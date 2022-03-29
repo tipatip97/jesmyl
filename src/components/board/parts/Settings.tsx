@@ -1,40 +1,41 @@
-import modalService from "../../../complect/modal/Modal.service";
-import { boardExer, boardStorage, localAuth } from "../Board.source";
-import { setPhase } from "../boardSlice";
+import modalService from '../../../complect/modal/Modal.service';
+import { indexStorage } from '../../../store/Index.storage';
+import { localAuth } from '../Board.source';
+import { boardExer, setPhase } from '../Board.store';
 
 export function BoardSettings() {
   return (
     <>
-      <div className="phase-name">Инструменты</div>
-      <div className="system-item">
-        <span className="text" onClick={() => setPhase("apps")}>
+      <div className='phase-name'>Инструменты</div>
+      <div className='system-item'>
+        <span className='text' onClick={() => setPhase('apps')}>
           назад
         </span>
       </div>
       {localStorage.auth == null ? (
-        <div className="system-item">
-          <span className="text" onClick={() => setPhase("login")}>
+        <div className='system-item'>
+          <span className='text' onClick={() => setPhase('login')}>
             вход
           </span>
         </div>
       ) : (
-        <div className="system-item">
+        <div className='system-item'>
           <span
-            className="text"
+            className='text'
             onClick={() => {
               modalService.open({
-                title: "Выход",
-                description: "Подтверди выход.",
+                title: 'Выход',
+                description: 'Подтверди выход.',
                 buttons: [
                   {
-                    title: "Выйти",
+                    title: 'Выйти',
                     onClick: () => {
-                      boardStorage.rem("auth");
-                      setPhase("apps");
+                      indexStorage.rem('auth');
+                      setPhase('apps');
                     },
                   },
                   {
-                    title: "Отмена",
+                    title: 'Отмена',
                   },
                 ],
               });
@@ -45,37 +46,37 @@ export function BoardSettings() {
         </div>
       )}
       {localAuth?.level && localAuth.level < 3 ? null : (
-        <div key="message-to-developers.wr" className="system-item">
+        <div key='message-to-developers.wr' className='system-item'>
           <span
-            key="message-to-developers"
-            className="text"
+            key='message-to-developers'
+            className='text'
             onClick={() => {
               modalService.open({
-                title: "Письмо разработчикам",
-                description: "Постараемся отреагировать в кратчайшие сроки.",
+                title: 'Письмо разработчикам',
+                description: 'Постараемся отреагировать в кратчайшие сроки.',
                 inputs: [
                   {
-                    type: "textarea",
-                    placeholder: "Текст сообщения",
+                    type: 'textarea',
+                    placeholder: 'Текст сообщения',
                     rows: 10,
-                    onInput: ({ setError }) => setError(""),
+                    onInput: ({ setError }) => setError(''),
                   },
                   {
-                    type: "password",
-                    title: "Пароль",
-                    placeholder: "Пароль",
-                    onInput: ({ setError }) => setError(""),
+                    type: 'password',
+                    title: 'Пароль',
+                    placeholder: 'Пароль',
+                    onInput: ({ setError }) => setError(''),
                   },
                 ],
                 buttons: [
                   {
-                    title: "Отправить",
+                    title: 'Отправить',
                     closable: false,
                     onClick: ({ closeModal, inputs }) => {
                       if (localAuth && inputs)
                       boardExer.send(
                           {
-                            action: "writeToDevelopers",
+                            action: 'writeToDevelopers',
                             args: {
                               message: inputs[0].value,
                               id: Date.now(),
@@ -85,10 +86,10 @@ export function BoardSettings() {
                             },
                           },
                           () => {
-                            // System.showToast("Сообщение отправлено!");
+                            // System.showToast('Сообщение отправлено!');
                             closeModal();
                           },
-                          // () => System.showToast("Ошибка отправки сообщения!")
+                          // () => System.showToast('Ошибка отправки сообщения!')
                         );
                     },
                   },

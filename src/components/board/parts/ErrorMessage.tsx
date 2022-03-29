@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
-import { BorderErrorScope } from "../Board.model";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import { BorderErrorScope } from '../Board.model';
 
 export function BoardErrorMessage({ scope }: { scope: BorderErrorScope }) {
   const message = useSelector((state: RootState) => state.board.errorMessage);
@@ -8,5 +8,5 @@ export function BoardErrorMessage({ scope }: { scope: BorderErrorScope }) {
 
   if (!message || errorScope !== scope) return null;
 
-  return <div style={{ color: "red" }}>{message}</div>;
+  return <div style={{ color: 'red' }}>{message}</div>;
 }

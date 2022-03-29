@@ -64,6 +64,13 @@ class ModalService {
             ]
         });
     }
+
+    alert(description: ReactNode, title = 'Подтвердить') {
+        return this.open({
+            title,
+            description,
+        });
+    }
 }
 
 const modalService = new ModalService();

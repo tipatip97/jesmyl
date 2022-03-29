@@ -1,0 +1,61 @@
+.user-greets {
+    position: absolute;
+    top: 5px;
+    width: 100vw;
+    text-align: center;
+}
+
+.app-loader-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    &>.app-loader-window-wrapper {
+        font-size: 1em;
+
+        &>.app-loader-window {
+            background-color: var(--color-br-5);
+            border: solid 1px var(--color-br-3);
+            color: var(--color-br-1);
+            border-radius: 5px;
+            padding: 3px;
+
+            &>.app-item {
+                background-color: var(--color-br-4);
+                padding: 10px;
+                border-radius: 3px;
+                margin: 3px;
+                cursor: pointer;
+
+                &>.app-title {
+                    background-color: var(--color-br-5);
+                    padding: 10px;
+                    border-radius: 3px;
+                    margin: 3px;
+
+                    &>.app-download-button {
+                        color: var(--color-br-1);
+                    }
+
+                }
+            }
+
+            &>.system-item {
+                display: flex;
+                padding: 15px;
+                justify-content: space-around;
+                align-items: center;
+                color: var(--color-no-6);
+
+                >.text {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

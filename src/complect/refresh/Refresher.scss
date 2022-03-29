@@ -1,0 +1,28 @@
+.refresher {
+    position: absolute;
+    z-index: 1000;
+    left: 6px;
+    bottom: 5px;
+    cursor: pointer;
+    transition: left .3s;
+    transform-origin: 51% 43%;
+
+    &.inactive {
+        left: -30px;
+    }
+
+    &.loading {
+        animation: rotate .5s linear infinite;
+    }
+}
+
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

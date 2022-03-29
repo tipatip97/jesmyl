@@ -1,14 +1,9 @@
-import { Exer } from "../../complect/exer/Exer";
-import { JStorage } from "../../complect/JStorage";
-import mylib from "../../complect/MyLib";
-import { BoardStorage, BorderAuthorization } from "./Board.model";
-import { setError, setPhase } from "./boardSlice";
+import mylib from '../../complect/MyLib';
+import { indexStorage } from '../../store/Index.storage';
+import { BorderAuthorization } from './Board.model';
+import { setError, setPhase } from './Board.store';
 
-
-export const boardStorage = new JStorage<BoardStorage>("board");
-export const boardExer = new Exer<BoardStorage>(boardStorage, 'index');
-
-export let localAuth = boardStorage.get("auth");
+export let localAuth = indexStorage.get('auth');
 
 export const sendLoginData = (mode: 'check' | 'login' | 'register', state?: BorderAuthorization) => {
   return fetch(`${localStorage.host}/auth`, {
@@ -16,12 +11,12 @@ export const sendLoginData = (mode: 'check' | 'login' | 'register', state?: Bord
     body: setAuthBody(mode, state)
   })
     .then(resp => resp.json())
-    .then(resp => { 
+    .then(resp => {
       if (resp.ok && resp.mode !== 'check') {
         const { login, at, fio, level } = resp;
 
         localAuth = { login, at, fio, level };
-        boardStorage.set("auth", localAuth);
+        indexStorage.set('auth', localAuth);
         // resp.mode === 'register'
         //   ? System.showToast('Регистрация и вход прошли успешно!')
         //   : System.showToast('Вход прошёл успешно!');

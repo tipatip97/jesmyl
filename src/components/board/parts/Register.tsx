@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
-import { BorderAuthorization } from "../Board.model";
-import { sendLoginData } from "../Board.source";
-import { setError, setFieldState, setPhase } from "../boardSlice";
-import { BoardErrorMessage } from "./ErrorMessage";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import { BorderAuthorization } from '../Board.model';
+import { sendLoginData } from '../Board.source';
+import { setError, setFieldState, setPhase } from '../Board.store';
+import { BoardErrorMessage } from './ErrorMessage';
 
 export function BoardRegister() {
   const authState = useSelector((state: RootState) => state.board.auth);
@@ -18,82 +18,82 @@ export function BoardRegister() {
 
   return (
     <>
-      <div className="phase-name">Вход</div>
-      <div className="system-item">
-        <span className="text" onClick={() => setPhase("settings")}>
+      <div className='phase-name'>Вход</div>
+      <div className='system-item'>
+        <span className='text' onClick={() => setPhase('settings')}>
           назад
         </span>
       </div>
-      <div className="system-item">
+      <div className='system-item'>
         <input
-          className=""
+          className=''
           value={fio}
-          placeholder="Псевдоним"
-          onInput={onInputFieldChanger("fio")}
+          placeholder='Псевдоним'
+          onInput={onInputFieldChanger('fio')}
         />
       </div>
-      <BoardErrorMessage scope="fio" />
-      <div className="system-item">
+      <BoardErrorMessage scope='fio' />
+      <div className='system-item'>
         <input
-          className=""
+          className=''
           value={login}
-          placeholder="Логин (+76543210123)"
-          onInput={onInputFieldChanger("login")}
+          placeholder='Логин (+76543210123)'
+          onInput={onInputFieldChanger('login')}
         />
       </div>
-      <BoardErrorMessage scope="login" />
-      <div className="system-item">
+      <BoardErrorMessage scope='login' />
+      <div className='system-item'>
         <input
-          className=""
+          className=''
           value={passw}
-          placeholder="Пароль"
-          type="password"
-          onInput={onInputFieldChanger("passw")}
+          placeholder='Пароль'
+          type='password'
+          onInput={onInputFieldChanger('passw')}
         />
       </div>
-      <div className="system-item">
+      <div className='system-item'>
         <input
-          className=""
+          className=''
           value={rpassw}
-          placeholder="Повтор пароля"
-          type="password"
-          onInput={onInputFieldChanger("rpassw")}
+          placeholder='Повтор пароля'
+          type='password'
+          onInput={onInputFieldChanger('rpassw')}
         />
       </div>
-      <BoardErrorMessage scope="passw" />
-      <div className="system-item">
+      <BoardErrorMessage scope='passw' />
+      <div className='system-item'>
         <span
-          className="text"
+          className='text'
           onClick={() => {
             if (!login) {
               setError({
-                errorMessage: "Введи логин (Номер телефона)!",
-                errorScope: "login",
+                errorMessage: 'Введи логин (Номер телефона)!',
+                errorScope: 'login',
               });
               return;
             }
             if (!passw) {
               setError({
-                errorMessage: "Введи пароль!",
-                errorScope: "passw",
+                errorMessage: 'Введи пароль!',
+                errorScope: 'passw',
               });
               return;
             }
             if (passw !== rpassw) {
               setError({
-                errorMessage: "Пароли не совпадают!",
-                errorScope: "passw",
+                errorMessage: 'Пароли не совпадают!',
+                errorScope: 'passw',
               });
               return;
             }
-            setError({ errorMessage: "" });
-            sendLoginData("register", authState);
+            setError({ errorMessage: '' });
+            sendLoginData('register', authState);
           }}
         >
           зарегистрироваться
         </span>
       </div>
-      <BoardErrorMessage scope="general" />
+      <BoardErrorMessage scope='general' />
     </>
   );
 }

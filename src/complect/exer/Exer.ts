@@ -2,12 +2,13 @@ import { localAuth } from "../../components/board/Board.source";
 import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";
 import mylib from "../MyLib";
+import { Refresh } from "../refresh/Refresh";
 import { Exec, ExecDict } from "./Exec";
 
 type Callback = (okRes: any, errRes: any) => void;
 
 export class Exer<Storage> {
-    host = 'https://jesmyl.space';
+    host = Refresh.host;
     appName = '';
     execs: Exec<any, any>[] = [];
     storage: JStorage<Storage>;

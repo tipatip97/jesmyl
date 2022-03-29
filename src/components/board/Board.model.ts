@@ -1,7 +1,10 @@
+import { AppName } from "../../store/Storage.model";
 
 export interface BorderState extends BorderStateError {
     phase: BoardPhase;
+    currentApp: BoardAppName;
     auth?: BorderAuthorization;
+    apps: BoardApplication[];
 }
 
 export type BorderErrorScope = keyof BorderAuthorization | 'general';
@@ -18,8 +21,23 @@ export interface BorderAuthorization {
     rpassw?: string;
 }
 
-export interface BoardStorage {
+export interface IndexStorage {
     auth: BoardAuth;
+    apps: BoardApplication[];
+    currentApp: BoardAppName;
+    rejectedComponents: string[];
+    registeredApps: BoardAppName[];
+    evaIconPack: { [key: string]: string };
+
+    lastUpdate: number;
+}
+
+export interface BoardApplication<Variables = {}> {
+    name: BoardAppName;
+    title: string;
+    disabled: boolean;
+    hidden: boolean;
+    variables: Variables;
 }
 
 export interface BoardAuth extends BorderAuthorization {
@@ -28,6 +46,7 @@ export interface BoardAuth extends BorderAuthorization {
 }
 
 export type BoardPhase = 'apps' | 'settings' | 'login' | 'register';
+export type BoardAppName = AppName | null;
 
 export interface SetFieldState<K extends keyof BorderAuthorization> {
     fieldn: K;
