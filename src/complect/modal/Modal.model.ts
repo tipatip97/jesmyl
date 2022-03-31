@@ -8,8 +8,8 @@ export interface ModalType {
 export interface ModalConfig {
     title?: string,
     description?: ReactNode,
-    inputs?: Partial<ModalConfigInput>[],
-    buttons?: (ModalConfigButton | string)[],
+    inputs?: Partial<ModalConfigInput>[] | null,
+    buttons?: (ModalConfigButton | string)[] | null,
     closeOnClick: boolean,
     theme: string,
     withoutCloseButton: boolean,

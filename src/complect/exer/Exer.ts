@@ -77,11 +77,11 @@ export class Exer<Storage> {
             // this.dconsl(error, text).config({ type: 0 });
             modalService.confirm(`${error || `Ошибка!`}\nСохранить локально?`)
                 .then(isSave => {
-                    if (isSave) this.saveExecsLocally();
+                    if (isSave) this.saveLocally();
                     else modalService.confirm(`Удалить весь стек?`)
                         .then(isRemove => {
                             if (isRemove) {
-                                this.removeLocalExecs();
+                                this.removeLocals();
                                 this.execs.length = 0;
                             }
                         });
@@ -114,15 +114,15 @@ export class Exer<Storage> {
         });
     }
 
-    saveExecsLocally() {
+    saveLocally() {
         this.storage.set(this.key, this.execs.map(exec => exec.toDict()) as never);
     }
 
-    removeLocalExecs() {
+    removeLocals() {
         this.storage.rem(this.key);
     }
 
-    setLocalExecs() {
+    setLocals() {
         if (this.storage.has(this.key)) {
             this.set(this.storage.get(this.key) as never);
         }

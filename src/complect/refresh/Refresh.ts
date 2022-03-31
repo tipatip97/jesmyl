@@ -1,5 +1,5 @@
 import { BoardAppName } from "../../components/board/Board.model";
-import { appStorage, indexStorage } from "../../store/Index.storage";
+import { appStorage, indexStorage } from "../../store/jstorages";
 import { CheckRefreshResponse, RefreshResponse, RefreshResponseValue, RefreshState } from "./Refresh.model";
 
 const host = 'https://jesmyl.space/debug/';
@@ -21,8 +21,8 @@ export class Refresh {
             appName || '',
             isCheck ? 1 : '',
             isAndroid ? 1 : '',
-            (includeRejected ? (indexStorage.get('rejectedComponents') || []).filter(p => p) : ''),
-            (indexStorage.get('registeredApps') || []).filter(p => p),
+            (includeRejected ? (indexStorage.getOr('rejectedComponents', [])).filter(p => p) : ''),
+            (indexStorage.getOr('registeredApps', [])).filter(p => p),
             isForceIndex
                 ? 0
                 : this.appLastMod('index') || '',
@@ -53,7 +53,7 @@ export class Refresh {
         if (storage == null) return null;
 
         if (setVal != null) storage.set(paramName, setVal);
-        return storage.get(paramName, 0);
+        return storage.getOr(paramName, 0);
     }
 
     appLastMod<Value>(appName: BoardAppName, setVal?: Value) {

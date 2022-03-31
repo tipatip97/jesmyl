@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../complect/exer/Exer";
-import { JStorage } from "../../complect/JStorage";
-import { appStorage, indexStorage } from "../../store/Index.storage";
+import { appStorage, indexStorage } from "../../store/jstorages";
 import {
   BoardAppName,
   BoardPhase,
@@ -19,7 +18,7 @@ indexStorage.registerTop(appStorage);
 
 const initialState: BorderState = {
   phase: "apps",
-  currentApp: indexStorage.get("currentApp", "index"),
+  currentApp: indexStorage.getOr("currentApp", "index"),
   apps: [],
 };
 

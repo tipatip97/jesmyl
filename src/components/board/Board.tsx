@@ -6,7 +6,7 @@ import { BoardLogin } from "./parts/Login";
 import { BoardRegister } from "./parts/Register";
 import { BoardSettings } from "./parts/Settings";
 import "./Board.scss";
-import { indexStorage } from "../../store/Index.storage";
+import { indexStorage } from "../../store/jstorages";
 import { useEffect } from "react";
 import { BoardApplication, IndexStorage } from "./Board.model";
 import { setApps } from "./Board.store";

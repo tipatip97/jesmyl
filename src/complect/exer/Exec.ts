@@ -1,31 +1,13 @@
-export interface ExecDict<Value, Args> {
+import { ExecArgs, ExecDict } from "./Exer.model";
+
+
+export class Exec<Value, Def, Args> {
     scope?: string;
     eprev?: Value;
     prev?: Value;
     value?: Value;
     method?: string;
-    args?: Args;
-    action: string;
-    generalId?: string;
-    createByPath?: boolean;
-    argValue?: string;
-    del?: boolean;
-    muted?: boolean;
-    errors?: string[];
-
-    onSet?: (exec: Exec<Value, Args>) => [];
-    onLoad?: (exec: Exec<Value, Args>) => '';
-    isFriendly?: boolean;
-}
-
-
-export class Exec<Value, Args> {
-    scope?: string;
-    eprev?: Value;
-    prev?: Value;
-    value?: Value;
-    method?: string;
-    args?: Args;
+    args?: ExecArgs<Def, Args>;
     action: string;
     generalId?: string;
     createByPath?: boolean;
@@ -35,11 +17,11 @@ export class Exec<Value, Args> {
     muted?: boolean;
     errors?: string[];
 
-    onSet?: (exec: Exec<Value, Args>) => [];
-    onLoad?: (exec: Exec<Value, Args>) => '';
+    onSet?: (exec: Exec<Value, Def, Args>) => [];
+    onLoad?: (exec: Exec<Value, Def, Args>) => '';
     isFriendly?: boolean;
 
-    constructor(exec: ExecDict<Value, Args>) {
+    constructor(exec: ExecDict<Value, Def, Args>) {
         this.scope = exec.scope;
         this.eprev = exec.eprev;
         this.prev = exec.prev;

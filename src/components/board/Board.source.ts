@@ -1,9 +1,9 @@
 import mylib from '../../complect/MyLib';
-import { indexStorage } from '../../store/Index.storage';
+import { indexStorage } from '../../store/jstorages';
 import { BorderAuthorization } from './Board.model';
 import { setError, setPhase } from './Board.store';
 
-export let localAuth = indexStorage.get('auth');
+export let localAuth = indexStorage.getOr('auth', { level: 0 });
 
 export const sendLoginData = (mode: 'check' | 'login' | 'register', state?: BorderAuthorization) => {
   return fetch(`${localStorage.host}/auth`, {
@@ -44,7 +44,7 @@ export const setAuthBody = (mode = 'check', state?: BorderAuthorization) => {
       ? fieldName === 'fio'
         ? state[fieldName]
         : mylib.md5(state[fieldName] || '')
-      : localAuth && localAuth[fieldName];
+      : localAuth[fieldName];
     if (fieldVal != null) {
       body.append(fieldName, fieldVal);
     }

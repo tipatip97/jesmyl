@@ -1,5 +1,5 @@
 import modalService from '../../../complect/modal/Modal.service';
-import { indexStorage } from '../../../store/Index.storage';
+import { indexStorage } from '../../../store/jstorages';
 import { localAuth } from '../Board.source';
 import { boardExer, setPhase } from '../Board.store';
 

@@ -40,9 +40,9 @@ export interface BoardApplication<Variables = {}> {
     variables: Variables;
 }
 
-export interface BoardAuth extends BorderAuthorization {
+export interface BoardAuth extends Partial<BorderAuthorization> {
     level: number;
-    at: string;
+    at?: string;
 }
 
 export type BoardPhase = 'apps' | 'settings' | 'login' | 'register';

@@ -1,13 +1,11 @@
 import React from "react";
-import { indexStorage } from "../store/Index.storage";
+import { indexStorage } from "../store/jstorages";
 
-let pack = indexStorage.get("evaIconPack") || {};
+let pack = indexStorage.getOr("evaIconPack", {});
 
 indexStorage.listen("evaIconPack", (key, value) => {
   if (key === "evaIconPack") pack = value as never;
 });
-
-const max = 24;
 
 export function EvaIcon({
   name,

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { indexStorage } from "../../../store/Index.storage";
+import { indexStorage } from "../../../store/jstorages";
 import { BoardApplication, BoardAppName } from "../Board.model";
 import { setCurrentApp, setPhase } from "../Board.store";
 

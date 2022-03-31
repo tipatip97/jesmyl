@@ -68,7 +68,11 @@ export class JStorage<Scope = any> {
         return this.keys.indexOf(key) >= 0;
     }
 
-    get<Key extends keyof Scope>(key: Key, def: Scope[Key] | null = null): Scope[Key] | null {
+    get<Key extends keyof Scope>(key: Key): Scope[Key] | undefined {
+        return this.properties[key];
+    }
+
+    getOr<Key extends keyof Scope>(key: Key, def: Scope[Key]): Scope[Key] {
         return this.properties[key] ?? def;
     }
 
@@ -76,7 +80,7 @@ export class JStorage<Scope = any> {
         return this.strings[key] ?? def;
     }
 
-    set<Key extends keyof Scope>(key: keyof Scope, val: Scope[Key]): string | null {
+    set<Key extends keyof Scope>(key: Key, val: Scope[Key]): string | null {
         try {
             const string = this.stringify(val);
             return string && (localStorage[this.lsName(key)] = this.setValue(key, val, string));
