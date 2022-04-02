@@ -1,4 +1,4 @@
-import mylib from "../../../../complect/MyLib";
+import mylib from "../../../../complect/refresh/MyLib";
 
 export class Base<T> {
     top: T;
@@ -9,25 +9,24 @@ export class Base<T> {
         this.self = this;
     }
 
-    getOrBase<K extends keyof T>(fieldn: K, typ?: T[K]) {
+    getOrBase<K extends keyof T>(fieldn: K, typ?: T[K]): T[K] {
         if (typ !== undefined && (this.self[fieldn] === null || this.self[fieldn] === undefined)) this.self[fieldn] = mylib.typ(typ, this.self.top[fieldn]);
-        return this.self[fieldn];
+        return this.self[fieldn] as T[K];
     }
 
     setExportable<K extends keyof T>(fieldn: K, val: T[K]) {
         this.self[fieldn] = val;
     }
 
-    forcedArray<K extends keyof T>(fieldn: K, message = 'expected #Array, but got #other') {
+    forcedArray<K extends keyof T>(fieldn: K): T[K] {
         const obj = this.self[fieldn];
         if (obj) {
             if (mylib.isArr(obj)) return obj;
             else {
-                const list: T[] = [];
-                // mylib.dcconsl(message, JSON.parse(JSON.stringify(obj)), obj);
-                Object.entries(obj).sort(([a], [b]) => +a - +b).forEach(([k, v]) => !isNaN(+k) && (list[k as never] = v));
-                return this.self[fieldn] = list;
+                const list: T = [] as never;
+                (Object.entries(obj) as [K, T][]).sort(([a], [b]) => +a - +b).forEach(([k, v]) => !isNaN(+k) && (list[k] = v as never));
+                return this.self[fieldn] = list as never;
             }
-        } else return this.self[fieldn] = [];
+        } else return this.self[fieldn] = [] as never;
     }
 }

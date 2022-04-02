@@ -1,13 +1,21 @@
-import { ExecArgs } from "../../../../../complect/exer/Exer.model";
-import mylib from "../../../../../complect/MyLib";
+import { Exec } from "../../../../../complect/exer/Exec";
+import { ExecArgs, ExecDict } from "../../../../../complect/exer/Exer.model";
+import mylib from "../../../../../complect/refresh/MyLib";
 import { Base } from "../../base/Base";
-import { IExportableOrder, IExportableOrderTop } from "./Order.model";
+import { cmExer } from "../../Cm.store";
+import { Order } from "./Order";
+import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderExecArgs, OrderRepeats } from "./Order.model";
 
 
 export class EditableOrder extends Base<IExportableOrderTop> {
+    self: Order;
 
+    constructor(top: IExportableOrderTop) {
+        super(top);
+        this.self = this as never;
+    }
     setField<Def, Args, K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args: ExecArgs<Def, Args>, refresh = true, onSet?: () => void | null) {
-        const setExec = (action: string, onSet: () => void | null, additionalArgs: {}) => {
+        const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
             this.exec({
                 prev: this.top.inhFields && this.top.inhFields.indexOf(fieldn) < 0
                     ? this.top.source
@@ -32,8 +40,8 @@ export class EditableOrder extends Base<IExportableOrderTop> {
 
             const wid = this.top.leadOrd?.wid;
 
-            action && setExec(action, null, { wid, isAnchor: this.top.leadOrd?.isAnchor });
-            setExec('setAnchorInheritValue', onSet, { inhIndex: this.top.anchorInheritIndex, wid, value });
+            action && setExec(action, { wid, isAnchor: this.top.leadOrd?.isAnchor });
+            setExec('setAnchorInheritValue', { inhIndex: this.top.anchorInheritIndex, wid, value }, onSet);
         } else {
             const action = ({
                 m: 'setComOrderMinimal',
@@ -46,20 +54,26 @@ export class EditableOrder extends Base<IExportableOrderTop> {
                 e: 'setComOrderEmptiedVal',
             } as Record<keyof Partial<IExportableOrder>, string>)[fieldn];
 
-            setExec(action, onSet, { value });
+            setExec(action, { value }, onSet);
         }
 
 
-        if (fieldn === 'r') this.repeats = value;
-        else this.top.source[fieldn] = value;
+        if (fieldn === 'r') this.setRepeats(value as IExportableOrder['r']);
+        else if (this.top.source) this.top.source[fieldn] = value as never;
 
         if (refresh) {
-            this.com.afterOrderChange();
-            g.ss();
+            this.top.com.afterOrderChange();
+            // g.ss();
         }
     }
 
-    setFieldValue(fieldn, value) {
+    setRepeats(val: OrderRepeats | null) { }
+    get fieldValues() { return this.getOrBase('f', {}); }
+    set fieldValues(val) { this.setExportable('f', val); }
+    get positions() { return []; }
+    set positions(val: number[][]) { }
+
+    setFieldValue<Key extends keyof IExportableOrderFieldValues>(fieldn: Key, value: IExportableOrderFieldValues[Key]) {
         const action = 'setComOrderFieldValue';
 
         this.exec({
@@ -67,7 +81,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
             value,
             method: 'set',
             action,
-            createByPath: 1,
+            createByPath: true,
             args: {
                 value,
                 fieldn,
@@ -77,36 +91,44 @@ export class EditableOrder extends Base<IExportableOrderTop> {
         this.fieldValues[fieldn] = value;
     }
 
-    delChordsi() {
-        delete this.c;
+    // delChordsi() {
+    //     delete this.c;
+    // }
+
+    // get wid() { return this.top.source?.w || this.top.w; }
+    // set wid(val: number) { this.top.source && (this.top.source.w = val); }
+
+    // get isAnchor() { return this.getOrBase('a') != null; }
+
+    // get texti() { return -1; }
+    // set texti(val: number) { }
+
+    scope(action: string, uniq?: number | string, wid?: number | null) {
+        return [this.top.com.scope(), '->', mylib.def(wid, this.self.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
     }
 
-    scope(action, uniq, wid) {
-        return [this.top.com.scope(), '->', mylib.def(wid, this.wid), '.', mylib.typ('[action]', action), ':', [].concat(mylib.def(uniq, ['[uniq]'])).join(',')].join('');
-    }
+    exec<Value>(bag: ExecDict<Value, OrderExecArgs<Value>>) {
+        const { scope, args: { wid } = {} } = bag;
 
-    exec(bag) {
-        const { scope, args: { wid = null } = {} } = bag;
-
-        mylib.setExecs(mylib.overlap({}, bag, {
+        cmExer.set(new Exec<Value, OrderExecArgs<Value>>(mylib.overlap({}, bag, {
             scope: this.scope(bag.action, bag.uniq, wid),
             args: mylib.overlap({
-                wid: mylib.def(wid, this.wid),
+                wid: mylib.def(wid, this.self.wid),
                 comw: this.top.com.wid,
                 name: this.top.com.name,
                 blockn: this.top.header({}, true),
-                isAnchor: this.isAnchor
+                isAnchor: this.self.isAnchor
             }, bag.args),
             generalId: this.top.com.wid
-        }, scope ? { scope } : null));
+        }, scope ? { scope } : null)));
     }
 
-    async setChordPosition(linei, pos) {
-        const com = this.com;
-        const prev = JSON.parse(JSON.stringify(this.positions[linei] || [])).sort((a, b) => a - b);
+    async setChordPosition(linei: number, pos: number) {
+        const com = this.top.com;
+        const prev = JSON.parse(JSON.stringify(this.positions[linei] || [])).sort((a: number, b: number) => a - b);
         const line = this.positions[linei] || [];
         const posi = line.indexOf(pos);
-        const textLines = (com.texts[this.texti] || '').split('\n');
+        const textLines = (this.self.text || '').split('\n');
         const textLine = textLines[linei];
         const lineSplitted = textLine.split('');
         const vowels = com.getVowelPositions(textLine);
@@ -134,19 +156,20 @@ export class EditableOrder extends Base<IExportableOrderTop> {
             args: {
                 linei,
                 line,
-                wid: this.getLeadFirst('w'),
+                wid: this.self.getLeadFirst('w'),
             },
             onSet: exec => {
                 const lineSplitted = textLine.split('');
+                const prev = exec.args?.prev || [];
 
-                exec.args.prev
+                prev
                     .concat(positions)
-                    .forEach(pos => {
+                    .forEach((pos: number) => {
                         const vowel = lineSplitted[vowels[pos]];
                         if (!vowel || vowel.length !== 1) return;
 
                         const inPos = positions.indexOf(pos) > -1;
-                        const inPrev = exec.args.prev.indexOf(pos) > -1;
+                        const inPrev = prev.indexOf(pos) > -1;
                         const [lbr, rbr] = inPos && inPrev
                             ? ['[', ']']
                             : !inPrev && inPos
@@ -157,23 +180,24 @@ export class EditableOrder extends Base<IExportableOrderTop> {
                     });
 
                 const preInPos = line.indexOf(-1) > -1;
-                const preInPrev = exec.args.prev.indexOf(-1) > -1;
+                const preInPrev = prev.indexOf(-1) > -1;
                 const postInPos = line.indexOf(-2) > -1;
-                const postInPrev = exec.args.prev.indexOf(-2) > -1;
+                const postInPrev = prev.indexOf(-2) > -1;
                 const preLabel = preInPos && preInPrev ? ['●'] : preInPos && !preInPrev ? ['★'] : !preInPos && preInPrev ? ['☆'] : [];
                 const postLabel = postInPos && postInPrev ? ['●'] : postInPos && !postInPrev ? ['★'] : !postInPos && postInPrev ? ['☆'] : [];
 
-                exec.args.lineTitle = preLabel
-                    .concat(lineSplitted)
-                    .concat(postLabel)
-                    .join('');
+                if (exec.args)
+                    exec.args.lineTitle = preLabel
+                        .concat(lineSplitted)
+                        .concat(postLabel)
+                        .join('');
             }
         });
     }
 
     takeUniq() {
-        if (this.unique != null) return this.unique;
-        const value = this.top.com.ords.reduce((max, ord) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
+        if (this.self.unique != null) return this.self.unique;
+        const value = this.top.com.ords.reduce((max: number, ord: IExportableOrder) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
 
         this.exec({
             method: 'set',
@@ -184,7 +208,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
             }
         });
 
-        this.unique = value;
+        this.self.unique = value;
 
         return value;
     }

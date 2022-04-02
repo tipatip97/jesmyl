@@ -1,4 +1,4 @@
-import mylib from '../../complect/MyLib';
+import mylib from '../../complect/refresh/MyLib';
 import { indexStorage } from '../../store/jstorages';
 import { BorderAuthorization } from './Board.model';
 import { setError, setPhase } from './Board.store';

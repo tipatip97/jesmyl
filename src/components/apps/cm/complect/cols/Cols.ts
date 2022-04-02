@@ -1,4 +1,4 @@
-import mylib from "../../../../../complect/MyLib";
+import mylib from "../../../../../complect/refresh/MyLib";
 import { cmStorage } from "../../../../../store/jstorages";
 import { Cat } from "../../col/cat/Cat";
 import { Com } from "../../col/com/Com";

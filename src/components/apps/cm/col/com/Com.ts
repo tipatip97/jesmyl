@@ -1,12 +1,23 @@
-import mylib from "../../../../../complect/MyLib";
+import mylib from "../../../../../complect/refresh/MyLib";
 import { EditableCol } from "../EditableCol";
 import { IExportableCom } from "./Com.model";
+import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.const";
+import { Order } from "../../complect/order/Order";
+import { IExportableOrder, IExportableOrderTop } from "../../complect/order/Order.model";
+import { StyleProp } from "../../complect/settings/StyleProp";
+import { setts } from "../../complect/settings/Setts";
 
 export class Com extends EditableCol<IExportableCom> {
   initial: Record<string, any>;
-  ton: string = '';
-  tonc: string[] = [];
+  ton?: number;
+  tonc?: string;
+  firstChord?: string;
   index: number = -1;
+  private _translationMap?: number[] = [];
+  private _o?: Order[] = [];
+  private _ords?: IExportableOrder[] = [];
+  private _chordLabels?: string[][][] = [];
+  private _usedChords?: Record<string, string> = {};
 
   constructor(obj: IExportableCom) {
     super(obj);
@@ -15,12 +26,12 @@ export class Com extends EditableCol<IExportableCom> {
 
     this.pullTransPosition(obj);
 
-    const realFields = ['ton', 'tonc'];
+    // const realFields = ['ton', 'tonc'];
 
-    realFields.forEach(fieldn => {
-      if (obj[fieldn] != null)
-        this[fieldn] = obj[fieldn];
-    });
+    // realFields.forEach(fieldn => {
+    //   if (obj[fieldn] != null)
+    //     this[fieldn] = obj[fieldn];
+    // });
   }
 
   static get fields() {
@@ -29,7 +40,7 @@ export class Com extends EditableCol<IExportableCom> {
   }
 
   get name() { return this.getOrBase('n', '?'); }
-  set name(val) { this.n = val; }
+  set name(val: string) { this.setExportable('n', val); }
 
   get wid() { return this.getOrBase('w', 0); }
 
@@ -58,26 +69,26 @@ export class Com extends EditableCol<IExportableCom> {
     this.resetChordLabels();
   }
 
-  get initialTransPosition() { return mylib.def(this.initial.p, this.p); }
+  get initialTransPosition() { return mylib.def(this.initial.p, this.getOrBase('p')); }
   set initialTransPosition(val) {
     if (this.initial.p == null) this.initial.p = mylib.typ(0, val);
     this.initialTransPos = mylib.typ(0, val);
   }
 
-  get initialTransPos() { return mylib.def(this.initial.pos, this.pos, this.initial.p, this.p); }
+  get initialTransPos() { return mylib.def(this.initial.pos, this.initial.p, this.getOrBase('p')); }
   set initialTransPos(val) {
     if (this.initial.pos == null) this.initial.pos = mylib.typ(0, val);
   }
 
-  get transPosition() { return this.p; }
+  get transPosition() { return this.getOrBase('p'); }
   set transPosition(value) {
-    const v = mylib.typ(0, value);
+    const v: number = mylib.typ(0, value) as number;
     const val = v > 11 ? v % 12 : v < 0 ? 12 + v : v;
-    this.p = val;
+    this.setExportable('p', val);
     this.initialTransPosition = val;
   }
 
-  pullTransPosition(obj) {
+  pullTransPosition(obj: IExportableCom) {
     if (obj) {
       if (obj.ton != null) this.initialTransPosition = obj.p;
       this.transPosition = mylib.def(obj.ton, obj.p);
@@ -85,25 +96,25 @@ export class Com extends EditableCol<IExportableCom> {
   }
 
   turnBemoled() {
-    this.isBemoled = !this.isBemoled;
+    this.isBemoled = this.isBemoled ? 0 : 1;
   }
 
   get langi() { return this.getOrBase('l', 0); }
-  //set langi(val) { this.l = val; }
 
-  get langn() { return ICom.langs[this.langi]; }
+  get langn() { return Com.langs[this.langi]; }
   static get langs() { return ['русский', 'украинский']; }
 
-  getVowelPositions(textLine) {
-    return g.searchAll(/[уеыаоэяиёюіїє ]/i, textLine);
+  getVowelPositions(textLine: string) {
+    const R = [];
+    for (let i = 0; i < textLine.length; i++) iRuUaReg.test(textLine[i]) && R.push(i);
+    return R;
   }
 
-  transChord(chord, delta) {
-    const chords = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H'];
+  transChord(chord: string, delta: number = 1) {
 
-    const cindex = chords.indexOf(chord);
+    const cindex = simpleHashChords.indexOf(chord);
     const di = cindex - -delta;
-    const len = chords.length;
+    const len = simpleHashChords.length;
     const nindex = di < 0
       ? len - -di
       : di > len
@@ -111,15 +122,15 @@ export class Com extends EditableCol<IExportableCom> {
         : di === len || -di === len
           ? 0
           : di;
-    return chords[nindex];
+    return simpleHashChords[nindex];
   }
 
-  transBlock(cblock, delta = this.transPosition) {
-    return cblock && cblock.replace(/[ACDEFGH]#?/g, chord => this.transChord(chord, delta));
+  transBlock(cblock: string, delta = this.transPosition) {
+    return cblock && cblock.replace(gSimpleHashChordReg, chord => this.transChord(chord, delta));
   }
 
-  transBlocks(delta) {
-    return this.chords.map((cblock) => this.transBlock(cblock, delta));
+  transBlocks(delta: number) {
+    return this.chords.map((cblock: string) => this.transBlock(cblock, delta));
   }
 
   setChordsInitialTon() {
@@ -129,8 +140,10 @@ export class Com extends EditableCol<IExportableCom> {
     this.resetChordLabels();
   }
 
-  transpose(delta) {
-    this.transPosition -= -delta;
+  transpose(delta: number) {
+    if (this.transPosition != null) this.transPosition -= -delta;
+    else this.transPosition = delta;
+
     this.ton = this.transPosition;
     this.tonc = mylib.def(this.tonc, this.chordLabels[0][0][0]);
     this.resetChordLabels();
@@ -141,24 +154,24 @@ export class Com extends EditableCol<IExportableCom> {
   }
 
   getOrderedBlocks(isInsludeName = false, isIncluseEndstars = true) {
-    const textBeats = this.orders.reduce((text, ord) => text + (ord.top.t == null ? (text ? '\n' : '') + ord.repeated), '').split(/\n/);
+    const textBeats = this.orders.reduce((text: string, ord: Order) => text + (ord.top.t == null ? (text ? '\n' : '') + ord.repeated : ''), '').split(/\n/);
 
     const texts = this.translationMap().map(peaceSize => {
       return textBeats.splice(0, peaceSize);
     });
 
-    return (isInsludeName ? [[this.name]] : []).concat(mylib.dconsl(texts).val);
+    return (isInsludeName ? [[this.name]] : []).concat(texts);
   }
 
-  translationMap(isIncludeChordedBlocks = this.isIncludeChordedBlocks) {
+  translationMap(isIncludeChordedBlocks = false) {
     if (this._translationMap != null) return this._translationMap;
 
-    const push = g.translationPushKinds[this.translationPushKind].cb;
+    const push = translationPushKinds[this.translationPushKind].cb;
 
     const map = this._translationMap = [];
     let curr = 0;
 
-    this.orders.forEach((ord, ordi, orda) => {
+    this.orders.forEach((ord: Order, ordi: number, orda: Order[]) => {
       if (ord.top.t == null) {
         isIncludeChordedBlocks && push(map, 1);
         curr = 0;
@@ -196,7 +209,7 @@ export class Com extends EditableCol<IExportableCom> {
           ? ''
           : (pref || '') + all
             .split('')
-            .map((br, bri) => (brackets[brLevel - (isOpen ? -bri : bri)] || ['`', '`'])[isOpen ? 0 : 1])
+            .map((_br: string, bri: number) => (brackets[brLevel - (isOpen ? -bri : bri)] || ['`', '`'])[isOpen ? 0 : 1])
             .join('') + (post || '');
       })
       .replace(/\("+ \)$|^\( "+\)/g, '');
@@ -204,10 +217,10 @@ export class Com extends EditableCol<IExportableCom> {
     return { text, level };
   }
 
-  get chordLabels() {
+  get chordLabels(): string[][][] {
     if (this._chordLabels == null) this.updateChordLabels();
 
-    return this._chordLabels;
+    return this._chordLabels as string[][][];
   }
 
   get usedChords() {
@@ -217,8 +230,8 @@ export class Com extends EditableCol<IExportableCom> {
   }
 
   resetChordLabels() {
-    this._usedChords = null;
-    this._chordLabels = null;
+    delete this._usedChords;
+    delete this._chordLabels;
   }
 
   updateChordLabels() {
@@ -227,18 +240,18 @@ export class Com extends EditableCol<IExportableCom> {
     let currTransPosition = this.transPosition;
 
     this.orders.forEach(ord => {
-      const ordLabels = [];
+      const ordLabels: string[][] = [];
       this.chordLabels.push(ordLabels);
-      const chords = this.actualChords(ord.chordsi, currTransPosition);
+      const chords: string = this.actualChords(ord.chordsi, currTransPosition);
 
-      if ((ord.top.style || 0).isModulation) {
-        currTransPosition = this.transPosition + (ord.fieldValues.md || 0);
+      if (ord.top.style?.isModulation) {
+        currTransPosition = (this.transPosition || 0) + (ord.fieldValues.md || 0);
       }
 
       (chords || '')
         .split(/\s*\n+\s*/)
         .forEach(line => {
-          const lineLabels = [];
+          const lineLabels: string[] = [];
           ordLabels.push(lineLabels);
 
           (line || '')
@@ -246,346 +259,31 @@ export class Com extends EditableCol<IExportableCom> {
             .forEach(chordSchema => {
               chordSchema
                 .split(/[^#A-Z/0-9]+/i)
-                .forEach(chord => this._usedChords[chord.replace(/B/, 'A#')] = chord);
+                .forEach(chord => this._usedChords && (this._usedChords[chord.replace(/B/, 'A#')] = chord));
               lineLabels.push(chordSchema);
             });
         });
     });
 
-    this.tonc = this.firstChord = mylib.def(mylib.typ('', this.tonc, mylib.def(mylib.def(mylib.def(this.chordLabels, '')[0], '')[0], '')[0]).match(/[A-H]#?m?/), '')[0] || '';
+    this.tonc = this.firstChord = (mylib.def(mylib.typ('', this.tonc, mylib.def(mylib.def(mylib.def(this.chordLabels, [])[0], [])[0], [])[0])?.match(/[A-H]#?m?/), []) as string[])[0] || '';
   }
 
-  static get bemoles() {
-    return {
-      'A#': 'B',
-      'C#': 'Db',
-      'D#': 'Eb',
-      'F#': 'Gb',
-      'G#': 'Ab',
-    };
+  static withBemoles(chords: string, isSet: 0 | 1) {
+    return (isSet ? chords.replace(gSimpleHashedEachLetterChordReg, all => chordBemoleEquivalent[all] || all) : chords).replace(/A#/g, 'B');
   }
 
-  static withBemoles(chords, isSet) {
-    return (isSet ? chords.replace(/[A-H]#/g, all => ICom.bemoles[all] || all) : chords).replace(/A#/g, 'B');
+  actualChords(chordsScalar: string | number, position = this.transPosition): string {
+    const chords = mylib.isStr(chordsScalar) ? chordsScalar as string : this.chords[chordsScalar as number];
+    return chords ?? Com.withBemoles(this.transBlock(chords, position), this.isBemoled);
   }
 
-  actualChords(chordsScalar, position = this.transPosition) {
-    const chords = mylib.isStr(chordsScalar) ? chordsScalar : this.chords[chordsScalar];
-    return chords && ICom.withBemoles(this.transBlock(chords, position), this.isBemoled);
+  get ords(): IExportableOrderTop[] {
+    if (this._ords == null) this._ords = this.forcedArray('o');
+
+    return this._ords as IExportableOrderTop[];
   }
 
-  lineComponent(props) {
-    const {
-      key,
-      chordedOrd,
-      textLine,
-      textLinei,
-      textLines,
-      orderUnit,
-      orderUniti,
-      onLetterClick,
-      onWordClick,
-      setWordClass,
-      isJoinLetters = true,
-      setLineClassName,
-      setChorded,
-    } = props;
-
-    const lineKey = `line-${key}.${orderUniti}-${textLinei}`;
-
-    if (!chordedOrd)
-      return ce('span',
-        { key: `song-woc-part-${lineKey}` },
-        textLine.split(/ +/).map((word, wordi, worda) => {
-          const actionProps = { ord: orderUnit, linei: textLinei, wordi, word, words: worda.length, lines: textLines };
-          return ce('span',
-            { key: `song-line-woc-${lineKey}.${wordi}` },
-            ce('span', {
-              className: mylib.func(setWordClass).call(actionProps),
-              onClick: mylib.isFunc(onWordClick)
-                ? event => onWordClick(actionProps, event)
-                : null,
-              dangerouslySetInnerHTML: { __html: word }
-            }),
-            wordi === worda.length - 1 ? null : [' ', ce('wbr', { key: `song-line-woc-wbr-${lineKey}.${wordi}` })]
-          )
-        })
-      );
-
-    const letters = this.getVowelPositions(textLine);
-
-    let chordIndex = 0;
-    const chordsLabels = (this.chordLabels[orderUniti] || [])[textLinei] || [];
-    const linePoss = (orderUnit.positions || [])[textLinei] || [];
-
-    let points = letters;
-
-    if (isJoinLetters)
-      points = letters.filter((lett, letti) => !letti || linePoss.indexOf(letti) >= 0 || / /.test(textLine[lett]));
-
-    const isHasPre = linePoss.indexOf(-1) > -1;
-    const isHasPost = linePoss.indexOf(-2) > -1;
-
-    return ce('span',
-      {
-        key: `song-line-wrapper-${lineKey}`,
-      },
-      points.map((index, indexi, indexa) => {
-        const indexKey = `${lineKey}-${indexi}`;
-        let isLast = indexi === indexa.length - 1;
-        let isFirst = indexi === 0;
-        let firstTextBit = isFirst ? textLine.slice(0, index) : '';
-        let chordedFirst = isFirst && isHasPre && firstTextBit === '';
-        let chordedLast = isLast && isHasPost;
-        let chorded = setChorded ? setChorded(indexi) : (linePoss.indexOf(letters.indexOf(index)) > -1);
-        let chordLabel = (chorded ? chordsLabels[chordIndex++ - (isHasPre ? -1 : 0)] || '' : '');
-
-        const chord = chordedFirst ? chordsLabels[0] : chordLabel;
-        const pchord = isLast && isHasPost ? chordsLabels[chordsLabels.length - 1] : null;
-
-        let baseTextBitOriginal = textLine.slice(index, indexa[indexi + 1]);
-        const isSpacedWord = / /.test(baseTextBitOriginal);
-        const origBits = baseTextBitOriginal.split(/ +/g).map((txt, txti, txta) =>
-          ce('span',
-            { key: `text-bit:${lineKey}.${txti}` },
-            ce('span', { dangerouslySetInnerHTML: { __html: txt } }),
-            txti === txta.length - 1 ? null : [' ', ce('wbr', { key: `song-line-wbr-${indexKey}.${txti}` })]
-          )
-        );
-
-        return [firstTextBit ?
-          ce('span',
-            {
-              key: `song-letterbit-${lineKey}`,
-              className: `${isHasPre ? 'chorded pre' : ''}`,
-              dangerouslySetInnerHTML: { __html: firstTextBit },
-              chord: chordsLabels[0]
-            }
-          ) : null,
-        ce('span',
-          {
-            key: `chord_${lineKey}`,
-            id: `chord_${lineKey}`,
-            chord,
-            pchord,
-            className: [
-              'chord',
-              (chorded || chordedFirst || chordedLast) && 'chorded',
-              chordedLast && 'post',
-              chordedFirst && 'pre',
-              isSpacedWord && 'spaced-word',
-              chorded && isLast && isHasPost && 'twice',
-              mylib.func(setLineClassName).call(chorded),
-            ].filter(s => s).join(' '),
-            onClick: !onLetterClick || (isHasPre && isFirst && !chorded)
-              ? null
-              : (() => onLetterClick(indexi)),
-          },
-          chorded || chordedLast
-            ? ce('f',
-              {
-                chord,
-                pchord: pchord || null
-              },
-              origBits
-            )
-            : origBits
-        )
-        ];
-      })
-    );
-  }
-
-  orderComponent(props) {
-    const {
-      key,
-      style,
-      onClick,
-      ref,
-      asLineComponent,
-      setChorded,
-      setHideAnchor,
-      onLineClick,
-      setOrdClassName,
-      setChordsPosition,
-      orderUnit,
-      orderUniti,
-      currTransPosition,
-      isAnchorInheritHide,
-    } = props || {};
-
-    if ((isAnchorInheritHide && (orderUnit.top.isAnchorInherit || orderUnit.top.isPrevAnchorInheritPlus)) || !orderUnit.isVisible) return null;
-
-    const params = (init = {}) => {
-      return Object.assign({
-        id: `com-block-${orderUniti}`,
-        ref: element => element && g.actions.com.registerBlock(orderUniti, element),
-        onContextMenu: (event) => {
-          event.preventDefault();
-          // navigator.clipboard.writeText('text123');
-        },
-      },
-        init,
-        g.streamManager.isCurr
-          ? {
-            onDoubleClick: () => g.streamManager.setBlocki(orderUniti, () => g.ss())
-          }
-          : null,
-        g.streamManager.isSub
-          ? {
-            style: Object.assign({},
-              g.streamManager.isCurr
-                ? {
-                  borderTop: 'dotted var(--color-far) 1px'
-                }
-                : null,
-              g.streamManager.isSubBlocki(orderUniti)
-                ? {
-                  backgroundColor: 'var(--color-light-far)',
-                }
-                : null
-            )
-          }
-          : null
-      );
-    };
-
-    const isHideAnchor = !g.streamManager.isSub && orderUnit.isAnchor && mylib.func(
-      setHideAnchor,
-      ord => !ord.isOpened && !g.playerShown
-    ).call(orderUnit);
-
-    if (isHideAnchor) {
-
-      return ce('div',
-        params({
-          key: `anchor-block-${orderUniti}-${orderUnit.a}`,
-          className: `${orderUnit.top.headClassName} anchor styled-block`
-        }),
-        orderUnit.top.header({ isTexted: false, r: orderUnit.repeatsTitle })
-      );
-    } else if (orderUnit.texti == null) {
-      const chords = this.actualChords(orderUnit.chordsi, currTransPosition);
-      if (!chords) return null;
-
-      return ce('div',
-        params({
-          key: `chorded-block-${orderUniti}-${orderUnit.chordsi}`,
-          className: 'com-order-block styled-block flex flex-baseline',
-        }),
-        ce('div',
-          {
-            key: `chorded-block-${orderUniti}-header`,
-            className: `header ${(!g.nav.v) ? 'anchor styled-block' : ''} ${orderUnit.top.headClassName}`
-          },
-          orderUnit.top.header({ isTexted: g.nav.v, r: orderUnit.repeatsTitle })
-        ),
-        !g.nav.v ? null : ce('pre',
-          {
-            key: `chorded-block-${orderUniti}-content`,
-            className: `body ${orderUnit.top.textClassName}`
-          },
-          chords
-        )
-      );
-    }
-
-    const blockHeader = orderUnit.top.isInherit ? null : orderUnit.top.header({ isTexted: true });
-    const chordedOrd = mylib
-      .func(
-        setChorded,
-        ord => ord.chordsi - -1 && (g.nav.v === 2 || (g.nav.v === 1 && ord.isMin))
-      )
-      .call(orderUnit);
-
-    return ce('div',
-      params({
-        key: `song-part-wrapper user-select${orderUniti}`,
-        className: [
-          'com-order-block song-part-wrapper Xuser-select',
-          mylib.func(setOrdClassName).call(orderUnit)
-        ].filter(s => s).join(' '),
-      }),
-      ce('div',
-        {
-          key: `song-part-woc-${orderUniti}`,
-          className: `song-part ${chordedOrd ? '' : 'without-chords'} ${orderUnit.top.textClassName}`,
-        },
-        blockHeader
-          ? ce('span',
-            {
-              key: `song-part-header-${orderUniti}`,
-              className: orderUnit.top.headClassName,
-            },
-            blockHeader
-          )
-          : null,
-        (orderUnit.repeated || '')
-          .split(/\n/)
-          .map((textLine, textLinei, textLinea) =>
-            ce('div',
-              {
-                key: `song-line:${orderUniti}-${textLinei}`,
-                className: 'song-line',
-                onClick: () => mylib.func(onLineClick).call(textLine, textLinei, orderUnit, orderUniti),
-              },
-              mylib.func(asLineComponent, this.lineComponent.bind(this)).call({ chordedOrd, textLine, textLinei, textLines: textLinea.length, orderUnit, orderUniti })
-            )
-          )
-      )
-    );
-  }
-
-  ordersComponent(props) {
-    const {
-      key,
-      style,
-      onClick,
-      ref,
-      asLineComponent,
-      asOrdComponent,
-      setChorded,
-      setHideAnchor,
-      onLineClick,
-      setClassName,
-      setOrdClassName,
-      setChordsPosition,
-    } = props || {};
-
-    let modulc;
-    let currTransPosition = this.transPosition;
-
-    return ce('div',
-      {
-        key: `com-ord-list:${key}`,
-        className: [
-          'com-ord-list',
-          mylib.func(setClassName).call(),
-        ].filter(s => s).join(' '),
-        onClick, ref,
-        style: mylib.overlap({}, style, {
-          fontSize: `${localStorage[g.lsCurrentCompositionFontSize] || 100}%`
-        }),
-      },
-      this.orders.map((orderUnit, orderUniti) => {
-        let trPos = currTransPosition;
-        if ((orderUnit.top.style || 0).isModulation) {
-          trPos = 0;
-          currTransPosition = this.transPosition + (orderUnit.fieldValues.md || 0);
-        }
-        const ordProps = mylib.overlap({}, props, { orderUnit, orderUniti, currTransPosition: trPos });
-        return mylib.func(asOrdComponent, () => this.orderComponent(ordProps)).call(ordProps);
-      })
-    );
-  }
-
-  get ords() {
-    if (this._ords == null) this._ords = this.forcedArray(this.top.o, 'incorrect ord line');
-
-    return this._ords;
-  }
-
-  get orders() { return this._o || this.setOrders(); }
+  get orders(): Order[] { return this._o || this.setOrders(); }
   setOrders() {
     const val = this.ords
       .map((ord) => {
@@ -593,34 +291,30 @@ export class Com extends EditableCol<IExportableCom> {
         return ord;
       })
       .sort((a, b) => a.w - b.w);
-    let ordi = 0;
     const orders = [];
-    let minimals = [];
-    const styles = g.setts.styles || [];
-    const groups = {};
+    let minimals: [string?, number?,][] = [];
+    const styles = setts.styles || [];
+    const groups: Record<string, number> = {};
     let viewIndex = 0;
-    let sourceIndex = 0;
-    let originIndex = 0;
-    let prev, prevOrd, prevStyle;
-    let leadOrd = null;
+    let prev, prevOrd;
     const self = this;
     const translate = function () { return arguments[self.langi || 0]; };
 
-    const getStyle = (o, def = {}) => {
+    const getStyle = (o: Partial<IExportableOrderTop> | nil) => {
       return o && o.s != null
-        ? styles.find(block => block.name === o.s) || def
-        : def;
+        ? styles.find((prop: StyleProp) => prop.name === o.s)
+        : null;
     };
 
-    const setMin = src => {
+    const setMin = (src: Partial<IExportableOrderTop>) => {
       const style = src.init ? src.init.style : src.style;
-      const styleName = ((style || '').name || '').trim();
-      if (style.isModulation) minimals = [];
-      src.m = !minimals.some(([s, c]) => styleName === s && src.c === c);
-      minimals.push([styleName, src.c, src]);
+      const styleName = style?.name.trim();
+      if (style?.isModulation) minimals = [];
+      src.m = minimals.some(([s, c]) => styleName === s && src.c === c) ? 1 : 0;
+      minimals.push([styleName, src.c]);
     };
 
-    const header = (ord, style, numered = true) => {
+    const header = (ord: IExportableOrderTop, style: StyleProp, numered = true) => {
       const type = style.name.trim();
       const number = numered
         ? groups[type] = groups[type] == null
@@ -630,50 +324,38 @@ export class Com extends EditableCol<IExportableCom> {
             : groups[type]
         : '';
 
-      const h = (bag = {}) => {
+      return (bag = {}) => {
         return mylib.stringTemplater(style.header, mylib.overlap({
           num: numered ? groups[type] < 2 ? '' : ` ${number}` : '',
           translate,
         }, bag));
       };
-
-      return b => h(b);
     };
 
     for (let i = 0; i < val.length; i++) {
       const ord = val[i];
       if (ord == null) {
-        orders.push(new IOrder({
-          header: () => '!!!',
-          isError: true,
-          com: this,
-        }));
+        orders.push(new Order({} as IExportableOrderTop, this));
         continue;
       }
-      const targetOrd = ord.a == null ? null : orders.find(o => o.u === ord.a);
-      const top = IOrder.getWithExtendableFields(((targetOrd || 1).top || 1).source, ord);
+      const targetOrd: Order | nil = ord.a == null ? null : orders.find(o => o.unique === ord.a);
+      const top = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, ord);
 
-      const style = getStyle(top, null);
+      const style = getStyle(top);
 
       if (!style) {
-        orders.push(new IOrder({
-          header: () => '???',
-          isError: true,
-          com: this,
+        orders.push(new Order({
           source: ord,
-        }));
+        } as IExportableOrderTop, this));
         continue;
       }
 
-      if (style.isInherit) {
-        prevStyle = style;
-        continue;
-      }
+      if (style.isInherit) continue;
 
       top.style = style;
       top.com = this;
       top.source = ord;
-      top.isNextInherit = !!getStyle(val[i + 1]).isInherit;
+      top.isNextInherit = !!getStyle(val[i + 1])?.isInherit;
       top.isNextAnchorOrd = !!(ord.u != null && val[i + 1] && val[i + 1].a === ord.u);
       top.isPrevTargetOrd = !!(targetOrd && (val[i - 1] == targetOrd.top.source));
       top.targetOrd = targetOrd;
@@ -681,14 +363,13 @@ export class Com extends EditableCol<IExportableCom> {
       top.isTarget = ord.u != null && val.some(o => o.a === ord.u);
       top.viewIndex = viewIndex++;
       top.sourceIndex = val.indexOf(ord);
-      top.originIndex = val.indexOf(targetOrd ? targetOrd.top.source : ord);
-      top.headClassName = g.setts.query(style.name, 'c', ' ');
-      top.textClassName = g.setts.query(style.name, 't', ' ');
-      top.random = Math.random();
+      top.originIndex = val.indexOf(targetOrd?.top.source ?? ord);
+      top.headClassName = setts.query(style.name, 'c', ' ');
+      top.textClassName = setts.query(style.name, 't', ' ');
 
       setMin(top);
 
-      const newOrder = new IOrder(top);
+      const newOrder = new Order(top as IExportableOrderTop, this);
       orders.push(newOrder);
 
       top.header = newOrder.isEmptyHeader || !newOrder.isVisible
@@ -712,14 +393,14 @@ export class Com extends EditableCol<IExportableCom> {
 
       if (top.a != null && newOrder.isVisible) {
         const leadStyle = getStyle(targetOrd);
-        let anci = targetOrd.top.sourceIndex + 1;
+        let anci = (targetOrd?.top.sourceIndex || 0) + 1;
         let anc = val[anci];
         let ancStyle = getStyle(anc);
         let anchorInheritIndex = 0;
 
-        while (ancStyle.isInherit) {
+        while (ancStyle?.isInherit) {
           isPrevAnchorInheritPlus = true;
-          const ancTop = IOrder.getWithExtendableFields(((targetOrd || {}).top || {}).source, anc);
+          const ancTop = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, anc);
 
           ancTop.isAnchorInherit = true;
           ancTop.isInherit = true;
@@ -727,22 +408,21 @@ export class Com extends EditableCol<IExportableCom> {
           ancTop.com = this;
           ancTop.source = anc;
           ancTop.header = top.header;
-          ancTop.init = top;
+          ancTop.init = top as IExportableOrderTop;
           //ancTop.targetOrd = targetOrd;
           ancTop.leadOrd = newOrder;
-          ancTop.isNextInherit = !!getStyle(val[anci + 1]).isInherit;
+          ancTop.isNextInherit = !!getStyle(val[anci + 1])?.isInherit;
           ancTop.anchorInheritIndex = anchorInheritIndex++;
           ancTop.viewIndex = viewIndex++;
-          ancTop.sourceIndex = val.indexOf(targetOrd.top.source);
+          ancTop.sourceIndex = val.indexOf(targetOrd?.top.source as IExportableOrderTop);
           ancTop.originIndex = val.indexOf(anc);
-          ancTop.headClassName = g.setts.query(leadStyle.name, 'c', ' ', ancStyle.name);
-          ancTop.textClassName = g.setts.query(leadStyle.name, 't', ' ', ancStyle.name);
+          ancTop.headClassName = setts.query(leadStyle?.name || '', 'c', ' ', ancStyle.name);
+          ancTop.textClassName = setts.query(leadStyle?.name || '', 't', ' ', ancStyle.name);
 
-          ancTop.random = Math.random();
 
           setMin(ancTop);
 
-          const newAncOrd = new IOrder(ancTop);
+          const newAncOrd = new Order(ancTop as IExportableOrderTop, this);
           orders.push(newAncOrd);
 
           anc = val[++anci];
@@ -755,8 +435,8 @@ export class Com extends EditableCol<IExportableCom> {
       let nextStyle = getStyle(next);
 
       if (newOrder.isVisible)
-        while (nextStyle.isInherit) {
-          const nextTop = IOrder.getWithExtendableFields(((targetOrd || {}).top || {}).source, next);
+        while (nextStyle?.isInherit) {
+          const nextTop = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, next);
 
           nextTop.isInherit = true;
           nextTop.style = nextStyle;
@@ -764,22 +444,20 @@ export class Com extends EditableCol<IExportableCom> {
           //nextTop.targetOrd = targetOrd;
           //nextTop.leadOrd = leadOrd;
           nextTop.prev = prev;
-          nextTop.init = top;
-          nextTop.isNextInherit = !!getStyle(val[nexti + 1]).isInherit;
+          nextTop.init = top as IExportableOrderTop;
+          nextTop.isNextInherit = !!getStyle(val[nexti + 1])?.isInherit;
           nextTop.isPrevAnchorInheritPlus = isPrevAnchorInheritPlus;
           nextTop.header = top.header;
           nextTop.source = next;
           nextTop.viewIndex = viewIndex++;
           nextTop.sourceIndex = val.indexOf(next);
           nextTop.originIndex = val.indexOf(next);
-          nextTop.headClassName = g.setts.query(style.name, 'c', ' ', nextStyle.name);
-          nextTop.textClassName = g.setts.query(style.name, 't', ' ', nextStyle.name);
-
-          nextTop.random = Math.random();
+          nextTop.headClassName = setts.query(style.name, 'c', ' ', nextStyle.name);
+          nextTop.textClassName = setts.query(style.name, 't', ' ', nextStyle.name);
 
           setMin(nextTop);
 
-          const newNextOrd = new IOrder(nextTop);
+          const newNextOrd = new Order(nextTop as IExportableOrderTop, this);
           orders.push(newNextOrd);
 
           if (prev) prev.top.next = newNextOrd;

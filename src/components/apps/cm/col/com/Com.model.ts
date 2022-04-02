@@ -1,3 +1,4 @@
+import { IExportableOrder } from "../../complect/order/Order.model";
 
 
 export interface ICom {
@@ -11,9 +12,19 @@ export interface ICom {
 
 export interface IExportableCom {
     w: number;
-    n?: string;
-    t?: string[];
-    c?: string[];
+    k: number;
+    p?: number;
+    l: number;
+    b: num;
+    n: string;
+    a: string;
+    t: string[];
+    c: string[];
+    r: Record<string, number>;
+    o: IExportableOrder[];
+
+    ton?: number;
+    // tonc?: string[];
 }
 
 

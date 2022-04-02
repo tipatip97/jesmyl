@@ -5,7 +5,7 @@ import { CmPhase, CmState, CmStorage } from "./Cm.model";
 import { Cat } from "./col/cat/Cat";
 import { Com } from "./col/com/Com";
 
-export const boardExer = new Exer<CmStorage>(cmStorage, 'index');
+export const cmExer = new Exer<CmStorage>(cmStorage, 'index');
 
 cmStorage.registerTop(appStorage);
 

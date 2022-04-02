@@ -1,9 +1,10 @@
 import { localAuth } from "../../components/board/Board.source";
 import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";
-import mylib from "../MyLib";
+import mylib from "../refresh/MyLib";
 import { Refresh } from "../refresh/Refresh";
-import { Exec, ExecDict } from "./Exec";
+import { Exec } from "./Exec";
+import { ExecDict } from "./Exer.model";
 
 type Callback = (okRes: any, errRes: any) => void;
 
@@ -19,8 +20,8 @@ export class Exer<Storage> {
         this.appName = appName;
     }
 
-    set<Val, Args>(execs: Exec<Val, Args> | Exec<Val, Args>[]) {
-        ([] as Exec<Val, Args>[]).concat(execs).filter(e => e).forEach((exec) => {
+    set<Value, Args>(execs: Exec<Value, Args> | Exec<Value, Args>[]) {
+        ([] as Exec<Value, Args>[]).concat(execs).filter(e => e).forEach((exec) => {
             const { scope, prev, value, method } = exec;
 
             const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
@@ -98,12 +99,13 @@ export class Exer<Storage> {
 
                 if (!resp.ok) onError(resp.errors);
                 else {
-                    this.execs = this.execs.filter(ex => (resp.ok && ex.del) ||
-                        resp.rejected && resp.rejected.some((rej: Exec<Value, Args> & { exec: Exec<Value, Args> }) => {
+                    this.execs = this.execs.filter(ex => ((resp.ok && ex.del) || resp.rejected) &&
+                        resp.rejected.some((rej: Exec<Value, Args> & { exec: Exec<Value, Args> }) => {
                             if (ex.id === rej.exec.id) {
                                 ex.errors = rej.errors;
                                 return true;
                             }
+                            return false;
                         }));
                     //this.setLS(, this.execs);
                     cb && cb(resp, null);

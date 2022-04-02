@@ -1,13 +1,13 @@
 import { ExecArgs, ExecDict } from "./Exer.model";
 
 
-export class Exec<Value, Def, Args> {
+export class Exec<Value, Args> {
     scope?: string;
     eprev?: Value;
     prev?: Value;
     value?: Value;
     method?: string;
-    args?: ExecArgs<Def, Args>;
+    args?: ExecArgs<Value, Args>;
     action: string;
     generalId?: string;
     createByPath?: boolean;
@@ -17,11 +17,11 @@ export class Exec<Value, Def, Args> {
     muted?: boolean;
     errors?: string[];
 
-    onSet?: (exec: Exec<Value, Def, Args>) => [];
-    onLoad?: (exec: Exec<Value, Def, Args>) => '';
+    onSet?: (exec: Exec<Value, Args>) => [];
+    onLoad?: (exec: Exec<Value, Args>) => '';
     isFriendly?: boolean;
 
-    constructor(exec: ExecDict<Value, Def, Args>) {
+    constructor(exec: ExecDict<Value, Args>) {
         this.scope = exec.scope;
         this.eprev = exec.eprev;
         this.prev = exec.prev;

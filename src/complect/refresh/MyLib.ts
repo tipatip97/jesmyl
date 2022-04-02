@@ -1,3 +1,5 @@
+import { StringTemplaterArgs } from "./MyLib.model";
+
 var md5 = require('md5');
 
 const constants = {
@@ -46,7 +48,7 @@ export class MyLib {
         return zero;
     }
 
-    def<T>(...args: T[]) {
+    def<T>(...args: T[]): T {
         const res = args.find(some => some != null);
         return res == null ? args[args.length - 1] : res;
     }
@@ -285,6 +287,138 @@ export class MyLib {
                 res[res.length - 1] += separator + curr;
             return res;
         }, []);
+    }
+
+    normQuery(query: string) {
+        return query.replace(/[^-a-z0-9]/g, all => `_${all.charCodeAt(0)}`);
+    }
+
+    stringTemplater<Args>(str: string, topArgs: Args): string {
+        topArgs = Object.assign({
+            ink: (num: number, post = '', pre = '') => num == null ? null : `${pre}${num - -1}${post}`,
+            switch: function (...args: any[]) {
+                let val: any, found: any;
+
+                const ret = args.find((arg, argi) => {
+                    if (!argi) {
+                        val = arg;
+                        return false;
+                    }
+
+                    if (found) return true;
+                    if ((argi % 2) && (arg == val)) found = true;
+                    return false;
+                });
+
+                return ret == null ? args[args.length - 1] : ret;
+            }
+        }, topArgs);
+
+        const dob = '{{';
+        const ocb = '}{';
+        const dcb = '}}';
+        const noObj = {};
+        const norm = (val: any, op?: string) => op === '?' ? val ? val : noObj : op === '!' ? val ? noObj : val : op === '!!' ? val == null ? '' : noObj : val == null ? noObj : val;
+        let lim = 1000;
+
+        const inline = (parts: string[]) => {
+            lim--;
+            if (lim < 0) {
+                return;
+            }
+            let line: any[] = [];
+
+            const addNorm = (val: any, op?: string) => {
+                const value = norm(val, op);
+                line = line.concat(value == noObj || value == null ? '' : value);
+            };
+
+            const getDiapason = (diapason: string[], district: number | null, structItems = false) => {
+                let ballance: number = null as never;
+                let distBallance = 0;
+                let struct: any[] = [];
+                const dists: any[] = [];
+
+                const diap = diapason.filter(txt => {
+                    if (ballance === 0) return false;
+
+                    if (structItems) {
+                        if ((txt === ocb || txt === dcb) && ballance === 1) {
+                            dists.push(inline(struct));
+                            struct = [];
+                        } else if (ballance) struct.push(txt);
+
+                    } else if (district != null) {
+                        if (distBallance === district) dists.push(txt);
+                        if (ballance === 1 && txt === ocb) distBallance++;
+                    }
+
+                    if (txt === dob) ballance++;
+                    else if (txt === dcb) ballance--;
+
+                    return true;
+                });
+
+                return {
+                    list: structItems || district != null ? dists : diap,
+                    len: diap.length,
+                    diap, dists
+                };
+            };
+
+            let escLim = 0;
+
+            parts.forEach((part, parti, parta) => {
+                if (parti && parti <= escLim) return;
+
+                const invokeFunc = (func: (...val: any) => void) => {
+                    const diapason = getDiapason(parta.slice(parti + 1), null, true);
+                    escLim += diapason.len;
+
+                    const nrm = inline(diapason.list) as any[];
+                    addNorm(func.apply(this, nrm));
+                };
+
+                if (part === dob) {
+                } else if (part === dcb || part === ocb) escLim++;
+                else if (this.isStr(part)) {
+                    const match = part.match(/^\$(\w+)(!{1,2}|\?{1,2})?(;?)/);
+                    const [, topArgName, op, semicolon] = (match || []) as [any, keyof StringTemplaterArgs, string, string];
+
+                    if (topArgName != null) {
+                        const val = topArgs[topArgName as keyof Args] as any;
+                        if (semicolon) {
+                            escLim++;
+                            if (this.isFunc(val)) invokeFunc(val);
+                            else addNorm(val, op);
+                        } else if (parta[parti + 1] === dob) {
+                            if (!op && this.isFunc(val)) invokeFunc(val);
+                            else {
+                                const value = norm(val, op);
+                                const diapason = getDiapason(parta.slice(parti + 1), value != noObj ? 0 : 1);
+                                escLim += diapason.len;
+
+                                const nrm = inline(diapason.list);
+                                addNorm(nrm);
+                            }
+                        } else if (this.isFunc(val)) invokeFunc(val);
+                        else {
+                            escLim++;
+                            addNorm(val, op);
+                        }
+                    } else {
+                        parti && escLim++;
+                        addNorm(part.replace(/^\\/, ''), op);
+                    }
+                } else addNorm(part);
+            });
+
+            return line;
+        };
+
+        return inline((str || '')
+            .split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/)
+            .filter(s => s))?.join('') || '';
     }
 }
 

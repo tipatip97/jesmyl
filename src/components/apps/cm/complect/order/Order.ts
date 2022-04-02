@@ -1,13 +1,18 @@
 import mylib from "../../../../../complect/MyLib";
 import { Com } from "../../col/com/Com";
 import { EditableOrder } from "./EditableOrder";
-import { EditableOrderRegion, IExportableOrder, IExportableOrderTop, Inheritancables, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
+import { orderFields } from "./Order.consts";
+import { EditableOrderRegion, IExportableOrderFieldValues, IExportableOrderTop, Inheritancables, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
 
 export class Order extends EditableOrder {
   _regions?: EditableOrderRegion[];
 
-  constructor(obj: IExportableOrder, com: Com) {
-    super({ ...obj, com });
+  constructor(obj: IExportableOrderTop, com: Com) {
+    super({
+      ...obj,
+      com,
+      header: () => '',
+    });
 
 
     if (mylib.isNum(obj.t))
@@ -21,23 +26,24 @@ export class Order extends EditableOrder {
 
   get com() { return this.top.com; }
 
-  // static getWithExtendableFields(source, target) {
-  //   const result = {
-  //     inhFields: []
-  //   };
-  //   if (source == null)
-  //     mylib.overlap(result, target);
-  //   else
-  //     IOrder.fields.forEach(({ name, isExt, extIf = el => el == null }) => {
-  //       if (isExt && source[name] != null && extIf(target[name])) {
-  //         result[name] = source[name];
-  //         result.inhFields.push(name);
-  //       } else {
-  //         result[name] = target[name];
-  //       }
-  //     });
-  //   return result;
-  // }
+  static getWithExtendableFields(source: IExportableOrderTop, target: IExportableOrderTop): Partial<IExportableOrderTop> {
+    const inhFields: string[] = [];
+    const result: Partial<IExportableOrderTop> = {
+      inhFields
+    };
+    if (source == null)
+      mylib.overlap(result, target);
+    else
+      orderFields.forEach(({ name, isExt, extIf = el => el == null }) => {
+        if (isExt && source[name] != null && extIf(target[name] as [])) {
+          result[name] = source[name] as never;
+          inhFields.push(name);
+        } else {
+          result[name] = target[name] as never;
+        }
+      });
+    return result;
+  }
 
   // static toDict(ord) {
   //   const dict = {};
@@ -70,8 +76,8 @@ export class Order extends EditableOrder {
   get texti() { return this.getOrBase('t'); }
   set texti(val) { this.setExportable('t', val); }
 
-  get positions() { return (this.top.targetOrd?.top.source || this.top.source)?.p || this.top.p; }
-  set positions(val: number[]) {
+  get positions(): number[][] { return (this.top.targetOrd?.top.source || this.top.source)?.p || this.top.p; }
+  set positions(val: number[][]) {
     const source = (this.top.targetOrd?.top.source || this.top.source)
     source && (source.p = val);
   }
@@ -80,8 +86,15 @@ export class Order extends EditableOrder {
   set type(val) { this.setExportable('s', val); }
 
   get text() {
-    return this.com.texts[this.texti] || '';
+    return (this.com.texts && this.com.texts[this.texti]) || '';
   }
+
+  get antiVis() { return this.isVisible ? 0 : 1; }
+  get isVisible() { return this.getOrBase('v') !== 0; }
+  set isVisible(val) { this.setExportable('v', val ? 1 : 0); }
+
+  get fieldValues(): IExportableOrderFieldValues { return this.getOrBase('f', {}); }
+  set fieldValues(val) { this.setExportable('f', val); }
 
   get repeatsTitle() {
     const repeats = this.repeats;
@@ -97,7 +110,7 @@ export class Order extends EditableOrder {
 
   get repeats(): OrderRepeats | null {
     if (this.top.isAnchorInherit) {
-      return this.getInheritance('r');
+      return this.getInheritance('r') as never;
     } else if (this.top && this.top.source && this.top.source.r != null)
       return this.top.source.r;
     else {
@@ -118,8 +131,12 @@ export class Order extends EditableOrder {
       const repeats = inh.r = inh.r || {};
 
       if (this.top.anchorInheritIndex != null) repeats[this.top.anchorInheritIndex] = val;
-      this.top.leadOrd.top.source.inh = inh;
+      this.top.leadOrd.top.source.inh = inh as never;
     } else if (this.top.source) this.top.source.r = val;
+  }
+
+  setRepeats(val: OrderRepeats | null) {
+    this.repeats = val;
   }
 
   get regions() {
@@ -134,67 +151,66 @@ export class Order extends EditableOrder {
     const text = (this.text || '').split(/\n+/).map((txt: string) => txt.split(/\s+/));
     const lines = text.length;
 
-    this._regions = this.repeats === 0 ? [] : Object.entries(mylib.isNum(this.repeats) ? { '.': this.repeats } : (this.repeats || {})).map(([key, count]: [string, number]) => {
-      let letter: string;
+    this._regions = this.repeats === 0 ? [] : Object.entries(mylib.isNum(this.repeats) ? { '.': this.repeats } : (this.repeats || {})).map(([key, count]: [string, number]): EditableOrderRegion => {
 
       if (key === '.') return [0, 0, lines - 1, (text[text.length - 1] || '').length - 1, this, this, null, null, key, key, count];
       else if (key.startsWith('~')) {
         const [, linei, wordi] = key.split(/[~:]/);
 
         return [+linei, +wordi, null, null, this, this, null, null, key, key, count];
-      } else if (letter = (/[a-z]/i.exec(key) || [])[0]) {
-        const [first, second, third] = key.split(/[a-z:]/i).map(num => parseInt(num));
-        const isBeg = /^[a-z]/i.exec(key);
-        let others: number[] = [];
-        let finishKey: string = '';
-
-        const ord = this.com.orders.find((ord: Order) => !mylib.isNum(ord.repeats) && Object.keys(ord.repeats || {}).some(key => {
-          if (key[!isBeg ? 'startsWith' : 'endsWith'](letter)) {
-            others = key.split(/[a-z:]/i).filter(s => s).map(num => +num);
-            finishKey = key;
-            return true;
-          }
-        }));
-
-        return (isBeg
-          ? [second, third, null, null, this, ord, others, key, finishKey]
-          : [null, null, first, second, ord, this, others, key, finishKey]);
       } else {
-        const [beg, end] = key.split(/-/);
-        const [begLinei, begWordi = 0] = beg.split(/:/).map(num => parseInt(num));
-        let [endLinei, endWordi] = (end || '').split(/:/).map(num => parseInt(num));
-        if (end) {
-          if (endWordi == null) {
-            endWordi = (text[endLinei] || '').length - 1;
-          }
-        } else[endLinei, endWordi] = [begLinei, (text[begLinei] || '').length - 1];
+        const letter: string = (/[a-z]/i.exec(key) || [])[0];
 
-        return [begLinei, begWordi, endLinei, endWordi, this, this, null, null, key, key, count];
+        if (letter) {
+          const [first, second, third] = key.split(/[a-z:]/i).map(num => parseInt(num));
+          const isBeg = /^[a-z]/i.exec(key);
+          let others: number[] = [];
+          let finishKey: string = '';
+
+          const ord = this.com.orders.find((ord: Order) => !mylib.isNum(ord.repeats) && Object.keys(ord.repeats || {}).some(key => {
+            if (key[!isBeg ? 'startsWith' : 'endsWith'](letter)) {
+              others = key.split(/[a-z:]/i).filter(s => s).map(num => +num);
+              finishKey = key;
+              return true;
+            }
+            return false;
+          }));
+
+          return (isBeg
+            ? [second, third, null, null, this, ord, others, key, finishKey]
+            : [null, null, first, second, ord, this, others, key, finishKey]);
+        } else {
+          const [beg, end] = key.split(/-/);
+          const [begLinei, begWordi = 0] = beg.split(/:/).map(num => parseInt(num));
+          let [endLinei, endWordi] = (end || '').split(/:/).map(num => parseInt(num));
+          if (end) {
+            if (endWordi == null) {
+              endWordi = (text[endLinei] || '').length - 1;
+            }
+          } else[endLinei, endWordi] = [begLinei, (text[begLinei] || '').length - 1];
+
+          return [begLinei, begWordi, endLinei, endWordi, this, this, null, null, key, key, count];
+        }
       }
     });
   }
 
-  getInheritance(fieldn: keyof Inheritancables) {
-    return this.top.isAnchorInherit && this.top.anchorInheritIndex != null
-      ? ((this.top.leadOrd?.top.source?.inh || {})[fieldn] || {})[this.top.anchorInheritIndex]
+  getInheritance<Key extends keyof Inheritancables = keyof Inheritancables>(fieldn: Key): Inheritancables[Key] | null {
+    return (this.top.isAnchorInherit && this.top.anchorInheritIndex != null
+      ? this.top.leadOrd?.top.source?.inh && this.top.leadOrd.top.source.inh[fieldn] != null
+        ? this.top.leadOrd.top.source.inh[fieldn][this.top.anchorInheritIndex]
+        : null
       : this.top.source
         ? this.top.source[fieldn]
-        : null;
+        : null) as never;
   }
 
-  get antiVis() { return this.isVisible ? 0 : 1; }
-  get isVisible() { return this.getOrBase('v') !== 0; }
-  set isVisible(val) { this.setExportable('v', val ? 1 : 0); }
-
-  get fieldValues() { return this.getOrBase('f', {}); }
-  set fieldValues(val) { this.setExportable('f', val); }
-
-  getSourceFirst(fieldn: keyof IExportableOrderTop) {
-    return this.top && mylib.def(this.getInheritance(fieldn as never), (this.top.targetOrd?.top.source || {})[fieldn]);
+  getSourceFirst<Key extends keyof IExportableOrderTop>(fieldn: Key) {
+    return this.top && mylib.def(this.getInheritance(fieldn as never), (this.top.targetOrd?.top.source || {} as IExportableOrderTop)[fieldn]);
   }
 
-  getLeadFirst(fieldn: keyof IExportableOrderTop) {
-    return this.top && mylib.def((this.top.targetOrd?.top.source || {})[fieldn], this.getInheritance(fieldn as never));
+  getLeadFirst<Key extends keyof IExportableOrderTop>(fieldn: Key) {
+    return this.top && mylib.def((this.top.targetOrd?.top.source || {} as IExportableOrderTop)[fieldn], this.getInheritance(fieldn as never));
   }
 
   get repeated() {
