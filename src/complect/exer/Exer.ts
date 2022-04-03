@@ -1,7 +1,8 @@
 import { localAuth } from "../../components/board/Board.source";
+import { AppName } from "../../store/Storage.model";
 import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";
-import mylib from "../refresh/MyLib";
+import mylib from "../my-lib/MyLib";
 import { Refresh } from "../refresh/Refresh";
 import { Exec } from "./Exec";
 import { ExecDict } from "./Exer.model";
@@ -15,7 +16,7 @@ export class Exer<Storage> {
     storage: JStorage<Storage>;
     key = 'execs' as keyof Storage;
 
-    constructor(storage: JStorage<Storage>, appName: string) {
+    constructor(storage: JStorage<Storage>, appName: AppName) {
         this.storage = storage;
         this.appName = appName;
     }

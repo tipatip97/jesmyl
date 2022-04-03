@@ -1,6 +1,6 @@
-import { Base } from "../../base/Base";
-import { Cat } from "../../col/cat/Cat";
-import { Com } from "../../col/com/Com";
+import { Base } from "../base/Base";
+import { Cat } from "../col/cat/Cat";
+import { Com } from "../col/com/Com";
 import { IExportableCols } from "./Cols.model";
 
 

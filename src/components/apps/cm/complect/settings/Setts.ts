@@ -1,12 +1,13 @@
-import mylib from "../../../../../complect/refresh/MyLib";
+import mylib from "../../../../../complect/my-lib/MyLib";
+import { cmStorage } from "../../../../../store/jstorages";
 import { Base } from "../../base/Base";
-import { IRxportableSetts } from "./Setts.model";
+import { IExportableSetts } from "./Setts.model";
 import { StyleProp } from "./StyleProp";
 
-export class Setts extends Base<IRxportableSetts> {
+export class Setts extends Base<IExportableSetts> {
   styles: StyleProp[];
 
-  constructor(top: IRxportableSetts) {
+  constructor(top: IExportableSetts) {
     super(top);
     this.styles = mylib.typ([], top.styles).map(st => new StyleProp(st));
   }
@@ -17,4 +18,4 @@ export class Setts extends Base<IRxportableSetts> {
 }
 
 
-export const setts = new Setts();
+export const setts = new Setts(cmStorage.getOr('settings', { styles: [] }));

@@ -1,6 +1,7 @@
-import { Com } from "../../col/com/Com";
-import { StyleProp } from "../settings/StyleProp";
+import { Com } from "../Com";
+import { StyleProp } from "../../../complect/settings/StyleProp";
 import { Order } from "./Order";
+import { ReactNode } from "react";
 
 
 export interface IExportableOrder {
@@ -57,11 +58,14 @@ export interface IExportableOrderTop extends IExportableOrder {
     headClassName?: string;
     textClassName?: string;
     viewIndex?: number;
-    header: (bag: OrderTopHeaderBag, isRequired: boolean) => string;
+    header: (bag: OrderTopHeaderBag, isRequired?: boolean) => string;
     style?: StyleProp;
 }
 
-export interface OrderTopHeaderBag {}
+export interface OrderTopHeaderBag {
+    isTexted: boolean;
+    r?: string;
+}
 export interface OrderExecArgs<Value> {
     wid?: number | null;
     value?: Value;
@@ -77,6 +81,19 @@ export interface OrderField {
     isExt?: boolean;
     extIf?: (poss?: [] | null) => boolean;
     type: string | string[];
+}
+
+export interface ITheOrderProps {
+    asLineComponent: () => ReactNode;
+    setChorded: () => boolean;
+    setHideAnchor: () => boolean;
+    onLineClick: () => void;
+    setOrdClassName: () => string;
+    orderUnit: Order;
+    orderUniti: number;
+    currTransPosition: number;
+    isAnchorInheritHide: boolean;
+    ccom: Com;
 }
 
 

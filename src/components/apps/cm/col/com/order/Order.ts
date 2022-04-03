@@ -1,5 +1,5 @@
-import mylib from "../../../../../complect/MyLib";
-import { Com } from "../../col/com/Com";
+import mylib from "../../../../../../complect/my-lib/MyLib";
+import { Com } from "../Com";
 import { EditableOrder } from "./EditableOrder";
 import { orderFields } from "./Order.consts";
 import { EditableOrderRegion, IExportableOrderFieldValues, IExportableOrderTop, Inheritancables, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
@@ -96,16 +96,16 @@ export class Order extends EditableOrder {
   get fieldValues(): IExportableOrderFieldValues { return this.getOrBase('f', {}); }
   set fieldValues(val) { this.setExportable('f', val); }
 
-  get repeatsTitle() {
+  get repeatsTitle(): string {
     const repeats = this.repeats;
 
     if (!repeats) return '';
-    if (typeof repeats === 'number') return repeats < 2 ? '' : repeats;
-    if (repeats['.']) return repeats['.'] < 2 ? '' : repeats['.'];
+    if (typeof repeats === 'number') return repeats < 2 ? '' : repeats + '';
+    if (repeats['.']) return repeats['.'] < 2 ? '' : repeats['.'] + '';
     const lastLineIndex = this.text.split(/\n/).length - 1;
     const region = this.regions?.find(([begLine, , endLine]) => begLine === 0 && endLine === lastLineIndex);
 
-    return region ? region[10] : '';
+    return region ? region[10] + '' : '';
   }
 
   get repeats(): OrderRepeats | null {

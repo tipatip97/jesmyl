@@ -1,0 +1,32 @@
+import { useDispatch, useSelector } from "react-redux";
+import { EvaIcon } from "../../../../../../complect/Eva";
+import { changeRollMode, changeRollModeMarks } from "../../../Cm.store";
+import { marks } from "../../../marks/Marks";
+
+export function TheComPlayerPanel() {
+  const dispatch = useDispatch();
+
+  return (
+    <div key="com-player" className="com-player">
+      {[
+        ["play-circle-outline", "Прокручивать"],
+        ["book-open-outline", "Заметки"],
+      ].map(([name, alt], conti) => {
+        return conti && !marks.coms.length ? null : (
+          <div
+            key={`collapse-mode-${name}`}
+            onClick={(event) => {
+              event.stopPropagation();
+              dispatch(changeRollMode("pause"));
+              if (conti) dispatch(changeRollModeMarks(true));
+              // g.updateFlexFontSize(400);
+            }}
+          >
+            <EvaIcon name={name} alt={alt} />
+          </div>
+        );
+      })}
+      {/* <CollapsePane /> */}
+    </div>
+  );
+}

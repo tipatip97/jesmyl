@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EvaIcon } from "../../../complect/Eva";
 import modalService from "../../../complect/modal/Modal.service";
 import { RootState } from "../../../store";
 import { setCurrentApp } from "../../board/Board.store";
 import { Comps } from "./Cm.complect";
-import { setIsComFullscreenMode } from "./Cm.store";
+import { updateIsComFullscreenMode } from "./Cm.store";
 import { mainTopButtons } from "./editor/Lazies";
+import 'Cm.scss';
 
 export function CmApplication() {
   // class CStartPage extends React.Component {
@@ -47,7 +48,7 @@ export function CmApplication() {
         onClick={() => {
           if (phase !== "com" || rollMode) return; ///* || g.streamManager.isCurr 
           if (Date.now() - topClickDateNow < 500) {
-            dispatch(setIsComFullscreenMode(!isComFullscreenMode));
+            dispatch(updateIsComFullscreenMode(!isComFullscreenMode));
             // updateFlexFontSize(400);
             setTopClickDateNow(0);
           } else setTopClickDateNow(Date.now());

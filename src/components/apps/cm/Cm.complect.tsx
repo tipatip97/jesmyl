@@ -6,7 +6,6 @@ import { TheCats } from "./cats/Cats";
 import { CmAction, CmAppVariables, CmPhase } from "./Cm.model";
 import { Cat } from "./col/cat/Cat";
 import { Com } from "./col/com/Com";
-import { Nav } from "./complect/Nav";
 
 const localAuth = indexStorage.getOr('auth', { level: 0 });
 const app: BoardApplication<CmAppVariables> = indexStorage.get('apps')?.find((app) => app.name === 'cm') as BoardApplication<CmAppVariables>;
@@ -22,10 +21,10 @@ export const isAccessed = (action: string): true | null => {
 export const isCanRedact = isAccessed('canRedact');
 export const isCanAddCol = isAccessed('addCom');
 
-export const Comps: Record<CmPhase, ReactNode> = {
+export const Comps: Record<CmPhase, () => ReactNode> = {
     cats: () => <TheCats />,
-    cat: (ccat: Cat) => <TheCat ccat={ccat}/>,
-    com: <Com />,
-    editor: <Editor />,
+    cat: () => <TheCat />,
+    com: () => <TheCom />,
+    editor: () => <TheEditor />,
 };
 

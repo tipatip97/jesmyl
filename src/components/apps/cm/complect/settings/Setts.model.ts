@@ -10,7 +10,7 @@ export interface IExportableStyleProp {
 }
 
 
-export interface IRxportableSetts {
+export interface IExportableSetts {
     styles: IExportableStyleProp[];
 }
 

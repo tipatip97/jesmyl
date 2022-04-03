@@ -1,15 +1,26 @@
 import { Cat } from "./col/cat/Cat";
 import { Com } from "./col/com/Com";
-import { IExportableCols } from "./complect/cols/Cols.model";
+import { IExportableCols } from "./cols/Cols.model";
+import { IExportableSetts } from "./complect/settings/Setts.model";
 
 
 export interface CmState {
-    ccat?: Cat;
-    ccom?: Com;
+    ccat?: Cat | null;
+    ccom?: Com | null;
     phase: CmPhase;
-    rollMode: boolean;
+    rollMode: CmRollMode;
     isComFullscreenMode: boolean;
+    isPlayerShown: boolean;
+    rollModeMarks: boolean;
+    numComUpdates: number;
+    marks: number[];
+    chordVisibleVariant: ChordVisibleVariant;
+    comFontSize: number;
 }
+
+export type CmRollMode = 'pause' | null;
+
+export type ChordVisibleVariant = 0 | 1 | 2;
 
 export type CmPhase = 'cats' | 'cat' | 'com' | 'editor';
 
@@ -19,6 +30,9 @@ export interface CmStorage {
     cols: IExportableCols;
     ccat: number;
     ccom: number;
+    marks: number[];
+    settings: IExportableSetts;
+    chordVisibleVariant: ChordVisibleVariant;
 }
 
 export interface CmAction {

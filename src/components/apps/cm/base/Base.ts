@@ -1,4 +1,4 @@
-import mylib from "../../../../complect/refresh/MyLib";
+import mylib from "../../../../complect/my-lib/MyLib";
 
 export class Base<T> {
     top: T;

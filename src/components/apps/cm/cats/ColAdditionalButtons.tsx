@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { EvaIcon } from "../../../../complect/Eva";
 import { isCanAddCol, isCanRedact } from "../Cm.complect";
 import { setPhase } from "../Cm.store";
-import { cols } from "../complect/cols/Cols";
+import { cols } from "../cols/Cols";
 
 export function TheColAdditionButtons() {
     const dispatch = useDispatch();

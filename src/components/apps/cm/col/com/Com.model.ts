@@ -1,4 +1,4 @@
-import { IExportableOrder } from "../../complect/order/Order.model";
+import { IExportableOrder } from "./order/Order.model";
 
 
 export interface ICom {

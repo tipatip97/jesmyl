@@ -1,4 +1,4 @@
-import mylib from "../../../../../complect/refresh/MyLib";
+import mylib from "../../../../../complect/my-lib/MyLib";
 import { Com } from "../com/Com";
 import { EditableCol } from "../EditableCol";
 import { ComWrap, ICat, IExportableCat } from "./Cat.model";

@@ -6,7 +6,7 @@ import {
 } from "./Modal.model";
 import modalService from "./Modal.service";
 import "./Modal.scss";
-import mylib from "../refresh/MyLib";
+import mylib from "../my-lib/MyLib";
 
 export default function Modal() {
   const [config, setConfig] = useState(modalService.current());

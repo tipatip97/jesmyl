@@ -1,9 +1,9 @@
-import mylib from "../../../../../complect/refresh/MyLib";
+import mylib from "../../../../../complect/my-lib/MyLib";
 import { EditableCol } from "../EditableCol";
 import { IExportableCom } from "./Com.model";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.const";
-import { Order } from "../../complect/order/Order";
-import { IExportableOrder, IExportableOrderTop } from "../../complect/order/Order.model";
+import { Order } from "./order/Order";
+import { IExportableOrder, IExportableOrderTop } from "./order/Order.model";
 import { StyleProp } from "../../complect/settings/StyleProp";
 import { setts } from "../../complect/settings/Setts";
 

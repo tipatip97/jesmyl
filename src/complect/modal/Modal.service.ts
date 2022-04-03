@@ -24,7 +24,8 @@ class ModalService {
 
     get error() { return this._error; }
 
-    open(config: Partial<ModalConfig>) {
+    open(config: Partial<ModalConfig> | ((res: (is: boolean) => void) => Partial<ModalConfig>)) {
+        if (typeof config === 'function') return new Promise(config);
         this.configs.push(config);
         this.refresh();
         return new Promise((res) => this.resolves.push(res));

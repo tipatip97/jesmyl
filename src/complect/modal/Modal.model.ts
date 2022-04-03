@@ -32,7 +32,7 @@ export interface ModalConfigButton {
 
 export interface ModalConfigInput {
     title: string,
-    type: 'textarea' | 'input' | 'password',
+    type: 'textarea' | 'input' | 'password' | 'button',
     placeholder: string;
     set: (attrn: keyof ModalConfigInput, val: string) => void,
     element: HTMLElement,
@@ -49,6 +49,7 @@ export interface ModalConfigInput {
     onClick: (config: ModalConfig) => void,
     confirm: string;
     modal: Function;
+    closable: boolean;
 
     rows: number;
 }

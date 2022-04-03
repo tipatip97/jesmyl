@@ -1,6 +1,6 @@
 import { selectCcol } from "../Cm.store";
 import { Cat } from "../col/cat/Cat";
-import { cols } from "../complect/cols/Cols";
+import { cols } from "../cols/Cols";
 import { TheColAdditionButtons } from "./ColAdditionalButtons";
 
 export function TheCats() {

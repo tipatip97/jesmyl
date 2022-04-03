@@ -1,4 +1,4 @@
-import { StringTemplaterArgs } from "./MyLib.model";
+import { OnSwipeDirn, StringTemplaterArgs } from "./MyLib.model";
 
 var md5 = require('md5');
 
@@ -420,6 +420,7 @@ export class MyLib {
             .split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/)
             .filter(s => s))?.join('') || '';
     }
+    
 }
 
 
