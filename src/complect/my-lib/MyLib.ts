@@ -1,4 +1,4 @@
-import { OnSwipeDirn, StringTemplaterArgs } from "./MyLib.model";
+import { StringTemplaterArgs } from "./MyLib.model";
 
 var md5 = require('md5');
 

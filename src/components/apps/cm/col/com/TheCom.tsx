@@ -5,6 +5,8 @@ import { RootState } from "../../../../../store";
 import { marks } from "../../marks/Marks";
 import { EvaIcon } from "../../../../../complect/Eva";
 import { TheComCtrlPanel } from "./ctrl-panel/ComCtrlPanel";
+import { Com } from "./Com";
+import { TheComOrders } from "./orders/ComOrders";
 
 export function TheCom() {
   const [isChordsImagineBlockOpened, setIsChordsImagineBlockOpened] =
@@ -39,7 +41,7 @@ export function TheCom() {
     >
       <TheComCtrlPanel ccom={ccom} />
       <div>
-        {[].concat(rollModeMarks ? marks.coms : ccom).map((com) => {
+        {([] as Com[]).concat(rollModeMarks ? marks.coms : ccom).map((com) => {
           return (
             ccom && (
               <TheComOrders
@@ -76,10 +78,9 @@ export function TheCom() {
           <button
             key="hiddener-chords-imgn"
             className="mbtn m-ok"
-            onClick={() => {
-              setIsChordsImagineBlockOpened(!isChordsImagineBlockOpened);
-              this.forceUpdate();
-            }}
+            onClick={() =>
+              setIsChordsImagineBlockOpened(!isChordsImagineBlockOpened)
+            }
           >
             <span>
               <EvaIcon name="options-2-outline" />
@@ -132,20 +133,21 @@ export function TheCom() {
                 );
               })}
           </div>
-          {Object.keys(ccom.usedChords)
-            .filter((uc) => uc)
-            .map((chordName) => {
-              return (
-                <div
-                  key={`chord-used-${chordName}`}
-                  className="chord-application"
-                >
-                  {/* <ChordCard
+          {ccom.usedChords &&
+            Object.keys(ccom.usedChords)
+              .filter((uc) => uc)
+              .map((chordName) => {
+                return (
+                  <div
+                    key={`chord-used-${chordName}`}
+                    className="chord-application"
+                  >
+                    {/* <ChordCard
                     {...{ chordName, chordLabel: ccom.usedChords[chordName] }}
                   /> */}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })}
         </div>
       </div>
     </div>

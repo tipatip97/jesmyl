@@ -1,3 +1,4 @@
+import { IExportedCol } from "../Col.model";
 import { Com } from "../com/Com";
 
 
@@ -6,16 +7,17 @@ export interface ICat {
     topComs: Com[];
 }
 
-export interface IExportableCat {
-    w: number;
+export interface IExportableCat extends IExportedCol {
     s?: number[];
-    n?: string;
     t?: string[] | null;
 }
 
 export interface ComWrap {
     com: Com;
     errors?: string[];
+    deep?: number;
+    field?: string;
+    rate?: number;
 }
 
 

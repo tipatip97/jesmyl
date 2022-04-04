@@ -15,6 +15,7 @@ export interface ExecDict<Value, Args> {
     muted?: boolean;
     errors?: string[];
     uniq?: number | string;
+    internalError?: string;
 
     onSet?: (exec: Exec<Value, Args>) => void;
     onLoad?: (exec: Exec<Value, Args>) => void;

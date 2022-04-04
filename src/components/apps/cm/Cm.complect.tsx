@@ -4,8 +4,8 @@ import { cmStorage, indexStorage } from "../../../store/jstorages";
 import { BoardApplication } from "../../board/Board.model";
 import { TheCats } from "./cats/Cats";
 import { CmAction, CmAppVariables, CmPhase } from "./Cm.model";
-import { Cat } from "./col/cat/Cat";
-import { Com } from "./col/com/Com";
+import { TheCat } from "./col/cat/TheCat";
+import { TheCom } from "./col/com/TheCom";
 
 const localAuth = indexStorage.getOr('auth', { level: 0 });
 const app: BoardApplication<CmAppVariables> = indexStorage.get('apps')?.find((app) => app.name === 'cm') as BoardApplication<CmAppVariables>;

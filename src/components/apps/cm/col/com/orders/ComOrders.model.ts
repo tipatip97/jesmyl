@@ -4,12 +4,13 @@ import { Com } from "../Com";
 
 export interface IComOrdersProps {
     key: string;
-    style: CSSProperties;
-    onClick: () => void;
-    ref: LegacyRef<HTMLDivElement>;
-    asOrdComponent: () => ReactNode;
-    setClassName: () => string;
+    style?: CSSProperties;
+    onClick?: () => void;
+    ref?: LegacyRef<HTMLDivElement>;
+    asOrdComponent?: () => ReactNode;
+    setClassName?: () => string;
     ccom: Com;
-    fontSize: number;
+    fontSize?: number;
+    isAnchorInheritHide?: boolean;
 }
 

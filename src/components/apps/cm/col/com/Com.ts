@@ -1,13 +1,13 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { EditableCol } from "../EditableCol";
 import { IExportableCom } from "./Com.model";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.const";
 import { Order } from "./order/Order";
 import { IExportableOrder, IExportableOrderTop } from "./order/Order.model";
 import { StyleProp } from "../../complect/settings/StyleProp";
 import { setts } from "../../complect/settings/Setts";
+import { EditableCom } from "./EditableCom";
 
-export class Com extends EditableCol<IExportableCom> {
+export class Com extends EditableCom {
   initial: Record<string, any>;
   ton?: number;
   tonc?: string;
@@ -38,11 +38,6 @@ export class Com extends EditableCol<IExportableCom> {
     // free: d e f h i j k s u v x y z
     return ['a', 'b', 'c', 'g', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 't', 'w'];
   }
-
-  get name() { return this.getOrBase('n', '?'); }
-  set name(val: string) { this.setExportable('n', val); }
-
-  get wid() { return this.getOrBase('w', 0); }
 
   get chords() {
     return this.forcedArray('c');
@@ -357,7 +352,7 @@ export class Com extends EditableCol<IExportableCom> {
       top.source = ord;
       top.isNextInherit = !!getStyle(val[i + 1])?.isInherit;
       top.isNextAnchorOrd = !!(ord.u != null && val[i + 1] && val[i + 1].a === ord.u);
-      top.isPrevTargetOrd = !!(targetOrd && (val[i - 1] == targetOrd.top.source));
+      top.isPrevTargetOrd = !!(targetOrd && (val[i - 1] === targetOrd.top.source));
       top.targetOrd = targetOrd;
       top.isAnchor = ord.a != null;
       top.isTarget = ord.u != null && val.some(o => o.a === ord.u);

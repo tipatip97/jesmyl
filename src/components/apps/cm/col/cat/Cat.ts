@@ -1,42 +1,21 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { Com } from "../com/Com";
-import { EditableCol } from "../EditableCol";
-import { ComWrap, ICat, IExportableCat } from "./Cat.model";
+import { ICat, IExportableCat } from "./Cat.model";
+import { EditableCat } from "./EditableCat";
 
-export class Cat extends EditableCol<IExportableCat> implements ICat, Partial<IExportableCat> {
-  index: number = -1;
-  term?: string;
-  topComs: Com[];
-  coms: Com[] = [];
-  wraps: ComWrap[] = [];
-  removed?: boolean;
-  t?: string[] | null;
-  n?: string;
+export class Cat extends EditableCat implements ICat, Partial<IExportableCat> {
+  searchTimeout: any;
 
   constructor(obj: IExportableCat, coms: Com[]) {
-    super(obj);
-    if (!mylib.isObj(obj)) throw new Error('wrong Cat type in ICat');
-
-    this.track = mylib.def(obj.t, null);
-    this.topComs = coms;
+    super(obj, coms);
 
     this.putComs();
   }
 
-  get wid() { return this.getOrBase('w', 0); }
-
-  get name() { return this.getOrBase('n', ''); }
-  set name(val) { this.n = val; }
-
-  get stack() { return this.getOrBase('s', ''); }
-
-  get track(): string[] | undefined | null { return this.t; }
-  set track(val: string[] | undefined | null) { this.t = val; }
-
   putComs() {
     this.coms = (
       this.track == null
-        ? (this.topComs || []).filter(com => com && ~this.stack.indexOf(com.wid))
+        ? (this.topComs || []).filter(com => com && ~(this.stack?.indexOf(com.wid) || -1))
         : (this.topComs || []).filter(com => com && mylib.isExpected(com, this.track, this))
     ).slice(0);
 
@@ -58,12 +37,12 @@ export class Cat extends EditableCol<IExportableCat> implements ICat, Partial<IE
         } else if (term === '@1') {
           this.wraps = this.coms.filter(com => !com.audio || !com.audio.trim()).map(com => ({ com }));
         } else if (term === '@2') {
-          this.wraps = this.coms.map(com => ({ com, bag: [[com.nameCorrects(com.name), 'n']].concat(com.texts.map((t, ti) => [com.blockCorrects(t, 't'), ti])).filter(([s]) => s && s.errors) })).filter(({ bag }) => bag.length).map(({ com, bag }) => ({ com, errors: [].concat(bag).map(([{ errors, warnings, unknowns }, index]) => errors && errors.map(({ message }) => ce('div', {}, message + ' ' + (index + 1)))) }));
+          // this.wraps = this.coms.map(com => ({ com, bag: [[com.nameCorrects(com.name), 'n']].concat(com.texts.map((t, ti) => [com.blockCorrects(t, 't'), ti])).filter(([s]) => s && s.errors) })).filter(({ bag }) => bag.length).map(({ com, bag }) => ({ com, errors: [].concat(bag).map(([{ errors, warnings, unknowns }, index]) => errors && errors.map(({ message }) => ce('div', {}, message + ' ' + (index + 1)))) }));
         } else {
           // const inner = mylib.convertStrIfReg(term);
           // let ratesBag = mylib.getRatesInclude(inner, reg => g.transcriptions.reduce((reg, trans) => reg.replace(RegExp(`[${trans[0]}]`, 'g'), `[${trans[1] || trans[0]}]`), reg));
 
-          this.wraps = mylib.func(mylib.searchRate).call(this.coms, term, ['n', mylib.POSITION, ['orders', mylib.INDEX, 'text']], 'com');
+          this.wraps = mylib.func(mylib.searchRate).call(this.coms, term, ['n', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com');
         }
       } else this.wraps = this.coms.map(com => ({ com }));
     };

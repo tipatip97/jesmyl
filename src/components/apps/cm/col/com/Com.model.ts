@@ -1,3 +1,4 @@
+import { IExportedCol } from "../Col.model";
 import { IExportableOrder } from "./order/Order.model";
 
 
@@ -10,13 +11,11 @@ export interface ICom {
 }
 
 
-export interface IExportableCom {
-    w: number;
+export interface IExportableCom extends IExportedCol {
     k: number;
     p?: number;
     l: number;
     b: num;
-    n: string;
     a: string;
     t: string[];
     c: string[];

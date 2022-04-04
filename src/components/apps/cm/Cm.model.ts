@@ -2,6 +2,7 @@ import { Cat } from "./col/cat/Cat";
 import { Com } from "./col/com/Com";
 import { IExportableCols } from "./cols/Cols.model";
 import { IExportableSetts } from "./complect/settings/Setts.model";
+import { EeStorageStoreType } from "./ee-storage/EeStorage.model";
 
 
 export interface CmState {
@@ -33,6 +34,7 @@ export interface CmStorage {
     marks: number[];
     settings: IExportableSetts;
     chordVisibleVariant: ChordVisibleVariant;
+    eeStorage: EeStorageStoreType;
 }
 
 export interface CmAction {

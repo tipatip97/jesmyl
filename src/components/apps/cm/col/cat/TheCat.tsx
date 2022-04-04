@@ -26,14 +26,15 @@ export function TheCat() {
           onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
             ccat
               .search
-              // event.target.value,
-              // () => this.fu(),
-              // 500,
-              // () => {
-              //   this.fu();
-              //   this.comsListElement.scrollTop = 0;
-              // }
-              ()
+              (
+                event.target.value,
+              () => 0, //this.fu(),
+              500,
+              () => {
+                // this.fu();
+                // this.comsListElement.scrollTop = 0;
+              }
+              )
           }
           onChange={() => {}}
           ref={searchInputRef}
@@ -72,38 +73,28 @@ export function TheCat() {
           ) : null}
           {ccat.wraps.map((wrap, comi) => {
             const { com, errors } = wrap || {};
-            const orderPositionIndex = g.selectedComs.indexOf(com.wid);
+            
             const className = () =>
               `${
                 errors
                   ? "m-ko"
                   // : streamComw === com.wid
                   // ? "m-br"
-                  : wrap.deep > 0
+                  : wrap.deep
                   ? "m-no"
                   : "m-ok"
-              }${~orderPositionIndex ? " mactive" : ""}`;
+              }`;
 
             return com == null ? null : (
-              <div key={`com-face-${com.wid}`} id={com.wid}>
+              <div key={`com-face-${com.wid}`} id={'' + com.wid}>
                 <button
                   key={`com-face-button-${com.wid}`}
                   className={`com-face mbtn ${className()} mblock mmd`}
-                  {...{
-                    "order-position": ~orderPositionIndex
-                      ? orderPositionIndex - -1
-                      : null,
-                  }}
                   style={{
                     backgroundColor: com.removed ? "red" : "",
                   }}
                 >
-                  <span>{`${
-                    ("" &&
-                      wrap.field &&
-                      comi + "[" + wrap.rate + wrap.field + "]") ||
-                    ""
-                  }${com.index == null ? "?" : com.index - -1}${
+                  <span>{`${com.index == null ? "?" : com.index - -1}${
                     com.refs && com.refs[ccat.wid]
                       ? `, №${com.refs[ccat.wid]}.`
                       : "."

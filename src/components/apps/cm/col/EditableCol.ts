@@ -1,15 +1,36 @@
-import { Base } from "../base/Base";
+import { ExecArgs, ExecDict } from "../../../../complect/exer/Exer.model";
+import mylib from "../../../../complect/my-lib/MyLib";
+import { cmExer } from "../Cm.store";
+import { cols } from "../cols/Cols";
+import { IEditableCol, IExportableCol } from "../cols/Cols.model";
+import { CorrectsBox } from "../editor/corrects-box/CorrectsBox";
+import { ICorrectsBox } from "../editor/corrects-box/CorrectsBox.model";
+import { eeStorage } from "../ee-storage/EeStorage";
+import { IEditableColDefaultArgs, IExportedCol } from "./Col.model";
+import { ExportedCol } from "./ExportedCol";
 
 
-export class EditableCol<T> extends Base<T> {
-  // constructor(top: IEditableCol) {
-  //   super(top);
-  // //   this.eeStorage = eeStorage;
-  // }
+export class EditableCol<Col extends IExportedCol> extends ExportedCol<Col> {
+  removed = false;
 
-  setField(fieldn, value, defVal, actions, internalError) {
+  exec<Value, Args, Coln extends keyof IExportableCol>(bag: ExecDict<Value, Args>, coln?: Coln) {
+    cmExer.set(mylib.overlap({}, bag, {
+      scope: this.scope(bag.action, bag.uniq),
+      args: mylib.overlap({}, bag.args, {
+        [`${coln}w`]: this.wid,
+        name: this.name
+      }),
+      generalId: this.wid
+    }) as ExecDict<Value, Args>);
+  }
+
+  scope(action: string, uniq?: number | string) {
+    return [this.wid, '.', mylib.typ('[action]', action), ':', [''].concat(mylib.def(uniq + '', '[uniq]')).join(',')].join('');
+  }
+
+  setField<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln?: Coln, defVal?: Col[Fieldn], internalError?: string) {
     this.exec({
-      prev: mylib.def(this[fieldn], defVal),
+      prev: mylib.def(this.getOrBase(fieldn), defVal),
       value,
       method: 'set',
       action: actions[fieldn],
@@ -17,10 +38,10 @@ export class EditableCol<T> extends Base<T> {
       args: {
         n: this.name,
         value
-      }
-    });
+      } as ExecArgs<Col[Fieldn], IEditableColDefaultArgs<Col[Fieldn]>>
+    }, coln);
 
-    this[fieldn] = value;
+    this.setExportable(fieldn, value);
 
     return this;
   }
@@ -29,45 +50,46 @@ export class EditableCol<T> extends Base<T> {
     return /([^а-яёіґїє !?]+\s*)+$/i;
   }
 
-  nameCorrects(name = this.name, coln) {
-    const cols = g.cols[`${coln}s`];
-    let incorrects;
+  nameCorrects<Coln extends keyof IEditableCol>(name = this.name, coln: Coln) {
+    const colLists: IEditableCol[Coln][] = cols[`${coln}s`] as never;
     const minLen = 3;
-    const msg = msg => msg && `"${name}" - не корректное имя для ${coln === 'cat' ? 'категории' : 'песни'}. ${msg}`;
-    const errors = [];
-    const ret = err => this.textCorrects(name).merge({ errors: err ? [{ message: err }] : null });
+    const msg = (msg?: string) => msg && `"${name}" - не корректное имя для ${coln === 'cat' ? 'категории' : 'песни'}. ${msg}`;
+    const ret = (err?: string) => this.textCorrects(name).merge({ errors: err ? [{ message: err }] : null });
 
     if (!mylib.isStr(name)) return ret(msg('Не верный формат'));
     if (name === '?' && coln === 'com') return ret('');
     if (name === '') return ret(msg('Пустое имя'));
-    if (incorrects = name.match(this.getIncorrectNameReg())) return ret(msg(`Недопустимые символы${incorrects[0] === name ? '' : ' в конце'} (${incorrects[0]})`));
+
+    const incorrects = name.match(this.getIncorrectNameReg());
+    if (incorrects) return ret(msg(`Недопустимые символы${incorrects[0] === name ? '' : ' в конце'} (${incorrects[0]})`));
+
     if (name.length < minLen) return ret(msg(`Минимальное количество символов - ${minLen}`));
-    if (cols.find(col => col.name === name && this.wid !== col.wid)) return ret(`именем "${name}" уже названа одна из ${coln === 'cat' ? 'категорий' : 'песен'}`);
+    if (colLists.find(col => col.name === name && this.wid !== col.wid)) return ret(`именем "${name}" уже названа одна из ${coln === 'cat' ? 'категорий' : 'песен'}`);
 
     return ret('');
   }
 
-  prepareName(name) {
+  prepareName(name: string) {
     return mylib.isStr(name) ? name.replace(this.getIncorrectNameReg(), '') : name;
   }
 
-  textCorrects(text) {
-    if (!mylib.isStr(text)) return new ICorrectsBox().setIncorrectType('[got not string]');
-    const errors = [];
-    const warnings = [];
-    const unknowns = [];
+  textCorrects(text: string) {
+    if (!mylib.isStr(text)) return new CorrectsBox().setIncorrectType('[got not string]');
+    const errors: ICorrectsBox[] = [];
+    const warnings: ICorrectsBox[] = [];
+    const unknowns: ICorrectsBox[] = [];
 
-    text.split(/[^а-яёіґїє]/i).filter(realWord => {
+    text.split(/[^а-яёіґїє]/i).filter((realWord): boolean => {
       if (!realWord.match(/[её]/i) || realWord.match(/[іґїє]/i)) return false;
       const lower = realWord.toLowerCase();
       const word = lower.replace(/ё/g, 'е');
       const parts = lower.split(/[а-дж-я]*([её])/).filter(p => p);
 
-      if (this.eeStorage[word] == null) unknowns.push({ message: `Слово '${realWord}' ещё не встречалось среди существующих песен. Проверь, пожалуйста, правильность написания букв ё/е, встречающихся в нём`, word: realWord, code: 2, });
+      if (eeStorage.get(word) == null) unknowns.push({ message: `Слово '${realWord}' ещё не встречалось среди существующих песен. Проверь, пожалуйста, правильность написания букв ё/е, встречающихся в нём`, word: realWord, code: 2, });
 
-      [].concat(this.eeStorage[word]).forEach((type, typei, typea) => {
+      ([] as number[]).concat(eeStorage.get(word)).forEach((type, typei, typea) => {
         const isE = parts[typei] === 'е';
-        const info = code => ({ code, message: `${['Не верно', 'Возможно не верно'][code]} указана ${typea.length > 1 ? `${typei + 1}-я из букв ё/е` : `буква ${parts[typei]}`} в слове '${realWord}'`, word: realWord, letter: parts[typei], pos: typei, alt: isE ? 'ё' : 'е' });
+        const info = (code: number) => ({ code, message: `${['Не верно', 'Возможно не верно'][code]} указана ${typea.length > 1 ? `${typei + 1}-я из букв ё/е` : `буква ${parts[typei]}`} в слове '${realWord}'`, word: realWord, letter: parts[typei], pos: typei, alt: isE ? 'ё' : 'е' });
 
         if (type === 0) {
           if (isE) warnings.push(info(1));
@@ -77,9 +99,10 @@ export class EditableCol<T> extends Base<T> {
           } else if (type === 1) errors.push(info(0));
         }
       });
+      return false
     });
 
-    return new ICorrectsBox(errors, warnings, unknowns);
+    return new CorrectsBox(errors, warnings, unknowns);
   }
 }
 

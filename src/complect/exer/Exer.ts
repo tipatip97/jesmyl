@@ -21,28 +21,28 @@ export class Exer<Storage> {
         this.appName = appName;
     }
 
-    set<Value, Args>(execs: Exec<Value, Args> | Exec<Value, Args>[]) {
-        ([] as Exec<Value, Args>[]).concat(execs).filter(e => e).forEach((exec) => {
+    set<Value, Args>(execs: ExecDict<Value, Args> | ExecDict<Value, Args>[]) {
+        ([] as ExecDict<Value, Args>[]).concat(execs).filter(e => e).forEach((exec) => {
             const { scope, prev, value, method } = exec;
 
             const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
-            const prevExec = this.execs[prevExeci];
+            const prevExec: Exec<Value, Args> = this.execs[prevExeci];
             const lasti = this.execs.length - 1;
-            const lastExec = this.execs[lasti];
+            const lastExec: Exec<Value, Args> = this.execs[lasti];
 
             if (method === 'func') {
-                if (prevExec) this.execs.splice(prevExeci, 1, exec);
+                if (prevExec) this.execs.splice(prevExeci, 1, new Exec(exec));
                 else this.execs.push(new Exec(exec));
 
             } else if (method === 'migrate' && lastExec && lastExec.method === method && lastExec.scope === scope) {
                 if (!Object.keys(value || {}).length) this.execs.splice(lasti, 1);
-                else this.execs.splice(lasti, 1, exec);
+                else this.execs.splice(lasti, 1, new Exec(exec));
 
             } else if (method === 'set') {
                 if (mylib.isEq(exec.prev, exec.value)) return;
                 if (prevExec)
                     if (mylib.isEq(prevExec.eprev, value)) this.execs.splice(prevExeci, 1);
-                    else this.execs.splice(prevExeci, 1, exec);
+                    else this.execs.splice(prevExeci, 1, new Exec(exec));
                 else this.execs.push(new Exec(exec));
 
                 exec.eprev = prevExec && prevExec.hasOwnProperty('eprev')

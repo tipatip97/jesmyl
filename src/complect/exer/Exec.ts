@@ -9,6 +9,7 @@ export class Exec<Value, Args> {
     method?: string;
     args?: ExecArgs<Value, Args>;
     action: string;
+    internalError?: string;
     generalId?: string;
     createByPath?: boolean;
     id = (Date.now() - -Math.random()).toString();
