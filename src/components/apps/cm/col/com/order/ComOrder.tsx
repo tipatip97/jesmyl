@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../../store";
-import { useNav } from "../../../hooks";
+import { useChordVisibleVariant } from "../../../hooks";
 import { TheComLine } from "../line/ComLine";
 import { IComLineProps } from "../line/ComLine.model";
 import { Order } from "./Order";
@@ -24,7 +24,7 @@ export function TheComOrder(props: ITheOrderProps) {
     (state: RootState) => state.cm.isPlayerShown
   );
 
-  const [chordVisibleVariant] = useNav("chordVisibleVariant");
+  const [chordVisibleVariant] = useChordVisibleVariant();
 
   if (
     (isAnchorInheritHide &&

@@ -6,10 +6,9 @@ import { RootState } from "../../../../../../store";
 import { ChordVisibleVariant } from "../../../Cm.model";
 import {
   comForceUpdate,
-  updateChordVisibleVariant,
   updateIsPlayerShown,
 } from "../../../Cm.store";
-import { useCols, useNav } from "../../../hooks";
+import { useChordVisibleVariant, useCols } from "../../../hooks";
 import { marks } from "../../../marks/Marks";
 import { Com } from "../Com";
 import { TheComPlayerPanel } from "../player/ComPlayerPanel";
@@ -21,7 +20,7 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
   const [cols] = useCols();
   const cats = cols.cats;
 
-  const [chordVisibleVariant, setChordVisibleVariant] = useNav('chordVisibleVariant');
+  const [chordVisibleVariant, setChordVisibleVariant] = useChordVisibleVariant();
 
   const [isShowNatives, setIsShowNatives] = useState(false);
   const [songNumberElement, setSongNumberElement] = useState<Swipeabler | null>(

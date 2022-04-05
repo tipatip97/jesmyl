@@ -3,13 +3,13 @@ import { EvaIcon } from "../../../../complect/Eva";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { isAccessed } from "../Cm.complect";
-import { useCols, useNav } from "../hooks";
+import { useCcol, useCols } from "../hooks";
 import { ePhases } from "./Editor.complect";
 
 export function TheEditor() {
   const [cols] = useCols();
-  const [ccom] = useNav('ccom');
-  const [ccat] = useNav('ccat');
+  const [ccom] = useCcol('com');
+  const [ccat] = useCcol('cat');
 
   const cats = cols.cats;
 

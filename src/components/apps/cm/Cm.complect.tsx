@@ -1,11 +1,14 @@
 import { ReactNode } from "react";
 import modalService from "../../../complect/modal/Modal.service";
+import mylib from "../../../complect/my-lib/MyLib";
 import { cmStorage, indexStorage } from "../../../store/jstorages";
 import { BoardApplication, BoardAuth } from "../../board/Board.model";
 import { TheCats } from "./cats/Cats";
 import { CmAction, CmAppVariables, CmPhase } from "./Cm.model";
 import { TheCat } from "./col/cat/TheCat";
 import { TheCom } from "./col/com/TheCom";
+import { setts } from "./complect/settings/Setts";
+import { StyleProp } from "./complect/settings/StyleProp";
 import { TheEditor } from "./editor/TheEditor";
 
 let rules: Record<string, true | null> = {};
@@ -13,7 +16,6 @@ let actions: CmAction[] = [];
 let localAuth: BoardAuth;
 
 const update = () => {
-  console.log("updated");
   localAuth = indexStorage.getOr("auth", { level: 0 });
   const app: BoardApplication<CmAppVariables> = indexStorage
     .get("apps")
@@ -62,3 +64,126 @@ export const Comps: Record<CmPhase, () => ReactNode> = {
   com: () => <TheCom />,
   editor: () => <TheEditor />,
 };
+
+const styleProps = [
+  {
+    n: "fontStyle",
+    title: "Курсив",
+    type: "p",
+    on: "italic",
+  },
+  {
+    n: "fontWeight",
+    title: "Жирный",
+    type: "p",
+    on: "bold",
+  },
+  {
+    n: "textDecoration",
+    title: "Подчёркнутый",
+    type: "p",
+    on: "underline",
+  },
+  {
+    n: "marginTop",
+    title: "-Отступ сверху-",
+    type: "p",
+    on: "0",
+  },
+  {
+    n: "fontSize",
+    title: "Размер",
+    type: "g",
+    variants: [
+      {
+        title: "S",
+        n: "S",
+        val: ".5em",
+      },
+      {
+        title: "M",
+        n: "M",
+        val: ".7em",
+      },
+      {
+        title: "N",
+        n: "N",
+        val: "1em",
+      },
+    ],
+    def: "N",
+  },
+  {
+    n: "marginLeft",
+    title: "Отступ",
+    type: "g",
+    variants: [
+      {
+        title: "Z",
+        n: "Z",
+        val: "0",
+      },
+      {
+        title: "S",
+        n: "S",
+        val: ".5em",
+      },
+      {
+        title: "M",
+        n: "M",
+        val: "1em",
+      },
+      {
+        title: "L",
+        n: "L",
+        val: "1.5em",
+      },
+    ],
+    def: "Z",
+  },
+];
+
+const putStyles = () => {
+  const topStyles: any = {};
+  const newStyles: any = (topStyles[".app-container.cm .com-ord-list "] = {});
+
+  (["headerProps", "textProps"] as (keyof StyleProp)[]).forEach(
+    (styleCol: keyof StyleProp) => {
+      setts.styles.forEach((styleBlock) => {
+        const block: any = (newStyles[
+          setts.query(
+            styleBlock.name,
+            styleCol,
+            ".",
+            styleBlock.isInherit ? styleBlock.name : ""
+          )
+        ] = {});
+        const sBlock = styleBlock[styleCol];
+
+        Object.keys(sBlock).forEach((bProp) => {
+          const prop: any = styleProps.find((sProp) => sProp.n === bProp);
+          block[bProp] =
+            prop.type === "p"
+              ? sBlock[bProp]
+              : (
+                  prop.variants.find(
+                    (variant: any) => variant.n === sBlock[bProp]
+                  ) || {}
+                ).val;
+        });
+      });
+    }
+  );
+
+  mylib.useElement("style", "cm-styles", (style) => {
+    style.innerText = mylib.stringifyCss(topStyles);
+  });
+};
+
+putStyles();
+
+cmStorage.listen('styles.listen', (key) => {
+  if (key === 'settings') {
+    putStyles();
+  }
+});

@@ -29,12 +29,13 @@ export const slice = createSlice({
     setPhase: (state, action: PayloadAction<CmPhase>) => {
       state.phase = action.payload;
     },
-    selectCcol: (state, action: PayloadAction<{ ccatw?: number, ccomw?: number }>) => {
-      if (action.payload.ccatw != null) {
-        state.ccatw = action.payload.ccatw;
+    selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {
+      if (action.payload.val == null) return;
+      if (action.payload.fieldn === 'catw') {
+        state.ccatw = action.payload.val;
       }
-      if (action.payload.ccomw != null) {
-        state.ccomw = action.payload.ccomw;
+      if (action.payload.fieldn === 'comw') {
+        state.ccomw = action.payload.val;
       }
     },
     // addMarks: (state, action: PayloadAction<number | number[]>) => {

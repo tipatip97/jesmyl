@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { isAccessed } from "../../Cm.complect";
-import { useNav } from "../../hooks";
+import { useCcol, usePhase } from "../../hooks";
 
 export function TheCat() {
-  const [ccat] = useNav("ccat");
-  const [ccom, setCcom] = useNav("ccom");
-  const [, setPhase] = useNav("phase");
+  const [ccat] = useCcol("cat");
+  const [, setCcom] = useCcol("com");
+  const [, setPhase] = usePhase();
   const [term, setTerm] = useState(ccat?.term || '');
   const [term1, setTerm1] = useState(ccat?.term || '');
 
