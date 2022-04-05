@@ -1,15 +1,25 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isAccessed } from "../../Cm.complect";
-import { Cat } from "./Cat";
+import { useNav } from "../../hooks";
 
 export function TheCat() {
-  const ccat = new Cat({} as never, []);
-  // const streamComw = g.streamManager.current && g.streamManager.current.comw;
+  const [ccat] = useNav("ccat");
+  const [ccom, setCcom] = useNav("ccom");
+  const [, setPhase] = useNav("phase");
+  const [term, setTerm] = useState(ccat?.term || '');
+  const [term1, setTerm1] = useState(ccat?.term || '');
+
+  useEffect(() => {}, [term]);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  return !ccat ? null : (
+  if (!ccat) {
+    setPhase("cats");
+    return null;
+  }
+
+  return (
     <div className="category-wrapper">
       {[
         //  g.CatHeads ||
@@ -24,28 +34,26 @@ export function TheCat() {
           type="text"
           className="filter-input cleared-input minput m--ok mblock mmd"
           onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
-            ccat
-              .search
-              (
-                event.target.value,
-              () => 0, //this.fu(),
+            ccat.search(
+              event.target.value,
+              () => setTerm(event.target.value),
               500,
               () => {
-                // this.fu();
-                // this.comsListElement.scrollTop = 0;
+                setTerm1(event.target.value);
+                if (listRef.current) listRef.current.scrollTop = 0;
               }
-              )
+            )
           }
           onChange={() => {}}
           ref={searchInputRef}
-          value={ccat.term}
+          value={term}
         />,
-        ccat.term ? (
+        term1 ? (
           <span
             key="com-filter-input-clear-button"
             className="clear-button"
-            onClick={(event) => {
-              // ccat.search("", () => this.fu());
+            onClick={() => {
+              ccat.search("", () => setTerm(""));
               searchInputRef.current?.focus();
             }}
           />
@@ -53,7 +61,7 @@ export function TheCat() {
         <div
           key="component-list"
           className={`component-list ${
-            isAccessed("delCat") ? "can-redact" : ""
+            isAccessed("catDel") ? "can-redact" : ""
           }`}
           ref={listRef}
         >
@@ -71,27 +79,22 @@ export function TheCat() {
               }${ccat.coms.length}`}
             </div>
           ) : null}
-          {ccat.wraps.map((wrap, comi) => {
+          {ccat.wraps.map((wrap) => {
             const { com, errors } = wrap || {};
-            
-            const className = () =>
-              `${
-                errors
-                  ? "m-ko"
-                  // : streamComw === com.wid
-                  // ? "m-br"
-                  : wrap.deep
-                  ? "m-no"
-                  : "m-ok"
-              }`;
 
             return com == null ? null : (
-              <div key={`com-face-${com.wid}`} id={'' + com.wid}>
+              <div key={`com-face-${com.wid}`} id={"" + com.wid}>
                 <button
                   key={`com-face-button-${com.wid}`}
-                  className={`com-face mbtn ${className()} mblock mmd`}
+                  className={`com-face mbtn ${
+                    errors ? "m-ko" : wrap.deep ? "m-no" : "m-ok"
+                  } mblock mmd`}
                   style={{
                     backgroundColor: com.removed ? "red" : "",
+                  }}
+                  onClick={() => {
+                    setCcom(com);
+                    setPhase('com');
                   }}
                 >
                   <span>{`${com.index == null ? "?" : com.index - -1}${
@@ -105,7 +108,7 @@ export function TheCat() {
             );
           })}
         </div>,
-      ].filter((part, parti) => (ccat.removed ? parti === 0 : true))}
+      ].filter((_, parti) => (ccat.removed ? parti === 0 : true))}
     </div>
   );
 }

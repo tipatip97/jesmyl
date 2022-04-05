@@ -62,7 +62,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
         else if (this.top.source) this.top.source[fieldn] = value as never;
 
         if (refresh) {
-            this.top.com.afterOrderChange();
+            // this.top.com.afterOrderChange();
             // g.ss();
         }
     }

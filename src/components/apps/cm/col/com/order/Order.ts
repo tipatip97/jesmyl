@@ -7,19 +7,16 @@ import { EditableOrderRegion, IExportableOrderFieldValues, IExportableOrderTop, 
 export class Order extends EditableOrder {
   _regions?: EditableOrderRegion[];
 
-  constructor(obj: IExportableOrderTop, com: Com) {
-    super({
-      ...obj,
-      com,
-      header: () => '',
-    });
+  constructor(top: IExportableOrderTop, com: Com) {
+    super(top);
+    top.com = com;
 
 
-    if (mylib.isNum(obj.t))
-      this.texti = obj.t;
+    if (mylib.isNum(top.t))
+      this.texti = top.t;
 
-    this.positions = mylib.def(obj.p, []);
-    this.fieldValues = obj.f;
+    this.positions = mylib.def(top.p, []);
+    this.fieldValues = top.f;
 
     // setReals(['chords', 'text', 'inh', 'u', 'o', 'c', 'v', 'a', 's', 'e', 'w']);
   }

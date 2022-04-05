@@ -24,7 +24,7 @@ export function TheComLine(props: IComLineProps) {
   if (!chordedOrd)
     return (
       <span key={`song-woc-part-${lineKey}`}>
-        {textLine.split(/ +/).map((word, wordi, worda) => {
+        {textLine?.split(/ +/).map((word, wordi, worda) => {
           const actionProps = {
             ord: orderUnit,
             linei: textLinei,
@@ -34,8 +34,9 @@ export function TheComLine(props: IComLineProps) {
             lines: textLines,
           };
           return (
-            <span key={`song-line-woc-${lineKey}.${wordi}`}>
+            <span key={`song-line-woc-${word}-${lineKey}.${wordi}`}>
               <span
+                key={`song-line-withc-${word}-${lineKey}.${wordi}`}
                 className={mylib.func(setWordClass).call(actionProps)}
                 onClick={
                   mylib.isFunc(onWordClick)
@@ -47,8 +48,10 @@ export function TheComLine(props: IComLineProps) {
               {wordi === worda.length - 1
                 ? null
                 : [
-                    " ",
-                    <wbr key={`song-line-woc-wbr-${lineKey}.${wordi}`}></wbr>,
+                    [
+                      " ",
+                      <wbr key={`song-line-woc-wbr-${lineKey}.${wordi}`}></wbr>,
+                    ],
                   ]}
             </span>
           );
@@ -99,57 +102,59 @@ export function TheComLine(props: IComLineProps) {
           .split(/ +/g)
           .map((txt, txti, txta) => (
             <span key={`text-bit:${lineKey}.${txti}`}>
-              <span dangerouslySetInnerHTML={{ __html: txt }} />
+              <span
+                key={`text-bvit:${lineKey}.${txti}`}
+                dangerouslySetInnerHTML={{ __html: txt }}
+              />
               {txti === txta.length - 1
                 ? null
                 : [" ", <wbr key={`song-line-wbr-${indexKey}.${txti}`} />]}
             </span>
           ));
 
-        return (
-          <>
-            {firstTextBit ? (
-              <span
-                key={`song-letterbit-${lineKey}`}
-                className={`${isHasPre ? "chorded pre" : ""}`}
-                dangerouslySetInnerHTML={{ __html: firstTextBit }}
-                {...{ chord: chordsLabels[0] }}
-              />
-            ) : null}
+        return [
+          firstTextBit ? (
             <span
-              key={`chord_${lineKey}`}
-              id={`chord_${lineKey}`}
-              {...{ chord, pchord }}
-              className={[
-                "chord",
-                (chorded || chordedFirst || chordedLast) && "chorded",
-                chordedLast && "post",
-                chordedFirst && "pre",
-                isSpacedWord && "spaced-word",
-                chorded && isLast && isHasPost && "twice",
-                mylib.func(setLineClassName).call(chorded),
-              ]
-                .filter((s) => s)
-                .join(" ")}
-              onClick={
-                !onLetterClick || (isHasPre && isFirst && !chorded)
-                  ? undefined
-                  : () => onLetterClick(indexi)
-              }
-            >
-              {chorded || chordedLast ? (
-                <span
-                  className="fragment"
-                  {...{ chord, pchord: pchord || null }}
-                >
-                  {origBits}
-                </span>
-              ) : (
-                origBits
-              )}
-            </span>
-          </>
-        );
+              key={`song-letterbit-${lineKey}`}
+              className={`${isHasPre ? "chorded pre" : ""}`}
+              dangerouslySetInnerHTML={{ __html: firstTextBit }}
+              attr-chord={chordsLabels[0]}
+            />
+          ) : null,
+          <span
+            key={`chord_${lineKey}`}
+            id={`chord_${lineKey}`}
+            attr-chord={chord}
+            attr-pchord={pchord}
+            className={[
+              "chord",
+              (chorded || chordedFirst || chordedLast) && "chorded",
+              chordedLast && "post",
+              chordedFirst && "pre",
+              isSpacedWord && "spaced-word",
+              chorded && isLast && isHasPost && "twice",
+              mylib.func(setLineClassName).call(chorded),
+            ].join(" ")}
+            onClick={
+              !onLetterClick || (isHasPre && isFirst && !chorded)
+                ? undefined
+                : () => onLetterClick(indexi)
+            }
+          >
+            {chorded || chordedLast ? (
+              <span
+                key={`fragment-${lineKey}-${indexi}`}
+                className="fragment"
+                attr-chord={chord}
+                attr-pchord={pchord}
+              >
+                {origBits}
+              </span>
+            ) : (
+              origBits
+            )}
+          </span>,
+        ];
       })}
     </span>
   );

@@ -1,10 +1,8 @@
 import { ReactNode } from "react";
 import { ModalConfigInput } from "../../../../complect/modal/Modal.model";
 import modalService from "../../../../complect/modal/Modal.service";
-import mylib from "../../../../complect/my-lib/MyLib";
 import { cmStorage } from "../../../../store/jstorages";
 import { Com } from "../col/com/Com";
-import { cols } from "../cols/Cols";
 import { MarksOnEmptyCallback } from "./Marks.model";
 
 
@@ -32,16 +30,16 @@ class IMarks {
   }
 
   setComs() {
-    const prevLen = (this.coms || '').length;
-    this.coms = this.stack.map((comw) => cols.coms.find(com => com.wid === comw)).filter(c => c) as Com[];
-    const len = this.coms.length;
+    // const prevLen = (this.coms || '').length;
+    // this.coms = this.stack.map((comw) => cols.coms.find(com => com.wid === comw)).filter(c => c) as Com[];
+    // const len = this.coms.length;
 
-    if (prevLen !== len) mylib.func(this.onEmptyListener).call(len < 1);
+    // if (prevLen !== len) mylib.func(this.onEmptyListener).call(len < 1);
   }
 
   goto(comw: number) {
     if (comw) {
-      g.nav.setCom(comw);
+      // g.nav.setCom(comw);
     } else {
       this.stack.splice(this.stack.indexOf(comw), 1);
     }
@@ -62,18 +60,18 @@ class IMarks {
   }
 
   bumerang(comw: number) {
-    if (this.stack.length < 2) return;
-    const comwi = this.stack.indexOf(comw);
-    const find = (dir: number) => this.stack.indexOf(this.stack[dir > 0 ? 'reduce' : 'reduceRight']((curr, cw, cwi, cwa) => curr == null ? cw === comw ? cwi : null : curr > cwa.length ? curr : cw, null));
+    // if (this.stack.length < 2) return;
+    // const comwi = this.stack.indexOf(comw);
+    // const find = (dir: number) => this.stack.indexOf(this.stack[dir > 0 ? 'reduce' : 'reduceRight']((curr, cw, cwi, cwa) => curr == null ? cw === comw ? cwi : null : curr > cwa.length ? curr : cw, null));
 
-    const index = find(comwi ? -1 : 1);
+    // const index = find(comwi ? -1 : 1);
 
-    [this.stack[index], this.stack[comwi]] =
-      [this.stack[comwi], this.stack[index]];
+    // [this.stack[index], this.stack[comwi]] =
+    //   [this.stack[comwi], this.stack[index]];
 
-    this.setComs();
-    // g.ss();
-    this.save();
+    // this.setComs();
+    // // g.ss();
+    // this.save();
   }
 
   toggle(comw: number) {
@@ -106,7 +104,7 @@ class IMarks {
   insertMarks(marks: number[], description: ReactNode) {
     if (this.stack.length === 0 && !description) {
       this.replace(marks);
-      g.ss();
+      // g.ss();
       return new Promise(resolve => resolve(true));
     } else {
 
@@ -119,7 +117,7 @@ class IMarks {
             onClick: () => {
               this.replace(marks);
               cb(true);
-              g.ss();
+              // g.ss();
             }
           }
         ];
@@ -170,25 +168,25 @@ class IMarks {
   }
 
   getNextComw() {
-    const index = this.stack.indexOf(g.nav.ccom.wid);
-    if (index < 0) return;
-    const next = index >= this.stack.length - 1 ? 0 : index - -1;
-    return this.stack[next];
+    // const index = this.stack.indexOf(g.nav.ccom.wid);
+    // if (index < 0) return;
+    // const next = index >= this.stack.length - 1 ? 0 : index - -1;
+    // return this.stack[next];
   }
 
   next(isEmitBeforeComChange = false, phase = null) {
-    g.nav.setCom(this.getNextComw(), phase, isEmitBeforeComChange);
+    // g.nav.setCom(this.getNextComw(), phase, isEmitBeforeComChange);
   }
 
   getPrevComw() {
-    const index = this.stack.indexOf(g.nav.ccom.wid);
-    if (index < 0) return;
-    const prev = index <= 0 ? this.stack.length - 1 : index - 1;
-    return this.stack[prev];
+    // const index = this.stack.indexOf(g.nav.ccom.wid);
+    // if (index < 0) return;
+    // const prev = index <= 0 ? this.stack.length - 1 : index - 1;
+    // return this.stack[prev];
   }
 
   prev(isEmitBeforeComChange = false, phase = null) {
-    g.nav.setCom(this.getPrevComw(), phase, isEmitBeforeComChange);
+    // g.nav.setCom(this.getPrevComw(), phase, isEmitBeforeComChange);
   }
 }
 

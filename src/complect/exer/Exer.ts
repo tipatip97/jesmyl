@@ -1,4 +1,4 @@
-import { localAuth } from "../../components/board/Board.source";
+import { indexStorage } from "../../store/jstorages";
 import { AppName } from "../../store/Storage.model";
 import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";
@@ -144,7 +144,7 @@ export class Exer<Storage> {
         const body = new FormData();
 
         body.append('execs', JSON.stringify(execs));
-        body.append('auth', JSON.stringify(localAuth));
+        body.append('auth', indexStorage.getString('auth') || '');
         body.append('appName', JSON.stringify(this.appName));
 
         fetch(`${this.host}/execute`, { method: 'POST', body })

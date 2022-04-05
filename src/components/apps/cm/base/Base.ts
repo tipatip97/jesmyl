@@ -10,7 +10,10 @@ export class Base<T> {
     }
 
     getOrBase<K extends keyof T>(fieldn: K, typ?: T[K]): T[K] {
-        if (typ !== undefined && (this.self[fieldn] === null || this.self[fieldn] === undefined)) this.self[fieldn] = mylib.typ(typ, this.self.top[fieldn]);
+        if ((this.self[fieldn] === null || this.self[fieldn] === undefined)) {
+            if (typ !== undefined) this.self[fieldn] = mylib.typ(typ, this.self.top[fieldn]);
+            else return this.self.top[fieldn];
+        }
         return this.self[fieldn] as T[K];
     }
 
@@ -19,7 +22,7 @@ export class Base<T> {
     }
 
     forcedArray<K extends keyof T>(fieldn: K): T[K] {
-        const obj = this.self[fieldn];
+        const obj = this.self[fieldn] ?? this.self.top[fieldn];
         if (obj) {
             if (mylib.isArr(obj)) return obj;
             else {

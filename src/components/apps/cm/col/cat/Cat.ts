@@ -1,6 +1,6 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { Com } from "../com/Com";
-import { ICat, IExportableCat } from "./Cat.model";
+import { ComWrap, ICat, IExportableCat } from "./Cat.model";
 import { EditableCat } from "./EditableCat";
 
 export class Cat extends EditableCat implements ICat, Partial<IExportableCat> {
@@ -19,7 +19,7 @@ export class Cat extends EditableCat implements ICat, Partial<IExportableCat> {
         : (this.topComs || []).filter(com => com && mylib.isExpected(com, this.track, this))
     ).slice(0);
 
-    // this.search();
+    this.search();
   }
   
   searchErrors(term: string) {
@@ -27,7 +27,7 @@ export class Cat extends EditableCat implements ICat, Partial<IExportableCat> {
     return null;
   }
 
-  search(term = this.term, cb: () => void, debounceTime = 0, dtCb: () => void) {
+  search(term = this.term, cb?: () => void, debounceTime = 0, dtCb?: () => void) {
     const filter = () => {
       if (term) {
         const errors = this.searchErrors(term);
@@ -42,7 +42,7 @@ export class Cat extends EditableCat implements ICat, Partial<IExportableCat> {
           // const inner = mylib.convertStrIfReg(term);
           // let ratesBag = mylib.getRatesInclude(inner, reg => g.transcriptions.reduce((reg, trans) => reg.replace(RegExp(`[${trans[0]}]`, 'g'), `[${trans[1] || trans[0]}]`), reg));
 
-          this.wraps = mylib.func(mylib.searchRate).call(this.coms, term, ['n', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com');
+          this.wraps = mylib.searchRate<ComWrap>(this.coms, term, ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com') as ComWrap[];
         }
       } else this.wraps = this.coms.map(com => ({ com }));
     };

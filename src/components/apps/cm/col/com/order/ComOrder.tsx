@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../../store";
+import { useNav } from "../../../hooks";
 import { TheComLine } from "../line/ComLine";
 import { IComLineProps } from "../line/ComLine.model";
 import { Order } from "./Order";
@@ -23,9 +24,7 @@ export function TheComOrder(props: ITheOrderProps) {
     (state: RootState) => state.cm.isPlayerShown
   );
 
-  const chordVisibleVariant = useSelector(
-    (state: RootState) => state.cm.chordVisibleVariant
-  );
+  const [chordVisibleVariant] = useNav("chordVisibleVariant");
 
   if (
     (isAnchorInheritHide &&
@@ -113,13 +112,14 @@ export function TheComOrder(props: ITheOrderProps) {
             r: orderUnit.repeatsTitle,
           })}
         </div>
-        !chordVisibleVariant ? null :{" "}
-        <pre
-          key={`chorded-block-${orderUniti}-content`}
-          className={`body ${orderUnit.top.textClassName}`}
-        >
-          {chords}
-        </pre>
+        {!chordVisibleVariant ? null : (
+          <pre
+            key={`chorded-block-${orderUniti}-content`}
+            className={`body ${orderUnit.top.textClassName}`}
+          >
+            {chords}
+          </pre>
+        )}
       </div>
     );
   }
@@ -131,7 +131,7 @@ export function TheComOrder(props: ITheOrderProps) {
     .func(
       setChorded,
       (ord: Order) =>
-        ord.chordsi - -1 &&
+        ord.chordsi > -1 &&
         (chordVisibleVariant === 2 || (chordVisibleVariant === 1 && ord.isMin))
     )
     .call(orderUnit);
@@ -144,7 +144,6 @@ export function TheComOrder(props: ITheOrderProps) {
           "com-order-block song-part-wrapper Xuser-select",
           mylib.func(setOrdClassName).call(orderUnit),
         ]
-          .filter((s) => s)
           .join(" "),
       })}
     >
@@ -154,14 +153,14 @@ export function TheComOrder(props: ITheOrderProps) {
           orderUnit.top.textClassName
         }`}
       >
-        blockHeader ?{" "}
-        <span
-          key={`song-part-header-${orderUniti}`}
-          className={orderUnit.top.headClassName}
-        >
-          {blockHeader}
-        </span>
-        : null,
+        {blockHeader ? (
+          <span
+            key={`song-part-header-${orderUniti}`}
+            className={orderUnit.top.headClassName}
+          >
+            {blockHeader}
+          </span>
+        ) : null}
         {(orderUnit.repeated || "")
           .split(/\n/)
           .map((textLine, textLinei, textLinea) => (
@@ -185,6 +184,7 @@ export function TheComOrder(props: ITheOrderProps) {
                   textLines: textLinea.length,
                   orderUnit,
                   orderUniti,
+                  ccom,
                 })}
             </div>
           ))}

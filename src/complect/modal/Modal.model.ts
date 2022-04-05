@@ -6,8 +6,8 @@ export interface ModalType {
 }
 
 export interface ModalConfig {
-    title?: string,
-    description?: ReactNode,
+    title?: FuncableVal<string>,
+    description?: FuncableVal<ReactNode>,
     inputs?: Partial<ModalConfigInput>[] | null,
     buttons?: (ModalConfigButton | string)[] | null,
     closeOnClick: boolean,
@@ -18,21 +18,23 @@ export interface ModalConfig {
     closeModal: () => void,
 };
 
+type FuncableVal<Value, Config = ModalConfig> = Value | ((config: Config) => Value);
+
 export interface ModalConfigButton {
-    title?: string,
+    title?: FuncableVal<string>,
     className?: string,
     onClick?: (config: ModalConfig) => void,
-    closable?: boolean,
-    disabled?: boolean,
-    hidden?: boolean,
+    closable?: FuncableVal<boolean>,
+    disabled?: FuncableVal<boolean>,
+    hidden?: FuncableVal<boolean>,
     confirm?: string,
     modal?: Function,
     value?: any;
 }
 
-export interface ModalConfigInput {
+export interface ModalConfigInput extends ModalConfig {
     title: string,
-    type: 'textarea' | 'input' | 'password' | 'button',
+    type: 'textarea' | 'input' | 'password' | 'button' | 'number',
     placeholder: string;
     set: (attrn: keyof ModalConfigInput, val: string) => void,
     element: HTMLElement,
@@ -45,7 +47,8 @@ export interface ModalConfigInput {
     checked: boolean;
     min: number;
     max: number;
-    onInput: (config: ModalConfig) => void,
+    input: ModalConfigInput;
+    onInput: (config: ModalConfigInput) => void,
     onClick: (config: ModalConfig) => void,
     confirm: string;
     modal: Function;

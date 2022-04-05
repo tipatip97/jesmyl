@@ -7,7 +7,13 @@ import { setCurrentApp } from "../../board/Board.store";
 import { Comps } from "./Cm.complect";
 import { updateIsComFullscreenMode } from "./Cm.store";
 import { mainTopButtons } from "./editor/Lazies";
-import 'Cm.scss';
+import "./Cm.scss";
+import { cmStorage } from "../../../store/jstorages";
+import { useNav } from "./hooks";
+import { CmPhase } from "./Cm.model";
+import mylib from "../../../complect/my-lib/MyLib";
+import { setts } from "./complect/settings/Setts";
+import { StyleProp } from "./complect/settings/StyleProp";
 
 export function CmApplication() {
   // class CStartPage extends React.Component {
@@ -30,7 +36,8 @@ export function CmApplication() {
   // rangeValue = rangeValue < rangeMin && rangeValue > 0 ? rangeMin : rangeValue > rangeMax ? rangeMax : rangeValue;
 
   const dispatch = useDispatch();
-  const phase = useSelector((state: RootState) => state.cm.phase);
+  // const phase = useSelector((state: RootState) => state.cm.phase);
+  const [phase, setPhase] = useNav("phase");
   const rollMode = useSelector((state: RootState) => state.cm.rollMode);
   const isComFullscreenMode = useSelector(
     (state: RootState) => state.cm.isComFullscreenMode
@@ -46,7 +53,7 @@ export function CmApplication() {
           isComFullscreenMode || rollMode ? " hidden-tools" : ""
         }${rollMode ? " roll-mode" : ""}`}
         onClick={() => {
-          if (phase !== "com" || rollMode) return; ///* || g.streamManager.isCurr 
+          if (phase !== "com" || rollMode) return; ///* || g.streamManager.isCurr
           if (Date.now() - topClickDateNow < 500) {
             dispatch(updateIsComFullscreenMode(!isComFullscreenMode));
             // updateFlexFontSize(400);
@@ -66,21 +73,31 @@ export function CmApplication() {
 
               if (phase === "com") {
                 ///* && g.streamManager.isJustSub
-                if (
-                  !(await modalService.confirm(
-                    "Отписаться от текущего стрима?",
-                    "Стрим",
-                    "да",
-                    "остаться"
-                  ))
-                )
-                  return;
-
+                // if (
+                //   !(await modalService.confirm(
+                //     "Отписаться от текущего стрима?",
+                //     "Стрим",
+                //     "да",
+                //     "остаться"
+                //   ))
+                // )
+                //   return;
                 // g.streamManager.unsubscribe(() => g.ss());
               } else {
-                if (phase === "cats") dispatch(setCurrentApp(null));
-                ///* else g.nav.goBack();
+                if (phase === "cats") {
+                  dispatch(setCurrentApp(null));
+                  ///* else g.nav.goBack();
+                  return;
+                }
               }
+
+              const newPhase = {
+                com: "cat",
+                cat: "cats",
+                editor: "com",
+              }[phase];
+
+              setPhase(newPhase as CmPhase);
             }}
           >
             {phase === "com" ? ( ///* && g.streamManager.isJustSub
@@ -103,7 +120,7 @@ export function CmApplication() {
             </button>
           )} */}
           {/* {!g.nav.isCanGoBack(g.Phase.Translations) ||
-          !g.isAccessed("canShowTranslation") ? null : (
+          !isAccessed("canShowTranslation") ? null : (
             <button
               key="translations-button"
               className="translations-button mbtn m-no mxs"
@@ -178,22 +195,115 @@ export function CmApplication() {
         </div>
 
         {Object.entries(Comps).map(([phasen, phaseComp]) => {
-
           return (
-            phaseComp && (
-              <div
-                key={`phase-body.${phasen}`}
-                className={`phase-body phase-${phasen} ${
-                  phasen === phase ? "active" : ""
-                }`}
-              >
-                {phasen === phase ? phaseComp : null}
-                {/* {mylib.func(g.comFooters).call(phasen)} */}
-              </div>
-            )
+            <div
+              key={`phase-body.${phasen}`}
+              className={`phase-body phase-${phasen} ${
+                phasen === phase ? "active" : ""
+              }`}
+            >
+              {phasen === phase ? phaseComp() : null}
+              {/* {mylib.func(g.comFooters).call(phasen)} */}
+            </div>
           );
         })}
       </div>
     </>
   );
 }
+
+
+const styleProps = [
+  {
+    n: 'fontStyle',
+    title: 'Курсив',
+    type: 'p',
+    on: 'italic'
+  }, {
+    n: 'fontWeight',
+    title: 'Жирный',
+    type: 'p',
+    on: 'bold'
+  }, {
+    n: 'textDecoration',
+    title: 'Подчёркнутый',
+    type: 'p',
+    on: 'underline'
+  }, {
+    n: 'marginTop',
+    title: '-Отступ сверху-',
+    type: 'p',
+    on: '0'
+  }, {
+    n: 'fontSize',
+    title: 'Размер',
+    type: 'g',
+    variants: [
+      {
+        title: 'S',
+        n: 'S',
+        val: '.5em'
+      }, {
+        title: 'M',
+        n: 'M',
+        val: '.7em'
+      }, {
+        title: 'N',
+        n: 'N',
+        val: '1em'
+      }
+    ],
+    def: 'N'
+  }, {
+    n: 'marginLeft',
+    title: 'Отступ',
+    type: 'g',
+    variants: [
+      {
+        title: 'Z',
+        n: 'Z',
+        val: '0'
+      }, {
+        title: 'S',
+        n: 'S',
+        val: '.5em'
+      }, {
+        title: 'M',
+        n: 'M',
+        val: '1em'
+      }, {
+        title: 'L',
+        n: 'L',
+        val: '1.5em'
+      }
+    ],
+    def: 'Z'
+  }
+];
+
+const putStyles = () => {
+  const topStyles: any = {};
+  const newStyles: any = topStyles['.app-container.cm .com-ord-list '] = {};
+  
+  (['headerProps', 'textProps'] as (keyof StyleProp)[]).forEach((styleCol: keyof StyleProp) => {
+    setts.styles.forEach(styleBlock => {
+      const block: any = newStyles[setts.query(styleBlock.name, styleCol, '.', styleBlock.isInherit ? styleBlock.name : '')] = {};
+      const sBlock = styleBlock[styleCol];
+
+      Object.keys(sBlock).forEach(bProp => {
+        const prop: any = styleProps.find(sProp => sProp.n === bProp);
+        block[bProp] = prop.type === 'p' ? sBlock[bProp] : (prop.variants.find((variant: any) => variant.n === sBlock[bProp]) || {}).val;
+      });
+    });
+  });
+
+  console.log(topStyles);
+
+  mylib.useElement('style', 'cm-styles', style => {
+    style.innerText = mylib.stringifyCss(topStyles);
+    console.log(style);
+  });
+};
+
+putStyles();
+

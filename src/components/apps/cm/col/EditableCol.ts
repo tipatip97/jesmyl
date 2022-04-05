@@ -1,7 +1,6 @@
 import { ExecArgs, ExecDict } from "../../../../complect/exer/Exer.model";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { cmExer } from "../Cm.store";
-import { cols } from "../cols/Cols";
 import { IEditableCol, IExportableCol } from "../cols/Cols.model";
 import { CorrectsBox } from "../editor/corrects-box/CorrectsBox";
 import { ICorrectsBox } from "../editor/corrects-box/CorrectsBox.model";
@@ -12,8 +11,24 @@ import { ExportedCol } from "./ExportedCol";
 
 export class EditableCol<Col extends IExportedCol> extends ExportedCol<Col> {
   removed = false;
+  incorrectName = false;
 
-  exec<Value, Args, Coln extends keyof IExportableCol>(bag: ExecDict<Value, Args>, coln?: Coln) {
+  renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln) {
+    this.execCol({
+      action: `${coln}Rename`,
+      value: name,
+    }, coln);
+    this.name = name;
+  }
+
+  removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
+    this.execCol({
+      action: `${coln}Del`,
+    }, coln);
+      return this.removed = isRemoved;
+  }
+
+  protected execCol<Value, Args, Coln extends keyof IExportableCol>(bag: ExecDict<Value, Args>, coln: Coln) {
     cmExer.set(mylib.overlap({}, bag, {
       scope: this.scope(bag.action, bag.uniq),
       args: mylib.overlap({}, bag.args, {
@@ -24,12 +39,12 @@ export class EditableCol<Col extends IExportedCol> extends ExportedCol<Col> {
     }) as ExecDict<Value, Args>);
   }
 
-  scope(action: string, uniq?: number | string) {
-    return [this.wid, '.', mylib.typ('[action]', action), ':', [''].concat(mylib.def(uniq + '', '[uniq]')).join(',')].join('');
+  scope(action?: string, uniq?: number | string) {
+    return [this.wid, '.', mylib.typ('[action]', action), ':', [''].concat(mylib.def(uniq, '[uniq]')).join(',')].join('');
   }
 
-  setField<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln?: Coln, defVal?: Col[Fieldn], internalError?: string) {
-    this.exec({
+  setFieldCol<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln: Coln, defVal?: Col[Fieldn], internalError?: string) {
+    this.execCol({
       prev: mylib.def(this.getOrBase(fieldn), defVal),
       value,
       method: 'set',
@@ -51,7 +66,7 @@ export class EditableCol<Col extends IExportedCol> extends ExportedCol<Col> {
   }
 
   nameCorrects<Coln extends keyof IEditableCol>(name = this.name, coln: Coln) {
-    const colLists: IEditableCol[Coln][] = cols[`${coln}s`] as never;
+    // const colLists: IEditableCol[Coln][] = cols[`${coln}s`] as never;
     const minLen = 3;
     const msg = (msg?: string) => msg && `"${name}" - не корректное имя для ${coln === 'cat' ? 'категории' : 'песни'}. ${msg}`;
     const ret = (err?: string) => this.textCorrects(name).merge({ errors: err ? [{ message: err }] : null });
@@ -64,7 +79,7 @@ export class EditableCol<Col extends IExportedCol> extends ExportedCol<Col> {
     if (incorrects) return ret(msg(`Недопустимые символы${incorrects[0] === name ? '' : ' в конце'} (${incorrects[0]})`));
 
     if (name.length < minLen) return ret(msg(`Минимальное количество символов - ${minLen}`));
-    if (colLists.find(col => col.name === name && this.wid !== col.wid)) return ret(`именем "${name}" уже названа одна из ${coln === 'cat' ? 'категорий' : 'песен'}`);
+    // if (colLists.find(col => col.name === name && this.wid !== col.wid)) return ret(`именем "${name}" уже названа одна из ${coln === 'cat' ? 'категорий' : 'песен'}`);
 
     return ret('');
   }

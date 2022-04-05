@@ -9,7 +9,11 @@ const constants = {
 }
 
 type Trace = string | typeof constants[keyof typeof constants];
-type Ferry = { [objName: string]: object | number, deep: number, rate: number };
+type Ferry<FerryType, ObjName extends keyof FerryType> =
+    Record<ObjName, FerryType[ObjName]> & {
+        deep: number;
+        rate: number
+    };
 
 export class MyLib {
     c = constants;
@@ -31,7 +35,7 @@ export class MyLib {
         const self = this;
         const call = (...args: any[]) => {
             const func = funcs.find(this.isFunc);
-            return func && func.apply(this, args);
+            return func && func.apply(this, ...args);
         };
 
         return {
@@ -48,13 +52,13 @@ export class MyLib {
         return zero;
     }
 
-    def<T>(...args: T[]): T {
+    def(...args: any[]): any {
         const res = args.find(some => some != null);
         return res == null ? args[args.length - 1] : res;
     }
 
-    typ<T>(...args: T[]) {
-        if (args[0] == null || args.length < 2) return args[0];
+    typ<T>(...args: (T | null | undefined)[]): T {
+        if (args[0] == null || args.length < 2) return args[0] as T;
 
         const type = this.typeOf(args[0]);
         const arg = args.find((arg, argi) => argi && this.typeOf(arg) === type);
@@ -110,19 +114,19 @@ export class MyLib {
         return RegExp(reps.reduce((acc, [from, to]) => acc.replace(RegExp(`[${from}]`), `[${to || from}]`), word).toLowerCase(), flags);
     }
 
-    searchRate(objects = [{ n: 'name' }], searchWord = 'string for search', places: Trace[] = [this.c.POSITION], objName = 'ferry') {
+    searchRate<FerryType, ObjName extends keyof FerryType = keyof FerryType>(objects: FerryType[ObjName][], searchWord: string, places: (Trace[] | Trace)[], objName: ObjName): Ferry<FerryType, ObjName>[] {
         const normalWords = searchWord.split(/[^а-яё0-9ґії'ʼє]+/i).filter(word => word);
         const words = normalWords.map(word => word.toLowerCase());
         const wordRegs = normalWords.map(word => this.internationalWordReg(word));
 
-        return objects.reduce((ferries: Ferry[], object, objecti) => {
+        return objects.reduce((ferries: Ferry<FerryType, ObjName>[], object, objecti) => {
             let rate = 0;
             let deep = 0;
-            const ferry = (): Ferry => ({ [objName]: object, deep, rate });
+            const ferry = (): Ferry<FerryType, ObjName> => ({ [objName]: object, deep, rate }) as never;
 
             if (places.some((place, placei) => {
                 deep = placei;
-                const num = ([this.c.INDEX, this.c.POSITION] as Trace[]).indexOf(place);
+                const num = ([this.c.INDEX, this.c.POSITION] as Trace[]).indexOf(place as never);
                 if (num > -1) {
                     if (words.some(word => word && (objecti + num).toString().startsWith(word))) {
                         rate = 1;
@@ -169,7 +173,7 @@ export class MyLib {
 
             })) return ferries.concat(ferry());
             else return ferries;
-        }, []).sort((a, b) => a.rate - b.rate);
+        }, []).sort((a, b) => a.rate - b.rate) as never;
     }
 
     correctRegExp(str: string, flags = '', transformer?: (str: string, reps: number) => string) {
@@ -420,7 +424,99 @@ export class MyLib {
             .split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/)
             .filter(s => s))?.join('') || '';
     }
-    
+
+    clone(what: any) {
+        return this.isStr(what)
+            ? `` + what
+            : this.isNum(what)
+                ? 0 + what
+                : this.isArr(what)
+                    ? what.slice(0)
+                    : this.isBool(what)
+                        ? !!what
+                        : this.isObj(what)
+                            ? Object.assign({}, what)
+                            : this.isUnd(what)
+                                ? undefined
+                                : null;
+    }
+
+    useElement(nodeName: string, topId: string, cb: (elem: HTMLElement) => void, forceReborn = false) {
+        const id = this.normQuery(topId);
+        const oldElement = document.querySelector(`#${id}`);
+
+        if (oldElement) {
+            if (forceReborn) {
+                oldElement.remove();
+            } else {
+                cb && cb(oldElement as HTMLElement);
+                return oldElement;
+            }
+        }
+
+        const element = document.createElement(nodeName);
+
+        element.id = id;
+        let serviceNode = document.querySelector('#service_node');
+        console.log(serviceNode);
+        if (!serviceNode) {
+            serviceNode = document.createElement('div');
+            serviceNode.id = 'service_node';
+            document.body.appendChild(serviceNode);
+        }
+        serviceNode.appendChild(element);
+        cb && cb(element);
+        return element;
+    }
+
+    stringifyCss(obj: any) {
+        const trombReg = /<\d+$/g;
+        let css = '';
+
+        const stringifyCss = (obj: any, topPath = '', isAnnotate = false, isAnnotateInner = false) => { // {
+
+            css += isAnnotateInner
+                ? `${topPath}{`
+                : isAnnotate
+                    ? `}${topPath}{`
+                    : topPath
+                        ? `}${topPath}{`
+                        : '';
+            for (const objn in obj)
+                if (this.isStr(obj[objn]))
+                    css += `${objn.replace(trombReg, '').replace(/([A-Z])/g, all => `-${all.toLowerCase()}`)}:${obj[objn]};`;
+
+            for (const objn in obj)
+                if (typeof obj[objn] !== 'string') {
+                    const query = objn.replace(trombReg, '');
+                    const isAnn = /^\s*@/.test(query);
+                    const includeQuery = () => topPath
+                        .split(',')
+                        .map(
+                            sTopPath => query
+                                .split(',')
+                                .map(sQuery => /^=/.test(sQuery)
+                                    ? sQuery.trim().replace(/^=/, '')
+                                    : /&/.test(sQuery)
+                                        ? sQuery.trim().replace(/&/g, sTopPath.trim())
+                                        : `${sTopPath.trim()} ${sQuery.trim()}`
+                                ).join(',')
+                        ).join(',');
+
+                    const path = (isAnn || isAnnotateInner || isAnnotate ? query : includeQuery()).trim().replace(/\s*([,>+])\s*/g, '$1');
+
+                    stringifyCss(obj[objn], path, isAnn, isAnnotate);
+                }
+            css += isAnnotateInner
+                ? `}`
+                : '';
+        }
+
+        stringifyCss(obj);
+
+        return `${css}}`.replace(/}/, '').replace(/(^|})[^{]+{}/g, '$1');
+    }
+
 }
 
 

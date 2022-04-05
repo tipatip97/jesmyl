@@ -32,7 +32,7 @@ export default function Board() {
   useEffect(() => {
     indexStorage.update(listener);
     return () => indexStorage.mute("board-listener");
-  }, []);
+  });
 
   return (
     <div className="app-loader-screen">

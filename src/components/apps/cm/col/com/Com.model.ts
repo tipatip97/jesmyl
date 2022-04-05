@@ -12,15 +12,15 @@ export interface ICom {
 
 
 export interface IExportableCom extends IExportedCol {
-    k: number;
+    k?: number;
     p?: number;
-    l: number;
-    b: num;
-    a: string;
-    t: string[];
-    c: string[];
-    r: Record<string, number>;
-    o: IExportableOrder[];
+    l?: number;
+    b?: num;
+    a?: string;
+    t?: string[];
+    c?: string[];
+    r?: Record<string, number>;
+    o?: IExportableOrder[];
 
     ton?: number;
     // tonc?: string[];

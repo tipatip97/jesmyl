@@ -9,15 +9,15 @@ export class EditableCols extends Base<IExportableCols> {
     cats?: Cat[];
 
     addCat() {
-        const w = Date.now();
-        this.cats?.push(new Cat({ w }, this.coms ?? []));
-        return w;
+        const cat = new Cat({ w: Date.now() }, this.coms ?? []);
+        this.cats?.push(cat);
+        return cat;
     }
 
     addCom() {
-        const w = Date.now();
-        this.coms?.push(new Com());
-        return w;
+        const com = new Com({ w: Date.now() });
+        this.coms?.push(com);
+        return com;
     }
 }
 

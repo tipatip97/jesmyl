@@ -1,12 +1,27 @@
-import { selectCcol } from "../Cm.store";
+import { useState } from "react";
+import { cmStorage } from "../../../../store/jstorages";
 import { Cat } from "../col/cat/Cat";
-import { cols } from "../cols/Cols";
-import { TheColAdditionButtons } from "./ColAdditionalButtons";
+import { Cols } from "../cols/Cols";
+import { IExportableCols } from "../cols/Cols.model";
+import { useCols, useNav } from "../hooks";
 
 export function TheCats() {
+  const [, setPhase] = useNav('phase');
+  const [, setCcat] = useNav('ccat');
+  // const [rendersCount, setRendersCount] = useState(0);
+  // const forceUpdate = () => setRendersCount(rendersCount + 1);
+  const [cols, setCols] = useCols();
+
+  cmStorage.listen("cats", (key, val) => {
+    if (key === "cols") {
+      setCols(new Cols(val as IExportableCols));
+      // forceUpdate();
+    }
+  });
+
   return (
     <div>
-      <TheColAdditionButtons />
+      {/* <TheColAdditionButtons /> */}
 
       {/* {null && [ce('input',
           {
@@ -32,12 +47,15 @@ export function TheCats() {
         return cat == null ? null : (
           <button
             key={`cat-face-button-${cat.wid}`}
-            id={cat.wid}
+            id={"" + cat.wid}
             className="mbtn mblock mupper m-ok mmd"
             style={{
               backgroundColor: cat.removed ? "red" : "",
             }}
-            onClick={() => selectCcol({ ccat: cat })}
+            onClick={() => {
+              setPhase("cat");
+              setCcat(cat);
+            }}
           >
             <span>{cat.name}</span>
           </button>

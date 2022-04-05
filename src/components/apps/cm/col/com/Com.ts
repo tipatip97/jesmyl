@@ -13,11 +13,11 @@ export class Com extends EditableCom {
   tonc?: string;
   firstChord?: string;
   index: number = -1;
-  private _translationMap?: number[] = [];
-  private _o?: Order[] = [];
-  private _ords?: IExportableOrder[] = [];
-  private _chordLabels?: string[][][] = [];
-  private _usedChords?: Record<string, string> = {};
+  private _translationMap?: number[];
+  private _o?: Order[];
+  private _ords?: IExportableOrder[];
+  private _chordLabels?: string[][][];
+  private _usedChords?: Record<string, string>;
 
   constructor(obj: IExportableCom) {
     super(obj);
@@ -46,14 +46,6 @@ export class Com extends EditableCom {
     this.setExportable('c', val);
     this.resetChordLabels();
   }
-
-  get texts() { return this.forcedArray('t'); }
-  set texts(val) { this.setExportable('t', val); }
-
-  get audio() { return this.getOrBase('a', ''); }
-
-  get refs() { return this.getOrBase('r', {}); }
-  set refs(val) { this.setExportable('r', val); }
 
   get translationPushKind() { return this.getOrBase('k', 0); }
   set translationPushKind(val) { this.setExportable('k', val); }
@@ -96,7 +88,7 @@ export class Com extends EditableCom {
 
   get langi() { return this.getOrBase('l', 0); }
 
-  get langn() { return Com.langs[this.langi]; }
+  get langn() { return Com.langs[this.langi || 0]; }
   static get langs() { return ['русский', 'украинский']; }
 
   getVowelPositions(textLine: string) {
@@ -120,12 +112,12 @@ export class Com extends EditableCom {
     return simpleHashChords[nindex];
   }
 
-  transBlock(cblock: string, delta = this.transPosition) {
+  transBlock(cblock?: string, delta = this.transPosition) {
     return cblock && cblock.replace(gSimpleHashChordReg, chord => this.transChord(chord, delta));
   }
 
   transBlocks(delta: number) {
-    return this.chords.map((cblock: string) => this.transBlock(cblock, delta));
+    return this.chords?.map((cblock: string) => this.transBlock(cblock, delta));
   }
 
   setChordsInitialTon() {
@@ -161,7 +153,7 @@ export class Com extends EditableCom {
   translationMap(isIncludeChordedBlocks = false) {
     if (this._translationMap != null) return this._translationMap;
 
-    const push = translationPushKinds[this.translationPushKind].cb;
+    const push = translationPushKinds[this.translationPushKind || 0].cb;
 
     const map = this._translationMap = [];
     let curr = 0;
@@ -237,7 +229,7 @@ export class Com extends EditableCom {
     this.orders.forEach(ord => {
       const ordLabels: string[][] = [];
       this.chordLabels.push(ordLabels);
-      const chords: string = this.actualChords(ord.chordsi, currTransPosition);
+      const chords = this.actualChords(ord.chordsi, currTransPosition);
 
       if (ord.top.style?.isModulation) {
         currTransPosition = (this.transPosition || 0) + (ord.fieldValues.md || 0);
@@ -263,13 +255,13 @@ export class Com extends EditableCom {
     this.tonc = this.firstChord = (mylib.def(mylib.typ('', this.tonc, mylib.def(mylib.def(mylib.def(this.chordLabels, [])[0], [])[0], [])[0])?.match(/[A-H]#?m?/), []) as string[])[0] || '';
   }
 
-  static withBemoles(chords: string, isSet: 0 | 1) {
-    return (isSet ? chords.replace(gSimpleHashedEachLetterChordReg, all => chordBemoleEquivalent[all] || all) : chords).replace(/A#/g, 'B');
+  static withBemoles(chords?: string, isSet: num = 0) {
+    return (isSet ? chords?.replace(gSimpleHashedEachLetterChordReg, all => chordBemoleEquivalent[all] || all) : chords)?.replace(/A#/g, 'B');
   }
 
-  actualChords(chordsScalar: string | number, position = this.transPosition): string {
-    const chords = mylib.isStr(chordsScalar) ? chordsScalar as string : this.chords[chordsScalar as number];
-    return chords ?? Com.withBemoles(this.transBlock(chords, position), this.isBemoled);
+  actualChords(chordsScalar: string | number, position = this.transPosition) {
+    const chords = mylib.isStr(chordsScalar) ? chordsScalar as string : this.chords && this.chords[chordsScalar as number];
+    return chords && Com.withBemoles(this.transBlock(chords, position), this.isBemoled);
   }
 
   get ords(): IExportableOrderTop[] {
@@ -305,7 +297,7 @@ export class Com extends EditableCom {
       const style = src.init ? src.init.style : src.style;
       const styleName = style?.name.trim();
       if (style?.isModulation) minimals = [];
-      src.m = minimals.some(([s, c]) => styleName === s && src.c === c) ? 1 : 0;
+      src.m = minimals.some(([s, c]) => styleName === s && src.c === c) ? 0 : 1;
       minimals.push([styleName, src.c]);
     };
 
@@ -330,7 +322,7 @@ export class Com extends EditableCom {
     for (let i = 0; i < val.length; i++) {
       const ord = val[i];
       if (ord == null) {
-        orders.push(new Order({} as IExportableOrderTop, this));
+        orders.push(new Order({ header: () => '' } as never, this));
         continue;
       }
       const targetOrd: Order | nil = ord.a == null ? null : orders.find(o => o.unique === ord.a);
@@ -341,7 +333,8 @@ export class Com extends EditableCom {
       if (!style) {
         orders.push(new Order({
           source: ord,
-        } as IExportableOrderTop, this));
+          header: () => ''
+        } as never, this));
         continue;
       }
 
@@ -359,8 +352,8 @@ export class Com extends EditableCom {
       top.viewIndex = viewIndex++;
       top.sourceIndex = val.indexOf(ord);
       top.originIndex = val.indexOf(targetOrd?.top.source ?? ord);
-      top.headClassName = setts.query(style.name, 'c', ' ');
-      top.textClassName = setts.query(style.name, 't', ' ');
+      top.headClassName = setts.query(style.name, 'headerProps', ' ');
+      top.textClassName = setts.query(style.name, 'textProps', ' ');
 
       setMin(top);
 
@@ -368,7 +361,7 @@ export class Com extends EditableCom {
       orders.push(newOrder);
 
       top.header = newOrder.isEmptyHeader || !newOrder.isVisible
-        ? (bag, isRequired) => isRequired ? header(ord, style, false)(bag) : ''
+        ? (bag, isRequired) => isRequired ? header(ord, style, false)(bag) : '0'
         : targetOrd && targetOrd.top.header
           ? targetOrd.top.header
           : header(ord, style);
@@ -411,8 +404,8 @@ export class Com extends EditableCom {
           ancTop.viewIndex = viewIndex++;
           ancTop.sourceIndex = val.indexOf(targetOrd?.top.source as IExportableOrderTop);
           ancTop.originIndex = val.indexOf(anc);
-          ancTop.headClassName = setts.query(leadStyle?.name || '', 'c', ' ', ancStyle.name);
-          ancTop.textClassName = setts.query(leadStyle?.name || '', 't', ' ', ancStyle.name);
+          ancTop.headClassName = setts.query(leadStyle?.name || '', 'headerProps', ' ', ancStyle.name);
+          ancTop.textClassName = setts.query(leadStyle?.name || '', 'textProps', ' ', ancStyle.name);
 
 
           setMin(ancTop);
@@ -447,8 +440,8 @@ export class Com extends EditableCom {
           nextTop.viewIndex = viewIndex++;
           nextTop.sourceIndex = val.indexOf(next);
           nextTop.originIndex = val.indexOf(next);
-          nextTop.headClassName = setts.query(style.name, 'c', ' ', nextStyle.name);
-          nextTop.textClassName = setts.query(style.name, 't', ' ', nextStyle.name);
+          nextTop.headClassName = setts.query(style.name, 'headerProps', ' ', nextStyle.name);
+          nextTop.textClassName = setts.query(style.name, 'textProps', ' ', nextStyle.name);
 
           setMin(nextTop);
 

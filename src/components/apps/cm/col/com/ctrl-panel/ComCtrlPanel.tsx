@@ -9,7 +9,7 @@ import {
   updateChordVisibleVariant,
   updateIsPlayerShown,
 } from "../../../Cm.store";
-import { cols } from "../../../cols/Cols";
+import { useCols, useNav } from "../../../hooks";
 import { marks } from "../../../marks/Marks";
 import { Com } from "../Com";
 import { TheComPlayerPanel } from "../player/ComPlayerPanel";
@@ -18,9 +18,10 @@ import { TheComCtrlPanelAdditionalButtons } from "./ComCtrlPanelAdditionalButton
 export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
   const dispatch = useDispatch();
 
-  const chordVisibleVariant = useSelector(
-    (state: RootState) => state.cm.chordVisibleVariant
-  );
+  const [cols] = useCols();
+  const cats = cols.cats;
+
+  const [chordVisibleVariant, setChordVisibleVariant] = useNav('chordVisibleVariant');
 
   const [isShowNatives, setIsShowNatives] = useState(false);
   const [songNumberElement, setSongNumberElement] = useState<Swipeabler | null>(
@@ -44,7 +45,6 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
 
   if (ccom == null) return null;
 
-  const cats = cols.cats;
   const isMarked = marks.isMarked(ccom.wid);
   const isWhole = !ccom.orders.some(
     (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
@@ -92,7 +92,7 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
                 <div key="empty-native-numbers-list">Нет данных</div>
               ) : (
                 refKeys.map((catw) => {
-                  const nativeNumber = ccom.refs[catw];
+                  const nativeNumber = ccom.refs && ccom.refs[catw];
                   const cat = cats.find((cat) => cat.wid === +catw);
 
                   if (cat == null) return null;
@@ -170,8 +170,7 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
                           event.stopPropagation();
                           dispatch(updateIsPlayerShown(!isPlayerShown));
                         } else {
-                          dispatch(
-                            updateChordVisibleVariant(
+                          setChordVisibleVariant(
                               isWhole
                                 ? chordVisibleVariant
                                   ? 0
@@ -180,8 +179,7 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
                                     (chordVisibleVariant > 1
                                       ? 2
                                       : -1)) as ChordVisibleVariant)
-                            )
-                          );
+                            );
                         }
                         // g.updateFlexFontSize();
                       }}

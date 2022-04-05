@@ -2,27 +2,23 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
 import { appStorage, cmStorage } from "../../../store/jstorages";
 import { ChordVisibleVariant, CmPhase, CmRollMode, CmState, CmStorage } from "./Cm.model";
-import { Cat } from "./col/cat/Cat";
-import { Com } from "./col/com/Com";
-import { cols } from "./cols/Cols";
-import { nav } from "./complect/Nav";
-import { marks } from "./marks/Marks";
 
 export const cmExer = new Exer<CmStorage>(cmStorage, 'cm');
 
 cmStorage.registerTop(appStorage);
 
 const initialState: CmState = {
-  phase: nav.loadPhase(),
-  chordVisibleVariant: nav.loadChordVisibleVariant(),
-  ccat: cols.loadCcat(),
-  ccom: cols.loadCcom(),
-  rollMode: false,
+  chordVisibleVariant: cmStorage.getOr('chordVisibleVariant', 0),
+  ccomw: cmStorage.get('ccomw'),
+  ccatw: cmStorage.get('ccatw'),
+  phase: cmStorage.getOr('phase', 'cats'),
+  rollMode: null,
   isComFullscreenMode: false,
   isPlayerShown: false,
   rollModeMarks: false,
   numComUpdates: 0,
-  marks: marks.load(),
+  numColsUpdates: 0,
+  marks: cmStorage.getOr('marks', []),
   comFontSize: 100,
 };
 
@@ -30,34 +26,23 @@ export const slice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    setPhase: (state, action: PayloadAction<{ phase: CmPhase, spec?: number }>) => {
-      const { phase, spec } = action.payload;
-      state.phase = nav.setPhase(phase);
-
-      if (spec != null)
-        switch (phase) {
-          case 'cat':
-            cols.setCcat(spec);
-            break;
-          case 'com':
-            cols.setCcom(spec);
-            break;
-        }
+    setPhase: (state, action: PayloadAction<CmPhase>) => {
+      state.phase = action.payload;
     },
-    selectCcol: (state, action: PayloadAction<{ ccat?: Cat, ccom?: Com }>) => {
-      if (action.payload.ccat) {
-        state.ccat = cols.setCcat(action.payload.ccat);
+    selectCcol: (state, action: PayloadAction<{ ccatw?: number, ccomw?: number }>) => {
+      if (action.payload.ccatw != null) {
+        state.ccatw = action.payload.ccatw;
       }
-      if (action.payload.ccom) {
-        state.ccom = cols.setCcom(action.payload.ccom);
+      if (action.payload.ccomw != null) {
+        state.ccomw = action.payload.ccomw;
       }
     },
-    addMarks: (state, action: PayloadAction<number | number[]>) => {
-      state.marks = marks.add(action.payload);
-    },
-    removeMark: (state, action: PayloadAction<number>) => {
-      state.marks = marks.remove(action.payload);
-    },
+    // addMarks: (state, action: PayloadAction<number | number[]>) => {
+    //   state.marks = marks.add(action.payload);
+    // },
+    // removeMark: (state, action: PayloadAction<number>) => {
+    //   state.marks = marks.remove(action.payload);
+    // },
     updateIsComFullscreenMode: (state, action: PayloadAction<boolean>) => {
       state.isComFullscreenMode = action.payload;
     },
@@ -70,19 +55,22 @@ export const slice = createSlice({
     updateComFontSize: (state, action: PayloadAction<number>) => {
       state.comFontSize = action.payload;
     },
-    comForceUpdate: (state) => {
-      state.numComUpdates = state.numComUpdates + 1;
-    },
     changeRollMode: (state, action: PayloadAction<CmRollMode>) => {
       state.rollMode = action.payload;
     },
     changeRollModeMarks: (state, action: PayloadAction<boolean>) => {
       state.rollModeMarks = action.payload;
     },
+    comForceUpdate: (state) => {
+      state.numComUpdates = state.numComUpdates + 1;
+    },
+    colsForceUpdate: (state) => {
+      state.numColsUpdates = state.numColsUpdates + 1;
+    },
   },
 });
 
-export const { setPhase, updateIsComFullscreenMode, selectCcol, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks } =
+export const { colsForceUpdate, setPhase, selectCcol, updateIsComFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks } =
   slice.actions;
 export default slice.actions;
 

@@ -63,7 +63,7 @@ export interface IExportableOrderTop extends IExportableOrder {
 }
 
 export interface OrderTopHeaderBag {
-    isTexted: boolean;
+    isTexted?: boolean;
     r?: string;
 }
 export interface OrderExecArgs<Value> {

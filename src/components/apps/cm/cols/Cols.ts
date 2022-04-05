@@ -2,18 +2,25 @@ import mylib from "../../../../complect/my-lib/MyLib";
 import { cmStorage } from "../../../../store/jstorages";
 import { Cat } from "../col/cat/Cat";
 import { Com } from "../col/com/Com";
+import { IExportableCom } from "../col/com/Com.model";
 import { ICol, ICols, IExportableCols } from "./Cols.model";
 import { EditableCols } from "./EditableCols";
 
 export class Cols extends EditableCols implements ICols {
-  coms: Com[];
-  cats: Cat[];
+  coms: Com[] = [];
+  cats: Cat[] = [];
+  ccat?: Cat;
+  ccom?: Com;
 
   constructor(cols: IExportableCols, prevComs?: Com[]) {
     super(cols);
+    this.load(cols, prevComs);
+  }
+
+  load(cols: IExportableCols | null, prevComs?: Com[]) {
 
     if (prevComs) {
-      this.coms = mylib.typ([], cols.coms)
+      this.coms = (mylib.typ([], cols?.coms) as IExportableCom[])
         .map(com => {
           let obj = com;
 
@@ -30,11 +37,11 @@ export class Cols extends EditableCols implements ICols {
           const comc = new Com(obj);
           return comc;
         });
-    } else this.coms = mylib.typ([], cols.coms).map(com => new Com(com));
+    } else this.coms = mylib.typ([], cols?.coms).map(com => new Com(com));
 
     this.sort('coms');
 
-    this.cats = mylib.typ([], cols.cats).map(cat => new Cat(cat, this.coms));
+    this.cats = mylib.typ([], cols?.cats).map(cat => new Cat(cat, this.coms));
     this.sort('cats');
   }
 
@@ -47,13 +54,14 @@ export class Cols extends EditableCols implements ICols {
   }
 
   private setCcol<Coln extends keyof ICol>(coln: Coln, ccol: ICol[Coln] | number): ICol[Coln] | null {
-    if (typeof ccol === 'number') {
-      const cols: ICol[Coln][] = (coln === 'cat' ? this.cats : this.coms) as ICol[Coln][];
-      ccol = cols.find((col: ICol[Coln]) => col.wid === ccol) as ICol[Coln];
-    }
-    if (!ccol) return null;
-    cmStorage.set(`c${coln}`, (ccol as ICol[Coln]).wid);
-    return ccol as ICol[Coln];
+    // if (typeof ccol === 'number') {
+    //   const cols: ICol[Coln][] = (coln === 'cat' ? this.cats : this.coms) as ICol[Coln][];
+    //   ccol = cols.find((col: ICol[Coln]) => col.wid === ccol) as ICol[Coln];
+    // }
+    // if (!ccol) return null;
+    // cmStorage.set(`c${coln}`, (ccol as ICol[Coln]).wid);
+    // return ccol as ICol[Coln];
+    return null;
   }
 
   loadCcom() {
@@ -64,10 +72,13 @@ export class Cols extends EditableCols implements ICols {
     return this.loadCcol('cat');
   }
 
-  private loadCcol<Coln extends keyof ICol>(coln: Coln): ICol[Coln] | null {
-    const colw = cmStorage.get(`c${coln}`);
-    const cols: ICol[Coln][] = (coln === 'cat' ? this.cats : this.coms) as ICol[Coln][];
-    return cols.find((col: ICol[Coln]) => col.wid === colw) as ICol[Coln];
+  private loadCcol<Coln extends keyof ICol>(coln: Coln): number | null {
+    // const colw = cmStorage.get(`c${coln}`);
+    // const cols: ICol[Coln][] = (coln === 'cat' ? this.cats : this.coms) as ICol[Coln][];
+    // this[`c${coln}`] = cols.find((col: ICol[Coln]) => col.wid === colw) as never;
+    
+    // return colw ?? null;
+    return 0;
   }
 
   sort(colsn: 'coms' | 'cats') {
@@ -89,5 +100,3 @@ export class Cols extends EditableCols implements ICols {
   }
 }
 
-const localCols = cmStorage.getOr('cols', { cats: [], coms: [] });
-export const cols = new Cols(localCols);

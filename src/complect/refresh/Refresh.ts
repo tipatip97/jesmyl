@@ -11,14 +11,16 @@ export class Refresh {
     controller?: AbortController;
     onStsteChangeListener?: (state: RefreshState) => void;
 
-    path(isCheck: boolean, includeRejected = false, isLive = false, isForceIndex = false, isForceApp = false) {
-        const appName = indexStorage.get('currentApp');
+    get appName() {
+        return indexStorage.getOr('currentApp', null);
+    }
 
+    path(isCheck: boolean, includeRejected = false, isLive = false, isForceIndex = false, isForceApp = false) {
         const url = new URL(host);
         url.pathname += 'updates';
         const params = url.searchParams;
         const list = [
-            appName || '',
+            this.appName || '',
             isCheck ? 1 : '',
             isAndroid ? 1 : '',
             (includeRejected ? (indexStorage.getOr('rejectedComponents', [])).filter(p => p) : ''),
@@ -28,10 +30,10 @@ export class Refresh {
                 : this.appLastMod('index') || '',
             isForceApp
                 ? 0
-                : this.appLastMod(appName) || '',
+                : this.appLastMod(this.appName) || '',
             `refreshes.updates`,
             this.appLiveTm('index') || '',
-            this.appLiveTm(appName) || '',
+            this.appLiveTm(this.appName) || '',
             '', //this.appParams(appName).list,
             isLive ? 1 : '',
             this.isFirstRequest ? 1 : '',
@@ -93,8 +95,8 @@ export class Refresh {
         return signal;
     }
 
-    pull() {
-        this.stateChange('loading');
+    pull(isSetLoading = true) {
+        if (isSetLoading) this.stateChange('loading');
 
         fetch(this.path(false), { signal: this.setSignal() })
             .then(response => response.json())
@@ -112,8 +114,8 @@ export class Refresh {
     }
 
     check() {
-        if (!indexStorage.get('lastUpdate')) {
-            this.pull();
+        if (!indexStorage.get('lastUpdate') || (this.appName && !appStorage[this.appName].get('lastUpdate'))) {
+            this.pull(false);
             return;
         }
         fetch(this.path(true), { signal: this.setSignal() })

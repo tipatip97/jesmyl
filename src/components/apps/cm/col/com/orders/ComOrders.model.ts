@@ -3,7 +3,6 @@ import { Com } from "../Com";
 
 
 export interface IComOrdersProps {
-    key: string;
     style?: CSSProperties;
     onClick?: () => void;
     ref?: LegacyRef<HTMLDivElement>;

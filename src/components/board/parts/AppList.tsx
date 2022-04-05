@@ -1,12 +1,10 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { indexStorage } from "../../../store/jstorages";
-import { BoardApplication, BoardAppName } from "../Board.model";
+import { refresh } from "../../../complect/refresh/Refresher";
+import { BoardApplication } from "../Board.model";
 import { setCurrentApp, setPhase } from "../Board.store";
 
 export function BoardAppList({ apps }: { apps: BoardApplication[] }) {
   const dispatch = useDispatch();
-  const [appsInProcess, setAppsInProcess] = useState<BoardAppName[]>([]);
 
   return (
     <>
@@ -17,16 +15,14 @@ export function BoardAppList({ apps }: { apps: BoardApplication[] }) {
         return app.hidden ? null : (
           <div
             key={`board-app:${app.name}`}
-            className={`app-item${isDisabled ? " mdisabled" : ""}${
-              ~appsInProcess.indexOf(app.name) ? " mprogressed" : ""
-            }`}
+            className={`app-item${isDisabled ? " mdisabled" : ""}`}
           >
             <div
               className="app-title"
               onClick={() => {
                 if (!isDisabled) {
                   dispatch(setCurrentApp(app.name));
-                  setAppsInProcess(appsInProcess.concat(app.name));
+                  refresh.check();
                 }
               }}
             >

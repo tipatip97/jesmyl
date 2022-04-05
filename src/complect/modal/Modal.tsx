@@ -30,25 +30,28 @@ export default function Modal() {
           typeof input.modal === "function"
             ? mylib.overlap({ title: config.title }, input.modal(clickConfig))
             : input.modal,
-            input.value
+          input.value
         );
     } else if (typeof input.confirm === "string") {
       const title = input.confirm.replace("#", "");
 
-      modalService.reopen({
-        title: (input as ModalConfigInput).value || input.title || title,
-        description: `Ты действительно хочешь ${title[0].toLowerCase()}${title.substr(
-          1
-        )}?`,
-        buttons: [
-          {
-            title: "да",
-            onClick: (inheritConfig: ModalConfig) =>
-              onClick(inheritConfig, clickConfig),
-          },
-          "нет",
-        ],
-      }, input.value);
+      modalService.reopen(
+        {
+          title: (input as ModalConfigInput).value || input.title || title,
+          description: `Ты действительно хочешь ${title[0].toLowerCase()}${title.substr(
+            1
+          )}?`,
+          buttons: [
+            {
+              title: "да",
+              onClick: (inheritConfig: ModalConfig) =>
+                onClick(inheritConfig, clickConfig),
+            },
+            "нет",
+          ],
+        },
+        input.value
+      );
     } else onClick(clickConfig);
     if ((input as ModalConfigButton).closable) modalService.close(input.value);
   };

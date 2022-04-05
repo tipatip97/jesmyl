@@ -374,14 +374,14 @@ body {
             .fragment {
 
                 &:before {
-                    content: attr(pchord);
+                    content: attr(attr-pchord);
                     position: absolute;
                     top: -1em;
                     left: 100%;
                 }
 
                 &:after {
-                    content: attr(chord);
+                    content: attr(attr-chord);
                     display: block;
                     margin-top: -1em;
                     color: transparent;
@@ -398,7 +398,7 @@ body {
 
         &.pre:before,
         &:not(.pre):not(.post):before {
-            content: attr(chord);
+            content: attr(attr-chord);
             white-space: nowrap;
             max-width: 500px;
         }
@@ -413,21 +413,21 @@ body {
                 display: inline-block;
 
                 &:before {
-                    content: attr(chord);
+                    content: attr(attr-chord);
                     height: 1em;
                     display: block;
                 }
             }
 
             &:before {
-                //content: attr(pchord);
+                //content: attr(attr-pchord);
                 position: absolute;
                 right: 0;
                 top: -1em;
             }
 
             &:after {
-                content: attr(pchord);
+                content: attr(attr-pchord);
                 position: relative;
                 top: -1em;
                 //color: transparent;
@@ -890,6 +890,7 @@ body {
                 border-radius: 50%;
                 transition: .2s ease-in;
                 background-color: var(--color-base-3);
+                cursor: pointer;
             }
 
             .marks-box {

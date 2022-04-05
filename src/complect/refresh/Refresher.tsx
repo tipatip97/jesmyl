@@ -4,7 +4,7 @@ import { Refresh } from "./Refresh";
 import { RefreshState } from "./Refresh.model";
 import "./Refresher.scss";
 
-const refresh = new Refresh();
+export const refresh = new Refresh();
 
 refresh.check();
 
