@@ -1,6 +1,6 @@
 import { ExecDict } from "../../../complect/exer/Exer.model";
 import { IExportableCols } from "./cols/Cols.model";
-import { IExportableMeeting } from "./complect/meetings/Meetings.model";
+import { IExportableMeeting } from "./meetings/Meetings.model";
 import { IExportableSetts } from "./complect/settings/Setts.model";
 import { EeStorageStoreType } from "./ee-storage/EeStorage.model";
 

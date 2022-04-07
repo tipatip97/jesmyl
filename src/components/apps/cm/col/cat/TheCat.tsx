@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { usePhase } from "../../base/usePhase";
 import { isAccessed } from "../../Cm.complect";
-import { useCcol, usePhase } from "../../hooks";
+import { useCcol } from "../useCcol";
 
 export default function TheCat() {
   const [ccat] = useCcol("cat");

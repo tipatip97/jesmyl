@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import EvaIcon from "../../../../../../complect/Eva";
 import { changeRollMode, changeRollModeMarks } from "../../../Cm.store";
-import { useMarks } from "../../../hooks";
+import { useMarks } from "../../../marks/useMarks";
 
 export default function ComPlayerPanel() {
   const dispatch = useDispatch();

@@ -3,7 +3,8 @@ import EvaIcon from "../../../../complect/Eva";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { isAccessed } from "../Cm.complect";
-import { useCcol, useCols } from "../hooks";
+import { useCcol } from "../col/useCcol";
+import { useCols } from "../cols/useCols";
 import { ePhases } from "./Editor.complect";
 
 export default function Editor() {

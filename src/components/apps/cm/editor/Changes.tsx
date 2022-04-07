@@ -5,7 +5,7 @@ import mylib from "../../../../complect/my-lib/MyLib";
 import { actions } from "../Cm.complect";
 import { cmExer } from "../Cm.store";
 import { Com } from "../col/com/Com";
-import { Meeting } from "../complect/meetings/Meeting";
+import { Meeting } from "../meetings/Meeting";
 
 const totalArgs = {
   getMeetingDate: (begin: number, end: number) =>

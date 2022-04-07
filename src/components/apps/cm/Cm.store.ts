@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
 import { appStorage, cmStorage } from "../../../store/jstorages";
 import { ChordVisibleVariant, CmPhase, CmRollMode, CmState, CmStorage } from "./Cm.model";
-import { IExportableMeeting } from "./complect/meetings/Meetings.model";
+import { IExportableMeeting } from "./meetings/Meetings.model";
 
 export const cmExer = new Exer<CmStorage>(cmStorage, 'cm');
 

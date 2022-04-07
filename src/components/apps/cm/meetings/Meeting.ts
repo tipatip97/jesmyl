@@ -1,5 +1,5 @@
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { isAccessed } from "../../Cm.complect";
+import mylib from "../../../../complect/my-lib/MyLib";
+import { isAccessed } from "../Cm.complect";
 import { EditableMeeting } from "./EditableMeeting";
 
 

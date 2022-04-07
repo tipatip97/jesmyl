@@ -6,10 +6,12 @@ import { cmStorage } from "../../../store/jstorages";
 import { Comps, isAccessed } from "./Cm.complect";
 import "./Cm.scss";
 import { updateIsComFullscreenMode } from "./Cm.store";
-import TheMeetings from "./complect/meetings/TheMeetings";
+import TheMeetings from "./meetings/TheMeetings";
 import { mainTopButtons } from "./editor/Lazies";
-import { useCols, useMeetings, usePhase } from "./hooks";
 import Marks from "./marks/Marks";
+import { usePhase } from "./base/usePhase";
+import { useMeetings } from "./meetings/useMeetings";
+import { useCols } from "./cols/useCols";
 
 export default function CmApplication() {
   // if (g.nav.phase < 3) setTimeout(() => {

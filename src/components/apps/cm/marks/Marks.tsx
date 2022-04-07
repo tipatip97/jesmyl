@@ -2,10 +2,12 @@ import { useState } from "react";
 import EvaIcon from "../../../../complect/Eva";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
+import { usePhase } from "../base/usePhase";
 import { Com } from "../col/com/Com";
-import AddToMeetingButton from "../complect/meetings/AddToMeetingButton";
-import { useCcol, useMarks, usePhase } from "../hooks";
+import { useCcol } from "../col/useCcol";
+import AddToMeetingButton from "../meetings/AddToMeetingButton";
 import { MarksProps } from "./Marks.model";
+import { useMarks } from "./useMarks";
 
 export default function Marks(props: MarksProps) {
   const [isOpened, setIsOpened] = useState(false);

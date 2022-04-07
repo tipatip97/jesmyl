@@ -1,5 +1,7 @@
+import { usePhase } from "../base/usePhase";
 import { Cat } from "../col/cat/Cat";
-import { useCcol, useCols, usePhase } from "../hooks";
+import { useCcol } from "../col/useCcol";
+import { useCols } from "../cols/useCols";
 
 export default function TheCats() {
   const { setPhase } = usePhase();

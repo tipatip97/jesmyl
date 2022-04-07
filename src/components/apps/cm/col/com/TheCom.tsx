@@ -3,12 +3,10 @@ import { useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/Eva";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
-import {
-  useCcol,
-  useChordVisibleVariant,
-  useMarks,
-  usePhase,
-} from "../../hooks";
+import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
+import { usePhase } from "../../base/usePhase";
+import { useMarks } from "../../marks/useMarks";
+import { useCcol } from "../useCcol";
 import ChordCard from "./chord-card/ChordCard";
 import { Com } from "./Com";
 import ComCtrlPanel from "./ctrl-panel/ComCtrlPanel";
