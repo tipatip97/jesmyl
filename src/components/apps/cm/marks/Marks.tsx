@@ -3,11 +3,11 @@ import EvaIcon from "../../../../complect/Eva";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { Com } from "../col/com/Com";
-import AddToMeetingButton from "../complect/meetings/TheAddToMeetingButton";
+import AddToMeetingButton from "../complect/meetings/AddToMeetingButton";
 import { useCcol, useMarks, usePhase } from "../hooks";
 import { MarksProps } from "./Marks.model";
 
-export default function TheMarks(props: MarksProps) {
+export default function Marks(props: MarksProps) {
   const [isOpened, setIsOpened] = useState(false);
 
   const [updates, riseUpUpdates] = useState(0);

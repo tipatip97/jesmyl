@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { localAuth } from "./Board.source";
-import BoardAppList from "./parts/TheAppList";
+import BoardAppList from "./parts/AppList";
 import BoardLogin from "./parts/Login";
 import BoardRegister from "./parts/Register";
 import BoardSettings from "./parts/Settings";

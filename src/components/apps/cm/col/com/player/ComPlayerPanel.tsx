@@ -1,10 +1,12 @@
 import { useDispatch } from "react-redux";
 import EvaIcon from "../../../../../../complect/Eva";
 import { changeRollMode, changeRollModeMarks } from "../../../Cm.store";
-import { marks } from "../../../marks/Marks";
+import { useMarks } from "../../../hooks";
 
 export default function ComPlayerPanel() {
   const dispatch = useDispatch();
+  
+  const { markedComs } = useMarks();
 
   return (
     <div key="com-player" className="com-player">
@@ -12,7 +14,7 @@ export default function ComPlayerPanel() {
         ["play-circle-outline", "Прокручивать"],
         ["book-open-outline", "Заметки"],
       ].map(([name, alt], conti) => {
-        return conti && !marks.coms.length ? null : (
+        return conti && !markedComs.length ? null : (
           <div
             key={`collapse-mode-${name}`}
             onClick={(event) => {

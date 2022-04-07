@@ -8,7 +8,7 @@ import { comForceUpdate, updateIsPlayerShown } from "../../../Cm.store";
 import { useChordVisibleVariant, useCols, useMarks } from "../../../hooks";
 import { Com } from "../Com";
 import ComPlayerPanel from "../player/ComPlayerPanel";
-import TheComCtrlPanelAdditionalButtons from "./TheComCtrlPanelAdditionalButtons";
+import TheComCtrlPanelAdditionalButtons from "./ComCtrlPanelAdditionalButtons";
 
 export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
   const dispatch = useDispatch();

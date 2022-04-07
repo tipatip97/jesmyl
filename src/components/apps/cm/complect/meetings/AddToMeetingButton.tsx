@@ -1,4 +1,4 @@
-import TheModalInput from "../../../../../complect/modal/TheModalInput";
+import TheModalInput from "../../../../../complect/modal/ModalInput";
 
 
 export default function AddToMeetingButton() {

@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import mylib from "../my-lib/MyLib";
 import { ModalConfig, TheModalButtonProps } from "./Modal.model";
 import modalService from "./Modal.service";
-import { onActionClick } from "./TheModal";
+import { onActionClick } from "./Modal";
 
 export default function ModalButton(topProps: TheModalButtonProps) {
   let {

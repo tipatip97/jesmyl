@@ -1,7 +1,7 @@
 import EvaIcon from "../../../../../complect/Eva";
 import modalService from "../../../../../complect/modal/Modal.service";
-import ModalButton from "../../../../../complect/modal/TheModalButton";
-import TheModalInput from "../../../../../complect/modal/TheModalInput";
+import ModalButton from "../../../../../complect/modal/ModalButton";
+import TheModalInput from "../../../../../complect/modal/ModalInput";
 import { useCols, useMarks, useMeetings } from "../../hooks";
 
 export default function TheMeetings() {

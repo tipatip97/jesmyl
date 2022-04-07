@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { refresh } from "../../../complect/refresh/TheRefresher";
+import { refresh } from "../../../complect/refresh/Refresher";
 import { BoardApplication } from "../Board.model";
 import { setCurrentApp, setBoardPhase } from "../Board.store";
 

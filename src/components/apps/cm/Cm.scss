@@ -90,11 +90,6 @@ body {
             transition: .2s;
             box-sizing: border-box;
 
-
-            &:not(.pulse) {
-                // transform: scale(1.2);
-            }
-
             .num {
                 font-size: .5em;
 
@@ -172,8 +167,6 @@ body {
                     display: inline-block;
                     vertical-align: bottom;
                 }
-
-                >.cat-native-number {}
             }
         }
     }

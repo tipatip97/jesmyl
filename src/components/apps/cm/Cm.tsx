@@ -9,7 +9,7 @@ import { updateIsComFullscreenMode } from "./Cm.store";
 import TheMeetings from "./complect/meetings/TheMeetings";
 import { mainTopButtons } from "./editor/Lazies";
 import { useCols, useMeetings, usePhase } from "./hooks";
-import TheMarks from "./marks/TheMarks";
+import Marks from "./marks/Marks";
 
 export default function CmApplication() {
   // if (g.nav.phase < 3) setTimeout(() => {
@@ -73,7 +73,7 @@ export default function CmApplication() {
             )}
           </button>
           {/* {g.streamManager.isJustSub ? null :  */}
-          <TheMarks key="marks-list" />
+          <Marks key="marks-list" />
           {!isCanGoBack("news") ? null : (
             <button
               key="execs-button"

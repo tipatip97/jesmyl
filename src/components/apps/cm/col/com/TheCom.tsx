@@ -3,11 +3,10 @@ import { useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/Eva";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
-import { useCcol, useChordVisibleVariant, usePhase } from "../../hooks";
-import { marks } from "../../marks/Marks";
+import { useCcol, useChordVisibleVariant, useMarks, usePhase } from "../../hooks";
 import { Com } from "./Com";
 import ComCtrlPanel from "./ctrl-panel/ComCtrlPanel";
-import TheComOrders from "./orders/TheComOrders";
+import ComOrders from "./orders/ComOrders";
 
 export default function TheCom() {
   const [isShowChordImages, setIsShowChordImages] = useState(false);
@@ -23,6 +22,8 @@ export default function TheCom() {
   const rollMode = useSelector((state: RootState) => state.cm.rollMode);
 
   const [ccom] = useCcol("com");
+
+  const { markedComs } = useMarks();
 
   if (ccom == null) {
     setPhase("cat");
@@ -44,10 +45,10 @@ export default function TheCom() {
     >
       <ComCtrlPanel ccom={ccom} />
       <div>
-        {([] as Com[]).concat(rollModeMarks ? marks.coms : ccom).map((com) => {
+        {([] as Com[]).concat(rollModeMarks ? markedComs : ccom).map((com) => {
           return (
             ccom && (
-              <TheComOrders
+              <ComOrders
                 ccom={ccom}
                 key={`main-com-${com.wid}`}
                 fontSize={fontSize}

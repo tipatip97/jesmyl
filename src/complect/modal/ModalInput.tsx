@@ -8,7 +8,7 @@ import {
   TheModalInputProps,
 } from "./Modal.model";
 import modalService from "./Modal.service";
-import { onActionClick } from "./TheModal";
+import { onActionClick } from "./Modal";
 
 export default function ModalInput(topProps: TheModalInputProps) {
   let input: Partial<ModalConfigInput>, inputi: number | string | und;

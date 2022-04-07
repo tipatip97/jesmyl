@@ -1,4 +1,3 @@
-import modalService from "../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { isAccessed } from "../../Cm.complect";
 import { EditableMeeting } from "./EditableMeeting";
@@ -8,8 +7,6 @@ export class Meeting extends EditableMeeting {
   get isEditable() {
     return isAccessed('canEditMeetings');
   }
-
-
 
   getTitle() {
     return `${this.name}${this.end ? `, ${this.getDate()}` : ''}`;

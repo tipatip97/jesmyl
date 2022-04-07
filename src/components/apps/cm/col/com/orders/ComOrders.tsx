@@ -3,7 +3,7 @@ import TheOrder from "../order/TheOrder";
 import { ITheOrderProps } from "../order/Order.model";
 import { IComOrdersProps } from "./ComOrders.model";
 
-export default function TheComOrders(props: IComOrdersProps) {
+export default function ComOrders(props: IComOrdersProps) {
   const { style, onClick, ref, asOrdComponent, setClassName, ccom, fontSize } =
     props || {};
 

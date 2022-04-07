@@ -9,7 +9,7 @@ import TheCat from "./col/cat/TheCat";
 import TheCom from "./col/com/TheCom";
 import { setts } from "./complect/settings/Setts";
 import { StyleProp } from "./complect/settings/StyleProp";
-import Editor from "./editor/TheEditor";
+import Editor from "./editor/Editor";
 
 let rules: Record<string, true | null> = {};
 let actions: CmAction[] = [];

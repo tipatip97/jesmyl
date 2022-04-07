@@ -10,8 +10,8 @@ import {
 } from "./Modal.model";
 import "./Modal.scss";
 import modalService from "./Modal.service";
-import ModalButton from "./TheModalButton";
-import TheModalInput from "./TheModalInput";
+import ModalButton from "./ModalButton";
+import TheModalInput from "./ModalInput";
 
 export const onActionClick = (
   input: ModalConfigInput | ModalConfigButton,
@@ -47,7 +47,7 @@ export const onActionClick = (
   if ((input as ModalConfigButton).closable) modalService.close(input.value);
 };
 
-export default function TheModal(props: ModalFixed) {
+export default function Modal(props: ModalFixed) {
   const [config, setConfig] = useState(modalService.current());
   useSelector((state: RootState) => state.cm.numModalUpdates);
 
