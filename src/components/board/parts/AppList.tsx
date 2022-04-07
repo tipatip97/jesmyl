@@ -1,36 +1,44 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { refresh } from "../../../complect/refresh/Refresher";
+import { RootState } from "../../../store";
 import { BoardApplication } from "../Board.model";
 import { setCurrentApp, setBoardPhase } from "../Board.store";
 
-export default function BoardAppList({ apps }: { apps: BoardApplication[] }) {
+export default function BoardAppList() {
   const dispatch = useDispatch();
+  const apps: BoardApplication[] = useSelector(
+    (state: RootState) => state.board.apps
+  );
 
   return (
     <>
       <div className="phase-name">Приложения</div>
-      {apps.map((app: BoardApplication) => {
-        const isDisabled = app.disabled;
+      {!apps ? (
+        <p style={{ textAlign: "center" }}>Загрузка...</p>
+      ) : (
+        apps.map((app: BoardApplication) => {
+          const isDisabled = app.disabled;
 
-        return app.hidden ? null : (
-          <div
-            key={`board-app:${app.name}`}
-            className={`app-item${isDisabled ? " mdisabled" : ""}`}
-          >
+          return app.hidden ? null : (
             <div
-              className="app-title"
-              onClick={() => {
-                if (!isDisabled) {
-                  dispatch(setCurrentApp(app.name));
-                  refresh.check();
-                }
-              }}
+              key={`board-app:${app.name}`}
+              className={`app-item${isDisabled ? " mdisabled" : ""}`}
             >
-              <span className="text">{app.title}</span>
+              <div
+                className="app-title"
+                onClick={() => {
+                  if (!isDisabled) {
+                    dispatch(setCurrentApp(app.name));
+                    refresh.check();
+                  }
+                }}
+              >
+                <span className="text">{app.title}</span>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })
+      )}
       <div className="system-item">
         <span
           className="text"

@@ -10,7 +10,6 @@ import TheMeetings from "./meetings/TheMeetings";
 import { mainTopButtons } from "./editor/Lazies";
 import Marks from "./marks/Marks";
 import { usePhase } from "./base/usePhase";
-import { useMeetings } from "./meetings/useMeetings";
 import { useCols } from "./cols/useCols";
 
 export default function CmApplication() {
@@ -34,7 +33,6 @@ export default function CmApplication() {
     (state: RootState) => state.cm.isComFullscreenMode
   );
   const [, setCols] = useCols();
-  const { meetings, isEditable: isEditableMeetings } = useMeetings();
 
   const [topClickDateNow, setTopClickDateNow] = useState(0);
 

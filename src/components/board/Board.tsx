@@ -13,9 +13,6 @@ import { setApps } from "./Board.store";
 
 export default function Board() {
   const phase = useSelector((state: RootState) => state.board.phase);
-  const apps: BoardApplication[] = useSelector(
-    (state: RootState) => state.board.apps
-  );
   const dispatch = useDispatch();
 
   const listener = indexStorage.listen("apps", "board-listener", (val) => {
@@ -37,13 +34,13 @@ export default function Board() {
       <div className="app-loader-window-wrapper">
         <div className="app-loader-window">
           {phase === "apps" ? (
-            <BoardAppList apps={apps}></BoardAppList>
+            <BoardAppList />
           ) : phase === "login" ? (
-            <BoardLogin></BoardLogin>
+            <BoardLogin />
           ) : phase === "register" ? (
-            <BoardRegister></BoardRegister>
+            <BoardRegister />
           ) : phase === "settings" ? (
-            <BoardSettings></BoardSettings>
+            <BoardSettings />
           ) : null}
         </div>
       </div>

@@ -12,7 +12,7 @@ import { StyleProp } from "./complect/settings/StyleProp";
 import Editor from "./editor/Editor";
 
 let rules: Record<string, true | null> = {};
-export let actions: CmAction[] = [];
+export let actions: CmAction[] | nil;
 let localAuth: BoardAuth;
 
 const update = () => {
@@ -47,6 +47,7 @@ cmStorage.listen("actions", name, () => {
 
 export const isAccessed = (action: string): true | null => {
   if (rules[action] !== undefined) return rules[action] || null;
+  if (!actions?.length) return null;
 
   const level = localAuth.level;
   const right = actions.find((right) => right.action === action) as CmAction;

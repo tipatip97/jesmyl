@@ -140,7 +140,7 @@ export default function Changes() {
               key={`reason=label-${exec.id}`}
               dangerouslySetInnerHTML={{
                 __html: mylib.stringTemplater(
-                  actions.find(({ action }) => action === exec.action)?.title ||
+                  actions?.find(({ action }) => action === exec.action)?.title ||
                     "",
                   mylib.overlap(totalArgs, exec.args || {})
                 ),
