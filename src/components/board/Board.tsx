@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { localAuth } from "./Board.source";
-import { BoardAppList } from "./parts/AppList";
+import { BoardAppList } from "./parts/TheAppList";
 import { BoardLogin } from "./parts/Login";
 import { BoardRegister } from "./parts/Register";
 import { BoardSettings } from "./parts/Settings";
@@ -18,20 +18,13 @@ export default function Board() {
   );
   const dispatch = useDispatch();
 
-  const listener = indexStorage.listen(
-    "board-listener",
-    <K extends keyof IndexStorage>(key: K, val: IndexStorage[K] | null) => {
-      switch (key) {
-        case "apps":
-          dispatch(setApps(val as BoardApplication[]));
-          break;
-      }
-    }
-  );
+  const listener = indexStorage.listen("apps", "board-listener", (val) => {
+    dispatch(setApps(val as BoardApplication[]));
+  });
 
   useEffect(() => {
-    indexStorage.update(listener);
-    return () => indexStorage.mute("board-listener");
+    indexStorage.update('apps', listener);
+    return () => indexStorage.mute('apps', "board-listener");
   });
 
   return (

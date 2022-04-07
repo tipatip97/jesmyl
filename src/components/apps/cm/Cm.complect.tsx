@@ -32,17 +32,17 @@ const update = () => {
 update();
 
 const name = "actions-updater";
-indexStorage.listen(name, (key) => {
-  if (key === "apps" || key === "auth") {
-    rules = {};
-    update();
-  }
+indexStorage.listen("apps", name, () => {
+  rules = {};
+  update();
 });
-cmStorage.listen(name, (key) => {
-  if (key === "actions") {
-    rules = {};
-    update();
-  }
+indexStorage.listen("auth", name, () => {
+  rules = {};
+  update();
+});
+cmStorage.listen("actions", name, () => {
+  rules = {};
+  update();
 });
 
 export const isAccessed = (action: string): true | null => {
@@ -63,6 +63,8 @@ export const Comps: Record<CmPhase, () => ReactNode> = {
   cat: () => <TheCat />,
   com: () => <TheCom />,
   editor: () => <TheEditor />,
+  news: () => null,
+  translations: () => null,
 };
 
 const styleProps = [
@@ -182,8 +184,4 @@ const putStyles = () => {
 
 putStyles();
 
-cmStorage.listen('styles.listen', (key) => {
-  if (key === 'settings') {
-    putStyles();
-  }
-});
+cmStorage.listen("settings", "styles.listen", () => putStyles());

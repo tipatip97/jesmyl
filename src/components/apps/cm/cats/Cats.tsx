@@ -1,19 +1,10 @@
-import { cmStorage } from "../../../../store/jstorages";
 import { Cat } from "../col/cat/Cat";
-import { Cols } from "../cols/Cols";
-import { IExportableCols } from "../cols/Cols.model";
 import { useCcol, useCols, usePhase } from "../hooks";
 
 export function TheCats() {
-  const [, setPhase] = usePhase();
-  const [, setCcat] = useCcol('cat');
-  const [cols, setCols] = useCols();
-
-  cmStorage.listen("cats", (key, val) => {
-    if (key === "cols") {
-      setCols(new Cols(val as IExportableCols));
-    }
-  });
+  const { setPhase } = usePhase();
+  const [, setCcat] = useCcol("cat");
+  const [cols] = useCols();
 
   return (
     <div>

@@ -8,7 +8,7 @@ export const refresh = new Refresh();
 
 refresh.check();
 
-export function Refresher() {
+export function TheRefresher() {
   const [state, setState] = useState<RefreshState>('inactive');
 
   refresh.onStateChange((state: RefreshState) => setState(state));

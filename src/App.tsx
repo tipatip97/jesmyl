@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import "./App.scss";
-import Modal from "./complect/modal/Modal";
-import { Refresher } from "./complect/refresh/Refresher";
+import TheModal from "./complect/modal/TheModal";
+import { TheRefresher } from "./complect/refresh/TheRefresher";
 import { AppRouter } from "./components/AppRouter";
 import Board from "./components/board/Board";
 import { BoardAppName } from "./components/board/Board.model";
@@ -14,8 +14,8 @@ function App() {
 
   return (
     <>
-      <Refresher />
-      <Modal />
+      <TheRefresher />
+      <TheModal />
       {app ? <AppRouter app={app} /> : <Board />}
     </>
   );

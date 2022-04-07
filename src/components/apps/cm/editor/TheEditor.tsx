@@ -8,8 +8,8 @@ import { ePhases } from "./Editor.complect";
 
 export function TheEditor() {
   const [cols] = useCols();
-  const [ccom] = useCcol('com');
-  const [ccat] = useCcol('cat');
+  const [ccom] = useCcol("com");
+  const [ccat] = useCcol("cat");
 
   const cats = cols.cats;
 
@@ -124,29 +124,25 @@ export function TheEditor() {
                           ],
                           buttons: [
                             {
-                              title: ({ inputs }) =>
+                              title: ({ getInput }) =>
                                 `Запомнить${
-                                  inputs &&
-                                  inputs[0].value?.match(incorrectNumberReg)
+                                  getInput()?.value?.match(incorrectNumberReg)
                                     ? ""
-                                    : inputs && inputs[0].value
-                                    ? ` №${(inputs && inputs[0].value) || "?"}`
+                                    : getInput()?.value
+                                    ? ` №${getInput()?.value || "?"}`
                                     : ""
                                 }`,
-                              onClick: ({ inputs }) => {
+                              onClick: ({ getInput }) => {
                                 setComNatives([
                                   cat.name ?? "",
                                   cat.wid,
-                                  parseInt((inputs && inputs[0].value) || ""),
+                                  parseInt(getInput()?.value || ""),
                                 ]);
 
                                 resolve(false);
                               },
-                              disabled: ({ inputs }) =>
-                                !!(
-                                  inputs &&
-                                  inputs[0].value?.match(incorrectNumberReg)
-                                ),
+                              disabled: ({ getInput }) =>
+                                !!getInput()?.value?.match(incorrectNumberReg),
                               hidden: () => !!(ccom.refs && ccom.refs[cat.wid]),
                             },
                             {

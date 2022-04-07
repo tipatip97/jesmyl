@@ -26,7 +26,7 @@ export const slice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    setPhase: (state, action: PayloadAction<BoardPhase>) => {
+    setBoardPhase: (state, action: PayloadAction<BoardPhase>) => {
       state.phase = action.payload;
     },
     setApps: (state, action: PayloadAction<BoardApplication[]>) => {
@@ -50,7 +50,7 @@ export const slice = createSlice({
   },
 });
 
-export const { setPhase, setFieldState, setError, setCurrentApp, setApps } =
+export const { setBoardPhase, setFieldState, setError, setCurrentApp, setApps } =
   slice.actions;
 export default slice.actions;
 

@@ -1,5 +1,5 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import { TheComOrder } from "../order/ComOrder";
+import { TheOrder } from "../order/TheOrder";
 import { ITheOrderProps } from "../order/Order.model";
 import { IComOrdersProps } from "./ComOrders.model";
 
@@ -31,7 +31,7 @@ export function TheComOrders(props: IComOrdersProps) {
         });
         return mylib
           .func(asOrdComponent, () => {
-            return <TheComOrder key={`com-${ccom.wid}-order.${orderUnit.wid}`} {...ordProps} />;
+            return <TheOrder key={`com-${ccom.wid}-order.${orderUniti}`} {...ordProps} />;
           })
           .call(ordProps);
       })}

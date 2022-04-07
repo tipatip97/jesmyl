@@ -458,7 +458,6 @@ export class MyLib {
 
         element.id = id;
         let serviceNode = document.querySelector('#service_node');
-        console.log(serviceNode);
         if (!serviceNode) {
             serviceNode = document.createElement('div');
             serviceNode.id = 'service_node';
@@ -516,7 +515,47 @@ export class MyLib {
 
         return `${css}}`.replace(/}/, '').replace(/(^|})[^{]+{}/g, '$1');
     }
+  
+    intervalToString(begin: number, end: number) {
+      const diff = end - begin;
+      const ms = this.getMilliseconds();
+      
+      if (diff > ms.inYear) return 'Больше года';
+      if (diff > ms.inMonth) return 'Больше месяца';
+      if (diff >= ms.inDay) {
+        const days = Math.trunc(diff % ms.inDay) + 2;
+        return `${days} ${this.declension(days, 'день', 'дня')}`;
+      }
+      
+      return '';
+    }
+    
+    getMilliseconds(monthDays = 30, yearDays = 365) {
+      const inSec = 1000;
+      const inMin = inSec * 60;
+      const inHour = inMin * 60;
+      const inDay = inHour * 24;
+      const inMonth = inDay * monthDays;
+      const inYear = inDay * yearDays;
+      
+      return {inSec, inMin, inHour, inDay, inMonth, inYear};
+    }
 
+    declension(num: number, one?: string, two?: string, five?: string) {
+        if (num % 1) return two;
+        let absNum = Math.abs(num) % 100;
+      
+        if (absNum > 10 && absNum < 20)
+          return this.def(five, two);
+        
+        absNum %= 10;
+        
+        return (absNum > 1 && absNum < 5)
+          ? two
+          : (absNum === 1)
+            ? one
+            : this.def(five, two);
+      }
 }
 
 

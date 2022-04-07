@@ -2,12 +2,12 @@ import { useSelector } from "react-redux";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../../store";
 import { useChordVisibleVariant } from "../../../hooks";
-import { TheComLine } from "../line/ComLine";
+import { TheComLine } from "../line/TheComLine";
 import { IComLineProps } from "../line/ComLine.model";
 import { Order } from "./Order";
 import { ITheOrderProps } from "./Order.model";
 
-export function TheComOrder(props: ITheOrderProps) {
+export function TheOrder(props: ITheOrderProps) {
   const {
     asLineComponent,
     setChorded,
@@ -93,6 +93,8 @@ export function TheComOrder(props: ITheOrderProps) {
   } else if (orderUnit.texti == null) {
     const chords = ccom.actualChords(orderUnit.chordsi, currTransPosition);
     if (!chords) return null;
+    const hideChords =
+      !chordVisibleVariant || (!orderUnit.isMin && chordVisibleVariant === 1);
 
     return (
       <div
@@ -103,16 +105,16 @@ export function TheComOrder(props: ITheOrderProps) {
       >
         <div
           key={`chorded-block-${orderUniti}-header`}
-          className={`header ${
-            !chordVisibleVariant ? "anchor styled-block" : ""
-          } ${orderUnit.top.headClassName}`}
+          className={`header ${hideChords ? "anchor styled-block" : ""} ${
+            orderUnit.top.headClassName
+          }`}
         >
           {orderUnit.top.header({
-            isTexted: !!chordVisibleVariant,
+            isTexted: !hideChords,
             r: orderUnit.repeatsTitle,
           })}
         </div>
-        {!chordVisibleVariant ? null : (
+        {hideChords ? null : (
           <pre
             key={`chorded-block-${orderUniti}-content`}
             className={`body ${orderUnit.top.textClassName}`}
@@ -143,8 +145,7 @@ export function TheComOrder(props: ITheOrderProps) {
         className: [
           "com-order-block song-part-wrapper Xuser-select",
           mylib.func(setOrdClassName).call(orderUnit),
-        ]
-          .join(" "),
+        ].join(" "),
       })}
     >
       <div

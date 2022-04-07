@@ -6,13 +6,13 @@ import { marks } from "../../marks/Marks";
 import { EvaIcon } from "../../../../../complect/Eva";
 import { TheComCtrlPanel } from "./ctrl-panel/ComCtrlPanel";
 import { Com } from "./Com";
-import { TheComOrders } from "./orders/ComOrders";
+import { TheComOrders } from "./orders/TheComOrders";
 import { useCcol, useChordVisibleVariant, usePhase } from "../../hooks";
 
 export function TheCom() {
   const [isShowChordImages, setIsShowChordImages] = useState(false);
   const [chordVisibleVariant] = useChordVisibleVariant();
-  const [, setPhase] = usePhase();
+  const { setPhase } = usePhase();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const rollModeMarks = useSelector(
     (state: RootState) => state.cm.rollModeMarks
@@ -23,6 +23,7 @@ export function TheCom() {
   const rollMode = useSelector((state: RootState) => state.cm.rollMode);
 
   const [ccom] = useCcol("com");
+
   if (ccom == null) {
     setPhase('cat');
     return null;

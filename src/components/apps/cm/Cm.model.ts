@@ -1,39 +1,45 @@
+import { ExecDict } from "../../../complect/exer/Exer.model";
 import { IExportableCols } from "./cols/Cols.model";
+import { IExportableMeeting } from "./complect/meetings/Meetings.model";
 import { IExportableSetts } from "./complect/settings/Setts.model";
 import { EeStorageStoreType } from "./ee-storage/EeStorage.model";
 
 
-export interface CmState {
-    ccatw?: number;
-    ccomw?: number;
-    phase?: CmPhase;
+
+export interface CmState extends CmStoraged {
     rollMode: CmRollMode;
     isComFullscreenMode: boolean;
     isPlayerShown: boolean;
     rollModeMarks: boolean;
+
     numComUpdates: number;
     numColsUpdates: number;
-    marks: number[];
-    chordVisibleVariant: ChordVisibleVariant;
-    comFontSize: number;
+    numModalUpdates: number;
 }
 
 export type CmRollMode = 'pause' | null;
 
 export type ChordVisibleVariant = 0 | 1 | 2;
 
-export type CmPhase = 'cats' | 'cat' | 'com' | 'editor';
+export type CmPhase = 'cats' | 'cat' | 'com' | 'editor' | 'news' | 'translations';
 
-export interface CmStorage {
-    actions: CmAction[];
-    phase: CmPhase;
-    cols: IExportableCols;
+export interface CmStoraged {
     ccatw?: number;
     ccomw?: number;
-    marks: number[];
-    settings: IExportableSetts;
     chordVisibleVariant: ChordVisibleVariant;
+    phase: CmPhase;
+    prevPhase?: CmPhase;
+    marks: number[];
+    cm_meetings: IExportableMeeting[];
+    comFontSize: number;
+}
+
+export interface CmStorage extends CmStoraged {
+    actions: CmAction[];
+    cols: IExportableCols;
+    settings: IExportableSetts;
     eeStorage: EeStorageStoreType;
+    executions: ExecDict[];
 }
 
 export interface CmAction {

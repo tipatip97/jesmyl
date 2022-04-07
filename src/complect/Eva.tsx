@@ -1,11 +1,8 @@
-import React from "react";
 import { indexStorage } from "../store/jstorages";
 
 let pack = indexStorage.getOr("evaIconPack", {});
 
-indexStorage.listen("evaIconPack", (key, value) => {
-  if (key === "evaIconPack") pack = value as never;
-});
+indexStorage.listen("evaIconPack", "evaIconPack", (value) => (pack = value));
 
 export function EvaIcon({
   name,

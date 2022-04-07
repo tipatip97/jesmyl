@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { refresh } from "../../../complect/refresh/Refresher";
+import { refresh } from "../../../complect/refresh/TheRefresher";
 import { BoardApplication } from "../Board.model";
-import { setCurrentApp, setPhase } from "../Board.store";
+import { setCurrentApp, setBoardPhase } from "../Board.store";
 
 export function BoardAppList({ apps }: { apps: BoardApplication[] }) {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ export function BoardAppList({ apps }: { apps: BoardApplication[] }) {
         );
       })}
       <div className="system-item">
-        <span className="text" onClick={() => dispatch(setPhase("settings"))}>
+        <span className="text" onClick={() => dispatch(setBoardPhase("settings"))}>
           инструменты
         </span>
       </div>

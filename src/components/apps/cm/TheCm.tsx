@@ -2,22 +2,16 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EvaIcon } from "../../../complect/Eva";
 import { RootState } from "../../../store";
-import { setCurrentApp } from "../../board/Board.store";
-import { Comps } from "./Cm.complect";
+import { Comps, isAccessed } from "./Cm.complect";
 import { updateIsComFullscreenMode } from "./Cm.store";
 import { mainTopButtons } from "./editor/Lazies";
 import "./Cm.scss";
-import { CmPhase } from "./Cm.model";
-import { usePhase } from "./hooks";
+import { useCols, useMeetings, usePhase } from "./hooks";
+import { TheMarks } from "./marks/TheMarks";
+import { cmStorage } from "../../../store/jstorages";
+import { TheMeetings } from "./complect/meetings/TheMeetings";
 
-export function CmApplication() {
-  // class CStartPage extends React.Component {
-  //   constructor() {
-  //     super();
-  //     g.nav.setContext(this);
-  //     this.state = g.nav;
-  //   }
-
+export function TheCmApplication() {
   // if (g.nav.phase < 3) setTimeout(() => {
   //   const view = document.getElementById((g.nav[g.nav.phase - -1] || '').toString());
   //   if (view) mylib.scrollToView(view, 'top');
@@ -32,13 +26,17 @@ export function CmApplication() {
 
   const dispatch = useDispatch();
   // const phase = useSelector((state: RootState) => state.cm.phase);
-  const [phase, setPhase] = usePhase();
+  const { phase, setPhase, goBack, isCanGoBack } = usePhase();
   const rollMode = useSelector((state: RootState) => state.cm.rollMode);
   const isComFullscreenMode = useSelector(
     (state: RootState) => state.cm.isComFullscreenMode
   );
+  const [, setCols] = useCols();
+  const { meetings, isEditable: isEditableMeetings } = useMeetings();
 
   const [topClickDateNow, setTopClickDateNow] = useState(0);
+
+  cmStorage.listen("cols", "cols-update", (val) => setCols(val));
 
   return (
     <>
@@ -61,104 +59,42 @@ export function CmApplication() {
         <div key="tools-panel" className="tools-panel">
           <button
             key="bb-button"
-            {...{ "aria-label": "back" }}
+            aria-label="back"
             className="bb-button weight"
-            onClick={async (event) => {
+            onClick={(event) => {
               event.stopPropagation();
-
-              if (phase === "com") {
-                ///* && g.streamManager.isJustSub
-                // if (
-                //   !(await modalService.confirm(
-                //     "Отписаться от текущего стрима?",
-                //     "Стрим",
-                //     "да",
-                //     "остаться"
-                //   ))
-                // )
-                //   return;
-                // g.streamManager.unsubscribe(() => g.ss());
-              } else {
-                if (phase === "cats") {
-                  dispatch(setCurrentApp(null));
-                  ///* else g.nav.goBack();
-                  return;
-                }
-              }
-
-              if (phase) {
-                const newPhase = {
-                  com: "cat",
-                  cat: "cats",
-                  editor: "com",
-                }[phase];
-
-                setPhase(newPhase as CmPhase);
-              }
+              goBack();
             }}
           >
-            {phase === "com" ? ( ///* && g.streamManager.isJustSub
-              <EvaIcon name="close-outline" />
-            ) : phase === "cats" ? (
+            {phase === "cats" ? (
               <EvaIcon name="arrowhead-left-outline" />
             ) : (
               <EvaIcon name="chevron-left-outline" />
             )}
           </button>
-          {/* {g.streamManager.isJustSub ? null : <Marks key="marks-list" />} */}
-          {/* {window.json.cm_executions == null ||
-          !g.nav.isCanGoBack(g.Phase.News) ? null : (
+          {/* {g.streamManager.isJustSub ? null :  */}
+          <TheMarks key="marks-list" />
+          {!isCanGoBack("news") ? null : (
             <button
               key="execs-button"
               className="execs-button mbtn m-no mxs"
-              onClick={() => g.nav.setPhase(g.Phase.News)}
+              onClick={() => setPhase("news")}
             >
               <EvaIcon name="list" />
             </button>
-          )} */}
-          {/* {!g.nav.isCanGoBack(g.Phase.Translations) ||
+          )}
+          {!isCanGoBack("translations") ||
           !isAccessed("canShowTranslation") ? null : (
             <button
               key="translations-button"
               className="translations-button mbtn m-no mxs"
-              onClick={() => g.nav.setPhase(g.Phase.Translations)}
+              onClick={() => setPhase("translations")}
             >
               <EvaIcon name="monitor-outline" />
             </button>
-          )} */}
-          {/* {g.streamManager.isJustSub ? null : (
-            <button
-              key="meetings-button"
-              className="meetings-button mbtn m-no mxs"
-              onClick={() => {
-                const inputs = g.meetings.stack.map((meeting) => {
-                  return {
-                    titleHtml: meeting.getTitle(),
-                    type: "button",
-                    value: "Просмотреть",
-                    onClick: () => meeting.showDetails(),
-                  };
-                }, []);
-
-                const buttons = g.meetings.isEditable
-                  ? [
-                      {
-                        title: "Новое событие",
-                        onClick: () => g.meetings.create(),
-                      },
-                    ]
-                  : null;
-
-                modalService.open({
-                  title: "События",
-                  inputs,
-                  buttons,
-                });
-              }}
-            >
-              <EvaIcon name="calendar-outline" />
-            </button>
-          )} */}
+          )}
+          {/* {g.streamManager.isJustSub ? null : ( */}
+          <TheMeetings />
           {/* {(() => {
             const getComWindows = () =>
               document.querySelectorAll(".com-ord-list");

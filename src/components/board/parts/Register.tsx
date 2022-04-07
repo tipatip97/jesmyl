@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { BorderAuthorization } from '../Board.model';
 import { sendLoginData } from '../Board.source';
-import { setError, setFieldState, setPhase } from '../Board.store';
+import { setError, setFieldState, setBoardPhase } from '../Board.store';
 import { BoardErrorMessage } from './ErrorMessage';
 
 export function BoardRegister() {
@@ -20,7 +20,7 @@ export function BoardRegister() {
     <>
       <div className='phase-name'>Вход</div>
       <div className='system-item'>
-        <span className='text' onClick={() => setPhase('settings')}>
+        <span className='text' onClick={() => setBoardPhase('settings')}>
           назад
         </span>
       </div>

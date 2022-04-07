@@ -4,9 +4,9 @@ import { useCcol, useCols, usePhase } from "../hooks";
 
 export function TheColAdditionButtons() {
   const [cols] = useCols();
-  const [, setPhase] = usePhase();
-  const [, setCcat] = useCcol('cat');
-  const [, setCcom] = useCcol('com');
+  const { setPhase } = usePhase();
+  const [, setCcat] = useCcol("cat");
+  const [, setCcom] = useCcol("com");
 
   return (
     isAccessed("comAdd") && [

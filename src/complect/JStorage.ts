@@ -1,5 +1,5 @@
 
-export type JStorageListener<Scope> = <Key extends keyof Scope>(key: Key, val: Scope[Key] | null) => void;
+export type JStorageListener<Val> = (val: Val) => void;
 
 export class JStorage<Scope = any> {
     prefix: string = '';
@@ -8,7 +8,7 @@ export class JStorage<Scope = any> {
     properties: Record<keyof Scope, any> = {} as never;
     strings: Record<keyof Scope, string> = {} as never;
     keys: (keyof Scope)[] = [];
-    listeners: Record<string, JStorageListener<Scope>> = {};
+    listeners: Record<keyof Scope, Record<string, JStorageListener<Scope[keyof Scope]>>> = {} as never;
 
     constructor(scope: string) {
         this.prefix = `[${scope}]:`;
@@ -24,24 +24,21 @@ export class JStorage<Scope = any> {
         top[this.scope] = this;
     }
 
-    listen(name: string, listener: JStorageListener<Scope>): JStorageListener<Scope> {
-        return this.listeners[name] = listener;
+    listen<Key extends keyof Scope>(key: Key, name: string, listener: JStorageListener<Scope[Key]>): JStorageListener<Scope[Key]> {
+        if (this.listeners[key] == null) this.listeners[key] = {};
+        return (this.listeners[key] as Record<string, JStorageListener<Scope[Key]>>)[name] = listener;
     }
 
-    mute(name: string) {
-        delete this.listeners[name];
+    mute(key: keyof Scope, name: string) {
+        delete this.listeners[key][name];
     }
 
-    update(listener: JStorageListener<Scope>, keys?: (keyof Scope)[]) {
-        Object.entries(this.properties).forEach(
-            keys
-                ? ([key, val]) => keys.indexOf(key as never) > -1 && listener(key as keyof Scope, val as Scope[keyof Scope] | null)
-                : ([key, val]) => listener(key as keyof Scope, val as Scope[keyof Scope] | null)
-        );
+    update<Key extends keyof Scope>(key: Key, listener: JStorageListener<Scope[Key]>) {
+        listener(this.properties[key]);
     }
 
-    private next<Key extends keyof Scope>(key: keyof Scope, val: Scope[Key] | null) {
-        Object.values(this.listeners).forEach((listener) => listener(key, val));
+    private next<Key extends keyof Scope>(key: keyof Scope, val: Scope[Key]) {
+        this.listeners[key] && Object.values(this.listeners[key]).forEach((listener) => listener(val));
     }
 
     parse(val: string) {
@@ -114,7 +111,7 @@ export class JStorage<Scope = any> {
         delete this.strings[key];
         this.keys.splice(this.keys.indexOf(key), 1);
 
-        this.next(key, null);
+        this.next(key, null as never);
         return localStorage.removeItem(this.lsName(key));
     }
 }

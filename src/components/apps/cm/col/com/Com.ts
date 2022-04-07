@@ -379,16 +379,16 @@ export class Com extends EditableCom {
 
       let isPrevAnchorInheritPlus = top.a != null;
 
-      if (top.a != null && newOrder.isVisible) {
-        const leadStyle = getStyle(targetOrd);
-        let anci = (targetOrd?.top.sourceIndex || 0) + 1;
+      if (targetOrd && top.a != null && newOrder.isVisible) {
+        const leadStyle = getStyle(targetOrd.top);
+        let anci = (targetOrd.top.sourceIndex || 0) + 1;
         let anc = val[anci];
         let ancStyle = getStyle(anc);
         let anchorInheritIndex = 0;
 
         while (ancStyle?.isInherit) {
           isPrevAnchorInheritPlus = true;
-          const ancTop = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, anc);
+          const ancTop = Order.getWithExtendableFields(targetOrd.top.source as IExportableOrderTop, anc);
 
           ancTop.isAnchorInherit = true;
           ancTop.isInherit = true;
@@ -402,7 +402,7 @@ export class Com extends EditableCom {
           ancTop.isNextInherit = !!getStyle(val[anci + 1])?.isInherit;
           ancTop.anchorInheritIndex = anchorInheritIndex++;
           ancTop.viewIndex = viewIndex++;
-          ancTop.sourceIndex = val.indexOf(targetOrd?.top.source as IExportableOrderTop);
+          ancTop.sourceIndex = val.indexOf(targetOrd.top.source as IExportableOrderTop);
           ancTop.originIndex = val.indexOf(anc);
           ancTop.headClassName = setts.query(leadStyle?.name || '', 'headerProps', ' ', ancStyle.name);
           ancTop.textClassName = setts.query(leadStyle?.name || '', 'textProps', ' ', ancStyle.name);

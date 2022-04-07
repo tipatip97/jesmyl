@@ -4,15 +4,11 @@ import { EvaIcon } from "../../../../../../complect/Eva";
 import { Swipeabler } from "../../../../../../complect/swipeabler/Swipeabler";
 import { RootState } from "../../../../../../store";
 import { ChordVisibleVariant } from "../../../Cm.model";
-import {
-  comForceUpdate,
-  updateIsPlayerShown,
-} from "../../../Cm.store";
-import { useChordVisibleVariant, useCols } from "../../../hooks";
-import { marks } from "../../../marks/Marks";
+import { comForceUpdate, updateIsPlayerShown } from "../../../Cm.store";
+import { useChordVisibleVariant, useCols, useMarks } from "../../../hooks";
 import { Com } from "../Com";
 import { TheComPlayerPanel } from "../player/ComPlayerPanel";
-import { TheComCtrlPanelAdditionalButtons } from "./ComCtrlPanelAdditionalButtons";
+import { TheComCtrlPanelAdditionalButtons } from "./TheComCtrlPanelAdditionalButtons";
 
 export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
   const dispatch = useDispatch();
@@ -20,7 +16,10 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
   const [cols] = useCols();
   const cats = cols.cats;
 
-  const [chordVisibleVariant, setChordVisibleVariant] = useChordVisibleVariant();
+  const { toggle: toggleMark, isMarked } = useMarks();
+
+  const [chordVisibleVariant, setChordVisibleVariant] =
+    useChordVisibleVariant();
 
   const [isShowNatives, setIsShowNatives] = useState(false);
   const [songNumberElement, setSongNumberElement] = useState<Swipeabler | null>(
@@ -44,7 +43,6 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
 
   if (ccom == null) return null;
 
-  const isMarked = marks.isMarked(ccom.wid);
   const isWhole = !ccom.orders.some(
     (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
   );
@@ -72,18 +70,17 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
             );
           }}
           className={`mbtn msm btn btn-sm btn-${
-            !isMarked ? "secondary" : "success m-ok"
+            isMarked(ccom.wid) ? "success m-ok" : "secondary"
           } song-number`}
           onClick={(event) => {
             event.stopPropagation();
 
             if (event.ctrlKey) setIsShowNatives(!isShowNatives);
-            // else g.marks.toggle(ccom.wid);
+            else toggleMark(ccom.wid);
           }}
         >
           #{ccom.index == null ? "?" : ccom.index - -1}
         </button>
-        ,
         {isShowNatives ? (
           <div key="native-numbers-list" className="native-numbers-list m-ok">
             {((refKeys) =>
@@ -170,15 +167,15 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
                           dispatch(updateIsPlayerShown(!isPlayerShown));
                         } else {
                           setChordVisibleVariant(
-                              isWhole
-                                ? chordVisibleVariant
-                                  ? 0
-                                  : 2
-                                : ((chordVisibleVariant -
-                                    (chordVisibleVariant > 1
-                                      ? 2
-                                      : -1)) as ChordVisibleVariant)
-                            );
+                            isWhole
+                              ? chordVisibleVariant
+                                ? 0
+                                : 2
+                              : ((chordVisibleVariant -
+                                  (chordVisibleVariant > 1
+                                    ? 2
+                                    : -1)) as ChordVisibleVariant)
+                          );
                         }
                         // g.updateFlexFontSize();
                       }}

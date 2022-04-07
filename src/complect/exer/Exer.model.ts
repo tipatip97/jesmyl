@@ -1,6 +1,6 @@
 import { Exec } from "./Exec";
 
-export interface ExecDict<Value, Args> {
+export interface ExecDict<Value = any, Args = {}> {
     action: string;
     scope?: string;
     eprev?: Value;

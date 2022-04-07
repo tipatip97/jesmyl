@@ -1,20 +1,20 @@
 import modalService from '../../../complect/modal/Modal.service';
 import { indexStorage } from '../../../store/jstorages';
 import { localAuth } from '../Board.source';
-import { boardExer, setPhase } from '../Board.store';
+import { boardExer, setBoardPhase } from '../Board.store';
 
 export function BoardSettings() {
   return (
     <>
       <div className='phase-name'>Инструменты</div>
       <div className='system-item'>
-        <span className='text' onClick={() => setPhase('apps')}>
+        <span className='text' onClick={() => setBoardPhase('apps')}>
           назад
         </span>
       </div>
       {localStorage.auth == null ? (
         <div className='system-item'>
-          <span className='text' onClick={() => setPhase('login')}>
+          <span className='text' onClick={() => setBoardPhase('login')}>
             вход
           </span>
         </div>
@@ -31,7 +31,7 @@ export function BoardSettings() {
                     title: 'Выйти',
                     onClick: () => {
                       indexStorage.rem('auth');
-                      setPhase('apps');
+                      setBoardPhase('apps');
                     },
                   },
                   {
@@ -72,13 +72,13 @@ export function BoardSettings() {
                   {
                     title: 'Отправить',
                     closable: false,
-                    onClick: ({ closeModal, inputs }) => {
-                      if (localAuth && inputs)
+                    onClick: ({ closeModal, getInput }) => {
+                      if (localAuth)
                       boardExer.send(
                           {
                             action: 'writeToDevelopers',
                             args: {
-                              message: inputs[0].value,
+                              message: getInput(0)?.value,
                               id: Date.now(),
                               login: localAuth.login,
                               fio: localAuth.fio,
