@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import EvaIcon from "../../../../../complect/Eva";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
-import { marks } from "../../marks/Marks";
-import { EvaIcon } from "../../../../../complect/Eva";
-import { TheComCtrlPanel } from "./ctrl-panel/ComCtrlPanel";
-import { Com } from "./Com";
-import { TheComOrders } from "./orders/TheComOrders";
 import { useCcol, useChordVisibleVariant, usePhase } from "../../hooks";
+import { marks } from "../../marks/Marks";
+import { Com } from "./Com";
+import ComCtrlPanel from "./ctrl-panel/ComCtrlPanel";
+import TheComOrders from "./orders/TheComOrders";
 
-export function TheCom() {
+export default function TheCom() {
   const [isShowChordImages, setIsShowChordImages] = useState(false);
   const [chordVisibleVariant] = useChordVisibleVariant();
   const { setPhase } = usePhase();
@@ -25,7 +25,7 @@ export function TheCom() {
   const [ccom] = useCcol("com");
 
   if (ccom == null) {
-    setPhase('cat');
+    setPhase("cat");
     return null;
   }
 
@@ -42,7 +42,7 @@ export function TheCom() {
         }
       }
     >
-      <TheComCtrlPanel ccom={ccom} />
+      <ComCtrlPanel ccom={ccom} />
       <div>
         {([] as Com[]).concat(rollModeMarks ? marks.coms : ccom).map((com) => {
           return (

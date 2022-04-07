@@ -4,6 +4,6 @@ import { isAccessed } from "../Cm.complect";
 export const mainTopButtons = () => null;
   // isAccessed("canRedact") ? React.lazy(() => import("./EditButton")) : null;
 
-export function LazyEditorParts() {
+export default function LazyEditorParts() {
   return <div style={{ display: "none" }}>{mainTopButtons()}</div>;
 }

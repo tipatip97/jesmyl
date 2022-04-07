@@ -1,6 +1,6 @@
 
 
-export function TheMeeting() {
+export default function TheMeeting() {
     return <div>meeting</div>
 }
 

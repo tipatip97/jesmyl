@@ -3,7 +3,7 @@ import { refresh } from "../../../complect/refresh/TheRefresher";
 import { BoardApplication } from "../Board.model";
 import { setCurrentApp, setBoardPhase } from "../Board.store";
 
-export function BoardAppList({ apps }: { apps: BoardApplication[] }) {
+export default function BoardAppList({ apps }: { apps: BoardApplication[] }) {
   const dispatch = useDispatch();
 
   return (
@@ -32,7 +32,10 @@ export function BoardAppList({ apps }: { apps: BoardApplication[] }) {
         );
       })}
       <div className="system-item">
-        <span className="text" onClick={() => dispatch(setBoardPhase("settings"))}>
+        <span
+          className="text"
+          onClick={() => dispatch(setBoardPhase("settings"))}
+        >
           инструменты
         </span>
       </div>

@@ -1,7 +1,7 @@
 import { Cat } from "../col/cat/Cat";
 import { useCcol, useCols, usePhase } from "../hooks";
 
-export function TheCats() {
+export default function TheCats() {
   const { setPhase } = usePhase();
   const [, setCcat] = useCcol("cat");
   const [cols] = useCols();

@@ -1,16 +1,16 @@
 import { ReactNode } from "react";
-import { EvaIcon } from "../../../../complect/Eva";
+import EvaIcon from "../../../../complect/Eva";
 
 export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [
     "a",
     <EvaIcon name="umbrella-outline" alt="Аппликатура" />,
-    () => null,//<TheComApplicationsEditor />,
+    () => null, //<TheComApplicationsEditor />,
   ],
   [
     "t",
     <EvaIcon name="text-outline" alt="Текст" />,
-    ({ coln }) => null,//<TheComEditor coln={coln} />,
+    ({ coln }) => null, //<TheComEditor coln={coln} />,
   ],
   [
     "c",
@@ -25,18 +25,17 @@ export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [
     "s",
     <EvaIcon name="recording-outline" alt="Прокрутка" />,
-    () => null,//<ComRecords />,
+    () => null, //<ComRecords />,
   ],
   [
     "r",
     "//" || "Повторения",
-    () => (
-      null//<TheRegionsEditor coln="r"colnGetter="repeats"flashes={["/", "\\", "&nbsp;"]}/>
-    ),
+    () =>
+      null, //<TheRegionsEditor coln="r"colnGetter="repeats"flashes={["/", "\\", "&nbsp;"]}/>
   ],
   [
     "tr",
     <EvaIcon name="monitor-outline" alt="Настройка трансляции" />,
-    ({ coln }) => null,//<TheTranslationSetting />,
+    ({ coln }) => null, //<TheTranslationSetting />,
   ],
 ];

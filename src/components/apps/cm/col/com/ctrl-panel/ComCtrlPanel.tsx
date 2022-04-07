@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EvaIcon } from "../../../../../../complect/Eva";
+import EvaIcon from "../../../../../../complect/Eva";
 import { Swipeabler } from "../../../../../../complect/swipeabler/Swipeabler";
 import { RootState } from "../../../../../../store";
 import { ChordVisibleVariant } from "../../../Cm.model";
 import { comForceUpdate, updateIsPlayerShown } from "../../../Cm.store";
 import { useChordVisibleVariant, useCols, useMarks } from "../../../hooks";
 import { Com } from "../Com";
-import { TheComPlayerPanel } from "../player/ComPlayerPanel";
-import { TheComCtrlPanelAdditionalButtons } from "./TheComCtrlPanelAdditionalButtons";
+import ComPlayerPanel from "../player/ComPlayerPanel";
+import TheComCtrlPanelAdditionalButtons from "./TheComCtrlPanelAdditionalButtons";
 
-export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
+export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
   const dispatch = useDispatch();
 
   const [cols] = useCols();
@@ -250,7 +250,7 @@ export function TheComCtrlPanel({ ccom }: { ccom: Com }) {
             ]}
         {<TheComCtrlPanelAdditionalButtons />}
       </div>
-      {isPlayerShown ? <TheComPlayerPanel /> : null}
+      {isPlayerShown ? <ComPlayerPanel /> : null}
     </div>
   );
 }

@@ -2,12 +2,12 @@ import { useSelector } from "react-redux";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../../store";
 import { useChordVisibleVariant } from "../../../hooks";
-import { TheComLine } from "../line/TheComLine";
+import ComLine from "../line/TheComLine";
 import { IComLineProps } from "../line/ComLine.model";
 import { Order } from "./Order";
 import { ITheOrderProps } from "./Order.model";
 
-export function TheOrder(props: ITheOrderProps) {
+export default function TheOrder(props: ITheOrderProps) {
   const {
     asLineComponent,
     setChorded,
@@ -176,7 +176,7 @@ export function TheOrder(props: ITheOrderProps) {
             >
               {mylib
                 .func(asLineComponent, (props: IComLineProps) => (
-                  <TheComLine {...props} />
+                  <ComLine {...props} />
                 ))
                 .call({
                   chordedOrd,

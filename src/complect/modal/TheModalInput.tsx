@@ -10,7 +10,7 @@ import {
 import modalService from "./Modal.service";
 import { onActionClick } from "./TheModal";
 
-export function TheModalInput(topProps: TheModalInputProps) {
+export default function ModalInput(topProps: TheModalInputProps) {
   let input: Partial<ModalConfigInput>, inputi: number | string | und;
 
   if (Array.isArray(topProps.config)) [input, inputi] = topProps.config;

@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { localAuth } from "./Board.source";
-import { BoardAppList } from "./parts/TheAppList";
-import { BoardLogin } from "./parts/Login";
-import { BoardRegister } from "./parts/Register";
-import { BoardSettings } from "./parts/Settings";
+import BoardAppList from "./parts/TheAppList";
+import BoardLogin from "./parts/Login";
+import BoardRegister from "./parts/Register";
+import BoardSettings from "./parts/Settings";
 import "./Board.scss";
 import { indexStorage } from "../../store/jstorages";
 import { useEffect } from "react";
-import { BoardApplication, IndexStorage } from "./Board.model";
+import { BoardApplication } from "./Board.model";
 import { setApps } from "./Board.store";
 
 export default function Board() {
@@ -23,8 +23,8 @@ export default function Board() {
   });
 
   useEffect(() => {
-    indexStorage.update('apps', listener);
-    return () => indexStorage.mute('apps', "board-listener");
+    indexStorage.update("apps", listener);
+    return () => indexStorage.mute("apps", "board-listener");
   });
 
   return (

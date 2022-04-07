@@ -1,51 +1,48 @@
 import React, { ReactNode, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import mylib from "../my-lib/MyLib";
 import {
   ModalConfig,
   ModalConfigButton,
   ModalConfigInput,
-  ModalFixed,
+  ModalFixed
 } from "./Modal.model";
-import modalService from "./Modal.service";
 import "./Modal.scss";
-import mylib from "../my-lib/MyLib";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { TheModalInput } from "./TheModalInput";
-import { TheModalButton } from "./TheModalButton";
-
+import modalService from "./Modal.service";
+import ModalButton from "./TheModalButton";
+import TheModalInput from "./TheModalInput";
 
 export const onActionClick = (
   input: ModalConfigInput | ModalConfigButton,
   onClick: (config: ModalConfig, clickConfig?: ModalConfig) => void,
   clickConfig: ModalConfig,
-  config: Partial<ModalConfig>,
+  config: Partial<ModalConfig>
 ) => {
   if (input.modal != null) {
     if (typeof input.onClick !== "function" || input.onClick(clickConfig))
       modalService.open(
         typeof input.modal === "function"
           ? mylib.overlap({ title: config.title }, input.modal(clickConfig))
-          : input.modal,
+          : input.modal
       );
   } else if (typeof input.confirm === "string") {
     const title = input.confirm.replace("#", "");
 
-    modalService.open(
-      {
-        title: (input as ModalConfigInput).value || input.title || title,
-        description: `Ты действительно хочешь ${title[0].toLowerCase()}${title.substr(
-          1
-        )}?`,
-        buttons: [
-          {
-            title: "да",
-            onClick: (inheritConfig: ModalConfig) =>
-              onClick(inheritConfig, clickConfig),
-          },
-          "нет",
-        ],
-      },
-    );
+    modalService.open({
+      title: (input as ModalConfigInput).value || input.title || title,
+      description: `Ты действительно хочешь ${title[0].toLowerCase()}${title.substr(
+        1
+      )}?`,
+      buttons: [
+        {
+          title: "да",
+          onClick: (inheritConfig: ModalConfig) =>
+            onClick(inheritConfig, clickConfig),
+        },
+        "нет",
+      ],
+    });
   } else onClick(clickConfig);
   if ((input as ModalConfigButton).closable) modalService.close(input.value);
 };
@@ -59,7 +56,6 @@ export default function TheModal(props: ModalFixed) {
   const defTheme = "m-ok";
   const asFunc = (val?: Function | boolean | ReactNode) =>
     typeof val === "function" ? val(config) : val;
-
 
   return config == null ? null : (
     <div
@@ -119,7 +115,19 @@ export default function TheModal(props: ModalFixed) {
                 key="app-modal-body-input-list"
                 className="app-modal-body-input-list"
               >
-                {config.theInputs || config.inputs?.map((input, inputi) => input ? Array.isArray(input) ? input[0] : <TheModalInput key={`modal-input${inputi}`} config={[input, inputi]} /> : null)}
+                {config.theInputs ||
+                  config.inputs?.map((input, inputi) =>
+                    input ? (
+                      Array.isArray(input) ? (
+                        input[0]
+                      ) : (
+                        <TheModalInput
+                          key={`modal-input${inputi}`}
+                          config={[input, inputi]}
+                        />
+                      )
+                    ) : null
+                  )}
               </div>
             )}
           </div>
@@ -150,7 +158,13 @@ export default function TheModal(props: ModalFixed) {
                   config.theme || defTheme
                 }`}
               >
-                {config.theButtons || config.buttons?.map((button, buttoni) => <TheModalButton key={`modal-button-${buttoni}`} config={[button, buttoni]}/>)}
+                {config.theButtons ||
+                  config.buttons?.map((button, buttoni) => (
+                    <ModalButton
+                      key={`modal-button-${buttoni}`}
+                      config={[button, buttoni]}
+                    />
+                  ))}
               </div>
             </div>
           )}

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { EvaIcon } from "../../../../complect/Eva";
+import EvaIcon from "../../../../complect/Eva";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { isAccessed } from "../Cm.complect";
 import { useCcol, useCols } from "../hooks";
 import { ePhases } from "./Editor.complect";
 
-export function TheEditor() {
+export default function Editor() {
   const [cols] = useCols();
   const [ccom] = useCcol("com");
   const [ccat] = useCcol("cat");

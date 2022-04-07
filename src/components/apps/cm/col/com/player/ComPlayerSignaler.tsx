@@ -1,10 +1,10 @@
 import { CSSProperties, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EvaIcon } from "../../../../../../complect/Eva";
+import EvaIcon from "../../../../../../complect/Eva";
 import { RootState } from "../../../../../../store";
 import { changeRollMode, changeRollModeMarks } from "../../../Cm.store";
 
-export function TheComPlayerSignaler() {
+export default function ComPlayerSignaler() {
   const closingTime = 1500;
 
   const dispatch = useDispatch();

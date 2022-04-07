@@ -1,7 +1,7 @@
-import { TheModalInput } from "../../../../../complect/modal/TheModalInput";
+import TheModalInput from "../../../../../complect/modal/TheModalInput";
 
 
-export function TheAddToMeetingButton() {
+export default function AddToMeetingButton() {
     return <TheModalInput config={{
         
     }} />

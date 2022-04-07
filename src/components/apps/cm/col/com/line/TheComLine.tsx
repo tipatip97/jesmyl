@@ -1,7 +1,7 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { IComLineProps } from "./ComLine.model";
 
-export function TheComLine(props: IComLineProps) {
+export default function ComLine(props: IComLineProps) {
   const {
     key,
     chordedOrd,

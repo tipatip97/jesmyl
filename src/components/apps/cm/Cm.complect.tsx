@@ -3,13 +3,13 @@ import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
 import { cmStorage, indexStorage } from "../../../store/jstorages";
 import { BoardApplication, BoardAuth } from "../../board/Board.model";
-import { TheCats } from "./cats/Cats";
+import TheCats from "./cats/Cats";
 import { CmAction, CmAppVariables, CmPhase } from "./Cm.model";
-import { TheCat } from "./col/cat/TheCat";
-import { TheCom } from "./col/com/TheCom";
+import TheCat from "./col/cat/TheCat";
+import TheCom from "./col/com/TheCom";
 import { setts } from "./complect/settings/Setts";
 import { StyleProp } from "./complect/settings/StyleProp";
-import { TheEditor } from "./editor/TheEditor";
+import Editor from "./editor/TheEditor";
 
 let rules: Record<string, true | null> = {};
 let actions: CmAction[] = [];
@@ -62,7 +62,7 @@ export const Comps: Record<CmPhase, () => ReactNode> = {
   cats: () => <TheCats />,
   cat: () => <TheCat />,
   com: () => <TheCom />,
-  editor: () => <TheEditor />,
+  editor: () => <Editor />,
   news: () => null,
   translations: () => null,
 };

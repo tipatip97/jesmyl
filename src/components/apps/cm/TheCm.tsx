@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EvaIcon } from "../../../complect/Eva";
+import EvaIcon from "../../../complect/Eva";
 import { RootState } from "../../../store";
-import { Comps, isAccessed } from "./Cm.complect";
-import { updateIsComFullscreenMode } from "./Cm.store";
-import { mainTopButtons } from "./editor/Lazies";
-import "./Cm.scss";
-import { useCols, useMeetings, usePhase } from "./hooks";
-import { TheMarks } from "./marks/TheMarks";
 import { cmStorage } from "../../../store/jstorages";
-import { TheMeetings } from "./complect/meetings/TheMeetings";
+import { Comps, isAccessed } from "./Cm.complect";
+import "./Cm.scss";
+import { updateIsComFullscreenMode } from "./Cm.store";
+import TheMeetings from "./complect/meetings/TheMeetings";
+import { mainTopButtons } from "./editor/Lazies";
+import { useCols, useMeetings, usePhase } from "./hooks";
+import TheMarks from "./marks/TheMarks";
 
-export function TheCmApplication() {
+export default function CmApplication() {
   // if (g.nav.phase < 3) setTimeout(() => {
   //   const view = document.getElementById((g.nav[g.nav.phase - -1] || '').toString());
   //   if (view) mylib.scrollToView(view, 'top');

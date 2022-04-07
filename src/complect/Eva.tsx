@@ -4,7 +4,7 @@ let pack = indexStorage.getOr("evaIconPack", {});
 
 indexStorage.listen("evaIconPack", "evaIconPack", (value) => (pack = value));
 
-export function EvaIcon({
+export default function EvaIcon({
   name,
   alt,
   scale = 1,

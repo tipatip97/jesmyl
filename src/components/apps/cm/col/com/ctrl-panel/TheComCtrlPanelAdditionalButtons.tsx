@@ -1,3 +1,3 @@
-export function TheComCtrlPanelAdditionalButtons() {
+export default function ComCtrlPanelAdditionalButtons() {
   return <></>;
 }

@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { EvaIcon } from "../../../../complect/Eva";
+import EvaIcon from "../../../../complect/Eva";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { Com } from "../col/com/Com";
-import { TheAddToMeetingButton } from "../complect/meetings/TheAddToMeetingButton";
+import AddToMeetingButton from "../complect/meetings/TheAddToMeetingButton";
 import { useCcol, useMarks, usePhase } from "../hooks";
 import { MarksProps } from "./Marks.model";
 
-export function TheMarks(props: MarksProps) {
+export default function TheMarks(props: MarksProps) {
   const [isOpened, setIsOpened] = useState(false);
 
   const [updates, riseUpUpdates] = useState(0);
@@ -58,7 +58,7 @@ export function TheMarks(props: MarksProps) {
                         onClick: () => setMarks([]),
                       },
                       // !g.meetings.isEditable ? null : 
-                      [<TheAddToMeetingButton />]
+                      [<AddToMeetingButton />]
                       // {
                       //   value: "Поделиться",
                       //   type: "button",

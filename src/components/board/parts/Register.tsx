@@ -3,9 +3,9 @@ import { RootState } from '../../../store';
 import { BorderAuthorization } from '../Board.model';
 import { sendLoginData } from '../Board.source';
 import { setError, setFieldState, setBoardPhase } from '../Board.store';
-import { BoardErrorMessage } from './ErrorMessage';
+import BoardErrorMessage from './ErrorMessage';
 
-export function BoardRegister() {
+export default function BoardRegister() {
   const authState = useSelector((state: RootState) => state.board.auth);
   const fio = authState?.fio;
   const login = authState?.login;

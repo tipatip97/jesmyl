@@ -1,10 +1,10 @@
-import { EvaIcon } from "../../../../../complect/Eva";
+import EvaIcon from "../../../../../complect/Eva";
 import modalService from "../../../../../complect/modal/Modal.service";
-import { TheModalButton } from "../../../../../complect/modal/TheModalButton";
-import { TheModalInput } from "../../../../../complect/modal/TheModalInput";
+import ModalButton from "../../../../../complect/modal/TheModalButton";
+import TheModalInput from "../../../../../complect/modal/TheModalInput";
 import { useCols, useMarks, useMeetings } from "../../hooks";
 
-export function TheMeetings() {
+export default function TheMeetings() {
   const { meetings, createMeeting } = useMeetings();
   const [cols] = useCols();
   const { setMarks, addMarks } = useMarks();
@@ -69,7 +69,7 @@ export function TheMeetings() {
           }),
           theButtons: true
             ? [
-                <TheModalButton
+                <ModalButton
                   key={`meeting-modal-button`}
                   config={[
                     {

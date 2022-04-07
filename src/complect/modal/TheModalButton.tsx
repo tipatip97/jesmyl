@@ -4,7 +4,7 @@ import { ModalConfig, TheModalButtonProps } from "./Modal.model";
 import modalService from "./Modal.service";
 import { onActionClick } from "./TheModal";
 
-export function TheModalButton(topProps: TheModalButtonProps) {
+export default function ModalButton(topProps: TheModalButtonProps) {
   let {
     config: [button, buttoni],
   } = topProps;

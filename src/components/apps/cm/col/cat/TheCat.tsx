@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { isAccessed } from "../../Cm.complect";
 import { useCcol, usePhase } from "../../hooks";
 
-export function TheCat() {
+export default function TheCat() {
   const [ccat] = useCcol("cat");
   const [, setCcom] = useCcol("com");
   const { setPhase } = usePhase();

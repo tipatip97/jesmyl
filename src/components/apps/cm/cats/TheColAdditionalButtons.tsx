@@ -1,8 +1,8 @@
-import { EvaIcon } from "../../../../complect/Eva";
+import EvaIcon from "../../../../complect/Eva";
 import { isAccessed } from "../Cm.complect";
 import { useCcol, useCols, usePhase } from "../hooks";
 
-export function TheColAdditionButtons() {
+export default function ColAdditionButtons() {
   const [cols] = useCols();
   const { setPhase } = usePhase();
   const [, setCcat] = useCcol("cat");
