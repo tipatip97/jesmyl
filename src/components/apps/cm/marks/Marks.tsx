@@ -58,7 +58,7 @@ export default function Marks(props: MarksProps) {
                         onClick: () => setMarks([]),
                       },
                       // !g.meetings.isEditable ? null : 
-                      [<AddToMeetingButton />]
+                      [<AddToMeetingButton key='AddToMeetingButton' />]
                       // {
                       //   value: "Поделиться",
                       //   type: "button",

@@ -3,7 +3,13 @@ import { useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/Eva";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
-import { useCcol, useChordVisibleVariant, useMarks, usePhase } from "../../hooks";
+import {
+  useCcol,
+  useChordVisibleVariant,
+  useMarks,
+  usePhase,
+} from "../../hooks";
+import ChordCard from "./chord-card/ChordCard";
 import { Com } from "./Com";
 import ComCtrlPanel from "./ctrl-panel/ComCtrlPanel";
 import ComOrders from "./orders/ComOrders";
@@ -106,7 +112,8 @@ export default function TheCom() {
           className={`used-chords ${isShowChordImages ? " shown" : ""}`}
         >
           <div>
-            {ccom.audio &&
+            {null &&
+              ccom.audio &&
               ccom.audio.split("\n\n").map((ablock) => {
                 const [src, description] = mylib.explode("\n", ablock, 2);
                 return (
@@ -142,9 +149,12 @@ export default function TheCom() {
                     key={`chord-used-${chordName}`}
                     className="chord-application"
                   >
-                    {/* <ChordCard
-                    {...{ chordName, chordLabel: ccom.usedChords[chordName] }}
-                  /> */}
+                    <ChordCard
+                      chordName={chordName}
+                      chordLabel={
+                        (ccom.usedChords && ccom.usedChords[chordName]) || "?"
+                      }
+                    />
                   </div>
                 );
               })}

@@ -70,7 +70,7 @@ export class Exer<Storage> {
         this.load(cb, errCb, finCb, ([] as ExecDict<Value, Args>[]).concat(fixedExecs).map(exec => new Exec(exec)));
     }
 
-    load<Value, Args>(cb?: Callback, errCb?: Callback, finCb?: Callback, fixedExecs?: Exec<Value, Args>[]) {
+    load<Value, Args>(cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, fixedExecs?: Exec<Value, Args>[]) {
         const execs = (fixedExecs || this.execs)
             .map(exec => exec.forLoad())
             .filter(ex => ex);
@@ -123,6 +123,11 @@ export class Exer<Storage> {
 
     removeLocals() {
         this.storage.rem(this.key);
+    }
+
+    removeAll() {
+        this.execs = [];
+        this.removeLocals();
     }
 
     setLocals() {

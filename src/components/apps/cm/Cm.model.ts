@@ -32,6 +32,7 @@ export interface CmStoraged {
     marks: number[];
     cm_meetings: IExportableMeeting[];
     comFontSize: number;
+    chords: Record<string, number[]>;
 }
 
 export interface CmStorage extends CmStoraged {

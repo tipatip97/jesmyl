@@ -315,7 +315,8 @@ export class MyLib {
                 });
 
                 return ret == null ? args[args.length - 1] : ret;
-            }
+            },
+            declension: (num: number, one: string, two: string, five: string) => mylib.declension(num, one, two, five),
         }, topArgs);
 
         const dob = '{{';
@@ -441,7 +442,7 @@ export class MyLib {
                                 : null;
     }
 
-    useElement(nodeName: string, topId: string, cb: (elem: HTMLElement) => void, forceReborn = false) {
+    useElement(nodeName: string, topId: string, cb: (elem: HTMLElement) => void, forceReborn = false): HTMLElement {
         const id = this.normQuery(topId);
         const oldElement = document.querySelector(`#${id}`);
 
@@ -450,7 +451,7 @@ export class MyLib {
                 oldElement.remove();
             } else {
                 cb && cb(oldElement as HTMLElement);
-                return oldElement;
+                return oldElement as HTMLElement;
             }
         }
 
@@ -515,47 +516,314 @@ export class MyLib {
 
         return `${css}}`.replace(/}/, '').replace(/(^|})[^{]+{}/g, '$1');
     }
-  
+
     intervalToString(begin: number, end: number) {
-      const diff = end - begin;
-      const ms = this.getMilliseconds();
-      
-      if (diff > ms.inYear) return 'Больше года';
-      if (diff > ms.inMonth) return 'Больше месяца';
-      if (diff >= ms.inDay) {
-        const days = Math.trunc(diff % ms.inDay) + 2;
-        return `${days} ${this.declension(days, 'день', 'дня')}`;
-      }
-      
-      return '';
+        const diff = end - begin;
+        const ms = this.getMilliseconds();
+
+        if (diff > ms.inYear) return 'Больше года';
+        if (diff > ms.inMonth) return 'Больше месяца';
+        if (diff >= ms.inDay) {
+            const days = Math.trunc(diff % ms.inDay) + 2;
+            return `${days} ${this.declension(days, 'день', 'дня')}`;
+        }
+
+        return '';
     }
-    
+
     getMilliseconds(monthDays = 30, yearDays = 365) {
-      const inSec = 1000;
-      const inMin = inSec * 60;
-      const inHour = inMin * 60;
-      const inDay = inHour * 24;
-      const inMonth = inDay * monthDays;
-      const inYear = inDay * yearDays;
-      
-      return {inSec, inMin, inHour, inDay, inMonth, inYear};
+        const inSec = 1000;
+        const inMin = inSec * 60;
+        const inHour = inMin * 60;
+        const inDay = inHour * 24;
+        const inMonth = inDay * monthDays;
+        const inYear = inDay * yearDays;
+
+        return { inSec, inMin, inHour, inDay, inMonth, inYear };
     }
 
     declension(num: number, one?: string, two?: string, five?: string) {
         if (num % 1) return two;
         let absNum = Math.abs(num) % 100;
-      
+
         if (absNum > 10 && absNum < 20)
-          return this.def(five, two);
-        
+            return this.def(five, two);
+
         absNum %= 10;
-        
+
         return (absNum > 1 && absNum < 5)
-          ? two
-          : (absNum === 1)
-            ? one
-            : this.def(five, two);
-      }
+            ? two
+            : (absNum === 1)
+                ? one
+                : this.def(five, two);
+    }
+
+    dconsl(...args: any[]) {
+        return this.consl(...args);
+    }
+    conslConfig(args: any[]) {
+        return {
+            val: args[0],
+            value: args[0],
+            args,
+            get: (argn: number) => args[argn],
+        };
+    }
+
+    _clearButton?: HTMLButtonElement;
+    _conslBox?: HTMLDivElement;
+
+    conslBox({ top, toggle, show }: { top?: string, toggle?: boolean, show?: string } = {} as never) {
+
+        if (this._conslBox == null)
+            this._conslBox = this.useElement('div', `consl-app`, box => {
+
+                this.useElement('style', 'consl-style', style => {
+                    style.innerText = (`
+                .consl-grey {color: grey;}
+                .consl-green {color: green;}
+                .consl-violet {color: violet;}
+                .consl-red {color: pink;}
+                .consl-blue {color: blue;}
+                .consl-pre {margin: 0;padding: 0;display: inline-block;}
+            `);
+                });
+
+            }) as HTMLDivElement;
+
+        if (top) {
+            this._conslBox.style.position = 'absolute';
+            this._conslBox.style.marginTop = top;
+        }
+        if (toggle) {
+            this._conslBox.style.display = this._conslBox.style.display ? null as never : 'none';
+        }
+        if (show != null) {
+            this._conslBox.style.display = show ? null as never : 'none';
+        }
+
+
+        return this._conslBox;
+    }
+
+    consl(...args: any) {
+        const config: any = this.conslConfig(args);
+
+        try {
+
+            let clearButton = this._clearButton || document.getElementById(`consl-app-clear`);
+            if (clearButton == null) {
+                const button = document.createElement(`button`);
+                button.id = `consl-app-clear`;
+                button.innerText = `CLEAR`;
+                button.onclick = event => document.querySelectorAll(`.consl-app-message`).forEach(box => box.remove());
+                this.conslBox().appendChild(button);
+                this._clearButton = clearButton = button;
+            }
+            const typizator = (some: any, parent: HTMLElement, name?: string | nil, level = 0, isOwn = true, specialText = null) => {
+
+                const someType = this.typeOf(some);
+
+                const element = document.createElement('div');
+                parent.appendChild(element);
+                let html: string = '';
+                const repHtmls = (str: string) => str.replace(/[<>&#]/g, all => `&#${all.charCodeAt(0)};`);
+
+                const innerHTML = (htmlText: string) => `${name == null ? '' : `<span class="consl-${name && isOwn ? 'violet' : 'grey'}">${name ? '' : '"'}${name}${name ? '' : '"'}</span>: `}${htmlText}`;
+
+                if (specialText) html = `<span class="consl-green">${specialText}</span>`;
+                else
+                    switch (someType) {
+                        case 'Str':
+                            const bracket = `<span class="consl-grey">"</span>`;
+                            const text = repHtmls(some);
+                            const isSliced = text.length > 150;
+                            const head = isSliced ? text.slice(0, 100) : text;
+
+                            const strHtml = (innerTxt: string, showInfo = true) => `<pre class="consl-red consl-pre">${bracket}${innerTxt}${bracket}</pre>${isSliced && showInfo ? `<sub class="consl-grey">(показано ${head.length} из ${text.length} символов)</sub>` : ''}`;
+                            html = strHtml(head);
+                            if (isSliced) {
+                                let opened = true;
+
+                                element.onclick = e => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    element.innerHTML = innerHTML(strHtml(opened ? head : text, opened));
+                                    opened = !opened;
+                                };
+                            }
+
+                            break;
+                        case 'Bool':
+                        case 'Nan':
+                        case 'Num':
+                            html = `<span class="consl-blue">${some}</span>`;
+                            break;
+                        case 'Null':
+                        case 'Und':
+                            html = `<span class="consl-grey">${some}</span>`;
+                            break;
+                        case 'Func':
+                            html = some.name
+                                ? `<span class="consl-grey">${/^\s*class/.test(some.toString()) ? 'class ' : ''}${name === some.name ? '' : `${some.name} `}</span>()`
+                                : '()';
+
+                            (() => {
+                                const box = document.createElement('div');
+                                let isFirstly = true;
+                                box.hidden = true;
+                                const prevParams = '["val"]';
+
+                                element.ondblclick = e => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    const paramsStr = prompt(`invoke ${name || 'function'}`, prevParams) || '[]';
+                                    const params = JSON.parse(paramsStr);
+
+                                    some.apply(null, params);
+                                };
+
+                                element.onclick = e => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    box.hidden = !box.hidden;
+
+                                    if (isFirstly) {
+                                        isFirstly = false;
+                                        element.appendChild(box);
+                                        box.innerHTML = `<pre>${some}</pre>`;
+                                    }
+                                };
+                            })();
+                            break;
+                        case 'Arr':
+                        case 'Obj':
+                            (() => {
+                                const isArr = someType === 'Arr';
+                                const box = document.createElement('div');
+                                let isFirstly = true;
+                                box.hidden = true;
+
+
+                                if (some instanceof RegExp) {
+                                    html = some.toString();
+                                } else {
+                                    html = isArr
+                                        ? `[<span class="consl-grey">${some.length}</span>]`
+                                        : some.constructor && some.constructor.name && some.constructor.name !== 'Object'
+                                            ? `<span class="consl-grey">${some.constructor.name}</span> {}`
+                                            : '{}';
+                                    element.onclick = e => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        box.hidden = !box.hidden;
+
+                                        if (isFirstly) {
+                                            isFirstly = false;
+                                            element.appendChild(box);
+                                            const owns = this.getAllProperties(some).filter(propn => !some.hasOwnProperty(propn));
+
+                                            Object.keys(some).concat(isArr ? ['length'] : []).forEach(fieldn => typizator(some[fieldn], box, fieldn, level + 1, some.hasOwnProperty(fieldn)));
+                                            if (owns.length) {
+                                                let isInnFirstly = true;
+                                                const innBox = document.createElement('div');
+                                                const elem = typizator([], box, null, level + 1, false, ((some || 0).constructor || 0).name || 'open()');
+                                                innBox.hidden = true;
+
+                                                elem.onclick = e => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    innBox.hidden = !innBox.hidden;
+
+                                                    if (isInnFirstly) {
+                                                        isInnFirstly = false;
+                                                        box.appendChild(innBox);
+                                                        owns.forEach(fieldn => typizator(some[fieldn], innBox, fieldn, level + 1, false));
+                                                    }
+                                                };
+                                            }
+                                        }
+                                    };
+                                }
+                            })();
+                            break;
+                    }
+
+                element.style.marginLeft = `${level ? 15 : 0}px`;
+                element.innerHTML = innerHTML(html);
+
+
+                return element;
+            };
+
+            const child = document.createElement(`div`);
+            const className = 'consl-app-message';
+
+            child.style.borderBottom = `solid 1px grey`;
+            child.style.marginBottom = `1em`;
+            child.style.maxHeight = ``;
+            child.className = className;
+            Array.from(arguments).forEach(something => typizator(something, child));
+            this.insertAfter(child, clearButton);
+
+
+            const setConfig = (params: any = {}) => {
+                const {
+                    type = 1,
+                    top = '100vh',
+                    unclosable = false
+                } = params;
+
+                const [bgColor = 'black', color = 'white'] = [[`red`], [`black`], [`blue`], ['orange', 'black']][type] || [];
+
+                child.style.backgroundColor = bgColor;
+                child.style.color = color;
+
+                if (unclosable) child.classList.remove(className);
+
+                this.conslBox({ top });
+                return config;
+            };
+
+            const insertAfter = (element: HTMLElement) => {
+                this.insertAfter(child, element);
+                return config;
+            };
+
+            setConfig();
+            config.config = setConfig;
+            config.insertAfter = insertAfter;
+
+            return config;
+        } catch (error) {
+            config.config = () => {
+                throw error;
+            };
+            config.insertAfter = () => {
+                throw error;
+            };
+
+            return config;
+        }
+    }
+
+    getAllProperties(obj: any) {
+        const allProps: string[] = [];
+        let curr = obj;
+        do {
+            Object.getOwnPropertyNames(curr).forEach((prop) => {
+                if (allProps.indexOf(prop) === -1)
+                    allProps.push(prop);
+            })
+        } while (curr = Object.getPrototypeOf(curr));
+        return allProps;
+    }
+
+    insertAfter(elem: HTMLElement, refElem: HTMLElement) {
+      return refElem.parentNode?.insertBefore(elem, refElem.nextSibling);
+    }
 }
 
 

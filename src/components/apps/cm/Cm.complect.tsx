@@ -12,7 +12,7 @@ import { StyleProp } from "./complect/settings/StyleProp";
 import Editor from "./editor/Editor";
 
 let rules: Record<string, true | null> = {};
-let actions: CmAction[] = [];
+export let actions: CmAction[] = [];
 let localAuth: BoardAuth;
 
 const update = () => {

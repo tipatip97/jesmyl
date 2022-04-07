@@ -21,6 +21,7 @@ const initialState: CmState = {
   marks: cmStorage.getOr('marks', []),
   cm_meetings: cmStorage.getOr('cm_meetings', []),
   comFontSize: 100,
+  chords: cmStorage.getOr('chords', {}),
 
   numComUpdates: 0,
   numColsUpdates: 0,
@@ -46,6 +47,9 @@ export const slice = createSlice({
     },
     setMarkList: (state, action: PayloadAction<number[]>) => {
       state.marks = action.payload;
+    },
+    setCmChords: (state, action: PayloadAction<Record<string, number[]>>) => {
+      state.chords = action.payload;
     },
     setMeetingList: (state, action: PayloadAction<IExportableMeeting[]>) => {
       state.cm_meetings = action.payload;
