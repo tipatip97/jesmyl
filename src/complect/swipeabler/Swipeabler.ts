@@ -42,9 +42,6 @@ export class Swipeabler {
         const move = { x: 0, y: 0 };
 
         this.onTouchStart = (event: TouchEvent) => {
-            event.preventDefault = () => event.preventDefault();
-            //event.stopPropagation();
-
             const { clientX: x, clientY: y } = event.targetTouches[0];
             start.x = x;
             start.y = y;

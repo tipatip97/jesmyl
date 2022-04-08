@@ -71,6 +71,10 @@ body {
 
 }
 
+.non-overscroll {
+  overscroll-behavior: none;
+}
+
 body.light-theme {
   --color-ok-6: #587455;
   --color-ok-4: #b6d285;
