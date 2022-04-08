@@ -279,7 +279,7 @@ export class Com extends EditableCom {
       })
       .sort((a, b) => a.w - b.w);
     const orders = [];
-    let minimals: [string?, number?,][] = [];
+    let minimals: [string?, number?][] = [];
     const styles = setts.styles || [];
     const groups: Record<string, number> = {};
     let viewIndex = 0;
@@ -351,7 +351,7 @@ export class Com extends EditableCom {
       top.isTarget = ord.u != null && val.some(o => o.a === ord.u);
       top.viewIndex = viewIndex++;
       top.sourceIndex = val.indexOf(ord);
-      top.originIndex = val.indexOf(targetOrd?.top.source ?? ord);
+      // top.originIndex = val.indexOf(targetOrd?.top.source ?? ord);
       top.headClassName = setts.query(style.name, 'headerProps', ' ');
       top.textClassName = setts.query(style.name, 'textProps', ' ');
 
@@ -403,7 +403,7 @@ export class Com extends EditableCom {
           ancTop.anchorInheritIndex = anchorInheritIndex++;
           ancTop.viewIndex = viewIndex++;
           ancTop.sourceIndex = val.indexOf(targetOrd.top.source as IExportableOrderTop);
-          ancTop.originIndex = val.indexOf(anc);
+          // ancTop.originIndex = val.indexOf(anc);
           ancTop.headClassName = setts.query(leadStyle?.name || '', 'headerProps', ' ', ancStyle.name);
           ancTop.textClassName = setts.query(leadStyle?.name || '', 'textProps', ' ', ancStyle.name);
 
@@ -439,7 +439,7 @@ export class Com extends EditableCom {
           nextTop.source = next;
           nextTop.viewIndex = viewIndex++;
           nextTop.sourceIndex = val.indexOf(next);
-          nextTop.originIndex = val.indexOf(next);
+          // nextTop.originIndex = val.indexOf(next);
           nextTop.headClassName = setts.query(style.name, 'headerProps', ' ', nextStyle.name);
           nextTop.textClassName = setts.query(style.name, 'textProps', ' ', nextStyle.name);
 

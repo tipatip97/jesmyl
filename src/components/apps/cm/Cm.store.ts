@@ -20,7 +20,7 @@ const initialState: CmState = {
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
   cm_meetings: cmStorage.getOr('cm_meetings', []),
-  comFontSize: 100,
+  comFontSize: cmStorage.getOr('comFontSize', 100),
   chords: cmStorage.getOr('chords', {}),
 
   numComUpdates: 0,
@@ -65,6 +65,7 @@ export const slice = createSlice({
     },
     updateComFontSize: (state, action: PayloadAction<number>) => {
       state.comFontSize = action.payload;
+      cmStorage.set('comFontSize', action.payload);
     },
     changeRollMode: (state, action: PayloadAction<CmRollMode>) => {
       state.rollMode = action.payload;
@@ -84,7 +85,7 @@ export const slice = createSlice({
   },
 });
 
-export const { colsForceUpdate, setCmPhase, selectCcol, updateIsComFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates } =
+export const { colsForceUpdate, setCmPhase, selectCcol, updateIsComFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates, updateComFontSize } =
   slice.actions;
 export default slice.actions;
 

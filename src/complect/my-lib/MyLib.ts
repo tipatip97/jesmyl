@@ -822,7 +822,87 @@ export class MyLib {
     }
 
     insertAfter(elem: HTMLElement, refElem: HTMLElement) {
-      return refElem.parentNode?.insertBefore(elem, refElem.nextSibling);
+        return refElem.parentNode?.insertBefore(elem, refElem.nextSibling);
+    }
+
+    scrollToView(element: HTMLElement, position = 'center', props: { parent: HTMLElement; force: boolean; animationTime: number; } = {} as never) {
+        if (!element) return;
+        const {
+            parent = element.parentElement,
+            force = true,
+            animationTime = 0
+        } = props;
+
+        if (!parent) return;
+
+        const attrName = 'animation.ts';
+        const attrVal = (Date.now() + Math.random()).toString();
+        const is = (pos: RegExp) => ~(position || 'center').search(pos);
+        const isStatic = getComputedStyle(parent).position === 'static';
+        const prevPosition = parent.style.position;
+
+        if (isStatic) {
+            parent.style.position = 'relative';
+        }
+
+        parent.setAttribute(attrName, attrVal);
+
+        const scroll = (posMode = 's' || 'c' || 'e', dir = 'v' || 'h') => {
+            const [pos, vol]: ['Top' | 'Left', 'Height' | 'Width'] = dir === 'v'
+                ? ['Top', 'Height']
+                : ['Left', 'Width'];
+
+            const parentScroll = parent[`scroll${pos}`];
+            const parentVol = parent[`client${vol}`];
+            const elemVol = element[`client${vol}`];
+            const elemPos = element[`offset${pos}`];
+
+            const end = elemPos - parentVol + elemVol;
+            const center = elemPos - parentVol / 2 + elemVol / 2;
+
+            const newPos = posMode === 's'
+                ? elemPos
+                : posMode === 'e'
+                    ? end
+                    : center;
+
+            if (force || parentScroll > elemPos || parentScroll + parentVol < elemPos + elemVol) {
+                if (animationTime < 1) parent[`scroll${pos}`] = newPos;
+                else {
+                    const diff = parent[`scroll${pos}`] - newPos;
+                    const time = Math.abs(animationTime / diff);
+                    const dir = diff > 0 ? -1 : 1;
+                    let last = 0;
+
+                    const step = (dec = 0) => setTimeout(() => {
+                        const px = (parent[`scroll${pos}`] += dir) - dir;
+
+                        if (parent.getAttribute(attrName) === attrVal)
+                            if (dec < 5 && (dir > 0 ? px < newPos : px > newPos))
+                                step(dec + (px !== last ? 0 : 1));
+
+                        last = px;
+                    }, time);
+
+                    step();
+                }
+            }
+        };
+
+        [
+            [/left/i, /right/i, /top/i, /bottom/i, /center +-/i, 'h'],
+            [/top/i, /bottom/i, /left/i, /right/i, /- +center/i, 'v']
+        ].forEach(([sReg, eReg, nsReg, neReg, ncReg, dir]: any[]) => {
+            if (is(sReg)) scroll('s', dir);
+            else if (is(eReg)) scroll('e', dir);
+            else if (
+                is(nsReg) || is(neReg)
+                    ? is(/center/i)
+                    : is(/center/i) && !is(ncReg)
+            ) scroll('c', dir);
+        });
+
+        if (isStatic) parent.style.position = prevPosition;
     }
 }
 

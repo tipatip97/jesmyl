@@ -67,7 +67,7 @@ body {
 
   --svg-color: var(--color-far);
   color: var(--color-far);
-  overscroll-behavior: none;
+  // overscroll-behavior: none;
 
 }
 
@@ -145,7 +145,6 @@ body {
 
   --svg-color: var(--color-far);
   color: var(--color-far);
-  overscroll-behavior: none;
 
   &.light-theme {
     --color-ok-6: #587455;

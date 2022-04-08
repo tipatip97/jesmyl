@@ -193,10 +193,8 @@ export class Order extends EditableOrder {
   }
 
   getInheritance<Key extends keyof Inheritancables = keyof Inheritancables>(fieldn: Key): Inheritancables[Key] | null {
-    return (this.top.isAnchorInherit && this.top.anchorInheritIndex != null
-      ? this.top.leadOrd?.top.source?.inh && this.top.leadOrd.top.source.inh[fieldn] != null
-        ? this.top.leadOrd.top.source.inh[fieldn][this.top.anchorInheritIndex]
-        : null
+    return (this.top.isAnchorInherit && this.top.anchorInheritIndex != null && this.top.leadOrd?.top.source?.inh && this.top.leadOrd.top.source.inh[fieldn] != null
+      ? this.top.leadOrd.top.source.inh[fieldn][this.top.anchorInheritIndex]
       : this.top.source
         ? this.top.source[fieldn]
         : null) as never;

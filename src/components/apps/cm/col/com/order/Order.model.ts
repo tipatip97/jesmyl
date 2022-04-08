@@ -38,6 +38,8 @@ export interface IExportableOrderTop extends IExportableOrder {
     init?: IExportableOrderTop;
     targetOrd?: Order | nil;
     leadOrd?: Order;
+    ord?: Order;
+    sourceOrd?: Order | nil;
     prev?: Order | null;
     next?: Order | null;
     prevOrd?: Order | null;
@@ -53,7 +55,6 @@ export interface IExportableOrderTop extends IExportableOrder {
     inh?: Inheritancables;
     anchorInheritIndex?: number;
     sourceIndex?: number;
-    originIndex?: number;
     inhFields?: string[];
     headClassName?: string;
     textClassName?: string;

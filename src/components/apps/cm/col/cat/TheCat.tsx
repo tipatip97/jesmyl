@@ -1,16 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import mylib from "../../../../../complect/my-lib/MyLib";
 import { usePhase } from "../../base/usePhase";
 import { isAccessed } from "../../Cm.complect";
 import { useCcol } from "../useCcol";
 
 export default function TheCat() {
   const [ccat] = useCcol("cat");
-  const [, setCcom] = useCcol("com");
+  const [ccom, setCcom] = useCcol("com");
   const { setPhase } = usePhase();
-  const [term, setTerm] = useState(ccat?.term || '');
-  const [term1, setTerm1] = useState(ccat?.term || '');
-
-  useEffect(() => {}, [term]);
+  const [term, setTerm] = useState(ccat?.term || "");
+  const [term1, setTerm1] = useState(ccat?.term || "");
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -19,6 +18,12 @@ export default function TheCat() {
     setPhase("cats");
     return null;
   }
+
+  if (ccom)
+    setTimeout(() => {
+      const view = document.getElementById(`com-face-${ccom.wid}`);
+      if (view) mylib.scrollToView(view, "top");
+    }, 100);
 
   return (
     <div className="category-wrapper">
@@ -84,7 +89,7 @@ export default function TheCat() {
             const { com, errors } = wrap || {};
 
             return com == null ? null : (
-              <div key={`com-face-${com.wid}`} id={"" + com.wid}>
+              <div key={`com-face-${com.wid}`} id={`com-face-${com.wid}`}>
                 <button
                   key={`com-face-button-${com.wid}`}
                   className={`com-face mbtn ${
@@ -95,7 +100,7 @@ export default function TheCat() {
                   }}
                   onClick={() => {
                     setCcom(com);
-                    setPhase('com');
+                    setPhase("com");
                   }}
                 >
                   <span>{`${com.index == null ? "?" : com.index - -1}${

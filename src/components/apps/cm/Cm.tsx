@@ -5,25 +5,18 @@ import { RootState } from "../../../store";
 import { cmStorage } from "../../../store/jstorages";
 import { Comps, isAccessed } from "./Cm.complect";
 import "./Cm.scss";
-import { updateIsComFullscreenMode } from "./Cm.store";
+import { updateComFontSize, updateIsComFullscreenMode } from "./Cm.store";
 import TheMeetings from "./meetings/TheMeetings";
 import { mainTopButtons } from "./editor/Lazies";
 import Marks from "./marks/Marks";
 import { usePhase } from "./base/usePhase";
 import { useCols } from "./cols/useCols";
+import Resizer from "./resizer/Resizer";
 
 export default function CmApplication() {
-  // if (g.nav.phase < 3) setTimeout(() => {
-  //   const view = document.getElementById((g.nav[g.nav.phase - -1] || '').toString());
-  //   if (view) mylib.scrollToView(view, 'top');
-  // }, 100);
-
-  // const rangeStep = 5;
-  // let rangeValue = parseFloat(localStorage[g.lsCurrentCompositionFontSize] || '100');
-  // const rangeMin = 20;
-  // const rangeMax = 200;
-
-  // rangeValue = rangeValue < rangeMin && rangeValue > 0 ? rangeMin : rangeValue > rangeMax ? rangeMax : rangeValue;
+  const rangeStep = 5;
+  const rangeMin = 20;
+  const rangeMax = 200;
 
   const dispatch = useDispatch();
   // const phase = useSelector((state: RootState) => state.cm.phase);
@@ -32,6 +25,7 @@ export default function CmApplication() {
   const isComFullscreenMode = useSelector(
     (state: RootState) => state.cm.isComFullscreenMode
   );
+  const comFontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const [, setCols] = useCols();
 
   const [topClickDateNow, setTopClickDateNow] = useState(0);
@@ -69,12 +63,12 @@ export default function CmApplication() {
             {phase === "cats" ? (
               <EvaIcon name="arrowhead-left-outline" />
             ) : (
-              <EvaIcon name="chevron-left-outline" />
+              <EvaIcon name="arrow-back-outline" />
             )}
           </button>
           {/* {g.streamManager.isJustSub ? null :  */}
           <Marks key="marks-list" />
-          {!isCanGoBack("news") ? null : (
+          {!isCanGoBack("news") || !isAccessed("canWatch") ? null : (
             <button
               key="execs-button"
               className="execs-button mbtn m-no mxs"
@@ -95,36 +89,36 @@ export default function CmApplication() {
           )}
           {/* {g.streamManager.isJustSub ? null : ( */}
           <TheMeetings />
-          {/* {(() => {
+          {(() => {
             const getComWindows = () =>
               document.querySelectorAll(".com-ord-list");
 
-            return g.nav.isPhase(g.Phase.Com, g.Phase.Editor) &&
-              g.RangePanel ? (
-              <RangePanel
-                value={rangeValue}
+            return 1 ? (
+              <Resizer
+                value={comFontSize}
                 min={rangeMin}
                 max={rangeMax}
                 step={rangeStep}
-                textElem={() => Array.from(getComWindows())}
-                textWide={() => "parent"}
-                onRange={(value, per) => {
+                // textElem={() => Array.from(getComWindows())}
+                // textWide={() => "parent"}
+                onRange={(value) => {
                   const comWindows = getComWindows();
+
                   comWindows &&
                     Array.from(comWindows).forEach((comWindow) => {
-                      comWindow.style.fontSize = `${value}%`;
+                      (comWindow as HTMLElement).style.fontSize = `${value}%`;
                     });
                 }}
                 onChange={(value, per) => {
-                  localStorage.setItem(g.lsCurrentCompositionFontSize, value);
-                  rangeValue = value.toFixed(0);
+                  dispatch(updateComFontSize(value));
+                  // rangeValue = value.toFixed(0);
                 }}
-                registerUpdaters={(update) => {
-                  g.updateFlexFontSize = update;
-                }}
+                // registerUpdaters={(update) => {
+                //   g.updateFlexFontSize = update;
+                // }}
               />
             ) : null;
-          })()} */}
+          })()}
         </div>
 
         {Object.entries(Comps).map(([phasen, phaseComp]) => {
