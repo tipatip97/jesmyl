@@ -19,7 +19,6 @@ export default function CmApplication() {
   const rangeMax = 200;
 
   const dispatch = useDispatch();
-  // const phase = useSelector((state: RootState) => state.cm.phase);
   const { phase, setPhase, goBack, isCanGoBack } = usePhase();
   const rollMode = useSelector((state: RootState) => state.cm.rollMode);
   const isComFullscreenMode = useSelector(
@@ -40,10 +39,9 @@ export default function CmApplication() {
           isComFullscreenMode || rollMode ? " hidden-tools" : ""
         }${rollMode ? " roll-mode" : ""}`}
         onClick={() => {
-          if (phase !== "com" || rollMode) return; ///* || g.streamManager.isCurr
+          if (phase !== "com" || rollMode) return;
           if (Date.now() - topClickDateNow < 500) {
             dispatch(updateIsComFullscreenMode(!isComFullscreenMode));
-            // updateFlexFontSize(400);
             setTopClickDateNow(0);
           } else setTopClickDateNow(Date.now());
         }}
@@ -66,7 +64,6 @@ export default function CmApplication() {
               <EvaIcon name="arrow-back-outline" />
             )}
           </button>
-          {/* {g.streamManager.isJustSub ? null :  */}
           <Marks key="marks-list" />
           {!isCanGoBack("news") || !isAccessed("canWatch") ? null : (
             <button
@@ -87,20 +84,17 @@ export default function CmApplication() {
               <EvaIcon name="monitor-outline" />
             </button>
           )}
-          {/* {g.streamManager.isJustSub ? null : ( */}
           <TheMeetings />
           {(() => {
             const getComWindows = () =>
               document.querySelectorAll(".com-ord-list");
 
-            return 1 ? (
+            return phase === "com" ? (
               <Resizer
                 value={comFontSize}
                 min={rangeMin}
                 max={rangeMax}
                 step={rangeStep}
-                // textElem={() => Array.from(getComWindows())}
-                // textWide={() => "parent"}
                 onRange={(value) => {
                   const comWindows = getComWindows();
 
@@ -109,13 +103,7 @@ export default function CmApplication() {
                       (comWindow as HTMLElement).style.fontSize = `${value}%`;
                     });
                 }}
-                onChange={(value, per) => {
-                  dispatch(updateComFontSize(value));
-                  // rangeValue = value.toFixed(0);
-                }}
-                // registerUpdaters={(update) => {
-                //   g.updateFlexFontSize = update;
-                // }}
+                onChange={(value) => dispatch(updateComFontSize(value))}
               />
             ) : null;
           })()}
