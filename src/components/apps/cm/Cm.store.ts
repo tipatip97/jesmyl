@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
 import { appStorage, cmStorage } from "../../../store/jstorages";
 import { ChordVisibleVariant, CmPhase, CmRollMode, CmState, CmStorage } from "./Cm.model";
+import { FontSizeContainPropsPosition } from "./complect/font-size-contain/FontSizeContain.model";
 import { IExportableMeeting } from "./meetings/Meetings.model";
 
 export const cmExer = new Exer<CmStorage>(cmStorage, 'cm');
@@ -22,6 +23,10 @@ const initialState: CmState = {
   cm_meetings: cmStorage.getOr('cm_meetings', []),
   comFontSize: cmStorage.getOr('comFontSize', 100),
   chords: cmStorage.getOr('chords', {}),
+  translationUpdates: 0,
+  translationBlock: 0,
+  translationBlockIsVisible: true,
+  translationBlockPosition: 'center',
 
   numComUpdates: 0,
   numColsUpdates: 0,
@@ -70,22 +75,34 @@ export const slice = createSlice({
     changeRollMode: (state, action: PayloadAction<CmRollMode>) => {
       state.rollMode = action.payload;
     },
+    setTranslationBlock: (state, action: PayloadAction<number>) => {
+      state.translationBlock = action.payload;
+    },
+    setTranslationBlockIsVisible: (state, action: PayloadAction<boolean>) => {
+      state.translationBlockIsVisible = action.payload;
+    },
+    setTranslationBlockPosition: (state, action: PayloadAction<FontSizeContainPropsPosition>) => {
+      state.translationBlockPosition = action.payload;
+    },
     changeRollModeMarks: (state, action: PayloadAction<boolean>) => {
       state.rollModeMarks = action.payload;
     },
+    riseUpTranslationUpdates: (state) => {
+      state.translationUpdates++;
+    },
     comForceUpdate: (state) => {
-      state.numComUpdates = state.numComUpdates + 1;
+      state.numComUpdates++;
     },
     colsForceUpdate: (state) => {
-      state.numColsUpdates = state.numColsUpdates + 1;
+      state.numColsUpdates++;
     },
     riseUpModalUpdates: (state) => {
-      state.numModalUpdates = state.numModalUpdates + 1;
+      state.numModalUpdates++;
     },
   },
 });
 
-export const { colsForceUpdate, setCmPhase, selectCcol, updateIsComFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates, updateComFontSize } =
+export const { colsForceUpdate, setCmPhase, selectCcol, updateIsComFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates, updateComFontSize, setTranslationBlock, setTranslationBlockIsVisible, setTranslationBlockPosition, riseUpTranslationUpdates } =
   slice.actions;
 export default slice.actions;
 

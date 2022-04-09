@@ -3,11 +3,16 @@ import { IExportableCols } from "./cols/Cols.model";
 import { IExportableMeeting } from "./meetings/Meetings.model";
 import { IExportableSetts } from "./complect/settings/Setts.model";
 import { EeStorageStoreType } from "./ee-storage/EeStorage.model";
+import { FontSizeContainPropsPosition } from "./complect/font-size-contain/FontSizeContain.model";
 
 
 
 export interface CmState extends CmStoraged {
     rollMode: CmRollMode;
+    translationUpdates: number;
+    translationBlock: number;
+    translationBlockIsVisible: boolean;
+    translationBlockPosition: FontSizeContainPropsPosition;
     isComFullscreenMode: boolean;
     isPlayerShown: boolean;
     rollModeMarks: boolean;

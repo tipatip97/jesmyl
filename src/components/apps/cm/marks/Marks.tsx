@@ -17,9 +17,8 @@ export default function Marks(props: MarksProps) {
 
   const { marks, setMarks, markedComs, bumerangMarks } = useMarks();
   const [ccom, setCcom] = useCcol("com");
-  const { setPhase } = usePhase();
+  const { phase, setPhase } = usePhase();
 
-  // g.marks.listenOnEmpty(isOpened => !isOpened && this.setState({ isOpened }));
   const isActive = (comw: number, com: Com, ccomw?: number) =>
     mylib.isFunc(props.setIsActive)
       ? (props.setIsActive as Function)(comw, com, ccomw)
@@ -59,41 +58,7 @@ export default function Marks(props: MarksProps) {
                         confirm: "Очистить список закладок",
                         onClick: () => setMarks([]),
                       },
-                      // !g.meetings.isEditable ? null : 
-                      [<AddToMeetingButton key='AddToMeetingButton' />]
-                      // {
-                      //   value: "Поделиться",
-                      //   type: "button",
-                      //   onClick: () => {
-                      //     let description = "";
-                      //     modalService.open({
-                      //       title: "Поделиться",
-                      //       description: "Нужно скопировать ссылку",
-                      //       inputs: [
-                      //         {
-                      //           title: "Описание",
-                      //           placeholder: "Необязательно",
-                      //           onInput: ({ event }) =>
-                      //             (description = event.target.value),
-                      //         },
-                      //         // {
-                      //         //   title: "Ссылка",
-                      //         //   value: () =>
-                      //         //     applicanter.prepareStarterHref("marks_list", {
-                      //         //       appAction: {
-                      //         //         app: "cm",
-                      //         //         type: "marksList",
-                      //         //         val: {
-                      //         //           s: g.marks.stack || [],
-                      //         //           d: description,
-                      //         //         },
-                      //         //       },
-                      //         //     }),
-                      //         // },
-                      //       ],
-                      //     });
-                      //   },
-                      // },
+                      [<AddToMeetingButton key="AddToMeetingButton" />],
                     ],
                   });
                 }}
@@ -134,7 +99,7 @@ export default function Marks(props: MarksProps) {
                         }
                       : () => {
                           setCcom(com);
-                          setPhase("com");
+                          if (phase !== "translations") setPhase("com");
                           setIsOpened(false);
                         }
                   }

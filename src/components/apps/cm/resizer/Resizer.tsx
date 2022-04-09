@@ -168,7 +168,7 @@ export default function Resizer(props: Partial<ResizerProps>) {
             panel.classList.add("ranged");
           }
 
-          if (value != newValue) {
+          if (value !== newValue) {
             value = newValue;
 
             if (isRangeMode && !isNaN(pxPer)) {
@@ -195,7 +195,7 @@ export default function Resizer(props: Partial<ResizerProps>) {
           panel.classList.remove("ranged");
           isRangeMode = false;
 
-          if (value != curr) {
+          if (value !== curr) {
             prop("onChange")(value, percents);
             updateCurr(value);
           } else {

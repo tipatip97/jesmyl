@@ -13,7 +13,7 @@ const phaseJumps: Record<CmPhase, CmPhase | null> = {
     cat: "cats",
     editor: "com",
     news: null,
-    translations: null,
+    translations: 'com',
 };
 
 export function usePhase() {

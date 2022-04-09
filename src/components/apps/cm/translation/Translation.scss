@@ -1,0 +1,61 @@
+.translation-screen-wrapper {
+    position: relative;
+    width: 50vw;
+    height: 20vh;
+}
+
+.translation-screen-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 1em;
+
+    .translation-screen-wrapper-inner {
+        user-select: none;
+        cursor: pointer;
+        background: black;
+        white-space: pre;
+        color: var(--color-far);
+        border: solid 1px transparent;
+        font-size: 14px;
+        overflow: hidden;
+
+        &.active {
+            border-color: var(--color-far);
+        }
+    }
+}
+
+.translations-line {
+    .translations-line-item {
+        display: inline-block;
+    }
+}
+
+.translations-line {
+    margin: 1em 0;
+    padding: 1em 0;
+    overflow: auto;
+    white-space: nowrap;
+    background: black;
+
+    .translations-line-item {
+        display: inline-block;
+        vertical-align: middle;
+        padding: 0 1em;
+
+        .translations-line-item-inner {
+            user-select: none;
+            cursor: pointer;
+            background: black;
+            white-space: pre;
+            color: var(--color-far);
+            border: solid 1px transparent;
+            font-size: 14px;
+            overflow: hidden;
+
+            &.active {
+                border-color: var(--color-far);
+            }
+        }
+    }
+}

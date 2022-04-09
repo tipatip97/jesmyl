@@ -1,11 +1,11 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { IExportableCom } from "./Com.model";
+import { setts } from "../../complect/settings/Setts";
+import { StyleProp } from "../../complect/settings/StyleProp";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.const";
+import { IExportableCom } from "./Com.model";
+import { EditableCom } from "./EditableCom";
 import { Order } from "./order/Order";
 import { IExportableOrder, IExportableOrderTop } from "./order/Order.model";
-import { StyleProp } from "../../complect/settings/StyleProp";
-import { setts } from "../../complect/settings/Setts";
-import { EditableCom } from "./EditableCom";
 
 export class Com extends EditableCom {
   initial: Record<string, any>;
@@ -136,21 +136,22 @@ export class Com extends EditableCom {
     this.resetChordLabels();
   }
 
-  getOrderedTexts(isInsludeName = false, isIncluseEndstars = true) {
-    return this.getOrderedBlocks(isInsludeName = false, isIncluseEndstars).map((lines, linesi, linesa) => lines.join('\n') + (isIncluseEndstars && linesa.length - 1 === linesi ? '\n* * *' : ''));
+  getOrderedTexts(isIncluseEndstars = true) {
+    return this.getOrderedBlocks().map((lines, linesi, linesa) => lines.join('\n') + (isIncluseEndstars && linesa.length - 1 === linesi ? '\n* * *' : ''));
   }
 
-  getOrderedBlocks(isInsludeName = false, isIncluseEndstars = true, isIncludeChordedBlocks = true) {
-    const textBeats = this.orders.reduce((text, ord) => text + (ord.top.t == null ? isIncludeChordedBlocks ? (text ? '\n' : '') + ord.top.header() : '' : (text ? '\n' : '') + ord.repeated), '').split(/\n/);
+  getOrderedBlocks() {
+    const textBeats = this.orders.reduce((text, ord) =>
+      text + (ord.top.t == null ? '' : (text ? '\n' : '') + ord.repeated), '').split(/\n/);
 
     const texts = this.translationMap().map(peaceSize => {
       return textBeats.splice(0, peaceSize);
     });
 
-    return (isInsludeName ? [[this.name]] : []).concat(texts);
+    return texts;
   }
 
-  translationMap(isIncludeChordedBlocks = false) {
+  translationMap() {
     if (this._translationMap != null) return this._translationMap;
 
     const push = translationPushKinds[this.translationPushKind || 0].cb;
@@ -160,7 +161,6 @@ export class Com extends EditableCom {
 
     this.orders.forEach((ord: Order, ordi: number, orda: Order[]) => {
       if (ord.top.t == null) {
-        isIncludeChordedBlocks && push(map, 1);
         curr = 0;
         return;
       }

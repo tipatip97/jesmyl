@@ -10,6 +10,7 @@ import TheCom from "./col/com/TheCom";
 import { setts } from "./complect/settings/Setts";
 import { StyleProp } from "./complect/settings/StyleProp";
 import Editor from "./editor/Editor";
+import Translations from "./translation/Translation";
 
 let rules: Record<string, true | null> = {};
 export let actions: CmAction[] | nil;
@@ -65,7 +66,7 @@ export const Comps: Record<CmPhase, () => ReactNode> = {
   com: () => <TheCom />,
   editor: () => <Editor />,
   news: () => null,
-  translations: () => null,
+  translations: () => <Translations />,
 };
 
 const styleProps = [
