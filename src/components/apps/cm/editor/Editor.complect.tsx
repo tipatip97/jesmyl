@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import EvaIcon from "../../../../complect/Eva";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 
 export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [
@@ -10,12 +10,12 @@ export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [
     "t",
     <EvaIcon name="text-outline" alt="Текст" />,
-    ({ coln }) => null, //<TheComEditor coln={coln} />,
+    () => null, //<TheComEditor coln={coln} />,
   ],
   [
     "c",
     <EvaIcon name="music-outline" alt="Аккорды" />,
-    ({ coln }) => null, //<TheComEditor coln={coln} />,
+    () => null, //<TheComEditor coln={coln} />,
   ],
   [
     "o",
@@ -36,6 +36,6 @@ export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [
     "tr",
     <EvaIcon name="monitor-outline" alt="Настройка трансляции" />,
-    ({ coln }) => null, //<TheTranslationSetting />,
+    () => null, //<TheTranslationSetting />,
   ],
 ];

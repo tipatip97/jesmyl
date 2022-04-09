@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EvaIcon from "../../../complect/Eva";
+import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../store";
 import { cmStorage } from "../../../store/jstorages";
+import { usePhase } from "./base/usePhase";
 import { Comps, isAccessed } from "./Cm.complect";
 import "./Cm.scss";
 import { updateComFontSize, updateIsComFullscreenMode } from "./Cm.store";
-import TheMeetings from "./meetings/TheMeetings";
+import { useCols } from "./cols/useCols";
 import { mainTopButtons } from "./editor/Lazies";
 import Marks from "./marks/Marks";
-import { usePhase } from "./base/usePhase";
-import { useCols } from "./cols/useCols";
+import TheMeetings from "./meetings/TheMeetings";
 import Resizer from "./resizer/Resizer";
 
 export default function CmApplication() {
@@ -74,16 +74,18 @@ export default function CmApplication() {
               <EvaIcon name="list" />
             </button>
           )}
-          {!isCanGoBack("translations") ||
-          !isAccessed("canShowTranslation") ? null : (
-            <button
-              key="translations-button"
-              className="translations-button mbtn m-no mxs"
-              onClick={() => setPhase("translations")}
-            >
-              <EvaIcon name="monitor-outline" />
-            </button>
-          )}
+          {
+            // !isAccessed("canShowTranslation") ||
+            !isCanGoBack("translations") ? null : (
+              <button
+                key="translations-button"
+                className="translations-button mbtn m-no mxs"
+                onClick={() => setPhase('translations')}
+              >
+                <EvaIcon name="monitor-outline" />
+              </button>
+            )
+          }
           <TheMeetings />
           {(() => {
             const getComWindows = () =>

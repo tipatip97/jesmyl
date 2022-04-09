@@ -1,6 +1,6 @@
 import { CSSProperties, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EvaIcon from "../../../../../../complect/Eva";
+import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../../store";
 import { changeRollMode, changeRollModeMarks } from "../../../Cm.store";
 
@@ -22,7 +22,7 @@ export default function ComPlayerSignaler() {
       }-mode`}
     >
       <div className="speed-panel">
-        {["plus", "", "minus"].map((sign, signi) => {
+        {(["plus", "", "minus"] as ["plus", "", "minus"]).map((sign, signi) => {
           const isActive = false; //g.actions.com.isSpeedRollKfSetterActive(signi);
 
           return (
@@ -42,7 +42,7 @@ export default function ComPlayerSignaler() {
               {sign ? (
                 <EvaIcon name={`${sign}-square${isActive ? "" : "-outline"}`} />
               ) : (
-                '?'//g.actions.com.speedRollKfLabel
+                "?" //g.actions.com.speedRollKfLabel
               )}
             </div>
           );
@@ -51,9 +51,11 @@ export default function ComPlayerSignaler() {
       <div
         key="com-player-signaler"
         className={`com-player-signaler ${closing ? "closing" : ""}`}
-        style={{
-          "--slosing-time-kf": closingTime,
-        } as CSSProperties}
+        style={
+          {
+            "--slosing-time-kf": closingTime,
+          } as CSSProperties
+        }
         onClick={(event) => {
           event.stopPropagation();
         }}

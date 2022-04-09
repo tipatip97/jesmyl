@@ -140,8 +140,8 @@ export class Com extends EditableCom {
     return this.getOrderedBlocks(isInsludeName = false, isIncluseEndstars).map((lines, linesi, linesa) => lines.join('\n') + (isIncluseEndstars && linesa.length - 1 === linesi ? '\n* * *' : ''));
   }
 
-  getOrderedBlocks(isInsludeName = false, isIncluseEndstars = true) {
-    const textBeats = this.orders.reduce((text: string, ord: Order) => text + (ord.top.t == null ? (text ? '\n' : '') + ord.repeated : ''), '').split(/\n/);
+  getOrderedBlocks(isInsludeName = false, isIncluseEndstars = true, isIncludeChordedBlocks = true) {
+    const textBeats = this.orders.reduce((text, ord) => text + (ord.top.t == null ? isIncludeChordedBlocks ? (text ? '\n' : '') + ord.top.header() : '' : (text ? '\n' : '') + ord.repeated), '').split(/\n/);
 
     const texts = this.translationMap().map(peaceSize => {
       return textBeats.splice(0, peaceSize);

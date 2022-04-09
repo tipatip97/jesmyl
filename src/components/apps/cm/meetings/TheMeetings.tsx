@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../complect/Eva";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../complect/modal/Modal.service";
 import ModalButton from "../../../../complect/modal/ModalButton";
 import TheModalInput from "../../../../complect/modal/ModalInput";

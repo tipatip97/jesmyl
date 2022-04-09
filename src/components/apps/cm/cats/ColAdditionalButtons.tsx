@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../complect/Eva";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import { usePhase } from "../base/usePhase";
 import { isAccessed } from "../Cm.complect";
 import { useCcol } from "../col/useCcol";

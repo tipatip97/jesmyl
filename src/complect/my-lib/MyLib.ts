@@ -442,7 +442,7 @@ export class MyLib {
                                 : null;
     }
 
-    useElement(nodeName: string, topId: string, cb: (elem: HTMLElement) => void, forceReborn = false): HTMLElement {
+    useElement(nodeName: string, topId: string, cb: (elem: HTMLElement) => void, doc = document, forceReborn = false): HTMLElement {
         const id = this.normQuery(topId);
         const oldElement = document.querySelector(`#${id}`);
 
@@ -462,11 +462,52 @@ export class MyLib {
         if (!serviceNode) {
             serviceNode = document.createElement('div');
             serviceNode.id = 'service_node';
-            document.body.appendChild(serviceNode);
+            doc.body.appendChild(serviceNode);
         }
         serviceNode.appendChild(element);
         cb && cb(element);
         return element;
+    }
+
+    compileCss(scss: string, styleId: string) {
+        const tromb = (p => {
+            let t = 0;
+            return () => `${p}${t++}`;
+        })('<');
+
+        let colonCode = 1000000;
+
+        while (scss.match(String.fromCharCode(colonCode))) {
+            colonCode++;
+        }
+
+        const replaceColons = (str: string) => str.replace(/:/g, all => String.fromCharCode(colonCode));
+        let text;
+
+        try {
+
+            text = '{' + scss
+                // comments
+                .replace(/\/\*+[\w\W]*?\*+\//g, '')
+                .replace(/(^|\n)\s*\/{2,}.*?(?=\n)/g, '$1')
+
+                .replace(/"/g, '\\"')
+
+                .replace(/(^|[;{}])[^};]*?{/g, all => replaceColons(all))
+                .replace(/\s*,\s*/g, ',') // {
+                .replace(/([\s\n ]*|[{};,])[\s\n ]*(.+?)[\n\s ]*{/g, (all, $1, $2) => `${$1}\n\n  "${replaceColons($2)}${tromb()}": {`)
+                .replace(/([-\w]+)[\n\s ]*:[\n\s ]*([\w\W]+?)[;\n}]/ig, (all, $1, $2) => `"${replaceColons($1)}${tromb()}":"${replaceColons($2)}",`) // {
+                .replace(/(\s*),(\s*)}/g, '$1$2}') // {{
+                .replace(/([}\]])(\s*)"/g, '$1,$2"')
+                .replace(RegExp(String.fromCharCode(colonCode), 'g'), ':')
+
+                + '}';
+
+            return this.stringifyCss(JSON.parse(text)); // {{
+        } catch (error) {
+            console.error(`CSS Parser Error. incorrect css text${styleId ? ` in ${styleId}` : ''}`, error, text);
+            throw error;
+        }
     }
 
     stringifyCss(obj: any) {

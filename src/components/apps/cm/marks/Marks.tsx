@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EvaIcon from "../../../../complect/Eva";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { usePhase } from "../base/usePhase";

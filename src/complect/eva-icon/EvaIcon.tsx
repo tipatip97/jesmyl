@@ -1,4 +1,5 @@
-import { indexStorage } from "../store/jstorages";
+import { indexStorage } from "../../store/jstorages";
+import { EvaIconName } from "./EvaIcon.model";
 
 let pack = indexStorage.getOr("evaIconPack", {});
 
@@ -9,7 +10,7 @@ export default function EvaIcon({
   alt,
   scale = 1,
 }: {
-  name: string;
+  name: EvaIconName;
   alt?: string;
   scale?: number;
 }) {

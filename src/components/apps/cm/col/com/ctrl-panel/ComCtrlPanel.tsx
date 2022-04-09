@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EvaIcon from "../../../../../../complect/Eva";
+import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import { EvaIconName } from "../../../../../../complect/eva-icon/EvaIcon.model";
 import { Swipeabler } from "../../../../../../complect/swipeabler/Swipeabler";
 import { RootState } from "../../../../../../store";
 import { useChordVisibleVariant } from "../../../base/useChordVisibleVariant";
@@ -141,11 +142,13 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                   );
                 }}
               >
-                {[
-                  ["file-outline", "нет"],
-                  ["file-remove-outline", "мин"],
-                  ["file-text-outline", "макс"],
-                ].map(([name, alt], v) => {
+                {(
+                  [
+                    ["file-outline", "нет"],
+                    ["file-remove-outline", "мин"],
+                    ["file-text-outline", "макс"],
+                  ] as [EvaIconName, string][]
+                ).map(([name, alt], v) => {
                   if (chordVisibleVariant !== v) return null;
                   const id = `song-variant-switcher-${v}`;
 
@@ -210,9 +213,9 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                 }}
               >
                 {[
-                  ["arrow-down-outline", "-"],
+                  ["arrow-down-outline", "-"] as [EvaIconName, string],
                   null,
-                  ["arrow-up-outline", "+"],
+                  ["arrow-up-outline", "+"] as [EvaIconName, string],
                 ].map((sign, signi) => (
                   <button
                     key={`transport-${signi}`}

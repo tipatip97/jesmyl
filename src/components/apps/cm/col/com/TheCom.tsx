@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import EvaIcon from "../../../../../complect/Eva";
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
