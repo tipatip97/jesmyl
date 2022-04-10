@@ -122,6 +122,7 @@ export default function Translations() {
                 id={`translation-window-line-${blocki}`}
                 className="translations-line-item"
               >
+                <div>{blocki + 1}</div>
                 <div
                   className={`translations-line-item-inner ${
                     currBlocki === blocki ? "active" : ""
