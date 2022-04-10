@@ -49,14 +49,17 @@ export default function Translations() {
         onClick={() => showMarks(!isShowMarksMode)}
         onDoubleClick={() => {
           setIsShowCloseButton(true);
-          setTimeout(() => setIsShowCloseButton(false), 1300);
+          setTimeout(() => setIsShowCloseButton(false), 2000);
         }}
       >
         <div
           className={`close-translation-button ${
             isShowCloseButton ? "show" : ""
           }`}
-          onClick={() => closeTranslation()}
+          onClick={(event) => {
+            event.stopPropagation();
+            closeTranslation();
+          }}
         >
           <EvaIcon name="close-circle-outline" />
         </div>
