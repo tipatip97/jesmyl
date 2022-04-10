@@ -1,4 +1,4 @@
-import { isAndroid } from "../../components/apps/cm/base/complect";
+import { isAndroid } from "../device-differences";
 import { BoardAppName } from "../../components/board/Board.model";
 import { appStorage, indexStorage } from "../../store/jstorages";
 import { CheckRefreshResponse, RefreshResponse, RefreshResponseValue, RefreshState } from "./Refresh.model";

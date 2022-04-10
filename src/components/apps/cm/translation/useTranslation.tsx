@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { renderApplication } from "../../../..";
 import modalService from "../../../../complect/modal/Modal.service";
 import { RootState } from "../../../../store";
-import { isTouchDevice } from "../base/complect";
+import { isTouchDevice } from "../../../../complect/device-differences";
 import { usePhase } from "../base/usePhase";
 import {
   riseUpTranslationUpdates,
