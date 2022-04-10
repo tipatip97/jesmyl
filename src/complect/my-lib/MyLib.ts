@@ -647,6 +647,11 @@ export class MyLib {
         return this._conslBox;
     }
 
+    cconsl(...args: any[]) {
+        this.consl(...args);
+        console.log(...args);
+    }
+
     consl(...args: any) {
         const config: any = this.conslConfig(args);
 

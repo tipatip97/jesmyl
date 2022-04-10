@@ -10,7 +10,7 @@ export class Base<T> {
     }
 
     getOrBase<K extends keyof T>(fieldn: K, typ?: T[K]): T[K] {
-        if ((this.self[fieldn] === null || this.self[fieldn] === undefined)) {
+        if (this.self[fieldn] === undefined) {
             if (typ !== undefined) this.self[fieldn] = mylib.typ(typ, this.self.top[fieldn]);
             else return this.self.top[fieldn];
         }

@@ -98,6 +98,7 @@ export default function Marks(props: MarksProps) {
                         }
                       : () => {
                           setCcom(com);
+                          mylib.cconsl(com);
                           if (phase !== "translations") setPhase("com");
                           setIsOpened(false);
                         }

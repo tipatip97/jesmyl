@@ -14,7 +14,7 @@ export interface IExportableOrder {
     p: number[][]; // Позиции аккордов
     r: OrderRepeats | null; // Повторения
     s: string; // Тип блока
-    t: number; // Текстовый блок
+    t?: number | null; // Текстовый блок
     u: number; // Целевой айди
     v: num; // Видимость блока
     w: number; // Уникальный айди

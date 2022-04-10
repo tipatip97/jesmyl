@@ -6,7 +6,6 @@ import { cmExer } from "../../../Cm.store";
 import { Order } from "./Order";
 import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderExecArgs, OrderRepeats } from "./Order.model";
 
-
 export class EditableOrder extends Base<IExportableOrderTop> {
     self: Order;
 

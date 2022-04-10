@@ -11,14 +11,10 @@ export class Order extends EditableOrder {
     super(top);
     top.com = com;
 
-
-    if (mylib.isNum(top.t))
-      this.texti = top.t;
+    this.texti = mylib.isNum(top.t) ? top.t : null;
 
     this.positions = mylib.def(top.p, []);
     this.fieldValues = top.f;
-
-    // setReals(['chords', 'text', 'inh', 'u', 'o', 'c', 'v', 'a', 's', 'e', 'w']);
   }
 
   get com() { return this.top.com; }
@@ -83,7 +79,7 @@ export class Order extends EditableOrder {
   set type(val) { this.setExportable('s', val); }
 
   get text() {
-    return (this.com.texts && this.com.texts[this.texti]) || '';
+    return (this.texti != null && this.com.texts && this.com.texts[this.texti]) || '';
   }
 
   get antiVis() { return this.isVisible ? 0 : 1; }

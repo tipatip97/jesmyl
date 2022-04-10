@@ -25,13 +25,6 @@ export class Com extends EditableCom {
     this.initial = {};
 
     this.pullTransPosition(obj);
-
-    // const realFields = ['ton', 'tonc'];
-
-    // realFields.forEach(fieldn => {
-    //   if (obj[fieldn] != null)
-    //     this[fieldn] = obj[fieldn];
-    // });
   }
 
   static get fields() {
