@@ -53,7 +53,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
   return (
     <div key="chord-ctrl" className="chord-ctrl">
       <div>
-        <button
+        <div
           key="song-number-button"
           id="song-number-button"
           title="Номер песни"
@@ -83,7 +83,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
           }}
         >
           #{ccom.index == null ? "?" : ccom.index - -1}
-        </button>
+        </div>
         {isShowNatives ? (
           <div key="native-numbers-list" className="native-numbers-list m-ok">
             {((refKeys) =>
@@ -153,7 +153,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                   const id = `song-variant-switcher-${v}`;
 
                   return (
-                    <button
+                    <div
                       key={`navigation-v-${v}`}
                       id={id}
                       title={
@@ -186,7 +186,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                       }}
                     >
                       {<EvaIcon name={name} alt={alt} />}
-                    </button>
+                    </div>
                   );
                 })}
               </div>,
@@ -217,7 +217,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                   null,
                   ["arrow-up-outline", "+"] as [EvaIconName, string],
                 ].map((sign, signi) => (
-                  <button
+                  <div
                     key={`transport-${signi}`}
                     title={`Транспонировать песню на тон ${
                       sign
@@ -228,11 +228,12 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                     }`}
                     className={`mbtn ${!ccom.isBemoled ? "m-ok" : "m-br"} msm ${
                       chordVisibleVariant ? "" : "disabled"
-                    }`}
-                    disabled={
+                    }${
                       !chordVisibleVariant ||
                       (!sign && ccom.transPosition === ccom.initialTransPos)
-                    }
+                        ? "mdisabled"
+                        : ""
+                    }`}
                     onClick={(event) => {
                       event.stopPropagation();
 
@@ -249,7 +250,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                   >
                     {(sign && <EvaIcon name={sign[0]} alt={sign[1]} />) ||
                       ccom.firstChord}
-                  </button>
+                  </div>
                 ))}
               </div>,
             ]}

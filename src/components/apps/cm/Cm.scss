@@ -793,14 +793,25 @@ body {
             }
         }
 
-        &.hidden-tools {
+        &.fullscreen-mode {
             .tools-panel {
                 left: -80px;
                 opacity: 0;
             }
 
+            &.show-marks-mode {
+                .tools-panel {
+                    left: 0;
+                    opacity: 1;
+
+                    > :not(.marks-box) {
+                        opacity: 0;
+                    }
+                }
+            }
+
             .phase-body {
-                --left: 5px;
+                --left: 0px;
                 width: calc(100vw - var(--left));
                 left: var(--left);
             }
@@ -1200,6 +1211,7 @@ body {
     display: none;
     width: calc(100vw - 50px);
     min-width: 200px;
+    height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 100vh;

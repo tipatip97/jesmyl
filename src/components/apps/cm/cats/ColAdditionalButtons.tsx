@@ -12,7 +12,7 @@ export default function ColAdditionButtons() {
 
   return (
     isAccessed("comAdd") && [
-      <button
+      <div
         key="new-cat-button"
         id="new-cat-button"
         className="mbtn msm m-ok"
@@ -22,8 +22,8 @@ export default function ColAdditionButtons() {
         }}
       >
         <EvaIcon name="folder-add-outline" alt="Новая категория" />
-      </button>,
-      <button
+      </div>,
+      <div
         key="com-new-button"
         className="mbtn m-no msm"
         onClick={() => {
@@ -32,7 +32,7 @@ export default function ColAdditionButtons() {
         }}
       >
         <EvaIcon name="file-add-outline" alt="Новая песня" />
-      </button>,
+      </div>,
     ]
   );
 }

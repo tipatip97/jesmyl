@@ -1,10 +1,14 @@
+import { useEffect, useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import { usePhase } from "../base/usePhase";
 import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
 import useTranslation from "./useTranslation";
 
 export default function Translations() {
   const {
+    isTouchDevice,
+    isFullScreen,
     currWin,
     newTranslation,
     prevBlock,
@@ -15,9 +19,51 @@ export default function Translations() {
     position,
     switchPosition,
     switchVisible,
+    closeTranslation,
+    showMarks,
+    isShowMarksMode,
   } = useTranslation();
 
-  return (
+  const [isShowCloseButton, setIsShowCloseButton] = useState(false);
+  const { setPhase } = usePhase();
+
+  useEffect(() => {
+    if (isTouchDevice) {
+      const gotoCom = () => setPhase("com");
+      window.addEventListener("unload", gotoCom);
+
+      return () => window.removeEventListener("unload", gotoCom);
+    }
+  });
+
+  return isFullScreen ? (
+    <div className="fullscreen-translation">
+      <TranslationScreen
+        fontSizeContainId="translation-native-window"
+        position={position}
+        updater={(update) => window.addEventListener("resize", () => update())}
+      />
+      <div className="triple-area left" onClick={() => prevBlock()} />
+      <div
+        className="triple-area center"
+        onClick={() => showMarks(!isShowMarksMode)}
+        onDoubleClick={() => {
+          setIsShowCloseButton(true);
+          setTimeout(() => setIsShowCloseButton(false), 1300);
+        }}
+      >
+        <div
+          className={`close-translation-button ${
+            isShowCloseButton ? "show" : ""
+          }`}
+          onClick={() => closeTranslation()}
+        >
+          <EvaIcon name="close-circle-outline" />
+        </div>
+      </div>
+      <div className="triple-area right" onClick={() => nextBlock()} />
+    </div>
+  ) : (
     <div>
       <div>
         <div
@@ -40,13 +86,15 @@ export default function Translations() {
         className="translation-screen-wrapper"
         onClick={() => switchVisible()}
       >
-        <TranslationScreen
-          fontSizeContainId="translation-native-window"
-          position={position}
-          updater={(update) =>
-            window.addEventListener("resize", () => update())
-          }
-        />
+        <div className="translation-screen-wrapper-inner">
+          <TranslationScreen
+            fontSizeContainId="translation-native-window"
+            position={position}
+            updater={(update) =>
+              window.addEventListener("resize", () => update())
+            }
+          />
+        </div>
       </div>
       <div>
         <div className="mbtn m-no msm" onClick={() => prevBlock()}>

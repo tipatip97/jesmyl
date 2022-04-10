@@ -74,7 +74,7 @@ export default function Editor() {
               className="binds-list mgroup scrollable-x no-scroll"
             >
               {isAccessed("comDel") && (
-                <button
+                <div
                   key="rem-song"
                   className="mbtn m-ko msm"
                   onClick={() => {
@@ -84,12 +84,12 @@ export default function Editor() {
                   }}
                 >
                   <EvaIcon name="trash-2-outline" alt="Удалить" />
-                </button>
+                </div>
               )}
               {cats.map((cat) => {
                 return !cat.wid ||
                   (cat.track && cat.track[0] !== ">w") ? null : (
-                  <button
+                  <div
                     key={`cat-for-bind-${cat.wid}`}
                     className={`mbtn msm m-ok${
                       ~(cat.stack?.indexOf(ccom.wid) ?? -1) ? ` mactive` : ``
@@ -167,7 +167,7 @@ export default function Editor() {
                     {ccom.refs && ccom.refs[cat.wid]
                       ? `№${ccom.refs[cat.wid]}`
                       : ""}
-                  </button>
+                  </div>
                 );
               })}
             </div>
@@ -212,7 +212,7 @@ export default function Editor() {
           <div key="ephases-group" className="mgroup scrollable-x no-scroll">
             {ePhases.map(([ephasen, ephase]) => {
               return (
-                <button
+                <div
                   key={`edit-phase-${ephasen}`}
                   id={`edit-phase-${ephasen}`}
                   className={`mbtn m-ok ${
@@ -221,7 +221,7 @@ export default function Editor() {
                   onClick={() => setCurrentEPhase(ephasen)}
                 >
                   {ephase}
-                </button>
+                </div>
               );
             })}
           </div>,

@@ -12,7 +12,7 @@ export default function TheMeetings() {
   const { setMarks, addMarks } = useMarks();
 
   return (
-    <button
+    <div
       key="meetings-button"
       className="meetings-button mbtn m-no mxs"
       onClick={() => {
@@ -86,6 +86,6 @@ export default function TheMeetings() {
       }}
     >
       <EvaIcon name="calendar-outline" />
-    </button>
+    </div>
   );
 }

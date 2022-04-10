@@ -90,7 +90,7 @@ export default function TheCat() {
 
             return com == null ? null : (
               <div key={`com-face-${com.wid}`} id={`com-face-${com.wid}`}>
-                <button
+                <div
                   key={`com-face-button-${com.wid}`}
                   className={`com-face mbtn ${
                     errors ? "m-ko" : wrap.deep ? "m-no" : "m-ok"
@@ -108,7 +108,7 @@ export default function TheCat() {
                       ? `, №${com.refs[ccat.wid]}.`
                       : "."
                   } ${com.name}`}</span>
-                </button>
+                </div>
                 {errors}
               </div>
             );

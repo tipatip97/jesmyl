@@ -35,7 +35,7 @@ export default function Marks(props: MarksProps) {
         {props.isHideSysButtons
           ? null
           : [
-              <button
+              <div
                 key="open-marks-button"
                 id="open-marks-button"
                 className="open-button mbtn msm m-ok"
@@ -43,8 +43,8 @@ export default function Marks(props: MarksProps) {
                 onClick={() => setIsOpened(!isOpened)}
               >
                 <EvaIcon name="bookmark-outline" alt="m" />
-              </button>,
-              <button
+              </div>,
+              <div
                 key="print-button mbtn msm m-ko"
                 className="print-button mbtn msm m-ko"
                 title="Действия с закладками"
@@ -64,7 +64,7 @@ export default function Marks(props: MarksProps) {
                 }}
               >
                 <EvaIcon name="settings-2-outline" alt="действия" />
-              </button>,
+              </div>,
             ]}
         <div key="marked-buttons-list" id="marked-buttons" className="list">
           {markedComs.map((com, comi, coma) => {
@@ -76,17 +76,16 @@ export default function Marks(props: MarksProps) {
                 id={`mark-${comw}`}
                 className={"mgroup btn-group mblock"}
               >
-                <button
+                <div
                   key={`order-button-${comw}`}
                   className={`mbtn msm m-br order-button ${
                     comi ? "up" : "down"
-                  }-button-marked-sort`}
-                  disabled={coma.length < 2}
+                  }-button-marked-sort ${coma.length < 2 ? 'mdisabled' : ''}`}
                   onClick={() => bumerangMarks(comw)}
                 >
                   {comi ? "↑" : "↓"}
-                </button>
-                <button
+                </div>
+                <div
                   key={`mark-${comw}`}
                   className={`mbtn msm com-button${com ? "" : " m-ko"}${
                     isActive(comw, com, ccom?.wid) ? " mactive" : ""
@@ -112,7 +111,7 @@ export default function Marks(props: MarksProps) {
                         : com.index - -1 || ""
                       : ""}
                   </span>
-                </button>
+                </div>
               </div>,
             ];
           })}

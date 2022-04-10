@@ -40,12 +40,9 @@ export default function Changes() {
           }
         }}
       >
-        <button
+        <div
           key="send-execs"
-          className={`mbtn ${isSomeWarning ? "m-ko" : ""}`}
-          disabled={
-            isSomeIncorrect || sendDisabled || !execs.some((ex) => !ex.del)
-          }
+          className={`mbtn ${isSomeWarning ? "m-ko" : ""} ${isSomeIncorrect || sendDisabled || !execs.some((ex) => !ex.del) ? 'mdisabled' : ''}`}
           onClick={async () => {
             if (!execs.some((ex) => !ex.del)) return;
             if (
@@ -74,9 +71,9 @@ export default function Changes() {
           }}
         >
           svg('paper-plane-outline', 'Отправить отмеченные')
-        </button>
+        </div>
         {isSomeRejected ? (
-          <button
+          <div
             key="save-local-rejected"
             className="save-local-rejected mbtn m-no"
             onClick={async () => {
@@ -103,7 +100,7 @@ export default function Changes() {
             ) : (
               <EvaIcon name="save-outline" alt="Сохранить отклонённые" />
             )}
-          </button>
+          </div>
         ) : null}
       </div>
       ,

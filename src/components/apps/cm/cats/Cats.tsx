@@ -34,7 +34,7 @@ export default function TheCats() {
         })], */}
       {cols.cats.map((cat: Cat) => {
         return cat == null ? null : (
-          <button
+          <div
             key={`cat-face-button-${cat.wid}`}
             id={"" + cat.wid}
             className="mbtn mblock mupper m-ok mmd"
@@ -47,7 +47,7 @@ export default function TheCats() {
             }}
           >
             <span>{cat.name}</span>
-          </button>
+          </div>
         );
       })}
     </div>

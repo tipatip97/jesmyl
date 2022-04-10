@@ -20,9 +20,9 @@ export default function FontSizeContain(
           };
 
           res();
+          setTimeout(() => res());
           if (isFirst) {
             setIsFirst(false);
-            setTimeout(() => res());
             if (props.updater) props.updater(res);
           }
         }

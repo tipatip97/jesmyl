@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { renderApplication } from "../../../..";
 import modalService from "../../../../complect/modal/Modal.service";
 import { RootState } from "../../../../store";
+import { isTouchDevice } from "../base/complect";
 import { usePhase } from "../base/usePhase";
 import {
   riseUpTranslationUpdates,
+  setIsShowMarksMode,
   setTranslationBlock,
   setTranslationBlockIsVisible,
   setTranslationBlockPosition,
+  updateIsCmFullscreenMode,
 } from "../Cm.store";
 import { useCcol } from "../col/useCcol";
 import TranslationScreen from "./TranslationScreen";
@@ -29,14 +32,21 @@ export default function useTranslation() {
   const position = useSelector(
     (state: RootState) => state.cm.translationBlockPosition
   );
+  const isFullScreen = useSelector(
+    (state: RootState) => state.cm.isCmFullscreenMode
+  );
+  const isShowMarksMode = useSelector(
+    (state: RootState) => state.cm.isShowMarksMode
+  );
   const blocks = ccom?.getOrderedTexts();
 
-  useEffect(() => {
-    ret.setBlocki(0);
-  }, [ccom]);
+  useEffect(() => ret.setBlocki(0), [ccom]);
 
   const ret = {
     currWin,
+    isFullScreen,
+    isTouchDevice,
+    isShowMarksMode,
     currBlock: isVisible ? blocks && blocks[currBlocki] : "",
     currBlocki,
     blocks,
@@ -69,6 +79,16 @@ export default function useTranslation() {
         )
       );
     },
+    closeTranslation: () => {
+      currWin?.close();
+      dispatch(updateIsCmFullscreenMode(false));
+      if (isTouchDevice) setPhase("com");
+    },
+    openTranslations: () => {
+      if (isTouchDevice) dispatch(updateIsCmFullscreenMode(true));
+      setPhase("translations");
+    },
+    showMarks: (isShow: boolean) => dispatch(setIsShowMarksMode(isShow)),
     newTranslation: (left: number, top: number) => {
       if (currWin) {
         currWin.focus();
@@ -85,6 +105,7 @@ export default function useTranslation() {
         dispatch(riseUpTranslationUpdates());
         win.document.body.style.margin = "0";
         win.document.body.style.padding = "0";
+        win.document.body.style.userSelect = "none";
         const closeWin = () => win.close();
 
         window.addEventListener("unload", closeWin);
@@ -124,11 +145,14 @@ export default function useTranslation() {
         //     break;
 
         case 27: // esc
-          event.ctrlKey
-            ? currWin &&
-              (await modalService.confirm("Закончить Трансляцию?")) &&
-              currWin.close()
-            : ret.switchVisible();
+          if (isFullScreen) ret.closeTranslation();
+          else {
+            event.ctrlKey
+              ? currWin &&
+                (await modalService.confirm("Закончить Трансляцию?")) &&
+                currWin.close()
+              : ret.switchVisible();
+          }
           break;
 
         case 86: // v

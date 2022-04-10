@@ -83,7 +83,7 @@ export default function TheCom() {
         }`}
       >
         <div key="show-wrappper" className="mgroup msm">
-          <button
+          <div
             key="hiddener-chords-imgn"
             className="mbtn m-ok"
             onClick={() => setIsShowChordImages(!isShowChordImages)}
@@ -102,7 +102,7 @@ export default function TheCom() {
                 />
               )}
             </span>
-          </button>
+          </div>
           {/* {g.usedChordsButtons} */}
         </div>
         <div

@@ -13,7 +13,8 @@ export interface CmState extends CmStoraged {
     translationBlock: number;
     translationBlockIsVisible: boolean;
     translationBlockPosition: FontSizeContainPropsPosition;
-    isComFullscreenMode: boolean;
+    isCmFullscreenMode: boolean;
+    isShowMarksMode: boolean;
     isPlayerShown: boolean;
     rollModeMarks: boolean;
 

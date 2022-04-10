@@ -1,9 +1,9 @@
+import { isAndroid } from "../../components/apps/cm/base/complect";
 import { BoardAppName } from "../../components/board/Board.model";
 import { appStorage, indexStorage } from "../../store/jstorages";
 import { CheckRefreshResponse, RefreshResponse, RefreshResponseValue, RefreshState } from "./Refresh.model";
 
-const host = 'https://jesmyl.space/debug/';
-const isAndroid = navigator.userAgent && /android/i.test(navigator.userAgent);
+const host = 'https://jesmyl.space/';
 
 export class Refresh {
     static host = host;

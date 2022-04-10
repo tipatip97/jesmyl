@@ -19,6 +19,7 @@ export default function TranslationScreen(props: TranslationScreenProps) {
         width: "100%",
         height: "100%",
         color: "white",
+        fontWeight: "bold",
         fontFamily:
           "montserrat, main, calibri, georgia, times, serif, verdana, arial",
         backgroundColor: "black",

@@ -16,7 +16,8 @@ const initialState: CmState = {
   phase: cmStorage.getOr('phase', 'cats'),
   prevPhase: cmStorage.get('prevPhase'),
   rollMode: null,
-  isComFullscreenMode: false,
+  isCmFullscreenMode: false,
+  isShowMarksMode: false,
   isPlayerShown: false,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
@@ -59,8 +60,11 @@ export const slice = createSlice({
     setMeetingList: (state, action: PayloadAction<IExportableMeeting[]>) => {
       state.cm_meetings = action.payload;
     },
-    updateIsComFullscreenMode: (state, action: PayloadAction<boolean>) => {
-      state.isComFullscreenMode = action.payload;
+    updateIsCmFullscreenMode: (state, action: PayloadAction<boolean>) => {
+      state.isCmFullscreenMode = action.payload;
+    },
+    setIsShowMarksMode: (state, action: PayloadAction<boolean>) => {
+      state.isShowMarksMode = action.payload;
     },
     updateIsPlayerShown: (state, action: PayloadAction<boolean>) => {
       state.isPlayerShown = action.payload;
@@ -102,7 +106,7 @@ export const slice = createSlice({
   },
 });
 
-export const { colsForceUpdate, setCmPhase, selectCcol, updateIsComFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates, updateComFontSize, setTranslationBlock, setTranslationBlockIsVisible, setTranslationBlockPosition, riseUpTranslationUpdates } =
+export const { colsForceUpdate, setCmPhase, selectCcol, updateIsCmFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates, updateComFontSize, setTranslationBlock, setTranslationBlockIsVisible, setTranslationBlockPosition, riseUpTranslationUpdates, setIsShowMarksMode } =
   slice.actions;
 export default slice.actions;
 
