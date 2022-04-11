@@ -39,7 +39,7 @@ export default function TheCat() {
           key="com-searcher"
           type="text"
           className="filter-input cleared-input minput m--ok mblock mmd"
-          onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             ccat.search(
               event.target.value,
               () => setTerm(event.target.value),
@@ -50,7 +50,6 @@ export default function TheCat() {
               }
             )
           }
-          onChange={() => {}}
           ref={searchInputRef}
           value={term}
         />,
