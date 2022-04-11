@@ -153,7 +153,7 @@ export class Com extends EditableCom {
     let curr = 0;
 
     this.orders.forEach((ord: Order, ordi: number, orda: Order[]) => {
-      if (ord.top.t == null) {
+      if (ord.texti == null) {
         curr = 0;
         return;
       }

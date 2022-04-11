@@ -39,7 +39,7 @@ const resize: FontSizeContainResizer = (child, fixOnly?, position?) => {
   let max = 1000;
   child.style.fontSize = "1%";
   const step = 5;
-  let size = 1;
+  let size = 50;
   let min = 0;
 
   const resize = () => {

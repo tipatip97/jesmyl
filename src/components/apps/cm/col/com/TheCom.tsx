@@ -5,6 +5,7 @@ import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import { usePhase } from "../../base/usePhase";
+import FontSizeContain from "../../complect/font-size-contain/FontSizeContain";
 import { useMarks } from "../../marks/useMarks";
 import { useCcol } from "../useCcol";
 import ChordCard from "./chord-card/ChordCard";
@@ -34,6 +35,22 @@ export default function TheCom() {
     return null;
   }
 
+  const content = ([] as Com[])
+    .concat(rollModeMarks ? markedComs : ccom)
+    .map((com) => {
+      return (
+        ccom && (
+          <ComOrders
+            ccom={ccom}
+            key={`main-com-${com.wid}`}
+            fontSize={fontSize}
+            // onClick: () => actions.turnRoll(),
+            isAnchorInheritHide={!isPlayerShown} // && !g.streamManager.isSub
+          />
+        )
+      );
+    });
+
   // const actions = g.actions.com;
 
   return (
@@ -48,21 +65,7 @@ export default function TheCom() {
       }
     >
       <ComCtrlPanel ccom={ccom} />
-      <div>
-        {([] as Com[]).concat(rollModeMarks ? markedComs : ccom).map((com) => {
-          return (
-            ccom && (
-              <ComOrders
-                ccom={ccom}
-                key={`main-com-${com.wid}`}
-                fontSize={fontSize}
-                // onClick: () => actions.turnRoll(),
-                isAnchorInheritHide={!isPlayerShown} // && !g.streamManager.isSub
-              />
-            )
-          );
-        })}
-      </div>
+      {fontSize < 0 ? <FontSizeContain fixOnly='width'>{content}</FontSizeContain> : content}
       <div
         key="rollYAxis thumb"
         className={`roll-y-axis-thumb ${rollMode ? "show" : ""}`}

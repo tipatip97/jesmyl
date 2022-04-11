@@ -618,6 +618,7 @@ export class MyLib {
 
         if (this._conslBox == null)
             this._conslBox = this.useElement('div', `consl-app`, box => {
+                box.style.display = 'none';
 
                 this.useElement('style', 'consl-style', style => {
                     style.innerText = (`

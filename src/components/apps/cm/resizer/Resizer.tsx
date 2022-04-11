@@ -90,6 +90,11 @@ export default function Resizer(props: Partial<ResizerProps>) {
       <div
         ref={(element) => (ring = element || ring)}
         className={`ring ${props.icon || ""}`}
+        onClick={() => {
+          updateCurr(-curr);
+          if (curr < 0) prop("onRange")(curr, percents);
+          prop("onChange")(curr, percents);
+        }}
         onTouchStart={(event) => {
           if (curr < 0) return;
           const { clientX: x, clientY: y } = event.targetTouches[0];
