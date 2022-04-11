@@ -1,17 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { renderApplication } from "../../../..";
+import { isTouchDevice } from "../../../../complect/device-differences";
 import modalService from "../../../../complect/modal/Modal.service";
 import { RootState } from "../../../../store";
-import { isTouchDevice } from "../../../../complect/device-differences";
-import { usePhase } from "../base/usePhase";
+import useNav from "../base/useNav";
 import {
   riseUpTranslationUpdates,
   setIsShowMarksMode,
   setTranslationBlock,
   setTranslationBlockIsVisible,
-  setTranslationBlockPosition,
-  updateIsCmFullscreenMode,
+  setTranslationBlockPosition
 } from "../Cm.store";
 import { useCcol } from "../col/useCcol";
 import TranslationScreen from "./TranslationScreen";
@@ -20,7 +19,7 @@ let currWin: Window | null = null;
 
 export default function useTranslation() {
   const dispatch = useDispatch();
-  const { setPhase } = usePhase();
+  const { setPhase, isFullScreen, switchFullscreen } = useNav();
   const [ccom] = useCcol("com");
   const currBlocki = useSelector(
     (state: RootState) => state.cm.translationBlock
@@ -32,9 +31,6 @@ export default function useTranslation() {
   const position = useSelector(
     (state: RootState) => state.cm.translationBlockPosition
   );
-  const isFullScreen = useSelector(
-    (state: RootState) => state.cm.isCmFullscreenMode
-  );
   const isShowMarksMode = useSelector(
     (state: RootState) => state.cm.isShowMarksMode
   );
@@ -44,7 +40,6 @@ export default function useTranslation() {
 
   const ret = {
     currWin,
-    isFullScreen,
     isTouchDevice,
     isShowMarksMode,
     currBlock: isVisible ? blocks && blocks[currBlocki] : "",
@@ -81,11 +76,11 @@ export default function useTranslation() {
     },
     closeTranslation: () => {
       currWin?.close();
-      dispatch(updateIsCmFullscreenMode(false));
+      switchFullscreen(false);
       if (isTouchDevice) setPhase("com");
     },
     openTranslations: () => {
-      if (isTouchDevice) dispatch(updateIsCmFullscreenMode(true));
+      if (isTouchDevice) switchFullscreen(true);
       setPhase("translations");
     },
     showMarks: (isShow: boolean) => dispatch(setIsShowMarksMode(isShow)),

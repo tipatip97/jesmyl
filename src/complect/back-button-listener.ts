@@ -1,9 +1,11 @@
-
+let isFirst = true;
+if (window.location.hash !== '!') window.location.hash = '!';
 window.addEventListener('load', () => window.history.pushState({}, ''));
 
 window.addEventListener('popstate', () => {
     window.history.pushState({}, '');
-    next();
+    if (isFirst) isFirst = false;
+    else next();
 });
 
 const listeners: Record<string, () => void> = {};

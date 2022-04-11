@@ -2,7 +2,7 @@ import { useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
-import { usePhase } from "../base/usePhase";
+import useNav from "../base/useNav";
 import { Com } from "../col/com/Com";
 import { useCcol } from "../col/useCcol";
 import AddToMeetingButton from "../meetings/AddToMeetingButton";
@@ -17,7 +17,7 @@ export default function Marks(props: MarksProps) {
 
   const { marks, setMarks, markedComs, bumerangMarks } = useMarks();
   const [ccom, setCcom] = useCcol("com");
-  const { phase, setPhase } = usePhase();
+  const { phase, setPhase } = useNav();
 
   const isActive = (comw: number, com: Com, ccomw?: number) =>
     mylib.isFunc(props.setIsActive)

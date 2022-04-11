@@ -4,7 +4,7 @@ import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
-import { usePhase } from "../../base/usePhase";
+import useNav from "../../base/useNav";
 import FontSizeContain from "../../complect/font-size-contain/FontSizeContain";
 import { useMarks } from "../../marks/useMarks";
 import { useCcol } from "../useCcol";
@@ -16,7 +16,7 @@ import ComOrders from "./orders/ComOrders";
 export default function TheCom() {
   const [isShowChordImages, setIsShowChordImages] = useState(false);
   const [chordVisibleVariant] = useChordVisibleVariant();
-  const { setPhase } = usePhase();
+  const { setPhase } = useNav();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const rollModeMarks = useSelector(
     (state: RootState) => state.cm.rollModeMarks

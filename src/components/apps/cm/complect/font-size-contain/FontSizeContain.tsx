@@ -37,7 +37,6 @@ const resize: FontSizeContainResizer = (child, fixOnly?, position?) => {
   const { clientWidth, clientHeight } =
     (child.parentElement as HTMLDivElement) || {};
   let max = 1000;
-  child.style.fontSize = "1%";
   const step = 5;
   let size = 50;
   let min = 0;

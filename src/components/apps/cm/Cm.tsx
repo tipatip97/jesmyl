@@ -4,7 +4,7 @@ import onBackButton from "../../../complect/back-button-listener";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../store";
 import { cmStorage } from "../../../store/jstorages";
-import { usePhase } from "./base/usePhase";
+import useNav from "./base/useNav";
 import { Comps, isAccessed } from "./Cm.complect";
 import "./Cm.scss";
 import { updateComFontSize, updateIsCmFullscreenMode } from "./Cm.store";
@@ -22,13 +22,13 @@ export default function CmApplication() {
   const rangeMax = 200;
 
   const dispatch = useDispatch();
-  const { phase, setPhase, goBack, isCanGoBack } = usePhase();
+  const { phase, setPhase, goBack, isCanGoBack, isFullScreen } = useNav();
   const rollMode = useSelector((state: RootState) => state.cm.rollMode);
   const comFontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const [, setCols] = useCols();
   const [ccom] = useCcol("com");
 
-  const { isFullScreen, openTranslations, isShowMarksMode } = useTranslation();
+  const { openTranslations, isShowMarksMode } = useTranslation();
 
   const [topClickDateNow, setTopClickDateNow] = useState(0);
 

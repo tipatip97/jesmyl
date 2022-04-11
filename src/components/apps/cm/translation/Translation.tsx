@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import { usePhase } from "../base/usePhase";
+import useNav from "../base/useNav";
 import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
 import useTranslation from "./useTranslation";
@@ -8,7 +8,6 @@ import useTranslation from "./useTranslation";
 export default function Translations() {
   const {
     isTouchDevice,
-    isFullScreen,
     currWin,
     newTranslation,
     prevBlock,
@@ -25,7 +24,7 @@ export default function Translations() {
   } = useTranslation();
 
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { setPhase } = usePhase();
+  const { setPhase, isFullScreen } = useNav();
 
   useEffect(() => {
     if (isTouchDevice) {

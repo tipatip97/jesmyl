@@ -6,10 +6,12 @@ import { updateChordVisibleVariant } from "../Cm.store";
 
 export function useChordVisibleVariant(): [ChordVisibleVariant, (val: ChordVisibleVariant) => void] {
     const dispatch = useDispatch();
-    const chordVisibleVariant = useSelector((state: RootState) => state.cm.chordVisibleVariant);
 
-    return [chordVisibleVariant, (val: ChordVisibleVariant) => {
-        cmStorage.set('chordVisibleVariant', val);
-        dispatch(updateChordVisibleVariant(val));
-    }];
+    return [
+        useSelector((state: RootState) => state.cm.chordVisibleVariant),
+        (val: ChordVisibleVariant) => {
+            cmStorage.set('chordVisibleVariant', val);
+            dispatch(updateChordVisibleVariant(val));
+        }
+    ];
 }

@@ -1,10 +1,10 @@
-import { usePhase } from "../base/usePhase";
+import useNav from "../base/useNav";
 import { Cat } from "../col/cat/Cat";
 import { useCcol } from "../col/useCcol";
 import { useCols } from "../cols/useCols";
 
 export default function TheCats() {
-  const { setPhase } = usePhase();
+  const { setPhase } = useNav();
   const [, setCcat] = useCcol("cat");
   const [cols] = useCols();
 

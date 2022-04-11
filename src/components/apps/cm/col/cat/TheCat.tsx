@@ -1,13 +1,13 @@
 import { useRef, useState } from "react";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { usePhase } from "../../base/usePhase";
+import useNav from "../../base/useNav";
 import { isAccessed } from "../../Cm.complect";
 import { useCcol } from "../useCcol";
 
 export default function TheCat() {
   const [ccat] = useCcol("cat");
   const [ccom, setCcom] = useCcol("com");
-  const { setPhase } = usePhase();
+  const { setPhase } = useNav();
   const [term, setTerm] = useState(ccat?.term || "");
   const [term1, setTerm1] = useState(ccat?.term || "");
 
