@@ -40,7 +40,7 @@ export default function TheCom() {
           <ComOrders
             ccom={com}
             fontSize={fontSize}
-            isAnchorInheritHide={!isPlayerShown} // && !g.streamManager.isSub
+            isAnchorInheritHide={!isPlayerShown}
           />
         </div>
       )

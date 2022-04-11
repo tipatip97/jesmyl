@@ -4,6 +4,7 @@ import { IExportableMeeting } from "./meetings/Meetings.model";
 import { IExportableSetts } from "./complect/settings/Setts.model";
 import { EeStorageStoreType } from "./ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./complect/font-size-contain/FontSizeContain.model";
+import { EvaIconName } from "../../../complect/eva-icon/EvaIcon.model";
 
 
 
@@ -27,8 +28,14 @@ export type CmRollMode = 'pause' | 'play' | null;
 
 export type ChordVisibleVariant = 0 | 1 | 2;
 
-export type CmPhase = 'cats' | 'cat' | 'com' | 'editor' | 'news' | 'translations';
+export type CmPhase = 'all' | 'lists' | 'other' | 'cats' | 'cat' | 'com' | 'editor' | 'news' | 'translations';
 
+
+export interface FooterItem {
+    title: string;
+    icon: EvaIconName;
+    phase: CmPhase;
+}
 export interface CmStoraged {
     ccatw?: number;
     ccomw?: number;

@@ -5,7 +5,7 @@ import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../store";
 import { cmStorage } from "../../../store/jstorages";
 import useNav from "./base/useNav";
-import { Comps, isAccessed } from "./Cm.complect";
+import { Comps, footerItems, isAccessed } from "./Cm.complect";
 import "./Cm.scss";
 import { updateComFontSize } from "./Cm.store";
 import ComPlayerSignaler from "./col/com/player/ComPlayerSignaler";
@@ -49,7 +49,7 @@ export default function CmApplication() {
     <>
       <div
         key="app-container"
-        className={`app-container phase-${phase}${
+        className={`main-container phase-${phase}${
           isFullScreen || rollMode ? " fullscreen-mode" : ""
         }${rollMode ? " roll-mode" : ""}${
           isShowMarksMode ? " show-marks-mode" : ""
@@ -62,7 +62,7 @@ export default function CmApplication() {
           } else setTopClickDateNow(Date.now());
         }}
       >
-        <ComPlayerSignaler />
+        {/* <ComPlayerSignaler />
         {mainTopButtons()}
         <div key="tools-panel" className="tools-panel">
           <div
@@ -125,20 +125,33 @@ export default function CmApplication() {
               />
             ) : null;
           })()}
+        </div>*/}
+
+        <div className="header"></div>
+        <div className="content">
+          {Object.entries(Comps).map(([phasen, phaseComp]) => {
+            if (phasen !== phase) return null;
+            return (
+              <div key={`phase-content.${phasen}`} className="phase-content">
+                {phasen === phase ? phaseComp() : null}
+              </div>
+            );
+          })}
         </div>
-        {Object.entries(Comps).map(([phasen, phaseComp]) => {
-          return (
+        <div className="footer">
+          {footerItems.map(({ title, icon, phase: itemPhase }) => (
             <div
-              key={`phase-body.${phasen}`}
-              className={`phase-body phase-${phasen} ${
-                phasen === phase ? "active" : ""
-              }`}
+              key={`main-footer-item_${icon}`}
+              className={`footer-item ${phase === itemPhase ? "active" : ""}`}
+              onClick={() => setPhase(itemPhase)}
             >
-              {phasen === phase ? phaseComp() : null}
-              {/* {mylib.func(g.comFooters).call(phasen)} */}
+              <div className="icon-container">
+                <EvaIcon name={icon} />
+              </div>
+              <div className="title">{title}</div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </>
   );

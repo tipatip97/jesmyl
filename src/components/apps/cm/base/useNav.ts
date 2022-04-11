@@ -8,7 +8,7 @@ import { useMarks } from "../marks/useMarks";
 import useRollMode from "./useRoll";
 
 
-const phaseJumps: Record<CmPhase, CmPhase | null> = {
+const phaseJumps: Partial<Record<CmPhase, CmPhase | null>> = {
     // если значение - null, то переход на предыдущую фазу
     cats: null,
     com: "cat",

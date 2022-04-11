@@ -3,10 +3,105 @@ body {
 }
 
 .app-container.cm {
-    --font-size: 20px;
+    --font-size: 16px;
     --com-player-signaler-size: 50px;
 
     font-size: var(--font-size);
+
+    --color-1: #e6e4c0;
+    --color-2: #e7edde;
+    --color-3: #f2f0e0;
+    --color-4: #4f4e46;
+    --color-5: #1d192b;
+
+    --header-height: 10px;
+    --header-container-height: 60px;
+    --footer-height: 70px;
+    --content-height: calc(100vh - var(--header-height) - var(--header-container-height) - var(--footer-height));
+
+    --svg-color: var(--color-4);
+    color: var(--color-4);
+
+    // Выделенная область(тёмный беж)  e6e4c0
+    // Фон (белый с оттенком зелёного)   e7edde
+    // Навигационный бар и топ бар (белый + желт)  f2f0e0
+    // Основной шрифт и иконки (тёмный серый+корич)  4f4e46
+    // Выбранный пункт (темнее серый + корич) 1d192b
+
+    >.main-container {
+        >.header {
+            background-color: var(--color-3);
+            height: var(--header-height);
+        }
+
+        >.content {
+            height: calc(100vh - var(--header-height) - var(--footer-height));
+            background-color: var(--color-2);
+            overflow: hidden;
+
+            >.phase-content {
+                height: 100%;
+            }
+
+            .header-content {
+                background-color: var(--color-3);
+                height: var(--header-container-height);
+            }
+        }
+
+        >.footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--color-3);
+            height: var(--footer-height);
+
+            >.footer-item {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                width: 25%;
+                cursor: pointer;
+
+                >.icon-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 24px;
+                    height: 30px;
+                    border-radius: 30px;
+                    transition: width .1s, background-color .05s;
+                }
+
+                &.active {
+                    >.icon-container {
+                        width: 50px;
+                        background-color: var(--color-1);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     .mytransition {
         transition: all ease 500ms;
@@ -583,52 +678,6 @@ body {
         vertical-align: middle;
     }
 
-    .category-wrapper {
-        position: relative;
-
-        .component-list {
-            max-height: calc(100vh - 95px);
-            overflow: auto;
-            transition: padding .2s;
-
-            &.can-redact {
-                max-height: calc(100vh - 150px);
-            }
-
-            .com-face {
-                position: relative;
-
-                &[order-position]:after {
-                    content: attr(order-position);
-                    position: absolute;
-                    top: .6em;
-                    right: .5em;
-                    font-size: .7em;
-                }
-            }
-        }
-
-        .select-actions-panel {
-            position: absolute;
-            top: 95px;
-            left: 0;
-            z-index: 1;
-            display: none;
-            opacity: 0;
-            transition: opacity .3s;
-        }
-
-        &.select-mode {
-            .component-list {
-                padding-top: 40px;
-            }
-
-            .select-actions-panel {
-                opacity: 1;
-                display: block;
-            }
-        }
-    }
 
     .com-order-panel {
         .add-order-button {
@@ -762,7 +811,7 @@ body {
         }
     }
 
-    .app-container {
+    .main-container1 {
         --transition-time: 1s;
 
         position: absolute;

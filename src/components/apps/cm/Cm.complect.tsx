@@ -4,7 +4,7 @@ import mylib from "../../../complect/my-lib/MyLib";
 import { cmStorage, indexStorage } from "../../../store/jstorages";
 import { BoardApplication, BoardAuth } from "../../board/Board.model";
 import TheCats from "./cats/Cats";
-import { CmAction, CmAppVariables, CmPhase } from "./Cm.model";
+import { CmAction, CmAppVariables, CmPhase, FooterItem } from "./Cm.model";
 import TheCat from "./col/cat/TheCat";
 import TheCom from "./col/com/TheCom";
 import { setts } from "./complect/settings/Setts";
@@ -60,9 +60,9 @@ export const isAccessed = (action: string): true | null => {
   return (rules[action] = right ? (right.level <= level ? true : null) : true);
 };
 
-export const Comps: Record<CmPhase, () => ReactNode> = {
+export const Comps: Partial<Record<CmPhase, () => ReactNode>> = {
   cats: () => <TheCats />,
-  cat: () => <TheCat />,
+  all: () => <TheCat />,
   com: () => <TheCom />,
   editor: () => <Editor />,
   news: () => null,
@@ -187,3 +187,22 @@ const putStyles = () => {
 putStyles();
 
 cmStorage.listen("settings", "styles.listen", () => putStyles());
+
+export const footerItems: FooterItem[] = [
+  {
+    icon: 'list-outline',
+    title: 'Все',
+    phase: 'all',
+  },
+  {
+    icon: 'folder-outline',
+    title: 'Списки',
+    phase: 'lists'
+  },
+  {
+    icon: 'arrow-circle-right',
+    title: 'Другое',
+    phase: 'other'
+  },
+];
+
