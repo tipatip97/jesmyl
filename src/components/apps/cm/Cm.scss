@@ -777,16 +777,16 @@ body {
                 pointer-events: none;
             }
 
-            .com-ord-list {
-                &:not(:last-child) {
+            .com-ord-list-content {
+                >:not(:last-child) {
                     border-bottom: dashed 2px var(--color-far);
                 }
 
-                &:first-child {
+                >:first-child {
                     padding-top: calc(100vh * var(--roll-mode-padding-kf));
                 }
 
-                &:last-child {
+                >:last-child {
                     padding-bottom: calc(100vh * (1 - var(--roll-mode-padding-kf)));
                 }
             }

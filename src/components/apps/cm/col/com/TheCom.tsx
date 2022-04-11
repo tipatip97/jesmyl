@@ -5,11 +5,11 @@ import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useNav from "../../base/useNav";
+import useRoll from "../../base/useRoll";
 import FontSizeContain from "../../complect/font-size-contain/FontSizeContain";
 import { useMarks } from "../../marks/useMarks";
 import { useCcol } from "../useCcol";
 import ChordCard from "./chord-card/ChordCard";
-import { Com } from "./Com";
 import ComCtrlPanel from "./ctrl-panel/ComCtrlPanel";
 import ComOrders from "./orders/ComOrders";
 
@@ -18,69 +18,61 @@ export default function TheCom() {
   const [chordVisibleVariant] = useChordVisibleVariant();
   const { setPhase } = useNav();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
-  const rollModeMarks = useSelector(
-    (state: RootState) => state.cm.rollModeMarks
-  );
   const isPlayerShown = useSelector(
     (state: RootState) => state.cm.isPlayerShown
   );
-  const rollMode = useSelector((state: RootState) => state.cm.rollMode);
 
   const [ccom] = useCcol("com");
 
   const { markedComs } = useMarks();
+  const { toggleRoll, setRollModeContainer, rollModeMarks, rollMode } =
+    useRoll();
 
   if (ccom == null) {
     setPhase("cat");
     return null;
   }
 
-  const content = ([] as Com[])
-    .concat(rollModeMarks ? markedComs : ccom)
-    .map((com) => {
-      return (
-        ccom && (
+  const content = [rollModeMarks ? markedComs : ccom].flat().map(
+    (com) =>
+      com && (
+        <div key={`main-com-${com.wid}`}>
           <ComOrders
-            ccom={ccom}
-            key={`main-com-${com.wid}`}
+            ccom={com}
             fontSize={fontSize}
-            // onClick: () => actions.turnRoll(),
             isAnchorInheritHide={!isPlayerShown} // && !g.streamManager.isSub
           />
-        )
-      );
-    });
-
-  // const actions = g.actions.com;
+        </div>
+      )
+  );
 
   return (
     <div
       key="com-ord-list-wrapper"
       className="com-screen"
-      // ref={actions.winName}
-      style={
-        {
-          // "--roll-mode-padding-kf": actions.rollYAxis,
-        }
-      }
+      ref={(element) => element && setRollModeContainer(element)}
     >
       <ComCtrlPanel ccom={ccom} />
-      {fontSize < 0 ? <FontSizeContain fixOnly='width'>{content}</FontSizeContain> : content}
+      <div className="com-ord-list-content" onClick={() => toggleRoll()}>
+        {fontSize < 0 ? (
+          <FontSizeContain fixOnly="width">{content}</FontSizeContain>
+        ) : (
+          content
+        )}
+      </div>
       <div
         key="rollYAxis thumb"
         className={`roll-y-axis-thumb ${rollMode ? "show" : ""}`}
         onClick={(event) => {
           event.stopPropagation();
-          // actions.nextRollYAxis(() => this.fu());
         }}
-        // ref={actions.rollYAxisThumbName}
       >
         svg('menu-arrow-outline')
       </div>
       <div
         key="some-vcom-wrppr"
         className={`chords-images-show-panel${
-          !chordVisibleVariant || rollMode // || g.streamManager.isSub
+          !chordVisibleVariant || rollMode
             ? " hidden"
             : ""
         }`}

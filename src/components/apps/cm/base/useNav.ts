@@ -4,6 +4,8 @@ import { cmStorage } from "../../../../store/jstorages";
 import { setCurrentApp } from "../../../board/Board.store";
 import { CmPhase } from "../Cm.model";
 import { setCmPhase, updateIsCmFullscreenMode } from "../Cm.store";
+import { useMarks } from "../marks/useMarks";
+import useRollMode from "./useRoll";
 
 
 const phaseJumps: Record<CmPhase, CmPhase | null> = {
@@ -20,6 +22,8 @@ export default function useNav() {
     const dispatch = useDispatch();
 
     const ret = {
+        rollMode: useRollMode(),
+        marks: useMarks(),
         phase: useSelector((state: RootState) => state.cm.phase),
         prevPhase: useSelector((state: RootState) => state.cm.prevPhase),
         setPhase: (val: CmPhase) => {
@@ -37,6 +41,12 @@ export default function useNav() {
             if (!ret.phase) return;
             if (ret.phase === 'cats') {
                 dispatch(setCurrentApp(null));
+                return;
+            }
+
+            if (ret.rollMode.rollMode) {
+                ret.rollMode.switchRollMode(null);
+                ret.rollMode.switchRollModeMarks(false);
                 return;
             }
 

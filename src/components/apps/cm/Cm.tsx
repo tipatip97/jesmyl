@@ -7,7 +7,8 @@ import { cmStorage } from "../../../store/jstorages";
 import useNav from "./base/useNav";
 import { Comps, isAccessed } from "./Cm.complect";
 import "./Cm.scss";
-import { updateComFontSize, updateIsCmFullscreenMode } from "./Cm.store";
+import { updateComFontSize } from "./Cm.store";
+import ComPlayerSignaler from "./col/com/player/ComPlayerSignaler";
 import { useCcol } from "./col/useCcol";
 import { useCols } from "./cols/useCols";
 import { mainTopButtons } from "./editor/Lazies";
@@ -22,8 +23,15 @@ export default function CmApplication() {
   const rangeMax = 200;
 
   const dispatch = useDispatch();
-  const { phase, setPhase, goBack, isCanGoBack, isFullScreen } = useNav();
-  const rollMode = useSelector((state: RootState) => state.cm.rollMode);
+  const {
+    phase,
+    setPhase,
+    goBack,
+    isCanGoBack,
+    isFullScreen,
+    switchFullscreen,
+    rollMode: { rollMode },
+  } = useNav();
   const comFontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const [, setCols] = useCols();
   const [ccom] = useCcol("com");
@@ -49,12 +57,12 @@ export default function CmApplication() {
         onClick={() => {
           if (phase !== "com" || rollMode) return;
           if (Date.now() - topClickDateNow < 500) {
-            dispatch(updateIsCmFullscreenMode(!isFullScreen));
+            switchFullscreen();
             setTopClickDateNow(0);
           } else setTopClickDateNow(Date.now());
         }}
       >
-        {/* <CComPlayerSignaler /> */}
+        <ComPlayerSignaler />
         {mainTopButtons()}
         <div key="tools-panel" className="tools-panel">
           <div

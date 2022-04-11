@@ -326,6 +326,7 @@ body {
     left: calc(100% - 1.5em);
     width: 0;
     height: 0;
+    cursor: pointer;
 
     &:after {
       content: '×';

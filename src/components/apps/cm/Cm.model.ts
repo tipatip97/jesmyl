@@ -23,7 +23,7 @@ export interface CmState extends CmStoraged {
     numModalUpdates: number;
 }
 
-export type CmRollMode = 'pause' | null;
+export type CmRollMode = 'pause' | 'play' | null;
 
 export type ChordVisibleVariant = 0 | 1 | 2;
 
@@ -47,6 +47,8 @@ export interface CmStorage extends CmStoraged {
     settings: IExportableSetts;
     eeStorage: EeStorageStoreType;
     executions: ExecDict[];
+    
+    speedRollKf: number;
 }
 
 export interface CmAction {

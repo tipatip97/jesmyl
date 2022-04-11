@@ -1,18 +1,22 @@
 import { CSSProperties, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
-import { RootState } from "../../../../../../store";
-import { changeRollMode, changeRollModeMarks } from "../../../Cm.store";
+import useRollMode from "../../../base/useRoll";
 
 export default function ComPlayerSignaler() {
   const closingTime = 1500;
 
-  const dispatch = useDispatch();
-
-  const [closing, setClosing] = useState(true);
+  const [closing, setClosing] = useState(false);
   const [closingTimeout, setClosingTimeout] = useState<any | null>(null);
 
-  const rollMode = useSelector((state: RootState) => state.cm.rollMode);
+  const {
+    rollMode,
+    updateSpeedRollKf,
+    setRollSpeedScreenContainer,
+    switchRollModeMarks,
+    switchRollMode,
+  } = useRollMode();
+
+  if (!rollMode) return null;
 
   return (
     <div
@@ -23,27 +27,25 @@ export default function ComPlayerSignaler() {
     >
       <div className="speed-panel">
         {(["plus", "", "minus"] as ["plus", "", "minus"]).map((sign, signi) => {
-          const isActive = false; //g.actions.com.isSpeedRollKfSetterActive(signi);
-
           return (
             <div
               key={`${sign}-sign of speed`}
               className="sign-digit"
               onClick={(event) => {
                 event.stopPropagation();
-                if (!isActive || !sign) return;
-                // g.actions.com.updateSpeedRollKf(signi ? 1 : -1);
-                // this.fu();
+                if (!sign) return;
+                updateSpeedRollKf(signi ? -1 : 1);
               }}
               onTouchStart={(event) => {
                 event.stopPropagation();
               }}
+              ref={
+                signi === 1
+                  ? (element) => element && setRollSpeedScreenContainer(element)
+                  : null
+              }
             >
-              {sign ? (
-                <EvaIcon name={`${sign}-square${isActive ? "" : "-outline"}`} />
-              ) : (
-                "?" //g.actions.com.speedRollKfLabel
-              )}
+              {sign ? <EvaIcon name={`${sign}-square`} /> : "1.0"}
             </div>
           );
         })}
@@ -64,10 +66,9 @@ export default function ComPlayerSignaler() {
           clearTimeout(closingTimeout);
           setClosingTimeout(
             setTimeout(() => {
-              dispatch(changeRollMode(null));
-              dispatch(changeRollModeMarks(false));
+              switchRollMode(null);
+              switchRollModeMarks(false);
               setClosing(false);
-              // g.updateFlexFontSize(400);
             }, closingTime)
           );
         }}

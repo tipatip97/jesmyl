@@ -1,13 +1,11 @@
-import { useDispatch } from "react-redux";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import { EvaIconName } from "../../../../../../complect/eva-icon/EvaIcon.model";
-import { changeRollMode, changeRollModeMarks } from "../../../Cm.store";
+import useRoll from "../../../base/useRoll";
 import { useMarks } from "../../../marks/useMarks";
 
 export default function ComPlayerPanel() {
-  const dispatch = useDispatch();
-
   const { markedComs } = useMarks();
+  const { switchRollModeMarks, switchRollMode } = useRoll();
 
   return (
     <div key="com-player" className="com-player">
@@ -22,9 +20,8 @@ export default function ComPlayerPanel() {
             key={`collapse-mode-${name}`}
             onClick={(event) => {
               event.stopPropagation();
-              dispatch(changeRollMode("pause"));
-              if (conti) dispatch(changeRollModeMarks(true));
-              // g.updateFlexFontSize(400);
+              switchRollMode("pause");
+              if (conti) switchRollModeMarks(true);
             }}
           >
             <EvaIcon name={name} alt={alt} />
