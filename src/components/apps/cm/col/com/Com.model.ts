@@ -1,3 +1,4 @@
+import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon.model";
 import { IExportedCol } from "../Col.model";
 import { IExportableOrder } from "./order/Order.model";
 
@@ -26,5 +27,10 @@ export interface IExportableCom extends IExportedCol {
     // tonc?: string[];
 }
 
+export type SettingsItemName = 'ton' | 'font-size' | 'open-anchors';
 
-
+export interface SettingsItem {
+    title: string;
+    name: SettingsItemName;
+    icon: EvaIconName;
+}

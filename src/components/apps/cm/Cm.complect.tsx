@@ -60,13 +60,15 @@ export const isAccessed = (action: string): true | null => {
   return (rules[action] = right ? (right.level <= level ? true : null) : true);
 };
 
-export const Comps: Partial<Record<CmPhase, () => ReactNode>> = {
+export const Comps: Record<CmPhase, () => ReactNode> = {
   cats: () => <TheCats />,
-  all: () => <TheCat />,
+  cat: () => <TheCat />,
   com: () => <TheCom />,
   editor: () => <Editor />,
   news: () => null,
   translations: () => <Translations />,
+  lists: () => null,
+  other: () => null,
 };
 
 const styleProps = [
@@ -190,19 +192,18 @@ cmStorage.listen("settings", "styles.listen", () => putStyles());
 
 export const footerItems: FooterItem[] = [
   {
-    icon: 'list-outline',
-    title: 'Все',
-    phase: 'all',
+    icon: "list-outline",
+    title: "Все",
+    phases: ["cat","com"],
   },
   {
-    icon: 'folder-outline',
-    title: 'Списки',
-    phase: 'lists'
+    icon: "folder-outline",
+    title: "Списки",
+    phases: ["lists"],
   },
   {
-    icon: 'arrow-circle-right',
-    title: 'Другое',
-    phase: 'other'
+    icon: "arrow-circle-right",
+    title: "Другое",
+    phases: ["other"],
   },
 ];
-

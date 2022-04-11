@@ -44,8 +44,17 @@ body {
             }
 
             .header-content {
+                --header-padding: 8px;
+
                 background-color: var(--color-3);
                 height: var(--header-container-height);
+                padding: var(--header-padding);
+                box-sizing: border-box;
+
+                .action-button {
+                    padding: var(--header-padding);
+                    cursor: pointer;
+                }
             }
         }
 
@@ -83,6 +92,24 @@ body {
         }
     }
 
+    .paranja {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: none;
+        z-index: 99;
+
+        &.open {
+            display: initial;
+        }
+
+        &.dark {
+            display: initial;
+            background-color: rgba(0, 0, 0, .2);
+        }
+    }
 
 
 

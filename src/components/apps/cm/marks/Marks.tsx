@@ -118,11 +118,6 @@ export default function Marks(props: MarksProps) {
           })}
         </div>
       </div>
-      <div
-        key="paranja"
-        className="paranja"
-        onClick={() => setIsOpened(false)}
-      />
     </>
   );
 }

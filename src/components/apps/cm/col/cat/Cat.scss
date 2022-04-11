@@ -2,21 +2,18 @@
     position: relative;
 
     .header-content {
-        --padding: 7px;
-
-        padding: var(--padding);
-        box-sizing: border-box;
 
         .com-searcher {
-            --height: calc(var(--header-container-height) - var(--padding) * 2);
+            --height: calc(var(--header-container-height) - var(--header-padding) * 2);
 
             display: flex;
             justify-content: space-between;
-            height: var(--height);
             align-items: center;
-            border-radius: calc(var(--height) /2);
+            height: var(--height);
+            box-sizing: border-box;
+            border-radius: calc(var(--header-padding) * 3);
             background-color: var(--color-1);
-            padding: 0 10px;
+            padding: var(--header-padding);
 
             .filter-input {
                 width: calc(100% - 60px);
@@ -49,7 +46,7 @@
             height: var(--size);
             align-items: center;
             padding: 0 .4em;
-            margin-top: calc(var(--number-border-size) * 2 + 2px);
+            margin-bottom: calc(var(--number-border-size) * 2 + 2px);
             cursor: pointer;
 
             >.number {

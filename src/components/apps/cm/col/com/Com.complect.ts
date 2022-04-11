@@ -1,3 +1,4 @@
+import { SettingsItem } from "./Com.model";
 
 
 export const iRuUaReg = /[уеыаоэяиёюіїє ]/i;
@@ -34,4 +35,22 @@ export const chordBemoleEquivalent: Record<string, string> = {
     'D#': 'Eb',
     'F#': 'Gb',
     'G#': 'Ab',
-  };
+};
+
+export const settingsItems: SettingsItem[] = [
+    {
+        title: 'Тональность',
+        name: 'ton',
+        icon: 'music-outline',
+    },
+    {
+        title: 'Размер шрифта',
+        name: 'font-size',
+        icon: 'text-outline',
+    },
+    {
+        title: 'Cсылки',
+        name: 'open-anchors',
+        icon: 'menu-outline',
+    },
+];

@@ -68,6 +68,7 @@
     width: 100vw;
     height: 100vh;
     color: white;
+    z-index: 1000;
 
     .triple-area {
         position: absolute;
@@ -80,10 +81,13 @@
             left: 40%;
 
             .close-translation-button {
+                --svg-color: white;
+
                 position: relative;
                 top: -50px;
                 transition: top .4s;
                 left: calc(50% - 24px / 2);
+                z-index: 10000;
 
                 &.show {
                     top: 10px;

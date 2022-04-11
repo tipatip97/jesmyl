@@ -5,6 +5,7 @@ import { IExportableSetts } from "./complect/settings/Setts.model";
 import { EeStorageStoreType } from "./ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./complect/font-size-contain/FontSizeContain.model";
 import { EvaIconName } from "../../../complect/eva-icon/EvaIcon.model";
+import { ParanjaMode } from "./base/useParanja";
 
 
 
@@ -15,6 +16,7 @@ export interface CmState extends CmStoraged {
     translationBlockIsVisible: boolean;
     translationBlockPosition: FontSizeContainPropsPosition;
     isCmFullscreenMode: boolean;
+    paranjaMode: ParanjaMode;
     isShowMarksMode: boolean;
     isPlayerShown: boolean;
     rollModeMarks: boolean;
@@ -28,13 +30,13 @@ export type CmRollMode = 'pause' | 'play' | null;
 
 export type ChordVisibleVariant = 0 | 1 | 2;
 
-export type CmPhase = 'all' | 'lists' | 'other' | 'cats' | 'cat' | 'com' | 'editor' | 'news' | 'translations';
+export type CmPhase = 'lists' | 'other' | 'cats' | 'cat' | 'com' | 'editor' | 'news' | 'translations';
 
 
 export interface FooterItem {
     title: string;
     icon: EvaIconName;
-    phase: CmPhase;
+    phases: CmPhase[];
 }
 export interface CmStoraged {
     ccatw?: number;

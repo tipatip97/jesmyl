@@ -5,6 +5,7 @@ import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../store";
 import { cmStorage } from "../../../store/jstorages";
 import useNav from "./base/useNav";
+import useParanja from "./base/useParanja";
 import { Comps, footerItems, isAccessed } from "./Cm.complect";
 import "./Cm.scss";
 import { updateComFontSize } from "./Cm.store";
@@ -41,6 +42,7 @@ export default function CmApplication() {
   const [topClickDateNow, setTopClickDateNow] = useState(0);
 
   cmStorage.listen("cols", "cols-update", (val) => setCols(val));
+  const { onParanjaClick, paranjaMode } = useParanja();
 
   onBackButton.listen("cm-listener", () => goBack());
   useEffect(() => () => onBackButton.mute("cm-listener"), []);
@@ -139,11 +141,11 @@ export default function CmApplication() {
           })}
         </div>
         <div className="footer">
-          {footerItems.map(({ title, icon, phase: itemPhase }) => (
+          {footerItems.map(({ title, icon, phases }) => (
             <div
               key={`main-footer-item_${icon}`}
-              className={`footer-item ${phase === itemPhase ? "active" : ""}`}
-              onClick={() => setPhase(itemPhase)}
+              className={`footer-item ${phases.indexOf(phase) > -1 ? "active" : ""}`}
+              onClick={() => setPhase(phases[0])}
             >
               <div className="icon-container">
                 <EvaIcon name={icon} />
@@ -153,6 +155,11 @@ export default function CmApplication() {
           ))}
         </div>
       </div>
+      <div
+        key="paranja"
+        className={`paranja ${paranjaMode || ""}`}
+        onClick={() => onParanjaClick()}
+      />
     </>
   );
 }

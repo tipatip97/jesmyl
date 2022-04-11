@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
 import { appStorage, cmStorage } from "../../../store/jstorages";
+import { ParanjaMode } from "./base/useParanja";
 import { ChordVisibleVariant, CmPhase, CmRollMode, CmState, CmStorage } from "./Cm.model";
 import { FontSizeContainPropsPosition } from "./complect/font-size-contain/FontSizeContain.model";
 import { IExportableMeeting } from "./meetings/Meetings.model";
@@ -19,10 +20,11 @@ const initialState: CmState = {
   isCmFullscreenMode: false,
   isShowMarksMode: false,
   isPlayerShown: false,
+  paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
   cm_meetings: cmStorage.getOr('cm_meetings', []),
-  comFontSize: cmStorage.getOr('comFontSize', 100),
+  comFontSize: cmStorage.getOr('comFontSize', 15),
   chords: cmStorage.getOr('chords', {}),
   translationUpdates: 0,
   translationBlock: 0,
@@ -69,12 +71,17 @@ export const slice = createSlice({
     updateIsPlayerShown: (state, action: PayloadAction<boolean>) => {
       state.isPlayerShown = action.payload;
     },
+    setParanjaMode: (state, action: PayloadAction<ParanjaMode>) => {
+      state.paranjaMode = action.payload;
+    },
     updateChordVisibleVariant: (state, action: PayloadAction<ChordVisibleVariant>) => {
       state.chordVisibleVariant = action.payload;
     },
     updateComFontSize: (state, action: PayloadAction<number>) => {
-      state.comFontSize = action.payload;
-      cmStorage.set('comFontSize', action.payload);
+      const size = Math.ceil(action.payload);
+      if (size < 5 || size > 70) return;
+      state.comFontSize = size;
+      cmStorage.set('comFontSize', size);
     },
     changeRollMode: (state, action: PayloadAction<CmRollMode>) => {
       state.rollMode = action.payload;
@@ -106,7 +113,7 @@ export const slice = createSlice({
   },
 });
 
-export const { colsForceUpdate, setCmPhase, selectCcol, updateIsCmFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates, updateComFontSize, setTranslationBlock, setTranslationBlockIsVisible, setTranslationBlockPosition, riseUpTranslationUpdates, setIsShowMarksMode } =
+export const { colsForceUpdate, setCmPhase, selectCcol, updateIsCmFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates, updateComFontSize, setTranslationBlock, setTranslationBlockIsVisible, setTranslationBlockPosition, riseUpTranslationUpdates, setIsShowMarksMode, setParanjaMode } =
   slice.actions;
 export default slice.actions;
 

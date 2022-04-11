@@ -14,7 +14,7 @@ export default function ComOrders(props: IComOrdersProps) {
       className={["com-ord-list", mylib.func(setClassName).call()].join(" ")}
       {...{ onClick, ref }}
       style={mylib.overlap({}, style, {
-        fontSize: `${fontSize || 100}%`,
+        fontSize: `${fontSize}px`,
       })}
     >
       {ccom.orders.map((orderUnit, orderUniti) => {

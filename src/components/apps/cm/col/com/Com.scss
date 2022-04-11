@@ -1,0 +1,45 @@
+.com-container {
+    .com-ord-list-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: var(--content-height);
+    }
+
+    .setting-popup {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 0;
+        max-height: 70vh;
+        background-color: var(--color-3);
+        padding: 0;
+        overflow: hidden;
+        z-index: 150;
+        transition: height .2s, padding .2s;
+
+        &.open {
+            height: 300px;
+            padding: 30px;
+        }
+
+        .item {
+            padding: 10px 0;
+
+            .action {
+                >.full {
+                    width: calc(6em + 20px);
+                }
+
+                >* {
+                    width: 2em;
+                    text-align: center;
+
+                    +* {
+                        margin-left: 10px;
+                    }
+                }
+            }
+        }
+    }
+}

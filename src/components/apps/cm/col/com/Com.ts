@@ -1,7 +1,7 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { setts } from "../../complect/settings/Setts";
 import { StyleProp } from "../../complect/settings/StyleProp";
-import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.const";
+import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.complect";
 import { IExportableCom } from "./Com.model";
 import { EditableCom } from "./EditableCom";
 import { Order } from "./order/Order";
@@ -218,10 +218,11 @@ export class Com extends EditableCom {
     this._chordLabels = [];
     this._usedChords = {};
     let currTransPosition = this.transPosition;
+    let firstChord: string = '';
 
     this.orders.forEach(ord => {
       const ordLabels: string[][] = [];
-      this.chordLabels.push(ordLabels);
+      this._chordLabels?.push(ordLabels);
       const chords = this.actualChords(ord.chordsi, currTransPosition);
 
       if (ord.top.style?.isModulation) {
@@ -241,11 +242,12 @@ export class Com extends EditableCom {
                 .split(/[^#A-Z/0-9]+/i)
                 .forEach(chord => this._usedChords && (this._usedChords[chord.replace(/B/, 'A#')] = chord));
               lineLabels.push(chordSchema);
+              if (!firstChord) firstChord = chordSchema;
             });
         });
     });
 
-    this.tonc = this.firstChord = (mylib.def(mylib.typ('', this.tonc, mylib.def(mylib.def(mylib.def(this.chordLabels, [])[0], [])[0], [])[0])?.match(/[A-H]#?m?/), []) as string[])[0] || '';
+    this.tonc = this.firstChord = firstChord;//(mylib.def(mylib.typ('', this.tonc, mylib.def(mylib.def(mylib.def(this._chordLabels, [])[0], [])[0], [])[0])?.match(/[A-H]#?m?/), []) as string[])[0] || '';
   }
 
   static withBemoles(chords?: string, isSet: num = 0) {

@@ -8,7 +8,7 @@ import { useMarks } from "../marks/useMarks";
 import useRollMode from "./useRoll";
 
 
-const phaseJumps: Partial<Record<CmPhase, CmPhase | null>> = {
+const phaseJumps: Record<CmPhase, CmPhase | null> = {
     // если значение - null, то переход на предыдущую фазу
     cats: null,
     com: "cat",
@@ -16,6 +16,8 @@ const phaseJumps: Partial<Record<CmPhase, CmPhase | null>> = {
     editor: "com",
     news: null,
     translations: 'com',
+    lists: null,
+    other: null,
 };
 
 export default function useNav() {
