@@ -17,7 +17,11 @@ let ccat: Cat | undefined;
 export function useCcol<Coln extends keyof NavColField>(coln: Coln): [NavColField[Coln], (val: NavColField[Coln]) => void] {
     useSelector((state: RootState) => state.cm.numColsUpdates);
     const dispatch = useDispatch();
-    const ccolw = useSelector((state: RootState) => state.cm[`c${coln}w`]);
+    const ccolw = useSelector(
+        coln === 'com'
+            ? (state: RootState) => state.cm.ccomw
+            : (state: RootState) => state.cm.ccatw
+    );
 
     return [
         (

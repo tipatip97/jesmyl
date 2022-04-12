@@ -1,9 +1,23 @@
-.com-container {
-    .com-ord-list-content {
-        overflow-y: auto;
-        overflow-x: hidden;
-        height: var(--content-height);
+.main-container {
+    &.roll-mode {
+
+        .com-ord-list-content {
+            >:not(:last-child) {
+                border-bottom: dashed 2px var(--color-far);
+            }
+
+            >:first-child {
+                padding-top: calc(100vh * var(--roll-mode-padding-kf));
+            }
+
+            >:last-child {
+                padding-bottom: calc(100vh * (1 - var(--roll-mode-padding-kf)));
+            }
+        }
     }
+}
+
+.com-container {
 
     .setting-popup {
         position: absolute;

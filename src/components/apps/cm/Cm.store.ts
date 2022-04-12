@@ -13,13 +13,14 @@ cmStorage.registerTop(appStorage);
 const initialState: CmState = {
   chordVisibleVariant: cmStorage.getOr('chordVisibleVariant', 0),
   ccomw: cmStorage.get('ccomw'),
-  ccatw: cmStorage.get('ccatw'),
-  phase: cmStorage.getOr('phase', 'cats'),
+  ccatw: cmStorage.getOr('ccatw', 0),
+  lastComwList: cmStorage.getOr('lastComwList', []),
+  phase: cmStorage.getOr('phase', 'cat'),
   prevPhase: cmStorage.get('prevPhase'),
   rollMode: null,
-  isCmFullscreenMode: false,
-  isShowMarksMode: false,
-  isPlayerShown: false,
+  isCmFullscreen: false,
+  isShowMarks: false,
+  isAnchorsVisible: false,
   paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
@@ -28,7 +29,7 @@ const initialState: CmState = {
   chords: cmStorage.getOr('chords', {}),
   translationUpdates: 0,
   translationBlock: 0,
-  translationBlockIsVisible: true,
+  isTranslationBlockVisible: true,
   translationBlockPosition: 'center',
 
   numComUpdates: 0,
@@ -62,22 +63,25 @@ export const slice = createSlice({
     setMeetingList: (state, action: PayloadAction<IExportableMeeting[]>) => {
       state.cm_meetings = action.payload;
     },
-    updateIsCmFullscreenMode: (state, action: PayloadAction<boolean>) => {
-      state.isCmFullscreenMode = action.payload;
+    switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
+      state.isCmFullscreen = action.payload ?? state.isCmFullscreen;
     },
-    setIsShowMarksMode: (state, action: PayloadAction<boolean>) => {
-      state.isShowMarksMode = action.payload;
+    switchShowMarks: (state, action: PayloadAction<boolean | nil>) => {
+      state.isShowMarks = action.payload ?? state.isShowMarks;
     },
-    updateIsPlayerShown: (state, action: PayloadAction<boolean>) => {
-      state.isPlayerShown = action.payload;
+    switchAnchorsVisible: (state, action: PayloadAction<boolean | nil>) => {
+      state.isAnchorsVisible = action.payload ?? !state.isAnchorsVisible;
     },
     setParanjaMode: (state, action: PayloadAction<ParanjaMode>) => {
       state.paranjaMode = action.payload;
     },
-    updateChordVisibleVariant: (state, action: PayloadAction<ChordVisibleVariant>) => {
+    updateLastComwList: (state, action: PayloadAction<number[]>) => {
+      state.lastComwList = action.payload;
+    },
+    setChordVisibleVariant: (state, action: PayloadAction<ChordVisibleVariant>) => {
       state.chordVisibleVariant = action.payload;
     },
-    updateComFontSize: (state, action: PayloadAction<number>) => {
+    setComFontSize: (state, action: PayloadAction<number>) => {
       const size = Math.ceil(action.payload);
       if (size < 5 || size > 70) return;
       state.comFontSize = size;
@@ -89,22 +93,22 @@ export const slice = createSlice({
     setTranslationBlock: (state, action: PayloadAction<number>) => {
       state.translationBlock = action.payload;
     },
-    setTranslationBlockIsVisible: (state, action: PayloadAction<boolean>) => {
-      state.translationBlockIsVisible = action.payload;
+    switchTranslationBlockVisible: (state, action: PayloadAction<boolean>) => {
+      state.isTranslationBlockVisible = action.payload;
     },
     setTranslationBlockPosition: (state, action: PayloadAction<FontSizeContainPropsPosition>) => {
       state.translationBlockPosition = action.payload;
     },
-    changeRollModeMarks: (state, action: PayloadAction<boolean>) => {
-      state.rollModeMarks = action.payload;
+    switchRollModeMarks: (state, action: PayloadAction<boolean | nil>) => {
+      state.rollModeMarks = action.payload ?? state.rollModeMarks;
     },
     riseUpTranslationUpdates: (state) => {
       state.translationUpdates++;
     },
-    comForceUpdate: (state) => {
+    riseUpComUpdate: (state) => {
       state.numComUpdates++;
     },
-    colsForceUpdate: (state) => {
+    riseUpColsUpdates: (state) => {
       state.numColsUpdates++;
     },
     riseUpModalUpdates: (state) => {
@@ -113,8 +117,28 @@ export const slice = createSlice({
   },
 });
 
-export const { colsForceUpdate, setCmPhase, selectCcol, updateIsCmFullscreenMode, updateIsPlayerShown, updateChordVisibleVariant, comForceUpdate, changeRollMode, changeRollModeMarks, setMarkList, setMeetingList, riseUpModalUpdates, updateComFontSize, setTranslationBlock, setTranslationBlockIsVisible, setTranslationBlockPosition, riseUpTranslationUpdates, setIsShowMarksMode, setParanjaMode } =
-  slice.actions;
+export const {
+  riseUpColsUpdates,
+  setCmPhase,
+  selectCcol,
+  switchCmFullscreen,
+  switchAnchorsVisible,
+  setChordVisibleVariant,
+  riseUpComUpdate,
+  changeRollMode,
+  switchRollModeMarks,
+  setMarkList,
+  setMeetingList,
+  riseUpModalUpdates,
+  setComFontSize,
+  setTranslationBlock,
+  switchTranslationBlockVisible,
+  setTranslationBlockPosition,
+  riseUpTranslationUpdates,
+  switchShowMarks,
+  setParanjaMode,
+  updateLastComwList
+} = slice.actions;
 export default slice.actions;
 
 export const cmReducer = slice.reducer;

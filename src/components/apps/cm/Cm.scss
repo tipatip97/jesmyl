@@ -6,20 +6,30 @@ body {
     --font-size: 16px;
     --com-player-signaler-size: 50px;
 
-    font-size: var(--font-size);
-
     --color-1: #e6e4c0;
     --color-2: #e7edde;
     --color-3: #f2f0e0;
     --color-4: #4f4e46;
     --color-5: #1d192b;
 
+    --main-gap: 8px;
     --header-height: 10px;
     --header-container-height: 60px;
     --footer-height: 70px;
-    --content-height: calc(100vh - var(--header-height) - var(--header-container-height) - var(--footer-height));
+    --fullscreen-transition: top .3s, bottom .3s, height .3s, margin-top .3s;
+
+    --header-container-margin-top: 0;
+    --header-top: 0;
+    --header-container-top: var(--header-height);
+    --footer-bottom: 0;
 
     --svg-color: var(--color-4);
+
+
+    font-size: var(--font-size);
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
     color: var(--color-4);
 
     // Выделенная область(тёмный беж)  e6e4c0
@@ -29,41 +39,86 @@ body {
     // Выбранный пункт (темнее серый + корич) 1d192b
 
     >.main-container {
+        --content-height: calc(100vh - var(--header-height) - var(--header-container-height) - var(--footer-height));
+        --main-content-height: calc(100vh - var(--header-height) - var(--footer-height));
+
+        .collapse-fullscreen-button {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            margin: 10px;
+            transition: top .2s;
+            z-index: 50;
+        }
+
+        &.fullscreen-mode {
+            --header-top: calc(0px - var(--header-height));
+            --header-container-top: calc(0px - var(--header-container-height));
+            --footer-bottom: calc(0px - var(--footer-height));
+            --content-height: 100vh;
+            --main-content-height: 100vh;
+            --header-container-margin-top: calc(0px - var(--header-container-height) - var(--header-height));
+
+            .collapse-fullscreen-button {
+                top: 0;
+            }
+        }
+
         >.header {
+            position: static;
+            margin-top: var(--header-top);
+            width: 100vw;
             background-color: var(--color-3);
             height: var(--header-height);
+            transition: var(--fullscreen-transition);
         }
 
         >.content {
-            height: calc(100vh - var(--header-height) - var(--footer-height));
+            position: static;
+            width: 100vw;
             background-color: var(--color-2);
             overflow: hidden;
+            transition: var(--fullscreen-transition);
 
             >.phase-content {
                 height: 100%;
             }
 
             .header-content {
-                --header-padding: 8px;
-
+                width: 100vw;
                 background-color: var(--color-3);
                 height: var(--header-container-height);
-                padding: var(--header-padding);
+                padding: var(--main-gap);
+                margin-top: var(--header-container-margin-top);
                 box-sizing: border-box;
+                transition: var(--fullscreen-transition);
 
                 .action-button {
-                    padding: var(--header-padding);
+                    padding: var(--main-gap);
                     cursor: pointer;
                 }
+            }
+
+            .content-container {
+                margin-top: var(--header-height);
+                height: var(--content-height);
+                transition: var(--fullscreen-transition);
+                padding: var(--main-gap);
+                overflow-y: auto;
+                overflow-x: hidden;
             }
         }
 
         >.footer {
+            position: absolute;
+            bottom: var(--footer-bottom);
+            width: 100vw;
             display: flex;
             justify-content: space-around;
             align-items: center;
             background-color: var(--color-3);
             height: var(--footer-height);
+            transition: var(--fullscreen-transition);
 
             >.footer-item {
                 display: flex;
@@ -851,20 +906,6 @@ body {
                 top: -50px;
                 opacity: 0;
                 pointer-events: none;
-            }
-
-            .com-ord-list-content {
-                >:not(:last-child) {
-                    border-bottom: dashed 2px var(--color-far);
-                }
-
-                >:first-child {
-                    padding-top: calc(100vh * var(--roll-mode-padding-kf));
-                }
-
-                >:last-child {
-                    padding-bottom: calc(100vh * (1 - var(--roll-mode-padding-kf)));
-                }
             }
         }
 

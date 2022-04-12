@@ -13,12 +13,12 @@ export interface CmState extends CmStoraged {
     rollMode: CmRollMode;
     translationUpdates: number;
     translationBlock: number;
-    translationBlockIsVisible: boolean;
+    isTranslationBlockVisible: boolean;
     translationBlockPosition: FontSizeContainPropsPosition;
-    isCmFullscreenMode: boolean;
+    isCmFullscreen: boolean;
     paranjaMode: ParanjaMode;
-    isShowMarksMode: boolean;
-    isPlayerShown: boolean;
+    isShowMarks: boolean;
+    isAnchorsVisible: boolean;
     rollModeMarks: boolean;
 
     numComUpdates: number;
@@ -41,6 +41,7 @@ export interface FooterItem {
 export interface CmStoraged {
     ccatw?: number;
     ccomw?: number;
+    lastComwList: number[];
     chordVisibleVariant: ChordVisibleVariant;
     phase: CmPhase;
     prevPhase?: CmPhase;

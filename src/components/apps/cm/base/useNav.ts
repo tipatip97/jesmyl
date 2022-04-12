@@ -3,7 +3,7 @@ import { RootState } from "../../../../store";
 import { cmStorage } from "../../../../store/jstorages";
 import { setCurrentApp } from "../../../board/Board.store";
 import { CmPhase } from "../Cm.model";
-import { setCmPhase, updateIsCmFullscreenMode } from "../Cm.store";
+import { setCmPhase, switchCmFullscreen } from "../Cm.store";
 import { useMarks } from "../marks/useMarks";
 import useRollMode from "./useRoll";
 
@@ -33,8 +33,8 @@ export default function useNav() {
             cmStorage.set('phase', val);
             dispatch(setCmPhase(val));
         },
-        isFullScreen: useSelector((state: RootState) => state.cm.isCmFullscreenMode),
-        switchFullscreen: (isFullscreen?: boolean) => dispatch(updateIsCmFullscreenMode(isFullscreen ?? !ret.isFullScreen)),
+        isFullScreen: useSelector((state: RootState) => state.cm.isCmFullscreen),
+        switchFullscreen: (isFullscreen?: boolean) => dispatch(switchCmFullscreen(isFullscreen)),
         isCanGoBack: (phase: CmPhase) => {
             return (ret.phase && ret.phase !== 'cats' && phaseJumps[ret.phase] !== null)
                 || (phase && phase !== 'cats' && phaseJumps[phase] !== null);

@@ -1,45 +1,34 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon.model";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useNav from "../../base/useNav";
+import useParanja from "../../base/useParanja";
 import useRoll from "../../base/useRoll";
-import FontSizeContain from "../../complect/font-size-contain/FontSizeContain";
-import { useMarks } from "../../marks/useMarks";
+import { ChordVisibleVariant } from "../../Cm.model";
 import { useCcol } from "../useCcol";
 import ChordCard from "./chord-card/ChordCard";
-import ComCtrlPanel from "./ctrl-panel/ComCtrlPanel";
-import ComOrders from "./orders/ComOrders";
 import "./Com.scss";
-import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon.model";
-import { ChordVisibleVariant } from "../../Cm.model";
-import useTranslation from "../../translation/useTranslation";
-import useParanja from "../../base/useParanja";
-import { settingsItems } from "./Com.complect";
-import {
-  comForceUpdate,
-  updateComFontSize,
-  updateIsPlayerShown,
-} from "../../Cm.store";
+import ComTools from "./ComTools";
+import ComOrders from "./orders/ComOrders";
 
 export default function TheCom() {
-  const dispatch = useDispatch();
   const [isShowChordImages, setIsShowChordImages] = useState(false);
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
-  const { setPhase, goBack } = useNav();
+  const { setPhase, goBack, switchFullscreen } = useNav();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
-  const isPlayerShown = useSelector(
-    (state: RootState) => state.cm.isPlayerShown
+  const isAnchorsVisible = useSelector(
+    (state: RootState) => state.cm.isAnchorsVisible
   );
   const [isOpenSettings, setIsOpenSettings] = useState(false);
 
   const [ccom] = useCcol("com");
 
   const { toggleRoll, setRollModeContainer, rollMode } = useRoll();
-  const { openTranslations } = useTranslation();
   const { openParanja } = useParanja();
 
   if (ccom == null) {
@@ -70,7 +59,7 @@ export default function TheCom() {
           <EvaIcon
             className="action-button"
             name="expand-outline"
-            onClick={() => openTranslations()}
+            onClick={() => switchFullscreen(true)}
           />
           {(
             [
@@ -128,13 +117,15 @@ export default function TheCom() {
           />
         </div>
       </div>
-      {/* <ComCtrlPanel ccom={ccom} /> */}
-      <div className="com-ord-list-content" onClick={() => toggleRoll()}>
+      <div
+        className="com-ord-list-content content-container"
+        onClick={() => toggleRoll()}
+      >
         <div key={`main-com-${ccom.wid}`}>
           <ComOrders
             ccom={ccom}
             fontSize={fontSize}
-            isAnchorInheritHide={!isPlayerShown}
+            isAnchorInheritHide={!isAnchorsVisible}
           />
         </div>
       </div>
@@ -220,69 +211,7 @@ export default function TheCom() {
         </div>
       </div>
       <div className={`setting-popup ${isOpenSettings ? "open" : ""}`}>
-        {settingsItems.map(({ title, name, icon }) => {
-          return (
-            <div key={`settingsItem-${name}`} className="item flex between">
-              <EvaIcon name={icon} className="icon" />
-              <div className="title">{title}</div>
-              <div className="action flex around pointer">
-                {name === "ton" ? (
-                  <>
-                    <EvaIcon
-                      name="minus"
-                      onClick={() => {
-                        ccom.transpose(-1);
-                        dispatch(comForceUpdate());
-                      }}
-                    />
-                    <div
-                      onClick={() => {
-                        ccom.setChordsInitialTon();
-                        dispatch(comForceUpdate());
-                      }}
-                    >
-                      {ccom.firstChord}
-                    </div>
-                    <EvaIcon
-                      name="plus"
-                      onClick={() => {
-                        ccom.transpose(-1);
-                        dispatch(comForceUpdate());
-                      }}
-                    />
-                  </>
-                ) : name === "font-size" ? (
-                  <>
-                    <EvaIcon
-                      name="minimize-outline"
-                      onClick={() => dispatch(updateComFontSize(fontSize - 1))}
-                    />
-                    <div>{fontSize}</div>
-                    <EvaIcon
-                      name="maximize-outline"
-                      onClick={() => dispatch(updateComFontSize(fontSize + 1))}
-                    />
-                  </>
-                ) : name === "open-anchors" ? (
-                  <div
-                    className="full"
-                    onClick={() =>
-                      dispatch(updateIsPlayerShown(!isPlayerShown))
-                    }
-                  >
-                    {!isPlayerShown ? "Открыть" : "Закрыть"}
-                  </div>
-                ) : (
-                  <>
-                    <span />
-                    <span />
-                    <span />
-                  </>
-                )}
-              </div>
-            </div>
-          );
-        })}
+        <ComTools />
       </div>
     </div>
   );

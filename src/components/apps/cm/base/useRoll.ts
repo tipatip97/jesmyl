@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { cmStorage } from "../../../../store/jstorages";
 import { CmRollMode } from "../Cm.model";
-import { changeRollMode, changeRollModeMarks } from "../Cm.store";
+import { changeRollMode, switchRollModeMarks } from "../Cm.store";
 
 const setRollInterval = (): number => interval = ((20 - speedRollKf) || .7) * 30;
 
@@ -22,7 +22,7 @@ export default function useRoll() {
             ret.updateSpeedRollKf(0);
         },
         rollModeMarks: useSelector((state: RootState) => state.cm.rollModeMarks),
-        switchRollModeMarks: (isMarks?: boolean) => dispatch(changeRollModeMarks(isMarks ?? !ret.rollModeMarks)),
+        switchRollModeMarks: (isMarks?: boolean) => dispatch(switchRollModeMarks(isMarks ?? !ret.rollModeMarks)),
         rollMode: useSelector((state: RootState) => state.cm.rollMode),
         switchRollMode: (topRollMode: CmRollMode) => {
             rollMode = topRollMode;

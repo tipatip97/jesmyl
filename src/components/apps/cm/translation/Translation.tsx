@@ -20,11 +20,11 @@ export default function Translations() {
     switchVisible,
     closeTranslation,
     showMarks,
-    isShowMarksMode,
+    isShowMarks,
   } = useTranslation();
 
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { setPhase, isFullScreen } = useNav();
+  const { setPhase, isFullScreen, goBack } = useNav();
 
   useEffect(() => {
     if (isTouchDevice) {
@@ -35,60 +35,10 @@ export default function Translations() {
     }
   });
 
-  return isFullScreen ? (
-    <div className="fullscreen-translation">
-      <TranslationScreen
-        fontSizeContainId="translation-native-window"
-        position={position}
-        updater={(update) => window.addEventListener("resize", () => update())}
-      />
-      <div className="triple-area left" onClick={() => prevBlock()} />
-      <div
-        className="triple-area center"
-        onClick={() => showMarks(!isShowMarksMode)}
-        onDoubleClick={() => {
-          setIsShowCloseButton(true);
-          setTimeout(() => setIsShowCloseButton(false), 2000);
-        }}
-      >
-        <div
-          className={`close-translation-button ${
-            isShowCloseButton ? "show" : ""
-          }`}
-          onClick={(event) => {
-            event.stopPropagation();
-            closeTranslation();
-          }}
-        >
-          <EvaIcon name="close-circle-outline" />
-        </div>
-      </div>
-      <div className="triple-area right" onClick={() => nextBlock()} />
-    </div>
-  ) : (
-    <div>
-      <div>
-        <div
-          className={`mbtn msm ${currWin ? "m-no" : "m-ko"}`}
-          onClick={(event) => {
-            newTranslation(
-              (event.view as any).screenLeft + event.clientX - 70,
-              (event.view as any).screenTop + event.clientY + 70
-            );
-          }}
-        >
-          {currWin ? (
-            <EvaIcon name="monitor-outline" />
-          ) : (
-            <EvaIcon name="play-circle-outline" />
-          )}
-        </div>
-      </div>
-      <div
-        className="translation-screen-wrapper"
-        onClick={() => switchVisible()}
-      >
-        <div className="translation-screen-wrapper-inner">
+  return (
+    <div className="translation-container">
+      {isFullScreen ? (
+        <div className="fullscreen-translation">
           <TranslationScreen
             fontSizeContainId="translation-native-window"
             position={position}
@@ -96,43 +46,109 @@ export default function Translations() {
               window.addEventListener("resize", () => update())
             }
           />
+          <div className="triple-area left" onClick={() => prevBlock()} />
+          <div
+            className="triple-area center"
+            onClick={() => showMarks(!isShowMarks)}
+            onDoubleClick={() => {
+              setIsShowCloseButton(true);
+              setTimeout(() => setIsShowCloseButton(false), 2000);
+            }}
+          >
+            <div
+              className={`close-translation-button ${
+                isShowCloseButton ? "show" : ""
+              }`}
+              onClick={(event) => {
+                event.stopPropagation();
+                closeTranslation();
+              }}
+            >
+              <EvaIcon name="close-circle-outline" />
+            </div>
+          </div>
+          <div className="triple-area right" onClick={() => nextBlock()} />
         </div>
-      </div>
-      <div>
-        <div className="mbtn m-no msm" onClick={() => prevBlock()}>
-          <EvaIcon name="arrow-left-outline" />
-        </div>
-        <div className="mbtn m-no msm" onClick={() => nextBlock()}>
-          <EvaIcon name="arrow-right-outline" />
-        </div>
-        <div
-          className={`mbtn msm m-no ${position === "center" ? "" : "mactive"}`}
-          onClick={() => switchPosition()}
-        >
-          <EvaIcon name="upload-outline" />
-        </div>
-      </div>
-      {blocks && (
-        <div className="translations-line">
-          {blocks.map((block, blocki) => {
-            return (
+      ) : (
+        <>
+          <div className="header-content flex between">
+            <EvaIcon
+              name="arrow-back"
+              className="action-button"
+              onClick={() => goBack()}
+            />
+            <div className="flex pointer">
+              <div className="action-button" onClick={() => prevBlock()}>
+                <EvaIcon name="arrow-left-outline" />
+              </div>
+              <div className="action-button" onClick={() => nextBlock()}>
+                <EvaIcon name="arrow-right-outline" />
+              </div>
               <div
-                key={`translations-line-item_${blocki}`}
-                id={`translation-window-line-${blocki}`}
-                className="translations-line-item"
+                className={`action-button ${
+                  position === "center" ? "inactive" : ""
+                }`}
+                onClick={() => switchPosition()}
               >
-                <div>{blocki + 1}</div>
-                <div
-                  className={`translations-line-item-inner ${
-                    currBlocki === blocki ? "active" : ""
-                  }`}
-                  onClick={() => setBlocki(blocki)}
-                  dangerouslySetInnerHTML={{ __html: block }}
+                <EvaIcon name="upload-outline" />
+              </div>
+            </div>
+            <div
+              className="action-button"
+              onClick={(event) => {
+                newTranslation(
+                  (event.view as any).screenLeft + event.clientX - 70,
+                  (event.view as any).screenTop + event.clientY + 70
+                );
+              }}
+            >
+              {currWin ? (
+                <EvaIcon name="monitor-outline" />
+              ) : (
+                <EvaIcon name="play-circle-outline" />
+              )}
+            </div>
+          </div>
+          <div className="content-container">
+            <div
+              className="translation-screen-wrapper"
+              onClick={() => switchVisible()}
+            >
+              <div className="translation-screen-wrapper-inner">
+                <TranslationScreen
+                  fontSizeContainId="translation-native-window"
+                  position={position}
+                  updater={(update) =>
+                    window.addEventListener("resize", () => update())
+                  }
                 />
               </div>
-            );
-          })}
-        </div>
+            </div>
+
+            {blocks && (
+              <div className="translations-line">
+                {blocks.map((block, blocki) => {
+                  return (
+                    <div
+                      key={`translations-line-item_${blocki}`}
+                      id={`translation-window-line-${blocki}`}
+                      className="translations-line-item"
+                    >
+                      <div>{blocki + 1}</div>
+                      <div
+                        className={`translations-line-item-inner ${
+                          currBlocki === blocki ? "active" : ""
+                        }`}
+                        onClick={() => setBlocki(blocki)}
+                        dangerouslySetInnerHTML={{ __html: block }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

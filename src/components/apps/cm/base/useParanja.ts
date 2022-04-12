@@ -10,6 +10,10 @@ export default function useParanja() {
     const dispatch = useDispatch();
     const ret = {
         paranjaMode: useSelector((state: RootState) => state.cm.paranjaMode),
+        closeParanja: () => {
+            actions.shift();
+            dispatch(setParanjaMode(null));
+        },
         openParanja: (cb: () => void, mode: ParanjaMode = 'open') => {
             actions.push(cb);
             dispatch(setParanjaMode(mode));

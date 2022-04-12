@@ -6,7 +6,7 @@ import { Swipeabler } from "../../../../../../complect/swipeabler/Swipeabler";
 import { RootState } from "../../../../../../store";
 import { useChordVisibleVariant } from "../../../base/useChordVisibleVariant";
 import { ChordVisibleVariant } from "../../../Cm.model";
-import { comForceUpdate, updateIsPlayerShown } from "../../../Cm.store";
+import { riseUpComUpdate, switchAnchorsVisible } from "../../../Cm.store";
 import { useCols } from "../../../cols/useCols";
 import { useMarks } from "../../../marks/useMarks";
 import { Com } from "../Com";
@@ -34,8 +34,8 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
   const [bemoleSwitcherElement, setBemoleSwitcherElement] =
     useState<Swipeabler | null>(null);
 
-  const isPlayerShown = useSelector(
-    (state: RootState) => state.cm.isPlayerShown
+  const isAnchorsVisible = useSelector(
+    (state: RootState) => state.cm.isAnchorsVisible
   );
 
   useEffect(() => {
@@ -135,8 +135,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                         event.name === "start" &&
                         event.direction?.match(/d/)
                       ) {
-                        dispatch(updateIsPlayerShown(!isPlayerShown));
-                        // g.updateFlexFontSize();
+                        dispatch(switchAnchorsVisible());
                       }
                     })
                   );
@@ -169,7 +168,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
 
                         if (event.ctrlKey) {
                           event.stopPropagation();
-                          dispatch(updateIsPlayerShown(!isPlayerShown));
+                          dispatch(switchAnchorsVisible());
                         } else {
                           setChordVisibleVariant(
                             isWhole
@@ -182,7 +181,6 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                                     : -1)) as ChordVisibleVariant)
                           );
                         }
-                        // g.updateFlexFontSize();
                       }}
                     >
                       {<EvaIcon name={name} alt={alt} />}
@@ -206,7 +204,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                       } else if (event.name === "stop" && isSwitch) {
                         isSwitch = false;
                         ccom.turnBemoled();
-                        dispatch(comForceUpdate());
+                        dispatch(riseUpComUpdate());
                       }
                     })
                   );
@@ -244,8 +242,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                           : ccom.setChordsInitialTon();
                       }
 
-                      dispatch(comForceUpdate());
-                      // g.updateFlexFontSize();
+                      dispatch(riseUpComUpdate());
                     }}
                   >
                     {(sign && <EvaIcon name={sign[0]} alt={sign[1]} />) ||
@@ -256,7 +253,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
             ]}
         {<TheComCtrlPanelAdditionalButtons />}
       </div>
-      {isPlayerShown ? <ComPlayerPanel /> : null}
+      {isAnchorsVisible ? <ComPlayerPanel /> : null}
     </div>
   );
 }

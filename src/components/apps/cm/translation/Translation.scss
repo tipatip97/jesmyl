@@ -1,48 +1,21 @@
-.translation-screen-wrapper {
-    --size: 50vmin;
-    --max-size: 300px;
-    --min-size: 200px;
+.translation-container {
+    .translation-screen-wrapper {
+        --size: 50vmin;
+        --max-size: 300px;
+        --min-size: 200px;
 
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-    padding: 0 1em;
-    width: var(--size);
-    height: var(--size);
-    max-width: var(--max-size);
-    max-height: var(--max-size);
-    min-width: var(--min-size);
-    min-height: var(--min-size);
-
-    .translation-screen-wrapper-inner {
-        user-select: none;
-        cursor: pointer;
-        background: black;
-        white-space: pre;
-        color: var(--color-far);
-        border: solid 1px transparent;
-        font-size: 14px;
-        overflow: hidden;
-
-        &.active {
-            border-color: var(--color-far);
-        }
-    }
-}
-
-.translations-line {
-    margin: 1em 0;
-    padding: 1em 0;
-    overflow: auto;
-    white-space: nowrap;
-    background: black;
-
-    .translations-line-item {
+        position: relative;
         display: inline-block;
         vertical-align: middle;
         padding: 0 1em;
+        width: var(--size);
+        height: var(--size);
+        max-width: var(--max-size);
+        max-height: var(--max-size);
+        min-width: var(--min-size);
+        min-height: var(--min-size);
 
-        .translations-line-item-inner {
+        .translation-screen-wrapper-inner {
             user-select: none;
             cursor: pointer;
             background: black;
@@ -51,57 +24,87 @@
             border: solid 1px transparent;
             font-size: 14px;
             overflow: hidden;
-            text-align: center;
 
             &.active {
                 border-color: var(--color-far);
             }
         }
     }
-}
 
-.fullscreen-translation {
-    position: absolute;
-    background: black;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    color: white;
-    z-index: 1000;
+    .translations-line {
+        margin: 1em 0;
+        padding: 1em 0;
+        overflow: auto;
+        white-space: nowrap;
+        background: black;
+        color: white;
 
-    .triple-area {
-        position: absolute;
-        top: 0;
-        width: 40%;
-        height: 100vh;
+        .translations-line-item {
+            display: inline-block;
+            vertical-align: middle;
+            padding: 0 1em;
 
-        &.center {
-            width: 20%;
-            left: 40%;
+            .translations-line-item-inner {
+                user-select: none;
+                cursor: pointer;
+                background: black;
+                white-space: pre;
+                color: var(--color-far);
+                border: solid 1px transparent;
+                font-size: 14px;
+                overflow: hidden;
+                text-align: center;
 
-            .close-translation-button {
-                --svg-color: white;
-
-                position: relative;
-                top: -50px;
-                transition: top .4s;
-                left: calc(50% - 24px / 2);
-                z-index: 10000;
-
-                &.show {
-                    top: 10px;
-                    cursor: pointer;
+                &.active {
+                    border-color: var(--color-far);
                 }
             }
         }
+    }
 
-        &.left {
-            left: 0;
-        }
+    .fullscreen-translation {
+        position: absolute;
+        background: black;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        color: white;
+        z-index: 1000;
 
-        &.right {
-            right: 0;
+        .triple-area {
+            position: absolute;
+            top: 0;
+            width: 40%;
+            height: 100vh;
+
+            &.center {
+                width: 20%;
+                left: 40%;
+
+                .close-translation-button {
+                    --svg-color: white;
+
+                    position: relative;
+                    top: -50px;
+                    transition: top .4s;
+                    left: calc(50% - 24px / 2);
+                    z-index: 10000;
+
+                    &.show {
+                        top: 10px;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            &.left {
+                left: 0;
+            }
+
+            &.right {
+                right: 0;
+            }
         }
     }
 }

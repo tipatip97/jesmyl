@@ -7,10 +7,10 @@ import { RootState } from "../../../../store";
 import useNav from "../base/useNav";
 import {
   riseUpTranslationUpdates,
-  setIsShowMarksMode,
+  switchShowMarks,
   setTranslationBlock,
-  setTranslationBlockIsVisible,
-  setTranslationBlockPosition
+  switchTranslationBlockVisible,
+  setTranslationBlockPosition,
 } from "../Cm.store";
 import { useCcol } from "../col/useCcol";
 import TranslationScreen from "./TranslationScreen";
@@ -25,15 +25,13 @@ export default function useTranslation() {
     (state: RootState) => state.cm.translationBlock
   );
   const isVisible = useSelector(
-    (state: RootState) => state.cm.translationBlockIsVisible
+    (state: RootState) => state.cm.isTranslationBlockVisible
   );
   useSelector((state: RootState) => state.cm.translationUpdates);
   const position = useSelector(
     (state: RootState) => state.cm.translationBlockPosition
   );
-  const isShowMarksMode = useSelector(
-    (state: RootState) => state.cm.isShowMarksMode
-  );
+  const isShowMarks = useSelector((state: RootState) => state.cm.isShowMarks);
   const blocks = ccom?.getOrderedTexts();
 
   useEffect(() => ret.setBlocki(0), [ccom]);
@@ -41,7 +39,7 @@ export default function useTranslation() {
   const ret = {
     currWin,
     isTouchDevice,
-    isShowMarksMode,
+    isShowMarks,
     currBlock: isVisible ? blocks && blocks[currBlocki] : "",
     currBlocki,
     blocks,
@@ -66,7 +64,7 @@ export default function useTranslation() {
             nextParent.clientWidth / 2;
       }
     },
-    switchVisible: () => dispatch(setTranslationBlockIsVisible(!isVisible)),
+    switchVisible: () => dispatch(switchTranslationBlockVisible(!isVisible)),
     switchPosition: () => {
       dispatch(
         setTranslationBlockPosition(
@@ -83,7 +81,7 @@ export default function useTranslation() {
       if (isTouchDevice) switchFullscreen(true);
       setPhase("translations");
     },
-    showMarks: (isShow: boolean) => dispatch(setIsShowMarksMode(isShow)),
+    showMarks: (isShow: boolean) => dispatch(switchShowMarks(isShow)),
     newTranslation: (left: number, top: number) => {
       if (currWin) {
         currWin.focus();

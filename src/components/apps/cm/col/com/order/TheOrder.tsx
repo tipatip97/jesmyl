@@ -20,8 +20,8 @@ export default function TheOrder(props: ITheOrderProps) {
     isAnchorInheritHide,
     ccom,
   } = props || {};
-  const isPlayerShown = useSelector(
-    (state: RootState) => state.cm.isPlayerShown
+  const isAnchorsVisible = useSelector(
+    (state: RootState) => state.cm.isAnchorsVisible
   );
 
   const [chordVisibleVariant] = useChordVisibleVariant();
@@ -35,48 +35,13 @@ export default function TheOrder(props: ITheOrderProps) {
     return null;
 
   const params = (init = {}) => {
-    return Object.assign(
-      {
-        id: `com-block-${orderUniti}`,
-        // ref: (element) =>
-        //   element && g.actions.com.registerBlock(orderUniti, element),
-        // onContextMenu: (event) => {
-        //   event.preventDefault();
-        //   // navigator.clipboard.writeText('text123');
-        // },
-      },
-      init
-      // g.streamManager.isCurr
-      //   ? {
-      //       onDoubleClick: () =>
-      //         g.streamManager.setBlocki(orderUniti, () => g.ss()),
-      //     }
-      //   : null,
-      // g.streamManager.isSub
-      //   ? {
-      //       style: Object.assign(
-      //         {},
-      //         g.streamManager.isCurr
-      //           ? {
-      //               borderTop: "dotted var(--color-far) 1px",
-      //             }
-      //           : null,
-      //         g.streamManager.isSubBlocki(orderUniti)
-      //           ? {
-      //               backgroundColor: "var(--color-light-far)",
-      //             }
-      //           : null
-      //       ),
-      //     }
-      //   : null
-    );
+    return Object.assign({ id: `com-block-${orderUniti}` }, init);
   };
 
   const isHideAnchor =
-    // !g.streamManager.isSub &&
     orderUnit.isAnchor &&
     mylib
-      .func(setHideAnchor, (ord: Order) => !ord.isOpened && !isPlayerShown)
+      .func(setHideAnchor, (ord: Order) => !ord.isOpened && !isAnchorsVisible)
       .call(orderUnit);
 
   if (isHideAnchor) {

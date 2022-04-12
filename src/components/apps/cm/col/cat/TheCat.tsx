@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import mylib from "../../../../../complect/my-lib/MyLib";
 import useNav from "../../base/useNav";
 import { isAccessed } from "../../Cm.complect";
 import { useCcol } from "../useCcol";
@@ -8,7 +7,7 @@ import "./Cat.scss";
 
 export default function TheCat() {
   const [ccat] = useCcol("cat");
-  const [ccom, setCcom] = useCcol("com");
+  const [, setCcom] = useCcol("com");
   const { setPhase } = useNav();
   const [term, setTerm] = useState(ccat?.term || "");
   const [, setTerm1] = useState(ccat?.term || "");
@@ -17,25 +16,12 @@ export default function TheCat() {
   const listRef = useRef<HTMLDivElement>(null);
 
   if (!ccat) {
-    setPhase("cats");
     return null;
   }
-
-  if (ccom && !term)
-    setTimeout(() => {
-      const view = document.getElementById(`com-face-${ccom.wid}`);
-      if (view) mylib.scrollToView(view, "top");
-    }, 100);
 
   return (
     <div className="cat-content">
       <div className="header-content">
-        {/* <div
-          key="category-title-col-title"
-          className="category-title col-title"
-        >
-          {ccat.name || "Карегория без названия"}
-        </div>, */}
         <div className="com-searcher">
           <EvaIcon name="search-outline" />
           <input
@@ -68,6 +54,7 @@ export default function TheCat() {
           />
         </div>
       </div>
+      <div className="last-com-list"></div>
       <div
         key="com-list"
         className={`com-list ${isAccessed("catDel") ? "can-redact" : ""}`}
@@ -94,9 +81,7 @@ export default function TheCat() {
             <div key={`com-face-${com.wid}`} id={`com-face-${com.wid}`}>
               <div
                 key={`com-face-button-${com.wid}`}
-                className={`com-face  ${
-                  "" // errors ? "m-ko" : wrap.deep ? "m-no" : "m-ok"
-                } `}
+                className="com-face"
                 style={{
                   backgroundColor: com.removed ? "red" : "",
                 }}

@@ -194,7 +194,7 @@ export const footerItems: FooterItem[] = [
   {
     icon: "list-outline",
     title: "Все",
-    phases: ["cat","com"],
+    phases: ["cat", "com", "translations"],
   },
   {
     icon: "folder-outline",

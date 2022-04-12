@@ -4,16 +4,16 @@
     .header-content {
 
         .com-searcher {
-            --height: calc(var(--header-container-height) - var(--header-padding) * 2);
+            --height: calc(var(--header-container-height) - var(--main-gap) * 2);
 
             display: flex;
             justify-content: space-between;
             align-items: center;
             height: var(--height);
             box-sizing: border-box;
-            border-radius: calc(var(--header-padding) * 3);
+            border-radius: calc(var(--main-gap) * 3);
             background-color: var(--color-1);
-            padding: var(--header-padding);
+            padding: var(--main-gap);
 
             .filter-input {
                 width: calc(100% - 60px);

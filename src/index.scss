@@ -50,6 +50,14 @@ input {
   cursor: pointer;
 }
 
+.relative {
+  position: relative;
+}
+
+.inactive {
+  filter: brightness(.2);
+}
+
 
 ::-webkit-scrollbar {
   width: 2px;

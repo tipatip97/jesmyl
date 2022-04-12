@@ -1,43 +1,26 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import onBackButton from "../../../complect/back-button-listener";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
-import { RootState } from "../../../store";
 import { cmStorage } from "../../../store/jstorages";
 import useNav from "./base/useNav";
 import useParanja from "./base/useParanja";
-import { Comps, footerItems, isAccessed } from "./Cm.complect";
+import { Comps, footerItems } from "./Cm.complect";
 import "./Cm.scss";
-import { updateComFontSize } from "./Cm.store";
-import ComPlayerSignaler from "./col/com/player/ComPlayerSignaler";
-import { useCcol } from "./col/useCcol";
 import { useCols } from "./cols/useCols";
-import { mainTopButtons } from "./editor/Lazies";
-import Marks from "./marks/Marks";
-import TheMeetings from "./meetings/TheMeetings";
-import Resizer from "./resizer/Resizer";
 import useTranslation from "./translation/useTranslation";
 
 export default function CmApplication() {
-  const rangeStep = 5;
-  const rangeMin = 20;
-  const rangeMax = 200;
-
-  const dispatch = useDispatch();
   const {
     phase,
     setPhase,
     goBack,
-    isCanGoBack,
     isFullScreen,
     switchFullscreen,
     rollMode: { rollMode },
   } = useNav();
-  const comFontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const [, setCols] = useCols();
-  const [ccom] = useCcol("com");
 
-  const { openTranslations, isShowMarksMode } = useTranslation();
+  const { isShowMarks } = useTranslation();
 
   const [topClickDateNow, setTopClickDateNow] = useState(0);
 
@@ -54,7 +37,7 @@ export default function CmApplication() {
         className={`main-container phase-${phase}${
           isFullScreen || rollMode ? " fullscreen-mode" : ""
         }${rollMode ? " roll-mode" : ""}${
-          isShowMarksMode ? " show-marks-mode" : ""
+          isShowMarks ? " show-marks-mode" : ""
         }`}
         onClick={() => {
           if (phase !== "com" || rollMode) return;
@@ -64,70 +47,11 @@ export default function CmApplication() {
           } else setTopClickDateNow(Date.now());
         }}
       >
-        {/* <ComPlayerSignaler />
-        {mainTopButtons()}
-        <div key="tools-panel" className="tools-panel">
-          <div
-            key="bb-button"
-            aria-label="back"
-            className="bb-button weight"
-            onClick={(event) => {
-              event.stopPropagation();
-              goBack();
-            }}
-          >
-            {phase === "cats" ? (
-              <EvaIcon name="arrowhead-left-outline" />
-            ) : (
-              <EvaIcon name="arrow-back-outline" />
-            )}
-          </div>
-          <Marks key="marks-list" />
-          {!isCanGoBack("news") || !isAccessed("canWatch") ? null : (
-            <div
-              key="execs-button"
-              className="execs-button mbtn m-no mxs"
-              onClick={() => setPhase("news")}
-            >
-              <EvaIcon name="list" />
-            </div>
-          )}
-          {
-            // !isAccessed("canShowTranslation") ||
-            !ccom || !isCanGoBack("translations") ? null : (
-              <div
-                key="translations-button"
-                className="translations-button mbtn m-no mxs"
-                onClick={() => openTranslations()}
-              >
-                <EvaIcon name="monitor-outline" />
-              </div>
-            )
-          }
-          <TheMeetings />
-          {(() => {
-            const getComWindows = () =>
-              document.querySelectorAll(".com-ord-list");
-
-            return phase === "com" ? (
-              <Resizer
-                value={comFontSize}
-                min={rangeMin}
-                max={rangeMax}
-                step={rangeStep}
-                onRange={(value) => {
-                  const comWindows = getComWindows();
-
-                  comWindows &&
-                    Array.from(comWindows).forEach((comWindow) => {
-                      (comWindow as HTMLElement).style.fontSize = `${value}%`;
-                    });
-                }}
-                onChange={(value) => dispatch(updateComFontSize(value))}
-              />
-            ) : null;
-          })()}
-        </div>*/}
+        <EvaIcon
+          name="collapse-outline"
+          className="collapse-fullscreen-button pointer"
+          onClick={() => switchFullscreen(false)}
+        />
 
         <div className="header"></div>
         <div className="content">
@@ -144,7 +68,9 @@ export default function CmApplication() {
           {footerItems.map(({ title, icon, phases }) => (
             <div
               key={`main-footer-item_${icon}`}
-              className={`footer-item ${phases.indexOf(phase) > -1 ? "active" : ""}`}
+              className={`footer-item ${
+                phases.indexOf(phase) > -1 ? "active" : ""
+              }`}
               onClick={() => setPhase(phases[0])}
             >
               <div className="icon-container">

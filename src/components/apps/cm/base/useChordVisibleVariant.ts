@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { cmStorage } from "../../../../store/jstorages";
 import { ChordVisibleVariant } from "../Cm.model";
-import { updateChordVisibleVariant } from "../Cm.store";
+import { setChordVisibleVariant } from "../Cm.store";
 
 export function useChordVisibleVariant(): [ChordVisibleVariant, (val: ChordVisibleVariant) => void] {
     const dispatch = useDispatch();
@@ -11,7 +11,7 @@ export function useChordVisibleVariant(): [ChordVisibleVariant, (val: ChordVisib
         useSelector((state: RootState) => state.cm.chordVisibleVariant),
         (val: ChordVisibleVariant) => {
             cmStorage.set('chordVisibleVariant', val);
-            dispatch(updateChordVisibleVariant(val));
+            dispatch(setChordVisibleVariant(val));
         }
     ];
 }
