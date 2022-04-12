@@ -1,0 +1,14 @@
+.com-face-context-menu {
+    padding: 10px 10px;
+    background: var(--color-2);
+    box-shadow: 0 0 40px #ccc;
+    border-radius: 10px;
+
+    .item {
+        margin: 10px 0;
+
+        .eva-icon {
+            margin-right: 5px;
+        }
+    }
+}

@@ -24,6 +24,7 @@ export interface CmState extends CmStoraged {
     numComUpdates: number;
     numColsUpdates: number;
     numModalUpdates: number;
+    numAbsolutePopupUpdates: number;
 }
 
 export type CmRollMode = 'pause' | 'play' | null;
@@ -41,7 +42,7 @@ export interface FooterItem {
 export interface CmStoraged {
     ccatw?: number;
     ccomw?: number;
-    lastComwList: number[];
+    laterComwList: number[];
     chordVisibleVariant: ChordVisibleVariant;
     phase: CmPhase;
     prevPhase?: CmPhase;

@@ -13,6 +13,7 @@ body {
     --color-5: #1d192b;
 
     --main-gap: 8px;
+    --main-big-gap: 18px;
     --header-height: 10px;
     --header-container-height: 60px;
     --footer-height: 70px;
@@ -25,6 +26,33 @@ body {
 
     --svg-color: var(--color-4);
 
+    .main-gap-v {
+        margin-left: var(--main-gap);
+        margin-right: var(--main-gap);
+    }
+
+    .main-gap-h {
+        margin-top: var(--main-gap);
+        margin-bottom: var(--main-gap);
+    }
+
+    .main-gap {
+        margin: var(--main-gap);
+    }
+
+    .main-big-gap-v {
+        margin-left: var(--main-big-gap);
+        margin-right: var(--main-big-gap);
+    }
+
+    .main-big-gap-h {
+        margin-top: var(--main-big-gap);
+        margin-bottom: var(--main-big-gap);
+    }
+
+    .main-big-gap {
+        margin: var(--main-big-gap);
+    }
 
     font-size: var(--font-size);
     overflow: hidden;
@@ -163,6 +191,56 @@ body {
         &.dark {
             display: initial;
             background-color: rgba(0, 0, 0, .2);
+        }
+    }
+
+    .absolute-popup {
+        position: absolute;
+        z-index: 100;
+
+        &:not(.bottom-mode) {
+            top: -1000px;
+            left: -1000px;
+        }
+
+        &.bottom-mode {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100vw;
+            max-height: 70vh;
+            background-color: var(--color-3);
+            overflow: hidden;
+            height: 300px;
+            padding: 30px;
+            z-index: 150;
+
+            .item {
+                padding: 10px 0;
+
+                .icon {
+                    margin: var(--main-gap);
+                }
+
+                .action {
+                    >.full {
+                        width: calc(6em + 20px);
+                    }
+
+                    >* {
+                        width: 2em;
+                        text-align: center;
+
+                        +* {
+                            margin-left: 10px;
+                        }
+                    }
+                }
+            }
+
+            bottom: 0;
+            left: 0;
+            width: 100vw;
         }
     }
 

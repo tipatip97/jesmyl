@@ -1,0 +1,38 @@
+.lists-container {
+    .content-container {
+        --list-item-height: 60px;
+        --list-item-gap-v: 7px;
+        --thematic-item-gap-v: 20px;
+
+        >.thematic-item,
+        >.list-item {
+            border-radius: 10px;
+            background-color: var(--color-1);
+            width: 100%;
+        }
+
+        >.list-item {
+            height: var(--list-item-height);
+
+            +.list-item {
+                margin-top: var(--list-item-gap-v);
+            }
+        }
+
+        >.thematic-item {
+            height: 100%;
+            min-height: 120px;
+            margin: var(--thematic-item-gap-v) 0;
+
+            >.title {
+                padding: 3px 10px;
+            }
+            
+            >.item {
+                height: 30px;
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    }
+}

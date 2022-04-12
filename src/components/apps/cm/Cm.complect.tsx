@@ -10,6 +10,7 @@ import TheCom from "./col/com/TheCom";
 import { setts } from "./complect/settings/Setts";
 import { StyleProp } from "./complect/settings/StyleProp";
 import Editor from "./editor/Editor";
+import Lists from "./lists/Lists";
 import Translations from "./translation/Translation";
 
 let rules: Record<string, true | null> = {};
@@ -67,9 +68,27 @@ export const Comps: Record<CmPhase, () => ReactNode> = {
   editor: () => <Editor />,
   news: () => null,
   translations: () => <Translations />,
-  lists: () => null,
+  lists: () => <Lists />,
   other: () => null,
 };
+
+export const footerItems: FooterItem[] = [
+  {
+    icon: "list-outline",
+    title: "Все",
+    phases: ["cat", "com", "translations"],
+  },
+  {
+    icon: "folder-outline",
+    title: "Списки",
+    phases: ["lists"],
+  },
+  {
+    icon: "arrow-circle-right",
+    title: "Другое",
+    phases: ["other"],
+  },
+];
 
 const styleProps = [
   {
@@ -189,21 +208,3 @@ const putStyles = () => {
 putStyles();
 
 cmStorage.listen("settings", "styles.listen", () => putStyles());
-
-export const footerItems: FooterItem[] = [
-  {
-    icon: "list-outline",
-    title: "Все",
-    phases: ["cat", "com", "translations"],
-  },
-  {
-    icon: "folder-outline",
-    title: "Списки",
-    phases: ["lists"],
-  },
-  {
-    icon: "arrow-circle-right",
-    title: "Другое",
-    phases: ["other"],
-  },
-];

@@ -1,16 +1,15 @@
 import { useRef, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useNav from "../../base/useNav";
-import { isAccessed } from "../../Cm.complect";
+import useLaterComList from "../../base/useLaterComList";
+import ComFace from "../com/face/ComFace";
 import { useCcol } from "../useCcol";
 import "./Cat.scss";
 
 export default function TheCat() {
   const [ccat] = useCcol("cat");
-  const [, setCcom] = useCcol("com");
-  const { setPhase } = useNav();
   const [term, setTerm] = useState(ccat?.term || "");
   const [, setTerm1] = useState(ccat?.term || "");
+  const { laterComs } = useLaterComList();
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -25,7 +24,6 @@ export default function TheCat() {
         <div className="com-searcher">
           <EvaIcon name="search-outline" />
           <input
-            key="com-searcher"
             className="filter-input"
             type="text"
             placeholder="Поиск песен"
@@ -44,7 +42,6 @@ export default function TheCat() {
             value={term}
           />
           <EvaIcon
-            key="com-filter-input-clear-button"
             name="close"
             className={`clear-button ${term ? "" : "hidden"}`}
             onClick={() => {
@@ -54,55 +51,34 @@ export default function TheCat() {
           />
         </div>
       </div>
-      <div className="last-com-list"></div>
-      <div
-        key="com-list"
-        className={`com-list ${isAccessed("catDel") ? "can-redact" : ""}`}
-        ref={listRef}
-      >
-        {ccat.wraps ? (
-          <div
-            key="coms-count"
-            style={{
-              textAlign: "center",
-            }}
-          >
-            {`${
-              ccat.coms.length === ccat.wraps.length
-                ? ""
-                : `${ccat.wraps.length} / `
-            }${ccat.coms.length}`}
-          </div>
-        ) : null}
-        {ccat.wraps.map((wrap) => {
-          const { com, errors } = wrap || {};
-
-          return com == null ? null : (
-            <div key={`com-face-${com.wid}`} id={`com-face-${com.wid}`}>
-              <div
-                key={`com-face-button-${com.wid}`}
-                className="com-face"
-                style={{
-                  backgroundColor: com.removed ? "red" : "",
-                }}
-                onClick={() => {
-                  setCcom(com);
-                  setPhase("com");
-                }}
-              >
-                <div className="number">
-                  <span>{`${com.index == null ? "?" : com.index - -1}${
-                    com.refs && com.refs[ccat.wid]
-                      ? `, №${com.refs[ccat.wid]}.`
-                      : ""
-                  }`}</span>
-                </div>
-                <span className="title ellipsis">{com.name}</span>
-              </div>
-              {errors}
+      <div className="content-container">
+        <div
+          className={`later-com-list ${
+            !term && laterComs.length ? "" : "hidden"
+          }`}
+        >
+          <div className="main-gap">Последние:</div>
+          {laterComs.map((com) => (
+            <ComFace key={`later-com-${com.wid}`} com={com} />
+          ))}
+        </div>
+        <div className="main-gap flex between">
+          <div className="">Все песни:</div>
+          {ccat.wraps && (
+            <div>
+              {`${
+                ccat.coms.length === ccat.wraps.length
+                  ? ""
+                  : `${ccat.wraps.length} / `
+              }${ccat.coms.length}`}
             </div>
-          );
-        })}
+          )}
+        </div>
+        <div className="com-list" ref={listRef}>
+          {ccat.wraps.map((wrap) => (
+            <ComFace key={`com-face-${wrap.com.wid}`} {...wrap} />
+          ))}
+        </div>
       </div>
     </div>
   );

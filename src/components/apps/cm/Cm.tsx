@@ -7,6 +7,7 @@ import useParanja from "./base/useParanja";
 import { Comps, footerItems } from "./Cm.complect";
 import "./Cm.scss";
 import { useCols } from "./cols/useCols";
+import useAbsolutePopup from "./complect/absolute-popup/useAbsolutePopup";
 import useTranslation from "./translation/useTranslation";
 
 export default function CmApplication() {
@@ -29,6 +30,7 @@ export default function CmApplication() {
 
   onBackButton.listen("cm-listener", () => goBack());
   useEffect(() => () => onBackButton.mute("cm-listener"), []);
+  const { absolutePopupContent } = useAbsolutePopup();
 
   return (
     <>
@@ -86,6 +88,7 @@ export default function CmApplication() {
         className={`paranja ${paranjaMode || ""}`}
         onClick={() => onParanjaClick()}
       />
+      {absolutePopupContent}
     </>
   );
 }

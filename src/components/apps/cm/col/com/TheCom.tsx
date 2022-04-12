@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon.model";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
+import useLaterComList from "../../base/useLaterComList";
 import useNav from "../../base/useNav";
-import useParanja from "../../base/useParanja";
 import useRoll from "../../base/useRoll";
 import { ChordVisibleVariant } from "../../Cm.model";
+import useAbsolutePopup from "../../complect/absolute-popup/useAbsolutePopup";
 import { useCcol } from "../useCcol";
 import ChordCard from "./chord-card/ChordCard";
 import "./Com.scss";
+import ComAddMenu from "./ComAddMenu";
 import ComTools from "./ComTools";
 import ComOrders from "./orders/ComOrders";
 
@@ -24,12 +26,20 @@ export default function TheCom() {
   const isAnchorsVisible = useSelector(
     (state: RootState) => state.cm.isAnchorsVisible
   );
-  const [isOpenSettings, setIsOpenSettings] = useState(false);
 
   const [ccom] = useCcol("com");
 
   const { toggleRoll, setRollModeContainer, rollMode } = useRoll();
-  const { openParanja } = useParanja();
+  const { addLaterComw } = useLaterComList();
+  const { openAbsolutePopup, closeAbsolutePopup } = useAbsolutePopup();
+
+  useEffect(() => {
+    const addToLaterListTimeout = setTimeout(
+      () => ccom && addLaterComw(ccom.wid),
+      10000
+    );
+    return () => clearTimeout(addToLaterListTimeout);
+  }, []);
 
   if (ccom == null) {
     setPhase("cat");
@@ -56,6 +66,15 @@ export default function TheCom() {
           <span>{ccom.index + 1}</span>
         </div>
         <div className="flex between">
+          <EvaIcon
+            name="plus-circle"
+            className="action-button"
+            onClick={() =>
+              openAbsolutePopup(
+                <ComAddMenu onClick={() => closeAbsolutePopup()} com={ccom} />
+              )
+            }
+          />
           <EvaIcon
             className="action-button"
             name="expand-outline"
@@ -110,10 +129,7 @@ export default function TheCom() {
           <EvaIcon
             className="action-button"
             name="more-vertical"
-            onClick={() => {
-              openParanja(() => setIsOpenSettings(false), "dark");
-              setIsOpenSettings(true);
-            }}
+            onClick={() => openAbsolutePopup(<ComTools />)}
           />
         </div>
       </div>
@@ -209,9 +225,6 @@ export default function TheCom() {
                 );
               })}
         </div>
-      </div>
-      <div className={`setting-popup ${isOpenSettings ? "open" : ""}`}>
-        <ComTools />
       </div>
     </div>
   );

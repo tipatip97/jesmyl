@@ -31,7 +31,10 @@ input {
 
 .flex {
   display: flex;
-  align-items: center;
+
+  &:not(.custom-align-items) {
+    align-items: center;
+  }
 
   &.between {
     justify-content: space-between;
@@ -39,6 +42,10 @@ input {
 
   &.around {
     justify-content: space-around;
+  }
+
+  &.column {
+    flex-direction: column;
   }
 }
 

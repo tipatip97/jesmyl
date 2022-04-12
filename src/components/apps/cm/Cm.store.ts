@@ -14,7 +14,7 @@ const initialState: CmState = {
   chordVisibleVariant: cmStorage.getOr('chordVisibleVariant', 0),
   ccomw: cmStorage.get('ccomw'),
   ccatw: cmStorage.getOr('ccatw', 0),
-  lastComwList: cmStorage.getOr('lastComwList', []),
+  laterComwList: cmStorage.getOr('laterComwList', []),
   phase: cmStorage.getOr('phase', 'cat'),
   prevPhase: cmStorage.get('prevPhase'),
   rollMode: null,
@@ -35,6 +35,7 @@ const initialState: CmState = {
   numComUpdates: 0,
   numColsUpdates: 0,
   numModalUpdates: 0,
+  numAbsolutePopupUpdates: 0,
 };
 
 export const slice = createSlice({
@@ -75,8 +76,8 @@ export const slice = createSlice({
     setParanjaMode: (state, action: PayloadAction<ParanjaMode>) => {
       state.paranjaMode = action.payload;
     },
-    updateLastComwList: (state, action: PayloadAction<number[]>) => {
-      state.lastComwList = action.payload;
+    updateLaterComwList: (state, action: PayloadAction<number[]>) => {
+      state.laterComwList = action.payload;
     },
     setChordVisibleVariant: (state, action: PayloadAction<ChordVisibleVariant>) => {
       state.chordVisibleVariant = action.payload;
@@ -114,6 +115,9 @@ export const slice = createSlice({
     riseUpModalUpdates: (state) => {
       state.numModalUpdates++;
     },
+    riseUpAbsolutePopupUpdates: (state) => {
+      state.numAbsolutePopupUpdates++;
+    },
   },
 });
 
@@ -137,7 +141,8 @@ export const {
   riseUpTranslationUpdates,
   switchShowMarks,
   setParanjaMode,
-  updateLastComwList
+  updateLaterComwList,
+  riseUpAbsolutePopupUpdates,
 } = slice.actions;
 export default slice.actions;
 
