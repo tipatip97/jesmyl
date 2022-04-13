@@ -7,22 +7,23 @@ import {
   setComFontSize,
   switchAnchorsVisible,
 } from "../../Cm.store";
+import useAbsolutePopup from "../../complect/absolute-popup/useAbsolutePopup";
 import useTranslation from "../../translation/useTranslation";
-import { useCcol } from "../useCcol";
+import { useCcom } from "../useCcol";
 
 export default function ComTools() {
   const dispatch = useDispatch();
-  const [ccom] = useCcol("com");
+  const [ccom] = useCcom();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const isAnchorsVisible = useSelector(
     (state: RootState) => state.cm.isAnchorsVisible
   );
   const { openTranslations } = useTranslation();
-  const { closeParanja } = useParanja();
+  const { closeAbsolutePopup } = useAbsolutePopup();
 
   if (!ccom) return null;
   return (
-    <>
+    <div className="com-tools-popup flex column between">
       <div className="item flex between">
         <EvaIcon name="music-outline" className="icon" />
         <div className="title">Тональность</div>
@@ -56,43 +57,35 @@ export default function ComTools() {
         <div className="title">Размер шрифта</div>
         <div className="action flex around pointer">
           <EvaIcon
-            name="minimize-outline"
+            name="minus-outline"
             onClick={() => dispatch(setComFontSize(fontSize - 1))}
           />
           <div>{fontSize}</div>
           <EvaIcon
-            name="maximize-outline"
+            name="plus-outline"
             onClick={() => dispatch(setComFontSize(fontSize + 1))}
           />
         </div>
       </div>
-      <div className="item flex between">
-        <EvaIcon name="menu-outline" className="icon" />
-        <div className="title">Cсылки</div>
-        <div className="action flex around pointer">
-          <div
-            className="full"
-            onClick={() => dispatch(switchAnchorsVisible())}
-          >
-            {!isAnchorsVisible ? "Показать" : "Скрыть"}
-          </div>
-        </div>
+      <div
+        className="item full flex between"
+        onClick={() => dispatch(switchAnchorsVisible())}
+      >
+        <EvaIcon name="format-text-variant-outline" className="icon" />
+        <div className="title">{isAnchorsVisible ? 'Свернуть текст' : 'Развернуть текст'}</div>
+        <div className="action" />
       </div>
-      <div className="item flex between">
+      <div
+        className="item full flex between"
+        onClick={() => {
+          openTranslations();
+          closeAbsolutePopup();
+        }}
+      >
         <EvaIcon name="monitor-outline" className="icon" />
         <div className="title">Слайды</div>
-        <div className="action flex around pointer">
-          <div
-            className="full"
-            onClick={() => {
-              openTranslations();
-              closeParanja();
-            }}
-          >
-            Транслировать
-          </div>
-        </div>
+        <div className="action" />
       </div>
-    </>
+    </div>
   );
 }

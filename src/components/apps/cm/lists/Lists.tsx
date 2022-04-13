@@ -1,31 +1,54 @@
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import BrutalItem from "../base/brutal-item/BrutalItem";
+import PhaseContainer from "../base/phase-container/PhaseContainer";
+import useNav from "../base/useNav";
+import { useCols } from "../cols/useCols";
+import { useCcat } from "../col/useCcol";
 import "./Lists.scss";
 
 export default function Lists() {
+  const { setPhase } = useNav();
+  const [cols] = useCols();
+  const [, setCcat] = useCcat();
+
   return (
-    <div className="lists-container">
-      <div className="header-content flex between">Списки</div>
-      <div className="content-container flex between column">
-        <div className="list-item flex">
-          <EvaIcon name="star" className="main-big-gap" />
-          <div>Избранное</div>
-        </div>
-        <div className="list-item flex">
-          <EvaIcon name="calendar" className="main-big-gap" />
-          <div>События</div>
-        </div>
-        <div className="thematic-item flex column custom-align-items">
-          <div className="title">Тематические:</div>
-          <div className="item flex">
-            <EvaIcon name="car" className="main-big-gap" />
-            <div>Детские</div>
+    <PhaseContainer
+      topClass="lists-container"
+      withoutBackButton
+      head="Списки"
+      contentClass="flex between column"
+      content={
+        <>
+          <BrutalItem
+            icon="star-outline"
+            title="Избранное"
+            onClick={() => setPhase("favorites")}
+          />
+          <BrutalItem
+            icon="calendar-outline"
+            title="События"
+            onClick={() => setPhase("meetings")}
+          />
+          <div className="thematic-item flex column custom-align-items">
+            <div className="title">Тематические:</div>
+            {cols.cats.map((cat) => {
+              return !cat.wid ? null : (
+                <div
+                  key={`thematic-cat-${cat.wid}`}
+                  className="item flex"
+                  onClick={() => {
+                    setCcat(cat);
+                    setPhase('cat');
+                  }}
+                >
+                  <EvaIcon name="book-open-outline" className="main-big-gap" />
+                  <div>{cat.name}</div>
+                </div>
+              );
+            })}
           </div>
-          <div className="item flex">
-            <EvaIcon name="headphones" className="main-big-gap" />
-            <div>Молодёжные</div>
-          </div>
-        </div>
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }

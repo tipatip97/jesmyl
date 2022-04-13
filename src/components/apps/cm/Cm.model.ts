@@ -6,8 +6,7 @@ import { EeStorageStoreType } from "./ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./complect/font-size-contain/FontSizeContain.model";
 import { EvaIconName } from "../../../complect/eva-icon/EvaIcon.model";
 import { ParanjaMode } from "./base/useParanja";
-
-
+import { inlinePhases } from "./Cm.complect";
 
 export interface CmState extends CmStoraged {
     rollMode: CmRollMode;
@@ -25,13 +24,14 @@ export interface CmState extends CmStoraged {
     numColsUpdates: number;
     numModalUpdates: number;
     numAbsolutePopupUpdates: number;
+    numMeetingsUpdate: number;
 }
 
 export type CmRollMode = 'pause' | 'play' | null;
 
 export type ChordVisibleVariant = 0 | 1 | 2;
 
-export type CmPhase = 'lists' | 'other' | 'cats' | 'cat' | 'com' | 'editor' | 'news' | 'translations';
+export type CmPhase = typeof inlinePhases[number][number];
 
 
 export interface FooterItem {
@@ -42,6 +42,7 @@ export interface FooterItem {
 export interface CmStoraged {
     ccatw?: number;
     ccomw?: number;
+    meetingw?: number;
     laterComwList: number[];
     chordVisibleVariant: ChordVisibleVariant;
     phase: CmPhase;
@@ -58,7 +59,7 @@ export interface CmStorage extends CmStoraged {
     settings: IExportableSetts;
     eeStorage: EeStorageStoreType;
     executions: ExecDict[];
-    
+
     speedRollKf: number;
 }
 

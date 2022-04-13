@@ -1,11 +1,11 @@
 import useNav from "../base/useNav";
 import { Cat } from "../col/cat/Cat";
-import { useCcol } from "../col/useCcol";
+import { useCcat } from "../col/useCcol";
 import { useCols } from "../cols/useCols";
 
 export default function TheCats() {
   const { setPhase } = useNav();
-  const [, setCcat] = useCcol("cat");
+  const [, setCcat] = useCcat();
   const [cols] = useCols();
 
   return (

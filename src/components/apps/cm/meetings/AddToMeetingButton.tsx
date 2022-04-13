@@ -12,7 +12,7 @@ export default function AddToMeetingButton() {
         onClick: () => {
             modalService.open({
                 title: 'Закладки',
-                inputs: meetings.map(meeting => {
+                inputs: meetings?.map(meeting => {
                     return {
                         type: 'button',
                         title: meeting.getTitle(),

@@ -3,14 +3,17 @@ import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
 import { cmStorage, indexStorage } from "../../../store/jstorages";
 import { BoardApplication, BoardAuth } from "../../board/Board.model";
-import TheCats from "./cats/Cats";
 import { CmAction, CmAppVariables, CmPhase, FooterItem } from "./Cm.model";
 import TheCat from "./col/cat/TheCat";
 import TheCom from "./col/com/TheCom";
 import { setts } from "./complect/settings/Setts";
 import { StyleProp } from "./complect/settings/StyleProp";
 import Editor from "./editor/Editor";
+import Favorites from "./favorites/Favorites";
 import Lists from "./lists/Lists";
+import TheMeeting from "./meetings/TheMeeting";
+import TheMeetings from "./meetings/TheMeetings";
+import Other from "./other/Other";
 import Translations from "./translation/Translation";
 
 let rules: Record<string, true | null> = {};
@@ -61,32 +64,76 @@ export const isAccessed = (action: string): true | null => {
   return (rules[action] = right ? (right.level <= level ? true : null) : true);
 };
 
+export const phaseJumps: Record<CmPhase, CmPhase | null> = {
+  // если значение - null, то переход на предыдущую фазу
+  all: null,
+  // cats: null,
+  com: null,
+  cat: null,
+  editor: "com",
+  // news: null,
+  translations: "com",
+  lists: "all",
+  other: null,
+  favorite_com: "favorites",
+  thematic_com: null,
+  meeting_com: null,
+  favorites: "lists",
+  meetings: "lists",
+  meeting: "meetings",
+  "": null,
+};
+
 export const Comps: Record<CmPhase, () => ReactNode> = {
-  cats: () => <TheCats />,
+  all: () => <TheCat allMode />,
+  // cats: () => <TheCats />,
   cat: () => <TheCat />,
   com: () => <TheCom />,
+  thematic_com: () => <TheCom />,
+  favorite_com: () => <TheCom />,
+  meeting_com: () => <TheCom />,
   editor: () => <Editor />,
-  news: () => null,
   translations: () => <Translations />,
   lists: () => <Lists />,
-  other: () => null,
+  favorites: () => <Favorites />,
+  meetings: () => <TheMeetings />,
+  meeting: () => <TheMeeting />,
+  other: () => <Other />,
+  "": () => null,
 };
+
+export const inlinePhases = [
+  ["all", "com", "translations"],
+  [
+    "lists",
+    "cat",
+    "favorites",
+    "favorite_com",
+    "meetings",
+    "meeting",
+    "thematic_com",
+    "meeting_com",
+  ],
+  ["other", "editor", ""],
+] as const;
+
+const [allPhases, listsPhases, otherPhases] = inlinePhases;
 
 export const footerItems: FooterItem[] = [
   {
-    icon: "list-outline",
+    icon: "list",
     title: "Все",
-    phases: ["cat", "com", "translations"],
+    phases: allPhases as never,
   },
   {
-    icon: "folder-outline",
+    icon: "folder",
     title: "Списки",
-    phases: ["lists"],
+    phases: listsPhases as never,
   },
   {
     icon: "arrow-circle-right",
     title: "Другое",
-    phases: ["other"],
+    phases: otherPhases as never,
   },
 ];
 

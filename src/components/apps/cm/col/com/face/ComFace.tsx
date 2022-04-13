@@ -1,17 +1,18 @@
 import useNav from "../../../base/useNav";
+import { CmPhase } from "../../../Cm.model";
 import useAbsolutePopup from "../../../complect/absolute-popup/useAbsolutePopup";
-import { useCcol } from "../../useCcol";
+import { useCcom } from "../../useCcol";
 import { Com } from "../Com";
+import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
-export default function ComFace({
-  com,
-  errors,
-}: {
-  com: Com;
-  errors?: string[];
-}) {
-  const [, setCcom] = useCcol("com");
+export default function ComFace(props: ComFaceProps) {
+  const {
+    com,
+    errors,
+    forPhase = 'com'
+  } = props;
+  const [, setCcom] = useCcom();
   const { setPhase } = useNav();
   const { openAbsolutePopup, closeAbsolutePopup } = useAbsolutePopup();
 
@@ -24,7 +25,7 @@ export default function ComFace({
         }}
         onClick={() => {
           setCcom(com);
-          setPhase("com");
+          setPhase(forPhase);
         }}
         onContextMenu={(event) => {
           event.preventDefault();

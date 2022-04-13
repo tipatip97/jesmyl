@@ -12,7 +12,7 @@ import {
   switchTranslationBlockVisible,
   setTranslationBlockPosition,
 } from "../Cm.store";
-import { useCcol } from "../col/useCcol";
+import { useCcom } from "../col/useCcol";
 import TranslationScreen from "./TranslationScreen";
 
 let currWin: Window | null = null;
@@ -20,7 +20,7 @@ let currWin: Window | null = null;
 export default function useTranslation() {
   const dispatch = useDispatch();
   const { setPhase, isFullScreen, switchFullscreen } = useNav();
-  const [ccom] = useCcol("com");
+  const [ccom] = useCcom();
   const currBlocki = useSelector(
     (state: RootState) => state.cm.translationBlock
   );

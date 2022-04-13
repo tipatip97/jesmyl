@@ -3,14 +3,14 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { isAccessed } from "../Cm.complect";
-import { useCcol } from "../col/useCcol";
+import { useCcat, useCcom } from "../col/useCcol";
 import { useCols } from "../cols/useCols";
 import { ePhases } from "./Editor.complect";
 
 export default function Editor() {
   const [cols] = useCols();
-  const [ccom] = useCcol("com");
-  const [ccat] = useCcol("cat");
+  const [ccom] = useCcom();
+  const [ccat] = useCcat();
 
   const cats = cols.cats;
 

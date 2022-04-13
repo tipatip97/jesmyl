@@ -1,10 +1,6 @@
 import { HTMLAttributes } from "react";
-import { indexStorage } from "../../store/jstorages";
+import * as pack from "../../resource/eva-icons.json";
 import { EvaIconName } from "./EvaIcon.model";
-
-let pack = indexStorage.getOr("evaIconPack", {});
-
-indexStorage.listen("evaIconPack", "evaIconPack", (value) => (pack = value));
 
 export default function EvaIcon(
   props: HTMLAttributes<HTMLOrSVGElement> & {

@@ -4,7 +4,7 @@ import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import useNav from "../base/useNav";
 import { Com } from "../col/com/Com";
-import { useCcol } from "../col/useCcol";
+import { useCcom } from "../col/useCcol";
 import AddToMeetingButton from "../meetings/AddToMeetingButton";
 import { MarksProps } from "./Marks.model";
 import { useMarks } from "./useMarks";
@@ -16,7 +16,7 @@ export default function Marks(props: MarksProps) {
   const forceUpdate = () => riseUpUpdates(updates + 1);
 
   const { marks, setMarks, markedComs, bumerangMarks } = useMarks();
-  const [ccom, setCcom] = useCcol("com");
+  const [ccom, setCcom] = useCcom();
   const { phase, setPhase } = useNav();
 
   const isActive = (comw: number, com: Com, ccomw?: number) =>

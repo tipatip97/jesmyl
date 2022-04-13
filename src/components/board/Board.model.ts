@@ -27,7 +27,6 @@ export interface IndexStorage {
     currentApp: BoardAppName;
     rejectedComponents: string[];
     registeredApps: BoardAppName[];
-    evaIconPack: { [key: string]: string };
     theme: 'light-theme';
 
     lastUpdate: number;

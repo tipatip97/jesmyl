@@ -1,28 +1,20 @@
 .lists-container {
     .content-container {
-        --list-item-height: 60px;
-        --list-item-gap-v: 7px;
         --thematic-item-gap-v: 20px;
-
-        >.thematic-item,
-        >.list-item {
-            border-radius: 10px;
-            background-color: var(--color-1);
-            width: 100%;
-        }
-
-        >.list-item {
-            height: var(--list-item-height);
-
-            +.list-item {
-                margin-top: var(--list-item-gap-v);
-            }
-        }
 
         >.thematic-item {
             height: 100%;
             min-height: 120px;
             margin: var(--thematic-item-gap-v) 0;
+            border-radius: 10px;
+            background-color: var(--color-1);
+            width: 100%;
+            padding-bottom: 10px;
+            overflow: auto;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
 
             >.title {
                 padding: 3px 10px;
@@ -32,6 +24,7 @@
                 height: 30px;
                 width: 100%;
                 margin-top: 10px;
+                cursor: pointer;
             }
         }
     }

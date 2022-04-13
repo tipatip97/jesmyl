@@ -1,14 +1,14 @@
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useNav from "../base/useNav";
 import { isAccessed } from "../Cm.complect";
-import { useCcol } from "../col/useCcol";
+import { useCcat, useCcom } from "../col/useCcol";
 import { useCols } from "../cols/useCols";
 
 export default function ColAdditionButtons() {
   const [cols] = useCols();
   const { setPhase } = useNav();
-  const [, setCcat] = useCcol("cat");
-  const [, setCcom] = useCcol("com");
+  const [, setCcat] = useCcat();
+  const [, setCcom] = useCcom();
 
   return (
     isAccessed("comAdd") && [

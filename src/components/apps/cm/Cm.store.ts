@@ -20,11 +20,12 @@ const initialState: CmState = {
   rollMode: null,
   isCmFullscreen: false,
   isShowMarks: false,
-  isAnchorsVisible: false,
+  isAnchorsVisible: true,
   paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
   cm_meetings: cmStorage.getOr('cm_meetings', []),
+  meetingw: cmStorage.get('meetingw'),
   comFontSize: cmStorage.getOr('comFontSize', 15),
   chords: cmStorage.getOr('chords', {}),
   translationUpdates: 0,
@@ -36,6 +37,7 @@ const initialState: CmState = {
   numColsUpdates: 0,
   numModalUpdates: 0,
   numAbsolutePopupUpdates: 0,
+  numMeetingsUpdate: 0,
 };
 
 export const slice = createSlice({
@@ -61,8 +63,11 @@ export const slice = createSlice({
     setCmChords: (state, action: PayloadAction<Record<string, number[]>>) => {
       state.chords = action.payload;
     },
-    setMeetingList: (state, action: PayloadAction<IExportableMeeting[]>) => {
+    updateMeetingList: (state, action: PayloadAction<IExportableMeeting[]>) => {
       state.cm_meetings = action.payload;
+    },
+    setCurrentMeetingw: (state, action: PayloadAction<number>) => {
+      state.meetingw = action.payload;
     },
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? state.isCmFullscreen;
@@ -118,6 +123,9 @@ export const slice = createSlice({
     riseUpAbsolutePopupUpdates: (state) => {
       state.numAbsolutePopupUpdates++;
     },
+    riseUpMeetingsUpdate: (state) => {
+      state.numMeetingsUpdate++;
+    },
   },
 });
 
@@ -132,7 +140,8 @@ export const {
   changeRollMode,
   switchRollModeMarks,
   setMarkList,
-  setMeetingList,
+  updateMeetingList,
+  setCurrentMeetingw,
   riseUpModalUpdates,
   setComFontSize,
   setTranslationBlock,
@@ -143,6 +152,7 @@ export const {
   setParanjaMode,
   updateLaterComwList,
   riseUpAbsolutePopupUpdates,
+  riseUpMeetingsUpdate,
 } = slice.actions;
 export default slice.actions;
 

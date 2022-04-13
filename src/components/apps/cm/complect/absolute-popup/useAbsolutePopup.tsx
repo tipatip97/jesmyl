@@ -5,6 +5,8 @@ import { riseUpAbsolutePopupUpdates } from "../../Cm.store";
 import { AbsolutePopupMode } from "./AbsolutePopup.model";
 
 let absolutePopupContent: JSX.Element | null;
+let element: HTMLDivElement | null;
+let isFloated = false;
 
 export default function useAbsolutePopup() {
   const dispatch = useDispatch();
@@ -14,9 +16,11 @@ export default function useAbsolutePopup() {
   const ret = {
     absolutePopupContent,
     closeAbsolutePopup: () => {
-      absolutePopupContent = null;
+      if (isFloated) absolutePopupContent = null;
       dispatch(riseUpAbsolutePopupUpdates());
       closeParanja();
+      element?.classList.remove("open");
+      element = null;
     },
     openAbsolutePopup: <
       Mode extends AbsolutePopupMode,
@@ -27,38 +31,35 @@ export default function useAbsolutePopup() {
       x?: Pos,
       y?: Pos
     ) => {
-      let element: HTMLDivElement;
-      const isFloated = mode !== "bottom" && y != null && x != null;
+      isFloated = mode !== "bottom" && y != null && x != null;
       openParanja(() => ret.closeAbsolutePopup());
-      
+
       absolutePopupContent = (
         <div
           className={`absolute-popup ${mode ?? "bottom"}-mode`}
-          ref={
-            isFloated
-              ? (elem) => {
-                  if (elem && !element) {
-                    element = elem;
+          ref={(elem) => {
+            if (elem && !element) {
+              element = elem;
 
-                    if (isFloated)
-                      setTimeout(() => {
-                        if (!isFloated) return;
-                        const top =
-                          (y as number) + elem.clientHeight > window.innerHeight
-                            ? window.innerHeight - elem.clientHeight - 5
-                            : y;
-                        const left =
-                          (x as number) + elem.clientWidth > window.innerWidth
-                            ? window.innerWidth - elem.clientWidth - 5
-                            : x;
+              setTimeout(() => elem.classList.add("open"));
 
-                        elem.style.top = `${top}px`;
-                        elem.style.left = `${left}px`;
-                      });
-                  }
-                }
-              : null
-          }
+              if (isFloated)
+                setTimeout(() => {
+                  if (!isFloated) return;
+                  const top =
+                    (y as number) + elem.clientHeight > window.innerHeight
+                      ? window.innerHeight - elem.clientHeight - 5
+                      : y;
+                  const left =
+                    (x as number) + elem.clientWidth > window.innerWidth
+                      ? window.innerWidth - elem.clientWidth - 5
+                      : x;
+
+                  elem.style.top = `${top}px`;
+                  elem.style.left = `${left}px`;
+                });
+            }
+          }}
         >
           {content}
         </div>

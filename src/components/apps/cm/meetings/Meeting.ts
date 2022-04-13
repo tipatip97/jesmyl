@@ -1,9 +1,20 @@
 import mylib from "../../../../complect/my-lib/MyLib";
 import { isAccessed } from "../Cm.complect";
+import { Com } from "../col/com/Com";
+import { Cols } from "../cols/Cols";
 import { EditableMeeting } from "./EditableMeeting";
+import { IExportableMeeting } from "./Meetings.model";
 
 
 export class Meeting extends EditableMeeting {
+  coms: Com[];
+
+  constructor(top: IExportableMeeting, cols: Cols) {
+    super(top);
+
+    this.coms = top.s.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
+  }
+
   get isEditable() {
     return isAccessed('canEditMeetings');
   }

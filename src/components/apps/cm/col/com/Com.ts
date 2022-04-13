@@ -247,7 +247,7 @@ export class Com extends EditableCom {
         });
     });
 
-    this.tonc = this.firstChord = firstChord;//(mylib.def(mylib.typ('', this.tonc, mylib.def(mylib.def(mylib.def(this._chordLabels, [])[0], [])[0], [])[0])?.match(/[A-H]#?m?/), []) as string[])[0] || '';
+    this.tonc = this.firstChord = firstChord;
   }
 
   static withBemoles(chords?: string, isSet: num = 0) {

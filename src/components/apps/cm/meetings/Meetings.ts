@@ -2,15 +2,16 @@ import modalService from "../../../../complect/modal/Modal.service";
 import { cmExer } from "../Cm.store";
 import { Meeting } from "./Meeting";
 import { IExportableMeeting } from "./Meetings.model";
+import { Cols } from "../cols/Cols";
 
   export {};
   export class Meetings {
     stack: Meeting[];
     meetings: IExportableMeeting[];
 
-    constructor(meetings: IExportableMeeting[]) {
+    constructor(meetings: IExportableMeeting[], cols: Cols) {
       this.meetings = meetings;
-      this.stack = meetings.map(meeting => new Meeting(meeting));
+      this.stack = meetings.map(meeting => new Meeting(meeting, cols));
     }
     
     create(cb: (meetings: IExportableMeeting[]) => void) {

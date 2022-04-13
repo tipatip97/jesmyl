@@ -67,20 +67,23 @@ export default function CmApplication() {
           })}
         </div>
         <div className="footer">
-          {footerItems.map(({ title, icon, phases }) => (
-            <div
-              key={`main-footer-item_${icon}`}
-              className={`footer-item ${
-                phases.indexOf(phase) > -1 ? "active" : ""
-              }`}
-              onClick={() => setPhase(phases[0])}
-            >
-              <div className="icon-container">
-                <EvaIcon name={icon} />
+          {footerItems.map(({ title, icon, phases }) => {
+            const isActive = phases.indexOf(phase) > -1;
+            return !phases[0] ? null : (
+              <div
+                key={`main-footer-item_${icon}`}
+                className={`footer-item ${isActive ? "active" : ""}`}
+                onClick={() => setPhase(phases[0])}
+              >
+                <div className="icon-container">
+                  <EvaIcon
+                    name={`${icon}${isActive ? "" : "-outline"}` as never}
+                  />
+                </div>
+                <div className="title">{title}</div>
               </div>
-              <div className="title">{title}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       <div

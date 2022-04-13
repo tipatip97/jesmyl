@@ -8,8 +8,8 @@ import { Com } from "../col/com/Com";
 import { Meeting } from "../meetings/Meeting";
 
 const totalArgs = {
-  getMeetingDate: (begin: number, end: number) =>
-    new Meeting({ b: begin, e: end } as never).getDate(),
+  // getMeetingDate: (begin: number, end: number) =>
+  //   new Meeting({ b: begin, e: end } as never).getDate(),
   comLang: (langi: number) => Com.langs[langi],
 };
 
