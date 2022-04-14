@@ -74,15 +74,17 @@ export const getNewPhase = (
         : specialPhase === "meeting"
           ? "meeting"
           : "all"
-    : phase === "cat"
-      ? "lists"
-      : phase === "lists" || phase === "other"
-        ? "all"
-        : phase === "meeting"
-          ? "meetings"
-          : phase === "meetings" || phase === "marks"
-            ? "lists"
-            : prevPhase ?? 'all';
+    : phase === "translation"
+      ? "com"
+      : phase === "cat"
+        ? "lists"
+        : phase === "lists" || phase === "other"
+          ? "all"
+          : phase === "meeting"
+            ? "meetings"
+            : phase === "meetings" || phase === "marks"
+              ? "lists"
+              : prevPhase ?? 'all';
 
   return newPhase === 'all' ? [newPhase, null] : newPhase;
 };

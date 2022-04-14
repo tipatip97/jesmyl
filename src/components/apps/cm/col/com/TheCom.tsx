@@ -10,9 +10,9 @@ import useNav from "../../base/useNav";
 import useRoll from "../../base/useRoll";
 import { ChordVisibleVariant } from "../../Cm.model";
 import useAbsolutePopup from "../../complect/absolute-popup/useAbsolutePopup";
+import { useMarks } from "../../marks/useMarks";
 import { useCcom } from "../useCcol";
 import "./Com.scss";
-import ComAddMenu from "./ComAddMenu";
 import ComTools from "./ComTools";
 import ComOrders from "./orders/ComOrders";
 
@@ -29,7 +29,8 @@ export default function TheCom() {
 
   const { toggleRoll, setRollModeContainer } = useRoll();
   const { addLaterComw } = useLaterComList();
-  const { openAbsolutePopup, closeAbsolutePopup } = useAbsolutePopup();
+  const { openAbsolutePopup } = useAbsolutePopup();
+  const { isMarked, toggleMarked } = useMarks();
 
   useEffect(() => {
     const addToLaterListTimeout = setTimeout(
@@ -67,13 +68,9 @@ export default function TheCom() {
           </div>
           <div className="flex between">
             <EvaIcon
-              name="plus-circle-outline"
+              name={isMarked(ccom.wid) ? "star" : "star-outline"}
               className="action-button"
-              onClick={() =>
-                openAbsolutePopup(
-                  <ComAddMenu onClick={() => closeAbsolutePopup()} com={ccom} />
-                )
-              }
+              onClick={() => toggleMarked(ccom.wid)}
             />
             <EvaIcon
               className="action-button"

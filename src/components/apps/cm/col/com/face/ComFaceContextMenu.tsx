@@ -10,7 +10,7 @@ export default function ComFaceContextMenu({
   onClick: () => void;
   com: Com;
 }) {
-  const { isMarked, toggle } = useMarks();
+  const { isMarked, toggleMarked } = useMarks();
   const isComMarked = isMarked(com.wid);
 
   return (
@@ -19,7 +19,7 @@ export default function ComFaceContextMenu({
         className="item flex"
         onClick={() => {
           onClick();
-          toggle(com.wid);
+          toggleMarked(com.wid);
         }}
       >
         <EvaIcon name={isComMarked ? "star-outline" : "star"} />
