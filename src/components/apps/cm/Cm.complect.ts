@@ -1,20 +1,17 @@
-import { ReactNode } from "react";
 import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
 import { cmStorage, indexStorage } from "../../../store/jstorages";
 import { BoardApplication, BoardAuth } from "../../board/Board.model";
-import { CmAction, CmAppVariables, CmPhase, FooterItem } from "./Cm.model";
-import TheCat from "./col/cat/TheCat";
-import TheCom from "./col/com/TheCom";
+import {
+  CmAction,
+  CmAppVariables,
+  CmPhase,
+  CmSpecialPhase,
+  FooterItem,
+  SetPhasePayload,
+} from "./Cm.model";
 import { setts } from "./complect/settings/Setts";
 import { StyleProp } from "./complect/settings/StyleProp";
-import Editor from "./editor/Editor";
-import Favorites from "./favorites/Favorites";
-import Lists from "./lists/Lists";
-import TheMeeting from "./meetings/TheMeeting";
-import TheMeetings from "./meetings/TheMeetings";
-import Other from "./other/Other";
-import Translations from "./translation/Translation";
 
 let rules: Record<string, true | null> = {};
 export let actions: CmAction[] | nil;
@@ -64,54 +61,37 @@ export const isAccessed = (action: string): true | null => {
   return (rules[action] = right ? (right.level <= level ? true : null) : true);
 };
 
-export const phaseJumps: Record<CmPhase, CmPhase | null> = {
-  // если значение - null, то переход на предыдущую фазу
-  all: null,
-  // cats: null,
-  com: "all",
-  cat: null,
-  editor: "com",
-  // news: null,
-  translations: null,
-  lists: "all",
-  other: null,
-  favorite_com: "favorites",
-  thematic_com: "cat",
-  meeting_com: "meeting",
-  favorites: "lists",
-  meetings: "lists",
-  meeting: "meetings",
+export const getNewPhase = (
+  phase: CmPhase,
+  specialPhase: CmSpecialPhase,
+  prevPhase: CmPhase | nil
+): SetPhasePayload => {
+  const newPhase = phase === "com"
+    ? specialPhase === "marked"
+      ? "marks"
+      : specialPhase === "thematic"
+        ? "cat"
+        : specialPhase === "meeting"
+          ? "meeting"
+          : "all"
+    : phase === "cat"
+      ? "lists"
+      : phase === "lists" || phase === "other"
+        ? "all"
+        : phase === "meeting"
+          ? "meetings"
+          : phase === "meetings" || phase === "marks"
+            ? "lists"
+            : prevPhase ?? 'all';
+
+  return newPhase === 'all' ? [newPhase, null] : newPhase;
 };
 
-export const Comps: Record<CmPhase, () => ReactNode> = {
-  all: () => <TheCat allMode />,
-  // cats: () => <TheCats />,
-  cat: () => <TheCat />,
-  com: () => <TheCom />,
-  thematic_com: () => <TheCom />,
-  favorite_com: () => <TheCom />,
-  meeting_com: () => <TheCom />,
-  editor: () => <Editor />,
-  translations: () => <Translations />,
-  lists: () => <Lists />,
-  favorites: () => <Favorites />,
-  meetings: () => <TheMeetings />,
-  meeting: () => <TheMeeting />,
-  other: () => <Other />,
-};
+export const specialPhases = ["marked", "thematic", "meeting"] as const;
 
 export const inlinePhases = [
-  ["all", "com", "translations"],
-  [
-    "lists",
-    "cat",
-    "favorites",
-    "favorite_com",
-    "meetings",
-    "meeting",
-    "thematic_com",
-    "meeting_com",
-  ],
+  ["all", "com", "translation"],
+  ["lists", "cat", "marks", "meetings", "meeting"],
   ["other", "editor"],
 ] as const;
 
@@ -127,6 +107,7 @@ export const footerItems: FooterItem[] = [
     icon: "folder",
     title: "Списки",
     phases: listsPhases as never,
+    activeWithSpecialPhases: true,
   },
   {
     icon: "arrow-circle-right",
@@ -237,10 +218,10 @@ const putStyles = () => {
             prop.type === "p"
               ? sBlock[bProp]
               : (
-                  prop.variants.find(
-                    (variant: any) => variant.n === sBlock[bProp]
-                  ) || {}
-                ).val;
+                prop.variants.find(
+                  (variant: any) => variant.n === sBlock[bProp]
+                ) || {}
+              ).val;
         });
       });
     }

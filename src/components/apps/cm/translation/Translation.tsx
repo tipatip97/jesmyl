@@ -3,7 +3,9 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import PhaseContainer from "../base/phase-container/PhaseContainer";
 import useNav from "../base/useNav";
 import ComFace from "../col/com/face/ComFace";
+import { useCcat, useCcom } from "../col/useCcol";
 import { useMarks } from "../marks/useMarks";
+import { useMeetings } from "../meetings/useMeetings";
 import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
 import useTranslation from "./useTranslation";
@@ -27,8 +29,11 @@ export default function Translations() {
   } = useTranslation();
 
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { setPhase, isFullScreen } = useNav();
+  const { setPhase, isFullScreen, specialPhase } = useNav();
+  const [ccat] = useCcat();
   const { markedComs } = useMarks();
+  const { currentMeeting } = useMeetings();
+  const [, setCcom] = useCcom();
 
   useEffect(() => {
     if (isShowFullscreen) {
@@ -99,13 +104,24 @@ export default function Translations() {
                 />
               </div>
             </div>
-            <div>
-              {markedComs.map((com) => {
-                return (
-                  <ComFace key={`mark-to-translation_${com.wid}`} com={com} />
-                );
-              })}
-            </div>
+            {specialPhase ? (
+              <div className="translation-com-list">
+                {(specialPhase === "marked"
+                  ? markedComs
+                  : specialPhase === "meeting"
+                  ? currentMeeting?.coms
+                  : ccat?.coms
+                )?.map((com) => {
+                  return (
+                    <ComFace
+                      key={`mark-to-translation_${com.wid}`}
+                      com={com}
+                      importantOnClick={() => setCcom(com)}
+                    />
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
 
           {blocks && (

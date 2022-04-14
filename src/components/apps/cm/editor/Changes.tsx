@@ -5,7 +5,6 @@ import mylib from "../../../../complect/my-lib/MyLib";
 import { actions } from "../Cm.complect";
 import { cmExer } from "../Cm.store";
 import { Com } from "../col/com/Com";
-import { Meeting } from "../meetings/Meeting";
 
 const totalArgs = {
   // getMeetingDate: (begin: number, end: number) =>
@@ -28,7 +27,6 @@ export default function Changes() {
   return (
     <>
       <div
-        key="send-execs-buttons"
         className="send-execs-buttons mgroup msm"
         onContextMenu={() => {
           if (
@@ -41,8 +39,11 @@ export default function Changes() {
         }}
       >
         <div
-          key="send-execs"
-          className={`mbtn ${isSomeWarning ? "m-ko" : ""} ${isSomeIncorrect || sendDisabled || !execs.some((ex) => !ex.del) ? 'mdisabled' : ''}`}
+          className={`mbtn ${isSomeWarning ? "m-ko" : ""} ${
+            isSomeIncorrect || sendDisabled || !execs.some((ex) => !ex.del)
+              ? "mdisabled"
+              : ""
+          }`}
           onClick={async () => {
             if (!execs.some((ex) => !ex.del)) return;
             if (
@@ -74,7 +75,6 @@ export default function Changes() {
         </div>
         {isSomeRejected ? (
           <div
-            key="save-local-rejected"
             className="save-local-rejected mbtn m-no"
             onClick={async () => {
               if (
@@ -137,8 +137,8 @@ export default function Changes() {
               key={`reason=label-${exec.id}`}
               dangerouslySetInnerHTML={{
                 __html: mylib.stringTemplater(
-                  actions?.find(({ action }) => action === exec.action)?.title ||
-                    "",
+                  actions?.find(({ action }) => action === exec.action)
+                    ?.title || "",
                   mylib.overlap(totalArgs, exec.args || {})
                 ),
               }}

@@ -84,7 +84,7 @@ export default function ComTools() {
         }}
       >
         <EvaIcon
-          name={isShowFullscreen ? "play-circle-outline" : "monitor-outline"}
+          name={isShowFullscreen ? "play-outline" : "monitor-outline"}
           className="icon"
         />
         <div className="title">Слайды</div>

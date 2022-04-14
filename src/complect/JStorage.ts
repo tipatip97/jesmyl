@@ -88,6 +88,7 @@ export class JStorage<Scope = any> {
 
     set<Key extends keyof Scope>(key: Key, val: Scope[Key]): string | null {
         try {
+            if (val === null) { this.rem(key); return null; }
             const string = this.stringify(val);
             return string && (localStorage[this.lsName(key)] = this.setValue(key, val, string));
         } catch (error) {

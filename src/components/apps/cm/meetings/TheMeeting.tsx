@@ -10,7 +10,11 @@ export default function TheMeeting() {
       topClass="meeting-container"
       head={currentMeeting?.name ?? "Событие"}
       content={currentMeeting?.coms?.map((com) => (
-        <ComFace key={`metting.com-face-${com.wid}`} com={com} forPhase="meeting_com" />
+        <ComFace
+          key={`metting.com-face-${com.wid}`}
+          com={com}
+          specialPhase="meeting"
+        />
       ))}
     />
   );

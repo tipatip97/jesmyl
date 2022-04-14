@@ -1,17 +1,11 @@
 import useNav from "../../../base/useNav";
-import { CmPhase } from "../../../Cm.model";
 import useAbsolutePopup from "../../../complect/absolute-popup/useAbsolutePopup";
 import { useCcom } from "../../useCcol";
-import { Com } from "../Com";
 import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
 export default function ComFace(props: ComFaceProps) {
-  const {
-    com,
-    errors,
-    forPhase = 'com'
-  } = props;
+  const { com, errors, specialPhase = null, importantOnClick } = props;
   const [, setCcom] = useCcom();
   const { setPhase } = useNav();
   const { openAbsolutePopup, closeAbsolutePopup } = useAbsolutePopup();
@@ -24,8 +18,12 @@ export default function ComFace(props: ComFaceProps) {
           backgroundColor: com.removed ? "red" : "",
         }}
         onClick={() => {
+          if (importantOnClick) {
+            importantOnClick();
+            return;
+          }
           setCcom(com);
-          setPhase(forPhase);
+          setPhase(["com", specialPhase]);
         }}
         onContextMenu={(event) => {
           event.preventDefault();
@@ -34,9 +32,9 @@ export default function ComFace(props: ComFaceProps) {
               onClick={() => closeAbsolutePopup()}
               com={com}
             />,
-            'float',
+            "float",
             event.clientX,
-            event.clientY,
+            event.clientY
           );
         }}
       >

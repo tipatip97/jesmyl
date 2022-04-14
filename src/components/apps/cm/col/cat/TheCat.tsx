@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import PhaseContainer from "../../base/phase-container/PhaseContainer";
 import useLaterComList from "../../base/useLaterComList";
+import useNav from "../../base/useNav";
 import ComFace from "../com/face/ComFace";
 import { useCcat } from "../useCcol";
 import "./Cat.scss";
@@ -12,8 +13,10 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const { specialPhase } = useNav();
+  const isThematic = specialPhase === "thematic";
 
-  const cat = allMode ? zeroCat : ccat;
+  const cat = isThematic ? ccat : zeroCat;
 
   const [term, setTerm] = useState(cat?.term || "");
   const [, setTerm1] = useState(cat?.term || "");
@@ -25,10 +28,9 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
   return (
     <PhaseContainer
       topClass="cat-content"
-      withoutBackButton={allMode}
       head={(backButton) => (
         <>
-          {allMode ? null : backButton}
+          {isThematic ? backButton : null}
           <div className="com-searcher">
             <EvaIcon name="search-outline" />
             <input
@@ -64,7 +66,7 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
         <div>
           <div
             className={`later-com-list ${
-              allMode && !term && laterComs.length ? "" : "hidden"
+              !isThematic && !term && laterComs.length ? "" : "hidden"
             }`}
           >
             <div className="main-gap">Последние:</div>
@@ -73,7 +75,7 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
             ))}
           </div>
           <div className="main-gap flex between">
-            <div>{allMode ? "Все песни" : cat.name}:</div>
+            <div>{isThematic ? cat.name : "Все песни"}:</div>
             {cat.wraps && (
               <div>
                 {`${
@@ -89,7 +91,7 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
               <ComFace
                 key={`com-face-${wrap.com.wid}`}
                 {...wrap}
-                forPhase={allMode ? "com" : "thematic_com"}
+                specialPhase={allMode ? null : "thematic"}
               />
             ))}
           </div>

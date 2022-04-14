@@ -8,7 +8,7 @@ export default function ComPlayerPanel() {
   const { switchRollModeMarks, switchRollMode } = useRoll();
 
   return (
-    <div key="com-player" className="com-player">
+    <div className="com-player">
       {(
         [
           ["play-circle-outline", "Прокручивать"],

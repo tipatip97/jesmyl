@@ -42,7 +42,6 @@ export default function Editor() {
 
   return ccom == null ? (
     <h1
-      key="song-not-fnd"
       style={{
         color: "red",
       }}
@@ -51,10 +50,9 @@ export default function Editor() {
     </h1>
   ) : (
     <>
-      <div key="song-editor-wwrraappeerr">
+      <div>
         {[
           <input
-            key="com-header"
             style={{
               backgroundColor: ccom.removed ? "red" : undefined,
               borderColor: ccom.incorrectName ? "red" : undefined,
@@ -68,14 +66,13 @@ export default function Editor() {
             value={comName}
             placeholder="Песня без названия"
           />,
-          <div key="binds-list-wrapper" className="binds-list-wrapper">
+          <div className="binds-list-wrapper">
             <div
               key="binds-list mgroup"
               className="binds-list mgroup scrollable-x no-scroll"
             >
               {isAccessed("comDel") && (
                 <div
-                  key="rem-song"
                   className="mbtn m-ko msm"
                   onClick={() => {
                     modalService
@@ -176,7 +173,6 @@ export default function Editor() {
       </div>
       {ccom.texts?.length === 0 ? (
         <textarea
-          key="textarea-on-empty-texets-line"
           className="text-heap-textarea"
           // onPaste={(event) => {
           //   ccom.parseBlocksFromClipboard(event);
@@ -196,7 +192,7 @@ export default function Editor() {
         />
       ) : (
         [
-          <div key="com-editor-wrapper" className="com-editor-wrapper">
+          <div className="com-editor-wrapper">
             {getEPhase()}
             {/* {((ccat.wraps || [])[0] || {}).errors && (
               <div className="white-space-pre error-text">
@@ -209,7 +205,7 @@ export default function Editor() {
               </div>
             )} */}
           </div>,
-          <div key="ephases-group" className="mgroup scrollable-x no-scroll">
+          <div className="mgroup scrollable-x no-scroll">
             {ePhases.map(([ephasen, ephase]) => {
               return (
                 <div

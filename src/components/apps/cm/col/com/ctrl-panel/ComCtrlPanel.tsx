@@ -51,10 +51,9 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
   );
 
   return (
-    <div key="chord-ctrl" className="chord-ctrl">
+    <div className="chord-ctrl">
       <div>
         <div
-          key="song-number-button"
           id="song-number-button"
           title="Номер песни"
           ref={(element) => {
@@ -85,10 +84,10 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
           #{ccom.index == null ? "?" : ccom.index - -1}
         </div>
         {isShowNatives ? (
-          <div key="native-numbers-list" className="native-numbers-list m-ok">
+          <div className="native-numbers-list m-ok">
             {((refKeys) =>
               refKeys.length === 0 ? (
-                <div key="empty-native-numbers-list">Нет данных</div>
+                <div>Нет данных</div>
               ) : (
                 refKeys.map((catw) => {
                   const nativeNumber = ccom.refs && ccom.refs[catw];
@@ -189,7 +188,6 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
                 })}
               </div>,
               <div
-                key="transport-buttons"
                 id="transport-buttons"
                 className="mgroup btn-group transport"
                 ref={(element) => {

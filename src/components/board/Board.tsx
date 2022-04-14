@@ -1,15 +1,15 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { indexStorage } from "../../store/jstorages";
+import { BoardApplication } from "./Board.model";
+import "./Board.scss";
 import { localAuth } from "./Board.source";
+import { setApps } from "./Board.store";
 import BoardAppList from "./parts/AppList";
 import BoardLogin from "./parts/Login";
 import BoardRegister from "./parts/Register";
 import BoardSettings from "./parts/Settings";
-import "./Board.scss";
-import { indexStorage } from "../../store/jstorages";
-import { useEffect } from "react";
-import { BoardApplication } from "./Board.model";
-import { setApps } from "./Board.store";
 
 export default function Board() {
   const phase = useSelector((state: RootState) => state.board.phase);
@@ -27,9 +27,7 @@ export default function Board() {
   return (
     <div className="app-loader-screen">
       {localAuth?.fio ? (
-        <div key="uset-greets" className="user-greets">
-          Привет, {localAuth.fio}!
-        </div>
+        <div className="user-greets">Привет, {localAuth.fio}!</div>
       ) : null}
       <div className="app-loader-window-wrapper">
         <div className="app-loader-window">

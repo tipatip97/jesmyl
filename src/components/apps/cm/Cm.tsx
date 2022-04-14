@@ -1,14 +1,37 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import onBackButton from "../../../complect/back-button-listener";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { cmStorage } from "../../../store/jstorages";
 import useNav from "./base/useNav";
 import useParanja from "./base/useParanja";
-import { Comps, footerItems } from "./Cm.complect";
+import { footerItems } from "./Cm.complect";
+import { CmPhase } from "./Cm.model";
 import "./Cm.scss";
+import TheCat from "./col/cat/TheCat";
+import TheCom from "./col/com/TheCom";
 import { useCols } from "./cols/useCols";
 import useAbsolutePopup from "./complect/absolute-popup/useAbsolutePopup";
+import Editor from "./editor/Editor";
+import Lists from "./lists/Lists";
+import Marks from "./marks/Marks";
+import TheMeeting from "./meetings/TheMeeting";
+import TheMeetings from "./meetings/TheMeetings";
+import Other from "./other/Other";
+import Translations from "./translation/Translation";
 import useTranslation from "./translation/useTranslation";
+
+const Comps: Record<CmPhase, () => ReactNode> = {
+  all: () => <TheCat allMode />,
+  cat: () => <TheCat />,
+  com: () => <TheCom />,
+  editor: () => <Editor />,
+  translation: () => <Translations />,
+  lists: () => <Lists />,
+  marks: () => <Marks />,
+  meetings: () => <TheMeetings />,
+  meeting: () => <TheMeeting />,
+  other: () => <Other />,
+};
 
 export default function CmApplication() {
   const {
@@ -18,6 +41,7 @@ export default function CmApplication() {
     isFullScreen,
     switchFullscreen,
     rollMode: { rollMode },
+    specialPhase,
   } = useNav();
   const [, setCols] = useCols();
 
@@ -35,7 +59,6 @@ export default function CmApplication() {
   return (
     <>
       <div
-        key="app-container"
         className={`main-container phase-${phase}${
           isFullScreen || rollMode ? " fullscreen-mode" : ""
         }${rollMode ? " roll-mode" : ""}${
@@ -67,27 +90,34 @@ export default function CmApplication() {
           })}
         </div>
         <div className="footer">
-          {footerItems.map(({ title, icon, phases }) => {
-            const isActive = phases.indexOf(phase) > -1;
-            return !phases[0] ? null : (
-              <div
-                key={`main-footer-item_${icon}`}
-                className={`footer-item ${isActive ? "active" : ""}`}
-                onClick={() => setPhase(phases[0])}
-              >
-                <div className="icon-container">
-                  <EvaIcon
-                    name={`${icon}${isActive ? "" : "-outline"}` as never}
-                  />
+          {footerItems.map(
+            ({ title, icon, phases, activeWithSpecialPhases }) => {
+              const isActive = specialPhase
+                ? activeWithSpecialPhases
+                : phases.indexOf(phase) > -1;
+              return !phases[0] ? null : (
+                <div
+                  key={`main-footer-item_${icon}`}
+                  className={`footer-item ${isActive ? "active" : ""}`}
+                  onClick={() =>
+                    setPhase(
+                      activeWithSpecialPhases ? phases[0] : [phases[0], null]
+                    )
+                  }
+                >
+                  <div className="icon-container">
+                    <EvaIcon
+                      name={`${icon}${isActive ? "" : "-outline"}` as never}
+                    />
+                  </div>
+                  <div className="title">{title}</div>
                 </div>
-                <div className="title">{title}</div>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
         </div>
       </div>
       <div
-        key="paranja"
         className={`paranja ${paranjaMode || ""}`}
         onClick={() => onParanjaClick()}
       />

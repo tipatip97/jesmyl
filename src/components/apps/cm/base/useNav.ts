@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
-import { cmStorage } from "../../../../store/jstorages";
-import { phaseJumps } from "../Cm.complect";
-import { CmPhase } from "../Cm.model";
+import { getNewPhase } from "../Cm.complect";
+import { CmPhase, SetPhasePayload } from "../Cm.model";
 import { setCmPhase, switchCmFullscreen } from "../Cm.store";
 import { useMarks } from "../marks/useMarks";
 import useRollMode from "./useRoll";
@@ -18,20 +17,12 @@ export default function useNav() {
         marks: useMarks(),
         phase: useSelector((state: RootState) => state.cm.phase),
         prevPhase: useSelector((state: RootState) => state.cm.prevPhase),
-        setPhase: (val: CmPhase) => {
-            if (ret.phase !== firstPhase && ret.phase && phaseJumps[ret.phase]) cmStorage.set('prevPhase', ret.phase);
-            cmStorage.set('phase', val);
-            dispatch(setCmPhase(val));
-        },
+        specialPhase: useSelector((state: RootState) => state.cm.specialPhase),
+        setPhase: (val: SetPhasePayload) => dispatch(setCmPhase(val)),
         isFullScreen: useSelector((state: RootState) => state.cm.isCmFullscreen),
         switchFullscreen: (isFullscreen?: boolean) => dispatch(switchCmFullscreen(isFullscreen)),
-        isCanGoBack: (phase: CmPhase) => {
-            return (ret.phase && ret.phase !== firstPhase && phaseJumps[ret.phase] !== null)
-                || (phase && phase !== firstPhase && phaseJumps[phase] !== null);
-        },
         goBack: () => {
-            if (!ret.phase) return;
-            if (ret.phase === firstPhase) {
+            if (!ret.phase || ret.phase === firstPhase || ret.phase === firstPhase) {
                 return;
             }
 
@@ -43,13 +34,13 @@ export default function useNav() {
 
             if (ret.isFullScreen) {
                 ret.switchFullscreen(false);
-                if (ret.phase === 'translations') ret.setPhase('com');
+                if (ret.phase === 'translation') ret.setPhase('com');
                 return;
             }
 
-            const newPhase = phaseJumps[ret.phase] ?? ret.prevPhase ?? firstPhase;
+            const newPhase: SetPhasePayload = getNewPhase(ret.phase, ret.specialPhase, ret.prevPhase);
 
-            ret.setPhase(newPhase as CmPhase);
+            if (newPhase) ret.setPhase(newPhase);
         }
     };
 

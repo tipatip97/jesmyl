@@ -48,7 +48,6 @@ export default function BoardSettings() {
       {localAuth?.level && localAuth.level < 3 ? null : (
         <div key="message-to-developers.wr" className="system-item">
           <span
-            key="message-to-developers"
             className="text"
             onClick={() => {
               modalService.open({

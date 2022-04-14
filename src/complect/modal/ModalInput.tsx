@@ -2,13 +2,13 @@ import { ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import { riseUpModalUpdates } from "../../components/apps/cm/Cm.store";
 import mylib from "../my-lib/MyLib";
+import { onActionClick } from "./Modal";
 import {
   ModalConfig,
   ModalConfigInput,
   TheModalInputProps,
 } from "./Modal.model";
 import modalService from "./Modal.service";
-import { onActionClick } from "./Modal";
 
 export default function ModalInput(topProps: TheModalInputProps) {
   let input: Partial<ModalConfigInput>, inputi: number | string | und;
@@ -66,7 +66,12 @@ export default function ModalInput(topProps: TheModalInputProps) {
             }
           };
 
-          onActionClick(input, onClick, clickConfig, config as Partial<ModalConfig>);
+          onActionClick(
+            input,
+            onClick,
+            clickConfig,
+            config as Partial<ModalConfig>
+          );
         } catch (error) {
           // mylib.dcconsl(error.stack);
           throw error;
@@ -91,15 +96,11 @@ export default function ModalInput(topProps: TheModalInputProps) {
 
   return (
     <label
-      key={`app-modal-body-input-list-item=${inputi}`}
       className="app-modal-body-input-list-item"
       hidden={asFunc(input.hidden)}
     >
       {input.title && (
-        <span
-          key={`app-modal-body-input-list-item-title=${inputi}`}
-          className="app-modal-body-input-list-item-title"
-        >
+        <span className="app-modal-body-input-list-item-title">
           {asFunc(input.title)}
         </span>
       )}

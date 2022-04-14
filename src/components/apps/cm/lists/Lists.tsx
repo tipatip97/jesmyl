@@ -2,8 +2,8 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import BrutalItem from "../base/brutal-item/BrutalItem";
 import PhaseContainer from "../base/phase-container/PhaseContainer";
 import useNav from "../base/useNav";
-import { useCols } from "../cols/useCols";
 import { useCcat } from "../col/useCcol";
+import { useCols } from "../cols/useCols";
 import "./Lists.scss";
 
 export default function Lists() {
@@ -22,7 +22,7 @@ export default function Lists() {
           <BrutalItem
             icon="star-outline"
             title="Избранное"
-            onClick={() => setPhase("favorites")}
+            onClick={() => setPhase("marks")}
           />
           <BrutalItem
             icon="calendar-outline"
@@ -38,7 +38,7 @@ export default function Lists() {
                   className="item flex"
                   onClick={() => {
                     setCcat(cat);
-                    setPhase('cat');
+                    setPhase(["cat", "thematic"]);
                   }}
                 >
                   <EvaIcon name="book-open-outline" className="main-big-gap" />

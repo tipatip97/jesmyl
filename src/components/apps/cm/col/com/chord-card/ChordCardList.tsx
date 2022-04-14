@@ -18,9 +18,8 @@ export default function ChordCardList() {
         !chordVisibleVariant || rollMode ? " hidden" : ""
       }`}
     >
-      <div key="show-wrappper" className="mgroup msm">
+      <div className="mgroup msm">
         <div
-          key="hiddener-chords-imgn"
           className="mbtn m-ok"
           onClick={() => setIsShowChordImages(!isShowChordImages)}
         >
@@ -40,10 +39,7 @@ export default function ChordCardList() {
           </span>
         </div>
       </div>
-      <div
-        key="usedChords"
-        className={`used-chords ${isShowChordImages ? " shown" : ""}`}
-      >
+      <div className={`used-chords ${isShowChordImages ? " shown" : ""}`}>
         <div>
           {null &&
             ccom?.audio &&

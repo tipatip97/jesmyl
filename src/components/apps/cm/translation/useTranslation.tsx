@@ -80,7 +80,7 @@ export default function useTranslation() {
     },
     openTranslations: () => {
       if (isShowFullscreen) switchFullscreen(true);
-      setPhase("translations");
+      setPhase("translation");
     },
     showMarks: (isShow: boolean) => dispatch(switchShowMarks(isShow)),
     newTranslation: (left: number, top: number) => {
@@ -118,7 +118,7 @@ export default function useTranslation() {
           />,
           win.document.body
         );
-        setPhase("translations");
+        setPhase("translation");
       }
     },
     onKeyUpTranslations: async (event: MouseEvent | any) => {
@@ -133,10 +133,6 @@ export default function useTranslation() {
         case 39: // arr right
           if (!shiftKey) ret.nextBlock();
           break;
-
-        //   case 69: // e
-        //     currWin.equiv();
-        //     break;
 
         case 27: // esc
           if (isFullScreen) ret.closeTranslation();

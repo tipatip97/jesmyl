@@ -6,7 +6,7 @@ import {
   ModalConfig,
   ModalConfigButton,
   ModalConfigInput,
-  ModalFixed
+  ModalFixed,
 } from "./Modal.model";
 import "./Modal.scss";
 import modalService from "./Modal.service";
@@ -58,19 +58,12 @@ export default function Modal(props: ModalFixed) {
     typeof val === "function" ? val(config) : val;
 
   return config == null ? null : (
-    <div
-      key="app-modal-window"
-      className="app-modal-window"
-      onClick={() => modalService.close(null)}
-    >
-      <div key="app-modal" className="app-modal">
-        <div key="app-modal-title" className="app-modal-title">
-          <span key="app-modal-title-label" className="app-modal-title-label">
-            {config.title}
-          </span>
+    <div className="app-modal-window" onClick={() => modalService.close(null)}>
+      <div className="app-modal">
+        <div className="app-modal-title">
+          <span className="app-modal-title-label">{config.title}</span>
           {config.withoutCloseButton ? null : (
             <span
-              key="app-modal-title-close-icon"
               className="app-modal-title-close-icon"
               onClick={() => {
                 const res =
@@ -87,34 +80,21 @@ export default function Modal(props: ModalFixed) {
         </div>
 
         <div
-          key="app-modal-body"
           className={`app-modal-body${
             modalService.error ? " with-error" : ""
           } ${config.theme || defTheme}`}
         >
-          <div
-            key="app-modal-body-inner"
-            className={`app-modal-body-inner ${config.theme || defTheme}`}
-          >
+          <div className={`app-modal-body-inner ${config.theme || defTheme}`}>
             {config.description && (
-              <div
-                key="app-modal-description"
-                className="app-modal-description"
-              >
-                <span
-                  key="app-modal-description-label"
-                  className="app-modal-description-label"
-                >
+              <div className="app-modal-description">
+                <span className="app-modal-description-label">
                   {asFunc(config.description)}
                 </span>
               </div>
             )}
 
             {!config.theInputs && !config.inputs?.length ? null : (
-              <div
-                key="app-modal-body-input-list"
-                className="app-modal-body-input-list"
-              >
+              <div className="app-modal-body-input-list">
                 {config.theInputs ||
                   config.inputs?.map((input, inputi) =>
                     input ? (
@@ -133,27 +113,17 @@ export default function Modal(props: ModalFixed) {
           </div>
         </div>
 
-        <div
-          key="app-modal-footer"
-          className={`app-modal-footer ${config.theme || defTheme}`}
-        >
+        <div className={`app-modal-footer ${config.theme || defTheme}`}>
           {modalService.error && (
-            <div
-              key="app-modal-footer-error"
-              className="app-modal-footer-error"
-            >
-              {modalService.error}
-            </div>
+            <div className="app-modal-footer-error">{modalService.error}</div>
           )}
           {!config.theButtons && !config.buttons?.length ? null : (
             <div
-              key="app-modal-footer-button-list"
               className={`app-modal-footer-button-list ${
                 config.theme || defTheme
               }`}
             >
               <div
-                key="app-modal-footer-button-list-inner"
                 className={`app-modal-footer-button-list-inner ${
                   config.theme || defTheme
                 }`}

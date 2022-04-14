@@ -20,7 +20,6 @@ export default function ComPlayerSignaler() {
 
   return (
     <div
-      key="com-player-signaler-panel"
       className={`com-player-signaler-panel ${closing ? "closing" : ""} ${
         rollMode || "stop"
       }-mode`}
@@ -51,7 +50,6 @@ export default function ComPlayerSignaler() {
         })}
       </div>
       <div
-        key="com-player-signaler"
         className={`com-player-signaler ${closing ? "closing" : ""}`}
         style={
           {

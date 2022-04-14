@@ -1,11 +1,10 @@
 .translation-container {
     --radius: 20px;
+    --size: 50vmin;
+    --max-size: 300px;
+    --min-size: 200px;
 
     .translation-screen-wrapper {
-        --size: 50vmin;
-        --max-size: 300px;
-        --min-size: 200px;
-
         position: relative;
         display: inline-block;
         vertical-align: middle;
@@ -32,6 +31,15 @@
                 border-color: var(--color-far);
             }
         }
+    }
+
+    .translation-com-list {
+        width: 50%;
+        height: var(--size);
+        max-height: var(--max-size);
+        min-height: var(--min-size);
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
     .translations-line {
