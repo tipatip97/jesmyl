@@ -33,12 +33,6 @@ export default function useNav() {
                 return;
             }
 
-            if (ret.rollMode.rollMode) {
-                ret.rollMode.switchRollMode(null);
-                ret.rollMode.switchRollModeMarks(false);
-                return;
-            }
-
             if (ret.isFullScreen) {
                 ret.switchFullscreen(false);
                 if (ret.phase === 'translation') ret.setPhase('com');
@@ -48,6 +42,11 @@ export default function useNav() {
             const newPhase: SetPhasePayload = getNewPhase(ret.phase, ret.specialPhase, ret.prevPhase);
 
             if (newPhase) ret.setPhase(newPhase);
+
+            if (ret.rollMode.rollMode) {
+                ret.rollMode.switchRollMode(null);
+                ret.rollMode.switchRollModeMarks(false);
+            }
         }
     };
 
