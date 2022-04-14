@@ -29,7 +29,7 @@ export default function Translations() {
   } = useTranslation();
 
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { setPhase, isFullScreen, specialPhase } = useNav();
+  const { isFullScreen, specialPhase } = useNav();
   const [ccat] = useCcat();
   const { markedComs } = useMarks();
   const { currentMeeting } = useMeetings();
@@ -42,15 +42,6 @@ export default function Translations() {
       ? [currentMeeting.coms, " - " + currentMeeting.name]
       : [markedComs, " - Избранное"]
     : [null, ""];
-
-  useEffect(() => {
-    if (isShowFullscreen) {
-      const gotoCom = () => setPhase("com");
-      window.addEventListener("beforeunload", gotoCom);
-
-      return () => window.removeEventListener("beforeunload", gotoCom);
-    }
-  }, []);
 
   if (isFullScreen)
     return (

@@ -79,8 +79,10 @@ export default function useTranslation() {
       if (isShowFullscreen) setPhase("com");
     },
     openTranslations: () => {
-      if (isShowFullscreen) switchFullscreen(true);
-      setPhase("translation");
+      if (isShowFullscreen) {
+        switchFullscreen(true);
+        setPhase(["translation", undefined, true]);
+      } else setPhase("translation");
     },
     showMarks: (isShow: boolean) => dispatch(switchShowMarks(isShow)),
     newTranslation: (left: number, top: number) => {

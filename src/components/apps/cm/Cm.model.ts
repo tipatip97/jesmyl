@@ -33,7 +33,7 @@ export type ChordVisibleVariant = 0 | 1 | 2;
 
 export type CmPhase = typeof inlinePhases[number][number];
 export type CmSpecialPhase = typeof specialPhases[number] | null;
-export type SetPhasePayload = CmPhase | [CmPhase, CmSpecialPhase | nil];
+export type SetPhasePayload = CmPhase | [CmPhase, CmSpecialPhase | nil, boolean?];
 
 
 export interface FooterItem {

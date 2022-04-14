@@ -46,18 +46,17 @@ export const slice = createSlice({
   initialState,
   reducers: {
     setCmPhase: (state, action: PayloadAction<SetPhasePayload>) => {
-      const [phase, specialPhase] = [action.payload].flat() as [CmPhase, CmSpecialPhase | nil];
+      const [phase, specialPhase, preventSaveLocal] = [action.payload].flat() as [CmPhase, CmSpecialPhase | nil, boolean];
 
-      cmStorage.set('prevPhase', state.phase);
       state.prevPhase = state.phase;
-
       state.phase = phase;
-      cmStorage.set('phase', phase);
+      if (specialPhase !== undefined) state.specialPhase = specialPhase;
 
-      if (specialPhase !== undefined) {
-        state.specialPhase = specialPhase;
-        cmStorage.set('specialPhase', specialPhase);
-      }
+      if (preventSaveLocal) return;
+
+      cmStorage.set('phase', state.phase);
+      cmStorage.set('prevPhase', state.prevPhase);
+      if (specialPhase !== undefined) cmStorage.set('specialPhase', specialPhase);
     },
     selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {
       if (action.payload.val == null) return;
