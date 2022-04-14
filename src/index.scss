@@ -41,8 +41,9 @@ body {
 body {
   --svg-color: var(--color--4);
   --text-color: var(--color--4);
+  --current-bg: var(--color--5);
 
-  background-color: var(--color--5);
+  background-color: var(--current-bg);
   font-family: var(--font-family);
   margin: 0;
   padding: 0;

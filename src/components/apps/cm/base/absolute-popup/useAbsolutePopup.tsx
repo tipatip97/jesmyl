@@ -3,6 +3,7 @@ import { RootState } from "../../../../../store";
 import useParanja from "../useParanja";
 import { switchAbsolutePopupOpen } from "../../Cm.store";
 import { AbsolutePopupMode } from "./AbsolutePopup.model";
+import useNav from "../useNav";
 
 let absolutePopupContent: JSX.Element | null;
 let element: HTMLDivElement | null;
@@ -11,12 +12,16 @@ let isFloated = false;
 export default function useAbsolutePopup() {
   const dispatch = useDispatch();
   const { openParanja, closeParanja } = useParanja();
-  const isAbsolutePopupOpen = useSelector((state: RootState) => state.cm.isAbsolutePopupOpen);
+  const { registerBackAction } = useNav();
+  const isAbsolutePopupOpen = useSelector(
+    (state: RootState) => state.cm.isAbsolutePopupOpen
+  );
 
   const ret = {
     absolutePopupContent,
     isAbsolutePopupOpen,
     closeAbsolutePopup: () => {
+      if (!element) return true;
       if (isFloated) absolutePopupContent = null;
       dispatch(switchAbsolutePopupOpen(false));
       closeParanja();
@@ -32,8 +37,12 @@ export default function useAbsolutePopup() {
       x?: Pos,
       y?: Pos
     ) => {
+      const deregisterCloseOnBackButton = registerBackAction(() => ret.closeAbsolutePopup());
       isFloated = mode !== "bottom" && y != null && x != null;
-      openParanja(() => ret.closeAbsolutePopup());
+      openParanja(() => {
+        deregisterCloseOnBackButton();
+        ret.closeAbsolutePopup();
+      });
 
       absolutePopupContent = (
         <div

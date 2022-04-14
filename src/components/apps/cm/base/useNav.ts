@@ -3,19 +3,16 @@ import { RootState } from "../../../../store";
 import { getNewPhase } from "../Cm.complect";
 import { CmPhase, SetPhasePayload } from "../Cm.model";
 import { setCmPhase, switchCmFullscreen } from "../Cm.store";
-import useAbsolutePopup from "./absolute-popup/useAbsolutePopup";
 import { useMarks } from "../lists/marks/useMarks";
-import useRollMode from "./useRoll";
 
 
 const firstPhase: CmPhase = 'all';
+const actions: (() => boolean | void)[] = [];
 
 export default function useNav() {
     const dispatch = useDispatch();
-    const  { isAbsolutePopupOpen, closeAbsolutePopup } = useAbsolutePopup();
 
     const ret = {
-        rollMode: useRollMode(),
         marks: useMarks(),
         phase: useSelector((state: RootState) => state.cm.phase),
         prevPhase: useSelector((state: RootState) => state.cm.prevPhase),
@@ -23,9 +20,13 @@ export default function useNav() {
         setPhase: (val: SetPhasePayload) => dispatch(setCmPhase(val)),
         isFullScreen: useSelector((state: RootState) => state.cm.isCmFullscreen),
         switchFullscreen: (isFullscreen?: boolean) => dispatch(switchCmFullscreen(isFullscreen)),
+        registerBackAction: (action: () => void) => {
+            actions.unshift(action);
+            return () => actions.splice(actions.findIndex(ac => ac !== action), 1);
+        },
         goBack: () => {
-            if (isAbsolutePopupOpen) {
-                closeAbsolutePopup();
+            if (actions.length) {
+                actions.find(action => action && action() === true && actions.shift());
                 return;
             }
 
@@ -42,11 +43,6 @@ export default function useNav() {
             const newPhase: SetPhasePayload = getNewPhase(ret.phase, ret.specialPhase, ret.prevPhase);
 
             if (newPhase) ret.setPhase(newPhase);
-
-            if (ret.rollMode.rollMode) {
-                ret.rollMode.switchRollMode(null);
-                ret.rollMode.switchRollModeMarks(false);
-            }
         }
     };
 

@@ -1,13 +1,33 @@
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import useAbsolutePopup from "../../base/absolute-popup/useAbsolutePopup";
 import PhaseContainer from "../../base/phase-container/PhaseContainer";
 import ComFace from "../../col/com/face/ComFace";
+import LocalListToolsPopup from "../popups/LocalListToolsPopup";
 import { useMarks } from "./useMarks";
 
 export default function Marks() {
   const { markedComs } = useMarks();
+  const { openAbsolutePopup } = useAbsolutePopup();
+
   return (
     <PhaseContainer
       topClass="favorites-container"
-      head={"Избранное"}
+      headClass="flex between"
+      head={(backButton) => (
+        <>
+          <div className="flex">
+            {backButton}
+            Избранное
+          </div>
+          <EvaIcon
+            name="more-vertical"
+            className="action-button"
+            onClick={() =>
+              openAbsolutePopup(<LocalListToolsPopup coms={markedComs} />)
+            }
+          />
+        </>
+      )}
       content={markedComs.map((com) => (
         <ComFace
           key={`marked-com-${com.wid}`}

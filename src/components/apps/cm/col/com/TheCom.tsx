@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon.model";
 import { RootState } from "../../../../../store";
+import useAbsolutePopup from "../../base/absolute-popup/useAbsolutePopup";
 import PhaseContainer from "../../base/phase-container/PhaseContainer";
+import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";
 import useNav from "../../base/useNav";
-import useRoll from "../../base/useRoll";
 import { ChordVisibleVariant } from "../../Cm.model";
-import useAbsolutePopup from "../../base/absolute-popup/useAbsolutePopup";
 import { useMarks } from "../../lists/marks/useMarks";
 import { useCcom } from "../useCcol";
 import "./Com.scss";
@@ -26,14 +26,6 @@ export default function TheCom() {
   );
 
   const [ccom] = useCcom();
-
-  const {
-    toggleRoll,
-    setRollModeContainer,
-    rollMode,
-    setRollSpeedScreenContainer,
-    updateSpeedRollKf,
-  } = useRoll();
   const { addLaterComw } = useLaterComList();
   const { openAbsolutePopup } = useAbsolutePopup();
   const { isMarked, toggleMarked } = useMarks();
@@ -136,32 +128,13 @@ export default function TheCom() {
         </>
       )}
       content={
-        <>
-          <div
-            className="com-ord-list-content"
-            onClick={() => toggleRoll()}
-            ref={(element) => element && setRollModeContainer(element)}
-          >
-            <div key={`main-com-${ccom.wid}`}>
-              <ComOrders
-                ccom={ccom}
-                fontSize={fontSize}
-                isAnchorInheritHide={!isAnchorsVisible}
-              />
-            </div>
-          </div>
-          <div
-            className={`roll-controls flex column center ${
-              rollMode === "play" ? "open" : ""
-            }`}
-          >
-            <EvaIcon name="minus" onClick={() => updateSpeedRollKf(-1)} />
-            <div
-              ref={(element) => element && setRollSpeedScreenContainer(element)}
-            />
-            <EvaIcon name="plus" onClick={() => updateSpeedRollKf(1)} />
-          </div>
-        </>
+        <RollControled>
+          <ComOrders
+            ccom={ccom}
+            fontSize={fontSize}
+            isAnchorInheritHide={!isAnchorsVisible}
+          />
+        </RollControled>
       }
     />
   );

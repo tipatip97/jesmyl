@@ -1,14 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
-import { cmStorage } from "../../../../store/jstorages";
 import { riseUpColsUpdates } from "../Cm.store";
 import { useCcat, useCcom } from "../col/useCcol";
 import { Cols } from "./Cols";
 import { IExportableCols } from "./Cols.model";
 
-export let localCols: Cols | nil;
+export let localCols: Cols | und;
 
-export function useCols(): [Cols | nil, (val: IExportableCols) => void] {
+export function useCols(): [Cols | und, (val: IExportableCols) => void] {
     useSelector((state: RootState) => state.cm.numColsUpdates);
     const dispatch = useDispatch();
     const [ccat, setCcat] = useCcat();

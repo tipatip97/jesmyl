@@ -1,18 +1,4 @@
 .main-container {
-    &.roll-mode {
-
-        .com-ord-list-content {
-            >:not(:last-child) {
-                border-bottom: dashed 2px var(--color--2);
-            }
-        }
-    }
-
-    .com-ord-list-content-container {
-        overflow-y: auto;
-        height: 100%;
-    }
-
     .com-face {
         --size: 2.5em;
         --number-border-size: 2px;
@@ -26,7 +12,6 @@
         cursor: pointer;
 
         >.number {
-
             position: absolute;
             display: flex;
             justify-content: center;
@@ -43,66 +28,6 @@
         }
     }
 }
-
-.com-container {
-    .roll-controls {
-        --height: 100px;
-        position: absolute;
-        top: calc(50vh - var(--height) / 2);
-        right: 10px;
-        height: var(--height);
-        opacity: 0;
-        pointer-events: none;
-        cursor: pointer;
-        transition: opacity .7s;
-
-        >* {
-            margin: 5px;
-        }
-
-        &.open {
-            opacity: .7;
-            pointer-events: all;
-        }
-    }
-}
-
-.com-tools-popup {
-    display: flex;
-    justify-content: center;
-
-    .item {
-        padding: 10px 0;
-        width: 100%;
-        max-width: 450px;
-
-        &.full {
-            cursor: pointer;
-
-            .action {
-                width: calc(6em + 20px);
-            }
-        }
-
-        .action {
-
-            &.full,
-            >.full {
-                width: calc(6em + 20px);
-            }
-
-            >* {
-                width: 2em;
-                text-align: center;
-
-                +* {
-                    margin-left: 10px;
-                }
-            }
-        }
-    }
-}
-
 
 
 

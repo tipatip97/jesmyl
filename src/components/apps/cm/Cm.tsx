@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import onBackButton from "../../../complect/back-button-listener";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { cmStorage } from "../../../store/jstorages";
+import useAbsolutePopup from "./base/absolute-popup/useAbsolutePopup";
 import useNav from "./base/useNav";
 import useParanja from "./base/useParanja";
 import { footerItems } from "./Cm.complect";
@@ -10,7 +11,6 @@ import "./Cm.scss";
 import TheCat from "./col/cat/TheCat";
 import TheCom from "./col/com/TheCom";
 import { useCols } from "./cols/useCols";
-import useAbsolutePopup from "./base/absolute-popup/useAbsolutePopup";
 import Editor from "./editor/Editor";
 import Lists from "./lists/Lists";
 import Marks from "./lists/marks/Marks";
@@ -18,7 +18,6 @@ import TheMeeting from "./lists/meetings/TheMeeting";
 import TheMeetings from "./lists/meetings/TheMeetings";
 import Other from "./other/Other";
 import Translations from "./translation/Translation";
-import useTranslation from "./translation/useTranslation";
 
 const Comps: Record<CmPhase, () => ReactNode> = {
   all: () => <TheCat allMode />,
@@ -40,12 +39,9 @@ export default function CmApplication() {
     goBack,
     isFullScreen,
     switchFullscreen,
-    rollMode: { rollMode },
     specialPhase,
   } = useNav();
   const [, setCols] = useCols();
-
-  const { isShowMarks } = useTranslation();
 
   const [topClickDateNow, setTopClickDateNow] = useState(0);
 
@@ -63,7 +59,7 @@ export default function CmApplication() {
           isFullScreen ? " fullscreen-mode" : ""
         }`}
         onClick={() => {
-          if (phase !== "com" || rollMode) return;
+          if (phase !== "com") return;
           if (Date.now() - topClickDateNow < 500) {
             switchFullscreen();
             setTopClickDateNow(0);

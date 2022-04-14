@@ -14,18 +14,19 @@ export default function ComFaceContextMenu({
   const isComMarked = isMarked(com.wid);
 
   return (
-    <div className="com-face-context-menu">
-      <div
-        className="item flex"
-        onClick={() => {
-          onClick();
-          toggleMarked(com.wid);
-        }}
-      >
-        <EvaIcon name={isComMarked ? "star-outline" : "star"} />
-        <div>
-          {isComMarked ? "Удалить из Избранного" : "Добавить в Избранное"}
-        </div>
+    <div
+      className="abs-item flex"
+      onClick={() => {
+        onClick();
+        toggleMarked(com.wid);
+      }}
+    >
+      <EvaIcon
+        name={isComMarked ? "star-outline" : "star"}
+        className="abs-icon"
+      />
+      <div>
+        {isComMarked ? "Удалить из Избранного" : "Добавить в Избранное"}
       </div>
     </div>
   );

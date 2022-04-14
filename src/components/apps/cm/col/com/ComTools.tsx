@@ -22,11 +22,11 @@ export default function ComTools() {
 
   if (!ccom) return null;
   return (
-    <div className="com-tools-popup flex column between">
-      <div className="item flex between">
-        <EvaIcon name="music-outline" className="icon" />
+    <>
+      <div className="abs-item">
+        <EvaIcon name="music-outline" className="abs-icon" />
         <div className="title">Тональность</div>
-        <div className="action flex around pointer">
+        <div className="abs-action flex around pointer">
           <EvaIcon
             name="minus"
             onClick={() => {
@@ -51,10 +51,10 @@ export default function ComTools() {
           />
         </div>
       </div>
-      <div className="item flex between">
-        <EvaIcon name="text-outline" className="icon" />
+      <div className="abs-item">
+        <EvaIcon name="text-outline" className="abs-icon" />
         <div className="title">Размер шрифта</div>
-        <div className="action flex around pointer">
+        <div className="abs-action flex around pointer">
           <EvaIcon
             name="minus-outline"
             onClick={() => dispatch(setComFontSize(fontSize - 1))}
@@ -67,17 +67,7 @@ export default function ComTools() {
         </div>
       </div>
       <div
-        className="item full flex between"
-        onClick={() => dispatch(switchAnchorsVisible())}
-      >
-        <EvaIcon name="format-text-variant-outline" className="icon" />
-        <div className="title">
-          {isAnchorsVisible ? "Свернуть текст" : "Развернуть текст"}
-        </div>
-        <div className="action" />
-      </div>
-      <div
-        className="item full flex between"
+        className="abs-item abs-full"
         onClick={() => {
           openTranslations();
           closeAbsolutePopup();
@@ -85,11 +75,21 @@ export default function ComTools() {
       >
         <EvaIcon
           name={isShowFullscreen ? "play-outline" : "monitor-outline"}
-          className="icon"
+          className="abs-icon"
         />
         <div className="title">Слайды</div>
-        <div className="action" />
+        <div className="abs-action" />
       </div>
-    </div>
+      <div
+        className="abs-item abs-full"
+        onClick={() => dispatch(switchAnchorsVisible())}
+      >
+        <EvaIcon name="format-text-variant-outline" className="abs-icon" />
+        <div className="title">
+          {isAnchorsVisible ? "Свернуть текст" : "Развернуть текст"}
+        </div>
+        <div className="abs-action" />
+      </div>
+    </>
   );
 }

@@ -2,20 +2,18 @@ import { useState } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { useChordVisibleVariant } from "../../../base/useChordVisibleVariant";
-import useRoll from "../../../base/useRoll";
 import { useCcom } from "../../useCcol";
 import ChordCard from "./ChordCard";
 
 export default function ChordCardList() {
   const [isShowChordImages, setIsShowChordImages] = useState(false);
   const [chordVisibleVariant] = useChordVisibleVariant();
-  const { rollMode } = useRoll();
   const [ccom] = useCcom();
 
   return (
     <div
       className={`chords-images-show-panel${
-        !chordVisibleVariant || rollMode ? " hidden" : ""
+        !chordVisibleVariant ? " hidden" : ""
       }`}
     >
       <div className="mgroup msm">

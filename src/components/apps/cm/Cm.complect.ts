@@ -198,7 +198,7 @@ const styleProps = [
 
 const putStyles = () => {
   const topStyles: any = {};
-  const newStyles: any = (topStyles[".app-container.cm .com-ord-list "] = {});
+  const newStyles: any = (topStyles["#root .com-ord-list "] = {});
 
   (["headerProps", "textProps"] as (keyof StyleProp)[]).forEach(
     (styleCol: keyof StyleProp) => {

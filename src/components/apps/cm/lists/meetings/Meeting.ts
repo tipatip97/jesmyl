@@ -7,9 +7,9 @@ import { IExportableMeeting } from "./Meetings.model";
 
 
 export class Meeting extends EditableMeeting {
-  coms: Com[] | nil;
+  coms?: Com[];
 
-  constructor(top: IExportableMeeting, cols?: Cols | nil) {
+  constructor(top: IExportableMeeting, cols?: Cols) {
     super(top);
 
     this.coms = cols && top.s.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
