@@ -1,14 +1,16 @@
+import { useDispatch } from "react-redux";
 import modalService from "../../../complect/modal/Modal.service";
 import { indexStorage } from "../../../store/jstorages";
 import { localAuth } from "../Board.source";
 import { boardExer, setBoardPhase } from "../Board.store";
 
 export default function BoardSettings() {
+  const dispatch = useDispatch();
   return (
     <>
       <div className="phase-name">Инструменты</div>
       <div className="system-item">
-        <span className="text" onClick={() => setBoardPhase("apps")}>
+        <span className="text" onClick={() => dispatch(setBoardPhase("apps"))}>
           назад
         </span>
       </div>
@@ -31,7 +33,7 @@ export default function BoardSettings() {
                     title: "Выйти",
                     onClick: () => {
                       indexStorage.rem("auth");
-                      setBoardPhase("apps");
+                      dispatch(setBoardPhase("apps"));
                     },
                   },
                   {

@@ -18,7 +18,7 @@ indexStorage.registerTop(appStorage);
 
 const initialState: BorderState = {
   phase: "apps",
-  currentApp: indexStorage.getOr("currentApp", null),
+  currentApp: indexStorage.getOr("currentApp", 'cm'),
   apps: [],
 };
 

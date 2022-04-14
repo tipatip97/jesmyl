@@ -12,7 +12,7 @@ export class Refresh {
     onStsteChangeListener?: (state: RefreshState) => void;
 
     get appName() {
-        return indexStorage.getOr('currentApp', null);
+        return indexStorage.getOr('currentApp', 'cm');
     }
 
     path(isCheck: boolean, includeRejected = false, isLive = false, isForceIndex = false, isForceApp = false) {
