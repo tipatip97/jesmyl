@@ -40,6 +40,7 @@ body {
 
 body {
   --svg-color: var(--color--4);
+  --text-color: var(--color--4);
 
   background-color: var(--color--5);
   font-family: var(--font-family);
@@ -48,6 +49,7 @@ body {
   width: 100vw;
   height: 100vh;
   font-size: 16px;
+  color: var(--text-color);
 }
 
 * {
