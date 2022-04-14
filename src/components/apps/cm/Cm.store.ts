@@ -33,10 +33,10 @@ const initialState: CmState = {
   translationBlock: 0,
   isTranslationBlockVisible: true,
   translationBlockPosition: 'center',
+  isAbsolutePopupOpen: false,
 
   numComUpdates: 0,
   numColsUpdates: 0,
-  numModalUpdates: 0,
   numAbsolutePopupUpdates: 0,
   numMeetingsUpdate: 0,
 };
@@ -85,6 +85,9 @@ export const slice = createSlice({
     switchShowMarks: (state, action: PayloadAction<boolean | nil>) => {
       state.isShowMarks = action.payload ?? state.isShowMarks;
     },
+    switchAbsolutePopupOpen: (state, action: PayloadAction<boolean | nil>) => {
+      state.isAbsolutePopupOpen = action.payload ?? state.isAbsolutePopupOpen;
+    },
     switchAnchorsVisible: (state, action: PayloadAction<boolean | nil>) => {
       state.isAnchorsVisible = action.payload ?? !state.isAnchorsVisible;
     },
@@ -127,9 +130,6 @@ export const slice = createSlice({
     riseUpColsUpdates: (state) => {
       state.numColsUpdates++;
     },
-    riseUpModalUpdates: (state) => {
-      state.numModalUpdates++;
-    },
     riseUpAbsolutePopupUpdates: (state) => {
       state.numAbsolutePopupUpdates++;
     },
@@ -152,7 +152,7 @@ export const {
   setMarkList,
   updateMeetingList,
   setCurrentMeetingw,
-  riseUpModalUpdates,
+  switchAbsolutePopupOpen,
   setComFontSize,
   setTranslationBlock,
   switchTranslationBlockVisible,

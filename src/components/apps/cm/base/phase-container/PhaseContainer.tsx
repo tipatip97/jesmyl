@@ -8,7 +8,6 @@ export default function PhaseContainer(props: PhaseContainerProps) {
     head,
     content,
     withoutBackButton,
-    reference,
     headClass,
     contentClass,
   } = props;
@@ -22,7 +21,7 @@ export default function PhaseContainer(props: PhaseContainerProps) {
   );
 
   return (
-    <div className={`${topClass} ${props.className || ""}`} ref={reference}>
+    <div className={`${topClass} ${props.className || ""}`}>
       <div className={`header-content ${headClass || "flex"}`}>
         {typeof head === "function" ? (
           head(backButton)

@@ -19,10 +19,10 @@ export interface CmState extends CmStoraged {
     isShowMarks: boolean;
     isAnchorsVisible: boolean;
     rollModeMarks: boolean;
+    isAbsolutePopupOpen: boolean;
 
     numComUpdates: number;
     numColsUpdates: number;
-    numModalUpdates: number;
     numAbsolutePopupUpdates: number;
     numMeetingsUpdate: number;
 }

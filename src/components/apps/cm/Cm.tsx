@@ -60,9 +60,7 @@ export default function CmApplication() {
     <>
       <div
         className={`main-container phase-${phase}${
-          isFullScreen || rollMode ? " fullscreen-mode" : ""
-        }${rollMode ? " roll-mode" : ""}${
-          isShowMarks ? " show-marks-mode" : ""
+          isFullScreen ? " fullscreen-mode" : ""
         }`}
         onClick={() => {
           if (phase !== "com" || rollMode) return;

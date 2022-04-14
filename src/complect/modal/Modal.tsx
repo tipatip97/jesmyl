@@ -49,7 +49,7 @@ export const onActionClick = (
 
 export default function Modal(props: ModalFixed) {
   const [config, setConfig] = useState(modalService.current());
-  useSelector((state: RootState) => state.cm.numModalUpdates);
+  // useSelector((state: RootState) => state.cm.numModalUpdates);
 
   modalService.setConfigSetter((config) => setConfig(config));
 

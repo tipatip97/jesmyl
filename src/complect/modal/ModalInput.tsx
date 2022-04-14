@@ -1,12 +1,11 @@
 import { ReactNode } from "react";
 import { useDispatch } from "react-redux";
-import { riseUpModalUpdates } from "../../components/apps/cm/Cm.store";
 import mylib from "../my-lib/MyLib";
 import { onActionClick } from "./Modal";
 import {
   ModalConfig,
   ModalConfigInput,
-  TheModalInputProps,
+  TheModalInputProps
 } from "./Modal.model";
 import modalService from "./Modal.service";
 
@@ -17,7 +16,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
   else [input, inputi] = [topProps.config, 0];
 
   const dispatch = useDispatch();
-  const forceUpdate = () => dispatch(riseUpModalUpdates());
+  const forceUpdate = () => {};
   const config = modalService.current();
 
   if (input == null) return null;

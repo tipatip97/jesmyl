@@ -27,7 +27,13 @@ export default function TheCom() {
 
   const [ccom] = useCcom();
 
-  const { toggleRoll, setRollModeContainer } = useRoll();
+  const {
+    toggleRoll,
+    setRollModeContainer,
+    rollMode,
+    setRollSpeedScreenContainer,
+    updateSpeedRollKf,
+  } = useRoll();
   const { addLaterComw } = useLaterComList();
   const { openAbsolutePopup } = useAbsolutePopup();
   const { isMarked, toggleMarked } = useMarks();
@@ -44,7 +50,6 @@ export default function TheCom() {
     return (
       <PhaseContainer
         topClass="com-container"
-        reference={(element) => element && setRollModeContainer(element)}
         head="Упс"
         content="Песня не найдена("
       />
@@ -58,7 +63,6 @@ export default function TheCom() {
   return (
     <PhaseContainer
       topClass="com-container"
-      reference={(element) => element && setRollModeContainer(element)}
       headClass="flex between"
       head={(backButton) => (
         <>
@@ -132,15 +136,32 @@ export default function TheCom() {
         </>
       )}
       content={
-        <div className="com-ord-list-content" onClick={() => toggleRoll()}>
-          <div key={`main-com-${ccom.wid}`}>
-            <ComOrders
-              ccom={ccom}
-              fontSize={fontSize}
-              isAnchorInheritHide={!isAnchorsVisible}
-            />
+        <>
+          <div
+            className="com-ord-list-content"
+            onClick={() => toggleRoll()}
+            ref={(element) => element && setRollModeContainer(element)}
+          >
+            <div key={`main-com-${ccom.wid}`}>
+              <ComOrders
+                ccom={ccom}
+                fontSize={fontSize}
+                isAnchorInheritHide={!isAnchorsVisible}
+              />
+            </div>
           </div>
-        </div>
+          <div
+            className={`roll-controls flex column center ${
+              rollMode === "play" ? "open" : ""
+            }`}
+          >
+            <EvaIcon name="minus" onClick={() => updateSpeedRollKf(-1)} />
+            <div
+              ref={(element) => element && setRollSpeedScreenContainer(element)}
+            />
+            <EvaIcon name="plus" onClick={() => updateSpeedRollKf(1)} />
+          </div>
+        </>
       }
     />
   );

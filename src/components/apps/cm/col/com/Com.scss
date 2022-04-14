@@ -3,17 +3,14 @@
 
         .com-ord-list-content {
             >:not(:last-child) {
-                border-bottom: dashed 2px var(--color-far);
-            }
-
-            >:first-child {
-                padding-top: calc(100vh * var(--roll-mode-padding-kf));
-            }
-
-            >:last-child {
-                padding-bottom: calc(100vh * (1 - var(--roll-mode-padding-kf)));
+                border-bottom: dashed 2px var(--color--2);
             }
         }
+    }
+
+    .com-ord-list-content-container {
+        overflow-y: auto;
+        height: 100%;
     }
 
     .com-face {
@@ -43,6 +40,29 @@
 
         >.title {
             margin-left: calc(2.5em + 1em);
+        }
+    }
+}
+
+.com-container {
+    .roll-controls {
+        --height: 100px;
+        position: absolute;
+        top: calc(50vh - var(--height) / 2);
+        right: 10px;
+        height: var(--height);
+        opacity: 0;
+        pointer-events: none;
+        cursor: pointer;
+        transition: opacity .7s;
+
+        >* {
+            margin: 5px;
+        }
+
+        &.open {
+            opacity: .7;
+            pointer-events: all;
         }
     }
 }

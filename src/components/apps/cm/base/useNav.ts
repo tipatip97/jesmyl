@@ -3,6 +3,7 @@ import { RootState } from "../../../../store";
 import { getNewPhase } from "../Cm.complect";
 import { CmPhase, SetPhasePayload } from "../Cm.model";
 import { setCmPhase, switchCmFullscreen } from "../Cm.store";
+import useAbsolutePopup from "../complect/absolute-popup/useAbsolutePopup";
 import { useMarks } from "../marks/useMarks";
 import useRollMode from "./useRoll";
 
@@ -11,6 +12,7 @@ const firstPhase: CmPhase = 'all';
 
 export default function useNav() {
     const dispatch = useDispatch();
+    const  { isAbsolutePopupOpen, closeAbsolutePopup } = useAbsolutePopup();
 
     const ret = {
         rollMode: useRollMode(),
@@ -22,6 +24,11 @@ export default function useNav() {
         isFullScreen: useSelector((state: RootState) => state.cm.isCmFullscreen),
         switchFullscreen: (isFullscreen?: boolean) => dispatch(switchCmFullscreen(isFullscreen)),
         goBack: () => {
+            if (isAbsolutePopupOpen) {
+                closeAbsolutePopup();
+                return;
+            }
+
             if (!ret.phase || ret.phase === firstPhase || ret.phase === firstPhase) {
                 return;
             }

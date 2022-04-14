@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../store";
 import useParanja from "../../base/useParanja";
-import { riseUpAbsolutePopupUpdates } from "../../Cm.store";
+import { switchAbsolutePopupOpen } from "../../Cm.store";
 import { AbsolutePopupMode } from "./AbsolutePopup.model";
 
 let absolutePopupContent: JSX.Element | null;
@@ -11,13 +11,14 @@ let isFloated = false;
 export default function useAbsolutePopup() {
   const dispatch = useDispatch();
   const { openParanja, closeParanja } = useParanja();
-  useSelector((state: RootState) => state.cm.numModalUpdates);
+  const isAbsolutePopupOpen = useSelector((state: RootState) => state.cm.isAbsolutePopupOpen);
 
   const ret = {
     absolutePopupContent,
+    isAbsolutePopupOpen,
     closeAbsolutePopup: () => {
       if (isFloated) absolutePopupContent = null;
-      dispatch(riseUpAbsolutePopupUpdates());
+      dispatch(switchAbsolutePopupOpen(false));
       closeParanja();
       element?.classList.remove("open");
       element = null;
@@ -64,7 +65,7 @@ export default function useAbsolutePopup() {
           {content}
         </div>
       );
-      dispatch(riseUpAbsolutePopupUpdates());
+      dispatch(switchAbsolutePopupOpen(true));
     },
   };
   return ret;

@@ -37,7 +37,6 @@ export default function useRoll() {
             speedScreen.innerText = (speedRollKf / 10).toFixed(1);
         },
         toggleRoll: () => {
-            if (!rollMode) return;
             if (rollMode !== 'play') {
                 ret.switchRollMode('play');
                 startRoll(ret.switchRollMode);
