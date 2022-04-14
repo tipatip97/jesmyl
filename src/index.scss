@@ -7,6 +7,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: var(--font-family);
 
+
+  --font-size: 16px;
+  --com-player-signaler-size: 50px;
+
+  --color-1: #e6e4c0;
+  --color-2: #e7edde;
+  --color-3: #f2f0e0;
+  --color-4: #4f4e46;
+  --color-5: #1d192b;
+
+  --main-gap: 8px;
+  --main-big-gap: 18px;
+  --header-height: 10px;
+  --header-container-height: 60px;
+  --footer-height: 70px;
+  --fullscreen-transition: top .3s, bottom .3s, height .3s, margin-top .3s;
+
+  --header-container-margin-top: 0;
+  --header-top: 0;
+  --header-container-top: var(--header-height);
+  --footer-bottom: 0;
+
+  --svg-color: var(--color-4);
+
+  background-color: var(--color-2);
 }
 
 * {
@@ -44,6 +69,10 @@ input {
     justify-content: space-around;
   }
 
+  &.center {
+    justify-content: center;
+  }
+
   &.column {
     flex-direction: column;
   }
@@ -62,7 +91,7 @@ input {
 }
 
 .inactive {
-  filter: brightness(.2);
+  opacity: .7;
 }
 
 
@@ -75,6 +104,10 @@ input {
 ::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 

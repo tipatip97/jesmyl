@@ -17,7 +17,8 @@ export default function ColAdditionButtons() {
         id="new-cat-button"
         className="mbtn msm m-ok"
         onClick={() => {
-          setCcat(cols.addCat());
+          const cat = cols?.addCat();
+          if (cat) setCcat(cat);
           setPhase("cat");
         }}
       >
@@ -27,7 +28,8 @@ export default function ColAdditionButtons() {
         key="com-new-button"
         className="mbtn m-no msm"
         onClick={() => {
-          setCcom(cols.addCom());
+          const com = cols?.addCom();
+          if (com) setCcom(com);
           setPhase("editor");
         }}
       >

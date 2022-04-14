@@ -32,7 +32,7 @@ export default function TheCats() {
             event.target.previousSibling.focus();
           }
         })], */}
-      {cols.cats.map((cat: Cat) => {
+      {cols?.cats.map((cat: Cat) => {
         return cat == null ? null : (
           <div
             key={`cat-face-button-${cat.wid}`}

@@ -40,10 +40,17 @@ export default function TheCom() {
   }, []);
 
   if (ccom == null) {
-    return null;
+    return (
+      <PhaseContainer
+        topClass="com-container"
+        reference={(element) => element && setRollModeContainer(element)}
+        head="Упс"
+        content="Песня не найдена("
+      />
+    );
   }
 
-  const isWhole = !ccom.orders.some(
+  const isWhole = !ccom.orders?.some(
     (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
   );
 

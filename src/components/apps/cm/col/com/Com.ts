@@ -130,15 +130,15 @@ export class Com extends EditableCom {
   }
 
   getOrderedTexts(isIncluseEndstars = true) {
-    return this.getOrderedBlocks().map((lines, linesi, linesa) => lines.join('\n') + (isIncluseEndstars && linesa.length - 1 === linesi ? '\n* * *' : ''));
+    return this.getOrderedBlocks().map((lines, linesi, linesa) => lines?.join('\n') + (isIncluseEndstars && linesa.length - 1 === linesi ? '\n* * *' : ''));
   }
 
   getOrderedBlocks() {
-    const textBeats = this.orders.reduce((text, ord) =>
+    const textBeats = this.orders?.reduce((text, ord) =>
       text + (ord.top.t == null ? '' : (text ? '\n' : '') + ord.repeated), '').split(/\n/);
 
     const texts = this.translationMap().map(peaceSize => {
-      return textBeats.splice(0, peaceSize);
+      return textBeats?.splice(0, peaceSize);
     });
 
     return texts;
@@ -152,7 +152,7 @@ export class Com extends EditableCom {
     const map = this._translationMap = [];
     let curr = 0;
 
-    this.orders.forEach((ord: Order, ordi: number, orda: Order[]) => {
+    this.orders?.forEach((ord: Order, ordi: number, orda: Order[]) => {
       if (ord.texti == null) {
         curr = 0;
         return;
@@ -220,7 +220,7 @@ export class Com extends EditableCom {
     let currTransPosition = this.transPosition;
     let firstChord: string = '';
 
-    this.orders.forEach(ord => {
+    this.orders?.forEach(ord => {
       const ordLabels: string[][] = [];
       this._chordLabels?.push(ordLabels);
       const chords = this.actualChords(ord.chordsi, currTransPosition);
@@ -265,8 +265,9 @@ export class Com extends EditableCom {
     return this._ords as IExportableOrderTop[];
   }
 
-  get orders(): Order[] { return this._o || this.setOrders(); }
+  get orders(): Order[] | null { return this._o || this.setOrders(); }
   setOrders() {
+    if (!setts) return null;
     const val = this.ords
       .map((ord) => {
         ord.originWid = mylib.def(ord.originWid, ord.w);

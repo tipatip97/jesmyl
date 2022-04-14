@@ -68,20 +68,19 @@ export const phaseJumps: Record<CmPhase, CmPhase | null> = {
   // если значение - null, то переход на предыдущую фазу
   all: null,
   // cats: null,
-  com: null,
+  com: "all",
   cat: null,
   editor: "com",
   // news: null,
-  translations: "com",
+  translations: null,
   lists: "all",
   other: null,
   favorite_com: "favorites",
-  thematic_com: null,
-  meeting_com: null,
+  thematic_com: "cat",
+  meeting_com: "meeting",
   favorites: "lists",
   meetings: "lists",
   meeting: "meetings",
-  "": null,
 };
 
 export const Comps: Record<CmPhase, () => ReactNode> = {
@@ -99,7 +98,6 @@ export const Comps: Record<CmPhase, () => ReactNode> = {
   meetings: () => <TheMeetings />,
   meeting: () => <TheMeeting />,
   other: () => <Other />,
-  "": () => null,
 };
 
 export const inlinePhases = [
@@ -114,7 +112,7 @@ export const inlinePhases = [
     "thematic_com",
     "meeting_com",
   ],
-  ["other", "editor", ""],
+  ["other", "editor"],
 ] as const;
 
 const [allPhases, listsPhases, otherPhases] = inlinePhases;
@@ -221,7 +219,8 @@ const putStyles = () => {
 
   (["headerProps", "textProps"] as (keyof StyleProp)[]).forEach(
     (styleCol: keyof StyleProp) => {
-      setts.styles.forEach((styleBlock) => {
+      setts?.styles.forEach((styleBlock) => {
+        if (!setts) return;
         const block: any = (newStyles[
           setts.query(
             styleBlock.name,

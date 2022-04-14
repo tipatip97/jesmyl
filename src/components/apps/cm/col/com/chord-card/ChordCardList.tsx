@@ -46,7 +46,7 @@ export default function ChordCardList() {
       >
         <div>
           {null &&
-            ccom.audio &&
+            ccom?.audio &&
             ccom.audio.split("\n\n").map((ablock) => {
               const [src, description] = mylib.explode("\n", ablock, 2);
               return (
@@ -73,7 +73,7 @@ export default function ChordCardList() {
               );
             })}
         </div>
-        {ccom.usedChords &&
+        {ccom?.usedChords &&
           Object.keys(ccom.usedChords)
             .filter((uc) => uc)
             .map((chordName) => {

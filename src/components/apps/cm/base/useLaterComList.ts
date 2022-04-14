@@ -15,8 +15,8 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
     const list = useSelector((state: RootState) => state.cm.laterComwList);
     const [cols] = useCols();
 
-    if (laterComs == null) setLaterComs(cols, list);
-    useEffect(() => { setLaterComs(cols, list); }, [list]);
+    if (cols && laterComs == null) setLaterComs(cols, list);
+    useEffect(() => { cols && setLaterComs(cols, list); }, [list]);
 
     const ret = {
         laterComs,

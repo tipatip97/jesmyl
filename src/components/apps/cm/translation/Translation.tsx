@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import PhaseContainer from "../base/phase-container/PhaseContainer";
 import useNav from "../base/useNav";
+import ComFace from "../col/com/face/ComFace";
+import { useMarks } from "../marks/useMarks";
 import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
 import useTranslation from "./useTranslation";
 
 export default function Translations() {
   const {
-    isTouchDevice,
+    isShowFullscreen,
     currWin,
     newTranslation,
     prevBlock,
@@ -25,16 +27,17 @@ export default function Translations() {
   } = useTranslation();
 
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { setPhase, isFullScreen, goBack } = useNav();
+  const { setPhase, isFullScreen } = useNav();
+  const { markedComs } = useMarks();
 
   useEffect(() => {
-    if (isTouchDevice) {
+    if (isShowFullscreen) {
       const gotoCom = () => setPhase("com");
-      window.addEventListener("unload", gotoCom);
+      window.addEventListener("beforeunload", gotoCom);
 
-      return () => window.removeEventListener("unload", gotoCom);
+      return () => window.removeEventListener("beforeunload", gotoCom);
     }
-  });
+  }, []);
 
   if (isFullScreen)
     return (
@@ -78,61 +81,35 @@ export default function Translations() {
   return (
     <PhaseContainer
       topClass="translation-container"
-      headClass="flex between"
-      head={
-        <>
-          <div className="flex pointer">
-            <div className="action-button" onClick={() => prevBlock()}>
-              <EvaIcon name="arrow-left-outline" />
-            </div>
-            <div className="action-button" onClick={() => nextBlock()}>
-              <EvaIcon name="arrow-right-outline" />
-            </div>
-            <div
-              className={`action-button ${
-                position === "center" ? "inactive" : ""
-              }`}
-              onClick={() => switchPosition()}
-            >
-              <EvaIcon name="upload-outline" />
-            </div>
-          </div>
-          <div
-            className="action-button"
-            onClick={(event) => {
-              newTranslation(
-                (event.view as any).screenLeft + event.clientX - 70,
-                (event.view as any).screenTop + event.clientY + 70
-              );
-            }}
-          >
-            {currWin ? (
-              <EvaIcon name="monitor-outline" />
-            ) : (
-              <EvaIcon name="play-circle-outline" />
-            )}
-          </div>
-        </>
-      }
+      head="Трансляция"
       content={
         <>
-          <div
-            className="translation-screen-wrapper"
-            onClick={() => switchVisible()}
-          >
-            <div className="translation-screen-wrapper-inner">
-              <TranslationScreen
-                fontSizeContainId="translation-native-window"
-                position={position}
-                updater={(update) =>
-                  window.addEventListener("resize", () => update())
-                }
-              />
+          <div className="flex">
+            <div
+              className="translation-screen-wrapper"
+              onClick={() => switchVisible()}
+            >
+              <div className="translation-screen-wrapper-inner">
+                <TranslationScreen
+                  fontSizeContainId="translation-native-window"
+                  position={position}
+                  updater={(update) =>
+                    window.addEventListener("resize", () => update())
+                  }
+                />
+              </div>
+            </div>
+            <div>
+              {markedComs.map((com) => {
+                return (
+                  <ComFace key={`mark-to-translation_${com.wid}`} com={com} />
+                );
+              })}
             </div>
           </div>
 
           {blocks && (
-            <div className="translations-line">
+            <div className="translations-line no-scrollbar">
               {blocks.map((block, blocki) => {
                 return (
                   <div
@@ -153,6 +130,38 @@ export default function Translations() {
               })}
             </div>
           )}
+          <div className="control-panel flex between">
+            <div className="button" onClick={() => prevBlock()}>
+              <EvaIcon name="chevron-left-outline" />
+            </div>
+            <div className="button" onClick={() => nextBlock()}>
+              <EvaIcon name="chevron-right-outline" />
+            </div>
+            <div
+              className="start-translation button flex center"
+              onClick={(event) => {
+                newTranslation(
+                  (event.view as any).screenLeft + event.clientX - 70,
+                  (event.view as any).screenTop + event.clientY + 70
+                );
+              }}
+            >
+              {currWin ? (
+                <EvaIcon name="monitor-outline" />
+              ) : (
+                <EvaIcon name="play-outline" />
+              )}
+            </div>
+            <div
+              className={`button ${position === "center" ? "inactive" : ""}`}
+              onClick={() => switchPosition()}
+            >
+              <EvaIcon name="upload-outline" />
+            </div>
+            <div className="button" onClick={() => switchVisible()}>
+              <EvaIcon name="square-outline" />
+            </div>
+          </div>
         </>
       }
     />

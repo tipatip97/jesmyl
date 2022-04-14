@@ -248,14 +248,15 @@ body {
     }
 
 
-@keyframes rise-up-absolute-bottom-popup {
-    from {
-        bottom: calc(0px - var(--max-height));
+    @keyframes rise-up-absolute-bottom-popup {
+        from {
+            bottom: calc(0px - var(--max-height));
+        }
+
+        to {
+            bottom: 0;
+        }
     }
-    to {
-        bottom: 0;
-    }
-}
 
 
 

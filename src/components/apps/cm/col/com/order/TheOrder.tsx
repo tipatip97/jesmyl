@@ -48,7 +48,6 @@ export default function TheOrder(props: ITheOrderProps) {
     return (
       <div
         {...params({
-          key: `anchor-block-${orderUniti}-${orderUnit.anchor}`,
           className: `${orderUnit.top.headClassName} anchor styled-block`,
         })}
       >
@@ -106,7 +105,6 @@ export default function TheOrder(props: ITheOrderProps) {
   return (
     <div
       {...params({
-        key: `song-part-wrapper user-select${orderUniti}`,
         className: [
           "com-order-block song-part-wrapper Xuser-select",
           mylib.func(setOrdClassName).call(orderUnit),

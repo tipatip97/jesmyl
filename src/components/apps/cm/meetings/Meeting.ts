@@ -7,12 +7,12 @@ import { IExportableMeeting } from "./Meetings.model";
 
 
 export class Meeting extends EditableMeeting {
-  coms: Com[];
+  coms: Com[] | nil;
 
-  constructor(top: IExportableMeeting, cols: Cols) {
+  constructor(top: IExportableMeeting, cols?: Cols | nil) {
     super(top);
 
-    this.coms = top.s.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
+    this.coms = cols && top.s.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
   }
 
   get isEditable() {

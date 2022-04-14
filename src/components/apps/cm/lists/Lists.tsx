@@ -31,7 +31,7 @@ export default function Lists() {
           />
           <div className="thematic-item flex column custom-align-items">
             <div className="title">Тематические:</div>
-            {cols.cats.map((cat) => {
+            {cols?.cats.map((cat) => {
               return !cat.wid ? null : (
                 <div
                   key={`thematic-cat-${cat.wid}`}

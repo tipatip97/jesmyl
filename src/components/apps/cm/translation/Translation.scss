@@ -1,4 +1,6 @@
 .translation-container {
+    --radius: 20px;
+
     .translation-screen-wrapper {
         --size: 50vmin;
         --max-size: 300px;
@@ -24,6 +26,7 @@
             border: solid 1px transparent;
             font-size: 14px;
             overflow: hidden;
+            border-radius: var(--radius);
 
             &.active {
                 border-color: var(--color-far);
@@ -38,6 +41,7 @@
         white-space: nowrap;
         background: black;
         color: white;
+        border-radius: var(--radius);
 
         .translations-line-item {
             display: inline-block;
@@ -59,6 +63,24 @@
                     border-color: var(--color-far);
                 }
             }
+        }
+    }
+
+    .control-panel {
+        >.button {
+            padding: 2px 15px;
+            border-radius: 15px;
+            background-color: var(--color-3);
+            cursor: pointer;
+
+            +.button {
+                margin-left: 10px;
+                background-color: var(--color-3);
+            }
+        }
+
+        >.start-translation {
+            width: 100%;
         }
     }
 

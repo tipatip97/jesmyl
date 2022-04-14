@@ -18,4 +18,7 @@ export class Setts extends Base<IExportableSetts> {
 }
 
 
-export const setts = new Setts(cmStorage.getOr('settings', { styles: [] }));
+export let setts: Setts | nil;
+
+cmStorage.listen('settings', 'root', (val) => setts = new Setts(val));
+

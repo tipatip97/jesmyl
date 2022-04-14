@@ -12,7 +12,7 @@ export default function Editor() {
   const [ccom] = useCcom();
   const [ccat] = useCcat();
 
-  const cats = cols.cats;
+  const cats = cols?.cats;
 
   const [currentEPhase, setCurrentEPhase] = useState("a");
   const [comName, setComName] = useState(ccom?.name || "");
@@ -86,7 +86,7 @@ export default function Editor() {
                   <EvaIcon name="trash-2-outline" alt="Удалить" />
                 </div>
               )}
-              {cats.map((cat) => {
+              {cats?.map((cat) => {
                 return !cat.wid ||
                   (cat.track && cat.track[0] !== ">w") ? null : (
                   <div

@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { cmStorage } from "../../../../store/jstorages";
-import { setCurrentApp } from "../../../board/Board.store";
 import { phaseJumps } from "../Cm.complect";
 import { CmPhase } from "../Cm.model";
 import { setCmPhase, switchCmFullscreen } from "../Cm.store";
@@ -33,7 +32,6 @@ export default function useNav() {
         goBack: () => {
             if (!ret.phase) return;
             if (ret.phase === firstPhase) {
-                dispatch(setCurrentApp(null));
                 return;
             }
 

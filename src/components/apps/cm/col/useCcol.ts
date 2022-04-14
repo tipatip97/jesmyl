@@ -1,42 +1,45 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { cmStorage } from "../../../../store/jstorages";
-import { selectCcol } from "../Cm.store";
+import { riseUpComUpdate, selectCcol } from "../Cm.store";
 import { localCols } from "../cols/useCols";
 import { Cat } from "./cat/Cat";
 import { Com } from "./com/Com";
 
-let ccom: Com | undefined;
+let ccom: Com | nil = null;
 let ccat: Cat | undefined;
 let zeroCat: Cat | nil;
 
-export function useCcom(): [Com, (val: Com) => void] {
+export function useCcom(): [Com | nil, (val: Com) => void] {
+    useSelector((state: RootState) => state.cm.numColsUpdates);
     useSelector((state: RootState) => state.cm.numComUpdates);
     const dispatch = useDispatch();
-    const ccolw = useSelector((state: RootState) => state.cm.ccomw);
+    const ccomw = useSelector((state: RootState) => state.cm.ccomw);
 
-    if (!zeroCat) zeroCat = localCols.cats.find((cat) => 0 === cat.wid);
+    if (!ccom && ccomw) ccom = localCols?.coms.find((com) => ccomw === com.wid);
 
     return [
-        (ccom || (ccom = localCols.coms.find((com) => ccolw === com.wid))) as Com,
+        ccom,
         (val: Com) => {
             ccom = val as Com;
 
             cmStorage.set("ccomw", val?.wid);
             dispatch(selectCcol({ fieldn: "comw", val: val?.wid }));
+            dispatch(riseUpComUpdate());
         }
     ];
 }
 
-export function useCcat(): [Cat, (val: Cat) => void, Cat | undefined] {
+export function useCcat(): [Cat | nil, (val: Cat) => void, Cat | undefined] {
     useSelector((state: RootState) => state.cm.numColsUpdates);
     const dispatch = useDispatch();
-    const ccolw = useSelector((state: RootState) => state.cm.ccatw);
+    const ccatw = useSelector((state: RootState) => state.cm.ccatw);
 
-    if (!zeroCat) zeroCat = localCols.cats.find((cat) => 0 === cat.wid);
+    if (!zeroCat) zeroCat = localCols?.cats.find((cat) => 0 === cat.wid);
+    if (!ccat && ccatw) ccat = localCols?.cats.find((cat) => ccatw === cat.wid);
 
     return [
-        (ccat || (ccat = localCols.cats.find((cat) => ccolw === cat.wid))) as Cat,
+        ccat,
         (val: Cat) => {
             ccat = val as Cat;
 

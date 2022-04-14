@@ -11,7 +11,7 @@ export function useMarks() {
     const [cols] = useCols();
     const unsets: number[] = [];
     const markedComs = marks.map(comw => {
-        const com = cols.coms.find(com => com.wid === comw);
+        const com = cols?.coms.find(com => com.wid === comw);
         if (com === undefined) unsets.push(comw);
         return com;
     }).filter(com => com) as Com[];

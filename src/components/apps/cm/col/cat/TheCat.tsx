@@ -25,38 +25,41 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
   return (
     <PhaseContainer
       topClass="cat-content"
-      withoutBackButton
-      head={
-        <div className="com-searcher">
-          <EvaIcon name="search-outline" />
-          <input
-            className="filter-input"
-            type="text"
-            placeholder="Поиск песен"
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              cat.search(
-                event.target.value,
-                () => setTerm(event.target.value),
-                500,
-                () => {
-                  setTerm1(event.target.value);
-                  if (listRef.current) listRef.current.scrollTop = 0;
-                }
-              )
-            }
-            ref={searchInputRef}
-            value={term}
-          />
-          <EvaIcon
-            name="close"
-            className={`clear-button ${term ? "" : "hidden"}`}
-            onClick={() => {
-              cat.search("", () => setTerm(""));
-              searchInputRef.current?.focus();
-            }}
-          />
-        </div>
-      }
+      withoutBackButton={allMode}
+      head={(backButton) => (
+        <>
+          {allMode ? null : backButton}
+          <div className="com-searcher">
+            <EvaIcon name="search-outline" />
+            <input
+              className="filter-input"
+              type="text"
+              placeholder="Поиск песен"
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                cat.search(
+                  event.target.value,
+                  () => setTerm(event.target.value),
+                  500,
+                  () => {
+                    setTerm1(event.target.value);
+                    if (listRef.current) listRef.current.scrollTop = 0;
+                  }
+                )
+              }
+              ref={searchInputRef}
+              value={term}
+            />
+            <EvaIcon
+              name="close"
+              className={`clear-button ${term ? "" : "hidden"}`}
+              onClick={() => {
+                cat.search("", () => setTerm(""));
+                searchInputRef.current?.focus();
+              }}
+            />
+          </div>
+        </>
+      )}
       content={
         <div>
           <div
@@ -70,7 +73,7 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
             ))}
           </div>
           <div className="main-gap flex between">
-            <div>{allMode ? 'Все песни' : cat.name}:</div>
+            <div>{allMode ? "Все песни" : cat.name}:</div>
             {cat.wraps && (
               <div>
                 {`${
@@ -83,7 +86,11 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
           </div>
           <div className="com-list" ref={listRef}>
             {cat.wraps.map((wrap) => (
-              <ComFace key={`com-face-${wrap.com.wid}`} {...wrap} forPhase={allMode ? 'com' : 'thematic_com'} />
+              <ComFace
+                key={`com-face-${wrap.com.wid}`}
+                {...wrap}
+                forPhase={allMode ? "com" : "thematic_com"}
+              />
             ))}
           </div>
         </div>

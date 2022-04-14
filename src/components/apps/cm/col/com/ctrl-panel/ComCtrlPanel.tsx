@@ -17,7 +17,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
   const dispatch = useDispatch();
 
   const [cols] = useCols();
-  const cats = cols.cats;
+  const cats = cols?.cats;
 
   const { toggle: toggleMark, isMarked } = useMarks();
 
@@ -46,7 +46,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
 
   if (ccom == null) return null;
 
-  const isWhole = !ccom.orders.some(
+  const isWhole = !ccom.orders?.some(
     (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
   );
 
@@ -92,7 +92,7 @@ export default function ComCtrlPanel({ ccom }: { ccom: Com }) {
               ) : (
                 refKeys.map((catw) => {
                   const nativeNumber = ccom.refs && ccom.refs[catw];
-                  const cat = cats.find((cat) => cat.wid === +catw);
+                  const cat = cats?.find((cat) => cat.wid === +catw);
 
                   if (cat == null) return null;
 

@@ -9,7 +9,7 @@ import { Cols } from "../cols/Cols";
     stack: Meeting[];
     meetings: IExportableMeeting[];
 
-    constructor(meetings: IExportableMeeting[], cols: Cols) {
+    constructor(meetings: IExportableMeeting[], cols: Cols | nil) {
       this.meetings = meetings;
       this.stack = meetings.map(meeting => new Meeting(meeting, cols));
     }

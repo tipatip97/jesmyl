@@ -9,13 +9,16 @@ export class JStorage<Scope = any> {
     strings: Record<keyof Scope, string> = {} as never;
     keys: (keyof Scope)[] = [];
     listeners: Record<keyof Scope, Record<string, JStorageListener<Scope[keyof Scope]>>> = {} as never;
+    initialized: (keyof Scope)[] = [] as never;
+    updatetOnInit: (keyof Scope)[] = [] as never;
 
     constructor(scope: string) {
         this.prefix = `[${scope}]:`;
-        Object.entries(localStorage).forEach(([key, val]: string[]) => {
-            if (key.startsWith(this.prefix)) {
-                const name = key.replace(this.prefix, '') as keyof Scope;
-                this.setString(name, val);
+        Object.entries(localStorage).forEach(([name, val]: string[]) => {
+            if (name.startsWith(this.prefix)) {
+                const key = name.replace(this.prefix, '') as keyof Scope;
+                this.setString(key, val);
+                this.initialized.push(key);
             }
         });
     }
@@ -24,8 +27,12 @@ export class JStorage<Scope = any> {
         top[this.scope] = this;
     }
 
-    listen<Key extends keyof Scope>(key: Key, name: string, listener: JStorageListener<Scope[Key]>): JStorageListener<Scope[Key]> {
+    listen<Key extends keyof Scope>(key: Key, name: string, listener: JStorageListener<Scope[Key]>, isRejectOnInit?: boolean): JStorageListener<Scope[Key]> {
         if (this.listeners[key] == null) this.listeners[key] = {};
+        if (!isRejectOnInit && this.initialized.indexOf(key) > -1 && this.updatetOnInit.indexOf(key) < 0) {
+            this.update(key, listener);
+            this.updatetOnInit.push(key);
+        }
         return (this.listeners[key] as Record<string, JStorageListener<Scope[Key]>>)[name] = listener;
     }
 
@@ -38,7 +45,9 @@ export class JStorage<Scope = any> {
     }
 
     private next<Key extends keyof Scope>(key: keyof Scope, val: Scope[Key]) {
-        this.listeners[key] && Object.values(this.listeners[key]).forEach((listener) => listener(val));
+        if (this.listeners[key]) {
+            Object.values(this.listeners[key]).forEach((listener) => listener(val));
+        }
     }
 
     parse(val: string) {

@@ -6,9 +6,9 @@ import { useCcat, useCcom } from "../col/useCcol";
 import { Cols } from "./Cols";
 import { IExportableCols } from "./Cols.model";
 
-export let localCols = new Cols(cmStorage.getOr('cols', { cats: [], coms: [] }));
+export let localCols: Cols | nil;
 
-export function useCols(): [Cols, (val: IExportableCols) => void] {
+export function useCols(): [Cols | nil, (val: IExportableCols) => void] {
     useSelector((state: RootState) => state.cm.numColsUpdates);
     const dispatch = useDispatch();
     const [ccat, setCcat] = useCcat();

@@ -17,7 +17,7 @@ export default function ComOrders(props: IComOrdersProps) {
         fontSize: `${fontSize}px`,
       })}
     >
-      {ccom.orders.map((orderUnit, orderUniti) => {
+      {ccom.orders?.map((orderUnit, orderUniti) => {
         let trPos = currTransPosition;
         if (orderUnit.top.style?.isModulation) {
           trPos = 0;

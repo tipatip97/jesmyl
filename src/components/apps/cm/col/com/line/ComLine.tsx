@@ -77,7 +77,7 @@ export default function ComLine(props: IComLineProps) {
   const isHasPost = linePoss.indexOf(-2) > -1;
 
   return (
-    <span key={`song-line-wrapper-${lineKey}`}>
+    <span>
       {points.map((index, indexi, indexa) => {
         const indexKey = `${lineKey}-${indexi}`;
         let isLast = indexi === indexa.length - 1;

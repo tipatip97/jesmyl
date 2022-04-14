@@ -3,7 +3,7 @@ import { BoardAppName } from "../../components/board/Board.model";
 import { appStorage, indexStorage } from "../../store/jstorages";
 import { CheckRefreshResponse, RefreshResponse, RefreshResponseValue, RefreshState } from "./Refresh.model";
 
-const host = 'https://jesmyl.space/';
+const host = 'https://jesmyl.space/debug/';
 
 export class Refresh {
     static host = host;

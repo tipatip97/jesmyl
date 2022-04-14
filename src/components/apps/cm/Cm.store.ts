@@ -15,7 +15,7 @@ const initialState: CmState = {
   ccomw: cmStorage.get('ccomw'),
   ccatw: cmStorage.getOr('ccatw', 0),
   laterComwList: cmStorage.getOr('laterComwList', []),
-  phase: cmStorage.getOr('phase', 'cat'),
+  phase: cmStorage.getOr('phase', 'all'),
   prevPhase: cmStorage.get('prevPhase'),
   rollMode: null,
   isCmFullscreen: false,
@@ -89,9 +89,9 @@ export const slice = createSlice({
     },
     setComFontSize: (state, action: PayloadAction<number>) => {
       const size = Math.ceil(action.payload);
-      if (size < 5 || size > 70) return;
-      state.comFontSize = size;
-      cmStorage.set('comFontSize', size);
+      const fontSize = size < 5 ? 5 : size > 70 ? 70 : size;
+      state.comFontSize = fontSize;
+      cmStorage.set('comFontSize', fontSize);
     },
     changeRollMode: (state, action: PayloadAction<CmRollMode>) => {
       state.rollMode = action.payload;

@@ -160,7 +160,7 @@ export class Order extends EditableOrder {
           let others: number[] = [];
           let finishKey: string = '';
 
-          const ord = this.com.orders.find((ord: Order) => !mylib.isNum(ord.repeats) && Object.keys(ord.repeats || {}).some(key => {
+          const ord = this.com.orders?.find((ord: Order) => !mylib.isNum(ord.repeats) && Object.keys(ord.repeats || {}).some(key => {
             if (key[!isBeg ? 'startsWith' : 'endsWith'](letter)) {
               others = key.split(/[a-z:]/i).filter(s => s).map(num => +num);
               finishKey = key;

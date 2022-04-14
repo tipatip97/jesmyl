@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../store";
-import useParanja from "../../base/useParanja";
 import {
   riseUpComUpdate,
   setComFontSize,
@@ -18,7 +17,7 @@ export default function ComTools() {
   const isAnchorsVisible = useSelector(
     (state: RootState) => state.cm.isAnchorsVisible
   );
-  const { openTranslations } = useTranslation();
+  const { openTranslations, isShowFullscreen } = useTranslation();
   const { closeAbsolutePopup } = useAbsolutePopup();
 
   if (!ccom) return null;
@@ -72,7 +71,9 @@ export default function ComTools() {
         onClick={() => dispatch(switchAnchorsVisible())}
       >
         <EvaIcon name="format-text-variant-outline" className="icon" />
-        <div className="title">{isAnchorsVisible ? 'Свернуть текст' : 'Развернуть текст'}</div>
+        <div className="title">
+          {isAnchorsVisible ? "Свернуть текст" : "Развернуть текст"}
+        </div>
         <div className="action" />
       </div>
       <div
@@ -82,7 +83,10 @@ export default function ComTools() {
           closeAbsolutePopup();
         }}
       >
-        <EvaIcon name="monitor-outline" className="icon" />
+        <EvaIcon
+          name={isShowFullscreen ? "play-circle-outline" : "monitor-outline"}
+          className="icon"
+        />
         <div className="title">Слайды</div>
         <div className="action" />
       </div>

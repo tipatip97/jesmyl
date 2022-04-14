@@ -7,10 +7,10 @@ import { RootState } from "../../../../store";
 import useNav from "../base/useNav";
 import {
   riseUpTranslationUpdates,
-  switchShowMarks,
   setTranslationBlock,
-  switchTranslationBlockVisible,
   setTranslationBlockPosition,
+  switchShowMarks,
+  switchTranslationBlockVisible,
 } from "../Cm.store";
 import { useCcom } from "../col/useCcol";
 import TranslationScreen from "./TranslationScreen";
@@ -33,12 +33,13 @@ export default function useTranslation() {
   );
   const isShowMarks = useSelector((state: RootState) => state.cm.isShowMarks);
   const blocks = ccom?.getOrderedTexts();
+  const isShowFullscreen = isTouchDevice;
 
   useEffect(() => ret.setBlocki(0), [ccom]);
 
   const ret = {
     currWin,
-    isTouchDevice,
+    isShowFullscreen,
     isShowMarks,
     currBlock: isVisible ? blocks && blocks[currBlocki] : "",
     currBlocki,
@@ -75,10 +76,10 @@ export default function useTranslation() {
     closeTranslation: () => {
       currWin?.close();
       switchFullscreen(false);
-      if (isTouchDevice) setPhase("com");
+      if (isShowFullscreen) setPhase("com");
     },
     openTranslations: () => {
-      if (isTouchDevice) switchFullscreen(true);
+      if (isShowFullscreen) switchFullscreen(true);
       setPhase("translations");
     },
     showMarks: (isShow: boolean) => dispatch(switchShowMarks(isShow)),
