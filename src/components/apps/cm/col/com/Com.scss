@@ -58,6 +58,7 @@
 
         &.full {
             cursor: pointer;
+
             .action {
                 width: calc(6em + 20px);
             }
@@ -78,6 +79,159 @@
                     margin-left: 10px;
                 }
             }
+        }
+    }
+}
+
+
+
+
+
+.com-ord-list {
+    display: inline-block;
+    color: var(--color-far);
+    padding-top: .06em;
+    transition: padding .2s;
+
+    .song-part {
+        position: relative;
+        margin-top: 1em;
+        padding-left: 1em;
+        line-height: 2.3em;
+        white-space: nowrap;
+
+        &.without-chords {
+            line-height: 1.5em;
+        }
+
+        .song-line {
+            display: list-item;
+            list-style: none;
+        }
+    }
+
+    .styled-block {
+        margin-top: 1em;
+
+        >.header {
+            margin-right: 1em;
+        }
+    }
+}
+
+
+.chorded {
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+    cursor: pointer;
+    white-space: pre;
+
+    &:not(.collapsed-com) {
+        &.mark-origin-letter {
+
+            &:first-letter,
+            &.spaced-word:after {
+                background-color: rgba(0, 255, 2, .3);
+            }
+        }
+
+        &.mark-driven-letter {
+
+            &:first-letter,
+            &.spaced-word:after {
+                background-color: rgba(255, 209, 0, .3);
+            }
+        }
+    }
+
+    &.collapsed-com {
+
+        &.mark-origin-letter,
+        &.mark-driven-letter {
+
+            &:first-letter,
+            &.spaced-word:after {
+                background-color: rgba(0, 209, 200, .3);
+            }
+        }
+    }
+
+    &:not(.pre):not(.post):before {
+        left: 0;
+    }
+
+    &:not(.post) {
+
+        &:before,
+        &:after {
+            position: absolute;
+            z-index: 0;
+            top: -1em;
+            font-size: 1em;
+            pointer-events: none;
+        }
+
+        .fragment {
+
+            &:before {
+                content: attr(attr-pchord);
+                position: absolute;
+                top: -1em;
+                left: 100%;
+            }
+
+            &:after {
+                content: attr(attr-chord);
+                display: block;
+                margin-top: -1em;
+                color: transparent;
+            }
+        }
+    }
+
+    &.spaced-word:not(.post):after {
+        content: '.';
+        color: transparent;
+        top: 0;
+        width: .3em;
+    }
+
+    &.pre:before,
+    &:not(.pre):not(.post):before {
+        content: attr(attr-chord);
+        white-space: nowrap;
+        max-width: 500px;
+    }
+
+    &.pre:before {
+        left: -.5em;
+    }
+
+    &.post {
+        .fragment {
+            position: relative;
+            display: inline-block;
+
+            &:before {
+                content: attr(attr-chord);
+                height: 1em;
+                display: block;
+            }
+        }
+
+        &:before {
+            position: absolute;
+            right: 0;
+            top: -1em;
+        }
+
+        &:after {
+            content: attr(attr-pchord);
+            position: relative;
+            top: -1em;
+            margin-left: .2em;
+            display: inline-block;
         }
     }
 }
