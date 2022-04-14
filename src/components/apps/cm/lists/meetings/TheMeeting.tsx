@@ -1,5 +1,5 @@
-import PhaseContainer from "../base/phase-container/PhaseContainer";
-import ComFace from "../col/com/face/ComFace";
+import PhaseContainer from "../../base/phase-container/PhaseContainer";
+import ComFace from "../../col/com/face/ComFace";
 import { useMeetings } from "./useMeetings";
 
 export default function TheMeeting() {

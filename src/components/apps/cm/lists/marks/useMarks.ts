@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../store";
-import { cmStorage } from "../../../../store/jstorages";
-import { setMarkList } from "../Cm.store";
-import { Com } from "../col/com/Com";
-import { useCols } from "../cols/useCols";
+import { RootState } from "../../../../../store";
+import { cmStorage } from "../../../../../store/jstorages";
+import { setMarkList } from "../../Cm.store";
+import { Com } from "../../col/com/Com";
+import { useCols } from "../../cols/useCols";
 
 export function useMarks() {
     const dispatch = useDispatch();

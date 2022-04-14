@@ -1,7 +1,7 @@
-import mylib from "../../../../complect/my-lib/MyLib";
-import { isAccessed } from "../Cm.complect";
-import { Com } from "../col/com/Com";
-import { Cols } from "../cols/Cols";
+import mylib from "../../../../../complect/my-lib/MyLib";
+import { isAccessed } from "../../Cm.complect";
+import { Com } from "../../col/com/Com";
+import { Cols } from "../../cols/Cols";
 import { EditableMeeting } from "./EditableMeeting";
 import { IExportableMeeting } from "./Meetings.model";
 

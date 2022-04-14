@@ -1,4 +1,4 @@
-import { cmStorage } from "../../../../store/jstorages";
+import { cmStorage } from "../../../../../store/jstorages";
 import { EeStorageStoreType } from "./EeStorage.model";
 
 

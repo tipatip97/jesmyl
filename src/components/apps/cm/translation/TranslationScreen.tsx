@@ -1,4 +1,4 @@
-import FontSizeContain from "../complect/font-size-contain/FontSizeContain";
+import FontSizeContain from "../base/font-size-contain/FontSizeContain";
 import { TranslationScreenProps } from "./Translations.model";
 import useTranslation from "./useTranslation";
 

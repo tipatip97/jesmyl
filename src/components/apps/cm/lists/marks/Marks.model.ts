@@ -1,4 +1,4 @@
-import { Com } from "../col/com/Com";
+import { Com } from "../../col/com/Com";
 
 
 export type MarksOnEmptyCallback = (isEmpty: boolean) => void;

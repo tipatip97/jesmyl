@@ -1,8 +1,8 @@
-import { ExecDict } from "../../../../complect/exer/Exer.model";
-import mylib from "../../../../complect/my-lib/MyLib";
-import { Base } from "../base/Base";
-import { isAccessed } from "../Cm.complect";
-import { cmExer } from "../Cm.store";
+import { ExecDict } from "../../../../../complect/exer/Exer.model";
+import mylib from "../../../../../complect/my-lib/MyLib";
+import { Base } from "../../base/Base";
+import { isAccessed } from "../../Cm.complect";
+import { cmExer } from "../../Cm.store";
 import { IExportableMeeting } from "./Meetings.model";
 
 

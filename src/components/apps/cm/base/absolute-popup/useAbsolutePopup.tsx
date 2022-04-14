@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../store";
-import useParanja from "../../base/useParanja";
+import useParanja from "../useParanja";
 import { switchAbsolutePopupOpen } from "../../Cm.store";
 import { AbsolutePopupMode } from "./AbsolutePopup.model";
 

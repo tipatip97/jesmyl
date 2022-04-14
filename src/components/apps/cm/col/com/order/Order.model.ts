@@ -1,5 +1,5 @@
 import { Com } from "../Com";
-import { StyleProp } from "../../../complect/settings/StyleProp";
+import { StyleProp } from "../../../base/settings/StyleProp";
 import { Order } from "./Order";
 import { ReactNode } from "react";
 

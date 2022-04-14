@@ -1,6 +1,6 @@
-import PhaseContainer from "../base/phase-container/PhaseContainer";
-import ComFace from "../col/com/face/ComFace";
-import { useMarks } from "../marks/useMarks";
+import PhaseContainer from "../../base/phase-container/PhaseContainer";
+import ComFace from "../../col/com/face/ComFace";
+import { useMarks } from "./useMarks";
 
 export default function Marks() {
   const { markedComs } = useMarks();

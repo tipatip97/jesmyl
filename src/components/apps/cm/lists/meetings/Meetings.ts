@@ -1,8 +1,8 @@
-import modalService from "../../../../complect/modal/Modal.service";
-import { cmExer } from "../Cm.store";
+import modalService from "../../../../../complect/modal/Modal.service";
+import { cmExer } from "../../Cm.store";
 import { Meeting } from "./Meeting";
 import { IExportableMeeting } from "./Meetings.model";
-import { Cols } from "../cols/Cols";
+import { Cols } from "../../cols/Cols";
 
   export {};
   export class Meetings {

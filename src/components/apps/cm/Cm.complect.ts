@@ -10,8 +10,8 @@ import {
   FooterItem,
   SetPhasePayload,
 } from "./Cm.model";
-import { setts } from "./complect/settings/Setts";
-import { StyleProp } from "./complect/settings/StyleProp";
+import { setts } from "./base/settings/Setts";
+import { StyleProp } from "./base/settings/StyleProp";
 
 let rules: Record<string, true | null> = {};
 export let actions: CmAction[] | nil;

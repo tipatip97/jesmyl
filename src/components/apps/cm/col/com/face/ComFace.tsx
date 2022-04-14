@@ -1,5 +1,5 @@
 import useNav from "../../../base/useNav";
-import useAbsolutePopup from "../../../complect/absolute-popup/useAbsolutePopup";
+import useAbsolutePopup from "../../../base/absolute-popup/useAbsolutePopup";
 import { useCcom } from "../../useCcol";
 import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";

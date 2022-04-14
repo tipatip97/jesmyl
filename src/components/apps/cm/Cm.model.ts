@@ -1,9 +1,9 @@
 import { ExecDict } from "../../../complect/exer/Exer.model";
 import { IExportableCols } from "./cols/Cols.model";
-import { IExportableMeeting } from "./meetings/Meetings.model";
-import { IExportableSetts } from "./complect/settings/Setts.model";
-import { EeStorageStoreType } from "./ee-storage/EeStorage.model";
-import { FontSizeContainPropsPosition } from "./complect/font-size-contain/FontSizeContain.model";
+import { IExportableMeeting } from "./lists/meetings/Meetings.model";
+import { IExportableSetts } from "./base/settings/Setts.model";
+import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
+import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { EvaIconName } from "../../../complect/eva-icon/EvaIcon.model";
 import { ParanjaMode } from "./base/useParanja";
 import { inlinePhases, specialPhases } from "./Cm.complect";

@@ -3,8 +3,8 @@ import { Exer } from "../../../complect/exer/Exer";
 import { appStorage, cmStorage } from "../../../store/jstorages";
 import { ParanjaMode } from "./base/useParanja";
 import { ChordVisibleVariant, CmPhase, CmRollMode, CmSpecialPhase, CmState, CmStorage, SetPhasePayload } from "./Cm.model";
-import { FontSizeContainPropsPosition } from "./complect/font-size-contain/FontSizeContain.model";
-import { IExportableMeeting } from "./meetings/Meetings.model";
+import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
+import { IExportableMeeting } from "./lists/meetings/Meetings.model";
 
 export const cmExer = new Exer<CmStorage>(cmStorage, 'cm');
 

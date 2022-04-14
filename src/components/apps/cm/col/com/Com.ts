@@ -1,6 +1,6 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { setts } from "../../complect/settings/Setts";
-import { StyleProp } from "../../complect/settings/StyleProp";
+import { setts } from "../../base/settings/Setts";
+import { StyleProp } from "../../base/settings/StyleProp";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.complect";
 import { IExportableCom } from "./Com.model";
 import { EditableCom } from "./EditableCom";

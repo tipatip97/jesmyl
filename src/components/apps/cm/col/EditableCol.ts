@@ -4,7 +4,7 @@ import { cmExer } from "../Cm.store";
 import { IEditableCol, IExportableCol } from "../cols/Cols.model";
 import { CorrectsBox } from "../editor/corrects-box/CorrectsBox";
 import { ICorrectsBox } from "../editor/corrects-box/CorrectsBox.model";
-import { eeStorage } from "../ee-storage/EeStorage";
+import { eeStorage } from "../base/ee-storage/EeStorage";
 import { IEditableColDefaultArgs, IExportedCol } from "./Col.model";
 import { ExportedCol } from "./ExportedCol";
 

@@ -1,4 +1,4 @@
-import { Base } from "../../base/Base";
+import { Base } from "../Base";
 import { IExportableStyleProp } from "./Setts.model";
 
 export class StyleProp extends Base<IExportableStyleProp> {

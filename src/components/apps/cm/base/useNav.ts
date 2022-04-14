@@ -3,8 +3,8 @@ import { RootState } from "../../../../store";
 import { getNewPhase } from "../Cm.complect";
 import { CmPhase, SetPhasePayload } from "../Cm.model";
 import { setCmPhase, switchCmFullscreen } from "../Cm.store";
-import useAbsolutePopup from "../complect/absolute-popup/useAbsolutePopup";
-import { useMarks } from "../marks/useMarks";
+import useAbsolutePopup from "./absolute-popup/useAbsolutePopup";
+import { useMarks } from "../lists/marks/useMarks";
 import useRollMode from "./useRoll";
 
 

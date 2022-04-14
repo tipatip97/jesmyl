@@ -1,5 +1,5 @@
-import modalService from "../../../../complect/modal/Modal.service";
-import TheModalInput from "../../../../complect/modal/ModalInput";
+import modalService from "../../../../../complect/modal/Modal.service";
+import TheModalInput from "../../../../../complect/modal/ModalInput";
 import { useMeetings } from "./useMeetings";
 
 
