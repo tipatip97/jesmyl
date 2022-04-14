@@ -78,17 +78,20 @@
         >.button {
             padding: 2px 15px;
             border-radius: 15px;
-            background-color: var(--color-3);
+            background-color: var(--color--1);
+            color: var(--color--4);
             cursor: pointer;
 
             +.button {
                 margin-left: 10px;
-                background-color: var(--color-3);
             }
         }
 
         >.start-translation {
+            --svg-color: var(--color--5);
+
             width: 100%;
+            background-color: var(--color--7);
         }
     }
 

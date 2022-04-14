@@ -35,6 +35,14 @@ export default function Translations() {
   const { currentMeeting } = useMeetings();
   const [, setCcom] = useCcom();
 
+  const [comList, titlePostfix] = specialPhase
+    ? specialPhase === "thematic" && ccat
+      ? [ccat.coms, " - " + ccat.name]
+      : specialPhase === "meeting" && currentMeeting
+      ? [currentMeeting.coms, " - " + currentMeeting.name]
+      : [markedComs, " - Избранное"]
+    : [null, ""];
+
   useEffect(() => {
     if (isShowFullscreen) {
       const gotoCom = () => setPhase("com");
@@ -86,7 +94,7 @@ export default function Translations() {
   return (
     <PhaseContainer
       topClass="translation-container"
-      head="Трансляция"
+      head={`Трансляция${titlePostfix}`}
       content={
         <>
           <div className="flex">
@@ -106,12 +114,7 @@ export default function Translations() {
             </div>
             {specialPhase ? (
               <div className="translation-com-list">
-                {(specialPhase === "marked"
-                  ? markedComs
-                  : specialPhase === "meeting"
-                  ? currentMeeting?.coms
-                  : ccat?.coms
-                )?.map((com) => {
+                {comList?.map((com) => {
                   return (
                     <ComFace
                       key={`mark-to-translation_${com.wid}`}
