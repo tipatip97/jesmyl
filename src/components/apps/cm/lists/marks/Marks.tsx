@@ -28,7 +28,7 @@ export default function Marks() {
           />
         </>
       )}
-      content={markedComs.map((com) => (
+      content={markedComs?.map((com) => (
         <ComFace
           key={`marked-com-${com.wid}`}
           com={com}
