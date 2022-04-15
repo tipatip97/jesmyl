@@ -1,5 +1,5 @@
 import Image from "../../../../complect/Image";
-import PhaseContainer from "../base/phase-container/PhaseContainer";
+import PhaseContainer from "../../../../complect/phase-container";
 
 export default function Other() {
   return (

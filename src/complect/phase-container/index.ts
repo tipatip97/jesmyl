@@ -1,6 +1,6 @@
 import { DOMElement, HTMLAttributes, HtmlHTMLAttributes, ReactNode } from "react";
 
-
+export { default } from './PhaseContainer';
 
 export interface PhaseContainerProps extends HtmlHTMLAttributes<HTMLDivElement>, Partial<DOMElement<HTMLAttributes<HTMLDivElement>, HTMLDivElement>> {
     topClass: string;

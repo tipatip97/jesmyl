@@ -1,5 +1,5 @@
 import BrutalItem from "../../../../../complect/brutal-item";
-import PhaseContainer from "../../base/phase-container/PhaseContainer";
+import PhaseContainer from "../../../../../complect/phase-container";
 import { useMeetings } from "./useMeetings";
 
 export default function TheMeetings() {

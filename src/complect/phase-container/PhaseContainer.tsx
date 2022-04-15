@@ -1,6 +1,6 @@
-import EvaIcon from "../../../../../complect/eva-icon";
-import useNav from "../useNav";
-import { PhaseContainerProps } from "./PhaseContainer.model";
+import EvaIcon from "../eva-icon";
+import useNav from "../../components/apps/cm/base/useNav";
+import { PhaseContainerProps } from ".";
 
 export default function PhaseContainer(props: PhaseContainerProps) {
   const {

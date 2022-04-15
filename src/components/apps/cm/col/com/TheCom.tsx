@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import useAbsolutePopup from "../../../../../complect/absolute-popup";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
 import { RootState } from "../../../../../store";
-import PhaseContainer from "../../base/phase-container/PhaseContainer";
+import PhaseContainer from "../../../../../complect/phase-container";
 import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";
