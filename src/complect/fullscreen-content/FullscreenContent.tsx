@@ -1,12 +1,13 @@
+import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useNav from "../../components/apps/cm/base/useNav";
 import { RootState } from "../../store";
 import { switchFullscreenContentOpen } from "../Complect.store";
+import EvaIcon from "../eva-icon/EvaIcon";
 import "./FullscreenContent.scss";
 
-let fullscreenContent: JSX.Element | null;
-let element: HTMLDivElement | null;
-let isFloated = false;
+let fullscreenContent: ReactNode;
+let isOpen = false;
 
 export default function useFullscreenContent() {
   const dispatch = useDispatch();
@@ -18,16 +19,15 @@ export default function useFullscreenContent() {
   const ret = {
     isFullscreenContentOpen,
     closeFullscreenContent: () => {
-      if (!element) return true;
-      if (isFloated) fullscreenContent = null;
       dispatch(switchFullscreenContentOpen(false));
-      element?.classList.remove("open");
-      element = null;
+      fullscreenContent = null;
+      if (!isOpen) return true;
+      isOpen = false;
     },
-    openFullscreenContent: (content: JSX.Element) => {
+    openFullscreenContent: (content: ReactNode) => {
+      isOpen = true;
       fullscreenContent = content;
       dispatch(switchFullscreenContentOpen(true));
-      element?.classList.add("open");
       registerBackAction(() => ret.closeFullscreenContent());
     },
   };
@@ -35,14 +35,28 @@ export default function useFullscreenContent() {
 }
 
 export function FULLSCREEN__CONTENT() {
-  const { isFullscreenContentOpen } = useFullscreenContent();
+  const { isFullscreenContentOpen, closeFullscreenContent } =
+    useFullscreenContent();
+  useEffect(
+    () =>
+      window.addEventListener(
+        "keydown",
+        (event) => event.code === "Escape" && closeFullscreenContent()
+      ),
+    []
+  );
+
   return (
     <div
       className={`fullscreen-content-container ${
         isFullscreenContentOpen ? "open" : ""
       }`}
-      ref={(elem) => elem && (element = elem)}
     >
+      <EvaIcon
+        name="close"
+        className="close-button"
+        onClick={() => closeFullscreenContent()}
+      />
       {fullscreenContent}
     </div>
   );

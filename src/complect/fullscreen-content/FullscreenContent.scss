@@ -8,6 +8,13 @@
     pointer-events: none;
     z-index: 160;
 
+    >.close-button {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        z-index: 1;
+    }
 
     &.open {
         opacity: 1;

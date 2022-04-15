@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import "./App.scss";
-import { ABSOLUTE_POPUP_ELEMENT } from "./complect/absolute-popup";
-import { FULLSCREEN__CONTENT } from "./complect/fullscreen-content";
+import { ABSOLUTE__POPUP } from "./complect/absolute-popup/AbsolutePopup";
+import { FULLSCREEN__CONTENT } from "./complect/fullscreen-content/FullscreenContent";
 import Modal from "./complect/modal/Modal";
 import TheRefresher from "./complect/refresh/Refresher";
 import listenThemeChanges from "./complect/theme-changer";
@@ -22,7 +22,7 @@ function App() {
       <TheRefresher />
       <Modal />
       <FULLSCREEN__CONTENT />
-      <ABSOLUTE_POPUP_ELEMENT />
+      <ABSOLUTE__POPUP />
       {app ? <AppRouter app={app} /> : <Board />}
     </>
   );

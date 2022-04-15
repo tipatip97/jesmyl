@@ -1,17 +1,10 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AbsolutePopupConfig, AbsolutePopupMode } from ".";
 import useNav from "../../components/apps/cm/base/useNav";
 import { RootState } from "../../store";
 import { setAbsolutePopupOpen } from "../Complect.store";
 import "./AbsolutePopup.scss";
-
-export interface AbsolutePopupConfig {
-  mode: AbsolutePopupMode;
-  x?: number;
-  y?: number;
-}
-
-export type AbsolutePopupMode = null | "float" | "bottom";
 
 let absolutePopupContent: ReactNode = null;
 let floatElement: HTMLDivElement | null;
@@ -28,10 +21,10 @@ export default function useAbsolutePopup() {
   const ret = {
     absolutePopupOpenMode,
     closeAbsolutePopup: () => {
+      dispatch(setAbsolutePopupOpen(null));
+      if (isFloated) absolutePopupContent = null;
       if (isClosed) return true;
       isClosed = true;
-      if (isFloated) absolutePopupContent = null;
-      dispatch(setAbsolutePopupOpen(null));
     },
     openAbsolutePopup: (content: ReactNode) => {
       isClosed = false;
@@ -73,7 +66,7 @@ export default function useAbsolutePopup() {
   return ret;
 }
 
-export function ABSOLUTE_POPUP_ELEMENT() {
+export function ABSOLUTE__POPUP() {
   const { absolutePopupOpenMode, closeAbsolutePopup } = useAbsolutePopup();
 
   useEffect(
