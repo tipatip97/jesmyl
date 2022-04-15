@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EvaIcon from "../eva-icon/EvaIcon";
+import EvaIcon from "../eva-icon";
 import { Refresh } from "./Refresh";
 import { RefreshState } from "./Refresh.model";
 import "./Refresher.scss";

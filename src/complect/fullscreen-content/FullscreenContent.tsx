@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useNav from "../../components/apps/cm/base/useNav";
 import { RootState } from "../../store";
 import { switchFullscreenContentOpen } from "../Complect.store";
-import EvaIcon from "../eva-icon/EvaIcon";
+import EvaIcon from "../eva-icon";
 import "./FullscreenContent.scss";
 
 let fullscreenContent: ReactNode;

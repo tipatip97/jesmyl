@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import EvaIcon from "../../../../complect/eva-icon";
 import BrutalItem from "../base/brutal-item/BrutalItem";
 import PhaseContainer from "../base/phase-container/PhaseContainer";
 import useNav from "../base/useNav";

@@ -1,4 +1,4 @@
-import { EvaIconName } from "../../../complect/eva-icon/EvaIcon.model";
+import { EvaIconName } from "../../../complect/eva-icon";
 import { ExecDict } from "../../../complect/exer/Exer.model";
 import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";

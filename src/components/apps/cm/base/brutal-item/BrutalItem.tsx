@@ -1,6 +1,6 @@
 import { HtmlHTMLAttributes } from "react";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon.model";
+import EvaIcon from "../../../../../complect/eva-icon";
+import { EvaIconName } from "../../../../../complect/eva-icon";
 import './BrutalItem.scss';
 
 export default function BrutalItem({

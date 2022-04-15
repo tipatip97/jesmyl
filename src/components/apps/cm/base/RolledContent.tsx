@@ -1,6 +1,6 @@
 import { HTMLAttributes, PropsWithChildren } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import EvaIcon from "../../../../complect/eva-icon";
 import { RootState } from "../../../../store";
 import { cmStorage } from "../../../../store/jstorages";
 import { CmRollMode } from "../Cm.model";

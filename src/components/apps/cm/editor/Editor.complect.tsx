@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import EvaIcon from "../../../../complect/eva-icon";
 
 export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [

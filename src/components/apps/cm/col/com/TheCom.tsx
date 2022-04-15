@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import useAbsolutePopup from "../../../../../complect/absolute-popup";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon.model";
+import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
 import { RootState } from "../../../../../store";
 import PhaseContainer from "../../base/phase-container/PhaseContainer";
 import RollControled from "../../base/RolledContent";

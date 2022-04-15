@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import onBackButton from "../../../complect/back-button-listener";
-import EvaIcon from "../../../complect/eva-icon/EvaIcon";
+import EvaIcon from "../../../complect/eva-icon";
 import { cmStorage } from "../../../store/jstorages";
 import useNav from "./base/useNav";
 import useParanja from "./base/useParanja";

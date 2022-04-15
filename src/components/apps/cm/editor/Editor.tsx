@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import EvaIcon from "../../../../complect/eva-icon";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { isAccessed } from "../Cm.complect";

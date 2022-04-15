@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import EvaIcon from "../../../../../complect/eva-icon";
 import PhaseContainer from "../../base/phase-container/PhaseContainer";
 import useLaterComList from "../../base/useLaterComList";
 import useNav from "../../base/useNav";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import EvaIcon from "../../../../../../complect/eva-icon";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { useChordVisibleVariant } from "../../../base/useChordVisibleVariant";
 import { useCcom } from "../../useCcol";

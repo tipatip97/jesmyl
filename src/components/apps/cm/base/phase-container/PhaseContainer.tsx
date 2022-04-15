@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import EvaIcon from "../../../../../complect/eva-icon";
 import useNav from "../useNav";
 import { PhaseContainerProps } from "./PhaseContainer.model";
 
