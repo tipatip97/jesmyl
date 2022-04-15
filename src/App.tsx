@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import "./App.scss";
 import { ABSOLUTE_POPUP_ELEMENT } from "./complect/absolute-popup";
-import { FULLSCREEN__CONTENT } from "./complect/fullscreen-content/FullscreenContent";
+import { FULLSCREEN__CONTENT } from "./complect/fullscreen-content";
 import Modal from "./complect/modal/Modal";
 import TheRefresher from "./complect/refresh/Refresher";
 import listenThemeChanges from "./complect/theme-changer";
