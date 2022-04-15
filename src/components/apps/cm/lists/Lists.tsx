@@ -1,5 +1,5 @@
 import EvaIcon from "../../../../complect/eva-icon";
-import BrutalItem from "../base/brutal-item/BrutalItem";
+import BrutalItem from "../../../../complect/brutal-item";
 import PhaseContainer from "../base/phase-container/PhaseContainer";
 import useNav from "../base/useNav";
 import { useCcat } from "../col/useCcol";
