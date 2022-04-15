@@ -5,9 +5,11 @@ import { CmPhase, SetPhasePayload } from "../Cm.model";
 import { setCmPhase, switchCmFullscreen } from "../Cm.store";
 import { useMarks } from "../lists/marks/useMarks";
 
+// верни тут true, если событие "назад" уже не должно иметь эффекта
+type UseNavAction = () => boolean | void | any;
 
 const firstPhase: CmPhase = 'all';
-const actions: (() => boolean | void)[] = [];
+const actions: UseNavAction[] = [];
 
 export default function useNav() {
     const dispatch = useDispatch();
@@ -20,14 +22,19 @@ export default function useNav() {
         setPhase: (val: SetPhasePayload) => dispatch(setCmPhase(val)),
         isFullScreen: useSelector((state: RootState) => state.cm.isCmFullscreen),
         switchFullscreen: (isFullscreen?: boolean) => dispatch(switchCmFullscreen(isFullscreen)),
-        registerBackAction: (action: () => void) => {
+        registerBackAction: (action: UseNavAction) => {
             actions.unshift(action);
             return () => actions.splice(actions.findIndex(ac => ac !== action), 1);
         },
         goBack: () => {
             if (actions.length) {
-                actions.find(action => action && action() === true && actions.shift());
-                return;
+                if (actions.some(action => {
+                    if (action && action() === true) {
+                        actions.shift();
+                        return false;
+                    }
+                    return true;
+                })) return;
             }
 
             if (!ret.phase || ret.phase === firstPhase || ret.phase === firstPhase) {

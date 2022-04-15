@@ -2,7 +2,6 @@ import { ReactNode, useEffect, useState } from "react";
 import onBackButton from "../../../complect/back-button-listener";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { cmStorage } from "../../../store/jstorages";
-import useAbsolutePopup from "./base/absolute-popup/useAbsolutePopup";
 import useNav from "./base/useNav";
 import useParanja from "./base/useParanja";
 import { footerItems } from "./Cm.complect";
@@ -50,7 +49,6 @@ export default function CmApplication() {
 
   onBackButton.listen("cm-listener", () => goBack());
   useEffect(() => () => onBackButton.mute("cm-listener"), []);
-  const { absolutePopupContent } = useAbsolutePopup();
 
   return (
     <>
@@ -115,7 +113,6 @@ export default function CmApplication() {
         className={`paranja ${paranjaMode || ""}`}
         onClick={() => onParanjaClick()}
       />
-      {absolutePopupContent}
     </>
   );
 }

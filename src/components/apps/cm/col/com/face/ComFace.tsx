@@ -1,5 +1,5 @@
+import useAbsolutePopup from "../../../../../../complect/absolute-popup";
 import useNav from "../../../base/useNav";
-import useAbsolutePopup from "../../../base/absolute-popup/useAbsolutePopup";
 import { useCcom } from "../../useCcol";
 import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";
@@ -32,10 +32,11 @@ export default function ComFace(props: ComFaceProps) {
               onClick={() => closeAbsolutePopup()}
               com={com}
             />,
-            "float",
-            event.clientX,
-            event.clientY
-          );
+          ).config({
+            mode: "float",
+            x: event.clientX,
+            y: event.clientY
+          });
         }}
       >
         <div className="number">

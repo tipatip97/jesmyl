@@ -22,7 +22,10 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
         laterComs,
         updateLaterComwList: (list: number[]) => dispatch(updateLaterComwList(list)),
         addLaterComw: (comw: number) => {
-            const newList = [comw].concat(list.filter((laterComw, laterComwi) => laterComw !== comw && maxStack - 1 > laterComwi));
+            const newList = [comw].concat(list
+                .filter((laterComw) => laterComw !== comw)
+                .filter((_, laterComwi) => maxStack - 1 > laterComwi)
+            );
             ret.updateLaterComwList(newList);
             cmStorage.set('laterComwList', newList);
         },

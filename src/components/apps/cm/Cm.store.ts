@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
 import { appStorage, cmStorage } from "../../../store/jstorages";
+import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
 import { ChordVisibleVariant, CmPhase, CmRollMode, CmSpecialPhase, CmState, CmStorage, SetPhasePayload } from "./Cm.model";
-import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { IExportableMeeting } from "./lists/meetings/Meetings.model";
 
 export const cmExer = new Exer<CmStorage>(cmStorage, 'cm');
@@ -33,7 +33,6 @@ const initialState: CmState = {
   translationBlock: 0,
   isTranslationBlockVisible: true,
   translationBlockPosition: 'center',
-  isAbsolutePopupOpen: false,
 
   numComUpdates: 0,
   numColsUpdates: 0,
@@ -84,9 +83,6 @@ export const slice = createSlice({
     },
     switchShowMarks: (state, action: PayloadAction<boolean | nil>) => {
       state.isShowMarks = action.payload ?? state.isShowMarks;
-    },
-    switchAbsolutePopupOpen: (state, action: PayloadAction<boolean | nil>) => {
-      state.isAbsolutePopupOpen = action.payload ?? state.isAbsolutePopupOpen;
     },
     switchAnchorsVisible: (state, action: PayloadAction<boolean | nil>) => {
       state.isAnchorsVisible = action.payload ?? !state.isAnchorsVisible;
@@ -152,7 +148,6 @@ export const {
   setMarkList,
   updateMeetingList,
   setCurrentMeetingw,
-  switchAbsolutePopupOpen,
   setComFontSize,
   setTranslationBlock,
   switchTranslationBlockVisible,

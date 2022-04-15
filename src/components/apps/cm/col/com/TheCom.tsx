@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import useAbsolutePopup from "../../../../../complect/absolute-popup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon.model";
 import { RootState } from "../../../../../store";
-import useAbsolutePopup from "../../base/absolute-popup/useAbsolutePopup";
 import PhaseContainer from "../../base/phase-container/PhaseContainer";
 import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
@@ -31,11 +31,8 @@ export default function TheCom() {
   const { isMarked, toggleMarked } = useMarks();
 
   useEffect(() => {
-    const addToLaterListTimeout = setTimeout(
-      () => ccom && addLaterComw(ccom.wid),
-      10000
-    );
-    return () => clearTimeout(addToLaterListTimeout);
+    const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
+    return () => clearTimeout(add);
   }, []);
 
   if (ccom == null) {

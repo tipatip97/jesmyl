@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import "./App.scss";
+import { ABSOLUTE_POPUP_ELEMENT } from "./complect/absolute-popup";
 import { FULLSCREEN__CONTENT } from "./complect/fullscreen-content/FullscreenContent";
 import Modal from "./complect/modal/Modal";
 import TheRefresher from "./complect/refresh/Refresher";
@@ -15,15 +16,13 @@ function App() {
   const app: BoardAppName = useSelector(
     (state: RootState) => state.board.currentApp
   );
-  const isFullscreenContentOpen = useSelector(
-    (state: RootState) => state.complect.isFullscreenContentOpen
-  );
 
   return (
     <>
       <TheRefresher />
       <Modal />
-      <FULLSCREEN__CONTENT isOpen={isFullscreenContentOpen} />
+      <FULLSCREEN__CONTENT />
+      <ABSOLUTE_POPUP_ELEMENT />
       {app ? <AppRouter app={app} /> : <Board />}
     </>
   );

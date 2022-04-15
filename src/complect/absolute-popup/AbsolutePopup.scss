@@ -1,0 +1,126 @@
+.absolute-popup {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+
+    &.open {
+        opacity: 1;
+        pointer-events: all;
+
+        &.bottom {
+            >.float-content {
+                display: none;
+            }
+
+            >.absolute-popup-content {
+                &.bottom-content {
+                    bottom: 0;
+                }
+            }
+        }
+
+        &.float {
+            >.bottom-content {
+                display: none;
+            }
+        }
+    }
+
+    >.absolute-popup-content {
+        position: absolute;
+        left: 0;
+        bottom: calc(0px - var(--height));
+
+        &.float-content {
+            padding: 10px 10px;
+            background: var(--color--1);
+            box-shadow: 0 0 40px var(--color--2);
+            border-radius: 10px;
+            top: -1000px;
+            left: -1000px;
+
+            .abs-item {
+                cursor: pointer;
+            }
+        }
+
+        &.bottom-content {
+            --max-height: 70vh;
+            --initial-bottom: calc(0px - var(--max-height));
+            --target-bottom: 0;
+            --height: 300px;
+
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            width: 100vw;
+            height: var(--height);
+            max-height: var(--max-height);
+            background-color: var(--color--1);
+            overflow: hidden;
+            padding: 30px;
+            z-index: 150;
+            // animation: grow-up-absolute-popup .5s forwards;
+            transition: bottom .5s;
+
+            .abs-item {
+                padding: 10px 0;
+            }
+        }
+    }
+
+    .abs-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 450px;
+
+        &.abs-full {
+            cursor: pointer;
+
+            .abs-action {
+                width: calc(6em + 20px);
+            }
+        }
+
+        .abs-icon {
+            margin: var(--main-gap);
+        }
+
+        .abs-action {
+            cursor: pointer;
+
+            >.abs-full,
+            &.abs-full {
+                width: calc(6em + 20px);
+            }
+
+            >* {
+                width: 2em;
+                text-align: center;
+
+                +* {
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+}
+
+@keyframes grow-up-absolute-popup {
+    from {
+        bottom: var(--initial-bottom);
+    }
+
+    to {
+        bottom: var(--target-bottom);
+    }
+}

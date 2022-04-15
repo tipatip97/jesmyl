@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import useAbsolutePopup from "../../../../../complect/absolute-popup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../store";
 import {
@@ -6,7 +7,6 @@ import {
   setComFontSize,
   switchAnchorsVisible,
 } from "../../Cm.store";
-import useAbsolutePopup from "../../base/absolute-popup/useAbsolutePopup";
 import useTranslation from "../../translation/useTranslation";
 import { useCcom } from "../useCcol";
 

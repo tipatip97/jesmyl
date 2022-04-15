@@ -34,10 +34,13 @@ export default function useFullscreenContent() {
   return ret;
 }
 
-export function FULLSCREEN__CONTENT({ isOpen }: { isOpen: boolean }) {
+export function FULLSCREEN__CONTENT() {
+  const { isFullscreenContentOpen } = useFullscreenContent();
   return (
     <div
-      className={`fullscreen-content-container ${isOpen ? "open" : ""}`}
+      className={`fullscreen-content-container ${
+        isFullscreenContentOpen ? "open" : ""
+      }`}
       ref={(elem) => elem && (element = elem)}
     >
       {fullscreenContent}
