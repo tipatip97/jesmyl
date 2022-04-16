@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon";
 import PhaseContainer from "../../../../complect/phase-container";
 import useNav from "../base/useNav";
@@ -12,7 +12,6 @@ import useTranslation from "./useTranslation";
 
 export default function Translations() {
   const {
-    isShowFullscreen,
     currWin,
     newTranslation,
     prevBlock,
