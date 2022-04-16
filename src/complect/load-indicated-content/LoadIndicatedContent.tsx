@@ -29,7 +29,6 @@ export default function LoadIndicatedContent(
   };
 
   useEffect(() => {
-      console.log(props.isLoading);
     if (props.isLoading) setIsLoading(true);
     else {
       if (Date.now() - initTime < 30) onEnd();
@@ -39,15 +38,6 @@ export default function LoadIndicatedContent(
       }
     }
   }, [props.isLoading]);
-
-  console.log(
-    isLoading && !isEnding
-      ? loadingClassName
-      : isEnding
-      ? endingClassName
-      : isReady
-      ? contentReadyClassName
-      : "");
 
   return (
     <div
@@ -60,7 +50,6 @@ export default function LoadIndicatedContent(
           ? contentReadyClassName
           : ""
       }`}
-      onClick={() => setIsReady(true)}
       ref={container}
     >
       <div
