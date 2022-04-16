@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
 
-export default function Image(
+export default function JImage(
   props: { src: string } & HTMLAttributes<HTMLImageElement>
 ) {
   return (

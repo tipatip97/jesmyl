@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import useAbsolutePopup from "../../../../../complect/absolute-popup";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
-import { RootState } from "../../../../../store";
 import PhaseContainer from "../../../../../complect/phase-container";
+import { RootState } from "../../../../../store";
 import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";
@@ -123,6 +123,7 @@ export default function TheCom() {
           </div>
         </>
       )}
+      // contentClass="container-loading"
       content={
         <RollControled>
           <ComOrders

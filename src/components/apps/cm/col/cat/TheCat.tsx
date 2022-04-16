@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon";
+import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import PhaseContainer from "../../../../../complect/phase-container";
 import useLaterComList from "../../base/useLaterComList";
 import useNav from "../../base/useNav";
@@ -21,10 +22,6 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
   const [term, setTerm] = useState(cat?.term || "");
   const [, setTerm1] = useState(cat?.term || "");
 
-  if (!cat) {
-    return null;
-  }
-
   return (
     <PhaseContainer
       topClass="cat-content"
@@ -38,7 +35,7 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
               type="text"
               placeholder="Поиск песен"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                cat.search(
+                cat?.search(
                   event.target.value,
                   () => setTerm(event.target.value),
                   500,
@@ -55,7 +52,7 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
               name="close"
               className={`clear-button ${term ? "" : "hidden"}`}
               onClick={() => {
-                cat.search("", () => setTerm(""));
+                cat?.search("", () => setTerm(""));
                 searchInputRef.current?.focus();
               }}
             />
@@ -63,39 +60,43 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
         </>
       )}
       content={
-        <div>
-          <div
-            className={`later-com-list ${
-              !isThematic && !term && laterComs.length ? "" : "hidden"
-            }`}
-          >
-            <div className="main-gap">Последние:</div>
-            {laterComs.map((com) => (
-              <ComFace key={`later-com-${com.wid}`} com={com} />
-            ))}
-          </div>
-          <div className="main-gap flex between">
-            <div>{isThematic ? cat.name : "Все песни"}:</div>
-            {cat.wraps && (
-              <div>
-                {`${
-                  cat.coms.length === cat.wraps.length
-                    ? ""
-                    : `${cat.wraps.length} / `
-                }${cat.coms.length}`}
+        <LoadIndicatedContent isLoading={!cat}>
+          {!cat ? null : (
+            <>
+              <div
+                className={`later-com-list ${
+                  !isThematic && !term && laterComs.length ? "" : "hidden"
+                }`}
+              >
+                <div className="main-gap">Последние:</div>
+                {laterComs.map((com) => (
+                  <ComFace key={`later-com-${com.wid}`} com={com} />
+                ))}
               </div>
-            )}
-          </div>
-          <div className="com-list" ref={listRef}>
-            {cat.wraps.map((wrap) => (
-              <ComFace
-                key={`com-face-${wrap.com.wid}`}
-                {...wrap}
-                specialPhase={allMode ? null : "thematic"}
-              />
-            ))}
-          </div>
-        </div>
+              <div className="main-gap flex between">
+                <div>{isThematic ? cat.name : "Все песни"}:</div>
+                {cat.wraps && (
+                  <div>
+                    {`${
+                      cat.coms.length === cat.wraps.length
+                        ? ""
+                        : `${cat.wraps.length} / `
+                    }${cat.coms.length}`}
+                  </div>
+                )}
+              </div>
+              <div className="com-list" ref={listRef}>
+                {cat.wraps.map((wrap) => (
+                  <ComFace
+                    key={`com-face-${wrap.com.wid}`}
+                    {...wrap}
+                    specialPhase={allMode ? null : "thematic"}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </LoadIndicatedContent>
       }
     />
   );

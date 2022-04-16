@@ -1,4 +1,4 @@
-import Image from "../../../../complect/Image";
+import JImage from "../../../../complect/Image";
 import PhaseContainer from "../../../../complect/phase-container";
 
 export default function Other() {
@@ -9,7 +9,7 @@ export default function Other() {
       contentClass="flex column center"
       content={
         <>
-          <Image src="CuteCat.png" style={{ width: "50vmin" }} />
+          <JImage src="CuteCat.png" style={{ width: "50vmin" }} />
           Раздел в разработке :)
         </>
       }

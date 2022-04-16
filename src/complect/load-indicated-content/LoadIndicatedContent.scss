@@ -1,0 +1,158 @@
+.load-indicated-content-container {
+    &:not(.loading-process) {
+        >.load-indicated-content-spinner-container {
+            display: none;
+        }
+    }
+
+    &.loading-process {
+        position: relative;
+        height: 100%;
+        width: 100%;
+
+        >:not(.load-indicated-content-spinner-container) {
+            display: none;
+        }
+    }
+
+    >.load-indicated-content-spinner-container {
+        --lkf: 1%;
+
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .load-indicated-content-spinner {
+            --load-indicated-content-spinner-size: 100px;
+            --load-indicated-content-spinner-dot-size: calc(var(--load-indicated-content-spinner-size) / 7);
+            --load-indicated-content-spinner-color: var(--text-color);
+
+            position: relative;
+            width: var(--load-indicated-content-spinner-size);
+            height: var(--load-indicated-content-spinner-size);
+            animation: rotate 1.5s infinite linear;
+            animation-delay: 1s;
+
+            >.load-indicated-content-spinner-part {
+                position: absolute;
+
+                &-dot {
+                    fill-rule: evenodd;
+                    clip-rule: evenodd;
+                    fill: var(--load-indicated-content-spinner-color);
+                }
+
+                border-radius: 100%;
+
+                &.dot-part {
+                    width: var(--load-indicated-content-spinner-dot-size);
+                    height: var(--load-indicated-content-spinner-dot-size);
+                    background-color: var(--load-indicated-content-spinner-color);
+                }
+
+                &.lip-part {
+                    --size: 100%;
+                    top: 0;
+                    left: calc(var(--lkf) + 0);
+                    width: var(--size);
+                    height: var(--size);
+                    border-top: none;
+                    border: var(--load-indicated-content-spinner-dot-size) solid;
+                    transform: rotate(-15deg);
+                    border-color: transparent var(--load-indicated-content-spinner-color) var(--load-indicated-content-spinner-color) transparent;
+
+                    &.second {
+                        transform: rotate(-26deg);
+                    }
+                }
+
+                &.top-part {
+                    top: 3.4%;
+                    left: 57%;
+                }
+
+                &.bot-part {
+                    top: 80.8%;
+                    left: 21%;
+                }
+
+                &.point-part {
+                    top: 1%;
+                    left: 35%;
+                }
+
+                &.leye-part {
+                    --leye-top: 54%;
+                    --leye-left: 32%;
+                    --leye-ringify-top: 24%;
+                    --leye-ringify-left: 3%;
+                    animation: lringify 1s forwards;
+                }
+
+                &.reye-part {
+                    --reye-top: 31%;
+                    --reye-left: 42%;
+                    --reye-ringify-top: 64%;
+                    --reye-ringify-left: 4%;
+                    animation: rringify 1s forwards;
+                }
+            }
+
+            .load-indicated-content-spinner-part-lip {
+                fill-rule: evenodd;
+                clip-rule: evenodd;
+                fill: none;
+                stroke-width: 54;
+                stroke-linecap: round;
+                stroke-miterlimit: 10;
+                stroke: var(--load-indicated-content-spinner-color);
+            }
+        }
+    }
+}
+
+@keyframes lringify {
+    from {
+        top: var(--leye-top);
+        left: var(--leye-left);
+    }
+
+    50% {
+        top: var(--leye-top);
+        left: var(--leye-left);
+    }
+
+    to {
+        top: var(--leye-ringify-top);
+        left: var(--leye-ringify-left);
+    }
+}
+
+@keyframes rringify {
+    from {
+        top: var(--reye-top);
+        left: var(--reye-left);
+    }
+
+    50% {
+        top: var(--reye-top);
+        left: var(--reye-left);
+    }
+
+    to {
+        top: var(--reye-ringify-top);
+        left: var(--reye-ringify-left);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
