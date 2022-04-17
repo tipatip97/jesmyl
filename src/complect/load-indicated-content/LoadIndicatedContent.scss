@@ -1,42 +1,70 @@
 .load-indicated-content-container {
+    --load-indicated-content-spinner-size: 100px;
+    --load-indicated-content-spinner-dot-size: calc(var(--load-indicated-content-spinner-size) / 7);
+    --load-indicated-content-spinner-color: var(--text-color);
 
+    &.initial-state {
+        >.load-indicated-content-spinner-container {
+            >.load-indicated-content-spinner {
+                >.smile-container {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &.content-is-ready,
     &.ending-process,
     &.loading-process {
         position: absolute;
         height: 100%;
         width: 100%;
+
+        >.load-indicated-content-spinner-container {
+            >.load-indicated-content-spinner {
+
+                &::before,
+                &::after {
+                    content: '';
+                }
+            }
+        }
     }
 
+    &.content-is-ready,
     &.loading-process {
         >:not(.load-indicated-content-spinner-container) {
             display: none;
         }
 
         >.load-indicated-content-spinner-container {
-            .load-indicated-content-spinner {
+            >.load-indicated-content-spinner {
                 animation: fade-in .3s, rotate .7s infinite linear;
             }
         }
     }
 
     &.ending-process {
-        --animation-time: 1.5s;
+        --animation-time: .8s;
 
         >.load-indicated-content-spinner-container {
-            animation: fade-out 1s;
+            animation: fade-out var(--animation-time);
             animation-delay: var(--animation-time);
-        }
 
-        .reye-part {
-            animation: rringify var(--animation-time) forwards;
-        }
+            >.load-indicated-content-spinner {
+                &::after {
+                    animation: rringify var(--animation-time) forwards;
+                }
 
-        .leye-part {
-            animation: lringify var(--animation-time) forwards;
+                &::before {
+                    animation: lringify var(--animation-time) forwards;
+                }
+            }
         }
     }
 
-    &.content-is-ready {
+
+    &.content-loaded {
         >.load-indicated-content-spinner-container {
             display: none;
         }
@@ -49,80 +77,60 @@
         justify-content: center;
         align-items: center;
 
-        .load-indicated-content-spinner {
-            --load-indicated-content-spinner-size: 100px;
-            --load-indicated-content-spinner-dot-size: calc(var(--load-indicated-content-spinner-size) / 7);
-            --load-indicated-content-spinner-color: var(--text-color);
-
+        >.load-indicated-content-spinner {
             position: absolute;
             width: var(--load-indicated-content-spinner-size);
             height: var(--load-indicated-content-spinner-size);
             animation: fade-in .3s;
 
-            >.load-indicated-content-spinner-part {
+            &::before,
+            &::after {
                 position: absolute;
+                display: block;
+                background-color: var(--load-indicated-content-spinner-color);
+                width: var(--load-indicated-content-spinner-dot-size);
+                height: var(--load-indicated-content-spinner-dot-size);
+                border-radius: 100%;
+            }
 
-                &-dot {
+            &::before {
+                --leye-top: 54%;
+                --leye-left: 32%;
+                --leye-ringify-top: 24%;
+                --leye-ringify-left: 3%;
+
+                top: var(--leye-ringify-top);
+                left: var(--leye-ringify-left);
+            }
+
+            &::after {
+                --reye-top: 31%;
+                --reye-left: 42%;
+                --reye-ringify-top: 64%;
+                --reye-ringify-left: 4%;
+
+                top: var(--reye-ringify-top);
+                left: var(--reye-ringify-left);
+            }
+
+            >.smile-container {
+                position: absolute;
+                left: 21%;
+                display: block;
+                height: 101%;
+
+                >.smile-line {
                     fill-rule: evenodd;
                     clip-rule: evenodd;
-                    fill: var(--load-indicated-content-spinner-color);
+                    fill: none;
+                    stroke: var(--text-color);
+                    stroke-width: 54;
+                    stroke-linecap: round;
+                    stroke-miterlimit: 10;
                 }
 
-                border-radius: 100%;
-
-                &.dot-part {
-                    width: var(--load-indicated-content-spinner-dot-size);
-                    height: var(--load-indicated-content-spinner-dot-size);
-                    background-color: var(--load-indicated-content-spinner-color);
-                }
-
-                &.lip-part {
-                    --size: 100%;
-                    top: 0;
-                    left: 0;
-                    width: var(--size);
-                    height: var(--size);
-                    border-top: none;
-                    border: var(--load-indicated-content-spinner-dot-size) solid;
-                    transform: rotate(-15deg);
-                    border-color: transparent var(--load-indicated-content-spinner-color) var(--load-indicated-content-spinner-color) transparent;
-
-                    &.second {
-                        transform: rotate(-26deg);
-                    }
-                }
-
-                &.top-part {
-                    top: 3.4%;
-                    left: 57%;
-                }
-
-                &.bot-part {
-                    top: 80.8%;
-                    left: 21%;
-                }
-
-                &.point-part {
-                    top: 1%;
-                    left: 35%;
-                }
-
-                &.leye-part {
-                    --leye-top: 54%;
-                    --leye-left: 32%;
-                    --leye-ringify-top: 24%;
-                    --leye-ringify-left: 3%;
-                    top: var(--leye-ringify-top);
-                    left: var(--leye-ringify-left);
-                }
-
-                &.reye-part {
-                    --reye-top: 31%;
-                    --reye-left: 42%;
-                    --reye-ringify-top: 64%;
-                    --reye-ringify-left: 4%;
-                    top: var(--reye-ringify-top);
-                    left: var(--reye-ringify-left);
+                >.smile-dot {
+                    fill: var(--text-color);
                 }
             }
         }
@@ -140,7 +148,7 @@
         left: var(--leye-ringify-left);
     }
 
-    60% {
+    70% {
         top: var(--leye-top);
         left: var(--leye-left);
     }
@@ -162,7 +170,7 @@
         left: var(--reye-ringify-left);
     }
 
-    60% {
+    70% {
         top: var(--reye-top);
         left: var(--reye-left);
     }
@@ -178,7 +186,7 @@
         opacity: 0;
     }
 
-    50% {
+    90% {
         opacity: 0;
     }
 
