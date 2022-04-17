@@ -4,7 +4,7 @@ import { RootState } from "../../../../../store";
 import { cmStorage } from "../../../../../store/jstorages";
 import useNav from "../../base/useNav";
 import { riseUpMeetingsUpdate, setCurrentMeetingw, updateMeetingList } from "../../Cm.store";
-import { useCols } from "../../cols/useCols";
+import { localCols, useCols } from "../../cols/useCols";
 import { Meeting } from "./Meeting";
 import { Meetings } from "./Meetings";
 
@@ -19,19 +19,13 @@ export function useMeetings() {
     const { setPhase } = useNav();
     const [cols] = useCols();
 
-    cmStorage.listen('cm_meetings', 'useMeetings hook', (val) => dispatch(updateMeetingList(val)));
-
     useEffect(() => {
-        localMeetings = new Meetings(meetings, cols);
-        dispatch(riseUpMeetingsUpdate());
-    }, [meetings]);
-
-    useEffect(() => {
-        if (localMeetings) {
-            currentMeeting = localMeetings.stack.find(meeting => meeting.wid === meetingw);
-            cmStorage.set('meetingw', meetingw);
+        if (cols && meetings) {
+            localMeetings = new Meetings(meetings, cols);
+            setCurrMeeting(meetingw);
+            dispatch(riseUpMeetingsUpdate());
         }
-    }, [meetingw]);
+    }, [meetings, cols]);
 
     return {
         meetings: localMeetings?.stack,
@@ -39,8 +33,16 @@ export function useMeetings() {
         isEditable: false,
         createMeeting: () => localMeetings?.create((meetings) => dispatch(updateMeetingList(meetings))),
         goToMeeting: (meetingw: number) => {
+            setCurrMeeting(meetingw);
+            cmStorage.set('meetingw', meetingw);
             dispatch(setCurrentMeetingw(meetingw));
             setPhase('meeting');
         },
     };
 }
+
+cmStorage.listen('cm_meetings', 'useMeetings global', (val) => {
+    localMeetings = new Meetings(val, localCols);
+});
+
+const setCurrMeeting = (meetingw?: number) => meetingw != null && (currentMeeting = localMeetings?.stack?.find(meeting => meeting.wid === meetingw));

@@ -4,17 +4,16 @@ import { Meeting } from "./Meeting";
 import { IExportableMeeting } from "./Meetings.model";
 import { Cols } from "../../cols/Cols";
 
-  export {};
   export class Meetings {
-    stack: Meeting[];
-    meetings: IExportableMeeting[];
+    stack?: Meeting[];
+    meetings?: IExportableMeeting[];
 
-    constructor(meetings: IExportableMeeting[], cols?: Cols) {
+    constructor(meetings?: IExportableMeeting[], cols?: Cols) {
       this.meetings = meetings;
-      this.stack = meetings.map(meeting => new Meeting(meeting, cols));
+      this.stack = meetings?.map(meeting => new Meeting(meeting, cols));
     }
     
-    create(cb: (meetings: IExportableMeeting[]) => void) {
+    create(cb: (meetings?: IExportableMeeting[]) => void) {
       let n: string;
       let b = Date.now();
       let e = Date.now() + 1000 * 60 * 60 * 24;
@@ -66,7 +65,7 @@ import { Cols } from "../../cols/Cols";
             onClick: () => {
               const meeting: IExportableMeeting = {n, b, e, w, s: []};
               this.add(meeting);
-              cb && cb(this.meetings.concat(meeting));
+              cb && cb(this.meetings?.concat(meeting));
             },
           }, {
             title: 'Отмена'

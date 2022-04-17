@@ -51,7 +51,7 @@ export interface CmStoraged {
     specialPhase: CmSpecialPhase;
     prevPhase?: CmPhase;
     marks: number[];
-    cm_meetings: IExportableMeeting[];
+    cm_meetings?: IExportableMeeting[];
     comFontSize: number;
     chords: Record<string, number[]>;
 }

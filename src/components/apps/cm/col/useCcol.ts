@@ -21,11 +21,12 @@ export function useCcom(): [Com | nil, (val: Com) => void] {
     return [
         ccom,
         (val: Com) => {
-            ccom = val as Com;
-
-            cmStorage.set("ccomw", val?.wid);
-            dispatch(selectCcol({ fieldn: "comw", val: val?.wid }));
-            dispatch(riseUpComUpdate());
+            if (val) {
+                ccom = val;
+                cmStorage.set("ccomw", val.wid);
+                dispatch(selectCcol({ fieldn: "comw", val: val.wid }));
+                dispatch(riseUpComUpdate());
+            }
         }
     ];
 }
@@ -41,10 +42,11 @@ export function useCcat(): [Cat | nil, (val: Cat) => void, Cat | undefined] {
     return [
         ccat,
         (val: Cat) => {
-            ccat = val as Cat;
-
-            cmStorage.set("ccatw", val?.wid);
-            dispatch(selectCcol({ fieldn: "catw", val: val?.wid }));
+            if (val) {
+                ccat = val;
+                cmStorage.set("ccatw", val.wid);
+                dispatch(selectCcol({ fieldn: "catw", val: val.wid }));
+            }
         },
         zeroCat
     ];

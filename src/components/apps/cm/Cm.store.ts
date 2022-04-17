@@ -25,7 +25,7 @@ const initialState: CmState = {
   paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
-  cm_meetings: cmStorage.getOr('cm_meetings', []),
+  cm_meetings: cmStorage.get('cm_meetings'),
   meetingw: cmStorage.get('meetingw'),
   comFontSize: cmStorage.getOr('comFontSize', 15),
   chords: cmStorage.getOr('chords', {}),
@@ -72,7 +72,7 @@ export const slice = createSlice({
     setCmChords: (state, action: PayloadAction<Record<string, number[]>>) => {
       state.chords = action.payload;
     },
-    updateMeetingList: (state, action: PayloadAction<IExportableMeeting[]>) => {
+    updateMeetingList: (state, action: PayloadAction<IExportableMeeting[] | und>) => {
       state.cm_meetings = action.payload;
     },
     setCurrentMeetingw: (state, action: PayloadAction<number>) => {
