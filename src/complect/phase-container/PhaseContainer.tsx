@@ -6,6 +6,7 @@ export default function PhaseContainer(props: PhaseContainerProps) {
   const {
     topClass,
     head,
+    noHead,
     content,
     withoutBackButton,
     headClass,
@@ -22,26 +23,30 @@ export default function PhaseContainer(props: PhaseContainerProps) {
 
   return (
     <div className={`${topClass} ${props.className || ""}`}>
-      <div className={`header-content ${headClass || "flex"}`}>
-        {typeof head === "function" ? (
-          head(backButton)
-        ) : head == null ? (
-          withoutBackButton ? null : (
-            backButton
-          )
-        ) : withoutBackButton ? (
-          head
-        ) : (
-          <>
-            {backButton}
-            {typeof head === "string" ? (
-              <span className="pointer" onClick={() => goBack()}>{head}</span>
-            ) : (
-              head
-            )}
-          </>
-        )}
-      </div>
+      {noHead ? null : (
+        <div className={`header-content ${headClass || "flex"}`}>
+          {typeof head === "function" ? (
+            head(backButton)
+          ) : head == null ? (
+            withoutBackButton ? null : (
+              backButton
+            )
+          ) : withoutBackButton ? (
+            head
+          ) : (
+            <>
+              {backButton}
+              {typeof head === "string" ? (
+                <span className="pointer" onClick={() => goBack()}>
+                  {head}
+                </span>
+              ) : (
+                head
+              )}
+            </>
+          )}
+        </div>
+      )}
       <div className={`content-container ${contentClass || ""}`}>{content}</div>
     </div>
   );

@@ -21,10 +21,12 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
 
   const [term, setTerm] = useState(cat?.term || "");
   const [, setTerm1] = useState(cat?.term || "");
+  const [isLoadingContent, setIsLoadingContent]= useState(true);
 
   return (
     <PhaseContainer
       topClass="cat-content"
+      noHead={isLoadingContent}
       head={(backButton) => (
         <>
           {isThematic ? backButton : null}
@@ -60,7 +62,7 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
         </>
       )}
       content={
-        <LoadIndicatedContent isLoading={!cat}>
+        <LoadIndicatedContent isLoading={!cat} onLoad={() => setIsLoadingContent(false)}>
           {!cat ? null : (
             <>
               <div
