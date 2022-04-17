@@ -1,15 +1,22 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
+import mylib from "../../../../../complect/my-lib/MyLib";
 import PhaseContainer from "../../../../../complect/phase-container";
 import useLaterComList from "../../base/useLaterComList";
 import useNav from "../../base/useNav";
+import { CmSpecialPhase } from "../../Cm.model";
 import ComFace from "../com/face/ComFace";
-import { useCcat } from "../useCcol";
+import { useCcat, useCcom } from "../useCcol";
 import "./Cat.scss";
 
-export default function TheCat({ allMode }: { allMode?: boolean }) {
+export default function TheCat({
+  specialPhase: topSpecialPhase,
+}: {
+  specialPhase?: CmSpecialPhase;
+}) {
   const [ccat, , zeroCat] = useCcat();
+  const [ccom] = useCcom();
   const { laterComs } = useLaterComList();
 
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -21,7 +28,15 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
 
   const [term, setTerm] = useState(cat?.term || "");
   const [, setTerm1] = useState(cat?.term || "");
-  const [isLoadingContent, setIsLoadingContent]= useState(true);
+  const [isLoadingContent, setIsLoadingContent] = useState(true);
+
+  useEffect(() => {
+    if (ccom) {
+      const currentFace = document.getElementById(`com-face-${ccom.wid}`);
+      if (currentFace && listRef.current)
+        mylib.scrollToView(currentFace, "top", { parent: listRef.current });
+    }
+  });
 
   return (
     <PhaseContainer
@@ -61,8 +76,12 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
           </div>
         </>
       )}
+      contentRef={listRef}
       content={
-        <LoadIndicatedContent isLoading={!cat} onLoad={() => setIsLoadingContent(false)}>
+        <LoadIndicatedContent
+          isLoading={!cat}
+          onLoad={() => setIsLoadingContent(false)}
+        >
           {!cat ? null : (
             <>
               <div
@@ -87,12 +106,12 @@ export default function TheCat({ allMode }: { allMode?: boolean }) {
                   </div>
                 )}
               </div>
-              <div className="com-list" ref={listRef}>
+              <div className="com-list">
                 {cat.wraps.map((wrap) => (
                   <ComFace
                     key={`com-face-${wrap.com.wid}`}
                     {...wrap}
-                    specialPhase={allMode ? null : "thematic"}
+                    specialPhase={topSpecialPhase}
                   />
                 ))}
               </div>

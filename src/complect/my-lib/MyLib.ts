@@ -872,7 +872,7 @@ export class MyLib {
         return refElem.parentNode?.insertBefore(elem, refElem.nextSibling);
     }
 
-    scrollToView(element: HTMLElement, position = 'center', props: { parent: HTMLElement; force: boolean; animationTime: number; } = {} as never) {
+    scrollToView(element: HTMLElement, position = 'center', props: { parent?: HTMLElement; force?: boolean; animationTime?: number; } = {} as never) {
         if (!element) return;
         const {
             parent = element.parentElement,

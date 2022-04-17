@@ -8,6 +8,7 @@ export default function PhaseContainer(props: PhaseContainerProps) {
     head,
     noHead,
     content,
+    contentRef,
     withoutBackButton,
     headClass,
     contentClass,
@@ -47,7 +48,12 @@ export default function PhaseContainer(props: PhaseContainerProps) {
           )}
         </div>
       )}
-      <div className={`content-container ${contentClass || ""}`}>{content}</div>
+      <div
+        className={`content-container ${contentClass || ""}`}
+        ref={contentRef}
+      >
+        {content}
+      </div>
     </div>
   );
 }

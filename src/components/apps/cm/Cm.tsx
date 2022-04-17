@@ -19,8 +19,8 @@ import Other from "./other/Other";
 import Translations from "./translation/Translation";
 
 const Comps: Record<CmPhase, () => ReactNode> = {
-  all: () => <TheCat allMode />,
-  cat: () => <TheCat />,
+  all: () => <TheCat />,
+  cat: () => <TheCat specialPhase={"thematic"} />,
   com: () => <TheCom />,
   editor: () => <Editor />,
   translation: () => <Translations />,
