@@ -34,9 +34,8 @@ export default function RollControled(
         <div
           ref={(element) => {
             if (element) {
-              const isFirst = !speedScreen;
               speedScreen = element;
-              if (isFirst) updateSpeedRollKf(0);
+              updateSpeedRollKf(0);
             }
           }}
         />
