@@ -30,13 +30,14 @@ export default function useNavConfigurer<App extends AppName, State extends Root
         setPhase: <Phase extends State['phase'], SpecialPhase extends State['specialPhase']>(val: SetPhasePayload<Phase, SpecialPhase>) => {
             const [phase, specialPhase, preventSaveLocal] = [val].flat() as [State['phase'], State['specialPhase'], boolean];
 
-            if (preventSaveLocal) return;
             const prevPhase = ret.phase;
+            dispatch(setPhaseAction({ phase, prevPhase, specialPhase }));
+
+            if (preventSaveLocal) return;
 
             storage.set('phase', phase);
             storage.set('prevPhase', prevPhase);
             if (specialPhase !== undefined) storage.set('specialPhase', specialPhase);
-            dispatch(setPhaseAction({ phase, prevPhase, specialPhase }));
         },
         registerBackAction: (action: UseNavAction) => {
             actions.unshift(action);
