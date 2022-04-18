@@ -1,12 +1,12 @@
 import BrutalItem from "../../../../../complect/brutal-item";
-import PhaseContainer from "../../../../../complect/phase-container";
+import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import { useMeetings } from "./useMeetings";
 
 export default function TheMeetings() {
   const { meetings, goToMeeting } = useMeetings();
 
   return (
-    <PhaseContainer
+    <PhaseCmContainer
       topClass="meetings-container"
       head="События"
       contentClass="flex column"

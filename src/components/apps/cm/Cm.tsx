@@ -42,7 +42,7 @@ export default function CmApplication() {
   return (
     <>
       <div className={`main-container phase-${phase}`}>
-        <div className="header"></div>
+        <div className="header" />
         <div className="content">
           {Object.entries(Comps).map(([phasen, phaseComp]) => {
             if (phasen !== phase) return null;

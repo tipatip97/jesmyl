@@ -1,9 +1,9 @@
 import JImage from "../../../../complect/Image";
-import PhaseContainer from "../../../../complect/phase-container";
+import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 
 export default function Other() {
   return (
-    <PhaseContainer
+    <PhaseCmContainer
       topClass="other-container"
       head="Другое"
       contentClass="flex column center"

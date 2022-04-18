@@ -1,8 +1,10 @@
+import navConfigurers from "../../shared/navConfigurers";
 import EvaIcon from "../eva-icon";
-import useCmNav from "../../components/apps/cm/base/useCmNav";
-import { PhaseContainerProps } from ".";
+import { PhaseContainerConfigurerProps } from "./PhaseContainerConfigurer.model";
 
-export default function PhaseContainer(props: PhaseContainerProps) {
+export default function PhaseContainerConfigurer(
+  props: PhaseContainerConfigurerProps
+) {
   const {
     topClass,
     head,
@@ -12,8 +14,10 @@ export default function PhaseContainer(props: PhaseContainerProps) {
     withoutBackButton,
     headClass,
     contentClass,
+    appName,
   } = props;
-  const { goBack } = useCmNav();
+
+  const { goBack } = navConfigurers[appName]();
   const backButton = (
     <EvaIcon
       name="arrow-back"

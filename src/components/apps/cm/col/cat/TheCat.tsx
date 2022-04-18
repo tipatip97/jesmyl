@@ -2,13 +2,13 @@ import { useRef, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import PhaseContainer from "../../../../../complect/phase-container";
 import useLaterComList from "../../base/useLaterComList";
 import useCmNav from "../../base/useCmNav";
 import { CmSpecialPhase } from "../../Cm.model";
 import ComFace from "../com/face/ComFace";
 import { useCcat, useCcom } from "../useCcol";
 import "./Cat.scss";
+import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 
 export default function TheCat({
   specialPhase: topSpecialPhase,
@@ -34,9 +34,9 @@ export default function TheCat({
     if (ccom) {
       setTimeout(() => {
         const currentFace = document.getElementById(`com-face-${ccom.wid}`);
-        if (currentFace && listRef.current && categoryTitleRef.current)
+        if (listRef.current)
           if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
-          else
+          else if (currentFace && categoryTitleRef.current)
             mylib.scrollToView(currentFace, "top", {
               parent: listRef.current,
               top: categoryTitleRef.current.clientHeight,
@@ -46,7 +46,7 @@ export default function TheCat({
   };
 
   return (
-    <PhaseContainer
+    <PhaseCmContainer
       topClass="cat-content"
       head={
         !cat

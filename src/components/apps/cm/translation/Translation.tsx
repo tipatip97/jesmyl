@@ -1,6 +1,6 @@
 import { useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon";
-import PhaseContainer from "../../../../complect/phase-container";
+import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import useCmNav from "../base/useCmNav";
 import ComFace from "../col/com/face/ComFace";
 import { useCcat, useCcom } from "../col/useCcol";
@@ -83,7 +83,7 @@ export default function Translations() {
     );
 
   return (
-    <PhaseContainer
+    <PhaseCmContainer
       topClass="translation-container"
       head={`Трансляция${titlePostfix}`}
       content={

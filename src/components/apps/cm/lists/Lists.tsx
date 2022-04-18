@@ -1,10 +1,10 @@
 import EvaIcon from "../../../../complect/eva-icon";
 import BrutalItem from "../../../../complect/brutal-item";
-import PhaseContainer from "../../../../complect/phase-container";
 import useCmNav from "../base/useCmNav";
 import { useCcat } from "../col/useCcol";
 import { useCols } from "../cols/useCols";
 import "./Lists.scss";
+import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 
 export default function Lists() {
   const { setPhase } = useCmNav();
@@ -12,7 +12,7 @@ export default function Lists() {
   const [, setCcat] = useCcat();
 
   return (
-    <PhaseContainer
+    <PhaseCmContainer
       topClass="lists-container"
       withoutBackButton
       head="Списки"

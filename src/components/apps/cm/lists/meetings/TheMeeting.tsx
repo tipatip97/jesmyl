@@ -1,7 +1,7 @@
 import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
 import EvaIcon from "../../../../../complect/eva-icon";
-import PhaseContainer from "../../../../../complect/phase-container";
 import ComFace from "../../col/com/face/ComFace";
+import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import LocalListToolsPopup from "../popups/LocalListToolsPopup";
 import { useMeetings } from "./useMeetings";
 
@@ -10,7 +10,7 @@ export default function TheMeeting() {
   const { openAbsolutePopup } = useAbsolutePopup();
 
   return (
-    <PhaseContainer
+    <PhaseCmContainer
       topClass="meeting-container"
       headClass="flex between"
       head={(backButton) => (
