@@ -1,4 +1,3 @@
-export { default } from "./AbsolutePopup";
 
 export interface AbsolutePopupConfig {
   mode: AbsolutePopupMode;

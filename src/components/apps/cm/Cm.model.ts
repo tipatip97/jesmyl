@@ -1,4 +1,3 @@
-import { EvaIconName } from "../../../complect/eva-icon";
 import { ExecDict } from "../../../complect/exer/Exer.model";
 import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
@@ -32,15 +31,8 @@ export type ChordVisibleVariant = 0 | 1 | 2;
 
 export type CmPhase = typeof inlinePhases[number][number];
 export type CmSpecialPhase = typeof specialPhases[number] | null;
-export type SetPhasePayload = CmPhase | [CmPhase, CmSpecialPhase | nil, boolean?];
 
 
-export interface FooterItem {
-    title: string;
-    icon: EvaIconName;
-    phases: CmPhase[];
-    activeWithSpecialPhases?: boolean;
-}
 export interface CmStoraged {
     ccatw?: number;
     ccomw?: number;

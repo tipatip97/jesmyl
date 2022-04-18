@@ -4,7 +4,7 @@ import LoadIndicatedContent from "../../../../../complect/load-indicated-content
 import mylib from "../../../../../complect/my-lib/MyLib";
 import PhaseContainer from "../../../../../complect/phase-container";
 import useLaterComList from "../../base/useLaterComList";
-import useNav from "../../base/useNav";
+import useCmNav from "../../base/useCmNav";
 import { CmSpecialPhase } from "../../Cm.model";
 import ComFace from "../com/face/ComFace";
 import { useCcat, useCcom } from "../useCcol";
@@ -22,7 +22,7 @@ export default function TheCat({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
-  const { specialPhase } = useNav();
+  const { specialPhase } = useCmNav();
   const isThematic = specialPhase === "thematic";
 
   const cat = isThematic ? ccat : zeroCat;

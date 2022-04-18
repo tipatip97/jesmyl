@@ -1,7 +1,7 @@
 import { useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon";
 import PhaseContainer from "../../../../complect/phase-container";
-import useNav from "../base/useNav";
+import useCmNav from "../base/useCmNav";
 import ComFace from "../col/com/face/ComFace";
 import { useCcat, useCcom } from "../col/useCcol";
 import { useMarks } from "../lists/marks/useMarks";
@@ -29,7 +29,7 @@ export default function Translations() {
   } = useTranslation();
 
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { specialPhase } = useNav();
+  const { specialPhase } = useCmNav();
   const [ccat] = useCcat();
   const { markedComs } = useMarks();
   const { currentMeeting } = useMeetings();

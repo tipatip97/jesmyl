@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { indexStorage } from "../../store/jstorages";
+import { RootState } from "../../shared/store";
+import { indexStorage } from "../../shared/jstorages";
 import { BoardApplication } from "./Board.model";
 import "./Board.scss";
 import { localAuth } from "./Board.source";
@@ -12,7 +12,7 @@ import BoardRegister from "./parts/Register";
 import BoardSettings from "./parts/Settings";
 
 export default function Board() {
-  const phase = useSelector((state: RootState) => state.board.phase);
+  const phase = useSelector((state: RootState) => state.index.phase);
   const dispatch = useDispatch();
 
   const listener = indexStorage.listen("apps", "board-listener", (val) => {

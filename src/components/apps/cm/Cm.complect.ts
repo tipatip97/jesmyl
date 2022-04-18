@@ -1,17 +1,16 @@
 import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
-import { cmStorage, indexStorage } from "../../../store/jstorages";
+import { cmStorage, indexStorage } from "../../../shared/jstorages";
 import { BoardApplication, BoardAuth } from "../../board/Board.model";
 import {
   CmAction,
   CmAppVariables,
   CmPhase,
   CmSpecialPhase,
-  FooterItem,
-  SetPhasePayload,
 } from "./Cm.model";
 import { setts } from "./base/settings/Setts";
 import { StyleProp } from "./base/settings/StyleProp";
+import { FooterItem, SetPhasePayload } from "../../../complect/nav-configurer/useNavConfigurer.model";
 
 let rules: Record<string, true | null> = {};
 export let actions: CmAction[] | nil;
@@ -65,7 +64,7 @@ export const getNewPhase = (
   phase: CmPhase,
   specialPhase: CmSpecialPhase,
   prevPhase: CmPhase | nil
-): SetPhasePayload => {
+): SetPhasePayload<CmPhase, CmSpecialPhase> => {
   const newPhase = phase === "com"
     ? specialPhase === "marked"
       ? "marks"
@@ -99,7 +98,7 @@ export const inlinePhases = [
 
 const [allPhases, listsPhases, otherPhases] = inlinePhases;
 
-export const footerItems: FooterItem[] = [
+export const cmFooterItems: FooterItem<CmPhase>[] = [
   {
     icon: "list",
     title: "Все",

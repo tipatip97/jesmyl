@@ -1,5 +1,5 @@
 import EvaIcon from "../eva-icon";
-import useNav from "../../components/apps/cm/base/useNav";
+import useCmNav from "../../components/apps/cm/base/useCmNav";
 import { PhaseContainerProps } from ".";
 
 export default function PhaseContainer(props: PhaseContainerProps) {
@@ -13,7 +13,7 @@ export default function PhaseContainer(props: PhaseContainerProps) {
     headClass,
     contentClass,
   } = props;
-  const { goBack } = useNav();
+  const { goBack } = useCmNav();
   const backButton = (
     <EvaIcon
       name="arrow-back"

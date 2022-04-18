@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import useAbsolutePopup from "../../../../../complect/absolute-popup";
+import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
 import EvaIcon from "../../../../../complect/eva-icon";
-import { RootState } from "../../../../../store";
+import { RootState } from "../../../../../shared/store";
 import {
   riseUpComUpdate,
   setComFontSize,

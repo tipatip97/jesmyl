@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { appStorage, cmStorage } from "../../../store/jstorages";
+import { appStorage, cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
-import { ChordVisibleVariant, CmPhase, CmRollMode, CmSpecialPhase, CmState, CmStorage, SetPhasePayload } from "./Cm.model";
+import { ChordVisibleVariant, CmPhase, CmRollMode, CmSpecialPhase, CmState, CmStorage } from "./Cm.model";
 import { IExportableMeeting } from "./lists/meetings/Meetings.model";
 
 export const cmExer = new Exer<CmStorage>(cmStorage, 'cm');
@@ -44,18 +44,11 @@ export const slice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    setCmPhase: (state, action: PayloadAction<SetPhasePayload>) => {
-      const [phase, specialPhase, preventSaveLocal] = [action.payload].flat() as [CmPhase, CmSpecialPhase | nil, boolean];
+    setCmPhase: (state, action: PayloadAction<{ prevPhase: CmPhase; phase: CmPhase; specialPhase: CmSpecialPhase }>) => {
 
-      state.prevPhase = state.phase;
-      state.phase = phase;
-      if (specialPhase !== undefined) state.specialPhase = specialPhase;
-
-      if (preventSaveLocal) return;
-
-      cmStorage.set('phase', state.phase);
-      cmStorage.set('prevPhase', state.prevPhase);
-      if (specialPhase !== undefined) cmStorage.set('specialPhase', specialPhase);
+      state.prevPhase = action.payload.prevPhase;
+      state.phase = action.payload.phase;
+      if (action.payload.specialPhase !== undefined) state.specialPhase = action.payload.specialPhase;
     },
     selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {
       if (action.payload.val == null) return;

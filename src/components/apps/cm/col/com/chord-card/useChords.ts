@@ -1,4 +1,4 @@
-import { cmStorage } from "../../../../../../store/jstorages";
+import { cmStorage } from "../../../../../../shared/jstorages";
 
 
 const chords = cmStorage.getOr('chords', {});

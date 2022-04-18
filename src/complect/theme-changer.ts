@@ -1,4 +1,4 @@
-import { indexStorage } from "../store/jstorages";
+import { indexStorage } from "../shared/jstorages";
 import mylib from "./my-lib/MyLib";
 
 const minTouches = 3;

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
+import { RootState } from "../../../shared/store";
 import { BorderErrorScope } from "../Board.model";
 
 export default function BoardErrorMessage({
@@ -7,8 +7,8 @@ export default function BoardErrorMessage({
 }: {
   scope: BorderErrorScope;
 }) {
-  const message = useSelector((state: RootState) => state.board.errorMessage);
-  const errorScope = useSelector((state: RootState) => state.board.errorScope);
+  const message = useSelector((state: RootState) => state.index.errorMessage);
+  const errorScope = useSelector((state: RootState) => state.index.errorScope);
 
   if (!message || errorScope !== scope) return null;
 

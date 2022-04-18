@@ -1,11 +1,11 @@
 import { HTMLAttributes, PropsWithChildren } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../complect/eva-icon";
-import { RootState } from "../../../../store";
-import { cmStorage } from "../../../../store/jstorages";
+import { RootState } from "../../../../shared/store";
+import { cmStorage } from "../../../../shared/jstorages";
 import { CmRollMode } from "../Cm.model";
 import { changeRollMode, switchRollModeMarks } from "../Cm.store";
-import useNav from "./useNav";
+import useCmNav from "./useCmNav";
 
 export default function RollControled(
   props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>
@@ -63,7 +63,7 @@ let rollMode: CmRollMode = null;
 
 export function useRoll() {
   const dispatch = useDispatch();
-  const { registerBackAction } = useNav();
+  const { registerBackAction } = useCmNav();
 
   const ret = {
     rollModeMarks: useSelector((state: RootState) => state.cm.rollModeMarks),

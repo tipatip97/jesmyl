@@ -1,5 +1,5 @@
 import { BoardAppName } from "../../components/board/Board.model";
-import { AppName } from "../../store/Storage.model";
+import { AppName } from "../../app/App.model";
 
 export type RefreshState = 'ready' | 'inactive' | 'error' | 'loading';
 

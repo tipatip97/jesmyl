@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../../store";
-import { cmStorage } from "../../../../../store/jstorages";
-import useNav from "../../base/useNav";
+import { RootState } from "../../../../../shared/store";
+import { cmStorage } from "../../../../../shared/jstorages";
+import useCmNav from "../../base/useCmNav";
 import { riseUpMeetingsUpdate, setCurrentMeetingw, updateMeetingList } from "../../Cm.store";
 import { localCols, useCols } from "../../cols/useCols";
 import { Meeting } from "./Meeting";
@@ -16,7 +16,7 @@ export function useMeetings() {
     useSelector((state: RootState) => state.cm.numMeetingsUpdate);
     const meetings = useSelector((state: RootState) => state.cm.cm_meetings);
     const meetingw = useSelector((state: RootState) => state.cm.meetingw);
-    const { setPhase } = useNav();
+    const { setPhase } = useCmNav();
     const [cols] = useCols();
 
     useEffect(() => {

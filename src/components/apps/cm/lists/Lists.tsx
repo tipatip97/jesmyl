@@ -1,13 +1,13 @@
 import EvaIcon from "../../../../complect/eva-icon";
 import BrutalItem from "../../../../complect/brutal-item";
 import PhaseContainer from "../../../../complect/phase-container";
-import useNav from "../base/useNav";
+import useCmNav from "../base/useCmNav";
 import { useCcat } from "../col/useCcol";
 import { useCols } from "../cols/useCols";
 import "./Lists.scss";
 
 export default function Lists() {
-  const { setPhase } = useNav();
+  const { setPhase } = useCmNav();
   const [cols] = useCols();
   const [, setCcat] = useCcat();
 

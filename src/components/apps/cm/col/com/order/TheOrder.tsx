@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import { RootState } from "../../../../../../store";
+import { RootState } from "../../../../../../shared/store";
 import { useChordVisibleVariant } from "../../../base/useChordVisibleVariant";
 import ComLine from "../line/ComLine";
 import { IComLineProps } from "../line/ComLine.model";

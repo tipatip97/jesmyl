@@ -1,4 +1,4 @@
-import { AppName } from "../store/Storage.model";
+import { AppName } from "../app/App.model";
 import TheCmApplication from "./apps/cm/Cm";
 
 export default function AppRouter({ app }: { app: AppName }) {

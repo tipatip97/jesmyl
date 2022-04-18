@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import useAbsolutePopup from "../../../../../complect/absolute-popup";
+import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
 import PhaseContainer from "../../../../../complect/phase-container";
 import useFullScreen from "../../../../../complect/useFullscreen";
-import { RootState } from "../../../../../store";
+import { RootState } from "../../../../../shared/store";
 import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";

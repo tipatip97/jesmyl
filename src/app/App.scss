@@ -42,4 +42,42 @@
             top: 0;
         }
     }
+
+    >.footer {
+        position: absolute;
+        bottom: var(--footer-bottom);
+        width: 100vw;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background-color: var(--color--1);
+        height: var(--footer-height);
+        transition: var(--fullscreen-transition);
+
+        >.footer-item {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            width: 25%;
+            cursor: pointer;
+
+            >.icon-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 24px;
+                height: 30px;
+                border-radius: 30px;
+                transition: width .1s, background-color .05s;
+            }
+
+            &.active {
+                >.icon-container {
+                    width: 50px;
+                    background-color: var(--color--2);
+                    color: var(--color--3);
+                }
+            }
+        }
+    }
 }

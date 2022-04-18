@@ -1,10 +1,10 @@
 import React, { ReactNode } from "react";
 import ReactDOM from "react-dom";
 import "./index.scss";
-import App from "./App";
+import App from "./app/App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
-import { store } from "./store";
+import { store } from "./shared/store";
 import { Provider } from "react-redux";
 
 export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null) => {

@@ -1,7 +1,7 @@
 import mylib from '../../complect/my-lib/MyLib';
-import { indexStorage } from '../../store/jstorages';
+import { indexStorage } from '../../shared/jstorages';
 import { BorderAuthorization } from './Board.model';
-import { setError, setBoardPhase } from './Board.store';
+import { setError } from './Board.store';
 
 export let localAuth = indexStorage.getOr('auth', { level: 0 });
 
@@ -21,7 +21,7 @@ export const sendLoginData = (mode: 'check' | 'login' | 'register', state?: Bord
         //   ? System.showToast('Регистрация и вход прошли успешно!')
         //   : System.showToast('Вход прошёл успешно!');
 
-        setBoardPhase('apps');
+        // setBoardPhase('apps');
       } else setError({ errorMessage: resp.errorMessage, errorScope: resp.errorId });
       return resp;
     })

@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { refresh } from "../../../complect/refresh/Refresher";
-import { RootState } from "../../../store";
+import { RootState } from "../../../shared/store";
 import { BoardApplication } from "../Board.model";
-import { setCurrentApp, setBoardPhase } from "../Board.store";
+import { setCurrentApp } from "../Board.store";
+import useIndexNav from "../complect/useIndexNav";
 
 export default function BoardAppList() {
   const dispatch = useDispatch();
   const apps: BoardApplication[] = useSelector(
-    (state: RootState) => state.board.apps
+    (state: RootState) => state.index.apps
   );
+  const { setPhase } = useIndexNav();
 
   return (
     <>
@@ -40,10 +42,7 @@ export default function BoardAppList() {
         })
       )}
       <div className="system-item">
-        <span
-          className="text"
-          onClick={() => dispatch(setBoardPhase("settings"))}
-        >
+        <span className="text" onClick={() => setPhase("settings")}>
           инструменты
         </span>
       </div>

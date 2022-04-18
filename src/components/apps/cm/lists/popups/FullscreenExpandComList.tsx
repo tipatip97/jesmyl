@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../../store";
+import { RootState } from "../../../../../shared/store";
 import RollControled from "../../base/RolledContent";
 import { Com } from "../../col/com/Com";
 import ComOrders from "../../col/com/orders/ComOrders";

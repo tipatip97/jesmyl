@@ -1,8 +1,8 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AbsolutePopupConfig, AbsolutePopupMode } from ".";
-import useNav from "../../components/apps/cm/base/useNav";
-import { RootState } from "../../store";
+import { AbsolutePopupConfig, AbsolutePopupMode } from "./useAbsolutePopup.model";
+import useCmNav from "../../components/apps/cm/base/useCmNav";
+import { RootState } from "../../shared/store";
 import { setAbsolutePopupOpen } from "../Complect.store";
 import "./AbsolutePopup.scss";
 
@@ -13,7 +13,7 @@ let isClosed = true;
 
 export default function useAbsolutePopup() {
   const dispatch = useDispatch();
-  const { registerBackAction } = useNav();
+  const { registerBackAction } = useCmNav();
   const absolutePopupOpenMode = useSelector(
     (state: RootState) => state.complect.absolutePopupOpenMode
   );

@@ -1,7 +1,9 @@
-import { AppName } from "../../store/Storage.model";
+import { AppName } from "../../app/App.model";
 
 export interface BorderState extends BorderStateError {
     phase: BoardPhase;
+    prevPhase: BoardPhase;
+    specialPhase: BoardSpecialPhase;
     currentApp: BoardAppName;
     auth?: BorderAuthorization;
     apps: BoardApplication[];
@@ -46,6 +48,7 @@ export interface BoardAuth extends Partial<BorderAuthorization> {
 }
 
 export type BoardPhase = 'apps' | 'settings' | 'login' | 'register';
+export type BoardSpecialPhase = '';
 export type BoardAppName = AppName | null;
 
 export interface SetFieldState<K extends keyof BorderAuthorization> {

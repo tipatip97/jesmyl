@@ -1,4 +1,4 @@
-import useAbsolutePopup from "../../../../../complect/absolute-popup";
+import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
 import EvaIcon from "../../../../../complect/eva-icon";
 import PhaseContainer from "../../../../../complect/phase-container";
 import ComFace from "../../col/com/face/ComFace";

@@ -1,10 +1,8 @@
 import { ReactNode, useEffect } from "react";
 import onBackButton from "../../../complect/back-button-listener";
-import EvaIcon from "../../../complect/eva-icon";
-import { cmStorage } from "../../../store/jstorages";
-import useNav from "./base/useNav";
+import { cmStorage } from "../../../shared/jstorages";
+import useCmNav from "./base/useCmNav";
 import useParanja from "./base/useParanja";
-import { footerItems } from "./Cm.complect";
 import { CmPhase } from "./Cm.model";
 import "./Cm.scss";
 import TheCat from "./col/cat/TheCat";
@@ -32,7 +30,7 @@ const Comps: Record<CmPhase, () => ReactNode> = {
 };
 
 export default function CmApplication() {
-  const { phase, setPhase, goBack, specialPhase } = useNav();
+  const { phase, goBack } = useCmNav();
   const [, setCols] = useCols();
 
   cmStorage.listen("cols", "cols-update", (val) => setCols(val));
@@ -54,33 +52,6 @@ export default function CmApplication() {
               </div>
             );
           })}
-        </div>
-        <div className="footer">
-          {footerItems.map(
-            ({ title, icon, phases, activeWithSpecialPhases }) => {
-              const isActive = specialPhase
-                ? activeWithSpecialPhases
-                : phases.indexOf(phase) > -1;
-              return !phases[0] ? null : (
-                <div
-                  key={`main-footer-item_${icon}`}
-                  className={`footer-item ${isActive ? "active" : ""}`}
-                  onClick={() =>
-                    setPhase(
-                      activeWithSpecialPhases ? phases[0] : [phases[0], null]
-                    )
-                  }
-                >
-                  <div className="icon-container">
-                    <EvaIcon
-                      name={`${icon}${isActive ? "" : "-outline"}` as never}
-                    />
-                  </div>
-                  <div className="title">{title}</div>
-                </div>
-              );
-            }
-          )}
         </div>
       </div>
       <div

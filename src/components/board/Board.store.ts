@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../complect/exer/Exer";
-import { appStorage, indexStorage } from "../../store/jstorages";
+import { appStorage, indexStorage } from "../../shared/jstorages";
 import {
   BoardAppName,
   BoardPhase,
@@ -10,6 +10,7 @@ import {
   BorderStateError,
   SetFieldState,
   BoardApplication,
+  BoardSpecialPhase,
 } from "./Board.model";
 
 export const boardExer = new Exer<IndexStorage>(indexStorage, 'index');
@@ -18,7 +19,9 @@ indexStorage.registerTop(appStorage);
 
 const initialState: BorderState = {
   phase: "apps",
-  currentApp: indexStorage.getOr("currentApp", 'cm'),
+  specialPhase: "",
+  prevPhase: "apps",
+  currentApp: indexStorage.getOr("currentApp", "cm"),
   apps: [],
 };
 
@@ -26,8 +29,10 @@ export const slice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    setBoardPhase: (state, action: PayloadAction<BoardPhase>) => {
-      state.phase = action.payload;
+    setBoardPhase: (state, action: PayloadAction<{ phase: BoardPhase; prevPhase: BoardPhase; specialPhase: BoardSpecialPhase }>) => {
+      state.phase = action.payload.phase;
+      state.prevPhase = action.payload.prevPhase;
+      if (action.payload.specialPhase !== undefined) state.specialPhase = action.payload.specialPhase;
     },
     setApps: (state, action: PayloadAction<BoardApplication[]>) => {
       state.apps = action.payload;

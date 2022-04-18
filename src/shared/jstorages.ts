@@ -2,7 +2,7 @@ import { ComplectStorage } from "../complect/Complect.model";
 import { JStorage } from "../complect/JStorage";
 import { CmStorage } from "../components/apps/cm/Cm.model";
 import { IndexStorage } from "../components/board/Board.model";
-import { AppName } from "./Storage.model";
+import { AppName } from "../app/App.model";
 
 
 export const indexStorage = new JStorage<IndexStorage>('index');

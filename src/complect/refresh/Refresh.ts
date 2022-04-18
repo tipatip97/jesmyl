@@ -1,6 +1,6 @@
 import { isAndroid } from "../device-differences";
 import { BoardAppName } from "../../components/board/Board.model";
-import { appStorage, indexStorage } from "../../store/jstorages";
+import { appStorage, indexStorage } from "../../shared/jstorages";
 import { CheckRefreshResponse, RefreshResponse, RefreshResponseValue, RefreshState } from "./Refresh.model";
 
 const host = 'https://jesmyl.space/debug/';

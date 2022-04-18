@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../store";
+import { RootState } from "../../../../shared/store";
 import { riseUpColsUpdates } from "../Cm.store";
 import { useCcat, useCcom } from "../col/useCcol";
 import { Cols } from "./Cols";

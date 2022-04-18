@@ -5,12 +5,10 @@ import { boardReducer } from '../components/board/Board.store';
 
 export const store = configureStore({
     reducer: {
-        board: boardReducer,
+        index: boardReducer,
         cm: cmReducer,
         complect: complectReducer,
     },
 });
 
 export type RootState = ReturnType<typeof store.getState>
-
-

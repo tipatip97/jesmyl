@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { renderApplication } from "../../../..";
 import { isTouchDevice } from "../../../../complect/device-differences";
 import modalService from "../../../../complect/modal/Modal.service";
-import { RootState } from "../../../../store";
-import useNav from "../base/useNav";
+import { RootState } from "../../../../shared/store";
+import useCmNav from "../base/useCmNav";
 import {
   riseUpTranslationUpdates,
   setTranslationBlock,
@@ -19,7 +19,7 @@ let currWin: Window | null = null;
 
 export default function useTranslation() {
   const dispatch = useDispatch();
-  const { setPhase } = useNav();
+  const { setPhase } = useCmNav();
   const [ccom] = useCcom();
   const currBlocki = useSelector(
     (state: RootState) => state.cm.translationBlock

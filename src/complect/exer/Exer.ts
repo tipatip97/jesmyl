@@ -1,5 +1,5 @@
-import { indexStorage } from "../../store/jstorages";
-import { AppName } from "../../store/Storage.model";
+import { indexStorage } from "../../shared/jstorages";
+import { AppName } from "../../app/App.model";
 import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";
 import mylib from "../my-lib/MyLib";

@@ -1,5 +1,5 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { cmStorage } from "../../../../../store/jstorages";
+import { cmStorage } from "../../../../../shared/jstorages";
 import { Base } from "../Base";
 import { IExportableSetts } from "./Setts.model";
 import { StyleProp } from "./StyleProp";

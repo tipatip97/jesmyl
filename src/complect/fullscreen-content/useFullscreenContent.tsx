@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useNav from "../../components/apps/cm/base/useNav";
-import { RootState } from "../../store";
+import useCmNav from "../../components/apps/cm/base/useCmNav";
+import { RootState } from "../../shared/store";
 import { switchFullscreenContentOpen } from "../Complect.store";
 import EvaIcon from "../eva-icon";
 import "./FullscreenContent.scss";
@@ -14,7 +14,7 @@ export default function useFullscreenContent() {
   const isFullscreenContentOpen = useSelector(
     (state: RootState) => state.complect.isFullscreenContentOpen
   );
-  const { registerBackAction } = useNav();
+  const { registerBackAction } = useCmNav();
 
   const ret = {
     isFullscreenContentOpen,

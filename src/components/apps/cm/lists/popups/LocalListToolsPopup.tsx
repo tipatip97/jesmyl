@@ -1,5 +1,5 @@
 import EvaIcon from "../../../../../complect/eva-icon";
-import useFullscreenContent from "../../../../../complect/fullscreen-content";
+import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import { Com } from "../../col/com/Com";
 import FullscreenExpandComList from "./FullscreenExpandComList";
 
