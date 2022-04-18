@@ -8,7 +8,7 @@ import Lists from "./lists/Lists";
 import Marks from "./lists/marks/Marks";
 import TheMeeting from "./lists/meetings/TheMeeting";
 import TheMeetings from "./lists/meetings/TheMeetings";
-import Other from "./other/Other";
+import PageOnDevelopment from "../../../complect/page-on-development/PageOnDevelopment";
 import Translations from "./translation/Translation";
 
 export default function CmApplication() {
@@ -35,6 +35,6 @@ export default function CmApplication() {
     case "meeting":
       return <TheMeeting />;
     default:
-      return <Other />;
+      return <PageOnDevelopment head="Новый раздел"/>;
   }
 }
