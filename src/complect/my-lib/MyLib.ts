@@ -872,12 +872,13 @@ export class MyLib {
         return refElem.parentNode?.insertBefore(elem, refElem.nextSibling);
     }
 
-    scrollToView(element: HTMLElement, position = 'center', props: { parent?: HTMLElement; force?: boolean; animationTime?: number; } = {} as never) {
+    scrollToView(element: HTMLElement, position = 'center', props: { parent?: HTMLElement; force?: boolean; animationTime?: number; top?: number; } = {} as never) {
         if (!element) return;
         const {
             parent = element.parentElement,
             force = true,
-            animationTime = 0
+            animationTime = 0,
+            top = 0,
         } = props;
 
         if (!parent) return;
@@ -907,11 +908,12 @@ export class MyLib {
             const end = elemPos - parentVol + elemVol;
             const center = elemPos - parentVol / 2 + elemVol / 2;
 
-            const newPos = posMode === 's'
+            const cleanPos = posMode === 's'
                 ? elemPos
                 : posMode === 'e'
                     ? end
                     : center;
+            const newPos = cleanPos - (pos === 'Top' ? top : 0);
 
             if (force || parentScroll > elemPos || parentScroll + parentVol < elemPos + elemVol) {
                 if (animationTime < 1) parent[`scroll${pos}`] = newPos;

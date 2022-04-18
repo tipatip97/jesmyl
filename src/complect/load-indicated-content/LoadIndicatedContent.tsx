@@ -23,7 +23,7 @@ export default function LoadIndicatedContent(
   useEffect(() => {
     if (props.isLoading) setState(State.Loading);
     else {
-      if (Date.now() - initTime < 100) onEnd();
+      if (Date.now() - initTime < 200) onEnd();
       else setState(State.Ready);
     }
   }, [props.isLoading]);

@@ -7,4 +7,5 @@ export interface ComFaceProps {
     errors?: string[];
     specialPhase?: CmSpecialPhase;
     importantOnClick?: () => void;
+    idPrefix?: string;
 }

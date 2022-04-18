@@ -22,7 +22,6 @@
             --footer-bottom: calc(0px - var(--footer-height));
             --content-height: 100vh;
             --main-content-height: 100vh;
-            --header-container-margin-top: calc(0px - var(--header-container-height) - var(--header-height));
 
             .collapse-fullscreen-button {
                 top: 0;
@@ -54,8 +53,6 @@
                 background-color: var(--color--1);
                 height: var(--header-container-height);
                 padding: var(--main-gap);
-                margin-top: var(--header-container-margin-top);
-                box-sizing: border-box;
                 transition: var(--fullscreen-transition);
 
                 .action-button {
@@ -67,7 +64,7 @@
             .content-container {
                 height: var(--content-height);
                 transition: var(--fullscreen-transition);
-                padding: var(--main-gap);
+                padding: 0 var(--main-gap);
                 overflow-y: auto;
                 overflow-x: hidden;
             }

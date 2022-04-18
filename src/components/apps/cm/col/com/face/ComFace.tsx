@@ -5,13 +5,13 @@ import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
 export default function ComFace(props: ComFaceProps) {
-  const { com, errors, specialPhase = null, importantOnClick } = props;
+  const { com, errors, specialPhase = null, importantOnClick, idPrefix } = props;
   const [, setCcom] = useCcom();
   const { setPhase } = useNav();
   const { openAbsolutePopup, closeAbsolutePopup } = useAbsolutePopup();
 
   return com == null ? null : (
-    <div id={`com-face-${com.wid}`}>
+    <div id={idPrefix ? `${idPrefix}${com.wid}` : ''}>
       <div
         className="com-face"
         style={{

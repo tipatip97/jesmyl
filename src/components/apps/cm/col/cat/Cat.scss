@@ -1,8 +1,13 @@
 .cat-content {
     position: relative;
 
-    .header-content {
+    .category-title,
+    .later-title {
+        background-color: var(--current-bg);
+        padding: var(--main-gap);
+    }
 
+    .header-content {
         .com-searcher {
             --height: calc(var(--header-container-height) - var(--main-gap) * 2);
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
@@ -21,6 +21,7 @@ export default function TheCat({
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const categoryTitleRef = useRef<HTMLDivElement>(null);
   const { specialPhase } = useNav();
   const isThematic = specialPhase === "thematic";
 
@@ -29,54 +30,63 @@ export default function TheCat({
   const [term, setTerm] = useState(cat?.term || "");
   const [, setTerm1] = useState(cat?.term || "");
 
-  useEffect(() => {
+  const scrollToCurrent = () => {
     if (ccom) {
-      const currentFace = document.getElementById(`com-face-${ccom.wid}`);
-      if (currentFace && listRef.current)
-        mylib.scrollToView(currentFace, "top", { parent: listRef.current });
+      setTimeout(() => {
+        const currentFace = document.getElementById(`com-face-${ccom.wid}`);
+        if (currentFace && listRef.current && categoryTitleRef.current)
+          mylib.scrollToView(currentFace, "top", {
+            parent: listRef.current,
+            top: categoryTitleRef.current.clientHeight,
+          });
+      });
     }
-  });
+  };
 
   return (
     <PhaseContainer
       topClass="cat-content"
-      head={(backButton) => (
-        <>
-          {isThematic ? backButton : null}
-          <div className="com-searcher">
-            <EvaIcon name="search-outline" />
-            <input
-              className="filter-input"
-              type="text"
-              placeholder="Поиск песен"
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                cat?.search(
-                  event.target.value,
-                  () => setTerm(event.target.value),
-                  500,
-                  () => {
-                    setTerm1(event.target.value);
-                    if (listRef.current) listRef.current.scrollTop = 0;
-                  }
-                )
-              }
-              ref={searchInputRef}
-              value={term}
-            />
-            <EvaIcon
-              name="close"
-              className={`clear-button ${term ? "" : "hidden"}`}
-              onClick={() => {
-                cat?.search("", () => setTerm(""));
-                searchInputRef.current?.focus();
-              }}
-            />
-          </div>
-        </>
-      )}
+      head={
+        !cat
+          ? null
+          : (backButton) => (
+              <>
+                {isThematic ? backButton : null}
+                <div className="com-searcher">
+                  <EvaIcon name="search-outline" />
+                  <input
+                    className="filter-input"
+                    type="text"
+                    placeholder="Поиск песен"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                      cat?.search(
+                        event.target.value,
+                        () => setTerm(event.target.value),
+                        500,
+                        () => {
+                          setTerm1(event.target.value);
+                          if (listRef.current) listRef.current.scrollTop = 0;
+                        }
+                      )
+                    }
+                    ref={searchInputRef}
+                    value={term}
+                  />
+                  <EvaIcon
+                    name="close"
+                    className={`clear-button ${term ? "" : "hidden"}`}
+                    onClick={() => {
+                      cat?.search("", () => setTerm(""));
+                      searchInputRef.current?.focus();
+                    }}
+                  />
+                </div>
+              </>
+            )
+      }
       contentRef={listRef}
       content={
-        <LoadIndicatedContent isLoading={!cat}>
+        <LoadIndicatedContent isLoading={!cat} onLoad={scrollToCurrent}>
           {!cat ? null : (
             <>
               <div
@@ -84,12 +94,16 @@ export default function TheCat({
                   !isThematic && !term && laterComs.length ? "" : "hidden"
                 }`}
               >
-                <div className="main-gap">Последние:</div>
+                <div className="later-title sticky">Последние:</div>
                 {laterComs.map((com) => (
                   <ComFace key={`later-com-${com.wid}`} com={com} />
                 ))}
               </div>
-              <div className="main-gap flex between">
+              <div
+                className="flex between sticky category-title"
+                ref={categoryTitleRef}
+                onClick={scrollToCurrent}
+              >
                 <div>{isThematic ? cat.name : "Все песни"}:</div>
                 {cat.wraps && (
                   <div>
@@ -106,6 +120,7 @@ export default function TheCat({
                   <ComFace
                     key={`com-face-${wrap.com.wid}`}
                     {...wrap}
+                    idPrefix="com-face-"
                     specialPhase={topSpecialPhase}
                   />
                 ))}
