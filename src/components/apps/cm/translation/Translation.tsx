@@ -25,10 +25,11 @@ export default function Translations() {
     closeTranslation,
     showMarks,
     isShowMarks,
+    isShowFullscreen,
   } = useTranslation();
 
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { isFullScreen, specialPhase } = useNav();
+  const { specialPhase } = useNav();
   const [ccat] = useCcat();
   const { markedComs } = useMarks();
   const { currentMeeting } = useMeetings();
@@ -42,7 +43,7 @@ export default function Translations() {
       : [markedComs, " - Избранное"]
     : [null, ""];
 
-  if (isFullScreen)
+  if (isShowFullscreen)
     return (
       <div className="translation-container">
         {

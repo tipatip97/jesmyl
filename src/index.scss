@@ -5,17 +5,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --main-gap: 8px;
-  --main-big-gap: 18px;
-  --header-height: 10px;
-  --header-container-height: 60px;
-  --footer-height: 70px;
-  --fullscreen-transition: top .3s, bottom .3s, height .3s, margin-top .3s;
-
-  --header-top: 0;
-  --header-container-top: var(--header-height);
-  --footer-bottom: 0;
-
   --color--1: #242a26;
   --color--2: #3b4b40;
   --color--3: #d5e6d6;
@@ -42,14 +31,11 @@ body {
   --text-color: var(--color--4);
   --current-bg: var(--color--5);
 
-  background-color: var(--current-bg);
-  font-family: var(--font-family);
   margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
   font-size: 16px;
-  color: var(--text-color);
 }
 
 * {
@@ -141,34 +127,4 @@ input {
 @font-face {
   font-family: main;
   src: url(./resource/avenir-next.ttf);
-}
-
-#root {
-  .main-gap-v {
-    margin-left: var(--main-gap);
-    margin-right: var(--main-gap);
-  }
-
-  .main-gap-h {
-    margin-top: var(--main-gap);
-    margin-bottom: var(--main-gap);
-  }
-
-  .main-gap {
-    margin: var(--main-gap);
-  }
-
-  .main-big-gap-v {
-    margin-left: var(--main-big-gap);
-    margin-right: var(--main-big-gap);
-  }
-
-  .main-big-gap-h {
-    margin-top: var(--main-big-gap);
-    margin-bottom: var(--main-big-gap);
-  }
-
-  .main-big-gap {
-    margin: var(--main-big-gap);
-  }
 }

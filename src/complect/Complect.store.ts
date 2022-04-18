@@ -6,6 +6,7 @@ import { ComplectState } from "./Complect.model";
 const initialState: ComplectState = {
     isFullscreenContentOpen: false,
     absolutePopupOpenMode: null,
+    isFullscreen: false,
 };
 
 export const slice = createSlice({
@@ -15,6 +16,9 @@ export const slice = createSlice({
         switchFullscreenContentOpen: (state, action: PayloadAction<boolean | nil>) => {
             state.isFullscreenContentOpen = action.payload ?? !state.isFullscreenContentOpen;
         },
+        switchComplectFullscreen: (state, action: PayloadAction<boolean | nil>) => {
+            state.isFullscreen = action.payload ?? !state.isFullscreen;
+        },
         setAbsolutePopupOpen: (state, action: PayloadAction<AbsolutePopupMode>) => {
             state.absolutePopupOpenMode = action.payload;
         },
@@ -23,7 +27,8 @@ export const slice = createSlice({
 
 export const {
     switchFullscreenContentOpen,
-    setAbsolutePopupOpen
+    setAbsolutePopupOpen,
+    switchComplectFullscreen
 } =
     slice.actions;
 export default slice.actions;

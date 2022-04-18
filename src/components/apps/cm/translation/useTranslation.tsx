@@ -19,7 +19,7 @@ let currWin: Window | null = null;
 
 export default function useTranslation() {
   const dispatch = useDispatch();
-  const { setPhase, isFullScreen, switchFullscreen } = useNav();
+  const { setPhase } = useNav();
   const [ccom] = useCcom();
   const currBlocki = useSelector(
     (state: RootState) => state.cm.translationBlock
@@ -75,12 +75,10 @@ export default function useTranslation() {
     },
     closeTranslation: () => {
       currWin?.close();
-      switchFullscreen(false);
       if (isShowFullscreen) setPhase("com");
     },
     openTranslations: () => {
       if (isShowFullscreen) {
-        switchFullscreen(true);
         setPhase(["translation", undefined, true]);
       } else setPhase("translation");
     },
@@ -137,7 +135,7 @@ export default function useTranslation() {
           break;
 
         case 27: // esc
-          if (isFullScreen) ret.closeTranslation();
+          if (isShowFullscreen) ret.closeTranslation();
           else {
             event.ctrlKey
               ? currWin &&

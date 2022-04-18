@@ -5,4 +5,5 @@ export interface ComplectStorage {}
 export interface ComplectState {
     isFullscreenContentOpen: boolean;
     absolutePopupOpenMode: AbsolutePopupMode;
+    isFullscreen: boolean;
 }

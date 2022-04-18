@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import useAbsolutePopup from "../../../../../complect/absolute-popup";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
 import PhaseContainer from "../../../../../complect/phase-container";
+import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../store";
 import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";
-import useNav from "../../base/useNav";
 import { ChordVisibleVariant } from "../../Cm.model";
 import { useMarks } from "../../lists/marks/useMarks";
 import { useCcom } from "../useCcol";
@@ -18,7 +18,7 @@ import ComOrders from "./orders/ComOrders";
 export default function TheCom() {
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
-  const { switchFullscreen } = useNav();
+  const [, switchFullscreen] = useFullScreen();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const isAnchorsVisible = useSelector(
     (state: RootState) => state.cm.isAnchorsVisible

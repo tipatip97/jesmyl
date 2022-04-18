@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import onBackButton from "../../../complect/back-button-listener";
 import EvaIcon from "../../../complect/eva-icon";
 import { cmStorage } from "../../../store/jstorages";
@@ -32,17 +32,8 @@ const Comps: Record<CmPhase, () => ReactNode> = {
 };
 
 export default function CmApplication() {
-  const {
-    phase,
-    setPhase,
-    goBack,
-    isFullScreen,
-    switchFullscreen,
-    specialPhase,
-  } = useNav();
+  const { phase, setPhase, goBack, specialPhase } = useNav();
   const [, setCols] = useCols();
-
-  const [topClickDateNow, setTopClickDateNow] = useState(0);
 
   cmStorage.listen("cols", "cols-update", (val) => setCols(val));
   const { onParanjaClick, paranjaMode } = useParanja();
@@ -52,24 +43,7 @@ export default function CmApplication() {
 
   return (
     <>
-      <div
-        className={`main-container phase-${phase}${
-          isFullScreen ? " fullscreen-mode" : ""
-        }`}
-        onClick={() => {
-          if (phase !== "com") return;
-          if (Date.now() - topClickDateNow < 500) {
-            switchFullscreen();
-            setTopClickDateNow(0);
-          } else setTopClickDateNow(Date.now());
-        }}
-      >
-        <EvaIcon
-          name="collapse-outline"
-          className="collapse-fullscreen-button pointer"
-          onClick={() => switchFullscreen(false)}
-        />
-
+      <div className={`main-container phase-${phase}`}>
         <div className="header"></div>
         <div className="content">
           {Object.entries(Comps).map(([phasen, phaseComp]) => {
