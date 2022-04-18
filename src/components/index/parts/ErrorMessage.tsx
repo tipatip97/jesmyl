@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../shared/store";
-import { BorderErrorScope } from "../Board.model";
+import { IndexErrorScope } from "../Index.model";
 
 export default function BoardErrorMessage({
   scope,
 }: {
-  scope: BorderErrorScope;
+  scope: IndexErrorScope;
 }) {
   const message = useSelector((state: RootState) => state.index.errorMessage);
   const errorScope = useSelector((state: RootState) => state.index.errorScope);

@@ -1,7 +1,7 @@
 import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
 import { cmStorage, indexStorage } from "../../../shared/jstorages";
-import { BoardApplication, BoardAuth } from "../../board/Board.model";
+import { IndexApplication, IndexAuth } from "../../index/Index.model";
 import {
   CmAction,
   CmAppVariables,
@@ -14,13 +14,13 @@ import { FooterItem, SetPhasePayload } from "../../../complect/nav-configurer/us
 
 let rules: Record<string, true | null> = {};
 export let actions: CmAction[] | nil;
-let localAuth: BoardAuth;
+let localAuth: IndexAuth;
 
 const update = () => {
   localAuth = indexStorage.getOr("auth", { level: 0 });
-  const app: BoardApplication<CmAppVariables> = indexStorage
+  const app: IndexApplication<CmAppVariables> = indexStorage
     .get("apps")
-    ?.find((app) => app.name === "cm") as BoardApplication<CmAppVariables>;
+    ?.find((app) => app.name === "cm") as IndexApplication<CmAppVariables>;
 
   actions =
     cmStorage.get("actions")?.concat(
@@ -77,7 +77,7 @@ export const getNewPhase = (
       ? "com"
       : phase === "cat"
         ? "lists"
-        : phase === "lists" || phase === "other"
+        : phase === "lists"
           ? "all"
           : phase === "meeting"
             ? "meetings"
@@ -92,11 +92,10 @@ export const specialPhases = ["marked", "thematic", "meeting"] as const;
 
 export const inlinePhases = [
   ["all", "com", "translation"],
-  ["lists", "cat", "marks", "meetings", "meeting"],
-  ["other", "editor"],
+  ["lists", "cat", "marks", "meetings", "meeting"]
 ] as const;
 
-const [allPhases, listsPhases, otherPhases] = inlinePhases;
+const [allPhases, listsPhases] = inlinePhases;
 
 export const cmFooterItems: FooterItem<CmPhase>[] = [
   {
@@ -109,11 +108,6 @@ export const cmFooterItems: FooterItem<CmPhase>[] = [
     title: "Списки",
     phases: listsPhases as never,
     activeWithSpecialPhases: true,
-  },
-  {
-    icon: "arrow-circle-right",
-    title: "Другое",
-    phases: otherPhases as never,
   },
 ];
 

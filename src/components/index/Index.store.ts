@@ -1,53 +1,48 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppName } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
 import { appStorage, indexStorage } from "../../shared/jstorages";
 import {
-  BoardAppName,
-  BoardPhase,
-  IndexStorage,
-  BorderAuthorization,
-  BorderState,
-  BorderStateError,
-  SetFieldState,
-  BoardApplication,
-  BoardSpecialPhase,
-} from "./Board.model";
+  IndexApplication, IndexPhase, IndexSpecialPhase, IndexAuthorization,
+  IndexState,
+  IndexStateError, IndexStorage, SetFieldState
+} from "./Index.model";
 
-export const boardExer = new Exer<IndexStorage>(indexStorage, 'index');
+export const indexExer = new Exer<IndexStorage>(indexStorage, 'index');
 
 indexStorage.registerTop(appStorage);
 
-const initialState: BorderState = {
-  phase: "apps",
-  specialPhase: "",
-  prevPhase: "apps",
+const initialState: IndexState = {
+  phase: indexStorage.getOr("phase", "main"),
+  specialPhase: indexStorage.getOr("specialPhase", "cm"),
+  prevPhase: indexStorage.getOr("prevPhase", "main"),
   currentApp: indexStorage.getOr("currentApp", "cm"),
   apps: [],
 };
 
 export const slice = createSlice({
-  name: "board",
+  name: "index",
   initialState,
   reducers: {
-    setBoardPhase: (state, action: PayloadAction<{ phase: BoardPhase; prevPhase: BoardPhase; specialPhase: BoardSpecialPhase }>) => {
+    setIndexPhase: (state, action: PayloadAction<{ phase: IndexPhase; prevPhase: IndexPhase; specialPhase: IndexSpecialPhase }>) => {
       state.phase = action.payload.phase;
       state.prevPhase = action.payload.prevPhase;
       if (action.payload.specialPhase !== undefined) state.specialPhase = action.payload.specialPhase;
     },
-    setApps: (state, action: PayloadAction<BoardApplication[]>) => {
+    setApps: (state, action: PayloadAction<IndexApplication[]>) => {
       state.apps = action.payload;
     },
-    setCurrentApp: (state, action: PayloadAction<BoardAppName>) => {
+    setCurrentApp: (state, action: PayloadAction<AppName>) => {
       state.currentApp = action.payload;
       indexStorage.set("currentApp", action.payload);
     },
-    setError: (state, action: PayloadAction<BorderStateError>) => {
+    setError: (state, action: PayloadAction<IndexStateError>) => {
       state.errorMessage = action.payload.errorMessage;
       state.errorScope = action.payload.errorScope;
     },
     setFieldState: (
       state,
-      action: PayloadAction<SetFieldState<keyof BorderAuthorization>>
+      action: PayloadAction<SetFieldState<keyof IndexAuthorization>>
     ) => {
       if (state.auth)
         state.auth[action.payload.fieldn] = action.payload.value || "";
@@ -55,8 +50,8 @@ export const slice = createSlice({
   },
 });
 
-export const { setBoardPhase, setFieldState, setError, setCurrentApp, setApps } =
+export const { setIndexPhase, setFieldState, setError, setCurrentApp, setApps } =
   slice.actions;
 export default slice.actions;
 
-export const boardReducer = slice.reducer;
+export const indexReducer = slice.reducer;

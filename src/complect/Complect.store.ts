@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { indexStorage } from "../shared/jstorages";
 import { AbsolutePopupMode } from "./absolute-popup/useAbsolutePopup.model";
 import { ComplectState } from "./Complect.model";
 
@@ -6,7 +7,7 @@ import { ComplectState } from "./Complect.model";
 const initialState: ComplectState = {
     phase: '',
     prevPhase: '',
-    specialPhase: '',
+    specialPhase: indexStorage.getOr('currentApp', 'cm'),
     isFullscreenContentOpen: false,
     absolutePopupOpenMode: null,
     isFullscreen: false,

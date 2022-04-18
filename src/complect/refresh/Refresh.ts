@@ -1,5 +1,5 @@
 import { isAndroid } from "../device-differences";
-import { BoardAppName } from "../../components/board/Board.model";
+import { IndexAppName } from "../../components/index/Index.model";
 import { appStorage, indexStorage } from "../../shared/jstorages";
 import { CheckRefreshResponse, RefreshResponse, RefreshResponseValue, RefreshState } from "./Refresh.model";
 
@@ -48,7 +48,7 @@ export class Refresh {
     }
 
 
-    lsTmVal<Value>(appName: BoardAppName, paramName: string, setVal?: Value) {
+    lsTmVal<Value>(appName: IndexAppName, paramName: string, setVal?: Value) {
         if (appName == null || setVal === null) return null;
         const storage = appStorage[appName];
 
@@ -58,11 +58,11 @@ export class Refresh {
         return storage.getOr(paramName, 0);
     }
 
-    appLastMod<Value>(appName: BoardAppName, setVal?: Value) {
+    appLastMod<Value>(appName: IndexAppName, setVal?: Value) {
         return this.lsTmVal(appName, 'lastUpdate', setVal);
     }
 
-    appLiveTm<Value>(appName: BoardAppName, setVal?: Value) {
+    appLiveTm<Value>(appName: IndexAppName, setVal?: Value) {
         return this.lsTmVal(appName, 'liveTm', setVal);
     }
 

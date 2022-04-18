@@ -5,6 +5,7 @@ import { useCcat } from "../col/useCcol";
 import { useCols } from "../cols/useCols";
 import "./Lists.scss";
 import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
+import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 
 export default function Lists() {
   const { setPhase } = useCmNav();
@@ -29,7 +30,7 @@ export default function Lists() {
             title="События"
             onClick={() => setPhase("meetings")}
           />
-          <div className="thematic-item flex column custom-align-items">
+          <BrutalScreen>
             <div className="title">Тематические:</div>
             {cols?.cats.map((cat) => {
               return !cat.wid ? null : (
@@ -46,7 +47,7 @@ export default function Lists() {
                 </div>
               );
             })}
-          </div>
+          </BrutalScreen>
         </>
       }
     />

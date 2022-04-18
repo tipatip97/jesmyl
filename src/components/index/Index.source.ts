@@ -1,11 +1,11 @@
 import mylib from '../../complect/my-lib/MyLib';
 import { indexStorage } from '../../shared/jstorages';
-import { BorderAuthorization } from './Board.model';
-import { setError } from './Board.store';
+import { IndexAuthorization } from './Index.model';
+import { setError } from './Index.store';
 
 export let localAuth = indexStorage.getOr('auth', { level: 0 });
 
-export const sendLoginData = (mode: 'check' | 'login' | 'register', state?: BorderAuthorization) => {
+export const sendLoginData = (mode: 'check' | 'login' | 'register', state?: IndexAuthorization) => {
   return fetch(`${localStorage.host}/auth`, {
     method: 'POST',
     body: setAuthBody(mode, state)
@@ -28,7 +28,7 @@ export const sendLoginData = (mode: 'check' | 'login' | 'register', state?: Bord
     .catch(() => setError({ errorMessage: 'Ошибка отправки данных.', errorScope: 'general' }));
 };
 
-export const setAuthBody = (mode = 'check', state?: BorderAuthorization) => {
+export const setAuthBody = (mode = 'check', state?: IndexAuthorization) => {
   if (state == null) return null;
 
   const body = new FormData();
@@ -37,7 +37,7 @@ export const setAuthBody = (mode = 'check', state?: BorderAuthorization) => {
     check: ['login', 'at'],
     login: ['login', 'passw'],
     register: ['fio', 'login', 'passw', 'rpassw'],
-  }[mode] || ['login', 'at']) as (keyof BorderAuthorization)[];
+  }[mode] || ['login', 'at']) as (keyof IndexAuthorization)[];
 
   fields.forEach(fieldName => {
     const fieldVal = state[fieldName] != null

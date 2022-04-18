@@ -1,10 +1,11 @@
+import { AppName } from "../app/App.model";
 import { AbsolutePopupMode } from "./absolute-popup/useAbsolutePopup.model";
 
 
 export interface ComplectStorage {}
 
 type ComplectPhase = '';
-type ComplectSpecialPhase = '';
+type ComplectSpecialPhase = AppName;
 
 export interface ComplectState {
     phase: ComplectPhase;

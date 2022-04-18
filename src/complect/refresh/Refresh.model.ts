@@ -1,11 +1,11 @@
-import { BoardAppName } from "../../components/board/Board.model";
+import { IndexAppName } from "../../components/index/Index.model";
 import { AppName } from "../../app/App.model";
 
 export type RefreshState = 'ready' | 'inactive' | 'error' | 'loading';
 
 export interface RefreshResponse {
     ok: boolean,
-    appName: BoardAppName,
+    appName: IndexAppName,
     appLive: number | null,
     appLm: number | null,
     indexLive: number | null,

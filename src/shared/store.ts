@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { complectReducer } from '../complect/Complect.store';
 import { cmReducer } from '../components/apps/cm/Cm.store';
-import { boardReducer } from '../components/board/Board.store';
+import { indexReducer } from '../components/index/Index.store';
 
 export const store = configureStore({
     reducer: {
-        index: boardReducer,
+        index: indexReducer,
         cm: cmReducer,
         complect: complectReducer,
     },

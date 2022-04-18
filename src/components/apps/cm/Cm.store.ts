@@ -41,7 +41,7 @@ const initialState: CmState = {
 };
 
 export const slice = createSlice({
-  name: "board",
+  name: "cm",
   initialState,
   reducers: {
     setCmPhase: (state, action: PayloadAction<{ prevPhase: CmPhase; phase: CmPhase; specialPhase: CmSpecialPhase }>) => {
