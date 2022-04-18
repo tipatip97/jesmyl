@@ -35,10 +35,12 @@ export default function TheCat({
       setTimeout(() => {
         const currentFace = document.getElementById(`com-face-${ccom.wid}`);
         if (currentFace && listRef.current && categoryTitleRef.current)
-          mylib.scrollToView(currentFace, "top", {
-            parent: listRef.current,
-            top: categoryTitleRef.current.clientHeight,
-          });
+          if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
+          else
+            mylib.scrollToView(currentFace, "top", {
+              parent: listRef.current,
+              top: categoryTitleRef.current.clientHeight,
+            });
       });
     }
   };
