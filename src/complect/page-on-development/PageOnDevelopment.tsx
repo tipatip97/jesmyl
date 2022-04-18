@@ -11,6 +11,7 @@ export default function PageOnDevelopment({
     <PhaseCmContainer
       topClass="other-container"
       head={head}
+      withoutBackButton
       contentClass="flex column center"
       content={
         <>

@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BrutalItem from "../../../complect/brutal-item";
 import BrutalScreen from "../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../complect/eva-icon";
+import PageOnDevelopment from "../../../complect/page-on-development/PageOnDevelopment";
 import { RootState } from "../../../shared/store";
 import PhaseIndexContainer from "../complect/phase-container/PhaseIndexContainer";
 import useIndexNav from "../complect/useIndexNav";
@@ -12,6 +13,8 @@ export default function IndexMain() {
   const { setPhase } = useIndexNav();
   const apps = useSelector((state: RootState) => state.index.apps);
   const currentApp = useSelector((state: RootState) => state.index.currentApp);
+
+  return <PageOnDevelopment head="Другое" />
 
   const filteredApps = apps.filter((app) => app.name !== currentApp);
   const appList =
