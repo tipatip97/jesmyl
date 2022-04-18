@@ -3,53 +3,6 @@
     position: relative;
     height: 100vh;
 
-    >.main-container {
-        >.header {
-            position: static;
-            margin-top: var(--header-top);
-            width: 100vw;
-            background-color: var(--color--1);
-            height: var(--header-height);
-            transition: var(--fullscreen-transition);
-        }
-
-        >.content {
-            position: static;
-            width: 100vw;
-            background-color: var(--color--5);
-            overflow: hidden;
-            transition: var(--fullscreen-transition);
-            margin-top: var(--content-top);
-
-            >.phase-content {
-                height: 100%;
-            }
-
-            .header-content {
-                width: 100vw;
-                position: absolute;
-                background-color: var(--color--1);
-                height: var(--header-container-height);
-                padding: var(--main-gap);
-                transition: var(--fullscreen-transition);
-                top: var(--header-container-top);
-
-                .action-button {
-                    padding: var(--main-gap);
-                    cursor: pointer;
-                }
-            }
-
-            .content-container {
-                height: var(--content-height);
-                transition: var(--fullscreen-transition);
-                padding: 0 var(--main-gap);
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
-        }
-    }
-
     .paranja {
         position: absolute;
         top: 0;

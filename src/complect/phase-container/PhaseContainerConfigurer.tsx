@@ -1,6 +1,7 @@
 import navConfigurers from "../../shared/navConfigurers";
 import EvaIcon from "../eva-icon";
 import { PhaseContainerConfigurerProps } from "./PhaseContainerConfigurer.model";
+import './PhaseContainerConfigurer.scss';
 
 export default function PhaseContainerConfigurer(
   props: PhaseContainerConfigurerProps
@@ -27,9 +28,9 @@ export default function PhaseContainerConfigurer(
   );
 
   return (
-    <div className={`${topClass} ${props.className || ""}`}>
+    <div className={`phase-container ${topClass} ${props.className || ""}`}>
       {noHead ? null : (
-        <div className={`header-content ${headClass || "flex"}`}>
+        <div className={`header ${headClass || "flex"}`}>
           {typeof head === "function" ? (
             head(backButton)
           ) : head == null ? (
@@ -53,7 +54,7 @@ export default function PhaseContainerConfigurer(
         </div>
       )}
       <div
-        className={`content-container ${contentClass || ""}`}
+        className={`content ${contentClass || ""}`}
         ref={contentRef}
       >
         {content}

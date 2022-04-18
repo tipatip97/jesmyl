@@ -1,0 +1,30 @@
+.phase-container {
+    >.header {
+        width: 100vw;
+        background-color: var(--color--1);
+        height: var(--header-height);
+        padding: var(--header-padding);
+        transition: var(--fullscreen-transition);
+        margin-top: var(--header-top);
+
+        .action-button {
+            padding: var(--main-gap);
+            cursor: pointer;
+        }
+    }
+
+    >.content {
+        position: static;
+        width: 100vw;
+        background-color: var(--color--5);
+        overflow-x: hidden;
+        overflow-y: auto;
+        transition: var(--fullscreen-transition);
+        height: var(--content-height);
+        padding: var(--main-gap);
+
+        >.phase-content {
+            height: 100%;
+        }
+    }
+}

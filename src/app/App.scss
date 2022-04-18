@@ -1,17 +1,16 @@
 .application-container {
     --main-gap: 8px;
     --main-big-gap: 18px;
-    --header-height: 10px;
-    --header-container-height: 60px;
+    --header-padding-top: 23px;
+    --header-padding: var(--header-padding-top) var(--main-gap) var(--main-gap) var(--main-gap);
+    --header-content-height: 50px;
     --footer-height: 70px;
     --fullscreen-transition: top .3s, bottom .3s, height .3s, margin-top .3s;
-
     --header-top: 0;
-    --header-container-top: var(--header-height);
+    --header-height: calc(var(--header-padding-top) + var(--header-content-height));
     --footer-bottom: 0;
-    --content-height: calc(100vh - var(--header-height) - var(--header-container-height) - var(--footer-height));
-    --main-content-height: calc(100vh - var(--header-height) - var(--footer-height));
-    --content-top: var(--header-container-height);
+    --content-height: calc(100vh - var(--header-height) - var(--footer-height));
+    --content-top: var(--header-content-height);
 
     background-color: var(--current-bg);
     font-family: var(--font-family);
@@ -32,10 +31,9 @@
 
     &.fullscreen-mode {
         --header-top: calc(0px - var(--header-height));
-        --header-container-top: calc(0px - var(--header-container-height));
+        --header-container-top: calc(0px - var(--header-content-height));
         --footer-bottom: calc(0px - var(--footer-height));
         --content-height: 100vh;
-        --main-content-height: 100vh;
         --content-top: 0;
 
         .collapse-fullscreen-button {
