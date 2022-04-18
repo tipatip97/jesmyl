@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import onBackButton from "../../../complect/back-button-listener";
 import { cmStorage } from "../../../shared/jstorages";
 import useCmNav from "./base/useCmNav";
 import "./Cm.scss";
@@ -14,13 +12,10 @@ import Other from "./other/Other";
 import Translations from "./translation/Translation";
 
 export default function CmApplication() {
-  const { phase, goBack } = useCmNav();
+  const { phase } = useCmNav();
   const [, setCols] = useCols();
 
   cmStorage.listen("cols", "cols-update", (val) => setCols(val));
-
-  onBackButton.listen("cm-listener", () => goBack());
-  useEffect(() => () => onBackButton.mute("cm-listener"), []);
 
   switch (phase) {
     case "all":

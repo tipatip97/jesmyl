@@ -23,9 +23,9 @@ export default function useNavConfigurer<App extends AppName, State extends Root
     const [isFullScreen, switchFullscreen] = useFullScreen();
 
     const ret = {
-        phase: useSelector((state: RootState) => state[appName].phase),
-        prevPhase: useSelector((state: RootState) => state[appName].prevPhase),
-        specialPhase: useSelector((state: RootState) => state[appName].specialPhase),
+        phase: useSelector((state: RootState): RootState[App]['phase'] => state[appName].phase),
+        prevPhase: useSelector((state: RootState): RootState[App]['prevPhase'] => state[appName].prevPhase),
+        specialPhase: useSelector((state: RootState): RootState[App]['specialPhase'] => state[appName].specialPhase),
         footerItems,
         setPhase: <Phase extends State['phase'], SpecialPhase extends State['specialPhase']>(val: SetPhasePayload<Phase, SpecialPhase>) => {
             const [phase, specialPhase, preventSaveLocal] = [val].flat() as [State['phase'], State['specialPhase'], boolean];
