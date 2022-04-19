@@ -1,0 +1,12 @@
+.index-login {
+    .input-container {
+        >:not(input) {}
+
+        >input {
+            margin-left: 10px;
+            background-color: var(--color--1);
+            color: var(--text-color);
+            padding: .3em;
+        }
+    }
+}

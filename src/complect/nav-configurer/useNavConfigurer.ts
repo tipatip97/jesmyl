@@ -11,7 +11,7 @@ export default function useNavConfigurer<App extends AppName, State extends Root
     appName: App,
     firstPhase: Phase,
     actions: UseNavAction[],
-    setPhaseAction: (payload: { phase: State['phase']; prevPhase: State['phase']; specialPhase: State['specialPhase'] }) => PayloadAction<{ phase: State['phase']; prevPhase: State['phase']; specialPhase: State['specialPhase'] }>,
+    setPhaseAction: (payload: { phase: State['phase'] | nil; prevPhase: State['phase']; specialPhase: State['specialPhase'] }) => PayloadAction<{ phase: State['phase'] | nil; prevPhase: State['phase']; specialPhase: State['specialPhase'] }>,
     getNewPhase: (
         phase: State['phase'],
         specialPhase: State['specialPhase'],
@@ -28,7 +28,7 @@ export default function useNavConfigurer<App extends AppName, State extends Root
         specialPhase: useSelector((state: RootState): RootState[App]['specialPhase'] => state[appName].specialPhase),
         footerItems,
         setPhase: <Phase extends State['phase'], SpecialPhase extends State['specialPhase']>(val: SetPhasePayload<Phase, SpecialPhase>) => {
-            const [phase, specialPhase, preventSaveLocal] = [val].flat() as [State['phase'], State['specialPhase'], boolean];
+            const [phase, specialPhase, preventSaveLocal] = [val].flat() as [State['phase'] | nil, State['specialPhase'], boolean];
 
             const prevPhase = ret.phase;
             dispatch(setPhaseAction({ phase, prevPhase, specialPhase }));

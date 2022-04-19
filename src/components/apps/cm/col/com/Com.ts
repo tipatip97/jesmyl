@@ -358,7 +358,7 @@ export class Com extends EditableCom {
       orders.push(newOrder);
 
       top.header = newOrder.isEmptyHeader || !newOrder.isVisible
-        ? (bag, isRequired) => isRequired ? header(ord, style, false)(bag) : '0'
+        ? (bag, isRequired) => isRequired ? header(ord, style, false)(bag) : ''
         : targetOrd && targetOrd.top.header
           ? targetOrd.top.header
           : header(ord, style);

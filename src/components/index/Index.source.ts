@@ -4,9 +4,10 @@ import { IndexAuthorization } from './Index.model';
 import { setError } from './Index.store';
 
 export let localAuth = indexStorage.getOr('auth', { level: 0 });
+export type AuthMode = 'check' | 'login' | 'register';
 
-export const sendLoginData = (mode: 'check' | 'login' | 'register', state?: IndexAuthorization) => {
-  return fetch(`${localStorage.host}/auth`, {
+export const sendLoginData = (mode: AuthMode, state?: IndexAuthorization) => {
+  return fetch(`https://jesmyl.space/auth`, {
     method: 'POST',
     body: setAuthBody(mode, state)
   })

@@ -5,8 +5,9 @@ import { IndexApplication } from "./Index.model";
 import "./Index.scss";
 import { setApps } from "./Index.store";
 import useIndexNav from "./complect/useIndexNav";
-import IndexMain from "./parts/index-main/IndexMain";
+import IndexMain from "./parts/main/IndexMain";
 import IndexSettings from "./parts/Settings";
+import IndexLogin from "./parts/login/IndexLogin";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -26,6 +27,8 @@ export default function Index() {
       return <IndexMain />;
     case "settings":
       return <IndexSettings />;
+    case "login":
+      return <IndexLogin />;
   }
   return null;
 }

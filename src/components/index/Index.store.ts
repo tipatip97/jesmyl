@@ -25,8 +25,8 @@ export const slice = createSlice({
   name: "index",
   initialState,
   reducers: {
-    setIndexPhase: (state, action: PayloadAction<{ phase: IndexPhase; prevPhase: IndexPhase; specialPhase: IndexSpecialPhase }>) => {
-      state.phase = action.payload.phase;
+    setIndexPhase: (state, action: PayloadAction<{ phase: IndexPhase | nil; prevPhase: IndexPhase; specialPhase: IndexSpecialPhase }>) => {
+      if (action.payload.phase != null) state.phase = action.payload.phase;
       state.prevPhase = action.payload.prevPhase;
       if (action.payload.specialPhase !== undefined) state.specialPhase = action.payload.specialPhase;
     },

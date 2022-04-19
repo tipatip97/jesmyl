@@ -112,18 +112,12 @@ export default function TheOrder(props: ITheOrderProps) {
       })}
     >
       <div
-        key={`song-part-woc-${orderUniti}`}
         className={`song-part ${chordedOrd ? "" : "without-chords"} ${
           orderUnit.top.textClassName
         }`}
       >
         {blockHeader ? (
-          <span
-            key={`song-part-header-${orderUniti}`}
-            className={orderUnit.top.headClassName}
-          >
-            {blockHeader}
-          </span>
+          <span className={orderUnit.top.headClassName}>{blockHeader}</span>
         ) : null}
         {(orderUnit.repeated || "")
           .split(/\n/)

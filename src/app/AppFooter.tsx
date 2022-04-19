@@ -1,3 +1,4 @@
+import { useState } from "react";
 import EvaIcon from "../complect/eva-icon";
 import useIndexNav from "../components/index/complect/useIndexNav";
 import navConfigurers from "../shared/navConfigurers";
@@ -6,6 +7,7 @@ import { AppName } from "./App.model";
 export default function AppFooter({ app }: { app: AppName }) {
   const { phase, setPhase, specialPhase, footerItems } = navConfigurers[app]();
   const { specialPhase: appPhase, setPhase: setIndexPhase } = useIndexNav();
+  const [footApp, setCurrFooterState] = useState('index');
 
   return (
     <div className="footer">
@@ -19,7 +21,8 @@ export default function AppFooter({ app }: { app: AppName }) {
             className={`footer-item ${isActive ? "active" : ""}`}
             onClick={() => {
               setPhase(activeWithSpecialPhases ? phases[0] : [phases[0], null]);
-              setIndexPhase(["main", app]);
+              setIndexPhase([null, app]);
+              setCurrFooterState(app);
             }}
           >
             <div className="icon-container">
@@ -31,10 +34,14 @@ export default function AppFooter({ app }: { app: AppName }) {
       })}
       <div
         className={`footer-item ${appPhase === "index" ? "active" : ""}`}
-        onClick={() => setIndexPhase(["main", "index"])}
+        onClick={() => {
+          if (footApp === 'index') setIndexPhase(["main", "index"]);
+          else setIndexPhase([null, "index"]);
+          setCurrFooterState('index');
+        }}
       >
         <div className="icon-container">
-          <EvaIcon name="arrow-circle-right-outline" />
+          <EvaIcon name={`arrow-circle-right${appPhase !== "index" ? '-outline' : ''}`} />
         </div>
         <div className="title">Другое</div>
       </div>

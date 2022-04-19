@@ -45,10 +45,10 @@ export const slice = createSlice({
   name: "cm",
   initialState,
   reducers: {
-    setCmPhase: (state, action: PayloadAction<{ prevPhase: CmPhase; phase: CmPhase; specialPhase: CmSpecialPhase }>) => {
+    setCmPhase: (state, action: PayloadAction<{ prevPhase: CmPhase; phase: CmPhase | nil; specialPhase: CmSpecialPhase }>) => {
 
       state.prevPhase = action.payload.prevPhase;
-      state.phase = action.payload.phase;
+      if (action.payload.phase != null) state.phase = action.payload.phase;
       if (action.payload.specialPhase !== undefined) state.specialPhase = action.payload.specialPhase;
     },
     selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {
