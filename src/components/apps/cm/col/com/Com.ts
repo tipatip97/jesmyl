@@ -117,7 +117,7 @@ export class Com extends EditableCom {
     delete this.ton;
     delete this.tonc;
     this.transPosition = this.initialTransPos;
-    this.resetChordLabels();
+    this.updateChordLabels();
   }
 
   transpose(delta: number) {
@@ -126,7 +126,7 @@ export class Com extends EditableCom {
 
     this.ton = this.transPosition;
     this.tonc = mylib.def(this.tonc, this.chordLabels[0][0][0]);
-    this.resetChordLabels();
+    this.updateChordLabels();
   }
 
   getOrderedTexts(isIncluseEndstars = true) {
@@ -248,6 +248,7 @@ export class Com extends EditableCom {
     });
 
     this.tonc = this.firstChord = firstChord;
+    console.log(firstChord);
   }
 
   static withBemoles(chords?: string, isSet: num = 0) {

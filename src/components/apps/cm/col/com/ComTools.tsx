@@ -45,14 +45,14 @@ export default function ComTools() {
           <EvaIcon
             name="plus"
             onClick={() => {
-              ccom.transpose(-1);
+              ccom.transpose(1);
               dispatch(riseUpComUpdate());
             }}
           />
         </div>
       </div>
       <div className="abs-item">
-        <EvaIcon name="text-outline" className="abs-icon" />
+        <EvaIcon name="format-text-variant-outline" className="abs-icon" />
         <div className="title">Размер шрифта</div>
         <div className="abs-action flex around pointer">
           <EvaIcon
@@ -84,7 +84,7 @@ export default function ComTools() {
         className="abs-item abs-full"
         onClick={() => dispatch(switchAnchorsVisible())}
       >
-        <EvaIcon name="format-text-variant-outline" className="abs-icon" />
+        <EvaIcon name={isAnchorsVisible ? 'collapse' : 'expand'} className="abs-icon" />
         <div className="title">
           {isAnchorsVisible ? "Свернуть текст" : "Развернуть текст"}
         </div>
