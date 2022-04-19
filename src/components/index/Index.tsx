@@ -5,7 +5,7 @@ import { IndexApplication } from "./Index.model";
 import "./Index.scss";
 import { setApps } from "./Index.store";
 import useIndexNav from "./complect/useIndexNav";
-import IndexMain from "./parts/IndexMain";
+import IndexMain from "./parts/index-main/IndexMain";
 import IndexSettings from "./parts/Settings";
 
 export default function Index() {

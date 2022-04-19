@@ -5,9 +5,11 @@ export interface IndexState extends IndexStateError {
     phase: IndexPhase;
     prevPhase: IndexPhase;
     specialPhase: IndexSpecialPhase;
-    currentApp: IndexAppName;
+    currentApp: AppName;
     auth?: IndexAuthorization;
     apps: IndexApplication[];
+
+    lastUpdate?: number;
 }
 
 export type IndexErrorScope = keyof IndexAuthorization | 'general';
@@ -36,6 +38,7 @@ export interface IndexStorage {
     theme: 'light-theme';
 
     lastUpdate: number;
+    updateOnRefresher: boolean;
 }
 
 export interface IndexApplication<Variables = {}> {

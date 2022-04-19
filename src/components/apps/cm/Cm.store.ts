@@ -18,6 +18,7 @@ const initialState: CmState = {
   phase: cmStorage.getOr('phase', 'all'),
   specialPhase: cmStorage.getOr('specialPhase', null),
   prevPhase: cmStorage.get('prevPhase'),
+  lastUpdate: cmStorage.get('lastUpdate'),
   rollMode: null,
   isCmFullscreen: false,
   isShowMarks: false,

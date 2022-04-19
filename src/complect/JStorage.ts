@@ -1,6 +1,10 @@
 
 export type JStorageListener<Val> = (val: Val) => void;
 
+export interface JStorageTechFields {
+    lastUpdate: number;
+}
+
 export class JStorage<Scope = any> {
     prefix: string = '';
     scope: string = '';

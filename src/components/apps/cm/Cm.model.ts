@@ -46,6 +46,8 @@ export interface CmStoraged {
     cm_meetings?: IExportableMeeting[];
     comFontSize: number;
     chords: Record<string, number[]>;
+
+    lastUpdate?: number;
 }
 
 export interface CmStorage extends CmStoraged {

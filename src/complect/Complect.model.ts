@@ -1,5 +1,6 @@
 import { AppName } from "../app/App.model";
 import { AbsolutePopupMode } from "./absolute-popup/useAbsolutePopup.model";
+import { FullScreenContentOpenMode } from "./fullscreen-content/useFullscreenContent";
 
 
 export interface ComplectStorage {}
@@ -11,7 +12,7 @@ export interface ComplectState {
     phase: ComplectPhase;
     prevPhase: ComplectPhase;
     specialPhase: ComplectSpecialPhase;
-    isFullscreenContentOpen: boolean;
+    fullscreenContentOpenMode: FullScreenContentOpenMode;
     absolutePopupOpenMode: AbsolutePopupMode;
     isFullscreen: boolean;
 }

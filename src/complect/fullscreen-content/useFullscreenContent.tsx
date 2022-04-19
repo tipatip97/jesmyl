@@ -2,32 +2,34 @@ import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useCmNav from "../../components/apps/cm/base/useCmNav";
 import { RootState } from "../../shared/store";
-import { switchFullscreenContentOpen } from "../Complect.store";
+import { setFullscreenContentOpenMode } from "../Complect.store";
 import EvaIcon from "../eva-icon";
 import "./FullscreenContent.scss";
+
+export type FullScreenContentOpenMode = null | "open" | "closable";
 
 let fullscreenContent: ReactNode;
 let isOpen = false;
 
 export default function useFullscreenContent() {
   const dispatch = useDispatch();
-  const isFullscreenContentOpen = useSelector(
-    (state: RootState) => state.complect.isFullscreenContentOpen
+  const fullscreenContentOpenMode = useSelector(
+    (state: RootState) => state.complect.fullscreenContentOpenMode
   );
   const { registerBackAction } = useCmNav();
 
   const ret = {
-    isFullscreenContentOpen,
+    fullscreenContentOpenMode,
     closeFullscreenContent: () => {
-      dispatch(switchFullscreenContentOpen(false));
+      dispatch(setFullscreenContentOpenMode(null));
       fullscreenContent = null;
       if (!isOpen) return true;
       isOpen = false;
     },
-    openFullscreenContent: (content: ReactNode) => {
+    openFullscreenContent: (content: ReactNode, closable = false) => {
       isOpen = true;
       fullscreenContent = content;
-      dispatch(switchFullscreenContentOpen(true));
+      dispatch(setFullscreenContentOpenMode(closable ? "closable" : "open"));
       registerBackAction(() => ret.closeFullscreenContent());
     },
   };
@@ -35,7 +37,7 @@ export default function useFullscreenContent() {
 }
 
 export function FULLSCREEN__CONTENT() {
-  const { isFullscreenContentOpen, closeFullscreenContent } =
+  const { fullscreenContentOpenMode, closeFullscreenContent } =
     useFullscreenContent();
   useEffect(
     () =>
@@ -49,14 +51,21 @@ export function FULLSCREEN__CONTENT() {
   return (
     <div
       className={`fullscreen-content-container ${
-        isFullscreenContentOpen ? "open" : ""
+        fullscreenContentOpenMode ? "open" : ""
       }`}
+      onClick={
+        fullscreenContentOpenMode === "closable"
+          ? () => closeFullscreenContent()
+          : undefined
+      }
     >
-      <EvaIcon
-        name="close"
-        className="close-button"
-        onClick={() => closeFullscreenContent()}
-      />
+      {fullscreenContentOpenMode === "closable" ? null : (
+        <EvaIcon
+          name="close"
+          className="close-button"
+          onClick={() => closeFullscreenContent()}
+        />
+      )}
       {fullscreenContent}
     </div>
   );

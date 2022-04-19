@@ -123,8 +123,10 @@ export class Refresh {
             .then((res: CheckRefreshResponse) => {
                 if (!res.ok) return;
 
-                if (res.isReady) this.stateChange('ready');
-                else this.check();
+                if (res.isReady) {
+                    if (indexStorage.get('updateOnRefresher')) this.stateChange('ready');
+                    else this.pull(false);
+                } else this.check();
             });
     }
 

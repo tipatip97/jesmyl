@@ -17,6 +17,7 @@ const initialState: IndexState = {
   specialPhase: indexStorage.getOr("specialPhase", "cm"),
   prevPhase: indexStorage.getOr("prevPhase", "main"),
   currentApp: indexStorage.getOr("currentApp", "cm"),
+  lastUpdate: indexStorage.get("lastUpdate"),
   apps: [],
 };
 

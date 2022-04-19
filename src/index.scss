@@ -36,6 +36,10 @@ body {
   width: 100vw;
   height: 100vh;
   font-size: 16px;
+
+  background-color: var(--current-bg);
+  font-family: var(--font-family);
+  color: var(--text-color);
 }
 
 * {
@@ -55,6 +59,14 @@ body {
 input {
   font-size: 1em;
   font-family: var(--font-family);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
 }
 
 .flex {
@@ -78,6 +90,40 @@ input {
 
   &.column {
     flex-direction: column;
+  }
+}
+
+.pointers-none {
+  pointer-events: fill;
+}
+.pointers-all {
+  pointer-events: all;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute,
+.relative {
+  &.float-bottom {
+    bottom: 0;
+  }
+
+  &.float-top {
+    top: 0;
+  }
+
+  &.float-left {
+    left: 0;
+  }
+
+  &.float-right {
+    right: 0;
   }
 }
 
@@ -127,4 +173,8 @@ input {
 @font-face {
   font-family: main;
   src: url(./resource/avenir-next.ttf);
+}
+
+a {
+  color: var(--text-color);
 }
