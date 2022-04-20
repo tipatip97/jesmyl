@@ -41,6 +41,7 @@ export default function useTranslation() {
     currWin,
     isShowFullscreen,
     isShowMarks,
+    isTranslationBlockVisible: isVisible,
     currBlock: isVisible ? blocks && blocks[currBlocki] : "",
     currBlocki,
     blocks,
@@ -121,36 +122,38 @@ export default function useTranslation() {
         setPhase("translation");
       }
     },
-    onKeyUpTranslations: async (event: MouseEvent | any) => {
+    onKeyTranslations: async (event: KeyboardEvent) => {
+      if ((event.code === "KeyC" || event.code === "KeyR") && event.ctrlKey) return;
       event.preventDefault();
-      const shiftKey = event.shiftKey;
 
-      switch (event.keyCode) {
-        case 37: // arr left
-          if (!shiftKey) ret.prevBlock();
+      switch (event.code) {
+        case "ArrowLeft":
+          ret.prevBlock();
           break;
 
-        case 39: // arr right
-          if (!shiftKey) ret.nextBlock();
+        case "Enter":
+          ret.newTranslation(200, 200);
           break;
 
-        case 27: // esc
+        case "ArrowRight":
+          ret.nextBlock();
+          break;
+
+        case "Escape":
           if (isShowFullscreen) ret.closeTranslation();
-          else {
-            event.ctrlKey
-              ? currWin &&
-                (await modalService.confirm("Закончить Трансляцию?")) &&
-                currWin.close()
-              : ret.switchVisible();
-          }
+          else ret.switchVisible();
           break;
 
-        case 86: // v
+        case "KeyV":
           ret.switchVisible();
           break;
 
-        case 70: // f
+        case "KeyF":
           currWin && currWin.focus();
+          break;
+
+        case "KeyT":
+          ret.switchPosition();
           break;
       }
     },

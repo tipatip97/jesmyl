@@ -3,7 +3,7 @@
     --size: 50vmin;
     --max-size: 300px;
     --min-size: 200px;
-    
+
     height: 100vh;
     width: 100vw;
 
@@ -11,7 +11,6 @@
         position: relative;
         display: inline-block;
         vertical-align: middle;
-        padding: 0 1em;
         width: var(--size);
         height: var(--size);
         max-width: var(--max-size);
@@ -45,7 +44,18 @@
         overflow-y: auto;
     }
 
+    &:not(.top).center {
+        .translations-line {
+            .translations-line-item {
+                .translations-line-item-inner {
+                    align-items: center;
+                }
+            }
+        }
+    }
+
     .translations-line {
+        display: flex;
         margin: 1em 0;
         padding: 1em 0;
         overflow: auto;
@@ -55,11 +65,10 @@
         border-radius: var(--radius);
 
         .translations-line-item {
-            display: inline-block;
-            vertical-align: middle;
-            padding: 0 1em;
+            margin: 0 7px;
 
             .translations-line-item-inner {
+                display: flex;
                 user-select: none;
                 cursor: pointer;
                 background: black;
@@ -69,6 +78,8 @@
                 font-size: 14px;
                 overflow: hidden;
                 text-align: center;
+                height: calc(100% - 1.5em);
+                padding: 5px;
 
                 &.active {
                     border-color: var(--color-far);
@@ -79,7 +90,11 @@
 
     .control-panel {
         >.button {
-            padding: 2px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            width: 100%;
             border-radius: 15px;
             background-color: var(--color--1);
             color: var(--color--4);
@@ -93,7 +108,6 @@
         >.start-translation {
             --svg-color: var(--color--5);
 
-            width: 100%;
             background-color: var(--color--7);
         }
     }

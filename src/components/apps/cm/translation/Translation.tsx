@@ -26,6 +26,7 @@ export default function Translations() {
     showMarks,
     isShowMarks,
     isShowFullscreen,
+    isTranslationBlockVisible,
   } = useTranslation();
 
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
@@ -84,7 +85,7 @@ export default function Translations() {
 
   return (
     <PhaseCmContainer
-      topClass="translation-container"
+      topClass={`translation-container ${position}`}
       head={`Трансляция${titlePostfix}`}
       content={
         <>
@@ -101,6 +102,14 @@ export default function Translations() {
                     window.addEventListener("resize", () => update())
                   }
                 />
+                {isTranslationBlockVisible ? null : (
+                  <div
+                    title="esc, V"
+                    className="absolute float-bottom full-width margin-gap-v text-center"
+                  >
+                    Нажми для показа
+                  </div>
+                )}
               </div>
             </div>
             {specialPhase ? (
@@ -126,15 +135,16 @@ export default function Translations() {
                     key={`translations-line-item_${blocki}`}
                     id={`translation-window-line-${blocki}`}
                     className="translations-line-item"
+                    onClick={() => setBlocki(blocki)}
                   >
                     <div>{blocki + 1}</div>
                     <div
                       className={`translations-line-item-inner ${
                         currBlocki === blocki ? "active" : ""
                       }`}
-                      onClick={() => setBlocki(blocki)}
-                      dangerouslySetInnerHTML={{ __html: block }}
-                    />
+                    >
+                      <div dangerouslySetInnerHTML={{ __html: block }} />
+                    </div>
                   </div>
                 );
               })}
@@ -148,6 +158,7 @@ export default function Translations() {
               <EvaIcon name="chevron-right-outline" />
             </div>
             <div
+              title={currWin ? "" : "Enter"}
               className="start-translation button flex center"
               onClick={(event) => {
                 newTranslation(
@@ -163,12 +174,13 @@ export default function Translations() {
               )}
             </div>
             <div
+              title="T"
               className={`button ${position === "center" ? "inactive" : ""}`}
               onClick={() => switchPosition()}
             >
               <EvaIcon name="upload-outline" />
             </div>
-            <div className="button" onClick={() => switchVisible()}>
+            <div title="esc, V" className="button" onClick={() => switchVisible()}>
               <EvaIcon name="square-outline" />
             </div>
           </div>

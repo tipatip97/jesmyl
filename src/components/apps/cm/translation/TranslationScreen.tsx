@@ -3,11 +3,11 @@ import { TranslationScreenProps } from "./Translations.model";
 import useTranslation from "./useTranslation";
 
 export default function TranslationScreen(props: TranslationScreenProps) {
-  const { currWin, currBlock, onKeyUpTranslations, position } =
+  const { currWin, currBlock, onKeyTranslations, position } =
     useTranslation();
 
-  if (currWin) currWin.onkeyup = onKeyUpTranslations;
-  window.onkeyup = onKeyUpTranslations;
+  if (currWin) currWin.onkeydown = onKeyTranslations;
+  window.onkeydown = onKeyTranslations;
 
   return (
     <div
@@ -28,9 +28,7 @@ export default function TranslationScreen(props: TranslationScreenProps) {
       <FontSizeContain
         containerId={props.fontSizeContainId}
         position={position}
-        updater={(update) => {
-          if (props.updater) props.updater(update);
-        }}
+        updater={(update) => props.updater && props.updater(update)}
       >
         <div
           style={{ whiteSpace: "pre", textAlign: "center", padding: "10px" }}
