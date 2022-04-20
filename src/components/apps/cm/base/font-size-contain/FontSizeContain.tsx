@@ -19,6 +19,7 @@ export default function FontSizeContain(
               resize(element, props.fixOnly, props.position);
           };
 
+          res();
           setTimeout(() => res());
           if (isFirst) {
             setIsFirst(false);
