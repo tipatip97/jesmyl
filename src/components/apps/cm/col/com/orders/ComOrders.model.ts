@@ -1,15 +1,13 @@
-import { CSSProperties, LegacyRef, ReactNode } from "react";
+import { ReactNode } from "react";
+import { ChordVisibleVariant } from "../../../Cm.model";
 import { Com } from "../Com";
 
 
 export interface IComOrdersProps {
-    style?: CSSProperties;
-    onClick?: () => void;
-    ref?: LegacyRef<HTMLDivElement>;
     asOrdComponent?: () => ReactNode;
-    setClassName?: () => string;
-    ccom: Com;
+    com: Com;
+    isHideAnchor?: boolean;
     fontSize?: number;
-    isAnchorInheritHide?: boolean;
+    chordVisibleVariant: ChordVisibleVariant;
 }
 

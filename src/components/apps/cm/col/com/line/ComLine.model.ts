@@ -10,13 +10,8 @@ export interface IComLineProps {
     textLines: number;
     orderUnit: Order;
     orderUniti: number;
-    onLetterClick: (linei: number) => void;
-    onWordClick: (bag: IComLinePropsBag, event: MouseEvent) => void;
-    setWordClass: () => boolean;
     isJoinLetters: boolean;
-    setLineClassName: () => string;
-    setChorded: (indexi: number) => boolean;
-    ccom: Com;
+    com: Com;
 }
 
 export interface IComLinePropsBag {

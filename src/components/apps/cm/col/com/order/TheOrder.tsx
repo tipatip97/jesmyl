@@ -1,74 +1,50 @@
-import { useSelector } from "react-redux";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import { RootState } from "../../../../../../shared/store";
-import { useChordVisibleVariant } from "../../../base/useChordVisibleVariant";
 import ComLine from "../line/ComLine";
 import { IComLineProps } from "../line/ComLine.model";
-import { Order } from "./Order";
 import { ITheOrderProps } from "./Order.model";
 
 export default function TheOrder(props: ITheOrderProps) {
   const {
     asLineComponent,
-    setChorded,
-    setHideAnchor,
-    onLineClick,
-    setOrdClassName,
     orderUnit,
     orderUniti,
     currTransPosition,
-    isAnchorInheritHide,
-    ccom,
+    com,
+    chordVisibleVariant,
+    isHideAnchor,
   } = props || {};
-  const isAnchorsVisible = useSelector(
-    (state: RootState) => state.cm.isAnchorsVisible
-  );
-
-  const [chordVisibleVariant] = useChordVisibleVariant();
 
   if (
-    (isAnchorInheritHide &&
+    (isHideAnchor &&
       (orderUnit.top.isAnchorInherit ||
         orderUnit.top.isPrevAnchorInheritPlus)) ||
     !orderUnit.isVisible
   )
     return null;
 
-  const params = (init = {}) => {
-    return Object.assign({ id: `com-block-${orderUniti}` }, init);
-  };
-
-  const isHideAnchor =
-    orderUnit.isAnchor &&
-    mylib
-      .func(setHideAnchor, (ord: Order) => !ord.isOpened && !isAnchorsVisible)
-      .call(orderUnit);
-
-  if (isHideAnchor) {
+  if (isHideAnchor && orderUnit.isAnchor && !orderUnit.isOpened) {
     return (
       <div
-        {...params({
-          className: `${orderUnit.top.headClassName} anchor styled-block`,
-        })}
+        id={`com-block-${orderUniti}`}
+        className={`${orderUnit.top.headClassName} anchor styled-block`}
       >
         {orderUnit.top.header({ isTexted: false, r: orderUnit.repeatsTitle })}
       </div>
     );
   } else if (orderUnit.texti == null) {
-    const chords = ccom.actualChords(orderUnit.chordsi, currTransPosition);
+    const chords = com.actualChords(orderUnit.chordsi, currTransPosition);
+
     if (!chords) return null;
+
     const hideChords =
       !chordVisibleVariant || (!orderUnit.isMin && chordVisibleVariant === 1);
 
     return (
       <div
-        {...params({
-          key: `chorded-block-${orderUniti}-${orderUnit.chordsi}`,
-          className: "com-order-block styled-block flex flex-baseline",
-        })}
+        id={`com-block-${orderUniti}`}
+        className="com-order-block styled-block flex flex-baseline"
       >
         <div
-          key={`chorded-block-${orderUniti}-header`}
           className={`header ${hideChords ? "anchor styled-block" : ""} ${
             orderUnit.top.headClassName
           }`}
@@ -93,23 +69,16 @@ export default function TheOrder(props: ITheOrderProps) {
   const blockHeader = orderUnit.top.isInherit
     ? null
     : orderUnit.top.header({ isTexted: true });
-  const chordedOrd = mylib
-    .func(
-      setChorded,
-      (ord: Order) =>
-        ord.chordsi > -1 &&
-        (chordVisibleVariant === 2 || (chordVisibleVariant === 1 && ord.isMin))
-    )
-    .call(orderUnit);
+
+  const chordedOrd =
+    orderUnit.chordsi > -1 &&
+    (chordVisibleVariant === 2 ||
+      (chordVisibleVariant === 1 && orderUnit.isMin));
 
   return (
     <div
-      {...params({
-        className: [
-          "com-order-block song-part-wrapper Xuser-select",
-          mylib.func(setOrdClassName).call(orderUnit),
-        ].join(" "),
-      })}
+      id={`com-block-${orderUniti}`}
+      className="com-order-block song-part-wrapper Xuser-select"
     >
       <div
         className={`song-part ${chordedOrd ? "" : "without-chords"} ${
@@ -125,11 +94,6 @@ export default function TheOrder(props: ITheOrderProps) {
             <div
               key={`song-line:${orderUniti}-${textLinei}`}
               className="song-line"
-              onClick={() =>
-                mylib
-                  .func(onLineClick)
-                  .call(textLine, textLinei, orderUnit, orderUniti)
-              }
             >
               {mylib
                 .func(asLineComponent, (props: IComLineProps) => (
@@ -142,7 +106,7 @@ export default function TheOrder(props: ITheOrderProps) {
                   textLines: textLinea.length,
                   orderUnit,
                   orderUniti,
-                  ccom,
+                  com,
                 })}
             </div>
           ))}

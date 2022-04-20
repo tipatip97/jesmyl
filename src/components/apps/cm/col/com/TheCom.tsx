@@ -123,13 +123,13 @@ export default function TheCom() {
           </div>
         </>
       )}
-      // contentClass="container-loading"
       content={
         <RollControled>
           <ComOrders
-            ccom={ccom}
+            com={ccom}
             fontSize={fontSize}
-            isAnchorInheritHide={!isAnchorsVisible}
+            chordVisibleVariant={chordVisibleVariant}
+            isHideAnchor={!isAnchorsVisible}
           />
         </RollControled>
       }

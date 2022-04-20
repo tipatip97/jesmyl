@@ -2,6 +2,7 @@ import { Com } from "../Com";
 import { StyleProp } from "../../../base/settings/StyleProp";
 import { Order } from "./Order";
 import { ReactNode } from "react";
+import { ChordVisibleVariant } from "../../../Cm.model";
 
 
 export interface IExportableOrder {
@@ -86,15 +87,12 @@ export interface OrderField {
 
 export interface ITheOrderProps {
     asLineComponent: () => ReactNode;
-    setChorded: () => boolean;
-    setHideAnchor: () => boolean;
-    onLineClick: () => void;
-    setOrdClassName: () => string;
+    isHideAnchor?: boolean;
     orderUnit: Order;
     orderUniti: number;
     currTransPosition: number;
-    isAnchorInheritHide: boolean;
-    ccom: Com;
+    com: Com;
+    chordVisibleVariant: ChordVisibleVariant;
 }
 
 

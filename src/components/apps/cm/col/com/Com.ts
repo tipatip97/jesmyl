@@ -248,7 +248,6 @@ export class Com extends EditableCom {
     });
 
     this.tonc = this.firstChord = firstChord;
-    console.log(firstChord);
   }
 
   static withBemoles(chords?: string, isSet: num = 0) {

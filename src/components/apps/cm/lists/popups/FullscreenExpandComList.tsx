@@ -13,7 +13,12 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
         {coms?.map((com) => (
           <div key={`expand-com-number-${com.wid}`}>
             <div className="com-number">#{com.index + 1}</div>
-            <ComOrders ccom={com} fontSize={fontSize} isAnchorInheritHide />
+            <ComOrders
+              com={com}
+              fontSize={fontSize}
+              chordVisibleVariant={2}
+              isHideAnchor={false}
+            />
           </div>
         ))}
       </RollControled>
