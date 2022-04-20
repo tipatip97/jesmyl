@@ -42,6 +42,10 @@
         min-height: var(--min-size);
         overflow-x: hidden;
         overflow-y: auto;
+
+        .com-face.current {
+            font-weight: bold;
+        }
     }
 
     &:not(.top).center {
@@ -113,6 +117,8 @@
     }
 
     .fullscreen-translation {
+        --safe-gap: 5%;
+
         position: absolute;
         background: black;
         top: 0;
@@ -122,38 +128,49 @@
         color: white;
         z-index: 1000;
 
-        .triple-area {
+        >.bottom-area,
+        >.top-area {
             position: absolute;
-            top: 0;
             width: 40%;
-            height: 100vh;
-
-            &.center {
-                width: 20%;
-                left: 40%;
-
-                .close-translation-button {
-                    --svg-color: white;
-
-                    position: relative;
-                    top: -50px;
-                    transition: top .4s;
-                    left: calc(50% - 24px / 2);
-                    z-index: 10000;
-
-                    &.show {
-                        top: 10px;
-                        cursor: pointer;
-                    }
-                }
-            }
+            height: 40vh;
 
             &.left {
-                left: 0;
+                left: var(--safe-gap);
             }
 
             &.right {
-                right: 0;
+                right: var(--safe-gap);
+            }
+        }
+
+        >.top-area {
+            top: var(--safe-gap);
+        }
+
+        >.bottom-area {
+            bottom: var(--safe-gap);
+        }
+
+        >.center-area {
+            position: absolute;
+            top: 0;
+            width: 20%;
+            left: 40%;
+            height: 100vh;
+
+            .close-translation-button {
+                --svg-color: white;
+
+                position: relative;
+                top: -50px;
+                transition: top .4s;
+                left: calc(50% - 24px / 2);
+                z-index: 10000;
+
+                &.show {
+                    top: 10px;
+                    cursor: pointer;
+                }
             }
         }
     }

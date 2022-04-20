@@ -3,7 +3,7 @@ import { TranslationScreenProps } from "./Translations.model";
 import useTranslation from "./useTranslation";
 
 export default function TranslationScreen(props: TranslationScreenProps) {
-  const { currWin, currBlock, onKeyTranslations, position } =
+  const { currWin, currText, onKeyTranslations, position } =
     useTranslation();
 
   if (currWin) currWin.onkeydown = onKeyTranslations;
@@ -32,7 +32,7 @@ export default function TranslationScreen(props: TranslationScreenProps) {
       >
         <div
           style={{ whiteSpace: "pre", textAlign: "center", padding: "10px" }}
-          dangerouslySetInnerHTML={{ __html: currBlock || "" }}
+          dangerouslySetInnerHTML={{ __html: currText || "" }}
         />
       </FontSizeContain>
     </div>

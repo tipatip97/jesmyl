@@ -32,7 +32,7 @@ export default function TheMeeting() {
       )}
       content={currentMeeting?.coms?.map((com) => (
         <ComFace
-          key={`metting.com-face-${com.wid}`}
+          key={`metting.com-face ${com.wid}`}
           com={com}
           specialPhase="meeting"
         />

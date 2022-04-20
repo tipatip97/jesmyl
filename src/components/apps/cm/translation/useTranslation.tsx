@@ -1,8 +1,8 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { renderApplication } from "../../../..";
 import { isTouchDevice } from "../../../../complect/device-differences";
-import modalService from "../../../../complect/modal/Modal.service";
+import mylib from "../../../../complect/my-lib/MyLib";
+import useComPack from "../../../../complect/useComPack";
 import { RootState } from "../../../../shared/store";
 import useCmNav from "../base/useCmNav";
 import {
@@ -12,46 +12,73 @@ import {
   switchShowMarks,
   switchTranslationBlockVisible,
 } from "../Cm.store";
+import { Com } from "../col/com/Com";
 import { useCcom } from "../col/useCcol";
 import TranslationScreen from "./TranslationScreen";
 
 let currWin: Window | null = null;
 
 export default function useTranslation() {
+  useSelector((state: RootState) => state.cm.translationUpdates);
+
   const dispatch = useDispatch();
   const { setPhase } = useCmNav();
-  const [ccom] = useCcom();
-  const currBlocki = useSelector(
+  const [ccom, setCcom] = useCcom();
+  const currTexti = useSelector(
     (state: RootState) => state.cm.translationBlock
   );
   const isVisible = useSelector(
     (state: RootState) => state.cm.isTranslationBlockVisible
   );
-  useSelector((state: RootState) => state.cm.translationUpdates);
-  const position = useSelector(
-    (state: RootState) => state.cm.translationBlockPosition
-  );
-  const isShowMarks = useSelector((state: RootState) => state.cm.isShowMarks);
-  const blocks = ccom?.getOrderedTexts();
-  const isShowFullscreen = isTouchDevice;
+  const texts = ccom?.getOrderedTexts();
 
-  useEffect(() => ret.setBlocki(0), [ccom]);
+  const getComi = (comList?: Com[] | nil) => {
+    if (!comList) return -1;
+    const ccomw = ccom?.wid;
+    return ccomw == null ? -1 : comList.findIndex((com) => ccomw === com.wid);
+  };
+
+  const scrollToView = (com: Com) => {
+    const comFace = document.querySelector(`.com-face.current.wid_${com.wid}`);
+    if (comFace) mylib.scrollToView(comFace, "center");
+  };
 
   const ret = {
     currWin,
-    isShowFullscreen,
-    isShowMarks,
+    isShowFullscreen: isTouchDevice,
+    isShowMarks: useSelector((state: RootState) => state.cm.isShowMarks),
     isTranslationBlockVisible: isVisible,
-    currBlock: isVisible ? blocks && blocks[currBlocki] : "",
-    currBlocki,
-    blocks,
-    position,
-    nextBlock: () =>
-      ret.blocks &&
-      currBlocki < ret.blocks.length - 1 &&
-      ret.setBlocki(currBlocki + 1),
-    prevBlock: () => currBlocki > 0 && ret.setBlocki(currBlocki - 1),
-    setBlocki: (blocki: number) => {
+    currText: isVisible ? texts && texts[currTexti] : "",
+    currTexti,
+    texts,
+    position: useSelector(
+      (state: RootState) => state.cm.translationBlockPosition
+    ),
+    comPack: useComPack(),
+    nextText: () =>
+      ret.texts &&
+      currTexti < ret.texts.length - 1 &&
+      ret.setTexti(currTexti + 1),
+    prevText: () => currTexti > 0 && ret.setTexti(currTexti - 1),
+    prevCom: () => {
+      const [comList] = ret.comPack;
+      const comi = getComi(comList);
+      if (!comList || comi < 0) return;
+      const nextCom = comList[comi === 0 ? comList.length - 1 : comi - 1];
+      setCcom(nextCom);
+      ret.setTexti(0);
+      scrollToView(nextCom);
+    },
+    nextCom: () => {
+      const [comList] = ret.comPack;
+      const comi = getComi(comList);
+      if (!comList || comi < 0) return;
+      const nextCom = comList[comi === comList.length - 1 ? 0 : comi + 1];
+      setCcom(nextCom);
+      ret.setTexti(0);
+      scrollToView(nextCom);
+    },
+    setTexti: (blocki: number) => {
       dispatch(setTranslationBlock(blocki));
       const nextd = window.document.getElementById(
         `translation-window-line-${blocki}`
@@ -70,16 +97,17 @@ export default function useTranslation() {
     switchPosition: () => {
       dispatch(
         setTranslationBlockPosition(
-          position === "center" ? "top center" : "center"
+          ret.position === "center" ? "top center" : "center"
         )
       );
     },
     closeTranslation: () => {
       currWin?.close();
-      if (isShowFullscreen) setPhase("com");
+      if (ret.isShowFullscreen) setPhase("com");
     },
     openTranslations: () => {
-      if (isShowFullscreen) {
+      ret.setTexti(0);
+      if (ret.isShowFullscreen) {
         setPhase(["translation", undefined, true]);
       } else setPhase("translation");
     },
@@ -123,24 +151,29 @@ export default function useTranslation() {
       }
     },
     onKeyTranslations: async (event: KeyboardEvent) => {
-      if ((event.code === "KeyC" || event.code === "KeyR") && event.ctrlKey) return;
-      event.preventDefault();
-
       switch (event.code) {
-        case "ArrowLeft":
-          ret.prevBlock();
-          break;
-
         case "Enter":
           ret.newTranslation(200, 200);
           break;
 
+        case "ArrowUp":
+          if (event.ctrlKey) ret.prevCom();
+          break;
+
+        case "ArrowDown":
+          if (event.ctrlKey) ret.nextCom();
+          break;
+
+        case "ArrowLeft":
+          ret.prevText();
+          break;
+
         case "ArrowRight":
-          ret.nextBlock();
+          ret.nextText();
           break;
 
         case "Escape":
-          if (isShowFullscreen) ret.closeTranslation();
+          if (ret.isShowFullscreen) ret.closeTranslation();
           else ret.switchVisible();
           break;
 

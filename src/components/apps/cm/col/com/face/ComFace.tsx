@@ -5,15 +5,23 @@ import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
 export default function ComFace(props: ComFaceProps) {
-  const { com, errors, specialPhase = null, importantOnClick, idPrefix } = props;
-  const [, setCcom] = useCcom();
+  const {
+    com,
+    errors,
+    specialPhase = null,
+    importantOnClick,
+    groupClass,
+  } = props;
+  const [ccom, setCcom] = useCcom();
   const { setPhase } = useCmNav();
   const { openAbsolutePopup, closeAbsolutePopup } = useAbsolutePopup();
 
   return com == null ? null : (
-    <div id={idPrefix ? `${idPrefix}${com.wid}` : ''}>
+    <>
       <div
-        className="com-face"
+        className={`com-face${ccom?.wid === com.wid ? " current" : ""} ${
+          groupClass || ""
+        } wid_${com.wid}`}
         style={{
           backgroundColor: com.removed ? "red" : "",
         }}
@@ -31,11 +39,11 @@ export default function ComFace(props: ComFaceProps) {
             <ComFaceContextMenu
               onClick={() => closeAbsolutePopup()}
               com={com}
-            />,
+            />
           ).config({
             mode: "float",
             x: event.clientX,
-            y: event.clientY
+            y: event.clientY,
           });
         }}
       >
@@ -45,6 +53,6 @@ export default function ComFace(props: ComFaceProps) {
         <span className="title ellipsis">{com.name}</span>
       </div>
       {errors}
-    </div>
+    </>
   );
 }

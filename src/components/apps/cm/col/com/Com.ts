@@ -147,9 +147,7 @@ export class Com extends EditableCom {
   translationMap() {
     if (this._translationMap != null) return this._translationMap;
 
-    const push = translationPushKinds[this.translationPushKind || 0].cb;
-
-    const map = this._translationMap = [];
+    const kinds = translationPushKinds[this.translationPushKind || 0];
     let curr = 0;
 
     this.orders?.forEach((ord: Order, ordi: number, orda: Order[]) => {
@@ -160,17 +158,17 @@ export class Com extends EditableCom {
 
       if (ord.top.isInherit) {
         curr += ord.text.split(/\n/).length;
-        if (ordi === orda.length - 1) push(map, curr);
+        if (ordi === orda.length - 1) kinds.push(curr);
         return;
       }
 
-      curr && push(map, curr);
+      curr && kinds.push(curr);
 
       curr = ord.text.split(/\n/).length;
-      if (ordi === orda.length - 1) push(map, curr);
+      if (ordi === orda.length - 1) kinds.push(curr);
     });
 
-    return map;
+    return this._translationMap = kinds.list();
   }
 
   bracketsTransformed(str = '') {

@@ -72,11 +72,11 @@ export default function ComTools() {
           openTranslations();
           closeAbsolutePopup();
         }}
-      >
-        <EvaIcon
-          name={isShowFullscreen ? "play-outline" : "monitor-outline"}
-          className="abs-icon"
-        />
+        >
+          <EvaIcon
+            name={isShowFullscreen ? "play-outline" : "monitor-outline"}
+            className="abs-icon"
+          />
         <div className="title">Слайды</div>
         <div className="abs-action" />
       </div>

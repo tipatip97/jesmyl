@@ -1,24 +1,28 @@
 import { useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon";
-import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import useCmNav from "../base/useCmNav";
 import ComFace from "../col/com/face/ComFace";
-import { useCcat, useCcom } from "../col/useCcol";
-import { useMarks } from "../lists/marks/useMarks";
-import { useMeetings } from "../lists/meetings/useMeetings";
+import { useCcom } from "../col/useCcol";
+import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
 import useTranslation from "./useTranslation";
 
 export default function Translations() {
+  const [isShowCloseButton, setIsShowCloseButton] = useState(false);
+  const { specialPhase } = useCmNav();
+  const [, setCcom] = useCcom();
+
   const {
     currWin,
     newTranslation,
-    prevBlock,
-    nextBlock,
-    blocks,
-    currBlocki,
-    setBlocki,
+    prevText,
+    nextText,
+    prevCom,
+    nextCom,
+    texts,
+    currTexti,
+    setTexti,
     position,
     switchPosition,
     switchVisible,
@@ -27,22 +31,8 @@ export default function Translations() {
     isShowMarks,
     isShowFullscreen,
     isTranslationBlockVisible,
+    comPack: [comList, titlePostfix],
   } = useTranslation();
-
-  const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { specialPhase } = useCmNav();
-  const [ccat] = useCcat();
-  const { markedComs } = useMarks();
-  const { currentMeeting } = useMeetings();
-  const [, setCcom] = useCcom();
-
-  const [comList, titlePostfix] = specialPhase
-    ? specialPhase === "thematic" && ccat
-      ? [ccat.coms, " - " + ccat.name]
-      : specialPhase === "meeting" && currentMeeting
-      ? [currentMeeting.coms, " - " + currentMeeting.name]
-      : [markedComs, " - Избранное"]
-    : [null, ""];
 
   if (isShowFullscreen)
     return (
@@ -56,9 +46,12 @@ export default function Translations() {
                 window.addEventListener("resize", () => update())
               }
             />
-            <div className="triple-area left" onClick={() => prevBlock()} />
+            <div className="top-area left" onDoubleClick={() => prevCom()} />
+            <div className="top-area right" onDoubleClick={() => nextCom()} />
+            <div className="bottom-area left" onClick={() => prevText()} />
+            <div className="bottom-area right" onClick={() => nextText()} />
             <div
-              className="triple-area center"
+              className="center-area"
               onClick={() => showMarks(!isShowMarks)}
               onDoubleClick={() => {
                 setIsShowCloseButton(true);
@@ -77,7 +70,6 @@ export default function Translations() {
                 <EvaIcon name="close-circle-outline" />
               </div>
             </div>
-            <div className="triple-area right" onClick={() => nextBlock()} />
           </div>
         }
       </div>
@@ -119,7 +111,10 @@ export default function Translations() {
                     <ComFace
                       key={`mark-to-translation_${com.wid}`}
                       com={com}
-                      importantOnClick={() => setCcom(com)}
+                      importantOnClick={() => {
+                        setCcom(com);
+                        setTexti(0);
+                      }}
                     />
                   );
                 })}
@@ -127,23 +122,23 @@ export default function Translations() {
             ) : null}
           </div>
 
-          {blocks && (
+          {texts && (
             <div className="translations-line no-scrollbar">
-              {blocks.map((block, blocki) => {
+              {texts.map((text, texti) => {
                 return (
                   <div
-                    key={`translations-line-item_${blocki}`}
-                    id={`translation-window-line-${blocki}`}
+                    key={`translations-line-item_${texti}`}
+                    id={`translation-window-line-${texti}`}
                     className="translations-line-item"
-                    onClick={() => setBlocki(blocki)}
+                    onClick={() => setTexti(texti)}
                   >
-                    <div>{blocki + 1}</div>
+                    <div>{texti + 1}</div>
                     <div
                       className={`translations-line-item-inner ${
-                        currBlocki === blocki ? "active" : ""
+                        currTexti === texti ? "active" : ""
                       }`}
                     >
-                      <div dangerouslySetInnerHTML={{ __html: block }} />
+                      <div dangerouslySetInnerHTML={{ __html: text }} />
                     </div>
                   </div>
                 );
@@ -151,10 +146,10 @@ export default function Translations() {
             </div>
           )}
           <div className="control-panel flex between">
-            <div className="button" onClick={() => prevBlock()}>
+            <div className="button" onClick={() => prevText()}>
               <EvaIcon name="chevron-left-outline" />
             </div>
-            <div className="button" onClick={() => nextBlock()}>
+            <div className="button" onClick={() => nextText()}>
               <EvaIcon name="chevron-right-outline" />
             </div>
             <div
@@ -180,7 +175,11 @@ export default function Translations() {
             >
               <EvaIcon name="upload-outline" />
             </div>
-            <div title="esc, V" className="button" onClick={() => switchVisible()}>
+            <div
+              title="esc, V"
+              className="button"
+              onClick={() => switchVisible()}
+            >
               <EvaIcon name="square-outline" />
             </div>
           </div>

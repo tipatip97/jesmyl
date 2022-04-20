@@ -33,14 +33,17 @@ export default function TheCat({
   const scrollToCurrent = () => {
     if (ccom) {
       setTimeout(() => {
-        const currentFace = document.getElementById(`com-face-${ccom.wid}`);
+        const currentFace = document.querySelector(
+          `.com-face.com-of-cat.current.wid_${ccom.wid}`
+        );
         if (listRef.current)
           if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
-          else if (currentFace && categoryTitleRef.current)
+          else if (currentFace && categoryTitleRef.current) {
             mylib.scrollToView(currentFace, "top", {
               parent: listRef.current,
               top: categoryTitleRef.current.clientHeight,
             });
+          }
       });
     }
   };
@@ -120,10 +123,10 @@ export default function TheCat({
               <div className="com-list">
                 {cat.wraps.map((wrap) => (
                   <ComFace
-                    key={`com-face-${wrap.com.wid}`}
+                    key={`com-face ${wrap.com.wid}`}
                     {...wrap}
-                    idPrefix="com-face-"
                     specialPhase={topSpecialPhase}
+                    groupClass="com-of-cat"
                   />
                 ))}
               </div>
