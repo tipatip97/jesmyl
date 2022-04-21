@@ -7,11 +7,13 @@ import { AppName } from "./App.model";
 export default function AppFooter({ app }: { app: AppName }) {
   const { phase, setPhase, specialPhase, footerItems } = navConfigurers[app]();
   const { specialPhase: appPhase, setPhase: setIndexPhase } = useIndexNav();
-  const [footApp, setCurrFooterState] = useState('index');
+  const [footApp, setCurrFooterState] = useState("index");
 
   return (
     <div className="footer">
-      {footerItems.map(({ title, icon, phases, activeWithSpecialPhases }) => {
+      {footerItems.map((props) => {
+        if (!props) return null;
+        const { title, icon, phases, activeWithSpecialPhases } = props;
         const isActive =
           appPhase !== "index" &&
           (specialPhase ? activeWithSpecialPhases : phases.indexOf(phase) > -1);
@@ -35,13 +37,15 @@ export default function AppFooter({ app }: { app: AppName }) {
       <div
         className={`footer-item ${appPhase === "index" ? "active" : ""}`}
         onClick={() => {
-          if (footApp === 'index') setIndexPhase(["main", "index"]);
+          if (footApp === "index") setIndexPhase(["main", "index"]);
           else setIndexPhase([null, "index"]);
-          setCurrFooterState('index');
+          setCurrFooterState("index");
         }}
       >
         <div className="icon-container">
-          <EvaIcon name={`arrow-circle-right${appPhase !== "index" ? '-outline' : ''}`} />
+          <EvaIcon
+            name={`arrow-circle-right${appPhase !== "index" ? "-outline" : ""}`}
+          />
         </div>
         <div className="title">Другое</div>
       </div>

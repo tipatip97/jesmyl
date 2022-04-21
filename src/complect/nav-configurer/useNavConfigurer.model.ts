@@ -7,7 +7,7 @@ export type SetPhasePayload<Phase, SpecialPhase> = Phase | nil | [Phase | nil, S
 // верни тут true, если событие "назад" уже не должно иметь эффекта
 export type UseNavAction = () => boolean | void | any;
 
-export interface FooterItem<Phase> {
+export type FooterItem<Phase> = null | {
     title: string;
     icon: EvaIconName;
     phases: Phase[];

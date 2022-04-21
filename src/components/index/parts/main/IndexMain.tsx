@@ -55,7 +55,7 @@ export default function IndexMain() {
           />
           <BrutalItem
             icon="login-outline"
-            title="Войти"
+            title="Войти" // 'Выйти' 
             onClick={() => setPhase("login")}
           /> */}
           <BrutalItem

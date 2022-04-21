@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PhaseIndexContainer from "../../complect/phase-container/PhaseIndexContainer";
-import { sendLoginData, AuthMode } from "../../Index.source";
+import useIndexNav from "../../complect/useIndexNav";
+import { AuthMode } from "../../Index.model";
+import useAuth from "../../useAuth";
+import IndexErrorMessage from "../ErrorMessage";
 import "./IndexLogin.scss";
 
 export default function IndexLogin() {
@@ -10,20 +13,40 @@ export default function IndexLogin() {
   const [fio, setFio] = useState("");
   const [mode, setMode] = useState<AuthMode>("login");
 
+  const { loginInSystem, registerInSystem, setAuthError, errorMessage } =
+    useAuth();
+  const { setPhase } = useIndexNav();
+
+  useEffect(() => {
+    login.length < 3
+      ? setAuthError("Минимум 3 символа", "login")
+      : setAuthError("", "login");
+  }, [login]);
+
+  useEffect(() => {
+    rpassw && rpassw !== passw
+      ? setAuthError("Пароли не совпадают", "rpassw")
+      : setAuthError("", "rpassw");
+  }, [passw, rpassw]);
+
   return (
     <PhaseIndexContainer
       topClass="index-login login-page"
       head="Вход"
+      contentClass="flex center column"
       content={
         <>
           {mode === "register" ? (
-            <div className="input-container flex">
-              <div className="title">ФИО</div>
-              <input
-                onChange={(event) => setFio(event.target.value)}
-                value={fio}
-              />
-            </div>
+            <>
+              <div className="input-container flex">
+                <div className="title">ФИО</div>
+                <input
+                  onChange={(event) => setFio(event.target.value)}
+                  value={fio}
+                />
+              </div>
+              <IndexErrorMessage scope="fio" />
+            </>
           ) : null}
           <div className="input-container flex">
             <div className="title">Логин</div>
@@ -32,6 +55,7 @@ export default function IndexLogin() {
               value={login}
             />
           </div>
+          <IndexErrorMessage scope="login" />
           <div className="input-container flex">
             <div className="title">Пароль</div>
             <input
@@ -40,27 +64,33 @@ export default function IndexLogin() {
               value={passw}
             />
           </div>
+          <IndexErrorMessage scope="passw" />
           {mode === "register" ? (
-            <div className="input-container flex">
-              <div className="title">Пароль2</div>
-              <input
-                type="password"
-                onChange={(event) => setRPassword(event.target.value)}
-                value={rpassw}
-              />
-            </div>
+            <>
+              <div className="input-container flex">
+                <div className="title">Пароль2</div>
+                <input
+                  type="password"
+                  onChange={(event) => setRPassword(event.target.value)}
+                  value={rpassw}
+                />
+              </div>
+              <IndexErrorMessage scope="rpassw" />
+            </>
           ) : null}
-          <div className="pointer" onClick={() => setMode("register")}>Зарегистрироваться</div>
+          <div className="pointer" onClick={() => setMode("register")}>
+            Зарегистрироваться
+          </div>
           <button
             className="send-button"
-            onClick={() =>
-              sendLoginData(mode, {
-                login,
-                fio,
-                passw,
-                rpassw,
-              })
-            }
+            disabled={!!errorMessage}
+            onClick={async () => {
+              const resp =
+                mode === "login"
+                  ? await loginInSystem({ login, passw })
+                  : await registerInSystem({ login, fio, passw, rpassw });
+              if (resp.ok) setPhase("main");
+            }}
           >
             Отправить
           </button>

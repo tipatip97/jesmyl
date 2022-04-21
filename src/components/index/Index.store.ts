@@ -4,9 +4,9 @@ import { Exer } from "../../complect/exer/Exer";
 import { setPhaseInState } from "../../complect/nav-configurer/useNavConfigurer";
 import { appStorage, indexStorage } from "../../shared/jstorages";
 import {
-  IndexApplication, IndexPhase, IndexSpecialPhase, IndexAuthorization,
+  IndexApplication, IndexPhase, IndexSpecialPhase,
   IndexState,
-  IndexStateError, IndexStorage, SetFieldState
+  IndexStateError, IndexStorage, Auth
 } from "./Index.model";
 
 export const indexExer = new Exer<IndexStorage>(indexStorage, 'index');
@@ -19,6 +19,7 @@ const initialState: IndexState = {
   prevPhase: indexStorage.getOr("prevPhase", "main"),
   currentApp: indexStorage.getOr("currentApp", "cm"),
   lastUpdate: indexStorage.get("lastUpdate"),
+  auth: indexStorage.get('auth'),
   apps: [],
 };
 
@@ -28,6 +29,10 @@ export const slice = createSlice({
   reducers: {
     setIndexPhase: (state, action: PayloadAction<{ phase: IndexPhase | nil; prevPhase: IndexPhase | nil; specialPhase: IndexSpecialPhase }>) => {
       setPhaseInState(state, action.payload.phase, action.payload.prevPhase, action.payload.specialPhase);
+    },
+    setAuthData: (state, action: PayloadAction<Auth>) => {
+      state.auth = action.payload;
+      indexStorage.set('auth', action.payload);
     },
     setApps: (state, action: PayloadAction<IndexApplication[]>) => {
       state.apps = action.payload;
@@ -40,18 +45,16 @@ export const slice = createSlice({
       state.errorMessage = action.payload.errorMessage;
       state.errorScope = action.payload.errorScope;
     },
-    setFieldState: (
-      state,
-      action: PayloadAction<SetFieldState<keyof IndexAuthorization>>
-    ) => {
-      if (state.auth)
-        state.auth[action.payload.fieldn] = action.payload.value || "";
-    },
   },
 });
 
-export const { setIndexPhase, setFieldState, setError, setCurrentApp, setApps } =
-  slice.actions;
+export const {
+  setIndexPhase,
+  setError,
+  setCurrentApp,
+  setApps,
+  setAuthData,
+} = slice.actions;
 export default slice.actions;
 
 export const indexReducer = slice.reducer;

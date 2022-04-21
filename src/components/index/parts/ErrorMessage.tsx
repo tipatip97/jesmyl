@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../shared/store";
 import { IndexErrorScope } from "../Index.model";
 
-export default function BoardErrorMessage({
+export default function IndexErrorMessage({
   scope,
 }: {
   scope: IndexErrorScope;

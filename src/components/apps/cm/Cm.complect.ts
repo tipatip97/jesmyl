@@ -1,20 +1,19 @@
 import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
+import { FooterItem } from "../../../complect/nav-configurer/useNavConfigurer.model";
 import { cmStorage, indexStorage } from "../../../shared/jstorages";
-import { IndexApplication, IndexAuth } from "../../index/Index.model";
+import { IndexApplication, Auth } from "../../index/Index.model";
+import { setts } from "./base/settings/Setts";
+import { StyleProp } from "./base/settings/StyleProp";
 import {
   CmAction,
   CmAppVariables,
-  CmPhase,
-  CmSpecialPhase,
+  CmPhase
 } from "./Cm.model";
-import { setts } from "./base/settings/Setts";
-import { StyleProp } from "./base/settings/StyleProp";
-import { FooterItem, SetPhasePayload } from "../../../complect/nav-configurer/useNavConfigurer.model";
 
 let rules: Record<string, true | null> = {};
 export let actions: CmAction[] | nil;
-let localAuth: IndexAuth;
+let localAuth: Auth;
 
 const update = () => {
   localAuth = indexStorage.getOr("auth", { level: 0 });
