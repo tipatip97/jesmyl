@@ -1,5 +1,5 @@
 import navConfigurers from "../../shared/navConfigurers";
-import EvaIcon from "../eva-icon";
+import EvaIcon from "../eva-icon/EvaIcon";
 import { PhaseContainerConfigurerProps } from "./PhaseContainerConfigurer.model";
 import './PhaseContainerConfigurer.scss';
 

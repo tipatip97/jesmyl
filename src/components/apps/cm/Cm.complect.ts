@@ -63,10 +63,11 @@ export const specialPhases = ["marked", "thematic", "meeting"] as const;
 
 export const inlinePhases = [
   ["all", "com", "translation"],
-  ["lists", "cat", "marks", "meetings", "meeting"]
+  ["lists", "cat", "marks", "meetings", "meeting"],
+  ["editor"]
 ] as const;
 
-const [allPhases, listsPhases] = inlinePhases;
+const [allPhases, listsPhases, editorPhases] = inlinePhases;
 
 export const cmFooterItems: FooterItem<CmPhase>[] = [
   {
@@ -79,6 +80,12 @@ export const cmFooterItems: FooterItem<CmPhase>[] = [
     title: "Списки",
     phases: listsPhases as never,
     activeWithSpecialPhases: true,
+  },
+  {
+    icon: "edit",
+    title: "Редактор",
+    phases: editorPhases as never,
+    accessRule: 'canRedact',
   },
 ];
 

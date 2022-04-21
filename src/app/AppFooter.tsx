@@ -1,5 +1,6 @@
 import { useState } from "react";
-import EvaIcon from "../complect/eva-icon";
+import EvaIcon from "../complect/eva-icon/EvaIcon";
+import { isAccessed } from "../components/apps/cm/Cm.complect";
 import useIndexNav from "../components/index/complect/useIndexNav";
 import navConfigurers from "../shared/navConfigurers";
 import { AppName } from "./App.model";
@@ -13,7 +14,8 @@ export default function AppFooter({ app }: { app: AppName }) {
     <div className="footer">
       {footerItems.map((props) => {
         if (!props) return null;
-        const { title, icon, phases, activeWithSpecialPhases } = props;
+        const { title, icon, phases, activeWithSpecialPhases, accessRule } = props;
+        if (accessRule != null && !isAccessed(accessRule)) return null;
         const isActive =
           appPhase !== "index" &&
           (specialPhase ? activeWithSpecialPhases : phases.indexOf(phase) > -1);

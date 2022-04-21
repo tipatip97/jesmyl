@@ -16,7 +16,9 @@ export default function useNavConfigurer<App extends AppName, State extends Root
         phase: State['phase'],
         specialPhase: State['specialPhase'],
         prevPhase?: State['phase']
-    ) => SetPhasePayload<State['phase'], State['specialPhase']>, footerItems: FooterItem<State['phase']>[]) {
+    ) => SetPhasePayload<State['phase'], State['specialPhase']>,
+    footerItems: FooterItem<State['phase']>[]
+) {
 
     const dispatch = useDispatch();
     const storage = appStorage[appName];

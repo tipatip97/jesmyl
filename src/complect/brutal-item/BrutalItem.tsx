@@ -1,6 +1,6 @@
 import { HtmlHTMLAttributes } from "react";
-import EvaIcon, { EvaIconName } from "../eva-icon";
-import './BrutalItem.scss';
+import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
+import "./BrutalItem.scss";
 
 export default function BrutalItem({
   onClick,

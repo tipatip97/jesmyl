@@ -1,4 +1,4 @@
-import { EvaIconName } from "../../../../../complect/eva-icon";
+import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import { IExportedCol } from "../Col.model";
 import { IExportableOrder } from "./order/Order.model";
 

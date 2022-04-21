@@ -1,5 +1,5 @@
 import { AppName } from "../../app/App.model";
-import { EvaIconName } from "../../complect/eva-icon";
+import { EvaIconName } from "../../complect/eva-icon/EvaIcon";
 
 export interface IndexState extends IndexStateError {
     phase: IndexPhase;

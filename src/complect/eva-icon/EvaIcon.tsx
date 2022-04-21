@@ -1,6 +1,7 @@
 import { HTMLAttributes } from "react";
-import { EvaIconName } from ".";
 import * as pack from "../../resource/eva-icons.json";
+
+export type EvaIconName = keyof typeof pack;
 
 export default function EvaIcon(
   props: HTMLAttributes<HTMLOrSVGElement> & {

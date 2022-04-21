@@ -10,6 +10,7 @@ import TheMeeting from "./lists/meetings/TheMeeting";
 import TheMeetings from "./lists/meetings/TheMeetings";
 import PageOnDevelopment from "../../../complect/page-on-development/PageOnDevelopment";
 import Translations from "./translation/Translation";
+import Editor from "./editor/Editor";
 
 export default function CmApplication() {
   const { phase } = useCmNav();
@@ -34,6 +35,8 @@ export default function CmApplication() {
       return <TheMeetings />;
     case "meeting":
       return <TheMeeting />;
+    case "editor":
+      return <Editor />;
     default:
       return <PageOnDevelopment head="Новый раздел"/>;
   }

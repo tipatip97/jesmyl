@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import EvaIcon from "../../../../../complect/eva-icon";
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
 import RollControled from "../../base/RolledContent";

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import EvaIcon from "../../../../../complect/eva-icon";
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import useLaterComList from "../../base/useLaterComList";

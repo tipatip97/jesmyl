@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import BrutalItem from "../../../../complect/brutal-item";
+import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
-import EvaIcon from "../../../../complect/eva-icon";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
 import { RootState } from "../../../../shared/store";
 import PhaseIndexContainer from "../../complect/phase-container/PhaseIndexContainer";

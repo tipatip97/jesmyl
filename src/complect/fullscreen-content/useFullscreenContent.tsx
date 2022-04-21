@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useCmNav from "../../components/apps/cm/base/useCmNav";
 import { RootState } from "../../shared/store";
 import { setFullscreenContentOpenMode } from "../Complect.store";
-import EvaIcon from "../eva-icon";
+import EvaIcon from "../eva-icon/EvaIcon";
 import "./FullscreenContent.scss";
 
 export type FullScreenContentOpenMode = null | "open" | "closable";

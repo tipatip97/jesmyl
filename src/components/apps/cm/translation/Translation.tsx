@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EvaIcon from "../../../../complect/eva-icon";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useCmNav from "../base/useCmNav";
 import ComFace from "../col/com/face/ComFace";
 import { useCcom } from "../col/useCcol";

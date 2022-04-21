@@ -1,5 +1,5 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import EvaIcon from "../../../../../complect/eva-icon";
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import ComFace from "../../col/com/face/ComFace";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import LocalListToolsPopup from "../popups/LocalListToolsPopup";
