@@ -118,7 +118,7 @@ export default function TheCom() {
             <EvaIcon
               className="action-button"
               name="more-vertical"
-              onClick={() => openAbsolutePopup(<ComTools />)}
+              onClick={() => openAbsolutePopup(<ComTools />, false)}
             />
           </div>
         </>

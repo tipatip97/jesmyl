@@ -23,12 +23,12 @@ export default function Lists() {
           <BrutalItem
             icon="star-outline"
             title="Избранное"
-            onClick={() => setPhase("marks")}
+            onClick={() => setPhase(["marks", "marked"])}
           />
           <BrutalItem
             icon="calendar-outline"
             title="События"
-            onClick={() => setPhase("meetings")}
+            onClick={() => setPhase(["meetings", "meeting"])}
           />
           <BrutalScreen>
             <div className="title">Тематические:</div>

@@ -60,34 +60,6 @@ export const isAccessed = (action: string): true | null => {
   return (rules[action] = right ? (right.level <= level ? true : null) : true);
 };
 
-export const getNewPhase = (
-  phase: CmPhase,
-  specialPhase: CmSpecialPhase,
-  prevPhase: CmPhase | nil
-): SetPhasePayload<CmPhase, CmSpecialPhase> => {
-  const newPhase = phase === "com"
-    ? specialPhase === "marked"
-      ? "marks"
-      : specialPhase === "thematic"
-        ? "cat"
-        : specialPhase === "meeting"
-          ? "meeting"
-          : "all"
-    : phase === "translation"
-      ? "com"
-      : phase === "cat"
-        ? "lists"
-        : phase === "lists"
-          ? "all"
-          : phase === "meeting"
-            ? "meetings"
-            : phase === "meetings" || phase === "marks"
-              ? "lists"
-              : prevPhase ?? 'all';
-
-  return newPhase === 'all' ? [newPhase, null] : newPhase;
-};
-
 export const specialPhases = ["marked", "thematic", "meeting"] as const;
 
 export const inlinePhases = [

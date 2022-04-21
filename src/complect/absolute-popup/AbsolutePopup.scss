@@ -15,14 +15,12 @@
         pointer-events: all;
 
         &.bottom {
-            >.float-content {
-                display: none;
+            >.bottom-container {
+                top: 0;
             }
 
-            >.absolute-popup-content {
-                &.bottom-content {
-                    bottom: 0;
-                }
+            >.float-content {
+                display: none;
             }
         }
 
@@ -33,12 +31,23 @@
         }
     }
 
-    >.absolute-popup-content {
-        position: absolute;
-        left: 0;
-        bottom: calc(0px - var(--height));
+    >.bottom-container {
+        --padding-top: 70vh;
 
+        position: absolute;
+        top: calc(100vh - var(--padding-top));
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding-top: var(--padding-top);
+        transition: top .5s;
+    }
+
+    .absolute-popup-content {
         &.float-content {
+            position: absolute;
             padding: 10px 10px;
             background: var(--color--1);
             box-shadow: 0 0 40px var(--color--2);
@@ -52,23 +61,15 @@
         }
 
         &.bottom-content {
-            --max-height: 70vh;
-            --initial-bottom: calc(0px - var(--max-height));
-            --target-bottom: 0;
-            --height: 300px;
-
             display: flex;
             align-items: center;
             flex-direction: column;
             width: 100vw;
-            height: var(--height);
-            max-height: var(--max-height);
+            min-height: calc(100vh - var(--padding-top));
             background-color: var(--color--1);
             overflow: hidden;
             padding: 30px;
             z-index: 150;
-            // animation: grow-up-absolute-popup .5s forwards;
-            transition: bottom .5s;
 
             .abs-item {
                 padding: 10px 0;
@@ -112,15 +113,5 @@
                 }
             }
         }
-    }
-}
-
-@keyframes grow-up-absolute-popup {
-    from {
-        bottom: var(--initial-bottom);
-    }
-
-    to {
-        bottom: var(--target-bottom);
     }
 }

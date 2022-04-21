@@ -1,6 +1,9 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AbsolutePopupConfig, AbsolutePopupMode } from "./useAbsolutePopup.model";
+import {
+  AbsolutePopupConfig,
+  AbsolutePopupMode,
+} from "./useAbsolutePopup.model";
 import useCmNav from "../../components/apps/cm/base/useCmNav";
 import { RootState } from "../../shared/store";
 import { setAbsolutePopupOpen } from "../Complect.store";
@@ -10,6 +13,7 @@ let absolutePopupContent: ReactNode = null;
 let floatElement: HTMLDivElement | null;
 let isFloated = false;
 let isClosed = true;
+let isClosable = true;
 
 export default function useAbsolutePopup() {
   const dispatch = useDispatch();
@@ -26,7 +30,8 @@ export default function useAbsolutePopup() {
       if (isClosed) return true;
       isClosed = true;
     },
-    openAbsolutePopup: (content: ReactNode) => {
+    openAbsolutePopup: (content: ReactNode, closable = true) => {
+      isClosable = closable;
       isClosed = false;
       registerBackAction(() => ret.closeAbsolutePopup());
       absolutePopupContent = content;
@@ -87,15 +92,17 @@ export function ABSOLUTE__POPUP() {
       }`}
       onClick={() => closeAbsolutePopup()}
     >
-      <div
-        className={`absolute-popup-content bottom-content`}
-        onClick={(event) => event.stopPropagation()}
-      >
-        {absolutePopupContent}
+      <div className="bottom-container no-scrollbar">
+        <div
+          className={`absolute-popup-content bottom-content`}
+          onClick={(event) => !isClosable && event.stopPropagation()}
+        >
+          {absolutePopupContent}
+        </div>
       </div>
       <div
         className={`absolute-popup-content float-content`}
-        onClick={(event) => event.stopPropagation()}
+        onClick={(event) => !isClosable && event.stopPropagation()}
         ref={(elem) => elem && (floatElement = elem)}
       >
         {absolutePopupContent}
