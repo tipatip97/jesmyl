@@ -1,4 +1,4 @@
-import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon";
 import ComFace from "../../col/com/face/ComFace";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
@@ -7,7 +7,7 @@ import { useMarks } from "./useMarks";
 
 export default function Marks() {
   const { markedComs } = useMarks();
-  const { openAbsolutePopup } = useAbsolutePopup();
+  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   return (
     <PhaseCmContainer
@@ -23,7 +23,7 @@ export default function Marks() {
             name="more-vertical"
             className="action-button"
             onClick={() =>
-              openAbsolutePopup(<LocalListToolsPopup coms={markedComs} />)
+              openAbsoluteBottomPopup(<LocalListToolsPopup coms={markedComs} />)
             }
           />
         </>

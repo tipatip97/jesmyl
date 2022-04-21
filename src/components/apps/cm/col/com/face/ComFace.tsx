@@ -1,4 +1,4 @@
-import useAbsolutePopup from "../../../../../../complect/absolute-popup/useAbsolutePopup";
+import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
 import useCmNav from "../../../base/useCmNav";
 import { useCcom } from "../../useCcol";
 import { ComFaceProps } from "./ComFace.model";
@@ -14,7 +14,8 @@ export default function ComFace(props: ComFaceProps) {
   } = props;
   const [ccom, setCcom] = useCcom();
   const { setPhase } = useCmNav();
-  const { openAbsolutePopup, closeAbsolutePopup } = useAbsolutePopup();
+  const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
+    useAbsoluteFloatPopup();
 
   return com == null ? null : (
     <>
@@ -35,16 +36,14 @@ export default function ComFace(props: ComFaceProps) {
         }}
         onContextMenu={(event) => {
           event.preventDefault();
-          openAbsolutePopup(
+          openAbsoluteFloatPopup(
             <ComFaceContextMenu
-              onClick={() => closeAbsolutePopup()}
+              onClick={() => closeAbsoluteFloatPopup()}
               com={com}
-            />
-          ).config({
-            mode: "float",
-            x: event.clientX,
-            y: event.clientY,
-          });
+            />,
+            event.clientX,
+            event.clientY
+          );
         }}
       >
         <div className="number">

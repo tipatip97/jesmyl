@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
@@ -24,7 +24,7 @@ export default function TheCom() {
 
   const [ccom] = useCcom();
   const { addLaterComw } = useLaterComList();
-  const { openAbsolutePopup } = useAbsolutePopup();
+  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { isMarked, toggleMarked } = useMarks();
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function TheCom() {
             <EvaIcon
               className="action-button"
               name="more-vertical"
-              onClick={() => openAbsolutePopup(<ComTools />, false)}
+              onClick={() => openAbsoluteBottomPopup(<ComTools />, false)}
             />
           </div>
         </>

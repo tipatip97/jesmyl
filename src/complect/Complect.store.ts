@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { indexStorage } from "../shared/jstorages";
-import { AbsolutePopupMode } from "./absolute-popup/useAbsolutePopup.model";
 import { ComplectState } from "./Complect.model";
 import { FullScreenContentOpenMode } from "./fullscreen-content/useFullscreenContent";
 
@@ -10,7 +9,9 @@ const initialState: ComplectState = {
     prevPhase: '',
     specialPhase: indexStorage.getOr('currentApp', 'cm'),
     fullscreenContentOpenMode: null,
-    absolutePopupOpenMode: null,
+    isAbsoluteFloatPopupOpen: false,
+    isAbsoluteBottomPopupOpen: false,
+    numAbsoluteBottomPopupUpdates: 0,
     isFullscreen: false,
 };
 
@@ -24,15 +25,23 @@ export const slice = createSlice({
         switchComplectFullscreen: (state, action: PayloadAction<boolean | nil>) => {
             state.isFullscreen = action.payload ?? !state.isFullscreen;
         },
-        setAbsolutePopupOpen: (state, action: PayloadAction<AbsolutePopupMode>) => {
-            state.absolutePopupOpenMode = action.payload;
+        switchAbsoluteFloatPopupOpen: (state, action: PayloadAction<boolean | nil>) => {
+            state.isAbsoluteFloatPopupOpen = action.payload ?? !state.isAbsoluteFloatPopupOpen;
+        },
+        switchAbsoluteBottomPopupOpen: (state, action: PayloadAction<boolean | nil>) => {
+            state.isAbsoluteBottomPopupOpen = action.payload ?? !state.isAbsoluteBottomPopupOpen;
+        },
+        riseUpAbsoluteBottomPopupUpdates: (state) => {
+            state.numAbsoluteBottomPopupUpdates++;
         },
     },
 });
 
 export const {
     setFullscreenContentOpenMode,
-    setAbsolutePopupOpen,
+    switchAbsoluteFloatPopupOpen,
+    switchAbsoluteBottomPopupOpen,
+    riseUpAbsoluteBottomPopupUpdates,
     switchComplectFullscreen
 } =
     slice.actions;

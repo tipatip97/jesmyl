@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-import { ABSOLUTE__POPUP } from "../complect/absolute-popup/useAbsolutePopup";
+import { ABSOLUTE__BOTTOM__POPUP } from "../complect/absolute-popup/useAbsoluteBottomPopup";
+import { ABSOLUTE__FLOAT__POPUP } from "../complect/absolute-popup/useAbsoluteFloatPopup";
 import EvaIcon from "../complect/eva-icon";
 import { FULLSCREEN__CONTENT } from "../complect/fullscreen-content/useFullscreenContent";
 import Modal from "../complect/modal/Modal";
@@ -34,7 +35,8 @@ function App() {
       <TheRefresher />
       <Modal />
       <FULLSCREEN__CONTENT />
-      <ABSOLUTE__POPUP />
+      <ABSOLUTE__BOTTOM__POPUP />
+      <ABSOLUTE__FLOAT__POPUP />
       {app ? (
         <>
           <AppRouter app={app} />

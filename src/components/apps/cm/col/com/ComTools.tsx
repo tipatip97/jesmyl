@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
@@ -20,7 +20,7 @@ export default function ComTools() {
     (state: RootState) => state.cm.isAnchorsVisible
   );
   const { openTranslations, isShowFullscreen } = useTranslation();
-  const { closeAbsolutePopup } = useAbsolutePopup();
+  const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
 
@@ -78,7 +78,7 @@ export default function ComTools() {
         className="abs-item abs-full"
         onClick={() => {
           openTranslations();
-          closeAbsolutePopup();
+          closeAbsoluteBottomPopup();
         }}
       >
         <EvaIcon
