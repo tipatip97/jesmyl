@@ -27,7 +27,11 @@ export interface CmState extends CmStoraged {
 
 export type CmRollMode = 'pause' | 'play' | null;
 
-export type ChordVisibleVariant = 0 | 1 | 2;
+export enum ChordVisibleVariant {
+    None = 0,
+    Minimal = 1,
+    Maximal = 2,
+}
 
 export type CmPhase = typeof inlinePhases[number][number];
 export type CmSpecialPhase = typeof specialPhases[number] | null;

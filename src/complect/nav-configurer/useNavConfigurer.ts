@@ -11,7 +11,7 @@ export default function useNavConfigurer<App extends AppName, State extends Root
     appName: App,
     firstPhase: Phase,
     actions: UseNavAction[],
-    setPhaseAction: (payload: { phase: State['phase'] | nil; prevPhase: State['phase']; specialPhase: State['specialPhase'] }) => PayloadAction<{ phase: State['phase'] | nil; prevPhase: State['phase']; specialPhase: State['specialPhase'] }>,
+    setPhaseAction: (payload: { phase: State['phase'] | nil; prevPhase: State['phase'] | nil; specialPhase: State['specialPhase'] }) => PayloadAction<{ phase: State['phase'] | nil; prevPhase: State['phase'] | nil; specialPhase: State['specialPhase'] }>,
     getNewPhase: (
         phase: State['phase'],
         specialPhase: State['specialPhase'],
@@ -30,7 +30,7 @@ export default function useNavConfigurer<App extends AppName, State extends Root
         setPhase: <Phase extends State['phase'], SpecialPhase extends State['specialPhase']>(val: SetPhasePayload<Phase, SpecialPhase>) => {
             const [phase, specialPhase, preventSaveLocal] = [val].flat() as [State['phase'] | nil, State['specialPhase'], boolean];
 
-            const prevPhase = ret.phase;
+            const prevPhase = ret.phase === phase ? null : ret.phase;
             dispatch(setPhaseAction({ phase, prevPhase, specialPhase }));
 
             if (preventSaveLocal) return;
@@ -71,3 +71,9 @@ export default function useNavConfigurer<App extends AppName, State extends Root
 
     return ret;
 }
+
+export const setPhaseInState = <App extends AppName, State extends RootState[App]>(state: State, phase: State['phase'] | nil, prevPhase: State['prevPhase'] | nil, specialPhase: State['specialPhase'] | nil) => {
+    if (phase != null) state.phase = phase;
+    if (prevPhase !== phase && prevPhase != null) state.prevPhase = prevPhase;
+    if (specialPhase !== undefined) state.specialPhase = specialPhase;
+};

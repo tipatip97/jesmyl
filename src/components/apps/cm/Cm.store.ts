@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
+import { setPhaseInState } from "../../../complect/nav-configurer/useNavConfigurer";
 import { appStorage, cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
@@ -45,11 +46,8 @@ export const slice = createSlice({
   name: "cm",
   initialState,
   reducers: {
-    setCmPhase: (state, action: PayloadAction<{ prevPhase: CmPhase; phase: CmPhase | nil; specialPhase: CmSpecialPhase }>) => {
-
-      state.prevPhase = action.payload.prevPhase;
-      if (action.payload.phase != null) state.phase = action.payload.phase;
-      if (action.payload.specialPhase !== undefined) state.specialPhase = action.payload.specialPhase;
+    setCmPhase: (state, action: PayloadAction<{ prevPhase: CmPhase | nil; phase: CmPhase | nil; specialPhase: CmSpecialPhase }>) => {
+      setPhaseInState(state, action.payload.phase, action.payload.prevPhase, action.payload.specialPhase);
     },
     selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {
       if (action.payload.val == null) return;

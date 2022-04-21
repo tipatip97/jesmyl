@@ -17,7 +17,7 @@ const getNewPhase = (
                     ? "meeting"
                     : "all"
         : phase === "translation"
-            ? prevPhase
+            ? prevPhase || "com"
             : phase === "cat"
                 ? "lists"
                 : phase === "lists"

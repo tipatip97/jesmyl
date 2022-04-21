@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
-import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
+import EvaIcon from "../../../../../complect/eva-icon";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
 import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";
-import { ChordVisibleVariant } from "../../Cm.model";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import { useMarks } from "../../lists/marks/useMarks";
 import { useCcom } from "../useCcol";
@@ -16,8 +15,7 @@ import ComTools from "./ComTools";
 import ComOrders from "./orders/ComOrders";
 
 export default function TheCom() {
-  const [chordVisibleVariant, setChordVisibleVariant] =
-    useChordVisibleVariant();
+  const [chordVisibleVariant] = useChordVisibleVariant();
   const [, switchFullscreen] = useFullScreen();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
   const isAnchorsVisible = useSelector(
@@ -44,10 +42,6 @@ export default function TheCom() {
     );
   }
 
-  const isWhole = !ccom.orders?.some(
-    (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
-  );
-
   return (
     <PhaseCmContainer
       topClass="com-container"
@@ -69,51 +63,6 @@ export default function TheCom() {
               name="expand-outline"
               onClick={() => switchFullscreen(true)}
             />
-            {(
-              [
-                ["file-outline", "нет"],
-                ["file-remove-outline", "мин"],
-                ["file-text-outline", "макс"],
-              ] as [EvaIconName, string][]
-            ).map(([name, alt], v) => {
-              if (chordVisibleVariant !== v) return null;
-              const id = `song-variant-switcher-${v}`;
-
-              return (
-                <EvaIcon
-                  key={`navigation-v-${v}`}
-                  name={name}
-                  alt={alt}
-                  id={id}
-                  className="action-button"
-                  title={
-                    v
-                      ? v === 1
-                        ? "Показать минимальное количество аккордов"
-                        : "Показать все аккорды"
-                      : "Скрыть все аккорды"
-                  }
-                  onClick={(event) => {
-                    event.stopPropagation();
-
-                    if (event.ctrlKey) {
-                      event.stopPropagation();
-                    } else {
-                      setChordVisibleVariant(
-                        isWhole
-                          ? chordVisibleVariant
-                            ? 0
-                            : 2
-                          : ((chordVisibleVariant -
-                              (chordVisibleVariant > 1
-                                ? 2
-                                : -1)) as ChordVisibleVariant)
-                      );
-                    }
-                  }}
-                />
-              );
-            })}
 
             <EvaIcon
               className="action-button"

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppName } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
+import { setPhaseInState } from "../../complect/nav-configurer/useNavConfigurer";
 import { appStorage, indexStorage } from "../../shared/jstorages";
 import {
   IndexApplication, IndexPhase, IndexSpecialPhase, IndexAuthorization,
@@ -25,10 +26,8 @@ export const slice = createSlice({
   name: "index",
   initialState,
   reducers: {
-    setIndexPhase: (state, action: PayloadAction<{ phase: IndexPhase | nil; prevPhase: IndexPhase; specialPhase: IndexSpecialPhase }>) => {
-      if (action.payload.phase != null) state.phase = action.payload.phase;
-      state.prevPhase = action.payload.prevPhase;
-      if (action.payload.specialPhase !== undefined) state.specialPhase = action.payload.specialPhase;
+    setIndexPhase: (state, action: PayloadAction<{ phase: IndexPhase | nil; prevPhase: IndexPhase | nil; specialPhase: IndexSpecialPhase }>) => {
+      setPhaseInState(state, action.payload.phase, action.payload.prevPhase, action.payload.specialPhase);
     },
     setApps: (state, action: PayloadAction<IndexApplication[]>) => {
       state.apps = action.payload;

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { renderApplication } from "../../../..";
 import { isTouchDevice } from "../../../../complect/device-differences";
@@ -22,7 +23,7 @@ export default function useTranslation() {
   useSelector((state: RootState) => state.cm.translationUpdates);
 
   const dispatch = useDispatch();
-  const { setPhase } = useCmNav();
+  const { setPhase, goBack } = useCmNav();
   const [ccom, setCcom] = useCcom();
   const currTexti = useSelector(
     (state: RootState) => state.cm.translationBlock
@@ -30,18 +31,7 @@ export default function useTranslation() {
   const isVisible = useSelector(
     (state: RootState) => state.cm.isTranslationBlockVisible
   );
-  const texts = ccom?.getOrderedTexts();
-
-  const getComi = (comList?: Com[] | nil) => {
-    if (!comList) return -1;
-    const ccomw = ccom?.wid;
-    return ccomw == null ? -1 : comList.findIndex((com) => ccomw === com.wid);
-  };
-
-  const scrollToView = (com: Com) => {
-    const comFace = document.querySelector(`.com-face.current.wid_${com.wid}`);
-    if (comFace) mylib.scrollToView(comFace, "center");
-  };
+  const texts = useMemo(() => ccom?.getOrderedTexts(), [ccom]);
 
   const ret = {
     currWin,
@@ -62,7 +52,7 @@ export default function useTranslation() {
     prevText: () => currTexti > 0 && ret.setTexti(currTexti - 1),
     prevCom: () => {
       const [comList] = ret.comPack;
-      const comi = getComi(comList);
+      const comi = getComi(ccom?.wid, comList);
       if (!comList || comi < 0) return;
       const nextCom = comList[comi === 0 ? comList.length - 1 : comi - 1];
       setCcom(nextCom);
@@ -71,7 +61,7 @@ export default function useTranslation() {
     },
     nextCom: () => {
       const [comList] = ret.comPack;
-      const comi = getComi(comList);
+      const comi = getComi(ccom?.wid, comList);
       if (!comList || comi < 0) return;
       const nextCom = comList[comi === comList.length - 1 ? 0 : comi + 1];
       setCcom(nextCom);
@@ -103,9 +93,13 @@ export default function useTranslation() {
     },
     closeTranslation: () => {
       currWin?.close();
-      if (ret.isShowFullscreen) setPhase("com");
+      if (ret.isShowFullscreen) goBack();
     },
     openTranslations: () => {
+      const [comList] = ret.comPack;
+
+      if (comList?.length) setCcom(comList[0]);
+
       ret.setTexti(0);
       if (ret.isShowFullscreen) {
         setPhase(["translation", undefined, true]);
@@ -194,3 +188,13 @@ export default function useTranslation() {
 
   return ret;
 }
+
+const getComi = (comw?: number, comList?: Com[] | nil) => {
+  if (!comList) return -1;
+  return comw == null ? -1 : comList.findIndex((com) => comw === com.wid);
+};
+
+const scrollToView = (com: Com) => {
+  const comFace = document.querySelector(`.com-face.current.wid_${com.wid}`);
+  if (comFace) mylib.scrollToView(comFace, "center");
+};

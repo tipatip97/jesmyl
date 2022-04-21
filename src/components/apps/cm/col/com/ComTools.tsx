@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import useAbsolutePopup from "../../../../../complect/absolute-popup/useAbsolutePopup";
-import EvaIcon from "../../../../../complect/eva-icon";
+import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
 import { RootState } from "../../../../../shared/store";
+import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
+import { ChordVisibleVariant } from "../../Cm.model";
 import {
   riseUpComUpdate,
   setComFontSize,
@@ -19,6 +21,12 @@ export default function ComTools() {
   );
   const { openTranslations, isShowFullscreen } = useTranslation();
   const { closeAbsolutePopup } = useAbsolutePopup();
+  const [chordVisibleVariant, setChordVisibleVariant] =
+    useChordVisibleVariant();
+
+  const isWhole = !ccom?.orders?.some(
+    (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
+  );
 
   if (!ccom) return null;
   return (
@@ -72,19 +80,64 @@ export default function ComTools() {
           openTranslations();
           closeAbsolutePopup();
         }}
-        >
-          <EvaIcon
-            name={isShowFullscreen ? "play-outline" : "monitor-outline"}
-            className="abs-icon"
-          />
+      >
+        <EvaIcon
+          name={isShowFullscreen ? "play-outline" : "monitor-outline"}
+          className="abs-icon"
+        />
         <div className="title">Слайды</div>
+        <div className="abs-action" />
+      </div>
+      <div
+        className="abs-item abs-full"
+        onClick={(event) => {
+          event.stopPropagation();
+
+          if (event.ctrlKey) {
+            event.stopPropagation();
+          } else {
+            setChordVisibleVariant(
+              isWhole
+                ? chordVisibleVariant
+                  ? ChordVisibleVariant.None
+                  : ChordVisibleVariant.Maximal
+                : chordVisibleVariant -
+                    (chordVisibleVariant > ChordVisibleVariant.Minimal
+                      ? ChordVisibleVariant.Maximal
+                      : -1)
+            );
+          }
+        }}
+      >
+        {(
+          [
+            ["file-outline", "нет"],
+            ["file-remove-outline", "мин"],
+            ["file-text-outline", "макс"],
+          ] as [EvaIconName, string][]
+        ).map(([name, alt], variant: ChordVisibleVariant) => {
+          if (chordVisibleVariant !== variant) return null;
+
+          return (
+            <EvaIcon
+              key={`navigation-v-${variant}`}
+              name={name}
+              alt={alt}
+              className="abs-icon"
+            />
+          );
+        })}
+        <div className="title">Показать аккорды</div>
         <div className="abs-action" />
       </div>
       <div
         className="abs-item abs-full"
         onClick={() => dispatch(switchAnchorsVisible())}
       >
-        <EvaIcon name={isAnchorsVisible ? 'collapse' : 'expand'} className="abs-icon" />
+        <EvaIcon
+          name={isAnchorsVisible ? "collapse" : "expand"}
+          className="abs-icon"
+        />
         <div className="title">
           {isAnchorsVisible ? "Свернуть текст" : "Развернуть текст"}
         </div>
