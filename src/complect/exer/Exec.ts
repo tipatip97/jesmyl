@@ -10,10 +10,6 @@ export class Exec<Value> {
     method: ExecMethod;
     args?: Record<string, any>;
     action: string;
-    reason?: string[];
-    strack?: string;
-    internalError?: string;
-    internalWarning?: string;
     generalId?: string;
     createByPath?: boolean;
     id = (Date.now() - -Math.random()).toString();
@@ -25,15 +21,14 @@ export class Exec<Value> {
 
     onSet?: (exec: Exec<Value>) => [];
     onLoad?: (exec: Exec<Value>) => '';
-    isFriendly?: boolean;
 
     constructor(exec: ExecDict<Value>, rules: ExecRule[]) {
-        const setReals = (keys: (keyof Exec<Value>)[]) => keys.forEach((key) => {
+        const setReals = (keys: (keyof this)[]) => keys.forEach((key) => {
             if (exec.hasOwnProperty(key)) this[key as keyof this] = (exec[key as keyof ExecDict<Value>] as never);
         });
         this.action = exec.action;
         this.method = exec.method;
-        setReals(['argValue', 'scope', 'prev', 'value', 'args', 'generalId', 'createByPath', 'isFriendly', 'muted']);
+        setReals(['argValue', 'scope', 'prev', 'value', 'args', 'generalId', 'createByPath', 'muted']);
         this.rule = rules.find(rule => rule.action === this.action);
         if (!this.rule) console.error(`Неизвестное правило "${this.action}"`);
         this.updateTitle();

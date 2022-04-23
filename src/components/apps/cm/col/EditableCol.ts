@@ -1,4 +1,4 @@
-import { ExecArgs, ExecDict, FreeExecDict } from "../../../../complect/exer/Exer.model";
+import { ExecArgs, FreeExecDict } from "../../../../complect/exer/Exer.model";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { BaseNamedExportables } from "../base/Base";
 import { eeStorage } from "../base/ee-storage/EeStorage";
@@ -6,22 +6,28 @@ import { cmExer } from "../Cm.store";
 import { IEditableCol, IExportableCol } from "../cols/Cols.model";
 import { CorrectsBox } from "../editor/corrects-box/CorrectsBox";
 import { ICorrectsBox } from "../editor/corrects-box/CorrectsBox.model";
-import { IEditableColDefaultArgs } from "./Col.model";
 import { ExportedCol } from "./ExportedCol";
 
 
 export class EditableCol<Col extends BaseNamedExportables> extends ExportedCol<Col> {
   removed = false;
   incorrectName = false;
+  corrects: Record<string, CorrectsBox | nil> = {};
 
   protected renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln) {
+    const action = `${coln}Rename`;
+    const corrects = this.nameCorrects(name, coln);
+
     this.execCol({
-      action: `${coln}Rename`,
+      action,
       prev: this.name,
       value: name,
       argValue: 'name',
+      corrects,
     }, coln);
+
     this.name = name;
+    this.corrects[action] = corrects;
   }
 
   protected removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
@@ -49,13 +55,12 @@ export class EditableCol<Col extends BaseNamedExportables> extends ExportedCol<C
     return [this.wid, '.', mylib.typ('[no-action]', action), ':', [mylib.def(uniq, '[no-uniq]')].join(',')].join('');
   }
 
-  setFieldCol<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln: Coln, defVal?: Col[Fieldn], internalError?: string) {
+  setFieldCol<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln: Coln, defVal?: Col[Fieldn]) {
     this.execCol({
       prev: mylib.def(this.getOrBase(fieldn), defVal),
       value,
       method: 'set',
       action: actions[fieldn],
-      internalError,
       args: {
         n: this.name,
         value

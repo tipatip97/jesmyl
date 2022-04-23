@@ -60,14 +60,14 @@ export class Exer<Storage extends ExerStorage> {
                 else this.execs.splice(lasti, 1, new Exec(exec, this.rules));
 
             } else if (method === 'set') {
-                if (mylib.isEq(exec.prev, exec.value)) return;
                 if (prevExec)
                     if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
                     else {
                         const needRemove = prevExec.setValue(value);
                         if (needRemove) this.execs.splice(prevExeci, 1);
                     }
-                else this.execs.push(new Exec(exec, this.rules));
+                else if (!mylib.isEq(exec.prev, exec.value))
+                    this.execs.push(new Exec(exec, this.rules));
             }
 
             exec.scope = scope;
@@ -75,9 +75,6 @@ export class Exer<Storage extends ExerStorage> {
                 case mylib.c.REMOVE: this.execs.splice(prevExeci, 1);
             }
         });
-
-        if (!this.execs.some(ex => !ex.isFriendly))
-            this.execs.splice(0, this.execs.length);
     }
 
     isThereLocals() {

@@ -5,9 +5,11 @@ import { EditableCat } from "./EditableCat";
 
 export class Cat extends EditableCat implements ICat, Partial<IExportableCat> {
   searchTimeout: any;
+  initialName: string;
 
   constructor(obj: IExportableCat, coms: Com[]) {
     super(obj, coms);
+    this.initialName = obj.n;
 
     this.putComs();
   }

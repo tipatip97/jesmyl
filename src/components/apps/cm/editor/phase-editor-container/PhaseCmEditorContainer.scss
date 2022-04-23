@@ -1,0 +1,22 @@
+.phase-cm-editor-container {
+    .editable-block {
+        border: 1px solid transparent;
+
+        &.error {
+            border-color: red;
+        }
+
+        &.warning {
+            border-color: orange;
+        }
+
+        >.corrects-container {
+            >.error-box {
+                color: red;
+            }
+            >.warning-box {
+                color: orange;
+            }
+        }
+    }
+}

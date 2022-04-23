@@ -14,10 +14,9 @@ export default function useExer<Storage extends ExerStorage>(
   const dispatch = useDispatch();
   useSelector((state: RootState) => state.complect.numExerUpdates);
   const { openFullscreenContent } = useFullscreenContent();
-  console.log(exer.execs);
 
   return {
-    exec: <Value,>(value: Value) => {
+    exec: <Value,>(value?: Value) => {
       dispatch(riseUpExerUpdates());
       return value;
     },
@@ -26,7 +25,6 @@ export default function useExer<Storage extends ExerStorage>(
       <EvaIcon
         name="eye-outline"
         className="action-button pointer"
-        // onClick={() => exer.load(() => dispatch(riseUpExerUpdates()))}
         onClick={() => openFullscreenContent(<ExecList exer={exer} />)}
       />
     ) : null,

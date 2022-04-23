@@ -1,3 +1,4 @@
+import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
 import { Exec } from "./Exec";
 
 export interface ExecRule {
@@ -22,7 +23,7 @@ export interface FreeExecDict<Value> {
     prev?: Value;
     value?: Value;
     method?: ExecMethod;
-    args?: any;
+    args?: Record<string, any>;
     generalId?: string | number;
     createByPath?: boolean;
     argValue?: string;
@@ -30,11 +31,10 @@ export interface FreeExecDict<Value> {
     muted?: boolean;
     errors?: string[];
     uniq?: number | string;
-    internalError?: string;
+    corrects?: CorrectsBox;
 
     onSet?: (exec: Exec<Value>) => void;
     onLoad?: (exec: Exec<Value>) => void;
-    isFriendly?: boolean;
 }
 
 export interface ExecDict<Value = any> extends FreeExecDict<Value> {

@@ -67,4 +67,16 @@ export class CorrectsBox {
 
         return this;
     }
+
+    setErrors(errors: ICorrectsBox[] | null) {
+        this.errors = errors;
+    }
+
+    setWarnings(warnings: ICorrectsBox[] | null) {
+        this.warnings = warnings;
+    }
+
+    setUnknowns(unknowns: ICorrectsBox[] | null) {
+        this.unknowns = unknowns;
+    }
 }
