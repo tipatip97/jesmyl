@@ -46,13 +46,10 @@ export default function TheCom() {
     <PhaseCmContainer
       topClass="com-container"
       headClass="flex between"
-      head={(backButton) => (
+      headTitle={ccom.index + 1}
+      head={
         <>
-          <div className="flex between">
-            {backButton}
-            <span>{ccom.index + 1}</span>
-          </div>
-          <div className="flex between">
+          <div className="flex">
             <EvaIcon
               name={isMarked(ccom.wid) ? "star" : "star-outline"}
               className="action-button"
@@ -71,7 +68,7 @@ export default function TheCom() {
             />
           </div>
         </>
-      )}
+      }
       content={
         <RollControled>
           <ComOrders

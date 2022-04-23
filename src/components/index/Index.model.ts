@@ -29,6 +29,7 @@ export interface IndexStorage {
     rejectedComponents: string[];
     registeredApps: AppName[];
     theme: 'light-theme';
+    actions: [];
 
     lastUpdate: number;
     updateOnRefresher: boolean;

@@ -11,7 +11,8 @@ export interface PhaseContainerProps extends HtmlHTMLAttributes<HTMLDivElement>,
     contentClass?: string;
     withoutBackButton?: boolean;
     noHead?: boolean;
-    head?: ReactNode | ((backButton: JSX.Element) => ReactNode);
+    headTitle?: string | number;
+    head?: ReactNode | ((backButton: JSX.Element, titleNode: ReactNode) => ReactNode);
     content: ReactNode;
     contentRef?: React.LegacyRef<HTMLDivElement>;
 }

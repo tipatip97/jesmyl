@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div
-      className={`application-container${
+      className={`application-container app_${app || 'index'}${
         isFullscreen ? " fullscreen-mode" : ""
       }`}
     >

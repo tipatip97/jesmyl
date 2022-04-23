@@ -45,26 +45,13 @@ cmStorage.listen("actions", name, () => {
   update();
 });
 
-export const isAccessed = (action: string): true | null => {
-  if (rules[action] !== undefined) return rules[action] || null;
-  if (!actions?.length) return null;
-
-  const level = localAuth.level;
-  const right = actions.find((right) => right.action === action) as CmAction;
-  if (!right)
-    modalService.alert(
-      `Зарегистрировано правило на неизвестное действие ${action}`
-    );
-
-  return (rules[action] = right ? (right.level <= level ? true : null) : true);
-};
 
 export const specialPhases = ["marked", "thematic", "meeting"] as const;
 
 export const inlinePhases = [
   ["all", "com", "translation"],
   ["lists", "cat", "marks", "meetings", "meeting"],
-  ["editor"]
+  ["editor", "edit-categories", "edit-category"]
 ] as const;
 
 const [allPhases, listsPhases, editorPhases] = inlinePhases;

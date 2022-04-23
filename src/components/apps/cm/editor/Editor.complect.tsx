@@ -30,8 +30,7 @@ export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [
     "r",
     "//" || "Повторения",
-    () =>
-      null, //<TheRegionsEditor coln="r"colnGetter="repeats"flashes={["/", "\\", "&nbsp;"]}/>
+    () => null, //<TheRegionsEditor coln="r"colnGetter="repeats"flashes={["/", "\\", "&nbsp;"]}/>
   ],
   [
     "tr",

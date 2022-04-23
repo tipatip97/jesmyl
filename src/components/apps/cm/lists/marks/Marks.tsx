@@ -13,12 +13,9 @@ export default function Marks() {
     <PhaseCmContainer
       topClass="favorites-container"
       headClass="flex between"
-      head={(backButton) => (
+      headTitle="Избранное"
+      head={
         <>
-          <div className="flex">
-            {backButton}
-            Избранное
-          </div>
           <EvaIcon
             name="more-vertical"
             className="action-button"
@@ -27,7 +24,7 @@ export default function Marks() {
             }
           />
         </>
-      )}
+      }
       content={markedComs?.map((com) => (
         <ComFace
           key={`marked-com-${com.wid}`}

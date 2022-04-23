@@ -1,13 +1,14 @@
-import { ExecArgs, ExecDict } from "./Exer.model";
+import mylib from "../my-lib/MyLib";
+import { ExecArgs, ExecDict, ExecMethod, ExecRule } from "./Exer.model";
 
 
-export class Exec<Value, Args> {
+export class Exec<Value> {
     scope?: string;
-    eprev?: Value;
+    title: string = '';
     prev?: Value;
     value?: Value;
-    method?: string;
-    args?: ExecArgs<Value, Args>;
+    method: ExecMethod;
+    args?: Record<string, any>;
     action: string;
     reason?: string[];
     strack?: string;
@@ -20,23 +21,28 @@ export class Exec<Value, Args> {
     del?: boolean = false;
     muted?: boolean;
     errors?: string[];
+    rule?: ExecRule;
 
-    onSet?: (exec: Exec<Value, Args>) => [];
-    onLoad?: (exec: Exec<Value, Args>) => '';
+    onSet?: (exec: Exec<Value>) => [];
+    onLoad?: (exec: Exec<Value>) => '';
     isFriendly?: boolean;
 
-    constructor(exec: ExecDict<Value, Args>) {
-        this.scope = exec.scope;
-        this.eprev = exec.eprev;
-        this.prev = exec.prev;
-        this.value = exec.value;
-        this.method = exec.method;
-        this.args = exec.args;
+    constructor(exec: ExecDict<Value>, rules: ExecRule[]) {
+        const setReals = (keys: (keyof Exec<Value>)[]) => keys.forEach((key) => {
+            if (exec.hasOwnProperty(key)) this[key as keyof this] = (exec[key as keyof ExecDict<Value>] as never);
+        });
         this.action = exec.action;
-        this.generalId = exec.generalId;
-        this.createByPath = exec.createByPath;
-        this.isFriendly = exec.isFriendly;
-        this.muted = exec.muted;
+        this.method = exec.method;
+        setReals(['argValue', 'scope', 'prev', 'value', 'args', 'generalId', 'createByPath', 'isFriendly', 'muted']);
+        this.rule = rules.find(rule => rule.action === this.action);
+        if (!this.rule) console.error(`Неизвестное правило "${this.action}"`);
+        this.updateTitle();
+    }
+
+    updateTitle() {
+        const rule = this.rule;
+        if (!rule?.title) return;
+        this.title = mylib.stringTemplater(rule.title, this.args);
     }
 
     forLoad() {
@@ -52,13 +58,21 @@ export class Exec<Value, Args> {
             muted: this.muted,
             createByPath: this.createByPath,
             id: this.id,
+            method: this.method,
             args: {
                 ...this.args,
-                prev: this.eprev,
+                prev: this.prev,
                 ...(this.argValue
                     ? { [this.argValue]: this.value }
                     : null)
             }
         };
+    }
+
+    setValue(value?: Value) {
+        this.value = value;
+        if (this.args && this.argValue != null) this.args[this.argValue] = value;
+        this.updateTitle();
+        return this.value === this.prev;
     }
 }

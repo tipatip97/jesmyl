@@ -4,7 +4,7 @@ import mylib from "../../../../../../complect/my-lib/MyLib";
 import { Base } from "../../../base/Base";
 import { cmExer } from "../../../Cm.store";
 import { Order } from "./Order";
-import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderExecArgs, OrderRepeats } from "./Order.model";
+import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats } from "./Order.model";
 
 export class EditableOrder extends Base<IExportableOrderTop> {
     self: Order;
@@ -13,7 +13,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
         super(top);
         this.self = this as never;
     }
-    setField<Def, Args, K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args: ExecArgs<Def, Args>, refresh = true, onSet?: () => void | null) {
+    setField<Def, K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args: ExecArgs<Def>, refresh = true, onSet?: () => void | null) {
         const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
             this.exec({
                 prev: this.top.inhFields && this.top.inhFields.indexOf(fieldn) < 0
@@ -106,20 +106,23 @@ export class EditableOrder extends Base<IExportableOrderTop> {
         return [this.top.com.scope(), '->', mylib.def(wid, this.self.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
     }
 
-    exec<Value>(bag: ExecDict<Value, OrderExecArgs<Value>>) {
+    exec<Value>(bag: ExecDict<Value>) {
         const { scope, args: { wid } = {} } = bag;
 
-        cmExer.set(new Exec<Value, OrderExecArgs<Value>>(mylib.overlap({}, bag, {
-            scope: this.scope(bag.action, bag.uniq, wid),
-            args: mylib.overlap({
-                wid: mylib.def(wid, this.self.wid),
-                comw: this.top.com.wid,
-                name: this.top.com.name,
-                blockn: this.top.header({}, true),
-                isAnchor: this.self.isAnchor
-            }, bag.args),
-            generalId: this.top.com.wid
-        }, scope ? { scope } : null)));
+        // cmExer.set({
+        //     ...bag,
+        //     scope: this.scope(bag.action, bag.uniq, wid),
+        //     args: {
+        //         wid: mylib.def(wid, this.self.wid),
+        //         comw: this.top.com.wid,
+        //         name: this.top.com.name,
+        //         blockn: this.top.header({}, true),
+        //         isAnchor: this.self.isAnchor,
+        //         ...bag.args
+        //     },
+        //     generalId: this.top.com.wid,
+        //     ...(scope ? { scope } : null)
+        // });
     }
 
     async setChordPosition(linei: number, pos: number) {

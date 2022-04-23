@@ -1,46 +1,52 @@
-import { ExecArgs, ExecDict } from "../../../../complect/exer/Exer.model";
+import { ExecArgs, ExecDict, FreeExecDict } from "../../../../complect/exer/Exer.model";
 import mylib from "../../../../complect/my-lib/MyLib";
+import { BaseNamedExportables } from "../base/Base";
+import { eeStorage } from "../base/ee-storage/EeStorage";
 import { cmExer } from "../Cm.store";
 import { IEditableCol, IExportableCol } from "../cols/Cols.model";
 import { CorrectsBox } from "../editor/corrects-box/CorrectsBox";
 import { ICorrectsBox } from "../editor/corrects-box/CorrectsBox.model";
-import { eeStorage } from "../base/ee-storage/EeStorage";
-import { IEditableColDefaultArgs, IExportedCol } from "./Col.model";
+import { IEditableColDefaultArgs } from "./Col.model";
 import { ExportedCol } from "./ExportedCol";
 
 
-export class EditableCol<Col extends IExportedCol> extends ExportedCol<Col> {
+export class EditableCol<Col extends BaseNamedExportables> extends ExportedCol<Col> {
   removed = false;
   incorrectName = false;
 
-  renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln) {
+  protected renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln) {
     this.execCol({
       action: `${coln}Rename`,
+      prev: this.name,
       value: name,
+      argValue: 'name',
     }, coln);
     this.name = name;
   }
 
-  removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
+  protected removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
     this.execCol({
       action: `${coln}Del`,
     }, coln);
-      return this.removed = isRemoved;
+    return this.removed = isRemoved;
   }
 
-  protected execCol<Value, Args, Coln extends keyof IExportableCol>(bag: ExecDict<Value, Args>, coln: Coln) {
-    cmExer.set(mylib.overlap({}, bag, {
+  protected execCol<Value, Coln extends keyof IExportableCol>(bag: FreeExecDict<Value>, coln: Coln) {
+    cmExer.set<Value>({
+      ...bag,
       scope: this.scope(bag.action, bag.uniq),
-      args: mylib.overlap({}, bag.args, {
+      args: {
+        prev: bag.prev,
+        name: this.name,
+        ...bag.args,
         [`${coln}w`]: this.wid,
-        name: this.name
-      }),
-      generalId: this.wid
-    }) as ExecDict<Value, Args>);
+      },
+      generalId: this.wid,
+    });
   }
 
   scope(action?: string, uniq?: number | string) {
-    return [this.wid, '.', mylib.typ('[action]', action), ':', [''].concat(mylib.def(uniq, '[uniq]')).join(',')].join('');
+    return [this.wid, '.', mylib.typ('[no-action]', action), ':', [mylib.def(uniq, '[no-uniq]')].join(',')].join('');
   }
 
   setFieldCol<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln: Coln, defVal?: Col[Fieldn], internalError?: string) {
@@ -53,7 +59,7 @@ export class EditableCol<Col extends IExportedCol> extends ExportedCol<Col> {
       args: {
         n: this.name,
         value
-      } as ExecArgs<Col[Fieldn], IEditableColDefaultArgs<Col[Fieldn]>>
+      } as ExecArgs<Col[Fieldn]>
     }, coln);
 
     this.setExportable(fieldn, value);

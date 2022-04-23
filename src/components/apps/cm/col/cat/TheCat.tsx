@@ -51,43 +51,41 @@ export default function TheCat({
   return (
     <PhaseCmContainer
       topClass="cat-content"
+      withoutBackButton={!isThematic}
       head={
-        !cat
-          ? null
-          : (backButton) => (
-              <>
-                {isThematic ? backButton : null}
-                <div className="com-searcher">
-                  <EvaIcon name="search-outline" />
-                  <input
-                    className="filter-input"
-                    type="text"
-                    placeholder="Поиск песен"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                      cat?.search(
-                        event.target.value,
-                        () => setTerm(event.target.value),
-                        500,
-                        () => {
-                          setTerm1(event.target.value);
-                          if (listRef.current) listRef.current.scrollTop = 0;
-                        }
-                      )
+        !cat ? null : (
+          <>
+            <div className="com-searcher">
+              <EvaIcon name="search-outline" />
+              <input
+                className="filter-input"
+                type="text"
+                placeholder="Поиск песен"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  cat?.search(
+                    event.target.value,
+                    () => setTerm(event.target.value),
+                    500,
+                    () => {
+                      setTerm1(event.target.value);
+                      if (listRef.current) listRef.current.scrollTop = 0;
                     }
-                    ref={searchInputRef}
-                    value={term}
-                  />
-                  <EvaIcon
-                    name="close"
-                    className={`clear-button ${term ? "" : "hidden"}`}
-                    onClick={() => {
-                      cat?.search("", () => setTerm(""));
-                      searchInputRef.current?.focus();
-                    }}
-                  />
-                </div>
-              </>
-            )
+                  )
+                }
+                ref={searchInputRef}
+                value={term}
+              />
+              <EvaIcon
+                name="close"
+                className={`clear-button ${term ? "" : "hidden"}`}
+                onClick={() => {
+                  cat?.search("", () => setTerm(""));
+                  searchInputRef.current?.focus();
+                }}
+              />
+            </div>
+          </>
+        )
       }
       contentRef={listRef}
       content={

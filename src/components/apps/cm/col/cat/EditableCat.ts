@@ -3,9 +3,13 @@ import { ExportedCat } from "./ExportedCat";
 
 
 export class EditableCat extends ExportedCat {
-    
-  exec<Value, Args>(bag: ExecDict<Value, Args>) {
+
+  exec<Value>(bag: ExecDict<Value>) {
     super.execCol(bag, 'cat');
+  }
+
+  rename(name: string) {
+    this.renameCol(name, 'cat');
   }
 }
 

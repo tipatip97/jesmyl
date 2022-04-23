@@ -11,6 +11,8 @@ import TheMeetings from "./lists/meetings/TheMeetings";
 import PageOnDevelopment from "../../../complect/page-on-development/PageOnDevelopment";
 import Translations from "./translation/Translation";
 import Editor from "./editor/Editor";
+import EditCategories from "./editor/categories/EditCategories";
+import EditCategory from "./editor/categories/EditCategory";
 
 export default function CmApplication() {
   const { phase } = useCmNav();
@@ -37,7 +39,11 @@ export default function CmApplication() {
       return <TheMeeting />;
     case "editor":
       return <Editor />;
+    case "edit-categories":
+      return <EditCategories />;
+    case "edit-category":
+      return <EditCategory />;
     default:
-      return <PageOnDevelopment head="Новый раздел"/>;
+      return <PageOnDevelopment head="Новый раздел" />;
   }
 }

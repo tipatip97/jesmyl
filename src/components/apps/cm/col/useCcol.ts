@@ -16,7 +16,7 @@ export function useCcom(): [Com | nil, (val: Com) => void] {
     const dispatch = useDispatch();
     const ccomw = useSelector((state: RootState) => state.cm.ccomw);
 
-    if (!ccom && ccomw) ccom = localCols?.coms.find((com) => ccomw === com.wid);
+    if (!ccom && ccomw != null) ccom = localCols?.coms.find((com) => ccomw === com.wid);
 
     return [
         ccom,
@@ -37,7 +37,7 @@ export function useCcat(): [Cat | nil, (val: Cat) => void, Cat | undefined] {
     const ccatw = useSelector((state: RootState) => state.cm.ccatw);
 
     if (!zeroCat) zeroCat = localCols?.cats.find((cat) => 0 === cat.wid);
-    if (!ccat && ccatw) ccat = localCols?.cats.find((cat) => ccatw === cat.wid);
+    if (!ccat && ccatw != null) ccat = localCols?.cats.find((cat) => ccatw === cat.wid);
 
     return [
         ccat,

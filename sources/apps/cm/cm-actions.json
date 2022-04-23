@@ -104,10 +104,10 @@
                                     "n"
                                 ],
                                 "method": "set",
-                                "title": "$prev?{{Категория \"$prev\" переименована на}{Новой Категории задано имя}} \"$newName\"",
-                                "value": "{newName}",
+                                "title": "$prev?{{Категория \"$prev\" переименована на}{Новой Категории задано имя}} \"$name\"",
+                                "value": "{name}",
                                 "args": {
-                                    "newName": "#String"
+                                    "name": "#String"
                                 }
                             },
                             {

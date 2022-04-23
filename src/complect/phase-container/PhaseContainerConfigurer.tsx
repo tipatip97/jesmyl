@@ -1,7 +1,7 @@
 import navConfigurers from "../../shared/navConfigurers";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { PhaseContainerConfigurerProps } from "./PhaseContainerConfigurer.model";
-import './PhaseContainerConfigurer.scss';
+import "./PhaseContainerConfigurer.scss";
 
 export default function PhaseContainerConfigurer(
   props: PhaseContainerConfigurerProps
@@ -14,6 +14,7 @@ export default function PhaseContainerConfigurer(
     contentRef,
     withoutBackButton,
     headClass,
+    headTitle,
     contentClass,
     appName,
   } = props;
@@ -27,21 +28,39 @@ export default function PhaseContainerConfigurer(
     />
   );
 
+  const title = headTitle && (
+    <span className="pointer" onClick={() => goBack()}>
+      {headTitle}
+    </span>
+  );
+  const titled = () => {
+    return title ? (
+      <div className="flex between">{backButton}{title}</div>
+    ) : (
+      backButton
+    );
+  };
+
   return (
     <div className={`phase-container ${topClass} ${props.className || ""}`}>
       {noHead ? null : (
         <div className={`header ${headClass || "flex"}`}>
           {typeof head === "function" ? (
-            head(backButton)
+            <>
+              {head(backButton, title)}
+            </>
           ) : head == null ? (
-            withoutBackButton ? null : (
-              backButton
-            )
+            withoutBackButton ? (
+              title
+            ) : titled()
           ) : withoutBackButton ? (
-            head
+            <>
+              {title}
+              {head}
+            </>
           ) : (
             <>
-              {backButton}
+              {titled()}
               {typeof head === "string" ? (
                 <span className="pointer" onClick={() => goBack()}>
                   {head}
@@ -53,10 +72,7 @@ export default function PhaseContainerConfigurer(
           )}
         </div>
       )}
-      <div
-        className={`content ${contentClass || ""}`}
-        ref={contentRef}
-      >
+      <div className={`content ${contentClass || ""}`} ref={contentRef}>
         {content}
       </div>
     </div>

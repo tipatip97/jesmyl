@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../complect/modal/Modal.service";
 import mylib from "../../../../complect/my-lib/MyLib";
-import { isAccessed } from "../Cm.complect";
+import { cmExer } from "../Cm.store";
 import { useCcat, useCcom } from "../col/useCcol";
 import { useCols } from "../cols/useCols";
 import { ePhases } from "./Editor.complect";
@@ -58,7 +58,7 @@ export default function ENditor() {
               borderColor: ccom.incorrectName ? "red" : undefined,
             }}
             className={`composition-title col-title ${
-              ccat?.removed || !isAccessed("catRename") ? "inactive" : ""
+              ccat?.removed || !cmExer.isActionAccessed("catRename") ? "inactive" : ""
             }`}
             onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
               setComName(event.target.value)
@@ -71,7 +71,7 @@ export default function ENditor() {
               key="binds-list mgroup"
               className="binds-list mgroup scrollable-x no-scroll"
             >
-              {isAccessed("comDel") && (
+              {cmExer.isActionAccessed("comDel") && (
                 <div
                   className="mbtn m-ko msm"
                   onClick={() => {

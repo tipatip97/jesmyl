@@ -1,10 +1,10 @@
-import { ExecDict } from "../../../../../complect/exer/Exer.model";
+import { FreeExecDict } from "../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { ExportedCom } from "./ExportedCom";
 
 
 export class EditableCom extends ExportedCom {
-    exec<Value, Args>(bag: ExecDict<Value, Args>) {
+    exec<Value>(bag: FreeExecDict<Value>) {
         super.execCol(bag, 'com');
     }
 

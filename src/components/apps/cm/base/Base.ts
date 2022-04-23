@@ -33,3 +33,16 @@ export class Base<T> {
         } else return this.self[fieldn] = [] as never;
     }
 }
+
+export interface BaseNamedExportables {
+    n: string;
+    w: number;
+}
+
+export class BaseNamed<T extends BaseNamedExportables> extends Base<T> {
+    get name() { return this.getOrBase('n'); }
+    set name(value) { this.setExportable('n', value); }
+
+    get wid() { return this.getOrBase('w'); }
+    set wid(value) { this.setExportable('w', value); }
+}

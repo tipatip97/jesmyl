@@ -1,4 +1,4 @@
-import { IExportedCol } from "../Col.model";
+import { BaseNamedExportables } from "../../base/Base";
 import { Com } from "../com/Com";
 
 
@@ -7,7 +7,7 @@ export interface ICat {
     topComs: Com[];
 }
 
-export interface IExportableCat extends IExportedCol {
+export interface IExportableCat extends BaseNamedExportables {
     s?: number[];
     t?: string[] | null;
 }
