@@ -107,7 +107,7 @@ export default function TheCat({
                 ref={categoryTitleRef}
                 onClick={scrollToCurrent}
               >
-                <div>{isThematic ? cat.name : "Все песни"}:</div>
+                <div>{cat.name}:</div>
                 {cat.wraps && (
                   <div>
                     {`${
