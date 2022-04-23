@@ -64,13 +64,12 @@ export function ABSOLUTE__BOTTOM__POPUP() {
   const bottomContainer = useRef<HTMLDivElement>(null);
 
   const scrollableContent =
-    (bottomContentContainer.current?.clientHeight || 0) > initialScrollTop;
+    (bottomContentContainer.current?.clientHeight || 0) - 5 > initialScrollTop;
 
   const animateScroll = () => {
     if (inactiveScrollTop > scrollTop) {
       animateScrollInProcess = true;
       setTimeout(() => {
-        console.log("scroll", inactiveScrollTop, scrollTop);
         if (bottomContainer.current)
           scrollTop = bottomContainer.current.scrollTop += 3;
         animateScroll();
@@ -79,7 +78,7 @@ export function ABSOLUTE__BOTTOM__POPUP() {
   };
 
   useEffect(() => {
-    if (bottomContainer.current)
+    if (isAbsoluteBottomPopupOpen && bottomContainer.current)
       if (isTouchDevice)
         bottomContainer.current.scrollTop = scrollTop = initialScrollTop;
       else bottomContainer.current.scrollTop = scrollTop = 0;
