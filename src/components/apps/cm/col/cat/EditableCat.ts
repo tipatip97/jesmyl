@@ -2,25 +2,32 @@ import { ExecDict } from "../../../../../complect/exer/Exer.model";
 import { CorrectsBox } from "../../editor/corrects-box/CorrectsBox";
 import { Com } from "../com/Com";
 import { EditableCom } from "../com/EditableCom";
+import { EditableCol } from "../EditableCol";
 import { Cat } from "./Cat";
 import { IExportableCat } from "./Cat.model";
 
 
-export class EditableCat extends Cat {
+export class EditableCat extends EditableCol<IExportableCat> {
+  native: Cat;
   coms: EditableCom[] = [];
+  initialName: string;
+  index: number;
 
-  constructor(top: IExportableCat, coms: Com[]) {
-    super(top, coms);
+  constructor(cat: Cat, coms: Com[]) {
+    super(cat.top);
+    this.native = new Cat(cat.top, coms);
+    this.index = cat.index;
+    this.initialName = cat.name;
 
     this.coms = this.putComs();
   }
 
   putComs() {
-    return super.putComs().map(com => new EditableCom(com));
+    return this.native.putComs().map(com => new EditableCom(com, com.index));
   }
 
   exec<Value>(bag: ExecDict<Value>) {
-    super.execCol(bag, 'cat');
+    this.execCol(bag, 'cat');
   }
 
   rename(name: string) {
@@ -33,13 +40,13 @@ export class EditableCat extends Cat {
       this.execCol({
         action: 'catSetTrack',
         value,
-        prev: this.track,
+        prev: this.native.track,
         args: {
           track: value,
         },
         argValue: 'track',
       }, 'cat');
-      this.track = value;
+      this.native.track = value;
 
       this.coms = [];
       setTimeout(() => {

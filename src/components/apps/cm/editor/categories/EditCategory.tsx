@@ -9,8 +9,9 @@ import useEditCategory from "./useEditCategory";
 export default function EditCategory() {
   const ccat = useEditableCcat();
   const { rename, setTrack } = useEditCategory(ccat);
-  const track = useMemo(() => JSON.stringify(ccat?.track), []);
+  const track = useMemo(() => JSON.stringify(ccat?.native.track), [ccat]);
   const [trackStr, setTrackStr] = useState(track);
+  const [isShowComs, setIsShowComs] = useState(false);
 
   if (!ccat) return null;
 
@@ -46,17 +47,25 @@ export default function EditCategory() {
                   setTrackStr(event.target.value);
                 }}
               />
+              <div
+                className="pointer"
+                onClick={() => setIsShowComs(!isShowComs)}
+              >
+                {isShowComs ? " Скрыть" : " Показать"} список песен
+              </div>
             </PhaseCmEditorContainerItem>
           }
-          <LoadIndicatedContent isLoading={!ccat.coms.length}>
-            {ccat.coms.map((com) => (
-              <ComFace
-                key={`edit-category-com-list-com_${com.wid}`}
-                com={com}
-                importantOnClick={() => {}}
-              />
-            ))}
-          </LoadIndicatedContent>
+          {isShowComs ? (
+            <LoadIndicatedContent isLoading={!ccat.coms.length}>
+              {ccat.coms.map((com) => (
+                <ComFace
+                  key={`edit-category-com-list-com_${com.wid}`}
+                  com={com.native}
+                  importantOnClick={() => {}}
+                />
+              ))}
+            </LoadIndicatedContent>
+          ) : null}
         </>
       }
     />

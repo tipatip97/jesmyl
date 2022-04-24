@@ -1,11 +1,10 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
+import { BaseNamed } from "../../base/Base";
 import { Com } from "../com/Com";
-import { EditableCol } from "../EditableCol";
 import { ComWrap, ICat, IExportableCat } from "./Cat.model";
 
-export class Cat extends EditableCol<IExportableCat> implements ICat, Partial<IExportableCat> {
+export class Cat extends BaseNamed<IExportableCat> implements ICat, Partial<IExportableCat> {
   searchTimeout: any;
-  initialName: string;
 
   index: number = -1;
   term?: string;
@@ -16,7 +15,6 @@ export class Cat extends EditableCol<IExportableCat> implements ICat, Partial<IE
 
   constructor(top: IExportableCat, coms: Com[]) {
     super(top);
-    this.initialName = top.n;
 
     this.track = mylib.def(top.t, null);
     this.topComs = coms;

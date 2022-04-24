@@ -1,15 +1,18 @@
 import { ExecArgs, ExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
+import { Base } from "../../../base/Base";
 import { EditableCom } from "../EditableCom";
 import { Order } from "./Order";
 import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats } from "./Order.model";
 
-export class EditableOrder extends Order {
+export class EditableOrder extends Base<IExportableOrderTop> {
     self: Order;
+    native: Order;
     com: EditableCom;
 
     constructor(top: IExportableOrderTop, com: EditableCom) {
-        super(top, com);
+        super(top);
+        this.native = new Order(top, com.native);
         this.self = this as never;
         this.com = com;
     }
@@ -104,7 +107,7 @@ export class EditableOrder extends Order {
     // set texti(val: number) { }
 
     scope(action: string, uniq?: number | string, wid?: number | null) {
-        return [this.com.do.scope(), '->', mylib.def(wid, this.self.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
+        return [this.com.scope(), '->', mylib.def(wid, this.self.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
     }
 
     exec<Value>(bag: ExecDict<Value>) {
@@ -133,7 +136,7 @@ export class EditableOrder extends Order {
         const textLines = (this.self.text || '').split('\n');
         const textLine = textLines[linei];
         const lineSplitted = textLine.split('');
-        const vowels = this.com.getVowelPositions(textLine);
+        const vowels = this.com.native.getVowelPositions(textLine);
 
         posi < 0
             ? line.push(pos)
@@ -199,7 +202,7 @@ export class EditableOrder extends Order {
 
     takeUniq() {
         if (this.self.unique != null) return this.self.unique;
-        const value = this.com.ords.reduce((max: number, ord: IExportableOrder) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
+        const value = this.com.native.ords.reduce((max: number, ord: IExportableOrder) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
 
         this.exec({
             method: 'set',

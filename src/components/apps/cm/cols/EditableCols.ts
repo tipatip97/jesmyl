@@ -1,18 +1,16 @@
 import { EditableCat } from "../col/cat/EditableCat";
-import { Com } from "../col/com/Com";
 import { EditableCom } from "../col/com/EditableCom";
 import { Cols } from "./Cols";
 
 
-export class EditableCols extends Cols {
+export class EditableCols {
     cats: EditableCat[];
     coms: EditableCom[];
 
-    constructor(cols: Cols, prevComs?: Com[]) {
-        super(cols.top, prevComs);
+    constructor(cols: Cols) {
         const coms = cols.coms;
-        this.cats = cols.cats.map(cat => new EditableCat(cat.top, coms));
-        this.coms = cols.coms.map((com) => new EditableCom(com));
+        this.cats = cols.cats.map(cat => new EditableCat(cat, coms));
+        this.coms = cols.coms.map((com) => new EditableCom(com, com.index));
     }
 
     addCat() {

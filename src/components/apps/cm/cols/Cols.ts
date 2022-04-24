@@ -20,23 +20,23 @@ export class Cols extends Base<IExportableCols> implements ICols {
 
     if (prevComs) {
       this.coms = (mylib.typ([], cols?.coms) as IExportableCom[])
-        .map(com => {
-          let obj = com;
+        .map((com, comi) => {
+          let top = com;
 
           const comw = com.w;
           let prevCom;
           prevCom = prevComs.find(c => c.wid === comw);
           if (prevCom && prevCom.ton != null) {
-            obj = mylib.overlap({}, com, {
+            top = {
+              ...com,
               ton: prevCom.ton,
-              tonc: prevCom.tonc,
-            });
+            };
           }
 
-          const comc = new Com(obj);
+          const comc = new Com(top, comi);
           return comc;
         });
-    } else this.coms = mylib.typ([], cols?.coms).map(com => new Com(com));
+    } else this.coms = mylib.typ([], cols?.coms).map((com, comi) => new Com(com, comi));
 
     this.sort('coms');
 
@@ -46,9 +46,7 @@ export class Cols extends Base<IExportableCols> implements ICols {
 
 
   sort(colsn: 'coms' | 'cats') {
-    const cols = this[colsn].sort((a, b) => a.wid - b.wid);
-    cols.forEach((col, coli) => col.index = coli);
-    return cols;
+    return this[colsn].sort((a, b) => a.wid - b.wid);
   }
 }
 

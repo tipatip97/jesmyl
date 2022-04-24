@@ -13,18 +13,21 @@ export class Com extends BaseNamed<IExportableCom> {
   tonc?: string;
   firstChord?: string;
   index: number = -1;
+  initialName: string;
   private _translationMap?: number[];
   private _o?: Order[];
   private _ords?: IExportableOrder[];
   private _chordLabels?: string[][][];
   private _usedChords?: Record<string, string>;
 
-  constructor(obj: IExportableCom) {
-    super(obj);
+  constructor(top: IExportableCom, index: number) {
+    super(top);
+    this.initialName = this.name;
+    this.index = index;
 
     this.initial = {};
 
-    this.pullTransPosition(obj);
+    this.pullTransPosition(top);
   }
 
   get texts() { return this.forcedArray('t'); }
