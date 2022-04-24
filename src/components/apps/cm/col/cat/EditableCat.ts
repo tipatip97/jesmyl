@@ -23,15 +23,15 @@ export class EditableCat extends EditableCol<IExportableCat> {
   }
 
   putComs() {
-    return this.native.putComs().map(com => new EditableCom(com, com.index));
+    return this.coms = this.native.putComs().map(com => new EditableCom(com, com.index));
   }
 
   exec<Value>(bag: ExecDict<Value>) {
     this.execCol(bag, 'cat');
   }
 
-  rename(name: string) {
-    this.renameCol(name, 'cat');
+  rename(name: string, exec: <Val>(val?: Val) => Val | nil) {
+    this.renameCol(name, 'cat', (correct: string) => exec(this.rename(correct, exec)));
   }
 
   setTrack(track: string, onSet?: () => void) {

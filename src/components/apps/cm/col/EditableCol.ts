@@ -12,9 +12,9 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
   incorrectName = false;
   corrects: Record<string, CorrectsBox | nil> = {};
 
-  renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln) {
+  renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln, onFix?: (correct: string) => void) {
     const action = `${coln}Rename`;
-    const corrects = this.nameCorrects(name, coln);
+    const corrects = this.nameCorrects(name, coln, onFix);
 
     this.execCol({
       action,
@@ -74,18 +74,18 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     return /([^а-яёіґїє !?]+\s*)+$/i;
   }
 
-  nameCorrects<Coln extends keyof IEditableCol>(name = this.name, coln: Coln) {
+  nameCorrects<Coln extends keyof IEditableCol>(name = this.name, coln: Coln, onIncorrectsFix?: (correct: string) => void) {
     // const colLists: IEditableCol[Coln][] = cols[`${coln}s`] as never;
     const minLen = 3;
     const msg = (msg?: string) => msg && `"${name}" - не корректное имя для ${coln === 'cat' ? 'категории' : 'песни'}. ${msg}`;
-    const ret = (err?: string) => this.textCorrects(name).merge({ errors: err ? [{ message: err }] : null });
+    const ret = (err?: string, onFix?: () => void) => this.textCorrects(name).merge({ errors: err ? [{ message: err, onFix }] : null });
 
     if (!mylib.isStr(name)) return ret(msg('Не верный формат'));
     if (name === '?' && coln === 'com') return ret('');
     if (name === '') return ret(msg('Пустое имя'));
 
     const incorrects = name.match(this.getIncorrectNameReg());
-    if (incorrects) return ret(msg(`Недопустимые символы${incorrects[0] === name ? '' : ' в конце'} (${incorrects[0]})`));
+    if (incorrects) return ret(msg(`Недопустимые символы${incorrects[0] === name ? '' : ' в конце'} (${incorrects[0]})`), () => onIncorrectsFix && onIncorrectsFix(name.slice(0, -incorrects[0].length)));
 
     if (name.length < minLen) return ret(msg(`Минимальное количество символов - ${minLen}`));
     // if (colLists.find(col => col.name === name && this.wid !== col.wid)) return ret(`именем "${name}" уже названа одна из ${coln === 'cat' ? 'категорий' : 'песен'}`);
@@ -108,10 +108,11 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
       const lower = realWord.toLowerCase();
       const word = lower.replace(/ё/g, 'е');
       const parts = lower.split(/[а-дж-я]*([её])/).filter(p => p);
+      console.log(lower, word, parts, eeStorage);
 
       if (eeStorage.get(word) == null) unknowns.push({ message: `Слово '${realWord}' ещё не встречалось среди существующих песен. Проверь, пожалуйста, правильность написания букв ё/е, встречающихся в нём`, word: realWord, code: 2, });
 
-      ([] as number[]).concat(eeStorage.get(word)).forEach((type, typei, typea) => {
+      [eeStorage.get(word)].flat().forEach((type, typei, typea) => {
         const isE = parts[typei] === 'е';
         const info = (code: number) => ({ code, message: `${['Не верно', 'Возможно не верно'][code]} указана ${typea.length > 1 ? `${typei + 1}-я из букв ё/е` : `буква ${parts[typei]}`} в слове '${realWord}'`, word: realWord, letter: parts[typei], pos: typei, alt: isE ? 'ё' : 'е' });
 
@@ -125,6 +126,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
       });
       return false
     });
+    console.log(text, errors, warnings, unknowns)
 
     return new CorrectsBox(errors, warnings, unknowns);
   }

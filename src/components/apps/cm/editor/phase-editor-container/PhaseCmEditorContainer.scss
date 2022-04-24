@@ -14,8 +14,14 @@
             >.error-box {
                 color: red;
             }
+
             >.warning-box {
                 color: orange;
+            }
+
+            .fix-button {
+                color: var(--text-color);
+                cursor: pointer;
             }
         }
     }

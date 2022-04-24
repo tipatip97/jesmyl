@@ -22,14 +22,19 @@ export default function PhaseCmEditorContainerItem(
       {children}
       <div className="corrects-container">
         {corrects &&
-          corrects?.errors?.map(({ message }, errori) => {
+          corrects?.errors?.map(({ message, onFix }, errori) => {
             return (
-              <p
+              <div
                 key={`error-corrects-for "${action}" action : ${errori}`}
                 className="error-box"
               >
                 {message}
-              </p>
+                {onFix && (
+                  <p className="fix-button" onClick={() => onFix()}>
+                    Исправить
+                  </p>
+                )}
+              </div>
             );
           })}
         {corrects &&
