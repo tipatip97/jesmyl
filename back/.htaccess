@@ -22,8 +22,8 @@ RewriteEngine On
 RewriteBase /
 # RewriteCond %{REQUEST_FILENAME} !/run.py
 
-#RewriteCond %{ENV:HTTPS} !on
-#RewriteRule ^.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{ENV:HTTPS} !on
+RewriteRule ^.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 #RewriteRule \.js(on)? /blocked...page [L]
 #RewriteRule ^S/x\.py /blocked...page [L]
@@ -34,7 +34,8 @@ RewriteBase /
 
 #RewriteRule ^requirements(\+?(.+))?$ /S/load-requirements.php?with=$2 [L]
 
-RewriteRule ^application.+$ /index.html [L]
+RewriteRule ^application(.*)?$ /index.html$1 [L]
+
 RewriteRule ^.{32}/.{32}$ / [L,R=404]
 
 RewriteRule ^(debug/)?users(/(\w{32}))?$ /S/users-listo.php?user=$3 [L]
@@ -58,12 +59,3 @@ RewriteRule ^helper/(\w+)/(\w+)$ /S/help-me.php?app=$1&id=$2 [L]
 
 RewriteRule ^debug/updates(.*)$ /S/requirements.php$1 [L]
 RewriteRule ^updates(.*)$ /release/S/requirements.php$1 [L]
-
-
-RewriteRule ^$ / [L]
-
-
-
-
-
-
