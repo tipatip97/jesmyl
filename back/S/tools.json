@@ -1,0 +1,6 @@
+{
+  "lock": false,
+  "lockSleep": 20000,
+  "frequency": 5000,
+  "timeLimit": 50000
+}
