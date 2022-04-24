@@ -9,10 +9,10 @@ import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import { useMarks } from "../../lists/marks/useMarks";
-import { useCcom } from "../useCcol";
 import "./Com.scss";
 import ComTools from "./ComTools";
 import ComOrders from "./orders/ComOrders";
+import { useCcom } from "./useCcom";
 
 export default function TheCom() {
   const [chordVisibleVariant] = useChordVisibleVariant();

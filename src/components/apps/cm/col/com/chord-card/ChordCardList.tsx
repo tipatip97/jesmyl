@@ -2,7 +2,7 @@ import { useState } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { useChordVisibleVariant } from "../../../base/useChordVisibleVariant";
-import { useCcom } from "../../useCcol";
+import { useCcom } from "../useCcom";
 import ChordCard from "./ChordCard";
 
 export default function ChordCardList() {

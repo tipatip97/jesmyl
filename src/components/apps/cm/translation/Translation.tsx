@@ -2,7 +2,7 @@ import { useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useCmNav from "../base/useCmNav";
 import ComFace from "../col/com/face/ComFace";
-import { useCcom } from "../col/useCcol";
+import { useCcom } from "../col/com/useCcom";
 import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";

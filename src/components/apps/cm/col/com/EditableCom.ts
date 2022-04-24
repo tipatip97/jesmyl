@@ -1,19 +1,29 @@
 import { FreeExecDict } from "../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { ExportedCom } from "./ExportedCom";
+import { EditableCol } from "../EditableCol";
+import { Com } from "./Com";
+import { IExportableCom } from "./Com.model";
 
 
-export class EditableCom extends ExportedCom {
+export class EditableCom extends Com {
+    do: EditableCol<IExportableCom>;
+
+    constructor(com: Com) {
+        super(com.top);
+        this.do = new EditableCol(com.top);
+        this.index = com.index;
+    }
+
     exec<Value>(bag: FreeExecDict<Value>) {
-        super.execCol(bag, 'com');
+        this.do.execCol(bag, 'com');
     }
 
     rename(name: string) {
-        return this.renameCol(name, 'com');
+        return this.do.renameCol(name, 'com');
     }
 
     remove(isRemoved = true) {
-        this.removeCol('com', isRemoved);
+        this.do.removeCol('com', isRemoved);
     }
 
     setNativeNumber([catn, catw, number]: [string, number, number]) {

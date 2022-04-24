@@ -1,6 +1,6 @@
 import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
 import useCmNav from "../../../base/useCmNav";
-import { useCcom } from "../../useCcol";
+import { useCcom } from "../useCcom";
 import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
@@ -23,9 +23,6 @@ export default function ComFace(props: ComFaceProps) {
         className={`com-face${ccom?.wid === com.wid ? " current" : ""} ${
           groupClass || ""
         } wid_${com.wid}`}
-        style={{
-          backgroundColor: com.removed ? "red" : "",
-        }}
         onClick={() => {
           if (importantOnClick) {
             importantOnClick();

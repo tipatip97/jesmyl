@@ -14,7 +14,7 @@ import {
   switchTranslationBlockVisible,
 } from "../Cm.store";
 import { Com } from "../col/com/Com";
-import { useCcom } from "../col/useCcol";
+import { useCcom } from "../col/com/useCcom";
 import TranslationScreen from "./TranslationScreen";
 
 let currWin: Window | null = null;

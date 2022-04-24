@@ -1,9 +1,9 @@
 import useExer from "../../../../../complect/exer/useExer";
 import { cmExer } from "../../Cm.store";
-import { Cat } from "../../col/cat/Cat";
+import { EditableCat } from "../../col/cat/EditableCat";
 
 
-export default function useEditCategory(cat: Cat | nil) {
+export default function useEditCategory(cat: EditableCat | nil) {
     const { exec } = useExer(cmExer);
     const ret = {
         rename: (name: string) => exec(cat?.rename(name)),

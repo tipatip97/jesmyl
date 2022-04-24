@@ -1,15 +1,16 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
+import { Base } from "../../../base/Base";
 import { Com } from "../Com";
-import { EditableOrder } from "./EditableOrder";
 import { orderFields } from "./Order.consts";
 import { EditableOrderRegion, IExportableOrderFieldValues, IExportableOrderTop, Inheritancables, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
 
-export class Order extends EditableOrder {
+export class Order extends Base<IExportableOrderTop> {
   _regions?: EditableOrderRegion[];
+  com: Com;
 
   constructor(top: IExportableOrderTop, com: Com) {
     super(top);
-    top.com = com;
+    this.com = com;
 
     this.texti = mylib.isNum(top.t) ? top.t : null;
 
@@ -17,7 +18,7 @@ export class Order extends EditableOrder {
     this.fieldValues = top.f;
   }
 
-  get com() { return this.top.com; }
+  // get com() { return this.top.com; }
 
   static getWithExtendableFields(source: IExportableOrderTop, target: IExportableOrderTop): Partial<IExportableOrderTop> {
     const inhFields: string[] = [];

@@ -1,11 +1,11 @@
 import mylib from "../../../../complect/my-lib/MyLib";
+import { Base } from "../base/Base";
 import { Cat } from "../col/cat/Cat";
 import { Com } from "../col/com/Com";
 import { IExportableCom } from "../col/com/Com.model";
 import { ICols, IExportableCols } from "./Cols.model";
-import { EditableCols } from "./EditableCols";
 
-export class Cols extends EditableCols implements ICols {
+export class Cols extends Base<IExportableCols> implements ICols {
   coms: Com[] = [];
   cats: Cat[] = [];
   ccat?: Cat;
@@ -50,6 +50,5 @@ export class Cols extends EditableCols implements ICols {
     cols.forEach((col, coli) => col.index = coli);
     return cols;
   }
-
 }
 

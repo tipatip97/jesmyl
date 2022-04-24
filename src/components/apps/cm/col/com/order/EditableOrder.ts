@@ -1,18 +1,19 @@
-import { Exec } from "../../../../../../complect/exer/Exec";
 import { ExecArgs, ExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import { Base } from "../../../base/Base";
-import { cmExer } from "../../../Cm.store";
+import { EditableCom } from "../EditableCom";
 import { Order } from "./Order";
 import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats } from "./Order.model";
 
-export class EditableOrder extends Base<IExportableOrderTop> {
+export class EditableOrder extends Order {
     self: Order;
+    com: EditableCom;
 
-    constructor(top: IExportableOrderTop) {
-        super(top);
+    constructor(top: IExportableOrderTop, com: EditableCom) {
+        super(top, com);
         this.self = this as never;
+        this.com = com;
     }
+
     setField<Def, K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args: ExecArgs<Def>, refresh = true, onSet?: () => void | null) {
         const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
             this.exec({
@@ -103,7 +104,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
     // set texti(val: number) { }
 
     scope(action: string, uniq?: number | string, wid?: number | null) {
-        return [this.top.com.scope(), '->', mylib.def(wid, this.self.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
+        return [this.com.do.scope(), '->', mylib.def(wid, this.self.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
     }
 
     exec<Value>(bag: ExecDict<Value>) {
@@ -126,14 +127,13 @@ export class EditableOrder extends Base<IExportableOrderTop> {
     }
 
     async setChordPosition(linei: number, pos: number) {
-        const com = this.top.com;
         const prev = JSON.parse(JSON.stringify(this.positions[linei] || [])).sort((a: number, b: number) => a - b);
         const line = this.positions[linei] || [];
         const posi = line.indexOf(pos);
         const textLines = (this.self.text || '').split('\n');
         const textLine = textLines[linei];
         const lineSplitted = textLine.split('');
-        const vowels = com.getVowelPositions(textLine);
+        const vowels = this.com.getVowelPositions(textLine);
 
         posi < 0
             ? line.push(pos)
@@ -199,7 +199,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
 
     takeUniq() {
         if (this.self.unique != null) return this.self.unique;
-        const value = this.top.com.ords.reduce((max: number, ord: IExportableOrder) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
+        const value = this.com.ords.reduce((max: number, ord: IExportableOrder) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
 
         this.exec({
             method: 'set',

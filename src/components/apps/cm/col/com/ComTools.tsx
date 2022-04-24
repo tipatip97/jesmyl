@@ -10,7 +10,7 @@ import {
   switchAnchorsVisible,
 } from "../../Cm.store";
 import useTranslation from "../../translation/useTranslation";
-import { useCcom } from "../useCcol";
+import { useCcom } from "./useCcom";
 
 export default function ComTools() {
   const dispatch = useDispatch();

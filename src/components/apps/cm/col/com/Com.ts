@@ -1,13 +1,13 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
+import { BaseNamed } from "../../base/Base";
 import { setts } from "../../base/settings/Setts";
 import { StyleProp } from "../../base/settings/StyleProp";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.complect";
 import { IExportableCom } from "./Com.model";
-import { EditableCom } from "./EditableCom";
 import { Order } from "./order/Order";
 import { IExportableOrder, IExportableOrderTop } from "./order/Order.model";
 
-export class Com extends EditableCom {
+export class Com extends BaseNamed<IExportableCom> {
   initial: Record<string, any>;
   ton?: number;
   tonc?: string;
@@ -26,6 +26,14 @@ export class Com extends EditableCom {
 
     this.pullTransPosition(obj);
   }
+
+  get texts() { return this.forcedArray('t'); }
+  set texts(val) { this.setExportable('t', val); }
+
+  get audio() { return this.getOrBase('a', ''); }
+
+  get refs() { return this.getOrBase('r', {}); }
+  set refs(val) { this.setExportable('r', val); }
 
   static get fields() {
     // free: d e f h i j k s u v x y z
@@ -335,7 +343,7 @@ export class Com extends EditableCom {
       if (style.isInherit) continue;
 
       top.style = style;
-      top.com = this;
+      // top.com = this;
       top.source = ord;
       top.isNextInherit = !!getStyle(val[i + 1])?.isInherit;
       top.isNextAnchorOrd = !!(ord.u != null && val[i + 1] && val[i + 1].a === ord.u);
@@ -387,7 +395,7 @@ export class Com extends EditableCom {
           ancTop.isAnchorInherit = true;
           ancTop.isInherit = true;
           ancTop.style = ancStyle;
-          ancTop.com = this;
+          // ancTop.com = this;
           ancTop.source = anc;
           ancTop.header = top.header;
           ancTop.init = top as IExportableOrderTop;
@@ -422,7 +430,7 @@ export class Com extends EditableCom {
 
           nextTop.isInherit = true;
           nextTop.style = nextStyle;
-          nextTop.com = this;
+          // nextTop.com = this;
           //nextTop.targetOrd = targetOrd;
           //nextTop.leadOrd = leadOrd;
           nextTop.prev = prev;

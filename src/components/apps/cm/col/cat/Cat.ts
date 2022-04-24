@@ -1,18 +1,33 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { Com } from "../com/Com";
+import { EditableCol } from "../EditableCol";
 import { ComWrap, ICat, IExportableCat } from "./Cat.model";
-import { EditableCat } from "./EditableCat";
 
-export class Cat extends EditableCat implements ICat, Partial<IExportableCat> {
+export class Cat extends EditableCol<IExportableCat> implements ICat, Partial<IExportableCat> {
   searchTimeout: any;
   initialName: string;
 
-  constructor(obj: IExportableCat, coms: Com[]) {
-    super(obj, coms);
-    this.initialName = obj.n;
+  index: number = -1;
+  term?: string;
+  topComs: Com[];
+  coms: Com[];
+  wraps: ComWrap[] = [];
+  t?: string[] | null;
 
-    this.putComs();
+  constructor(top: IExportableCat, coms: Com[]) {
+    super(top);
+    this.initialName = top.n;
+
+    this.track = mylib.def(top.t, null);
+    this.topComs = coms;
+
+    this.coms = this.putComs();
   }
+
+  get stack() { return this.getOrBase('s', []); }
+
+  get track(): string[] | undefined | null { return this.t; }
+  set track(val: string[] | undefined | null) { this.t = val; }
 
   putComs() {
     this.coms = (
@@ -22,8 +37,10 @@ export class Cat extends EditableCat implements ICat, Partial<IExportableCat> {
     ).slice(0);
 
     this.search();
+
+    return this.coms;
   }
-  
+
   searchErrors(term: string) {
     // editable code
     return null;

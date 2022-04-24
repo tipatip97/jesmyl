@@ -1,20 +1,18 @@
 import { ExecArgs, FreeExecDict } from "../../../../complect/exer/Exer.model";
 import mylib from "../../../../complect/my-lib/MyLib";
-import { BaseNamedExportables } from "../base/Base";
+import { BaseNamed, BaseNamedExportables } from "../base/Base";
 import { eeStorage } from "../base/ee-storage/EeStorage";
 import { cmExer } from "../Cm.store";
 import { IEditableCol, IExportableCol } from "../cols/Cols.model";
 import { CorrectsBox } from "../editor/corrects-box/CorrectsBox";
 import { ICorrectsBox } from "../editor/corrects-box/CorrectsBox.model";
-import { ExportedCol } from "./ExportedCol";
 
-
-export class EditableCol<Col extends BaseNamedExportables> extends ExportedCol<Col> {
+export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col> {
   removed = false;
   incorrectName = false;
   corrects: Record<string, CorrectsBox | nil> = {};
 
-  protected renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln) {
+  renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln) {
     const action = `${coln}Rename`;
     const corrects = this.nameCorrects(name, coln);
 
@@ -30,14 +28,14 @@ export class EditableCol<Col extends BaseNamedExportables> extends ExportedCol<C
     this.corrects[action] = corrects;
   }
 
-  protected removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
+  removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
     this.execCol({
       action: `${coln}Del`,
     }, coln);
     return this.removed = isRemoved;
   }
 
-  protected execCol<Value, Coln extends keyof IExportableCol>(bag: FreeExecDict<Value>, coln: Coln) {
+  execCol<Value, Coln extends keyof IExportableCol>(bag: FreeExecDict<Value>, coln: Coln) {
     cmExer.set<Value>({
       ...bag,
       scope: this.scope(bag.action, bag.uniq),
