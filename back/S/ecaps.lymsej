@@ -1,0 +1,13 @@
+<script>
+
+setTimeout(() => {
+  localStorage.host = window.input.value = localStorage.host || 'https://jesmyl.space/debug/';
+  
+  window.input.oninput = event => window.div.innerText = localStorage.host = event.target.value;
+  window.div.onclick = e => window.input.hidden = false;
+});
+
+</script>
+
+<input id=input hidden />
+<div id=div >Your PWA is debug</div>
