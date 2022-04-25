@@ -11,8 +11,8 @@ import TheMeetings from "./lists/meetings/TheMeetings";
 import PageOnDevelopment from "../../../complect/page-on-development/PageOnDevelopment";
 import Translations from "./translation/Translation";
 import Editor from "./editor/Editor";
-import EditCategories from "./editor/categories/EditCategories";
-import EditCategory from "./editor/categories/EditCategory";
+import EditCategories from "./editor/col/categories/EditCategories";
+import EditCategory from "./editor/col/categories/EditCategory";
 
 export default function CmApplication() {
   const { phase } = useCmNav();

@@ -1,6 +1,6 @@
-import { useEditableCcom } from "../../col/com/useEditableCcom";
-import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
-import PhaseCmEditorContainerItem from "../phase-editor-container/PhaseCmEditorContainerItem";
+import { useEditableCcom } from "./useEditableCcom";
+import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
+import PhaseCmEditorContainerItem from "../../phase-editor-container/PhaseCmEditorContainerItem";
 import useEditComposition from "./useEditComposition";
 
 export default function EditCategory() {

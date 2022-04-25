@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
-import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
-import { useEditableCcat } from "../../col/cat/useEditableCcat";
-import ComFace from "../../col/com/face/ComFace";
-import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
-import PhaseCmEditorContainerItem from "../phase-editor-container/PhaseCmEditorContainerItem";
+import LoadIndicatedContent from "../../../../../../complect/load-indicated-content/LoadIndicatedContent";
+import { useEditableCcat } from "./useEditableCcat";
+import ComFace from "../../../col/com/face/ComFace";
+import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
+import PhaseCmEditorContainerItem from "../../phase-editor-container/PhaseCmEditorContainerItem";
 import useEditCategory from "./useEditCategory";
 
 export default function EditCategory() {

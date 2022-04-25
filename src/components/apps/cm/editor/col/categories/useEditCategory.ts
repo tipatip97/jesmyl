@@ -1,6 +1,6 @@
-import useExer from "../../../../../complect/exer/useExer";
-import { cmExer } from "../../Cm.store";
-import { EditableCat } from "../../col/cat/EditableCat";
+import useExer from "../../../../../../complect/exer/useExer";
+import { cmExer } from "../../../Cm.store";
+import { EditableCat } from "./EditableCat";
 
 
 export default function useEditCategory(cat: EditableCat | nil) {

@@ -1,7 +1,7 @@
 import { ExecArgs, ExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { Base } from "../../../base/Base";
-import { EditableCom } from "../EditableCom";
+import { EditableCom } from "../../../editor/col/compositions/EditableCom";
 import { Order } from "./Order";
 import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats } from "./Order.model";
 

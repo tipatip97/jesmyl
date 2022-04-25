@@ -1,10 +1,10 @@
-import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
-import useCmNav from "../../base/useCmNav";
-import { useCcat } from "../../col/cat/useCcat";
-import { useCols } from "../../cols/useCols";
-import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
+import BrutalItem from "../../../../../../complect/brutal-item/BrutalItem";
+import useCmNav from "../../../base/useCmNav";
+import { useCcat } from "../../../col/cat/useCcat";
+import { useCols } from "../../../cols/useCols";
+import PhaseCmContainer from "../../../complect/phase-container/PhaseCmContainer";
 
-export default function EditCompositions() {
+export default function EditCategories() {
   const [cols] = useCols();
   const { setPhase } = useCmNav();
   const [, setCcat] = useCcat();

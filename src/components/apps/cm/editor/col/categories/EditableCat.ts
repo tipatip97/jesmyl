@@ -1,10 +1,10 @@
-import { ExecDict } from "../../../../../complect/exer/Exer.model";
-import { CorrectsBox } from "../../editor/corrects-box/CorrectsBox";
-import { Com } from "../com/Com";
-import { EditableCom } from "../com/EditableCom";
+import { ExecDict } from "../../../../../../complect/exer/Exer.model";
+import { CorrectsBox } from "../../corrects-box/CorrectsBox";
+import { Com } from "../../../col/com/Com";
+import { EditableCom } from "../compositions/EditableCom";
 import { EditableCol } from "../EditableCol";
-import { Cat } from "./Cat";
-import { IExportableCat } from "./Cat.model";
+import { Cat } from "../../../col/cat/Cat";
+import { IExportableCat } from "../../../col/cat/Cat.model";
 
 
 export class EditableCat extends EditableCol<IExportableCat> {

@@ -1,11 +1,11 @@
-import { ExecArgs, FreeExecDict } from "../../../../complect/exer/Exer.model";
-import mylib from "../../../../complect/my-lib/MyLib";
-import { BaseNamed, BaseNamedExportables } from "../base/Base";
-import { eeStorage } from "../base/ee-storage/EeStorage";
-import { cmExer } from "../Cm.store";
-import { IEditableCol, IExportableCol } from "../cols/Cols.model";
-import { CorrectsBox } from "../editor/corrects-box/CorrectsBox";
-import { ICorrectsBox } from "../editor/corrects-box/CorrectsBox.model";
+import { ExecArgs, FreeExecDict } from "../../../../../complect/exer/Exer.model";
+import mylib from "../../../../../complect/my-lib/MyLib";
+import { BaseNamed, BaseNamedExportables } from "../../base/Base";
+import { eeStorage } from "../../base/ee-storage/EeStorage";
+import { cmExer } from "../../Cm.store";
+import { IEditableCol, IExportableCol } from "../../cols/Cols.model";
+import { CorrectsBox } from "../corrects-box/CorrectsBox";
+import { ICorrectsBox } from "../corrects-box/CorrectsBox.model";
 
 export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col> {
   removed = false;
@@ -103,14 +103,17 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     const warnings: ICorrectsBox[] = [];
     const unknowns: ICorrectsBox[] = [];
 
-    text.split(/[^а-яёіґїє]/i).filter((realWord): boolean => {
-      if (!realWord.match(/[её]/i) || realWord.match(/[іґїє]/i)) return false;
+    text.split(/[^а-яёіґїє]/i).forEach((realWord) => {
+      if (!realWord.match(/[её]/i) || realWord.match(/[іґїє]/i)) return;
       const lower = realWord.toLowerCase();
       const word = lower.replace(/ё/g, 'е');
       const parts = lower.split(/[а-дж-я]*([её])/).filter(p => p);
       console.log(lower, word, parts, eeStorage);
 
-      if (eeStorage.get(word) == null) unknowns.push({ message: `Слово '${realWord}' ещё не встречалось среди существующих песен. Проверь, пожалуйста, правильность написания букв ё/е, встречающихся в нём`, word: realWord, code: 2, });
+      if (eeStorage.get(word) === -1) {
+        unknowns.push({ message: `Слово '${realWord}' ещё не встречалось среди существующих песен. Проверь, пожалуйста, правильность написания букв ё/е, встречающихся в нём`, word: realWord, code: 2, });
+        return;
+      }
 
       [eeStorage.get(word)].flat().forEach((type, typei, typea) => {
         const isE = parts[typei] === 'е';
@@ -124,7 +127,6 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
           } else if (type === 1) errors.push(info(0));
         }
       });
-      return false
     });
     console.log(text, errors, warnings, unknowns)
 

@@ -1,6 +1,6 @@
-import useExer from "../../../../../complect/exer/useExer";
-import { cmExer } from "../../Cm.store";
-import { EditableCom } from "../../col/com/EditableCom";
+import useExer from "../../../../../../complect/exer/useExer";
+import { cmExer } from "../../../Cm.store";
+import { EditableCom } from "./EditableCom";
 
 
 export default function useEditComposition(com: EditableCom | nil) {

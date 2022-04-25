@@ -1,9 +1,9 @@
-import { FreeExecDict } from "../../../../../complect/exer/Exer.model";
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { CorrectsBox } from "../../editor/corrects-box/CorrectsBox";
+import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
+import mylib from "../../../../../../complect/my-lib/MyLib";
+import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import { EditableCol } from "../EditableCol";
-import { Com } from "./Com";
-import { IExportableCom } from "./Com.model";
+import { Com } from "../../../col/com/Com";
+import { IExportableCom } from "../../../col/com/Com.model";
 
 
 export class EditableCom extends EditableCol<IExportableCom> {

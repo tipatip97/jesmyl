@@ -1,5 +1,5 @@
-import { EditableCat } from "../col/cat/EditableCat";
-import { EditableCom } from "../col/com/EditableCom";
+import { EditableCat } from "../editor/col/categories/EditableCat";
+import { EditableCom } from "../editor/col/compositions/EditableCom";
 import { Cols } from "./Cols";
 
 
