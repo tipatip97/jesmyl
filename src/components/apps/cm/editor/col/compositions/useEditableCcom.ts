@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import useEditableCols from "../../../cols/useEditableCols";
+import useEditableCols from "../useEditableCols";
 import { useCcom } from "../../../col/com/useCcom";
 
 export function useEditableCcom() {

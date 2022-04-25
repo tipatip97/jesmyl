@@ -12,7 +12,7 @@ export default function EditCompositions() {
   return (
     <PhaseCmContainer
       topClass="edit-categories"
-      head="Категории"
+      head="Песни"
       content={
         <>
           {cols?.cats.map((cat) => {

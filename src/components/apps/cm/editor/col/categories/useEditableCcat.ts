@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import useEditableCols from "../../../cols/useEditableCols";
+import useEditableCols from "../useEditableCols";
 import { useCcat } from "../../../col/cat/useCcat";
 
 export function useEditableCcat() {

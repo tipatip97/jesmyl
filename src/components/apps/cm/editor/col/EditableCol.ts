@@ -108,9 +108,8 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
       const lower = realWord.toLowerCase();
       const word = lower.replace(/ё/g, 'е');
       const parts = lower.split(/[а-дж-я]*([её])/).filter(p => p);
-      console.log(lower, word, parts, eeStorage);
 
-      if (eeStorage.get(word) === -1) {
+      if (eeStorage.get(word) == null) {
         unknowns.push({ message: `Слово '${realWord}' ещё не встречалось среди существующих песен. Проверь, пожалуйста, правильность написания букв ё/е, встречающихся в нём`, word: realWord, code: 2, });
         return;
       }
@@ -128,7 +127,6 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
         }
       });
     });
-    console.log(text, errors, warnings, unknowns)
 
     return new CorrectsBox(errors, warnings, unknowns);
   }

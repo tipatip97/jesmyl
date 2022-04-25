@@ -11,12 +11,10 @@ export class EditableCat extends EditableCol<IExportableCat> {
   native: Cat;
   coms: EditableCom[] = [];
   initialName: string;
-  index: number;
 
   constructor(cat: Cat, coms: Com[]) {
     super(cat.top);
     this.native = new Cat(cat.top, coms);
-    this.index = cat.index;
     this.initialName = cat.name;
 
     this.coms = this.putComs();

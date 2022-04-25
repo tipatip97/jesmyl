@@ -1,6 +1,6 @@
-import { EditableCat } from "../editor/col/categories/EditableCat";
-import { EditableCom } from "../editor/col/compositions/EditableCom";
-import { Cols } from "./Cols";
+import { EditableCat } from "./categories/EditableCat";
+import { EditableCom } from "./compositions/EditableCom";
+import { Cols } from "../../cols/Cols";
 
 
 export class EditableCols {

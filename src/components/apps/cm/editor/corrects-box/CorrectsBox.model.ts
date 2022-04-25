@@ -13,6 +13,7 @@ export interface ICorrectsBox {
     pos?: number;
     alt?: string;
     onFix?: () => void;
+    fixLabel?: string;
 }
 
 

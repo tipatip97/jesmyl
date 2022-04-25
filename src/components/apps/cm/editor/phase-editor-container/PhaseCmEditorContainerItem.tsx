@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import { CorrectsBox } from "../corrects-box/CorrectsBox";
+import { ICorrectsBox } from "../corrects-box/CorrectsBox.model";
 
 export default function PhaseCmEditorContainerItem(
   props: PropsWithChildren<{
@@ -8,46 +9,37 @@ export default function PhaseCmEditorContainerItem(
   }>
 ) {
   const { action, corrects, children } = props;
+  const errors = corrects?.errors || [];
+  const warnings = corrects?.warnings || [];
+  const unknowns = corrects?.unknowns || [];
 
   return (
-    <div
-      className={`editable-block ${
-        corrects && corrects?.errors?.length
-          ? "error"
-          : corrects && corrects?.warnings?.length
-          ? "warning"
-          : ""
-      }`}
-    >
+    <div className="editable-block">
       {children}
       <div className="corrects-container">
-        {corrects &&
-          corrects?.errors?.map(({ message, onFix }, errori) => {
+        {(
+          [
+            ["error", errors],
+            ["warning", warnings],
+            ["unknown", unknowns],
+          ] as [string, ICorrectsBox[]][]
+        ).map(([correct, line]) => {
+          return line.map(({ message, onFix, fixLabel }, correcti) => {
             return (
               <div
-                key={`error-corrects-for "${action}" action : ${errori}`}
-                className="error-box"
+                key={`${correct}-corrects-for "${action}" action : ${correcti}`}
+                className={`${correct} correct-box`}
               >
                 {message}
                 {onFix && (
-                  <p className="fix-button" onClick={() => onFix()}>
-                    Исправить
-                  </p>
+                  <div className="fix-button" onClick={() => onFix()}>
+                    {fixLabel || "Исправить"}
+                  </div>
                 )}
               </div>
             );
-          })}
-        {corrects &&
-          corrects?.warnings?.map(({ message }, warningi) => {
-            return (
-              <p
-                key={`warning-corrects-for "${action}" action : ${warningi}`}
-                className="warning-box"
-              >
-                {message}
-              </p>
-            );
-          })}
+          });
+        })}
       </div>
     </div>
   );

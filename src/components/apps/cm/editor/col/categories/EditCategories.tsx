@@ -1,18 +1,19 @@
 import BrutalItem from "../../../../../../complect/brutal-item/BrutalItem";
 import useCmNav from "../../../base/useCmNav";
 import { useCcat } from "../../../col/cat/useCcat";
-import { useCols } from "../../../cols/useCols";
-import PhaseCmContainer from "../../../complect/phase-container/PhaseCmContainer";
+import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
+import useEditableCols from "../useEditableCols";
 
 export default function EditCategories() {
-  const [cols] = useCols();
+  const cols = useEditableCols();
   const { setPhase } = useCmNav();
   const [, setCcat] = useCcat();
 
   return (
-    <PhaseCmContainer
+    <PhaseCmEditorContainer
       topClass="edit-categories"
-      head="Категории"
+      headClass="flex between"
+      headTitle="Категории"
       content={
         <>
           {cols?.cats.map((cat) => {
@@ -20,9 +21,11 @@ export default function EditCategories() {
               <BrutalItem
                 key={`category-on-change_${cat.wid}`}
                 icon="book-open-outline"
-                title={cat.name || ""}
+                title={`${cat.name || ""}${
+                  cat.name !== cat.initialName ? ` (${cat.initialName})` : ""
+                }`}
                 onClick={() => {
-                  setCcat(cat);
+                  setCcat(cat.native);
                   setPhase("edit-category");
                 }}
               />
