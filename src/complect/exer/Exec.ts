@@ -1,5 +1,6 @@
+import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
 import mylib from "../my-lib/MyLib";
-import { ExecArgs, ExecDict, ExecMethod, ExecRule } from "./Exer.model";
+import { ExecArgs, ExecDict, ExecMethod, ExecRule, FreeExecDict } from "./Exer.model";
 
 
 export class Exec<Value> {
@@ -18,6 +19,7 @@ export class Exec<Value> {
     muted?: boolean;
     errors?: string[];
     rule?: ExecRule;
+    corrects?: CorrectsBox;
 
     onSet?: (exec: Exec<Value>) => [];
     onLoad?: (exec: Exec<Value>) => '';
@@ -28,9 +30,14 @@ export class Exec<Value> {
         });
         this.action = exec.action;
         this.method = exec.method;
-        setReals(['argValue', 'scope', 'prev', 'value', 'args', 'generalId', 'createByPath', 'muted']);
+        this.prev = mylib.deepClone(exec.prev);
+        this.corrects = exec.corrects;
+
+        setReals(['argValue', 'scope', 'value', 'args', 'generalId', 'createByPath', 'muted']);
+
         this.rule = rules.find(rule => rule.action === this.action);
         if (!this.rule) console.error(`Неизвестное правило "${this.action}"`);
+
         this.updateTitle();
     }
 
@@ -64,9 +71,10 @@ export class Exec<Value> {
         };
     }
 
-    setValue(value?: Value) {
-        this.value = value;
-        if (this.args && this.argValue != null) this.args[this.argValue] = value;
+    setValue(value?: Value, exec?: FreeExecDict<Value>) {
+        if (exec?.args != null) this.args = { ...exec.args, prev: this.prev };
+        if (value !== undefined) this.value = value;
+        if (exec?.corrects && this.corrects) this.corrects.setAll(exec.corrects);
         this.updateTitle();
         return this.value === this.prev;
     }
