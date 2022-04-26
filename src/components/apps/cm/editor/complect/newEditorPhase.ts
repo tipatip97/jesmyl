@@ -6,7 +6,7 @@ export const newEditorPhase = (
     specialPhase: CmSpecialPhase,
     prevPhase: CmPhase | nil
 ) => {
-    return phase === 'edit-categories'
+    return phase === 'edit-categories' || phase === 'edit-compositions'
         ? 'editor'
         : null;
 };

@@ -20,7 +20,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
       action,
       prev: this.name,
       value: name,
-      argValue: 'name',
+      args: { name },
       corrects,
     }, coln);
 

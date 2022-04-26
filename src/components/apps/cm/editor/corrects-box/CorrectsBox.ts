@@ -7,7 +7,7 @@ export class CorrectsBox {
     collection: ICorrectsBox[] | null = null;
     incorrectType?: string | boolean;
 
-    constructor(errors?: ICorrectsBox[], warnings?: ICorrectsBox[], unknowns?: ICorrectsBox[]) {
+    constructor(errors?: ICorrectsBox[] | nil, warnings?: ICorrectsBox[] | nil, unknowns?: ICorrectsBox[] | nil) {
         this.errors = Array.isArray(errors) && errors.length ? errors : null;
         this.warnings = Array.isArray(warnings) && warnings.length ? warnings : null;
         this.unknowns = Array.isArray(unknowns) && unknowns.length ? unknowns : null;
@@ -78,5 +78,12 @@ export class CorrectsBox {
 
     setUnknowns(unknowns: ICorrectsBox[] | null) {
         this.unknowns = unknowns;
+    }
+
+    setAll(box: CorrectsBox) {
+        const { errors, warnings, unknowns } = box;
+        if (errors !== undefined) this.setErrors(errors);
+        if (warnings !== undefined) this.setWarnings(warnings);
+        if (unknowns !== undefined) this.setUnknowns(unknowns);
     }
 }

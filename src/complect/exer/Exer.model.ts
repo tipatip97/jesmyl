@@ -11,11 +11,13 @@ export interface ExecRule {
 }
 
 
-export type ExecMethod = 'set' | 'push' | 'func' | 'migrate';
+export type ExecMethod = 'set' | 'push' | 'func' | 'migrate' | 'remove' | 'add';
 
 export interface ExerStorage {
     actions: ExecRule[];
 }
+
+export type FreeExecDictAntiCallback<Value> = (exec: Exec<Value>) => (() => boolean | nil) | void;
 
 export interface FreeExecDict<Value> {
     action: string;
@@ -26,15 +28,22 @@ export interface FreeExecDict<Value> {
     args?: Record<string, any>;
     generalId?: string | number;
     createByPath?: boolean;
-    argValue?: string;
     del?: boolean;
     muted?: boolean;
     errors?: string[];
     uniq?: number | string;
     corrects?: CorrectsBox;
+    // верни функцию, если нашлось противное `exec` - в таком случае будет удалён противный `exec`
+    // которая должна вернуть "зафиксировать выполнение текущего `exec`?"
+    anti?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[];
 
     onSet?: (exec: Exec<Value>) => void;
     onLoad?: (exec: Exec<Value>) => void;
+}
+
+export interface SetAntiValue<Value> {
+    args?: any;
+    value?: Value;
 }
 
 export interface ExecDict<Value = any> extends FreeExecDict<Value> {

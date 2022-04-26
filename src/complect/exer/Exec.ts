@@ -1,6 +1,6 @@
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
 import mylib from "../my-lib/MyLib";
-import { ExecArgs, ExecDict, ExecMethod, ExecRule, FreeExecDict } from "./Exer.model";
+import { ExecDict, ExecMethod, ExecRule, FreeExecDict } from "./Exer.model";
 
 
 export class Exec<Value> {

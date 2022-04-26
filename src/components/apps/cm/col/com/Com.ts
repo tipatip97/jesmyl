@@ -35,7 +35,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
   get audio() { return this.getOrBase('a', ''); }
 
-  get refs() { return this.getOrBase('r', {}); }
+  get refs() { return this.getOrBase('r'); }
   set refs(val) { this.setExportable('r', val); }
 
   static get fields() {

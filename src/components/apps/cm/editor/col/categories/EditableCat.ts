@@ -42,7 +42,6 @@ export class EditableCat extends EditableCol<IExportableCat> {
         args: {
           track: value,
         },
-        argValue: 'track',
       }, 'cat');
       this.native.track = value;
 

@@ -953,6 +953,30 @@ export class MyLib {
 
         if (isStatic) parent.style.position = prevPosition;
     }
+  
+    deepClone(obj: any) {
+      const cloned: any[] = [];
+      
+      const clone = (what: any) => {
+        if (this.isStr(what)) return '' + what;
+        if (this.isNum(what)) return 0 + what;
+        if (this.isBool(what)) return !!what;
+        if (what == null || this.isFunc(what)) return what;
+        
+        if (this.isobj(what)) {
+          if (cloned.indexOf(what) > -1) throw Error('Circular clone');
+          cloned.push(what);
+          const newObj: any = this.isArr(what) ? [] : {};
+          
+          for (const whatn in what) 
+            newObj[whatn] = clone(what[whatn]);
+          
+          return newObj;
+        }
+      };
+      
+      return clone(obj);
+    }
 }
 
 

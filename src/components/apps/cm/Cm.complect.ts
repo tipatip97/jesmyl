@@ -51,7 +51,7 @@ export const specialPhases = ["marked", "thematic", "meeting"] as const;
 export const inlinePhases = [
   ["all", "com", "translation"],
   ["lists", "cat", "marks", "meetings", "meeting"],
-  ["editor", "edit-categories", "edit-category"]
+  ["editor", "edit-categories", "edit-category", "edit-compositions", "edit-composition"]
 ] as const;
 
 const [allPhases, listsPhases, editorPhases] = inlinePhases;

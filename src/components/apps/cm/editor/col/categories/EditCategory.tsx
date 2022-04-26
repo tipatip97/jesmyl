@@ -3,7 +3,7 @@ import LoadIndicatedContent from "../../../../../../complect/load-indicated-cont
 import { useEditableCcat } from "./useEditableCcat";
 import ComFace from "../../../col/com/face/ComFace";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
-import PhaseCmEditorContainerItem from "../../phase-editor-container/PhaseCmEditorContainerItem";
+import EditContainerCorrectsInformer from "../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import useEditCategory from "./useEditCategory";
 
 export default function EditCategory() {
@@ -23,7 +23,7 @@ export default function EditCategory() {
       content={
         <>
           {
-            <PhaseCmEditorContainerItem
+            <EditContainerCorrectsInformer
               action="catRename"
               corrects={ccat?.corrects.catRename}
             >
@@ -32,10 +32,10 @@ export default function EditCategory() {
                 value={ccat?.name}
                 onChange={(event) => rename(event.target.value)}
               />
-            </PhaseCmEditorContainerItem>
+            </EditContainerCorrectsInformer>
           }
           {
-            <PhaseCmEditorContainerItem
+            <EditContainerCorrectsInformer
               action="catSetTrack"
               corrects={ccat?.corrects.catSetTrack}
             >
@@ -53,7 +53,7 @@ export default function EditCategory() {
               >
                 {isShowComs ? " Скрыть" : " Показать"} список песен
               </div>
-            </PhaseCmEditorContainerItem>
+            </EditContainerCorrectsInformer>
           }
           {isShowComs ? (
             <LoadIndicatedContent isLoading={!ccat.coms.length}>

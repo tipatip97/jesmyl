@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import EditContainerCorrectsInformer from "../../components/apps/cm/editor/edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { riseUpExerUpdates } from "../Complect.store";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { Exer } from "./Exer";
@@ -12,16 +13,29 @@ export default function ExecList<Storage extends ExerStorage>({
 }) {
   const dispatch = useDispatch();
   const { execs } = useExer(exer);
+  const isDisabledSendButton = execs.some(
+    (exec) => exec.corrects?.errors?.length
+  );
 
   return (
-    <div className="full-container flex center">
+    <div className="full-container flex center column">
       {execs.map((exec) => {
-        return <div key={exec.scope}>{exec.title}</div>;
+        return (
+          <EditContainerCorrectsInformer
+            key={"exec-list*" + exec.scope}
+            action="catRename"
+            corrects={exec?.corrects}
+          >
+            {exec.title}
+          </EditContainerCorrectsInformer>
+        );
       })}
-      
+
       <EvaIcon
         name="paper-plane-outline"
-        className="action-button pointer"
+        className={`action-button pointer ${
+          isDisabledSendButton ? "disabled" : ""
+        }`}
         onClick={() => exer.load(() => dispatch(riseUpExerUpdates()))}
       />
     </div>

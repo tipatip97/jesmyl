@@ -1,8 +1,9 @@
 import { PropsWithChildren } from "react";
 import { CorrectsBox } from "../corrects-box/CorrectsBox";
 import { ICorrectsBox } from "../corrects-box/CorrectsBox.model";
+import "./EditContainerCorrectsInformer.scss";
 
-export default function PhaseCmEditorContainerItem(
+export default function EditContainerCorrectsInformer(
   props: PropsWithChildren<{
     corrects?: CorrectsBox | nil;
     action: string;
@@ -14,7 +15,7 @@ export default function PhaseCmEditorContainerItem(
   const unknowns = corrects?.unknowns || [];
 
   return (
-    <div className="editable-block">
+    <div className="edit-container-corrects-informer">
       {children}
       <div className="corrects-container">
         {(
@@ -24,7 +25,7 @@ export default function PhaseCmEditorContainerItem(
             ["unknown", unknowns],
           ] as [string, ICorrectsBox[]][]
         ).map(([correct, line]) => {
-          return line.map(({ message, onFix, fixLabel }, correcti) => {
+          return line?.map(({ message, onFix, fixLabel }, correcti) => {
             return (
               <div
                 key={`${correct}-corrects-for "${action}" action : ${correcti}`}

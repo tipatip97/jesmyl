@@ -84,7 +84,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
             value,
             method: 'set',
             action,
-            createByPath: true,
+            // createByPath: true,
             args: {
                 value,
                 fieldn,

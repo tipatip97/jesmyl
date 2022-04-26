@@ -43,13 +43,36 @@ export class Exer<Storage extends ExerStorage> {
     set<Value>(execs: FreeExecDict<Value> | FreeExecDict<Value>[]) {
         [execs].flat().forEach((freeExec) => {
             if (!freeExec) return;
-            const { scope, value, method = 'set' } = freeExec;
+            const { scope, value, method = 'set', anti } = freeExec;
             const exec = { ...freeExec, method };
 
             const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
             const prevExec: Exec<Value> = this.execs[prevExeci];
             const lasti = this.execs.length - 1;
             const lastExec: Exec<Value> = this.execs[lasti];
+
+            let isPrevented = false;
+
+            if (anti) {
+                const antis = [anti].flat();
+                const remIndexes: number[] = [];
+
+                for (let execi = 0; execi < this.execs.length; execi++) {
+
+                    for (const anti of antis) {
+                        const prevent = anti(this.execs[execi]);
+
+                        if (prevent) {
+                            remIndexes.push(execi);
+                            if (prevent()) isPrevented = true;
+                        }
+                    }
+                    if (isPrevented) break;
+                }
+                remIndexes.sort((a, b) => b - a).forEach(execi => this.execs.splice(execi, 1));
+            }
+
+            if (isPrevented) return;
 
             if (method === 'func') {
                 if (prevExec) this.execs.splice(prevExeci, 1, new Exec(exec, this.rules));
@@ -63,12 +86,12 @@ export class Exer<Storage extends ExerStorage> {
                 if (prevExec)
                     if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
                     else {
-                        const needRemove = prevExec.setValue(value);
+                        const needRemove = prevExec.setValue(value, exec);
                         if (needRemove) this.execs.splice(prevExeci, 1);
                     }
                 else if (!mylib.isEq(exec.prev, exec.value))
                     this.execs.push(new Exec(exec, this.rules));
-            }
+            } else if (!prevExec || !mylib.isEq(exec.args, prevExec.args)) this.execs.push(new Exec(exec, this.rules));
 
             exec.scope = scope;
             switch (mylib.func(exec.onSet).call(exec)) {
@@ -91,7 +114,6 @@ export class Exer<Storage extends ExerStorage> {
             .filter(ex => ex);
 
         const onError = (error: Error) => {
-            // this.dconsl(error, text).config({ type: 0 });
             modalService.confirm(`${error || `Ошибка!`}\nСохранить локально?`)
                 .then(isSave => {
                     if (isSave) this.saveLocally();
@@ -106,13 +128,10 @@ export class Exer<Storage extends ExerStorage> {
             errCb && errCb(null, error);
             finCb && finCb(null, error);
         };
-        // this.dconsl(execs);
 
         this.fetch({
             execs,
             success: resp => {
-                // this.dconsl(resp);
-
                 if (!resp.ok) onError(resp.errors);
                 else {
                     this.execs = this.execs.filter(ex => ((resp.ok && ex.del) || resp.rejected) &&
@@ -123,7 +142,7 @@ export class Exer<Storage extends ExerStorage> {
                             }
                             return false;
                         }));
-                    //this.setLS(, this.execs);
+
                     cb && cb(resp, null);
                     finCb && finCb(resp, null);
                 }

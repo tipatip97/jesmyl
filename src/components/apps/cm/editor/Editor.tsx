@@ -25,6 +25,11 @@ export default function Editor() {
             title="Категории"
             onClick={() => setPhase("edit-categories")}
           />
+          <BrutalItem
+            icon="headphones-outline"
+            title="Песни"
+            onClick={() => setPhase("edit-compositions")}
+          />
         </>
       }
     />
