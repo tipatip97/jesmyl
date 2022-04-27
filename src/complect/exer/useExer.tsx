@@ -7,6 +7,7 @@ import { ExerStorage } from "./Exer.model";
 import EvaIcon from "../eva-icon/EvaIcon";
 import useFullscreenContent from "../fullscreen-content/useFullscreenContent";
 import ExecList from "./ExecList";
+import "./Exec.scss";
 
 export default function useExer<Storage extends ExerStorage>(
   exer: Exer<Storage>
@@ -22,11 +23,13 @@ export default function useExer<Storage extends ExerStorage>(
     },
     execs: exer.execs,
     sendIcon: exer.execs.length ? (
-      <EvaIcon
-        name="eye-outline"
-        className="action-button pointer"
-        onClick={() => openFullscreenContent(<ExecList exer={exer} />)}
-      />
+      <span className="show-execs-icon" execs-count={exer.execs.length}>
+        <EvaIcon
+          name="eye-outline"
+          className="action-button pointer"
+          onClick={() => openFullscreenContent(<ExecList exer={exer} />)}
+        />
+      </span>
     ) : null,
   };
 }
