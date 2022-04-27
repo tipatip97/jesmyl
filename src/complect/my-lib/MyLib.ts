@@ -426,22 +426,6 @@ export class MyLib {
             .filter(s => s))?.join('') || '';
     }
 
-    clone(what: any) {
-        return this.isStr(what)
-            ? `` + what
-            : this.isNum(what)
-                ? 0 + what
-                : this.isArr(what)
-                    ? what.slice(0)
-                    : this.isBool(what)
-                        ? !!what
-                        : this.isObj(what)
-                            ? Object.assign({}, what)
-                            : this.isUnd(what)
-                                ? undefined
-                                : null;
-    }
-
     useElement(nodeName: string, topId: string, cb: (elem: HTMLElement) => void, doc = document, forceReborn = false): HTMLElement {
         const id = this.normQuery(topId);
         const oldElement = document.querySelector(`#${id}`);
@@ -954,7 +938,7 @@ export class MyLib {
         if (isStatic) parent.style.position = prevPosition;
     }
   
-    deepClone(obj: any) {
+    clone(obj: any) {
       const cloned: any[] = [];
       
       const clone = (what: any) => {

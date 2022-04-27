@@ -1,21 +1,24 @@
-import { ExecDict } from "../../../../../../complect/exer/Exer.model";
+import { ExecDict, FreeExecDict } from "../../../../../../complect/exer/Exer.model";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import { Com } from "../../../col/com/Com";
 import { EditableCom } from "../compositions/EditableCom";
 import { EditableCol } from "../EditableCol";
 import { Cat } from "../../../col/cat/Cat";
 import { IExportableCat } from "../../../col/cat/Cat.model";
+import mylib from "../../../../../../complect/my-lib/MyLib";
 
 
 export class EditableCat extends EditableCol<IExportableCat> {
   native: Cat;
   coms: EditableCom[] = [];
   initialName: string;
+  stack?: number[];
 
   constructor(cat: Cat, coms: Com[]) {
     super(cat.top);
     this.native = new Cat(cat.top, coms);
     this.initialName = cat.name;
+    this.stack = mylib.clone(cat.stack);
 
     this.coms = this.putComs();
   }
@@ -24,7 +27,7 @@ export class EditableCat extends EditableCol<IExportableCat> {
     return this.coms = this.native.putComs().map(com => new EditableCom(com, com.index));
   }
 
-  exec<Value>(bag: ExecDict<Value>) {
+  exec<Value>(bag: FreeExecDict<Value>) {
     this.execCol(bag, 'cat');
   }
 
@@ -57,6 +60,39 @@ export class EditableCat extends EditableCol<IExportableCat> {
       if (this.corrects.catSetTrack) this.corrects.catSetTrack.setErrors(errors);
       else this.corrects.catSetTrack = new CorrectsBox(errors);
     }
+  }
+
+  toggleComExistence(com: Com | nil, exec?: <Val>(v?: Val) => Val | nil) {
+    if (!com) return;
+    if (!this.stack) return;
+    const index = this.stack.indexOf(com.wid);
+
+    if (index < 0) {
+      this.exec({
+        action: 'catBindCom',
+        args: {
+          comw: com.wid,
+        },
+        anti: ({ action, args }) => {
+          if (action === 'catUnbindCom' && args?.comw === com.wid)
+            return () => false;
+        },
+      });
+      this.stack.push(com.wid);
+    } else {
+      this.exec({
+        action: 'catUnbindCom',
+        args: {
+          comw: com.wid,
+        },
+        anti: ({ action, args }) => {
+          if (action === 'catBindCom' && args?.comw === com.wid)
+            return () => this.native.stack && this.native.stack?.indexOf(com.wid) > -1;
+        },
+      });
+      this.stack.splice(index, 1);
+    }
+    exec?.();
   }
 }
 

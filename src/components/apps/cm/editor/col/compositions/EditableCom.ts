@@ -117,6 +117,6 @@ export class EditableCom extends EditableCol<IExportableCom> {
                 },
             ],
         });
-        exec && exec();
+        exec?.();
     }
 }

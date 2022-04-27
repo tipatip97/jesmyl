@@ -11,7 +11,7 @@ export interface ExecRule {
 }
 
 
-export type ExecMethod = 'set' | 'push' | 'func' | 'migrate' | 'remove' | 'add';
+export type ExecMethod = 'set' | 'push' | 'func' | 'migrate' | 'remove' | 'add' | 'other';
 
 export interface ExerStorage {
     actions: ExecRule[];
@@ -33,8 +33,8 @@ export interface FreeExecDict<Value> {
     errors?: string[];
     uniq?: number | string;
     corrects?: CorrectsBox;
-    // верни функцию, если нашлось противное `exec` - в таком случае будет удалён противный `exec`
-    // которая должна вернуть "зафиксировать выполнение текущего `exec`?"
+    // верни функцию, если нашлось противное `exec` (в таком случае будет удалён противный `exec`),
+    // которая должна вернуть "зафиксировать ли выполнение текущего `exec`?"
     anti?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[];
 
     onSet?: (exec: Exec<Value>) => void;

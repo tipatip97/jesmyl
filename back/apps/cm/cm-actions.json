@@ -143,34 +143,35 @@
                                 }
                             },
                             {
-                                "level": 50,
-                                "action": "comBind",
-                                "title": "К Категории \"$name\" прикреплена Песня \"$comn\"",
-                                "track": [
-                                    "s"
-                                ],
-                                "method": "push",
-                                "value": "{comw}",
                                 "args": {
                                     "comw": "#Number"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "comUnbind",
-                                "title": "Песня \"$comn\" откреплена от Категории \"$name\"",
-                                "track": [
-                                    "s"
-                                ],
-                                "method": "remove",
-                                "value": [
-                                    ".",
-                                    "===",
-                                    "{comw}"
-                                ],
-                                "args": {
-                                    "comw": "#Number"
-                                }
+                                },
+                                "next": [
+                                    {
+                                        "level": 50,
+                                        "action": "catBindCom",
+                                        "title": "К Категории \"$name\" прикреплена Песня \"$comn\"",
+                                        "track": [
+                                            "s"
+                                        ],
+                                        "method": "push",
+                                        "value": "{comw}"
+                                    },
+                                    {
+                                        "level": 50,
+                                        "action": "catUnbindCom",
+                                        "title": "Песня \"$comn\" откреплена от Категории \"$name\"",
+                                        "track": [
+                                            "s"
+                                        ],
+                                        "method": "remove",
+                                        "value": [
+                                            ".",
+                                            "===",
+                                            "{comw}"
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     }

@@ -30,7 +30,7 @@ export class Exec<Value> {
         });
         this.action = exec.action;
         this.method = exec.method;
-        this.prev = mylib.deepClone(exec.prev);
+        this.prev = mylib.clone(exec.prev);
         this.corrects = exec.corrects;
 
         setReals(['argValue', 'scope', 'value', 'args', 'generalId', 'createByPath', 'muted']);

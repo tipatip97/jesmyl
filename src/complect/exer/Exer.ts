@@ -43,7 +43,7 @@ export class Exer<Storage extends ExerStorage> {
     set<Value>(execs: FreeExecDict<Value> | FreeExecDict<Value>[]) {
         [execs].flat().forEach((freeExec) => {
             if (!freeExec) return;
-            const { scope, value, method = 'set', anti } = freeExec;
+            const { scope, value, method = 'other', anti } = freeExec;
             const exec = { ...freeExec, method };
 
             const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
