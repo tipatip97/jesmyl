@@ -158,28 +158,32 @@ export class Com extends BaseNamed<IExportableCom> {
   translationMap() {
     if (this._translationMap != null) return this._translationMap;
 
-    const kinds = translationPushKinds[this.translationPushKind || 0];
+    const kinds = translationPushKinds[this.translationPushKind];
     let curr = 0;
+    const orders = this.orders ?? [];
+    const len = orders.length;
 
-    this.orders?.forEach((ord: Order, ordi: number, orda: Order[]) => {
-      if (ord.texti == null) {
-        curr = 0;
-        return;
+    for (let ordi = 0; ordi < len;) {
+      const ord = orders[ordi];
+
+      if (!ord.text) {
+        ordi++;
+        continue;
       }
 
-      if (ord.top.isInherit) {
-        curr += ord.text.split(/\n/).length;
-        if (ordi === orda.length - 1) kinds.push(curr);
-        return;
+      curr += ord.text.split(/\n/).length;
+      let nextOrd = orders[++ordi];
+
+      while (nextOrd?.top.isInherit) {
+        curr += nextOrd.text.split(/\n/).length;
+        nextOrd = orders[++ordi];
       }
 
-      curr && kinds.push(curr);
+      kinds.push(curr);
+      curr = 0;
+    }
 
-      curr = ord.text.split(/\n/).length;
-      if (ordi === orda.length - 1) kinds.push(curr);
-    });
-
-    return this._translationMap = kinds.list();
+    return this._translationMap = kinds.clearList();
   }
 
   bracketsTransformed(str = '') {
