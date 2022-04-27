@@ -5,6 +5,7 @@ import { EditableCol } from "../EditableCol";
 import { Com } from "../../../col/com/Com";
 import { IExportableCom } from "../../../col/com/Com.model";
 import { Cat } from "../../../col/cat/Cat";
+import { textedChord } from "../../Editor.complect";
 
 
 export class EditableCom extends EditableCol<IExportableCom> {
@@ -118,5 +119,50 @@ export class EditableCom extends EditableCol<IExportableCom> {
             ],
         });
         exec?.();
+    }
+    
+    blockCorrects(value: string, coln: 'c' | 't', blocki: number) {
+        const blockNum = blocki == null ? '' : `. (${blocki - -1}-й блок)`;
+        const ret = (err: string | null) => new CorrectsBox(err ? [{ message: err, code: 0 }] : null);
+
+        if (coln === 'c') {
+            const errors: string[] = [];
+            const text = value
+                .trim()
+                .split(/([\n\s ]+)/)
+                .map((chord, chordi) => {
+                    if (!(chordi % 2) && !textedChord.exec(chord)) {
+                        errors.push(chord);
+                        return `[${chord}]`;
+                    }
+                    return chord;
+                })
+                .join(' ');
+            const few = errors.length > 1;
+
+            return ret(errors.length ? `Аккорд${few ? 'ы' : ''} "${errors.join('; ')}" не верно написан${few ? 'ы' : ''}${blockNum}:\n\n${text}\n\n` : null);
+        } else {
+            let isThereErrors;
+            let mistakes = '';
+            const text = (value || '').replace(/[^-ієїа-яё().,":;!?\s']+/gi, all => {
+                isThereErrors = true;
+                mistakes += all;
+                return `[${all}]`;
+            });
+            if (isThereErrors) return ret(`Присутствуют недопустимые символы${blockNum}: ${mistakes}\n\n${text}\n\n`);
+
+            const { level } = this.native.bracketsTransformed(value);
+            if (level) {
+                const pre = level < 0 ? 'открывающ' : 'закрывающ';
+                const text = mylib.declension(
+                    Math.abs(level),
+                    `${pre}уюся кавычку`,
+                    `${pre}ихся кавычки`,
+                    `${pre}ихся кавычек`
+                );
+                return ret(`В тексте присутствует непарное количество ковычек.\nНеобходимо добавить ${Math.abs(level)} ${text}${blockNum}\n\n`);
+            }
+            return this.textCorrects(value);
+        }
     }
 }

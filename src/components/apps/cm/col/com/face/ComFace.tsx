@@ -5,13 +5,7 @@ import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
 export default function ComFace(props: ComFaceProps) {
-  const {
-    com,
-    errors,
-    specialPhase = null,
-    importantOnClick,
-    groupClass,
-  } = props;
+  const { com, specialPhase = null, importantOnClick, groupClass } = props;
   const [ccom, setCcom] = useCcom();
   const { setPhase } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
@@ -48,7 +42,6 @@ export default function ComFace(props: ComFaceProps) {
         </div>
         <span className="title ellipsis">{com.name}</span>
       </div>
-      {errors}
     </>
   );
 }

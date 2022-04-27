@@ -39,38 +39,11 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat, Partial<IExp
     return this.coms;
   }
 
-  searchErrors(term: string) {
-    // editable code
-    return null;
-  }
+  search(term = this.term, cb?: () => void) {
+    if (term) {
+      this.wraps = mylib.searchRate<ComWrap>(this.coms, term, ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com') as ComWrap[];
 
-  search(term = this.term, cb?: () => void, debounceTime = 0, dtCb?: () => void) {
-    const filter = () => {
-      if (term) {
-        const errors = this.searchErrors(term);
-
-        if (errors != null) {
-          this.wraps = errors;
-        } else if (term === '@1') {
-          this.wraps = this.coms.filter(com => !com.audio || !com.audio.trim()).map(com => ({ com }));
-        } else if (term === '@2') {
-          // this.wraps = this.coms.map(com => ({ com, bag: [[com.nameCorrects(com.name), 'n']].concat(com.texts.map((t, ti) => [com.blockCorrects(t, 't'), ti])).filter(([s]) => s && s.errors) })).filter(({ bag }) => bag.length).map(({ com, bag }) => ({ com, errors: [].concat(bag).map(([{ errors, warnings, unknowns }, index]) => errors && errors.map(({ message }) => ce('div', {}, message + ' ' + (index + 1)))) }));
-        } else {
-          // const inner = mylib.convertStrIfReg(term);
-          // let ratesBag = mylib.getRatesInclude(inner, reg => g.transcriptions.reduce((reg, trans) => reg.replace(RegExp(`[${trans[0]}]`, 'g'), `[${trans[1] || trans[0]}]`), reg));
-
-          this.wraps = mylib.searchRate<ComWrap>(this.coms, term, ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com') as ComWrap[];
-        }
-      } else this.wraps = this.coms.map(com => ({ com }));
-    };
-
-    if (debounceTime) {
-      clearTimeout(this.searchTimeout);
-      this.searchTimeout = setTimeout(() => {
-        filter();
-        dtCb && dtCb();
-      }, debounceTime);
-    } else filter();
+    } else this.wraps = this.coms.map(com => ({ com }));
 
     this.term = term;
     cb && cb();
