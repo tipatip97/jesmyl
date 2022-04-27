@@ -1,0 +1,271 @@
+[
+  {
+    "name": "cm",
+    "title": "Аккорд Мастер",
+    "description": "Сборщик Христианских песен для удобного использования",
+    "params": ["joinedStream:#String:[runtime]", "observedComs:#String"],
+    "variables": {
+      "canRedact": 50,
+      "mutedExecs": false
+    },
+    "requirements": [
+      {
+        "R": ["@prepareActions():1:cm"],
+        "name": "actions",
+        "ext": "json",
+        "track": ["@prepareActions()::cm"]
+      }, {
+        "path": "../apps/cm/cm.css",
+        "file": "cm.scss",
+        "name": "cm_style",
+        "ext": "scss"
+      }, {
+        "path": "~apps/cm/settings.json",
+        "file": "settings.json",
+        "name": "settings",
+        "ext": "json"
+      }, {
+        "path": "~apps/cm/cols.json",
+        "file": "cols.json",
+        "name": "cols",
+        "ext": "json"
+      }, {
+        "path": "~apps/cm/meetings.json",
+        "file": "meetings.json",
+        "name": "cm_meetings",
+        "ext": "json"
+      }, {
+        "R": ["@userLevel", ">=", 50],
+        "path": "~apps/cm/e-e-rules.json",
+        "file": "e-e-rules.json",
+        "name": "cm_e_e_rules",
+        "ext": "json"
+      }, {
+        "R": ["@userLevel", ">=", 100],
+        "path": "~apps/cm/cm-execs.json",
+        "file": "cm-execs.json",
+        "name": "cm_executions",
+        "ext": "json",
+        "track": [
+          ["~apps/cm/cm-execs.json"],
+          {
+            "FILTER": ["ts", ">", "@timePrevDay"]
+          }
+        ]
+      }, {
+        "R": ["@userLevel", ">=", 100],
+        "path": ["~apps/cm/cm-execs.json", "~S/apps.json"],
+        "file": "cm-execs.json",
+        "name": "cm_observable_executions",
+        "ext": "json",
+        "track": [
+          ["~apps/cm/cm-execs.json"],
+          {
+            "FILTER": [["args", "comw"], "===", 20220214131605570]
+          }
+        ]
+      }, {
+        "R": ["@userLevel", ">=", 100],
+        "track": ["@getComsExecutions()"],
+        "name": "cm_coms_executions",
+        "ext": "json"
+      }, {
+        "path": "~apps/cm/chords.json",
+        "file": "chords.json",
+        "name": "chords",
+        "ext": "json"
+      }, {
+        "R": ["@observeStreamChanges():1:cm"],
+        "ext": "json",
+        "name": "joined_stream",
+        "track": ["@observeStreamChanges()::cm"],
+        "F": [">joinedStream:cm", "is", "Truthy"],
+        "frequency": 100,
+        "comp": true,
+        "live": true
+      }, {
+        "path": "../apps/cm/cm-servant.module.js",
+        "file": "cm-servant.module.js",
+        "name": "cm-servant.module",
+        "ext": "js"
+      }, {
+        "path": "../apps/cm/cm-features-accesses.module.js",
+        "file": "cm-features-accesses.module.js",
+        "name": "cm-features-accesses.module",
+        "ext": "js"
+      }, {
+        "path": "../apps/cm/cm-editor.module.js",
+        "file": "cm-editor.module.js",
+        "name": "cm-editor.module",
+        "ext": "js",
+        "R": ["@userLevel", ">=", "@adminLevel"]
+      }, {
+        "path": "../apps/cm/cm-streams.module.js",
+        "file": "cm-streams.module.js",
+        "name": "cm-streams.module",
+        "ext": "js",
+        "R": ["@userLevel", ">=", "@adminLevel"]
+      }, {
+        "path": "../apps/cm/cm-meetings.module.js",
+        "file": "cm-meetings.module.js",
+        "name": "cm-meetings.module",
+        "ext": "js",
+        "R": ["@userLevel", ">=", "@adminLevel"]
+      }, {
+        "path": "../apps/cm/cm-settings.module.js",
+        "file": "cm-settings.module.js",
+        "name": "cm-settings.module",
+        "ext": "js",
+        "R": ["@userLevel", ">=", "@bossLevel"]
+      }, {
+        "path": "../apps/cm/cm-translations.module.js",
+        "file": "cm-translations.module.js",
+        "name": "cm-translations.module",
+        "ext": "js",
+        "R": ["@userLevel", ">=", "3"]
+      }, {
+        "path": "../apps/cm/cm.js",
+        "file": "cm.js",
+        "name": "cm",
+        "ext": "js",
+        "main": true
+      }
+    ]
+  }, {
+    "name": "adm",
+    "title": "Админка",
+    "description": "",
+    "R": ["@userLevel", "==", "@bossLevel"],
+    "params": ["regPeopleCount:#Number"],
+    "requirements": [
+      {
+        "comp": true,
+        "R": ["@checkPeopleAuths():adm"],
+        "ext": "json",
+        "name": "people",
+        "track": ["@getPeopleAuths():adm"],
+        "live": true
+      }, {
+        "comp": true,
+        "R": ["@checkPeopleVisits():adm"],
+        "ext": "json",
+        "name": "people_visits",
+        "track": ["@getPeopleVisits()"],
+        "live": true
+      }, {
+        "path": "~apps/adm/adm.js",
+        "file": "adm.js",
+        "name": "adm_module",
+        "ext": "js",
+        "main": true
+      }
+    ]
+  }, {
+    "name": "br",
+    "title": "Библейский ринг",
+    "description": "Всекрымский библейский ринг",
+    "disabled": true,
+    "R": false
+  }, {
+    "name": "exb",
+    "title": "Опросник",
+    "description": "",
+    "R": ["@userLevel", "==", 1000],
+    "requirements": [
+      {
+        "path": "../apps/exb/exb.js",
+        "file": "exb.js",
+        "name": "exb_js",
+        "ext": "js",
+        "main": true
+      }, {
+        "path": "../apps/exb/exb.admin.js",
+        "file": "exb.admin.js",
+        "name": "exb-admin-module_js",
+        "ext": "js"
+      }, {
+        "path": "../apps/exb/exb.css",
+        "file": "exb.scss",
+        "name": "exb_css",
+        "ext": "scss"
+      }
+    ]
+  }, {
+    "name": "sch",
+    "title": "Календарь",
+    "description": "",
+    "R": ["@userLevel", "==", 1000],
+    "requirements": [
+      {
+        "path": "../apps/sch/sch.admin.js",
+        "file": "sch.admin.js",
+        "name": "sch.admin.js",
+        "ext": "js"
+      }, {
+        "path": "../apps/sch/sch.js",
+        "file": "sch.js",
+        "name": "sch.js",
+        "ext": "js",
+        "main": true
+      }, {
+        "path": "../apps/sch/sch.css",
+        "file": "sch.scss",
+        "name": "sch.css",
+        "ext": "scss"
+      }
+    ]
+  }, {
+    "name": "bible",
+    "title": "Библия",
+    "description": "",
+    "R": ["@userLevel", "==", 1000],
+    "requirements": [
+      {
+        "path": "../apps/bible/bible.json",
+        "file": "bible.json",
+        "name": "bible_json",
+        "ext": "json"
+      }, {
+        "path": "../apps/bible/bible.css",
+        "file": "bible.style.scss",
+        "name": "bible_style_css",
+        "ext": "scss"
+      }, {
+        "path": "../apps/bible/bible.js",
+        "file": "bible.js",
+        "name": "bible.module.js",
+        "ext": "js",
+        "main": true
+      }
+    ]
+  }, {
+    "name": "alias",
+    "title": "Алиас",
+    "description": "The Alias Game",
+    "disabled": true,
+    "R": false
+  }, {
+    "name": "im",
+    "title": "Империя",
+    "description": "The Imperia Game",
+    "disabled": false,
+    "R": ["@userLevel", ">=", 3],
+    "requirements": [
+      {
+        "path": "../apps/im/im.js",
+        "file": "im.js",
+        "name": "im_module",
+        "ext": "js",
+        "main": true
+      }, {
+        "path": "../apps/im/im.css",
+        "file": "im.scss",
+        "name": "im_styles",
+        "ext": "scss"
+      }
+    ]
+  }
+]
+
+
+

@@ -1,0 +1,93 @@
+$brown_dark: #514500;
+$brown: #B4A15B;
+$brown_light: #EAE29E;
+
+$invalid: #E91F66;
+$invalid_1: #FFFADF;
+
+body {
+ background-color: $brown_light;
+}
+
+.main-header {
+ display: flex;
+ justify-content: space-around;
+ background-color: $brown_dark;
+ text-align: center;
+ height: 60px;
+ color: $brown;
+}
+
+.main-header_unit {
+ font-size: 20px;
+ align-self: center;
+ font-weight: bold;
+}
+
+.main-header_action {
+ cursor: pointer;
+ vertical-align: middle;
+ display: inline-block;
+}
+
+.main-header_form {
+ padding: 5px;
+ background-color: $brown;
+ text-align: center;
+}
+
+.main-header_form_field_wrapper {
+ display: inline-block;
+ margin: 5px auto;
+ padding: 0 5px;
+}
+
+.main-header_form_field {
+ outline: none;
+ background-color: $brown_light;
+ border: none;
+ height: 1.5em;
+ text-align: center;
+}
+
+.main-header_form_field.invalid {
+ background-color: $invalid;
+ color: $invalid_1;
+}
+
+.main-header_form_message {
+ color: $brown_dark;
+ padding: 15px 13.5%;
+}
+
+.main-header_form_message.invalid {
+ color: white;
+}
+
+
+.app-imagine {
+ margin: 1em 0;
+}
+
+.app-imagine .icon {
+ margin: 1em;
+ width: 70px;
+ height: 70px;
+ vertical-align: middle;
+}
+
+.app-imagine .control {
+ display: inline-block;
+ vertical-align: middle;
+}
+
+.app-imagine .control .field {
+ display: block;
+ margin: .5em 0;
+}
+
+
+
+
+
+
