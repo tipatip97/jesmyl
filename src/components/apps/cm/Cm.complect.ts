@@ -172,14 +172,14 @@ const putStyles = () => {
         ] = {});
         const sBlock = styleBlock[styleCol];
 
-        Object.keys(sBlock).forEach((bProp) => {
+        (Object.keys(sBlock) as (keyof StyleProp)[]).forEach((bProp) => {
           const prop: any = styleProps.find((sProp) => sProp.n === bProp);
           block[bProp] =
             prop.type === "p"
-              ? sBlock[bProp]
+              ? sBlock[bProp as never]
               : (
                 prop.variants.find(
-                  (variant: any) => variant.n === sBlock[bProp]
+                  (variant: any) => variant.n === sBlock[bProp as never]
                 ) || {}
               ).val;
         });

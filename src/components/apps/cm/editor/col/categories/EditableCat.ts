@@ -73,8 +73,8 @@ export class EditableCat extends EditableCol<IExportableCat> {
           comw: com.wid,
         },
         anti: ({ action, args }) => {
-          if (action === 'catUnbindCom' && args?.comw === com.wid)
-            return () => false;
+          if (action === 'catUnbindCom' && args && args.comw === com.wid && args.catw === this.wid)
+            return () => true;
         },
       });
       this.stack.push(com.wid);
@@ -85,8 +85,8 @@ export class EditableCat extends EditableCol<IExportableCat> {
           comw: com.wid,
         },
         anti: ({ action, args }) => {
-          if (action === 'catBindCom' && args?.comw === com.wid)
-            return () => this.native.stack && this.native.stack?.indexOf(com.wid) > -1;
+          if (action === 'catBindCom' && args && args.comw === com.wid && args.catw === this.wid)
+            return () => true;
         },
       });
       this.stack.splice(index, 1);
