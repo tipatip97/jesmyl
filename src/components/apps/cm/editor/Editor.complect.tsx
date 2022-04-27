@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import EvaIcon from "../../../../complect/eva-icon";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 
 export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [
@@ -30,8 +30,7 @@ export const ePhases: [string, ReactNode, (props: any) => ReactNode][] = [
   [
     "r",
     "//" || "Повторения",
-    () =>
-      null, //<TheRegionsEditor coln="r"colnGetter="repeats"flashes={["/", "\\", "&nbsp;"]}/>
+    () => null, //<TheRegionsEditor coln="r"colnGetter="repeats"flashes={["/", "\\", "&nbsp;"]}/>
   ],
   [
     "tr",

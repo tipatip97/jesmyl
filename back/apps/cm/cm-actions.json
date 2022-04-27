@@ -143,34 +143,35 @@
                                 }
                             },
                             {
-                                "level": 50,
-                                "action": "comBind",
-                                "title": "К Категории \"$name\" прикреплена Песня \"$comn\"",
-                                "track": [
-                                    "s"
-                                ],
-                                "method": "push",
-                                "value": "{comw}",
                                 "args": {
                                     "comw": "#Number"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "comUnbind",
-                                "title": "Песня \"$comn\" откреплена от Категории \"$name\"",
-                                "track": [
-                                    "s"
-                                ],
-                                "method": "remove",
-                                "value": [
-                                    ".",
-                                    "===",
-                                    "{comw}"
-                                ],
-                                "args": {
-                                    "comw": "#Number"
-                                }
+                                },
+                                "next": [
+                                    {
+                                        "level": 50,
+                                        "action": "catBindCom",
+                                        "title": "К Категории \"$name\" прикреплена Песня \"$comn\"",
+                                        "track": [
+                                            "s"
+                                        ],
+                                        "method": "push",
+                                        "value": "{comw}"
+                                    },
+                                    {
+                                        "level": 50,
+                                        "action": "catUnbindCom",
+                                        "title": "Песня \"$comn\" откреплена от Категории \"$name\"",
+                                        "track": [
+                                            "s"
+                                        ],
+                                        "method": "remove",
+                                        "value": [
+                                            ".",
+                                            "===",
+                                            "{comw}"
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -270,14 +271,14 @@
                             {
                                 "level": 50,
                                 "action": "comRename",
-                                "title": "$prev?{{Песня \"$prev\" переименована на}{Новой Песне задано имя}} \"$newName\"",
+                                "title": "$prev?{{Песня \"$prev\" переименована на}{Новой Песне задано имя}} \"$name\"",
                                 "track": [
                                     "n"
                                 ],
                                 "method": "set",
-                                "value": "{newName}",
+                                "value": "{name}",
                                 "args": {
-                                    "newName": "#String"
+                                    "name": "#String"
                                 }
                             },
                             {
@@ -331,21 +332,31 @@
                             },
                             {
                                 "level": 50,
-                                "action": "setNativeNum",
-                                "title": "Песня \"$name\" $number?{{в категории \"$catn\" обозначена №$number}{отнесена к категории \"$catn\"}}",
+                                "action": "setNativeNumBox",
+                                "title": "Песня \"$name\" теперь содержит список номеров внешних сборников",
                                 "track": [
                                     "r"
                                 ],
                                 "method": "set",
-                                "value": "{refs}",
+                                "value": {}
+                            },
+                            {
+                                "level": 50,
+                                "action": "setNativeNum",
+                                "title": "Песня \"$name\" $number?{{в категории \"$catn\" обозначена №$number}{отнесена к категории \"$catn\"}}",
+                                "track": [
+                                    "r",
+                                    "{catw}"
+                                ],
+                                "method": "set",
                                 "args": {
-                                    "refs": "#Dict"
+                                    "catw": "#Number"
                                 }
                             },
                             {
                                 "level": 50,
                                 "action": "removeNativeNum",
-                                "title": "Нативный номер$nNum{{ №$nNum}} песни \"$name\", ранее обозначенный в категории \"$catn\", был удалён",
+                                "title": "Нативный номер$prev{{ (№$prev)}} песни \"$name\", ранее обозначенный в категории \"$catn\", был удалён",
                                 "track": [
                                     "r"
                                 ],

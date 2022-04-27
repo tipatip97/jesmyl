@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon";
+import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import { ChordVisibleVariant } from "../../Cm.model";
@@ -10,7 +10,7 @@ import {
   switchAnchorsVisible,
 } from "../../Cm.store";
 import useTranslation from "../../translation/useTranslation";
-import { useCcom } from "../useCcol";
+import { useCcom } from "./useCcom";
 
 export default function ComTools() {
   const dispatch = useDispatch();

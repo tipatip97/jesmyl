@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import EvaIcon from "../../../complect/eva-icon";
+import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { appStorage, indexStorage } from "../../../shared/jstorages";
 import { RootState } from "../../../shared/store";
 

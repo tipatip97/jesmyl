@@ -1,5 +1,5 @@
-import { EvaIconName } from "../../../../../complect/eva-icon";
-import { IExportedCol } from "../Col.model";
+import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
+import { BaseNamedExportables } from "../../base/Base";
 import { IExportableOrder } from "./order/Order.model";
 
 
@@ -12,7 +12,7 @@ export interface ICom {
 }
 
 
-export interface IExportableCom extends IExportedCol {
+export interface IExportableCom extends BaseNamedExportables {
     k?: number;
     p?: number;
     l?: number;

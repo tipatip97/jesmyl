@@ -45,28 +45,16 @@ cmStorage.listen("actions", name, () => {
   update();
 });
 
-export const isAccessed = (action: string): true | null => {
-  if (rules[action] !== undefined) return rules[action] || null;
-  if (!actions?.length) return null;
-
-  const level = localAuth.level;
-  const right = actions.find((right) => right.action === action) as CmAction;
-  if (!right)
-    modalService.alert(
-      `Зарегистрировано правило на неизвестное действие ${action}`
-    );
-
-  return (rules[action] = right ? (right.level <= level ? true : null) : true);
-};
 
 export const specialPhases = ["marked", "thematic", "meeting"] as const;
 
 export const inlinePhases = [
   ["all", "com", "translation"],
-  ["lists", "cat", "marks", "meetings", "meeting"]
+  ["lists", "cat", "marks", "meetings", "meeting"],
+  ["editor", "edit-categories", "edit-category", "edit-compositions", "edit-composition"]
 ] as const;
 
-const [allPhases, listsPhases] = inlinePhases;
+const [allPhases, listsPhases, editorPhases] = inlinePhases;
 
 export const cmFooterItems: FooterItem<CmPhase>[] = [
   {
@@ -79,6 +67,12 @@ export const cmFooterItems: FooterItem<CmPhase>[] = [
     title: "Списки",
     phases: listsPhases as never,
     activeWithSpecialPhases: true,
+  },
+  {
+    icon: "edit",
+    title: "Редактор",
+    phases: editorPhases as never,
+    accessRule: 'canRedact',
   },
 ];
 
@@ -178,14 +172,14 @@ const putStyles = () => {
         ] = {});
         const sBlock = styleBlock[styleCol];
 
-        Object.keys(sBlock).forEach((bProp) => {
+        (Object.keys(sBlock) as (keyof StyleProp)[]).forEach((bProp) => {
           const prop: any = styleProps.find((sProp) => sProp.n === bProp);
           block[bProp] =
             prop.type === "p"
-              ? sBlock[bProp]
+              ? sBlock[bProp as never]
               : (
                 prop.variants.find(
-                  (variant: any) => variant.n === sBlock[bProp]
+                  (variant: any) => variant.n === sBlock[bProp as never]
                 ) || {}
               ).val;
         });

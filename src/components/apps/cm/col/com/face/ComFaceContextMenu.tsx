@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../../../complect/eva-icon";
+import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import { useMarks } from "../../../lists/marks/useMarks";
 import { Com } from "../Com";
 import "./ComFace.scss";

@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../shared/store";
 import { riseUpColsUpdates } from "../Cm.store";
-import { useCcat, useCcom } from "../col/useCcol";
+import { useCcat } from "../col/cat/useCcat";
+import { useCcom } from "../col/com/useCcom";
 import { Cols } from "./Cols";
 import { IExportableCols } from "./Cols.model";
 

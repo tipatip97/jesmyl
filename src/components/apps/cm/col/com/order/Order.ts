@@ -1,15 +1,16 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
+import { Base } from "../../../base/Base";
 import { Com } from "../Com";
-import { EditableOrder } from "./EditableOrder";
 import { orderFields } from "./Order.consts";
 import { EditableOrderRegion, IExportableOrderFieldValues, IExportableOrderTop, Inheritancables, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
 
-export class Order extends EditableOrder {
+export class Order extends Base<IExportableOrderTop> {
   _regions?: EditableOrderRegion[];
+  com: Com;
 
   constructor(top: IExportableOrderTop, com: Com) {
     super(top);
-    top.com = com;
+    this.com = com;
 
     this.texti = mylib.isNum(top.t) ? top.t : null;
 
@@ -17,7 +18,7 @@ export class Order extends EditableOrder {
     this.fieldValues = top.f;
   }
 
-  get com() { return this.top.com; }
+  // get com() { return this.top.com; }
 
   static getWithExtendableFields(source: IExportableOrderTop, target: IExportableOrderTop): Partial<IExportableOrderTop> {
     const inhFields: string[] = [];
@@ -52,21 +53,21 @@ export class Order extends EditableOrder {
   get unique() { return this.top.source?.u ?? this.top.u; }
   set unique(val) { this.top.source && (this.top.source.u = val); }
 
-  get isAnchor() { return this.getOrBase('a') != null; }
+  get isAnchor() { return this.getBasic('a') != null; }
 
-  get anchor() { return this.getOrBase('a'); }
+  get anchor() { return this.getBasic('a'); }
   set anchor(val) { this.setExportable('a', val); }
 
-  get isEmptyHeader() { return this.getOrBase('e'); }
+  get isEmptyHeader() { return this.getBasic('e'); }
   set isEmptyHeader(val) { this.setExportable('e', val); }
 
-  get isOpened() { return this.getOrBase('o'); }
+  get isOpened() { return this.getBasic('o'); }
   set isOpened(val) { this.setExportable('o', val); }
 
-  get chordsi() { return this.getOrBase('c'); }
+  get chordsi() { return this.getBasic('c'); }
   set chordsi(val) { this.setExportable('c', val); }
 
-  get texti() { return this.getOrBase('t'); }
+  get texti() { return this.getBasic('t'); }
   set texti(val) { this.setExportable('t', val); }
 
   get positions(): number[][] { return (this.top.targetOrd?.top.source || this.top.source)?.p || this.top.p; }
@@ -75,7 +76,7 @@ export class Order extends EditableOrder {
     source && (source.p = val);
   }
 
-  get type() { return this.getOrBase('s'); }
+  get type() { return this.getBasic('s'); }
   set type(val) { this.setExportable('s', val); }
 
   get text() {
@@ -83,10 +84,10 @@ export class Order extends EditableOrder {
   }
 
   get antiVis() { return this.isVisible ? 0 : 1; }
-  get isVisible() { return this.getOrBase('v') !== 0; }
+  get isVisible() { return this.getBasic('v') !== 0; }
   set isVisible(val) { this.setExportable('v', val ? 1 : 0); }
 
-  get fieldValues(): IExportableOrderFieldValues { return this.getOrBase('f', {}); }
+  get fieldValues(): IExportableOrderFieldValues { return this.getBasicOr('f', {}); }
   set fieldValues(val) { this.setExportable('f', val); }
 
   get repeatsTitle(): string {

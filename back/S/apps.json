@@ -38,7 +38,7 @@
         "R": ["@userLevel", ">=", 50],
         "path": "~apps/cm/e-e-rules.json",
         "file": "e-e-rules.json",
-        "name": "cm_e_e_rules",
+        "name": "eeStorage",
         "ext": "json"
       }, {
         "R": ["@userLevel", ">=", 100],

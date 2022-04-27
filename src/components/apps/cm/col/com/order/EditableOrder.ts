@@ -1,19 +1,23 @@
-import { Exec } from "../../../../../../complect/exer/Exec";
 import { ExecArgs, ExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { Base } from "../../../base/Base";
-import { cmExer } from "../../../Cm.store";
+import { EditableCom } from "../../../editor/col/compositions/EditableCom";
 import { Order } from "./Order";
-import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderExecArgs, OrderRepeats } from "./Order.model";
+import { IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats } from "./Order.model";
 
 export class EditableOrder extends Base<IExportableOrderTop> {
     self: Order;
+    native: Order;
+    com: EditableCom;
 
-    constructor(top: IExportableOrderTop) {
+    constructor(top: IExportableOrderTop, com: EditableCom) {
         super(top);
+        this.native = new Order(top, com.native);
         this.self = this as never;
+        this.com = com;
     }
-    setField<Def, Args, K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args: ExecArgs<Def, Args>, refresh = true, onSet?: () => void | null) {
+
+    setField<Def, K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args: ExecArgs<Def>, refresh = true, onSet?: () => void | null) {
         const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
             this.exec({
                 prev: this.top.inhFields && this.top.inhFields.indexOf(fieldn) < 0
@@ -67,7 +71,8 @@ export class EditableOrder extends Base<IExportableOrderTop> {
     }
 
     setRepeats(val: OrderRepeats | null) { }
-    get fieldValues() { return this.getOrBase('f', {}); }
+    
+    get fieldValues() { return this.getBasicOr('f', {}); }
     set fieldValues(val) { this.setExportable('f', val); }
     get positions() { return []; }
     set positions(val: number[][]) { }
@@ -80,7 +85,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
             value,
             method: 'set',
             action,
-            createByPath: true,
+            // createByPath: true,
             args: {
                 value,
                 fieldn,
@@ -103,34 +108,36 @@ export class EditableOrder extends Base<IExportableOrderTop> {
     // set texti(val: number) { }
 
     scope(action: string, uniq?: number | string, wid?: number | null) {
-        return [this.top.com.scope(), '->', mylib.def(wid, this.self.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
+        return [this.com.scope(), '->', mylib.def(wid, this.self.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
     }
 
-    exec<Value>(bag: ExecDict<Value, OrderExecArgs<Value>>) {
+    exec<Value>(bag: ExecDict<Value>) {
         const { scope, args: { wid } = {} } = bag;
 
-        cmExer.set(new Exec<Value, OrderExecArgs<Value>>(mylib.overlap({}, bag, {
-            scope: this.scope(bag.action, bag.uniq, wid),
-            args: mylib.overlap({
-                wid: mylib.def(wid, this.self.wid),
-                comw: this.top.com.wid,
-                name: this.top.com.name,
-                blockn: this.top.header({}, true),
-                isAnchor: this.self.isAnchor
-            }, bag.args),
-            generalId: this.top.com.wid
-        }, scope ? { scope } : null)));
+        // cmExer.set({
+        //     ...bag,
+        //     scope: this.scope(bag.action, bag.uniq, wid),
+        //     args: {
+        //         wid: mylib.def(wid, this.self.wid),
+        //         comw: this.top.com.wid,
+        //         name: this.top.com.name,
+        //         blockn: this.top.header({}, true),
+        //         isAnchor: this.self.isAnchor,
+        //         ...bag.args
+        //     },
+        //     generalId: this.top.com.wid,
+        //     ...(scope ? { scope } : null)
+        // });
     }
 
     async setChordPosition(linei: number, pos: number) {
-        const com = this.top.com;
         const prev = JSON.parse(JSON.stringify(this.positions[linei] || [])).sort((a: number, b: number) => a - b);
         const line = this.positions[linei] || [];
         const posi = line.indexOf(pos);
         const textLines = (this.self.text || '').split('\n');
         const textLine = textLines[linei];
         const lineSplitted = textLine.split('');
-        const vowels = com.getVowelPositions(textLine);
+        const vowels = this.com.native.getVowelPositions(textLine);
 
         posi < 0
             ? line.push(pos)
@@ -196,7 +203,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
 
     takeUniq() {
         if (this.self.unique != null) return this.self.unique;
-        const value = this.top.com.ords.reduce((max: number, ord: IExportableOrder) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
+        const value = this.com.native.ords.reduce((max: number, ord: IExportableOrder) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
 
         this.exec({
             method: 'set',

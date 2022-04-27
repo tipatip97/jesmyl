@@ -12,6 +12,8 @@ export interface ICorrectsBox {
     letter?: string;
     pos?: number;
     alt?: string;
+    onFix?: () => void;
+    fixLabel?: string;
 }
 
 

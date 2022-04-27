@@ -48,6 +48,11 @@ body {
   border: none;
 }
 
+.disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
 :not(svg) {
   box-sizing: border-box;
 }

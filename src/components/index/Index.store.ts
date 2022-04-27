@@ -4,14 +4,10 @@ import { Exer } from "../../complect/exer/Exer";
 import { setPhaseInState } from "../../complect/nav-configurer/useNavConfigurer";
 import { appStorage, indexStorage } from "../../shared/jstorages";
 import {
-  IndexApplication, IndexPhase, IndexSpecialPhase,
+  Auth, IndexApplication, IndexPhase, IndexSpecialPhase,
   IndexState,
-  IndexStateError, IndexStorage, Auth
+  IndexStateError
 } from "./Index.model";
-
-export const indexExer = new Exer<IndexStorage>(indexStorage, 'index');
-
-indexStorage.registerTop(appStorage);
 
 const initialState: IndexState = {
   phase: indexStorage.getOr("phase", "main"),

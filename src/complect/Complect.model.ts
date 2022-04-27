@@ -16,4 +16,5 @@ export interface ComplectState {
     isAbsoluteBottomPopupOpen: boolean;
     numAbsoluteBottomPopupUpdates: number;
     isFullscreen: boolean;
+    numExerUpdates: number;
 }

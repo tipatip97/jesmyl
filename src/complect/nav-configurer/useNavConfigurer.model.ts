@@ -1,4 +1,5 @@
-import { EvaIconName } from '../eva-icon';
+import { EvaIconName } from '../eva-icon/EvaIcon';
+
 
 export { default } from './useNavConfigurer';
 
@@ -12,4 +13,5 @@ export type FooterItem<Phase> = null | {
     icon: EvaIconName;
     phases: Phase[];
     activeWithSpecialPhases?: boolean;
+    accessRule?: string;
 }

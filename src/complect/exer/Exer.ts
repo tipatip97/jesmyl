@@ -1,82 +1,119 @@
-import { indexStorage } from "../../shared/jstorages";
-import { AppName } from "../../app/App.model";
+import { JStorageName } from "../../app/App.model";
+import { Auth } from "../../components/index/Index.model";
+import { appStorage, indexStorage } from "../../shared/jstorages";
 import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";
 import mylib from "../my-lib/MyLib";
 import { Refresh } from "../refresh/Refresh";
 import { Exec } from "./Exec";
-import { ExecDict } from "./Exer.model";
+import { ExecDict, ExecRule, ExerStorage, FreeExecDict } from "./Exer.model";
 
 type Callback = (okRes: any, errRes: any) => void;
 
-export class Exer<Storage> {
+export class Exer<Storage extends ExerStorage> {
     host = Refresh.host;
-    appName = '';
-    execs: Exec<any, any>[] = [];
+    appName: JStorageName;
+    execs: Exec<any>[] = [];
     storage: JStorage<Storage>;
     key = 'execs' as keyof Storage;
+    rules: ExecRule[] = [];
+    checkedActions: Record<string, true | null> = {};
+    auth: Auth;
 
-    constructor(storage: JStorage<Storage>, appName: AppName) {
-        this.storage = storage;
+    constructor(appName: JStorageName) {
+        this.storage = appStorage[appName];
         this.appName = appName;
+        this.auth = indexStorage.getOr('auth', { level: 0 });
+
+        this.updateRules();
     }
 
-    set<Value, Args>(execs: ExecDict<Value, Args> | ExecDict<Value, Args>[]) {
-        ([] as ExecDict<Value, Args>[]).concat(execs).filter(e => e).forEach((exec) => {
-            const { scope, prev, value, method } = exec;
+    updateRules() {
+        const app = indexStorage.get("apps")?.find((app) => app.name === "cm");
+
+        this.rules = [
+            ...Object.entries(app?.variables || {}).map(([action, level]) => ({
+                action,
+                level: level as number,
+            })),
+            ...(this.storage.get('actions') as [] || [])
+        ];
+    }
+
+    set<Value>(execs: FreeExecDict<Value> | FreeExecDict<Value>[]) {
+        [execs].flat().forEach((freeExec) => {
+            if (!freeExec) return;
+            const { scope, value, method = 'other', anti } = freeExec;
+            const exec = { ...freeExec, method };
 
             const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
-            const prevExec: Exec<Value, Args> = this.execs[prevExeci];
+            const prevExec: Exec<Value> = this.execs[prevExeci];
             const lasti = this.execs.length - 1;
-            const lastExec: Exec<Value, Args> = this.execs[lasti];
+            const lastExec: Exec<Value> = this.execs[lasti];
+
+            let isPrevented = false;
+
+            if (anti) {
+                const antis = [anti].flat();
+                const remIndexes: number[] = [];
+
+                for (let execi = 0; execi < this.execs.length; execi++) {
+
+                    for (const anti of antis) {
+                        const prevent = anti(this.execs[execi]);
+
+                        if (prevent) {
+                            remIndexes.push(execi);
+                            if (prevent()) isPrevented = true;
+                        }
+                    }
+                    if (isPrevented) break;
+                }
+                remIndexes.sort((a, b) => b - a).forEach(execi => this.execs.splice(execi, 1));
+            }
+
+            if (isPrevented) return;
 
             if (method === 'func') {
-                if (prevExec) this.execs.splice(prevExeci, 1, new Exec(exec));
-                else this.execs.push(new Exec(exec));
+                if (prevExec) this.execs.splice(prevExeci, 1, new Exec(exec, this.rules));
+                else this.execs.push(new Exec(exec, this.rules));
 
             } else if (method === 'migrate' && lastExec && lastExec.method === method && lastExec.scope === scope) {
                 if (!Object.keys(value || {}).length) this.execs.splice(lasti, 1);
-                else this.execs.splice(lasti, 1, new Exec(exec));
+                else this.execs.splice(lasti, 1, new Exec(exec, this.rules));
 
             } else if (method === 'set') {
-                if (mylib.isEq(exec.prev, exec.value)) return;
                 if (prevExec)
-                    if (mylib.isEq(prevExec.eprev, value)) this.execs.splice(prevExeci, 1);
-                    else this.execs.splice(prevExeci, 1, new Exec(exec));
-                else this.execs.push(new Exec(exec));
-
-                exec.eprev = prevExec && prevExec.hasOwnProperty('eprev')
-                    ? prevExec.eprev
-                    : prev == null
-                        ? null
-                        : JSON.parse(JSON.stringify(prev));
-            }
+                    if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
+                    else {
+                        const needRemove = prevExec.setValue(value, exec);
+                        if (needRemove) this.execs.splice(prevExeci, 1);
+                    }
+                else if (!mylib.isEq(exec.prev, exec.value))
+                    this.execs.push(new Exec(exec, this.rules));
+            } else if (!prevExec || !mylib.isEq(exec.args, prevExec.args)) this.execs.push(new Exec(exec, this.rules));
 
             exec.scope = scope;
             switch (mylib.func(exec.onSet).call(exec)) {
                 case mylib.c.REMOVE: this.execs.splice(prevExeci, 1);
             }
         });
-
-        if (!this.execs.some(ex => !ex.isFriendly))
-            this.execs.splice(0, this.execs.length);
     }
 
     isThereLocals() {
         return this.storage.has(this.key);
     }
 
-    send<Value, Args>(fixedExecs: ExecDict<Value, Args> | (ExecDict<Value, Args>[]), cb?: Callback, errCb?: Callback, finCb?: Callback) {
-        this.load(cb, errCb, finCb, ([] as ExecDict<Value, Args>[]).concat(fixedExecs).map(exec => new Exec(exec)));
+    send<Value>(fixedExecs: ExecDict<Value> | (ExecDict<Value>[]), cb?: Callback, errCb?: Callback, finCb?: Callback) {
+        this.load(cb, errCb, finCb, [fixedExecs].flat().map(exec => new Exec(exec, this.rules)));
     }
 
-    load<Value, Args>(cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, fixedExecs?: Exec<Value, Args>[]) {
+    load<Value>(cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, fixedExecs?: Exec<Value>[]) {
         const execs = (fixedExecs || this.execs)
             .map(exec => exec.forLoad())
             .filter(ex => ex);
 
         const onError = (error: Error) => {
-            // this.dconsl(error, text).config({ type: 0 });
             modalService.confirm(`${error || `Ошибка!`}\nСохранить локально?`)
                 .then(isSave => {
                     if (isSave) this.saveLocally();
@@ -91,24 +128,21 @@ export class Exer<Storage> {
             errCb && errCb(null, error);
             finCb && finCb(null, error);
         };
-        // this.dconsl(execs);
 
         this.fetch({
             execs,
             success: resp => {
-                // this.dconsl(resp);
-
                 if (!resp.ok) onError(resp.errors);
                 else {
                     this.execs = this.execs.filter(ex => ((resp.ok && ex.del) || resp.rejected) &&
-                        resp.rejected.some((rej: Exec<Value, Args> & { exec: Exec<Value, Args> }) => {
+                        resp.rejected.some((rej: Exec<Value> & { exec: Exec<Value> }) => {
                             if (ex.id === rej.exec.id) {
                                 ex.errors = rej.errors;
                                 return true;
                             }
                             return false;
                         }));
-                    //this.setLS(, this.execs);
+
                     cb && cb(resp, null);
                     finCb && finCb(resp, null);
                 }
@@ -136,8 +170,8 @@ export class Exer<Storage> {
         }
     }
 
-    fetch<Value, Args>(S: {
-        execs: (ExecDict<Value, Args> | null)[], success?: Callback, error?: Callback,
+    fetch<Value>(S: {
+        execs: (ExecDict<Value> | null)[], success?: Callback, error?: Callback,
         complete?: Callback
     }) {
         const {
@@ -163,6 +197,17 @@ export class Exer<Storage> {
                 complete(null, errorMessage);
             });
     }
+
+    isActionAccessed(action: string): true | null {
+        if (this.checkedActions[action] !== undefined) return this.checkedActions[action] || null;
+        if (!this.rules?.length) return null;
+
+        const rule = this.rules.find((right) => right.action === action) as ExecRule;
+        if (!rule)
+            console.error(`Зарегистрировано правило на неизвестное действие ${action}`);
+
+        return (this.checkedActions[action] = rule ? ((rule.level || 0) <= this.auth.level ? true : null) : null);
+    };
 }
 
 

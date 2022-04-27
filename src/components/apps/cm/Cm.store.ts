@@ -4,10 +4,10 @@ import { setPhaseInState } from "../../../complect/nav-configurer/useNavConfigur
 import { appStorage, cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
-import { ChordVisibleVariant, CmPhase, CmRollMode, CmSpecialPhase, CmState, CmStorage } from "./Cm.model";
+import { ChordVisibleVariant, CmPhase, CmRollMode, CmSpecialPhase, CmState } from "./Cm.model";
 import { IExportableMeeting } from "./lists/meetings/Meetings.model";
 
-export const cmExer = new Exer<CmStorage>(cmStorage, 'cm');
+export const cmExer = new Exer('cm');
 
 cmStorage.registerTop(appStorage);
 

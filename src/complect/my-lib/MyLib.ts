@@ -426,22 +426,6 @@ export class MyLib {
             .filter(s => s))?.join('') || '';
     }
 
-    clone(what: any) {
-        return this.isStr(what)
-            ? `` + what
-            : this.isNum(what)
-                ? 0 + what
-                : this.isArr(what)
-                    ? what.slice(0)
-                    : this.isBool(what)
-                        ? !!what
-                        : this.isObj(what)
-                            ? Object.assign({}, what)
-                            : this.isUnd(what)
-                                ? undefined
-                                : null;
-    }
-
     useElement(nodeName: string, topId: string, cb: (elem: HTMLElement) => void, doc = document, forceReborn = false): HTMLElement {
         const id = this.normQuery(topId);
         const oldElement = document.querySelector(`#${id}`);
@@ -952,6 +936,30 @@ export class MyLib {
         });
 
         if (isStatic) parent.style.position = prevPosition;
+    }
+  
+    clone(obj: any) {
+      const cloned: any[] = [];
+      
+      const clone = (what: any) => {
+        if (this.isStr(what)) return '' + what;
+        if (this.isNum(what)) return 0 + what;
+        if (this.isBool(what)) return !!what;
+        if (what == null || this.isFunc(what)) return what;
+        
+        if (this.isobj(what)) {
+          if (cloned.indexOf(what) > -1) throw Error('Circular clone');
+          cloned.push(what);
+          const newObj: any = this.isArr(what) ? [] : {};
+          
+          for (const whatn in what) 
+            newObj[whatn] = clone(what[whatn]);
+          
+          return newObj;
+        }
+      };
+      
+      return clone(obj);
     }
 }
 

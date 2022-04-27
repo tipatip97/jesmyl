@@ -2,6 +2,7 @@ import useNavConfigurer, { SetPhasePayload, UseNavAction } from "../../../../com
 import { cmFooterItems } from "../Cm.complect";
 import { CmPhase, CmSpecialPhase } from "../Cm.model";
 import { setCmPhase } from "../Cm.store";
+import { newEditorPhase } from "../editor/complect/newEditorPhase";
 
 const getNewPhase = (
     phase: CmPhase,
@@ -26,7 +27,7 @@ const getNewPhase = (
                         ? "meetings"
                         : phase === "meetings" || phase === "marks"
                             ? "lists"
-                            : prevPhase ?? 'all';
+                            : newEditorPhase(phase, specialPhase, prevPhase) ?? prevPhase ?? 'all';
 
     return newPhase === 'all' ? [newPhase, null] : newPhase;
 };

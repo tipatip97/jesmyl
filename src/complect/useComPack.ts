@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import useCmNav from "../components/apps/cm/base/useCmNav";
+import { useCcat } from "../components/apps/cm/col/cat/useCcat";
 import { Com } from "../components/apps/cm/col/com/Com";
-import { useCcat } from "../components/apps/cm/col/useCcol";
 import { useMarks } from "../components/apps/cm/lists/marks/useMarks";
 import { useMeetings } from "../components/apps/cm/lists/meetings/useMeetings";
 

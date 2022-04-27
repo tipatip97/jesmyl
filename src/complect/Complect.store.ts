@@ -11,8 +11,9 @@ const initialState: ComplectState = {
     fullscreenContentOpenMode: null,
     isAbsoluteFloatPopupOpen: false,
     isAbsoluteBottomPopupOpen: false,
-    numAbsoluteBottomPopupUpdates: 0,
     isFullscreen: false,
+    numAbsoluteBottomPopupUpdates: 0,
+    numExerUpdates: 0,
 };
 
 export const slice = createSlice({
@@ -34,6 +35,9 @@ export const slice = createSlice({
         riseUpAbsoluteBottomPopupUpdates: (state) => {
             state.numAbsoluteBottomPopupUpdates++;
         },
+        riseUpExerUpdates: (state) => {
+            state.numExerUpdates++;
+        },
     },
 });
 
@@ -42,7 +46,8 @@ export const {
     switchAbsoluteFloatPopupOpen,
     switchAbsoluteBottomPopupOpen,
     riseUpAbsoluteBottomPopupUpdates,
-    switchComplectFullscreen
+    switchComplectFullscreen,
+    riseUpExerUpdates
 } =
     slice.actions;
 export default slice.actions;

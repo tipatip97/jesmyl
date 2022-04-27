@@ -34,7 +34,7 @@ export type OrderRepeats = number | SpecielOrderRepeats;
 export type Inheritancables<K extends keyof IExportableOrder = keyof IExportableOrder> = Record<K, Record<number, IExportableOrder[K]>>
 
 export interface IExportableOrderTop extends IExportableOrder {
-    com: Com;
+    // com: Com;
     source?: IExportableOrderTop;
     init?: IExportableOrderTop;
     targetOrd?: Order | nil;

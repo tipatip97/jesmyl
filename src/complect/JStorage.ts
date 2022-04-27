@@ -1,3 +1,4 @@
+import { JStorageName } from "../app/App.model";
 
 export type JStorageListener<Val> = (val: Val) => void;
 
@@ -5,9 +6,9 @@ export interface JStorageTechFields {
     lastUpdate: number;
 }
 
-export class JStorage<Scope = any> {
-    prefix: string = '';
-    scope: string = '';
+export class JStorage<Scope> {
+    prefix: string;
+    appName: JStorageName;
     store: { [key: string]: any } = {};
     properties: Record<keyof Scope, any> = {} as never;
     strings: Record<keyof Scope, string> = {} as never;
@@ -16,8 +17,9 @@ export class JStorage<Scope = any> {
     initialized: (keyof Scope)[] = [] as never;
     updatetOnInit: (keyof Scope)[] = [] as never;
 
-    constructor(scope: string) {
-        this.prefix = `[${scope}]:`;
+    constructor(appName: JStorageName) {
+        this.prefix = `[${appName}]:`;
+        this.appName = appName;
         Object.entries(localStorage).forEach(([name, val]: string[]) => {
             if (name.startsWith(this.prefix)) {
                 const key = name.replace(this.prefix, '') as keyof Scope;
@@ -27,8 +29,8 @@ export class JStorage<Scope = any> {
         });
     }
 
-    registerTop(top: { [key: string]: JStorage }) {
-        top[this.scope] = this;
+    registerTop(top: Record<JStorageName, JStorage<any>>) {
+        top[this.appName] = this;
     }
 
     listen<Key extends keyof Scope>(key: Key, name: string, listener: JStorageListener<Scope[Key]>, isRejectOnInit?: boolean): JStorageListener<Scope[Key]> {

@@ -1,4 +1,4 @@
-import BrutalItem from "../../../../../complect/brutal-item";
+import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import { useMeetings } from "./useMeetings";
 

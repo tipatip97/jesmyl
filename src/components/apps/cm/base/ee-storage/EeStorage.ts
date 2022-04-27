@@ -5,6 +5,10 @@ import { EeStorageStoreType } from "./EeStorage.model";
 
 export class EeStorage {
     store?: EeStorageStoreType;
+    
+    constructor() {
+        this.load();
+    }
 
     load() {
         if (this.store != null) return this.store;

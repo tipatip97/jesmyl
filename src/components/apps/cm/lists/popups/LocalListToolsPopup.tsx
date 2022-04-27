@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../../complect/eva-icon";
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import { Com } from "../../col/com/Com";
 import useTranslation from "../../translation/useTranslation";
