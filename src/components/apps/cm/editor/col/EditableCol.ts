@@ -55,7 +55,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
 
   setFieldCol<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln: Coln, defVal?: Col[Fieldn]) {
     this.execCol({
-      prev: mylib.def(this.getOrBase(fieldn), defVal),
+      prev: mylib.def(this.getBasic(fieldn), defVal),
       value,
       method: 'set',
       action: actions[fieldn],

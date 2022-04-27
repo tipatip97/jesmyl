@@ -9,18 +9,18 @@ export class StyleProp extends Base<IExportableStyleProp> {
     this.textProps = top.t;
   }
 
-  get name() { return this.getOrBase('n'); }
+  get name() { return this.getBasic('n'); }
 
-  get header() { return this.getOrBase('h'); }
+  get header() { return this.getBasic('h'); }
 
-  get isInherit() { return this.getOrBase('i'); }
+  get isInherit() { return this.getBasic('i'); }
 
-  get headerProps() { return this.getOrBase('c'); }
+  get headerProps() { return this.getBasic('c'); }
   set headerProps(val) { this.setExportable('c', val); }
 
-  get textProps() { return this.getOrBase('t'); }
+  get textProps() { return this.getBasic('t'); }
   set textProps(val) { this.setExportable('t', val); }
 
-  get isModulation() { return this.getOrBase('md'); }
+  get isModulation() { return this.getBasic('md'); }
 
 }

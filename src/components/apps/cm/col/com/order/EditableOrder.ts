@@ -71,7 +71,8 @@ export class EditableOrder extends Base<IExportableOrderTop> {
     }
 
     setRepeats(val: OrderRepeats | null) { }
-    get fieldValues() { return this.getOrBase('f', {}); }
+    
+    get fieldValues() { return this.getBasicOr('f', {}); }
     set fieldValues(val) { this.setExportable('f', val); }
     get positions() { return []; }
     set positions(val: number[][]) { }

@@ -33,9 +33,9 @@ export class Com extends BaseNamed<IExportableCom> {
   get texts() { return this.forcedArray('t'); }
   set texts(val) { this.setExportable('t', val); }
 
-  get audio() { return this.getOrBase('a', ''); }
+  get audio() { return this.getBasicOr('a', ''); }
 
-  get refs() { return this.getOrBase('r'); }
+  get refs() { return this.getBasic('r'); }
   set refs(val) { this.setExportable('r', val); }
 
   static get fields() {
@@ -51,27 +51,27 @@ export class Com extends BaseNamed<IExportableCom> {
     this.resetChordLabels();
   }
 
-  get translationPushKind() { return this.getOrBase('k', 0); }
+  get translationPushKind() { return this.getBasicOr('k', 0); }
   set translationPushKind(val) { this.setExportable('k', val); }
 
-  get isBemoled() { return this.getOrBase('b', 0); }
+  get isBemoled() { return this.getBasicOr('b', 0); }
   set isBemoled(val) {
     this.setExportable('b', val ? 1 : 0);
     this.resetChordLabels();
   }
 
-  get initialTransPosition() { return mylib.def(this.initial.p, this.getOrBase('p')); }
+  get initialTransPosition() { return mylib.def(this.initial.p, this.getBasic('p')); }
   set initialTransPosition(val) {
     if (this.initial.p == null) this.initial.p = mylib.typ(0, val);
     this.initialTransPos = mylib.typ(0, val);
   }
 
-  get initialTransPos() { return mylib.def(this.initial.pos, this.initial.p, this.getOrBase('p')); }
+  get initialTransPos() { return mylib.def(this.initial.pos, this.initial.p, this.getBasic('p')); }
   set initialTransPos(val) {
     if (this.initial.pos == null) this.initial.pos = mylib.typ(0, val);
   }
 
-  get transPosition() { return this.getOrBase('p'); }
+  get transPosition() { return this.getBasic('p'); }
   set transPosition(value) {
     const v: number = mylib.typ(0, value) as number;
     const val = v > 11 ? v % 12 : v < 0 ? 12 + v : v;
@@ -90,7 +90,7 @@ export class Com extends BaseNamed<IExportableCom> {
     this.isBemoled = this.isBemoled ? 0 : 1;
   }
 
-  get langi() { return this.getOrBase('l', 0); }
+  get langi() { return this.getBasicOr('l', 0); }
 
   get langn() { return Com.langs[this.langi || 0]; }
   static get langs() { return ['русский', 'украинский']; }

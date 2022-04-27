@@ -22,7 +22,7 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat, Partial<IExp
     this.coms = this.putComs();
   }
 
-  get stack() { return this.getOrBase('s', []); }
+  get stack() { return this.getBasicOr('s', []); }
 
   get track(): string[] | undefined | null { return this.t; }
   set track(val: string[] | undefined | null) { this.t = val; }

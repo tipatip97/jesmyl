@@ -7,13 +7,13 @@ import { IExportableMeeting } from "./Meetings.model";
 
 
 export class EditableMeeting extends BaseNamed<IExportableMeeting> {
-  get begin() { return this.getOrBase('b'); }
+  get begin() { return this.getBasic('b'); }
   set begin(value) { this.setExportable('b', value); }
 
-  get end() { return this.getOrBase('e'); }
+  get end() { return this.getBasic('e'); }
   set end(value) { this.setExportable('e', value); }
 
-  get stack() { return this.getOrBase('s'); }
+  get stack() { return this.getBasic('s'); }
   set stack(value) { this.setExportable('s', value); }
 
   args() {

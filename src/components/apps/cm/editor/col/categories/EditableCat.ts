@@ -1,18 +1,18 @@
-import { ExecDict, FreeExecDict } from "../../../../../../complect/exer/Exer.model";
-import { CorrectsBox } from "../../corrects-box/CorrectsBox";
-import { Com } from "../../../col/com/Com";
-import { EditableCom } from "../compositions/EditableCom";
-import { EditableCol } from "../EditableCol";
+import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
+import mylib from "../../../../../../complect/my-lib/MyLib";
 import { Cat } from "../../../col/cat/Cat";
 import { IExportableCat } from "../../../col/cat/Cat.model";
-import mylib from "../../../../../../complect/my-lib/MyLib";
+import { Com } from "../../../col/com/Com";
+import { CorrectsBox } from "../../corrects-box/CorrectsBox";
+import { EditableCom } from "../compositions/EditableCom";
+import { EditableCol } from "../EditableCol";
 
 
 export class EditableCat extends EditableCol<IExportableCat> {
   native: Cat;
   coms: EditableCom[] = [];
   initialName: string;
-  stack?: number[];
+  stack: number[];
 
   constructor(cat: Cat, coms: Com[]) {
     super(cat.top);
@@ -64,7 +64,6 @@ export class EditableCat extends EditableCol<IExportableCat> {
 
   toggleComExistence(com: Com | nil, exec?: <Val>(v?: Val) => Val | nil) {
     if (!com) return;
-    if (!this.stack) return;
     const index = this.stack.indexOf(com.wid);
 
     if (index < 0) {

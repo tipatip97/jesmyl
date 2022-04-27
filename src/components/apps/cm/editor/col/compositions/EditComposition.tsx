@@ -77,7 +77,7 @@ export default function EditComposition() {
                 <span>{cat.name} </span>
                 <input
                   type="checkbox"
-                  checked={cat.stack?.some((comw) => ccom.wid === comw)}
+                  checked={cat.stack.some((comw) => ccom.wid === comw)}
                   onChange={(event) => {
                     if (event.target.value.match(/\D/)) return;
                     toggleComExistence(cat);

@@ -9,12 +9,19 @@ export class Base<T> {
         this.self = this;
     }
 
-    getOrBase<K extends keyof T>(fieldn: K, typ?: T[K]): T[K] {
+    getBasic<K extends keyof T>(fieldn: K): T[K] {
+        if (this.self[fieldn] === undefined) {
+            return this.self.top[fieldn];
+        }
+        return this.self[fieldn] as T[K];
+    }
+
+    getBasicOr<K extends keyof T>(fieldn: K, typ: T[K]): T[K] extends undefined ? never : T[K] {
         if (this.self[fieldn] === undefined) {
             if (typ !== undefined) this.self[fieldn] = mylib.typ(typ, this.self.top[fieldn]);
             else return this.self.top[fieldn];
         }
-        return this.self[fieldn] as T[K];
+        return this.self[fieldn] as T[K] extends undefined ? never : T[K];
     }
 
     setExportable<K extends keyof T>(fieldn: K, val: T[K]) {
@@ -40,9 +47,9 @@ export interface BaseNamedExportables {
 }
 
 export class BaseNamed<T extends BaseNamedExportables> extends Base<T> {
-    get name() { return this.getOrBase('n'); }
+    get name() { return this.getBasic('n'); }
     set name(value) { this.setExportable('n', value); }
 
-    get wid() { return this.getOrBase('w'); }
+    get wid() { return this.getBasic('w'); }
     set wid(value) { this.setExportable('w', value); }
 }
