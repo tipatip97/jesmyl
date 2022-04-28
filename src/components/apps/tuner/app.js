@@ -1,4 +1,3 @@
-import { FrequencyBars } from "./frequency-bars"
 import { Meter } from "./meter"
 import { Notes } from "./notes"
 import { Tuner } from "./tuner"
@@ -64,4 +63,4 @@ Application.prototype.toggleAutoMode = function () {
   this.notes.toggleAutoMode()
 }
 
-export { Application as TunerApplication };
+export { Application as TunerApplication }
