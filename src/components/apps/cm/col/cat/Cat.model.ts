@@ -12,9 +12,8 @@ export interface IExportableCat extends BaseNamedExportables {
     t?: string[] | null;
 }
 
-export interface ComWrap {
-    com: Com;
-    errors?: (string[] | string | null)[];
+export interface ComWrap<C = Com> {
+    com: C;
     deep?: number;
     field?: string;
     rate?: number;

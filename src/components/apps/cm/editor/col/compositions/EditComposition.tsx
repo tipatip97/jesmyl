@@ -23,7 +23,7 @@ export default function EditComposition() {
         <>
           {
             <EditContainerCorrectsInformer
-              action="comRename"
+              uniq="comRename"
               corrects={ccom?.corrects.comRename}
             >
               Название:
@@ -40,7 +40,7 @@ export default function EditComposition() {
               cat.native.track[0] !== ">wid" ? null : (
               <EditContainerCorrectsInformer
                 key={`cat-for-bind-${cat.wid}`}
-                action="setNativeNum"
+                uniq="setNativeNum"
                 corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
               >
                 <span>{cat.name} </span>
@@ -49,7 +49,6 @@ export default function EditComposition() {
                   onChange={(event) => {
                     if (event.target.value.match(/\D/)) return;
                     setNativeNumber(cat.native, event.target.value);
-                    // else cat.toggleCom(ccom);
                   }}
                 />
                 {ccom.refs?.[cat.wid] != null ? (
@@ -71,7 +70,7 @@ export default function EditComposition() {
             return !cat.wid || cat.native.track != null ? null : (
               <EditContainerCorrectsInformer
                 key={`cat-for-bind-${cat.wid}`}
-                action="setNativeNum"
+                uniq="setNativeNum"
                 corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
               >
                 <span>{cat.name} </span>

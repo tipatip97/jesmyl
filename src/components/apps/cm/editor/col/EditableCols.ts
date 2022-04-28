@@ -9,8 +9,8 @@ export class EditableCols {
 
     constructor(cols: Cols) {
         const coms = cols.coms;
-        this.cats = cols.cats.map(cat => new EditableCat(cat, coms));
-        this.coms = cols.coms.map((com) => new EditableCom(com, com.index));
+        this.coms = coms.map((com) => new EditableCom(com));
+        this.cats = cols.cats.map(cat => new EditableCat(cat, this.coms));
     }
 
     addCat() {

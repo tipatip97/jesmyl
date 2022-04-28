@@ -15,9 +15,9 @@ export class EditableCom extends EditableCol<IExportableCom> {
     initialName: string;
     refs?: Record<string, number>;
 
-    constructor(com: Com, index: number) {
+    constructor(com: Com) {
         super(com.top);
-        this.native = new Com(com.top, index);
+        this.native = com;
         this.index = com.index;
         this.initialName = com.name;
         this.refs = mylib.clone(com.refs);
@@ -121,7 +121,7 @@ export class EditableCom extends EditableCol<IExportableCom> {
         exec?.();
     }
     
-    blockCorrects(value: string, coln: 'c' | 't', blocki: number) {
+    blockCorrects(value: string, coln: 'c' | 't', blocki: number, action: string) {
         const blockNum = blocki == null ? '' : `. (${blocki - -1}-й блок)`;
         const ret = (err: string | null) => new CorrectsBox(err ? [{ message: err, code: 0 }] : null);
 
@@ -162,7 +162,7 @@ export class EditableCom extends EditableCol<IExportableCom> {
                 );
                 return ret(`В тексте присутствует непарное количество ковычек.\nНеобходимо добавить ${Math.abs(level)} ${text}${blockNum}\n\n`);
             }
-            return this.textCorrects(value);
+            return this.textCorrects(value, action);
         }
     }
 }

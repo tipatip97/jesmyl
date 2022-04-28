@@ -1,19 +1,16 @@
 
 export interface ICorrectsBoxes {
-    errors: ICorrectsBox[] | null;
-    warnings: ICorrectsBox[] | null;
-    unknowns: ICorrectsBox[] | null;
+    errors: ICorrect[] | null;
+    warnings: ICorrect[] | null;
+    unknowns: ICorrect[] | null;
 }
 
-export interface ICorrectsBox {
+export interface ICorrect {
     code?: number;
     message: string;
-    word?: string;
-    letter?: string;
-    pos?: number;
-    alt?: string;
     onFix?: () => void;
     fixLabel?: string;
+    uniq?: string;
 }
 
 

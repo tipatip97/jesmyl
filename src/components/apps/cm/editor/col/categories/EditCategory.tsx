@@ -24,7 +24,7 @@ export default function EditCategory() {
         <>
           {
             <EditContainerCorrectsInformer
-              action="catRename"
+              uniq="catRename"
               corrects={ccat?.corrects.catRename}
             >
               Название:
@@ -36,7 +36,7 @@ export default function EditCategory() {
           }
           {
             <EditContainerCorrectsInformer
-              action="catSetTrack"
+              uniq="catSetTrack"
               corrects={ccat?.corrects.catSetTrack}
             >
               Трек:

@@ -10,15 +10,17 @@ import { EditableCol } from "../EditableCol";
 
 export class EditableCat extends EditableCol<IExportableCat> {
   native: Cat;
-  coms: EditableCom[] = [];
+  coms: EditableCom[];
+  topComs: EditableCom[];
   initialName: string;
   stack: number[];
   term: string = '';
-  wraps: ComWrap[] = [];
+  wraps: ComWrap<EditableCom>[] = [];
 
-  constructor(cat: Cat, coms: Com[]) {
+  constructor(cat: Cat, coms: EditableCom[]) {
     super(cat.top);
-    this.native = new Cat(cat.top, coms);
+    this.topComs = coms;
+    this.native = new Cat(cat.top, coms.map(com => com.native));
     this.initialName = cat.name;
     this.stack = mylib.clone(cat.stack);
 
@@ -28,35 +30,25 @@ export class EditableCat extends EditableCol<IExportableCat> {
   search(term = this.term, cb?: () => void) {
     if (term) {
       if (term === '@1') {
-        this.wraps = this.native.coms.filter(com => !com.audio || !com.audio.trim()).map(com => ({ com }));
+        this.wraps = this.coms.filter(com => !com.native.audio.trim()).map(com => ({ com }));
       } else if (term === '@2') {
         this.wraps = this.coms.map(com => {
-          const correct: [CorrectsBox, number][] | nil = com.native.texts?.map((text, texti) => [com.blockCorrects(text, 't', texti), texti]);
-
-          return {
-            com: com.native,
-            bag: ([[com.nameCorrects(com.name, 'com'), 'n']].concat(correct as never || []) as [CorrectsBox, string][]).filter(([s]) => s && s.errors)
-          };
-        })
-          .filter(({ bag }) => bag.length)
-          .map(({ com, bag }) => {
-            return {
-              com,
-              errors: [bag].flat().map(([{ errors, warnings, unknowns }, index]) => errors && errors.map(({ message }) => message + ' ' + (index + 1)))
-            };
-          });
+          com.nameCorrects(com.name, 'com');
+          com.native.texts?.map((text, texti) => com.blockCorrects(text, 't', texti, 'setText'));
+          return { com };
+        });
 
       } else {
-        this.wraps = mylib.searchRate<ComWrap>(this.native.coms, term, ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com') as ComWrap[];
+        this.wraps = mylib.searchRate<ComWrap<EditableCom>>(this.coms, term, ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com') as ComWrap<EditableCom>[];
       }
-    } else this.wraps = this.native.coms.map(com => ({ com }));
+    } else this.wraps = this.coms.map(com => ({ com }));
 
     this.term = term;
     cb && cb();
   }
 
   putComs() {
-    this.coms = this.native.putComs().map(com => new EditableCom(com, com.index));
+    this.coms = this.native.putComs().map(com => this.topComs.find((ecom) => ecom.native === com)).filter(com => com) as EditableCom[];
     this.search();
     return this.coms;
   }
@@ -72,14 +64,15 @@ export class EditableCat extends EditableCol<IExportableCat> {
   setTrack(track: string, onSet?: () => void) {
     try {
       const value = JSON.parse(track);
-      this.execCol({
+      this.exec({
         action: 'catSetTrack',
+        method: 'set',
         value,
         prev: this.native.track,
         args: {
           track: value,
         },
-      }, 'cat');
+      });
       this.native.track = value;
 
       this.coms = [];

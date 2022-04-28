@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import useEditableCols from "../useEditableCols";
 import { useCcom } from "../../../col/com/useCcom";
+import { useEditableCcat } from "../categories/useEditableCcat";
 
 export function useEditableCcom() {
-    const cols = useEditableCols();
+    const zcat = useEditableCcat(0);
     const [ccom] = useCcom();
-    return useMemo(() => cols && ccom && cols.coms.find(com => com.wid === ccom.wid), [ccom, cols]);
+    return useMemo(() => zcat && ccom && zcat.coms.find(com => com.wid === ccom.wid), [ccom, zcat]);
 }

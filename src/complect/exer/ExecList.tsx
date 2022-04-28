@@ -23,7 +23,7 @@ export default function ExecList<Storage extends ExerStorage>({
         return (
           <EditContainerCorrectsInformer
             key={"exec-list*" + exec.scope}
-            action="catRename"
+            uniq="catRename"
             corrects={exec?.corrects}
           >
             {exec.title}

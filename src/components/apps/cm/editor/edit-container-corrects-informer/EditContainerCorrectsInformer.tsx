@@ -1,15 +1,15 @@
 import { PropsWithChildren } from "react";
 import { CorrectsBox } from "../corrects-box/CorrectsBox";
-import { ICorrectsBox } from "../corrects-box/CorrectsBox.model";
+import { ICorrect } from "../corrects-box/CorrectsBox.model";
 import "./EditContainerCorrectsInformer.scss";
 
 export default function EditContainerCorrectsInformer(
   props: PropsWithChildren<{
     corrects?: CorrectsBox | nil;
-    action: string;
+    uniq: string;
   }>
 ) {
-  const { action, corrects, children } = props;
+  const { uniq, corrects, children } = props;
   const errors = corrects?.errors || [];
   const warnings = corrects?.warnings || [];
   const unknowns = corrects?.unknowns || [];
@@ -23,12 +23,12 @@ export default function EditContainerCorrectsInformer(
             ["error", errors],
             ["warning", warnings],
             ["unknown", unknowns],
-          ] as [string, ICorrectsBox[]][]
+          ] as [string, ICorrect[]][]
         ).map(([correct, line]) => {
           return line?.map(({ message, onFix, fixLabel }, correcti) => {
             return (
               <div
-                key={`${correct}-corrects-for "${action}" action : ${correcti}`}
+                key={`${correct}-corrects-for "${uniq}" action : ${correcti}`}
                 className={`${correct} correct-box`}
               >
                 {message}
