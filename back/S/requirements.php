@@ -5,15 +5,14 @@ require_once 'servant.php';
 require_once 'authorizator.php';
 
 $initTime = time();
-function isTimeout($time) {
+function isTimeout($time)
+{
   global $initTime;
   return time() > ($initTime + ($time / 1000));
 }
 
-function observeRequirements ($topProps, $waits = 0) {
-  global $globs, $bags;
-  
-  $lockForDebug = 0;
+function observeRequirements($topProps, $waits = 0)
+{
   $names = [
     'appName',
     'isCheck:#Bool',
@@ -30,12 +29,12 @@ function observeRequirements ($topProps, $waits = 0) {
     'isFirstRequest:#Bool',
     'isPwa:#Bool',
   ];
-  
+
   $params = associateParams(jsonDecode($topProps['json']), $names);
-  
+
   if (!is_array($params) || !count($params))
     $params = decodeParams($topProps['params'], $names);
-  
+
   $appName = $params['appName'];
   $isCheck = $params['isCheck'];
   $isMob = $params['isMob'];
@@ -50,42 +49,42 @@ function observeRequirements ($topProps, $waits = 0) {
   $isLiveMode = $params['isLiveMode'];
   $isFirstRequest = $params['isFirstRequest'];
   $isPwa = $params['isPwa'];
-  
+
   setGlob('isPwa', $isPwa);
-  
+
   $preText = $topProps['preText'];
-  
+
   $frequency = 0;
-  
+
   $tools = tracker(['~S/tools.json'])['target'];
   $lock = $tools['lock'];
   $timeLimit = $tools['timeLimit'];
-  
+
   if ($lock && !isTimeout($timeLimit)) {
     usleep($tools['lockSleep'] * 1000);
-    
+
     return observeRequirements($topProps, $waits + 1);
   } else {
     if ($isCheck) $frequency = $tools['frequency'];
     else if (!$isPwa) echo $preText ? $preText : "window.$windowName = ";
   }
-  
+
   if ($lock) return [
     'ok' => true,
     'locked' => true,
     '$waits' => $waits,
   ];
-  
-  $auth = $topProps['auth'];
-  $user = authorize($auth ? jsonDecode($auth) : []);
-  
+
   setGlob('isMobile', $isMob);
   setGlob('isCheckMode', $isCheck);
   setGlob('isFirstRequest', $isFirstRequest);
-  
+
+  $auth = $topProps['auth'];
+  authorize($auth ? jsonDecode($auth) : []);
+
   $reqs = tracker(['requirements.json'])['target'];
   $apps = tracker(['apps.json'])['target'];
-  
+
   return observeRequirementList($frequency, [
     'isCheck' => $isCheck,
     'indexLm' => $indexLm,
@@ -95,7 +94,6 @@ function observeRequirements ($topProps, $waits = 0) {
     'appLiveTm' => $appLiveTm,
     'appParams' => $appParams,
     'isLiveMode' => $isLiveMode,
-    'parents' => & $parents,
     'regApps' => $regApps,
     'tops' => $params,
     'prevs' => $prevs,
@@ -110,9 +108,10 @@ function observeRequirements ($topProps, $waits = 0) {
   ]);
 }
 
-function observeRequirementList($frequency, $params, $topRets) {
-  global $globs, $bags;
-  
+function observeRequirementList($frequency, $params, $topRets)
+{
+  global $globs;
+
   $isCheck = $params['isCheck'];
   $indexLm = $params['indexLm'];
   $indexLiveTm = $params['indexLiveTm'];
@@ -120,7 +119,7 @@ function observeRequirementList($frequency, $params, $topRets) {
   $appLm = $params['appLm'];
   $appLiveTm = $params['appLiveTm'];
   $appParams = $params['appParams'];
-  $parents = & $params['parents'];
+  $parents = &$params['parents'];
   $isLiveMode = $params['isLiveMode'];
   $regApps = $params['regApps'];
   $prevs = $params['prevs'];
@@ -128,11 +127,12 @@ function observeRequirementList($frequency, $params, $topRets) {
   $reqs = $params['reqs'];
   $timeLimit = $params['timeLimit'];
   $isPwa = $params['isPwa'];
-  
+
   $val = [];
   $isLive = false;
   $isReady = false;
   $retAppName = null;
+  $outsideAppLm = 0;
   $maxIndexLive = 0;
   $maxAppLive = 0;
   $maxIndexLm = 0;
@@ -140,30 +140,31 @@ function observeRequirementList($frequency, $params, $topRets) {
   $allComponents = [];
   $parents = [];
   $observe = false;
-  
-  forEach ($reqs as $req) {
+
+  foreach ($reqs as $req) {
     if ($isPwa && $req['ext'] !== 'json') continue;
-    
+
     if (isExpected($req, [['?comp', '*R']])) {
       $req['app'] = 'index';
       $allComponents[] = $req;
     }
-      
+
     if (!isExpected($req, ['*R'])) continue;
     //if ($isCheck && ($req['live'] ? $isLive : $isReady)) continue;
-    
+
     $mtime = getAttribute($req['--path'] ? $req['--path'] : $req['path'], '.maxmtime');
-    
-    
+
+
     if (($req['live']
         ? ($indexLiveTm ? ($mtime > $indexLiveTm) : true)
         : ($isLiveMode ? false : ($indexLm ? $mtime > $indexLm : true)))
-        || isExpected($req, ['name', 'in', $prevs])) {
-      
+      || isExpected($req, ['name', 'in', $prevs])
+    ) {
+
       if ($isCheck) {
         if ($req['live']) $isLive = true;
         else $isReady = true;
-        
+
         if ($isLive && $isReady) break;
       } else {
         if ($req['live']) {
@@ -176,55 +177,62 @@ function observeRequirementList($frequency, $params, $topRets) {
       }
     }
   }
-  $rrr = [];
-  
-  forEach ($apps as & $app) {
+
+  foreach ($apps as &$app) {
     $appReqs = $app['requirements'];
-    
-    if (!isList($appReqs)) continue;
+
+    if ($app['outsideApp']) {
+      $retAppName = $appName;
+      $outsideAppLm = time();
+      continue;
+    }
+
+    if (!isList($appReqs)) {
+      continue;
+    }
     if (!isExpected($app, ['*R'])) continue;
-    
+
     if (isExpected($app, ['name', 'in', $regApps])) {
-      forEach ($appReqs as $req)
+      foreach ($appReqs as $req)
         if (isExpected($req, [['?comp', '*R']])) {
           $req['app'] = $app['name'];
           $allComponents[] = $req;
         }
     }
-    
+
     if (!isExpected($app, ['name', '===', $appName])) continue;
-    
+
     setBagPropsIfNo($appName, $app['params'], $appParams, [
       '_liveTm' => $appLiveTm,
       '_lastTm' => $appLm
     ]);
-    
-    forEach ($appReqs as & $req) {
+
+    foreach ($appReqs as &$req) {
       if ($isPwa && $req['ext'] !== 'json') continue;
-      
+
       //$req['_is.live'] = $isLiveMode && !$req['live'];
       //if ($isLiveMode && !$req['live']) continue;
       //if ($isCheck && ($req['live'] ? $isLive : $isReady)) continue;
-      
+
       if (isExpected($req, ['?F']) && $req['frequency']) {
         $frequency = $req['frequency'];
         $observe = true;
       }
-      
+
       if (!isExpected($req, ['*R'])) continue;
-      
+
       $pathmtime = getAttribute($req['path'], '.maxmtime');
       $lm = $pathmtime ? $pathmtime : getBagProp($appName, 'lm');
       $mtime = $lm ? $lm : getGlob('timeNextDay');
-      
+
       $Base = (($req['live']
         ? ($appLiveTm ? $mtime > $appLiveTm : true)
         : ($isLiveMode ? false : ($appLm ? $mtime > $appLm : true)))
         || isExpected($req, ['name', 'in', $prevs]));
-        
+
       if ($Base) {
         $retAppName = $appName;
-        
+
         if ($req['live']) {
           if ($isCheck) $isLive = true;
           if ($lm > $maxAppLive) $maxAppLive = $mtime;
@@ -232,24 +240,24 @@ function observeRequirementList($frequency, $params, $topRets) {
           if ($isCheck) $isReady = true;
           if ($lm > $maxAppLm) $maxAppLm = $mtime;
         }
-          
+
         if (!$isCheck) {
           $req['app'] = $appName;
-          
+
           $val[] = $req;
         } else if ($isLive && ($isReady || $isLiveMode)) break;
       }
     }
-    
+
     if ($isLive && ($isReady || $isLiveMode)) break;
   }
-  
+
   if ($isCheck && !$isLive && !$isReady && !count($val) && !isTimeout($timeLimit)) {
     usleep($frequency * 1000);
-    
+
     return observeRequirementList($frequency, $params, $topRets);
   }
-  
+
   if ($isCheck) {
     $leadRets = [
       'isReady' => $isReady,
@@ -257,27 +265,28 @@ function observeRequirementList($frequency, $params, $topRets) {
       'isDebug' => isDebug() ? 1 : '',
       'observe' => $observe,
       'isLiveMode' => $isLiveMode,
+      'userLevel' => getGlob('userLevel'),
       '::isPwa' => $isPwa,
     ];
   } else {
     $rets = ['name', 'ext', 'main', 'app', 'live'];
     $components = [];
-    
-    forEach ($allComponents as $req) {
+
+    foreach ($allComponents as $req) {
       $compReq = [];
-      
-      forEach ($rets as $field)
+
+      foreach ($rets as $field)
         if (isset($req[$field]))
           $compReq[$field] = $req[$field];
-        
+
       $components[] = $compReq;
     }
-    
+
     $news = [];
-    
-    forEach ($val as $req) {
+
+    foreach ($val as $req) {
       $newVal = [];
-      
+
       if (!isset($newVal['content'])) {
         $content = '';
         if (is_array($req['track'])) {
@@ -290,32 +299,33 @@ function observeRequirementList($frequency, $params, $topRets) {
         }
         $newVal['content'] = $content ? $content : null;
       }
-      
+
       foreach ($rets as $fieldName) {
         if (isset($req[$fieldName])) $newVal[$fieldName] = $req[$fieldName];
       }
       $news[] = $newVal;
     }
-    
+
     $leadRets = [
       'val' => $news,
       'indexLive' => $maxIndexLive ? $maxIndexLive : null,
       'indexLm' => $maxIndexLm ? $maxIndexLm : null,
       'appLive' => $maxAppLive ? $maxAppLive : null,
-      'appLm' => $maxAppLm ? $maxAppLm : null,
+      'appLm' => $outsideAppLm ? $outsideAppLm : ($maxAppLm ? $maxAppLm : null),
       'appName' => $retAppName,
       'props' => $retAppName ? getBagProps($retAppName) : null,
       'components' => $components,
+      'userLevel' => getGlob('userLevel'),
+      'login' => getGlob('userLogin'),
     ];
   }
-  
   $rets = [
     'ok' => true,
   ];
-  
-  forEach ($leadRets as $retKey => $retVal)
+
+  foreach ($leadRets as $retKey => $retVal)
     $rets[$retKey] = $retVal;
-  
+
   if (isDebug()) {
     $debRets = [
       'regApps' => $regApps,
@@ -332,31 +342,19 @@ function observeRequirementList($frequency, $params, $topRets) {
       //'frequency' => $frequency,
       'params' => $params,
       //'all_comps' => $allComponents,
-      
+
       //'rrr' => $rrr,
       //'bags' => $bags,
     ];
-    
-    forEach ($debRets as $retKey => $retVal)
+
+    foreach ($debRets as $retKey => $retVal)
       $rets[debugPrefix() . $retKey] = $retVal;
-    
-    forEach ($topRets as $retKey => $retVal)
+
+    foreach ($topRets as $retKey => $retVal)
       $rets['+' . $retKey] = $retVal;
   }
-  
+
   return $rets;
 }
 
 echo jsonEncode(observeRequirements($_GET));
-
-
-
-
-
-
-
-
-
-
-
-
