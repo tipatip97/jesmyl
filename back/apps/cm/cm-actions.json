@@ -112,11 +112,11 @@
                             },
                             {
                                 "level": 70,
-                                "action": "delStack",
-                                "track": [],
-                                "method": "remove",
-                                "title": "У категории \"$name\"удалён список песен",
-                                "value": "s"
+                                "action": "catClearStack",
+                                "track": ["s"],
+                                "method": "set",
+                                "title": "У категории \"$name\" очищен список песен",
+                                "value": []
                             },
                             {
                                 "level": 100,

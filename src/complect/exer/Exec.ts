@@ -75,7 +75,7 @@ export class Exec<Value> extends Simplifyed {
             if (exec.args != null) this.args = { ...exec.args, prev: this.prev };
             if (exec.corrects && this.corrects) this.corrects.setAll(exec.corrects);
         }
-        
+
         if (value !== undefined) this.value = value;
         this.updateTitle();
         return this.value === this.prev;

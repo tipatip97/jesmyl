@@ -66,11 +66,25 @@ export class EditableCat extends EditableCol<IExportableCat> {
     this.renameCol(name, 'cat', (correct: string) => exec(this.rename(correct, exec)));
   }
 
+  clearStack(isNeedClear: boolean) {
+    const value = isNeedClear ? [] : this.native.stack.slice(0);
+
+    this.exec({
+      action: 'catClearStack',
+      anti: ({ action }) => {
+        if (action === 'catClearStack' && !isNeedClear)
+          return () => false;
+      },
+    });
+
+    this.stack = value;
+  }
+
   setKind({ title, id }: CatTracker, onSet?: () => void) {
     this.exec({
       action: 'catSetKind',
       method: 'set',
-      value: title,
+      value: id,
       prev: this.kind,
       args: {
         value: id,

@@ -9,6 +9,7 @@ export default function useEditCategory(cat: EditableCat | nil) {
     const ret = {
         rename: (name: string) => exec(cat?.rename(name, exec)),
         setKind: (kind: CatTracker) => exec(cat?.setKind(kind, exec)),
+        clearStack: (isNeedClear: boolean) => exec(cat?.clearStack(isNeedClear)),
     };
     return ret;
 }

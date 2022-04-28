@@ -1,17 +1,18 @@
-import { useMemo, useState } from "react";
-import LoadIndicatedContent from "../../../../../../complect/load-indicated-content/LoadIndicatedContent";
-import { useEditableCcat } from "./useEditableCcat";
-import ComFace from "../../../col/com/face/ComFace";
-import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
-import EditContainerCorrectsInformer from "../../edit-container-corrects-informer/EditContainerCorrectsInformer";
-import useEditCategory from "./useEditCategory";
+import { useState } from "react";
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
+import LoadIndicatedContent from "../../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import { catTrackers } from "../../../col/cat/Cat.complect";
+import ComFace from "../../../col/com/face/ComFace";
+import EditContainerCorrectsInformer from "../../edit-container-corrects-informer/EditContainerCorrectsInformer";
+import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
+import { useEditableCcat } from "./useEditableCcat";
+import useEditCategory from "./useEditCategory";
 
 export default function EditCategory() {
   const ccat = useEditableCcat();
-  const { rename, setKind } = useEditCategory(ccat);
+  const { rename, setKind, clearStack } = useEditCategory(ccat);
   const [isShowComs, setIsShowComs] = useState(false);
+  const [isCleared, setCleared] = useState(false);
 
   if (!ccat) return null;
 
@@ -42,11 +43,24 @@ export default function EditCategory() {
             >
               <div className="flex between">
                 <span>Тип:</span>
-                <Dropdown
-                  id={ccat.kind}
-                  items={catTrackers}
-                  onSelect={(kind) => setKind(kind)}
-                />
+                <div className="half-width">
+                  <Dropdown
+                    id={ccat.kind}
+                    items={catTrackers}
+                    onSelect={(kind) => setKind(kind)}
+                  />
+                </div>
+                {(ccat.kind !== 'list' && ccat.coms.length > 0) || isCleared ? (
+                  <div
+                    className="pointer"
+                    onClick={() => {
+                      clearStack(!isCleared);
+                      setCleared(!isCleared);
+                    }}
+                  >
+                    {isCleared ? "Восстановить список" : "Очистить список"}
+                  </div>
+                ) : null}
               </div>
               <div
                 className="pointer"

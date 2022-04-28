@@ -91,7 +91,7 @@ export class Exer<Storage extends ExerStorage> {
                     }
                 else if (!mylib.isEq(exec.prev, exec.value))
                     this.execs.push(new Exec(exec, this.rules));
-            } else if (!prevExec || !mylib.isEq(exec.args, prevExec.args)) this.execs.push(new Exec(exec, this.rules));
+            } else if (!prevExec || !mylib.isEq(exec.args, prevExec.args) || exec.args == null) this.execs.push(new Exec(exec, this.rules));
 
             exec.scope = scope;
             switch (mylib.func(exec.onSet).call(exec)) {
