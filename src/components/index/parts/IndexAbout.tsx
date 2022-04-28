@@ -13,20 +13,20 @@ export default function IndexAbout() {
     indexStorage.get("lastUpdate")
   );
   const [appLastUpdate, setAppLastUpdate] = useState(
-    appStorage[currentAppName].get("lastUpdate")
+    appStorage[currentAppName]?.get("lastUpdate")
   );
 
   indexStorage.listen("lastUpdate", "IndexAbout", (val) => {
     setIdexLastUpdate(val);
   });
-  appStorage[currentAppName].listen("lastUpdate", "IndexAbout", (val) => {
+  appStorage[currentAppName]?.listen("lastUpdate", "IndexAbout", (val) => {
     setAppLastUpdate(val);
   });
 
   useEffect(
     () => () => {
       indexStorage.mute("lastUpdate", "IndexAbout");
-      appStorage[currentAppName].mute("lastUpdate", "IndexAbout");
+      appStorage[currentAppName]?.mute("lastUpdate", "IndexAbout");
     },
     []
   );

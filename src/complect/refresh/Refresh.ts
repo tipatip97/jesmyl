@@ -79,7 +79,7 @@ export class Refresh {
 
         list.forEach((value) => {
             const storage = appStorage[value.app];
-            if (storage.setString(value.name, value.content) == null) code++;
+            if (storage?.setString(value.name, value.content) == null) code++;
         });
 
         return code;
@@ -114,20 +114,24 @@ export class Refresh {
     }
 
     check() {
-        if (!indexStorage.get('lastUpdate') || (this.appName && !appStorage[this.appName].get('lastUpdate'))) {
+        const stor = appStorage[this.appName];
+        if (!indexStorage.get('lastUpdate') || (this.appName && stor && !stor.get('lastUpdate'))) {
             this.pull(false);
             return;
         }
         fetch(this.path(true), { signal: this.setSignal() })
             .then(response => response.json())
             .then((res: CheckRefreshResponse) => {
-                if (!res.ok) return;
+                if (!res.ok) {
+                    setTimeout(() => this.check(), 10000);
+                    return;
+                }
 
                 if (res.isReady) {
                     if (indexStorage.get('updateOnRefresher')) this.stateChange('ready');
                     else this.pull(false);
                 } else this.check();
-            });
+            }).catch(() => setTimeout(() => this.check(), 10000));
     }
 
     stateChange(state: RefreshState) {

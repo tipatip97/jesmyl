@@ -19,6 +19,7 @@ export default function AppFooter({ app }: { app: AppName }) {
         const isActive =
           appPhase !== "index" &&
           (specialPhase ? activeWithSpecialPhases : phases.indexOf(phase) > -1);
+
         return !phases[0] ? null : (
           <div
             key={`main-footer-item_${icon}`}

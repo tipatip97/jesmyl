@@ -14,7 +14,7 @@ export class Exer<Storage extends ExerStorage> {
     host = Refresh.host;
     appName: JStorageName;
     execs: Exec<any>[] = [];
-    storage: JStorage<Storage>;
+    storage: JStorage<Storage> | nil;
     key = 'execs' as keyof Storage;
     rules: ExecRule[] = [];
     checkedActions: Record<string, true | null> = {};
@@ -36,7 +36,7 @@ export class Exer<Storage extends ExerStorage> {
                 action,
                 level: level as number,
             })),
-            ...(this.storage.get('actions') as [] || [])
+            ...(this.storage?.get('actions') as [] || [])
         ];
     }
 
@@ -101,7 +101,7 @@ export class Exer<Storage extends ExerStorage> {
     }
 
     isThereLocals() {
-        return this.storage.has(this.key);
+        return this.storage?.has(this.key);
     }
 
     send<Value>(fixedExecs: ExecDict<Value> | (ExecDict<Value>[]), cb?: Callback, errCb?: Callback, finCb?: Callback) {
@@ -152,11 +152,11 @@ export class Exer<Storage extends ExerStorage> {
     }
 
     saveLocally() {
-        this.storage.set(this.key, this.execs.map(exec => exec.toDict()) as never);
+        this.storage?.set(this.key, this.execs.map(exec => exec.toDict()) as never);
     }
 
     removeLocals() {
-        this.storage.rem(this.key);
+        this.storage?.rem(this.key);
     }
 
     removeAll() {
@@ -165,7 +165,7 @@ export class Exer<Storage extends ExerStorage> {
     }
 
     setLocals() {
-        if (this.storage.has(this.key)) {
+        if (this.storage?.has(this.key)) {
             this.set(this.storage.get(this.key) as never);
         }
     }

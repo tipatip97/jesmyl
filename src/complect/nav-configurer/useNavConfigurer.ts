@@ -35,7 +35,7 @@ export default function useNavConfigurer<App extends AppName, State extends Root
             const prevPhase = ret.phase === phase ? null : ret.phase;
             dispatch(setPhaseAction({ phase, prevPhase, specialPhase }));
 
-            if (preventSaveLocal) return;
+            if (preventSaveLocal || !storage) return;
 
             storage.set('phase', phase);
             storage.set('prevPhase', prevPhase);

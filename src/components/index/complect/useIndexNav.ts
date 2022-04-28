@@ -15,4 +15,4 @@ export default function useIndexNav() {
 }
 
 const useIndexNavConfigurer = () => useNavConfigurer('index', firstPhase, actions, setIndexPhase, getIndexNewPhase, []);
-export { useIndexNavConfigurer as useIndexmNavConfigurer };
+export { useIndexNavConfigurer };

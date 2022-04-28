@@ -50,6 +50,12 @@
         }
     }
 
+    .app-container {
+        overflow: hidden;
+        position: relative;
+        height: 100vh;
+    }
+
     >.footer {
         position: absolute;
         bottom: var(--footer-bottom);

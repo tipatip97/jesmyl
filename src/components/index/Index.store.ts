@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppName } from "../../app/App.model";
-import { Exer } from "../../complect/exer/Exer";
 import { setPhaseInState } from "../../complect/nav-configurer/useNavConfigurer";
-import { appStorage, indexStorage } from "../../shared/jstorages";
+import { indexStorage } from "../../shared/jstorages";
 import {
   Auth, IndexApplication, IndexPhase, IndexSpecialPhase,
   IndexState,
