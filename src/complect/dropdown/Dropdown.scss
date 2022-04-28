@@ -1,0 +1,36 @@
+.dropdown-selector {
+    --selector-height: 40px;
+
+    position: relative;
+    min-width: 50px;
+    width: 100%;
+    height: var(--selector-height);
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--color--2);
+    cursor: pointer;
+
+    &.dropped {
+        border-radius: 5px 5px 0 0;
+        >.item-list {
+            max-height: 30vh;
+        }
+    }
+
+    >.item-list {
+        position: absolute;
+        top: var(--selector-height);
+        left: 0;
+        width: 100%;
+        background-color: var(--color--3);
+        color: var(--color--1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .2s linear;
+        border-radius: 0 0 5px 5px;
+
+        >.list-item {
+            padding: 5px;
+        }
+    }
+}

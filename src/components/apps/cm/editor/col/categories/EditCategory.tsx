@@ -5,12 +5,12 @@ import ComFace from "../../../col/com/face/ComFace";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
 import EditContainerCorrectsInformer from "../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import useEditCategory from "./useEditCategory";
+import Dropdown from "../../../../../../complect/dropdown/Dropdown";
+import { catTrackers } from "../../../col/cat/Cat.complect";
 
 export default function EditCategory() {
   const ccat = useEditableCcat();
-  const { rename, setTrack } = useEditCategory(ccat);
-  const track = useMemo(() => JSON.stringify(ccat?.native.track), [ccat]);
-  const [trackStr, setTrackStr] = useState(track);
+  const { rename, setKind } = useEditCategory(ccat);
   const [isShowComs, setIsShowComs] = useState(false);
 
   if (!ccat) return null;
@@ -36,22 +36,24 @@ export default function EditCategory() {
           }
           {
             <EditContainerCorrectsInformer
-              uniq="catSetTrack"
-              corrects={ccat?.corrects.catSetTrack}
+              uniq="catSetKind"
+              access="catSetKind"
+              corrects={ccat?.corrects.catSetKind}
             >
-              Трек:
-              <input
-                value={trackStr}
-                onChange={(event) => {
-                  setTrack(event.target.value);
-                  setTrackStr(event.target.value);
-                }}
-              />
+              <div className="flex between">
+                <span>Тип:</span>
+                <Dropdown
+                  id={ccat.kind}
+                  items={catTrackers}
+                  onSelect={(kind) => setKind(kind)}
+                />
+              </div>
               <div
                 className="pointer"
                 onClick={() => setIsShowComs(!isShowComs)}
               >
-                {isShowComs ? " Скрыть" : " Показать"} список песен
+                {isShowComs ? " Скрыть" : " Показать"} список песен{" "}
+                {ccat.coms.length}
               </div>
             </EditContainerCorrectsInformer>
           }

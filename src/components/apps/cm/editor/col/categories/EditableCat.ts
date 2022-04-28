@@ -1,9 +1,9 @@
 import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { Cat } from "../../../col/cat/Cat";
-import { ComWrap, IExportableCat } from "../../../col/cat/Cat.model";
+import { catTrackers } from "../../../col/cat/Cat.complect";
+import { CatKind, CatTracker, ComWrap, IExportableCat } from "../../../col/cat/Cat.model";
 import { Com } from "../../../col/com/Com";
-import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import { EditableCom } from "../compositions/EditableCom";
 import { EditableCol } from "../EditableCol";
 
@@ -16,12 +16,14 @@ export class EditableCat extends EditableCol<IExportableCat> {
   stack: number[];
   term: string = '';
   wraps: ComWrap<EditableCom>[] = [];
+  kind: CatKind;
 
   constructor(cat: Cat, coms: EditableCom[]) {
     super(cat.top);
     this.topComs = coms;
     this.native = new Cat(cat.top, coms.map(com => com.native));
     this.initialName = cat.name;
+    this.kind = cat.kind;
     this.stack = mylib.clone(cat.stack);
 
     this.coms = this.putComs();
@@ -48,8 +50,11 @@ export class EditableCat extends EditableCol<IExportableCat> {
   }
 
   putComs() {
-    this.coms = this.native.putComs().map(com => this.topComs.find((ecom) => ecom.native === com)).filter(com => com) as EditableCom[];
+    const { select } = catTrackers.find(({ id }) => id === this.kind) || {};
+    this.coms = select ? this.topComs.filter(com => select(com.native, this.native)) : [];
+
     this.search();
+
     return this.coms;
   }
 
@@ -61,32 +66,25 @@ export class EditableCat extends EditableCol<IExportableCat> {
     this.renameCol(name, 'cat', (correct: string) => exec(this.rename(correct, exec)));
   }
 
-  setTrack(track: string, onSet?: () => void) {
-    try {
-      const value = JSON.parse(track);
-      this.exec({
-        action: 'catSetTrack',
-        method: 'set',
-        value,
-        prev: this.native.track,
-        args: {
-          track: value,
-        },
-      });
-      this.native.track = value;
+  setKind({ title, id }: CatTracker, onSet?: () => void) {
+    this.exec({
+      action: 'catSetKind',
+      method: 'set',
+      value: title,
+      prev: this.kind,
+      args: {
+        value: id,
+        kindn: title,
+      },
+    });
+    this.kind = id;
 
-      this.coms = [];
-      setTimeout(() => {
-        this.putComs();
-        onSet && onSet();
-      });
-      this.corrects.catSetTrack = null;
-    } catch (e) {
-      const errors = [{ message: 'Некорректное значение JSON' }];
-
-      if (this.corrects.catSetTrack) this.corrects.catSetTrack.setErrors(errors);
-      else this.corrects.catSetTrack = new CorrectsBox(errors);
-    }
+    this.coms = [];
+    setTimeout(() => {
+      this.putComs();
+      onSet && onSet();
+    });
+    this.corrects.catSetKind = null;
   }
 
   toggleComExistence(com: Com | nil, exec?: <Val>(v?: Val) => Val | nil) {

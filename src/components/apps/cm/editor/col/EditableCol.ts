@@ -129,7 +129,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
       });
     });
 
-    const corrects =  new CorrectsBox(errors, warnings, unknowns);
+    const corrects = new CorrectsBox(errors, warnings, unknowns);
     if (correctsScope) this.corrects[correctsScope] = corrects;
     return corrects;
   }

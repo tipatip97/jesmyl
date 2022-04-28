@@ -120,15 +120,20 @@
                             },
                             {
                                 "level": 100,
-                                "action": "catSetTrack",
+                                "action": "catSetKind",
                                 "track": [
-                                    "t"
+                                    "k"
                                 ],
                                 "method": "set",
-                                "title": "В Категории \"$name\" $track?{{$prev{{изменён}{добавлен}}}{удалён}} трек",
-                                "value": "{track}",
+                                "title": "Категории \"$name\" присвоен тип $kindn",
                                 "args": {
-                                    "track": "#any"
+                                    "value": [
+                                        "full",
+                                        "list",
+                                        "dict",
+                                        "lang:ru",
+                                        "lang:ua"
+                                    ]
                                 }
                             },
                             {

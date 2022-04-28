@@ -1,9 +1,10 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { BaseNamed } from "../../base/Base";
 import { Com } from "../com/Com";
+import { catTrackers } from "./Cat.complect";
 import { ComWrap, ICat, IExportableCat } from "./Cat.model";
 
-export class Cat extends BaseNamed<IExportableCat> implements ICat, Partial<IExportableCat> {
+export class Cat extends BaseNamed<IExportableCat> implements ICat {
   searchTimeout: any;
 
   index: number = -1;
@@ -11,12 +12,10 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat, Partial<IExp
   topComs: Com[];
   coms: Com[];
   wraps: ComWrap[] = [];
-  t?: string[] | null;
 
   constructor(top: IExportableCat, coms: Com[]) {
     super(top);
 
-    this.track = mylib.def(top.t, null);
     this.topComs = coms;
 
     this.coms = this.putComs();
@@ -24,15 +23,12 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat, Partial<IExp
 
   get stack() { return this.getBasicOr('s', []); }
 
-  get track(): string[] | undefined | null { return this.t; }
-  set track(val: string[] | undefined | null) { this.t = val; }
+  get kind(): string { return this.getBasic('k'); }
+  set kind(val: string) { this.setExportable('k', val); }
 
   putComs() {
-    this.coms = (
-      this.track == null
-        ? (this.topComs || []).filter(com => com && ~(this.stack?.indexOf(com.wid) || -1))
-        : (this.topComs || []).filter(com => com && mylib.isExpected(com, this.track, this))
-    ).slice(0);
+    const { select } = catTrackers.find(({ id }) => id === this.kind) || {};
+    this.coms = select ? this.topComs.filter(com => select(com, this)) : [];
 
     this.search();
 

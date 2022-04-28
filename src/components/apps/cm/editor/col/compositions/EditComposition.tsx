@@ -35,9 +35,7 @@ export default function EditComposition() {
           }
           <div className="cat-list-title">Сборники</div>
           {cols?.cats.map((cat) => {
-            return !cat.wid ||
-              cat.native.track == null ||
-              cat.native.track[0] !== ">wid" ? null : (
+            return cat.kind !== "dict" ? null : (
               <EditContainerCorrectsInformer
                 key={`cat-for-bind-${cat.wid}`}
                 uniq="setNativeNum"
@@ -67,7 +65,7 @@ export default function EditComposition() {
           })}
           <div className="cat-list-title">Группированые</div>
           {cols?.cats.map((cat) => {
-            return !cat.wid || cat.native.track != null ? null : (
+            return cat.kind !== "list" ? null : (
               <EditContainerCorrectsInformer
                 key={`cat-for-bind-${cat.wid}`}
                 uniq="setNativeNum"
