@@ -1,3 +1,5 @@
+/* eslint-disable no-cond-assign */
+/* eslint-disable eqeqeq */
 import { StringTemplaterArgs } from "./MyLib.model";
 
 var md5 = require('md5');
