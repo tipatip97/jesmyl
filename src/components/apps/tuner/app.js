@@ -8,7 +8,7 @@ const Application = function () {
   this.tuner = new Tuner(this.a4)
   this.notes = new Notes('.notes', this.tuner)
   this.meter = new Meter('.meter')
-  this.frequencyBars = new FrequencyBars('.frequency-bars')
+  // this.frequencyBars = new FrequencyBars('.frequency-bars')
   this.update({ name: 'A', frequency: this.a4, octave: 4, value: 69, cents: 0 })
 }
 
@@ -43,7 +43,7 @@ Application.prototype.start = function () {
     self.update({ name: 'A', frequency: self.a4, octave: 4, value: 69, cents: 0 })
     localStorage.setItem('a4', a4)
   });
-  this.updateFrequencyBars();
+  // this.updateFrequencyBars();
 }
 
 Application.prototype.updateFrequencyBars = function () {

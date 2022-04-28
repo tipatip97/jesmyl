@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PhaseContainerConfigurer from "../../../complect/phase-container/PhaseContainerConfigurer";
 import { TunerApplication } from "./app";
 import "./TunerStyle.scss";
 import "./Tuner.scss";
 
-let tunerContainer: HTMLDivElement;
+let tunerContainer: HTMLDivElement | null;
 let tunerApplication: any;
 
 export default function TheTuner() {
   const [started, setStarted] = useState(false);
+
+  useEffect(
+    () => () => {
+      tunerContainer = null;
+    },
+    []
+  );
 
   return (
     <PhaseContainerConfigurer

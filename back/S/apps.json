@@ -278,12 +278,7 @@
     "name": "tuner",
     "title": "Тюнер",
     "description": "",
-    "outsideApp" : true,
-    "R": [
-      "@userLevel",
-      "==",
-      100
-    ]
+    "outsideApp": true
   },
   {
     "name": "exb",
