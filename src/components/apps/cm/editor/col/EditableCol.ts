@@ -16,7 +16,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     const action = `${coln}Rename`;
     const corrects = this.nameCorrects(name, coln, onFix, `${action}:${this.wid}`);
 
-    this.execCol({
+    const exec = this.execCol({
       action,
       prev: this.name,
       method: 'set',
@@ -26,7 +26,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     }, coln);
 
     this.name = name;
-    this.corrects[action] = corrects;
+    this.corrects[action] = exec?.corrects ?? corrects;
   }
 
   removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
@@ -37,7 +37,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
   }
 
   execCol<Value, Coln extends keyof IExportableCol>(bag: FreeExecDict<Value>, coln: Coln) {
-    cmExer.set<Value>({
+    return cmExer.set<Value>({
       ...bag,
       scope: this.scope(bag.action, bag.uniq),
       args: {

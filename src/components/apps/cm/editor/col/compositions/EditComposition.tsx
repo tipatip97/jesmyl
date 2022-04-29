@@ -63,7 +63,7 @@ export default function EditComposition() {
               </EditContainerCorrectsInformer>
             );
           })}
-          <div className="cat-list-title">Группированые</div>
+          <div className="cat-list-title">Списки</div>
           {cols?.cats.map((cat) => {
             return cat.kind !== "list" ? null : (
               <EditContainerCorrectsInformer

@@ -40,64 +40,67 @@ export class Exer<Storage extends ExerStorage> {
         ];
     }
 
-    set<Value>(execs: FreeExecDict<Value> | FreeExecDict<Value>[]) {
-        [execs].flat().forEach((freeExec) => {
-            if (!freeExec) return;
-            const { scope, value, method = 'other', anti } = freeExec;
-            const exec = { ...freeExec, method };
+    set<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
+        if (!freeExec) return null;
+        let retExec: Exec<Value> | null = null;
+        const { scope, value, method = 'other', anti } = freeExec;
+        const exec = { ...freeExec, method };
 
-            const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
-            const prevExec: Exec<Value> = this.execs[prevExeci];
-            const lasti = this.execs.length - 1;
-            const lastExec: Exec<Value> = this.execs[lasti];
+        setTimeout(() => console.info(this.execs));
 
-            let isPrevented = false;
+        const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
+        const prevExec: Exec<Value> = this.execs[prevExeci];
+        const lasti = this.execs.length - 1;
+        const lastExec: Exec<Value> = this.execs[lasti];
 
-            if (anti) {
-                const antis = [anti].flat();
-                const remIndexes: number[] = [];
+        let isPrevented = false;
 
-                for (let execi = 0; execi < this.execs.length; execi++) {
+        if (anti) {
+            const antis = [anti].flat();
+            const remIndexes: number[] = [];
 
-                    for (const anti of antis) {
-                        const prevent = anti(this.execs[execi]);
+            for (let execi = 0; execi < this.execs.length; execi++) {
 
-                        if (prevent) {
-                            remIndexes.push(execi);
-                            if (prevent()) isPrevented = true;
-                        }
+                for (const anti of antis) {
+                    const prevent = anti(this.execs[execi]);
+
+                    if (prevent) {
+                        remIndexes.push(execi);
+                        if (prevent()) isPrevented = true;
                     }
-                    if (isPrevented) break;
                 }
-                remIndexes.sort((a, b) => b - a).forEach(execi => this.execs.splice(execi, 1));
+                if (isPrevented) break;
             }
+            remIndexes.sort((a, b) => b - a).forEach(execi => this.execs.splice(execi, 1));
+        }
 
-            if (isPrevented) return;
+        if (isPrevented) return null;
 
-            if (method === 'func') {
-                if (prevExec) this.execs.splice(prevExeci, 1, new Exec(exec, this.rules));
-                else this.execs.push(new Exec(exec, this.rules));
+        if (method === 'func') {
+            if (prevExec) this.execs.splice(prevExeci, 1, retExec = new Exec(exec, this.rules));
+            else this.execs.push(retExec = new Exec(exec, this.rules));
 
-            } else if (method === 'migrate' && lastExec && lastExec.method === method && lastExec.scope === scope) {
-                if (!Object.keys(value || {}).length) this.execs.splice(lasti, 1);
-                else this.execs.splice(lasti, 1, new Exec(exec, this.rules));
+        } else if (method === 'migrate' && lastExec && lastExec.method === method && lastExec.scope === scope) {
+            if (!Object.keys(value || {}).length) this.execs.splice(lasti, 1);
+            else this.execs.splice(lasti, 1, retExec = new Exec(exec, this.rules));
 
-            } else if (method === 'set') {
-                if (prevExec)
-                    if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
-                    else {
-                        const needRemove = prevExec.setValue(value, exec);
-                        if (needRemove) this.execs.splice(prevExeci, 1);
-                    }
-                else if (!mylib.isEq(exec.prev, exec.value))
-                    this.execs.push(new Exec(exec, this.rules));
-            } else if (!prevExec || !mylib.isEq(exec.args, prevExec.args) || exec.args == null) this.execs.push(new Exec(exec, this.rules));
+        } else if (method === 'set') {
+            if (prevExec)
+                if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
+                else {
+                    const needRemove = prevExec.setValue(value, exec);
+                    if (needRemove) this.execs.splice(prevExeci, 1);
+                }
+            else if (!mylib.isEq(exec.prev, exec.value))
+                this.execs.push(retExec = new Exec(exec, this.rules));
+        } else if (!prevExec || !mylib.isEq(exec.args, prevExec.args) || exec.args == null) this.execs.push(retExec = new Exec(exec, this.rules));
 
-            exec.scope = scope;
-            switch (mylib.func(exec.onSet).call(exec)) {
-                case mylib.c.REMOVE: this.execs.splice(prevExeci, 1);
-            }
-        });
+        exec.scope = scope;
+        switch (mylib.func(exec.onSet).call(exec)) {
+            case mylib.c.REMOVE: this.execs.splice(prevExeci, 1);
+        }
+
+        return retExec;
     }
 
     isThereLocals() {

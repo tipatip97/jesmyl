@@ -113,7 +113,9 @@
                             {
                                 "level": 70,
                                 "action": "catClearStack",
-                                "track": ["s"],
+                                "track": [
+                                    "s"
+                                ],
                                 "method": "set",
                                 "title": "У категории \"$name\" очищен список песен",
                                 "value": []

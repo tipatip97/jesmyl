@@ -1,7 +1,7 @@
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
 import mylib from "../my-lib/MyLib";
 import Simplifyed from "../Simplifyed";
-import { ExecDict, ExecMethod, ExecRule, FreeExecDict } from "./Exer.model";
+import { ExecDict, ExecMethod, ExecRule, ExecRuleClient, FreeExecDict } from "./Exer.model";
 
 
 export class Exec<Value> extends Simplifyed {
@@ -15,11 +15,10 @@ export class Exec<Value> extends Simplifyed {
     generalId?: string;
     createByPath?: boolean;
     id = (Date.now() - -Math.random()).toString();
-    argValue?: string;
     del?: boolean = false;
     muted?: boolean;
     errors?: string[];
-    rule?: ExecRule;
+    rule?: ExecRuleClient;
     corrects?: CorrectsBox;
 
     onSet?: (exec: Exec<Value>) => [];
@@ -29,15 +28,16 @@ export class Exec<Value> extends Simplifyed {
         super();
         this.action = exec.action;
         this.method = exec.method;
-        this.prev = mylib.clone(exec.prev);
+        if (exec.method === 'set') this.prev = mylib.clone(exec.prev);
         this.corrects = exec.corrects;
 
-        this.setReals(exec, ['argValue', 'scope', 'value', 'args', 'generalId', 'createByPath', 'muted']);
+        this.setReals(exec, ['scope', 'value', 'args', 'generalId', 'createByPath', 'muted']);
 
         this.rule = rules.find(rule => rule.action === this.action);
         if (!this.rule) console.error(`Неизвестное правило "${this.action}"`);
 
         this.updateTitle();
+        this.checkIsCorrectArgs();
     }
 
     updateTitle() {
@@ -60,24 +60,48 @@ export class Exec<Value> extends Simplifyed {
             createByPath: this.createByPath,
             id: this.id,
             method: this.method,
-            args: {
-                ...this.args,
-                prev: this.prev,
-                ...(this.argValue
-                    ? { [this.argValue]: this.value }
-                    : null)
-            }
         };
+    }
+
+    checkIsCorrectArgs() {
+        const argsEntries = Object.entries(this.args || {});
+        const ruleEntries = Object.entries(this.rule?.args || {});
+        const corrects = this.corrects || new CorrectsBox();
+        const add = (message: string) => {
+            this.corrects = corrects.merge({ errors: [{ message }] });
+            return corrects;
+        }
+
+        if (!ruleEntries.length) return;
+        if (!argsEntries.length) {
+            return add('Нет необходимых аргументов для данного исполнения');;
+        }
+
+        for (const [key, type] of ruleEntries) {
+            const argEntry = argsEntries.find(([argn]) => argn === key);
+            if (!argEntry) {
+                add(`Не указан параметр "${key}" для исполнения "${this.action}"`);;
+                continue;
+            }
+            const [, value] = argEntry;
+            if (!mylib.isCorrectType(value, type)) add(`Неверный тип параметра "${key}" (${value}) в исполнении "${this.action}". Ожидалось "${type}"`);
+        }
+
+        this.corrects = corrects;
     }
 
     setValue(value?: Value, exec?: FreeExecDict<Value>) {
         if (exec) {
-            if (exec.args != null) this.args = { ...exec.args, prev: this.prev };
+            if (exec.args != null) this.args = {
+                ...exec.args,
+                ...(this.method === 'set' ? { prev: this.prev } : null),
+            };
             if (exec.corrects && this.corrects) this.corrects.setAll(exec.corrects);
         }
 
         if (value !== undefined) this.value = value;
         this.updateTitle();
+        this.checkIsCorrectArgs();
         return this.value === this.prev;
     }
 }
