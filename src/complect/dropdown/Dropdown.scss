@@ -2,6 +2,7 @@
     --selector-height: 40px;
 
     position: relative;
+    z-index: 300;
     min-width: 50px;
     width: 100%;
     height: var(--selector-height);

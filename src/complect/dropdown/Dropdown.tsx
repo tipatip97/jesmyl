@@ -30,7 +30,7 @@ export default function Dropdown<Item extends DropdownItem>(props: DropdownProps
       className={`dropdown-selector ${isDropped ? "dropped" : ""}`}
       onClick={(event) => {
         event.stopPropagation();
-        setDropped(true);
+        setDropped(!isDropped);
       }}
     >
       <div className="selected-item">
