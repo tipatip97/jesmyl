@@ -1,22 +1,21 @@
 import { useState } from "react";
 import BrutalItem from "../../../../../../complect/brutal-item/BrutalItem";
+import useExer from "../../../../../../complect/exer/useExer";
 import DebouncedSearcher from "../../../base/debounced-searcher/DebouncedSearcher";
 import useCmNav from "../../../base/useCmNav";
+import { cmExer } from "../../../Cm.store";
 import { useCcom } from "../../../col/com/useCcom";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import EditContainerCorrectsInformer from "../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
 import { useEditableCcat } from "../categories/useEditableCcat";
-import { useEditableCcom } from "./useEditableCcom";
-import useEditComposition from "./useEditComposition";
 
 export default function EditCompositions() {
   const [, setCcom] = useCcom();
-  const ccom = useEditableCcom();
   const { setPhase } = useCmNav();
   const zcat = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || "");
-  useEditComposition(ccom);
+  useExer(cmExer);
 
   return (
     <PhaseCmEditorContainer
