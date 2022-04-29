@@ -110,6 +110,7 @@ export class EditableCat extends EditableCol<IExportableCat> {
         action: 'catBindCom',
         args: {
           comw: com.wid,
+          comn: com.name,
         },
         anti: ({ action, args }) => {
           if (action === 'catUnbindCom' && args && args.comw === com.wid && args.catw === this.wid)
@@ -122,6 +123,7 @@ export class EditableCat extends EditableCol<IExportableCat> {
         action: 'catUnbindCom',
         args: {
           comw: com.wid,
+          comn: com.name,
         },
         anti: ({ action, args }) => {
           if (action === 'catBindCom' && args && args.comw === com.wid && args.catw === this.wid)
