@@ -29,7 +29,6 @@ export default function Marks() {
         <ComFace
           key={`marked-com-${com.wid}`}
           com={com}
-          specialPhase="marked"
         />
       ))}
     />

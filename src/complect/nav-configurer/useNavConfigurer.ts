@@ -1,45 +1,40 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { FooterItem, SetPhasePayload, UseNavAction } from "./useNavConfigurer.model";
 import { RootState } from "../../shared/store";
-import { appStorage } from "../../shared/jstorages";
-import { AppName } from "../../app/App.model";
+import { JStorage } from "../JStorage";
 import useFullScreen from "../useFullscreen";
+import { NavigationConfig } from "./Navigation";
+import { NavPhase, NavRoute, UseNavAction } from "./Navigation.model";
 
 
-export default function useNavConfigurer<App extends AppName, State extends RootState[App], Phase extends State['phase']>(
-    appName: App,
-    firstPhase: Phase,
+export default function useNavConfigurer<Storage extends { route: NavRoute }>(
     actions: UseNavAction[],
-    setPhaseAction: (payload: { phase: State['phase'] | nil; prevPhase: State['phase'] | nil; specialPhase: State['specialPhase'] }) => PayloadAction<{ phase: State['phase'] | nil; prevPhase: State['phase'] | nil; specialPhase: State['specialPhase'] }>,
-    getNewPhase: (
-        phase: State['phase'],
-        specialPhase: State['specialPhase'],
-        prevPhase?: State['phase']
-    ) => SetPhasePayload<State['phase'], State['specialPhase']>,
-    footerItems: FooterItem<State['phase']>[]
+    setPhaseAction: (payload: { route: NavRoute }) => PayloadAction<{ route: NavRoute }>,
+    nav: NavigationConfig,
+    storage: JStorage<Storage>,
+    routeSelector: (state: RootState) => NavRoute,
 ) {
 
     const dispatch = useDispatch();
-    const storage = appStorage[appName];
     const [isFullScreen, switchFullscreen] = useFullScreen();
 
     const ret = {
-        phase: useSelector((state: RootState): RootState[App]['phase'] => state[appName].phase),
-        prevPhase: useSelector((state: RootState): RootState[App]['prevPhase'] => state[appName].prevPhase),
-        specialPhase: useSelector((state: RootState): RootState[App]['specialPhase'] => state[appName].specialPhase),
-        footerItems,
-        setPhase: <Phase extends State['phase'], SpecialPhase extends State['specialPhase']>(val: SetPhasePayload<Phase, SpecialPhase>) => {
-            const [phase, specialPhase, preventSaveLocal] = [val].flat() as [State['phase'] | nil, State['specialPhase'], boolean];
-
-            const prevPhase = ret.phase === phase ? null : ret.phase;
-            dispatch(setPhaseAction({ phase, prevPhase, specialPhase }));
-
-            if (preventSaveLocal || !storage) return;
-
-            storage.set('phase', phase);
-            storage.set('prevPhase', prevPhase);
-            if (specialPhase !== undefined) storage.set('specialPhase', specialPhase);
+        nav,
+        route: useSelector(routeSelector),
+        navigate: (route: NavRoute, isPreventSave?: boolean) => {
+            if (route && !nav.findContent(route)) {
+                console.error(`Фаза "/${route.join('/')}" не существует!`);
+                return;
+            }
+            dispatch(setPhaseAction({ route }));
+            if (isPreventSave) return;
+            storage.set('route', route);
+        },
+        goTo: (phase: NavPhase | NavPhase[], isPreventSave?: boolean) => {
+            ret.navigate([...(ret.route || []), ...[phase].flat()], isPreventSave);
+        },
+        replace: (phase: NavPhase | NavPhase[], isPreventSave?: boolean) => {
+            ret.navigate([...(ret.route || []).slice(0, -1), ...[phase].flat()], isPreventSave)
         },
         registerBackAction: (action: UseNavAction) => {
             actions.unshift(action);
@@ -56,26 +51,19 @@ export default function useNavConfigurer<App extends AppName, State extends Root
                 })) return;
             }
 
-            if (!ret.phase || ret.phase === firstPhase || ret.phase === firstPhase) {
-                return;
-            }
-
             if (isFullScreen) {
                 switchFullscreen(false);
                 return;
             }
 
-            const newPhase = getNewPhase(ret.phase, ret.specialPhase, ret.prevPhase);
+            if (ret.route?.length) {
+                const newNav = [...(ret.route || []).slice(0, -1)];
 
-            if (newPhase) ret.setPhase(newPhase);
+                if (newNav.length) ret.navigate(newNav);
+                else ret.navigate(nav.rootPhase === null ? null : [nav.rootPhase]);
+            }
         }
     };
 
     return ret;
 }
-
-export const setPhaseInState = <App extends AppName, State extends RootState[App]>(state: State, phase: State['phase'] | nil, prevPhase: State['prevPhase'] | nil, specialPhase: State['specialPhase'] | nil) => {
-    if (phase != null) state.phase = phase;
-    if (prevPhase !== phase && prevPhase != null) state.prevPhase = prevPhase;
-    if (specialPhase !== undefined) state.specialPhase = specialPhase;
-};

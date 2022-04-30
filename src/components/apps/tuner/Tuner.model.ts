@@ -1,16 +1,9 @@
-
-
-export type TunerPhase = 'tuner';
-export type TunerSpecialPhase = 'tuner';
+import { NavRoute } from "../../../complect/nav-configurer/Navigation.model";
 
 export interface TunerState {
-    phase: TunerPhase;
-    prevPhase: TunerPhase;
-    specialPhase?: TunerSpecialPhase | nil;
+    route: NavRoute;
 }
 export interface TunerStorage {
-    phase: TunerPhase;
-    prevPhase: TunerPhase;
-    specialPhase: TunerSpecialPhase;
+    route: NavRoute;
     lastUpdate: number;
 }

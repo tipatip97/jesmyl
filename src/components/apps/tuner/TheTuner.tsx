@@ -3,6 +3,7 @@ import PhaseContainerConfigurer from "../../../complect/phase-container/PhaseCon
 import { TunerApplication } from "./app";
 import "./TunerStyle.scss";
 import "./Tuner.scss";
+import useTunerNav from "./useTunerNav";
 
 let tunerContainer: HTMLDivElement | null;
 let tunerApplication: any;
@@ -17,9 +18,11 @@ export default function TheTuner() {
     []
   );
 
+  const { goBack } = useTunerNav();
+
   return (
     <PhaseContainerConfigurer
-      appName="tuner"
+      goBack={goBack}
       topClass="tuner-application"
       withoutBackButton
       headTitle="Тюнер"

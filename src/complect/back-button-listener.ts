@@ -1,5 +1,7 @@
 let isFirst = true;
-if (window.location.hash !== '!') window.location.hash = '!';
+if (window.location.hash === '#;)') window.location.hash = ':)';
+else window.location.hash = ';)';
+
 window.addEventListener('load', () => window.history.pushState({}, ''));
 
 window.addEventListener('popstate', () => {

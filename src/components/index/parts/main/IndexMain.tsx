@@ -5,7 +5,7 @@ import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
 import { RootState } from "../../../../shared/store";
-import PhaseIndexContainer from "../../complect/phase-container/PhaseIndexContainer";
+import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import { setCurrentApp } from "../../Index.store";
 import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
@@ -32,7 +32,7 @@ export default function IndexMain() {
             >
               <EvaIcon
                 name={app.icon || "cube-outline"}
-                className="main-big-gap"
+                className="margin-big-gap"
               />
               <div>{app.title}</div>
             </div>
@@ -43,7 +43,7 @@ export default function IndexMain() {
     <PhaseIndexContainer
       topClass="index-main"
       withoutBackButton
-      head="Другое"
+      headTitle={currentApp?.title || 'Другое'}
       contentClass="flex column"
       content={
         <>

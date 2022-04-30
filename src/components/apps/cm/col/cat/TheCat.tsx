@@ -1,31 +1,22 @@
 import { useRef, useState } from "react";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import useCmNav from "../../base/useCmNav";
+import DebouncedSearcher from "../../base/debounced-searcher/DebouncedSearcher";
 import useLaterComList from "../../base/useLaterComList";
-import { CmSpecialPhase } from "../../Cm.model";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import ComFace from "../com/face/ComFace";
 import { useCcom } from "../com/useCcom";
 import "./Cat.scss";
-import DebouncedSearcher from "../../base/debounced-searcher/DebouncedSearcher";
 import { useCcat } from "./useCcat";
 
-export default function TheCat({
-  specialPhase: topSpecialPhase,
-}: {
-  specialPhase?: CmSpecialPhase;
-}) {
+export default function TheCat({ all }: { all?: boolean }) {
   const [ccat, , zeroCat] = useCcat();
   const [ccom] = useCcom();
   const { laterComs } = useLaterComList();
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
-  const { specialPhase } = useCmNav();
-  const isThematic = specialPhase === "thematic";
-
-  const cat = isThematic ? ccat : zeroCat;
+  const cat = all ? zeroCat : ccat;
 
   const [term, setTerm] = useState(cat?.term || "");
 
@@ -50,7 +41,7 @@ export default function TheCat({
   return (
     <PhaseCmContainer
       topClass="cat-content"
-      withoutBackButton={!isThematic}
+      withoutBackButton={all}
       head={
         !cat ? null : (
           <DebouncedSearcher
@@ -71,7 +62,7 @@ export default function TheCat({
             <>
               <div
                 className={`later-com-list ${
-                  !isThematic && !term && laterComs.length ? "" : "hidden"
+                  all && !term && laterComs.length ? "" : "hidden"
                 }`}
               >
                 <div className="later-title sticky">Последние:</div>
@@ -100,7 +91,6 @@ export default function TheCat({
                   <ComFace
                     key={`com-face ${wrap.com.wid}`}
                     {...wrap}
-                    specialPhase={topSpecialPhase}
                     groupClass="com-of-cat"
                   />
                 ))}

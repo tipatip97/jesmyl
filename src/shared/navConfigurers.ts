@@ -1,5 +1,5 @@
 import { AppName } from "../app/App.model";
-import useNavConfigurer from '../complect/nav-configurer/useNavConfigurer.model';
+import useNavConfigurer from "../complect/nav-configurer/useNavConfigurer";
 import { useCmNavConfigurer } from "../components/apps/cm/base/useCmNav";
 import { useTunerNavConfigurer } from "../components/apps/tuner/useTunerNav";
 import { useIndexNavConfigurer } from "../components/index/complect/useIndexNav";

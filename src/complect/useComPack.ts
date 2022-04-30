@@ -10,15 +10,17 @@ export default function useComPack(): [Com[] | nil, string] {
     const [ccat] = useCcat();
     const { markedComs } = useMarks();
     const { currentMeeting } = useMeetings();
-    const { specialPhase } = useCmNav();
+    const { route } = useCmNav();
 
     return useMemo(() => {
-        return specialPhase
-            ? specialPhase === "thematic" && ccat
-                ? [ccat.coms, " - " + ccat.name]
-                : specialPhase === "meeting" && currentMeeting
+        return route?.includes('lists')
+            ? route.includes('marks')
+                ? [markedComs, " - Избранное"]
+                : currentMeeting && route.includes('meetings')
                     ? [currentMeeting.coms, " - " + currentMeeting.name]
-                    : [markedComs, " - Избранное"]
+                    : ccat ?
+                        [ccat.coms, " - " + ccat.name]
+                        : [null, ""]
             : [null, ""];
-    }, [ccat, currentMeeting, markedComs, specialPhase]);
+    }, [ccat, currentMeeting, markedComs, route]);
 }

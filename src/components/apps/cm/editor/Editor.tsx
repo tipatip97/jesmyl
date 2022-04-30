@@ -6,7 +6,8 @@ import PhaseCmEditorContainer from "./phase-editor-container/PhaseCmEditorContai
 
 export default function Editor() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { setPhase } = useCmNav();
+  const { goTo } = useCmNav();
+
   return (
     <PhaseCmEditorContainer
       topClass="cm-editor"
@@ -23,12 +24,12 @@ export default function Editor() {
           <BrutalItem
             icon="book-open-outline"
             title="Категории"
-            onClick={() => setPhase("edit-categories")}
+            onClick={() => goTo("cats")}
           />
           <BrutalItem
             icon="headphones-outline"
             title="Песни"
-            onClick={() => setPhase("edit-compositions")}
+            onClick={() => goTo("coms")}
           />
         </>
       }

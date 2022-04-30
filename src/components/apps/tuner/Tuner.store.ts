@@ -1,20 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { setPhaseInState } from "../../../complect/nav-configurer/useNavConfigurer";
+import { NavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { tunerStorage } from "../../../shared/jstorages";
-import { TunerPhase, TunerSpecialPhase, TunerState } from "./Tuner.model";
+import { TunerState } from "./Tuner.model";
 
 const initialState: TunerState = {
-    phase: tunerStorage.getOr("phase", "tuner"),
-    prevPhase: tunerStorage.getOr("prevPhase", "tuner"),
-    specialPhase: tunerStorage.get("specialPhase"),
+    route: tunerStorage.getOr("route", ['tuner']),
 };
 
 export const slice = createSlice({
     name: "tuner",
     initialState,
     reducers: {
-        setTunerPhase: (state, action: PayloadAction<{ phase: TunerPhase | nil; prevPhase: TunerPhase | nil; specialPhase: TunerSpecialPhase | nil }>) => {
-            setPhaseInState(state, action.payload.phase, action.payload.prevPhase, action.payload.specialPhase);
+        setTunerPhase: (state, action: PayloadAction<{ route: NavRoute; }>) => {
+            state.route = action.payload.route;
         },
     },
 });

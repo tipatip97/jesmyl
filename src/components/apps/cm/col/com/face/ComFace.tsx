@@ -5,9 +5,9 @@ import { ComFaceProps } from "./ComFace.model";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
 export default function ComFace(props: ComFaceProps) {
-  const { com, specialPhase = null, importantOnClick, groupClass } = props;
+  const { com, importantOnClick, groupClass } = props;
   const [ccom, setCcom] = useCcom();
-  const { setPhase } = useCmNav();
+  const { goTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
     useAbsoluteFloatPopup();
 
@@ -23,7 +23,7 @@ export default function ComFace(props: ComFaceProps) {
             return;
           }
           setCcom(com);
-          setPhase(["com", specialPhase]);
+          goTo("com");
         }}
         onContextMenu={(event) => {
           event.preventDefault();

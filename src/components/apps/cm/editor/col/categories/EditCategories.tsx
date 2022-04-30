@@ -6,7 +6,7 @@ import useEditableCols from "../useEditableCols";
 
 export default function EditCategories() {
   const cols = useEditableCols();
-  const { setPhase } = useCmNav();
+  const { goTo } = useCmNav();
   const [, setCcat] = useCcat();
 
   return (
@@ -26,7 +26,7 @@ export default function EditCategories() {
                 }`}
                 onClick={() => {
                   setCcat(cat.native);
-                  setPhase("edit-category");
+                  goTo("cat");
                 }}
               />
             );

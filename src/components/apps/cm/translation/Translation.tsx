@@ -1,6 +1,5 @@
 import { useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import useCmNav from "../base/useCmNav";
 import ComFace from "../col/com/face/ComFace";
 import { useCcom } from "../col/com/useCcom";
 import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
@@ -8,9 +7,12 @@ import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
 import useTranslation from "./useTranslation";
 
-export default function Translations() {
+export default function Translations({
+  hideComList,
+}: {
+  hideComList?: boolean;
+}) {
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const { specialPhase } = useCmNav();
   const [, setCcom] = useCcom();
 
   const {
@@ -104,7 +106,7 @@ export default function Translations() {
                 )}
               </div>
             </div>
-            {specialPhase ? (
+            {hideComList ? null : (
               <div className="translation-com-list">
                 {comList?.map((com) => {
                   return (
@@ -119,7 +121,7 @@ export default function Translations() {
                   );
                 })}
               </div>
-            ) : null}
+            )}
           </div>
 
           {texts && (

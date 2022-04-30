@@ -8,7 +8,7 @@ import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import "./Lists.scss";
 
 export default function Lists() {
-  const { setPhase } = useCmNav();
+  const { goTo } = useCmNav();
   const [cols] = useCols();
   const [, setCcat] = useCcat();
 
@@ -16,19 +16,19 @@ export default function Lists() {
     <PhaseCmContainer
       topClass="lists-container"
       withoutBackButton
-      head="Списки"
+      headTitle="Списки"
       contentClass="flex between column"
       content={
         <>
           <BrutalItem
             icon="star-outline"
             title="Избранное"
-            onClick={() => setPhase(["marks", "marked"])}
+            onClick={() => goTo("marks")}
           />
           <BrutalItem
             icon="calendar-outline"
             title="События"
-            onClick={() => setPhase(["meetings", "meeting"])}
+            onClick={() => goTo("meetings")}
           />
           <BrutalScreen>
             <div className="title">Тематические:</div>
@@ -39,10 +39,10 @@ export default function Lists() {
                   className="item flex"
                   onClick={() => {
                     setCcat(cat);
-                    setPhase(["cat", "thematic"]);
+                    goTo("cat");
                   }}
                 >
-                  <EvaIcon name="book-open-outline" className="main-big-gap" />
+                  <EvaIcon name="book-open-outline" className="margin-big-gap" />
                   <div>{cat.name}</div>
                 </div>
               );

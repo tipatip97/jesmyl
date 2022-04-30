@@ -20,8 +20,8 @@ export class Exer<Storage extends ExerStorage> {
     checkedActions: Record<string, true | null> = {};
     auth: Auth;
 
-    constructor(appName: JStorageName) {
-        this.storage = appStorage[appName];
+    constructor(appName: JStorageName, storage: JStorage<Storage> | nil) {
+        this.storage = storage;
         this.appName = appName;
         this.auth = indexStorage.getOr('auth', { level: 0 });
 

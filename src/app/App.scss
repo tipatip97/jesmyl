@@ -15,9 +15,21 @@
     position: absolute;
     top: 0;
     overflow: hidden;
+    height: 100%;
+    width: 100%;
 
-    .main-big-gap {
+    .margin-big-gap {
         margin: var(--main-big-gap);
+    }
+
+    .margin-big-gap-v {
+        margin-top: var(--main-big-gap);
+        margin-bottom: var(--main-big-gap);
+    }
+
+    .margin-big-gap-h {
+        margin-left: var(--main-big-gap);
+        margin-right: var(--main-big-gap);
     }
 
     .margin-gap {
@@ -27,6 +39,11 @@
     .margin-gap-v {
         margin-top: var(--main-gap);
         margin-bottom: var(--main-gap);
+    }
+
+    .margin-gap-h {
+        margin-left: var(--main-gap);
+        margin-right: var(--main-gap);
     }
 
     .collapse-fullscreen-button {

@@ -13,12 +13,9 @@ export default function TheMeeting() {
     <PhaseCmContainer
       topClass="meeting-container"
       headClass="flex between"
-      head={(backButton) => (
+      headTitle={currentMeeting?.name ?? "Событие"}
+      head={
         <>
-          <div className="flex">
-            {backButton}
-            {currentMeeting?.name ?? "Событие"}
-          </div>
           <EvaIcon
             name="more-vertical"
             className="action-button"
@@ -29,12 +26,11 @@ export default function TheMeeting() {
             }
           />
         </>
-      )}
+      }
       content={currentMeeting?.coms?.map((com) => (
         <ComFace
           key={`metting.com-face ${com.wid}`}
           com={com}
-          specialPhase="meeting"
         />
       ))}
     />

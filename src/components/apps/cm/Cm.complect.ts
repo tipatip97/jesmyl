@@ -1,14 +1,11 @@
-import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
-import { FooterItem } from "../../../complect/nav-configurer/useNavConfigurer.model";
 import { cmStorage, indexStorage } from "../../../shared/jstorages";
-import { IndexApplication, Auth } from "../../index/Index.model";
+import { Auth, IndexApplication } from "../../index/Index.model";
 import { setts } from "./base/settings/Setts";
 import { StyleProp } from "./base/settings/StyleProp";
 import {
   CmAction,
-  CmAppVariables,
-  CmPhase
+  CmAppVariables
 } from "./Cm.model";
 
 let rules: Record<string, true | null> = {};
@@ -45,36 +42,6 @@ cmStorage.listen("actions", name, () => {
   update();
 });
 
-
-export const specialPhases = ["marked", "thematic", "meeting"] as const;
-
-export const inlinePhases = [
-  ["all", "com", "translation"],
-  ["lists", "cat", "marks", "meetings", "meeting"],
-  ["editor", "edit-categories", "edit-category", "edit-compositions", "edit-composition"]
-] as const;
-
-const [allPhases, listsPhases, editorPhases] = inlinePhases;
-
-export const cmFooterItems: FooterItem<CmPhase>[] = [
-  {
-    icon: "list",
-    title: "Все",
-    phases: allPhases as never,
-  },
-  {
-    icon: "folder",
-    title: "Списки",
-    phases: listsPhases as never,
-    activeWithSpecialPhases: true,
-  },
-  {
-    icon: "edit",
-    title: "Редактор",
-    phases: editorPhases as never,
-    accessRule: 'canRedact',
-  },
-];
 
 const styleProps = [
   {
@@ -154,7 +121,7 @@ const styleProps = [
   },
 ];
 
-const putStyles = () => {
+export const putCmCompositionsStyles = () => {
   const topStyles: any = {};
   const newStyles: any = (topStyles["#root .com-ord-list "] = {});
 
@@ -192,6 +159,4 @@ const putStyles = () => {
   });
 };
 
-putStyles();
-
-cmStorage.listen("settings", "styles.listen", () => putStyles());
+cmStorage.listen("settings", "styles.listen", () => putCmCompositionsStyles());

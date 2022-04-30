@@ -1,9 +1,9 @@
 import { ExecDict } from "../../../complect/exer/Exer.model";
+import { NavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { IExportableSetts } from "./base/settings/Setts.model";
 import { ParanjaMode } from "./base/useParanja";
-import { inlinePhases, specialPhases } from "./Cm.complect";
 import { IExportableCols } from "./cols/Cols.model";
 import { IExportableMeeting } from "./lists/meetings/Meetings.model";
 
@@ -33,19 +33,14 @@ export enum ChordVisibleVariant {
     Maximal = 2,
 }
 
-export type CmPhase = typeof inlinePhases[number][number];
-export type CmSpecialPhase = typeof specialPhases[number] | null;
-
 
 export interface CmStoraged {
+    route: NavRoute;
     ccatw?: number;
     ccomw?: number;
     meetingw?: number;
     laterComwList: number[];
     chordVisibleVariant: ChordVisibleVariant;
-    phase: CmPhase;
-    specialPhase: CmSpecialPhase;
-    prevPhase?: CmPhase;
     marks: number[];
     cm_meetings?: IExportableMeeting[];
     comFontSize: number;

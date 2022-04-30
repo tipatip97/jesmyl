@@ -1,4 +1,4 @@
-import PhaseIndexContainer from "../complect/phase-container/PhaseIndexContainer";
+import PhaseIndexContainer from "../complect/PhaseIndexContainer";
 
 export default function IndexSettings() {
   return (

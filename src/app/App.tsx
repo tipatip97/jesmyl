@@ -7,11 +7,11 @@ import Modal from "../complect/modal/Modal";
 import TheRefresher from "../complect/refresh/Refresher";
 import listenThemeChanges from "../complect/theme-changer";
 import useFullScreen from "../complect/useFullscreen";
-import AppRouter from "../components/AppRouter";
 import { IndexAppName } from "../components/index/Index.model";
 import { RootState } from "../shared/store";
 import "./App.scss";
 import AppFooter from "./AppFooter";
+import AppRouter from "./AppRouter";
 
 listenThemeChanges();
 
@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div
-      className={`application-container app_${app || 'index'}${
+      className={`application-container app_${app || "index"}${
         isFullscreen ? " fullscreen-mode" : ""
       }`}
     >

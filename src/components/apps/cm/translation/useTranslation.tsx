@@ -23,7 +23,7 @@ export default function useTranslation() {
   useSelector((state: RootState) => state.cm.translationUpdates);
 
   const dispatch = useDispatch();
-  const { setPhase, goBack } = useCmNav();
+  const { goTo, goBack } = useCmNav();
   const [ccom, setCcom] = useCcom();
   const currTexti = useSelector(
     (state: RootState) => state.cm.translationBlock
@@ -102,8 +102,8 @@ export default function useTranslation() {
 
       ret.setTexti(0);
       if (ret.isShowFullscreen) {
-        setPhase(["translation", undefined, true]);
-      } else setPhase("translation");
+        goTo("translation", true);
+      } else goTo("translation");
     },
     showMarks: (isShow: boolean) => dispatch(switchShowMarks(isShow)),
     newTranslation: (left: number, top: number) => {
@@ -141,7 +141,7 @@ export default function useTranslation() {
           />,
           win.document.body
         );
-        setPhase("translation");
+        goTo("translation");
       }
     },
     onKeyTranslations: async (event: KeyboardEvent) => {

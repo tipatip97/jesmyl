@@ -1,10 +1,9 @@
 import { AppName } from "../../app/App.model";
 import { EvaIconName } from "../../complect/eva-icon/EvaIcon";
+import { NavRoute } from "../../complect/nav-configurer/Navigation.model";
 
 export interface IndexState extends IndexStateError {
-    phase: IndexPhase;
-    prevPhase: IndexPhase;
-    specialPhase: IndexSpecialPhase;
+    route: NavRoute;
     currentApp: AppName;
     auth?: Auth;
     apps: IndexApplication[];
@@ -19,13 +18,11 @@ export interface IndexStateError {
     errorScope?: IndexErrorScope;
 }
 
-export interface IndexStorage {
+export interface IndexStorage extends IndexState {
     auth: Auth;
     apps: IndexApplication[];
     currentApp: AppName;
     specialPhase: AppName;
-    prevPhase: IndexPhase;
-    phase: IndexPhase;
     rejectedComponents: string[];
     registeredApps: AppName[];
     theme: 'light-theme';

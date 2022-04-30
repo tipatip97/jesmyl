@@ -1,57 +1,64 @@
-import { useState } from "react";
 import EvaIcon from "../complect/eva-icon/EvaIcon";
+import { INavigationConfig } from "../complect/nav-configurer/Navigation.model";
 import { cmExer } from "../components/apps/cm/Cm.store";
 import useIndexNav from "../components/index/complect/useIndexNav";
 import navConfigurers from "../shared/navConfigurers";
 import { AppName } from "./App.model";
 
 export default function AppFooter({ app }: { app: AppName }) {
-  const { phase, setPhase, specialPhase, footerItems } = navConfigurers[app]();
-  const { specialPhase: appPhase, setPhase: setIndexPhase } = useIndexNav();
-  const [footApp, setCurrFooterState] = useState("index");
+  const { nav, route, navigate } = navConfigurers[app]();
+  const {
+    route: indexRoute,
+    navigate: indexNavigate,
+    nav: indexNav,
+  } = useIndexNav();
+
+  const [indexPhase] = indexRoute || [];
+
+  const putItems = (
+    nav: INavigationConfig,
+    onClick: (phase: string) => void,
+    setIsActive: (phase: string) => boolean
+  ) => {
+    return nav.routes.map((props) => {
+      if (!props) return null;
+      const { phase, title, icon, accessRule } = props;
+      if (accessRule != null && !cmExer.isActionAccessed(accessRule))
+        return null;
+      const isActive = setIsActive(phase);
+
+      return (
+        <div
+          key={`main-footer-item_${icon}`}
+          className={`footer-item ${isActive ? "active" : ""}`}
+          onClick={() => onClick(phase)}
+        >
+          <div className="icon-container">
+            <EvaIcon name={`${icon}${isActive ? "" : "-outline"}` as never} />
+          </div>
+          <div className="title">{title}</div>
+        </div>
+      );
+    });
+  };
 
   return (
     <div className="footer">
-      {footerItems.map((props) => {
-        if (!props) return null;
-        const { title, icon, phases, activeWithSpecialPhases, accessRule } = props;
-        if (accessRule != null && !cmExer.isActionAccessed(accessRule)) return null;
-        const isActive =
-          appPhase !== "index" &&
-          (specialPhase ? activeWithSpecialPhases : phases.indexOf(phase) > -1);
-
-        return !phases[0] ? null : (
-          <div
-            key={`main-footer-item_${icon}`}
-            className={`footer-item ${isActive ? "active" : ""}`}
-            onClick={() => {
-              setPhase(activeWithSpecialPhases ? phases[0] : [phases[0], null]);
-              setIndexPhase([null, app]);
-              setCurrFooterState(app);
-            }}
-          >
-            <div className="icon-container">
-              <EvaIcon name={`${icon}${isActive ? "" : "-outline"}` as never} />
-            </div>
-            <div className="title">{title}</div>
-          </div>
-        );
-      })}
-      <div
-        className={`footer-item ${appPhase === "index" ? "active" : ""}`}
-        onClick={() => {
-          if (footApp === "index") setIndexPhase(["main", "index"]);
-          else setIndexPhase([null, "index"]);
-          setCurrFooterState("index");
-        }}
-      >
-        <div className="icon-container">
-          <EvaIcon
-            name={`arrow-circle-right${appPhase !== "index" ? "-outline" : ""}`}
-          />
-        </div>
-        <div className="title">Другое</div>
-      </div>
+      {putItems(
+        nav,
+        (phase) => {
+          navigate([phase]);
+          indexNavigate(null);
+        },
+        (phase) => indexPhase == null && route?.[0] === phase
+      )}
+      {putItems(
+        indexNav,
+        () => {
+          indexNavigate(["other"]);
+        },
+        () => indexPhase != null
+      )}
     </div>
   );
 }

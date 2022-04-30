@@ -1,8 +1,7 @@
 import { DOMElement, HTMLAttributes, HtmlHTMLAttributes, ReactNode } from "react";
-import { AppName } from "../../app/App.model";
 
 export interface PhaseContainerConfigurerProps extends PhaseContainerProps {
-    appName: AppName;
+    goBack: () => void;
 }
 
 export interface PhaseContainerProps extends HtmlHTMLAttributes<HTMLDivElement>, Partial<DOMElement<HTMLAttributes<HTMLDivElement>, HTMLDivElement>> {

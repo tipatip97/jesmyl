@@ -1,24 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { setPhaseInState } from "../../../complect/nav-configurer/useNavConfigurer";
-import { appStorage, cmStorage } from "../../../shared/jstorages";
+import { NavRoute } from "../../../complect/nav-configurer/Navigation.model";
+import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
-import { ChordVisibleVariant, CmPhase, CmRollMode, CmSpecialPhase, CmState } from "./Cm.model";
+import { ChordVisibleVariant, CmRollMode, CmState } from "./Cm.model";
 import { IExportableMeeting } from "./lists/meetings/Meetings.model";
 
-export const cmExer = new Exer('cm');
-
-cmStorage.registerTop(appStorage);
+export const cmExer = new Exer('cm', cmStorage);
 
 const initialState: CmState = {
+  route: cmStorage.getOr('route', ['all']),
   chordVisibleVariant: cmStorage.getOr('chordVisibleVariant', 0),
   ccomw: cmStorage.get('ccomw'),
   ccatw: cmStorage.getOr('ccatw', 0),
   laterComwList: cmStorage.getOr('laterComwList', []),
-  phase: cmStorage.getOr('phase', 'all'),
-  specialPhase: cmStorage.getOr('specialPhase', null),
-  prevPhase: cmStorage.get('prevPhase'),
   lastUpdate: cmStorage.get('lastUpdate'),
   rollMode: null,
   isCmFullscreen: false,
@@ -46,8 +42,8 @@ export const slice = createSlice({
   name: "cm",
   initialState,
   reducers: {
-    setCmPhase: (state, action: PayloadAction<{ prevPhase: CmPhase | nil; phase: CmPhase | nil; specialPhase: CmSpecialPhase }>) => {
-      setPhaseInState(state, action.payload.phase, action.payload.prevPhase, action.payload.specialPhase);
+    setCmRoute: (state, action: PayloadAction<{ route: NavRoute }>) => {
+      state.route = action.payload.route;
     },
     selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {
       if (action.payload.val == null) return;
@@ -129,7 +125,7 @@ export const slice = createSlice({
 
 export const {
   riseUpColsUpdates,
-  setCmPhase,
+  setCmRoute,
   selectCcol,
   switchCmFullscreen,
   switchAnchorsVisible,

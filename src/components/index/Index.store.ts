@@ -1,17 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppName } from "../../app/App.model";
-import { setPhaseInState } from "../../complect/nav-configurer/useNavConfigurer";
+import { NavRoute } from "../../complect/nav-configurer/Navigation.model";
 import { indexStorage } from "../../shared/jstorages";
 import {
-  Auth, IndexApplication, IndexPhase, IndexSpecialPhase,
-  IndexState,
+  Auth, IndexApplication, IndexState,
   IndexStateError
 } from "./Index.model";
 
 const initialState: IndexState = {
-  phase: indexStorage.getOr("phase", "main"),
-  specialPhase: indexStorage.getOr("specialPhase", "cm"),
-  prevPhase: indexStorage.getOr("prevPhase", "main"),
+  route: indexStorage.getOr("route", null),
   currentApp: indexStorage.getOr("currentApp", "cm"),
   lastUpdate: indexStorage.get("lastUpdate"),
   auth: indexStorage.get('auth'),
@@ -22,8 +19,8 @@ export const slice = createSlice({
   name: "index",
   initialState,
   reducers: {
-    setIndexPhase: (state, action: PayloadAction<{ phase: IndexPhase | nil; prevPhase: IndexPhase | nil; specialPhase: IndexSpecialPhase }>) => {
-      setPhaseInState(state, action.payload.phase, action.payload.prevPhase, action.payload.specialPhase);
+    setIndexRoute: (state, action: PayloadAction<{ route: NavRoute }>) => {
+      state.route = action.payload.route;
     },
     setAuthData: (state, action: PayloadAction<Auth>) => {
       state.auth = action.payload;
@@ -44,7 +41,7 @@ export const slice = createSlice({
 });
 
 export const {
-  setIndexPhase,
+  setIndexRoute,
   setError,
   setCurrentApp,
   setApps,

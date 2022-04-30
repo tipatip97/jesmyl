@@ -16,7 +16,7 @@ export function useMeetings() {
     useSelector((state: RootState) => state.cm.numMeetingsUpdate);
     const meetings = useSelector((state: RootState) => state.cm.cm_meetings);
     const meetingw = useSelector((state: RootState) => state.cm.meetingw);
-    const { setPhase } = useCmNav();
+    const { goTo } = useCmNav();
     const [cols] = useCols();
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export function useMeetings() {
             setCurrMeeting(meetingw);
             cmStorage.set('meetingw', meetingw);
             dispatch(setCurrentMeetingw(meetingw));
-            setPhase('meeting');
+            goTo('meeting');
         },
     };
 }

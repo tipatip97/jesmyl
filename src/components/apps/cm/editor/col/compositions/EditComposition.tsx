@@ -1,14 +1,17 @@
-import { useState } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import { NavigationThrowNodeProps } from "../../../../../../complect/nav-configurer/Navigation.model";
+import useCmNav from "../../../base/useCmNav";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
 import { editCompositionNavs } from "./EditComposition.complect";
-import { EditCompositionNav } from "./EditComposition.model";
 import "./EditComposition.scss";
 import { useEditableCcom } from "./useEditableCcom";
 
-export default function EditComposition() {
+export default function EditComposition({
+  outletContent,
+  currentPhase,
+}: NavigationThrowNodeProps) {
   const ccom = useEditableCcom();
-  const [currPlace, setCurrPlace] = useState<EditCompositionNav>("main");
+  const { replace } = useCmNav();
 
   if (!ccom) return null;
 
@@ -26,14 +29,16 @@ export default function EditComposition() {
                   key={`editCompositionNavs ${place}`}
                   className="pointer"
                   name={
-                    `${icon}${place === currPlace ? "" : "-outline"}` as never
+                    `${icon}${
+                      place === currentPhase ? "" : "-outline"
+                    }` as never
                   }
-                  onClick={() => setCurrPlace(place)}
+                  onClick={() => replace(place)}
                 />
               );
             })}
           </div>
-          {editCompositionNavs.find(({ place }) => currPlace === place)?.node}
+          {outletContent}
         </>
       }
     />

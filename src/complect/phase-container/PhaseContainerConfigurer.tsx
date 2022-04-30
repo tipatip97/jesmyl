@@ -1,4 +1,3 @@
-import navConfigurers from "../../shared/navConfigurers";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { PhaseContainerConfigurerProps } from "./PhaseContainerConfigurer.model";
 import "./PhaseContainerConfigurer.scss";
@@ -16,10 +15,9 @@ export default function PhaseContainerConfigurer(
     headClass,
     headTitle,
     contentClass,
-    appName,
+    goBack,
   } = props;
 
-  const { goBack } = navConfigurers[appName]();
   const backButton = (
     <EvaIcon
       name="arrow-back"
@@ -29,13 +27,16 @@ export default function PhaseContainerConfigurer(
   );
 
   const title = headTitle && (
-    <span className="pointer" onClick={() => goBack()}>
+    <span className={`pointer ${withoutBackButton ? 'margin-big-gap-h' : ''}`} onClick={() => goBack()}>
       {headTitle}
     </span>
   );
   const titled = () => {
     return title ? (
-      <div className="flex between">{backButton}{title}</div>
+      <div className="flex between">
+        {backButton}
+        {title}
+      </div>
     ) : (
       backButton
     );
@@ -46,13 +47,13 @@ export default function PhaseContainerConfigurer(
       {noHead ? null : (
         <div className={`header ${headClass || "flex"}`}>
           {typeof head === "function" ? (
-            <>
-              {head(backButton, title)}
-            </>
+            <>{head(backButton, title)}</>
           ) : head == null ? (
             withoutBackButton ? (
               title
-            ) : titled()
+            ) : (
+              titled()
+            )
           ) : withoutBackButton ? (
             <>
               {title}

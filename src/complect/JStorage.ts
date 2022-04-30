@@ -29,10 +29,6 @@ export class JStorage<Scope> {
         });
     }
 
-    registerTop(top: Record<JStorageName, JStorage<any>>) {
-        top[this.appName] = this;
-    }
-
     listen<Key extends keyof Scope>(key: Key, name: string, listener: JStorageListener<Scope[Key]>, isRejectOnInit?: boolean): JStorageListener<Scope[Key]> {
         if (this.listeners[key] == null) this.listeners[key] = {};
         if (!isRejectOnInit && this.initialized.indexOf(key) > -1 && this.updatetOnInit.indexOf(key) < 0) {

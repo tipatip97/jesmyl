@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PhaseIndexContainer from "../../complect/phase-container/PhaseIndexContainer";
+import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
 import { AuthMode } from "../../Index.model";
 import useAuth from "../../useAuth";
@@ -15,7 +15,7 @@ export default function IndexLogin() {
 
   const { loginInSystem, registerInSystem, setAuthError, errorMessage } =
     useAuth();
-  const { setPhase } = useIndexNav();
+  const { navigate } = useIndexNav();
 
   useEffect(() => {
     login.length < 3
@@ -89,7 +89,7 @@ export default function IndexLogin() {
                 mode === "login"
                   ? await loginInSystem({ login, passw })
                   : await registerInSystem({ login, fio, passw, rpassw });
-              if (resp.ok) setPhase("main");
+              if (resp.ok) navigate(["other"]);
             }}
           >
             Отправить

@@ -12,14 +12,14 @@ import { useEditableCcat } from "../categories/useEditableCcat";
 
 export default function EditCompositions() {
   const [, setCcom] = useCcom();
-  const { setPhase } = useCmNav();
+  const { goTo } = useCmNav();
   const zcat = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || "");
   useExer(cmExer);
 
   return (
     <PhaseCmEditorContainer
-      topClass="edit-categories"
+      topClass="edit-compositions"
       headClass="flex between"
       headTitle="Песни"
       head={
@@ -51,7 +51,7 @@ export default function EditCompositions() {
                   }`}
                   onClick={() => {
                     setCcom(com.native);
-                    setPhase("edit-composition");
+                    goTo(["com", "main"]);
                   }}
                 />
               </EditContainerCorrectsInformer>

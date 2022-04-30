@@ -1,16 +1,12 @@
-import { AppName } from "../app/App.model";
 import { FullScreenContentOpenMode } from "./fullscreen-content/useFullscreenContent";
+import { NavRoute } from "./nav-configurer/Navigation.model";
 
 
-export interface ComplectStorage { }
+export interface ComplectStorage {
+    route: NavRoute;
+}
 
-type ComplectPhase = '';
-type ComplectSpecialPhase = AppName;
-
-export interface ComplectState {
-    phase: ComplectPhase;
-    prevPhase: ComplectPhase;
-    specialPhase: ComplectSpecialPhase;
+export interface ComplectState extends ComplectStorage {
     fullscreenContentOpenMode: FullScreenContentOpenMode;
     isAbsoluteFloatPopupOpen: boolean;
     isAbsoluteBottomPopupOpen: boolean;
