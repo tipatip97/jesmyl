@@ -25,7 +25,7 @@ export default function ComTools() {
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
-    const { openFullscreenContent } = useFullscreenContent();
+  const { openFullscreenContent } = useFullscreenContent();
 
   const isWhole = !ccom?.orders?.some(
     (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
@@ -34,7 +34,11 @@ export default function ComTools() {
   if (!ccom) return null;
   return (
     <>
-      <div className="abs-item">
+      <div
+        className={`abs-item ${
+          chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : ""
+        }`}
+      >
         <EvaIcon name="music-outline" className="abs-icon" />
         <div className="title">Тональность</div>
         <div className="abs-action flex around pointer">
@@ -135,12 +139,11 @@ export default function ComTools() {
       </div>
       <div
         className="abs-item abs-full"
-        onClick={() => dispatch(openFullscreenContent(<ChordImagesList />, true))}
+        onClick={() =>
+          dispatch(openFullscreenContent(<ChordImagesList />, true))
+        }
       >
-        <EvaIcon
-          name="image-outline"
-          className="abs-icon"
-        />
+        <EvaIcon name="image-outline" className="abs-icon" />
         <div className="title">Изображения аккордов</div>
         <div className="abs-action" />
       </div>
