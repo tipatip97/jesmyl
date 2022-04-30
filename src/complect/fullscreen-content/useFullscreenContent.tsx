@@ -25,8 +25,10 @@ export default function useFullscreenContent() {
       fullscreenContent = null;
       if (!isOpen) return true;
       isOpen = false;
+      document.exitFullscreen();
     },
     openFullscreenContent: (content: ReactNode, closable = false) => {
+      document.body.requestFullscreen();
       isOpen = true;
       fullscreenContent = content;
       dispatch(setFullscreenContentOpenMode(closable ? "closable" : "open"));
