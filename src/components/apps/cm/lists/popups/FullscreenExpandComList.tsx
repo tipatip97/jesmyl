@@ -10,17 +10,19 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
   return (
     <div className="com-expand-content full-container">
       <RollControled>
-        {coms?.map((com) => (
-          <div key={`expand-com-number-${com.wid}`}>
-            <div className="com-number">#{com.index + 1}</div>
-            <ComOrders
-              com={com}
-              fontSize={fontSize}
-              chordVisibleVariant={2}
-              isHideAnchor={false}
-            />
-          </div>
-        ))}
+        <div className="inner-content">
+          {coms?.map((com) => (
+            <div key={`expand-com-number-${com.wid}`}>
+              <div className="com-number">#{com.index + 1}</div>
+              <ComOrders
+                com={com}
+                fontSize={fontSize}
+                chordVisibleVariant={2}
+                isHideAnchor={false}
+              />
+            </div>
+          ))}
+        </div>
       </RollControled>
     </div>
   );

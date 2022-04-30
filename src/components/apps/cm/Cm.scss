@@ -23,6 +23,10 @@
     .com-expand-content {
         overflow: auto;
 
+        .inner-content {
+            padding-top: 50vh;
+        }
+
         .com-number {
             text-align: center;
         }
