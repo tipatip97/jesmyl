@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { ABSOLUTE__BOTTOM__POPUP } from "../complect/absolute-popup/useAbsoluteBottomPopup";
 import { ABSOLUTE__FLOAT__POPUP } from "../complect/absolute-popup/useAbsoluteFloatPopup";
@@ -20,6 +21,14 @@ function App() {
     (state: RootState) => state.index.currentApp
   );
   const [isFullscreen, switchFullscreen] = useFullScreen();
+
+  useEffect(
+    () =>
+      window.addEventListener("keydown", (event) => {
+        event.code === "Escape" && switchFullscreen(false);
+      }),
+    []
+  );
 
   return (
     <div

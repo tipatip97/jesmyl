@@ -93,7 +93,10 @@ export default function useTranslation() {
     },
     closeTranslation: () => {
       currWin?.close();
-      if (ret.isShowFullscreen) goBack();
+      if (ret.isShowFullscreen) {
+        goBack();
+        document.exitFullscreen();
+      }
     },
     openTranslations: () => {
       const [comList] = ret.comPack;
@@ -103,6 +106,7 @@ export default function useTranslation() {
       ret.setTexti(0);
       if (ret.isShowFullscreen) {
         goTo("translation", true);
+        document.body.requestFullscreen();
       } else goTo("translation");
     },
     showMarks: (isShow: boolean) => dispatch(switchShowMarks(isShow)),

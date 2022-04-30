@@ -13,6 +13,8 @@ export default function Translations({
   hideComList?: boolean;
 }) {
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
+  const [isShowTurnButton, setIsShowTurnButton] = useState(false);
+  const [isRotateScreen, rotateScreen] = useState(false);
   const [, setCcom] = useCcom();
 
   const {
@@ -38,9 +40,13 @@ export default function Translations({
 
   if (isShowFullscreen)
     return (
-      <div className="translation-container">
+      <div className="translation-container fullscreen">
         {
-          <div className="fullscreen-translation">
+          <div
+            className={`fullscreen-translation ${
+              isRotateScreen ? "rotate" : ""
+            }`}
+          >
             <TranslationScreen
               fontSizeContainId="translation-native-window"
               position={position}
@@ -53,7 +59,7 @@ export default function Translations({
             <div className="bottom-area left" onClick={() => prevText()} />
             <div className="bottom-area right" onClick={() => nextText()} />
             <div
-              className="center-area"
+              className="center-area top"
               onClick={() => showMarks(!isShowMarks)}
               onDoubleClick={() => {
                 setIsShowCloseButton(true);
@@ -70,6 +76,25 @@ export default function Translations({
                 }}
               >
                 <EvaIcon name="close-circle-outline" />
+              </div>
+            </div>
+            <div
+              className="center-area bottom"
+              onDoubleClick={() => {
+                setIsShowTurnButton(true);
+                setTimeout(() => setIsShowTurnButton(false), 2000);
+              }}
+            >
+              <div
+                className={`close-translation-button ${
+                  isShowTurnButton ? "show" : ""
+                }`}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  rotateScreen(!isRotateScreen);
+                }}
+              >
+                <EvaIcon name="sync-outline" />
               </div>
             </div>
           </div>

@@ -13,9 +13,6 @@ export default function TranslationScreen(props: TranslationScreenProps) {
     <div
       className="translation-screen-wrapper-inner"
       style={{
-        position: "absolute",
-        top: "0",
-        left: "0",
         width: "100%",
         height: "100%",
         color: "white",
