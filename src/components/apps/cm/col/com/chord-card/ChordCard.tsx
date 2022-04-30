@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChordCardProps } from "./ChordCard.model";
 import { useChords } from "./useChords";
+import './ChordCard.scss';
 
 export default function ChordCard(props: ChordCardProps) {
   const stringsCount = 6;

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
+import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import { ChordVisibleVariant } from "../../Cm.model";
@@ -10,6 +11,7 @@ import {
   switchAnchorsVisible,
 } from "../../Cm.store";
 import useTranslation from "../../translation/useTranslation";
+import ChordImagesList from "./chord-card/ChordImagesList";
 import { useCcom } from "./useCcom";
 
 export default function ComTools() {
@@ -23,6 +25,7 @@ export default function ComTools() {
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
+    const { openFullscreenContent } = useFullscreenContent();
 
   const isWhole = !ccom?.orders?.some(
     (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
@@ -128,6 +131,17 @@ export default function ComTools() {
           );
         })}
         <div className="title">Показать аккорды</div>
+        <div className="abs-action" />
+      </div>
+      <div
+        className="abs-item abs-full"
+        onClick={() => dispatch(openFullscreenContent(<ChordImagesList />, true))}
+      >
+        <EvaIcon
+          name="image-outline"
+          className="abs-icon"
+        />
+        <div className="title">Изображения аккордов</div>
         <div className="abs-action" />
       </div>
       <div

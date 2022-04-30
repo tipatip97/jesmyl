@@ -1,0 +1,43 @@
+.chord-zero-line {
+    fill: none;
+    stroke: #ffdfad;
+    stroke-width: 3px;
+}
+
+.chord-string {
+    fill: none;
+    stroke: #f2b148;
+}
+
+.chord-lad {
+    fill: none;
+    stroke: #f4f0e8;
+}
+
+.chord-application {
+    margin-top: 1em;
+}
+
+.chord-board {
+    position: relative;
+    background-color: #634008;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.chord-point {
+    stroke-linecap: round;
+    stroke-width: 12px;
+    stroke: red;
+
+    &.shadow {
+        stroke: grey;
+    }
+}
+
+.first-lad-counter {
+    font-size: 1em;
+    margin-right: .5em;
+    display: inline-block;
+    vertical-align: middle;
+}
