@@ -21,10 +21,12 @@ export interface INavigationConfig {
     routes: INavigationRouteRootItem[];
 }
 
-export interface INavigationRouteChildItem {
+export interface INavigationRouteChildItem<Data extends Record<string, any> | und = Record<string, any>> {
     phase: string;
     // компоненту можно передать содержимое его потомков, если typeof node === 'function'
     node: ReactNode | ((props: NavigationThrowNodeProps) => ReactNode);
+    // передаётся в useNav()
+    data?: Data,
     accessRule?: string;
     next?: INavigationRouteChildItem[];
 }
@@ -44,4 +46,5 @@ export interface MainNavigationNodeProps {
 export interface NavigationThrowNodeProps {
     outletContent: ReactNode;
     currentPhase: NavPhase | nil;
+    data?: Record<string, any> | nil;
 }

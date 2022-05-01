@@ -1,4 +1,8 @@
-import { INavigationRouteRootItem } from "../../../../complect/nav-configurer/Navigation.model";
+import { EvaIconName } from "../../../../complect/eva-icon/EvaIcon";
+import {
+  INavigationRouteChildItem,
+  INavigationRouteRootItem,
+} from "../../../../complect/nav-configurer/Navigation.model";
 import EditCategories from "./col/categories/EditCategories";
 import EditCategory from "./col/categories/EditCategory";
 import CategoryBinds from "./col/compositions/complect/category-binds/CategoryBinds";
@@ -6,6 +10,30 @@ import EditableCompositionMain from "./col/compositions/complect/main/EditableCo
 import EditComposition from "./col/compositions/EditComposition";
 import EditCompositions from "./col/compositions/EditCompositions";
 import Editor from "./Editor";
+
+export const editCompositionNavs: INavigationRouteChildItem<{ icon: EvaIconName }>[] = [
+  {
+    phase: "main",
+    node: <EditableCompositionMain />,
+    data: {
+      icon: "credit-card",
+    },
+  },
+  {
+    phase: "texts",
+    node: <CategoryBinds />,
+    data: {
+      icon: "text",
+    },
+  },
+  {
+    phase: "catBinds",
+    node: <CategoryBinds />,
+    data: {
+      icon: "book-open",
+    },
+  },
+];
 
 export const editorNav: INavigationRouteRootItem = {
   phase: "editor",
@@ -31,16 +59,7 @@ export const editorNav: INavigationRouteRootItem = {
         {
           phase: "com",
           node: (props) => <EditComposition {...props} />,
-          next: [
-            {
-              phase: "main",
-              node: <EditableCompositionMain />,
-            },
-            {
-              phase: "catBinds",
-              node: <CategoryBinds />,
-            },
-          ],
+          next: editCompositionNavs,
         },
       ],
     },

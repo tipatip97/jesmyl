@@ -43,7 +43,8 @@ export class NavigationConfig implements INavigationConfig {
                 ? typeof item.node === 'function'
                     ? item.node({
                         outletContent: findContent(throwRoute, items),
-                        currentPhase: throwRoute[0]
+                        currentPhase: throwRoute[0],
+                        data: item.data,
                     })
                     : item.node
                 : null;

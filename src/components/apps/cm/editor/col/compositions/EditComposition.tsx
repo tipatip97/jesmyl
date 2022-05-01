@@ -1,14 +1,15 @@
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import { NavigationThrowNodeProps } from "../../../../../../complect/nav-configurer/Navigation.model";
 import useCmNav from "../../../base/useCmNav";
+import { editCompositionNavs } from "../../editorNav";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
-import { editCompositionNavs } from "./EditComposition.complect";
 import "./EditComposition.scss";
 import { useEditableCcom } from "./useEditableCcom";
 
 export default function EditComposition({
   outletContent,
   currentPhase,
+  data
 }: NavigationThrowNodeProps) {
   const ccom = useEditableCcom();
   const { replace } = useCmNav();
@@ -23,17 +24,17 @@ export default function EditComposition({
       content={
         <>
           <div className="flex around margin-gap">
-            {editCompositionNavs.map(({ icon, place }) => {
+            {editCompositionNavs.map(({ data: {icon} = {}, phase }) => {
               return (
                 <EvaIcon
-                  key={`editCompositionNavs ${place}`}
+                  key={`editCompositionNavs ${phase}`}
                   className="pointer"
                   name={
                     `${icon}${
-                      place === currentPhase ? "" : "-outline"
+                      phase === currentPhase ? "" : "-outline"
                     }` as never
                   }
-                  onClick={() => replace(place)}
+                  onClick={() => replace(phase)}
                 />
               );
             })}
