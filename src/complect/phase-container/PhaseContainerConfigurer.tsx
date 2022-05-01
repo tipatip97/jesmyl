@@ -27,7 +27,7 @@ export default function PhaseContainerConfigurer(
   );
 
   const title = headTitle && (
-    <span className={`pointer ${withoutBackButton ? 'margin-big-gap-h' : ''}`} onClick={() => goBack()}>
+    <span className={withoutBackButton ? 'margin-big-gap-h' : 'pointer'} onClick={() => !withoutBackButton && goBack()}>
       {headTitle}
     </span>
   );
