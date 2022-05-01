@@ -27,6 +27,7 @@ const initialState: CmState = {
   meetingw: cmStorage.get('meetingw'),
   comFontSize: cmStorage.getOr('comFontSize', 15),
   chords: cmStorage.getOr('chords', {}),
+  isShowTranslationInfo: cmStorage.getOr('isShowTranslationInfo', true),
   translationUpdates: 0,
   translationBlock: 0,
   isTranslationBlockVisible: true,
@@ -99,6 +100,10 @@ export const slice = createSlice({
     switchTranslationBlockVisible: (state, action: PayloadAction<boolean>) => {
       state.isTranslationBlockVisible = action.payload;
     },
+    switchShowTranslationInfo: (state, action: PayloadAction<boolean>) => {
+      state.isShowTranslationInfo = action.payload;
+      if (!state.isShowTranslationInfo) cmStorage.set('isShowTranslationInfo', false);
+    },
     setTranslationBlockPosition: (state, action: PayloadAction<FontSizeContainPropsPosition>) => {
       state.translationBlockPosition = action.payload;
     },
@@ -142,6 +147,7 @@ export const {
   setTranslationBlockPosition,
   riseUpTranslationUpdates,
   switchShowMarks,
+  switchShowTranslationInfo,
   setParanjaMode,
   updateLaterComwList,
   riseUpAbsolutePopupUpdates,

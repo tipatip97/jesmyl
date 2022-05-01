@@ -48,6 +48,11 @@ const navigation = new NavigationConfig({
       node: <Lists />,
       next: [
         {
+          phase: "cat",
+          node: <TheCat />,
+          next: [...comNext],
+        },
+        {
           phase: "marks",
           node: <Marks />,
           next: [...comNext],

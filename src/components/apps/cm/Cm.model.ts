@@ -45,6 +45,7 @@ export interface CmStoraged {
     cm_meetings?: IExportableMeeting[];
     comFontSize: number;
     chords: Record<string, number[]>;
+    isShowTranslationInfo: boolean;
 
     lastUpdate?: number;
 }
