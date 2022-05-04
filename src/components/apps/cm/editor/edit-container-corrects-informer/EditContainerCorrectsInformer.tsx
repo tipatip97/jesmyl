@@ -7,18 +7,21 @@ import "./EditContainerCorrectsInformer.scss";
 export default function EditContainerCorrectsInformer(
   props: PropsWithChildren<{
     corrects?: CorrectsBox | nil;
-    uniq: string;
     access?: string;
-  }> & DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  }> &
+    DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ) {
-  const { uniq, corrects, children, access } = props;
+  const { corrects, children, access } = props;
   const errors = corrects?.errors || [];
   const warnings = corrects?.warnings || [];
   const unknowns = corrects?.unknowns || [];
 
   return (
     cmExer.isActionAccessed(access, true) && (
-      <div {...props} className={`edit-container-corrects-informer ${props.className || ''}`}>
+      <div
+        {...props}
+        className={`edit-container-corrects-informer ${props.className || ""}`}
+      >
         {children}
         <div className="corrects-container">
           {(
@@ -28,10 +31,10 @@ export default function EditContainerCorrectsInformer(
               ["unknown", unknowns],
             ] as [string, ICorrect[]][]
           ).map(([correct, line]) => {
-            return line?.map(({ message, onFix, fixLabel }, correcti) => {
+            return line.map(({ message, onFix, fixLabel }, correcti) => {
               return (
                 <div
-                  key={`${correct}-corrects-for "${uniq}" action : ${correcti}`}
+                  key={`${correct}-corrects-for action : ${correcti}`}
                   className={`${correct} correct-box`}
                 >
                   {message}

@@ -1,12 +1,14 @@
 import mylib from "../../../../complect/my-lib/MyLib";
+import Simplifyed from "../../../../complect/Simplifyed";
 
 type NonUndefined<T> = T extends undefined ? never | null : T | null;
 
-export class Base<T> {
+export class Base<T> extends Simplifyed {
     top: T;
     basics: T;
 
     constructor(top: T) {
+        super();
         this.top = top;
         this.basics = {} as never;
     }

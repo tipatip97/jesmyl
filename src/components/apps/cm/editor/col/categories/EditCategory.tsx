@@ -24,10 +24,7 @@ export default function EditCategory() {
       content={
         <>
           {
-            <EditContainerCorrectsInformer
-              uniq="catRename"
-              corrects={ccat?.corrects.catRename}
-            >
+            <EditContainerCorrectsInformer corrects={ccat?.corrects.catRename}>
               Название:
               <input
                 value={ccat?.name}
@@ -37,7 +34,6 @@ export default function EditCategory() {
           }
           {
             <EditContainerCorrectsInformer
-              uniq="catSetKind"
               access="catSetKind"
               corrects={ccat?.corrects.catSetKind}
             >
@@ -50,7 +46,7 @@ export default function EditCategory() {
                     onSelect={(kind) => setKind(kind)}
                   />
                 </div>
-                {(ccat.kind !== 'list' && ccat.coms.length > 0) || isCleared ? (
+                {(ccat.kind !== "list" && ccat.coms.length > 0) || isCleared ? (
                   <div
                     className="pointer"
                     onClick={() => {

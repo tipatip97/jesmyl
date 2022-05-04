@@ -1,5 +1,5 @@
 import EvaIcon from "../complect/eva-icon/EvaIcon";
-import { INavigationConfig } from "../complect/nav-configurer/Navigation.model";
+import { INavigationConfig, NavPhasePoint } from "../complect/nav-configurer/Navigation.model";
 import { cmExer } from "../components/apps/cm/Cm.store";
 import useIndexNav from "../components/index/complect/useIndexNav";
 import navConfigurers from "../shared/navConfigurers";
@@ -17,8 +17,8 @@ export default function AppFooter({ app }: { app: AppName }) {
 
   const putItems = (
     nav: INavigationConfig,
-    onClick: (phase: string) => void,
-    setIsActive: (phase: string) => boolean
+    onClick: (phase: NavPhasePoint) => void,
+    setIsActive: (phase: NavPhasePoint) => boolean
   ) => {
     return nav.routes.map((props) => {
       if (!props) return null;
@@ -47,10 +47,10 @@ export default function AppFooter({ app }: { app: AppName }) {
       {putItems(
         nav,
         (phase) => {
-          navigate([phase]);
+          navigate(phase);
           indexNavigate(null);
         },
-        (phase) => indexPhase == null && route?.[0] === phase
+        ([phase]) => indexPhase == null && route?.[0] === phase
       )}
       {putItems(
         indexNav,

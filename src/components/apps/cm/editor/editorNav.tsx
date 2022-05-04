@@ -7,27 +7,30 @@ import EditCategories from "./col/categories/EditCategories";
 import EditCategory from "./col/categories/EditCategory";
 import CategoryBinds from "./col/compositions/complect/category-binds/CategoryBinds";
 import EditableCompositionMain from "./col/compositions/complect/main/EditableCompositionMain";
+import TextsChordsRedactor from "./col/compositions/complect/texts_chords-redactor/TextsChordsRedactor";
 import EditComposition from "./col/compositions/EditComposition";
 import EditCompositions from "./col/compositions/EditCompositions";
 import Editor from "./Editor";
 
-export const editCompositionNavs: INavigationRouteChildItem<{ icon: EvaIconName }>[] = [
+export const editCompositionNavs: INavigationRouteChildItem<{
+  icon: EvaIconName;
+}>[] = [
   {
-    phase: "main",
+    phase: ["main"],
     node: <EditableCompositionMain />,
     data: {
       icon: "credit-card",
     },
   },
   {
-    phase: "texts",
-    node: <CategoryBinds />,
+    phase: ["texts"],
+    node: <TextsChordsRedactor />,
     data: {
       icon: "text",
     },
   },
   {
-    phase: "catBinds",
+    phase: ["catBinds"],
     node: <CategoryBinds />,
     data: {
       icon: "book-open",
@@ -36,29 +39,30 @@ export const editCompositionNavs: INavigationRouteChildItem<{ icon: EvaIconName 
 ];
 
 export const editorNav: INavigationRouteRootItem = {
-  phase: "editor",
+  phase: ["editor"],
   node: <Editor />,
   title: "Редактор",
   icon: "edit",
   accessRule: "canRedact",
   next: [
     {
-      phase: "cats",
+      phase: ["cats"],
       node: <EditCategories />,
       next: [
         {
-          phase: "cat",
+          phase: ["cat"],
           node: <EditCategory />,
         },
       ],
     },
     {
-      phase: "coms",
+      phase: ["coms"],
       node: <EditCompositions />,
       next: [
         {
-          phase: "com",
+          phase: ["com"],
           node: (props) => <EditComposition {...props} />,
+          defaultChild: "main",
           next: editCompositionNavs,
         },
       ],

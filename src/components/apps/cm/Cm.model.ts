@@ -1,5 +1,5 @@
 import { ExecDict } from "../../../complect/exer/Exer.model";
-import { NavRoute } from "../../../complect/nav-configurer/Navigation.model";
+import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { IExportableSetts } from "./base/settings/Setts.model";
@@ -35,7 +35,7 @@ export enum ChordVisibleVariant {
 
 
 export interface CmStoraged {
-    route: NavRoute;
+    route: FreeNavRoute;
     ccatw?: number;
     ccomw?: number;
     meetingw?: number;

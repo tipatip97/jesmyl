@@ -20,7 +20,7 @@ export default function ComOrders(props: IComOrdersProps) {
         if (orderUnit.top.style?.isModulation) {
           trPos = 0;
           currTransPosition =
-            (com.transPosition || 0) + (orderUnit.fieldValues.md || 0);
+            (com.transPosition || 0) + (orderUnit.fieldValues?.md || 0);
         }
         const ordProps: ITheOrderProps = mylib.overlap({}, props, {
           orderUnit,

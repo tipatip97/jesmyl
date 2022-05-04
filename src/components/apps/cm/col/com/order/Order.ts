@@ -70,8 +70,8 @@ export class Order extends Base<IExportableOrderTop> {
   get texti() { return this.getBasic('t'); }
   set texti(val) { this.setExportable('t', val); }
 
-  get positions(): number[][] { return (this.top.targetOrd?.top.source || this.top.source)?.p || this.top.p; }
-  set positions(val: number[][]) {
+  get positions(): number[][] | und { return (this.top.targetOrd?.top.source || this.top.source)?.p || this.top.p; }
+  set positions(val: number[][] | und) {
     const source = (this.top.targetOrd?.top.source || this.top.source)
     source && (source.p = val);
   }
@@ -87,7 +87,7 @@ export class Order extends Base<IExportableOrderTop> {
   get isVisible() { return this.getBasic('v') !== 0; }
   set isVisible(val) { this.setExportable('v', val ? 1 : 0); }
 
-  get fieldValues(): IExportableOrderFieldValues { return this.getBasicOr('f', {}); }
+  get fieldValues(): IExportableOrderFieldValues | und { return this.getBasicOr('f', {}); }
   set fieldValues(val) { this.setExportable('f', val); }
 
   get repeatsTitle(): string {

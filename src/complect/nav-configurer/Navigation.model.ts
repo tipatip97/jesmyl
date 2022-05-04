@@ -22,9 +22,12 @@ export interface INavigationConfig {
 }
 
 export interface INavigationRouteChildItem<Data extends Record<string, any> | und = Record<string, any>> {
-    phase: string;
+    readonly phase: NavPhasePoint;
     // компоненту можно передать содержимое его потомков, если typeof node === 'function'
     node: ReactNode | ((props: NavigationThrowNodeProps) => ReactNode);
+    // если typeof node === 'function' - этот параметр будет указывать,
+    // на какой роут нужно перейти по умолчанию
+    defaultChild?: NavPhase;
     // передаётся в useNav()
     data?: Data,
     accessRule?: string;
@@ -36,8 +39,10 @@ export interface INavigationRouteRootItem extends INavigationRouteChildItem {
     icon: EvaIconName;
 }
 
+export type NavPhasePoint = [string];
 export type NavPhase = string;
-export type NavRoute = NavPhase[] | nil;
+export type NavRoute = NavPhase[];
+export type FreeNavRoute = NavRoute | null;
 
 export interface MainNavigationNodeProps {
     content: ReactNode;
@@ -45,6 +50,7 @@ export interface MainNavigationNodeProps {
 
 export interface NavigationThrowNodeProps {
     outletContent: ReactNode;
-    currentPhase: NavPhase | nil;
+    relativePoint: NavPhasePoint | nil;
+    currentChildPhase: NavPhase;
     data?: Record<string, any> | nil;
 }

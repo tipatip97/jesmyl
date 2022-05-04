@@ -75,6 +75,7 @@
 
     >.footer {
         position: absolute;
+        z-index: 200;
         bottom: var(--footer-bottom);
         width: 100vw;
         display: flex;

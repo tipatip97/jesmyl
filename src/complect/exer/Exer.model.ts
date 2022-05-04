@@ -35,7 +35,7 @@ export interface FreeExecDict<Value> {
     del?: boolean;
     muted?: boolean;
     errors?: string[];
-    uniq?: number | string;
+    uniq?: number | string | (string | number)[];
     corrects?: CorrectsBox;
     // верни функцию, если нашлось противное `exec` (в таком случае будет удалён противный `exec`),
     // которая должна вернуть "зафиксировать ли выполнение текущего `exec`?"

@@ -15,6 +15,8 @@ export class StyleProp extends Base<IExportableStyleProp> {
 
   get isInherit() { return this.getBasic('i'); }
 
+  get level() { return this.getBasic('l'); }
+
   get headerProps() { return this.getBasic('c'); }
   set headerProps(val) { this.setExportable('c', val); }
 
@@ -22,5 +24,6 @@ export class StyleProp extends Base<IExportableStyleProp> {
   set textProps(val) { this.setExportable('t', val); }
 
   get isModulation() { return this.getBasic('md'); }
+  get tags() { return this.getBasic('tg'); }
 
 }

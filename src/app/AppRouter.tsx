@@ -10,7 +10,8 @@ export default function AppRouter({ app }: { app: AppName }) {
     goBack: indexGoBack,
     nav: indexNav,
   } = useIndexNav();
-  const { route, nav, goBack } = navConfigurers[app || "index"]();
+  const { route, nav, goBack, navigateToRoot } =
+    navConfigurers[app || "index"]();
 
   onBackButton.listen("app-router-listener", () => {
     goBack();
@@ -19,7 +20,10 @@ export default function AppRouter({ app }: { app: AppName }) {
   useEffect(() => () => onBackButton.mute("app-router-listener"), []);
 
   const appContent = useMemo(
-    () => (indexRoute != null ? null : nav.findContent(route)),
+    () =>
+      indexRoute != null
+        ? null
+        : nav.findContent(route, () => navigateToRoot()),
     [indexRoute, route, nav]
   );
   const indexContent = useMemo(

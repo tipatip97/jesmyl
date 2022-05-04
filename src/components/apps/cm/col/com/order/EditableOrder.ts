@@ -61,7 +61,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
         }
 
 
-        if (fieldn === 'r') this.setRepeats(value as IExportableOrder['r']);
+        if (fieldn === 'r') this.setRepeats(value as OrderRepeats | null);
         else if (this.top.source) this.top.source[fieldn] = value as never;
 
         if (refresh) {
@@ -70,7 +70,7 @@ export class EditableOrder extends Base<IExportableOrderTop> {
         }
     }
 
-    setRepeats(val: OrderRepeats | null) { }
+    setRepeats(val?: OrderRepeats | null) { }
     
     get fieldValues() { return this.getBasicOr('f', {}); }
     set fieldValues(val) { this.setExportable('f', val); }

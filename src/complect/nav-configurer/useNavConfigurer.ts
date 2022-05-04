@@ -4,15 +4,15 @@ import { RootState } from "../../shared/store";
 import { JStorage } from "../JStorage";
 import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
-import { NavPhase, NavRoute, UseNavAction } from "./Navigation.model";
+import { FreeNavRoute, NavPhase, NavPhasePoint, UseNavAction } from "./Navigation.model";
 
 
-export default function useNavConfigurer<Storage extends { route: NavRoute }>(
+export default function useNavConfigurer<Storage extends { route: FreeNavRoute }>(
     actions: UseNavAction[],
-    setPhaseAction: (payload: { route: NavRoute }) => PayloadAction<{ route: NavRoute }>,
+    setPhaseAction: (payload: { route: FreeNavRoute }) => PayloadAction<{ route: FreeNavRoute }>,
     nav: NavigationConfig,
     storage: JStorage<Storage>,
-    routeSelector: (state: RootState) => NavRoute,
+    routeSelector: (state: RootState) => FreeNavRoute,
 ) {
 
     const dispatch = useDispatch();
@@ -21,20 +21,15 @@ export default function useNavConfigurer<Storage extends { route: NavRoute }>(
     const ret = {
         nav,
         route: useSelector(routeSelector),
-        navigate: (route: NavRoute, isPreventSave?: boolean) => {
-            if (route && !nav.findContent(route)) {
-                console.error(`Фаза "/${route.join('/')}" не существует!`);
-                return;
-            }
+        navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
+        navigate: (route: FreeNavRoute, isPreventSave?: boolean) => {
             dispatch(setPhaseAction({ route }));
             if (isPreventSave) return;
             storage.set('route', route);
         },
-        goTo: (phase: NavPhase | NavPhase[], isPreventSave?: boolean) => {
-            ret.navigate([...(ret.route || []), ...[phase].flat()], isPreventSave);
-        },
-        replace: (phase: NavPhase | NavPhase[], isPreventSave?: boolean) => {
-            ret.navigate([...(ret.route || []).slice(0, -1), ...[phase].flat()], isPreventSave)
+        goTo: (phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil, isPreventSave?: boolean) => {
+            const newRoute = nav.goTo(ret.route || [], phase, relativePoint);
+            if (newRoute) ret.navigate(newRoute, isPreventSave);
         },
         registerBackAction: (action: UseNavAction) => {
             actions.unshift(action);
@@ -56,10 +51,9 @@ export default function useNavConfigurer<Storage extends { route: NavRoute }>(
                 return;
             }
 
-            if (ret.route?.length) {
-                const newNav = [...(ret.route || []).slice(0, -1)];
-
-                if (newNav.length) ret.navigate(newNav);
+            if (ret.route) {
+                const line = nav.goBack(ret.route);
+                if (line.length) ret.navigate(line);
                 else ret.navigate(nav.rootPhase === null ? null : [nav.rootPhase]);
             }
         }

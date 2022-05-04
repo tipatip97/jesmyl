@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppName } from "../../app/App.model";
-import { NavRoute } from "../../complect/nav-configurer/Navigation.model";
+import { FreeNavRoute } from "../../complect/nav-configurer/Navigation.model";
 import { indexStorage } from "../../shared/jstorages";
 import {
   Auth, IndexApplication, IndexState,
@@ -19,7 +19,7 @@ export const slice = createSlice({
   name: "index",
   initialState,
   reducers: {
-    setIndexRoute: (state, action: PayloadAction<{ route: NavRoute }>) => {
+    setIndexRoute: (state, action: PayloadAction<{ route: FreeNavRoute }>) => {
       state.route = action.payload.route;
     },
     setAuthData: (state, action: PayloadAction<Auth>) => {

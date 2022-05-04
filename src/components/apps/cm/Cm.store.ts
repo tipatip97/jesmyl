@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { NavRoute } from "../../../complect/nav-configurer/Navigation.model";
+import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
@@ -43,7 +43,7 @@ export const slice = createSlice({
   name: "cm",
   initialState,
   reducers: {
-    setCmRoute: (state, action: PayloadAction<{ route: NavRoute }>) => {
+    setCmRoute: (state, action: PayloadAction<{ route: FreeNavRoute }>) => {
       state.route = action.payload.route;
     },
     selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {

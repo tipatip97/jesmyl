@@ -1,9 +1,9 @@
 import { FullScreenContentOpenMode } from "./fullscreen-content/useFullscreenContent";
-import { NavRoute } from "./nav-configurer/Navigation.model";
+import { FreeNavRoute } from "./nav-configurer/Navigation.model";
 
 
 export interface ComplectStorage {
-    route: NavRoute;
+    route: FreeNavRoute;
 }
 
 export interface ComplectState extends ComplectStorage {

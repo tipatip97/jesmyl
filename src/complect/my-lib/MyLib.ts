@@ -93,8 +93,8 @@ export class MyLib {
 
     typeOf(obj: any): string | null { return (['isStr', 'isNum', 'isBool', 'isArr', 'isNull', 'isUnd', 'isFunc', 'isObj', 'isNan'] as (keyof MyLib)[]).find((type: keyof MyLib) => (this[type] as Function)(obj)) || null; }
 
-    findLastIndex(arr: [], cb: Function) {
-        if (!this.isArr(arr)) return null;
+    findLastIndex<Value>(arr?: Value[], cb: ((val: Value, index: number, array: Value[]) => any) = () => false) {
+        if (!Array.isArray(arr)) return null;
         if (!this.isFunc(cb)) return arr.length - 1;
 
         for (let i = arr.length - 1; i >= 0; i--)
@@ -636,7 +636,7 @@ export class MyLib {
 
     cconsl(...args: any[]) {
         this.consl(...args);
-        console.log(...args);
+        console.info(...args);
     }
 
     consl(...args: any) {
@@ -939,29 +939,29 @@ export class MyLib {
 
         if (isStatic) parent.style.position = prevPosition;
     }
-  
+
     clone(obj: any) {
-      const cloned: any[] = [];
-      
-      const clone = (what: any) => {
-        if (this.isStr(what)) return '' + what;
-        if (this.isNum(what)) return 0 + what;
-        if (this.isBool(what)) return !!what;
-        if (what == null || this.isFunc(what)) return what;
-        
-        if (this.isobj(what)) {
-          if (cloned.indexOf(what) > -1) throw Error('Circular clone');
-          cloned.push(what);
-          const newObj: any = this.isArr(what) ? [] : {};
-          
-          for (const whatn in what) 
-            newObj[whatn] = clone(what[whatn]);
-          
-          return newObj;
-        }
-      };
-      
-      return clone(obj);
+        const cloned: any[] = [];
+
+        const clone = (what: any) => {
+            if (this.isStr(what)) return '' + what;
+            if (this.isNum(what)) return 0 + what;
+            if (this.isBool(what)) return !!what;
+            if (what == null || this.isFunc(what)) return what;
+
+            if (this.isobj(what)) {
+                if (cloned.indexOf(what) > -1) throw Error('Circular clone');
+                cloned.push(what);
+                const newObj: any = this.isArr(what) ? [] : {};
+
+                for (const whatn in what)
+                    newObj[whatn] = clone(what[whatn]);
+
+                return newObj;
+            }
+        };
+
+        return clone(obj);
     }
 }
 

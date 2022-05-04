@@ -38,7 +38,6 @@ export default function EditCompositions() {
             return (
               <EditContainerCorrectsInformer
                 key={`coms-etitor_${wrapi}`}
-                uniq={`coms-etitor_${wrapi}`}
                 corrects={new CorrectsBox().merge(
                   ...Object.values(com.corrects || {})
                 )}
@@ -51,7 +50,7 @@ export default function EditCompositions() {
                   }`}
                   onClick={() => {
                     setCcom(com.native);
-                    goTo(["com", "main"]);
+                    goTo("com");
                   }}
                 />
               </EditContainerCorrectsInformer>

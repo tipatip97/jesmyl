@@ -50,8 +50,8 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     });
   }
 
-  scope(action?: string, uniq?: number | string) {
-    return [this.wid, '.', mylib.typ('[no-action]', action), ':', [mylib.def(uniq, '[no-uniq]')].join(',')].join('');
+  scope(action?: string, uniq?: number | string | (number | string)[]) {
+    return [this.wid, '.', mylib.typ('[no-action]', action), ':', [mylib.def(uniq, '[no-uniq]')].flat().join(',')].join('');
   }
 
   setFieldCol<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln: Coln, defVal?: Col[Fieldn]) {
@@ -98,8 +98,8 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     return mylib.isStr(name) ? name.replace(this.getIncorrectNameReg(), '') : name;
   }
 
-  textCorrects(text: string, correctsScope?: string) {
-    if (!mylib.isStr(text)) return new CorrectsBox().setIncorrectType('[got not string]');
+  textCorrects(text: string | nil, correctsScope?: string) {
+    if (typeof text !== 'string') return new CorrectsBox().setIncorrectType('[got not string]');
     const errors: ICorrect[] = [];
     const warnings: ICorrect[] = [];
     const unknowns: ICorrect[] = [];

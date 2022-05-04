@@ -15,17 +15,17 @@ const navigate = new NavigationConfig({
   rootPhase: null,
   routes: [
     {
-      phase: "other",
+      phase: ["other"],
       title: "Другое",
       icon: "arrow-circle-right",
       node: <IndexMain />,
       next: [
         {
-          phase: "settings",
+          phase: ["settings"],
           node: <IndexSettings />,
         },
         {
-          phase: "login",
+          phase: ["login"],
           node: <IndexLogin />,
         },
       ],

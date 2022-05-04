@@ -3,6 +3,7 @@ import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import useCmNav from "../base/useCmNav";
 import EditorCreatePopup from "./complect/EditorCreatePopup";
 import PhaseCmEditorContainer from "./phase-editor-container/PhaseCmEditorContainer";
+import './Editor.scss';
 
 export default function Editor() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();

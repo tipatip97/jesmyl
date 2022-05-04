@@ -239,7 +239,7 @@ export class Com extends BaseNamed<IExportableCom> {
       const chords = this.actualChords(ord.chordsi, currTransPosition);
 
       if (ord.top.style?.isModulation) {
-        currTransPosition = (this.transPosition || 0) + (ord.fieldValues.md || 0);
+        currTransPosition = (this.transPosition || 0) + (ord.fieldValues?.md || 0);
       }
 
       (chords || '')
@@ -267,7 +267,7 @@ export class Com extends BaseNamed<IExportableCom> {
     return (isSet ? chords?.replace(gSimpleHashedEachLetterChordReg, all => chordBemoleEquivalent[all] || all) : chords)?.replace(/A#/g, 'B');
   }
 
-  actualChords(chordsScalar: string | number, position = this.transPosition) {
+  actualChords(chordsScalar?: string | number, position = this.transPosition) {
     const chords = mylib.isStr(chordsScalar) ? chordsScalar as string : this.chords && this.chords[chordsScalar as number];
     return chords && Com.withBemoles(this.transBlock(chords, position), this.isBemoled);
   }

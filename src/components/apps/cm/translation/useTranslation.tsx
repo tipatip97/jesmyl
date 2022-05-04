@@ -105,7 +105,7 @@ export default function useTranslation() {
 
       ret.setTexti(0);
       if (ret.isShowFullscreen) {
-        goTo("translation", true);
+        goTo("translation", null, true);
         document.body.requestFullscreen();
       } else goTo("translation");
     },

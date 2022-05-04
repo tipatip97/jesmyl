@@ -1,9 +1,9 @@
-import { NavRoute } from "../../../complect/nav-configurer/Navigation.model";
+import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 
 export interface TunerState {
-    route: NavRoute;
+    route: FreeNavRoute;
 }
 export interface TunerStorage {
-    route: NavRoute;
+    route: FreeNavRoute;
     lastUpdate: number;
 }

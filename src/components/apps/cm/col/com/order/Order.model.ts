@@ -6,21 +6,23 @@ import { ChordVisibleVariant } from "../../../Cm.model";
 
 
 export interface IExportableOrder {
-    a: number; // Ссылка на блок
-    c: number; // Блок аккордов
-    e: num; // Без названия
-    f: IExportableOrderFieldValues; // Особые значения
-    m: num; // Минималка
-    o: num; // Открыто в полном режиме
-    p: number[][]; // Позиции аккордов
-    r: OrderRepeats | null; // Повторения
+    a?: number; // Ссылка на блок
+    c?: number; // Блок аккордов
+    e?: num; // Без названия
+    f?: IExportableOrderFieldValues; // Особые значения
+    m?: num; // Минималка
+    o?: num; // Открыто в полном режиме
+    p?: number[][]; // Позиции аккордов
+    r?: OrderRepeats | null; // Повторения
     s: string; // Тип блока
     t?: number | null; // Текстовый блок
-    u: number; // Целевой айди
-    v: num; // Видимость блока
+    u?: number; // Целевой айди
+    v?: num; // Видимость блока
     w: number; // Уникальный айди
     originWid: number; // Неизменяемый уникальный айди
 }
+
+export type INewExportableOrder = Omit<IExportableOrder, 'w' | 'originWid'>;
 
 export type EditableOrderRegion = [number | null, number | null, number | null, number | null, Order | undefined, Order | undefined, number[] | null, string | null, string, string?, number?];
 

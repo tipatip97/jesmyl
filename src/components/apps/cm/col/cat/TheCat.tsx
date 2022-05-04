@@ -64,6 +64,7 @@ export default function TheCat({ all }: { all?: boolean }) {
                 className={`later-com-list ${
                   all && !term && laterComs.length ? "" : "hidden"
                 }`}
+                onClick={scrollToCurrent}
               >
                 <div className="later-title sticky">Последние:</div>
                 {laterComs.map((com) => (

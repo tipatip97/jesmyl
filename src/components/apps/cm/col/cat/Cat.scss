@@ -3,6 +3,7 @@
     .later-title {
         background-color: var(--current-bg);
         padding: var(--main-gap);
+        cursor: ns-resize;
     }
     
     >.content {

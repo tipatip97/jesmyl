@@ -1,8 +1,5 @@
 import { NavigationConfig } from "../../../../complect/nav-configurer/Navigation";
-import {
-  NavRoute,
-  UseNavAction,
-} from "../../../../complect/nav-configurer/Navigation.model";
+import { INavigationRouteChildItem, UseNavAction } from "../../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
 import { cmStorage } from "../../../../shared/jstorages";
 import { RootState } from "../../../../shared/store";
@@ -17,13 +14,13 @@ import TheMeeting from "../lists/meetings/TheMeeting";
 import TheMeetings from "../lists/meetings/TheMeetings";
 import Translations from "../translation/Translation";
 
-const translationNav = {
-  phase: "translation",
+const translationNav: INavigationRouteChildItem = {
+  phase: ["translation"],
   node: <Translations />,
 };
 
-const comNav = {
-  phase: "com",
+const comNav: INavigationRouteChildItem = {
+  phase: ["com"],
   node: <TheCom />,
   next: [translationNav],
 };
@@ -36,33 +33,33 @@ const navigation = new NavigationConfig({
   routes: [
     {
       icon: "list",
-      phase: "all",
+      phase: ["all"],
       title: "Все",
       node: <TheCat all />,
       next: [comNav],
     },
     {
       icon: "folder",
-      phase: "lists",
+      phase: ["lists"],
       title: "Списки",
       node: <Lists />,
       next: [
         {
-          phase: "cat",
+          phase: ["cat"],
           node: <TheCat />,
           next: [...comNext],
         },
         {
-          phase: "marks",
+          phase: ["marks"],
           node: <Marks />,
           next: [...comNext],
         },
         {
-          phase: "meetings",
+          phase: ["meetings"],
           node: <TheMeetings />,
           next: [
             {
-              phase: "meeting",
+              phase: ["meeting"],
               node: <TheMeeting />,
               next: [...comNext],
             },
@@ -86,6 +83,6 @@ const useCmNavConfigurer = () =>
     setCmRoute,
     navigation,
     cmStorage,
-    (state: RootState): NavRoute => state.cm.route
+    (state: RootState) => state.cm.route
   );
 export { useCmNavConfigurer };

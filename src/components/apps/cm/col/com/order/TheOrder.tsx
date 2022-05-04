@@ -68,10 +68,10 @@ export default function TheOrder(props: ITheOrderProps) {
 
   const blockHeader = orderUnit.top.isInherit
     ? null
-    : orderUnit.top.header({ isTexted: true });
+    : orderUnit.top.header?.({ isTexted: true });
 
   const chordedOrd =
-    orderUnit.chordsi > -1 &&
+    (!orderUnit.chordsi || orderUnit.chordsi > -1) &&
     (chordVisibleVariant === 2 ||
       (chordVisibleVariant === 1 && orderUnit.isMin));
 

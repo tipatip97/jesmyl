@@ -11,10 +11,7 @@ export default function EditableCompositionMain() {
   return (
     <>
       {
-        <EditContainerCorrectsInformer
-          uniq="comRename"
-          corrects={ccom?.corrects.comRename}
-        >
+        <EditContainerCorrectsInformer corrects={ccom?.corrects.comRename}>
           Название:
           <input
             value={ccom?.name}

@@ -8,11 +8,11 @@ import { useEditableCcom } from "./useEditableCcom";
 
 export default function EditComposition({
   outletContent,
-  currentPhase,
-  data
+  relativePoint,
+  currentChildPhase,
 }: NavigationThrowNodeProps) {
   const ccom = useEditableCcom();
-  const { replace } = useCmNav();
+  const { goTo } = useCmNav();
 
   if (!ccom) return null;
 
@@ -24,20 +24,22 @@ export default function EditComposition({
       content={
         <>
           <div className="flex around margin-gap">
-            {editCompositionNavs.map(({ data: {icon} = {}, phase }) => {
-              return (
-                <EvaIcon
-                  key={`editCompositionNavs ${phase}`}
-                  className="pointer"
-                  name={
-                    `${icon}${
-                      phase === currentPhase ? "" : "-outline"
-                    }` as never
-                  }
-                  onClick={() => replace(phase)}
-                />
-              );
-            })}
+            {editCompositionNavs.map(
+              ({ data: { icon } = {}, phase: [phase] }) => {
+                return (
+                  <EvaIcon
+                    key={`editCompositionNavs ${phase}`}
+                    className="pointer"
+                    name={
+                      `${icon}${
+                        phase === currentChildPhase ? "" : "-outline"
+                      }` as never
+                    }
+                    onClick={() => goTo(phase, relativePoint)}
+                  />
+                );
+              }
+            )}
           </div>
           {outletContent}
         </>

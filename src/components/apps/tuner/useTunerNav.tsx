@@ -11,7 +11,7 @@ const tunerNavigation = new NavigationConfig({
   rootPhase: "tuner",
   routes: [
     {
-      phase: "tuner",
+      phase: ["tuner"],
       icon: "music",
       title: "Тюнер",
       node: <TheTuner />,

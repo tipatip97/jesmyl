@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NavRoute } from "../../../complect/nav-configurer/Navigation.model";
+import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { tunerStorage } from "../../../shared/jstorages";
 import { TunerState } from "./Tuner.model";
 
@@ -11,7 +11,7 @@ export const slice = createSlice({
     name: "tuner",
     initialState,
     reducers: {
-        setTunerPhase: (state, action: PayloadAction<{ route: NavRoute; }>) => {
+        setTunerPhase: (state, action: PayloadAction<{ route: FreeNavRoute; }>) => {
             state.route = action.payload.route;
         },
     },
