@@ -35,15 +35,21 @@ export interface FreeExecDict<Value> {
     del?: boolean;
     muted?: boolean;
     errors?: string[];
-    uniq?: number | string | (string | number)[];
+    uniq?: FreeExecDictUniq;
     corrects?: CorrectsBox;
     // верни функцию, если нашлось противное `exec` (в таком случае будет удалён противный `exec`),
-    // которая должна вернуть "зафиксировать ли выполнение текущего `exec`?"
+    // которая должна вернуть "предотвратить ли выполнение текущего `exec`?"
     anti?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[];
+    // верни функцию, если нашлось дружественное `exec`
+    // (в таком случае, при удалении текущего, будет удалён и дружественный `exec`),
+    // которая должна вернуть "удалить ли основное `exec`?"
+    friendly?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[];
 
     onSet?: (exec: Exec<Value>) => void;
     onLoad?: (exec: Exec<Value>) => void;
 }
+
+export type FreeExecDictUniq = number | string | (string | number)[];
 
 export interface SetAntiValue<Value> {
     args?: any;

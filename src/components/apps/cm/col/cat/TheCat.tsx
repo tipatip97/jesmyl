@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
+import DebouncedInput from "../../../../../complect/DebouncedInput";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import DebouncedSearcher from "../../base/debounced-searcher/DebouncedSearcher";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import ComFace from "../com/face/ComFace";
@@ -44,7 +44,10 @@ export default function TheCat({ all }: { all?: boolean }) {
       withoutBackButton={all}
       head={
         !cat ? null : (
-          <DebouncedSearcher
+          <DebouncedInput
+            icon="search-outline"
+            placeholder="Поиск песен"
+            className="debounced-searcher"
             initialTerm={term}
             onSearch={(term) => cat.search(term)}
             debounce={500}

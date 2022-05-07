@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../shared/store";
 import { switchComplectFullscreen } from "./Complect.store";
@@ -11,7 +10,7 @@ export default function useFullScreen(): [boolean, (isFullscreen?: boolean) => v
         dispatch(switchComplectFullscreen(isFullscreen));
 
         if (isFullscreen ?? !isFullScreen) document.body.requestFullscreen();
-        else document.exitFullscreen();
+        else if (document.fullscreenElement) document.exitFullscreen();
     };
 
 

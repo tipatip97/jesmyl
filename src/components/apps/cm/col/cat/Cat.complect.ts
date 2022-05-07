@@ -17,7 +17,7 @@ export const catTrackers: CatTracker[] = [
     {
         title: 'Список',
         id: 'list',
-        select: (com: Com, cat: Cat) => cat.stack.indexOf(com.wid) > -1,
+        select: (com: Com, cat: Cat) => cat.stack?.indexOf(com.wid) > -1,
     },
     {
         title: 'Язык - Русский',

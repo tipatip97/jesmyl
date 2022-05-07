@@ -623,6 +623,16 @@
                                             },
                                             {
                                                 "level": 50,
+                                                "action": "comSetOrderFieldValueBox",
+                                                "title": "В песне \"$name\" к блоку \"$blockn\" установлен массив спецефических значений",
+                                                "track": [
+                                                    "f"
+                                                ],
+                                                "method": "set",
+                                                "value": {}
+                                            },
+                                            {
+                                                "level": 50,
                                                 "action": "comSetOrderFieldValue",
                                                 "title": "В песне \"$name\" блоку \"$blockn\" установлен параметр $switch{{$fieldn}{md}{модулирования}} в значение \"$value\"",
                                                 "track": [

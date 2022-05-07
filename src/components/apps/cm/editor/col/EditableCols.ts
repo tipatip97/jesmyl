@@ -1,15 +1,17 @@
 import { EditableCat } from "./categories/EditableCat";
 import { EditableCom } from "./compositions/EditableCom";
 import { Cols } from "../../cols/Cols";
+import { IExportableCols } from "../../cols/Cols.model";
 
 
-export class EditableCols {
+export class EditableCols extends Cols {
     cats: EditableCat[];
     coms: EditableCom[];
 
-    constructor(cols: Cols) {
+    constructor(cols: IExportableCols) {
+        super(cols);
         const coms = cols.coms;
-        this.coms = coms.map((com) => new EditableCom(com));
+        this.coms = coms.sort((a, b) => a.w - b.w).map((com, comi) => new EditableCom(com, comi));
         this.cats = cols.cats.map(cat => new EditableCat(cat, this.coms));
     }
 

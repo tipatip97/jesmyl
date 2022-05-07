@@ -1,12 +1,12 @@
 import { JStorageName } from "../../app/App.model";
 import { Auth } from "../../components/index/Index.model";
-import { appStorage, indexStorage } from "../../shared/jstorages";
+import { indexStorage } from "../../shared/jstorages";
 import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";
 import mylib from "../my-lib/MyLib";
 import { Refresh } from "../refresh/Refresh";
 import { Exec } from "./Exec";
-import { ExecDict, ExecRule, ExerStorage, FreeExecDict } from "./Exer.model";
+import { ExecDict, ExecRule, ExerStorage, FreeExecDict, FreeExecDictAntiCallback } from "./Exer.model";
 
 type Callback = (okRes: any, errRes: any) => void;
 
@@ -43,10 +43,10 @@ export class Exer<Storage extends ExerStorage> {
     set<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
         if (!freeExec) return null;
         let retExec: Exec<Value> | null = null;
-        const { scope, value, method = 'other', anti } = freeExec;
+        const { scope, value, method = 'other', anti, friendly } = freeExec;
         const exec = { ...freeExec, method };
 
-        setTimeout(() => console.info(this.execs));
+        setTimeout(() => console.info(exec, this.execs));
 
         const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
         const prevExec: Exec<Value> = this.execs[prevExeci];
@@ -54,25 +54,25 @@ export class Exer<Storage extends ExerStorage> {
         const lastExec: Exec<Value> = this.execs[lasti];
 
         let isPrevented = false;
-
-        if (anti) {
-            const antis = [anti].flat();
+        const removeNabors = (nabors: FreeExecDictAntiCallback<Value>[], onFind: () => void) => {
             const remIndexes: number[] = [];
 
             for (let execi = 0; execi < this.execs.length; execi++) {
 
-                for (const anti of antis) {
+                for (const anti of nabors) {
                     const prevent = anti(this.execs[execi]);
 
                     if (prevent) {
                         remIndexes.push(execi);
-                        if (prevent()) isPrevented = true;
+                        if (prevent()) onFind();
                     }
                 }
                 if (isPrevented) break;
             }
             remIndexes.sort((a, b) => b - a).forEach(execi => this.execs.splice(execi, 1));
-        }
+        };
+
+        if (anti) removeNabors([anti].flat(), () => isPrevented = true);
 
         if (isPrevented) return null;
 
@@ -89,7 +89,11 @@ export class Exer<Storage extends ExerStorage> {
                 if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
                 else {
                     const needRemove = prevExec.setValue(value, exec);
-                    if (needRemove) this.execs.splice(prevExeci, 1);
+                    if (needRemove) {
+                        let isRemove = true;
+                        if (friendly) removeNabors([friendly].flat(), () => isRemove = false);
+                        if (isRemove) this.execs.splice(prevExeci, 1);
+                    }
                 }
             else if (!mylib.isEq(exec.prev, exec.value))
                 this.execs.push(retExec = new Exec(exec, this.rules));

@@ -1,47 +1,76 @@
 import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { setts } from "../../../base/settings/Setts";
+import { cmExer } from "../../../Cm.store";
 import { Cat } from "../../../col/cat/Cat";
 import { Com } from "../../../col/com/Com";
 import { IExportableCom } from "../../../col/com/Com.model";
-import { INewExportableOrder } from "../../../col/com/order/Order.model";
+import { IExportableOrderTop, INewExportableOrder } from "../../../col/com/order/Order.model";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import { textedChord } from "../../Editor.complect";
 import { EditableCol } from "../EditableCol";
+import { EditableOrder } from "./orders/EditableOrder";
 
 
-export class EditableCom extends EditableCol<IExportableCom> {
-    native: Com;
+export class EditableCom extends Com {
     corrects: Record<string, CorrectsBox | nil> = {};
-    index: number;
     initialName: string;
-    refs?: Record<string, number>;
-    texts?: string[];
-    chords?: string[];
+    col: EditableCol<IExportableCom>;
+    initial: Com;
+    protected _o?: EditableOrder[];
 
-    constructor(com: Com) {
-        super(com.top);
-        this.native = com;
-        this.index = com.index;
-        this.initialName = com.name;
-        this.refs = mylib.clone(com.refs);
+    constructor(top: IExportableCom, index: number) {
+        super(top, index);
+        this.col = new EditableCol(top);
+        this.initialName = this.name;
+        this.initial = new Com(mylib.clone(top), index);
+    }
 
-        this.setReals(com, ['texts', 'chords']);
+    scope(action?: string, uniq?: string | number) {
+        return [this.wid, '.', mylib.typ('[action]', action), ':', [].concat(mylib.def(uniq, ['[uniq]'])).join(',')].join('');
+    }
+
+    get orders(): EditableOrder[] | null { return this._o || this.setOrders() as EditableOrder[]; }
+
+    orderConstructor(top: IExportableOrderTop) {
+        return new EditableOrder(top, this);
     }
 
     exec<Value>(bag: FreeExecDict<Value>) {
-        this.execCol(bag, 'com');
+        this.col.execCol(bag, 'com');
     }
 
     rename(name: string, exec?: <Val>(val?: Val) => Val | nil) {
-        this.renameCol(name, 'com', (correct: string) => {
+        this.col.renameCol(name, 'com', (correct: string) => {
             this.rename(correct, exec);
             exec?.();
         });
     }
 
+    setField<Fieldn extends keyof IExportableCom>(fieldn: Fieldn, value: IExportableCom[Fieldn], defVal?: IExportableCom[Fieldn]) {
+        this.col.setFieldCol<keyof IExportableCom, 'com'>(fieldn, value, { b: 'comSetDefaultBemolType', a: '', c: '', k: '', l: '', n: '', o: '', p: '', r: '', t: '', ton: '', w: '', }, 'com', defVal);
+        if (fieldn === 'b') this.isBemoled = value as num;
+    }
+
+    switchLang() {
+        const value = this.langi ? 0 : 1;
+
+        this.exec({
+            action: 'comSetLangi',
+            prev: this.langi,
+            method: 'set',
+            value,
+            uniq: this.wid,
+            args: {
+                value
+            },
+        });
+
+        this.langi = value;
+    }
+
     remove(isRemoved = true) {
-        this.removeCol('com', isRemoved);
+        this.col.removeCol('com', isRemoved);
     }
 
     setNativeNumber(cat: Cat, numberStr: string) {
@@ -69,7 +98,7 @@ export class EditableCom extends EditableCol<IExportableCom> {
 
         this.exec({
             action: 'setNativeNum',
-            prev: this.native.refs?.[cat.wid],
+            prev: this.initial.refs?.[cat.wid],
             method: 'set',
             value: number,
             uniq: cat.wid,
@@ -205,14 +234,14 @@ export class EditableCom extends EditableCol<IExportableCom> {
             orders.push({ t, c, s, p: [] });
         });
 
-        this.add('c', chords);
-        this.add('t', texts);
+        this.add('chords', chords);
+        this.add('texts', texts);
         this.addOrders(orders);
     }
-    
+
     afterOrderChange() {
-        this.native.setOrders();
-        this.native.resetChordLabels();
+        this.setOrders();
+        this.resetChordLabels();
     }
 
     addOrders(orderDicts: INewExportableOrder[] = []) {
@@ -220,17 +249,15 @@ export class EditableCom extends EditableCol<IExportableCom> {
         this.afterOrderChange();
     }
 
-    add(fieldn: 't' | 'c', value: string | string[]) {
+    add(fieldn: 'texts' | 'chords', value: string | string[]) {
 
-        if (fieldn === 'c' || fieldn === 't') {
-            const emptyIndex = (mylib.findLastIndex(fieldn === 't' ? this.texts : this.chords, ch => ch) || 0) - -1;
+        const emptyIndex = (mylib.findLastIndex(fieldn === 'texts' ? this.texts : this.chords, ch => ch) || 0) - -1;
 
-            [value].flat().forEach((block, blocki) => {
-                this.changeBlock(fieldn, emptyIndex + blocki, block);
-            });
-        }
+        [value].flat().forEach((block, blocki) => {
+            this.changeBlock(fieldn, emptyIndex + blocki, block);
+        });
 
-        if (fieldn === 'c') this.native.resetChordLabels();
+        if (fieldn === 'chords') this.resetChordLabels();
 
         return this;
     }
@@ -245,39 +272,204 @@ export class EditableCom extends EditableCol<IExportableCom> {
                 texti: t,
                 type: s,
                 chordsi: c,
-            }
+            },
         });
-        this.native.ords.push({ w, t, s, p: [], c, header: () => '', originWid: w });
+        this.ords.push({ w, t, s, p: [], c, header: () => '', originWid: w });
         if (refresh) this.afterOrderChange();
     }
 
-    getNextOrdWid() {
-        return this.native.ords.reduce((w, ord) => (ord.w == null || ord.w < w) ? w : ord.w, -1) - -1;
+    isCantMigrateOrder(ord: EditableOrder, ordi: number) {
+        return (!ordi && ord.top.isNextInherit || ord.top.isPrevTargetOrd || (ord.top.isNextAnchorOrd && !ordi))
+            || (index => !(index < 0 || index === cmExer.execs.length - 1))
+                (cmExer.execs.findIndex(exec => mylib.isEq(exec.scope, this.scope('comMigrateOrders'))));
     }
 
-    changeBlock(coln: 't' | 'c', coli: number, val: string) {
-        const value = coln === 't' ? val : this.native.transBlock(val, 12 - (this.native.transPosition || 0));
+    migrateOrder(topOrd: EditableOrder) {
+        if (!this.orders) return;
+        const { top: { source: { w: to = null } = {} } = {} } = topOrd.top.next || topOrd.top.prev || {};
+
+        if (to == null) {
+            mylib.dconsl('migrate error', topOrd).config({ type: 0 });
+            return;
+        }
+
+        const prev: Record<number, number> = {};
+        const value: Record<number, number> = {};
+        const from = topOrd.top.w;
+        const min = Math.min(from, to);
+        const max = Math.max(from, to);
+
+        this.ords.forEach(ord => {
+            if (ord.w > min && ord.w <= max) {
+                prev[ord.w] = ord.w - 1;
+                prev[ord.w - 1] = ord.w;
+            }
+        });
+
+        this.orders.forEach(ord => {
+            if (ord.top.source && prev[ord.wid] != null && !ord.top.isAnchorInherit)
+                ord.top.source.w = prev[ord.wid];
+        });
+
+        this.orders.forEach(ord => {
+            if (ord.top.source && ord.top.source.w !== ord.top.source.originWid)
+                value[ord.top.source.originWid] = ord.top.source.w;
+        });
+
+        this.exec({
+            value,
+            method: 'migrate',
+            action: 'comMigrateOrders',
+            args: {
+                value
+            },
+        });
+
+        this.afterOrderChange();
+    }
+
+    removeOrderBlock({ wid, isAnchor, top }: EditableOrder) {
+        this.exec({
+            action: 'removeOrderBlock',
+            uniq: wid,
+            args: {
+                wid,
+                isAnchor: +isAnchor,
+                blockn: top.header()
+            },
+            anti: ({ action, args, args: { comw } = {} }) => {
+                if (action === "comAddOrderBlock" && comw === this.wid && wid === args?.wid)
+                    return () => false;
+            },
+        });
+        const index = this.ords.findIndex(o => o.w === wid);
+
+        this.ords.splice(index, 1);
+        this.afterOrderChange();
+
+        this.resetChordLabels();
+    }
+
+    addOrderAnchor(ord: EditableOrder) {
+        if (ord.isAnchor) {
+            console.error('Не возможно ссылаться на ссылку');
+            return;
+        }
+
+        const anchor = ord.takeUniq();
+        const wid = this.getNextOrdWid();
+
+        this.exec({
+            action: 'comAddOrderAnchorBlock',
+            args: {
+                wid,
+                anchor,
+                blockn: ord.top.header(),
+            }
+        });
+
+        this.ords.push({ a: anchor, w: wid, originWid: wid, header: () => '' });
+        this.afterOrderChange();
+    }
+
+    setTransPosition(value: number | und) {
+        this.exec({
+            prev: this.transPosition,
+            value,
+            method: 'set',
+            action: 'comSetTransPosition',
+            args: {
+                value,
+            },
+            // onSet: () => delete this.initial.pos,
+            // onLoad: () => delete this.initial.p,
+        });
+
+        this.transPosition = value;
+
+        this.resetChordLabels();
+    }
+
+    getNextOrdWid() {
+        return this.ords.reduce((w, ord) => (ord.w == null || ord.w < w) ? w : ord.w, -1) - -1;
+    }
+
+    changeBlock(coln: 'texts' | 'chords', coli: number, val: string) {
+        const value = coln === 'texts' ? val : this.transBlock(val, 12 - (this.transPosition || 0));
         if (value == null) return;
+        const corrects = this.blockCorrects(value, coln);
 
         this.exec({
             uniq: [coln, coli],
-            prev: coln === 't' ? this.texts?.[coli] : this.chords?.[coli],
+            prev: coln === 'texts' ? this.texts?.[coli] : this.chords?.[coli],
             value,
             method: 'set',
             action: 'changeBlocks',
-            corrects: this.blockCorrects(value, coln),
+            corrects,
             args: {
                 text: value,
-                coln,
+                coln: coln === 'texts' ? 't' : 'c',
                 index: coli
             }
         });
 
+        this.corrects[`changeBlocks_${coln}_${coli}`] = corrects;
 
-        if (coln === 't' && this.texts) this.texts[coli] = value;
+        if (coln === 'texts' && this.texts) this.texts[coli] = value;
         else if (this.chords) this.chords[coli] = value
 
-        if (coln === 'c') this.native.resetChordLabels();
+        if (coln === 'chords') this.resetChordLabels();
+    }
+
+    insertBlocks(coln: 'texts' | 'chords', coli: number, value = '', prev = '...') {
+        if (coli === (this[coln]?.length || 0) - 1) {
+            this.add(coln, '');
+        } else {
+            this[coln]
+                ?.concat(value)
+                .forEach((ccol, ccoli, ccola) => {
+                    if (ccoli <= coli) return;
+                    const val = ccoli - 1 === coli
+                        ? value
+                        : ccoli === coli
+                            ? prev
+                            : '' + ccola[ccoli - 1];
+
+                    this.changeBlock(coln, ccoli, val);
+                });
+
+            this.updateOrderSticks(coln, coli, 1);
+        }
+
+        if (coln === 'chords') this.resetChordLabels();
+    }
+
+    updateOrderSticks(coln: 'texts' | 'chords', coli: number, delta: number, isReset?: boolean) {
+        const ccoln = coln === 'texts' ? 't' : 'c';
+        this.ords.forEach((ord, ordi) => {
+            const colIndex = ord[ccoln] || 0;
+            if (isReset ? colIndex >= coli : colIndex > coli) {
+                const value = isReset && ord[ccoln] === coli
+                    ? -1
+                    : colIndex - -delta;
+
+                this.exec({
+                    uniq: [ordi, coln],
+                    prev: 0 - -colIndex,
+                    value,
+                    method: 'set',
+                    action: 'updateOrderStick',
+                    args: {
+                        coln: coln === 'texts' ? 't' : 'c',
+                        value,
+                        ordi,
+                        wid: ord.w
+                    }
+                });
+                ord[ccoln] = value;
+            }
+        });
+        this.afterOrderChange();
     }
 
     prepareCorrectTextLine(line: string) {
@@ -289,7 +481,7 @@ export class EditableCom extends EditableCol<IExportableCom> {
     }
 
     correctRename(name: string) {
-        return mylib.isStr(name) ? this.rename(name.replace(this.getIncorrectNameReg(), '')) : name;
+        return mylib.isStr(name) ? this.rename(name.replace(this.col.getIncorrectNameReg(), '')) : name;
     }
 
     removeNativeNumber(cat: Cat, exec?: <Val>(v?: Val) => Val | nil) {
@@ -299,7 +491,7 @@ export class EditableCom extends EditableCol<IExportableCom> {
         if (refs == null || mylib.isArr(refs)) {
             refs = this.refs = {};
         }
-        const prev = this.native.refs?.[cat.wid];
+        const prev = this.initial.refs?.[cat.wid];
         delete refs[cat.wid];
 
         this.exec({
@@ -322,10 +514,10 @@ export class EditableCom extends EditableCol<IExportableCom> {
                         args &&
                         args.comw === this.wid &&
                         !Object.keys(refs || {}).length &&
-                        !Object.keys(this.native.refs || {}).length
+                        !Object.keys(this.initial.refs || {}).length
                     )
                         return () => {
-                            if (this.native.refs == null) delete this.refs;
+                            if (this.initial.refs == null) delete this.refs;
                             return false;
                         }
                 },
@@ -334,11 +526,11 @@ export class EditableCom extends EditableCol<IExportableCom> {
         exec?.();
     }
 
-    blockCorrects(value: string | und, coln: 'c' | 't', blocki?: number, action?: string) {
+    blockCorrects(value: string | und, coln: 'chords' | 'texts', blocki?: number, action?: string) {
         const blockNum = blocki == null ? '' : `. (${blocki - -1}-й блок)`;
         const ret = (err: string | null) => new CorrectsBox(err ? [{ message: err, code: 0 }] : null);
 
-        if (coln === 'c') {
+        if (coln === 'chords') {
             const errors: string[] = [];
             const text = (value || '')
                 .trim()
@@ -364,7 +556,7 @@ export class EditableCom extends EditableCol<IExportableCom> {
             });
             if (isThereErrors) return ret(`Присутствуют недопустимые символы${blockNum}: ${mistakes}\n\n${text}\n\n`);
 
-            const { level } = this.native.bracketsTransformed(value);
+            const { level } = this.bracketsTransformed(value);
             if (level) {
                 const pre = level < 0 ? 'открывающ' : 'закрывающ';
                 const text = mylib.declension(
@@ -375,7 +567,33 @@ export class EditableCom extends EditableCol<IExportableCom> {
                 );
                 return ret(`В тексте присутствует непарное количество ковычек.\nНеобходимо добавить ${Math.abs(level)} ${text}${blockNum}\n\n`);
             }
-            return this.textCorrects(value, action);
+            return this.col.textCorrects(value, action);
         }
+    }
+
+    getRegionNextLetter() {
+        const chars = this.orders?.map(ord => Object.keys(ord.repeats || {}).map(key => (key.match(/[a-z]/i) || [])[0]))
+            .flat().filter(s => s)
+            .map(letter => letter.charCodeAt(0));
+
+        const next = chars && '.'.repeat(26).split('').map((c, ci) => 97 + ci).find(num => chars.indexOf(num) < 0);
+
+        return next && String.fromCharCode(next);
+    }
+
+    setTranslationPushKind(value: number) {
+        this.exec({
+            action: 'comSetTranslationPushKind',
+            method: 'set',
+            prev: this.translationPushKind,
+            value,
+            args: {
+                value
+            }
+        });
+
+        this.translationPushKind = value;
+        this._translationMap = null;
+        this.translationMap();
     }
 }

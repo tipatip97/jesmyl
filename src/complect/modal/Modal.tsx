@@ -1,4 +1,7 @@
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { riseUpModalUpdates } from "../../components/index/Index.store";
+import { RootState } from "../../shared/store";
 import mylib from "../my-lib/MyLib";
 import {
   ModalConfig,
@@ -47,31 +50,32 @@ export const onActionClick = (
 
 export default function Modal(props: ModalFixed) {
   const [config, setConfig] = useState(modalService.current());
-  // useSelector((state: RootState) => state.cm.numModalUpdates);
+  useSelector((state: RootState) => state.index.numModalUpdates);
+
+  const dispatch = useDispatch();
+  const forceUpdate = () => {
+    dispatch(riseUpModalUpdates());
+  };
 
   modalService.setConfigSetter((config) => setConfig(config));
 
   const defTheme = "m-ok";
   const asFunc = (val?: Function | boolean | ReactNode) =>
     typeof val === "function" ? val(config) : val;
+  const onClose = () => {
+    const res = config?.onCloseAcion?.(config as ModalConfig);
+    if (res !== false) {
+      modalService.close(null);
+    }
+  };
 
   return config == null ? null : (
-    <div className="app-modal-window" onClick={() => modalService.close(null)}>
+    <div className="app-modal-window" onClick={onClose}>
       <div className="app-modal">
         <div className="app-modal-title">
           <span className="app-modal-title-label">{config.title}</span>
           {config.withoutCloseButton ? null : (
-            <span
-              className="app-modal-title-close-icon"
-              onClick={() => {
-                const res =
-                  config.onCloseButtonClick &&
-                  config.onCloseButtonClick(config as ModalConfig);
-                if (res !== false) {
-                  modalService.close(null);
-                }
-              }}
-            >
+            <span className="app-modal-title-close-icon" onClick={onClose}>
               ×
             </span>
           )}
@@ -102,6 +106,7 @@ export default function Modal(props: ModalFixed) {
                         <TheModalInput
                           key={`modal-input${inputi}`}
                           config={[input, inputi]}
+                          forceUpdate={forceUpdate}
                         />
                       )
                     ) : null

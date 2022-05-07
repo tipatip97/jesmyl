@@ -60,6 +60,7 @@ export class Exec<Value> extends Simplifyed {
             createByPath: this.createByPath,
             id: this.id,
             method: this.method,
+            args: this.args
         };
     }
 
@@ -69,6 +70,7 @@ export class Exec<Value> extends Simplifyed {
         const corrects = this.corrects || new CorrectsBox();
         const add = (message: string) => {
             this.corrects = corrects.merge({ errors: [{ message }] });
+            if (message) console.error(message);
             return corrects;
         }
 
@@ -92,6 +94,7 @@ export class Exec<Value> extends Simplifyed {
 
     setValue(value?: Value, exec?: FreeExecDict<Value>) {
         if (exec) {
+            mylib.func(exec.onSet).call(exec);
             if (exec.args != null) this.args = {
                 ...exec.args,
                 ...(this.method === 'set' ? { prev: this.prev } : null),

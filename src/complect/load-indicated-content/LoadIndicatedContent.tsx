@@ -10,15 +10,19 @@ const enum State {
 }
 
 export default function LoadIndicatedContent(
-  props: PropsWithChildren<{ isLoading: boolean; onLoad?: () => void }>
+  props: PropsWithChildren<{ isLoading: boolean; onLoad?: () => void; onLoaded?: () => void }>
 ) {
   const [state, setState] = useState(State.Initial);
+  const [isWasLoading, setIsWasLoading] = useState(false);
   const initTime = useMemo(() => Date.now(), []);
 
   const onEnd = () => {
     setState(State.Loaded);
-    props.onLoad && props.onLoad();
+    props.onLoad?.();
+    if (isWasLoading) props.onLoaded?.();
   };
+
+  useEffect(() => setIsWasLoading(true), [state]);
 
   useEffect(() => {
     if (props.isLoading) setState(State.Loading);

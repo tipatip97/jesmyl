@@ -54,7 +54,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     return [this.wid, '.', mylib.typ('[no-action]', action), ':', [mylib.def(uniq, '[no-uniq]')].flat().join(',')].join('');
   }
 
-  setFieldCol<Coln extends keyof IExportableCol, Fieldn extends keyof Col>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln: Coln, defVal?: Col[Fieldn]) {
+  setFieldCol<Fieldn extends keyof Col, Coln extends keyof IExportableCol>(fieldn: Fieldn, value: Col[Fieldn], actions: Record<Fieldn, string>, coln: Coln, defVal?: Col[Fieldn]) {
     this.execCol({
       prev: mylib.def(this.getBasic(fieldn), defVal),
       value,

@@ -19,7 +19,7 @@ const initialState: CmState = {
   rollMode: null,
   isCmFullscreen: false,
   isShowMarks: false,
-  isAnchorsVisible: true,
+  isMiniAnchor: false,
   paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
@@ -73,8 +73,8 @@ export const slice = createSlice({
     switchShowMarks: (state, action: PayloadAction<boolean | nil>) => {
       state.isShowMarks = action.payload ?? state.isShowMarks;
     },
-    switchAnchorsVisible: (state, action: PayloadAction<boolean | nil>) => {
-      state.isAnchorsVisible = action.payload ?? !state.isAnchorsVisible;
+    switchIsMiniAnchor: (state, action: PayloadAction<boolean | nil>) => {
+      state.isMiniAnchor = action.payload ?? !state.isMiniAnchor;
     },
     setParanjaMode: (state, action: PayloadAction<ParanjaMode>) => {
       state.paranjaMode = action.payload;
@@ -133,7 +133,7 @@ export const {
   setCmRoute,
   selectCcol,
   switchCmFullscreen,
-  switchAnchorsVisible,
+  switchIsMiniAnchor,
   setChordVisibleVariant,
   riseUpComUpdate,
   changeRollMode,

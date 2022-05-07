@@ -24,7 +24,7 @@ export default function EditCategory() {
       content={
         <>
           {
-            <EditContainerCorrectsInformer corrects={ccat?.corrects.catRename}>
+            <EditContainerCorrectsInformer corrects={ccat?.col.corrects.catRename}>
               Название:
               <input
                 value={ccat?.name}
@@ -35,7 +35,7 @@ export default function EditCategory() {
           {
             <EditContainerCorrectsInformer
               access="catSetKind"
-              corrects={ccat?.corrects.catSetKind}
+              corrects={ccat?.col.corrects.catSetKind}
             >
               <div className="flex between">
                 <span>Тип:</span>
@@ -72,7 +72,7 @@ export default function EditCategory() {
               {ccat.coms.map((com) => (
                 <ComFace
                   key={`edit-category-com-list-com_${com.wid}`}
-                  com={com.native}
+                  com={com}
                   importantOnClick={() => {}}
                 />
               ))}

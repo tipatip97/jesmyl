@@ -6,7 +6,7 @@ import { RootState } from "../../../../shared/store";
 import CmApplication from "../Cm";
 import { setCmRoute } from "../Cm.store";
 import TheCat from "../col/cat/TheCat";
-import TheCom from "../col/com/TheCom";
+import TheComposition from "../col/com/TheComposition";
 import { editorNav } from "../editor/editorNav";
 import Lists from "../lists/Lists";
 import Marks from "../lists/marks/Marks";
@@ -21,7 +21,7 @@ const translationNav: INavigationRouteChildItem = {
 
 const comNav: INavigationRouteChildItem = {
   phase: ["com"],
-  node: <TheCom />,
+  node: <TheComposition />,
   next: [translationNav],
 };
 
@@ -86,3 +86,4 @@ const useCmNavConfigurer = () =>
     (state: RootState) => state.cm.route
   );
 export { useCmNavConfigurer };
+

@@ -10,7 +10,7 @@ export default function useEditCompositionCategoryBinds(com: EditableCom | nil) 
     const ret = {
         setNativeNumber: (cat: Cat, number: string) => exec(com?.setNativeNumber(cat, number)),
         removeNativeNumber: (cat: Cat) => exec(com?.removeNativeNumber(cat, exec)),
-        toggleComExistence: (cat: EditableCat) => exec(cat?.toggleComExistence(com?.native, exec)),
+        toggleComExistence: (cat: EditableCat) => exec(cat?.toggleComExistence(com, exec)),
     };
     return ret;
 }

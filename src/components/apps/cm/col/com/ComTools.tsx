@@ -8,7 +8,7 @@ import { ChordVisibleVariant } from "../../Cm.model";
 import {
   riseUpComUpdate,
   setComFontSize,
-  switchAnchorsVisible,
+  switchIsMiniAnchor,
 } from "../../Cm.store";
 import useTranslation from "../../translation/useTranslation";
 import ChordImagesList from "./chord-card/ChordImagesList";
@@ -18,9 +18,7 @@ export default function ComTools() {
   const dispatch = useDispatch();
   const [ccom] = useCcom();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
-  const isAnchorsVisible = useSelector(
-    (state: RootState) => state.cm.isAnchorsVisible
-  );
+  const isMiniAnchor = useSelector((state: RootState) => state.cm.isMiniAnchor);
   const { openTranslations, isShowFullscreen } = useTranslation();
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const [chordVisibleVariant, setChordVisibleVariant] =
@@ -140,7 +138,7 @@ export default function ComTools() {
       <div
         className="abs-item abs-full"
         onClick={() =>
-          dispatch(openFullscreenContent(<ChordImagesList />, true))
+          dispatch(openFullscreenContent(<ChordImagesList />, true, true))
         }
       >
         <EvaIcon name="image-outline" className="abs-icon" />
@@ -149,14 +147,14 @@ export default function ComTools() {
       </div>
       <div
         className="abs-item abs-full"
-        onClick={() => dispatch(switchAnchorsVisible())}
+        onClick={() => dispatch(switchIsMiniAnchor())}
       >
         <EvaIcon
-          name={isAnchorsVisible ? "collapse" : "expand"}
+          name={isMiniAnchor ? "expand" : "collapse"}
           className="abs-icon"
         />
         <div className="title">
-          {isAnchorsVisible ? "Свернуть текст" : "Развернуть текст"}
+          {isMiniAnchor ? "Развернуть текст" : "Свернуть текст"}
         </div>
         <div className="abs-action" />
       </div>

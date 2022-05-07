@@ -16,7 +16,7 @@ export interface CmState extends CmStoraged {
     isCmFullscreen: boolean;
     paranjaMode: ParanjaMode;
     isShowMarks: boolean;
-    isAnchorsVisible: boolean;
+    isMiniAnchor: boolean;
     rollModeMarks: boolean;
 
     numComUpdates: number;

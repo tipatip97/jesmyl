@@ -25,6 +25,7 @@ export default function EvaIcon(
           viewBox="0 0 24 24"
           style={{
             transform: `scale(${scale || "var(--icon-scale)"})`,
+            ...props.style
           }}
           className={"eva-icon " + (className || "")}
           fill="var(--svg-color)"

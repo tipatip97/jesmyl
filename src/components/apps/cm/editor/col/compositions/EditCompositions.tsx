@@ -1,7 +1,7 @@
 import { useState } from "react";
 import BrutalItem from "../../../../../../complect/brutal-item/BrutalItem";
+import DebouncedInput from "../../../../../../complect/DebouncedInput";
 import useExer from "../../../../../../complect/exer/useExer";
-import DebouncedSearcher from "../../../base/debounced-searcher/DebouncedSearcher";
 import useCmNav from "../../../base/useCmNav";
 import { cmExer } from "../../../Cm.store";
 import { useCcom } from "../../../col/com/useCcom";
@@ -24,7 +24,10 @@ export default function EditCompositions() {
       headTitle="Песни"
       head={
         !zcat ? null : (
-          <DebouncedSearcher
+          <DebouncedInput
+            icon="search-outline"
+            placeholder="Поиск песен"
+            className="debounced-searcher"
             initialTerm={term}
             onSearch={(term) => zcat.search(term)}
             debounce={500}
@@ -49,7 +52,7 @@ export default function EditCompositions() {
                     com.name !== com.initialName ? ` (${com.initialName})` : ""
                   }`}
                   onClick={() => {
-                    setCcom(com.native);
+                    setCcom(com);
                     goTo("com");
                   }}
                 />

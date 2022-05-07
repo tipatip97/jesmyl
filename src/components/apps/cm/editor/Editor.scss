@@ -5,3 +5,18 @@
     background-color: transparent;
     outline: 0;
 }
+
+.orders-redactor {
+    --svg-color: var(--color--7);
+
+    .order-changes-buttons {
+        >* {
+            margin-right: var(--main-gap);
+        }
+    }
+
+    .inherit-block {
+        opacity: .2;
+        color: var(--color--7);
+    }
+}

@@ -123,7 +123,7 @@ const styleProps = [
 
 export const putCmCompositionsStyles = () => {
   const topStyles: any = {};
-  const newStyles: any = (topStyles["#root .com-ord-list "] = {});
+  const newStyles: any = (topStyles["#root"] = {});
 
   (["headerProps", "textProps"] as (keyof StyleProp)[]).forEach(
     (styleCol: keyof StyleProp) => {

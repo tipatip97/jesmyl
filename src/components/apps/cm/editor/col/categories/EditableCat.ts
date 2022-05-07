@@ -2,29 +2,25 @@ import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { Cat } from "../../../col/cat/Cat";
 import { catTrackers } from "../../../col/cat/Cat.complect";
-import { CatKind, CatTracker, ComWrap, IExportableCat } from "../../../col/cat/Cat.model";
+import { CatTracker, ComWrap, IExportableCat } from "../../../col/cat/Cat.model";
 import { Com } from "../../../col/com/Com";
 import { EditableCom } from "../compositions/EditableCom";
 import { EditableCol } from "../EditableCol";
 
 
-export class EditableCat extends EditableCol<IExportableCat> {
-  native: Cat;
+export class EditableCat extends Cat {
   coms: EditableCom[];
   topComs: EditableCom[];
   initialName: string;
-  stack: number[];
   term: string = '';
   wraps: ComWrap<EditableCom>[] = [];
-  kind: CatKind;
+  col: EditableCol<IExportableCat>;
 
-  constructor(cat: Cat, coms: EditableCom[]) {
-    super(cat.top);
+  constructor(top: IExportableCat, coms: EditableCom[]) {
+    super(top, coms);
+    this.col = new EditableCol(top);
     this.topComs = coms;
-    this.native = new Cat(cat.top, coms.map(com => com.native));
-    this.initialName = cat.name;
-    this.kind = cat.kind;
-    this.stack = mylib.clone(cat.stack);
+    this.initialName = this.name;
 
     this.coms = this.putComs();
   }
@@ -32,11 +28,11 @@ export class EditableCat extends EditableCol<IExportableCat> {
   search(term = this.term, cb?: () => void) {
     if (term) {
       if (term === '@1') {
-        this.wraps = this.coms.filter(com => !com.native.audio.trim()).map(com => ({ com }));
+        this.wraps = this.coms.filter(com => !com.audio.trim()).map(com => ({ com }));
       } else if (term === '@2') {
         this.wraps = this.coms.map(com => {
-          com.nameCorrects(com.name, 'com');
-          com.native.texts?.map((text, texti) => com.blockCorrects(text, 't', texti, 'setText'));
+          com.col.nameCorrects(com.name, 'com');
+          com.texts?.map((text, texti) => com.blockCorrects(text, 'texts', texti, 'setText'));
           return { com };
         });
 
@@ -51,7 +47,7 @@ export class EditableCat extends EditableCol<IExportableCat> {
 
   putComs() {
     const { select } = catTrackers.find(({ id }) => id === this.kind) || {};
-    this.coms = select ? this.topComs.filter(com => select(com.native, this.native)) : [];
+    this.coms = select ? this.topComs.filter(com => select(com, this)) : [];
 
     this.search();
 
@@ -59,15 +55,15 @@ export class EditableCat extends EditableCol<IExportableCat> {
   }
 
   exec<Value>(bag: FreeExecDict<Value>) {
-    this.execCol(bag, 'cat');
+    this.col.execCol(bag, 'cat');
   }
 
   rename(name: string, exec: <Val>(val?: Val) => Val | nil) {
-    this.renameCol(name, 'cat', (correct: string) => exec(this.rename(correct, exec)));
+    this.col.renameCol(name, 'cat', (correct: string) => exec(this.rename(correct, exec)));
   }
 
   clearStack(isNeedClear: boolean) {
-    const value = isNeedClear ? [] : this.native.stack.slice(0);
+    const value = isNeedClear ? [] : this.stack.slice(0);
 
     this.exec({
       action: 'catClearStack',
@@ -98,7 +94,7 @@ export class EditableCat extends EditableCol<IExportableCat> {
       this.putComs();
       onSet && onSet();
     });
-    this.corrects.catSetKind = null;
+    this.col.corrects.catSetKind = null;
   }
 
   toggleComExistence(com: Com | nil, exec?: <Val>(v?: Val) => Val | nil) {

@@ -940,28 +940,18 @@ export class MyLib {
         if (isStatic) parent.style.position = prevPosition;
     }
 
-    clone(obj: any) {
-        const cloned: any[] = [];
+    clone<Val>(what: Val): Val {
+        if (this.isobj(what)) {
+            const newObj: any = this.isArr(what) ? [] : {};
+            for (const whatn in what) newObj[whatn] = this.clone(what[whatn]);
+            return newObj;
+        }
+        return what;
+    }
 
-        const clone = (what: any) => {
-            if (this.isStr(what)) return '' + what;
-            if (this.isNum(what)) return 0 + what;
-            if (this.isBool(what)) return !!what;
-            if (what == null || this.isFunc(what)) return what;
-
-            if (this.isobj(what)) {
-                if (cloned.indexOf(what) > -1) throw Error('Circular clone');
-                cloned.push(what);
-                const newObj: any = this.isArr(what) ? [] : {};
-
-                for (const whatn in what)
-                    newObj[whatn] = clone(what[whatn]);
-
-                return newObj;
-            }
-        };
-
-        return clone(obj);
+    unique(arr: any[], by = (f: any) => f) {
+        const exclusives: any[] = [];
+        return arr.filter(item => exclusives.indexOf(by(item)) === -1 ? exclusives.push(by(item)) : false);
     }
 }
 

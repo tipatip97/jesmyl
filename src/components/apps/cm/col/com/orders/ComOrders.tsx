@@ -1,10 +1,16 @@
-import mylib from "../../../../../../complect/my-lib/MyLib";
 import { ITheOrderProps } from "../order/Order.model";
 import TheOrder from "../order/TheOrder";
 import { IComOrdersProps } from "./ComOrders.model";
 
 export default function ComOrders(props: IComOrdersProps) {
-  const { asOrdComponent, com, fontSize, chordVisibleVariant } = props || {};
+  const {
+    asOrdComponent,
+    com,
+    fontSize,
+    chordVisibleVariant,
+    asHeaderComponent,
+    hideInvisibles,
+  } = props || {};
 
   let currTransPosition = com.transPosition;
 
@@ -22,22 +28,21 @@ export default function ComOrders(props: IComOrdersProps) {
           currTransPosition =
             (com.transPosition || 0) + (orderUnit.fieldValues?.md || 0);
         }
-        const ordProps: ITheOrderProps = mylib.overlap({}, props, {
+        const ordProps: ITheOrderProps = {
           orderUnit,
           orderUniti,
           chordVisibleVariant,
           currTransPosition: trPos,
-        });
-        return mylib
-          .func(asOrdComponent, () => {
-            return (
-              <TheOrder
-                key={`com-${com.wid}-order.${orderUniti}`}
-                {...ordProps}
-              />
-            );
-          })
-          .call(ordProps);
+          asHeaderComponent,
+          com,
+          hideInvisibles,
+        };
+
+        return typeof asOrdComponent === "function" ? (
+          asOrdComponent(ordProps)
+        ) : (
+          <TheOrder key={`com-${com.wid}-order.${orderUniti}`} {...ordProps} />
+        );
       })}
     </div>
   );

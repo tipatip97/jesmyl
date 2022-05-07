@@ -9,6 +9,7 @@ export interface IndexState extends IndexStateError {
     apps: IndexApplication[];
 
     lastUpdate?: number;
+    numModalUpdates: number;
 }
 
 export type IndexErrorScope = keyof RegisterData | 'general';

@@ -14,8 +14,8 @@ export class Com extends BaseNamed<IExportableCom> {
   firstChord?: string;
   index: number = -1;
   initialName: string;
-  private _translationMap?: number[];
-  private _o?: Order[];
+  protected _translationMap?: number[] | null;
+  protected _o?: Order[];
   private _ords?: IExportableOrder[];
   private _chordLabels?: string[][][];
   private _usedChords?: Record<string, string>;
@@ -91,6 +91,7 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   get langi() { return this.getBasicOr('l', 0); }
+  set langi(val: number) { this.setExportable('l', val); }
 
   get langn() { return Com.langs[this.langi || 0]; }
   static get langs() { return ['русский', 'украинский']; }
@@ -278,6 +279,10 @@ export class Com extends BaseNamed<IExportableCom> {
     return this._ords as IExportableOrderTop[];
   }
 
+  orderConstructor(top: IExportableOrderTop) {
+    return new Order(top, this);
+  }
+
   get orders(): Order[] | null { return this._o || this.setOrders(); }
   setOrders() {
     if (!setts) return null;
@@ -331,7 +336,7 @@ export class Com extends BaseNamed<IExportableCom> {
     for (let i = 0; i < val.length; i++) {
       const ord = val[i];
       if (ord == null) {
-        orders.push(new Order({ header: () => '' } as never, this));
+        orders.push(this.orderConstructor({ header: () => '' } as never));
         continue;
       }
       const targetOrd: Order | nil = ord.a == null ? null : orders.find(o => o.unique === ord.a);
@@ -340,10 +345,10 @@ export class Com extends BaseNamed<IExportableCom> {
       const style = getStyle(top);
 
       if (!style) {
-        orders.push(new Order({
+        orders.push(this.orderConstructor({
           source: ord,
           header: () => ''
-        } as never, this));
+        } as never));
         continue;
       }
 
@@ -366,10 +371,10 @@ export class Com extends BaseNamed<IExportableCom> {
 
       setMin(top);
 
-      const newOrder = new Order(top as IExportableOrderTop, this);
+      const newOrder = this.orderConstructor(top as IExportableOrderTop);
       orders.push(newOrder);
 
-      top.header = newOrder.isEmptyHeader || !newOrder.isVisible
+      top.header = newOrder.isEmptyHeader// || !newOrder.isVisible
         ? (bag, isRequired) => isRequired ? header(ord, style, false)(bag) : ''
         : targetOrd && targetOrd.top.header
           ? targetOrd.top.header
@@ -388,7 +393,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
       let isPrevAnchorInheritPlus = top.a != null;
 
-      if (targetOrd && top.a != null && newOrder.isVisible) {
+      if (targetOrd && top.a != null) {//} && newOrder.isVisible) {
         const leadStyle = getStyle(targetOrd.top);
         let anci = (targetOrd.top.sourceIndex || 0) + 1;
         let anc = val[anci];
@@ -406,7 +411,7 @@ export class Com extends BaseNamed<IExportableCom> {
           ancTop.source = anc;
           ancTop.header = top.header;
           ancTop.init = top as IExportableOrderTop;
-          //ancTop.targetOrd = targetOrd;
+          ancTop.targetOrd = targetOrd;
           ancTop.leadOrd = newOrder;
           ancTop.isNextInherit = !!getStyle(val[anci + 1])?.isInherit;
           ancTop.anchorInheritIndex = anchorInheritIndex++;
@@ -419,7 +424,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
           setMin(ancTop);
 
-          const newAncOrd = new Order(ancTop as IExportableOrderTop, this);
+          const newAncOrd = this.orderConstructor(ancTop as IExportableOrderTop);
           orders.push(newAncOrd);
 
           anc = val[++anci];
@@ -431,38 +436,35 @@ export class Com extends BaseNamed<IExportableCom> {
       let next = val[nexti];
       let nextStyle = getStyle(next);
 
-      if (newOrder.isVisible)
-        while (nextStyle?.isInherit) {
-          const nextTop = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, next);
+      while (nextStyle?.isInherit) {
+        const nextTop = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, next);
 
-          nextTop.isInherit = true;
-          nextTop.style = nextStyle;
-          // nextTop.com = this;
-          //nextTop.targetOrd = targetOrd;
-          //nextTop.leadOrd = leadOrd;
-          nextTop.prev = prev;
-          nextTop.init = top as IExportableOrderTop;
-          nextTop.isNextInherit = !!getStyle(val[nexti + 1])?.isInherit;
-          nextTop.isPrevAnchorInheritPlus = isPrevAnchorInheritPlus;
-          nextTop.header = top.header;
-          nextTop.source = next;
-          nextTop.viewIndex = viewIndex++;
-          nextTop.sourceIndex = val.indexOf(next);
-          // nextTop.originIndex = val.indexOf(next);
-          nextTop.headClassName = setts.query(style.name, 'headerProps', ' ', nextStyle.name);
-          nextTop.textClassName = setts.query(style.name, 'textProps', ' ', nextStyle.name);
+        nextTop.isInherit = true;
+        nextTop.style = nextStyle;
+        nextTop.leadOrd = newOrder;
+        nextTop.prev = prev;
+        nextTop.init = top as IExportableOrderTop;
+        nextTop.isNextInherit = !!getStyle(val[nexti + 1])?.isInherit;
+        nextTop.isPrevAnchorInheritPlus = isPrevAnchorInheritPlus;
+        nextTop.header = top.header;
+        nextTop.source = next;
+        nextTop.viewIndex = viewIndex++;
+        nextTop.sourceIndex = val.indexOf(next);
+        // nextTop.originIndex = val.indexOf(next);
+        nextTop.headClassName = setts.query(style.name, 'headerProps', ' ', nextStyle.name);
+        nextTop.textClassName = setts.query(style.name, 'textProps', ' ', nextStyle.name);
 
-          setMin(nextTop);
+        setMin(nextTop);
 
-          const newNextOrd = new Order(nextTop as IExportableOrderTop, this);
-          orders.push(newNextOrd);
+        const newNextOrd = this.orderConstructor(nextTop as IExportableOrderTop);
+        orders.push(newNextOrd);
 
-          if (prev) prev.top.next = newNextOrd;
-          prev = newNextOrd;
+        if (prev) prev.top.next = newNextOrd;
+        prev = newNextOrd;
 
-          next = val[++nexti];
-          nextStyle = getStyle(next);
-        }
+        next = val[++nexti];
+        nextStyle = getStyle(next);
+      }
     };
 
     this._o = orders;

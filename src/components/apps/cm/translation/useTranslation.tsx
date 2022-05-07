@@ -95,7 +95,7 @@ export default function useTranslation() {
       currWin?.close();
       if (ret.isShowFullscreen) {
         goBack();
-        document.exitFullscreen();
+        if (document.fullscreenElement) document.exitFullscreen();
       }
     },
     openTranslations: () => {

@@ -6,12 +6,12 @@ export interface ModalType {
 }
 
 export interface ModalConfigBase {
-    title?: FuncableVal<string>;
+    title?: FuncableVal<ReactNode>;
     description?: FuncableVal<ReactNode>;
     closeOnClick: boolean;
     theme: string;
     withoutCloseButton: boolean;
-    onCloseButtonClick: (config: ModalConfig) => boolean;
+    onCloseAcion: (config: ModalConfig) => boolean | void;
     setError: (err: string) => void;
     closeModal: () => void;
     getInput: (index?: number) => Partial<ModalConfigInput> | und;
@@ -28,10 +28,10 @@ export interface ModalConfig extends ModalConfigBase {
     buttons?: (ModalConfigButton | string)[] | null;
 }
 
-type FuncableVal<Value, Config = ModalConfig> = Value | ((config: Config) => Value);
+type FuncableVal<Value, Config = ModalConfig> = null | Value | ((config: Config) => Value);
 
 export interface ModalConfigButton {
-    title?: FuncableVal<string>;
+    title?: FuncableVal<ReactNode>;
     className?: string;
     onClick?: (config: ModalConfig) => void;
     closable?: FuncableVal<boolean>;
@@ -43,13 +43,12 @@ export interface ModalConfigButton {
 }
 
 export interface ModalConfigInput extends ModalConfig {
-    title: string;
     placeholder: string;
     value: string;
-    style: CSSProperties;
+    style: FuncableVal<CSSProperties>;
     className: string;
     hidden: FuncableVal<boolean>;
-    disabled: boolean;
+    disabled: FuncableVal<boolean>;
 
     rows: number;
 
@@ -72,6 +71,7 @@ export interface ModalConfigInput extends ModalConfig {
 export interface TheModalInputProps {
     // второй параметр - уникальный ключ инпута
     config: Partial<ModalConfigInput> | [Partial<ModalConfigInput>, (number | string)?];
+    forceUpdate: () => void;
 }
 
 export interface TheModalButtonProps {

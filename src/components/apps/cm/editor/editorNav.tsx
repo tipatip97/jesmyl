@@ -6,14 +6,19 @@ import {
 import EditCategories from "./col/categories/EditCategories";
 import EditCategory from "./col/categories/EditCategory";
 import CategoryBinds from "./col/compositions/complect/category-binds/CategoryBinds";
+import ChordApplicationsRedactor from "./col/compositions/complect/chord-applications/ChordApplicationsRedactor";
 import EditableCompositionMain from "./col/compositions/complect/main/EditableCompositionMain";
+import OrdersRedactor from "./col/compositions/complect/orders/OrdersRedactor";
 import TextsChordsRedactor from "./col/compositions/complect/texts_chords-redactor/TextsChordsRedactor";
+import ComOnTranslations from "./col/compositions/complect/translations/ComOnTranslations";
 import EditComposition from "./col/compositions/EditComposition";
 import EditCompositions from "./col/compositions/EditCompositions";
+import ComRepeats from "./col/compositions/repeats/ComRepeats";
 import Editor from "./Editor";
 
 export const editCompositionNavs: INavigationRouteChildItem<{
-  icon: EvaIconName;
+  icon?: EvaIconName;
+  iconText?: string;
 }>[] = [
   {
     phase: ["main"],
@@ -23,10 +28,31 @@ export const editCompositionNavs: INavigationRouteChildItem<{
     },
   },
   {
+    phase: ["applications"],
+    node: <ChordApplicationsRedactor />,
+    data: {
+      icon: "umbrella",
+    },
+  },
+  {
+    phase: ["orders"],
+    node: <OrdersRedactor />,
+    data: {
+      icon: "list",
+    },
+  },
+  {
     phase: ["texts"],
-    node: <TextsChordsRedactor />,
+    node: <TextsChordsRedactor ccoln="texts" />,
     data: {
       icon: "text",
+    },
+  },
+  {
+    phase: ["chords"],
+    node: <TextsChordsRedactor ccoln="chords" />,
+    data: {
+      icon: "music",
     },
   },
   {
@@ -34,6 +60,20 @@ export const editCompositionNavs: INavigationRouteChildItem<{
     node: <CategoryBinds />,
     data: {
       icon: "book-open",
+    },
+  },
+  {
+    phase: ["repeats"],
+    node: <ComRepeats />,
+    data: {
+      iconText: "//",
+    },
+  },
+  {
+    phase: ["translations"],
+    node: <ComOnTranslations />,
+    data: {
+      icon: "monitor",
     },
   },
 ];

@@ -25,18 +25,25 @@ export default function EditComposition({
         <>
           <div className="flex around margin-gap">
             {editCompositionNavs.map(
-              ({ data: { icon } = {}, phase: [phase] }) => {
+              ({ data: { icon, iconText } = {}, phase: [phase] }) => {
                 return (
-                  <EvaIcon
+                  <span
                     key={`editCompositionNavs ${phase}`}
                     className="pointer"
-                    name={
-                      `${icon}${
-                        phase === currentChildPhase ? "" : "-outline"
-                      }` as never
-                    }
                     onClick={() => goTo(phase, relativePoint)}
-                  />
+                  >
+                    {icon ? (
+                      <EvaIcon
+                        name={
+                          `${icon}${
+                            phase === currentChildPhase ? "" : "-outline"
+                          }` as never
+                        }
+                      />
+                    ) : (
+                      iconText
+                    )}
+                  </span>
                 );
               }
             )}

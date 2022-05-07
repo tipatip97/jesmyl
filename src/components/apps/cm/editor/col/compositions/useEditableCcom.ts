@@ -5,5 +5,7 @@ import { useEditableCcat } from "../categories/useEditableCcat";
 export function useEditableCcom() {
     const zcat = useEditableCcat(0);
     const [ccom] = useCcom();
-    return useMemo(() => zcat && ccom && zcat.coms.find(com => com.wid === ccom.wid), [ccom, zcat]);
+    return useMemo(() => {
+        return zcat && ccom && zcat.coms.find(com => com.wid === ccom.wid);
+    }, [ccom, zcat]);
 }

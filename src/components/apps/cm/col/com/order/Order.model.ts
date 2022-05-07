@@ -1,8 +1,8 @@
-import { Com } from "../Com";
-import { StyleProp } from "../../../base/settings/StyleProp";
-import { Order } from "./Order";
 import { ReactNode } from "react";
+import { StyleProp } from "../../../base/settings/StyleProp";
 import { ChordVisibleVariant } from "../../../Cm.model";
+import { Com } from "../Com";
+import { Order } from "./Order";
 
 
 export interface IExportableOrder {
@@ -14,7 +14,7 @@ export interface IExportableOrder {
     o?: num; // Открыто в полном режиме
     p?: number[][]; // Позиции аккордов
     r?: OrderRepeats | null; // Повторения
-    s: string; // Тип блока
+    s?: string; // Тип блока
     t?: number | null; // Текстовый блок
     u?: number; // Целевой айди
     v?: num; // Видимость блока
@@ -24,10 +24,22 @@ export interface IExportableOrder {
 
 export type INewExportableOrder = Omit<IExportableOrder, 'w' | 'originWid'>;
 
-export type EditableOrderRegion = [number | null, number | null, number | null, number | null, Order | undefined, Order | undefined, number[] | null, string | null, string, string?, number?];
+export type EditableOrderRegion<Ord extends Order> = {
+    startLinei: number | null,
+    startWordi: number | null,
+    endLinei: number | null,
+    endWordi: number | null,
+    startOrd: Ord | undefined,
+    endOrd: Ord | undefined,
+    others: number[] | null,
+    key: string | null,
+    startKey: string,
+    endKey?: string,
+    count?: number
+};
 
 export interface IExportableOrderFieldValues {
-    md?: num; // Признак модулирующего блока
+    md?: number; // Значение модуляции
 }
 
 export type SpecielOrderRepeats = Record<string, number>;
@@ -67,6 +79,7 @@ export interface IExportableOrderTop extends IExportableOrder {
 }
 
 export interface OrderTopHeaderBag {
+    isEdit?: boolean;
     isTexted?: boolean;
     r?: string;
 }
@@ -88,13 +101,45 @@ export interface OrderField {
 }
 
 export interface ITheOrderProps {
-    asLineComponent: () => ReactNode;
-    isHideAnchor?: boolean;
+    asLineComponent?: (props: IComLineProps) => ReactNode;
+    asHeaderComponent?: (props: IComOrdHeaderProps) => ReactNode;
+    isMiniAnchor?: boolean;
     orderUnit: Order;
     orderUniti: number;
-    currTransPosition: number;
+    currTransPosition?: number;
     com: Com;
     chordVisibleVariant: ChordVisibleVariant;
+    hideInvisibles?: boolean;
 }
 
+export interface IComOrdHeaderProps extends IComOrdProps {
+    headerNode: ReactNode;
+}
+
+export interface IComOrdProps {
+    chordedOrd: boolean;
+    orderUnit: Order;
+    orderUniti: number;
+    isJoinLetters: boolean;
+    com: Com;
+}
+
+export interface IComLineProps extends IComOrdProps {
+    textLine: string;
+    textLinei: number;
+    textLines: number;
+    wordCount: number;
+    words: string[];
+    onClick?: React.MouseEventHandler<HTMLSpanElement>;
+    setWordClass?: (props: IComLineProps & { wordi: number; }) => string;
+}
+
+export interface IComLinePropsBag {
+    ord: Order;
+    linei: number;
+    wordi: number;
+    word: string;
+    words: number;
+    lines: number;
+}
 

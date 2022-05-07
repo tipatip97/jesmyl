@@ -13,6 +13,7 @@ const initialState: IndexState = {
   lastUpdate: indexStorage.get("lastUpdate"),
   auth: indexStorage.get('auth'),
   apps: [],
+  numModalUpdates: 0,
 };
 
 export const slice = createSlice({
@@ -37,6 +38,9 @@ export const slice = createSlice({
       state.errorMessage = action.payload.errorMessage;
       state.errorScope = action.payload.errorScope;
     },
+    riseUpModalUpdates: (state) => {
+      state.numModalUpdates++;
+    },
   },
 });
 
@@ -46,6 +50,7 @@ export const {
   setCurrentApp,
   setApps,
   setAuthData,
+  riseUpModalUpdates,
 } = slice.actions;
 export default slice.actions;
 

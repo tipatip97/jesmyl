@@ -1,10 +1,10 @@
 import EditContainerCorrectsInformer from "../../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
-import useEditableCols from "../../../useEditableCols";
+import { useEditableCols } from "../../../useEditableCols";
 import { useEditableCcom } from "../../useEditableCcom";
 import useEditCompositionCategoryBinds from "./useEditComposition";
 
 export default function CategoryBinds() {
-  const cols = useEditableCols();
+  const [cols] = useEditableCols();
   const ccom = useEditableCcom();
   const { setNativeNumber, removeNativeNumber, toggleComExistence } =
     useEditCompositionCategoryBinds(ccom);
@@ -25,13 +25,13 @@ export default function CategoryBinds() {
               value={ccom.refs?.[cat.wid] || ""}
               onChange={(event) => {
                 if (event.target.value.match(/\D/)) return;
-                setNativeNumber(cat.native, event.target.value);
+                setNativeNumber(cat, event.target.value);
               }}
             />
             {ccom.refs?.[cat.wid] != null ? (
               <span
                 className="pointer"
-                onClick={() => removeNativeNumber(cat.native)}
+                onClick={() => removeNativeNumber(cat)}
               >
                 {" " +
                   (isNaN(ccom.refs?.[cat.wid])
@@ -58,7 +58,7 @@ export default function CategoryBinds() {
             {ccom.refs?.[cat.wid] != null ? (
               <span
                 className="pointer"
-                onClick={() => removeNativeNumber(cat.native)}
+                onClick={() => removeNativeNumber(cat)}
               >
                 {" " +
                   (isNaN(ccom.refs?.[cat.wid])

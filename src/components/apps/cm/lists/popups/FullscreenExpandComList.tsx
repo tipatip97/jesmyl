@@ -18,7 +18,7 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
                 com={com}
                 fontSize={fontSize}
                 chordVisibleVariant={2}
-                isHideAnchor={false}
+                isMiniAnchor={false}
               />
             </div>
           ))}

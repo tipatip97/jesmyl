@@ -1,0 +1,12 @@
+.phase-cm-editor-container {
+    .com-order-block {
+        &.invisible {
+
+            *,
+            ::after,
+            ::before {
+                text-decoration: line-through;
+            }
+        }
+    }
+}

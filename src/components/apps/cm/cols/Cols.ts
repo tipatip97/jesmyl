@@ -8,8 +8,6 @@ import { ICols, IExportableCols } from "./Cols.model";
 export class Cols extends Base<IExportableCols> implements ICols {
   coms: Com[] = [];
   cats: Cat[] = [];
-  ccat?: Cat;
-  ccom?: Com;
 
   constructor(cols: IExportableCols, prevComs?: Com[]) {
     super(cols);

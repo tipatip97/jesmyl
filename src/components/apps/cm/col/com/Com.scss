@@ -38,20 +38,10 @@
     padding-top: .06em;
     transition: padding .2s;
 
-    .song-part {
-        position: relative;
-        margin-top: 1em;
-        padding-left: 1em;
-        line-height: 2.3em;
-        white-space: nowrap;
-
-        &.without-chords {
-            line-height: 1.5em;
-        }
-
-        .song-line {
-            display: list-item;
-            list-style: none;
+    
+    .com-order-block {
+        &.invisible {
+            display: none;
         }
     }
 
@@ -69,38 +59,7 @@
     position: relative;
     display: inline-block;
     line-height: 1;
-    cursor: pointer;
     white-space: pre;
-
-    &:not(.collapsed-com) {
-        &.mark-origin-letter {
-
-            &:first-letter,
-            &.spaced-word:after {
-                background-color: rgba(0, 255, 2, .3);
-            }
-        }
-
-        &.mark-driven-letter {
-
-            &:first-letter,
-            &.spaced-word:after {
-                background-color: rgba(255, 209, 0, .3);
-            }
-        }
-    }
-
-    &.collapsed-com {
-
-        &.mark-origin-letter,
-        &.mark-driven-letter {
-
-            &:first-letter,
-            &.spaced-word:after {
-                background-color: rgba(0, 209, 200, .3);
-            }
-        }
-    }
 
     &:not(.pre):not(.post):before {
         left: 0;

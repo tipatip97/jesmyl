@@ -2,6 +2,8 @@
     --load-indicated-content-spinner-size: 100px;
     --load-indicated-content-spinner-dot-size: calc(var(--load-indicated-content-spinner-size) / 7);
     --load-indicated-content-spinner-color: var(--text-color);
+    
+    height: 100%;
 
     &.initial-state {
         >.load-indicated-content-spinner-container {

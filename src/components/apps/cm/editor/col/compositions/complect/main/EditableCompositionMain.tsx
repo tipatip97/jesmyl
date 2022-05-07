@@ -1,3 +1,4 @@
+import TheCom from "../../../../../col/com/TheCom";
 import EditContainerCorrectsInformer from "../../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { useEditableCcom } from "../../useEditableCcom";
 import useEditCompositionMain from "./useEditCompositionMain";
@@ -19,6 +20,7 @@ export default function EditableCompositionMain() {
           />
         </EditContainerCorrectsInformer>
       }
+      <TheCom com={ccom} hideInvisibles />
     </>
   );
 }

@@ -1,11 +1,10 @@
 import { ReactNode } from "react";
-import { useDispatch } from "react-redux";
 import mylib from "../my-lib/MyLib";
 import { onActionClick } from "./Modal";
 import {
   ModalConfig,
   ModalConfigInput,
-  TheModalInputProps
+  TheModalInputProps,
 } from "./Modal.model";
 import modalService from "./Modal.service";
 
@@ -15,8 +14,6 @@ export default function ModalInput(topProps: TheModalInputProps) {
   if (Array.isArray(topProps.config)) [input, inputi] = topProps.config;
   else [input, inputi] = [topProps.config, 0];
 
-  const dispatch = useDispatch();
-  const forceUpdate = () => {};
   const config = modalService.current();
 
   if (input == null) return null;
@@ -49,7 +46,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
         if (input.onInput) {
           input.onInput(mylib.overlap({ input, event }, props));
         }
-        forceUpdate();
+        topProps.forceUpdate();
       },
       onClick: (event: Event) => {
         try {
@@ -57,11 +54,12 @@ export default function ModalInput(topProps: TheModalInputProps) {
             { input, event },
             props
           );
+          if (input.closable === false) event.stopPropagation();
 
           const onClick = () => {
             if (input.onClick) {
               input.onClick(clickConfig);
-              forceUpdate();
+              topProps.forceUpdate();
             }
           };
 
@@ -72,7 +70,6 @@ export default function ModalInput(topProps: TheModalInputProps) {
             config as Partial<ModalConfig>
           );
         } catch (error) {
-          // mylib.dcconsl(error.stack);
           throw error;
         }
       },
@@ -95,7 +92,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
 
   return (
     <label
-      className="app-modal-body-input-list-item"
+      className="app-modal-body-input-list-item pointer"
       hidden={asFunc(input.hidden)}
     >
       {input.title && (

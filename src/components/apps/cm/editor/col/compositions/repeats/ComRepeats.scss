@@ -1,0 +1,68 @@
+.region-editor-block {
+    position: relative;
+
+    .com-word {
+        cursor: pointer;
+        
+        &.inactive-word {
+            color: grey;
+            pointer-events: none;
+        }
+    }
+
+    .float-button-panel {
+        --size: 1.2em;
+
+        position: absolute;
+        top: calc(var(--y) * 1px - var(--size) * 1.2);
+        left: calc(var(--x) * 1px);
+
+        display: flex;
+        transition: .5s;
+
+        &.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: var(--size);
+            height: var(--size);
+            border-radius: .3em;
+            margin-left: .2em;
+            opacity: 1;
+            cursor: pointer;
+
+            &.close {
+                --svg-color: var(--color--1);
+
+                background: var(--color--6);
+            }
+
+            &.remove {
+                --svg-color: white;
+
+                background: var(--color--ko);
+            }
+
+            &.flag {
+                --svg-color: var(--color--6);
+
+                background: var(--color--2);
+            }
+
+            &.numeric {
+                background: var(--color--3);
+                color: var(--color--1);
+
+                &.active {
+                    background: var(--color--7);
+                }
+            }
+        }
+    }
+}
