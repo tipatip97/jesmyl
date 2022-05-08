@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
+import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.model";
 import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
-import { ChordVisibleVariant, CmRollMode, CmState } from "./Cm.model";
+import { ChordVisibleVariant, CmRollMode, CmState, CmStorage } from "./Cm.model";
 import { IExportableMeeting } from "./lists/meetings/Meetings.model";
 
 export const cmExer = new Exer('cm', cmStorage);
@@ -43,7 +43,7 @@ export const slice = createSlice({
   name: "cm",
   initialState,
   reducers: {
-    setCmRoute: (state, action: PayloadAction<{ route: FreeNavRoute }>) => {
+    setCmRoute: (state, action: PayloadAction<NavigationStorage<CmStorage>>) => {
       state.route = action.payload.route;
     },
     selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {

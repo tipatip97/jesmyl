@@ -4,13 +4,13 @@ import { RootState } from "../../shared/store";
 import { JStorage } from "../JStorage";
 import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
-import { FreeNavRoute, NavPhase, NavPhasePoint, UseNavAction } from "./Navigation.model";
+import { FreeNavRoute, NavigationStorage, NavPhase, NavPhasePoint, UseNavAction } from "./Navigation.model";
 
 
-export default function useNavConfigurer<Storage extends { route: FreeNavRoute }>(
+export default function useNavConfigurer<T, Storage extends NavigationStorage<T>>(
     actions: UseNavAction[],
-    setPhaseAction: (payload: { route: FreeNavRoute }) => PayloadAction<{ route: FreeNavRoute }>,
-    nav: NavigationConfig,
+    setPhaseAction: (payload: NavigationStorage<T>) => PayloadAction<NavigationStorage<T>>,
+    nav: NavigationConfig<Storage, Storage>,
     storage: JStorage<Storage>,
     routeSelector: (state: RootState) => FreeNavRoute,
 ) {
@@ -23,7 +23,7 @@ export default function useNavConfigurer<Storage extends { route: FreeNavRoute }
         route: useSelector(routeSelector),
         navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
         navigate: (route: FreeNavRoute, isPreventSave?: boolean) => {
-            dispatch(setPhaseAction({ route }));
+            dispatch(setPhaseAction({ route } as never));
             if (isPreventSave) return;
             storage.set('route', route);
         },

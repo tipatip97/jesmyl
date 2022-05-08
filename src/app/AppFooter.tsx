@@ -1,6 +1,9 @@
 import EvaIcon from "../complect/eva-icon/EvaIcon";
-import { INavigationConfig, NavPhasePoint } from "../complect/nav-configurer/Navigation.model";
-import { cmExer } from "../components/apps/cm/Cm.store";
+import { ExerStorage } from "../complect/exer/Exer.model";
+import {
+  INavigationConfig,
+  NavPhasePoint,
+} from "../complect/nav-configurer/Navigation.model";
 import useIndexNav from "../components/index/complect/useIndexNav";
 import navConfigurers from "../shared/navConfigurers";
 import { AppName } from "./App.model";
@@ -15,15 +18,15 @@ export default function AppFooter({ app }: { app: AppName }) {
 
   const [indexPhase] = indexRoute || [];
 
-  const putItems = (
-    nav: INavigationConfig,
+  const putItems = <Storage extends ExerStorage>(
+    nav: INavigationConfig<Storage>,
     onClick: (phase: NavPhasePoint) => void,
     setIsActive: (phase: NavPhasePoint) => boolean
   ) => {
     return nav.routes.map((props) => {
       if (!props) return null;
       const { phase, title, icon, accessRule } = props;
-      if (accessRule != null && !cmExer.isActionAccessed(accessRule))
+      if (accessRule != null && nav.exer && !nav.exer.isActionAccessed(accessRule))
         return null;
       const isActive = setIsActive(phase);
 

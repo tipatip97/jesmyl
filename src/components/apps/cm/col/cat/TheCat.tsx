@@ -39,29 +39,29 @@ export default function TheCat({ all }: { all?: boolean }) {
   };
 
   return (
-    <PhaseCmContainer
-      topClass="cat-content"
-      withoutBackButton={all}
-      head={
-        !cat ? null : (
-          <DebouncedInput
-            icon="search-outline"
-            placeholder="Поиск песен"
-            className="debounced-searcher"
-            initialTerm={term}
-            onSearch={(term) => cat.search(term)}
-            debounce={500}
-            onDebounced={() => {
-              if (listRef.current) listRef.current.scrollTop = 0;
-            }}
-            onTermChange={(term) => setTerm(term)}
-          />
-        )
-      }
-      contentRef={listRef}
-      content={
-        <LoadIndicatedContent isLoading={!cat} onLoad={scrollToCurrent}>
-          {!cat ? null : (
+    <LoadIndicatedContent isLoading={!cat} onLoad={scrollToCurrent}>
+      <PhaseCmContainer
+        topClass="cat-content"
+        withoutBackButton={all}
+        head={
+          !cat ? null : (
+            <DebouncedInput
+              icon="search-outline"
+              placeholder="Поиск песен"
+              className="debounced-searcher"
+              initialTerm={term}
+              onSearch={(term) => cat.search(term)}
+              debounce={500}
+              onDebounced={() => {
+                if (listRef.current) listRef.current.scrollTop = 0;
+              }}
+              onTermChange={(term) => setTerm(term)}
+            />
+          )
+        }
+        contentRef={listRef}
+        content={
+          !cat ? null : (
             <>
               <div
                 className={`later-com-list ${
@@ -100,9 +100,9 @@ export default function TheCat({ all }: { all?: boolean }) {
                 ))}
               </div>
             </>
-          )}
-        </LoadIndicatedContent>
-      }
-    />
+          )
+        }
+      />
+    </LoadIndicatedContent>
   );
 }

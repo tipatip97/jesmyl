@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 import { EvaIconName } from "../eva-icon/EvaIcon";
+import { Exer } from "../exer/Exer";
+import { ExerStorage } from "../exer/Exer.model";
 
 export type SetPhasePayload<Phase, SpecialPhase> = Phase | nil | [Phase | nil, SpecialPhase | nil, boolean?];
 
@@ -14,11 +16,16 @@ export type FooterItem<Phase> = null | {
     accessRule?: string;
 }
 
-export interface INavigationConfig {
+export type NavigationStorage<T> = T & ExerStorage & {
+    route: FreeNavRoute;
+}
+
+export interface INavigationConfig<Storage extends ExerStorage> {
     root: (content: ReactNode) => JSX.Element;
     // переход в данную фазу будет при навигации назад, и пустом роуте
     rootPhase: NavPhase | null;
     routes: INavigationRouteRootItem[];
+    exer?: Exer<Storage>;
 }
 
 export interface INavigationRouteChildItem<Data extends Record<string, any> | und = Record<string, any>> {

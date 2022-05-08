@@ -1,16 +1,19 @@
 import { ReactNode } from "react";
-import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteRootItem, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
+import { Exer } from "../exer/Exer";
+import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteRootItem, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
 
-export class NavigationConfig implements INavigationConfig {
+export class NavigationConfig<T, Storage extends NavigationStorage<T>> implements INavigationConfig<Storage> {
     root: (content: ReactNode) => JSX.Element;
     rootPhase: NavPhase | null;
     routes: INavigationRouteRootItem[];
+    exer?: Exer<Storage>;
 
-    constructor({ routes, root, rootPhase }: INavigationConfig) {
+    constructor({ routes, root, rootPhase, exer }: INavigationConfig<Storage>) {
         this.root = root;
         this.rootPhase = rootPhase;
         this.routes = routes;
         this.checkRoutes(routes);
+        this.exer = exer;
     }
 
     checkRoutes(routes: INavigationRouteRootItem[] | INavigationRouteChildItem[], phases: NavPhase[] = []) {
@@ -135,7 +138,8 @@ export class NavigationConfig implements INavigationConfig {
             }, null);
 
             return item
-                ? typeof item.node === 'function'
+                ? (item.accessRule != null && (this.exer == null || this.exer.isActionAccessed(item.accessRule)))
+                    && typeof item.node === 'function'
                     ? item.node({
                         outletContent: findContent(throwRoute, items),
                         relativePoint: item.phase,

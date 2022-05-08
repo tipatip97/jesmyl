@@ -65,6 +65,7 @@ export const editCompositionNavs: INavigationRouteChildItem<{
   {
     phase: ["repeats"],
     node: <ComRepeats />,
+    accessRule: 'canWatch',
     data: {
       iconText: "//",
     },

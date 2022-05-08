@@ -1,10 +1,15 @@
 import { NavigationConfig } from "../../../../complect/nav-configurer/Navigation";
-import { INavigationRouteChildItem, UseNavAction } from "../../../../complect/nav-configurer/Navigation.model";
+import {
+  INavigationRouteChildItem,
+  NavigationStorage,
+  UseNavAction,
+} from "../../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
 import { cmStorage } from "../../../../shared/jstorages";
 import { RootState } from "../../../../shared/store";
 import CmApplication from "../Cm";
-import { setCmRoute } from "../Cm.store";
+import { CmStorage } from "../Cm.model";
+import { cmExer, setCmRoute } from "../Cm.store";
 import TheCat from "../col/cat/TheCat";
 import TheComposition from "../col/com/TheComposition";
 import { editorNav } from "../editor/editorNav";
@@ -30,6 +35,7 @@ const comNext = [comNav, translationNav];
 const navigation = new NavigationConfig({
   root: (content) => <CmApplication content={content} />,
   rootPhase: "all",
+  exer: cmExer,
   routes: [
     {
       icon: "list",
@@ -78,7 +84,7 @@ export default function useCmNav() {
 }
 
 const useCmNavConfigurer = () =>
-  useNavConfigurer(
+  useNavConfigurer<CmStorage, NavigationStorage<CmStorage>>(
     actions,
     setCmRoute,
     navigation,
@@ -86,4 +92,3 @@ const useCmNavConfigurer = () =>
     (state: RootState) => state.cm.route
   );
 export { useCmNavConfigurer };
-

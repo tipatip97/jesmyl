@@ -5,8 +5,8 @@ import { useTunerNavConfigurer } from "../components/apps/tuner/useTunerNav";
 import { useIndexNavConfigurer } from "../components/index/complect/useIndexNav";
 
 const navConfigurers: Record<AppName, () => ReturnType<typeof useNavConfigurer>> = {
-    cm: useCmNavConfigurer,
-    index: useIndexNavConfigurer,
-    tuner: useTunerNavConfigurer,
+    cm: useCmNavConfigurer as never,
+    index: useIndexNavConfigurer as never,
+    tuner: useTunerNavConfigurer as never,
 };
 export default navConfigurers;
