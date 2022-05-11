@@ -138,15 +138,16 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
             }, null);
 
             return item
-                ? (item.accessRule != null && (this.exer == null || this.exer.isActionAccessed(item.accessRule)))
-                    && typeof item.node === 'function'
-                    ? item.node({
-                        outletContent: findContent(throwRoute, items),
-                        relativePoint: item.phase,
-                        currentChildPhase: throwRoute[0],
-                        data: item.data,
-                    })
-                    : item.node
+                ? (item.accessRule == null || (this.exer != null && this.exer.isActionAccessed(item.accessRule)))
+                    ? typeof item.node === 'function'
+                        ? item.node({
+                            outletContent: findContent(throwRoute, items),
+                            relativePoint: item.phase,
+                            currentChildPhase: throwRoute[0],
+                            data: item.data,
+                        })
+                        : item.node
+                    : null
                 : null;
         };
 
