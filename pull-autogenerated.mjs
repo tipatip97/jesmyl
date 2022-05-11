@@ -8,9 +8,16 @@ import fetch from 'node-fetch';
     ['apps/cm', 'settings'],
     // ['apps/cm', 'cm-execs'],
     ['apps/cm', 'chords'],
-].forEach(([path, name]) => {
-    fetch(`https://jesmyl.space/${path}/${name}.json`)
-        .then(r => r.json())
-        .then(content => file_system.writeFile(`./back/${path}/+case/${name}.json`, JSON.stringify(content, null, 2), () => console.log(`File ${path}/${name}.json rewrited!`)))
+    // ['S', 'main', 'css'],
+].forEach(([path, name, ext = 'json']) => {
+    fetch(`https://jesmyl.space/${path}/${name}.${ext}`)
+        .then(r => ext === 'json' ? r.json() : r.text())
+        .then(content =>
+            file_system.writeFile(`./back/${path}/+case/${name}.json`,
+                ext === 'json'
+                    ? JSON.stringify(content, null, 2)
+                    : content, () => console.log(`File ${path}/${name}.${ext} rewrited!`)
+            )
+        )
         .catch(err => console.log(err));
 });
