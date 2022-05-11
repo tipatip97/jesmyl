@@ -6,6 +6,7 @@ import { exec } from 'child_process';
 
 const filename = `tmp-build-archive.zip`;
 const passphrase = (process.argv.find(param => param.startsWith('--pass=')) || '').split('=')[1] || 'default';
+const isRelease = process.argv.find(param => param === '--release');
 
 const archive = (isFront) => {
     const archive = archiver('zip');
@@ -18,7 +19,7 @@ const archive = (isFront) => {
     archive.on('end', () => {
         const body = new FormData();
         body.append(0, file_system.createReadStream(filename));
-        fetch(`https://jesmyl.space/bomba.php?pass=${passphrase}&isFront=${isFront ? '1' : ''}`, {
+        fetch(`https://jesmyl.space/bomba.php?pass=${passphrase}&isFront=${isFront ? '1' : ''}&isRelease=${isRelease ? 1 : ''}`, {
             method: 'POST',
             body
         }).then(r => r.json()).then(r => {

@@ -43,7 +43,7 @@ function authorize($auth)
     ];
   }
 
-  $isRegister = isset($auth['fio']) && isset($auth['rpassw']);
+  $isRegister = isset($auth['rpassw']);
   setGlob('userLogin', $login);
 
   if (!is_dir($authDir))
@@ -99,7 +99,7 @@ function authorize($auth)
       ];
     }
   } else {
-      $loginAt = getAt($authDir, $login, $passw);
+    $loginAt = getAt($authDir, $login, $passw);
     if ($passw && is_file($passwFile)) {
       $auth = organizeUp(file_get_contents($passwFile), $userOrganizeOrder);
       $level = $auth['level']['general'];

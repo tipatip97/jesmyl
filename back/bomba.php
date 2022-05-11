@@ -2,6 +2,10 @@
 
 $backendPath = './__tmp__backend__folder__';
 
+$releasePaths = [
+  './S/authorizator.php',
+];
+
 if ($_GET['pass'] !== 'zerou') {
   echo '{"ok":false, "msg":"incorrect passphrase"}';
 } else {
@@ -58,8 +62,11 @@ if ($_GET['pass'] !== 'zerou') {
   ], JSON_UNESCAPED_UNICODE);
 }
 
-function updateEdited($path, &$updated, &$created, $prevFilepath = '')
+function updateEdited($path, &$updated, &$created, $prevFilepath = '', $topReleasePath = '')
 {
+  global $releasePaths;
+  $isRelease = $_GET['isRelease'];
+
   foreach (scandir($path) as $fname) {
     if ($fname === '.' || $fname === '..') continue;
 
@@ -68,22 +75,26 @@ function updateEdited($path, &$updated, &$created, $prevFilepath = '')
     if ($fname[0] === '+') continue;
 
     $prevFpath = (!$prevFilepath ? './' : $prevFilepath . '/') . $fname;
+    $releasePath = (!$topReleasePath ? './release/' : $topReleasePath . '/') . $fname;
+    $comparePath = $isRelease ? $releasePath : $prevFpath;
 
     if (is_dir($filepath)) {
 
-      if (!is_dir($prevFpath)) {
-        mkdir($prevFpath);
-        $created[] = $prevFpath . '/';
+      if (!is_dir($comparePath)) {
+        mkdir($comparePath);
+        $created[] = $comparePath . '/';
       }
-      updateEdited($filepath, $updated, $created, $prevFpath);
+
+      updateEdited($filepath, $updated, $created, $prevFpath, $releasePath);
     } elseif (is_file($filepath)) {
       $content = file_get_contents($filepath);
 
-      if (!is_file($prevFpath) || md5($content) !== md5(file_get_contents($prevFpath))) {
-        if (is_file($prevFpath)) $updated[] = $prevFpath;
-        else $created[] = $prevFpath;
+      if (!is_file($comparePath) || md5($content) !== md5(file_get_contents($comparePath))) {
+        if ($isRelease && !in_array($prevFpath, $releasePaths)) continue;
+        if (is_file($comparePath)) $updated[] = $comparePath;
+        else $created[] = $comparePath;
 
-        rename($filepath, $prevFpath);
+        rename($filepath, $comparePath);
       }
     }
   }
