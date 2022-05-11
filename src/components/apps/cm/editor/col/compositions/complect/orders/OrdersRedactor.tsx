@@ -47,7 +47,7 @@ export default function OrdersRedactor() {
           />
         );
         const isWithHead =
-          !ord.top.isInherit && !ord.top.isPrevAnchorInheritPlus;
+          !ord.top.isInherit && !ord.top.isPrevAnchorInheritPlus && !ord.isEmptyHeader;
 
         return (
           <div key={`order-${ordi}`} className={ord.top.isAnchorInherit ? 'inherit-block' : ''}>

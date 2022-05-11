@@ -9,7 +9,7 @@ const passphrase = (process.argv.find(param => param.startsWith('--pass=')) || '
 
 const archive = (isFront) => {
     const archive = archiver('zip');
-    console.log(`Send created ${filename} file`);
+    console.info(`Send created ${filename} file`);
 
     archive.on('error', (err) => {
         throw err;
@@ -22,9 +22,9 @@ const archive = (isFront) => {
             method: 'POST',
             body
         }).then(r => r.json()).then(r => {
-            console.log('Upload respond', r);
+            console.info('Upload respond', r);
             file_system.unlinkSync(filename);
-            console.log('DONE!');
+            console.info('DONE!');
         }).catch((error) => {
             console.error('upload error:', error);
             file_system.unlinkSync(filename);
@@ -37,9 +37,9 @@ const archive = (isFront) => {
 };
 
 if (~process.argv.indexOf('--push-front')) {
-    console.log('Build is running...');
+    console.info('Build is running...');
     exec('npm run build', (err) => {
-        console.log('Build is finished.');
+        console.info('Build is finished.');
         if (err) console.error('BUILD FAILURE!');
         else archive(true);
     });

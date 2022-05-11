@@ -7,7 +7,7 @@ import { Com } from "../com/Com";
 
 let ccom: Com | nil = null;
 
-export function useCcom(): [Com | nil, (val: Com) => void] {
+export function useCcom(): [Com | nil, (val: Com, isPreventSave?: boolean) => void] {
     useSelector((state: RootState) => state.cm.numColsUpdates);
     useSelector((state: RootState) => state.cm.numComUpdates);
     const dispatch = useDispatch();
@@ -17,12 +17,13 @@ export function useCcom(): [Com | nil, (val: Com) => void] {
 
     return [
         ccom,
-        (val: Com) => {
-            if (val) {
-                ccom = val;
-                cmStorage.set("ccomw", val.wid);
-                dispatch(selectCcol({ fieldn: "comw", val: val.wid }));
+        (com: Com, isPreventSave?: boolean) => {
+            if (com) {
+                ccom = com;
+                dispatch(selectCcol({ fieldn: "comw", val: com.wid }));
                 dispatch(riseUpComUpdate());
+                if (isPreventSave) return;
+                cmStorage.set("ccomw", com.wid);
             }
         }
     ];

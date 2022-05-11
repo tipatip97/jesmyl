@@ -44,7 +44,8 @@ export class Cols extends Base<IExportableCols> implements ICols {
 
 
   sort(colsn: 'coms' | 'cats') {
-    return this[colsn].sort((a, b) => a.wid - b.wid);
+    return this[colsn].sort((a, b) => a.wid > widLimit ? b.wid > widLimit ? a.wid - b.wid : -1 : 1);
   }
 }
 
+export const widLimit = 20000000000000000;

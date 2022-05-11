@@ -1,11 +1,11 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
+import { BaseNamed } from "../../base/Base";
 import { Com } from "../../col/com/Com";
 import { Cols } from "../../cols/Cols";
-import { EditableMeeting } from "./EditableMeeting";
 import { IExportableMeeting } from "./Meetings.model";
 
 
-export class Meeting extends EditableMeeting {
+export class Meeting extends BaseNamed<IExportableMeeting> {
   coms?: Com[];
 
   constructor(top: IExportableMeeting, cols?: Cols) {
@@ -13,6 +13,15 @@ export class Meeting extends EditableMeeting {
 
     this.coms = cols && top.s.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
   }
+
+  get begin() { return this.getBasic('b'); }
+  set begin(value) { this.setExportable('b', value); }
+
+  get end() { return this.getBasic('e'); }
+  set end(value) { this.setExportable('e', value); }
+
+  get stack() { return this.getBasic('s'); }
+  set stack(value) { this.setExportable('s', value); }
 
   getTitle() {
     return `${this.name}${this.end ? `, ${this.getDate()}` : ''}`;

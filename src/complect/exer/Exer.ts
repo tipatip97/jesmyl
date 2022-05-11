@@ -141,14 +141,17 @@ export class Exer<Storage extends ExerStorage> {
             success: resp => {
                 if (!resp.ok) onError(resp.errors);
                 else {
-                    this.execs = this.execs.filter(ex => ((resp.ok && ex.del) || resp.rejected) &&
-                        resp.rejected.some((rej: Exec<Value> & { exec: Exec<Value> }) => {
+                    this.execs = this.execs.filter(ex => {
+                        const isRejected = resp.rejected?.some((rej: Exec<Value> & { exec: Exec<Value> }) => {
                             if (ex.id === rej.exec.id) {
                                 ex.errors = rej.errors;
                                 return true;
                             }
                             return false;
-                        }));
+                        });
+                        if (!isRejected) ex.onLoad?.(ex);
+                        return ex.del || isRejected;
+                    });
 
                     cb && cb(resp, null);
                     finCb && finCb(resp, null);
@@ -214,7 +217,7 @@ export class Exer<Storage extends ExerStorage> {
         if (!rule)
             console.error(`Зарегистрировано правило на неизвестное действие ${action}`);
 
-        return (this.checkedActions[action] = rule ? ((rule.level || 0) <= this.auth.level ? true : null) : null);
+        return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +this.auth.level ? true : null) : null);
     };
 }
 

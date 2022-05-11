@@ -1,6 +1,6 @@
 let isFirst = true;
-if (window.location.hash === '#;)') window.location.hash = ':)';
-else window.location.hash = ';)';
+if (window.location.hash === '#;J') window.location.hash = ':J';
+else window.location.hash = ';J';
 
 window.addEventListener('load', () => window.history.pushState({}, ''));
 

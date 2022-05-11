@@ -12,9 +12,13 @@ export default function EditableCompositionMain() {
   return (
     <>
       {
-        <EditContainerCorrectsInformer corrects={ccom?.corrects.comRename}>
-          Название:
+        <EditContainerCorrectsInformer
+          corrects={ccom?.corrects.comRename}
+          className="flex"
+        >
+          <div className="margin-gap-h">Название</div>
           <input
+            className="full-width"
             value={ccom?.name}
             onChange={(event) => rename(event.target.value)}
           />

@@ -1,6 +1,7 @@
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import { NavigationThrowNodeProps } from "../../../../../../complect/nav-configurer/Navigation.model";
 import useCmNav from "../../../base/useCmNav";
+import { cmExer } from "../../../Cm.store";
 import { editCompositionNavs } from "../../editorNav";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
 import "./EditComposition.scss";
@@ -20,17 +21,23 @@ export default function EditComposition({
     <PhaseCmEditorContainer
       topClass="edit-composition"
       headClass="flex between"
-      headTitle={`Песня - ${ccom.initialName}`}
+      headTitle={`Песня - ${ccom.initialName || ccom.name}`}
       content={
         <>
           <div className="flex around margin-gap">
             {editCompositionNavs.map(
-              ({ data: { icon, iconText } = {}, phase: [phase] }) => {
+              ({
+                data: { icon, iconText } = {},
+                phase: [phase],
+                accessRule,
+              }) => {
+                if (accessRule && !cmExer.isActionAccessed(accessRule))
+                  return null;
                 return (
                   <span
                     key={`editCompositionNavs ${phase}`}
                     className="pointer"
-                    onClick={() => goTo(phase, relativePoint)}
+                    onClick={() => goTo(phase, relativePoint, ccom.isCreated)}
                   >
                     {icon ? (
                       <EvaIcon

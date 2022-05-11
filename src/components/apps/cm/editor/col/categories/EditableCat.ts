@@ -54,6 +54,11 @@ export class EditableCat extends Cat {
     return this.coms;
   }
 
+  newCom(com: EditableCom) {
+    this.topComs.push(com);
+    this.putComs();
+  }
+
   exec<Value>(bag: FreeExecDict<Value>) {
     this.col.execCol(bag, 'cat');
   }

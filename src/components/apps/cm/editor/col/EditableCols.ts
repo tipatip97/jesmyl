@@ -1,6 +1,6 @@
 import { EditableCat } from "./categories/EditableCat";
 import { EditableCom } from "./compositions/EditableCom";
-import { Cols } from "../../cols/Cols";
+import { Cols, widLimit } from "../../cols/Cols";
 import { IExportableCols } from "../../cols/Cols.model";
 
 
@@ -11,7 +11,7 @@ export class EditableCols extends Cols {
     constructor(cols: IExportableCols) {
         super(cols);
         const coms = cols.coms;
-        this.coms = coms.sort((a, b) => a.w - b.w).map((com, comi) => new EditableCom(com, comi));
+        this.coms = coms.sort((a, b) => a.w > widLimit ? b.w > widLimit ? a.w - b.w : -1 : 1).map((com, comi) => new EditableCom(com, comi));
         this.cats = cols.cats.map(cat => new EditableCat(cat, this.coms));
     }
 
@@ -21,10 +21,9 @@ export class EditableCols extends Cols {
         // return cat;
     }
 
-    addCom() {
-        // const com = new Com({ w: Date.now() });
-        // this.coms?.push(com);
-        // return com;
+    addCom(com: EditableCom) {
+        this.coms?.push(com);
+        this.cats.forEach((cat) => cat.putComs());
     }
 }
 

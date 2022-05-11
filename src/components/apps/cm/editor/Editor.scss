@@ -1,9 +1,18 @@
-.text-heap-textarea {
-    width: calc(100% - 5px);
-    height: 50vh;
-    border: 2px dashed var(--color-far);
-    background-color: transparent;
-    outline: 0;
+.new-composition {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+
+    .text-heap-textarea {
+        width: 100%;
+        height: 100%;
+        border: 2px dashed var(--text-color);
+        background-color: transparent;
+        outline: 0;
+        resize: none;
+        color: var(--text-color);
+    }
 }
 
 .orders-redactor {

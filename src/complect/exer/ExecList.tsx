@@ -25,11 +25,11 @@ export default function ExecList<Storage extends ExerStorage>({
   return (
     <div className="full-container">
       <LoadIndicatedContent isLoading={isLoading} onLoaded={onLoad}>
-        <div className="flex center column full-height">
+        <div className="flex center column">
           {execs.map((exec) => {
             return (
               <EditContainerCorrectsInformer
-                key={"exec-list*" + exec.scope}
+                key={`exec-list*${exec.scope}+${exec.id}`}
                 corrects={exec?.corrects}
               >
                 {exec.title}

@@ -1,20 +1,11 @@
 import { ExecDict } from "../../../../../complect/exer/Exer.model";
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { BaseNamed } from "../../base/Base";
 import { cmExer } from "../../Cm.store";
-import { IExportableMeeting } from "./Meetings.model";
+import { Meeting } from "../../lists/meetings/Meeting";
 
 
 
-export class EditableMeeting extends BaseNamed<IExportableMeeting> {
-  get begin() { return this.getBasic('b'); }
-  set begin(value) { this.setExportable('b', value); }
-
-  get end() { return this.getBasic('e'); }
-  set end(value) { this.setExportable('e', value); }
-
-  get stack() { return this.getBasic('s'); }
-  set stack(value) { this.setExportable('s', value); }
+export class EditableMeeting extends Meeting {
+  initialName= '';
 
   args() {
     return ({

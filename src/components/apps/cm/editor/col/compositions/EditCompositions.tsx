@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import BrutalItem from "../../../../../../complect/brutal-item/BrutalItem";
 import DebouncedInput from "../../../../../../complect/DebouncedInput";
 import useExer from "../../../../../../complect/exer/useExer";
@@ -9,12 +10,14 @@ import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import EditContainerCorrectsInformer from "../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
 import { useEditableCcat } from "../categories/useEditableCcat";
+import EditCompositionsMore from "./complect/EditCompositionsMore";
 
 export default function EditCompositions() {
   const [, setCcom] = useCcom();
   const { goTo } = useCmNav();
   const zcat = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || "");
+  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   useExer(cmExer);
 
   return (
@@ -22,6 +25,7 @@ export default function EditCompositions() {
       topClass="edit-compositions"
       headClass="flex between"
       headTitle="Песни"
+      onMoreClick={() => openAbsoluteBottomPopup(<EditCompositionsMore />)}
       head={
         !zcat ? null : (
           <DebouncedInput
@@ -52,8 +56,8 @@ export default function EditCompositions() {
                     com.name !== com.initialName ? ` (${com.initialName})` : ""
                   }`}
                   onClick={() => {
-                    setCcom(com);
-                    goTo("com");
+                    setCcom(com, com.isCreated);
+                    goTo("com", null, com.isCreated);
                   }}
                 />
               </EditContainerCorrectsInformer>

@@ -1,3 +1,4 @@
+import { Exec } from "../../../../../../complect/exer/Exec";
 import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { setts } from "../../../base/settings/Setts";
@@ -18,6 +19,7 @@ export class EditableCom extends Com {
     col: EditableCol<IExportableCom>;
     initial: Com;
     protected _o?: EditableOrder[];
+    isCreated = false;
 
     constructor(top: IExportableCom, index: number) {
         super(top, index);
@@ -25,6 +27,9 @@ export class EditableCom extends Com {
         this.initialName = this.name;
         this.initial = new Com(mylib.clone(top), index);
     }
+
+    get name() { return this.col?.getBasic('n') || ''; }
+    set name(value) { this.col.setExportable('n', value); }
 
     scope(action?: string, uniq?: string | number) {
         return [this.wid, '.', mylib.typ('[action]', action), ':', [].concat(mylib.def(uniq, ['[uniq]'])).join(',')].join('');
@@ -34,6 +39,18 @@ export class EditableCom extends Com {
 
     orderConstructor(top: IExportableOrderTop) {
         return new EditableOrder(top, this);
+    }
+
+    create<Value>(onLoad: (exec: Exec<Value>) => void) {
+        if (this.isCreated) return false;
+        this.exec({
+            action: 'comAdd',
+            args: {
+                comw: this.wid,
+            },
+            onLoad
+        });
+        return this.isCreated = true;
     }
 
     exec<Value>(bag: FreeExecDict<Value>) {
@@ -125,7 +142,7 @@ export class EditableCom extends Com {
         if ((cb && cb(blocks)) !== false) this.parseBlocks(blocks);
     }
 
-    parseBlocks(blocks: string[]) {
+    parseBlocks(blocks: string[] | string) {
         type Thromb = { arr: number[], s?: string; str?: string; len?: number; c?: number; };
         const chords: string[] = [];
         const orders: INewExportableOrder[] = [];
@@ -142,7 +159,7 @@ export class EditableCom extends Com {
         const [thirdLeveled] = setts.styles.filter(style => style.level === 3).map(style => style.name);
         const [inherited] = setts.styles.filter(style => style.isInherit).map(style => style.name);
 
-        blocks.forEach((block, blocki) => {
+        (typeof blocks === 'string' ? blocks.split('\n\n') : blocks).forEach((block) => {
             const ctromb: Thromb = { arr: [] };
             trombs.push(ctromb);
 
@@ -239,6 +256,10 @@ export class EditableCom extends Com {
         this.addOrders(orders);
     }
 
+    takeName(text: string) {
+        return text.split('\n').filter((line) => /^[^a-zA-Z\d#]+$/.exec(line))[0] || '';
+    }
+
     afterOrderChange() {
         this.setOrders();
         this.resetChordLabels();
@@ -281,7 +302,7 @@ export class EditableCom extends Com {
     isCantMigrateOrder(ord: EditableOrder, ordi: number) {
         return (!ordi && ord.top.isNextInherit || ord.top.isPrevTargetOrd || (ord.top.isNextAnchorOrd && !ordi))
             || (index => !(index < 0 || index === cmExer.execs.length - 1))
-                (cmExer.execs.findIndex(exec => mylib.isEq(exec.scope, this.scope('comMigrateOrders'))));
+                (cmExer.execs.findIndex(exec => exec.action === 'comMigrateOrders' && exec.args?.comw === this.wid));
     }
 
     migrateOrder(topOrd: EditableOrder) {
@@ -381,8 +402,6 @@ export class EditableCom extends Com {
             args: {
                 value,
             },
-            // onSet: () => delete this.initial.pos,
-            // onLoad: () => delete this.initial.p,
         });
 
         this.transPosition = value;
@@ -481,7 +500,11 @@ export class EditableCom extends Com {
     }
 
     correctRename(name: string) {
-        return mylib.isStr(name) ? this.rename(name.replace(this.col.getIncorrectNameReg(), '')) : name;
+        return mylib.isStr(name) ? this.rename(this.correctName(name)) : name;
+    }
+
+    correctName(name: string) {
+        return name.replace(this.col.getIncorrectNameReg(), '');
     }
 
     removeNativeNumber(cat: Cat, exec?: <Val>(v?: Val) => Val | nil) {

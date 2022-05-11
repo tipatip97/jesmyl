@@ -31,7 +31,7 @@ export class Exec<Value> extends Simplifyed {
         if (exec.method === 'set') this.prev = mylib.clone(exec.prev);
         this.corrects = exec.corrects;
 
-        this.setReals(exec, ['scope', 'value', 'args', 'generalId', 'createByPath', 'muted']);
+        this.setReals(exec, ['scope', 'onLoad', 'value', 'args', 'generalId', 'createByPath', 'muted']);
 
         this.rule = rules.find(rule => rule.action === this.action);
         if (!this.rule) console.error(`Неизвестное правило "${this.action}"`);
@@ -48,8 +48,6 @@ export class Exec<Value> extends Simplifyed {
 
     forLoad() {
         if (this.del) return null;
-        this.onLoad && this.onLoad(this);
-
         return this.toDict();
     }
 
