@@ -163,7 +163,7 @@ function authorize($auth)
         'ok' => false,
         'mode' => 'check',
         'errors' => ['Неверные данные авторизации!'],
-        'errorId' => 'general'
+        'errorId' => 'login'
       ];
     }
   }

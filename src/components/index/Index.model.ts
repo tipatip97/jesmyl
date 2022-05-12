@@ -2,21 +2,22 @@ import { AppName } from "../../app/App.model";
 import { EvaIconName } from "../../complect/eva-icon/EvaIcon";
 import { FreeNavRoute } from "../../complect/nav-configurer/Navigation.model";
 
-export interface IndexState extends IndexStateError {
+export interface IndexState {
     route: FreeNavRoute;
     currentApp: AppName;
     auth?: Auth;
     apps: IndexApplication[];
+    errors: Partial<Record<IndexErrorScope, string>>;
 
     lastUpdate?: number;
     numModalUpdates: number;
 }
 
-export type IndexErrorScope = keyof RegisterData | 'general';
+export type IndexErrorScope = keyof RegisterData;
 
 export interface IndexStateError {
-    errorMessage?: string;
-    errorScope?: IndexErrorScope;
+    message?: string | nil,
+    scope?: IndexErrorScope;
 }
 
 export interface IndexStorage extends IndexState {
@@ -55,17 +56,15 @@ export interface AuthorizationData {
 }
 
 export interface RegisterData {
-    fio: string;
     login: string;
     passw: string;
     rpassw: string;
 }
 
-export interface AuthResponse {
+export interface AuthResponse extends Auth {
     ok: boolean;
     mode: AuthMode;
-    auth: Auth;
-    errorMessage: string;
+    errors: string[];
     errorId: IndexErrorScope;
 }
 

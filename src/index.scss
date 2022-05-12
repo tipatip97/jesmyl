@@ -206,3 +206,15 @@ a {
 .text-center {
   text-align: center;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  --autofill-background-color: var(--color--2);
+  --autofill-color: var(--text-color);
+
+  -webkit-box-shadow: 0 0 0 30px var(--autofill-background-color) inset !important;
+  -webkit-text-fill-color: var(--autofill-color);
+  font-size: 1em;
+}

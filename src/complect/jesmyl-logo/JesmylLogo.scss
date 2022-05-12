@@ -1,0 +1,82 @@
+.jesmyl-smile {
+    --jesmyl-smile-size: 100px;
+    --jesmyl-smile-dot-size: calc(var(--jesmyl-smile-size) / 7);
+    --jesmyl-smile-color: var(--text-color);
+
+    position: relative;
+    width: var(--jesmyl-smile-size);
+    height: var(--jesmyl-smile-size);
+    animation: fade-in .3s;
+
+    &.ringify {
+        &::before {
+            top: var(--beye-ringify-top);
+            left: var(--beye-ringify-left);
+        }
+
+        &::after {
+            top: var(--aeye-ringify-top);
+            left: var(--aeye-ringify-left);
+        }
+    }
+
+    &:not(.ringify) {
+
+        &::before,
+        &::after {
+            content: '';
+        }
+    }
+
+    &::before,
+    &::after {
+        content: none;
+        position: absolute;
+        display: block;
+        background-color: var(--jesmyl-smile-color);
+        width: var(--jesmyl-smile-dot-size);
+        height: var(--jesmyl-smile-dot-size);
+        border-radius: 100%;
+    }
+
+    &::before {
+        --beye-top: 54%;
+        --beye-left: 32%;
+        --beye-ringify-top: 24%;
+        --beye-ringify-left: 3%;
+
+        top: var(--beye-top);
+        left: var(--beye-left);
+    }
+
+    &::after {
+        --aeye-top: 31%;
+        --aeye-left: 42%;
+        --aeye-ringify-top: 64%;
+        --aeye-ringify-left: 4%;
+
+        top: var(--aeye-top);
+        left: var(--aeye-left);
+    }
+
+    >.smile-container {
+        position: absolute;
+        left: 21%;
+        display: block;
+        height: 101%;
+
+        >.smile-line {
+            fill-rule: evenodd;
+            clip-rule: evenodd;
+            fill: none;
+            stroke: var(--jesmyl-smile-color);
+            stroke-width: 54;
+            stroke-linecap: round;
+            stroke-miterlimit: 10;
+        }
+
+        >.smile-dot {
+            fill: var(--jesmyl-smile-color);
+        }
+    }
+}

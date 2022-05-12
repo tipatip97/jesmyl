@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { renderApplication } from "../../../..";
 import { isTouchDevice } from "../../../../complect/device-differences";
 import mylib from "../../../../complect/my-lib/MyLib";
-import useComPack from "../../../../complect/useComPack";
+import useComPack from "../col/com/useComPack";
 import { RootState } from "../../../../shared/store";
 import useCmNav from "../base/useCmNav";
 import {

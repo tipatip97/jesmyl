@@ -8,6 +8,7 @@ const host = 'https://jesmyl.space/debug/';
 export class Refresh {
     static host = host;
     isFirstRequest = true;
+    isAborted = false;
     controller?: AbortController;
     onStsteChangeListener?: (state: RefreshState) => void;
 
@@ -89,10 +90,18 @@ export class Refresh {
         const controller = new AbortController();
         const { signal } = controller;
 
-        this.controller?.abort();
+        if (this.controller) {
+            this.controller.abort();
+            this.isAborted = true;
+        }
         this.controller = controller;
 
         return signal;
+    }
+
+    onLogin() {
+        Object.values(appStorage).forEach(storage => storage.set('lastUpdate', null));
+        this.pull(false);
     }
 
     pull(isSetLoading = true) {
@@ -131,7 +140,10 @@ export class Refresh {
                     if (indexStorage.get('updateOnRefresher')) this.stateChange('ready');
                     else this.pull(false);
                 } else this.check();
-            }).catch(() => setTimeout(() => this.check(), 10000));
+            }).catch(() => {
+                if (!this.isAborted) setTimeout(() => this.check(), 10000);
+                this.isAborted = false;
+            });
     }
 
     stateChange(state: RefreshState) {

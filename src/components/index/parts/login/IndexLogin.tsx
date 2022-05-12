@@ -1,100 +1,128 @@
 import { useEffect, useState } from "react";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
+import LoadIndicatedContent from "../../../../complect/load-indicated-content/LoadIndicatedContent";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
 import { AuthMode } from "../../Index.model";
 import useAuth from "../../useAuth";
-import IndexErrorMessage from "../ErrorMessage";
 import "./IndexLogin.scss";
 
 export default function IndexLogin() {
   const [login, setLogin] = useState("");
   const [passw, setPassword] = useState("");
   const [rpassw, setRPassword] = useState("");
-  const [fio, setFio] = useState("");
   const [mode, setMode] = useState<AuthMode>("login");
+  const [isPasswHidden, setIsPasswHidden] = useState(true);
+  const [isRPasswHidden, setIsRPasswHidden] = useState(true);
+  const [isInProcess, setIsInProscess] = useState(1);
 
-  const { loginInSystem, registerInSystem, setAuthError, errorMessage } =
-    useAuth();
+  const { loginInSystem, registerInSystem, setError, errors } = useAuth();
   const { navigate } = useIndexNav();
+  const error = (message: string | nil) =>
+    message && <div className="login-error-message">{message}</div>;
 
   useEffect(() => {
-    login.length < 3
-      ? setAuthError("Минимум 3 символа", "login")
-      : setAuthError("", "login");
+    setError("login", login.length < 3 ? "Минимум 3 символа" : null);
   }, [login]);
 
   useEffect(() => {
-    rpassw && rpassw !== passw
-      ? setAuthError("Пароли не совпадают", "rpassw")
-      : setAuthError("", "rpassw");
-  }, [passw, rpassw]);
+    setError(
+      "rpassw",
+      mode === "register" && rpassw !== passw ? "Пароли не совпадают" : null
+    );
+  }, [passw, rpassw, mode]);
 
   return (
     <PhaseIndexContainer
       topClass="index-login login-page"
-      head="Вход"
-      contentClass="flex center column"
+      head={mode === "register" ? "Создать профиль" : "Вход"}
       content={
-        <>
-          {mode === "register" ? (
-            <>
-              <div className="input-container flex">
-                <div className="title">ФИО</div>
+        <LoadIndicatedContent
+          className="flex around column full-height full-width"
+          isLoading={!isInProcess}
+          onLoaded={() => isInProcess !== 2 && navigate(["other"])}
+        >
+          {mode === "register" ? null : (
+            <div className="logo">
+              <div className="logo-container">
+                <JesmylLogo />
+              </div>
+              <div className="text">JesmyL</div>
+            </div>
+          )}
+          <div className="relative flex column full-width">
+            <div className="input-container flex">
+              {error(errors.login)}
+              <div className="input-wrapper">
                 <input
-                  onChange={(event) => setFio(event.target.value)}
-                  value={fio}
+                  onChange={(event) => setLogin(event.target.value)}
+                  value={login}
+                  autoComplete="off"
+                  placeholder="Логин"
                 />
               </div>
-              <IndexErrorMessage scope="fio" />
-            </>
-          ) : null}
-          <div className="input-container flex">
-            <div className="title">Логин</div>
-            <input
-              onChange={(event) => setLogin(event.target.value)}
-              value={login}
-            />
-          </div>
-          <IndexErrorMessage scope="login" />
-          <div className="input-container flex">
-            <div className="title">Пароль</div>
-            <input
-              type="password"
-              onChange={(event) => setPassword(event.target.value)}
-              value={passw}
-            />
-          </div>
-          <IndexErrorMessage scope="passw" />
-          {mode === "register" ? (
-            <>
-              <div className="input-container flex">
-                <div className="title">Пароль2</div>
+            </div>
+            <div className="input-container flex">
+              {error(errors.passw)}
+              <div className="input-wrapper">
                 <input
-                  type="password"
-                  onChange={(event) => setRPassword(event.target.value)}
-                  value={rpassw}
+                  type={isPasswHidden ? "password" : "text"}
+                  onChange={(event) => setPassword(event.target.value)}
+                  value={passw}
+                  autoComplete="off"
+                  placeholder="Пароль"
+                />
+                <EvaIcon
+                  name="eye"
+                  onClick={() => setIsPasswHidden(!isPasswHidden)}
                 />
               </div>
-              <IndexErrorMessage scope="rpassw" />
-            </>
-          ) : null}
-          <div className="pointer" onClick={() => setMode("register")}>
-            Зарегистрироваться
+            </div>
+            {mode === "register" ? (
+              <>
+                <div className="input-container flex">
+                  {error(errors.rpassw)}
+                  <div className="input-wrapper">
+                    <input
+                      type={isRPasswHidden ? "password" : "text"}
+                      onChange={(event) => setRPassword(event.target.value)}
+                      value={rpassw}
+                      placeholder="Подтверди пароль"
+                    />
+                    <EvaIcon
+                      name={errors.rpassw ? "alert-circle" : "eye"}
+                      onClick={() => setIsRPasswHidden(!isRPasswHidden)}
+                    />
+                  </div>
+                </div>
+              </>
+            ) : null}
+            <button
+              className="send-button"
+              disabled={Object.keys(errors).length > 0}
+              onClick={async () => {
+                setIsInProscess(0);
+                const resp =
+                  mode === "login"
+                    ? await loginInSystem({ login, passw })
+                    : await registerInSystem({ login, passw, rpassw });
+                if (resp.ok) setIsInProscess(1);
+                else setIsInProscess(2);
+              }}
+            >
+              {mode === "register" ? "Создать профиль" : "Войти"}
+            </button>
           </div>
-          <button
-            className="send-button"
-            disabled={!!errorMessage}
-            onClick={async () => {
-              const resp =
-                mode === "login"
-                  ? await loginInSystem({ login, passw })
-                  : await registerInSystem({ login, fio, passw, rpassw });
-              if (resp.ok) navigate(["other"]);
-            }}
-          >
-            Отправить
-          </button>
-        </>
+          {mode === "register" ? null : (
+            <div
+              className="register-button"
+              onClick={() => setMode("register")}
+            >
+              Создать профиль
+            </div>
+          )}
+        </LoadIndicatedContent>
       }
     />
   );

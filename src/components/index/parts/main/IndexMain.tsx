@@ -6,7 +6,9 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
 import { RootState } from "../../../../shared/store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
+import useIndexNav from "../../complect/useIndexNav";
 import { setCurrentApp } from "../../Index.store";
+import useAuth from "../../useAuth";
 import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
 
@@ -17,9 +19,14 @@ export default function IndexMain() {
     (state: RootState) => state.index.currentApp
   );
   const { openFullscreenContent } = useFullscreenContent();
+  const { goTo } = useIndexNav();
 
   const currentApp = apps.find((app) => app.name === currentAppName);
-  const filteredApps = apps.filter((app) => app !== currentApp && appNames.indexOf(app.name) > -1);
+  const filteredApps = apps.filter(
+    (app) => app !== currentApp && appNames.indexOf(app.name) > -1
+  );
+  const { auth } = useAuth();
+
   const appList =
     filteredApps.length === 0
       ? null
@@ -43,7 +50,9 @@ export default function IndexMain() {
     <PhaseIndexContainer
       topClass="index-main"
       withoutBackButton
-      headTitle={currentApp?.title || 'Другое'}
+      headClass="flex between"
+      headTitle={currentApp?.title || "Другое"}
+      head={auth?.fio && <div className="margin-big-gap-h">{auth?.fio}</div>}
       contentClass="flex column"
       content={
         <>
@@ -51,12 +60,14 @@ export default function IndexMain() {
             icon="settings-2-outline"
             title="Настройки"
             onClick={() => setPhase("settings")}
-          />
-          <BrutalItem
-            icon="login-outline"
-            title="Войти" // 'Выйти' 
-            onClick={() => setPhase("login")}
           /> */}
+          {auth?.fio ? null : (
+            <BrutalItem
+              icon="login-outline"
+              title="Войти"
+              onClick={() => goTo("login")}
+            />
+          )}
           <BrutalItem
             icon="info-outline"
             title="О приложении"

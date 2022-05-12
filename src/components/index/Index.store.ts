@@ -15,6 +15,7 @@ const initialState: IndexState = {
   auth: indexStorage.get('auth'),
   apps: [],
   numModalUpdates: 0,
+  errors: {},
 };
 
 export const slice = createSlice({
@@ -36,8 +37,11 @@ export const slice = createSlice({
       indexStorage.set("currentApp", action.payload);
     },
     setError: (state, action: PayloadAction<IndexStateError>) => {
-      state.errorMessage = action.payload.errorMessage;
-      state.errorScope = action.payload.errorScope;
+      if (action.payload.scope) {
+        if (action.payload.message == null) delete state.errors[action.payload.scope];
+        else
+          state.errors[action.payload.scope] = action.payload.message;
+      }
     },
     riseUpModalUpdates: (state) => {
       state.numModalUpdates++;
