@@ -1,12 +1,11 @@
-import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import useCmNav from "../base/useCmNav";
-import EditorCreatePopup from "./complect/EditorCreatePopup";
+import { cmExer } from "../Cm.store";
 import "./Editor.scss";
+import { editorRouteItems } from "./editorNav";
 import PhaseCmEditorContainer from "./phase-editor-container/PhaseCmEditorContainer";
 
 export default function Editor() {
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { goTo } = useCmNav();
 
   return (
@@ -17,21 +16,20 @@ export default function Editor() {
       headTitle="Редактор"
       content={
         <>
-          <BrutalItem
-            icon="plus-circle-outline"
-            title="Создать"
-            onClick={() => openAbsoluteBottomPopup(<EditorCreatePopup />)}
-          />
-          <BrutalItem
-            icon="book-open-outline"
-            title="Категории"
-            onClick={() => goTo("cats")}
-          />
-          <BrutalItem
-            icon="headphones-outline"
-            title="Песни"
-            onClick={() => goTo("coms")}
-          />
+          {editorRouteItems.map(
+            ({ data: { icon, title } = {}, phase, accessRule }) => {
+              return (
+                (!accessRule || cmExer.isActionAccessed(accessRule)) && (
+                  <BrutalItem
+                    key={`${icon} ${phase}`}
+                    icon={icon || "question-mark-circle"}
+                    title={title || ""}
+                    onClick={() => goTo(phase)}
+                  />
+                )
+              );
+            }
+          )}
         </>
       }
     />

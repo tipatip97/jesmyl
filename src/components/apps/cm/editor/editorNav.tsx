@@ -65,7 +65,6 @@ export const editCompositionNavs: INavigationRouteChildItem<{
   {
     phase: ["repeats"],
     node: <ComRepeats />,
-    accessRule: 'canWatch',
     data: {
       iconText: "//",
     },
@@ -79,34 +78,48 @@ export const editCompositionNavs: INavigationRouteChildItem<{
   },
 ];
 
+export const editorRouteItems: INavigationRouteChildItem<{
+  title: string;
+  icon: EvaIconName;
+}>[] = [
+  {
+    phase: ["cats"],
+    node: <EditCategories />,
+    accessRule: "canWatch",
+    data: {
+      title: "Категории",
+      icon: "book-open-outline",
+    },
+    next: [
+      {
+        phase: ["cat"],
+        node: <EditCategory />,
+      },
+    ],
+  },
+  {
+    phase: ["coms"],
+    node: <EditCompositions />,
+    data: {
+      title: "Песни",
+      icon: "headphones-outline",
+    },
+    next: [
+      {
+        phase: ["com"],
+        node: (props) => <EditComposition {...props} />,
+        defaultChild: "main",
+        next: editCompositionNavs,
+      },
+    ],
+  },
+];
+
 export const editorNav: INavigationRouteRootItem = {
   phase: ["editor"],
   node: <Editor />,
   title: "Редактор",
   icon: "edit",
   accessRule: "canRedact",
-  next: [
-    {
-      phase: ["cats"],
-      node: <EditCategories />,
-      next: [
-        {
-          phase: ["cat"],
-          node: <EditCategory />,
-        },
-      ],
-    },
-    {
-      phase: ["coms"],
-      node: <EditCompositions />,
-      next: [
-        {
-          phase: ["com"],
-          node: (props) => <EditComposition {...props} />,
-          defaultChild: "main",
-          next: editCompositionNavs,
-        },
-      ],
-    },
-  ],
+  next: editorRouteItems,
 };
