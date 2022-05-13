@@ -28,13 +28,16 @@ export default function useFullscreenContent() {
       if (document.fullscreenElement) document.exitFullscreen();
     },
     openFullscreenContent: (
-      content: ReactNode,
+      content: ReactNode | ((close: () => void) => ReactNode),
       closable = false,
       isRequestFullscreen = false
     ) => {
       if (isRequestFullscreen) document.body.requestFullscreen();
       isOpen = true;
-      fullscreenContent = content;
+      fullscreenContent =
+        typeof content === "function"
+          ? content(ret.closeFullscreenContent)
+          : content;
       dispatch(setFullscreenContentOpenMode(closable ? "closable" : "open"));
       registerBackAction(() => ret.closeFullscreenContent());
     },

@@ -1,12 +1,15 @@
 
 
-export interface DropdownProps<Item extends DropdownItem> {
+export interface DropdownProps<Id extends string, Item extends DropdownItem<Id>> {
     items: Item[];
     id?: string;
     onSelect?: (item: Item) => void;
+    className?: string;
 }
 
-export interface DropdownItem {
+export interface DropdownItem<Id> {
     title: string;
-    id: string;
+    id: Id;
 }
+
+export const DropdownItemList = <Id>(list: DropdownItem<Id>[]) => list;

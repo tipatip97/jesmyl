@@ -10,7 +10,7 @@ import useExer from "./useExer";
 
 export default function ExecList<Storage extends ExerStorage>({
   exer,
-  onLoad
+  onLoad,
 }: {
   exer: Exer<Storage>;
   onLoad: () => void;
@@ -20,11 +20,14 @@ export default function ExecList<Storage extends ExerStorage>({
   const isDisabledSendButton = execs.some(
     (exec) => exec.corrects?.errors?.length
   );
-  const [isLoading, setIsLoading] = useState(false);
+  const [readyState, setReadyState] = useState(1);
 
   return (
     <div className="full-container">
-      <LoadIndicatedContent isLoading={isLoading} onLoaded={onLoad}>
+      <LoadIndicatedContent
+        isLoading={!readyState}
+        onLoaded={() => readyState !== 2 && onLoad()}
+      >
         <div className="flex center column">
           {execs.map((exec) => {
             return (
@@ -43,11 +46,14 @@ export default function ExecList<Storage extends ExerStorage>({
               isDisabledSendButton ? "disabled" : ""
             }`}
             onClick={() => {
-              setIsLoading(true);
-              exer.load(() => {
-                dispatch(riseUpExerUpdates());
-                setIsLoading(false);
-              });
+              setReadyState(0);
+              exer.load(
+                () => {
+                  dispatch(riseUpExerUpdates());
+                  setReadyState(1);
+                },
+                () => setReadyState(2)
+              );
             }}
           />
         </div>

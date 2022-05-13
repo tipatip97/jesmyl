@@ -15,7 +15,7 @@ import TheComposition from "../col/com/TheComposition";
 import { editorNav } from "../editor/editorNav";
 import Lists from "../lists/Lists";
 import Marks from "../lists/marks/Marks";
-import TheMeeting from "../lists/meetings/TheMeeting";
+import TheMeetingsEvent from "../lists/meetings/TheMeetingsEvent";
 import TheMeetings from "../lists/meetings/TheMeetings";
 import Translations from "../translation/Translation";
 
@@ -65,9 +65,8 @@ const navigation = new NavigationConfig({
           node: <TheMeetings />,
           next: [
             {
-              phase: ["meeting"],
-              node: <TheMeeting />,
-              next: [...comNext],
+              phase: ["event"],
+              node: <TheMeetingsEvent />,
             },
           ],
         },

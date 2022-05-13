@@ -5,7 +5,7 @@ import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import LocalListToolsPopup from "../popups/LocalListToolsPopup";
 import { useMeetings } from "./useMeetings";
 
-export default function TheMeeting() {
+export default function TheMeetingsEvent() {
   const { currentMeeting } = useMeetings();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 

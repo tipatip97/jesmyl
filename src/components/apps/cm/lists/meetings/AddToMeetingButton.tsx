@@ -4,7 +4,7 @@ import { useMeetings } from "./useMeetings";
 
 
 export default function AddToMeetingButton() {
-    const { meetings } = useMeetings();
+    // const { events: meetings } = useMeetings();
     
     // return <TheModalInput config={{
     //     type: 'button',

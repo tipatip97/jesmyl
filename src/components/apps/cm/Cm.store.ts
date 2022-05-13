@@ -5,7 +5,7 @@ import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
 import { ChordVisibleVariant, CmRollMode, CmState, CmStorage } from "./Cm.model";
-import { IExportableMeeting } from "./lists/meetings/Meetings.model";
+import { IExportableMeetings } from "./lists/meetings/Meetings.model";
 
 export const cmExer = new Exer('cm', cmStorage);
 
@@ -23,8 +23,8 @@ const initialState: CmState = {
   paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
-  cm_meetings: cmStorage.get('cm_meetings'),
-  meetingw: cmStorage.get('meetingw'),
+  meetings: cmStorage.get('meetings'),
+  eventw: cmStorage.get('eventw'),
   comFontSize: cmStorage.getOr('comFontSize', 15),
   chords: cmStorage.getOr('chords', {}),
   isShowTranslationInfo: cmStorage.getOr('isShowTranslationInfo', true),
@@ -61,11 +61,11 @@ export const slice = createSlice({
     setCmChords: (state, action: PayloadAction<Record<string, number[]>>) => {
       state.chords = action.payload;
     },
-    updateMeetingList: (state, action: PayloadAction<IExportableMeeting[] | und>) => {
-      state.cm_meetings = action.payload;
+    updateMeetingList: (state, action: PayloadAction<IExportableMeetings | und>) => {
+      state.meetings = action.payload;
     },
     setCurrentMeetingw: (state, action: PayloadAction<number>) => {
-      state.meetingw = action.payload;
+      state.eventw = action.payload;
     },
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? state.isCmFullscreen;

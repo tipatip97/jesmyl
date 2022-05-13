@@ -1,34 +1,48 @@
 import { ExecDict } from "../../../../../complect/exer/Exer.model";
 import { cmExer } from "../../Cm.store";
-import { Meeting } from "../../lists/meetings/Meeting";
+import { MeetingsEvent } from "../../lists/meetings/MeetingsEvent";
+import { IExportableMeetingsEvent } from "../../lists/meetings/Meetings.model";
+import { EditableCols } from "../col/EditableCols";
 
 
 
-export class EditableMeeting extends Meeting {
-  initialName= '';
+export class EditableMeetingsEvent extends MeetingsEvent {
+  initialName = this.name;
 
-  args() {
-    return ({
-      n: this.name + '',
-      b: this.begin - 0,
-      e: this.end - 0
-    });
+  // constructor(top: IExportableMeeting, cols?: EditableCols) {
+  //   super(top, cols);
+  // }
+
+  scope(...args: (string | number)[]) {
+    return (['meeting', this.wid].concat(Array.from(args))).join('.');
   }
 
   // clearStack() {
   //   this.setStack([]);
   // }
 
+  execArgs(): IExportableMeetingsEvent {
+    return {
+      n: this.name,
+      b: this.begin,
+      g: this.group,
+      e: this.end,
+      r: this.isRegular,
+      s: [],
+      w: this.wid,
+    };
+  }
+
   exec<Value>(bag: ExecDict<Value>) {
     cmExer.set({
       ...bag,
       args: {
+        meetingw: this.wid,
+        meetingn: this.name,
         ...bag.args,
-        name: this.name,
-        id: this.wid,
-        ...this.args()
+        prev: bag.prev,
       }
-    } as ExecDict<Value>);
+    });
   }
 
   // setStack(value) {
@@ -46,33 +60,34 @@ export class EditableMeeting extends Meeting {
   //   this.stack = value.slice(0);
   // }
 
-  // rename(name = '') {
-  //   this.exec({
-  //     scope: this.scope('rename'),
-  //     prev: this.name,
-  //     value: name,
-  //     method: 'set',
-  //     action: 'renameMeeting',
-  //     args: {
-  //       name
-  //     },
-  //     onSet: (exec) => exec.args.name = exec.value
-  //   });
+  rename(name: string) {
+    this.exec({
+      scope: this.scope('rename'),
+      prev: this.name,
+      value: name,
+      method: 'set',
+      action: 'meetingRename',
+      args: {
+        meetingn: name,
+      }
+    });
 
-  //   this.name = name;
-  // }
+    this.name = name;
+  }
 
-  // scope(uniq: string) {
-  //   return (['meeting', this.wid, uniq].concat(Array.from(arguments))).join('.');
-  // }
+  switchRegular() {
+    const value = +!this.isRegular;
 
-  // removeEnd() {
-  //   this.exec({
-  //     action: 'setMeetingRegular'
-  //   });
+    this.exec({
+      action: 'setMeetingRegular',
+      method: 'set',
+      prev: this.isRegular || 0,
+      value,
+      args: { value }
+    });
 
-  //   this.end = 0;
-  // }
+    this.isRegular = +!this.isRegular as num;
+  }
 
   // appendMarks(value = []) {
   //   this.setStack(this.stack.filter(comw => value.indexOf(comw) < 0).concat(value));

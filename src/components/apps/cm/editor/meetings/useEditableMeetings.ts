@@ -4,30 +4,31 @@ import { cmStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
 import useCmNav from "../../base/useCmNav";
 import { riseUpMeetingsUpdate, setCurrentMeetingw } from "../../Cm.store";
-import { localCols, useCols } from "../../cols/useCols";
-import { MeetingsEvent } from "./MeetingsEvent";
-import { Meetings } from "./Meetings";
+import { localEditableCols, useEditableCols } from "../col/useEditableCols";
+import { EditableMeetingsEvent } from "./EditableMeeting";
+import { EditableMeetings } from "./EditableMeetings";
 
-let localMeetings: Meetings | nil;
-let currentMeeting: MeetingsEvent | nil;
+let localMeetings: EditableMeetings | nil;
+let currentMeeting: EditableMeetingsEvent | nil;
 
-export function useMeetings() {
+export function useEditableMeetings() {
     const dispatch = useDispatch();
     useSelector((state: RootState) => state.cm.numMeetingsUpdate);
     const meetings = useSelector((state: RootState) => state.cm.meetings);
     const meetingw = useSelector((state: RootState) => state.cm.eventw);
     const { goTo } = useCmNav();
-    const [cols] = useCols();
+    const [cols] = useEditableCols();
 
     useEffect(() => {
         if (cols && meetings) {
-            localMeetings = new Meetings(meetings, cols);
+            localMeetings = new EditableMeetings(meetings, cols);
             setCurrMeeting(meetingw);
             dispatch(riseUpMeetingsUpdate());
         }
     }, [meetings, cols]);
 
     return {
+        events: localMeetings?.events,
         meetings: localMeetings,
         currentMeeting,
         goToMeeting: (meetingw: number) => {
@@ -40,7 +41,7 @@ export function useMeetings() {
 }
 
 cmStorage.listen('meetings', 'useMeetings global', (val) => {
-    localMeetings = new Meetings(val, localCols);
+    localMeetings = new EditableMeetings(val, localEditableCols);
 });
 
 const setCurrMeeting = (meetingw?: number) => meetingw != null && (currentMeeting = localMeetings?.events?.find(meeting => meeting.wid === meetingw));

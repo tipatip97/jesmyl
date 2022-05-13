@@ -41,9 +41,15 @@
         "ext": "json"
       },
       {
+        "path": "~apps/cm/old-meetings.json",
+        "file": "old-meetings.json",
+        "name": "cm_meetings",
+        "ext": "json"
+      },
+      {
         "path": "~apps/cm/meetings.json",
         "file": "meetings.json",
-        "name": "cm_meetings",
+        "name": "meetings",
         "ext": "json"
       },
       {

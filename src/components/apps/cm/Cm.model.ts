@@ -5,7 +5,7 @@ import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeC
 import { IExportableSetts } from "./base/settings/Setts.model";
 import { ParanjaMode } from "./base/useParanja";
 import { IExportableCols } from "./cols/Cols.model";
-import { IExportableMeeting } from "./lists/meetings/Meetings.model";
+import { IExportableMeetingsEvent, IExportableMeetings } from "./lists/meetings/Meetings.model";
 
 export interface CmState extends CmStoraged {
     rollMode: CmRollMode;
@@ -38,11 +38,11 @@ export interface CmStoraged {
     route: FreeNavRoute;
     ccatw?: number;
     ccomw?: number;
-    meetingw?: number;
+    eventw?: number;
     laterComwList: number[];
     chordVisibleVariant: ChordVisibleVariant;
     marks: number[];
-    cm_meetings?: IExportableMeeting[];
+    meetings?: IExportableMeetings;
     comFontSize: number;
     chords: Record<string, number[]>;
     isShowTranslationInfo: boolean;

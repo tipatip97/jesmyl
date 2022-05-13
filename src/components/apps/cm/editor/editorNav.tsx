@@ -15,6 +15,8 @@ import EditComposition from "./col/compositions/EditComposition";
 import EditCompositions from "./col/compositions/EditCompositions";
 import ComRepeats from "./col/compositions/repeats/ComRepeats";
 import Editor from "./Editor";
+import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
+import EditMeetings from "./meetings/EditMeetings";
 
 export const editCompositionNavs: INavigationRouteChildItem<{
   icon?: EvaIconName;
@@ -110,6 +112,21 @@ export const editorRouteItems: INavigationRouteChildItem<{
         node: (props) => <EditComposition {...props} />,
         defaultChild: "main",
         next: editCompositionNavs,
+      },
+    ],
+  },
+  {
+    phase: ["meetings"],
+    node: <EditMeetings />,
+    data: {
+      title: "События",
+      icon: "calendar-outline",
+    },
+    next: [
+      {
+        phase: ["meeting"],
+        node: <EditMeetingsEvent />,
+        accessRule: 'canWatch',
       },
     ],
   },
