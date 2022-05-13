@@ -70,9 +70,15 @@ export class Order extends Base<IExportableOrderTop> {
   get texti() { return this.getBasic('t'); }
   set texti(val) { this.setExportable('t', val); }
 
-  get positions(): number[][] | und { return (this.top.targetOrd?.top.source || this.top.source)?.p || this.top.p; }
+  get positions(): number[][] | und {
+    return (
+      (this.top.isAnchorInherit ? this.top.source : this.top.targetOrd?.top.source)
+      || this.top.source)?.p || this.top.p;
+  }
   set positions(val: number[][] | und) {
-    const source = (this.top.targetOrd?.top.source || this.top.source)
+    const source = (
+      (this.top.isAnchorInherit ? this.top.source : this.top.targetOrd?.top.source)
+      || this.top.source)
     source && (source.p = val);
   }
 
@@ -105,7 +111,7 @@ export class Order extends Base<IExportableOrderTop> {
     if (typeof repeats === 'number') return repeats < 2 ? '' : repeats + '';
     if (repeats['.']) return repeats['.'] < 2 ? '' : repeats['.'] + '';
     const lastLineIndex = this.text.split(/\n/).length - 1;
-    const region = this.regions?.find(({startLinei, endLinei}) => startLinei === 0 && endLinei === lastLineIndex);
+    const region = this.regions?.find(({ startLinei, endLinei }) => startLinei === 0 && endLinei === lastLineIndex);
 
     return region ? region.endKey + '' : '';
   }
