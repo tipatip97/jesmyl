@@ -54,11 +54,6 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         const newRoute: NavPhase[] = [];
         const line = [route, phase].flat();
 
-        if (!this.isRoutePosible(line)) {
-            console.error(`Фаза "/${line.join('/')}" не существует!`);
-            return;
-        }
-
         const addRelatives = (point?: NavPhase | nil) => {
             if (typeof item?.node === 'function') {
                 item = point
@@ -86,6 +81,10 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
                 break;
             }
             if (phasei === line.length - 1) addRelatives();
+        }
+        if (!item) {
+            console.error(`Фаза "/${line.join('/')}" не существует!`);
+            return;
         }
 
         return newRoute;

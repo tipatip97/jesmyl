@@ -17,7 +17,7 @@ export function useEditableMeetings() {
     useSelector((state: RootState) => state.cm.numMeetingsUpdate);
     const meetings = useSelector((state: RootState) => state.cm.meetings);
     const eventw = useSelector((state: RootState) => state.cm.eventw);
-    const { navigate } = useCmNav();
+    const { goTo } = useCmNav();
     const [cols] = useEditableCols();
 
     useEffect(() => {
@@ -39,11 +39,10 @@ export function useEditableMeetings() {
             localEditableMeetings = new EditableMeetings(meetings, cols);
             dispatch(riseUpMeetingsUpdate());
         },
-        goToEvent: (eventw: number, isPreventSave?: boolean) => {
+        goToEvent: (eventw: number) => {
             setCurrEvent(eventw);
             dispatch(setCurrentEventw(eventw));
-            navigate(['editor', 'meetings', 'event'], isPreventSave);
-            if (isPreventSave) return;
+            goTo('event');
             cmStorage.set('eventw', eventw);
         },
     };
