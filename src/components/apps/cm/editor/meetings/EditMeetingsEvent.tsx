@@ -28,12 +28,6 @@ export default function EditMeetingsEvent() {
               }
             />
           </EditContainerCorrectsInformer>
-          {/* Регулярное событие{" "}
-          <input
-            type="checkbox"
-            checked={!!currentMeeting.isRegular}
-            onChange={() => exec(currentMeeting.switchRegular())}
-          /> */}
 
           {currentMeeting.coms?.map((com, comi) => (
             <ComFace
@@ -45,7 +39,6 @@ export default function EditMeetingsEvent() {
                   onClick={() => exec(currentMeeting.moveCom(comi))}
                 />
               }
-              importantOnClick={() => {}}
             />
           ))}
         </>

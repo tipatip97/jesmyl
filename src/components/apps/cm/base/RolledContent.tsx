@@ -6,18 +6,20 @@ import { cmStorage } from "../../../../shared/jstorages";
 import { CmRollMode } from "../Cm.model";
 import { changeRollMode, switchRollModeMarks } from "../Cm.store";
 import useCmNav from "./useCmNav";
+import useFullScreen from "../../../../complect/useFullscreen";
 
 export default function RollControled(
   props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>
 ) {
   const { toggleRoll, rollMode } = useRoll();
+  const [isFullscreen] = useFullScreen();
 
   return (
     <div
       {...props}
       onClick={() => toggleRoll()}
       ref={(element) => element && (container = element.parentElement)}
-      className="roll-controled-container"
+      className={`roll-controled-container ${isFullscreen ? "fullscreen" : ""}`}
     >
       <div
         className={`roll-controls flex column center ${
