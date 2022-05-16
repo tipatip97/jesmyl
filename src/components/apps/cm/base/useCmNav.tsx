@@ -67,6 +67,7 @@ const navigation = new NavigationConfig({
             {
               phase: ["event"],
               node: <TheMeetingsEvent />,
+              next: [...comNext],
             },
           ],
         },

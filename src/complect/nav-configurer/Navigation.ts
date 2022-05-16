@@ -54,7 +54,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         const newRoute: NavPhase[] = [];
         const line = [route, phase].flat();
 
-        if (!this.isRoutePosible(route)) {
+        if (!this.isRoutePosible(line)) {
             console.error(`Фаза "/${line.join('/')}" не существует!`);
             return;
         }

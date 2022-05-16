@@ -7,11 +7,13 @@ import { IExportableMeetingsEvent } from "./Meetings.model";
 
 export class MeetingsEvent extends BaseNamed<IExportableMeetingsEvent> {
   coms?: Com[];
+  cols?: Cols;
 
   constructor(top: IExportableMeetingsEvent, cols?: Cols) {
     super(top);
+    this.cols = cols;
 
-    this.coms = cols && top.s.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
+    this.coms = this.takeComs();
   }
 
   get group() { return this.getBasic('g'); }
@@ -28,6 +30,10 @@ export class MeetingsEvent extends BaseNamed<IExportableMeetingsEvent> {
 
   get stack() { return this.getBasic('s'); }
   set stack(value) { this.setExportable('s', value); }
+
+  takeComs() {
+    return this.cols && this.stack.map(comw => (this.cols as Cols).coms.find(com => com.wid === comw)).filter(com => com) as Com[];
+  }
 
   getTitle() {
     return `${this.name}${this.end ? `, ${this.getDate()}` : ''}`;

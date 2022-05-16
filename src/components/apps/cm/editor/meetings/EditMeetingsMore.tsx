@@ -1,9 +1,11 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import AddContext from "./AddContext";
 import MeetingsCreator from "./MeetingsCreator";
 
-export default function EditMeetingsMore() {
+export default function EditMeetingsMore({ currPath }: { currPath: number[] }) {
   const { openFullscreenContent } = useFullscreenContent();
+
   return (
     <>
       <div
@@ -13,17 +15,19 @@ export default function EditMeetingsMore() {
         }
       >
         <EvaIcon name="plus-circle-outline" className="abs-icon" />
-        <div>Создать</div>
+        <div>Создать событие</div>
         <div className="abs-action" />
       </div>
       <div
         className="abs-item pointer"
-        onClick={() =>
-          openFullscreenContent((close) => <MeetingsCreator close={close} />)
-        }
+        onClick={() => {
+          openFullscreenContent((close) => (
+            <AddContext close={close} currPath={currPath} />
+          ));
+        }}
       >
-        <EvaIcon name="folder-outline" className="abs-icon" />
-        <div>Поменять контекст</div>
+        <EvaIcon name="folder-add-outline" className="abs-icon" />
+        <div>Создать контекст</div>
         <div className="abs-action" />
       </div>
     </>

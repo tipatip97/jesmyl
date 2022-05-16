@@ -1,42 +1,89 @@
+import { ExecDict } from "../../../../../complect/exer/Exer.model";
 import { cmExer } from "../../Cm.store";
-import { IExportableMeetings, IExportableMeetingsEvent } from "../../lists/meetings/Meetings.model";
+import { Meetings } from "../../lists/meetings/Meetings";
+import { IExportableMeetings, IExportableMeetingsEvent, MeetingsContext, MeetingsContextMap } from "../../lists/meetings/Meetings.model";
 import { EditableCols } from "../col/EditableCols";
-import { EditableMeetingsEvent } from "./EditableMeeting";
-import { MeetingSection } from "./EditMeetings.model";
+import { EditableMeetingsEvent } from "./EditableMeetingsEvent";
 
-export class EditableMeetings {
+export class EditableMeetings extends Meetings {
+    event: EditableMeetingsEvent;
     stack?: IExportableMeetingsEvent[];
     events: EditableMeetingsEvent[];
-    contexts: string[];
+    contexts: MeetingsContextMap;
+    names: string[];
+    cols?: EditableCols;
 
-    constructor({ events, contexts }: IExportableMeetings = {} as IExportableMeetings, cols?: EditableCols) {
+    constructor(meetings?: IExportableMeetings, cols?: EditableCols) {
+        const { events, contexts, names } = meetings || {} as IExportableMeetings;
+
+        super(meetings, cols);
+
+        this.cols = cols;
         this.stack = events;
-        this.contexts = contexts;
+        this.contexts = this.takeContexts(contexts);
+        this.names = [...names];
         this.events = events?.map(event => new EditableMeetingsEvent(event, cols));
+        this.event = this.events[0];
     }
 
-    addContext(contextn: string) {
-        cmExer.set({
-            action: 'addMeetingsContext',
-            method: 'push',
+    scope(action: string, uniq?: number) {
+        return `${action}.${uniq || '[no-uniq]'}`;
+    }
+
+    exec(bag: ExecDict, uniq?: number) {
+        return cmExer.set({
+            scope: this.scope(bag.action, uniq),
+            ...bag,
             args: {
-                contextn
+                ...bag.args
             }
         });
     }
 
-    addEvent(name: string) {
+    addContext(name: string, groupPath: number[], bindEvents: EditableMeetingsEvent[]) {
+        let contexti = this.names.indexOf(name);
+
+        if (contexti < 0) {
+            this.exec({
+                action: 'addMeetingsName',
+                method: 'push',
+                args: {
+                    name
+                }
+            });
+            contexti = this.names.push(name) - 1;
+        }
+
+        const contextw = Date.now();
+        const context = groupPath.concat(contexti);
+
+        this.exec({
+            action: 'addMeetingsContext',
+            method: 'set',
+            value: context,
+            args: {
+                contextw,
+                context,
+            }
+        }, contextw);
+
+        this.contexts[contextw] = new MeetingsContext({ c: context });
+
+        bindEvents.forEach((event) => event.setGroup(contextw));
+    }
+
+    addEvent(name: string, group: number) {
         const event = new EditableMeetingsEvent({
             n: name,
             b: 0,
             e: 0,
-            g: -1,
+            g: group,
             r: 0,
             s: [],
             w: Date.now(),
-        });
+        }, this.cols);
 
-        cmExer.set({
+        this.exec({
             action: 'addMeetingsEvent',
             method: 'push',
             args: event.execArgs()
@@ -44,86 +91,4 @@ export class EditableMeetings {
 
         this.events.push(event);
     }
-
-    create(section: MeetingSection, name: string) {
-        console.log(section);
-        switch (section) {
-            case 'context': this.addContext(name); break;
-            case 'group': this.addContext(name); break;
-            case 'event': this.addEvent(name); break;
-        }
-    }
-
-    createMeeting(cb: (meetings?: IExportableMeetingsEvent[]) => void) {
-        // let n: string;
-        // let b = Date.now();
-        // let e = Date.now() + 1000 * 60 * 60 * 24;
-        // const w = Date.now();
-        // let bs = new Date(b).toISOString().split('T')[0];
-        // let es = new Date(e).toISOString().split('T')[0];
-        // let isOneDay = true;
-
-        // modalService.open({
-        //     title: 'Новое событие',
-        //     inputs: [
-        //         {
-        //             title: 'Название',
-        //             placeholder: 'Название',
-        //             type: 'text',
-        //             onInput: ({ input }) => n = input.value
-        //         }, {
-        //             title: 'Дата начала',
-        //             type: 'date',
-        //             min: bs,
-        //             value: bs,
-        //             onInput: ({ input }) => {
-        //                 b = new Date(input.value).getTime();
-        //                 bs = new Date(b + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
-
-        //                 if (b > e) {
-        //                     e = 0 + b;
-        //                     es = new Date(e).toISOString().split('T')[0];
-        //                 }
-        //             },
-        //         }, {
-        //             title: 'Один день',
-        //             type: 'checkbox',
-        //             checked: () => isOneDay,
-        //             onInput: () => isOneDay = !isOneDay,
-        //         }, {
-        //             title: 'Дата окончания',
-        //             type: 'date',
-        //             min: () => bs,
-        //             value: es,
-        //             onInput: ({ input }) => e = new Date(input.value).getTime(),
-        //             hidden: () => isOneDay
-        //         }
-        //     ],
-        //     buttons: [
-        //         {
-        //             title: 'Создать',
-        //             disabled: () => !n,
-        //             onClick: () => {
-        //                 const meeting: IExportableMeeting = { r: 0, n, b, e, w, s: [] };
-        //                 this.add(meeting);
-        //                 cb && cb(this.meetings?.concat(meeting));
-        //             },
-        //         }, {
-        //             title: 'Отмена'
-        //         }
-        //     ]
-        // });
-    }
-
-    // add({ n, b, e, w }: IExportableMeeting) {
-    //     cmExer.set({
-    //         action: 'addMeeting',
-    //         args: {
-    //             name: n,
-    //             begin: b,
-    //             end: e,
-    //             id: w
-    //         }
-    //     });
-    // }
 }

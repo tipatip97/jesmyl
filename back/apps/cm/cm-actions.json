@@ -908,21 +908,35 @@
             "meetings"
         ],
         "value": {
-            "contexts": [],
-            "events": [],
-            "groups": {}
+            "contexts": {},
+            "names": [],
+            "events": []
         },
         "next": [
             {
-                "action": "addMeetingsContext",
+                "action": "addMeetingsName",
                 "method": "push",
-                "title": "Добавлен новый контекст \"$contextn\"",
+                "title": "Добавлен новый наименование контекста \"$name\"",
                 "track": [
-                    "contexts"
+                    "names"
                 ],
-                "value": "{contextn}",
+                "value": "{name}",
                 "args": {
-                    "contextn": "#String"
+                    "name": "#String"
+                }
+            },
+            {
+                "action": "addMeetingsContext",
+                "method": "set",
+                "title": "Добавлен новый контекст для событий",
+                "track": [
+                    "contexts",
+                    "{contextw}"
+                ],
+                "value": "{context}",
+                "args": {
+                    "contextw": "#Number",
+                    "context": "#List"
                 }
             },
             {
@@ -955,7 +969,7 @@
                     },
                     {
                         "level": 50,
-                        "action": "remEvent",
+                        "action": "remMeetingEvent",
                         "title": "Событие \"$eventn\" удалено",
                         "method": "remove",
                         "value": [
@@ -975,7 +989,7 @@
                         "next": [
                             {
                                 "level": 50,
-                                "action": "setEventStack",
+                                "action": "setMeetingEventStack",
                                 "title": "В событии \"$eventn\" изменён список песен",
                                 "method": "set_all",
                                 "value": {
@@ -987,7 +1001,19 @@
                             },
                             {
                                 "level": 50,
-                                "action": "setEventRegular",
+                                "action": "setMeetingEventGroup",
+                                "title": "Событие \"$eventn\" перемещено в другой контекст",
+                                "method": "set_all",
+                                "value": {
+                                    "g": "{groupw}"
+                                },
+                                "args": {
+                                    "groupw": "#Number"
+                                }
+                            },
+                            {
+                                "level": 50,
+                                "action": "setMeetingEventRegular",
                                 "title": "Событие \"$eventn\" сделано $value!{{не}}регулярным",
                                 "track": [
                                     "r"
@@ -996,7 +1022,7 @@
                             },
                             {
                                 "level": 50,
-                                "action": "meetingRename",
+                                "action": "meetingEventRename",
                                 "title": "Событие \"$prev\" переименовано в \"$eventn\"",
                                 "track": [
                                     "n"

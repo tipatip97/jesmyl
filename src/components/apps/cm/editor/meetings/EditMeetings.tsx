@@ -1,47 +1,35 @@
+import { useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import useExer from "../../../../../complect/exer/useExer";
-import useCmNav from "../../base/useCmNav";
 import { cmExer } from "../../Cm.store";
-import { useMeetings } from "../../lists/meetings/useMeetings";
-import EditContainerCorrectsInformer from "../edit-container-corrects-informer/EditContainerCorrectsInformer";
+import MeetingsInner from "../../lists/meetings/MeetingsInner";
 import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
 import EditMeetingsMore from "./EditMeetingsMore";
+import "./Meetings.scss";
 import { useEditableMeetings } from "./useEditableMeetings";
 
 export default function EditMeetings() {
-  const { goTo } = useCmNav();
-  const { events, goToMeeting } = useEditableMeetings();
+  const { meetings, goToEvent } = useEditableMeetings();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   useExer(cmExer);
+  const [currPath, setCurrPath] = useState<number[]>([]);
+
+  if (!meetings) return null;
 
   return (
     <PhaseCmEditorContainer
       topClass="edit-meeitngs"
       headClass="flex between"
       headTitle="События"
-      onMoreClick={() => openAbsoluteBottomPopup(<EditMeetingsMore />)}
+      onMoreClick={() =>
+        openAbsoluteBottomPopup(<EditMeetingsMore currPath={currPath} />)
+      }
       content={
-        <>
-          {events?.map((meeting, meetingi) => {
-            return (
-              <EditContainerCorrectsInformer key={`coms-etitor_${meetingi}`}>
-                <BrutalItem
-                  key={`category-on-change_${meeting.wid}`}
-                  icon="calendar-outline"
-                  title={`${meeting.name || ""}${
-                    meeting.name !== meeting.initialName
-                      ? ` (${meeting.initialName})`
-                      : ""
-                  }`}
-                  onClick={() => {
-                    goToMeeting(meeting.wid);
-                  }}
-                />
-              </EditContainerCorrectsInformer>
-            );
-          })}
-        </>
+        <MeetingsInner
+          meetings={meetings}
+          onEventClick={(event) => goToEvent(event.wid)}
+          onContextNavigate={(context) => setCurrPath(context)}
+        />
       }
     />
   );

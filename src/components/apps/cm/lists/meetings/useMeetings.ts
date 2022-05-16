@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { cmStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
 import useCmNav from "../../base/useCmNav";
-import { riseUpMeetingsUpdate, setCurrentMeetingw } from "../../Cm.store";
+import { riseUpMeetingsUpdate, setCurrentEventw } from "../../Cm.store";
 import { localCols, useCols } from "../../cols/useCols";
 import { MeetingsEvent } from "./MeetingsEvent";
 import { Meetings } from "./Meetings";
@@ -15,14 +15,14 @@ export function useMeetings() {
     const dispatch = useDispatch();
     useSelector((state: RootState) => state.cm.numMeetingsUpdate);
     const meetings = useSelector((state: RootState) => state.cm.meetings);
-    const meetingw = useSelector((state: RootState) => state.cm.eventw);
+    const eventw = useSelector((state: RootState) => state.cm.eventw);
     const { goTo } = useCmNav();
     const [cols] = useCols();
 
     useEffect(() => {
         if (cols && meetings) {
             localMeetings = new Meetings(meetings, cols);
-            setCurrMeeting(meetingw);
+            setCurrEvent(eventw);
             dispatch(riseUpMeetingsUpdate());
         }
     }, [meetings, cols]);
@@ -30,11 +30,11 @@ export function useMeetings() {
     return {
         meetings: localMeetings,
         currentMeeting,
-        goToMeeting: (meetingw: number) => {
-            setCurrMeeting(meetingw);
-            cmStorage.set('eventw', meetingw);
-            dispatch(setCurrentMeetingw(meetingw));
-            goTo('meeting');
+        goToEvent: (eventw: number) => {
+            setCurrEvent(eventw);
+            cmStorage.set('eventw', eventw);
+            dispatch(setCurrentEventw(eventw));
+            goTo('event');
         },
     };
 }
@@ -43,4 +43,4 @@ cmStorage.listen('meetings', 'useMeetings global', (val) => {
     localMeetings = new Meetings(val, localCols);
 });
 
-const setCurrMeeting = (meetingw?: number) => meetingw != null && (currentMeeting = localMeetings?.events?.find(meeting => meeting.wid === meetingw));
+const setCurrEvent = (eventw?: number) => eventw != null && (currentMeeting = localMeetings?.events?.find(meeting => meeting.wid === eventw));

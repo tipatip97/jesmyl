@@ -4,8 +4,9 @@ import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { IExportableSetts } from "./base/settings/Setts.model";
 import { ParanjaMode } from "./base/useParanja";
+import { MigratableComToolName } from "./col/com/Com.model";
 import { IExportableCols } from "./cols/Cols.model";
-import { IExportableMeetingsEvent, IExportableMeetings } from "./lists/meetings/Meetings.model";
+import { IExportableMeetings } from "./lists/meetings/Meetings.model";
 
 export interface CmState extends CmStoraged {
     rollMode: CmRollMode;
@@ -18,6 +19,8 @@ export interface CmState extends CmStoraged {
     isShowMarks: boolean;
     isMiniAnchor: boolean;
     rollModeMarks: boolean;
+    selectedComs: number[];
+    currentMeetingsContext: number[];
 
     numComUpdates: number;
     numColsUpdates: number;
@@ -33,6 +36,7 @@ export enum ChordVisibleVariant {
     Maximal = 2,
 }
 
+export type FavoriteMeetings = Record<'events' | 'contexts', number[]>;
 
 export interface CmStoraged {
     route: FreeNavRoute;
@@ -46,6 +50,8 @@ export interface CmStoraged {
     comFontSize: number;
     chords: Record<string, number[]>;
     isShowTranslationInfo: boolean;
+    favoriteMeetings: FavoriteMeetings;
+    comTopTools: MigratableComToolName[];
 
     lastUpdate?: number;
 }

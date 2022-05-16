@@ -34,3 +34,12 @@ export interface SettingsItem {
     name: SettingsItemName;
     icon: EvaIconName;
 }
+
+export type MigratableComToolName = 'translation' | 'chords-variant' | 'chord-images' | 'selected-toggle' | 'mark-com' | 'fullscreen-mode';
+
+export interface MigratableComTool {
+    title: string;
+    icon: EvaIconName;
+    onClick: () => void | boolean;
+    tool: MigratableComToolName;
+}

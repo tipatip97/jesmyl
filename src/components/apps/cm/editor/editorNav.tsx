@@ -124,7 +124,7 @@ export const editorRouteItems: INavigationRouteChildItem<{
     },
     next: [
       {
-        phase: ["meeting"],
+        phase: ["event"],
         node: <EditMeetingsEvent />,
         accessRule: 'canWatch',
       },

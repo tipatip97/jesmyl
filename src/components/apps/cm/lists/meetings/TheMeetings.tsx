@@ -1,20 +1,20 @@
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
-import MeetingsContext from "./MeetingsContext";
+import MeetingsInner from "./MeetingsInner";
 import { useMeetings } from "./useMeetings";
 
 export default function TheMeetings() {
-  const { meetings, goToMeeting } = useMeetings();
+  const { meetings, goToEvent } = useMeetings();
+
+  if (!meetings) return null;
 
   return (
     <PhaseCmContainer
       topClass="meetings-container"
       head="События"
-      contentClass="flex column"
       content={
-        <MeetingsContext
+        <MeetingsInner
           meetings={meetings}
-          onContextClick={() => {}}
-          onEventClick={(event) => goToMeeting(event.wid)}
+          onEventClick={(event) => goToEvent(event.wid)}
         />
       }
     />

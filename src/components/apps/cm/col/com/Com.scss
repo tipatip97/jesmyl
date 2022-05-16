@@ -11,6 +11,10 @@
         margin-bottom: calc(var(--number-border-size) * 2 + 2px);
         cursor: pointer;
 
+        &.selected .number {
+            border-color: var(--color--3);
+        }
+
         >.number {
             position: absolute;
             display: flex;
@@ -20,7 +24,7 @@
             border-radius: 50%;
             width: var(--size);
             height: var(--size);
-            border: solid 2px transparent;
+            border: solid 4px transparent;
         }
 
         >.title {

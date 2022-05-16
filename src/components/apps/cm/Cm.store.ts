@@ -4,7 +4,8 @@ import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.m
 import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
-import { ChordVisibleVariant, CmRollMode, CmState, CmStorage } from "./Cm.model";
+import { ChordVisibleVariant, CmRollMode, CmState, CmStorage, FavoriteMeetings } from "./Cm.model";
+import { MigratableComToolName } from "./col/com/Com.model";
 import { IExportableMeetings } from "./lists/meetings/Meetings.model";
 
 export const cmExer = new Exer('cm', cmStorage);
@@ -32,6 +33,10 @@ const initialState: CmState = {
   translationBlock: 0,
   isTranslationBlockVisible: true,
   translationBlockPosition: 'center',
+  selectedComs: [],
+  favoriteMeetings: cmStorage.getOr('favoriteMeetings', { contexts: [], events: [] }),
+  comTopTools: cmStorage.getOr('comTopTools', ["mark-com", "fullscreen-mode"]),
+  currentMeetingsContext: [],
 
   numComUpdates: 0,
   numColsUpdates: 0,
@@ -64,7 +69,21 @@ export const slice = createSlice({
     updateMeetingList: (state, action: PayloadAction<IExportableMeetings | und>) => {
       state.meetings = action.payload;
     },
-    setCurrentMeetingw: (state, action: PayloadAction<number>) => {
+    updateFavoriteMeetings: (state, action: PayloadAction<FavoriteMeetings>) => {
+      state.favoriteMeetings = action.payload;
+      cmStorage.set('favoriteMeetings', state.favoriteMeetings);
+    },
+    updateSelectedComs: (state, action: PayloadAction<number[]>) => {
+      state.selectedComs = action.payload;
+    },
+    updateComTopTools: (state, action: PayloadAction<MigratableComToolName[]>) => {
+      state.comTopTools = action.payload;
+      cmStorage.set('comTopTools', action.payload);
+    },
+    updateCurrentMeetingsContext: (state, action: PayloadAction<number[]>) => {
+      state.currentMeetingsContext = action.payload;
+    },
+    setCurrentEventw: (state, action: PayloadAction<number>) => {
       state.eventw = action.payload;
     },
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
@@ -140,7 +159,11 @@ export const {
   switchRollModeMarks,
   setMarkList,
   updateMeetingList,
-  setCurrentMeetingw,
+  updateFavoriteMeetings,
+  updateSelectedComs,
+  updateComTopTools,
+  updateCurrentMeetingsContext,
+  setCurrentEventw,
   setComFontSize,
   setTranslationBlock,
   switchTranslationBlockVisible,

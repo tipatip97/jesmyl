@@ -3,45 +3,50 @@ import { useDispatch, useSelector } from "react-redux";
 import { cmStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
 import useCmNav from "../../base/useCmNav";
-import { riseUpMeetingsUpdate, setCurrentMeetingw } from "../../Cm.store";
-import { localEditableCols, useEditableCols } from "../col/useEditableCols";
-import { EditableMeetingsEvent } from "./EditableMeeting";
+import { riseUpMeetingsUpdate, setCurrentEventw } from "../../Cm.store";
+import { IExportableMeetings } from "../../lists/meetings/Meetings.model";
+import { useEditableCols } from "../col/useEditableCols";
 import { EditableMeetings } from "./EditableMeetings";
+import { EditableMeetingsEvent } from "./EditableMeetingsEvent";
 
-let localMeetings: EditableMeetings | nil;
+let localEditableMeetings: EditableMeetings | nil;
 let currentMeeting: EditableMeetingsEvent | nil;
 
 export function useEditableMeetings() {
     const dispatch = useDispatch();
     useSelector((state: RootState) => state.cm.numMeetingsUpdate);
     const meetings = useSelector((state: RootState) => state.cm.meetings);
-    const meetingw = useSelector((state: RootState) => state.cm.eventw);
-    const { goTo } = useCmNav();
+    const eventw = useSelector((state: RootState) => state.cm.eventw);
+    const { navigate } = useCmNav();
     const [cols] = useEditableCols();
 
     useEffect(() => {
-        if (cols && meetings) {
-            localMeetings = new EditableMeetings(meetings, cols);
-            setCurrMeeting(meetingw);
+        if (!localEditableMeetings) {
+            localEditableMeetings = new EditableMeetings(meetings, cols);
             dispatch(riseUpMeetingsUpdate());
         }
-    }, [meetings, cols]);
+    }, [meetings, cols, dispatch]);
+
+    useEffect(() => {
+        setCurrEvent(eventw);
+        dispatch(riseUpMeetingsUpdate());
+    }, [dispatch, eventw]);
 
     return {
-        events: localMeetings?.events,
-        meetings: localMeetings,
+        meetings: localEditableMeetings,
         currentMeeting,
-        goToMeeting: (meetingw: number) => {
-            setCurrMeeting(meetingw);
-            cmStorage.set('eventw', meetingw);
-            dispatch(setCurrentMeetingw(meetingw));
-            goTo('meeting');
+        setEditableMeetings: (meetings?: IExportableMeetings) => {
+            localEditableMeetings = new EditableMeetings(meetings, cols);
+            dispatch(riseUpMeetingsUpdate());
+        },
+        goToEvent: (eventw: number, isPreventSave?: boolean) => {
+            setCurrEvent(eventw);
+            dispatch(setCurrentEventw(eventw));
+            navigate(['editor', 'meetings', 'event'], isPreventSave);
+            if (isPreventSave) return;
+            cmStorage.set('eventw', eventw);
         },
     };
 }
 
-cmStorage.listen('meetings', 'useMeetings global', (val) => {
-    localMeetings = new EditableMeetings(val, localEditableCols);
-});
-
-const setCurrMeeting = (meetingw?: number) => meetingw != null && (currentMeeting = localMeetings?.events?.find(meeting => meeting.wid === meetingw));
+const setCurrEvent = (eventw?: number) => eventw != null && (currentMeeting = localEditableMeetings?.events?.find(meeting => meeting.wid === eventw));

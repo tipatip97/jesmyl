@@ -1,3 +1,4 @@
+import { Base } from "../../base/Base";
 
 
 export interface IExportableMeetingsEvent {
@@ -10,15 +11,29 @@ export interface IExportableMeetingsEvent {
     g: number; // контекстуальная группа
 }
 
-export type MeetingsContext = string;
+export interface IExportableMeetingsContext {
+    c: number[];
+}
+
+export class MeetingsContext extends Base<IExportableMeetingsContext> {
+    get context() {
+        return this.getBasic('c');
+    }
+    set context(val) {
+        this.setExportable('c', val);
+    }
+}
+
+export type MeetingsContextMap = Record<number, MeetingsContext>;
+export type IExportableMeetingsContextMap = Record<number, IExportableMeetingsContext>;
 
 export interface IExportableMeetings {
-    contexts: MeetingsContext[];
+    names: string[];
     events: IExportableMeetingsEvent[];
-    groups: Record<number, (keyof IExportableMeetings['contexts'])[]>;
+    contexts: IExportableMeetingsContextMap;
 }
 
 export interface MeetingsContextBox {
     id: number;
-    name: MeetingsContext;
+    name: string;
 }

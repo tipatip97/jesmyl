@@ -1,33 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import { ChordVisibleVariant } from "../../Cm.model";
-import {
-  riseUpComUpdate,
-  setComFontSize,
-  switchIsMiniAnchor,
-} from "../../Cm.store";
-import useTranslation from "../../translation/useTranslation";
-import ChordImagesList from "./chord-card/ChordImagesList";
+import { riseUpComUpdate, setComFontSize } from "../../Cm.store";
 import { useCcom } from "./useCcom";
+import useMigratableComTools from "./useMigratableComTools";
 
 export default function ComTools() {
   const dispatch = useDispatch();
   const [ccom] = useCcom();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
-  const isMiniAnchor = useSelector((state: RootState) => state.cm.isMiniAnchor);
-  const { openTranslations, isShowFullscreen } = useTranslation();
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const [chordVisibleVariant, setChordVisibleVariant] =
-    useChordVisibleVariant();
-  const { openFullscreenContent } = useFullscreenContent();
+  const [chordVisibleVariant] = useChordVisibleVariant();
 
-  const isWhole = !ccom?.orders?.some(
-    (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
-  );
+  const { makeToolList, toggleTopTool } = useMigratableComTools();
 
   if (!ccom) return null;
   return (
@@ -79,85 +67,25 @@ export default function ComTools() {
           />
         </div>
       </div>
-      <div
-        className="abs-item abs-full"
-        onClick={() => {
-          openTranslations();
-          closeAbsoluteBottomPopup();
-        }}
-      >
-        <EvaIcon
-          name={isShowFullscreen ? "play-outline" : "monitor-outline"}
-          className="abs-icon"
-        />
-        <div className="title">Слайды</div>
-        <div className="abs-action" />
-      </div>
-      <div
-        className="abs-item abs-full"
-        onClick={(event) => {
-          event.stopPropagation();
 
-          if (event.ctrlKey) {
-            event.stopPropagation();
-          } else {
-            setChordVisibleVariant(
-              isWhole
-                ? chordVisibleVariant
-                  ? ChordVisibleVariant.None
-                  : ChordVisibleVariant.Maximal
-                : chordVisibleVariant -
-                    (chordVisibleVariant > ChordVisibleVariant.Minimal
-                      ? ChordVisibleVariant.Maximal
-                      : -1)
-            );
-          }
-        }}
-      >
-        {(
-          [
-            ["file-outline", "нет"],
-            ["file-remove-outline", "мин"],
-            ["file-text-outline", "макс"],
-          ] as [EvaIconName, string][]
-        ).map(([name, alt], variant: ChordVisibleVariant) => {
-          if (chordVisibleVariant !== variant) return null;
-
-          return (
-            <EvaIcon
-              key={`navigation-v-${variant}`}
-              name={name}
-              alt={alt}
-              className="abs-icon"
-            />
-          );
-        })}
-        <div className="title">Показать аккорды</div>
-        <div className="abs-action" />
-      </div>
-      <div
-        className="abs-item abs-full"
-        onClick={() =>
-          dispatch(openFullscreenContent(<ChordImagesList />, true, true))
-        }
-      >
-        <EvaIcon name="image-outline" className="abs-icon" />
-        <div className="title">Изображения аккордов</div>
-        <div className="abs-action" />
-      </div>
-      <div
-        className="abs-item abs-full"
-        onClick={() => dispatch(switchIsMiniAnchor())}
-      >
-        <EvaIcon
-          name={isMiniAnchor ? "expand" : "collapse"}
-          className="abs-icon"
-        />
-        <div className="title">
-          {isMiniAnchor ? "Развернуть текст" : "Свернуть текст"}
+      {makeToolList(false).map(({ onClick, title, icon, tool }) => (
+        <div
+          key={tool}
+          className="abs-item abs-full"
+          onContextMenu={(event) => {
+            event.preventDefault();
+            toggleTopTool(tool);
+          }}
+          onClick={() => {
+            if (onClick()) return;
+            closeAbsoluteBottomPopup();
+          }}
+        >
+          <EvaIcon name={icon} className="abs-icon" />
+          <div className="title">{title}</div>
+          <div className="abs-action" />
         </div>
-        <div className="abs-action" />
-      </div>
+      ))}
     </>
   );
 }

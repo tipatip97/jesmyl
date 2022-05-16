@@ -14,7 +14,6 @@
     .abs-item {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         width: 100%;
         max-width: 450px;
 
@@ -122,6 +121,11 @@
 
             .abs-item {
                 padding: 10px 0;
+                justify-content: space-between;
+
+                .title {
+                    text-align: center;
+                }
             }
         }
     }
