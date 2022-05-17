@@ -299,8 +299,18 @@ export class EditableCom extends Com {
         if (refresh) this.afterOrderChange();
     }
 
+    isOrdWithHead(ord: EditableOrder) {
+        return !ord.top.isInherit &&
+            !ord.top.isPrevAnchorInheritPlus &&
+            !ord.isEmptyHeader;
+    }
+
+    isImpossibleToMigrateOrder(ord: EditableOrder, ordi: number, ords: EditableOrder[]) {
+        return ord.top.isAnchorInherit || ordi === ords.length - 1;
+    }
+
     isCantMigrateOrder(ord: EditableOrder, ordi: number) {
-        return (!ordi && ord.top.isNextInherit || ord.top.isPrevTargetOrd || (ord.top.isNextAnchorOrd && !ordi))
+        return ((!ordi && ord.top.isNextInherit) || ord.top.isNextAnchorOrd || (ord.top.isNextAnchorOrd && !ordi))
             || (index => !(index < 0 || index === cmExer.execs.length - 1))
                 (cmExer.execs.findIndex(exec => exec.action === 'comMigrateOrders' && exec.args?.comw === this.wid));
     }

@@ -46,12 +46,16 @@ export default function OrdersRedactor() {
             }}
           />
         );
-        const isWithHead =
-          !ord.top.isInherit && !ord.top.isPrevAnchorInheritPlus && !ord.isEmptyHeader;
+        const isWithHead = ccom.isOrdWithHead(ord);
 
         return (
-          <div key={`order-${ordi}`} className={ord.top.isAnchorInherit ? 'inherit-block' : ''}>
-            <div className="margin-big-gap-h">{isWithHead ? null : editNode}</div>
+          <div
+            key={`order-${ordi}`}
+            className={ord.top.isAnchorInherit ? "inherit-block" : ""}
+          >
+            <div className="margin-big-gap-h">
+              {isWithHead ? null : editNode}
+            </div>
             <TheOrder
               orderUnit={ord}
               orderUniti={ordi}
@@ -66,16 +70,16 @@ export default function OrdersRedactor() {
                 );
               }}
             />
-              {ord.top.isAnchorInherit || ordi === orda.length - 1 ? null : (
-                <EvaIcon
-                  name="swap-outline"
-                  className={`pointer ${
-                    ccom.isCantMigrateOrder(ord, ordi) ? "disabled" : ""
-                  }`}
-                  style={{ transform: "rotate(90deg)" }}
-                  onClick={() => exec(ccom.migrateOrder(ord))}
-                />
-              )}
+            {ccom.isImpossibleToMigrateOrder(ord, ordi, orda) ? null : (
+              <EvaIcon
+                name="swap-outline"
+                className={`pointer ${
+                  ccom.isCantMigrateOrder(ord, ordi) ? "disabled" : ""
+                }`}
+                style={{ transform: "rotate(90deg)" }}
+                onClick={() => exec(ccom.migrateOrder(ord))}
+              />
+            )}
           </div>
         );
       })}
