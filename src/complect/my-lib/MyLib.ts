@@ -259,19 +259,20 @@ export class MyLib {
 
             if (typer[0] === '#') {
                 const explodes = this.explode(':', typer as string, 2);
-                const type = explodes[0].substr(1);
+                const type = explodes[0].slice(1);
                 const lower = type.toLowerCase();
 
                 if (lower === type && value == null) return true;
 
                 let isCorrect = false;
 
-                if (lower === 'list') isCorrect = this.isArr(value); // && this.isCorrectInArray(explodes[1], value);
-                else if (lower === 'dict') isCorrect = this.isObj(value); // && this.isCorrectInArray(explodes[1], value);
-                else if (lower === 'object') isCorrect = this.isobj(value); // && this.isCorrectInArray(explodes[1], value);
+                if (lower === 'list') isCorrect = this.isArr(value);
+                else if (lower === 'dict') isCorrect = this.isObj(value);
+                else if (lower === 'object') isCorrect = this.isobj(value);
                 else if (lower === 'string') isCorrect = this.isStr(value);
                 else if (lower === 'numeric') isCorrect = this.isnum(value);
                 else if (lower === 'number') isCorrect = this.isNum(value);
+                else if (lower === 'num') isCorrect = value === 0 || value === 1;
                 else if (lower === 'boolean') isCorrect = this.isBool(value);
                 else if (lower === 'simple') isCorrect = this.isStr(value) || this.isNum(value);
                 else if (lower === 'primitive') isCorrect = this.isBool(value) || this.isStr(value) || this.isNum(value);
