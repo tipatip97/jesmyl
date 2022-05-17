@@ -3,6 +3,8 @@ import {
   INavigationRouteChildItem,
   INavigationRouteRootItem,
 } from "../../../../complect/nav-configurer/Navigation.model";
+import TheComposition from "../col/com/TheComposition";
+import Translations from "../translation/Translation";
 import EditCategories from "./col/categories/EditCategories";
 import EditCategory from "./col/categories/EditCategory";
 import CategoryBinds from "./col/compositions/complect/category-binds/CategoryBinds";
@@ -15,6 +17,8 @@ import EditComposition from "./col/compositions/EditComposition";
 import EditCompositions from "./col/compositions/EditCompositions";
 import ComRepeats from "./col/compositions/repeats/ComRepeats";
 import Editor from "./Editor";
+import EditMeetings from "./meetings/EditMeetings";
+import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
 
 export const editCompositionNavs: INavigationRouteChildItem<{
   icon?: EvaIconName;
@@ -110,6 +114,32 @@ export const editorRouteItems: INavigationRouteChildItem<{
         node: (props) => <EditComposition {...props} />,
         defaultChild: "main",
         next: editCompositionNavs,
+      },
+    ],
+  },
+  {
+    phase: ["meetings"],
+    node: <EditMeetings />,
+    data: {
+      title: "События",
+      icon: "calendar-outline",
+    },
+    next: [
+      {
+        phase: ["event"],
+        node: <EditMeetingsEvent />,
+        next: [
+          {
+            phase: ["com"],
+            node: <TheComposition />,
+            next: [
+              {
+                phase: ["translation"],
+                node: <Translations />,
+              },
+            ],
+          },
+        ],
       },
     ],
   },

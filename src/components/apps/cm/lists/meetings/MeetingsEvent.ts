@@ -2,17 +2,25 @@ import mylib from "../../../../../complect/my-lib/MyLib";
 import { BaseNamed } from "../../base/Base";
 import { Com } from "../../col/com/Com";
 import { Cols } from "../../cols/Cols";
-import { IExportableMeeting } from "./Meetings.model";
+import { IExportableMeetingsEvent } from "./Meetings.model";
 
 
-export class Meeting extends BaseNamed<IExportableMeeting> {
+export class MeetingsEvent extends BaseNamed<IExportableMeetingsEvent> {
   coms?: Com[];
+  cols?: Cols;
 
-  constructor(top: IExportableMeeting, cols?: Cols) {
+  constructor(top: IExportableMeetingsEvent, cols?: Cols) {
     super(top);
+    this.cols = cols;
 
-    this.coms = cols && top.s.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
+    this.coms = this.takeComs();
   }
+
+  get group() { return this.getBasic('g'); }
+  set group(value) { this.setExportable('g', value); }
+
+  get isRegular() { return this.getBasic('r'); }
+  set isRegular(value) { this.setExportable('r', value); }
 
   get begin() { return this.getBasic('b'); }
   set begin(value) { this.setExportable('b', value); }
@@ -22,6 +30,10 @@ export class Meeting extends BaseNamed<IExportableMeeting> {
 
   get stack() { return this.getBasic('s'); }
   set stack(value) { this.setExportable('s', value); }
+
+  takeComs() {
+    return this.cols && this.stack.map(comw => (this.cols as Cols).coms.find(com => com.wid === comw)).filter(com => com) as Com[];
+  }
 
   getTitle() {
     return `${this.name}${this.end ? `, ${this.getDate()}` : ''}`;

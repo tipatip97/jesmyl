@@ -18,6 +18,10 @@
     height: 100%;
     width: 100%;
 
+    .padding-big-gap {
+        padding: var(--main-big-gap);
+    }
+
     .margin-big-gap {
         margin: var(--main-big-gap);
     }

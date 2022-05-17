@@ -1,88 +1,58 @@
-import modalService from "../../../../../complect/modal/Modal.service";
-import { cmExer } from "../../Cm.store";
-import { Meeting } from "./Meeting";
-import { IExportableMeeting } from "./Meetings.model";
 import { Cols } from "../../cols/Cols";
+import { MeetingsEvent } from "./MeetingsEvent";
+import { IExportableMeetingsEvent, IExportableMeetings, MeetingsContextMap, MeetingsContext, IExportableMeetingsContextMap } from "./Meetings.model";
+import mylib from "../../../../../complect/my-lib/MyLib";
 
-  export class Meetings {
-    stack?: Meeting[];
-    meetings?: IExportableMeeting[];
+export class Meetings {
+  event: MeetingsEvent;
+  stack?: IExportableMeetingsEvent[];
+  events: MeetingsEvent[];
+  contexts: MeetingsContextMap;
+  names: string[];
 
-    constructor(meetings?: IExportableMeeting[], cols?: Cols) {
-      this.meetings = meetings;
-      this.stack = meetings?.map(meeting => new Meeting(meeting, cols));
-    }
-    
-    create(cb: (meetings?: IExportableMeeting[]) => void) {
-      let n: string;
-      let b = Date.now();
-      let e = Date.now() + 1000 * 60 * 60 * 24;
-      const w = Date.now();
-      let bs = new Date(b).toISOString().split('T')[0];
-      let es = new Date(e).toISOString().split('T')[0];
-      let isOneDay = true;
-      
-      modalService.open({
-        title: 'Новое событие',
-        inputs: [
-          {
-            title: 'Название',
-            placeholder: 'Название',
-            type: 'text',
-            onInput: ({input}) => n = input.value
-          }, {
-            title: 'Дата начала',
-            type: 'date',
-            min: bs,
-            value: bs,
-            onInput: ({input}) => {
-              b = new Date(input.value).getTime();
-              bs = new Date(b + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
-              
-              if (b > e) {
-                e = 0 + b;
-                es = new Date(e).toISOString().split('T')[0];
-              }
-            },
-          }, {
-            title: 'Один день',
-            type: 'checkbox',
-            checked: () => isOneDay,
-            onInput: () => isOneDay = !isOneDay,
-          }, {
-            title: 'Дата окончания',
-            type: 'date',
-            min: () => bs,
-            value: es,
-            onInput: ({input}) => e = new Date(input.value).getTime(),
-            hidden: () => isOneDay
-          }
-        ],
-        buttons: [
-          {
-            title: 'Создать',
-            disabled: () => !n,
-            onClick: () => {
-              const meeting: IExportableMeeting = {n, b, e, w, s: []};
-              this.add(meeting);
-              cb && cb(this.meetings?.concat(meeting));
-            },
-          }, {
-            title: 'Отмена'
-          }
-        ]
-      });
-    }
-
-    add({ n, b, e, w }: IExportableMeeting) {
-      cmExer.set({
-        action: 'addMeeting',
-        args: {
-          name: n,
-          begin: b,
-          end: e,
-          id: w
-        }
-      });
-    }
+  constructor({ events, contexts, names }: IExportableMeetings = {} as IExportableMeetings, cols?: Cols) {
+    this.stack = events;
+    this.contexts = this.takeContexts(contexts);
+    this.events = events?.map(event => new MeetingsEvent(event, cols));
+    this.event = this.events[0];
+    this.names = [...names];
   }
+
+  takeContexts(contexts: IExportableMeetingsContextMap) {
+    return Object.entries(contexts).reduce((ctxs, [contextw, context]) => {
+      ctxs[contextw as never] = new MeetingsContext(context);
+      return ctxs;
+    }, {} as MeetingsContextMap);
+  }
+
+  getNames(currPath: number[]): string[][] {
+      const usedNameis: number[] = [];
+      const usedNames: string[] = [];
+      Object.values(this.contexts || {}).forEach((path) => {
+          if (!currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx)) {
+              usedNameis.push(path.context[currPath.length]);
+              usedNames.push(this.names[path.context[currPath.length]]);
+          }
+      });
+      return [this.names.filter((_, contexti) => usedNameis.indexOf(contexti) < 0), usedNames];
+  }
+
+  getContexts(currPath: number[]): [[number, string, number][], number | null] {
+      let currGroupw: number | null = null;
+
+      const contexts = Object.entries(this.contexts || {})
+          .map(([groupw, path]): null | [number, string, number] => {
+              if (currPath.length === path.context.length && mylib.isEq(currPath, path.context))
+                  currGroupw = +groupw;
+              if (currPath.length !== path.context.length - 1 || currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx)) return null;
+
+              const contexti = path.context[currPath.length];
+              const context = this.names[contexti];
+
+              return context ? [contexti, context, +groupw] : null;
+          })
+          .filter((context) => context);
+
+      return [contexts as [number, string, number][], currGroupw];
+  }
+}

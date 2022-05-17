@@ -1,25 +1,22 @@
-import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
+import MeetingsInner from "./MeetingsInner";
 import { useMeetings } from "./useMeetings";
 
 export default function TheMeetings() {
-  const { meetings, goToMeeting } = useMeetings();
+  const { meetings, goToEvent } = useMeetings();
+
+  if (!meetings) return null;
 
   return (
     <PhaseCmContainer
       topClass="meetings-container"
       head="События"
-      contentClass="flex column"
-      content={meetings?.map((meeting) => {
-        return (
-          <BrutalItem
-            key={`meeting-${meeting.wid}`}
-            icon="calendar"
-            title={meeting.name}
-            onClick={() => goToMeeting(meeting.wid)}
-          />
-        );
-      })}
+      content={
+        <MeetingsInner
+          meetings={meetings}
+          onEventClick={(event) => goToEvent(event.wid)}
+        />
+      }
     />
   );
 }

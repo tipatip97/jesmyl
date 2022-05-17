@@ -103,7 +103,6 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   transChord(chord: string, delta: number = 1) {
-
     const cindex = simpleHashChords.indexOf(chord);
     const di = cindex - -delta;
     const len = simpleHashChords.length;
@@ -114,6 +113,7 @@ export class Com extends BaseNamed<IExportableCom> {
         : di === len || -di === len
           ? 0
           : di;
+
     return simpleHashChords[nindex];
   }
 

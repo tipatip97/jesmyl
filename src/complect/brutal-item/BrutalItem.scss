@@ -7,9 +7,5 @@
     width: 100%;
     height: var(--brutal-item-height);
     cursor: pointer;
-
-    +.brutal-item {
-        margin-top: var(--brutal-item-gap-v);
-    }
+    margin-top: var(--brutal-item-gap-v);
 }
-

@@ -14,7 +14,7 @@ export default function BrutalItem({
         <EvaIcon name={icon} className="margin-big-gap" />
         <div>{title}</div>
       </div>
-      {description && <div className="margin-big-gap">{description}</div>}
+      {description && <div className="margin-big-gap flex">{description}</div>}
     </div>
   );
 }

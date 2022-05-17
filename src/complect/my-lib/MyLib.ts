@@ -75,6 +75,7 @@ export class MyLib {
     isEq(base: any, source: any) {
         if (base == null && base == source) return true;
         if (base == null || source == null) return false;
+        if (base === source) return true;
 
         const baseType = this.typeOf(base);
         const srcType = this.typeOf(source);
@@ -116,7 +117,12 @@ export class MyLib {
         return RegExp(reps.reduce((acc, [from, to]) => acc.replace(RegExp(`[${from}]`), `[${to || from}]`), word).toLowerCase(), flags);
     }
 
-    searchRate<FerryType, ObjName extends keyof FerryType = keyof FerryType>(objects: FerryType[ObjName][], searchWord: string, places: (Trace[] | Trace)[], objName: ObjName): Ferry<FerryType, ObjName>[] {
+    searchRate<FerryType, ObjName extends keyof FerryType = keyof FerryType>(
+        objects: FerryType[ObjName][],
+        searchWord: string,
+        places: (Trace[] | Trace)[],
+        objName: ObjName
+    ): Ferry<FerryType, ObjName>[] {
         const normalWords = searchWord.split(/[^а-яё0-9ґії'ʼє]+/i).filter(word => word);
         const words = normalWords.map(word => word.toLowerCase());
         const wordRegs = normalWords.map(word => this.internationalWordReg(word));
@@ -253,19 +259,20 @@ export class MyLib {
 
             if (typer[0] === '#') {
                 const explodes = this.explode(':', typer as string, 2);
-                const type = explodes[0].substr(1);
+                const type = explodes[0].slice(1);
                 const lower = type.toLowerCase();
 
                 if (lower === type && value == null) return true;
 
                 let isCorrect = false;
 
-                if (lower === 'list') isCorrect = this.isArr(value); // && this.isCorrectInArray(explodes[1], value);
-                else if (lower === 'dict') isCorrect = this.isObj(value); // && this.isCorrectInArray(explodes[1], value);
-                else if (lower === 'object') isCorrect = this.isobj(value); // && this.isCorrectInArray(explodes[1], value);
+                if (lower === 'list') isCorrect = this.isArr(value);
+                else if (lower === 'dict') isCorrect = this.isObj(value);
+                else if (lower === 'object') isCorrect = this.isobj(value);
                 else if (lower === 'string') isCorrect = this.isStr(value);
                 else if (lower === 'numeric') isCorrect = this.isnum(value);
                 else if (lower === 'number') isCorrect = this.isNum(value);
+                else if (lower === 'num') isCorrect = value === 0 || value === 1;
                 else if (lower === 'boolean') isCorrect = this.isBool(value);
                 else if (lower === 'simple') isCorrect = this.isStr(value) || this.isNum(value);
                 else if (lower === 'primitive') isCorrect = this.isBool(value) || this.isStr(value) || this.isNum(value);

@@ -1,7 +1,9 @@
 import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
 import useCmNav from "../../../base/useCmNav";
+import useSelectedComs from "../../../base/useSelectedComs";
 import { useCcom } from "../useCcom";
 import { ComFaceProps } from "./ComFace.model";
+import "./ComFace.scss";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
 export default function ComFace(props: ComFaceProps) {
@@ -10,13 +12,16 @@ export default function ComFace(props: ComFaceProps) {
   const { goTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
     useAbsoluteFloatPopup();
+  const { isSelected, toggleSelectedCom } = useSelectedComs();
 
   return com == null ? null : (
     <>
       <div
-        className={`com-face${ccom?.wid === com.wid ? " current" : ""} ${
-          groupClass || ""
-        } wid_${com.wid}`}
+        className={`com-face flex between ${
+          isSelected(com) ? "selected" : ""
+        } ${ccom?.wid === com.wid ? " current" : ""} ${groupClass || ""} wid_${
+          com.wid
+        }`}
         onClick={() => {
           if (importantOnClick) {
             importantOnClick();
@@ -37,10 +42,17 @@ export default function ComFace(props: ComFaceProps) {
           );
         }}
       >
-        <div className="number">
+        <div
+          className="number"
+          onClick={(event) => {
+            event.stopPropagation();
+            toggleSelectedCom(com);
+          }}
+        >
           <span>{`${com.index == null ? "?" : com.index - -1}`}</span>
         </div>
         <span className="title ellipsis">{com.name}</span>
+        {props.description}
       </div>
     </>
   );

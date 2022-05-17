@@ -49,6 +49,10 @@ body {
   border: none;
 }
 
+.error-message {
+  color: var(--color--ko);
+}
+
 .disabled {
   opacity: .5;
   pointer-events: none;
@@ -117,7 +121,7 @@ input {
 }
 
 .pointers-none {
-  pointer-events: fill;
+  pointer-events: none;
 }
 
 .pointers-all {
@@ -130,6 +134,10 @@ input {
 
 .relative {
   position: relative;
+}
+
+.fade-05 {
+  opacity: 0.5;
 }
 
 .absolute,

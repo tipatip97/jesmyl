@@ -1,23 +1,20 @@
 import { useEffect } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useFullScreen from "../../../../../complect/useFullscreen";
 import RollControled from "../../base/RolledContent";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
-import { useMarks } from "../../lists/marks/useMarks";
 import "./Com.scss";
 import ComTools from "./ComTools";
 import TheCom from "./TheCom";
 import { useCcom } from "./useCcom";
+import useMigratableComTools from "./useMigratableComTools";
 
 export default function TheComposition() {
-  const [, switchFullscreen] = useFullScreen();
-
   const [ccom] = useCcom();
   const { addLaterComw } = useLaterComList();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { isMarked, toggleMarked } = useMarks();
+  const { makeToolList, toggleTopTool } = useMigratableComTools();
 
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
@@ -42,16 +39,18 @@ export default function TheComposition() {
       head={
         <>
           <div className="flex">
-            <EvaIcon
-              name={isMarked(ccom.wid) ? "star" : "star-outline"}
-              className="action-button"
-              onClick={() => toggleMarked(ccom.wid)}
-            />
-            <EvaIcon
-              className="action-button"
-              name="expand-outline"
-              onClick={() => switchFullscreen(true)}
-            />
+            {makeToolList(true).map(({ icon, onClick, tool }) => (
+              <EvaIcon
+                key={tool}
+                name={icon}
+                className="action-button"
+                onClick={() => onClick()}
+                onContextMenu={(event) => {
+                  event.preventDefault();
+                  toggleTopTool(tool);
+                }}
+              />
+            ))}
 
             <EvaIcon
               className="action-button"

@@ -903,103 +903,134 @@
         }
     },
     {
+        "action": "meetingsInit",
         "track": [
             "meetings"
         ],
-        "args": {
-            "id": "#Number"
+        "value": {
+            "contexts": {},
+            "names": [],
+            "events": []
         },
         "next": [
             {
-                "level": 50,
-                "action": "addMeeting",
-                "title": "Добавлено новое событие \"$name\"",
+                "action": "addMeetingsName",
                 "method": "push",
-                "value": {
-                    "w": "{id}",
-                    "n": "{name}",
-                    "b": "{begin}",
-                    "e": "{end}",
-                    "s": []
-                },
+                "title": "Добавлен новый наименование контекста \"$name\"",
+                "track": [
+                    "names"
+                ],
+                "value": "{name}",
                 "args": {
-                    "name": "#String",
-                    "begin": "#Number",
-                    "end": "#Number"
+                    "name": "#String"
                 }
             },
             {
-                "level": 50,
-                "action": "remMeeting",
-                "title": "Событие \"$name\" удалено",
-                "method": "remove",
-                "value": [
-                    "w",
-                    "===",
-                    "{id}"
-                ]
+                "action": "addMeetingsContext",
+                "method": "set",
+                "title": "Добавлен новый контекст для событий",
+                "track": [
+                    "contexts",
+                    "{contextw}"
+                ],
+                "value": "{context}",
+                "args": {
+                    "contextw": "#Number",
+                    "context": "#List"
+                }
             },
             {
                 "track": [
-                    [
-                        "w",
-                        "===",
-                        "{id}"
-                    ]
+                    "events"
                 ],
+                "args": {
+                    "eventn": "#String",
+                    "eventw": "#Number"
+                },
                 "next": [
                     {
                         "level": 50,
-                        "action": "setMeetingStack",
-                        "title": "В событии \"$name$e?{{, $getMeetingDate{{$b}{$e}}}}\" изменён список песен",
-                        "method": "set_all",
+                        "action": "addMeetingsEvent",
+                        "title": "Добавлено новое событие \"$eventn\"",
+                        "method": "push",
                         "value": {
-                            "s": "{value}"
+                            "w": "{eventw}",
+                            "n": "{eventn}",
+                            "b": "{begin}",
+                            "e": "{end}",
+                            "s": [],
+                            "g": "{group}"
                         },
                         "args": {
-                            "value": "#List"
-                        },
-                        "expected": {
-                            "//////p": [
-                                "{...$p}",
-                                {
-                                    "s": "{p}"
-                                }
-                            ]
-                        },
-                        "/////side": {
-                            "track": [
-                                "p"
-                            ],
-                            "method": "push",
-                            "value": {
-                                "s": "{s}",
-                                "w": "{@timeNowMs}"
-                            }
+                            "begin": "#Number",
+                            "end": "#Number",
+                            "group": "#Number"
                         }
                     },
                     {
                         "level": 50,
-                        "action": "setMeetingRegular",
-                        "title": "Событие \"$name\" сделано регулярным",
-                        "track": [
-                            "e"
-                        ],
-                        "method": "set",
-                        "value": 0
+                        "action": "remMeetingEvent",
+                        "title": "Событие \"$eventn\" удалено",
+                        "method": "remove",
+                        "value": [
+                            "w",
+                            "===",
+                            "{eventw}"
+                        ]
                     },
                     {
-                        "level": 50,
-                        "action": "renameMeeting",
-                        "title": "Событие \"$prev\" переименовано в \"$name\"",
                         "track": [
-                            "n"
+                            [
+                                "w",
+                                "===",
+                                "{eventw}"
+                            ]
                         ],
-                        "method": "set",
-                        "args": {
-                            "name": "#String"
-                        },
-                        "value": "{name}"
+                        "next": [
+                            {
+                                "level": 50,
+                                "action": "setMeetingEventStack",
+                                "title": "В событии \"$eventn\" изменён список песен",
+                                "method": "set_all",
+                                "value": {
+                                    "s": "{value}"
+                                },
+                                "args": {
+                                    "value": "#List"
+                                }
+                            },
+                            {
+                                "level": 50,
+                                "action": "setMeetingEventGroup",
+                                "title": "Событие \"$eventn\" перемещено в другой контекст",
+                                "method": "set_all",
+                                "value": {
+                                    "g": "{groupw}"
+                                },
+                                "args": {
+                                    "groupw": "#Number"
+                                }
+                            },
+                            {
+                                "level": 50,
+                                "action": "setMeetingEventRegular",
+                                "title": "Событие \"$eventn\" сделано $value!{{не}}регулярным",
+                                "track": [
+                                    "r"
+                                ],
+                                "method": "set"
+                            },
+                            {
+                                "level": 50,
+                                "action": "meetingEventRename",
+                                "title": "Событие \"$prev\" переименовано в \"$eventn\"",
+                                "track": [
+                                    "n"
+                                ],
+                                "method": "set",
+                                "value": "{eventn}"
+                            }
+                        ]
                     }
                 ]
             }
