@@ -10,7 +10,7 @@ import { EditableMeetings } from "./EditableMeetings";
 import { EditableMeetingsEvent } from "./EditableMeetingsEvent";
 
 let localEditableMeetings: EditableMeetings | nil;
-let currentMeeting: EditableMeetingsEvent | nil;
+let currentEvent: EditableMeetingsEvent | nil;
 
 export function useEditableMeetings() {
     const dispatch = useDispatch();
@@ -34,7 +34,7 @@ export function useEditableMeetings() {
 
     return {
         meetings: localEditableMeetings,
-        currentMeeting,
+        currentEvent,
         setEditableMeetings: (meetings?: IExportableMeetings) => {
             localEditableMeetings = new EditableMeetings(meetings, cols);
             dispatch(riseUpMeetingsUpdate());
@@ -48,4 +48,4 @@ export function useEditableMeetings() {
     };
 }
 
-const setCurrEvent = (eventw?: number) => eventw != null && (currentMeeting = localEditableMeetings?.events?.find(meeting => meeting.wid === eventw));
+const setCurrEvent = (eventw?: number) => eventw != null && (currentEvent = localEditableMeetings?.events?.find(meeting => meeting.wid === eventw));

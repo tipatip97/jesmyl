@@ -25,7 +25,7 @@ export default function ComFaceContextMenuEditorItems() {
                 <MeetingsInner
                   meetings={meetings}
                   onEventClick={(event) => {
-                    exec(event.setStack(selectedComs));
+                    exec(event.mergeStack(selectedComs));
                     goToEvent(event.wid);
                     closeFullscreenContent();
                   }}

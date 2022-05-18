@@ -3,16 +3,24 @@ import mylib from "../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../Cm.store";
 import { IExportableMeetingsEvent } from "../../lists/meetings/Meetings.model";
 import { MeetingsEvent } from "../../lists/meetings/MeetingsEvent";
+import { EditableCom } from "../col/compositions/EditableCom";
 import { EditableCols } from "../col/EditableCols";
 
 export class EditableMeetingsEvent extends MeetingsEvent {
   initialName = this.name;
   cols?: EditableCols;
+  prevComs?: EditableCom[];
+  coms?: EditableCom[];
 
   constructor(top: IExportableMeetingsEvent, cols?: EditableCols) {
     super(top, cols);
 
     this.cols = cols;
+    this.coms = this.takeComs();
+  }
+
+  takeComs() {
+    return this.cols && this.stack.map(comw => (this.cols as EditableCols).coms.find(com => com.wid === comw)).filter(com => com) as EditableCom[];
   }
 
   scope(...args: (string | number)[]) {
@@ -56,10 +64,32 @@ export class EditableMeetingsEvent extends MeetingsEvent {
     this.group = groupw;
   }
 
-  setStack(value: number[]) {
+  removeCom(com: EditableCom) {
+    this.setStack(() => {
+      this.stack = this.stack.filter((comw) => com.wid !== comw);
+      this.coms = this.takeComs();
+      if (this.prevComs) this.prevComs.push(com);
+      else this.prevComs = [com];
+    });
+  }
+
+  mergePrevCom(coms?: EditableCom[]) {
+    if (coms) this.setStack(() => {
+      if (coms) {
+        this.mergeStack(coms.map(com => com.wid));
+        this.prevComs = this.prevComs?.filter((prev) => !coms.some(com => prev === com));
+      }
+    });
+  }
+
+  setStack(cb: () => void) {
+    const prev = mylib.clone(this.stack);
+    cb();
+    const value = mylib.clone(this.stack);
+
     this.exec({
       scope: this.scope('set.meet'),
-      prev: this.stack,
+      prev,
       value,
       method: 'set',
       action: 'setMeetingEventStack',
@@ -67,18 +97,31 @@ export class EditableMeetingsEvent extends MeetingsEvent {
         value
       }
     });
+  }
 
-    this.stack = mylib.clone(value);
-    this.coms = this.takeComs();
+  mergeStack(value: number[]) {
+    this.setStack(() => {
+      const isNoPrevComs = !this.prevComs;
+
+      if (isNoPrevComs) this.prevComs = this.coms;
+
+      this.stack = isNoPrevComs
+        ? mylib.clone(value)
+        : this.stack
+          .filter((comw) => value.indexOf(comw) < 0)
+          .concat(mylib.clone(value));
+
+      this.coms = this.takeComs();
+    });
   }
 
   moveCom(index: number) {
     const stack = [...this.stack];
 
     if (index) [stack[index - 1], stack[index]] = [stack[index], stack[index - 1]];
-    else [stack[index + 1], stack[index]] = [stack[index], stack[index + 1]];
+    else[stack[index + 1], stack[index]] = [stack[index], stack[index + 1]];
 
-    this.setStack(stack);
+    this.mergeStack(stack);
 
     this.stack = stack;
     this.coms = this.takeComs();
