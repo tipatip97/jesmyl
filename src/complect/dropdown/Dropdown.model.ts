@@ -1,8 +1,8 @@
 
 
-export interface DropdownProps<Id extends string, Item extends DropdownItem<Id>> {
+export interface DropdownProps<Id , Item extends DropdownItem<Id>> {
     items: Item[];
-    id?: string;
+    id?: Id;
     onSelect?: (item: Item) => void;
     className?: string;
 }
@@ -10,6 +10,9 @@ export interface DropdownProps<Id extends string, Item extends DropdownItem<Id>>
 export interface DropdownItem<Id> {
     title: string;
     id: Id;
+    disabled?: boolean;
+    color?: DropdownItemColor | null;
 }
 
 export const DropdownItemList = <Id>(list: DropdownItem<Id>[]) => list;
+export type DropdownItemColor = 'ko';

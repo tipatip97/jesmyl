@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { DropdownItem, DropdownProps } from "./Dropdown.model";
 import "./Dropdown.scss";
 
-
-export default function Dropdown<
-  Id extends string,
-  Item extends DropdownItem<Id>
->(props: DropdownProps<Id, Item>) {
+export default function Dropdown<Id, Item extends DropdownItem<Id>>(
+  props: DropdownProps<Id, Item>
+) {
   const [selectedItem, setItem] = useState(
     props.items.find((item) => item.id === props.id)
   );
@@ -49,7 +47,9 @@ export default function Dropdown<
           return (
             <div
               key={`dropdown-item ${item.id}`}
-              className="list-item"
+              className={`list-item ${item.disabled ? "disabled" : ""} ${
+                item.color ? `colored color_${item.color}` : ""
+              }`}
               onClick={(event) => {
                 event.stopPropagation();
                 setDropped(false);

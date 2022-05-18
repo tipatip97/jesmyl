@@ -13,6 +13,7 @@
 
     &.dropped {
         border-radius: 5px 5px 0 0;
+
         >.item-list {
             max-height: 30vh;
         }
@@ -26,12 +27,19 @@
         background-color: var(--color--3);
         color: var(--color--1);
         max-height: 0;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
         transition: max-height .2s linear;
         border-radius: 0 0 5px 5px;
 
         >.list-item {
             padding: 5px;
+
+            &.colored {
+                &.color_ko {
+                    color: var(--color--ko);
+                }
+            }
         }
     }
 }
