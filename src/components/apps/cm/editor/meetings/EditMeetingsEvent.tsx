@@ -84,16 +84,16 @@ export default function EditMeetingsEvent() {
               <div className="list-title sticky">
                 <span>Предыдущие (не войдут)</span>
 
-                <EvaIcon
-                  name={
-                    comsLength ? "arrowhead-up-outline" : "plus-circle-outline"
-                  }
-                  className="pointer"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    exec(currentEvent.mergePrevCom(currentEvent.prevComs));
-                  }}
-                />
+                {prevComsLength < 2 ? null : (
+                  <EvaIcon
+                    name={comsLength ? "arrowhead-up-outline" : "plus-outline"}
+                    className="pointer"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      exec(currentEvent.mergePrevCom(currentEvent.prevComs));
+                    }}
+                  />
+                )}
               </div>
               {currentEvent.prevComs?.map((com) => (
                 <ComFace
