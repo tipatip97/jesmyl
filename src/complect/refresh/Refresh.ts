@@ -16,6 +16,26 @@ export class Refresh {
         return indexStorage.getOr('currentApp', 'cm');
     }
 
+    get appProps() {
+        return appStorage[this.appName]?.getOr('appProps', {});
+    }
+
+    setAppProps(topProps: Record<string, any> | null) {
+        if (topProps) {
+            const props: Record<string, any> = {};
+            const apps = indexStorage.get('apps');
+            const appName = this.appName;
+            const app = apps?.find(app => app.name === appName);
+            if (app) {
+                app.params?.forEach(param => {
+                    const paramn = param.split(':')?.[0];
+                    if (paramn) props[paramn] = topProps[paramn];
+                });
+                appStorage[this.appName]?.set('appProps', props);
+            }
+        }
+    }
+
     path(isCheck: boolean, includeRejected = false, isLive = false, isForceIndex = false, isForceApp = false) {
         const url = new URL(host);
         url.pathname += 'updates';
@@ -36,9 +56,10 @@ export class Refresh {
             this.appLiveTm('index') || '',
             this.appLiveTm(this.appName) || '',
             '', //this.appParams(appName).list,
-            isLive ? 1 : '',
+            '', //isLive ? 1 : '',
             this.isFirstRequest ? 1 : '',
-            1
+            1,
+            this.appProps
         ];
 
         params.set('auth', indexStorage.getString('auth') || '');
@@ -111,6 +132,8 @@ export class Refresh {
             .then(response => response.json())
             .then((res: RefreshResponse) => {
                 if (!res.ok) return;
+
+                this.setAppProps(res.props);
 
                 this.setRefreshedTimes(res);
                 if (this.setComponents(res.val))
