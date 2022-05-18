@@ -28,7 +28,8 @@ export interface ModalConfig extends ModalConfigBase {
     buttons?: (ModalConfigButton | string)[] | null;
 }
 
-type FuncableVal<Value, Config = ModalConfig> = null | Value | ((config: Config) => Value);
+type FuncVal<Value, Config = ModalConfig> = null | ((config: Config) => Value);
+type FuncableVal<Value, Config = ModalConfig> = null | Value | FuncVal<Value, Config>;
 
 export interface ModalConfigButton {
     title?: FuncableVal<ReactNode>;
@@ -42,9 +43,14 @@ export interface ModalConfigButton {
     value?: any;
 }
 
+export interface ModalConfigInputRet extends ModalConfigInput {
+    value: string;
+    input: ModalConfigInputRet;
+}
+
 export interface ModalConfigInput extends ModalConfig {
     placeholder: string;
-    value: string;
+    value: FuncableVal<string>;
     style: FuncableVal<CSSProperties>;
     className: string;
     hidden: FuncableVal<boolean>;
@@ -57,7 +63,7 @@ export interface ModalConfigInput extends ModalConfig {
     min: FuncableVal<string | number>;
     max: FuncableVal<string | number>;
 
-    onInput: (config: ModalConfigInput) => void;
+    onInput: (config: ModalConfigInputRet) => void;
     onClick: (config: ModalConfig) => void;
     set: (attrn: keyof ModalConfigInput, val: string) => void;
     element: HTMLElement;

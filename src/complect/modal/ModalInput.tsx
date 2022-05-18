@@ -22,8 +22,8 @@ export default function ModalInput(topProps: TheModalInputProps) {
     // input[attrn] = val;
   };
   input.setVal = (val) => input.set && input.set("value", val);
-  const asFunc = (val?: Function | boolean | ReactNode) =>
-    typeof val === "function" ? val(config) : val;
+  const asFunc = (val?: Function | boolean | ReactNode, alt?: any) =>
+    typeof val === "function" ? val(config) : alt !== undefined ? alt : val;
 
   const isTextArea = input.type === "textarea";
   const props: Record<string, Function | string> = mylib.overlap(
@@ -39,6 +39,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
       placeholder: asFunc(input.placeholder),
       min: asFunc(input.min),
       max: asFunc(input.max),
+      // setError: (err: string) => {if (!Array.isArray(topProps.config)) topProps.config.setError?.(err)},
       className:
         asFunc(input.className) + " app-modal-body-input-list-item-input",
       onInput: (event: InputEvent) => {
