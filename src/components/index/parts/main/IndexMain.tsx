@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { appNames } from "../../../../app/App.model";
+import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
@@ -11,6 +12,7 @@ import { setCurrentApp } from "../../Index.store";
 import useAuth from "../../useAuth";
 import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
+import UserMore from "./UserMore";
 
 export default function IndexMain() {
   const dispatch = useDispatch();
@@ -20,6 +22,7 @@ export default function IndexMain() {
   );
   const { openFullscreenContent } = useFullscreenContent();
   const { goTo } = useIndexNav();
+  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   const currentApp = apps.find((app) => app.name === currentAppName);
   const filteredApps = apps.filter(
@@ -52,7 +55,18 @@ export default function IndexMain() {
       withoutBackButton
       headClass="flex between"
       headTitle={currentApp?.title || "Другое"}
-      head={auth?.fio && <div className="margin-big-gap-h">{auth?.fio}</div>}
+      head={
+        auth?.fio && (
+          <div
+            className="margin-big-gap-h pointer"
+            onClick={() => {
+              openAbsoluteBottomPopup(<UserMore />);
+            }}
+          >
+            {auth?.fio}
+          </div>
+        )
+      }
       contentClass="flex column"
       content={
         <>

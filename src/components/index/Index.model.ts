@@ -8,6 +8,7 @@ export interface IndexState {
     auth?: Auth;
     apps: IndexApplication[];
     errors: Partial<Record<IndexErrorScope, string>>;
+    userMessages: UserMessage[];
 
     lastUpdate?: number;
     numModalUpdates: number;
@@ -24,7 +25,6 @@ export interface IndexStorage extends IndexState {
     auth: Auth;
     apps: IndexApplication[];
     currentApp: AppName;
-    specialPhase: AppName;
     rejectedComponents: string[];
     registeredApps: AppName[];
     theme: 'light-theme';
@@ -34,6 +34,15 @@ export interface IndexStorage extends IndexState {
     updateOnRefresher: boolean;
 }
 
+export interface UserMessage {
+    at: string;
+    fio: string;
+    login: string;
+    message: string;
+    read?: boolean;
+    w: number;
+}
+
 export interface IndexApplication<Variables = {}> {
     name: AppName;
     title: string;
@@ -41,6 +50,7 @@ export interface IndexApplication<Variables = {}> {
     disabled: boolean;
     hidden: boolean;
     variables: Variables;
+    params?: string[];
 }
 
 export interface Auth {

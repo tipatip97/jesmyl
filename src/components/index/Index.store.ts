@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppName } from "../../app/App.model";
+import { Exer } from "../../complect/exer/Exer";
 import { NavigationStorage } from "../../complect/nav-configurer/Navigation.model";
 import { indexStorage } from "../../shared/jstorages";
 import {
@@ -7,6 +8,8 @@ import {
   IndexStateError,
   IndexStorage
 } from "./Index.model";
+
+export const indexExer = new Exer('index', indexStorage);
 
 const initialState: IndexState = {
   route: indexStorage.getOr("route", null),
@@ -16,6 +19,7 @@ const initialState: IndexState = {
   apps: [],
   numModalUpdates: 0,
   errors: {},
+  userMessages: indexStorage.getOr("userMessages", []),
 };
 
 export const slice = createSlice({

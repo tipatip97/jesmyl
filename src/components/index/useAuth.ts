@@ -8,7 +8,7 @@ import {
   AuthResponse,
   IndexErrorScope, RegisterData
 } from "./Index.model";
-import { setAuthData, setError } from "./Index.store";
+import { indexExer, setAuthData, setError } from "./Index.store";
 
 export default function useAuth() {
   const dispatch = useDispatch();
@@ -26,6 +26,19 @@ export default function useAuth() {
     errors,
     setError: (scope: IndexErrorScope, message: string | nil) =>
       dispatch(setError({ scope, message })),
+    writeToDevelopers: (message: string) => {
+      if (auth) indexExer.send({
+        action: 'writeToDevelopers',
+        method: 'push',
+        args: {
+          message,
+          id: Date.now(),
+          login: auth.login,
+          fio: auth.fio,
+          at: auth.at,
+        }
+      });
+    },
     loginInSystem: (state: AuthorizationData) => {
       const body = new FormData();
       body.append("login", mylib.md5(state.login));
