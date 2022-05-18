@@ -23,6 +23,10 @@
         height: var(--content-height);
         padding: var(--main-gap);
 
+        &.no-padding-top {
+            padding-top: 0;
+        }
+
         >.phase-content {
             height: 100%;
         }
