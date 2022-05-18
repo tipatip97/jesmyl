@@ -67,18 +67,9 @@ export class EditableMeetingsEvent extends MeetingsEvent {
   removeCom(com: EditableCom) {
     this.setStack(() => {
       this.stack = this.stack.filter((comw) => com.wid !== comw);
-      this.coms = this.takeComs();
+
       if (this.prevComs) this.prevComs.push(com);
       else this.prevComs = [com];
-    });
-  }
-
-  mergePrevCom(coms?: EditableCom[]) {
-    if (coms) this.setStack(() => {
-      if (coms) {
-        this.mergeStack(coms.map(com => com.wid));
-        this.prevComs = this.prevComs?.filter((prev) => !coms.some(com => prev === com));
-      }
     });
   }
 
@@ -86,12 +77,12 @@ export class EditableMeetingsEvent extends MeetingsEvent {
     const prev = mylib.clone(this.stack);
     cb();
     const value = mylib.clone(this.stack);
+    this.coms = this.takeComs();
 
     this.exec({
-      scope: this.scope('set.meet'),
+      method: 'set',
       prev,
       value,
-      method: 'set',
       action: 'setMeetingEventStack',
       args: {
         value
@@ -110,21 +101,25 @@ export class EditableMeetingsEvent extends MeetingsEvent {
         : this.stack
           .filter((comw) => value.indexOf(comw) < 0)
           .concat(mylib.clone(value));
-
-      this.coms = this.takeComs();
     });
   }
 
+  mergePrevComs(coms?: EditableCom[]) {
+    if (coms) {
+      this.mergeStack(coms.map(com => com.wid));
+      this.prevComs = this.prevComs?.filter((prev) => !coms.some(com => prev === com));
+    }
+  }
+
   moveCom(index: number) {
-    const stack = [...this.stack];
+    this.setStack(() => {
+      const stack = [...this.stack];
 
-    if (index) [stack[index - 1], stack[index]] = [stack[index], stack[index - 1]];
-    else[stack[index + 1], stack[index]] = [stack[index], stack[index + 1]];
+      if (index) [stack[index - 1], stack[index]] = [stack[index], stack[index - 1]];
+      else[stack[index + 1], stack[index]] = [stack[index], stack[index + 1]];
 
-    this.mergeStack(stack);
-
-    this.stack = stack;
-    this.coms = this.takeComs();
+      this.stack = stack;
+    });
   }
 
   rename(name: string) {

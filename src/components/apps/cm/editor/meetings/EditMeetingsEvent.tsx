@@ -90,7 +90,7 @@ export default function EditMeetingsEvent() {
                     className="pointer"
                     onClick={(event) => {
                       event.stopPropagation();
-                      exec(currentEvent.mergePrevCom(currentEvent.prevComs));
+                      exec(currentEvent.mergePrevComs(currentEvent.prevComs));
                     }}
                   />
                 )}
@@ -109,7 +109,7 @@ export default function EditMeetingsEvent() {
                       }
                       onClick={(event) => {
                         event.stopPropagation();
-                        exec(currentEvent.mergePrevCom([com]));
+                        exec(currentEvent.mergePrevComs([com]));
                       }}
                     />
                   }
