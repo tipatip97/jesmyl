@@ -6,5 +6,6 @@ export interface ComFaceProps {
     com: Com;
     importantOnClick?: () => void;
     groupClass?: string;
+    selectable?: boolean;
     description?: ReactNode;
 }

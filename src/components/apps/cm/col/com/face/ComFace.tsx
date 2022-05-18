@@ -7,7 +7,7 @@ import "./ComFace.scss";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
 export default function ComFace(props: ComFaceProps) {
-  const { com, importantOnClick, groupClass } = props;
+  const { com, importantOnClick, groupClass, selectable } = props;
   const [ccom, setCcom] = useCcom();
   const { goTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
@@ -32,21 +32,22 @@ export default function ComFace(props: ComFaceProps) {
         }}
         onContextMenu={(event) => {
           event.preventDefault();
-          openAbsoluteFloatPopup(
-            <ComFaceContextMenu
-              onClick={() => closeAbsoluteFloatPopup()}
-              com={com}
-            />,
-            event.clientX,
-            event.clientY
-          );
+          selectable !== false &&
+            openAbsoluteFloatPopup(
+              <ComFaceContextMenu
+                onClick={() => closeAbsoluteFloatPopup()}
+                com={com}
+              />,
+              event.clientX,
+              event.clientY
+            );
         }}
       >
         <div
           className="number"
           onClick={(event) => {
             event.stopPropagation();
-            toggleSelectedCom(com);
+            selectable !== false && toggleSelectedCom(com);
           }}
         >
           <span>{`${com.index == null ? "?" : com.index - -1}`}</span>
