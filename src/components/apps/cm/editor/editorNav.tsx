@@ -17,6 +17,7 @@ import EditComposition from "./col/compositions/EditComposition";
 import EditCompositions from "./col/compositions/EditCompositions";
 import ComRepeats from "./col/compositions/repeats/ComRepeats";
 import Editor from "./Editor";
+import EERules from "./ee-rules/EERules";
 import EditMeetings from "./meetings/EditMeetings";
 import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
 
@@ -142,6 +143,15 @@ export const editorRouteItems: INavigationRouteChildItem<{
         ],
       },
     ],
+  },
+  {
+    phase: ["e-e"],
+    node: <EERules />,
+    accessRule: "canWatch",
+    data: {
+      title: "Ё-Е правила",
+      icon: "text-outline",
+    },
   },
 ];
 
