@@ -66,7 +66,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                   icon="calendar-outline"
                   title={event.name}
                   onClick={() => onEventClick(event)}
-                  description={<EvaIcon name="star" />}
+                  description={<EvaIcon className="fade-05" name="star" />}
                 />
                 <div className="absolute flex center full-width float-bottom fade-05 pointers-none">
                   {context
