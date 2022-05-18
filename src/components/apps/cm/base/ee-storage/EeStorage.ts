@@ -5,7 +5,7 @@ import { EeStorageStoreType } from "./EeStorage.model";
 
 export class EeStorage {
     store?: EeStorageStoreType;
-    
+
     constructor() {
         this.load();
     }
@@ -21,6 +21,10 @@ export class EeStorage {
 
     get(word: string) {
         return this.store ? this.store[word] : -1;
+    }
+
+    set(word: string, value: number | number[]) {
+        if (this.store) this.store[word] = value;
     }
 }
 
