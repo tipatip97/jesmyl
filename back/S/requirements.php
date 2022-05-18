@@ -28,6 +28,7 @@ function observeRequirements($topProps, $waits = 0)
     'isLiveMode:#Bool',
     'isFirstRequest:#Bool',
     'isPwa:#Bool',
+    'appProps:#Dict'
   ];
 
   $params = associateParams(jsonDecode($topProps['json']), $names);
@@ -49,8 +50,10 @@ function observeRequirements($topProps, $waits = 0)
   $isLiveMode = $params['isLiveMode'];
   $isFirstRequest = $params['isFirstRequest'];
   $isPwa = $params['isPwa'];
+  $appProps = $params['appProps'];
 
   setGlob('isPwa', $isPwa);
+  setBagProp($appName, 'appProps', $appProps);
 
   $preText = $topProps['preText'];
 
@@ -60,14 +63,8 @@ function observeRequirements($topProps, $waits = 0)
   $lock = $tools['lock'];
   $timeLimit = $tools['timeLimit'];
 
-  if ($lock && !isTimeout($timeLimit)) {
-    usleep($tools['lockSleep'] * 1000);
-
-    return observeRequirements($topProps, $waits + 1);
-  } else {
-    if ($isCheck) $frequency = $tools['frequency'];
-    else if (!$isPwa) echo $preText ? $preText : "window.$windowName = ";
-  }
+  if ($isCheck) $frequency = $tools['frequency'];
+  else if (!$isPwa) echo $preText ? $preText : "window.$windowName = ";
 
   if ($lock) return [
     'ok' => true,
@@ -190,6 +187,7 @@ function observeRequirementList($frequency, $params, $topRets)
     if (!isList($appReqs)) {
       continue;
     }
+
     if (!isExpected($app, ['*R'])) continue;
 
     if (isExpected($app, ['name', 'in', $regApps])) {
@@ -332,7 +330,7 @@ function observeRequirementList($frequency, $params, $topRets)
       'deb' => debugLine(),
       'isPwa' => $isPwa,
       'glob.isPwa' => getGlob('isPwa'),
-      //'isCheck' => $isCheck,
+      'isCheck' => $isCheck,
       //'val' => $val,
       //'all' => $reqs,
       //'apps' => $apps,

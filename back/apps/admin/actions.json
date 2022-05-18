@@ -1,0 +1,16 @@
+[
+    {
+        "action": "setUserLevel",
+        "title": "Пользователь \"$fio\" теперь имеет уровень доступа $level",
+        "track": ["setUserLevel"],
+        "method": "func",
+        "level": 100,
+        "args": {
+            "level": "#Number",
+            "passphrase": "#String",
+            "login": "#String",
+            "at": "#String",
+            "fio": "#String"
+        }
+    }
+]

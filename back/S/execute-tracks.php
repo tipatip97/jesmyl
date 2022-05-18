@@ -53,7 +53,7 @@ function executeTracks() {
   $executed;
   
   if ($execs && count($execs)) {
-    $executed = executer($execs, $isRootApp ? '~S/%s.json' : "~apps/$appName/%s.json");
+    $executed = executer($execs, $isRootApp ? '~S/%s.json' : "~apps/$appName/%s.json", 1, $appName);
     
     if (count(debugLine())) return [
       'ok' => false,
@@ -114,6 +114,7 @@ function executeTracks() {
     }
   }
   
+  global $bags;
   $ret = [
     'ok' => $executed['ok'],
     'executed' => $executed,
@@ -125,7 +126,8 @@ function executeTracks() {
     '::deb' => debugLine(),
     //'accessesPath' => $accessesPath,
     //'exs' => $exs,
-    //'month' => getGlob('timePrevMonth'),
+    // 'month' => getGlob('timePrevMonth'),
+    'bags' => $bags,
   ];
   
   if (!$ret['ok'] && $executes['rejected'][0]) {

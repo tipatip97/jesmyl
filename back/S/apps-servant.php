@@ -1,9 +1,10 @@
 <?
 
+require_once 'authorizator.php';
 
 
 
-function checkPeopleAuths($appName)
+function checkUserAuths($appName)
 {
   global $authPath;
   $logins = tracker([$authPath, '--named'])['target'];
@@ -14,12 +15,10 @@ function checkPeopleAuths($appName)
     $count += count(tracker(["$authPath/$login", '--named'])['target']);
   }
 
-  //debugLine(['people count', $props, $count, $logins]);
-
-  return $props['regPeopleCount'] !== $count;
+  return $props['appProps']['regUsersCount'] !== $count;
 }
 
-function getPeopleAuths($appName)
+function getUserAuths($appName)
 {
   global $authDir, $authPath, $userOrganizeOrder;
   $logins = tracker([$authPath, '--named'])['target'];
@@ -30,11 +29,11 @@ function getPeopleAuths($appName)
     $count += count(tracker(["$authPath/$login", '--named'])['target']);
   }
 
-  setBagProp($appName, 'regPeopleCount', $count);
-  $people = [];
+  setBagProp($appName, 'regUsersCount', $count);
+  $users = [];
 
   foreach ($logins as $login) {
-    $human = [];
+    $user = [];
     $_passw = get_passw($login);
     $loginPath = $authDir . '/' . $login;
     $passw_path = $loginPath . '/' . $_passw;
@@ -42,43 +41,45 @@ function getPeopleAuths($appName)
     $user = organizeUp(file_get_contents($loginPath . '/' . $passw), $userOrganizeOrder);
     $mtime = getAttribute(['.mtime' => $passw_path], '.mtime');
 
-    $human['login'] = $login;
-    $human['passw'] = $passw;
-    $human['_passw'] = $_passw;
-    $human['fio'] = implode(' ', $user['fio']);
-    $human['level'] = floatval($user['level']['general']);
+    $user['login'] = $login;
+    $user['passw'] = $passw;
+    $user['_passw'] = $_passw;
+    $user['fio'] = implode(' ', $user['fio']);
+    $user['level'] = floatval($user['level']['general']);
 
-    if ($human['level'] < 100)
-      $people[] = $human;
+    if ($user['level'] < 100)
+      $users[] = $user;
   }
 
-  return $people;
+  return $users;
 }
 
-function checkPeopleVisits($appName)
+function checkUserVisits($appName)
 {
   //if (getGlob('isFirstRequest')) return true;
 
   global $authPath;
   $time = time();
   $logins = tracker([$authPath, '--named'])['target'];
+  $i = 0;
 
   foreach ($logins as $login) {
     $path = $authPath . '/' . $login . '/' . get_passw($login);
     $mtime = getAttribute(['.mtime' => $path], '.mtime');
 
-    if ($time - $mtime < 55) {
+    if (($time - $mtime) < 55) {
       setBagProp($appName, 'lm', $mtime);
       return true;
     }
   }
+
   return false;
 }
 
-function getPeopleVisits()
+function getUserVisits()
 {
   global $authPath;
-  $time = time();
+  // $time = time();
   $logins = tracker([$authPath, '--named'])['target'];
   $visits = [];
 
@@ -94,14 +95,6 @@ function getPeopleVisits()
 
 
 /////// cm
-
-
-function getComsExecutions()
-{
-  $props = getBagProps('cm');
-  $coms = explode(',', $props['observedComs']);
-}
-
 
 function observeStreamChanges($isCheck, $appName)
 {
@@ -127,7 +120,7 @@ function observeStreamChanges($isCheck, $appName)
 function prepareActions($isCheck, $appName, $asIs = '')
 {
   $props = getBagProps($appName);
-  $path = ($appName === 'index' || $appName === 'adm' ? getPath('~S/actions') : "../apps/$appName/$appName-actions") . '.json';
+  $path = ($appName === 'index' ? getPath('~S/actions') : "../apps/$appName/actions") . '.json';
 
   if ($isCheck) {
     $mtime = getmtime($path);
@@ -175,4 +168,14 @@ function inlineActions($actions, $args = [], $line = [])
     }
   }
   return $line;
+}
+
+
+////// admn
+
+function setUserLevel()
+{
+  $props = getBagProps('admin')['execArgs'];
+
+  return updateUserLevel($props['login'], $props['at'], $props['level'], $props['passphrase']);
 }

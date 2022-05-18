@@ -205,12 +205,13 @@ setGlob('sModeratorLevel', 40);
 setGlob('moderatorLevel', 30);
 setGlob('simpleLevel', 3);
 
-setGlob('checkPeopleAuths()', 'checkPeopleAuths');
-setGlob('checkPeopleVisits()', 'checkPeopleVisits');
-setGlob('getPeopleAuths()', 'getPeopleAuths');
-setGlob('getPeopleVisits()', 'getPeopleVisits');
+setGlob('checkUserAuths()', 'checkUserAuths');
+setGlob('checkUserVisits()', 'checkUserVisits');
+setGlob('getUserAuths()', 'getUserAuths');
+setGlob('getUserVisits()', 'getUserVisits');
 setGlob('observeStreamChanges()', 'observeStreamChanges');
 setGlob('prepareActions()', 'prepareActions');
+setGlob('setUserLevel()', 'setUserLevel');
 
 function &tracker($track, &$parents = null, &$topParent = null, $createByPath = 0)
 {
@@ -672,7 +673,7 @@ function &doIt($exec, &$parents, &$parent)
 
 
 
-function executer($execs, $pathTemplate, $saveInFiles = 1)
+function executer($execs, $pathTemplate, $saveInFiles = 1, $appName)
 {
   if (!$execs) {
     return [
@@ -691,9 +692,14 @@ function executer($execs, $pathTemplate, $saveInFiles = 1)
     $value = $exec['value'];
     $method = $exec['method'];
 
+    setBagProp($appName, 'execArgs', $exec['args']);
+    setBagProp($appName, 'method', $method);
+
     if ($method === 'func') {
-      if (is_callable($track)) {
-        $results[$track] = $track($value);
+      $func = $track[0];
+    setBagProp($appName, 'isCall', [is_callable($func), $track, $exec]);
+      if (is_callable($func)) {
+        $results[$func] = $func($value);
       }
       continue;
     }
@@ -1416,6 +1422,7 @@ function parseType($value, $type, $div = ',', $names = [])
         : []);
   } else if ($lower === '#dict') {
     if (!$value) return ['isDict' => true];
+    if (isDict($value)) return $value;
     $res = [];
     $vals = explode($div, $value);
     $keys = is_string($names)

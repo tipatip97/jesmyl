@@ -116,18 +116,6 @@
         ]
       },
       {
-        "R": [
-          "@userLevel",
-          ">=",
-          100
-        ],
-        "track": [
-          "@getComsExecutions()"
-        ],
-        "name": "cm_coms_executions",
-        "ext": "json"
-      },
-      {
         "path": "~apps/cm/chords.json",
         "file": "chords.json",
         "name": "chords",
@@ -228,7 +216,7 @@
     ]
   },
   {
-    "name": "adm",
+    "name": "admin",
     "title": "Админка",
     "description": "",
     "R": [
@@ -237,39 +225,40 @@
       "@bossLevel"
     ],
     "params": [
-      "regPeopleCount:#Number"
+      "regUsersCount:#Number"
     ],
     "requirements": [
       {
         "comp": true,
         "R": [
-          "@checkPeopleAuths():adm"
+          "@checkUserAuths():admin"
         ],
         "ext": "json",
-        "name": "people",
+        "name": "userList",
         "track": [
-          "@getPeopleAuths():adm"
+          "@getUserAuths():admin"
+        ]
+      },
+      {
+        "R": [
+          "@prepareActions():1:admin"
         ],
-        "live": true
+        "name": "actions",
+        "ext": "json",
+        "track": [
+          "@prepareActions()::admin"
+        ]
       },
       {
         "comp": true,
         "R": [
-          "@checkPeopleVisits():adm"
+          "@checkUserVisits():admin"
         ],
         "ext": "json",
-        "name": "people_visits",
+        "name": "userVisits",
         "track": [
-          "@getPeopleVisits()"
-        ],
-        "live": true
-      },
-      {
-        "path": "~apps/adm/adm.js",
-        "file": "adm.js",
-        "name": "adm_module",
-        "ext": "js",
-        "main": true
+          "@getUserVisits()"
+        ]
       }
     ]
   },
