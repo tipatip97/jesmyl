@@ -69,13 +69,13 @@ export default function TheCat({ all }: { all?: boolean }) {
                 }`}
                 onClick={scrollToCurrent}
               >
-                <div className="later-title sticky">Последние:</div>
+                <div className="list-title sticky">Последние:</div>
                 {laterComs.map((com) => (
                   <ComFace key={`later-com-${com.wid}`} com={com} />
                 ))}
               </div>
               <div
-                className="flex between sticky category-title"
+                className="flex between sticky list-title"
                 ref={categoryTitleRef}
                 onClick={scrollToCurrent}
               >
