@@ -84,7 +84,8 @@ input[type='radio'] {
   overflow: hidden;
 }
 
-input {
+input,
+textarea {
   font-size: 1em;
   font-family: var(--font-family);
   background-color: var(--color--2);
@@ -109,6 +110,10 @@ input {
 
 .full-height {
   height: 100%;
+}
+
+.half-height {
+  height: 50%;
 }
 
 .flex {
@@ -215,6 +220,10 @@ input {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.no-resize {
+  resize: none;
 }
 
 :not(.user-select) {
