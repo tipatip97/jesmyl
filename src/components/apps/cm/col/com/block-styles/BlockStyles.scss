@@ -1,4 +1,4 @@
-.com-container {
+.app-container.cm {
     --margin-left-small: .5em;
     --margin-left-medium: 1em;
     --margin-left-large: 1.5em;
@@ -31,6 +31,20 @@
         &.chorded-block {
             .composition-line {
                 line-height: 2.3em;
+            }
+
+            +.inherit.without-chords {
+                margin-top: -.4em;
+            }
+        }
+
+        &.without-chords {
+            .composition-line {
+                line-height: 1.5em;
+            }
+
+            +.inherit.chorded-block {
+                margin-top: .4em;
             }
         }
 

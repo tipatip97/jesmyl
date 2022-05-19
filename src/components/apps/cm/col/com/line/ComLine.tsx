@@ -16,7 +16,7 @@ export default function ComLine(props: IComLineProps) {
 
   if (!chordedOrd)
     return (
-      <div className="composition-line" onClick={onClick}>
+      <span className="composition-line" onClick={onClick}>
         {words.map((word, wordi, worda) => {
           return (
             <span
@@ -35,7 +35,7 @@ export default function ComLine(props: IComLineProps) {
             </span>
           );
         })}
-      </div>
+      </span>
     );
 
   const letters = com.getVowelPositions(textLine);
@@ -56,7 +56,7 @@ export default function ComLine(props: IComLineProps) {
   const isHasPost = linePoss.indexOf(-2) > -1;
 
   return (
-    <div className="composition-line" onClick={onClick}>
+    <span className="composition-line" onClick={onClick}>
       {points.map((index, indexi, indexa) => {
         let isLast = indexi === indexa.length - 1;
         let isFirst = indexi === 0;
@@ -121,6 +121,6 @@ export default function ComLine(props: IComLineProps) {
           </span>
         );
       })}
-    </div>
+    </span>
   );
 }

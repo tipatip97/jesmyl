@@ -7,10 +7,12 @@ export class StyleBlock extends Base<IExportableStyleProp> {
     return this.getBasicOr('n', '');
   }
 
+  normName(name: string) {
+    return name.replace(/ /g, '_').replace(/\+/g, '_plus').replace(/>/g, '_shift');
+  }
+
   getStyleName(ord: Order) {
-    return `${this.name.replace(/ /g, '_')
-      .replace(/\+/g, '_plus')
-      .replace(/>/g, '_shift')} ${this.isInherit ? 'inherit' : ''} ${ord.top.leadOrd?.top.style?.name || ''}`;
+    return `${this.normName(this.name)} ${this.isInherit ? 'inherit' : ''} ${this.normName(ord.top.leadOrd?.top.style?.name || '')}`;
   }
 
   get header() { return this.getBasic('h'); }
