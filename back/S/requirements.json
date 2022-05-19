@@ -1,55 +1,5 @@
 [
   {
-    "path": "~S/rrd.js",
-    "ext": "js",
-    "name": "react-routing.js",
-    "R": false
-  },
-  {
-    "path": "my-lib.js",
-    "ext": "js",
-    "name": "my_lib_js",
-    "background": true
-  },
-  {
-    "path": "servant.js",
-    "ext": "js",
-    "name": "servant_js",
-    "background": true
-  },
-  {
-    "path": "wizard.js",
-    "ext": "js",
-    "name": "wizard.js",
-    "R": [
-      "@userLevel",
-      "==",
-      100
-    ]
-  },
-  {
-    "path": "index.js",
-    "ext": "js",
-    "name": "initial_script",
-    "main": true
-  },
-  {
-    "path": "~S/json/eva-icons.json",
-    "ext": "json",
-    "name": "evaIconPack"
-  },
-  {
-    "path": "requirements.json",
-    "ext": "json",
-    "name": "requirements",
-    "R": [
-      "@userLevel",
-      "==",
-      100
-    ],
-    "W": false
-  },
-  {
     "R": [
       "@prepareActions():1:index"
     ],
@@ -127,27 +77,6 @@
         }
       }
     ]
-  },
-  {
-    "path": "main.css",
-    "file": "main.scss",
-    "ext": "scss",
-    "name": "main_css"
-  },
-  {
-    "path": "themes.css",
-    "ext": "scss",
-    "name": "themes_css",
-    "R": [
-      "@userLevel",
-      "==",
-      1000
-    ]
-  },
-  {
-    "path": "board.js",
-    "ext": "js",
-    "name": "board_js"
   },
   {
     "path": "~S/messanger.json",

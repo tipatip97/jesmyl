@@ -312,7 +312,7 @@ function observeRequirementList($frequency, $params, $topRets)
       'appLm' => $outsideAppLm ? $outsideAppLm : ($maxAppLm ? $maxAppLm : null),
       'appName' => $retAppName,
       'props' => $retAppName ? getBagProps($retAppName) : null,
-      'components' => $components,
+      //'components' => $components,
       'userLevel' => getGlob('userLevel'),
       'login' => getGlob('userLogin'),
     ];
