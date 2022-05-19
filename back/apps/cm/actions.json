@@ -356,8 +356,10 @@
                                     "{catw}"
                                 ],
                                 "method": "set",
+                                "value": "{number}",
                                 "args": {
-                                    "catw": "#Number"
+                                    "catw": "#Number",
+                                    "number": "#Number"
                                 }
                             },
                             {
