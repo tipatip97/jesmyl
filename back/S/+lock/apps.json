@@ -23,9 +23,27 @@
         ]
       },
       {
+        "path": "../apps/cm/cm.css",
+        "file": "cm.scss",
+        "name": "cm_style",
+        "ext": "scss"
+      },
+      {
+        "path": "~apps/cm/settings.json",
+        "file": "settings.json",
+        "name": "settings",
+        "ext": "json"
+      },
+      {
         "path": "~apps/cm/cols.json",
         "file": "cols.json",
         "name": "cols",
+        "ext": "json"
+      },
+      {
+        "path": "~apps/cm/old-meetings.json",
+        "file": "old-meetings.json",
+        "name": "cm_meetings",
         "ext": "json"
       },
       {
@@ -120,6 +138,80 @@
         "frequency": 100,
         "comp": true,
         "live": true
+      },
+      {
+        "path": "../apps/cm/cm-servant.module.js",
+        "file": "cm-servant.module.js",
+        "name": "cm-servant.module",
+        "ext": "js"
+      },
+      {
+        "path": "../apps/cm/cm-features-accesses.module.js",
+        "file": "cm-features-accesses.module.js",
+        "name": "cm-features-accesses.module",
+        "ext": "js"
+      },
+      {
+        "path": "../apps/cm/cm-editor.module.js",
+        "file": "cm-editor.module.js",
+        "name": "cm-editor.module",
+        "ext": "js",
+        "R": [
+          "@userLevel",
+          ">=",
+          "@adminLevel"
+        ]
+      },
+      {
+        "path": "../apps/cm/cm-streams.module.js",
+        "file": "cm-streams.module.js",
+        "name": "cm-streams.module",
+        "ext": "js",
+        "R": [
+          "@userLevel",
+          ">=",
+          "@adminLevel"
+        ]
+      },
+      {
+        "path": "../apps/cm/cm-meetings.module.js",
+        "file": "cm-meetings.module.js",
+        "name": "cm-meetings.module",
+        "ext": "js",
+        "R": [
+          "@userLevel",
+          ">=",
+          "@adminLevel"
+        ]
+      },
+      {
+        "path": "../apps/cm/cm-settings.module.js",
+        "file": "cm-settings.module.js",
+        "name": "cm-settings.module",
+        "ext": "js",
+        "R": [
+          "@userLevel",
+          ">=",
+          "@bossLevel"
+        ]
+      },
+      {
+        "path": "../apps/cm/cm-translations.module.js",
+        "file": "cm-translations.module.js",
+        "name": "cm-translations.module",
+        "ext": "js",
+        "R": [
+          "@userLevel",
+          ">=",
+          "3"
+        ]
+      },
+      {
+        "path": "../apps/cm/cm.js",
+        "file": "cm.js",
+        "name": "cm",
+        "ext": "js",
+        "main": true
       }
     ]
   },
