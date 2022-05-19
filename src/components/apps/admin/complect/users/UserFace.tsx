@@ -13,12 +13,8 @@ export default function UserFace({
   return (
     <div
       className="user-face flex between full-width"
-      onClick={() => {
-        uses.navToUser(user);
-      }}
-      onContextMenu={(event) => {
-        event.preventDefault();
-      }}
+      onClick={() => uses.navToUser(user)}
+      onContextMenu={(event) => event.preventDefault()}
     >
       <div className="logo">
         <EvaIcon name="person-outline" />
