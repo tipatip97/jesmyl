@@ -26,6 +26,7 @@ export interface INavigationConfig<Storage extends ExerStorage> {
     rootPhase: NavPhase | null;
     routes: INavigationRouteRootItem[];
     exer?: Exer<Storage>;
+    logo?: EvaIconName;
 }
 
 export interface INavigationRouteChildItem<Data extends Record<string, any> | und = Record<string, any>> {

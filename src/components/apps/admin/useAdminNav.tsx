@@ -18,6 +18,7 @@ const adminNavigation = new NavigationConfig<
 >({
   root: (content) => <AdminApp content={content} />,
   rootPhase: "admin",
+  logo: 'twitter',
   routes: [
     {
       phase: ["admin"],

@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { appNames } from "../../../../app/App.model";
+import { AppName, appNames } from "../../../../app/App.model";
 import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
+import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
+import navConfigurers from "../../../../shared/navConfigurers";
 import { RootState } from "../../../../shared/store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
-import useIndexNav from "../../complect/useIndexNav";
 import { setCurrentApp } from "../../Index.store";
 import useAuth from "../../useAuth";
 import IndexAbout from "../IndexAbout";
@@ -21,10 +22,16 @@ export default function IndexMain() {
     (state: RootState) => state.index.currentApp
   );
   const { openFullscreenContent } = useFullscreenContent();
-  const { goTo } = useIndexNav();
+  const { goTo } = navConfigurers["index"]();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   const currentApp = apps.find((app) => app.name === currentAppName);
+  const appConfigs = {} as Record<AppName, ReturnType<typeof useNavConfigurer>>;
+
+  Object.entries(navConfigurers).forEach(
+    ([name, config]) => (appConfigs[name as AppName] = config())
+  );
+
   const filteredApps = apps.filter(
     (app) => app !== currentApp && appNames.indexOf(app.name) > -1
   );
@@ -41,7 +48,7 @@ export default function IndexMain() {
               onClick={() => dispatch(setCurrentApp(app.name))}
             >
               <EvaIcon
-                name={app.icon || "cube-outline"}
+                name={appConfigs[app.name].nav.logo || "cube-outline"}
                 className="margin-big-gap"
               />
               <div>{app.title}</div>

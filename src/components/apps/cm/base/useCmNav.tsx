@@ -35,6 +35,7 @@ const comNext = [comNav, translationNav];
 const navigation = new NavigationConfig({
   root: (content) => <CmApplication content={content} />,
   rootPhase: "all",
+  logo: "headphones",
   exer: cmExer,
   routes: [
     {

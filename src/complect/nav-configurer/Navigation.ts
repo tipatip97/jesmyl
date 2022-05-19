@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
 import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteRootItem, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
 
@@ -7,13 +8,15 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
     rootPhase: NavPhase | null;
     routes: INavigationRouteRootItem[];
     exer?: Exer<Storage>;
+    logo?: EvaIconName;
 
-    constructor({ routes, root, rootPhase, exer }: INavigationConfig<Storage>) {
+    constructor({ routes, root, rootPhase, exer, logo }: INavigationConfig<Storage>) {
         this.root = root;
         this.rootPhase = rootPhase;
         this.routes = routes;
         this.checkRoutes(routes);
         this.exer = exer;
+        this.logo = logo;
     }
 
     checkRoutes(routes: INavigationRouteRootItem[] | INavigationRouteChildItem[], phases: NavPhase[] = []) {

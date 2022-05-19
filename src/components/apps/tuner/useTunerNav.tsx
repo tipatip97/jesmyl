@@ -1,5 +1,8 @@
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
-import { NavigationStorage, UseNavAction } from "../../../complect/nav-configurer/Navigation.model";
+import {
+  NavigationStorage,
+  UseNavAction,
+} from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import { tunerStorage } from "../../../shared/jstorages";
 import { RootState } from "../../../shared/store";
@@ -7,9 +10,13 @@ import TheTuner from "./TheTuner";
 import { TunerStorage } from "./Tuner.model";
 import { setTunerPhase } from "./Tuner.store";
 
-const tunerNavigation = new NavigationConfig<TunerStorage, NavigationStorage<TunerStorage>>({
+const tunerNavigation = new NavigationConfig<
+  TunerStorage,
+  NavigationStorage<TunerStorage>
+>({
   root: (content) => <>{content}</>,
   rootPhase: "tuner",
+  logo: "music",
   routes: [
     {
       phase: ["tuner"],
