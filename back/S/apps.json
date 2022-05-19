@@ -133,7 +133,7 @@
       "@bossLevel"
     ],
     "params": [
-      "regUsersCount:#Number"
+      "userVisitTokensCount:#Number"
     ],
     "requirements": [
       {

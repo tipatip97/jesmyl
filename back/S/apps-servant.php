@@ -15,7 +15,7 @@ function checkUserAuths($appName)
     $count += count(tracker(["$authPath/$login", '--named'])['target']);
   }
 
-  return $props['appProps']['regUsersCount'] !== $count;
+  return $props['appProps']['userVisitTokensCount'] !== $count;
 }
 
 function getUserAuths($appName)
@@ -29,7 +29,7 @@ function getUserAuths($appName)
     $count += count(tracker(["$authPath/$login", '--named'])['target']);
   }
 
-  setBagProp($appName, 'regUsersCount', $count);
+  setBagProp($appName, 'userVisitTokensCount', $count);
   $users = [];
 
   foreach ($logins as $login) {
