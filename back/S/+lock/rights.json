@@ -1,0 +1,39 @@
+[
+  {
+    "level": 100,
+    "action": "setAsReadMessage",
+    "track": ["#List:[\"messanger\"]", "#List", "read"],
+    "method": "set",
+    "value": "#Boolean"
+  }, {
+    "level": 100,
+    "action": "commitTextFiles",
+    "track": "commitTextFiles",
+    "method": "func",
+    "value": "#Dict"
+  }, {
+    "level": 3,
+    "action": "writeToDevelopers",
+    "track": [["messanger"]],
+    "method": "push",
+    "value": {
+      "message": "{message}",
+      "login": "{login}",
+      "passw": "{passw}",
+      "fio": "{fio}",
+      "at": "{at}",
+      "w": "{id}"
+    },
+    "args": {
+      "fio": "#String",
+      "at": "#String",
+      "passw": "#String",
+      "login": "#String",
+      "message": "#String",
+      "id": "#Number"
+    }
+  }
+]
+
+
+
