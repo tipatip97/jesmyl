@@ -1,7 +1,7 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { BaseNamed } from "../../base/Base";
-import { setts } from "../../base/settings/Setts";
-import { StyleProp } from "../../base/settings/StyleProp";
+import { blockStyles } from "./block-styles/BlockStyles";
+import { StyleBlock } from "./block-styles/StyleBlock";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.complect";
 import { IExportableCom } from "./Com.model";
 import { Order } from "./order/Order";
@@ -285,7 +285,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
   get orders(): Order[] | null { return this._o || this.setOrders(); }
   setOrders() {
-    if (!setts) return null;
+    if (!blockStyles) return null;
     const val = this.ords
       .map((ord) => {
         ord.originWid = mylib.def(ord.originWid, ord.w);
@@ -294,7 +294,7 @@ export class Com extends BaseNamed<IExportableCom> {
       .sort((a, b) => a.w - b.w);
     const orders = [];
     let minimals: [string?, number?][] = [];
-    const styles = setts.styles || [];
+    const styles = blockStyles.styles;
     const groups: Record<string, number> = {};
     let viewIndex = 0;
     let prev, prevOrd;
@@ -303,7 +303,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
     const getStyle = (o: Partial<IExportableOrderTop> | nil) => {
       return o && o.s != null
-        ? styles.find((prop: StyleProp) => prop.name === o.s)
+        ? styles.find((prop: StyleBlock) => prop.name === o.s)
         : null;
     };
 
@@ -315,7 +315,7 @@ export class Com extends BaseNamed<IExportableCom> {
       minimals.push([styleName, src.c]);
     };
 
-    const header = (ord: IExportableOrderTop, style: StyleProp, numered = true) => {
+    const header = (ord: IExportableOrderTop, style: StyleBlock, numered = true) => {
       const type = style.name.trim();
       const number = numered
         ? groups[type] = groups[type] == null
@@ -355,7 +355,6 @@ export class Com extends BaseNamed<IExportableCom> {
       if (style.isInherit) continue;
 
       top.style = style;
-      // top.com = this;
       top.source = ord;
       top.isNextInherit = !!getStyle(val[i + 1])?.isInherit;
       top.isNextAnchorOrd = !!(ord.u != null && val[i + 1] && val[i + 1].a === ord.u);
@@ -365,16 +364,13 @@ export class Com extends BaseNamed<IExportableCom> {
       top.isTarget = ord.u != null && val.some(o => o.a === ord.u);
       top.viewIndex = viewIndex++;
       top.sourceIndex = val.indexOf(ord);
-      // top.originIndex = val.indexOf(targetOrd?.top.source ?? ord);
-      top.headClassName = setts.query(style.name, 'headerProps', ' ');
-      top.textClassName = setts.query(style.name, 'textProps', ' ');
 
       setMin(top);
 
       const newOrder = this.orderConstructor(top as IExportableOrderTop);
       orders.push(newOrder);
 
-      top.header = newOrder.isEmptyHeader// || !newOrder.isVisible
+      top.header = newOrder.isEmptyHeader
         ? (bag, isRequired) => isRequired ? header(ord, style, false)(bag) : ''
         : targetOrd && targetOrd.top.header
           ? targetOrd.top.header
@@ -393,8 +389,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
       let isPrevAnchorInheritPlus = top.a != null;
 
-      if (targetOrd && top.a != null) {//} && newOrder.isVisible) {
-        const leadStyle = getStyle(targetOrd.top);
+      if (targetOrd && top.a != null) {
         let anci = (targetOrd.top.sourceIndex || 0) + 1;
         let anc = val[anci];
         let ancStyle = getStyle(anc);
@@ -407,7 +402,6 @@ export class Com extends BaseNamed<IExportableCom> {
           ancTop.isAnchorInherit = true;
           ancTop.isInherit = true;
           ancTop.style = ancStyle;
-          // ancTop.com = this;
           ancTop.source = anc;
           ancTop.header = top.header;
           ancTop.init = top as IExportableOrderTop;
@@ -417,10 +411,6 @@ export class Com extends BaseNamed<IExportableCom> {
           ancTop.anchorInheritIndex = anchorInheritIndex++;
           ancTop.viewIndex = viewIndex++;
           ancTop.sourceIndex = val.indexOf(targetOrd.top.source as IExportableOrderTop);
-          // ancTop.originIndex = val.indexOf(anc);
-          ancTop.headClassName = setts.query(leadStyle?.name || '', 'headerProps', ' ', ancStyle.name);
-          ancTop.textClassName = setts.query(leadStyle?.name || '', 'textProps', ' ', ancStyle.name);
-
 
           setMin(ancTop);
 
@@ -450,9 +440,6 @@ export class Com extends BaseNamed<IExportableCom> {
         nextTop.source = next;
         nextTop.viewIndex = viewIndex++;
         nextTop.sourceIndex = val.indexOf(next);
-        // nextTop.originIndex = val.indexOf(next);
-        nextTop.headClassName = setts.query(style.name, 'headerProps', ' ', nextStyle.name);
-        nextTop.textClassName = setts.query(style.name, 'textProps', ' ', nextStyle.name);
 
         setMin(nextTop);
 

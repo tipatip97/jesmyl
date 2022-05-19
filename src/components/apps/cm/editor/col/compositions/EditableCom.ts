@@ -1,7 +1,7 @@
 import { Exec } from "../../../../../../complect/exer/Exec";
 import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import { setts } from "../../../base/settings/Setts";
+import { blockStyles } from "../../../col/com/block-styles/BlockStyles";
 import { cmExer } from "../../../Cm.store";
 import { Cat } from "../../../col/cat/Cat";
 import { Com } from "../../../col/com/Com";
@@ -152,12 +152,12 @@ export class EditableCom extends Com {
         const ctlen = this.texts?.length || 0;
         let isMoved = true;
 
-        if (!setts) return;
+        if (!blockStyles) return;
 
-        const [firstLeveled, firstAltLeveled] = setts.styles.filter(style => style.level === 1).map(style => style.name);
-        const [secondLeveled] = setts.styles.filter(style => style.level === 2).map(style => style.name);
-        const [thirdLeveled] = setts.styles.filter(style => style.level === 3).map(style => style.name);
-        const [inherited] = setts.styles.filter(style => style.isInherit).map(style => style.name);
+        const [firstLeveled, firstAltLeveled] = blockStyles.styles.filter(style => style.level === 1).map(style => style.name);
+        const [secondLeveled] = blockStyles.styles.filter(style => style.level === 2).map(style => style.name);
+        const [thirdLeveled] = blockStyles.styles.filter(style => style.level === 3).map(style => style.name);
+        const [inherited] = blockStyles.styles.filter(style => style.isInherit).map(style => style.name);
 
         (typeof blocks === 'string' ? blocks.split('\n\n') : blocks).forEach((block) => {
             const ctromb: Thromb = { arr: [] };
@@ -173,7 +173,7 @@ export class EditableCom extends Com {
                     schords += (schords ? '\n' : '') + trimmedLine;
                 } else {
                     const lowerTrimmedLine = trimmedLine.toLowerCase();
-                    const taggedStyle = stexts ? null : setts?.styles.find(style => (style.tags || []).some(tag => lowerTrimmedLine.replace(/[^а-я]/g, '') === tag.toLowerCase().trim()));
+                    const taggedStyle = stexts ? null : blockStyles?.styles.find(style => (style.tags || []).some(tag => lowerTrimmedLine.replace(/[^а-я]/g, '') === tag.toLowerCase().trim()));
 
                     if (taggedStyle) ctromb.s = taggedStyle.name;
                     else {

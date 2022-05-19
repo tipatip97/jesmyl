@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { StyleProp } from "../../../base/settings/StyleProp";
+import { StyleBlock } from "../block-styles/StyleBlock";
 import { ChordVisibleVariant } from "../../../Cm.model";
 import { Com } from "../Com";
 import { Order } from "./Order";
@@ -71,11 +71,11 @@ export interface IExportableOrderTop extends IExportableOrder {
     anchorInheritIndex?: number;
     sourceIndex?: number;
     inhFields?: string[];
-    headClassName?: string;
-    textClassName?: string;
+    // headClassName?: string;
+    // textClassName?: string;
     viewIndex?: number;
     header: (bag?: OrderTopHeaderBag, isRequired?: boolean) => string;
-    style?: StyleProp;
+    style?: StyleBlock;
 }
 
 export interface OrderTopHeaderBag {

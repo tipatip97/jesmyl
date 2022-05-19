@@ -8,6 +8,7 @@ import { Com } from "./Com";
 import "./Com.scss";
 import ComOrders from "./orders/ComOrders";
 import { useCcom } from "./useCcom";
+import "./block-styles/BlockStyles.scss";
 
 export default function TheCom({
   com: topCom,
@@ -18,9 +19,7 @@ export default function TheCom({
 }) {
   const [chordVisibleVariant] = useChordVisibleVariant();
   const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
-  const isMiniAnchor = useSelector(
-    (state: RootState) => state.cm.isMiniAnchor
-  );
+  const isMiniAnchor = useSelector((state: RootState) => state.cm.isMiniAnchor);
 
   const [ccom] = useCcom();
   const com = topCom ?? ccom;

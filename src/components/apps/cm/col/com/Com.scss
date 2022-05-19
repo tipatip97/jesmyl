@@ -41,21 +41,6 @@
     color: var(--color-far);
     padding-top: .06em;
     transition: padding .2s;
-
-    
-    .com-order-block {
-        &.invisible {
-            display: none;
-        }
-    }
-
-    .styled-block {
-        margin-top: 1em;
-
-        >.header {
-            margin-right: 1em;
-        }
-    }
 }
 
 
@@ -125,6 +110,7 @@
                 content: attr(attr-chord);
                 height: 1em;
                 display: block;
+                margin-top: -1em;
             }
         }
 

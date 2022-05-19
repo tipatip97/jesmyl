@@ -1,5 +1,4 @@
 import ComLine from "../line/ComLine";
-import "./ComOrder.scss";
 import { IComLineProps, ITheOrderProps } from "./Order.model";
 
 export default function TheOrder(props: ITheOrderProps) {
@@ -23,11 +22,13 @@ export default function TheOrder(props: ITheOrderProps) {
   )
     return null;
 
+  const className = orderUnit.top.style?.getStyleName(orderUnit);
+
   if (isMiniAnchor && orderUnit.isAnchor && !orderUnit.isOpened) {
     return (
       <div
         id={`com-block-${orderUniti}`}
-        className={`${orderUnit.top.headClassName} anchor styled-block`}
+        className={`${className} styled-header anchor`}
       >
         {orderUnit.top.header({ isTexted: false, r: orderUnit.repeatsTitle })}
       </div>
@@ -45,15 +46,11 @@ export default function TheOrder(props: ITheOrderProps) {
     return (
       <div
         id={`com-block-${orderUniti}`}
-        className={`com-order-block styled-block ${
+        className={`composition-block styled-block ${
           orderUnit.isVisible ? "" : "invisible"
         } flex flex-baseline`}
       >
-        <div
-          className={`header ${hideChords ? "anchor styled-block" : ""} ${
-            orderUnit.top.headClassName
-          }`}
-        >
+        <div className={`header ${hideChords ? "anchor" : ""} ${className}`}>
           {orderUnit.top.header({
             isTexted: !hideChords,
             r: orderUnit.repeatsTitle,
@@ -62,7 +59,7 @@ export default function TheOrder(props: ITheOrderProps) {
         {hideChords ? null : (
           <pre
             key={`chorded-block-${orderUniti}-content`}
-            className={`body ${orderUnit.top.textClassName}`}
+            className={`body styled-block ${className}`}
           >
             {chords}
           </pre>
@@ -82,61 +79,57 @@ export default function TheOrder(props: ITheOrderProps) {
   );
 
   const headerNode = (
-    <span className={orderUnit.top.headClassName}>{blockHeader}</span>
+    <div className={`styled-header ${className}`}>{blockHeader}</div>
   );
 
   return (
     <div
       id={`com-block-${orderUniti}`}
-      className={`com-order-block composition-block-wrapper Xuser-select ${
+      className={`composition-block ${
         orderUnit.isVisible ? "" : "invisible"
-      }`}
+      } styled-block ${
+        chordedOrd ? "chorded-block" : "without-chords"
+      } ${className}`}
     >
-      <div
-        className={`composition-block ${chordedOrd ? "" : "without-chords"} ${
-          orderUnit.top.textClassName
-        }`}
-      >
-        {blockHeader
-          ? typeof asHeaderComponent === "function"
-            ? asHeaderComponent({
-                chordedOrd,
-                orderUnit,
-                orderUniti,
-                com,
-                isJoinLetters: true,
-                headerNode,
-              })
-            : headerNode
-          : null}
-        {(orderUnit.repeated || "")
-          .split(/\n/)
-          .map((textLine, textLinei, textLinea) => {
-            const words = textLine?.split(/ +/);
-            const lineProps: IComLineProps = {
+      {blockHeader
+        ? typeof asHeaderComponent === "function"
+          ? asHeaderComponent({
               chordedOrd,
-              textLine,
-              textLinei,
-              textLines: textLinea.length,
               orderUnit,
               orderUniti,
-              wordCount: words.length,
-              words,
               com,
               isJoinLetters: true,
-            };
+              headerNode,
+            })
+          : headerNode
+        : null}
+      {(orderUnit.repeated || "")
+        .split(/\n/)
+        .map((textLine, textLinei, textLinea) => {
+          const words = textLine?.split(/ +/);
+          const lineProps: IComLineProps = {
+            chordedOrd,
+            textLine,
+            textLinei,
+            textLines: textLinea.length,
+            orderUnit,
+            orderUniti,
+            wordCount: words.length,
+            words,
+            com,
+            isJoinLetters: true,
+          };
 
-            return (
-              <div key={`song-line:${orderUniti}-${textLinei}`}>
-                {typeof asLineComponent === "function" ? (
-                  asLineComponent(lineProps)
-                ) : (
-                  <ComLine {...lineProps} />
-                )}
-              </div>
-            );
-          })}
-      </div>
+          return (
+            <div key={`song-line:${orderUniti}-${textLinei}`}>
+              {typeof asLineComponent === "function" ? (
+                asLineComponent(lineProps)
+              ) : (
+                <ComLine {...lineProps} />
+              )}
+            </div>
+          );
+        })}
     </div>
   );
 }

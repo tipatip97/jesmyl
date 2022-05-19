@@ -2,7 +2,7 @@ import EvaIcon from "../../../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../../../complect/my-lib/MyLib";
-import { setts } from "../../../../../base/settings/Setts";
+import { blockStyles } from "../../../../../col/com/block-styles/BlockStyles";
 import { ChordVisibleVariant } from "../../../../../Cm.model";
 import { cmExer } from "../../../../../Cm.store";
 import TheOrder from "../../../../../col/com/order/TheOrder";
@@ -55,7 +55,7 @@ export default function OrdersRedactorOrderTools({
                 />
               </pre>
             ),
-            inputs: setts?.styles.map((styleBlock) => {
+            inputs: blockStyles?.styles.map((styleBlock) => {
               if ((ordi === 0 || ord.top.isTarget) && styleBlock.isInherit)
                 return null;
 

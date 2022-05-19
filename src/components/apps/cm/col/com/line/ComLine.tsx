@@ -16,11 +16,11 @@ export default function ComLine(props: IComLineProps) {
 
   if (!chordedOrd)
     return (
-      <span className="composition-line" onClick={onClick}>
+      <div className="composition-line" onClick={onClick}>
         {words.map((word, wordi, worda) => {
           return (
             <span
-              key={`composition-line-woc-${word}-${wordi}`}
+              key={`word-${word}-${wordi}`}
               className={`com-word wordi_${wordi} ${
                 (setWordClass && setWordClass({ ...props, wordi })) || ""
               }`}
@@ -35,7 +35,7 @@ export default function ComLine(props: IComLineProps) {
             </span>
           );
         })}
-      </span>
+      </div>
     );
 
   const letters = com.getVowelPositions(textLine);
@@ -56,7 +56,7 @@ export default function ComLine(props: IComLineProps) {
   const isHasPost = linePoss.indexOf(-2) > -1;
 
   return (
-    <span className="composition-line" onClick={onClick}>
+    <div className="composition-line" onClick={onClick}>
       {points.map((index, indexi, indexa) => {
         let isLast = indexi === indexa.length - 1;
         let isFirst = indexi === 0;
@@ -89,7 +89,7 @@ export default function ComLine(props: IComLineProps) {
           ));
 
         return (
-          <span key={`composition-line-${indexi}`}>
+          <span key={`word-chordeddd-${indexi}`}>
             {firstTextBit ? (
               <span
                 className={`${isHasPre ? "chorded pre" : ""}`}
@@ -121,6 +121,6 @@ export default function ComLine(props: IComLineProps) {
           </span>
         );
       })}
-    </span>
+    </div>
   );
 }

@@ -2,7 +2,7 @@ import { ExecDict } from "../../../complect/exer/Exer.model";
 import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
-import { IExportableSetts } from "./base/settings/Setts.model";
+import { IExportableSetts } from "./col/com/block-styles/BlockStyles.model";
 import { ParanjaMode } from "./base/useParanja";
 import { MigratableComToolName } from "./col/com/Com.model";
 import { IExportableCols } from "./cols/Cols.model";

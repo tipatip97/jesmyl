@@ -1,10 +1,9 @@
-import { putCmCompositionsStyles } from "../../../../../Cm.complect";
 import { ChordVisibleVariant } from "../../../../../Cm.model";
 import ComLine from "../../../../../col/com/line/ComLine";
 import TheOrder from "../../../../../col/com/order/TheOrder";
 import { useEditableCcom } from "../../useEditableCcom";
-import useChordApplicationsRedactor from "./useChordApplicationsRedactor";
 import "./ChordApplicationsRedactor.scss";
+import useChordApplicationsRedactor from "./useChordApplicationsRedactor";
 
 export default function ChordApplicationsRedactor() {
   const ccom = useEditableCcom();
@@ -14,7 +13,7 @@ export default function ChordApplicationsRedactor() {
     <div className="chord-application-redactor">
       {ccom?.orders?.map((ord, ordi) => {
         const positions = ord.positions || [];
-        
+
         return (
           <TheOrder
             key={`order-${ordi}`}
@@ -80,5 +79,3 @@ export default function ChordApplicationsRedactor() {
     </div>
   );
 }
-
-putCmCompositionsStyles();
