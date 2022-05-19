@@ -19,7 +19,7 @@ if (!is_dir($authDir)) mkdir($authDir);
 
 function authorize($auth)
 {
-  global $authDir, $userOrganizeOrder, $tsOrganizeOrder;
+  global $authDir, $userOrganizeOrder, $loginedAtOrganizeOrder;
 
   if (!$auth) $auth = [];
 
@@ -138,7 +138,7 @@ function authorize($auth)
       ];
     } else if ($at && is_file($atFile)) {
       $atFileContent = file_get_contents($atFile);
-      $checks = organizeUp($atFileContent, $tsOrganizeOrder);
+      $checks = organizeUp($atFileContent, $loginedAtOrganizeOrder);
       $level = $checks['level'][0];
 
       if ($level < 100 && $level > 3) {
@@ -154,7 +154,7 @@ function authorize($auth)
       return [
         'ok' => true,
         'mode' => 'check',
-        'loginedAt' => $checks['ts'][0] * 1000,
+        'loginedAt' => $checks['loginedAt'][0] * 1000,
         'level' => $level,
         'fio' => implode(' ', $checks['fio'])
       ];
@@ -171,14 +171,14 @@ function authorize($auth)
 
 function registerAT($filepath, $user)
 {
-  global $tsOrganizeOrder;
+  global $loginedAtOrganizeOrder;
   $atCheck = [
-    'ts' => [time()],
+    'loginedAt' => [time()],
     'level' => [$user['level']],
     'fio' => explode(' ', $user['fio'])
   ];
 
-  file_put_contents($filepath, organizeDown($atCheck, $tsOrganizeOrder));
+  file_put_contents($filepath, organizeDown($atCheck, $loginedAtOrganizeOrder));
 }
 
 function getAt($authDir, $login, $passw)
@@ -193,7 +193,7 @@ function getAt($authDir, $login, $passw)
 }
 
 $userOrganizeOrder = ['fio', ['level', 'general']];
-$tsOrganizeOrder = ['ts', 'level', 'fio'];
+$loginedAtOrganizeOrder = ['loginedAt', 'level', 'fio'];
 
 function organizeUp($content, $orders = [])
 {
@@ -244,7 +244,7 @@ function organizeDown($dict, $orders)
 
 function updateUserLevel($login, $at, $newLevel = 0, $password)
 {
-  global $authDir, $userOrganizeOrder, $tsOrganizeOrder;
+  global $authDir, $userOrganizeOrder, $loginedAtOrganizeOrder;
 
   if (!$login) return ['ok' => false, 'errors' => ['no login.']];
   if (!$at) return ['ok' => false, 'errors' => ['no at.']];
@@ -277,15 +277,15 @@ function updateUserLevel($login, $at, $newLevel = 0, $password)
       $authContent = file_get_contents($passwPath);
       $tsContent = file_get_contents($tsPath);
       $auth = organizeUp($authContent, $userOrganizeOrder);
-      $ts = organizeUp($tsContent, $tsOrganizeOrder);
-      $ts['level'] = array_merge([$newLevel], $ts['level']);
+      $loginedUser = organizeUp($tsContent, $loginedAtOrganizeOrder);
+      $loginedUser['level'] = array_merge([$newLevel], $loginedUser['level']);
       $prevLevel = $auth['level']['general'];
       $auth['level']['general'] = $newLevel;
       $authOrganizes = organizeDown($auth, $userOrganizeOrder);
-      $tsOrganizes = organizeDown($ts, $tsOrganizeOrder);
+      $loginedOrganizes = organizeDown($loginedUser, $loginedAtOrganizeOrder);
 
       if (file_put_contents($passwPath, $authOrganizes)) {
-        $isPut = file_put_contents($tsPath, $tsOrganizes);
+        $isPut = file_put_contents($tsPath, $loginedOrganizes);
 
         $ret = [
           'ok' => $isPut ? true : false,

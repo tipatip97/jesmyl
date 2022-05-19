@@ -39,7 +39,6 @@ function getUserAuths($appName)
     $passw_path = $loginPath . '/' . $_passw;
     $passw = getContent($passw_path);
     $user = organizeUp(file_get_contents($loginPath . '/' . $passw), $userOrganizeOrder);
-    $mtime = getAttribute(['.mtime' => $passw_path], '.mtime');
 
     $user['login'] = $login;
     $user['passw'] = $passw;
@@ -47,8 +46,7 @@ function getUserAuths($appName)
     $user['fio'] = implode(' ', $user['fio']);
     $user['level'] = floatval($user['level']['general']);
 
-    if ($user['level'] < 100)
-      $users[] = $user;
+    if ($user['level'] < 100) $users[] = $user;
   }
 
   return $users;

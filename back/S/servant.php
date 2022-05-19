@@ -697,7 +697,6 @@ function executer($execs, $pathTemplate, $saveInFiles = 1, $appName)
 
     if ($method === 'func') {
       $func = $track[0];
-    setBagProp($appName, 'isCall', [is_callable($func), $track, $exec]);
       if (is_callable($func)) {
         $results[$func] = $func($value);
       }
@@ -1219,20 +1218,30 @@ function &getAttribute_(&$target, $topField)
 
           if ($isVariated && !$time) continue;
           return $time;
-        } else if ($name === 'minmtime' || $name === 'maxmtime') {
+        } else if ($name === 'ctime') {
+          $time = getctime(getPath($target[$field]));
+
+          if ($isVariated && !$time) continue;
+          return $time;
+        } else if (
+          $name === 'minmtime'
+          || $name === 'maxmtime'
+          || $name === 'minctime'
+          || $name === 'maxctime'
+        ) {
           $line = $target;
           if (is_string($target)) $line = [$target];
           if (!is_array($line)) return null;
 
           $times = [];
           foreach ($line as $path) {
-            $times[] = getmtime(getPath($path));
+            $times[] = $name === 'minmtime' || $name === 'maxmtime'
+              ? getmtime(getPath($path))
+              : getctime(getPath($path));
           }
 
-          //debugLine($line);
-
           if ($isVariated && !$times) continue;
-          return $name === 'minmtime' ? min($times) : max($times);
+          return $name === 'minmtime' || $name === 'minctime' ? min($times) : max($times);
         }
       } else if ($field[0] === '>') {
         global $currentVariables;
@@ -1241,8 +1250,6 @@ function &getAttribute_(&$target, $topField)
         $appName = $attrs['attrs'][0];
         $bag = getBagProps($appName);
         $res = $bag[$attrs['name']];
-
-        //debugLine(['>>>', $appName, $bag, $res, $attrs, $currentVariables]);
 
         if ($isVariated && !$res) continue;
         return $res;
@@ -1301,28 +1308,30 @@ function debugLine($news = null)
 
 function getmtime($topPath, $depth = -1)
 {
+  return getMCtime('m', $topPath, $depth);
+}
+
+function getctime($topPath, $depth = -1)
+{
+  return getMCtime('c', $topPath, $depth);
+}
+
+function getMCtime($kind, $topPath, $depth)
+{
   if (is_null($topPath)) return null;
-
-  //debugLine(['getmtime-innnn' => $topPath]);
-
   if (is_dir($topPath)) {
     $maxTime = 1;
 
-    //debugLine(['getmtime--start', array_slice(scandir($topPath), 2)]);
     foreach (array_slice(scandir($topPath), 2) as $innername) {
       $path = "$topPath/$innername";
 
-      $mtime = getmtime($path, $depth - 1);
-
-      if ($maxTime < $mtime) $maxTime = $mtime;
-
-      //debugLine(['getmtime', $path, is_dir($path), $mtime, $maxTime - 0]);
+      $time = getMCtime($kind, $path, $depth - 1);
+      if ($maxTime < $time) $maxTime = $time;
     }
-    //debugLine(['getmtime--end']);
 
     return $maxTime;
   } else if (file_exists($topPath)) {
-    return filemtime($topPath);
+    return $kind === 'm' ? filemtime($topPath) : filectime($topPath);
   } else return 0;
 }
 
