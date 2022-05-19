@@ -1,6 +1,8 @@
 {
     "name": "Jesus my Lord",
     "short_name": "JesmyL",
+    "description": "Сборник приложений",
+    "prefer_related_applications": false,
     "icons": [
         {
             "src": "android-chrome-192x192.png",
