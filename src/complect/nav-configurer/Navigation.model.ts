@@ -34,11 +34,12 @@ export type INavigationRouteItem = INavigationRouteChildItem | INavigationRouteR
 export interface INavigationRouteChildItem<Data extends Record<string, any> | und = Record<string, any>> {
     readonly phase: NavPhasePoint;
     // компоненту можно передать содержимое его потомков, если typeof node === 'function'
+    // такая фаза считается проходящей
     node: ReactNode | ((props: NavigationThrowNodeProps) => ReactNode);
     // если typeof node === 'function' - этот параметр будет указывать,
     // на какой роут нужно перейти по умолчанию
     defaultChild?: NavPhase;
-    // передаётся в useNav()
+    // передаётся в useNav() как есть
     data?: Data,
     accessRule?: string;
     next?: INavigationRouteChildItem[];
@@ -60,6 +61,8 @@ export interface MainNavigationNodeProps {
 
 export interface NavigationThrowNodeProps {
     outletContent: ReactNode;
+    // если фаза является проходящей, она может выступать как относительная точка
+    // в этом параметре передаётся картеж относительной точки
     relativePoint: NavPhasePoint | nil;
     currentChildPhase: NavPhase;
     data?: Record<string, any> | nil;
