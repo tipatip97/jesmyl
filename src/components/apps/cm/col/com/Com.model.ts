@@ -35,9 +35,18 @@ export interface SettingsItem {
     icon: EvaIconName;
 }
 
-export type MigratableComToolName = 'translation' | 'chords-variant' | 'chord-images' | 'selected-toggle' | 'mark-com' | 'fullscreen-mode' | MigratableEditableComToolName;
+export type MigratableComToolName = typeof menuComToolNameList[number] | MigratableEditableComToolName;
 
-export interface MigratableComTool {
+export const menuComToolNameList = [
+    "fullscreen-mode",
+    "mark-com",
+    "translation",
+    "chords-variant",
+    "chord-images",
+    "selected-toggle",
+  ] as const;
+
+  export interface MigratableComTool {
     title: string;
     icon: EvaIconName;
     onClick: () => void | boolean;

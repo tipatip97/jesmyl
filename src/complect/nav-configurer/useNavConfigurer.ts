@@ -6,7 +6,6 @@ import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
 import { FreeNavRoute, NavigationStorage, NavPhase, NavPhasePoint, UseNavAction } from "./Navigation.model";
 
-
 export default function useNavConfigurer<T, Storage extends NavigationStorage<T>>(
     actions: UseNavAction[],
     setPhaseAction: (payload: NavigationStorage<T>) => PayloadAction<NavigationStorage<T>>,

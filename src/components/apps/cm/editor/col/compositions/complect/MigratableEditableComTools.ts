@@ -1,10 +1,19 @@
 import { useCmNavConfigurer } from "../../../../base/useCmNav";
-import { MigratableComTool } from "../../../../col/com/Com.model";
+import { cmExer } from "../../../../Cm.store";
+import { MigratableComTool, MigratableComToolName } from "../../../../col/com/Com.model";
 import { editComNavPhasePoint } from "../../../editorNav";
 import { MigratableEditableComToolName } from "../EditableCom.model";
 
-export const migratableEditableComToolNameList: MigratableEditableComToolName[] =
-  ["edit-com"];
+export const migratableEditableComToolNameList = ["edit-com"] as const;
+
+export const concatMigratableEditableComToolNameList = (toolList: MigratableComToolName[]) => cmExer.isActionAccessed("canRedact")
+  ? toolList.concat(migratableEditableComToolNameList)
+  : toolList;
+
+export const spliceMigratableEditableComToolNameList = (toolList: MigratableComToolName[]) => cmExer.isActionAccessed("canRedact")
+  ? toolList
+  : toolList.filter(tool => migratableEditableComToolNameList.indexOf(tool as never) < 0);
+
 
 export const getMigratableEditableComTool = (
   tool: MigratableEditableComToolName,

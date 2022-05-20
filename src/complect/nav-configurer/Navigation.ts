@@ -54,10 +54,8 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
     jumpTo(phasePoint: NavPhasePoint): NavRoute | nil {
         const makeRoute = (topRoute: NavRoute, routes?: INavigationRouteChildItem[] | INavigationRouteRootItem[]): NavRoute | nil => {
             if (!routes) return null;
-            console.log(routes);
             for (let routei = 0; routei < routes.length; routei++) {
                 const route = routes[routei];
-                console.log(route.phase);
                 if (route.phase === phasePoint) {
                     const relativePhases = [topRoute, route.phase];
                     let item: INavigationRouteItem = route;

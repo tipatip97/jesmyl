@@ -9,27 +9,22 @@ import useSelectedComs from "../../base/useSelectedComs";
 import { ChordVisibleVariant } from "../../Cm.model";
 import { updateComTopTools } from "../../Cm.store";
 import {
+  concatMigratableEditableComToolNameList,
   getMigratableEditableComTool,
-  migratableEditableComToolNameList,
+  spliceMigratableEditableComToolNameList,
 } from "../../editor/col/compositions/complect/MigratableEditableComTools";
 import { useMarks } from "../../lists/marks/useMarks";
 import useTranslation from "../../translation/useTranslation";
 import ChordImagesList from "./chord-card/ChordImagesList";
-import { MigratableComTool, MigratableComToolName } from "./Com.model";
+import {
+  menuComToolNameList,
+  MigratableComTool,
+  MigratableComToolName,
+} from "./Com.model";
 import { useCcom } from "./useCcom";
 
 let localTopComToolList: MigratableComTool[] | nil;
 let localMenuComToolList: MigratableComTool[] | nil;
-
-const menuComToolNameList: MigratableComToolName[] = [
-  "fullscreen-mode",
-  "mark-com",
-  "translation",
-  "chords-variant",
-  "chord-images",
-  "selected-toggle",
-  ...migratableEditableComToolNameList,
-];
 
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
@@ -136,9 +131,13 @@ export default function useMigratableComTools() {
         .filter((tool) => tool) as MigratableComTool[];
     };
 
-    localTopComToolList = makeToolList(comTopTools);
+    localTopComToolList = makeToolList(
+      spliceMigratableEditableComToolNameList(comTopTools)
+    );
     localMenuComToolList = makeToolList(
-      menuComToolNameList.filter((tool) => comTopTools.indexOf(tool) < 0)
+      concatMigratableEditableComToolNameList(
+        menuComToolNameList as never
+      ).filter((tool) => comTopTools.indexOf(tool) < 0)
     );
   }
 
