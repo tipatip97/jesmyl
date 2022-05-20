@@ -43,29 +43,22 @@ export default function SwipeableContainer({
 
   const nprops = useMemo(
     () =>
-      Object.assign(
-        {},
-        defProps,
-        props,
-        props
-          ? {
-              startMoveVKf:
-                props.startMoveVKf == null
-                  ? props.startMoveKf == null
-                    ? defProps.startMoveKf
-                    : props.startMoveKf
-                  : props.startMoveVKf,
+      Object.assign({}, defProps, props, {
+        startMoveVKf:
+          props?.startMoveVKf == null
+            ? props?.startMoveKf == null
+              ? defProps.startMoveKf
+              : props.startMoveKf
+            : props.startMoveVKf,
 
-              startMoveHKf:
-                props.startMoveHKf == null
-                  ? props.startMoveKf == null
-                    ? defProps.startMoveKf
-                    : props.startMoveKf
-                  : props.startMoveHKf,
-            }
-          : {}
-      ),
-    []
+        startMoveHKf:
+          props?.startMoveHKf == null
+            ? props?.startMoveKf == null
+              ? defProps.startMoveKf
+              : props?.startMoveKf
+            : props?.startMoveHKf,
+      }),
+    [props]
   );
 
   nprops.cb = (event) => {
@@ -102,7 +95,7 @@ export default function SwipeableContainer({
 
   return (
     <div
-      className="swipeable-container"
+      className="swipeable-container full-min-height full-min-width"
       onTouchStart={(event) => {
         const { clientX: x, clientY: y } = event.targetTouches[0];
         start.x = x;
@@ -116,10 +109,10 @@ export default function SwipeableContainer({
 
         const dx = x - start.x;
         const dy = y - start.y;
-        const toRight = dx >= (nprops.startMoveHKf ?? 0);
-        const toLeft = dx <= -(nprops.startMoveHKf ?? 0);
-        const toUp = dy <= -(nprops.startMoveVKf ?? 0);
-        const toDown = dy >= (nprops.startMoveVKf ?? 0);
+        const toRight = dx >= (nprops.startMoveHKf || 0);
+        const toLeft = dx <= -(nprops.startMoveHKf || 0);
+        const toUp = dy <= -(nprops.startMoveVKf || 0);
+        const toDown = dy >= (nprops.startMoveVKf || 0);
         const cardinalPoints = [
           toUp,
           toUp && toRight,
@@ -142,7 +135,7 @@ export default function SwipeableContainer({
         ];
         const toAny = cardinalPoints.some((cardinalPoint) => cardinalPoint);
         const allPointLabels = cardinalPointsLabels.filter(
-          (pointl, pointli) => cardinalPoints[pointli]
+          (_, pointli) => cardinalPoints[pointli]
         );
         const toLabel =
           allPointLabels.find((pointl) => pointl.length === 2) ||
