@@ -29,6 +29,8 @@ export interface INavigationConfig<Storage extends ExerStorage> {
     logo?: EvaIconName;
 }
 
+export type INavigationRouteItem = INavigationRouteChildItem | INavigationRouteRootItem;
+
 export interface INavigationRouteChildItem<Data extends Record<string, any> | und = Record<string, any>> {
     readonly phase: NavPhasePoint;
     // компоненту можно передать содержимое его потомков, если typeof node === 'function'

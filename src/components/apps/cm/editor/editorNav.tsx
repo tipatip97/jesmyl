@@ -2,6 +2,7 @@ import { EvaIconName } from "../../../../complect/eva-icon/EvaIcon";
 import {
   INavigationRouteChildItem,
   INavigationRouteRootItem,
+  NavPhasePoint,
 } from "../../../../complect/nav-configurer/Navigation.model";
 import TheComposition from "../col/com/TheComposition";
 import Translations from "../translation/Translation";
@@ -83,6 +84,8 @@ export const editCompositionNavs: INavigationRouteChildItem<{
   },
 ];
 
+export const editComNavPhasePoint: NavPhasePoint = ["com"];
+
 export const editorRouteItems: INavigationRouteChildItem<{
   title: string;
   icon: EvaIconName;
@@ -111,7 +114,7 @@ export const editorRouteItems: INavigationRouteChildItem<{
     },
     next: [
       {
-        phase: ["com"],
+        phase: editComNavPhasePoint,
         node: (props) => <EditComposition {...props} />,
         defaultChild: "main",
         next: editCompositionNavs,

@@ -1,5 +1,6 @@
 import { useCmNavConfigurer } from "../../../../base/useCmNav";
 import { MigratableComTool } from "../../../../col/com/Com.model";
+import { editComNavPhasePoint } from "../../../editorNav";
 import { MigratableEditableComToolName } from "../EditableCom.model";
 
 export const migratableEditableComToolNameList: MigratableEditableComToolName[] =
@@ -7,7 +8,7 @@ export const migratableEditableComToolNameList: MigratableEditableComToolName[] 
 
 export const getMigratableEditableComTool = (
   tool: MigratableEditableComToolName,
-  { navigate }: ReturnType<typeof useCmNavConfigurer>
+  { jumpTo }: ReturnType<typeof useCmNavConfigurer>
 ): MigratableComTool | nil => {
   switch (tool) {
     case "edit-com":
@@ -15,7 +16,7 @@ export const getMigratableEditableComTool = (
         tool,
         title: "Редактировать",
         icon: "edit-outline",
-        onClick: () => navigate(['editor', 'coms', 'com']),
+        onClick: () => jumpTo(editComNavPhasePoint),
       };
   }
 };

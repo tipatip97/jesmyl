@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
-import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteRootItem, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
+import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
 
 export class NavigationConfig<T, Storage extends NavigationStorage<T>> implements INavigationConfig<Storage> {
     root: (content: ReactNode) => JSX.Element;
@@ -49,6 +49,36 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         }
 
         return !!item;
+    }
+
+    jumpTo(phasePoint: NavPhasePoint): NavRoute | nil {
+        const makeRoute = (topRoute: NavRoute, routes?: INavigationRouteChildItem[] | INavigationRouteRootItem[]): NavRoute | nil => {
+            if (!routes) return null;
+            console.log(routes);
+            for (let routei = 0; routei < routes.length; routei++) {
+                const route = routes[routei];
+                console.log(route.phase);
+                if (route.phase === phasePoint) {
+                    const relativePhases = [topRoute, route.phase];
+                    let item: INavigationRouteItem = route;
+                    while (typeof item.node === 'function') {
+                        const nextItem: INavigationRouteItem | nil = item.defaultChild
+                            ? item.next?.find((it) => item.defaultChild === it.phase[0])
+                            : item.next?.[0];
+
+                        if (!nextItem) break;
+
+                        relativePhases.push(nextItem.phase);
+                        item = nextItem;
+                    }
+                    return relativePhases.flat();
+                }
+                const nextRoute = makeRoute(topRoute.concat(route.phase), route.next);
+                if (nextRoute) return nextRoute;
+            }
+        };
+
+        return makeRoute([], this.routes);
     }
 
     goTo(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
