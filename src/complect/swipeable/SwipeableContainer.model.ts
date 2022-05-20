@@ -24,7 +24,3 @@ export interface SwipeablerProps {
     movingStep: number,
     prevPoint?: string | null;
 };
-
-export interface SwipeablerEvent {
-
-}
