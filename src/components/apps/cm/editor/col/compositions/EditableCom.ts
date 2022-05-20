@@ -307,7 +307,16 @@ export class EditableCom extends Com {
     }
 
     isImpossibleToMigrateOrder(ord: EditableOrder, ordi: number, ords: EditableOrder[]) {
-        return ord.top.isAnchorInherit || ordi === ords.length - 1;
+        let isSelfOrd = false;
+
+        return ord.top.isAnchorInherit || ordi === ords.length - 1 || !ords.some((currOrd) => {
+            if (currOrd === ord) {
+                isSelfOrd = true;
+                return false;
+            }
+            if (!isSelfOrd) return false;
+            return !currOrd.top.isAnchorInherit;
+        });
     }
 
     isCantMigrateOrder(ord: EditableOrder, ordi: number) {
