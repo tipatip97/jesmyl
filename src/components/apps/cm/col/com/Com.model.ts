@@ -1,5 +1,6 @@
 import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import { BaseNamedExportables } from "../../base/Base";
+import { MigratableEditableComToolName } from "../../editor/col/compositions/EditableCom.model";
 import { IExportableOrder } from "./order/Order.model";
 
 
@@ -34,7 +35,7 @@ export interface SettingsItem {
     icon: EvaIconName;
 }
 
-export type MigratableComToolName = 'translation' | 'chords-variant' | 'chord-images' | 'selected-toggle' | 'mark-com' | 'fullscreen-mode';
+export type MigratableComToolName = 'translation' | 'chords-variant' | 'chord-images' | 'selected-toggle' | 'mark-com' | 'fullscreen-mode' | MigratableEditableComToolName;
 
 export interface MigratableComTool {
     title: string;

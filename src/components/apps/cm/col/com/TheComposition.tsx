@@ -14,7 +14,7 @@ export default function TheComposition() {
   const [ccom] = useCcom();
   const { addLaterComw } = useLaterComList();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { makeToolList, toggleTopTool } = useMigratableComTools();
+  const { topTools, toggleTopTool } = useMigratableComTools();
 
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
@@ -39,7 +39,7 @@ export default function TheComposition() {
       head={
         <>
           <div className="flex">
-            {makeToolList(true).map(({ icon, onClick, tool }) => (
+            {topTools.map(({ icon, onClick, tool }) => (
               <EvaIcon
                 key={tool}
                 name={icon}

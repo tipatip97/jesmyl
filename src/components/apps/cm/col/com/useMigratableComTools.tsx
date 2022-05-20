@@ -4,14 +4,32 @@ import useFullscreenContent from "../../../../../complect/fullscreen-content/use
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
+import useCmNav from "../../base/useCmNav";
 import useSelectedComs from "../../base/useSelectedComs";
 import { ChordVisibleVariant } from "../../Cm.model";
 import { updateComTopTools } from "../../Cm.store";
+import {
+  getMigratableEditableComTool,
+  migratableEditableComToolNameList,
+} from "../../editor/col/compositions/complect/MigratableEditableComTools";
 import { useMarks } from "../../lists/marks/useMarks";
 import useTranslation from "../../translation/useTranslation";
 import ChordImagesList from "./chord-card/ChordImagesList";
 import { MigratableComTool, MigratableComToolName } from "./Com.model";
 import { useCcom } from "./useCcom";
+
+let localTopComToolList: MigratableComTool[] | nil;
+let localMenuComToolList: MigratableComTool[] | nil;
+
+const menuComToolNameList: MigratableComToolName[] = [
+  "fullscreen-mode",
+  "mark-com",
+  "translation",
+  "chords-variant",
+  "chord-images",
+  "selected-toggle",
+  ...migratableEditableComToolNameList,
+];
 
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
@@ -24,30 +42,12 @@ export default function useMigratableComTools() {
   const { isMarked, toggleMarked } = useMarks();
   const [, switchFullscreen] = useFullScreen();
   const comTopTools = useSelector((state: RootState) => state.cm.comTopTools);
+  const nav = useCmNav();
 
-  return {
-    toggleTopTool: (tool: MigratableComToolName) =>
-      dispatch(
-        updateComTopTools(
-          comTopTools.indexOf(tool) < 0
-            ? [...comTopTools, tool]
-            : comTopTools.filter((currTool) => tool !== currTool)
-        )
-      ),
-    makeToolList: (isTop: boolean): MigratableComTool[] => {
-      const tools: MigratableComToolName[] = isTop
-        ? comTopTools
-        : (
-            [
-              "fullscreen-mode",
-              "mark-com",
-              "translation",
-              "chords-variant",
-              "chord-images",
-              "selected-toggle",
-            ] as MigratableComToolName[]
-          ).filter((tool) => comTopTools.indexOf(tool) < 0);
-
+  if (!localTopComToolList || !localMenuComToolList) {
+    const makeToolList = (
+      tools: MigratableComToolName[]
+    ): MigratableComTool[] => {
       return tools
         .map((tool): MigratableComTool | nil => {
           switch (tool) {
@@ -131,9 +131,31 @@ export default function useMigratableComTools() {
                 }
               );
           }
-          return null;
+          return getMigratableEditableComTool(tool, nav);
         })
         .filter((tool) => tool) as MigratableComTool[];
+    };
+
+    localTopComToolList = makeToolList(comTopTools);
+    localMenuComToolList = makeToolList(
+      menuComToolNameList.filter((tool) => comTopTools.indexOf(tool) < 0)
+    );
+  }
+
+  return {
+    topTools: localTopComToolList,
+    menuTools: localMenuComToolList,
+    toggleTopTool: (tool: MigratableComToolName) => {
+      localTopComToolList = null;
+      localMenuComToolList = null;
+
+      dispatch(
+        updateComTopTools(
+          comTopTools.indexOf(tool) < 0
+            ? [...comTopTools, tool]
+            : comTopTools.filter((currTool) => tool !== currTool)
+        )
+      );
     },
   };
 }

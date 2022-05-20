@@ -16,7 +16,7 @@ export default function ComTools() {
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const [chordVisibleVariant] = useChordVisibleVariant();
 
-  const { makeToolList, toggleTopTool } = useMigratableComTools();
+  const { menuTools, toggleTopTool } = useMigratableComTools();
 
   if (!ccom) return null;
   return (
@@ -69,7 +69,7 @@ export default function ComTools() {
         </div>
       </div>
 
-      {makeToolList(false).map(({ onClick, title, icon, tool }) => (
+      {menuTools.map(({ onClick, title, icon, tool }) => (
         <div
           key={tool}
           className="abs-item abs-full"

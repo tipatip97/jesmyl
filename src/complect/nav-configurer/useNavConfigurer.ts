@@ -22,10 +22,13 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
         nav,
         route: useSelector(routeSelector),
         navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
-        navigate: (route: FreeNavRoute, isPreventSave?: boolean) => {
-            dispatch(setPhaseAction({ route } as never));
-            if (isPreventSave) return;
-            storage.set('route', route);
+        navigate: (topRoute: FreeNavRoute, isPreventSave?: boolean) => {
+            const route = topRoute && nav.goTo([], topRoute);
+            if (route) {
+                dispatch(setPhaseAction({ route } as never));
+                if (isPreventSave) return;
+                storage.set('route', route);
+            }
         },
         goTo: (phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil, isPreventSave?: boolean) => {
             const newRoute = nav.goTo(ret.route || [], phase, relativePoint);
