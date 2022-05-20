@@ -6,6 +6,7 @@ import useCmNav from "../../base/useCmNav";
 import { riseUpMeetingsUpdate, setCurrentEventw } from "../../Cm.store";
 import { IExportableMeetings } from "../../lists/meetings/Meetings.model";
 import { useEditableCols } from "../col/useEditableCols";
+import { editEventNavPhasePoint } from "../editorNav";
 import { EditableMeetings } from "./EditableMeetings";
 import { EditableMeetingsEvent } from "./EditableMeetingsEvent";
 
@@ -17,7 +18,7 @@ export function useEditableMeetings() {
     useSelector((state: RootState) => state.cm.numMeetingsUpdate);
     const meetings = useSelector((state: RootState) => state.cm.meetings);
     const eventw = useSelector((state: RootState) => state.cm.eventw);
-    const { goTo } = useCmNav();
+    const { jumpTo } = useCmNav();
     const [cols] = useEditableCols();
 
     useEffect(() => {
@@ -42,7 +43,7 @@ export function useEditableMeetings() {
         goToEvent: (eventw: number) => {
             setCurrEvent(eventw);
             dispatch(setCurrentEventw(eventw));
-            goTo('event');
+            jumpTo(editEventNavPhasePoint);
             cmStorage.set('eventw', eventw);
         },
     };

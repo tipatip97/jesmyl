@@ -85,6 +85,7 @@ export const editCompositionNavs: INavigationRouteChildItem<{
 ];
 
 export const editComNavPhasePoint: NavPhasePoint = ["com"];
+export const editEventNavPhasePoint: NavPhasePoint = ["event"];
 
 export const editorRouteItems: INavigationRouteChildItem<{
   title: string;
@@ -130,7 +131,7 @@ export const editorRouteItems: INavigationRouteChildItem<{
     },
     next: [
       {
-        phase: ["event"],
+        phase: editEventNavPhasePoint,
         node: <EditMeetingsEvent />,
         next: [
           {
