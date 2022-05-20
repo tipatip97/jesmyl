@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
@@ -88,10 +89,10 @@ export default function ComTools() {
       ))}
       <div className="fade-05 full-width margin-gap-v">
         {ccom.catMentions().map((mention, mentioni) => (
-          <span key={`mentioni-${mentioni}`}>
+          <React.Fragment key={`mentioni-${mentioni}`}>
             {mentioni ? ", " : ""}
             <span className="nowrap">{mention}</span>
-          </span>
+          </React.Fragment>
         ))}
       </div>
     </div>

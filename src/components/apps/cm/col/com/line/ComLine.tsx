@@ -1,3 +1,4 @@
+import React from "react";
 import { IComLineProps } from "../order/Order.model";
 
 export default function ComLine(props: IComLineProps) {
@@ -77,7 +78,7 @@ export default function ComLine(props: IComLineProps) {
         const origBits = baseTextBitOriginal
           .split(/ +/g)
           .map((txt, txti, txta) => (
-            <span key={`text-bit:${txti}`}>
+            <React.Fragment key={`text-bit:${txti}`}>
               <span dangerouslySetInnerHTML={{ __html: txt }} />
               {txti === txta.length - 1 ? null : (
                 <>
@@ -85,11 +86,11 @@ export default function ComLine(props: IComLineProps) {
                   <wbr />
                 </>
               )}
-            </span>
+            </React.Fragment>
           ));
 
         return (
-          <span key={`word-chordeddd-${indexi}`}>
+          <React.Fragment key={`word-chordeddd-${indexi}`}>
             {firstTextBit ? (
               <span
                 className={`${isHasPre ? "chorded pre" : ""}`}
@@ -118,7 +119,7 @@ export default function ComLine(props: IComLineProps) {
                 origBits
               )}
             </span>
-          </span>
+          </React.Fragment>
         );
       })}
     </span>
