@@ -13,14 +13,12 @@ export default function useComPack(): [Com[] | nil, string] {
     const { route } = useCmNav();
 
     return useMemo(() => {
-        return route?.includes('lists')
-            ? route.includes('marks')
-                ? [markedComs, " - Избранное"]
-                : currentMeeting && route.includes('meetings')
-                    ? [currentMeeting.coms, " - " + currentMeeting.name]
-                    : ccat ?
-                        [ccat.coms, " - " + ccat.name]
-                        : [null, ""]
-            : [null, ""];
+        return route?.includes('marks')
+            ? [markedComs, " - Избранное"]
+            : currentMeeting && route?.includes('meetings')
+                ? [currentMeeting.coms, " - " + currentMeeting.name]
+                : ccat ?
+                    [ccat.wraps.map(wrap => wrap.com), " - " + ccat.name]
+                    : [null, ""];
     }, [ccat, currentMeeting, markedComs, route]);
 }

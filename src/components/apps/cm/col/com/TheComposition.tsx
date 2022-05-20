@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import SwipeableContainer from "../../../../../complect/swipeable/SwipeableContainer";
 import RollControled from "../../base/RolledContent";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
@@ -8,13 +9,15 @@ import "./Com.scss";
 import ComTools from "./ComTools";
 import TheCom from "./TheCom";
 import { useCcom } from "./useCcom";
+import useComPack from "./useComPack";
 import useMigratableComTools from "./useMigratableComTools";
 
 export default function TheComposition() {
-  const [ccom] = useCcom();
+  const [ccom, setCcom] = useCcom();
   const { addLaterComw } = useLaterComList();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { topTools, toggleTopTool } = useMigratableComTools();
+  const [comList] = useComPack();
 
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
@@ -61,9 +64,27 @@ export default function TheComposition() {
         </>
       }
       content={
-        <RollControled>
-          <TheCom />
-        </RollControled>
+        <SwipeableContainer
+          onHorizontalSwipe={(dir) => {
+            if (!comList) return;
+            const comi = comList.findIndex((com) => com === ccom);
+
+            if (comi > -1) {
+              if ("l" === dir)
+                if (comi < comList.length - 1) setCcom(comList[comi + 1]);
+                else setCcom(comList[0]);
+
+              if ("r" === dir)
+                if (comi > 0) setCcom(comList[comi - 1]);
+                else setCcom(comList[comList.length - 1]);
+            }
+          }}
+          content={
+            <RollControled>
+              <TheCom />
+            </RollControled>
+          }
+        />
       }
     />
   );
