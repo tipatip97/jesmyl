@@ -17,7 +17,7 @@ export default function TheUser() {
       content={
         <>
           <div className="flex margin-gap">
-            Уровень доступа - {currentUser.level}{" "}
+            Уровень доступа - {currentUser.level}
           </div>
           <div className="">Сообщения от пользователя</div>
           <div className="messages-box">

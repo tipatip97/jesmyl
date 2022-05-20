@@ -84,6 +84,10 @@ input[type='radio'] {
   overflow: hidden;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 input,
 textarea {
   font-size: 1em;
@@ -138,6 +142,14 @@ textarea {
   &.column {
     flex-direction: column;
   }
+
+  &.start {
+    justify-content: start;
+  }
+}
+
+.after-margin-space {
+  margin-right: .2em;
 }
 
 .text-middle {
