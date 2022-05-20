@@ -69,7 +69,6 @@ export default function SwipeableContainer({
   );
 
   nprops.cb = (event) => {
-    console.log(event, direction);
     if (event.name === "moving") {
       if (!direction.dir) direction.dir = event.direction;
       else if (direction.dir !== event.direction) direction.canceled = true;
