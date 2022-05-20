@@ -14,12 +14,13 @@ export default function NewComposition({ close }: { close: () => void }) {
   const [cols] = useEditableCols();
   const { exec } = useExer(cmExer);
   const [, setCcom] = useCcom();
-  const [value, setValue] = useState('');
-  const [name, setName] = useState('');
+  const [value, setValue] = useState("");
+  const [name, setName] = useState("");
   const [isTakeName, setIsTakeName] = useState(true);
 
   const com = useMemo(
-    () => new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1),
+    () =>
+      new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1, cols),
     []
   );
 
@@ -67,7 +68,8 @@ export default function NewComposition({ close }: { close: () => void }) {
           value={value}
           onChange={(event) => {
             setValue(event.target.value);
-            if (isTakeName) setName(com.correctName(com.takeName(event.target.value)));
+            if (isTakeName)
+              setName(com.correctName(com.takeName(event.target.value)));
           }}
         />
         <EvaIcon

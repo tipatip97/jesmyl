@@ -1,5 +1,6 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { BaseNamed } from "../../base/Base";
+import { Cols } from "../../cols/Cols";
 import { blockStyles } from "./block-styles/BlockStyles";
 import { StyleBlock } from "./block-styles/StyleBlock";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.complect";
@@ -8,6 +9,7 @@ import { Order } from "./order/Order";
 import { IExportableOrder, IExportableOrderTop } from "./order/Order.model";
 
 export class Com extends BaseNamed<IExportableCom> {
+  cols?: Cols;
   initial: Record<string, any>;
   ton?: number;
   tonc?: string;
@@ -20,10 +22,11 @@ export class Com extends BaseNamed<IExportableCom> {
   private _chordLabels?: string[][][];
   private _usedChords?: Record<string, string>;
 
-  constructor(top: IExportableCom, index: number) {
+  constructor(top: IExportableCom, index: number, cols?: Cols) {
     super(top);
     this.initialName = this.name;
     this.index = index;
+    this.cols = cols;
 
     this.initial = {};
 
@@ -84,6 +87,22 @@ export class Com extends BaseNamed<IExportableCom> {
       if (obj.ton != null) this.initialTransPosition = obj.p;
       this.transPosition = mylib.def(obj.ton, obj.p);
     }
+  }
+
+  catMentions(): string[] {
+    if (!this.cols) return [];
+    const wid = this.wid;
+    const refs = this.refs || {};
+    const natives: string[] = [];
+
+    const inCats = this.cols.cats
+      .filter(cat => {
+        if (refs[cat.wid]) natives.push(`${cat.name} ${refs[cat.wid]}`);
+        return cat.stack.indexOf(wid) > -1
+      })
+      .map(cat => cat.name);
+
+    return inCats.concat(natives);
   }
 
   turnBemoled() {

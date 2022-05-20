@@ -11,6 +11,7 @@ import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import { textedChord } from "../../Editor.complect";
 import { EditableCol } from "../EditableCol";
 import { EditableOrder } from "./orders/EditableOrder";
+import { EditableCols } from "../EditableCols";
 
 
 export class EditableCom extends Com {
@@ -21,11 +22,11 @@ export class EditableCom extends Com {
     protected _o?: EditableOrder[];
     isCreated = false;
 
-    constructor(top: IExportableCom, index: number) {
-        super(top, index);
+    constructor(top: IExportableCom, index: number, cols?: EditableCols) {
+        super(top, index, cols);
         this.col = new EditableCol(top);
         this.initialName = this.name;
-        this.initial = new Com(mylib.clone(top), index);
+        this.initial = new Com(mylib.clone(top), index, cols);
     }
 
     get name() { return this.col?.getBasic('n') || ''; }

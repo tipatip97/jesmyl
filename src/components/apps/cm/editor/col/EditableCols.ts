@@ -11,7 +11,10 @@ export class EditableCols extends Cols {
     constructor(cols: IExportableCols) {
         super(cols);
         const coms = cols.coms;
-        this.coms = coms.sort((a, b) => a.w > widLimit ? b.w > widLimit ? a.w - b.w : -1 : 1).map((com, comi) => new EditableCom(com, comi));
+        this.coms = coms
+            .sort((a, b) => a.w > widLimit ? b.w > widLimit ? a.w - b.w : -1 : 1)
+            .map((com, comi) => new EditableCom(com, comi, this));
+
         this.cats = cols.cats.map(cat => new EditableCat(cat, this.coms));
     }
 

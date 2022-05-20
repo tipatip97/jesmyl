@@ -19,7 +19,7 @@ export default function ComTools() {
 
   if (!ccom) return null;
   return (
-    <>
+    <div className="abs-item flex column">
       <div
         className={`abs-item ${
           chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : ""
@@ -86,6 +86,14 @@ export default function ComTools() {
           <div className="abs-action" />
         </div>
       ))}
-    </>
+      <div className="fade-05 full-width margin-gap-v">
+        {ccom.catMentions().map((mention, mentioni) => (
+          <span key={`mentioni-${mentioni}`}>
+            {mentioni ? ", " : ""}
+            <span className="nowrap">{mention}</span>
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }

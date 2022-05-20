@@ -15,7 +15,6 @@ export class Cols extends Base<IExportableCols> implements ICols {
   }
 
   load(cols: IExportableCols | null, prevComs?: Com[]) {
-
     if (prevComs) {
       this.coms = (mylib.typ([], cols?.coms) as IExportableCom[])
         .map((com, comi) => {
@@ -31,10 +30,9 @@ export class Cols extends Base<IExportableCols> implements ICols {
             };
           }
 
-          const comc = new Com(top, comi);
-          return comc;
+          return new Com(top, comi, this);
         });
-    } else this.coms = mylib.typ([], cols?.coms).map((com, comi) => new Com(com, comi));
+    } else this.coms = mylib.typ([], cols?.coms).map((com, comi) => new Com(com, comi, this));
 
     this.sort('coms');
 
