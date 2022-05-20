@@ -31,9 +31,7 @@ export default function AppRouter({ app }: { app: AppName }) {
     [indexRoute, indexNav]
   );
 
-  return (
-    <div className={`app-container ${app}`}>
-      {indexRoute != null ? indexNav.root(indexContent) : nav.root(appContent)}
-    </div>
-  );
+  return indexRoute != null
+    ? indexNav.root(indexContent)
+    : nav.root(appContent);
 }
