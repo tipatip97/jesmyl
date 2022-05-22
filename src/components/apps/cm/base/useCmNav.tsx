@@ -2,6 +2,7 @@ import { NavigationConfig } from "../../../../complect/nav-configurer/Navigation
 import {
   INavigationRouteChildItem,
   NavigationStorage,
+  NavPhasePoint,
   UseNavAction,
 } from "../../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
@@ -20,8 +21,9 @@ import TheMeetings from "../lists/meetings/TheMeetings";
 import Translations from "../translation/Translation";
 import SelectedComs from "../lists/selected-coms/SelectedComs";
 
+export const translationNavPoint: NavPhasePoint = ["translation"];
 const translationNav: INavigationRouteChildItem = {
-  phase: ["translation"],
+  phase: translationNavPoint,
   node: <Translations />,
 };
 

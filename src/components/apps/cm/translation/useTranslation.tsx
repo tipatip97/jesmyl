@@ -145,7 +145,6 @@ export default function useTranslation() {
           />,
           win.document.body
         );
-        goTo("translation");
       }
     },
     onKeyTranslations: async (event: KeyboardEvent) => {
