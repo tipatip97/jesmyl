@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import SwipeableContainer from "../../../../../complect/swipeable/SwipeableContainer";
@@ -24,6 +24,11 @@ export default function TheComposition() {
     return () => clearTimeout(add);
   }, []);
 
+  const comListElem = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (comListElem.current) comListElem.current.scrollTop = 0;
+  }, [ccom]);
+
   if (ccom == null) {
     return (
       <PhaseCmContainer
@@ -39,6 +44,7 @@ export default function TheComposition() {
       topClass="com-container"
       headClass="flex between"
       headTitle={ccom.index + 1}
+      contentRef={comListElem}
       head={
         <>
           <div className="flex">
@@ -64,27 +70,26 @@ export default function TheComposition() {
         </>
       }
       content={
-        <SwipeableContainer
-          onHorizontalSwipe={(dir) => {
-            if (!comList) return;
-            const comi = comList.findIndex((com) => com === ccom);
+        <RollControled>
+          <SwipeableContainer
+            props={{ diapasonMoveVKf: 50 }}
+            onHorizontalSwipe={(dir) => {
+              if (!comList) return;
+              const comi = comList.findIndex((com) => com === ccom);
 
-            if (comi > -1) {
-              if ("l" === dir)
-                if (comi < comList.length - 1) setCcom(comList[comi + 1]);
-                else setCcom(comList[0]);
+              if (comi > -1) {
+                if ("l" === dir)
+                  if (comi < comList.length - 1) setCcom(comList[comi + 1]);
+                  else setCcom(comList[0]);
 
-              if ("r" === dir)
-                if (comi > 0) setCcom(comList[comi - 1]);
-                else setCcom(comList[comList.length - 1]);
-            }
-          }}
-          content={
-            <RollControled>
-              <TheCom />
-            </RollControled>
-          }
-        />
+                if ("r" === dir)
+                  if (comi > 0) setCcom(comList[comi - 1]);
+                  else setCcom(comList[comList.length - 1]);
+              }
+            }}
+            content={<TheCom />}
+          />
+        </RollControled>
       }
     />
   );

@@ -19,7 +19,9 @@ export default function RollControled(
       {...props}
       onClick={() => toggleRoll()}
       ref={(element) => element && (container = element.parentElement)}
-      className={`roll-controled-container ${isFullscreen ? "fullscreen" : ""}`}
+      className={`roll-controled-container full-width full-height ${
+        isFullscreen ? "fullscreen" : ""
+      }`}
     >
       <div
         className={`roll-controls flex column center ${
