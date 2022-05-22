@@ -13,14 +13,9 @@ export interface SwipeablerEvent {
 }
 
 export interface SwipeablerProps {
-    startMoveVKf?: number;
-    startMoveKf?: number;
-    startMoveHKf?: number;
-    cb: SwipeablerPropsCallback;
+    diapasonMoveKf?: number;
+    diapasonMoveVKf?: number;
+    diapasonMoveHKf?: number;
 
-    dirDiapasonH: number,
-    dirDiapasonV: number,
-    isMovingPhase: boolean,
-    movingStep: number,
-    prevPoint?: string | null;
+    movingStep?: number;
 };

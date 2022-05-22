@@ -4,14 +4,11 @@ import {
   SwipeablerEventDirection,
   SwipeablerEventName,
   SwipeablerProps,
+  SwipeablerPropsCallback,
 } from "./SwipeableContainer.model";
 
 const defProps: SwipeablerProps = {
-  cb: () => {},
-  startMoveKf: 10,
-  dirDiapasonH: 50,
-  dirDiapasonV: 50,
-  isMovingPhase: false,
+  diapasonMoveKf: 10,
   movingStep: 5,
 };
 
@@ -38,58 +35,50 @@ export default function SwipeableContainer({
 }) {
   const start = useMemo(() => ({ x: 0, y: 0 }), []);
   const move = useMemo(() => ({ x: 0, y: 0 }), []);
-  const direction: { dir: SwipeablerEventDirection | nil; canceled: boolean } =
-    useMemo(() => ({ dir: null, canceled: false }), []);
-
-  const nprops = useMemo(
-    () =>
-      Object.assign({}, defProps, props, {
-        startMoveVKf:
-          props?.startMoveVKf == null
-            ? props?.startMoveKf == null
-              ? defProps.startMoveKf
-              : props.startMoveKf
-            : props.startMoveVKf,
-
-        startMoveHKf:
-          props?.startMoveHKf == null
-            ? props?.startMoveKf == null
-              ? defProps.startMoveKf
-              : props?.startMoveKf
-            : props?.startMoveHKf,
-      }),
-    [props]
+  const nprops: {
+    dir: SwipeablerEventDirection | nil;
+    canceled: boolean;
+    isMovingPhase: boolean;
+    prevPoint: string | null;
+  } = useMemo(
+    () => ({
+      dir: null,
+      canceled: false,
+      isMovingPhase: false,
+      prevPoint: null,
+    }),
+    []
   );
 
-  nprops.cb = (event) => {
+  const cb: SwipeablerPropsCallback = (event) => {
     if (event.name === "moving") {
-      if (!direction.dir) direction.dir = event.direction;
-      else if (direction.dir !== event.direction) direction.canceled = true;
+      if (!nprops.dir) nprops.dir = event.direction;
+      else if (nprops.dir !== event.direction) nprops.canceled = true;
     }
     if (event.name === "stop") {
-      if (!direction.canceled && direction.dir) {
-        onSwipe?.(direction.dir);
+      if (!nprops.canceled && nprops.dir) {
+        onSwipe?.(nprops.dir);
 
-        if (/l/.exec(direction.dir)) {
-          onLeftSwipe?.(direction.dir === "l");
-          onHorizontalSwipe?.(direction.dir);
+        if (/l/.exec(nprops.dir)) {
+          onLeftSwipe?.(nprops.dir === "l");
+          onHorizontalSwipe?.(nprops.dir);
         }
-        if (/r/.exec(direction.dir)) {
-          onRightSwipe?.(direction.dir === "r");
-          onHorizontalSwipe?.(direction.dir);
+        if (/r/.exec(nprops.dir)) {
+          onRightSwipe?.(nprops.dir === "r");
+          onHorizontalSwipe?.(nprops.dir);
         }
-        if (/d/.exec(direction.dir)) {
-          onDownSwipe?.(direction.dir === "d");
-          onVerticalSwipe?.(direction.dir);
+        if (/d/.exec(nprops.dir)) {
+          onDownSwipe?.(nprops.dir === "d");
+          onVerticalSwipe?.(nprops.dir);
         }
-        if (/u/.exec(direction.dir)) {
-          onUpSwipe?.(direction.dir === "u");
-          onVerticalSwipe?.(direction.dir);
+        if (/u/.exec(nprops.dir)) {
+          onUpSwipe?.(nprops.dir === "u");
+          onVerticalSwipe?.(nprops.dir);
         }
       }
 
-      direction.dir = null;
-      direction.canceled = false;
+      nprops.dir = null;
+      nprops.canceled = false;
     }
   };
 
@@ -109,10 +98,20 @@ export default function SwipeableContainer({
 
         const dx = x - start.x;
         const dy = y - start.y;
-        const toRight = dx >= (nprops.startMoveHKf || 0);
-        const toLeft = dx <= -(nprops.startMoveHKf || 0);
-        const toUp = dy <= -(nprops.startMoveVKf || 0);
-        const toDown = dy >= (nprops.startMoveVKf || 0);
+        const diapasonMoveVKf =
+          props?.diapasonMoveVKf ??
+          props?.diapasonMoveKf ??
+          defProps.diapasonMoveKf;
+
+        const diapasonMoveHKf =
+          props?.diapasonMoveHKf ??
+          props?.diapasonMoveKf ??
+          defProps.diapasonMoveKf;
+
+        const toRight = dx >= (diapasonMoveHKf || 0);
+        const toLeft = dx <= -(diapasonMoveHKf || 0);
+        const toUp = dy <= -(diapasonMoveVKf || 0);
+        const toDown = dy >= (diapasonMoveVKf || 0);
         const cardinalPoints = [
           toUp,
           toUp && toRight,
@@ -162,12 +161,12 @@ export default function SwipeableContainer({
             nprops.prevPoint = toLabel;
           }
 
-          nprops.cb(eventProp);
+          cb(eventProp);
         }
       }}
       onTouchEnd={() => {
         nprops.isMovingPhase = false;
-        nprops.cb({ name: "stop" });
+        cb({ name: "stop" });
       }}
     >
       {content}
