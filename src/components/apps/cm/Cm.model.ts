@@ -19,7 +19,6 @@ export interface CmState extends CmStoraged {
     isShowMarks: boolean;
     isMiniAnchor: boolean;
     rollModeMarks: boolean;
-    selectedComs: number[];
     currentMeetingsContext: number[];
 
     numComUpdates: number;
@@ -52,6 +51,7 @@ export interface CmStoraged {
     isShowTranslationInfo: boolean;
     favoriteMeetings: FavoriteMeetings;
     comTopTools: MigratableComToolName[];
+    selectedComws: number[];
 
     lastUpdate?: number;
 }

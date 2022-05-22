@@ -18,6 +18,7 @@ import Marks from "../lists/marks/Marks";
 import TheMeetingsEvent from "../lists/meetings/TheMeetingsEvent";
 import TheMeetings from "../lists/meetings/TheMeetings";
 import Translations from "../translation/Translation";
+import SelectedComs from "../lists/selected-coms/SelectedComs";
 
 const translationNav: INavigationRouteChildItem = {
   phase: ["translation"],
@@ -59,6 +60,11 @@ const navigation = new NavigationConfig({
         {
           phase: ["marks"],
           node: <Marks />,
+          next: [...comNext],
+        },
+        {
+          phase: ["selected"],
+          node: <SelectedComs />,
           next: [...comNext],
         },
         {

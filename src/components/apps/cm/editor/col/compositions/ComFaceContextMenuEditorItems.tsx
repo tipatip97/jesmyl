@@ -11,11 +11,11 @@ export default function ComFaceContextMenuEditorItems() {
     useFullscreenContent();
   const { meetings, goToEvent } = useEditableMeetings();
   const { exec } = useExer(cmExer);
-  const { selectedComs } = useSelectedComs();
+  const { selectedComws } = useSelectedComs();
 
   return (
     <>
-      {selectedComs.length ? (
+      {selectedComws.length ? (
         <div
           className="abs-item flex"
           onClick={() =>
@@ -25,7 +25,7 @@ export default function ComFaceContextMenuEditorItems() {
                 <MeetingsInner
                   meetings={meetings}
                   onEventClick={(event) => {
-                    exec(event.mergeStack(selectedComs));
+                    exec(event.mergeStack(selectedComws));
                     goToEvent(event.wid);
                     closeFullscreenContent();
                   }}

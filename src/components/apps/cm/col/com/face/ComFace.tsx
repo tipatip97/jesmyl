@@ -12,16 +12,14 @@ export default function ComFace(props: ComFaceProps) {
   const { goTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
     useAbsoluteFloatPopup();
-  const { isSelected, toggleSelectedCom } = useSelectedComs();
+  const { selectedComPosition, toggleSelectedCom } = useSelectedComs();
 
   return com == null ? null : (
     <>
       <div
         className={`com-face flex between ${
-          isSelected(com) ? "selected" : ""
-        } ${ccom?.wid === com.wid ? " current" : ""} ${groupClass || ""} wid_${
-          com.wid
-        }`}
+          ccom?.wid === com.wid ? "current" : ""
+        } ${groupClass || ""} wid_${com.wid}`}
         onClick={() => {
           if (importantOnClick) {
             importantOnClick();
@@ -45,6 +43,7 @@ export default function ComFace(props: ComFaceProps) {
       >
         <div
           className="number"
+          selected-position={selectedComPosition(com) || undefined}
           onClick={(event) => {
             event.stopPropagation();
             selectable !== false && toggleSelectedCom(com);

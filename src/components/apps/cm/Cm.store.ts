@@ -24,6 +24,7 @@ const initialState: CmState = {
   paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
+  selectedComws: cmStorage.getOr('selectedComws', []),
   meetings: cmStorage.get('meetings'),
   eventw: cmStorage.get('eventw'),
   comFontSize: cmStorage.getOr('comFontSize', 15),
@@ -33,7 +34,6 @@ const initialState: CmState = {
   translationBlock: 0,
   isTranslationBlockVisible: true,
   translationBlockPosition: 'center',
-  selectedComs: [],
   favoriteMeetings: cmStorage.getOr('favoriteMeetings', { contexts: [], events: [] }),
   comTopTools: cmStorage.getOr('comTopTools', ["mark-com", "fullscreen-mode"]),
   currentMeetingsContext: [],
@@ -73,8 +73,8 @@ export const slice = createSlice({
       state.favoriteMeetings = action.payload;
       cmStorage.set('favoriteMeetings', state.favoriteMeetings);
     },
-    updateSelectedComs: (state, action: PayloadAction<number[]>) => {
-      state.selectedComs = action.payload;
+    updateSelectedComws: (state, action: PayloadAction<number[]>) => {
+      state.selectedComws = action.payload;
     },
     updateComTopTools: (state, action: PayloadAction<MigratableComToolName[]>) => {
       state.comTopTools = action.payload;
@@ -160,7 +160,7 @@ export const {
   setMarkList,
   updateMeetingList,
   updateFavoriteMeetings,
-  updateSelectedComs,
+  updateSelectedComws,
   updateComTopTools,
   updateCurrentMeetingsContext,
   setCurrentEventw,

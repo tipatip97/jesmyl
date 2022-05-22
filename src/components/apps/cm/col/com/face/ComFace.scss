@@ -8,3 +8,53 @@
         }
     }
 }
+.application-container.app_cm {
+    .com-face {
+        --size: 2.5em;
+        --number-border-size: 2px;
+
+        position: relative;
+        display: flex;
+        height: var(--size);
+        align-items: center;
+        padding: 0 .4em;
+        margin-bottom: calc(var(--number-border-size) * 2 + 2px);
+        cursor: pointer;
+
+        [selected-position].number {
+            border-color: var(--color--3);
+            
+            &::after {
+                content: attr(selected-position);
+                position: absolute;
+                bottom: -1px;
+                right: -2px;            
+                background-color: var(--color--3);
+                color: var(--color--2);
+                width: 1.2em;
+                height: 1.2em;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: .5em;
+            }
+        }
+
+        >.number {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--color--1);
+            border-radius: 50%;
+            width: var(--size);
+            height: var(--size);
+            border: solid 4px transparent;
+        }
+
+        >.title {
+            margin-left: calc(2.5em + 1em);
+        }
+    }
+}

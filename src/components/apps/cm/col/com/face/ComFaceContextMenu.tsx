@@ -1,4 +1,5 @@
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import mylib from "../../../../../../complect/my-lib/MyLib";
 import useSelectedComs from "../../../base/useSelectedComs";
 import ComFaceContextMenuEditorItems from "../../../editor/col/compositions/ComFaceContextMenuEditorItems";
 import { useMarks } from "../../../lists/marks/useMarks";
@@ -14,8 +15,14 @@ export default function ComFaceContextMenu({
 }) {
   const { isMarked, toggleMarked } = useMarks();
   const isComMarked = isMarked(com.wid);
-  const { setSelectedComs, selectedComs, isSelected, toggleSelectedCom } =
-    useSelectedComs();
+  const {
+    clearSelectedComws,
+    selectedComws,
+    selectedComPosition: isSelected,
+    toggleSelectedCom,
+    saveSelectedComws,
+    getLocalSelectedComws,
+  } = useSelectedComs();
 
   return (
     <>
@@ -45,11 +52,19 @@ export default function ComFaceContextMenu({
         />
         <div>{isSelected(com) ? "Отменить выбор" : "Выбрать"}</div>
       </div>
-      {selectedComs.length ? (
-        <div className="abs-item flex" onClick={() => setSelectedComs([])}>
-          <EvaIcon name="close-circle-outline" className="abs-icon" />
-          <div>Очистить выбранные</div>
-        </div>
+      {selectedComws.length ? (
+        <>
+          <div className="abs-item flex" onClick={() => clearSelectedComws()}>
+            <EvaIcon name="close-circle-outline" className="abs-icon" />
+            <div>Очистить выбранные</div>
+          </div>
+          {mylib.isEq(getLocalSelectedComws(), selectedComws) ? null : (
+            <div className="abs-item flex" onClick={() => saveSelectedComws()}>
+              <EvaIcon name="shopping-bag-outline" className="abs-icon" />
+              <div>Запомнить выбранные</div>
+            </div>
+          )}
+        </>
       ) : null}
       <ComFaceContextMenuEditorItems />
     </>
