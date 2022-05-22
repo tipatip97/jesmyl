@@ -98,10 +98,11 @@ export default function useTranslation() {
         if (document.fullscreenElement) document.exitFullscreen();
       }
     },
-    openTranslations: () => {
-      const [comList] = ret.comPack;
-
-      if (comList?.length) setCcom(comList[0]);
+    openTranslations: (isSetFirstCom?: boolean) => {
+      if (isSetFirstCom) {
+        const [comList] = ret.comPack;
+        if (comList?.length) setCcom(comList[0]);
+      }
 
       ret.setTexti(0);
       if (ret.isShowFullscreen) {

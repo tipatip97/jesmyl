@@ -22,7 +22,7 @@ export default function LocalListToolsPopup({ coms }: { coms?: Com[] }) {
             <div>Раскрыть песни списка</div>
             <div className="abs-action" />
           </div>
-          <div className="abs-item pointer" onClick={() => openTranslations()}>
+          <div className="abs-item pointer" onClick={() => openTranslations(true)}>
             <EvaIcon
               name={isShowFullscreen ? "play-outline" : "monitor-outline"}
               className="abs-icon"
