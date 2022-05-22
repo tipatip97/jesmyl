@@ -110,11 +110,17 @@ export default function useTranslation() {
       } else goTo("translation");
     },
     showMarks: (isShow: boolean) => dispatch(switchShowMarks(isShow)),
-    newTranslation: (left: number, top: number) => {
+    newTranslation: (left: number, top: number, isSetFirstCom = false) => {
       if (currWin) {
         currWin.focus();
         if (!currWin.closed) return;
       }
+
+      if (isSetFirstCom) {
+        const [comList] = ret.comPack;
+        if (comList) setCcom(comList[0]);
+      }
+
       const win = window.open(
         undefined,
         "translation-win",
@@ -139,9 +145,7 @@ export default function useTranslation() {
         renderApplication(
           <TranslationScreen
             fontSizeContainId="other-translate-window"
-            updater={(update) => {
-              win.addEventListener("resize", () => update());
-            }}
+            updater={(update) => win.addEventListener("resize", () => update())}
           />,
           win.document.body
         );

@@ -35,7 +35,7 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
             if (newRoute) ret.navigate(newRoute, isPreventSave);
         },
         jumpTo: (phasePoint: NavPhasePoint, isPreventSave?: boolean) => {
-            const newRoute = nav.jumpTo(phasePoint);
+            const newRoute = nav.jumpTo(ret.route, phasePoint);
             if (newRoute) ret.navigate(newRoute, isPreventSave);
         },
         registerBackAction: (action: UseNavAction) => {

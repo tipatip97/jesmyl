@@ -19,7 +19,7 @@ export default function useComPack(): [Com[] | nil, string] {
             ? [markedComs, " - Избранное"]
             : currentMeeting && route?.includes('meetings')
                 ? [currentMeeting.coms, " - " + currentMeeting.name]
-                : currentMeeting && route?.includes('selected')
+                : route?.includes('selected')
                     ? [takeSelectedComs(), " - Выбранное"]
                     : ccat ?
                         [ccat.wraps.map(wrap => wrap.com), " - " + ccat.name]

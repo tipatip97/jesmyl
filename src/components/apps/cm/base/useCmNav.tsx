@@ -55,13 +55,13 @@ const navigation = new NavigationConfig({
       node: <Lists />,
       next: [
         {
-          phase: ["cat"],
-          node: <TheCat />,
+          phase: ["marks"],
+          node: <Marks />,
           next: [...comNext],
         },
         {
-          phase: ["marks"],
-          node: <Marks />,
+          phase: ["cat"],
+          node: <TheCat />,
           next: [...comNext],
         },
         {

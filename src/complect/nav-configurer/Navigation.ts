@@ -51,11 +51,16 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         return !!item;
     }
 
-    jumpTo(phasePoint: NavPhasePoint): NavRoute | nil {
-        const makeRoute = (topRoute: NavRoute, routes?: INavigationRouteChildItem[] | INavigationRouteRootItem[]): NavRoute | nil => {
+    jumpTo(currentRoute: FreeNavRoute, phasePoint: NavPhasePoint): NavRoute | nil {
+        const makeRoute = (topRoute: NavRoute, routes?: INavigationRouteChildItem[] | INavigationRouteRootItem[], deep?: number): NavRoute | nil => {
             if (!routes) return null;
             for (let routei = 0; routei < routes.length; routei++) {
                 const route = routes[routei];
+
+                if (currentRoute && deep !== undefined && currentRoute.length > deep) {
+                    if (route.phase[0] !== currentRoute[deep]) continue;
+                }
+
                 if (route.phase === phasePoint) {
                     const relativePhases = [topRoute, route.phase];
                     let item: INavigationRouteItem = route;
@@ -71,12 +76,12 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
                     }
                     return relativePhases.flat();
                 }
-                const nextRoute = makeRoute(topRoute.concat(route.phase), route.next);
+                const nextRoute = makeRoute(topRoute.concat(route.phase), route.next, deep === undefined ? deep : deep + 1);
                 if (nextRoute) return nextRoute;
             }
         };
 
-        return makeRoute([], this.routes);
+        return makeRoute([], this.routes, 0) ?? makeRoute([], this.routes);
     }
 
     goTo(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
