@@ -436,7 +436,7 @@
                                     "o"
                                 ],
                                 "args": {
-                                    "wid": "#Number"
+                                    "ordw": "#Number"
                                 },
                                 "next": [
                                     {
@@ -445,7 +445,7 @@
                                         "title": "В песню \"$name\" добавлен Порядковый блок",
                                         "method": "push",
                                         "value": {
-                                            "w": "{wid}",
+                                            "w": "{ordw}",
                                             "p": [],
                                             "c": "{?chordsi}",
                                             "t": "{texti}",
@@ -463,7 +463,7 @@
                                         "title": "Добавлена ссылка на $blockn в песне \"$name\"",
                                         "method": "push",
                                         "value": {
-                                            "w": "{wid}",
+                                            "w": "{ordw}",
                                             "a": "{anchor}"
                                         },
                                         "args": {
@@ -478,7 +478,7 @@
                                         "value": [
                                             "w",
                                             "===",
-                                            "{wid}"
+                                            "{ordw}"
                                         ]
                                     },
                                     {
@@ -486,7 +486,7 @@
                                             [
                                                 "w",
                                                 "===",
-                                                "{wid}"
+                                                "{ordw}"
                                             ]
                                         ],
                                         "next": [
