@@ -1,8 +1,10 @@
+import EvaIcon from "../../../../../../../../complect/eva-icon/EvaIcon";
+import useExer from "../../../../../../../../complect/exer/useExer";
 import mylib from "../../../../../../../../complect/my-lib/MyLib";
+import { cmExer } from "../../../../../Cm.store";
 import EditContainerCorrectsInformer from "../../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { useEditableCcom } from "../../useEditableCcom";
 import TextAreaRedactor from "./TextAreaRedactor";
-import useEditTextsChords from "./useEditTextsChords";
 
 export default function TextsChordsRedactor({
   ccoln,
@@ -10,7 +12,7 @@ export default function TextsChordsRedactor({
   ccoln: "texts" | "chords";
 }) {
   const ccom = useEditableCcom();
-  const { changeBlock, insertBlocks } = useEditTextsChords(ccom);
+  const { exec } = useExer(cmExer);
 
   if (!ccom) return null;
 
@@ -27,40 +29,52 @@ export default function TextsChordsRedactor({
             corrects={ccom.corrects[`changeBlocks_${ccoln}_${coli}`]}
           >
             <div>
+              <div className="flex between">
+                <div>
+                  {coli + 1 + ". "}
+                  {((ords) => (
+                    <span
+                      style={{
+                        color: ords.length ? "grey" : "red",
+                      }}
+                    >
+                      {ords.length
+                        ? mylib
+                            .unique(
+                              ords.map(
+                                (o) =>
+                                  `${o.top.header()}${
+                                    o.top.style?.isInherit
+                                      ? ` ${o.top.style.name}`
+                                      : ""
+                                  }`
+                              )
+                            )
+                            .join(", ")
+                        : "Нет упоминаний этого блока"}
+                    </span>
+                  ))(
+                    ccom.orders?.filter(
+                      (ord) => (istcoln ? ord.texti : ord.chordsi) === coli
+                    ) || []
+                  )}
+                </div>
+                <EvaIcon
+                  name="close"
+                  className="pointer"
+                  onClick={() => exec(ccom.removeBlock(ccoln, coli))}
+                />
+              </div>
               <TextAreaRedactor
                 ccoln={ccoln}
                 coli={coli}
                 com={ccom}
                 col={col}
-                onChange={(value) => changeBlock(ccoln, coli, value)}
-                onInsert={(value) => insertBlocks(ccoln, coli, value)}
+                onChange={(value) => exec(ccom.changeBlock(ccoln, coli, value))}
+                onInsert={(value) =>
+                  exec(ccom.insertBlocks(ccoln, coli, value))
+                }
               />
-              {((ords) => (
-                <div
-                  style={{
-                    color: ords.length ? "grey" : "red",
-                  }}
-                >
-                  {ords.length
-                    ? mylib
-                        .unique(
-                          ords.map(
-                            (o) =>
-                              `${o.top.header()}${
-                                o.top.style?.isInherit
-                                  ? ` ${o.top.style.name}`
-                                  : ""
-                              }`
-                          )
-                        )
-                        .join(", ")
-                    : "Нет упоминаний этого блока"}
-                </div>
-              ))(
-                ccom.orders?.filter(
-                  (ord) => (istcoln ? ord.texti : ord.chordsi) === coli
-                ) || []
-              )}
             </div>
           </EditContainerCorrectsInformer>
         );

@@ -3,16 +3,6 @@ import { BaseNamedExportables } from "../../base/Base";
 import { MigratableEditableComToolName } from "../../editor/col/compositions/EditableCom.model";
 import { IExportableOrder } from "./order/Order.model";
 
-
-export interface ICom {
-    name: string;
-    wid: number;
-    audio: string;
-    nameCorrects: (name: string) => string;
-    texts: string[];
-}
-
-
 export interface IExportableCom extends BaseNamedExportables {
     k?: number; // вариант группировки строк для трансляций
     p?: number; // позиции аккордов

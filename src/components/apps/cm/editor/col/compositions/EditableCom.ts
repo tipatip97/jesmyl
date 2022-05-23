@@ -290,7 +290,7 @@ export class EditableCom extends Com {
         this.exec({
             action: 'comAddOrderBlock',
             args: {
-                wid: w,
+                ordw: w,
                 texti: t,
                 type: s,
                 chordsi: c,
@@ -304,6 +304,53 @@ export class EditableCom extends Com {
         return !ord.top.isInherit &&
             !ord.top.isPrevAnchorInheritPlus &&
             !ord.isEmptyHeader;
+    }
+
+    getOrdersOnBlockDeletion(coln: 'texts' | 'chords', coli: number) {
+        if (!this.orders) return {};
+        const indexes: { ordi: number; ord: EditableOrder }[] = [];
+        const containers = this.orders.filter((ord, ordi) => {
+            const isContains = (coln === 'texts' ? ord.texti : ord.chordsi) === coli;
+            if (isContains) indexes.push({ ordi, ord });
+            return isContains;
+        });
+        let anchors: EditableOrder[] = [];
+
+        if (coln === 'texts') {
+            anchors = this.orders.filter((ord, ordi) => {
+                return containers.some(contOrd => {
+                    const isAnch = ord.isAnchor && contOrd.top.u === ord.top.a;
+                    if (isAnch) indexes.push({ ordi, ord });
+                    return isAnch;
+                });
+            });
+        }
+
+        return { containers, anchors, indexes: indexes.sort((a, b) => b.ordi - a.ordi) };
+    }
+
+    removeBlock(coln: 'texts' | 'chords', coli: number) {
+        const { indexes } = this.getOrdersOnBlockDeletion(coln, coli);
+
+        if (coln === 'texts' && indexes) {
+
+            indexes.forEach(({ ord }) => {
+                this.removeOrderBlock(ord);
+            });
+        }
+
+        this.updateOrderSticks(coln, coli, -1, coln === 'chords');
+
+        this.exec({
+            action: 'removeBlock',
+            args: {
+                coli,
+                coln: coln === 'texts' ? 't' : 'c',
+            }
+        });
+        this[coln]?.splice(coli, 1);
+
+        if (coln === 'chords') this.resetChordLabels();
     }
 
     isImpossibleToMigrateOrder(ord: EditableOrder, ordi: number, ords: EditableOrder[]) {
@@ -502,7 +549,7 @@ export class EditableCom extends Com {
                         coln: coln === 'texts' ? 't' : 'c',
                         value,
                         ordi,
-                        wid: ord.w
+                        ordw: ord.w
                     }
                 });
                 ord[ccoln] = value;

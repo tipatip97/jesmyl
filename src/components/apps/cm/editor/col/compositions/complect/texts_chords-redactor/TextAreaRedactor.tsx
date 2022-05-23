@@ -24,7 +24,7 @@ export default function TextAreaRedactor({
 
   return (
     <textarea
-      className={`cleared-input com-editor-textarea full-width ${
+      className={`cleared-input com-editor-textarea full-width no-resize ${
         value.trim() === "" ? "empty" : ""
       }`}
       value={value}
