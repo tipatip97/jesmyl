@@ -10,7 +10,7 @@ import { IExportableOrderTop, INewExportableOrder } from "../../../col/com/order
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import { textedChord } from "../../Editor.complect";
 import { EditableCol } from "../EditableCol";
-import { EditableOrder } from "./orders/EditableOrder";
+import { EditableOrder } from "./complect/orders/EditableOrder";
 import { EditableCols } from "../EditableCols";
 
 

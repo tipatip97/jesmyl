@@ -1,9 +1,9 @@
-import { FreeExecDict, FreeExecDictUniq } from "../../../../../../../complect/exer/Exer.model";
-import mylib from "../../../../../../../complect/my-lib/MyLib";
-import { cmExer } from "../../../../Cm.store";
-import { Order } from "../../../../col/com/order/Order";
-import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats } from "../../../../col/com/order/Order.model";
-import { EditableCom } from "../EditableCom";
+import { FreeExecDict, FreeExecDictUniq } from "../../../../../../../../complect/exer/Exer.model";
+import mylib from "../../../../../../../../complect/my-lib/MyLib";
+import { cmExer } from "../../../../../Cm.store";
+import { Order } from "../../../../../col/com/order/Order";
+import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats } from "../../../../../col/com/order/Order.model";
+import { EditableCom } from "../../EditableCom";
 
 export class EditableOrder extends Order {
     _regions?: EditableOrderRegion<EditableOrder>[];
@@ -25,13 +25,9 @@ export class EditableOrder extends Order {
     }
 
     setField<K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args?: Record<string, any>, onFinish?: () => void, refresh = true, onSet?: () => void | null) {
-        const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
+        const setExec = (action: string, additionalArgs: {}, onSet?: () => void, prevs?: Partial<IExportableOrder>) => {
             this.exec({
-                prev: this.top.inhFields && this.top.inhFields.indexOf(fieldn) < 0
-                    ? this.top.source
-                        ? this.top.source[fieldn] != null ? this.top.source[fieldn] : args?.def
-                        : null
-                    : null,
+                prev: prevs?.[fieldn],
                 value,
                 uniq: this.top.viewIndex,
                 method: 'set',
@@ -64,7 +60,16 @@ export class EditableOrder extends Order {
                 e: 'comSetOrderEmptiedVal',
             } as Record<keyof Partial<IExportableOrder>, string>)[fieldn];
 
-            setExec(action, { value }, onSet);
+            setExec(action, { value }, onSet, mylib.clone({
+                m: this.isMin,
+                s: this.type,
+                c: this.chordsi,
+                t: this.texti,
+                o: this.isOpened,
+                r: this.repeats,
+                v: this.isVisible ? 1 : 0,
+                e: this.isEmptyHeader
+            }));
         }
 
 
@@ -79,7 +84,7 @@ export class EditableOrder extends Order {
         }
     }
 
-    setRepeats(val?: OrderRepeats | null) { }
+    setRepeats(_val?: OrderRepeats | null) { }
 
     get fieldValues() { return this.getBasicOr('f', {}); }
     set fieldValues(val) { this.setExportable('f', val); }

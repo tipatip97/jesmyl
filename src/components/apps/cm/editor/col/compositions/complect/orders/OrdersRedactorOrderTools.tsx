@@ -7,7 +7,7 @@ import { ChordVisibleVariant } from "../../../../../Cm.model";
 import { cmExer } from "../../../../../Cm.store";
 import TheOrder from "../../../../../col/com/order/TheOrder";
 import { EditableCom } from "../../EditableCom";
-import { EditableOrder } from "../../orders/EditableOrder";
+import { EditableOrder } from "./EditableOrder";
 
 export default function OrdersRedactorOrderTools({
   ccom,

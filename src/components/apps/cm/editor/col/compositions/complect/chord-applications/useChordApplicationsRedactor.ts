@@ -1,6 +1,6 @@
 import useExer from "../../../../../../../../complect/exer/useExer";
 import { cmExer } from "../../../../../Cm.store";
-import { EditableOrder } from "../../orders/EditableOrder";
+import { EditableOrder } from "../orders/EditableOrder";
 import { EditableCom } from "../../EditableCom";
 
 
