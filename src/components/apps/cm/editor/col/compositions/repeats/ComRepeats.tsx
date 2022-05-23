@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../../complect/exer/useExer";
 import modalService from "../../../../../../../complect/modal/Modal.service";
@@ -9,7 +9,7 @@ import ComLine from "../../../../col/com/line/ComLine";
 import { Order } from "../../../../col/com/order/Order";
 import { OrderRepeats } from "../../../../col/com/order/Order.model";
 import TheOrder from "../../../../col/com/order/TheOrder";
-import { EditableOrder } from "../orders/EditableOrder";
+import { EditableOrder } from "../complect/orders/EditableOrder";
 import { useEditableCcom } from "../useEditableCcom";
 import { IEditableComLineProps } from "./ComRepeats.model";
 import "./ComRepeats.scss";
@@ -20,6 +20,7 @@ export default function ComRepeats() {
   const [xPos, setXPos] = useState(0);
   const [yPos, setYPos] = useState(0);
   const [isChordBlock, setIsChordBlock] = useState(false);
+  const [isReadySetChordBlock, setIsReadySetChordBlock] = useState(false);
   const [flashCount, setFlashCount] = useState(2);
 
   const ccom = useEditableCcom();
@@ -42,21 +43,33 @@ export default function ComRepeats() {
     repeateds?: OrderRepeats | nil,
     prevs?: OrderRepeats | nil
   ) => {
+    if (!ord) return;
+
     const reps = typeof prevs === "number" ? { ".": prevs } : prevs || {};
     const repds =
       typeof repeateds === "number" ? { ".": repeateds } : repeateds || {};
     const repeats = { ...reps, ...repds };
     const keys = Object.keys(repeats);
     if (repeats["."] === 0) delete repeats["."];
-    ord?.setField(
-      coln,
-      keys.length
-        ? keys.length === 1 && keys[0] === "."
-          ? repeats["."]
-          : repeats
-        : 0
+    exec(
+      ord.setField(
+        coln,
+        keys.length
+          ? keys.length === 1 && keys[0] === "."
+            ? repeats["."]
+            : repeats
+          : 0
+      )
     );
   };
+
+  useEffect(() => {
+    if (isReadySetChordBlock) {
+      setField(startOrd, flashCount);
+      reset();
+      setIsReadySetChordBlock(false);
+    }
+  }, [flashCount, isReadySetChordBlock, startOrd]);
 
   const reset = () => {
     setStart(null);
@@ -75,18 +88,24 @@ export default function ComRepeats() {
               ord.text
                 ? undefined
                 : (event) => {
-                    //this.setField(coln, ord, this.state.flashCount, ord[colnGetter]);
-                    // if (start == null || !this.state.chordBlock) {
-                    //   this.setState({
-                    //     start: props,
-                    //     x: (event.target as any).offsetLeft,
-                    //     y: (event.target as any).offsetTop,
-                    //     chordBlock: true,
-                    //   });
-                    // } else {
-                    //   props.ord.setField(coln, this.state.flashCount);
-                    //   this.reset();
-                    // }
+                    if (start == null || !isChordBlock) {
+                      setStart({
+                        orderUnit: ord,
+                        textLine: "",
+                        textLinei: 0,
+                        textLines: 0,
+                        wordCount: 0,
+                        wordi: 0,
+                        words: [],
+                      });
+
+                      setIsChordBlock(true);
+                      setXPos((event.target as any).offsetLeft);
+                      setYPos((event.target as any).offsetTop);
+                    } else {
+                      setIsChordBlock(false);
+                      setIsReadySetChordBlock(true);
+                    }
                   }
             }
           >
@@ -396,9 +415,14 @@ export default function ComRepeats() {
                                     startOrd?.repeats
                                   );
 
-                                  if (srepeats && typeof srepeats !== "number")
+                                  if (
+                                    srepeats &&
+                                    typeof srepeats !== "number"
+                                  ) {
                                     delete srepeats[startKey];
-                                  setField(startOrd, srepeats);
+                                    setField(startOrd, srepeats);
+                                  } else setField(startOrd, 0);
+
                                   startOrd?.resetRegions();
 
                                   if (startOrd !== endOrd && endOrd) {
@@ -439,7 +463,7 @@ export default function ComRepeats() {
                         className={`button numeric${
                           flashCount === currFlashCount ? " active" : ""
                         }`}
-                        onClick={() => setFlashCount(flashCount)}
+                        onClick={() => setFlashCount(currFlashCount)}
                       >
                         {currFlashCount}
                       </div>
