@@ -113,6 +113,10 @@
             color: var(--color--4);
             cursor: pointer;
 
+            &.center{
+                min-width: 40vw;
+            }
+
             +.button {
                 margin-left: 10px;
             }
