@@ -19,23 +19,22 @@ export class Exer<Storage extends ExerStorage> {
     rules: ExecRule[] = [];
     checkedActions: Record<string, true | null> = {};
     auth: Auth;
+    appVariables?: { mutedExecs: boolean };
 
     constructor(appName: JStorageName, storage: JStorage<Storage> | nil) {
         this.storage = storage;
         this.appName = appName;
         this.auth = indexStorage.getOr('auth', { level: 0 });
 
+        this.appVariables = indexStorage.get("apps")?.find((app) => app.name === this.appName)?.variables;
         this.updateRules();
     }
 
     updateRules() {
-        const app = indexStorage.get("apps")?.find((app) => app.name === "cm");
-
         this.rules = [
-            ...Object.entries(app?.variables || {}).map(([action, level]) => ({
-                action,
-                level: level as number,
-            })),
+            ...Object.entries(this.appVariables || {})
+                .map(([action, level]) => typeof level === 'number' ? { action, level } : null)
+                .filter(rule => rule) as ExecRule[],
             ...(this.storage?.get('actions') as [] || [])
         ];
     }
@@ -44,7 +43,7 @@ export class Exer<Storage extends ExerStorage> {
         if (!freeExec) return null;
         let retExec: Exec<Value> | null = null;
         const { scope, value, method = 'other', anti, friendly } = freeExec;
-        const exec = { ...freeExec, method };
+        const exec = { ...freeExec, method, muted: this.appVariables?.mutedExecs ?? freeExec.muted };
 
         setTimeout(() => console.info(exec, this.execs));
 
