@@ -50,7 +50,9 @@ export default function TheOrder(props: ITheOrderProps) {
           orderUnit.isVisible ? "" : "invisible"
         } flex flex-baseline`}
       >
-        <div className={`header ${hideChords ? "anchor" : ""} ${className}`}>
+        <div
+          className={`styled-header ${hideChords ? "anchor" : ""} ${className}`}
+        >
           {orderUnit.top.header({
             isTexted: !hideChords,
             r: orderUnit.repeatsTitle,
@@ -59,7 +61,7 @@ export default function TheOrder(props: ITheOrderProps) {
         {hideChords ? null : (
           <pre
             key={`chorded-block-${orderUniti}-content`}
-            className={`body styled-block ${className}`}
+            className={`styled-block ${className}`}
           >
             {chords}
           </pre>
