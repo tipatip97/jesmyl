@@ -616,23 +616,20 @@ function &doIt($exec, &$parents, &$parent)
       break;
     case 'remove':
       if (is_array($target)) {
-        if (isList($value)) {
-          foreach ($target as $key => $val) {
-            $isExp = isExpected($val, $value);
+        $isTargetList = isList($target);
+        $isValueList = isList($value);
+        $found = false;
+        $newList = [];
 
-            if ($isExp) {
-              array_splice($target, $key, 1);
-              break;
-            }
-          }
-        } else
-          foreach ($target as $key => $val) {
-            if ($key === $value) {
-              unset($target[$key]);
-              break;
-            }
-          }
-      } else array_splice($target, $value, 1);
+        foreach ($target as $key => $val) {
+          if ($found || ($isValueList ? !isExpected($val, $value) : $key !== $value)) {
+            if ($isTargetList) $newList[] = $val;
+            else $newList[$key] = $val;
+          } else $found = true;
+        }
+
+        $penultimate[$lastTrace] = $newList;
+      }
       break;
     case 'concat':
       $arr = is_array($value) ? $value : [$value];
