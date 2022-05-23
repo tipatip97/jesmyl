@@ -122,7 +122,7 @@ export class EditableOrder extends Order {
             ...bag,
             scope: this.scope(bag.action, bag.uniq, wid),
             args: {
-                wid: mylib.def(wid, this.wid),
+                ordw: mylib.def(wid, this.wid),
                 comw: this.com.wid,
                 name: this.com.name,
                 blockn: this.top.header({}, true),
@@ -177,7 +177,7 @@ export class EditableOrder extends Order {
             args: {
                 linei,
                 line,
-                wid: this.getLeadFirst('w'),
+                ordw: this.getLeadFirst('w'),
             },
             onSet: exec => {
                 const lineSplitted = textLine.split('');

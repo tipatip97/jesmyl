@@ -43,13 +43,13 @@ export interface UserMessage {
     w: number;
 }
 
-export interface IndexApplication<Variables = {}> {
+export interface IndexApplication {
     name: AppName;
     title: string;
     icon: EvaIconName;
     disabled: boolean;
     hidden: boolean;
-    variables: Variables;
+    variables: { mutedExecs: boolean; };
     params?: string[];
 }
 
