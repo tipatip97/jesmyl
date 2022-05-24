@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import useCmNav from "../../base/useCmNav";
-import { useCcat } from "../cat/useCcat";
-import { Com } from "./Com";
+import useSelectedComs from "../../base/useSelectedComs";
 import { useMarks } from "../../lists/marks/useMarks";
 import { useMeetings } from "../../lists/meetings/useMeetings";
-import useSelectedComs from "../../base/useSelectedComs";
+import { useCcat } from "../cat/useCcat";
+import { Com } from "./Com";
 
 
 export default function useComPack(): [Com[] | nil, string] {
-    const [ccat] = useCcat();
+    const [ccat, , zcat] = useCcat();
     const { markedComs } = useMarks();
     const { currentMeeting } = useMeetings();
     const { route } = useCmNav();
@@ -21,8 +21,12 @@ export default function useComPack(): [Com[] | nil, string] {
                 ? [currentMeeting.coms, " - " + currentMeeting.name]
                 : route?.includes('selected')
                     ? [takeSelectedComs(), " - Выбранное"]
-                    : ccat ?
-                        [ccat.wraps.map(wrap => wrap.com), " - " + ccat.name]
-                        : [null, ""];
+                    : route?.includes('all')
+                        ? zcat
+                            ? [zcat.wraps.map(wrap => wrap.com), " - " + zcat.name]
+                            : [null, '']
+                        : ccat ?
+                            [ccat.wraps.map(wrap => wrap.com), " - " + ccat.name]
+                            : [null, ""];
     }, [ccat, currentMeeting, markedComs, route]);
 }
