@@ -67,3 +67,20 @@ export interface NavigationThrowNodeProps {
     currentChildPhase: NavPhase;
     data?: Record<string, any> | nil;
 }
+
+export enum NavigationForEachPhaseSlideBy {
+    Inline,
+    Each,
+    InlineEach,
+    EachInline,
+}
+
+export interface NavigationForEachPhaseProps {
+    currentRoute?: FreeNavRoute;
+    isEndPoint?: (item: INavigationRouteItem, topRoute: NavRoute, isInline: boolean) =>
+        // если возвращена эта функция - будет обработка фазовой точки
+        // верни здесь true, чтоб прекратить проход по точкам
+        () => boolean;
+    onNextRelative?: (item: INavigationRouteItem, topRoute: NavRoute, isInline: boolean) => void;
+    slideBy?: NavigationForEachPhaseSlideBy;
+}

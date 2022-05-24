@@ -20,7 +20,7 @@ export default function CmApplication({ content }: { content: ReactNode }) {
     const onKeyUp = (event: KeyboardEvent) => {
       if (event.key === "F5") {
         event.preventDefault();
-        jumpTo(translationNavPoint);
+        jumpTo(translationNavPoint, true);
         newTranslation(200, 200, true);
       }
     };

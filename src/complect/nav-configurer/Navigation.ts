@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
-import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
+import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
 
 export class NavigationConfig<T, Storage extends NavigationStorage<T>> implements INavigationConfig<Storage> {
     root: (content: ReactNode) => JSX.Element;
@@ -9,6 +9,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
     routes: INavigationRouteRootItem[];
     exer?: Exer<Storage>;
     logo?: EvaIconName;
+    endPoints: [NavPhasePoint, NavPhase[]][];
 
     constructor({ routes, root, rootPhase, exer, logo }: INavigationConfig<Storage>) {
         this.root = root;
@@ -17,6 +18,22 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         this.checkRoutes(routes);
         this.exer = exer;
         this.logo = logo;
+        this.endPoints = this.fillEndPoints();
+    }
+
+    fillEndPoints() {
+        const endPoints: [NavPhasePoint, NavPhase[]][] = [];
+        this.forEachPhase({
+            slideBy: NavigationForEachPhaseSlideBy.Each,
+            onNextRelative: (item, route) => {
+                endPoints.push([item.phase, route.concat(item.phase)]);
+            },
+            isEndPoint: (item, route) => {
+                endPoints.push([item.phase, route.concat(item.phase)]);
+                return () => false;
+            },
+        });
+        return endPoints;
     }
 
     checkRoutes(routes: INavigationRouteRootItem[] | INavigationRouteChildItem[], phases: NavPhase[] = []) {
@@ -51,7 +68,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         return !!item;
     }
 
-    jumpTo(currentRoute: FreeNavRoute, phasePoint: NavPhasePoint): NavRoute | nil {
+    forEachPhase({ currentRoute, isEndPoint, onNextRelative, slideBy = NavigationForEachPhaseSlideBy.InlineEach }: NavigationForEachPhaseProps) {
         const makeRoute = (topRoute: NavRoute, routes?: INavigationRouteChildItem[] | INavigationRouteRootItem[], deep?: number): NavRoute | nil => {
             if (!routes) return null;
             for (let routei = 0; routei < routes.length; routei++) {
@@ -61,27 +78,46 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
                     if (route.phase[0] !== currentRoute[deep]) continue;
                 }
 
-                if (route.phase === phasePoint) {
-                    const relativePhases = [topRoute, route.phase];
+                const endPointReflect = isEndPoint?.(route, topRoute, deep != null);
+
+                if (endPointReflect) {
                     let item: INavigationRouteItem = route;
-                    while (typeof item.node === 'function') {
+                    while (onNextRelative && typeof item.node === 'function') {
                         const nextItem: INavigationRouteItem | nil = item.defaultChild
                             ? item.next?.find((it) => item.defaultChild === it.phase[0])
                             : item.next?.[0];
 
                         if (!nextItem) break;
 
-                        relativePhases.push(nextItem.phase);
+                        onNextRelative(item, topRoute, deep != null);
                         item = nextItem;
                     }
-                    return relativePhases.flat();
+                    if (endPointReflect()) return;
                 }
-                const nextRoute = makeRoute(topRoute.concat(route.phase), route.next, deep === undefined ? deep : deep + 1);
-                if (nextRoute) return nextRoute;
+                makeRoute(topRoute.concat(route.phase), route.next, deep === undefined ? deep : deep + 1);
             }
         };
 
-        return makeRoute([], this.routes, 0) ?? makeRoute([], this.routes);
+        if (
+            slideBy === NavigationForEachPhaseSlideBy.Inline
+            || slideBy === NavigationForEachPhaseSlideBy.InlineEach
+        )
+            makeRoute([], this.routes, 0);
+
+        if (
+            slideBy === NavigationForEachPhaseSlideBy.Each
+            || slideBy === NavigationForEachPhaseSlideBy.EachInline
+            || slideBy === NavigationForEachPhaseSlideBy.InlineEach
+        )
+            makeRoute([], this.routes);
+
+        if (slideBy === NavigationForEachPhaseSlideBy.EachInline)
+            makeRoute([], this.routes, 0);
+    }
+
+    jumpTo(currentRoute: FreeNavRoute, phasePoint: NavPhasePoint): NavRoute | nil {
+        const currRoute = currentRoute || [];
+        return this.endPoints.find(([point, route]) => point === phasePoint && !currRoute.some((phase, phasei) => phase !== route[phasei]))?.[1];
     }
 
     goTo(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
