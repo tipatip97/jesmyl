@@ -61,7 +61,7 @@ export default function TheOrder(props: ITheOrderProps) {
         {hideChords ? null : (
           <pre
             key={`chorded-block-${orderUniti}-content`}
-            className={`styled-block ${className}`}
+            className={`styled-block chords-block ${className}`}
           >
             {chords}
           </pre>
