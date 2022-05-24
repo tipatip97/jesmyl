@@ -3,15 +3,16 @@ import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
 import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
 
-export class NavigationConfig<T, Storage extends NavigationStorage<T>> implements INavigationConfig<Storage> {
+export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData = any> implements INavigationConfig<Storage, NavData> {
     root: (content: ReactNode) => JSX.Element;
     rootPhase: NavPhase | null;
-    routes: INavigationRouteRootItem[];
+    routes: INavigationRouteRootItem<NavData>[];
     exer?: Exer<Storage>;
     logo?: EvaIconName;
     endPoints: [NavPhasePoint, NavPhase[]][];
+    private _data?: NavData;
 
-    constructor({ routes, root, rootPhase, exer, logo }: INavigationConfig<Storage>) {
+    constructor({ routes, root, rootPhase, exer, logo }: INavigationConfig<Storage, NavData>) {
         this.root = root;
         this.rootPhase = rootPhase;
         this.routes = routes;
@@ -20,6 +21,10 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         this.logo = logo;
         this.endPoints = this.fillEndPoints();
     }
+
+    get data() { return this._data; }
+    private set data(data) { this._data = data; }
+    setData(data: NavData) { this.data = data; }
 
     fillEndPoints() {
         const endPoints: [NavPhasePoint, NavPhase[]][] = [];
@@ -36,7 +41,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         return endPoints;
     }
 
-    checkRoutes(routes: INavigationRouteRootItem[] | INavigationRouteChildItem[], phases: NavPhase[] = []) {
+    checkRoutes(routes: INavigationRouteItem<NavData>[], phases: NavPhase[] = []) {
         const stack: NavPhase[] = [];
         routes.forEach(({ phase: [phase], next }) => {
             if (stack.indexOf(phase) > -1)
@@ -50,8 +55,8 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
     isRoutePosible(route: FreeNavRoute): boolean {
         if (route == null) return false;
 
-        let item: INavigationRouteRootItem | INavigationRouteChildItem | nil;
-        let items: INavigationRouteRootItem[] | INavigationRouteChildItem[] = this.routes;
+        let item: INavigationRouteItem<NavData> | nil;
+        let items: INavigationRouteItem<NavData>[] = this.routes;
 
         for (let phasei = 0; phasei < route.length; phasei++) {
             const currPhase = route[phasei];
@@ -68,8 +73,8 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
         return !!item;
     }
 
-    forEachPhase({ currentRoute, isEndPoint, onNextRelative, slideBy = NavigationForEachPhaseSlideBy.InlineEach }: NavigationForEachPhaseProps) {
-        const makeRoute = (topRoute: NavRoute, routes?: INavigationRouteChildItem[] | INavigationRouteRootItem[], deep?: number): NavRoute | nil => {
+    forEachPhase({ currentRoute, isEndPoint, onNextRelative, slideBy = NavigationForEachPhaseSlideBy.InlineEach }: NavigationForEachPhaseProps<NavData>) {
+        const makeRoute = (topRoute: NavRoute, routes?: INavigationRouteChildItem<NavData>[], deep?: number): NavRoute | nil => {
             if (!routes) return null;
             for (let routei = 0; routei < routes.length; routei++) {
                 const route = routes[routei];
@@ -81,11 +86,11 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
                 const endPointReflect = isEndPoint?.(route, topRoute, deep != null);
 
                 if (endPointReflect) {
-                    let item: INavigationRouteItem = route;
+                    let item: INavigationRouteItem<NavData> = route;
                     while (onNextRelative && typeof item.node === 'function') {
-                        const nextItem: INavigationRouteItem | nil = item.defaultChild
+                        const nextItem = (item.defaultChild
                             ? item.next?.find((it) => item.defaultChild === it.phase[0])
-                            : item.next?.[0];
+                            : item.next?.[0]) as INavigationRouteItem<NavData> | nil;
 
                         if (!nextItem) break;
 
@@ -121,18 +126,18 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
     }
 
     goTo(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
-        let item: INavigationRouteRootItem | INavigationRouteChildItem | nil;
-        let items: INavigationRouteRootItem[] | INavigationRouteChildItem[] = this.routes;
+        let item: INavigationRouteItem<NavData> | nil;
+        let items: INavigationRouteItem<NavData>[] = this.routes;
         const newRoute: NavPhase[] = [];
         const line = [route, phase].flat();
 
         const addRelatives = (point?: NavPhase | nil) => {
             if (typeof item?.node === 'function') {
-                item = point
+                item = (point
                     ? item.next?.find(({ phase: [phase] }) => phase === point)
                     : item.defaultChild != null
                         ? item.next?.find(({ phase: [phase] }) => phase === item?.defaultChild) ?? item.next?.[0]
-                        : item.next?.[0];
+                        : item.next?.[0]) as INavigationRouteItem<NavData>;
                 const relativePhase: NavPhasePoint | nil = item?.phase;
 
                 if (relativePhase != null) {
@@ -147,7 +152,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
             item = items.find(({ phase: [phase] }) => currPhase === phase);
             if (!item) break;
             newRoute.push(item.phase[0]);
-            if (item.next) items = item.next;
+            if (item.next) items = item.next as never;
             if (item.phase === relativePoint) {
                 addRelatives([phase].flat()[0]);
                 break;
@@ -163,25 +168,24 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
     }
 
     goBack(route: NavRoute): NavPhase[] {
-        let item: INavigationRouteRootItem | INavigationRouteChildItem | nil;
-        let items: INavigationRouteRootItem[] | INavigationRouteChildItem[] | nil = this.routes;
-        let line: INavigationRouteChildItem[] = [];
+        let item: INavigationRouteItem<NavData> | nil;
+        let items: INavigationRouteItem<NavData>[] | nil = this.routes;
+        let line: INavigationRouteItem<NavData>[] = [];
 
         for (let phasei = 0; phasei < route.length; phasei++) {
             const currPhase = route[phasei];
             item = items?.find(({ phase: [phase] }) => currPhase === phase);
             if (!item) break;
             line.push(item);
-            items = item.next;
+            items = item.next as never;
         }
 
         if (item) {
-            line = line.slice(0, -1);
-            let last = line[line.length - 1];
-            while (typeof last?.node === 'function') {
+            let last;
+            do {
                 line = line.slice(0, -1);
                 last = line[line.length - 1];
-            }
+            } while (typeof last?.node === 'function' || last.slideBackOn?.(this.data));
         }
 
         return line.map(({ phase: [phase] }) => phase);
@@ -194,14 +198,14 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>> implement
             return null;
         }
 
-        const findContent = (route: FreeNavRoute, navigationItems: INavigationRouteRootItem[] | INavigationRouteChildItem[]): ReactNode => {
-            let items: INavigationRouteRootItem[] | INavigationRouteChildItem[] | nil = navigationItems;
-            let throwItem: INavigationRouteChildItem | nil;
+        const findContent = (route: FreeNavRoute, navigationItems: INavigationRouteItem<NavData>[]): ReactNode => {
+            let items: INavigationRouteItem<NavData>[] | nil = navigationItems;
+            let throwItem: INavigationRouteChildItem<NavData> | nil;
             const throwRoute = route?.slice(0) || [];
 
-            const item: INavigationRouteChildItem | nil = route?.reduce<INavigationRouteChildItem | nil>((_, phase) => {
+            const item: INavigationRouteItem<NavData> | nil = route?.reduce<INavigationRouteItem<NavData> | nil>((_, phase) => {
                 if (throwItem) return throwItem;
-                const item = (items as INavigationRouteChildItem[])?.find(({ phase: [currPhase] }) => currPhase === phase);
+                const item = (items as INavigationRouteChildItem<NavData>[])?.find(({ phase: [currPhase] }) => currPhase === phase);
                 items = item?.next as never;
                 throwRoute.shift();
                 if (item && typeof item.node === 'function') throwItem = item;

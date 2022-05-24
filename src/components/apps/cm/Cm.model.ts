@@ -77,4 +77,7 @@ export interface CmAppVariables {
     mutedExecs: boolean;
 }
 
+export interface CmNavData {
+    selectedComws: number[];
+}
 

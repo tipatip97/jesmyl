@@ -20,18 +20,18 @@ export type NavigationStorage<T> = T & ExerStorage & {
     route: FreeNavRoute;
 }
 
-export interface INavigationConfig<Storage extends ExerStorage> {
+export interface INavigationConfig<Storage extends ExerStorage, NavData> {
     root: (content: ReactNode) => JSX.Element;
     // переход в данную фазу будет при навигации назад, и пустом роуте
     rootPhase: NavPhase | null;
-    routes: INavigationRouteRootItem[];
+    routes: INavigationRouteRootItem<NavData>[];
     exer?: Exer<Storage>;
     logo?: EvaIconName;
 }
 
-export type INavigationRouteItem = INavigationRouteChildItem | INavigationRouteRootItem;
+export type INavigationRouteItem<NavData> = INavigationRouteChildItem<NavData> | INavigationRouteRootItem<NavData>;
 
-export interface INavigationRouteChildItem<Data extends Record<string, any> | und = Record<string, any>> {
+export interface INavigationRouteChildItem<NavData, Data extends Record<string, any> | und = Record<string, any>> {
     readonly phase: NavPhasePoint;
     // компоненту можно передать содержимое его потомков, если typeof node === 'function'
     // такая фаза считается проходящей
@@ -42,10 +42,11 @@ export interface INavigationRouteChildItem<Data extends Record<string, any> | un
     // передаётся в useNav() как есть
     data?: Data,
     accessRule?: string;
-    next?: INavigationRouteChildItem[];
+    next?: INavigationRouteChildItem<NavData>[];
+    slideBackOn?: (data?: NavData) => boolean;
 }
 
-export interface INavigationRouteRootItem extends INavigationRouteChildItem {
+export interface INavigationRouteRootItem<NavData> extends INavigationRouteChildItem<NavData> {
     title: string;
     icon: EvaIconName;
 }
@@ -75,12 +76,12 @@ export enum NavigationForEachPhaseSlideBy {
     EachInline,
 }
 
-export interface NavigationForEachPhaseProps {
+export interface NavigationForEachPhaseProps<NavData> {
     currentRoute?: FreeNavRoute;
-    isEndPoint?: (item: INavigationRouteItem, topRoute: NavRoute, isInline: boolean) =>
+    isEndPoint?: (item: INavigationRouteItem<NavData>, topRoute: NavRoute, isInline: boolean) =>
         // если возвращена эта функция - будет обработка фазовой точки
         // верни здесь true, чтоб прекратить проход по точкам
         () => boolean;
-    onNextRelative?: (item: INavigationRouteItem, topRoute: NavRoute, isInline: boolean) => void;
+    onNextRelative?: (item: INavigationRouteItem<NavData>, topRoute: NavRoute, isInline: boolean) => void;
     slideBy?: NavigationForEachPhaseSlideBy;
 }

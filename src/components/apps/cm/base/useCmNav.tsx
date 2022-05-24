@@ -9,25 +9,25 @@ import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigur
 import { cmStorage } from "../../../../shared/jstorages";
 import { RootState } from "../../../../shared/store";
 import CmApplication from "../Cm";
-import { CmStorage } from "../Cm.model";
+import { CmNavData, CmStorage } from "../Cm.model";
 import { cmExer, setCmRoute } from "../Cm.store";
 import TheCat from "../col/cat/TheCat";
 import TheComposition from "../col/com/TheComposition";
 import { editorNav } from "../editor/editorNav";
 import Lists from "../lists/Lists";
 import Marks from "../lists/marks/Marks";
-import TheMeetingsEvent from "../lists/meetings/TheMeetingsEvent";
 import TheMeetings from "../lists/meetings/TheMeetings";
-import Translations from "../translation/Translation";
+import TheMeetingsEvent from "../lists/meetings/TheMeetingsEvent";
 import SelectedComs from "../lists/selected-coms/SelectedComs";
+import Translations from "../translation/Translation";
 
 export const translationNavPoint: NavPhasePoint = ["translation"];
-const translationNav: INavigationRouteChildItem = {
+const translationNav: INavigationRouteChildItem<CmNavData> = {
   phase: translationNavPoint,
   node: <Translations />,
 };
 
-const comNav: INavigationRouteChildItem = {
+const comNav: INavigationRouteChildItem<CmNavData> = {
   phase: ["com"],
   node: <TheComposition />,
   next: [translationNav],
@@ -35,7 +35,11 @@ const comNav: INavigationRouteChildItem = {
 
 const comNext = [comNav, translationNav];
 
-const navigation = new NavigationConfig({
+const navigation: NavigationConfig<
+  CmStorage,
+  NavigationStorage<CmStorage>,
+  CmNavData
+> = new NavigationConfig({
   root: (content) => <CmApplication content={content} />,
   rootPhase: "all",
   logo: "headphones",
@@ -67,6 +71,7 @@ const navigation = new NavigationConfig({
         {
           phase: ["selected"],
           node: <SelectedComs />,
+          slideBackOn: (data) => !data?.selectedComws.length,
           next: [...comNext],
         },
         {
@@ -93,7 +98,7 @@ export default function useCmNav() {
 }
 
 const useCmNavConfigurer = () =>
-  useNavConfigurer<CmStorage, NavigationStorage<CmStorage>>(
+  useNavConfigurer<CmStorage, NavigationStorage<CmStorage>, CmNavData>(
     actions,
     setCmRoute,
     navigation,

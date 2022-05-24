@@ -18,15 +18,19 @@ export default function AppFooter({ app }: { app: AppName }) {
 
   const [indexPhase] = indexRoute || [];
 
-  const putItems = <Storage extends ExerStorage>(
-    nav: INavigationConfig<Storage>,
+  const putItems = <Storage extends ExerStorage, NavData>(
+    nav: INavigationConfig<Storage, NavData>,
     onClick: (phase: NavPhasePoint) => void,
     setIsActive: (phase: NavPhasePoint) => boolean
   ) => {
     return nav.routes.map((props) => {
       if (!props) return null;
       const { phase, title, icon, accessRule } = props;
-      if (accessRule != null && nav.exer && !nav.exer.isActionAccessed(accessRule))
+      if (
+        accessRule != null &&
+        nav.exer &&
+        !nav.exer.isActionAccessed(accessRule)
+      )
         return null;
       const isActive = setIsActive(phase);
 

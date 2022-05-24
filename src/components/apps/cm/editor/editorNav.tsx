@@ -4,6 +4,7 @@ import {
   INavigationRouteRootItem,
   NavPhasePoint,
 } from "../../../../complect/nav-configurer/Navigation.model";
+import { CmNavData } from "../Cm.model";
 import TheComposition from "../col/com/TheComposition";
 import Translations from "../translation/Translation";
 import EditCategories from "./col/categories/EditCategories";
@@ -22,7 +23,7 @@ import EERules from "./ee-rules/EERules";
 import EditMeetings from "./meetings/EditMeetings";
 import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
 
-export const editCompositionNavs: INavigationRouteChildItem<{
+export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
   icon?: EvaIconName;
   iconText?: string;
 }>[] = [
@@ -87,7 +88,7 @@ export const editCompositionNavs: INavigationRouteChildItem<{
 export const editComNavPhasePoint: NavPhasePoint = ["com"];
 export const editEventNavPhasePoint: NavPhasePoint = ["event"];
 
-export const editorRouteItems: INavigationRouteChildItem<{
+export const editorRouteItems: INavigationRouteChildItem<CmNavData, {
   title: string;
   icon: EvaIconName;
 }>[] = [
@@ -159,7 +160,7 @@ export const editorRouteItems: INavigationRouteChildItem<{
   },
 ];
 
-export const editorNav: INavigationRouteRootItem = {
+export const editorNav: INavigationRouteRootItem<CmNavData> = {
   phase: ["editor"],
   node: <Editor />,
   title: "Редактор",

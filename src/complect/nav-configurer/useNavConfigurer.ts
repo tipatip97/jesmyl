@@ -6,10 +6,10 @@ import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
 import { FreeNavRoute, NavigationStorage, NavPhase, NavPhasePoint, UseNavAction } from "./Navigation.model";
 
-export default function useNavConfigurer<T, Storage extends NavigationStorage<T>>(
+export default function useNavConfigurer<T, Storage extends NavigationStorage<T>, NavData = {}>(
     actions: UseNavAction[],
     setPhaseAction: (payload: NavigationStorage<T>) => PayloadAction<NavigationStorage<T>>,
-    nav: NavigationConfig<Storage, Storage>,
+    nav: NavigationConfig<Storage, Storage, NavData>,
     storage: JStorage<Storage>,
     routeSelector: (state: RootState) => FreeNavRoute,
 ) {
