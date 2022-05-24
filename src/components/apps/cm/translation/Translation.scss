@@ -12,6 +12,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        width: 100vw;
+        height: 100vh;
     }
 
     .translation-screen-wrapper {
@@ -36,7 +38,7 @@
             overflow: hidden;
             width: 100%;
             height: 100%;
-            border-radius: var(--radius);;
+            border-radius: var(--radius);
 
             &.active {
                 border-color: var(--color-far);
@@ -113,7 +115,7 @@
             color: var(--color--4);
             cursor: pointer;
 
-            &.center{
+            &.center {
                 min-width: 40vw;
             }
 
