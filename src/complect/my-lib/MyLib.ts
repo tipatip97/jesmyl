@@ -960,6 +960,10 @@ export class MyLib {
         const exclusives: any[] = [];
         return arr.filter(item => exclusives.indexOf(by(item)) === -1 ? exclusives.push(by(item)) : false);
     }
+
+    static entries<T>(obj: T): T extends Record<infer Key, infer V> ? [Key, V][] : [string, any][] {
+        return Object.entries(obj) as never;
+    }
 }
 
 
