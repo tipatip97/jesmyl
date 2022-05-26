@@ -39,8 +39,9 @@ export default function useKeyboard() {
             topOnFocus();
           }
         );
+
       if (inputDict[id]) return getNode();
-      inputDict[id] = new KeyboardInputStorage();
+      inputDict[id] = new KeyboardInputStorage(props.initialValue);
       return getNode();
     },
   };
@@ -67,16 +68,13 @@ export function KEYBOARD_FLASH({
     const onMouseDown = (event: MouseEvent) => currentInput?.onMouseDown(event);
     const onMouseUp = () => currentInput?.onMouseUp();
     const onKeyDown = (event: KeyboardEvent) => currentInput?.onKeyDown(event);
-    const onKeyUp = (event: KeyboardEvent) => currentInput?.onKeyUp(event);
 
     window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("keyup", onKeyUp);
     window.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mouseup", onMouseUp);
 
     return () => {
       window.removeEventListener("mousedown", onMouseDown);
-      window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("mouseup", onMouseUp);
       window.removeEventListener("keydown", onKeyDown);
     };

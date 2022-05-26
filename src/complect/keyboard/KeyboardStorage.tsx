@@ -31,8 +31,10 @@ export class KeyboardInputStorage {
   memoryPosition = 0;
   cursorMovedTo = -1;
   event: { shiftKey: boolean } = {} as never;
+  debounceValueChangeTimeout: any;
 
-  constructor() {
+  constructor(initialValue?: string) {
+    this.replaceAll(initialValue || "");
     this.node = (props, forceUpdater, onBlur, onFocus) => {
       let charList: HTMLDivElement;
       let focusedCharItem: HTMLSpanElement;
@@ -56,23 +58,62 @@ export class KeyboardInputStorage {
               2;
       };
 
-      // if (this.isMemoShifted) this.isMemoShifted = false;
-      // else if (props.value !== this.value) this.replaceAll(props.value || "");
-
       return (
         <div
           className={`${props.className || ""} ${
             this.isFocused ? "focused" : ""
           } ${this.value ? "" : "empty-input"} input-keyboard-flash-controlled`}
+          placeholder={props.placeholder}
           onMouseDown={(event) => {
             event.stopPropagation();
+            this.downTs = Date.now();
             if (!this.isFocused) onFocus();
             this.cursorPosition = this.valueChars.length;
-            if (!this.isSelecting) this.isSelected = false;
-            this.focus();
+            this.isSelected = false;
+            this.isSelecting = true;
+            this.selected = [this.cursorPosition, this.cursorPosition];
             this.cursorMovedTo = this.cursorPosition;
+            this.focus();
+          }}
+          onMouseUp={(event) => {
+            event.stopPropagation();
+            if (Date.now() - this.downTs < 300) {
+              this.isSelected = false;
+              this.isSelecting = false;
+              this.forceUpdate();
+            }
           }}
         >
+          <div
+            className={`menu-actions-with-selected ${
+              this.isSelected ? "open" : ""
+            }`}
+          >
+            <div
+              onMouseDown={(event) => {
+                event.stopPropagation();
+                this.selectAll();
+              }}
+            >
+              Выделить всё
+            </div>
+            <div
+              onMouseDown={(event) => {
+                event.stopPropagation();
+                this.copy();
+              }}
+            >
+              Копировать
+            </div>
+            <div
+              onMouseDown={(event) => {
+                event.stopPropagation();
+                this.paste();
+              }}
+            >
+              Вставить
+            </div>
+          </div>
           <div
             className="input-keyboard-flash-controlled-char-list"
             ref={(el) => el && (charList = el)}
@@ -130,12 +171,11 @@ export class KeyboardInputStorage {
                 </span>
               ))}
             </span>
-            <div className=""/>
           </div>
           <EvaIcon
             name="close"
             className="close-icon"
-            onClick={() => this.replaceAll("")}
+            onMouseDown={() => this.replaceAll("")}
           />
         </div>
       );
@@ -176,10 +216,7 @@ export class KeyboardInputStorage {
         this.isSelected = false;
         this.isSelecting = false;
         this.focus();
-        setTimeout(() => {
-          this.cursorPosition = chari;
-          this.focus();
-        });
+        this.cursorPosition = chari;
       } else {
         this.selected[1] = chari;
         this.isSelecting = false;
@@ -187,8 +224,6 @@ export class KeyboardInputStorage {
       }
     }
   }
-
-  onKeyUp(event: KeyboardEvent) {}
 
   onKeyDown(event: KeyboardEvent) {
     switch (event.key) {
@@ -223,6 +258,9 @@ export class KeyboardInputStorage {
           break;
         case "KeyC":
           this.copy();
+          break;
+        case "KeyX":
+          this.cut();
           break;
       }
 
@@ -269,7 +307,7 @@ export class KeyboardInputStorage {
 
   async paste() {
     const text = await navigator.clipboard.readText();
-    if (this.replaceSelected(text)) return;
+    text && this.type(text);
   }
 
   copy() {
@@ -279,8 +317,20 @@ export class KeyboardInputStorage {
     }
   }
 
+  cut() {
+    if (this.isSelected) {
+      const [start, finish] = this.selected;
+      navigator.clipboard.writeText(this.value.slice(start, finish));
+      if (this.replaceSelected("")) return;
+    }
+  }
+
   arrowLeft(event: KeyboardEvent) {
-    if (this.cursorPosition) {
+    if (this.isSelected && (this.selected[0] === 0 || this.selected[1] === 0)) {
+      this.cursorMovedTo = this.cursorPosition = 0;
+      this.isSelected = false;
+      this.forceUpdate();
+    } else if (this.cursorPosition) {
       this.selectByShift(event, () => {
         if (event.ctrlKey) {
           this.cursorMovedTo = this.cursorPosition =
@@ -292,7 +342,15 @@ export class KeyboardInputStorage {
   }
 
   arrowRight(event: KeyboardEvent) {
-    if (this.cursorPosition < this.valueChars.length) {
+    if (
+      this.isSelected &&
+      (this.selected[0] === this.valueChars.length ||
+        this.selected[1] === this.valueChars.length)
+    ) {
+      this.cursorMovedTo = this.cursorPosition = this.valueChars.length;
+      this.isSelected = false;
+      this.forceUpdate();
+    } else if (this.cursorPosition < this.valueChars.length) {
       this.selectByShift(event, () => {
         if (event.ctrlKey)
           this.cursorMovedTo = this.cursorPosition = this.findWordFinish(
@@ -443,7 +501,7 @@ export class KeyboardInputStorage {
 
       if (start === finish) return false;
 
-      this.valueChars.splice(start, finish - start, ...value.split(""));
+      this.valueChars.splice(start, finish - start + 1, ...value.split(""));
       this.value = this.valueChars.join("");
       this.cursorPosition = start + value.length;
       this.isSelected = false;
@@ -487,20 +545,20 @@ export class KeyboardInputStorage {
     this.textUpdate();
   }
 
-  type(char: string) {
-    if (this.replaceSelected(char)) return;
+  type(value: string) {
+    if (this.replaceSelected(value)) return;
     if (
-      char === " " ||
+      value === " " ||
       !this.value ||
       this.memoryPosition < this.memory.length ||
       this.cursorMovedTo === this.cursorPosition
     )
       this.remember("type");
 
-    this.valueChars.splice(this.cursorPosition, 0, char);
+    this.valueChars.splice(this.cursorPosition, 0, ...value.split(""));
 
     this.value = this.valueChars.join("");
-    this.cursorPosition++;
+    this.cursorPosition += value.length;
     this.textUpdate();
     this.forceUpdate();
     this.scrollToView();

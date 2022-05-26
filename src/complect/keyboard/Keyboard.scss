@@ -61,6 +61,13 @@
     width: 100%;
 
     &.empty-input {
+        &:before {
+            content: attr(placeholder);
+            position: absolute;
+            opacity: .7;
+            pointer-events: none;
+        }
+
         .close-icon {
             display: none;
         }
@@ -71,7 +78,7 @@
             .input-keyboard-flash-controlled-char-list-inner {
                 height: 1.3em;
 
-                &:empty {
+                &.zero-cursor {
                     animation: var(--cursor-animation);
                 }
 
@@ -81,6 +88,31 @@
                     }
                 }
             }
+        }
+    }
+
+    >.menu-actions-with-selected {
+        position: absolute;
+        display: flex;
+        bottom: -2.3em;
+        background: var(--keyboard-flash-selected-background);
+        color: var(--keyboard-flash-selected-color);
+        z-index: 10000000;
+        border-radius: 0 .5em .5em .5em;
+        padding: 0 .3em;
+        font-size: .7em;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .2s;
+
+        &.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        >* {
+            margin: .3em;
+            cursor: pointer;
         }
     }
 
@@ -97,10 +129,6 @@
         .input-keyboard-flash-controlled-char-list-inner {
             border-left: 1px solid transparent;
             white-space: nowrap;
-
-            &.zero-cursor {
-                animation: var(--cursor-animation);
-            }
 
             .input-keyboard-flash-controlled-char {
                 position: relative;

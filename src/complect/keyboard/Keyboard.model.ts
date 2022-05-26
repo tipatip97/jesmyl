@@ -12,7 +12,7 @@ export type KeyboardKeyDict = Record<KeyboardKeyTranslateLangs, { lower: string[
 
 
 export interface KeyboardInputProps {
-    value?: string;
+    initialValue?: string;
     className?: string;
     placeholder?: string;
     onBlur?: () => void;

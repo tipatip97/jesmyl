@@ -61,7 +61,7 @@ export default function DebouncedInput(props: {
           className: "input",
           placeholder: props.placeholder,
           onChange: (value) => setTerm(value),
-          value: term,
+          initialValue: term,
         })
       )}
     </div>
