@@ -122,7 +122,18 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
 
     jumpTo(currentRoute: FreeNavRoute, phasePoint: NavPhasePoint): NavRoute | nil {
         const currRoute = currentRoute || [];
-        return this.endPoints.find(([point, route]) => point === phasePoint && !currRoute.some((phase, phasei) => phase !== route[phasei]))?.[1];
+        let retRoute;
+        for (let pointi = 0; pointi < this.endPoints.length; pointi++) {
+            const [point, route] = this.endPoints[pointi];
+
+            if (point === phasePoint) {
+                if (!retRoute) retRoute = route;
+
+                if (!currRoute.some((phase, phasei) => phase !== route[phasei])) return route;
+            }
+        }
+
+        return retRoute;
     }
 
     goTo(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
