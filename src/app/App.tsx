@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ABSOLUTE__BOTTOM__POPUP } from "../complect/absolute-popup/useAbsoluteBottomPopup";
 import { ABSOLUTE__FLOAT__POPUP } from "../complect/absolute-popup/useAbsoluteFloatPopup";
 import EvaIcon from "../complect/eva-icon/EvaIcon";
 import { FULLSCREEN__CONTENT } from "../complect/fullscreen-content/useFullscreenContent";
+import { KEYBOARD_FLASH } from "../complect/keyboard/useKeyboard";
 import Modal from "../complect/modal/Modal";
 import TheRefresher from "../complect/refresh/Refresher";
 import listenThemeChanges from "../complect/theme-changer";
@@ -21,6 +22,7 @@ function App() {
     (state: RootState) => state.index.currentApp
   );
   const [isFullscreen, switchFullscreen] = useFullScreen();
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
 
   useEffect(
     () =>
@@ -31,27 +33,33 @@ function App() {
   );
 
   return (
-    <div
-      className={`application-container app_${app || "index"}${
-        isFullscreen ? " fullscreen-mode" : ""
-      }`}
-    >
-      <EvaIcon
-        name="collapse-outline"
-        className="collapse-fullscreen-button pointer"
-        onClick={() => switchFullscreen(false)}
+    <div className={`above-container ${keyboardOpen ? "keyboard-open" : ""}`}>
+      <div
+        className={`application-container app_${app || "index"}${
+          isFullscreen ? " fullscreen-mode" : ""
+        }`}
+      >
+        <EvaIcon
+          name="collapse-outline"
+          className="collapse-fullscreen-button pointer"
+          onClick={() => switchFullscreen(false)}
+        />
+        <TheRefresher />
+        <Modal />
+        <FULLSCREEN__CONTENT />
+        <ABSOLUTE__BOTTOM__POPUP />
+        <ABSOLUTE__FLOAT__POPUP />
+        {app ? (
+          <>
+            <AppRouter app={app} />
+            <AppFooter app={app} />
+          </>
+        ) : null}
+      </div>
+      <KEYBOARD_FLASH
+        onBlur={() => setKeyboardOpen(false)}
+        onFocus={() => setKeyboardOpen(true)}
       />
-      <TheRefresher />
-      <Modal />
-      <FULLSCREEN__CONTENT />
-      <ABSOLUTE__BOTTOM__POPUP />
-      <ABSOLUTE__FLOAT__POPUP />
-      {app ? (
-        <>
-          <AppRouter app={app} />
-          <AppFooter app={app} />
-        </>
-      ) : null}
     </div>
   );
 }

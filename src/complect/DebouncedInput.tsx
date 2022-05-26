@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import EvaIcon, { EvaIconName } from "./eva-icon/EvaIcon";
+import useKeyboard from "./keyboard/useKeyboard";
 
 export default function DebouncedInput(props: {
   initialTerm?: string;
@@ -22,11 +23,11 @@ export default function DebouncedInput(props: {
     className,
     textarea,
   } = props;
-  const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [term, setTerm] = useState(initialTerm || "");
   const [termDebounced, setTermDebounced] = useState(initialTerm);
   const [timeout, setTimeOut] = useState();
+  const { Input } = useKeyboard();
 
   useEffect(() => {
     onSearch?.(term);
@@ -56,24 +57,13 @@ export default function DebouncedInput(props: {
           value={term}
         />
       ) : (
-        <input
-          className="input"
-          type="text"
-          placeholder={props.placeholder}
-          onChange={(event) => setTerm(event.target.value)}
-          ref={inputRef}
-          value={term}
-        />
+        Input("debounce-input {uniq}", {
+          className: "input",
+          placeholder: props.placeholder,
+          onChange: (value) => setTerm(value),
+          value: term,
+        })
       )}
-      <EvaIcon
-        name="close"
-        className={`clear-button ${term ? "" : "hidden"}`}
-        onClick={() => {
-          setTerm("");
-          inputRef.current?.focus();
-          textareaRef.current?.focus();
-        }}
-      />
     </div>
   );
 }
