@@ -3,6 +3,7 @@ import EvaIcon, { EvaIconName } from "./eva-icon/EvaIcon";
 import useKeyboard from "./keyboard/useKeyboard";
 
 export default function DebouncedInput(props: {
+  uniq?: string;
   initialTerm?: string;
   debounce?: number;
   onSearch?: (term: string) => void;
@@ -57,7 +58,7 @@ export default function DebouncedInput(props: {
           value={term}
         />
       ) : (
-        Input("debounce-input {uniq}", {
+        Input(`debounce-input ${props.uniq || '{uniq}'}`, {
           className: "input",
           placeholder: props.placeholder,
           onChange: (value) => setTerm(value),

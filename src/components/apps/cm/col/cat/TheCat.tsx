@@ -46,6 +46,7 @@ export default function TheCat({ all }: { all?: boolean }) {
         head={
           !cat ? null : (
             <DebouncedInput
+              uniq={`search in cat ${cat.wid}`}
               icon="search-outline"
               placeholder="Поиск песен"
               className="debounced-searcher"
