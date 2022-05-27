@@ -450,7 +450,7 @@ export class EditableCom extends Com {
         this.exec({
             action: 'comAddOrderAnchorBlock',
             args: {
-                wid,
+                ordw: wid,
                 anchor,
                 blockn: ord.top.header(),
             }
