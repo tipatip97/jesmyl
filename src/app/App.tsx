@@ -10,6 +10,7 @@ import TheRefresher from "../complect/refresh/Refresher";
 import listenThemeChanges from "../complect/theme-changer";
 import useFullScreen from "../complect/useFullscreen";
 import { IndexAppName } from "../components/index/Index.model";
+import navConfigurers from "../shared/navConfigurers";
 import { RootState } from "../shared/store";
 import "./App.scss";
 import AppFooter from "./AppFooter";
@@ -23,14 +24,18 @@ function App() {
   );
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const { goBack, registerBackAction } = navConfigurers[app]();
 
-  useEffect(
-    () =>
-      window.addEventListener("keydown", (event) => {
-        event.code === "Escape" && switchFullscreen(false);
-      }),
-    []
-  );
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      event.code === "Escape" && switchFullscreen(false);
+      event.code === "ArrowLeft" && event.altKey && goBack();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [goBack]);
 
   return (
     <div className={`above-container ${keyboardOpen ? "keyboard-open" : ""}`}>
@@ -57,8 +62,16 @@ function App() {
         ) : null}
       </div>
       <KEYBOARD_FLASH
-        onBlur={() => setKeyboardOpen(false)}
-        onFocus={() => setKeyboardOpen(true)}
+        onFocus={() => {
+          setKeyboardOpen(true);
+          registerBackAction(() => {
+            setKeyboardOpen(false);
+            return keyboardOpen;
+          });
+        }}
+        onBlur={() => {
+          setKeyboardOpen(false);
+        }}
       />
     </div>
   );
