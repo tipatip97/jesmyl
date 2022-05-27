@@ -12,16 +12,16 @@ let fullscreenContent: ReactNode;
 let isOpen = false;
 
 export default function useFullscreenContent() {
-  const dispatch = useDispatch();
-  const fullscreenContentOpenMode = useSelector(
-    (state: RootState) => state.complect.fullscreenContentOpenMode
-  );
+  // todo: make universal using
   const { registerBackAction } = useCmNav();
 
   const ret = {
-    fullscreenContentOpenMode,
+    dispatch: useDispatch(),
+    fullscreenContentOpenMode: useSelector(
+      (state: RootState) => state.complect.fullscreenContentOpenMode
+    ),
     closeFullscreenContent: () => {
-      dispatch(setFullscreenContentOpenMode(null));
+      ret.dispatch(setFullscreenContentOpenMode(null));
       fullscreenContent = null;
       if (!isOpen) return true;
       isOpen = false;
@@ -38,7 +38,9 @@ export default function useFullscreenContent() {
         typeof content === "function"
           ? content(ret.closeFullscreenContent)
           : content;
-      dispatch(setFullscreenContentOpenMode(closable ? "closable" : "open"));
+      ret.dispatch(
+        setFullscreenContentOpenMode(closable ? "closable" : "open")
+      );
       registerBackAction(() => ret.closeFullscreenContent());
     },
   };
