@@ -14,7 +14,7 @@ const inputDict: Record<string, KeyboardInputStorage> = {};
 let currentInput: KeyboardInputStorage | nil;
 let topForceUpdate: () => void = () => {};
 let topOnBlur: () => void = () => {};
-let topOnFocus: () => void = () => {};
+let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => {};
 
 export default function useKeyboard() {
   const [updates, setUpdates] = useState(0);
@@ -36,7 +36,7 @@ export default function useKeyboard() {
           },
           () => {
             currentInput = inputDict[id];
-            topOnFocus();
+            topOnFocus(currentInput);
           }
         );
 
@@ -53,7 +53,7 @@ export function KEYBOARD_FLASH({
   onFocus,
 }: {
   onBlur: () => void;
-  onFocus: () => void;
+  onFocus: (currentInput: KeyboardInputStorage | nil) => void;
 }) {
   const [updates, setUpdates] = useState(0);
   const [lang, setLang] = useState<KeyboardKeyTranslateLangs>("ru");
@@ -62,7 +62,7 @@ export function KEYBOARD_FLASH({
   useKeyboard();
   topForceUpdate = () => setUpdates(updates + 1);
   topOnBlur = () => onBlur();
-  topOnFocus = () => onFocus();
+  topOnFocus = () => onFocus(currentInput);
 
   useEffect(() => {
     const onMouseDown = (event: MouseEvent) => currentInput?.onMouseDown(event);

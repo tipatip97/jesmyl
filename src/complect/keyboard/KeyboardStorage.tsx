@@ -440,10 +440,13 @@ export class KeyboardInputStorage {
     return this.memory.length && this.memoryPosition < this.memory.length - 1;
   }
 
-  blur() {
+  blur(): boolean {
+    const prev = this.isFocused;
     this.isFocused = false;
     this.forceUpdate();
     this.onBlur();
+
+    return prev;
   }
 
   selectAll() {

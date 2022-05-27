@@ -62,12 +62,9 @@ function App() {
         ) : null}
       </div>
       <KEYBOARD_FLASH
-        onFocus={() => {
+        onFocus={(input) => {
           setKeyboardOpen(true);
-          registerBackAction(() => {
-            setKeyboardOpen(false);
-            return keyboardOpen;
-          });
+          registerBackAction(() => input?.blur());
         }}
         onBlur={() => {
           setKeyboardOpen(false);
