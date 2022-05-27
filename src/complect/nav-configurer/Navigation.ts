@@ -196,7 +196,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
             do {
                 line = line.slice(0, -1);
                 last = line[line.length - 1];
-            } while (typeof last?.node === 'function' || last.slideBackOn?.(this.data));
+            } while (last && (typeof last.node === 'function' || last.slideBackOn?.(this.data)));
         }
 
         return line.map(({ phase: [phase] }) => phase);
