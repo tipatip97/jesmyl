@@ -1,18 +1,21 @@
 import { useState } from "react";
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
+import useExer from "../../../../../../complect/exer/useExer";
+import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
 import LoadIndicatedContent from "../../../../../../complect/load-indicated-content/LoadIndicatedContent";
+import { cmExer } from "../../../Cm.store";
 import { catTrackers } from "../../../col/cat/Cat.complect";
 import ComFace from "../../../col/com/face/ComFace";
 import EditContainerCorrectsInformer from "../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
 import { useEditableCcat } from "./useEditableCcat";
-import useEditCategory from "./useEditCategory";
 
 export default function EditCategory() {
   const ccat = useEditableCcat();
-  const { rename, setKind, clearStack } = useEditCategory(ccat);
   const [isShowComs, setIsShowComs] = useState(false);
   const [isCleared, setCleared] = useState(false);
+  const { Input } = useKeyboard();
+  const { exec } = useExer(cmExer);
 
   if (!ccat) return null;
 
@@ -24,12 +27,16 @@ export default function EditCategory() {
       content={
         <>
           {
-            <EditContainerCorrectsInformer corrects={ccat?.col.corrects.catRename}>
-              Название:
-              <input
-                value={ccat?.name}
-                onChange={(event) => rename(event.target.value)}
-              />
+            <EditContainerCorrectsInformer
+              corrects={ccat?.col.corrects.catRename}
+            >
+              <div className="flex">
+                <div className="margin-gap-h">Название:</div>
+                {Input(`edit category name ${ccat.wid}`, {
+                  initialValue: ccat.name,
+                  onChange: (value) => exec(ccat.rename(value, exec)),
+                })}
+              </div>
             </EditContainerCorrectsInformer>
           }
           {
@@ -43,14 +50,14 @@ export default function EditCategory() {
                   <Dropdown
                     id={ccat.kind}
                     items={catTrackers}
-                    onSelect={(kind) => setKind(kind)}
+                    onSelect={(kind) => exec(ccat.setKind(kind, exec))}
                   />
                 </div>
                 {(ccat.kind !== "list" && ccat.coms.length > 0) || isCleared ? (
                   <div
                     className="pointer"
                     onClick={() => {
-                      clearStack(!isCleared);
+                      exec(ccat.clearStack(!isCleared));
                       setCleared(!isCleared);
                     }}
                   >
