@@ -18,8 +18,6 @@ export class Order extends Base<IExportableOrderTop> {
     this.fieldValues = top.f;
   }
 
-  // get com() { return this.top.com; }
-
   static getWithExtendableFields(source: IExportableOrderTop, target: IExportableOrderTop): Partial<IExportableOrderTop> {
     const inhFields: string[] = [];
     const result: Partial<IExportableOrderTop> = {
@@ -38,12 +36,6 @@ export class Order extends Base<IExportableOrderTop> {
       });
     return result;
   }
-
-  // static toDict(ord) {
-  //   const dict = {};
-  //   IOrder.fields.forEach(({ name, forDict }) => forDict !== false && ord[name] != null && (dict[name] = ord[name]));
-  //   return dict;
-  // }
 
   get isMin() { return this.top.m; }
 
