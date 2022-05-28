@@ -166,7 +166,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
   getOrderedBlocks() {
     const textBeats = this.orders?.reduce((text, ord) =>
-      text + (ord.top.t == null ? '' : (text ? '\n' : '') + ord.repeated), '').split(/\n/);
+      text + (ord.texti == null ? '' : (text ? '\n' : '') + ord.repeated), '').split(/\n/);
 
     const texts = this.translationMap().map(peaceSize => {
       return textBeats?.splice(0, peaceSize);
