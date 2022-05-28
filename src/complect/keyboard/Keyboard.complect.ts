@@ -5,14 +5,14 @@ import { KeyboardKeyDict, KeyboardKeyTranslateCase, KeyboardKeyTranslateLangs } 
 export const languagedKeys: Record<KeyboardKeyTranslateLangs, Record<KeyboardKeyTranslateCase, string[]>> = {
     ru: {
         lower: [
-            'ё1234567890-=',
-            'йцукенгшщзхъ',
+            'ё1234567890ъ',
+            'йцукенгшщзх',
             'фывапролджэ',
             'ячсмитьбю.',
         ],
         upper: [
-            'Ё!"№;%:?*()_+',
-            'ЙЦУКЕНГШЩЗХЪ',
+            'Ё!"№;%:?*()Ъ',
+            'ЙЦУКЕНГШЩЗХ',
             'ФЫВАПРОЛДЖЭ',
             'ЯЧСМИТЬБЮ,'
         ]
@@ -33,14 +33,14 @@ export const languagedKeys: Record<KeyboardKeyTranslateLangs, Record<KeyboardKey
     },
     ua: {
         lower: [
-            '\'1234567890-=',
-            'йцукенгшщзхї',
+            '\'1234567890ї',
+            'йцукенгшщзх',
             'фівапролджє',
             'ячсмитьбю.',
         ],
         upper: [
-            '\'!"№;%:?*()_+',
-            'ЙЦУКЕНГШЩЗХЇ',
+            '\'!"№;%:?*()Ї',
+            'ЙЦУКЕНГШЩЗХ',
             'ФІВАПРОЛДЖЄ',
             'ЯЧСМИТЬБЮ,',
         ],
