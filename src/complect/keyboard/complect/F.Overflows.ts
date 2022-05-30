@@ -3,11 +3,12 @@ import { KeyboardStorageTextModifiers } from './E.TextModifiers';
 
 export class KeyboardStorageOverflows extends KeyboardStorageTextModifiers {
     onOverflowMouseDown() {
-        this.isSelecting = false;
-        this.forceUpdate();
+        if (!this.isFocused) return;
+        this.blur();
     }
 
     onOverflowMouseUp() {
+        if (!this.isFocused) return;
         const isClick = Date.now() - this.downTs < 300;
 
         if (isClick) this.blur();
@@ -19,12 +20,16 @@ export class KeyboardStorageOverflows extends KeyboardStorageTextModifiers {
     }
 
     onOverflowKeyDown(event: KeyboardEvent) {
+        if (!this.isFocused) return;
         switch (event.key) {
             case 'Backspace':
-                this.backspace(event.ctrlKey);
+                this.backspace(event);
                 return;
             case 'Delete':
-                this.delete(event.ctrlKey);
+                this.delete(event);
+                return;
+            case 'Enter':
+                this.type('\n');
                 return;
             case 'ArrowLeft':
                 this.arrowLeft(event);
@@ -76,7 +81,10 @@ export class KeyboardStorageOverflows extends KeyboardStorageTextModifiers {
                 this.arrowDown(event);
                 break;
             default:
-                if (event.key.length === 1) this.type(event.key);
+                if (event.key.length === 1) {
+                    event.preventDefault();
+                    this.type(event.key);
+                }
         }
     }
 }

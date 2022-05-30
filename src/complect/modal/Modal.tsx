@@ -14,6 +14,9 @@ import modalService from "./Modal.service";
 import ModalButton from "./ModalButton";
 import TheModalInput from "./ModalInput";
 
+const getInputId = () => `modal input prefix ${Date.now()}`;
+let inputPrefix = getInputId();
+
 export const onActionClick = (
   input: ModalConfigInput | ModalConfigButton,
   onClick: (config: ModalConfig, clickConfig?: ModalConfig) => void,
@@ -45,7 +48,10 @@ export const onActionClick = (
       ],
     });
   } else onClick(clickConfig);
-  if ((input as ModalConfigButton).closable) modalService.close(input.value);
+  if ((input as ModalConfigButton).closable) {
+    modalService.close(input.value);
+    inputPrefix = getInputId();
+  }
 };
 
 export default function Modal(props: ModalFixed) {
@@ -66,6 +72,7 @@ export default function Modal(props: ModalFixed) {
     const res = config?.onCloseAcion?.(config as ModalConfig);
     if (res !== false) {
       modalService.close(null);
+      inputPrefix = getInputId();
     }
   };
 
@@ -105,7 +112,7 @@ export default function Modal(props: ModalFixed) {
                       ) : (
                         <TheModalInput
                           key={`modal-input${inputi}`}
-                          config={[input, inputi]}
+                          config={[input, inputPrefix + inputi]}
                           forceUpdate={forceUpdate}
                         />
                       )

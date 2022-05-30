@@ -76,7 +76,7 @@ export interface ModalConfigInput extends ModalConfig {
 
 export interface TheModalInputProps {
     // второй параметр - уникальный ключ инпута
-    config: Partial<ModalConfigInput> | [Partial<ModalConfigInput>, (number | string)?];
+    config: Partial<ModalConfigInput> | [Partial<ModalConfigInput>, string?];
     forceUpdate: () => void;
 }
 

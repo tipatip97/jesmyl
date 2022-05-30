@@ -44,12 +44,9 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
         },
         goBack: () => {
             if (actions.length) {
-                if (!actions.some(action => {
-                    if (action?.() === true) {
-                        actions.shift();
-                        return false;
-                    }
-                    return true;
+                if (actions.some(action => {
+                    actions.shift();
+                    return action?.() === true;
                 })) return;
             }
 

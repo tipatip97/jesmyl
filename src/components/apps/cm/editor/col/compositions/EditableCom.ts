@@ -135,10 +135,8 @@ export class EditableCom extends Com {
         return numberStr;
     }
 
-    async parseBlocksFromClipboard(clipboardEvent: React.ClipboardEvent<HTMLTextAreaElement>, cb?: (blocks: string[]) => boolean) {
-        const blocks: string[] = (clipboardEvent.clipboardData?.getData('text') || await navigator.clipboard.readText())
-            .trim()
-            .split(/\n\s*\n/);
+    async parseBlocksFromClipboard(value: string, cb?: (blocks: string[]) => boolean) {
+        const blocks: string[] = value.trim().split(/\n\s*\n/);
 
         if ((cb && cb(blocks)) !== false) this.parseBlocks(blocks);
     }

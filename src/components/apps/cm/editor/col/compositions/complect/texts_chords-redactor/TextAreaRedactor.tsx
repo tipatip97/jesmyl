@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import useKeyboard from "../../../../../../../../complect/keyboard/useKeyboard";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import { EditableCom } from "../../EditableCom";
 
@@ -6,6 +7,7 @@ export default function TextAreaRedactor({
   ccoln,
   com,
   col,
+  coli,
   onChange,
   onInsert,
 }: {
@@ -16,24 +18,19 @@ export default function TextAreaRedactor({
   onChange: (value: string) => void;
   onInsert: (value: string) => void;
 }) {
-  const [value, setValue] = useState(col || "");
+  const [currValue, setValue] = useState(col || "");
   const istcoln = ccoln === "texts";
-  const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => setValue(col), [col]);
-
-  return (
-    <textarea
-      className={`cleared-input com-editor-textarea full-width no-resize ${
-        value.trim() === "" ? "empty" : ""
-      }`}
-      value={value}
-      ref={inputRef}
-      rows={value.split("\n").length}
-      onChange={async (event) => {
-        const target = event.target;
-        const prev = value;
-        const curr = target.value;
+  const [Input, updateInputValue] = useKeyboard()(
+    `redact ${ccoln} #${coli} of com ${com.wid}`,
+    {
+      multiline: true,
+      closeButton: false,
+      className: `cleared-input com-editor-textarea full-width no-resize`,
+      initialValue: currValue,
+      onChange: async (value) => {
+        const prev = currValue;
+        const curr = value;
 
         if (prev !== curr) {
           const valnum = curr
@@ -50,20 +47,19 @@ export default function TextAreaRedactor({
             if (!(await modalService.confirm(`Добавить новый ${txt}?`))) return;
 
             onInsert("");
-            inputRef.current?.focus();
+            // inputRef.current?.focus();
           }
           onChange(isNewBlock ? curr.replace(/\n+$/, "") : curr);
           setValue(istcoln ? curr : com.transBlock(curr) || "");
         }
-      }}
-      onPaste={(event) => {
+      },
+      onPaste: (value) => {
         com.parseBlocksFromClipboard(
-          event,
+          value,
           (blocks): boolean => {
             if (blocks.length > 1) {
-              event.preventDefault();
 
-              if (value !== "") {
+              if (currValue !== "") {
                 // mylib.alert(
                 //   "Вставлять многоблочный текст возможно только в пустые блоки."
                 // );
@@ -73,10 +69,13 @@ export default function TextAreaRedactor({
 
             return true;
           }
-          //   ccoln,
-          //   coli
         );
-      }}
-    />
+      },
+    }
   );
+
+  useEffect(() => setValue(col), [col]);
+  useEffect(() => updateInputValue(currValue), [currValue]);
+
+  return <>{Input()}</>;
 }

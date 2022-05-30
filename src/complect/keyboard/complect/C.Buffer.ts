@@ -5,7 +5,6 @@ import { KeyboardStorageSelect } from './B.Select';
 export class KeyboardStorageBuffer extends KeyboardStorageSelect {
     memory: KeyboardMemoryPoint[] = [];
     memoryPosition = 0;
-    isNeedSetLastFocusedOffset = false;
 
     remember(action: KeyboardMemoryPointAction) {
         const prev = this.memory[this.memory.length - 1];
@@ -47,13 +46,12 @@ export class KeyboardStorageBuffer extends KeyboardStorageSelect {
                 valueCharLines,
             } = mylib.clone(prev);
 
-            this.cursorPosition = cursorPosition;
+            this.setCursorPosition(cursorPosition);
             this.selected = selected;
             this.value = value;
             this.valueChars = valueChars;
             this.valueCharLines = valueCharLines;
             this.isSelected = isSelected;
-            this.isNeedSetLastFocusedOffset = true;
 
             this.memoryPosition += isUndo ? -1 : 1;
 

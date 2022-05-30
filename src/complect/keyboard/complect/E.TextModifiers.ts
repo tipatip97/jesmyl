@@ -1,12 +1,15 @@
+import { KeyboardStorageEvent } from '../Keyboard.model';
 import { KeyboardStorageTextNavigate } from './D.TextNavigate';
 
 export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
+    prevTypedValue: string = '';
+    typedCursorPosition = -1;
 
-    replaceAll(value: string) {
-        this.remember('replaceAll');
+    replaceAll(value: string, isRemember = true) {
+        if (value === this.value) return;
+        if (isRemember) this.remember('replaceAll');
         this.valueChars = value.split('');
-        this.cursorPosition = this.valueChars.length;
-        this.isNeedSetLastFocusedOffset = true;
+        this.setCursorPosition(this.valueChars.length);
         this.setValues();
     }
 
@@ -37,8 +40,7 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
             if (start === finish) return false;
 
             this.valueChars.splice(start, finish - start + 1, ...value.split(''));
-            this.cursorPosition = start + value.length;
-            this.isNeedSetLastFocusedOffset = true;
+            this.setCursorPosition(start + value.length);
             this.isSelected = false;
             this.setValues();
 
@@ -47,29 +49,28 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
         return false;
     }
 
-    backspace(ctrlKey: boolean) {
+    backspace(event: KeyboardStorageEvent) {
         if (this.replaceSelected()) return;
         this.remember('backspace');
         if (this.cursorPosition > 0) {
-            if (ctrlKey) {
+            if (this.isCtrlKey(event)) {
                 const start = this.findWordStart(this.cursorPosition);
                 this.valueChars.splice(start, this.cursorPosition - start);
-                this.cursorPosition = start;
-                this.isNeedSetLastFocusedOffset = true;
+                this.setCursorPosition(start);
             } else {
                 this.valueChars.splice(this.cursorPosition - 1, 1);
-                this.cursorPosition--;
+                this.setCursorPosition(this.cursorPosition - 1);
             }
 
             this.setValues();
         }
     }
 
-    delete(ctrlKey: boolean) {
+    delete(event: KeyboardStorageEvent) {
         if (this.replaceSelected()) return;
         this.remember('delete');
 
-        if (ctrlKey) {
+        if (this.isCtrlKey(event)) {
             const finish = this.findWordFinish(this.cursorPosition);
             this.valueChars.splice(this.cursorPosition, finish - this.cursorPosition);
         } else {
@@ -79,20 +80,22 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
         this.setValues();
     }
 
-    type(value: string, isRememberAsPart = false) {
+    type(value: string, isRememberAsPart?: boolean) {
         if (this.replaceSelected(value)) return;
         if (
-            value === ' ' ||
+            (value === ' ' && this.prevTypedValue !== ' ') ||
             !this.value ||
             this.memoryPosition < this.memory.length ||
-            this.cursorMovedTo === this.cursorPosition
+            this.typedCursorPosition !== this.cursorPosition
         )
             this.remember('type');
 
         this.valueChars.splice(this.cursorPosition, 0, ...value.split(''));
 
-        this.cursorPosition += value.length;
-        if (isRememberAsPart) this.cursorMovedTo = this.cursorPosition;
+        this.setCursorPosition(this.cursorPosition + value.length);
+        this.prevTypedValue = value;
+        if (!isRememberAsPart) this.typedCursorPosition = this.cursorPosition;
+        if (!this.isCapsLock) this.event.shiftKey = false;
         this.setValues();
         this.scrollToView();
     }
@@ -104,7 +107,7 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
 
     copy() {
         if (this.isSelected) {
-            const [start, finish] = this.selected;
+            const [start, finish] = [...this.selected].sort((a, b) => a - b);
             navigator.clipboard.writeText(this.value.slice(start, finish));
             this.isSelected = false;
             this.forceUpdate();
@@ -113,7 +116,7 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
 
     cut() {
         if (this.isSelected) {
-            const [start, finish] = this.selected;
+            const [start, finish] = [...this.selected].sort((a, b) => a - b);
             navigator.clipboard.writeText(this.value.slice(start, finish));
             if (this.replaceSelected('')) return;
         }

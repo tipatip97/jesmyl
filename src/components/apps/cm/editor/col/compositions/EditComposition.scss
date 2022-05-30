@@ -1,5 +1,19 @@
-.edit-composition {
-    .cat-list-title {
-        background-color: var(--color--2);
+.application-container.app_cm {
+    .edit-composition {
+        .cat-list-title {
+            background-color: var(--color--2);
+        }
+    }
+
+    .edit-compositions {
+        &.with-changes {
+            .debounced-searcher {
+                max-width: calc(100vw - 150px);
+            }
+        }
+
+        .debounced-searcher {
+            width: calc(100vw - 110px);
+        }
     }
 }

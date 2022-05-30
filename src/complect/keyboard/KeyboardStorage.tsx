@@ -11,9 +11,9 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
     onFocus: () => void
   ) => ReactNode;
 
-  constructor(initialValue?: string) {
+  constructor(initialValue?: string, id?: string) {
     super();
-    this.replaceAll(initialValue || "");
+    this.replaceAll(initialValue || "", false);
     this.node = (props, forceUpdater, onBlur, onFocus) => {
       this.offsetElements = [];
 
@@ -21,19 +21,25 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
       this.onFocus = onFocus;
       this.forceUpdate = forceUpdater;
       this.onBlur = onBlur;
+      this.isMultiline = props.multiline;
 
       let currentChari = 0;
 
       return (
         <div
           className={`${props.className || ""} ${
-            this.isFocused ? "focused" : ""
-          } ${this.value ? "" : "empty-input"} ${
-            props.multiline ? "multiline" : ""
-          } ${
-            props.closeButton ? "" : "without-close-button"
+            this.valueCharLines.length === 0 ? "no-lines" : ""
+          } ${this.isFocused ? "focused" : ""} ${
+            this.value ? "" : "empty-input"
+          } ${props.multiline ? "multiline" : ""} ${
+            props.closeButton !== false ? "" : "without-close-button"
           } input-keyboard-flash-controlled`}
           placeholder={props.placeholder}
+          onMouseDown={(event) => {
+            event.stopPropagation();
+            this.focus();
+          }}
+          onClick={(event) => event.stopPropagation()}
         >
           <div
             className="input-keyboard-flash-controlled-char-list"
@@ -51,18 +57,18 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
                     }`}
                     onMouseDown={(event) => {
                       event.stopPropagation();
-                      this.onCharMouseDown(charLinei + line.length);
+                      this.onCharMouseDown(event, charLinei + line.length);
                     }}
                     onMouseOver={(event) => {
                       event.stopPropagation();
-                      this.onCharMouseOver(charLinei + line.length);
+                      this.onCharMouseOver(event, charLinei + line.length);
                     }}
                     onMouseUp={(event) => {
                       event.stopPropagation();
-                      this.onCharMouseUp(charLinei + line.length);
+                      this.onCharMouseUp(event, charLinei + line.length);
                     }}
                   >
-                    {line.map((letter, letteri) => {
+                    {(line.length ? line : [""]).map((letter, letteri) => {
                       const chari = currentChari - (letteri ? 1 : 0);
                       currentChari += letteri ? 1 : 2;
 
@@ -85,15 +91,15 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
                           }}
                           onMouseDown={(event) => {
                             event.stopPropagation();
-                            this.onCharMouseDown(chari);
+                            this.onCharMouseDown(event, chari);
                           }}
                           onMouseOver={(event) => {
                             event.stopPropagation();
-                            this.onCharMouseOver(chari);
+                            this.onCharMouseOver(event, chari);
                           }}
                           onMouseUp={(event) => {
                             event.stopPropagation();
-                            this.onCharMouseUp(chari);
+                            this.onCharMouseUp(event, chari);
                           }}
                         >
                           {letter}
@@ -156,13 +162,12 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
     chari: number
   ) {
     if (element) {
-      if (!this.isSelected && this.cursorPosition - 1 === chari) {
+      if (this.cursorPosition - 1 === chari) {
         this.focusedCharItem = element;
         this.focusedLinei = linei;
-        if (this.isNeedSetLastFocusedOffset) {
+        if (this.isCursorPositionChanged) {
           this.focusedOffset = element.offsetLeft + element.clientWidth;
-          this.isNeedSetLastFocusedOffset = false;
-          console.log(element.innerText, this.focusedOffset);
+          this.isCursorPositionChanged = false;
         }
       }
 

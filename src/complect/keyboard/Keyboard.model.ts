@@ -1,3 +1,4 @@
+import React from "react";
 
 
 export const keyboardKeyTranslateLangs = ['ru', 'ua', 'en'] as const;
@@ -19,10 +20,16 @@ export interface KeyboardInputProps {
     placeholder?: string;
     onBlur?: () => void;
     onChange?: (value: string) => void;
+    onPaste?: (value: string) => void;
 };
 
 export type KeyboardMemoryPointAction = 'type' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';
 export const keyboardInlineActions: KeyboardMemoryPointAction[] = ['memoShift'];
+
+export type KeyboardStorageEvent = React.MouseEvent<HTMLSpanElement, MouseEvent>
+    | React.TouchEvent<HTMLSpanElement>
+    | React.MouseEvent<HTMLOrSVGElement, MouseEvent>
+    | KeyboardEvent;
 
 export interface KeyboardMemoryPoint {
     selected: [number, number];

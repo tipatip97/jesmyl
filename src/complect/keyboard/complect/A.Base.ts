@@ -1,4 +1,5 @@
 
+
 export class KeyboardStorageBase {
     valueChars: string[] = [];
     valueCharLines: string[][] = [];
@@ -8,6 +9,9 @@ export class KeyboardStorageBase {
     forceUpdate: () => void = () => { };
     onBlur: () => void = () => { };
     isFocused = false;
+    isMultiline?: boolean;
+    isSelected = false;
+
 
     focus() {
         if (!this.isFocused) this.onFocus?.();
@@ -15,7 +19,9 @@ export class KeyboardStorageBase {
         this.forceUpdate();
     }
 
-    blur(): boolean {
+    blur(resetSelected = false): boolean {
+        if (resetSelected) this.isSelected = false;
+
         if (this.isFocused) {
             this.isFocused = false;
             this.forceUpdate();
@@ -24,6 +30,7 @@ export class KeyboardStorageBase {
             return true;
         }
 
+        this.forceUpdate();
         return false;
     }
 

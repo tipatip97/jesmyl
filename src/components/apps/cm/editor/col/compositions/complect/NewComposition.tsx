@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../../complect/exer/useExer";
+import useKeyboard from "../../../../../../../complect/keyboard/useKeyboard";
 import { NavPhase } from "../../../../../../../complect/nav-configurer/Navigation.model";
 import useCmNav from "../../../../base/useCmNav";
 import { cmExer } from "../../../../Cm.store";
@@ -23,6 +24,17 @@ export default function NewComposition({ close }: { close: () => void }) {
       new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1, cols),
     []
   );
+
+  const [Input] = useKeyboard()("new composition name input", {
+    className: "full-width",
+    initialValue: name,
+    onChange: (value) => {
+      create();
+      setName(value);
+      exec(com.rename(value, exec));
+      setIsTakeName(false);
+    },
+  });
 
   const corrects = com.col.corrects.comRename;
 
@@ -47,18 +59,7 @@ export default function NewComposition({ close }: { close: () => void }) {
         >
           <div className="flex full-width">
             <span className="margin-gap-h">Название </span>
-            <div className="full-width">
-              <input
-                className="full-width"
-                value={name}
-                onChange={(event) => {
-                  create();
-                  setName(event.target.value);
-                  exec(com.rename(event.target.value, exec));
-                  setIsTakeName(false);
-                }}
-              />
-            </div>
+            <div className="full-width">{Input()}</div>
           </div>
         </EditContainerCorrectsInformer>
         <textarea

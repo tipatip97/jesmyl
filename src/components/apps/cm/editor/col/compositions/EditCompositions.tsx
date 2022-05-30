@@ -42,16 +42,15 @@ export default function EditCompositions() {
     <LoadIndicatedContent isLoading={false} onLoad={scrollToCurrent}>
       <PhaseCmEditorContainer
         topClass="edit-compositions"
-        headClass="flex between"
-        headTitle="Песни"
+        headClass="flex between full-width"
         contentRef={listRef}
         onMoreClick={() => openAbsoluteBottomPopup(<EditCompositionsMore />)}
         head={
           !zcat ? null : (
             <DebouncedInput
               icon="search-outline"
-              placeholder="Поиск песен"
-              className="debounced-searcher"
+              placeholder="Песни"
+              className="debounced-searcher margin-gap-h"
               initialTerm={term}
               onSearch={(term) => zcat.search(term)}
               debounce={500}

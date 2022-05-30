@@ -1,11 +1,45 @@
+import { KeyboardStorageEvent } from '../Keyboard.model';
 import { KeyboardStorageBase } from './A.Base';
 
 export class KeyboardStorageSelect extends KeyboardStorageBase {
-    cursorPosition = 0;
+    _cursorPosition = 0;
     isSelecting = false;
-    isSelected = false;
     selected: [number, number] = [-1, -1];
-    event: { shiftKey: boolean } = {} as never;
+    isCapsLock: boolean = false;
+    event: { shiftKey: boolean; ctrlKey: boolean; } = {} as never;
+    isCursorPositionChanged = false;
+
+    get cursorPosition() {
+        return this._cursorPosition;
+    }
+    setCursorPosition(value: number, isFixChange = true) {
+        if (isFixChange) this.isCursorPositionChanged = true;
+        this._cursorPosition = value;
+        return value;
+    }
+
+    isCtrlKey(event: KeyboardStorageEvent) {
+        return event.ctrlKey || this.event.ctrlKey;
+    }
+
+    isShiftKey(event: KeyboardStorageEvent) {
+        return event.shiftKey || this.event.shiftKey;
+    }
+
+    switchCtrlKey() {
+        this.event.ctrlKey = !this.event.ctrlKey;
+        this.forceUpdate();
+    }
+
+    switchCaps() {
+        if (this.isCapsLock) {
+            this.event.shiftKey = false;
+            this.isCapsLock = false;
+        } else if (this.event.shiftKey) this.isCapsLock = true;
+        else this.event.shiftKey = true;
+
+        this.forceUpdate();
+    }
 
     isSelectedChar(chari: number) {
         return (
@@ -14,10 +48,11 @@ export class KeyboardStorageSelect extends KeyboardStorageBase {
                 (this.selected[0] > chari && this.selected[1] <= chari))
         );
     }
-    selectByShift(event: KeyboardEvent, cb: (shiftKey: boolean) => void) {
+
+    selectIfShift(event: KeyboardStorageEvent, cb: () => void, isNeedForceUpdate = true) {
         if (event.shiftKey || this.event.shiftKey) {
             if (!this.isSelected) this.selected[0] = this.cursorPosition;
-            cb(true);
+            cb();
 
             if (this.selected[0] === this.cursorPosition) this.isSelected = false;
             else {
@@ -25,11 +60,11 @@ export class KeyboardStorageSelect extends KeyboardStorageBase {
                 this.isSelected = true;
             }
         } else {
-            cb(false);
+            cb();
             this.isSelected = false;
         }
 
-        this.forceUpdate();
+        if (isNeedForceUpdate) this.forceUpdate();
     }
 
     selectAll() {
@@ -51,7 +86,7 @@ export class KeyboardStorageSelect extends KeyboardStorageBase {
                 (acc, curr, curri): number | null =>
                     acc != null
                         ? acc
-                        : curr === ' ' && curri < chari
+                        : (curr === ' ' || curr === '\n') && curri < chari
                             ? curri + (isSpaceInWord ? 0 : curri + 1 === chari ? 0 : 1)
                             : null,
                 null as null | number
@@ -63,7 +98,7 @@ export class KeyboardStorageSelect extends KeyboardStorageBase {
         return (
             this.valueChars.reduce(
                 (acc, curr, curri): number | null =>
-                    acc != null ? acc : curr === ' ' && curri > chari ? curri : null,
+                    acc != null ? acc : (curr === ' ' || curr === '\n') && curri > chari ? curri : null,
                 null as null | number
             ) || this.valueChars.length
         );

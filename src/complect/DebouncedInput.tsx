@@ -28,7 +28,12 @@ export default function DebouncedInput(props: {
   const [term, setTerm] = useState(initialTerm || "");
   const [termDebounced, setTermDebounced] = useState(initialTerm);
   const [timeout, setTimeOut] = useState();
-  const { Input } = useKeyboard();
+  const [Input] = useKeyboard()(`debounce-input ${props.uniq || "{uniq}"}`, {
+    className: "input",
+    placeholder: props.placeholder,
+    onChange: (value) => setTerm(value),
+    initialValue: term,
+  });
 
   useEffect(() => {
     onSearch?.(term);
@@ -58,12 +63,7 @@ export default function DebouncedInput(props: {
           value={term}
         />
       ) : (
-        Input(`debounce-input ${props.uniq || '{uniq}'}`, {
-          className: "input",
-          placeholder: props.placeholder,
-          onChange: (value) => setTerm(value),
-          initialValue: term,
-        })
+        Input()
       )}
     </div>
   );

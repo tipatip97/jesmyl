@@ -13,9 +13,11 @@ export default function PhaseCmEditorContainer(
   return (
     <PhaseCmContainer
       {...props}
-      topClass={`phase-cm-editor-container ${props.topClass}`}
+      topClass={`phase-cm-editor-container ${props.topClass} ${
+        lookIcon ? "with-changes" : ""
+      }`}
       head={
-        <div className="flex">
+        <div className={`flex ${props.headClass}`}>
           {props.head}
           {lookIcon}
           {props.onMoreClick ? (

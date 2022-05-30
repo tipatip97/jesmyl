@@ -14,10 +14,15 @@ export default function EditCategory() {
   const ccat = useEditableCcat();
   const [isShowComs, setIsShowComs] = useState(false);
   const [isCleared, setCleared] = useState(false);
-  const { Input } = useKeyboard();
+  const aboutInput = useKeyboard();
   const { exec } = useExer(cmExer);
 
   if (!ccat) return null;
+
+  const [Input] = aboutInput(`edit category name ${ccat.wid}`, {
+    initialValue: ccat.name,
+    onChange: (value) => exec(ccat.rename(value, exec)),
+  });
 
   return (
     <PhaseCmEditorContainer
@@ -32,10 +37,7 @@ export default function EditCategory() {
             >
               <div className="flex">
                 <div className="margin-gap-h">Название:</div>
-                {Input(`edit category name ${ccat.wid}`, {
-                  initialValue: ccat.name,
-                  onChange: (value) => exec(ccat.rename(value, exec)),
-                })}
+                {Input()}
               </div>
             </EditContainerCorrectsInformer>
           }

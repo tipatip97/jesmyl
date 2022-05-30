@@ -1,68 +1,67 @@
+import { KeyboardStorageEvent } from '../Keyboard.model';
 import { KeyboardStorageBuffer } from './C.Buffer';
 
 export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
     downTs = 0;
-    cursorMovedTo = -1;
     flowCharListElement: HTMLDivElement | nil;
     focusedCharItem: HTMLSpanElement | nil;
     focusedLinei: number = -1;
     focusedOffset: number = 0;
     offsetElements: HTMLSpanElement[] = [];
 
-    arrowLeft(event: KeyboardEvent) {
+    arrowLeft(event: KeyboardStorageEvent) {
         event.preventDefault();
-        if (this.isSelected && (this.selected[0] === 0 || this.selected[1] === 0)) {
-            this.cursorMovedTo = this.cursorPosition = 0;
-            this.isNeedSetLastFocusedOffset = true;
-            this.isSelected = false;
-            this.forceUpdate();
-        } else if (this.cursorPosition) {
-            this.selectByShift(event, () => {
-                this.isNeedSetLastFocusedOffset = true;
-                if (event.ctrlKey) {
-                    this.cursorMovedTo = this.cursorPosition =
-                        this.findWordStart(this.cursorPosition, true) +
-                        (this.isSelecting ? 1 : 0);
-                } else this.cursorMovedTo = --this.cursorPosition;
-            });
-        }
+        this.selectIfShift(event, () => {
+            if (!this.isShiftKey(event) && this.isSelected && (this.selected[0] === 0 || this.selected[1] === 0)) {
+                this.setCursorPosition(0);
+                this.isSelected = false;
+                this.forceUpdate();
+            } else
+                if (this.cursorPosition) {
+                    if (this.isCtrlKey(event)) {
+                        this.setCursorPosition(
+                            this.findWordStart(this.cursorPosition, true) +
+                            (this.isSelecting ? 1 : 0));
+                    } else this.setCursorPosition(this.cursorPosition - 1);
+                }
+        });
+
         this.scrollToView();
     }
 
-    arrowRight(event: KeyboardEvent) {
+    arrowRight(event: KeyboardStorageEvent) {
         event.preventDefault();
-        if (
-            this.isSelected &&
-            (this.selected[0] === this.valueChars.length ||
-                this.selected[1] === this.valueChars.length)
-        ) {
-            this.cursorMovedTo = this.cursorPosition = this.valueChars.length;
-            this.isNeedSetLastFocusedOffset = true;
-            this.isSelected = false;
-            this.forceUpdate();
-        } else if (this.cursorPosition < this.valueChars.length) {
-            this.selectByShift(event, () => {
-                this.isNeedSetLastFocusedOffset = true;
+
+        this.selectIfShift(event, () => {
+            if (!this.isShiftKey(event) &&
+                this.isSelected &&
+                (this.selected[0] === this.valueChars.length ||
+                    this.selected[1] === this.valueChars.length)
+            ) {
+                this.setCursorPosition(this.valueChars.length);
+                this.isSelected = false;
+                this.forceUpdate();
+            } else if (this.cursorPosition < this.valueChars.length) {
                 if (event.ctrlKey)
-                    this.cursorMovedTo = this.cursorPosition = this.findWordFinish(
+                    this.setCursorPosition(this.findWordFinish(
                         this.cursorPosition
-                    );
-                else this.cursorMovedTo = ++this.cursorPosition;
-            });
-        }
+                    ));
+                else this.setCursorPosition(this.cursorPosition + 1);
+            }
+        });
 
         this.scrollToView();
     }
 
-    arrowUp(event: KeyboardEvent) {
+    arrowUp(event: KeyboardStorageEvent) {
         event.preventDefault();
-        this.selectByShift(event, () => this.onArrowUpward());
+        this.selectIfShift(event, () => this.onArrowUpward());
         this.scrollToView();
     }
 
-    arrowDown(event: KeyboardEvent) {
+    arrowDown(event: KeyboardStorageEvent) {
         event.preventDefault();
-        this.selectByShift(event, () => this.onArrowDownward());
+        this.selectIfShift(event, () => this.onArrowDownward());
         this.scrollToView();
     }
 
@@ -72,8 +71,9 @@ export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
         const revIndex = this.offsetElements
             .slice(0, this.cursorPosition - this.focusedLinei - 1)
             .reverse()
-            .findIndex((element) => {
+            .findIndex((element, elementi) => {
                 if (element.offsetLeft === 0) {
+                    if (!elementi) return false;
                     isZeroFind = true;
                     return false;
                 }
@@ -89,10 +89,8 @@ export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
                 return false;
             });
 
-        if (revIndex < 0) this.cursorPosition = 0;
-        else this.cursorPosition -= revIndex + 2;
-
-        this.cursorMovedTo = this.cursorPosition;
+        if (revIndex < 0) this.setCursorPosition(0);
+        else this.setCursorPosition(this.cursorPosition - (revIndex + 2), false);
     }
 
     onArrowDownward() {
@@ -102,9 +100,10 @@ export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
 
         const index = this.offsetElements
             .slice(this.cursorPosition)
-            .findIndex((element) => {
+            .findIndex((element, elementi) => {
                 if (this.focusedOffset === element.offsetLeft) return false;
                 if (element.offsetLeft === 0) {
+                    if (!elementi) return false;
                     if (isZeroFind && this.focusedOffset > prev) {
                         isNeedMinus = true;
                         return true;
@@ -124,11 +123,10 @@ export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
                 return false;
             });
 
-        if (index < 0) this.cursorPosition = this.valueChars.length;
+        if (index < 0) this.setCursorPosition(this.valueChars.length);
         else
-            this.cursorPosition += index + this.focusedLinei + (isNeedMinus ? 0 : 1);
+            this.setCursorPosition(this.cursorPosition + index + this.focusedLinei + (isNeedMinus ? 0 : 1), false);
 
-        this.cursorMovedTo = this.cursorPosition;
     }
 
     scrollToView() {
@@ -149,6 +147,7 @@ export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
                     this.focusedCharItem.clientWidth +
                     2;
     }
+
     isZeroCursorOn(charLinei: number) {
         return (
             (!this.isSelected && this.cursorPosition === 0 && charLinei === 0) ||
@@ -160,33 +159,46 @@ export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
         return !this.isSelected && this.cursorPosition - 1 === chari;
     }
 
-    onCharMouseDown(chari: number) {
+    onCharMouseDown(event: KeyboardStorageEvent, chari: number) {
         this.downTs = Date.now();
-
         this.isSelecting = true;
-        this.isSelected = false;
-        this.cursorPosition = this.selected[0] = chari;
+
+        this.selectIfShift(event, () => {
+            if (!this.isShiftKey(event)) this.selected[0] = chari;
+        }, false);
+
         this.focus();
     }
 
-    onCharMouseOver(chari: number) {
+    onCharMouseOver(event: KeyboardStorageEvent, chari: number) {
         if (this.isSelecting) {
             this.isSelected = true;
-            this.selected[1] = chari;
+
+            this.selected[1] =
+                this.setCursorPosition(this.isCtrlKey(event)
+                    ? this.selected[0] > chari
+                        ? this.findWordStart(chari)
+                        : this.findWordFinish(chari)
+                    : chari);
+
             this.forceUpdate();
         }
     }
 
-    onCharMouseUp(chari: number) {
+    onCharMouseUp(event: KeyboardStorageEvent, chari: number) {
+        this.isSelecting = false;
+
         if (Date.now() - this.downTs < 300) {
-            this.isSelected = false;
-            this.isSelecting = false;
-            this.cursorPosition = this.cursorMovedTo = chari;
-            this.isNeedSetLastFocusedOffset = true;
-            this.focus();
+            this.selectIfShift(event, () => {
+                if (!this.isShiftKey(event)) this.isSelected = false;
+                this.setCursorPosition(this.isCtrlKey(event)
+                    ? this.selected[0] > chari
+                        ? this.findWordStart(chari)
+                        : this.findWordFinish(chari)
+                    : chari);
+            });
         } else {
             this.selected[1] = chari;
-            this.isSelecting = false;
             this.forceUpdate();
         }
     }
