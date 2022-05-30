@@ -126,9 +126,6 @@ export const slice = createSlice({
     setTranslationBlockPosition: (state, action: PayloadAction<FontSizeContainPropsPosition>) => {
       state.translationBlockPosition = action.payload;
     },
-    switchRollModeMarks: (state, action: PayloadAction<boolean | nil>) => {
-      state.rollModeMarks = action.payload ?? state.rollModeMarks;
-    },
     riseUpTranslationUpdates: (state) => {
       state.translationUpdates++;
     },
@@ -156,7 +153,6 @@ export const {
   setChordVisibleVariant,
   riseUpComUpdate,
   changeRollMode,
-  switchRollModeMarks,
   setMarkList,
   updateMeetingList,
   updateFavoriteMeetings,

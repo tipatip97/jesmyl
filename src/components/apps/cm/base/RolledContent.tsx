@@ -1,12 +1,12 @@
 import { HTMLAttributes, PropsWithChildren } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import { RootState } from "../../../../shared/store";
-import { cmStorage } from "../../../../shared/jstorages";
-import { CmRollMode } from "../Cm.model";
-import { changeRollMode, switchRollModeMarks } from "../Cm.store";
-import useCmNav from "./useCmNav";
 import useFullScreen from "../../../../complect/useFullscreen";
+import { cmStorage } from "../../../../shared/jstorages";
+import { RootState } from "../../../../shared/store";
+import { CmRollMode } from "../Cm.model";
+import { changeRollMode } from "../Cm.store";
+import useCmNav from "./useCmNav";
 
 export default function RollControled(
   props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>
@@ -71,8 +71,6 @@ export function useRoll() {
 
   const ret = {
     rollModeMarks: useSelector((state: RootState) => state.cm.rollModeMarks),
-    switchRollModeMarks: (isMarks?: boolean) =>
-      dispatch(switchRollModeMarks(isMarks ?? !ret.rollModeMarks)),
     rollMode: useSelector((state: RootState) => state.cm.rollMode),
     switchRollMode: (topRollMode: CmRollMode) => {
       rollMode = topRollMode;
@@ -86,8 +84,7 @@ export function useRoll() {
 
         registerBackAction(() => {
           ret.switchRollMode(null);
-          ret.switchRollModeMarks(false);
-          return true;
+          return false;
         });
       } else {
         ret.switchRollMode("pause");
