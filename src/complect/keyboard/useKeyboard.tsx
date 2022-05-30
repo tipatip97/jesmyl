@@ -59,15 +59,22 @@ export function KEYBOARD_FLASH({
   const [lang, setLang] = useState<KeyboardKeyTranslateLangs>("ru");
   const [keyCase, setKeyCase] = useState<KeyboardKeyTranslateCase>("lower");
   const [isCaps, setIsCaps] = useState(false);
+  const [keyInFix, setKeyInFix] = useState<string | null>(null);
   useKeyboard();
   topForceUpdate = () => setUpdates(updates + 1);
   topOnBlur = () => onBlur();
   topOnFocus = () => onFocus(currentInput);
 
   useEffect(() => {
-    const onMouseDown = (event: MouseEvent) => currentInput?.onMouseDown(event);
-    const onMouseUp = () => currentInput?.onMouseUp();
-    const onKeyDown = (event: KeyboardEvent) => currentInput?.onKeyDown(event);
+    const onMouseDown = (event: MouseEvent) => {
+      event.stopPropagation();
+      currentInput?.onOverflowMouseDown();
+    };
+    const onMouseUp = () => {
+      currentInput?.onOverflowMouseUp();
+      setKeyInFix(null);
+    };
+    const onKeyDown = (event: KeyboardEvent) => currentInput?.onOverflowKeyDown(event);
 
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("mousedown", onMouseDown);
@@ -83,7 +90,10 @@ export function KEYBOARD_FLASH({
   return (
     <div
       className={`keyboard-flash ${currentInput ? "" : "inactive"}`}
-      onMouseUp={(event) => event.stopPropagation()}
+      onMouseUp={(event) => {
+        event.stopPropagation();
+        setKeyInFix(null);
+      }}
     >
       {keyboardKeyDict[lang][keyCase].map((line, linei) => {
         return (
@@ -112,8 +122,12 @@ export function KEYBOARD_FLASH({
               return (
                 <div
                   key={`key-${keyi}`}
-                  className="keyboard-flash-key writable"
-                  onClick={() => {
+                  className={`keyboard-flash-key writable ${
+                    keyInFix === key ? "key-in-fix" : ""
+                  }`}
+                  onMouseDown={() => setKeyInFix(key)}
+                  onMouseOver={() => keyInFix && setKeyInFix(key)}
+                  onMouseUp={() => {
                     currentInput?.type(key);
                     if (!isCaps) setKeyCase("lower");
                   }}
@@ -135,16 +149,6 @@ export function KEYBOARD_FLASH({
 
       <div className="keyboard-flash-line">
         <EvaIcon
-          name="globe-outline"
-          className="keyboard-flash-key"
-          onClick={() => {
-            const langi = keyboardKeyTranslateLangs.indexOf(lang);
-            if (langi === keyboardKeyTranslateLangs.length - 1)
-              setLang(keyboardKeyTranslateLangs[0]);
-            else setLang(keyboardKeyTranslateLangs[langi + 1]);
-          }}
-        />
-        <EvaIcon
           name="corner-up-left-outline"
           className={`keyboard-flash-key ${
             currentInput?.canUndo() ? "" : "disabled"
@@ -159,8 +163,22 @@ export function KEYBOARD_FLASH({
           onClick={() => currentInput?.redo()}
         />
         <div
-          className="keyboard-flash-key space-key"
-          onClick={() => currentInput?.type(" ")}
+          className={`keyboard-flash-key space-key ${
+            keyInFix === "space" ? "key-in-fix" : ""
+          }`}
+          onMouseDown={() => setKeyInFix("space")}
+          onMouseOver={() => keyInFix && setKeyInFix("space")}
+          onMouseUp={() => currentInput?.type(" ")}
+        />
+        <EvaIcon
+          name="globe-outline"
+          className="keyboard-flash-key"
+          onClick={() => {
+            const langi = keyboardKeyTranslateLangs.indexOf(lang);
+            if (langi === keyboardKeyTranslateLangs.length - 1)
+              setLang(keyboardKeyTranslateLangs[0]);
+            else setLang(keyboardKeyTranslateLangs[langi + 1]);
+          }}
         />
         <EvaIcon
           name="arrowhead-down-outline"

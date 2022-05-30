@@ -13,6 +13,8 @@ export type KeyboardKeyDict = Record<KeyboardKeyTranslateLangs, { lower: string[
 
 export interface KeyboardInputProps {
     initialValue?: string;
+    multiline?: boolean;
+    closeButton?: boolean;
     className?: string;
     placeholder?: string;
     onBlur?: () => void;
@@ -26,6 +28,7 @@ export interface KeyboardMemoryPoint {
     selected: [number, number];
     value: string;
     valueChars: string[];
+    valueCharLines: string[][];
     cursorPosition: number;
     isSelected: boolean;
     action: KeyboardMemoryPointAction;

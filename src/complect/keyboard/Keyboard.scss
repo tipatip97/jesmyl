@@ -44,10 +44,18 @@
 
             &:not(.writable) {
                 background: var(--keyboard-flash-tool-button-background);
+
+                &.key-in-fix {
+                    opacity: .5;
+                }
+            }
+
+            &.key-in-fix {
+                background: var(--keyboard-flash-tool-button-background);
             }
 
             &.space-key {
-                width: 70%;
+                width: 50%;
             }
         }
     }
@@ -57,15 +65,49 @@
     --cursor-animation: cursor .4s infinite alternate-reverse;
     position: relative;
     cursor: text;
-    height: 1.3em;
     width: 100%;
 
+    &.multiline {
+        .input-keyboard-flash-controlled-char-list {
+            .input-keyboard-flash-controlled-char-list-inner {
+                white-space: pre-line;
+            }
+        }
+    }
+
+    &:not(.multiline) {
+        height: 1.3em;
+
+        .input-keyboard-flash-controlled-char-list {
+            height: 1.3em;
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            .input-keyboard-flash-controlled-char-list-inner {
+                white-space: nowrap;
+            }
+        }
+    }
+
+    &.without-close-button {
+        .close-icon {
+            display: none;
+        }
+
+        .input-keyboard-flash-controlled-char-list {
+            max-width: 100%;
+        }
+    }
+
     &.empty-input {
+        overflow: hidden;
+
         &:before {
             content: attr(placeholder);
             position: absolute;
             opacity: .7;
             pointer-events: none;
+            white-space: nowrap;
         }
 
         .close-icon {
@@ -76,15 +118,17 @@
     &.focused {
         .input-keyboard-flash-controlled-char-list {
             .input-keyboard-flash-controlled-char-list-inner {
-                height: 1.3em;
+                // height: 1.3em;
 
-                &.zero-cursor {
-                    animation: var(--cursor-animation);
-                }
-
-                .input-keyboard-flash-controlled-char {
-                    &.cursor {
+                .input-keyboard-flash-controlled-char-list-line {
+                    &.zero-cursor {
                         animation: var(--cursor-animation);
+                    }
+
+                    .input-keyboard-flash-controlled-char {
+                        &.cursor {
+                            animation: var(--cursor-animation);
+                        }
                     }
                 }
             }
@@ -117,44 +161,49 @@
     }
 
     .input-keyboard-flash-controlled-char-list {
-        height: 1.3em;
-        max-width: calc(100% - 30px);
-        overflow-x: auto;
-        overflow-y: hidden;
 
         &::-webkit-scrollbar {
             display: none;
         }
 
         .input-keyboard-flash-controlled-char-list-inner {
-            border-left: 1px solid transparent;
             white-space: nowrap;
 
-            .input-keyboard-flash-controlled-char {
-                position: relative;
-                display: inline-block;
-                margin-left: -1px;
-                white-space: pre;
-                border-right: 1px solid transparent;
-                pointer-events: none;
+            .input-keyboard-flash-controlled-char-list-line {
+                height: 1.3em;
+                border-left: 1px solid transparent;
 
-                &:before {
-                    content: '';
-                    position: absolute;
+                .input-keyboard-flash-controlled-char {
+                    position: relative;
                     display: inline-block;
-                    width: .5em;
-                    height: 1.4em;
-                    left: -.2em;
-                    pointer-events: all;
-                }
+                    margin-left: -1px;
+                    white-space: pre;
+                    border-right: 1px solid transparent;
+                    pointer-events: none;
 
-                &:first-child {
-                    padding-left: 0;
-                }
+                    &.newline-char {
+                        display: block;
+                        height: 0;
+                    }
 
-                &.selected {
-                    background: var(--keyboard-flash-selected-background);
-                    color: var(--keyboard-flash-selected-color);
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        display: inline-block;
+                        width: .5em;
+                        height: 1.4em;
+                        left: -.2em;
+                        pointer-events: all;
+                    }
+
+                    &:first-child {
+                        padding-left: 0;
+                    }
+
+                    &.selected {
+                        background: var(--keyboard-flash-selected-background);
+                        color: var(--keyboard-flash-selected-color);
+                    }
                 }
             }
         }
