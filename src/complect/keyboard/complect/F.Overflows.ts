@@ -1,7 +1,10 @@
+import { KeyboardInputPropsType } from '../Keyboard.model';
 import { KeyboardStorageTextModifiers } from './E.TextModifiers';
 
 
 export class KeyboardStorageOverflows extends KeyboardStorageTextModifiers {
+    type?: KeyboardInputPropsType;
+
     onOverflowMouseDown() {
         if (!this.isFocused) return;
         this.blur();
@@ -83,6 +86,7 @@ export class KeyboardStorageOverflows extends KeyboardStorageTextModifiers {
             default:
                 if (event.key.length === 1) {
                     event.preventDefault();
+                    if (this.type === 'number' && /\D/.exec(event.key)) return; 
                     this.write(event.key);
                 }
         }

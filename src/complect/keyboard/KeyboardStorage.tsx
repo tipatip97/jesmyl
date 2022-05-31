@@ -2,7 +2,6 @@ import EvaIcon from "../eva-icon/EvaIcon";
 import { KeyboardStorageOverflows } from "./complect/F.Overflows";
 import {
   KeyboardInputProps,
-  KeyboardInputPropsType,
   keyboardKeyTranslateLangs,
   KeyboardKeyTranslateLanguage,
 } from "./Keyboard.model";
@@ -10,7 +9,6 @@ import {
 export class KeyboardInputStorage extends KeyboardStorageOverflows {
   isNeedValuesInitialize = true;
   initialValue?: string;
-  type?: KeyboardInputPropsType;
   isHiddenPassword?: boolean;
   currentLanguage: KeyboardKeyTranslateLanguage = "ru";
 
