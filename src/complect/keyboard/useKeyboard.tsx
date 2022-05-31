@@ -1,11 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
 import { keyboardKeyDict } from "./Keyboard.complect";
-import {
-  KeyboardInputProps,
-  keyboardKeyTranslateLangs,
-  KeyboardKeyTranslateLangs,
-} from "./Keyboard.model";
+import { KeyboardInputProps } from "./Keyboard.model";
 import "./Keyboard.scss";
 import { KeyboardInputStorage } from "./KeyboardStorage";
 
@@ -76,7 +72,6 @@ export function KEYBOARD_FLASH({
   onFocus: (currentInput: KeyboardInputStorage | nil) => void;
 }) {
   const [updates, setUpdates] = useState(0);
-  const [lang, setLang] = useState<KeyboardKeyTranslateLangs>("ru");
   const [keyInFix, setKeyInFix] = useState<string | null>(null);
   useKeyboard();
   topForceUpdate = () => setUpdates(updates + 1);
@@ -149,7 +144,7 @@ export function KEYBOARD_FLASH({
     >
       {currentInput ? (
         <>
-          {keyboardKeyDict[lang][
+          {keyboardKeyDict[currentInput.currentLanguage][
             currentInput.event.shiftKey ? "upper" : "lower"
           ].map((line, linei) => {
             return (
@@ -218,12 +213,7 @@ export function KEYBOARD_FLASH({
               <EvaIcon
                 name="globe-outline"
                 className="key-button"
-                onClick={() => {
-                  const langi = keyboardKeyTranslateLangs.indexOf(lang);
-                  if (langi === keyboardKeyTranslateLangs.length - 1)
-                    setLang(keyboardKeyTranslateLangs[0]);
-                  else setLang(keyboardKeyTranslateLangs[langi + 1]);
-                }}
+                onClick={() => currentInput.switchLanguage()}
               />
             </div>
             {currentInput.isMultiline ? (

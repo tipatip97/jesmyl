@@ -1,175 +1,191 @@
-import { ReactNode } from "react";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { KeyboardStorageOverflows } from "./complect/F.Overflows";
-import { KeyboardInputProps } from "./Keyboard.model";
+import {
+  KeyboardInputProps,
+  KeyboardInputPropsType,
+  keyboardKeyTranslateLangs,
+  KeyboardKeyTranslateLanguage,
+} from "./Keyboard.model";
 
 export class KeyboardInputStorage extends KeyboardStorageOverflows {
-  node: (
+  isNeedValuesInitialize = true;
+  initialValue?: string;
+  type?: KeyboardInputPropsType;
+  isHiddenPassword?: boolean;
+  currentLanguage: KeyboardKeyTranslateLanguage = "ru";
+
+  constructor(initialValue?: string) {
+    super();
+    this.initialValue = initialValue;
+  }
+
+  node(
     props: KeyboardInputProps,
     forceUpdater: () => void,
     onBlur: () => void,
     onFocus: () => void
-  ) => ReactNode;
+  ) {
+    this.offsetElements = [];
+    this.onChange = props.onChange;
+    this.onFocus = onFocus;
+    this.forceUpdate = forceUpdater;
+    this.onBlur = onBlur;
+    this.isMultiline = props.multiline;
+    this.type = props.type;
 
-  constructor(initialValue?: string) {
-    super();
-    this.replaceAll(initialValue || "", false);
-    this.node = (props, forceUpdater, onBlur, onFocus) => {
-      this.offsetElements = [];
+    let currentChari = 0;
 
-      this.onChange = props.onChange;
-      this.onFocus = onFocus;
-      this.forceUpdate = forceUpdater;
-      this.onBlur = onBlur;
-      this.isMultiline = props.multiline;
-      this.type = props.type;
-      this.isHiddenPassword ??= this.type === "password";
+    if (this.isNeedValuesInitialize) {
+      this.isNeedValuesInitialize = false;
 
-      let currentChari = 0;
+      if (props.preferLanguage) this.currentLanguage = props.preferLanguage;
+      this.isHiddenPassword = this.type === "password";
+      if (this.initialValue)
+        setTimeout(() => this.replaceAll(this.initialValue || "", false));
+    }
 
-      return (
+    return (
+      <div
+        className={`input-keyboard-flash-controlled input ${
+          props.className || ""
+        } ${this.valueCharLines.length === 0 ? "no-lines" : ""} ${
+          this.isFocused ? "focused" : ""
+        } ${this.value ? "" : "empty-input"} ${
+          props.multiline ? "multiline" : ""
+        } ${props.closeButton !== false ? "" : "without-close-button"}`}
+        placeholder={props.placeholder}
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          this.focus();
+        }}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div
-          className={`input-keyboard-flash-controlled input ${
-            props.className || ""
-          } ${this.valueCharLines.length === 0 ? "no-lines" : ""} ${
-            this.isFocused ? "focused" : ""
-          } ${this.value ? "" : "empty-input"} ${
-            props.multiline ? "multiline" : ""
-          } ${props.closeButton !== false ? "" : "without-close-button"}`}
-          placeholder={props.placeholder}
-          onMouseDown={(event) => {
-            event.stopPropagation();
-            this.focus();
-          }}
-          onClick={(event) => event.stopPropagation()}
+          className="input-keyboard-flash-controlled-char-list"
+          ref={(el) => el && (this.flowCharListElement = el)}
         >
-          <div
-            className="input-keyboard-flash-controlled-char-list"
-            ref={(el) => el && (this.flowCharListElement = el)}
-          >
-            <div className={`input-keyboard-flash-controlled-char-list-inner`}>
-              {this.valueCharLines.map((line, linei) => {
-                const charLinei = currentChari;
+          <div className={`input-keyboard-flash-controlled-char-list-inner`}>
+            {this.valueCharLines.map((line, linei) => {
+              const charLinei = currentChari;
 
-                return (
-                  <div
-                    key={`line ${linei}`}
-                    className={`input-keyboard-flash-controlled-char-list-line ${
-                      this.isZeroCursorOn(charLinei) ? "zero-cursor" : ""
-                    }`}
-                    onMouseDown={(event) => {
-                      event.stopPropagation();
-                      this.onCharMouseDown(event, charLinei + line.length);
-                    }}
-                    onMouseOver={(event) => {
-                      event.stopPropagation();
-                      this.onCharMouseOver(event, charLinei + line.length);
-                    }}
-                    onMouseUp={(event) => {
-                      event.stopPropagation();
-                      this.onCharMouseUp(event, charLinei + line.length);
-                    }}
-                  >
-                    {(line.length ? line : [""]).map((letter, letteri) => {
-                      const chari = currentChari - (letteri ? 1 : 0);
-                      currentChari += letteri ? 1 : 2;
+              return (
+                <div
+                  key={`line ${linei}`}
+                  className={`input-keyboard-flash-controlled-char-list-line ${
+                    this.isZeroCursorOn(charLinei) ? "zero-cursor" : ""
+                  }`}
+                  onMouseDown={(event) => {
+                    event.stopPropagation();
+                    this.onCharMouseDown(event, charLinei + line.length);
+                  }}
+                  onMouseOver={(event) => {
+                    event.stopPropagation();
+                    this.onCharMouseOver(event, charLinei + line.length);
+                  }}
+                  onMouseUp={(event) => {
+                    event.stopPropagation();
+                    this.onCharMouseUp(event, charLinei + line.length);
+                  }}
+                >
+                  {(line.length ? line : [""]).map((letter, letteri) => {
+                    const chari = currentChari - (letteri ? 1 : 0);
+                    currentChari += letteri ? 1 : 2;
 
-                      return (
-                        <span
-                          key={`node-${letteri}`}
-                          className={`input-keyboard-flash-controlled-char ${
-                            this.isCursorOn(chari) ? "cursor" : ""
-                          } ${this.isSelectedChar(chari) ? "selected" : ""}`}
-                          ref={(element) => {
-                            this.charElementReference(element, linei, chari);
-                          }}
-                          onContextMenu={(event) => {
-                            event.preventDefault();
-                            this.selectWord(chari);
-                          }}
-                          onDoubleClick={(event) => {
-                            event.preventDefault();
-                            this.selectWord(chari);
-                          }}
-                          onMouseDown={(event) => {
-                            event.stopPropagation();
-                            this.onCharMouseDown(event, chari);
-                          }}
-                          onMouseOver={(event) => {
-                            event.stopPropagation();
-                            this.onCharMouseOver(event, chari);
-                          }}
-                          onMouseUp={(event) => {
-                            event.stopPropagation();
-                            this.onCharMouseUp(event, chari);
-                          }}
-                        >
-                          {this.isHiddenPassword ? "●" : letter}
-                        </span>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="icon-button-container">
-            {this.type === "password" ? (
-              <EvaIcon
-                name={this.isHiddenPassword ? "eye-outline" : "eye-off-outline"}
-                className="icon-button close-button"
-                onMouseDown={(event) => {
-                  event.stopPropagation();
-                  this.isHiddenPassword = !this.isHiddenPassword;
-                  this.forceUpdate();
-                }}
-              />
-            ) : (
-              <EvaIcon
-                name="close"
-                className="icon-button close-button"
-                onMouseDown={() => {
-                  this.replaceAll("");
-                  this.focus();
-                }}
-              />
-            )}
-          </div>
-          <div
-            className={`menu-actions-with-selected ${
-              this.isSelected && this.isFocused ? "open" : ""
-            }`}
-          >
-            {this.nullOrCanSelectAll() && (
-              <div
-                onMouseDown={(event) => {
-                  event.stopPropagation();
-                  this.selectAll();
-                }}
-              >
-                Выделить всё
-              </div>
-            )}
-            <div
-              onMouseDown={(event) => {
-                event.stopPropagation();
-                this.copy();
-              }}
-            >
-              Копировать
-            </div>
-            <div
-              onMouseDown={(event) => {
-                event.stopPropagation();
-                this.paste();
-              }}
-            >
-              Вставить
-            </div>
+                    return (
+                      <span
+                        key={`node-${letteri}`}
+                        className={`input-keyboard-flash-controlled-char ${
+                          this.isCursorOn(chari) ? "cursor" : ""
+                        } ${this.isSelectedChar(chari) ? "selected" : ""}`}
+                        ref={(element) => {
+                          this.charElementReference(element, linei, chari);
+                        }}
+                        onContextMenu={(event) => {
+                          event.preventDefault();
+                          this.selectWord(chari);
+                        }}
+                        onDoubleClick={(event) => {
+                          event.preventDefault();
+                          this.selectWord(chari);
+                        }}
+                        onMouseDown={(event) => {
+                          event.stopPropagation();
+                          this.onCharMouseDown(event, chari);
+                        }}
+                        onMouseOver={(event) => {
+                          event.stopPropagation();
+                          this.onCharMouseOver(event, chari);
+                        }}
+                        onMouseUp={(event) => {
+                          event.stopPropagation();
+                          this.onCharMouseUp(event, chari);
+                        }}
+                      >
+                        {this.isHiddenPassword ? "●" : letter}
+                      </span>
+                    );
+                  })}
+                </div>
+              );
+            })}
           </div>
         </div>
-      );
-    };
+        <div className="icon-button-container">
+          {this.type === "password" ? (
+            <EvaIcon
+              name={this.isHiddenPassword ? "eye-outline" : "eye-off-outline"}
+              className="icon-button close-button"
+              onMouseDown={(event) => {
+                event.stopPropagation();
+                this.isHiddenPassword = !this.isHiddenPassword;
+                this.forceUpdate();
+              }}
+            />
+          ) : (
+            <EvaIcon
+              name="close"
+              className="icon-button close-button"
+              onMouseDown={() => {
+                this.replaceAll("");
+                this.focus();
+              }}
+            />
+          )}
+        </div>
+        <div
+          className={`menu-actions-with-selected ${
+            this.isSelected && this.isFocused ? "open" : ""
+          }`}
+        >
+          {this.nullOrCanSelectAll() && (
+            <div
+              onMouseDown={(event) => {
+                event.stopPropagation();
+                this.selectAll();
+              }}
+            >
+              Выделить всё
+            </div>
+          )}
+          <div
+            onMouseDown={(event) => {
+              event.stopPropagation();
+              this.copy();
+            }}
+          >
+            Копировать
+          </div>
+          <div
+            onMouseDown={(event) => {
+              event.stopPropagation();
+              this.paste();
+            }}
+          >
+            Вставить
+          </div>
+        </div>
+      </div>
+    );
   }
 
   charElementReference(
@@ -197,5 +213,14 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
       (this.selected[0] === this.valueChars.length && this.selected[1] === 0)
       ? null
       : true;
+  }
+
+  switchLanguage() {
+    const langi = keyboardKeyTranslateLangs.indexOf(this.currentLanguage);
+    if (langi === keyboardKeyTranslateLangs.length - 1)
+      this.currentLanguage = keyboardKeyTranslateLangs[0];
+    else this.currentLanguage = keyboardKeyTranslateLangs[langi + 1];
+
+    this.forceUpdate();
   }
 }

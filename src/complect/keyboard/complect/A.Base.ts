@@ -1,19 +1,12 @@
-import { KeyboardInputPropsType } from "../Keyboard.model";
-
-
 export class KeyboardStorageBase {
-    valueChars: string[] = [];
-    valueCharLines: string[][] = [];
     value: string = '';
     onChange?: (value: string) => void;
     onFocus?: () => void;
     forceUpdate: () => void = () => { };
     onBlur: () => void = () => { };
     isFocused = false;
-    isMultiline?: boolean;
+    isMultiline?: boolean = false;
     isSelected = false;
-    type?: KeyboardInputPropsType;
-    isHiddenPassword?: boolean;
 
     focus() {
         if (!this.isFocused) this.onFocus?.();

@@ -1,8 +1,8 @@
 import { createContext, ReactNode } from 'react';
 import { MyLib } from '../my-lib/MyLib';
-import { KeyboardKeyDict, KeyboardKeyTranslateCase, KeyboardKeyTranslateLangs } from './Keyboard.model';
+import { KeyboardKeyDict, KeyboardKeyTranslateCase, KeyboardKeyTranslateLanguage } from './Keyboard.model';
 
-export const languagedKeys: Record<KeyboardKeyTranslateLangs, Record<KeyboardKeyTranslateCase, string[]>> = {
+export const languagedKeys: Record<KeyboardKeyTranslateLanguage, Record<KeyboardKeyTranslateCase, [string, string, string, string]>> = {
     ru: {
         lower: [
             'ё1234567890ъ',
@@ -11,25 +11,11 @@ export const languagedKeys: Record<KeyboardKeyTranslateLangs, Record<KeyboardKey
             'ячсмитьбю.',
         ],
         upper: [
-            'Ё!"№;%:?*()Ъ',
+            'Ё!"№;-:?*()Ъ',
             'ЙЦУКЕНГШЩЗХ',
             'ФЫВАПРОЛДЖЭ',
             'ЯЧСМИТЬБЮ,'
         ]
-    },
-    en: {
-        lower: [
-            '`1234567890-=',
-            'qwertyuiop[]',
-            'asdfghjkl;\'',
-            'zxcvbnm,./',
-        ],
-        upper: [
-            '~!@#$%^&*()_+',
-            'QWERTYUIOP{}',
-            'ASDFGHJKL:"',
-            'ZXCVBNM<>?',
-        ],
     },
     ua: {
         lower: [
@@ -39,10 +25,24 @@ export const languagedKeys: Record<KeyboardKeyTranslateLangs, Record<KeyboardKey
             'ячсмитьбю.',
         ],
         upper: [
-            '\'!"№;%:?*()Ї',
+            '\'!"№;-:?*()Ї',
             'ЙЦУКЕНГШЩЗХ',
             'ФІВАПРОЛДЖЄ',
             'ЯЧСМИТЬБЮ,',
+        ],
+    },
+    en: {
+        lower: [
+            '`1234567890-',
+            'qwertyuiop',
+            'asdfghjkl;\'',
+            'zxcvbnm,./',
+        ],
+        upper: [
+            '~!@#$%^&*()_',
+            'QWERTYUIOP',
+            'ASDFGHJKL:"',
+            'ZXCVBNM<>?',
         ],
     }
 }
@@ -57,5 +57,5 @@ MyLib.entries(languagedKeys)
     });
 
 
-    
+
 export const KeyboardContext = createContext((() => '') as ((props: any) => ReactNode));

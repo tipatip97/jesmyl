@@ -8,6 +8,8 @@ export class KeyboardStorageSelect extends KeyboardStorageBase {
     isCapsLock: boolean = false;
     event: { shiftKey: boolean; ctrlKey: boolean; } = {} as never;
     isCursorPositionChanged = false;
+    valueChars: string[] = [];
+    valueCharLines: string[][] = [];
 
     get cursorPosition() {
         return this._cursorPosition;
