@@ -22,7 +22,7 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
         route: useSelector(routeSelector),
         navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
         navigate: (topRoute: FreeNavRoute, isPreventSave?: boolean) => {
-            const route = topRoute && nav.goTo([], topRoute);
+            const route = topRoute && nav.getGoToRoute([], topRoute);
 
             if (route || topRoute === null) {
                 dispatch(setPhaseAction({ route } as never));
@@ -31,23 +31,23 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
             }
         },
         goTo: (phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil, isPreventSave?: boolean) => {
-            const newRoute = nav.goTo(ret.route || [], phase, relativePoint);
+            const newRoute = nav.getGoToRoute(ret.route || [], phase, relativePoint);
             if (newRoute) ret.navigate(newRoute, isPreventSave);
         },
         jumpTo: (phasePoint: NavPhasePoint, isPreventSave?: boolean) => {
-            const newRoute = nav.jumpTo(ret.route, phasePoint);
+            const newRoute = nav.getJumpToRoute(ret.route, phasePoint);
             if (newRoute) ret.navigate(newRoute, isPreventSave);
         },
         registerBackAction: (action: UseNavAction) => {
             actions.unshift(action);
             return () => actions.splice(actions.findIndex(ac => ac !== action), 1);
         },
-        goBack: () => {
+        goBack: (isForceBack = false) => {
             if (actions.length) {
                 if (actions.some(action => {
                     actions.shift();
-                    return action?.() === true;
-                })) return;
+                    return !action?.();
+                }) && !isForceBack) return;
             }
 
             if (isFullScreen) {
@@ -56,7 +56,7 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
             }
 
             if (ret.route) {
-                const line = nav.goBack(ret.route);
+                const line = nav.getGoBackRoute(ret.route);
                 if (line.length) ret.navigate(line);
                 else ret.navigate(nav.rootPhase === null ? null : [nav.rootPhase]);
             }

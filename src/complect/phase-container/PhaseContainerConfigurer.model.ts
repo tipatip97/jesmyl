@@ -1,7 +1,7 @@
 import { DOMElement, HTMLAttributes, HtmlHTMLAttributes, ReactNode } from "react";
 
 export interface PhaseContainerConfigurerProps extends PhaseContainerProps {
-    goBack: () => void;
+    goBack: (isForceBack?: boolean) => void;
 }
 
 export interface PhaseContainerProps extends HtmlHTMLAttributes<HTMLDivElement>, Partial<DOMElement<HTMLAttributes<HTMLDivElement>, HTMLDivElement>> {

@@ -84,7 +84,7 @@ export function useRoll() {
 
         registerBackAction(() => {
           ret.switchRollMode(null);
-          return false;
+          return rollMode === "play";
         });
       } else {
         ret.switchRollMode("pause");

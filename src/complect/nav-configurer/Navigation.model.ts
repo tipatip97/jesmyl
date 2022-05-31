@@ -5,8 +5,8 @@ import { ExerStorage } from "../exer/Exer.model";
 
 export type SetPhasePayload<Phase, SpecialPhase> = Phase | nil | [Phase | nil, SpecialPhase | nil, boolean?];
 
-// верни тут true, если событие "назад" уже не должно иметь эффекта
-export type UseNavAction = () => boolean | void | any;
+// верни тут true, если событие "назад" должно ТОЛЬКО обработать этот Action (не переводить назад)
+export type UseNavAction = () => boolean;
 
 export type FooterItem<Phase> = null | {
     title: string;

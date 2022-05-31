@@ -120,7 +120,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
             makeRoute([], this.routes, 0);
     }
 
-    jumpTo(currentRoute: FreeNavRoute, phasePoint: NavPhasePoint): NavRoute | nil {
+    getJumpToRoute(currentRoute: FreeNavRoute, phasePoint: NavPhasePoint): NavRoute | nil {
         const currRoute = currentRoute || [];
         let retRoute;
         for (let pointi = 0; pointi < this.endPoints.length; pointi++) {
@@ -136,7 +136,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
         return retRoute;
     }
 
-    goTo(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
+    getGoToRoute(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
         let item: INavigationRouteItem<NavData> | nil;
         let items: INavigationRouteItem<NavData>[] = this.routes;
         const newRoute: NavPhase[] = [];
@@ -178,7 +178,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
         return newRoute;
     }
 
-    goBack(route: NavRoute): NavPhase[] {
+    getGoBackRoute(route: NavRoute): NavPhase[] {
         let item: INavigationRouteItem<NavData> | nil;
         let items: INavigationRouteItem<NavData>[] | nil = this.routes;
         let line: INavigationRouteItem<NavData>[] = [];

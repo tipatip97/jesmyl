@@ -27,8 +27,9 @@ export default function useAbsoluteBottomPopup() {
     isAbsoluteBottomPopupOpen,
     closeAbsoluteBottomPopup: () => {
       dispatch(switchAbsoluteBottomPopupOpen(false));
-      if (isClosed) return true;
+      if (isClosed) return false;
       isClosed = true;
+      return true;
     },
     openAbsoluteBottomPopup: (content: ReactNode, closable = true) => {
       isClosable = closable;

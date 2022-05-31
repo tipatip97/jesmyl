@@ -23,8 +23,9 @@ export default function useAbsoluteFloatPopup() {
     closeAbsoluteFloatPopup: () => {
       dispatch(switchAbsoluteFloatPopupOpen(false));
       if (isFloated) popupContent = null;
-      if (isClosed) return true;
+      if (isClosed) return false;
       isClosed = true;
+      return true;
     },
     openAbsoluteFloatPopup: (
       content: ReactNode,

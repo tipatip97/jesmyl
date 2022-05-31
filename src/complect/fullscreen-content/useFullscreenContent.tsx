@@ -20,12 +20,13 @@ export default function useFullscreenContent() {
     fullscreenContentOpenMode: useSelector(
       (state: RootState) => state.complect.fullscreenContentOpenMode
     ),
-    closeFullscreenContent: () => {
+    closeFullscreenContent: (): boolean => {
       ret.dispatch(setFullscreenContentOpenMode(null));
       fullscreenContent = null;
-      if (!isOpen) return true;
+      if (!isOpen) return false;
       isOpen = false;
       if (document.fullscreenElement) document.exitFullscreen();
+      return true;
     },
     openFullscreenContent: (
       content: ReactNode | ((close: () => void) => ReactNode),

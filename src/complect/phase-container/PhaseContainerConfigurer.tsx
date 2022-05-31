@@ -22,12 +22,15 @@ export default function PhaseContainerConfigurer(
     <EvaIcon
       name="arrow-back"
       className="action-button"
-      onClick={() => goBack()}
+      onClick={() => goBack(true)}
     />
   );
 
   const title = headTitle && (
-    <span className={withoutBackButton ? 'margin-big-gap-h' : 'pointer'} onClick={() => !withoutBackButton && goBack()}>
+    <span
+      className={withoutBackButton ? "margin-big-gap-h" : "pointer"}
+      onClick={() => !withoutBackButton && goBack(true)}
+    >
       {headTitle}
     </span>
   );
@@ -63,7 +66,7 @@ export default function PhaseContainerConfigurer(
             <>
               {titled()}
               {typeof head === "string" ? (
-                <span className="pointer" onClick={() => goBack()}>
+                <span className="pointer" onClick={() => goBack(true)}>
                   {head}
                 </span>
               ) : (
