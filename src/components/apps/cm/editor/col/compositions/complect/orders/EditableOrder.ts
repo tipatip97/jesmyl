@@ -75,6 +75,7 @@ export class EditableOrder extends Order {
 
         if (this.top.source) {
             this.top.source[fieldn] = value as never;
+            if (this.top.leadOrd?.top.source?.inh) this.top.leadOrd.top.source.inh[fieldn] = value as never;
             this.setExportable(fieldn, value);
         }
 

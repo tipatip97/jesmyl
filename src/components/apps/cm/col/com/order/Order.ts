@@ -219,7 +219,8 @@ export class Order extends Base<IExportableOrderTop> {
                 endOrd: ord,
                 others,
                 key,
-                startKey: finishKey,
+                startKey: key,
+                endKey: finishKey,
                 count
               }
               : {
@@ -231,7 +232,8 @@ export class Order extends Base<IExportableOrderTop> {
                 endOrd: this.self<Ord>(),
                 others,
                 key,
-                startKey: finishKey,
+                startKey: key,
+                endKey: finishKey,
                 count
               }) as EditableOrderRegion<Ord>;
           } else {
