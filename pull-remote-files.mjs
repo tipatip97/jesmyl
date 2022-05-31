@@ -8,7 +8,7 @@ import fetch from 'node-fetch';
     // ['apps/cm', 'settings'],
     // ['apps/cm', 'cm-execs'],
     ['apps/cm', 'chords'],
-    ['S', 'apps'],
+    // ['S', 'apps'],
     // ['S', 'main', 'css'],
 ].forEach(([path, name, ext = 'json']) => {
     fetch(`https://jesmyl.space/${path}/${name}.${ext}`)
