@@ -21,6 +21,7 @@ export default function CategoryBinds() {
           `cat-for-bind-${cat.wid}`,
           {
             initialValue: `${ccom.refs?.[cat.wid] || ""}`,
+            type: 'number',
             onChange: (value) => {
               if (!value) {
                 removeNativeNumber(cat);
