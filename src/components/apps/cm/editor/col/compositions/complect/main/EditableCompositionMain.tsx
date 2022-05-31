@@ -1,13 +1,21 @@
+import useExer from "../../../../../../../../complect/exer/useExer";
+import useKeyboard from "../../../../../../../../complect/keyboard/useKeyboard";
+import { cmExer } from "../../../../../Cm.store";
 import TheCom from "../../../../../col/com/TheCom";
 import EditContainerCorrectsInformer from "../../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { useEditableCcom } from "../../useEditableCcom";
-import useEditCompositionMain from "./useEditCompositionMain";
 
 export default function EditableCompositionMain() {
   const ccom = useEditableCcom();
-  const { rename } = useEditCompositionMain(ccom);
+  const { exec } = useExer(cmExer);
+  const aboutInput = useKeyboard();
 
   if (!ccom) return null;
+  const [input] = aboutInput(`EditableCompositionMain ${ccom.wid}`, {
+    initialValue: ccom?.name,
+    className: "full-width",
+    onChange: (value) => exec(ccom?.rename(value, exec)),
+  });
 
   return (
     <>
@@ -17,11 +25,7 @@ export default function EditableCompositionMain() {
           className="flex"
         >
           <div className="margin-gap-h">Название</div>
-          <input
-            className="full-width"
-            value={ccom?.name}
-            onChange={(event) => rename(event.target.value)}
-          />
+          {input}
         </EditContainerCorrectsInformer>
       }
       <TheCom com={ccom} hideInvisibles />

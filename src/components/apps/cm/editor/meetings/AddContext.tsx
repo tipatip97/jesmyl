@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import useExer from "../../../../../complect/exer/useExer";
+import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import { cmExer } from "../../Cm.store";
 import { EditableMeetingsEvent } from "./EditableMeetingsEvent";
 import { useEditableMeetings } from "./useEditableMeetings";
@@ -17,6 +18,11 @@ export default function AddContext({
   const { exec } = useExer(cmExer);
   const [contexts, usedContexts] = meetings?.getNames(currPath) || [[], []];
   const [bindEvents, setBindEvents] = useState<EditableMeetingsEvent[]>([]);
+  const [input] = useKeyboard()("AddContext - input", {
+    className: "full-width",
+    initialValue: name,
+    onChange: (value) => setName(value),
+  });
 
   const [, currGroupw] = meetings?.getContexts(currPath) || [];
 
@@ -67,9 +73,7 @@ export default function AddContext({
 
   return (
     <div className="add-context full-container flex column full-height padding-big-gap center">
-      <div>
-        <input value={name} onChange={(event) => setName(event.target.value)} />
-      </div>
+      {input}
       {stack}
       {eventsStack?.length ? (
         <>

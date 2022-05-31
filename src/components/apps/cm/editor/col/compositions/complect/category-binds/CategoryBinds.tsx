@@ -1,3 +1,4 @@
+import useKeyboard from "../../../../../../../../complect/keyboard/useKeyboard";
 import EditContainerCorrectsInformer from "../../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { useEditableCols } from "../../../useEditableCols";
 import { useEditableCcom } from "../../useEditableCcom";
@@ -8,6 +9,7 @@ export default function CategoryBinds() {
   const ccom = useEditableCcom();
   const { setNativeNumber, removeNativeNumber, toggleComExistence } =
     useEditCompositionCategoryBinds(ccom);
+  const aboutInput = useKeyboard();
 
   if (!ccom) return null;
 
@@ -15,24 +17,30 @@ export default function CategoryBinds() {
     <>
       <div className="cat-list-title">Сборники</div>
       {cols?.cats.map((cat) => {
+        const [input, updateInputValue] = aboutInput(
+          `cat-for-bind-${cat.wid}`,
+          {
+            initialValue: `${ccom.refs?.[cat.wid] || ""}`,
+            onChange: (value) => {
+              if (!value) {
+                removeNativeNumber(cat);
+                return;
+              }
+              if (value.match(/\D/)) return;
+              setNativeNumber(cat, value);
+            },
+          }
+        );
+
         return cat.kind !== "dict" ? null : (
           <EditContainerCorrectsInformer
             key={`cat-for-bind-${cat.wid}`}
             corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
           >
             <span>{cat.name} </span>
-            <input
-              value={ccom.refs?.[cat.wid] || ""}
-              onChange={(event) => {
-                if (event.target.value.match(/\D/)) return;
-                setNativeNumber(cat, event.target.value);
-              }}
-            />
+            {input}
             {ccom.refs?.[cat.wid] != null ? (
-              <span
-                className="pointer"
-                onClick={() => removeNativeNumber(cat)}
-              >
+              <span className="pointer" onClick={() => updateInputValue("")}>
                 {" " +
                   (isNaN(ccom.refs?.[cat.wid])
                     ? "Корректно очистить"
@@ -55,17 +63,6 @@ export default function CategoryBinds() {
               checked={cat.stack.some((comw) => ccom.wid === comw)}
               onChange={() => toggleComExistence(cat)}
             />
-            {ccom.refs?.[cat.wid] != null ? (
-              <span
-                className="pointer"
-                onClick={() => removeNativeNumber(cat)}
-              >
-                {" " +
-                  (isNaN(ccom.refs?.[cat.wid])
-                    ? "Корректно очистить"
-                    : "Удалить")}
-              </span>
-            ) : null}
           </EditContainerCorrectsInformer>
         );
       })}

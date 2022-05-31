@@ -21,7 +21,7 @@ export default function TextAreaRedactor({
   const [currValue, setValue] = useState(col || "");
   const istcoln = ccoln === "texts";
 
-  const [Input, updateInputValue] = useKeyboard()(
+  const [input, updateInputValue] = useKeyboard()(
     `redact ${ccoln} #${coli} of com ${com.wid}`,
     {
       multiline: true,
@@ -77,5 +77,5 @@ export default function TextAreaRedactor({
   useEffect(() => setValue(col), [col]);
   useEffect(() => updateInputValue(currValue), [currValue]);
 
-  return <>{Input()}</>;
+  return <>{input}</>;
 }

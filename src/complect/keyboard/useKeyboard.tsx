@@ -19,7 +19,7 @@ export default function useKeyboard(): (
   id: string,
   props: KeyboardInputProps
 ) => [
-  () => ReactNode,
+  ReactNode,
   (value: string, isRemember?: boolean) => void,
   (id: string) => void
 ] {
@@ -27,36 +27,37 @@ export default function useKeyboard(): (
 
   return (id: string, props: KeyboardInputProps) => {
     let localInput: KeyboardInputStorage;
+    const getNode = () =>
+      inputDict[id].node(
+        props,
+        () => {
+          setUpdates(updates + 1);
+          topForceUpdate();
+        },
+        () => {
+          currentInput?.blur();
+          topForceUpdate();
+          topOnBlur();
+          props.onBlur?.();
+        },
+        () => {
+          currentInput?.blur(inputDict[id] !== currentInput);
+          currentInput = inputDict[id];
+          topOnFocus(currentInput);
+        }
+      );
+
+    let inputNode;
+    localInput = inputDict[id];
+
+    if (localInput) inputNode = getNode();
+    else {
+      localInput = inputDict[id] = new KeyboardInputStorage(props.initialValue);
+      inputNode = getNode();
+    }
 
     return [
-      () => {
-        const getNode = () =>
-          inputDict[id].node(
-            props,
-            () => {
-              setUpdates(updates + 1);
-              topForceUpdate();
-            },
-            () => {
-              currentInput?.blur();
-              topForceUpdate();
-              topOnBlur();
-              props.onBlur?.();
-            },
-            () => {
-              currentInput?.blur(inputDict[id] !== currentInput);
-              currentInput = inputDict[id];
-              topOnFocus(currentInput);
-            }
-          );
-
-        localInput = inputDict[id];
-        if (inputDict[id]) return getNode();
-        localInput = inputDict[id] = new KeyboardInputStorage(
-          props.initialValue
-        );
-        return getNode();
-      },
+      inputNode,
       (value: string, isRemember = false) => {
         localInput.replaceAll(value, isRemember);
       },

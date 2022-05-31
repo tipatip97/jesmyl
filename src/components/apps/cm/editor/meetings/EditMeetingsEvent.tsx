@@ -2,6 +2,7 @@ import { useState } from "react";
 import DebouncedInput from "../../../../../complect/DebouncedInput";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../complect/exer/useExer";
+import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import useCmNav from "../../base/useCmNav";
 import { cmExer } from "../../Cm.store";
 import ComFace from "../../col/com/face/ComFace";
@@ -18,6 +19,7 @@ export default function EditMeetingsEvent() {
   const [term, setTerm] = useState(zcat?.term || "");
   const [, setCcom] = useCcom();
   const { goTo } = useCmNav();
+  const aboutInput = useKeyboard();
 
   if (!currentEvent) return null;
   const usedComList = (currentEvent.coms || []).concat(
@@ -25,6 +27,10 @@ export default function EditMeetingsEvent() {
   );
   const comsLength = currentEvent.coms?.length || 0;
   const prevComsLength = currentEvent.prevComs?.length || 0;
+  const [input] = aboutInput(`EditMeetingsEvent ${currentEvent.wid}`, {
+    initialValue: currentEvent.name,
+    onChange: (value) => exec(currentEvent.rename(value)),
+  });
 
   return (
     <PhaseCmEditorContainer
@@ -35,13 +41,7 @@ export default function EditMeetingsEvent() {
       content={
         <>
           <EditContainerCorrectsInformer>
-            Название{" "}
-            <input
-              value={currentEvent.name}
-              onChange={(event) =>
-                exec(currentEvent.rename(event.target.value))
-              }
-            />
+            Название {input}
           </EditContainerCorrectsInformer>
 
           <div className="list-title sticky">

@@ -25,7 +25,7 @@ export default function NewComposition({ close }: { close: () => void }) {
     []
   );
 
-  const [Input] = useKeyboard()("new composition name input", {
+  const [input] = useKeyboard()("new composition name input", {
     className: "full-width",
     initialValue: name,
     onChange: (value) => {
@@ -59,7 +59,7 @@ export default function NewComposition({ close }: { close: () => void }) {
         >
           <div className="flex full-width">
             <span className="margin-gap-h">Название </span>
-            <div className="full-width">{Input()}</div>
+            <div className="full-width">{input}</div>
           </div>
         </EditContainerCorrectsInformer>
         <textarea

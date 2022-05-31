@@ -31,7 +31,6 @@ export default function ModalInput(topProps: TheModalInputProps) {
   const props: Record<string, Function | string> = mylib.overlap(
     isTextArea ? { rows: 3 } : {},
     {
-      key: `app-modal-body-input-list-item-input-${uniq}`,
       type: asFunc(input.type),
       value: asFunc(input.value),
       style: asFunc(input.style),
@@ -41,7 +40,6 @@ export default function ModalInput(topProps: TheModalInputProps) {
       placeholder: asFunc(input.placeholder),
       min: asFunc(input.min),
       max: asFunc(input.max),
-      // setError: (err: string) => {if (!Array.isArray(topProps.config)) topProps.config.setError?.(err)},
       className:
         asFunc(input.className) + " app-modal-body-input-list-item-input",
       onInput: (event: InputEvent) => {
@@ -93,7 +91,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
     }
   );
 
-  const [Input] = aboutInput(uniq, { ...props });
+  const [inputNode] = aboutInput(uniq, { ...props, multiline: isTextArea });
 
   return (
     <label
@@ -105,7 +103,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
           {asFunc(input.title)}
         </span>
       )}
-      {isTextArea ? <textarea {...props}>{input.value}</textarea> : Input()}
+      {inputNode}
     </label>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
+import useKeyboard from "../../../../complect/keyboard/useKeyboard";
 import LoadIndicatedContent from "../../../../complect/load-indicated-content/LoadIndicatedContent";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
@@ -13,17 +14,41 @@ export default function IndexLogin() {
   const [passw, setPassword] = useState("");
   const [rpassw, setRPassword] = useState("");
   const [mode, setMode] = useState<AuthMode>("login");
-  const [isPasswHidden, setIsPasswHidden] = useState(true);
-  const [isRPasswHidden, setIsRPasswHidden] = useState(true);
   const [isInProcess, setIsInProscess] = useState(1);
+  const aboutInput = useKeyboard();
 
   const { loginInSystem, registerInSystem, setError, errors } = useAuth();
   const { navigate } = useIndexNav();
   const error = (message: string | nil) =>
     message && <div className="login-error-message">{message}</div>;
 
+  const [loginInput] = aboutInput("IndexLogin login", {
+    onChange: (value) => setLogin(value),
+    initialValue: login,
+    placeholder: "Логин",
+  });
+  const [passwInput] = aboutInput("IndexLogin passw", {
+    type: "password",
+    onChange: (value) => setPassword(value),
+    initialValue: passw,
+    placeholder: "Пароль",
+  });
+  const [rpasswInput] = aboutInput("IndexLogin r-passw", {
+    type: "password",
+    onChange: (value) => setRPassword(value),
+    initialValue: rpassw,
+    placeholder: "Подтверди пароль",
+  });
+
   useEffect(() => {
-    setError("login", login.length < 3 ? "Минимум 3 символа" : null);
+    setError(
+      "login",
+      login.length < 3
+        ? "Минимум 3 символа"
+        : login.length > 20
+        ? "Максимум 20 символов"
+        : null
+    );
   }, [login]);
 
   useEffect(() => {
@@ -54,47 +79,17 @@ export default function IndexLogin() {
           <div className="relative flex column full-width">
             <div className="input-container flex">
               {error(errors.login)}
-              <div className="input-wrapper">
-                <input
-                  onChange={(event) => setLogin(event.target.value)}
-                  value={login}
-                  autoComplete="off"
-                  placeholder="Логин"
-                />
-              </div>
+              <div className="input-wrapper">{loginInput}</div>
             </div>
             <div className="input-container flex">
               {error(errors.passw)}
-              <div className="input-wrapper">
-                <input
-                  type={isPasswHidden ? "password" : "text"}
-                  onChange={(event) => setPassword(event.target.value)}
-                  value={passw}
-                  autoComplete="off"
-                  placeholder="Пароль"
-                />
-                <EvaIcon
-                  name="eye"
-                  onClick={() => setIsPasswHidden(!isPasswHidden)}
-                />
-              </div>
+              <div className="input-wrapper">{passwInput}</div>
             </div>
             {mode === "register" ? (
               <>
                 <div className="input-container flex">
                   {error(errors.rpassw)}
-                  <div className="input-wrapper">
-                    <input
-                      type={isRPasswHidden ? "password" : "text"}
-                      onChange={(event) => setRPassword(event.target.value)}
-                      value={rpassw}
-                      placeholder="Подтверди пароль"
-                    />
-                    <EvaIcon
-                      name={errors.rpassw ? "alert-circle" : "eye"}
-                      onClick={() => setIsRPasswHidden(!isRPasswHidden)}
-                    />
-                  </div>
+                  <div className="input-wrapper">{rpasswInput}</div>
                 </div>
               </>
             ) : null}

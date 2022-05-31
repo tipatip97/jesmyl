@@ -28,7 +28,7 @@ export default function DebouncedInput(props: {
   const [term, setTerm] = useState(initialTerm || "");
   const [termDebounced, setTermDebounced] = useState(initialTerm);
   const [timeout, setTimeOut] = useState();
-  const [Input] = useKeyboard()(`debounce-input ${props.uniq || "{uniq}"}`, {
+  const [input] = useKeyboard()(`debounce-input ${props.uniq || "{uniq}"}`, {
     className: "input",
     placeholder: props.placeholder,
     onChange: (value) => setTerm(value),
@@ -63,7 +63,7 @@ export default function DebouncedInput(props: {
           value={term}
         />
       ) : (
-        Input()
+        input
       )}
     </div>
   );
