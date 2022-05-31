@@ -20,6 +20,13 @@
         justify-content: space-around;
         height: 100%;
 
+        &.number-type {
+            max-width: 90%;
+            min-width: 200px;
+            width: 100%;
+            margin: auto;
+        }
+
         &:not(.bottom-line) {
 
             >.keyboard-flash-key:not(.writable) {
@@ -60,7 +67,8 @@
                     opacity: .5;
                 }
 
-                >.is-control-key-label {
+                &.is-control-key-label:before {
+                    content: 'ctrl';
                     position: absolute;
                     bottom: 0;
                     right: 0;

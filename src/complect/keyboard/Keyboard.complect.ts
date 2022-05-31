@@ -47,6 +47,12 @@ export const languagedKeys: Record<KeyboardKeyTranslateLanguage, Record<Keyboard
     }
 }
 
+export const keyboardNumberScreenLines = [
+    ['1', '2', '3'],
+    ['4', '5', '6'],
+    ['7', '8', '9'],
+];
+
 export const keyboardKeyDict: KeyboardKeyDict = {} as KeyboardKeyDict;
 MyLib.entries(languagedKeys)
     .forEach(([lang, { lower, upper }]) => {

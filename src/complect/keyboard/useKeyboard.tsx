@@ -1,6 +1,9 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
-import { keyboardKeyDict } from "./Keyboard.complect";
+import {
+  keyboardKeyDict,
+  keyboardNumberScreenLines,
+} from "./Keyboard.complect";
 import { KeyboardInputProps } from "./Keyboard.model";
 import "./Keyboard.scss";
 import { KeyboardInputStorage } from "./KeyboardStorage";
@@ -102,23 +105,26 @@ export function KEYBOARD_FLASH({
     };
   }, []);
 
-  const typeKeyNode = (
+  const keyNode = (
     className: string,
     key: string,
-    iconName?: EvaIconName
+    iconName?: EvaIconName,
+    onMouseUp?: React.MouseEventHandler<HTMLDivElement>,
+    onContextMenu?: React.MouseEventHandler<HTMLOrSVGElement>
   ) => {
     return (
       <div
         className={`keyboard-flash-key ${className} ${
           keyInFix === key ? "key-in-fix" : ""
         }`}
-        onMouseUp={() => currentInput.write(key)}
+        onMouseUp={onMouseUp || (() => currentInput.write(key))}
         onMouseDown={() => setKeyInFix(key)}
         onMouseOver={() => keyInFix && setKeyInFix(key)}
         onTouchStart={(event) => {
           event.stopPropagation();
           setKeyInFix(key);
         }}
+        onContextMenu={onContextMenu}
       >
         {iconName ? (
           <EvaIcon name={iconName} className="key-button" />
@@ -143,92 +149,115 @@ export function KEYBOARD_FLASH({
       }}
     >
       {currentInput ? (
-        <>
-          {keyboardKeyDict[currentInput.currentLanguage][
-            currentInput.event.shiftKey ? "upper" : "lower"
-          ].map((line, linei) => {
-            return (
-              <div key={`line-${linei}`} className="keyboard-flash-line">
-                {linei === 3 ? (
-                  <div
-                    className={`keyboard-flash-key shift-key ${
-                      currentInput.isCapsLock ? "caps-lock" : ""
-                    }`}
-                  >
-                    <EvaIcon
-                      name="arrow-upward-outline"
-                      className="key-button"
-                      onClick={() => currentInput.switchCaps()}
-                      onContextMenu={(event) => {
-                        event.preventDefault();
-                        currentInput.switchCtrlKey();
-                      }}
-                    />
-                    {currentInput.event.ctrlKey ? (
-                      <div className="is-control-key-label">ctrl</div>
-                    ) : null}
-                  </div>
-                ) : null}
-                {line.map((key, keyi) => {
-                  return (
-                    <React.Fragment key={`key-${keyi}`}>
-                      {typeKeyNode("writable", key)}
-                    </React.Fragment>
-                  );
-                })}
-                {linei === 3 ? (
-                  <div className="keyboard-flash-key">
-                    <EvaIcon
-                      name="backspace-outline"
-                      className="key-button"
-                      onClick={(event) => currentInput.backspace(event)}
-                    />
-                  </div>
-                ) : null}
-              </div>
-            );
-          })}
+        currentInput.type === "number" ? (
+          <>
+            {keyboardNumberScreenLines.map((line, linei) => {
+              return (
+                <div key={`line-nums-${linei}`} className="keyboard-flash-line number-type">
+                  {line.map((key, keyi) => {
+                    return (
+                      <React.Fragment key={`key-num-${keyi}`}>
+                        {keyNode("writable", key)}
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+              );
+            })}
+            <div className="keyboard-flash-line bottom-line">
+              {keyNode(
+                currentInput?.canUndo() ? "full-width" : "full-width disabled",
+                "UNDO",
+                "corner-up-left-outline",
+                () => currentInput.undo()
+              )}
+              {keyNode(
+                currentInput?.canRedo() ? "full-width" : "full-width disabled",
+                "REDO",
+                "corner-up-right-outline",
+                () => currentInput.redo()
+              )}
+              {keyNode("writable", "0")}
+              {keyNode(
+                "backspace full-width",
+                "BACKSPACE",
+                "backspace-outline",
+                (event) => currentInput.backspace(event)
+              )}
+              {keyNode("full-width", "BLUR", "arrowhead-down-outline", () =>
+                currentInput.blur()
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            {keyboardKeyDict[currentInput.currentLanguage][
+              currentInput.event.shiftKey ? "upper" : "lower"
+            ].map((line, linei) => {
+              return (
+                <div key={`line-${linei}`} className="keyboard-flash-line">
+                  {linei === 3
+                    ? keyNode(
+                        `shift-key ${
+                          currentInput.isCapsLock ? "caps-lock" : ""
+                        } ${
+                          currentInput.event.ctrlKey
+                            ? "is-control-key-label"
+                            : ""
+                        }`,
+                        "SHIFT",
+                        "arrow-upward-outline",
+                        () => currentInput.switchCaps(),
+                        (event) => {
+                          event.preventDefault();
+                          currentInput.switchCtrlKey();
+                        }
+                      )
+                    : null}
+                  {line.map((key, keyi) => {
+                    return (
+                      <React.Fragment key={`key-${keyi}`}>
+                        {keyNode("writable", key)}
+                      </React.Fragment>
+                    );
+                  })}
+                  {linei === 3
+                    ? keyNode(
+                        "backspace",
+                        "BACKSPACE",
+                        "backspace-outline",
+                        (event) => currentInput.backspace(event)
+                      )
+                    : null}
+                </div>
+              );
+            })}
 
-          <div className="keyboard-flash-line bottom-line">
-            <div className="keyboard-flash-key">
-              <EvaIcon
-                name="corner-up-left-outline"
-                className={`key-button ${
-                  currentInput.canUndo() ? "" : "disabled"
-                }`}
-                onClick={() => currentInput.undo()}
-              />
+            <div className="keyboard-flash-line bottom-line">
+              {keyNode(
+                currentInput?.canUndo() ? "" : " disabled",
+                "UNDO",
+                "corner-up-left-outline",
+                () => currentInput.undo()
+              )}
+              {keyNode(
+                currentInput?.canRedo() ? "" : " disabled",
+                "REDO",
+                "corner-up-right-outline",
+                () => currentInput.redo()
+              )}
+              {keyNode("space-key", " ")}
+              {keyNode("", "LANG", "globe-outline", () =>
+                currentInput.switchLanguage()
+              )}
+              {currentInput.isMultiline
+                ? keyNode("enter", "\n", "corner-down-left-outline")
+                : keyNode("", "BLUR", "arrowhead-down-outline", () =>
+                    currentInput.blur()
+                  )}
             </div>
-            <div className="keyboard-flash-key">
-              <EvaIcon
-                name="corner-up-right-outline"
-                className={`key-button ${
-                  currentInput.canRedo() ? "" : "disabled"
-                }`}
-                onClick={() => currentInput.redo()}
-              />
-            </div>
-            {typeKeyNode("space-key", " ")}
-            <div className="keyboard-flash-key">
-              <EvaIcon
-                name="globe-outline"
-                className="key-button"
-                onClick={() => currentInput.switchLanguage()}
-              />
-            </div>
-            {currentInput.isMultiline ? (
-              typeKeyNode("enter", "\n", "corner-down-left-outline")
-            ) : (
-              <div className="keyboard-flash-key">
-                <EvaIcon
-                  name="arrowhead-down-outline"
-                  className="key-button"
-                  onClick={() => currentInput.blur()}
-                />
-              </div>
-            )}
-          </div>
-        </>
+          </>
+        )
       ) : null}
     </div>
   );
