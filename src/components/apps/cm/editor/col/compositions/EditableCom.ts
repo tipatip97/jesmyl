@@ -419,7 +419,7 @@ export class EditableCom extends Com {
             action: 'removeOrderBlock',
             uniq: wid,
             args: {
-                wid,
+                ordw: wid,
                 isAnchor: +isAnchor,
                 blockn: top.header()
             },
