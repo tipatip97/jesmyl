@@ -29,7 +29,7 @@ export class KeyboardStorageOverflows extends KeyboardStorageTextModifiers {
                 this.delete(event);
                 return;
             case 'Enter':
-                this.type('\n');
+                this.isMultiline && this.write('\n');
                 return;
             case 'ArrowLeft':
                 this.arrowLeft(event);
@@ -83,7 +83,7 @@ export class KeyboardStorageOverflows extends KeyboardStorageTextModifiers {
             default:
                 if (event.key.length === 1) {
                     event.preventDefault();
-                    this.type(event.key);
+                    this.write(event.key);
                 }
         }
     }

@@ -128,7 +128,7 @@
     }
 
     &.without-close-button {
-        .close-icon {
+        .icon-button-container>.close-button {
             display: none;
         }
 
@@ -160,7 +160,7 @@
             white-space: nowrap;
         }
 
-        .close-icon {
+        .icon-button-container>.close-button {
             display: none;
         }
     }
@@ -276,11 +276,17 @@
         }
     }
 
-    >.close-icon {
+    >.icon-button-container {
         position: absolute;
-        right: 0;
+        right: .5em;
         top: 0;
-        cursor: pointer;
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        >.icon-button {
+            cursor: pointer;
+        }
     }
 }
 

@@ -18,7 +18,11 @@ let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => {};
 export default function useKeyboard(): (
   id: string,
   props: KeyboardInputProps
-) => [() => ReactNode, (value: string, isRemember?: boolean) => void] {
+) => [
+  () => ReactNode,
+  (value: string, isRemember?: boolean) => void,
+  (id: string) => void
+] {
   const [updates, setUpdates] = useState(0);
 
   return (id: string, props: KeyboardInputProps) => {
@@ -49,13 +53,15 @@ export default function useKeyboard(): (
         localInput = inputDict[id];
         if (inputDict[id]) return getNode();
         localInput = inputDict[id] = new KeyboardInputStorage(
-          props.initialValue,
-          id
+          props.initialValue
         );
         return getNode();
       },
       (value: string, isRemember = false) => {
         localInput.replaceAll(value, isRemember);
+      },
+      (id: string) => {
+        delete inputDict[id];
       },
     ];
   };
@@ -110,7 +116,7 @@ export function KEYBOARD_FLASH({
         className={`keyboard-flash-key ${className} ${
           keyInFix === key ? "key-in-fix" : ""
         }`}
-        onMouseUp={() => currentInput.type(key)}
+        onMouseUp={() => currentInput.write(key)}
         onMouseDown={() => setKeyInFix(key)}
         onMouseOver={() => keyInFix && setKeyInFix(key)}
         onTouchStart={(event) => {

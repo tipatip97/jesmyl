@@ -11,7 +11,7 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
     onFocus: () => void
   ) => ReactNode;
 
-  constructor(initialValue?: string, id?: string) {
+  constructor(initialValue?: string) {
     super();
     this.replaceAll(initialValue || "", false);
     this.node = (props, forceUpdater, onBlur, onFocus) => {
@@ -22,18 +22,20 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
       this.forceUpdate = forceUpdater;
       this.onBlur = onBlur;
       this.isMultiline = props.multiline;
+      this.type = props.type;
+      this.isHiddenPassword ??= this.type === "password";
 
       let currentChari = 0;
 
       return (
         <div
-          className={`${props.className || ""} ${
-            this.valueCharLines.length === 0 ? "no-lines" : ""
-          } ${this.isFocused ? "focused" : ""} ${
-            this.value ? "" : "empty-input"
-          } ${props.multiline ? "multiline" : ""} ${
-            props.closeButton !== false ? "" : "without-close-button"
-          } input-keyboard-flash-controlled`}
+          className={`input-keyboard-flash-controlled input ${
+            props.className || ""
+          } ${this.valueCharLines.length === 0 ? "no-lines" : ""} ${
+            this.isFocused ? "focused" : ""
+          } ${this.value ? "" : "empty-input"} ${
+            props.multiline ? "multiline" : ""
+          } ${props.closeButton !== false ? "" : "without-close-button"}`}
           placeholder={props.placeholder}
           onMouseDown={(event) => {
             event.stopPropagation();
@@ -102,7 +104,7 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
                             this.onCharMouseUp(event, chari);
                           }}
                         >
-                          {letter}
+                          {this.isHiddenPassword ? "●" : letter}
                         </span>
                       );
                     })}
@@ -111,14 +113,28 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
               })}
             </div>
           </div>
-          <EvaIcon
-            name="close"
-            className="close-icon"
-            onMouseDown={() => {
-              this.replaceAll("");
-              this.focus();
-            }}
-          />
+          <div className="icon-button-container">
+            {this.type === "password" ? (
+              <EvaIcon
+                name={this.isHiddenPassword ? "eye-outline" : "eye-off-outline"}
+                className="icon-button close-button"
+                onMouseDown={(event) => {
+                  event.stopPropagation();
+                  this.isHiddenPassword = !this.isHiddenPassword;
+                  this.forceUpdate();
+                }}
+              />
+            ) : (
+              <EvaIcon
+                name="close"
+                className="icon-button close-button"
+                onMouseDown={() => {
+                  this.replaceAll("");
+                  this.focus();
+                }}
+              />
+            )}
+          </div>
           <div
             className={`menu-actions-with-selected ${
               this.isSelected && this.isFocused ? "open" : ""

@@ -10,11 +10,12 @@ export type KeyboardKeyTranslateCase = typeof keyboardKeyTranslateCase[number];
 export type KeyboardKeyTranslate = Record<KeyboardKeyTranslateLangs, string>;
 
 export type KeyboardKeyDict = Record<KeyboardKeyTranslateLangs, { lower: string[][]; upper: string[][]; }>;
-
+export type KeyboardInputPropsType = 'password' | 'text';
 
 export interface KeyboardInputProps {
     initialValue?: string;
     multiline?: boolean;
+    type?: KeyboardInputPropsType;
     closeButton?: boolean;
     className?: string;
     placeholder?: string;

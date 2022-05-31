@@ -1,3 +1,4 @@
+import { KeyboardInputPropsType } from "../Keyboard.model";
 
 
 export class KeyboardStorageBase {
@@ -11,7 +12,8 @@ export class KeyboardStorageBase {
     isFocused = false;
     isMultiline?: boolean;
     isSelected = false;
-
+    type?: KeyboardInputPropsType;
+    isHiddenPassword?: boolean;
 
     focus() {
         if (!this.isFocused) this.onFocus?.();
@@ -26,11 +28,11 @@ export class KeyboardStorageBase {
             this.isFocused = false;
             this.forceUpdate();
             this.onBlur();
+            this.forceUpdate();
 
             return true;
         }
 
-        this.forceUpdate();
         return false;
     }
 

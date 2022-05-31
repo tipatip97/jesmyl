@@ -19,8 +19,11 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
 
         this.valueChars.forEach((char) => {
             if (char === '\n') {
-                lastLine = [];
-                lines.push(lastLine);
+                if (this.isMultiline) {
+                    lastLine = [];
+                    lines.push(lastLine);
+                } else lastLine.push(' ');
+
                 return;
             }
             lastLine.push(char);
@@ -80,7 +83,7 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
         this.setValues();
     }
 
-    type(value: string, isRememberAsPart?: boolean) {
+    write(value: string, isRememberAsPart?: boolean) {
         if (this.replaceSelected(value)) return;
         if (
             (value === ' ' && this.prevTypedValue !== ' ') ||
@@ -102,7 +105,7 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
 
     async paste() {
         const text = await navigator.clipboard.readText();
-        text && this.type(text, true);
+        text && this.write(text, true);
     }
 
     copy() {
