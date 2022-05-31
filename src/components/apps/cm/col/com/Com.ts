@@ -406,7 +406,7 @@ export class Com extends BaseNamed<IExportableCom> {
         prevOrd = newOrder;
       }
 
-      let isPrevAnchorInheritPlus = top.a != null;
+      let isAnchorInheritPlus = top.a != null;
 
       if (targetOrd && top.a != null) {
         let anci = (targetOrd.top.sourceIndex || 0) + 1;
@@ -415,7 +415,7 @@ export class Com extends BaseNamed<IExportableCom> {
         let anchorInheritIndex = 0;
 
         while (ancStyle?.isInherit) {
-          isPrevAnchorInheritPlus = true;
+          isAnchorInheritPlus = true;
           const ancTop = Order.getWithExtendableFields(targetOrd.top.source as IExportableOrderTop, anc);
 
           ancTop.isAnchorInherit = true;
@@ -454,7 +454,7 @@ export class Com extends BaseNamed<IExportableCom> {
         nextTop.prev = prev;
         nextTop.init = top as IExportableOrderTop;
         nextTop.isNextInherit = !!getStyle(val[nexti + 1])?.isInherit;
-        nextTop.isPrevAnchorInheritPlus = isPrevAnchorInheritPlus;
+        nextTop.isAnchorInheritPlus = isAnchorInheritPlus;
         nextTop.header = top.header;
         nextTop.source = next;
         nextTop.viewIndex = viewIndex++;

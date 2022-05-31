@@ -17,7 +17,7 @@ export default function TheOrder(props: ITheOrderProps) {
   if (
     (isMiniAnchor &&
       (orderUnit.top.isAnchorInherit ||
-        orderUnit.top.isPrevAnchorInheritPlus)) ||
+        orderUnit.top.isAnchorInheritPlus)) ||
     (hideInvisibles && !orderUnit.isVisible)
   )
     return null;

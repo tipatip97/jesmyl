@@ -1,17 +1,17 @@
 import { Exec } from "../../../../../../complect/exer/Exec";
 import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import { blockStyles } from "../../../col/com/block-styles/BlockStyles";
 import { cmExer } from "../../../Cm.store";
 import { Cat } from "../../../col/cat/Cat";
+import { blockStyles } from "../../../col/com/block-styles/BlockStyles";
 import { Com } from "../../../col/com/Com";
 import { IExportableCom } from "../../../col/com/Com.model";
 import { IExportableOrderTop, INewExportableOrder } from "../../../col/com/order/Order.model";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import { textedChord } from "../../Editor.complect";
 import { EditableCol } from "../EditableCol";
-import { EditableOrder } from "./complect/orders/EditableOrder";
 import { EditableCols } from "../EditableCols";
+import { EditableOrder } from "./complect/orders/EditableOrder";
 
 
 export class EditableCom extends Com {
@@ -300,7 +300,7 @@ export class EditableCom extends Com {
 
     isOrdWithHead(ord: EditableOrder) {
         return !ord.top.isInherit &&
-            !ord.top.isPrevAnchorInheritPlus &&
+            !ord.top.isAnchorInheritPlus &&
             !ord.isEmptyHeader;
     }
 

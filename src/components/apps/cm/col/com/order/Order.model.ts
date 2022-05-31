@@ -63,7 +63,7 @@ export interface IExportableOrderTop extends IExportableOrder {
     isTarget?: boolean;
     isInherit?: boolean;
     isAnchorInherit?: boolean;
-    isPrevAnchorInheritPlus?: boolean;
+    isAnchorInheritPlus?: boolean;
     isNextInherit?: boolean;
     isNextAnchorOrd?: boolean;
     isPrevTargetOrd?: boolean;
@@ -71,8 +71,6 @@ export interface IExportableOrderTop extends IExportableOrder {
     anchorInheritIndex?: number;
     sourceIndex?: number;
     inhFields?: string[];
-    // headClassName?: string;
-    // textClassName?: string;
     viewIndex?: number;
     header: (bag?: OrderTopHeaderBag, isRequired?: boolean) => string;
     style?: StyleBlock;

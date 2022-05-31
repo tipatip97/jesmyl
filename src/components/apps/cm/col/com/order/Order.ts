@@ -84,7 +84,7 @@ export class Order extends Base<IExportableOrderTop> {
   get antiVis() { return this.isVisible ? 0 : 1; }
   get isVisible(): boolean {
     return !!(
-      this.top.isPrevAnchorInheritPlus || this.top.isAnchorInherit
+      this.top.isAnchorInheritPlus || this.top.isAnchorInherit
         ? this.top.leadOrd?.isVisible
         : this.top.isInherit
           ? !(this.getBasic('v') === 0 || (this.top.leadOrd && !this.top.leadOrd?.isVisible))
