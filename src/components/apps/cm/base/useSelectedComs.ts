@@ -25,7 +25,10 @@ export default function useSelectedComs() {
         },
         isPreventSaveNav: () => !mylib.isEq(cmStorage.get('selectedComws'), ret.selectedComws),
         selectedComPosition: (com: Com) => ret.selectedComws.indexOf(com.wid) + 1,
-        updateSelectedComws: (comws: number[]) => dispatch(updateSelectedComws(comws)),
+        updateSelectedComws: (comws: number[]) => {
+            localSelectedComs = null;
+            dispatch(updateSelectedComws(comws));
+        },
         clearSelectedComws: () => {
             ret.updateSelectedComws([]);
             localSelectedComs = null;

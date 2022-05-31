@@ -12,7 +12,7 @@ export default function useComPack(): [Com[] | nil, string] {
     const { markedComs } = useMarks();
     const { currentMeeting } = useMeetings();
     const { route } = useCmNav();
-    const { takeSelectedComs } = useSelectedComs();
+    const { takeSelectedComs, selectedComws } = useSelectedComs();
 
     return useMemo(() => {
         return route?.includes('marks')
@@ -28,5 +28,5 @@ export default function useComPack(): [Com[] | nil, string] {
                         : ccat ?
                             [ccat.wraps.map(wrap => wrap.com), " - " + ccat.name]
                             : [null, ""];
-    }, [ccat, currentMeeting, markedComs, route]);
+    }, [ccat, currentMeeting, markedComs, route, selectedComws]);
 }
