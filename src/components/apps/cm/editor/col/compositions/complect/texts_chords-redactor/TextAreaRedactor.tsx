@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import useKeyboard from "../../../../../../../../complect/keyboard/useKeyboard";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import { EditableCom } from "../../EditableCom";
@@ -28,6 +28,7 @@ export default function TextAreaRedactor({
       closeButton: false,
       className: `cleared-input com-editor-textarea full-width no-resize`,
       initialValue: currValue,
+      preferLanguage: ccoln === "texts" ? (com.langi ? "ua" : "ru") : "en",
       onChange: async (value) => {
         const prev = currValue;
         const curr = value;
@@ -47,29 +48,21 @@ export default function TextAreaRedactor({
             if (!(await modalService.confirm(`Добавить новый ${txt}?`))) return;
 
             onInsert("");
-            // inputRef.current?.focus();
           }
           onChange(isNewBlock ? curr.replace(/\n+$/, "") : curr);
           setValue(istcoln ? curr : com.transBlock(curr) || "");
         }
       },
       onPaste: (value) => {
-        com.parseBlocksFromClipboard(
-          value,
-          (blocks): boolean => {
-            if (blocks.length > 1) {
+        com.parseBlocksFromClipboard(value, (blocks): boolean => {
+          if (blocks.length > 1) {
+            if (currValue !== "") {
+              return false;
+            }
+          } else return false;
 
-              if (currValue !== "") {
-                // mylib.alert(
-                //   "Вставлять многоблочный текст возможно только в пустые блоки."
-                // );
-                return false;
-              }
-            } else return false;
-
-            return true;
-          }
-        );
+          return true;
+        });
       },
     }
   );
