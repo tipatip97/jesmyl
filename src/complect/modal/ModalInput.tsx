@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import useKeyboard from "../keyboard/useKeyboard";
 import mylib from "../my-lib/MyLib";
 import { onActionClick } from "./Modal";
 import {
@@ -11,7 +10,6 @@ import modalService from "./Modal.service";
 
 export default function ModalInput(topProps: TheModalInputProps) {
   let input: Partial<ModalConfigInput>, uniq: string;
-  const aboutInput = useKeyboard();
 
   if (Array.isArray(topProps.config)) [input, uniq = ""] = topProps.config;
   else [input, uniq] = [topProps.config, ""];
@@ -91,8 +89,6 @@ export default function ModalInput(topProps: TheModalInputProps) {
     }
   );
 
-  const [inputNode] = aboutInput(uniq, { ...props, multiline: isTextArea });
-
   return (
     <label
       className="app-modal-body-input-list-item pointer"
@@ -103,7 +99,11 @@ export default function ModalInput(topProps: TheModalInputProps) {
           {asFunc(input.title)}
         </span>
       )}
-      {inputNode}
+      {isTextArea ? (
+        <textarea {...props}>{input.value}</textarea>
+      ) : (
+        <input {...props} />
+      )}
     </label>
   );
 }
