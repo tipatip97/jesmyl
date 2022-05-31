@@ -37,22 +37,29 @@ export default function TextsChordsRedactor({
                       style={{
                         color: ords.length ? "grey" : "red",
                       }}
-                    >
-                      {ords.length
-                        ? mylib
-                            .unique(
-                              ords.map(
-                                (o) =>
-                                  `${o.top.header()}${
-                                    o.top.style?.isInherit
-                                      ? ` ${o.top.style.name}`
-                                      : ""
-                                  }`
+                      dangerouslySetInnerHTML={{
+                        __html: ords.length
+                          ? mylib
+                              .unique(
+                                ords.map(
+                                  (o) =>
+                                    `${
+                                      o.top.isAnchor ||
+                                      o.top.isAnchorInherit ||
+                                      o.top.isAnchorInheritPlus
+                                        ? "&#9875;"
+                                        : ""
+                                    }${o.top.header()}${
+                                      o.top.style?.isInherit
+                                        ? ` ${o.top.style.name}`
+                                        : ""
+                                    }`
+                                )
                               )
-                            )
-                            .join(", ")
-                        : "Нет упоминаний этого блока"}
-                    </span>
+                              .join(", ")
+                          : "Нет упоминаний этого блока",
+                      }}
+                    />
                   ))(
                     ccom.orders?.filter(
                       (ord) => (istcoln ? ord.texti : ord.chordsi) === coli
