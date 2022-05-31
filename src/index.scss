@@ -74,7 +74,8 @@ input[type='radio'] {
   display: block;
 }
 
-.disabled {
+.disabled,
+:disabled {
   opacity: .5;
   pointer-events: none;
 }
@@ -93,6 +94,7 @@ input[type='radio'] {
   white-space: nowrap;
 }
 
+.input,
 input,
 textarea {
   font-size: 1em;
