@@ -61,6 +61,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
         <div
           className="input-keyboard-flash-controlled-char-list"
           ref={this.charListElementRef}
+          onContextMenu={this.onFlashContextMenu}
         >
           <div className={`input-keyboard-flash-controlled-char-list-inner`}>
             {this.valueCharLines.map(this.valueCharLinesNodeMap)}
@@ -81,17 +82,22 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
             />
           )}
         </div>
-        <div
-          className={`menu-actions-with-selected ${
-            this.isSelected && this.isFocused ? "open" : ""
-          }`}
-        >
-          {this.nullOrCanSelectAll() && (
-            <div onMouseDown={this.onSelectAllButton}>Выделить всё</div>
-          )}
-          <div onMouseDown={this.onCopyButton}>Копировать</div>
-          <div onMouseDown={this.onPasteButton}>Вставить</div>
-        </div>
+        {this.nullOrContextMenu() && (
+          <div className="menu-actions-with-selected">
+            {this.nullOrCanSelectAll() && (
+              <div onMouseDown={this.onSelectAllButton}>Выделить всё</div>
+            )}
+            {this.nullOrCanCopy() && (
+              <div onMouseDown={this.onCopyButton}>Копировать</div>
+            )}
+            {this.nullOrCanPaste() && (
+              <div onMouseDown={this.onPasteButton}>Вставить</div>
+            )}
+            {this.nullOrCanPasteBefore() && (
+              <div onMouseDown={this.onPasteBeforeButton}>Вставить перед</div>
+            )}
+          </div>
+        )}
       </div>
     );
   }
@@ -159,12 +165,31 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     }
   }
 
+  nullOrContextMenu() {
+    console.log(this.isFocused && (this.isSelected || this.isContextOpen), '===', this.isFocused, this.isSelected, this.isContextOpen);
+    return this.isFocused && (this.isSelected || this.isContextOpen)
+      ? true
+      : null;
+  }
+
   nullOrCanSelectAll() {
     return (this.selected[0] === 0 &&
       this.selected[1] === this.valueChars.length) ||
       (this.selected[0] === this.valueChars.length && this.selected[1] === 0)
       ? null
       : true;
+  }
+
+  nullOrCanCopy() {
+    return this.isContextOpen ? null : true;
+  }
+
+  nullOrCanPaste() {
+    return true;
+  }
+
+  nullOrCanPasteBefore() {
+    return this.isContextOpen ? null : true;
   }
 
   switchLanguage() {

@@ -28,7 +28,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
 
                 return;
             }
-            lastLine.push(this.setIsUnknownSymbols(char) ? '𖡄' : char);
+            lastLine.push(this.setIsUnknownSymbols(char) ? '�' : char);
         });
 
         this.valueCharLines = lines;
@@ -105,8 +105,12 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         this.scrollToView();
     }
 
-    async paste() {
+    async paste(position?: 'before' | 'after') {
         const text = await navigator.clipboard.readText();
+        if (text && position) {
+            this.isSelected = false;
+            this.setCursorPosition(position === 'before' ? Math.min(...this.selected) : Math.max(...this.selected));
+        }
         text && this.write(text, true);
     }
 

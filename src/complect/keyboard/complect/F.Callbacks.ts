@@ -5,6 +5,7 @@ import { KeyboardStorageChanges } from './E.Changes';
 export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
     type?: KeyboardInputPropsType;
     isHiddenPassword?: boolean;
+    isContextOpen = false;
 
     charListElementRef = (element: HTMLDivElement) => element && (this.flowCharListElement = element);
 
@@ -30,6 +31,11 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         this.paste();
     }
 
+    onPasteBeforeButton = (event: KeyboardStorageEvent) => {
+        event.stopPropagation();
+        this.paste('before');
+    }
+
     onClearButton = () => {
         this.replaceAll("");
         this.focus();
@@ -41,10 +47,18 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         this.forceUpdate();
     }
 
+    onFlashContextMenu = (event: KeyboardStorageEvent) => {
+        event.stopPropagation();
+        event.preventDefault();
+        this.isContextOpen = true;
+        this.forceUpdate();
+    }
+
     onCharMouseDown = (chari: number, event: KeyboardStorageEvent) => {
         event.stopPropagation();
         this.downTs = Date.now();
         this.isSelecting = true;
+        this.isContextOpen = false;
 
         this.selectIfShift(event, () => {
             if (!this.isShiftKey(event)) this.selected[0] = chari;
@@ -55,6 +69,7 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
 
     onCharContextMenu = (chari: number, event: KeyboardStorageEvent) => {
         event.preventDefault();
+        event.stopPropagation();
         this.selectWord(chari);
     }
 
