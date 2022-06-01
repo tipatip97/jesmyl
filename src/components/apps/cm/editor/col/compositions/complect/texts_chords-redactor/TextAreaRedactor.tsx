@@ -30,6 +30,7 @@ export default function TextAreaRedactor({
       initialValue: currValue,
       setIsUnknownSymbols: (char) => ["\r", "\t"].indexOf(char) > -1,
       preferLanguage: ccoln === "texts" ? (com.langi ? "ua" : "ru") : "en",
+      autofocus: !currValue,
       onChange: async (value) => {
         const prev = currValue;
         const curr = value;

@@ -486,7 +486,7 @@ export class EditableCom extends Com {
 
         this.exec({
             uniq: [coln, coli],
-            prev: (coln === 'texts' ? this.texts : this.chords)?.[coli].replace(/^\s+|\s+$/gm, ""),
+            prev: (coln === 'texts' ? this.texts : this.chords)?.[coli]?.replace(/^\s+|\s+$/gm, ""),
             value: execValue,
             method: 'set',
             action: 'changeBlocks',
