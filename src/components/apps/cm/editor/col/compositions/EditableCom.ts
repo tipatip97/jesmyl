@@ -481,17 +481,18 @@ export class EditableCom extends Com {
     changeBlock(coln: 'texts' | 'chords', coli: number, val: string) {
         const value = coln === 'texts' ? val : this.transBlock(val, 12 - (this.transPosition || 0));
         if (value == null) return;
-        const corrects = this.blockCorrects(value, coln);
+        const execValue = value.replace(/^\s+|\s+$/gm, "");
+        const corrects = this.blockCorrects(val, coln);
 
         this.exec({
             uniq: [coln, coli],
-            prev: coln === 'texts' ? this.texts?.[coli] : this.chords?.[coli],
-            value,
+            prev: (coln === 'texts' ? this.texts : this.chords)?.[coli].replace(/^\s+|\s+$/gm, ""),
+            value: execValue,
             method: 'set',
             action: 'changeBlocks',
             corrects,
             args: {
-                text: value,
+                text: execValue,
                 coln: coln === 'texts' ? 't' : 'c',
                 index: coli
             }
@@ -500,9 +501,10 @@ export class EditableCom extends Com {
         this.corrects[`changeBlocks_${coln}_${coli}`] = corrects;
 
         if (coln === 'texts' && this.texts) this.texts[coli] = value;
-        else if (this.chords) this.chords[coli] = value
-
-        if (coln === 'chords') this.resetChordLabels();
+        else if (this.chords) {
+            this.chords[coli] = value;
+            this.resetChordLabels();
+        }
     }
 
     insertBlocks(coln: 'texts' | 'chords', coli: number, value = '', prev = '...') {

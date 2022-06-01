@@ -17,7 +17,7 @@ export default function TextsChordsRedactor({
   if (!ccom) return null;
 
   const istcoln = ccoln === "texts";
-  const colList = ccom[ccoln];
+  const colList = istcoln ? ccom.texts : ccom.transBlocks();
 
   return (
     <>

@@ -51,7 +51,7 @@ export default function TextAreaRedactor({
             onInsert("");
           }
           onChange(isNewBlock ? curr.replace(/\n+$/, "") : curr);
-          setValue(istcoln ? curr : com.transBlock(curr) || "");
+          setValue(curr);
         }
       },
       onPaste: (value) => {

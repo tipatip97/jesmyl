@@ -136,11 +136,11 @@ export class Com extends BaseNamed<IExportableCom> {
     return simpleHashChords[nindex];
   }
 
-  transBlock(cblock?: string, delta = this.transPosition) {
-    return cblock && cblock.replace(gSimpleHashChordReg, chord => this.transChord(chord, delta));
+  transBlock(cblock: string, delta = this.transPosition) {
+    return cblock.replace(gSimpleHashChordReg, chord => this.transChord(chord, delta));
   }
 
-  transBlocks(delta: number) {
+  transBlocks(delta?: number) {
     return this.chords?.map((cblock: string) => this.transBlock(cblock, delta));
   }
 
