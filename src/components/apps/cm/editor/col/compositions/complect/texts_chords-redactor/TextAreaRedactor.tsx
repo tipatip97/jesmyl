@@ -28,6 +28,7 @@ export default function TextAreaRedactor({
       closeButton: false,
       className: `cleared-input com-editor-textarea full-width no-resize`,
       initialValue: currValue,
+      setIsUnknownSymbols: (char) => ["\r", "\t"].indexOf(char) > -1,
       preferLanguage: ccoln === "texts" ? (com.langi ? "ua" : "ru") : "en",
       onChange: async (value) => {
         const prev = currValue;
