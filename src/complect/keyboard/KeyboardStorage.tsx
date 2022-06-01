@@ -1,16 +1,17 @@
 import EvaIcon from "../eva-icon/EvaIcon";
-import { KeyboardStorageOverflows } from "./complect/F.Overflows";
+import { KeyboardStorageCallbacks } from "./complect/F.Callbacks";
 import {
   KeyboardInputProps,
   keyboardKeyTranslateLangs,
   KeyboardKeyTranslateLanguage,
 } from "./Keyboard.model";
 
-export class KeyboardInputStorage extends KeyboardStorageOverflows {
+export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   isNeedValuesInitialize = true;
   initialValue?: string;
-  isHiddenPassword?: boolean;
   currentLanguage: KeyboardKeyTranslateLanguage = "ru";
+  private viewFlowChari: number = 0;
+  private readonly viewEmptyLine = [""];
 
   constructor(initialValue?: string) {
     super();
@@ -30,8 +31,10 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
     this.onBlur = onBlur;
     this.isMultiline = props.multiline;
     this.type = props.type;
+    this.setIsUnknownSymbols =
+      props.setIsUnknownSymbols || this.dafaultSetIsUnknownSymbols;
 
-    let currentChari = 0;
+    this.viewFlowChari = 0;
 
     if (this.isNeedValuesInitialize) {
       this.isNeedValuesInitialize = false;
@@ -39,7 +42,7 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
       if (props.preferLanguage) this.currentLanguage = props.preferLanguage;
       this.isHiddenPassword = this.type === "password";
       if (this.initialValue)
-        setTimeout(() => this.replaceAll(this.initialValue || "", false));
+        setTimeout(this.replaceAll, 0, this.initialValue || "", false);
     }
 
     return (
@@ -52,101 +55,29 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
           props.multiline ? "multiline" : ""
         } ${props.closeButton !== false ? "" : "without-close-button"}`}
         placeholder={props.placeholder}
-        onMouseDown={(event) => {
-          event.stopPropagation();
-          this.focus();
-        }}
-        onClick={(event) => event.stopPropagation()}
+        onMouseDown={this.onFlashMouseDown}
+        onClick={this.onStopPropagation}
       >
         <div
           className="input-keyboard-flash-controlled-char-list"
-          ref={(el) => el && (this.flowCharListElement = el)}
+          ref={this.charListElementRef}
         >
           <div className={`input-keyboard-flash-controlled-char-list-inner`}>
-            {this.valueCharLines.map((line, linei) => {
-              const charLinei = currentChari;
-
-              return (
-                <div
-                  key={`line ${linei}`}
-                  className={`input-keyboard-flash-controlled-char-list-line ${
-                    this.isZeroCursorOn(charLinei) ? "zero-cursor" : ""
-                  }`}
-                  onMouseDown={(event) => {
-                    event.stopPropagation();
-                    this.onCharMouseDown(event, charLinei + line.length);
-                  }}
-                  onMouseOver={(event) => {
-                    event.stopPropagation();
-                    this.onCharMouseOver(event, charLinei + line.length);
-                  }}
-                  onMouseUp={(event) => {
-                    event.stopPropagation();
-                    this.onCharMouseUp(event, charLinei + line.length);
-                  }}
-                >
-                  {(line.length ? line : [""]).map((letter, letteri) => {
-                    const chari = currentChari - (letteri ? 1 : 0);
-                    currentChari += letteri ? 1 : 2;
-
-                    return (
-                      <span
-                        key={`node-${letteri}`}
-                        className={`input-keyboard-flash-controlled-char ${
-                          this.isCursorOn(chari) ? "cursor" : ""
-                        } ${this.isSelectedChar(chari) ? "selected" : ""}`}
-                        ref={(element) => {
-                          this.charElementReference(element, linei, chari);
-                        }}
-                        onContextMenu={(event) => {
-                          event.preventDefault();
-                          this.selectWord(chari);
-                        }}
-                        onDoubleClick={(event) => {
-                          event.preventDefault();
-                          this.selectWord(chari);
-                        }}
-                        onMouseDown={(event) => {
-                          event.stopPropagation();
-                          this.onCharMouseDown(event, chari);
-                        }}
-                        onMouseOver={(event) => {
-                          event.stopPropagation();
-                          this.onCharMouseOver(event, chari);
-                        }}
-                        onMouseUp={(event) => {
-                          event.stopPropagation();
-                          this.onCharMouseUp(event, chari);
-                        }}
-                      >
-                        {this.isHiddenPassword ? "●" : letter}
-                      </span>
-                    );
-                  })}
-                </div>
-              );
-            })}
+            {this.valueCharLines.map(this.valueCharLinesNodeMap)}
           </div>
         </div>
         <div className="icon-button-container">
           {this.type === "password" ? (
             <EvaIcon
               name={this.isHiddenPassword ? "eye-outline" : "eye-off-outline"}
-              className="icon-button close-button"
-              onMouseDown={(event) => {
-                event.stopPropagation();
-                this.isHiddenPassword = !this.isHiddenPassword;
-                this.forceUpdate();
-              }}
+              className="icon-button eye-button"
+              onMouseDown={this.onPasswordEyeButton}
             />
           ) : (
             <EvaIcon
               name="close"
               className="icon-button close-button"
-              onMouseDown={() => {
-                this.replaceAll("");
-                this.focus();
-              }}
+              onMouseDown={this.onClearButton.bind(this)}
             />
           )}
         </div>
@@ -156,35 +87,58 @@ export class KeyboardInputStorage extends KeyboardStorageOverflows {
           }`}
         >
           {this.nullOrCanSelectAll() && (
-            <div
-              onMouseDown={(event) => {
-                event.stopPropagation();
-                this.selectAll();
-              }}
-            >
-              Выделить всё
-            </div>
+            <div onMouseDown={this.onSelectAllButton}>Выделить всё</div>
           )}
-          <div
-            onMouseDown={(event) => {
-              event.stopPropagation();
-              this.copy();
-            }}
-          >
-            Копировать
-          </div>
-          <div
-            onMouseDown={(event) => {
-              event.stopPropagation();
-              this.paste();
-            }}
-          >
-            Вставить
-          </div>
+          <div onMouseDown={this.onCopyButton}>Копировать</div>
+          <div onMouseDown={this.onPasteButton}>Вставить</div>
         </div>
       </div>
     );
   }
+
+  valueCharLinesNodeMap = (line: string[], linei: number) => {
+    const charLinei = this.viewFlowChari;
+
+    return (
+      <div
+        key={`line ${linei}`}
+        className={`input-keyboard-flash-controlled-char-list-line ${
+          this.isZeroCursorOn(charLinei) ? "zero-cursor" : ""
+        }`}
+        onMouseDown={this.onCharMouseDown.bind(this, charLinei + line.length)}
+        onMouseOver={this.onCharMouseOver.bind(this, charLinei + line.length)}
+        onMouseUp={this.onCharMouseUp.bind(this, charLinei + line.length)}
+      >
+        {(line.length ? line : this.viewEmptyLine).map(
+          this.valueCharLineNodeMap.bind(this, linei)
+        )}
+      </div>
+    );
+  };
+
+  valueCharLineNodeMap = (linei: number, letter: string, letteri: number) => {
+    const chari = this.viewFlowChari - (letteri ? 1 : 0);
+    this.viewFlowChari += letteri ? 1 : 2;
+
+    return (
+      <span
+        key={`node-${letteri}`}
+        className={`input-keyboard-flash-controlled-char ${
+          this.isCursorOn(chari) ? "cursor" : ""
+        } ${this.isSelectedChar(chari) ? "selected" : ""}`}
+        ref={(element) => {
+          this.charElementReference(element, linei, chari);
+        }}
+        onContextMenu={this.onCharContextMenu.bind(this, chari)}
+        onDoubleClick={this.onCharDoubleClick.bind(this, chari)}
+        onMouseDown={this.onCharMouseDown.bind(this, chari)}
+        onMouseOver={this.onCharMouseOver.bind(this, chari)}
+        onMouseUp={this.onCharMouseUp.bind(this, chari)}
+      >
+        {this.isHiddenPassword ? "●" : letter}
+      </span>
+    );
+  };
 
   charElementReference(
     element: HTMLSpanElement | nil,

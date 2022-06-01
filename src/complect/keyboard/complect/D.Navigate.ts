@@ -1,7 +1,7 @@
 import { KeyboardStorageEvent } from '../Keyboard.model';
-import { KeyboardStorageBuffer } from './C.Buffer';
+import { KeyboardStorageHistoty } from './C.History';
 
-export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
+export class KeyboardStorageNavigate extends KeyboardStorageHistoty {
     downTs = 0;
     flowCharListElement: HTMLDivElement | nil;
     focusedCharItem: HTMLSpanElement | nil;
@@ -157,49 +157,5 @@ export class KeyboardStorageTextNavigate extends KeyboardStorageBuffer {
 
     isCursorOn(chari: number) {
         return !this.isSelected && this.cursorPosition - 1 === chari;
-    }
-
-    onCharMouseDown(event: KeyboardStorageEvent, chari: number) {
-        this.downTs = Date.now();
-        this.isSelecting = true;
-
-        this.selectIfShift(event, () => {
-            if (!this.isShiftKey(event)) this.selected[0] = chari;
-        }, false);
-
-        this.focus();
-    }
-
-    onCharMouseOver(event: KeyboardStorageEvent, chari: number) {
-        if (this.isSelecting) {
-            this.isSelected = true;
-
-            this.selected[1] =
-                this.setCursorPosition(this.isCtrlKey(event)
-                    ? this.selected[0] > chari
-                        ? this.findWordStart(chari)
-                        : this.findWordFinish(chari)
-                    : chari);
-
-            this.forceUpdate();
-        }
-    }
-
-    onCharMouseUp(event: KeyboardStorageEvent, chari: number) {
-        this.isSelecting = false;
-
-        if (Date.now() - this.downTs < 300) {
-            this.selectIfShift(event, () => {
-                if (!this.isShiftKey(event)) this.isSelected = false;
-                this.setCursorPosition(this.isCtrlKey(event)
-                    ? this.selected[0] > chari
-                        ? this.findWordStart(chari)
-                        : this.findWordFinish(chari)
-                    : chari);
-            });
-        } else {
-            this.selected[1] = chari;
-            this.forceUpdate();
-        }
     }
 }

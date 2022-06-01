@@ -1,11 +1,13 @@
 import { KeyboardStorageEvent } from '../Keyboard.model';
-import { KeyboardStorageTextNavigate } from './D.TextNavigate';
+import { KeyboardStorageNavigate } from './D.Navigate';
 
-export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
+export class KeyboardStorageChanges extends KeyboardStorageNavigate {
     prevTypedValue: string = '';
     typedCursorPosition = -1;
+    dafaultSetIsUnknownSymbols = () => false;
+    setIsUnknownSymbols: (char: string) => boolean = this.dafaultSetIsUnknownSymbols;
 
-    replaceAll(value: string, isRemember = true) {
+    replaceAll = (value: string, isRemember = true) => {
         if (value === this.value) return;
         if (isRemember) this.remember('replaceAll');
         this.valueChars = value.split('');
@@ -26,7 +28,7 @@ export class KeyboardStorageTextModifiers extends KeyboardStorageTextNavigate {
 
                 return;
             }
-            lastLine.push(char);
+            lastLine.push(this.setIsUnknownSymbols(char) ? '𖡄' : char);
         });
 
         this.valueCharLines = lines;

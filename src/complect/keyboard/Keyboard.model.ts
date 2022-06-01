@@ -23,6 +23,7 @@ export interface KeyboardInputProps {
     onBlur?: () => void;
     onChange?: (value: string) => void;
     onPaste?: (value: string) => void;
+    setIsUnknownSymbols?: (char: string) => boolean;
 };
 
 export type KeyboardMemoryPointAction = 'type' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';

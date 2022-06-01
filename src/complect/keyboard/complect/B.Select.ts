@@ -14,6 +14,7 @@ export class KeyboardStorageSelect extends KeyboardStorageBase {
     get cursorPosition() {
         return this._cursorPosition;
     }
+    
     setCursorPosition(value: number, isFixChange = true) {
         if (isFixChange) this.isCursorPositionChanged = true;
         this._cursorPosition = value;

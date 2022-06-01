@@ -2,7 +2,7 @@ import mylib from '../../my-lib/MyLib';
 import { KeyboardMemoryPoint, KeyboardMemoryPointAction } from '../Keyboard.model';
 import { KeyboardStorageSelect } from './B.Select';
 
-export class KeyboardStorageBuffer extends KeyboardStorageSelect {
+export class KeyboardStorageHistoty extends KeyboardStorageSelect {
     memory: KeyboardMemoryPoint[] = [];
     memoryPosition = 0;
 
