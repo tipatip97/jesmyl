@@ -18,6 +18,7 @@ export interface KeyboardInputProps {
     type?: KeyboardInputPropsType;
     preferLanguage?: KeyboardKeyTranslateLanguage;
     closeButton?: boolean;
+    autofocus?: boolean;
     className?: string;
     placeholder?: string;
     onBlur?: () => void;

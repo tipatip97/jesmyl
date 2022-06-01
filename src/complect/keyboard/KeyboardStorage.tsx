@@ -41,8 +41,19 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
 
       if (props.preferLanguage) this.currentLanguage = props.preferLanguage;
       this.isHiddenPassword = this.type === "password";
-      if (this.initialValue)
-        setTimeout(this.replaceAll, 0, this.initialValue || "", false);
+      setTimeout(() => {
+        let isForceUpdated = false;
+
+        if (this.initialValue) {
+          this.replaceAll(this.initialValue || "", false);
+          isForceUpdated = true;
+        }
+
+        if (props.autofocus) {
+          this.focus(isForceUpdated);
+          isForceUpdated = true;
+        }
+      });
     }
 
     return (
@@ -166,7 +177,6 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   }
 
   nullOrContextMenu() {
-    console.log(this.isFocused && (this.isSelected || this.isContextOpen), '===', this.isFocused, this.isSelected, this.isContextOpen);
     return this.isFocused && (this.isSelected || this.isContextOpen)
       ? true
       : null;

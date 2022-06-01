@@ -8,10 +8,10 @@ export class KeyboardStorageBase {
     isMultiline?: boolean = false;
     isSelected = false;
 
-    focus() {
+    focus(rejectForceUpdate?: boolean) {
         if (!this.isFocused) this.onFocus?.();
         this.isFocused = true;
-        this.forceUpdate();
+        if (!rejectForceUpdate) this.forceUpdate();
     }
 
     blur(resetSelected = false): boolean {
