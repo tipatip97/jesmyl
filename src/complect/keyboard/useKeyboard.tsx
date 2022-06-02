@@ -75,6 +75,7 @@ export function KEYBOARD_FLASH({
   onFocus: (currentInput: KeyboardInputStorage | nil) => void;
 }) {
   const [updates, setUpdates] = useState(0);
+  const [moreClosed, setMoreClosed] = useState(true);
   const [keyInFix, setKeyInFix] = useState<string | null>(null);
   useKeyboard();
   topForceUpdate = () => setUpdates(updates + 1);
@@ -110,7 +111,8 @@ export function KEYBOARD_FLASH({
     key: string,
     iconName?: EvaIconName,
     onMouseUp?: React.MouseEventHandler<HTMLDivElement>,
-    onContextMenu?: React.MouseEventHandler<HTMLOrSVGElement>
+    onContextMenu?: React.MouseEventHandler<HTMLOrSVGElement>,
+    children?: ReactNode
   ) => {
     return (
       <div
@@ -118,7 +120,10 @@ export function KEYBOARD_FLASH({
           keyInFix === key ? "key-in-fix" : ""
         }`}
         onMouseUp={onMouseUp || (() => currentInput.write(key))}
-        onMouseDown={() => setKeyInFix(key)}
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          setKeyInFix(key);
+        }}
         onMouseOver={() => keyInFix && setKeyInFix(key)}
         onTouchStart={(event) => {
           event.stopPropagation();
@@ -126,6 +131,7 @@ export function KEYBOARD_FLASH({
         }}
         onContextMenu={onContextMenu}
       >
+        {children}
         {iconName ? (
           <EvaIcon name={iconName} className="key-button" />
         ) : (
@@ -137,8 +143,13 @@ export function KEYBOARD_FLASH({
 
   return (
     <div
-      className={`keyboard-flash ${currentInput?.isFocused ? "active" : ""}`}
-      onMouseDown={(event) => event.stopPropagation()}
+      className={`keyboard-flash ${currentInput?.isFocused ? "active" : ""} ${
+        moreClosed ? "" : "more-open"
+      }`}
+      onMouseDown={(event) => {
+        event.stopPropagation();
+        setKeyInFix("CLOSE-MORE");
+      }}
       onTouchEnd={(event) => {
         event.stopPropagation();
         setKeyInFix(null);
@@ -146,6 +157,7 @@ export function KEYBOARD_FLASH({
       onMouseUp={(event) => {
         event.stopPropagation();
         setKeyInFix(null);
+        !moreClosed && setMoreClosed(true);
       }}
     >
       {currentInput ? (
@@ -153,7 +165,10 @@ export function KEYBOARD_FLASH({
           <>
             {keyboardNumberScreenLines.map((line, linei) => {
               return (
-                <div key={`line-nums-${linei}`} className="keyboard-flash-line number-type">
+                <div
+                  key={`line-nums-${linei}`}
+                  className="keyboard-flash-line number-type"
+                >
                   {line.map((key, keyi) => {
                     return (
                       <React.Fragment key={`key-num-${keyi}`}>
@@ -235,16 +250,76 @@ export function KEYBOARD_FLASH({
 
             <div className="keyboard-flash-line bottom-line">
               {keyNode(
-                currentInput?.canUndo() ? "" : " disabled",
+                currentInput?.canUndo() ? "undo-action" : "undo-action disabled",
                 "UNDO",
                 "corner-up-left-outline",
-                () => currentInput.undo()
+                (event) => {
+                  event.stopPropagation();
+                  setKeyInFix(null);
+                  currentInput.undo();
+                }
               )}
               {keyNode(
-                currentInput?.canRedo() ? "" : " disabled",
-                "REDO",
-                "corner-up-right-outline",
-                () => currentInput.redo()
+                "more-box",
+                "CLOSE-MORE",
+                moreClosed ? "bulb-outline" : "close-outline",
+                () => setMoreClosed(!moreClosed),
+                () => {},
+                moreClosed ? null : (
+                  <div className="keyboard-flash-key-more-box-list no-scrollbar">
+                    <div className="keyboard-flash-key-more-box-inner">
+                      {keyNode(
+                        "",
+                        "WORD-SELECT-MODE",
+                        currentInput.event.ctrlKey
+                          ? "flash-off-outline"
+                          : "flash-outline",
+                        () => currentInput.switchCtrlKey(),
+                        () => {},
+                        <span className="key-description">Ctrl клавиша</span>
+                      )}
+                      {currentInput.nullOrCanSelectAll() &&
+                        keyNode(
+                          "",
+                          "SELECT_ALL",
+                          "text-outline",
+                          () => currentInput.selectAll(),
+                          () => {},
+                          <span className="key-description">Выделить всё</span>
+                        )}
+                      {currentInput.nullOrCanCopy() &&
+                        keyNode(
+                          "",
+                          "COPY",
+                          "copy-outline",
+                          () => currentInput.copy(),
+                          () => {},
+                          <span className="key-description">Копировать</span>
+                        )}
+                      {currentInput.nullOrCanPaste() &&
+                        keyNode(
+                          "",
+                          "PASTE",
+                          "clipboard-outline",
+                          () => currentInput.paste(),
+                          () => {},
+                          <span className="key-description">Вставить</span>
+                        )}
+                      {keyNode(
+                        currentInput?.canRedo() ? "" : " disabled",
+                        "REDO",
+                        "corner-up-right-outline",
+                        (event) => {
+                          event.stopPropagation();
+                          setKeyInFix(null);
+                          currentInput.redo();
+                        },
+                        () => {},
+                        <span className="key-description">Вернуть</span>
+                      )}
+                    </div>
+                  </div>
+                )
               )}
               {keyNode("space-key", " ")}
               {keyNode("", "LANG", "globe-outline", () =>

@@ -41,7 +41,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
 
       if (props.preferLanguage) this.currentLanguage = props.preferLanguage;
       this.isHiddenPassword = this.type === "password";
-      
+
       setTimeout(() => {
         let isForceUpdated = false;
 
@@ -106,7 +106,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
               <div onMouseDown={this.onPasteButton}>Вставить</div>
             )}
             {this.nullOrCanPasteBefore() && (
-              <div onMouseDown={this.onPasteBeforeButton}>Вставить перед</div>
+              <div onMouseDown={this.onPasteBeforeButton}>Вставить перёд</div>
             )}
           </div>
         )}
@@ -184,15 +184,18 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   }
 
   nullOrCanSelectAll() {
-    return (this.selected[0] === 0 &&
-      this.selected[1] === this.valueChars.length) ||
-      (this.selected[0] === this.valueChars.length && this.selected[1] === 0)
+    return !this.value ||
+      (this.isSelected &&
+        ((this.selected[0] === 0 &&
+          this.selected[1] === this.valueChars.length) ||
+          (this.selected[0] === this.valueChars.length &&
+            this.selected[1] === 0)))
       ? null
       : true;
   }
 
   nullOrCanCopy() {
-    return this.isContextOpen ? null : true;
+    return this.isSelected ? true : null;
   }
 
   nullOrCanPaste() {

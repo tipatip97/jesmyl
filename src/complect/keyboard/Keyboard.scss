@@ -15,6 +15,24 @@
         height: var(--keyboard-flash-height);
     }
 
+    &.more-open {
+        >.keyboard-flash-line {
+            &.bottom-line {
+                >.keyboard-flash-key:not(.more-box):not(.undo-action) {
+                    opacity: .5;
+                    pointer-events: none;
+                    filter: blur(5px);
+                }
+            }
+
+            &:not(.bottom-line) {
+                opacity: .5;
+                pointer-events: none;
+                filter: blur(5px);
+            }
+        }
+    }
+
     >.keyboard-flash-line {
         display: flex;
         justify-content: space-around;
@@ -34,12 +52,15 @@
             }
         }
 
-        >.keyboard-flash-key {
+
+        .keyboard-flash-key {
             display: flex;
             justify-content: center;
             align-items: center;
             padding: .2em;
             border-radius: .2em;
+            width: 2.3em;
+            height: 2.6em;
             cursor: pointer;
 
             @media screen and (max-width: 350px) {
@@ -48,6 +69,32 @@
 
             @media screen and (min-width: 351px) {
                 min-width: 1.5em;
+            }
+
+            &.more-box {
+                position: relative;
+
+                >.keyboard-flash-key-more-box-list {
+                    position: absolute;
+                    bottom: 2.6em;
+                    overflow-y: auto;
+                    overflow-x: visible;
+                    max-height: calc(var(--keyboard-flash-height) - 50px);
+                    width: 70vw;
+                    left: 0;
+
+                    >.keyboard-flash-key-more-box-inner {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: start;
+
+                        .key-description {
+                            position: absolute;
+                            left: 2.3em;
+                            white-space: nowrap;
+                        }
+                    }
+                }
             }
 
             >.key-button {
@@ -73,6 +120,7 @@
                     bottom: 0;
                     right: 0;
                     font-size: .5em;
+                    z-index: 1;
                 }
             }
 

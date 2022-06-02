@@ -66,6 +66,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
                 this.valueChars.splice(this.cursorPosition - 1, 1);
                 this.setCursorPosition(this.cursorPosition - 1);
             }
+            this.isSelected = false;
 
             this.setValues();
         }
@@ -81,6 +82,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         } else {
             this.valueChars.splice(this.cursorPosition, 1);
         }
+        this.isSelected = false;
 
         this.setValues();
     }
@@ -98,6 +100,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         this.valueChars.splice(this.cursorPosition, 0, ...value.split(''));
 
         this.setCursorPosition(this.cursorPosition + value.length);
+        this.isSelected = false;
         this.prevTypedValue = value;
         if (!isRememberAsPart) this.typedCursorPosition = this.cursorPosition;
         if (!this.isCapsLock) this.event.shiftKey = false;

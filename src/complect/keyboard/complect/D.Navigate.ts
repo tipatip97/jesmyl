@@ -42,7 +42,7 @@ export class KeyboardStorageNavigate extends KeyboardStorageHistoty {
                 this.isSelected = false;
                 this.forceUpdate();
             } else if (this.cursorPosition < this.valueChars.length) {
-                if (event.ctrlKey)
+                if (this.isCtrlKey(event))
                     this.setCursorPosition(this.findWordFinish(
                         this.cursorPosition
                     ));

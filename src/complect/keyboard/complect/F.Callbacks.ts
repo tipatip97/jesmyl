@@ -60,19 +60,6 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         this.forceUpdate();
     }
 
-    onCharMouseDown = (chari: number, event: KeyboardStorageEvent) => {
-        event.stopPropagation();
-        this.downTs = Date.now();
-        this.isSelecting = true;
-        this.isContextOpen = false;
-
-        this.selectIfShift(event, () => {
-            if (!this.isShiftKey(event)) this.selected[0] = chari;
-        }, false);
-
-        this.focus();
-    }
-
     onCharContextMenu = (chari: number, event: KeyboardStorageEvent) => {
         event.preventDefault();
         event.stopPropagation();
@@ -84,6 +71,19 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         event.preventDefault();
         this.isContextOpen = false;
         this.selectWord(chari);
+    }
+
+    onCharMouseDown = (chari: number, event: KeyboardStorageEvent) => {
+        event.stopPropagation();
+        this.downTs = Date.now();
+        this.isSelecting = true;
+        this.isContextOpen = false;
+
+        this.selectIfShift(event, () => {
+            if (!this.isShiftKey(event)) this.selected[0] = chari;
+        }, false);
+
+        this.focus();
     }
 
     onCharMouseOver = (chari: number, event: KeyboardStorageEvent) => {
@@ -109,11 +109,13 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         if (Date.now() - this.downTs < 300) {
             this.selectIfShift(event, () => {
                 if (!this.isShiftKey(event)) this.isSelected = false;
-                this.setCursorPosition(this.isCtrlKey(event)
-                    ? this.selected[0] > chari
-                        ? this.findWordStart(chari)
-                        : this.findWordFinish(chari)
-                    : chari);
+                this.setCursorPosition(
+                    this.isCtrlKey(event)
+                        ? (this.isSelected ? this.selected[0] : this.cursorPosition) > chari
+                            ? this.findWordStart(chari)
+                            : this.findWordFinish(chari)
+                        : chari
+                );
             });
         } else {
             this.selected[1] = chari;
