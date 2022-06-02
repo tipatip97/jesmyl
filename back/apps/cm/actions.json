@@ -42,9 +42,8 @@
             "value": "{chordn}"
         },
         "method": "set",
-        "value": "{chord}",
         "args": {
-            "chord": "#List",
+            "value": "#List",
             "chordn": "#String"
         }
     },
@@ -104,10 +103,9 @@
                                     "n"
                                 ],
                                 "method": "set",
-                                "title": "$prev?{{Категория \"$prev\" переименована на}{Новой Категории задано имя}} \"$name\"",
-                                "value": "{name}",
+                                "title": "$prev?{{Категория \"$prev\" переименована на}{Новой Категории задано имя}} \"$value\"",
                                 "args": {
-                                    "name": "#String"
+                                    "value": "#String"
                                 }
                             },
                             {
@@ -161,8 +159,7 @@
                                         "track": [
                                             "s"
                                         ],
-                                        "method": "push",
-                                        "value": "{comw}"
+                                        "method": "push"
                                     },
                                     {
                                         "level": 50,
@@ -243,14 +240,13 @@
                             {
                                 "level": 50,
                                 "action": "removeBlock",
-                                "title": "Из песни \"$name\" удалён $ink{{$coli}{-й }}$switch{{$coln}{t}{Текстовый блок}{c}{блок Аккордов}}",
+                                "title": "Из песни \"$name\" удалён $ink{{$value}{-й }}$switch{{$coln}{t}{Текстовый блок}{c}{блок Аккордов}}",
                                 "track": [
                                     "{coln}"
                                 ],
                                 "method": "remove",
-                                "value": "{coli}",
                                 "args": {
-                                    "coli": "#Number",
+                                    "value": "#Number",
                                     "coln": [
                                         "c",
                                         "t"
@@ -278,14 +274,13 @@
                             {
                                 "level": 50,
                                 "action": "comRename",
-                                "title": "$prev?{{Песня \"$prev\" переименована на}{Новой Песне задано имя}} \"$name\"",
+                                "title": "$prev?{{Песня \"$prev\" переименована на}{Новой Песне задано имя}} \"$value\"",
                                 "track": [
                                     "n"
                                 ],
                                 "method": "set",
-                                "value": "{name}",
                                 "args": {
-                                    "name": "#String"
+                                    "value": "#String"
                                 }
                             },
                             {
@@ -308,9 +303,8 @@
                                     "c"
                                 ],
                                 "method": "set",
-                                "value": "{chords}",
                                 "args": {
-                                    "chords": "#List"
+                                    "value": "#List"
                                 }
                             },
                             {
@@ -350,16 +344,15 @@
                             {
                                 "level": 50,
                                 "action": "setNativeNum",
-                                "title": "Песня \"$name\" $number?{{в категории \"$catn\" обозначена №$number}{отнесена к категории \"$catn\"}}",
+                                "title": "Песня \"$name\" $value?{{в категории \"$catn\" обозначена №$value}{отнесена к категории \"$catn\"}}",
                                 "track": [
                                     "r",
                                     "{catw}"
                                 ],
                                 "method": "set",
-                                "value": "{number}",
                                 "args": {
                                     "catw": "#Number",
-                                    "number": "#Number"
+                                    "value": "#Number"
                                 }
                             },
                             {
@@ -370,9 +363,8 @@
                                     "r"
                                 ],
                                 "method": "remove",
-                                "value": "{catw}",
                                 "args": {
-                                    "catw": "#Number"
+                                    "value": "#Number"
                                 }
                             },
                             {
@@ -384,9 +376,8 @@
                                     "{index}"
                                 ],
                                 "method": "set",
-                                "value": "{text}",
                                 "args": {
-                                    "text": "#String",
+                                    "value": "#String",
                                     "coln": [
                                         "t",
                                         "c"
@@ -511,9 +502,8 @@
                                                     "{linei}"
                                                 ],
                                                 "method": "set",
-                                                "value": "{line}",
                                                 "args": {
-                                                    "line": "#List",
+                                                    "value": "#List",
                                                     "linei": "#Number"
                                                 }
                                             },
@@ -918,13 +908,12 @@
             {
                 "action": "addMeetingsName",
                 "method": "push",
-                "title": "Добавлен новый наименование контекста \"$name\"",
+                "title": "Добавлен новый наименование контекста \"$value\"",
                 "track": [
                     "names"
                 ],
-                "value": "{name}",
                 "args": {
-                    "name": "#String"
+                    "value": "#String"
                 }
             },
             {
@@ -935,10 +924,9 @@
                     "contexts",
                     "{contextw}"
                 ],
-                "value": "{context}",
                 "args": {
                     "contextw": "#Number",
-                    "context": "#List"
+                    "value": "#List"
                 }
             },
             {
@@ -1025,12 +1013,11 @@
                             {
                                 "level": 50,
                                 "action": "meetingEventRename",
-                                "title": "Событие \"$prev\" переименовано в \"$eventn\"",
+                                "title": "Событие \"$prev\" переименовано в \"$value\"",
                                 "track": [
                                     "n"
                                 ],
-                                "method": "set",
-                                "value": "{eventn}"
+                                "method": "set"
                             }
                         ]
                     }
