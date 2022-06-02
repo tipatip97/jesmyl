@@ -1,26 +1,26 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../../shared/store";
-import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";
+import { ChordVisibleVariant } from "../../Cm.model";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
+import "./block-styles/BlockStyles.scss";
 import { Com } from "./Com";
 import "./Com.scss";
 import ComOrders from "./orders/ComOrders";
 import { useCcom } from "./useCcom";
-import "./block-styles/BlockStyles.scss";
 
 export default function TheCom({
   com: topCom,
   hideInvisibles = true,
+  chordVisibleVariant,
+  isMiniAnchor,
+  fontSize,
 }: {
   com?: Com;
   hideInvisibles?: boolean;
+  chordVisibleVariant?: ChordVisibleVariant;
+  isMiniAnchor?: boolean;
+  fontSize?: number;
 }) {
-  const [chordVisibleVariant] = useChordVisibleVariant();
-  const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
-  const isMiniAnchor = useSelector((state: RootState) => state.cm.isMiniAnchor);
-
   const [ccom] = useCcom();
   const com = topCom ?? ccom;
   const { addLaterComw } = useLaterComList();
@@ -44,7 +44,7 @@ export default function TheCom({
     <ComOrders
       com={com}
       fontSize={fontSize}
-      chordVisibleVariant={chordVisibleVariant}
+      chordVisibleVariant={chordVisibleVariant || ChordVisibleVariant.Minimal}
       isMiniAnchor={isMiniAnchor}
       hideInvisibles={hideInvisibles}
     />

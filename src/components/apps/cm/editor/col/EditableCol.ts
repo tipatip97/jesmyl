@@ -21,7 +21,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
       prev: this.name,
       method: 'set',
       value: name,
-      args: { name },
+      args: { value: name },
       corrects,
     }, coln);
 

@@ -9,12 +9,13 @@ import TheComposition from "../col/com/TheComposition";
 import Translations from "../translation/Translation";
 import EditCategories from "./col/categories/EditCategories";
 import EditCategory from "./col/categories/EditCategory";
-import CategoryBinds from "./col/compositions/complect/category-binds/CategoryBinds";
+import CategoryBinds from "./col/compositions/complect/CategoryBinds";
 import ChordApplicationsRedactor from "./col/compositions/complect/chord-applications/ChordApplicationsRedactor";
-import EditableCompositionMain from "./col/compositions/complect/main/EditableCompositionMain";
+import EditableCompositionMain from "./col/compositions/complect/EditableCompositionMain";
 import OrdersRedactor from "./col/compositions/complect/orders/OrdersRedactor";
 import TextsChordsRedactor from "./col/compositions/complect/texts_chords-redactor/TextsChordsRedactor";
-import ComOnTranslations from "./col/compositions/complect/translations/ComOnTranslations";
+import ComOnTranslations from "./col/compositions/complect/ComOnTranslations";
+import EditableCompositionWatch from "./col/compositions/complect/Watch";
 import EditComposition from "./col/compositions/EditComposition";
 import EditCompositions from "./col/compositions/EditCompositions";
 import ComRepeats from "./col/compositions/repeats/ComRepeats";
@@ -28,10 +29,10 @@ export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
   iconText?: string;
 }>[] = [
   {
-    phase: ["main"],
-    node: <EditableCompositionMain />,
+    phase: ["watch"],
+    node: <EditableCompositionWatch />,
     data: {
-      icon: "credit-card",
+      icon: "eye",
     },
   },
   {
@@ -45,21 +46,21 @@ export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
     phase: ["orders"],
     node: <OrdersRedactor />,
     data: {
-      icon: "list",
+      icon: "grid",
     },
   },
   {
     phase: ["texts"],
     node: <TextsChordsRedactor ccoln="texts" />,
     data: {
-      icon: "text",
+      icon: "file-text",
     },
   },
   {
     phase: ["chords"],
     node: <TextsChordsRedactor ccoln="chords" />,
     data: {
-      icon: "music",
+      icon: "options-2",
     },
   },
   {
@@ -73,7 +74,7 @@ export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
     phase: ["repeats"],
     node: <ComRepeats />,
     data: {
-      iconText: "//",
+      icon: "layers",
     },
   },
   {
@@ -81,6 +82,13 @@ export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
     node: <ComOnTranslations />,
     data: {
       icon: "monitor",
+    },
+  },
+  {
+    phase: ["main"],
+    node: <EditableCompositionMain />,
+    data: {
+      icon: "credit-card",
     },
   },
 ];
@@ -118,7 +126,6 @@ export const editorRouteItems: INavigationRouteChildItem<CmNavData, {
       {
         phase: editComNavPhasePoint,
         node: (props) => <EditComposition {...props} />,
-        defaultChild: "main",
         next: editCompositionNavs,
       },
     ],

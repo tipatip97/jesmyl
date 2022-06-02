@@ -7,7 +7,6 @@ import TheOrder from "../../../../../col/com/order/TheOrder";
 import { useEditableCcom } from "../../useEditableCcom";
 import OrdersRedactorAdditions from "./OrdersRedactorAdditions";
 import OrdersRedactorOrderTools from "./OrdersRedactorOrderTools";
-import OrdersRedactorSettings from "./OrdersRedactorSettings";
 
 export default function OrdersRedactor() {
   const ccom = useEditableCcom();
@@ -18,27 +17,11 @@ export default function OrdersRedactor() {
 
   return (
     <div className="orders-redactor">
-      <div className="flex">
-        <EvaIcon
-          name="settings-2-outline"
-          className="pointer margin-gap-h"
-          onClick={() => {
-            openAbsoluteBottomPopup(<OrdersRedactorSettings ccom={ccom} />);
-          }}
-        />
-        <EvaIcon
-          name="plus-circle-outline"
-          className="pointer margin-gap-h"
-          onClick={() => {
-            openAbsoluteBottomPopup(<OrdersRedactorAdditions ccom={ccom} />);
-          }}
-        />
-      </div>
       {ccom.orders?.map((ord, ordi, orda) => {
         const editNode = !ord.top.isAnchorInherit && (
           <EvaIcon
             name="edit-outline"
-            className="margin-gap-h pointer"
+            className="margin-gap-h pointer vertical-middle"
             onClick={() => {
               openAbsoluteBottomPopup(
                 <OrdersRedactorOrderTools ccom={ccom} ord={ord} ordi={ordi} />
@@ -46,7 +29,7 @@ export default function OrdersRedactor() {
             }}
           />
         );
-        const isWithHead = ccom.isOrdWithHead(ord);
+        const isWithHead = ord.isWithHead();
 
         return (
           <div
@@ -83,6 +66,15 @@ export default function OrdersRedactor() {
           </div>
         );
       })}
+      <div className="flex">
+        <EvaIcon
+          name="plus-circle-outline"
+          className="pointer margin-gap-h"
+          onClick={() => {
+            openAbsoluteBottomPopup(<OrdersRedactorAdditions ccom={ccom} />);
+          }}
+        />
+      </div>
     </div>
   );
 }

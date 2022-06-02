@@ -41,6 +41,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
 
       if (props.preferLanguage) this.currentLanguage = props.preferLanguage;
       this.isHiddenPassword = this.type === "password";
+      
       setTimeout(() => {
         let isForceUpdated = false;
 

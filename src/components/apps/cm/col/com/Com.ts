@@ -391,7 +391,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
       top.header = newOrder.isEmptyHeader
         ? (bag, isRequired) => isRequired ? header(ord, style, false)(bag) : ''
-        : targetOrd && targetOrd.top.header
+        : targetOrd && targetOrd.top.header && !top.source.s
           ? targetOrd.top.header
           : header(ord, style);
 

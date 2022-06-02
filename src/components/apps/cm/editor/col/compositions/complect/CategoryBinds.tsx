@@ -1,15 +1,15 @@
-import useKeyboard from "../../../../../../../../complect/keyboard/useKeyboard";
-import EditContainerCorrectsInformer from "../../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
-import { useEditableCols } from "../../../useEditableCols";
-import { useEditableCcom } from "../../useEditableCcom";
-import useEditCompositionCategoryBinds from "./useEditComposition";
+import useExer from "../../../../../../../complect/exer/useExer";
+import useKeyboard from "../../../../../../../complect/keyboard/useKeyboard";
+import { cmExer } from "../../../../Cm.store";
+import EditContainerCorrectsInformer from "../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
+import { useEditableCols } from "../../useEditableCols";
+import { useEditableCcom } from "../useEditableCcom";
 
 export default function CategoryBinds() {
   const [cols] = useEditableCols();
   const ccom = useEditableCcom();
-  const { setNativeNumber, removeNativeNumber, toggleComExistence } =
-    useEditCompositionCategoryBinds(ccom);
   const aboutInput = useKeyboard();
+  const { exec } = useExer(cmExer);
 
   if (!ccom) return null;
 
@@ -21,14 +21,14 @@ export default function CategoryBinds() {
           `cat-for-bind-${cat.wid}`,
           {
             initialValue: `${ccom.refs?.[cat.wid] || ""}`,
-            type: 'number',
+            type: "number",
             onChange: (value) => {
               if (!value) {
-                removeNativeNumber(cat);
+                exec(ccom.removeNativeNumber(cat, exec));
                 return;
               }
               if (value.match(/\D/)) return;
-              setNativeNumber(cat, value);
+              exec(ccom.setNativeNumber(cat, value));
             },
           }
         );
@@ -62,7 +62,7 @@ export default function CategoryBinds() {
             <input
               type="checkbox"
               checked={cat.stack.some((comw) => ccom.wid === comw)}
-              onChange={() => toggleComExistence(cat)}
+              onChange={() => exec(cat?.toggleComExistence(ccom, exec))}
             />
           </EditContainerCorrectsInformer>
         );

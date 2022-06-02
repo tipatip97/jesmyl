@@ -121,6 +121,12 @@ export class EditableOrder extends Order {
         return [this.com.scope(), '->', mylib.def(wid, this.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
     }
 
+    isWithHead() {
+        return !this.top.isInherit &&
+            !this.top.isAnchorInheritPlus &&
+            !this.isEmptyHeader;
+    }
+
     exec<Value>(bag: FreeExecDict<Value>) {
         const { scope, args: { wid } = {} } = bag;
 
@@ -182,7 +188,7 @@ export class EditableOrder extends Order {
             action: 'comSetOrderChordPositionLine',
             args: {
                 linei,
-                line,
+                value: line,
                 ordw: this.getLeadFirst('w'),
             },
             onSet: exec => {

@@ -54,11 +54,7 @@ export default function useMigratableComTools() {
             return {
               tool,
               title: "Показать аккорды",
-              icon: [
-                "file-outline",
-                "file-remove-outline",
-                "file-text-outline",
-              ][chordVisibleVariant] as EvaIconName,
+              icon: "umbrella-outline",
               onClick: () => {
                 setChordVisibleVariant(
                   !ccom?.orders?.some(

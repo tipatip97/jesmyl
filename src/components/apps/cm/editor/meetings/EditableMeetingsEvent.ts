@@ -129,7 +129,7 @@ export class EditableMeetingsEvent extends MeetingsEvent {
       method: 'set',
       action: 'meetingEventRename',
       args: {
-        eventn: name,
+        value: name,
       }
     });
 

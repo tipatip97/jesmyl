@@ -48,7 +48,7 @@ export class EditableMeetings extends Meetings {
                 action: 'addMeetingsName',
                 method: 'push',
                 args: {
-                    name
+                    value: name
                 }
             });
             contexti = this.names.push(name) - 1;
@@ -63,7 +63,7 @@ export class EditableMeetings extends Meetings {
             value: context,
             args: {
                 contextw,
-                context,
+                value: context,
             }
         }, contextw);
 

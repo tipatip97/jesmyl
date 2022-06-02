@@ -55,7 +55,7 @@ export default function OrdersRedactorAdditions({
           });
         }}
       >
-        <EvaIcon name="music" className="abs-icon" />
+        <EvaIcon name="options-2" className="abs-icon" />
         <div className="title">Аккордный блок</div>
         <div className="abs-action" />
       </div>

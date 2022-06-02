@@ -1,7 +1,7 @@
-import useExer from "../../../../../../../../complect/exer/useExer";
-import { cmExer } from "../../../../../Cm.store";
-import { translationPushKinds } from "../../../../../col/com/Com.complect";
-import { useEditableCcom } from "../../useEditableCcom";
+import useExer from "../../../../../../../complect/exer/useExer";
+import { cmExer } from "../../../../Cm.store";
+import { translationPushKinds } from "../../../../col/com/Com.complect";
+import { useEditableCcom } from "../useEditableCcom";
 
 export default function ComOnTranslations() {
   const ccom = useEditableCcom();

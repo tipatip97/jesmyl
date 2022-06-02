@@ -1,8 +1,11 @@
 import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import SwipeableContainer from "../../../../../complect/swipeable/SwipeableContainer";
+import { RootState } from "../../../../../shared/store";
 import RollControled from "../../base/RolledContent";
+import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import "./Com.scss";
@@ -18,6 +21,9 @@ export default function TheComposition() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { topTools, toggleTopTool } = useMigratableComTools();
   const [comList] = useComPack();
+  const [chordVisibleVariant] = useChordVisibleVariant();
+  const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
+  const isMiniAnchor = useSelector((state: RootState) => state.cm.isMiniAnchor);
 
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
@@ -27,7 +33,7 @@ export default function TheComposition() {
   const comListElem = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (comListElem.current) comListElem.current.scrollTop = 0;
-  }, [ccom]);
+  }, [ccom?.wid]);
 
   if (ccom == null) {
     return (
@@ -72,7 +78,7 @@ export default function TheComposition() {
       content={
         <RollControled>
           <SwipeableContainer
-            props={{ diapasonMoveVKf: 50 }}
+            props={{ diapasonMoveVKf: 50, diapasonMoveHKf: 70 }}
             onHorizontalSwipe={(dir) => {
               if (!comList) return;
               const comi = comList.findIndex((com) => com === ccom);
@@ -87,7 +93,13 @@ export default function TheComposition() {
                   else setCcom(comList[comList.length - 1]);
               }
             }}
-            content={<TheCom />}
+            content={
+              <TheCom
+                fontSize={fontSize}
+                chordVisibleVariant={chordVisibleVariant}
+                isMiniAnchor={isMiniAnchor}
+              />
+            }
           />
         </RollControled>
       }

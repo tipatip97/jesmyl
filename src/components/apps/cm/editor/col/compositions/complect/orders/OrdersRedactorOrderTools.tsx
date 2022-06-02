@@ -144,7 +144,7 @@ export default function OrdersRedactorOrderTools({
           });
         }}
       >
-        <EvaIcon name="music-outline" className="abs-icon" />
+        <EvaIcon name="options-2-outline" className="abs-icon" />
         <div className="title">Аккорды</div>
         <div className="abs-action" />
       </div>

@@ -16,8 +16,7 @@ export default function TheOrder(props: ITheOrderProps) {
 
   if (
     (isMiniAnchor &&
-      (orderUnit.top.isAnchorInherit ||
-        orderUnit.top.isAnchorInheritPlus)) ||
+      (orderUnit.top.isAnchorInherit || orderUnit.top.isAnchorInheritPlus)) ||
     (hideInvisibles && !orderUnit.isVisible)
   )
     return null;
@@ -34,45 +33,20 @@ export default function TheOrder(props: ITheOrderProps) {
       </div>
     );
   }
-
-  if (orderUnit.texti == null) {
-    const chords = com.actualChords(orderUnit.chordsi, currTransPosition);
-
-    if (!chords) return null;
-
-    const hideChords =
-      !chordVisibleVariant || (!orderUnit.isMin && chordVisibleVariant === 1);
-
-    return (
-      <div
-        id={`com-block-${orderUniti}`}
-        className={`composition-block styled-block ${
-          orderUnit.isVisible ? "" : "invisible"
-        } flex flex-baseline`}
-      >
-        <div
-          className={`styled-header ${hideChords ? "anchor" : ""} ${className}`}
-        >
-          {orderUnit.top.header({
-            isTexted: !hideChords,
-            r: orderUnit.repeatsTitle,
-          })}
-        </div>
-        {hideChords ? null : (
-          <pre
-            key={`chorded-block-${orderUniti}-content`}
-            className={`styled-block chords-block ${className}`}
-          >
-            {chords}
-          </pre>
-        )}
-      </div>
-    );
-  }
+  const isTexted =
+    orderUnit.texti == null
+      ? !(
+          !chordVisibleVariant ||
+          (!orderUnit.isMin && chordVisibleVariant === 1)
+        )
+      : true;
 
   const blockHeader = orderUnit.top.isInherit
     ? null
-    : orderUnit.top.header?.({ isTexted: true });
+    : orderUnit.top.header?.({
+        isTexted,
+        r: orderUnit.texti == null ? orderUnit.repeatsTitle : "",
+      });
 
   const chordedOrd = !!(
     (!orderUnit.chordsi || orderUnit.chordsi > -1) &&
@@ -84,6 +58,44 @@ export default function TheOrder(props: ITheOrderProps) {
     <div className={`styled-header ${className}`}>{blockHeader}</div>
   );
 
+  const header = blockHeader
+    ? typeof asHeaderComponent === "function"
+      ? asHeaderComponent({
+          chordedOrd,
+          orderUnit,
+          orderUniti,
+          com,
+          isJoinLetters: true,
+          headerNode,
+        })
+      : headerNode
+    : null;
+
+  if (orderUnit.texti == null) {
+    const chords = com.actualChords(orderUnit.chordsi, currTransPosition);
+
+    if (!chords) return null;
+
+    return (
+      <div
+        id={`com-block-${orderUniti}`}
+        className={`composition-block styled-block ${
+          orderUnit.isVisible ? "" : "invisible"
+        } flex flex-baseline`}
+      >
+        {header}
+        {!isTexted ? null : (
+          <div
+            key={`chorded-block-${orderUniti}-content`}
+            className={`styled-block chords-block vertical-middle ${className}`}
+          >
+            {chords}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div
       id={`com-block-${orderUniti}`}
@@ -93,18 +105,7 @@ export default function TheOrder(props: ITheOrderProps) {
         chordedOrd ? "chorded-block" : "without-chords"
       } ${className}`}
     >
-      {blockHeader
-        ? typeof asHeaderComponent === "function"
-          ? asHeaderComponent({
-              chordedOrd,
-              orderUnit,
-              orderUniti,
-              com,
-              isJoinLetters: true,
-              headerNode,
-            })
-          : headerNode
-        : null}
+      {header}
       {(orderUnit.repeated || "")
         .split(/\n/)
         .map((textLine, textLinei, textLinea) => {

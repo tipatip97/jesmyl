@@ -1,13 +1,14 @@
+import useExer from "../../../../../../../../complect/exer/useExer";
 import { ChordVisibleVariant } from "../../../../../Cm.model";
+import { cmExer } from "../../../../../Cm.store";
 import ComLine from "../../../../../col/com/line/ComLine";
 import TheOrder from "../../../../../col/com/order/TheOrder";
 import { useEditableCcom } from "../../useEditableCcom";
 import "./ChordApplicationsRedactor.scss";
-import useChordApplicationsRedactor from "./useChordApplicationsRedactor";
 
 export default function ChordApplicationsRedactor() {
   const ccom = useEditableCcom();
-  const { setChordPosition } = useChordApplicationsRedactor(ccom);
+  const { exec } = useExer(cmExer);
 
   return (
     <div className="chord-application-redactor">
@@ -33,7 +34,7 @@ export default function ChordApplicationsRedactor() {
                       linePoss?.indexOf(-1) > -1 ? "active" : ""
                     }`}
                     onClick={() => {
-                      setChordPosition(ord, textLinei, -1);
+                      exec(ord?.setChordPosition(textLinei, -1));
                     }}
                   />
                   <ComLine
@@ -59,7 +60,7 @@ export default function ChordApplicationsRedactor() {
                           ?.split("_") || [];
 
                       if (letteri != null)
-                        setChordPosition(ord, textLinei, +letteri);
+                        exec(ord?.setChordPosition(textLinei, +letteri));
                     }}
                   />
                   <div
@@ -67,7 +68,7 @@ export default function ChordApplicationsRedactor() {
                       linePoss?.indexOf(-2) > -1 ? "active" : ""
                     }`}
                     onClick={() => {
-                      setChordPosition(ord, textLinei, -2);
+                      exec(ord?.setChordPosition(textLinei, -2));
                     }}
                   />
                 </>

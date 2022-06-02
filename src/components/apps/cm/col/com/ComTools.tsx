@@ -26,7 +26,7 @@ export default function ComTools() {
           chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : ""
         }`}
       >
-        <EvaIcon name="music-outline" className="abs-icon" />
+        <EvaIcon name="options-2-outline" className="abs-icon" />
         <div className="title">Тональность</div>
         <div className="abs-action flex around pointer">
           <EvaIcon

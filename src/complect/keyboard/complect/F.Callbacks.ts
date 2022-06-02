@@ -13,31 +13,37 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
 
     onFlashMouseDown = (event: KeyboardStorageEvent) => {
         event.stopPropagation();
+        this.isContextOpen = false;
         this.focus();
     }
 
     onSelectAllButton = (event: KeyboardStorageEvent) => {
         event.stopPropagation();
+        this.isContextOpen = false;
         this.selectAll();
     }
 
     onCopyButton = (event: KeyboardStorageEvent) => {
         event.stopPropagation();
+        this.isContextOpen = false;
         this.copy();
     }
 
     onPasteButton = (event: KeyboardStorageEvent) => {
         event.stopPropagation();
+        this.isContextOpen = false;
         this.paste();
     }
 
     onPasteBeforeButton = (event: KeyboardStorageEvent) => {
         event.stopPropagation();
+        this.isContextOpen = false;
         this.paste('before');
     }
 
     onClearButton = () => {
         this.replaceAll("");
+        this.isContextOpen = false;
         this.focus();
     }
 
@@ -70,11 +76,13 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
     onCharContextMenu = (chari: number, event: KeyboardStorageEvent) => {
         event.preventDefault();
         event.stopPropagation();
+        this.isContextOpen = false;
         this.selectWord(chari);
     }
 
     onCharDoubleClick = (chari: number, event: KeyboardStorageEvent) => {
         event.preventDefault();
+        this.isContextOpen = false;
         this.selectWord(chari);
     }
 

@@ -111,6 +111,7 @@ export class EditableCat extends Cat {
         action: 'catBindCom',
         args: {
           comw: com.wid,
+          value: com.wid,
           comn: com.name,
         },
         anti: ({ action, args }) => {

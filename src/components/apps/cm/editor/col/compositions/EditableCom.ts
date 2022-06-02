@@ -126,7 +126,7 @@ export class EditableCom extends Com {
             },
             args: {
                 catn: cat.name,
-                number,
+                value: number,
                 catw: cat.wid,
             },
             corrects
@@ -342,7 +342,7 @@ export class EditableCom extends Com {
         this.exec({
             action: 'removeBlock',
             args: {
-                coli,
+                value: coli,
                 coln: coln === 'texts' ? 't' : 'c',
             }
         });
@@ -492,7 +492,7 @@ export class EditableCom extends Com {
             action: 'changeBlocks',
             corrects,
             args: {
-                text: execValue,
+                value: execValue,
                 coln: coln === 'texts' ? 't' : 'c',
                 index: coli
             }
@@ -591,7 +591,7 @@ export class EditableCom extends Com {
             prev,
             args: {
                 catn: cat.name,
-                catw: cat.wid,
+                value: cat.wid,
             },
             anti: [
                 ({ action, args }) => {
