@@ -29,6 +29,8 @@
     .styled-block {
         &.chords-block {
             margin-left: .5em;
+            margin-bottom: .5em;
+            white-space: pre-line;
         }
 
         &.chorded-block {
@@ -94,6 +96,8 @@
         font-weight: var(--font-bold);
         text-decoration: var(--text-decor);
         margin-bottom: .5em;
+        display: inline-block;
+        vertical-align: middle;
 
         &.enter,
         &.trans {
