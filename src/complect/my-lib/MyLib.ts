@@ -947,10 +947,11 @@ export class MyLib {
         if (isStatic) parent.style.position = prevPosition;
     }
 
-    clone<Val>(what: Val): Val {
-        if (this.isobj(what)) {
+    clone<Val extends Object | undefined | null>(what: Val): Val {
+        if (what === null || what === undefined) return what;
+        else if (what.constructor === Array || what.constructor === Object) {
             const newObj: any = this.isArr(what) ? [] : {};
-            for (const whatn in what) newObj[whatn] = this.clone(what[whatn]);
+            for (const whatn in what) newObj[whatn] = this.clone(what[whatn as never]);
             return newObj;
         }
         return what;
