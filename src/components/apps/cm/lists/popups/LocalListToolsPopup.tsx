@@ -6,7 +6,7 @@ import FullscreenExpandComList from "./FullscreenExpandComList";
 
 export default function LocalListToolsPopup({ coms }: { coms?: Com[] }) {
   const { openFullscreenContent } = useFullscreenContent();
-  const { openTranslations, isShowFullscreen } = useTranslation();
+  const { goToTranslation: openTranslations, isSelfTranslation: isShowFullscreen } = useTranslation();
 
   return (
     <>

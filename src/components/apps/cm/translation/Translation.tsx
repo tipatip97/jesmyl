@@ -26,7 +26,7 @@ export default function Translations({
 
   const {
     currWin,
-    newTranslation,
+    watchTranslation,
     prevText,
     nextText,
     prevCom,
@@ -38,9 +38,7 @@ export default function Translations({
     switchPosition,
     switchVisible,
     closeTranslation,
-    showMarks,
-    isShowMarks,
-    isShowFullscreen,
+    isSelfTranslation: isShowFullscreen,
     isTranslationBlockVisible,
     comPack: [comList, titlePostfix],
   } = useTranslation();
@@ -108,7 +106,6 @@ export default function Translations({
             </div>
             <div
               className="center-area info-area top"
-              onClick={() => showMarks(!isShowMarks)}
               onDoubleClick={() => {
                 setIsShowCloseButton(true);
                 setTimeout(() => setIsShowCloseButton(false), 2000);
@@ -245,7 +242,7 @@ export default function Translations({
               title={currWin ? "" : "Enter"}
               className="start-translation button flex center"
               onClick={(event) => {
-                newTranslation(
+                watchTranslation(
                   (event.view as any).screenLeft + event.clientX - 70,
                   (event.view as any).screenTop + event.clientY + 70
                 );

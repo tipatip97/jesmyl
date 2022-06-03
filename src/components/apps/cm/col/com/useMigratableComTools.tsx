@@ -26,7 +26,7 @@ import { useCcom } from "./useCcom";
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
   const [ccom] = useCcom();
-  const { openTranslations, isShowFullscreen } = useTranslation();
+  const { goToTranslation: openTranslations, isSelfTranslation: isShowFullscreen } = useTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
   const { openFullscreenContent } = useFullscreenContent();

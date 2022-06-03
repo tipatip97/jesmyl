@@ -10,7 +10,7 @@ import useTranslation from "./translation/useTranslation";
 export default function CmApplication({ content }: { content: ReactNode }) {
   const [, setCols] = useCols();
   const [, setEditableCols] = useEditableCols();
-  const { newTranslation } = useTranslation();
+  const { watchTranslation } = useTranslation();
   const { jumpTo, nav } = useCmNav();
   const { selectedComws } = useSelectedComs();
 
@@ -26,13 +26,13 @@ export default function CmApplication({ content }: { content: ReactNode }) {
       if (event.key === "F5") {
         event.preventDefault();
         jumpTo(translationNavPoint, true);
-        newTranslation(200, 200, true);
+        watchTranslation(200, 200, true);
       }
     };
 
     window.addEventListener("keydown", onKeyUp);
     return () => window.removeEventListener("keydown", onKeyUp);
-  }, [jumpTo, newTranslation]);
+  }, [jumpTo, watchTranslation]);
 
   return <>{content}</>;
 }

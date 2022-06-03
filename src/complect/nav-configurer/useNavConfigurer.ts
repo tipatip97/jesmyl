@@ -46,7 +46,7 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
             if (actions.length) {
                 if (actions.some(action => {
                     actions.shift();
-                    return !action?.();
+                    return action?.();
                 }) && !isForceBack) return;
             }
 

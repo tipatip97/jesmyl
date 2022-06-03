@@ -16,7 +16,6 @@ export interface CmState extends CmStoraged {
     translationBlockPosition: FontSizeContainPropsPosition;
     isCmFullscreen: boolean;
     paranjaMode: ParanjaMode;
-    isShowMarks: boolean;
     isMiniAnchor: boolean;
     rollModeMarks: boolean;
     currentMeetingsContext: number[];

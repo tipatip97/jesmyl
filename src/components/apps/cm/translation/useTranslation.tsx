@@ -2,19 +2,17 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { renderApplication } from "../../../..";
 import { isTouchDevice } from "../../../../complect/device-differences";
-import mylib from "../../../../complect/my-lib/MyLib";
-import useComPack from "../col/com/useComPack";
 import { RootState } from "../../../../shared/store";
 import useCmNav from "../base/useCmNav";
 import {
   riseUpTranslationUpdates,
   setTranslationBlock,
   setTranslationBlockPosition,
-  switchShowMarks,
   switchTranslationBlockVisible,
 } from "../Cm.store";
 import { Com } from "../col/com/Com";
 import { useCcom } from "../col/com/useCcom";
+import useComPack from "../col/com/useComPack";
 import TranslationScreen from "./TranslationScreen";
 
 let currWin: Window | null = null;
@@ -23,7 +21,7 @@ export default function useTranslation() {
   useSelector((state: RootState) => state.cm.translationUpdates);
 
   const dispatch = useDispatch();
-  const { goTo, goBack } = useCmNav();
+  const { goTo, goBack, registerBackAction } = useCmNav();
   const [ccom, setCcom] = useCcom();
   const currTexti = useSelector(
     (state: RootState) => state.cm.translationBlock
@@ -35,8 +33,7 @@ export default function useTranslation() {
 
   const ret = {
     currWin,
-    isShowFullscreen: isTouchDevice,
-    isShowMarks: useSelector((state: RootState) => state.cm.isShowMarks),
+    isSelfTranslation: isTouchDevice,
     isTranslationBlockVisible: isVisible,
     currText: isVisible ? texts && texts[currTexti] : "",
     currTexti,
@@ -93,25 +90,26 @@ export default function useTranslation() {
     },
     closeTranslation: () => {
       currWin?.close();
-      if (ret.isShowFullscreen) {
+      if (ret.isSelfTranslation) {
         goBack();
         if (document.fullscreenElement) document.exitFullscreen();
       }
+      return false;
     },
-    openTranslations: (isSetFirstCom?: boolean) => {
+    goToTranslation: (isSetFirstCom?: boolean) => {
       if (isSetFirstCom) {
         const [comList] = ret.comPack;
         if (comList?.length) setCcom(comList[0]);
       }
 
       ret.setTexti(0);
-      if (ret.isShowFullscreen) {
+      if (ret.isSelfTranslation) {
         goTo("translation", null, true);
         document.body.requestFullscreen();
+        registerBackAction(() => ret.closeTranslation());
       } else goTo("translation");
     },
-    showMarks: (isShow: boolean) => dispatch(switchShowMarks(isShow)),
-    newTranslation: (left: number, top: number, isSetFirstCom = false) => {
+    watchTranslation: (left: number, top: number, isSetFirstCom = false) => {
       if (currWin) {
         currWin.focus();
         if (!currWin.closed) return;
@@ -155,7 +153,7 @@ export default function useTranslation() {
     onKeyTranslations: async (event: KeyboardEvent) => {
       switch (event.code) {
         case "Enter":
-          ret.newTranslation(200, 200);
+          ret.watchTranslation(200, 200);
           break;
 
         case "ArrowUp":
@@ -175,7 +173,7 @@ export default function useTranslation() {
           break;
 
         case "Escape":
-          if (ret.isShowFullscreen) ret.closeTranslation();
+          if (ret.isSelfTranslation) ret.closeTranslation();
           else ret.switchVisible();
           break;
 
@@ -204,5 +202,5 @@ const getComi = (comw?: number, comList?: Com[] | nil) => {
 
 const scrollToView = (com: Com) => {
   const comFace = document.querySelector(`.com-face.current.wid_${com.wid}`);
-  if (comFace) mylib.scrollToView(comFace, "center");
+  if (comFace) comFace.scrollIntoView({ block: "center" });
 };

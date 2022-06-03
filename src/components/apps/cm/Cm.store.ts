@@ -19,7 +19,6 @@ const initialState: CmState = {
   lastUpdate: cmStorage.get('lastUpdate'),
   rollMode: null,
   isCmFullscreen: false,
-  isShowMarks: false,
   isMiniAnchor: false,
   paranjaMode: null,
   rollModeMarks: false,
@@ -88,9 +87,6 @@ export const slice = createSlice({
     },
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? state.isCmFullscreen;
-    },
-    switchShowMarks: (state, action: PayloadAction<boolean | nil>) => {
-      state.isShowMarks = action.payload ?? state.isShowMarks;
     },
     switchIsMiniAnchor: (state, action: PayloadAction<boolean | nil>) => {
       state.isMiniAnchor = action.payload ?? !state.isMiniAnchor;
@@ -165,7 +161,6 @@ export const {
   switchTranslationBlockVisible,
   setTranslationBlockPosition,
   riseUpTranslationUpdates,
-  switchShowMarks,
   switchShowTranslationInfo,
   setParanjaMode,
   updateLaterComwList,
