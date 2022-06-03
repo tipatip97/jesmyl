@@ -56,6 +56,7 @@ export class KeyboardStorageHistoty extends KeyboardStorageSelect {
             this.memoryPosition += isUndo ? -1 : 1;
 
             this.textUpdate();
+            this.scrollToView();
         }
     }
 

@@ -12,6 +12,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         if (isRemember) this.remember('replaceAll');
         this.valueChars = value.split('');
         this.setCursorPosition(this.valueChars.length);
+        this.scrollToView();
         this.setValues();
     }
 
@@ -47,6 +48,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
             this.valueChars.splice(start, finish - start + 1, ...value.split(''));
             this.setCursorPosition(start + value.length);
             this.isSelected = false;
+            this.scrollToView();
             this.setValues();
 
             return true;
@@ -68,6 +70,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
             }
             this.isSelected = false;
 
+            this.scrollToView();
             this.setValues();
         }
     }
@@ -84,6 +87,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         }
         this.isSelected = false;
 
+        this.scrollToView();
         this.setValues();
     }
 
@@ -95,7 +99,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
             this.memoryPosition < this.memory.length ||
             this.typedCursorPosition !== this.cursorPosition
         )
-            this.remember('type');
+            this.remember('write');
 
         this.valueChars.splice(this.cursorPosition, 0, ...value.split(''));
 
@@ -131,6 +135,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
             const [start, finish] = [...this.selected].sort((a, b) => a - b);
             navigator.clipboard.writeText(this.value.slice(start, finish));
             if (this.replaceSelected('')) return;
+            this.scrollToView();
         }
     }
 }

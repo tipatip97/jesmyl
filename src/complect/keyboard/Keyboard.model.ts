@@ -27,7 +27,7 @@ export interface KeyboardInputProps {
     setIsUnknownSymbols?: (char: string) => boolean;
 };
 
-export type KeyboardMemoryPointAction = 'type' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';
+export type KeyboardMemoryPointAction = 'write' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';
 export const keyboardInlineActions: KeyboardMemoryPointAction[] = ['memoShift'];
 
 export type KeyboardStorageEvent = React.MouseEvent<HTMLSpanElement, MouseEvent>

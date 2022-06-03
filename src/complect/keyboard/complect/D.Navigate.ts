@@ -4,7 +4,6 @@ import { KeyboardStorageHistoty } from './C.History';
 export class KeyboardStorageNavigate extends KeyboardStorageHistoty {
     downTs = 0;
     flowCharListElement: HTMLDivElement | nil;
-    focusedCharItem: HTMLSpanElement | nil;
     focusedLinei: number = -1;
     focusedOffset: number = 0;
     offsetElements: HTMLSpanElement[] = [];
@@ -127,25 +126,6 @@ export class KeyboardStorageNavigate extends KeyboardStorageHistoty {
         else
             this.setCursorPosition(this.cursorPosition + index + this.focusedLinei + (isNeedMinus ? 0 : 1), false);
 
-    }
-
-    scrollToView() {
-        if (this.flowCharListElement && this.focusedCharItem)
-            if (
-                this.flowCharListElement.scrollLeft > this.focusedCharItem.offsetLeft
-            ) {
-                this.flowCharListElement.scrollLeft = this.focusedCharItem.offsetLeft;
-            } else if (
-                this.flowCharListElement.scrollLeft <
-                this.focusedCharItem.offsetLeft -
-                this.flowCharListElement.clientWidth +
-                this.focusedCharItem.clientWidth
-            )
-                this.flowCharListElement.scrollLeft =
-                    this.focusedCharItem.offsetLeft -
-                    this.flowCharListElement.clientWidth +
-                    this.focusedCharItem.clientWidth +
-                    2;
     }
 
     isZeroCursorOn(charLinei: number) {
