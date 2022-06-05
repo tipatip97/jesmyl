@@ -44,7 +44,7 @@ export default function TheCom({
     <ComOrders
       com={com}
       fontSize={fontSize}
-      chordVisibleVariant={chordVisibleVariant || ChordVisibleVariant.Minimal}
+      chordVisibleVariant={chordVisibleVariant ?? ChordVisibleVariant.Minimal}
       isMiniAnchor={isMiniAnchor}
       hideInvisibles={hideInvisibles}
     />

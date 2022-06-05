@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
@@ -26,7 +25,10 @@ import { useCcom } from "./useCcom";
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
   const [ccom] = useCcom();
-  const { goToTranslation: openTranslations, isSelfTranslation: isShowFullscreen } = useTranslation();
+  const {
+    goToTranslation: openTranslations,
+    isSelfTranslation: isShowFullscreen,
+  } = useTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
   const { openFullscreenContent } = useFullscreenContent();
@@ -54,19 +56,25 @@ export default function useMigratableComTools() {
             return {
               tool,
               title: "Показать аккорды",
-              icon: "umbrella-outline",
+              icon:
+                chordVisibleVariant === ChordVisibleVariant.Maximal
+                  ? "file-text-outline"
+                  : chordVisibleVariant === ChordVisibleVariant.Minimal
+                  ? "file-remove-outline"
+                  : "file-outline",
               onClick: () => {
                 setChordVisibleVariant(
-                  !ccom?.orders?.some(
-                    (ord) => !ord.isMin && ord.texti != null && !ord.isAnchor
-                  )
-                    ? chordVisibleVariant
-                      ? ChordVisibleVariant.None
-                      : ChordVisibleVariant.Maximal
-                    : chordVisibleVariant -
-                        (chordVisibleVariant > ChordVisibleVariant.Minimal
-                          ? ChordVisibleVariant.Maximal
-                          : -1)
+                  chordVisibleVariant === ChordVisibleVariant.Maximal
+                    ? ChordVisibleVariant.None
+                    : !ccom?.orders?.some(
+                        (ord) => !ord.isMin && ord.texti != null
+                      )
+                    ? chordVisibleVariant === ChordVisibleVariant.None
+                      ? ChordVisibleVariant.Minimal
+                      : ChordVisibleVariant.None
+                    : chordVisibleVariant === ChordVisibleVariant.None
+                    ? ChordVisibleVariant.Minimal
+                    : ChordVisibleVariant.Maximal
                 );
 
                 return true;
