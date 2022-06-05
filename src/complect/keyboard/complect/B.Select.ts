@@ -71,6 +71,7 @@ export class KeyboardStorageSelect extends KeyboardStorageBase {
     }
 
     selectAll() {
+        if (!this.value) return;
         this.selected = [0, this.valueChars.length];
         this.isSelected = true;
         this.forceUpdate();

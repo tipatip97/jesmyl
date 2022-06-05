@@ -156,7 +156,8 @@
 
 .input-keyboard-flash-controlled {
     --cursor-animation: cursor .4s infinite alternate-reverse;
-    --cursor-border: 1px solid transparent;
+    --cursor-border-color: transparent;
+    --cursor-border: 1px solid var(--cursor-border-color);
     position: relative;
     cursor: text;
     width: 100%;
@@ -199,7 +200,6 @@
             .input-keyboard-flash-controlled-char-list {
                 height: 1.3em;
                 border-left: var(--cursor-border);
-                ;
 
                 .input-keyboard-flash-controlled-char-list-line {
                     height: 1.3em;
@@ -217,6 +217,35 @@
 
         .icon-button-container>.close-button {
             display: none;
+        }
+    }
+
+    &.stable-cursor-mode {
+        --cursor-animation: none;
+
+        &.empty-input {
+            &.no-lines {
+                .input-keyboard-flash-controlled-char-list {
+                    border-color: var(--keyboard-flash-color);
+                }
+            }
+        }
+
+        .input-keyboard-flash-controlled-char-list {
+            .input-keyboard-flash-controlled-char-list-inner {
+
+                .input-keyboard-flash-controlled-char-list-line {
+                    &.zero-cursor {
+                        border-color: var(--keyboard-flash-color);
+                    }
+
+                    .input-keyboard-flash-controlled-char {
+                        &.cursor {
+                            border-color: var(--keyboard-flash-color);
+                        }
+                    }
+                }
+            }
         }
     }
 

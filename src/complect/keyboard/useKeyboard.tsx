@@ -93,8 +93,10 @@ export function KEYBOARD_FLASH({
     };
     const onKeyDown = (event: KeyboardEvent) =>
       currentInput?.onOverflowKeyDown(event);
+    const onKeyUp = () => currentInput?.onOverflowKeyUp();
 
     window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
     window.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mouseup", onMouseUp);
 
@@ -103,6 +105,7 @@ export function KEYBOARD_FLASH({
       window.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);
       window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
     };
   }, []);
 
@@ -111,8 +114,9 @@ export function KEYBOARD_FLASH({
     key: string,
     iconName?: EvaIconName,
     onMouseUp?: React.MouseEventHandler<HTMLDivElement>,
+    children?: ReactNode,
     onContextMenu?: React.MouseEventHandler<HTMLOrSVGElement>,
-    children?: ReactNode
+    onTouchStart?: React.TouchEventHandler<HTMLDivElement>
   ) => {
     return (
       <div
@@ -128,6 +132,7 @@ export function KEYBOARD_FLASH({
         onTouchStart={(event) => {
           event.stopPropagation();
           setKeyInFix(key);
+          onTouchStart?.(event);
         }}
         onContextMenu={onContextMenu}
       >
@@ -153,6 +158,13 @@ export function KEYBOARD_FLASH({
       onTouchEnd={(event) => {
         event.stopPropagation();
         setKeyInFix(null);
+        currentInput.onTouchNavigationEnd(event);
+      }}
+      onTouchMove={(event) => {
+        currentInput.onTouchNavigationMove(
+          event,
+          event.targetTouches[0].clientX
+        );
       }}
       onMouseUp={(event) => {
         event.stopPropagation();
@@ -223,10 +235,16 @@ export function KEYBOARD_FLASH({
                         "SHIFT",
                         "arrow-upward-outline",
                         () => currentInput.switchCaps(),
+                        null,
                         (event) => {
                           event.preventDefault();
                           currentInput.switchCtrlKey();
-                        }
+                        },
+                        (event) =>
+                          currentInput.onTouchNavigationStart(
+                            "select",
+                            event.targetTouches[0].clientX
+                          )
                       )
                     : null}
                   {line.map((key, keyi) => {
@@ -241,7 +259,14 @@ export function KEYBOARD_FLASH({
                         "backspace",
                         "BACKSPACE",
                         "backspace-outline",
-                        (event) => currentInput.backspace(event)
+                        (event) => currentInput.backspace(event),
+                        null,
+                        undefined,
+                        (event) =>
+                          currentInput.onTouchNavigationStart(
+                            "delete",
+                            event.targetTouches[0].clientX
+                          )
                       )
                     : null}
                 </div>
@@ -250,7 +275,9 @@ export function KEYBOARD_FLASH({
 
             <div className="keyboard-flash-line bottom-line">
               {keyNode(
-                currentInput?.canUndo() ? "undo-action" : "undo-action disabled",
+                currentInput?.canUndo()
+                  ? "undo-action"
+                  : "undo-action disabled",
                 "UNDO",
                 "corner-up-left-outline",
                 (event) => {
@@ -264,9 +291,15 @@ export function KEYBOARD_FLASH({
                 "CLOSE-MORE",
                 moreClosed ? "bulb-outline" : "close-outline",
                 () => setMoreClosed(!moreClosed),
-                () => {},
                 moreClosed ? null : (
-                  <div className="keyboard-flash-key-more-box-list no-scrollbar">
+                  <div
+                    className="keyboard-flash-key-more-box-list no-scrollbar"
+                    ref={(elem) =>
+                      elem &&
+                      keyInFix === null &&
+                      (elem.scrollTop = window.innerHeight)
+                    }
+                  >
                     <div className="keyboard-flash-key-more-box-inner">
                       {keyNode(
                         "",
@@ -275,7 +308,6 @@ export function KEYBOARD_FLASH({
                           ? "flash-off-outline"
                           : "flash-outline",
                         () => currentInput.switchCtrlKey(),
-                        () => {},
                         <span className="key-description">Ctrl клавиша</span>
                       )}
                       {currentInput.nullOrCanSelectAll() &&
@@ -284,7 +316,6 @@ export function KEYBOARD_FLASH({
                           "SELECT_ALL",
                           "text-outline",
                           () => currentInput.selectAll(),
-                          () => {},
                           <span className="key-description">Выделить всё</span>
                         )}
                       {currentInput.nullOrCanCopy() &&
@@ -293,7 +324,6 @@ export function KEYBOARD_FLASH({
                           "COPY",
                           "copy-outline",
                           () => currentInput.copy(),
-                          () => {},
                           <span className="key-description">Копировать</span>
                         )}
                       {currentInput.nullOrCanPaste() &&
@@ -302,7 +332,6 @@ export function KEYBOARD_FLASH({
                           "PASTE",
                           "clipboard-outline",
                           () => currentInput.paste(),
-                          () => {},
                           <span className="key-description">Вставить</span>
                         )}
                       {keyNode(
@@ -314,16 +343,31 @@ export function KEYBOARD_FLASH({
                           setKeyInFix(null);
                           currentInput.redo();
                         },
-                        () => {},
                         <span className="key-description">Вернуть</span>
                       )}
                     </div>
                   </div>
                 )
               )}
-              {keyNode("space-key", " ")}
-              {keyNode("", "LANG", "globe-outline", () =>
-                currentInput.switchLanguage()
+              {keyNode(
+                "space-key",
+                " ",
+                undefined,
+                undefined,
+                null,
+                undefined,
+                (event) =>
+                  currentInput.onTouchNavigationStart(
+                    "navigate",
+                    event.targetTouches[0].clientX
+                  )
+              )}
+              {keyNode(
+                "",
+                "LANG",
+                "globe-outline",
+                () => currentInput.switchLanguage(),
+                null
               )}
               {currentInput.isMultiline
                 ? keyNode("enter", "\n", "corner-down-left-outline")

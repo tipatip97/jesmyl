@@ -65,7 +65,11 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
           this.isFocused ? "focused" : ""
         } ${this.value ? "" : "empty-input"} ${
           props.multiline ? "multiline" : ""
-        } ${props.closeButton !== false ? "" : "without-close-button"}`}
+        } ${props.closeButton !== false ? "" : "without-close-button"} ${
+          this.touchNavigationMode || this.isOverflowKeyDown
+            ? "stable-cursor-mode"
+            : ""
+        }`}
         placeholder={props.placeholder}
         onMouseDown={this.onFlashMouseDown}
         onClick={this.onStopPropagation}
@@ -164,7 +168,12 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     chari: number
   ) {
     if (element) {
-      if (this.cursorPosition - 1 === chari) {
+      if (this.isSelected) {
+        if (this.selected[1] === chari) {
+          this.focusedCharItem = element;
+          this.focusedLinei = linei;
+        }
+      } else if (this.cursorPosition - 1 === chari) {
         this.focusedCharItem = element;
         this.focusedLinei = linei;
         if (this.isCursorPositionChanged) {
@@ -178,7 +187,9 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   }
 
   nullOrContextMenu() {
-    return this.isFocused && (this.isSelected || this.isContextOpen)
+    return this.isFocused &&
+      (this.isSelected || this.isContextOpen) &&
+      this.touchNavigationMode !== "delete"
       ? true
       : null;
   }

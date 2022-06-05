@@ -22,8 +22,11 @@ export class KeyboardStorageHistoty extends KeyboardStorageSelect {
             );
 
         if (action === 'backspace' || action === 'delete') {
-            if (prev?.action !== action && (!prev || prev.value !== this.value))
+            if (prev?.action !== action && (!prev || prev.value !== this.value)) {
+                this.memory.splice(this.memoryPosition, this.memory.length);
+
                 push();
+            }
         } else if (action !== 'memoShift' || prev?.action !== action) {
             this.memory.splice(this.memoryPosition, this.memory.length);
 

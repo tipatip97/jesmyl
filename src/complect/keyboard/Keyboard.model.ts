@@ -11,6 +11,7 @@ export type KeyboardKeyTranslate = Record<KeyboardKeyTranslateLanguage, string>;
 
 export type KeyboardKeyDict = Record<KeyboardKeyTranslateLanguage, { lower: string[][]; upper: string[][]; }>;
 export type KeyboardInputPropsType = 'password' | 'text' | 'number';
+export type TouchSelectionMode = 'select' | 'delete' | 'navigate';
 
 export interface KeyboardInputProps {
     initialValue?: string;

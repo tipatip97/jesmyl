@@ -1,11 +1,15 @@
-import { KeyboardInputPropsType, KeyboardStorageEvent } from '../Keyboard.model';
+import { KeyboardInputPropsType, KeyboardStorageEvent, TouchSelectionMode } from '../Keyboard.model';
 import { KeyboardStorageChanges } from './E.Changes';
 
 
 export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
     type?: KeyboardInputPropsType;
+    isOverflowKeyDown = false;
     isHiddenPassword?: boolean;
     isContextOpen = false;
+    touchNavigationMode?: TouchSelectionMode;
+    touchNavigationXStart: number | null = null;
+    touchNavigationXPosition: number | null = null;
 
     charListElementRef = (element: HTMLDivElement) => element && (this.flowCharListElement = element);
 
@@ -123,6 +127,57 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         }
     }
 
+    onTouchNavigationStart = (mode: TouchSelectionMode, xStart: number) => {
+        this.touchNavigationMode = mode;
+        this.touchNavigationXPosition = 0;
+        this.touchNavigationXStart = xStart;
+        this.shadowCursorPosition = this.cursorPosition;
+        if (!this.isSelected) this.selected[0] = this.cursorPosition;
+        this.forceUpdate();
+    };
+
+    onTouchNavigationMove = (event: KeyboardStorageEvent, xPosition: number) => {
+        if (
+            !this.touchNavigationMode ||
+            (this.touchNavigationMode !== 'navigate' && (this.touchNavigationMode === 'delete'
+                ? xPosition > (this.touchNavigationXStart as number) :
+                xPosition < (this.touchNavigationXStart as number)
+            ))
+        ) return;
+        this.touchNavigationXPosition = xPosition;
+        const newPosition = this.shadowCursorPosition - Math.floor((this.touchNavigationXStart as number - xPosition) / 7);
+        const limitedPosition = newPosition > this.value.length
+            ? this.value.length
+            : newPosition < 0
+                ? 0
+                : newPosition;
+
+        if (this.touchNavigationMode === 'navigate') {
+            this.selectIfShift(event, () => {
+                this.setCursorPosition(limitedPosition);
+            });
+        } else {
+            this.isSelected = newPosition !== this.shadowCursorPosition;
+
+            this.selected[1] = limitedPosition;
+        }
+        this.scrollToView();
+        this.forceUpdate();
+
+    };
+
+    onTouchNavigationEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+        if (this.touchNavigationXPosition && this.touchNavigationMode === 'delete') {
+            this.backspace(event);
+            this.isSelected = false;
+        }
+        delete this.touchNavigationMode;
+        this.touchNavigationXStart = null;
+        this.touchNavigationXPosition = null;
+        this.shadowCursorPosition = this.cursorPosition;
+        this.forceUpdate();
+    };
+
     onOverflowMouseDown() {
         if (!this.isFocused) return;
         this.blur();
@@ -140,8 +195,15 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         }
     }
 
+    onOverflowKeyUp() {
+        if (!this.isFocused) return;
+        this.isOverflowKeyDown = false;
+        this.forceUpdate();
+    }
+    
     onOverflowKeyDown(event: KeyboardEvent) {
         if (!this.isFocused) return;
+        this.isOverflowKeyDown = true;
         switch (event.key) {
             case 'Backspace':
                 this.backspace(event);

@@ -3,7 +3,7 @@ import { KeyboardStorageNavigate } from './D.Navigate';
 
 export class KeyboardStorageChanges extends KeyboardStorageNavigate {
     prevTypedValue: string = '';
-    typedCursorPosition = -1;
+    shadowCursorPosition = this.cursorPosition;
     dafaultSetIsUnknownSymbols = () => false;
     setIsUnknownSymbols: (char: string) => boolean = this.dafaultSetIsUnknownSymbols;
 
@@ -45,7 +45,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
 
             if (start === finish) return false;
 
-            this.valueChars.splice(start, finish - start + 1, ...value.split(''));
+            this.valueChars.splice(start, finish - start, ...value.split(''));
             this.setCursorPosition(start + value.length);
             this.isSelected = false;
             this.scrollToView();
@@ -97,7 +97,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
             (value === ' ' && this.prevTypedValue !== ' ') ||
             !this.value ||
             this.memoryPosition < this.memory.length ||
-            this.typedCursorPosition !== this.cursorPosition
+            this.shadowCursorPosition !== this.cursorPosition
         )
             this.remember('write');
 
@@ -106,7 +106,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         this.setCursorPosition(this.cursorPosition + value.length);
         this.isSelected = false;
         this.prevTypedValue = value;
-        if (!isRememberAsPart) this.typedCursorPosition = this.cursorPosition;
+        if (!isRememberAsPart) this.shadowCursorPosition = this.cursorPosition;
         if (!this.isCapsLock) this.event.shiftKey = false;
         this.setValues();
         this.scrollToView();
