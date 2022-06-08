@@ -53,7 +53,7 @@
         ],
         "path": "~apps/cm/cm-execs.json",
         "file": "cm-execs.json",
-        "name": "cm_executions",
+        "name": "execs",
         "ext": "json",
         "track": [
           [

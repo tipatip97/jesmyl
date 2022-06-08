@@ -27,8 +27,10 @@ const translationNav: INavigationRouteChildItem<CmNavData> = {
   node: <Translations />,
 };
 
+export const comNavPhasePoint: NavPhasePoint = ["com"];
+
 const comNav: INavigationRouteChildItem<CmNavData> = {
-  phase: ["com"],
+  phase: comNavPhasePoint,
   node: <TheComposition />,
   next: [translationNav],
 };

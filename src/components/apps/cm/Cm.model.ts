@@ -7,6 +7,7 @@ import { ParanjaMode } from "./base/useParanja";
 import { MigratableComToolName } from "./col/com/Com.model";
 import { IExportableCols } from "./cols/Cols.model";
 import { IExportableMeetings } from "./lists/meetings/Meetings.model";
+import { CmEditorStoraged } from "./editor/CmEditor.model";
 
 export interface CmState extends CmStoraged {
     rollMode: CmRollMode;
@@ -36,7 +37,7 @@ export enum ChordVisibleVariant {
 
 export type FavoriteMeetings = Record<'events' | 'contexts', number[]>;
 
-export interface CmStoraged {
+export interface CmStoraged extends CmEditorStoraged {
     route: FreeNavRoute;
     ccatw?: number;
     ccomw?: number;
@@ -69,6 +70,7 @@ export interface CmAction {
     title?: string;
     action: string;
     level: number;
+    valueAs?: string;
 }
 
 export interface CmAppVariables {

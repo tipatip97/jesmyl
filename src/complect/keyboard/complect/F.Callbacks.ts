@@ -4,7 +4,6 @@ import { KeyboardStorageChanges } from './E.Changes';
 
 export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
     type?: KeyboardInputPropsType;
-    isOverflowKeyDown = false;
     isHiddenPassword?: boolean;
     isContextOpen = false;
     touchNavigationMode?: TouchSelectionMode;

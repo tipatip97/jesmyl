@@ -43,6 +43,7 @@ export default function useKeyboard(): (
           currentInput?.blur(inputDict[id] !== currentInput);
           currentInput = inputDict[id];
           topOnFocus(currentInput);
+          props.onFocus?.();
         }
       );
 

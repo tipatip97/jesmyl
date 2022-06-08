@@ -20,6 +20,7 @@ export default function EditMeetingsEvent() {
   const [, setCcom] = useCcom();
   const { goTo } = useCmNav();
   const aboutInput = useKeyboard();
+  const [isClosedComList, setIsClosedComList] = useState(true);
 
   if (!currentEvent) return null;
   const usedComList = (currentEvent.coms || []).concat(
@@ -29,7 +30,11 @@ export default function EditMeetingsEvent() {
   const prevComsLength = currentEvent.prevComs?.length || 0;
   const [input] = aboutInput(`EditMeetingsEvent ${currentEvent.wid}`, {
     initialValue: currentEvent.name,
-    onChange: (value) => exec(currentEvent.rename(value)),
+    onFocus: () => setIsClosedComList(true),
+    onChange: (value) => {
+      setIsClosedComList(true);
+      exec(currentEvent.rename(value));
+    },
   });
 
   return (
@@ -117,8 +122,15 @@ export default function EditMeetingsEvent() {
               ))}
             </>
           ) : null}
-          <div className="list-title sticky">Все песни</div>
-          {!zcat ? null : (
+          <div className="list-title sticky">
+            <span>Все песни</span>
+            <EvaIcon
+              className="pointer"
+              name={isClosedComList ? "eye-outline" : "eye-off-outline"}
+              onClick={() => setIsClosedComList(!isClosedComList)}
+            />
+          </div>
+          {!zcat || isClosedComList ? null : (
             <>
               <DebouncedInput
                 icon="search-outline"

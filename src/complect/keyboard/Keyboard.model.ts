@@ -23,6 +23,7 @@ export interface KeyboardInputProps {
     className?: string;
     placeholder?: string;
     onBlur?: () => void;
+    onFocus?: () => void;
     onChange?: (value: string) => void;
     onPaste?: (value: string) => void;
     setIsUnknownSymbols?: (char: string) => boolean;

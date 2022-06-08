@@ -23,6 +23,7 @@ import Editor from "./Editor";
 import EERules from "./ee-rules/EERules";
 import EditMeetings from "./meetings/EditMeetings";
 import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
+import ExecsVisor from "./execs/ExecsVisor";
 
 export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
   icon?: EvaIconName;
@@ -163,6 +164,15 @@ export const editorRouteItems: INavigationRouteChildItem<CmNavData, {
     data: {
       title: "Ё-Е правила",
       icon: "text-outline",
+    },
+  },
+  {
+    phase: ["execs"],
+    node: <ExecsVisor />,
+    accessRule: "canWatch",
+    data: {
+      title: "Изменения",
+      icon: "pantone-outline",
     },
   },
 ];

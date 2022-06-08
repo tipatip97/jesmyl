@@ -81,6 +81,10 @@ export class Order extends Base<IExportableOrderTop> {
     return (this.texti != null && this.com.texts && this.com.texts[this.texti]) || '';
   }
 
+  get chords() {
+    return (this.chordsi != null && this.com.chords && this.com.chords[this.chordsi]) || '';
+  }
+
   get antiVis() { return this.isVisible ? 0 : 1; }
   get isVisible(): boolean {
     return !!(

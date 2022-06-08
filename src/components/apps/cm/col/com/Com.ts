@@ -82,6 +82,10 @@ export class Com extends BaseNamed<IExportableCom> {
     this.initialTransPosition = val;
   }
 
+  getFirstSimpleChord() {
+    return (this.orders?.[0]?.chords ?? this.chords?.[0])?.match(/[A-H]#?/)?.[0];
+  }
+
   pullTransPosition(obj: IExportableCom) {
     if (obj) {
       if (obj.ton != null) this.initialTransPosition = obj.p;

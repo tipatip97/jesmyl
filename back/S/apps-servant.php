@@ -150,7 +150,7 @@ function inlineActions($actions, $args = [], $line = [])
     $inlineAction = [];
     $inlineArgs = $args;
 
-    foreach (['action', 'level', 'title'] as $fieldn)
+    foreach (['action', 'level', 'title', 'valueAs'] as $fieldn)
       if (!is_null($action[$fieldn]))
         $inlineAction[$fieldn] = $action[$fieldn];
 

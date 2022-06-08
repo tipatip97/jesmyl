@@ -1,5 +1,5 @@
 import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
-import useCmNav from "../../../base/useCmNav";
+import useCmNav, { comNavPhasePoint } from "../../../base/useCmNav";
 import useSelectedComs from "../../../base/useSelectedComs";
 import { useCcom } from "../useCcom";
 import { ComFaceProps } from "./ComFace.model";
@@ -9,7 +9,7 @@ import ComFaceContextMenu from "./ComFaceContextMenu";
 export default function ComFace(props: ComFaceProps) {
   const { com, importantOnClick, groupClass, selectable } = props;
   const [ccom, setCcom] = useCcom();
-  const { goTo } = useCmNav();
+  const { jumpTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
     useAbsoluteFloatPopup();
   const { selectedComPosition, toggleSelectedCom } = useSelectedComs();
@@ -26,7 +26,7 @@ export default function ComFace(props: ComFaceProps) {
             return;
           }
           setCcom(com);
-          goTo("com");
+          jumpTo(comNavPhasePoint);
         }}
         onContextMenu={(event) => {
           event.preventDefault();

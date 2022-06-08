@@ -35,6 +35,7 @@ const initialState: CmState = {
   translationBlockPosition: 'center',
   favoriteMeetings: cmStorage.getOr('favoriteMeetings', { contexts: [], events: [] }),
   comTopTools: cmStorage.getOr('comTopTools', ["mark-com", "fullscreen-mode"]),
+  execs: cmStorage.getOr('execs', []),
   currentMeetingsContext: [],
 
   numComUpdates: 0,

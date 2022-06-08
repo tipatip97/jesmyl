@@ -713,9 +713,9 @@ function executer($execs, $pathTemplate, $saveInFiles = 1, $appName)
       $parentContent = contentOrWrite($path, '{}');
 
       if (is_null($parentContent)) {
-        $isFileParent = ($method === 'set' && is_array($track) && count($track) === 1);
+        $isFileParent = $method === 'set' && is_array($track) && count($track) === 1;
 
-        $parent = !$isFileParent
+        $parent = $isFileParent
           ? $value
           : [];
       } else {

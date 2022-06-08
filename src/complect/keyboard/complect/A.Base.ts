@@ -8,6 +8,7 @@ export class KeyboardStorageBase {
     isMultiline?: boolean = false;
     isSelected = false;
     focusedCharItem: HTMLSpanElement | nil;
+    isOverflowKeyDown = false;
 
     focus(rejectForceUpdate?: boolean) {
         if (!this.isFocused) this.onFocus?.();
@@ -23,6 +24,7 @@ export class KeyboardStorageBase {
             this.forceUpdate();
             this.onBlur();
             this.forceUpdate();
+            this.isOverflowKeyDown = false;
 
             return true;
         }
