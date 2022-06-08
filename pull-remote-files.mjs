@@ -17,7 +17,8 @@ import fetch from 'node-fetch';
             file_system.writeFile(`./back/${path}/+case/${name}.json`,
                 ext === 'json'
                     ? JSON.stringify(content, null, 2)
-                    : content, () => console.info(`File ${path}/${name}.${ext} rewrited!`)
+                    : content,
+                () => console.info(`File ${path}/${name}.${ext} checked!`)
             )
         )
         .catch(err => console.info(err));
