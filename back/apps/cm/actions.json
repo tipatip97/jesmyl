@@ -42,6 +42,7 @@
             "value": "{chordn}"
         },
         "method": "set",
+        "valueAs": "chord",
         "args": {
             "value": "#List",
             "chordn": "#String"
@@ -297,23 +298,12 @@
                             },
                             {
                                 "level": 60,
-                                "action": "changeTon",
-                                "title": "В Песне \"$name\" изменена тональность с \"$init\" на \"$ton\"",
-                                "track": [
-                                    "c"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#List"
-                                }
-                            },
-                            {
-                                "level": 60,
                                 "action": "comSetTransPosition",
                                 "title": "В Песне \"$name\" изменена тональность: \"$prev\" -> \"$value\"",
                                 "track": [
                                     "p"
                                 ],
+                                "valueAs": "tonLevel",
                                 "method": "set",
                                 "args": {
                                     "value": "#Number"
@@ -502,6 +492,7 @@
                                                     "{linei}"
                                                 ],
                                                 "method": "set",
+                                                "valueAs": "chordApplications",
                                                 "args": {
                                                     "value": "#List",
                                                     "linei": "#Number"
@@ -735,143 +726,6 @@
                         }
                     }
                 ]
-            },
-            {
-                "track": [
-                    "styles"
-                ],
-                "next": [
-                    {
-                        "level": 100,
-                        "action": "addStyleBlock",
-                        "title": "Добавлен новый тип блока \"$name\"",
-                        "method": "push",
-                        "value": {
-                            "n": "{name}",
-                            "t": {},
-                            "c": {},
-                            "i": 0
-                        },
-                        "args": {
-                            "name": "#String"
-                        }
-                    },
-                    {
-                        "level": 100,
-                        "action": "bumerangSettingsStyleProps",
-                        "title": "Изменён порядок отображения стилей в настройках",
-                        "method": "bumerang",
-                        "args": {
-                            "value": "#List"
-                        }
-                    },
-                    {
-                        "level": 100,
-                        "action": "removeStyleProp",
-                        "title": "Тип блока \"$name\" удалён",
-                        "method": "remove",
-                        "value": [
-                            "n",
-                            "===",
-                            "{name}"
-                        ],
-                        "args": {
-                            "name": "#String"
-                        }
-                    },
-                    {
-                        "track": [
-                            [
-                                "n",
-                                "===",
-                                "{name}"
-                            ]
-                        ],
-                        "args": {
-                            "name": "#String"
-                        },
-                        "next": [
-                            {
-                                "level": 100,
-                                "action": "changeStyleTopField",
-                                "title": "Изменение в названии типа блока \"$name\" на \"$value\"",
-                                "track": [
-                                    "h"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#String"
-                                }
-                            },
-                            {
-                                "level": 100,
-                                "action": "changeStyleInheritField",
-                                "title": "Изменено значение параметра наследования типа блока \"$name\" на \"$value?{{положительное}{отрицательное}}\"",
-                                "track": [
-                                    "i"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#Num"
-                                }
-                            },
-                            {
-                                "level": 100,
-                                "action": "setStyleBlockLevelSign",
-                                "title": "Изменено значение уровня привязки блока \"$name\" на '$value'",
-                                "track": [
-                                    "l"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#Number"
-                                }
-                            },
-                            {
-                                "level": 100,
-                                "action": "setIsModulationBlock",
-                                "title": "Изменено значение параметра \"Модулирующий ли '$name' блок\" в $value?{{положительное}{отрицательное}} значение",
-                                "track": [
-                                    "md"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#Num"
-                                }
-                            },
-                            {
-                                "level": 100,
-                                "action": "setTagListStyleProp",
-                                "title": "$prev{{$value{{Изменён}{Удалён}}}{Добавлен}} список тегов в блоке '$name'",
-                                "track": [
-                                    "tg"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#list"
-                                }
-                            },
-                            {
-                                "level": 100,
-                                "action": "changeStyleProp",
-                                "title": "Изменён параметр \"$propn\" в значение \"$value{{$value}{null}}\" в типе блока \"$name\" для $switch{{$coln}{t}{Текстов}{c}{Заголовков}}",
-                                "track": [
-                                    "{coln}",
-                                    "{propn}"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#string",
-                                    "coln": [
-                                        "t",
-                                        "c"
-                                    ],
-                                    "propn": "#String"
-                                }
-                            }
-                        ]
-                    }
-                ]
             }
         ]
     },
@@ -982,6 +836,7 @@
                                 "action": "setMeetingEventStack",
                                 "title": "В событии \"$eventn\" изменён список песен",
                                 "method": "set_all",
+                                "valueAs": "comw",
                                 "value": {
                                     "s": "{value}"
                                 },
