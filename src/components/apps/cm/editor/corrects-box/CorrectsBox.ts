@@ -64,7 +64,7 @@ export class CorrectsBox {
                 if (Array.isArray(source))
                     source.forEach(src => {
                         const previ = target.findIndex((tar) => tar.uniq === src.uniq);
-                        
+
                         if (previ < 0) target.push(this.correctify(src));
                         else target.splice(previ, 1, this.correctify(src));
                     });
@@ -111,5 +111,9 @@ export class CorrectsBox {
         if (!box) return;
         const { errors, warnings, unknowns } = box;
         this.remove(errors, warnings, unknowns);
+    }
+
+    isSome() {
+        return this.errors !== null || this.unknowns !== null || this.warnings !== null;
     }
 }

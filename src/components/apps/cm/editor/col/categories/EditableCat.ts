@@ -31,10 +31,12 @@ export class EditableCat extends Cat {
         this.wraps = this.coms.filter(com => !com.audio.trim()).map(com => ({ com }));
       } else if (term === '@2') {
         this.wraps = this.coms.map(com => {
-          com.col.nameCorrects(com.name, 'com');
-          com.texts?.map((text, texti) => com.blockCorrects(text, 'texts', texti, 'setText'));
-          return { com };
-        });
+          com.texts?.forEach((text, texti) => com.setBlockCorrects('texts', texti, text, true));
+          com.chords?.forEach((chords, chordsi) => com.setBlockCorrects('chords', chordsi, chords, true));
+          com.rename(com.name, null, false, true);
+
+          return Object.values(com.corrects).some(correct => correct?.isSome()) ? { com } : null;
+        }).filter((wrap) => wrap) as never;
 
       } else {
         this.wraps = mylib.searchRate<ComWrap<EditableCom>>(this.coms, term, ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com') as ComWrap<EditableCom>[];

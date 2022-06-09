@@ -26,7 +26,7 @@ export default function EditableCompositionMain() {
     <>
       {
         <EditContainerCorrectsInformer
-          corrects={ccom?.corrects.comRename}
+          corrects={ccom?.corrects.name}
           className="flex"
         >
           <div className="margin-gap-h">Название</div>

@@ -58,11 +58,11 @@ export class EditableCom extends Com {
         this.col.execCol(bag, 'com');
     }
 
-    rename(name: string, exec?: <Val>(val?: Val) => Val | nil) {
+    rename(name: string, exec?: (<Val>(val?: Val) => Val | nil) | nil, isSetExec = true, isSetAllText?: boolean) {
         this.col.renameCol(name, 'com', (correct: string) => {
             this.rename(correct, exec);
             exec?.();
-        });
+        }, isSetExec, isSetAllText);
     }
 
     setField<Fieldn extends keyof IExportableCom>(fieldn: Fieldn, value: IExportableCom[Fieldn], defVal?: IExportableCom[Fieldn]) {
@@ -482,7 +482,7 @@ export class EditableCom extends Com {
         const value = coln === 'texts' ? val : this.transBlock(val, 12 - (this.transPosition || 0));
         if (value == null) return;
         const execValue = value.replace(/^\s+|\s+$/gm, "");
-        const corrects = this.blockCorrects(val, coln);
+        const corrects = this.setBlockCorrects(coln, coli, val);
 
         this.exec({
             uniq: [coln, coli],
@@ -498,13 +498,18 @@ export class EditableCom extends Com {
             }
         });
 
-        this.corrects[`changeBlocks_${coln}_${coli}`] = corrects;
 
         if (coln === 'texts' && this.texts) this.texts[coli] = value;
         else if (this.chords) {
             this.chords[coli] = value;
             this.resetChordLabels();
         }
+    }
+
+    setBlockCorrects(coln: 'texts' | 'chords', coli: number, val: string, isSetAllText?: boolean) {
+        const corrects = this.blockCorrects(val, coln, coli, undefined, isSetAllText);
+        this.corrects[`${coln}-block-${coli}`] = corrects;
+        return corrects
     }
 
     insertBlocks(coln: 'texts' | 'chords', coli: number, value = '', prev = '...') {
@@ -616,7 +621,7 @@ export class EditableCom extends Com {
         exec?.();
     }
 
-    blockCorrects(value: string | und, coln: 'chords' | 'texts', blocki?: number, action?: string) {
+    blockCorrects(value: string | und, coln: 'chords' | 'texts', blocki?: number, action?: string, isSetAllText?: boolean) {
         const blockNum = blocki == null ? '' : `. (${blocki - -1}-й блок)`;
         const ret = (err: string | null) => new CorrectsBox(err ? [{ message: err, code: 0 }] : null);
 
@@ -657,7 +662,7 @@ export class EditableCom extends Com {
                 );
                 return ret(`В тексте присутствует непарное количество ковычек.\nНеобходимо добавить ${Math.abs(level)} ${text}${blockNum}\n\n`);
             }
-            return this.col.textCorrects(value, action);
+            return this.col.textCorrects(value, action, isSetAllText);
         }
     }
 

@@ -207,7 +207,7 @@ export class EditableOrder extends Order {
                             ? ['[', ']']
                             : !inPrev && inPos
                                 ? ['{', '}']
-                                : ['(', ')'];
+                                : ['<', '>'];
 
                         lineSplitted[vowels[pos]] = lbr + vowel + rbr;
                     });

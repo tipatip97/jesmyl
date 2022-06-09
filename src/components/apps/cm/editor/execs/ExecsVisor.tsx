@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../complect/my-lib/MyLib";
@@ -66,24 +66,39 @@ export default function ExecsVisor() {
 
     return (
       actions &&
-      execs?.map((exec) => {
-        const action = actions.find(({ action }) => exec.action === action);
-        console.log(action, exec);
-        return action
-          ? {
-              ...action,
-              ...exec,
-              specials: (
-                <>
-                  {setAsNode(exec.args?.eventw, "eventw")}
-                  {setAsNode(exec.args?.comw, "comw")}
-                </>
-              ),
-              prevNode: setAsNode(exec.args?.prev, action.valueAs),
-              valueNode: setAsNode(exec.args?.value, action.valueAs),
-            }
-          : { action: "", title: "Неизвестное изменение", level: 0 };
-      })
+      execs
+        ?.map((exec): ExecVision => {
+          const action = actions.find(({ action }) => exec.action === action);
+          let prevNode: ReactNode;
+          let valueNode: ReactNode;
+
+          if (
+            exec.args &&
+            (typeof exec.args.value === "string" ||
+              typeof exec.args.prev === "string")
+          ) {
+            prevNode = <pre>{exec.args?.prev}</pre>;
+            valueNode = <pre>{exec.args?.value}</pre>;
+          } else if (action) {
+            prevNode = setAsNode(exec.args?.prev, action.valueAs);
+            valueNode = setAsNode(exec.args?.value, action.valueAs);
+          }
+          return action
+            ? {
+                ...action,
+                ...exec,
+                specials: (
+                  <>
+                    {setAsNode(exec.args?.eventw, "eventw")}
+                    {setAsNode(exec.args?.comw, "comw")}
+                  </>
+                ),
+                prevNode,
+                valueNode,
+              }
+            : { action: "", title: "Неизвестное изменение", level: 0 };
+        })
+        .sort((a, b) => (b.ts || 0) - (a.ts || 0))
     );
   }, [cols, execs, meetings]);
 
@@ -96,7 +111,7 @@ export default function ExecsVisor() {
         return (
           <div
             key={`exec-${exec.ts}`}
-            className="exec-visor margin-big-gap-v pointer padding-gap"
+            className="exec-visor margin-big-gap-v pointer padding-gap full-width"
           >
             <div className="flex between full-width">
               <span>{exec.author}</span>
@@ -120,6 +135,7 @@ export default function ExecsVisor() {
                 }
               </span>
             </div>
+            {exec.ts && <div>{new Date(exec.ts * 1000).toLocaleString()}</div>}
             <div>
               <strong>
                 {mylib.stringTemplater(exec.title || "", exec.args)}

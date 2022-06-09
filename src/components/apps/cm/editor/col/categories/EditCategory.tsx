@@ -33,7 +33,7 @@ export default function EditCategory() {
         <>
           {
             <EditContainerCorrectsInformer
-              corrects={ccat?.col.corrects.catRename}
+              corrects={ccat?.col.corrects.name}
             >
               <div className="flex">
                 <div className="margin-gap-h">Название:</div>

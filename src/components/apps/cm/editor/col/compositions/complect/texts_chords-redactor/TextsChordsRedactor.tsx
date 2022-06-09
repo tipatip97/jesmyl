@@ -26,7 +26,7 @@ export default function TextsChordsRedactor({
           <EditContainerCorrectsInformer
             className="margin-big-gap-v"
             key={`com-text ${ccoln} ${coli}`}
-            corrects={ccom.corrects[`changeBlocks_${ccoln}_${coli}`]}
+            corrects={ccom.corrects[`${ccoln}-block-${coli}`]}
           >
             <div>
               <div className="flex between">

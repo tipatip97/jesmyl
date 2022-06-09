@@ -176,6 +176,10 @@ textarea {
     flex-direction: column;
   }
 
+  &.column-reverse {
+    flex-direction: column-reverse;
+  }
+
   &.start {
     justify-content: start;
   }

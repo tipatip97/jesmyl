@@ -6,6 +6,7 @@ import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeC
 import { ParanjaMode } from "./base/useParanja";
 import { ChordVisibleVariant, CmRollMode, CmState, CmStorage, FavoriteMeetings } from "./Cm.model";
 import { MigratableComToolName } from "./col/com/Com.model";
+import { Exec } from "./editor/CmEditor.model";
 import { IExportableMeetings } from "./lists/meetings/Meetings.model";
 
 export const cmExer = new Exer('cm', cmStorage);
@@ -83,6 +84,9 @@ export const slice = createSlice({
     updateCurrentMeetingsContext: (state, action: PayloadAction<number[]>) => {
       state.currentMeetingsContext = action.payload;
     },
+    updateEditorExecList: (state, action: PayloadAction<Exec[]>) => {
+      state.execs = action.payload;
+    },
     setCurrentEventw: (state, action: PayloadAction<number>) => {
       state.eventw = action.payload;
     },
@@ -156,6 +160,7 @@ export const {
   updateSelectedComws,
   updateComTopTools,
   updateCurrentMeetingsContext,
+  updateEditorExecList,
   setCurrentEventw,
   setComFontSize,
   setTranslationBlock,

@@ -36,7 +36,7 @@ export default function NewComposition({ close }: { close: () => void }) {
     },
   });
 
-  const corrects = com.col.corrects.comRename;
+  const corrects = com.col.corrects.name;
 
   const goToRoute = (phase = "texts", isRejectSave = true) => {
     setCcom(com, isRejectSave);
