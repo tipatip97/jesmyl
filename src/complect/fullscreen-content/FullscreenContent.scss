@@ -25,7 +25,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        height: 100vh;
+        height: calc(100vh - var(--keyboard-flash-height));
         width: 100vw;
         background-color: var(--current-bg);
         overflow-y: auto;
