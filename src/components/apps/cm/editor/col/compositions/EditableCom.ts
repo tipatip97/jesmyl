@@ -58,10 +58,10 @@ export class EditableCom extends Com {
         this.col.execCol(bag, 'com');
     }
 
-    rename(name: string, exec?: (<Val>(val?: Val) => Val | nil) | nil, isSetExec = true, isSetAllText?: boolean) {
+    rename(name: string, onCorrecting?: ((val?: string) => any | nil | void) | nil, isSetExec = true, isSetAllText?: boolean) {
         this.col.renameCol(name, 'com', (correct: string) => {
-            this.rename(correct, exec);
-            exec?.();
+            this.rename(correct, onCorrecting);
+            onCorrecting?.(correct);
         }, isSetExec, isSetAllText);
     }
 
@@ -143,6 +143,7 @@ export class EditableCom extends Com {
 
     parseBlocks(blocks: string[] | string) {
         type Thromb = { arr: number[], s?: string; str?: string; len?: number; c?: number; };
+
         const chords: string[] = [];
         const orders: INewExportableOrder[] = [];
         const trombs: Thromb[] = [];
@@ -250,8 +251,8 @@ export class EditableCom extends Com {
             orders.push({ t, c, s, p: [] });
         });
 
-        this.add('chords', chords);
-        this.add('texts', texts);
+        this.add('chords', chords.length ? chords : ['']);
+        this.add('texts', texts.length ? texts : ['']);
         this.addOrders(orders);
     }
 

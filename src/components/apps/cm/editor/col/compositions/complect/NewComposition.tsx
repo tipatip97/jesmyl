@@ -25,18 +25,40 @@ export default function NewComposition({ close }: { close: () => void }) {
     []
   );
 
-  const [input] = useKeyboard()("new composition name input", {
-    className: "full-width",
-    initialValue: name,
+  const keyboardFerry = useKeyboard();
+
+  const [input, updateInputValue] = keyboardFerry(
+    "new composition name input",
+    {
+      className: "full-width",
+      initialValue: name,
+      onInput: () => setIsTakeName(false),
+      onChange: (value) => {
+        create();
+        setName(com.correctName(value));
+        exec(
+          com.rename(value, (correctName) =>
+            exec(correctName && updateInputValue(correctName))
+          )
+        );
+      },
+    }
+  );
+
+  const [textarea] = keyboardFerry("new composition body textarea", {
+    className: "text-heap-textarea full-width",
+    multiline: true,
+    closeButton: false,
+    placeholder: "Начни писать или вставь текст для создания песни",
     onChange: (value) => {
-      create();
-      setName(value);
-      exec(com.rename(value, exec));
-      setIsTakeName(false);
+      setValue(value);
+      if (isTakeName) {
+        const correctName = com.takeName(value);
+        setName(com.correctName(correctName));
+        updateInputValue(correctName);
+      }
     },
   });
-
-  const corrects = com.col.corrects.name;
 
   const goToRoute = (phase = "texts", isRejectSave = true) => {
     setCcom(com, isRejectSave);
@@ -55,24 +77,14 @@ export default function NewComposition({ close }: { close: () => void }) {
 
         <EditContainerCorrectsInformer
           className="full-width"
-          corrects={corrects}
+          corrects={com.col.corrects.name}
         >
           <div className="flex full-width">
             <span className="margin-gap-h">Название </span>
             <div className="full-width">{input}</div>
           </div>
         </EditContainerCorrectsInformer>
-        <textarea
-          className="text-heap-textarea"
-          placeholder="Начни писать или вставь текст для создания песни"
-          disabled={!!corrects?.errors?.length}
-          value={value}
-          onChange={(event) => {
-            setValue(event.target.value);
-            if (isTakeName)
-              setName(com.correctName(com.takeName(event.target.value)));
-          }}
-        />
+        {textarea}
         <EvaIcon
           name="done-all-outline"
           className="pointer margin-big-gap"
