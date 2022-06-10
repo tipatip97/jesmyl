@@ -24,6 +24,9 @@ export interface KeyboardInputProps {
     placeholder?: string;
     onBlur?: () => void;
     onFocus?: () => void;
+    // срабатывает только при вводе в поле инпута
+    onInput?: (value: string) => void;
+    // сабатывает при любом изменении значения
     onChange?: (value: string) => void;
     onPaste?: (value: string) => void;
     setIsUnknownSymbols?: (char: string) => boolean;

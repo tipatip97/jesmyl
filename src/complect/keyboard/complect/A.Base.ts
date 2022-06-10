@@ -1,5 +1,6 @@
 export class KeyboardStorageBase {
     value: string = '';
+    onInput?: (value: string) => void;
     onChange?: (value: string) => void;
     onFocus?: () => void;
     forceUpdate: () => void = () => { };

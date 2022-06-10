@@ -26,6 +26,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   ) {
     this.offsetElements = [];
     this.onChange = props.onChange;
+    this.onInput = props.onInput;
     this.onFocus = onFocus;
     this.forceUpdate = forceUpdater;
     this.onBlur = onBlur;

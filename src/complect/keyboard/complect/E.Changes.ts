@@ -109,6 +109,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         if (!isRememberAsPart) this.shadowCursorPosition = this.cursorPosition;
         if (!this.isCapsLock) this.event.shiftKey = false;
         this.setValues();
+        this.onInput?.(this.value);
         this.scrollToView();
     }
 
