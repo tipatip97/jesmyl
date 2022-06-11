@@ -34,7 +34,7 @@ export default function Lists() {
           />
           {selectedComws.length ? (
             <BrutalItem
-              icon="calendar-outline"
+              icon="checkmark-circle-2-outline"
               title="Выбранное"
               onClick={() => goTo("selected", null, isPreventSaveNav())}
             />
