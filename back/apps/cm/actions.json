@@ -539,18 +539,6 @@
                                             },
                                             {
                                                 "level": 50,
-                                                "action": "comSetOrderMinimal",
-                                                "title": "$value?{{В песне \"$name\" на $blockn установлена минималка}{В песне \"$name\" с блока $blockn снята минималка}}",
-                                                "track": [
-                                                    "m"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "value": "#Num"
-                                                }
-                                            },
-                                            {
-                                                "level": 50,
                                                 "action": "comSetOrderStringBlock",
                                                 "title": "В песне \"$name\", к $isa?{{ссылке на блок}{блоку}} $blockn прикреплён $i-й $ist?{{Текстовый блок}{блок Аккордов}}",
                                                 "track": [
@@ -642,7 +630,8 @@
                                                         },
                                                         "args": {
                                                             "fieldn": [
-                                                                "r"
+                                                                "r",
+                                                                "v"
                                                             ]
                                                         },
                                                         "next": [
@@ -659,7 +648,7 @@
                                                                     {
                                                                         "level": 50,
                                                                         "action": "setAnchorInheritValue",
-                                                                        "title": "В песне \"$name\" для $ink{{$ink{{$inhIndex}}}}-й части ссылки на блок \"$blockn\" установлено новое значение $switch{{$fieldn}{r}{повторений}} в значение \"$value\"",
+                                                                        "title": "В песне \"$name\" для $ink{{$ink{{$inhIndex}}}}-й части ссылки на блок \"$blockn\" $value{{установлено новое значение $switch{{$fieldn}{r}{повторений}} в значение \"$value\"}{значение $switch{{$fieldn}{r}{повторений}} было удалено}}",
                                                                         "track": [
                                                                             "{inhIndex}"
                                                                         ],
