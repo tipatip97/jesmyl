@@ -12,7 +12,7 @@ export interface IExportableOrder {
     f?: IExportableOrderFieldValues; // Особые значения
     m?: num; // Минималка
     o?: num; // Открыто в полном режиме
-    p?: number[][]; // Позиции аккордов
+    p?: number[][] | nil; // Позиции аккордов
     r?: OrderRepeats | null; // Повторения
     s?: string; // Тип блока
     t?: number | null; // Текстовый блок
@@ -48,11 +48,11 @@ export type OrderRepeats = number | SpecielOrderRepeats;
 export type Inheritancables<K extends keyof IExportableOrder = keyof IExportableOrder> = Record<K, Record<number, IExportableOrder[K]>>
 
 export interface IExportableOrderTop extends IExportableOrder {
-    // com: Com;
     source?: IExportableOrderTop;
     init?: IExportableOrderTop;
     targetOrd?: Order | nil;
     leadOrd?: Order;
+    watchOrd?: Order | nil;
     ord?: Order;
     sourceOrd?: Order | nil;
     prev?: Order | null;

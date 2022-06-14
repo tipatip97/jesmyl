@@ -13,6 +13,8 @@ export default function ChordApplicationsRedactor() {
   return (
     <div className="chord-application-redactor">
       {ccom?.orders?.map((ord, ordi) => {
+        if (!ord.isVisible) return null;
+
         const positions = ord.positions || [];
 
         return (

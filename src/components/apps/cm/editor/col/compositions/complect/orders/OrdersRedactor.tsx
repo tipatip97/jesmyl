@@ -18,13 +18,30 @@ export default function OrdersRedactor() {
   return (
     <div className="orders-redactor">
       {ccom.orders?.map((ord, ordi, orda) => {
+        const leadHeader = ord.top.header(
+          {
+            isEdit: true,
+            isTexted: ord.top.isInherit,
+            r: ord.repeatsTitle,
+          },
+          true
+        );
+        const blockHeader = ord.top.isInherit
+          ? `${leadHeader} ${ord.type}`
+          : leadHeader;
+
         const editNode = !ord.top.isAnchorInherit && (
           <EvaIcon
             name="edit-outline"
             className="margin-gap-h pointer vertical-middle"
             onClick={() => {
               openAbsoluteBottomPopup(
-                <OrdersRedactorOrderTools ccom={ccom} ord={ord} ordi={ordi} />
+                <OrdersRedactorOrderTools
+                  ccom={ccom}
+                  ord={ord}
+                  ordi={ordi}
+                  blockHeader={blockHeader}
+                />
               );
             }}
           />
@@ -37,12 +54,26 @@ export default function OrdersRedactor() {
             className={ord.top.isAnchorInherit ? "inherit-block" : ""}
           >
             <div className="margin-big-gap-h">
-              {isWithHead ? null : editNode}
+              {isWithHead ? null : ord.top.isAnchorInherit ? (
+                <EvaIcon
+                  name={ord.isVisible ? "eye-outline" : "eye-off-outline"}
+                  onClick={() => {
+                    exec(
+                      ord.setField("v", ord.antiIsVisible, {
+                        b: blockHeader,
+                      })
+                    );
+                  }}
+                />
+              ) : (
+                editNode
+              )}
             </div>
             <TheOrder
               orderUnit={ord}
               orderUniti={ordi}
               com={ccom}
+              hideInvisibles={false}
               chordVisibleVariant={ChordVisibleVariant.Maximal}
               asHeaderComponent={({ headerNode }) => {
                 return (

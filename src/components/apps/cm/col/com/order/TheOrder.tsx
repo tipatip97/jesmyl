@@ -28,11 +28,13 @@ export default function TheOrder(props: ITheOrderProps) {
       <div
         id={`com-block-${orderUniti}`}
         className={`${className} styled-header anchor`}
+        ref={(el) => el && (orderUnit.element = el)}
       >
         {orderUnit.top.header({ isTexted: false, r: orderUnit.repeatsTitle })}
       </div>
     );
   }
+
   const isTexted =
     orderUnit.texti == null
       ? !(
@@ -54,12 +56,12 @@ export default function TheOrder(props: ITheOrderProps) {
       (chordVisibleVariant === 1 && orderUnit.isMin))
   );
 
-  const headerNode = (
+  const headerNode = blockHeader && (
     <div className={`styled-header ${className}`}>{blockHeader}</div>
   );
 
-  const header = blockHeader
-    ? typeof asHeaderComponent === "function"
+  const header =
+    typeof asHeaderComponent === "function"
       ? asHeaderComponent({
           chordedOrd,
           orderUnit,
@@ -68,8 +70,7 @@ export default function TheOrder(props: ITheOrderProps) {
           isJoinLetters: true,
           headerNode,
         })
-      : headerNode
-    : null;
+      : headerNode;
 
   if (orderUnit.texti == null) {
     const chords = com.actualChords(orderUnit.chordsi, currTransPosition);
@@ -82,6 +83,7 @@ export default function TheOrder(props: ITheOrderProps) {
         className={`composition-block styled-block ${
           orderUnit.isVisible ? "" : "invisible"
         } flex flex-baseline`}
+        ref={(el) => el && (orderUnit.element = el)}
       >
         {header}
         {!isTexted ? null : (
@@ -104,6 +106,7 @@ export default function TheOrder(props: ITheOrderProps) {
       } styled-block ${
         chordedOrd ? "chorded-block" : "without-chords"
       } ${className}`}
+      ref={(el) => el && (orderUnit.element = el)}
     >
       {header}
       {(orderUnit.repeated || "")

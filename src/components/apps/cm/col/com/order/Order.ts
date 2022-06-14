@@ -2,11 +2,12 @@ import mylib from "../../../../../../complect/my-lib/MyLib";
 import { Base } from "../../../base/Base";
 import { Com } from "../Com";
 import { orderFields } from "./Order.consts";
-import { EditableOrderRegion, IExportableOrderFieldValues, IExportableOrderTop, Inheritancables, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
+import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, Inheritancables, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
 
 export class Order extends Base<IExportableOrderTop> {
   _regions?: EditableOrderRegion<Order>[];
   com: Com;
+  element?: HTMLDivElement;
 
   constructor(top: IExportableOrderTop, com: Com) {
     super(top);
@@ -62,16 +63,13 @@ export class Order extends Base<IExportableOrderTop> {
   get texti() { return this.getBasic('t'); }
   set texti(val) { this.setExportable('t', val); }
 
-  get positions(): number[][] | und {
-    return (
-      (this.top.isAnchorInherit ? this.top.source : this.top.targetOrd?.top.source)
-      || this.top.source)?.p || this.top.p;
+  get positions(): number[][] | nil {
+    return this.getInheritance('p')
+      || this.top.source?.p || this.top.p;;
   }
-  set positions(val: number[][] | und) {
-    const source = (
-      (this.top.isAnchorInherit ? this.top.source : this.top.targetOrd?.top.source)
-      || this.top.source)
-    source && (source.p = val);
+
+  set positions(val: number[][] | nil) {
+    this.setExportable('p', val);
   }
 
   get type() { return this.getBasic('s'); }
@@ -85,15 +83,12 @@ export class Order extends Base<IExportableOrderTop> {
     return (this.chordsi != null && this.com.chords && this.com.chords[this.chordsi]) || '';
   }
 
-  get antiVis() { return this.isVisible ? 0 : 1; }
   get isVisible(): boolean {
-    return !!(
-      this.top.isAnchorInheritPlus || this.top.isAnchorInherit
-        ? this.top.leadOrd?.isVisible
-        : this.top.isInherit
-          ? !(this.getBasic('v') === 0 || (this.top.leadOrd && !this.top.leadOrd?.isVisible))
-          : this.getBasic('v') !== 0
-    );
+    return this.top.isAnchorInheritPlus || this.top.isAnchorInherit
+      ? !(!this.top.leadOrd?.isVisible || this.getInheritance('v') === 0)
+      : this.top.isInherit
+        ? !(this.getBasic('v') === 0 || (this.top.leadOrd && !this.top.leadOrd.isVisible))
+        : this.getBasic('v') !== 0;
   }
   set isVisible(val) { this.setExportable('v', val ? 1 : 0); }
 
@@ -118,7 +113,7 @@ export class Order extends Base<IExportableOrderTop> {
     } else if (this.top && this.top.source && this.top.source.r != null)
       return this.top.source.r;
     else {
-      const repeats = this.getLeadFirst('r');
+      const repeats = this.getTargetFirst('r');
       const nrepeats: Record<string, number> = {};
       const reg = /[a-z]/i;
 
@@ -268,8 +263,8 @@ export class Order extends Base<IExportableOrderTop> {
       });
   }
 
-  getInheritance<Key extends keyof Inheritancables = keyof Inheritancables>(fieldn: Key): Inheritancables[Key] | null {
-    return (this.top.isAnchorInherit && this.top.anchorInheritIndex != null && this.top.leadOrd?.top.source?.inh && this.top.leadOrd.top.source.inh[fieldn] != null
+  getInheritance<Key extends keyof IExportableOrder>(fieldn: Key): IExportableOrder[Key] | null {
+    return (this.top.isAnchorInherit && this.top.anchorInheritIndex != null && this.top.leadOrd?.top.source?.inh && this.top.leadOrd.top.source.inh[fieldn]?.[this.top.anchorInheritIndex] != null
       ? this.top.leadOrd.top.source.inh[fieldn][this.top.anchorInheritIndex]
       : this.top.source
         ? this.top.source[fieldn]
@@ -277,11 +272,11 @@ export class Order extends Base<IExportableOrderTop> {
   }
 
   getSourceFirst<Key extends keyof IExportableOrderTop>(fieldn: Key) {
-    return this.top && mylib.def(this.getInheritance(fieldn as never), (this.top.targetOrd?.top.source || {} as IExportableOrderTop)[fieldn]);
+    return this.getInheritance(fieldn as never) ?? (this.top.targetOrd?.top.source || {} as IExportableOrderTop)[fieldn];
   }
 
-  getLeadFirst<Key extends keyof IExportableOrderTop>(fieldn: Key) {
-    return this.top && mylib.def((this.top.targetOrd?.top.source || {} as IExportableOrderTop)[fieldn], this.getInheritance(fieldn as never));
+  getTargetFirst<Key extends keyof IExportableOrderTop>(fieldn: Key): IExportableOrderTop[Key] {
+    return this.top?.targetOrd?.top.source?.[fieldn] ?? this.getInheritance(fieldn as never) as never;
   }
 
   get repeated() {

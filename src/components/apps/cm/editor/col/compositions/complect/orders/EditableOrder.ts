@@ -14,6 +14,8 @@ export class EditableOrder extends Order {
         this.com = com;
     }
 
+    get antiIsVisible() { return this.isVisible ? 0 : 1; }
+
     regionsOrders() {
         return this.com.orders;
     }
@@ -25,9 +27,17 @@ export class EditableOrder extends Order {
     }
 
     setField<K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args?: Record<string, any>, onFinish?: () => void, refresh = true, onSet?: () => void | null) {
-        const setExec = (action: string, additionalArgs: {}, onSet?: () => void, prevs?: Partial<IExportableOrder>) => {
+        const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
             this.exec({
-                prev: prevs?.[fieldn],
+                prev: ({
+                    s: this.type,
+                    c: this.chordsi,
+                    t: this.texti,
+                    o: this.isOpened,
+                    r: this.repeats,
+                    v: this.isVisible ? 1 : 0,
+                    e: this.isEmptyHeader
+                } as never)[fieldn],
                 value,
                 uniq: this.top.viewIndex,
                 method: 'set',
@@ -50,7 +60,6 @@ export class EditableOrder extends Order {
             setExec('setAnchorInheritValue', { inhIndex: this.top.anchorInheritIndex, wid, value }, onSet);
         } else {
             const action = ({
-                m: 'comSetOrderMinimal',
                 s: 'comSetOrderType',
                 c: 'comSetOrderStringBlock',
                 t: 'comSetOrderStringBlock',
@@ -60,22 +69,21 @@ export class EditableOrder extends Order {
                 e: 'comSetOrderEmptiedVal',
             } as Record<keyof Partial<IExportableOrder>, string>)[fieldn];
 
-            setExec(action, { value }, onSet, mylib.clone({
-                m: this.isMin,
-                s: this.type,
-                c: this.chordsi,
-                t: this.texti,
-                o: this.isOpened,
-                r: this.repeats,
-                v: this.isVisible ? 1 : 0,
-                e: this.isEmptyHeader
-            }));
+            setExec(action, { value }, onSet);
         }
 
 
         if (this.top.source) {
-            this.top.source[fieldn] = value as never;
-            if (this.top.leadOrd?.top.source?.inh) this.top.leadOrd.top.source.inh[fieldn] = value as never;
+            if (this.top.isAnchorInherit) {
+                const src = this.top.leadOrd?.top.source;
+                if (src && !src.inh) src.inh = {} as never;
+                const inh = src?.inh;
+
+                if (inh && this.top.anchorInheritIndex != null) {
+                    if (!inh[fieldn]) inh[fieldn] = {};
+                    inh[fieldn][this.top.anchorInheritIndex] = value as never;
+                }
+            } else this.top.source[fieldn] = value as never;
             this.setExportable(fieldn, value);
         }
 
@@ -146,6 +154,13 @@ export class EditableOrder extends Order {
         });
     }
 
+    isInheritValue<Key extends keyof IExportableOrder>(key: Key) {
+        return this.top.isAnchorInherit
+            ? this.top.anchorInheritIndex != null
+            && this.top.leadOrd?.top.source?.inh?.[key][this.top.anchorInheritIndex] == null
+            : this.top.isAnchor && this.top.source?.[key] == null
+    }
+
     get texti() { return this.getBasic('t'); }
     set texti(val) { this.setExportable('t', val); }
 
@@ -157,7 +172,7 @@ export class EditableOrder extends Order {
     set unique(val) { this.top.source && (this.top.source.u = val); }
 
     async setChordPosition(linei: number, pos: number) {
-        const prev = JSON.parse(JSON.stringify(this.positions?.[linei] || [])).sort((a: number, b: number) => a - b);
+        const prev = mylib.clone(this.positions?.[linei] || []).sort((a: number, b: number) => a - b);
         const line = this.positions?.[linei] || [];
         const posi = line.indexOf(pos);
         const textLines = (this.text || '').split('\n');
@@ -171,7 +186,6 @@ export class EditableOrder extends Order {
 
         const positions = line.sort((a, b) => a - b);
         if (this.positions) this.positions[linei] = positions;
-        //this.top.source.positions[linei] = positions;
 
         positions.forEach(pos => {
             const vowel = lineSplitted[vowels[pos]];
@@ -189,7 +203,7 @@ export class EditableOrder extends Order {
             args: {
                 linei,
                 value: line,
-                ordw: this.getLeadFirst('w'),
+                ordw: this.getTargetFirst('w'),
             },
             onSet: exec => {
                 const lineSplitted = textLine.split('');
@@ -226,6 +240,10 @@ export class EditableOrder extends Order {
                         .join('');
             }
         });
+    }
+
+    removeInheritance<Key extends keyof IExportableOrder>(key: Key) {
+        this.setField(key, null);
     }
 
     takeUniq() {

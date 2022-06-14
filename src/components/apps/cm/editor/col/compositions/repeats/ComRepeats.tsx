@@ -51,6 +51,7 @@ export default function ComRepeats() {
     const repeats = { ...reps, ...repds };
     const keys = Object.keys(repeats);
     if (repeats["."] === 0) delete repeats["."];
+
     exec(
       ord.setField(
         coln,
@@ -80,6 +81,8 @@ export default function ComRepeats() {
   return (
     <div className={`com-repeats-editor ${start == null ? "" : "active"}`}>
       {ccom?.orders?.map((ord, ordi) => {
+        if (!ord.isVisible) return null;
+
         return (
           <div
             key={`ord-${ordi}`}
@@ -114,6 +117,39 @@ export default function ComRepeats() {
               com={ccom}
               orderUnit={ord}
               orderUniti={ordi}
+              asHeaderComponent={(props) => {
+                return (
+                  <>
+                    {props.headerNode}
+                    {ord.top.watchOrd ? (
+                      <>
+                        <EvaIcon
+                          name="undo-outline"
+                          className="vertical-middle pointer margin-gap-h"
+                          onClick={() => {
+                            ord.top.watchOrd?.element?.scrollIntoView();
+                          }}
+                        />
+                        <EvaIcon
+                          name="pin-outline"
+                          className={`vertical-middle pointer ${
+                            ord.isInheritValue("r") ? "disabled" : ""
+                          }`}
+                          onClick={() => {
+                            modalService
+                              .confirm(
+                                "Очистить собственные правила повторения?"
+                              )
+                              .then((isClear) => {
+                                if (isClear) exec(ord.removeInheritance("r"));
+                              });
+                          }}
+                        />
+                      </>
+                    ) : null}
+                  </>
+                );
+              }}
               asLineComponent={(props) => {
                 return (
                   <ComLine

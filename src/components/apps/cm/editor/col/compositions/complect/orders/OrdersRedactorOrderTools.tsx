@@ -13,23 +13,14 @@ export default function OrdersRedactorOrderTools({
   ccom,
   ord,
   ordi,
+  blockHeader,
 }: {
   ccom: EditableCom;
   ord: EditableOrder;
   ordi: number;
+  blockHeader: string;
 }) {
   const { exec } = useExer(cmExer);
-  const leadHeader = ord.top.header(
-    {
-      isEdit: true,
-      isTexted: ord.top.isInherit,
-      r: ord.repeatsTitle,
-    },
-    true
-  );
-  const blockHeader = ord.top.isInherit
-    ? `${leadHeader} ${ord.type}`
-    : leadHeader;
   const blockHeaderHtml = (textPre = "", textPost = "") =>
     `${textPre && `${textPre} `}${
       ord.isEmptyHeader ? <s>{blockHeader}</s> : blockHeader
@@ -153,7 +144,7 @@ export default function OrdersRedactorOrderTools({
         className="abs-item abs-full"
         onClick={() => {
           exec(
-            ord.setField("v", ord.antiVis, {
+            ord.setField("v", ord.antiIsVisible, {
               b: blockHeader,
               def: 1,
             })
@@ -165,7 +156,7 @@ export default function OrdersRedactorOrderTools({
           className="abs-icon"
         />
         <div className="title">
-          {ord.isVisible ? "Скрыть" : "Показать"} блок
+          {ord.isVisible ? "Скрыть блок" : "Показать блок"}
         </div>
         <div className="abs-action" />
       </div>
