@@ -14,6 +14,7 @@ export default function ChordApplicationsRedactor() {
     <div className="chord-application-redactor">
       {ccom?.orders?.map((ord, ordi) => {
         if (!ord.isVisible) return null;
+        const chords = ord.chords?.split("\n").map((line) => line.split(" "));
 
         const positions = ord.positions || [];
 
@@ -26,8 +27,10 @@ export default function ChordApplicationsRedactor() {
             currTransPosition={0}
             orderUniti={ordi}
             asLineComponent={(props) => {
-              const { com, textLinei } = props;
+              const { com, textLine, textLinei } = props;
               const linePoss = positions[textLinei];
+              const diffCount =
+                (chords[textLinei]?.length || 0) - linePoss.length;
 
               return (
                 <>
@@ -73,6 +76,16 @@ export default function ChordApplicationsRedactor() {
                       exec(ord?.setChordPosition(textLinei, -2));
                     }}
                   />
+                  <span
+                    className={`margin-gap-h ${
+                      diffCount < 0 ? "pointer error-message" : ""
+                    }`}
+                    onClick={() => {
+                      exec(ord?.cutChordPositions(textLine, textLinei));
+                    }}
+                  >
+                    {diffCount || ""}
+                  </span>
                 </>
               );
             }}

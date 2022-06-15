@@ -1,8 +1,7 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { Base } from "../../../base/Base";
 import { Com } from "../Com";
-import { orderFields } from "./Order.consts";
-import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, Inheritancables, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
+import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
 
 export class Order extends Base<IExportableOrderTop> {
   _regions?: EditableOrderRegion<Order>[];
@@ -15,26 +14,13 @@ export class Order extends Base<IExportableOrderTop> {
 
     this.texti = mylib.isNum(top.t) ? top.t : null;
 
-    this.positions = mylib.def(top.p, []);
     this.fieldValues = top.f;
   }
 
   static getWithExtendableFields(source: IExportableOrderTop, target: IExportableOrderTop): Partial<IExportableOrderTop> {
-    const inhFields: string[] = [];
     const result: Partial<IExportableOrderTop> = {
-      inhFields
+      ...source, ...target
     };
-    if (source == null)
-      mylib.overlap(result, target);
-    else
-      orderFields.forEach(({ name, isExt, extIf = el => el == null }) => {
-        if (isExt && source[name] != null && extIf(target[name] as [])) {
-          result[name] = source[name] as never;
-          inhFields.push(name);
-        } else {
-          result[name] = target[name] as never;
-        }
-      });
     return result;
   }
 
@@ -64,12 +50,16 @@ export class Order extends Base<IExportableOrderTop> {
   set texti(val) { this.setExportable('t', val); }
 
   get positions(): number[][] | nil {
-    return this.getInheritance('p')
-      || this.top.source?.p || this.top.p;;
-  }
+    let positions = this.getInheritance('p');
+    if (positions?.length) return positions;
 
-  set positions(val: number[][] | nil) {
-    this.setExportable('p', val);
+    positions = this.top.source?.p;
+    if (positions?.length) return positions;
+
+    positions = this.top.targetOrd?.top.source?.p;
+    if (positions?.length) return positions;
+
+    return [];
   }
 
   get type() { return this.getBasic('s'); }
@@ -264,7 +254,9 @@ export class Order extends Base<IExportableOrderTop> {
   }
 
   getInheritance<Key extends keyof IExportableOrder>(fieldn: Key): IExportableOrder[Key] | null {
-    return (this.top.isAnchorInherit && this.top.anchorInheritIndex != null && this.top.leadOrd?.top.source?.inh && this.top.leadOrd.top.source.inh[fieldn]?.[this.top.anchorInheritIndex] != null
+    return (this.top.isAnchorInherit
+      && this.top.anchorInheritIndex != null
+      && this.top.leadOrd?.top.source?.inh?.[fieldn]?.[this.top.anchorInheritIndex] != null
       ? this.top.leadOrd.top.source.inh[fieldn][this.top.anchorInheritIndex]
       : this.top.source
         ? this.top.source[fieldn]

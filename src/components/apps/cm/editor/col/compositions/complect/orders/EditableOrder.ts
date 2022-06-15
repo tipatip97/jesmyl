@@ -242,6 +242,18 @@ export class EditableOrder extends Order {
         });
     }
 
+    cutChordPositions(line: string, linei: number) {
+        const letters = this.com.getVowelPositions(line);
+
+        this.positions?.[linei]?.reduceRight((stub, pos) => {
+            if (pos > letters.length - 1) {
+                this.setChordPosition(linei, pos);
+            }
+            return stub;
+        }, 0);
+    }
+
+
     removeInheritance<Key extends keyof IExportableOrder>(key: Key) {
         this.setField(key, null);
     }

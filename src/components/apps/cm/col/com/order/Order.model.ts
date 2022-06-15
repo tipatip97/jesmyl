@@ -70,7 +70,6 @@ export interface IExportableOrderTop extends IExportableOrder {
     inh?: Inheritancables;
     anchorInheritIndex?: number;
     sourceIndex?: number;
-    inhFields?: string[];
     viewIndex?: number;
     header: (bag?: OrderTopHeaderBag, isRequired?: boolean) => string;
     style?: StyleBlock;
