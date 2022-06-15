@@ -11,13 +11,13 @@ export default function TheOrder(props: ITheOrderProps) {
     com,
     chordVisibleVariant,
     isMiniAnchor,
-    hideInvisibles,
+    showInvisibles,
   } = props || {};
 
   if (
     (isMiniAnchor &&
       (orderUnit.top.isAnchorInherit || orderUnit.top.isAnchorInheritPlus)) ||
-    (hideInvisibles && !orderUnit.isVisible)
+    (!showInvisibles && !orderUnit.isVisible)
   )
     return null;
 

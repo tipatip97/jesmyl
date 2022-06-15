@@ -11,6 +11,6 @@ export interface IComOrdersProps {
     isMiniAnchor?: boolean;
     fontSize?: number;
     chordVisibleVariant: ChordVisibleVariant;
-    hideInvisibles?: boolean;
+    showInvisibles?: boolean;
 }
 

@@ -91,6 +91,10 @@ export class EditableCom extends Com {
         this.col.removeCol('com', isRemoved);
     }
 
+    comeBack() {
+        this.col.comeBackCol('com');
+    }
+
     setNativeNumber(cat: Cat, numberStr: string) {
         const number = parseInt(numberStr);
 

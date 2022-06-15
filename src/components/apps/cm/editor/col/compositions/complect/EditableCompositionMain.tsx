@@ -56,7 +56,6 @@ export default function EditableCompositionMain() {
           const first = ccom.transPosition;
           let pos = ccom.transPosition;
           const prev = pos;
-          const init = ccom.initialTransPosition;
 
           modalService.open({
             title: "Тональность песни",
@@ -78,7 +77,6 @@ export default function EditableCompositionMain() {
                   "полутона",
                   "полутонов"
                 )} от базовой`,
-                // disabled: () => position === first,
                 style: () => ({
                   fontWeight: position === pos ? "bold" : undefined,
                 }),
@@ -112,10 +110,23 @@ export default function EditableCompositionMain() {
         </div>
         <div className="half-width" />
       </div>
+      {cmExer.isActionAccessed("canWatch") && (
+        <div
+          className="flex full-width between error-message margin-gap-v pointer"
+          onClick={() => {
+            modalService
+              .confirm(`Удалить песню "${ccom.name}"?`)
+              .then((isRemove) => isRemove && exec(ccom.remove()));
+          }}
+        >
+          <EvaIcon name="trash-2-outline" />
+          <div className="title half-width text-center">Удалить песню</div>
+          <div className="half-width" />
+        </div>
+      )}
 
       <TheCom
         com={ccom}
-        hideInvisibles
         chordVisibleVariant={ChordVisibleVariant.Maximal}
         isMiniAnchor={false}
       />

@@ -73,7 +73,7 @@ export default function OrdersRedactor() {
               orderUnit={ord}
               orderUniti={ordi}
               com={ccom}
-              hideInvisibles={false}
+              showInvisibles
               chordVisibleVariant={ChordVisibleVariant.Maximal}
               asHeaderComponent={({ headerNode }) => {
                 return (

@@ -33,9 +33,21 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
 
   removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
     this.execCol({
-      action: `${coln}Del`,
+      action: `${coln}Del`
     }, coln);
     return this.removed = isRemoved;
+  }
+
+  comeBackCol<Coln extends keyof IExportableCol>(coln: Coln) {
+    this.execCol({
+      action: `${coln}ComeBack`,
+      anti: ({ action, args }) => {
+        if (action === `${coln}Del` && args?.[`${coln}w`] === this.wid)
+          return () => true;
+      }
+    }, coln);
+
+    this.removed = false;
   }
 
   execCol<Value, Coln extends keyof IExportableCol>(bag: FreeExecDict<Value>, coln: Coln) {

@@ -9,7 +9,7 @@ export default function ComOrders(props: IComOrdersProps) {
     fontSize,
     chordVisibleVariant,
     asHeaderComponent,
-    hideInvisibles,
+    showInvisibles,
   } = props || {};
 
   let currTransPosition = com.transPosition;
@@ -35,7 +35,7 @@ export default function ComOrders(props: IComOrdersProps) {
           currTransPosition: trPos,
           asHeaderComponent,
           com,
-          hideInvisibles,
+          showInvisibles,
         };
 
         return typeof asOrdComponent === "function" ? (

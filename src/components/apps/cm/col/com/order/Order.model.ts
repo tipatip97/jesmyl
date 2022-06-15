@@ -106,7 +106,7 @@ export interface ITheOrderProps {
     currTransPosition?: number;
     com: Com;
     chordVisibleVariant: ChordVisibleVariant;
-    hideInvisibles?: boolean;
+    showInvisibles?: boolean;
 }
 
 export interface IComOrdHeaderProps extends IComOrdProps {

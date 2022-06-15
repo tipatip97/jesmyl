@@ -16,8 +16,6 @@ export default function ChordApplicationsRedactor() {
         if (!ord.isVisible) return null;
         const chords = ord.chords?.split("\n").map((line) => line.split(" "));
 
-        const positions = ord.positions || [];
-
         return (
           <TheOrder
             key={`order-${ordi}`}
@@ -28,9 +26,9 @@ export default function ChordApplicationsRedactor() {
             orderUniti={ordi}
             asLineComponent={(props) => {
               const { com, textLine, textLinei } = props;
-              const linePoss = positions[textLinei];
+              const linePoss = ord.positions?.[textLinei] ?? [];
               const diffCount =
-                (chords[textLinei]?.length || 0) - linePoss.length;
+                (chords[textLinei]?.length || 0) - (linePoss?.length || 0);
 
               return (
                 <>

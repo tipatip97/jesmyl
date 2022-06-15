@@ -10,13 +10,13 @@ import { useCcom } from "./useCcom";
 
 export default function TheCom({
   com: topCom,
-  hideInvisibles = true,
+  showInvisibles,
   chordVisibleVariant,
   isMiniAnchor,
   fontSize,
 }: {
   com?: Com;
-  hideInvisibles?: boolean;
+  showInvisibles?: boolean;
   chordVisibleVariant?: ChordVisibleVariant;
   isMiniAnchor?: boolean;
   fontSize?: number;
@@ -46,7 +46,7 @@ export default function TheCom({
       fontSize={fontSize}
       chordVisibleVariant={chordVisibleVariant ?? ChordVisibleVariant.Minimal}
       isMiniAnchor={isMiniAnchor}
-      hideInvisibles={hideInvisibles}
+      showInvisibles={showInvisibles}
     />
   );
 }
