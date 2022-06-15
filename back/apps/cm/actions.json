@@ -230,15 +230,6 @@
                         },
                         "next": [
                             {
-                                "action": "comModified",
-                                "level": 30,
-                                "track": [
-                                    "m"
-                                ],
-                                "method": "set",
-                                "value": "#Number"
-                            },
-                            {
                                 "level": 50,
                                 "action": "removeBlock",
                                 "title": "Из песни \"$name\" удалён $ink{{$value}{-й }}$switch{{$coln}{t}{Текстовый блок}{c}{блок Аккордов}}",
