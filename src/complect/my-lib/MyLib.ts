@@ -136,7 +136,13 @@ export class MyLib {
                 deep = placei;
                 const num = ([this.c.INDEX, this.c.POSITION] as Trace[]).indexOf(place as never);
                 if (num > -1) {
-                    if (words.some(word => word && (objecti + num).toString().startsWith(word))) {
+                    if (
+                        words.some(word =>
+                            word && words.length > 1
+                                ? (objecti + num).toString() === word
+                                : (objecti + num).toString().startsWith(word)
+                        )
+                    ) {
                         rate = 1;
                         return true;
                     }
