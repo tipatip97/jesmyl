@@ -17,6 +17,7 @@ export class Cols extends Base<IExportableCols> implements ICols {
   load(cols: IExportableCols | null, prevComs?: Com[]) {
     if (prevComs) {
       this.coms = (mylib.typ([], cols?.coms) as IExportableCom[])
+        .sort((a, b) => a.w - b.w)
         .map((com, comi) => {
           let top = com;
 
@@ -32,18 +33,13 @@ export class Cols extends Base<IExportableCols> implements ICols {
 
           return new Com(top, comi, this);
         });
-    } else this.coms = mylib.typ([], cols?.coms).map((com, comi) => new Com(com, comi, this));
+    } else
+      this.coms = mylib.typ([], cols?.coms)
+        .sort((a, b) => a.w - b.w)
+        .map((com, comi) => new Com(com, comi, this));
 
-    this.sort('coms');
-
-    this.cats = mylib.typ([], cols?.cats).map(cat => new Cat(cat, this.coms));
-    this.sort('cats');
-  }
-
-
-  sort(colsn: 'coms' | 'cats') {
-    return this[colsn].sort((a, b) => a.wid > widLimit ? b.wid > widLimit ? a.wid - b.wid : -1 : 1);
+    this.cats = mylib.typ([], cols?.cats)
+      .sort((a, b) => a.w - b.w)
+      .map(cat => new Cat(cat, this.coms));
   }
 }
-
-export const widLimit = 20000000000000000;

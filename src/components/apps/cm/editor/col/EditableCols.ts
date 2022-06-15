@@ -1,7 +1,7 @@
+import { Cols } from "../../cols/Cols";
+import { IExportableCols } from "../../cols/Cols.model";
 import { EditableCat } from "./categories/EditableCat";
 import { EditableCom } from "./compositions/EditableCom";
-import { Cols, widLimit } from "../../cols/Cols";
-import { IExportableCols } from "../../cols/Cols.model";
 
 
 export class EditableCols extends Cols {
@@ -12,7 +12,7 @@ export class EditableCols extends Cols {
         super(cols);
         const coms = cols.coms;
         this.coms = coms
-            .sort((a, b) => a.w > widLimit ? b.w > widLimit ? a.w - b.w : -1 : 1)
+            .sort((a, b) => a.w - b.w)
             .map((com, comi) => new EditableCom(com, comi, this));
 
         this.cats = cols.cats.map(cat => new EditableCat(cat, this.coms));
