@@ -313,28 +313,25 @@
                                 }
                             },
                             {
-                                "level": 50,
-                                "action": "setNativeNumBox",
-                                "title": "Песня \"$name\" теперь содержит список номеров внешних сборников",
                                 "track": [
                                     "r"
                                 ],
-                                "method": "set",
-                                "value": {}
-                            },
-                            {
-                                "level": 50,
-                                "action": "setNativeNum",
-                                "title": "Песня \"$name\" $value?{{в категории \"$catn\" обозначена №$value}{отнесена к категории \"$catn\"}}",
-                                "track": [
-                                    "r",
-                                    "{catw}"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "catw": "#Number",
-                                    "value": "#Number"
-                                }
+                                "expected": {},
+                                "next": [
+                                    {
+                                        "level": 50,
+                                        "action": "setNativeNum",
+                                        "title": "Песня \"$name\" $value?{{в категории \"$catn\" обозначена №$value}{отнесена к категории \"$catn\"}}",
+                                        "track": [
+                                            "{catw}"
+                                        ],
+                                        "method": "set",
+                                        "args": {
+                                            "catw": "#Number",
+                                            "value": "#Number"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "level": 50,
@@ -418,7 +415,6 @@
                                         "method": "push",
                                         "value": {
                                             "w": "{ordw}",
-                                            "p": [],
                                             "c": "{?chordsi}",
                                             "t": "{texti}",
                                             "s": "{type}"
@@ -475,19 +471,26 @@
                                                 }
                                             },
                                             {
-                                                "level": 50,
-                                                "action": "comSetOrderChordPositionLine",
-                                                "title": "В песне \"$name\", в блоке $blockn;$ink{{$linei}{-й строке}{, в }} изменена аппликатура: $lineTitle",
                                                 "track": [
-                                                    "p",
-                                                    "{linei}"
+                                                    "p"
                                                 ],
-                                                "method": "set",
-                                                "valueAs": "chordApplications",
-                                                "args": {
-                                                    "value": "#List",
-                                                    "linei": "#Number"
-                                                }
+                                                "expected": [],
+                                                "next": [
+                                                    {
+                                                        "level": 50,
+                                                        "action": "comSetOrderChordPositionLine",
+                                                        "title": "В песне \"$name\", в блоке $blockn;$ink{{$linei}{-й строке}{, в }} изменена аппликатура: $lineTitle",
+                                                        "track": [
+                                                            "{linei}"
+                                                        ],
+                                                        "method": "set",
+                                                        "valueAs": "chordApplications",
+                                                        "args": {
+                                                            "value": "#List",
+                                                            "linei": "#Number"
+                                                        }
+                                                    }
+                                                ]
                                             },
                                             {
                                                 "level": 50,
@@ -584,57 +587,44 @@
                                                 }
                                             },
                                             {
-                                                "level": 50,
-                                                "action": "comSetOrderFieldValueBox",
-                                                "title": "В песне \"$name\" к блоку \"$blockn\" установлен массив спецефических значений",
                                                 "track": [
                                                     "f"
                                                 ],
-                                                "method": "set",
-                                                "value": {}
-                                            },
-                                            {
-                                                "level": 50,
-                                                "action": "comSetOrderFieldValue",
-                                                "title": "В песне \"$name\" блоку \"$blockn\" установлен параметр $switch{{$fieldn}{md}{модулирования}} в значение \"$value\"",
-                                                "track": [
-                                                    "f",
-                                                    "{fieldn}"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "value": "#Number"
-                                                }
+                                                "expected": {},
+                                                "next": [
+                                                    {
+                                                        "level": 50,
+                                                        "action": "comSetOrderFieldValue",
+                                                        "title": "В песне \"$name\" блоку \"$blockn\" установлен параметр $switch{{$fieldn}{md}{модулирования}} в значение \"$value\"",
+                                                        "track": [
+                                                            "{fieldn}"
+                                                        ],
+                                                        "method": "set",
+                                                        "args": {
+                                                            "value": "#Number"
+                                                        }
+                                                    }
+                                                ]
                                             },
                                             {
                                                 "next": [
                                                     {
-                                                        "level": 50,
-                                                        "action": "setAnchorInheritValueWithoutInh",
-                                                        "title": "В песне \"$name\" для $isAnchor?{{ссылки на блок}{блока}} \"$blockn\" установлены узлы $switch{{$fieldn}{r}{повторений}}",
                                                         "track": [
                                                             "inh"
                                                         ],
-                                                        "method": "set",
-                                                        "value": {
-                                                            "{fieldn}": []
-                                                        },
-                                                        "args": {
-                                                            "fieldn": [
-                                                                "r",
-                                                                "v"
-                                                            ]
-                                                        },
+                                                        "expected": {},
                                                         "next": [
                                                             {
-                                                                "level": 50,
-                                                                "action": "setAnchorInheritValueWithoutBox",
-                                                                "title": "В песне \"$name\" для блока \"$blockn\" установлен узел $switch{{$fieldn}{r}{повторений}}",
+                                                                "args": {
+                                                                    "fieldn": [
+                                                                        "r",
+                                                                        "v"
+                                                                    ]
+                                                                },
                                                                 "track": [
                                                                     "{fieldn}"
                                                                 ],
-                                                                "method": "set",
-                                                                "value": [],
+                                                                "expected": [],
                                                                 "next": [
                                                                     {
                                                                         "level": 50,

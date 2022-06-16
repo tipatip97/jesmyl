@@ -50,7 +50,7 @@ function executeTracks() {
     'val' => $executes,
   ];
   $execs = $executes['resolved'];
-  $executed;
+  $executed = null;
   
   if ($execs && count($execs)) {
     $executed = executer($execs, $isRootApp ? '~S/%s.json' : "~apps/$appName/%s.json", 1, $appName);
