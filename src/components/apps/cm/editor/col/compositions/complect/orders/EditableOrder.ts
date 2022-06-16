@@ -48,15 +48,8 @@ export class EditableOrder extends Order {
         };
 
         if (this.top.isAnchorInherit) {
-            const action = this.top.leadOrd?.top.source?.inh == null
-                ? 'setAnchorInheritValueWithoutInh'
-                : this.top.leadOrd.top.source.inh[fieldn] == null
-                    ? 'setAnchorInheritValueWithoutBox'
-                    : null;
-
             const wid = this.top.leadOrd?.wid;
-
-            action && setExec(action, { wid, isAnchor: this.top.leadOrd?.isAnchor });
+            
             setExec('setAnchorInheritValue', { inhIndex: this.top.anchorInheritIndex, wid, value }, onSet);
         } else {
             const action = ({
@@ -99,13 +92,6 @@ export class EditableOrder extends Order {
     set fieldValues(val) { this.setExportable('f', val); }
 
     setFieldValue<Key extends keyof IExportableOrderFieldValues>(fieldn: Key, value: IExportableOrderFieldValues[Key]) {
-        let fieldValueBoxLen = 0;
-
-        if (this.top.f == null)
-            this.exec({
-                action: 'comSetOrderFieldValueBox',
-            });
-
         this.exec({
             prev: this.fieldValues[fieldn],
             value,
@@ -115,14 +101,9 @@ export class EditableOrder extends Order {
                 value,
                 fieldn,
             },
-            friendly: (exec) => {
-                if (exec.action === 'comSetOrderFieldValueBox' && fieldValueBoxLen === 0)
-                    return () => true;
-            }
         });
 
         this.fieldValues[fieldn] = value;
-        fieldValueBoxLen = Object.keys(this.fieldValues).length;
     }
 
     scope(action: string, uniq?: FreeExecDictUniq, wid?: number | null) {

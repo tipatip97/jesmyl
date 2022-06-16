@@ -108,10 +108,6 @@ export class EditableCom extends Com {
 
         if (refs == null) {
             refs = this.refs = {};
-            this.exec({
-                action: 'setNativeNumBox',
-                method: 'add',
-            });
         }
 
         refs[cat.wid] = number;
@@ -607,19 +603,6 @@ export class EditableCom extends Com {
                 ({ action, args }) => {
                     if (action === 'setNativeNum' && (args ? args.catw === cat.wid && args.comw === this.wid : false))
                         return () => null == prev;
-                },
-                ({ action, args }) => {
-                    if (
-                        action === 'setNativeNumBox' &&
-                        args &&
-                        args.comw === this.wid &&
-                        !Object.keys(refs || {}).length &&
-                        !Object.keys(this.initial.refs || {}).length
-                    )
-                        return () => {
-                            if (this.initial.refs == null) delete this.refs;
-                            return false;
-                        }
                 },
             ],
         });

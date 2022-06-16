@@ -50,16 +50,9 @@ export class Order extends Base<IExportableOrderTop> {
   set texti(val) { this.setExportable('t', val); }
 
   get positions(): number[][] | nil {
-    let positions = this.getInheritance('p');
-    if (positions?.length) return positions;
-
-    positions = this.top.source?.p;
-    if (positions?.length) return positions;
-
-    positions = this.top.targetOrd?.top.source?.p;
-    if (positions?.length) return positions;
-
-    return [];
+    return this.getInheritance('p')
+      ?? this.top.targetOrd?.top.source?.p
+      ?? (this.top.source && (this.top.source.p = []));
   }
 
   get type() { return this.getBasic('s'); }
