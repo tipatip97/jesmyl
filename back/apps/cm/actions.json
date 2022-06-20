@@ -732,7 +732,7 @@
             {
                 "action": "addMeetingsName",
                 "method": "push",
-                "title": "Добавлен новый наименование контекста \"$value\"",
+                "title": "Добавлено новое наименование контекста \"$value\"",
                 "track": [
                     "names"
                 ],
@@ -748,6 +748,9 @@
                     "contexts",
                     "{contextw}"
                 ],
+                "value": {
+                    "c": "{value}"
+                },
                 "args": {
                     "contextw": "#Number",
                     "value": "#List"
@@ -773,12 +776,12 @@
                             "b": "{begin}",
                             "e": "{end}",
                             "s": [],
-                            "g": "{group}"
+                            "c": "{contextw}"
                         },
                         "args": {
                             "begin": "#Number",
                             "end": "#Number",
-                            "group": "#Number"
+                            "contextw": "#Number"
                         }
                     },
                     {
@@ -816,14 +819,14 @@
                             },
                             {
                                 "level": 50,
-                                "action": "setMeetingEventGroup",
+                                "action": "setMeetingEventContext",
                                 "title": "Событие \"$eventn\" перемещено в другой контекст",
                                 "method": "set_all",
                                 "value": {
-                                    "g": "{groupw}"
+                                    "c": "{contextw}"
                                 },
                                 "args": {
-                                    "groupw": "#Number"
+                                    "contextw": "#Number"
                                 }
                             },
                             {
