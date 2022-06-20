@@ -31,7 +31,7 @@ export class EditableMeetingsEvent extends MeetingsEvent {
     return {
       eventn: this.name,
       begin: this.begin,
-      group: this.group,
+      contextw: this.contextw,
       end: this.end,
       eventw: this.wid,
     };
@@ -50,18 +50,18 @@ export class EditableMeetingsEvent extends MeetingsEvent {
     });
   }
 
-  setGroup(groupw: number) {
+  setContext(contextw: number) {
     this.exec({
-      action: 'setMeetingEventGroup',
+      action: 'setMeetingEventContext',
       method: 'set',
-      prev: this.group,
-      value: groupw,
+      prev: this.contextw,
+      value: contextw,
       args: {
-        groupw
+        contextw
       }
     });
 
-    this.group = groupw;
+    this.contextw = contextw;
   }
 
   removeCom(com: EditableCom) {

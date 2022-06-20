@@ -8,7 +8,7 @@ export interface IExportableMeetingsEvent {
     b: number; // время начала
     e: number; // время окончания
     s: number[]; // список песен
-    g: number; // контекстуальная группа
+    c: number; // контекстуальная группа
 }
 
 export interface IExportableMeetingsContext {

@@ -58,7 +58,7 @@ export default function MeetingsInner<Meets extends Meetings>({
           {favorites.events.map((eventw, eventwi) => {
             const event = meetings.events.find((event) => event.wid === eventw);
             if (!event) return null;
-            const { context } = meetings.contexts[event.group] || {};
+            const { context } = meetings.contexts[event.contextw] || {};
 
             return (
               <div key={`event-${eventwi}`} className="relative">
@@ -96,7 +96,7 @@ export default function MeetingsInner<Meets extends Meetings>({
         </>
       )}
       {meetings.events.map((event, eventi) => {
-        if (event.group && event.group !== currContextw) return null;
+        if (event.contextw && event.contextw !== currContextw) return null;
         const isFavorite = favorites.events.indexOf(event.wid) > -1;
 
         return (

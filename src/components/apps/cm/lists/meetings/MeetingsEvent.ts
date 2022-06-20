@@ -16,8 +16,8 @@ export class MeetingsEvent extends BaseNamed<IExportableMeetingsEvent> {
     this.coms = this.takeComs();
   }
 
-  get group() { return this.getBasic('g'); }
-  set group(value) { this.setExportable('g', value); }
+  get contextw() { return this.getBasic('c'); }
+  set contextw(value) { this.setExportable('c', value); }
 
   get isRegular() { return this.getBasic('r'); }
   set isRegular(value) { this.setExportable('r', value); }

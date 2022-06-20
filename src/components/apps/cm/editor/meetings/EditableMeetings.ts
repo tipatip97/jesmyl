@@ -69,15 +69,15 @@ export class EditableMeetings extends Meetings {
 
         this.contexts[contextw] = new MeetingsContext({ c: context });
 
-        bindEvents.forEach((event) => event.setGroup(contextw));
+        bindEvents.forEach((event) => event.setContext(contextw));
     }
 
-    addEvent(name: string, group: number) {
+    addEvent(name: string, contextw: number) {
         const event = new EditableMeetingsEvent({
             n: name,
             b: 0,
             e: 0,
-            g: group,
+            c: contextw,
             r: 0,
             s: [],
             w: Date.now(),
