@@ -205,7 +205,7 @@ export function KEYBOARD_FLASH({
                 "corner-up-right-outline",
                 () => currentInput.redo()
               )}
-              {keyNode("writable", "0")}
+              {keyNode("writable self-width", "0")}
               {keyNode(
                 "backspace full-width",
                 "BACKSPACE",

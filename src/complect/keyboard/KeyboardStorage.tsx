@@ -11,7 +11,6 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   initialValue?: string;
   currentLanguage: KeyboardKeyTranslateLanguage = "ru";
   private viewFlowChari: number = 0;
-  private readonly viewEmptyLine = [""];
 
   constructor(initialValue?: string) {
     super();
@@ -120,28 +119,34 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   }
 
   valueCharLinesNodeMap = (line: string[], linei: number) => {
-    const charLinei = this.viewFlowChari;
-
-    return (
+    const lineNode = (
       <div
         key={`line ${linei}`}
         className={`input-keyboard-flash-controlled-char-list-line ${
-          this.isZeroCursorOn(charLinei) ? "zero-cursor" : ""
+          this.isZeroCursorOn(this.viewFlowChari) ? "zero-cursor" : ""
         }`}
-        onMouseDown={this.onCharMouseDown.bind(this, charLinei + line.length)}
-        onMouseOver={this.onCharMouseOver.bind(this, charLinei + line.length)}
-        onMouseUp={this.onCharMouseUp.bind(this, charLinei + line.length)}
-      >
-        {(line.length ? line : this.viewEmptyLine).map(
-          this.valueCharLineNodeMap.bind(this, linei)
+        onMouseDown={this.onCharMouseDown.bind(
+          this,
+          this.viewFlowChari + line.length
         )}
+        onMouseOver={this.onCharMouseOver.bind(
+          this,
+          this.viewFlowChari + line.length
+        )}
+        onMouseUp={this.onCharMouseUp.bind(
+          this,
+          this.viewFlowChari + line.length
+        )}
+      >
+        {line.map(this.valueCharLineNodeMap.bind(this, linei))}
       </div>
     );
+    this.viewFlowChari++;
+    return lineNode;
   };
 
   valueCharLineNodeMap = (linei: number, letter: string, letteri: number) => {
-    const chari = this.viewFlowChari - (letteri ? 1 : 0);
-    this.viewFlowChari += letteri ? 1 : 2;
+    const chari = this.viewFlowChari++;
 
     return (
       <span
@@ -149,9 +154,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
         className={`input-keyboard-flash-controlled-char ${
           this.isCursorOn(chari) ? "cursor" : ""
         } ${this.isSelectedChar(chari) ? "selected" : ""}`}
-        ref={(element) => {
-          this.charElementReference(element, linei, chari);
-        }}
+        ref={this.charElementReference.bind(this, linei, chari)}
         onContextMenu={this.onCharContextMenu.bind(this, chari)}
         onDoubleClick={this.onCharDoubleClick.bind(this, chari)}
         onMouseDown={this.onCharMouseDown.bind(this, chari)}
@@ -164,9 +167,9 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   };
 
   charElementReference(
-    element: HTMLSpanElement | nil,
     linei: number,
-    chari: number
+    chari: number,
+    element: HTMLSpanElement | nil
   ) {
     if (element) {
       if (this.isSelected) {

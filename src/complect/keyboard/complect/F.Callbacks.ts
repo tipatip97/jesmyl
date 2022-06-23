@@ -173,7 +173,6 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         delete this.touchNavigationMode;
         this.touchNavigationXStart = null;
         this.touchNavigationXPosition = null;
-        this.shadowCursorPosition = this.cursorPosition;
         this.forceUpdate();
     };
 
@@ -199,7 +198,7 @@ export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
         this.isOverflowKeyDown = false;
         this.forceUpdate();
     }
-    
+
     onOverflowKeyDown(event: KeyboardEvent) {
         if (!this.isFocused) return;
         this.isOverflowKeyDown = true;

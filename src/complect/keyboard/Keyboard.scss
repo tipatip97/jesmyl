@@ -125,8 +125,11 @@
             }
 
             &.writable {
-                width: 100%;
                 height: 100%;
+
+                &:not(.self-width) {
+                    width: 100%;
+                }
             }
 
             &:not(.writable) {
@@ -324,6 +327,7 @@
 
             .input-keyboard-flash-controlled-char-list-line {
                 border-left: var(--cursor-border);
+                min-height: 1.4em;
 
                 .input-keyboard-flash-controlled-char {
                     position: relative;
