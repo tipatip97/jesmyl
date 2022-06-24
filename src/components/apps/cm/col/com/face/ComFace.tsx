@@ -7,7 +7,13 @@ import "./ComFace.scss";
 import ComFaceContextMenu from "./ComFaceContextMenu";
 
 export default function ComFace(props: ComFaceProps) {
-  const { com, importantOnClick, groupClass, selectable } = props;
+  const {
+    com,
+    importantOnClick,
+    groupClass,
+    selectable,
+    isRejectScrollToView,
+  } = props;
   const [ccom, setCcom] = useCcom();
   const { jumpTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
@@ -20,14 +26,18 @@ export default function ComFace(props: ComFaceProps) {
         className={`com-face flex between ${
           ccom?.wid === com.wid ? "current" : ""
         } ${groupClass || ""} wid_${com.wid}`}
-        onClick={() => {
-          if (importantOnClick) {
-            importantOnClick();
-            return;
-          }
-          setCcom(com);
-          jumpTo(comNavPhasePoint);
-        }}
+        onClick={
+          importantOnClick ||
+          (() => {
+            setCcom(com);
+            jumpTo(comNavPhasePoint);
+          })
+        }
+        ref={
+          isRejectScrollToView || ccom?.wid !== com.wid
+            ? undefined
+            : (element) => element?.scrollIntoView()
+        }
         onContextMenu={(event) => {
           event.preventDefault();
           selectable !== false &&

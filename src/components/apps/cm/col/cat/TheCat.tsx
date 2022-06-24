@@ -72,7 +72,11 @@ export default function TheCat({ all }: { all?: boolean }) {
               >
                 <div className="list-title sticky">Последние:</div>
                 {laterComs.map((com) => (
-                  <ComFace key={`later-com-${com.wid}`} com={com} />
+                  <ComFace
+                    key={`later-com-${com.wid}`}
+                    com={com}
+                    isRejectScrollToView
+                  />
                 ))}
               </div>
               <div
@@ -96,6 +100,7 @@ export default function TheCat({ all }: { all?: boolean }) {
                   <ComFace
                     key={`com-face ${wrap.com.wid}`}
                     {...wrap}
+                    isRejectScrollToView
                     groupClass="com-of-cat"
                   />
                 ))}

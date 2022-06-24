@@ -20,6 +20,10 @@
         padding: 0 .4em;
         margin-bottom: calc(var(--number-border-size) * 2 + 2px);
         cursor: pointer;
+        
+        &.current {
+            font-weight: bold;
+        }
 
         [selected-position].number {
             border-color: var(--color--3);

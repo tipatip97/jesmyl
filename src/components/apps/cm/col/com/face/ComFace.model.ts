@@ -8,4 +8,5 @@ export interface ComFaceProps {
     groupClass?: string;
     selectable?: boolean;
     description?: ReactNode;
+    isRejectScrollToView?: boolean;
 }
