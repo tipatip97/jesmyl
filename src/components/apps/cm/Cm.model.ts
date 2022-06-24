@@ -19,7 +19,6 @@ export interface CmState extends CmStoraged {
     paranjaMode: ParanjaMode;
     isMiniAnchor: boolean;
     rollModeMarks: boolean;
-    currentMeetingsContext: number[];
 
     numComUpdates: number;
     numColsUpdates: number;
@@ -52,6 +51,7 @@ export interface CmStoraged extends CmEditorStoraged {
     favoriteMeetings: FavoriteMeetings;
     comTopTools: MigratableComToolName[];
     selectedComws: number[];
+    currentMeetingsContext: number[];
 
     lastUpdate?: number;
 }

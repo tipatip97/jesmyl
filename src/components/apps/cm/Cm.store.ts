@@ -37,7 +37,7 @@ const initialState: CmState = {
   favoriteMeetings: cmStorage.getOr('favoriteMeetings', { contexts: [], events: [] }),
   comTopTools: cmStorage.getOr('comTopTools', ["mark-com", "fullscreen-mode"]),
   execs: cmStorage.getOr('execs', []),
-  currentMeetingsContext: [],
+  currentMeetingsContext: cmStorage.getOr('currentMeetingsContext', []),
 
   numComUpdates: 0,
   numColsUpdates: 0,
@@ -83,6 +83,7 @@ export const slice = createSlice({
     },
     updateCurrentMeetingsContext: (state, action: PayloadAction<number[]>) => {
       state.currentMeetingsContext = action.payload;
+      cmStorage.set('currentMeetingsContext', action.payload);
     },
     updateEditorExecList: (state, action: PayloadAction<Exec[]>) => {
       state.execs = action.payload;

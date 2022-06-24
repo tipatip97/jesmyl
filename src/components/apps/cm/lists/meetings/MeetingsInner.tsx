@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
+import useCmNav from "../../base/useCmNav";
 import {
   updateCurrentMeetingsContext,
   updateFavoriteMeetings,
@@ -19,6 +20,7 @@ export default function MeetingsInner<Meets extends Meetings>({
   onContextNavigate?: (context: number[]) => void;
 }) {
   const dispatch = useDispatch();
+  const { registerBackAction } = useCmNav();
   const favorites = useSelector(
     (state: RootState) => state.cm.favoriteMeetings
   );
@@ -28,10 +30,19 @@ export default function MeetingsInner<Meets extends Meetings>({
   const setCurrContext = (context: number[]) =>
     dispatch(updateCurrentMeetingsContext(context));
 
-  useEffect(
-    () => onContextNavigate?.(currContext),
-    [currContext, onContextNavigate]
-  );
+  useEffect(() => {
+    onContextNavigate?.(currContext);
+    const deregister = registerBackAction((isForceBack) => {
+      if (!isForceBack && currContext.length) {
+        setCurrContext(currContext.slice(0, -1));
+        return true;
+      }
+      return false;
+    });
+    return () => {
+      deregister();
+    };
+  }, [currContext, onContextNavigate]);
 
   if (!meetings) return null;
 
@@ -81,15 +92,22 @@ export default function MeetingsInner<Meets extends Meetings>({
             if (!context) return null;
 
             return (
-              <BrutalItem
-                key={`folder-${contextwi}`}
-                icon="folder-outline"
-                title={
-                  meetings.names[context.context[context.context.length - 1]]
-                }
-                onClick={() => setCurrContext(context.context)}
-                description={<EvaIcon name="star" />}
-              />
+              <div key={`context-${contextwi}`} className="relative">
+                <BrutalItem
+                  icon="folder-outline"
+                  title={
+                    meetings.names[context.context[context.context.length - 1]]
+                  }
+                  onClick={() => setCurrContext(context.context)}
+                  description={<EvaIcon className="fade-05" name="star" />}
+                />
+                <div className="absolute flex center full-width float-bottom fade-05 pointers-none">
+                  {context.context
+                    ?.slice(0, -1)
+                    .map((context) => meetings.names[context])
+                    .join(" - ")}
+                </div>
+              </div>
             );
           })}
           <div className="margin-big-gap-v" />
