@@ -1,4 +1,5 @@
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import useSelectedComs from "../../../base/useSelectedComs";
 import ComFaceContextMenuEditorItems from "../../../editor/col/compositions/ComFaceContextMenuEditorItems";
@@ -54,7 +55,14 @@ export default function ComFaceContextMenu({
       </div>
       {selectedComws.length ? (
         <>
-          <div className="abs-item flex" onClick={() => clearSelectedComws()}>
+          <div
+            className="abs-item flex"
+            onClick={() => {
+              modalService
+                .confirm("Очистить список выбранных?")
+                .then((isClear) => isClear && clearSelectedComws());
+            }}
+          >
             <EvaIcon name="close-circle-outline" className="abs-icon" />
             <div>Очистить выбранные</div>
           </div>
