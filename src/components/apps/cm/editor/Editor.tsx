@@ -19,7 +19,7 @@ export default function Editor() {
           {editorRouteItems.map(
             ({ data: { icon, title } = {}, phase, accessRule }) => {
               return (
-                (!accessRule || cmExer.isActionAccessed(accessRule)) && (
+                (!accessRule || cmExer.actionAccessedOrNull(accessRule)) && (
                   <BrutalItem
                     key={`${icon} ${phase}`}
                     icon={icon || "question-mark-circle"}

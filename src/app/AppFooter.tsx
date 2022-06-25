@@ -29,7 +29,7 @@ export default function AppFooter({ app }: { app: AppName }) {
       if (
         accessRule != null &&
         nav.exer &&
-        !nav.exer.isActionAccessed(accessRule)
+        !nav.exer.actionAccessedOrNull(accessRule)
       )
         return null;
       const isActive = setIsActive(phase);

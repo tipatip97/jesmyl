@@ -1,5 +1,6 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { cmExer } from "../../Cm.store";
 import AddContext from "./AddContext";
 import MeetingsCreator from "./MeetingsCreator";
 
@@ -18,18 +19,20 @@ export default function EditMeetingsMore({ currPath }: { currPath: number[] }) {
         <div>Создать событие</div>
         <div className="abs-action" />
       </div>
-      <div
-        className="abs-item pointer"
-        onClick={() => {
-          openFullscreenContent((close) => (
-            <AddContext close={close} currPath={currPath} />
-          ));
-        }}
-      >
-        <EvaIcon name="folder-add-outline" className="abs-icon" />
-        <div>Создать контекст</div>
-        <div className="abs-action" />
-      </div>
+      {cmExer.actionAccessedOrNull("addMeetingsContext") && (
+        <div
+          className="abs-item pointer"
+          onClick={() => {
+            openFullscreenContent((close) => (
+              <AddContext close={close} currPath={currPath} />
+            ));
+          }}
+        >
+          <EvaIcon name="folder-add-outline" className="abs-icon" />
+          <div>Создать контекст</div>
+          <div className="abs-action" />
+        </div>
+      )}
     </>
   );
 }

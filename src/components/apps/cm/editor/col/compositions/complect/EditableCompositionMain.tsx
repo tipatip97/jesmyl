@@ -110,7 +110,7 @@ export default function EditableCompositionMain() {
         </div>
         <div className="half-width" />
       </div>
-      {cmExer.isActionAccessed("canWatch") && (
+      {cmExer.actionAccessedOrNull("canWatch") && (
         <div
           className="flex full-width between error-message margin-gap-v pointer"
           onClick={() => {

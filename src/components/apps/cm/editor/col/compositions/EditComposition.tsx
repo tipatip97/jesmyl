@@ -55,7 +55,7 @@ export default function EditComposition({
                       phase: [phase],
                       accessRule,
                     }) => {
-                      if (accessRule && !cmExer.isActionAccessed(accessRule))
+                      if (accessRule && !cmExer.actionAccessedOrNull(accessRule))
                         return null;
                       return (
                         <span

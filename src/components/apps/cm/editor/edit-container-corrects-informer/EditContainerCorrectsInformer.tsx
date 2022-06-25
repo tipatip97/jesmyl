@@ -17,7 +17,7 @@ export default function EditContainerCorrectsInformer(
   const unknowns = corrects?.unknowns || [];
 
   return (
-    cmExer.isActionAccessed(access, true) && (
+    cmExer.actionAccessedOrNull(access, true) && (
       <div
         {...props}
         className={`edit-container-corrects-informer ${props.className || ""}`}

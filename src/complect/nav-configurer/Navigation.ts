@@ -224,7 +224,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
             }, null);
 
             return item
-                ? (item.accessRule == null || (this.exer != null && this.exer.isActionAccessed(item.accessRule)))
+                ? (item.accessRule == null || (this.exer != null && this.exer.actionAccessedOrNull(item.accessRule)))
                     ? typeof item.node === 'function'
                         ? item.node({
                             outletContent: findContent(throwRoute, items),

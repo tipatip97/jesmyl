@@ -6,11 +6,11 @@ import { MigratableEditableComToolName } from "../EditableCom.model";
 
 export const migratableEditableComToolNameList = ["edit-com"] as const;
 
-export const concatMigratableEditableComToolNameList = (toolList: MigratableComToolName[]) => cmExer.isActionAccessed("canRedact")
+export const concatMigratableEditableComToolNameList = (toolList: MigratableComToolName[]) => cmExer.actionAccessedOrNull("canRedact")
   ? toolList.concat(migratableEditableComToolNameList)
   : toolList;
 
-export const spliceMigratableEditableComToolNameList = (toolList: MigratableComToolName[]) => cmExer.isActionAccessed("canRedact")
+export const spliceMigratableEditableComToolNameList = (toolList: MigratableComToolName[]) => cmExer.actionAccessedOrNull("canRedact")
   ? toolList
   : toolList.filter(tool => migratableEditableComToolNameList.indexOf(tool as never) < 0);
 
