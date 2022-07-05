@@ -96,6 +96,10 @@ input[type='button'] {
   white-space: nowrap;
 }
 
+.over-hidden {
+  overflow: hidden;
+}
+
 .input,
 input,
 textarea {
@@ -218,20 +222,30 @@ textarea {
 
 .absolute,
 .relative {
-  &.float-bottom {
+  &.pos-bottom {
     bottom: 0;
   }
 
-  &.float-top {
+  &.pos-top {
     top: 0;
   }
 
-  &.float-left {
+  &.pos-left {
     left: 0;
   }
 
-  &.float-right {
+  &.pos-right {
     right: 0;
+  }
+}
+
+.float- {
+  &left {
+    float: left;
+  }
+
+  &right {
+    float: right;
   }
 }
 
@@ -291,8 +305,14 @@ a {
   color: var(--text-color);
 }
 
-.text-center {
-  text-align: center;
+.text- {
+  &center {
+    text-align: center;
+  }
+
+  &right {
+    text-align: right;
+  }
 }
 
 input:-webkit-autofill,

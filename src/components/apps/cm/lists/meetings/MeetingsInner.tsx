@@ -72,19 +72,25 @@ export default function MeetingsInner<Meets extends Meetings>({
             const { context } = meetings.contexts[event.contextw] || {};
 
             return (
-              <div key={`event-${eventwi}`} className="relative">
-                <BrutalItem
-                  icon="calendar-outline"
-                  title={event.name}
-                  onClick={() => onEventClick(event)}
-                  description={<EvaIcon className="fade-05" name="star" />}
-                />
-                <div className="absolute flex center full-width float-bottom fade-05 pointers-none">
-                  {context
-                    ?.map((context) => meetings.names[context])
-                    .join(" - ")}
-                </div>
-              </div>
+              <BrutalItem
+                key={`event-${eventwi}`}
+                icon="calendar-outline"
+                title={event.name}
+                onClick={() => onEventClick(event)}
+                box={<EvaIcon className="fade-05" name="star" />}
+                description={
+                  <span
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setCurrContext(context);
+                    }}
+                  >
+                    {context
+                      ?.map((context) => meetings.names[context])
+                      .join(" - ")}
+                  </span>
+                }
+              />
             );
           })}
           {favorites.contexts.map((contextw, contextwi) => {
@@ -99,9 +105,9 @@ export default function MeetingsInner<Meets extends Meetings>({
                     meetings.names[context.context[context.context.length - 1]]
                   }
                   onClick={() => setCurrContext(context.context)}
-                  description={<EvaIcon className="fade-05" name="star" />}
+                  box={<EvaIcon className="fade-05" name="star" />}
                 />
-                <div className="absolute flex center full-width float-bottom fade-05 pointers-none">
+                <div className="absolute flex center full-width pos-bottom fade-05 pointers-none">
                   {context.context
                     ?.slice(0, -1)
                     .map((context) => meetings.names[context])
@@ -110,7 +116,6 @@ export default function MeetingsInner<Meets extends Meetings>({
               </div>
             );
           })}
-          <div className="margin-big-gap-v" />
         </>
       )}
       {meetings.events.map((event, eventi) => {
@@ -123,7 +128,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             icon="calendar-outline"
             title={event.name}
             onClick={() => onEventClick(event)}
-            description={
+            box={
               currContext.length ? (
                 <EvaIcon
                   name={isFavorite ? "star" : "star-outline"}
@@ -156,7 +161,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             icon="folder-outline"
             title={contextn}
             onClick={() => setCurrContext([...currContext, contexti])}
-            description={
+            box={
               currContext.length ? (
                 <EvaIcon
                   name={isFavorite ? "star" : "star-outline"}

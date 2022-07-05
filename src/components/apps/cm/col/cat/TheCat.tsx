@@ -75,7 +75,7 @@ export default function TheCat({ all }: { all?: boolean }) {
                   <ComFace
                     key={`later-com-${com.wid}`}
                     com={com}
-                    isRejectScrollToView
+                    rejectScrollToView
                   />
                 ))}
               </div>
@@ -100,7 +100,7 @@ export default function TheCat({ all }: { all?: boolean }) {
                   <ComFace
                     key={`com-face ${wrap.com.wid}`}
                     {...wrap}
-                    isRejectScrollToView
+                    rejectScrollToView
                     groupClass="com-of-cat"
                   />
                 ))}

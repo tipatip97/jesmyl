@@ -28,7 +28,15 @@ export default function ExecsVisor() {
               .flat()
               .map((comw: number) => {
                 flowCom = cols.coms.find((com) => com.wid === comw);
-                return flowCom && <ComFace key={`com-${comw}`} com={flowCom} />;
+                return (
+                  flowCom && (
+                    <ComFace
+                      key={`com-${comw}`}
+                      com={flowCom}
+                      rejectScrollToView
+                    />
+                  )
+                );
               })
               .filter((val) => val != null)
         : fieldn === "tonLevel"

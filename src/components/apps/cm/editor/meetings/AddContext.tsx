@@ -59,7 +59,7 @@ export default function AddContext({
           icon="calendar-outline"
           title={event.name}
           onClick={() => switchEvent(event)}
-          description={
+          box={
             <input
               type="checkbox"
               checked={bindEvents.indexOf(event) > -1}

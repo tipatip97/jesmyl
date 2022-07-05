@@ -12,7 +12,7 @@ export default function ComFace(props: ComFaceProps) {
     importantOnClick,
     groupClass,
     selectable,
-    isRejectScrollToView,
+    rejectScrollToView,
   } = props;
   const [ccom, setCcom] = useCcom();
   const { jumpTo } = useCmNav();
@@ -34,7 +34,7 @@ export default function ComFace(props: ComFaceProps) {
           })
         }
         ref={
-          isRejectScrollToView || ccom?.wid !== com.wid
+          rejectScrollToView || ccom?.wid !== com.wid
             ? undefined
             : (element) => element?.scrollIntoView()
         }

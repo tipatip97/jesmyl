@@ -55,7 +55,7 @@ export default function IndexAbout() {
           <a href="https://t.me/danikpon">дизайн (3</a>
         </div>
       </div>
-      <div className="absolute float-bottom margin-gap-v flex center full-width">
+      <div className="absolute pos-bottom margin-gap-v flex center full-width">
         <span>
           {currentApp && latsDate && `${currentApp.title} ${latsDate}`}
         </span>

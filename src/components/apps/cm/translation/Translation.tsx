@@ -183,7 +183,7 @@ export default function Translations({
                 {isTranslationBlockVisible ? null : (
                   <div
                     title="esc, V"
-                    className="absolute float-bottom full-width margin-gap-v text-center"
+                    className="absolute pos-bottom full-width margin-gap-v text-center"
                   >
                     Нажми для показа
                   </div>
