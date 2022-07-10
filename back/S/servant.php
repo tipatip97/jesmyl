@@ -274,8 +274,9 @@ function &tracker($track, &$parents = null, &$topParent = null, $createByPath = 
                 '--files' => $files,
                 '--dirs' => $dirs
               ];
-            } else if (file_exists($parentPath)) $parent = jsonDecode(getContent($parentPath));
-            else if ($createByPath) {
+            } else if (file_exists($parentPath)) {
+              $parent = jsonDecode(getContent($parentPath));
+            } else if ($createByPath) {
               file_put_contents($parentPath, 1 ? '[]' : '{}');
               $parent = [];
               //debugLine(['($createByPath tracker)', $target, $ctrace]);
@@ -1398,7 +1399,7 @@ function isCorrectType($value, $typer)
         return true;
     }
     return false;
-  }
+  } else if ($value === $typer) return true;
 
   return false;
 }

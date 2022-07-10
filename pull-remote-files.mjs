@@ -4,8 +4,7 @@ import fetch from 'node-fetch';
 [
     ['apps/cm', 'cols'],
     ['apps/cm', 'e-e-rules'],
-    // ['apps/cm', 'meetings'],
-    // ['apps/cm', 'settings'],
+    ['apps/cm', 'meetings'],
     // ['apps/cm', 'cm-execs'],
     ['apps/cm', 'chords'],
     // ['S', 'apps'],
