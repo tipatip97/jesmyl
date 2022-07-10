@@ -11,11 +11,14 @@ export interface ModalConfigBase {
     closeOnClick: boolean;
     theme: string;
     withoutCloseButton: boolean;
+    // при клике в любом месте на модалке произойдёт её закрытие
+    // для предотвращения этого верни тут false
     onCloseAcion: (config: ModalConfig) => boolean | void;
     setError: (err: string) => void;
     closeModal: () => void;
     getInput: (index?: number) => Partial<ModalConfigInput> | und;
     deep: number;
+    forceUpdate: () => void;
 };
 
 export interface ModalConfig extends ModalConfigBase {
@@ -83,6 +86,7 @@ export interface TheModalInputProps {
 export interface TheModalButtonProps {
     // второй параметр - уникальный ключ инпута
     config: [Partial<ModalConfigButton> | string, (number | string)?];
+    forceUpdate: () => void;
 }
 
 export interface ModalFixed {

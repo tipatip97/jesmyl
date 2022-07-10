@@ -21,15 +21,18 @@ export const onActionClick = (
   input: ModalConfigInput | ModalConfigButton,
   onClick: (config: ModalConfig, clickConfig?: ModalConfig) => void,
   clickConfig: ModalConfig,
-  config: Partial<ModalConfig>
+  config: Partial<ModalConfig>,
+  event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
 ) => {
+  event?.stopPropagation();
   if (input.modal != null) {
-    if (typeof input.onClick !== "function" || input.onClick(clickConfig))
+    if (typeof input.onClick !== "function")
       modalService.open(
         typeof input.modal === "function"
           ? mylib.overlap({ title: config.title }, input.modal(clickConfig))
           : input.modal
       );
+    else input.onClick(clickConfig);
   } else if (typeof input.confirm === "string") {
     const title = input.confirm.replace("#", "");
 
@@ -48,7 +51,7 @@ export const onActionClick = (
       ],
     });
   } else onClick(clickConfig);
-  if ((input as ModalConfigButton).closable) {
+  if ((input as ModalConfigButton).closable !== false) {
     modalService.close(input.value);
     inputPrefix = getInputId();
   }
@@ -66,8 +69,12 @@ export default function Modal(props: ModalFixed) {
   modalService.setConfigSetter((config) => setConfig(config));
 
   const defTheme = "m-ok";
-  const asFunc = (val?: Function | boolean | ReactNode) =>
-    typeof val === "function" ? val(config) : val;
+  const asFunc = (val?: Function | boolean | ReactNode) => {
+    if (typeof val === "function") {
+      if (config) config.forceUpdate = forceUpdate;
+      return val(config);
+    } else return val;
+  };
   const onClose = () => {
     const res = config?.onCloseAcion?.(config as ModalConfig);
     if (res !== false) {
@@ -143,6 +150,7 @@ export default function Modal(props: ModalFixed) {
                     <ModalButton
                       key={`modal-button-${buttoni}`}
                       config={[button, buttoni]}
+                      forceUpdate={forceUpdate}
                     />
                   ))}
               </div>

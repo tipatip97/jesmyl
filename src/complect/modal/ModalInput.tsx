@@ -9,17 +9,16 @@ import {
 import modalService from "./Modal.service";
 
 export default function ModalInput(topProps: TheModalInputProps) {
-  let input: Partial<ModalConfigInput>, uniq: string;
+  let input: Partial<ModalConfigInput>;
 
-  if (Array.isArray(topProps.config)) [input, uniq = ""] = topProps.config;
-  else [input, uniq] = [topProps.config, ""];
+  if (Array.isArray(topProps.config)) [input] = topProps.config;
+  else [input] = [topProps.config, ""];
 
   const config = modalService.current();
 
   if (input == null) return null;
   input.set = (attrn: keyof ModalConfigInput, val) => {
     if (input.element) input.element.setAttribute(attrn, val);
-    // input[attrn] = val;
   };
   input.setVal = (val) => input.set && input.set("value", val);
   const asFunc = (val?: Function | boolean | ReactNode, alt?: any) =>
