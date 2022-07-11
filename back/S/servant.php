@@ -232,8 +232,7 @@ function &tracker($track, &$parents = null, &$topParent = null, $createByPath = 
     else
       $mTraceScalar = $track[0];
 
-
-    if (!$topParent) {
+    if (is_null($topParent)) {
       $isOldParent = false;
 
       if (is_string($mTraceScalar)) {
@@ -590,14 +589,14 @@ function &doIt($exec, &$parents, &$parent)
   if (is_array($exec['expecteds']))
     foreach ($exec['expecteds'] as $expected) {
       $exTracked = &tracker($expected[0], $parents, $parent);
-      // debugLine([is_null($exTracked['target']), $exTracked]);
+      //debugLine(['expecteds1', is_null($exTracked['target']), $exTracked, $parent]);
       if (is_null($exTracked['target'])) {
 
         $exPenultimate = &$exTracked['penultimate'];
         $exLastTrace = $exTracked['trace'];
 
         $exPenultimate[$exLastTrace] = $expected[1];
-        // debugLine([$exPenultimate]);
+        //debugLine([$exPenultimate]);
       }
     }
 
