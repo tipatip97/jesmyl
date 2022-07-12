@@ -1,0 +1,34 @@
+[
+    {
+        "expected": {},
+        "track": [
+            "templates"
+        ],
+        "next": [
+            {
+                "track": [
+                    "humans"
+                ],
+                "expected": [],
+                "next": [
+                    {
+                        "level": 20,
+                        "action": "addHuman",
+                        "title": "Добавлен новый участник $name",
+                        "method": "push",
+                        "value": {
+                            "name": "{name}",
+                            "notes": "{?notes}",
+                            "isMan": "{isMan}"
+                        },
+                        "args": {
+                            "name": "#String",
+                            "notes": "#string",
+                            "isMan": "#Num"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]

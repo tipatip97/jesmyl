@@ -184,6 +184,34 @@
     "outsideApp": true
   },
   {
+    "name": "printer",
+    "title": "Принтер",
+    "description": "",
+    "R": [
+      "@userLevel",
+      "==",
+      100
+    ],
+    "requirements": [
+      {
+        "R": [
+          "@prepareActions():1:printer"
+        ],
+        "name": "actions",
+        "ext": "json",
+        "track": [
+          "@prepareActions()::printer"
+        ]
+      },
+      {
+        "path": "../apps/printer/templates.json",
+        "file": "templates.json",
+        "name": "templates",
+        "ext": "json"
+      }
+    ]
+  },
+  {
     "name": "exb",
     "title": "Опросник",
     "description": "",
