@@ -312,27 +312,45 @@ export class MyLib {
         return query.replace(/[^-a-z0-9]/g, all => `_${all.charCodeAt(0)}`);
     }
 
-    stringTemplater<Args>(str: string, topArgs: Args): string {
-        topArgs = Object.assign({
-            ink: (num: number, post = '', pre = '') => num == null ? null : `${pre}${num - -1}${post}`,
-            switch: function (...args: any[]) {
-                let val: any, found: any;
+    stringTemplaterFunctions = {
+        ink: (num: number, post = '', pre = '') => num == null ? null : `${pre}${num - -1}${post}`,
+        switch: (...args: any[]) => {
+            let val: any, found: any;
 
-                const ret = args.find((arg, argi) => {
-                    if (!argi) {
-                        val = arg;
-                        return false;
-                    }
-
-                    if (found) return true;
-                    if ((argi % 2) && (arg == val)) found = true;
+            const ret = args.find((arg, argi) => {
+                if (!argi) {
+                    val = arg;
                     return false;
-                });
+                }
 
-                return ret == null ? args[args.length - 1] : ret;
-            },
-            declension: (num: number, one: string, two: string, five: string) => mylib.declension(num, one, two, five),
-        }, topArgs);
+                if (found) return true;
+                if ((argi % 2) && (arg == val)) found = true;
+                return false;
+            });
+
+            return ret == null ? args[args.length - 1] : ret;
+        },
+        declension: (num: number, one: string, two: string, five: string) => mylib.declension(num, one, two, five),
+        isEq: (...args: any[]) => {
+            let val: any;
+
+            return !args.some((arg, argi) => {
+                if (argi) return !this.isEq(arg, val);
+                val = arg;
+                return false;
+            });
+        },
+        isGt: (first: any, second: any) => first > second,
+        isGte: (first: any, second: any) => first >= second,
+        isLt: (first: any, second: any) => first < second,
+        isLte: (first: any, second: any) => first <= second,
+        or: (...args: any[]) => args.some((arg) => arg),
+        and: (...args: any[]) => !args.some((arg) => !arg),
+        if: (condition: any, ifTrue: any, ifFalse: any) => condition ? ifTrue : ifFalse,
+    };
+
+    stringTemplater<Args>(str: string, topArgs: Args): string {
+        topArgs = Object.assign({}, this.stringTemplaterFunctions, topArgs);
 
         const dob = '{{';
         const ocb = '}{';
