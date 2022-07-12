@@ -135,7 +135,7 @@ export default function EditMeetingsEvent() {
               <DebouncedInput
                 icon="search-outline"
                 placeholder="Поиск песен"
-                className="debounced-searcher margin-gap-v"
+                className="debounced-searcher round-styled margin-gap-v"
                 initialTerm={term}
                 onSearch={(term) => zcat.search(term)}
                 debounce={500}

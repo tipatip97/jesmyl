@@ -17,36 +17,6 @@
             background-color: rgba(0, 0, 0, .2);
         }
     }
-
-    .debounced-searcher {
-        --height: calc(var(--header-container-height) - var(--main-gap) * 2);
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: var(--height);
-        box-sizing: border-box;
-        border-radius: calc(var(--main-gap) * 3);
-        background-color: var(--color--2);
-        padding: var(--main-gap);
-        width: 100%;
-
-        .input {
-            width: calc(100% - 30px);
-            outline: 0;
-            border: 0;
-            background: none;
-            color: var(--text-color);
-        }
-
-        .clear-button {
-            cursor: pointer;
-
-            &.hidden {
-                opacity: 0;
-            }
-        }
-    }
 }
 
 #root {

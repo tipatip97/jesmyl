@@ -27,7 +27,7 @@ export default function EditCompositions() {
     if (ccom) {
       setTimeout(() => {
         const currentFace = document.querySelector(
-          `.com-face.editable-com.current.wid_${ccom.wid}`
+          `.face-item.editable-com.current.wid_${ccom.wid}`
         );
         if (listRef.current && currentFace) {
           mylib.scrollToView(currentFace, "top", {
@@ -50,7 +50,7 @@ export default function EditCompositions() {
             <DebouncedInput
               icon="search-outline"
               placeholder="Песни"
-              className="debounced-searcher margin-gap-h"
+              className="debounced-searcher round-styled margin-gap-h"
               initialTerm={term}
               onSearch={(term) => zcat.search(term)}
               debounce={500}

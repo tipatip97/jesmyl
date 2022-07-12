@@ -201,6 +201,6 @@ const getComi = (comw?: number, comList?: Com[] | nil) => {
 };
 
 const scrollToView = (com: Com) => {
-  const comFace = document.querySelector(`.com-face.current.wid_${com.wid}`);
+  const comFace = document.querySelector(`.face-item.current.wid_${com.wid}`);
   if (comFace) comFace.scrollIntoView({ block: "center" });
 };

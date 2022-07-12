@@ -23,7 +23,7 @@ export default function ComFace(props: ComFaceProps) {
   return com == null ? null : (
     <>
       <div
-        className={`com-face flex between ${
+        className={`face-item flex between ${
           ccom?.wid === com.wid ? "current" : ""
         } ${groupClass || ""} wid_${com.wid}`}
         onClick={
@@ -52,7 +52,7 @@ export default function ComFace(props: ComFaceProps) {
         }}
       >
         <div
-          className="number"
+          className="face-logo"
           selected-position={selectedComPosition(com) || undefined}
           onClick={(event) => {
             event.stopPropagation();
@@ -61,7 +61,7 @@ export default function ComFace(props: ComFaceProps) {
         >
           <span>{`${com.index == null ? "?" : com.index - -1}`}</span>
         </div>
-        <span className="title ellipsis">{com.name}</span>
+        <span className="face-title ellipsis">{com.name}</span>
         {props.description}
       </div>
     </>

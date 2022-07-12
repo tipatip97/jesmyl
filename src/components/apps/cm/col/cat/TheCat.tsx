@@ -24,7 +24,7 @@ export default function TheCat({ all }: { all?: boolean }) {
     if (ccom) {
       setTimeout(() => {
         const currentFace = document.querySelector(
-          `.com-face.com-of-cat.current.wid_${ccom.wid}`
+          `.face-item.com-of-cat.current.wid_${ccom.wid}`
         );
         if (listRef.current)
           if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
@@ -49,7 +49,7 @@ export default function TheCat({ all }: { all?: boolean }) {
               uniq={`search in cat ${cat.wid}`}
               icon="search-outline"
               placeholder="Поиск песен"
-              className="debounced-searcher"
+              className="debounced-searcher round-styled"
               initialTerm={term}
               onSearch={(term) => cat.search(term)}
               debounce={500}
