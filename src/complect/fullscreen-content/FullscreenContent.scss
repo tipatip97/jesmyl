@@ -1,33 +1,39 @@
 .fullscreen-content-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 350;
+
+  &.closable {
+    > .close-button {
+      display: none;
+    }
+  }
+
+  > .close-button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  &.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .full-container {
     position: absolute;
     top: 0;
     left: 0;
-    height: 100vh;
+    height: calc(100vh - var(--keyboard-flash-height));
     width: 100vw;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 350;
-
-    >.close-button {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-        z-index: 1;
-    }
-
-    &.open {
-        opacity: 1;
-        pointer-events: all;
-    }
-
-    .full-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: calc(100vh - var(--keyboard-flash-height));
-        width: 100vw;
-        background-color: var(--current-bg);
-        overflow-y: auto;
-    }
+    background-color: var(--current-bg);
+    overflow-y: auto;
+  }
 }
