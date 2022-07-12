@@ -39,6 +39,10 @@ export class Exer<Storage extends ExerStorage> {
         ];
     }
 
+    setIfCan<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
+        return this.actionAccessedOrNull(freeExec.action) && this.set(freeExec);
+    }
+
     set<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
         if (!freeExec) return null;
         let retExec: Exec<Value> | null = null;

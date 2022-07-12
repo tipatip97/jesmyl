@@ -42,11 +42,12 @@ export default function ModalInput(topProps: TheModalInputProps) {
       onInput: (event: InputEvent) => {
         input.value = (event.target as HTMLInputElement)?.value;
         if (input.onInput) {
-          input.onInput(mylib.overlap({ input, event }, props));
+          input.onInput(mylib.overlap({}, props, { input, event, value: input.value }));
         }
         topProps.forceUpdate();
       },
       onClick: (event: Event) => {
+        event.stopPropagation();
         try {
           const clickConfig: ModalConfig = mylib.overlap(
             { input, event },
