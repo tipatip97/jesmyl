@@ -14,19 +14,19 @@ export default function MeetingsCreator({ close }: { close: () => void }) {
     (state: RootState) => state.cm.currentMeetingsContext
   );
   const [, currContextw] = meetings?.getContexts(currContext) || [];
-  const [input, , destroyInput] = useKeyboard()("MeetingsCreator", {
+  const input = useKeyboard()("MeetingsCreator", {
     className: "full-width",
     initialValue: name,
     onChange: (value) => setName(value),
   });
 
-  useEffect(() => () => destroyInput("MeetingsCreator"), []);
+  useEffect(() => () => input.remove(), [input]);
 
   return (
     <div className="full-container flex column full-height padding-big-gap center">
       <div className="full-width margin-gap-v flex">
         <div className="margin-gap-h">Название</div>
-        {input}
+        {input.node}
       </div>
       <button
         disabled={!name || !currContextw || !meetings}

@@ -18,7 +18,7 @@ export default function AddContext({
   const { exec } = useExer(cmExer);
   const [contexts, usedContexts] = meetings?.getNames(currPath) || [[], []];
   const [bindEvents, setBindEvents] = useState<EditableMeetingsEvent[]>([]);
-  const [input, setInputValue] = useKeyboard()("AddContext - input", {
+  const input = useKeyboard()("AddContext - input", {
     className: "full-width",
     initialValue: name,
     onChange: (value) => setName(value),
@@ -36,7 +36,7 @@ export default function AddContext({
             <div
               key={`context-${context}`}
               className="context-item"
-              onClick={() => setInputValue(context)}
+              onClick={() => input.value(context)}
             >
               {context}
             </div>
@@ -73,7 +73,7 @@ export default function AddContext({
 
   return (
     <div className="add-context full-container flex column full-height padding-big-gap center">
-      {input}
+      {input.node}
       {stack}
       {eventsStack?.length ? (
         <>

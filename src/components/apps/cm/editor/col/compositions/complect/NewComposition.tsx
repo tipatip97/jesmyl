@@ -27,25 +27,22 @@ export default function NewComposition({ close }: { close: () => void }) {
 
   const keyboardFerry = useKeyboard();
 
-  const [input, updateInputValue] = keyboardFerry(
-    "new composition name input",
-    {
-      className: "full-width",
-      initialValue: name,
-      onInput: () => setIsTakeName(false),
-      onChange: (value) => {
-        create();
-        setName(com.correctName(value));
-        exec(
-          com.rename(value, (correctName) =>
-            exec(correctName && updateInputValue(correctName))
-          )
-        );
-      },
-    }
-  );
+  const input = keyboardFerry("new composition name input", {
+    className: "full-width",
+    initialValue: name,
+    onInput: () => setIsTakeName(false),
+    onChange: (value) => {
+      create();
+      setName(com.correctName(value));
+      exec(
+        com.rename(value, (correctName) =>
+          exec(correctName && input.value(correctName))
+        )
+      );
+    },
+  });
 
-  const [textarea] = keyboardFerry("new composition body textarea", {
+  const textarea = keyboardFerry("new composition body textarea", {
     className: "text-heap-textarea full-width",
     multiline: true,
     closeButton: false,
@@ -55,7 +52,7 @@ export default function NewComposition({ close }: { close: () => void }) {
       if (isTakeName) {
         const correctName = com.takeName(value);
         setName(com.correctName(correctName));
-        updateInputValue(correctName);
+        input.value(correctName);
       }
     },
   });
@@ -81,10 +78,10 @@ export default function NewComposition({ close }: { close: () => void }) {
         >
           <div className="flex full-width">
             <span className="margin-gap-h">Название </span>
-            <div className="full-width">{input}</div>
+            <div className="full-width">{input.node}</div>
           </div>
         </EditContainerCorrectsInformer>
-        {textarea}
+        {textarea.node}
         <EvaIcon
           name="done-all-outline"
           className="pointer margin-big-gap"

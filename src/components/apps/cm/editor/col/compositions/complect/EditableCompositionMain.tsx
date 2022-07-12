@@ -16,7 +16,7 @@ export default function EditableCompositionMain() {
   const aboutInput = useKeyboard();
 
   if (!ccom) return null;
-  const [input] = aboutInput(`EditableCompositionMain ${ccom.wid}`, {
+  const input = aboutInput(`EditableCompositionMain ${ccom.wid}`, {
     initialValue: ccom?.name,
     className: "full-width",
     onChange: (value) => exec(ccom?.rename(value, exec)),
@@ -30,7 +30,7 @@ export default function EditableCompositionMain() {
           className="flex"
         >
           <div className="margin-gap-h">Название</div>
-          {input}
+          {input.node}
         </EditContainerCorrectsInformer>
       }
       <div

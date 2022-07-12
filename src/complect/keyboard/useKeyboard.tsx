@@ -14,14 +14,7 @@ let topForceUpdate: () => void = () => {};
 let topOnBlur: () => void = () => {};
 let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => {};
 
-export default function useKeyboard(): (
-  id: string,
-  props: KeyboardInputProps
-) => [
-  ReactNode,
-  (value: string, isRemember?: boolean) => void,
-  (id: string) => void
-] {
+export default function useKeyboard() {
   const [updates, setUpdates] = useState(0);
 
   return (id: string, props: KeyboardInputProps) => {
@@ -56,15 +49,16 @@ export default function useKeyboard(): (
       inputNode = getNode();
     }
 
-    return [
-      inputNode,
-      (value: string, isRemember = false) => {
-        localInput.replaceAll(value, isRemember);
+    return {
+      node: inputNode,
+      value: (value?: string, isRemember = false) => {
+        if (value !== undefined) localInput.replaceAll(value, isRemember);
+        return localInput.value;
       },
-      (id: string) => {
+      remove: () => {
         delete inputDict[id];
       },
-    ];
+    };
   };
 }
 

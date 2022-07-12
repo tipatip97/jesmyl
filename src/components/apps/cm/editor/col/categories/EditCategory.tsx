@@ -19,7 +19,7 @@ export default function EditCategory() {
 
   if (!ccat) return null;
 
-  const [input] = aboutInput(`edit category name ${ccat.wid}`, {
+  const input = aboutInput(`edit category name ${ccat.wid}`, {
     initialValue: ccat.name,
     onChange: (value) => exec(ccat.rename(value, exec)),
   });
@@ -37,7 +37,7 @@ export default function EditCategory() {
             >
               <div className="flex">
                 <div className="margin-gap-h">Название:</div>
-                {input}
+                {input.node}
               </div>
             </EditContainerCorrectsInformer>
           }

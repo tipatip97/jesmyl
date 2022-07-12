@@ -22,18 +22,18 @@ export default function IndexLogin() {
   const error = (message: string | nil) =>
     message && <div className="login-error-message">{message}</div>;
 
-  const [loginInput] = aboutInput("IndexLogin login", {
+  const loginInput = aboutInput("IndexLogin login", {
     onChange: (value) => setLogin(value),
     initialValue: login,
     placeholder: "Логин",
   });
-  const [passwInput] = aboutInput("IndexLogin passw", {
+  const passwInput = aboutInput("IndexLogin passw", {
     type: "password",
     onChange: (value) => setPassword(value),
     initialValue: passw,
     placeholder: "Пароль",
   });
-  const [rpasswInput] = aboutInput("IndexLogin r-passw", {
+  const rpasswInput = aboutInput("IndexLogin r-passw", {
     type: "password",
     onChange: (value) => setRPassword(value),
     initialValue: rpassw,
@@ -79,17 +79,17 @@ export default function IndexLogin() {
           <div className="relative flex column full-width">
             <div className="input-container flex">
               {error(errors.login)}
-              <div className="input-wrapper">{loginInput}</div>
+              <div className="input-wrapper">{loginInput.node}</div>
             </div>
             <div className="input-container flex">
               {error(errors.passw)}
-              <div className="input-wrapper">{passwInput}</div>
+              <div className="input-wrapper">{passwInput.node}</div>
             </div>
             {mode === "register" ? (
               <>
                 <div className="input-container flex">
                   {error(errors.rpassw)}
-                  <div className="input-wrapper">{rpasswInput}</div>
+                  <div className="input-wrapper">{rpasswInput.node}</div>
                 </div>
               </>
             ) : null}

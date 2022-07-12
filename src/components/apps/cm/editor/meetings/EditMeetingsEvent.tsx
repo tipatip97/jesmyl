@@ -28,7 +28,7 @@ export default function EditMeetingsEvent() {
   );
   const comsLength = currentEvent.coms?.length || 0;
   const prevComsLength = currentEvent.prevComs?.length || 0;
-  const [input] = aboutInput(`EditMeetingsEvent ${currentEvent.wid}`, {
+  const input = aboutInput(`EditMeetingsEvent ${currentEvent.wid}`, {
     initialValue: currentEvent.name,
     onFocus: () => setIsClosedComList(true),
     onChange: (value) => {
@@ -46,7 +46,7 @@ export default function EditMeetingsEvent() {
       content={
         <>
           <EditContainerCorrectsInformer>
-            Название {input}
+            Название {input.node}
           </EditContainerCorrectsInformer>
 
           <div className="list-title sticky">

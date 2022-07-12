@@ -17,21 +17,18 @@ export default function CategoryBinds() {
     <>
       <div className="cat-list-title">Сборники</div>
       {cols?.cats.map((cat) => {
-        const [input, updateInputValue] = aboutInput(
-          `cat-for-bind-${cat.wid}`,
-          {
-            initialValue: `${ccom.refs?.[cat.wid] || ""}`,
-            type: "number",
-            onChange: (value) => {
-              if (!value) {
-                exec(ccom.removeNativeNumber(cat, exec));
-                return;
-              }
-              if (value.match(/\D/)) return;
-              exec(ccom.setNativeNumber(cat, value));
-            },
-          }
-        );
+        const input = aboutInput(`cat-for-bind-${cat.wid}`, {
+          initialValue: `${ccom.refs?.[cat.wid] || ""}`,
+          type: "number",
+          onChange: (value) => {
+            if (!value) {
+              exec(ccom.removeNativeNumber(cat, exec));
+              return;
+            }
+            if (value.match(/\D/)) return;
+            exec(ccom.setNativeNumber(cat, value));
+          },
+        });
 
         return cat.kind !== "dict" ? null : (
           <EditContainerCorrectsInformer
@@ -39,9 +36,9 @@ export default function CategoryBinds() {
             corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
           >
             <span>{cat.name} </span>
-            {input}
+            {input.node}
             {ccom.refs?.[cat.wid] != null ? (
-              <span className="pointer" onClick={() => updateInputValue("")}>
+              <span className="pointer" onClick={() => input.value("")}>
                 {" " +
                   (isNaN(ccom.refs?.[cat.wid])
                     ? "Корректно очистить"
