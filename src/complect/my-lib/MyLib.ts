@@ -71,6 +71,9 @@ export class MyLib {
         return md5(content);
     }
 
+    randomOf(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
 
     isEq(base: any, source: any) {
         if (base == null && base == source) return true;
