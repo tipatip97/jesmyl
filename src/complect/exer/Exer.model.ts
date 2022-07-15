@@ -15,7 +15,7 @@ export interface ExecRule extends ExecRuleClient {
 }
 
 
-export type ExecMethod = 'set' | 'push' | 'func' | 'migrate' | 'remove' | 'add' | 'other';
+export type ExecMethod = 'set' | 'push' | 'concat' | 'func' | 'migrate' | 'remove' | 'add' | 'other';
 
 export interface ExerStorage {
     actions: ExecRule[];
