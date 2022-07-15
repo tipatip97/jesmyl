@@ -33,9 +33,10 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         });
 
         this.valueCharLines = lines;
+        const prev = this.value;
         this.value = this.valueChars.join('');
 
-        this.textUpdate();
+        this.textUpdate(prev);
     }
 
     replaceSelected(value = ''): boolean {
@@ -71,7 +72,9 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
             this.isSelected = false;
 
             this.scrollToView();
+            const prev = this.value;
             this.setValues();
+            this.onInput?.(this.value, prev);
         }
     }
 
@@ -88,7 +91,9 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         this.isSelected = false;
 
         this.scrollToView();
+        const prev = this.value;
         this.setValues();
+        this.onInput?.(this.value, prev);
     }
 
     write(value: string, isRememberAsPart?: boolean) {
@@ -108,8 +113,9 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         this.prevTypedValue = value;
         if (!isRememberAsPart) this.shadowCursorPosition = this.cursorPosition;
         if (!this.isCapsLock) this.event.shiftKey = false;
+        const prev = this.value;
         this.setValues();
-        this.onInput?.(this.value);
+        this.onInput?.(this.value, prev);
         this.scrollToView();
     }
 

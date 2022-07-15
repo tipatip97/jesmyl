@@ -1,7 +1,7 @@
 export class KeyboardStorageBase {
     value: string = '';
-    onInput?: (value: string) => void;
-    onChange?: (value: string) => void;
+    onInput?: (value: string, prev: string) => void;
+    onChange?: (value: string, prev: string) => void;
     onFocus?: () => void;
     forceUpdate: () => void = () => { };
     onBlur: () => void = () => { };
@@ -33,8 +33,8 @@ export class KeyboardStorageBase {
         return false;
     }
 
-    textUpdate() {
-        this.onChange?.(this.value);
+    textUpdate(prev: string) {
+        this.onChange?.(this.value, prev);
         this.forceUpdate();
     }
 

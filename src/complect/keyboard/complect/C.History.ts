@@ -49,16 +49,17 @@ export class KeyboardStorageHistoty extends KeyboardStorageSelect {
                 valueCharLines,
             } = mylib.clone(prev);
 
+            const prevValue = this.value;
+            this.value = value;
             this.setCursorPosition(cursorPosition);
             this.selected = selected;
-            this.value = value;
             this.valueChars = valueChars;
             this.valueCharLines = valueCharLines;
             this.isSelected = isSelected;
 
             this.memoryPosition += isUndo ? -1 : 1;
 
-            this.textUpdate();
+            this.textUpdate(prevValue);
             this.scrollToView();
         }
     }
