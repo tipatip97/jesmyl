@@ -189,8 +189,8 @@
     "description": "",
     "R": [
       "@userLevel",
-      "==",
-      100
+      ">=",
+      10
     ],
     "requirements": [
       {

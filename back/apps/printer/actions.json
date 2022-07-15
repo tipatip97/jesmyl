@@ -10,6 +10,10 @@
                     "humans"
                 ],
                 "expected": [],
+                "uniqs": [
+                    "id",
+                    "name"
+                ],
                 "next": [
                     {
                         "level": 20,
@@ -17,15 +21,92 @@
                         "title": "Добавлен новый участник $name",
                         "method": "push",
                         "value": {
+                            "id": "{id}",
                             "name": "{name}",
                             "notes": "{?notes}",
-                            "isMan": "{isMan}"
+                            "ufp": "{?ufp}",
+                            "isMan": "{isMan}",
+                            "isInactive": "{?isInactive}"
                         },
                         "args": {
+                            "id": "#String",
                             "name": "#String",
                             "notes": "#string",
-                            "isMan": "#Num"
+                            "ufp": "#number",
+                            "isMan": "#Boolean",
+                            "isInactive": "#boolean"
                         }
+                    },
+                    {
+                        "level": 20,
+                        "action": "addManyHumans",
+                        "title": "Добавлено несколько участников",
+                        "method": "concat",
+                        "args": {
+                            "value": "#List"
+                        }
+                    },
+                    {
+                        "track": [
+                            [
+                                "id",
+                                "===",
+                                "{id}"
+                            ]
+                        ],
+                        "next": [
+                            {
+                                "level": 20,
+                                "track": [
+                                    "name"
+                                ],
+                                "action": "setHumanName",
+                                "title": "Изменено имя участника \"$prev\" на \"$value\"",
+                                "method": "set",
+                                "args": {
+                                    "value": "#String"
+                                }
+                            },
+                            {
+                                "level": 20,
+                                "track": [
+                                    "ufp"
+                                ],
+                                "action": "setHumanUfp",
+                                "title": "Изменено значение Уровня физ. подготовки участника \"$humann\"",
+                                "method": "set",
+                                "args": {
+                                    "value": "#String",
+                                    "humann": "#String"
+                                }
+                            },
+                            {
+                                "level": 20,
+                                "track": [
+                                    "notes"
+                                ],
+                                "action": "setHumanNotes",
+                                "title": "Изменена заметка участника \"$humann\"",
+                                "method": "set",
+                                "args": {
+                                    "value": "#String",
+                                    "humann": "#String"
+                                }
+                            },
+                            {
+                                "level": 20,
+                                "track": [
+                                    "isInactive"
+                                ],
+                                "action": "setHumanInactive",
+                                "title": "Участник \"$humann\" исключён",
+                                "method": "set",
+                                "args": {
+                                    "value": "#Boolean",
+                                    "humann": "#String"
+                                }
+                            }
+                        ]
                     }
                 ]
             }

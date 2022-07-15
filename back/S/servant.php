@@ -581,6 +581,7 @@ function &doIt($exec, &$parents, &$parent)
   $track = $exec['track'];
   $value = $exec['value'];
   $method = $exec['method'];
+  $uniqs = $exec['uniqs'];
   $createByPath = $exec['exec']['createByPath'] || $exec['createByPath'];
 
   $penultimate = null;
@@ -618,15 +619,17 @@ function &doIt($exec, &$parents, &$parent)
 
   switch ($method) {
     case 'set':
+      // debugLine(['set in do-It', $tracked, $parents, $value]);
       $penultimate[$lastTrace] = &$value;
-      //debugLine(['set in do-It', $tracked, $parents, $value]);
       break;
     case 'set_all':
       foreach ($value as $key => &$val) $target[$key] = &$val;
       //debugLine(['set_all', $value, $target]);
       break;
     case 'push':
-      if (is_array($target)) $target[] = &$value;
+      if (isList($target) && isUniqByFields($uniqs, $target, $value))
+        $target[] = &$value;
+
       break;
     case 'remove':
       if (is_array($target)) {
@@ -647,9 +650,14 @@ function &doIt($exec, &$parents, &$parent)
       break;
     case 'concat':
       $arr = is_array($value) ? $value : [$value];
-      if (is_array($target))
-        foreach ($arr as $val)
-          $target[] = $val;
+      if (!is_array($target)) {
+        $target = [];
+        $penultimate[$lastTrace] = &$target;
+      }
+      // debugLine(['case "concat"', $target, $penultimate, $lastTrace]);
+
+      foreach ($arr as $val)
+        if (isUniqByFields($uniqs, $target, $val)) $target[] = $val;
       break;
     case 'bumerang':
       if (is_array($target)) {
@@ -680,6 +688,22 @@ function &doIt($exec, &$parents, &$parent)
   ];
 }
 
+
+function isUniqByFields($uniqs, $target, $value)
+{
+  if (is_array($uniqs)) {
+    foreach ($target as $val) {
+      foreach ($uniqs as $field) {
+        // debugLine([$val, $field, $value, $val[$field], $value[$field]]);
+        if ($val[$field] === $value[$field]) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
 
 
 
@@ -862,7 +886,7 @@ function replaceArgs($value, $args, &$errors, $defValueName = 'value', $canBeStr
   } else return $value;
 }
 
-function findRule($rules, $exec, $topTrack = [], $topArgs = [], $expecteds = [])
+function findRule($rules, $exec, $topTrack = [], $topArgs = [], $expecteds = [], $topUniqs = [])
 {
   $action = $exec['action'];
   $execArgs = $exec['args'];
@@ -872,6 +896,7 @@ function findRule($rules, $exec, $topTrack = [], $topArgs = [], $expecteds = [])
     $ruleAction = $rule['action'];
     $args = array_merge($topArgs, typ([], $rule['args']));
     $track = array_merge($topTrack, typ([], $rule['track']));
+    $uniqs = array_merge($topUniqs, typ([], $rule['uniqs']));
     $replacedTrack = null;
 
     if (!is_null($rule['expected'])) {
@@ -908,6 +933,7 @@ function findRule($rules, $exec, $topTrack = [], $topArgs = [], $expecteds = [])
 
       $track = $replacedTrack ? $replacedTrack : replaceArgs($track, $execArgs, $errors);
       $value = replaceArgs($rule['value'], $execArgs, $errors);
+      $uniqs = replaceArgs($uniqs, $execArgs, $errors);
 
       $ruleSide = $rule['side'];
       $side = null;
@@ -934,6 +960,7 @@ function findRule($rules, $exec, $topTrack = [], $topArgs = [], $expecteds = [])
         'value' => $value,
         'args' => $execArgs,
         'rule' => $rule,
+        'uniqs' => $uniqs,
         'exec' => $exec,
       ];
 
@@ -945,7 +972,7 @@ function findRule($rules, $exec, $topTrack = [], $topArgs = [], $expecteds = [])
     }
 
     if (is_array($rule['next'])) {
-      $retExec = findRule($rule['next'], $exec, $track, $args, $expecteds);
+      $retExec = findRule($rule['next'], $exec, $track, $args, $expecteds, $uniqs);
       if ($retExec) return $retExec;
     }
 
