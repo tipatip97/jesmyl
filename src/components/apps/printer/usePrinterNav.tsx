@@ -6,7 +6,7 @@ import {
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import { printerStorage } from "../../../shared/jstorages";
 import { RootState } from "../../../shared/store";
-import TemplatePage from "./components/TemplatePage";
+import HumanList from "./components/HumanList";
 import PrinterApplication from "./Printer";
 import { PrinterNavData, PrinterStorage } from "./Printer.model";
 import { printerExer, setPrinterRoute } from "./Printer.store";
@@ -25,7 +25,7 @@ const navigation: NavigationConfig<
       icon: "printer",
       phase: ["all"],
       title: "Принтер",
-      node: <TemplatePage />,
+      node: <HumanList />,
     },
   ],
 });

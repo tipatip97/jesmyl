@@ -5,17 +5,20 @@ export interface PrinterState extends PrinterStorage {
 }
 
 export interface PrinterStorage {
-    templates: Templates;
+    templates?: Templates;
 }
 
 export interface Templates {
-    text?: string;
     humans?: Human[];
 }
 
 export interface Human {
     name: string;
     isMan: boolean;
+    notes: string;
+    id: string;
+    ufp?: number;
+    isInactive?: boolean;
 }
 
-export interface PrinterNavData {}
+export interface PrinterNavData { }
