@@ -71,16 +71,24 @@
     }
   }
 
+  > .face-action {
+    right: 0;
+  }
+
+  > .face-logo {
+    background: var(--color--1);
+    border-radius: 50%;
+    border: solid 4px transparent;
+  }
+
+  > .face-action,
   > .face-logo {
     position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--color--1);
-    border-radius: 50%;
     width: var(--size);
     height: var(--size);
-    border: solid 4px transparent;
   }
 
   > .face-title {

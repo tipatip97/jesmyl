@@ -201,10 +201,24 @@ textarea {
   margin-right: 0.2em;
 }
 
-.text-middle {
-  > * {
-    display: inline-block;
-    vertical-align: middle;
+.text {
+  &-middle {
+    > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  &-strike {
+    text-decoration: line-through;
+  }
+
+  &-underline {
+    text-decoration: underline;
+  }
+
+  &-bold {
+    font-weight: bold;
   }
 }
 

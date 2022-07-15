@@ -1,11 +1,14 @@
+.template-page-content {
+  .human-heap {
+    border: dotted 1px var(--text-color);
+    margin: 20px 0;
+  }
+}
+
 .print-template-page.full-container {
   background-color: white;
   color: black;
-}
-
-.adaptation-page {
-  padding: 40px;
-  height: 1127px;
+  // height: 1127px;
 
   .tpl-title {
     font-size: 20px;
@@ -13,12 +16,22 @@
     text-align: center;
   }
 
+  .tpl-subtitle {
+    font-size: 17px;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+.adaptation-page {
+  padding: 40px;
+
   .table-wrapper {
     display: flex;
     justify-content: center;
 
     > .table {
-        --table-size: 500px;
+      --table-size: 80vmin;
       width: var(--table-size);
       border: solid black 1px;
 
@@ -41,4 +54,45 @@
       }
     }
   }
+}
+
+.fort-passport {
+  padding: 40px;
+
+  .table-wrapper {
+    display: flex;
+    justify-content: center;
+
+    > .table {
+      --table-size: 40vmin;
+      // width: var(--table-size);
+      border: solid black 1px;
+
+      > .row {
+        display: flex;
+
+        > .cell {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: calc(var(--table-size));
+          height: calc(var(--table-size) / 2);
+          border: solid black 1px;
+          color: grey;
+
+          .qr-code {
+            width: calc(100% - 10px);
+          }
+        }
+      }
+    }
+  }
+}
+
+.simple-border {
+  border: solid 1px var(--text-color);
+}
+
+.page-break-after-always {
+  page-break-after: always;
 }
