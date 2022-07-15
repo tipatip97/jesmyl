@@ -1,24 +1,42 @@
 import React, { ReactNode } from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import App from "./app/App";
 import "./index.scss";
 import "./lib.scss";
-import App from "./app/App";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { store } from "./shared/store";
-import { Provider } from "react-redux";
 
-export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null) => {
+export const renderApplication = (
+  reactNode: ReactNode,
+  node: HTMLElement | null
+) => {
   ReactDOM.render(
     <React.StrictMode>
-      <Provider store={store}>
-        {reactNode}
-      </Provider>
+      <Provider store={store}>{reactNode}</Provider>
     </React.StrictMode>,
     node
   );
 };
 renderApplication(<App />, document.getElementById("root"));
+
+export const renderComponentInNewWindow = (reactNode: ReactNode) => {
+  const win = window.open();
+  if (win) {
+    const div = document.createElement("div");
+    div.classList.add('above-container');
+    let styles = "";
+    win.document.body.appendChild(div);
+    renderApplication(reactNode, div);
+    Array.from(document.querySelectorAll("style")).forEach((box) => {
+      styles += box.innerText;
+    });
+    const styleNode = document.createElement("style");
+    styleNode.innerText = styles;
+    win.document.body.appendChild(styleNode);
+  }
+};
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
