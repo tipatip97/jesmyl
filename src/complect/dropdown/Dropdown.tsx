@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DropdownItem, DropdownProps } from "./Dropdown.model";
 import "./Dropdown.scss";
 
-export default function Dropdown<Id, Item extends DropdownItem<Id>>(
+export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownItem<Id>>(
   props: DropdownProps<Id, Item>
 ) {
   const [selectedItem, setItem] = useState(
@@ -39,7 +39,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id>>(
     >
       <div className="selected-item">
         {selectedItem?.title || (
-          <span className="not-selected">Не выбрано</span>
+          <span className="not-selected">{props.placeholder ?? 'Не выбрано'}</span>
         )}
       </div>
       <div className="item-list">

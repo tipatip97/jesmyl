@@ -2,6 +2,7 @@
 
 export interface DropdownProps<Id , Item extends DropdownItem<Id>> {
     items: Item[];
+    placeholder?: string;
     id?: Id;
     onSelect?: (item: Item) => void;
     className?: string;
