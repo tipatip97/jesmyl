@@ -60,11 +60,11 @@ export function FULLSCREEN__CONTENT() {
     []
   );
 
-  return (
+  return fullscreenContentOpenMode ? (
     <div
       className={`fullscreen-content-container ${
-        fullscreenContentOpenMode ? "open" : ""
-      } ${fullscreenContentOpenMode || ""}`}
+        fullscreenContentOpenMode || ""
+      }`}
       onClick={
         fullscreenContentOpenMode === "closable"
           ? () => closeFullscreenContent()
@@ -80,5 +80,5 @@ export function FULLSCREEN__CONTENT() {
       )}
       {fullscreenContent}
     </div>
-  );
+  ) : null;
 }

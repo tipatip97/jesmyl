@@ -4,8 +4,6 @@
   left: 0;
   height: 100vh;
   width: 100vw;
-  opacity: 0;
-  pointer-events: none;
   z-index: 350;
 
   &.closable {
@@ -20,11 +18,6 @@
     right: 10px;
     cursor: pointer;
     z-index: 1;
-  }
-
-  &.open {
-    opacity: 1;
-    pointer-events: all;
   }
 
   .full-container {
