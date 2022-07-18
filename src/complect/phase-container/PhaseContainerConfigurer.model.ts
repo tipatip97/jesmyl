@@ -15,3 +15,7 @@ export interface PhaseContainerProps extends HtmlHTMLAttributes<HTMLDivElement>,
     content: ReactNode;
     contentRef?: React.LegacyRef<HTMLDivElement>;
 }
+
+export interface EditablePhaseContainerProps extends PhaseContainerProps {
+    onMoreClick?: () => void;
+}
