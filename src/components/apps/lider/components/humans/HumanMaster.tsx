@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import Dropdown from "../../../../complect/dropdown/Dropdown";
-import useExer from "../../../../complect/exer/useExer";
-import useKeyboard from "../../../../complect/keyboard/useKeyboard";
-import { Human } from "../Printer.model";
-import { printerExer } from "../Printer.store";
+import Dropdown from "../../../../../complect/dropdown/Dropdown";
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import useExer from "../../../../../complect/exer/useExer";
+import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import { Human } from "../../Lider.model";
+import { liderExer } from "../../Lider.store";
 
 const idMaker = (name: string[]) =>
   name
@@ -18,49 +19,31 @@ export default function HumanMaster({
   human?: Human;
   close: () => void;
 }) {
-  const { exec } = useExer(printerExer);
-  const [isMan, setIsMan] = useState(true);
+  const { exec } = useExer(liderExer);
   const [humanHeap, setHumanHeap] = useState("");
+  const [ufp, setUfp] = useState<number | nil>(human?.ufp);
+  const [ufp2, setUfp2] = useState<number | nil>(human?.ufp2);
   const [isHumanHeap, setIsHumanHeap] = useState(false);
   const [isInactive, setIsInactive] = useState(human?.isInactive);
+  const [isMan, setIsMan] = useState(human?.isMan ?? true);
+
   const nameInput = useKeyboard()("human-name", {
     placeholder: "Фамилия, Имя",
     initialValue: human?.name,
-    setIsUnknownSymbols: (char) => !!/[^а-я ]/i.exec(char),
+    setIsUnknownSymbols: (char) => !!/[^а-яё ]/i.exec(char),
     preferLanguage: "ru",
     onInput: !human
       ? undefined
       : (value, prev) => {
-          printerExer.setIfCan({
+          liderExer.setIfCan({
             action: "setHumanName",
+            scope: `setHumanName-${human.id}`,
             method: "set",
             prev,
             value,
             args: {
               id: human.id,
               value,
-            },
-          });
-          exec();
-        },
-  });
-
-  const ufpInput = useKeyboard()("human-ufp", {
-    placeholder: "Уровень физ. подготовки",
-    type: "number",
-    initialValue: `${human?.ufp || ""}`,
-    onInput: !human
-      ? undefined
-      : (value, prev) => {
-          printerExer.setIfCan({
-            action: "setHumanUfp",
-            method: "set",
-            prev,
-            value,
-            args: {
-              id: human.id,
-              value: +value,
-              humann: human.name,
             },
           });
           exec();
@@ -74,8 +57,9 @@ export default function HumanMaster({
     onInput: !human
       ? undefined
       : (value, prev) => {
-          printerExer.setIfCan({
+          liderExer.setIfCan({
             action: "setHumanNotes",
+            scope: `setHumanNotes-${human.id}`,
             method: "set",
             prev,
             value,
@@ -99,11 +83,8 @@ export default function HumanMaster({
 
   useEffect(() => {
     return () => {
-      if (human) {
-        notesInput.remove();
-        ufpInput.remove();
-        nameInput.remove();
-      }
+      notesInput.remove();
+      nameInput.remove();
     };
   }, []);
 
@@ -143,10 +124,12 @@ export default function HumanMaster({
                     name: name.reverse().join(" "),
                     isMan: !!/[мm]/i.exec(notes),
                     id: idMaker(name),
+                    ufp: 0,
+                    ufp2: 0,
                   });
                 });
 
-                printerExer.setIfCan({
+                liderExer.setIfCan({
                   action: "addManyHumans",
                   method: "concat",
                   args: {
@@ -164,11 +147,10 @@ export default function HumanMaster({
       ) : (
         <>
           <div className="full-width margin-big-gap-v">{nameInput.node}</div>
-          <div className="full-width margin-big-gap-v">{ufpInput.node}</div>
-          <div className="full-width margin-big-gap-v">{notesInput.node}</div>
           <div className="full-width margin-big-gap-v">
             <Dropdown
               id={isMan}
+              placeholder="Пол не указан"
               items={[
                 {
                   id: true,
@@ -179,9 +161,74 @@ export default function HumanMaster({
                   title: "Женский",
                 },
               ]}
-              onSelect={({ id }) => setIsMan(id)}
+              onSelect={({ id }) => {
+                setIsMan(id);
+                if (human)
+                  liderExer.setIfCan({
+                    action: "setHumanIsMan",
+                    scope: `setHumanIsMan-${human.id}`,
+                    method: "set",
+                    prev: human.isMan,
+                    value: !isMan,
+                    args: {
+                      id: human.id,
+                      value: !isMan,
+                      humann: human.name,
+                    },
+                  });
+                exec();
+              }}
             />
           </div>
+          {(
+            [
+              ["УФП1", "ufp", "setHumanUfp"],
+              ["УФП2", "ufp2", "setHumanUfp2"],
+            ] as [string, keyof Human, string][]
+          ).map(([label, fieldn, action], placei) => {
+            return (
+              <div className="full-width margin-big-gap-v flex between">
+                {label + " "}
+                {"1"
+                  .repeat(10)
+                  .split("")
+                  .map((_, ufpi) => {
+                    return (
+                      <EvaIcon
+                        key={`${fieldn}${ufpi}`}
+                        className="pointer"
+                        name={`radio-button-${
+                          ((placei ? ufp2 : ufp) || 0) - 1 === ufpi
+                            ? "on"
+                            : "off"
+                        }`}
+                        onClick={() => {
+                          const value = ufpi + 1;
+                          placei ? setUfp2(value) : setUfp(value);
+
+                          if (human) {
+                            liderExer.setIfCan({
+                              action,
+                              scope: `${action}-${human.id}`,
+                              method: "set",
+                              prev: human[fieldn],
+                              value,
+                              args: {
+                                id: human.id,
+                                value,
+                                humann: human.name,
+                              },
+                            });
+                            exec();
+                          }
+                        }}
+                      />
+                    );
+                  })}
+              </div>
+            );
+          })}
+          <div className="full-width margin-big-gap-v">{notesInput.node}</div>
           <div
             style={{
               color: isInactive ? "green" : "red",
@@ -189,8 +236,9 @@ export default function HumanMaster({
             onClick={() => {
               setIsInactive(!isInactive);
               if (human)
-                printerExer.setIfCan({
+                liderExer.setIfCan({
                   action: "setHumanInactive",
+                  scope: `setHumanInactive-${human.id}`,
                   method: "set",
                   prev: !!human.isInactive,
                   value: !isInactive,
@@ -210,18 +258,18 @@ export default function HumanMaster({
               className="full-width margin-big-gap-v text-center pointer"
               onClick={() => {
                 if (human) {
-                  printerExer.load();
+                  liderExer.load(() => close());
                 } else {
                   const name = nameInput.value();
 
-                  printerExer.send({
+                  liderExer.send({
                     action: "addHuman",
                     method: "push",
                     args: {
                       name,
                       isMan,
                       notes: notesInput.value(),
-                      ufp: +ufpInput.value(),
+                      ufp,
                       id: idMaker(name.trim().split(/ +/)),
                       isInactive,
                     } as Human,
@@ -230,7 +278,6 @@ export default function HumanMaster({
                 }
 
                 notesInput.remove();
-                ufpInput.remove();
                 nameInput.remove();
               }}
             >

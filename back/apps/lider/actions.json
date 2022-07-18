@@ -1,8 +1,8 @@
 [
     {
-        "expected": {},
+        "expected":  {},
         "track": [
-            "templates"
+            "people"
         ],
         "next": [
             {
@@ -19,7 +19,7 @@
                         "level": 20,
                         "action": "addHuman",
                         "title": "Добавлен новый участник $name",
-                        "method": "push",
+                        "method": "push" ,
                         "value": {
                             "id": "{id}",
                             "name": "{name}",
@@ -76,7 +76,33 @@
                                 "title": "Изменено значение Уровня физ. подготовки участника \"$humann\"",
                                 "method": "set",
                                 "args": {
-                                    "value": "#String",
+                                    "value": "#Number",
+                                    "humann": "#String"
+                                }
+                            },
+                            {
+                                "level": 20,
+                                "track": [
+                                    "ufp2"
+                                ],
+                                "action": "setHumanUfp2",
+                                "title": "Изменено значение Уровня физ. подготовки (2) участника \"$humann\"",
+                                "method": "set",
+                                "args": {
+                                    "value": "#Number",
+                                    "humann": "#String"
+                                }
+                            },
+                            {
+                                "level": 20,
+                                "track": [
+                                    "isMan"
+                                ],
+                                "action": "setHumanIsMan",
+                                "title": "Изменено значение пола участника \"$humann\"",
+                                "method": "set",
+                                "args": {
+                                    "value": "#Boolean",
                                     "humann": "#String"
                                 }
                             },
@@ -107,6 +133,39 @@
                                 }
                             }
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "track": [
+            "games"
+        ],
+        "expected": {},
+        "uniqs": [
+            "id"
+        ],
+        "next": [
+            {
+                "track": "teamGames",
+                "expected": [],
+                "next": [
+                    {
+                        "level": 20,
+                        "action": "addTeamGame",
+                        "title": "Добавлена новая командная игра $name",
+                        "method": "push",
+                        "value": {
+                            "id": "{id}",
+                            "name": "{name}",
+                            "teams": "{teams}"
+                        },
+                        "args": {
+                            "id": "#Number",
+                            "name": "#String",
+                            "teams": "#List"
+                        }
                     }
                 ]
             }

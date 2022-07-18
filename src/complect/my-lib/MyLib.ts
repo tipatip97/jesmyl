@@ -992,6 +992,74 @@ export class MyLib {
     static entries<T>(obj: T): T extends Record<infer Key, infer V> ? [Key, V][] : [string, any][] {
         return Object.entries(obj) as never;
     }
+
+    keys<Item extends {}>(item: Item): (keyof Item)[] {
+        return Object.keys(item) as never;
+    }
+
+    randomSort<Item>(items: Item[]) {
+        return items.sort(() => this.randomOf(-1, 1));
+    }
+
+    findMap<Item, Val, Def>(items: Item[], cb: (item: Item, index: number, items: Item[]) => Val, def: Def) {
+        for (let i = 0; i < items.length; i++) {
+            const val = cb(items[i], i, items);
+            if (val) return val;
+        }
+        return def;
+    }
+
+    groupByFieldsSoftly<Item extends Record<Fieldn, Item[Fieldn]>, Fieldn extends string>(fieldns: Fieldn[], items: Item[], numOf: number) {
+        const lastFieldn = fieldns[fieldns.length - 1];
+        const wraps = items
+            .map((item) => ({ item }))
+            .sort(({ item: a }, { item: b }) => {
+                return this.findMap(fieldns, (fieldn, fieldni, fieldna) => {
+                    return a[fieldn] > b[fieldn]
+                        ? -1
+                        : a[fieldn] < b[fieldn]
+                            ? 1
+                            : fieldni === fieldna.length - 1
+                                ? this.randomOf(-1, 1)
+                                : 0;
+                }, 0);
+            });
+        const groups: Item[][] = [];
+        const teams: Item[][] = [];
+        let more: Item[] = [];
+
+        for (let i = 0; i < wraps.length;) {
+            const group: Item[] = [];
+            groups.push(group);
+            for (let j = 0; j < numOf; j++, i++) {
+                if (i < wraps.length) group.push(wraps[i].item);
+            }
+        }
+
+        for (let i = 0; i < numOf; i++) {
+            const team: Item[] = [];
+            teams.push(team);
+            // eslint-disable-next-line no-loop-func
+            groups.forEach((group) => {
+                if (group.length === numOf) team.push(group[i]);
+                else more = group;
+            });
+        }
+
+        const map = teams.map((team, teami) => [team.reduce((rate, item) => rate + item[lastFieldn], 0), teami]).sort(([a], [b]) => b - a);
+        more.forEach((item, itemi) => {
+            const [, index] = map[itemi];
+            teams[index].push(item);
+        });
+
+        teams.sort(() => this.randomOf(-1, 1));
+
+        return teams;
+    }
+
+    findNext<Item>(items: Item[], item: Item, step = 1) {
+        return items[(items.indexOf(item) + Math.abs(step)) % items.length];
+    }
 }
 
 

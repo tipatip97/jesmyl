@@ -184,8 +184,8 @@
     "outsideApp": true
   },
   {
-    "name": "printer",
-    "title": "Принтер",
+    "name": "lider",
+    "title": "Лидер",
     "description": "",
     "R": [
       "@userLevel",
@@ -195,18 +195,18 @@
     "requirements": [
       {
         "R": [
-          "@prepareActions():1:printer"
+          "@prepareActions():1:lider"
         ],
         "name": "actions",
         "ext": "json",
-        "track": [
-          "@prepareActions()::printer"
+        "track":  [
+          "@prepareActions()::lider"
         ]
       },
       {
-        "path": "../apps/printer/templates.json",
-        "file": "templates.json",
-        "name": "templates",
+        "path": "../apps/lider/people.json",
+        "file": "people.json",
+        "name": "people",
         "ext": "json"
       }
     ]

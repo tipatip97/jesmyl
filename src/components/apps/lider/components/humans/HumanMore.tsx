@@ -1,10 +1,9 @@
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
-import { Human } from "../Printer.model";
-import PrintableBottomItem from "./PrintableBottomItem";
-import HumanMaster from "./RedactHuman";
-import "./Styles.scss";
-import AdaptationPage from "./templates/AdaptationPage";
+import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { Human } from "../../Lider.model";
+import PrintableBottomItem from "../PrintableBottomItem";
+import HumanMaster from "./HumanMaster";
+import AdaptationPage from "../templates/AdaptationPage";
 
 export default function HumanMore({ human }: { human: Human }) {
   const { openFullscreenContent } = useFullscreenContent();

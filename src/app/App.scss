@@ -1,6 +1,7 @@
 .above-container {
     --main-gap: 8px;
     --main-big-gap: 18px;
+    --main-giant-gap: 40px;
     --header-padding-top: 23px;
     --header-padding: var(--header-padding-top) var(--main-gap) var(--main-gap) var(--main-gap);
     --header-content-height: 50px;
@@ -22,6 +23,10 @@
 
     overflow: hidden;
 
+
+    .padding-giant-gap {
+        padding: var(--main-giant-gap);
+    }
 
     .padding-big-gap {
         padding: var(--main-big-gap);
