@@ -1,5 +1,5 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { BaseNamed } from "../../base/Base";
+import { BaseNamed } from "../../base/BaseNamed";
 import { Com } from "../../col/com/Com";
 import { Cols } from "../../cols/Cols";
 import { IExportableMeetingsEvent } from "./Meetings.model";

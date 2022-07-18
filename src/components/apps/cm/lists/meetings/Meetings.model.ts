@@ -1,4 +1,4 @@
-import { Base } from "../../base/Base";
+import SourceBased from "../../../../../complect/SourceBased";
 
 
 export interface IExportableMeetingsEvent {
@@ -15,7 +15,7 @@ export interface IExportableMeetingsContext {
     c: number[];
 }
 
-export class MeetingsContext extends Base<IExportableMeetingsContext> {
+export class MeetingsContext extends SourceBased<IExportableMeetingsContext> {
     get context() {
         return this.getBasic('c');
     }

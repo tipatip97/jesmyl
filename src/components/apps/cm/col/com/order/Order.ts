@@ -1,9 +1,9 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import { Base } from "../../../base/Base";
+import SourceBased from "../../../../../../complect/SourceBased";
 import { Com } from "../Com";
 import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
 
-export class Order extends Base<IExportableOrderTop> {
+export class Order extends SourceBased<IExportableOrderTop> {
   _regions?: EditableOrderRegion<Order>[];
   com: Com;
   element?: HTMLDivElement;

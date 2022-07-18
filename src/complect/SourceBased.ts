@@ -1,14 +1,13 @@
-import mylib from "../../../../complect/my-lib/MyLib";
-import Simplifyed from "../../../../complect/Simplifyed";
+import mylib from "./my-lib/MyLib";
+
 
 type NonUndefined<T> = T extends undefined ? never | null : T | null;
 
-export class Base<T> extends Simplifyed {
+export default class SourceBased<T> {
     top: T;
     basics: T;
 
     constructor(top: T) {
-        super();
         this.top = top;
         this.basics = {} as never;
     }
@@ -51,17 +50,10 @@ export class Base<T> extends Simplifyed {
             }
         } else return this.basics[fieldn] = [] as never;
     }
-}
 
-export interface BaseNamedExportables {
-    n: string;
-    w: number;
-}
-
-export class BaseNamed<T extends BaseNamedExportables> extends Base<T> {
-    get name() { return this.getBasic('n'); }
-    set name(value) { this.setExportable('n', value); }
-
-    get wid() { return this.getBasic('w'); }
-    set wid(value) { this.setExportable('w', value); }
+    setReals<Top extends Object>(top: Top, keys: (keyof this)[]) {
+        keys.forEach((key) => {
+            if (top[key as keyof Top] != null) this[key as keyof this] = (top[key as keyof Top] as never);
+        });
+    }
 }

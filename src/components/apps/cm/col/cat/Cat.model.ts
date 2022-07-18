@@ -1,4 +1,4 @@
-import { BaseNamedExportables } from "../../base/Base";
+import { BaseNamedExportables } from "../../base/BaseNamed";
 import { Com } from "../com/Com";
 import { Cat } from "./Cat";
 

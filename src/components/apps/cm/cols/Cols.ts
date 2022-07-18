@@ -1,11 +1,11 @@
 import mylib from "../../../../complect/my-lib/MyLib";
-import { Base } from "../base/Base";
+import SourceBased from "../../../../complect/SourceBased";
 import { Cat } from "../col/cat/Cat";
 import { Com } from "../col/com/Com";
 import { IExportableCom } from "../col/com/Com.model";
 import { ICols, IExportableCols } from "./Cols.model";
 
-export class Cols extends Base<IExportableCols> implements ICols {
+export class Cols extends SourceBased<IExportableCols> implements ICols {
   coms: Com[] = [];
   cats: Cat[] = [];
 

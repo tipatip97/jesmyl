@@ -1,5 +1,5 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { BaseNamed } from "../../base/Base";
+import { BaseNamed } from "../../base/BaseNamed";
 import { Cols } from "../../cols/Cols";
 import { blockStyles } from "./block-styles/BlockStyles";
 import { StyleBlock } from "./block-styles/StyleBlock";

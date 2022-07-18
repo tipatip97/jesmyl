@@ -1,5 +1,5 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { BaseNamed } from "../../base/Base";
+import { BaseNamed } from "../../base/BaseNamed";
 import { Com } from "../com/Com";
 import { catTrackers } from "./Cat.complect";
 import { ComWrap, ICat, IExportableCat } from "./Cat.model";

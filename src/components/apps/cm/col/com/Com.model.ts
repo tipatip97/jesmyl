@@ -1,5 +1,5 @@
 import { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
-import { BaseNamedExportables } from "../../base/Base";
+import { BaseNamedExportables } from "../../base/BaseNamed";
 import { MigratableEditableComToolName } from "../../editor/col/compositions/EditableCom.model";
 import { IExportableOrder } from "./order/Order.model";
 

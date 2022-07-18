@@ -1,6 +1,6 @@
 import { ExecArgs, FreeExecDict } from "../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { BaseNamed, BaseNamedExportables } from "../../base/Base";
+import { BaseNamed, BaseNamedExportables } from "../../base/BaseNamed";
 import { eeStorage } from "../../base/ee-storage/EeStorage";
 import { cmExer } from "../../Cm.store";
 import { IEditableCol, IExportableCol } from "../../cols/Cols.model";

@@ -1,10 +1,10 @@
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
 import mylib from "../my-lib/MyLib";
-import Simplifyed from "../Simplifyed";
+import SourceBased from "../SourceBased";
 import { ExecDict, ExecMethod, ExecRule, ExecRuleClient, FreeExecDict } from "./Exer.model";
 
 
-export class Exec<Value> extends Simplifyed {
+export class Exec<Value> extends SourceBased<ExecDict> {
     scope?: string;
     title: string = '';
     prev?: Value;
@@ -25,7 +25,7 @@ export class Exec<Value> extends Simplifyed {
     onLoad?: (exec: Exec<Value>) => '';
 
     constructor(exec: ExecDict<Value>, rules: ExecRule[]) {
-        super();
+        super(exec);
         this.action = exec.action;
         this.method = exec.method;
         if (exec.method === 'set') this.prev = mylib.clone(exec.prev);

@@ -1,8 +1,8 @@
-import { Base } from "../../../base/Base";
+import SourceBased from "../../../../../../complect/SourceBased";
 import { Order } from "../order/Order";
 import { IExportableStyleProp } from "./BlockStyles.model";
 
-export class StyleBlock extends Base<IExportableStyleProp> {
+export class StyleBlock extends SourceBased<IExportableStyleProp> {
   get name() {
     return this.getBasicOr('n', '');
   }

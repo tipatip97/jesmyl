@@ -1,7 +1,7 @@
-import Simplifyed from "../../../../../complect/Simplifyed";
+import SourceBased from "../../../../../complect/SourceBased";
 import { ICorrect } from "./CorrectsBox.model";
 
-export default class Correct extends Simplifyed implements ICorrect {
+export default class Correct extends SourceBased<ICorrect> implements ICorrect {
     code?: number;
     message: string;
     onFix?: () => void;
@@ -10,7 +10,7 @@ export default class Correct extends Simplifyed implements ICorrect {
     uniq?: string;
 
     constructor(top: ICorrect) {
-        super();
+        super(top);
         this.message = top.message;
         this.setReals(top, ['code', 'onFix', 'fixLabel', 'uniq']);
         this.id = `correct#${Date.now() + Math.random()}`;

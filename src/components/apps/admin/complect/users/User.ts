@@ -1,10 +1,10 @@
 import { FreeExecDict } from "../../../../../complect/exer/Exer.model";
-import { Base } from "../../../cm/base/Base";
+import SourceBased from "../../../../../complect/SourceBased";
 import { IExportableUser } from "../../Admin.model";
 import { adminExer } from "../../Admin.store";
 import './User.scss';
 
-export class User extends Base<IExportableUser> {
+export class User extends SourceBased<IExportableUser> {
     get login() { return this.getBasic('login'); }
     set login(val) { this.setExportable('login', val); }
 
