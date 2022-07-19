@@ -24,7 +24,8 @@
                             "id": "{id}",
                             "name": "{name}",
                             "notes": "{?notes}",
-                            "ufp": "{?ufp}",
+                            "ufp1": "{?ufp1}",
+                            "ufp2": "{?ufp2}",
                             "isMan": "{isMan}",
                             "isInactive": "{?isInactive}"
                         },
@@ -32,7 +33,8 @@
                             "id": "#String",
                             "name": "#String",
                             "notes": "#string",
-                            "ufp": "#number",
+                            "ufp1": "#number",
+                            "ufp2": "#number",
                             "isMan": "#Boolean",
                             "isInactive": "#boolean"
                         }
@@ -70,10 +72,10 @@
                             {
                                 "level": 20,
                                 "track": [
-                                    "ufp"
+                                    "ufp1"
                                 ],
-                                "action": "setHumanUfp",
-                                "title": "Изменено значение Уровня физ. подготовки участника \"$humann\"",
+                                "action": "setHumanUfp1",
+                                "title": "Изменено значение Уровня физ. подготовки (1) участника \"$humann\"",
                                 "method": "set",
                                 "args": {
                                     "value": "#Number",
@@ -148,7 +150,7 @@
         ],
         "next": [
             {
-                "track": "teamGames",
+                "track": ["teamGames"],
                 "expected": [],
                 "next": [
                     {
