@@ -20,7 +20,8 @@ export default function EditablePhaseContainerConfigurer<Storaged>(
   return (
     <PhaseContainerConfigurer
       {...props}
-      topClass={`${props.topClass} ${lookIcon ? "with-changes" : ""}`}
+      topClass={`${props.topClass || ""} ${lookIcon ? "with-changes" : ""}`}
+      headClass={props.headClass || "flex between"}
       head={
         <div className={`flex ${props.headClass || ""}`}>
           {props.head}
