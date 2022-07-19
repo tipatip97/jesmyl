@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DropdownItem, DropdownProps } from "./Dropdown.model";
 import "./Dropdown.scss";
 
-export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownItem<Id>>(
-  props: DropdownProps<Id, Item>
-) {
-  const [selectedItem, setItem] = useState(
-    props.items.find((item) => item.id === props.id)
-  );
+export default function Dropdown<
+  Id,
+  Item extends DropdownItem<Id> = DropdownItem<Id>
+>(props: DropdownProps<Id, Item>) {
+  const [selectedId, setId] = useState(props.id);
   const [isDropped, setDropped] = useState(false);
+  const selectedItem = useMemo(
+    () => props.items.find((item) => item.id === selectedId),
+    [props.items, selectedId]
+  );
 
   useEffect(() => {
     const close = () => setDropped(false);
@@ -39,7 +42,9 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
     >
       <div className="selected-item">
         {selectedItem?.title || (
-          <span className="not-selected">{props.placeholder ?? 'Не выбрано'}</span>
+          <span className="not-selected">
+            {props.placeholder ?? "Не выбрано"}
+          </span>
         )}
       </div>
       <div className="item-list">
@@ -53,7 +58,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
               onClick={(event) => {
                 event.stopPropagation();
                 setDropped(false);
-                setItem(item);
+                setId(item.id);
                 props.onSelect?.(item);
               }}
             >
