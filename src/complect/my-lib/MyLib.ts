@@ -17,6 +17,8 @@ type Ferry<FerryType, ObjName extends keyof FerryType> =
         rate: number
     };
 
+export type AddRestMode = 'strong' | 'weak' | 'random';
+
 export class MyLib {
     c = constants;
 
@@ -1009,7 +1011,7 @@ export class MyLib {
         return def;
     }
 
-    groupByFieldsSoftly<Item extends Record<Fieldn, Item[Fieldn]>, Fieldn extends string>(fieldns: Fieldn[], items: Item[], numOf: number) {
+    groupByFieldsSoftly<Item extends Record<Fieldn, Item[Fieldn]>, Fieldn extends string>(fieldns: Fieldn[], items: Item[], numOf: number, addRestMode: AddRestMode) {
         const lastFieldn = fieldns[fieldns.length - 1];
         const wraps = items
             .map((item) => ({ item }))
@@ -1026,7 +1028,7 @@ export class MyLib {
             });
         const groups: Item[][] = [];
         const teams: Item[][] = [];
-        let more: Item[] = [];
+        let rest: Item[] = [];
 
         for (let i = 0; i < wraps.length;) {
             const group: Item[] = [];
@@ -1042,17 +1044,28 @@ export class MyLib {
             // eslint-disable-next-line no-loop-func
             groups.forEach((group) => {
                 if (group.length === numOf) team.push(group[i]);
-                else more = group;
+                else rest = group;
             });
         }
 
-        const map = teams.map((team, teami) => [team.reduce((rate, item) => rate + item[lastFieldn], 0), teami]).sort(([a], [b]) => b - a);
-        more.forEach((item, itemi) => {
+        const sorter: (a: number[], b: number[]) => number = addRestMode === 'strong'
+            ? ([a], [b]) => b - a
+            : addRestMode === 'weak'
+                ? ([a], [b]) => a - b
+                : () => this.randomOf(-1, 1);
+
+        const map = teams
+            .map((team, teami) => [team.reduce((rate, item) => rate + item[lastFieldn], 0), teami])
+            .sort(sorter);
+
+        rest.forEach((item, itemi) => {
             const [, index] = map[itemi];
             teams[index].push(item);
         });
 
-        teams.sort(() => this.randomOf(-1, 1));
+        teams
+            .sort(() => this.randomOf(-1, 1))
+            .forEach((team) => team.sort(() => this.randomOf(-1, 1)));
 
         return teams;
     }

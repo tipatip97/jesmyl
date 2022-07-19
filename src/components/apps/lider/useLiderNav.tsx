@@ -7,15 +7,16 @@ import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer"
 import { liderStorage } from "../../../shared/jstorages";
 import { RootState } from "../../../shared/store";
 import GameList from "./components/games/GameList";
-import HumanList from "./components/humans/HumanList";
+import TheGame from "./components/games/TheGame";
+import HumanList from "./components/people/HumanList";
 import GeneralPage from "./GeneralPage";
 import LiderApplication from "./Lider";
-import { LiderNavData, LiderStorage } from "./Lider.model";
+import { LiderNavData, LiderStoraged } from "./Lider.model";
 import { liderExer, setLiderRoute } from "./Lider.store";
 
 const navigation: NavigationConfig<
-  LiderStorage,
-  NavigationStorage<LiderStorage>,
+  LiderStoraged,
+  NavigationStorage<LiderStoraged>,
   LiderNavData
 > = new NavigationConfig({
   root: (content) => <LiderApplication content={content} />,
@@ -36,6 +37,12 @@ const navigation: NavigationConfig<
         {
           phase: ["games"],
           node: <GameList />,
+          next: [
+            {
+              phase: ["game"],
+              node: <TheGame />,
+            },
+          ],
         },
       ],
     },
@@ -49,7 +56,11 @@ export default function useLiderNav() {
 }
 
 const useLiderNavConfigurer = () =>
-  useNavConfigurer<LiderStorage, NavigationStorage<LiderStorage>, LiderNavData>(
+  useNavConfigurer<
+    LiderStoraged,
+    NavigationStorage<LiderStoraged>,
+    LiderNavData
+  >(
     actions,
     setLiderRoute,
     navigation,

@@ -1,29 +1,18 @@
 import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
+import Human from "./components/people/Human";
+import { HumanListSortVariant, PeopleExportable } from "./components/people/Human.model";
 
-export interface LiderState extends LiderStorage {
+export interface LiderState extends LiderStoraged {
     route: FreeNavRoute;
 }
 
-export interface LiderStorage {
-    people?: People;
-    games?: GamesStore;
+export interface LiderStoraged {
+    people?: PeopleExportable;
+    numPeopleUpdates: number;
+    numGamesUpdates: number;
+    games?: GamesStoreExportable;
+    cgamew?: number;
     humanListSortVariant: HumanListSortVariant;
-}
-
-export type HumanListSortVariant = keyof typeof humanFieldTranslations;
-
-export interface People {
-    humans?: Human[];
-}
-
-export interface Human {
-    name: string;
-    isMan: boolean;
-    notes: string;
-    id: string;
-    ufp: number;
-    ufp2: number;
-    isInactive?: boolean;
 }
 
 export interface HumanTeam {
@@ -36,19 +25,14 @@ export interface LocalHumanTeam extends HumanTeam {
     humans: Human[];
 }
 
-export interface TeamGame {
+export interface TeamGameExportable {
     id: number;
     name: string;
     teams: HumanTeam[];
 }
 
-export interface GamesStore {
-    teamGames: TeamGame[];
+export interface GamesStoreExportable {
+    teamGames: TeamGameExportable[];
 }
-
-export const humanFieldTranslations: Partial<Record<keyof Human, string>> = {
-    name: 'имя',
-    ufp: 'УФП',
-};
 
 export interface LiderNavData { }

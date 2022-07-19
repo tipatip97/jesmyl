@@ -1,30 +1,21 @@
 import { useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import DebouncedInput from "../../../../../complect/DebouncedInput";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useExer from "../../../../../complect/exer/useExer";
-import { liderStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
-import { liderExer, updatePeople } from "../../Lider.store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
 import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
 import HumanFace from "./HumanFace";
 import HumansMore from "./HumansMore";
+import usePeople from "./usePeople";
 
 export default function HumanList() {
-  const dispatch = useDispatch();
-  const people = useSelector((state: RootState) => state.lider.people);
+  const { people } = usePeople();
   const [term, setTerm] = useState("");
-  const { lookIcon } = useExer(liderExer);
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const humanListSortVariant = useSelector(
     (state: RootState) => state.lider.humanListSortVariant
   );
-
-  liderStorage.listen("people", "HumanList", (templates) => {
-    if (templates) dispatch(updatePeople(templates));
-  });
 
   const humanList = useMemo(
     () =>
@@ -41,6 +32,10 @@ export default function HumanList() {
   return (
     <PhaseLiderContainer
       topClass="template-page-content"
+      headClass="flex between full-width"
+      onMoreClick={() =>
+        openAbsoluteBottomPopup(<HumansMore humanList={humanList} />)
+      }
       head={
         <>
           <DebouncedInput
@@ -51,14 +46,6 @@ export default function HumanList() {
             initialTerm={term}
             debounce={500}
             onTermChange={(term) => setTerm(term.toLowerCase())}
-          />
-          {lookIcon}
-          <EvaIcon
-            className="margin-gap pointer"
-            name="more-vertical"
-            onClick={() =>
-              openAbsoluteBottomPopup(<HumansMore humanList={humanList} />)
-            }
           />
         </>
       }

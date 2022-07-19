@@ -1,24 +1,22 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import QRCode from "../../../../../complect/qr-code/QRCode";
+import Human from "../people/Human";
 
 const name = "$name{{$name}{????????}}";
-const place =
-  "$switch{{$notes}{м1}{к рукомойникам}{м2}{под мост}{м3}{в столовую}{д1}{в общий зал}{???????????????????}}";
+const place = "$isMan?{{к рукомойникам}{под мост}}";
 
-const text = `Привет, ${name}! Мы рады тебя приветствовать на нашем корабле.
-Для обеспечения комфортного пребывания в круизе тебе необходимо пройти все пункты контроля.
-Когда ты получишь допуск к путешествию, подходи ${place} - там ты встретишь свою команду! 
+const text = `Привет, ${name}! Мы рады тебя приветствовать на нашем корабле. \
+Для обеспечения комфортного пребывания в круизе тебе необходимо пройти все пункты контроля. \
+Когда ты получишь допуск к путешествию, подходи ${place} - там ты встретишь свою команду!
 Приятного путешествия!`;
 
-export default function AdaptationPage({ bag }: { bag: any }) {
-  const date = new Date();
-
+export default function AdaptationPage({ human }: { human: Human }) {
   return (
     <div className="adaptation-page print-template-page full-container flex column ">
       <div>
         <div className="tpl-title">Допуск к путешествию</div>
         <div className="margin-big-gap-v white-pre-line">
-          {mylib.stringTemplater(text, bag)}
+          {mylib.stringTemplater(text, human?.top)}
         </div>
         <div className="table-wrapper">
           <div className="table">
@@ -35,15 +33,6 @@ export default function AdaptationPage({ bag }: { bag: any }) {
       </div>
       <div className="margin-big-gap">
         <QRCode text="беги к рукомойникам - там задание" />
-      </div>
-      <div className="text-bold">
-        Время начала - {date.getHours().toString().padStart(2, "0")}:
-        {date.getMinutes().toString().padStart(2, "0")}:
-        {date.getSeconds().toString().padStart(2, "0")}
-      </div>
-      <div className="text-bold">
-        Время завершения/Подпись важатого - _______________ /
-        ______________________
       </div>
     </div>
   );

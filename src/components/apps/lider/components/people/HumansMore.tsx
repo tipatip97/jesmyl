@@ -3,11 +3,11 @@ import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
-import { Human, humanFieldTranslations } from "../../Lider.model";
 import { setHumanListSortVariant } from "../../Lider.store";
+import { HumanExportable, humanFieldTranslations } from "./Human.model";
 import HumanMaster from "./HumanMaster";
 
-export default function HumansMore({ humanList }: { humanList?: Human[] }) {
+export default function HumansMore({ humanList }: { humanList?: HumanExportable[] }) {
   const { openFullscreenContent } = useFullscreenContent();
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(

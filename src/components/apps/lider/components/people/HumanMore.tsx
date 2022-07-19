@@ -1,9 +1,9 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import { Human } from "../../Lider.model";
 import PrintableBottomItem from "../PrintableBottomItem";
-import HumanMaster from "./HumanMaster";
 import AdaptationPage from "../templates/AdaptationPage";
+import Human from "./Human";
+import HumanMaster from "./HumanMaster";
 
 export default function HumanMore({ human }: { human: Human }) {
   const { openFullscreenContent } = useFullscreenContent();
@@ -24,7 +24,7 @@ export default function HumanMore({ human }: { human: Human }) {
       </div>
       <PrintableBottomItem
         title="Распечатать Адаптацию"
-        node={<AdaptationPage bag={human} />}
+        node={<AdaptationPage human={human} />}
       />
     </>
   );

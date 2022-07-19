@@ -2,13 +2,14 @@ import { HTMLAttributes, useState } from "react";
 import modalService from "../../../../complect/modal/Modal.service";
 import { getRandomTwiceName } from "../resources/getRandomTwiceName";
 
-export default function RandomTwiceName(
-  props: {
-    noun?: string;
-    pronoun?: string;
-    onNameChange?: (name: string) => void;
-  } & HTMLAttributes<HTMLDivElement>
-) {
+export default function RandomTwiceName({
+  onNameChange,
+  ...props
+}: {
+  noun?: string;
+  pronoun?: string;
+  onNameChange?: (name: string) => void;
+} & HTMLAttributes<HTMLDivElement>) {
   const getTwiceName = (pronoun?: string | null, noun?: string) =>
     getRandomTwiceName(pronoun, noun).join(" ").toUpperCase();
   const [twiceName, setTwiceName] = useState(
@@ -17,12 +18,12 @@ export default function RandomTwiceName(
 
   return (
     <span
-      {...{ ...props, onNameChange: undefined }}
+      {...props}
       onClick={(event) => {
         event.stopPropagation();
         const name = getTwiceName();
         setTwiceName(name);
-        props.onNameChange?.(name);
+        onNameChange?.(name);
       }}
       onContextMenu={(event) => {
         event.stopPropagation();

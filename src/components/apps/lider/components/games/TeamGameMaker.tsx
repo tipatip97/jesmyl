@@ -1,35 +1,43 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import useExer from "../../../../../complect/exer/useExer";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { RootState } from "../../../../../shared/store";
-import { LocalHumanTeam, TeamGame } from "../../Lider.model";
+import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
+import { LocalHumanTeam, TeamGameExportable } from "../../Lider.model";
 import { liderExer } from "../../Lider.store";
 import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
-import HumanFace from "../humans/HumanFace";
-import RandomTwiceName from "../RandomTwiseName";
+import usePeople from "../people/usePeople";
+import Team from "./Team";
+import TheTeam from "./TheTeam";
 
-export default function TeamGameMaker() {
+export default function TeamGameMaker({ close }: { close: () => void }) {
   const teamMemberCountInput = useKeyboard()("set-team-member-count", {
     type: "number",
   });
   const gameNameInput = useKeyboard()("game-name", {});
-  const [teams, updateTeams] = useState<LocalHumanTeam[]>([]);
+  const [teams, updateTeams] = useState<Team[] | null>(null);
+  const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
   const { exec } = useExer(liderExer);
-  const people = useSelector((state: RootState) => state.lider.people);
+  const { people } = usePeople();
 
-  const humanList = people?.humans;
+  const humanList = people?.activeHumans;
 
   if (!humanList) return null;
 
-  const teamMemberCount = +teamMemberCountInput.value();
-  const countInTeam = teamMemberCount && humanList.length / teamMemberCount;
+  const teamsCount = +teamMemberCountInput.value();
+  const countInTeam = teamsCount && humanList.length / teamsCount;
   const truncated = Math.trunc(countInTeam);
+  const restCount = humanList?.length % teamsCount;
+  const restLabelPrefix = mylib.declension(
+    restCount,
+    `Оставшегося ${restCount} участника`,
+    `Оставшихся ${restCount} участника`,
+    `Оставшихся ${restCount} участников`
+  );
 
   return (
     <div className="team-maker full-container padding-giant-gap">
-      <div className="flex full-width">
+      <div className="flex full-width margin-big-gap-v">
         <div className="nowrap">Название игры</div>
         <div className="full-width margin-gap-h">{gameNameInput.node}</div>
       </div>
@@ -43,86 +51,113 @@ export default function TeamGameMaker() {
           {teamMemberCountInput.node}
         </div>
       </div>
-      {countInTeam ? (
-        <div>
-          Состав команд по {truncated}
-          {truncated !== countInTeam
-            ? ` - ${truncated + 1} ${mylib.declension(
-                truncated + 1,
-                "человек",
-                "человека",
-                "человек"
-              )}`
-            : ""}
-        </div>
-      ) : null}
-      <div className="flex around margin-big-gap">
-        {teamMemberCountInput.value() ? (
-          <div
-            className="pointer"
-            onClick={() => {
-              const teams = mylib.groupByFieldsSoftly(
-                ["isMan", "ufp"],
-                humanList,
-                +teamMemberCountInput.value()
-              );
-              const idPrefix = Date.now();
-
-              updateTeams(
-                teams.map((humans) => {
-                  return {
-                    id: idPrefix + Math.random(),
-                    humans,
-                    members: humans.map((human) => human.name),
-                    name: getRandomTwiceName().join(" "),
-                  };
-                })
-              );
-            }}
-          >
-            Рассчитать
-          </div>
-        ) : null}
-        {gameNameInput.value() ? (
-          <div
-            className="pointer"
-            onClick={() => {
-              liderExer.setIfCan({
-                action: "addTeamGame",
-                method: "push",
-                args: {
-                  id: Date.now() + Math.random(),
-                  name: gameNameInput.value(),
-                  teams: teams.map((team) => {
-                    const newTeam: Partial<LocalHumanTeam> = { ...team };
-                    delete newTeam.humans;
-                    return newTeam;
-                  }),
-                } as TeamGame,
-              });
-              exec();
-            }}
-          >
-            Сохранить игру
-          </div>
-        ) : null}
-      </div>
-      {teams.map((team, teami) => {
-        const [pronoun, noun] = team.name.split(" ");
-        return (
-          <div key={`teami-${teami}`} className="padding-giant-gap">
-            <RandomTwiceName
-              pronoun={pronoun}
-              noun={noun}
-              className="inline-block margin-gap-v"
-              onNameChange={(name) => (team.name = name)}
+      {teamsCount <= humanList.length ? (
+        <>
+          {countInTeam ? (
+            <div>
+              Состав команд по {truncated}
+              {truncated !== countInTeam
+                ? ` - ${truncated + 1} ${mylib.declension(
+                    truncated + 1,
+                    "человеку",
+                    "человека",
+                    "человек"
+                  )}`
+                : ` ${mylib.declension(
+                    truncated,
+                    "человеку",
+                    "человека",
+                    "человек"
+                  )}`}
+            </div>
+          ) : null}
+          {truncated !== countInTeam ? (
+            <Dropdown
+              id={addRestMode}
+              className="margin-gap-v"
+              items={[
+                {
+                  title: `${restLabelPrefix} в сильную команду`,
+                  id: "strong",
+                },
+                {
+                  title: `${restLabelPrefix} в слабую команду`,
+                  id: "weak",
+                },
+                {
+                  title: `${restLabelPrefix} ${
+                    restCount === 1 ? "определить" : "распределить"
+                  } случайным образом`,
+                  id: "random",
+                },
+              ]}
+              onSelect={({ id }) => setAddRestMode(id)}
             />
-            {team.humans.map((human, humani) => {
-              return <HumanFace key={`human ${humani}`} human={human} />;
-            })}
+          ) : null}
+          <div className="flex around margin-big-gap">
+            {teamMemberCountInput.value() ? (
+              <div
+                className="pointer"
+                onClick={() => {
+                  const teams = mylib.groupByFieldsSoftly(
+                    ["isMan", "ufp"],
+                    humanList,
+                    +teamMemberCountInput.value(),
+                    addRestMode
+                  );
+                  const idPrefix = Date.now();
+
+                  updateTeams(
+                    teams.map((humans) => {
+                      return new Team(
+                        {
+                          id: idPrefix + Math.random(),
+                          members: humans.map((human) => human.id),
+                          name: getRandomTwiceName().join(" "),
+                        },
+                        humans
+                      );
+                    })
+                  );
+                }}
+              >
+                Рассчитать
+              </div>
+            ) : null}
+            {gameNameInput.value() && teams ? (
+              <div
+                className="pointer"
+                onClick={() => {
+                  liderExer.setIfCan({
+                    action: "addTeamGame",
+                    method: "push",
+                    args: {
+                      id: Date.now() + Math.random(),
+                      name: gameNameInput.value(),
+                      teams: teams.map((team) => {
+                        const newTeam: Partial<LocalHumanTeam> = { ...team };
+                        delete newTeam.humans;
+                        return newTeam;
+                      }),
+                    } as TeamGameExportable,
+                  });
+                  exec();
+                  close();
+                }}
+              >
+                Сохранить игру
+              </div>
+            ) : null}
           </div>
-        );
-      })}
+          {teams?.map((team, teami) => {
+            return <TheTeam key={`team-${teami}`} team={team} />;
+          })}
+        </>
+      ) : (
+        <div className="error-message padding-giant-gap text-center">
+          Количество команд превышает допустимое число
+        </div>
+      )}
     </div>
   );
 }

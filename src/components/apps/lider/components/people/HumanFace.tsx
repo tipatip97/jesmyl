@@ -1,6 +1,6 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import { Human } from "../../Lider.model";
+import Human from "./Human";
 import HumanMore from "./HumanMore";
 
 export default function HumanFace({ human }: { human: Human }) {

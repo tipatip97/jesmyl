@@ -9,7 +9,9 @@ export default function GameMore() {
     <>
       <div
         className="abs-item"
-        onClick={() => openFullscreenContent(<TeamGameMaker />)}
+        onClick={() =>
+          openFullscreenContent((close) => <TeamGameMaker close={close} />)
+        }
       >
         <EvaIcon name="people-outline" className="abs-icon" />
         <div>Новая командная игра</div>
