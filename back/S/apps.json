@@ -208,6 +208,12 @@
         "file": "people.json",
         "name": "people",
         "ext": "json"
+      },
+      {
+        "path": "../apps/lider/games.json",
+        "file": "games.json",
+        "name": "games",
+        "ext": "json"
       }
     ]
   },
