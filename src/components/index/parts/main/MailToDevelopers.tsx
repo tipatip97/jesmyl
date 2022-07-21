@@ -1,17 +1,18 @@
 import { useState } from "react";
+import useKeyboard from "../../../../complect/keyboard/useKeyboard";
 import useAuth from "../../useAuth";
 
 export default function MailToDevelopers({ close }: { close: () => void }) {
   const [text, setText] = useState("");
   const { writeToDevelopers } = useAuth();
+  const input = useKeyboard()("write-to developers", {
+    multiline: true,
+    onInput: (value) => setText(value),
+  });
 
   return (
     <div className="full-container flex column center padding-big-gap">
-      <textarea
-        className="full-width no-resize half-height"
-        value={text}
-        onChange={(event) => setText(event.target.value)}
-      />
+      {input.node}
       <button
         disabled={!text}
         className="margin-gap"
