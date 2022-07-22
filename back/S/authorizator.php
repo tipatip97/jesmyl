@@ -45,6 +45,7 @@ function authorize($auth)
 
   $isRegister = isset($auth['rpassw']);
   setGlob('userLogin', $login);
+  setGlob('userFio', $fio);
 
   if (!is_dir($authDir))
     mkdir($authDir);
@@ -140,6 +141,7 @@ function authorize($auth)
       $atFileContent = file_get_contents($atFile);
       $checks = organizeUp($atFileContent, $loginedAtOrganizeOrder);
       $level = $checks['level'][0];
+      $fio = implode(' ', $checks['fio']);
 
       if ($level < 100 && $level > 3) {
         file_put_contents($atFile, $atFileContent);
@@ -150,6 +152,7 @@ function authorize($auth)
 
       setGlob('userLevel', $level);
       setGlob('userAt', $at);
+      setGlob('userFio', $fio);
 
       return [
         'ok' => true,
