@@ -175,9 +175,6 @@
             "games"
         ],
         "expected": {},
-        "uniqs": [
-            "id"
-        ],
         "next": [
             {
                 "track": [
@@ -186,20 +183,110 @@
                 "expected": [],
                 "next": [
                     {
+                        "uniqs": [
+                            "w"
+                        ],
                         "level": 20,
                         "action": "addTeamGame",
                         "title": "Добавлена новая командная игра $name",
                         "method": "push",
                         "value": {
-                            "id": "{id}",
+                            "w": "{w}",
                             "name": "{name}",
                             "teams": "{teams}"
                         },
                         "args": {
-                            "id": "#Number",
+                            "w": "#Number",
                             "name": "#String",
                             "teams": "#List"
                         }
+                    },
+                    {
+                        "track": [
+                            [
+                                "w",
+                                "===",
+                                "{gamew}"
+                            ]
+                        ],
+                        "args": {
+                            "gamew": "#Number"
+                        },
+                        "next": [
+                            {
+                                "track": [
+                                    "teams"
+                                ],
+                                "next": [
+                                    {
+                                        "track": [
+                                            [
+                                                "w",
+                                                "===",
+                                                "{teamw}"
+                                            ]
+                                        ],
+                                        "args": {
+                                            "teamw": "#Number"
+                                        },
+                                        "next": [
+                                            {
+                                                "track": [
+                                                    "comments"
+                                                ],
+                                                "expected": [],
+                                                "next": [
+                                                    {
+                                                        "action": "addCommentToGameTeam",
+                                                        "method": "push",
+                                                        "value": {
+                                                            "w": "{wid}",
+                                                            "comment": "{comment}",
+                                                            "fio": "{@userFio}",
+                                                            "owner": "{@userLogin}"
+                                                        },
+                                                        "args": {
+                                                            "comment": "#String",
+                                                            "wid": "#Number"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "track": [
+                                                    "members"
+                                                ],
+                                                "next": [
+                                                    {
+                                                        "action": "removeMemberFromTeam",
+                                                        "method": "remove",
+                                                        "value": [
+                                                            ".",
+                                                            "===",
+                                                            "{humanId}"
+                                                        ],
+                                                        "args": {
+                                                            "humanId": "#String"
+                                                        }
+                                                    },
+                                                    {
+                                                        "uniqs": [
+                                                            "."
+                                                        ],
+                                                        "action": "addMemberToTeam",
+                                                        "method": "push",
+                                                        "value": "{humanId}",
+                                                        "args": {
+                                                            "humanId": "#String"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
