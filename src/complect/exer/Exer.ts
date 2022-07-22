@@ -18,7 +18,7 @@ export class Exer<Storage extends ExerStorage> {
     key = 'execs' as keyof Storage;
     rules: ExecRule[] = [];
     checkedActions: Record<string, true | null> = {};
-    auth: Auth;
+    auth: Auth | nil;
     appVariables?: { mutedExecs: boolean };
 
     constructor(appName: JStorageName, storage: JStorage<Storage> | nil) {
@@ -220,7 +220,7 @@ export class Exer<Storage extends ExerStorage> {
         if (!rule)
             console.error(`Зарегистрировано правило на неизвестное действие ${action}`);
 
-        return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +this.auth.level ? true : null) : null);
+        return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +(this.auth?.level ?? 0) ? true : null) : null);
     };
 }
 
