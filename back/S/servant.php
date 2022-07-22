@@ -695,9 +695,9 @@ function isUniqByFields($uniqs, $target, $value)
     foreach ($target as $val) {
       foreach ($uniqs as $field) {
         // debugLine([$val, $field, $value, $val[$field], $value[$field]]);
-        if ($val[$field] === $value[$field]) {
-          return false;
-        }
+        if ($field === '.') {
+          if ($val === $value) return false;
+        } else if ($val[$field] === $value[$field]) return false;
       }
     }
   }
