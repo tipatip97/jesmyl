@@ -359,3 +359,16 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: var(--autofill-color);
   font-size: 1em;
 }
+
+.rotate {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
