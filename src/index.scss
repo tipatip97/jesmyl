@@ -318,6 +318,17 @@ textarea {
   user-select: none;
 }
 
+.for-print {
+  &.print-as-a4 {
+    height: 29.7cm;
+    page-break-inside: avoid;
+  }
+
+  &.break-inside-avoid {
+    page-break-inside: avoid;
+  }
+}
+
 @font-face {
   font-family: main;
   src: url(./resource/avenir-next.ttf);
