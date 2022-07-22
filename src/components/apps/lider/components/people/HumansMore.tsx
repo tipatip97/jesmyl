@@ -4,10 +4,12 @@ import useFullscreenContent from "../../../../../complect/fullscreen-content/use
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import { setHumanListSortVariant } from "../../Lider.store";
-import { HumanExportable, humanFieldTranslations } from "./Human.model";
+import PrintableBottomItem from "../PrintableBottomItem";
+import AdaptationPageList from "../templates/AdaptationPageList";
+import { humanFieldTranslations } from "./Human.model";
 import HumanMaster from "./HumanMaster";
 
-export default function HumansMore({ humanList }: { humanList?: HumanExportable[] }) {
+export default function HumansMore() {
   const { openFullscreenContent } = useFullscreenContent();
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(
@@ -26,6 +28,10 @@ export default function HumansMore({ humanList }: { humanList?: HumanExportable[
         <div>Добавить участника</div>
         <div className="abs-action" />
       </div>
+      <PrintableBottomItem
+        title="Распечатать Допуска к путешествию"
+        node={<AdaptationPageList />}
+      />
       <div
         className="abs-item"
         onClick={(event) => {

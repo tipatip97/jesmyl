@@ -1,6 +1,6 @@
 [
     {
-        "expected":  {},
+        "expected": {},
         "track": [
             "people"
         ],
@@ -19,7 +19,7 @@
                         "level": 20,
                         "action": "addHuman",
                         "title": "Добавлен новый участник $name",
-                        "method": "push" ,
+                        "method": "push",
                         "value": {
                             "id": "{id}",
                             "name": "{name}",
@@ -27,6 +27,8 @@
                             "ufp1": "{?ufp1}",
                             "ufp2": "{?ufp2}",
                             "isMan": "{isMan}",
+                            "bDay": "{bDay}",
+                            "group": "{group}",
                             "isInactive": "{?isInactive}"
                         },
                         "args": {
@@ -35,6 +37,8 @@
                             "notes": "#string",
                             "ufp1": "#number",
                             "ufp2": "#number",
+                            "bDay": "#Number",
+                            "group": "#Number",
                             "isMan": "#Boolean",
                             "isInactive": "#boolean"
                         }
@@ -124,6 +128,32 @@
                             {
                                 "level": 20,
                                 "track": [
+                                    "bDay"
+                                ],
+                                "action": "setHumanBDay",
+                                "title": "Изменена дата рождения \"$humann\"",
+                                "method": "set",
+                                "args": {
+                                    "value": "#Number",
+                                    "humann": "#String"
+                                }
+                            },
+                            {
+                                "level": 20,
+                                "track": [
+                                    "bDay"
+                                ],
+                                "action": "setHumanGroup",
+                                "title": "Изменена группа \"$humann\"",
+                                "method": "set",
+                                "args": {
+                                    "value": "#Number",
+                                    "humann": "#String"
+                                }
+                            },
+                            {
+                                "level": 20,
+                                "track": [
                                     "isInactive"
                                 ],
                                 "action": "setHumanInactive",
@@ -150,7 +180,9 @@
         ],
         "next": [
             {
-                "track": ["teamGames"],
+                "track": [
+                    "teamGames"
+                ],
                 "expected": [],
                 "next": [
                     {

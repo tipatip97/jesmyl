@@ -7,13 +7,32 @@ import { liderExer } from "../../Lider.store";
 import Human from "./Human";
 import { HumanExportable } from "./Human.model";
 
-const idMaker = (name: string[]) =>
-  name
-    .map((part) => part.toLowerCase())
-    .sort()
-    .join("_");
-
+const idMaker = (name: string) => name.toLowerCase().replace(/\s+/g, "_");
 const ufpLabels = "1".repeat(10).split("");
+
+const lineAsHuman = (line: string): HumanExportable => {
+  const [first, last, bDay, ...allNotes] = line
+    .trim()
+    .replace(/([а-я])([А-Я])/, "$1 $2")
+    .replace(/([а-я])([\d])/, "$1 $2")
+    .split(/\s+/);
+  const notes = allNotes.join(" ");
+
+  const name = `${first} ${last}`;
+  const [day, month, year] = bDay?.split(/\./) || [];
+  const group = +(notes?.match(/\d/)?.[0] || 0);
+
+  return {
+    notes: notes?.replace(/[мm]/i, "м").replace(/[дd]/i, "д"),
+    name,
+    bDay: new Date(+year, +month - 1, +day).getTime(),
+    isMan: !!/[мm]/i.exec(notes),
+    id: idMaker(name),
+    group,
+    ufp1: 0,
+    ufp2: 0,
+  };
+};
 
 export default function HumanMaster({
   human,
@@ -23,14 +42,18 @@ export default function HumanMaster({
   close: () => void;
 }) {
   const { exec } = useExer(liderExer);
-  const [humanHeap, setHumanHeap] = useState("");
+  const [viewHumanList, updateViewHumanList] = useState<
+    HumanExportable[] | null
+  >(null);
   const [ufp1, setUfp1] = useState<number | nil>(human?.ufp1);
   const [ufp2, setUfp2] = useState<number | nil>(human?.ufp2);
+  const [bDay, setBDay] = useState<number | nil>(human?.bDay);
   const [isHumanHeap, setIsHumanHeap] = useState(false);
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
+  const inputGenerator = useKeyboard();
 
-  const nameInput = useKeyboard()("human-name", {
+  const nameInput = inputGenerator("human-name", {
     placeholder: "Фамилия, Имя",
     initialValue: human?.name,
     setIsUnknownSymbols: (char) => !!/[^а-яё ]/i.exec(char),
@@ -53,7 +76,7 @@ export default function HumanMaster({
         },
   });
 
-  const notesInput = useKeyboard()("human-notes", {
+  const notesInput = inputGenerator("human-notes", {
     placeholder: "Заметки",
     initialValue: human?.notes,
     preferLanguage: "ru",
@@ -76,18 +99,74 @@ export default function HumanMaster({
         },
   });
 
-  const heapInput = useKeyboard()(`heap-human-input`, {
+  const bDayInput = inputGenerator("human-bday", {
+    placeholder: "Дата рождения",
+    initialValue: human?.bDay ? new Date(human.bDay).toLocaleDateString() : "",
+    preferLanguage: "ru",
+    onInput: !human
+      ? undefined
+      : (value, prev) => {
+          const [day, month, year] = value?.split(/\./) || [];
+          const time = new Date(+year, +month - 1, +day).getTime();
+          setBDay(time);
+
+          if (time) {
+            liderExer.setIfCan({
+              action: "setHumanBDay",
+              scope: `setHumanBDay-${human.id}`,
+              method: "set",
+              prev: human.bDay,
+              value: time,
+              args: {
+                id: human.id,
+                value: time,
+                humann: human.name,
+              },
+            });
+            exec();
+          }
+        },
+  });
+
+  const groupInput = inputGenerator("human-group", {
+    placeholder: "Группа",
+    type: "number",
+    initialValue: "" + (human?.group || 0),
+    onInput: !human
+      ? undefined
+      : (value) => {
+          liderExer.setIfCan({
+            action: "setHumanGroup",
+            scope: `setHumanGroup-${human.id}`,
+            method: "set",
+            prev: human.group,
+            value: +value,
+            args: {
+              id: human.id,
+              value: +value,
+              humann: human.name,
+            },
+          });
+          exec();
+        },
+  });
+
+  const heapInput = inputGenerator(`heap-human-input`, {
     className: "input",
     multiline: true,
     placeholder: "Массив участников",
-    onChange: (value) => setHumanHeap(value),
+    onChange: (value) => {
+      updateViewHumanList(value.split(/\n+/).map((line) => lineAsHuman(line)));
+    },
     initialValue: "",
   });
 
   useEffect(() => {
     return () => {
-      notesInput.remove();
       nameInput.remove();
+      notesInput.remove();
+      bDayInput.remove();
+      groupInput.remove();
     };
   }, []);
 
@@ -96,7 +175,7 @@ export default function HumanMaster({
       {human ? null : (
         <Dropdown
           id={isHumanHeap}
-          className="margin-big-gap"
+          className="margin-big-gap-v"
           items={[
             {
               id: true,
@@ -113,30 +192,81 @@ export default function HumanMaster({
       {isHumanHeap ? (
         <>
           <div className="full-width">{heapInput.node}</div>
+          {viewHumanList?.map((human, humani) => {
+            const bDay = new Date(human.bDay);
+            const nameInput = inputGenerator(`viewHumanList-name-${human.id}`, {
+              initialValue: human.name,
+              onChange: (value) => {
+                human.name = value;
+              },
+            });
+            const groupInput = inputGenerator(
+              `viewHumanList-group-${human.id}`,
+              {
+                initialValue: "" + human.group,
+                type: "number",
+                onChange: (value) => {
+                  human.group = +value;
+                },
+              }
+            );
+            const notesInput = inputGenerator(
+              `viewHumanList-notes-${human.id}`,
+              {
+                initialValue: human.notes,
+                onChange: (value) => {
+                  human.notes = value;
+                },
+              }
+            );
+            const bDayInput = inputGenerator(`viewHumanList-bday-${human.id}`, {
+              initialValue: (bDay.getTime()
+                ? bDay
+                : null
+              )?.toLocaleDateString(),
+              onChange: (value) => {
+                const [day, month, year] = value?.split(/\./) || [];
+                human.bDay = new Date(+year, +month - 1, +day).getTime();
+              },
+            });
+
+            return (
+              <div key={`humani-${humani}`} className="margin-big-gap-v">
+                <div>Имя: {nameInput.node}</div>
+                <div>
+                  Пол:{" "}
+                  <Dropdown
+                    id={human.isMan}
+                    items={[
+                      {
+                        id: true,
+                        title: "Мужской",
+                      },
+                      {
+                        id: false,
+                        title: "Женский",
+                      },
+                    ]}
+                    onSelect={({ id }) => (human.isMan = id)}
+                  />
+                </div>
+                <div>Группа: {groupInput.node}</div>
+                <div className={bDay.getTime() ? "" : "error-message"}>
+                  Дата рождения: {bDayInput.node}
+                </div>
+                <div>Заметка: {notesInput.node}</div>
+              </div>
+            );
+          })}
           {heapInput.value() ? (
             <div
               className="pointer"
               onClick={() => {
-                const humans: HumanExportable[] = [];
-
-                humanHeap.split("\n").forEach((line) => {
-                  const [notes, ...name] = line.trim().split(/ +/).reverse();
-
-                  humans.push({
-                    notes: notes.replace(/[мm]/i, "м").replace(/[дd]/i, "д"),
-                    name: name.reverse().join(" "),
-                    isMan: !!/[мm]/i.exec(notes),
-                    id: idMaker(name),
-                    ufp1: 0,
-                    ufp2: 0,
-                  });
-                });
-
                 liderExer.setIfCan({
                   action: "addManyHumans",
                   method: "concat",
                   args: {
-                    value: humans,
+                    value: viewHumanList,
                   },
                 });
                 exec();
@@ -231,6 +361,8 @@ export default function HumanMaster({
               </div>
             );
           })}
+          <div className="full-width margin-big-gap-v">{groupInput.node}</div>
+          <div className="full-width margin-big-gap-v">{bDayInput.node}</div>
           <div className="full-width margin-big-gap-v">{notesInput.node}</div>
           <div
             style={{
@@ -256,7 +388,7 @@ export default function HumanMaster({
           >
             {isInactive ? "Включить участника" : "Исключить участника"}
           </div>
-          {notesInput.value() && nameInput.value() ? (
+          {bDay && bDayInput.value() && nameInput.value() ? (
             <div
               className="full-width margin-big-gap-v text-center pointer"
               onClick={() => {
@@ -273,7 +405,7 @@ export default function HumanMaster({
                       isMan,
                       notes: notesInput.value(),
                       ufp1,
-                      id: idMaker(name.trim().split(/ +/)),
+                      id: idMaker(name.trim()),
                       isInactive,
                     } as HumanExportable,
                   });

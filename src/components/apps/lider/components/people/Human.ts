@@ -17,6 +17,12 @@ export default class Human extends SourceBased<HumanExportable> {
     get notes() { return this.getBasic('notes'); }
     set notes(val) { this.setExportable('notes', val); }
 
+    get bDay() { return this.getBasic('bDay'); }
+    set bDay(val) { this.setExportable('bDay', val); }
+
+    get group() { return this.getBasic('group'); }
+    set group(val) { this.setExportable('group', val); }
+
     get ufp1() { return this.getBasic('ufp1'); }
     set ufp1(val) { this.setExportable('ufp1', val); }
 

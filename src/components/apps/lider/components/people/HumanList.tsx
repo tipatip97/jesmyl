@@ -19,7 +19,7 @@ export default function HumanList() {
 
   const humanList = useMemo(
     () =>
-      people?.humans
+      people?.humanList
         ?.filter(({ name }) => name.toLowerCase().includes(term))
         .sort((a, b) => {
           const aVar = a[humanListSortVariant] || 0;
@@ -33,9 +33,7 @@ export default function HumanList() {
     <PhaseLiderContainer
       topClass="template-page-content"
       headClass="flex between full-width"
-      onMoreClick={() =>
-        openAbsoluteBottomPopup(<HumansMore humanList={humanList} />)
-      }
+      onMoreClick={() => openAbsoluteBottomPopup(<HumansMore />)}
       head={
         <>
           <DebouncedInput
@@ -59,5 +57,3 @@ export default function HumanList() {
     />
   );
 }
-
-getRandomTwiceName();

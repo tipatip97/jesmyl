@@ -18,7 +18,7 @@ export default function useGames() {
     const { people } = usePeople();
     const { goTo } = useLiderNav();
 
-    if (!localGames && games && people?.humans) localGames = new GamesStore(games, people?.humans);
+    if (!localGames && games && people?.humanList) localGames = new GamesStore(games, people?.humanList);
     if (!cgame && cgamew != null) cgame = localGames?.teamGames.find((game) => game.id === cgamew);
 
     const ret = {
@@ -38,8 +38,8 @@ export default function useGames() {
             }
         },
         updateGames: (games: GamesStoreExportable) => {
-            if (people?.humans) {
-                localGames = new GamesStore(games, people.humans);
+            if (people?.humanList) {
+                localGames = new GamesStore(games, people.humanList);
                 ret.updateCgame(localGames.teamGames.find((game) => game.id === cgamew));
                 dispatch(riseUpGamesNumUpdates());
             }

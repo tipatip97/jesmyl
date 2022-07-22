@@ -23,7 +23,7 @@ export default function HumanMore({ human }: { human: Human }) {
         <div className="abs-action" />
       </div>
       <PrintableBottomItem
-        title="Распечатать Адаптацию"
+        title="Распечатать Допуск к путешествию"
         node={<AdaptationPage human={human} />}
       />
     </>

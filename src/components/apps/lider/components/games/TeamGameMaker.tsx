@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import useExer from "../../../../../complect/exer/useExer";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
-import { LocalHumanTeam, TeamGameExportable } from "../../Lider.model";
 import { liderExer } from "../../Lider.store";
 import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
 import usePeople from "../people/usePeople";
+import Game from "./Game";
 import Team from "./Team";
 import TheTeam from "./TheTeam";
 
@@ -21,6 +21,13 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
   const { people } = usePeople();
 
   const humanList = people?.activeHumans;
+
+  useEffect(() => {
+    return () => {
+      gameNameInput.remove();
+      teamMemberCountInput.remove();
+    };
+  }, []);
 
   if (!humanList) return null;
 
@@ -131,15 +138,14 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                   liderExer.setIfCan({
                     action: "addTeamGame",
                     method: "push",
-                    args: {
-                      id: Date.now() + Math.random(),
-                      name: gameNameInput.value(),
-                      teams: teams.map((team) => {
-                        const newTeam: Partial<LocalHumanTeam> = { ...team };
-                        delete newTeam.humans;
-                        return newTeam;
-                      }),
-                    } as TeamGameExportable,
+                    args: new Game(
+                      {
+                        id: Date.now() + Math.random(),
+                        name: gameNameInput.value(),
+                        teams: teams.map((team) => team.toDict()),
+                      },
+                      humanList
+                    ).toDict(),
                   });
                   exec();
                   close();

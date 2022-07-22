@@ -6,17 +6,19 @@ export interface HumanExportable {
     name: string;
     isMan: boolean;
     notes: string;
+    bDay: number;
     id: string;
     ufp1: number;
     ufp2: number;
+    group?: number;
     isInactive?: boolean;
 }
 
-export const humanFieldTranslations: Partial<Record<keyof HumanExportable, string>> = {
+export const humanFieldTranslations: Partial<Record<keyof Human, string>> = {
     name: 'имя',
-    ufp1: 'УФП',
+    ufp: 'УФП',
 };
 
 export interface PeopleExportable {
-    humans?: Human[];
+    humans?: HumanExportable[];
 }

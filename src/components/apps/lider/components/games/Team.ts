@@ -12,7 +12,16 @@ export default class Team extends SourceBased<HumanTeam> {
             .filter((human) => human) as Human[];
     }
 
+    get id() { return this.getBasic('id'); }
     get name() { return this.getBasic('name'); }
     set name(val) { this.setExportable('name', val); }
     get members() { return this.getBasic('members'); }
+
+    toDict(): HumanTeam {
+        return {
+            name: this.name,
+            members: this.members,
+            id: this.id
+        };
+    }
 }

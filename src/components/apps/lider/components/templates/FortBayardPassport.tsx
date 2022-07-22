@@ -1,4 +1,20 @@
+import mylib from "../../../../../complect/my-lib/MyLib";
 import RandomTwiceName from "../RandomTwiseName";
+
+const points = [
+  "Ведёрко",
+  "Фруктолов",
+  "Паутина",
+  "Стрелок",
+  "Арнольд",
+  "Канц товарищ",
+  "Золушка",
+  "Поплавочек",
+  "Мемори",
+  "Сантехник",
+];
+
+const pointsNet = mylib.netFromLine(points, 2, (item) => item);
 
 export default function FortBayardPassport() {
   return (
@@ -10,26 +26,19 @@ export default function FortBayardPassport() {
         </div>
         <div className="table-wrapper">
           <div className="table">
-            <div className="row">
-              <div className="cell">Ведёрко</div>
-              <div className="cell">Фруктолов</div>
-            </div>
-            <div className="row">
-              <div className="cell">Паутина</div>
-              <div className="cell">Стрелок</div>
-            </div>
-            <div className="row">
-              <div className="cell">Арнольд</div>
-              <div className="cell">Канц товарищ</div>
-            </div>
-            <div className="row">
-              <div className="cell">Золушка</div>
-              <div className="cell">Поплавочек</div>
-            </div>
-            <div className="row">
-              <div className="cell">Мемори</div>
-              <div className="cell">Сантехник</div>
-            </div>
+            {pointsNet.map((row, rowi) => {
+              return (
+                <div key={`rowi-${rowi}`} className="row">
+                  {row.map((cell, celli) => {
+                    return (
+                      <div key={`celli-${celli}`} className="cell">
+                        {cell}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

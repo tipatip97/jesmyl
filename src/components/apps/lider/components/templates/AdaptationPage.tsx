@@ -12,7 +12,7 @@ const text = `Привет, ${name}! Мы рады тебя приветство
 
 export default function AdaptationPage({ human }: { human: Human }) {
   return (
-    <div className="adaptation-page print-template-page full-container flex column ">
+    <div className="adaptation-page print-template-page full-container flex column for-print break-inside-avoid">
       <div>
         <div className="tpl-title">Допуск к путешествию</div>
         <div className="margin-big-gap-v white-pre-line">
