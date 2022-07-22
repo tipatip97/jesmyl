@@ -1,5 +1,6 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable eqeqeq */
+import { ReactNode } from "react";
 import { StringTemplaterArgs } from "./MyLib.model";
 
 var md5 = require('md5');
@@ -354,7 +355,7 @@ export class MyLib {
         if: (condition: any, ifTrue: any, ifFalse: any) => condition ? ifTrue : ifFalse,
     };
 
-    stringTemplater<Args>(str: string, topArgs: Args): string {
+    stringTemplater<Args>(str: string, topArgs: Args): ReactNode {
         topArgs = Object.assign({}, this.stringTemplaterFunctions, topArgs);
 
         const dob = '{{';
