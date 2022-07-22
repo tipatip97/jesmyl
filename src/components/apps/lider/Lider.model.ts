@@ -16,9 +16,24 @@ export interface LiderStoraged {
 }
 
 export interface HumanTeam {
-    id: number;
+    w: number;
     name: string;
     members: string[];
+    comments?: HumanTeamComment[];
+}
+
+export interface HumanTeamCommentSend {
+    wid: number;
+    comment: string;
+    teamw: number;
+    gamew: number;
+}
+
+export interface HumanTeamComment {
+    comment: string;
+    owner: string;
+    fio: string;
+    w: number;
 }
 
 export interface LocalHumanTeam extends HumanTeam {
@@ -26,7 +41,7 @@ export interface LocalHumanTeam extends HumanTeam {
 }
 
 export interface TeamGameExportable {
-    id: number;
+    w: number;
     name: string;
     teams: HumanTeam[];
 }

@@ -6,9 +6,9 @@ import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
 import { liderExer } from "../../Lider.store";
 import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
 import usePeople from "../people/usePeople";
+import Team from "../teams/Team";
+import TheTeam from "../teams/TheTeam";
 import Game from "./Game";
-import Team from "./Team";
-import TheTeam from "./TheTeam";
 
 export default function TeamGameMaker({ close }: { close: () => void }) {
   const teamMemberCountInput = useKeyboard()("set-team-member-count", {
@@ -118,11 +118,12 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                     teams.map((humans) => {
                       return new Team(
                         {
-                          id: idPrefix + Math.random(),
+                          w: idPrefix + Math.random(),
                           members: humans.map((human) => human.id),
                           name: getRandomTwiceName().join(" "),
                         },
-                        humans
+                        humans,
+                        null
                       );
                     })
                   );
@@ -140,7 +141,7 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                     method: "push",
                     args: new Game(
                       {
-                        id: Date.now() + Math.random(),
+                        w: Date.now() + Math.random(),
                         name: gameNameInput.value(),
                         teams: teams.map((team) => team.toDict()),
                       },
