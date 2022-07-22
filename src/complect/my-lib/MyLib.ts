@@ -1026,17 +1026,9 @@ export class MyLib {
                                 : 0;
                 }, 0);
             });
-        const groups: Item[][] = [];
+        const groups: Item[][] = this.netFromLine(wraps, numOf, ({ item }) => item);
         const teams: Item[][] = [];
         let rest: Item[] = [];
-
-        for (let i = 0; i < wraps.length;) {
-            const group: Item[] = [];
-            groups.push(group);
-            for (let j = 0; j < numOf; j++, i++) {
-                if (i < wraps.length) group.push(wraps[i].item);
-            }
-        }
 
         for (let i = 0; i < numOf; i++) {
             const team: Item[] = [];
@@ -1068,6 +1060,20 @@ export class MyLib {
             .forEach((team) => team.sort(() => this.randomOf(-1, 1)));
 
         return teams;
+    }
+
+    netFromLine<Item, FillItem>(line: Item[], cols: number, map: (item: Item) => FillItem) {
+        const rows: FillItem[][] = [];
+
+        for (let i = 0; i < line.length;) {
+            const row: FillItem[] = [];
+            rows.push(row);
+            for (let j = 0; j < cols; j++, i++) {
+                if (i < line.length) row.push(map(line[i]));
+            }
+        }
+
+        return rows;
     }
 
     findNext<Item>(items: Item[], item: Item, step = 1) {
