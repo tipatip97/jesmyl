@@ -55,6 +55,9 @@ export default function useKeyboard() {
         if (value !== undefined) localInput.replaceAll(value, isRemember);
         return localInput.value;
       },
+      focus: () => localInput.focus(),
+      write: (value: string, isRememberAsPart?: boolean) =>
+        localInput.write(value, isRememberAsPart),
       remove: () => {
         delete inputDict[id];
       },

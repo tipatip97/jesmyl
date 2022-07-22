@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
 import mylib from "../my-lib/MyLib";
 import SourceBased from "../SourceBased";
@@ -6,7 +7,7 @@ import { ExecDict, ExecMethod, ExecRule, ExecRuleClient, FreeExecDict } from "./
 
 export class Exec<Value> extends SourceBased<ExecDict> {
     scope?: string;
-    title: string = '';
+    title: ReactNode = '';
     prev?: Value;
     value?: Value;
     method: ExecMethod;

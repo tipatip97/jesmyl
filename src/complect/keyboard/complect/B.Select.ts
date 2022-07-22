@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { KeyboardStorageEvent } from '../Keyboard.model';
 import { KeyboardStorageBase } from './A.Base';
 
@@ -9,7 +10,7 @@ export class KeyboardStorageSelect extends KeyboardStorageBase {
     event: { shiftKey: boolean; ctrlKey: boolean; } = {} as never;
     isCursorPositionChanged = false;
     valueChars: string[] = [];
-    valueCharLines: string[][] = [];
+    valueCharLines: ReactNode[][] = [];
 
     get cursorPosition() {
         return this._cursorPosition;

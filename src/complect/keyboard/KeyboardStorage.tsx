@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { KeyboardStorageCallbacks } from "./complect/F.Callbacks";
 import {
@@ -33,6 +34,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     this.type = props.type;
     this.setIsUnknownSymbols =
       props.setIsUnknownSymbols || this.dafaultSetIsUnknownSymbols;
+    this.mapChar = props.mapChar || this.dafaultMapChar;
 
     this.viewFlowChari = 0;
 
@@ -118,7 +120,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     );
   }
 
-  valueCharLinesNodeMap = (line: string[], linei: number) => {
+  valueCharLinesNodeMap = (line: ReactNode[], linei: number) => {
     const lineNode = (
       <div
         key={`line ${linei}`}
@@ -145,7 +147,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     return lineNode;
   };
 
-  valueCharLineNodeMap = (linei: number, letter: string, letteri: number) => {
+  valueCharLineNodeMap = (linei: number, letter: ReactNode, letteri: number) => {
     const chari = this.viewFlowChari++;
 
     return (

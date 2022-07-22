@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { KeyboardStorageEvent } from '../Keyboard.model';
 import { KeyboardStorageNavigate } from './D.Navigate';
 
@@ -5,7 +6,9 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
     prevTypedValue: string = '';
     shadowCursorPosition = this.cursorPosition;
     dafaultSetIsUnknownSymbols = () => false;
+    dafaultMapChar = (char: string) => char;
     setIsUnknownSymbols: (char: string) => boolean = this.dafaultSetIsUnknownSymbols;
+    mapChar: (char: string) => ReactNode = this.dafaultMapChar;
 
     replaceAll = (value: string, isRemember = true) => {
         if (value === this.value) return;
@@ -17,8 +20,8 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
     }
 
     setValues() {
-        let lastLine: string[] = [];
-        const lines: string[][] = [lastLine];
+        let lastLine: ReactNode[] = [];
+        const lines: ReactNode[][] = [lastLine];
 
         this.valueChars.forEach((char) => {
             if (char === '\n') {
@@ -29,7 +32,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
 
                 return;
             }
-            lastLine.push(this.setIsUnknownSymbols(char) ? '�' : char);
+            lastLine.push(this.setIsUnknownSymbols(char) ? '�' : this.mapChar(char));
         });
 
         this.valueCharLines = lines;

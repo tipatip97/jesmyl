@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 
 export const keyboardKeyTranslateLangs = ['ru', 'ua', 'en'] as const;
@@ -30,6 +30,7 @@ export interface KeyboardInputProps {
     onChange?: (value: string, prev: string) => void;
     onPaste?: (value: string) => void;
     setIsUnknownSymbols?: (char: string) => boolean;
+    mapChar?: (char: string) => ReactNode;
 };
 
 export type KeyboardMemoryPointAction = 'write' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';
@@ -44,7 +45,7 @@ export interface KeyboardMemoryPoint {
     selected: [number, number];
     value: string;
     valueChars: string[];
-    valueCharLines: string[][];
+    valueCharLines: ReactNode[][];
     cursorPosition: number;
     isSelected: boolean;
     action: KeyboardMemoryPointAction;
