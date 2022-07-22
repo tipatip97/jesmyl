@@ -8,6 +8,7 @@ import { cmExer } from "../../../../../Cm.store";
 import TheOrder from "../../../../../col/com/order/TheOrder";
 import { EditableCom } from "../../EditableCom";
 import { EditableOrder } from "./EditableOrder";
+import { ReactNode } from "react";
 
 export default function OrdersRedactorOrderTools({
   ccom,
@@ -18,7 +19,7 @@ export default function OrdersRedactorOrderTools({
   ccom: EditableCom;
   ord: EditableOrder;
   ordi: number;
-  blockHeader: string;
+  blockHeader: ReactNode;
 }) {
   const { exec } = useExer(cmExer);
   const blockHeaderHtml = (textPre = "", textPost = "") =>
@@ -63,7 +64,7 @@ export default function OrdersRedactorOrderTools({
                 onClick: () => {
                   exec(ord.setField("s", styleBlock.name, { newBlockn }, exec));
                 },
-              };
+              } as never;
             }),
           });
         }}

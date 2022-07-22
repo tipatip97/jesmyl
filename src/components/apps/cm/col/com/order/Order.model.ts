@@ -71,7 +71,7 @@ export interface IExportableOrderTop extends IExportableOrder {
     anchorInheritIndex?: number;
     sourceIndex?: number;
     viewIndex?: number;
-    header: (bag?: OrderTopHeaderBag, isRequired?: boolean) => string;
+    header: (bag?: OrderTopHeaderBag, isRequired?: boolean) => ReactNode;
     style?: StyleBlock;
 }
 
