@@ -29,7 +29,7 @@ export const slice = createSlice({
     setIndexRoute: (state, action: PayloadAction<NavigationStorage<IndexStorage>>) => {
       state.route = action.payload.route;
     },
-    setAuthData: (state, action: PayloadAction<Auth>) => {
+    setAuthData: (state, action: PayloadAction<Auth | null>) => {
       state.auth = action.payload;
       indexStorage.set('auth', action.payload);
     },

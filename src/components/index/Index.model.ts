@@ -5,7 +5,7 @@ import { FreeNavRoute } from "../../complect/nav-configurer/Navigation.model";
 export interface IndexState {
     route: FreeNavRoute;
     currentApp: AppName;
-    auth?: Auth;
+    auth: Auth | nil;
     apps: IndexApplication[];
     errors: Partial<Record<IndexErrorScope, string>>;
     userMessages: UserMessage[];
@@ -22,7 +22,7 @@ export interface IndexStateError {
 }
 
 export interface IndexStorage extends IndexState {
-    auth: Auth;
+    auth: Auth | nil;
     apps: IndexApplication[];
     currentApp: AppName;
     rejectedComponents: string[];

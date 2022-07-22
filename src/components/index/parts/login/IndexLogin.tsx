@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
 import useKeyboard from "../../../../complect/keyboard/useKeyboard";
 import LoadIndicatedContent from "../../../../complect/load-indicated-content/LoadIndicatedContent";
+import { indexStorage } from "../../../../shared/jstorages";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
 import { AuthMode } from "../../Index.model";
@@ -13,11 +13,19 @@ export default function IndexLogin() {
   const [login, setLogin] = useState("");
   const [passw, setPassword] = useState("");
   const [rpassw, setRPassword] = useState("");
+  const [isJSONDataLogin, setIsJSONDataLogin] = useState(false);
   const [mode, setMode] = useState<AuthMode>("login");
   const [isInProcess, setIsInProscess] = useState(1);
   const aboutInput = useKeyboard();
 
-  const { loginInSystem, registerInSystem, setError, errors } = useAuth();
+  const {
+    loginInSystem,
+    registerInSystem,
+    setError,
+    errors,
+    isCorrectLoginJSONData,
+    setJSONData,
+  } = useAuth();
   const { navigate } = useIndexNav();
   const error = (message: string | nil) =>
     message && <div className="login-error-message">{message}</div>;
@@ -41,14 +49,20 @@ export default function IndexLogin() {
   });
 
   useEffect(() => {
-    setError(
-      "login",
-      login.length < 3
-        ? "Минимум 3 символа"
-        : login.length > 20
-        ? "Максимум 20 символов"
-        : null
-    );
+    if (isCorrectLoginJSONData(login)) {
+      setIsJSONDataLogin(true);
+      setError("login", null);
+    } else {
+      setIsJSONDataLogin(false);
+      setError(
+        "login",
+        login.length < 3
+          ? "Минимум 3 символа"
+          : login.length > 20
+          ? "Максимум 20 символов"
+          : null
+      );
+    }
   }, [login]);
 
   useEffect(() => {
@@ -95,15 +109,25 @@ export default function IndexLogin() {
             ) : null}
             <button
               className="send-button"
-              disabled={Object.keys(errors).length > 0}
+              disabled={!isJSONDataLogin && Object.keys(errors).length > 0}
               onClick={async () => {
-                setIsInProscess(0);
-                const resp =
-                  mode === "login"
-                    ? await loginInSystem({ login, passw })
-                    : await registerInSystem({ login, passw, rpassw });
-                if (resp.ok) setIsInProscess(1);
-                else setIsInProscess(2);
+                if (isJSONDataLogin) {
+                  setIsInProscess(0);
+                  setTimeout(() => {
+                    setJSONData(login);
+                    setIsInProscess(1);
+                  });
+                } else {
+                  setIsInProscess(0);
+                  const resp =
+                    mode === "login"
+                      ? await loginInSystem({ login, passw })
+                      : await registerInSystem({ login, passw, rpassw });
+                  if (resp.ok) {
+                    setIsInProscess(1);
+                    indexStorage.rem("lastUpdate");
+                  } else setIsInProscess(2);
+                }
               }}
             >
               {mode === "register" ? "Создать профиль" : "Войти"}

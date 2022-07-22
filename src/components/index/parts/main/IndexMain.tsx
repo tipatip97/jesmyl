@@ -84,7 +84,7 @@ export default function IndexMain() {
           /> */}
           {auth?.fio ? null : (
             <BrutalItem
-              icon="login-outline"
+              icon="person-outline"
               title="Войти"
               onClick={() => goTo("login")}
             />

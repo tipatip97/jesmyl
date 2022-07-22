@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import mylib from "../../complect/my-lib/MyLib";
 import { refresh } from "../../complect/refresh/Refresher";
+import { indexStorage } from "../../shared/jstorages";
 import { RootState } from "../../shared/store";
 import {
   Auth,
@@ -8,7 +9,7 @@ import {
   AuthResponse,
   IndexErrorScope, RegisterData
 } from "./Index.model";
-import { indexExer, setAuthData, setError } from "./Index.store";
+import { indexExer, setAuthData, setCurrentApp, setError } from "./Index.store";
 
 export default function useAuth() {
   const dispatch = useDispatch();
@@ -38,6 +39,34 @@ export default function useAuth() {
           at: auth.at,
         }
       });
+    },
+    isCorrectLoginJSONData: (json: string) => {
+      try {
+        const data: Auth = JSON.parse(json);
+        return typeof data.login === 'string'
+          && typeof data.at === 'string'
+          && typeof data.fio === 'string'
+          && (typeof data.level === 'number' || typeof data.level === 'string');
+      } catch (e) {
+        return false;
+      }
+    },
+    logout: () => {
+      dispatch(setAuthData(null));
+      dispatch(setCurrentApp("cm"));
+      refresh.onLogin();
+    },
+    setJSONData: (login: string) => {
+      if (ret.isCorrectLoginJSONData(login)) {
+        indexStorage.setString('auth', login);
+        const auth = indexStorage.get('auth');
+
+        if (auth) {
+          dispatch(setAuthData(auth));
+          dispatch(setCurrentApp("cm"));
+          refresh.onLogin();
+        }
+      }
     },
     loginInSystem: (state: AuthorizationData) => {
       const body = new FormData();
