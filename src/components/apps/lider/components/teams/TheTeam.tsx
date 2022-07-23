@@ -13,17 +13,20 @@ import TheTeamComment from "./TheTeamComment";
 
 interface Addition {
   icon: EvaIconName;
-  char: string;
-  inText: string;
+  char?: string;
+  inText?: string;
   node: ReactNode;
+  insert?: () => string;
 }
 
 const textAdditions = (
   [
     {
       icon: "clock-outline",
-      char: String.fromCharCode(1000),
-      inText: "$commentTime{{$w}}",
+      insert: () => {
+        const date = new Date();
+        return ` ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()} `;
+      },
     },
   ] as Addition[]
 ).map((item) => {
@@ -34,7 +37,9 @@ const textAdditions = (
 });
 
 const textAdditionsMap: Record<string, Addition> = {};
-textAdditions.forEach((adds) => (textAdditionsMap[adds.char] = adds));
+textAdditions.forEach(
+  (adds) => adds.char && (textAdditionsMap[adds.char] = adds)
+);
 
 export default function TheTeam({
   team,
@@ -106,14 +111,14 @@ export default function TheTeam({
         {commentInput && (
           <div className="flex column full-width">
             <div className="flex full-width">
-              {textAdditions.map(({ icon, char }, buttoni) => {
+              {textAdditions.map(({ icon, char, insert }, buttoni) => {
                 return (
                   <EvaIcon
                     key={`buttoni-${buttoni}`}
                     name={icon}
                     onClick={() => {
                       if (commentInput) {
-                        commentInput.write(char);
+                        commentInput.write(char ?? (insert?.() || ""));
                         commentInput.focus();
                       }
                     }}
@@ -133,7 +138,10 @@ export default function TheTeam({
                     if (team.game && commentInput) {
                       const comment = textAdditions.reduce(
                         (text, { char, inText }) =>
-                          text.replace(RegExp(char, "g"), inText),
+                          (char &&
+                            inText &&
+                            text.replace(RegExp(char, "g"), inText)) ||
+                          text,
                         commentInput.value()
                       );
                       setIsCommentSending(true);
@@ -143,7 +151,7 @@ export default function TheTeam({
                           method: "push",
                           args: {
                             wid: Date.now() + Math.random(),
-                            comment,
+                            comment: comment.trim(),
                             teamw: team.wid,
                             gamew: team.game.wid,
                           } as HumanTeamCommentSend,

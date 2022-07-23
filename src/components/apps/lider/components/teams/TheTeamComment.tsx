@@ -9,6 +9,21 @@ const templaterBag = {
   },
 };
 
+const months = [
+  "янв",
+  "фев",
+  "март",
+  "апр",
+  "май",
+  "июн",
+  "июл",
+  "авг",
+  "сент",
+  "окт",
+  "нояб",
+  "дек",
+];
+
 export default function TheTeamComment({
   comment,
   ...props
@@ -27,10 +42,11 @@ export default function TheTeamComment({
       <div className="flex between">
         <div>{comment.fio}</div>
         <div>
-          {date.getHours()}:{date.getMinutes()}:{date.getSeconds()}
+        {date.getDate()} {months[date.getMonth()]}, {date.getHours()}:
+          {date.getMinutes()}:{date.getSeconds()}
         </div>
       </div>
-      <div className="text-bold margin-gap-v">
+      <div className="text-bold user-select margin-gap-v">
         {mylib.stringTemplater(commentText, {
           ...templaterBag,
           ...comment,
