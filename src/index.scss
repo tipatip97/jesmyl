@@ -322,6 +322,13 @@ textarea {
   user-select: none;
 }
 
+.user-select {
+  -moz-user-select: text;
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
 .for-print {
   &.print-as-a4 {
     height: 29.7cm;
