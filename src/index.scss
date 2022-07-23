@@ -195,6 +195,10 @@ textarea {
   &.start {
     justify-content: start;
   }
+
+  &.flex-end {
+    justify-content: end;
+  }
 }
 
 .after-margin-space {
