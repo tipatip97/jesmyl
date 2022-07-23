@@ -1,3 +1,4 @@
+import { HTMLAttributes, useState } from "react";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { HumanTeamComment } from "../../Lider.model";
 
@@ -10,13 +11,19 @@ const templaterBag = {
 
 export default function TheTeamComment({
   comment,
-}: {
+  ...props
+}: HTMLAttributes<HTMLDivElement> & {
   comment: HumanTeamComment;
 }) {
   const date = new Date(comment.w);
+  const isNeedCut = comment.comment.split(/\n/).length > 5;
+  const [isHiddenPart, setIsHiddenPart] = useState(isNeedCut);
+  const commentText = isHiddenPart
+    ? comment.comment.split(/\n/).slice(0, 4).join("\n") + " ..."
+    : comment.comment;
 
   return (
-    <div className="margin-gap comment">
+    <div {...props} className={`${props.className || ""} margin-gap comment`}>
       <div className="flex between">
         <div>{comment.fio}</div>
         <div>
@@ -24,11 +31,21 @@ export default function TheTeamComment({
         </div>
       </div>
       <div className="text-bold margin-gap-v">
-        {mylib.stringTemplater(comment.comment, {
+        {mylib.stringTemplater(commentText, {
           ...templaterBag,
           ...comment,
         })}
       </div>
+      {isNeedCut && (
+        <div className="flex flex-end">
+          <span
+            className="pointer"
+            onClick={() => setIsHiddenPart(!isHiddenPart)}
+          >
+            {isHiddenPart ? "Показать полностью" : "Скрыть часть текста"}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

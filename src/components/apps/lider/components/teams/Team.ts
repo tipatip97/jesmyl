@@ -18,6 +18,7 @@ export default class Team extends SourceBased<HumanTeam> {
     get wid() { return this.getBasic('w'); }
     get name() { return this.getBasic('name'); }
     set name(val) { this.setExportable('name', val); }
+    get upperName() { return this.name.toUpperCase(); }
     get members() { return this.getBasic('members'); }
     get comments() { return this.getBasic('comments'); }
 

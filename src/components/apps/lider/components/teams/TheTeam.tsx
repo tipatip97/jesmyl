@@ -64,6 +64,7 @@ export default function TheTeam({
       {
         className: `margin-gap ${isCommentSending ? "pointers-none" : ""}`,
         multiline: true,
+        placeholder: `Комментарий о "${team.upperName}"`,
         mapChar: (char) => textAdditionsMap[char]?.node || char,
       }
     );
@@ -90,9 +91,15 @@ export default function TheTeam({
         )}
 
         {(isCommentsShow ? allComments : partOfComments).map(
-          (comment, commenti) => {
+          (comment, commenti, commenta) => {
             return (
-              <TheTeamComment key={`commenti-${commenti}`} comment={comment} />
+              <TheTeamComment
+                key={`commenti-${commenti}`}
+                className={`${commenti === 0 ? "first" : ""} ${
+                  commenti === commenta.length - 1 ? "last" : ""
+                }`}
+                comment={comment}
+              />
             );
           }
         )}
@@ -162,7 +169,7 @@ export default function TheTeam({
       <RandomTwiceName
         pronoun={pronoun}
         noun={noun}
-        className="inline-block margin-gap-v"
+        className="inline-block margin-gap-v text-bold"
         onNameChange={(name) => (team.name = name)}
       />
       {" (сила - " +
