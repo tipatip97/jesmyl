@@ -123,6 +123,11 @@ export class Exer<Storage extends ExerStorage> {
             .map(exec => exec.forLoad())
             .filter(ex => ex);
 
+        if (!execs.length) {
+            cb?.(null, null);
+            return;
+        }
+
         const onError = (error: Error) => {
             modalService.confirm(`${error || `Ошибка!`}\nСохранить локально?`)
                 .then(isSave => {
