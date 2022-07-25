@@ -1,6 +1,5 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useCmNav from "../../components/apps/cm/base/useCmNav";
 import { RootState } from "../../shared/store";
 import { switchAbsoluteFloatPopupOpen } from "../Complect.store";
 import "./AbsolutePopup.scss";
@@ -10,10 +9,10 @@ let floatElement: HTMLDivElement | null;
 let isFloated = false;
 let isClosed = true;
 let isClosable = true;
+let onOpenPopup: ((close: () => boolean) => void) | und;
 
 export default function useAbsoluteFloatPopup() {
   const dispatch = useDispatch();
-  const { registerBackAction } = useCmNav();
   const isAbsoluteFloatPopupOpen = useSelector(
     (state: RootState) => state.complect.isAbsoluteFloatPopupOpen
   );
@@ -35,7 +34,7 @@ export default function useAbsoluteFloatPopup() {
     ) => {
       isClosable = closable;
       isClosed = false;
-      registerBackAction(() => ret.closeAbsoluteFloatPopup());
+      onOpenPopup?.(ret.closeAbsoluteFloatPopup);
       popupContent = content;
       dispatch(switchAbsoluteFloatPopupOpen(true));
 
@@ -58,17 +57,20 @@ export default function useAbsoluteFloatPopup() {
   return ret;
 }
 
-export function ABSOLUTE__FLOAT__POPUP() {
-  const {
-    isAbsoluteFloatPopupOpen,
-    closeAbsoluteFloatPopup: closeAbsolutePopup,
-  } = useAbsoluteFloatPopup();
+export function ABSOLUTE__FLOAT__POPUP({
+  onOpen,
+}: {
+  onOpen: (close: () => boolean) => void;
+}) {
+  onOpenPopup = onOpen;
+  const { isAbsoluteFloatPopupOpen, closeAbsoluteFloatPopup } =
+    useAbsoluteFloatPopup();
 
   useEffect(
     () =>
       window.addEventListener(
         "keydown",
-        (event) => event.code === "Escape" && closeAbsolutePopup()
+        (event) => event.code === "Escape" && closeAbsoluteFloatPopup()
       ),
     []
   );
@@ -78,7 +80,7 @@ export function ABSOLUTE__FLOAT__POPUP() {
       className={`absolute-float-popup${
         isAbsoluteFloatPopupOpen && popupContent ? " open" : ""
       }`}
-      onClick={() => closeAbsolutePopup()}
+      onClick={() => closeAbsoluteFloatPopup()}
     >
       <div
         className={`absolute-popup-content`}

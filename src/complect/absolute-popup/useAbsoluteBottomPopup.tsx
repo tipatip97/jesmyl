@@ -1,6 +1,5 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useCmNav from "../../components/apps/cm/base/useCmNav";
 import { RootState } from "../../shared/store";
 import {
   riseUpAbsoluteBottomPopupUpdates,
@@ -12,10 +11,10 @@ import "./AbsolutePopup.scss";
 let absolutePopupContent: ReactNode = null;
 let isClosed = true;
 let isClosable = true;
+let onOpenPopup: ((close: () => boolean) => void) | und;
 
 export default function useAbsoluteBottomPopup() {
   const dispatch = useDispatch();
-  const { registerBackAction } = useCmNav();
   const isAbsoluteBottomPopupOpen = useSelector(
     (state: RootState) => state.complect.isAbsoluteBottomPopupOpen
   );
@@ -34,7 +33,7 @@ export default function useAbsoluteBottomPopup() {
     openAbsoluteBottomPopup: (content: ReactNode, closable = true) => {
       isClosable = closable;
       isClosed = false;
-      registerBackAction(() => ret.closeAbsoluteBottomPopup());
+      onOpenPopup?.(ret.closeAbsoluteBottomPopup);
       absolutePopupContent = content;
       dispatch(switchAbsoluteBottomPopupOpen(true));
       setTimeout(() => dispatch(riseUpAbsoluteBottomPopupUpdates()));
@@ -51,9 +50,14 @@ let isMouseDown = false;
 const initialScrollTop = window.innerHeight * 0.3;
 const inactiveScrollTop = window.innerHeight * 0.25;
 
-export function ABSOLUTE__BOTTOM__POPUP() {
+export function ABSOLUTE__BOTTOM__POPUP({
+  onOpen,
+}: {
+  onOpen: (close: () => boolean) => void;
+}) {
   const { isAbsoluteBottomPopupOpen, closeAbsoluteBottomPopup } =
     useAbsoluteBottomPopup();
+  onOpenPopup = onOpen;
 
   useEffect(() => {
     window.addEventListener(

@@ -29,7 +29,10 @@ function App() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       event.code === "Escape" && switchFullscreen(false);
-      event.code === "ArrowLeft" && event.altKey && goBack();
+      if (event.code === "ArrowLeft" && event.altKey) {
+        event.preventDefault();
+        goBack();
+      }
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -51,9 +54,15 @@ function App() {
         />
         <TheRefresher />
         <Modal />
-        <FULLSCREEN__CONTENT />
-        <ABSOLUTE__BOTTOM__POPUP />
-        <ABSOLUTE__FLOAT__POPUP />
+        <FULLSCREEN__CONTENT
+          onOpen={(close) => registerBackAction(() => close())}
+        />
+        <ABSOLUTE__BOTTOM__POPUP
+          onOpen={(close) => registerBackAction(() => close())}
+        />
+        <ABSOLUTE__FLOAT__POPUP
+          onOpen={(close) => registerBackAction(() => close())}
+        />
         {app ? (
           <>
             <AppRouter app={app} />

@@ -14,8 +14,8 @@ export default function AppRouter({ app }: { app: AppName }) {
     navConfigurers[app || "index"]();
 
   onBackButton.listen("app-router-listener", () => {
+    if (!app || app === "index") indexGoBack();
     goBack();
-    indexGoBack();
   });
   useEffect(() => () => onBackButton.mute("app-router-listener"), []);
 

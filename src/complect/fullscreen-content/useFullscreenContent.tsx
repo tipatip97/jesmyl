@@ -1,6 +1,5 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useCmNav from "../../components/apps/cm/base/useCmNav";
 import { RootState } from "../../shared/store";
 import { setFullscreenContentOpenMode } from "../Complect.store";
 import EvaIcon from "../eva-icon/EvaIcon";
@@ -10,11 +9,9 @@ export type FullScreenContentOpenMode = null | "open" | "closable";
 
 let fullscreenContent: ReactNode;
 let isOpen = false;
+let onOpenPopup: ((close: () => boolean) => void) | und;
 
 export default function useFullscreenContent() {
-  // todo: make universal using
-  const { registerBackAction } = useCmNav();
-
   const ret = {
     dispatch: useDispatch(),
     fullscreenContentOpenMode: useSelector(
@@ -35,6 +32,7 @@ export default function useFullscreenContent() {
     ) => {
       if (isRequestFullscreen) document.body.requestFullscreen();
       isOpen = true;
+      onOpenPopup?.(ret.closeFullscreenContent);
       fullscreenContent =
         typeof content === "function"
           ? content(ret.closeFullscreenContent)
@@ -42,13 +40,17 @@ export default function useFullscreenContent() {
       ret.dispatch(
         setFullscreenContentOpenMode(closable ? "closable" : "open")
       );
-      registerBackAction(() => ret.closeFullscreenContent());
     },
   };
   return ret;
 }
 
-export function FULLSCREEN__CONTENT() {
+export function FULLSCREEN__CONTENT({
+  onOpen,
+}: {
+  onOpen: (close: () => boolean) => void;
+}) {
+  onOpenPopup = onOpen;
   const { fullscreenContentOpenMode, closeFullscreenContent } =
     useFullscreenContent();
   useEffect(
