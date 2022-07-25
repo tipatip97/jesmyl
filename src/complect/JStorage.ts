@@ -112,7 +112,11 @@ export class JStorage<Scope> {
         this.strings[key] = string as string;
         this.keys.push(key);
 
-        this.next(key, val);
+        try {
+            this.next(key, val);
+        } catch (error) {
+            console.error(error);
+        }
 
         return string;
     }
