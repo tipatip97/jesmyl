@@ -141,7 +141,7 @@
                             {
                                 "level": 20,
                                 "track": [
-                                    "bDay"
+                                    "group"
                                 ],
                                 "action": "setHumanGroup",
                                 "title": "Изменена группа \"$humann\"",
@@ -186,7 +186,7 @@
                         "uniqs": [
                             "w"
                         ],
-                        "level": 20,
+                        "level": 30,
                         "action": "addTeamGame",
                         "title": "Добавлена новая командная игра $name",
                         "method": "push",
@@ -256,6 +256,9 @@
                                                 "track": [
                                                     "members"
                                                 ],
+                                                "args": {
+                                                    "humanId": "#String"
+                                                },
                                                 "next": [
                                                     {
                                                         "action": "removeMemberFromTeam",
@@ -264,10 +267,7 @@
                                                             ".",
                                                             "===",
                                                             "{humanId}"
-                                                        ],
-                                                        "args": {
-                                                            "humanId": "#String"
-                                                        }
+                                                        ]
                                                     },
                                                     {
                                                         "uniqs": [
@@ -275,10 +275,7 @@
                                                         ],
                                                         "action": "addMemberToTeam",
                                                         "method": "push",
-                                                        "value": "{humanId}",
-                                                        "args": {
-                                                            "humanId": "#String"
-                                                        }
+                                                        "value": "{humanId}"
                                                     }
                                                 ]
                                             }
