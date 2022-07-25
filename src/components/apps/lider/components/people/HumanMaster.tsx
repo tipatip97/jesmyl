@@ -45,39 +45,51 @@ export default function HumanMaster({
   const [viewHumanList, updateViewHumanList] = useState<
     HumanExportable[] | null
   >(null);
+  const [name, setName] = useState<string | nil>(human?.name);
   const [ufp1, setUfp1] = useState<number | nil>(human?.ufp1);
   const [ufp2, setUfp2] = useState<number | nil>(human?.ufp2);
   const [bDay, setBDay] = useState<number | nil>(human?.bDay);
+  const [group, setGroup] = useState<number | nil>(human?.group || 0);
   const [isHumanHeap, setIsHumanHeap] = useState(false);
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
   const inputGenerator = useKeyboard();
 
+  const takeName = (value: string) => {
+    if (value.match(/^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$/)) {
+      setName(value);
+      return value;
+    }
+    setName(null);
+    return null;
+  };
+
   const nameInput = inputGenerator("human-name", {
-    placeholder: "Фамилия, Имя",
     initialValue: human?.name,
     setIsUnknownSymbols: (char) => !!/[^а-яё ]/i.exec(char),
     preferLanguage: "ru",
     onInput: !human
-      ? undefined
+      ? (value) => takeName(value)
       : (value, prev) => {
-          liderExer.setIfCan({
-            action: "setHumanName",
-            scope: `setHumanName-${human.id}`,
-            method: "set",
-            prev,
-            value,
-            args: {
-              id: human.id,
+          const name = takeName(value);
+          if (name) {
+            liderExer.setIfCan({
+              action: "setHumanName",
+              scope: `setHumanName-${human.id}`,
+              method: "set",
+              prev,
               value,
-            },
-          });
-          exec();
+              args: {
+                id: human.id,
+                value,
+              },
+            });
+            exec();
+          }
         },
   });
 
   const notesInput = inputGenerator("human-notes", {
-    placeholder: "Заметки",
     initialValue: human?.notes,
     preferLanguage: "ru",
     onInput: !human
@@ -99,17 +111,24 @@ export default function HumanMaster({
         },
   });
 
+  const takeTime = (value: string) => {
+    const [day, month, year] = value?.split(/\./) || [];
+    let time: number | null = new Date(+year, +month - 1, +day).getTime();
+
+    if (time < 0 || !time) time = null;
+
+    setBDay(time);
+
+    return time;
+  };
+
   const bDayInput = inputGenerator("human-bday", {
-    placeholder: "Дата рождения",
     initialValue: human?.bDay ? new Date(human.bDay).toLocaleDateString() : "",
     preferLanguage: "ru",
     onInput: !human
-      ? undefined
-      : (value, prev) => {
-          const [day, month, year] = value?.split(/\./) || [];
-          const time = new Date(+year, +month - 1, +day).getTime();
-          setBDay(time);
-
+      ? (value) => takeTime(value)
+      : (value) => {
+          const time = takeTime(value);
           if (time) {
             liderExer.setIfCan({
               action: "setHumanBDay",
@@ -129,12 +148,12 @@ export default function HumanMaster({
   });
 
   const groupInput = inputGenerator("human-group", {
-    placeholder: "Группа",
     type: "number",
     initialValue: "" + (human?.group || 0),
     onInput: !human
-      ? undefined
+      ? (value) => setGroup(+value)
       : (value) => {
+          setGroup(+value);
           liderExer.setIfCan({
             action: "setHumanGroup",
             scope: `setHumanGroup-${human.id}`,
@@ -279,7 +298,12 @@ export default function HumanMaster({
         </>
       ) : (
         <>
-          <div className="full-width margin-big-gap-v">{nameInput.node}</div>
+          <div className="full-width margin-big-gap-v">
+            Фамилия, Имя {nameInput.node}
+          </div>
+          {name == null && (
+            <div className="error-message">Нужно два слова с больших букв</div>
+          )}
           <div className="full-width margin-big-gap-v">
             <Dropdown
               id={isMan}
@@ -361,9 +385,18 @@ export default function HumanMaster({
               </div>
             );
           })}
-          <div className="full-width margin-big-gap-v">{groupInput.node}</div>
-          <div className="full-width margin-big-gap-v">{bDayInput.node}</div>
-          <div className="full-width margin-big-gap-v">{notesInput.node}</div>
+          <div className="full-width margin-big-gap-v">
+            Группа ({isMan ? "у мальчиков" : "у девочек"}) {groupInput.node}
+          </div>
+          <div className="full-width margin-big-gap-v">
+            Дата рождения {bDayInput.node}
+          </div>
+          {bDay == null && (
+            <div className="error-message">Некорректная дата</div>
+          )}
+          <div className="full-width margin-big-gap-v">
+            Заметки {notesInput.node}
+          </div>
           <div
             style={{
               color: isInactive ? "green" : "red",
@@ -405,6 +438,9 @@ export default function HumanMaster({
                       isMan,
                       notes: notesInput.value(),
                       ufp1,
+                      ufp2,
+                      group,
+                      bDay,
                       id: idMaker(name.trim()),
                       isInactive,
                     } as HumanExportable,

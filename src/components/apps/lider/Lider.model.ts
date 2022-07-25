@@ -47,7 +47,7 @@ export interface TeamGameExportable {
 }
 
 export interface GamesStoreExportable {
-    teamGames: TeamGameExportable[];
+    teamGames?: TeamGameExportable[];
 }
 
 export interface LiderNavData { }

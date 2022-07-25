@@ -4,10 +4,10 @@ import Human from "../people/Human";
 import Game from "./Game";
 
 export default class GamesStore extends SourceBased<GamesStoreExportable> {
-    teamGames: Game[];
+    teamGames?: Game[];
 
     constructor(top: GamesStoreExportable, humans: Human[]) {
         super(top);
-        this.teamGames = this.getBasic('teamGames').map((game) => new Game(game, humans));
+        this.teamGames = this.getBasic('teamGames')?.map((game) => new Game(game, humans));
     }
 }

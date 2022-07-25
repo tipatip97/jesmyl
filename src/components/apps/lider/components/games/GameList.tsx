@@ -1,4 +1,5 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { liderExer } from "../../Lider.store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
 import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
 import TeamGameFace from "./GameFace";
@@ -12,13 +13,17 @@ export default function GameList() {
   return (
     <PhaseLiderContainer
       topClass="template-page-content"
-      onMoreClick={() => {
-        openAbsoluteBottomPopup(<GamesMore />);
-      }}
+      onMoreClick={
+        liderExer.actionAccessedOrNull("addTeamGame") === null
+          ? undefined
+          : () => {
+              openAbsoluteBottomPopup(<GamesMore />);
+            }
+      }
       headTitle="Командные игры"
       content={
         <>
-          {games?.teamGames.map((game, gamei) => (
+          {games?.teamGames?.map((game, gamei) => (
             <TeamGameFace key={`gamei-${gamei}`} game={game} />
           ))}
         </>
