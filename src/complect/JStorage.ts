@@ -5,6 +5,7 @@ export type JStorageListener<Val> = (val: Val) => void;
 export interface JStorageTechFields {
     lastUpdate: number;
 }
+type NonUndefined<T> = T extends undefined | null ? never : T;
 
 export class JStorage<Scope> {
     prefix: string;
@@ -80,8 +81,8 @@ export class JStorage<Scope> {
         return this.properties[key];
     }
 
-    getOr<Key extends keyof Scope>(key: Key, def: Scope[Key]): Scope[Key] {
-        return this.properties[key] ?? def;
+    getOr<Key extends keyof Scope>(key: Key, def: Scope[Key]): NonUndefined<Scope[Key]> {
+        return this.properties[key] ?? def as never;
     }
 
     getString<Key extends keyof Scope>(key: Key, def: string | null = null): string | null {
