@@ -56,4 +56,11 @@ export default class SourceBased<T> {
             if (top[key as keyof Top] != null) this[key as keyof this] = (top[key as keyof Top] as never);
         });
     }
+
+    toDict(): T {
+        return {
+            ...this.top,
+            ...this.basics
+        };
+    }
 }
