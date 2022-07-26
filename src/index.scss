@@ -48,6 +48,27 @@ body {
   color: var(--text-color);
 }
 
+.color-- {
+  &1 {
+    color: var(--color--1);
+  }
+  &3 {
+    color: var(--color--3);
+  }
+  &7 {
+    color: var(--color--7);
+  }
+}
+
+.background-- {
+  &3 {
+    background-color: var(--color--3);
+  }
+  &7 {
+    background-color: var(--color--7);
+  }
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
   outline: 0;
@@ -79,7 +100,14 @@ input[type="button"] {
 .disabled,
 :disabled {
   opacity: 0.5;
-  pointer-events: none;
+
+  &.clickable {
+    cursor: inherit;
+  }
+
+  &:not(.clickable) {
+    pointer-events: none;
+  }
 }
 
 :not(svg) {
@@ -149,6 +177,11 @@ textarea {
   max-width: 100%;
 }
 
+
+.min-width-90 {
+  min-width: 90%;
+}
+
 .full-max-height {
   max-height: 100%;
 }
@@ -167,6 +200,14 @@ textarea {
 
 .flex {
   display: flex;
+
+  &.flex-gap {
+    gap: var(--main-gap);
+  }
+
+  &.flex-big-gap {
+    gap: var(--main-big-gap);
+  }
 
   &:not(.custom-align-items) {
     align-items: center;
