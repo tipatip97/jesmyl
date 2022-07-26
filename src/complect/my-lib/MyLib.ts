@@ -1063,15 +1063,15 @@ export class MyLib {
         return teams;
     }
 
-    netFromLine<Item, FillItem>(line: Item[], cols: number, map: (item: Item) => FillItem) {
+    netFromLine<Item, FillItem>(line: Item[], cols: number, map: (item: Item, rowi: number, index: number) => FillItem) {
         const rows: FillItem[][] = [];
 
-        for (let i = 0; i < line.length;) {
+        for (let i = 0, rowi = 0; i < line.length;) {
             const row: FillItem[] = [];
             rows.push(row);
-            for (let j = 0; j < cols; j++, i++) {
-                if (i < line.length) row.push(map(line[i]));
-            }
+            for (let j = 0; j < cols; j++, i++)
+                if (i < line.length) row.push(map(line[i], rowi, i));
+            rowi++;
         }
 
         return rows;
