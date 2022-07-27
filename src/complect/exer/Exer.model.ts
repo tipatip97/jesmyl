@@ -6,6 +6,7 @@ export interface ExecRuleClient {
     title?: string;
     level?: number;
     args?: Record<string, string | string[]>;
+    cloneArgs?: Record<string, string>;
 }
 
 export interface ExecRule extends ExecRuleClient {

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
-import mylib from "../my-lib/MyLib";
+import mylib, { MyLib } from "../my-lib/MyLib";
 import SourceBased from "../SourceBased";
 import { ExecDict, ExecMethod, ExecRule, ExecRuleClient, FreeExecDict } from "./Exer.model";
 
@@ -64,8 +64,12 @@ export class Exec<Value> extends SourceBased<ExecDict> {
     }
 
     checkIsCorrectArgs() {
-        const argsEntries = Object.entries(this.args || {});
-        const ruleEntries = Object.entries(this.rule?.args || {});
+        const args = { ...this.args };
+        if (this.rule?.cloneArgs) {
+            MyLib.entries(this.rule.cloneArgs).forEach(([from, to]) => args[to] === undefined && (args[to] = args[from]));
+        }
+        const argsEntries = MyLib.entries(args);
+        const ruleEntries = MyLib.entries(this.rule?.args || {});
         const corrects = this.corrects || new CorrectsBox();
         const add = (message: string) => {
             this.corrects = corrects.merge({ errors: [{ message }] });

@@ -212,6 +212,10 @@
                         "args": {
                             "gamew": "#Number"
                         },
+                        "cloneArgs": {
+                            "areaw": "gamew",
+                            "listw": "teamw"
+                        },
                         "next": [
                             {
                                 "track": [
@@ -240,14 +244,15 @@
                                                         "action": "addCommentToGameTeam",
                                                         "method": "push",
                                                         "value": {
-                                                            "w": "{wid}",
+                                                            "w": "{@setNewWid()}",
                                                             "comment": "{comment}",
+                                                            "ts": "{ts}",
                                                             "fio": "{@userFio}",
                                                             "owner": "{@userLogin}"
                                                         },
                                                         "args": {
                                                             "comment": "#String",
-                                                            "wid": "#Number"
+                                                            "ts": "#Number"
                                                         }
                                                     }
                                                 ]

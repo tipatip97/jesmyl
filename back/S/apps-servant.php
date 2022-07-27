@@ -133,7 +133,7 @@ function prepareActions($isCheck, $appName, $asIs = '')
 }
 
 
-function inlineActions($actions, $args = [], $line = [])
+function inlineActions($actions, $args = [], $line = [], $topCloneArgs = [])
 {
   foreach ($actions as $action) {
     if (is_array($action['rule'])) {
@@ -150,11 +150,16 @@ function inlineActions($actions, $args = [], $line = [])
     $inlineAction = [];
     $inlineArgs = $args;
 
+    if (isDict($action['cloneArgs']))
+      $topCloneArgs = array_merge($topCloneArgs, $action['cloneArgs']);
+
     foreach (['action', 'level', 'title', 'valueAs'] as $fieldn)
       if (!is_null($action[$fieldn]))
         $inlineAction[$fieldn] = $action[$fieldn];
 
-    if (!is_null($action['args'])) $inlineArgs = array_merge($args, $action['args']);
+    if ($topCloneArgs && $action['action']) $inlineAction['cloneArgs'] = $topCloneArgs;
+
+    if (is_array($action['args'])) $inlineArgs = array_merge($args, $action['args']);
 
     if (count($inlineAction)) {
       if (count($inlineArgs)) $inlineAction['args'] = $inlineArgs;
@@ -162,9 +167,10 @@ function inlineActions($actions, $args = [], $line = [])
     }
 
     if (is_array($action['next'])) {
-      $line = inlineActions($action['next'], $inlineArgs, $line);
+      $line = inlineActions($action['next'], $inlineArgs, $line, $topCloneArgs);
     }
   }
+
   return $line;
 }
 

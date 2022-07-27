@@ -212,6 +212,7 @@ setGlob('getUserVisits()', 'getUserVisits');
 setGlob('observeStreamChanges()', 'observeStreamChanges');
 setGlob('prepareActions()', 'prepareActions');
 setGlob('setUserLevel()', 'setUserLevel');
+setGlob('setNewWid()', 'setNewWid');
 
 function &tracker($track, &$parents = null, &$topParent = null, $createByPath = 0)
 {
@@ -844,14 +845,9 @@ function replaceArgs($value, $args, &$errors, $defValueName = 'value', $canBeStr
       $argn = substr($value, 1, -1);
 
       if ($argn[0] === '@') {
-        global $globs;
-        $glob = $globs[substr($argn, 1)];
-        if (isset($glob)) return $glob;
-        // $errors[] = "Используется параметр, не входящий в список аргументов: $value";
-        return;
+        return getIfGlob($argn);
       } else if ($argn[0] === '?') return $args[substr($argn, 1)];
       else if (isset($args[$argn])) return $args[$argn];
-      //else if (array_key_exists($argn, $args) && $args[$argn] == null)
       return null;
     } else if (strpos($value, '{') !== false && strpos($value, '}') !== false) {
       $keys = [];
@@ -886,13 +882,23 @@ function replaceArgs($value, $args, &$errors, $defValueName = 'value', $canBeStr
   } else return $value;
 }
 
-function findRule($rules, $exec, $topTrack = [], $topArgs = [], $expecteds = [], $topUniqs = [])
+function findRule($rules, &$exec, $topTrack = [], &$topArgs = [], $expecteds = [], $topUniqs = [], $topCloneArgs = [])
 {
   $action = $exec['action'];
-  $execArgs = $exec['args'];
+  $execArgs = &$exec['args'];
   $retExec = null;
 
   foreach ($rules as $rule) {
+    $cloneArgs = $rule['cloneArgs'];
+
+    if (is_array($cloneArgs))
+      $topCloneArgs = array_merge($topCloneArgs, $cloneArgs);
+
+    if (is_array($topCloneArgs))
+      foreach ($topCloneArgs as $form => $to)
+        if (is_array($execArgs) && !array_key_exists($to, $execArgs))
+          $execArgs[$to] = $execArgs[$form];
+
     $ruleAction = $rule['action'];
     $args = array_merge($topArgs, typ([], $rule['args']));
     $track = array_merge($topTrack, typ([], $rule['track']));
@@ -935,33 +941,18 @@ function findRule($rules, $exec, $topTrack = [], $topArgs = [], $expecteds = [],
       $value = replaceArgs($rule['value'], $execArgs, $errors);
       $uniqs = replaceArgs($uniqs, $execArgs, $errors);
 
-      $ruleSide = $rule['side'];
-      $side = null;
       $rule['expecteds'] = $expecteds;
-
-      // debugLine(['... value', $exec, $value, $rule, $execArgs]);
-
-      if (is_array($ruleSide)) {
-        $side = [];
-        $sideTrack = array_merge($track, typ([], $ruleSide['track']));
-        $side['method'] = $ruleSide['method'];
-        $side['muted'] = (array_key_exists('muted', $ruleSide))
-          ? $ruleSide['muted']
-          : true;
-        $side['track'] = replaceArgs($sideTrack, $exec, $errors);
-        $side['value'] = replaceArgs($ruleSide['value'], $exec, $errors);
-      }
 
       $ret = [
         'ok' => !count($errors),
         'errors' => $errors,
-        'side' => $side,
         'track' => $track,
         'value' => $value,
-        'args' => $execArgs,
+        'args' => &$execArgs,
         'rule' => $rule,
         'uniqs' => $uniqs,
         'exec' => $exec,
+        'cloneArgs' => $topCloneArgs,
       ];
 
       foreach ($rule as $key => $val)
@@ -1445,6 +1436,11 @@ function explodeAttrs($str)
     else $ret['attrs'][] = $expl;
   }
   return $ret;
+}
+
+function setNewWid()
+{
+  return microtime(true) * 1000;
 }
 
 function parseType($value, $type, $div = ',', $names = [])

@@ -114,11 +114,11 @@ export class Exer<Storage extends ExerStorage> {
         return this.storage?.has(this.key);
     }
 
-    send<Value>(fixedExecs: ExecDict<Value> | (ExecDict<Value>[]), cb?: Callback, errCb?: Callback, finCb?: Callback) {
-        this.load(cb, errCb, finCb, [fixedExecs].flat().map(exec => new Exec(exec, this.rules)));
+    send<Value>(fixedExecs: ExecDict<Value> | (ExecDict<Value>[]), cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, isRejectShowErrorModal?: boolean) {
+        this.load(cb, errCb, finCb, [fixedExecs].flat().map(exec => new Exec(exec, this.rules)), isRejectShowErrorModal);
     }
 
-    load<Value>(cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, fixedExecs?: Exec<Value>[]) {
+    load<Value>(cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, fixedExecs?: Exec<Value>[] | nil, isRejectShowErrorModal?: boolean) {
         const execs = (fixedExecs || this.execs)
             .map(exec => exec.forLoad())
             .filter(ex => ex);
@@ -129,17 +129,18 @@ export class Exer<Storage extends ExerStorage> {
         }
 
         const onError = (error: Error) => {
-            modalService.confirm(`${error || `Ошибка!`}\nСохранить локально?`)
-                .then(isSave => {
-                    if (isSave) this.saveLocally();
-                    else modalService.confirm(`Удалить весь стек?`)
-                        .then(isRemove => {
-                            if (isRemove) {
-                                this.removeLocals();
-                                this.execs.length = 0;
-                            }
-                        });
-                });
+            if (!isRejectShowErrorModal)
+                modalService.confirm(`${error || `Ошибка!`}\nСохранить локально?`)
+                    .then(isSave => {
+                        if (isSave) this.saveLocally();
+                        else modalService.confirm(`Удалить весь стек?`)
+                            .then(isRemove => {
+                                if (isRemove) {
+                                    this.removeLocals();
+                                    this.execs.length = 0;
+                                }
+                            });
+                    });
             errCb && errCb(null, error);
             finCb && finCb(null, error);
         };
