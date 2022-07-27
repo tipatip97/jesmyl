@@ -89,11 +89,11 @@ export class JStorage<Scope> {
         return this.strings[key] ?? def;
     }
 
-    set<Key extends keyof Scope>(key: Key, val: Scope[Key]): string | null {
+    set<Key extends keyof Scope>(key: Key, val: Scope[Key], isRejectPropagation?: boolean): string | null {
         try {
             if (val === null) { this.rem(key); return null; }
             const string = this.stringify(val);
-            return string && (localStorage[this.lsName(key)] = this.setValue(key, val, string));
+            return string && (localStorage[this.lsName(key)] = this.setValue(key, val, string, isRejectPropagation));
         } catch (error) {
             return null;
         }
@@ -107,17 +107,18 @@ export class JStorage<Scope> {
         }
     }
 
-    setValue<Key extends keyof Scope>(key: keyof Scope, val: Scope[Key], string: string) {
+    setValue<Key extends keyof Scope>(key: keyof Scope, val: Scope[Key], string: string, isRejectPropagation?: boolean) {
         this.store[this.lsName(key)] = val;
         this.properties[key] = val;
         this.strings[key] = string as string;
         this.keys.push(key);
 
-        try {
-            this.next(key, val);
-        } catch (error) {
-            console.error(error);
-        }
+        if (!isRejectPropagation)
+            try {
+                this.next(key, val);
+            } catch (error) {
+                console.error(error);
+            }
 
         return string;
     }
