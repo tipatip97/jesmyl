@@ -1,8 +1,13 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import mylib from "../../../../../complect/my-lib/MyLib";
 import LeaderComment from "./LeaderComment";
-import { TeamInGameCommentExportable } from "./LeaderComment.model";
+import {
+  LeaderCommentImportable,
+  SendingCommentsAreaName,
+} from "./LeaderComment.model";
+import useLeaderComments from "./useLeaderComments";
 
 interface Addition {
   icon: EvaIconName;
@@ -38,32 +43,50 @@ export default function LeaderCommentBlock({
   comments,
   inputId,
   placeholder,
-  onSend,
+  action,
+  arean,
+  areaw,
+  listw,
 }: {
-  comments?: TeamInGameCommentExportable[];
+  comments?: LeaderCommentImportable[];
   inputId: string;
   placeholder: string;
-  onSend: (comment: string) => Promise<void>;
+  arean: SendingCommentsAreaName;
+  areaw?: number;
+  listw: number;
+  action: string;
 }) {
-  const [isCommentsShow, setIsCommentsShow] = useState(!false);
-  const [isCommentSending, setIsCommentSending] = useState(false);
-  let commentInput: ReturnType<ReturnType<typeof useKeyboard>> | und;
-  const inputGenerator = useKeyboard();
-
-  useEffect(() => {
-    return () => {
-      commentInput?.remove();
-    };
-  }, []);
-
-  commentInput = inputGenerator(inputId, {
-    className: `margin-gap ${isCommentSending ? "pointers-none" : ""}`,
+  const [isCommentsShow, setIsCommentsShow] = useState(false);
+  const commentInput = useKeyboard()(inputId, {
+    className: `margin-gap`,
     multiline: true,
     placeholder,
     mapChar: (char) => textAdditionsMap[char]?.node || char,
   });
+  const { sendingComments, sendComment, errorSentComments, rejectSending } =
+    useLeaderComments();
 
-  const allComments = comments || [];
+  useEffect(() => {
+    return () => {
+      commentInput.remove();
+    };
+  }, []);
+
+  const allComments = useMemo(
+    () =>
+      mylib.unique(
+        (comments || []).concat(
+          areaw
+            ? sendingComments[arean][areaw]?.[listw]
+                ?.map(({ comment }) => comment)
+                .filter((comment) => comment) || []
+            : []
+        ),
+        (comment) => comment.ts ?? NaN
+      ),
+    [arean, areaw, comments, listw, sendingComments]
+  );
+  console.log(allComments);
   const partOfComments = allComments.slice(-4);
 
   return (
@@ -87,58 +110,73 @@ export default function LeaderCommentBlock({
                 commenti === commenta.length - 1 ? "last" : ""
               }`}
               comment={comment}
+              isError={errorSentComments.indexOf(comment.ts) > -1}
+              onRejectSend={() =>
+                areaw && rejectSending(arean, areaw, listw, comment.ts)
+              }
             />
           );
         }
       )}
-      {commentInput && (
+      {
         <div className="flex column full-width">
-          <div className="flex full-width">
+          {commentInput.node}
+          <div className="flex full-width between margin-gap pointer-children">
             {textAdditions.map(({ icon, char, insert }, buttoni) => {
               return (
                 <EvaIcon
                   key={`buttoni-${buttoni}`}
                   name={icon}
                   onClick={() => {
-                    if (commentInput) {
-                      commentInput.write(char ?? (insert?.() || ""));
-                      commentInput.focus();
-                    }
+                    commentInput.write(char ?? (insert?.() || ""));
+                    commentInput.focus();
                   }}
                 />
               );
             })}
-          </div>
-          {commentInput.node}
-          {isCommentSending ? (
-            <EvaIcon className="margin-gap rotate" name="loader-outline" />
-          ) : (
-            !!commentInput.value() && (
-              <EvaIcon
-                name="paper-plane-outline"
-                className="pointer margin-gap"
-                onClick={() => {
-                  if (commentInput) {
-                    const comment = textAdditions.reduce(
-                      (text, { char, inText }) =>
-                        (char &&
-                          inText &&
-                          text.replace(RegExp(char, "g"), inText)) ||
-                        text,
-                      commentInput.value()
-                    );
-                    setIsCommentSending(true);
-                    onSend(comment.trim()).then(() => {
-                      setIsCommentSending(false);
-                      commentInput?.value("");
+            <EvaIcon
+              name="paper-plane-outline"
+              className={commentInput.value() ? "" : "disabled"}
+              onClick={() => {
+                if (commentInput) {
+                  const comment = textAdditions.reduce(
+                    (text, { char, inText }) =>
+                      (char &&
+                        inText &&
+                        text.replace(RegExp(char, "g"), inText)) ||
+                      text,
+                    commentInput.value()
+                  );
+                  if (areaw) {
+                    const ts = Date.now() + Math.random();
+                    const args = { comment, areaw, listw, ts };
+
+                    setTimeout(() => {
+                      sendComment(arean, areaw, listw, {
+                        ts,
+                        exec: {
+                          action,
+                          method: "push",
+                          args,
+                        },
+                        comment: {
+                          w: 0,
+                          comment,
+                          fio: "",
+                          owner: "",
+                          ts,
+                        },
+                      });
+
+                      commentInput.value("");
                     });
                   }
-                }}
-              />
-            )
-          )}
+                }
+              }}
+            />
+          </div>
         </div>
-      )}
+      }
     </>
   );
 }

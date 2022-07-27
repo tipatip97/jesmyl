@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import { liderExer } from "../../Lider.store";
-import { TeamInGameCommentSend } from "../comments/LeaderComment.model";
+import { LeaderCommentExportable } from "../comments/LeaderComment.model";
 import LeaderCommentBlock from "../comments/LeaderCommentBlock";
 import HumanFace from "../people/HumanFace";
 import RandomTwiceName from "../RandomTwiseName";
@@ -36,21 +36,10 @@ export default function TheTeam({
           inputId={`commentInput ${team.wid} ${team.game?.wid || "##"}`}
           placeholder={`Комментарий о "${team.upperName}"`}
           comments={team.comments}
-          onSend={(comment) => {
-            return new Promise((resolve, reject) => {
-              if (team.game)
-                liderExer.send({
-                  action: "addCommentToGameTeam",
-                  method: "push",
-                  args: {
-                    wid: Date.now() + Math.random(),
-                    comment,
-                    teamw: team.wid,
-                    gamew: team.game.wid,
-                  } as TeamInGameCommentSend,
-                }, () => resolve(), () => reject());
-            });
-          }}
+          arean={"gameTeams"}
+          areaw={team.game?.wid}
+          listw={team.wid}
+          action="addCommentToGameTeam"
         />
       </>
     );
@@ -62,7 +51,7 @@ export default function TheTeam({
         pronoun={pronoun}
         noun={noun}
         canChange={!redactable}
-        className="inline-block margin-gap-v text-bold"
+        className="user-select inline-block margin-gap-v text-bold"
         onNameChange={(name) => (team.name = name)}
       />
       {" (сила - " +

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
 import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.model";
 import { liderStorage } from "../../../shared/jstorages";
+import { defaultSendingComments, SendingComments } from "./components/comments/LeaderComment.model";
 import { HumanListSortVariant } from "./components/people/People.model";
 import { GamesStoreExportable, LiderState, LiderStoraged } from "./Lider.model";
 
@@ -14,6 +15,8 @@ const initialState: LiderState = {
   cgamew: liderStorage.get('cgamew'),
   gameTimers: liderStorage.getOr('gameTimers', {}),
   humanListSortVariant: liderStorage.getOr('humanListSortVariant', 'name'),
+  sendingComments: liderStorage.getOr('sendingComments', defaultSendingComments),
+  errorSentComments: [],
   numUpdatesPeople: 0,
   numUpdatesGames: 0,
   numUpdatesTimers: 0,
@@ -38,6 +41,12 @@ export const slice = createSlice({
       state.cgamew = action.payload;
       liderStorage.set('cgamew', action.payload);
     },
+    updateSendingComments: (state, action: PayloadAction<SendingComments>) => {
+      state.sendingComments = action.payload;
+    },
+    updateRrrorSentComments: (state, action: PayloadAction<number[]>) => {
+      state.errorSentComments = action.payload;
+    },
     riseUpNumUpdatesPeople: (state) => { state.numUpdatesPeople++; },
     riseUpNumUpdatesGames: (state) => { state.numUpdatesGames++; },
     riseUpNumUpdatesTimers: (state) => { state.numUpdatesTimers++; },
@@ -49,6 +58,8 @@ export const {
   setHumanListSortVariant,
   updateGamesStore,
   updateCgamew,
+  updateSendingComments,
+  updateRrrorSentComments,
   riseUpNumUpdatesPeople,
   riseUpNumUpdatesGames,
   riseUpNumUpdatesTimers,

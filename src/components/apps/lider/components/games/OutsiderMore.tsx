@@ -37,6 +37,7 @@ export default function OutsiderMore({
                 title: () => `Добавить в ${targetTeam?.name}`,
                 hidden: () => !targetTeam,
                 onClick: () => {
+                  console.log(targetTeam.wid, game.wid);
                   liderExer.send({
                     action: "addMemberToTeam",
                     method: "push",
