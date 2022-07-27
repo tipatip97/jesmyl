@@ -54,7 +54,8 @@ export default function TextsChordsRedactor({
                                         ? ` ${o.top.style.name}`
                                         : ""
                                     }`
-                                )
+                                ),
+                                (o) => o
                               )
                               .join(", ")
                           : "Нет упоминаний этого блока",
