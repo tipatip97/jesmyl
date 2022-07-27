@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
-import useExer from "../../../../../complect/exer/useExer";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import modalService from "../../../../../complect/modal/Modal.service";
 import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
 import { liderExer } from "../../Lider.store";
-import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
 import HumanFace from "../people/HumanFace";
 import usePeople from "../people/usePeople";
 import Team from "../teams/Team";
@@ -19,7 +17,6 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
   const gameNameInput = useKeyboard()("game-name", {});
   const [teams, updateTeams] = useState<Team[] | null>(null);
   const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
-  const { exec } = useExer(liderExer);
   const { people } = usePeople();
 
   const humanList = people?.humansReadyToPlay;
@@ -138,7 +135,9 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
               <div
                 className="pointer"
                 onClick={async () => {
-                  const isSend = await modalService.confirm("Опубликовать игру?");
+                  const isSend = await modalService.confirm(
+                    "Опубликовать игру?"
+                  );
 
                   if (isSend)
                     liderExer.send({
@@ -153,7 +152,6 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                         humanList
                       ).toDict(),
                     });
-                  exec();
                   close();
                 }}
               >

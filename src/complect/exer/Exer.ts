@@ -43,6 +43,10 @@ export class Exer<Storage extends ExerStorage> {
         return this.actionAccessedOrNull(freeExec.action) && this.set(freeExec);
     }
 
+    clear() {
+        this.execs = [];
+    }
+
     set<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
         if (!freeExec) return null;
         let retExec: Exec<Value> | null = null;

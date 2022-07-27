@@ -6,8 +6,14 @@ import GameTimerMaster from "./GameTimerMaster";
 
 export default function TimerFace({
   timer,
+  onSelect,
+  isSelected,
   ...props
-}: { timer: GameTimer } & HTMLAttributes<HTMLDivElement>) {
+}: {
+  timer: GameTimer;
+  onSelect?: () => void;
+  isSelected?: boolean;
+} & HTMLAttributes<HTMLDivElement>) {
   const { openFullscreenContent } = useFullscreenContent();
 
   return (
@@ -20,7 +26,13 @@ export default function TimerFace({
         ))
       }
     >
-      <span className="face-logo">
+      <span
+        className={`face-logo ${isSelected ? "selected" : ""}`}
+        onClick={(event) => {
+          event.stopPropagation();
+          onSelect?.();
+        }}
+      >
         <EvaIcon name="clock-outline" />
       </span>
       <span className="face-title">

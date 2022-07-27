@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useExer from "../../../../../complect/exer/useExer";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import { liderExer } from "../../Lider.store";
 import Human from "./Human";
@@ -41,7 +40,6 @@ export default function HumanMaster({
   human?: Human;
   close: () => void;
 }) {
-  const { exec } = useExer(liderExer);
   const [viewHumanList, updateViewHumanList] = useState<
     HumanExportable[] | null
   >(null);
@@ -84,7 +82,6 @@ export default function HumanMaster({
                 value,
               },
             });
-            exec();
           }
         },
   });
@@ -107,7 +104,6 @@ export default function HumanMaster({
               humann: human.name,
             },
           });
-          exec();
         },
   });
 
@@ -142,7 +138,6 @@ export default function HumanMaster({
                 humann: human.name,
               },
             });
-            exec();
           }
         },
   });
@@ -166,7 +161,6 @@ export default function HumanMaster({
               humann: human.name,
             },
           });
-          exec();
         },
   });
 
@@ -186,6 +180,7 @@ export default function HumanMaster({
       notesInput.remove();
       bDayInput.remove();
       groupInput.remove();
+      liderExer.clear();
     };
   }, []);
 
@@ -288,7 +283,6 @@ export default function HumanMaster({
                     value: viewHumanList,
                   },
                 });
-                exec();
                 close();
               }}
             >
@@ -333,7 +327,6 @@ export default function HumanMaster({
                       humann: human.name,
                     },
                   });
-                exec();
               }}
             />
           </div>
@@ -376,7 +369,6 @@ export default function HumanMaster({
                               humann: human.name,
                             },
                           });
-                          exec();
                         }
                       }}
                     />
@@ -416,7 +408,6 @@ export default function HumanMaster({
                     humann: human.name,
                   },
                 });
-              exec();
             }}
           >
             {isInactive ? "Включить участника" : "Исключить участника"}

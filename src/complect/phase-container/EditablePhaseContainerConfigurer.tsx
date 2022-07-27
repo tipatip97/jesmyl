@@ -8,29 +8,38 @@ import {
   PhaseContainerConfigurerProps,
 } from "./PhaseContainerConfigurer.model";
 
-export default function EditablePhaseContainerConfigurer<Storaged>(
-  props: EditablePhaseContainerProps &
-    PhaseContainerConfigurerProps & {
-      onMoreClick?: () => void;
-      exer: Exer<NavigationStorage<Storaged>>;
-    }
-) {
-  const { lookIcon } = useExer(props.exer);
+export default function EditablePhaseContainerConfigurer<Storaged>({
+  isWithoutLookButton,
+  topClass,
+  headClass,
+  onMoreClick,
+  head,
+  exer,
+  ...props
+}: EditablePhaseContainerProps &
+  PhaseContainerConfigurerProps & {
+    onMoreClick?: () => void;
+    exer: Exer<NavigationStorage<Storaged>>;
+    isWithoutLookButton?: boolean;
+  }) {
+  const { lookIcon } = useExer(exer);
 
   return (
     <PhaseContainerConfigurer
       {...props}
-      topClass={`${props.topClass || ""} ${lookIcon ? "with-changes" : ""}`}
-      headClass={props.headClass || "flex between"}
+      topClass={`${topClass || ""} ${
+        !isWithoutLookButton && lookIcon ? "with-changes" : ""
+      }`}
+      headClass={headClass || "flex between"}
       head={
-        <div className={`flex ${props.headClass || ""}`}>
-          {props.head}
-          {lookIcon}
-          {props.onMoreClick ? (
+        <div className={`flex ${headClass || ""}`}>
+          {head}
+          {!isWithoutLookButton && lookIcon}
+          {onMoreClick ? (
             <EvaIcon
               name="more-vertical-outline"
               className="action-button"
-              onClick={props.onMoreClick}
+              onClick={onMoreClick}
             />
           ) : null}
         </div>
