@@ -88,6 +88,10 @@
       background: var(--color--1);
       border-radius: 50%;
       border: solid 4px transparent;
+
+      &.selected {
+        border-color: var(--color--3);
+      }
     }
 
     > .face-action,

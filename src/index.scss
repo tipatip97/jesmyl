@@ -247,14 +247,14 @@ textarea {
   margin-right: 0.2em;
 }
 
-.text {
-  &-middle {
-    > * {
-      display: inline-block;
-      vertical-align: middle;
-    }
+.children-middle {
+  > * {
+    display: inline-block;
+    vertical-align: middle;
   }
+}
 
+.text {
   &-strike {
     text-decoration: line-through;
   }
