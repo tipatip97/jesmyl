@@ -1,6 +1,6 @@
 import { HTMLAttributes, useState } from "react";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { HumanTeamComment } from "../../Lider.model";
+import { TeamInGameCommentExportable } from "./LeaderComment.model";
 
 const templaterBag = {
   commentTime: (wid: number) => {
@@ -24,11 +24,11 @@ const months = [
   "дек",
 ];
 
-export default function TheTeamComment({
+export default function LeaderComment({
   comment,
   ...props
 }: HTMLAttributes<HTMLDivElement> & {
-  comment: HumanTeamComment;
+  comment: TeamInGameCommentExportable;
 }) {
   const date = new Date(comment.w);
   const isNeedCut = comment.comment.split(/\n/).length > 5;
@@ -42,7 +42,7 @@ export default function TheTeamComment({
       <div className="flex between">
         <div>{comment.fio}</div>
         <div>
-        {date.getDate()} {months[date.getMonth()]}, {date.getHours()}:
+          {date.getDate()} {months[date.getMonth()]}, {date.getHours()}:
           {date.getMinutes()}:{date.getSeconds()}
         </div>
       </div>

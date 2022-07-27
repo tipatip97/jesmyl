@@ -22,6 +22,32 @@
   }
 }
 
+.table-centered-wrapper {
+  display: flex;
+  justify-content: center;
+
+  > .table {
+    --table-size: 80vmin;
+    width: var(--table-size);
+    border: solid var(--text-color) 1px;
+
+    > .row {
+      display: flex;
+
+      > .cell {
+        display: flex;
+        justify-content: center;
+        border: solid var(--text-color) 1px;
+        padding: var(--main-gap);
+
+        &:not(.self-width) {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
 .adaptation-page {
   padding: 40px;
 

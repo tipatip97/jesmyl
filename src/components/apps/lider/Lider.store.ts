@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
 import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.model";
 import { liderStorage } from "../../../shared/jstorages";
-import { HumanListSortVariant } from "./components/people/Human.model";
+import { HumanListSortVariant } from "./components/people/People.model";
 import { GamesStoreExportable, LiderState, LiderStoraged } from "./Lider.model";
 
 export const liderExer = new Exer('lider', liderStorage);
@@ -12,9 +12,11 @@ const initialState: LiderState = {
   people: liderStorage.get('people'),
   games: liderStorage.get('games'),
   cgamew: liderStorage.get('cgamew'),
+  gameTimers: liderStorage.getOr('gameTimers', {}),
   humanListSortVariant: liderStorage.getOr('humanListSortVariant', 'name'),
-  numPeopleUpdates: 0,
-  numGamesUpdates: 0,
+  numUpdatesPeople: 0,
+  numUpdatesGames: 0,
+  numUpdatesTimers: 0,
 };
 
 export const slice = createSlice({
@@ -36,8 +38,9 @@ export const slice = createSlice({
       state.cgamew = action.payload;
       liderStorage.set('cgamew', action.payload);
     },
-    riseUpPeopleNumUpdates: (state) => { state.numPeopleUpdates++; },
-    riseUpGamesNumUpdates: (state) => { state.numGamesUpdates++; },
+    riseUpNumUpdatesPeople: (state) => { state.numUpdatesPeople++; },
+    riseUpNumUpdatesGames: (state) => { state.numUpdatesGames++; },
+    riseUpNumUpdatesTimers: (state) => { state.numUpdatesTimers++; },
   },
 });
 
@@ -46,8 +49,9 @@ export const {
   setHumanListSortVariant,
   updateGamesStore,
   updateCgamew,
-  riseUpPeopleNumUpdates,
-  riseUpGamesNumUpdates,
+  riseUpNumUpdatesPeople,
+  riseUpNumUpdatesGames,
+  riseUpNumUpdatesTimers,
 } = slice.actions;
 export default slice.actions;
 

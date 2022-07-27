@@ -6,8 +6,8 @@ import { RootState } from "../../../../../shared/store";
 import { setHumanListSortVariant } from "../../Lider.store";
 import PrintableBottomItem from "../PrintableBottomItem";
 import AdaptationPageList from "../templates/AdaptationPageList";
-import { humanFieldTranslations } from "./Human.model";
 import HumanMaster from "./HumanMaster";
+import { humanFieldTranslations } from "./People.model";
 
 export default function HumansMore() {
   const { openFullscreenContent } = useFullscreenContent();

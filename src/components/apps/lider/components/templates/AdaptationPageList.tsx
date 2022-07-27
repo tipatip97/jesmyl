@@ -5,7 +5,7 @@ export default function AdaptationPageList() {
   const { people } = usePeople();
   return (
     <>
-      {people?.activeHumans?.map((human) => (
+      {people?.humansReadyToPlay?.map((human) => (
         <AdaptationPage human={human} />
       ))}
     </>

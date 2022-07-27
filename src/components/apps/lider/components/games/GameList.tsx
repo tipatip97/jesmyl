@@ -14,11 +14,10 @@ export default function GameList() {
     <PhaseLiderContainer
       topClass="template-page-content"
       onMoreClick={
-        liderExer.actionAccessedOrNull("addTeamGame") === null
-          ? undefined
-          : () => {
-              openAbsoluteBottomPopup(<GamesMore />);
-            }
+        liderExer.actionAccessedOrUnd("addTeamGame") &&
+        (() => {
+          openAbsoluteBottomPopup(<GamesMore />);
+        })
       }
       headTitle="Командные игры"
       content={

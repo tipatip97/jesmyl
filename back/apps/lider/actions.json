@@ -263,6 +263,7 @@
                                                     {
                                                         "action": "removeMemberFromTeam",
                                                         "method": "remove",
+                                                        "level": 30,
                                                         "value": [
                                                             ".",
                                                             "===",
@@ -273,6 +274,7 @@
                                                         "uniqs": [
                                                             "."
                                                         ],
+                                                        "level": 30,
                                                         "action": "addMemberToTeam",
                                                         "method": "push",
                                                         "value": "{humanId}"
@@ -280,6 +282,43 @@
                                                 ]
                                             }
                                         ]
+                                    }
+                                ]
+                            },
+                            {
+                                "track": [
+                                    "timers"
+                                ],
+                                "expected": [],
+                                "next": [
+                                    {
+                                        "uniqs": [
+                                            "w"
+                                        ],
+                                        "level": 20,
+                                        "action": "addGameTimer",
+                                        "title": "Добавлен новый таймер $name для игры $gamen",
+                                        "method": "push",
+                                        "value": {
+                                            "w": "{w}",
+                                            "name": "{name}",
+                                            "mode": "{mode}",
+                                            "joins": "{joins}",
+                                            "start": "{start}",
+                                            "starts": "{starts}",
+                                            "teams": "{teams}",
+                                            "finishes": "{finishes}"
+                                        },
+                                        "args": {
+                                            "w": "#Number",
+                                            "name": "#String",
+                                            "mode": "#Number",
+                                            "joins": "#number",
+                                            "start": "#number",
+                                            "starts": "#list",
+                                            "teams": "#list",
+                                            "finishes": "#Dict"
+                                        }
                                     }
                                 ]
                             }

@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import useExer from "../../../../../complect/exer/useExer";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import modalService from "../../../../../complect/modal/Modal.service";
 import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
 import { liderExer } from "../../Lider.store";
 import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
+import HumanFace from "../people/HumanFace";
 import usePeople from "../people/usePeople";
 import Team from "../teams/Team";
 import TheTeam from "../teams/TheTeam";
@@ -20,7 +22,7 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
   const { exec } = useExer(liderExer);
   const { people } = usePeople();
 
-  const humanList = people?.activeHumans;
+  const humanList = people?.humansReadyToPlay;
 
   useEffect(() => {
     return () => {
@@ -120,7 +122,6 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                         {
                           w: idPrefix + Math.random(),
                           members: humans.map((human) => human.id),
-                          name: getRandomTwiceName().join(" "),
                         },
                         humans,
                         null
@@ -132,22 +133,26 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                 Рассчитать
               </div>
             ) : null}
+
             {gameNameInput.value() && teams ? (
               <div
                 className="pointer"
-                onClick={() => {
-                  liderExer.setIfCan({
-                    action: "addTeamGame",
-                    method: "push",
-                    args: new Game(
-                      {
-                        w: Date.now() + Math.random(),
-                        name: gameNameInput.value(),
-                        teams: teams.map((team) => team.toDict()),
-                      },
-                      humanList
-                    ).toDict(),
-                  });
+                onClick={async () => {
+                  const isSend = await modalService.confirm("Опубликовать игру?");
+
+                  if (isSend)
+                    liderExer.send({
+                      action: "addTeamGame",
+                      method: "push",
+                      args: new Game(
+                        {
+                          w: Date.now() + Math.random(),
+                          name: gameNameInput.value(),
+                          teams: teams.map((team) => team.toDict()),
+                        },
+                        humanList
+                      ).toDict(),
+                    });
                   exec();
                   close();
                 }}
@@ -156,6 +161,14 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
               </div>
             ) : null}
           </div>
+
+          <div className="margin-gap error-message">Не войдут</div>
+          {people?.humanList?.map(
+            (human, humani) =>
+              !human.isCanPlayGame() && (
+                <HumanFace key={`humani-${humani}`} human={human} />
+              )
+          )}
           {teams?.map((team, teami) => {
             return <TheTeam key={`team-${teami}`} team={team} />;
           })}

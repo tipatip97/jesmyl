@@ -1,0 +1,136 @@
+.game-timer-master {
+  .start-total {
+    --size: 30vmin;
+    border-radius: 100%;
+    width: var(--size);
+    min-width: var(--size);
+    height: var(--size);
+    min-height: var(--size);
+  }
+
+  .total-timer {
+    font-size: 70px;
+
+    @media screen and (max-width: 360px) {
+      font-size: 50px;
+    }
+
+    @media screen and (max-width: 300px) {
+      font-size: 30px;
+    }
+  }
+
+  .timer-screen {
+    &:not(.paused)::after {
+      content: "000";
+    }
+
+    &.started::after {
+      animation: digit-switcher 1s linear infinite;
+    }
+
+    & .milliseconds-digits,
+    &::after {
+      font-size: 0.7em;
+    }
+  }
+
+  .team-list-table {
+    .team-box {
+      padding: 0 1em;
+      border: 1px solid transparent;
+      text-align: center;
+    }
+
+    .selected-team {
+      .team-box {
+        border-color: var(--color--3);
+      }
+    }
+
+    .control-button {
+      > * {
+        --size: 30px;
+        color: var(--color--3);
+        width: var(--size);
+        min-width: var(--size);
+        height: var(--size);
+      }
+
+      &.start-button {
+        > * {
+          --svg-color: var(--color--3);
+        }
+      }
+
+      &.finish-button {
+        > * {
+          --svg-color: var(--color--ko);
+        }
+      }
+    }
+  }
+}
+
+@keyframes digit-switcher {
+  from {
+    content: "001";
+  }
+  5% {
+    content: "014";
+  }
+  10% {
+    content: "122";
+  }
+  15% {
+    content: "136";
+  }
+  20% {
+    content: "249";
+  }
+  25% {
+    content: "255";
+  }
+  30% {
+    content: "360";
+  }
+  35% {
+    content: "374";
+  }
+  40% {
+    content: "481";
+  }
+  45% {
+    content: "493";
+  }
+  50% {
+    content: "502";
+  }
+  60% {
+    content: "510";
+  }
+  65% {
+    content: "624";
+  }
+  70% {
+    content: "632";
+  }
+  75% {
+    content: "749";
+  }
+  80% {
+    content: "753";
+  }
+  85% {
+    content: "866";
+  }
+  90% {
+    content: "875";
+  }
+  95% {
+    content: "987";
+  }
+  100% {
+    content: "999";
+  }
+}

@@ -1,6 +1,6 @@
 import SourceBased from "../../../../../complect/SourceBased";
 import Human from "./Human";
-import { PeopleExportable } from "./Human.model";
+import { PeopleExportable } from "./People.model";
 
 export default class People extends SourceBased<PeopleExportable> {
     humanList?: Human[];
@@ -13,7 +13,7 @@ export default class People extends SourceBased<PeopleExportable> {
     get humans() { return this.getBasic('humans'); }
     set humans(val) { this.setExportable('humans', val); }
 
-    get activeHumans() {
-        return this.humanList?.filter((human) => !human.isInactive);
+    get humansReadyToPlay() {
+        return this.humanList?.filter((human) => human.isCanPlayGame());
     }
 }

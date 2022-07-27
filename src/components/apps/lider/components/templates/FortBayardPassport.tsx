@@ -22,7 +22,7 @@ export default function FortBayardPassport() {
       <div>
         <div className="tpl-title">Форт Баярд</div>
         <div className="tpl-subtitle margin-gap">
-          Паспорт команды "<RandomTwiceName />"
+          Паспорт команды "<RandomTwiceName canChange />"
         </div>
         <div className="table-wrapper">
           <div className="table">

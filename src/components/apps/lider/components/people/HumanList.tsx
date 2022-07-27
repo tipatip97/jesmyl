@@ -4,7 +4,6 @@ import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAb
 import DebouncedInput from "../../../../../complect/DebouncedInput";
 import { RootState } from "../../../../../shared/store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
-import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
 import HumanFace from "./HumanFace";
 import HumansMore from "./HumansMore";
 import usePeople from "./usePeople";

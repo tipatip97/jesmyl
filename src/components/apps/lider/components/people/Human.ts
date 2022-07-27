@@ -1,5 +1,5 @@
 import SourceBased from "../../../../../complect/SourceBased";
-import { HumanExportable } from "./Human.model";
+import { HumanExportable } from "./People.model";
 
 export default class Human extends SourceBased<HumanExportable> {
     get name() { return this.getBasic('name'); }
@@ -9,7 +9,6 @@ export default class Human extends SourceBased<HumanExportable> {
     set id(val) { this.setExportable('id', val); }
 
     get isInactive() { return this.getBasic('isInactive'); }
-    set isInactive(val) { this.setExportable('isInactive', val); }
 
     get isMan() { return this.getBasic('isMan'); }
     set isMan(val) { this.setExportable('isMan', val); }
@@ -31,5 +30,9 @@ export default class Human extends SourceBased<HumanExportable> {
 
     get ufp() {
         return this.ufp1 && this.ufp2 ? ((this.ufp1 || 0) + (this.ufp2 || 0)) / 2 : 0;
+    }
+
+    isCanPlayGame() {
+        return !this.isInactive && this.ufp;
     }
 }

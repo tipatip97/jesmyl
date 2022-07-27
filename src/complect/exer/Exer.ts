@@ -216,6 +216,10 @@ export class Exer<Storage extends ExerStorage> {
             });
     }
 
+    actionAccessedOrUnd(action: string | nil, isNullifyed?: boolean): true | undefined {
+        return this.actionAccessedOrNull(action, isNullifyed) ?? undefined;
+    }
+
     actionAccessedOrNull(action: string | nil, isNullifyed?: boolean): true | null {
         if (action == null) return isNullifyed ? true : null;
         if (this.checkedActions[action] !== undefined) return this.checkedActions[action] || null;

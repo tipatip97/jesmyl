@@ -21,14 +21,14 @@ export const getRandomTwiceName = (topPronoun?: string | null, topNoun?: string)
     } else if (/[оеё.]$/.exec(noun)) {
         pronoun = pronoun
             .replace(/ний$/, 'нее')
-            .replace(/([жшщ])[иоы]й/, '$1ее')
+            .replace(/([жшчщ])[иоы]й/, '$1ее')
             .replace(/[иоы]й$/, 'ое');
     }
 
     return [pronoun, noun.replace(/[^- а-яё\d]/ig, '')];
 }
 
-console.info(getRandomTwiceName(null, 'улей'));
+console.info(getRandomTwiceName('рабочий', 'жильё'));
 
 // console.info(
 //     JSON.stringify(

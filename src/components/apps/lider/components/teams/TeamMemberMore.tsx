@@ -20,7 +20,7 @@ export default function TeamMemberMore({
             const isDel = await modalService.confirm(
               `Исключить участни${human.isMan ? "ка" : "цу"} ${
                 human.name
-              } из команды "${team.name.toLocaleUpperCase()}"?`,
+              } из команды "${team.upperName}"?`,
               "Исключить"
             );
 

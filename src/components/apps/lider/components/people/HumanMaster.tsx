@@ -5,7 +5,7 @@ import useExer from "../../../../../complect/exer/useExer";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import { liderExer } from "../../Lider.store";
 import Human from "./Human";
-import { HumanExportable } from "./Human.model";
+import { HumanExportable } from "./People.model";
 
 const idMaker = (name: string) => name.toLowerCase().replace(/\s+/g, "_");
 const ufpLabels = "1".repeat(10).split("");
