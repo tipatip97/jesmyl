@@ -71,7 +71,7 @@ export default class GameTimer extends SourceBased<GameTimerExportable> {
             this.mode === GameTimerMode.Total
                 ? (team, rowi) => ({ team, start, finish: finishes[team.wid], rowi })
                 : (team, rowi) => ({ team, start: starts[rowi], finish: finishes[team.wid], rowi })
-        ).flat();
+        ).flat().filter(({ start, finish }) => start && finish);
 
         return teamsNet.sort(({ start: aStart, finish: aFinish }, { start: bStart, finish: bFinish }) => {
             return (aFinish - aStart) - (bFinish - bStart);
@@ -79,7 +79,6 @@ export default class GameTimer extends SourceBased<GameTimerExportable> {
     }
 
     isRowFinished(topRowi: number) {
-        const starts = this.starts || [];
         const finishes = this.finishes || {};
 
         return !this.rateSortedTeams()
