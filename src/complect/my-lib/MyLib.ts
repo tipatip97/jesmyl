@@ -987,8 +987,8 @@ export class MyLib {
         return what;
     }
 
-    unique(arr: any[], by = (f: any) => f) {
-        const exclusives: any[] = [];
+    unique<Item, Res>(arr: Item[], by: (f: Item) => Res) {
+        const exclusives: Res[] = [];
         return arr.filter(item => exclusives.indexOf(by(item)) === -1 ? exclusives.push(by(item)) : false);
     }
 
