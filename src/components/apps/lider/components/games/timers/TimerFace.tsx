@@ -7,12 +7,12 @@ import GameTimerMaster from "./GameTimerMaster";
 export default function TimerFace({
   timer,
   onSelect,
-  isSelected,
+  selectedPosition,
   ...props
 }: {
   timer: GameTimer;
   onSelect?: () => void;
-  isSelected?: boolean;
+  selectedPosition?: number;
 } & HTMLAttributes<HTMLDivElement>) {
   const { openFullscreenContent } = useFullscreenContent();
 
@@ -27,7 +27,8 @@ export default function TimerFace({
       }
     >
       <span
-        className={`face-logo ${isSelected ? "selected" : ""}`}
+        className={`face-logo ${selectedPosition ? "selected" : ""}`}
+        selected-position={selectedPosition || null}
         onClick={(event) => {
           event.stopPropagation();
           onSelect?.();
@@ -35,16 +36,25 @@ export default function TimerFace({
       >
         <EvaIcon name="clock-outline" />
       </span>
-      <span className="face-title">
+      <span className="face-title flex between full-width">
         {timer.isNewTimer ? (
           <span className="color--7">
             Новый таймер{timer.name ? ` - ${timer.name}` : ""}
           </span>
         ) : (
-          `${timer.name} ${timer.fio ? `(${timer.fio})` : ""}`
+          <span className={`${timer.isInactive ? "text-strike" : ""}`}>
+            {timer.name}
+            {timer.fio ? ` (${timer.fio})` : ""}
+          </span>
         )}{" "}
         {timer.isNewTimer && timer.isStarted && (
           <span className="error-message">(Запущен)</span>
+        )}
+        {!!timer.comments?.length && (
+          <div>
+            <EvaIcon name="message-square-outline" />
+            <sub>{timer.comments.length}</sub>
+          </div>
         )}
       </span>
     </div>

@@ -8,6 +8,7 @@ import {
   SendingCommentsAreaName,
 } from "./LeaderComment.model";
 import useLeaderComments from "./useLeaderComments";
+import "./LeaderComment.scss";
 
 interface Addition {
   icon: EvaIconName;
@@ -47,6 +48,9 @@ export default function LeaderCommentBlock({
   arean,
   areaw,
   listw,
+  isWaitedToSend,
+  importantActionOnClick,
+  onRejectSend,
 }: {
   comments?: LeaderCommentImportable[];
   inputId: string;
@@ -55,6 +59,9 @@ export default function LeaderCommentBlock({
   areaw?: number;
   listw: number;
   action: string;
+  isWaitedToSend?: boolean;
+  importantActionOnClick?: (comment: string) => void;
+  onRejectSend?: (comment: LeaderCommentImportable) => void;
 }) {
   const [isCommentsShow, setIsCommentsShow] = useState(false);
   const commentInput = useKeyboard()(inputId, {
@@ -77,7 +84,7 @@ export default function LeaderCommentBlock({
       mylib.unique(
         (comments || []).concat(
           areaw
-            ? sendingComments[arean][areaw]?.[listw]
+            ? sendingComments[arean]?.[areaw]?.[listw]
                 ?.map(({ comment }) => comment)
                 .filter((comment) => comment) || []
             : []
@@ -89,7 +96,7 @@ export default function LeaderCommentBlock({
   const partOfComments = allComments.slice(-4);
 
   return (
-    <>
+    <div className="leader-comment-block full-width">
       {partOfComments.length !== allComments.length && (
         <div
           className="margin-gap pointer"
@@ -110,8 +117,11 @@ export default function LeaderCommentBlock({
               }`}
               comment={comment}
               isError={errorSentComments.indexOf(comment.ts) > -1}
+              isWaitedToSend={isWaitedToSend}
               onRejectSend={() =>
-                areaw && rejectSending(arean, areaw, listw, comment.ts)
+                onRejectSend
+                  ? onRejectSend(comment)
+                  : areaw && rejectSending(arean, areaw, listw, comment.ts)
               }
             />
           );
@@ -146,28 +156,31 @@ export default function LeaderCommentBlock({
                       text,
                     commentInput.value()
                   );
+                  commentInput.value("");
+
+                  if (importantActionOnClick) {
+                    importantActionOnClick(comment);
+                    return;
+                  }
+
                   if (areaw) {
                     const ts = Date.now() + Math.random();
                     const args = { comment, areaw, listw, ts };
 
-                    setTimeout(() => {
-                      sendComment(arean, areaw, listw, {
+                    sendComment(arean, areaw, listw, {
+                      ts,
+                      exec: {
+                        action,
+                        method: "push",
+                        args,
+                      },
+                      comment: {
+                        w: 0,
+                        comment,
+                        fio: "",
+                        owner: "",
                         ts,
-                        exec: {
-                          action,
-                          method: "push",
-                          args,
-                        },
-                        comment: {
-                          w: 0,
-                          comment,
-                          fio: "",
-                          owner: "",
-                          ts,
-                        },
-                      });
-
-                      commentInput.value("");
+                      },
                     });
                   }
                 }
@@ -176,6 +189,6 @@ export default function LeaderCommentBlock({
           </div>
         </div>
       }
-    </>
+    </div>
   );
 }

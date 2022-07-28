@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { liderStorage } from "../../../../../../shared/jstorages";
 import { RootState } from "../../../../../../shared/store";
 import { riseUpNumUpdatesTimers } from "../../../Lider.store";
+import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
 import Game from "../Game";
 import { GameTimerImportable, GameTimerMode } from "../Games.model";
 import GameTimer from "./GameTimer";
@@ -45,6 +46,12 @@ export default function useGameTimer(game?: Game) {
                 if (!isRejectSave) ret.saveTimer();
             }
         },
+        saveComment: (comment: string) => {
+            ret.mapTimer((timer) => timer.newComment(comment));
+        },
+        removeComment: (comment: LeaderCommentImportable) => {
+            ret.mapTimer((timer) => timer.removeComment(comment));
+        },
         saveTimer: () => {
             if (newTimer) ret.updateTimer(newTimer.toDict());
         },
@@ -54,6 +61,7 @@ export default function useGameTimer(game?: Game) {
         updateTeamList: (wids: number[]) => {
             ret.mapTimer((timer) => {
                 timer.teamList = wids;
+                timer.setTeams();
             });
         },
         startForRow: (rowi: number, value: number = Date.now()) => {
@@ -65,7 +73,7 @@ export default function useGameTimer(game?: Game) {
         },
         pauseForRow: (teamw: number, value: number = Date.now()) => {
             ret.mapTimer((timer) => {
-                timer.finishes = { ...timer.finishes || [] };
+                timer.finishes = { ...timer.finishes || {} };
                 timer.finishes[teamw] = value;
             });
         },

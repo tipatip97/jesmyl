@@ -1,24 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { liderExer } from "../../../Lider.store";
+import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
 import Team from "../../teams/Team";
 import { GameTimerMode } from "../Games.model";
+import useGames from "../useGames";
 import GameTimer from "./GameTimer";
 import "./GameTimer.scss";
 import GameTimerScreen from "./GameTimerScreen";
 import useGameTimer from "./useGameTimer";
 
 export default function GameTimerMaster({
-  timer,
+  timer: topTimer,
   close,
 }: {
   timer: GameTimer;
   close: () => void;
 }) {
+  const { cgame } = useGames();
+  const timer = useMemo(
+    () =>
+      (topTimer.wid &&
+        cgame?.timers?.find((timer) => topTimer.wid === timer.wid)) ||
+      topTimer,
+    [cgame?.timers, topTimer]
+  );
+
   const [mode, setMode] = useState(timer.mode);
   const [joins, setJoins] = useState(timer.joins || 1);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
@@ -31,6 +42,8 @@ export default function GameTimerMaster({
     pauseForRow,
     updateTeamList,
     removeLocalTimer,
+    saveComment,
+    removeComment,
   } = useGameTimer(timer.game);
   const nameInput = useKeyboard()("name-of-GameTimer-input", {
     preferLanguage: "ru",
@@ -47,6 +60,9 @@ export default function GameTimerMaster({
   );
   useEffect(() => () => nameInput.remove(), []);
 
+  const members = timer.teams.length;
+  const membersInGame = timer.rateSortedTeams(true).length;
+
   return (
     <div className="game-timer-master full-container padding-giant-gap flex column over-hidden">
       <div className="flex full-width flex-gap">
@@ -56,7 +72,19 @@ export default function GameTimerMaster({
             {nameInput.node}
           </>
         ) : (
-          <>Таймер {timer.name}</>
+          <div className="padding-giant-gap">
+            <div className="text-bold">Общее о таймере:</div>
+            <div>Название: {timer.name}</div>
+            <div>
+              Старт: {timer.mode === GameTimerMode.Total ? "Общий" : "Частный"}
+            </div>
+            <div>
+              Команд участвовало:{" "}
+              {members === membersInGame
+                ? members
+                : `${membersInGame} / ${members}`}
+            </div>
+          </div>
         )}
       </div>
       {timer.isNewTimer && (
@@ -69,7 +97,7 @@ export default function GameTimerMaster({
                 items={[
                   {
                     id: GameTimerMode.Apart,
-                    title: "Индивидуальный старт",
+                    title: "Частный старт",
                   },
                   {
                     id: GameTimerMode.Total,
@@ -146,9 +174,17 @@ export default function GameTimerMaster({
                         }`}
                         onContextMenu={(event) => {
                           event.preventDefault();
+                          if (timer.isTeamCantMove(team)) {
+                            if (team === selectedTeam) setSelectedTeam(null);
+                            return;
+                          }
                           setSelectedTeam(team === selectedTeam ? null : team);
                         }}
                         onClick={() => {
+                          if (timer.isTeamCantMove(team)) {
+                            if (team === selectedTeam) setSelectedTeam(null);
+                            return;
+                          }
                           if (!selectedTeam) {
                             if (selectedTeam === team) setSelectedTeam(null);
                             return;
@@ -192,7 +228,9 @@ export default function GameTimerMaster({
                               name="pause-circle-outline"
                               onContextMenu={(event) => {
                                 event.preventDefault();
-                                pauseForRow(team.wid, 0);
+                                event.stopPropagation();
+                                if (timer.startTime(rowi))
+                                  pauseForRow(team.wid, 0);
                               }}
                               onClick={() => {
                                 if (
@@ -239,29 +277,6 @@ export default function GameTimerMaster({
 
       {timer.isNewTimer ? (
         <div className="flex around flex-gap margin-big-gap">
-          {timer.finishes && nameInput.value() && (
-            <span
-              className="pointer"
-              onClick={async () => {
-                if (await modalService.confirm("Опубликовать таймер?"))
-                  liderExer.send(
-                    {
-                      action: "addGameTimer",
-                      method: "push",
-                      args: timer.toExportDict(),
-                    },
-                    () => {
-                      resetTimers();
-                      removeLocalTimer();
-                      nameInput.remove();
-                      close();
-                    }
-                  );
-              }}
-            >
-              Сохранить результаты
-            </span>
-          )}
           {timer.isStarted && (
             <span
               className="pointer error-message"
@@ -296,6 +311,75 @@ export default function GameTimerMaster({
                 </div>
               )
           )}
+        </div>
+      )}
+      <div className="margin-big-gap-v full-width">
+        <LeaderCommentBlock
+          action="addCommentForGameTimer"
+          inputId={`addCommentForGameTimer ${timer.wid} ${timer.game?.wid}`}
+          listw={timer.wid}
+          placeholder="Комментарий к таймеру"
+          areaw={timer.game?.wid}
+          comments={timer.comments}
+          arean={"gameTimers"}
+          {...(timer.isNewTimer
+            ? {
+                isWaitedToSend: true,
+                importantActionOnClick: (comment) => saveComment(comment),
+                onRejectSend: (comment) => removeComment(comment),
+              }
+            : null)}
+        />
+      </div>
+      {timer.isNewTimer ? (
+        <div className="flex around flex-gap margin-big-gap">
+          {timer.finishes && nameInput.value() && (
+            <span
+              className="pointer"
+              onClick={async () => {
+                if (await modalService.confirm("Опубликовать таймер?"))
+                  liderExer.send(
+                    {
+                      action: "addGameTimer",
+                      method: "push",
+                      args: timer.toExportDict(),
+                    },
+                    () => {
+                      resetTimers();
+                      removeLocalTimer();
+                      nameInput.remove();
+                      close();
+                    }
+                  );
+              }}
+            >
+              Сохранить результаты
+            </span>
+          )}
+        </div>
+      ) : (
+        <div
+          className={`flex center pointer ${
+            timer.isInactive ? "color--3" : "error-message"
+          }`}
+          onClick={async () => {
+            if (
+              await modalService.confirm(
+                timer.isInactive ? "Восстановить таймер?" : "Исключить таймер?"
+              )
+            )
+              liderExer.send({
+                action: "setIsIctiveGameTimer",
+                method: "set",
+                args: {
+                  value: !timer.isInactive,
+                  gamew: timer.game?.wid,
+                  timerw: timer.wid,
+                },
+              });
+          }}
+        >
+          {timer.isInactive ? "Восстановить таймер" : "Исключить таймер"}
         </div>
       )}
     </div>

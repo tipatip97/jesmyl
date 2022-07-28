@@ -27,4 +27,4 @@ export interface SendingComment {
     comment: LeaderCommentImportable;
 }
 
-export const defaultSendingComments: SendingComments = { gameTeams: {}, gameTimers: {} };
+export const defaultSendingComments = {} as SendingComments;

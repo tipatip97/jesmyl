@@ -30,11 +30,13 @@ export default function LeaderComment({
   comment,
   isError,
   onRejectSend,
+  isWaitedToSend,
   ...props
 }: HTMLAttributes<HTMLDivElement> & {
   comment: LeaderCommentImportable;
   isError: boolean;
   onRejectSend?: () => void;
+  isWaitedToSend?: boolean;
 }) {
   const date = comment.w && new Date(comment.w);
   const isNeedCut = comment.comment.split(/\n/).length > 5;
@@ -49,7 +51,7 @@ export default function LeaderComment({
       {...props}
       className={`${props.className || ""} margin-gap comment`}
       onContextMenu={
-        isError
+        isError || isWaitedToSend
           ? (event) => {
               event.preventDefault();
               openAbsoluteFloatPopup(
@@ -67,7 +69,9 @@ export default function LeaderComment({
         {date === 0 ? (
           <>
             <div />
-            {isError ? (
+            {isWaitedToSend ? (
+              <EvaIcon name="pause-circle-outline" />
+            ) : isError ? (
               <EvaIcon
                 className="absolute pos-right error-message"
                 name="alert-circle-outline"

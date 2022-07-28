@@ -1,3 +1,4 @@
+import { LeaderCommentImportable } from "../comments/LeaderComment.model";
 
 export enum GameTimerMode {
     Total = 1,
@@ -8,6 +9,8 @@ export interface GameTimerImportable extends GameTimerExportable {
     w: number;
     fio: string;
     owner: string;
+    comments?: LeaderCommentImportable[];
+    isInactive?: boolean;
 }
 
 export interface GameTimerExportable {
