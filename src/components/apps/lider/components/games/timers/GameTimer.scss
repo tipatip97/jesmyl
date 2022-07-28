@@ -20,21 +20,6 @@
     }
   }
 
-  .timer-screen {
-    &:not(.paused)::after {
-      content: "000";
-    }
-
-    &.started::after {
-      animation: digit-switcher 1s linear infinite;
-    }
-
-    & .milliseconds-digits,
-    &::after {
-      font-size: 0.7em;
-    }
-  }
-
   .team-list-table {
     .team-box {
       padding: 0 1em;
@@ -69,6 +54,23 @@
         }
       }
     }
+  }
+}
+
+.timer-screen {
+  color: var(--color--3);
+
+  &:not(.paused)::after {
+    content: "000";
+  }
+
+  &.started::after {
+    animation: digit-switcher 1s linear infinite;
+  }
+
+  & .milliseconds-digits,
+  &::after {
+    font-size: 0.7em;
   }
 }
 
