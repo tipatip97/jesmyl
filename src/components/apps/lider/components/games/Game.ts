@@ -1,14 +1,14 @@
 import SourceBased from "../../../../../complect/SourceBased";
-import { TeamGameExportable } from "../../Lider.model";
+import { TeamGameExportable, TeamGameImportable } from "../../Lider.model";
 import Human from "../people/Human";
 import Team from "../teams/Team";
 import GameTimer from "./timers/GameTimer";
 
-export default class Game extends SourceBased<TeamGameExportable> {
+export default class Game extends SourceBased<TeamGameImportable> {
     teams: Team[];
     timers?: GameTimer[];
 
-    constructor(top: TeamGameExportable, humans: Human[]) {
+    constructor(top: TeamGameImportable, humans: Human[]) {
         super(top);
         this.teams = this.teamList.map((team) => new Team(team, humans, this));
         this.timers = this.timerList?.map((timer) => new GameTimer(timer, this));
@@ -19,11 +19,11 @@ export default class Game extends SourceBased<TeamGameExportable> {
     get wid() { return this.getBasic('w'); }
     get timerList() { return this.getBasic('timers'); }
 
-    toDict(): TeamGameExportable {
+    toExportDict(): TeamGameExportable {
         return {
-            w: this.wid,
-            name: this.name,
-            teams: this.teams.map((team) => team.toDict())
+            ...super.toDict(),
+            teams: this.teams.map((team) => team.toExportDict()),
+            ts: this.makeNewTs(),
         };
     }
 }

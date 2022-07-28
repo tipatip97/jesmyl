@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
-import { GamesStoreExportable } from "../../Lider.model";
+import { GamesStoreImportable } from "../../Lider.model";
 import { riseUpNumUpdatesGames, updateCgamew } from "../../Lider.store";
 import useLiderNav from "../../useLiderNav";
 import usePeople from "../people/usePeople";
@@ -37,7 +37,7 @@ export default function useGames() {
                 dispatch(riseUpNumUpdatesGames());
             }
         },
-        updateGames: (games: GamesStoreExportable) => {
+        updateGames: (games: GamesStoreImportable) => {
             if (people?.humanList) {
                 localGames = new GamesStore(games, people.humanList);
                 ret.updateCgame(localGames.teamGames?.find((game) => game.wid === cgamew));

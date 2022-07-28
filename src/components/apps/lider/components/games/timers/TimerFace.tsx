@@ -41,7 +41,7 @@ export default function TimerFace({
             Новый таймер{timer.name ? ` - ${timer.name}` : ""}
           </span>
         ) : (
-          timer.name
+          `${timer.name} ${timer.fio ? `(${timer.fio})` : ""}`
         )}{" "}
         {timer.isNewTimer && timer.isStarted && (
           <span className="error-message">(Запущен)</span>

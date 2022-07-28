@@ -4,7 +4,7 @@ import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.m
 import { liderStorage } from "../../../shared/jstorages";
 import { defaultSendingComments, SendingComments } from "./components/comments/LeaderComment.model";
 import { HumanListSortVariant } from "./components/people/People.model";
-import { GamesStoreExportable, LiderState, LiderStoraged } from "./Lider.model";
+import { GamesStoreImportable, LiderState, LiderStoraged } from "./Lider.model";
 
 export const liderExer = new Exer('lider', liderStorage);
 
@@ -33,7 +33,7 @@ export const slice = createSlice({
       state.humanListSortVariant = action.payload;
       liderStorage.set('humanListSortVariant', action.payload);
     },
-    updateGamesStore: (state, action: PayloadAction<GamesStoreExportable>) => {
+    updateGamesStore: (state, action: PayloadAction<GamesStoreImportable>) => {
       state.games = action.payload;
       liderStorage.set('games', action.payload);
     },

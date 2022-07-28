@@ -4,8 +4,14 @@ export enum GameTimerMode {
     Apart = 2,
 }
 
-export interface GameTimerExportable {
+export interface GameTimerImportable extends GameTimerExportable {
     w: number;
+    fio: string;
+    owner: string;
+}
+
+export interface GameTimerExportable {
+    ts: number;
     name: string;
     mode: GameTimerMode;
     joins?: number;

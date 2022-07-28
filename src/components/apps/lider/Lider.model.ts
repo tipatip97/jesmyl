@@ -1,8 +1,8 @@
 import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { SendingComments } from "./components/comments/LeaderComment.model";
-import { GameTimerExportable } from "./components/games/Games.model";
+import { GameTimerImportable } from "./components/games/Games.model";
 import { HumanListSortVariant, PeopleExportable } from "./components/people/People.model";
-import { TeamInGameExportable } from "./components/teams/Teams.model";
+import { TeamInGameExportable, TeamInGameImportable } from "./components/teams/Teams.model";
 
 export interface LiderState extends LiderStoraged {
     route: FreeNavRoute;
@@ -14,22 +14,27 @@ export interface LiderStoraged {
     numUpdatesPeople: number;
     numUpdatesTimers: number;
     numUpdatesGames: number;
-    games?: GamesStoreExportable;
+    games?: GamesStoreImportable;
     cgamew?: number;
     humanListSortVariant: HumanListSortVariant;
-    gameTimers: Record<number, GameTimerExportable | null>;
+    gameTimers: Record<number, GameTimerImportable | null>;
     sendingComments: SendingComments;
 }
 
-export interface TeamGameExportable {
+export interface TeamGameImportable extends TeamGameExportable {
     w: number;
-    name: string;
-    teams: TeamInGameExportable[];
-    timers?: GameTimerExportable[];
+    teams: TeamInGameImportable[];
 }
 
-export interface GamesStoreExportable {
-    teamGames?: TeamGameExportable[];
+export interface TeamGameExportable {
+    ts: number;
+    name: string;
+    teams: TeamInGameExportable[];
+    timers?: GameTimerImportable[];
+}
+
+export interface GamesStoreImportable {
+    teamGames?: TeamGameImportable[];
 }
 
 export interface LiderNavData { }

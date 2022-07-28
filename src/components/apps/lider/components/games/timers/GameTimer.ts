@@ -2,14 +2,14 @@ import mylib from "../../../../../../complect/my-lib/MyLib";
 import SourceBased from "../../../../../../complect/SourceBased";
 import Team from "../../teams/Team";
 import Game from "../Game";
-import { GameTimerExportable, GameTimerMode } from "../Games.model";
+import { GameTimerImportable, GameTimerMode } from "../Games.model";
 
-export default class GameTimer extends SourceBased<GameTimerExportable> {
+export default class GameTimer extends SourceBased<GameTimerImportable> {
     game?: Game;
     teams: Team[];
     isNewTimer?: boolean;
 
-    constructor(top: GameTimerExportable, game?: Game, isNewTimer?: boolean) {
+    constructor(top: GameTimerImportable, game?: Game, isNewTimer?: boolean) {
         super(top);
         this.game = game;
         const teams = game?.teams || [];
@@ -24,6 +24,8 @@ export default class GameTimer extends SourceBased<GameTimerExportable> {
     }
 
     get wid() { return this.getBasic('w'); }
+    get owner() { return this.getBasic('owner'); }
+    get fio() { return this.getBasic('fio'); }
 
     get finishes() { return this.getBasic('finishes'); }
     set finishes(val) { this.setExportable('finishes', val); }
@@ -86,10 +88,11 @@ export default class GameTimer extends SourceBased<GameTimerExportable> {
             .some(({ team }) => !finishes[team.wid]);
     }
 
-    toDict() {
+    toExportDict() {
         return {
             ...super.toDict(),
             gamew: this.game?.wid,
-        }
+            ts: this.makeNewTs(),
+        };
     }
 }

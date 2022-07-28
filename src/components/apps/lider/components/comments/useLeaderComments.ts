@@ -3,7 +3,7 @@ import mylib, { MyLib } from "../../../../../complect/my-lib/MyLib";
 import { liderStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
 import useAuth from "../../../../index/useAuth";
-import { GamesStoreExportable } from "../../Lider.model";
+import { GamesStoreImportable } from "../../Lider.model";
 import { liderExer, updateRrrorSentComments, updateSendingComments } from "../../Lider.store";
 import { SendingComment, SendingCommentArea, SendingComments, SendingCommentsAreaName } from "./LeaderComment.model";
 
@@ -27,7 +27,7 @@ export default function useLeaderComments() {
     const ret = {
         sendingComments,
         errorSentComments,
-        sendAllComments: (observableComments: SendingComments, observableGames: GamesStoreExportable) => {
+        sendAllComments: (observableComments: SendingComments, observableGames: GamesStoreImportable) => {
             let throwComments: SendingComments = ret.sendingComments;
 
             const tss = observableGames.teamGames?.map(({ teams }) => teams.map(({ comments }) => comments?.map(comment => comment.owner === login ? comment.ts : 0)))

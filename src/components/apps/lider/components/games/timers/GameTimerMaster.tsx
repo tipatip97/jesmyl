@@ -248,7 +248,7 @@ export default function GameTimerMaster({
                     {
                       action: "addGameTimer",
                       method: "push",
-                      args: timer.toDict(),
+                      args: timer.toExportDict(),
                     },
                     () => {
                       resetTimers();

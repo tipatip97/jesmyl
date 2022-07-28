@@ -111,13 +111,13 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                     +teamMemberCountInput.value(),
                     addRestMode
                   );
-                  const idPrefix = Date.now();
 
                   updateTeams(
                     teams.map((humans) => {
                       return new Team(
                         {
-                          w: idPrefix + Math.random(),
+                          w: 0,
+                          ts: 0,
                           members: humans.map((human) => human.id),
                         },
                         humans,
@@ -145,12 +145,13 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                       method: "push",
                       args: new Game(
                         {
-                          w: Date.now() + Math.random(),
+                          w: 0,
+                          ts: 0,
                           name: gameNameInput.value(),
                           teams: teams.map((team) => team.toDict()),
                         },
                         humanList
-                      ).toDict(),
+                      ).toExportDict(),
                     });
                   close();
                 }}

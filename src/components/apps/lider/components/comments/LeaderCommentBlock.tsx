@@ -86,7 +86,6 @@ export default function LeaderCommentBlock({
       ),
     [arean, areaw, comments, listw, sendingComments]
   );
-  console.log(allComments);
   const partOfComments = allComments.slice(-4);
 
   return (

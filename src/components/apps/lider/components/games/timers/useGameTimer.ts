@@ -4,7 +4,7 @@ import { liderStorage } from "../../../../../../shared/jstorages";
 import { RootState } from "../../../../../../shared/store";
 import { riseUpNumUpdatesTimers } from "../../../Lider.store";
 import Game from "../Game";
-import { GameTimerExportable, GameTimerMode } from "../Games.model";
+import { GameTimerImportable, GameTimerMode } from "../Games.model";
 import GameTimer from "./GameTimer";
 
 let runTimeTimers: Record<number, GameTimer | und> = {};
@@ -16,9 +16,12 @@ export default function useGameTimer(game?: Game) {
         return runTimeTimers[game?.wid || 0] ??= new GameTimer(
             (game && liderStorage.get('gameTimers')?.[game.wid])
             ?? {
-                w: Date.now() + Math.random(),
+                w: 0,
+                ts: 0,
                 mode: GameTimerMode.Apart,
                 name: '',
+                owner: '',
+                fio: ''
             },
             game,
             true
@@ -28,7 +31,7 @@ export default function useGameTimer(game?: Game) {
     const ret = {
         newTimer,
         removeLocalTimer: () => ret.updateTimer(null),
-        updateTimer: (timer: GameTimerExportable | null) => {
+        updateTimer: (timer: GameTimerImportable | null) => {
             if (!game) return;
 
             const timers = { ...liderStorage.getOr('gameTimers', {}) };

@@ -1,13 +1,13 @@
 import SourceBased from "../../../../../complect/SourceBased";
 import Game from "../games/Game";
 import Human from "../people/Human";
-import { TeamInGameExportable } from "./Teams.model";
+import { TeamInGameExportable, TeamInGameImportable } from "./Teams.model";
 
-export default class Team extends SourceBased<TeamInGameExportable> {
+export default class Team extends SourceBased<TeamInGameImportable> {
     humans: Human[];
     game: Game | null;
 
-    constructor(top: TeamInGameExportable, humans: Human[], game: Game | null) {
+    constructor(top: TeamInGameImportable, humans: Human[], game: Game | null) {
         super(top);
         this.humans = this.members
             .map((id) => humans.find((human) => human.id === id))
@@ -22,11 +22,10 @@ export default class Team extends SourceBased<TeamInGameExportable> {
     get members() { return this.getBasic('members'); }
     get comments() { return this.getBasic('comments'); }
 
-    toDict() {
+    toExportDict(): TeamInGameExportable {
         return {
-            name: this.name,
-            members: this.members,
-            w: this.wid
+            ...this.top,
+            ...this.basics,
         };
     }
 }

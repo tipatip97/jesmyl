@@ -1,8 +1,12 @@
 import { LeaderCommentImportable } from "../comments/LeaderComment.model";
 import Human from "../people/Human";
 
-export interface TeamInGameExportable {
+export interface TeamInGameImportable extends TeamInGameExportable {
     w: number;
+    ts: number;
+}
+
+export interface TeamInGameExportable {
     name?: string;
     members: string[];
     comments?: LeaderCommentImportable[];

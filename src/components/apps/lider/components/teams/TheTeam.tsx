@@ -1,8 +1,6 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import { liderExer } from "../../Lider.store";
-import { LeaderCommentExportable } from "../comments/LeaderComment.model";
 import LeaderCommentBlock from "../comments/LeaderCommentBlock";
 import HumanFace from "../people/HumanFace";
 import RandomTwiceName from "../RandomTwiseName";

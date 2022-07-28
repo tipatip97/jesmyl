@@ -4,7 +4,7 @@ import { SendingComments } from "./components/comments/LeaderComment.model";
 import useLeaderComments from "./components/comments/useLeaderComments";
 import useCgame from "./components/games/useGames";
 import usePeople from "./components/people/usePeople";
-import { GamesStoreExportable } from "./Lider.model";
+import { GamesStoreImportable } from "./Lider.model";
 import "./Lider.scss";
 
 export default function LiderApplication({ content }: { content: ReactNode }) {
@@ -12,7 +12,7 @@ export default function LiderApplication({ content }: { content: ReactNode }) {
   const { updateGames, games } = useCgame();
   const { sendAllComments } = useLeaderComments();
 
-  let observableGames: GamesStoreExportable;
+  let observableGames: GamesStoreImportable;
   let observableComments: SendingComments;
   const sendComments = () => {
     if (observableComments && (observableGames || games)) {
