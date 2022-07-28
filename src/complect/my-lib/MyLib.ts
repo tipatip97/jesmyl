@@ -266,6 +266,17 @@ export class MyLib {
         return last;
     }
 
+    isRequiredType(typer: string | any[]) {
+        const check = (type: string | any) => {
+            if (typeof type === 'string') return type !== type.toLowerCase();
+            else if (type == null) return false;
+            else if (Array.isArray(type))
+                return !type.some((type): boolean => !check(type));
+            else return true;
+        };
+        return check(typer);
+    }
+
     isCorrectType(value: any, typer: string | any[]): boolean {
         if (this.isStr(typer)) {
 

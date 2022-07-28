@@ -85,7 +85,8 @@ export class Exec<Value> extends SourceBased<ExecDict> {
         for (const [key, type] of ruleEntries) {
             const argEntry = argsEntries.find(([argn]) => argn === key);
             if (!argEntry) {
-                add(`Не указан параметр "${key}" для исполнения "${this.action}"`);;
+                if (mylib.isRequiredType(type))
+                    add(`Не указан параметр "${key}" для исполнения "${this.action}"`);;
                 continue;
             }
             const [, value] = argEntry;
