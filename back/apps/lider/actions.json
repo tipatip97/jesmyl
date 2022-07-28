@@ -184,19 +184,22 @@
                 "next": [
                     {
                         "uniqs": [
-                            "w"
+                            "ts"
                         ],
                         "level": 30,
                         "action": "addTeamGame",
                         "title": "Добавлена новая командная игра $name",
                         "method": "push",
                         "value": {
-                            "w": "{w}",
+                            "w": "{@setNewWid()}",
+                            "ts": "{ts}",
                             "name": "{name}",
-                            "teams": "{teams}"
+                            "teams": "{teams}",
+                            "fio": "{@userFio}",
+                            "owner": "{@userLogin}"
                         },
                         "args": {
-                            "w": "#Number",
+                            "ts": "#Number",
                             "name": "#String",
                             "teams": "#List"
                         }
@@ -245,8 +248,8 @@
                                                         "method": "push",
                                                         "value": {
                                                             "w": "{@setNewWid()}",
-                                                            "comment": "{comment}",
                                                             "ts": "{ts}",
+                                                            "comment": "{comment}",
                                                             "fio": "{@userFio}",
                                                             "owner": "{@userLogin}"
                                                         },
@@ -298,32 +301,94 @@
                                 "next": [
                                     {
                                         "uniqs": [
-                                            "w"
+                                            "ts"
                                         ],
                                         "level": 20,
                                         "action": "addGameTimer",
                                         "title": "Добавлен новый таймер $name для игры $gamen",
                                         "method": "push",
                                         "value": {
-                                            "w": "{w}",
+                                            "w": "{@setNewWid()}",
+                                            "fio": "{@userFio}",
+                                            "owner": "{@userLogin}",
+                                            "ts": "{ts}",
                                             "name": "{name}",
                                             "mode": "{mode}",
                                             "joins": "{joins}",
                                             "start": "{start}",
                                             "starts": "{starts}",
                                             "teams": "{teams}",
-                                            "finishes": "{finishes}"
+                                            "finishes": "{finishes}",
+                                            "comments": "{comments}"
                                         },
                                         "args": {
-                                            "w": "#Number",
+                                            "ts": "#Number",
                                             "name": "#String",
                                             "mode": "#Number",
                                             "joins": "#number",
                                             "start": "#number",
                                             "starts": "#list",
                                             "teams": "#list",
+                                            "comments": "#list",
                                             "finishes": "#Dict"
+                                        },
+                                        "setForceInEach": {
+                                            "comments": {
+                                                "fio": "{@userFio}",
+                                                "owner": "{@userLogin}",
+                                                "w": "{@setNewWid()}"
+                                            }
                                         }
+                                    },
+                                    {
+                                        "next": [
+                                            {
+                                                "cloneArgs": {
+                                                    "listw": "timerw"
+                                                },
+                                                "track": [
+                                                    [
+                                                        "w",
+                                                        "===",
+                                                        "{timerw}"
+                                                    ]
+                                                ],
+                                                "args": {
+                                                    "timerw": "#Number"
+                                                },
+                                                "next": [
+                                                    {
+                                                        "track": [
+                                                            "comments"
+                                                        ],
+                                                        "expected": [],
+                                                        "action": "addCommentForGameTimer",
+                                                        "method": "push",
+                                                        "value": {
+                                                            "w": "{@setNewWid()}",
+                                                            "ts": "{ts}",
+                                                            "comment": "{comment}",
+                                                            "fio": "{@userFio}",
+                                                            "owner": "{@userLogin}"
+                                                        },
+                                                        "args": {
+                                                            "comment": "#String",
+                                                            "ts": "#Number"
+                                                        }
+                                                    },
+                                                    {
+                                                        "track": [
+                                                            "isInactive"
+                                                        ],
+                                                        "action": "setIsIctiveGameTimer",
+                                                        "method": "set",
+                                                        "args": {
+                                                            "value": "#Boolean"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
                                     }
                                 ]
                             }
