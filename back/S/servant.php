@@ -577,13 +577,14 @@ function expectedObjectError($method, $target, $value)
   ];
 }
 
-function &doIt($exec, &$parents, &$parent)
+function &doIt(&$exec, &$parents, &$parent)
 {
   $track = $exec['track'];
-  $value = $exec['value'];
+  $value = &$exec['value'];
   $method = $exec['method'];
   $uniqs = $exec['uniqs'];
   $createByPath = $exec['exec']['createByPath'] || $exec['createByPath'];
+  $setForceInEach = $exec['setForceInEach'];
 
   $penultimate = null;
   $target = null;
@@ -614,6 +615,20 @@ function &doIt($exec, &$parents, &$parent)
     $penultimate = &$tracked['penultimate'];
     $lastTrace = $tracked['trace'];
     $target = &$tracked['target'];
+  }
+
+  if (is_array($setForceInEach)) {
+    $errors = [];
+
+    foreach ($setForceInEach as $key => $setters) {
+      if (isList($value[$key])) {
+        foreach ($value[$key] as &$item) {
+          foreach ($setters as $fieldn => $val) {
+            $item[$fieldn] = replaceArgs($val, $item, $errors);
+          }
+        }
+      }
+    }
   }
 
   //debugLine(['do-It', $tracked, $parents, $value]);
@@ -764,8 +779,6 @@ function executer($execs, $pathTemplate, $saveInFiles = 1, $appName)
     } else {
       $parent = &$parents[$path];
     }
-
-    //debugLine([$isFileParent]);
 
     if ($isFileParent) {
       $did = &doIt($exec, $parents, $parent);
