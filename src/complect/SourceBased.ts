@@ -12,6 +12,10 @@ export default class SourceBased<T> {
         this.basics = {} as never;
     }
 
+    makeNewTs() {
+        return Date.now() + Math.random();
+    }
+
     getBasic<K extends keyof T>(fieldn: K): T[K] {
         if (this.basics[fieldn] === undefined) {
             return this.top[fieldn];
