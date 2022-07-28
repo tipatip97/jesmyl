@@ -281,7 +281,7 @@ export default function GameTimerMaster({
         </div>
       ) : (
         <div>
-          {timer.rateSortedTeams().map(
+          {timer.rateSortedTeams(true).map(
             ({ team, start, finish }, bagi) =>
               !!finish &&
               !!start && (

@@ -64,16 +64,19 @@ export default class GameTimer extends SourceBased<GameTimerImportable> {
         this.finishes = null;
     }
 
-    rateSortedTeams() {
+    rateSortedTeams(isFilterOnlyFinished?: boolean) {
         const starts = this.starts || [];
         const finishes = this.finishes || {};
         const start = this.start || 0;
 
-        const teamsNet = mylib.netFromLine(this.teams, this.joins || 1,
+        let teamsNet = mylib.netFromLine(this.teams, this.joins || 1,
             this.mode === GameTimerMode.Total
                 ? (team, rowi) => ({ team, start, finish: finishes[team.wid], rowi })
                 : (team, rowi) => ({ team, start: starts[rowi], finish: finishes[team.wid], rowi })
-        ).flat().filter(({ start, finish }) => start && finish);
+        ).flat();
+
+        if (isFilterOnlyFinished)
+            teamsNet = teamsNet.filter(({ start, finish }) => start && finish);
 
         return teamsNet.sort(({ start: aStart, finish: aFinish }, { start: bStart, finish: bFinish }) => {
             return (aFinish - aStart) - (bFinish - bStart);
