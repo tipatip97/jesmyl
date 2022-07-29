@@ -1,18 +1,17 @@
 import { useState } from "react";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import { liderExer } from "../../Lider.store";
-import LeaderCommentBlock from "../comments/LeaderCommentBlock";
-import HumanFace from "../people/HumanFace";
-import RandomTwiceName from "../RandomTwiseName";
-import Team from "./Team";
-import "./Team.scss";
-import TeamMemberMore from "./TeamMemberMore";
+import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { liderExer } from "../../../Lider.store";
+import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
+import HumanFace from "../../people/HumanFace";
+import RandomTwiceName from "../../RandomTwiseName";
+import GameTeam from "./GameTeam";
+import GameTeamMemberMore from "./GameTeamMemberMore";
 
-export default function TheTeam({
+export default function TheGameTeam({
   team,
   redactable,
 }: {
-  team: Team;
+  team: GameTeam;
   redactable?: boolean;
 }) {
   let redactBlock = null;
@@ -65,7 +64,7 @@ export default function TheTeam({
                 liderExer.actionAccessedOrUnd("removeMemberFromTeam") &&
                 (() => {
                   openAbsoluteBottomPopup(
-                    <TeamMemberMore human={human} team={team} />
+                    <GameTeamMemberMore human={human} team={team} />
                   );
                 })
               }

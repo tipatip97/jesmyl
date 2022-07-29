@@ -2,7 +2,7 @@ import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { liderExer } from "../../Lider.store";
 import Human from "../people/Human";
-import Team from "../teams/Team";
+import GameTeam from "./teams/GameTeam";
 import Game from "./Game";
 
 export default function OutsiderMore({
@@ -17,7 +17,7 @@ export default function OutsiderMore({
       <div
         className="abs-item"
         onClick={() => {
-          let targetTeam: Team;
+          let targetTeam: GameTeam;
 
           modalService.open({
             description: `В какую команду определить участни${

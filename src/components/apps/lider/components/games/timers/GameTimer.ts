@@ -1,14 +1,14 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import SourceBased from "../../../../../../complect/SourceBased";
 import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
-import Team from "../../teams/Team";
+import GameTeam from "../teams/GameTeam";
 import Game from "../Game";
 import { GameTimerImportable, GameTimerMode } from "../Games.model";
 import { RateSortedItem } from "./GameTimer.model";
 
 export default class GameTimer extends SourceBased<GameTimerImportable> {
     game?: Game;
-    teams: Team[];
+    teams: GameTeam[];
     isNewTimer?: boolean;
 
     constructor(top: GameTimerImportable, game?: Game, isNewTimer?: boolean) {
@@ -25,8 +25,8 @@ export default class GameTimer extends SourceBased<GameTimerImportable> {
         return this.teams = this.teamList
             ? this.teamList.map((wid) => {
                 const team = teams.find((team) => team.wid === wid);
-                return team && this.game && new Team(team.toDict(), team.humans, this.game)
-            }).filter((team) => team) as Team[]
+                return team && this.game && new GameTeam(team.toDict(), team.humans, this.game)
+            }).filter((team) => team) as GameTeam[]
             : this.game?.teams || [];
     }
 
@@ -121,7 +121,7 @@ export default class GameTimer extends SourceBased<GameTimerImportable> {
         return this.finishes?.[teamw];
     }
 
-    isTeamCantMove(topTeam: Team) {
+    isTeamCantMove(topTeam: GameTeam) {
         const rowi = this.rateSortedTeams().find(({ team }) => topTeam === team)?.rowi;
         return rowi != null && this.startTime(rowi) && this.isTeamFinished(topTeam.wid);
     }

@@ -6,8 +6,8 @@ import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
 import { liderExer } from "../../Lider.store";
 import HumanFace from "../people/HumanFace";
 import usePeople from "../people/usePeople";
-import Team from "../teams/Team";
-import TheTeam from "../teams/TheTeam";
+import GameTeam from "./teams/GameTeam";
+import TheGameTeam from "./teams/TheGameTeam";
 import Game from "./Game";
 
 export default function TeamGameMaker({ close }: { close: () => void }) {
@@ -15,7 +15,7 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
     type: "number",
   });
   const gameNameInput = useKeyboard()("game-name", {});
-  const [teams, updateTeams] = useState<Team[] | null>(null);
+  const [teams, updateTeams] = useState<GameTeam[] | null>(null);
   const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
   const { people } = usePeople();
 
@@ -114,7 +114,7 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
 
                   updateTeams(
                     teams.map((humans) => {
-                      return new Team(
+                      return new GameTeam(
                         {
                           w: 0,
                           ts: 0,
@@ -169,7 +169,7 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
               )
           )}
           {teams?.map((team, teami) => {
-            return <TheTeam key={`team-${teami}`} team={team} />;
+            return <TheGameTeam key={`team-${teami}`} team={team} />;
           })}
         </>
       ) : (

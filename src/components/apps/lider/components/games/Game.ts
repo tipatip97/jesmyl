@@ -1,16 +1,16 @@
 import SourceBased from "../../../../../complect/SourceBased";
 import { TeamGameExportable, TeamGameImportable } from "../../Lider.model";
 import Human from "../people/Human";
-import Team from "../teams/Team";
+import GameTeam from "./teams/GameTeam";
 import GameTimer from "./timers/GameTimer";
 
 export default class Game extends SourceBased<TeamGameImportable> {
-    teams: Team[];
+    teams: GameTeam[];
     timers?: GameTimer[];
 
     constructor(top: TeamGameImportable, humans: Human[]) {
         super(top);
-        this.teams = this.teamList.map((team) => new Team(team, humans, this));
+        this.teams = this.teamList.map((team) => new GameTeam(team, humans, this));
         this.timers = this.timerList?.map((timer) => new GameTimer(timer, this));
     }
 

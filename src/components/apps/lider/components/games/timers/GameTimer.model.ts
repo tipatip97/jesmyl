@@ -1,7 +1,7 @@
-import Team from "../../teams/Team";
+import GameTeam from "../teams/GameTeam";
 
 export interface RateSortedItem {
-    team: Team;
+    team: GameTeam;
     start: number;
     finish: number;
     rowi: number;

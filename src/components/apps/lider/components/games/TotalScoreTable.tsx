@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import Team from "../teams/Team";
+import GameTeam from "./teams/GameTeam";
 import GameTimer from "./timers/GameTimer";
 import { RateSortedItem } from "./timers/GameTimer.model";
 import GameTimerScreen from "./timers/GameTimerScreen";
@@ -12,7 +12,7 @@ export default function TotalScoreTable({
   const [openScores, updateOpenScores] = useState<number[]>([]);
 
   const scores = useMemo(() => {
-    const rateSortedItemsMap = new Map<Team, RateSortedItem[]>();
+    const rateSortedItemsMap = new Map<GameTeam, RateSortedItem[]>();
 
     selectedTimers.forEach((timer) => {
       timer.rateSortedTeams().forEach((rateSorts) => {

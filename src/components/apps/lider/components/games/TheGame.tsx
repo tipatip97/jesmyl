@@ -6,7 +6,7 @@ import { liderExer } from "../../Lider.store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
 import HumanFace from "../people/HumanFace";
 import usePeople from "../people/usePeople";
-import TheTeam from "../teams/TheTeam";
+import TheGameTeam from "./teams/TheGameTeam";
 import OutsiderMore from "./OutsiderMore";
 import GameTimer from "./timers/GameTimer";
 import TimerFace from "./timers/TimerFace";
@@ -85,7 +85,7 @@ export default function TheGame() {
           )}
           <h2 className="margin-big-gap-v margin-gap">Команды:</h2>
           {cgame?.teams.map((team, teami) => {
-            return <TheTeam key={`teami-${teami}`} team={team} redactable />;
+            return <TheGameTeam key={`teami-${teami}`} team={team} redactable />;
           })}
         </>
       }

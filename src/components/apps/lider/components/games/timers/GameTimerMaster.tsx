@@ -6,7 +6,7 @@ import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { liderExer } from "../../../Lider.store";
 import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
-import Team from "../../teams/Team";
+import GameTeam from "../teams/GameTeam";
 import { GameTimerMode } from "../Games.model";
 import useGames from "../useGames";
 import GameTimer from "./GameTimer";
@@ -32,8 +32,8 @@ export default function GameTimerMaster({
 
   const [mode, setMode] = useState(timer.mode);
   const [joins, setJoins] = useState(timer.joins || 1);
-  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
-  const [teams, updateTeams] = useState<Team[]>(timer.teams ?? []);
+  const [selectedTeam, setSelectedTeam] = useState<GameTeam | null>(null);
+  const [teams, updateTeams] = useState<GameTeam[]>(timer.teams ?? []);
   const {
     startTotalTimer,
     mapTimer,

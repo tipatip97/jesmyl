@@ -1,15 +1,15 @@
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import modalService from "../../../../../complect/modal/Modal.service";
-import { liderExer } from "../../Lider.store";
-import Human from "../people/Human";
-import Team from "./Team";
+import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import modalService from "../../../../../../complect/modal/Modal.service";
+import { liderExer } from "../../../Lider.store";
+import Human from "../../people/Human";
+import GameTeam from "./GameTeam";
 
-export default function TeamMemberMore({
+export default function GameTeamMemberMore({
   human,
   team,
 }: {
   human: Human;
-  team: Team;
+  team: GameTeam;
 }) {
   return (
     <>

@@ -2,7 +2,7 @@ import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model"
 import { SendingComments } from "./components/comments/LeaderComment.model";
 import { GameTimerImportable } from "./components/games/Games.model";
 import { HumanListSortVariant, PeopleExportable } from "./components/people/People.model";
-import { TeamInGameExportable, TeamInGameImportable } from "./components/teams/Teams.model";
+import { GameTeamExportable, GameTeamImportable } from "./components/games/teams/GameTeams.model";
 
 export interface LiderState extends LiderStoraged {
     route: FreeNavRoute;
@@ -23,13 +23,13 @@ export interface LiderStoraged {
 
 export interface TeamGameImportable extends TeamGameExportable {
     w: number;
-    teams: TeamInGameImportable[];
+    teams: GameTeamImportable[];
 }
 
 export interface TeamGameExportable {
     ts: number;
     name: string;
-    teams: TeamInGameExportable[];
+    teams: GameTeamExportable[];
     timers?: GameTimerImportable[];
 }
 
