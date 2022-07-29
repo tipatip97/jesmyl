@@ -1,5 +1,6 @@
 import PrintableBottomItem from "./components/PrintableBottomItem";
 import FortBayardPassport from "./components/templates/FortBayardPassport";
+import QRQuest from "./components/templates/QRQuest";
 
 export default function GeneralMore() {
   return (
@@ -7,6 +8,10 @@ export default function GeneralMore() {
       <PrintableBottomItem
         title="Распечатать Паспорт Форт-Баярда"
         node={<FortBayardPassport />}
+      />
+      <PrintableBottomItem
+        title="Распечатать QR квест-точки"
+        node={<QRQuest />}
       />
     </>
   );
