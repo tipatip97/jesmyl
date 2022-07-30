@@ -19,16 +19,16 @@ function debugPrefix()
   return '::';
 }
 
-function startsWith($haystack, $needle)
+function startsWith($haystack, $start)
 {
-  return substr($haystack, 0, strlen($needle)) === $needle;
+  return substr($haystack, 0, strlen($start)) === $start;
 }
 
-function endsWith($haystack, $needle)
+function endsWith($haystack, $end)
 {
-  $len = strlen($needle);
+  $len = strlen($end);
   if (!$len) return false;
-  return substr($haystack, -$len) === $needle;
+  return substr($haystack, -$len) === $end;
 }
 
 function isDebug()
@@ -617,21 +617,7 @@ function &doIt(&$exec, &$parents, &$parent)
     $target = &$tracked['target'];
   }
 
-  if (is_array($setForceInEach)) {
-    $errors = [];
-
-    foreach ($setForceInEach as $key => $setters) {
-      if (isList($value[$key])) {
-        foreach ($value[$key] as &$item) {
-          foreach ($setters as $fieldn => $val) {
-            $item[$fieldn] = replaceArgs($val, $item, $errors);
-          }
-        }
-      }
-    }
-  }
-
-  //debugLine(['do-It', $tracked, $parents, $value]);
+  setForceInEach($setForceInEach, $value);
 
   switch ($method) {
     case 'set':
@@ -648,6 +634,7 @@ function &doIt(&$exec, &$parents, &$parent)
 
       break;
     case 'remove':
+    case 'remove_each':
       if (is_array($target)) {
         $isTargetList = isList($target);
         $isValueList = isList($value);
@@ -655,10 +642,10 @@ function &doIt(&$exec, &$parents, &$parent)
         $newList = [];
 
         foreach ($target as $key => $val) {
-          if ($found || ($isValueList ? !isExpected($val, $value) : $key !== $value)) {
+          if ($found || ($isValueList ? !isExpected($val, $value, $exec['args']) : $key !== $value)) {
             if ($isTargetList) $newList[] = $val;
             else $newList[$key] = $val;
-          } else $found = true;
+          } else $found = $method !== 'remove_each';
         }
 
         $penultimate[$lastTrace] = $newList;
@@ -702,6 +689,45 @@ function &doIt(&$exec, &$parents, &$parent)
     'ok' => true,
     'val' => $parent
   ];
+}
+
+function setForceInEach($source, &$value)
+{
+
+  if (is_array($source)) {
+    $errors = [];
+
+    foreach ($source as $keyPath => $setters) {
+      $keyPaths = explode('.', $keyPath);
+
+      foreach ($keyPaths as $key) {
+
+        if (endsWith($key, '[]')) {
+          $fieldn = substr($key, 0, -2);
+          $nextLevelKey = substr($keyPath, strlen($key) + 1);
+
+          $nextValue = &$value[$fieldn];
+
+          if (is_array($nextValue))
+            foreach ($nextValue as &$nextVal) {
+              setForceInEach([$nextLevelKey => $source[$keyPath]], $nextVal);
+            }
+          continue;
+        }
+
+        if ($key === '.') $list = &$value;
+        else if (is_array($value[$key])) $list = &$value[$key];
+
+        if (isList($list)) {
+          foreach ($list as &$item) {
+            foreach ($setters as $fieldn => $val) {
+              $item[$fieldn] = replaceArgs($val, $item, $errors);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 
@@ -1123,7 +1149,9 @@ function getIfWHEN($target, $inspector)
   return $inspector['WHEN'][$index];
 }
 
-function isExpected($target, $inspector)
+
+
+function isExpected($source, $inspector, $bag = null)
 {
 
   if (is_null($inspector)) return false;
@@ -1133,12 +1161,10 @@ function isExpected($target, $inspector)
       foreach ($inspector as $key => $val) {
         $tern = 'WHEN';
         if ($key === $tern) {
-          $num = isExpected($target, $inspector[$tern][0]) ? 1 : 2;
+          $num = isExpected($source, $inspector[$tern][0]) ? 1 : 2;
 
-          //debugLine([$num, $inspector[$tern][$num], $inspector]);
-
-          return isExpected($target, $inspector[$tern][$num]);
-        } elseif ($target[$key] !== $inspector[$key])
+          return isExpected($source, $inspector[$tern][$num]);
+        } elseif ($source[$key] !== $inspector[$key])
           return false;
       }
       return true;
@@ -1146,14 +1172,12 @@ function isExpected($target, $inspector)
       $valLen = count($inspector);
 
       if ($valLen == 1) {
-        $ret = !!getAttribute($target, $inspector[0]);
+        $ret = !!getAttribute($source, $inspector[0]);
         return $ret;
       } elseif ($valLen == 2) {
-        //$debugLine[] = ['twice operator', $target, $inspector[0] === '!', $target[$inspector[0]], getAttribute($target, $inspector[0]), $inspector[0], $target[$inspector[1]], getAttribute($target, $inspector[1]), $inspector[1]];
-
         return $inspector[0] === '!'
-          ? !getAttribute($target, $inspector[1])
-          : isCorrectType($target[$inspector[0]], $inspector[1]) || getAttribute($target, $inspector[0]) === getAttribute($target, $inspector[1]);
+          ? !getAttribute($source, $inspector[1])
+          : isCorrectType($source[$inspector[0]], $inspector[1]) || getAttribute($source, $inspector[0]) === getAttribute($source, $inspector[1]);
       } elseif ($valLen != 0) {
         $step = 3;
         $happensCount = 0;
@@ -1163,9 +1187,8 @@ function isExpected($target, $inspector)
 
         for ($i = 0; $i < $valLen; $i += $step) {
           $wholeCount += 1;
-          $field = is_array($inspector[$i]) ? tracker(array_merge([[$target]], $inspector[$i]))['target'] : getAttribute($target, $inspector[$i]);
-          //if (is_array($inspector[$i])) //debugLine(['insp', $field, $inspector[$i],$target, array_merge([$target], $inspector[$i]), '=', '=', '=']);
-          $sign = getIfGlob($inspector[$i + 2]);
+          $field = is_array($inspector[$i]) ? tracker(array_merge([[$source]], $inspector[$i]))['source'] : getAttribute($source, $inspector[$i]);
+          $sign = getIfGlob($inspector[$i + 2], getAttribute($bag, $inspector[$i + 2]));
           $result = false;
 
           $operator = $inspector[$i + 1];
@@ -1173,8 +1196,6 @@ function isExpected($target, $inspector)
           $logicStart = $operator[0];
           $logics = ['&', '|', '(', ')'];
           $logicBrackets = ['(', ')'];
-
-          //$ret[] = ['Ф', $logicStart, $operator, $logicEnd, $prevLogicEnd];
 
           if (array_search($logicStart, $logics) !== false) $operator = substr($operator, 1);
           if (array_search($logicEnd, $logics) !== false) {
@@ -1212,7 +1233,6 @@ function isExpected($target, $inspector)
               : $res;
           }
 
-          //$debugLine[] = ['isExpected', $field, $operator, $sign, '>>>', $result, $inspector, $target];
           if ($result) {
             if ($logicEnd === '|' || $prevLogicEnd === '|') return true;
             else $happensCount++;
