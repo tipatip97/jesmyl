@@ -11,7 +11,6 @@
                 ],
                 "expected": [],
                 "uniqs": [
-                    "id",
                     "name"
                 ],
                 "next": [
@@ -21,24 +20,23 @@
                         "title": "Добавлен новый участник $name",
                         "method": "push",
                         "value": {
-                            "id": "{id}",
+                            "w": "{@setNewWid()}",
+                            "ts": "{ts}",
                             "name": "{name}",
                             "notes": "{?notes}",
                             "ufp1": "{?ufp1}",
                             "ufp2": "{?ufp2}",
                             "isMan": "{isMan}",
                             "bDay": "{bDay}",
-                            "group": "{group}",
                             "isInactive": "{?isInactive}"
                         },
                         "args": {
-                            "id": "#String",
+                            "ts": "#Number",
                             "name": "#String",
                             "notes": "#string",
                             "ufp1": "#number",
                             "ufp2": "#number",
                             "bDay": "#Number",
-                            "group": "#Number",
                             "isMan": "#Boolean",
                             "isInactive": "#boolean"
                         }
@@ -46,6 +44,11 @@
                     {
                         "level": 20,
                         "action": "addManyHumans",
+                        "setForceInEach": {
+                            ".": {
+                                "w": "{@setNewWid()}"
+                            }
+                        },
                         "title": "Добавлено несколько участников",
                         "method": "concat",
                         "args": {
@@ -55,9 +58,9 @@
                     {
                         "track": [
                             [
-                                "id",
+                                "w",
                                 "===",
-                                "{id}"
+                                "{wid}"
                             ]
                         ],
                         "next": [
@@ -192,16 +195,30 @@
                         "method": "push",
                         "value": {
                             "w": "{@setNewWid()}",
+                            "owner": "{@userLogin}",
+                            "fio": "{@userFio}",
                             "ts": "{ts}",
                             "name": "{name}",
                             "teams": "{teams}",
-                            "fio": "{@userFio}",
-                            "owner": "{@userLogin}"
+                            "contextw": "{contextw}"
                         },
                         "args": {
                             "ts": "#Number",
                             "name": "#String",
-                            "teams": "#List"
+                            "teams": "#List",
+                            "contextw": "#Number"
+                        },
+                        "setForceInEach": {
+                            "teams": {
+                                "fio": "{@userFio}",
+                                "owner": "{@userLogin}",
+                                "w": "{@setNewWid()}"
+                            },
+                            "teams[].comments": {
+                                "fio": "{@userFio}",
+                                "owner": "{@userLogin}",
+                                "w": "{@setNewWid()}"
+                            }
                         }
                     },
                     {
@@ -265,7 +282,7 @@
                                                     "members"
                                                 ],
                                                 "args": {
-                                                    "humanId": "#String"
+                                                    "humanw": "#Number"
                                                 },
                                                 "next": [
                                                     {
@@ -275,7 +292,7 @@
                                                         "value": [
                                                             ".",
                                                             "===",
-                                                            "{humanId}"
+                                                            "{humanw}"
                                                         ]
                                                     },
                                                     {
@@ -285,7 +302,7 @@
                                                         "level": 30,
                                                         "action": "addMemberToTeam",
                                                         "method": "push",
-                                                        "value": "{humanId}"
+                                                        "value": "{humanw}"
                                                     }
                                                 ]
                                             }
@@ -391,6 +408,89 @@
                                         ]
                                     }
                                 ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "track": [
+            "contexts"
+        ],
+        "expected": {},
+        "next": [
+            {
+                "track": [
+                    "list"
+                ],
+                "expected": [],
+                "next": [
+                    {
+                        "action": "addContext",
+                        "level": 300,
+                        "method": "push",
+                        "value": {
+                            "w": "{@setNewWid()}",
+                            "name": "{name}",
+                            "members": "{members}",
+                            "mentors": "{mentors}"
+                        },
+                        "args": {
+                            "name": "#String",
+                            "members": "#List",
+                            "mentors": "#List"
+                        }
+                    },
+                    {
+                        "track": [
+                            [
+                                "w",
+                                "===",
+                                "{w}"
+                            ]
+                        ],
+                        "next": [
+                            {
+                                "action": "addHumansToContext",
+                                "track": [
+                                    "{listn}"
+                                ],
+                                "method": "concat",
+                                "uniqs": [
+                                    "."
+                                ],
+                                "value": "{list}",
+                                "args": {
+                                    "list": "#List",
+                                    "listn": [
+                                        "mentors",
+                                        "members"
+                                    ]
+                                }
+                            },
+                            {
+                                "action": "removeHumansFromContext",
+                                "track": [
+                                    "{listn}"
+                                ],
+                                "method": "remove_each",
+                                "uniqs": [
+                                    "."
+                                ],
+                                "value": [
+                                    ".",
+                                    "in",
+                                    "{list}"
+                                ],
+                                "args": {
+                                    "list": "#List",
+                                    "listn": [
+                                        "mentors",
+                                        "members"
+                                    ]
+                                }
                             }
                         ]
                     }
