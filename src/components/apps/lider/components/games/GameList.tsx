@@ -2,12 +2,14 @@ import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAb
 import { liderExer } from "../../Lider.store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
 import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
+import useLeaderContexts from "../contexts/useContexts";
 import TeamGameFace from "./GameFace";
 import GamesMore from "./GamesMore";
 import useGames from "./useGames";
 
 export default function GameList() {
-  const { games } = useGames();
+  const { teamGames } = useGames();
+  const { ccontext } = useLeaderContexts();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   return (
@@ -19,10 +21,10 @@ export default function GameList() {
           openAbsoluteBottomPopup(<GamesMore />);
         })
       }
-      headTitle="Командные игры"
+      headTitle={`Командные игры${ccontext?.name ? ` - ${ccontext.name}` : ""}`}
       content={
         <>
-          {games?.teamGames?.map((game, gamei) => (
+          {teamGames?.map((game, gamei) => (
             <TeamGameFace key={`gamei-${gamei}`} game={game} />
           ))}
         </>

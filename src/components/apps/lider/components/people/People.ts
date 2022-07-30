@@ -1,11 +1,11 @@
 import SourceBased from "../../../../../complect/SourceBased";
 import Human from "./Human";
-import { PeopleExportable } from "./People.model";
+import { PeopleImportable } from "./People.model";
 
-export default class People extends SourceBased<PeopleExportable> {
+export default class People extends SourceBased<PeopleImportable> {
     humanList?: Human[];
 
-    constructor(top: PeopleExportable) {
+    constructor(top: PeopleImportable) {
         super(top);
         this.humanList = top.humans?.map((human) => new Human(human));
     }

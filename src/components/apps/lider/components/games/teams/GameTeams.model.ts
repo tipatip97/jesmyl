@@ -8,7 +8,7 @@ export interface GameTeamImportable extends GameTeamExportable {
 
 export interface GameTeamExportable {
     name?: string;
-    members: string[];
+    members: number[];
     comments?: LeaderCommentImportable[];
 }
 

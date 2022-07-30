@@ -14,33 +14,12 @@ export default function TheGameTeam({
   team: GameTeam;
   redactable?: boolean;
 }) {
-  let redactBlock = null;
   const [pronoun, noun] = team.name?.split(" ") || [];
   const [isHumansShow, setIsHumansShow] = useState(!(redactable ?? false));
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-
-  if (redactable) {
-    redactBlock = (
-      <>
-        <div
-          className="margin-gap pointer"
-          onClick={() => setIsHumansShow(!isHumansShow)}
-        >
-          {isHumansShow ? "Скрыть" : "Показать"} участников
-        </div>
-
-        <LeaderCommentBlock
-          inputId={`commentInput ${team.wid} ${team.game?.wid || "##"}`}
-          placeholder={`Комментарий о "${team.upperName}"`}
-          comments={team.comments}
-          arean={"gameTeams"}
-          areaw={team.game?.wid}
-          listw={team.wid}
-          action="addCommentToGameTeam"
-        />
-      </>
-    );
-  }
+  const [updates, riseUpUpdates] = useState(0);
+  const [, setName] = useState("");
+  const forceUpdate = () => riseUpUpdates(updates + 1);
 
   return (
     <div className="the-team-card padding-giant-gap">
@@ -49,7 +28,7 @@ export default function TheGameTeam({
         noun={noun}
         canChange={!redactable}
         className="user-select inline-block margin-gap-v text-bold"
-        onNameChange={(name) => (team.name = name)}
+        onNameChange={(name) => setName((team.name = name))}
       />
       {" (сила - " +
         team.humans.reduce((acc, { ufp }) => acc + ufp, 0).toFixed(1) +
@@ -71,7 +50,32 @@ export default function TheGameTeam({
             />
           );
         })}
-      {redactBlock}
+      <div
+        className="margin-gap pointer"
+        onClick={() => setIsHumansShow(!isHumansShow)}
+      >
+        {isHumansShow ? "Скрыть" : "Показать"} участников
+      </div>
+
+      <LeaderCommentBlock
+        inputId={`commentInput ${team.wid || team.ts} ${
+          team.game?.wid || "##"
+        }`}
+        placeholder={`Комментарий о "${team.upperName}"`}
+        comments={team.comments}
+        arean="gameTeams"
+        areaw={team.game?.wid}
+        listw={team.wid}
+        action="addCommentToGameTeam"
+        {...(!redactable && {
+          isWaitedToSend: true,
+          importantActionOnClick: (comment) => {
+            team.includeNewComment(comment);
+            forceUpdate();
+          },
+          onRejectSend: (comment) => team.removeComment(comment),
+        })}
+      />
     </div>
   );
 }

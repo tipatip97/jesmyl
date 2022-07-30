@@ -13,6 +13,10 @@ export default class SourceBased<T> {
     }
 
     makeNewTs() {
+        return SourceBased.makeNewTs();
+    }
+
+    static makeNewTs() {
         return Date.now() + Math.random();
     }
 

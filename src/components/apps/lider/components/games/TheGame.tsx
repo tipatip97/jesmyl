@@ -4,10 +4,10 @@ import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import { liderExer } from "../../Lider.store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
+import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
-import usePeople from "../people/usePeople";
-import TheGameTeam from "./teams/TheGameTeam";
 import OutsiderMore from "./OutsiderMore";
+import TheGameTeam from "./teams/TheGameTeam";
 import GameTimer from "./timers/GameTimer";
 import TimerFace from "./timers/TimerFace";
 import useGameTimer from "./timers/useGameTimer";
@@ -16,17 +16,36 @@ import useCgame from "./useGames";
 
 export default function TheGame() {
   const { cgame } = useCgame();
-  const { people } = usePeople();
+  const { ccontext } = useLeaderContexts();
   const [selectedTimers, updateSelectedTimers] = useState<GameTimer[]>([]);
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { openFullscreenContent } = useFullscreenContent();
   const usedHumans =
-    cgame?.teams.reduce(
+    cgame?.teams.reduce<number[]>(
       (list, team) => list.concat(team.members),
-      [] as string[]
+      []
     ) || [];
 
   const { newTimer } = useGameTimer(cgame);
+
+  const membersReadyToPlayNode = ccontext
+    ?.membersReadyToPlay()
+    ?.filter((human) => usedHumans.indexOf(human.wid) < 0)
+    .map((human, humani) => (
+      <HumanFace
+        key={`humani-${humani}`}
+        human={human}
+        onMoreClick={
+          cgame &&
+          liderExer.actionAccessedOrUnd("addMemberToTeam") &&
+          (() => {
+            openAbsoluteBottomPopup(
+              <OutsiderMore game={cgame} human={human} />
+            );
+          })
+        }
+      />
+    ));
 
   return (
     <PhaseLiderContainer
@@ -34,24 +53,12 @@ export default function TheGame() {
       headTitle={`Игра - ${cgame?.name || ""}`}
       content={
         <>
-          <h2 className="margin-gap">Не вошедшие игроки:</h2>
-          {people?.humanList
-            ?.filter((human) => usedHumans.indexOf(human.id) < 0)
-            .map((human, humani) => (
-              <HumanFace
-                key={`humani-${humani}`}
-                human={human}
-                onMoreClick={
-                  cgame &&
-                  liderExer.actionAccessedOrUnd("addMemberToTeam") &&
-                  (() => {
-                    openAbsoluteBottomPopup(
-                      <OutsiderMore game={cgame} human={human} />
-                    );
-                  })
-                }
-              />
-            ))}
+          {!!membersReadyToPlayNode?.length && (
+            <>
+              <h2 className="margin-gap">Не вошедшие игроки:</h2>
+              {membersReadyToPlayNode}
+            </>
+          )}
           <h2 className="margin-gap">Таймеры:</h2>
           {cgame?.timers?.map((timer, timeri) => {
             return (
@@ -85,7 +92,9 @@ export default function TheGame() {
           )}
           <h2 className="margin-big-gap-v margin-gap">Команды:</h2>
           {cgame?.teams.map((team, teami) => {
-            return <TheGameTeam key={`teami-${teami}`} team={team} redactable />;
+            return (
+              <TheGameTeam key={`teami-${teami}`} team={team} redactable />
+            );
           })}
         </>
       }

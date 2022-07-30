@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import Human from "./Human";
@@ -6,9 +7,11 @@ import HumanMore from "./HumanMore";
 export default function HumanFace({
   human,
   onMoreClick,
+  asMore,
 }: {
   human: Human;
   onMoreClick?: () => void;
+  asMore?: (human: Human) => ReactNode;
 }) {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
@@ -28,15 +31,16 @@ export default function HumanFace({
           {`${human.name}${human.ufp ? `, ${human.ufp}` : ""}`}
         </span>
       </div>
-      {onMoreClick && (
-        <EvaIcon
-          name="more-vertical"
-          onClick={(event) => {
-            event.stopPropagation();
-            onMoreClick();
-          }}
-        />
-      )}
+      {asMore?.(human) ||
+        (onMoreClick && (
+          <EvaIcon
+            name="more-vertical"
+            onClick={(event) => {
+              event.stopPropagation();
+              onMoreClick();
+            }}
+          />
+        ))}
     </div>
   );
 }

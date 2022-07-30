@@ -1,16 +1,12 @@
+import { ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import { setHumanListSortVariant } from "../../Lider.store";
-import PrintableBottomItem from "../PrintableBottomItem";
-import AdaptationPageList from "../templates/AdaptationPageList";
-import HumanMaster from "./HumanMaster";
 import { humanFieldTranslations } from "./People.model";
 
-export default function HumansMore() {
-  const { openFullscreenContent } = useFullscreenContent();
+export default function HumansMore({ moreNode }: { moreNode?: ReactNode }) {
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(
     (state: RootState) => state.lider.humanListSortVariant
@@ -19,21 +15,7 @@ export default function HumansMore() {
   return (
     <>
       <div
-        className="abs-item"
-        onClick={() =>
-          openFullscreenContent((close) => <HumanMaster close={close} />)
-        }
-      >
-        <EvaIcon name="person-add-outline" className="abs-icon" />
-        <div>Добавить участника</div>
-        <div className="abs-action" />
-      </div>
-      <PrintableBottomItem
-        title="Распечатать Допуска к путешествию"
-        node={<AdaptationPageList />}
-      />
-      <div
-        className="abs-item"
+        className="abs-item pointer"
         onClick={(event) => {
           event.stopPropagation();
           const next = mylib.findNext(
@@ -44,11 +26,12 @@ export default function HumansMore() {
         }}
       >
         <EvaIcon name="bar-chart-2-outline" className="abs-icon" />
-        <div>Сортировать участников</div>
-        <div className="abs-action">
+        <div>Сортировать личности</div>
+        <div className="abs-action abs-full flex center">
           {humanFieldTranslations[humanListSortVariant]}
         </div>
       </div>
+      {moreNode}
     </>
   );
 }

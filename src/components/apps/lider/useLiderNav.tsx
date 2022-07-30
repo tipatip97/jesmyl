@@ -9,6 +9,10 @@ import { RootState } from "../../../shared/store";
 import GameList from "./components/games/GameList";
 import TheGame from "./components/games/TheGame";
 import HumanList from "./components/people/HumanList";
+import MentorList from "./components/people/MentorList";
+import MemberList from "./components/people/MemberList";
+import PrintableBottomItem from "./components/PrintableBottomItem";
+import AdaptationPageList from "./components/templates/AdaptationPageList";
 import GeneralPage from "./GeneralPage";
 import LiderApplication from "./Lider";
 import { LiderNavData, LiderStoraged } from "./Lider.model";
@@ -32,7 +36,25 @@ const navigation: NavigationConfig<
       next: [
         {
           phase: ["humanList"],
-          node: <HumanList />,
+          node: (
+            <HumanList
+              isAsPage
+              moreNode={
+                <PrintableBottomItem
+                  title="Распечатать Допуска к путешествию"
+                  node={<AdaptationPageList />}
+                />
+              }
+            />
+          ),
+        },
+        {
+          phase: ["leaderList"],
+          node: <MentorList isAsPage/>,
+        },
+        {
+          phase: ["memberList"],
+          node: <MemberList isAsPage />,
         },
         {
           phase: ["games"],

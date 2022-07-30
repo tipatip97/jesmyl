@@ -321,7 +321,7 @@ export default function GameTimerMaster({
           placeholder="Комментарий к таймеру"
           areaw={timer.game?.wid}
           comments={timer.comments}
-          arean={"gameTimers"}
+          arean="gameTimers"
           {...(timer.isNewTimer
             ? {
                 isWaitedToSend: true,

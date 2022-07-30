@@ -29,7 +29,7 @@ export default function GameTeamMemberMore({
                 action: "removeMemberFromTeam",
                 method: "remove",
                 args: {
-                  humanId: human.id,
+                  humanw: human.wid,
                   teamw: team.wid,
                   gamew: team.game.wid,
                 },
@@ -39,7 +39,7 @@ export default function GameTeamMemberMore({
         }}
       >
         <EvaIcon name="person-delete-outline" className="abs-icon" />
-        <div>Исключить участника</div>
+        <div>Исключить личность</div>
         <div className="abs-action" />
       </div>
     </>

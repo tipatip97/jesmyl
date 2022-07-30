@@ -6,28 +6,25 @@ import { liderExer } from "../../Lider.store";
 import Human from "./Human";
 import { HumanExportable } from "./People.model";
 
-const idMaker = (name: string) => name.toLowerCase().replace(/\s+/g, "_");
 const ufpLabels = "1".repeat(10).split("");
 
-const lineAsHuman = (line: string): HumanExportable => {
-  const [first, last, bDay, ...allNotes] = line
-    .trim()
-    .replace(/([а-я])([А-Я])/, "$1 $2")
-    .replace(/([а-я])([\d])/, "$1 $2")
-    .split(/\s+/);
-  const notes = allNotes.join(" ");
+const lineAsHuman = (line: string): HumanExportable | string => {
+  const match = line.match(/^([А-ЯЁа-яё\s]+)([\d.]+)\s*([дмДМ])$/);
 
-  const name = `${first} ${last}`;
+  if (match == null) return line;
+
+  const [, name, bDay, sex] = match;
   const [day, month, year] = bDay?.split(/\./) || [];
-  const group = +(notes?.match(/\d/)?.[0] || 0);
+
+  if (isNaN(new Date(+year, +month - 1, +day).getTime()))
+    return "[Date]" + line;
 
   return {
-    notes: notes?.replace(/[мm]/i, "м").replace(/[дd]/i, "д"),
-    name,
+    ts: Date.now() + Math.random(),
+    notes: "",
+    name: name.trim().replace(/\s+/g, " "),
     bDay: new Date(+year, +month - 1, +day).getTime(),
-    isMan: !!/[мm]/i.exec(notes),
-    id: idMaker(name),
-    group,
+    isMan: !!/[м]/i.exec(sex),
     ufp1: 0,
     ufp2: 0,
   };
@@ -41,13 +38,12 @@ export default function HumanMaster({
   close: () => void;
 }) {
   const [viewHumanList, updateViewHumanList] = useState<
-    HumanExportable[] | null
+    (HumanExportable | string)[] | null
   >(null);
   const [name, setName] = useState<string | nil>(human?.name);
   const [ufp1, setUfp1] = useState<number | nil>(human?.ufp1);
   const [ufp2, setUfp2] = useState<number | nil>(human?.ufp2);
   const [bDay, setBDay] = useState<number | nil>(human?.bDay);
-  const [group, setGroup] = useState<number | nil>(human?.group || 0);
   const [isHumanHeap, setIsHumanHeap] = useState(false);
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
@@ -73,12 +69,12 @@ export default function HumanMaster({
           if (name) {
             liderExer.setIfCan({
               action: "setHumanName",
-              scope: `setHumanName-${human.id}`,
+              scope: `setHumanName-${human.wid}`,
               method: "set",
               prev,
               value,
               args: {
-                id: human.id,
+                wid: human.wid,
                 value,
               },
             });
@@ -94,12 +90,12 @@ export default function HumanMaster({
       : (value, prev) => {
           liderExer.setIfCan({
             action: "setHumanNotes",
-            scope: `setHumanNotes-${human.id}`,
+            scope: `setHumanNotes-${human.wid}`,
             method: "set",
             prev,
             value,
             args: {
-              id: human.id,
+              wid: human.wid,
               value,
               humann: human.name,
             },
@@ -128,12 +124,12 @@ export default function HumanMaster({
           if (time) {
             liderExer.setIfCan({
               action: "setHumanBDay",
-              scope: `setHumanBDay-${human.id}`,
+              scope: `setHumanBDay-${human.wid}`,
               method: "set",
               prev: human.bDay,
               value: time,
               args: {
-                id: human.id,
+                wid: human.wid,
                 value: time,
                 humann: human.name,
               },
@@ -142,32 +138,10 @@ export default function HumanMaster({
         },
   });
 
-  const groupInput = inputGenerator("human-group", {
-    type: "number",
-    initialValue: "" + (human?.group || 0),
-    onInput: !human
-      ? (value) => setGroup(+value)
-      : (value) => {
-          setGroup(+value);
-          liderExer.setIfCan({
-            action: "setHumanGroup",
-            scope: `setHumanGroup-${human.id}`,
-            method: "set",
-            prev: human.group,
-            value: +value,
-            args: {
-              id: human.id,
-              value: +value,
-              humann: human.name,
-            },
-          });
-        },
-  });
-
   const heapInput = inputGenerator(`heap-human-input`, {
     className: "input",
     multiline: true,
-    placeholder: "Массив участников",
+    placeholder: "Массив личностей",
     onChange: (value) => {
       updateViewHumanList(value.split(/\n+/).map((line) => lineAsHuman(line)));
     },
@@ -179,7 +153,6 @@ export default function HumanMaster({
       nameInput.remove();
       notesInput.remove();
       bDayInput.remove();
-      groupInput.remove();
       liderExer.clear();
     };
   }, []);
@@ -193,11 +166,11 @@ export default function HumanMaster({
           items={[
             {
               id: true,
-              title: "Добавить несколько участников",
+              title: "Добавить несколько личностей",
             },
             {
               id: false,
-              title: "Добавление участника",
+              title: "Добавление личности",
             },
           ]}
           onSelect={({ id }) => setIsHumanHeap(id)}
@@ -207,25 +180,22 @@ export default function HumanMaster({
         <>
           <div className="full-width">{heapInput.node}</div>
           {viewHumanList?.map((human, humani) => {
+            if (typeof human === "string") {
+              return (
+                <div key={`incorrect-humani-${humani}`} className="error-text">
+                  {human}
+                </div>
+              );
+            }
             const bDay = new Date(human.bDay);
-            const nameInput = inputGenerator(`viewHumanList-name-${human.id}`, {
+            const nameInput = inputGenerator(`viewHumanList-name-${human.ts}`, {
               initialValue: human.name,
               onChange: (value) => {
                 human.name = value;
               },
             });
-            const groupInput = inputGenerator(
-              `viewHumanList-group-${human.id}`,
-              {
-                initialValue: "" + human.group,
-                type: "number",
-                onChange: (value) => {
-                  human.group = +value;
-                },
-              }
-            );
             const notesInput = inputGenerator(
-              `viewHumanList-notes-${human.id}`,
+              `viewHumanList-notes-${human.ts}`,
               {
                 initialValue: human.notes,
                 onChange: (value) => {
@@ -233,7 +203,7 @@ export default function HumanMaster({
                 },
               }
             );
-            const bDayInput = inputGenerator(`viewHumanList-bday-${human.id}`, {
+            const bDayInput = inputGenerator(`viewHumanList-bday-${human.ts}`, {
               initialValue: (bDay.getTime()
                 ? bDay
                 : null
@@ -264,7 +234,6 @@ export default function HumanMaster({
                     onSelect={({ id }) => (human.isMan = id)}
                   />
                 </div>
-                <div>Группа: {groupInput.node}</div>
                 <div className={bDay.getTime() ? "" : "error-message"}>
                   Дата рождения: {bDayInput.node}
                 </div>
@@ -276,7 +245,7 @@ export default function HumanMaster({
             <div
               className="pointer"
               onClick={() => {
-                liderExer.setIfCan({
+                liderExer.send({
                   action: "addManyHumans",
                   method: "concat",
                   args: {
@@ -317,12 +286,12 @@ export default function HumanMaster({
                 if (human)
                   liderExer.setIfCan({
                     action: "setHumanIsMan",
-                    scope: `setHumanIsMan-${human.id}`,
+                    scope: `setHumanIsMan-${human.wid}`,
                     method: "set",
                     prev: human.isMan,
                     value: !isMan,
                     args: {
-                      id: human.id,
+                      wid: human.wid,
                       value: !isMan,
                       humann: human.name,
                     },
@@ -359,12 +328,12 @@ export default function HumanMaster({
                         if (human) {
                           liderExer.setIfCan({
                             action,
-                            scope: `${action}-${human.id}`,
+                            scope: `${action}-${human.wid}`,
                             method: "set",
                             prev: human[fieldn],
                             value,
                             args: {
-                              id: human.id,
+                              wid: human.wid,
                               value,
                               humann: human.name,
                             },
@@ -377,9 +346,6 @@ export default function HumanMaster({
               </div>
             );
           })}
-          <div className="full-width margin-big-gap-v">
-            Группа ({isMan ? "у мальчиков" : "у девочек"}) {groupInput.node}
-          </div>
           <div className="full-width margin-big-gap-v">
             Дата рождения {bDayInput.node}
           </div>
@@ -398,19 +364,19 @@ export default function HumanMaster({
               if (human)
                 liderExer.setIfCan({
                   action: "setHumanInactive",
-                  scope: `setHumanInactive-${human.id}`,
+                  scope: `setHumanInactive-${human.wid}`,
                   method: "set",
                   prev: !!human.isInactive,
                   value: !isInactive,
                   args: {
-                    id: human.id,
+                    wid: human.wid,
                     value: !isInactive,
                     humann: human.name,
                   },
                 });
             }}
           >
-            {isInactive ? "Включить участника" : "Исключить участника"}
+            {isInactive ? "Разблокировать личность" : "Заблокировать личность"}
           </div>
           {bDay && bDayInput.value() && nameInput.value() ? (
             <div
@@ -430,9 +396,8 @@ export default function HumanMaster({
                       notes: notesInput.value(),
                       ufp1,
                       ufp2,
-                      group,
                       bDay,
-                      id: idMaker(name.trim()),
+                      ts: Date.now() + Math.random(),
                       isInactive,
                     } as HumanExportable,
                   });

@@ -28,7 +28,7 @@ export const getRandomTwiceName = (topPronoun?: string | null, topNoun?: string)
     return [pronoun, noun.replace(/[^- а-яё\d]/ig, '')];
 }
 
-console.info(getRandomTwiceName('рабочий', 'жильё'));
+console.info(getRandomTwiceName());
 
 // console.info(
 //     JSON.stringify(

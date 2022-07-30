@@ -1,12 +1,12 @@
 import SourceBased from "../../../../../complect/SourceBased";
-import { HumanExportable } from "./People.model";
+import { HumanImportable } from "./People.model";
 
-export default class Human extends SourceBased<HumanExportable> {
+export default class Human extends SourceBased<HumanImportable> {
     get name() { return this.getBasic('name'); }
     set name(val) { this.setExportable('name', val); }
 
-    get id() { return this.getBasic('id'); }
-    set id(val) { this.setExportable('id', val); }
+    get wid() { return this.getBasic('w'); }
+    set wid(val) { this.setExportable('w', val); }
 
     get isInactive() { return this.getBasic('isInactive'); }
 
@@ -18,9 +18,6 @@ export default class Human extends SourceBased<HumanExportable> {
 
     get bDay() { return this.getBasic('bDay'); }
     set bDay(val) { this.setExportable('bDay', val); }
-
-    get group() { return this.getBasic('group'); }
-    set group(val) { this.setExportable('group', val); }
 
     get ufp1() { return this.getBasic('ufp1'); }
     set ufp1(val) { this.setExportable('ufp1', val); }

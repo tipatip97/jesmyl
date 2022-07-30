@@ -14,6 +14,7 @@ body {
   --color--7: #b5f2c8;
   --color--8: var(--color--5);
   --color--ko: #ec6969;
+  --color--ok: #9bec69;
 
   &.light-theme {
     --color--1: #eaf1e9;
@@ -24,6 +25,7 @@ body {
     --color--6: #f8fbf4;
     --color--7: #336a4a;
     --color--8: #fbfdf8;
+    --color--ok: #47bb00;
   }
 
   #root {
@@ -82,6 +84,11 @@ body {
   color: var(--color--ko);
 }
 
+.success-message {
+  --svg-color: var(--color--ok);
+  color: var(--color--ok);
+}
+
 input[type="radio"],
 input[type="button"] {
   cursor: pointer;
@@ -134,8 +141,14 @@ input[type="button"] {
   }
 }
 
-.over-hidden {
-  overflow: hidden;
+.over- {
+  &hidden {
+    overflow: hidden;
+  }
+
+  &auto {
+    overflow: auto;
+  }
 }
 
 .input,
@@ -295,6 +308,10 @@ textarea {
   .fade-0#{$i} {
     opacity: $i / 10;
   }
+}
+
+.height-30vh {
+  height: 30vh;
 }
 
 .absolute,

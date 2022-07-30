@@ -13,7 +13,6 @@ export default function PhaseLiderContainer(
       {...props}
       exer={liderExer}
       goBack={goBack}
-      isWithoutLookButton
     />
   );
 }

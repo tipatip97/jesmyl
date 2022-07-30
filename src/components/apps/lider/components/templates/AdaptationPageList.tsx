@@ -1,11 +1,11 @@
-import usePeople from "../people/usePeople";
+import useLeaderContexts from "../contexts/useContexts";
 import AdaptationPage from "./AdaptationPage";
 
 export default function AdaptationPageList() {
-  const { people } = usePeople();
+  const { ccontext } = useLeaderContexts();
   return (
     <>
-      {people?.humansReadyToPlay?.map((human) => (
+      {ccontext?.membersReadyToPlay()?.map((human) => (
         <AdaptationPage human={human} />
       ))}
     </>

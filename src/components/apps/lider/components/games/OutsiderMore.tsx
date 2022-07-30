@@ -41,7 +41,7 @@ export default function OutsiderMore({
                     action: "addMemberToTeam",
                     method: "push",
                     args: {
-                      humanId: human.id,
+                      humanw: human.wid,
                       teamw: targetTeam.wid,
                       gamew: game.wid,
                     },

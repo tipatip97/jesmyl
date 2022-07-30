@@ -3,12 +3,11 @@ import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import modalService from "../../../../../complect/modal/Modal.service";
 import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
-import { liderExer } from "../../Lider.store";
+import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
-import usePeople from "../people/usePeople";
+import Game from "./Game";
 import GameTeam from "./teams/GameTeam";
 import TheGameTeam from "./teams/TheGameTeam";
-import Game from "./Game";
 
 export default function TeamGameMaker({ close }: { close: () => void }) {
   const teamMemberCountInput = useKeyboard()("set-team-member-count", {
@@ -17,9 +16,9 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
   const gameNameInput = useKeyboard()("game-name", {});
   const [teams, updateTeams] = useState<GameTeam[] | null>(null);
   const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
-  const { people } = usePeople();
+  const { ccontext } = useLeaderContexts();
 
-  const humanList = people?.humansReadyToPlay;
+  const humanList = ccontext?.membersReadyToPlay();
 
   useEffect(() => {
     return () => {
@@ -29,6 +28,15 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
   }, []);
 
   if (!humanList) return null;
+
+  const cantPlayers = ccontext?.members
+    ?.map(
+      (human, humani) =>
+        !human.isCanPlayGame() && (
+          <HumanFace key={`humani-${humani}`} human={human} />
+        )
+    )
+    .filter((player) => player);
 
   const teamsCount = +teamMemberCountInput.value();
   const countInTeam = teamsCount && humanList.length / teamsCount;
@@ -117,8 +125,8 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                       return new GameTeam(
                         {
                           w: 0,
-                          ts: 0,
-                          members: humans.map((human) => human.id),
+                          ts: GameTeam.makeNewTs(),
+                          members: humans.map((human) => human.wid),
                         },
                         humans,
                         null
@@ -135,25 +143,19 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
               <div
                 className="pointer"
                 onClick={async () => {
+                  if (!ccontext) return;
                   const isSend = await modalService.confirm(
                     "Опубликовать игру?"
                   );
 
-                  if (isSend)
-                    liderExer.send({
-                      action: "addTeamGame",
-                      method: "push",
-                      args: new Game(
-                        {
-                          w: 0,
-                          ts: 0,
-                          name: gameNameInput.value(),
-                          teams: teams.map((team) => team.toDict()),
-                        },
-                        humanList
-                      ).toExportDict(),
-                    });
-                  close();
+                  if (isSend) {
+                    Game.sendNewGame(
+                      gameNameInput.value(),
+                      teams,
+                      ccontext.wid
+                    );
+                    close();
+                  }
                 }}
               >
                 Сохранить игру
@@ -161,12 +163,13 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
             ) : null}
           </div>
 
-          <div className="margin-gap error-message">Не войдут</div>
-          {people?.humanList?.map(
-            (human, humani) =>
-              !human.isCanPlayGame() && (
-                <HumanFace key={`humani-${humani}`} human={human} />
-              )
+          {!!cantPlayers?.length && (
+            <>
+              <div className="margin-gap error-message">
+                Не войдут {cantPlayers?.length}
+              </div>
+              {cantPlayers}
+            </>
           )}
           {teams?.map((team, teami) => {
             return <TheGameTeam key={`team-${teami}`} team={team} />;

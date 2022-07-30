@@ -1,40 +1,80 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
+import modalService from "../../../complect/modal/Modal.service";
 import { liderStorage } from "../../../shared/jstorages";
-import { SendingComments } from "./components/comments/LeaderComment.model";
 import useLeaderComments from "./components/comments/useLeaderComments";
+import useLeaderContexts from "./components/contexts/useContexts";
 import useCgame from "./components/games/useGames";
 import usePeople from "./components/people/usePeople";
-import { GamesStoreImportable } from "./Lider.model";
 import "./Lider.scss";
 
 export default function LiderApplication({ content }: { content: ReactNode }) {
-  const { updatePeople } = usePeople();
-  const { updateGames, games } = useCgame();
-  const { sendAllComments } = useLeaderComments();
+  const { updatePeople, peopleImportable, updatePeopleImportable } =
+    usePeople();
+  const { updateGames, gamesImportable, updateGamesImportable } = useCgame();
+  const { sendAllComments, sendingComments } = useLeaderComments();
+  const {
+    updateContexts,
+    setCurrentContext,
+    ccontext,
+    contextsImportable,
+    updateContextsImportable,
+  } = useLeaderContexts();
 
-  let observableGames: GamesStoreImportable;
-  let observableComments: SendingComments;
-  const sendComments = () => {
-    if (observableComments && (observableGames || games)) {
-      sendAllComments(observableComments, observableGames ?? games?.toDict());
+  useEffect(() => {
+    if (gamesImportable && ccontext) updateGames(gamesImportable, ccontext);
+  }, [ccontext, gamesImportable]);
+
+  useEffect(() => {
+    if (sendingComments && gamesImportable)
+      sendAllComments(sendingComments, gamesImportable);
+  }, [gamesImportable, sendingComments]);
+
+  useEffect(() => {
+    if (contextsImportable && peopleImportable?.humans) {
+      const contexts = updateContexts(
+        contextsImportable,
+        peopleImportable.humans
+      );
+
+      setTimeout(() => {
+        if (!liderStorage.get("currentContextw")) {
+          modalService.open({
+            title: "Нужно быть в контексте)",
+            withoutCloseButton: true,
+
+            description:
+              "На данный момент нет текущего контекста. Выбери, пожалуйста, нужный",
+            inputs: contexts.list?.map((context) => {
+              return {
+                type: "button",
+                value: context.name,
+                onClick: () => setCurrentContext(context.wid),
+              };
+            }),
+          });
+        }
+      });
     }
-  };
+  }, [
+    contextsImportable,
+    gamesImportable,
+    peopleImportable?.humans,
+    sendingComments,
+  ]);
 
-  liderStorage.listen("people", "LiderApplication", (people) => {
-    if (people) updatePeople(people);
-  });
+  useEffect(() => {
+    if (peopleImportable) updatePeople(peopleImportable);
+  }, [peopleImportable]);
 
   liderStorage.listen("games", "LiderApplication", (games) => {
-    if (games) {
-      updateGames(games);
-      observableGames = games;
-      sendComments();
-    }
+    if (games) updateGamesImportable(games);
   });
 
-  liderStorage.listen("sendingComments", "LiderApplication", (comments) => {
-    observableComments = comments;
-    sendComments();
+  liderStorage.listen("people", "LiderApplication", (games) => {
+    if (games) updatePeopleImportable(games);
+  });
+  liderStorage.listen("contexts", "LiderApplication", (games) => {
+    if (games) updateContextsImportable(games);
   });
 
   return <>{content}</>;

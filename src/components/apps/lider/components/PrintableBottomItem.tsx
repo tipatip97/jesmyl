@@ -13,7 +13,10 @@ export default function PrintableBottomItem({
   const { openFullscreenContent } = useFullscreenContent();
 
   return (
-    <div className="abs-item" onClick={() => renderComponentInNewWindow(node)}>
+    <div
+      className="abs-item pointer"
+      onClick={() => renderComponentInNewWindow(node)}
+    >
       <EvaIcon name="printer-outline" className="abs-icon" />
       <div>{title}</div>
       <div className="abs-action">
