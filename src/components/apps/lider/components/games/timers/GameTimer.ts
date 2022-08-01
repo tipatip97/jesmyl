@@ -3,18 +3,19 @@ import SourceBased from "../../../../../../complect/SourceBased";
 import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
 import GameTeam from "../teams/GameTeam";
 import Game from "../Game";
-import { GameTimerImportable, GameTimerMode } from "../Games.model";
+import { GameTimerCreatable, GameTimerImportable, GameTimerMode } from "./GameTimer.model";
 import { RateSortedItem } from "./GameTimer.model";
+import { liderExer } from "../../../Lider.store";
 
-export default class GameTimer extends SourceBased<GameTimerImportable> {
+export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
     game?: Game;
     teams: GameTeam[];
-    isNewTimer?: boolean;
+    isNew?: boolean;
 
-    constructor(top: GameTimerImportable, game?: Game, isNewTimer?: boolean) {
+    constructor(top: GameTimerImportable, game?: Game, isNew?: boolean) {
         super(top);
         this.game = game;
-        this.isNewTimer = isNewTimer;
+        this.isNew = isNew;
 
         this.teams = this.setTeams();
     }
@@ -31,6 +32,7 @@ export default class GameTimer extends SourceBased<GameTimerImportable> {
     }
 
     get wid() { return this.getBasic('w'); }
+    get ts() { return this.getBasic('ts'); }
     get owner() { return this.getBasic('owner'); }
     get fio() { return this.getBasic('fio'); }
     get isInactive() { return this.getBasic('isInactive'); }
@@ -64,7 +66,7 @@ export default class GameTimer extends SourceBased<GameTimerImportable> {
     }
 
     startTime(rowi: number) {
-        return (this.mode === GameTimerMode.Total
+        return (this.mode === GameTimerMode.TimerTotal
             ? this.start
             : this.starts?.[rowi]) || 0;
     }
@@ -96,7 +98,7 @@ export default class GameTimer extends SourceBased<GameTimerImportable> {
         const start = this.start || 0;
 
         let teamsNet = mylib.netFromLine(this.teams, this.joins || 1,
-            this.mode === GameTimerMode.Total
+            this.mode === GameTimerMode.TimerTotal
                 ? (team, rowi) => ({ team, start, finish: finishes[team.wid], rowi })
                 : (team, rowi) => ({ team, start: starts[rowi], finish: finishes[team.wid], rowi })
         ).flat();
@@ -114,7 +116,7 @@ export default class GameTimer extends SourceBased<GameTimerImportable> {
 
         return !this.rateSortedTeams()
             .filter(({ rowi }) => topRowi === rowi)
-            .some(({ team }) => !finishes[team.wid]);
+            .some(({ team }) => team && !finishes[team.wid]);
     }
 
     isTeamFinished(teamw: number) {
@@ -122,15 +124,17 @@ export default class GameTimer extends SourceBased<GameTimerImportable> {
     }
 
     isTeamCantMove(topTeam: GameTeam) {
-        const rowi = this.rateSortedTeams().find(({ team }) => topTeam === team)?.rowi;
+        const rowi = this.rateSortedTeams().find(({ team }) => team && topTeam.wid === team.wid)?.rowi;
         return rowi != null && this.startTime(rowi) && this.isTeamFinished(topTeam.wid);
     }
 
-    toExportDict() {
-        return {
-            ...super.toDict(),
-            gamew: this.game?.wid,
-            ts: this.makeNewTs(),
-        };
+    static publicateNew(timer: GameTimerCreatable) {
+        return new Promise((res, rej) => liderExer.send(
+            {
+                action: "addGameTimer",
+                method: "push",
+                args: timer,
+            }, res, rej, null, true
+        ));
     }
 }

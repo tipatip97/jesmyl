@@ -34,9 +34,9 @@ export interface PeopleImportable {
 export interface HumanListComponentProps {
     isAsPage?: boolean;
     uniq?: string;
-    list?: (list?: Human[]) => und | Human[];
-    dangers?: Human[];
-    successes?: Human[];
+    list?: (list?: number[]) => und | number[];
+    dangers?: number[];
+    successes?: number[];
     searcherClass?: string;
     placeholder?: string;
     onMoreClick?: () => void;
@@ -47,10 +47,12 @@ export interface HumanListComponentProps {
 export interface SelectHumansComponentProps {
     uniq: string;
     excludedTitle?: string;
-    onListUpdate?: (addList: Human[], delList: Human[]) => void;
+    onListsUpdate?: (addList: number[], delList: number[]) => void;
     chosenPlaceholder: string;
     chooseTitle: string;
-    chosenTitle: string;
-    fixedList?: Human[];
-    excludes?: Human[];
+    chosenTitle: ReactNode;
+    isRedactable?: boolean;
+    isRedact?: boolean;
+    fixedList?: number[];
+    excludes?: number[];
 }

@@ -134,10 +134,7 @@ export default function IndexLogin() {
             </button>
           </div>
           {mode === "register" ? null : (
-            <div
-              className="register-button"
-              onClick={() => setMode("register")}
-            >
+            <div className="the-button" onClick={() => setMode("register")}>
               Создать профиль
             </div>
           )}

@@ -3,6 +3,7 @@ import useAbsoluteFloatPopup from "../../../../../complect/absolute-popup/useAbs
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { LeaderCommentImportable } from "./LeaderComment.model";
+import useLeaderComments from "./useLeaderComments";
 
 const templaterBag = {
   commentTime: (wid: number) => {
@@ -45,6 +46,7 @@ export default function LeaderComment({
     ? comment.comment.split(/\n/).slice(0, 4).join("\n") + " ..."
     : comment.comment;
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
+  const { sendAllComments } = useLeaderComments();
 
   return (
     <div
@@ -55,9 +57,17 @@ export default function LeaderComment({
           ? (event) => {
               event.preventDefault();
               openAbsoluteFloatPopup(
-                <div className="pointer" onClick={() => onRejectSend?.()}>
-                  Отменить отправку
-                </div>,
+                <>
+                  <div
+                    className="pointer error-text"
+                    onClick={() => onRejectSend?.()}
+                  >
+                    Отменить отправку
+                  </div>
+                  <div className="pointer" onClick={() => sendAllComments()}>
+                    Повторить отправку всех
+                  </div>
+                </>,
                 event.clientX,
                 event.clientY
               );

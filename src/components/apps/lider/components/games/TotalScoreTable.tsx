@@ -1,29 +1,32 @@
 import { useMemo, useState } from "react";
 import GameTeam from "./teams/GameTeam";
-import GameTimer from "./timers/GameTimer";
 import { RateSortedItem } from "./timers/GameTimer.model";
 import GameTimerScreen from "./timers/GameTimerScreen";
+import useGames from "./useGames";
 
 export default function TotalScoreTable({
   selectedTimers,
 }: {
-  selectedTimers: GameTimer[];
+  selectedTimers: number[];
 }) {
   const [openScores, updateOpenScores] = useState<number[]>([]);
+  const { cgame } = useGames();
 
   const scores = useMemo(() => {
-    const rateSortedItemsMap = new Map<GameTeam, RateSortedItem[]>();
+    const rateSortedItemsMap = new Map<number, RateSortedItem[]>();
 
-    selectedTimers.forEach((timer) => {
-      timer.rateSortedTeams().forEach((rateSorts) => {
+    selectedTimers.forEach((timerWid) => {
+      const timer = cgame?.timers?.find((timer) => timer.wid === timerWid);
+
+      timer?.rateSortedTeams().forEach((rateSorts) => {
         const { team, start, finish } = rateSorts;
-        if (start && finish) {
-          if (rateSortedItemsMap.has(team))
+        if (start && finish && team) {
+          if (rateSortedItemsMap.has(team.wid))
             rateSortedItemsMap.set(
-              team,
-              rateSortedItemsMap.get(team)?.concat(rateSorts) ?? []
+              team.wid,
+              rateSortedItemsMap.get(team.wid)?.concat(rateSorts) ?? []
             );
-          else rateSortedItemsMap.set(team, [rateSorts]);
+          else rateSortedItemsMap.set(team.wid, [rateSorts]);
         }
       });
     });
@@ -36,6 +39,7 @@ export default function TotalScoreTable({
         finish: number;
         starts: number[];
         finishes: number[];
+        team?: GameTeam;
       };
 
       const { start, finish } = items.reduce<ScoreMap>(
@@ -44,11 +48,12 @@ export default function TotalScoreTable({
           finish: item.finish + finish,
           starts: [...starts, start] as number[],
           finishes: [...finishes, finish] as number[],
+          team: item.team,
         }),
         { start: 0, finish: 0, starts: [], finishes: [] }
       );
 
-      scores.push({ start, finish, rowi: -1, team });
+      scores.push({ start, finish, rowi: -1, team: cgame?.getTeam(team) });
     });
     return scores;
   }, [selectedTimers]);
@@ -71,19 +76,22 @@ export default function TotalScoreTable({
               }}
             >
               <span>
-                {scorei + 1}. {team.name} -
+                {scorei + 1}. {team?.name} -
               </span>
               <GameTimerScreen start={start} pause={finish} />
             </div>
             {openScores.indexOf(scorei) < 0 || (
               <div className="padding-giant-gap">
-                {selectedTimers.map((timer, timeri) => {
+                {selectedTimers.map((timerWid, timeri) => {
+                  const timer = cgame?.getTimer(timerWid);
+                  if (!timer) return null;
+
                   const scores = timer.rateSortedTeams();
                   const teamScores = scores.find(
-                    ({ team: scoreTeam }) => scoreTeam.wid === team.wid
+                    ({ team: scoreTeam }) => scoreTeam?.wid === team?.wid
                   );
                   const teamInTimer = timer.teams.find(
-                    (timerTeam) => team.wid === timerTeam.wid
+                    (timerTeam) => team?.wid === timerTeam.wid
                   );
 
                   return (
@@ -92,7 +100,7 @@ export default function TotalScoreTable({
                       teamScores?.start &&
                       teamScores?.finish
                     ) && (
-                      <div key={`timeri-${timeri}`} className="flex flex-gap">
+                      <div key={`point-${timeri}`} className="flex flex-gap">
                         <span
                           className={`${
                             timer.isInactive ? "text-strike" : ""

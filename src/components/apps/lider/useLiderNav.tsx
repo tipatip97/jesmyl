@@ -17,6 +17,8 @@ import GeneralPage from "./GeneralPage";
 import LiderApplication from "./Lider";
 import { LiderNavData, LiderStoraged } from "./Lider.model";
 import { liderExer, setLiderRoute } from "./Lider.store";
+import GroupList from "./components/groups/GroupList";
+import TheLeaderGroup from "./components/groups/TheGroup";
 
 const navigation: NavigationConfig<
   LiderStoraged,
@@ -55,6 +57,16 @@ const navigation: NavigationConfig<
         {
           phase: ["memberList"],
           node: <MemberList isAsPage />,
+        },
+        {
+          phase: ["groupList"],
+          node: <GroupList />,
+          next: [
+            {
+              phase: ['group'],
+              node: <TheLeaderGroup />
+            }
+          ]
         },
         {
           phase: ["games"],

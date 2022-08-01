@@ -5,7 +5,7 @@ import AddHumansToContext from "./AddHumansToContext";
 import HumanList from "./HumanList";
 import { HumanListComponentProps } from "./People.model";
 
-export default function MemberList(props: HumanListComponentProps) {
+export default function MemberList({ ...props }: {} & HumanListComponentProps) {
   const { ccontext } = useLeaderContexts();
   const { openFullscreenContent } = useFullscreenContent();
   const placeholder = `Поиск по участникам ${ccontext?.name || ""}`;
@@ -14,7 +14,7 @@ export default function MemberList(props: HumanListComponentProps) {
     <>
       <HumanList
         {...props}
-        list={() => ccontext?.members ?? []}
+        list={() => ccontext?.members.map((human) => human.wid) ?? []}
         placeholder={placeholder}
         moreNode={
           <div
@@ -27,8 +27,8 @@ export default function MemberList(props: HumanListComponentProps) {
                   chosenTitle="Выбранные участники:"
                   uniq="members"
                   excludedTitle="Лидер"
-                  fixedList={ccontext?.members}
-                  excludes={ccontext?.mentors}
+                  fixedList={ccontext?.members.map((human) => human.wid)}
+                  excludes={ccontext?.mentors.map((human) => human.wid)}
                   onSend={(addList, delList) => {
                     ccontext?.add_removeHumans(addList, delList, "members");
                     close();

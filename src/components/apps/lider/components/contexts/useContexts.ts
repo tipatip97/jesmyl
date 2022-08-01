@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
 import { liderExer, riseUpNumUpdatesContexts, setCurrentContextw, updateLeaderContexts } from "../../Lider.store";
+import Human from "../people/Human";
 import { HumanImportable } from "../people/People.model";
 import LeaderContext from "./Context";
 import LeaderContexts from "./Contexts";
@@ -13,19 +14,19 @@ export default function useLeaderContexts() {
     const dispatch = useDispatch();
     useSelector((state: RootState) => state.lider.numUpdatesContexts);
     const contextsImportable = useSelector((state: RootState) => state.lider.contexts);
-    const currentContextw = useSelector((state: RootState) => state.lider.currentContextw);
+    const ccontextw = useSelector((state: RootState) => state.lider.ccontextw);
 
-    if (!localCurrentContext && currentContextw && localContexts) {
-        localCurrentContext = localContexts.list?.find(({ wid }) => wid === currentContextw);
+    if (!localCurrentContext && ccontextw && localContexts) {
+        localCurrentContext = localContexts.list?.find(({ wid }) => wid === ccontextw);
     }
 
     const ret = {
         ccontext: localCurrentContext,
         contexts: localContexts,
         contextsImportable,
-        updateContexts: (contexts: LeaderContextsImportable, humans: HumanImportable[]) => {
+        updateContexts: (contexts: LeaderContextsImportable, humans: Human[]) => {
             localContexts = new LeaderContexts(contexts, humans);
-            ret.setCurrentContext(currentContextw);
+            ret.setCurrentContext(ccontextw);
             dispatch(riseUpNumUpdatesContexts());
             return localContexts;
         },
@@ -37,7 +38,7 @@ export default function useLeaderContexts() {
                 args: context,
             });
         },
-        setCurrentContext: (contextw: number) => {
+        setCurrentContext: (contextw?: number) => {
             if (localContexts)
                 localCurrentContext = localContexts.list?.find(({ wid }) => wid === contextw);
             dispatch(setCurrentContextw(contextw));

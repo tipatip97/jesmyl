@@ -1,20 +1,20 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import LeaderGameMaster from "./GameMaster";
+import LeaderGroupMaster from "./GroupMaster";
 
-export default function GameMore() {
+export default function LeaderGroupsMore() {
   const { openFullscreenContent } = useFullscreenContent();
 
   return (
     <>
       <div
-        className="abs-item"
+        className="abs-item pointer"
         onClick={() =>
-          openFullscreenContent((close) => <LeaderGameMaster close={close} />)
+          openFullscreenContent((close) => <LeaderGroupMaster close={close} />)
         }
       >
-        <EvaIcon name="people-outline" className="abs-icon" />
-        <div>Новая командная игра</div>
+        <EvaIcon name="plus-circle-outline" className="abs-icon" />
+        <div>Новая группа</div>
         <div className="abs-action" />
       </div>
     </>

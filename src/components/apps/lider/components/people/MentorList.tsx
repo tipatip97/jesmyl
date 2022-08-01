@@ -14,7 +14,7 @@ export default function MentorList(props: HumanListComponentProps) {
     <>
       <HumanList
         {...props}
-        list={() => ccontext?.mentors ?? []}
+        list={() => ccontext?.mentors.map((human) => human.wid) ?? []}
         placeholder={placeholder}
         moreNode={
           <div
@@ -26,9 +26,11 @@ export default function MentorList(props: HumanListComponentProps) {
                   chooseTitle="Выбери лидеров:"
                   chosenTitle="Выбранные лидеры:"
                   uniq="mentors"
+                  isRedactable
+                  isRedact
                   excludedTitle="Участник"
-                  fixedList={ccontext?.mentors}
-                  excludes={ccontext?.members}
+                  fixedList={ccontext?.mentors.map((human) => human.wid)}
+                  excludes={ccontext?.members.map((human) => human.wid)}
                   onSend={(addList, delList) => {
                     ccontext?.add_removeHumans(addList, delList, "mentors");
                     close();

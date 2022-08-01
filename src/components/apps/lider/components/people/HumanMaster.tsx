@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import modalService from "../../../../../complect/modal/Modal.service";
+import SendButton from "../../complect/SendButton";
 import { liderExer } from "../../Lider.store";
 import Human from "./Human";
 import { HumanExportable } from "./People.model";
@@ -379,37 +381,44 @@ export default function HumanMaster({
             {isInactive ? "Разблокировать личность" : "Заблокировать личность"}
           </div>
           {bDay && bDayInput.value() && nameInput.value() ? (
-            <div
-              className="full-width margin-big-gap-v text-center pointer"
-              onClick={() => {
-                if (human) {
-                  liderExer.load(() => close());
-                } else {
-                  const name = nameInput.value();
-
-                  liderExer.send({
-                    action: "addHuman",
-                    method: "push",
-                    args: {
-                      name,
-                      isMan,
-                      notes: notesInput.value(),
-                      ufp1,
-                      ufp2,
-                      bDay,
-                      ts: Date.now() + Math.random(),
-                      isInactive,
-                    } as HumanExportable,
-                  });
-                  close();
-                }
-
+            <SendButton
+              title={human ? "Сохранить" : "Добавить"}
+              onSuccess={() => close()}
+              onSend={() => {
                 notesInput.remove();
                 nameInput.remove();
+
+                return new Promise(async (res, rej) => {
+                  if (human) {
+                    liderExer.load(res, rej);
+                  } else {
+                    if (
+                      !(await modalService.confirm("Добавить новую личность?"))
+                    )
+                      return false;
+
+                    liderExer.send(
+                      {
+                        action: "addHuman",
+                        method: "push",
+                        args: {
+                          name: nameInput.value(),
+                          isMan,
+                          notes: notesInput.value(),
+                          ufp1,
+                          ufp2,
+                          bDay,
+                          ts: Date.now() + Math.random(),
+                          isInactive,
+                        } as HumanExportable,
+                      },
+                      res,
+                      rej
+                    );
+                  }
+                });
               }}
-            >
-              {human ? "Сохранить" : "Добавить"}
-            </div>
+            />
           ) : null}
         </>
       )}

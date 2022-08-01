@@ -22,7 +22,7 @@ export default function GeneralPage() {
           <>
             <BrutalItem
               title="Участники"
-              icon="people-outline"
+              icon="person-outline"
               onClick={() => {
                 goTo("memberList");
               }}
@@ -32,6 +32,13 @@ export default function GeneralPage() {
               icon="person-outline"
               onClick={() => {
                 goTo("leaderList");
+              }}
+            />
+            <BrutalItem
+              title="Группы"
+              icon="people-outline"
+              onClick={() => {
+                goTo("groupList");
               }}
             />
             <BrutalItem

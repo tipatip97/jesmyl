@@ -347,7 +347,7 @@
                                             "starts": "#list",
                                             "teams": "#list",
                                             "comments": "#list",
-                                            "finishes": "#Dict"
+                                            "finishes": "#dict"
                                         },
                                         "setForceInEach": {
                                             "comments": {

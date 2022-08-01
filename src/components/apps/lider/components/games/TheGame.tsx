@@ -8,8 +8,7 @@ import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import OutsiderMore from "./OutsiderMore";
 import TheGameTeam from "./teams/TheGameTeam";
-import GameTimer from "./timers/GameTimer";
-import TimerFace from "./timers/TimerFace";
+import LeaderGameTimerFace from "./timers/TimerFace";
 import useGameTimer from "./timers/useGameTimer";
 import TotalScoreTable from "./TotalScoreTable";
 import useCgame from "./useGames";
@@ -17,7 +16,7 @@ import useCgame from "./useGames";
 export default function TheGame() {
   const { cgame } = useCgame();
   const { ccontext } = useLeaderContexts();
-  const [selectedTimers, updateSelectedTimers] = useState<GameTimer[]>([]);
+  const [selectedTimers, updateSelectedTimers] = useState<number[]>([]);
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { openFullscreenContent } = useFullscreenContent();
   const usedHumans =
@@ -62,21 +61,21 @@ export default function TheGame() {
           <h2 className="margin-gap">Таймеры:</h2>
           {cgame?.timers?.map((timer, timeri) => {
             return (
-              <TimerFace
-                key={`timeri-${timeri}`}
+              <LeaderGameTimerFace
+                key={`timer-${timeri}`}
                 timer={timer}
-                selectedPosition={selectedTimers.indexOf(timer) + 1}
+                selectedPosition={selectedTimers.indexOf(timer.wid) + 1}
                 onSelect={() =>
                   updateSelectedTimers(
-                    selectedTimers.indexOf(timer) < 0
-                      ? [...selectedTimers, timer]
-                      : selectedTimers.filter((ctimer) => ctimer !== timer)
+                    selectedTimers.indexOf(timer.wid) < 0
+                      ? [...selectedTimers, timer.wid]
+                      : selectedTimers.filter((wid) => wid !== timer.wid)
                   )
                 }
               />
             );
           })}
-          <TimerFace timer={newTimer} />
+          <LeaderGameTimerFace timer={newTimer} />
           {selectedTimers.length > 1 && (
             <div
               className="margin-big-gap pointer flex"

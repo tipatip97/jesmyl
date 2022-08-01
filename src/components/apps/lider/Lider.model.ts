@@ -1,8 +1,8 @@
 import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { SendingComments } from "./components/comments/LeaderComment.model";
 import { LeaderContextsImportable } from "./components/contexts/Contexts.model";
-import { GameTimerImportable } from "./components/games/Games.model";
 import { GameTeamExportable, GameTeamImportable } from "./components/games/teams/GameTeams.model";
+import { GameTimerImportable } from "./components/games/timers/GameTimer.model";
 import { HumanListSortVariant, PeopleImportable } from "./components/people/People.model";
 
 export interface LiderState extends LiderStoraged {
@@ -15,10 +15,11 @@ export interface LiderStoraged {
     contexts?: LeaderContextsImportable;
     games?: GamesStoreImportable;
     cgamew?: number;
+    cgroupw?: number;
+    ccontextw?: number;
     humanListSortVariant: HumanListSortVariant;
     gameTimers: Record<number, GameTimerImportable | null>;
     sendingComments: SendingComments;
-    currentContextw: number;
     numUpdatesPeople: number;
     numUpdatesTimers: number;
     numUpdatesGames: number;

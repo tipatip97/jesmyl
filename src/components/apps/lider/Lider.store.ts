@@ -4,6 +4,7 @@ import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.m
 import { liderStorage } from "../../../shared/jstorages";
 import { defaultSendingComments, SendingComments } from "./components/comments/LeaderComment.model";
 import { LeaderContextsImportable } from "./components/contexts/Contexts.model";
+import { GameTimerImportable } from "./components/games/timers/GameTimer.model";
 import { HumanListSortVariant, PeopleImportable } from "./components/people/People.model";
 import { GamesStoreImportable, LiderState, LiderStoraged } from "./Lider.model";
 
@@ -13,9 +14,10 @@ const initialState: LiderState = {
   route: liderStorage.getOr('route', ['all']),
   people: liderStorage.get('people'),
   contexts: liderStorage.get('contexts'),
-  currentContextw: liderStorage.getOr('currentContextw', 0),
+  ccontextw: liderStorage.getOr('ccontextw', 0),
   games: liderStorage.get('games'),
   cgamew: liderStorage.get('cgamew'),
+  cgroupw: liderStorage.get('cgroupw'),
   gameTimers: liderStorage.getOr('gameTimers', {}),
   humanListSortVariant: liderStorage.getOr('humanListSortVariant', 'name'),
   sendingComments: liderStorage.getOr('sendingComments', defaultSendingComments),
@@ -33,9 +35,13 @@ export const slice = createSlice({
     setLiderRoute: (state, action: PayloadAction<NavigationStorage<LiderStoraged>>) => {
       state.route = action.payload.route;
     },
-    setCurrentContextw: (state, action: PayloadAction<number>) => {
-      state.currentContextw = action.payload;
-      liderStorage.set('currentContextw', action.payload);
+    setCurrentContextw: (state, action: PayloadAction<number | und>) => {
+      state.ccontextw = action.payload;
+      liderStorage.set('ccontextw', action.payload);
+    },
+    setCurrentGroupw: (state, action: PayloadAction<number | und>) => {
+      state.cgroupw = action.payload;
+      liderStorage.set('cgroupw', action.payload);
     },
     setHumanListSortVariant: (state, action: PayloadAction<HumanListSortVariant>) => {
       state.humanListSortVariant = action.payload;
@@ -43,6 +49,9 @@ export const slice = createSlice({
     },
     updateGamesStore: (state, action: PayloadAction<GamesStoreImportable>) => {
       state.games = action.payload;
+    },
+    updateGamesTimers: (state, action: PayloadAction<Record<number, GameTimerImportable | null>>) => {
+      state.gameTimers = action.payload;
     },
     updateLeaderPeople: (state, action: PayloadAction<PeopleImportable>) => {
       state.people = action.payload;
@@ -75,6 +84,8 @@ export const {
   updateSendingComments,
   updateRrrorSentComments,
   updateLeaderPeople,
+  updateGamesTimers,
+  setCurrentGroupw,
   updateLeaderContexts,
   setCurrentContextw,
   riseUpNumUpdatesPeople,

@@ -3,13 +3,14 @@ import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import modalService from "../../../../../complect/modal/Modal.service";
 import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
+import SendButton from "../../complect/SendButton";
 import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import Game from "./Game";
 import GameTeam from "./teams/GameTeam";
 import TheGameTeam from "./teams/TheGameTeam";
 
-export default function TeamGameMaker({ close }: { close: () => void }) {
+export default function LeaderGameMaster({ close }: { close: () => void }) {
   const teamMemberCountInput = useKeyboard()("set-team-member-count", {
     type: "number",
   });
@@ -111,7 +112,7 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
           <div className="flex around margin-big-gap">
             {teamMemberCountInput.value() ? (
               <div
-                className="pointer"
+                className="the-button"
                 onClick={() => {
                   const teams = mylib.groupByFieldsSoftly(
                     ["isMan", "ufp"],
@@ -135,31 +136,30 @@ export default function TeamGameMaker({ close }: { close: () => void }) {
                   );
                 }}
               >
-                Рассчитать
+                Рассчитать{teams ? " заново" : ""}
               </div>
             ) : null}
-
             {gameNameInput.value() && teams ? (
-              <div
-                className="pointer"
-                onClick={async () => {
+              <SendButton
+                title="Опубликовать игру"
+                onSend={async () => {
                   if (!ccontext) return;
                   const isSend = await modalService.confirm(
                     "Опубликовать игру?"
                   );
 
                   if (isSend) {
-                    Game.sendNewGame(
+                    close();
+                    return Game.sendNewGame(
                       gameNameInput.value(),
                       teams,
                       ccontext.wid
                     );
-                    close();
                   }
+
+                  return false;
                 }}
-              >
-                Сохранить игру
-              </div>
+              />
             ) : null}
           </div>
 

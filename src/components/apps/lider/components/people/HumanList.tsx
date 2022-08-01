@@ -4,6 +4,7 @@ import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAb
 import DebouncedInput from "../../../../../complect/DebouncedInput";
 import { RootState } from "../../../../../shared/store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
+import Human from "./Human";
 import HumanFace from "./HumanFace";
 import HumansMore from "./HumansMore";
 import { HumanListComponentProps } from "./People.model";
@@ -31,7 +32,11 @@ export default function HumanList({
 
   const humanList = useMemo(
     () =>
-      (list?.(people?.humanList) ?? people?.humanList)
+      (
+        (list?.(people?.humans?.map((human) => human.wid))
+          ?.map((wid) => people?.humans?.find((human) => human.wid === wid))
+          .filter((human) => human) as Human[]) ?? people?.humans
+      )
         ?.filter(({ name }) => name.toLowerCase().includes(term))
         .sort((a, b) => {
           const aVar = a[humanListSortVariant] || 0;
@@ -58,11 +63,9 @@ export default function HumanList({
       <div
         key={`human ${humani}`}
         className={`${
-          dangers?.some(({ wid }) => human.wid === wid) ? "error-message" : ""
+          dangers?.some((wid) => human.wid === wid) ? "error-message" : ""
         } ${
-          successes?.some(({ wid }) => human.wid === wid)
-            ? "success-message"
-            : ""
+          successes?.some((wid) => human.wid === wid) ? "success-message" : ""
         }`}
       >
         <HumanFace human={human} asMore={asHumanMore} />

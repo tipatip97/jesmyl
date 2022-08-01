@@ -6,7 +6,6 @@ export default class Human extends SourceBased<HumanImportable> {
     set name(val) { this.setExportable('name', val); }
 
     get wid() { return this.getBasic('w'); }
-    set wid(val) { this.setExportable('w', val); }
 
     get isInactive() { return this.getBasic('isInactive'); }
 

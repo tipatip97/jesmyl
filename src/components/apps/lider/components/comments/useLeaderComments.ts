@@ -5,6 +5,7 @@ import { RootState } from "../../../../../shared/store";
 import useAuth from "../../../../index/useAuth";
 import { GamesStoreImportable } from "../../Lider.model";
 import { liderExer, updateRrrorSentComments, updateSendingComments } from "../../Lider.store";
+import useGames from "../games/useGames";
 import { LeaderCommentImportable, SendingComment, SendingCommentArea, SendingComments, SendingCommentsAreaName } from "./LeaderComment.model";
 
 export default function useLeaderComments() {
@@ -13,6 +14,7 @@ export default function useLeaderComments() {
     const login = auth?.login ?? NaN;
     const sendingComments = useSelector((state: RootState) => state.lider.sendingComments);
     const errorSentComments = useSelector((state: RootState) => state.lider.errorSentComments);
+    const { gamesImportable } = useGames();
     const save = (arean: SendingCommentsAreaName, areaw: number, listw: number, mapper: (comments: SendingComment[], area: SendingCommentArea) => void, throwComments?: SendingComments) => {
         const generalDict = mylib.clone(throwComments ?? sendingComments);
         const dict = generalDict[arean] ??= {};
@@ -26,10 +28,10 @@ export default function useLeaderComments() {
     const ret = {
         sendingComments,
         errorSentComments,
-        sendAllComments: (observableComments: SendingComments, observableGames: GamesStoreImportable) => {
+        sendAllComments: (observableComments: SendingComments = sendingComments, observableGames: GamesStoreImportable | und = gamesImportable) => {
             let throwComments: SendingComments = ret.sendingComments;
 
-            const tss = observableGames.teamGames?.map(({ teams, timers }) => {
+            const tss = observableGames?.teamGames?.map(({ teams, timers }) => {
                 const mapper = (...args: { comments?: LeaderCommentImportable[] }[][]) => args.flat().map(({ comments }) => comments?.map(comment => comment.owner === login ? comment.ts : 0))
                 return mapper(teams, timers || []);
             })

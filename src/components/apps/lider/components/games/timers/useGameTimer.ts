@@ -2,45 +2,64 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { liderStorage } from "../../../../../../shared/jstorages";
 import { RootState } from "../../../../../../shared/store";
-import { riseUpNumUpdatesTimers } from "../../../Lider.store";
+import { riseUpNumUpdatesTimers, updateGamesTimers } from "../../../Lider.store";
 import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
 import Game from "../Game";
-import { GameTimerImportable, GameTimerMode } from "../Games.model";
-import GameTimer from "./GameTimer";
+import LeaderGameTimer from "./GameTimer";
+import { GameTimerImportable, GameTimerMode } from "./GameTimer.model";
 
-let runTimeTimers: Record<number, GameTimer | und> = {};
+let runTimeTimers: Record<number, LeaderGameTimer | und> = {};
 
 export default function useGameTimer(game?: Game) {
     const dispatch = useDispatch();
     useSelector((state: RootState) => state.lider.numUpdatesTimers);
+    const gameTimers = useSelector((state: RootState) => state.lider.gameTimers);
+
     const newTimer = useMemo(() => {
-        return runTimeTimers[game?.wid || 0] ??= new GameTimer(
-            (game && liderStorage.get('gameTimers')?.[game.wid])
-            ?? {
-                w: 0,
-                ts: 0,
-                mode: GameTimerMode.Apart,
-                name: '',
-                owner: '',
-                fio: ''
-            },
+        const localTimer = game && gameTimers?.[game.wid];
+        const runTimer = runTimeTimers[game?.wid || 0];
+
+        if (localTimer && !game?.isTimerWasPublicate(localTimer.ts)) {
+            return runTimeTimers[game?.wid || 0] ??= new LeaderGameTimer(localTimer, game, true);
+        }
+        const newTimer = new LeaderGameTimer({
+            w: 0,
+            ts: LeaderGameTimer.makeNewTs(),
+            mode: GameTimerMode.TimerApart,
+            name: '',
+            owner: '',
+            fio: ''
+        },
             game,
             true
-        )
-    }, [game?.wid]);
+        );
+
+        if (runTimer && game?.timers?.some((timer) => timer.ts === runTimer.ts))
+            return runTimeTimers[game?.wid || 0] = newTimer;
+        else return runTimeTimers[game?.wid || 0] ??= newTimer;
+
+    }, [game, gameTimers]);
 
     const ret = {
         newTimer,
         removeLocalTimer: () => ret.updateTimer(null),
+        updateGamesTimers: (timers: Record<number, GameTimerImportable | null>) => {
+            dispatch(updateGamesTimers(timers));
+        },
         updateTimer: (timer: GameTimerImportable | null) => {
             if (!game) return;
+            const runTimer = runTimeTimers[game.wid];
 
-            const timers = { ...liderStorage.getOr('gameTimers', {}) };
+            if (runTimer && game.timers?.some((timer) => timer.ts === runTimer.ts)) {
+                delete runTimeTimers[game.wid];
+            }
+
+            const timers = { ...liderStorage.get('gameTimers') };
             timers[game.wid] = timer;
             liderStorage.set('gameTimers', timers);
             dispatch(riseUpNumUpdatesTimers());
         },
-        mapTimer: (map: (timer: GameTimer) => void, isRejectSave?: boolean) => {
+        mapTimer: (map: (timer: LeaderGameTimer) => void, isRejectSave?: boolean) => {
             if (newTimer) {
                 map(newTimer);
                 if (!isRejectSave) ret.saveTimer();

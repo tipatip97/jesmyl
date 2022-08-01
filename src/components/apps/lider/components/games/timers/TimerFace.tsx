@@ -1,16 +1,17 @@
 import { HTMLAttributes } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../../complect/fullscreen-content/useFullscreenContent";
-import GameTimer from "./GameTimer";
-import GameTimerMaster from "./GameTimerMaster";
+import LeaderGameTimer from "./GameTimer";
+import { GameTimerMode } from "./GameTimer.model";
+import LeaderGameTimerMaster from "./GameTimerMaster";
 
-export default function TimerFace({
+export default function LeaderGameTimerFace({
   timer,
   onSelect,
   selectedPosition,
   ...props
 }: {
-  timer: GameTimer;
+  timer: LeaderGameTimer;
   onSelect?: () => void;
   selectedPosition?: number;
 } & HTMLAttributes<HTMLDivElement>) {
@@ -22,7 +23,7 @@ export default function TimerFace({
       className="face-item"
       onClick={() =>
         openFullscreenContent((close) => (
-          <GameTimerMaster close={close} timer={timer} />
+          <LeaderGameTimerMaster close={close} timer={timer} />
         ))
       }
     >
@@ -34,10 +35,14 @@ export default function TimerFace({
           onSelect?.();
         }}
       >
-        <EvaIcon name="clock-outline" />
+        <EvaIcon
+          name={`${
+            timer.mode === GameTimerMode.Messager ? "message-circle" : "clock"
+          }-outline`}
+        />
       </span>
       <span className="face-title flex between full-width">
-        {timer.isNewTimer ? (
+        {timer.isNew ? (
           <span className="color--7">
             Новый таймер{timer.name ? ` - ${timer.name}` : ""}
           </span>
@@ -47,7 +52,7 @@ export default function TimerFace({
             {timer.fio ? ` (${timer.fio})` : ""}
           </span>
         )}{" "}
-        {timer.isNewTimer && timer.isStarted && (
+        {timer.isNew && timer.isStarted && (
           <span className="error-message">(Запущен)</span>
         )}
         {!!timer.comments?.length && (

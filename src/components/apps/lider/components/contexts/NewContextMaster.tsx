@@ -7,24 +7,24 @@ import HumanList from "../people/HumanList";
 import useLeaderContexts from "./useContexts";
 
 const getHumanList = (
-  members: Human[],
+  members: number[],
   isWholeList: boolean,
-  list: Human[],
-  updater: React.Dispatch<React.SetStateAction<Human[]>>
+  list: number[],
+  updater: React.Dispatch<React.SetStateAction<number[]>>
 ) => {
   return (
-    <div className="height-30vh over-auto">
+    <div className="height-30vh-strong over-auto">
       <HumanList
         uniq={`${isWholeList} context-master ${list === members ? "#" : "*"}`}
         searcherClass="sticky"
-        list={() => isWholeList ? undefined : list}
+        list={() => (isWholeList ? undefined : list)}
         asHumanMore={(human) => {
-          return list.indexOf(human) < 0 ? (
+          return list.indexOf(human.wid) < 0 ? (
             <EvaIcon
               name="plus-circle-outline"
               onClick={(event) => {
                 event.stopPropagation();
-                updater([...list, human]);
+                updater([...list, human.wid]);
               }}
             />
           ) : (
@@ -32,7 +32,7 @@ const getHumanList = (
               name="minus-circle-outline"
               onClick={(event) => {
                 event.stopPropagation();
-                updater(list.filter((member) => member !== human));
+                updater(list.filter((wid) => wid !== human.wid));
               }}
             />
           );
@@ -48,8 +48,8 @@ export default function NewLeaderContextMaster({
   close: () => void;
 }) {
   const nameInput = useKeyboard()("new leader context", {});
-  const [members, updateMembers] = useState<Human[]>([]);
-  const [mentors, updateMentors] = useState<Human[]>([]);
+  const [members, updateMembers] = useState<number[]>([]);
+  const [mentors, updateMentors] = useState<number[]>([]);
   const { publicateNewContext } = useLeaderContexts();
 
   const chooseMembersNode = useMemo(
@@ -88,12 +88,8 @@ export default function NewLeaderContextMaster({
             if (!(await modalService.confirm("Опубликовать контекст?"))) return;
             publicateNewContext({
               name: nameInput.value(),
-              mentors: mentors
-                .map((leader) => leader.wid)
-                .sort((a, b) => a - b),
-              members: members
-                .map((member) => member.wid)
-                .sort((a, b) => a - b),
+              mentors: mentors.sort((a, b) => a - b),
+              members: members.sort((a, b) => a - b),
             });
             close();
           }}
