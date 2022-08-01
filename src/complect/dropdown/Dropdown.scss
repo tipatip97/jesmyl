@@ -51,3 +51,19 @@
     }
   }
 }
+
+.dropdown-ancestor {
+  .dropdown-selector {
+    z-index: 300;
+  }
+  + .dropdown-ancestor {
+    .dropdown-selector {
+      z-index: 299;
+      + .dropdown-ancestor {
+        .dropdown-selector {
+          z-index: 298;
+        }
+      }
+    }
+  }
+}

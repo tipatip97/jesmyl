@@ -109,3 +109,17 @@
     }
   }
 }
+
+.the-button {
+  position: relative;
+  display: inline-block;
+  border: var(--color--2) 4px solid;
+  padding: 0.5em 2em;
+  border-radius: 2em;
+  cursor: pointer;
+
+  .eva-icon {
+    position: absolute;
+    margin-left: 2px;
+  }
+}

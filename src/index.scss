@@ -304,7 +304,7 @@ textarea {
   position: relative;
 }
 
-@for $i from 1 through 9 {
+@for $i from 0 through 9 {
   .fade-0#{$i} {
     opacity: $i / 10;
   }
@@ -312,6 +312,10 @@ textarea {
 
 .height-30vh {
   height: 30vh;
+
+  &-strong {
+    min-height: 30vh;
+  }
 }
 
 .absolute,
