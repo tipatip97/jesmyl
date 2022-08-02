@@ -88,10 +88,10 @@ export class MyLib {
 
         if (baseType !== srcType) return false;
         if (typeof base === 'object') {
-            const bKeys = Object.keys(base);
+            const bEntries = Object.entries(base).filter(([, val]) => val !== undefined);
 
-            if (bKeys.length !== Object.keys(source).length
-                || bKeys.some(bKey => !this.isEq(source[bKey], base[bKey]))
+            if (bEntries.length !== Object.values(source).filter((val) => val !== undefined).length
+                || bEntries.some(([bKey, bVal]) => !this.isEq(source[bKey], bVal))
             ) return false;
         } else if (base !== source) return false;
 
