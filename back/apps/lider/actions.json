@@ -597,12 +597,12 @@
                                                 "track": [
                                                     "fields"
                                                 ],
+                                                "level": 30,
                                                 "expected": {},
-                                                "action": "setContextGroupField",
-                                                "method": "set",
+                                                "action": "setContextGroupFields",
+                                                "method": "set_all",
                                                 "args": {
-                                                    "key": "#String",
-                                                    "value": "#Any"
+                                                    "value": "#Dict"
                                                 }
                                             },
                                             {

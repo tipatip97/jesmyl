@@ -64,15 +64,6 @@ body {
   }
 }
 
-.background-- {
-  &3 {
-    background-color: var(--color--3);
-  }
-  &7 {
-    background-color: var(--color--7);
-  }
-}
-
 * {
   -webkit-tap-highlight-color: transparent;
   outline: 0;
@@ -309,13 +300,69 @@ textarea {
     opacity: $i / 10;
   }
 }
+@for $i from 1 through 8 {
+  .background-- {
+    &#{$i} {
+      background-color: var(--color--#{$i});
+    }
+  }
+  .border-- {
+    &#{$i} {
+      border: solid 1px var(--color--#{$i});
+    }
+  }
+}
 
 .height-30vh {
   height: 30vh;
 
   &-strong {
+    height: 30vh;
     min-height: 30vh;
+    max-height: 30vh;
   }
+}
+
+@mixin strong-height($count) {
+  .strong-height-#{$count} {
+    height: $count;
+    min-height: $count;
+    max-height: $count;
+  }
+}
+
+@mixin strong-width($count) {
+  .strong-width-#{$count} {
+    width: $count;
+    min-width: $count;
+    max-width: $count;
+  }
+}
+
+@mixin strong-square($count) {
+  .strong-square-#{$count} {
+    width: $count;
+    min-width: $count;
+    max-width: $count;
+    height: $count;
+    min-height: $count;
+    max-height: $count;
+  }
+}
+
+@for $i from 1 through 9 {
+  @include strong-height(#{$i * 10}vmin);
+  @include strong-height(#{$i * 10}vmax);
+
+  @include strong-width(#{$i * 10}vmin);
+  @include strong-width(#{$i * 10}vmax);
+
+  @include strong-square(#{$i * 10}vmax);
+  @include strong-square(#{$i * 10}vmin);
+}
+
+.margin-auto {
+  margin: auto;
 }
 
 .absolute,

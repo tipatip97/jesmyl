@@ -1009,6 +1009,7 @@ function findRule($rules, &$exec, $topTrack = [], &$topArgs = [], $expecteds = [
     }
 
     $expecteds = [];
+    $cloneArgs = null;
   }
 
   return $retExec;
