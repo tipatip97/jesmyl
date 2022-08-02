@@ -953,18 +953,20 @@ function findRule($rules, &$exec, $topTrack = [], &$topArgs = [], $expecteds = [
       $errors = [];
       $typeErrors = [];
       $last = [];
+      $keys = [];
 
       foreach ($args as $argn => $argv) {
         if (!isCorrectType($execArgs[$argn], $argv)) {
+          $keys[] = $argn;
           $typeErrors[$argn] = $argv;
-          $last = [$argn, $argv];
+          $last = [$argn, $execArgs[$argn], isList($argv) ? implode(' | ', $argv) : $argv];
         }
       }
 
       if (count($typeErrors)) {
         $message = count($typeErrors) === 1
-          ? 'Некорректное значение параметра ' . $last[0] . '. Ожидается ' . $last[1]
-          : 'Присутствуют некорректные значения параметров';
+          ? 'Некорректное значение параметра ' . $last[0] . ' (' . (is_null($last[1]) ? 'null' : $last[1]) . ')' . '. Ожидается ' . $last[2] . '.'
+          : 'Присутствуют некорректные значения параметров ' . implode(', ', $keys);
 
         return [
           'ok' => false,
@@ -1417,7 +1419,6 @@ function jsonDecode($data)
 function isCorrectType($value, $typer)
 {
   if (is_string($typer)) {
-
     if ($typer[0] === '#') {
       $explodes = explode(':', $typer, 2);
       $type = substr($explodes[0], 1);
