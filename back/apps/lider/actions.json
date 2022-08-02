@@ -444,8 +444,8 @@
                         }
                     },
                     {
-                        "cloneArgs": {
-                            "contextw": "w"
+                        "args": {
+                            "contextw": "#Number"
                         },
                         "track": [
                             [
@@ -497,6 +497,56 @@
                             },
                             {
                                 "track": [
+                                    "blanks"
+                                ],
+                                "expected": [],
+                                "next": [
+                                    {
+                                        "level": 40,
+                                        "action": "addContextGroupFieldBlanks",
+                                        "method": "concat",
+                                        "uniqs": [
+                                            "key"
+                                        ],
+                                        "value": "{list}",
+                                        "args": {
+                                            "list": "#List"
+                                        }
+                                    },
+                                    {
+                                        "track": [
+                                            [
+                                                "key",
+                                                "===",
+                                                "{key}"
+                                            ]
+                                        ],
+                                        "args": {
+                                            "key": "#String"
+                                        },
+                                        "next": [
+                                            {
+                                                "track": [
+                                                    "{fieldn}"
+                                                ],
+                                                "action": "setContextGroupFieldBlankField",
+                                                "method": "set",
+                                                "args": {
+                                                    "fieldn": [
+                                                        "name",
+                                                        "def",
+                                                        "value",
+                                                        "type"
+                                                    ],
+                                                    "value": "#Any"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "track": [
                                     "groups"
                                 ],
                                 "expected": [],
@@ -545,59 +595,50 @@
                                             },
                                             {
                                                 "track": [
-                                                    "members"
+                                                    "fields"
                                                 ],
-                                                "action": "addContextGroupMembers",
-                                                "method": "concat",
-                                                "uniqs": [
-                                                    "."
-                                                ],
+                                                "expected": {},
+                                                "action": "setContextGroupField",
+                                                "method": "set",
                                                 "args": {
-                                                    "value": "#List"
+                                                    "key": "#String",
+                                                    "value": "#Any"
                                                 }
                                             },
                                             {
                                                 "track": [
-                                                    "mentors"
-                                                ],
-                                                "action": "addContextGroupMentors",
-                                                "method": "concat",
-                                                "uniqs": [
-                                                    "."
+                                                    "{fieldn}"
                                                 ],
                                                 "args": {
-                                                    "value": "#List"
-                                                }
-                                            },
-                                            {
-                                                "track": [
-                                                    "members"
-                                                ],
-                                                "action": "delContextGroupMembers",
-                                                "method": "remove_each",
-                                                "value": [
-                                                    ".",
-                                                    "in",
-                                                    "{value}"
-                                                ],
-                                                "args": {
-                                                    "value": "#List"
-                                                }
-                                            },
-                                            {
-                                                "track": [
-                                                    "mentors"
-                                                ],
-                                                "action": "delContextGroupMentors",
-                                                "method": "remove_each",
-                                                "value": [
-                                                    ".",
-                                                    "in",
-                                                    "{value}"
-                                                ],
-                                                "args": {
-                                                    "value": "#List"
-                                                }
+                                                    "fieldn": [
+                                                        "members",
+                                                        "mentors"
+                                                    ]
+                                                },
+                                                "next": [
+                                                    {
+                                                        "action": "addContextGroupHumans",
+                                                        "method": "concat",
+                                                        "uniqs": [
+                                                            "."
+                                                        ],
+                                                        "args": {
+                                                            "value": "#List"
+                                                        }
+                                                    },
+                                                    {
+                                                        "action": "delContextGroupHumans",
+                                                        "method": "remove_each",
+                                                        "value": [
+                                                            ".",
+                                                            "in",
+                                                            "{value}"
+                                                        ],
+                                                        "args": {
+                                                            "value": "#List"
+                                                        }
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
