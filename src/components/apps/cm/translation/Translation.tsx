@@ -50,7 +50,7 @@ export default function Translations({
           <div
             className={`fullscreen-translation ${
               isShowInfo ? "open-info" : ""
-            } ${isRotateScreen ? "rotate" : ""}`}
+            } ${isRotateScreen ? "rotate-fullscreen-translation" : ""}`}
           >
             <TranslationScreen
               fontSizeContainId="translation-native-window"
