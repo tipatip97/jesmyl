@@ -10,13 +10,12 @@
     "@types/jest": "^26.0.24",
     "@types/node": "^12.20.47",
     "@types/react": "^16.14.24",
-    "@types/react-dom": "^16.9.14",
     "archiver": "^5.3.0",
     "md5": "^2.3.0",
     "node-fetch": "^3.2.3",
     "qrcode": "^1.5.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-eva-icons": "0.0.8",
     "react-redux": "^7.2.8",
     "react-router": "^6.2.2",
@@ -64,6 +63,7 @@
   "main": "deploy.js",
   "devDependencies": {
     "@types/qrcode": "^1.4.2",
+    "@types/react-dom": "^16.9.16",
     "react-router-dom": "^6.2.2"
   },
   "keywords": [],

@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import App from "./app/App";
 import "./index.scss";
@@ -12,11 +12,10 @@ export const renderApplication = (
   reactNode: ReactNode,
   node: HTMLElement | null
 ) => {
-  ReactDOM.render(
+  createRoot(node).render(
     <React.StrictMode>
       <Provider store={store}>{reactNode}</Provider>
-    </React.StrictMode>,
-    node
+    </React.StrictMode>
   );
 };
 renderApplication(<App />, document.getElementById("root"));
@@ -25,7 +24,7 @@ export const renderComponentInNewWindow = (reactNode: ReactNode) => {
   const win = window.open();
   if (win) {
     const div = document.createElement("div");
-    div.classList.add('above-container');
+    div.classList.add("above-container");
     let styles = "";
     win.document.body.appendChild(div);
     renderApplication(reactNode, div);
