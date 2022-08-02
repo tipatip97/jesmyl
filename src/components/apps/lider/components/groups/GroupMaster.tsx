@@ -78,40 +78,27 @@ export default function LeaderGroupMaster({
         }).length) && (
         <SendButton
           title={`Опубликовать ${group ? "изменения" : "группу"}`}
+          confirm
           onSuccess={() => close()}
-          onSend={async () => {
+          onSend={() => {
             if (!ccontext) return;
 
             if (group) {
-              if (
-                await modalService.confirm(
-                  `Опубликовать изменения группы ${
-                    group.name || "без названия"
-                  }?`
-                )
-              ) {
-                return group.sendChanges({
-                  addMembers,
-                  addMentors,
-                  contextw: ccontext.wid,
-                  delMembers,
-                  delMentors,
-                  name,
-                });
-              }
+              return group.sendChanges({
+                addMembers,
+                addMentors,
+                contextw: ccontext.wid,
+                delMembers,
+                delMentors,
+                name,
+              });
             } else {
-              if (
-                await modalService.confirm(
-                  `Опубликовать группу ${name || "без названия"}?`
-                )
-              ) {
-                return LeaderGroup.publicateNew({
-                  name,
-                  members: addMembers,
-                  mentors: addMentors,
-                  contextw: ccontext.wid,
-                });
-              }
+              return LeaderGroup.publicateNew({
+                name,
+                members: addMembers,
+                mentors: addMentors,
+                contextw: ccontext.wid,
+              });
             }
           }}
         />

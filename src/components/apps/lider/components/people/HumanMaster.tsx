@@ -383,6 +383,7 @@ export default function HumanMaster({
           {bDay && bDayInput.value() && nameInput.value() ? (
             <SendButton
               title={human ? "Сохранить" : "Добавить"}
+              confirm={human ? null : "Добавить новую личность?"}
               onSuccess={() => close()}
               onSend={() => {
                 notesInput.remove();
@@ -392,10 +393,6 @@ export default function HumanMaster({
                   if (human) {
                     liderExer.load(res, rej);
                   } else {
-                    if (
-                      !(await modalService.confirm("Добавить новую личность?"))
-                    )
-                      return false;
 
                     liderExer.send(
                       {

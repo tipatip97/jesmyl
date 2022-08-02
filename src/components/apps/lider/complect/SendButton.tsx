@@ -1,16 +1,17 @@
 import { HTMLAttributes, useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import modalService from "../../../../complect/modal/Modal.service";
 
 export default function SendButton({
   title,
+  confirm,
   onSend,
   onSuccess,
   ...props
 }: {
   title: string;
-  isLoading?: boolean;
-  isError?: boolean;
-  onSend?: () => Promise<unknown> | boolean;
+  confirm?: string | boolean | null;
+  onSend?: () => Promise<unknown> | void | nil;
   onSuccess?: () => void;
 } & Omit<HTMLAttributes<HTMLDivElement>, "onClick">) {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,8 +20,18 @@ export default function SendButton({
   return (
     <div
       {...props}
-      className={`the-button margin-gap ${props.className || ""}`}
-      onClick={() => {
+      className={`the-button margin-gap ${
+        isLoading && !isError ? "pointers-none" : ""
+      } ${props.className || ""}`}
+      onClick={async () => {
+        if (
+          confirm != null &&
+          !(confirm === true
+            ? await modalService.confirm(`${title}?`)
+            : await modalService.confirm(confirm))
+        )
+          return;
+
         const promise = onSend?.();
         if (promise instanceof Promise) {
           setIsError(false);

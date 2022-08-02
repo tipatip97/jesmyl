@@ -383,21 +383,20 @@ export default function LeaderGameTimerMaster({
                 nameInput.value() && (
                   <SendButton
                     title="Опубликовать таймер"
+                    confirm
                     onSuccess={() => {
                       close();
                       resetTimers();
                       removeLocalTimer();
                       nameInput.remove();
                     }}
-                    onSend={async () => {
-                      if (!cgame) return false;
+                    onSend={() => {
+                      if (!cgame) return;
 
-                      if (await modalService.confirm("Опубликовать таймер?"))
-                        return LeaderGameTimer.publicateNew({
-                          ...timer.toDict(),
-                          gamew: cgame.wid,
-                        });
-                      else return false;
+                      return LeaderGameTimer.publicateNew({
+                        ...timer.toDict(),
+                        gamew: cgame.wid,
+                      });
                     }}
                   />
                 )}

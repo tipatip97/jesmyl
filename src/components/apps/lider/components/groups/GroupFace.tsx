@@ -29,9 +29,9 @@ export default function GroupFace({
           <span className="color--3">
             {group.mentors
               .map((mentor) =>
-                mentor.name.replace(/([А-ЯЁ])[а-яё]+ (.+)/, "$2 $1.")
+                mentor.name.replace(/([А-ЯЁ])[а-яё]+ (.+)/, "$2 $1")
               )
-              .join(" ")}
+              .join(", ") || "Лидеров нет"}
           </span>
         </span>
       </div>

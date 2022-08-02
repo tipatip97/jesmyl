@@ -2,9 +2,7 @@ import { ExecDict } from "../../../../../complect/exer/Exer.model";
 import SourceBased from "../../../../../complect/SourceBased";
 import { liderExer } from "../../Lider.store";
 import LeaderGroup from "../groups/Group";
-import { LeaderGroupImportable } from "../groups/Groups.model";
 import Human from "../people/Human";
-import { HumanImportable } from "../people/People.model";
 import { LeaderContextImportable } from "./Contexts.model";
 
 export default class LeaderContext extends SourceBased<LeaderContextImportable> {
@@ -18,10 +16,12 @@ export default class LeaderContext extends SourceBased<LeaderContextImportable> 
         this.humans = humans;
         this.members = this.takeHumans(this.getBasic('members'));
         this.mentors = this.takeHumans(this.getBasic('mentors'));
-        this.groups = this.getBasic('groups')?.map((group) => new LeaderGroup(group, humans));
+        this.groups = this.getBasic('groups')?.map((group) => new LeaderGroup(group, humans, this));
     }
+
     get wid() { return this.getBasic('w'); }
     get name() { return this.getBasic('name'); }
+    get blanks() { return this.getBasic('blanks'); }
 
     private takeHumans(list: number[]) {
         const humans = this.humans || [];

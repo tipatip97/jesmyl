@@ -142,22 +142,16 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
             {gameNameInput.value() && teams ? (
               <SendButton
                 title="Опубликовать игру"
-                onSend={async () => {
+                confirm
+                onSend={() => {
                   if (!ccontext) return;
-                  const isSend = await modalService.confirm(
-                    "Опубликовать игру?"
+
+                  close();
+                  return Game.sendNewGame(
+                    gameNameInput.value(),
+                    teams,
+                    ccontext.wid
                   );
-
-                  if (isSend) {
-                    close();
-                    return Game.sendNewGame(
-                      gameNameInput.value(),
-                      teams,
-                      ccontext.wid
-                    );
-                  }
-
-                  return false;
                 }}
               />
             ) : null}

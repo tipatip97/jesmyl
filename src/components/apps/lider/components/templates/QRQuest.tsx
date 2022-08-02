@@ -1,32 +1,51 @@
 import { useState } from "react";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import QRCode from "../../../../../complect/qr-code/QRCode";
-import { initialTeamPoints } from "./complect";
+import useLeaderContexts from "../contexts/useContexts";
 import "./Templates.scss";
 
-const fades = [2, 3, 4, 5, 6, 7, 8, 9];
-
 export default function QRQuest() {
-  const [fade, setFade] = useState(3);
+  const { ccontext } = useLeaderContexts();
 
   return (
     <div className="qr-quest print-template-page full-container for-print break-inside-avoid">
-      {initialTeamPoints.map(({ text, color }) => (
-        <div
-          key={color}
-          className="qr-code-wrapper relative flex center full-width full-height for-print break-inside-avoid"
-          onClick={() => setFade(mylib.findNext(fades, fade))}
-        >
-          <div className="flex center full-width margin-big-gap relative">
-            <QRCode className="qr-code full-width" text={text} />
+      {ccontext?.groups?.map((group) => {
+        const { qrText, color, initQrPoint } = group.getFieldValues();
+        if (!qrText) return null;
+
+        return (
+          <>
             <div
-              className={`absolute full-fill fade-0${fade}`}
-              style={{ background: color }}
-            />
-          </div>
-          <div className="absolute pos-top pos-left margin-big-gap">{fade}</div>
-        </div>
-      ))}
+              key={color}
+              className="qr-code-wrapper relative flex center full-width full-height for-print break-inside-avoid"
+            >
+              <div className="flex center full-width margin-big-gap relative">
+                <QRCode className="qr-code full-width" text={qrText} />
+                <div
+                  className={`absolute full-fill fade-03`}
+                  style={{ background: color }}
+                />
+              </div>
+            </div>
+            <div
+              key={color + ":::"}
+              className="qr-code-wrapper relative flex center full-width full-height for-print break-inside-avoid"
+            >
+              <div className=" full-width margin-big-gap relative">
+                <div
+                  className={`relative flex text-center margin-auto padding-giant-gap strong-square-50vmin`}
+                >
+                  {initQrPoint}
+                  <div
+                    className="absolute full-fill fade-03"
+                    style={{ background: color, color: "black" }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      })}
     </div>
   );
 }

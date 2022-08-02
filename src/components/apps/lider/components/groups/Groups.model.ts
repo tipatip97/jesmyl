@@ -1,3 +1,4 @@
+
 export interface LeaderGroupImportable extends LeaderGroupExportable {
     w: number;
     ts: number;
@@ -13,6 +14,7 @@ export interface LeaderGroupCreatable {
 export interface LeaderGroupExportable extends LeaderGroupCreatable {
     ts: number;
     isInactive?: boolean;
+    fields?: Record<string, string>;
 }
 
 export interface LeaderGroupChangable {

@@ -10,7 +10,7 @@ let localCurrentGroup: LeaderGroup | nil;
 export default function useLeaderGroups() {
     const dispatch = useDispatch();
     const cgroupw = useSelector((state: RootState) => state.lider.cgroupw);
-    const { ccontext, contexts } = useLeaderContexts();
+    const { ccontext } = useLeaderContexts();
     const { goTo } = useLiderNav();
 
     if (!localCurrentGroup && ccontext?.groups && cgroupw) {

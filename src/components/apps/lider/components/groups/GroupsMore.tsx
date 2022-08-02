@@ -1,5 +1,7 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import PrintableBottomItem from "../PrintableBottomItem";
+import QRQuest from "../templates/QRQuest";
 import LeaderGroupMaster from "./GroupMaster";
 
 export default function LeaderGroupsMore() {
@@ -17,6 +19,7 @@ export default function LeaderGroupsMore() {
         <div>Новая группа</div>
         <div className="abs-action" />
       </div>
+      <PrintableBottomItem title="QR квест точки" node={<QRQuest />} />
     </>
   );
 }
