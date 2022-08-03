@@ -2,6 +2,7 @@ import { HTMLAttributes, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import DebouncedInput from "../../../../../complect/DebouncedInput";
+import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
 import Human from "./Human";
@@ -21,6 +22,8 @@ export default function HumanList({
   uniq,
   dangers,
   successes,
+  humansRef,
+  humanMoreAdditions,
   ...props
 }: HumanListComponentProps & HTMLAttributes<HTMLDivElement>) {
   const { people } = usePeople();
@@ -30,21 +33,27 @@ export default function HumanList({
     (state: RootState) => state.lider.humanListSortVariant
   );
 
-  const humanList = useMemo(
-    () =>
-      (
-        (list?.(people?.humans?.map((human) => human.wid))
-          ?.map((wid) => people?.humans?.find((human) => human.wid === wid))
-          .filter((human) => human) as Human[]) ?? people?.humans
-      )
-        ?.filter(({ name }) => name.toLowerCase().includes(term))
-        .sort((a, b) => {
-          const aVar = a[humanListSortVariant] || 0;
-          const bVar = b[humanListSortVariant] || 0;
-          return aVar < bVar ? -1 : aVar > bVar ? 1 : 0;
-        }),
-    [people, term, humanListSortVariant, list]
-  );
+  const humanList = useMemo(() => {
+    const humans =
+      (list?.(people?.humans?.map((human) => human.wid))
+        ?.map((wid) => people?.humans?.find((human) => human.wid === wid))
+        .filter((human) => human) as Human[]) ?? people?.humans;
+    const wraps = term
+      ? mylib
+          .searchRate<{ human: Human }>(humans, term, ["name"], "human")
+          .map(({ human }) => human)
+      : humans;
+
+    if (!term) {
+      if (humanListSortVariant === "name")
+        wraps.sort(({ wid: a }, { wid: b }) => (a < b ? -1 : a > b ? 1 : 0));
+      else wraps.sort(({ ufp: a }, { ufp: b }) => a - b);
+    }
+
+    return wraps;
+  }, [people, term, humanListSortVariant, list]);
+
+  if (humansRef) humansRef.current = humanList;
 
   const searcher = (
     <DebouncedInput
@@ -68,7 +77,11 @@ export default function HumanList({
           successes?.some((wid) => human.wid === wid) ? "success-message" : ""
         }`}
       >
-        <HumanFace human={human} asMore={asHumanMore} />
+        <HumanFace
+          human={human}
+          asMore={asHumanMore}
+          humanMoreAdditions={humanMoreAdditions}
+        />
       </div>
     );
   });

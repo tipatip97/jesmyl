@@ -1,6 +1,5 @@
 import SourceBased from "../../../../../complect/SourceBased";
 import Human from "../people/Human";
-import { HumanImportable } from "../people/People.model";
 import LeaderContext from "./Context";
 import { LeaderContextsImportable } from "./Contexts.model";
 

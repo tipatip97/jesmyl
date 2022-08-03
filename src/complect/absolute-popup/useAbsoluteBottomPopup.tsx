@@ -30,11 +30,17 @@ export default function useAbsoluteBottomPopup() {
       isClosed = true;
       return true;
     },
-    openAbsoluteBottomPopup: (content: ReactNode, closable = true) => {
+    openAbsoluteBottomPopup: (
+      content: ((close: () => void) => ReactNode) | ReactNode,
+      closable = true
+    ) => {
       isClosable = closable;
       isClosed = false;
       onOpenPopup?.(ret.closeAbsoluteBottomPopup);
-      absolutePopupContent = content;
+      absolutePopupContent =
+        typeof content === "function"
+          ? content(() => ret.closeAbsoluteBottomPopup())
+          : content;
       dispatch(switchAbsoluteBottomPopupOpen(true));
       setTimeout(() => dispatch(riseUpAbsoluteBottomPopupUpdates()));
     },

@@ -497,6 +497,10 @@ input:-webkit-autofill:active {
 
 .rotate {
   animation: rotate 1s linear infinite;
+
+  &-90 {
+    transform: rotate(90deg);
+  }
 }
 
 @keyframes rotate {

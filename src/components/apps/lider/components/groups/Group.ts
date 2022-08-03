@@ -86,54 +86,47 @@ export default class LeaderGroup extends SourceBased<LeaderGroupImportable> {
         }
 
         if (changes.addMembers?.length) {
-            stack.push({
-                action: 'addContextGroupHumans',
-                method: 'other',
-                args: {
-                    ...generals,
-                    value: changes.addMembers,
-                    fieldn: 'members',
-                },
-            });
+            stack.push(this.makeHumansToGroupExecDict(changes.addMembers, generals, 'members', 'add'));
         }
 
         if (changes.delMembers?.length) {
-            stack.push({
-                action: 'delContextGroupHumans',
-                method: 'other',
-                args: {
-                    ...generals,
-                    value: changes.delMembers,
-                    fieldn: 'members',
-                },
-            });
+            stack.push(this.makeHumansToGroupExecDict(changes.delMembers, generals, 'members', 'del'));
         }
 
         if (changes.delMentors?.length) {
-            stack.push({
-                action: 'delContextGroupHumans',
-                method: 'other',
-                args: {
-                    ...generals,
-                    value: changes.delMentors,
-                    fieldn: 'mentors',
-                },
-            });
+            stack.push(this.makeHumansToGroupExecDict(changes.delMentors, generals, 'mentors', 'del'));
         }
 
         if (changes.addMentors?.length) {
-            stack.push({
-                action: 'addContextGroupHumans',
-                method: 'other',
-                args: {
-                    ...generals,
-                    value: changes.addMentors,
-                    fieldn: 'mentors',
-                },
-            });
+            stack.push(this.makeHumansToGroupExecDict(changes.addMentors, generals, 'mentors', 'add'));
         }
 
         return stack;
+    }
+
+    makeHumansToGroupExecDict(value: number[], generals: { contextw: number; groupw: number }, fieldn: 'mentors' | 'members', type: 'add' | 'del'): ExecDict {
+        return {
+            action: `${type}ContextGroupHumans`,
+            method: 'other',
+            args: {
+                ...generals,
+                value,
+                fieldn
+            },
+        }
+    }
+
+    replaceMemberToGroup(contextw: number, humanw: number, excludeGroups: LeaderGroup[]) {
+        liderExer.clear();
+        const stack: ExecDict<unknown>[] = [];
+
+        stack.push(this.makeHumansToGroupExecDict([humanw], { contextw, groupw: this.wid }, 'members', 'add'));
+
+        excludeGroups.forEach((group) => {
+            stack.push(this.makeHumansToGroupExecDict([humanw], { contextw, groupw: group.wid }, 'members', 'del'));
+        });
+
+        return liderExer.send(stack);
     }
 
     sendChanges(changes: LeaderGroupChangable) {

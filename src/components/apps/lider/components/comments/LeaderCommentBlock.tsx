@@ -51,6 +51,7 @@ export default function LeaderCommentBlock({
   isWaitedToSend,
   importantActionOnClick,
   onRejectSend,
+  newCommentTextChange,
 }: {
   comments?: LeaderCommentImportable[];
   inputId: string;
@@ -61,6 +62,7 @@ export default function LeaderCommentBlock({
   action: string;
   isWaitedToSend?: boolean;
   importantActionOnClick?: (comment: string) => void;
+  newCommentTextChange?: (comment: string) => void;
   onRejectSend?: (comment: LeaderCommentImportable) => void;
 }) {
   const [isCommentsShow, setIsCommentsShow] = useState(false);
@@ -69,6 +71,7 @@ export default function LeaderCommentBlock({
     multiline: true,
     placeholder,
     mapChar: (char) => textAdditionsMap[char]?.node || char,
+    onChange: (value) => newCommentTextChange?.(value),
   });
   const { sendingComments, sendComment, errorSentComments, rejectSending } =
     useLeaderComments();

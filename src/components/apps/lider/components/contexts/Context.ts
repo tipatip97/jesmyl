@@ -68,4 +68,19 @@ export default class LeaderContext extends SourceBased<LeaderContextImportable> 
             });
         liderExer.send(execs);
     }
+
+    getMembersInGroups(wids: number[]) {
+        return this.groups?.map(
+            (group) =>
+                group.members
+                    .map((member) =>
+                        wids.indexOf(member.wid) > -1 ? { member, group } : null
+                    )
+                    .filter((human) => human) as {
+                        member: Human;
+                        group: LeaderGroup;
+                    }[]
+        )
+            .flat() || [];
+    }
 }

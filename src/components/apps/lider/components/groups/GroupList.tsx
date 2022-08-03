@@ -14,7 +14,9 @@ export default function GroupList() {
     <PhaseLiderContainer
       topClass=""
       headTitle={`Группы${ccontext ? ` - ${ccontext.name}` : ""}`}
-      onMoreClick={() => openAbsoluteBottomPopup(<LeaderGroupsMore />)}
+      onMoreClick={() =>
+        openAbsoluteBottomPopup((close) => <LeaderGroupsMore close={close} />)
+      }
       contentClass="padding-big-gap"
       content={
         <>

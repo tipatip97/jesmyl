@@ -1,7 +1,5 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import PrintableBottomItem from "../PrintableBottomItem";
-import AdaptationPage from "../templates/AdaptationPage";
 import LeaderGroup from "./Group";
 import LeaderGroupMaster from "./GroupMaster";
 

@@ -119,7 +119,7 @@ export class Exer<Storage extends ExerStorage> {
     }
 
     send<Value>(fixedExecs: ExecDict<Value> | (ExecDict<Value>[]), cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, isRejectShowErrorModal?: boolean) {
-        this.load(cb, errCb, finCb, [fixedExecs].flat().map(exec => new Exec(exec, this.rules)), isRejectShowErrorModal);
+        return this.load(cb, errCb, finCb, [fixedExecs].flat().map(exec => new Exec(exec, this.rules)), isRejectShowErrorModal);
     }
 
     load<Value>(cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, fixedExecs?: Exec<Value>[] | nil, isRejectShowErrorModal?: boolean) {
@@ -129,7 +129,7 @@ export class Exer<Storage extends ExerStorage> {
 
         if (!execs.length) {
             cb?.(null, null);
-            return;
+            return Promise.resolve();
         }
 
         const onError = (error: Error) => {
@@ -149,11 +149,13 @@ export class Exer<Storage extends ExerStorage> {
             finCb && finCb(null, error);
         };
 
-        this.fetch({
+        return new Promise((resolve, reject) => this.fetch({
             execs,
             success: resp => {
-                if (!resp.ok) onError(resp.errors);
-                else {
+                if (!resp.ok) {
+                    onError(resp.errors);
+                    reject(resp.errors);
+                } else {
                     this.execs = this.execs.filter(ex => {
                         const isRejected = resp.rejected?.some((rej: Exec<Value> & { exec: Exec<Value> }) => {
                             if (ex.id === rej.exec.id) {
@@ -168,10 +170,14 @@ export class Exer<Storage extends ExerStorage> {
 
                     cb && cb(resp, null);
                     finCb && finCb(resp, null);
+                    resolve(resp);
                 }
             },
-            error: onError,
-        });
+            error: (resp) => {
+                onError(resp);
+                reject(resp);
+            },
+        }));
     }
 
     saveLocally() {

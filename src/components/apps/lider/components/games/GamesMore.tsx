@@ -2,7 +2,7 @@ import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import LeaderGameMaster from "./GameMaster";
 
-export default function GameMore() {
+export default function GamesMore() {
   const { openFullscreenContent } = useFullscreenContent();
 
   return (

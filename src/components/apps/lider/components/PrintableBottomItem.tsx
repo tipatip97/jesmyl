@@ -6,9 +6,11 @@ import useFullscreenContent from "../../../../complect/fullscreen-content/useFul
 export default function PrintableBottomItem({
   node,
   title,
+  close,
 }: {
   node: ReactNode;
   title: string;
+  close: () => void;
 }) {
   const { openFullscreenContent } = useFullscreenContent();
 
@@ -25,6 +27,7 @@ export default function PrintableBottomItem({
           onClick={(event) => {
             event.stopPropagation();
             openFullscreenContent(node, true);
+            close();
           }}
         />
       </div>

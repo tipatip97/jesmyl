@@ -59,6 +59,7 @@ export default function LeaderGameTimerMaster({
     },
   });
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
+  const [newCommentText, setNewCommentText] = useState("");
 
   const teamNet = mylib.netFromLine(
     teams,
@@ -367,6 +368,7 @@ export default function LeaderGameTimerMaster({
               placeholder="Комментарий к таймеру"
               areaw={timer.game?.wid}
               comments={timer.comments}
+              newCommentTextChange={(value) => setNewCommentText(value)}
               arean="gameTimers"
               {...(timer.isNew
                 ? {
@@ -379,27 +381,34 @@ export default function LeaderGameTimerMaster({
           </div>
           {timer.isNew ? (
             <div className="flex around flex-gap margin-big-gap">
-              {(timer.finishes || mode === GameTimerMode.Messager) &&
-                nameInput.value() && (
-                  <SendButton
-                    title="Опубликовать таймер"
-                    confirm
-                    onSuccess={() => {
-                      close();
-                      resetTimers();
-                      removeLocalTimer();
-                      nameInput.remove();
-                    }}
-                    onSend={() => {
-                      if (!cgame) return;
+              {newCommentText ? (
+                <div className="error-message">Комментарий не отправлен</div>
+              ) : !nameInput.value() ? (
+                <div className="error-message">Нет названия таймера</div>
+              ) : !timer.finishes && mode !== GameTimerMode.Messager ? (
+                <div className="error-message">
+                  Нет остановленных секундомеров
+                </div>
+              ) : (
+                <SendButton
+                  title="Опубликовать таймер"
+                  confirm
+                  onSuccess={() => {
+                    close();
+                    resetTimers();
+                    removeLocalTimer();
+                    nameInput.remove();
+                  }}
+                  onSend={() => {
+                    if (!cgame) return;
 
-                      return LeaderGameTimer.publicateNew({
-                        ...timer.toDict(),
-                        gamew: cgame.wid,
-                      });
-                    }}
-                  />
-                )}
+                    return LeaderGameTimer.publicateNew({
+                      ...timer.toDict(),
+                      gamew: cgame.wid,
+                    });
+                  }}
+                />
+              )}
             </div>
           ) : (
             <div

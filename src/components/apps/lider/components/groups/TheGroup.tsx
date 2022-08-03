@@ -4,6 +4,7 @@ import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import { HumanListComponentProps } from "../people/People.model";
 import LeaderGroupFields from "./fields/Fields";
+import GroupMemberMore from "./GroupMemberMore";
 import LeaderGroupMore from "./GroupMore";
 import useLeaderGroups from "./useGroups";
 
@@ -27,7 +28,21 @@ export default function TheLeaderGroup(props: HumanListComponentProps) {
           })}
           <h2>Участники</h2>
           {cgroup?.members.map((human, humani) => {
-            return <HumanFace key={`humani ${humani}`} human={human} />;
+            return (
+              <HumanFace
+                key={`humani ${humani}`}
+                human={human}
+                onMoreClick={() =>
+                  openAbsoluteBottomPopup((close) => (
+                    <GroupMemberMore
+                      group={cgroup}
+                      member={human}
+                      close={close}
+                    />
+                  ))
+                }
+              />
+            );
           })}
           {!ccontext?.blanks?.length || <LeaderGroupFields />}
         </div>

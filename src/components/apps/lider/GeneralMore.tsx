@@ -5,11 +5,10 @@ import NewLeaderContextMaster from "./components/contexts/NewContextMaster";
 import useLeaderContexts from "./components/contexts/useContexts";
 import HumanMaster from "./components/people/HumanMaster";
 import PrintableBottomItem from "./components/PrintableBottomItem";
-import FortBayardPassport from "./components/templates/FortBayardPassport";
 import QRQuest from "./components/templates/QRQuest";
 import { liderExer } from "./Lider.store";
 
-export default function GeneralMore() {
+export default function GeneralMore({ close }: { close: () => void }) {
   const { openFullscreenContent } = useFullscreenContent();
   const { contexts, setCurrentContext, ccontext } = useLeaderContexts();
 
@@ -26,12 +25,9 @@ export default function GeneralMore() {
         <div className="abs-action" />
       </div>
       <PrintableBottomItem
-        title="Распечатать Паспорт Форт-Баярда"
-        node={<FortBayardPassport />}
-      />
-      <PrintableBottomItem
         title="Распечатать QR квест-точки"
         node={<QRQuest />}
+        close={close}
       />
       {liderExer.actionAccessedOrNull("addContext") && (
         <div

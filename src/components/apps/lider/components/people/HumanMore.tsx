@@ -1,11 +1,18 @@
+import { ReactNode } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import PrintableBottomItem from "../PrintableBottomItem";
-import AdaptationPage from "../templates/AdaptationPage";
+import WelcomePage from "../templates/WelcomePage";
 import Human from "./Human";
 import HumanMaster from "./HumanMaster";
 
-export default function HumanMore({ human }: { human: Human }) {
+export default function HumanMore({
+  human,
+  humanMoreAdditions,
+}: {
+  human: Human;
+  humanMoreAdditions?: (human: Human) => ReactNode;
+}) {
   const { openFullscreenContent } = useFullscreenContent();
 
   return (
@@ -22,10 +29,9 @@ export default function HumanMore({ human }: { human: Human }) {
         <div>Редактировать</div>
         <div className="abs-action" />
       </div>
-      <PrintableBottomItem
-        title="Распечатать Допуск к путешествию"
-        node={<AdaptationPage human={human} />}
-      />
+      {typeof humanMoreAdditions === "function"
+        ? humanMoreAdditions(human)
+        : humanMoreAdditions}
     </>
   );
 }

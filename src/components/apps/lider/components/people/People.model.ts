@@ -40,8 +40,10 @@ export interface HumanListComponentProps {
     searcherClass?: string;
     placeholder?: string;
     onMoreClick?: () => void;
-    moreNode?: ReactNode;
+    moreNode?: ((human: Human) => ReactNode) | ReactNode;
     asHumanMore?: (human: Human) => ReactNode;
+    humanMoreAdditions?: (human: Human) => ReactNode;
+    humansRef?: { current: Human[] };
 }
 
 export interface SelectHumansComponentProps {

@@ -8,10 +8,12 @@ export default function HumanFace({
   human,
   onMoreClick,
   asMore,
+  humanMoreAdditions,
 }: {
   human: Human;
   onMoreClick?: () => void;
   asMore?: (human: Human) => ReactNode;
+  humanMoreAdditions?: (human: Human) => ReactNode;
 }) {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
@@ -20,7 +22,9 @@ export default function HumanFace({
       className="face-item flex between"
       onClick={(event) => {
         event.stopPropagation();
-        openAbsoluteBottomPopup(<HumanMore human={human} />);
+        openAbsoluteBottomPopup(
+          <HumanMore human={human} humanMoreAdditions={humanMoreAdditions} />
+        );
       }}
     >
       <div className="face-wrapper">

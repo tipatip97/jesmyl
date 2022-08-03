@@ -8,17 +8,15 @@ import { liderStorage } from "../../../shared/jstorages";
 import { RootState } from "../../../shared/store";
 import GameList from "./components/games/GameList";
 import TheGame from "./components/games/TheGame";
+import GroupList from "./components/groups/GroupList";
+import TheLeaderGroup from "./components/groups/TheGroup";
 import HumanList from "./components/people/HumanList";
-import MentorList from "./components/people/MentorList";
 import MemberList from "./components/people/MemberList";
-import PrintableBottomItem from "./components/PrintableBottomItem";
-import AdaptationPageList from "./components/templates/AdaptationPageList";
+import MentorList from "./components/people/MentorList";
 import GeneralPage from "./GeneralPage";
 import LiderApplication from "./Lider";
 import { LiderNavData, LiderStoraged } from "./Lider.model";
 import { liderExer, setLiderRoute } from "./Lider.store";
-import GroupList from "./components/groups/GroupList";
-import TheLeaderGroup from "./components/groups/TheGroup";
 
 const navigation: NavigationConfig<
   LiderStoraged,
@@ -38,21 +36,11 @@ const navigation: NavigationConfig<
       next: [
         {
           phase: ["humanList"],
-          node: (
-            <HumanList
-              isAsPage
-              moreNode={
-                <PrintableBottomItem
-                  title="Распечатать Допуска к путешествию"
-                  node={<AdaptationPageList />}
-                />
-              }
-            />
-          ),
+          node: <HumanList isAsPage />,
         },
         {
           phase: ["leaderList"],
-          node: <MentorList isAsPage/>,
+          node: <MentorList isAsPage />,
         },
         {
           phase: ["memberList"],
@@ -63,10 +51,10 @@ const navigation: NavigationConfig<
           node: <GroupList />,
           next: [
             {
-              phase: ['group'],
-              node: <TheLeaderGroup />
-            }
-          ]
+              phase: ["group"],
+              node: <TheLeaderGroup />,
+            },
+          ],
         },
         {
           phase: ["games"],

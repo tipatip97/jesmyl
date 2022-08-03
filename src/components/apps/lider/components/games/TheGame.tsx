@@ -6,6 +6,7 @@ import { liderExer } from "../../Lider.store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
 import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
+import GameMore from "./GameMore";
 import OutsiderMore from "./OutsiderMore";
 import TheGameTeam from "./teams/TheGameTeam";
 import LeaderGameTimerFace from "./timers/TimerFace";
@@ -50,6 +51,18 @@ export default function TheGame() {
     <PhaseLiderContainer
       topClass="the-game"
       headTitle={`Игра - ${cgame?.name || ""}`}
+      onMoreClick={() =>
+        openAbsoluteBottomPopup((close) => (
+          <GameMore
+            close={close}
+            selectedTimers={
+              selectedTimers.length
+                ? selectedTimers
+                : cgame?.timers?.map(({ wid }) => wid)
+            }
+          />
+        ))
+      }
       content={
         <>
           {!!membersReadyToPlayNode?.length && (

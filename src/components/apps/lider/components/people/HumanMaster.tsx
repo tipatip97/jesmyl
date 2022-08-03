@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import modalService from "../../../../../complect/modal/Modal.service";
 import SendButton from "../../complect/SendButton";
 import { liderExer } from "../../Lider.store";
+import useLeaderContexts from "../contexts/useContexts";
 import Human from "./Human";
 import { HumanExportable } from "./People.model";
 
@@ -50,6 +52,8 @@ export default function HumanMaster({
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
   const inputGenerator = useKeyboard();
+  const { ccontext } = useLeaderContexts();
+  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   const takeName = (value: string) => {
     if (value.match(/^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$/)) {
@@ -157,6 +161,58 @@ export default function HumanMaster({
       bDayInput.remove();
       liderExer.clear();
     };
+  }, []);
+
+  const includeToGroupButton = useMemo(() => {
+    if (!ccontext) return null;
+    const wraps = (human && ccontext.getMembersInGroups([human.wid])) || [];
+    const title = (txt = "", txt2 = "") =>
+      `${
+        wraps.length ? "Переопределить" : "Определить"
+      }${txt} в группу ${txt2}`;
+
+    return (
+      <div
+        className="pointer"
+        onClick={() => {
+          const groupws = wraps.map(({ group: { wid } }) => wid);
+
+          openAbsoluteBottomPopup(
+            ccontext.groups?.map((group) => {
+              return (
+                <div
+                  className={`abs-item pointer ${
+                    groupws.indexOf(group.wid) < 0 ? "" : "disabled"
+                  }`}
+                  onClick={async () => {
+                    if (
+                      human &&
+                      (await modalService.confirm(
+                        title(` участника "${human.name}"`, `${group.name}?`)
+                      ))
+                    ) {
+                      group
+                        .replaceMemberToGroup(
+                          ccontext.wid,
+                          human.wid,
+                          wraps.map(({ group }) => group)
+                        )
+                        .then(() => close());
+                    }
+                  }}
+                >
+                  <EvaIcon name="people-outline" className="abs-icon" />
+                  <div>{group.name}</div>
+                  <div className="abs-action"></div>
+                </div>
+              );
+            })
+          );
+        }}
+      >
+        {title()}
+      </div>
+    );
   }, []);
 
   return (
@@ -357,28 +413,34 @@ export default function HumanMaster({
           <div className="full-width margin-big-gap-v">
             Заметки {notesInput.node}
           </div>
-          <div
-            style={{
-              color: isInactive ? "green" : "red",
-            }}
-            onClick={() => {
-              setIsInactive(!isInactive);
-              if (human)
-                liderExer.setIfCan({
-                  action: "setHumanInactive",
-                  scope: `setHumanInactive-${human.wid}`,
-                  method: "set",
-                  prev: !!human.isInactive,
-                  value: !isInactive,
-                  args: {
-                    wid: human.wid,
+          <div className="flex around full-width">
+            <div
+              className="pointer"
+              style={{
+                color: isInactive ? "green" : "red",
+              }}
+              onClick={() => {
+                setIsInactive(!isInactive);
+                if (human)
+                  liderExer.setIfCan({
+                    action: "setHumanInactive",
+                    scope: `setHumanInactive-${human.wid}`,
+                    method: "set",
+                    prev: !!human.isInactive,
                     value: !isInactive,
-                    humann: human.name,
-                  },
-                });
-            }}
-          >
-            {isInactive ? "Разблокировать личность" : "Заблокировать личность"}
+                    args: {
+                      wid: human.wid,
+                      value: !isInactive,
+                      humann: human.name,
+                    },
+                  });
+              }}
+            >
+              {isInactive
+                ? "Разблокировать личность"
+                : "Заблокировать личность"}
+            </div>
+            {includeToGroupButton}
           </div>
           {bDay && bDayInput.value() && nameInput.value() ? (
             <SendButton
@@ -393,7 +455,6 @@ export default function HumanMaster({
                   if (human) {
                     liderExer.load(res, rej);
                   } else {
-
                     liderExer.send(
                       {
                         action: "addHuman",

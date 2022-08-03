@@ -16,7 +16,9 @@ export default function GeneralPage() {
       topClass="template-page-content"
       withoutBackButton
       headTitle={`Лидер${ccontext ? ` - ${ccontext.name}` : ""}`}
-      onMoreClick={() => openAbsoluteBottomPopup(<GeneralMore />)}
+      onMoreClick={() =>
+        openAbsoluteBottomPopup((close) => <GeneralMore close={close} />)
+      }
       content={
         ccontext ? (
           <>
