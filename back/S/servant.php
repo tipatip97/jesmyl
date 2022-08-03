@@ -698,7 +698,7 @@ function setForceInEach($source, &$value)
     $errors = [];
 
     foreach ($source as $keyPath => $setters) {
-      $keyPaths = explode('.', $keyPath);
+      $keyPaths = $keyPath === '.' ? [$keyPath] : explode('.', $keyPath);
 
       foreach ($keyPaths as $key) {
 
@@ -715,10 +715,17 @@ function setForceInEach($source, &$value)
           continue;
         }
 
-        if ($key === '.') $list = &$value;
-        else if (is_array($value[$key])) $list = &$value[$key];
+        $canSet = false;
 
-        if (isList($list)) {
+        if ($key === '.') {
+          $list = &$value;
+          $canSet = true;
+        } else if (is_array($value[$key])) {
+          $list = &$value[$key];
+          $canSet = true;
+        }
+
+        if ($canSet && isList($list)) {
           foreach ($list as &$item) {
             foreach ($setters as $fieldn => $val) {
               $item[$fieldn] = replaceArgs($val, $item, $errors);
