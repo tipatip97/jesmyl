@@ -26,8 +26,6 @@ export default function LeaderGroupsMore({ close }: { close: () => void }) {
         ...human.toDict(),
       })) || [];
 
-  console.log(ccontext);
-
   return (
     <>
       <div

@@ -6,12 +6,12 @@ import GameTeam from "./teams/GameTeam";
 import LeaderGameTimer from "./timers/GameTimer";
 
 export default class Game extends SourceBased<TeamGameImportable> {
-    teams: GameTeam[];
+    teams?: GameTeam[];
     timers?: LeaderGameTimer[];
 
     constructor(top: TeamGameImportable, humans: Human[]) {
         super(top);
-        this.teams = this.teamList.map((team) => new GameTeam(team, humans, this));
+        this.teams = this.teamList?.map((team) => new GameTeam(team, humans, this));
         this.timers = this.timerList?.map((timer) => new LeaderGameTimer(timer, this));
     }
 
@@ -32,16 +32,43 @@ export default class Game extends SourceBased<TeamGameImportable> {
     get wid() { return this.getBasic('w'); }
     get timerList() { return this.getBasic('timers'); }
     get contextw() { return this.getBasic('contextw'); }
+    get timerNames() { return this.getBasic('timerNames'); }
 
     toExportDict(): TeamGameExportable {
         return {
             ...super.toDict(),
-            teams: this.teams.map((team) => team.toDict()),
+            teams: this.teams?.map((team) => team.toDict()),
             ts: this.makeNewTs(),
         };
     }
 
-    static sendNewGame(name: string, teams: GameTeam[], contextw: number) {
+    publicateTeams(teams: GameTeam[]) {
+        return new Promise((res, rej) => {
+            liderExer.send({
+                action: 'updateGameTeamList',
+                method: 'other',
+                args: {
+                    gamew: this.wid,
+                    list: teams.map((team) => team.toDict())
+                },
+            }, res, rej, null, true);
+        });
+    }
+
+    publicateTimerNameList(list: string[]) {
+        return new Promise((res, rej) => {
+            liderExer.send({
+                action: 'updateGameTimerNames',
+                method: 'other',
+                args: {
+                    gamew: this.wid,
+                    list,
+                },
+            }, res, rej);
+        });
+    }
+
+    static sendNewGame(name: string, contextw: number, timerNames?: string[], teams?: GameTeam[]) {
         return new Promise((res, rej) => liderExer.send({
             action: "addTeamGame",
             method: "push",
@@ -49,8 +76,9 @@ export default class Game extends SourceBased<TeamGameImportable> {
                 ts: Date.now() + Math.random(),
                 name,
                 contextw,
-                teams: teams.map((team) => team.toDict()),
+                timerNames,
+                teams: teams?.map((team) => team.toDict()),
             } as TeamGameExportable,
-        }, res, rej));
+        }, res, rej, null, true));
     }
 }

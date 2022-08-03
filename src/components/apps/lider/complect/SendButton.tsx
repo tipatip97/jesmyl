@@ -1,4 +1,4 @@
-import { HTMLAttributes, useState } from "react";
+import { useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../complect/modal/Modal.service";
 
@@ -7,22 +7,22 @@ export default function SendButton({
   confirm,
   onSend,
   onSuccess,
-  ...props
+  onFailure,
 }: {
   title: string;
   confirm?: string | boolean | null;
   onSend?: () => Promise<unknown> | void | nil;
   onSuccess?: () => void;
-} & Omit<HTMLAttributes<HTMLDivElement>, "onClick">) {
+  onFailure?: () => void;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   return (
     <div
-      {...props}
       className={`the-button margin-gap ${
         isLoading && !isError ? "pointers-none" : ""
-      } ${props.className || ""}`}
+      }`}
       onClick={async () => {
         if (
           confirm != null &&
@@ -40,8 +40,14 @@ export default function SendButton({
             .then((isSucc) => {
               setIsLoading(false);
               if (isSucc !== false) onSuccess?.();
+              else onFailure?.();
             })
-            .catch(() => setTimeout(() => setIsError(true), 1000));
+            .catch(() =>
+              setTimeout(() => {
+                setIsError(true);
+                onFailure?.();
+              }, 1000)
+            );
         }
       }}
     >

@@ -10,9 +10,11 @@ import GameTeamMemberMore from "./GameTeamMemberMore";
 export default function TheGameTeam({
   team,
   redactable,
+  noComments,
 }: {
   team: GameTeam;
   redactable?: boolean;
+  noComments?: boolean;
 }) {
   const [pronoun, noun] = team.name?.split(" ") || [];
   const [isHumansShow, setIsHumansShow] = useState(!(redactable ?? false));
@@ -57,7 +59,7 @@ export default function TheGameTeam({
         {isHumansShow ? "Скрыть" : "Показать"} участников
       </div>
 
-      <LeaderCommentBlock
+      {noComments || <LeaderCommentBlock
         inputId={`commentInput ${team.wid || team.ts} ${
           team.game?.wid || "##"
         }`}
@@ -75,7 +77,7 @@ export default function TheGameTeam({
           },
           onRejectSend: (comment) => team.removeComment(comment),
         })}
-      />
+      />}
     </div>
   );
 }

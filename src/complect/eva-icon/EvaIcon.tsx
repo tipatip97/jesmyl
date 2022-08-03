@@ -20,7 +20,9 @@ export default function EvaIcon(
           height="24"
           viewBox="0 0 24 24"
           style={props.style}
-          className={"eva-icon " + (props.className || "")}
+          className={`eva-icon ${props.className || ""} ${
+            props.onClick ? "pointer" : ""
+          }`}
           fill="var(--svg-color)"
           dangerouslySetInnerHTML={{ __html: pack[props.name] }}
         />

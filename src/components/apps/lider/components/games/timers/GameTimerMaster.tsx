@@ -54,12 +54,11 @@ export default function LeaderGameTimerMaster({
   const nameInput = useKeyboard()("name-of-GameTimer-input", {
     preferLanguage: "ru",
     initialValue: timer.name,
-    onInput: (value) => {
-      value && mapTimer((timer) => (timer.name = value));
-    },
+    onChange: (value) => mapTimer((timer) => (timer.name = value)),
   });
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const [newCommentText, setNewCommentText] = useState("");
+  const [isWriteName, setIsWriteName] = useState(false);
 
   const teamNet = mylib.netFromLine(
     teams,
@@ -79,11 +78,42 @@ export default function LeaderGameTimerMaster({
         </div>
       ) : (
         <>
-          <div className="flex full-width flex-gap">
+          <div className="dropdown-ancestor flex full-width flex-gap">
             {timer.isNew ? (
               <>
                 <span>Название</span>
-                {nameInput.node}
+                {!isWriteName &&
+                cgame?.timerNames?.length &&
+                (!timer.name || cgame.timerNames.indexOf(timer.name) > -1) ? (
+                  <>
+                    <Dropdown
+                      placeholder="Выбрать название"
+                      id={timer.name}
+                      items={cgame.timerNames.map((name) => ({
+                        id: name,
+                        title: name,
+                      }))}
+                      onSelect={({ id }) => nameInput.value(id)}
+                    />
+                    <EvaIcon
+                      name="edit-outline"
+                      onClick={() => setIsWriteName(true)}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {nameInput.node}
+                    {!cgame?.timerNames?.length || (
+                      <EvaIcon
+                        name="menu-outline"
+                        onClick={() => {
+                          setIsWriteName(false);
+                          nameInput.value("");
+                        }}
+                      />
+                    )}
+                  </>
+                )}
               </>
             ) : (
               <div className="padding-giant-gap">
@@ -172,153 +202,157 @@ export default function LeaderGameTimerMaster({
                   )}
                 </>
               )}
-              <div className="table-centered-wrapper team-list-table margin-big-gap-v">
-                <div className="table">
-                  {teamNet?.map((row, rowi) => {
-                    return (
-                      <div key={`rowi-${rowi}`} className="row">
-                        <div className="cell flex column ellipsis">
-                          {row.map((team, teami) => {
-                            return (
-                              <div
-                                key={`teami-${teami}`}
-                                className={`flex center full-max-width ${
-                                  selectedTeamw === team.wid
-                                    ? "selected-team"
-                                    : ""
-                                }`}
-                                onContextMenu={(event) => {
-                                  event.preventDefault();
-                                  if (timer.isTeamCantMove(team)) {
-                                    if (team.wid === selectedTeamw)
-                                      setSelectedTeamw(null);
-                                    return;
-                                  }
-                                  setSelectedTeamw(
-                                    team.wid === selectedTeamw ? null : team.wid
-                                  );
-                                }}
-                                onClick={() => {
-                                  if (timer.isTeamCantMove(team)) {
-                                    if (team.wid === selectedTeamw)
-                                      setSelectedTeamw(null);
-                                    return;
-                                  }
-                                  if (!selectedTeamw) {
-                                    if (selectedTeamw === team.wid)
-                                      setSelectedTeamw(null);
-                                    return;
-                                  }
-                                  const newTeams = [
-                                    ...teams.map(({ wid }) => wid),
-                                  ];
-                                  const selectedi =
-                                    newTeams.indexOf(selectedTeamw);
-                                  const teami = newTeams.indexOf(team.wid);
-                                  [newTeams[selectedi], newTeams[teami]] = [
-                                    newTeams[teami],
-                                    newTeams[selectedi],
-                                  ];
-                                  updateTeams(
-                                    newTeams
-                                      .map((wid) =>
-                                        teams.find((team) => team.wid === wid)
-                                      )
-                                      .filter((team) => team) as GameTeam[]
-                                  );
-                                  updateTeamList(newTeams);
-                                  setSelectedTeamw(null);
-                                }}
-                              >
-                                <div className="flex column min-width-90 over-hidden">
-                                  <div className="team-box full-max-width ellipsis">
-                                    {team.upperName}
-                                  </div>
+              {!teamNet?.length || (
+                <div className="table-centered-wrapper team-list-table margin-big-gap-v">
+                  <div className="table">
+                    {teamNet.map((row, rowi) => {
+                      return (
+                        <div key={`rowi-${rowi}`} className="row">
+                          <div className="cell flex column ellipsis">
+                            {row.map((team, teami) => {
+                              return (
+                                <div
+                                  key={`teami-${teami}`}
+                                  className={`flex center full-max-width ${
+                                    selectedTeamw === team.wid
+                                      ? "selected-team"
+                                      : ""
+                                  }`}
+                                  onContextMenu={(event) => {
+                                    event.preventDefault();
+                                    if (timer.isTeamCantMove(team)) {
+                                      if (team.wid === selectedTeamw)
+                                        setSelectedTeamw(null);
+                                      return;
+                                    }
+                                    setSelectedTeamw(
+                                      team.wid === selectedTeamw
+                                        ? null
+                                        : team.wid
+                                    );
+                                  }}
+                                  onClick={() => {
+                                    if (timer.isTeamCantMove(team)) {
+                                      if (team.wid === selectedTeamw)
+                                        setSelectedTeamw(null);
+                                      return;
+                                    }
+                                    if (!selectedTeamw) {
+                                      if (selectedTeamw === team.wid)
+                                        setSelectedTeamw(null);
+                                      return;
+                                    }
+                                    const newTeams = [
+                                      ...teams.map(({ wid }) => wid),
+                                    ];
+                                    const selectedi =
+                                      newTeams.indexOf(selectedTeamw);
+                                    const teami = newTeams.indexOf(team.wid);
+                                    [newTeams[selectedi], newTeams[teami]] = [
+                                      newTeams[teami],
+                                      newTeams[selectedi],
+                                    ];
+                                    updateTeams(
+                                      newTeams
+                                        .map((wid) =>
+                                          teams.find((team) => team.wid === wid)
+                                        )
+                                        .filter((team) => team) as GameTeam[]
+                                    );
+                                    updateTeamList(newTeams);
+                                    setSelectedTeamw(null);
+                                  }}
+                                >
+                                  <div className="flex column min-width-90 over-hidden">
+                                    <div className="team-box full-max-width ellipsis">
+                                      {team.upperName}
+                                    </div>
 
-                                  {!!timer.finishes?.[team.wid] && (
-                                    <GameTimerScreen
-                                      className="color--3"
-                                      start={timer.startTime(rowi)}
-                                      pause={timer.finishes?.[team.wid]}
-                                    />
-                                  )}
-                                </div>
-
-                                {timer.isNew && (
-                                  <div
-                                    className={` control-button finish-button flex center pointer margin-gap`}
-                                  >
-                                    {!timer.finishes?.[team.wid] ? (
-                                      <EvaIcon
-                                        name="pause-circle-outline"
-                                        className={
-                                          !timer.startTime(rowi)
-                                            ? "disabled "
-                                            : ""
-                                        }
-                                        onClick={(event) => {
-                                          event.stopPropagation();
-                                          if (
-                                            !timer.startTime(rowi) ||
-                                            timer.finishes?.[team.wid]
-                                          )
-                                            return;
-                                          pauseForRow(team.wid);
-                                        }}
-                                      />
-                                    ) : (
-                                      <EvaIcon
-                                        name="rewind-right-outline"
-                                        onClick={(event) => {
-                                          event.stopPropagation();
-                                          openAbsoluteFloatPopup(
-                                            <div
-                                              onClick={() => {
-                                                if (timer.startTime(rowi))
-                                                  pauseForRow(team.wid, 0);
-                                              }}
-                                            >
-                                              Возобновить старый таймер
-                                            </div>,
-                                            event.clientX,
-                                            event.clientY
-                                          );
-                                        }}
+                                    {!!timer.finishes?.[team.wid] && (
+                                      <GameTimerScreen
+                                        className="color--3"
+                                        start={timer.startTime(rowi)}
+                                        pause={timer.finishes?.[team.wid]}
                                       />
                                     )}
                                   </div>
-                                )}
-                              </div>
-                            );
-                          })}
-                          {timer.isNew &&
-                            !timer.isRowFinished(rowi) &&
-                            !!timer.starts?.[rowi] && (
-                              <div>
-                                <GameTimerScreen
-                                  className="color--3"
-                                  start={timer.startTime(rowi)}
-                                />
-                              </div>
-                            )}
-                        </div>
-                        {mode !== GameTimerMode.TimerTotal && timer.isNew ? (
-                          <div
-                            className={`control-button start-button flex center pointer margin-gap ${
-                              timer.starts?.[rowi] ? "disabled" : ""
-                            }`}
-                          >
-                            <EvaIcon
-                              name="play-circle-outline"
-                              onClick={() => startForRow(rowi)}
-                            />
+
+                                  {timer.isNew && (
+                                    <div
+                                      className={` control-button finish-button flex center pointer margin-gap`}
+                                    >
+                                      {!timer.finishes?.[team.wid] ? (
+                                        <EvaIcon
+                                          name="pause-circle-outline"
+                                          className={
+                                            !timer.startTime(rowi)
+                                              ? "disabled "
+                                              : ""
+                                          }
+                                          onClick={(event) => {
+                                            event.stopPropagation();
+                                            if (
+                                              !timer.startTime(rowi) ||
+                                              timer.finishes?.[team.wid]
+                                            )
+                                              return;
+                                            pauseForRow(team.wid);
+                                          }}
+                                        />
+                                      ) : (
+                                        <EvaIcon
+                                          name="rewind-right-outline"
+                                          onClick={(event) => {
+                                            event.stopPropagation();
+                                            openAbsoluteFloatPopup(
+                                              <div
+                                                onClick={() => {
+                                                  if (timer.startTime(rowi))
+                                                    pauseForRow(team.wid, 0);
+                                                }}
+                                              >
+                                                Возобновить старый таймер
+                                              </div>,
+                                              event.clientX,
+                                              event.clientY
+                                            );
+                                          }}
+                                        />
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                            {timer.isNew &&
+                              !timer.isRowFinished(rowi) &&
+                              !!timer.starts?.[rowi] && (
+                                <div>
+                                  <GameTimerScreen
+                                    className="color--3"
+                                    start={timer.startTime(rowi)}
+                                  />
+                                </div>
+                              )}
                           </div>
-                        ) : null}
-                      </div>
-                    );
-                  })}
+                          {mode !== GameTimerMode.TimerTotal && timer.isNew ? (
+                            <div
+                              className={`control-button start-button flex center pointer margin-gap ${
+                                timer.starts?.[rowi] ? "disabled" : ""
+                              }`}
+                            >
+                              <EvaIcon
+                                name="play-circle-outline"
+                                onClick={() => startForRow(rowi)}
+                              />
+                            </div>
+                          ) : null}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
 
@@ -385,6 +419,10 @@ export default function LeaderGameTimerMaster({
                 <div className="error-message">Комментарий не отправлен</div>
               ) : !nameInput.value() ? (
                 <div className="error-message">Нет названия таймера</div>
+              ) : !teamNet?.length ? (
+                <div className="flex center color--3">
+                  Команды ещё не сформированы
+                </div>
               ) : !timer.finishes && mode !== GameTimerMode.Messager ? (
                 <div className="error-message">
                   Нет остановленных секундомеров

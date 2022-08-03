@@ -200,12 +200,14 @@
                             "ts": "{ts}",
                             "name": "{name}",
                             "teams": "{teams}",
+                            "timerNames": "{timerNames}",
                             "contextw": "{contextw}"
                         },
                         "args": {
                             "ts": "#Number",
                             "name": "#String",
-                            "teams": "#List",
+                            "teams": "#list",
+                            "timerNames": "#list",
                             "contextw": "#Number"
                         },
                         "setForceInEach": {
@@ -239,9 +241,46 @@
                         "next": [
                             {
                                 "track": [
+                                    "timerNames"
+                                ],
+                                "next": [
+                                    {
+                                        "level": 30,
+                                        "action": "updateGameTimerNames",
+                                        "method": "set",
+                                        "value": "{list}",
+                                        "args": {
+                                            "list": "#List"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "track": [
                                     "teams"
                                 ],
                                 "next": [
+                                    {
+                                        "level": 30,
+                                        "action": "updateGameTeamList",
+                                        "method": "set",
+                                        "value": "{list}",
+                                        "args": {
+                                            "list": "#List"
+                                        },
+                                        "setForceInEach": {
+                                            ".": {
+                                                "fio": "{@userFio}",
+                                                "owner": "{@userLogin}",
+                                                "w": "{@setNewWid()}"
+                                            },
+                                            "comments": {
+                                                "fio": "{@userFio}",
+                                                "owner": "{@userLogin}",
+                                                "w": "{@setNewWid()}"
+                                            }
+                                        }
+                                    },
                                     {
                                         "track": [
                                             [

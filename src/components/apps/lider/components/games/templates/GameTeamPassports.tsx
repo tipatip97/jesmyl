@@ -11,14 +11,19 @@ export default function GameTeamPassports({
   selectedTimers?: number[];
 }) {
   const { cgame } = useGames();
+  const gameTimers = cgame?.timers;
   const timers =
-    selectedTimers &&
-    cgame?.timers &&
-    selectedTimers
-      ?.map((wid) =>
-        cgame.timers?.find((timer) => !timer.isInactive && timer.wid === wid)
-      )
-      .filter((timer) => timer);
+    (selectedTimers?.length &&
+      gameTimers &&
+      selectedTimers
+        .map(
+          (wid) =>
+            gameTimers.find((timer) => !timer.isInactive && timer.wid === wid)
+              ?.name
+        )
+        .filter((timer) => timer)) ||
+    cgame?.timerNames;
+
   let carouselTimers = timers || [];
 
   return (
@@ -31,14 +36,14 @@ export default function GameTeamPassports({
                 {page(
                   <div className="full-width full-height flex center">
                     <FontSizeContain>
-                      <div className="rotate-90">{timer?.name}</div>
+                      <div className="rotate-90">{timer}</div>
                     </FontSizeContain>
                   </div>
                 )}
               </React.Fragment>
             );
           })}
-          {cgame?.teams.map((team, teami) => {
+          {cgame?.teams?.map((team, teami) => {
             if (teami) {
               carouselTimers = [...carouselTimers];
               carouselTimers.push(carouselTimers.splice(0, 1)[0]);
@@ -70,7 +75,7 @@ export default function GameTeamPassports({
                                       key={`timeri-${timeri}`}
                                       className="cell"
                                     >
-                                      {timer?.name}
+                                      {timer}
                                     </div>
                                   );
                                 })}

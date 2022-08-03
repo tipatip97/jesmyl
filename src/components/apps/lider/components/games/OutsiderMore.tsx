@@ -23,7 +23,7 @@ export default function OutsiderMore({
             description: `В какую команду определить участни${
               human.isMan ? "ка" : "цу"
             } ${human.name}?`,
-            inputs: game.teams.map((team) => {
+            inputs: game.teams?.map((team) => {
               return {
                 value: team.name,
                 type: "button",

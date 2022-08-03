@@ -28,14 +28,15 @@ export interface LiderStoraged {
 
 export interface TeamGameImportable extends TeamGameExportable {
     w: number;
-    teams: GameTeamImportable[];
+    teams?: GameTeamImportable[];
 }
 
 export interface TeamGameExportable {
     ts: number;
     contextw: number;
     name: string;
-    teams: GameTeamExportable[];
+    timerNames?: string[];
+    teams?: GameTeamExportable[];
     timers?: GameTimerImportable[];
 }
 

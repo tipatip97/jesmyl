@@ -40,4 +40,11 @@ export default class GameTeam extends SourceBased<GameTeamImportable> {
     removeComment({ ts: topTs }: LeaderCommentImportable) {
         this.comments = this.comments?.filter(({ ts }) => ts !== topTs);
     }
+
+    toDict() {
+        return {
+            ...super.toDict(),
+            comments: this.comments?.map(comment => comment)
+        };
+    }
 }

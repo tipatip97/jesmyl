@@ -59,9 +59,14 @@
   + .dropdown-ancestor {
     .dropdown-selector {
       z-index: 299;
+    }
+    + .dropdown-ancestor {
+      .dropdown-selector {
+        z-index: 298;
+      }
       + .dropdown-ancestor {
         .dropdown-selector {
-          z-index: 298;
+          z-index: 297;
         }
       }
     }

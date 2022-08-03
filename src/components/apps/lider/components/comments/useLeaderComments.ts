@@ -33,7 +33,7 @@ export default function useLeaderComments() {
 
             const tss = observableGames?.teamGames?.map(({ teams, timers }) => {
                 const mapper = (...args: { comments?: LeaderCommentImportable[] }[][]) => args.flat().map(({ comments }) => comments?.map(comment => comment.owner === login ? comment.ts : 0))
-                return mapper(teams, timers || []);
+                return teams && mapper(teams, timers || []);
             })
                 .flat().flat()
                 .filter(ts => ts) as number[] || [];
