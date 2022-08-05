@@ -51,8 +51,13 @@ export default function useKeyboard() {
 
     return {
       node: inputNode,
-      value: (value?: string, isRemember = false) => {
-        if (value !== undefined) localInput.replaceAll(value, isRemember);
+      value: (
+        value?: string,
+        isRemember = false,
+        isInvokeOnInputEvent = true
+      ) => {
+        if (value !== undefined)
+          localInput.replaceAll(value, isRemember, isInvokeOnInputEvent);
         return localInput.value;
       },
       focus: () => localInput.focus(),

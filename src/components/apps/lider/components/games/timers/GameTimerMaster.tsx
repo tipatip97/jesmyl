@@ -18,6 +18,7 @@ import {
 } from "./GameTimer.model";
 import "./GameTimer.scss";
 import GameTimerScreen from "./GameTimerScreen";
+import TimerCompetitionsSelector from "./TimerCompetitionsSelector";
 import useGameTimer from "./useGameTimer";
 
 export default function LeaderGameTimerMaster({
@@ -28,33 +29,44 @@ export default function LeaderGameTimerMaster({
   close: () => void;
 }) {
   const { cgame } = useGames();
-  const timer = useMemo(
-    () =>
-      (topTimer.wid &&
-        cgame?.timers?.find((timer) => topTimer.wid === timer.wid)) ||
-      topTimer,
-    [cgame?.timers, topTimer]
-  );
-
-  const [mode, setMode] = useState(timer.mode);
-  const [joins, setJoins] = useState(timer.joins || 1);
-  const [selectedTeamw, setSelectedTeamw] = useState<number | null>(null);
-  const [teams, updateTeams] = useState<GameTeam[]>(timer.teams ?? []);
   const {
     startTotalTimer,
     mapTimer,
     resetTimers,
     startForRow,
     pauseForRow,
+    isCanPauseForRow,
     updateTeamList,
     removeLocalTimer,
     saveComment,
     removeComment,
-  } = useGameTimer(timer.game);
+    publicateTimer,
+    newTimer,
+    isRedactOld,
+    redactIcon,
+    isCanSendOldTimerUpdates,
+    isTimerOnRedaction,
+  } = useGameTimer(topTimer.wid);
+
+  const timer = useMemo(
+    () =>
+      isRedactOld
+        ? newTimer
+        : (topTimer.wid &&
+            cgame?.timers?.find((timer) => topTimer.wid === timer.wid)) ||
+          topTimer,
+    [cgame?.timers, topTimer, isRedactOld, newTimer]
+  );
+
+  const [mode, setMode] = useState(timer.mode);
+  const [joins, setJoins] = useState(timer.joins || 1);
+  const [selectedTeamw, setSelectedTeamw] = useState<number | null>(null);
+  const [teams, updateTeams] = useState<GameTeam[]>(timer.teams ?? []);
+
   const nameInput = useKeyboard()("name-of-GameTimer-input", {
     preferLanguage: "ru",
     initialValue: timer.name,
-    onChange: (value) => mapTimer((timer) => (timer.name = value)),
+    onInput: (value) => mapTimer((timer) => (timer.name = value)),
   });
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const [newCommentText, setNewCommentText] = useState("");
@@ -151,38 +163,14 @@ export default function LeaderGameTimerMaster({
                   {!timer.isStarted && (
                     <>
                       {mode === GameTimerMode.TimerApart && (
-                        <div className="dropdown-ancestor margin-big-gap-v flex flex-gap full-width">
-                          Таймер
-                          <Dropdown
-                            id={joins}
-                            items={[
-                              {
-                                id: 1,
-                                title: "Глобальное противостояние",
-                              },
-                            ].concat(
-                              [2, 3, 4, 5, 6, 7, 8, 9]
-                                .map((num) => {
-                                  return num < teams.length
-                                    ? {
-                                        id: num,
-                                        title: `Соревнуются по ${num} ${mylib.declension(
-                                          num,
-                                          "команде",
-                                          "команды",
-                                          "команд"
-                                        )}`,
-                                      }
-                                    : { id: 0, title: "" };
-                                })
-                                .filter(({ id }) => id)
-                            )}
-                            onSelect={({ id }) => {
-                              setJoins(id);
-                              mapTimer((timer) => (timer.joins = id));
-                            }}
-                          />
-                        </div>
+                        <TimerCompetitionsSelector
+                          joins={joins}
+                          teams={teams}
+                          onSelect={({ id }) => {
+                            setJoins(id);
+                            mapTimer((timer) => (timer.joins = id));
+                          }}
+                        />
                       )}
                       {mode === GameTimerMode.TimerTotal && (
                         <div
@@ -202,6 +190,7 @@ export default function LeaderGameTimerMaster({
                   )}
                 </>
               )}
+              <div className="flex flex-end full-width">{redactIcon}</div>
               {!teamNet?.length || (
                 <div className="table-centered-wrapper team-list-table margin-big-gap-v">
                   <div className="table">
@@ -277,7 +266,7 @@ export default function LeaderGameTimerMaster({
                                     )}
                                   </div>
 
-                                  {timer.isNew && (
+                                  {isCanPauseForRow(team.wid) && (
                                     <div
                                       className={` control-button finish-button flex center pointer margin-gap`}
                                     >
@@ -324,7 +313,7 @@ export default function LeaderGameTimerMaster({
                                 </div>
                               );
                             })}
-                            {timer.isNew &&
+                            {(isRedactOld || timer.isNew) &&
                               !timer.isRowFinished(rowi) &&
                               !!timer.starts?.[rowi] && (
                                 <div>
@@ -335,7 +324,8 @@ export default function LeaderGameTimerMaster({
                                 </div>
                               )}
                           </div>
-                          {mode !== GameTimerMode.TimerTotal && timer.isNew ? (
+                          {mode !== GameTimerMode.TimerTotal &&
+                          (isRedactOld || timer.isNew) ? (
                             <div
                               className={`control-button start-button flex center pointer margin-gap ${
                                 timer.starts?.[rowi] ? "disabled" : ""
@@ -356,7 +346,7 @@ export default function LeaderGameTimerMaster({
             </>
           )}
 
-          {timer.isNew ? (
+          {timer.isNew || isRedactOld ? (
             <div className="flex around flex-gap margin-big-gap">
               {timer.isStarted && (
                 <span
@@ -364,14 +354,18 @@ export default function LeaderGameTimerMaster({
                   onClick={() => {
                     modalService
                       .confirm(
-                        mode === GameTimerMode.TimerTotal
+                        isTimerOnRedaction(timer.ts)
+                          ? "Сбросить новые изменения таймера?"
+                          : mode === GameTimerMode.TimerTotal
                           ? "Сбросить таймер?"
                           : "Сбросить все таймеры?"
                       )
                       .then((reset) => reset && resetTimers());
                   }}
                 >
-                  Сбросить таймер
+                  {isTimerOnRedaction(timer.ts)
+                    ? "Сбросить изменения"
+                    : "Сбросить таймер"}
                 </span>
               )}
             </div>
@@ -413,7 +407,7 @@ export default function LeaderGameTimerMaster({
                 : null)}
             />
           </div>
-          {timer.isNew ? (
+          {isRedactOld || timer.isNew ? (
             <div className="flex around flex-gap margin-big-gap">
               {newCommentText ? (
                 <div className="error-message">Комментарий не отправлен</div>
@@ -428,24 +422,21 @@ export default function LeaderGameTimerMaster({
                   Нет остановленных секундомеров
                 </div>
               ) : (
-                <SendButton
-                  title="Опубликовать таймер"
-                  confirm
-                  onSuccess={() => {
-                    close();
-                    resetTimers();
-                    removeLocalTimer();
-                    nameInput.remove();
-                  }}
-                  onSend={() => {
-                    if (!cgame) return;
-
-                    return LeaderGameTimer.publicateNew({
-                      ...timer.toDict(),
-                      gamew: cgame.wid,
-                    });
-                  }}
-                />
+                (!isRedactOld || isCanSendOldTimerUpdates()) && (
+                  <SendButton
+                    title={`Опубликовать ${
+                      isRedactOld ? "изменения" : "таймер"
+                    }`}
+                    confirm
+                    onSuccess={() => {
+                      close();
+                      resetTimers();
+                      removeLocalTimer();
+                      nameInput.remove();
+                    }}
+                    onSend={() => publicateTimer(timer)}
+                  />
+                )
               )}
             </div>
           ) : (

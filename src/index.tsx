@@ -21,19 +21,33 @@ export const renderApplication = (
 renderApplication(<App />, document.getElementById("root"));
 
 export const renderComponentInNewWindow = (reactNode: ReactNode) => {
-  const win = window.open();
-  if (win) {
-    const div = document.createElement("div");
-    div.classList.add("above-container");
+  const linkNode = document.querySelector(
+    "link[href][rel='stylesheet']"
+  ) as HTMLLinkElement | null;
+
+  const style = document.createElement("style");
+  const link: HTMLLinkElement = document.createElement("link");
+
+  if (linkNode) {
+    link.href = linkNode.href;
+    link.rel = "stylesheet";
+  } else {
     let styles = "";
-    win.document.body.appendChild(div);
-    renderApplication(reactNode, div);
     Array.from(document.querySelectorAll("style")).forEach((box) => {
       styles += box.innerText;
     });
-    const styleNode = document.createElement("style");
-    styleNode.innerText = styles;
-    win.document.body.appendChild(styleNode);
+    style.innerText = styles;
+  }
+
+  const win = window.open();
+  if (win) {
+    win.document.head.appendChild(style);
+    win.document.head.appendChild(link);
+    const div = document.createElement("div");
+    div.classList.add("above-container");
+    win.document.body.appendChild(div);
+
+    renderApplication(reactNode, div);
   }
 };
 

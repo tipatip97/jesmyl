@@ -4,7 +4,7 @@ import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.m
 import { liderStorage } from "../../../shared/jstorages";
 import { defaultSendingComments, SendingComments } from "./components/comments/LeaderComment.model";
 import { LeaderContextsImportable } from "./components/contexts/Contexts.model";
-import { GameTimerImportable } from "./components/games/timers/GameTimer.model";
+import { StoragedGameTimerImportableDict } from "./components/games/timers/GameTimer.model";
 import { HumanListSortVariant, PeopleImportable } from "./components/people/People.model";
 import { GamesStoreImportable, LiderState, LiderStoraged } from "./Lider.model";
 
@@ -50,7 +50,7 @@ export const slice = createSlice({
     updateGamesStore: (state, action: PayloadAction<GamesStoreImportable>) => {
       state.games = action.payload;
     },
-    updateGamesTimers: (state, action: PayloadAction<Record<number, GameTimerImportable | null>>) => {
+    updateGamesTimers: (state, action: PayloadAction<StoragedGameTimerImportableDict>) => {
       state.gameTimers = action.payload;
     },
     updateLeaderPeople: (state, action: PayloadAction<PeopleImportable>) => {

@@ -8,14 +8,14 @@ export default function useIsRedactArea(
   onEditStart?: () => void
 ) {
   const [isRedact, setIsRedact] = useState(false);
-  const isCanRedact = canRedact == null || canRedact;
+  const isCanRedact = canRedact === undefined || canRedact;
 
   const ret = {
     isRedact:
-      isCanRedact &&
+      !!isCanRedact &&
       (redact ?? (redactable == null ? isRedact : redactable && isRedact)),
     setIsRedact,
-    editIcon: isCanRedact && redactable && !(redact ?? isRedact) && (
+    editIcon: !!isCanRedact && redactable && !(redact ?? isRedact) && (
       <EvaIcon
         name="edit-outline"
         onClick={() => {

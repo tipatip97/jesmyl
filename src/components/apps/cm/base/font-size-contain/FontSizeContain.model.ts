@@ -13,6 +13,7 @@ export interface FontSizeContainProps {
     fixOnly?: FontSizeContainPropsFixOnly;
     position?: FontSizeContainPropsPosition;
     updater?: (resizer: (containerId?: string) => void) => void;
+    delay?: number;
 }
 
 

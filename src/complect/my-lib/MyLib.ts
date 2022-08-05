@@ -1007,6 +1007,10 @@ export class MyLib {
         return Object.entries(obj) as never;
     }
 
+    static values<T extends {} | []>(obj: T | nil) {
+        return obj ? Object.values(obj) : [];
+    }
+
     keys<Item extends {}>(item: Item): (keyof Item)[] {
         return Object.keys(item) as never;
     }

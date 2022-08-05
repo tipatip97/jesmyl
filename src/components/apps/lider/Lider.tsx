@@ -1,15 +1,17 @@
 import { ReactNode, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import modalService from "../../../complect/modal/Modal.service";
 import { liderStorage } from "../../../shared/jstorages";
 import useLeaderComments from "./components/comments/useLeaderComments";
 import useLeaderContexts from "./components/contexts/useContexts";
-import useGameTimer from "./components/games/timers/useGameTimer";
 import useCgame from "./components/games/useGames";
 import useLeaderGroups from "./components/groups/useGroups";
 import usePeople from "./components/people/usePeople";
 import "./Lider.scss";
+import { updateGamesTimers } from "./Lider.store";
 
 export default function LiderApplication({ content }: { content: ReactNode }) {
+  const dispatch = useDispatch();
   const { updatePeople, peopleImportable, updatePeopleImportable, people } =
     usePeople();
   const { updateGames, gamesImportable, updateGamesImportable } = useCgame();
@@ -21,7 +23,6 @@ export default function LiderApplication({ content }: { content: ReactNode }) {
     contextsImportable,
     updateContextsImportable,
   } = useLeaderContexts();
-  const { updateGamesTimers } = useGameTimer();
   const { resetCurrentGroup } = useLeaderGroups();
 
   useEffect(() => {
@@ -79,7 +80,7 @@ export default function LiderApplication({ content }: { content: ReactNode }) {
     if (contexts) updateContextsImportable(contexts);
   });
   liderStorage.listen("gameTimers", "LiderApplication", (gameTimers) => {
-    if (gameTimers) updateGamesTimers(gameTimers);
+    if (gameTimers) dispatch(updateGamesTimers(gameTimers));
   });
 
   return <>{content}</>;

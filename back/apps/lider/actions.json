@@ -257,6 +257,28 @@
                             },
                             {
                                 "track": [
+                                    "timerFields"
+                                ],
+                                "next": [
+                                    {
+                                        "level": 30,
+                                        "action": "updateGameTimerFields",
+                                        "method": "set_all",
+                                        "value": {
+                                            "mode": "{?mode}",
+                                            "teams": "{?teams}",
+                                            "joins": "{?joins}"
+                                        },
+                                        "args": {
+                                            "mode": "#number",
+                                            "joins": "#number",
+                                            "teams": "#list"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "track": [
                                     "teams"
                                 ],
                                 "next": [
@@ -414,6 +436,15 @@
                                                 },
                                                 "next": [
                                                     {
+                                                        "level": 20,
+                                                        "action": "updateTimerComponents",
+                                                        "method": "set_all",
+                                                        "args": {
+                                                            "value": "#Dict",
+                                                            "timerw": "#Number"
+                                                        }
+                                                    },
+                                                    {
                                                         "track": [
                                                             "comments"
                                                         ],
@@ -494,6 +525,10 @@
                             ]
                         ],
                         "next": [
+                            {
+                                "action": "ruleIsCanRedactGroupMentorList",
+                                "level": 30
+                            },
                             {
                                 "action": "addHumansToContext",
                                 "track": [

@@ -10,13 +10,15 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
     setIsUnknownSymbols: (char: string) => boolean = this.dafaultSetIsUnknownSymbols;
     mapChar: (char: string) => ReactNode = this.dafaultMapChar;
 
-    replaceAll = (value: string, isRemember = true) => {
+    replaceAll = (value: string, isRemember = true, isInvokeOnInputEvent = false) => {
         if (value === this.value) return;
+        const prev = this.value;
         if (isRemember) this.remember('replaceAll');
         this.valueChars = value.split('');
         this.setCursorPosition(this.valueChars.length);
         this.scrollToView();
         this.setValues();
+        if (isInvokeOnInputEvent) this.onInput?.(this.value, prev);
     }
 
     setValues() {

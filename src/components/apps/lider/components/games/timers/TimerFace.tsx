@@ -9,11 +9,13 @@ export default function LeaderGameTimerFace({
   timer,
   onSelect,
   selectedPosition,
+  isTimerOnRedaction,
   ...props
 }: {
   timer: LeaderGameTimer;
   onSelect?: () => void;
   selectedPosition?: number;
+  isTimerOnRedaction?: boolean;
 } & HTMLAttributes<HTMLDivElement>) {
   const { openFullscreenContent } = useFullscreenContent();
 
@@ -42,19 +44,24 @@ export default function LeaderGameTimerFace({
         />
       </span>
       <span className="face-title flex between full-width">
-        {timer.isNew ? (
-          <span className="color--7">
-            Новый таймер{timer.name ? ` - ${timer.name}` : ""}
-          </span>
-        ) : (
-          <span className={`${timer.isInactive ? "text-strike" : ""}`}>
-            {timer.name}
-            {timer.fio ? ` (${timer.fio})` : ""}
-          </span>
-        )}{" "}
-        {timer.isNew && timer.isStarted && (
-          <span className="error-message">(Запущен)</span>
-        )}
+        <span className="flex flex-gap">
+          {timer.isNew ? (
+            <span className="color--7">
+              Новый таймер{timer.name ? ` - ${timer.name}` : ""}
+            </span>
+          ) : (
+            <span className={`${timer.isInactive ? "text-strike" : ""}`}>
+              {timer.name}
+              {timer.fio ? ` (${timer.fio})` : ""}
+            </span>
+          )}
+          {timer.isNew && timer.isStarted && (
+            <span className="error-message">(Запущен)</span>
+          )}
+          {isTimerOnRedaction && (
+            <EvaIcon name="edit-outline" className="fade-05" />
+          )}
+        </span>
         {!!timer.comments?.length && (
           <div>
             <EvaIcon name="message-square-outline" />

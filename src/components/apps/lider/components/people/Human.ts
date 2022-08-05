@@ -29,6 +29,6 @@ export default class Human extends SourceBased<HumanImportable> {
     }
 
     isCanPlayGame() {
-        return !this.isInactive && this.ufp;
+        return !this.isInactive// && this.ufp;
     }
 }

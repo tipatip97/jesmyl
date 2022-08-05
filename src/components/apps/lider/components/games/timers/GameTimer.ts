@@ -1,21 +1,22 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import SourceBased from "../../../../../../complect/SourceBased";
-import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
-import GameTeam from "../teams/GameTeam";
-import Game from "../Game";
-import { GameTimerCreatable, GameTimerImportable, GameTimerMode } from "./GameTimer.model";
-import { RateSortedItem } from "./GameTimer.model";
 import { liderExer } from "../../../Lider.store";
+import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
+import Game from "../Game";
+import GameTeam from "../teams/GameTeam";
+import { GameTimerCreatable, GameTimerImportable, GameTimerMode, GameTimerUpdatable, GameTimerUpdateExportable, RateSortedItem } from "./GameTimer.model";
 
 export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
     game?: Game;
     teams: GameTeam[];
     isNew?: boolean;
+    isRedact?: boolean;
 
-    constructor(top: GameTimerImportable, game?: Game, isNew?: boolean) {
+    constructor(top: GameTimerImportable, game?: Game, isNew?: boolean, isRedact?: boolean) {
         super(top);
         this.game = game;
         this.isNew = isNew;
+        this.isRedact = isRedact;
 
         this.teams = this.setTeams();
     }
@@ -128,12 +129,22 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
         return rowi != null && this.startTime(rowi) && this.isTeamFinished(topTeam.wid);
     }
 
-    static publicateNew(timer: GameTimerCreatable) {
+    static publicateNew(args: GameTimerCreatable) {
         return new Promise((res, rej) => liderExer.send(
             {
                 action: "addGameTimer",
                 method: "push",
-                args: timer,
+                args,
+            }, res, rej, null, true
+        ));
+    }
+
+    static updateTimerComponents(gamew: number, timerw: number, value: GameTimerUpdatable) {
+        return new Promise((res, rej) => liderExer.send(
+            {
+                action: "updateTimerComponents",
+                method: "other",
+                args: { gamew, timerw, value } as GameTimerUpdateExportable,
             }, res, rej, null, true
         ));
     }

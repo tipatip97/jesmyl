@@ -13,6 +13,7 @@ import OutsiderMore from "./OutsiderMore";
 import GameTeam from "./teams/GameTeam";
 import TheGameTeam from "./teams/TheGameTeam";
 import LeaderGameTimerFace from "./timers/TimerFace";
+import TimerFieldsConfigurer from "./timers/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/TimerNameListConfigurer";
 import useGameTimer from "./timers/useGameTimer";
 import TotalScoreTable from "./TotalScoreTable";
@@ -31,7 +32,7 @@ export default function TheGame() {
       []
     ) || [];
 
-  const { newTimer } = useGameTimer(cgame);
+  const { newTimer, isTimerOnRedaction } = useGameTimer();
   const [teams, updateTeams] = useState<GameTeam[] | und>();
 
   const membersReadyToPlayNode = ccontext
@@ -82,6 +83,7 @@ export default function TheGame() {
                     key={`timer-${timeri}`}
                     timer={timer}
                     selectedPosition={selectedTimers.indexOf(timer.wid) + 1}
+                    isTimerOnRedaction={isTimerOnRedaction(timer.ts)}
                     onSelect={() =>
                       updateSelectedTimers(
                         selectedTimers.indexOf(timer.wid) < 0
@@ -97,6 +99,10 @@ export default function TheGame() {
                 timerNames={cgame?.timerNames}
                 redactable
                 onSend={(list) => cgame?.publicateTimerNameList(list)}
+              />
+              <TimerFieldsConfigurer
+                redactable
+                onSend={(list) => cgame?.publicateGameTimerFields(list)}
               />
               {selectedTimers.length > 1 && (
                 <div

@@ -4,9 +4,10 @@ import {
   FontSizeContainResizer,
 } from "./FontSizeContain.model";
 
-export default function FontSizeContain(
-  props: PropsWithChildren<FontSizeContainProps>
-) {
+export default function FontSizeContain({
+  delay,
+  ...props
+}: PropsWithChildren<FontSizeContainProps>) {
   const [isFirst, setIsFirst] = useState(true);
 
   return (
@@ -14,17 +15,24 @@ export default function FontSizeContain(
       style={{ display: "inline-block" }}
       ref={(element) => {
         if (element) {
-          const res = (containerId?: string) => {
-            if (containerId === undefined || containerId === props.containerId)
-              resize(element, props.fixOnly, props.position);
-          };
+          const compute = () => {
+            const res = (containerId?: string) => {
+              if (
+                containerId === undefined ||
+                containerId === props.containerId
+              )
+                resize(element, props.fixOnly, props.position);
+            };
 
-          res();
-          setTimeout(() => res());
-          if (isFirst) {
-            setIsFirst(false);
-            if (props.updater) props.updater(res);
-          }
+            res();
+            setTimeout(() => res());
+            if (isFirst) {
+              setIsFirst(false);
+              props.updater?.(res);
+            }
+          };
+          if (delay) setTimeout(compute, delay);
+          else compute();
         }
       }}
     >

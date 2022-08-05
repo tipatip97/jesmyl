@@ -2,7 +2,7 @@ import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model"
 import { SendingComments } from "./components/comments/LeaderComment.model";
 import { LeaderContextsImportable } from "./components/contexts/Contexts.model";
 import { GameTeamExportable, GameTeamImportable } from "./components/games/teams/GameTeams.model";
-import { GameTimerImportable } from "./components/games/timers/GameTimer.model";
+import { GameTimerConfigurable, GameTimerImportable, StoragedGameTimerImportableDict } from "./components/games/timers/GameTimer.model";
 import { HumanListSortVariant, PeopleImportable } from "./components/people/People.model";
 
 export interface LiderState extends LiderStoraged {
@@ -18,7 +18,7 @@ export interface LiderStoraged {
     cgroupw?: number;
     ccontextw?: number;
     humanListSortVariant: HumanListSortVariant;
-    gameTimers: Record<number, GameTimerImportable | null>;
+    gameTimers?: StoragedGameTimerImportableDict;
     sendingComments: SendingComments;
     numUpdatesPeople: number;
     numUpdatesTimers: number;
@@ -36,6 +36,7 @@ export interface TeamGameExportable {
     contextw: number;
     name: string;
     timerNames?: string[];
+    timerFields?: GameTimerConfigurable;
     teams?: GameTeamExportable[];
     timers?: GameTimerImportable[];
 }

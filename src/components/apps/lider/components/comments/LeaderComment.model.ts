@@ -1,18 +1,19 @@
 import { ExecDict } from "../../../../../complect/exer/Exer.model";
 
-export interface LeaderCommentExportable {
+export interface LeaderCommentInitializable {
     comment: string;
-    areaw: number;
-    listw: number;
     ts: number;
 }
 
-export interface LeaderCommentImportable {
-    comment: string;
+export interface LeaderCommentExportable extends LeaderCommentInitializable {
+    areaw: number;
+    listw: number;
+}
+
+export interface LeaderCommentImportable extends LeaderCommentInitializable {
     owner: string;
     fio: string;
     w: number;
-    ts: number;
 }
 
 export type SendingCommentsAreaName = 'gameTimers' | 'gameTeams';

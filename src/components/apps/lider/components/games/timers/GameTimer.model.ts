@@ -1,5 +1,6 @@
-import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
+import { LeaderCommentExportable, LeaderCommentImportable, LeaderCommentInitializable } from "../../comments/LeaderComment.model";
 import GameTeam from "../teams/GameTeam";
+import LeaderGameTimer from "./GameTimer";
 
 export interface RateSortedItem {
     team?: GameTeam;
@@ -35,7 +36,7 @@ timerModeAliasList.forEach(({ id, title }) => {
     timerModeAliases[id] = title;
 });
 
-export interface GameTimerImportable extends GameTimerExportable {
+export interface GameTimerImportable extends GameTimerBasics {
     w: number;
     fio: string;
     owner: string;
@@ -43,17 +44,50 @@ export interface GameTimerImportable extends GameTimerExportable {
     isInactive?: boolean;
 }
 
-export interface GameTimerCreatable extends GameTimerExportable {
+export interface GameTimerUpdateExportable {
     gamew: number;
+    timerw: number;
+    value: GameTimerUpdatable;
 }
 
-export interface GameTimerExportable {
-    ts: number;
-    name: string;
-    mode: GameTimerMode;
-    joins?: number;
-    start?: number | null;
+export interface GameTimerUpdatable {
     starts?: number[] | null;
     finishes?: Record<number, number> | null;
     teams?: number[];
+}
+
+export interface GameTimerCreatable extends GameTimerBasics {
+    gamew: number;
+    comments?: LeaderCommentInitializable[];
+}
+
+export interface GameTimerConfigurable {
+    mode: GameTimerMode;
+    joins?: number;
+    teams?: number[];
+}
+
+export interface GameTimerBasics extends GameTimerUpdatable, GameTimerConfigurable {
+    ts: number;
+    name: string;
+    start?: number | null;
+}
+
+export interface GameTimerExportable extends GameTimerBasics {
+    comments?: LeaderCommentExportable[];
+}
+
+export type StoragedGameTimerImportable = { [gameWid: number]: { [timerTs: number]: GameTimerImportable | null } };
+
+export interface StoragedGameTimerImportableDict {
+    news?: StoragedGameTimerImportable;
+    redacts?: StoragedGameTimerImportable;
+}
+
+
+export type StoragedGameTimer = { [gameWid: number]: { [timerTs: number]: LeaderGameTimer | null } };
+
+export interface StoragedGameTimerDict {
+    news: StoragedGameTimer;
+    redacts: StoragedGameTimer;
 }

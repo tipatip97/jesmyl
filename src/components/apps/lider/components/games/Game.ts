@@ -4,10 +4,12 @@ import { liderExer } from "../../Lider.store";
 import Human from "../people/Human";
 import GameTeam from "./teams/GameTeam";
 import LeaderGameTimer from "./timers/GameTimer";
+import { GameTimerConfigurable } from "./timers/GameTimer.model";
 
 export default class Game extends SourceBased<TeamGameImportable> {
     teams?: GameTeam[];
     timers?: LeaderGameTimer[];
+    asd = this.makeNewTs();
 
     constructor(top: TeamGameImportable, humans: Human[]) {
         super(top);
@@ -16,7 +18,7 @@ export default class Game extends SourceBased<TeamGameImportable> {
     }
 
     isTimerWasPublicate(timerTs: number) {
-        return this.timers?.some((timer) => timer.ts === timerTs)
+        return this.timers?.some((timer) => timer.ts === timerTs);
     }
 
     getTimer(timerWid: number) {
@@ -33,6 +35,7 @@ export default class Game extends SourceBased<TeamGameImportable> {
     get timerList() { return this.getBasic('timers'); }
     get contextw() { return this.getBasic('contextw'); }
     get timerNames() { return this.getBasic('timerNames'); }
+    get timerFields() { return this.getBasic('timerFields'); }
 
     toExportDict(): TeamGameExportable {
         return {
@@ -63,6 +66,19 @@ export default class Game extends SourceBased<TeamGameImportable> {
                 args: {
                     gamew: this.wid,
                     list,
+                },
+            }, res, rej);
+        });
+    }
+
+    publicateGameTimerFields(value: GameTimerConfigurable) {
+        return new Promise((res, rej) => {
+            liderExer.send({
+                action: 'updateGameTimerFields',
+                method: 'other',
+                args: {
+                    ...value,
+                    gamew: this.wid,
                 },
             }, res, rej);
         });

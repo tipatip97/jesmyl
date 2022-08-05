@@ -35,7 +35,7 @@ export default function GameTeamPassports({
               <React.Fragment key={`timeri${timeri}`}>
                 {page(
                   <div className="full-width full-height flex center">
-                    <FontSizeContain>
+                    <FontSizeContain delay={100}>
                       <div className="rotate-90">{timer}</div>
                     </FontSizeContain>
                   </div>

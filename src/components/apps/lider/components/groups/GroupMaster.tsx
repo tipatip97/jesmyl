@@ -1,10 +1,8 @@
 import { useState } from "react";
 import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
-import modalService from "../../../../../complect/modal/Modal.service";
 import SendButton from "../../complect/SendButton";
 import { liderExer } from "../../Lider.store";
 import useLeaderContexts from "../contexts/useContexts";
-import Human from "../people/Human";
 import SelectHumans from "../people/SelectHumans";
 import LeaderGroup from "./Group";
 
@@ -44,7 +42,7 @@ export default function LeaderGroupMaster({
         chosenPlaceholder="Поиск по участникам группы"
         chosenTitle="Список участников группы"
         excludedTitle="Лидер"
-        redactable
+        redact
         fixedList={group?.members.map((human) => human.wid)}
         wholeList={ccontext?.members.map((human) => human.wid)}
         excludes={ccontext?.mentors.map((human) => human.wid)}
@@ -54,21 +52,23 @@ export default function LeaderGroupMaster({
         }}
       />
 
-      <SelectHumans
-        uniq={uniq + "mentors"}
-        chooseTitle={`Выбор из участников ${ccontext?.name || "контекста"}`}
-        chosenPlaceholder="Поиск по лидерам группы"
-        chosenTitle="Список лидеров группы"
-        excludedTitle="Участник"
-        redactable
-        fixedList={group?.mentors.map((human) => human.wid)}
-        wholeList={ccontext?.mentors.map((human) => human.wid)}
-        excludes={ccontext?.members.map((human) => human.wid)}
-        onListsUpdate={(addList, delList) => {
-          updateAddMentors(addList);
-          updateDelMentors(delList);
-        }}
-      />
+      {liderExer.actionAccessedOrNull("ruleIsCanRedactGroupMentorList") && (
+        <SelectHumans
+          uniq={uniq + "mentors"}
+          chooseTitle={`Выбор из участников ${ccontext?.name || "контекста"}`}
+          chosenPlaceholder="Поиск по лидерам группы"
+          chosenTitle="Список лидеров группы"
+          excludedTitle="Участник"
+          redact
+          fixedList={group?.mentors.map((human) => human.wid)}
+          wholeList={ccontext?.mentors.map((human) => human.wid)}
+          excludes={ccontext?.members.map((human) => human.wid)}
+          onListsUpdate={(addList, delList) => {
+            updateAddMentors(addList);
+            updateDelMentors(delList);
+          }}
+        />
+      )}
       {(!group ||
         !!group.getChangesStack({
           name,
