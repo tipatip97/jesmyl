@@ -4,6 +4,7 @@ import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { useWid } from "../../../../../../complect/useWid";
 import SendButton from "../../../complect/SendButton";
+import useIsRedactArea from "../../../complect/useIsRedactArea";
 
 export default function TimerNameListConfigurer({
   timerNames,
@@ -21,8 +22,8 @@ export default function TimerNameListConfigurer({
   const id = useWid();
   const inputGenerator = useKeyboard();
   const [names, updateNames] = useState<string[]>([]);
-  const [isRedact, setIsRedact] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const { editIcon, isRedact, setIsRedact } = useIsRedactArea(redactable, redact);
 
   const redactNames = useMemo(() => {
     return names.length ? names : timerNames ?? [];
@@ -46,11 +47,9 @@ export default function TimerNameListConfigurer({
     <div className="margin-gap">
       <h2 className="flex flex-gap">
         Названия таймеров
-        {redactable && !isRedact && !redact && (
-          <EvaIcon name="edit-outline" onClick={() => setIsRedact(true)} />
-        )}
+        {editIcon}
       </h2>
-      {isRedact || redact ? (
+      {isRedact ? (
         <>
           <div className={isSending ? "disabled" : ""}>
             {redactNames.map((name, namei) => {

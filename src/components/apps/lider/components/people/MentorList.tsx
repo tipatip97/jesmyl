@@ -26,8 +26,8 @@ export default function MentorList(props: HumanListComponentProps) {
                   chooseTitle="Выбери лидеров:"
                   chosenTitle="Выбранные лидеры:"
                   uniq="mentors"
-                  isRedactable
-                  isRedact
+                  redactable
+                  redact
                   excludedTitle="Участник"
                   fixedList={ccontext?.mentors.map((human) => human.wid)}
                   excludes={ccontext?.members.map((human) => human.wid)}

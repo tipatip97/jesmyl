@@ -44,7 +44,7 @@ export default function LeaderGroupsMore({ close }: { close: () => void }) {
         close={close}
       />
       <PrintableBottomItem
-        title="AdA"
+        title="Допуск к путешествию"
         node={<WelcomePageList list={bags} />}
         close={close}
       />

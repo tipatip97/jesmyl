@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import { useWid } from "../../../../../../complect/useWid";
-import useLeaderContexts from "../../contexts/useContexts";
+import useIsRedactArea from "../../../complect/useIsRedactArea";
 import {
   ContextFieldBlankExportable,
   contextFieldBlankTypeDictAliases,
@@ -15,61 +15,78 @@ export default function ContextFieldBlank({
   addition,
   onRedact,
   onDelete,
-  importantOnRedactClick,
+  onEditStart,
 }: {
   blank: ContextFieldBlankExportable;
   redact?: boolean;
   addition?: boolean;
   onRedact?: (blank: ContextFieldBlankExportable) => void;
   onDelete?: () => void;
-  importantOnRedactClick?: () => void;
+  onEditStart?: () => void;
 }) {
   const [isInit, setIsInit] = useState(true);
-  const [isInternalRedact, setIsRedact] = useState(redact ?? false);
   const inputGenerator = useKeyboard();
   const [key, setKey] = useState(blank.key);
   const [name, setName] = useState(blank.name);
   const [def, setDef] = useState(blank.def);
   const [value, setValue] = useState(blank.value);
   const [type, setType] = useState(blank.type);
-  const { ccontext } = useLeaderContexts();
   const id = useWid();
-
-  const isRedact = useMemo(
-    () => isInternalRedact || redact,
-    [isInternalRedact, redact]
+  const { editIcon, isRedact } = useIsRedactArea(
+    true,
+    redact,
+    null,
+    onEditStart
   );
 
-  let nameInput;
-  let keyInput;
-  let defInput;
-  let valueInput;
+  let nameNode;
+  let keyNode;
+  let defNode;
+  let valueNode;
 
   if (isRedact) {
-    keyInput = inputGenerator(`${id}-field-back-key`, {
-      preferLanguage: "en",
-      onInput: (value) => {
-        setKey(value);
-      },
-      initialValue: key,
-      multiline: true,
-    });
-    nameInput = inputGenerator(`${id}-field-back-name`, {
+    const nameInput = inputGenerator(`${id}-field-back-name`, {
       onInput: (value) => setName(value),
       initialValue: name,
       multiline: true,
     });
-    defInput = inputGenerator(`${id}-field-back-def`, {
+    const defInput = inputGenerator(`${id}-field-back-def`, {
       onInput: (value) => setDef(value),
       initialValue: def,
       multiline: true,
     });
-    valueInput = inputGenerator(`${id}-field-back-value`, {
+    const valueInput = inputGenerator(`${id}-field-back-value`, {
       onInput: (value) => setValue(value),
       initialValue: value,
       multiline: true,
     });
+
+    nameNode = nameInput.node;
+    defNode = defInput.node;
+    valueNode = valueInput.node;
+
+    if (redact && addition) {
+      const keyInput = inputGenerator(`${id}-field-back-key`, {
+        preferLanguage: "en",
+        onInput: (value) => setKey(value),
+        initialValue: key,
+        multiline: true,
+      });
+      keyNode = keyInput.node;
+    }
+  } else {
+    nameNode = name;
+    defNode = def;
+    valueNode = value;
   }
+
+  const net: [string, ReactNode][] = [
+    ["Ключ", keyNode ?? key],
+    ["Тип значения", contextFieldBlankTypeDictAliases[blank.type]],
+    ["Название", nameNode],
+    ["Значение по умолчанию", defNode],
+    ["Конечное значение", valueNode],
+  ];
 
   useEffect(() => {
     if (isInit) {
@@ -80,70 +97,30 @@ export default function ContextFieldBlank({
   }, [name, def, type, value, key]);
 
   return (
-    <div className="margin-gap padding-gap border--3">
+    <div className="margin-gap padding-gap border--3 relative">
       <div className="flex flex-end full-width">
         {addition ? (
           <EvaIcon
             name="close"
-            className="pointer"
             onClick={async () => {
               if (await modalService.confirm(`Удалить бланк ${name || key}?`))
                 onDelete?.();
             }}
           />
-        ) : isRedact ? null : (
-          <EvaIcon
-            name="edit-outline"
-            className="pointer"
-            onClick={importantOnRedactClick ?? (() => setIsRedact(true))}
-          />
+        ) : (
+          <span className="absolute pos-right pos-top margin-gap">{editIcon}</span>
         )}
       </div>
-      {!isRedact ? (
-        <>
-          <div>
-            Ключ: <span className="color--3 user-select">{key}</span>
-          </div>
-          <div>
-            Тип значения:{" "}
-            <span className="color--3 user-select">
-              {contextFieldBlankTypeDictAliases[type]}
+      {net.map(([title, node]) => {
+        return (
+          <div className="flex flex-gap margin-gap-v">
+            <span className="nowrap">{title}</span>
+            <span className="color--3 user-select full-width">
+              {node || " - "}
             </span>
           </div>
-          <div>
-            Название: <span className="color--3 user-select">{name}</span>
-          </div>
-          <div>
-            Тип значения:{" "}
-            <span className="color--3 user-select">
-              {contextFieldBlankTypeDictAliases[type]}
-            </span>
-          </div>
-          <div>
-            Значение по умолчанию:{" "}
-            <span className="color--3 user-select">{def || "-"}</span>
-          </div>
-          <div>
-            Конечное значение: <span className="color--3 user-select">{value || "-"}</span>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="flex flex-gap margin-gap-v">
-            Ключ {redact && addition ? keyInput?.node : blank.key}
-          </div>
-          <div>Тип значения {contextFieldBlankTypeDictAliases[blank.type]}</div>
-          <div className="flex flex-gap margin-gap-v">
-            Название {nameInput?.node}
-          </div>
-          <div className="flex flex-gap margin-gap-v">
-            Значение по умолчанию {defInput?.node}
-          </div>
-          <div className="flex full-max-width flex-gap margin-gap-v">
-            Конечное значение {valueInput?.node}
-          </div>
-        </>
-      )}
+        );
+      })}
     </div>
   );
 }

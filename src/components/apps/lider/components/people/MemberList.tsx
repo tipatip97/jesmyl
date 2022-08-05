@@ -74,7 +74,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
           const list = ccontext?.getMembersInGroups([wid]);
 
           if (!list?.length)
-            return <div className="error-message">Не в группах</div>;
+            return <div className="error-message nowrap">Вне групп</div>;
           else if (list.length > 1)
             return <div className="error-message">В нескольких группах!</div>;
         }}
@@ -89,6 +89,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
                   chosenTitle="Выбранные участники:"
                   uniq="members"
                   excludedTitle="Лидер"
+                  redact
                   fixedList={ccontext?.members.map((human) => human.wid)}
                   excludes={ccontext?.mentors.map((human) => human.wid)}
                   onSend={(addList, delList) => {

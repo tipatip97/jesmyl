@@ -361,6 +361,10 @@ textarea {
   @include strong-square(#{$i * 10}vmin);
 }
 
+.min-height-30vh {
+  min-height: 30vh;
+}
+
 .margin-auto {
   margin: auto;
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
 import SendButton from "../../../complect/SendButton";
+import useIsRedactArea from "../../../complect/useIsRedactArea";
 import { liderExer } from "../../../Lider.store";
 import useLeaderContexts from "../../contexts/useContexts";
 import useLeaderGroups from "../useGroups";
@@ -10,44 +10,40 @@ export default function LeaderGroupFields() {
   const { ccontext } = useLeaderContexts();
   const { cgroup } = useLeaderGroups();
   const inputGenerator = useKeyboard();
-  const [isRedact, setIsRedact] = useState(false);
   const [redactFields, updateRedactFields] = useState<
     Record<string, string | und>
   >({});
   const canRedact = liderExer.actionAccessedOrNull("setContextGroupFields");
-  const fields = cgroup?.fields || {};
+  const { editIcon, isRedact, setIsRedact } = useIsRedactArea(
+    true,
+    null,
+    canRedact
+  );
+  const fields = cgroup?.getFieldValues() || {};
 
   return (
     <>
       <h2 className="flex flex-gap">
         Специальные поля
-        {canRedact && !isRedact && (
-          <EvaIcon
-            name="edit-outline"
-            className="pointer"
-            onClick={() => setIsRedact(true)}
-          />
-        )}
+        {editIcon}
       </h2>
       {ccontext?.blanks?.map(({ name, key, def, value }, blanki) => {
         if (value || !canRedact || !isRedact)
           return (
             <div key={`blanki ${blanki}`} className="flex flex-gap">
               <div className="nowrap">{name}:</div>
-              <div className="color--3 pre-line">
-                {value || fields[key] || "-"}
-              </div>
+              <div className="color--3 pre-line">{fields[key] || "-"}</div>
             </div>
           );
         const valueInput = inputGenerator(
           `${ccontext.wid} ${cgroup?.wid} ${key}`,
           {
-            initialValue: def || fields[key],
+            initialValue: fields[key],
             multiline: true,
-            onInput: (value) => {
+            onChange: (value) => {
               let val: und | string = value;
 
-              if (fields[key] && fields[key] !== value) val = undefined;
+              if (fields[key] === value) val = undefined;
               updateRedactFields({ ...redactFields, [key]: val });
             },
           }
@@ -61,7 +57,9 @@ export default function LeaderGroupFields() {
         );
       })}
       <div className="flex center margin-big-gap">
-        {!Object.values(redactFields).filter((val) => val).length || (
+        {Object.entries(redactFields).some(
+          ([key, val]) => fields[key] !== val
+        ) && (
           <SendButton
             title="Отправить значения"
             onSuccess={() => {

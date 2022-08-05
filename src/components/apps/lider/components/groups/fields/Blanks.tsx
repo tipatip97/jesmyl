@@ -11,9 +11,9 @@ import ContextFieldBlank from "./FieldBlank";
 export default function GroupFieldBlanks() {
   const { ccontext } = useLeaderContexts();
   const [addList, updateAddList] = useState<ContextFieldBlankExportable[]>([]);
-  const [redactList, updateRedactList] = useState<ContextFieldBlankExportable[]>(
-    []
-  );
+  const [redactList, updateRedactList] = useState<
+    ContextFieldBlankExportable[]
+  >([]);
   const [keysOnRedact, updateKeysOnRedact] = useState<string[]>([]);
   const { isCanAddNew, isCanPublicate, inclusiveKeys, isEmptyExists } =
     useMemo(() => {
@@ -32,7 +32,6 @@ export default function GroupFieldBlanks() {
         isCanAddNew: !isEmptyExists && !inclusiveKeys.length,
         isCanPublicate:
           (!isEmptyExists && !inclusiveKeys.length && !!addList.length) ||
-          !!keysOnRedact.length ||
           !!redactList.length,
         inclusiveKeys,
         isEmptyExists,
@@ -66,9 +65,7 @@ export default function GroupFieldBlanks() {
             key={`blanki-${blanki}`}
             blank={blank}
             redact={keysOnRedact.indexOf(blank.key) > -1}
-            importantOnRedactClick={() =>
-              updateKeysOnRedact([...keysOnRedact, blank.key])
-            }
+            onEditStart={() => updateKeysOnRedact([...keysOnRedact, blank.key])}
             onRedact={(blank) => {
               const redactBlanks = [...redactList];
               const redactBlanki = redactBlanks.findIndex(

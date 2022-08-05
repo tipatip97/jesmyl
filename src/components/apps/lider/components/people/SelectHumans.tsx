@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import Human from "./Human";
+import useIsRedactArea from "../../complect/useIsRedactArea";
 import HumanList from "./HumanList";
 import { SelectHumansComponentProps } from "./People.model";
 
@@ -13,13 +13,14 @@ export default function SelectHumans({
   fixedList,
   excludes,
   excludedTitle,
-  isRedactable,
-  isRedact: topIsRedact,
+  redactable,
+  redact,
+  wholeList,
 }: SelectHumansComponentProps) {
   const [addList, updateAddList] = useState<number[]>([]);
   const [delList, updateDelList] = useState<number[]>([]);
   const [isShowExcluded, setIsShowExcluded] = useState(false);
-  const [isRedact, setIsRedact] = useState(topIsRedact ?? !isRedactable);
+  const { isRedact, editIcon } = useIsRedactArea(redactable, redact);
 
   const getHumanList = (
     uniq: string,
@@ -27,7 +28,11 @@ export default function SelectHumans({
     placeholder: string
   ) => {
     return (
-      <div className="height-30vh-strong over-auto full-width">
+      <div
+        className={`${
+          isRedact ? "height-30vh-strong" : ""
+        } min-height-30vh over-auto full-width`}
+      >
         <HumanList
           uniq={uniq}
           className="full-width"
@@ -39,11 +44,11 @@ export default function SelectHumans({
             if (isWholeList) {
               if (!isShowExcluded && excludes)
                 return (
-                  list?.filter(
+                  (wholeList ?? list)?.filter(
                     (wid) => !excludes.some((exWid) => exWid === wid)
                   ) ?? []
                 );
-              else return list;
+              else return wholeList ?? list;
             }
 
             if (fixedList) {
@@ -53,9 +58,8 @@ export default function SelectHumans({
             } else return addList;
           }}
           asHumanMore={
-            !isRedactable || !isRedact
-              ? undefined
-              : (human) => {
+            isRedact
+              ? (human) => {
                   if (
                     excludedTitle &&
                     excludes?.some((exWid) => exWid === human.wid)
@@ -99,6 +103,7 @@ export default function SelectHumans({
                     />
                   );
                 }
+              : undefined
           }
         />
       </div>
@@ -112,7 +117,7 @@ export default function SelectHumans({
 
   return (
     <>
-      {(!isRedactable || isRedact) && (
+      {isRedact && (
         <>
           <h2>{chooseTitle}</h2>
           {chooseNode}
@@ -128,15 +133,9 @@ export default function SelectHumans({
           )}
         </>
       )}
-      <h2 className="relative">
+      <h2 className="flex flex-gap">
         {chosenTitle}
-        {isRedactable && !isRedact && (
-          <EvaIcon
-            className="pointer absolute pos-bottom margin-gap-h"
-            name="edit-outline"
-            onClick={() => setIsRedact(!isRedact)}
-          />
-        )}
+        {editIcon}
       </h2>
       {chosenNode}
     </>

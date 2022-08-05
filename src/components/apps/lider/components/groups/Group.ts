@@ -43,14 +43,16 @@ export default class LeaderGroup extends SourceBased<LeaderGroupImportable> {
 
     getFieldValues() {
         const values: Record<string, any> = {};
+        const fields = this.fields || {};
 
         this.context.blanks?.forEach(({ key, def, value }) => {
-            values[key] = def ?? value;
+            if (value) values[key] = value;
+            else if (def && !fields[key]) values[key] ||= def;
         });
 
         return {
-            ...values,
             ...this.fields,
+            ...values,
         };
     }
 

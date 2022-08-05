@@ -44,8 +44,9 @@ export default function LeaderGroupMaster({
         chosenPlaceholder="Поиск по участникам группы"
         chosenTitle="Список участников группы"
         excludedTitle="Лидер"
-        isRedactable
+        redactable
         fixedList={group?.members.map((human) => human.wid)}
+        wholeList={ccontext?.members.map((human) => human.wid)}
         excludes={ccontext?.mentors.map((human) => human.wid)}
         onListsUpdate={(addList, delList) => {
           updateAddMembers(addList);
@@ -59,8 +60,9 @@ export default function LeaderGroupMaster({
         chosenPlaceholder="Поиск по лидерам группы"
         chosenTitle="Список лидеров группы"
         excludedTitle="Участник"
-        isRedactable
+        redactable
         fixedList={group?.mentors.map((human) => human.wid)}
+        wholeList={ccontext?.mentors.map((human) => human.wid)}
         excludes={ccontext?.members.map((human) => human.wid)}
         onListsUpdate={(addList, delList) => {
           updateAddMentors(addList);

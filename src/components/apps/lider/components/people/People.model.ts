@@ -53,8 +53,9 @@ export interface SelectHumansComponentProps {
     chosenPlaceholder: string;
     chooseTitle: string;
     chosenTitle: ReactNode;
-    isRedactable?: boolean;
-    isRedact?: boolean;
+    redactable?: boolean;
+    redact?: boolean;
     fixedList?: number[];
+    wholeList?: number[];
     excludes?: number[];
 }
