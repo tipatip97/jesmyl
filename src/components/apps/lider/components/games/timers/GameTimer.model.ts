@@ -10,6 +10,7 @@ export interface RateSortedItem {
 }
 
 export enum GameTimerMode {
+    None = 0,
     TimerTotal = 1,
     TimerApart = 2,
     Messager = 3,

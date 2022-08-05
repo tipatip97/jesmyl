@@ -123,3 +123,13 @@
     margin-left: 2px;
   }
 }
+
+.eva-icon {
+  &.as-button-circle {
+    padding: 7px;
+    border-radius: 100%;
+    background: var(--color--2);
+    margin: 5px;
+    cursor: pointer;
+  }
+}

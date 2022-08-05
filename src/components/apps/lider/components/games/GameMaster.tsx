@@ -5,6 +5,8 @@ import useLeaderContexts from "../contexts/useContexts";
 import Game from "./Game";
 import GameTeamListComputer from "./GameTeamListComputer";
 import GameTeam from "./teams/GameTeam";
+import { GameTimerConfigurable } from "./timers/GameTimer.model";
+import TimerFieldsConfigurer from "./timers/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/TimerNameListConfigurer";
 
 export default function LeaderGameMaster({ close }: { close: () => void }) {
@@ -12,6 +14,9 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
   const [isComputeTeamsLater, setIsComputeTeamsLater] = useState(false);
   const [teams, updateTeams] = useState<GameTeam[] | und>();
   const [timerNames, updateTimerNames] = useState<string[] | und>();
+  const [timerFields, updateTimerFields] = useState<
+    GameTimerConfigurable | und
+  >();
   const { ccontext } = useLeaderContexts();
 
   useEffect(() => {
@@ -27,6 +32,7 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
         <div className="full-width margin-gap-h">{gameNameInput.node}</div>
       </div>
       <TimerNameListConfigurer redact onUpdate={updateTimerNames} />
+      <TimerFieldsConfigurer redactable onUpdate={updateTimerFields} />
       <div
         className="flex flex-gap margin-gap-v pointer"
         onClick={() => setIsComputeTeamsLater(!isComputeTeamsLater)}
@@ -48,12 +54,13 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
             onSend={() => {
               if (!ccontext) return;
 
-              return Game.sendNewGame(
-                gameNameInput.value(),
-                ccontext.wid,
+              return Game.sendNewGame({
+                name: gameNameInput.value(),
+                contextw: ccontext.wid,
                 timerNames,
-                teams
-              );
+                teams,
+                timerFields,
+              });
             }}
           />
         ) : null}

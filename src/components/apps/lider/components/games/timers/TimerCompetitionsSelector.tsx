@@ -1,18 +1,26 @@
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import GameTeam from "../teams/GameTeam";
+import useGames from "../useGames";
 
 export default function TimerCompetitionsSelector({
   joins,
   teams,
   onSelect,
   isRedact = true,
+  addItems,
+  hideable,
 }: {
   joins: number;
   teams: GameTeam[];
   onSelect: (item: { id: number; title: string }) => void;
   isRedact?: boolean;
+  hideable?: boolean;
+  addItems?: { id: number; title: string }[];
 }) {
+  const { cgame } = useGames();
+  if (hideable && cgame?.timerFields?.joins) return null;
+
   return (
     <>
       <div className="dropdown-ancestor margin-big-gap-v flex flex-gap full-width">
@@ -40,12 +48,13 @@ export default function TimerCompetitionsSelector({
                       }
                     : { id: 0, title: "" };
                 })
-                .filter(({ id }) => id)
+                .filter(({ id }) => id),
+              addItems || []
             )}
             onSelect={onSelect}
           />
         ) : (
-          <div>{joins}</div>
+          <div className="color--3">{joins || " - "}</div>
         )}
       </div>
     </>

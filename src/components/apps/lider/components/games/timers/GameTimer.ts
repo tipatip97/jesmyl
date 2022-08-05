@@ -44,10 +44,10 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
     get finishes() { return this.getBasic('finishes'); }
     set finishes(val) { this.setExportable('finishes', val); }
 
-    get joins() { return this.getBasic('joins'); }
+    get joins() { return this.game?.timerFields?.joins ?? this.getBasic('joins'); }
     set joins(val) { this.setExportable('joins', val); }
 
-    get mode() { return this.getBasic('mode'); }
+    get mode() { return this.game?.timerFields?.mode ?? this.getBasic('mode'); }
     set mode(val) { this.setExportable('mode', val); }
 
     get start() { return this.getBasic('start'); }
@@ -59,7 +59,7 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
     get name() { return this.getBasic('name'); }
     set name(val) { this.setExportable('name', val); }
 
-    get teamList() { return this.getBasic('teams'); }
+    get teamList() { return this.game?.timerFields?.teams ?? this.getBasic('teams'); }
     set teamList(val) { this.setExportable('teams', val); }
 
     get isStarted() {
@@ -125,6 +125,7 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
     }
 
     isTeamCantMove(topTeam: GameTeam) {
+        if (this.game?.timerFields?.teams) return true;
         const rowi = this.rateSortedTeams().find(({ team }) => team && topTeam.wid === team.wid)?.rowi;
         return rowi != null && this.startTime(rowi) && this.isTeamFinished(topTeam.wid);
     }

@@ -19,6 +19,7 @@ import {
 import "./GameTimer.scss";
 import GameTimerScreen from "./GameTimerScreen";
 import TimerCompetitionsSelector from "./TimerCompetitionsSelector";
+import TimerModeSelector from "./TimerModeSelector";
 import useGameTimer from "./useGameTimer";
 
 export default function LeaderGameTimerMaster({
@@ -144,17 +145,14 @@ export default function LeaderGameTimerMaster({
             )}
           </div>
           {timer.isNew && !timer.isStarted && (
-            <div className="dropdown-ancestor margin-big-gap-v flex flex-gap full-width">
-              <span className="nowrap">Тип таймера</span>
-              <Dropdown
-                id={mode}
-                items={timerModeAliasList}
-                onSelect={({ id }) => {
-                  setMode(id);
-                  mapTimer((timer) => (timer.mode = id));
-                }}
-              />
-            </div>
+            <TimerModeSelector
+              hideable
+              mode={mode}
+              onSelect={({ id }) => {
+                setMode(id);
+                mapTimer((timer) => (timer.mode = id));
+              }}
+            />
           )}
           {mode !== GameTimerMode.Messager && (
             <>
@@ -164,6 +162,7 @@ export default function LeaderGameTimerMaster({
                     <>
                       {mode === GameTimerMode.TimerApart && (
                         <TimerCompetitionsSelector
+                          hideable
                           joins={joins}
                           teams={teams}
                           onSelect={({ id }) => {

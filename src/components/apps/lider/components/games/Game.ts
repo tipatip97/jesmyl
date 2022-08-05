@@ -9,7 +9,6 @@ import { GameTimerConfigurable } from "./timers/GameTimer.model";
 export default class Game extends SourceBased<TeamGameImportable> {
     teams?: GameTeam[];
     timers?: LeaderGameTimer[];
-    asd = this.makeNewTs();
 
     constructor(top: TeamGameImportable, humans: Human[]) {
         super(top);
@@ -84,7 +83,7 @@ export default class Game extends SourceBased<TeamGameImportable> {
         });
     }
 
-    static sendNewGame(name: string, contextw: number, timerNames?: string[], teams?: GameTeam[]) {
+    static sendNewGame({ name, contextw, teams, timerNames, timerFields }: { name: string, contextw: number, timerNames?: string[], teams?: GameTeam[]; timerFields?: GameTimerConfigurable }) {
         return new Promise((res, rej) => liderExer.send({
             action: "addTeamGame",
             method: "push",
@@ -93,6 +92,7 @@ export default class Game extends SourceBased<TeamGameImportable> {
                 name,
                 contextw,
                 timerNames,
+                timerFields,
                 teams: teams?.map((team) => team.toDict()),
             } as TeamGameExportable,
         }, res, rej, null, true));

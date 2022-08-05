@@ -201,13 +201,15 @@
                             "name": "{name}",
                             "teams": "{teams}",
                             "timerNames": "{timerNames}",
-                            "contextw": "{contextw}"
+                            "contextw": "{contextw}",
+                            "timerFields": "{timerFields}"
                         },
                         "args": {
                             "ts": "#Number",
                             "name": "#String",
                             "teams": "#list",
                             "timerNames": "#list",
+                            "timerFields": "#dict",
                             "contextw": "#Number"
                         },
                         "setForceInEach": {
@@ -259,19 +261,20 @@
                                 "track": [
                                     "timerFields"
                                 ],
+                                "expected": {},
                                 "next": [
                                     {
                                         "level": 30,
                                         "action": "updateGameTimerFields",
                                         "method": "set_all",
                                         "value": {
-                                            "mode": "{?mode}",
-                                            "teams": "{?teams}",
-                                            "joins": "{?joins}"
+                                            "mode": "{mode}",
+                                            "teams": "{teams}",
+                                            "joins": "{joins}"
                                         },
                                         "args": {
-                                            "mode": "#number",
-                                            "joins": "#number",
+                                            "mode": "#Number",
+                                            "joins": "#Number",
                                             "teams": "#list"
                                         }
                                     }

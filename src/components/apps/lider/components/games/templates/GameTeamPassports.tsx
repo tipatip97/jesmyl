@@ -12,6 +12,7 @@ export default function GameTeamPassports({
 }) {
   const { cgame } = useGames();
   const gameTimers = cgame?.timers;
+  const joins = cgame?.timerFields?.joins;
   const timers =
     (selectedTimers?.length &&
       gameTimers &&
@@ -44,7 +45,7 @@ export default function GameTeamPassports({
             );
           })}
           {cgame?.teams?.map((team, teami) => {
-            if (teami) {
+            if (teami && (!joins || !(teami % joins))) {
               carouselTimers = [...carouselTimers];
               carouselTimers.push(carouselTimers.splice(0, 1)[0]);
             }

@@ -70,31 +70,46 @@ export default function TheGame() {
             <div className="error-message">Команды не сформированы</div>
           ) : (
             <>
-              {!!membersReadyToPlayNode?.length && (
+              {cgame?.teams && !!membersReadyToPlayNode?.length && (
                 <>
                   <h2 className="margin-gap">Не вошедшие игроки:</h2>
                   {membersReadyToPlayNode}
                 </>
               )}
-              <h2 className="margin-gap">Таймеры:</h2>
-              {cgame?.timers?.map((timer, timeri) => {
-                return (
-                  <LeaderGameTimerFace
-                    key={`timer-${timeri}`}
-                    timer={timer}
-                    selectedPosition={selectedTimers.indexOf(timer.wid) + 1}
-                    isTimerOnRedaction={isTimerOnRedaction(timer.ts)}
-                    onSelect={() =>
-                      updateSelectedTimers(
-                        selectedTimers.indexOf(timer.wid) < 0
-                          ? [...selectedTimers, timer.wid]
-                          : selectedTimers.filter((wid) => wid !== timer.wid)
+              <>
+                <h2 className="margin-gap">Таймеры:</h2>
+                {cgame?.timers?.map((timer, timeri) => {
+                  return (
+                    <LeaderGameTimerFace
+                      key={`timer-${timeri}`}
+                      timer={timer}
+                      selectedPosition={selectedTimers.indexOf(timer.wid) + 1}
+                      isTimerOnRedaction={isTimerOnRedaction(timer.ts)}
+                      onSelect={() =>
+                        updateSelectedTimers(
+                          selectedTimers.indexOf(timer.wid) < 0
+                            ? [...selectedTimers, timer.wid]
+                            : selectedTimers.filter((wid) => wid !== timer.wid)
+                        )
+                      }
+                    />
+                  );
+                })}
+                <LeaderGameTimerFace timer={newTimer} />
+                {selectedTimers.length > 1 && (
+                  <div
+                    className="margin-big-gap pointer flex"
+                    onClick={() =>
+                      openFullscreenContent(
+                        <TotalScoreTable selectedTimers={selectedTimers} />
                       )
                     }
-                  />
-                );
-              })}
-              <LeaderGameTimerFace timer={newTimer} />
+                  >
+                    <EvaIcon name="eye-outline" className="margin-gap" />
+                    Просмотреть объединённые результаты
+                  </div>
+                )}
+              </>
               <TimerNameListConfigurer
                 timerNames={cgame?.timerNames}
                 redactable
@@ -102,21 +117,9 @@ export default function TheGame() {
               />
               <TimerFieldsConfigurer
                 redactable
+                game={cgame}
                 onSend={(list) => cgame?.publicateGameTimerFields(list)}
               />
-              {selectedTimers.length > 1 && (
-                <div
-                  className="margin-big-gap pointer flex"
-                  onClick={() =>
-                    openFullscreenContent(
-                      <TotalScoreTable selectedTimers={selectedTimers} />
-                    )
-                  }
-                >
-                  <EvaIcon name="eye-outline" className="margin-gap" />
-                  Просмотреть объединённые результаты
-                </div>
-              )}
               <h2 className="margin-big-gap-v margin-gap">
                 Команды{cgame && !cgame.teams ? " не собраны" : ""}
               </h2>
