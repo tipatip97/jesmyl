@@ -64,80 +64,89 @@ export default function TheGame() {
       }
       content={
         <>
-          {!!membersReadyToPlayNode?.length && (
+          {!liderExer.actionAccessedOrNull("updateGameTeamList") &&
+          !cgame?.teams ? (
+            <div className="error-message">Команды не сформированы</div>
+          ) : (
             <>
-              <h2 className="margin-gap">Не вошедшие игроки:</h2>
-              {membersReadyToPlayNode}
+              {!!membersReadyToPlayNode?.length && (
+                <>
+                  <h2 className="margin-gap">Не вошедшие игроки:</h2>
+                  {membersReadyToPlayNode}
+                </>
+              )}
+              <h2 className="margin-gap">Таймеры:</h2>
+              {cgame?.timers?.map((timer, timeri) => {
+                return (
+                  <LeaderGameTimerFace
+                    key={`timer-${timeri}`}
+                    timer={timer}
+                    selectedPosition={selectedTimers.indexOf(timer.wid) + 1}
+                    onSelect={() =>
+                      updateSelectedTimers(
+                        selectedTimers.indexOf(timer.wid) < 0
+                          ? [...selectedTimers, timer.wid]
+                          : selectedTimers.filter((wid) => wid !== timer.wid)
+                      )
+                    }
+                  />
+                );
+              })}
+              <LeaderGameTimerFace timer={newTimer} />
+              <TimerNameListConfigurer
+                timerNames={cgame?.timerNames}
+                redactable
+                onSend={(list) => cgame?.publicateTimerNameList(list)}
+              />
+              {selectedTimers.length > 1 && (
+                <div
+                  className="margin-big-gap pointer flex"
+                  onClick={() =>
+                    openFullscreenContent(
+                      <TotalScoreTable selectedTimers={selectedTimers} />
+                    )
+                  }
+                >
+                  <EvaIcon name="eye-outline" className="margin-gap" />
+                  Просмотреть объединённые результаты
+                </div>
+              )}
+              <h2 className="margin-big-gap-v margin-gap">
+                Команды{cgame && !cgame.teams ? " не собраны" : ""}
+              </h2>
+              {cgame?.teams?.map((team, teami) => {
+                return (
+                  <TheGameTeam key={`teami-${teami}`} team={team} redactable />
+                );
+              })}
+              {!cgame?.teams && (
+                <div className={isTeamsLoading ? "disabled" : ""}>
+                  {cgame && !cgame.teams && (
+                    <GameTeamListComputer
+                      onUpdate={(list) => updateTeams(list)}
+                      noComments
+                    />
+                  )}
+                </div>
+              )}
+              {teams && liderExer.actionAccessedOrUnd("updateGameTeamList") && (
+                <div className="flex center">
+                  <SendButton
+                    title="Обубликовать команды"
+                    onSuccess={() => {
+                      setIsTeamsLoading(false);
+                      updateTeams(undefined);
+                    }}
+                    onFailure={() => setIsTeamsLoading(false)}
+                    confirm
+                    onSend={() => {
+                      setIsTeamsLoading(true);
+                      return cgame?.publicateTeams(teams);
+                    }}
+                  />
+                </div>
+              )}
             </>
-          )}
-          <h2 className="margin-gap">Таймеры:</h2>
-          {cgame?.timers?.map((timer, timeri) => {
-            return (
-              <LeaderGameTimerFace
-                key={`timer-${timeri}`}
-                timer={timer}
-                selectedPosition={selectedTimers.indexOf(timer.wid) + 1}
-                onSelect={() =>
-                  updateSelectedTimers(
-                    selectedTimers.indexOf(timer.wid) < 0
-                      ? [...selectedTimers, timer.wid]
-                      : selectedTimers.filter((wid) => wid !== timer.wid)
-                  )
-                }
-              />
-            );
-          })}
-          <LeaderGameTimerFace timer={newTimer} />
-          <TimerNameListConfigurer
-            timerNames={cgame?.timerNames}
-            redactable
-            onSend={(list) => cgame?.publicateTimerNameList(list)}
-          />
-          {selectedTimers.length > 1 && (
-            <div
-              className="margin-big-gap pointer flex"
-              onClick={() =>
-                openFullscreenContent(
-                  <TotalScoreTable selectedTimers={selectedTimers} />
-                )
-              }
-            >
-              <EvaIcon name="eye-outline" className="margin-gap" />
-              Просмотреть объединённые результаты
-            </div>
-          )}
-          <h2 className="margin-big-gap-v margin-gap">
-            Команды{cgame && !cgame.teams ? " не разбиты" : ""}:
-          </h2>
-          {cgame?.teams?.map((team, teami) => {
-            return (
-              <TheGameTeam key={`teami-${teami}`} team={team} redactable />
-            );
-          })}
-          <div className={isTeamsLoading ? "disabled" : ""}>
-            {cgame && !cgame.teams && (
-              <GameTeamListComputer
-                onUpdate={(list) => updateTeams(list)}
-                noComments
-              />
-            )}
-          </div>
-          {teams && liderExer.actionAccessedOrUnd("updateGameTeamList") && (
-            <div className="flex center">
-              <SendButton
-                title="Обубликовать команды"
-                onSuccess={() => {
-                  setIsTeamsLoading(false);
-                  updateTeams(undefined);
-                }}
-                onFailure={() => setIsTeamsLoading(false)}
-                confirm
-                onSend={() => {
-                  setIsTeamsLoading(true);
-                  return cgame?.publicateTeams(teams);
-                }}
-              />
-            </div>
           )}
         </>
       }

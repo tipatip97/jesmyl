@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { useWid } from "../../../../../../complect/useWid";
 import SendButton from "../../../complect/SendButton";
 import useIsRedactArea from "../../../complect/useIsRedactArea";
+import { liderExer } from "../../../Lider.store";
 
 export default function TimerNameListConfigurer({
   timerNames,
@@ -23,7 +23,10 @@ export default function TimerNameListConfigurer({
   const inputGenerator = useKeyboard();
   const [names, updateNames] = useState<string[]>([]);
   const [isSending, setIsSending] = useState(false);
-  const { editIcon, isRedact, setIsRedact } = useIsRedactArea(redactable, redact);
+  const { editIcon, isRedact, setIsRedact } = useIsRedactArea(
+    redactable,
+    redact
+  );
 
   const redactNames = useMemo(() => {
     return names.length ? names : timerNames ?? [];
@@ -42,6 +45,7 @@ export default function TimerNameListConfigurer({
   }, [redactNames, timerNames]);
 
   useEffect(() => onUpdate?.(finalNames), [finalNames]);
+  if (!liderExer.actionAccessedOrNull("updateGameTimerNames")) return null;
 
   return (
     <div className="margin-gap">
