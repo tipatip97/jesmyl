@@ -19,8 +19,8 @@ export default function TimerModeSelector({
   hideable?: boolean;
   addItems?: { id: GameTimerMode; title: string }[];
 }) {
-  const { cgame } = useGames();
-  if (hideable && cgame?.timerFields?.mode) return null;
+  // const { cgame } = useGames();
+  // // if (hideable && cgame?.timerFields?.mode) return null;
 
   return (
     <>

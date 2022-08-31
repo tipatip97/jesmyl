@@ -62,7 +62,7 @@ export default function LeaderGameTimerMaster({
   const [mode, setMode] = useState(timer.mode);
   const [joins, setJoins] = useState(timer.joins || 1);
   const [selectedTeamw, setSelectedTeamw] = useState<number | null>(null);
-  const [teams, updateTeams] = useState<GameTeam[]>(timer.teams ?? []);
+  const [teams, updateTeams] = useState<GameTeam[]>(timer.teams);
 
   const nameInput = useKeyboard()("name-of-GameTimer-input", {
     preferLanguage: "ru",
@@ -79,6 +79,7 @@ export default function LeaderGameTimerMaster({
     (team) => team
   );
   useEffect(() => () => nameInput.remove(), []);
+  const isTeamsTaken = !!teamNet?.length;
 
   const members = timer.teams.length;
   const membersInGame = timer.rateSortedTeams(true).length;
@@ -294,6 +295,7 @@ export default function LeaderGameTimerMaster({
                                             event.stopPropagation();
                                             openAbsoluteFloatPopup(
                                               <div
+                                                className="nowrap"
                                                 onClick={() => {
                                                   if (timer.startTime(rowi))
                                                     pauseForRow(team.wid, 0);
@@ -327,12 +329,34 @@ export default function LeaderGameTimerMaster({
                           (isRedactOld || timer.isNew) ? (
                             <div
                               className={`control-button start-button flex center pointer margin-gap ${
-                                timer.starts?.[rowi] ? "disabled" : ""
+                                timer.starts?.[rowi] ? "disabled clickable" : ""
                               }`}
                             >
                               <EvaIcon
                                 name="play-circle-outline"
                                 onClick={() => startForRow(rowi)}
+                                onContextMenu={(event) => {
+                                  event.preventDefault();
+                                  event.stopPropagation();
+                                  if (
+                                    !timer.starts?.[rowi] ||
+                                    timer.isRowFinished(rowi, false)
+                                  )
+                                    return;
+                                  openAbsoluteFloatPopup(
+                                    <div
+                                      className="nowrap"
+                                      onClick={() => {
+                                        if (timer.startTime(rowi))
+                                          startForRow(rowi, 0);
+                                      }}
+                                    >
+                                      Сбросить начало
+                                    </div>,
+                                    event.clientX,
+                                    event.clientY
+                                  );
+                                }}
                               />
                             </div>
                           ) : null}
@@ -412,7 +436,7 @@ export default function LeaderGameTimerMaster({
                 <div className="error-message">Комментарий не отправлен</div>
               ) : !nameInput.value() ? (
                 <div className="error-message">Нет названия таймера</div>
-              ) : !teamNet?.length ? (
+              ) : !isTeamsTaken ? (
                 <div className="flex center color--3">
                   Команды ещё не сформированы
                 </div>

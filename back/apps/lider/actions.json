@@ -226,6 +226,19 @@
                         }
                     },
                     {
+                        "level": 30,
+                        "action": "removeTeamGame",
+                        "method": "remove",
+                        "value": [
+                            "w",
+                            "===",
+                            "{gamew}"
+                        ],
+                        "args": {
+                            "gamew": "#Number"
+                        }
+                    },
+                    {
                         "track": [
                             [
                                 "w",

@@ -93,7 +93,6 @@ export default function TimerFieldsConfigurer({
         />
         <TimerCompetitionsSelector
           joins={joins}
-          teams={teams ?? []}
           addItems={[
             {
               id: GameTimerMode.None,

@@ -83,6 +83,16 @@ export default class Game extends SourceBased<TeamGameImportable> {
         });
     }
 
+    remove() {
+        return new Promise((res, rej) => liderExer.send({
+            action: "removeTeamGame",
+            method: "other",
+            args: {
+                gamew: this.wid
+            },
+        }, res, rej))
+    }
+
     static sendNewGame({ name, contextw, teams, timerNames, timerFields }: { name: string, contextw: number, timerNames?: string[], teams?: GameTeam[]; timerFields?: GameTimerConfigurable }) {
         return new Promise((res, rej) => liderExer.send({
             action: "addTeamGame",

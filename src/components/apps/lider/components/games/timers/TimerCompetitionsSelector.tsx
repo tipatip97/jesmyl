@@ -12,14 +12,14 @@ export default function TimerCompetitionsSelector({
   hideable,
 }: {
   joins: number;
-  teams: GameTeam[];
+  teams?: GameTeam[];
   onSelect: (item: { id: number; title: string }) => void;
   isRedact?: boolean;
   hideable?: boolean;
   addItems?: { id: number; title: string }[];
 }) {
-  const { cgame } = useGames();
-  if (hideable && cgame?.timerFields?.joins) return null;
+  // const { cgame } = useGames();
+  // if (hideable && cgame?.timerFields?.joins) return null;
 
   return (
     <>
@@ -36,7 +36,7 @@ export default function TimerCompetitionsSelector({
             ].concat(
               [2, 3, 4, 5, 6, 7, 8, 9]
                 .map((num) => {
-                  return num < teams.length
+                  return !teams || num < teams?.length
                     ? {
                         id: num,
                         title: `Соревнуются по ${num} ${mylib.declension(

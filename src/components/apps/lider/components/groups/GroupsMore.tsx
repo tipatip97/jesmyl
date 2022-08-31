@@ -1,5 +1,6 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import mylib from "../../../../../complect/my-lib/MyLib";
 import useLeaderContexts from "../contexts/useContexts";
 import PrintableBottomItem from "../PrintableBottomItem";
 import QRQuest from "../templates/QRQuest";
@@ -11,20 +12,23 @@ export default function LeaderGroupsMore({ close }: { close: () => void }) {
   const { ccontext } = useLeaderContexts();
 
   const bags =
-    ccontext?.groups
-      ?.map((group) =>
-        group.members.map((human) => {
-          return { group, human };
-        })
-      )
-      .flat()
-      .sort(({ human: { name: a } }, { human: { name: b } }) =>
-        a > b ? 1 : b < a ? -1 : 0
-      )
-      .map(({ group, human }) => ({
-        ...group.getFieldValues(),
-        ...human.toDict(),
-      })) || [];
+    (ccontext?.groups &&
+      mylib
+        .unique(
+          ccontext.groups
+            ?.map((group) => group.members.map((human) => ({ group, human })))
+            .flat()
+            .sort(({ human: { name: a } }, { human: { name: b } }) =>
+              a > b ? 1 : b < a ? -1 : 0
+            ),
+          ({ human }) => human.wid
+        )
+        .filter(({ human }) => !human.isInactive)
+        .map(({ group, human }) => ({
+          ...group.getFieldValues(),
+          ...human.toDict(),
+        }))) ||
+    [];
 
   return (
     <>

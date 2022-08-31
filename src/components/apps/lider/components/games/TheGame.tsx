@@ -2,6 +2,7 @@ import { useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
 import SendButton from "../../complect/SendButton";
 import { liderExer } from "../../Lider.store";
 import PhaseLiderContainer from "../../phase-container/PhaseLiderContainer";
@@ -28,12 +29,20 @@ export default function TheGame() {
   const [isTeamsLoading, setIsTeamsLoading] = useState(false);
   const usedHumans =
     cgame?.teams?.reduce<number[]>(
-      (list, team) => list.concat(team.members),
+      (list, team) => list.concat(team.memberIds),
       []
     ) || [];
 
   const { newTimer, isTimerOnRedaction } = useGameTimer();
   const [teams, updateTeams] = useState<GameTeam[] | und>();
+  const [isShowNamesInInput, setIsShowNamesInInput] = useState(false);
+  const inputMaker = useKeyboard();
+  let input: any;
+  if (cgame)
+    input = inputMaker("namesssss", {
+      initialValue: cgame.teams?.map(({ name }) => name).join("\n"),
+      multiline: true,
+    });
 
   const membersReadyToPlayNode = ccontext
     ?.membersReadyToPlay()
@@ -60,7 +69,11 @@ export default function TheGame() {
       headTitle={`Игра - ${cgame?.name || ""}`}
       onMoreClick={() =>
         openAbsoluteBottomPopup((close) => (
-          <GameMore close={close} selectedTimers={selectedTimers} />
+          <GameMore
+            close={close}
+            selectedTimers={selectedTimers}
+            game={cgame}
+          />
         ))
       }
       content={
@@ -120,14 +133,28 @@ export default function TheGame() {
                 game={cgame}
                 onSend={(list) => cgame?.publicateGameTimerFields(list)}
               />
-              <h2 className="margin-big-gap-v margin-gap">
-                Команды{cgame && !cgame.teams ? " не собраны" : ""}
-              </h2>
-              {cgame?.teams?.map((team, teami) => {
-                return (
-                  <TheGameTeam key={`teami-${teami}`} team={team} redactable />
-                );
-              })}
+              <EvaIcon
+                name="copy-outline"
+                onClick={() => setIsShowNamesInInput(!isShowNamesInInput)}
+              />
+              {isShowNamesInInput ? (
+                input.node
+              ) : (
+                <>
+                  <h2 className="margin-big-gap-v margin-gap">
+                    Команды{cgame && !cgame.teams ? " не собраны" : ""}
+                  </h2>
+                  {cgame?.teams?.map((team, teami) => {
+                    return (
+                      <TheGameTeam
+                        key={`teami-${teami}`}
+                        team={team}
+                        redactable
+                      />
+                    );
+                  })}
+                </>
+              )}
               {!cgame?.teams && (
                 <div className={isTeamsLoading ? "disabled" : ""}>
                   {cgame && !cgame.teams && (

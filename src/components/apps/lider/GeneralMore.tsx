@@ -24,11 +24,6 @@ export default function GeneralMore({ close }: { close: () => void }) {
         <div>Добавить личность</div>
         <div className="abs-action" />
       </div>
-      <PrintableBottomItem
-        title="Распечатать QR квест-точки"
-        node={<QRQuest />}
-        close={close}
-      />
       {liderExer.actionAccessedOrNull("addContext") && (
         <div
           className="abs-item pointer"

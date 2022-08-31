@@ -8,7 +8,7 @@ export const getRandomTwiceName = (topPronoun?: string | null, topNoun?: string)
         storage.pronouns[mylib.randomOf(0, storage.pronouns.length - 1)];
     const noun = topNoun ?? storage.nouns[mylib.randomOf(0, storage.nouns.length - 1)];
 
-    if (/[ыи,]$/.exec(noun)) { // высокий быстрый скоростной
+    if (/[ыи,]$/.exec(noun)) { // высокий быстрый скоростной учащийся
         pronoun = pronoun
             .replace(/йся$/, 'еся')
             .replace(/ый$/, 'ые')
@@ -16,6 +16,7 @@ export const getRandomTwiceName = (topPronoun?: string | null, topNoun?: string)
             .replace(/ой$/, 'ые');
     } else if (/[аяь:]$/.exec(noun)) {
         pronoun = pronoun
+            .replace(/([жшчщ])[иоы]й/, '$1ая')
             .replace(/ний$/, 'няя')
             .replace(/[иоы]й$/, 'ая');
     } else if (/[оеё.]$/.exec(noun)) {
@@ -25,10 +26,10 @@ export const getRandomTwiceName = (topPronoun?: string | null, topNoun?: string)
             .replace(/[иоы]й$/, 'ое');
     }
 
-    return [pronoun, noun.replace(/[^- а-яё\d]/ig, '')];
+    return [pronoun, noun.replace(/[^- а-яё\d"]/ig, '') + (noun.startsWith('"') ? '"' : '')];
 }
 
-console.info(getRandomTwiceName());
+console.info(getRandomTwiceName(null, 'тиндер',).join(' '));
 
 // console.info(
 //     JSON.stringify(

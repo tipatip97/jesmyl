@@ -74,7 +74,7 @@ export default class LeaderContext extends SourceBased<LeaderContextImportable> 
             (group) =>
                 group.members
                     .map((member) =>
-                        wids.indexOf(member.wid) > -1 ? { member, group } : null
+                        !member.isInactive && wids.indexOf(member.wid) > -1 ? { member, group } : null
                     )
                     .filter((human) => human) as {
                         member: Human;

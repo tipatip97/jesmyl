@@ -21,9 +21,9 @@ export default function useGames() {
     const { goTo } = useLiderNav();
 
     if (!localGames && games) {
-        const membersReadyToPlay = ccontext?.membersReadyToPlay();
-        if (membersReadyToPlay) {
-            localGames = new GamesStore(games, membersReadyToPlay);
+        const members = ccontext?.members;
+        if (members) {
+            localGames = new GamesStore(games, members);
         }
     }
 
@@ -49,9 +49,9 @@ export default function useGames() {
         },
         updateGamesImportable: (gamesImportable: GamesStoreImportable) => dispatch(updateGamesStore(gamesImportable)),
         updateGames: (games: GamesStoreImportable, context: LeaderContext) => {
-            const membersReadyToPlay = context?.membersReadyToPlay();
-            if (membersReadyToPlay) {
-                localGames = new GamesStore(games, membersReadyToPlay);
+            const members = context?.members;
+            if (members) {
+                localGames = new GamesStore(games, members);
                 if (context)
                     teamGames = localGames.teamGames?.filter(({ contextw }) => context.wid === contextw);
                 ret.updateCgame(localGames.teamGames?.find((game) => game.wid === cgamew));

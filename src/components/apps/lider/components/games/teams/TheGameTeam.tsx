@@ -33,10 +33,10 @@ export default function TheGameTeam({
         onNameChange={(name) => setName((team.name = name))}
       />
       {" (сила - " +
-        team.humans.reduce((acc, { ufp }) => acc + ufp, 0).toFixed(1) +
+        team.members.reduce((acc, { ufp }) => acc + ufp, 0).toFixed(1) +
         ") "}
       {isHumansShow &&
-        team.humans.map((human, humani) => {
+        team.members.map((human, humani) => {
           return (
             <HumanFace
               key={`human ${humani}`}
@@ -57,27 +57,30 @@ export default function TheGameTeam({
         onClick={() => setIsHumansShow(!isHumansShow)}
       >
         {isHumansShow ? "Скрыть" : "Показать"} участников
+        <strong> {team.memberIds.length}</strong>
       </div>
 
-      {noComments || <LeaderCommentBlock
-        inputId={`commentInput ${team.wid || team.ts} ${
-          team.game?.wid || "##"
-        }`}
-        placeholder={`Комментарий о "${team.upperName}"`}
-        comments={team.comments}
-        arean="gameTeams"
-        areaw={team.game?.wid}
-        listw={team.wid}
-        action="addCommentToGameTeam"
-        {...(!redactable && {
-          isWaitedToSend: true,
-          importantActionOnClick: (comment) => {
-            team.includeNewComment(comment);
-            forceUpdate();
-          },
-          onRejectSend: (comment) => team.removeComment(comment),
-        })}
-      />}
+      {noComments || (
+        <LeaderCommentBlock
+          inputId={`commentInput ${team.wid || team.ts} ${
+            team.game?.wid || "##"
+          }`}
+          placeholder={`Комментарий о "${team.upperName}"`}
+          comments={team.comments}
+          arean="gameTeams"
+          areaw={team.game?.wid}
+          listw={team.wid}
+          action="addCommentToGameTeam"
+          {...(!redactable && {
+            isWaitedToSend: true,
+            importantActionOnClick: (comment) => {
+              team.includeNewComment(comment);
+              forceUpdate();
+            },
+            onRejectSend: (comment) => team.removeComment(comment),
+          })}
+        />
+      )}
     </div>
   );
 }

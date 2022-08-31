@@ -1,17 +1,17 @@
 import SourceBased from "../../../../../../complect/SourceBased";
-import Game from "../Game";
-import Human from "../../people/Human";
-import { GameTeamExportable, GameTeamImportable } from "./GameTeams.model";
 import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
+import Human from "../../people/Human";
+import Game from "../Game";
+import { GameTeamImportable } from "./GameTeams.model";
 
 export default class GameTeam extends SourceBased<GameTeamImportable> {
-    humans: Human[];
+    members: Human[];
     game: Game | null;
 
     constructor(top: GameTeamImportable, humans: Human[], game: Game | null) {
         super(top);
-        this.humans = this.members
-            .map((id) => humans.find((human) => human.wid === id))
+        this.members = this.memberIds
+            .map((wid) => humans.find((human) => human.wid === wid))
             .filter((human) => human) as Human[];
         this.game = game;
     }
@@ -21,7 +21,7 @@ export default class GameTeam extends SourceBased<GameTeamImportable> {
     get name() { return this.getBasic('name'); }
     set name(val) { this.setExportable('name', val); }
     get upperName() { return this.name?.toUpperCase(); }
-    get members() { return this.getBasic('members'); }
+    get memberIds() { return this.getBasic('members'); }
 
     get comments() { return this.getBasic('comments'); }
     set comments(val) { this.setExportable('comments', val); }
@@ -35,6 +35,10 @@ export default class GameTeam extends SourceBased<GameTeamImportable> {
             ts: this.makeNewTs(),
             w: 0,
         }];
+    }
+
+    get activeMembers() {
+        return this.members.filter((member) => !member.isInactive);
     }
 
     removeComment({ ts: topTs }: LeaderCommentImportable) {

@@ -31,7 +31,9 @@ export default function useLeaderComments() {
         sendAllComments: (observableComments: SendingComments = sendingComments, observableGames: GamesStoreImportable | und = gamesImportable) => {
             let throwComments: SendingComments = ret.sendingComments;
 
-            const tss = observableGames?.teamGames?.map(({ teams, timers }) => {
+            const gameWids = observableGames?.teamGames?.map(({ w }) => w) || [];
+
+            const commentTss = observableGames?.teamGames?.map(({ teams, timers }) => {
                 const mapper = (...args: { comments?: LeaderCommentImportable[] }[][]) => args.flat().map(({ comments }) => comments?.map(comment => comment.owner === login ? comment.ts : 0))
                 return teams && mapper(teams, timers || []);
             })
@@ -39,22 +41,25 @@ export default function useLeaderComments() {
                 .filter(ts => ts) as number[] || [];
 
             const execs = MyLib.entries(observableComments)
-                .map(([arean, val]) => MyLib.entries(val).map(([areaw, val]) => MyLib.entries(val).map(([listw, realComments]) => {
-                    realComments.forEach(() => {
-                        throwComments = save(arean, areaw, listw, (comments, area) => {
-                            area[listw] = comments.filter(({ ts }) => tss.indexOf(ts) < 0);
-                        }, throwComments)
-                    });
-                    return realComments;
-                })))
+                .map(([arean, val]) => MyLib.entries(val)
+                    .map(([areaw, val]) => MyLib.entries(val).map(([listw, realComments]) => {
+                        realComments.forEach(() => {
+                            throwComments = save(arean, areaw, listw, (comments, area) => {
+                                area[listw] = comments.filter(({ ts }) => commentTss.indexOf(ts) < 0);
+                            }, throwComments)
+                        });
+                        return realComments;
+                    })))
                 .flat().flat().flat()
-                .filter(comment => tss.indexOf(comment?.ts) < 0)
+                .filter(({ ts, exec: { args: { areaw } = {} } } = {} as never) => {
+                    return commentTss.indexOf(ts) < 0 && gameWids.indexOf(areaw) > -1;
+                })
                 .map(({ exec }) => exec);
 
             liderExer.send(execs, null, () => {
                 const tss = execs.map(({ args }) => args?.ts) as number[];
                 dispatch(updateRrrorSentComments([...errorSentComments, ...tss]));
-            }, null, true);
+            }, null);
             ret.saveLocal(throwComments, true);
         },
         saveLocal: (comments: SendingComments, isRejectPropagation?: boolean) => liderStorage.set('sendingComments', comments, isRejectPropagation),

@@ -11,7 +11,7 @@ import TimerNameListConfigurer from "./timers/TimerNameListConfigurer";
 
 export default function LeaderGameMaster({ close }: { close: () => void }) {
   const gameNameInput = useKeyboard()(`game-name`, {});
-  const [isComputeTeamsLater, setIsComputeTeamsLater] = useState(false);
+  const [isComputeTeamsLater, setIsComputeTeamsLater] = useState(true);
   const [teams, updateTeams] = useState<GameTeam[] | und>();
   const [timerNames, updateTimerNames] = useState<string[] | und>();
   const [timerFields, updateTimerFields] = useState<

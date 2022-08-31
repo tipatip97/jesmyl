@@ -27,7 +27,7 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
         return this.teams = this.teamList
             ? this.teamList.map((wid) => {
                 const team = teams.find((team) => team.wid === wid);
-                return team && this.game && new GameTeam(team.toDict(), team.humans, this.game)
+                return team && this.game && new GameTeam(team.toDict(), team.members, this.game)
             }).filter((team) => team) as GameTeam[]
             : this.game?.teams || [];
     }
@@ -44,10 +44,12 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
     get finishes() { return this.getBasic('finishes'); }
     set finishes(val) { this.setExportable('finishes', val); }
 
-    get joins() { return this.game?.timerFields?.joins ?? this.getBasic('joins'); }
+    get joins() {
+        return this.getBasic('joins') ?? this.game?.timerFields?.joins;
+    }
     set joins(val) { this.setExportable('joins', val); }
 
-    get mode() { return this.game?.timerFields?.mode ?? this.getBasic('mode'); }
+    get mode() { return this.getBasic('mode') ?? this.game?.timerFields?.mode; }
     set mode(val) { this.setExportable('mode', val); }
 
     get start() { return this.getBasic('start'); }
@@ -59,7 +61,7 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
     get name() { return this.getBasic('name'); }
     set name(val) { this.setExportable('name', val); }
 
-    get teamList() { return this.game?.timerFields?.teams ?? this.getBasic('teams'); }
+    get teamList() { return this.getBasic('teams') ?? this.game?.timerFields?.teams; }
     set teamList(val) { this.setExportable('teams', val); }
 
     get isStarted() {
@@ -112,12 +114,15 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
         });
     }
 
-    isRowFinished(topRowi: number) {
+    isRowFinished(topRowi: number, isSomeOf = true) {
         const finishes = this.finishes || {};
 
-        return !this.rateSortedTeams()
-            .filter(({ rowi }) => topRowi === rowi)
-            .some(({ team }) => team && !finishes[team.wid]);
+        const teams = this.rateSortedTeams()
+            .filter(({ rowi }) => topRowi === rowi);
+
+        return !(isSomeOf
+            ? teams.some(({ team }) => team && !finishes[team.wid])
+            : !teams.some(({ team }) => team && finishes[team.wid]))
     }
 
     isTeamFinished(teamw: number) {
