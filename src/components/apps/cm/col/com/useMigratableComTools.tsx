@@ -85,11 +85,7 @@ export default function useMigratableComTools() {
               tool,
               title: "Изображения аккордов",
               icon: "image-outline",
-              onClick: () => {
-                dispatch(
-                  openFullscreenContent(<ChordImagesList />, true, true)
-                );
-              },
+              onClick: () => openFullscreenContent(<ChordImagesList />, true),
             };
           case "selected-toggle":
             return (
@@ -101,9 +97,7 @@ export default function useMigratableComTools() {
                 icon: isSelected(ccom)
                   ? "close-circle-outline"
                   : "checkmark-circle-2-outline",
-                onClick: () => {
-                  toggleSelectedCom(ccom);
-                },
+                onClick: () => toggleSelectedCom(ccom),
               }
             );
           case "mark-com":

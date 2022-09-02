@@ -23,16 +23,18 @@ export default function TheCat({ all }: { all?: boolean }) {
   const scrollToCurrent = () => {
     if (ccom) {
       setTimeout(() => {
-        const currentFace = document.querySelector(
-          `.face-item.com-of-cat.current.wid_${ccom.wid}`
-        );
         if (listRef.current)
           if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
-          else if (currentFace && categoryTitleRef.current) {
-            mylib.scrollToView(currentFace, "top", {
-              parent: listRef.current,
-              top: categoryTitleRef.current.clientHeight,
-            });
+          else {
+            const currentFace = document.querySelector(
+              `.face-item.com-of-cat.current.wid_${ccom.wid}`
+            );
+            if (currentFace) {
+              mylib.scrollToView(currentFace, "top", {
+                parent: listRef.current,
+                top: categoryTitleRef.current?.clientHeight ?? 40,
+              });
+            }
           }
       });
     }
