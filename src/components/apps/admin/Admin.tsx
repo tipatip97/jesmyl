@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./Admin.scss";
 import UserFace from "./complect/users/UserFace";
 import useUsers from "./complect/users/useUsers";
@@ -8,9 +8,14 @@ let timeOut: any;
 let updates = 0;
 
 export default function Admin() {
-  const { users } = useUsers();
+  const { users, visits } = useUsers();
   const usersUses = useUsers();
   const [, setUpdates] = useState(0);
+
+  const sortedUsers = useMemo(
+    () => users.sort((a, b) => visits[b.login] - visits[a.login]),
+    [visits, users]
+  );
 
   useEffect(() => {
     const set = () => {
@@ -29,7 +34,7 @@ export default function Admin() {
       headTitle="Админ"
       content={
         <>
-          {users.map((user) => (
+          {sortedUsers.map((user) => (
             <UserFace key={`user-${user.login}`} user={user} uses={usersUses} />
           ))}
         </>
