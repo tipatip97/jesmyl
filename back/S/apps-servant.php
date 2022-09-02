@@ -52,14 +52,14 @@ function getUserAuths($appName)
   return $users;
 }
 
+$logins = tracker([$authPath, '--named'])['target'];
+
 function checkUserVisits($appName)
 {
-  //if (getGlob('isFirstRequest')) return true;
+  if (!getBagProps('admin')['appProps']['userVisitTokensCount']) return true;
 
-  global $authPath;
+  global $authPath, $logins;
   $time = time();
-  $logins = tracker([$authPath, '--named'])['target'];
-  $i = 0;
 
   foreach ($logins as $login) {
     $path = $authPath . '/' . $login . '/' . get_passw($login);
