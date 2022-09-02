@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import EvaIcon, { EvaIconName } from "./eva-icon/EvaIcon";
 import useKeyboard from "./keyboard/useKeyboard";
 
@@ -35,7 +35,7 @@ export default function DebouncedInput(props: {
     initialValue: term,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     onSearch?.(term);
 
     if (debounce) {
@@ -49,7 +49,10 @@ export default function DebouncedInput(props: {
     } else onTermChange?.(term);
   }, [term, onSearch, debounce, onTermChange]);
 
-  useEffect(() => onDebounced?.(termDebounced), [termDebounced, onDebounced]);
+  useLayoutEffect(
+    () => onDebounced?.(termDebounced),
+    [termDebounced, onDebounced]
+  );
 
   return (
     <div className={`debounced-input ${className}`}>

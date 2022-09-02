@@ -1,4 +1,11 @@
-import { HTMLAttributes, PropsWithChildren, useEffect, useMemo, useState } from "react";
+import {
+  HTMLAttributes,
+  PropsWithChildren,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import JesmylLogo from "../jesmyl-logo/JesmylLogo";
 import "./LoadIndicatedContent.scss";
 
@@ -11,14 +18,17 @@ const enum State {
 }
 
 export default function LoadIndicatedContent(
-  props: PropsWithChildren<{
-    isLoading: boolean;
-    onLoad?: () => void;
-    onLoaded?: () => void;
-  } & HTMLAttributes<HTMLDivElement>>
+  props: PropsWithChildren<
+    {
+      isLoading: boolean;
+      onLoad?: () => void;
+      onLoaded?: () => void;
+    } & HTMLAttributes<HTMLDivElement>
+  >
 ) {
   const [state, setState] = useState(State.Initial);
   const [isWasLoading, setIsWasLoading] = useState(false);
+  const [isInit, setIsInit] = useState(true);
   const initTime = useMemo(() => Date.now(), []);
 
   const onEnd = () => {
@@ -29,16 +39,24 @@ export default function LoadIndicatedContent(
 
   useEffect(() => setIsWasLoading(true), [state]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (isInit) {
+      setIsInit(false);
+      return;
+    }
     if (props.isLoading) setState(State.Loading);
     else {
       if (Date.now() - initTime < 200) onEnd();
       else setState(State.Ready);
     }
-  }, [props.isLoading]);
+  }, [props.isLoading, isInit]);
 
   return (
-    <div className={`load-indicated-content-container ${state} ${props.className || ''}`}>
+    <div
+      className={`load-indicated-content-container ${state} ${
+        props.className || ""
+      }`}
+    >
       <div
         className="load-indicated-content-spinner-container"
         onAnimationEnd={() => state === State.Ending && onEnd()}
