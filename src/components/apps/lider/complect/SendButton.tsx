@@ -8,9 +8,11 @@ export default function SendButton({
   onSend,
   onSuccess,
   onFailure,
+  disabled,
 }: {
   title: string;
   confirm?: string | boolean | null;
+  disabled?: boolean;
   onSend?: () => Promise<unknown> | void | nil;
   onSuccess?: () => void;
   onFailure?: () => void;
@@ -20,10 +22,11 @@ export default function SendButton({
 
   return (
     <div
-      className={`the-button margin-gap ${
+      className={`the-button margin-gap ${disabled ? "disabled" : ""} ${
         isLoading && !isError ? "pointers-none" : ""
       }`}
       onClick={async () => {
+        if (disabled) return;
         if (
           confirm != null &&
           !(confirm === true

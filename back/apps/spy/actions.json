@@ -1,0 +1,361 @@
+[
+    {
+        "expected": {},
+        "track": [
+            "cache"
+        ],
+        "next": [
+            {
+                "expected": [],
+                "track": [
+                    "locations"
+                ],
+                "next": [
+                    {
+                        "level": 50,
+                        "action": "addNewLocation",
+                        "method": "push",
+                        "uniqs": [
+                            "."
+                        ],
+                        "value": "{location}",
+                        "args": {
+                            "location": "#String"
+                        }
+                    }
+                ]
+            },
+            {
+                "expected": [],
+                "track": [
+                    "rooms"
+                ],
+                "next": [
+                    {
+                        "action": "addNewRoom",
+                        "title": "Добавлена новая комната $name",
+                        "method": "push",
+                        "level": 4,
+                        "value": {
+                            "name": "{name}",
+                            "w": "{@setNewWid()}",
+                            "members": [
+                                {
+                                    "login": "{@userLogin}",
+                                    "name": "{@userFio}",
+                                    "status": "owner",
+                                    "locations": []
+                                }
+                            ]
+                        },
+                        "args": {
+                            "name": "#String"
+                        }
+                    },
+                    {
+                        "action": "removeRoom",
+                        "method": "remove",
+                        "level": 50,
+                        "args": {
+                            "roomw": "#Number"
+                        },
+                        "value": [
+                            [
+                                "w",
+                                "===",
+                                "{roomw}"
+                            ]
+                        ]
+                    },
+                    {
+                        "track": [
+                            [
+                                "w",
+                                "===",
+                                "{roomw}"
+                            ]
+                        ],
+                        "args": {
+                            "roomw": "#Number"
+                        },
+                        "next": [
+                            {
+                                "side": [
+                                    {
+                                        "track": [
+                                            "finisher"
+                                        ],
+                                        "method": "set",
+                                        "value": null
+                                    },
+                                    {
+                                        "track": [
+                                            "retired"
+                                        ],
+                                        "method": "set",
+                                        "value": null
+                                    }
+                                ],
+                                "next": [
+                                    {
+                                        "action": "resetResults",
+                                        "method": "set",
+                                        "value": null,
+                                        "track": [
+                                            "roles"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "args": {
+                                    "location": "#String",
+                                    "spiesCount": "#Number"
+                                },
+                                "side": [
+                                    {
+                                        "track": [
+                                            "finisher"
+                                        ],
+                                        "method": "set",
+                                        "value": null
+                                    },
+                                    {
+                                        "track": [
+                                            "locations"
+                                        ],
+                                        "method": "push",
+                                        "value": "{location}",
+                                        "expected": []
+                                    },
+                                    {
+                                        "track": [
+                                            "spiesCount"
+                                        ],
+                                        "method": "set",
+                                        "value": "{spiesCount}"
+                                    }
+                                ],
+                                "next": [
+                                    {
+                                        "action": "startGame",
+                                        "method": "set",
+                                        "value": "{roles}",
+                                        "args": {
+                                            "roles": "#Dict"
+                                        },
+                                        "track": [
+                                            "roles"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "action": "finishGame",
+                                "method": "set",
+                                "track": [
+                                    "finisher"
+                                ],
+                                "value": {
+                                    "login": "{@userLogin}",
+                                    "name": "{@userFio}"
+                                }
+                            },
+                            {
+                                "access": [
+                                    "members",
+                                    [
+                                        "login",
+                                        "===&",
+                                        "{@userLogin}",
+                                        "status",
+                                        "===",
+                                        "owner"
+                                    ]
+                                ],
+                                "next": [
+                                    {
+                                        "access": [
+                                            "members",
+                                            [
+                                                "login",
+                                                "===&",
+                                                "{login}",
+                                                "status",
+                                                "!==",
+                                                "owner"
+                                            ]
+                                        ],
+                                        "next": [
+                                            {
+                                                "track": [
+                                                    "members",
+                                                    [
+                                                        "login",
+                                                        "===",
+                                                        "{login}"
+                                                    ]
+                                                ],
+                                                "next": [
+                                                    {
+                                                        "action": "riseUpToAdmin",
+                                                        "method": "set",
+                                                        "value": "admin",
+                                                        "track": [
+                                                            "status"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "action": "riseDownToUser",
+                                                        "method": "set",
+                                                        "value": "member",
+                                                        "track": [
+                                                            "status"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "access": [
+                                    "members",
+                                    [
+                                        "login",
+                                        "===&",
+                                        "{@userLogin}",
+                                        "status",
+                                        "in",
+                                        [
+                                            "owner",
+                                            "admin"
+                                        ]
+                                    ]
+                                ],
+                                "next": [
+                                    {
+                                        "track": [
+                                            "retired"
+                                        ],
+                                        "expected": [],
+                                        "next": [
+                                            {
+                                                "action": "excludeMember",
+                                                "method": "push",
+                                                "value": "{login}",
+                                                "uniqs": [
+                                                    "."
+                                                ],
+                                                "args": {
+                                                    "login": "#String"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "track": [
+                                            "members"
+                                        ],
+                                        "next": [
+                                            {
+                                                "track": [
+                                                    [
+                                                        "login",
+                                                        "===",
+                                                        "{login}"
+                                                    ]
+                                                ],
+                                                "args": {
+                                                    "login": "#String"
+                                                },
+                                                "next": [
+                                                    {
+                                                        "action": "acceptMemberToRoom",
+                                                        "method": "set",
+                                                        "track": [
+                                                            "status"
+                                                        ],
+                                                        "value": "member"
+                                                    },
+                                                    {
+                                                        "action": "banCurrentRoomMember",
+                                                        "method": "set",
+                                                        "track": [
+                                                            "isInactive"
+                                                        ],
+                                                        "value": true
+                                                    },
+                                                    {
+                                                        "action": "unbanCurrentRoomMember",
+                                                        "method": "set",
+                                                        "track": [
+                                                            "isInactive"
+                                                        ],
+                                                        "value": false
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "expected": [],
+                                        "track": [
+                                            "locations"
+                                        ],
+                                        "args": {
+                                            "value": "#String"
+                                        },
+                                        "next": [
+                                            {
+                                                "action": "strikeLocation",
+                                                "method": "push",
+                                                "uniqs": [
+                                                    "."
+                                                ]
+                                            },
+                                            {
+                                                "action": "unstrikeLocation",
+                                                "method": "remove",
+                                                "value": [
+                                                    ".",
+                                                    "===",
+                                                    "{value}"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "track": [
+                                    "members"
+                                ],
+                                "next": [
+                                    {
+                                        "action": "requestAddToRoom",
+                                        "method": "push",
+                                        "uniqs": [
+                                            "login"
+                                        ],
+                                        "args": {
+                                            "login": "#String",
+                                            "fio": "#String"
+                                        },
+                                        "value": {
+                                            "w": "{@setNewWid()}",
+                                            "login": "{login}",
+                                            "name": "{fio}",
+                                            "status": "requester"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

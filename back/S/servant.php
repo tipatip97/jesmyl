@@ -589,19 +589,17 @@ function &doIt(&$exec, &$parents, &$parent)
   $penultimate = null;
   $target = null;
 
-  if (is_array($exec['expecteds']))
-    foreach ($exec['expecteds'] as $expected) {
-      $exTracked = &tracker($expected[0], $parents, $parent);
-      //debugLine(['expecteds1', is_null($exTracked['target']), $exTracked, $parent]);
-      if (is_null($exTracked['target'])) {
-
-        $exPenultimate = &$exTracked['penultimate'];
-        $exLastTrace = $exTracked['trace'];
-
-        $exPenultimate[$exLastTrace] = $expected[1];
-        //debugLine([$exPenultimate]);
-      }
+  if (is_array($exec['accesses'])) {
+    foreach ($exec['accesses'] as $access) {
+      $accTracked = &tracker($access, $parents, $parent);
+      // debugLine([$access, $accTracked, $parent]);
+      if (!$accTracked['ok'] || !$accTracked['target']) return [
+        'ok' => true,
+      ];
     }
+  }
+
+  checkExpecteds($exec, $parents, $parent);
 
   if (count($track) === 1) {
     $penultimate = &$parent;
@@ -691,6 +689,23 @@ function &doIt(&$exec, &$parents, &$parent)
   ];
 }
 
+function checkExpecteds($exec, &$parents, &$parent)
+{
+  if (is_array($exec['expecteds'])) {
+    // debugLine([$exec]);
+    foreach ($exec['expecteds'] as $expected) {
+      $exTracked = &tracker($expected[0], $parents, $parent);
+      //debugLine(['expecteds1', is_null($exTracked['target']), $exTracked, $parent]);
+      if (is_null($exTracked['target'])) {
+        $exPenultimate = &$exTracked['penultimate'];
+        $exLastTrace = $exTracked['trace'];
+
+        $exPenultimate[$exLastTrace] = $expected[1];
+      }
+    }
+  }
+}
+
 function setForceInEach($source, &$value)
 {
 
@@ -753,9 +768,6 @@ function isUniqByFields($uniqs, $target, $value)
 
   return true;
 }
-
-
-
 
 function executer($execs, $pathTemplate, $saveInFiles = 1, $appName)
 {
@@ -821,6 +833,12 @@ function executer($execs, $pathTemplate, $saveInFiles = 1, $appName)
     }
 
     $parents[$path] = &$parent;
+
+    if (is_array($exec['sides']))
+      foreach ($exec['sides'] as $side) {
+        checkExpecteds($side, $parents, $parent);
+        doIt($side, $parents, $parent);
+      }
 
     //debugLine(['executer foreach execs', $path, $relPath, $exec, $parent, $parents]);
   }
@@ -928,13 +946,16 @@ function replaceArgs($value, $args, &$errors, $defValueName = 'value', $canBeStr
   } else return $value;
 }
 
-function findRule($rules, &$exec, $topTrack = [], &$topArgs = [], $expecteds = [], $topUniqs = [], $topCloneArgs = [])
+function findRule($rules, &$exec, $topTrack = [], &$topArgs = [], $topExpecteds = [], $topAccesses = [], $topSides = [], $topUniqs = [], $topCloneArgs = [])
 {
   $action = $exec['action'];
   $execArgs = &$exec['args'];
   $retExec = null;
 
   foreach ($rules as $rule) {
+    $accesses = $topAccesses;
+    $expecteds = $topExpecteds;
+    $sides = $topSides;
     $cloneArgs = $rule['cloneArgs'];
 
     if (is_array($cloneArgs))
@@ -954,6 +975,29 @@ function findRule($rules, &$exec, $topTrack = [], &$topArgs = [], $expecteds = [
     if (!is_null($rule['expected'])) {
       $replacedTrack = replaceArgs($track, $execArgs, $errors);
       $expecteds[] = [$replacedTrack, $rule['expected']];
+    }
+
+    if (!is_null($rule['access'])) {
+      $replacedTrack = $replacedTrack ? $replacedTrack : replaceArgs($track, $execArgs, $errors);
+      $accesses[] = array_merge($replacedTrack, replaceArgs($rule['access'], $execArgs, $errors));
+    }
+
+    if (!is_null($rule['side'])) {
+      $replacedTrack = $replacedTrack ? $replacedTrack : replaceArgs($track, $execArgs, $errors);
+      foreach ($rule['side'] as $side) {
+        $newSide = replaceArgs($side, $execArgs, $errors);
+        $newSideTrack = $side['track']
+          ? array_merge($replacedTrack, replaceArgs($side['track'], $execArgs, $errors))
+          : $replacedTrack;
+
+        $newSide['track'] = $newSideTrack;
+
+        if (!is_null($side['expected'])) {
+          $newSide['expecteds'] = [$newSideTrack, $side['expected']];
+        }
+
+        $sides[] = $newSide;
+      }
     }
 
     if ($action === $ruleAction) {
@@ -990,6 +1034,8 @@ function findRule($rules, &$exec, $topTrack = [], &$topArgs = [], $expecteds = [
       $uniqs = replaceArgs($uniqs, $execArgs, $errors);
 
       $rule['expecteds'] = $expecteds;
+      $rule['accesses'] = $accesses;
+      $rule['sides'] = $sides;
 
       $ret = [
         'ok' => !count($errors),
@@ -1011,11 +1057,10 @@ function findRule($rules, &$exec, $topTrack = [], &$topArgs = [], $expecteds = [
     }
 
     if (is_array($rule['next'])) {
-      $retExec = findRule($rule['next'], $exec, $track, $args, $expecteds, $uniqs);
+      $retExec = findRule($rule['next'], $exec, $track, $args, $expecteds, $accesses, $sides, $uniqs);
       if ($retExec) return $retExec;
     }
 
-    $expecteds = [];
     $cloneArgs = null;
   }
 
@@ -1037,6 +1082,8 @@ function accesser($accesses, $user, $execs)
     }
 
     $rule = findRule($accesses, $exec);
+
+    // debugLine([$rule]);
 
     if (!$rule) {
       $rejected[] = [
@@ -1217,6 +1264,7 @@ function isExpected($source, $inspector, $bag = null)
           else if ($operator === ">=") $result = $field >= $sign;
           else if ($operator === "<=") $result = $field <= $sign;
           else if ($operator === "!=") $result = $field != $sign;
+          else if ($operator === "!==") $result = $field !== $sign;
           else if ($operator === "<") $result = $field < $sign;
           else if ($operator === ">") $result = $field > $sign;
           else if ($operator === "is" || $operator === "not") {

@@ -199,7 +199,7 @@
         ],
         "name": "actions",
         "ext": "json",
-        "track":  [
+        "track": [
           "@prepareActions()::lider"
         ]
       },
@@ -314,7 +314,7 @@
         "ext": "js",
         "main": true
       }
-    ]
+     ]
   },
   {
     "name": "alias",
@@ -322,6 +322,33 @@
     "description": "The Alias Game",
     "disabled": true,
     "R": false
+  },
+  {
+    "name": "spy",
+    "title": "Шпион 1.0",
+    "description": "Сыграй в шпиона",
+    "requirements": [
+      {
+        "path": "../apps/spy/cache.json",
+        "name": "cache",
+        "ext": "json"
+      },
+      {
+        "R": [
+          "@prepareActions():1:spy"
+        ],
+        "name": "actions",
+        "ext": "json",
+        "track": [
+          "@prepareActions()::spy"
+        ]
+      }
+    ],
+    "R": [
+      "@userLevel",
+      ">=",
+      3
+    ]
   },
   {
     "name": "im",
