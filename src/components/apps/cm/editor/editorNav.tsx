@@ -24,6 +24,7 @@ import EERules from "./ee-rules/EERules";
 import EditMeetings from "./meetings/EditMeetings";
 import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
 import ExecsVisor from "./execs/ExecsVisor";
+import ComAudio from "./col/compositions/complect/ComAudio";
 
 export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
   icon?: EvaIconName;
@@ -62,6 +63,13 @@ export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
     node: <TextsChordsRedactor ccoln="chords" />,
     data: {
       icon: "options-2",
+    },
+  },
+  {
+    phase: ["audio"],
+    node: <ComAudio />,
+    data: {
+      icon: "music",
     },
   },
   {

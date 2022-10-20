@@ -109,11 +109,12 @@ export default function useEditableRooms(member?: SpyRoomMember) {
         ) || [];
       const location =
         actualLocations[mylib.randomOf(0, actualLocations.length - 1)];
+      const wordParts = '0987654321qwertyuiopasdfghjklzxcvbnm';
       const symbols =
-        "!@#$%^&*()_+=0987654321qqwertyuiopasdfghjklzxcvbnm,./[]{}:;QWERTYUIOPASDFGHJKLZXCVBNM\"'<>?";
+        `${wordParts}!@#$%^&*()_+=,./[]{}:;QWERTYUIOPASDFGHJKLZXCVBNM\"'<>?`;
       const spies: string[] = [];
-      const getRandomSymbol = () =>
-        symbols[mylib.randomOf(0, symbols.length - 1)];
+      const getRandomSymbol = (line = symbols) =>
+        line[mylib.randomOf(0, line.length - 1)];
 
       while (players && spies.length < spiesCount) {
         const player = players[mylib.randomOf(0, players.length - 1)];
@@ -149,6 +150,7 @@ export default function useEditableRooms(member?: SpyRoomMember) {
           roles,
           location,
           spiesCount,
+          name: new Array(4).fill(1).map(() => getRandomSymbol(wordParts))
         },
       });
     },

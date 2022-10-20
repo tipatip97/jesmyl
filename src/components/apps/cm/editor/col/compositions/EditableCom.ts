@@ -679,4 +679,21 @@ export class EditableCom extends Com {
         this._translationMap = null;
         this.translationMap();
     }
+
+    setAudio(val: string) {
+        const prev = this.audio.trim();
+        const value = val.trim().replace(/\n{2,}/, '\n');
+        this.exec({
+            action: 'comSetAudio',
+            method: 'set',
+            prev,
+            value,
+            args: {
+                prev,
+                value,
+                comw: this.wid,
+                name: this.name
+            },
+        });
+    }
 }

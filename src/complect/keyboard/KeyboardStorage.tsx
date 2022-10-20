@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import propsOfClicker from "../clicker/propsOfClicker";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { KeyboardStorageCallbacks } from "./complect/F.Callbacks";
 import {
@@ -79,7 +80,9 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
         <div
           className="input-keyboard-flash-controlled-char-list"
           ref={this.charListElementRef}
-          onContextMenu={this.onFlashContextMenu}
+          {...propsOfClicker({
+            onCtxMenu: this.onFlashContextMenu,
+          })}
         >
           <div className={`input-keyboard-flash-controlled-char-list-inner`}>
             {this.valueCharLines.map(this.valueCharLinesNodeMap)}

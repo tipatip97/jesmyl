@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
+import useKeyboard from "../keyboard/useKeyboard";
 import mylib from "../my-lib/MyLib";
+import { useWid } from "../useWid";
 import { onActionClick } from "./Modal";
 import {
   ModalConfig,
@@ -12,19 +14,13 @@ export default function ModalInput(topProps: TheModalInputProps) {
   let input: Partial<ModalConfigInput>;
 
   if (Array.isArray(topProps.config)) [input] = topProps.config;
-  else [input] = [topProps.config, ""];
-
+  else[input] = [topProps.config, ""];
+  const id = useWid();
+  const isTextArea = input.type === "textarea";
   const config = modalService.current();
-
-  if (input == null) return null;
-  input.set = (attrn: keyof ModalConfigInput, val) => {
-    if (input.element) input.element.setAttribute(attrn, val);
-  };
-  input.setVal = (val) => input.set && input.set("value", val);
   const asFunc = (val?: Function | boolean | ReactNode, alt?: any) =>
     typeof val === "function" ? val(config) : alt !== undefined ? alt : val;
 
-  const isTextArea = input.type === "textarea";
   const props: Record<string, Function | string> = mylib.overlap(
     isTextArea ? { rows: 3 } : {},
     {
@@ -39,10 +35,10 @@ export default function ModalInput(topProps: TheModalInputProps) {
       max: asFunc(input.max),
       className:
         asFunc(input.className) + " app-modal-body-input-list-item-input",
-      onInput: (event: InputEvent) => {
-        input.value = (event.target as HTMLInputElement)?.value;
+      onInput: (value: string) => {
+        input.value = value;
         if (input.onInput) {
-          input.onInput(mylib.overlap({}, props, { input, event, value: input.value }));
+          input.onInput(mylib.overlap({}, props, { input, value: input.value }));
         }
         topProps.forceUpdate();
       },
@@ -73,21 +69,21 @@ export default function ModalInput(topProps: TheModalInputProps) {
         }
       },
       ref: (element: HTMLInputElement) => {
-        // if (
-        //   element &&
-        //   focusedElement == null &&
-        //   (config.focusOn === inputi ||
-        //     (config.focusOn == null && inputi === 0))
-        // ) {
-        //   focusedElement = element;
-        //   element.focus();
-        //   element.select();
-        // }
         if (element) input.element = element;
-        // input.ref && input.ref(element);
       },
     }
   );
+
+  const inputNode = useKeyboard()(`the modal input ${id}`, {
+    ...props,
+    initialValue: asFunc(input.value),
+  });
+
+  if (input == null) return null;
+  input.set = (attrn: keyof ModalConfigInput, val) => {
+    if (input.element) input.element.setAttribute(attrn, val);
+  };
+  input.setVal = (val) => input.set && input.set("value", val);
 
   return (
     <label
@@ -102,7 +98,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
       {isTextArea ? (
         <textarea {...props}>{input.value}</textarea>
       ) : (
-        <input {...props} />
+        props.type === 'button' ? <input {...props} /> : inputNode.node
       )}
     </label>
   );

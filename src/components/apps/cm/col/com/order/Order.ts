@@ -43,7 +43,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
   get isOpened() { return this.getBasic('o'); }
   set isOpened(val) { this.setExportable('o', val); }
 
-  get chordsi() { return this.getBasic('c'); }
+  get chordsi() { return this.getBasic('c') ?? this.top.watchOrd?.getBasic('c'); }
   set chordsi(val) { this.setExportable('c', val); }
 
   get texti() { return this.getBasic('t'); }

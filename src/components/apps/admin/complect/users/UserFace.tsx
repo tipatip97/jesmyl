@@ -1,3 +1,4 @@
+import propsOfClicker from "../../../../../complect/clicker/propsOfClicker";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { User } from "./User";
 import "./User.scss";
@@ -14,7 +15,7 @@ export default function UserFace({
     <div
       className="user-face flex between full-width"
       onClick={() => uses.navToUser(user)}
-      onContextMenu={(event) => event.preventDefault()}
+      {...propsOfClicker({ onCtxMenu: (event) => event.preventDefault() }) }
     >
       <div className="logo">
         <EvaIcon name="person-outline" />

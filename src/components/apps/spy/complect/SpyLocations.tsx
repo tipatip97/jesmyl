@@ -1,3 +1,4 @@
+import { useState } from "react";
 import useKeyboard from "../../../../complect/keyboard/useKeyboard";
 import SendButton from "../../lider/complect/SendButton";
 import { spyExer } from "../Spy.store";
@@ -5,11 +6,13 @@ import PhaseSpyContainer from "./PhaseSpyContainer";
 import useRooms from "./useRooms";
 
 export default function SpyLocations() {
-  const { currentRoom, cache } = useRooms();
+  const { cache } = useRooms();
   const inputGenerator = useKeyboard();
 
-  const newLocationInput = inputGenerator("SpyLocations - new location", {});
-  const newName = newLocationInput.value().toUpperCase();
+  const [newName, setNewName] = useState('');
+  const newLocationInput = inputGenerator("SpyLocations - new location", {
+    onChange: (value) => setNewName(value.toUpperCase())
+  });
   const isShortNewName = newName.length < 3;
   const incorrectsInNewName = newName.match(/[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i);
   const isInclusiveNewName = cache?.locations?.some((loc) => loc === newName);

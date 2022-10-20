@@ -1,3 +1,4 @@
+import propsOfClicker from "../../../../complect/clicker/propsOfClicker";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
 import modalService from "../../../../complect/modal/Modal.service";
@@ -22,12 +23,14 @@ export default function UserMore() {
             <MailToDevelopers close={closeFullscreenContent} />
           );
         }}
-        onContextMenu={(event) => {
-          event.preventDefault();
-          modalService
-            .confirm("Произвести выход из системы?", "Разлогиниться")
-            .then((logout) => logout && indexStorage.rem("auth"));
-        }}
+        {...propsOfClicker({
+          onCtxMenu: (event) => {
+            event.preventDefault();
+            modalService
+              .confirm("Произвести выход из системы?", "Разлогиниться")
+              .then((logout) => logout && indexStorage.rem("auth"));
+          }
+        })}
       >
         <EvaIcon name="email-outline" className="abs-icon" />
         <div>Написать разработчикам</div>

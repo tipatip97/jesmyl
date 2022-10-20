@@ -78,19 +78,25 @@ export default function SpyRoom() {
   return (
     <PhaseSpyContainer
       topClass="spy-room"
-      headTitle={`Комната - ${currentRoom?.name}`}
+      headTitle={`Комната ${
+        currentRoom?.name ? ` - ${currentRoom?.name}` : ""
+      }`}
       headClass="flex between"
       head={
         <EvaIcon
           name="more-vertical"
           className="margin-gap"
-          onClick={() => openAbsoluteBottomPopup(<SpyRoomMore room={currentRoom} />)}
+          onClick={() =>
+            openAbsoluteBottomPopup(<SpyRoomMore room={currentRoom} />)
+          }
         />
       }
       content={
         <>
           {!currentRoom ? (
-            <div className="error-message">Комната не найдена</div>
+            <div className="error-message text-center padding-giant-gap">
+              Комната не найдена
+            </div>
           ) : currentRoom.roles ? (
             currentRoom.finisher ? (
               <div>
@@ -144,18 +150,6 @@ export default function SpyRoom() {
               <div>
                 <h2>
                   Игра начата
-                  {currentRoom.spiesCount && (
-                    <>
-                      {" - "}
-                      {currentRoom.spiesCount}{" "}
-                      {mylib.declension(
-                        currentRoom.spiesCount,
-                        "шпион",
-                        "шпиона",
-                        "шпионов"
-                      )}
-                    </>
-                  )}
                   {possibilities.isInactive ? ". Ты вне игры" : ""}
                 </h2>
                 {!possibilities.isInactive && (

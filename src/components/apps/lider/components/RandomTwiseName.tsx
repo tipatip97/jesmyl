@@ -1,4 +1,5 @@
 import { HTMLAttributes, useEffect, useState } from "react";
+import propsOfClicker from "../../../../complect/clicker/propsOfClicker";
 import modalService from "../../../../complect/modal/Modal.service";
 import { getRandomTwiceName } from "../resources/getRandomTwiceName";
 
@@ -29,40 +30,42 @@ export default function RandomTwiceName({
         const name = getTwiceName();
         setTwiceName(name);
       }}
-      onContextMenu={(event) => {
-        event.stopPropagation();
-        event.preventDefault();
-        if (!canChange) return;
+      {...propsOfClicker({
+        onCtxMenu: (event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          if (!canChange) return;
 
-        let pronoun: string;
-        let noun: string;
+          let pronoun: string;
+          let noun: string;
 
-        modalService.open({
-          title: "Задать свои слова",
-          inputs: [
-            {
-              title: "Прилагательное (муж. род)",
-              closable: false,
-              onInput: ({ value }) => (pronoun = value),
-            },
-            {
-              title: "Существительное",
-              closable: false,
-              onInput: ({ value }) => (noun = value),
-            },
-          ],
-          buttons: [
-            "Отмена",
-            {
-              title: "Применить",
-              onClick: () => {
-                const name = getTwiceName(pronoun, noun);
-                setTwiceName(name);
+          modalService.open({
+            title: "Задать свои слова",
+            inputs: [
+              {
+                title: "Прилагательное (муж. род)",
+                closable: false,
+                onInput: ({ value }) => (pronoun = value),
               },
-            },
-          ],
-        });
-      }}
+              {
+                title: "Существительное",
+                closable: false,
+                onInput: ({ value }) => (noun = value),
+              },
+            ],
+            buttons: [
+              "Отмена",
+              {
+                title: "Применить",
+                onClick: () => {
+                  const name = getTwiceName(pronoun, noun);
+                  setTwiceName(name);
+                },
+              },
+            ],
+          });
+        }
+      })}
     >
       {twiceName}
     </span>

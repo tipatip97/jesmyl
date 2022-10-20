@@ -331,6 +331,7 @@
       {
         "path": "../apps/spy/cache.json",
         "name": "cache",
+        "frequency": 1000,
         "ext": "json"
       },
       {

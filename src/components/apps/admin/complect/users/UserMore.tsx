@@ -31,7 +31,7 @@ export default function UserMore({ message }: { message: UserMessage }) {
                 type: "number",
                 closable: false,
                 value: () => "" + level,
-                onInput: ({ input }) => (level = +(input.value || 0)),
+                onInput: ({ input }) => level = +(input.value || 0),
               },
               {
                 title: "Проверочное слово)",

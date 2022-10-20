@@ -1,4 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
+import propsOfClicker from "../clicker/propsOfClicker";
+import { isIPhone } from "../device-differences";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
 import {
   keyboardKeyDict,
@@ -10,15 +12,17 @@ import { KeyboardInputStorage } from "./KeyboardStorage";
 
 const inputDict: Record<string, KeyboardInputStorage> = {};
 let currentInput: KeyboardInputStorage;
-let topForceUpdate: () => void = () => {};
-let topOnBlur: () => void = () => {};
-let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => {};
+let topForceUpdate: () => void = () => { };
+let topOnBlur: () => void = () => { };
+let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => { };
 
 export default function useKeyboard() {
   const [updates, setUpdates] = useState(0);
 
   return (id: string, props: KeyboardInputProps) => {
     let localInput: KeyboardInputStorage;
+    let nativeInputNode: HTMLInputElement | HTMLTextAreaElement;
+
     const getNode = () =>
       inputDict[id].node(
         props,
@@ -42,32 +46,78 @@ export default function useKeyboard() {
 
     let inputNode;
     localInput = inputDict[id];
+    let actions: {
+      replaceAll: (value: string, isRemember: boolean, isInvokeOnInputEvent: boolean) => void;
+      value: () => string;
+      write: (value: string, isRememberAsPart?: boolean) => void;
+      focus: () => void;
+    } = {} as never;
 
-    if (localInput) inputNode = getNode();
-    else {
-      localInput = inputDict[id] = new KeyboardInputStorage(props.initialValue);
-      inputNode = getNode();
+    if (isIPhone) {
+      if (localInput) inputNode = getNode();
+      else {
+        localInput = inputDict[id] = new KeyboardInputStorage(props.initialValue);
+        inputNode = getNode();
+      }
+      actions = {
+        replaceAll: localInput.replaceAll,
+        value: () => localInput.value,
+        write: localInput.write,
+        focus: localInput.focus,
+      };
+    } else {
+      const nodeProps = {
+        ...props,
+        defaultValue: props.initialValue,
+        type: props.type,
+        onInput: props.onInput && ((event: any) => props.onInput?.(event.target?.value, '')),
+        onChange: props.onChange && ((event: any) => props.onChange?.(event.target?.value, '')),
+        onPaste: props.onPaste && (async () => props.onPaste?.(await navigator.clipboard.readText())),
+      };
+
+      inputNode = <div className={`input-keyboard-flash-controlled input ${props.multiline ? 'multiline' : ''}`
+    }>
+    {
+      props.multiline
+        ? <textarea {...nodeProps}
+          className="native-input"
+          ref={(el) => {
+            if (el) {
+              nativeInputNode = el;
+              el.rows = el.value.split('\n').length;
+            }
+          }}
+        />
+        : <input {...nodeProps} className="native-input" ref={(el) => el && (nativeInputNode = el)} />
     }
+      </div >;
 
-    return {
-      node: inputNode,
-      value: (
-        value?: string,
-        isRemember = false,
-        isInvokeOnInputEvent = true
-      ) => {
-        if (value !== undefined)
-          localInput.replaceAll(value, isRemember, isInvokeOnInputEvent);
-        return localInput.value;
-      },
-      focus: () => localInput.focus(),
-      write: (value: string, isRememberAsPart?: boolean) =>
-        localInput.write(value, isRememberAsPart),
-      remove: () => {
-        delete inputDict[id];
-      },
+    actions = {
+      replaceAll: (value) => nativeInputNode.value = value,
+      value: () => nativeInputNode?.value || '',
+      write: (val) => nativeInputNode.value += val,
+      focus: () => nativeInputNode.focus(),
     };
+  }
+
+  return {
+    node: inputNode,
+    value: (
+      value?: string,
+      isRemember = false,
+      isInvokeOnInputEvent = true
+    ) => {
+      if (value !== undefined)
+        actions.replaceAll(value, isRemember, isInvokeOnInputEvent);
+      return actions.value();
+    },
+    focus: () => actions.focus(),
+    write: (value: string, isRememberAsPart?: boolean) => actions.write(value, isRememberAsPart),
+    remove: () => {
+      delete inputDict[id];
+    },
   };
+};
 }
 
 export function KEYBOARD_FLASH({
@@ -123,9 +173,8 @@ export function KEYBOARD_FLASH({
   ) => {
     return (
       <div
-        className={`keyboard-flash-key ${className} ${
-          keyInFix === key ? "key-in-fix" : ""
-        }`}
+        className={`keyboard-flash-key ${className} ${keyInFix === key ? "key-in-fix" : ""
+          }`}
         onMouseUp={onMouseUp || (() => currentInput.write(key))}
         onMouseDown={(event) => {
           event.stopPropagation();
@@ -137,7 +186,7 @@ export function KEYBOARD_FLASH({
           setKeyInFix(key);
           onTouchStart?.(event);
         }}
-        onContextMenu={onContextMenu}
+        {...propsOfClicker({ onCtxMenu: onContextMenu })}
       >
         {children}
         {iconName ? (
@@ -145,15 +194,14 @@ export function KEYBOARD_FLASH({
         ) : (
           <div>{key}</div>
         )}
-      </div>
+      </div >
     );
   };
 
   return (
     <div
-      className={`keyboard-flash ${currentInput?.isFocused ? "active" : ""} ${
-        moreClosed ? "" : "more-open"
-      }`}
+      className={`keyboard-flash ${currentInput?.isFocused ? "active" : ""} ${moreClosed ? "" : "more-open"
+        }`}
       onMouseDown={(event) => {
         event.stopPropagation();
         setKeyInFix("CLOSE-MORE");
@@ -228,27 +276,25 @@ export function KEYBOARD_FLASH({
                 <div key={`line-${linei}`} className="keyboard-flash-line">
                   {linei === 3
                     ? keyNode(
-                        `shift-key ${
-                          currentInput.isCapsLock ? "caps-lock" : ""
-                        } ${
-                          currentInput.event.ctrlKey
-                            ? "is-control-key-label"
-                            : ""
-                        }`,
-                        "SHIFT",
-                        "arrow-upward-outline",
-                        () => currentInput.switchCaps(),
-                        null,
-                        (event) => {
-                          event.preventDefault();
-                          currentInput.switchCtrlKey();
-                        },
-                        (event) =>
-                          currentInput.onTouchNavigationStart(
-                            "select",
-                            event.targetTouches[0].clientX
-                          )
-                      )
+                      `shift-key ${currentInput.isCapsLock ? "caps-lock" : ""
+                      } ${currentInput.event.ctrlKey
+                        ? "is-control-key-label"
+                        : ""
+                      }`,
+                      "SHIFT",
+                      "arrow-upward-outline",
+                      () => currentInput.switchCaps(),
+                      null,
+                      (event) => {
+                        event.preventDefault();
+                        currentInput.switchCtrlKey();
+                      },
+                      (event) =>
+                        currentInput.onTouchNavigationStart(
+                          "select",
+                          event.targetTouches[0].clientX
+                        )
+                    )
                     : null}
                   {line.map((key, keyi) => {
                     return (
@@ -259,18 +305,18 @@ export function KEYBOARD_FLASH({
                   })}
                   {linei === 3
                     ? keyNode(
-                        "backspace",
-                        "BACKSPACE",
-                        "backspace-outline",
-                        (event) => currentInput.backspace(event),
-                        null,
-                        undefined,
-                        (event) =>
-                          currentInput.onTouchNavigationStart(
-                            "delete",
-                            event.targetTouches[0].clientX
-                          )
-                      )
+                      "backspace",
+                      "BACKSPACE",
+                      "backspace-outline",
+                      (event) => currentInput.backspace(event),
+                      null,
+                      undefined,
+                      (event) =>
+                        currentInput.onTouchNavigationStart(
+                          "delete",
+                          event.targetTouches[0].clientX
+                        )
+                    )
                     : null}
                 </div>
               );
@@ -375,8 +421,8 @@ export function KEYBOARD_FLASH({
               {currentInput.isMultiline
                 ? keyNode("enter", "\n", "corner-down-left-outline")
                 : keyNode("", "BLUR", "arrowhead-down-outline", () =>
-                    currentInput.blur()
-                  )}
+                  currentInput.blur()
+                )}
             </div>
           </>
         )

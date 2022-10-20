@@ -1,4 +1,5 @@
 import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
+import propsOfClicker from "../../../../../../complect/clicker/propsOfClicker";
 import useCmNav, { comNavPhasePoint } from "../../../base/useCmNav";
 import useSelectedComs from "../../../base/useSelectedComs";
 import { useCcom } from "../useCcom";
@@ -23,9 +24,8 @@ export default function ComFace(props: ComFaceProps) {
   return com == null ? null : (
     <>
       <div
-        className={`face-item flex between ${
-          ccom?.wid === com.wid ? "current" : ""
-        } ${groupClass || ""} wid_${com.wid}`}
+        className={`face-item flex between ${ccom?.wid === com.wid ? "current" : ""
+          } ${groupClass || ""} wid_${com.wid}`}
         onClick={
           importantOnClick ||
           (() => {
@@ -38,18 +38,20 @@ export default function ComFace(props: ComFaceProps) {
             ? undefined
             : (element) => element?.scrollIntoView()
         }
-        onContextMenu={(event) => {
-          event.preventDefault();
-          selectable !== false &&
-            openAbsoluteFloatPopup(
-              <ComFaceContextMenu
-                onClick={() => closeAbsoluteFloatPopup()}
-                com={com}
-              />,
-              event.clientX,
-              event.clientY
-            );
-        }}
+        {...propsOfClicker({
+          onCtxMenu: (event) => {
+            event.preventDefault();
+            selectable !== false &&
+              openAbsoluteFloatPopup(
+                <ComFaceContextMenu
+                  onClick={() => closeAbsoluteFloatPopup()}
+                  com={com}
+                />,
+                event.clientX,
+                event.clientY
+              );
+          }
+        })}
       >
         <div
           className="face-logo"

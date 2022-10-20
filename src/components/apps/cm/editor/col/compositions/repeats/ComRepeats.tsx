@@ -91,25 +91,25 @@ export default function ComRepeats() {
               ord.text
                 ? undefined
                 : (event) => {
-                    if (start == null || !isChordBlock) {
-                      setStart({
-                        orderUnit: ord,
-                        textLine: "",
-                        textLinei: 0,
-                        textLines: 0,
-                        wordCount: 0,
-                        wordi: 0,
-                        words: [],
-                      });
+                  if (start == null || !isChordBlock) {
+                    setStart({
+                      orderUnit: ord,
+                      textLine: "",
+                      textLinei: 0,
+                      textLines: 0,
+                      wordCount: 0,
+                      wordi: 0,
+                      words: [],
+                    });
 
-                      setIsChordBlock(true);
-                      setXPos((event.target as any).offsetLeft);
-                      setYPos((event.target as any).offsetTop);
-                    } else {
-                      setIsChordBlock(false);
-                      setIsReadySetChordBlock(true);
-                    }
+                    setIsChordBlock(true);
+                    setXPos((event.target as any).offsetLeft);
+                    setYPos((event.target as any).offsetTop);
+                  } else {
+                    setIsChordBlock(false);
+                    setIsReadySetChordBlock(true);
                   }
+                }
             }
           >
             <TheOrder
@@ -132,9 +132,7 @@ export default function ComRepeats() {
                         />
                         <EvaIcon
                           name="pin-outline"
-                          className={`vertical-middle pointer ${
-                            ord.isInheritValue("r") ? "disabled" : ""
-                          }`}
+                          className={`vertical-middle pointer ${ord.isInheritValue("r") ? "disabled" : ""}`}
                           onClick={() => {
                             modalService
                               .confirm(
@@ -213,7 +211,7 @@ export default function ComRepeats() {
                       return isLastInRange ||
                         (isInRegion &&
                           (isLastInRange ? prevStarteds : startedFlashes) <=
-                            beforeFlashes &&
+                          beforeFlashes &&
                           !prevEnds)
                         ? ""
                         : "inactive-word";
@@ -233,6 +231,8 @@ export default function ComRepeats() {
                             .find((className) => className.startsWith("wordi_"))
                             ?.split("_")) ||
                         [];
+
+                      if (wordi == null) return;
 
                       const {
                         textLinei: linei,
@@ -255,24 +255,21 @@ export default function ComRepeats() {
                               +wordi === wordCount - 1
                               ? ["."]
                               : [
-                                  `${startLinei}${
-                                    startWordi ? `:${startWordi}` : ""
-                                  }${
-                                    startLinei === linei &&
-                                    !startWordi &&
-                                    wordCount - 1 === +wordi
-                                      ? ""
-                                      : `-${linei}${
-                                          wordCount - 1 === +wordi
-                                            ? ""
-                                            : `:${wordi}`
-                                        }`
-                                  }`,
-                                ]
+                                `${startLinei}${startWordi ? `:${startWordi}` : ""
+                                }${startLinei === linei &&
+                                  !startWordi &&
+                                  wordCount - 1 === +wordi
+                                  ? ""
+                                  : `-${linei}${wordCount - 1 === +wordi
+                                    ? ""
+                                    : `:${wordi}`
+                                  }`
+                                }`,
+                              ]
                             : [
-                                `${nextLetter}${startLinei}:${startWordi}`,
-                                `${linei}:${wordi}${nextLetter}`,
-                              ];
+                              `${nextLetter}${startLinei}:${startWordi}`,
+                              `${linei}:${wordi}${nextLetter}`,
+                            ];
 
                         setField(
                           startOrd,
@@ -311,9 +308,8 @@ export default function ComRepeats() {
 
               return (
                 <div
-                  className={`float-button-panel${
-                    start && ord === start.orderUnit ? "" : " hidden"
-                  }`}
+                  className={`float-button-panel${start && ord === start.orderUnit ? "" : " hidden"
+                    }`}
                   style={
                     {
                       "--x": xPos,
@@ -379,22 +375,22 @@ export default function ComRepeats() {
                                 return (
                                   isBeg
                                     ? lines.slice(
-                                        l || 0,
-                                        fl == null ? fl : fl + 1
-                                      )
+                                      l || 0,
+                                      fl == null ? fl : fl + 1
+                                    )
                                     : lines.slice(0, (l || 0) + 1)
                                 )
                                   .map((line) =>
                                     (isBeg
                                       ? (line || "")
-                                          .split(/ +/)
-                                          .slice(
-                                            w || 0,
-                                            fw == null ? fw : fw + 1
-                                          )
+                                        .split(/ +/)
+                                        .slice(
+                                          w || 0,
+                                          fw == null ? fw : fw + 1
+                                        )
                                       : (line || "")
-                                          .split(/ +/)
-                                          .slice(0, (w || 0) + 1)
+                                        .split(/ +/)
+                                        .slice(0, (w || 0) + 1)
                                     ).join(" ")
                                   )
                                   .join("\n");
@@ -405,15 +401,15 @@ export default function ComRepeats() {
                                 flashDivider +
                                 ((startKey || "").startsWith("~")
                                   ? fill(
-                                      startOrd,
-                                      startLinei,
-                                      startWordi,
-                                      true,
-                                      startLinei ?? undefined,
-                                      startWordi ?? undefined
-                                    )
+                                    startOrd,
+                                    startLinei,
+                                    startWordi,
+                                    true,
+                                    startLinei ?? undefined,
+                                    startWordi ?? undefined
+                                  )
                                   : startOrd === endOrd
-                                  ? fill(
+                                    ? fill(
                                       startOrd,
                                       startLinei,
                                       startWordi,
@@ -421,7 +417,7 @@ export default function ComRepeats() {
                                       endLinei ?? undefined,
                                       endWordi ?? undefined
                                     )
-                                  : `${fill(
+                                    : `${fill(
                                       startOrd,
                                       startLinei,
                                       startWordi,
@@ -496,9 +492,8 @@ export default function ComRepeats() {
                     return (
                       <div
                         key={`flash-${currFlashCount}`}
-                        className={`button numeric${
-                          flashCount === currFlashCount ? " active" : ""
-                        }`}
+                        className={`button numeric${flashCount === currFlashCount ? " active" : ""
+                          }`}
                         onClick={() => setFlashCount(currFlashCount)}
                       >
                         {currFlashCount}

@@ -55,10 +55,12 @@ body {
     --svg-color: var(--color--1);
     color: var(--color--1);
   }
+
   &3 {
     --svg-color: var(--color--3);
     color: var(--color--3);
   }
+
   &7 {
     color: var(--color--7);
   }
@@ -252,7 +254,7 @@ textarea {
 }
 
 .children-middle {
-  > * {
+  >* {
     display: inline-block;
     vertical-align: middle;
   }
@@ -300,12 +302,14 @@ textarea {
     opacity: $i / 10;
   }
 }
+
 @for $i from 1 through 8 {
   .background-- {
     &#{$i} {
       background-color: var(--color--#{$i});
     }
   }
+
   .border-- {
     &#{$i} {
       border: solid 1px var(--color--#{$i});
@@ -403,7 +407,7 @@ textarea {
 }
 
 .pointer,
-.pointer-children > * {
+.pointer-children>* {
   cursor: pointer;
 }
 
@@ -511,7 +515,13 @@ input:-webkit-autofill:active {
   from {
     transform: rotate(0);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.--color--ok {
+  --svg-color: var(--color--ok);
+  color: var(--color--ok);
 }

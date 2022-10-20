@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import propsOfClicker from "../../../../../complect/clicker/propsOfClicker";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
@@ -73,14 +74,14 @@ export default function ComTools() {
         <div
           key={tool}
           className="abs-item abs-full"
-          onContextMenu={(event) => {
-            event.preventDefault();
-            toggleTopTool(tool);
-          }}
           onClick={() => {
             if (onClick()) return;
             closeAbsoluteBottomPopup();
           }}
+          {...propsOfClicker({ onCtxMenu: (event) => {
+            event.preventDefault();
+            toggleTopTool(tool);
+          } }) }
         >
           <EvaIcon name={icon} className="abs-icon" />
           <div className="title">{title}</div>

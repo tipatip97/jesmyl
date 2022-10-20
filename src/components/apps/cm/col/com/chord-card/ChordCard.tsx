@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ChordCardProps } from "./ChordCard.model";
 import { useChords } from "./useChords";
 import './ChordCard.scss';
@@ -10,9 +10,11 @@ export default function ChordCard(props: ChordCardProps) {
   const chordName = props.chordName || `?`;
   const chordLabel = props.chordLabel;
   const [track] = useState(chords[chordName] || [0]);
-  const betweenStr = 20 + track[0] * 0.3;
-  const betweenLad = 80 - track[0] * 0.7;
-  const isFLad = track[0] === 0;
+  const baseLad = track[0];
+  const betweenStr = 20 + baseLad * 0.3;
+  const betweenLad = 80 - baseLad * 0.7;
+  const isFLad = baseLad === 0;
+  const leftMargin = 8;
 
   const isRedaction = false; //props.isRedaction;
 
@@ -21,7 +23,7 @@ export default function ChordCard(props: ChordCardProps) {
   for (let i = 1; i <= (track.length > 4 ? track.length - 1 : 3); i++)
     lads.push(i);
 
-  const stringLength = betweenLad * lads.length;
+  const stringLength = betweenLad * lads.length + 17;
 
   const strings: number[] = [];
   for (let i = 1; i <= stringsCount; i++) strings.push(i);
@@ -107,15 +109,13 @@ export default function ChordCard(props: ChordCardProps) {
   // }
 
   const getPoints = (poss: number | number[], i: number) => {
-    const x = i * betweenLad - betweenLad / 2;
+    const x = leftMargin + (i * betweenLad - betweenLad / 2);
     if (!~poss)
       return (
         <polyline
           key={`point-${poss}...${i}`}
           className="chord-point"
-          points={`${x},${betweenStr / 2} ${x},${
-            betweenStr * stringsCount - betweenStr / 2
-          }`}
+          points={`${x},${betweenStr / 2} ${x},${betweenStr * stringsCount - betweenStr / 2}`}
         />
       );
 
@@ -128,7 +128,7 @@ export default function ChordCard(props: ChordCardProps) {
           key={`chord-point-${pos}`}
           className="chord-point"
           points={`${x},${y} ${x},${y}`}
-          // onClick={onPointClick(poss, i, pos)}
+        // onClick={onPointClick(poss, i, pos)}
         />
       );
     });
@@ -139,55 +139,54 @@ export default function ChordCard(props: ChordCardProps) {
   //   ? undefined
   //   : async () => {
   //       const prev = track.slice(0);
-  //       const lad = await modalService.prompt("Стартовый лад:", track[0] + 1);
+  //       const lad = await modalService.prompt("Стартовый лад:", baseLad + 1);
   //       if (lad == null) return;
-  //       track[0] = (Math.abs(parseInt(lad)) || 1) - 1;
+  //       baseLad = (Math.abs(parseInt(lad)) || 1) - 1;
   //       this.fu(prev);
   //     };
 
   return (
     <>
-      <span
-        key={`first-lad-counter-${chordName}`}
-        className="first-lad-counter"
-        // onClick={onLabelClick}
-      >
-        {(chordLabel || chordName) + (track[0] ? ` [${track[0] + 1}]` : "")}
-      </span>
       <svg
         key={`chord-board:${chordName}`}
         className="chord-board"
         style={{
-          width: stringLength + 3.5,
+          width: stringLength,
           height:
             betweenStr * stringsCount + (isRedaction ? betweenLad / 5 + 3 : 0),
         }}
       >
-        [
-        <polyline
-          // zero line
-          key={`zero-line.${chordName}`}
-          points={`2,0 2,${betweenStr * stringsCount}`}
-          className={!isFLad ? "chord-lad" : "chord-zero-line"}
-        />
-        {lads.map((ladPos) => {
-          const x = betweenLad * ladPos;
+        {isFLad
+          ? <polyline
+            // zero line
+            points={`2,0 2,${betweenStr * stringsCount}`}
+            className="chord-zero-line"
+          />
+          : <polyline
+            points={`${leftMargin},0 ${leftMargin},${betweenStr * stringsCount}`}
+            className="chord-lad"
+          />}
+        {lads.map((ladPos, ladPosi) => {
+          const x = leftMargin + betweenLad * ladPos;
 
-          return (
+          return <React.Fragment key={`lad_${ladPos}:${chordName}`}>
             <polyline
               points={`${x},0 ${x},${betweenStr * stringsCount}`}
               className="chord-lad"
-              key={`chord-lad_${ladPos}:${chordName}`}
             />
-          );
+            <text
+              className="chord-lad-number"
+              x={x - 20}
+              y={betweenStr * stringsCount - 3}>{ladPosi + baseLad + 1}</text>
+          </React.Fragment>;
         })}
         {strings.map((stringPos) => {
           const y = betweenStr * stringPos - betweenStr / 2;
 
           return (
             <polyline
-              points={`0,${y} ${stringLength + 3.5},${y}`}
               key={`chord-string-${stringPos}:${chordName}`}
+              points={`0,${y} ${stringLength},${y}`}
               className="chord-string"
               strokeWidth={0.5 + stringPos / 5}
             />
@@ -198,6 +197,9 @@ export default function ChordCard(props: ChordCardProps) {
         )}
         {/* {buttons} */}
       </svg>
+      <span className="first-lad-counter">
+        {chordLabel || chordName}
+      </span>
     </>
   );
 }

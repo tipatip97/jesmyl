@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
+import propsOfClicker from "../../../../../../complect/clicker/propsOfClicker";
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
@@ -13,8 +14,7 @@ import useGames from "../useGames";
 import LeaderGameTimer from "./GameTimer";
 import {
   GameTimerMode,
-  timerModeAliases,
-  timerModeAliasList,
+  timerModeAliases
 } from "./GameTimer.model";
 import "./GameTimer.scss";
 import GameTimerScreen from "./GameTimerScreen";
@@ -54,8 +54,8 @@ export default function LeaderGameTimerMaster({
       isRedactOld
         ? newTimer
         : (topTimer.wid &&
-            cgame?.timers?.find((timer) => topTimer.wid === timer.wid)) ||
-          topTimer,
+          cgame?.timers?.find((timer) => topTimer.wid === timer.wid)) ||
+        topTimer,
     [cgame?.timers, topTimer, isRedactOld, newTimer]
   );
 
@@ -97,8 +97,8 @@ export default function LeaderGameTimerMaster({
               <>
                 <span>Название</span>
                 {!isWriteName &&
-                cgame?.timerNames?.length &&
-                (!timer.name || cgame.timerNames.indexOf(timer.name) > -1) ? (
+                  cgame?.timerNames?.length &&
+                  (!timer.name || cgame.timerNames.indexOf(timer.name) > -1) ? (
                   <>
                     <Dropdown
                       placeholder="Выбрать название"
@@ -202,24 +202,10 @@ export default function LeaderGameTimerMaster({
                               return (
                                 <div
                                   key={`teami-${teami}`}
-                                  className={`flex center full-max-width ${
-                                    selectedTeamw === team.wid
+                                  className={`flex center full-max-width ${selectedTeamw === team.wid
                                       ? "selected-team"
                                       : ""
-                                  }`}
-                                  onContextMenu={(event) => {
-                                    event.preventDefault();
-                                    if (timer.isTeamCantMove(team)) {
-                                      if (team.wid === selectedTeamw)
-                                        setSelectedTeamw(null);
-                                      return;
-                                    }
-                                    setSelectedTeamw(
-                                      team.wid === selectedTeamw
-                                        ? null
-                                        : team.wid
-                                    );
-                                  }}
+                                    }`}
                                   onClick={() => {
                                     if (timer.isTeamCantMove(team)) {
                                       if (team.wid === selectedTeamw)
@@ -251,6 +237,21 @@ export default function LeaderGameTimerMaster({
                                     updateTeamList(newTeams);
                                     setSelectedTeamw(null);
                                   }}
+                                  {...propsOfClicker({
+                                    onCtxMenu: (event) => {
+                                      event.preventDefault();
+                                      if (timer.isTeamCantMove(team)) {
+                                        if (team.wid === selectedTeamw)
+                                          setSelectedTeamw(null);
+                                        return;
+                                      }
+                                      setSelectedTeamw(
+                                        team.wid === selectedTeamw
+                                          ? null
+                                          : team.wid
+                                      );
+                                    }
+                                  })}
                                 >
                                   <div className="flex column min-width-90 over-hidden">
                                     <div className="team-box full-max-width ellipsis">
@@ -326,11 +327,10 @@ export default function LeaderGameTimerMaster({
                               )}
                           </div>
                           {mode !== GameTimerMode.TimerTotal &&
-                          (isRedactOld || timer.isNew) ? (
+                            (isRedactOld || timer.isNew) ? (
                             <div
-                              className={`control-button start-button flex center pointer margin-gap ${
-                                timer.starts?.[rowi] ? "disabled clickable" : ""
-                              }`}
+                              className={`control-button start-button flex center pointer margin-gap ${timer.starts?.[rowi] ? "disabled clickable" : ""
+                                }`}
                             >
                               <EvaIcon
                                 name="play-circle-outline"
@@ -380,8 +380,8 @@ export default function LeaderGameTimerMaster({
                         isTimerOnRedaction(timer.ts)
                           ? "Сбросить новые изменения таймера?"
                           : mode === GameTimerMode.TimerTotal
-                          ? "Сбросить таймер?"
-                          : "Сбросить все таймеры?"
+                            ? "Сбросить таймер?"
+                            : "Сбросить все таймеры?"
                       )
                       .then((reset) => reset && resetTimers());
                   }}
@@ -423,10 +423,10 @@ export default function LeaderGameTimerMaster({
               arean="gameTimers"
               {...(timer.isNew
                 ? {
-                    isWaitedToSend: true,
-                    importantActionOnClick: (comment) => saveComment(comment),
-                    onRejectSend: (comment) => removeComment(comment),
-                  }
+                  isWaitedToSend: true,
+                  importantActionOnClick: (comment) => saveComment(comment),
+                  onRejectSend: (comment) => removeComment(comment),
+                }
                 : null)}
             />
           </div>
@@ -447,9 +447,8 @@ export default function LeaderGameTimerMaster({
               ) : (
                 (!isRedactOld || isCanSendOldTimerUpdates()) && (
                   <SendButton
-                    title={`Опубликовать ${
-                      isRedactOld ? "изменения" : "таймер"
-                    }`}
+                    title={`Опубликовать ${isRedactOld ? "изменения" : "таймер"
+                      }`}
                     confirm
                     onSuccess={() => {
                       close();
@@ -464,9 +463,8 @@ export default function LeaderGameTimerMaster({
             </div>
           ) : (
             <div
-              className={`flex center pointer ${
-                timer.isInactive ? "color--3" : "error-message"
-              }`}
+              className={`flex center pointer ${timer.isInactive ? "color--3" : "error-message"
+                }`}
               onClick={async () => {
                 if (
                   await modalService.confirm(

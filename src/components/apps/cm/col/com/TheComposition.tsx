@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import propsOfClicker from "../../../../../complect/clicker/propsOfClicker";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import SwipeableContainer from "../../../../../complect/swipeable/SwipeableContainer";
 import { RootState } from "../../../../../shared/store";
@@ -60,10 +61,12 @@ export default function TheComposition() {
                 name={icon}
                 className="action-button"
                 onClick={() => onClick()}
-                onContextMenu={(event) => {
-                  event.preventDefault();
-                  toggleTopTool(tool);
-                }}
+                {...propsOfClicker({
+                  onCtxMenu: (event) => {
+                    event.preventDefault();
+                    toggleTopTool(tool);
+                  }
+                })}
               />
             ))}
 
