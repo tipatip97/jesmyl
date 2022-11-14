@@ -629,7 +629,15 @@ function &doIt(&$exec, &$parents, &$parent)
     case 'push':
       if (isList($target) && isUniqByFields($uniqs, $target, $value))
         $target[] = &$value;
-
+      break;
+    case 'formula':
+      if (is_string($value) && (is_int($target) || is_float($target))) {
+        $endVal = null;
+        $errors = [];
+        $formulaString = preg_replace('/\bX\b/', '' . $target, $value);
+        eval('$endVal = ' . replaceArgs($formulaString, $exec['args'], $errors) . ';');
+        if (is_int($endVal) || is_float($endVal)) $penultimate[$lastTrace] = &$endVal;
+      }
       break;
     case 'remove':
     case 'remove_each':

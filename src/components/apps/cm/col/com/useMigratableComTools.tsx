@@ -25,10 +25,7 @@ import { useCcom } from "./useCcom";
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
   const [ccom] = useCcom();
-  const {
-    goToTranslation: openTranslations,
-    isSelfTranslation: isShowFullscreen,
-  } = useTranslation();
+  const { goToTranslation: openTranslations } = useTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
   const { openFullscreenContent } = useFullscreenContent();
@@ -49,7 +46,7 @@ export default function useMigratableComTools() {
             return {
               tool,
               title: "Слайды",
-              icon: isShowFullscreen ? "play-outline" : "monitor-outline",
+              icon: "monitor-outline",
               onClick: () => openTranslations(),
             };
           case "chords-variant":
@@ -60,21 +57,21 @@ export default function useMigratableComTools() {
                 chordVisibleVariant === ChordVisibleVariant.Maximal
                   ? "file-text-outline"
                   : chordVisibleVariant === ChordVisibleVariant.Minimal
-                  ? "file-remove-outline"
-                  : "file-outline",
+                    ? "file-remove-outline"
+                    : "file-outline",
               onClick: () => {
                 setChordVisibleVariant(
                   chordVisibleVariant === ChordVisibleVariant.Maximal
                     ? ChordVisibleVariant.None
                     : !ccom?.orders?.some(
-                        (ord) => !ord.isMin && ord.texti != null
-                      )
-                    ? chordVisibleVariant === ChordVisibleVariant.None
-                      ? ChordVisibleVariant.Minimal
-                      : ChordVisibleVariant.None
-                    : chordVisibleVariant === ChordVisibleVariant.None
-                    ? ChordVisibleVariant.Minimal
-                    : ChordVisibleVariant.Maximal
+                      (ord) => !ord.isMin && ord.texti != null
+                    )
+                      ? chordVisibleVariant === ChordVisibleVariant.None
+                        ? ChordVisibleVariant.Minimal
+                        : ChordVisibleVariant.None
+                      : chordVisibleVariant === ChordVisibleVariant.None
+                        ? ChordVisibleVariant.Minimal
+                        : ChordVisibleVariant.Maximal
                 );
 
                 return true;
