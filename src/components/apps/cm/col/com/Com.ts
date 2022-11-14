@@ -298,7 +298,7 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   actualChords(chordsScalar?: string | number, position = this.transPosition) {
-    const chords = mylib.isStr(chordsScalar) ? chordsScalar as string : this.chords && this.chords[chordsScalar as number];
+    const chords = mylib.isStr(chordsScalar) ? chordsScalar as string : this.chords?.[chordsScalar as number];
     return chords && Com.withBemoles(this.transBlock(chords, position), this.isBemoled);
   }
 
@@ -402,7 +402,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
       top.header = newOrder.isEmptyHeader
         ? (bag, isRequired) => isRequired ? header(ordTop, style, false)(bag) : ''
-        : targetOrd && targetOrd.top.header && !top.source.s
+        : targetOrd && targetOrd.top.header! && !top.source.s
           ? targetOrd.top.header
           : header(ordTop, style);
 

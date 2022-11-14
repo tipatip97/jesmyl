@@ -63,7 +63,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   get chords() {
-    return (this.chordsi != null && this.com.chords && this.com.chords[this.chordsi]) || '';
+    return (this.chordsi != null && this.com.chords?.[this.chordsi]) || '';
   }
 
   get isVisible(): boolean {
