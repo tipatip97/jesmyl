@@ -20,8 +20,8 @@ export default function useKeyboard() {
   const [updates, setUpdates] = useState(0);
 
   return (id: string, props: KeyboardInputProps) => {
-    let localInput: KeyboardInputStorage;
-    let nativeInputNode: HTMLInputElement | HTMLTextAreaElement;
+    let localInput = inputDict[id];
+    let inputNode;
 
     const getNode = () =>
       inputDict[id].node(
@@ -44,28 +44,20 @@ export default function useKeyboard() {
         }
       );
 
-    let inputNode;
-    localInput = inputDict[id];
-    let actions: {
-      replaceAll: (value: string, isRemember: boolean, isInvokeOnInputEvent: boolean) => void;
-      value: () => string;
-      write: (value: string, isRememberAsPart?: boolean) => void;
-      focus: () => void;
-    } = {} as never;
+    if (localInput) inputNode = getNode();
+    else {
+      localInput = inputDict[id] = new KeyboardInputStorage(props.initialValue);
+      inputNode = getNode();
+    }
 
-    if (isIPhone) {
-      if (localInput) inputNode = getNode();
-      else {
-        localInput = inputDict[id] = new KeyboardInputStorage(props.initialValue);
-        inputNode = getNode();
-      }
-      actions = {
-        replaceAll: localInput.replaceAll,
-        value: () => localInput.value,
-        write: localInput.write,
-        focus: localInput.focus,
-      };
-    } else {
+    const actions = {
+      replaceAll: localInput.replaceAll,
+      value: () => localInput.value,
+      write: localInput.write,
+      focus: localInput.focus,
+    };
+
+    if (!isIPhone) {
       const nodeProps = {
         ...props,
         defaultValue: props.initialValue,
@@ -75,49 +67,45 @@ export default function useKeyboard() {
         onPaste: props.onPaste && (async () => props.onPaste?.(await navigator.clipboard.readText())),
       };
 
-      inputNode = <div className={`input-keyboard-flash-controlled input ${props.multiline ? 'multiline' : ''}`
-    }>
-    {
-      props.multiline
-        ? <textarea {...nodeProps}
-          className="native-input"
-          ref={(el) => {
-            if (el) {
-              nativeInputNode = el;
-              el.rows = el.value.split('\n').length;
-            }
-          }}
-        />
-        : <input {...nodeProps} className="native-input" ref={(el) => el && (nativeInputNode = el)} />
+      inputNode = <div className={`input-keyboard-flash-controlled input ${props.multiline ? 'multiline' : ''}`}>
+        {
+          props.multiline
+            ? <textarea {...nodeProps}
+              className="native-input"
+              onInput={(event) => localInput.replaceAll(event.currentTarget.value, false, false)}
+              ref={(el) => {
+                if (el) {
+                  el.rows = el.value.split('\n').length;
+                }
+              }}
+            />
+            : <input
+              {...nodeProps}
+              className="native-input"
+              onInput={(event) => localInput.replaceAll(event.currentTarget.value, false, false)}
+            />
+        }
+      </div>;
     }
-      </div >;
 
-    actions = {
-      replaceAll: (value) => nativeInputNode.value = value,
-      value: () => nativeInputNode?.value || '',
-      write: (val) => nativeInputNode.value += val,
-      focus: () => nativeInputNode.focus(),
+    return {
+      node: inputNode,
+      value: (
+        value?: string,
+        isRemember = false,
+        isInvokeOnInputEvent = true
+      ) => {
+        if (value !== undefined)
+          actions.replaceAll(value, isRemember, isInvokeOnInputEvent);
+        return actions.value();
+      },
+      focus: () => actions.focus(),
+      write: (value: string, isRememberAsPart?: boolean) => actions.write(value, isRememberAsPart),
+      remove: () => {
+        delete inputDict[id];
+      },
     };
-  }
-
-  return {
-    node: inputNode,
-    value: (
-      value?: string,
-      isRemember = false,
-      isInvokeOnInputEvent = true
-    ) => {
-      if (value !== undefined)
-        actions.replaceAll(value, isRemember, isInvokeOnInputEvent);
-      return actions.value();
-    },
-    focus: () => actions.focus(),
-    write: (value: string, isRememberAsPart?: boolean) => actions.write(value, isRememberAsPart),
-    remove: () => {
-      delete inputDict[id];
-    },
   };
-};
 }
 
 export function KEYBOARD_FLASH({
