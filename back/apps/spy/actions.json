@@ -39,12 +39,13 @@
                         "value": {
                             "name": "{name}",
                             "w": "{@setNewWid()}",
+                            "locations": [],
+                            "iterations": 0,
                             "members": [
                                 {
                                     "login": "{@userLogin}",
                                     "name": "{@userFio}",
-                                    "status": "owner",
-                                    "locations": []
+                                    "status": "owner"
                                 }
                             ]
                         },
@@ -111,6 +112,13 @@
                                     "spiesCount": "#Number"
                                 },
                                 "side": [
+                                    {
+                                        "track": [
+                                            "iterations"
+                                        ],
+                                        "method": "formula",
+                                        "value": "X + 1"
+                                    },
                                     {
                                         "track": [
                                             "finisher"
