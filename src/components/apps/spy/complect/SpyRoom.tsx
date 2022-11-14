@@ -148,8 +148,8 @@ export default function SpyRoom() {
               )
             ) : (
               <div>
-                <h2>
-                  Игра начата
+                <h2 className="flex center">
+                  Игра #{currentRoom.iterations}
                   {possibilities.isInactive ? ". Ты вне игры" : ""}
                 </h2>
                 {!possibilities.isInactive && (
@@ -181,11 +181,7 @@ export default function SpyRoom() {
                     if (member.isInactive) return null;
 
                     return (
-                      <div
-                      // className={
-                      //   getRoleName(member.login) ? "" : "error-message"
-                      // }
-                      >
+                      <div>
                         <RoomMemberFace
                           key={`m ${memberi}`}
                           member={member}

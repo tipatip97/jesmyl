@@ -19,6 +19,7 @@ export interface SpyRoom {
     members: SpyRoomMember[];
     locations?: string[];
     spiesCount?: number;
+    iterations: number;
     roles?: Record<string, string>;
     finisher?: SpyRoomMember | nil;
     retired?: string[] | nil;
