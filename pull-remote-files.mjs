@@ -12,10 +12,10 @@ import fetch from 'node-fetch';
     // ['S', 'apps'],
     // ['S', 'main', 'css'],
 ].forEach(([path, name, ext = 'json']) => {
-    fetch(`https://jesmyl.space/${path}/${name}.${ext}`)
+    fetch(`https://jesmyl.ru/${path}/${name}.${ext}`)
         .then(r => ext === 'json' ? r.json() : r.text())
         .then(content =>
-            file_system.writeFile(`./back/${path}/+case/${name}.json`,
+            file_system.writeFile(`./src/back/${path}/+case/${name}.json`,
                 ext === 'json'
                     ? JSON.stringify(content, null, 2)
                     : content,

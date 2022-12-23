@@ -1,0 +1,138 @@
+.list-title {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--current-bg);
+  padding: var(--main-gap);
+}
+
+.debounced-searcher.round-styled {
+  --height: calc(var(--header-container-height) - var(--main-gap) * 2);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--height);
+  box-sizing: border-box;
+  border-radius: calc(var(--main-gap) * 3);
+  background-color: var(--color--2);
+  padding: var(--main-gap);
+  width: 100%;
+
+  .input {
+    width: calc(100% - 30px);
+    outline: 0;
+    border: 0;
+    background: none;
+    color: var(--text-color);
+  }
+
+  .clear-button {
+    cursor: pointer;
+
+    &.hidden {
+      opacity: 0;
+    }
+  }
+}
+
+.face-item {
+  --size: 2.5em;
+  --logo-border-size: 2px;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--size);
+  padding: 0 0.4em;
+  margin-bottom: calc(var(--logo-border-size) * 2 + 2px);
+
+  &:not(.not-pointer) {
+    cursor: pointer;
+  }
+
+  &.current {
+    font-weight: bold;
+  }
+
+  [selected-position].face-logo {
+    border-color: var(--color--3);
+
+    &::after {
+      content: attr(selected-position);
+      position: absolute;
+      bottom: -1px;
+      right: -2px;
+      background-color: var(--color--3);
+      color: var(--color--2);
+      width: 1.2em;
+      height: 1.2em;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.5em;
+    }
+  }
+
+  .face-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .face-wrapper,
+  & {
+    >.face-action {
+      right: 0;
+    }
+
+    >.face-logo {
+      background: var(--color--1);
+      border-radius: 50%;
+      border: solid 4px transparent;
+
+      &.selected {
+        border-color: var(--color--3);
+      }
+    }
+
+    >.face-action,
+    >.face-logo {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: var(--size);
+      height: var(--size);
+    }
+
+    >.face-title {
+      margin-left: calc(2.5em + 1em);
+    }
+  }
+}
+
+.the-button {
+  position: relative;
+  display: inline-block;
+  border: var(--color--2) 4px solid;
+  padding: 0.5em 2em;
+  border-radius: 2em;
+  cursor: pointer;
+
+  .eva-icon {
+    position: absolute;
+    margin-left: 2px;
+  }
+}
+
+.eva-icon {
+  &.as-button-circle {
+    padding: 7px;
+    border-radius: 100%;
+    background: var(--color--2);
+    margin: 5px;
+    cursor: pointer;
+  }
+}

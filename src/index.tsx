@@ -1,12 +1,12 @@
 import React, { ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import App from "./app/App";
-import "./index.scss";
-import "./lib.scss";
-import reportWebVitals from "./reportWebVitals";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import { store } from "./shared/store";
+import App from "./front/app/App";
+import "./front/index.scss";
+import "./front/lib.scss";
+import reportWebVitals from "./front/reportWebVitals";
+import * as serviceWorkerRegistration from "./front/serviceWorkerRegistration";
+import { store } from "./front/shared/store";
 
 export const renderApplication = (
   reactNode: ReactNode,

@@ -19,21 +19,33 @@ const archive = (isFront) => {
     archive.on('end', () => {
         const body = new FormData();
         body.append(0, file_system.createReadStream(filename));
-        fetch(`https://jesmyl.space/bomba.php?pass=${passphrase}&isFront=${isFront ? '1' : ''}&isRelease=${isRelease ? 1 : ''}`, {
+        fetch(`https://jesmyl.ru/bomba.php?pass=${passphrase}&isFront=${isFront ? '1' : ''}&isRelease=${isRelease ? 1 : ''}`, {
             method: 'POST',
             body
-        }).then(r => r.json()).then(r => {
-            console.info('Upload respond', r);
-            file_system.unlinkSync(filename);
-            console.info('DONE!');
-        }).catch((error) => {
-            console.error('upload error:', error);
-            file_system.unlinkSync(filename);
-        });
+        })
+            .then(r => r.text())
+            .then(r => {
+                const [firstPart, secondPart] = r.split('===JSON:separation===');
+
+                try {
+                    if (firstPart) {
+                        console.info('Upload respond with errors:', JSON.parse(secondPart));
+                        console.error(firstPart);
+                    } else
+                        console.info('Upload respond:', JSON.parse(secondPart));
+                } catch (e) {
+                    console.error(e, r);
+                }
+                file_system.unlinkSync(filename);
+                console.info('DONE!');
+            }).catch((error) => {
+                console.error('upload error:', error);
+                file_system.unlinkSync(filename);
+            });
     });
 
     archive.pipe(file_system.createWriteStream(filename));
-    archive.directory(isFront ? 'build' : 'back', false);
+    archive.directory(isFront ? 'build' : 'src/back', false);
     archive.finalize();
 };
 
@@ -41,7 +53,7 @@ if (~process.argv.indexOf('--push-front')) {
     console.info('Build is running...');
     exec('npm run build', (err) => {
         console.info('Build is finished.');
-        if (err) console.error('BUILD FAILURE!');
+        if (err) console.error('BUILD FAILURE!', err);
         else archive(true);
     });
 }
