@@ -28,6 +28,7 @@ else {
       if ($res === true) {
         $steps[] = 'zip opened';
         if ($isFront) {
+          deleteForced('./static');
           $zip->extractTo('./');
           $steps[] = 'front files extracted';
 

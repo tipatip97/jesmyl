@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LocalSokiAuth } from "../../../back/complect/soki/Soki.model";
 import mylib from "../../complect/my-lib/MyLib";
-import { refresh } from "../../complect/refresh/Refresher";
-import { indexStorage } from "../../shared/jstorages";
+import { indexStorage, appStorage } from "../../shared/jstorages";
 import { RootState } from "../../shared/store";
 import { soki } from "../../soki";
 import {
@@ -12,6 +11,10 @@ import {
   AuthorizeInSystem, IndexErrorScope, RegisterData
 } from "./Index.model";
 import { indexExer, setAuthData, setCurrentApp, setError } from "./Index.store";
+
+const removeLastUpdates = () => {
+  Object.values(appStorage).forEach(storage => storage.set('lastUpdate', null));
+};
 
 export default function useAuth() {
   const dispatch = useDispatch();
@@ -33,6 +36,7 @@ export default function useAuth() {
     auth,
     errors,
     isConnected,
+    removeLastUpdates,
     setError: (scope: IndexErrorScope, message: string | nil) =>
       dispatch(setError({ scope, message })),
     writeToDevelopers: (message: string) => {
@@ -60,7 +64,8 @@ export default function useAuth() {
     logout: () => {
       dispatch(setAuthData(null));
       dispatch(setCurrentApp("cm"));
-      refresh.onLogin();
+      removeLastUpdates();
+      window.location.reload();
     },
     setAuthData: (login: string | LocalSokiAuth) => {
       let auth;
@@ -75,7 +80,8 @@ export default function useAuth() {
       if (auth) {
         dispatch(setAuthData(auth));
         dispatch(setCurrentApp("cm"));
-        refresh.onLogin();
+        removeLastUpdates();
+        window.location.reload();
       }
     },
     loginInSystem: (state: AuthorizationData) => {

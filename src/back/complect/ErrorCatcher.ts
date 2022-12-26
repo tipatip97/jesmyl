@@ -1,4 +1,5 @@
 import fs from 'fs';
+import environment from '../environments/environment';
 
 process.listeners('uncaughtException').forEach((func) => { process.off('uncaughtException', func) });
 
@@ -12,8 +13,7 @@ export class ErrorCatcher {
     static logAllErrors() {
         process.on('uncaughtException', (err) => {
             console.error(err);
-            const rootDir = '/var/www/html/';
-            const dir = rootDir + 'restart_outputs/';
+            const dir = `/var/www/${environment.host}/restart_outputs/`;
 
             const write = () => {
                 fs.readdir(dir, { withFileTypes: true }, (error, files) => {

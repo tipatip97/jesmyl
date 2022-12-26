@@ -3,8 +3,6 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
 import useKeyboard from "../../../../complect/keyboard/useKeyboard";
 import LoadIndicatedContent from "../../../../complect/load-indicated-content/LoadIndicatedContent";
-import { refresh } from "../../../../complect/refresh/Refresher";
-import { indexStorage } from "../../../../shared/jstorages";
 import { soki } from "../../../../soki";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
@@ -29,6 +27,7 @@ export default function IndexLogin() {
     isCorrectLoginJSONData,
     setAuthData,
     isConnected,
+    removeLastUpdates,
   } = useAuth();
   const { navigate } = useIndexNav();
   const error = (message: string | nil) =>
@@ -139,10 +138,9 @@ export default function IndexLogin() {
                   const unsubscribe = soki.watch('authorization')(
                     (resp) => {
                       if (resp && resp.ok !== false) {
-                        setAuthData(resp.value);
-                        refresh.onLogin();
                         setIsInProscess(1);
-                        indexStorage.rem("lastUpdate");
+                        removeLastUpdates();
+                        setAuthData(resp.value);
                       } else {
                         setError('login', resp?.value || 'Неизвестная ошибка');
                         setIsInProscess(2);

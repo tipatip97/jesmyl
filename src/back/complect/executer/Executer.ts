@@ -1,7 +1,6 @@
 /* eslint-disable eqeqeq */
-import { accessSync } from "fs";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
-import { LocalSokiAuth, SokiAppName } from "../soki/Soki.model";
+import { LocalSokiAuth } from "../soki/Soki.model";
 import { ExecuteError, ExecuteErrorType, ExecuteResults, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionTrack, TrackerRet } from "./Executer.model";
 
 
@@ -10,7 +9,6 @@ const globs: Record<string, any> = {
 };
 
 const reportFailError = (rej: (resp: { ok: false, fail?: boolean, message: string }) => void, error: any) => rej({ ok: false, fail: true, message: error && (error.stack ?? error.message) });
-const reportError = (rej: (resp: { ok: false, fail?: boolean, message: string }) => void, message: string) => rej({ ok: false, fail: false, message });
 
 export class Executer {
     findMap<Item, Ret>(arr: Item[], cb: (item: Item, itemi: number, itema: Item[]) => Ret): Ret | undefined {

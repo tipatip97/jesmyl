@@ -31,12 +31,17 @@ class ModalService {
       | ((res: (is: boolean) => void) => Partial<ModalConfig>)
   ) {
     if (typeof config === "function") return new Promise(config);
+
     const defaults = {
       getInput: (index: number = 0) => {
         return config.inputs?.filter(input => !Array.isArray(input))[index];
       },
     };
     this.configs.push(Object.assign(defaults, config) as ModalConfig);
+
+    const current = this.current();
+    if (current) config.onOpen?.(current);
+
     this.refresh();
     return new Promise((res) => this.resolves.push(res));
   }

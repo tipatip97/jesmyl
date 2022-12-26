@@ -9,6 +9,7 @@ import fetch from 'node-fetch';
     ['apps/cm', 'chords'],
     ['apps/lider', 'people'],
     ['apps/lider', 'contexts'],
+    // ['apps/spy', 'cache'],
     // ['S', 'apps'],
     // ['S', 'main', 'css'],
 ].forEach(([path, name, ext = 'json']) => {

@@ -1,13 +1,10 @@
 import { Executer } from '../back/complect/executer/Executer';
 import { SMyLib } from '../back/complect/soki/complect/SMyLib';
 import { SokiAppName, SokiClientEvent, SokiEventName, SokiServerEvent } from '../back/complect/soki/Soki.model';
+import environment from '../back/environments/environment';
 import modalService from './complect/modal/Modal.service';
 import mylib, { MyLib } from './complect/my-lib/MyLib';
 import { appStorage, indexStorage } from './shared/jstorages';
-
-const wsUrl = new URL(window.location.href).protocol === 'https:'
-    ? 'wss://185.244.173.52:443/websocket'
-    : 'ws://185.244.173.52:4446';
 
 export class SokiTrip {
     appName: SokiAppName = 'cm';
@@ -22,7 +19,7 @@ export class SokiTrip {
 
     start() {
         this.isClosed = false;
-        const ws = this.ws = new WebSocket(wsUrl);
+        const ws = this.ws = new WebSocket(`wss://${environment.dns}/websocket/`);
 
         ws.addEventListener('close', () => {
             this.isClosed = true;
@@ -54,6 +51,8 @@ export class SokiTrip {
                         this.send({ connect: true });
                         this.pullCurrentAppData();
                     }
+
+                    if (event.reloadFiles) this.pullCurrentAppData();
 
                     if (event.execs) {
                         const contents = mylib.clone(appStore.properties);

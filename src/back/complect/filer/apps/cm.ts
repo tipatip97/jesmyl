@@ -6,7 +6,7 @@ const config: FilerAppConfig = {
         "cols", "meetings", "chords",
         {
             level: 50,
-            name: "e-e-rules",
+            name: "eeStorage",
         },
         {
             level: 100,

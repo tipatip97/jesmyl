@@ -2,13 +2,15 @@ import WebSocket, { WebSocketServer } from 'ws';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
 import { filer } from '../filer/Filer';
+import { setPolyfills } from '../polyfills';
 import { SMyLib } from './complect/SMyLib';
 import { sokiAuther } from './complect/SokiAuther';
 import { SokiCapsule, SokiClientEvent, SokiServerEvent } from './Soki.model';
 
+setPolyfills();
 ErrorCatcher.logAllErrors();
 
-filer.load();
+filer.load().then().catch(() => { });
 
 const capsules = new Map<WebSocket, SokiCapsule>();
 const send = (data: SokiServerEvent, client?: WebSocket) => {
@@ -35,7 +37,6 @@ const disconnect = (client: WebSocket) => {
 
 new WebSocketServer({
     port: 4446,
-    path: '/websocket'
 })
     .on('connection', (client: WebSocket) => {
         connect(client);
@@ -43,11 +44,9 @@ new WebSocketServer({
         client.on('message', (data: WebSocket.RawData) => {
             const eventData: SokiClientEvent = JSON.parse('' + data);
             const eventBody = eventData.body;
-            const consl = () => { }; console.info(eventData);
 
             if (eventBody.authorization) {
                 const event = eventBody.authorization;
-                consl();
 
                 sokiAuther
                     .authenticate(event)
@@ -83,6 +82,10 @@ new WebSocketServer({
                 return;
             }
 
+            if (eventBody.reloadFiles && (capsule?.auth?.level || 0) >= 50) {
+                filer.load().then(() => send({ reloadFiles: true })).catch(() => { });
+            }
+
             if (eventBody.pull) {
                 if (eventData.appName) {
                     const pull = filer.getContents(eventData.appName, eventBody.pull.lastUpdate, eventBody.pull.indexLastUpdate, capsule?.auth);
@@ -95,13 +98,12 @@ new WebSocketServer({
             const isCapsuleAuth = eventData.auth && capsule?.auth && (eventData.auth.login === capsule.auth.login)
 
             if (isCapsuleAuth && eventBody.execs && capsule?.auth) {
-                consl();
                 const contents = filer.contents[eventData.appName];
                 const realParents: Record<string, unknown> = {};
                 SMyLib.entries(contents).forEach(([key, val]) => realParents[key] = val.data);
 
                 Executer
-                    .execute(contents.actions.data, realParents, eventBody.execs, capsule.auth)
+                    .execute(contents.actions?.data || [], realParents, eventBody.execs, capsule.auth)
                     .then(async ({ fixes, replacedExecs, errorMessage }) => {
                         const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
                         return { replacedExecs, lastUpdate, errorMessage };

@@ -29,7 +29,7 @@ const actionsRequirement: FilerAppRequirement = {
           expecteds: nextTop.expected,
           value,
         }, ...(next ? map(next, nextTop as never) : [])]
-      }).flat()
+      }).flat();
     };
 
     return map(data).filter(({ action }) => action);
@@ -52,45 +52,52 @@ export class Filer {
   }
 
   load() {
-    const apps = {
-      index,
-      cm,
-      spy,
-    } as FilerAppStore;
+    return new Promise<void>((loadRes) => {
+      const apps = {
+        index,
+        cm,
+        spy,
+      } as FilerAppStore;
+      let waits = 0;
+      let oks = 0;
 
-    SMyLib
-      .entries(apps)
-      .forEach(([appName, app]) => {
-        const content: FilerContent = this.contents[appName] = {};
+      SMyLib
+        .entries(apps)
+        .forEach(([appName, app]) => {
+          const content: FilerContent = this.contents[appName] = {};
 
-        [actionsRequirement, ...app.requirements].forEach((requ) => {
-          const { name, ext = 'json', level = 0, prepare = (data: unknown) => data, map = () => null } = smylib.isStr(requ) ? { name: requ } : requ;
+          [actionsRequirement, ...app.requirements].forEach((requ) => {
+            const { name, ext = 'json', level = 0, prepare = (data: unknown) => data, map = () => null } = smylib.isStr(requ) ? { name: requ } : requ;
 
-          const filename = this.fileName(appName, name, ext);
-          const path = this.filePath(filename);
+            const filename = this.fileName(appName, name, ext);
+            const path = this.filePath(filename);
 
-          fs.readFile(path, 'utf-8', (err, stringData) => {
-            if (!err) {
-              const stat = fs.statSync(path);
-              const data = JSON.parse(stringData);
+            waits++;
+            fs.readFile(path, 'utf-8', (err, stringData) => {
+              oks++;
+              if (!err) {
+                const stat = fs.statSync(path);
+                const data = JSON.parse(stringData);
 
-              try {
-                content[name] = {
-                  data,
-                  string: stringData,
-                  mtime: new Date(stat.mtime).getTime(),
-                  level,
-                  prepare,
-                  mapped: map(data),
-                };
-                return;
-              } catch (e) { }
-            }
+                try {
+                  content[name] = {
+                    data,
+                    string: stringData,
+                    mtime: new Date(stat.mtime).getTime(),
+                    level,
+                    prepare,
+                    mapped: map(data),
+                  };
+                  if (waits === oks) loadRes();
+                  return;
+                } catch (e) { }
+              }
 
-            console.error(`!!!! Ошибка при разборе файла ${filename}`);
-          })
+              console.error(`!!!! Load error ${filename}`);
+            });
+          });
         });
-      });
+    });
   }
 
   saveChanges(fixes: string[], appName: SokiAppName) {

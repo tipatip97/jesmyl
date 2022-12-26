@@ -707,7 +707,7 @@
     {
         "level": 100,
         "track": [
-            "e-e-rules",
+            "eeStorage",
             "{word}"
         ],
         "action": "setEERuleWordTrack",

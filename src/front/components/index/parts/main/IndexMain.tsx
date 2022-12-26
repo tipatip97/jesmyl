@@ -83,11 +83,11 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
       content={
         <>
           {isConnected || <div className="error-message">Соединение...</div>}
-          {/* <BrutalItem
+          <BrutalItem
             icon="settings-2-outline"
             title="Настройки"
-            onClick={() => setPhase("settings")}
-          /> */}
+            onClick={() => goTo("settings")}
+          />
           {auth?.fio ? null : (
             <BrutalItem
               icon="person-outline"

@@ -1,0 +1,56 @@
+apt install nano
+apt install nginx
+apt install apache2
+ufw status
+ufw allow 'Apache'
+apt update 
+apt install php7.4
+php -v
+??? apt-get install -y php-zip
+??? apt-get install php7.4-zip
+mkdir /var/www/jesmyl.ru/
+chmod 777 /var/www/jesmyl.ru/
+a2enmod rewrite # for .htaccess work
+
+apt install npm
+npm install
+npm install -g typescript
+npm i -g ts-node
+npm i core-js
+npm i --save-dev @types/ws
+npm i -D tslib @types/node
+
+# open port 
+iptables -I INPUT -p tcp -m tcp --dport 4446 -j ACCEPT
+netstat -na | grep :4446
+
+nano /etc/systemd/system/jesmyl_soki.service
+
+nano /etc/php/7.4/apache2/php.ini
+
+nano /etc/apache2/sites-available/{DOMAIN}.conf
+
+nano /etc/apache2/ports.conf
+
+nano /etc/nginx/sites-enabled/default
+
+nano /etc/nginx/nginx.conf
+
+nano /etc/ssl/certificate.crt
+/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/:
+-----BEGIN CERTIFICATE-----
+{{certificate content}}
+-----END CERTIFICATE-----
+/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+
+nano /etc/ssl/certificate.key
+/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/:
+-----BEGIN CERTIFICATE-----
+{{certificate content}}
+-----END CERTIFICATE-----
+/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+
+systemctl restart nginx
+systemctl restart apache2
+systemctl restart jesmyl_soki
+netstat -tlpn

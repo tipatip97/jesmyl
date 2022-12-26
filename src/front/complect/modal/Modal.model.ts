@@ -19,6 +19,7 @@ export interface ModalConfigBase {
     getInput: (index?: number) => Partial<ModalConfigInput> | und;
     deep: number;
     forceUpdate: () => void;
+    onOpen: (config: ModalConfig) => void;
 };
 
 export interface ModalConfig extends ModalConfigBase {

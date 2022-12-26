@@ -22,13 +22,15 @@ export interface SokiServerEvent {
         lastUpdate: number | null,
     },
     errorMessage?: string,
+    reloadFiles?: true,
 }
 
 export interface SokiClientEventBody {
     connect?: true,
     authorization?: ({ type: 'login', value: SokiAuthorizationData } | { type: 'register', value: SokiRegisterData }),
-    pull?: { lastUpdate: number, indexLastUpdate: number, },
+    pull?: { lastUpdate: number, indexLastUpdate: number },
     execs?: ExecutionDict[],
+    reloadFiles?: true,
 }
 
 export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
