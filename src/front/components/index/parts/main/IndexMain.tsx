@@ -83,11 +83,6 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
       content={
         <>
           {isConnected || <div className="error-message">Соединение...</div>}
-          <BrutalItem
-            icon="settings-2-outline"
-            title="Настройки"
-            onClick={() => goTo("settings")}
-          />
           {auth?.fio ? null : (
             <BrutalItem
               icon="person-outline"
@@ -95,6 +90,11 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
               onClick={() => goTo("login")}
             />
           )}
+          <BrutalItem
+            icon="settings-2-outline"
+            title="Настройки"
+            onClick={() => goTo("settings")}
+          />
           <BrutalItem
             icon="info-outline"
             title="О приложении"
