@@ -21,7 +21,7 @@ export interface SokiServerEvent {
         list: ExecutionReal[],
         lastUpdate: number | null,
     },
-    errorMessage?: string,
+    errorMessage?: string | null,
     reloadFiles?: true,
 }
 

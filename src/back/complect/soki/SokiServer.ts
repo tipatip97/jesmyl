@@ -13,11 +13,16 @@ ErrorCatcher.logAllErrors();
 filer.load().then().catch(() => { });
 
 const capsules = new Map<WebSocket, SokiCapsule>();
-const send = (data: SokiServerEvent, client?: WebSocket) => {
+const send = (data: SokiServerEvent, client?: WebSocket | null, errorFor?: WebSocket | null) => {
     const event = JSON.stringify(data);
 
     if (client) client.send(event);
-    else capsules.forEach((_, client) => client.send(event));
+    else {
+        const freeEvent = errorFor ? JSON.stringify({ ...data, errorMessage: null }) : '';
+        if (errorFor)
+            capsules.forEach((_, client) => client.send(errorFor === client ? event : freeEvent));
+        else capsules.forEach((_, client) => client.send(event));
+    }
 };
 
 const connect = (client: WebSocket) => {
@@ -108,14 +113,11 @@ new WebSocketServer({
                         const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
                         return { replacedExecs, lastUpdate, errorMessage };
                     })
-                    .then(({ replacedExecs, lastUpdate, errorMessage }) => {
+                    .then(({ replacedExecs: list, lastUpdate, errorMessage }) => {
                         send({
-                            execs: {
-                                list: replacedExecs,
-                                lastUpdate,
-                            },
+                            execs: { list, lastUpdate },
                             errorMessage
-                        });
+                        }, null, client);
                     });
                 return;
             }
