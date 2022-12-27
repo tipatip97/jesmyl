@@ -34,6 +34,7 @@
                     {
                         "action": "addNewRoom",
                         "title": "Добавлена новая комната $name",
+                        "shortTitle": "Создание комнаты",
                         "method": "push",
                         "level": 4,
                         "value": {
