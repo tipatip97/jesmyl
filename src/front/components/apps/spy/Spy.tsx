@@ -4,6 +4,7 @@ import PhaseSpyContainer from "./complect/PhaseSpyContainer";
 import SpyMore from "./complect/SpyMore";
 import useRooms from "./complect/useRooms";
 import "./Spy.scss";
+import { spyExer } from "./Spy.store";
 
 export default function SpyLocations() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
@@ -16,7 +17,7 @@ export default function SpyLocations() {
       headTitle="Комнаты"
       headClass="flex between"
       head={
-        <EvaIcon
+        spyExer.actionAccessedOrNull('addNewRoom') && <EvaIcon
           name="more-vertical"
           className="margin-gap"
           onClick={() => openAbsoluteBottomPopup(<SpyMore />)}
