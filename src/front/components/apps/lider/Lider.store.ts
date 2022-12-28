@@ -1,17 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.model";
 import { liderStorage } from "../../../shared/jstorages";
 import { defaultSendingComments, SendingComments } from "./components/comments/LeaderComment.model";
 import { LeaderContextsImportable } from "./components/contexts/Contexts.model";
 import { StoragedGameTimerImportableDict } from "./components/games/timers/GameTimer.model";
 import { HumanListSortVariant, PeopleImportable } from "./components/people/People.model";
-import { GamesStoreImportable, LiderState, LiderStoraged } from "./Lider.model";
+import { GamesStoreImportable, LiderState } from "./Lider.model";
 
 export const liderExer = new Exer('lider', liderStorage);
 
 const initialState: LiderState = {
-  route: liderStorage.getOr('route', ['all']),
   people: liderStorage.get('people'),
   contexts: liderStorage.get('contexts'),
   ccontextw: liderStorage.getOr('ccontextw', 0),
@@ -32,9 +30,6 @@ export const slice = createSlice({
   name: "lider",
   initialState,
   reducers: {
-    setLiderRoute: (state, action: PayloadAction<NavigationStorage<LiderStoraged>>) => {
-      state.route = action.payload.route;
-    },
     setCurrentContextw: (state, action: PayloadAction<number | und>) => {
       state.ccontextw = action.payload;
       liderStorage.set('ccontextw', action.payload);
@@ -77,7 +72,6 @@ export const slice = createSlice({
 });
 
 export const {
-  setLiderRoute,
   setHumanListSortVariant,
   updateGamesStore,
   updateCgamew,

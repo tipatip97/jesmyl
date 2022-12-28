@@ -55,7 +55,7 @@ export default function AppFooter({ app }: { app: AppName }) {
         nav,
         (phase) => {
           navigate(phase);
-          indexNavigate(null);
+          if (indexRoute) setTimeout(() => indexNavigate(null));
         },
         ([phase]) => indexPhase == null && route?.[0] === phase
       )}
@@ -63,6 +63,7 @@ export default function AppFooter({ app }: { app: AppName }) {
         indexNav,
         () => {
           indexNavigate(["other"]);
+          navigate(null);
         },
         () => indexPhase != null
       )}

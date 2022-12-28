@@ -1,14 +1,11 @@
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
   NavigationStorage,
-  UseNavAction,
+  UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
-import { tunerStorage } from "../../../shared/jstorages";
-import { RootState } from "../../../shared/store";
 import TheTuner from "./TheTuner";
 import { TunerStorage } from "./Tuner.model";
-import { setTunerPhase } from "./Tuner.store";
 
 const tunerNavigation = new NavigationConfig<
   TunerStorage,
@@ -35,10 +32,8 @@ export default function useTunerNav() {
 
 const useTunerNavConfigurer = () =>
   useNavConfigurer<TunerStorage, NavigationStorage<TunerStorage>>(
+    'tuner',
     actions,
-    setTunerPhase,
     tunerNavigation,
-    tunerStorage,
-    (state: RootState) => state.tuner.route
   );
 export { useTunerNavConfigurer };

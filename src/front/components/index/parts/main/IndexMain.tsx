@@ -50,6 +50,11 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
               onAppNameChange(app.name);
               dispatch(setCurrentApp(app.name));
               soki.onAppChange(app.name);
+              const rootPhase = appConfigs[app.name].nav.rootPhase;
+              if (rootPhase) {
+                appConfigs[app.name].navigate([rootPhase]);
+                appConfigs.index.navigate(null);
+              }
             }}
           >
             <EvaIcon

@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { complectStorage } from "../shared/jstorages";
 import { ComplectState } from "./Complect.model";
 import { FullScreenContentOpenMode } from "./fullscreen-content/useFullscreenContent";
 
 
 const initialState: ComplectState = {
-    route: complectStorage.getOr('route', ['']),
     fullscreenContentOpenMode: null,
     isAbsoluteFloatPopupOpen: false,
     isAbsoluteBottomPopupOpen: false,

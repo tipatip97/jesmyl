@@ -1,33 +1,64 @@
-import { PayloadAction } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
+import { AppName } from "../../app/App.model";
+import { updateIndexRouting } from "../../components/index/Index.store";
+import { indexStorage } from "../../shared/jstorages";
 import { RootState } from "../../shared/store";
-import { JStorage } from "../JStorage";
 import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
 import { FreeNavRoute, NavigationStorage, NavPhase, NavPhasePoint, UseNavAction } from "./Navigation.model";
 
 export default function useNavConfigurer<T, Storage extends NavigationStorage<T>, NavData = {}>(
+    appName: AppName,
     actions: UseNavAction[],
-    setPhaseAction: (payload: NavigationStorage<T>) => PayloadAction<NavigationStorage<T>>,
     nav: NavigationConfig<Storage, Storage, NavData>,
-    storage: JStorage<Storage>,
-    routeSelector: (state: RootState) => FreeNavRoute,
 ) {
 
     const dispatch = useDispatch();
     const [isFullScreen, switchFullscreen] = useFullScreen();
+    const appRouting = useSelector((state: RootState) => state.index.routing?.[appName]);
+    const route = appRouting?.current == null ? null : appRouting.routes.find(([phase]) => appRouting.current === phase);// || (nav.rootPhase ? [nav.rootPhase] : nav.routes[0].phase);
 
     const ret = {
         nav,
-        route: useSelector(routeSelector),
+        route,
         navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
         navigate: (topRoute: FreeNavRoute, isPreventSave?: boolean) => {
             const route = topRoute && nav.getGoToRoute([], topRoute);
 
             if (route || topRoute === null) {
-                dispatch(setPhaseAction({ route } as never));
+                const indexRouting = indexStorage.get('routing');
+                const appRouting = indexRouting?.[appName];
+
+                let routes = appRouting?.routes || [];
+                let current = topRoute === null ? null : appRouting?.current;
+
+                if (route) {
+                    const [generalPhase] = route;
+
+                    if (generalPhase === current) {
+                        nav.invokeGeneralFooterButtonClickListeners(generalPhase);
+                    }
+
+                    if (topRoute.length > 1 || generalPhase === current) {
+                        routes = routes.filter(([phase]) => generalPhase !== phase).concat([route]);
+                    } else {
+                        routes = routes.some(([phase]) => generalPhase === phase) ? routes : routes.concat([route]);
+                    }
+
+                    current = generalPhase;
+                }
+
+                const routing = {
+                    ...indexRouting,
+                    [appName]: {
+                        ...appRouting,
+                        current,
+                        routes,
+                    }
+                };
+                dispatch(updateIndexRouting(routing));
                 if (isPreventSave) return;
-                storage.set('route', route || null);
+                indexStorage.set('routing', routing);
             }
         },
         goTo: (phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil, isPreventSave?: boolean) => {

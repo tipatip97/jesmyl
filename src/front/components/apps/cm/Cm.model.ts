@@ -1,6 +1,5 @@
 
 import { ClientExecutionDict } from "../../../complect/exer/Exer.model";
-import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
@@ -38,7 +37,6 @@ export enum ChordVisibleVariant {
 export type FavoriteMeetings = Record<'events' | 'contexts', number[]>;
 
 export interface CmStoraged extends CmEditorStoraged {
-    route: FreeNavRoute;
     ccatw?: number;
     ccomw?: number;
     eventw?: number;

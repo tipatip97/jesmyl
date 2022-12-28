@@ -1,11 +1,9 @@
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
   NavigationStorage,
-  UseNavAction,
+  UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
-import { liderStorage } from "../../../shared/jstorages";
-import { RootState } from "../../../shared/store";
 import GameList from "./components/games/GameList";
 import TheGame from "./components/games/TheGame";
 import GroupList from "./components/groups/GroupList";
@@ -16,7 +14,7 @@ import MentorList from "./components/people/MentorList";
 import GeneralPage from "./GeneralPage";
 import LiderApplication from "./Lider";
 import { LiderNavData, LiderStoraged } from "./Lider.model";
-import { liderExer, setLiderRoute } from "./Lider.store";
+import { liderExer } from "./Lider.store";
 
 const navigation: NavigationConfig<
   LiderStoraged,
@@ -83,10 +81,8 @@ const useLiderNavConfigurer = () =>
     NavigationStorage<LiderStoraged>,
     LiderNavData
   >(
+    'lider',
     actions,
-    setLiderRoute,
     navigation,
-    liderStorage,
-    (state: RootState) => state.lider.route
   );
 export { useLiderNavConfigurer };

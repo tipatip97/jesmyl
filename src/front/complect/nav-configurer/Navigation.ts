@@ -11,6 +11,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
     logo?: EvaIconName;
     endPoints: [NavPhasePoint, NavPhase[]][];
     private _data?: NavData;
+    private onGeneralFooterButtonClicks: Record<NavPhase, Record<string, () => void>> = {};
 
     constructor({ routes, root, rootPhase, exer, logo }: INavigationConfig<Storage, NavData>) {
         this.root = root;
@@ -25,6 +26,20 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
     get data() { return this._data; }
     private set data(data) { this._data = data; }
     setData(data: NavData) { this.data = data; }
+
+    invokeGeneralFooterButtonClickListeners(listenLine: NavPhase) {
+        Object.values(this.onGeneralFooterButtonClicks[listenLine] || {}).forEach(cb => cb());
+    }
+
+    onGeneralFooterButtonClick(listenLine: NavPhase, listenerName: string) {
+        return (cb: () => void) => {
+            this.onGeneralFooterButtonClicks[listenLine] ??= {};
+            this.onGeneralFooterButtonClicks[listenLine][listenerName] = cb;
+            return () => {
+                delete this.onGeneralFooterButtonClicks[listenLine][listenerName];
+            };
+        };
+    }
 
     fillEndPoints() {
         const endPoints: [NavPhasePoint, NavPhase[]][] = [];
@@ -52,7 +67,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
         });
     }
 
-    isRoutePosible(route: FreeNavRoute): boolean {
+    isRoutePosible(route?: FreeNavRoute): boolean {
         if (route == null) return false;
 
         let item: INavigationRouteItem<NavData> | nil;
@@ -88,8 +103,9 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
                 if (endPointReflect) {
                     let item: INavigationRouteItem<NavData> = route;
                     while (onNextRelative && typeof item.node === 'function') {
+                        const defaultChild = item.defaultChild;
                         const nextItem = (item.defaultChild
-                            ? item.next?.find((it) => item.defaultChild === it.phase[0])
+                            ? item.next?.find(it => defaultChild === it.phase[0])
                             : item.next?.[0]) as INavigationRouteItem<NavData> | nil;
 
                         if (!nextItem) break;
@@ -120,20 +136,27 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
             makeRoute([], this.routes, 0);
     }
 
-    getJumpToRoute(currentRoute: FreeNavRoute, phasePoint: NavPhasePoint): NavRoute | nil {
+    getJumpToRoute(currentRoute?: FreeNavRoute, phasePoint?: NavPhasePoint): NavRoute | nil {
         const currRoute = currentRoute || [];
         let retRoute;
+        const setSearches = (route?: FreeNavRoute) => {
+            if (route) {
+                route[route.length - 1] = route[route.length - 1];
+            }
+            return route;
+        };
         for (let pointi = 0; pointi < this.endPoints.length; pointi++) {
             const [point, route] = this.endPoints[pointi];
 
             if (point === phasePoint) {
                 if (!retRoute) retRoute = route;
 
-                if (!currRoute.some((phase, phasei) => phase !== route[phasei])) return route;
+                if (!currRoute.some((phase, phasei) => phase !== route[phasei]))
+                    return setSearches(route);
             }
         }
 
-        return retRoute;
+        return setSearches(retRoute);
     }
 
     getGoToRoute(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
@@ -162,7 +185,10 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
             const currPhase = line[phasei];
             item = items.find(({ phase: [phase] }) => currPhase === phase);
             if (!item) break;
-            newRoute.push(item.phase[0]);
+
+            if (phasei === route.length) newRoute.push(item.phase[0]);
+            else newRoute.push(item.phase[0]);
+
             if (item.next) items = item.next as never;
             if (item.phase === relativePoint) {
                 addRelatives([phase].flat()[0]);
@@ -202,14 +228,14 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
         return line.map(({ phase: [phase] }) => phase);
     }
 
-    findContent(route: FreeNavRoute, onImpossible?: () => void): ReactNode {
+    findContent(route?: FreeNavRoute, onImpossible?: () => void): ReactNode {
         if (!this.isRoutePosible(route)) {
             if (route) console.error(`Фаза "/${route.join('/')}" не существует!`);
             setTimeout(() => onImpossible?.());
             return null;
         }
 
-        const findContent = (route: FreeNavRoute, navigationItems: INavigationRouteItem<NavData>[]): ReactNode => {
+        const findContent = (route: FreeNavRoute | undefined, navigationItems: INavigationRouteItem<NavData>[]): ReactNode => {
             let items: INavigationRouteItem<NavData>[] | nil = navigationItems;
             let throwItem: INavigationRouteChildItem<NavData> | nil;
             const throwRoute = route?.slice(0) || [];

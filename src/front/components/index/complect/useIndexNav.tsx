@@ -2,15 +2,12 @@ import React, { Suspense } from "react";
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
   NavigationStorage,
-  UseNavAction,
+  UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
-import { indexStorage } from "../../../shared/jstorages";
-import { RootState } from "../../../shared/store";
 import { soki } from "../../../soki";
 import Index from "../Index";
 import { IndexStorage } from "../Index.model";
-import { setIndexRoute } from "../Index.store";
 import IndexLogin from "../parts/login/IndexLogin";
 import IndexSettings from "../parts/Settings";
 
@@ -53,10 +50,8 @@ export default function useIndexNav() {
 
 const useIndexNavConfigurer = () =>
   useNavConfigurer<IndexStorage, NavigationStorage<IndexStorage>>(
+    'index',
     actions,
-    setIndexRoute,
     navigate,
-    indexStorage,
-    (state: RootState) => state.index.route
   );
 export { useIndexNavConfigurer };

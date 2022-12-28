@@ -1,16 +1,13 @@
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
   NavigationStorage,
-  UseNavAction,
+  UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
-import { spyStorage } from "../../../shared/jstorages";
-import { RootState } from "../../../shared/store";
 import SpyLocations from "./complect/SpyLocations";
 import SpyRoom from "./complect/SpyRoom";
 import Spy from "./Spy";
 import { SpyStorage } from "./Spy.model";
-import { setSpyRoute } from "./Spy.store";
 import SpyApp from "./SpyApp";
 
 const spyNavigation = new NavigationConfig<
@@ -50,10 +47,8 @@ export default function useSpyNav() {
 
 const useSpyNavConfigurer = () =>
   useNavConfigurer<SpyStorage, NavigationStorage<SpyStorage>>(
+    'spy',
     actions,
-    setSpyRoute,
     spyNavigation,
-    spyStorage,
-    (state: RootState) => state.spy.route
   );
 export { useSpyNavConfigurer };

@@ -1,7 +1,5 @@
-import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 
 export interface AdminState extends AdminStoraged {
-    route: FreeNavRoute;
 }
 
 export interface AdminStorage extends AdminStoraged {
@@ -11,7 +9,6 @@ export interface AdminStorage extends AdminStoraged {
 export type UserVisits = { [login: string]: number };
 
 export interface AdminStoraged {
-    route: FreeNavRoute;
     userList: IExportableUser[];
     currentUser?: string;
     userVisits: UserVisits;

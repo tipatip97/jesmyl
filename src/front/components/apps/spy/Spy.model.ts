@@ -1,4 +1,3 @@
-import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 
 export interface SpyState extends SpyStoraged {
 }
@@ -8,7 +7,6 @@ export interface SpyStorage extends SpyStoraged {
 }
 
 export interface SpyStoraged {
-    route: FreeNavRoute;
     cache?: SpyCache;
     roomw: number | nil;
 }

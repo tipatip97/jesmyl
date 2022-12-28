@@ -3,14 +3,12 @@ import {
   INavigationRouteChildItem,
   NavigationStorage,
   NavPhasePoint,
-  UseNavAction,
+  UseNavAction
 } from "../../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
-import { cmStorage } from "../../../../shared/jstorages";
-import { RootState } from "../../../../shared/store";
 import CmApplication from "../Cm";
 import { CmNavData, CmStorage } from "../Cm.model";
-import { cmExer, setCmRoute } from "../Cm.store";
+import { cmExer } from "../Cm.store";
 import TheCat from "../col/cat/TheCat";
 import TheComposition from "../col/com/TheComposition";
 import { editorNav } from "../editor/editorNav";
@@ -101,10 +99,8 @@ export default function useCmNav() {
 
 const useCmNavConfigurer = () =>
   useNavConfigurer<CmStorage, NavigationStorage<CmStorage>, CmNavData>(
+    'cm',
     actions,
-    setCmRoute,
     navigation,
-    cmStorage,
-    (state: RootState) => state.cm.route
   );
 export { useCmNavConfigurer };

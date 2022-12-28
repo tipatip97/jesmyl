@@ -1,18 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppName } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
-import { NavigationStorage } from "../../complect/nav-configurer/Navigation.model";
+import { NavRouting } from "../../complect/nav-configurer/Navigation.model";
 import { indexStorage } from "../../shared/jstorages";
 import {
   Auth, IndexApplication, IndexState,
-  IndexStateError,
-  IndexStorage
+  IndexStateError
 } from "./Index.model";
 
 export const indexExer = new Exer('index', indexStorage);
 
 const initialState: IndexState = {
-  route: indexStorage.getOr("route", null),
+  routing: indexStorage.getOr("routing", null),
   currentApp: indexStorage.getOr("currentApp", "cm"),
   lastUpdate: indexStorage.get("lastUpdate"),
   auth: indexStorage.get('auth'),
@@ -26,8 +25,8 @@ export const slice = createSlice({
   name: "index",
   initialState,
   reducers: {
-    setIndexRoute: (state, action: PayloadAction<NavigationStorage<IndexStorage>>) => {
-      state.route = action.payload.route;
+    updateIndexRouting: (state, action: PayloadAction<NavRouting>) => {
+      state.routing = action.payload;
     },
     setAuthData: (state, action: PayloadAction<Auth | null>) => {
       state.auth = action.payload;
@@ -54,7 +53,7 @@ export const slice = createSlice({
 });
 
 export const {
-  setIndexRoute,
+  updateIndexRouting,
   setError,
   setCurrentApp,
   setApps,

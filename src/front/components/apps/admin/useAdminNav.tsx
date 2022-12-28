@@ -1,14 +1,11 @@
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
   NavigationStorage,
-  UseNavAction,
+  UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
-import { adminStorage } from "../../../shared/jstorages";
-import { RootState } from "../../../shared/store";
 import Admin from "./Admin";
 import { AdminStorage } from "./Admin.model";
-import { setAdminRoute } from "./Admin.store";
 import AdminApp from "./AdminApp";
 import TheUser from "./complect/users/TheUser";
 
@@ -43,10 +40,8 @@ export default function useAdminNav() {
 
 const useAdminNavConfigurer = () =>
   useNavConfigurer<AdminStorage, NavigationStorage<AdminStorage>>(
+    'admin',
     actions,
-    setAdminRoute,
     adminNavigation,
-    adminStorage,
-    (state: RootState) => state.admin.route
   );
 export { useAdminNavConfigurer };

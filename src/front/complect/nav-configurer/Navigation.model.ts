@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { AppName } from "../../app/App.model";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
 import { ExerStorage } from "../exer/Exer.model";
@@ -17,7 +18,6 @@ export type FooterItem<Phase> = null | {
 }
 
 export type NavigationStorage<T> = T & ExerStorage & {
-    route: FreeNavRoute;
 }
 
 export interface INavigationConfig<Storage extends ExerStorage, NavData> {
@@ -55,6 +55,14 @@ export type NavPhasePoint = [string];
 export type NavPhase = string;
 export type NavRoute = NavPhase[];
 export type FreeNavRoute = NavRoute | null;
+
+export type NavRouting = Partial<Record<
+    AppName,
+    {
+        routes: NavRoute[],
+        current: NavPhase | null,
+    }
+>>;
 
 export interface MainNavigationNodeProps {
     content: ReactNode;

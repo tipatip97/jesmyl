@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.model";
 import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
-import { ChordVisibleVariant, CmRollMode, CmState, CmStorage, FavoriteMeetings } from "./Cm.model";
+import { ChordVisibleVariant, CmRollMode, CmState, FavoriteMeetings } from "./Cm.model";
 import { MigratableComToolName } from "./col/com/Com.model";
 import { Exec } from "./editor/CmEditor.model";
 import { IExportableMeetings } from "./lists/meetings/Meetings.model";
@@ -12,7 +11,6 @@ import { IExportableMeetings } from "./lists/meetings/Meetings.model";
 export const cmExer = new Exer('cm', cmStorage);
 
 const initialState: CmState = {
-  route: cmStorage.getOr('route', ['all']),
   chordVisibleVariant: cmStorage.getOr('chordVisibleVariant', 0),
   ccomw: cmStorage.get('ccomw'),
   ccatw: cmStorage.getOr('ccatw', 0),
@@ -49,9 +47,6 @@ export const slice = createSlice({
   name: "cm",
   initialState,
   reducers: {
-    setCmRoute: (state, action: PayloadAction<NavigationStorage<CmStorage>>) => {
-      state.route = action.payload.route;
-    },
     selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {
       if (action.payload.val == null) return;
       if (action.payload.fieldn === 'catw') {
@@ -148,7 +143,6 @@ export const slice = createSlice({
 
 export const {
   riseUpColsUpdates,
-  setCmRoute,
   selectCcol,
   switchCmFullscreen,
   switchIsMiniAnchor,

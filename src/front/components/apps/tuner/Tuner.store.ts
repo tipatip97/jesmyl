@@ -1,25 +1,14 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.model";
-import { tunerStorage } from "../../../shared/jstorages";
-import { TunerState, TunerStorage } from "./Tuner.model";
+import { createSlice } from "@reduxjs/toolkit";
+import { TunerState } from "./Tuner.model";
 
-const initialState: TunerState = {
-    route: tunerStorage.getOr("route", ['tuner']),
-};
+const initialState: TunerState = {};
 
 export const slice = createSlice({
     name: "tuner",
     initialState,
-    reducers: {
-        setTunerPhase: (state, action: PayloadAction<NavigationStorage<TunerStorage>>) => {
-            state.route = action.payload.route;
-        },
-    },
+    reducers: {},
 });
 
-export const {
-    setTunerPhase,
-} = slice.actions;
 export default slice.actions;
 
 export const tunerReducer = slice.reducer;

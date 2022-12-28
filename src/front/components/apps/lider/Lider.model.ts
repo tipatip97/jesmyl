@@ -1,4 +1,3 @@
-import { FreeNavRoute } from "../../../complect/nav-configurer/Navigation.model";
 import { SendingComments } from "./components/comments/LeaderComment.model";
 import { LeaderContextsImportable } from "./components/contexts/Contexts.model";
 import { GameTeamExportable, GameTeamImportable } from "./components/games/teams/GameTeams.model";
@@ -6,7 +5,6 @@ import { GameTimerConfigurable, GameTimerImportable, StoragedGameTimerImportable
 import { HumanListSortVariant, PeopleImportable } from "./components/people/People.model";
 
 export interface LiderState extends LiderStoraged {
-    route: FreeNavRoute;
     errorSentComments: number[];
 }
 

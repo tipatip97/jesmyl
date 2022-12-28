@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import DebouncedInput from "../../../../../complect/DebouncedInput";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
+import useCmNav from "../../base/useCmNav";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import ComFace from "../com/face/ComFace";
@@ -17,12 +18,15 @@ export default function TheCat({ all }: { all?: boolean }) {
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
   const cat = all ? zeroCat : ccat;
+  const { nav } = useCmNav();
+
+  nav.onGeneralFooterButtonClick('all', 'TheCat')(() => scrollToCurrent(true));
 
   const [term, setTerm] = useState(cat?.term || "");
 
-  const scrollToCurrent = () => {
+  const scrollToCurrent = (isSync?: boolean) => {
     if (ccom) {
-      setTimeout(() => {
+      const scroll = () => {
         if (listRef.current)
           if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
           else {
@@ -36,12 +40,15 @@ export default function TheCat({ all }: { all?: boolean }) {
               });
             }
           }
-      });
+      };
+
+      if (isSync && listRef.current?.scrollTop !== 0) scroll();
+      else setTimeout(scroll);
     }
   };
 
   return (
-    <LoadIndicatedContent isLoading={!cat} onLoad={scrollToCurrent}>
+    <LoadIndicatedContent isLoading={!cat} onLoad={() => scrollToCurrent()}>
       <PhaseCmContainer
         topClass="cat-content"
         withoutBackButton={all}
@@ -67,10 +74,7 @@ export default function TheCat({ all }: { all?: boolean }) {
           !cat ? null : (
             <>
               <div
-                className={`later-com-list ${
-                  all && !term && laterComs.length ? "" : "hidden"
-                }`}
-                onClick={scrollToCurrent}
+                className={`later-com-list ${all && !term && laterComs.length ? "" : "hidden"}`}
               >
                 <div className="list-title sticky">Последние:</div>
                 {laterComs.map((com) => (
@@ -84,16 +88,14 @@ export default function TheCat({ all }: { all?: boolean }) {
               <div
                 className="flex between sticky list-title"
                 ref={categoryTitleRef}
-                onClick={scrollToCurrent}
               >
                 <div>{cat.name}:</div>
                 {cat.wraps && (
                   <div>
-                    {`${
-                      cat.coms.length === cat.wraps.length
-                        ? ""
-                        : `${cat.wraps.length} / `
-                    }${cat.coms.length}`}
+                    {`${cat.coms.length === cat.wraps.length
+                      ? ""
+                      : `${cat.wraps.length} / `
+                      }${cat.coms.length}`}
                   </div>
                 )}
               </div>
