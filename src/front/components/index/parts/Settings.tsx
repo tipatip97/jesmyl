@@ -9,10 +9,15 @@ export default function IndexSettings() {
 
   const settingsList = [
     (auth?.level || 0) >= 50 && <BrutalItem
-      icon="info-outline"
+      icon="sync"
       title="Перечитать файлы"
-      onClick={() => soki.send({ reloadFiles: true })}
-    />
+      onClick={() => soki.send({ systemTrigger: 'reloadFiles' })}
+    />,
+    (auth?.level || 0) >= 80 && <BrutalItem
+      icon="sync"
+      title="Перезапустить сокет"
+      onClick={() => soki.send({ systemTrigger: 'restartWS' })}
+    />,
   ].filter((isShow) => isShow);
 
   return (

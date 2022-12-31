@@ -52,7 +52,16 @@ export class SokiTrip {
                         this.pullCurrentAppData();
                     }
 
-                    if (event.reloadFiles) this.pullCurrentAppData();
+                    if (event.systemTrigger?.name === 'reloadFiles') this.pullCurrentAppData();
+                    if (event.systemTrigger?.name === 'restartWS') {
+                        const { ok, message, error } = event.systemTrigger as any;
+                        modalService.alert(
+                            <>
+                                <div style={{ color: ok ? 'green' : 'red' }}>{ok ? 'Ok' : 'Error'}</div>
+                                <div>{message || error}</div>
+                            </>
+                        );
+                    }
 
                     if (event.execs) {
                         const contents = mylib.clone(appStore.properties);

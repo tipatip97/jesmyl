@@ -1,5 +1,5 @@
-import { LocalSokiAuth, SokiAppName } from "../../soki/Soki.model";
-import { FilerAppConfig } from "../Filer.model";
+import { LocalSokiAuth, SokiAppName } from "../../complect/soki/Soki.model";
+import { FilerAppConfig } from "../../complect/filer/Filer.model";
 
 export interface Application {
     name: SokiAppName;

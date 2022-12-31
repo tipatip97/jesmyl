@@ -1,3 +1,4 @@
+import { exec } from 'child_process';
 import WebSocket, { WebSocketServer } from 'ws';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
@@ -87,8 +88,22 @@ new WebSocketServer({
                 return;
             }
 
-            if (eventBody.reloadFiles && (capsule?.auth?.level || 0) >= 50) {
-                filer.load().then(() => send({ reloadFiles: true })).catch(() => { });
+            if (eventBody.systemTrigger === 'reloadFiles' && (capsule?.auth?.level || 0) >= 50) {
+                filer.load().then(() => send({ systemTrigger: { name: 'reloadFiles', ok: true } })).catch(() => { });
+            }
+
+            if (eventBody.systemTrigger === 'restartWS' && (capsule?.auth?.level || 0) >= 80) {
+                exec("systemctl restart jesmyl_soki", (error, stdout, stderr) => {
+                    if (error) {
+                        send({ systemTrigger: { name: 'restartWS', ok: false, error: error.message } }, client);
+                        return;
+                    }
+                    if (stderr) {
+                        send({ systemTrigger: { name: 'restartWS', ok: false, error: stderr } }, client);
+                        return;
+                    }
+                    send({ systemTrigger: { name: 'restartWS', ok: true, message: stdout } }, client);
+                });
             }
 
             if (eventBody.pull) {

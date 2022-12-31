@@ -22,7 +22,7 @@ export interface SokiServerEvent {
         lastUpdate: number | null,
     },
     errorMessage?: string | null,
-    reloadFiles?: true,
+    systemTrigger?: { name: 'reloadFiles' | 'restartWS' } & ({ ok: true, message?: string | null } | { ok: false, error?: string | null }),
 }
 
 export interface SokiClientEventBody {
@@ -30,7 +30,7 @@ export interface SokiClientEventBody {
     authorization?: ({ type: 'login', value: SokiAuthorizationData } | { type: 'register', value: SokiRegisterData }),
     pull?: { lastUpdate: number, indexLastUpdate: number },
     execs?: ExecutionDict[],
-    reloadFiles?: true,
+    systemTrigger?: 'reloadFiles' | 'restartWS',
 }
 
 export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
