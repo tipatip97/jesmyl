@@ -8,11 +8,12 @@ const filename = `tmp-build-archive.zip`;
 const passphrase = (process.argv.find(param => param.startsWith('--pass=')) || '').split('=')[1] || 'default';
 const isRelease = process.argv.find(param => param === '--release');
 
-const archive = (isFront) => {
+const archive = (isFront, onError) => {
     const archive = archiver('zip');
     console.info(`Send created ${filename} file`);
 
     archive.on('error', (err) => {
+        onError?.();
         throw err;
     });
 
@@ -31,16 +32,19 @@ const archive = (isFront) => {
                     if (firstPart) {
                         console.info('Upload respond with errors:', JSON.parse(secondPart));
                         console.error(firstPart);
+                        onError?.();
                     } else
                         console.info('Upload respond:', JSON.parse(secondPart));
                 } catch (e) {
                     console.error(e, r);
+                    onError?.();
                 }
                 file_system.unlinkSync(filename);
                 console.info('DONE!');
             }).catch((error) => {
                 console.error('upload error:', error);
                 file_system.unlinkSync(filename);
+                onError?.();
             });
     });
 
@@ -51,6 +55,9 @@ const archive = (isFront) => {
 
 
 if (~process.argv.indexOf('--push-front')) {
+    const riseVersion = (version, cb) =>
+        file_system.writeFile('src/front/version.json', version, () => cb());
+
     file_system.readFile('src/front/version.json', 'utf8', (err, versionStr) => {
         if (err) {
             console.error('version not inkremented', err);
@@ -61,17 +68,13 @@ if (~process.argv.indexOf('--push-front')) {
         num++;
         const newNum = JSON.stringify({ num });
 
-        const riseVersion = (version, cb) => {
-            file_system.writeFile('src/front/version.json', version, () => cb());
-        };
-
         riseVersion(newNum, () => {
             console.info(`Build ${num} is running...`);
             exec('npm run build', (err) => {
                 console.info('Build is finished.');
                 if (err)
                     riseVersion(prevNum, () => console.error('BUILD FAILURE!', err));
-                else archive(true);
+                else archive(true, () => riseVersion(prevNum));
             });
         });
     });
