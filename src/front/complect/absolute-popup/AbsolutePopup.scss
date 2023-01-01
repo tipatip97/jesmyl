@@ -71,7 +71,7 @@
 }
 
 .absolute-bottom-popup {
-    &.open {
+    &.mounted {
         opacity: 1;
         pointer-events: all;
 
@@ -79,7 +79,6 @@
             top: 0;
         }
     }
-
 
     >.container {
         --padding-top: 70vh;

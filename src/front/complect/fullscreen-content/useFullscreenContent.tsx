@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import { setFullscreenContentOpenMode } from "../Complect.store";
 import EvaIcon from "../eva-icon/EvaIcon";
+import Portal from "../popups/[complect]/Portal";
 import "./FullscreenContent.scss";
 
 export type FullScreenContentOpenMode = null | "open" | "closable";
@@ -63,24 +64,24 @@ export function FULLSCREEN__CONTENT({
   );
 
   return fullscreenContentOpenMode ? (
-    <div
-      className={`fullscreen-content-container ${
-        fullscreenContentOpenMode || ""
-      }`}
-      onClick={
-        fullscreenContentOpenMode === "closable"
-          ? () => closeFullscreenContent()
-          : undefined
-      }
-    >
-      {fullscreenContentOpenMode === "closable" ? null : (
-        <EvaIcon
-          name="close"
-          className="close-button"
-          onClick={() => closeFullscreenContent()}
-        />
-      )}
-      {fullscreenContent}
-    </div>
+    <Portal>
+      <div
+        className={`fullscreen-content-container ${fullscreenContentOpenMode || ""}`}
+        onClick={
+          fullscreenContentOpenMode === "closable"
+            ? () => closeFullscreenContent()
+            : undefined
+        }
+      >
+        {fullscreenContentOpenMode === "closable" ? null : (
+          <EvaIcon
+            name="close"
+            className="close-button"
+            onClick={() => closeFullscreenContent()}
+          />
+        )}
+        {fullscreenContent}
+      </div>
+    </Portal>
   ) : null;
 }

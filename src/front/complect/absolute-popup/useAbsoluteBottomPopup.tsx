@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import {
   riseUpAbsoluteBottomPopupUpdates,
-  switchAbsoluteBottomPopupOpen,
+  switchAbsoluteBottomPopupOpen
 } from "../Complect.store";
 import { isTouchDevice } from "../device-differences";
+import useMountTransition from "../popups/useMountTransition";
+import Portal from "../popups/[complect]/Portal";
 import "./AbsolutePopup.scss";
 
 let absolutePopupContent: ReactNode = null;
@@ -88,6 +90,8 @@ export function ABSOLUTE__BOTTOM__POPUP({
     } else animateScrollInProcess = false;
   };
 
+  const [isMounted, className] = useMountTransition(isAbsoluteBottomPopupOpen, 'absolute-bottom-popup', 500);
+
   useEffect(() => {
     if (isAbsoluteBottomPopupOpen && bottomContainer.current)
       if (isTouchDevice)
@@ -95,21 +99,16 @@ export function ABSOLUTE__BOTTOM__POPUP({
       else bottomContainer.current.scrollTop = scrollTop = 0;
   }, [isAbsoluteBottomPopupOpen]);
 
-  return (
-    <div
-      className={`absolute-bottom-popup${
-        isAbsoluteBottomPopupOpen ? " open" : ""
-      }`}
-      onClick={() => closeAbsoluteBottomPopup()}
-    >
-      <div
-        className={`container no-scrollbar${
-          isTouchDevice ? "" : " not-touch-device"
-        } ${scrollableContent ? "" : "not-"}scrollable-content`}
-        ref={bottomContainer}
-        onScroll={
-          isTouchDevice
-            ? () => {
+  return (<>{
+    isMounted && <Portal>
+      <div className={className} onClick={() => closeAbsoluteBottomPopup()}>
+        <div
+          className={`container no-scrollbar${isTouchDevice ? "" : " not-touch-device"
+            } ${scrollableContent ? "" : "not-"}scrollable-content`}
+          ref={bottomContainer}
+          onScroll={
+            isTouchDevice
+              ? () => {
                 if (!bottomContainer.current || animateScrollInProcess) return;
                 needClose = bottomContainer.current.scrollTop < scrollTop;
                 scrollTop = bottomContainer.current.scrollTop;
@@ -121,31 +120,32 @@ export function ABSOLUTE__BOTTOM__POPUP({
                     else animateScroll();
                   }, 300);
               }
-            : undefined
-        }
-        onTouchStart={() => (isMouseDown = true)}
-        onTouchEnd={
-          isTouchDevice
-            ? () => {
+              : undefined
+          }
+          onTouchStart={() => (isMouseDown = true)}
+          onTouchEnd={
+            isTouchDevice
+              ? () => {
                 isMouseDown = false;
                 if (scrollTop < inactiveScrollTop)
                   if (needClose) closeAbsoluteBottomPopup();
                   else animateScroll();
               }
-            : undefined
-        }
-      >
-        <div className="absolute full-width flex center margin-gap-v">
-          <div className="badge" />
-        </div>
-        <div
-          className="content"
-          onClick={(event) => !isClosable && event.stopPropagation()}
-          ref={bottomContentContainer}
+              : undefined
+          }
         >
-          {absolutePopupContent}
+          <div className="absolute full-width flex center margin-gap-v">
+            <div className="badge" />
+          </div>
+          <div
+            className="content"
+            onClick={(event) => !isClosable && event.stopPropagation()}
+            ref={bottomContentContainer}
+          >
+            {absolutePopupContent}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    </Portal>
+  }</>);
 }

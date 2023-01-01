@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
@@ -31,6 +32,7 @@ export default function useMigratableComTools() {
   const { openFullscreenContent } = useFullscreenContent();
   const { toggleSelectedCom, selectedComPosition: isSelected } =
     useSelectedComs();
+  const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { isMarked, toggleMarked } = useMarks();
   const [, switchFullscreen] = useFullScreen();
   const comTopTools = useSelector((state: RootState) => state.cm.comTopTools);
@@ -47,7 +49,10 @@ export default function useMigratableComTools() {
               tool,
               title: "Слайды",
               icon: "monitor-outline",
-              onClick: () => openTranslations(),
+              onClick: () => {
+                closeAbsoluteBottomPopup();
+                setTimeout(() => openTranslations());
+              },
             };
           case "chords-variant":
             return {

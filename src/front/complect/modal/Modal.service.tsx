@@ -92,10 +92,7 @@ class ModalService {
       inputs: [
         {
           value,
-          onInput: ({ value: val }) => {
-            value = val;
-            console.log(value);
-          },
+          onInput: ({ value: val }) => value = val,
         }
       ],
       buttons: [
