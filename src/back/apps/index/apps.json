@@ -2,169 +2,13 @@
   {
     "name": "cm",
     "title": "Аккорд Мастер",
-    "description": "Сборщик Христианских песен для удобного использования",
-    "params": [
-      "joinedStream:#String:[runtime]",
-      "observedComs:#String"
-    ],
-    "variables": {
-      "canRedact": 50,
-      "mutedExecs": false
-    },
-    "requirements": [
-      {
-        "R": [
-          "@prepareActions():1:cm"
-        ],
-        "name": "actions",
-        "ext": "json",
-        "track": [
-          "@prepareActions()::cm"
-        ]
-      },
-      {
-        "path": "~apps/cm/cols.json",
-        "file": "cols.json",
-        "name": "cols",
-        "ext": "json"
-      },
-      {
-        "path": "~apps/cm/meetings.json",
-        "file": "meetings.json",
-        "name": "meetings",
-        "ext": "json"
-      },
-      {
-        "R": [
-          "@userLevel",
-          ">=",
-          50
-        ],
-        "path": "~apps/cm/e-e-rules.json",
-        "file": "e-e-rules.json",
-        "name": "eeStorage",
-        "ext": "json"
-      },
-      {
-        "R": [
-          "@userLevel",
-          ">=",
-          100
-        ],
-        "path": "~apps/cm/cm-execs.json",
-        "file": "cm-execs.json",
-        "name": "execs",
-        "ext": "json",
-        "track": [
-          [
-            "~apps/cm/cm-execs.json"
-          ],
-          {
-            "FILTER": [
-              "ts",
-              ">",
-              "@timePrevDay"
-            ]
-          }
-        ]
-      },
-      {
-        "R": [
-          "@userLevel",
-          ">=",
-          100
-        ],
-        "path": [
-          "~apps/cm/cm-execs.json",
-          "~S/apps.json"
-        ],
-        "file": "cm-execs.json",
-        "name": "cm_observable_executions",
-        "ext": "json",
-        "track": [
-          [
-            "~apps/cm/cm-execs.json"
-          ],
-          {
-            "FILTER": [
-              [
-                "args",
-                "comw"
-              ],
-              "===",
-              20220214131605570
-            ]
-          }
-        ]
-      },
-      {
-        "path": "~apps/cm/chords.json",
-        "file": "chords.json",
-        "name": "chords",
-        "ext": "json"
-      },
-      {
-        "R": [
-          "@observeStreamChanges():1:cm"
-        ],
-        "ext": "json",
-        "name": "joined_stream",
-        "track": [
-          "@observeStreamChanges()::cm"
-        ],
-        "F": [
-          ">joinedStream:cm",
-          "is",
-          "Truthy"
-        ],
-        "frequency": 100,
-        "comp": true,
-        "live": true
-      }
-    ]
+    "description": "Сборщик Христианских песен для удобного использования"
   },
   {
     "name": "admin",
     "title": "Админка",
     "description": "",
-    "level": 100,
-    "params": [
-      "userVisitTokensCount:#Number"
-    ],
-    "requirements": [
-      {
-        "comp": true,
-        "R": [
-          "@checkUserAuths():admin"
-        ],
-        "ext": "json",
-        "name": "userList",
-        "track": [
-          "@getUserAuths():admin"
-        ]
-      },
-      {
-        "R": [
-          "@prepareActions():1:admin"
-        ],
-        "name": "actions",
-        "ext": "json",
-        "track": [
-          "@prepareActions()::admin"
-        ]
-      },
-      {
-        "comp": true,
-        "R": [
-          "@checkUserVisits():admin"
-        ],
-        "ext": "json",
-        "name": "userVisits",
-        "track": [
-          "@getUserVisits()"
-        ]
-      }
-    ]
+    "level": 100
   },
   {
     "name": "br",
@@ -183,118 +27,25 @@
     "name": "lider",
     "title": "Лидер",
     "description": "",
-    "level": 10,
-    "requirements": [
-      {
-        "R": [
-          "@prepareActions():1:lider"
-        ],
-        "name": "actions",
-        "ext": "json",
-        "track": [
-          "@prepareActions()::lider"
-        ]
-      },
-      {
-        "path": "../apps/lider/people.json",
-        "file": "people.json",
-        "name": "people",
-        "ext": "json"
-      },
-      {
-        "path": "../apps/lider/games.json",
-        "file": "games.json",
-        "name": "games",
-        "ext": "json"
-      },
-      {
-        "path": "../apps/lider/contexts.json",
-        "file": "contexts.json",
-        "name": "contexts",
-        "ext": "json"
-      }
-    ]
+    "level": 10
   },
   {
     "name": "exb",
     "title": "Опросник",
     "description": "",
-    "level": 1000,
-    "requirements": [
-      {
-        "path": "../apps/exb/exb.js",
-        "file": "exb.js",
-        "name": "exb_js",
-        "ext": "js",
-        "main": true
-      },
-      {
-        "path": "../apps/exb/exb.admin.js",
-        "file": "exb.admin.js",
-        "name": "exb-admin-module_js",
-        "ext": "js"
-      },
-      {
-        "path": "../apps/exb/exb.css",
-        "file": "exb.scss",
-        "name": "exb_css",
-        "ext": "scss"
-      }
-    ]
+    "level": 1000
   },
   {
     "name": "sch",
     "title": "Календарь",
     "description": "",
-    "level": 1000,
-    "requirements": [
-      {
-        "path": "../apps/sch/sch.admin.js",
-        "file": "sch.admin.js",
-        "name": "sch.admin.js",
-        "ext": "js"
-      },
-      {
-        "path": "../apps/sch/sch.js",
-        "file": "sch.js",
-        "name": "sch.js",
-        "ext": "js",
-        "main": true
-      },
-      {
-        "path": "../apps/sch/sch.css",
-        "file": "sch.scss",
-        "name": "sch.css",
-        "ext": "scss"
-      }
-    ]
+    "level": 1000
   },
   {
     "name": "bible",
     "title": "Библия",
     "description": "",
-    "level": 1000,
-    "requirements": [
-      {
-        "path": "../apps/bible/bible.json",
-        "file": "bible.json",
-        "name": "bible_json",
-        "ext": "json"
-      },
-      {
-        "path": "../apps/bible/bible.css",
-        "file": "bible.style.scss",
-        "name": "bible_style_css",
-        "ext": "scss"
-      },
-      {
-        "path": "../apps/bible/bible.js",
-        "file": "bible.js",
-        "name": "bible.module.js",
-        "ext": "js",
-        "main": true
-      }
-    ]
+    "level": 1000
   },
   {
     "name": "alias",
@@ -314,21 +65,6 @@
     "title": "Империя",
     "description": "The Imperia Game",
     "disabled": false,
-    "level": 3,
-    "requirements": [
-      {
-        "path": "../apps/im/im.js",
-        "file": "im.js",
-        "name": "im_module",
-        "ext": "js",
-        "main": true
-      },
-      {
-        "path": "../apps/im/im.css",
-        "file": "im.scss",
-        "name": "im_styles",
-        "ext": "scss"
-      }
-    ]
+    "level": 3
   }
 ]
