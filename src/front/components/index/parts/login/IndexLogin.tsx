@@ -34,17 +34,20 @@ export default function IndexLogin() {
     message && <div className="login-error-message">{message}</div>;
 
   const loginInput = aboutInput("IndexLogin login", {
+    preferLanguage: 'en',
     onChange: (value) => setLogin(value),
     initialValue: login,
     placeholder: "Логин",
   });
   const passwInput = aboutInput("IndexLogin passw", {
+    preferLanguage: 'en',
     type: "password",
     onChange: (value) => setPassword(value),
     initialValue: passw,
     placeholder: "Пароль",
   });
   const rpasswInput = aboutInput("IndexLogin r-passw", {
+    preferLanguage: 'en',
     type: "password",
     onChange: (value) => setRPassword(value),
     initialValue: rpassw,
