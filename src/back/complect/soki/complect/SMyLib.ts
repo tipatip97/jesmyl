@@ -1,4 +1,4 @@
-
+import md5 from 'md5';
 
 export class SMyLib {
     isObj(obj: any): obj is Record<string, any> { return obj instanceof Object && !(obj instanceof Array) }
@@ -63,6 +63,10 @@ export class SMyLib {
     }
 
     typeOf(obj: any): string | null { return (['isStr', 'isNum', 'isBool', 'isArr', 'isNull', 'isUnd', 'isFunc', 'isObj', 'isNan'] as (keyof SMyLib)[]).find((type: keyof SMyLib) => (this[type] as Function)(obj)) || null; }
+
+    md5(content: string) {
+        return md5(content);
+    }
 }
 
 

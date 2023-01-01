@@ -46,21 +46,25 @@ export class SokiTrip {
                         });
                     const appStore = appStorage[this.appName];
 
-                    if (event.connect) {
-                        this._onConnect(true);
-                        this.send({ connect: true });
-                        this.pullCurrentAppData();
+                    if (event.connect != null) {
+                        if (event.connect) {
+                            this._onConnect(true);
+                            this.send({ connect: true });
+                            this.pullCurrentAppData();
+                        } else this.onUnauthorize();
                     }
 
-                    if (event.systemTrigger?.name === 'reloadFiles') this.pullCurrentAppData();
-                    if (event.systemTrigger?.name === 'restartWS') {
-                        const { ok, message, error } = event.systemTrigger as any;
-                        modalService.alert(
-                            <>
-                                <div style={{ color: ok ? 'green' : 'red' }}>{ok ? 'Ok' : 'Error'}</div>
-                                <div>{message || error}</div>
-                            </>
-                        );
+                    if (event.system) {
+                        if (event.system.name === 'reloadFiles') this.pullCurrentAppData();
+                        if (event.system.name === 'restartWS') {
+                            const { ok, message, error } = event.system as any;
+                            modalService.alert(
+                                <>
+                                    <div style={{ color: ok ? 'green' : 'red' }}>{ok ? 'Ok' : 'Error'}</div>
+                                    <div>{message || error}</div>
+                                </>
+                            );
+                        }
                     }
 
                     if (event.execs) {
@@ -90,6 +94,11 @@ export class SokiTrip {
             this.onConnectWatchers[watcherName] = callback;
             return () => delete this.onConnectWatchers[watcherName];
         }
+    }
+
+    onUnauthorize() {
+        indexStorage.rem('auth');
+        SMyLib.entries(appStorage).forEach(([_, storage]) => storage.rem('lastUpdate'));
     }
 
     watch<Name extends SokiEventName>(topName: Name) {

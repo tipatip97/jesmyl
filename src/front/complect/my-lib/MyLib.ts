@@ -4,8 +4,6 @@ import { ReactNode } from "react";
 import { SMyLib } from "../../../back/complect/soki/complect/SMyLib";
 import { StringTemplaterArgs } from "./MyLib.model";
 
-var md5 = require('md5');
-
 const constants = {
     REMOVE: ['REMOVE'],
     POSITION: ['POSITION'],
@@ -56,10 +54,6 @@ export class MyLib extends SMyLib {
         const type = this.typeOf(args[0]);
         const arg = args.find((arg, argi) => argi && this.typeOf(arg) === type);
         return arg == null ? args[0] : arg;
-    }
-
-    md5(content: string) {
-        return md5(content);
     }
 
     randomOf(min: number, max: number) {

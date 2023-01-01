@@ -1,4 +1,4 @@
-.above-container {
+body {
     --main-gap: 8px;
     --main-big-gap: 18px;
     --main-giant-gap: 40px;
@@ -69,7 +69,7 @@
     }
 
 
-    &.keyboard-open {
+    .above-container.keyboard-open {
         --keyboard-flash-height: 30vh;
         --footer-height: 0px;
         --footer-opacity: 0;

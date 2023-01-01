@@ -2,7 +2,7 @@
 
 $JSONSeparator = '===JSON:separation===';
 
-if ($_GET['pass'] !== 'zerou') echoJSONData(['ok' => false]);
+if (md5($_GET['pass']) !== 'dbd2f9f2ccd2c687c3e2cf63fc662a78') echoJSONData(['ok' => false]);
 else {
   $backendTmpDir = './_backend_tmp_dir_';
   $frontendTargetDir = './';

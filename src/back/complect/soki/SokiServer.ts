@@ -4,7 +4,7 @@ import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
 import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
-import { SMyLib } from './complect/SMyLib';
+import smylib, { SMyLib } from './complect/SMyLib';
 import { sokiAuther } from './complect/SokiAuther';
 import { SokiCapsule, SokiClientEvent, SokiServerEvent } from './Soki.model';
 
@@ -47,7 +47,7 @@ new WebSocketServer({
     .on('connection', (client: WebSocket) => {
         connect(client);
 
-        client.on('message', (data: WebSocket.RawData) => {
+        client.on('message', async (data: WebSocket.RawData) => {
             const eventData: SokiClientEvent = JSON.parse('' + data);
             const eventBody = eventData.body;
 
@@ -56,14 +56,14 @@ new WebSocketServer({
 
                 sokiAuther
                     .authenticate(event)
-                    .then((auth) => {
+                    .then((value) => {
                         send({
-                            authorization: { ok: true, type: event.type, value: auth },
+                            authorization: { ok: true, type: event.type, value },
                         }, client);
                     })
-                    .catch((error: string) => {
+                    .catch((value: string) => {
                         send({
-                            authorization: { ok: false, type: event.type, value: error },
+                            authorization: { ok: false, type: event.type, value },
                         }, client);
                     });
                 return;
@@ -76,34 +76,36 @@ new WebSocketServer({
                     if (capsule) {
                         sokiAuther.onReady((auths) => {
                             const eventLogin = eventData.auth?.login;
-                            const eventPassw = eventData.auth?.passw;
+                            const eventPassw = eventData.auth?.passw ? smylib.md5(eventData.auth.passw) : NaN;
                             const auth = eventLogin && auths.find(({ login, passw }) => eventLogin === login && eventPassw === passw);
                             if (auth) {
                                 capsule.auth = auth;
                                 console.info(`Client ${auth.fio ?? '???'} connected`);
-                            }
+                            } else send({ connect: false, errorMessage: 'Некорректные данные авторизации' }, client);
                         });
                     }
                 } else console.info('Unknown client connected');
                 return;
             }
 
-            if (eventBody.systemTrigger === 'reloadFiles' && (capsule?.auth?.level || 0) >= 50) {
-                filer.load().then(() => send({ systemTrigger: { name: 'reloadFiles', ok: true } })).catch(() => { });
-            }
+            if (eventBody.system && smylib.md5(eventBody.system.passphrase) === 'dbd2f9f2ccd2c687c3e2cf63fc662a78') {
+                if (eventBody.system.name === 'reloadFiles' && (capsule?.auth?.level || 0) >= 50) {
+                    filer.load().then(() => send({ system: { name: 'reloadFiles', ok: true } })).catch(() => { });
+                }
 
-            if (eventBody.systemTrigger === 'restartWS' && (capsule?.auth?.level || 0) >= 80) {
-                exec("systemctl restart jesmyl_soki", (error, stdout, stderr) => {
-                    if (error) {
-                        send({ systemTrigger: { name: 'restartWS', ok: false, error: error.message } }, client);
-                        return;
-                    }
-                    if (stderr) {
-                        send({ systemTrigger: { name: 'restartWS', ok: false, error: stderr } }, client);
-                        return;
-                    }
-                    send({ systemTrigger: { name: 'restartWS', ok: true, message: stdout } }, client);
-                });
+                if (eventBody.system.name === 'restartWS' && (capsule?.auth?.level || 0) >= 80) {
+                    exec("systemctl restart jesmyl_soki", (error, stdout, stderr) => {
+                        if (error) {
+                            send({ system: { name: 'restartWS', ok: false, error: error.message } }, client);
+                            return;
+                        }
+                        if (stderr) {
+                            send({ system: { name: 'restartWS', ok: false, error: stderr } }, client);
+                            return;
+                        }
+                        send({ system: { name: 'restartWS', ok: true, message: stdout } }, client);
+                    });
+                }
             }
 
             if (eventBody.pull) {
@@ -115,26 +117,30 @@ new WebSocketServer({
                 return;
             }
 
-            const isCapsuleAuth = eventData.auth && capsule?.auth && (eventData.auth.login === capsule.auth.login)
 
-            if (isCapsuleAuth && eventBody.execs && capsule?.auth) {
-                const contents = filer.contents[eventData.appName];
-                const realParents: Record<string, unknown> = {};
-                SMyLib.entries(contents).forEach(([key, val]) => realParents[key] = val.data);
+            if (eventBody.execs) {
+                if (await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule?.auth.login === eventData.auth?.login) {
+                    const contents = filer.contents[eventData.appName];
+                    const realParents: Record<string, unknown> = {};
+                    SMyLib.entries(contents).forEach(([key, val]) => realParents[key] = val.data);
 
-                Executer
-                    .execute(contents.actions?.data || [], realParents, eventBody.execs, capsule.auth)
-                    .then(async ({ fixes, replacedExecs, errorMessage }) => {
-                        const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
-                        return { replacedExecs, lastUpdate, errorMessage };
-                    })
-                    .then(({ replacedExecs: list, lastUpdate, errorMessage }) => {
-                        send({
-                            execs: { list, lastUpdate },
-                            errorMessage
-                        }, null, client);
-                    });
-                return;
+                    Executer
+                        .execute(contents.actions?.data || [], realParents, eventBody.execs, capsule.auth)
+                        .then(async ({ fixes, replacedExecs, errorMessage }) => {
+                            const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
+                            return { replacedExecs, lastUpdate, errorMessage };
+                        })
+                        .then(({ replacedExecs: list, lastUpdate, errorMessage }) => {
+                            send({
+                                execs: { list, lastUpdate },
+                                errorMessage
+                            }, null, client);
+                        });
+                    return;
+                } else send({
+                    execs: { list: [], lastUpdate: null },
+                    errorMessage: 'Не авторизован'
+                }, null, client);
             }
 
         });

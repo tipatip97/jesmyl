@@ -251,7 +251,7 @@ function updateUserLevel($login, $at, $newLevel = 0, $password)
 
   if (!$login) return ['ok' => false, 'errors' => ['no login.']];
   if (!$at) return ['ok' => false, 'errors' => ['no at.']];
-  if ($password !== 'zerou') return ['ok' => true, 'new_level' => $newLevel];
+  if (md5($password) !== 'dbd2f9f2ccd2c687c3e2cf63fc662a78') return ['ok' => true, 'new_level' => $newLevel];
 
   $_passw = get_passw($login);
   $_passwPath = "$authDir/$login/$_passw";

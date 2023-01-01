@@ -68,21 +68,59 @@ export class Filer {
         .entries(apps)
         .forEach(([appName, app]) => {
           const content: FilerContent = this.contents[appName] = {};
-
-          [actionsRequirement, ...app.requirements].forEach((requ) => {
+          const loadInContent = (requ: string | FilerAppRequirement, cb?: () => void) => {
             const { name, ext = 'json', level = 0, prepare = (data: unknown) => data, map = () => null } = smylib.isStr(requ) ? { name: requ } : requ;
 
             const filename = this.fileName(appName, name, ext);
             const path = this.filePath(filename);
 
+            const createExpected = () => {
+              if (content.actions) {
+                const action: ExecutionRule = content.actions.data.find(({ track, expected }: ExecutionRule) => {
+                  return expected !== undefined && track?.[0] === name;
+                });
+
+                if (action) {
+                  const { expected } = action;
+                  const string = JSON.stringify(expected);
+
+                  fs.writeFile(path, string, (err) => {
+                    if (err) {
+                      console.error(`!!! WriteError ${filename}`);
+                      cb?.();
+                    } else console.info(`... ExpectedCreted ${filename}`);
+
+                    const stat = fs.statSync(path);
+
+                    content[name] = {
+                      data: expected,
+                      string,
+                      level,
+                      prepare,
+                      mapped: map(expected),
+                      mtime: new Date(stat.mtime).getTime(),
+                    };
+                  });
+                } else {
+                  console.error(`!!! NoExpected ${filename}`);
+                  return;
+                }
+              } else {
+                console.info(`!!! NoActions ${filename}`);
+                return;
+              }
+
+              cb?.();
+            };
+
             waits++;
             fs.readFile(path, 'utf-8', (err, stringData) => {
               oks++;
               if (!err) {
-                const stat = fs.statSync(path);
-                const data = JSON.parse(stringData);
-
                 try {
+                  const stat = fs.statSync(path);
+                  const data = JSON.parse(stringData);
+
                   content[name] = {
                     data,
                     string: stringData,
@@ -91,14 +129,18 @@ export class Filer {
                     prepare,
                     mapped: map(data),
                   };
-                  if (waits === oks) loadRes();
-                  return;
                 } catch (e) { }
-              }
+                cb?.();
+              } else createExpected();
 
-              console.error(`!!!! Load error ${filename}`);
+              if (waits === oks) loadRes();
             });
-          });
+          };
+
+          loadInContent(
+            actionsRequirement,
+            () => app.requirements.forEach((data) => loadInContent(data))
+          );
         });
     });
   }

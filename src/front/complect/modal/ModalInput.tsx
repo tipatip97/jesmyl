@@ -35,7 +35,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
       max: asFunc(input.max),
       className:
         asFunc(input.className) + " app-modal-body-input-list-item-input",
-      onInput: (value: string) => {
+      onChange: (value: string) => {
         input.value = value;
         if (input.onInput) {
           input.onInput(mylib.overlap({}, props, { input, value: input.value }));

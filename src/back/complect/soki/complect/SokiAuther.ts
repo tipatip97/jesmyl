@@ -1,5 +1,6 @@
 import fs from 'fs';
-import { rootDirective, SokiAuth, SokiClientEvent } from '../Soki.model';
+import { LocalSokiAuth, rootDirective, SokiAuth, SokiClientEvent } from '../Soki.model';
+import smylib from './SMyLib';
 
 const bonjourPath = `${rootDirective}/bonjour`;
 
@@ -40,44 +41,68 @@ export class SokiAuther {
         });
     }
 
+    isCorrectData(user?: LocalSokiAuth | null) {
+        return new Promise((res, rej) => {
+            const userLogin = user?.login;
+            if (!user || !user.login) {
+                res(false);
+                return;
+            }
+            this.onReady((authList) => {
+                const userPassw = user?.passw;
+                const auth = authList.find(({ login }) => userLogin === login);
+
+                if (!auth || (userPassw && smylib.md5(userPassw) !== auth.passw))
+                    res(false);
+                else res(true);
+            });
+        });
+    }
+
     authenticate(event: SokiClientEvent['body']['authorization']) {
         return new Promise<SokiAuth>((res, rej) => {
-            if (event) {
-                this.onReady((authList) => {
-                    const eventLogin = event.value.login;
-                    const user = authList.find(({ login }) => eventLogin === login);
+            try {
+                if (event) {
+                    this.onReady((authList) => {
+                        const eventLogin = event.value.login;
+                        const passw = event.value.passw;
+                        const secretPassw = smylib.md5(passw);
+                        const user = authList.find(({ login }) => eventLogin === login);
 
-                    if (event.type === 'register') {
-                        if (user) {
-                            rej('Такой логин уже есть!');
-                            return;
+                        if (event.type === 'register') {
+                            if (user) {
+                                rej('Такой логин уже есть!');
+                                return;
+                            }
+
+                            const auth = {
+                                level: 3,
+                                fio: event.value.fio,
+                                login: eventLogin,
+                                passw: secretPassw,
+                            };
+
+                            authList.push(auth);
+
+                            try {
+                                const authListText = JSON.stringify(authList);
+                                fs.writeFile(bonjourPath, authListText, null, (error) => {
+                                    if (error) rej('Неизвестная ошибка');
+                                    else res({ ...auth, passw });
+                                });
+                            } catch (e: any) {
+                                rej(e.message);
+                            }
+                        } else {
+                            if (user?.passw === secretPassw) res({ ...user, passw });
+                            else rej('Неверные данные');
                         }
+                    });
 
-                        const auth = {
-                            level: 3,
-                            fio: event.value.fio,
-                            login: event.value.login,
-                            passw: event.value.passw,
-                        };
-
-                        authList.push(auth);
-
-                        try {
-                            const authListText = JSON.stringify(authList);
-                            fs.writeFile(bonjourPath, authListText, null, (error) => {
-                                if (error) rej();
-                                else res(auth);
-                            });
-                        } catch (e: any) {
-                            rej(e.message);
-                        }
-                    } else {
-                        if (user) res(user);
-                        else rej('Неверные данные');
-                    }
-                });
-
-            } else rej('[No value in response]');
+                } else rej('Неизвестная ошибка #9384510');
+            } catch (e) {
+                rej('Неизвестная ошибка #187265');
+            }
         });
     }
 }

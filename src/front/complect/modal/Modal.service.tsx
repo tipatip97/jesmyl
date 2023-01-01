@@ -25,12 +25,12 @@ class ModalService {
     return this._error;
   }
 
-  open(
+  open<RetVal>(
     config:
       | Partial<ModalConfig>
-      | ((res: (is: boolean) => void) => Partial<ModalConfig>)
-  ) {
-    if (typeof config === "function") return new Promise(config);
+      | ((res: (is: RetVal) => void) => Partial<ModalConfig>)
+  ): Promise<RetVal> {
+    if (typeof config === "function") return new Promise<RetVal>((res) => this.open(config(res)));
 
     const defaults = {
       getInput: (index: number = 0) => {
@@ -43,7 +43,7 @@ class ModalService {
     if (current) config.onOpen?.(current);
 
     this.refresh();
-    return new Promise((res) => this.resolves.push(res));
+    return new Promise<RetVal>((res) => this.resolves.push(res));
   }
 
   close(value: any) {
@@ -77,6 +77,38 @@ class ModalService {
         },
       ],
     });
+  }
+
+  prompt(
+    description: ReactNode,
+    value = '',
+    title = "Ответ",
+    okButton = "применить",
+    cancelButton = "отмена"
+  ) {
+    return this.open<string | null>((res) => ({
+      title,
+      description,
+      inputs: [
+        {
+          value,
+          onInput: ({ value: val }) => {
+            value = val;
+            console.log(value);
+          },
+        }
+      ],
+      buttons: [
+        {
+          title: okButton,
+          onClick: () => res(value),
+        },
+        {
+          title: cancelButton,
+          onClick: () => res(null),
+        },
+      ],
+    }));
   }
 
   alert(description: ReactNode, title = "Подтвердить") {

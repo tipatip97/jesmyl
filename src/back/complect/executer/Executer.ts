@@ -23,7 +23,7 @@ export class Executer {
         }) ? ret : undefined;
     }
 
-    static tracker(track: ExecutionTrack, parents: Record<string, unknown>, args?: Record<string, unknown> | null, topParent?: Record<string, Object> | null, auth?: LocalSokiAuth): TrackerRet {
+    static tracker(track: ExecutionTrack, parents: Record<string, unknown>, args?: Record<string, unknown> | null, topParent?: Record<string, Object> | null, auth?: LocalSokiAuth | null): TrackerRet {
         const targets: any[] = topParent ? [topParent] : [];
 
         for (let tracei = 0; tracei < track.length; tracei++) {
@@ -200,7 +200,7 @@ export class Executer {
         return false;
     }
 
-    static isExpected(source: Record<string, unknown>, inspector: (number | string | (number | string)[])[], args?: Record<string, unknown> | null, auth?: LocalSokiAuth): boolean {
+    static isExpected(source: Record<string, unknown>, inspector: (number | string | (number | string)[])[], args?: Record<string, unknown> | null, auth?: LocalSokiAuth | null): boolean {
         if (inspector == null) return false;
 
         if (smylib.isobj(inspector)) {
@@ -280,7 +280,7 @@ export class Executer {
         return false;
     }
 
-    static replaceArgs<Value>(value: Value, args: Record<string, any> | null = {}, auth?: LocalSokiAuth, defCb?: () => string): any {
+    static replaceArgs<Value>(value: Value, args: Record<string, any> | null = {}, auth?: LocalSokiAuth | null, defCb?: () => string): any {
         if (smylib.isStr(value)) {
             if (value.includes('{') && value.includes('}')) {
                 const initial: string[] = ['INITIAL'];
@@ -318,7 +318,7 @@ export class Executer {
         return args;
     }
 
-    static findRule(rules: ExecutionRule[], exec: ExecutionDict<any, any>, auth?: LocalSokiAuth): ExecutionReal | null {
+    static findRule(rules: ExecutionRule[], exec: ExecutionDict<any, any>, auth?: LocalSokiAuth | null): ExecutionReal | null {
         const find = (rules: ExecutionRule[], topRule: ExecutionRealAccumulatable = {} as never): ExecutionReal | null => {
             for (const rule of rules) {
                 const accTrack = topRule.track?.concat(rule.track || []) || rule.track;
@@ -373,7 +373,7 @@ export class Executer {
         return trackered;
     }
 
-    static execSides(sides: ExecutionRule[], contents: Record<string, unknown>, auth?: LocalSokiAuth) {
+    static execSides(sides: ExecutionRule[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null) {
         sides.forEach(({ method, value, args, track }) => {
             if (track) {
                 const { lastTrace, penultimate, target } = this.tracker(track, contents, args, undefined, auth);
@@ -382,7 +382,7 @@ export class Executer {
         });
     }
 
-    static isAccessed(accesses: ExecutionTrack[] | undefined | null, contents: Record<string, unknown>, args?: Record<string, unknown>, auth?: LocalSokiAuth) {
+    static isAccessed(accesses: ExecutionTrack[] | undefined | null, contents: Record<string, unknown>, args?: Record<string, unknown>, auth?: LocalSokiAuth | null) {
         return !accesses || !accesses.some((track) => !this.tracker(track, contents, args, null, auth).target);
     }
 
@@ -411,7 +411,7 @@ export class Executer {
         });
     }
 
-    static execute(rules: ExecutionRule[], contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth) {
+    static execute(rules: ExecutionRule[], contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
         return new Promise<ExecuteResults>((res, rej) => {
             try {
                 const replacedExecs: ExecutionReal[] = [];
@@ -488,7 +488,7 @@ export class Executer {
         lastTrace: string | number,
         value: any,
         args?: Record<string, unknown>,
-        auth?: LocalSokiAuth,
+        auth?: LocalSokiAuth | null,
         uniqs?: string[],
     }) {
         return new Promise((res, rej) => {

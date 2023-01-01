@@ -81,7 +81,6 @@ export default function useAuth() {
         dispatch(setAuthData(auth));
         dispatch(setCurrentApp("cm"));
         removeLastUpdates();
-        window.location.reload();
       }
     },
     loginInSystem: (state: AuthorizationData) => {
