@@ -49,12 +49,31 @@ const archive = (isFront) => {
     archive.finalize();
 };
 
+
 if (~process.argv.indexOf('--push-front')) {
-    console.info('Build is running...');
-    exec('npm run build', (err) => {
-        console.info('Build is finished.');
-        if (err) console.error('BUILD FAILURE!', err);
-        else archive(true);
+    file_system.readFile('src/front/version.json', 'utf8', (err, versionStr) => {
+        if (err) {
+            console.error('version not inkremented', err);
+            return;
+        }
+        let { num } = JSON.parse(versionStr);
+        const prevNum = JSON.stringify({ num });
+        num++;
+        const newNum = JSON.stringify({ num });
+
+        const riseVersion = (version, cb) => {
+            file_system.writeFile('src/front/version.json', version, () => cb());
+        };
+
+        riseVersion(newNum, () => {
+            console.info(`Build ${num} is running...`);
+            exec('npm run build', (err) => {
+                console.info('Build is finished.');
+                if (err)
+                    riseVersion(prevNum, () => console.error('BUILD FAILURE!', err));
+                else archive(true);
+            });
+        });
     });
 }
 

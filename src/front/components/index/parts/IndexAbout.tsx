@@ -3,6 +3,9 @@ import { useSelector } from "react-redux";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import { appStorage, indexStorage } from "../../../shared/jstorages";
 import { RootState } from "../../../shared/store";
+import * as versionNum from '../../../version.json';
+
+const version = { ...versionNum };
 
 export default function IndexAbout() {
   const apps = useSelector((state: RootState) => state.index.apps);
@@ -34,7 +37,7 @@ export default function IndexAbout() {
   const latsDate = useMemo(() => {
     const lastTimestamp = Math.max(indexLastUpdate || 0, appLastUpdate || 0);
     return lastTimestamp > 0
-      ? new Date(lastTimestamp * 1000).toLocaleString()
+      ? new Date(lastTimestamp).toLocaleString()
       : null;
   }, [currentAppName, indexLastUpdate, appLastUpdate]);
 
@@ -57,7 +60,7 @@ export default function IndexAbout() {
       </div>
       <div className="absolute pos-bottom margin-gap-v flex center full-width">
         <span>
-          {currentApp && latsDate && `${currentApp.title} ${latsDate}`}
+          {currentApp && latsDate && `${currentApp.title} ${latsDate}; v${version.num}`}
         </span>
       </div>
     </div>
