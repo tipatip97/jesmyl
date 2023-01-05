@@ -6,7 +6,7 @@ import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
 import smylib, { SMyLib } from './complect/SMyLib';
 import { sokiAuther } from './complect/SokiAuther';
-import { SokiCapsule, SokiClientEvent, SokiServerEvent } from './Soki.model';
+import { SokiCapsule, SokiClientEvent, SokiServerEvent } from './soki.model';
 
 setPolyfills();
 ErrorCatcher.logAllErrors();

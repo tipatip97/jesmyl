@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useKeyboard from "../../../../complect/keyboard/useKeyboard";
-import SendButton from "../../lider/complect/SendButton";
+import SendButton from "../../../../complect/SendButton";
 import useEditableRooms from "./useEditableRooms";
 import useRooms from "./useRooms";
 

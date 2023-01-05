@@ -1,4 +1,4 @@
-import { SokiAppName, sokiAppNames } from "../../back/complect/soki/Soki.model";
+import { SokiAppName, sokiAppNames } from "../../back/complect/soki/soki.model";
 
 export type AppName = SokiAppName;
 export const appNames = sokiAppNames;

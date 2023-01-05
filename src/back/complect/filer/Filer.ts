@@ -1,11 +1,11 @@
 import fs from 'fs';
 import { ExecutionRule } from '../executer/Executer.model';
 import smylib, { SMyLib } from '../soki/complect/SMyLib';
-import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName } from '../soki/Soki.model';
+import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName } from '../soki/soki.model';
 import cm from '../../apps/cm/config';
 import index from '../../apps/index/config';
 import spy from '../../apps/spy/config';
-import lider from '../../apps/lider/config';
+import leader from '../../apps/leader/config';
 import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, SimpleKeyValue } from './Filer.model';
 
 const actionsRequirement: FilerAppRequirement = {
@@ -59,7 +59,7 @@ export class Filer {
         index,
         cm,
         spy,
-        lider,
+        leader,
       } as FilerAppStore;
       let waits = 0;
       let oks = 0;

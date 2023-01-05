@@ -1,4 +1,4 @@
-import { LocalSokiAuth } from "../../../back/complect/soki/Soki.model";
+import { LocalSokiAuth } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
 import { EvaIconName } from "../../complect/eva-icon/EvaIcon";
 import { NavRouting } from "../../complect/nav-configurer/Navigation.model";

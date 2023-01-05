@@ -1,4 +1,4 @@
-import { LocalSokiAuth, SokiAppName } from "../soki/Soki.model";
+import { LocalSokiAuth, SokiAppName } from "../soki/soki.model";
 
 export type FilerAppStore = Record<SokiAppName, FilerAppConfig>;
 

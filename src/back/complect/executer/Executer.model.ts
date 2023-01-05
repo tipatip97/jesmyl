@@ -1,4 +1,4 @@
-import { SokiAppName } from "../soki/Soki.model";
+import { SokiAppName } from "../soki/soki.model";
 
 export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | 'func' | 'migrate' | 'remove' | 'remove_each' | 'other';
 

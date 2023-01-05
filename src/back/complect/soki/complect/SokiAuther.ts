@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { LocalSokiAuth, rootDirective, SokiAuth, SokiClientEvent } from '../Soki.model';
+import { LocalSokiAuth, rootDirective, SokiAuth, SokiClientEvent } from '../soki.model';
 import smylib from './SMyLib';
 
 const bonjourPath = `${rootDirective}/bonjour`;

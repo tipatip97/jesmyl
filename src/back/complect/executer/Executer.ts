@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
-import { LocalSokiAuth } from "../soki/Soki.model";
+import { LocalSokiAuth } from "../soki/soki.model";
 import { ExecuteError, ExecuteErrorType, ExecuteResults, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionTrack, TrackerRet } from "./Executer.model";
 
 

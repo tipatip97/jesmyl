@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useKeyboard from "../../../../complect/keyboard/useKeyboard";
-import SendButton from "../../lider/complect/SendButton";
+import SendButton from "../../../../complect/SendButton";
 import { spyExer } from "../Spy.store";
 import PhaseSpyContainer from "./PhaseSpyContainer";
 import useRooms from "./useRooms";

@@ -4,7 +4,7 @@ import EvaButton from "../../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useKeyboard from "../../../../complect/keyboard/useKeyboard";
 import mylib from "../../../../complect/my-lib/MyLib";
-import SendButton from "../../lider/complect/SendButton";
+import SendButton from "../../../../complect/SendButton";
 import { SpyRoomMemberStatus } from "../Spy.model";
 import PhaseSpyContainer from "./PhaseSpyContainer";
 import RoomMemberFace from "./RoomMemberFace";

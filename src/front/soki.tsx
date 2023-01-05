@@ -1,6 +1,6 @@
 import { Executer } from '../back/complect/executer/Executer';
 import { SMyLib } from '../back/complect/soki/complect/SMyLib';
-import { SokiAppName, SokiClientEvent, SokiEventName, SokiServerEvent } from '../back/complect/soki/Soki.model';
+import { SokiAppName, SokiClientEvent, SokiEventName, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import modalService from './complect/modal/Modal.service';
 import mylib, { MyLib } from './complect/my-lib/MyLib';
