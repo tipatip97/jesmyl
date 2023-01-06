@@ -8,34 +8,57 @@ import spy from '../../apps/spy/config';
 import leader from '../../apps/leader/config';
 import admin from '../../apps/admin/config';
 import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, SimpleKeyValue } from './Filer.model';
+import { Executer } from '../executer/Executer';
 
 const getByConfigLabel = '[GET BY CONFIG]';
 
 const actionsRequirement: FilerAppRequirement = {
   name: 'actions',
-  map: (data: ExecutionRule[]) => {
-    const map = (data: ExecutionRule[], top: Partial<ExecutionRule> = {}): ExecutionRule[] => {
-      return data.map(({ action, isSequre, args, next, level, track, expected, value, method, title, shortTitle }) => {
-        const theTrack = top.track?.concat(track || []) || track;
-        const nextTop: Partial<ExecutionRule> = {
-          args: { ...top.args, ...args },
-          track: theTrack,
-          expected: (top.expected || []).concat(expected ? [[theTrack, expected]] : []),
-        };
+  map: (data: Record<string, ExecutionRule>) => {
+    const rules: ExecutionRule[] = [];
+    const map = (data: Record<string, ExecutionRule>, top: Partial<ExecutionRule> = {}): ExecutionRule[] => {
+        for (const key in data) {
+            if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
+                const rule = data[key];
+                const {
+                    title,
+                    shortTitle,
+                    level,
+                    method,
+                    action,
+                    isSequre,
+                    value,
+                    expected,
+                    args,
+                } = rule;
 
-        return [{
-          title,
-          shortTitle,
-          level,
-          method,
-          action,
-          isSequre,
-          args: nextTop.args,
-          track: nextTop.track,
-          expecteds: nextTop.expected,
-          value,
-        }, ...(next ? map(next, nextTop as never) : [])]
-      }).flat();
+                const track = Executer.prepareTrack(key);
+                const theTrack = top.track?.concat(track || []) || track;
+                const nextTop: Partial<ExecutionRule> = {
+                    args: { ...top.args, ...args },
+                    track: theTrack,
+                    expecteds: (top.expecteds || []).concat(expected ? [[theTrack, expected]] : []),
+                };
+
+                rules.push({
+                    title,
+                    shortTitle,
+                    level,
+                    method,
+                    action,
+                    isSequre,
+                    args: nextTop.args,
+                    track: nextTop.track,
+                    expecteds: nextTop.expecteds,
+                    value,
+
+                });
+
+                map(rule as never, nextTop);
+            }
+        }
+
+        return rules;
     };
 
     return map(data).filter(({ action }) => action);

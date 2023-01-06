@@ -1,47 +1,43 @@
-[
-    {
+{
+    "<canWatch>": {
         "level": 100,
         "action": "canWatch",
         "title": "stub"
     },
-    {
+    "<canRedact>": {
         "level": 50,
         "action": "canRedact",
         "title": "stub"
     },
-    {
+    "<flexibleMainFontSize>": {
         "level": 1000,
         "action": "flexibleMainFontSize",
         "title": "stub"
     },
-    {
+    "<canShowTranslation>": {
         "level": 3,
         "action": "canShowTranslation",
         "title": "stub"
     },
-    {
+    "<catCanSearch>": {
         "level": 50,
         "action": "catCanSearch",
         "title": "stub"
     },
-    {
+    "<canEditMeetings>": {
         "level": 50,
         "action": "canEditMeetings",
         "title": "stub"
     },
-    {
+    "<comCanSearch>": {
         "level": 0,
         "action": "comCanSearch",
         "title": "stub"
     },
-    {
+    "/chords/{chordn}": {
         "level": 50,
         "action": "setChord",
         "title": "$prev?{{Изменён}{Добавлен}} Аккорд \"$chordn\"",
-        "track": [
-            "chords",
-            "{chordn}"
-        ],
         "rule": {
             "name": "chordLike",
             "value": "{chordn}"
@@ -53,663 +49,455 @@
             "chordn": "#String"
         }
     },
-    {
-        "track": [
-            "cols"
-        ],
-        "next": [
-            {
-                "track": [
-                    "cats"
+    "/cols": {
+        "/cats": {
+            "<add>": {
+                "level": 70,
+                "action": "catAdd",
+                "title": "Добавлена новая Категория",
+                "method": "push",
+                "value": {
+                    "w": "{catw}",
+                    "s": []
+                },
+                "args": {
+                    "catw": "#Number"
+                }
+            },
+            "<rem>": {
+                "level": 100,
+                "action": "catDel",
+                "title": "Категория \"$name\" удалена",
+                "method": "remove",
+                "value": [
+                    "w",
+                    "===",
+                    "{catw}"
                 ],
-                "next": [
-                    {
-                        "level": 70,
-                        "action": "catAdd",
-                        "title": "Добавлена новая Категория",
-                        "method": "push",
-                        "value": {
-                            "w": "{catw}",
-                            "s": []
-                        },
-                        "args": {
-                            "catw": "#Number"
-                        }
-                    },
-                    {
-                        "level": 100,
-                        "action": "catDel",
-                        "title": "Категория \"$name\" удалена",
-                        "method": "remove",
+                "args": {
+                    "catw": "#Number"
+                }
+            },
+            "/[w === {catw}]": {
+                "args": {
+                    "catw": "#Number"
+                },
+                "/n": {
+                    "level": 70,
+                    "action": "catRename",
+                    "method": "set",
+                    "title": "$prev?{{Категория \"$prev\" переименована на}{Новой Категории задано имя}} \"$value\"",
+                    "args": {
+                        "value": "#String"
+                    }
+                },
+                "/s": {
+                    "level": 70,
+                    "action": "catClearStack",
+                    "method": "set",
+                    "title": "У категории \"$name\" очищен список песен",
+                    "value": []
+                },
+                "/k": {
+                    "level": 100,
+                    "action": "catSetKind",
+                    "method": "set",
+                    "title": "Категории \"$name\" присвоен тип $kindn",
+                    "args": {
                         "value": [
-                            "w",
-                            "===",
-                            "{catw}"
-                        ],
-                        "args": {
-                            "catw": "#Number"
-                        }
-                    },
-                    {
-                        "track": [
-                            [
-                                "w",
-                                "===",
-                                "{catw}"
-                            ]
-                        ],
-                        "args": {
-                            "catw": "#Number"
-                        },
-                        "next": [
-                            {
-                                "level": 70,
-                                "action": "catRename",
-                                "track": [
-                                    "n"
-                                ],
-                                "method": "set",
-                                "title": "$prev?{{Категория \"$prev\" переименована на}{Новой Категории задано имя}} \"$value\"",
-                                "args": {
-                                    "value": "#String"
-                                }
-                            },
-                            {
-                                "level": 70,
-                                "action": "catClearStack",
-                                "track": [
-                                    "s"
-                                ],
-                                "method": "set",
-                                "title": "У категории \"$name\" очищен список песен",
-                                "value": []
-                            },
-                            {
-                                "level": 100,
-                                "action": "catSetKind",
-                                "track": [
-                                    "k"
-                                ],
-                                "method": "set",
-                                "title": "Категории \"$name\" присвоен тип $kindn",
-                                "args": {
-                                    "value": [
-                                        "full",
-                                        "list",
-                                        "dict",
-                                        "lang:ru",
-                                        "lang:ua"
-                                    ]
-                                }
-                            },
-                            {
-                                "level": 30,
-                                "action": "catModified",
-                                "track": [
-                                    "m"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#Number"
-                                }
-                            },
-                            {
-                                "args": {
-                                    "comw": "#Number"
-                                },
-                                "next": [
-                                    {
-                                        "level": 50,
-                                        "action": "catBindCom",
-                                        "title": "К Категории \"$name\" прикреплена Песня \"$comn\"",
-                                        "track": [
-                                            "s"
-                                        ],
-                                        "method": "push"
-                                    },
-                                    {
-                                        "level": 50,
-                                        "action": "catUnbindCom",
-                                        "title": "Песня \"$comn\" откреплена от Категории \"$name\"",
-                                        "track": [
-                                            "s"
-                                        ],
-                                        "method": "remove",
-                                        "value": [
-                                            ".",
-                                            "===",
-                                            "{comw}"
-                                        ]
-                                    }
-                                ]
-                            }
+                            "full",
+                            "list",
+                            "dict",
+                            "lang:ru",
+                            "lang:ua"
                         ]
                     }
-                ]
-            },
-            {
-                "track": [
-                    "coms"
-                ],
-                "next": [
-                    {
-                        "action": "comDel",
-                        "title": "Песня \"$name\" удалена",
-                        "level": 70,
-                        "method": "remove",
-                        "value": [
-                            "w",
-                            "===",
-                            "{comw}"
-                        ],
-                        "args": {
-                            "comw": "#Number"
-                        }
+                },
+                "/m": {
+                    "level": 30,
+                    "action": "catModified",
+                    "method": "set",
+                    "args": {
+                        "value": "#Number"
+                    }
+                },
+                "<comBinding>": {
+                    "args": {
+                        "comw": "#Number"
                     },
-                    {
-                        "level": 50,
-                        "action": "comAdd",
-                        "title": "Добавлена новая Песня",
-                        "method": "push",
-                        "value": {
-                            "w": "{comw}",
-                            "n": "",
-                            "c": [],
-                            "t": [],
-                            "o": []
+                    "/s": {
+                        "<bind>": {
+                            "level": 50,
+                            "action": "catBindCom",
+                            "title": "К Категории \"$name\" прикреплена Песня \"$comn\"",
+                            "method": "push"
                         },
-                        "args": {
-                            "comw": "#Number"
-                        }
-                    },
-                    {
-                        "track": [
-                            [
-                                "w",
+                        "<unbind>": {
+                            "level": 50,
+                            "action": "catUnbindCom",
+                            "title": "Песня \"$comn\" откреплена от Категории \"$name\"",
+                            "method": "remove",
+                            "value": [
+                                ".",
                                 "===",
                                 "{comw}"
                             ]
-                        ],
-                        "args": {
-                            "comw": "#Number"
-                        },
-                        "next": [
-                            {
-                                "level": 50,
-                                "action": "removeBlock",
-                                "title": "Из песни \"$name\" удалён $ink{{$value}{-й }}$switch{{$coln}{t}{Текстовый блок}{c}{блок Аккордов}}",
-                                "track": [
-                                    "{coln}"
-                                ],
-                                "method": "remove",
-                                "args": {
-                                    "value": "#Number",
-                                    "coln": [
-                                        "c",
-                                        "t"
-                                    ]
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "replaceBlock",
-                                "title": "В Песне \"$name\" $switch{{$coln}{t}{текстовый блок}{c}{блок Аккордов}{блок}} перемещён$ink{{$previ}{}{ с позиции }}$ink{{$newi}{}{ на позицию }}",
-                                "track": [
-                                    "{coln}",
-                                    "{newi}"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#String",
-                                    "coln": [
-                                        "t",
-                                        "c"
-                                    ],
-                                    "newi": "#Number"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "comRename",
-                                "title": "$prev?{{Песня \"$prev\" переименована на}{Новой Песне задано имя}} \"$value\"",
-                                "track": [
-                                    "n"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#String"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "comSetDefaultBemolType",
-                                "title": "Тип знаков песни \"$name\" изменён на $value!{{диезный}{бемольный}}",
-                                "track": [
-                                    "b"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#Num"
-                                }
-                            },
-                            {
-                                "level": 60,
-                                "action": "comSetTransPosition",
-                                "title": "В Песне \"$name\" изменена тональность: \"$prev\" -> \"$value\"",
-                                "track": [
-                                    "p"
-                                ],
-                                "valueAs": "tonLevel",
-                                "method": "set",
-                                "args": {
-                                    "value": "#Number"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "comSetLangi",
-                                "title": "Язык в песне \"$name\", обозначен как $comLang{{$value}}",
-                                "track": [
-                                    "l"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#Num"
-                                }
-                            },
-                            {
-                                "track": [
-                                    "r"
-                                ],
-                                "expected": {},
-                                "next": [
-                                    {
-                                        "level": 50,
-                                        "action": "setNativeNum",
-                                        "title": "Песня \"$name\" $value?{{в категории \"$catn\" обозначена №$value}{отнесена к категории \"$catn\"}}",
-                                        "track": [
-                                            "{catw}"
-                                        ],
-                                        "method": "set",
-                                        "args": {
-                                            "catw": "#Number",
-                                            "value": "#Number"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "level": 50,
-                                "action": "removeNativeNum",
-                                "title": "Нативный номер$prev{{ (№$prev)}} песни \"$name\", ранее обозначенный в категории \"$catn\", был удалён",
-                                "track": [
-                                    "r"
-                                ],
-                                "method": "remove",
-                                "args": {
-                                    "value": "#Number"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "changeBlocks",
-                                "title": "В Песне \"$name\" $prev?{{изменён}{добавлен}} $ink{{$index}{-й}} блок $switch{{$coln}{t}{Текстов}{c}{Аккордов}}",
-                                "track": [
-                                    "{coln}",
-                                    "{index}"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#String",
-                                    "coln": [
-                                        "t",
-                                        "c"
-                                    ],
-                                    "index": "#Number"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "comMigrateOrders",
-                                "title": "В песне \"$name\" была пересортировка блоков",
-                                "track": [
-                                    "o",
-                                    "w"
-                                ],
-                                "method": "migrate",
-                                "args": {
-                                    "value": "#Object"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "comSetAudio",
-                                "title": "В песне \"$name\" изменены ссылки на аудио-файлы",
-                                "track": [
-                                    "a"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#String"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "comSetTranslationPushKind",
-                                "title": "В песне \"$name\" изменён вариант группировки слайдов для трансляций",
-                                "track": [
-                                    "k"
-                                ],
-                                "method": "set",
-                                "args": {
-                                    "value": "#Number"
-                                }
-                            },
-                            {
-                                "track": [
-                                    "o"
-                                ],
-                                "args": {
-                                    "ordw": "#Number"
-                                },
-                                "next": [
-                                    {
-                                        "level": 50,
-                                        "action": "comAddOrderBlock",
-                                        "title": "В песню \"$name\" добавлен Порядковый блок",
-                                        "method": "push",
-                                        "value": {
-                                            "w": "{ordw}",
-                                            "c": "{?chordsi}",
-                                            "t": "{texti}",
-                                            "s": "{type}"
-                                        },
-                                        "args": {
-                                            "texti": "#number",
-                                            "chordsi": "#number",
-                                            "type": "#string"
-                                        }
-                                    },
-                                    {
-                                        "level": 50,
-                                        "action": "comAddOrderAnchorBlock",
-                                        "title": "Добавлена ссылка на $blockn в песне \"$name\"",
-                                        "method": "push",
-                                        "value": {
-                                            "w": "{ordw}",
-                                            "a": "{anchor}"
-                                        },
-                                        "args": {
-                                            "anchor": "#Number"
-                                        }
-                                    },
-                                    {
-                                        "level": 50,
-                                        "action": "removeOrderBlock",
-                                        "title": "Из песни \"$name\" $isAnchor?{{удалена ссылка на}{удалён блок}} $blockn",
-                                        "method": "remove",
-                                        "value": [
-                                            "w",
-                                            "===",
-                                            "{ordw}"
-                                        ]
-                                    },
-                                    {
-                                        "track": [
-                                            [
-                                                "w",
-                                                "===",
-                                                "{ordw}"
-                                            ]
-                                        ],
-                                        "next": [
-                                            {
-                                                "level": 50,
-                                                "action": "comSetOrderType",
-                                                "title": "$newBlockn{{В песне \"$name\" тип $blockn заменён на $newBlockn}{Изменение типа блока в песне \"$name\"}}",
-                                                "track": [
-                                                    "s"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "value": "#String"
-                                                }
-                                            },
-                                            {
-                                                "track": [
-                                                    "p"
-                                                ],
-                                                "expected": [],
-                                                "next": [
-                                                    {
-                                                        "level": 50,
-                                                        "action": "comSetOrderChordPositionLine",
-                                                        "title": "В песне \"$name\", в блоке $blockn;$ink{{$linei}{-й строке}{, в }} изменена аппликатура: $lineTitle",
-                                                        "track": [
-                                                            "{linei}"
-                                                        ],
-                                                        "method": "set",
-                                                        "valueAs": "chordApplications",
-                                                        "args": {
-                                                            "value": "#List",
-                                                            "linei": "#Number"
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "level": 50,
-                                                "action": "addOrderUnitUniq",
-                                                "title": "Блок $blockn в песне \"$name\" сделан целевым. ($value)",
-                                                "track": [
-                                                    "u"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "value": "#Number"
-                                                }
-                                            },
-                                            {
-                                                "level": 50,
-                                                "action": "updateOrderStick",
-                                                "title": "В Песне \"$name\" позиция в порядке $ink{{$ordi}} у $switch{{$coln}{t}{Текстовых блоков}{c}{блоков Аккордов}} $switch{{$value}{-1}{сброшена}{изменена в значение $value}}",
-                                                "track": [
-                                                    "{coln}"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "coln": [
-                                                        "t",
-                                                        "c"
-                                                    ]
-                                                }
-                                            },
-                                            {
-                                                "level": 50,
-                                                "action": "comSetOrderOpenedBlock",
-                                                "title": "В песне \"$name\" ссылка на $blockn $value?{{показана}{скрыта}} в свёрнутом режиме",
-                                                "track": [
-                                                    "o"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "value": "#Num"
-                                                }
-                                            },
-                                            {
-                                                "level": 50,
-                                                "action": "comSetOrderStringBlock",
-                                                "title": "В песне \"$name\", к $isa?{{ссылке на блок}{блоку}} $blockn прикреплён $i-й $ist?{{Текстовый блок}{блок Аккордов}}",
-                                                "track": [
-                                                    "{fieldn}"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "fieldn": [
-                                                        "t",
-                                                        "c"
-                                                    ],
-                                                    "value": "#number"
-                                                }
-                                            },
-                                            {
-                                                "level": 50,
-                                                "action": "comSetOrderRepeatBlock",
-                                                "title": "В песне \"$name\" $value!!{{значение повторений $isAnchor?{{ссылки на блок}{блока}} $blockn было сброшено}{$isAnchor?{{ссылка на }}блок $blockn повторяется $value $declension{{$value}{раз}{раза}{раз}}}}",
-                                                "track": [
-                                                    "r"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "value": [
-                                                        "#number",
-                                                        "#object"
-                                                    ]
-                                                }
-                                            },
-                                            {
-                                                "level": 50,
-                                                "action": "comSetOrderVisibleSign",
-                                                "title": "В песне \"$name\" $isAnchor?{{ссылка на }}блок \"$blockn\" сделан$isAnchor?{{а}} $value!{{не}}видим$isAnchor?{{ой}{ым}}",
-                                                "track": [
-                                                    "v"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "value": "#Num"
-                                                }
-                                            },
-                                            {
-                                                "level": 50,
-                                                "action": "comSetOrderEmptiedVal",
-                                                "title": "В песне \"$name\" название $isAnchor?{{ссылки на блок}{блока}} \"$blockn\" $value!{{вставлено}{убрано}}",
-                                                "track": [
-                                                    "e"
-                                                ],
-                                                "method": "set",
-                                                "args": {
-                                                    "value": "#Num"
-                                                }
-                                            },
-                                            {
-                                                "track": [
-                                                    "f"
-                                                ],
-                                                "expected": {},
-                                                "next": [
-                                                    {
-                                                        "level": 50,
-                                                        "action": "comSetOrderFieldValue",
-                                                        "title": "В песне \"$name\" блоку \"$blockn\" установлен параметр $switch{{$fieldn}{md}{модулирования}} в значение \"$value\"",
-                                                        "track": [
-                                                            "{fieldn}"
-                                                        ],
-                                                        "method": "set",
-                                                        "args": {
-                                                            "value": "#Number"
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "next": [
-                                                    {
-                                                        "track": [
-                                                            "inh"
-                                                        ],
-                                                        "expected": {},
-                                                        "next": [
-                                                            {
-                                                                "args": {
-                                                                    "fieldn": [
-                                                                        "r",
-                                                                        "v"
-                                                                    ]
-                                                                },
-                                                                "track": [
-                                                                    "{fieldn}"
-                                                                ],
-                                                                "expected": [],
-                                                                "next": [
-                                                                    {
-                                                                        "level": 50,
-                                                                        "action": "setAnchorInheritValue",
-                                                                        "title": "В песне \"$name\" для $ink{{$ink{{$inhIndex}}}}-й части ссылки на блок \"$blockn\" $value{{установлено новое значение $switch{{$fieldn}{r}{повторений}} в значение \"$value\"}{значение $switch{{$fieldn}{r}{повторений}} было удалено}}",
-                                                                        "track": [
-                                                                            "{inhIndex}"
-                                                                        ],
-                                                                        "method": "set",
-                                                                        "args": {
-                                                                            "value": "#any",
-                                                                            "inhIndex": "#Number"
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/coms": {
+            "<rem>": {
+                "action": "comDel",
+                "title": "Песня \"$name\" удалена",
+                "level": 70,
+                "method": "remove",
+                "value": [
+                    "w",
+                    "===",
+                    "{comw}"
+                ],
+                "args": {
+                    "comw": "#Number"
+                }
+            },
+            "<add>": {
+                "level": 50,
+                "action": "comAdd",
+                "title": "Добавлена новая Песня",
+                "method": "push",
+                "value": {
+                    "w": "{comw}",
+                    "n": "",
+                    "c": [],
+                    "t": [],
+                    "o": []
+                },
+                "args": {
+                    "comw": "#Number"
+                }
+            },
+            "/[w === {comw}]": {
+                "args": {
+                    "comw": "#Number"
+                },
+                "/{coln}": {
+                    "level": 50,
+                    "action": "removeBlock",
+                    "title": "Из песни \"$name\" удалён $ink{{$value}{-й }}$switch{{$coln}{t}{Текстовый блок}{c}{блок Аккордов}}",
+                    "method": "remove",
+                    "args": {
+                        "value": "#Number",
+                        "coln": [
+                            "c",
+                            "t"
                         ]
                     }
-                ]
+                },
+                "/{coln}/{newi}": {
+                    "level": 50,
+                    "action": "replaceBlock",
+                    "title": "В Песне \"$name\" $switch{{$coln}{t}{текстовый блок}{c}{блок Аккордов}{блок}} перемещён$ink{{$previ}{}{ с позиции }}$ink{{$newi}{}{ на позицию }}",
+                    "method": "set",
+                    "args": {
+                        "value": "#String",
+                        "coln": [
+                            "t",
+                            "c"
+                        ],
+                        "newi": "#Number"
+                    }
+                },
+                "/n": {
+                    "level": 50,
+                    "action": "comRename",
+                    "title": "$prev?{{Песня \"$prev\" переименована на}{Новой Песне задано имя}} \"$value\"",
+                    "method": "set",
+                    "args": {
+                        "value": "#String"
+                    }
+                },
+                "/b": {
+                    "level": 50,
+                    "action": "comSetDefaultBemolType",
+                    "title": "Тип знаков песни \"$name\" изменён на $value!{{диезный}{бемольный}}",
+                    "method": "set",
+                    "args": {
+                        "value": "#Num"
+                    }
+                },
+                "/p": {
+                    "level": 60,
+                    "action": "comSetTransPosition",
+                    "title": "В Песне \"$name\" изменена тональность: \"$prev\" -> \"$value\"",
+                    "valueAs": "tonLevel",
+                    "method": "set",
+                    "args": {
+                        "value": "#Number"
+                    }
+                },
+                "/l": {
+                    "level": 50,
+                    "action": "comSetLangi",
+                    "title": "Язык в песне \"$name\", обозначен как $comLang{{$value}}",
+                    "method": "set",
+                    "args": {
+                        "value": "#Num"
+                    }
+                },
+                "/r": {
+                    "expected": {},
+                    "/{catw}": {
+                        "level": 50,
+                        "action": "setNativeNum",
+                        "title": "Песня \"$name\" $value?{{в категории \"$catn\" обозначена №$value}{отнесена к категории \"$catn\"}}",
+                        "method": "set",
+                        "args": {
+                            "catw": "#Number",
+                            "value": "#Number"
+                        }
+                    },
+                    "/r": {
+                        "level": 50,
+                        "action": "removeNativeNum",
+                        "title": "Нативный номер$prev{{ (№$prev)}} песни \"$name\", ранее обозначенный в категории \"$catn\", был удалён",
+                        "method": "remove",
+                        "args": {
+                            "value": "#Number"
+                        }
+                    }
+                },
+                "/{coln}/{index}": {
+                    "level": 50,
+                    "action": "changeBlocks",
+                    "title": "В Песне \"$name\" $prev?{{изменён}{добавлен}} $ink{{$index}{-й}} блок $switch{{$coln}{t}{Текстов}{c}{Аккордов}}",
+                    "method": "set",
+                    "args": {
+                        "value": "#String",
+                        "coln": [
+                            "t",
+                            "c"
+                        ],
+                        "index": "#Number"
+                    }
+                },
+                "/o/w": {
+                    "level": 50,
+                    "action": "comMigrateOrders",
+                    "title": "В песне \"$name\" была пересортировка блоков",
+                    "method": "migrate",
+                    "args": {
+                        "value": "#Object"
+                    }
+                },
+                "/a": {
+                    "level": 50,
+                    "action": "comSetAudio",
+                    "title": "В песне \"$name\" изменены ссылки на аудио-файлы",
+                    "method": "set",
+                    "args": {
+                        "value": "#String"
+                    }
+                },
+                "/k": {
+                    "level": 50,
+                    "action": "comSetTranslationPushKind",
+                    "title": "В песне \"$name\" изменён вариант группировки слайдов для трансляций",
+                    "method": "set",
+                    "args": {
+                        "value": "#Number"
+                    }
+                },
+                "/o": {
+                    "args": {
+                        "ordw": "#Number"
+                    },
+                    "<add>": {
+                        "level": 50,
+                        "action": "comAddOrderBlock",
+                        "title": "В песню \"$name\" добавлен Порядковый блок",
+                        "method": "push",
+                        "value": {
+                            "w": "{ordw}",
+                            "c": "{?chordsi}",
+                            "t": "{texti}",
+                            "s": "{type}"
+                        },
+                        "args": {
+                            "texti": "#number",
+                            "chordsi": "#number",
+                            "type": "#string"
+                        }
+                    },
+                    "<addAnc>": {
+                        "level": 50,
+                        "action": "comAddOrderAnchorBlock",
+                        "title": "Добавлена ссылка на $blockn в песне \"$name\"",
+                        "method": "push",
+                        "value": {
+                            "w": "{ordw}",
+                            "a": "{anchor}"
+                        },
+                        "args": {
+                            "anchor": "#Number"
+                        }
+                    },
+                    "<rem>": {
+                        "level": 50,
+                        "action": "removeOrderBlock",
+                        "title": "Из песни \"$name\" $isAnchor?{{удалена ссылка на}{удалён блок}} $blockn",
+                        "method": "remove",
+                        "value": [
+                            "w",
+                            "===",
+                            "{ordw}"
+                        ]
+                    },
+                    "/[w === {ordw}]": {
+                        "/s": {
+                            "level": 50,
+                            "action": "comSetOrderType",
+                            "title": "$newBlockn{{В песне \"$name\" тип $blockn заменён на $newBlockn}{Изменение типа блока в песне \"$name\"}}",
+                            "method": "set",
+                            "args": {
+                                "value": "#String"
+                            }
+                        },
+                        "/p": {
+                            "expected": [],
+                            "/{linei}": {
+                                "level": 50,
+                                "action": "comSetOrderChordPositionLine",
+                                "title": "В песне \"$name\", в блоке $blockn;$ink{{$linei}{-й строке}{, в }} изменена аппликатура: $lineTitle",
+                                "method": "set",
+                                "valueAs": "chordApplications",
+                                "args": {
+                                    "value": "#List",
+                                    "linei": "#Number"
+                                }
+                            }
+                        },
+                        "/u": {
+                            "level": 50,
+                            "action": "addOrderUnitUniq",
+                            "title": "Блок $blockn в песне \"$name\" сделан целевым. ($value)",
+                            "method": "set",
+                            "args": {
+                                "value": "#Number"
+                            }
+                        },
+                        "/{coln}": {
+                            "level": 50,
+                            "action": "updateOrderStick",
+                            "title": "В Песне \"$name\" позиция в порядке $ink{{$ordi}} у $switch{{$coln}{t}{Текстовых блоков}{c}{блоков Аккордов}} $switch{{$value}{-1}{сброшена}{изменена в значение $value}}",
+                            "method": "set",
+                            "args": {
+                                "coln": [
+                                    "t",
+                                    "c"
+                                ]
+                            }
+                        },
+                        "/o": {
+                            "level": 50,
+                            "action": "comSetOrderOpenedBlock",
+                            "title": "В песне \"$name\" ссылка на $blockn $value?{{показана}{скрыта}} в свёрнутом режиме",
+                            "method": "set",
+                            "args": {
+                                "value": "#Num"
+                            }
+                        },
+                        "/{fieldn}": {
+                            "level": 50,
+                            "action": "comSetOrderStringBlock",
+                            "title": "В песне \"$name\", к $isa?{{ссылке на блок}{блоку}} $blockn прикреплён $i-й $ist?{{Текстовый блок}{блок Аккордов}}",
+                            "method": "set",
+                            "args": {
+                                "fieldn": [
+                                    "t",
+                                    "c"
+                                ],
+                                "value": "#number"
+                            }
+                        },
+                        "/r": {
+                            "level": 50,
+                            "action": "comSetOrderRepeatBlock",
+                            "title": "В песне \"$name\" $value!!{{значение повторений $isAnchor?{{ссылки на блок}{блока}} $blockn было сброшено}{$isAnchor?{{ссылка на }}блок $blockn повторяется $value $declension{{$value}{раз}{раза}{раз}}}}",
+                            "method": "set",
+                            "args": {
+                                "value": [
+                                    "#number",
+                                    "#object"
+                                ]
+                            }
+                        },
+                        "/v": {
+                            "level": 50,
+                            "action": "comSetOrderVisibleSign",
+                            "title": "В песне \"$name\" $isAnchor?{{ссылка на }}блок \"$blockn\" сделан$isAnchor?{{а}} $value!{{не}}видим$isAnchor?{{ой}{ым}}",
+                            "method": "set",
+                            "args": {
+                                "value": "#Num"
+                            }
+                        },
+                        "/e": {
+                            "level": 50,
+                            "action": "comSetOrderEmptiedVal",
+                            "title": "В песне \"$name\" название $isAnchor?{{ссылки на блок}{блока}} \"$blockn\" $value!{{вставлено}{убрано}}",
+                            "method": "set",
+                            "args": {
+                                "value": "#Num"
+                            }
+                        },
+                        "/f": {
+                            "expected": {},
+                            "/{fieldn}": {
+                                "level": 50,
+                                "action": "comSetOrderFieldValue",
+                                "title": "В песне \"$name\" блоку \"$blockn\" установлен параметр $switch{{$fieldn}{md}{модулирования}} в значение \"$value\"",
+                                "method": "set",
+                                "args": {
+                                    "value": "#Number"
+                                }
+                            }
+                        },
+                        "<inheritance>": {
+                            "/inh": {
+                                "expected": {},
+                                "/{fieldn}": {
+                                    "args": {
+                                        "fieldn": [
+                                            "r",
+                                            "v"
+                                        ]
+                                    },
+                                    "expected": [],
+                                    "/{inhIndex}": {
+                                        "level": 50,
+                                        "action": "setAnchorInheritValue",
+                                        "title": "В песне \"$name\" для $ink{{$ink{{$inhIndex}}}}-й части ссылки на блок \"$blockn\" $value{{установлено новое значение $switch{{$fieldn}{r}{повторений}} в значение \"$value\"}{значение $switch{{$fieldn}{r}{повторений}} было удалено}}",
+                                        "method": "set",
+                                        "args": {
+                                            "value": "#any",
+                                            "inhIndex": "#Number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        ]
+        }
     },
-    {
+    "<canRedactSettings>": {
         "level": 100,
         "action": "canRedactSettings"
     },
-    {
-        "track": [
-            "settings"
-        ],
-        "next": [
-            {
-                "track": [
-                    "navigation"
-                ],
-                "next": [
-                    {
-                        "level": 100,
-                        "action": "changeSortVariant",
-                        "title": "Изменён принцип сортировки",
-                        "track": [
-                            "{nav}"
-                        ],
-                        "method": "set",
-                        "args": {
-                            "value": "#String",
-                            "nav": "#String"
-                        }
-                    },
-                    {
-                        "level": 50,
-                        "action": "changeSortOrder",
-                        "title": "Изменён порядок сортировки",
-                        "track": [
-                            "{nav}"
-                        ],
-                        "method": "set",
-                        "args": {
-                            "value": "#Boolean",
-                            "nav": "#String"
-                        }
-                    }
-                ]
-            }
-        ]
-    },
-    {
+    "/eeStorage/{word}": {
         "level": 100,
-        "track": [
-            "eeStorage",
-            "{word}"
-        ],
         "action": "setEERuleWordTrack",
         "title": "Задано правило правописания е/ё для слова '$word'",
         "method": "set",
@@ -723,204 +511,107 @@
             ]
         }
     },
-    {
+    "/meetings": {
         "action": "meetingsInit",
-        "track": [
-            "meetings"
-        ],
         "value": {
             "contexts": {},
             "names": [],
             "events": []
         },
-        "next": [
-            {
-                "action": "addMeetingsName",
-                "method": "push",
-                "title": "Добавлено новое наименование контекста \"$value\"",
-                "track": [
-                    "names"
-                ],
-                "args": {
-                    "value": "#String"
-                }
-            },
-            {
-                "action": "addMeetingsContext",
-                "method": "set",
-                "title": "Добавлен новый контекст для событий",
-                "track": [
-                    "contexts",
-                    "{contextw}"
-                ],
-                "value": {
-                    "c": "{value}"
-                },
-                "args": {
-                    "contextw": "#Number",
-                    "value": "#List"
-                }
-            },
-            {
-                "track": [
-                    "events"
-                ],
-                "args": {
-                    "eventn": "#String",
-                    "eventw": "#Number"
-                },
-                "next": [
-                    {
-                        "level": 50,
-                        "action": "addMeetingsEvent",
-                        "title": "Добавлено новое событие \"$eventn\"",
-                        "method": "push",
-                        "value": {
-                            "w": "{eventw}",
-                            "n": "{eventn}",
-                            "b": "{begin}",
-                            "e": "{end}",
-                            "s": [],
-                            "c": "{contextw}"
-                        },
-                        "args": {
-                            "begin": "#Number",
-                            "end": "#Number",
-                            "contextw": "#Number"
-                        }
-                    },
-                    {
-                        "level": 50,
-                        "action": "remMeetingEvent",
-                        "title": "Событие \"$eventn\" удалено",
-                        "method": "remove",
-                        "value": [
-                            "w",
-                            "===",
-                            "{eventw}"
-                        ]
-                    },
-                    {
-                        "track": [
-                            [
-                                "w",
-                                "===",
-                                "{eventw}"
-                            ]
-                        ],
-                        "next": [
-                            {
-                                "level": 50,
-                                "action": "setMeetingEventStack",
-                                "title": "В событии \"$eventn\" изменён список песен",
-                                "method": "set_all",
-                                "valueAs": "comw",
-                                "value": {
-                                    "s": "{value}"
-                                },
-                                "args": {
-                                    "value": "#List"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "setMeetingEventContext",
-                                "title": "Событие \"$eventn\" перемещено в другой контекст",
-                                "method": "set_all",
-                                "value": {
-                                    "c": "{contextw}"
-                                },
-                                "args": {
-                                    "contextw": "#Number"
-                                }
-                            },
-                            {
-                                "level": 50,
-                                "action": "setMeetingEventRegular",
-                                "title": "Событие \"$eventn\" сделано $value!{{не}}регулярным",
-                                "track": [
-                                    "r"
-                                ],
-                                "method": "set"
-                            },
-                            {
-                                "level": 50,
-                                "action": "meetingEventRename",
-                                "title": "Событие \"$prev\" переименовано в \"$value\"",
-                                "track": [
-                                    "n"
-                                ],
-                                "method": "set"
-                            }
-                        ]
-                    }
-                ]
+        "/names": {
+            "action": "addMeetingsName",
+            "method": "push",
+            "title": "Добавлено новое наименование контекста \"$value\"",
+            "args": {
+                "value": "#String"
             }
-        ]
-    },
-    {
-        "track": [
-            "streams/{id}"
-        ],
-        "args": {
-            "id": "#String"
         },
-        "next": [
-            {
-                "level": 50,
-                "action": "createStream",
-                "method": "set",
-                "muted": true,
-                "value": {
-                    "w": "{id}",
-                    "c": "{comw}",
-                    "f": "{fio}",
-                    "s": "{isSharable}",
-                    "b": -1
-                },
-                "args": {
-                    "comw": "#Number",
-                    "isSharable": "#Num",
-                    "fio": "#String"
-                }
+        "/contexts/{contextw}": {
+            "action": "addMeetingsContext",
+            "method": "set",
+            "title": "Добавлен новый контекст для событий",
+            "value": {
+                "c": "{value}"
             },
-            {
-                "level": 50,
-                "action": "changeStreamComw",
-                "muted": true,
-                "method": "set_all",
-                "value": {
-                    "c": "{comw}",
-                    "b": -1
-                },
-                "args": {
-                    "comw": "#Number"
-                }
-            },
-            {
-                "level": 50,
-                "action": "changeStreamBlocki",
-                "muted": true,
-                "method": "set_all",
-                "value": {
-                    "b": "{blocki}",
-                    "c": "{comw}"
-                },
-                "args": {
-                    "blocki": "#Number",
-                    "comw": "#Number"
-                }
-            },
-            {
-                "level": 50,
-                "action": "closeStream",
-                "muted": true,
-                "track": [
-                    "x"
-                ],
-                "method": "set",
-                "value": 1
+            "args": {
+                "contextw": "#Number",
+                "value": "#List"
             }
-        ]
+        },
+        "/events": {
+            "args": {
+                "eventn": "#String",
+                "eventw": "#Number"
+            },
+            "<add>": {
+                "level": 50,
+                "action": "addMeetingsEvent",
+                "title": "Добавлено новое событие \"$eventn\"",
+                "method": "push",
+                "value": {
+                    "w": "{eventw}",
+                    "n": "{eventn}",
+                    "b": "{begin}",
+                    "e": "{end}",
+                    "s": [],
+                    "c": "{contextw}"
+                },
+                "args": {
+                    "begin": "#Number",
+                    "end": "#Number",
+                    "contextw": "#Number"
+                }
+            },
+            "<rem>": {
+                "level": 50,
+                "action": "remMeetingEvent",
+                "title": "Событие \"$eventn\" удалено",
+                "method": "remove",
+                "value": [
+                    "w",
+                    "===",
+                    "{eventw}"
+                ]
+            },
+            "/[w === {eventw}]": {
+                "<stack>": {
+                    "level": 50,
+                    "action": "setMeetingEventStack",
+                    "title": "В событии \"$eventn\" изменён список песен",
+                    "method": "set_all",
+                    "valueAs": "comw",
+                    "value": {
+                        "s": "{value}"
+                    },
+                    "args": {
+                        "value": "#List"
+                    }
+                },
+                "<ctx>": {
+                    "level": 50,
+                    "action": "setMeetingEventContext",
+                    "title": "Событие \"$eventn\" перемещено в другой контекст",
+                    "method": "set_all",
+                    "value": {
+                        "c": "{contextw}"
+                    },
+                    "args": {
+                        "contextw": "#Number"
+                    }
+                },
+                "/r": {
+                    "level": 50,
+                    "action": "setMeetingEventRegular",
+                    "title": "Событие \"$eventn\" сделано $value!{{не}}регулярным",
+                    "method": "set"
+                },
+                "/n": {
+                    "level": 50,
+                    "action": "meetingEventRename",
+                    "title": "Событие \"$prev\" переименовано в \"$value\"",
+                    "method": "set"
+                }
+            }
+        }
     }
-]
+}

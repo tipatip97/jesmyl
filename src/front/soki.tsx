@@ -57,7 +57,7 @@ export class SokiTrip {
                     if (event.system) {
                         if (event.system.name === 'reloadFiles') this.pullCurrentAppData();
                         if (event.system.name === 'restartWS') {
-                            const { ok, message, error } = event.system as any;
+                            const { ok, message, error } = event.system as never;
                             modalService.alert(
                                 <>
                                     <div style={{ color: ok ? 'green' : 'red' }}>{ok ? 'Ok' : 'Error'}</div>
@@ -90,7 +90,7 @@ export class SokiTrip {
     }
 
     setLastUpdates(appName: SokiAppName, appLastUpdate?: number | null, inedxLastUpdate?: number | null) {
-        indexStorage.set('lastUpdates', (prev) => {            
+        indexStorage.set('lastUpdates', (prev) => {
             const next = { ...prev };
 
             if (appLastUpdate) next[appName] = appLastUpdate;

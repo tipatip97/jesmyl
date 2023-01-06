@@ -2,7 +2,7 @@
 import { sequreMD5Passphrase } from "../../values";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { ExecuteError, ExecuteErrorType, ExecuteResults, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionTrack, TrackerRet } from "./Executer.model";
+import { ExecuteError, ExecuteErrorType, ExecuteResults, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionTrack, TrackerRet } from "./Executer.model";
 
 
 const globs: Record<string, any> = {
@@ -319,41 +319,45 @@ export class Executer {
         return args;
     }
 
-    static findRule(rules: ExecutionRule[], exec: ExecutionDict<any, any>, auth?: LocalSokiAuth | null): ExecutionReal | null {
-        const find = (rules: ExecutionRule[], topRule: ExecutionRealAccumulatable = {} as never): ExecutionReal | null => {
-            for (const rule of rules) {
-                const accTrack = topRule.track?.concat(rule.track || []) || rule.track;
-                const accRule: ExecutionRealAccumulatable = {
-                    track: accTrack,
-                    args: this.cloneArgs({ ...topRule.args, ...rule.args }, rule.cloneArgs),
-                    expecteds: (rule.expected ? topRule.expecteds || [] : topRule.expecteds)
-                        ?.concat(rule.expected ? [[accTrack, rule.expected]] : []),
-                    accesses: (rule.access ? topRule.accesses || [] : topRule.accesses)
-                        ?.concat(rule.access ? [(accTrack || []).concat(rule.access)] : []),
-                    sides: (rule.side ? topRule.sides || [] : topRule.sides)?.concat(
-                        rule.side?.map(({ track, ...other }) => {
-                            return { ...other, track: accTrack.concat(track || []) };
-                        }) || []),
+    static prepareTrack = (path: string): ExecutionTrack => path.startsWith('<') ? [] : path.slice(1).split('/').map((part) => part.startsWith('[') && part.endsWith(']') ? part.slice(1, -1).split(' ') as ExecutionRuleTrackBeat : part).filter(part => part);
 
-                };
-                if (rule.action === exec.action) {
-                    const ret = this.replaceArgs<ExecutionReal>({
-                        ...accRule,
-                        ...rule,
-                        fix: accRule.track[0],
-                        value: rule.value === undefined ? exec.value ?? exec.args?.value : rule.value,
-                    }, exec.args, auth);
-                    return ret;
-                }
-                if (rule.next) {
-                    const nextRule = find(rule.next, accRule);
+    static findRule(actions: Record<string, ExecutionRule>, action: string, value: unknown, args?: Record<string, unknown>, auth?: LocalSokiAuth | null) {
+        const find = (composit: Record<string, ExecutionRule>, topRule: ExecutionRealAccumulatable = {} as never): ExecutionReal | null => {
+            for (const key in composit) {
+                const rule = composit[key];
+                if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
+                    const track = key.startsWith('<') ? [] : this.prepareTrack(key);
+                    const accTrack = topRule.track?.concat(track || []) || track;
+                    const accRule: ExecutionRealAccumulatable = {
+                        track: accTrack,
+                        args: this.cloneArgs({ ...topRule.args, ...rule.args }, rule.cloneArgs),
+                        expecteds: (rule.expected ? topRule.expecteds || [] : topRule.expecteds)
+                            ?.concat(rule.expected ? [[accTrack, rule.expected]] : []),
+                        accesses: (rule.access ? topRule.accesses || [] : topRule.accesses)
+                            ?.concat(rule.access ? [(accTrack || []).concat(rule.access)] : []),
+                        sides: (rule.side ? topRule.sides || [] : topRule.sides)?.concat(
+                            Object.entries(rule.side || {})?.map(([key, side]: [string, ExecutionRule]) => {
+                                return { ...side, track: accTrack.concat(this.prepareTrack(key) || []) };
+                            }) || []),
+
+                    };
+                    if (rule.action === action) {
+                        const ret = this.replaceArgs<ExecutionReal>({
+                            ...accRule,
+                            ...rule,
+                            fix: accRule.track?.[0],
+                            value: rule.value === undefined ? value ?? args?.value : rule.value,
+                        }, args, auth);
+                        return ret;
+                    }
+
+                    const nextRule = find(rule as never, accRule);
                     if (nextRule) return nextRule;
                 }
             }
             return null;
         };
-
-        return find(rules);
+        return find(actions);
     }
 
     static checkExpecteds(track: ExecutionTrack, contents: Record<string, unknown>, expecteds?: ExecutionExpectations, args?: Record<string, unknown>) {
@@ -408,7 +412,7 @@ export class Executer {
         });
     }
 
-    static execute(rules: ExecutionRule[], contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
+    static execute(rules: Record<string, ExecutionRule>, contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
         return new Promise<ExecuteResults>((res, rej) => {
             try {
                 const replacedExecs: ExecutionReal[] = [];
@@ -417,7 +421,7 @@ export class Executer {
                 const errors: ExecuteError[] = [];
 
                 execs.forEach((exec) => {
-                    const rule = this.findRule(rules, exec, auth);
+                    const rule = this.findRule(rules, exec.action, exec.value, exec.args, auth);
 
                     if (!rule) {
                         errors.push({

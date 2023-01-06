@@ -1,16 +1,7 @@
-[
-    {
+{
+    "/userList/[login === {login}]/level": {
         "action": "setUserLevel",
         "title": "Пользователь \"$fio\" теперь имеет уровень доступа $level",
-        "track": [
-            "userList",
-            [
-                "login",
-                "===",
-                "{login}"
-            ],
-            "level"
-        ],
         "method": "set",
         "level": 100,
         "value": "{level}",
@@ -21,4 +12,4 @@
             "fio": "#String"
         }
     }
-]
+}
