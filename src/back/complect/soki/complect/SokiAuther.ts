@@ -6,6 +6,7 @@ const bonjourPath = `${rootDirective}/bonjour`;
 
 export class SokiAuther {
     authList: SokiAuth[] = [];
+    mtime = 0;
     isReady = false;
     onReadies: ((authList: SokiAuth[]) => void)[] = [];
 
@@ -22,16 +23,24 @@ export class SokiAuther {
         else if (this.onReadies.indexOf(cb) < 0) this.onReadies.push(cb);
     }
 
+    updateMtime() {
+        this.mtime = new Date(fs.statSync(bonjourPath).mtime).getTime();
+    }
+
     getAuthList() {
         return new Promise<SokiAuth[]>((res, rej) => {
             fs.readFile(bonjourPath, 'utf-8', (err, data) => {
                 if (err) {
                     fs.writeFile(bonjourPath, '[]', null, (error) => {
                         if (error) rej();
-                        else res([]);
+                        else {
+                            this.updateMtime();
+                            res([]);
+                        }
                     });
                 } else {
                     try {
+                        this.updateMtime();
                         res(JSON.parse(data));
                     } catch (e) {
                         rej();
@@ -88,7 +97,10 @@ export class SokiAuther {
                                 const authListText = JSON.stringify(authList);
                                 fs.writeFile(bonjourPath, authListText, null, (error) => {
                                     if (error) rej('Неизвестная ошибка');
-                                    else res({ ...auth, passw });
+                                    else {
+                                        this.updateMtime();
+                                        res({ ...auth, passw });
+                                    }
                                 });
                             } catch (e: any) {
                                 rej(e.message);

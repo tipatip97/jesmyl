@@ -6,6 +6,7 @@ export interface FilerAppRequirement {
     name: string,
     ext?: string,
     level?: number,
+    get?: () => { data: any, mtime: number },
     map?: (data: any) => any,
     prepare?: (data: any, auth?: LocalSokiAuth | null) => any,
 }

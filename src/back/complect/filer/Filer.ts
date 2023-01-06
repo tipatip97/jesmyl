@@ -6,7 +6,10 @@ import cm from '../../apps/cm/config';
 import index from '../../apps/index/config';
 import spy from '../../apps/spy/config';
 import leader from '../../apps/leader/config';
+import admin from '../../apps/admin/config';
 import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, SimpleKeyValue } from './Filer.model';
+
+const getByConfigLabel = '[GET BY CONFIG]';
 
 const actionsRequirement: FilerAppRequirement = {
   name: 'actions',
@@ -60,6 +63,7 @@ export class Filer {
         cm,
         spy,
         leader,
+        admin,
       } as FilerAppStore;
       let waits = 0;
       let oks = 0;
@@ -69,7 +73,26 @@ export class Filer {
         .forEach(([appName, app]) => {
           const content: FilerContent = this.contents[appName] = {};
           const loadInContent = (requ: string | FilerAppRequirement, cb?: () => void) => {
-            const { name, ext = 'json', level = 0, prepare = (data: unknown) => data, map = () => null } = smylib.isStr(requ) ? { name: requ } : requ;
+            const {
+              name,
+              ext = 'json',
+              level = 0,
+              prepare = (data: unknown) => data,
+              map = () => null,
+            } = smylib.isStr(requ) ? { name: requ } : requ;
+
+            if (!smylib.isStr(requ) && requ.get) {
+              const { data, mtime } = requ.get();
+              content[name] = {
+                data,
+                string: getByConfigLabel,
+                mtime,
+                level,
+                prepare,
+                mapped: map(data),
+              };
+              return;
+            }
 
             const filename = this.fileName(appName, name, ext);
             const path = this.filePath(filename);
