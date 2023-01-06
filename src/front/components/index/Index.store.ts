@@ -13,7 +13,6 @@ export const indexExer = new Exer('index', indexStorage);
 const initialState: IndexState = {
   routing: indexStorage.getOr("routing", null),
   currentApp: indexStorage.getOr("currentApp", "cm"),
-  lastUpdate: indexStorage.get("lastUpdate"),
   auth: indexStorage.get('auth'),
   apps: indexStorage.getOr('apps', []),
   numModalUpdates: 0,

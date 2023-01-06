@@ -3,7 +3,6 @@ export interface SpyState extends SpyStoraged {
 }
 
 export interface SpyStorage extends SpyStoraged {
-    lastUpdate: number;
 }
 
 export interface SpyStoraged {

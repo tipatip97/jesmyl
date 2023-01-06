@@ -15,7 +15,6 @@ const initialState: CmState = {
   ccomw: cmStorage.get('ccomw'),
   ccatw: cmStorage.getOr('ccatw', 0),
   laterComwList: cmStorage.getOr('laterComwList', []),
-  lastUpdate: cmStorage.get('lastUpdate'),
   rollMode: null,
   isCmFullscreen: false,
   isMiniAnchor: false,

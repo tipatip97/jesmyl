@@ -11,7 +11,7 @@ export interface IndexState {
     errors: Partial<Record<IndexErrorScope, string>>,
     userMessages: UserMessage[],
 
-    lastUpdate?: number,
+    lastUpdates?: Partial<Record<AppName, number>>,
     numModalUpdates: number,
 }
 
@@ -31,7 +31,6 @@ export interface IndexStorage extends IndexState {
     theme: 'light-theme',
     actions: [],
 
-    lastUpdate: number,
     updateOnRefresher: boolean,
 }
 

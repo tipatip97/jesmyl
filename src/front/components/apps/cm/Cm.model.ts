@@ -51,8 +51,6 @@ export interface CmStoraged extends CmEditorStoraged {
     comTopTools: MigratableComToolName[];
     selectedComws: number[];
     currentMeetingsContext: number[];
-
-    lastUpdate?: number;
 }
 
 export interface CmStorage extends CmStoraged {

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
-import { appStorage, indexStorage } from "../../../shared/jstorages";
+import { indexStorage } from "../../../shared/jstorages";
 import { RootState } from "../../../shared/store";
 import * as versionNum from '../../../version.json';
 
@@ -12,27 +12,17 @@ export default function IndexAbout() {
   const currentAppName = useSelector(
     (state: RootState) => state.index.currentApp
   );
-  const [indexLastUpdate, setIdexLastUpdate] = useState(
-    indexStorage.get("lastUpdate")
-  );
-  const [appLastUpdate, setAppLastUpdate] = useState(
-    appStorage[currentAppName]?.get("lastUpdate")
-  );
+  const { index, [currentAppName]: app } = indexStorage.get("lastUpdates") || {};
+  const [indexLastUpdate, setIdexLastUpdate] = useState(index);
+  const [appLastUpdate, setAppLastUpdate] = useState(app);
 
-  indexStorage.listen("lastUpdate", "IndexAbout", (val) => {
-    setIdexLastUpdate(val);
-  });
-  appStorage[currentAppName]?.listen("lastUpdate", "IndexAbout", (val) => {
-    setAppLastUpdate(val);
+  indexStorage.listen("lastUpdates", "IndexAbout", (val) => {
+    const { index, [currentAppName]: app } = val || {};
+    setIdexLastUpdate(index);
+    setAppLastUpdate(app);
   });
 
-  useEffect(
-    () => () => {
-      indexStorage.mute("lastUpdate", "IndexAbout");
-      appStorage[currentAppName]?.mute("lastUpdate", "IndexAbout");
-    },
-    []
-  );
+  useEffect(() => () => { indexStorage.mute("lastUpdates", "IndexAbout"); }, []);
 
   const latsDate = useMemo(() => {
     const lastTimestamp = Math.max(indexLastUpdate || 0, appLastUpdate || 0);

@@ -1,10 +1,8 @@
 import { JStorageName } from "../app/App.model";
+import mylib from "./my-lib/MyLib";
 
 export type JStorageListener<Val> = (val: Val) => void;
 
-export interface JStorageTechFields {
-    lastUpdate: number;
-}
 type NonUndefined<T> = T extends undefined | null ? never : T;
 
 export class JStorage<Scope> {
@@ -93,11 +91,12 @@ export class JStorage<Scope> {
         return this.strings[key] ?? def;
     }
 
-    set<Key extends keyof Scope>(key: Key, val: Scope[Key], isRejectPropagation?: boolean): string | null {
+    set<Key extends keyof Scope>(key: Key, val: Scope[Key] | ((prevValue: Scope[Key]) => Scope[Key]), isRejectPropagation?: boolean): string | null {
         try {
             if (val === null) { this.rem(key); return null; }
-            const string = this.stringify(val);
-            return string && (localStorage[this.lsName(key)] = this.setValue(key, val, string, isRejectPropagation));
+            const value = mylib.invokeOrGet(val)(this.properties[key]);
+            const string = this.stringify(value);
+            return string && (localStorage[this.lsName(key)] = this.setValue(key, value, string, isRejectPropagation));
         } catch (error) {
             return null;
         }

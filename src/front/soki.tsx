@@ -73,7 +73,7 @@ export class SokiTrip {
                             .executeReals(contents, event.execs.list)
                             .then((fixes) => {
                                 appStore.refreshAreas(fixes, contents);
-                                if (event.execs?.lastUpdate) appStore.set('lastUpdate', event.execs.lastUpdate);
+                                this.setLastUpdates(this.appName, event.execs?.lastUpdate, null);
                             })
                             .catch();
                     }
@@ -89,6 +89,17 @@ export class SokiTrip {
             MyLib.entries(this.onConnectWatchers).forEach(([, cb]) => cb(isConnected));
     }
 
+    setLastUpdates(appName: SokiAppName, appLastUpdate?: number | null, inedxLastUpdate?: number | null) {
+        indexStorage.set('lastUpdates', (prev) => {            
+            const next = { ...prev };
+
+            if (appLastUpdate) next[appName] = appLastUpdate;
+            if (inedxLastUpdate) next.index = inedxLastUpdate;
+
+            return next;
+        });
+    }
+
     onConnect(watcherName: string) {
         return (callback: (isConnected: boolean) => void) => {
             this.onConnectWatchers[watcherName] = callback;
@@ -98,7 +109,7 @@ export class SokiTrip {
 
     onUnauthorize() {
         indexStorage.rem('auth');
-        SMyLib.entries(appStorage).forEach(([_, storage]) => storage.rem('lastUpdate'));
+        indexStorage.rem('lastUpdates');
     }
 
     watch<Name extends SokiEventName>(topName: Name) {
@@ -120,24 +131,22 @@ export class SokiTrip {
     }
 
     pullCurrentAppData() {
-        const currentAppName = this.appName;
-        const appStore = appStorage[currentAppName];
+        const { index: indexLastUpdate, [this.appName]: appLastUpdate } = indexStorage.get('lastUpdates') || {};
 
         this.send({
             pull: {
-                lastUpdate: appStore?.get('lastUpdate') || 0,
-                indexLastUpdate: indexStorage.get('lastUpdate') || 0
+                lastUpdate: appLastUpdate || 0,
+                indexLastUpdate: indexLastUpdate || 0
             }
         });
         this.watch('pull')((pull) => {
             if (pull) {
-                if (pull.appName !== currentAppName) return;
                 const { contents, lastUpdate, indexLastUpdate, indexContents } = pull;
+                const appStore = appStorage[pull.appName];
 
                 contents.forEach(({ key, value }) => appStore.set(key, value));
                 indexContents.forEach(({ key, value }) => indexStorage.set(key as never, value as never));
-                if (lastUpdate) appStore.set('lastUpdate', lastUpdate);
-                if (indexLastUpdate) indexStorage.set('lastUpdate', indexLastUpdate);
+                this.setLastUpdates(pull.appName, lastUpdate, indexLastUpdate);
             }
         });
     }

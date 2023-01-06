@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LocalSokiAuth } from "../../../back/complect/soki/soki.model";
 import mylib from "../../complect/my-lib/MyLib";
-import { indexStorage, appStorage } from "../../shared/jstorages";
+import { indexStorage } from "../../shared/jstorages";
 import { RootState } from "../../shared/store";
 import { soki } from "../../soki";
 import {
@@ -12,9 +12,7 @@ import {
 } from "./Index.model";
 import { indexExer, setAuthData, setCurrentApp, setError } from "./Index.store";
 
-const removeLastUpdates = () => {
-  Object.values(appStorage).forEach(storage => storage.set('lastUpdate', null));
-};
+const removeLastUpdates = () => indexStorage.rem('lastUpdates');
 
 export default function useAuth() {
   const dispatch = useDispatch();

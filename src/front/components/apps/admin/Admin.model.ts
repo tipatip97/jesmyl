@@ -3,7 +3,6 @@ export interface AdminState extends AdminStoraged {
 }
 
 export interface AdminStorage extends AdminStoraged {
-    lastUpdate: number;
 }
 
 export type UserVisits = { [login: string]: number };
