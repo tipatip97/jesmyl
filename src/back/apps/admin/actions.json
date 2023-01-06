@@ -2,14 +2,22 @@
     {
         "action": "setUserLevel",
         "title": "Пользователь \"$fio\" теперь имеет уровень доступа $level",
-        "track": ["setUserLevel"],
-        "method": "func",
+        "track": [
+            "userList",
+            [
+                "login",
+                "===",
+                "{login}"
+            ],
+            "level"
+        ],
+        "method": "set",
         "level": 100,
+        "value": "{level}",
+        "isSequre": true,
         "args": {
             "level": "#Number",
-            "passphrase": "#String",
             "login": "#String",
-            "at": "#String",
             "fio": "#String"
         }
     }
