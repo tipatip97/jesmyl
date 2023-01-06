@@ -651,6 +651,10 @@ export class MyLib extends SMyLib {
     findNext<Item>(items: Item[], item: Item, step = 1) {
         return items[(items.indexOf(item) + Math.abs(step)) % items.length];
     }
+
+    invokeOrGet(value: Function | any) {
+        return (...args: any[]) => this.isFunc(value) ? value(...args) : value;
+    }
 }
 
 
