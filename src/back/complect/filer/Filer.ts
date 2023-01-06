@@ -15,7 +15,7 @@ const actionsRequirement: FilerAppRequirement = {
   name: 'actions',
   map: (data: ExecutionRule[]) => {
     const map = (data: ExecutionRule[], top: Partial<ExecutionRule> = {}): ExecutionRule[] => {
-      return data.map(({ action, args, next, level, track, expected, value, method, title, shortTitle }) => {
+      return data.map(({ action, isSequre, args, next, level, track, expected, value, method, title, shortTitle }) => {
         const theTrack = top.track?.concat(track || []) || track;
         const nextTop: Partial<ExecutionRule> = {
           args: { ...top.args, ...args },
@@ -29,6 +29,7 @@ const actionsRequirement: FilerAppRequirement = {
           level,
           method,
           action,
+          isSequre,
           args: nextTop.args,
           track: nextTop.track,
           expecteds: nextTop.expected,

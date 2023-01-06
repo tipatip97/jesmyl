@@ -1,5 +1,6 @@
 import { exec } from 'child_process';
 import WebSocket, { WebSocketServer } from 'ws';
+import { sequreMD5Passphrase } from '../../values';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
 import { filer } from '../filer/Filer';
@@ -88,7 +89,7 @@ new WebSocketServer({
                 return;
             }
 
-            if (eventBody.system && smylib.md5(eventBody.system.passphrase) === 'dbd2f9f2ccd2c687c3e2cf63fc662a78') {
+            if (eventBody.system && smylib.md5(eventBody.system.passphrase) === sequreMD5Passphrase) {
                 if (eventBody.system.name === 'reloadFiles' && (capsule?.auth?.level || 0) >= 50) {
                     filer.load().then(() => send({ system: { name: 'reloadFiles', ok: true } })).catch(() => { });
                 }
@@ -133,7 +134,7 @@ new WebSocketServer({
                         .then(({ replacedExecs: list, lastUpdate, errorMessage }) => {
                             send({
                                 execs: { list, lastUpdate },
-                                errorMessage
+                                errorMessage,
                             }, null, client);
                         });
                     return;

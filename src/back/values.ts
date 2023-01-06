@@ -1,0 +1,1 @@
+export const sequreMD5Passphrase = 'dbd2f9f2ccd2c687c3e2cf63fc662a78';

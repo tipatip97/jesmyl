@@ -36,6 +36,7 @@ export interface ExecutionRule {
     value?: any,
     expecteds?: [ExecutionTrack, [] | {}][],
     next?: ExecutionRule[],
+    isSequre?: boolean,
 }
 
 export type ExecutionExpectations = [ExecutionTrack, {} | []][];
@@ -52,6 +53,7 @@ export interface ExecutionReal extends ExecutionRealAccumulatable {
     action: string;
     method: ExecutionMethod,
     shortTitle?: string,
+    isSequre?: boolean,
     level?: number,
     value: any,
     uniqs?: string[],
@@ -74,8 +76,10 @@ export interface ExecutionResponse {
 }
 
 export enum ExecuteErrorType {
+    Level = 'Нет прав',
     Access = 'Запрет',
     NoRule = 'Не найдено',
+    Sequre = 'Не верный пароль',
 }
 
 export interface ExecuteError {

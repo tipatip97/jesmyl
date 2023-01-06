@@ -1,4 +1,5 @@
 /* eslint-disable eqeqeq */
+import { sequreMD5Passphrase } from "../../values";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
 import { ExecuteError, ExecuteErrorType, ExecuteResults, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionTrack, TrackerRet } from "./Executer.model";
@@ -338,13 +339,9 @@ export class Executer {
                 if (rule.action === exec.action) {
                     const ret = this.replaceArgs<ExecutionReal>({
                         ...accRule,
-                        action: rule.action,
-                        method: rule.method,
-                        level: rule.level,
-                        uniqs: rule.uniqs,
+                        ...rule,
                         fix: accRule.track[0],
                         value: rule.value === undefined ? exec.value ?? exec.args?.value : rule.value,
-                        shortTitle: rule.shortTitle,
                     }, exec.args, auth);
                     return ret;
                 }
@@ -422,44 +419,62 @@ export class Executer {
                 execs.forEach((exec) => {
                     const rule = this.findRule(rules, exec, auth);
 
-                    if (rule)
-                        if (this.isAccessed(rule.accesses, contents, exec.args, auth)) {
-                            if (level != null && rule.level && rule.level > level) {
-                                errors.push({
-                                    type: ExecuteErrorType.Access,
-                                    note: rule.shortTitle || rule.action
-                                });
-                                return;
-                            }
-                            if (smylib.isStr(rule.fix) && !fixes.includes(rule.fix)) fixes.push(rule.fix);
-
-                            if (rule?.track) {
-                                const value = rule.value;
-                                const { lastTrace, penultimate, target } = this.checkExpecteds(rule.track, contents, rule.expecteds, rule.args);
-
-                                replacedExecs.push(rule);
-
-                                this.doIt({
-                                    target,
-                                    penultimate,
-                                    lastTrace,
-                                    value,
-                                    auth,
-                                    args: exec.args,
-                                    method: rule.method,
-                                    uniqs: rule.uniqs,
-                                }).then((did) => {
-                                    if (did && rule.sides) this.execSides(rule.sides, contents, auth);
-                                });
-                            }
-                        } else errors.push({
-                            type: ExecuteErrorType.Access,
-                            note: rule.shortTitle || rule.action
+                    if (!rule) {
+                        errors.push({
+                            type: ExecuteErrorType.NoRule,
+                            note: exec.action
                         });
-                    else errors.push({
-                        type: ExecuteErrorType.NoRule,
-                        note: exec.action
-                    });
+                        return;
+                    }
+
+                    const note = rule.shortTitle || rule.action;
+
+                    if (!this.isAccessed(rule.accesses, contents, exec.args, auth)) {
+                        errors.push({
+                            type: ExecuteErrorType.Access,
+                            note,
+                        });
+                        return;
+                    }
+
+                    if (rule.isSequre && (smylib.md5(exec.args?.passphrase || '') !== sequreMD5Passphrase)) {
+                        errors.push({
+                            type: ExecuteErrorType.Sequre,
+                            note,
+                        });
+                        return;
+                    }
+
+                    if (level != null && rule.level && rule.level > level) {
+                        errors.push({
+                            type: ExecuteErrorType.Level,
+                            note,
+                        });
+                        return;
+                    }
+
+                    if (smylib.isStr(rule.fix) && !fixes.includes(rule.fix)) fixes.push(rule.fix);
+
+                    if (rule?.track) {
+                        const value = rule.value;
+                        const { lastTrace, penultimate, target } = this.checkExpecteds(rule.track, contents, rule.expecteds, rule.args);
+
+                        replacedExecs.push(rule);
+
+                        this.doIt({
+                            target,
+                            penultimate,
+                            lastTrace,
+                            value,
+                            auth,
+                            args: exec.args,
+                            method: rule.method,
+                            uniqs: rule.uniqs,
+                        }).then((did) => {
+                            if (did && rule.sides) this.execSides(rule.sides, contents, auth);
+                        });
+                    }
+
                 });
 
                 const errorMessage = SMyLib.entries(errors.sort((a, b) => a.type > b.type ? 1 : a.type < b.type ? -1 : 0)

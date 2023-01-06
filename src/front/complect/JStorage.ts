@@ -52,7 +52,7 @@ export class JStorage<Scope> {
     }
 
     refreshAreas<Key extends keyof Scope>(areas: Key[], contents: Record<Key, unknown>) {
-        areas.forEach((key) => this.set(key, { ...contents[key] as Scope[Key] }));
+        areas.forEach((key) => this.set(key, contents[key] as Scope[Key]));
     }
 
     parse(val: string) {
