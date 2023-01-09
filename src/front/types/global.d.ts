@@ -7,4 +7,5 @@ declare global {
     type und = undefined;
     type ArrayMapCb<T> = (box: T, boxi: number, boxa: T[]) => T;
     type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
+    type TimeOut = ReturnType<typeof setTimeout> | und;
 }

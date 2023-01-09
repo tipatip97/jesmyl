@@ -5,7 +5,9 @@ import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
+import { MyLib } from "../../../../complect/my-lib/MyLib";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
+import { qrCodeMaster } from "../../../../complect/qr-code/QRCodeMaster";
 import navConfigurers from "../../../../shared/navConfigurers";
 import { RootState } from "../../../../shared/store";
 import { soki } from "../../../../soki";
@@ -29,9 +31,7 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
   const currentApp = apps.find((app) => app.name === currentAppName);
   const appConfigs = {} as Record<AppName, ReturnType<typeof useNavConfigurer>>;
 
-  Object.entries(navConfigurers).forEach(
-    ([name, config]) => (appConfigs[name as AppName] = config())
-  );
+  MyLib.entries(navConfigurers).forEach(([name, config]) => (appConfigs[name] = config()));
 
   const filteredApps = apps.filter(
     (app) => app !== currentApp && appNames.indexOf(app.name) > -1
@@ -100,6 +100,11 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
             title="Настройки"
             onClick={() => goTo("settings")}
           />
+          {auth?.level === 100 && <BrutalItem
+            icon="qr-code"
+            title="Читать QR"
+            onClick={() => qrCodeMaster.read().then((data) => console.log(data))}
+          />}
           <BrutalItem
             icon="info-outline"
             title="О приложении"
