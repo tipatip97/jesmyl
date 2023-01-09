@@ -11,15 +11,19 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
   removed = false;
   incorrectName = false;
   corrects: Record<string, CorrectsBox | nil> = {};
+  isCreated = false;
 
   renameCol<Coln extends keyof IExportableCol>(name: string, coln: Coln, onFix?: (correct: string) => void, isSetExec = true, isSetAllText?: boolean) {
     const action = `${coln}Rename`;
+    const prev = this.name;
     const corrects = this.nameCorrects(name, coln, onFix, `${action}:${this.wid}`, isSetAllText);
 
-    if (isSetExec) {
+    this.name = name;
+
+    if (!this.isCreated && isSetExec) {
       const exec = this.execCol({
         action,
-        prev: this.name,
+        prev,
         method: 'set',
         value: name,
         args: { value: name },
@@ -27,13 +31,12 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
       }, coln);
       this.corrects.name = exec?.corrects ?? corrects;
     } else this.corrects.name = corrects;
-
-    this.name = name;
   }
 
   removeCol<Coln extends keyof IExportableCol>(coln: Coln, isRemoved = true) {
     this.execCol({
-      action: `${coln}Del`
+      action: `${coln}Del`,
+      method: 'remove',
     }, coln);
     return this.removed = isRemoved;
   }
@@ -41,6 +44,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
   comeBackCol<Coln extends keyof IExportableCol>(coln: Coln) {
     this.execCol({
       action: `${coln}ComeBack`,
+      method: 'set',
       anti: ({ action, args }) => {
         if (action === `${coln}Del` && args?.[`${coln}w`] === this.wid)
           return () => true;

@@ -18,7 +18,7 @@ export default function OrdersRedactor() {
   return (
     <div className="orders-redactor">
       {ccom.orders?.map((ord, ordi, orda) => {
-        const leadHeader = ord.top.header(
+        const leadHeader = ord.top.header?.(
           {
             isEdit: true,
             isTexted: ord.top.isInherit,

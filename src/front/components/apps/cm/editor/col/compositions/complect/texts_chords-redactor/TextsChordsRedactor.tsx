@@ -49,7 +49,7 @@ export default function TextsChordsRedactor({
                                       o.top.isAnchorInheritPlus
                                         ? "&#9875;"
                                         : ""
-                                    }${o.top.header()}${
+                                    }${o.top.header?.()}${
                                       o.top.style?.isInherit
                                         ? ` ${o.top.style.name}`
                                         : ""

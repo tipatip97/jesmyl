@@ -30,6 +30,7 @@ export class User extends SourceBased<IExportableUser> {
         this.exec({
             action: 'setUserLevel',
             prev: this.level,
+            method: 'set',
             value: level,
             args: {
                 level,

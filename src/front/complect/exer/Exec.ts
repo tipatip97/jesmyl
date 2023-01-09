@@ -101,6 +101,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
         if (exec) {
             mylib.func(exec.onSet).call(exec);
             if (exec.args != null) this.args = {
+                ...this.args,
                 ...exec.args,
                 ...(this.method === 'set' ? { prev: this.prev } : null),
             };

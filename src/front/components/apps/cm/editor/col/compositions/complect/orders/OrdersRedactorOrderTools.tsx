@@ -167,7 +167,7 @@ export default function OrdersRedactorOrderTools({
           onClick={() => exec(ccom.addOrderAnchor(ord))}
         >
           <EvaIcon name="link-outline" className="abs-icon" />
-          <div className="title">Ссылка на {ord.top.header()}</div>
+          <div className="title">Ссылка на {ord.top.header?.()}</div>
           <div className="abs-action" />
         </div>
       )}

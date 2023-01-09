@@ -126,7 +126,7 @@ export class EditableOrder extends Order {
                 ordw: mylib.def(wid, this.wid),
                 comw: this.com.wid,
                 name: this.com.name,
-                blockn: this.top.header({}, true),
+                blockn: this.top.header?.({}, true),
                 isAnchor: this.isAnchor,
                 ...bag.args
             },

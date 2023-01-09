@@ -1,4 +1,3 @@
-import { Exec } from "../../../../../../complect/exer/Exec";
 import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../../Cm.store";
@@ -20,7 +19,6 @@ export class EditableCom extends Com {
     col: EditableCol<IExportableCom>;
     initial: Com;
     protected _o?: EditableOrder[];
-    isCreated = false;
 
     constructor(top: IExportableCom, index: number, cols?: EditableCols) {
         super(top, index, cols);
@@ -32,6 +30,9 @@ export class EditableCom extends Com {
     get name() { return this.col?.getBasic('n') || ''; }
     set name(value) { this.col.setExportable('n', value); }
 
+    get isCreated() { return this.col.isCreated; }
+    set isCreated(val: boolean) { this.col.isCreated = val; }
+
     scope(action?: string, uniq?: string | number) {
         return [this.wid, '.', mylib.typ('[action]', action), ':', [].concat(mylib.def(uniq, ['[uniq]'])).join(',')].join('');
     }
@@ -42,20 +43,49 @@ export class EditableCom extends Com {
         return new EditableOrder(top, this);
     }
 
-    create<Value>(onLoad: (exec: Exec<Value>) => void) {
+    create(onLoad: () => void) {
         if (this.isCreated) return false;
         this.exec({
             action: 'comAdd',
+            method: 'set',
+            prev: NaN,
             args: {
                 comw: this.wid,
+                value: this.toCreateDict()
             },
             onLoad
         });
         return this.isCreated = true;
     }
 
+    toCreateDict() {
+        return {
+            ...this.top,
+            ...this.basics,
+            ...this.col.toDict(),
+            o: this.ords.map((topOrd) => {
+                const ord = { ...topOrd };
+                delete ord.originWid;
+                delete ord.header;
+
+                if (!ord.p?.length) delete ord.p;
+
+                return ord;
+            })
+        };
+    }
+
     exec<Value>(bag: FreeExecDict<Value>) {
-        this.col.execCol(bag, 'com');
+        if (this.isCreated)
+            setTimeout(() => this.col.execCol({
+                action: 'comAdd',
+                method: 'set',
+                prev: NaN,
+                args: {
+                    value: this.toCreateDict()
+                },
+            }, 'com'));
+        else this.col.execCol(bag, 'com');
     }
 
     rename(name: string, onCorrecting?: ((val?: string) => any | nil | void) | nil, isSetExec = true, isSetAllText?: boolean) {
@@ -71,11 +101,12 @@ export class EditableCom extends Com {
     }
 
     switchLang() {
-        const value = this.langi ? 0 : 1;
+        const prev = this.langi;
+        const value = this.langi = this.langi ? 0 : 1;
 
         this.exec({
             action: 'comSetLangi',
-            prev: this.langi,
+            prev,
             method: 'set',
             value,
             uniq: this.wid,
@@ -83,8 +114,6 @@ export class EditableCom extends Com {
                 value
             },
         });
-
-        this.langi = value;
     }
 
     remove(isRemoved = true) {
@@ -288,6 +317,7 @@ export class EditableCom extends Com {
 
         this.exec({
             action: 'comAddOrderBlock',
+            method: 'push',
             args: {
                 ordw: w,
                 texti: t,
@@ -342,6 +372,7 @@ export class EditableCom extends Com {
 
         this.exec({
             action: 'removeBlock',
+            method: 'remove',
             args: {
                 value: coli,
                 coln: coln === 'texts' ? 't' : 'c',
@@ -398,8 +429,9 @@ export class EditableCom extends Com {
         });
 
         this.orders.forEach(ord => {
-            if (ord.top.source && ord.top.source.w !== ord.top.source.originWid)
-                value[ord.top.source.originWid] = ord.top.source.w;
+            const originWid = ord.top.source?.originWid;
+            if (originWid != null && ord.top.source && ord.top.source.w !== originWid)
+                value[originWid] = ord.top.source.w;
         });
 
         this.exec({
@@ -418,10 +450,11 @@ export class EditableCom extends Com {
         this.exec({
             action: 'removeOrderBlock',
             uniq: wid,
+            method: 'remove',
             args: {
                 ordw: wid,
                 isAnchor: +isAnchor,
-                blockn: top.header()
+                blockn: top.header?.()
             },
             anti: ({ action, args, args: { comw } = {} }) => {
                 if (action === "comAddOrderBlock" && comw === this.wid && wid === args?.wid)
@@ -447,10 +480,11 @@ export class EditableCom extends Com {
 
         this.exec({
             action: 'comAddOrderAnchorBlock',
+            method: 'push',
             args: {
                 ordw: wid,
                 anchor,
-                blockn: ord.top.header(),
+                blockn: ord.top.header?.(),
             }
         });
 

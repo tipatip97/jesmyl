@@ -27,7 +27,7 @@ export interface FreeExecDict<Value> {
     scope?: string;
     prev?: Value;
     value?: Value;
-    method?: ExecutionMethod;
+    method: ExecutionMethod;
     args?: Record<string, any>;
     generalId?: string | number;
     createByPath?: boolean;

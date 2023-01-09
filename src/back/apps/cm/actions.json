@@ -167,15 +167,8 @@
                 "action": "comAdd",
                 "title": "Добавлена новая Песня",
                 "method": "push",
-                "value": {
-                    "w": "{comw}",
-                    "n": "",
-                    "c": [],
-                    "t": [],
-                    "o": []
-                },
                 "args": {
-                    "comw": "#Number"
+                    "value": "#Dict"
                 }
             },
             "/[w === {comw}]": {

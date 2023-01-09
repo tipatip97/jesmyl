@@ -19,7 +19,7 @@ export interface IExportableOrder {
     u?: number; // Целевой айди
     v?: num; // Видимость блока
     w: number; // Уникальный айди
-    originWid: number; // Неизменяемый уникальный айди
+    originWid?: number; // Неизменяемый уникальный айди
 }
 
 export type INewExportableOrder = Omit<IExportableOrder, 'w' | 'originWid'>;
@@ -71,7 +71,7 @@ export interface IExportableOrderTop extends IExportableOrder {
     anchorInheritIndex?: number;
     sourceIndex?: number;
     viewIndex?: number;
-    header: (bag?: OrderTopHeaderBag, isRequired?: boolean) => ReactNode;
+    header?: (bag?: OrderTopHeaderBag, isRequired?: boolean) => ReactNode;
     style?: StyleBlock;
 }
 

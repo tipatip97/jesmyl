@@ -335,7 +335,7 @@ export default function ComRepeats() {
                         if (isChordBlock) {
                           if (
                             await modalService.confirm(
-                              `Сбросить повторения блока "${startOrd.top.header()}"?`,
+                              `Сбросить повторения блока "${startOrd.top.header?.() || ''}"?`,
                               "Сброс"
                             )
                           ) {

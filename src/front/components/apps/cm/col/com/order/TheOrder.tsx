@@ -30,7 +30,7 @@ export default function TheOrder(props: ITheOrderProps) {
         className={`${className} styled-header anchor`}
         ref={(el) => el && (orderUnit.element = el)}
       >
-        {orderUnit.top.header({ isTexted: false, r: orderUnit.repeatsTitle })}
+        {orderUnit.top.header?.({ isTexted: false, r: orderUnit.repeatsTitle })}
       </div>
     );
   }

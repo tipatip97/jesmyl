@@ -74,6 +74,7 @@ export class EditableCat extends Cat {
 
     this.exec({
       action: 'catClearStack',
+      method: 'set',
       anti: ({ action }) => {
         if (action === 'catClearStack' && !isNeedClear)
           return () => false;
@@ -111,6 +112,7 @@ export class EditableCat extends Cat {
     if (index < 0) {
       this.exec({
         action: 'catBindCom',
+        method: 'push',
         args: {
           comw: com.wid,
           value: com.wid,
@@ -125,6 +127,7 @@ export class EditableCat extends Cat {
     } else {
       this.exec({
         action: 'catUnbindCom',
+        method: 'remove',
         args: {
           comw: com.wid,
           comn: com.name,
