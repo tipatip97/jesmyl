@@ -11,11 +11,11 @@ let isClosed = true;
 let isClosable = true;
 let onOpenPopup: ((close: () => boolean) => void) | und;
 
+const isAbsoluteFloatPopupOpenSelector = (state: RootState) => state.complect.isAbsoluteFloatPopupOpen;
+
 export default function useAbsoluteFloatPopup() {
   const dispatch = useDispatch();
-  const isAbsoluteFloatPopupOpen = useSelector(
-    (state: RootState) => state.complect.isAbsoluteFloatPopupOpen
-  );
+  const isAbsoluteFloatPopupOpen = useSelector(isAbsoluteFloatPopupOpenSelector);
 
   const ret = {
     isAbsoluteFloatPopupOpen,
@@ -77,9 +77,7 @@ export function ABSOLUTE__FLOAT__POPUP({
 
   return (
     <div
-      className={`absolute-float-popup${
-        isAbsoluteFloatPopupOpen && popupContent ? " open" : ""
-      }`}
+      className={`absolute-float-popup${isAbsoluteFloatPopupOpen && popupContent ? " open" : ""}`}
       onClick={() => closeAbsoluteFloatPopup()}
     >
       <div

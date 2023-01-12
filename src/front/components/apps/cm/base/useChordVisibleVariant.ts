@@ -4,11 +4,13 @@ import { cmStorage } from "../../../../shared/jstorages";
 import { ChordVisibleVariant } from "../Cm.model";
 import { setChordVisibleVariant } from "../Cm.store";
 
+const chordVisibleVariantSelector = (state: RootState) => state.cm.chordVisibleVariant;
+
 export function useChordVisibleVariant(): [ChordVisibleVariant, (val: ChordVisibleVariant) => void] {
     const dispatch = useDispatch();
 
     return [
-        useSelector((state: RootState) => state.cm.chordVisibleVariant),
+        useSelector(chordVisibleVariantSelector),
         (val: ChordVisibleVariant) => {
             cmStorage.set('chordVisibleVariant', val);
             dispatch(setChordVisibleVariant(val));

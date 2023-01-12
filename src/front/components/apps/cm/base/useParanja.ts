@@ -5,11 +5,12 @@ import { setParanjaMode } from "../Cm.store";
 export type ParanjaMode = null | 'open' | 'dark';
 
 const actions: (() => void)[] = [];
+const paranjaModeSelector = (state: RootState) => state.cm.paranjaMode;
 
 export default function useParanja() {
     const dispatch = useDispatch();
     const ret = {
-        paranjaMode: useSelector((state: RootState) => state.cm.paranjaMode),
+        paranjaMode: useSelector(paranjaModeSelector),
         closeParanja: () => {
             actions.shift();
             dispatch(setParanjaMode(null));

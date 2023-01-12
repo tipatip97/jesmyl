@@ -6,8 +6,7 @@ import mylib from "../my-lib/MyLib";
 import {
   ModalConfig,
   ModalConfigButton,
-  ModalConfigInput,
-  ModalFixed,
+  ModalConfigInput
 } from "./Modal.model";
 import "./Modal.scss";
 import modalService from "./Modal.service";
@@ -57,9 +56,11 @@ export const onActionClick = (
   }
 };
 
-export default function Modal(props: ModalFixed) {
+const numModalUpdatesSelector = (state: RootState) => state.index.numModalUpdates;
+
+export default function Modal() {
   const [config, setConfig] = useState(modalService.current());
-  useSelector((state: RootState) => state.index.numModalUpdates);
+  useSelector(numModalUpdatesSelector);
 
   const dispatch = useDispatch();
   const forceUpdate = () => {

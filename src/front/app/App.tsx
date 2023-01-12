@@ -17,10 +17,10 @@ import AppRouter from "./AppRouter";
 
 listenThemeChanges();
 
+const currentAppSelector = (state: RootState) => state.index.currentApp;
+
 function App() {
-  const app: IndexAppName = useSelector(
-    (state: RootState) => state.index.currentApp
-  );
+  const app: IndexAppName = useSelector(currentAppSelector);
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const { goBack, registerBackAction } = navConfigurers[app]();

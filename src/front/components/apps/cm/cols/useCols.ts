@@ -8,8 +8,10 @@ import { IExportableCols } from "./Cols.model";
 
 export let localCols: Cols | und;
 
+const numColsUpdatesSelector = (state: RootState) => state.cm.numColsUpdates;
+
 export function useCols(): [Cols | und, (val: IExportableCols) => void] {
-    useSelector((state: RootState) => state.cm.numColsUpdates);
+    useSelector(numColsUpdatesSelector);
     const dispatch = useDispatch();
     const [ccat, setCcat] = useCcat();
     const [ccom, setCcom] = useCcom();

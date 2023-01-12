@@ -23,6 +23,8 @@ import {
 } from "./Com.model";
 import { useCcom } from "./useCcom";
 
+const comTopToolsSelector = (state: RootState) => state.cm.comTopTools;
+
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
   const [ccom] = useCcom();
@@ -35,7 +37,7 @@ export default function useMigratableComTools() {
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { isMarked, toggleMarked } = useMarks();
   const [, switchFullscreen] = useFullScreen();
-  const comTopTools = useSelector((state: RootState) => state.cm.comTopTools);
+  const comTopTools = useSelector(comTopToolsSelector);
   const nav = useCmNav();
 
   const makeToolList = (

@@ -18,11 +18,14 @@ import {
 
 let runTimeTimers: StoragedGameTimerDict = { news: {}, redacts: {} };
 
+const numUpdatesTimersSelector = (state: RootState) => state.leader.numUpdatesTimers;
+const gameTimersSelector = (state: RootState) => state.leader.gameTimers;
+
 export default function useGameTimer(topTimerw?: number, fff = '') {
   const dispatch = useDispatch();
-  useSelector((state: RootState) => state.leader.numUpdatesTimers);
+  useSelector(numUpdatesTimersSelector);
   const { cgame: game } = useGames();
-  const gameTimers = useSelector((state: RootState) => state.leader.gameTimers);
+  const gameTimers = useSelector(gameTimersSelector);
 
   const topTimer = useMemo(() => {
     return (topTimerw && game?.timers?.find((timer) => timer.wid === topTimerw)) || null;

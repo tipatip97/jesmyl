@@ -10,6 +10,8 @@ import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
 import useTranslation from "./useTranslation";
 
+const isShowTranslationInfoSelector = (state: RootState) => state.cm.isShowTranslationInfo;
+
 export default function Translations({
   hideComList,
 }: {
@@ -19,9 +21,7 @@ export default function Translations({
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
   const [isShowTurnButton, setIsShowTurnButton] = useState(false);
   const [isRotateScreen, rotateScreen] = useState(false);
-  const isShowInfo = useSelector(
-    (state: RootState) => state.cm.isShowTranslationInfo
-  );
+  const isShowInfo = useSelector(isShowTranslationInfoSelector);
   const [, setCcom] = useCcom();
 
   const {

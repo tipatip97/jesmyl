@@ -15,14 +15,13 @@ let isClosed = true;
 let isClosable = true;
 let onOpenPopup: ((close: () => boolean) => void) | und;
 
+const isAbsoluteBottomPopupOpenSelector = (state: RootState) => state.complect.isAbsoluteBottomPopupOpen;
+const numAbsoluteBottomPopupUpdatesSelector = (state: RootState) => state.complect.numAbsoluteBottomPopupUpdates;
+
 export default function useAbsoluteBottomPopup() {
   const dispatch = useDispatch();
-  const isAbsoluteBottomPopupOpen = useSelector(
-    (state: RootState) => state.complect.isAbsoluteBottomPopupOpen
-  );
-  useSelector(
-    (state: RootState) => state.complect.numAbsoluteBottomPopupUpdates
-  );
+  const isAbsoluteBottomPopupOpen = useSelector(isAbsoluteBottomPopupOpenSelector);
+  useSelector(numAbsoluteBottomPopupUpdatesSelector);
 
   const ret = {
     isAbsoluteBottomPopupOpen,

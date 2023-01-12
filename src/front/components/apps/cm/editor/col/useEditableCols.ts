@@ -6,8 +6,10 @@ import { EditableCols } from "./EditableCols";
 
 export let localEditableCols: EditableCols | und;
 
+const numColsUpdatesSelector = (state: RootState) => state.cm.numColsUpdates;
+
 export function useEditableCols(): [EditableCols | und, (val: IExportableCols) => void] {
-    useSelector((state: RootState) => state.cm.numColsUpdates);
+    useSelector(numColsUpdatesSelector);
     const dispatch = useDispatch();
 
     return [localEditableCols, (val: IExportableCols) => {

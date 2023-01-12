@@ -12,11 +12,15 @@ let cgame: Game | und;
 let localGames: GamesStore | und;
 let teamGames: Game[] | und;
 
+const numUpdatesGamesSelector = (state: RootState) => state.leader.numUpdatesGames;
+const cgamewSelector = (state: RootState) => state.leader.cgamew;
+const gamesSelector = (state: RootState) => state.leader.games;
+
 export default function useGames() {
     const dispatch = useDispatch();
-    useSelector((state: RootState) => state.leader.numUpdatesGames);
-    const cgamew = useSelector((state: RootState) => state.leader.cgamew);
-    const games = useSelector((state: RootState) => state.leader.games);
+    useSelector(numUpdatesGamesSelector);
+    const cgamew = useSelector(cgamewSelector);
+    const games = useSelector(gamesSelector);
     const { ccontext } = useLeaderContexts();
     const { goTo } = useLeaderNav();
 

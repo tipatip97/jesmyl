@@ -7,11 +7,15 @@ import { Com } from "./Com";
 
 let ccom: Com | nil = null;
 
+const numColsUpdatesSelector = (state: RootState) => state.cm.numColsUpdates;
+const numComUpdatesSelector = (state: RootState) => state.cm.numComUpdates;
+const ccomwSelector = (state: RootState) => state.cm.ccomw;
+
 export function useCcom(): [Com | nil, (val: Com, isPreventSave?: boolean) => void] {
-    useSelector((state: RootState) => state.cm.numColsUpdates);
-    useSelector((state: RootState) => state.cm.numComUpdates);
+    useSelector(numColsUpdatesSelector);
+    useSelector(numComUpdatesSelector);
     const dispatch = useDispatch();
-    const ccomw = useSelector((state: RootState) => state.cm.ccomw);
+    const ccomw = useSelector(ccomwSelector);
 
     if (!ccom && ccomw != null) ccom = localCols?.coms.find((com) => ccomw === com.wid);
 

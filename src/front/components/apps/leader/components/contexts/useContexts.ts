@@ -9,11 +9,15 @@ import { LeaderContextCreatable, LeaderContextsImportable } from "./Contexts.mod
 let localContexts: LeaderContexts | und;
 let localCurrentContext: LeaderContext | und;
 
+const numUpdatesContextsSelector = (state: RootState) => state.leader.numUpdatesContexts;
+const contextsSelector = (state: RootState) => state.leader.contexts;
+const ccontextwSelector = (state: RootState) => state.leader.ccontextw;
+
 export default function useLeaderContexts() {
     const dispatch = useDispatch();
-    useSelector((state: RootState) => state.leader.numUpdatesContexts);
-    const contextsImportable = useSelector((state: RootState) => state.leader.contexts);
-    const ccontextw = useSelector((state: RootState) => state.leader.ccontextw);
+    useSelector(numUpdatesContextsSelector);
+    const contextsImportable = useSelector(contextsSelector);
+    const ccontextw = useSelector(ccontextwSelector);
 
     if (!localCurrentContext && ccontextw && localContexts) {
         localCurrentContext = localContexts.list?.find(({ wid }) => wid === ccontextw);

@@ -5,9 +5,11 @@ import { setMarkList } from "../../Cm.store";
 import { Com } from "../../col/com/Com";
 import { useCols } from "../../cols/useCols";
 
+const marksSelector = (state: RootState) => state.cm.marks;
+
 export function useMarks() {
     const dispatch = useDispatch();
-    const marks = useSelector((state: RootState) => state.cm.marks);
+    const marks = useSelector(marksSelector);
     const [cols] = useCols();
     const unsets: number[] = [];
     const markedComs = cols && marks.map(comw => {

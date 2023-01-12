@@ -65,13 +65,16 @@ let speedScreen: HTMLDivElement | null = null;
 let interval: number;
 let rollMode: CmRollMode = null;
 
+const rollModeMarksSelector = (state: RootState) => state.cm.rollModeMarks;
+const rollModeSelector = (state: RootState) => state.cm.rollMode;
+
 export function useRoll() {
   const dispatch = useDispatch();
   const { registerBackAction } = useCmNav();
 
   const ret = {
-    rollModeMarks: useSelector((state: RootState) => state.cm.rollModeMarks),
-    rollMode: useSelector((state: RootState) => state.cm.rollMode),
+    rollModeMarks: useSelector(rollModeMarksSelector),
+    rollMode: useSelector(rollModeSelector),
     switchRollMode: (topRollMode: CmRollMode) => {
       rollMode = topRollMode;
       dispatch(changeRollMode(topRollMode));

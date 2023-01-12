@@ -17,18 +17,19 @@ import TranslationScreen from "./TranslationScreen";
 
 let currWin: Window | null = null;
 
+const translationUpdatesSelector = (state: RootState) => state.cm.translationUpdates;
+const translationBlockSelector = (state: RootState) => state.cm.translationBlock;
+const isTranslationBlockVisibleSelector = (state: RootState) => state.cm.isTranslationBlockVisible;
+const translationBlockPositionSelector = (state: RootState) => state.cm.translationBlockPosition;
+
 export default function useTranslation() {
-  useSelector((state: RootState) => state.cm.translationUpdates);
+  useSelector(translationUpdatesSelector);
 
   const dispatch = useDispatch();
   const { goTo, goBack, registerBackAction } = useCmNav();
   const [ccom, setCcom] = useCcom();
-  const currTexti = useSelector(
-    (state: RootState) => state.cm.translationBlock
-  );
-  const isVisible = useSelector(
-    (state: RootState) => state.cm.isTranslationBlockVisible
-  );
+  const currTexti = useSelector(translationBlockSelector);
+  const isVisible = useSelector(isTranslationBlockVisibleSelector);
   const texts = useMemo(() => ccom?.getOrderedTexts(), [ccom]);
 
   const ret = {
@@ -38,9 +39,7 @@ export default function useTranslation() {
     currText: isVisible ? texts && texts[currTexti] : "",
     currTexti,
     texts,
-    position: useSelector(
-      (state: RootState) => state.cm.translationBlockPosition
-    ),
+    position: useSelector(translationBlockPositionSelector),
     comPack: useComPack(),
     nextText: () =>
       ret.texts &&

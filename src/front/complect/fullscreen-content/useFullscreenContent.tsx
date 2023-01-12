@@ -12,12 +12,12 @@ let fullscreenContent: ReactNode;
 let isOpen = false;
 let onOpenPopup: ((close: () => boolean) => void) | und;
 
+const fullscreenContentOpenModeSelector = (state: RootState) => state.complect.fullscreenContentOpenMode;
+
 export default function useFullscreenContent() {
   const ret = {
     dispatch: useDispatch(),
-    fullscreenContentOpenMode: useSelector(
-      (state: RootState) => state.complect.fullscreenContentOpenMode
-    ),
+    fullscreenContentOpenMode: useSelector(fullscreenContentOpenModeSelector),
     closeFullscreenContent: (): boolean => {
       ret.dispatch(setFullscreenContentOpenMode(null));
       fullscreenContent = null;

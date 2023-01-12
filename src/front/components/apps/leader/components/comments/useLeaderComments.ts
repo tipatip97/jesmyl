@@ -8,12 +8,15 @@ import { leaderExer, updateRrrorSentComments, updateSendingComments } from "../.
 import useGames from "../games/useGames";
 import { LeaderCommentImportable, SendingComment, SendingCommentArea, SendingComments, SendingCommentsAreaName } from "./LeaderComment.model";
 
+const sendingCommentsSelector = (state: RootState) => state.leader.sendingComments;
+const errorSentCommentsSelector = (state: RootState) => state.leader.errorSentComments;
+
 export default function useLeaderComments() {
     const dispatch = useDispatch();
     const { auth } = useAuth();
     const login = auth?.login ?? NaN;
-    const sendingComments = useSelector((state: RootState) => state.leader.sendingComments);
-    const errorSentComments = useSelector((state: RootState) => state.leader.errorSentComments);
+    const sendingComments = useSelector(sendingCommentsSelector);
+    const errorSentComments = useSelector(errorSentCommentsSelector);
     const { gamesImportable } = useGames();
     const save = (arean: SendingCommentsAreaName, areaw: number, listw: number, mapper: (comments: SendingComment[], area: SendingCommentArea) => void, throwComments?: SendingComments) => {
         const generalDict = mylib.clone(throwComments ?? sendingComments);

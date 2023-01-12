@@ -11,6 +11,8 @@ import HumansMore from "./HumansMore";
 import { HumanListComponentProps } from "./People.model";
 import usePeople from "./usePeople";
 
+const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
+
 export default function HumanList({
   isAsPage,
   onMoreClick,
@@ -29,9 +31,7 @@ export default function HumanList({
   const { people } = usePeople();
   const [term, setTerm] = useState("");
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const humanListSortVariant = useSelector(
-    (state: RootState) => state.leader.humanListSortVariant
-  );
+  const humanListSortVariant = useSelector(humanListSortVariantSelector);
 
   const humanList = useMemo(() => {
     const humans =

@@ -8,10 +8,13 @@ import { Cat } from "./Cat";
 let ccat: Cat | undefined;
 let zeroCat: Cat | nil;
 
+const numColsUpdatesSelector = (state: RootState) => state.cm.numColsUpdates;
+const ccatwSelector = (state: RootState) => state.cm.ccatw;
+
 export function useCcat(): [Cat | nil, (val: Cat) => void, Cat | undefined] {
-    useSelector((state: RootState) => state.cm.numColsUpdates);
+    useSelector(numColsUpdatesSelector);
     const dispatch = useDispatch();
-    const ccatw = useSelector((state: RootState) => state.cm.ccatw);
+    const ccatw = useSelector(ccatwSelector);
 
     if (!zeroCat) zeroCat = localCols?.cats.find((cat) => 0 === cat.wid);
     if (!ccat && ccatw != null) ccat = localCols?.cats.find((cat) => ccatw === cat.wid);

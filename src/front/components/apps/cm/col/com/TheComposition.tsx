@@ -16,6 +16,9 @@ import { useCcom } from "./useCcom";
 import useComPack from "./useComPack";
 import useMigratableComTools from "./useMigratableComTools";
 
+const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
+const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
+
 export default function TheComposition() {
   const [ccom, setCcom] = useCcom();
   const { addLaterComw } = useLaterComList();
@@ -23,8 +26,8 @@ export default function TheComposition() {
   const { topTools, toggleTopTool } = useMigratableComTools();
   const [comList] = useComPack();
   const [chordVisibleVariant] = useChordVisibleVariant();
-  const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
-  const isMiniAnchor = useSelector((state: RootState) => state.cm.isMiniAnchor);
+  const fontSize = useSelector(fontSizeSelector);
+  const isMiniAnchor = useSelector(isMiniAnchorSelector);
 
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);

@@ -8,11 +8,13 @@ import ExecList from "./ExecList";
 import { Exer } from "./Exer";
 import { ExerStorage } from "./Exer.model";
 
+const numExerUpdatesSelector = (state: RootState) => state.complect.numExerUpdates;
+
 export default function useExer<Storage extends ExerStorage>(
   exer: Exer<Storage>
 ) {
   const dispatch = useDispatch();
-  useSelector((state: RootState) => state.complect.numExerUpdates);
+  useSelector(numExerUpdatesSelector);
   const { openFullscreenContent, closeFullscreenContent } =
     useFullscreenContent();
 

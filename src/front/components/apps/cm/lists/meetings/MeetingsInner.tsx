@@ -10,6 +10,9 @@ import {
 } from "../../Cm.store";
 import { Meetings } from "./Meetings";
 
+const favoriteMeetingsSelector = (state: RootState) => state.cm.favoriteMeetings;
+const currentMeetingsContextSelector = (state: RootState) => state.cm.currentMeetingsContext;
+
 export default function MeetingsInner<Meets extends Meetings>({
   meetings,
   onEventClick,
@@ -21,12 +24,8 @@ export default function MeetingsInner<Meets extends Meetings>({
 }) {
   const dispatch = useDispatch();
   const { registerBackAction } = useCmNav();
-  const favorites = useSelector(
-    (state: RootState) => state.cm.favoriteMeetings
-  );
-  const currContext = useSelector(
-    (state: RootState) => state.cm.currentMeetingsContext
-  );
+  const favorites = useSelector(favoriteMeetingsSelector);
+  const currContext = useSelector(currentMeetingsContextSelector);
   const setCurrContext = (context: number[]) =>
     dispatch(updateCurrentMeetingsContext(context));
 

@@ -4,8 +4,10 @@ import RollControled from "../../base/RolledContent";
 import { Com } from "../../col/com/Com";
 import ComOrders from "../../col/com/orders/ComOrders";
 
+const comFontSizeSelector = (state: RootState) => state.cm.comFontSize;
+
 export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
-  const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
+  const fontSize = useSelector(comFontSizeSelector);
 
   return (
     <div className="com-expand-content full-container">

@@ -7,13 +7,14 @@ import { Com } from "../col/com/Com";
 import { useCols } from "../cols/useCols";
 
 let localSelectedComs: Com[] | nil;
+const selectedComwsSelector = (state: RootState) => state.cm.selectedComws;
 
 export default function useSelectedComs() {
     const dispatch = useDispatch();
     const [cols] = useCols();
 
     const ret = {
-        selectedComws: useSelector((state: RootState) => state.cm.selectedComws),
+        selectedComws: useSelector(selectedComwsSelector),
         takeSelectedComs: (): Com[] => {
             if (localSelectedComs?.length) return localSelectedComs;
 

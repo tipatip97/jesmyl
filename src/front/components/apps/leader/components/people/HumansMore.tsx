@@ -6,11 +6,11 @@ import { RootState } from "../../../../../shared/store";
 import { setHumanListSortVariant } from "../../Leader.store";
 import { humanFieldTranslations } from "./People.model";
 
+const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
+
 export default function HumansMore({ moreNode }: { moreNode?: ReactNode }) {
   const dispatch = useDispatch();
-  const humanListSortVariant = useSelector(
-    (state: RootState) => state.leader.humanListSortVariant
-  );
+  const humanListSortVariant = useSelector(humanListSortVariantSelector);
 
   return (
     <>

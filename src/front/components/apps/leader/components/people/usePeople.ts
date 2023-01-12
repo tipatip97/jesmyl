@@ -6,10 +6,13 @@ import { PeopleImportable } from "./People.model";
 
 let localPeople: People | und;
 
+const numUpdatesPeopleSelector = (state: RootState) => state.leader.numUpdatesPeople;
+const peopleSelector = (state: RootState) => state.leader.people;
+
 export default function usePeople() {
     const dispatch = useDispatch();
-    useSelector((state: RootState) => state.leader.numUpdatesPeople);
-    const peopleImportable = useSelector((state: RootState) => state.leader.people);
+    useSelector(numUpdatesPeopleSelector);
+    const peopleImportable = useSelector(peopleSelector);
 
     const ret = {
         people: localPeople,

@@ -7,9 +7,11 @@ import LeaderGroup from "./Group";
 
 let localCurrentGroup: LeaderGroup | nil;
 
+const cgroupwSelector = (state: RootState) => state.leader.cgroupw;
+
 export default function useLeaderGroups() {
     const dispatch = useDispatch();
-    const cgroupw = useSelector((state: RootState) => state.leader.cgroupw);
+    const cgroupw = useSelector(cgroupwSelector);
     const { ccontext } = useLeaderContexts();
     const { goTo } = useLeaderNav();
 

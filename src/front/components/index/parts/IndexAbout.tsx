@@ -7,11 +7,12 @@ import * as versionNum from '../../../version.json';
 
 const version = { ...versionNum };
 
+const appsSelector = (state: RootState) => state.index.apps;
+const currentAppSelector = (state: RootState) => state.index.currentApp;
+
 export default function IndexAbout() {
-  const apps = useSelector((state: RootState) => state.index.apps);
-  const currentAppName = useSelector(
-    (state: RootState) => state.index.currentApp
-  );
+  const apps = useSelector(appsSelector);
+  const currentAppName = useSelector(currentAppSelector);
   const { index, [currentAppName]: app } = indexStorage.get("lastUpdates") || {};
   const [indexLastUpdate, setIdexLastUpdate] = useState(index);
   const [appLastUpdate, setAppLastUpdate] = useState(app);

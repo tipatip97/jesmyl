@@ -14,11 +14,14 @@ import { indexExer, setAuthData, setCurrentApp, setError } from "./Index.store";
 
 const removeLastUpdates = () => indexStorage.rem('lastUpdates');
 
+const authSelector = (state: RootState) => state.index.auth;
+const errorsSelector = (state: RootState) => state.index.errors;
+
 export default function useAuth() {
   const dispatch = useDispatch();
   const [isConnected, setIsConnected] = useState(true);
-  const auth = useSelector((state: RootState) => state.index.auth);
-  const errors = useSelector((state: RootState) => state.index.errors);
+  const auth = useSelector(authSelector);
+  const errors = useSelector(errorsSelector);
   const sendData = <AuthType extends keyof AuthorizeInSystem>(type: AuthType, data: AuthorizeInSystem[typeof type]) => {
     return soki.send({
       authorization: {

@@ -9,14 +9,15 @@ import { useCols } from "../cols/useCols";
 
 let laterComs: Com[];
 const setLaterComs = (cols: Cols, list: number[]) => laterComs = list.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
+const laterComwListSelector = (state: RootState) => state.cm.laterComwList;
 
 export default function useLaterComList({ maxStack = 4 } = {}) {
     const dispatch = useDispatch();
-    const list = useSelector((state: RootState) => state.cm.laterComwList);
+    const list = useSelector(laterComwListSelector);
     const [cols] = useCols();
 
     if (cols && laterComs == null) setLaterComs(cols, list);
-    useEffect(() => { cols && setLaterComs(cols, list); }, [list]);
+    useEffect(() => { cols && setLaterComs(cols, list); }, [cols, list]);
 
     const ret = {
         laterComs,

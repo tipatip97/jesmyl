@@ -18,12 +18,13 @@ import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
 import UserMore from "./UserMore";
 
+const appsSelector = (state: RootState) => state.index.apps;
+const currentAppSelector = (state: RootState) => state.index.currentApp;
+
 export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appName: AppName) => void }) {
   const dispatch = useDispatch();
-  const apps = useSelector((state: RootState) => state.index.apps);
-  const currentAppName = useSelector(
-    (state: RootState) => state.index.currentApp
-  );
+  const apps = useSelector(appsSelector);
+  const currentAppName = useSelector(currentAppSelector);
   const { openFullscreenContent } = useFullscreenContent();
   const { goTo } = navConfigurers["index"]();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();

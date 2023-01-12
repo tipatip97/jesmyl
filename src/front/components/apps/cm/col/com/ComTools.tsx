@@ -10,10 +10,12 @@ import { riseUpComUpdate, setComFontSize } from "../../Cm.store";
 import { useCcom } from "./useCcom";
 import useMigratableComTools from "./useMigratableComTools";
 
+const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
+
 export default function ComTools() {
   const dispatch = useDispatch();
   const [ccom] = useCcom();
-  const fontSize = useSelector((state: RootState) => state.cm.comFontSize);
+  const fontSize = useSelector(fontSizeSelector);
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const [chordVisibleVariant] = useChordVisibleVariant();
 

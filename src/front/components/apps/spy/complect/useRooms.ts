@@ -31,10 +31,13 @@ export const unsecretSpyRole = (word: string) => {
     return role === 'ШПИОН' ? null : role;
 };
 
+const cacheSelector = (state: RootState) => state.spy.cache;
+const roomwSelector = (state: RootState) => state.spy.roomw;
+
 export default function useRooms() {
     const dispatch = useDispatch();
-    const cache = useSelector((state: RootState) => state.spy.cache);
-    const roomw = useSelector((state: RootState) => state.spy.roomw);
+    const cache = useSelector(cacheSelector);
+    const roomw = useSelector(roomwSelector);
     const { goTo } = useSpyNav();
     const currentRoom = (roomw && cache?.rooms?.find(({ w }) => roomw === w)) || null;
     const { auth } = useAuth();

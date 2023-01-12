@@ -10,12 +10,16 @@ import { User } from "./User";
 let localUsers: User[] = [];
 let currentUser: User | und;
 
+const userLoginSelector = (state: RootState) => state.admin.currentUser;
+const visitsSelector = (state: RootState) => state.admin.userVisits;
+const userMessagesSelector = (state: RootState) => state.index.userMessages;
+
 export default function useUsers() {
     const dispatch = useDispatch();
-    const userLogin = useSelector((state: RootState) => state.admin.currentUser);
+    const userLogin = useSelector(userLoginSelector);
+    const visits = useSelector(visitsSelector);
+    const userMessages = useSelector(userMessagesSelector);
     const { goTo } = useAdminNav();
-    const visits = useSelector((state: RootState) => state.admin.userVisits);
-    const userMessages = useSelector((state: RootState) => state.index.userMessages);
     const now = Date.now();
 
     if (!currentUser) currentUser = localUsers.find(user => user.login === userLogin);

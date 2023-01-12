@@ -13,11 +13,15 @@ import { EditableMeetingsEvent } from "./EditableMeetingsEvent";
 let localEditableMeetings: EditableMeetings | nil;
 let currentEvent: EditableMeetingsEvent | nil;
 
+const numMeetingsUpdateSelector = (state: RootState) => state.cm.numMeetingsUpdate;
+const meetingsSelector = (state: RootState) => state.cm.meetings;
+const eventwSelector = (state: RootState) => state.cm.eventw;
+
 export function useEditableMeetings() {
     const dispatch = useDispatch();
-    useSelector((state: RootState) => state.cm.numMeetingsUpdate);
-    const meetings = useSelector((state: RootState) => state.cm.meetings);
-    const eventw = useSelector((state: RootState) => state.cm.eventw);
+    useSelector(numMeetingsUpdateSelector);
+    const meetings = useSelector(meetingsSelector);
+    const eventw = useSelector(eventwSelector);
     const { jumpTo } = useCmNav();
     const [cols] = useEditableCols();
 

@@ -6,13 +6,13 @@ import { RootState } from "../../../../../shared/store";
 import { cmExer } from "../../Cm.store";
 import { useEditableMeetings } from "./useEditableMeetings";
 
+const currContextSelector = (state: RootState) => state.cm.currentMeetingsContext;
+
 export default function MeetingsCreator({ close }: { close: () => void }) {
   const [name, setName] = useState("");
   const { meetings } = useEditableMeetings();
   const { exec } = useExer(cmExer);
-  const currContext = useSelector(
-    (state: RootState) => state.cm.currentMeetingsContext
-  );
+  const currContext = useSelector(currContextSelector);
   const [, currContextw] = meetings?.getContexts(currContext) || [];
   const input = useKeyboard()("MeetingsCreator", {
     className: "full-width",
