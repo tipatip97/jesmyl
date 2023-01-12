@@ -18,7 +18,7 @@ export class Com extends BaseNamed<IExportableCom> {
   initialName: string;
   protected _translationMap?: number[] | null;
   protected _o?: Order[];
-  private _ords?: IExportableOrder[];
+  protected _ords?: IExportableOrder[];
   private _chordLabels?: string[][][];
   private _usedChords?: Record<string, string>;
 
@@ -317,7 +317,7 @@ export class Com extends BaseNamed<IExportableCom> {
     if (!blockStyles) return null;
     const tops = this.ords
       .map((ord) => {
-        ord.originWid = mylib.def(ord.originWid, ord.w);
+        ord.originWid = ord.originWid ?? ord.w;
         return ord;
       })
       .sort((a, b) => a.w - b.w);

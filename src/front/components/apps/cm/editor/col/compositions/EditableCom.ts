@@ -21,7 +21,7 @@ export class EditableCom extends Com {
     protected _o?: EditableOrder[];
 
     constructor(top: IExportableCom, index: number, cols?: EditableCols) {
-        super(top, index, cols);
+        super(mylib.clone(top), index, cols);
         this.col = new EditableCol(top);
         this.initialName = this.name;
         this.initial = new Com(mylib.clone(top), index, cols);
@@ -35,6 +35,12 @@ export class EditableCom extends Com {
 
     scope(action?: string, uniq?: string | number) {
         return [this.wid, '.', mylib.typ('[action]', action), ':', [].concat(mylib.def(uniq, ['[uniq]'])).join(',')].join('');
+    }
+
+    get ords(): IExportableOrderTop[] {
+        if (this._ords == null) this._ords = mylib.clone(this.forcedArray('o'));
+
+        return this._ords as IExportableOrderTop[];
     }
 
     get orders(): EditableOrder[] | null { return this._o || this.setOrders() as EditableOrder[]; }
@@ -359,11 +365,10 @@ export class EditableCom extends Com {
     }
 
     removeBlock(coln: 'texts' | 'chords', coli: number) {
-        const { indexes } = this.getOrdersOnBlockDeletion(coln, coli);
+        if (coln === 'texts') {
+            const { indexes } = this.getOrdersOnBlockDeletion(coln, coli);
 
-        if (coln === 'texts' && indexes) {
-
-            indexes.forEach(({ ord }) => {
+            indexes?.forEach(({ ord }) => {
                 this.removeOrderBlock(ord);
             });
         }

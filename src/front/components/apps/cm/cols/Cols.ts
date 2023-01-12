@@ -19,7 +19,7 @@ export class Cols extends SourceBased<IExportableCols> implements ICols {
       this.coms = (mylib.typ([], cols?.coms) as IExportableCom[])
         .sort((a, b) => a.w - b.w)
         .map((com, comi) => {
-          let top = com;
+          let top: IExportableCom = com;
 
           const comw = com.w;
           let prevCom;
