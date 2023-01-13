@@ -157,7 +157,7 @@ export class EditableCom extends Com {
             uniq: cat.wid,
             anti: ({ action, args }) => {
                 if (action === 'removeNativeNum' && (args ? args.catw === cat.wid && args.comw === this.wid : false))
-                    return () => false;
+                    return (strategy) => strategy.RememberNew;
             },
             args: {
                 catn: cat.name,
@@ -374,13 +374,19 @@ export class EditableCom extends Com {
         }
 
         this.updateOrderSticks(coln, coli, -1, coln === 'chords');
+        const colnLiteral = coln === 'texts' ? 't' : 'c';
 
         this.exec({
             action: 'removeBlock',
             method: 'remove',
+            uniq: `${coln}-${coli}`,
             args: {
                 value: coli,
-                coln: coln === 'texts' ? 't' : 'c',
+                coln: colnLiteral,
+            },
+            anti: ({ action, args }) => {
+                if (action === 'changeBlocks' && args && args.coln === colnLiteral && args.index === coli && args.comw === this.wid && args.value === '')
+                    return (strategy) => strategy.RememberNew;
             }
         });
         this[coln]?.splice(coli, 1);
@@ -463,7 +469,7 @@ export class EditableCom extends Com {
             },
             anti: ({ action, args, args: { comw } = {} }) => {
                 if (action === "comAddOrderBlock" && comw === this.wid && wid === args?.wid)
-                    return () => false;
+                    return (strategy) => strategy.RememberNew;
             },
         });
         const index = this.ords.findIndex(o => o.w === wid);
@@ -522,6 +528,7 @@ export class EditableCom extends Com {
         if (value == null) return;
         const execValue = value.replace(/^\s+|\s+$/gm, "");
         const corrects = this.setBlockCorrects(coln, coli, val);
+        const colnLiteral = coln === 'texts' ? 't' : 'c';
 
         this.exec({
             uniq: [coln, coli],
@@ -532,7 +539,7 @@ export class EditableCom extends Com {
             corrects,
             args: {
                 value: execValue,
-                coln: coln === 'texts' ? 't' : 'c',
+                coln: colnLiteral,
                 index: coli
             }
         });
@@ -640,7 +647,7 @@ export class EditableCom extends Com {
             anti: [
                 ({ action, args }) => {
                     if (action === 'setNativeNum' && (args ? args.catw === cat.wid && args.comw === this.wid : false))
-                        return () => null == prev;
+                        return (strategy) => null == prev ? strategy.RemoveNew : strategy.RememberNew;
                 },
             ],
         });

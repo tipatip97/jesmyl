@@ -20,32 +20,38 @@ export interface ExerStorage {
     actions: ExecRule[];
 }
 
-export type FreeExecDictAntiCallback<Value> = (exec: Exec<Value>) => (() => boolean | nil) | void;
+
+export const FreeExecDictAntiCallbackStrategy = {
+    RemoveNew: [],
+    RememberNew: [],
+} as const;
+
+export type FreeExecDictAntiCallback<Value> = (exec: Exec<Value>) => (<Key extends keyof typeof FreeExecDictAntiCallbackStrategy>(strategy: typeof FreeExecDictAntiCallbackStrategy) => typeof FreeExecDictAntiCallbackStrategy[Key] | nil) | void | nil;
 
 export interface FreeExecDict<Value> {
-    action: string;
-    scope?: string;
-    prev?: Value;
-    value?: Value;
-    method: ExecutionMethod;
-    args?: Record<string, any>;
-    generalId?: string | number;
-    createByPath?: boolean;
-    del?: boolean;
-    muted?: boolean;
-    errors?: string[];
-    uniq?: FreeExecDictUniq;
-    corrects?: CorrectsBox;
-    // верни функцию, если нашлось противное `exec` (в таком случае будет удалён противный `exec`),
-    // которая должна вернуть "предотвратить ли выполнение текущего `exec`?"
-    anti?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[];
+    action: string,
+    scope?: string,
+    prev?: Value,
+    value?: Value,
+    method: ExecutionMethod,
+    args?: Record<string, any>,
+    generalId?: string | number,
+    createByPath?: boolean,
+    del?: boolean,
+    muted?: boolean,
+    errors?: string[],
+    uniq?: FreeExecDictUniq,
+    corrects?: CorrectsBox,
+    // верни функцию, если нашлось противное `exec` (в таком случае будет удалён противный `exec`)
+    anti?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[],
     // верни функцию, если нашлось дружественное `exec`
     // (в таком случае, при удалении текущего, будет удалён и дружественный `exec`),
     // которая должна вернуть "удалить ли основное `exec`?"
-    friendly?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[];
+    friendly?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[],
 
-    onSet?: (exec: Exec<Value>) => void;
-    onLoad?: (exec: Exec<Value>) => void;
+    onSet?: (exec: Exec<Value>) => void,
+    onLoad?: (exec: Exec<Value>) => void,
+    data?: Record<string, any>,
 }
 
 export type FreeExecDictUniq = number | string | (string | number)[];

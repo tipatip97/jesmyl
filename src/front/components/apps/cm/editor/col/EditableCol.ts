@@ -47,7 +47,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
       method: 'set',
       anti: ({ action, args }) => {
         if (action === `${coln}Del` && args?.[`${coln}w`] === this.wid)
-          return () => true;
+          return (strategy) => strategy.RemoveNew;
       }
     }, coln);
 

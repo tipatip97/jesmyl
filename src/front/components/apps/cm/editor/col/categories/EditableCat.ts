@@ -77,7 +77,7 @@ export class EditableCat extends Cat {
       method: 'set',
       anti: ({ action }) => {
         if (action === 'catClearStack' && !isNeedClear)
-          return () => false;
+          return (strategy) => strategy.RememberNew;
       },
     });
 
@@ -120,7 +120,7 @@ export class EditableCat extends Cat {
         },
         anti: ({ action, args }) => {
           if (action === 'catUnbindCom' && args && args.comw === com.wid && args.catw === this.wid)
-            return () => true;
+            return (strategy) => strategy.RemoveNew;
         },
       });
       this.stack.push(com.wid);
@@ -134,7 +134,7 @@ export class EditableCat extends Cat {
         },
         anti: ({ action, args }) => {
           if (action === 'catBindCom' && args && args.comw === com.wid && args.catw === this.wid)
-            return () => true;
+            return (strategy) => strategy.RemoveNew;
         },
       });
       this.stack.splice(index, 1);

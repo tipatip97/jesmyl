@@ -83,7 +83,6 @@ class QrCodeMaster {
                     qrbox: { width: size, height: size }  // Optional, if you want bounded box UI
                 },
                 (decodedText) => {
-                    console.log(decodedText);
                     try {
                         const [passphrase, appName, dataName, connectionNumber, count, part, data]: QRMasterConnectData<unknown> = JSON.parse(decodedText);
                         if (qrCodePassphraseSign !== passphrase) return;

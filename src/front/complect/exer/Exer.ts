@@ -8,7 +8,7 @@ import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";
 import mylib from "../my-lib/MyLib";
 import { Exec } from "./Exec";
-import { ClientExecutionDict, ExecRule, ExerStorage, FreeExecDict, FreeExecDictAntiCallback } from "./Exer.model";
+import { ClientExecutionDict, ExecRule, ExerStorage, FreeExecDict, FreeExecDictAntiCallback, FreeExecDictAntiCallbackStrategy } from "./Exer.model";
 
 type Callback = (okRes: any, errRes: any) => void;
 
@@ -65,14 +65,15 @@ export class Exer<Storage extends ExerStorage> {
         const removeNabors = (nabors: FreeExecDictAntiCallback<Value>[], onFind: () => void) => {
             const remIndexes: number[] = [];
 
-            for (let execi = 0; execi < this.execs.length; execi++) {
-
-                for (const anti of nabors) {
+            for (const anti of nabors) {
+                for (let execi = 0; execi < this.execs.length; execi++) {
                     const prevent = anti(this.execs[execi]);
 
                     if (prevent) {
                         remIndexes.push(execi);
-                        if (prevent()) onFind();
+                        const startegies = FreeExecDictAntiCallbackStrategy;
+                        const strategy = prevent(startegies);
+                        if (strategy === startegies.RemoveNew) onFind();
                     }
                 }
                 if (isPrevented) break;
