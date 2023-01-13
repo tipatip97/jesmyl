@@ -13,6 +13,7 @@ export interface IndexState {
 
     lastUpdates?: Partial<Record<AppName, number>>,
     numModalUpdates: number,
+    isUseNativeKeyboard?: boolean,
 }
 
 export type IndexErrorScope = keyof RegisterData;

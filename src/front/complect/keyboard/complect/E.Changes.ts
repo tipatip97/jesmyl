@@ -14,7 +14,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         if (value === this.value) return;
         const prev = this.value;
         if (isRemember) this.remember('replaceAll');
-        this.valueChars = value.split('');
+        this.valueChars = value?.split('') || [];
         this.setCursorPosition(this.valueChars.length);
         this.scrollToView();
         this.setValues();

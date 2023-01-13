@@ -10,9 +10,11 @@
     overflow: hidden;
     transition: height .2s;
     background: var(--keyboard-flash-background);
+    pointer-events: none;
 
     &.active {
         height: var(--keyboard-flash-height);
+        animation: pointer-events-on 1s forwards;
     }
 
     &.more-open {
@@ -398,5 +400,15 @@
 
     to {
         border-color: transparent;
+    }
+}
+
+@keyframes pointer-events-on {
+    from {
+        pointer-events: none;
+    }
+
+    to {
+        pointer-events: all;
     }
 }

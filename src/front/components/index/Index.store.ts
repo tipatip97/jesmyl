@@ -14,6 +14,7 @@ const initialState: IndexState = {
   routing: indexStorage.getOr("routing", null),
   currentApp: indexStorage.getOr("currentApp", "cm"),
   auth: indexStorage.get('auth'),
+  isUseNativeKeyboard: indexStorage.get('isUseNativeKeyboard'),
   apps: indexStorage.getOr('apps', []),
   numModalUpdates: 0,
   errors: {},
@@ -45,6 +46,10 @@ export const slice = createSlice({
           state.errors[action.payload.scope] = action.payload.message;
       }
     },
+    switchIsUseNativeKeyboard: (state, action: PayloadAction<boolean | und>) => {
+      state.isUseNativeKeyboard = action.payload ?? !state.isUseNativeKeyboard;
+      indexStorage.set("isUseNativeKeyboard", state.isUseNativeKeyboard);
+    },
     riseUpModalUpdates: (state) => {
       state.numModalUpdates++;
     },
@@ -58,6 +63,7 @@ export const {
   setApps,
   setAuthData,
   riseUpModalUpdates,
+  switchIsUseNativeKeyboard,
 } = slice.actions;
 export default slice.actions;
 

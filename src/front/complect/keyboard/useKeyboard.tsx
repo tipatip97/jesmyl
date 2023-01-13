@@ -1,10 +1,11 @@
 import React, { ReactNode, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../shared/store";
 import propsOfClicker from "../clicker/propsOfClicker";
-import { isIPhone } from "../device-differences";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
 import {
   keyboardKeyDict,
-  keyboardNumberScreenLines,
+  keyboardNumberScreenLines
 } from "./Keyboard.complect";
 import { KeyboardInputProps } from "./Keyboard.model";
 import "./Keyboard.scss";
@@ -15,9 +16,11 @@ let currentInput: KeyboardInputStorage;
 let topForceUpdate: () => void = () => { };
 let topOnBlur: () => void = () => { };
 let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => { };
+const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 
 export default function useKeyboard() {
   const [updates, setUpdates] = useState(0);
+  const isUseNativeKeyboard = useSelector(isUseNativeKeyboardSelector);
 
   return (id: string, props: KeyboardInputProps) => {
     let localInput = inputDict[id];
@@ -57,11 +60,10 @@ export default function useKeyboard() {
       focus: localInput.focus,
     };
 
-    if (!isIPhone) {
+    if (!isUseNativeKeyboard) {
       const { className, onBlur, placeholder, type } = props;
       const nodeProps = {
         className, onBlur, placeholder, type,
-        defaultValue: props.initialValue,
         onInput: props.onInput && ((event: any) => props.onInput?.(event.target?.value, '')),
         onChange: props.onChange && ((event: any) => props.onChange?.(event.target?.value, '')),
         onPaste: props.onPaste && (async () => props.onPaste?.(await navigator.clipboard.readText())),
@@ -71,8 +73,9 @@ export default function useKeyboard() {
         {
           props.multiline
             ? <textarea {...nodeProps}
+              value={localInput.value}
               className="native-input"
-              onInput={(event) => localInput.replaceAll(event.currentTarget.value, false, false)}
+              onInput={(event) => localInput.replaceAll(event.currentTarget.value || '', false, false)}
               ref={(el) => {
                 if (el) {
                   el.rows = el.value.split('\n').length;
@@ -81,8 +84,9 @@ export default function useKeyboard() {
             />
             : <input
               {...nodeProps}
+              value={localInput.value}
               className="native-input"
-              onInput={(event) => localInput.replaceAll(event.currentTarget.value, false, false)}
+              onInput={(event) => localInput.replaceAll(event.currentTarget.value || '', false, false)}
             />
         }
       </div>;

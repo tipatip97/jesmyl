@@ -73,6 +73,10 @@ body {
         --keyboard-flash-height: 30vh;
         --footer-height: 0px;
         --footer-opacity: 0;
+
+        .phase-container > .content {
+            padding-bottom: var(--keyboard-flash-height);
+        }
     }
 
     .application-container {

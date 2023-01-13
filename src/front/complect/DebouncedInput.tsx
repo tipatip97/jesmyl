@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import EvaIcon, { EvaIconName } from "./eva-icon/EvaIcon";
 import useKeyboard from "./keyboard/useKeyboard";
 
@@ -24,7 +24,6 @@ export default function DebouncedInput(props: {
     className,
     textarea,
   } = props;
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [term, setTerm] = useState(initialTerm || "");
   const [termDebounced, setTermDebounced] = useState(initialTerm);
   const [timeout, setTimeOut] = useState();
@@ -33,6 +32,7 @@ export default function DebouncedInput(props: {
     placeholder: props.placeholder,
     onChange: (value) => setTerm(value),
     initialValue: term,
+    multiline: textarea
   });
 
   useLayoutEffect(() => {
@@ -57,17 +57,7 @@ export default function DebouncedInput(props: {
   return (
     <div className={`debounced-input ${className}`}>
       {icon ? <EvaIcon name={icon} /> : null}
-      {textarea ? (
-        <textarea
-          className="input"
-          placeholder={props.placeholder}
-          onChange={(event) => setTerm(event.target.value)}
-          ref={textareaRef}
-          value={term}
-        />
-      ) : (
-        input.node
-      )}
+      {input.node}
     </div>
   );
 }
