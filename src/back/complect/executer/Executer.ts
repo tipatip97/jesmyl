@@ -544,7 +544,8 @@ export class Executer {
                     case 'remove':
                     case 'remove_each':
                         if (smylib.isArr(target) && penultimate && value && this.isUniq(uniqs, target, value))
-                            penultimate[lastTrace] = target.filter((source: any) => !this.isExpected(source, value as never, args));
+                            if (smylib.isNum(value)) target.splice(value, 1);
+                            else penultimate[lastTrace] = target.filter((source: any) => !this.isExpected(source, value as never, args));
                         break;
                     case 'migrate':
                         if (penultimate && value) {
