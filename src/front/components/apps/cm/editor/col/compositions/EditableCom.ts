@@ -305,12 +305,12 @@ export class EditableCom extends Com {
         this.afterOrderChange();
     }
 
-    add(fieldn: 'texts' | 'chords', value: string | string[]) {
+    add(fieldn: 'texts' | 'chords', value: string | string[], isInsert = false) {
 
         const emptyIndex = (mylib.findLastIndex(fieldn === 'texts' ? this.texts : this.chords, ch => ch) || 0) - -1;
 
         [value].flat().forEach((block, blocki) => {
-            this.changeBlock(fieldn, emptyIndex + blocki, block);
+            this.changeBlock(fieldn, emptyIndex + blocki, block, isInsert);
         });
 
         if (fieldn === 'chords') this.resetChordLabels();
@@ -375,6 +375,7 @@ export class EditableCom extends Com {
 
         this.updateOrderSticks(coln, coli, -1, coln === 'chords');
         const colnLiteral = coln === 'texts' ? 't' : 'c';
+        const currLen = this[coln]?.length;
 
         this.exec({
             action: 'removeBlock',
@@ -384,9 +385,16 @@ export class EditableCom extends Com {
                 value: coli,
                 coln: colnLiteral,
             },
-            anti: ({ action, args }) => {
-                if (action === 'changeBlocks' && args && args.coln === colnLiteral && args.index === coli && args.comw === this.wid && args.value === '')
-                    return (strategy) => strategy.RememberNew;
+            anti: (exec) => {
+                const { action, args, data } = exec;
+                if (action === 'changeBlocks' && args && args.coln === colnLiteral && args.comw === this.wid) {
+                    if (args.index === coli)
+                        return data?.isInsert
+                            ? (strategy) => strategy.RemoveNew
+                            : args.value === '' ? ((strategy) => strategy.RememberNew) : null;
+                    else if (currLen !== undefined && args.index === currLen - 1)
+                        return (strategy) => strategy.RememberNew;
+                }
             }
         });
         this[coln]?.splice(coli, 1);
@@ -523,7 +531,7 @@ export class EditableCom extends Com {
         return this.ords.reduce((w, ord) => (ord.w == null || ord.w < w) ? w : ord.w, -1) - -1;
     }
 
-    changeBlock(coln: 'texts' | 'chords', coli: number, val: string) {
+    changeBlock(coln: 'texts' | 'chords', coli: number, val: string, isInsert = false) {
         const value = coln === 'texts' ? val : this.transBlock(val, 12 - (this.transPosition || 0));
         if (value == null) return;
         const execValue = value.replace(/^\s+|\s+$/gm, "");
@@ -541,6 +549,9 @@ export class EditableCom extends Com {
                 value: execValue,
                 coln: colnLiteral,
                 index: coli
+            },
+            data: {
+                isInsert
             }
         });
 
@@ -560,11 +571,11 @@ export class EditableCom extends Com {
 
     insertBlocks(coln: 'texts' | 'chords', coli: number, value = '', prev = '...') {
         if (coli === (this[coln]?.length || 0) - 1) {
-            this.add(coln, '');
+            this.add(coln, '', true);
         } else {
             this[coln]
                 ?.concat(value)
-                .forEach((ccol, ccoli, ccola) => {
+                .forEach((_, ccoli, ccola) => {
                     if (ccoli <= coli) return;
                     const val = ccoli - 1 === coli
                         ? value
@@ -572,7 +583,7 @@ export class EditableCom extends Com {
                             ? prev
                             : '' + ccola[ccoli - 1];
 
-                    this.changeBlock(coln, ccoli, val);
+                    this.changeBlock(coln, ccoli, val, true);
                 });
 
             this.updateOrderSticks(coln, coli, 1);

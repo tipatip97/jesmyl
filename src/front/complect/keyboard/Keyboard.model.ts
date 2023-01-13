@@ -15,6 +15,7 @@ export type TouchSelectionMode = 'select' | 'delete' | 'navigate';
 
 export interface KeyboardInputProps {
     initialValue?: string;
+    nativeValue?: string;
     multiline?: boolean;
     type?: KeyboardInputPropsType;
     preferLanguage?: KeyboardKeyTranslateLanguage;

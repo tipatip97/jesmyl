@@ -25,11 +25,13 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
 
     onSet?: (exec: Exec<Value>) => [];
     onLoad?: (exec: Exec<Value>) => '';
+    data?: Record<string, any>;
 
     constructor(exec: ClientExecutionDict<Value>, rules: ExecRule[]) {
         super(exec);
         this.action = exec.action;
         this.method = exec.method;
+        this.data = exec.data;
         if (exec.method === 'set') this.prev = mylib.clone(exec.prev);
         this.corrects = exec.corrects;
 

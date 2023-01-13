@@ -1,3 +1,4 @@
+import EvaButton from "../../../../../../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import mylib from "../../../../../../../../complect/my-lib/MyLib";
@@ -29,6 +30,11 @@ export default function TextsChordsRedactor({
             corrects={ccom.corrects[`${ccoln}-block-${coli}`]}
           >
             <div>
+              {!coli &&
+                <EvaButton
+                  name="plus-circle-outline"
+                  onClick={() => exec(ccom.insertBlocks(ccoln, -1, ''))}
+                />}
               <div className="flex between">
                 <div>
                   {coli + 1 + ". "}
@@ -40,24 +46,22 @@ export default function TextsChordsRedactor({
                       dangerouslySetInnerHTML={{
                         __html: ords.length
                           ? mylib
-                              .unique(
-                                ords.map(
-                                  (o) =>
-                                    `${
-                                      o.top.isAnchor ||
-                                      o.top.isAnchorInherit ||
-                                      o.top.isAnchorInheritPlus
-                                        ? "&#9875;"
-                                        : ""
-                                    }${o.top.header?.()}${
-                                      o.top.style?.isInherit
-                                        ? ` ${o.top.style.name}`
-                                        : ""
-                                    }`
-                                ),
-                                (o) => o
-                              )
-                              .join(", ")
+                            .unique(
+                              ords.map(
+                                (o) =>
+                                  `${o.top.isAnchor ||
+                                    o.top.isAnchorInherit ||
+                                    o.top.isAnchorInheritPlus
+                                    ? "&#9875;"
+                                    : ""
+                                  }${o.top.header?.()}${o.top.style?.isInherit
+                                    ? ` ${o.top.style.name}`
+                                    : ""
+                                  }`
+                              ),
+                              (o) => o
+                            )
+                            .join(", ")
                           : "Нет упоминаний этого блока",
                       }}
                     />
@@ -79,9 +83,10 @@ export default function TextsChordsRedactor({
                 com={ccom}
                 col={col}
                 onChange={(value) => exec(ccom.changeBlock(ccoln, coli, value))}
-                onInsert={(value) =>
-                  exec(ccom.insertBlocks(ccoln, coli, value))
-                }
+              />
+              <EvaButton
+                name="plus-circle-outline"
+                onClick={() => exec(ccom.insertBlocks(ccoln, coli, ''))}
               />
             </div>
           </EditContainerCorrectsInformer>
