@@ -514,10 +514,10 @@ export class Executer {
             try {
                 switch (method) {
                     case 'set':
-                        if (penultimate) penultimate[lastTrace] = value;
+                        if (penultimate) penultimate[lastTrace] = smylib.clone(value);
                         break;
                     case 'set_all':
-                        if (target) SMyLib.entries(value).forEach(([key, val]) => target[key] = val);
+                        if (target) SMyLib.entries(smylib.clone(value)).forEach(([key, val]) => target[key] = val);
                         break;
                     case 'formula':
                         try {
@@ -536,10 +536,10 @@ export class Executer {
                         }
                         break;
                     case 'push':
-                        if (smylib.isArr(target) && this.isUniq(uniqs, target, value)) target?.push(value);
+                        if (smylib.isArr(target) && this.isUniq(uniqs, target, value)) target?.push(smylib.clone(value));
                         break;
                     case 'concat':
-                        if (penultimate && smylib.isArr(target) && this.isUniq(uniqs, target, value)) penultimate[lastTrace] = target.concat(value);
+                        if (penultimate && smylib.isArr(target) && this.isUniq(uniqs, target, value)) penultimate[lastTrace] = target.concat(smylib.clone(value));
                         break;
                     case 'remove':
                     case 'remove_each':
