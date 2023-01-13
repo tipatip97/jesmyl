@@ -26,40 +26,6 @@ export default function useKeyboard() {
     let localInput = inputDict[id];
     let inputNode;
 
-    const getNode = () =>
-      inputDict[id].node(
-        props,
-        () => {
-          setUpdates(updates + 1);
-          topForceUpdate();
-        },
-        () => {
-          currentInput?.blur();
-          topForceUpdate();
-          topOnBlur();
-          props.onBlur?.();
-        },
-        () => {
-          currentInput?.blur(inputDict[id] !== currentInput);
-          currentInput = inputDict[id];
-          topOnFocus(currentInput);
-          props.onFocus?.();
-        }
-      );
-
-    if (localInput) inputNode = getNode();
-    else {
-      localInput = inputDict[id] = new KeyboardInputStorage(props.initialValue);
-      inputNode = getNode();
-    }
-
-    const actions = {
-      replaceAll: localInput.replaceAll,
-      value: () => localInput.value,
-      write: localInput.write,
-      focus: localInput.focus,
-    };
-
     if (!isUseNativeKeyboard) {
       const { className, onBlur, placeholder, type, nativeValue } = props;
       const nodeProps = {
@@ -88,6 +54,33 @@ export default function useKeyboard() {
             />
         }
       </div>;
+    } else {
+      const getNode = () =>
+        inputDict[id].node(
+          props,
+          () => {
+            setUpdates(updates + 1);
+            topForceUpdate();
+          },
+          () => {
+            currentInput?.blur();
+            topForceUpdate();
+            topOnBlur();
+            props.onBlur?.();
+          },
+          () => {
+            currentInput?.blur(inputDict[id] !== currentInput);
+            currentInput = inputDict[id];
+            topOnFocus(currentInput);
+            props.onFocus?.();
+          }
+        );
+
+      if (localInput) inputNode = getNode();
+      else {
+        localInput = inputDict[id] = new KeyboardInputStorage(props.initialValue);
+        inputNode = getNode();
+      }
     }
 
     return {
@@ -98,11 +91,11 @@ export default function useKeyboard() {
         isInvokeOnInputEvent = true
       ) => {
         if (value !== undefined)
-          actions.replaceAll(value, isRemember, isInvokeOnInputEvent);
-        return actions.value();
+          localInput?.replaceAll(value, isRemember, isInvokeOnInputEvent);
+        return localInput?.value;
       },
-      focus: () => actions.focus(),
-      write: (value: string, isRememberAsPart?: boolean) => actions.write(value, isRememberAsPart),
+      focus: () => localInput.focus(),
+      write: (value: string, isRememberAsPart?: boolean) => localInput.write(value, isRememberAsPart),
       remove: () => {
         delete inputDict[id];
       },
