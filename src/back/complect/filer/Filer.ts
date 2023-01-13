@@ -95,7 +95,7 @@ export class Filer {
       SMyLib
         .entries(apps)
         .forEach(([appName, app]) => {
-          const content: FilerContent = this.contents[appName] = {};
+          const content: FilerContent = this.contents[appName] = {} as never;
           const loadInContent = (requ: string | FilerAppRequirement, cb?: () => void) => {
             const {
               name,
@@ -123,7 +123,7 @@ export class Filer {
 
             const createExpected = () => {
               if (content.actions) {
-                const action: ExecutionRule = content.actions.data.find(({ track, expected }: ExecutionRule) => {
+                const action = content.actions.mapped.find(({ track, expected }) => {
                   return expected !== undefined && track?.[0] === name;
                 });
 

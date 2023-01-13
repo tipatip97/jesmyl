@@ -1,3 +1,4 @@
+import { ExecutionRule } from "../executer/Executer.model";
 import { LocalSokiAuth, SokiAppName } from "../soki/soki.model";
 
 export type FilerAppStore = Record<SokiAppName, FilerAppConfig>;
@@ -23,14 +24,14 @@ export interface FilerApp extends FilerAppConfig {
     requirements: FilerAppRequirement[],
 }
 
-export interface FilerContentData {
+export interface FilerContentData<MappedData = unknown> {
     data: any,
     string: string,
     mtime: number,
     level: number,
     prepare: (data: any, auth?: LocalSokiAuth | null) => any,
-    mapped: unknown,
+    mapped: MappedData,
 }
 
-export type FilerContent = Record<string, FilerContentData>;
+export type FilerContent = Record<'actions', FilerContentData<ExecutionRule[]>> & Record<string, FilerContentData>;
 export type FilerContents = Record<Partial<SokiAppName>, FilerContent>;
