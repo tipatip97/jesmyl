@@ -79,3 +79,6 @@ export interface CmNavData {
     selectedComws: number[];
 }
 
+export interface CmQRData {
+    comws: number[],
+}

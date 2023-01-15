@@ -7,7 +7,7 @@ import {
 } from "../../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
 import CmApplication from "../Cm";
-import { CmNavData, CmStorage } from "../Cm.model";
+import { CmNavData, CmQRData, CmStorage } from "../Cm.model";
 import { cmExer } from "../Cm.store";
 import TheCat from "../col/cat/TheCat";
 import TheComposition from "../col/com/TheComposition";
@@ -57,6 +57,7 @@ const navigation: NavigationConfig<
       phase: ["lists"],
       title: "Списки",
       node: <Lists />,
+      markBadge: (qrData?: CmQRData) => !!qrData?.comws,
       next: [
         {
           phase: ["marks"],

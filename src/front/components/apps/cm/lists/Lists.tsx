@@ -1,8 +1,10 @@
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import useQRMaster from "../../../../complect/qr-code/useQRMaster";
 import useCmNav from "../base/useCmNav";
 import useSelectedComs from "../base/useSelectedComs";
+import { CmQRData } from "../Cm.model";
 import { useCcat } from "../col/cat/useCcat";
 import { useCols } from "../cols/useCols";
 import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
@@ -13,6 +15,7 @@ export default function Lists() {
   const [cols] = useCols();
   const [, setCcat] = useCcat();
   const { selectedComws, isPreventSaveNav } = useSelectedComs();
+  const { qrData } = useQRMaster<CmQRData>('cm');
 
   return (
     <PhaseCmContainer
@@ -36,6 +39,7 @@ export default function Lists() {
             <BrutalItem
               icon="checkmark-circle-2-outline"
               title="Выбранное"
+              markBadge={!!qrData?.comws?.length}
               onClick={() => goTo("selected", null, isPreventSaveNav())}
             />
           ) : null}

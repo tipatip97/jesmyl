@@ -1,6 +1,9 @@
+import { useEffect } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import useQRMaster from "../../../../../complect/qr-code/useQRMaster";
 import useSelectedComs from "../../base/useSelectedComs";
+import { CmQRData } from "../../Cm.model";
 import ComFace from "../../col/com/face/ComFace";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import LocalListToolsPopup from "../popups/LocalListToolsPopup";
@@ -8,6 +11,9 @@ import LocalListToolsPopup from "../popups/LocalListToolsPopup";
 export default function SelectedComs() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const coms = useSelectedComs().takeSelectedComs();
+  const { clearQRData, qrData } = useQRMaster<CmQRData>('cm');
+
+  useEffect(() => qrData?.comws && clearQRData('comws'), []);
 
   return (
     <PhaseCmContainer

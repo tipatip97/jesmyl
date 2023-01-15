@@ -1,6 +1,7 @@
 import { Html5Qrcode } from "html5-qrcode";
 import { renderApplication } from "../../..";
 import { AppName } from "../../app/App.model";
+import modalService from "../modal/Modal.service";
 import mylib from "../my-lib/MyLib";
 import './QRCode.scss';
 import { QRCodeReaderData, QRMasterConnectData, QRMasterControllerData } from "./QRCodeMaster.model";
@@ -59,13 +60,13 @@ class QrCodeMaster {
         }
     }
 
-    read<Value>(facingMode: 'user' | 'environment' = 'environment') {
+    read<Data, Key extends keyof Data>(facingMode: 'user' | 'environment' = 'environment') {
         controller({
             ok: true,
             type: 'openReader',
             value: true,
         });
-        return new Promise<QRCodeReaderData<Value>>((res, rej) => {
+        return new Promise<QRCodeReaderData<Data, Key>>((res) => {
             this.qr = new Html5Qrcode(qrCodeMasterContainerId);
             const vmin = Math.min(window.innerHeight, window.innerWidth);
             const size = vmin * .5;
@@ -74,13 +75,12 @@ class QrCodeMaster {
             let currCount: number;
             let currConnectionNumber: number;
             let dataParts: string[] = [];
-            let accumulate = 0;
 
             this.qr.start(
                 { facingMode },
                 {
-                    fps: 10,    // Optional, frame per seconds for qr code scanning
-                    qrbox: { width: size, height: size }  // Optional, if you want bounded box UI
+                    fps: 10,
+                    qrbox: { width: size, height: size }
                 },
                 (decodedText) => {
                     try {
@@ -91,8 +91,8 @@ class QrCodeMaster {
                             res({
                                 appName,
                                 dataName,
-                                value: data as Value,
-                            });
+                                value: data,
+                            } as QRCodeReaderData<Data, Key>);
                             this.closeReader();
                         } else {
                             if (currAppName !== appName || currDataName !== dataName || currCount !== count || connectionNumber !== currConnectionNumber) {
@@ -103,8 +103,6 @@ class QrCodeMaster {
                                 dataParts = [];
                             }
 
-                            if (dataParts[part] == null) accumulate++;
-
                             if (mylib.isStr(data))
                                 dataParts[part] = data;
 
@@ -113,14 +111,17 @@ class QrCodeMaster {
                                     appName,
                                     dataName,
                                     value: JSON.parse(dataParts.join(''))
-                                });
+                                } as QRCodeReaderData<Data, Key>);
                                 this.closeReader();
                             }
                         }
                     } catch (e) { }
                 },
-                () => { })
-                .catch(() => { });
+                () => { }
+            )
+                .catch((error) => {
+                    modalService.alert('' + error);
+                });
         });
     }
 

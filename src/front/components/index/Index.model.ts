@@ -2,6 +2,7 @@ import { LocalSokiAuth } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
 import { EvaIconName } from "../../complect/eva-icon/EvaIcon";
 import { NavRouting } from "../../complect/nav-configurer/Navigation.model";
+import { QRCodeDataStore } from "../../complect/qr-code/QRCodeMaster.model";
 
 export interface IndexState {
     routing: NavRouting | null,
@@ -14,6 +15,7 @@ export interface IndexState {
     lastUpdates?: Partial<Record<AppName, number>>,
     numModalUpdates: number,
     isUseNativeKeyboard?: boolean,
+    qrDataStore?: QRCodeDataStore,
 }
 
 export type IndexErrorScope = keyof RegisterData;

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppName } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
 import { NavRouting } from "../../complect/nav-configurer/Navigation.model";
+import { QRCodeDataStore } from "../../complect/qr-code/QRCodeMaster.model";
 import { indexStorage } from "../../shared/jstorages";
 import {
   Auth, IndexApplication, IndexState,
@@ -53,6 +54,9 @@ export const slice = createSlice({
     riseUpModalUpdates: (state) => {
       state.numModalUpdates++;
     },
+    updateQRDataStore: (state, action: PayloadAction<QRCodeDataStore>) => {
+      state.qrDataStore = action.payload;
+    },
   },
 });
 
@@ -64,6 +68,7 @@ export const {
   setAuthData,
   riseUpModalUpdates,
   switchIsUseNativeKeyboard,
+  updateQRDataStore,
 } = slice.actions;
 export default slice.actions;
 

@@ -39,7 +39,7 @@ export default function TheGame() {
   const inputMaker = useKeyboard();
   let input: any;
   if (cgame)
-    input = inputMaker("namesssss", {
+    input = inputMaker("TheGame team names", {
       initialValue: cgame.teams?.map(({ name }) => name).join("\n"),
       multiline: true,
     });
@@ -79,7 +79,7 @@ export default function TheGame() {
       content={
         <>
           {!leaderExer.actionAccessedOrNull("updateGameTeamList") &&
-          !cgame?.teams ? (
+            !cgame?.teams ? (
             <div className="error-message">Команды не сформированы</div>
           ) : (
             <>

@@ -7,7 +7,7 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
 import { MyLib } from "../../../../complect/my-lib/MyLib";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
-import { qrCodeMaster } from "../../../../complect/qr-code/QRCodeMaster";
+import useQRMaster from "../../../../complect/qr-code/useQRMaster";
 import navConfigurers from "../../../../shared/navConfigurers";
 import { RootState } from "../../../../shared/store";
 import { soki } from "../../../../soki";
@@ -38,6 +38,7 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
     (app) => app !== currentApp && appNames.indexOf(app.name) > -1
   );
   const { auth, isConnected } = useAuth();
+  const { readQR, qrDataStore } = useQRMaster();
 
   const appList =
     filteredApps.length === 0
@@ -62,7 +63,7 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
               name={appConfigs[app.name].nav.logo || "cube-outline"}
               className="margin-big-gap"
             />
-            <div>{app.title}</div>
+            <div attr-mark-badge={qrDataStore?.[app.name] ? '0' : null} className="app-title-label">{app.title}</div>
           </div>
         );
       });
@@ -101,11 +102,11 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
             title="Настройки"
             onClick={() => goTo("settings")}
           />
-          {auth?.level === 100 && <BrutalItem
+          <BrutalItem
             icon="qr-code"
             title="Читать QR"
-            onClick={() => qrCodeMaster.read().then((data) => console.log(data))}
-          />}
+            onClick={() => readQR()}
+          />
           <BrutalItem
             icon="info-outline"
             title="О приложении"
