@@ -75,6 +75,8 @@ class QrCodeMaster {
             let currCount: number;
             let currConnectionNumber: number;
             let dataParts: string[] = [];
+            let partsLoaded = 0;
+            let partsToLoad = 0;
 
             this.qr.start(
                 { facingMode },
@@ -86,6 +88,15 @@ class QrCodeMaster {
                     try {
                         const [passphrase, appName, dataName, connectionNumber, count, part, data]: QRMasterConnectData<unknown> = JSON.parse(decodedText);
                         if (qrCodePassphraseSign !== passphrase) return;
+
+                        if (partsToLoad === 0) {
+                            partsToLoad = count;
+                            controller({
+                                ok: true,
+                                type: 'partsToLoad',
+                                value: count,
+                            });
+                        }
 
                         if (count === 1) {
                             res({
@@ -101,10 +112,21 @@ class QrCodeMaster {
                                 currDataName = dataName;
                                 currCount = count;
                                 dataParts = [];
+                                partsToLoad = 0;
                             }
 
-                            if (mylib.isStr(data))
-                                dataParts[part] = data;
+                            if (mylib.isStr(data)) {
+                                if (dataParts[part] === undefined) {
+                                    partsLoaded++;
+                                    dataParts[part] = data;
+
+                                    controller({
+                                        ok: true,
+                                        type: 'partsLoaded',
+                                        value: partsLoaded,
+                                    });
+                                }
+                            }
 
                             if (dataParts.filter(data => data).length >= count) {
                                 res({

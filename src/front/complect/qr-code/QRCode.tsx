@@ -2,7 +2,7 @@ import QRCodeGenerator from "qrcode";
 import { HTMLAttributes } from "react";
 
 export default function QRCode(
-  props: HTMLAttributes<HTMLCanvasElement> & { text: string }
+  { text, ...props }: HTMLAttributes<HTMLCanvasElement> & { text: string }
 ) {
   return (
     <canvas
@@ -11,7 +11,7 @@ export default function QRCode(
       ref={(element) => {
         if (!element) return;
 
-        QRCodeGenerator.toCanvas(element, props.text, (error) => {
+        QRCodeGenerator.toCanvas(element, text, (error) => {
           if (error) console.error(error);
           else {
             element.style.width = null as never;

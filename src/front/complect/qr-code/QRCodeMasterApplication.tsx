@@ -3,7 +3,6 @@ import QRCode from "./QRCode";
 import { qrCodeMaster, qrCodeMasterContainerId } from "./QRCodeMaster";
 import { QRMasterControllerData } from "./QRCodeMaster.model";
 
-export let qrCodeMasterSwitchOpenState: (isOpen?: boolean) => void;
 let slideQRCodeTimeout: TimeOut;
 const qrReaderReadAreaSize = Math.min(window.innerHeight, window.innerWidth) * .9;
 let tsInterval = 100;
@@ -13,11 +12,15 @@ export default function QRCodeMasterApplication({ controller }: { controller: (c
     const [isOpenQRSlider, setIsOpenQRSlider] = useState(false);
     const [qrNodes, setQrNodes] = useState<ReactNode[]>([]);
     const [currentQr, setCurrentQr] = useState(0);
+    const [partsLoaded, setPartsLoaded] = useState(0);
+    const [partsToLoad, setPartsToLoad] = useState(0);
 
     controller((event) => {
         if (event.ok) {
             switch (event.type) {
                 case 'openReader':
+                    setPartsLoaded(0);
+                    setPartsToLoad(0);
                     setIsOpenReader((isOpen) => {
                         const open = event.value ?? !isOpen;
                         if (!open) clearTimeout(slideQRCodeTimeout);
@@ -41,6 +44,12 @@ export default function QRCodeMasterApplication({ controller }: { controller: (c
                     } else if (nodes.length === 1) setCurrentQr(0);
                     break;
                 }
+                case 'partsToLoad':
+                    setPartsToLoad(event.value);
+                    break;
+                case 'partsLoaded':
+                    setPartsLoaded(event.value);
+                    break;
             }
         }
 
@@ -62,7 +71,19 @@ export default function QRCodeMasterApplication({ controller }: { controller: (c
                 }}
             >
                 <div style={{ width: `${qrReaderReadAreaSize}px` }} id={qrCodeMasterContainerId}></div>
-                {isOpenQRSlider && <div className="qr-code-slider">{qrNodes[currentQr]}</div>}
+                {
+                    isOpenReader && (
+                        partsToLoad
+                            ? <div>{partsLoaded} / {partsToLoad}</div>
+                            : <div>Наведи камеру на QR</div>
+                    )
+                }
+                {isOpenQRSlider &&
+                    <div className="qr-code-slider">
+                        {qrNodes[currentQr]}
+                        <div className="flex full-width center">{currentQr + 1} / {qrNodes.length}</div>
+                    </div>
+                }
             </div>
         </>
     );

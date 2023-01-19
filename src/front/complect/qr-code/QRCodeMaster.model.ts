@@ -14,6 +14,12 @@ export type QRMasterControllerData = ({
 } | {
     type: 'showQRs',
     value: string[],
+} | {
+    type: 'partsLoaded',
+    value: number,
+} | {
+    type: 'partsToLoad',
+    value: number,
 })) | {
     ok: false,
     errorMessage: string,
