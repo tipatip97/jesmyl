@@ -16,7 +16,7 @@ export default function MeetingsCreator({ close }: { close: () => void }) {
   const [, currContextw] = meetings?.getContexts(currContext) || [];
   const input = useKeyboard()("MeetingsCreator", {
     className: "full-width",
-    initialValue: name,
+    theValue: name,
     onChange: (value) => setName(value),
   });
 

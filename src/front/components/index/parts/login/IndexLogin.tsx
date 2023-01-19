@@ -36,21 +36,21 @@ export default function IndexLogin() {
   const loginInput = aboutInput("IndexLogin login", {
     preferLanguage: 'en',
     onChange: (value) => setLogin(value),
-    initialValue: login,
+    theValue: login,
     placeholder: "Логин",
   });
   const passwInput = aboutInput("IndexLogin passw", {
     preferLanguage: 'en',
     type: "password",
     onChange: (value) => setPassword(value),
-    initialValue: passw,
+    theValue: passw,
     placeholder: "Пароль",
   });
   const rpasswInput = aboutInput("IndexLogin r-passw", {
     preferLanguage: 'en',
     type: "password",
     onChange: (value) => setRPassword(value),
-    initialValue: rpassw,
+    theValue: rpassw,
     placeholder: "Подтверди пароль",
   });
 

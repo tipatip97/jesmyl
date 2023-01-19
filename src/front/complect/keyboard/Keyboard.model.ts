@@ -14,8 +14,7 @@ export type KeyboardInputPropsType = 'password' | 'text' | 'number';
 export type TouchSelectionMode = 'select' | 'delete' | 'navigate';
 
 export interface KeyboardInputProps {
-    initialValue?: string,
-    nativeValue?: string,
+    theValue?: string,
     multiline?: boolean,
     type?: KeyboardInputPropsType,
     preferLanguage?: KeyboardKeyTranslateLanguage,

@@ -66,7 +66,7 @@ export default function LeaderGameTimerMaster({
 
   const nameInput = useKeyboard()("name-of-GameTimer-input", {
     preferLanguage: "ru",
-    initialValue: timer.name,
+    theValue: timer.name,
     onInput: (value) => mapTimer((timer) => (timer.name = value)),
   });
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();

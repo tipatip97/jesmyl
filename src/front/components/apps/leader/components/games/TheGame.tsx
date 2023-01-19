@@ -40,7 +40,7 @@ export default function TheGame() {
   let input: any;
   if (cgame)
     input = inputMaker("TheGame team names", {
-      initialValue: cgame.teams?.map(({ name }) => name).join("\n"),
+      theValue: cgame.teams?.map(({ name }) => name).join("\n"),
       multiline: true,
     });
 

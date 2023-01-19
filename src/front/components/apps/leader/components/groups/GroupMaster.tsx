@@ -25,7 +25,7 @@ export default function LeaderGroupMaster({
   const uniq = `group master ${group?.ts}`;
 
   const nameInput = useKeyboard()(uniq, {
-    initialValue: group?.name,
+    theValue: group?.name,
     preferLanguage: "ru",
     onInput: (value) => setName(value),
   });

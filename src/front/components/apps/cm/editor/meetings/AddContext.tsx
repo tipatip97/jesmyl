@@ -20,7 +20,7 @@ export default function AddContext({
   const [bindEvents, setBindEvents] = useState<EditableMeetingsEvent[]>([]);
   const input = useKeyboard()("AddContext - input", {
     className: "full-width",
-    initialValue: name,
+    theValue: name,
     onChange: (value) => setName(value),
   });
 

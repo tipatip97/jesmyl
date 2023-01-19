@@ -47,17 +47,17 @@ export default function ContextFieldBlank({
   if (isRedact) {
     const nameInput = inputGenerator(`${id}-field-back-name`, {
       onInput: (value) => setName(value),
-      initialValue: name,
+      theValue: name,
       multiline: true,
     });
     const defInput = inputGenerator(`${id}-field-back-def`, {
       onInput: (value) => setDef(value),
-      initialValue: def,
+      theValue: def,
       multiline: true,
     });
     const valueInput = inputGenerator(`${id}-field-back-value`, {
       onInput: (value) => setValue(value),
-      initialValue: value,
+      theValue: value,
       multiline: true,
     });
 
@@ -69,7 +69,7 @@ export default function ContextFieldBlank({
       const keyInput = inputGenerator(`${id}-field-back-key`, {
         preferLanguage: "en",
         onInput: (value) => setKey(value),
-        initialValue: key,
+        theValue: key,
         multiline: true,
       });
       keyNode = keyInput.node;

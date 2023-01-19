@@ -76,7 +76,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
 
   const inputNode = useKeyboard()(`the modal input ${id}`, {
     ...props,
-    initialValue: asFunc(input.value),
+    theValue: asFunc(input.value),
   });
 
   if (input == null) return null;

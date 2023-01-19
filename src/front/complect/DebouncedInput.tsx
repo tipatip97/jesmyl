@@ -31,7 +31,7 @@ export default function DebouncedInput(props: {
     className: "input",
     placeholder: props.placeholder,
     onChange: (value) => setTerm(value),
-    initialValue: term,
+    theValue: term,
     multiline: textarea
   });
 

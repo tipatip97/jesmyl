@@ -29,7 +29,7 @@ export default function EditMeetingsEvent() {
   const comsLength = currentEvent.coms?.length || 0;
   const prevComsLength = currentEvent.prevComs?.length || 0;
   const input = aboutInput(`EditMeetingsEvent ${currentEvent.wid}`, {
-    initialValue: currentEvent.name,
+    theValue: currentEvent.name,
     onFocus: () => setIsClosedComList(true),
     onChange: (value) => {
       setIsClosedComList(true);

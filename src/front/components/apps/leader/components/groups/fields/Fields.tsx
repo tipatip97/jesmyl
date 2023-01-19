@@ -38,7 +38,7 @@ export default function LeaderGroupFields() {
         const valueInput = inputGenerator(
           `${ccontext.wid} ${cgroup?.wid} ${key}`,
           {
-            initialValue: fields[key],
+            theValue: fields[key],
             multiline: true,
             onChange: (value) => {
               let val: und | string = value;

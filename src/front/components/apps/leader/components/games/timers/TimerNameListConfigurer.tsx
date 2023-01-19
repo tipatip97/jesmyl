@@ -61,7 +61,7 @@ export default function TimerNameListConfigurer({
                 <div key={`namei ${namei}`} className="margin-gap-v">
                   {
                     inputGenerator(inputIdName(namei), {
-                      initialValue: name,
+                      theValue: name,
                       onChange: (value) => {
                         const newNames = [...redactNames];
                         newNames[namei] = value;

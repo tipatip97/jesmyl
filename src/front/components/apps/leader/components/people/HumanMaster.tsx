@@ -65,7 +65,7 @@ export default function HumanMaster({
   };
 
   const nameInput = inputGenerator("human-name", {
-    initialValue: human?.name,
+    theValue: human?.name,
     setIsUnknownSymbols: (char) => !!/[^а-яё ]/i.exec(char),
     preferLanguage: "ru",
     onInput: !human
@@ -89,7 +89,7 @@ export default function HumanMaster({
   });
 
   const notesInput = inputGenerator("human-notes", {
-    initialValue: human?.notes,
+    theValue: human?.notes,
     preferLanguage: "ru",
     onInput: !human
       ? undefined
@@ -121,7 +121,7 @@ export default function HumanMaster({
   };
 
   const bDayInput = inputGenerator("human-bday", {
-    initialValue: human?.bDay ? new Date(human.bDay).toLocaleDateString() : "",
+    theValue: human?.bDay ? new Date(human.bDay).toLocaleDateString() : "",
     preferLanguage: "ru",
     onInput: !human
       ? (value) => takeTime(value)
@@ -151,7 +151,7 @@ export default function HumanMaster({
     onChange: (value) => {
       updateViewHumanList(value.split(/\n+/).map((line) => lineAsHuman(line)));
     },
-    initialValue: "",
+    theValue: "",
   });
 
   useEffect(() => {
@@ -247,7 +247,7 @@ export default function HumanMaster({
             }
             const bDay = new Date(human.bDay);
             const nameInput = inputGenerator(`viewHumanList-name-${human.ts}`, {
-              initialValue: human.name,
+              theValue: human.name,
               onChange: (value) => {
                 human.name = value;
               },
@@ -255,14 +255,14 @@ export default function HumanMaster({
             const notesInput = inputGenerator(
               `viewHumanList-notes-${human.ts}`,
               {
-                initialValue: human.notes,
+                theValue: human.notes,
                 onChange: (value) => {
                   human.notes = value;
                 },
               }
             );
             const bDayInput = inputGenerator(`viewHumanList-bday-${human.ts}`, {
-              initialValue: (bDay.getTime()
+              theValue: (bDay.getTime()
                 ? bDay
                 : null
               )?.toLocaleDateString(),

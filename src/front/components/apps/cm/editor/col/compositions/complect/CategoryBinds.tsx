@@ -18,7 +18,7 @@ export default function CategoryBinds() {
       <div className="cat-list-title">Сборники</div>
       {cols?.cats.map((cat) => {
         const input = aboutInput(`cat-for-bind-${cat.wid}`, {
-          initialValue: `${ccom.refs?.[cat.wid] || ""}`,
+          theValue: `${ccom.refs?.[cat.wid] || ""}`,
           type: "number",
           onChange: (value) => {
             if (!value) {

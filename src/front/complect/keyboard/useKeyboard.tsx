@@ -27,9 +27,11 @@ export default function useKeyboard() {
     let inputNode;
 
     if (!isUseNativeKeyboard) {
-      const { className, onBlur, placeholder, type, nativeValue } = props;
+      const { className, onBlur, placeholder, type, theValue } = props;
       const nodeProps = {
-        className, onBlur, placeholder, type,
+        onBlur, placeholder, type,
+        value: theValue,
+        className: `native-input ${className || ''}`,
         onInput: props.onInput && ((event: any) => localInput.replaceAll(event.currentTarget.value || '', false, false)),
         onChange: props.onChange && ((event: any) => props.onChange?.(event.target?.value, '')),
         onPaste: props.onPaste && (async () => props.onPaste?.(await navigator.clipboard.readText())),
@@ -39,19 +41,13 @@ export default function useKeyboard() {
         {
           props.multiline
             ? <textarea {...nodeProps}
-              value={nativeValue}
-              className="native-input"
               ref={(el) => {
                 if (el) {
                   el.rows = el.value.split('\n').length;
                 }
               }}
             />
-            : <input
-              {...nodeProps}
-              value={nativeValue}
-              className="native-input"
-            />
+            : <input {...nodeProps} />
         }
       </div>;
     } else {
@@ -78,7 +74,7 @@ export default function useKeyboard() {
 
       if (localInput) inputNode = getNode();
       else {
-        localInput = inputDict[id] = new KeyboardInputStorage(props.initialValue);
+        localInput = inputDict[id] = new KeyboardInputStorage(props.theValue);
         inputNode = getNode();
       }
     }

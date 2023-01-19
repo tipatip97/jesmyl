@@ -17,7 +17,7 @@ export default function EditableCompositionMain() {
 
   if (!ccom) return null;
   const input = aboutInput(`EditableCompositionMain ${ccom.wid}`, {
-    initialValue: ccom?.name,
+    theValue: ccom?.name,
     className: "full-width",
     onChange: (value) => exec(ccom?.rename(value, exec)),
   });

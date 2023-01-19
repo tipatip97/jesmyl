@@ -20,7 +20,7 @@ export default function EditCategory() {
   if (!ccat) return null;
 
   const input = aboutInput(`edit category name ${ccat.wid}`, {
-    initialValue: ccat.name,
+    theValue: ccat.name,
     onChange: (value) => exec(ccat.rename(value, exec)),
   });
 

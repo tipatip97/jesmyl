@@ -29,7 +29,7 @@ export default function NewComposition({ close }: { close: () => void }) {
 
   const input = keyboardFerry("new composition name input", {
     className: "full-width",
-    initialValue: name,
+    theValue: name,
     onInput: () => setIsTakeName(false),
     onChange: (value) => {
       create();
