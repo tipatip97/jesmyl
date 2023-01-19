@@ -136,3 +136,35 @@
     cursor: pointer;
   }
 }
+
+[attr-mark-badge] {
+  position: relative;
+  display: inline-block;
+
+  &[attr-mark-badge="0"]:before {
+    --size: 12px;
+    content: '';
+  }
+
+  &:not([attr-mark-badge="0"]):before {
+    --size: 15px;
+    content: attr(attr-mark-badge);
+    font-size: calc(var(--size) * .8);
+    color: white;
+  }
+
+  &:before {
+    --pos: calc(0px - var(--size) * .2);
+
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: var(--pos);
+    right: var(--pos);
+    background: var(--color--ko);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+  }
+}
