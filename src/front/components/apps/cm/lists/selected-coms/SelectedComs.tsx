@@ -11,9 +11,9 @@ import LocalListToolsPopup from "../popups/LocalListToolsPopup";
 export default function SelectedComs() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const coms = useSelectedComs().takeSelectedComs();
-  const { clearQRData, qrData } = useQRMaster<CmQRData>('cm');
+  const { clearQRData } = useQRMaster<CmQRData>('cm');
 
-  useEffect(() => qrData?.comws && clearQRData('comws'), []);
+  useEffect(() => clearQRData('comws'), []);
 
   return (
     <PhaseCmContainer

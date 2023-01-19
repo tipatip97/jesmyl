@@ -17,7 +17,7 @@ export default function useQRMaster<Data>(appName?: AppName) {
         qrDataStore,
         qrData: appName && qrDataStore?.[appName] as Data,
         clearQRData: (dataName: keyof Data) => {
-            if (appName) {
+            if (appName && ret.qrData?.[dataName] !== undefined) {
                 const appStore = {
                     ...qrDataStore?.[appName],
                 } as Data;
