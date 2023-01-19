@@ -17,7 +17,7 @@ setTimeout(() => renderApplication(<QRCodeMasterApplication controller={(top: (d
 class QrCodeMaster {
     private qr?: Html5Qrcode;
 
-    generateParts(appName: AppName, dataName: string, data: unknown) {
+    shareData(appName: AppName, dataName: string, data: unknown) {
         try {
             const dataString = JSON.stringify(data);
             const len = dataString.length;

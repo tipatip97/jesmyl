@@ -33,7 +33,7 @@ export default function LocalListToolsPopup({ coms }: { coms?: Com[] }) {
           </div>
           <div
             className="abs-item pointer"
-            onClick={() => qrCodeMaster.generateParts('cm', 'comws', coms.map(({ wid }) => wid))}
+            onClick={() => qrCodeMaster.shareData('cm', 'comws', coms.map(({ wid }) => wid))}
           >
             <EvaIcon
               name="qr-code"
