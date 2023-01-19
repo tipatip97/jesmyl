@@ -1,9 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DebouncedInput from "../../../../../complect/DebouncedInput";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
+import useQRMaster from "../../../../../complect/qr-code/useQRMaster";
 import useCmNav from "../../base/useCmNav";
 import useLaterComList from "../../base/useLaterComList";
+import { CmQRData } from "../../Cm.model";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import ComFace from "../com/face/ComFace";
 import { useCcom } from "../com/useCcom";
@@ -19,8 +21,11 @@ export default function TheCat({ all }: { all?: boolean }) {
   const categoryTitleRef = useRef<HTMLDivElement>(null);
   const cat = all ? zeroCat : ccat;
   const { nav } = useCmNav();
+  const { clearQRData } = useQRMaster<CmQRData>('cm');
 
   nav.onGeneralFooterButtonClick('all', 'TheCat')(() => scrollToCurrent(true));
+
+  useEffect(() => clearQRData('com'), []);
 
   const [term, setTerm] = useState(cat?.term || "");
 

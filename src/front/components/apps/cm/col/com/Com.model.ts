@@ -34,6 +34,7 @@ export const menuComToolNameList = [
     "chords-variant",
     "chord-images",
     "selected-toggle",
+    "share-by-qr",
   ] as const;
 
   export interface MigratableComTool {

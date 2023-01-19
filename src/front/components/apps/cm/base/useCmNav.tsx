@@ -50,6 +50,7 @@ const navigation: NavigationConfig<
       phase: ["all"],
       title: "Все",
       node: <TheCat all />,
+      markBadge: (qrData?: CmQRData) => !!qrData?.com,
       next: [comNav],
     },
     {

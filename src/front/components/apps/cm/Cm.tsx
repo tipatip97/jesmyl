@@ -13,7 +13,7 @@ import useTranslation from "./translation/useTranslation";
 
 export default function CmApplication({ content }: { content: ReactNode }) {
   const dispatch = useDispatch();
-  const [, setCols] = useCols();
+  const [cols, setCols] = useCols();
   const [, setEditableCols] = useEditableCols();
   const { watchTranslation } = useTranslation();
   const { jumpTo, nav } = useCmNav();
@@ -32,8 +32,15 @@ export default function CmApplication({ content }: { content: ReactNode }) {
   useEffect(() => nav.setData({ selectedComws }), [nav, selectedComws]);
 
   useEffect(() => {
-    if (qrData?.comws) updateSelectedComws(qrData.comws);
-  }, [qrData?.comws]);
+    if (qrData) {
+      if (qrData.comws) updateSelectedComws(qrData.comws);
+      if (qrData.com) {
+        const newCols = cols?.appendCom(qrData.com);
+        if (newCols) cmStorage.set('cols', newCols);
+      }
+    }
+  }, [qrData?.com, qrData?.comws]);
+
 
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {

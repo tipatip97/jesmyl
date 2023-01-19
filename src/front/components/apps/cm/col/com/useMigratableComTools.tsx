@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { qrCodeMaster } from "../../../../../complect/qr-code/QRCodeMaster";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
@@ -122,6 +123,15 @@ export default function useMigratableComTools() {
                 title: "На весь экран",
                 icon: "expand-outline",
                 onClick: () => switchFullscreen(true),
+              }
+            );
+          case "share-by-qr":
+            return (
+              ccom && {
+                tool,
+                title: "Поделиться по QR",
+                icon: "qr-code",
+                onClick: () => qrCodeMaster.shareData('cm', 'com', ccom.toDict()),
               }
             );
         }
