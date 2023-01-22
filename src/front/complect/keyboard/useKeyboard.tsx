@@ -25,15 +25,22 @@ export default function useKeyboard() {
   return (id: string, props: KeyboardInputProps) => {
     let localInput = inputDict[id];
     let inputNode;
+    let val = props.theValue || '';
 
     if (!isUseNativeKeyboard) {
-      const { className, onBlur, placeholder, type, theValue } = props;
+      const { className, theValue, ...otherProps } = props;
       const nodeProps = {
-        onBlur, placeholder, type,
+        ...otherProps,
         value: theValue,
         className: `native-input ${className || ''}`,
-        onInput: props.onInput && ((event: any) => localInput.replaceAll(event.currentTarget.value || '', false, false)),
-        onChange: props.onChange && ((event: any) => props.onChange?.(event.target?.value, '')),
+        onInput: (event: any) => {
+          val = event.target.value;
+          props.onInput?.(val, '');
+        },
+        onChange: (event: any) => {
+          val = event.target.value;
+          props.onChange?.(val, '')
+        },
         onPaste: props.onPaste && (async () => props.onPaste?.(await navigator.clipboard.readText())),
       };
 
@@ -50,6 +57,14 @@ export default function useKeyboard() {
             : <input {...nodeProps} />
         }
       </div>;
+
+      return {
+        node: inputNode,
+        value: () => '',
+        focus: () => {},
+        write: (value: string) => props.onChange?.(value, ''),
+        remove: () => { },
+      };
     } else {
       const getNode = () =>
         inputDict[id].node(

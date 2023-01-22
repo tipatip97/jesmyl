@@ -32,6 +32,7 @@ export interface KeyboardInputProps {
     onPaste?: (value: string) => void,
     setIsUnknownSymbols?: (char: string) => boolean,
     mapChar?: (char: string) => ReactNode,
+    maxLength?: number
 };
 
 export type KeyboardMemoryPointAction = 'write' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';
