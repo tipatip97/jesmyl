@@ -539,13 +539,18 @@ export class Executer {
                         if (smylib.isArr(target) && this.isUniq(uniqs, target, value)) target?.push(smylib.clone(value));
                         break;
                     case 'concat':
-                        if (penultimate && smylib.isArr(target) && this.isUniq(uniqs, target, value)) penultimate[lastTrace] = target.concat(smylib.clone(value));
+                        if (smylib.isArr(target) && smylib.isArr(value) && this.isUniq(uniqs, target, value)) {
+                            smylib.clone(value).forEach((val) => target.push(val));
+                        }
                         break;
                     case 'remove':
                     case 'remove_each':
-                        if (smylib.isArr(target) && penultimate && value && this.isUniq(uniqs, target, value))
+                        if (smylib.isArr(target) && value != null)
                             if (smylib.isNum(value)) target.splice(value, 1);
-                            else penultimate[lastTrace] = target.filter((source: any) => !this.isExpected(source, value as never, args));
+                            else {
+                                const valuei = target.findIndex((source: any) => this.isExpected(source, value, args));
+                                if (valuei > -1) target.splice(valuei, 1);
+                            }
                         break;
                     case 'migrate':
                         if (penultimate && value) {
