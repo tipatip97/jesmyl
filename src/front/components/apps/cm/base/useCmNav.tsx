@@ -42,7 +42,7 @@ const navigation: NavigationConfig<
 > = new NavigationConfig({
   root: (content) => <CmApplication content={content} />,
   rootPhase: "all",
-  logo: "headphones",
+  logo: "book-open",
   exer: cmExer,
   routes: [
     {
