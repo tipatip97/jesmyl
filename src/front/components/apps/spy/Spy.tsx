@@ -1,14 +1,13 @@
 import useAbsoluteBottomPopup from "../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import PhaseSpyContainer from "./complect/PhaseSpyContainer";
+import SpyOfflineRoomList from "./complect/rooms/offline-room/SpyOfflineRoomList";
+import SpyRoomList from "./complect/rooms/room/SpyRoomList";
 import SpyMore from "./complect/SpyMore";
-import useRooms from "./complect/useRooms";
 import "./Spy.scss";
-import { spyExer } from "./Spy.store";
 
 export default function SpyLocations() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { cache, goToRoom, memberPossibilities, auth } = useRooms();
 
   return (
     <PhaseSpyContainer
@@ -17,7 +16,7 @@ export default function SpyLocations() {
       headTitle="Комнаты"
       headClass="flex between"
       head={
-        spyExer.actionAccessedOrNull('addNewRoom') && <EvaIcon
+        <EvaIcon
           name="more-vertical"
           className="margin-gap"
           onClick={() => openAbsoluteBottomPopup(<SpyMore />)}
@@ -25,40 +24,8 @@ export default function SpyLocations() {
       }
       content={
         <>
-          {cache?.rooms?.map((room, roomi) => {
-            const possibilities = memberPossibilities(room);
-            const iconPostfix = possibilities.isOwner ? '' : '-outline';
-
-            return (
-              <div
-                key={`roomi ${roomi}`}
-                className="face-item"
-                onClick={() => goToRoom(room.w)}
-              >
-                <div
-                  className="face-logo">
-                  <EvaIcon
-                    name={
-                      possibilities.isRequester
-                        ? `clock${iconPostfix}`
-                        : possibilities.isInactive
-                          ? `person-delete${iconPostfix}`
-                          : possibilities.isInvalid
-                            ? `lock${iconPostfix}`
-                            : auth?.login && room.retired?.includes(auth.login)
-                              ? `person-remove${iconPostfix}`
-                              : room?.roles
-                                ? room.finisher
-                                  ? `pause-circle${iconPostfix}`
-                                  : `play-circle${iconPostfix}`
-                                : `cube${iconPostfix}`
-                    }
-                  />
-                </div>
-                <div className="face-title">{room.name}</div>
-              </div>
-            );
-          })}
+          <SpyRoomList />
+          <SpyOfflineRoomList />
         </>
       }
     />

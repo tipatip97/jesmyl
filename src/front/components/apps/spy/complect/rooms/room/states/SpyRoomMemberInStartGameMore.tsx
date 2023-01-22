@@ -1,7 +1,7 @@
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import { SpyRoomMember } from "../Spy.model";
-import useEditableRooms from "./useEditableRooms";
-import useRooms from "./useRooms";
+import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
+import { SpyRoomMember } from "../../../../Spy.model";
+import useEditableRooms from "../useEditableRooms";
+import useSpyRooms from "../useSpyRooms";
 
 export default function SpyRoomMemberInStartGameMore({
   member,
@@ -9,7 +9,7 @@ export default function SpyRoomMemberInStartGameMore({
   member: SpyRoomMember;
 }) {
   const { excludeMember, moreButtons, nameNode } = useEditableRooms(member);
-  const { memberPossibilities, currentRoom } = useRooms();
+  const { memberPossibilities, currentRoom } = useSpyRooms();
   const possibilities = memberPossibilities(currentRoom, member.login);
 
   return (

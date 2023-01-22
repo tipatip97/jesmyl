@@ -3,29 +3,31 @@ import useKeyboard from "../../../../complect/keyboard/useKeyboard";
 import SendButton from "../../../../complect/SendButton";
 import { spyExer } from "../Spy.store";
 import PhaseSpyContainer from "./PhaseSpyContainer";
-import useRooms from "./useRooms";
+import useSpyLocations from "./useSpyLocations";
 
 export default function SpyLocations() {
-  const { cache } = useRooms();
+  const { locations } = useSpyLocations();
   const inputGenerator = useKeyboard();
 
   const [newName, setNewName] = useState('');
   const newLocationInput = inputGenerator("SpyLocations - new location", {
+    theValue: newName,
     onChange: (value) => setNewName(value.toUpperCase())
   });
   const isShortNewName = newName.length < 3;
   const incorrectsInNewName = newName.match(/[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i);
-  const isInclusiveNewName = cache?.locations?.some((loc) => loc === newName);
+  const isInclusiveNewName = locations?.some((loc) => loc === newName);
 
   return (
     <PhaseSpyContainer
       topClass="spy-room"
       headTitle="Локации"
       headClass="flex between"
+      withoutBackButton
       content={
         <>
           <div>
-            {cache?.locations?.map((location, locationi) => {
+            {locations?.map((location, locationi) => {
               return <div key={`l ${locationi}`}>{location}</div>;
             })}
           </div>
@@ -53,7 +55,7 @@ export default function SpyLocations() {
               <div className="flex center margin-big-gap">
                 <SendButton
                   title="Отправить локацию"
-                  onSuccess={() => newLocationInput.value("")}
+                  onSuccess={() => setNewName('')}
                   disabled={
                     isInclusiveNewName ||
                     !!incorrectsInNewName ||

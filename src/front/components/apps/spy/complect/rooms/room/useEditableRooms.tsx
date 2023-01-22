@@ -1,25 +1,28 @@
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import mylib from "../../../../complect/my-lib/MyLib";
-import { SpyRoomMember } from "../Spy.model";
-import { spyExer } from "../Spy.store";
-import useRooms, { getSpyRandomSymbol, secretSpyRole, wordSpyParts } from "./useRooms";
-
+import { useMemo } from "react";
+import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import mylib from "../../../../../../complect/my-lib/MyLib";
+import { SpyRoomMember } from "../../../Spy.model";
+import { spyExer } from "../../../Spy.store";
+import useSpyLocations, { getSpyRandomSymbol, secretSpyRole, unsecretSpyRole, wordSpyParts } from "../../useSpyLocations";
+import useSpyRooms from "./useSpyRooms";
 
 
 export default function useEditableRooms(member?: SpyRoomMember) {
-  const { currentRoom, players, cache, memberPossibilities } = useRooms();
+  const { currentRoom, players, memberPossibilities } = useSpyRooms();
   const nameNode = member && <span className="color--3">{member.name}</span>;
   const strikedLocations = currentRoom?.locations || [];
-  const actualLocations =
-    cache?.locations?.filter(
-      (location) => strikedLocations.indexOf(location) < 0
-    ) || [];
-
+  const { actualLocations, locations } = useSpyLocations(strikedLocations);
+  const cleanLocations = useMemo(() =>
+    currentRoom?.locations?.map(location => [unsecretSpyRole(location), location]),
+    [currentRoom?.locations]);
 
   const ret = {
     nameNode,
+    currentRoom,
     strikedLocations,
     actualLocations,
+    cleanLocations,
+    locations,
     createRoom: (name: string) =>
       spyExer.send({
         action: 'addNewRoom',
@@ -68,17 +71,30 @@ export default function useEditableRooms(member?: SpyRoomMember) {
           login,
         },
       }),
-    toggleLocation: (value: string) => {
-      const isDel = currentRoom?.locations?.some((loc) => loc === value);
-      spyExer.send({
-        action: isDel ? 'unstrikeLocation' : 'strikeLocation',
-        method: isDel ? 'remove_each' : 'push',
-        args: {
-          roomw: currentRoom?.w,
-          value,
-        },
-      });
-      return isDel ? 'del' : 'add';
+    toggleLocation: (secretLocation: string) => {
+      const cleanLocation = unsecretSpyRole(secretLocation);
+
+      if (cleanLocations?.some(([loc]) => loc === cleanLocation)) {
+        spyExer.send({
+          action: 'unstrikeLocation',
+          method: 'remove_each',
+          args: {
+            roomw: currentRoom?.w,
+            value: secretLocation,
+          },
+        });
+        return 'del';
+      } else {
+        spyExer.send({
+          action: 'strikeLocation',
+          method: 'push',
+          args: {
+            roomw: currentRoom?.w,
+            value: secretSpyRole(cleanLocation.split('')),
+          },
+        });
+        return 'add';
+      }
     },
     finishGame: () => {
       return spyExer.send({

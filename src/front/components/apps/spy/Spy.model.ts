@@ -6,9 +6,31 @@ export interface SpyStorage extends SpyStoraged {
 }
 
 export interface SpyStoraged {
-    cache?: SpyCache;
-    roomw: number | nil;
+    locations?: string[];
+    rooms?: SpyRoom[];
+    roomw: number | nil,
+    passport?: SpyPassport,
+    offlineRooms?: SpyRoom[],
+    offlineGame?: OfflineGame,
 }
+
+export interface SpyPassport {
+    fio: string,
+    login: string,
+}
+
+export interface OfflineGame {
+    location: string,
+    iterations: number,
+    reshareData: OfflineGameShare,
+}
+
+export type OfflineGameShare = [
+    string, // location,
+    number, // spiesCount,
+    number, // iterations,
+    string, // memberStrList
+];
 
 export interface SpyRoom {
     w: number;
@@ -17,7 +39,7 @@ export interface SpyRoom {
     locations?: string[];
     spiesCount?: number;
     iterations: number;
-    roles?: Record<string, string>;
+    roles?: Record<string, string> | null;
     finisher?: SpyRoomMember | nil;
     retired?: string[] | nil;
 }
@@ -34,9 +56,4 @@ export enum SpyRoomMemberStatus {
     Admin = 'admin',
     Member = 'member',
     Requester = 'requester',
-}
-
-export interface SpyCache {
-    locations?: string[];
-    rooms?: SpyRoom[];
 }

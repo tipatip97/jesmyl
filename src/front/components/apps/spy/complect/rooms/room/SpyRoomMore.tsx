@@ -1,11 +1,9 @@
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import modalService from "../../../../complect/modal/Modal.service";
-import { SpyRoom } from "../Spy.model";
-import useSpyNav from "../useSpyNav";
-import useEditableRooms from "./useEditableRooms";
+import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import modalService from "../../../../../../complect/modal/Modal.service";
+import { SpyRoom } from "../../../Spy.model";
+import useSpyNav from "../../../useSpyNav";
 
-export default function SpyRoomMore({ room }: { room: SpyRoom | nil }) {
-  const { removeRoom } = useEditableRooms();
+export default function SpyRoomMore({ room, onRemove }: { room: SpyRoom | nil, onRemove: (roomw: number) => Promise<unknown | void> }) {
   const { goBack } = useSpyNav();
 
   return (
@@ -17,7 +15,7 @@ export default function SpyRoomMore({ room }: { room: SpyRoom | nil }) {
             room &&
             (await modalService.confirm(`Удалить комнату ${room.name}?`))
           ) {
-            await removeRoom(room.w);
+            await onRemove(room.w);
             goBack();
           }
         }}

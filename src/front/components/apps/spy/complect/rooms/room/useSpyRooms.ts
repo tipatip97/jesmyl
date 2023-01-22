@@ -1,64 +1,60 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import modalService from "../../../../complect/modal/Modal.service";
-import mylib from "../../../../complect/my-lib/MyLib";
-import { spyStorage } from "../../../../shared/jstorages";
-import { RootState } from "../../../../shared/store";
-import useAuth from "../../../index/useAuth";
-import { SpyRoom, SpyRoomMemberStatus } from "../Spy.model";
-import { setSpyCurrentRoomw, spyExer } from "../Spy.store";
-import useSpyNav from "../useSpyNav";
+import { spyStorage } from "../../../../../../shared/jstorages";
+import { RootState } from "../../../../../../shared/store";
+import modalService from "../../../../../../complect/modal/Modal.service";
+import useAuth from "../../../../../index/useAuth";
+import { SpyRoom, SpyRoomMemberStatus } from "../../../Spy.model";
+import { setSpyCurrentRoomw, spyExer } from "../../../Spy.store";
+import useSpyNav from "../../../useSpyNav";
+import { SPY_ROLE, unsecretSpyRole } from "../../useSpyLocations";
 
-
-export const wordSpyParts = '0987654321qwertyuiopasdfghjklzxcvbnm';
-const symbols = `${wordSpyParts}!@#$%^&*()_+=,./[]{}:;QWERTYUIOPASDFGHJKLZXCVBNM\\"'<>?`;
-export const getSpyRandomSymbol = (line = symbols) => line[mylib.randomOf(0, line.length - 1)];
-export const secretSpyRole = (word: string[]) => {
-    while (new Blob([word.join("")]).size < 50) {
-        word.splice(mylib.randomOf(0, word.length - 1), 0, getSpyRandomSymbol());
-    }
-    return btoa(
-        unescape(
-            encodeURIComponent(
-                getSpyRandomSymbol() + word.join("") + getSpyRandomSymbol()
-            )
-        )
-    );
-};
-
-export const unsecretSpyRole = (word: string) => {
-    const role = decodeURIComponent(escape(atob(word))).replace(/[^а-яё -]/gi, '');
-    return role === 'ШПИОН' ? null : role;
-};
-
-const cacheSelector = (state: RootState) => state.spy.cache;
+const roomsSelector = (state: RootState) => state.spy.rooms;
 const roomwSelector = (state: RootState) => state.spy.roomw;
 
-export default function useRooms() {
+const memberStatusPriority = [
+    SpyRoomMemberStatus.Owner,
+    SpyRoomMemberStatus.Admin,
+    SpyRoomMemberStatus.Member,
+    SpyRoomMemberStatus.Requester,
+];
+
+export default function useSpyRooms() {
     const dispatch = useDispatch();
-    const cache = useSelector(cacheSelector);
+    const rooms = useSelector(roomsSelector);
     const roomw = useSelector(roomwSelector);
     const { goTo } = useSpyNav();
-    const currentRoom = (roomw && cache?.rooms?.find(({ w }) => roomw === w)) || null;
+    const currentRoom = (roomw && rooms?.find(({ w }) => roomw === w)) || null;
     const { auth } = useAuth();
-    const players = useMemo(
+
+    const canPlayMembers = useMemo(
         () =>
             currentRoom?.members
-                .filter((member) => !member.isInactive && member.status !== SpyRoomMemberStatus.Requester),
+                .filter((member) => member.status !== SpyRoomMemberStatus.Requester)
+                .sort(
+                    (a, b) =>
+                        memberStatusPriority.indexOf(a.status) -
+                        memberStatusPriority.indexOf(b.status)
+                ),
         [currentRoom]
+    );
+    const players = useMemo(
+        () => canPlayMembers?.filter((member) => !member.isInactive),
+        [canPlayMembers]
     );
 
     const ret = {
         auth,
-        cache,
+        canPlayMembers,
+        rooms,
         currentRoom,
         players,
         spies: useMemo(() => {
-            return players?.filter((player) => unsecretSpyRole((currentRoom?.roles && currentRoom.roles[player.login]) || '') === null).map(({ login }) => login);
-        }, [players]),
+            return players?.filter((player) => unsecretSpyRole((currentRoom?.roles && currentRoom.roles[player.login]) || '') === SPY_ROLE).map(({ login }) => login);
+        }, [players, currentRoom]),
         currentLocation: useMemo(() => {
             return players?.map((player) => unsecretSpyRole((currentRoom?.roles && currentRoom.roles[player.login]) || '')).find(loc => loc);
-        }, [players]),
+        }, [players, currentRoom]),
         memberPossibilities: (room: SpyRoom | null, topLogin = auth?.login) => {
             const member = room?.members.find(({ login }) => login === topLogin);
 
@@ -83,7 +79,7 @@ export default function useRooms() {
             return currentRoom?.roles && auth?.login && unsecretSpyRole(currentRoom.roles[auth.login]);
         },
         goToRoom: (roomWid: number) => {
-            const isIMemberSubstance = ret.memberPossibilities(cache?.rooms?.find(({ w }) => w === roomWid) ?? null);
+            const isIMemberSubstance = ret.memberPossibilities(rooms?.find(({ w }) => w === roomWid) ?? null);
             if (isIMemberSubstance.isInvalid) {
                 if (isIMemberSubstance.member == null) {
                     modalService.confirm('Просматривать результаты и участвовать могут только добавленные в комнату участники. Отправить заявку на вступление?')

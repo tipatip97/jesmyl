@@ -5,7 +5,9 @@ import {
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import SpyLocations from "./complect/SpyLocations";
-import SpyRoom from "./complect/SpyRoom";
+import SpyOfflineRoom from "./complect/rooms/offline-room/SpyOfflineRoom";
+import TheSpyPassport from "./complect/SpyPassport";
+import SpyRoom from "./complect/rooms/room/SpyRoom";
 import Spy from "./Spy";
 import { SpyStorage } from "./Spy.model";
 import SpyApp from "./SpyApp";
@@ -28,6 +30,10 @@ const spyNavigation = new NavigationConfig<
           phase: ["room"],
           node: <SpyRoom />,
         },
+        {
+          phase: ["offlineRoom"],
+          node: <SpyOfflineRoom />,
+        },
       ],
     },
     {
@@ -35,6 +41,12 @@ const spyNavigation = new NavigationConfig<
       icon: "pin",
       title: "Локации",
       node: <SpyLocations />,
+    },
+    {
+      phase: ["passport"],
+      icon: "credit-card",
+      title: "Паспорт",
+      node: <TheSpyPassport />,
     },
   ],
 });

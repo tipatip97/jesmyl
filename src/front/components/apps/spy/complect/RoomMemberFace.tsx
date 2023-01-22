@@ -8,15 +8,17 @@ export default function RoomMemberFace({
   descriptionPlus,
   onClick,
   isClickable = true,
+  className,
 }: {
   member: SpyRoomMember;
   description?: ReactNode;
   descriptionPlus?: ReactNode;
   onClick?: () => void;
   isClickable?: boolean,
+  className?: string,
 }) {
   return (
-    <div className={`face-item ${isClickable ? '' : 'not-pointer'} flex between full-width`} onClick={isClickable ? onClick : undefined}>
+    <div className={`face-item ${isClickable ? '' : 'not-pointer'} ${className || ''} flex between full-width`} onClick={isClickable ? onClick : undefined}>
       <div className="face-logo">
         <EvaIcon name={member.isInactive ? "slash" : "person-outline"} />
       </div>
