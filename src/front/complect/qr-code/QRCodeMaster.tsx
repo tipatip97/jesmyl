@@ -1,7 +1,6 @@
 import { Html5Qrcode } from "html5-qrcode";
 import { renderApplication } from "../../..";
 import { AppName } from "../../app/App.model";
-import modalService from "../modal/Modal.service";
 import mylib from "../my-lib/MyLib";
 import './QRCode.scss';
 import { QRCodeReaderData, QRMasterConnectData, QRMasterControllerData } from "./QRCodeMaster.model";
@@ -24,9 +23,9 @@ class QrCodeMaster {
             const connectionNumber = Date.now();
             const partMapper = <Data,>(data: Data, parti: number, partCount: number): QRMasterConnectData<Data> => [qrCodePassphraseSign, appName, dataName, connectionNumber, partCount, parti, data];
 
-            if (len > 100) {
+            if (len > 150) {
                 const parts: QRMasterConnectData<string>[] = dataString
-                    .match(/(.{0,50})/g)
+                    .match(/(.{0,100})/g)
                     ?.filter((part) => part)
                     .map((part, parti, parta) => partMapper(part, parti, parta.length)) || [];
                 if (parts) {
@@ -141,9 +140,7 @@ class QrCodeMaster {
                 },
                 () => { }
             )
-                .catch((error) => {
-                    modalService.alert('' + error);
-                });
+                .catch(() => { });
         });
     }
 

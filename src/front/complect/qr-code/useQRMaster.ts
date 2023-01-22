@@ -4,6 +4,7 @@ import { updateQRDataStore } from "../../components/index/Index.store";
 import { RootState } from "../../shared/store";
 import modalService from "../modal/Modal.service";
 import { qrCodeMaster } from "./QRCodeMaster";
+import { QRCodeReaderData } from "./QRCodeMaster.model";
 
 const appsSelector = (state: RootState) => state.index.apps;
 const qrDataStoreSelector = (state: RootState) => state.index.qrDataStore;
@@ -34,12 +35,13 @@ export default function useQRMaster<Data>(appName?: AppName) {
                 dispatch(updateQRDataStore(newStore));
             }
         },
-        readQR: () => {
+        readQR: (callback?: (data: QRCodeReaderData<unknown, never>) => void) => {
             qrCodeMaster.read()
                 .then((data) => {
                     const app = apps.find(({ name }) => name === data.appName);
                     if (app) {
-                        dispatch(updateQRDataStore({
+                        if (callback) callback(data);
+                        else dispatch(updateQRDataStore({
                             ...qrDataStore,
                             [data.appName]: {
                                 ...qrDataStore?.[data.appName],

@@ -458,7 +458,6 @@ export class MyLib extends SMyLib {
                 ? one
                 : this.def(five, two);
     }
-    
 
     getAllProperties(obj: any) {
         const allProps: string[] = [];
@@ -657,10 +656,5 @@ export class MyLib extends SMyLib {
     }
 }
 
-
 const mylib = new MyLib();
 export default mylib;
-
-
-
-
