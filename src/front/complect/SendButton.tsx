@@ -1,4 +1,5 @@
 import { useState } from "react";
+import TheButton from "./Button";
 import EvaIcon from "./eva-icon/EvaIcon";
 import modalService from "./modal/Modal.service";
 
@@ -21,8 +22,8 @@ export default function SendButton({
   const [isError, setIsError] = useState(false);
 
   return (
-    <div
-      className={`the-button margin-gap ${disabled ? "disabled" : ""} ${
+    <TheButton
+      className={`margin-gap ${disabled ? "disabled" : ""} ${
         isLoading && !isError ? "pointers-none" : ""
       }`}
       onClick={async () => {
@@ -63,6 +64,6 @@ export default function SendButton({
           className={`rotate ${isLoading ? "" : "fade-00"}`}
         />
       )}
-    </div>
+    </TheButton>
   );
 }
