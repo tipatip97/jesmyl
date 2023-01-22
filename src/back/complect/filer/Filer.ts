@@ -17,48 +17,48 @@ const actionsRequirement: FilerAppRequirement = {
   map: (data: Record<string, ExecutionRule>) => {
     const rules: ExecutionRule[] = [];
     const map = (data: Record<string, ExecutionRule>, top: Partial<ExecutionRule> = {}): ExecutionRule[] => {
-        for (const key in data) {
-            if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
-                const rule = data[key];
-                const {
-                    title,
-                    shortTitle,
-                    level,
-                    method,
-                    action,
-                    isSequre,
-                    value,
-                    expected,
-                    args,
-                } = rule;
+      for (const key in data) {
+        if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
+          const rule = data[key];
+          const {
+            title,
+            shortTitle,
+            level,
+            method,
+            action,
+            isSequre,
+            value,
+            expected,
+            args,
+          } = rule;
 
-                const track = Executer.prepareTrack(key);
-                const theTrack = top.track?.concat(track || []) || track;
-                const nextTop: Partial<ExecutionRule> = {
-                    args: { ...top.args, ...args },
-                    track: theTrack,
-                    expecteds: (top.expecteds || []).concat(expected ? [[theTrack, expected]] : []),
-                };
+          const track = Executer.prepareTrack(key);
+          const theTrack = top.track?.concat(track || []) || track;
+          const nextTop: Partial<ExecutionRule> = {
+            args: { ...top.args, ...args },
+            track: theTrack,
+            expecteds: (top.expecteds || []).concat(expected ? [[theTrack, expected]] : []),
+          };
 
-                rules.push({
-                    title,
-                    shortTitle,
-                    level,
-                    method,
-                    action,
-                    isSequre,
-                    args: nextTop.args,
-                    track: nextTop.track,
-                    expecteds: nextTop.expecteds,
-                    value,
+          rules.push({
+            title,
+            shortTitle,
+            level,
+            method,
+            action,
+            isSequre,
+            args: nextTop.args,
+            track: nextTop.track,
+            expecteds: nextTop.expecteds,
+            value,
 
-                });
+          });
 
-                map(rule as never, nextTop);
-            }
+          map(rule as never, nextTop);
         }
+      }
 
-        return rules;
+      return rules;
     };
 
     return map(data).filter(({ action }) => action);
@@ -123,12 +123,14 @@ export class Filer {
 
             const createExpected = () => {
               if (content.actions) {
-                const action = content.actions.mapped.find(({ track, expected }) => {
-                  return expected !== undefined && track?.[0] === name;
+                const action = content.actions.mapped.find(({ track, expecteds }) => {
+                  return expecteds !== undefined && track?.[0] === name;
                 });
 
                 if (action) {
-                  const { expected } = action;
+                  const { expecteds } = action;
+                  const [, expected] = expecteds?.find(([track]) => track.length === 1 && track[0] === name) ?? [];
+                  if (!expected) return;
                   const string = JSON.stringify(expected);
 
                   fs.writeFile(path, string, (err) => {
@@ -199,9 +201,8 @@ export class Filer {
         return;
       }
 
-      let maxLastUpdate = 0;
-
       try {
+        let maxLastUpdate = 0;
         let waits = 0;
         let oks = 0;
         let errors: NodeJS.ErrnoException[] = [];
@@ -209,7 +210,14 @@ export class Filer {
         fixes.forEach((fileName) => {
           if (!smylib.isStr(fileName)) return;
           const content = this.contents[appName][fileName] || {};
-          const stringContent = JSON.stringify(content.data || {});
+          if (!content.data) {
+            if (waits === oks) {
+              res(maxLastUpdate);
+            }
+            return;
+          }
+
+          const stringContent = JSON.stringify(content.data);
           const path = this.fileNamePath(appName, fileName);
           waits++;
           fs.writeFile(path, stringContent, (error) => {
