@@ -103,5 +103,10 @@
         &.p-two {
             font-style: var(--font-style);
         }
+        
+        &.anchor {
+            color: grey;
+            margin: 10px 10px 10px 0;
+        }
     }
 }

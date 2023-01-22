@@ -8,7 +8,7 @@ import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useCmNav from "../../base/useCmNav";
 import useSelectedComs from "../../base/useSelectedComs";
 import { ChordVisibleVariant } from "../../Cm.model";
-import { updateComTopTools } from "../../Cm.store";
+import { switchIsMiniAnchor, updateComTopTools } from "../../Cm.store";
 import {
   concatMigratableEditableComToolNameList,
   getMigratableEditableComTool,
@@ -25,6 +25,7 @@ import {
 import { useCcom } from "./useCcom";
 
 const comTopToolsSelector = (state: RootState) => state.cm.comTopTools;
+const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
 
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ export default function useMigratableComTools() {
   const { isMarked, toggleMarked } = useMarks();
   const [, switchFullscreen] = useFullScreen();
   const comTopTools = useSelector(comTopToolsSelector);
+  const isMiniAnchor = useSelector(isMiniAnchorSelector);
   const nav = useCmNav();
 
   const makeToolList = (
@@ -123,6 +125,17 @@ export default function useMigratableComTools() {
                 title: "На весь экран",
                 icon: "expand-outline",
                 onClick: () => switchFullscreen(true),
+              }
+            );
+          case "is-mini-anchor":
+            return (
+              ccom && {
+                tool,
+                title: isMiniAnchor ? "Раскрыть ссылки" : "Свернуть ссылки",
+                icon: isMiniAnchor ? "minus" : "menu",
+                onClick: () => {
+                  dispatch(switchIsMiniAnchor(!isMiniAnchor));
+                },
               }
             );
           case "share-by-qr":

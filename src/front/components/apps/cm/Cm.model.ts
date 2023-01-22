@@ -17,7 +17,6 @@ export interface CmState extends CmStoraged {
     translationBlockPosition: FontSizeContainPropsPosition;
     isCmFullscreen: boolean;
     paranjaMode: ParanjaMode;
-    isMiniAnchor: boolean;
     rollModeMarks: boolean;
 
     numComUpdates: number;
@@ -51,6 +50,7 @@ export interface CmStoraged extends CmEditorStoraged {
     comTopTools: MigratableComToolName[];
     selectedComws: number[];
     currentMeetingsContext: number[];
+    isMiniAnchor: boolean;
 }
 
 export interface CmStorage extends CmStoraged {

@@ -17,7 +17,7 @@ const initialState: CmState = {
   laterComwList: cmStorage.getOr('laterComwList', []),
   rollMode: null,
   isCmFullscreen: false,
-  isMiniAnchor: false,
+  isMiniAnchor: cmStorage.getOr('isMiniAnchor', false),
   paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
@@ -90,6 +90,7 @@ export const slice = createSlice({
     },
     switchIsMiniAnchor: (state, action: PayloadAction<boolean | nil>) => {
       state.isMiniAnchor = action.payload ?? !state.isMiniAnchor;
+      cmStorage.set('isMiniAnchor', state.isMiniAnchor);
     },
     setParanjaMode: (state, action: PayloadAction<ParanjaMode>) => {
       state.paranjaMode = action.payload;

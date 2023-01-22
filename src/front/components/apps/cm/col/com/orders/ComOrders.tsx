@@ -1,16 +1,10 @@
+import mylib from "../../../../../../complect/my-lib/MyLib";
 import { ITheOrderProps } from "../order/Order.model";
 import TheOrder from "../order/TheOrder";
 import { IComOrdersProps } from "./ComOrders.model";
 
 export default function ComOrders(props: IComOrdersProps) {
-  const {
-    asOrdComponent,
-    com,
-    fontSize,
-    chordVisibleVariant,
-    asHeaderComponent,
-    showInvisibles,
-  } = props || {};
+  const { asOrdComponent, com, fontSize } = props || {};
 
   let currTransPosition = com.transPosition;
 
@@ -29,16 +23,13 @@ export default function ComOrders(props: IComOrdersProps) {
             (com.transPosition || 0) + (orderUnit.fieldValues?.md || 0);
         }
         const ordProps: ITheOrderProps = {
+          ...props,
           orderUnit,
           orderUniti,
-          chordVisibleVariant,
           currTransPosition: trPos,
-          asHeaderComponent,
-          com,
-          showInvisibles,
         };
 
-        return typeof asOrdComponent === "function" ? (
+        return mylib.isFunc(asOrdComponent) ? (
           asOrdComponent(ordProps)
         ) : (
           <TheOrder key={`com-${com.wid}-order.${orderUniti}`} {...ordProps} />

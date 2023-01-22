@@ -87,7 +87,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
     const lastLineIndex = this.text.split(/\n/).length - 1;
     const region = this.regions?.find(({ startLinei, endLinei }) => startLinei === 0 && endLinei === lastLineIndex);
 
-    return region ? region.endKey + '' : '';
+    return region ? region.count + '' : '';
   }
 
   get repeats(): OrderRepeats | null {
