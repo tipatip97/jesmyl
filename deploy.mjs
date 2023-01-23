@@ -56,7 +56,7 @@ const archive = (isFront, onError) => {
 
 if (~process.argv.indexOf('--push-front')) {
     const riseVersion = (version, cb) =>
-        file_system.writeFile('src/front/version.json', version, () => cb());
+        file_system.writeFile('src/front/version.json', version, () => cb?.());
 
     file_system.readFile('src/front/version.json', 'utf8', (err, versionStr) => {
         if (err) {
