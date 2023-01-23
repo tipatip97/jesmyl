@@ -158,9 +158,7 @@ export default function useMigratableComTools() {
       spliceMigratableEditableComToolNameList(comTopTools)
     ),
     menuTools: makeToolList(
-      concatMigratableEditableComToolNameList(
-        menuComToolNameList as never
-      ).filter((tool) => comTopTools.indexOf(tool) < 0)
+      concatMigratableEditableComToolNameList(menuComToolNameList as never)
     ),
     toggleTopTool: (tool: MigratableComToolName) => {
       dispatch(

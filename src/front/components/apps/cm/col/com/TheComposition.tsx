@@ -58,20 +58,22 @@ export default function TheComposition() {
       head={
         <>
           <div className="flex">
-            {topTools.map(({ icon, onClick, tool }) => (
-              <EvaIcon
-                key={tool}
-                name={icon}
-                className="action-button"
-                onClick={() => onClick()}
-                {...propsOfClicker({
-                  onCtxMenu: (event) => {
-                    event.preventDefault();
-                    toggleTopTool(tool);
-                  }
-                })}
-              />
-            ))}
+            <div className="com-actions-pannel">
+              {topTools.map(({ icon, onClick, tool }) => (
+                <EvaIcon
+                  key={tool}
+                  name={icon}
+                  className="action-button"
+                  onClick={() => onClick()}
+                  {...propsOfClicker({
+                    onCtxMenu: (event) => {
+                      event.preventDefault();
+                      toggleTopTool(tool);
+                    }
+                  })}
+                />
+              ))}
+            </div>
 
             <EvaIcon
               className="action-button"

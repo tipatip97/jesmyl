@@ -1,3 +1,18 @@
+.com-container {
+    .com-actions-pannel {
+        max-width: calc(100vw - 130px);
+        height: 40px;
+        padding-left: 10px;
+        white-space: nowrap;
+        overflow-x: scroll;
+        overflow-y: hidden;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
+
 .com-ord-list {
     display: inline-block;
     color: var(--color-far);
