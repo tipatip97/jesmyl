@@ -28,7 +28,7 @@ export default function useKeyboard() {
     let val = props.theValue || '';
 
     if (!isUseNativeKeyboard) {
-      const { className, theValue, ...otherProps } = props;
+      const { className, theValue, closeButton, multiline, ...otherProps } = props;
       const nodeProps = {
         ...otherProps,
         value: theValue,
@@ -44,9 +44,9 @@ export default function useKeyboard() {
         onPaste: props.onPaste && (async () => props.onPaste?.(await navigator.clipboard.readText())),
       };
 
-      inputNode = <div className={`input-keyboard-flash-controlled input ${props.multiline ? 'multiline' : ''}`}>
+      inputNode = <div className={`input-keyboard-flash-controlled input ${multiline ? 'multiline' : ''}`}>
         {
-          props.multiline
+          multiline
             ? <textarea {...nodeProps}
               ref={(el) => {
                 if (el) {

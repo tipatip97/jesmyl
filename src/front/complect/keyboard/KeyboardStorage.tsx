@@ -53,7 +53,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
           isForceUpdated = true;
         }
 
-        if (props.autofocus) {
+        if (props.autoFocus) {
           this.focus(isForceUpdated);
           isForceUpdated = true;
         }
