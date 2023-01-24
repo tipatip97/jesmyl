@@ -11,6 +11,7 @@ import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import "./Com.scss";
 import ComTools from "./ComTools";
+import ComPlayer from "./player/ComPlayer";
 import TheCom from "./TheCom";
 import { useCcom } from "./useCcom";
 import useComPack from "./useComPack";
@@ -18,6 +19,7 @@ import useMigratableComTools from "./useMigratableComTools";
 
 const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
 const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
+const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 
 export default function TheComposition() {
   const [ccom, setCcom] = useCcom();
@@ -28,11 +30,13 @@ export default function TheComposition() {
   const [chordVisibleVariant] = useChordVisibleVariant();
   const fontSize = useSelector(fontSizeSelector);
   const isMiniAnchor = useSelector(isMiniAnchorSelector);
+  const playerHideMode = useSelector(playerHideModeSelector);
+  const comAudio = ccom?.audio.trim();
 
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
     return () => clearTimeout(add);
-  }, []);
+  }, [ccom]);
 
   const comListElem = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -42,7 +46,7 @@ export default function TheComposition() {
   if (ccom == null) {
     return (
       <PhaseCmContainer
-        topClass="com-container"
+        topClass="composition-container"
         head="Упс"
         content="Песня не найдена("
       />
@@ -51,8 +55,9 @@ export default function TheComposition() {
 
   return (
     <PhaseCmContainer
-      topClass="com-container"
+      topClass={`composition-container ${playerHideMode && comAudio ? `with-open-player ${playerHideMode}` : ''}`}
       headClass="flex between"
+      contentClass="composition-content"
       headTitle={ccom.index + 1}
       contentRef={comListElem}
       head={
@@ -83,7 +88,8 @@ export default function TheComposition() {
           </div>
         </>
       }
-      content={
+      content={<>
+        {comAudio && <ComPlayer src={comAudio} />}
         <RollControled>
           <SwipeableContainer
             props={{ diapasonMoveVKf: 50, diapasonMoveHKf: 70 }}
@@ -110,7 +116,7 @@ export default function TheComposition() {
             }
           />
         </RollControled>
-      }
+      </>}
     />
   );
 }

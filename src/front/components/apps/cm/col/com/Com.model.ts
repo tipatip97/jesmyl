@@ -36,6 +36,7 @@ export const menuComToolNameList = [
     "selected-toggle",
     "share-by-qr",
     "is-mini-anchor",
+    "open-player",
   ] as const;
 
   export interface MigratableComTool {

@@ -735,6 +735,10 @@ export class EditableCom extends Com {
     }
 
     setAudio(val: string) {
+        if (this.isCreated) {
+            this.audio = val.trim();
+            return false;
+        }
         const prev = this.audio.trim();
         const value = val.trim().replace(/\n{2,}/, '\n');
         this.exec({

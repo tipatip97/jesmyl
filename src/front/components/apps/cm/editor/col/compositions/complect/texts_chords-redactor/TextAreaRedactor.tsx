@@ -23,7 +23,7 @@ export default function TextAreaRedactor({
     theValue: col,
     setIsUnknownSymbols: (char) => ["\r", "\t"].indexOf(char) > -1,
     preferLanguage: ccoln === "texts" ? (com.langi ? "ua" : "ru") : "en",
-    autofocus: !col,
+    autoFocus: !col,
     onChange: (value) => onChange(value),
     onPaste: (value) => {
       com.parseBlocksFromClipboard(value, (blocks): boolean => {

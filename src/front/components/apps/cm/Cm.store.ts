@@ -3,7 +3,7 @@ import { Exer } from "../../../complect/exer/Exer";
 import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
-import { ChordVisibleVariant, CmRollMode, CmState, FavoriteMeetings } from "./Cm.model";
+import { ChordVisibleVariant, CmRollMode, CmState, FavoriteMeetings, PlayerHideMode } from "./Cm.model";
 import { MigratableComToolName } from "./col/com/Com.model";
 import { Exec } from "./editor/CmEditor.model";
 import { IExportableMeetings } from "./lists/meetings/Meetings.model";
@@ -18,6 +18,7 @@ const initialState: CmState = {
   rollMode: null,
   isCmFullscreen: false,
   isMiniAnchor: cmStorage.getOr('isMiniAnchor', false),
+  playerHideMode: cmStorage.getOr('playerHideMode', null),
   paranjaMode: null,
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
@@ -92,6 +93,10 @@ export const slice = createSlice({
       state.isMiniAnchor = action.payload ?? !state.isMiniAnchor;
       cmStorage.set('isMiniAnchor', state.isMiniAnchor);
     },
+    setPlayerHideMode: (state, action: PayloadAction<PlayerHideMode>) => {
+      state.playerHideMode = action.payload;
+      cmStorage.set('playerHideMode', state.playerHideMode);
+    },
     setParanjaMode: (state, action: PayloadAction<ParanjaMode>) => {
       state.paranjaMode = action.payload;
     },
@@ -146,6 +151,7 @@ export const {
   selectCcol,
   switchCmFullscreen,
   switchIsMiniAnchor,
+  setPlayerHideMode,
   setChordVisibleVariant,
   riseUpComUpdate,
   changeRollMode,

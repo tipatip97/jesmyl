@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
+import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import useExer from "../../../../../../../complect/exer/useExer";
 import useKeyboard from "../../../../../../../complect/keyboard/useKeyboard";
 import { NavPhase } from "../../../../../../../complect/nav-configurer/Navigation.model";
@@ -9,6 +9,7 @@ import { useCcom } from "../../../../col/com/useCcom";
 import EditContainerCorrectsInformer from "../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { useEditableCols } from "../../useEditableCols";
 import { EditableCom } from "../EditableCom";
+import ComAudio from "./ComAudio";
 
 export default function NewComposition({ close }: { close: () => void }) {
   const { goTo } = useCmNav();
@@ -18,11 +19,12 @@ export default function NewComposition({ close }: { close: () => void }) {
   const [value, setValue] = useState("");
   const [name, setName] = useState("");
   const [isTakeName, setIsTakeName] = useState(true);
+  const [innerHTML, setInnerHTML] = useState('');
 
   const com = useMemo(
     () =>
       new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1, cols),
-    []
+    [cols]
   );
 
   const keyboardFerry = useKeyboard();
@@ -42,19 +44,35 @@ export default function NewComposition({ close }: { close: () => void }) {
     },
   });
 
+  const setTextAsValue = (value: string) => {
+    setValue(value);
+    if (isTakeName) {
+      const correctName = com.takeName(value);
+      setName(com.correctName(correctName));
+      input.value(correctName);
+    }
+  };
+
+  const codeInput = keyboardFerry("new composition body codeInput", {
+    className: "full-width",
+    closeButton: false,
+    placeholder: "введи код (ctrl+U)",
+    onPaste: (value) => {
+      const div = document.createElement('div');
+      div.innerHTML = value;
+      setInnerHTML(value);
+      const pre: HTMLPreElement | null = div.querySelector('pre#music_text');
+      if (pre) setTextAsValue(pre.innerHTML.replace(/<(\/ ?)?br( ?\/)?>/g, '\n'));
+    },
+  });
+
   const textarea = keyboardFerry("new composition body textarea", {
+    theValue: value,
     className: "text-heap-textarea full-width",
     multiline: true,
     closeButton: false,
     placeholder: "Начни писать или вставь текст для создания песни",
-    onChange: (value) => {
-      setValue(value);
-      if (isTakeName) {
-        const correctName = com.takeName(value);
-        setName(com.correctName(correctName));
-        input.value(correctName);
-      }
-    },
+    onChange: setTextAsValue,
   });
 
   const goToRoute = (phase = "texts", isRejectSave = true) => {
@@ -81,10 +99,12 @@ export default function NewComposition({ close }: { close: () => void }) {
             <div className="full-width">{input.node}</div>
           </div>
         </EditContainerCorrectsInformer>
+        {codeInput.node}
         {textarea.node}
-        <EvaIcon
+        {innerHTML && <ComAudio topCom={com} topHTML={innerHTML} />}
+        <EvaButton
           name="done-all-outline"
-          className="pointer margin-big-gap"
+          className="parse-com-data-button pointer margin-big-gap"
           onClick={() => {
             create();
             com.parseBlocks(value);

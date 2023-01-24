@@ -1,25 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import useExer from "../../../../../../../complect/exer/useExer";
 import useKeyboard from "../../../../../../../complect/keyboard/useKeyboard";
 import { MyLib } from "../../../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../../../Cm.store";
+import { EditableCom } from "../EditableCom";
 import { useEditableCcom } from "../useEditableCcom";
 
-export default function ComAudio() {
-  const ccom = useEditableCcom();
+export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom?: EditableCom }) {
+  const cEditableCom = useEditableCcom();
   const audioInput = useKeyboard()('audio-add Input', {
     placeholder: 'и вставь сюда',
-    onPaste: (value) => {
-      const div = document.createElement('div');
-      div.innerHTML = value;
-      const attributeName= 'data-audio-file';
-      updateHrefs(Array.from(div.querySelectorAll(`[${attributeName}]`)).map((e) => {
-        return `https://holychords.pro${e.getAttribute(attributeName)}`;
-      }));
-      div.remove();
-    }
+    onPaste: (value) => setInnerHTML(value),
   });
+  const ccom = topCom ?? cEditableCom;
+
+  const [innerHTML, setInnerHTML] = useState(topHTML);
   const { exec } = useExer(cmExer);
   const [hrefs, updateHrefs] = useState<(string | null)[]>([]);
   const [audio, setAudio] = useState(ccom?.audio || '');
@@ -31,6 +27,19 @@ export default function ComAudio() {
     ccom?.setAudio(audio);
     exec();
   };
+
+  useEffect(() => {
+    if (innerHTML) {
+      setOpenAddBlock(true);
+      const div = document.createElement('div');
+      div.innerHTML = innerHTML;
+      const attributeName = 'data-audio-file';
+      updateHrefs(Array.from(div.querySelectorAll(`[${attributeName}]`)).map((e) => {
+        return `https://holychords.pro${e.getAttribute(attributeName)}`;
+      }));
+      div.remove();
+    }
+  }, [innerHTML]);
 
   if (!ccom) return null;
 
@@ -53,7 +62,8 @@ export default function ComAudio() {
               }}
             />
           </div>
-        }) : <div>Нет треков</div>}
+        })
+        : <div>Нет треков</div>}
       {MyLib.entries(removedSrcs).length ? <>
         <h2>Удалённые аудио</h2>
         {MyLib.entries(removedSrcs).map(([index, src]) => {
@@ -77,8 +87,10 @@ export default function ComAudio() {
         openAddBlock
           ? <>
             <h2>Добавить аудио</h2>
-            Зайди на необходимую страницу, открой HTML-код страницы (CTRL + U), скопируй всё,
-            <div className="half-width">{audioInput.node}</div>
+            {!topHTML && <>
+              Зайди на необходимую страницу, открой HTML-код страницы (CTRL + U), скопируй всё,
+              <div className="half-width">{audioInput.node}</div>
+            </>}
             {hrefs.map((src) => {
               if (src && uniqs.indexOf(src) < 0) {
                 uniqs.push(src);

@@ -8,7 +8,7 @@ import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useCmNav from "../../base/useCmNav";
 import useSelectedComs from "../../base/useSelectedComs";
 import { ChordVisibleVariant } from "../../Cm.model";
-import { switchIsMiniAnchor, updateComTopTools } from "../../Cm.store";
+import { setPlayerHideMode, switchIsMiniAnchor, updateComTopTools } from "../../Cm.store";
 import {
   concatMigratableEditableComToolNameList,
   getMigratableEditableComTool,
@@ -26,6 +26,7 @@ import { useCcom } from "./useCcom";
 
 const comTopToolsSelector = (state: RootState) => state.cm.comTopTools;
 const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
+const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ export default function useMigratableComTools() {
   const [, switchFullscreen] = useFullScreen();
   const comTopTools = useSelector(comTopToolsSelector);
   const isMiniAnchor = useSelector(isMiniAnchorSelector);
+  const playerHideMode = useSelector(playerHideModeSelector);
   const nav = useCmNav();
 
   const makeToolList = (
@@ -125,6 +127,17 @@ export default function useMigratableComTools() {
                 title: "На весь экран",
                 icon: "expand-outline",
                 onClick: () => switchFullscreen(true),
+              }
+            );
+          case "open-player":
+            return (
+              ccom && {
+                tool,
+                title: "Проигрыватель",
+                icon: "music-outline",
+                onClick: () => {
+                  dispatch(setPlayerHideMode(playerHideMode ? null : 'min'));
+                },
               }
             );
           case "is-mini-anchor":

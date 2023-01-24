@@ -1,4 +1,30 @@
-.com-container {
+.phase-container.composition-container {
+    .composition-content {
+        transition: padding-top .2s;
+
+        .composition-player {
+            opacity: 0;
+        }
+    }
+
+    &.with-open-player {
+        &.expand {
+            --content-padding-top: var(--com-player-expand-height);
+        }
+
+        &.min {
+            --content-padding-top: var(--com-player-height);
+        }
+
+        .composition-content {
+            padding-top: var(--content-padding-top);
+
+            .composition-player {
+                opacity: 1;
+            }
+        }
+    }
+
     .com-actions-pannel {
         max-width: calc(100vw - 130px);
         height: 40px;

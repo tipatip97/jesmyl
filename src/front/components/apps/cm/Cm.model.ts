@@ -51,7 +51,10 @@ export interface CmStoraged extends CmEditorStoraged {
     selectedComws: number[];
     currentMeetingsContext: number[];
     isMiniAnchor: boolean;
+    playerHideMode: PlayerHideMode;
 }
+
+export type PlayerHideMode = 'expand' | 'min' | null;
 
 export interface CmStorage extends CmStoraged {
     actions: CmAction[];
