@@ -3,7 +3,7 @@ import { FilerAppConfig } from "../../complect/filer/Filer.model";
 const config: FilerAppConfig = {
     title: 'Аккорд Мастер',
     requirements: [
-        "cols", "meetings", "chords",
+        "cols", "meetings", "chords", "chordTracks",
         {
             level: 50,
             name: "eeStorage",

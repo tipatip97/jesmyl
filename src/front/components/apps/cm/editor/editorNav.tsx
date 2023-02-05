@@ -25,6 +25,7 @@ import EditMeetings from "./meetings/EditMeetings";
 import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
 import ExecsVisor from "./execs/ExecsVisor";
 import ComAudio from "./col/compositions/complect/ComAudio";
+import ChordRedactor from "./chord-redactor/ChordRedactor";
 
 export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
   icon?: EvaIconName;
@@ -164,6 +165,15 @@ export const editorRouteItems: INavigationRouteChildItem<CmNavData, {
           ],
         },
       ],
+    },
+    {
+      phase: ["chord"],
+      node: <ChordRedactor />,
+      accessRule: "canWatch",
+      data: {
+        title: "Редактор аккордов",
+        icon: "options-2-outline",
+      },
     },
     {
       phase: ["e-e"],

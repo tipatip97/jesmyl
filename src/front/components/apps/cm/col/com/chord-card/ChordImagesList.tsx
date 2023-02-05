@@ -11,17 +11,14 @@ export default function ChordImagesList() {
             .filter((uc) => uc)
             .map((chordName) => {
               return (
-                <div
-                  key={`chord-used-${chordName}`}
-                  className="chord-application"
-                >
-                  <ChordCard
-                    chordName={chordName}
-                    chordLabel={
-                      (ccom.usedChords && ccom.usedChords[chordName]) || "?"
-                    }
-                  />
-                </div>
+                <ChordCard
+                  chordName={chordName}
+                  customContent={(card) => {
+                    return <div key={chordName} className="flex column margin-big-gap">
+                      {card || <div className="error-message">Неизвестный аккорд</div>}
+                      {ccom.usedChords?.[chordName] || "?"}
+                    </div>
+                  }} />
               );
             })}
       </div>

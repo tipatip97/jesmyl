@@ -1,56 +1,59 @@
-.chord-application {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    margin-top: 40px;
+.chord-board {
+    position: relative;
+    background-color: var(--color--2);
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 10px;
 
-    .chord-board {
-        position: relative;
-        background-color: var(--color--2);
+    .chord-zero-line {
+        fill: none;
+        stroke: var(--color--1);
+        stroke-width: 10px;
+    }
+
+    .chord-string {
+        fill: none;
+        stroke: var(--color--3);
+        pointer-events: none;
+    }
+
+    .chord-lad {
+        fill: none;
+        stroke: var(--color--4);
+        stroke-width: 2px;
+    }
+
+    .chord-lad-number {
+        font-size: 30px;
+        font-weight: bolder;
+        fill: var(--color--3);
+        opacity: 0.3;
+    }
+
+    .mute-string-indicator {
+        font-size: 15px;
+        stroke: var(--color--3);
+    }
+
+    .chord-point {
+        stroke-linecap: round;
+        stroke-width: 12px;
+        stroke: var(--color--7);
+
+        &:not(.shadow) {
+            pointer-events: none;
+        }
+
+        &.shadow {
+            stroke: grey;
+            cursor: pointer;
+        }
+    }
+
+    .first-lad-counter {
+        font-size: 1em;
+        margin-right: .5em;
         display: inline-block;
         vertical-align: middle;
-        border-radius: 10px;
-
-        .chord-zero-line {
-            fill: none;
-            stroke: var(--color--1);
-            stroke-width: 10px;
-        }
-
-        .chord-string {
-            fill: none;
-            stroke: var(--color--3);
-        }
-
-        .chord-lad {
-            fill: none;
-            stroke: var(--color--4);
-            stroke-width: 2px;
-        }
-
-        .chord-lad-number {
-            font-size: 30px;
-            font-weight: bolder;
-            fill: var(--color--3);
-            opacity: 0.3;
-        }
-
-        .chord-point {
-            stroke-linecap: round;
-            stroke-width: 12px;
-            stroke: var(--color--7);
-
-            &.shadow {
-                stroke: grey;
-            }
-        }
-
-        .first-lad-counter {
-            font-size: 1em;
-            margin-right: .5em;
-            display: inline-block;
-            vertical-align: middle;
-        }
     }
 }

@@ -1,12 +1,11 @@
-import { cmStorage } from "../../../../../../shared/jstorages";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../../../shared/store";
 
 
-const chords = cmStorage.getOr('chords', {});
+const chordsSelector = (state: RootState) => state.cm.chordTracks;
 
 export function useChords() {
-
-    return {
-        chords,
-    };
+    const chords = useSelector(chordsSelector);
+    return chords;
 }
 

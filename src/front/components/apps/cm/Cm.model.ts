@@ -4,6 +4,7 @@ import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
 import { IExportableSetts } from "./col/com/block-styles/BlockStyles.model";
+import { ChordPack } from "./col/com/chord-card/ChordCard.model";
 import { IExportableCom, MigratableComToolName } from "./col/com/Com.model";
 import { IExportableCols } from "./cols/Cols.model";
 import { CmEditorStoraged } from "./editor/CmEditor.model";
@@ -44,7 +45,7 @@ export interface CmStoraged extends CmEditorStoraged {
     marks: number[];
     meetings?: IExportableMeetings;
     comFontSize: number;
-    chords: Record<string, number[]>;
+    chordTracks: ChordPack;
     isShowTranslationInfo: boolean;
     favoriteMeetings: FavoriteMeetings;
     comTopTools: MigratableComToolName[];

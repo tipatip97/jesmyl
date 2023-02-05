@@ -4,6 +4,7 @@ import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ParanjaMode } from "./base/useParanja";
 import { ChordVisibleVariant, CmRollMode, CmState, FavoriteMeetings, PlayerHideMode } from "./Cm.model";
+import { ChordPack } from "./col/com/chord-card/ChordCard.model";
 import { MigratableComToolName } from "./col/com/Com.model";
 import { Exec } from "./editor/CmEditor.model";
 import { IExportableMeetings } from "./lists/meetings/Meetings.model";
@@ -26,7 +27,7 @@ const initialState: CmState = {
   meetings: cmStorage.get('meetings'),
   eventw: cmStorage.get('eventw'),
   comFontSize: cmStorage.getOr('comFontSize', 15),
-  chords: cmStorage.getOr('chords', {}),
+  chordTracks: cmStorage.getOr('chordTracks', {}),
   isShowTranslationInfo: cmStorage.getOr('isShowTranslationInfo', true),
   translationUpdates: 0,
   translationBlock: 0,
@@ -59,8 +60,8 @@ export const slice = createSlice({
     setMarkList: (state, action: PayloadAction<number[]>) => {
       state.marks = action.payload;
     },
-    setCmChords: (state, action: PayloadAction<Record<string, number[]>>) => {
-      state.chords = action.payload;
+    setCmChords: (state, action: PayloadAction<ChordPack>) => {
+      state.chordTracks = action.payload;
     },
     updateMeetingList: (state, action: PayloadAction<IExportableMeetings | und>) => {
       state.meetings = action.payload;
