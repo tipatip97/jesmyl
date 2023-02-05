@@ -8,6 +8,7 @@ import fetch from 'node-fetch';
     ['apps/cm', 'meetings'],
     // ['apps/cm', 'cm-execs'],
     ['apps/cm', 'chords'],
+    ['apps/cm', 'chordTracks'],
     ['apps/leader', 'people'],
     ['apps/leader', 'contexts'],
     // ['apps/spy', 'cache'],
