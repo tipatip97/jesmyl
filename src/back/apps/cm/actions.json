@@ -34,19 +34,14 @@
         "action": "comCanSearch",
         "title": "stub"
     },
-    "/chords/{chordn}": {
+    "/chordTracks": {
+        "expected": {},
         "level": 50,
-        "action": "setChord",
-        "title": "$prev?{{Изменён}{Добавлен}} Аккорд \"$chordn\"",
-        "rule": {
-            "name": "chordLike",
-            "value": "{chordn}"
-        },
-        "method": "set",
-        "valueAs": "chord",
+        "action": "updateChordTracksDict",
+        "title": "Изменение изображений аккордов",
+        "method": "set_all",
         "args": {
-            "value": "#List",
-            "chordn": "#String"
+            "value": "#Dict"
         }
     },
     "/cols": {
