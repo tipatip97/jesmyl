@@ -1,8 +1,5 @@
 import mylib from "./my-lib/MyLib";
 
-
-type NonUndefined<T> = T extends undefined ? never | null : T | null;
-
 export default class SourceBased<T> {
     top: T;
     basics: T;
