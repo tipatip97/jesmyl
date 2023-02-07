@@ -6,7 +6,7 @@ import useCmNav, { translationNavPoint } from "./base/useCmNav";
 import useSelectedComs from "./base/useSelectedComs";
 import { CmQRData } from "./Cm.model";
 import "./Cm.scss";
-import { updateEditorExecList } from "./Cm.store";
+import { updateCmChordTracks, updateEditorExecList, updateMeetingList } from "./Cm.store";
 import { useCols } from "./cols/useCols";
 import { useEditableCols } from "./editor/col/useEditableCols";
 import useTranslation from "./translation/useTranslation";
@@ -25,9 +25,10 @@ export default function CmApplication({ content }: { content: ReactNode }) {
     setEditableCols(val);
   });
 
-  cmStorage.listen("execs", "ExecVisor", (val) => {
-    if (val) dispatch(updateEditorExecList(val));
-  });
+  cmStorage.dispatch(dispatch)
+    .it('chordTracks', updateCmChordTracks)
+    .it('meetings', updateMeetingList)
+    .it('execs', updateEditorExecList);
 
   useEffect(() => nav.setData({ selectedComws }), [nav, selectedComws]);
 

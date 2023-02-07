@@ -60,7 +60,7 @@ export const slice = createSlice({
     setMarkList: (state, action: PayloadAction<number[]>) => {
       state.marks = action.payload;
     },
-    setCmChords: (state, action: PayloadAction<ChordPack>) => {
+    updateCmChordTracks: (state, action: PayloadAction<ChordPack>) => {
       state.chordTracks = action.payload;
     },
     updateMeetingList: (state, action: PayloadAction<IExportableMeetings | und>) => {
@@ -172,6 +172,7 @@ export const {
   switchShowTranslationInfo,
   setParanjaMode,
   updateLaterComwList,
+  updateCmChordTracks,
   riseUpAbsolutePopupUpdates,
   riseUpMeetingsUpdate,
 } = slice.actions;
