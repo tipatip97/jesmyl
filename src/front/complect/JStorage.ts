@@ -1,9 +1,8 @@
+import { Dispatch } from "@reduxjs/toolkit";
 import { JStorageName } from "../app/App.model";
 import mylib from "./my-lib/MyLib";
 
 export type JStorageListener<Val> = (val: Val) => void;
-
-type NonUndefined<T> = T extends undefined | null ? never : T;
 
 export class JStorage<Scope> {
     prefix: string;
@@ -16,6 +15,8 @@ export class JStorage<Scope> {
     initialized: (keyof Scope)[] = [] as never;
     updatetOnInit: (keyof Scope)[] = [] as never;
 
+    private dispatchers: Record<keyof Scope, (val: NonUndefined<Scope[any]>) => void> = {} as never;
+
     constructor(appName: JStorageName) {
         this.prefix = `[${appName}]:`;
         this.appName = appName;
@@ -26,6 +27,18 @@ export class JStorage<Scope> {
                 this.initialized.push(key);
             }
         });
+    }
+
+    dispatch(dispatch: Dispatch<any>) {
+        const dispatcher = {
+            it: <Key extends keyof Scope>(key: Key, action: (val: NonUndefined<Scope[Key]>) => void) => {
+                this.dispatchers[key] = (val) => {
+                    val !== undefined && dispatch(action(val));
+                };
+                return dispatcher;
+            },
+        };
+        return dispatcher;
     }
 
     listen<Key extends keyof Scope>(key: Key, name: string, listener: JStorageListener<Scope[Key]>, isRejectOnInit?: boolean): JStorageListener<Scope[Key]> {
@@ -52,10 +65,13 @@ export class JStorage<Scope> {
     }
 
     refreshAreas<Key extends keyof Scope>(areas: Key[], contents: Record<Key, unknown>) {
-        areas.forEach((key) => this.set(key, contents[key] as Scope[Key]));
+        areas.forEach((key) => {
+            this.set(key, contents[key] as Scope[Key]);
+            if (contents[key] !== undefined) this.dispatchers[key]?.(contents[key] as never);
+        });
     }
 
-    parse(val: string) {
+    private parse(val: string) {
         try {
             return val == null ? null : JSON.parse(val);
         } catch (error) {
@@ -63,7 +79,7 @@ export class JStorage<Scope> {
         }
     }
 
-    stringify(val: any) {
+    private stringify(val: any) {
         try {
             return val == null ? null : JSON.stringify(val);
         } catch (error) {
@@ -71,7 +87,7 @@ export class JStorage<Scope> {
         }
     }
 
-    lsName(key: keyof Scope) {
+    private lsName(key: keyof Scope) {
         return `${this.prefix}${key as string}`;
     }
 
@@ -85,10 +101,6 @@ export class JStorage<Scope> {
 
     getOr<Key extends keyof Scope>(key: Key, def: Scope[Key]): NonUndefined<Scope[Key]> {
         return this.properties[key] ?? def as never;
-    }
-
-    getString<Key extends keyof Scope>(key: Key, def: string | null = null): string | null {
-        return this.strings[key] ?? def;
     }
 
     set<Key extends keyof Scope>(key: Key, val: Scope[Key] | ((prevValue: Scope[Key]) => Scope[Key]), isRejectPropagation?: boolean): string | null {
@@ -110,7 +122,7 @@ export class JStorage<Scope> {
         }
     }
 
-    setValue<Key extends keyof Scope>(key: keyof Scope, val: Scope[Key], string: string, isRejectPropagation?: boolean) {
+    private setValue<Key extends keyof Scope>(key: keyof Scope, val: Scope[Key], string: string, isRejectPropagation?: boolean) {
         this.store[this.lsName(key)] = val;
         this.properties[key] = val;
         this.strings[key] = string as string;
