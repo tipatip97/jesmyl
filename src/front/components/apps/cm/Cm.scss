@@ -19,57 +19,55 @@
     }
 }
 
-#root {
-    .com-expand-content {
-        overflow: auto;
+.com-expand-content {
+    overflow: auto;
 
-        .inner-content {
-            padding-top: 50vh;
-        }
-
-        .com-number {
-            text-align: center;
-        }
-
-        .com-ord-list {
-            width: 100%;
-        }
-
-        :not(:last-child) .com-ord-list {
-            border-bottom: 2px var(--text-color) dashed;
-        }
+    .inner-content {
+        padding-top: 50vh;
     }
 
+    .com-number {
+        text-align: center;
+    }
 
-    .roll-controled-container {
-        padding: 0;
-        transition: padding .3s;
+    .com-ord-list {
+        width: 100%;
+    }
 
-        &.fullscreen {
-            padding-top: 30%;
+    :not(:last-child) .com-ord-list {
+        border-bottom: 2px var(--text-color) dashed;
+    }
+}
+
+
+.roll-controled-container {
+    padding: 0;
+    transition: padding .3s;
+
+    &.fullscreen {
+        padding-top: 30%;
+    }
+
+    .roll-controls {
+        --height: 100px;
+
+        position: fixed;
+        top: calc(50vh - var(--height) / 2);
+        right: 10px;
+        height: var(--height);
+        opacity: 0;
+        pointer-events: none;
+        cursor: pointer;
+        transition: opacity .7s;
+        z-index: 1;
+
+        >* {
+            margin: 5px;
         }
 
-        .roll-controls {
-            --height: 100px;
-
-            position: fixed;
-            top: calc(50vh - var(--height) / 2);
-            right: 10px;
-            height: var(--height);
-            opacity: 0;
-            pointer-events: none;
-            cursor: pointer;
-            transition: opacity .7s;
-            z-index: 1;
-
-            >* {
-                margin: 5px;
-            }
-
-            &.open {
-                opacity: .7;
-                pointer-events: all;
-            }
+        &.open {
+            opacity: .7;
+            pointer-events: all;
         }
     }
 }

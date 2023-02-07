@@ -1,112 +1,94 @@
-.application-container.app_cm {
-    --margin-left-small: .5em;
-    --margin-left-medium: 1em;
-    --margin-left-large: 1.5em;
+.composition-block {
+    position: relative;
+    margin-top: 1em;
+    padding-left: 1em;
+    white-space: nowrap;
 
-    --font-size-small: .5em;
-    --font-size-medium: .7em;
-    --font-size-normal: 1em;
+    >.header {
+        margin-right: 1em;
+    }
+}
 
-    --text-decor: underline;
-    --font-bold: bold;
-    --font-style: italic;
+.styled-header {
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: .5em;
+    display: inline-block;
+    vertical-align: middle;
 
-    .composition-block {
-        position: relative;
-        margin-top: 1em;
-        padding-left: 1em;
-        white-space: nowrap;
-
-        >.header {
-            margin-right: 1em;
-        }
+    &.enter,
+    &.trans {
+        margin-left: .5em;
     }
 
-    .styled-block {
-        &.chords-block {
-            margin-left: .5em;
-            margin-bottom: .5em;
-            white-space: pre-line;
-        }
-
-        &.chorded-block {
-            .composition-line {
-                line-height: 2.3em;
-            }
-
-            +.inherit.without-chords {
-                margin-top: -.4em;
-            }
-        }
-
-        &.without-chords {
-            .composition-line {
-                line-height: 1.5em;
-            }
-
-            +.inherit.chorded-block {
-                margin-top: .4em;
-            }
-        }
-
-        &.enter {
-            margin-left: var(--margin-left-small);
-        }
-
-        &._one,
-        &._shift,
-        &._plus_plus_shift {
-            margin-left: var(--margin-left-medium);
-        }
-
-        &.p-two {
-            margin-left: var(--margin-left-small);
-            font-style: var(--font-style);
-        }
-
-        &.two,
-        &.thirdo {
-            font-weight: var(--font-bold);
-            margin-left: var(--margin-left-small);
-        }
-
-        &.bridge {
-            font-style: var(--font-style);
-            font-weight: var(--font-bold);
-            margin-left: var(--margin-left-large);
-        }
-
-        &.final {
-            font-style: var(--font-style);
-            font-weight: var(--font-bold);
-            margin-left: var(--margin-left-medium);
-        }
-
-        &._plus,
-        &._shift {
-            margin-top: 0;
-        }
+    &.p-two {
+        font-style: italic;
     }
 
-    .styled-header {
-        font-weight: var(--font-bold);
-        text-decoration: var(--text-decor);
+    &.anchor {
+        color: grey;
+        margin: 10px 10px 10px 0;
+    }
+}
+
+.styled-block {
+    &.chords-block {
+        margin-left: .5em;
         margin-bottom: .5em;
-        display: inline-block;
-        vertical-align: middle;
+        white-space: pre-line;
+    }
 
-        &.enter,
-        &.trans {
-            margin-left: var(--margin-left-small);
+    &.chorded-block {
+        .composition-line {
+            line-height: 2.3em;
         }
 
-        &.p-two {
-            font-style: var(--font-style);
+        +.inherit.without-chords {
+            margin-top: -.4em;
         }
-        
-        &.anchor {
-            color: grey;
-            margin: 10px 10px 10px 0;
+    }
+
+    &.without-chords {
+        .composition-line {
+            line-height: 1.5em;
         }
+
+        +.inherit.chorded-block {
+            margin-top: .4em;
+        }
+    }
+
+    &.enter,
+    &.p-two,
+    &.two,
+    &.thirdo {
+        margin-left: .5em;
+    }
+
+    &._one,
+    &._shift,
+    &._plus_plus_shift,
+    &.final {
+        margin-left: 1em;
+    }
+
+    &.bridge {
+        margin-left: 1.5em;
+    }
+
+    &.p-two, &.bridge, &.final {
+        font-style: italic;
+    }
+
+    &.two,
+    &.thirdo,
+    &.final,
+    &.bridge {
+        font-weight: bold;
+    }
+
+    &._plus,
+    &._shift {
+        margin-top: 0;
     }
 }

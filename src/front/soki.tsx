@@ -60,7 +60,10 @@ export class SokiTrip {
                             const { ok, message, error } = event.system as never;
                             modalService.alert(
                                 <>
-                                    <div style={{ color: ok ? 'green' : 'red' }}>{ok ? 'Ok' : 'Error'}</div>
+                                    {ok
+                                        ? <div style={{ color: 'green' }}>Ok</div>
+                                        : <div style={{ color: 'red' }}>Error</div>
+                                    }
                                     <div>{message || error}</div>
                                 </>
                             );
