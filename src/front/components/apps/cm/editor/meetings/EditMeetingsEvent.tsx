@@ -2,7 +2,7 @@ import { useState } from "react";
 import DebouncedInput from "../../../../../complect/DebouncedInput";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../complect/exer/useExer";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import useCmNav from "../../base/useCmNav";
 import { cmExer } from "../../Cm.store";
 import ComFace from "../../col/com/face/ComFace";
@@ -19,7 +19,6 @@ export default function EditMeetingsEvent() {
   const [term, setTerm] = useState(zcat?.term || "");
   const [, setCcom] = useCcom();
   const { goTo } = useCmNav();
-  const aboutInput = useKeyboard();
   const [isClosedComList, setIsClosedComList] = useState(true);
 
   if (!currentEvent) return null;
@@ -28,14 +27,6 @@ export default function EditMeetingsEvent() {
   );
   const comsLength = currentEvent.coms?.length || 0;
   const prevComsLength = currentEvent.prevComs?.length || 0;
-  const input = aboutInput(`EditMeetingsEvent ${currentEvent.wid}`, {
-    theValue: currentEvent.name,
-    onFocus: () => setIsClosedComList(true),
-    onChange: (value) => {
-      setIsClosedComList(true);
-      exec(currentEvent.rename(value));
-    },
-  });
 
   return (
     <PhaseCmEditorContainer
@@ -46,7 +37,15 @@ export default function EditMeetingsEvent() {
       content={
         <>
           <EditContainerCorrectsInformer>
-            Название {input.node}
+            Название
+            <KeyboardInput
+              value={currentEvent.name}
+              onFocus={() => setIsClosedComList(true)}
+              onChange={(value) => {
+                setIsClosedComList(true);
+                exec(currentEvent.rename(value));
+              }}
+            />
           </EditContainerCorrectsInformer>
 
           <div className="list-title sticky">

@@ -1,6 +1,6 @@
 import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../../complect/exer/useExer";
-import useKeyboard from "../../../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../../complect/my-lib/MyLib";
 import { ChordVisibleVariant } from "../../../../Cm.model";
@@ -13,14 +13,8 @@ import { useEditableCcom } from "../useEditableCcom";
 export default function EditableCompositionMain() {
   const ccom = useEditableCcom();
   const { exec } = useExer(cmExer);
-  const aboutInput = useKeyboard();
 
   if (!ccom) return null;
-  const input = aboutInput(`EditableCompositionMain ${ccom.wid}`, {
-    theValue: ccom?.name,
-    className: "full-width",
-    onChange: (value) => exec(ccom?.rename(value, exec)),
-  });
 
   return (
     <>
@@ -30,7 +24,11 @@ export default function EditableCompositionMain() {
           className="flex"
         >
           <div className="margin-gap-h">Название</div>
-          {input.node}
+          <KeyboardInput
+            value={ccom?.name}
+            className="full-width"
+            onChange={(value) => exec(ccom?.rename(value, exec))}
+          />
         </EditContainerCorrectsInformer>
       }
       <div
@@ -69,14 +67,13 @@ export default function EditableCompositionMain() {
               return {
                 type: "button",
                 closable: false,
-                value: `${
-                  position === first ? "* " : ""
-                }На ${position} ${mylib.declension(
-                  position,
-                  "полутон",
-                  "полутона",
-                  "полутонов"
-                )} от базовой`,
+                value: `${position === first ? "* " : ""
+                  }На ${position} ${mylib.declension(
+                    position,
+                    "полутон",
+                    "полутона",
+                    "полутонов"
+                  )} от базовой`,
                 style: () => ({
                   fontWeight: position === pos ? "bold" : undefined,
                 }),

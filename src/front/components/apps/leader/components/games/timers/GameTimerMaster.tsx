@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
 import propsOfClicker from "../../../../../../complect/clicker/propsOfClicker";
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
-import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import SendButton from "../../../../../../complect/SendButton";
@@ -60,15 +60,11 @@ export default function LeaderGameTimerMaster({
   );
 
   const [mode, setMode] = useState(timer.mode);
+  const [name, setName] = useState(timer.name);
   const [joins, setJoins] = useState(timer.joins || 1);
   const [selectedTeamw, setSelectedTeamw] = useState<number | null>(null);
   const [teams, updateTeams] = useState<GameTeam[]>(timer.teams);
 
-  const nameInput = useKeyboard()("name-of-GameTimer-input", {
-    preferLanguage: "ru",
-    theValue: timer.name,
-    onInput: (value) => mapTimer((timer) => (timer.name = value)),
-  });
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const [newCommentText, setNewCommentText] = useState("");
   const [isWriteName, setIsWriteName] = useState(false);
@@ -78,7 +74,6 @@ export default function LeaderGameTimerMaster({
     mode === GameTimerMode.TimerTotal ? 1 : joins,
     (team) => team
   );
-  useEffect(() => () => nameInput.remove(), []);
   const isTeamsTaken = !!teamNet?.length;
 
   const members = timer.teams.length;
@@ -107,7 +102,7 @@ export default function LeaderGameTimerMaster({
                         id: name,
                         title: name,
                       }))}
-                      onSelect={({ id }) => nameInput.value(id)}
+                      onSelect={({ id }) => setName(id)}
                     />
                     <EvaIcon
                       name="edit-outline"
@@ -116,13 +111,20 @@ export default function LeaderGameTimerMaster({
                   </>
                 ) : (
                   <>
-                    {nameInput.node}
+                    <KeyboardInput
+                      preferLanguage="ru"
+                      value={name}
+                      onInput={(value) => {
+                        setName(value);
+                        mapTimer((timer) => (timer.name = value));
+                      }}
+                    />
                     {!cgame?.timerNames?.length || (
                       <EvaIcon
                         name="menu-outline"
                         onClick={() => {
                           setIsWriteName(false);
-                          nameInput.value("");
+                          setName("");
                         }}
                       />
                     )}
@@ -203,9 +205,8 @@ export default function LeaderGameTimerMaster({
                                 <div
                                   key={`teami-${teami}`}
                                   className={`flex center full-max-width ${selectedTeamw === team.wid
-                                      ? "selected-team"
-                                      : ""
-                                    }`}
+                                    ? "selected-team"
+                                    : ""}`}
                                   onClick={() => {
                                     if (timer.isTeamCantMove(team)) {
                                       if (team.wid === selectedTeamw)
@@ -434,7 +435,7 @@ export default function LeaderGameTimerMaster({
             <div className="flex around flex-gap margin-big-gap">
               {newCommentText ? (
                 <div className="error-message">Комментарий не отправлен</div>
-              ) : !nameInput.value() ? (
+              ) : !name ? (
                 <div className="error-message">Нет названия таймера</div>
               ) : !isTeamsTaken ? (
                 <div className="flex center color--3">
@@ -454,7 +455,6 @@ export default function LeaderGameTimerMaster({
                       close();
                       resetTimers();
                       removeLocalTimer();
-                      nameInput.remove();
                     }}
                     onSend={() => publicateTimer(timer)}
                   />

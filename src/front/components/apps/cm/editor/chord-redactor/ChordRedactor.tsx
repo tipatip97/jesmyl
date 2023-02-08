@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import TheButton from "../../../../../complect/Button";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import useExer from "../../../../../complect/exer/useExer";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib, { MyLib } from "../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../Cm.store";
 import ChordCard from '../../col/com/chord-card/ChordCard';
@@ -21,7 +21,6 @@ export default function ChordRedactor() {
     const [redactableChords, updateRedactableChords] = useState<ChordPack>({});
     const redactableChord: ChordTrack = redactableChords[currentChord];
     const isExists = chords[currentChord];
-    const inputFerry = useKeyboard();
     const [newNameError, setNewNameError] = useState('');
     const { exec } = useExer(cmExer);
 
@@ -98,10 +97,6 @@ export default function ChordRedactor() {
         })
     }, [chords, currentChord, redactableChords]);
 
-    const newChordInput = inputFerry('newChordInput', {
-        onInput: (value) => setNewChordName(value),
-    });
-
     const modifyTrack = (map: (track: ChordTrack) => ChordTrack | void) => {
         let track: ChordTrack = mylib.clone(redactableChord);
         const newTrack = map(track);
@@ -137,7 +132,9 @@ export default function ChordRedactor() {
                 <div className="flex column center old-chord">
                     {isNewChord
                         ? <>
-                            {newChordInput.node}
+                            <KeyboardInput
+                                onInput={(value) => setNewChordName(value)}
+                            />
                             {newNameError && <div className="error-message margin-gap">{newNameError}</div>}
                             <div
                                 className="padding-giant-gap pointer"

@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../complect/modal/Modal.service";
 import SendButton from "../../../../../complect/SendButton";
 import { leaderExer } from "../../Leader.store";
@@ -51,7 +51,6 @@ export default function HumanMaster({
   const [isHumanHeap, setIsHumanHeap] = useState(false);
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
-  const inputGenerator = useKeyboard();
   const { ccontext } = useLeaderContexts();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
@@ -64,51 +63,6 @@ export default function HumanMaster({
     return null;
   };
 
-  const nameInput = inputGenerator("human-name", {
-    theValue: human?.name,
-    setIsUnknownSymbols: (char) => !!/[^а-яё ]/i.exec(char),
-    preferLanguage: "ru",
-    onInput: !human
-      ? (value) => takeName(value)
-      : (value, prev) => {
-          const name = takeName(value);
-          if (name) {
-            leaderExer.setIfCan({
-              action: "setHumanName",
-              scope: `setHumanName-${human.wid}`,
-              method: "set",
-              prev,
-              value,
-              args: {
-                wid: human.wid,
-                value,
-              },
-            });
-          }
-        },
-  });
-
-  const notesInput = inputGenerator("human-notes", {
-    theValue: human?.notes,
-    preferLanguage: "ru",
-    onInput: !human
-      ? undefined
-      : (value, prev) => {
-          leaderExer.setIfCan({
-            action: "setHumanNotes",
-            scope: `setHumanNotes-${human.wid}`,
-            method: "set",
-            prev,
-            value,
-            args: {
-              wid: human.wid,
-              value,
-              humann: human.name,
-            },
-          });
-        },
-  });
-
   const takeTime = (value: string) => {
     const [day, month, year] = value?.split(/\./) || [];
     let time: number | null = new Date(+year, +month - 1, +day).getTime();
@@ -120,55 +74,11 @@ export default function HumanMaster({
     return time;
   };
 
-  const bDayInput = inputGenerator("human-bday", {
-    theValue: human?.bDay ? new Date(human.bDay).toLocaleDateString() : "",
-    preferLanguage: "ru",
-    onInput: !human
-      ? (value) => takeTime(value)
-      : (value) => {
-          const time = takeTime(value);
-          if (time) {
-            leaderExer.setIfCan({
-              action: "setHumanBDay",
-              scope: `setHumanBDay-${human.wid}`,
-              method: "set",
-              prev: human.bDay,
-              value: time,
-              args: {
-                wid: human.wid,
-                value: time,
-                humann: human.name,
-              },
-            });
-          }
-        },
-  });
-
-  const heapInput = inputGenerator(`heap-human-input`, {
-    className: "input",
-    multiline: true,
-    placeholder: "Массив личностей",
-    onChange: (value) => {
-      updateViewHumanList(value.split(/\n+/).map((line) => lineAsHuman(line)));
-    },
-    theValue: "",
-  });
-
-  useEffect(() => {
-    return () => {
-      nameInput.remove();
-      notesInput.remove();
-      bDayInput.remove();
-      leaderExer.clear();
-    };
-  }, []);
-
   const includeToGroupButton = useMemo(() => {
     if (!ccontext) return null;
     const wraps = (human && ccontext.getMembersInGroups([human.wid])) || [];
     const title = (txt = "", txt2 = "") =>
-      `${
-        wraps.length ? "Переопределить" : "Определить"
+      `${wraps.length ? "Переопределить" : "Определить"
       }${txt} в группу ${txt2}`;
 
     return (
@@ -181,9 +91,8 @@ export default function HumanMaster({
             ccontext.groups?.map((group) => {
               return (
                 <div
-                  className={`abs-item pointer ${
-                    groupws.indexOf(group.wid) < 0 ? "" : "disabled"
-                  }`}
+                  className={`abs-item pointer ${groupws.indexOf(group.wid) < 0 ? "" : "disabled"
+                    }`}
                   onClick={async () => {
                     if (
                       human &&
@@ -236,7 +145,16 @@ export default function HumanMaster({
       )}
       {isHumanHeap ? (
         <>
-          <div className="full-width">{heapInput.node}</div>
+          <div className="full-width">
+            <KeyboardInput
+              className="input"
+              multiline
+              placeholder="Массив личностей"
+              onChange={(value) => {
+                updateViewHumanList(value.split(/\n+/).map((line) => lineAsHuman(line)));
+              }}
+            />
+          </div>
           {viewHumanList?.map((human, humani) => {
             if (typeof human === "string") {
               return (
@@ -246,35 +164,16 @@ export default function HumanMaster({
               );
             }
             const bDay = new Date(human.bDay);
-            const nameInput = inputGenerator(`viewHumanList-name-${human.ts}`, {
-              theValue: human.name,
-              onChange: (value) => {
-                human.name = value;
-              },
-            });
-            const notesInput = inputGenerator(
-              `viewHumanList-notes-${human.ts}`,
-              {
-                theValue: human.notes,
-                onChange: (value) => {
-                  human.notes = value;
-                },
-              }
-            );
-            const bDayInput = inputGenerator(`viewHumanList-bday-${human.ts}`, {
-              theValue: (bDay.getTime()
-                ? bDay
-                : null
-              )?.toLocaleDateString(),
-              onChange: (value) => {
-                const [day, month, year] = value?.split(/\./) || [];
-                human.bDay = new Date(+year, +month - 1, +day).getTime();
-              },
-            });
 
             return (
               <div key={`humani-${humani}`} className="margin-big-gap-v">
-                <div>Имя: {nameInput.node}</div>
+                <div>
+                  Имя:
+                  <KeyboardInput
+                    value={human.name}
+                    onChange={(value) => human.name = value}
+                  />
+                </div>
                 <div>
                   Пол:{" "}
                   <Dropdown
@@ -293,34 +192,68 @@ export default function HumanMaster({
                   />
                 </div>
                 <div className={bDay.getTime() ? "" : "error-message"}>
-                  Дата рождения: {bDayInput.node}
+                  Дата рождения:
+                  <KeyboardInput
+                    value={(bDay.getTime() ? bDay : null)?.toLocaleDateString()}
+                    onChange={(value) => {
+                      const [day, month, year] = value?.split(/\./) || [];
+                      human.bDay = new Date(+year, +month - 1, +day).getTime();
+                    }}
+                  />
                 </div>
-                <div>Заметка: {notesInput.node}</div>
+                <div>
+                  Заметка:
+                  <KeyboardInput
+                    value={human.notes}
+                    onChange={(value) => human.notes = value}
+                  />
+                </div>
               </div>
             );
           })}
-          {heapInput.value() ? (
-            <div
-              className="pointer"
-              onClick={() => {
-                leaderExer.send({
-                  action: "addManyHumans",
-                  method: "concat",
-                  args: {
-                    value: viewHumanList,
-                  },
-                });
-                close();
-              }}
-            >
-              Разобрать
-            </div>
-          ) : null}
+          {<div
+            className="pointer"
+            onClick={() => {
+              leaderExer.send({
+                action: "addManyHumans",
+                method: "concat",
+                args: {
+                  value: viewHumanList,
+                },
+              });
+              close();
+            }}
+          >
+            Разобрать
+          </div>}
         </>
       ) : (
         <>
           <div className="full-width margin-big-gap-v">
-            Фамилия, Имя {nameInput.node}
+            Фамилия, Имя
+            <KeyboardInput
+              value={human?.name}
+              setIsUnknownSymbols={(char) => !!/[^а-яё ]/i.exec(char)}
+              preferLanguage="ru"
+              onInput={!human
+                ? (value) => takeName(value)
+                : (value, prev) => {
+                  const name = takeName(value);
+                  if (name) {
+                    leaderExer.setIfCan({
+                      action: "setHumanName",
+                      scope: `setHumanName-${human.wid}`,
+                      method: "set",
+                      prev,
+                      value,
+                      args: {
+                        wid: human.wid,
+                        value,
+                      },
+                    });
+                  }
+                }}
+            />
           </div>
           {name == null && (
             <div className="error-message">Нужно два слова с больших букв</div>
@@ -374,11 +307,10 @@ export default function HumanMaster({
                     <EvaIcon
                       key={`${fieldn}${ufpi}`}
                       className="pointer"
-                      name={`radio-button-${
-                        ((placei ? ufp2 : ufp1) || 0) - 1 === ufpi
-                          ? "on"
-                          : "off"
-                      }`}
+                      name={`radio-button-${((placei ? ufp2 : ufp1) || 0) - 1 === ufpi
+                        ? "on"
+                        : "off"
+                        }`}
                       onClick={() => {
                         const value = ufpi + 1;
                         placei ? setUfp2(value) : setUfp1(value);
@@ -405,13 +337,56 @@ export default function HumanMaster({
             );
           })}
           <div className="full-width margin-big-gap-v">
-            Дата рождения {bDayInput.node}
+            Дата рождения
+            <KeyboardInput
+              value={human?.bDay ? new Date(human.bDay).toLocaleDateString() : ""}
+              preferLanguage="ru"
+              onInput={!human
+                ? (value) => takeTime(value)
+                : (value) => {
+                  const time = takeTime(value);
+                  if (time) {
+                    leaderExer.setIfCan({
+                      action: "setHumanBDay",
+                      scope: `setHumanBDay-${human.wid}`,
+                      method: "set",
+                      prev: human.bDay,
+                      value: time,
+                      args: {
+                        wid: human.wid,
+                        value: time,
+                        humann: human.name,
+                      },
+                    });
+                  }
+                }}
+            />
           </div>
           {bDay == null && (
             <div className="error-message">Некорректная дата</div>
           )}
           <div className="full-width margin-big-gap-v">
-            Заметки {notesInput.node}
+            Заметки
+            <KeyboardInput
+              value={human?.notes}
+              preferLanguage="ru"
+              onInput={!human
+                ? undefined
+                : (value, prev) => {
+                  leaderExer.setIfCan({
+                    action: "setHumanNotes",
+                    scope: `setHumanNotes-${human.wid}`,
+                    method: "set",
+                    prev,
+                    value,
+                    args: {
+                      wid: human.wid,
+                      value,
+                      humann: human.name,
+                    },
+                  });
+                }}
+            />
           </div>
           <div className="flex around full-width">
             <div
@@ -442,27 +417,25 @@ export default function HumanMaster({
             </div>
             {includeToGroupButton}
           </div>
-          {bDay && bDayInput.value() && nameInput.value() ? (
+          {bDay ? (
             <SendButton
               title={human ? "Сохранить" : "Добавить"}
               confirm={human ? null : "Добавить новую личность?"}
               onSuccess={() => close()}
               onSend={() => {
-                notesInput.remove();
-                nameInput.remove();
-
                 return new Promise(async (res, rej) => {
                   if (human) {
                     leaderExer.load(res, rej);
                   } else {
+                    if ('no data') return;
                     leaderExer.send(
                       {
                         action: "addHuman",
                         method: "push",
                         args: {
-                          name: nameInput.value(),
+                          name: '<NO NAME>',
                           isMan,
-                          notes: notesInput.value(),
+                          notes: '<NO NOTES>',
                           ufp1,
                           ufp2,
                           bDay,

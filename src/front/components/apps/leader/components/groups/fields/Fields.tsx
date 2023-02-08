@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../../complect/SendButton";
 import useIsRedactArea from "../../../complect/useIsRedactArea";
 import { leaderExer } from "../../../Leader.store";
@@ -9,7 +9,6 @@ import useLeaderGroups from "../useGroups";
 export default function LeaderGroupFields() {
   const { ccontext } = useLeaderContexts();
   const { cgroup } = useLeaderGroups();
-  const inputGenerator = useKeyboard();
   const [redactFields, updateRedactFields] = useState<
     Record<string, string | und>
   >({});
@@ -35,24 +34,20 @@ export default function LeaderGroupFields() {
               <div className="color--3 pre-line">{fields[key] || "-"}</div>
             </div>
           );
-        const valueInput = inputGenerator(
-          `${ccontext.wid} ${cgroup?.wid} ${key}`,
-          {
-            theValue: fields[key],
-            multiline: true,
-            onChange: (value) => {
-              let val: und | string = value;
-
-              if (fields[key] === value) val = undefined;
-              updateRedactFields({ ...redactFields, [key]: val });
-            },
-          }
-        );
 
         return (
           <div key={`blanki* ${blanki}`} className="flex flex-gap margin-gap">
             <div className="nowrap">{name}</div>
-            {valueInput.node}
+            <KeyboardInput
+              value={fields[key]}
+              multiline
+              onChange={(value) => {
+                let val: und | string = value;
+
+                if (fields[key] === value) val = undefined;
+                updateRedactFields({ ...redactFields, [key]: val });
+              }}
+            />
           </div>
         );
       })}
@@ -60,32 +55,32 @@ export default function LeaderGroupFields() {
         {Object.entries(redactFields).some(
           ([key, val]) => fields[key] !== val
         ) && (
-          <SendButton
-            title="Отправить значения"
-            onSuccess={() => {
-              updateRedactFields({});
-              setIsRedact(false);
-            }}
-            onSend={() => {
-              if (cgroup && ccontext)
-                return new Promise((res, rej) =>
-                  leaderExer.send(
-                    {
-                      action: "setContextGroupFields",
-                      method: "set_all",
-                      args: {
-                        value: redactFields,
-                        groupw: cgroup.wid,
-                        contextw: ccontext.wid,
+            <SendButton
+              title="Отправить значения"
+              onSuccess={() => {
+                updateRedactFields({});
+                setIsRedact(false);
+              }}
+              onSend={() => {
+                if (cgroup && ccontext)
+                  return new Promise((res, rej) =>
+                    leaderExer.send(
+                      {
+                        action: "setContextGroupFields",
+                        method: "set_all",
+                        args: {
+                          value: redactFields,
+                          groupw: cgroup.wid,
+                          contextw: ccontext.wid,
+                        },
                       },
-                    },
-                    res,
-                    rej
-                  )
-                );
-            }}
-          />
-        )}
+                      res,
+                      rej
+                    )
+                  );
+              }}
+            />
+          )}
       </div>
     </>
   );

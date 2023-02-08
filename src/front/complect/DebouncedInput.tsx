@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import EvaIcon, { EvaIconName } from "./eva-icon/EvaIcon";
-import useKeyboard from "./keyboard/useKeyboard";
+import KeyboardInput from "./keyboard/KeyboardInput";
 
 export default function DebouncedInput(props: {
   uniq?: string;
@@ -27,13 +27,6 @@ export default function DebouncedInput(props: {
   const [term, setTerm] = useState(initialTerm || "");
   const [termDebounced, setTermDebounced] = useState(initialTerm);
   const [timeout, setTimeOut] = useState();
-  const input = useKeyboard()(`debounce-input ${props.uniq || "{uniq}"}`, {
-    className: "input",
-    placeholder: props.placeholder,
-    onChange: (value) => setTerm(value),
-    theValue: term,
-    multiline: textarea
-  });
 
   useLayoutEffect(() => {
     onSearch?.(term);
@@ -57,7 +50,13 @@ export default function DebouncedInput(props: {
   return (
     <div className={`debounced-input ${className}`}>
       {icon ? <EvaIcon name={icon} /> : null}
-      {input.node}
+      <KeyboardInput
+        value={term}
+        multiline={textarea}
+        className="input"
+        placeholder={props.placeholder}
+        onChange={(value) => setTerm(value)}
+      />
     </div>
   );
 }

@@ -1,9 +1,8 @@
-import { KeyboardInputPropsType, KeyboardStorageEvent, TouchSelectionMode } from '../Keyboard.model';
+import { KeyboardStorageEvent, TouchSelectionMode } from '../Keyboard.model';
 import { KeyboardStorageChanges } from './E.Changes';
 
 
 export class KeyboardStorageCallbacks extends KeyboardStorageChanges {
-    type?: KeyboardInputPropsType;
     isHiddenPassword?: boolean;
     isContextOpen = false;
     touchNavigationMode?: TouchSelectionMode;

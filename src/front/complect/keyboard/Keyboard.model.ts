@@ -14,7 +14,7 @@ export type KeyboardInputPropsType = 'password' | 'text' | 'number';
 export type TouchSelectionMode = 'select' | 'delete' | 'navigate';
 
 export interface KeyboardInputProps {
-    theValue?: string,
+    value?: string,
     multiline?: boolean,
     type?: KeyboardInputPropsType,
     preferLanguage?: KeyboardKeyTranslateLanguage,
@@ -26,14 +26,14 @@ export interface KeyboardInputProps {
     onFocus?: () => void,
     onClick?: () => void,
     // срабатывает только при вводе в поле инпута
-    onInput?: (value: string, prev: string) => void,
+    onInput?: (value: string, prev: string | null) => void,
     // сабатывает при любом изменении значения
-    onChange?: (value: string, prev: string) => void,
+    onChange?: (value: string, prev: string | null) => void,
     onPaste?: (value: string) => void,
     setIsUnknownSymbols?: (char: string) => boolean,
     mapChar?: (char: string) => ReactNode,
     maxLength?: number
-};
+}
 
 export type KeyboardMemoryPointAction = 'write' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';
 export const keyboardInlineActions: KeyboardMemoryPointAction[] = ['memoShift'];

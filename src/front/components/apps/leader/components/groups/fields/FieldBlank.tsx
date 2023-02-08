@@ -1,8 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
-import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../complect/modal/Modal.service";
-import { useWid } from "../../../../../../complect/useWid";
 import useIsRedactArea from "../../../complect/useIsRedactArea";
 import {
   ContextFieldBlankExportable,
@@ -25,13 +24,11 @@ export default function ContextFieldBlank({
   onEditStart?: () => void;
 }) {
   const [isInit, setIsInit] = useState(true);
-  const inputGenerator = useKeyboard();
   const [key, setKey] = useState(blank.key);
   const [name, setName] = useState(blank.name);
   const [def, setDef] = useState(blank.def);
   const [value, setValue] = useState(blank.value);
   const [type] = useState(blank.type);
-  const id = useWid();
   const { editIcon, isRedact } = useIsRedactArea(
     true,
     redact,
@@ -45,34 +42,29 @@ export default function ContextFieldBlank({
   let valueNode;
 
   if (isRedact) {
-    const nameInput = inputGenerator(`${id}-field-back-name`, {
-      onInput: (value) => setName(value),
-      theValue: name,
-      multiline: true,
-    });
-    const defInput = inputGenerator(`${id}-field-back-def`, {
-      onInput: (value) => setDef(value),
-      theValue: def,
-      multiline: true,
-    });
-    const valueInput = inputGenerator(`${id}-field-back-value`, {
-      onInput: (value) => setValue(value),
-      theValue: value,
-      multiline: true,
-    });
-
-    nameNode = nameInput.node;
-    defNode = defInput.node;
-    valueNode = valueInput.node;
+    nameNode = <KeyboardInput
+      onInput={(value) => setName(value)}
+      value={name}
+      multiline
+    />;
+    defNode = <KeyboardInput
+      onInput={(value) => setDef(value)}
+      value={def}
+      multiline
+    />;
+    valueNode = <KeyboardInput
+      onInput={(value) => setValue(value)}
+      value={value}
+      multiline
+    />;
 
     if (redact && addition) {
-      const keyInput = inputGenerator(`${id}-field-back-key`, {
-        preferLanguage: "en",
-        onInput: (value) => setKey(value),
-        theValue: key,
-        multiline: true,
-      });
-      keyNode = keyInput.node;
+      keyNode = <KeyboardInput
+        preferLanguage="en"
+        onInput={(value) => setKey(value)}
+        value={key}
+        multiline
+      />;
     }
   } else {
     nameNode = name;

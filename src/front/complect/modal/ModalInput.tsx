@@ -1,12 +1,11 @@
 import { ReactNode } from "react";
-import useKeyboard from "../keyboard/useKeyboard";
+import KeyboardInput from "../keyboard/KeyboardInput";
 import mylib from "../my-lib/MyLib";
-import { useWid } from "../useWid";
 import { onActionClick } from "./Modal";
 import {
   ModalConfig,
   ModalConfigInput,
-  TheModalInputProps,
+  TheModalInputProps
 } from "./Modal.model";
 import modalService from "./Modal.service";
 
@@ -15,7 +14,6 @@ export default function ModalInput(topProps: TheModalInputProps) {
 
   if (Array.isArray(topProps.config)) [input] = topProps.config;
   else[input] = [topProps.config, ""];
-  const id = useWid();
   const isTextArea = input.type === "textarea";
   const config = modalService.current();
   const asFunc = (val?: Function | boolean | ReactNode, alt?: any) =>
@@ -74,11 +72,6 @@ export default function ModalInput(topProps: TheModalInputProps) {
     }
   );
 
-  const inputNode = useKeyboard()(`the modal input ${id}`, {
-    ...props,
-    theValue: asFunc(input.value),
-  });
-
   if (input == null) return null;
   input.set = (attrn: keyof ModalConfigInput, val) => {
     if (input.element) input.element.setAttribute(attrn, val);
@@ -98,7 +91,9 @@ export default function ModalInput(topProps: TheModalInputProps) {
       {isTextArea ? (
         <textarea {...props}>{input.value}</textarea>
       ) : (
-        props.type === 'button' ? <input {...props} /> : inputNode.node
+        props.type === 'button'
+          ? <input {...props} />
+          : <KeyboardInput {...props} value={asFunc(input.value)} />
       )}
     </label>
   );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../complect/SendButton";
 import { leaderExer } from "../../Leader.store";
 import useLeaderContexts from "../contexts/useContexts";
@@ -23,18 +23,16 @@ export default function LeaderGroupMaster({
   const { ccontext } = useLeaderContexts();
 
   const uniq = `group master ${group?.ts}`;
-
-  const nameInput = useKeyboard()(uniq, {
-    theValue: group?.name,
-    preferLanguage: "ru",
-    onInput: (value) => setName(value),
-  });
-
+  
   return (
     <div className="full-container flex column padding-giant-gap">
       <div className="flex flex-gap full-width">
         <div>Название:</div>
-        {nameInput.node}
+        <KeyboardInput
+          value={group?.name}
+          preferLanguage="ru"
+          onInput={(value) => setName(value)}
+        />
       </div>
       <SelectHumans
         uniq={uniq + "members"}
@@ -78,33 +76,33 @@ export default function LeaderGroupMaster({
           delMembers,
           delMentors,
         }).length) && (
-        <SendButton
-          title={`Опубликовать ${group ? "изменения" : "группу"}`}
-          confirm
-          onSuccess={() => close()}
-          onSend={() => {
-            if (!ccontext) return;
+          <SendButton
+            title={`Опубликовать ${group ? "изменения" : "группу"}`}
+            confirm
+            onSuccess={() => close()}
+            onSend={() => {
+              if (!ccontext) return;
 
-            if (group) {
-              return group.sendChanges({
-                addMembers,
-                addMentors,
-                contextw: ccontext.wid,
-                delMembers,
-                delMentors,
-                name,
-              });
-            } else {
-              return LeaderGroup.publicateNew({
-                name,
-                members: addMembers,
-                mentors: addMentors,
-                contextw: ccontext.wid,
-              });
-            }
-          }}
-        />
-      )}
+              if (group) {
+                return group.sendChanges({
+                  addMembers,
+                  addMentors,
+                  contextw: ccontext.wid,
+                  delMembers,
+                  delMentors,
+                  name,
+                });
+              } else {
+                return LeaderGroup.publicateNew({
+                  name,
+                  members: addMembers,
+                  mentors: addMentors,
+                  contextw: ccontext.wid,
+                });
+              }
+            }}
+          />
+        )}
     </div>
   );
 }

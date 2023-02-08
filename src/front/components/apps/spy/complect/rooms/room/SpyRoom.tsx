@@ -1,12 +1,11 @@
 import { useLayoutEffect, useMemo, useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
-import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import SendButton from "../../../../../../complect/SendButton";
 import { SpyRoomMemberStatus } from "../../../Spy.model";
 import PhaseSpyContainer from "../../PhaseSpyContainer";
-import useSpyLocations from "../../useSpyLocations";
 import SpyRoomMore from "./SpyRoomMore";
 import SpyRoomStartedGame from "./SpyRoomStartedGame copy";
 import SpyRoomGameFinished from "./states/SpyRoomGameFinished";
@@ -36,16 +35,11 @@ export default function SpyRoom() {
   const { toggleLocation, startGame, finishGame, resetResults, actualLocations, removeRoom, locations } =
     useEditableRooms();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const inputGenerator = useKeyboard();
   const [loactionsOnLoad, updateLoactionsOnLoad] = useState<
     ["add" | "del", string][]
   >([]);
   const [spyCount, setSpyCount] = useState(0);
 
-  const spyCountInput = inputGenerator("SpyRoom - spyCountInput", {
-    type: "number",
-    onInput: (value) => setSpyCount(+value),
-  });
 
   useLayoutEffect(() => {
     const newLocationList =
@@ -165,7 +159,10 @@ export default function SpyRoom() {
                             </h2>
                             <div className="full-width">
                               <span>Количество шпионов:</span>
-                              {spyCountInput.node}
+                              <KeyboardInput
+                                type="number"
+                                onInput={(value) => setSpyCount(+value)}
+                              />
                             </div>
                             {players && (
                               <div className="flex center padding-giant-gap">

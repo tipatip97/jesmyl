@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../complect/modal/Modal.service";
 import HumanList from "../people/HumanList";
 import useLeaderContexts from "./useContexts";
@@ -46,7 +46,7 @@ export default function NewLeaderContextMaster({
 }: {
   close: () => void;
 }) {
-  const nameInput = useKeyboard()("new leader context", {});
+  const [name, setName] = useState('');
   const [members, updateMembers] = useState<number[]>([]);
   const [mentors, updateMentors] = useState<number[]>([]);
   const { publicateNewContext } = useLeaderContexts();
@@ -71,7 +71,10 @@ export default function NewLeaderContextMaster({
 
   return (
     <div className="full-container padding-giant-gap">
-      <div className="flex flex-gap">Название: {nameInput.node}</div>
+      <div className="flex flex-gap">
+        Название:
+        <KeyboardInput onChange={setName} />
+      </div>
       <h2>Выбери участников:</h2>
       {chooseMembersNode}
       <h2>Выбери лидеров:</h2>
@@ -86,7 +89,7 @@ export default function NewLeaderContextMaster({
           onClick={async () => {
             if (!(await modalService.confirm("Опубликовать контекст?"))) return;
             publicateNewContext({
-              name: nameInput.value(),
+              name,
               mentors: mentors.sort((a, b) => a - b),
               members: members.sort((a, b) => a - b),
             });

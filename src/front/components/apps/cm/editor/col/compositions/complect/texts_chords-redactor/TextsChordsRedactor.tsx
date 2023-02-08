@@ -79,7 +79,6 @@ export default function TextsChordsRedactor({
               </div>
               <TextAreaRedactor
                 ccoln={ccoln}
-                coli={coli}
                 com={ccom}
                 col={col}
                 onChange={(value) => exec(ccom.changeBlock(ccoln, coli, value))}

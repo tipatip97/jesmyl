@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
 import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
@@ -16,22 +16,13 @@ export default function GameTeamListComputer({
 }) {
   const { ccontext } = useLeaderContexts();
   const [teams, updateTeams] = useState<GameTeam[] | und>();
-  const teamMemberCountInput = useKeyboard()("set-team-member-count", {
-    type: "number",
-  });
+  const [teamsCount, setTeamsCount] = useState(1);
   const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
 
   const humanList = ccontext?.membersReadyToPlay();
 
-  useEffect(() => {
-    return () => {
-      teamMemberCountInput.remove();
-    };
-  }, []);
-
   if (!humanList) return null;
 
-  const teamsCount = +teamMemberCountInput.value();
   const countInTeam = teamsCount && humanList.length / teamsCount;
 
   const truncated = Math.trunc(countInTeam);
@@ -68,7 +59,10 @@ export default function GameTeamListComputer({
           <div className="flex full-width">
             <div className="nowrap">Количество команд</div>
             <div className="full-width margin-gap-h">
-              {teamMemberCountInput.node}
+              <KeyboardInput
+                type="number"
+                onChange={(value) => setTeamsCount(+value)}
+              />
             </div>
           </div>
           {teamsCount <= humanList.length ? (
@@ -78,17 +72,17 @@ export default function GameTeamListComputer({
                   Состав команд по {truncated}
                   {truncated !== countInTeam
                     ? ` - ${truncated + 1} ${mylib.declension(
-                        truncated + 1,
-                        "человеку",
-                        "человека",
-                        "человек"
-                      )}`
+                      truncated + 1,
+                      "человеку",
+                      "человека",
+                      "человек"
+                    )}`
                     : ` ${mylib.declension(
-                        truncated,
-                        "человеку",
-                        "человека",
-                        "человек"
-                      )}`}
+                      truncated,
+                      "человеку",
+                      "человека",
+                      "человек"
+                    )}`}
                 </div>
               ) : null}
               {truncated !== countInTeam ? (
@@ -105,9 +99,8 @@ export default function GameTeamListComputer({
                       id: "weak",
                     },
                     {
-                      title: `${restLabelPrefix} ${
-                        restCount === 1 ? "определить" : "распределить"
-                      } случайным образом`,
+                      title: `${restLabelPrefix} ${restCount === 1 ? "определить" : "распределить"
+                        } случайным образом`,
                       id: "random",
                     },
                   ]}
@@ -115,14 +108,14 @@ export default function GameTeamListComputer({
                 />
               ) : null}
               <div className="flex around margin-big-gap">
-                {teamMemberCountInput.value() ? (
+                {!isNaN(teamsCount) ? (
                   <div
                     className="the-button"
                     onClick={() => {
                       const teams = mylib.groupByFieldsSoftly(
                         ["isMan", "ufp"],
                         humanList,
-                        +teamMemberCountInput.value(),
+                        teamsCount,
                         addRestMode
                       );
                       const newTeams = teams.map((humans) => {

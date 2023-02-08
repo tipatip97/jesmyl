@@ -1,14 +1,14 @@
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import LeaderComment from "./LeaderComment";
 import {
   LeaderCommentImportable,
-  SendingCommentsAreaName,
+  SendingCommentsAreaName
 } from "./LeaderComment.model";
-import useLeaderComments from "./useLeaderComments";
 import "./LeaderComment.scss";
+import useLeaderComments from "./useLeaderComments";
 
 interface Addition {
   icon: EvaIconName;
@@ -66,21 +66,9 @@ export default function LeaderCommentBlock({
   onRejectSend?: (comment: LeaderCommentImportable) => void;
 }) {
   const [isCommentsShow, setIsCommentsShow] = useState(false);
-  const commentInput = useKeyboard()(inputId, {
-    className: `margin-gap`,
-    multiline: true,
-    placeholder,
-    mapChar: (char) => textAdditionsMap[char]?.node || char,
-    onChange: (value) => newCommentTextChange?.(value),
-  });
+  const [commentText, setCommentText] = useState('');
   const { sendingComments, sendComment, errorSentComments, rejectSending } =
     useLeaderComments();
-
-  useEffect(() => {
-    return () => {
-      commentInput.remove();
-    };
-  }, []);
 
   const allComments = useMemo(
     () =>
@@ -88,8 +76,8 @@ export default function LeaderCommentBlock({
         (comments || []).concat(
           areaw
             ? sendingComments[arean]?.[areaw]?.[listw]
-                ?.map(({ comment }) => comment)
-                .filter((comment) => comment) || []
+              ?.map(({ comment }) => comment)
+              .filter((comment) => comment) || []
             : []
         ),
         (comment) => comment.ts ?? NaN
@@ -115,9 +103,7 @@ export default function LeaderCommentBlock({
           return (
             <LeaderComment
               key={`commenti-${commenti}`}
-              className={`${commenti === 0 ? "first" : ""} ${
-                commenti === commenta.length - 1 ? "last" : ""
-              }`}
+              className={`${commenti === 0 ? "first" : ""} ${commenti === commenta.length - 1 ? "last" : ""}`}
               comment={comment}
               isError={errorSentComments.indexOf(comment.ts) > -1}
               isWaitedToSend={isWaitedToSend}
@@ -132,60 +118,52 @@ export default function LeaderCommentBlock({
       )}
       {
         <div className="flex column full-width">
-          {commentInput.node}
+          <KeyboardInput
+            className="margin-gap"
+            multiline
+            placeholder={placeholder}
+            mapChar={(char) => textAdditionsMap[char]?.node || char}
+            onChange={(value) => newCommentTextChange?.(value)}
+          />
           <div className="flex full-width between margin-gap pointer-children">
-            {textAdditions.map(({ icon, char, insert }, buttoni) => {
-              return (
-                <EvaIcon
-                  key={`buttoni-${buttoni}`}
-                  name={icon}
-                  onClick={() => {
-                    commentInput.write(char ?? (insert?.() || ""));
-                    commentInput.focus();
-                  }}
-                />
-              );
-            })}
             <EvaIcon
               name="paper-plane-outline"
-              className={commentInput.value() ? "" : "disabled"}
+              className={commentText ? "" : "disabled"}
               onClick={() => {
-                if (commentInput) {
-                  const comment = textAdditions.reduce(
-                    (text, { char, inText }) =>
-                      (char &&
-                        inText &&
-                        text.replace(RegExp(char, "g"), inText)) ||
-                      text,
-                    commentInput.value()
-                  );
-                  commentInput.value("");
+                const comment = textAdditions.reduce(
+                  (text, { char, inText }) =>
+                    (char &&
+                      inText &&
+                      text.replace(RegExp(char, "g"), inText)) ||
+                    text,
+                  commentText
+                );
+                setCommentText('');
 
-                  if (importantActionOnClick) {
-                    importantActionOnClick(comment);
-                    return;
-                  }
+                if (importantActionOnClick) {
+                  importantActionOnClick(comment);
+                  return;
+                }
 
-                  if (areaw) {
-                    const ts = Date.now() + Math.random();
-                    const args = { comment, areaw, listw, ts };
+                if (areaw) {
+                  const ts = Date.now() + Math.random();
+                  const args = { comment, areaw, listw, ts };
 
-                    sendComment(arean, areaw, listw, {
+                  sendComment(arean, areaw, listw, {
+                    ts,
+                    exec: {
+                      action,
+                      method: "push",
+                      args,
+                    },
+                    comment: {
+                      w: 0,
+                      comment,
+                      fio: "",
+                      owner: "",
                       ts,
-                      exec: {
-                        action,
-                        method: "push",
-                        args,
-                      },
-                      comment: {
-                        w: 0,
-                        comment,
-                        fio: "",
-                        owner: "",
-                        ts,
-                      },
-                    });
-                  }
+                    },
+                  });
                 }
               }}
             />

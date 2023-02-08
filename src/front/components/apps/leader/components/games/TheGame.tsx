@@ -2,7 +2,7 @@ import { useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../complect/SendButton";
 import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
@@ -36,13 +36,6 @@ export default function TheGame() {
   const { newTimer, isTimerOnRedaction } = useGameTimer();
   const [teams, updateTeams] = useState<GameTeam[] | und>();
   const [isShowNamesInInput, setIsShowNamesInInput] = useState(false);
-  const inputMaker = useKeyboard();
-  let input: any;
-  if (cgame)
-    input = inputMaker("TheGame team names", {
-      theValue: cgame.teams?.map(({ name }) => name).join("\n"),
-      multiline: true,
-    });
 
   const membersReadyToPlayNode = ccontext
     ?.membersReadyToPlay()
@@ -138,7 +131,10 @@ export default function TheGame() {
                 onClick={() => setIsShowNamesInInput(!isShowNamesInInput)}
               />
               {isShowNamesInInput ? (
-                input.node
+                <KeyboardInput
+                  value={cgame?.teams?.map(({ name }) => name).join("\n")}
+                  multiline
+                />
               ) : (
                 <>
                   <h2 className="margin-big-gap-v margin-gap">

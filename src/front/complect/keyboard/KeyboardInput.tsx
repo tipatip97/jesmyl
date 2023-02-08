@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import propsOfClicker from "../clicker/propsOfClicker";
@@ -11,107 +11,89 @@ import { KeyboardInputProps } from "./Keyboard.model";
 import "./Keyboard.scss";
 import { KeyboardInputStorage } from "./KeyboardStorage";
 
-const inputDict: Record<string, KeyboardInputStorage> = {};
 let currentInput: KeyboardInputStorage;
 let topForceUpdate: () => void = () => { };
 let topOnBlur: () => void = () => { };
 let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => { };
 const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 
-export default function useKeyboard() {
+export default function KeyboardInput(props: KeyboardInputProps) {
+  const input = useMemo(() => new KeyboardInputStorage(), []);
+  const isNative = useSelector(isUseNativeKeyboardSelector);
   const [updates, setUpdates] = useState(0);
-  const isUseNativeKeyboard = useSelector(isUseNativeKeyboardSelector);
+  const nativeRef = useMemo<{ ref: HTMLTextAreaElement | null }>(() => ({ ref: null }), []);
 
-  return (id: string, props: KeyboardInputProps) => {
-    let localInput = inputDict[id];
-    let inputNode;
-    let val = props.theValue || '';
+  useEffect(() => {
+    !isNative && props.value && input.replaceAll(props.value, false, true);
+  }, [props.value, input, isNative]);
 
-    if (!isUseNativeKeyboard) {
-      const { className, theValue, closeButton, multiline, ...otherProps } = props;
-      const nodeProps = {
-        ...otherProps,
-        value: theValue,
-        className: `native-input ${className || ''}`,
-        onInput: (event: any) => {
-          val = event.target.value;
-          props.onInput?.(val, '');
-        },
-        onChange: (event: any) => {
-          val = event.target.value;
-          props.onChange?.(val, '')
-        },
-        onPaste: props.onPaste && (async () => props.onPaste?.(await navigator.clipboard.readText())),
-      };
-
-      inputNode = <div className={`input-keyboard-flash-controlled input ${multiline ? 'multiline' : ''}`}>
-        {
-          multiline
-            ? <textarea {...nodeProps}
-              ref={(el) => {
-                if (el) {
-                  el.rows = el.value.split('\n').length;
-                }
-              }}
-            />
-            : <input {...nodeProps} />
-        }
-      </div>;
-
-      return {
-        node: inputNode,
-        value: () => '',
-        focus: () => {},
-        write: (value: string) => props.onChange?.(value, ''),
-        remove: () => { },
-      };
-    } else {
-      const getNode = () =>
-        inputDict[id].node(
-          props,
-          () => {
-            setUpdates(updates + 1);
-            topForceUpdate();
-          },
-          () => {
-            currentInput?.blur();
-            topForceUpdate();
-            topOnBlur();
-            props.onBlur?.();
-          },
-          () => {
-            currentInput?.blur(inputDict[id] !== currentInput);
-            currentInput = inputDict[id];
-            topOnFocus(currentInput);
-            props.onFocus?.();
-          }
-        );
-
-      if (localInput) inputNode = getNode();
-      else {
-        localInput = inputDict[id] = new KeyboardInputStorage(props.theValue);
-        inputNode = getNode();
-      }
-    }
-
-    return {
-      node: inputNode,
-      value: (
-        value?: string,
-        isRemember = false,
-        isInvokeOnInputEvent = true
-      ) => {
-        if (value !== undefined)
-          localInput?.replaceAll(value, isRemember, isInvokeOnInputEvent);
-        return localInput?.value;
-      },
-      focus: () => localInput.focus(),
-      write: (value: string, isRememberAsPart?: boolean) => localInput.write(value, isRememberAsPart),
-      remove: () => {
-        delete inputDict[id];
-      },
+  if (isNative) {
+    const { className, closeButton, multiline, onInput, onChange, onPaste, type, ...otherProps } = props;
+    const invoke = (callback: (value: string, prev: string | null) => void, text: string) => {
+      const prev = type === 'number' ? nativeRef.ref?.value.replace(/\D+/g, '') || '0' : nativeRef.ref?.value;
+      const value = type === 'number' ? text.replace(/\D+/g, '') || '0' : text;
+      callback(value, prev ?? null);
     };
-  };
+
+    return <div className={`input-keyboard-flash-controlled input ${multiline ? 'multiline' : ''}`}>
+      <textarea
+        {...otherProps}
+        className={`native-input ${className || ''}`}
+        onInput={onInput && ((event: any) => {
+          invoke(onInput, event.target.value);
+        })}
+        onChange={onChange && ((event: any) => {
+          invoke(onChange, event.target.value);
+        })}
+        onPaste={onPaste && (async () => {
+          invoke(onPaste, await navigator.clipboard.readText());
+        })}
+        ref={el => {
+          if (el) {
+            if (multiline) el.rows = el.value.split('\n').length;
+            else el.rows = 1;
+            nativeRef.ref = el;
+          }
+        }}
+      />
+      {nativeRef.ref?.value && <div className="icon-button-container">
+        <EvaIcon
+          name="close"
+          className="icon-button close-button"
+          onMouseDown={() => {
+            setTimeout(() => nativeRef.ref?.focus());
+
+            if (nativeRef.ref) {
+              const val = type === 'number' ? '0' : '';
+              onChange?.(val, nativeRef.ref.value || '');
+              onInput?.(val, nativeRef.ref.value || '');
+              nativeRef.ref.value = val;
+            }
+          }}
+        />
+      </div>}
+    </div>;
+  }
+
+  return input.node(
+    props,
+    () => {
+      setUpdates(updates + 1);
+      topForceUpdate();
+    },
+    () => {
+      currentInput?.blur();
+      topForceUpdate();
+      topOnBlur();
+      props.onBlur?.();
+    },
+    () => {
+      currentInput?.blur(input !== currentInput);
+      currentInput = input;
+      topOnFocus(currentInput);
+      props.onFocus?.();
+    }
+  );
 }
 
 export function KEYBOARD_FLASH({
@@ -124,7 +106,7 @@ export function KEYBOARD_FLASH({
   const [updates, setUpdates] = useState(0);
   const [moreClosed, setMoreClosed] = useState(true);
   const [keyInFix, setKeyInFix] = useState<string | null>(null);
-  useKeyboard();
+  const isNative = useSelector(isUseNativeKeyboardSelector);
   topForceUpdate = () => setUpdates(updates + 1);
   topOnBlur = () => onBlur();
   topOnFocus = () => onFocus(currentInput);
@@ -156,6 +138,8 @@ export function KEYBOARD_FLASH({
     };
   }, []);
 
+  if (isNative) return null;
+
   const keyNode = (
     className: string,
     key: string,
@@ -167,8 +151,7 @@ export function KEYBOARD_FLASH({
   ) => {
     return (
       <div
-        className={`keyboard-flash-key ${className} ${keyInFix === key ? "key-in-fix" : ""
-          }`}
+        className={`keyboard-flash-key ${className} ${keyInFix === key ? "key-in-fix" : ""}`}
         onMouseUp={onMouseUp || (() => currentInput.write(key))}
         onMouseDown={(event) => {
           event.stopPropagation();
@@ -194,8 +177,7 @@ export function KEYBOARD_FLASH({
 
   return (
     <div
-      className={`keyboard-flash ${currentInput?.isFocused ? "active" : ""} ${moreClosed ? "" : "more-open"
-        }`}
+      className={`keyboard-flash ${currentInput?.isFocused ? "active" : ""} ${moreClosed ? "" : "more-open"}`}
       onMouseDown={(event) => {
         event.stopPropagation();
         setKeyInFix("CLOSE-MORE");
@@ -238,13 +220,13 @@ export function KEYBOARD_FLASH({
             })}
             <div className="keyboard-flash-line bottom-line">
               {keyNode(
-                currentInput?.canUndo() ? "full-width" : "full-width disabled",
+                currentInput.canUndo() ? "full-width" : "full-width disabled",
                 "UNDO",
                 "corner-up-left-outline",
                 () => currentInput.undo()
               )}
               {keyNode(
-                currentInput?.canRedo() ? "full-width" : "full-width disabled",
+                currentInput.canRedo() ? "full-width" : "full-width disabled",
                 "REDO",
                 "corner-up-right-outline",
                 () => currentInput.redo()
@@ -318,7 +300,7 @@ export function KEYBOARD_FLASH({
 
             <div className="keyboard-flash-line bottom-line">
               {keyNode(
-                currentInput?.canUndo()
+                currentInput.canUndo()
                   ? "undo-action"
                   : "undo-action disabled",
                 "UNDO",
@@ -378,7 +360,7 @@ export function KEYBOARD_FLASH({
                           <span className="key-description">Вставить</span>
                         )}
                       {keyNode(
-                        currentInput?.canRedo() ? "" : " disabled",
+                        currentInput.canRedo() ? "" : " disabled",
                         "REDO",
                         "corner-up-right-outline",
                         (event) => {

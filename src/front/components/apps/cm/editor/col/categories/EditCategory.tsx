@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
 import useExer from "../../../../../../complect/exer/useExer";
-import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import LoadIndicatedContent from "../../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import { cmExer } from "../../../Cm.store";
 import { catTrackers } from "../../../col/cat/Cat.complect";
@@ -14,15 +14,9 @@ export default function EditCategory() {
   const ccat = useEditableCcat();
   const [isShowComs, setIsShowComs] = useState(false);
   const [isCleared, setCleared] = useState(false);
-  const aboutInput = useKeyboard();
   const { exec } = useExer(cmExer);
 
   if (!ccat) return null;
-
-  const input = aboutInput(`edit category name ${ccat.wid}`, {
-    theValue: ccat.name,
-    onChange: (value) => exec(ccat.rename(value, exec)),
-  });
 
   return (
     <PhaseCmEditorContainer
@@ -37,7 +31,10 @@ export default function EditCategory() {
             >
               <div className="flex">
                 <div className="margin-gap-h">Название:</div>
-                {input.node}
+                <KeyboardInput
+                  value={ccat.name}
+                  onChange={(value) => exec(ccat.rename(value, exec))}
+                />
               </div>
             </EditContainerCorrectsInformer>
           }
@@ -82,7 +79,7 @@ export default function EditCategory() {
                 <ComFace
                   key={`edit-category-com-list-com_${com.wid}`}
                   com={com}
-                  importantOnClick={() => {}}
+                  importantOnClick={() => { }}
                 />
               ))}
             </LoadIndicatedContent>

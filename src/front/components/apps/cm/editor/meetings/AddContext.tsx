@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import useExer from "../../../../../complect/exer/useExer";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { cmExer } from "../../Cm.store";
 import { EditableMeetingsEvent } from "./EditableMeetingsEvent";
 import { useEditableMeetings } from "./useEditableMeetings";
@@ -18,11 +18,6 @@ export default function AddContext({
   const { exec } = useExer(cmExer);
   const [contexts, usedContexts] = meetings?.getNames(currPath) || [[], []];
   const [bindEvents, setBindEvents] = useState<EditableMeetingsEvent[]>([]);
-  const input = useKeyboard()("AddContext - input", {
-    className: "full-width",
-    theValue: name,
-    onChange: (value) => setName(value),
-  });
 
   const [, currGroupw] = meetings?.getContexts(currPath) || [];
 
@@ -36,7 +31,7 @@ export default function AddContext({
             <div
               key={`context-${context}`}
               className="context-item"
-              onClick={() => input.value(context)}
+              onClick={() => setName(context)}
             >
               {context}
             </div>
@@ -73,7 +68,11 @@ export default function AddContext({
 
   return (
     <div className="add-context full-container flex column full-height padding-big-gap center">
-      {input.node}
+      <KeyboardInput
+        className="full-width"
+        value={name}
+        onChange={(value) => setName(value)}
+      />
       {stack}
       {eventsStack?.length ? (
         <>

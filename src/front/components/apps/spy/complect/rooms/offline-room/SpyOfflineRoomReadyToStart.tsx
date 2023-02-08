@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TheButton from "../../../../../../complect/Button";
 import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
-import useKeyboard from "../../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import RoomMemberFace from "../../RoomMemberFace";
 import useSpyLocations from "../../useSpyLocations";
 import useSpyOfflineRooms from "./useSpyOfflineRooms";
@@ -18,11 +18,6 @@ export default function SpyOfflineRoomReadyToStart() {
   } = useSpyOfflineRooms();
   const [isOpenLocations, setIsOpenLocations] = useState(false);
   const [spiesCount, setSpiesCount] = useState(1);
-  const spyCountInput = useKeyboard()('SpyOfflineRoom', {
-    theValue: '' + spiesCount,
-    type: 'number',
-    onInput: (value) => setSpiesCount(+value),
-  });
   const { locations, actualLocations } = useSpyLocations(strikedLocations);
 
   return (<>
@@ -71,7 +66,13 @@ export default function SpyOfflineRoomReadyToStart() {
       !actualLocations?.length
         ? <div className="flex center error-message">Нет свободных локаций</div>
         : <>
-          {spyCountInput.node}
+          <span>Количество шпионов:</span>
+          <KeyboardInput
+            value={'' + spiesCount}
+            type="number"
+            maxLength={2}
+            onInput={(value) => setSpiesCount(+value)}
+          />
           <div className="flex center margin-gap">
             <TheButton
               onClick={() => startOfflineGame(spiesCount)}

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import useExer from "../../../../../complect/exer/useExer";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { RootState } from "../../../../../shared/store";
 import { cmExer } from "../../Cm.store";
 import { useEditableMeetings } from "./useEditableMeetings";
@@ -14,19 +14,16 @@ export default function MeetingsCreator({ close }: { close: () => void }) {
   const { exec } = useExer(cmExer);
   const currContext = useSelector(currContextSelector);
   const [, currContextw] = meetings?.getContexts(currContext) || [];
-  const input = useKeyboard()("MeetingsCreator", {
-    className: "full-width",
-    theValue: name,
-    onChange: (value) => setName(value),
-  });
-
-  useEffect(() => () => input.remove(), [input]);
 
   return (
     <div className="full-container flex column full-height padding-big-gap center">
       <div className="full-width margin-gap-v flex">
         <div className="margin-gap-h">Название</div>
-        {input.node}
+        <KeyboardInput
+          className="full-width"
+          value={name}
+          onChange={(value) => setName(value)}
+        />
       </div>
       <button
         disabled={!name || !currContextw || !meetings}

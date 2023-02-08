@@ -1,30 +1,22 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { LocalSokiAuth } from "../../../../../back/complect/soki/soki.model";
 import TheButton from "../../../../complect/Button";
 import EvaButton from "../../../../complect/eva-icon/EvaButton";
-import useKeyboard from "../../../../complect/keyboard/useKeyboard";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { qrCodeMaster } from "../../../../complect/qr-code/QRCodeMaster";
-import { updateSpyPassport } from "../Spy.store";
-import useSpyOfflineRooms from "./rooms/offline-room/useSpyOfflineRooms";
-import PhaseSpyContainer from "./PhaseSpyContainer";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import { SpyPassport } from "../Spy.model";
-import { LocalSokiAuth } from "../../../../../back/complect/soki/soki.model";
+import { updateSpyPassport } from "../Spy.store";
+import PhaseSpyContainer from "./PhaseSpyContainer";
+import useSpyOfflineRooms from "./rooms/offline-room/useSpyOfflineRooms";
 
 export default function TheSpyPassport() {
     const dispatch = useDispatch();
     const { passportData, passport, authData } = useSpyOfflineRooms();
     const [isEdit, setIsEdit] = useState(!passport);
     const [fio, setFio] = useState(passport?.fio || '');
-    const fioInput = useKeyboard()
-
-    const fioData = isEdit && fioInput('SpyPassport', {
-        theValue: fio,
-        placeholder: 'Твой ник-нейм',
-        onChange: (value) => setFio(value),
-        maxLength: 50,
-    }).node;
 
     const back = (data: SpyPassport | LocalSokiAuth | nil) => {
         setFio(data?.fio || '');
@@ -37,8 +29,13 @@ export default function TheSpyPassport() {
         headClass="flex between"
         withoutBackButton
         content={<>
-            {fioData && <div className="flex center margin-big-gap">
-                {fioData}
+            {isEdit && <div className="flex center margin-big-gap">
+                <KeyboardInput
+                    value={fio}
+                    placeholder="Твой ник-нейм"
+                    onChange={(value) => setFio(value)}
+                    maxLength={50}
+                />
             </div>}
             {isEdit
                 ? <div>

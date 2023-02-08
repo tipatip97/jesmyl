@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useKeyboard from "../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../complect/SendButton";
 import { spyExer } from "../Spy.store";
 import PhaseSpyContainer from "./PhaseSpyContainer";
@@ -7,20 +7,16 @@ import useSpyLocations from "./useSpyLocations";
 
 export default function SpyLocations() {
   const { locations } = useSpyLocations();
-  const inputGenerator = useKeyboard();
 
   const [newName, setNewName] = useState('');
-  const newLocationInput = inputGenerator("SpyLocations - new location", {
-    theValue: newName,
-    onChange: (value) => setNewName(value.toUpperCase())
-  });
   const isShortNewName = newName.length < 3;
   const incorrectsInNewName = newName.match(/[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i);
-  const isInclusiveNewName = locations?.some((loc) => loc === newName);
+  const upperName = newName.toUpperCase();
+  const isInclusiveNewName = locations?.some((loc) => loc === upperName);
 
   return (
     <PhaseSpyContainer
-      topClass="spy-room"
+      topClass="spy-locations"
       headTitle="Локации"
       headClass="flex between"
       withoutBackButton
@@ -34,7 +30,11 @@ export default function SpyLocations() {
           {spyExer.actionAccessedOrNull("addNewLocation") && (
             <div className="margin-big-gap-v">
               <div className="full-width">
-                Новая локация{newLocationInput.node}
+                Новая локация
+                <KeyboardInput
+                  value={newName}
+                  onChange={(value) => setNewName(value)}
+                />
               </div>
               {isInclusiveNewName && (
                 <div className="error-message text-center">
@@ -66,7 +66,7 @@ export default function SpyLocations() {
                       action: "addNewLocation",
                       method: "push",
                       args: {
-                        location: newName,
+                        location: upperName,
                       },
                     });
                   }}

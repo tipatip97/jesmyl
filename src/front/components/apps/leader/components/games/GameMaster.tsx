@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import useKeyboard from "../../../../../complect/keyboard/useKeyboard";
+import { useState } from "react";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../complect/SendButton";
 import useLeaderContexts from "../contexts/useContexts";
 import Game from "./Game";
@@ -10,26 +10,22 @@ import TimerFieldsConfigurer from "./timers/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/TimerNameListConfigurer";
 
 export default function LeaderGameMaster({ close }: { close: () => void }) {
-  const gameNameInput = useKeyboard()(`game-name`, {});
   const [isComputeTeamsLater, setIsComputeTeamsLater] = useState(true);
   const [teams, updateTeams] = useState<GameTeam[] | und>();
   const [timerNames, updateTimerNames] = useState<string[] | und>();
   const [timerFields, updateTimerFields] = useState<
     GameTimerConfigurable | und
   >();
+  const [name, setName] = useState('');
   const { ccontext } = useLeaderContexts();
-
-  useEffect(() => {
-    return () => {
-      gameNameInput.remove();
-    };
-  }, []);
 
   return (
     <div className="team-maker full-container padding-giant-gap">
       <div className="flex full-width margin-big-gap-v">
         <div className="nowrap">Название игры</div>
-        <div className="full-width margin-gap-h">{gameNameInput.node}</div>
+        <div className="full-width margin-gap-h">
+          <KeyboardInput onChange={setName} />
+        </div>
       </div>
       <TimerNameListConfigurer redact onUpdate={updateTimerNames} />
       <TimerFieldsConfigurer redactable onUpdate={updateTimerFields} />
@@ -40,13 +36,13 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
         <input
           type="checkbox"
           checked={isComputeTeamsLater}
-          onChange={() => {}}
+          onChange={() => { }}
         />
         Разбить на команды позже
       </div>
       {isComputeTeamsLater || <GameTeamListComputer onUpdate={updateTeams} />}
       <div className="flex center">
-        {gameNameInput.value() && (isComputeTeamsLater || teams) ? (
+        {name && (isComputeTeamsLater || teams) ? (
           <SendButton
             title="Опубликовать игру"
             onSuccess={() => close()}
@@ -55,7 +51,7 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
               if (!ccontext) return;
 
               return Game.sendNewGame({
-                name: gameNameInput.value(),
+                name,
                 contextw: ccontext.wid,
                 timerNames,
                 teams,

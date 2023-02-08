@@ -1,27 +1,33 @@
 import { ReactNode } from 'react';
-import { KeyboardStorageEvent } from '../Keyboard.model';
+import { KeyboardInputPropsType, KeyboardStorageEvent } from '../Keyboard.model';
 import { KeyboardStorageNavigate } from './D.Navigate';
 
 export class KeyboardStorageChanges extends KeyboardStorageNavigate {
+    type?: KeyboardInputPropsType;
     prevTypedValue: string = '';
     shadowCursorPosition = this.cursorPosition;
     dafaultSetIsUnknownSymbols = () => false;
     dafaultMapChar = (char: string) => char;
     setIsUnknownSymbols: (char: string) => boolean = this.dafaultSetIsUnknownSymbols;
     mapChar: (char: string) => ReactNode = this.dafaultMapChar;
+    maxLength?: number;
 
     replaceAll = (value: string, isRemember = true, isInvokeOnInputEvent = false) => {
         if (value === this.value) return;
+        let val = value;
+        if (this.maxLength !== undefined && val.length > this.maxLength) {
+            val = value.slice(0, this.maxLength);
+        }
         const prev = this.value;
         if (isRemember) this.remember('replaceAll');
-        this.valueChars = value?.split('') || [];
+        this.valueChars = val?.split('') || [];
         this.setCursorPosition(this.valueChars.length);
         this.scrollToView();
         this.setValues();
         if (isInvokeOnInputEvent) this.onInput?.(this.value, prev);
-    }
+    };
 
-    setValues() {
+    protected setValues() {
         let lastLine: ReactNode[] = [];
         const lines: ReactNode[][] = [lastLine];
 
@@ -30,7 +36,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
                 if (this.isMultiline) {
                     lastLine = [];
                     lines.push(lastLine);
-                } else lastLine.push(' ');
+                } else lastLine.push('*');
 
                 return;
             }
@@ -44,22 +50,51 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         this.textUpdate(prev);
     }
 
-    replaceSelected(value = ''): boolean {
-        if (this.isSelected) {
-            this.remember('replaceSelected');
-            const [start, finish] = this.selected.sort((a, b) => a - b);
+    protected replaceSelected(val?: string): boolean {
+        if (!this.isSelected) return false;
 
-            if (start === finish) return false;
+        const start = Math.min.apply(null, this.selected);
+        const finish = Math.max.apply(null, this.selected);
 
-            this.valueChars.splice(start, finish - start, ...value.split(''));
-            this.setCursorPosition(start + value.length);
-            this.isSelected = false;
-            this.scrollToView();
-            this.setValues();
+        this.remember('replaceSelected');
 
-            return true;
+        if (start === finish) return false;
+
+        const deltaPosition = this.insertValueChars(
+            this.maxLimitedValue(val, finish - start),
+            start, finish - start
+        );
+        this.setCursorPosition(start + deltaPosition);
+
+        this.isSelected = false;
+        this.scrollToView();
+        this.setValues();
+
+        return true;
+    }
+
+    private maxLimitedValue(value?: string, selectedChars?: number) {
+        if (value !== undefined && this.maxLength !== undefined) {
+            const sliceFinish = this.maxLength - (this.value.length - (selectedChars === undefined ? 0 : selectedChars));
+            if (sliceFinish > -1) return value.slice(0, sliceFinish);
+            else return '';
         }
-        return false;
+
+        return value;
+    }
+
+    private insertValueChars(value: string | undefined, point: number, count: number) {
+        if (value === undefined || value.length === 0) {
+            this.valueChars.splice(point, count);
+            return 0;
+        } else {
+            if (value.length > 1)
+                this.valueChars.splice(point, count, ...value.split(''));
+            else
+                this.valueChars.splice(point, count, value);
+
+            return value.length;
+        }
     }
 
     backspace(event: KeyboardStorageEvent) {
@@ -101,21 +136,23 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
         this.onInput?.(this.value, prev);
     }
 
-    write(value: string, isRememberAsPart?: boolean) {
-        if (this.replaceSelected(value)) return;
+    write(val: string, isRememberAsPart?: boolean) {
+        if (this.replaceSelected(val)) return;
         if (
-            (value === ' ' && this.prevTypedValue !== ' ') ||
+            (val === ' ' && this.prevTypedValue !== ' ') ||
             !this.value ||
             this.memoryPosition < this.memory.length ||
             this.shadowCursorPosition !== this.cursorPosition
         )
             this.remember('write');
 
-        this.valueChars.splice(this.cursorPosition, 0, ...value.split(''));
+        const value = this.maxLimitedValue(val);
 
-        this.setCursorPosition(this.cursorPosition + value.length);
+        const deltaPosition = this.insertValueChars(value, this.cursorPosition, 0);
+        this.setCursorPosition(this.cursorPosition + deltaPosition);
+
         this.isSelected = false;
-        this.prevTypedValue = value;
+        this.prevTypedValue = value!;
         if (!isRememberAsPart) this.shadowCursorPosition = this.cursorPosition;
         if (!this.isCapsLock) this.event.shiftKey = false;
         const prev = this.value;
@@ -125,12 +162,13 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
     }
 
     async paste(position?: 'before' | 'after') {
-        const text = await navigator.clipboard.readText();
-        if (text && position) {
+        const val = await navigator.clipboard.readText();
+        const value = this.type === 'number' ? val.replace(/\D+/g, '') : val;
+        if (value && position) {
             this.isSelected = false;
             this.setCursorPosition(position === 'before' ? Math.min(...this.selected) : Math.max(...this.selected));
         }
-        text && this.write(text, true);
+        value && this.write(value, true);
     }
 
     copy() {

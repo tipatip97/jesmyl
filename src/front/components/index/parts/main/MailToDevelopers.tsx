@@ -1,18 +1,14 @@
 import { useState } from "react";
-import useKeyboard from "../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import useAuth from "../../useAuth";
 
 export default function MailToDevelopers({ close }: { close: () => void }) {
   const [text, setText] = useState("");
   const { writeToDevelopers } = useAuth();
-  const input = useKeyboard()("write-to developers", {
-    multiline: true,
-    onInput: (value) => setText(value),
-  });
 
   return (
     <div className="full-container flex column center padding-big-gap">
-      {input.node}
+      <KeyboardInput multiline onInput={(value) => setText(value)} />
       <button
         disabled={!text}
         className="margin-gap"

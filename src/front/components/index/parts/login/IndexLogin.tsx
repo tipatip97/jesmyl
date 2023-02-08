@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
-import useKeyboard from "../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import LoadIndicatedContent from "../../../../complect/load-indicated-content/LoadIndicatedContent";
 import { soki } from "../../../../soki";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
@@ -17,7 +17,6 @@ export default function IndexLogin() {
   const [isJSONDataLogin, setIsJSONDataLogin] = useState(false);
   const [mode, setMode] = useState<AuthMode>("login");
   const [isInProcess, setIsInProscess] = useState(1);
-  const aboutInput = useKeyboard();
 
   const {
     loginInSystem,
@@ -32,27 +31,6 @@ export default function IndexLogin() {
   const { navigate } = useIndexNav();
   const error = (message: string | nil) =>
     message && <div className="login-error-message">{message}</div>;
-
-  const loginInput = aboutInput("IndexLogin login", {
-    preferLanguage: 'en',
-    onChange: (value) => setLogin(value),
-    theValue: login,
-    placeholder: "Логин",
-  });
-  const passwInput = aboutInput("IndexLogin passw", {
-    preferLanguage: 'en',
-    type: "password",
-    onChange: (value) => setPassword(value),
-    theValue: passw,
-    placeholder: "Пароль",
-  });
-  const rpasswInput = aboutInput("IndexLogin r-passw", {
-    preferLanguage: 'en',
-    type: "password",
-    onChange: (value) => setRPassword(value),
-    theValue: rpassw,
-    placeholder: "Подтверди пароль",
-  });
 
   useEffect(() => {
     if (isCorrectLoginJSONData(login)) {
@@ -107,17 +85,40 @@ export default function IndexLogin() {
           <div className="relative flex column full-width">
             <div className="input-container flex">
               {error(errors.login)}
-              <div className="input-wrapper">{loginInput.node}</div>
+              <div className="input-wrapper">
+                <KeyboardInput
+                  preferLanguage="en"
+                  onChange={(value) => setLogin(value)}
+                  value={login}
+                  placeholder="Логин"
+                />
+              </div>
             </div>
             <div className="input-container flex">
               {error(errors.passw)}
-              <div className="input-wrapper">{passwInput.node}</div>
+              <div className="input-wrapper">
+                <KeyboardInput
+                  preferLanguage="en"
+                  type="password"
+                  onChange={(value) => setPassword(value)}
+                  value={passw}
+                  placeholder="Пароль"
+                />
+              </div>
             </div>
             {mode === "register" ? (
               <>
                 <div className="input-container flex">
                   {error(errors.rpassw)}
-                  <div className="input-wrapper">{rpasswInput.node}</div>
+                  <div className="input-wrapper">
+                    <KeyboardInput
+                      preferLanguage="en"
+                      type="password"
+                      onChange={(value) => setRPassword(value)}
+                      value={rpassw}
+                      placeholder="Подтверди пароль"
+                    />
+                  </div>
                 </div>
               </>
             ) : null}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import useExer from "../../../../../../../complect/exer/useExer";
-import useKeyboard from "../../../../../../../complect/keyboard/useKeyboard";
+import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
 import { MyLib } from "../../../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../../../Cm.store";
 import { EditableCom } from "../EditableCom";
@@ -9,10 +9,6 @@ import { useEditableCcom } from "../useEditableCcom";
 
 export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom?: EditableCom }) {
   const cEditableCom = useEditableCcom();
-  const audioInput = useKeyboard()('audio-add Input', {
-    placeholder: 'и вставь сюда',
-    onPaste: (value) => setInnerHTML(value),
-  });
   const ccom = topCom ?? cEditableCom;
 
   const [innerHTML, setInnerHTML] = useState(topHTML);
@@ -89,7 +85,12 @@ export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom
             <h2>Добавить аудио</h2>
             {!topHTML && <>
               Зайди на необходимую страницу, открой HTML-код страницы (CTRL + U), скопируй всё,
-              <div className="half-width">{audioInput.node}</div>
+              <div className="half-width">
+                <KeyboardInput
+                  placeholder="и вставь сюда"
+                  onPaste={(value) => setInnerHTML(value)}
+                />
+              </div>
             </>}
             {hrefs.map((src) => {
               if (src && uniqs.indexOf(src) < 0) {

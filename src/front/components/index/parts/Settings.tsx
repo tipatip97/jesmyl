@@ -36,7 +36,7 @@ export default function IndexSettings() {
       icon="keypad-outline"
       title="Фирменная клавиатура"
       onClick={async () => { dispatch(switchIsUseNativeKeyboard()) }}
-      box={<input type="checkbox" checked={isUseNativeKeyboard} onChange={() => { }} />}
+      box={<input type="checkbox" checked={!isUseNativeKeyboard} onChange={() => { }} />}
     />,
   ].filter((isShow) => isShow);
 

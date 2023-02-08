@@ -10,14 +10,8 @@ import {
 
 export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   isNeedValuesInitialize = true;
-  initialValue?: string;
   currentLanguage: KeyboardKeyTranslateLanguage = "ru";
   private viewFlowChari: number = 0;
-
-  constructor(initialValue?: string) {
-    super();
-    this.initialValue = initialValue;
-  }
 
   node(
     props: KeyboardInputProps,
@@ -33,6 +27,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     this.onBlur = onBlur;
     this.isMultiline = props.multiline;
     this.type = props.type;
+    this.maxLength = props.maxLength;
     this.setIsUnknownSymbols =
       props.setIsUnknownSymbols || this.dafaultSetIsUnknownSymbols;
     this.mapChar = props.mapChar || this.dafaultMapChar;
@@ -48,11 +43,6 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
       setTimeout(() => {
         let isForceUpdated = false;
 
-        if (this.initialValue) {
-          this.replaceAll(this.initialValue || "", false);
-          isForceUpdated = true;
-        }
-
         if (props.autoFocus) {
           this.focus(isForceUpdated);
           isForceUpdated = true;
@@ -62,17 +52,15 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
 
     return (
       <div
-        className={`input-keyboard-flash-controlled input ${
-          props.className || ""
-        } ${this.valueCharLines.length === 0 ? "no-lines" : ""} ${
-          this.isFocused ? "focused" : ""
-        } ${this.value ? "" : "empty-input"} ${
-          props.multiline ? "multiline" : ""
-        } ${props.closeButton !== false ? "" : "without-close-button"} ${
-          this.touchNavigationMode || this.isOverflowKeyDown
-            ? "stable-cursor-mode"
-            : ""
-        }`}
+        className={'input-keyboard-flash-controlled input '
+          + (props.className || "")
+          + (this.valueCharLines.length === 0 ? " no-lines" : "")
+          + (this.isFocused ? " focused" : "")
+          + (this.value ? "" : " empty-input")
+          + (props.multiline ? " multiline" : "")
+          + (props.closeButton !== false ? "" : " without-close-button")
+          + (this.touchNavigationMode || this.isOverflowKeyDown ? " stable-cursor-mode" : "")
+        }
         placeholder={props.placeholder}
         onMouseDown={this.onFlashMouseDown}
         onClick={this.onStopPropagation}
@@ -99,7 +87,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
             <EvaIcon
               name="close"
               className="icon-button close-button"
-              onMouseDown={this.onClearButton.bind(this)}
+              onMouseDown={this.onClearButton}
             />
           )}
         </div>
@@ -127,9 +115,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     const lineNode = (
       <div
         key={`line ${linei}`}
-        className={`input-keyboard-flash-controlled-char-list-line ${
-          this.isZeroCursorOn(this.viewFlowChari) ? "zero-cursor" : ""
-        }`}
+        className={`input-keyboard-flash-controlled-char-list-line ${this.isZeroCursorOn(this.viewFlowChari) ? "zero-cursor" : ""}`}
         onMouseDown={this.onCharMouseDown.bind(
           this,
           this.viewFlowChari + line.length
@@ -156,9 +142,10 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     return (
       <span
         key={`node-${letteri}`}
-        className={`input-keyboard-flash-controlled-char ${
-          this.isCursorOn(chari) ? "cursor" : ""
-        } ${this.isSelectedChar(chari) ? "selected" : ""}`}
+        className={'input-keyboard-flash-controlled-char'
+          + (this.isCursorOn(chari) ? " cursor" : "")
+          + (this.isSelectedChar(chari) ? " selected" : "")
+        }
         ref={this.charElementReference.bind(this, linei, chari)}
         onContextMenu={this.onCharContextMenu.bind(this, chari)}
         onDoubleClick={this.onCharDoubleClick.bind(this, chari)}
