@@ -10,7 +10,7 @@ dir.length -= 2;
 export const rootDirective = dir.join('/');
 
 export interface SokiCapsule {
-    auth: LocalSokiAuth | null;
+    auth: LocalSokiAuth | null,
 }
 
 export interface SokiServerEvent {
@@ -23,6 +23,11 @@ export interface SokiServerEvent {
     },
     errorMessage?: string | null,
     system?: { name: 'reloadFiles' | 'restartWS' } & ({ ok: true, message?: string | null } | { ok: false, error?: string | null }),
+    service?: {
+        requestId: number,
+        key: string,
+        value: any,
+    },
 }
 
 export interface SokiClientEventBody {
@@ -31,14 +36,19 @@ export interface SokiClientEventBody {
     pull?: { lastUpdate: number, indexLastUpdate: number },
     execs?: ExecutionDict[],
     system?: { name: 'reloadFiles' | 'restartWS', passphrase: string },
+    service?: {
+        requestId: number,
+        key: string,
+        value?: any,
+    }
 }
 
 export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
 
 export interface SokiClientEvent {
-    body: SokiClientEventBody;
-    auth: LocalSokiAuth | null;
-    appName: SokiAppName;
+    body: SokiClientEventBody,
+    auth: LocalSokiAuth | null,
+    appName: SokiAppName,
 }
 
 export interface SokiAuthUnitRights { }
@@ -82,3 +92,5 @@ export interface AuthorizeInSystem {
     register: SokiRegisterData,
     login: SokiAuthorizationData,
 }
+
+export type SokiServicePack = Partial<Record<SokiAppName, (key: string, value: any) => Promise<any>>>;

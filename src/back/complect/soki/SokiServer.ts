@@ -1,5 +1,6 @@
 import { exec } from 'child_process';
 import WebSocket, { WebSocketServer } from 'ws';
+import cmService from '../../apps/cm/service';
 import { sequreMD5Passphrase } from '../../values';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
@@ -7,7 +8,7 @@ import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
 import smylib, { SMyLib } from './complect/SMyLib';
 import { sokiAuther } from './complect/SokiAuther';
-import { SokiCapsule, SokiClientEvent, SokiServerEvent } from './soki.model';
+import { SokiCapsule, SokiClientEvent, SokiServerEvent, SokiServicePack } from './soki.model';
 
 setPolyfills();
 ErrorCatcher.logAllErrors();
@@ -118,6 +119,24 @@ new WebSocketServer({
                 return;
             }
 
+            if (eventBody.service) {
+                const service = eventBody.service;
+
+                const services: SokiServicePack = {
+                    cm: cmService,
+                };
+
+                services[eventData.appName]?.(eventBody.service.key, eventBody.service.value)
+                    .then((value) => {
+                        send({
+                            service: {
+                                requestId: service.requestId,
+                                key: service.key,
+                                value,
+                            }
+                        });
+                    });
+            }
 
             if (eventBody.execs) {
                 if (await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule?.auth.login === eventData.auth?.login) {
