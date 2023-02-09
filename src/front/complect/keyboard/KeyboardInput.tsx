@@ -35,10 +35,10 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       callback(value, prev ?? null);
     };
 
-    return <div className={`input-keyboard-flash-controlled input ${multiline ? 'multiline' : ''}`}>
+    return <div className={`input-keyboard-flash-controlled input${multiline ? ' multiline' : ''} ${className || ''}`}>
       <textarea
         {...otherProps}
-        className={`native-input ${className || ''}`}
+        className="native-input"
         onInput={onInput && ((event: any) => {
           invoke(onInput, event.target.value);
         })}
