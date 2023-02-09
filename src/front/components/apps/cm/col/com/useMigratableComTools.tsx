@@ -103,9 +103,7 @@ export default function useMigratableComTools() {
                 title: isSelected(ccom)
                   ? "Убрать из выбранных"
                   : "Выбрать песню",
-                icon: isSelected(ccom)
-                  ? "close-circle-outline"
-                  : "checkmark-circle-2-outline",
+                icon: `checkmark-circle-2${isSelected(ccom) ? '' : '-outline'}`,
                 onClick: () => toggleSelectedCom(ccom),
               }
             );
@@ -134,7 +132,7 @@ export default function useMigratableComTools() {
               ccom && {
                 tool,
                 title: "Проигрыватель",
-                icon: "music-outline",
+                icon: playerHideMode ? "music" : "music-outline",
                 onClick: () => {
                   dispatch(setPlayerHideMode(playerHideMode ? null : 'min'));
                 },
