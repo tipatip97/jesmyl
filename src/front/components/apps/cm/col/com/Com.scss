@@ -3,7 +3,17 @@
         transition: padding-top .2s;
 
         .composition-player {
+            --transition-speed: .2s;
+            
+            position: absolute;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            z-index: 1;
             opacity: 0;
+            transition: width var(--transition-speed),
+                background var(--transition-speed),
+                opacity var(--transition-speed);
         }
     }
 

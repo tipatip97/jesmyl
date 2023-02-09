@@ -1,26 +1,16 @@
-.composition-container {
+.application-container.app_cm {
     --com-player-size: 30px;
     --com-player-height: var(--com-player-size);
     --com-player-expand-height: calc(var(--com-player-size) * 2);
 
     .composition-player {
-        --transition-speed: .2s;
-
-        position: absolute;
         padding: 0 5px;
-        top: var(--header-height);
-        left: 0;
-        right: 0;
         height: var(--com-player-height);
         width: 100%;
         font-size: .8em;
         white-space: nowrap;
         overflow: hidden;
         background: var(--color--2);
-        z-index: 1;
-        transition: width var(--transition-speed),
-            background var(--transition-speed),
-            opacity var(--transition-speed);
 
         &.hidden-controls {
             width: var(--com-player-size);
@@ -61,6 +51,7 @@
     from {
         transform: scale(.2) rotate(0);
     }
+
     to {
         transform: scale(.2) rotate(360deg);
     }
