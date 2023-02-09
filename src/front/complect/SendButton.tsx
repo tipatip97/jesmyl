@@ -3,7 +3,7 @@ import TheButton from "./Button";
 import EvaIcon from "./eva-icon/EvaIcon";
 import modalService from "./modal/Modal.service";
 
-export default function SendButton({
+export default function SendButton<Value>({
   title,
   confirm,
   onSend,
@@ -14,8 +14,8 @@ export default function SendButton({
   title: string;
   confirm?: string | boolean | null;
   disabled?: boolean;
-  onSend?: () => Promise<unknown> | void | nil;
-  onSuccess?: () => void;
+  onSend?: () => Promise<Value> | void | nil;
+  onSuccess?: (val: Value) => void;
   onFailure?: () => void;
 }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,10 +41,9 @@ export default function SendButton({
           setIsError(false);
           setIsLoading(true);
           promise
-            .then((isSucc) => {
+            .then((val) => {
               setIsLoading(false);
-              if (isSucc !== false) onSuccess?.();
-              else onFailure?.();
+              onSuccess?.(val);
             })
             .catch(() =>
               setTimeout(() => {
