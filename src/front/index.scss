@@ -54,19 +54,21 @@ body {
   }
 }
 
-.color-- {
-  &1 {
-    --svg-color: var(--color--1);
-    color: var(--color--1);
-  }
 
-  &3 {
-    --svg-color: var(--color--3);
-    color: var(--color--3);
-  }
+.color--ok {
+  --svg-color: var(--color--ok);
+  color: var(--color--ok);
+}
 
-  &7 {
-    color: var(--color--7);
+.color--ko {
+  --svg-color: var(--color--ko);
+  color: var(--color--ko);
+}
+
+@for $i from 1 through 8 {
+  .color--#{$i} {
+    --svg-color: var(--color--#{$i});
+    color: var(--color--#{$i});
   }
 }
 
