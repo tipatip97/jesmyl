@@ -12,6 +12,7 @@ export default function ChordImagesList() {
             .map((chordName) => {
               return (
                 <ChordCard
+                  key={chordName}
                   chordName={chordName}
                   customContent={(card) => {
                     return <div key={chordName} className="flex column margin-big-gap">
