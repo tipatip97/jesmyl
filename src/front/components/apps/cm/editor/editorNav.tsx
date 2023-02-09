@@ -24,8 +24,9 @@ import EERules from "./ee-rules/EERules";
 import EditMeetings from "./meetings/EditMeetings";
 import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
 import ExecsVisor from "./execs/ExecsVisor";
-import ComAudio from "./col/compositions/complect/ComAudio";
+import ComAudio from "./col/compositions/complect/audio/ComAudio";
 import ChordRedactor from "./chord-redactor/ChordRedactor";
+import Mp3RulesRedactor from "./mp3-rule-redactor/Mp3RulesRedactor";
 
 export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
   icon?: EvaIconName;
@@ -143,6 +144,7 @@ export const editorRouteItems: INavigationRouteChildItem<CmNavData, {
     {
       phase: ["meetings"],
       node: <EditMeetings />,
+      accessRule: "canEditMeetings",
       data: {
         title: "События",
         icon: "calendar-outline",
@@ -169,16 +171,25 @@ export const editorRouteItems: INavigationRouteChildItem<CmNavData, {
     {
       phase: ["chord"],
       node: <ChordRedactor />,
-      accessRule: "canWatch",
+      accessRule: "canEditChords",
       data: {
         title: "Редактор аккордов",
         icon: "options-2-outline",
       },
     },
     {
+      phase: ["mp3Rules"],
+      node: <Mp3RulesRedactor />,
+      accessRule: "canEditMp3Rules",
+      data: {
+        title: "Редактор MP3 правил",
+        icon: "music-outline",
+      },
+    },
+    {
       phase: ["e-e"],
       node: <EERules />,
-      accessRule: "canWatch",
+      accessRule: "canEditEERules",
       data: {
         title: "Ё-Е правила",
         icon: "text-outline",

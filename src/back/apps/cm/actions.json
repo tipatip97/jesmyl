@@ -1,38 +1,19 @@
 {
     "<canWatch>": {
         "level": 100,
-        "action": "canWatch",
-        "title": "stub"
+        "action": "canWatch"
     },
     "<canRedact>": {
         "level": 50,
-        "action": "canRedact",
-        "title": "stub"
-    },
-    "<flexibleMainFontSize>": {
-        "level": 1000,
-        "action": "flexibleMainFontSize",
-        "title": "stub"
-    },
-    "<canShowTranslation>": {
-        "level": 3,
-        "action": "canShowTranslation",
-        "title": "stub"
-    },
-    "<catCanSearch>": {
-        "level": 50,
-        "action": "catCanSearch",
-        "title": "stub"
+        "action": "canRedact"
     },
     "<canEditMeetings>": {
         "level": 50,
-        "action": "canEditMeetings",
-        "title": "stub"
+        "action": "canEditMeetings"
     },
-    "<comCanSearch>": {
-        "level": 0,
-        "action": "comCanSearch",
-        "title": "stub"
+    "<canEditChords>": {
+        "level": 50,
+        "action": "canEditChords"
     },
     "/chordTracks": {
         "expected": {},
@@ -480,12 +461,34 @@
             }
         }
     },
-    "<canRedactSettings>": {
-        "level": 100,
-        "action": "canRedactSettings"
+    "<canEditMp3Rules>": {
+        "level": 80,
+        "action": "canEditMp3Rules"
+    },
+    "/mp3Rules": {
+        "expected": [],
+        "<add>": {
+            "action": "addMp3Rule",
+            "method": "push",
+            "args": {
+                "value": "#Dict"
+            }
+        },
+        "/[w === {mp3w}]": {
+            "action": "updateMp3Rule",
+            "title": "Изменено MP3 правило",
+            "method": "set_all",
+            "args": {
+                "mp3w": "#Number",
+                "value": "#Dict"
+            }
+        }
+    },
+    "<canEditEERules>": {
+        "level": 80,
+        "action": "canEditEERules"
     },
     "/eeStorage/{word}": {
-        "level": 100,
         "action": "setEERuleWordTrack",
         "title": "Задано правило правописания е/ё для слова '$word'",
         "method": "set",

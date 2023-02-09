@@ -5,6 +5,10 @@ const config: FilerAppConfig = {
     requirements: [
         "cols", "meetings", "chords", "chordTracks",
         {
+            level: 80,
+            name: "mp3Rules",
+        },
+        {
             level: 50,
             name: "eeStorage",
         },

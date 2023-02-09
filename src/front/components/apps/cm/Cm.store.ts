@@ -35,13 +35,16 @@ const initialState: CmState = {
   translationBlockPosition: 'center',
   favoriteMeetings: cmStorage.getOr('favoriteMeetings', { contexts: [], events: [] }),
   comTopTools: cmStorage.getOr('comTopTools', ["mark-com", "fullscreen-mode"]),
-  execs: cmStorage.getOr('execs', []),
   currentMeetingsContext: cmStorage.getOr('currentMeetingsContext', []),
 
   numComUpdates: 0,
   numColsUpdates: 0,
   numAbsolutePopupUpdates: 0,
   numMeetingsUpdate: 0,
+
+  // editor
+  execs: cmStorage.getOr('execs', []),
+  mp3Rules: cmStorage.getOr('mp3Rules', []),
 };
 
 export const slice = createSlice({

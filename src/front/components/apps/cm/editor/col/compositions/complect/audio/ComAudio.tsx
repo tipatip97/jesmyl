@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
-import useExer from "../../../../../../../complect/exer/useExer";
-import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
-import { MyLib } from "../../../../../../../complect/my-lib/MyLib";
-import { cmExer } from "../../../../Cm.store";
-import { EditableCom } from "../EditableCom";
-import { useEditableCcom } from "../useEditableCcom";
+import EvaButton from "../../../../../../../../complect/eva-icon/EvaButton";
+import useExer from "../../../../../../../../complect/exer/useExer";
+import { MyLib } from "../../../../../../../../complect/my-lib/MyLib";
+import { cmExer } from "../../../../../Cm.store";
+import ComPlayer from "../../../../../col/com/player/ComPlayer";
+import { EditableCom } from "../../EditableCom";
+import { useEditableCcom } from "../../useEditableCcom";
+import ObserveUrlAudio from "./ObserveUrlAudio";
 
 export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom?: EditableCom }) {
   const cEditableCom = useEditableCcom();
   const ccom = topCom ?? cEditableCom;
 
   const [innerHTML, setInnerHTML] = useState(topHTML);
+  const [url, setUrl] = useState('');
   const { exec } = useExer(cmExer);
   const [hrefs, updateHrefs] = useState<(string | null)[]>([]);
   const [audio, setAudio] = useState(ccom?.audio || '');
@@ -30,12 +32,13 @@ export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom
       const div = document.createElement('div');
       div.innerHTML = innerHTML;
       const attributeName = 'data-audio-file';
+      const { origin } = new URL(url);
       updateHrefs(Array.from(div.querySelectorAll(`[${attributeName}]`)).map((e) => {
-        return `https://holychords.pro${e.getAttribute(attributeName)}`;
+        return `${origin}${e.getAttribute(attributeName)}`;
       }));
       div.remove();
     }
-  }, [innerHTML]);
+  }, [innerHTML, url]);
 
   if (!ccom) return null;
 
@@ -45,8 +48,8 @@ export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom
       {audio
         ? audio.split('\n').map((src, srci, srca) => {
           if (!src) return null;
-          return <div key={src} className="flex flex-gap">
-            <audio controls src={src} />
+          return <div key={src} className="flex flex-gap margin-gap">
+            <ComPlayer src={src} />
             <EvaButton
               className="error-message"
               name="close-circle-outline"
@@ -64,8 +67,8 @@ export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom
         <h2>Удалённые аудио</h2>
         {MyLib.entries(removedSrcs).map(([index, src]) => {
           if (!src) return null;
-          return <div key={src} className="flex flex-gap">
-            <audio controls src={src} />
+          return <div key={src} className="flex flex-gap margin-gap">
+            <ComPlayer src={src} />
             <EvaButton
               name="plus-circle"
               onClick={() => {
@@ -83,21 +86,23 @@ export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom
         openAddBlock
           ? <>
             <h2>Добавить аудио</h2>
-            {!topHTML && <>
-              Зайди на необходимую страницу, открой HTML-код страницы (CTRL + U), скопируй всё,
-              <div className="half-width">
-                <KeyboardInput
-                  placeholder="и вставь сюда"
-                  onPaste={(value) => setInnerHTML(value)}
-                />
-              </div>
-            </>}
+            {!topHTML && <ObserveUrlAudio
+              onSuccess={(val) => setInnerHTML(val)}
+              onUrlChange={(url) => setUrl(url)}
+            />}
+            <EvaButton name="google" onClick={() => {
+              const text = ccom.texts?.[0];
+              if (text) {
+                const search = decodeURIComponent(text.replace(/\s+/g, '+'));
+                window.open(`https://google.com/search?q=${search}`);
+              }
+            }} />
             {hrefs.map((src) => {
               if (src && uniqs.indexOf(src) < 0) {
                 uniqs.push(src);
 
-                return <div key={src} className="flex flex-gap">
-                  <audio controls src={src} />
+                return <div key={src} className="flex flex-gap margin-gap">
+                  <ComPlayer src={src} />
                   <EvaButton
                     name="plus-circle"
                     onClick={() => {

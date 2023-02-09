@@ -9,7 +9,8 @@ import { useCcom } from "../../../../col/com/useCcom";
 import EditContainerCorrectsInformer from "../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { useEditableCols } from "../../useEditableCols";
 import { EditableCom } from "../EditableCom";
-import ComAudio from "./ComAudio";
+import ComAudio from "./audio/ComAudio";
+import ObserveUrlAudio from "./audio/ObserveUrlAudio";
 
 export default function NewComposition({ close }: { close: () => void }) {
   const { goTo } = useCmNav();
@@ -26,8 +27,6 @@ export default function NewComposition({ close }: { close: () => void }) {
       new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1, cols),
     [cols]
   );
-
-
 
   const setTextAsValue = (value: string) => {
     setValue(value);
@@ -77,18 +76,13 @@ export default function NewComposition({ close }: { close: () => void }) {
             </div>
           </div>
         </EditContainerCorrectsInformer>
-        <KeyboardInput
-          className="full-width"
-          closeButton={false}
-          placeholder="введи код (ctrl+U)"
-          onPaste={(value) => {
-            const div = document.createElement('div');
-            div.innerHTML = value;
-            setInnerHTML(value);
-            const pre: HTMLPreElement | null = div.querySelector('pre#music_text');
-            if (pre) setTextAsValue(pre.innerHTML.replace(/<(\/ ?)?br( ?\/)?>/g, '\n'));
-          }}
-        />
+        <ObserveUrlAudio onSuccess={(value) => {
+          const div = document.createElement('div');
+          div.innerHTML = value;
+          setInnerHTML(value);
+          const pre: HTMLPreElement | null = div.querySelector('pre#music_text');
+          if (pre) setTextAsValue(pre.innerHTML.replace(/<(\/ ?)?br( ?\/)?>/g, '\n'));
+        }} />
         <KeyboardInput
           value={value}
           className="text-heap-textarea full-width"

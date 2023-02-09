@@ -74,11 +74,6 @@ export interface CmAction {
     valueAs?: string;
 }
 
-export interface CmAppVariables {
-    canRedact: number;
-    mutedExecs: boolean;
-}
-
 export interface CmNavData {
     selectedComws: number[];
 }
