@@ -5,9 +5,11 @@ export default function Portal({ children }: { children: ReactNode }) {
     const [container] = useState(() => document.createElement('div'));
 
     useEffect(() => {
-        document.body.appendChild(container);
+        const parentContainer = document.querySelector('.application-container');
+        parentContainer?.appendChild(container);
+        
         return () => {
-            document.body.removeChild(container);
+            parentContainer?.removeChild(container);
         }
     }, []);
 
