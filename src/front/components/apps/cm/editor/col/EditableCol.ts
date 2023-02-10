@@ -6,6 +6,7 @@ import { cmExer } from "../../Cm.store";
 import { IEditableCol, IExportableCol } from "../../cols/Cols.model";
 import { CorrectsBox } from "../corrects-box/CorrectsBox";
 import { ICorrect } from "../corrects-box/CorrectsBox.model";
+import { correctNotSlavicNameReg_i } from "../Editor.complect";
 
 export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col> {
   removed = false;
@@ -89,10 +90,6 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     return this;
   }
 
-  getIncorrectNameReg() {
-    return /([^а-яёіґїє !?]+\s*)+$/i;
-  }
-
   nameCorrects<Coln extends keyof IEditableCol>(name = this.name, coln: Coln, onIncorrectsFix?: (correct: string) => void, uniq?: string, isSetAllText?: boolean) {
     const minLen = 3;
     const msg = (msg?: string) => msg && `"${name}" - не корректное имя для ${coln === 'cat' ? 'категории' : 'песни'}. ${msg}`;
@@ -102,7 +99,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     if (name === '?' && coln === 'com') return ret('');
     if (name === '') return ret(msg('Пустое имя'));
 
-    const incorrects = name.match(this.getIncorrectNameReg());
+    const incorrects = name.match(correctNotSlavicNameReg_i);
     if (incorrects) return ret(msg(`Недопустимые символы${incorrects[0] === name ? '' : ' в конце'} (${incorrects[0]})`), () => onIncorrectsFix && onIncorrectsFix(name.slice(0, -incorrects[0].length)));
 
     if (name.length < minLen) return ret(msg(`Минимальное количество символов - ${minLen}`));
@@ -112,7 +109,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
   }
 
   prepareName(name: string) {
-    return mylib.isStr(name) ? name.replace(this.getIncorrectNameReg(), '') : name;
+    return mylib.isStr(name) ? name.replace(correctNotSlavicNameReg_i, '') : name;
   }
 
   textCorrects(text: string | nil, correctsScope?: string, isSetAllText = false) {

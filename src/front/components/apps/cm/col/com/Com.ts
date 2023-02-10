@@ -333,20 +333,20 @@ export class Com extends BaseNamed<IExportableCom> {
 
     const getStyle = (o: Partial<IExportableOrderTop> | nil) => {
       return o && o.s != null
-        ? styles.find((prop: StyleBlock) => prop.name === o.s)
+        ? styles.find((prop: StyleBlock) => prop.key === o.s)
         : null;
     };
 
     const setMin = (src: Partial<IExportableOrderTop>) => {
       const style = src.init ? src.init.style : src.style;
-      const styleName = style?.name.trim();
+      const styleName = style?.key.trim();
       if (style?.isModulation) minimals = [];
       src.m = minimals.some(([s, c]) => styleName === s && src.c === c) ? 0 : 1;
       minimals.push([styleName, src.c]);
     };
 
     const header = (ord: IExportableOrderTop, style: StyleBlock, numered = true) => {
-      const type = style.name.trim();
+      const type = style.key.trim();
       const number = numered
         ? groups[type] = groups[type] == null
           ? 1
@@ -356,7 +356,7 @@ export class Com extends BaseNamed<IExportableCom> {
         : '';
 
       return (bag = {}) => {
-        return mylib.stringTemplater(style.header, mylib.overlap({
+        return mylib.stringTemplater(style.title, mylib.overlap({
           num: numered ? groups[type] < 2 ? '' : ` ${number}` : '',
           translate,
         }, bag));

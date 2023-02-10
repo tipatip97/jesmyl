@@ -3,5 +3,11 @@ export const chordLikeStr =
 export const textedChordStr = `\\.*-?${chordLikeStr}`;
 export const textedChord = new RegExp(`^${textedChordStr}(/${chordLikeStr})?$`);
 export const correctChordNameReg = new RegExp(`^${chordLikeStr}(/${chordLikeStr})?$`);
+export const checkIsChordLineReg = /^[-+A-Ha-z# /\d]+$/;
+export const slavicLowerLettersStr = 'а-яёіґїє';
+export const ruDifferentLowerLettersStr = 'ъыэё';
+export const uaDifferentLowerLettersStr = 'іґїє';
+export const correctNotSlavicNameStr = `([^${slavicLowerLettersStr} !?]+\\s*)+$`;
+export const correctNotSlavicNameReg_i = new RegExp(correctNotSlavicNameStr, 'i');
 
 export const cleanChords = ["A", "C", "D", "E", "F", "G", "H"];

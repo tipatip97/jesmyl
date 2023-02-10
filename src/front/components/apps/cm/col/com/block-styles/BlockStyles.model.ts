@@ -1,10 +1,11 @@
 export interface IExportableStyleProp {
-    n: string;
-    h: string;
-    i?: number;
-    l?: number;
-    tg?: string[];
-    md?: number;
+    key: string;
+    title: string;
+    isInherit?: boolean;
+    group?: number;
+    tags?: string[];
+    isModulation?: boolean;
+    forChordedBlock?: number,
 }
 
 

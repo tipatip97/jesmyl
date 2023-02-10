@@ -3,8 +3,8 @@ import { Order } from "../order/Order";
 import { IExportableStyleProp } from "./BlockStyles.model";
 
 export class StyleBlock extends SourceBased<IExportableStyleProp> {
-  get name() {
-    return this.getBasicOr('n', '');
+  get key() {
+    return this.getBasicOr('key', '');
   }
 
   normName(name: string) {
@@ -12,16 +12,17 @@ export class StyleBlock extends SourceBased<IExportableStyleProp> {
   }
 
   getStyleName(ord: Order) {
-    return `${this.normName(this.name)} ${this.isInherit ? 'inherit' : ''} ${this.normName(ord.top.leadOrd?.top.style?.name || '')}`;
+    return `${this.normName(this.key)} ${this.isInherit ? 'inherit' : ''} ${this.normName(ord.top.leadOrd?.top.style?.key || '')}`;
   }
 
-  get header() { return this.getBasic('h'); }
+  get title() { return this.getBasic('title'); }
 
-  get isInherit() { return this.getBasic('i'); }
+  get isInherit() { return this.getBasic('isInherit'); }
 
-  get level() { return this.getBasic('l'); }
+  get group() { return this.getBasic('group'); }
 
-  get isModulation() { return this.getBasic('md'); }
-  get tags() { return this.getBasic('tg'); }
+  get isModulation() { return this.getBasic('isModulation'); }
+  get tags() { return this.getBasic('tags'); }
+  get forChordedBlock() { return this.getBasic('forChordedBlock'); }
 
 }

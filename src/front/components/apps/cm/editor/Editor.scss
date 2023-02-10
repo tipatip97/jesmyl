@@ -7,6 +7,7 @@
     .text-heap-textarea {
         width: 100%;
         height: 100%;
+        min-height: 50vh;
         border: 2px dashed var(--text-color);
         background-color: transparent;
         outline: 0;

@@ -3,15 +3,15 @@ import mylib from "../../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../../Cm.store";
 import { Cat } from "../../../col/cat/Cat";
 import { blockStyles } from "../../../col/com/block-styles/BlockStyles";
+import { StyleBlock } from "../../../col/com/block-styles/StyleBlock";
 import { Com } from "../../../col/com/Com";
 import { IExportableCom } from "../../../col/com/Com.model";
 import { IExportableOrderTop, INewExportableOrder } from "../../../col/com/order/Order.model";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
-import { textedChord } from "../../Editor.complect";
+import { checkIsChordLineReg, correctNotSlavicNameReg_i, ruDifferentLowerLettersStr, slavicLowerLettersStr, textedChord, uaDifferentLowerLettersStr } from "../../Editor.complect";
 import { EditableCol } from "../EditableCol";
 import { EditableCols } from "../EditableCols";
 import { EditableOrder } from "./complect/orders/EditableOrder";
-
 
 export class EditableCom extends Com {
     corrects: Record<string, CorrectsBox | nil> = {};
@@ -49,9 +49,13 @@ export class EditableCom extends Com {
         return new EditableOrder(top, this);
     }
 
-    create(onLoad: () => void) {
-        if (this.isCreated) return false;
-        this.exec({
+    create() {
+        this.isCreated = true;
+        return this;
+    }
+
+    publicate(onLoad: () => void) {
+        this.col.execCol({
             action: 'comAdd',
             method: 'set',
             prev: NaN,
@@ -60,8 +64,7 @@ export class EditableCom extends Com {
                 value: this.toCreateDict()
             },
             onLoad
-        });
-        return this.isCreated = true;
+        }, 'com');
     }
 
     toCreateDict() {
@@ -177,122 +180,149 @@ export class EditableCom extends Com {
     }
 
     parseBlocks(blocks: string[] | string) {
-        type Thromb = { arr: number[], s?: string; str?: string; len?: number; c?: number; };
+        type Unit = {
+            style?: StyleBlock,
+            chords?: string,
+            text?: string,
+            texti?: number,
+            chordsi?: number,
+            freeText?: string,
+            firstLineSlogs?: number,
+        };
 
-        const chords: string[] = [];
-        const orders: INewExportableOrder[] = [];
-        const trombs: Thromb[] = [];
+        const freeSlavicLineReg_gi = new RegExp(`[^${slavicLowerLettersStr} ]`, 'gi');
+        const ruDifferentReg = new RegExp(`[${ruDifferentLowerLettersStr}]`);
+        const uaDifferentReg = new RegExp(`[${uaDifferentLowerLettersStr}]`);
+        const units: Unit[] = [];
+        let languagei: number | und | null;
+        const errors: string[] = [];
+        const slogUnits: Record<number, Unit[]> = {};
+        const setLanguagei = (reg: RegExp, text: string, langi: number) => {
+            if (reg.exec(text)) {
+                if (languagei !== undefined && languagei !== langi) {
+                    languagei = null;
+                    errors.push('Не удалось определить язык песни');
+                } else languagei = langi;
+            }
+        };
+
+        (typeof blocks === 'string' ? blocks.split(/\n+\s*\n+/) : blocks)
+            .forEach((block) => {
+                const unit: Unit = {};
+                const textLines: string[] = [];
+                const chordLines: string[] = [];
+                units.push(unit);
+
+                block.split('\n').forEach((line, linei) => {
+                    const freeLine = line.replace(/\s+/g, ' ').trim();
+
+                    if (languagei !== null) {
+                        setLanguagei(ruDifferentReg, freeLine, 0);
+                        setLanguagei(uaDifferentReg, freeLine, 1);
+                    }
+
+                    if (linei === 0) {
+                        unit.style = this.takeStyleByTitle(freeLine);
+                        if (unit.style) return;
+                    }
+
+                    if (checkIsChordLineReg.exec(freeLine)) {
+                        chordLines.push(freeLine);
+                    } else {
+                        if (textLines.length === 0) {
+                            const letters = freeLine.match(/[аеёиоуэыяюaeouiіїє]/gi);
+                            const slogs = letters?.length;
+                            if (slogs !== undefined) {
+                                if (slogUnits[slogs] === undefined) slogUnits[slogs] = [];
+                                unit.firstLineSlogs = slogs;
+                                slogUnits[slogs].push(unit);
+                            }
+                        }
+                        textLines.push(freeLine);
+                    }
+                });
+
+                unit.text = textLines.join('\n');
+                unit.chords = chordLines.join('\n');
+                unit.freeText = textLines.map(line => line.replace(freeSlavicLineReg_gi, '')).join('\n');
+            });
+
         const texts: string[] = [];
-        const cclen = this.chords?.length || 0;
-        const ctlen = this.texts?.length || 0;
-        let isMoved = true;
+        const chords: string[] = [];
+        const unitSlogGroups = Object.values(slogUnits).sort((a, b) => b.length - a.length);
 
-        if (!blockStyles) return;
+        const orders: INewExportableOrder[] = [];
 
-        const [firstLeveled, firstAltLeveled] = blockStyles.styles.filter(style => style.level === 1).map(style => style.name);
-        const [secondLeveled] = blockStyles.styles.filter(style => style.level === 2).map(style => style.name);
-        const [thirdLeveled] = blockStyles.styles.filter(style => style.level === 3).map(style => style.name);
-        const [inherited] = blockStyles.styles.filter(style => style.isInherit).map(style => style.name);
-
-        (typeof blocks === 'string' ? blocks.split('\n\n') : blocks).forEach((block) => {
-            const ctromb: Thromb = { arr: [] };
-            trombs.push(ctromb);
-
-            let schords = '';
-            let stexts = '';
-
-            block.split(/\n/).forEach((line) => {
-                const trimmedLine = line.trim().replace(/\s+/g, ' ');
-
-                if (trimmedLine.match(/^([A-H][^A-H]*)+$/)) {
-                    schords += (schords ? '\n' : '') + trimmedLine;
+        units.forEach((unit, uniti) => {
+            if (unit.style === undefined && blockStyles) {
+                if (!unit.text) {
+                    if (uniti === 0) unit.style = blockStyles.forChordedBlock[0];
+                    else unit.style = blockStyles.forChordedBlock[1];
+                }
+                const prevUnit = units[uniti - 1];
+                if (prevUnit?.style && prevUnit.text && unit.firstLineSlogs === prevUnit.firstLineSlogs) {
+                    const style = blockStyles.getNextLevelSortedStyle(prevUnit.style);
+                    if (style) unit.style = style;
                 } else {
-                    const lowerTrimmedLine = trimmedLine.toLowerCase();
-                    const taggedStyle = stexts ? null : blockStyles?.styles.find(style => (style.tags || []).some(tag => lowerTrimmedLine.replace(/[^а-я]/g, '') === tag.toLowerCase().trim()));
-
-                    if (taggedStyle) ctromb.s = taggedStyle.name;
-                    else {
-                        !this.name && this.correctRename(trimmedLine);
-                        stexts += (stexts ? '\n' : '') + this.prepareCorrectTextLine(trimmedLine);
-                        const letters = trimmedLine.match(/[аеёиоуэыяюaeouiіїє]/gi);
-                        ctromb.arr.push(letters ? letters.length : 0);
+                    const uniti = unitSlogGroups.findIndex(units => units.includes(unit));
+                    if (uniti !== undefined) {
+                        const style = blockStyles.getNextLevelSortedStyle(uniti);
+                        if (style) unit.style = style;
                     }
                 }
-            });
-
-            ctromb.str = JSON.stringify(ctromb.arr);
-            ctromb.len = ctromb.arr.length;
-
-            if (schords) {
-                const index = chords.findIndex(c => c === schords);
-                ctromb.c = index < 0 ? chords.length : index;
-                if (index < 0) chords.push(schords);
             }
-            if (stexts) texts.push(stexts);
+
+            if (unit.text) {
+                let texti: number;
+                const sameTextUnit = units.find((u) => u.freeText === unit.freeText && u.texti !== undefined);
+
+                if (sameTextUnit?.texti !== undefined) texti = sameTextUnit.texti;
+                else texti = texts.push(unit.text) - 1;
+
+                unit.texti = texti;
+            }
+
+            if (unit.chords) {
+                let chordsi: number;
+                const sameChordsUnit = units.find((u) => u.chords === unit.chords && u.chordsi !== undefined);
+
+                if (sameChordsUnit?.chordsi !== undefined) chordsi = sameChordsUnit.chordsi;
+                else chordsi = chords.push(unit.chords) - 1;
+
+                unit.chordsi = chordsi;
+            }
         });
-        let prevS: string | und;
 
-        const isSingleBlockStyle = (name => {
-            trombs.some((tromb): boolean => {
-                const styleName = (tromb.s || '').trim();
-                if (!styleName) return false;
+        let uniq = 0;
 
-                if (!name) {
-                    name = styleName;
-                    return false;
-                }
+        units.forEach((unit) => {
+            const ord: INewExportableOrder = {};
 
-                if (name !== styleName) {
-                    name = '';
-                    return true;
-                }
-                return false;
-            });
-            return name;
-        })('');
-
-        texts.forEach((_, texti) => {
-            const ctromb = trombs[texti];
-            let t = ctlen + texti, c, s = ctromb.s;
-
-            if (chords.length) {
-                if (ctromb.c != null) {
-                    c = ctromb.c;
-                } else if (chords.length === 1) {
-                    c = cclen;
-                } else if (chords.length === texts.length) {
-                    c = cclen + texti;
-                } else {
-                    const sibling = trombs.find(tromb => tromb !== ctromb && tromb.s && ctromb.s && tromb.s.trim() === ctromb.s.trim());
-                    c = sibling ? sibling.c : 0;
-                }
-            }
-            if (isSingleBlockStyle && chords.length === 1) {
-                s = s || (!(t % 2) ? firstLeveled : firstAltLeveled);
-            } else if (chords.length === texts.length) {
-                s = s || (c === 0 ? firstLeveled : c === 1 ? secondLeveled : thirdLeveled);
+            const similarOrd = orders.find((ord) => ord.c === unit.chordsi && ord.t === unit.texti && ord.s === unit.style?.key);
+            if (similarOrd) {
+                if (similarOrd.u === undefined) similarOrd.u = uniq++;
+                ord.a = similarOrd.u;
             } else {
-                if (c === 0) isMoved = !isMoved;
-                else isMoved = true;
-
-                s = s || (c === 0 ? isMoved ? firstAltLeveled : firstLeveled : c === 1 ? secondLeveled : thirdLeveled);
-            }
-            if (!ctromb.s) {
-                const prev = s;
-                if (prevS === s) s = inherited;
-                prevS = prev;
+                if (unit.chordsi !== undefined) ord.c = unit.chordsi;
+                if (unit.texti !== undefined) ord.t = unit.texti;
+                if (unit.style !== undefined) ord.s = unit.style.key;
             }
 
-            orders.push({ t, c, s, p: [] });
+            orders.push(ord);
         });
+
+        if (languagei) this.langi = languagei;
 
         this.add('chords', chords.length ? chords : ['']);
         this.add('texts', texts.length ? texts : ['']);
         this.addOrders(orders);
+
+        return errors;
     }
 
-    takeName(text: string) {
-        return text.split('\n').filter((line) => /^[^a-zA-Z\d#]+$/.exec(line))[0] || '';
+    takeStyleByTitle(text: string) {
+        const preparedText = text.toLowerCase().replace(/[^а-я]/g, '').trim();
+        return blockStyles?.styles.find(style => style.tags?.some(tag => preparedText.startsWith(tag)));
     }
 
     afterOrderChange() {
@@ -318,7 +348,7 @@ export class EditableCom extends Com {
         return this;
     }
 
-    addOrder({ t, s, c }: INewExportableOrder, refresh = true) {
+    addOrder({ t, s, c, a, u }: INewExportableOrder, refresh = true) {
         const w = this.getNextOrdWid();
 
         this.exec({
@@ -329,9 +359,12 @@ export class EditableCom extends Com {
                 texti: t,
                 type: s,
                 chordsi: c,
+                anchor: a,
+                uniq: u,
             },
         });
-        this.ords.push({ w, t, s, p: [], c, header: () => '', originWid: w });
+        
+        this.ords.push({ w, t, s, a, u, c, header: () => '', originWid: w });
         if (refresh) this.afterOrderChange();
     }
 
@@ -629,11 +662,30 @@ export class EditableCom extends Com {
     }
 
     correctRename(name: string) {
-        return mylib.isStr(name) ? this.rename(this.correctName(name)) : name;
+        return mylib.isStr(name) ? this.rename(this.takeCorrectName(name)) : name;
     }
 
     correctName(name: string) {
-        return name.replace(this.col.getIncorrectNameReg(), '');
+        return name.replace(correctNotSlavicNameReg_i, '');
+    }
+
+    takeCorrectName(text: string) {
+        let name = '';
+
+        this.correctName(text.split('\n\n').find((block) => {
+            return block.split('\n').find((line) => {
+                const lowerLine = line.toLowerCase().replace(/^[^а-я]/g, '');
+                if (this.takeStyleByTitle(lowerLine)) return false;
+
+                if (/^[^a-zA-Z\d#]+$/.exec(lowerLine)) {
+                    name = line;
+                    return true;
+                }
+                return false;
+            });
+        }) || '');
+
+        return name.replace(/[^а-я!?]+$/i, '');
     }
 
     removeNativeNumber(cat: Cat, exec?: <Val>(v?: Val) => Val | nil) {

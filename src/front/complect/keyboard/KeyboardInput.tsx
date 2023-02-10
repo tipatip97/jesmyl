@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import propsOfClicker from "../clicker/propsOfClicker";
@@ -28,7 +28,19 @@ export default function KeyboardInput(props: KeyboardInputProps) {
   }, [props.value, input, isNative]);
 
   if (isNative) {
-    const { className, closeButton, multiline, onInput, onChange, onPaste, type, ...otherProps } = props;
+    const {
+      className,
+      multiline,
+      onInput,
+      onChange,
+      onPaste,
+      type,
+      closeButton,
+      setIsUnknownSymbols,
+      mapChar,
+      preferLanguage,
+      ...otherProps
+    } = props;
     const invoke = (callback: (value: string, prev: string | null) => void, text: string) => {
       const prev = type === 'number' ? nativeRef.ref?.value.replace(/\D+/g, '') || '0' : nativeRef.ref?.value;
       const value = type === 'number' ? text.replace(/\D+/g, '') || '0' : text;

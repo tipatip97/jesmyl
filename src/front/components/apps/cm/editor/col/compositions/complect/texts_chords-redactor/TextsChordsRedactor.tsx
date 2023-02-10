@@ -55,7 +55,7 @@ export default function TextsChordsRedactor({
                                     ? "&#9875;"
                                     : ""
                                   }${o.top.header?.()}${o.top.style?.isInherit
-                                    ? ` ${o.top.style.name}`
+                                    ? ` ${o.top.style.key}`
                                     : ""
                                   }`
                               ),

@@ -19,7 +19,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
 
   static getWithExtendableFields(source: IExportableOrderTop, target: IExportableOrderTop): Partial<IExportableOrderTop> {
     const result: Partial<IExportableOrderTop> = {
-      ...source, ...target
+      ...target, ...source
     };
     return result;
   }

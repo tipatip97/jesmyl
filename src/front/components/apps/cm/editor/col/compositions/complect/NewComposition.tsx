@@ -26,16 +26,16 @@ export default function NewComposition({ close }: { close: () => void }) {
 
   const com = useMemo(
     () =>
-      new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1, cols),
+      new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1, cols).create(),
     [cols]
   );
 
   const setTextAsValue = (value: string) => {
     setValue(value);
     if (isTakeName) {
-      const correctName = com.takeName(value);
-      setName(com.correctName(correctName));
-      setName(correctName);
+      const name = com.takeCorrectName(value);
+      com.rename(name);
+      setName(name);
     }
   };
 
@@ -45,8 +45,11 @@ export default function NewComposition({ close }: { close: () => void }) {
     close();
   };
 
-  const create = (phase?: NavPhase) => {
-    com.create(() => goToRoute(phase, false)) && cols?.addCom(com);
+  const publicate = (phase?: NavPhase) => {
+    if (cols?.addCom(com)) {
+      com.publicate(() => goToRoute(phase, false));
+      exec();
+    }
   };
 
   return (
@@ -66,7 +69,6 @@ export default function NewComposition({ close }: { close: () => void }) {
                 value={name}
                 onInput={() => setIsTakeName(false)}
                 onChange={(value) => {
-                  create();
                   setName(com.correctName(value));
                   exec(
                     com.rename(value, (correctName) =>
@@ -101,7 +103,7 @@ export default function NewComposition({ close }: { close: () => void }) {
           name="done-all-outline"
           className="parse-com-data-button pointer margin-big-gap"
           onClick={() => {
-            create();
+            publicate();
             com.parseBlocks(value);
             goToRoute();
           }}

@@ -18,15 +18,15 @@ export class EditableCols extends Cols {
         this.cats = cols.cats.map(cat => new EditableCat(cat, this.coms));
     }
 
-    addCat() {
-        // const cat = new Cat({ w: Date.now() }, this.coms ?? []);
-        // this.cats?.push(cat);
-        // return cat;
+    isComExists(com: EditableCom) {
+        return this.coms.includes(com);
     }
 
     addCom(com: EditableCom) {
+        if (this.isComExists(com)) return false;
         this.coms?.push(com);
         this.cats.forEach((cat) => cat.putComs());
+        return true;
     }
 }
 

@@ -51,18 +51,18 @@ export default function OrdersRedactorOrderTools({
               if ((ordi === 0 || ord.top.isTarget) && styleBlock.isInherit)
                 return null;
 
-              const newBlockn = mylib.stringTemplater(styleBlock.header, {
+              const newBlockn = mylib.stringTemplater(styleBlock.title, {
                 isModal: true,
                 isEdit: true,
                 translate: (...args: string[]) => args[ccom.langi || 0],
               });
               return {
                 type: "button",
-                title: styleBlock.name,
+                title: styleBlock.key,
                 value: newBlockn,
-                disabled: () => styleBlock.name === ord.type,
+                disabled: () => styleBlock.key === ord.type,
                 onClick: () => {
-                  exec(ord.setField("s", styleBlock.name, { newBlockn }, exec));
+                  exec(ord.setField("s", styleBlock.key, { newBlockn }, exec));
                 },
               } as never;
             }),
