@@ -1,5 +1,6 @@
 import { HTMLAttributes } from "react";
 import * as pack from "../../resource/eva-icons.json";
+import './Eva.scss';
 
 export type EvaIconName = keyof typeof pack;
 
