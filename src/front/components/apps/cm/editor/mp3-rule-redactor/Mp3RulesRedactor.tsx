@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { CmMp3Rule } from "../../../../../../back/apps/cm/CmBackend.model";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import { RootState } from "../../../../../shared/store";
 import { cmExer } from "../../Cm.store";
-import { Mp3Rule } from "../CmEditor.model";
 import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
 import Mp3RuleEditor from "./Mp3RuleEditor";
 
@@ -11,8 +11,8 @@ const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
 
 export default function Mp3RulesRedactor() {
     const mp3Rules = useSelector(mp3RulesSelector);
-    const [newRules, updateNewRules] = useState<Mp3Rule[]>([]);
-    const [redactRules, updateRedactRules] = useState<Mp3Rule[]>(mp3Rules || []);
+    const [newRules, updateNewRules] = useState<CmMp3Rule[]>([]);
+    const [redactRules, updateRedactRules] = useState<CmMp3Rule[]>(mp3Rules || []);
     const [isOpenNewRule, setIsOpenNewRule] = useState(false);
 
     return <PhaseCmEditorContainer

@@ -16,7 +16,7 @@ export default function SendButton<Value>({
   disabled?: boolean;
   onSend?: () => Promise<Value> | void | nil;
   onSuccess?: (val: Value) => void;
-  onFailure?: () => void;
+  onFailure?: (errorMessage: string) => void;
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -45,10 +45,10 @@ export default function SendButton<Value>({
               setIsLoading(false);
               onSuccess?.(val);
             })
-            .catch(() =>
+            .catch((errorMessage) =>
               setTimeout(() => {
                 setIsError(true);
-                onFailure?.();
+                onFailure?.(errorMessage);
               }, 1000)
             );
         }

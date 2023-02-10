@@ -26,7 +26,8 @@ export interface SokiServerEvent {
     service?: {
         requestId: number,
         key: string,
-        value: any,
+        value?: any,
+        errorMessage?: string
     },
 }
 

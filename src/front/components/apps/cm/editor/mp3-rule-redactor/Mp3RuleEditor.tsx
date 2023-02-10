@@ -1,9 +1,9 @@
 import { ReactNode, useState } from "react";
+import { CmMp3Rule } from "../../../../../../back/apps/cm/CmBackend.model";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import { Mp3Rule } from "../CmEditor.model";
 
-export default function Mp3RuleEditor(props: Partial<Mp3Rule> & { redact?: boolean, button?: ReactNode, onComplete?: (rule: Mp3Rule) => void }) {
+export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boolean, button?: ReactNode, onComplete?: (rule: CmMp3Rule) => void }) {
     const [url, setUrl] = useState(props.url || '');
     const [attr, setAttr] = useState(props.attr || '');
     const [query, setQuery] = useState(props.query || '');

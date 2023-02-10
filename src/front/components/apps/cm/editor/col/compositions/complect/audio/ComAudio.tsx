@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { CmMp3Rule } from "../../../../../../../../../back/apps/cm/CmBackend.model";
 import EvaButton from "../../../../../../../../complect/eva-icon/EvaButton";
+import EvaIcon from "../../../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import { MyLib } from "../../../../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../../../../Cm.store";
@@ -8,12 +10,12 @@ import { EditableCom } from "../../EditableCom";
 import { useEditableCcom } from "../../useEditableCcom";
 import ObserveUrlAudio from "./ObserveUrlAudio";
 
-export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom?: EditableCom }) {
+export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: string, topCom?: EditableCom, topMp3Rule?: CmMp3Rule }) {
   const cEditableCom = useEditableCcom();
   const ccom = topCom ?? cEditableCom;
 
   const [innerHTML, setInnerHTML] = useState(topHTML);
-  const [url, setUrl] = useState('');
+  const [mp3Rule, setMp3Rule] = useState<CmMp3Rule | und>(topMp3Rule);
   const { exec } = useExer(cmExer);
   const [hrefs, updateHrefs] = useState<(string | null)[]>([]);
   const [audio, setAudio] = useState(ccom?.audio || '');
@@ -27,18 +29,44 @@ export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom
   };
 
   useEffect(() => {
-    if (innerHTML) {
+    if (innerHTML && mp3Rule) {
       setOpenAddBlock(true);
       const div = document.createElement('div');
       div.innerHTML = innerHTML;
-      const attributeName = 'data-audio-file';
-      const { origin } = new URL(url);
-      updateHrefs(Array.from(div.querySelectorAll(`[${attributeName}]`)).map((e) => {
-        return `${origin}${e.getAttribute(attributeName)}`;
-      }));
+      const { attr, query, url } = mp3Rule;
+      updateHrefs(Array.from(div.querySelectorAll(query)).map((e) => {
+        let attrUrl: URL | und;
+        let serverUrl: URL | und;
+        const attribute = e.getAttribute(attr);
+        if (url)
+          try {
+            serverUrl = new URL(url);
+          } catch (e) { }
+
+        if (attribute)
+          try {
+            attrUrl = new URL(attribute);
+          } catch (e) {
+            try {
+              attrUrl = new URL(url);
+              const [path, ...search] = attribute.split('?');
+              attrUrl.pathname = path;
+              if (search.length) attrUrl.search = search.join('?');
+            } catch (e) { }
+          }
+
+        if (attrUrl && serverUrl) {
+          serverUrl.pathname = attrUrl.pathname;
+          serverUrl.search = attrUrl.search;
+
+          return serverUrl.toString();
+        }
+
+        return '';
+      }).filter(src => src));
       div.remove();
     }
-  }, [innerHTML, url]);
+  }, [innerHTML, mp3Rule]);
 
   if (!ccom) return null;
 
@@ -86,17 +114,24 @@ export default function ComAudio({ topHTML, topCom }: { topHTML?: string, topCom
         openAddBlock
           ? <>
             <h2>Добавить аудио</h2>
-            {!topHTML && <ObserveUrlAudio
-              onSuccess={(val) => setInnerHTML(val)}
-              onUrlChange={(url) => setUrl(url)}
-            />}
-            <EvaButton name="google" onClick={() => {
-              const text = ccom.texts?.[0];
-              if (text) {
-                const search = decodeURIComponent(text.replace(/\s+/g, '+'));
-                window.open(`https://google.com/search?q=${search}`);
-              }
-            }} />
+            {!topHTML && <>
+              <ObserveUrlAudio
+                onSuccess={({ html, rule }) => {
+                  setInnerHTML(html);
+                  setMp3Rule(rule);
+                }}
+              />
+              <div className="flex flex-gap pointer" onClick={() => {
+                const text = ccom.texts?.[0];
+                if (text) {
+                  const search = decodeURIComponent(text.replace(/\s+/g, '+'));
+                  window.open(`https://google.com/search?q=${search}`);
+                }
+              }} >
+                Найти песню в гугл
+                <EvaIcon name="google" />
+              </div>
+            </>}
             {hrefs.map((src) => {
               if (src && uniqs.indexOf(src) < 0) {
                 uniqs.push(src);

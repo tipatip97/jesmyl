@@ -134,7 +134,15 @@ new WebSocketServer({
                                 key: service.key,
                                 value,
                             }
-                        });
+                        }, client);
+                    }).catch((error) => {
+                        send({
+                            service: {
+                                requestId: service.requestId,
+                                key: service.key,
+                                errorMessage: error,
+                            }
+                        }, client);
                     });
             }
 

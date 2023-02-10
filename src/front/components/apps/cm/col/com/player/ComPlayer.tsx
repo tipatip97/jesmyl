@@ -4,12 +4,15 @@ import JesmylLogo from '../../../../../../complect/jesmyl-logo/JesmylLogo';
 import './ComPlayer.scss';
 import ComPlayerTrack from './ComPlayerTrack';
 
-export default function ComPlayer({ src }: { src: string }) {
+export default function ComPlayer({ src }: { src: string | string[] }) {
     const audioRef = useRef<HTMLAudioElement>(null);
     const player = audioRef.current;
     const [isError, setIsError] = useState(false);
     const [isPlay, setIsPlay] = useState(false);
     const [isShowLoader, setIsShowLoader] = useState(false);
+    const variants = [src].flat().map((src) => src.trim());
+    const [currentVariant, setCurrentVariant] = useState(0);
+    const currentSrc = variants[currentVariant];
 
     useEffect(() => {
         setIsPlay(false);
@@ -38,7 +41,7 @@ export default function ComPlayer({ src }: { src: string }) {
         {player
             ? <audio
                 ref={audioRef}
-                src={src.trim()}
+                src={currentSrc}
                 onError={() => setIsError(true)}
                 onPause={() => setIsPlay(false)}
                 onPlay={() => setIsPlay(true)}
@@ -49,7 +52,7 @@ export default function ComPlayer({ src }: { src: string }) {
                     }
                 }}
             />
-            : <audio ref={audioRef} src={src.trim()} />}
+            : <audio ref={audioRef} src={currentSrc} />}
         {<div className={`composition-player flex flex-gap ${!player ? 'center' : ''}`}>
             {player
                 ? isError
@@ -62,6 +65,17 @@ export default function ComPlayer({ src }: { src: string }) {
                         }} />
 
                         <ComPlayerTrack player={player} />
+                        {variants.length > 1 &&
+                            <div
+                                className="current-variant-badge flex center pointer"
+                                onClick={() => {
+                                    setCurrentVariant(currentVariant > variants.length - 2 ? 0 : currentVariant + 1);
+                                    setIsPlay(false);
+                                }}
+                            >
+                                {currentVariant + 1}
+                            </div>
+                        }
                     </>
                 : isShowLoader && <JesmylLogo className="loading-logo rotate" />}
         </div>}

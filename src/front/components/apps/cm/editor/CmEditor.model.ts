@@ -1,17 +1,11 @@
 import { ReactNode } from "react";
+import { CmMp3Rule } from "../../../../../back/apps/cm/CmBackend.model";
 import { CmAction } from "../Cm.model";
 
 
 export interface CmEditorStoraged {
     execs?: Exec[],
-    mp3Rules?: Mp3Rule[],
-}
-
-export interface Mp3Rule {
-    w: number,
-    url: string,
-    attr: string,
-    query: string,
+    mp3Rules?: CmMp3Rule[],
 }
 
 export type ExecVision = CmAction & Partial<Exec> & Partial<ExecVisionVisual>;

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { CmMp3Rule } from "../../../../../../../../back/apps/cm/CmBackend.model";
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import useExer from "../../../../../../../complect/exer/useExer";
 import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
@@ -21,6 +22,7 @@ export default function NewComposition({ close }: { close: () => void }) {
   const [name, setName] = useState("");
   const [isTakeName, setIsTakeName] = useState(true);
   const [innerHTML, setInnerHTML] = useState('');
+  const [mp3Rule, setMp3Rule] = useState<CmMp3Rule | und>();
 
   const com = useMemo(
     () =>
@@ -76,13 +78,16 @@ export default function NewComposition({ close }: { close: () => void }) {
             </div>
           </div>
         </EditContainerCorrectsInformer>
-        <ObserveUrlAudio onSuccess={(value) => {
-          const div = document.createElement('div');
-          div.innerHTML = value;
-          setInnerHTML(value);
-          const pre: HTMLPreElement | null = div.querySelector('pre#music_text');
-          if (pre) setTextAsValue(pre.innerHTML.replace(/<(\/ ?)?br( ?\/)?>/g, '\n'));
-        }} />
+        <ObserveUrlAudio
+          onSuccess={({ html, rule }) => {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            setInnerHTML(html);
+            setMp3Rule(rule);
+            const pre: HTMLPreElement | null = div.querySelector('pre#music_text');
+            if (pre) setTextAsValue(pre.innerHTML.replace(/<(\/ ?)?br( ?\/)?>/g, '\n'));
+          }}
+        />
         <KeyboardInput
           value={value}
           className="text-heap-textarea full-width"
@@ -91,7 +96,7 @@ export default function NewComposition({ close }: { close: () => void }) {
           placeholder="Начни писать или вставь текст для создания песни"
           onChange={setTextAsValue}
         />
-        {innerHTML && <ComAudio topCom={com} topHTML={innerHTML} />}
+        {innerHTML && <ComAudio topCom={com} topHTML={innerHTML} topMp3Rule={mp3Rule} />}
         <EvaButton
           name="done-all-outline"
           className="parse-com-data-button pointer margin-big-gap"

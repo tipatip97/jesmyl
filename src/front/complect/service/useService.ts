@@ -9,7 +9,8 @@ export default function useService() {
         return new Promise<ReturnValue>((resolve, reject) => {
             soki.watch("service")((res) => {
                 if (res && res.requestId === requestId && res.key === key) {
-                    resolve(res.value);
+                    if (res.errorMessage) reject(res.errorMessage);
+                    else resolve(res.value);
                 }
             }, (res) => res && res.requestId === requestId && reject());
         });

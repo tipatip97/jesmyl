@@ -20,6 +20,20 @@
             opacity: .5;
         }
 
+        .current-variant-badge {
+            --size: 1.8em;
+
+            border-radius: 50%;
+            width: var(--size);
+            max-width: var(--size);
+            min-width: var(--size);
+            height: var(--size);
+            min-height: var(--size);
+            max-height: var(--size);
+            background: var(--color--3);
+            color: var(--color--2);
+        }
+
         .loading-logo {
             animation: rotate-loading-logo 1s linear infinite;
         }

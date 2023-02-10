@@ -11,9 +11,10 @@ export default function ComPlayerTrack({ player }: { player: HTMLAudioElement })
 
     useEffect(() => {
         const onTimeUpdate = () => {
-            setTime(`${Math.floor(player.currentTime / 60).toFixed(0).padStart(2, '0')
-                }:${Math.floor(player.currentTime % 60).toFixed(0).padStart(2, '0')
-                }`);
+            setTime(
+                Math.floor(player.currentTime / 60).toFixed(0).padStart(2, '0') + ':' +
+                Math.floor(player.currentTime % 60).toFixed(0).padStart(2, '0')
+            );
             setProgressWidth(`${((player.currentTime / player.duration) * 100).toFixed(2)}%`);
         };
 

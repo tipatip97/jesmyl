@@ -197,6 +197,14 @@
     &:not(.multiline) {
         height: 1.6em;
 
+        .native-input {
+            white-space: nowrap;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
         .input-keyboard-flash-controlled-char-list {
             height: 1.3em;
             overflow-x: auto;

@@ -89,7 +89,7 @@ export default function TheComposition() {
         </>
       }
       content={<>
-        {comAudio && <ComPlayer src={comAudio} />}
+        {comAudio && <ComPlayer src={comAudio.split('\n')} />}
         <RollControled>
           <SwipeableContainer
             props={{ diapasonMoveVKf: 50, diapasonMoveHKf: 70 }}
