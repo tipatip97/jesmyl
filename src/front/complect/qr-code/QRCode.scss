@@ -15,9 +15,35 @@
         transition: opacity .5s;
         z-index: 10000000;
 
-        &.open-reader, &.open-slider {
+        &.open-reader,
+        &.open-slider {
             display: flex;
             opacity: .9;
+        }
+
+        .qr-container {
+            position: relative;
+
+            &.external {
+                .link-anchor {
+                    position: absolute;
+                    right: 0;
+                }
+            }
+
+            &.internal {
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: var(--color--7);
+                    opacity: .5;
+                }
+            }
         }
 
         .qr-code {

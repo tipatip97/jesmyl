@@ -1,44 +1,28 @@
-import { useDispatch, useSelector } from "react-redux";
-import { AppName, appNames } from "../../../../app/App.model";
+import { appNames } from "../../../../app/App.model";
 import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
-import { MyLib } from "../../../../complect/my-lib/MyLib";
-import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
 import useQRMaster from "../../../../complect/qr-code/useQRMaster";
+import useApps from "../../../../complect/useApps";
 import navConfigurers from "../../../../shared/navConfigurers";
-import { RootState } from "../../../../shared/store";
-import { soki } from "../../../../soki";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
-import { setCurrentApp } from "../../Index.store";
 import useAuth from "../../useAuth";
 import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
 import UserMore from "./UserMore";
 
-const appsSelector = (state: RootState) => state.index.apps;
-const currentAppSelector = (state: RootState) => state.index.currentApp;
 
-export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appName: AppName) => void }) {
-  const dispatch = useDispatch();
-  const apps = useSelector(appsSelector);
-  const currentAppName = useSelector(currentAppSelector);
+export default function IndexMain() {
   const { openFullscreenContent } = useFullscreenContent();
   const { goTo } = navConfigurers["index"]();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const { apps, currentApp, appConfigs, jumpToApp } = useApps();
 
-  const currentApp = apps.find((app) => app.name === currentAppName);
-  const appConfigs = {} as Record<AppName, ReturnType<typeof useNavConfigurer>>;
-
-  MyLib.entries(navConfigurers).forEach(([name, config]) => (appConfigs[name] = config()));
-
-  const filteredApps = apps.filter(
-    (app) => app !== currentApp && appNames.indexOf(app.name) > -1
-  );
+  const filteredApps = apps.filter((app) => app !== currentApp && appNames.indexOf(app.name) > -1);
   const { auth, isConnected } = useAuth();
-  const { readQR, qrDataStore } = useQRMaster();
+  const { readQR } = useQRMaster();
 
   const appList =
     filteredApps.length === 0
@@ -48,22 +32,13 @@ export default function IndexMain({ onAppNameChange }: { onAppNameChange: (appNa
           <div
             key={`thematic-cat-${app.name}`}
             className="item flex"
-            onClick={() => {
-              onAppNameChange(app.name);
-              dispatch(setCurrentApp(app.name));
-              soki.onAppChange(app.name);
-              const rootPhase = appConfigs[app.name].nav.rootPhase;
-              if (rootPhase) {
-                appConfigs[app.name].navigate([rootPhase]);
-                appConfigs.index.navigate(null);
-              }
-            }}
+            onClick={() => jumpToApp(app.name)}
           >
             <EvaIcon
               name={appConfigs[app.name].nav.logo || "cube-outline"}
               className="margin-big-gap"
             />
-            <div attr-mark-badge={qrDataStore?.[app.name] ? '0' : null} className="app-title-label">{app.title}</div>
+            <div className="app-title-label">{app.title}</div>
           </div>
         );
       });

@@ -6,7 +6,9 @@ import EvaIcon from "../complect/eva-icon/EvaIcon";
 import { FULLSCREEN__CONTENT } from "../complect/fullscreen-content/useFullscreenContent";
 import { KEYBOARD_FLASH } from "../complect/keyboard/KeyboardInput";
 import Modal from "../complect/modal/Modal";
+import { crossApplicationLinkCoder, jesmylHostName } from "../complect/qr-code/QRCodeMaster";
 import listenThemeChanges from "../complect/theme-changer";
+import useApps from "../complect/useApps";
 import useFullScreen from "../complect/useFullscreen";
 import { IndexAppName } from "../components/index/Index.model";
 import navConfigurers from "../shared/navConfigurers";
@@ -24,6 +26,7 @@ function App() {
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const { goBack, registerBackAction } = navConfigurers[app]();
+  const { apps, jumpToApp } = useApps();
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -39,12 +42,26 @@ function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [goBack]);
 
+  useEffect(() => {
+    if (window.location.href.startsWith(jesmylHostName)) {
+      const decodeds = crossApplicationLinkCoder.decode(window.location.href);
+      if (decodeds) {
+        const { appName, key, value } = decodeds;
+        if (appName && key && value !== undefined) {
+          window.history.pushState({}, "", jesmylHostName);
+
+          if (apps.some(({ name }) => name === appName)) {
+            jumpToApp(appName, key as never, value);
+          }
+        }
+      }
+    }
+  }, []);
+
   return (
     <div className={`above-container ${keyboardOpen ? "keyboard-open" : ""}`}>
       <div
-        className={`application-container app_${app || "index"}${
-          isFullscreen ? " fullscreen-mode" : ""
-        }`}
+        className={`application-container app_${app || "index"}${isFullscreen ? " fullscreen-mode" : ""}`}
       >
         <EvaIcon
           name="collapse-outline"

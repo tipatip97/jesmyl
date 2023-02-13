@@ -155,7 +155,7 @@ export default function useMigratableComTools() {
                 tool,
                 title: "Поделиться по QR",
                 icon: "qr-code",
-                onClick: () => qrCodeMaster.shareData('cm', 'com', ccom.toDict()),
+                onClick: () => qrCodeMaster.shareData('cm', 'ccomw', ccom.wid, true),
               }
             );
         }

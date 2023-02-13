@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import EvaIcon from "../eva-icon/EvaIcon";
 import QRCode from "./QRCode";
 import { qrCodeMaster, qrCodeMasterContainerId } from "./QRCodeMaster";
 import { QRMasterControllerData } from "./QRCodeMaster.model";
@@ -29,7 +30,14 @@ export default function QRCodeMasterApplication({ controller }: { controller: (c
                     })
                     break;
                 case 'showQRs': {
-                    const nodes = event.value.map((qr) => <QRCode text={qr} />) || [];
+                    const nodes = event.isExt
+                        ? event.value.map((qr) =>
+                            <div className="qr-container external">
+                                <QRCode text={qr} />
+                                <a className="link-anchor block" target="_blank" rel="noreferrer" href={qr}><EvaIcon name="link" /></a>
+                            </div>
+                        )
+                        : event.value.map((qr) => <div className="qr-container internal"><QRCode text={qr} /></div>)
                     setQrNodes(nodes);
                     setIsOpenQRSlider(true);
 

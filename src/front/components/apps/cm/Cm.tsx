@@ -1,10 +1,8 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import useQRMaster from "../../../complect/qr-code/useQRMaster";
 import { cmStorage } from "../../../shared/jstorages";
 import useCmNav, { translationNavPoint } from "./base/useCmNav";
 import useSelectedComs from "./base/useSelectedComs";
-import { CmQRData } from "./Cm.model";
 import "./Cm.scss";
 import { updateCmChordTracks, updateEditorExecList, updateMeetingList } from "./Cm.store";
 import { useCols } from "./cols/useCols";
@@ -13,12 +11,11 @@ import useTranslation from "./translation/useTranslation";
 
 export default function CmApplication({ content }: { content: ReactNode }) {
   const dispatch = useDispatch();
-  const [cols, setCols] = useCols();
+  const [, setCols] = useCols();
   const [, setEditableCols] = useEditableCols();
   const { watchTranslation } = useTranslation();
   const { jumpTo, nav } = useCmNav();
-  const { selectedComws, updateSelectedComws } = useSelectedComs();
-  const { qrData } = useQRMaster<CmQRData>('cm');
+  const { selectedComws } = useSelectedComs();
 
   cmStorage.listen("cols", "cols-update", (val) => {
     setCols(val);
@@ -31,17 +28,6 @@ export default function CmApplication({ content }: { content: ReactNode }) {
     .it('execs', updateEditorExecList);
 
   useEffect(() => nav.setData({ selectedComws }), [nav, selectedComws]);
-
-  useEffect(() => {
-    if (qrData) {
-      if (qrData.comws) updateSelectedComws(qrData.comws);
-      if (qrData.com) {
-        const newCols = cols?.appendCom(qrData.com);
-        if (newCols) cmStorage.set('cols', newCols);
-      }
-    }
-  }, [qrData?.com, qrData?.comws]);
-
 
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {

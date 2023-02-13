@@ -7,7 +7,7 @@ import {
 } from "../../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
 import CmApplication from "../Cm";
-import { CmNavData, CmQRData, CmStorage } from "../Cm.model";
+import { CmNavData, CmStorage } from "../Cm.model";
 import { cmExer } from "../Cm.store";
 import TheCat from "../col/cat/TheCat";
 import TheComposition from "../col/com/TheComposition";
@@ -44,13 +44,18 @@ const navigation: NavigationConfig<
   rootPhase: "all",
   logo: "book-open",
   exer: cmExer,
+  jumpByLink: (key, value, alt) =>
+    key === 'selectedComws'
+      ? ['lists', 'selected']
+      : key === 'ccomw'
+        ? { route: ['all', 'com'], data: { ccomw: value as number } }
+        : alt.RootPhase,
   routes: [
     {
       icon: "list",
       phase: ["all"],
       title: "Все",
       node: <TheCat all />,
-      markBadge: (qrData?: CmQRData) => !!qrData?.com,
       next: [comNav],
     },
     {
@@ -58,7 +63,6 @@ const navigation: NavigationConfig<
       phase: ["lists"],
       title: "Списки",
       node: <Lists />,
-      markBadge: (qrData?: CmQRData) => !!qrData?.comws,
       next: [
         {
           phase: ["marks"],
@@ -73,7 +77,7 @@ const navigation: NavigationConfig<
         {
           phase: ["selected"],
           node: <SelectedComs />,
-          slideBackOn: (data) => !data?.selectedComws.length,
+          slideBackOn: (navData) => !navData.selectedComws?.length,
           next: [...comNext],
         },
         {
@@ -106,3 +110,4 @@ const useCmNavConfigurer = () =>
     navigation,
   );
 export { useCmNavConfigurer };
+

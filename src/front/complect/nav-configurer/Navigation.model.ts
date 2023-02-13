@@ -20,6 +20,16 @@ export type FooterItem<Phase> = null | {
 export type NavigationStorage<T> = T & ExerStorage & {
 }
 
+export interface JumpByLinkAlt {
+    Reject: ['REJECT'],
+    RootPhase: ['ROOT_PHASE'],
+}
+
+export type JumpByLink<
+    NavData,
+    DataName extends keyof NavData = keyof NavData
+> = (key: DataName, value: NavData[DataName] | und, alt: JumpByLinkAlt) => NavRouteVariated<NavData> | JumpByLinkAlt[keyof JumpByLinkAlt];
+
 export interface INavigationConfig<Storage extends ExerStorage, NavData> {
     root: (content: ReactNode) => JSX.Element,
     // переход в данную фазу будет при навигации назад, и пустом роуте
@@ -27,6 +37,7 @@ export interface INavigationConfig<Storage extends ExerStorage, NavData> {
     routes: INavigationRouteRootItem<NavData>[],
     exer?: Exer<Storage>,
     logo?: EvaIconName,
+    jumpByLink?: JumpByLink<NavData>,
 }
 
 export type INavigationRouteItem<NavData> = INavigationRouteChildItem<NavData> | INavigationRouteRootItem<NavData>;
@@ -43,18 +54,28 @@ export interface INavigationRouteChildItem<NavData, Data extends Record<string, 
     data?: Data,
     accessRule?: string,
     next?: INavigationRouteChildItem<NavData>[],
-    slideBackOn?: (data?: NavData) => boolean,
+    slideBackOn?: (data: Partial<NavData>) => boolean,
 }
 
 export interface INavigationRouteRootItem<NavData> extends INavigationRouteChildItem<NavData> {
     title: string,
     icon: EvaIconName,
-    markBadge?: (qrData?: never) => number | boolean | nil,
+    markBadge?: (storeData?: NavData) => number | boolean | nil,
 }
 
 export type NavPhasePoint = [string];
 export type NavPhase = string;
 export type NavRoute = NavPhase[];
+
+export type NavPlaceWithData<NavData> = { place: NavPhase | NavRoute, data: Partial<NavData> };
+export type NavPlaceVariated<NavData> = NavPlaceWithData<NavData> | NavPhase | NavRoute;
+
+export type NavPhasePointWithData<NavData> = { phase: NavPhasePoint, data: Partial<NavData> };
+export type NavPhasePointVariated<NavData> = NavPhasePointWithData<NavData> | NavPhasePoint | null;
+
+export type NavRouteWithData<NavData> = { route: NavRoute, data: Partial<NavData> };
+export type NavRouteVariated<NavData> = NavRouteWithData<NavData> | NavRoute | null;
+
 export type FreeNavRoute = NavRoute | null;
 
 export type NavRouting = Partial<Record<
@@ -62,6 +83,7 @@ export type NavRouting = Partial<Record<
     {
         routes: NavRoute[],
         current: NavPhase | null,
+        data: Record<string, unknown>,
     }
 >>;
 

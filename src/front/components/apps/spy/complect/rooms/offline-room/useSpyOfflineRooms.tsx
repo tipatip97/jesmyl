@@ -16,7 +16,7 @@ const offlineRoomsSelector = (state: RootState) => state.spy.offlineRooms;
 const offlineGameSelector = (state: RootState) => state.spy.offlineGame;
 const roomwSelector = (state: RootState) => state.spy.roomw;
 const passportSelector = (state: RootState) => state.spy.passport;
-const roomDataName = 'offlineRoom';
+const roomKey = 'offlineRoom';
 
 export default function useSpyOfflineRooms() {
   const dispatch = useDispatch();
@@ -75,7 +75,7 @@ export default function useSpyOfflineRooms() {
       goTo('offlineRoom');
     },
     reshareGameData: () => {
-      qrCodeMaster.shareData('spy', roomDataName, offlineGame?.reshareData);
+      qrCodeMaster.shareData('spy', roomKey, offlineGame?.reshareData);
     },
     shareGameData: () => {
       if (!currentOfflineRoom) return;
@@ -90,7 +90,7 @@ export default function useSpyOfflineRooms() {
         .join('');
       const location = currentOfflineRoom.roles?.[newPlayers[0] || ''] || '';
 
-      qrCodeMaster.shareData('spy', roomDataName, [location, newSpies.length, currentOfflineRoom.iterations, md5s]);
+      qrCodeMaster.shareData('spy', roomKey, [location, newSpies.length, currentOfflineRoom.iterations, md5s]);
     },
     readMyRole: () => {
       readQR((data) => {
@@ -98,7 +98,7 @@ export default function useSpyOfflineRooms() {
           modalService.alert('Не авторизован');
           return;
         }
-        if (data.appName === 'spy' && data.dataName === roomDataName) {
+        if (data.appName === 'spy' && data.key === roomKey) {
           const [location, spiesCount, iterations, memberStrList] = data.value as OfflineGameShare || [];
           const members = memberStrList.match(/\.|.{0,32}/g);
           if (!members) return;
@@ -169,7 +169,7 @@ export default function useSpyOfflineRooms() {
       };
 
       readQR((data) => {
-        if (data.appName === 'spy' && data.dataName === 'passport') {
+        if (data.appName === 'spy' && data.key === 'passport') {
           addMember({
             login: data.value[0],
             name: data.value[1],

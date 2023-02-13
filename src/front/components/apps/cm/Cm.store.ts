@@ -13,8 +13,6 @@ export const cmExer = new Exer('cm', cmStorage);
 
 const initialState: CmState = {
   chordVisibleVariant: cmStorage.getOr('chordVisibleVariant', 0),
-  ccomw: cmStorage.get('ccomw'),
-  ccatw: cmStorage.getOr('ccatw', 0),
   laterComwList: cmStorage.getOr('laterComwList', []),
   rollMode: null,
   isCmFullscreen: false,
@@ -51,15 +49,6 @@ export const slice = createSlice({
   name: "cm",
   initialState,
   reducers: {
-    selectCcol: (state, action: PayloadAction<{ fieldn: 'catw' | 'comw', val?: number }>) => {
-      if (action.payload.val == null) return;
-      if (action.payload.fieldn === 'catw') {
-        state.ccatw = action.payload.val;
-      }
-      if (action.payload.fieldn === 'comw') {
-        state.ccomw = action.payload.val;
-      }
-    },
     setMarkList: (state, action: PayloadAction<number[]>) => {
       state.marks = action.payload;
     },
@@ -152,7 +141,6 @@ export const slice = createSlice({
 
 export const {
   riseUpColsUpdates,
-  selectCcol,
   switchCmFullscreen,
   switchIsMiniAnchor,
   setPlayerHideMode,

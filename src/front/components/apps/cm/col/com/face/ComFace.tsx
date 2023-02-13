@@ -15,7 +15,7 @@ export default function ComFace(props: ComFaceProps) {
     selectable,
     rejectScrollToView,
   } = props;
-  const [ccom, setCcom] = useCcom();
+  const [ccom] = useCcom();
   const { jumpTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
     useAbsoluteFloatPopup();
@@ -28,10 +28,7 @@ export default function ComFace(props: ComFaceProps) {
           } ${groupClass || ""} wid_${com.wid}`}
         onClick={
           importantOnClick ||
-          (() => {
-            setCcom(com);
-            jumpTo(comNavPhasePoint);
-          })
+          (() => jumpTo({ phase: comNavPhasePoint, data: { ccomw: com.wid } }))
         }
         ref={
           rejectScrollToView || ccom?.wid !== com.wid

@@ -14,6 +14,7 @@ export type QRMasterControllerData = ({
 } | {
     type: 'showQRs',
     value: string[],
+    isExt?: boolean,
 } | {
     type: 'partsLoaded',
     value: number,
@@ -27,10 +28,7 @@ export type QRMasterControllerData = ({
 
 export interface QRCodeReaderData<Data, Key extends keyof Data> {
     appName: AppName,
-    dataName: Key,
+    key: Key,
     value: Data[Key],
+    isExternalLink?: boolean,
 }
-
-export type QRCodeDataAppStoreConfigurer = (dataName: string, data: never) => void;
-export type QRCodeDataAppStore<Value = unknown> = Record<string, Value>;
-export type QRCodeDataStore<Value = unknown> = Partial<Record<AppName, QRCodeDataAppStore<Value>>>;

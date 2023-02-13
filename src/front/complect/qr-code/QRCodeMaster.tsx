@@ -1,6 +1,8 @@
 import { Html5Qrcode } from "html5-qrcode";
 import { renderApplication } from "../../..";
+import { SokiAppName } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
+import LinkCoder from "../link-coder/LinkCoder";
 import mylib from "../my-lib/MyLib";
 import './QRCode.scss';
 import { QRCodeReaderData, QRMasterConnectData, QRMasterControllerData } from "./QRCodeMaster.model";
@@ -13,18 +15,47 @@ let controller: (data: QRMasterControllerData) => TimeOut = () => undefined;
 
 setTimeout(() => renderApplication(<QRCodeMasterApplication controller={(top: (data: QRMasterControllerData) => TimeOut) => controller = top} />, document.querySelector('#qr-code-application-container')));
 
+export const jesmylHostName = new URL(window.location.href).origin;
+
+interface Attrs {
+    appName: SokiAppName,
+    key: string,
+    value: any,
+}
+
+export const crossApplicationLinkCoder = new LinkCoder<Attrs>(jesmylHostName, 'value', {
+    appName: 'a',
+    key: 'k',
+    value: 'v',
+});
+
 class QrCodeMaster {
     private qr?: Html5Qrcode;
 
-    shareData(appName: AppName, dataName: string, data: unknown) {
+    shareData(appName: AppName, key: string, value: unknown, isExternalDataType?: boolean) {
         try {
-            const dataString = JSON.stringify(data);
-            const len = dataString.length;
+            if (isExternalDataType) {
+                var link = crossApplicationLinkCoder.encode({
+                    appName,
+                    key,
+                    value
+                });
+
+                controller({
+                    ok: true,
+                    type: 'showQRs',
+                    value: [link],
+                    isExt: true,
+                });
+                return;
+            }
+            const valueStr = JSON.stringify(value);
+            const len = valueStr.length;
             const connectionNumber = Date.now();
-            const partMapper = <Data,>(data: Data, parti: number, partCount: number): QRMasterConnectData<Data> => [qrCodePassphraseSign, appName, dataName, connectionNumber, partCount, parti, data];
+            const partMapper = <Data,>(data: Data, parti: number, partCount: number): QRMasterConnectData<Data> => [qrCodePassphraseSign, appName, key, connectionNumber, partCount, parti, data];
 
             if (len > 150) {
-                const parts: QRMasterConnectData<string>[] = dataString
+                const parts: QRMasterConnectData<string>[] = valueStr
                     .match(/(.{0,100})/g)
                     ?.filter((part) => part)
                     .map((part, parti, parta) => partMapper(part, parti, parta.length)) || [];
@@ -49,7 +80,7 @@ class QrCodeMaster {
             } else controller({
                 ok: true,
                 type: 'showQRs',
-                value: [JSON.stringify(partMapper<unknown>(data, 0, 1))],
+                value: [JSON.stringify(partMapper<unknown>(value, 0, 1))],
             });
         } catch (e) {
             controller({
@@ -70,7 +101,7 @@ class QrCodeMaster {
             const vmin = Math.min(window.innerHeight, window.innerWidth);
             const size = vmin * .5;
             let currAppName: AppName;
-            let currDataName: string;
+            let currKey: string;
             let currCount: number;
             let currConnectionNumber: number;
             let dataParts: string[] = [];
@@ -85,7 +116,22 @@ class QrCodeMaster {
                 },
                 (decodedText) => {
                     try {
-                        const [passphrase, appName, dataName, connectionNumber, count, part, data]: QRMasterConnectData<unknown> = JSON.parse(decodedText);
+                        if (decodedText.startsWith(jesmylHostName)) {
+                            const decoded = crossApplicationLinkCoder.decode(decodedText);
+                            if (decoded) {
+                                const { appName, value, key } = decoded;
+
+                                res({
+                                    appName,
+                                    key,
+                                    value,
+                                    isExternalLink: true,
+                                } as QRCodeReaderData<Data, Key>);
+                            }
+                            this.closeReader();
+                            return;
+                        }
+                        const [passphrase, appName, key, connectionNumber, count, part, value]: QRMasterConnectData<unknown> = JSON.parse(decodedText);
                         if (qrCodePassphraseSign !== passphrase) return;
 
                         if (partsToLoad === 0) {
@@ -100,24 +146,24 @@ class QrCodeMaster {
                         if (count === 1) {
                             res({
                                 appName,
-                                dataName,
-                                value: data,
+                                key,
+                                value,
                             } as QRCodeReaderData<Data, Key>);
                             this.closeReader();
                         } else {
-                            if (currAppName !== appName || currDataName !== dataName || currCount !== count || connectionNumber !== currConnectionNumber) {
+                            if (currAppName !== appName || currKey !== key || currCount !== count || connectionNumber !== currConnectionNumber) {
                                 currAppName = appName;
                                 currConnectionNumber = connectionNumber;
-                                currDataName = dataName;
+                                currKey = key;
                                 currCount = count;
                                 dataParts = [];
                                 partsToLoad = 0;
                             }
 
-                            if (mylib.isStr(data)) {
+                            if (mylib.isStr(value)) {
                                 if (dataParts[part] === undefined) {
                                     partsLoaded++;
-                                    dataParts[part] = data;
+                                    dataParts[part] = value;
 
                                     controller({
                                         ok: true,
@@ -130,7 +176,7 @@ class QrCodeMaster {
                             if (dataParts.filter(data => data).length >= count) {
                                 res({
                                     appName,
-                                    dataName,
+                                    key,
                                     value: JSON.parse(dataParts.join(''))
                                 } as QRCodeReaderData<Data, Key>);
                                 this.closeReader();

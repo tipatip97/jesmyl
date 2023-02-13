@@ -2,9 +2,8 @@ import EvaIcon from "../complect/eva-icon/EvaIcon";
 import { ExerStorage } from "../complect/exer/Exer.model";
 import {
   INavigationConfig,
-  NavPhasePoint,
+  NavPhasePoint
 } from "../complect/nav-configurer/Navigation.model";
-import useQRMaster from "../complect/qr-code/useQRMaster";
 import useIndexNav from "../components/index/complect/useIndexNav";
 import navConfigurers from "../shared/navConfigurers";
 import { AppName } from "./App.model";
@@ -16,7 +15,6 @@ export default function AppFooter({ app }: { app: AppName }) {
     navigate: indexNavigate,
     nav: indexNav,
   } = useIndexNav();
-  const { qrData } = useQRMaster(app);
 
   const [indexPhase] = indexRoute || [];
 
@@ -27,7 +25,7 @@ export default function AppFooter({ app }: { app: AppName }) {
   ) => {
     return nav.routes.map((props) => {
       if (!props) return null;
-      const { phase, title, icon, accessRule, markBadge } = props;
+      const { phase, title, icon, accessRule } = props;
       if (
         accessRule != null &&
         nav.exer &&
@@ -35,7 +33,6 @@ export default function AppFooter({ app }: { app: AppName }) {
       )
         return null;
       const isActive = setIsActive(phase);
-      const badge = markBadge?.(qrData as never);
 
       return (
         <div
@@ -45,7 +42,6 @@ export default function AppFooter({ app }: { app: AppName }) {
         >
           <div
             className="icon-container"
-            attr-mark-badge={badge === true || badge === 0 ? 0 : badge || null}
           >
             <EvaIcon name={`${icon}${isActive ? "" : "-outline"}` as never} />
           </div>

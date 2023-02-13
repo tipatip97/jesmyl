@@ -5,7 +5,6 @@ import {
   UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
-import { soki } from "../../../soki";
 import Index from "../Index";
 import { IndexStorage } from "../Index.model";
 import IndexLogin from "../parts/login/IndexLogin";
@@ -27,7 +26,7 @@ const navigate = new NavigationConfig<
       icon: "arrow-circle-right",
       node: (
         <Suspense fallback={<></>}>
-          <Main onAppNameChange={(appName) => soki.setAppName(appName)} />
+          <Main />
         </Suspense>
       ),
       next: [

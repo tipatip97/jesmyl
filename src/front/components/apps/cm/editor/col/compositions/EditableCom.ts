@@ -8,7 +8,7 @@ import { Com } from "../../../col/com/Com";
 import { IExportableCom } from "../../../col/com/Com.model";
 import { IExportableOrderTop, INewExportableOrder } from "../../../col/com/order/Order.model";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
-import { checkIsChordLineReg, correctNotSlavicNameReg_i, ruDifferentLowerLettersStr, slavicLowerLettersStr, textedChord, uaDifferentLowerLettersStr } from "../../Editor.complect";
+import { checkIsChordLineReg, correctNotSlavicNameReg_i, ruDifferentLowerLettersStr, slavicLowerLettersStr, textedChordReg, uaDifferentLowerLettersStr } from "../../Editor.complect";
 import { EditableCol } from "../EditableCol";
 import { EditableCols } from "../EditableCols";
 import { EditableOrder } from "./complect/orders/EditableOrder";
@@ -727,7 +727,7 @@ export class EditableCom extends Com {
                 .trim()
                 .split(/([\n\s ]+)/)
                 .map((chord, chordi) => {
-                    if (!(chordi % 2) && !textedChord.exec(chord)) {
+                    if (!(chordi % 2) && !textedChordReg.exec(chord)) {
                         errors.push(chord);
                         return `[${chord}]`;
                     }

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
-import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
+import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, JumpByLink, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
 
 export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData = any> implements INavigationConfig<Storage, NavData> {
     root: (content: ReactNode) => JSX.Element;
@@ -10,22 +10,24 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
     exer?: Exer<Storage>;
     logo?: EvaIconName;
     endPoints: [NavPhasePoint, NavPhase[]][];
-    private _data?: NavData;
+    jumpByLink?: JumpByLink<NavData>;
+    private _data?: Partial<NavData>;
     private onGeneralFooterButtonClicks: Record<NavPhase, Record<string, () => void>> = {};
 
-    constructor({ routes, root, rootPhase, exer, logo }: INavigationConfig<Storage, NavData>) {
+    constructor({ routes, root, rootPhase, exer, logo, jumpByLink }: INavigationConfig<Storage, NavData>) {
         this.root = root;
         this.rootPhase = rootPhase;
         this.routes = routes;
         this.checkRoutes(routes);
         this.exer = exer;
         this.logo = logo;
+        this.jumpByLink = jumpByLink;
         this.endPoints = this.fillEndPoints();
     }
 
     get data() { return this._data; }
     private set data(data) { this._data = data; }
-    setData(data: NavData) { this.data = data; }
+    setData(data: Partial<NavData>) { this.data = { ...this.data, ...data }; }
 
     invokeGeneralFooterButtonClickListeners(listenLine: NavPhase) {
         Object.values(this.onGeneralFooterButtonClicks[listenLine] || {}).forEach(cb => cb());
@@ -222,7 +224,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
             do {
                 line = line.slice(0, -1);
                 last = line[line.length - 1];
-            } while (last && (typeof last.node === 'function' || last.slideBackOn?.(this.data)));
+            } while (last && (typeof last.node === 'function' || last.slideBackOn?.(this.data ?? {})));
         }
 
         return line.map(({ phase: [phase] }) => phase);
