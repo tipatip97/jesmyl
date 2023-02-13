@@ -1,7 +1,9 @@
 import { Executer } from '../back/complect/executer/Executer';
+import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
 import { SMyLib } from '../back/complect/soki/complect/SMyLib';
 import { SokiAppName, SokiClientEvent, SokiEventName, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
+import { JStorage } from './complect/JStorage';
 import modalService from './complect/modal/Modal.service';
 import mylib, { MyLib } from './complect/my-lib/MyLib';
 import { appStorage, indexStorage } from './shared/jstorages';
@@ -144,8 +146,25 @@ export class SokiTrip {
         });
         this.watch('pull')((pull) => {
             if (pull) {
-                const { contents, lastUpdate, indexLastUpdate, indexContents } = pull;
+                const { contents, lastUpdate, indexLastUpdate, indexContents, isNeedRefresh } = pull;
                 const appStore = appStorage[pull.appName];
+
+                if (isNeedRefresh) {
+                    const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown>) => {
+                        if (!pullContents.length) return;
+
+                        const fixes: string[] = [];
+                        const contents: Record<string, unknown> = {};
+                        pullContents.forEach(({ key, value }) => {
+                            contents[key] = value;
+                            fixes.push(key);
+                        });
+                        store.refreshAreas(fixes as never, contents);
+                    };
+
+                    update(contents, appStore);
+                    update(indexContents, appStorage.index);
+                }
 
                 contents.forEach(({ key, value }) => appStore.set(key, value));
                 indexContents.forEach(({ key, value }) => indexStorage.set(key as never, value as never));

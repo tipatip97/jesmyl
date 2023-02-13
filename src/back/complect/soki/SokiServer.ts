@@ -48,6 +48,18 @@ new WebSocketServer({
 })
     .on('connection', (client: WebSocket) => {
         connect(client);
+        filer.setWatcher((appName, name, data) => {
+            send({
+                pull: {
+                    appName,
+                    contents: appName === 'index' ? [] : [{ key: name, value: data }],
+                    indexContents: appName !== 'index' ? [] : [{ key: name, value: data }],
+                    lastUpdate: 0,
+                    indexLastUpdate: 0,
+                    isNeedRefresh: true,
+                }
+            });
+        });
 
         client.on('message', async (data: WebSocket.RawData) => {
             const eventData: SokiClientEvent = JSON.parse('' + data);

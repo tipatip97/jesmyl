@@ -13,6 +13,7 @@ export const indexExer = new Exer('index', indexStorage);
 const initialState: IndexState = {
   routing: indexStorage.getOr("routing", null),
   currentApp: indexStorage.getOr("currentApp", "cm"),
+  appVersion: indexStorage.get("appVersion"),
   auth: indexStorage.get('auth'),
   isUseNativeKeyboard: indexStorage.get('isUseNativeKeyboard'),
   apps: indexStorage.getOr('apps', []),
@@ -31,6 +32,10 @@ export const slice = createSlice({
     setAuthData: (state, action: PayloadAction<Auth | null>) => {
       state.auth = action.payload;
       indexStorage.set('auth', action.payload);
+    },
+    setAppVersion: (state, action: PayloadAction<number>) => {
+      state.appVersion = action.payload;
+      indexStorage.set('appVersion', action.payload);
     },
     setApps: (state, action: PayloadAction<IndexApplication[]>) => {
       state.apps = action.payload;
@@ -64,6 +69,7 @@ export const {
   setAuthData,
   riseUpModalUpdates,
   switchIsUseNativeKeyboard,
+  setAppVersion,
 } = slice.actions;
 export default slice.actions;
 

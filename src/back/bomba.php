@@ -12,7 +12,12 @@ else {
   $files = [];
   $roots = 0755;
   $isFront = $_GET['isFront'];
+  $versionNum = $_GET['versionNum'];
   $steps = [];
+
+  if ($versionNum) {
+    file_put_contents('./version.json', json_encode(['num' => intval($versionNum)], JSON_UNESCAPED_UNICODE));
+  }
 
   foreach ($_FILES as $file) {
     $zipPath = './' . basename($file['name']);

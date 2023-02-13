@@ -1,14 +1,14 @@
 import fs from 'fs';
+import admin from '../../apps/admin/config';
+import cm from '../../apps/cm/config';
+import index from '../../apps/index/config';
+import leader from '../../apps/leader/config';
+import spy from '../../apps/spy/config';
+import { Executer } from '../executer/Executer';
 import { ExecutionRule } from '../executer/Executer.model';
 import smylib, { SMyLib } from '../soki/complect/SMyLib';
 import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName } from '../soki/soki.model';
-import cm from '../../apps/cm/config';
-import index from '../../apps/index/config';
-import spy from '../../apps/spy/config';
-import leader from '../../apps/leader/config';
-import admin from '../../apps/admin/config';
-import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, SimpleKeyValue } from './Filer.model';
-import { Executer } from '../executer/Executer';
+import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, FilerWatcher, SimpleKeyValue } from './Filer.model';
 
 const getByConfigLabel = '[GET BY CONFIG]';
 
@@ -67,6 +67,11 @@ const actionsRequirement: FilerAppRequirement = {
 
 export class Filer {
   contents = {} as FilerContents;
+  private watcher: FilerWatcher = () => { };
+
+  setWatcher(watcher: FilerWatcher) {
+    this.watcher = watcher;
+  }
 
   fileName(appName: SokiAppName, name: string, ext = 'json') {
     return `${appName}/${name}${ext ? `.${ext}` : ''}`;
@@ -103,6 +108,7 @@ export class Filer {
               level = 0,
               prepare = (data: unknown) => data,
               map = () => null,
+              watch = null
             } = smylib.isStr(requ) ? { name: requ } : requ;
 
             if (!smylib.isStr(requ) && requ.get) {
@@ -163,7 +169,7 @@ export class Filer {
             };
 
             waits++;
-            fs.readFile(path, 'utf-8', (err, stringData) => {
+            fs.readFile(path, 'utf-8', async (err, stringData) => {
               oks++;
               if (!err) {
                 try {
@@ -180,7 +186,34 @@ export class Filer {
                   };
                 } catch (e) { }
                 cb?.();
-              } else createExpected();
+              } else {
+                if (watch) {
+                  const [watchPath, cb] = watch;
+                  const read = () => {
+                    fs.readFile(watchPath, 'utf-8', (err, fileContent) => {
+                      if (err) return;
+                      try {
+                        const data = cb(fileContent);
+
+                        content[name] = {
+                          data,
+                          string: fileContent,
+                          mtime: new Date(fs.statSync(watchPath).mtime).getTime(),
+                          level,
+                          prepare,
+                          mapped: map(data),
+                        };
+
+                        this.watcher(appName, name, data);
+                      } catch (e) { }
+                    });
+                  };
+
+                  fs.watchFile(watchPath, () => read());
+                  read();
+
+                } else createExpected();
+              }
 
               if (waits === oks) loadRes();
             });

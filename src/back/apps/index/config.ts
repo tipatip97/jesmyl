@@ -1,5 +1,5 @@
-import { LocalSokiAuth, SokiAppName } from "../../complect/soki/soki.model";
 import { FilerAppConfig } from "../../complect/filer/Filer.model";
+import { LocalSokiAuth, rootDirective, SokiAppName } from "../../complect/soki/soki.model";
 
 export interface Application {
     name: SokiAppName;
@@ -24,6 +24,10 @@ const config: FilerAppConfig = {
                 }).filter(app => app);
             }
         },
+        {
+            name: 'appVersion',
+            watch: [`${rootDirective}/version.json`, (content) => JSON.parse(content).num],
+        }
     ]
 }
 

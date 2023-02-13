@@ -10,6 +10,7 @@ export interface FilerAppRequirement {
     get?: () => { data: any, mtime: number },
     map?: (data: any) => any,
     prepare?: (data: any, auth?: LocalSokiAuth | null) => any,
+    watch?: [string, (content: string) => any],
 }
 
 export type SimpleKeyValue<Key = string, Value = unknown> = SimpleValueKey<Value, Key>;
@@ -32,6 +33,8 @@ export interface FilerContentData<MappedData = unknown> {
     prepare: (data: any, auth?: LocalSokiAuth | null) => any,
     mapped: MappedData,
 }
+
+export type FilerWatcher = (appName: SokiAppName, name: string, data: any) => void;
 
 export type FilerContent = Record<'actions', FilerContentData<ExecutionRule[]>> & Record<string, FilerContentData>;
 export type FilerContents = Record<Partial<SokiAppName>, FilerContent>;

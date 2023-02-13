@@ -4,11 +4,12 @@ import FormData from 'form-data';
 import fetch from 'node-fetch';
 import { exec } from 'child_process';
 
+const isBuildFront = true;
+
 const filename = `tmp-build-archive.zip`;
 const passphrase = (process.argv.find(param => param.startsWith('--pass=')) || '').split('=')[1] || 'default';
-const isRelease = process.argv.find(param => param === '--release');
 
-const archive = (isFront, onError) => {
+const archive = (isFront, onError, versionNum) => {
     const archive = archiver('zip');
     console.info(`Send created ${filename} file`);
 
@@ -20,7 +21,7 @@ const archive = (isFront, onError) => {
     archive.on('end', () => {
         const body = new FormData();
         body.append(0, file_system.createReadStream(filename));
-        fetch(`https://jesmyl.ru/bomba.php?pass=${passphrase}&isFront=${isFront ? '1' : ''}&isRelease=${isRelease ? 1 : ''}`, {
+        fetch(`https://jesmyl.ru/bomba.php?pass=${passphrase}&isFront=${isFront ? '1' : ''}&versionNum=${versionNum ? versionNum : ''}`, {
             method: 'POST',
             body
         })
@@ -56,9 +57,9 @@ const archive = (isFront, onError) => {
 
 if (~process.argv.indexOf('--push-front')) {
     const riseVersion = (version, cb) =>
-        file_system.writeFile('src/front/version.json', version, () => cb?.());
+        file_system.writeFile('src/back/version.json', version, () => cb?.());
 
-    file_system.readFile('src/front/version.json', 'utf8', (err, versionStr) => {
+    file_system.readFile('src/back/version.json', 'utf8', (err, versionStr) => {
         if (err) {
             console.error('version not inkremented', err);
             return;
@@ -69,13 +70,18 @@ if (~process.argv.indexOf('--push-front')) {
         const newNum = JSON.stringify({ num });
 
         riseVersion(newNum, () => {
-            console.info(`Build ${num} is running...`);
-            exec('npm run build', (err) => {
+            const send = (err) => {
                 console.info('Build is finished.');
-                if (err)
-                    riseVersion(prevNum, () => console.error('BUILD FAILURE!', err));
-                else archive(true, () => riseVersion(prevNum));
-            });
+                if (err) riseVersion(prevNum, () => console.error('BUILD FAILURE!', err));
+                else archive(true, () => riseVersion(prevNum), num);
+            };
+            if (isBuildFront) {
+                console.info(`Build ${num} is running...`);
+                exec('npm run build', (err) => send(err));
+            } else {
+                console.info(`Send ${num} without building`);
+                send(err);
+            }
         });
     });
 }
