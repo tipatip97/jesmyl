@@ -291,12 +291,16 @@
                             "w": "{ordw}",
                             "c": "{?chordsi}",
                             "t": "{texti}",
-                            "s": "{type}"
+                            "s": "{type}",
+                            "a": "{?anchor}",
+                            "u": "{?uniq}"
                         },
                         "args": {
                             "texti": "#number",
                             "chordsi": "#number",
-                            "type": "#string"
+                            "type": "#string",
+                            "anchor": "$number",
+                            "uniq": "$number"
                         }
                     },
                     "<addAnc>": {
