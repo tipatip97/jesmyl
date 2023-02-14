@@ -1,8 +1,11 @@
+import { useState } from "react";
+import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../complect/exer/useExer";
 import { NavigationThrowNodeProps } from "../../../../../../complect/nav-configurer/Navigation.model";
 import useCmNav from "../../../base/useCmNav";
 import { cmExer } from "../../../Cm.store";
+import ComPlayer from "../../../col/com/player/ComPlayer";
 import { editCompositionNavs } from "../../editorNav";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
 import "./EditComposition.scss";
@@ -16,6 +19,7 @@ export default function EditComposition({
   const ccom = useEditableCcom();
   const { goTo } = useCmNav();
   const { exec } = useExer(cmExer);
+  const [isOpenPlayer, setIsOpenPlayer] = useState(false);
 
   if (!ccom) return null;
 
@@ -23,7 +27,12 @@ export default function EditComposition({
     <PhaseCmEditorContainer
       topClass="edit-composition"
       headClass="flex between"
-      headTitle={`Песня - ${ccom.initialName || ccom.name}`}
+      headTitle={`Песня - #${ccom.number} ${ccom.initialName || ccom.name}`}
+      head={<EvaButton
+        name={`music${isOpenPlayer ? '' : '-outline'}`}
+        className="margin-gap"
+        onClick={() => setIsOpenPlayer(!isOpenPlayer)}
+      />}
       content={
         ccom.col.removed ? (
           <div className="flex column">
@@ -34,6 +43,7 @@ export default function EditComposition({
           </div>
         ) : (
           <>
+            {isOpenPlayer && ccom.audio && <ComPlayer src={ccom.audio} />}
             <div className="flex around margin-gap">
               {editCompositionNavs.map(
                 ({
