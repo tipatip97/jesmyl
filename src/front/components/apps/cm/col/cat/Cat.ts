@@ -38,7 +38,7 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
 
   search(term = this.term, cb?: () => void) {
     if (term) {
-      this.wraps = mylib.searchRate<ComWrap>(this.coms, term, ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com') as ComWrap[];
+      this.wraps = mylib.searchRate<ComWrap>(this.coms, term, ['name', 'number', ['orders', mylib.c.INDEX, 'text']], 'com');
 
     } else this.wraps = this.coms.map(com => ({ com }));
 

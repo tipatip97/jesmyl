@@ -58,7 +58,7 @@ export default function ComFace(props: ComFaceProps) {
             selectable !== false && toggleSelectedCom(com);
           }}
         >
-          <span>{`${com.index == null ? "?" : com.index - -1}`}</span>
+          <span>{`${com.number}`}</span>
         </div>
         <span className="face-title ellipsis">{com.name}</span>
         {props.description}

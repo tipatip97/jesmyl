@@ -15,7 +15,7 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
         <div className="inner-content">
           {coms?.map((com) => (
             <div key={`expand-com-number-${com.wid}`}>
-              <div className="com-number">#{com.index + 1}</div>
+              <div className="com-number">#{com.number}</div>
               <ComOrders
                 com={com}
                 fontSize={fontSize}

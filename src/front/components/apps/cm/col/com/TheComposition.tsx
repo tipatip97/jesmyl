@@ -62,7 +62,7 @@ export default function TheComposition() {
       topClass={`composition-container ${playerHideMode && comAudio ? `with-open-player ${playerHideMode}` : ''}`}
       headClass="flex between"
       contentClass="composition-content"
-      headTitle={ccom.index + 1}
+      headTitle={ccom.number}
       contentRef={comListElem}
       head={
         <>

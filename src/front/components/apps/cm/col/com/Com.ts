@@ -14,7 +14,7 @@ export class Com extends BaseNamed<IExportableCom> {
   ton?: number;
   tonc?: string;
   firstChord?: string;
-  index: number = -1;
+  number: string = '';
   initialName: string;
   protected _translationMap?: number[] | null;
   protected _o?: Order[];
@@ -25,7 +25,7 @@ export class Com extends BaseNamed<IExportableCom> {
   constructor(top: IExportableCom, index: number, cols?: Cols) {
     super(top);
     this.initialName = this.name;
-    this.index = index;
+    this.number = `${index + (index > 402 ? 2 : 1)}`;
     this.cols = cols;
 
     this.initial = {};

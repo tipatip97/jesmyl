@@ -88,7 +88,7 @@ export class MyLib extends SMyLib {
         searchWord: string,
         places: (Trace[] | Trace)[],
         objName: ObjName
-    ): Ferry<FerryType, ObjName>[] {
+    ): FerryType[] {
         const normalWords = searchWord.split(/[^а-яё0-9ґії'ʼє]+/i).filter(word => word);
         const words = normalWords.map(word => word.toLowerCase());
         const wordRegs = normalWords.map(word => this.internationalWordReg(word));
