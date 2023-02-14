@@ -18,10 +18,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   static getWithExtendableFields(source: IExportableOrderTop, target: IExportableOrderTop): Partial<IExportableOrderTop> {
-    const result: Partial<IExportableOrderTop> = {
-      ...target, ...source
-    };
-    return result;
+    return { ...source, ...target };
   }
 
   get isMin() { return this.top.m; }

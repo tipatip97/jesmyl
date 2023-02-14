@@ -43,7 +43,7 @@ export default function EditComposition({
           </div>
         ) : (
           <>
-            {isOpenPlayer && ccom.audio && <ComPlayer src={ccom.audio} />}
+            {isOpenPlayer && ccom.audio && <div className="sticky"><ComPlayer src={ccom.audio} /></div>}
             <div className="flex around margin-gap">
               {editCompositionNavs.map(
                 ({

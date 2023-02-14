@@ -391,7 +391,7 @@ export class EditableCom extends Com {
         return this;
     }
 
-    addOrder({ t, s, c, a, u }: INewExportableOrder, refresh = true) {
+    addOrder(topOrd: INewExportableOrder, refresh = true) {
         const w = this.getNextOrdWid();
 
         this.exec({
@@ -399,15 +399,21 @@ export class EditableCom extends Com {
             method: 'push',
             args: {
                 ordw: w,
-                texti: t,
-                type: s,
-                chordsi: c,
-                anchor: a,
-                uniq: u,
+                texti: topOrd.t,
+                type: topOrd.s,
+                chordsi: topOrd.c,
+                anchor: topOrd.a,
+                uniq: topOrd.u,
             },
         });
 
-        this.ords.push({ w, t, s, a, u, c, header: () => '', originWid: w });
+        const ord: IExportableOrderTop = { w, header: () => '', originWid: w };
+
+        (['t', 's', 'a', 'u', 'c'] as (keyof IExportableOrderTop)[]).forEach((key) => {
+            if (topOrd[key as never] != null) ord[key] = topOrd[key as never];
+        });
+
+        this.ords.push(ord);
         if (refresh) this.afterOrderChange();
     }
 
