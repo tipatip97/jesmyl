@@ -43,8 +43,7 @@ export default function EditComposition({
           </div>
         ) : (
           <>
-            {isOpenPlayer && ccom.audio && <div className="sticky"><ComPlayer src={ccom.audio} /></div>}
-            <div className="flex around margin-gap">
+            <div className="flex around sticky nav-panel">
               {editCompositionNavs.map(
                 ({
                   data: { icon, iconText } = {},
@@ -76,6 +75,7 @@ export default function EditComposition({
                 }
               )}
             </div>
+            {isOpenPlayer && ccom.audio && <div className="sticky com-player"><ComPlayer src={ccom.audio} /></div>}
             {outletContent}
           </>
         )
