@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../shared/store";
+import useCmNav from "../base/useCmNav";
 import { switchShowTranslationInfo } from "../Cm.store";
 import ComFace from "../col/com/face/ComFace";
-import { useCcom } from "../col/com/useCcom";
 import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
@@ -22,7 +22,7 @@ export default function Translations({
   const [isShowTurnButton, setIsShowTurnButton] = useState(false);
   const [isRotateScreen, rotateScreen] = useState(false);
   const isShowInfo = useSelector(isShowTranslationInfoSelector);
-  const [, setCcom] = useCcom();
+  const { setAppRouteData } = useCmNav();
 
   const {
     currWin,
@@ -48,9 +48,7 @@ export default function Translations({
       <div className="translation-container fullscreen">
         {
           <div
-            className={`fullscreen-translation ${
-              isShowInfo ? "open-info" : ""
-            } ${isRotateScreen ? "rotate-fullscreen-translation" : ""}`}
+            className={`fullscreen-translation ${isShowInfo ? "open-info" : ""} ${isRotateScreen ? "rotate-fullscreen-translation" : ""}`}
           >
             <TranslationScreen
               fontSizeContainId="translation-native-window"
@@ -126,9 +124,7 @@ export default function Translations({
                 <EvaIcon name="close-circle-outline" />
               </div>
               <div
-                className={`area-button second open-info-button ${
-                  isShowCloseButton ? "show" : ""
-                }`}
+                className={`area-button second open-info-button ${isShowCloseButton ? "show" : ""}`}
                 onClick={() => dispatch(switchShowTranslationInfo(!isShowInfo))}
               >
                 <EvaIcon name="question-mark-circle-outline" />
@@ -198,7 +194,7 @@ export default function Translations({
                       key={`mark-to-translation_${com.wid}`}
                       com={com}
                       importantOnClick={() => {
-                        setCcom(com);
+                        setAppRouteData({ ccomw: com.wid });
                         setTexti(0);
                       }}
                     />
@@ -220,9 +216,7 @@ export default function Translations({
                   >
                     <div>{texti + 1}</div>
                     <div
-                      className={`translations-line-item-inner ${
-                        currTexti === texti ? "active" : ""
-                      }`}
+                      className={`translations-line-item-inner ${currTexti === texti ? "active" : ""}`}
                     >
                       <div dangerouslySetInnerHTML={{ __html: text }} />
                     </div>

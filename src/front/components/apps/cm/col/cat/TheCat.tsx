@@ -6,32 +6,30 @@ import useCmNav from "../../base/useCmNav";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import ComFace from "../com/face/ComFace";
-import { useCcom } from "../com/useCcom";
 import "./Cat.scss";
 import { useCcat } from "./useCcat";
 
 export default function TheCat({ all }: { all?: boolean }) {
-  const [ccat, , zeroCat] = useCcat();
-  const [ccom] = useCcom();
+  const [ccat, zeroCat] = useCcat();
   const { laterComs } = useLaterComList();
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
   const cat = all ? zeroCat : ccat;
-  const { nav } = useCmNav();
+  const { nav, appRouteData: { ccomw } } = useCmNav();
 
   nav.onGeneralFooterButtonClick('all', 'TheCat')(() => scrollToCurrent(true));
 
   const [term, setTerm] = useState(cat?.term || "");
 
   const scrollToCurrent = (isSync?: boolean) => {
-    if (ccom) {
+    if (ccomw) {
       const scroll = () => {
         if (listRef.current)
           if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
           else {
             const currentFace = document.querySelector(
-              `.face-item.com-of-cat.current.wid_${ccom.wid}`
+              `.face-item.com-of-cat.current.wid_${ccomw}`
             );
             if (currentFace) {
               mylib.scrollToView(currentFace, "top", {

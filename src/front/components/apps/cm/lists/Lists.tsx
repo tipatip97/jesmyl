@@ -3,7 +3,6 @@ import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useCmNav from "../base/useCmNav";
 import useSelectedComs from "../base/useSelectedComs";
-import { useCcat } from "../col/cat/useCcat";
 import { useCols } from "../cols/useCols";
 import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import "./Lists.scss";
@@ -11,7 +10,6 @@ import "./Lists.scss";
 export default function Lists() {
   const { goTo } = useCmNav();
   const [cols] = useCols();
-  const [, setCcat] = useCcat();
   const { selectedComws, isPreventSaveNav } = useSelectedComs();
 
   return (
@@ -46,7 +44,7 @@ export default function Lists() {
                 <div
                   key={`thematic-cat-${cat.wid}`}
                   className="item flex"
-                  onClick={() => setCcat(cat)}
+                  onClick={() => goTo({ place: 'cat', data: { ccatw: cat.wid } })}
                 >
                   <EvaIcon
                     name="book-open-outline"

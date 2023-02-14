@@ -1,11 +1,10 @@
 import { useMemo } from "react";
-import { useCcom } from "../../../col/com/useCcom";
+import useCmNav from "../../../base/useCmNav";
 import { useEditableCcat } from "../categories/useEditableCcat";
 
 export function useEditableCcom() {
     const zcat = useEditableCcat(0);
-    const [ccom] = useCcom();
-    return useMemo(() => {
-        return zcat && ccom && zcat.coms.find(com => com.wid === ccom.wid);
-    }, [ccom, zcat]);
+    const { appRouteData: { ccomw } } = useCmNav();
+
+    return useMemo(() => zcat?.coms.find(com => com.wid === ccomw), [ccomw, zcat]);
 }

@@ -1,15 +1,17 @@
 import { useMemo } from "react";
-import { useCcat } from "../../../col/cat/useCcat";
+import useCmNav from "../../../base/useCmNav";
 import { useEditableCols } from "../useEditableCols";
 
 export function useEditableCcat(catw?: number) {
     const [cols] = useEditableCols();
-    const [ccat] = useCcat();
+    const { appRouteData: { ccatw } } = useCmNav();
 
     return useMemo(() => {
         if (cols) {
             if (catw != null) return cols.cats.find(cat => cat.wid === catw);
-            else return ccat && cols.cats.find(cat => cat.wid === ccat.wid);
+            else return ccatw === undefined
+                ? undefined
+                : cols.cats.find(cat => cat.wid === ccatw);
         }
-    }, [ccat, cols, catw]);
+    }, [ccatw, cols, catw]);
 }

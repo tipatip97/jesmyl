@@ -21,7 +21,7 @@ export default function TheCom({
   isMiniAnchor?: boolean;
   fontSize?: number;
 }) {
-  const [ccom] = useCcom();
+  const ccom = useCcom();
   const com = topCom ?? ccom;
   const { addLaterComw } = useLaterComList();
 

@@ -15,7 +15,7 @@ export default function ComFace(props: ComFaceProps) {
     selectable,
     rejectScrollToView,
   } = props;
-  const [ccom] = useCcom();
+  const ccom = useCcom();
   const { jumpTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } =
     useAbsoluteFloatPopup();

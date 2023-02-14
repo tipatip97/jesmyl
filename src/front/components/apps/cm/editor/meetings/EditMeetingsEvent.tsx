@@ -6,7 +6,6 @@ import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import useCmNav from "../../base/useCmNav";
 import { cmExer } from "../../Cm.store";
 import ComFace from "../../col/com/face/ComFace";
-import { useCcom } from "../../col/com/useCcom";
 import { useEditableCcat } from "../col/categories/useEditableCcat";
 import EditContainerCorrectsInformer from "../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
@@ -17,7 +16,6 @@ export default function EditMeetingsEvent() {
   const { exec } = useExer(cmExer);
   const zcat = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || "");
-  const [, setCcom] = useCcom();
   const { goTo } = useCmNav();
   const [isClosedComList, setIsClosedComList] = useState(true);
 
@@ -147,8 +145,7 @@ export default function EditMeetingsEvent() {
                     com={com}
                     selectable={false}
                     importantOnClick={() => {
-                      setCcom(com, true);
-                      goTo("com", null, true);
+                      goTo({ place: "com", data: { ccomw: com.wid } }, null, true);
                     }}
                     description={
                       usedComList.indexOf(com) < 0 ? (

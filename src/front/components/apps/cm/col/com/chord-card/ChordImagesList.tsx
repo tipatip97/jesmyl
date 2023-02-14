@@ -2,7 +2,7 @@ import ChordCard from "./ChordCard";
 import { useCcom } from "../useCcom";
 
 export default function ChordImagesList() {
-  const [ccom] = useCcom();
+  const ccom = useCcom();
   return (
     <div className="full-container">
       <div className="margin-big-gap flex center column">

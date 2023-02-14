@@ -8,7 +8,7 @@ import { Com } from "./Com";
 
 
 export default function useComPack(): [Com[] | nil, string] {
-    const [ccat, , zcat] = useCcat();
+    const [ccat, zcat] = useCcat();
     const { markedComs } = useMarks();
     const { currentMeeting } = useMeetings();
     const { route } = useCmNav();
@@ -28,5 +28,5 @@ export default function useComPack(): [Com[] | nil, string] {
                         : ccat ?
                             [ccat.wraps.map(wrap => wrap.com), " - " + ccat.name]
                             : [null, ""];
-    }, [ccat, currentMeeting, markedComs, route, selectedComws]);
+    }, [ccat, currentMeeting, markedComs, route, selectedComws, zcat]);
 }

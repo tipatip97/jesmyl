@@ -30,7 +30,7 @@ const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
-  const [ccom] = useCcom();
+  const ccom = useCcom();
   const { goToTranslation: openTranslations } = useTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();

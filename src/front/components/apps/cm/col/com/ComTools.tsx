@@ -14,7 +14,7 @@ const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
 
 export default function ComTools() {
   const dispatch = useDispatch();
-  const [ccom] = useCcom();
+  const ccom = useCcom();
   const fontSize = useSelector(fontSizeSelector);
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const [chordVisibleVariant] = useChordVisibleVariant();

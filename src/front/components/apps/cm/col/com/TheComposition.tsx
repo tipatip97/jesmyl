@@ -7,8 +7,10 @@ import SwipeableContainer from "../../../../../complect/swipeable/SwipeableConta
 import { RootState } from "../../../../../shared/store";
 import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
+import useCmNav from "../../base/useCmNav";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
+import { Com } from "./Com";
 import "./Com.scss";
 import ComTools from "./ComTools";
 import ComPlayer from "./player/ComPlayer";
@@ -22,7 +24,7 @@ const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
 const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 
 export default function TheComposition() {
-  const [ccom, setCcom] = useCcom();
+  const ccom = useCcom();
   const { addLaterComw } = useLaterComList();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { topTools, toggleTopTool } = useMigratableComTools();
@@ -31,7 +33,9 @@ export default function TheComposition() {
   const fontSize = useSelector(fontSizeSelector);
   const isMiniAnchor = useSelector(isMiniAnchorSelector);
   const playerHideMode = useSelector(playerHideModeSelector);
+  const { setAppRouteData } = useCmNav();
   const comAudio = ccom?.audio.trim();
+  const setCom = (com: Com) => setAppRouteData({ ccomw: com.wid });
 
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
@@ -99,12 +103,12 @@ export default function TheComposition() {
 
               if (comi > -1) {
                 if ("l" === dir)
-                  if (comi < comList.length - 1) setCcom(comList[comi + 1]);
-                  else setCcom(comList[0]);
+                  if (comi < comList.length - 1) setCom(comList[comi + 1]);
+                  else setCom(comList[0]);
 
                 if ("r" === dir)
-                  if (comi > 0) setCcom(comList[comi - 1]);
-                  else setCcom(comList[comList.length - 1]);
+                  if (comi > 0) setCom(comList[comi - 1]);
+                  else setCom(comList[comList.length - 1]);
               }
             }}
             content={

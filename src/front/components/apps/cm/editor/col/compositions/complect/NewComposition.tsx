@@ -6,7 +6,6 @@ import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput"
 import { NavPhase } from "../../../../../../../complect/nav-configurer/Navigation.model";
 import useCmNav from "../../../../base/useCmNav";
 import { cmExer } from "../../../../Cm.store";
-import { useCcom } from "../../../../col/com/useCcom";
 import EditContainerCorrectsInformer from "../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { useEditableCols } from "../../useEditableCols";
 import { EditableCom } from "../EditableCom";
@@ -17,7 +16,6 @@ export default function NewComposition({ close }: { close: () => void }) {
   const { goTo } = useCmNav();
   const [cols] = useEditableCols();
   const { exec } = useExer(cmExer);
-  const [, setCcom] = useCcom();
   const [value, setValue] = useState("");
   const [name, setName] = useState("");
   const [isTakeName, setIsTakeName] = useState(true);
@@ -40,8 +38,7 @@ export default function NewComposition({ close }: { close: () => void }) {
   };
 
   const goToRoute = (phase = "texts", isRejectSave = true) => {
-    setCcom(com, isRejectSave);
-    goTo(["com", phase], null, isRejectSave);
+    goTo({ place: ["com", phase], data: { ccomw: com.wid } }, null, isRejectSave);
     close();
   };
 

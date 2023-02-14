@@ -15,7 +15,7 @@ import { useEditableCcat } from "../categories/useEditableCcat";
 import EditCompositionsMore from "./complect/EditCompositionsMore";
 
 export default function EditCompositions() {
-  const [ccom, setCcom] = useCcom();
+  const ccom = useCcom();
   const { goTo } = useCmNav();
   const zcat = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || "");
@@ -73,8 +73,7 @@ export default function EditCompositions() {
                     com={com}
                     groupClass="editable-com"
                     importantOnClick={() => {
-                      setCcom(com, com.isCreated);
-                      goTo("com", null, com.isCreated);
+                      goTo({ place: "com", data: { ccomw: com.wid } }, null, com.isCreated);
                     }}
                   />
                 </EditContainerCorrectsInformer>

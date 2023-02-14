@@ -87,9 +87,7 @@ export default function OrdersRedactor() {
             {ccom.isImpossibleToMigrateOrder(ord, ordi, orda) ? null : (
               <EvaIcon
                 name="swap-outline"
-                className={`pointer ${
-                  ccom.isCantMigrateOrder(ord, ordi) ? "disabled" : ""
-                }`}
+                className={`pointer ${ccom.isCantMigrateOrder(ord, ordi) ? "disabled" : ""}`}
                 style={{ transform: "rotate(90deg)" }}
                 onClick={() => exec(ccom.migrateOrder(ord))}
               />

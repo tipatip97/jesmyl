@@ -26,11 +26,12 @@ export default function useTranslation() {
   useSelector(translationUpdatesSelector);
 
   const dispatch = useDispatch();
-  const { goTo, goBack, registerBackAction } = useCmNav();
-  const [ccom, setCcom] = useCcom();
+  const { goTo, goBack, registerBackAction, setAppRouteData } = useCmNav();
+  const ccom = useCcom();
   const currTexti = useSelector(translationBlockSelector);
   const isVisible = useSelector(isTranslationBlockVisibleSelector);
   const texts = useMemo(() => ccom?.getOrderedTexts(), [ccom]);
+  const setCom = (com: Com) => setAppRouteData({ccomw: com.wid });
 
   const ret = {
     currWin,
@@ -51,7 +52,7 @@ export default function useTranslation() {
       const comi = getComi(ccom?.wid, comList);
       if (!comList || comi < 0) return;
       const nextCom = comList[comi === 0 ? comList.length - 1 : comi - 1];
-      setCcom(nextCom);
+      setCom(nextCom);
       ret.setTexti(0);
       scrollToView(nextCom);
     },
@@ -60,7 +61,7 @@ export default function useTranslation() {
       const comi = getComi(ccom?.wid, comList);
       if (!comList || comi < 0) return;
       const nextCom = comList[comi === comList.length - 1 ? 0 : comi + 1];
-      setCcom(nextCom);
+      setCom(nextCom);
       ret.setTexti(0);
       scrollToView(nextCom);
     },
@@ -98,7 +99,7 @@ export default function useTranslation() {
     goToTranslation: (isSetFirstCom?: boolean) => {
       if (isSetFirstCom) {
         const [comList] = ret.comPack;
-        if (comList?.length) setCcom(comList[0]);
+        if (comList?.length) setCom(comList[0]);
       }
 
       ret.setTexti(0);
@@ -116,7 +117,7 @@ export default function useTranslation() {
 
       if (isSetFirstCom) {
         const [comList] = ret.comPack;
-        if (comList) setCcom(comList[0]);
+        if (comList) setCom(comList[0]);
       }
 
       const win = window.open(

@@ -13,10 +13,10 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
     actions: UseNavAction[],
     nav: NavigationConfig<Storage, Storage, NavData>,
 ) {
-
     const dispatch = useDispatch();
     const [isFullScreen, switchFullscreen] = useFullScreen();
-    const appRouting = useSelector((state: RootState) => state.index.routing?.[appName]);
+    const indexRouting = useSelector((state: RootState) => state.index.routing);
+    const appRouting = indexRouting?.[appName];
     const route = appRouting?.current == null ? null : appRouting.routes.find(([phase]) => appRouting.current === phase);// || (nav.rootPhase ? [nav.rootPhase] : nav.routes[0].phase);
     const appRouteData = (appRouting?.data || {}) as Partial<NavData>;
 
@@ -25,12 +25,12 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
         route,
         navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
         appRouteData,
-        setAppRouteData: (data: Partial<NavData> | ((prev: Partial<NavData>) => Partial<NavData>), isPreventSave?: boolean) => {
-            const indexRouting = indexStorage.get('routing');
-            const appRouting = indexRouting?.[appName];
+        setAppRouteData: (data: Partial<NavData> | ((prev: Partial<NavData>) => Partial<NavData>), isPreventSave?: boolean, isLocalStorageData?: boolean) => {
+            const theRouting = isLocalStorageData ? indexStorage.get('routing') : indexRouting;
+            const appRouting = theRouting?.[appName];
 
             const routing = {
-                ...indexRouting,
+                ...theRouting,
                 [appName]: {
                     ...appRouting,
                     data: {
@@ -44,15 +44,15 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
             if (isPreventSave) return;
             indexStorage.set('routing', routing);
         },
-        navigate: (topRoute: NavRouteVariated<NavData>, isPreventSave?: boolean) => {
+        navigate: (topRoute: NavRouteVariated<NavData>, isPreventSave?: boolean, isLocalStorageData?: boolean) => {
             const theRoute = mylib.isArr(topRoute) ? topRoute : topRoute?.route ?? null;
             const theData = mylib.isArr(topRoute) ? null : topRoute?.data;
 
             const route = theRoute && nav.getGoToRoute([], theRoute);
 
             if (route || theRoute === null) {
-                const indexRouting = indexStorage.get('routing');
-                const appRouting = indexRouting?.[appName];
+                const theRouting = isLocalStorageData ? indexStorage.get('routing') : indexRouting;
+                const appRouting = theRouting?.[appName];
 
                 let routes = appRouting?.routes || [];
                 let current = theRoute === null ? null : appRouting?.current;
@@ -74,7 +74,7 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
                 }
 
                 const routing = {
-                    ...indexRouting,
+                    ...theRouting,
                     [appName]: {
                         ...appRouting,
                         current,
@@ -85,6 +85,7 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
                         }
                     }
                 };
+
                 dispatch(updateIndexRouting(routing));
                 if (isPreventSave) return;
                 indexStorage.set('routing', routing);

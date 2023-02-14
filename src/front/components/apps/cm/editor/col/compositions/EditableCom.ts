@@ -184,9 +184,10 @@ export class EditableCom extends Com {
             style?: StyleBlock,
             chords?: string,
             text?: string,
+            chordLinesCount?: number,
             texti?: number,
             chordsi?: number,
-            freeText?: string,
+            cleanText?: string,
             firstLineSlogs?: number,
         };
 
@@ -205,6 +206,7 @@ export class EditableCom extends Com {
                 } else languagei = langi;
             }
         };
+        const inheritStyle = blockStyles?.styles.find(({ isInherit }) => isInherit);
 
         (typeof blocks === 'string' ? blocks.split(/\n+\s*\n+/) : blocks)
             .forEach((block) => {
@@ -242,15 +244,59 @@ export class EditableCom extends Com {
                     }
                 });
 
-                unit.text = textLines.join('\n');
-                unit.chords = chordLines.join('\n');
-                unit.freeText = textLines.map(line => line.replace(freeSlavicLineReg_gi, '')).join('\n');
+                const unitTextLines: string[][] = [];
+                const chordLinesCount = unit.chordLinesCount = chordLines.length;
+                let chords: string | und;
+
+                const pushTextLines = (chordLinesCount: number) => {
+                    for (let i = 0; i < chordLinesCount; i++) {
+                        const lines = textLines.slice(i * chordLinesCount, (i + 1) * chordLinesCount);
+                        if (lines.length) unitTextLines.push(lines);
+                    }
+                };
+
+                if (chordLinesCount === 0) {
+                    const unitStyle = unit.style;
+                    if (unitStyle) {
+                        const sameUnit = units.find(({ style }) => unitStyle === style);
+
+                        if (sameUnit) {
+                            if (sameUnit.chordLinesCount) pushTextLines(sameUnit.chordLinesCount);
+                            chords = sameUnit.chords;
+                        }
+                    }
+                } else {
+                    const textLinesCount = textLines.length;
+                    chords = chordLines.join('\n');
+
+                    if (chordLinesCount < textLinesCount) {
+                        const partsCount = textLinesCount / chordLinesCount;
+                        if (partsCount !== Math.trunc(partsCount)) unitTextLines.push(textLines);
+                        else {
+                            pushTextLines(chordLinesCount);
+                        }
+                    } else unitTextLines.push(textLines);
+                }
+
+                unitTextLines.forEach((lines, linesi) => {
+                    const currUnit = linesi === 0 ? unit : {};
+
+                    currUnit.text = lines.join('\n');
+                    currUnit.chords = chords;
+                    currUnit.cleanText = lines.map(line => line.replace(freeSlavicLineReg_gi, '')).join('\n');
+
+                    if (linesi > 0) {
+                        currUnit.style = inheritStyle;
+                        units.push(currUnit);
+                    }
+                });
             });
 
         const texts: string[] = [];
         const chords: string[] = [];
         const unitSlogGroups = Object.values(slogUnits).sort((a, b) => b.length - a.length);
 
+        let uniq = 0;
         const orders: INewExportableOrder[] = [];
 
         units.forEach((unit, uniti) => {
@@ -274,7 +320,7 @@ export class EditableCom extends Com {
 
             if (unit.text) {
                 let texti: number;
-                const sameTextUnit = units.find((u) => u.freeText === unit.freeText && u.texti !== undefined);
+                const sameTextUnit = units.find((u) => u.cleanText === unit.cleanText && u.texti !== undefined);
 
                 if (sameTextUnit?.texti !== undefined) texti = sameTextUnit.texti;
                 else texti = texts.push(unit.text) - 1;
@@ -291,11 +337,7 @@ export class EditableCom extends Com {
 
                 unit.chordsi = chordsi;
             }
-        });
 
-        let uniq = 0;
-
-        units.forEach((unit) => {
             const ord: INewExportableOrder = {};
 
             const similarOrd = orders.find((ord) => ord.c === unit.chordsi && ord.t === unit.texti && ord.s === unit.style?.key);
@@ -321,6 +363,7 @@ export class EditableCom extends Com {
     }
 
     takeStyleByTitle(text: string) {
+        if (!text) return;
         const preparedText = text.toLowerCase().replace(/[^а-я]/g, '').trim();
         return blockStyles?.styles.find(style => style.tags?.some(tag => preparedText.startsWith(tag)));
     }
@@ -363,7 +406,7 @@ export class EditableCom extends Com {
                 uniq: u,
             },
         });
-        
+
         this.ords.push({ w, t, s, a, u, c, header: () => '', originWid: w });
         if (refresh) this.afterOrderChange();
     }
@@ -672,9 +715,9 @@ export class EditableCom extends Com {
     takeCorrectName(text: string) {
         let name = '';
 
-        this.correctName(text.split('\n\n').find((block) => {
+        text.split(/\n\s*\n/).find((block) => {
             return block.split('\n').find((line) => {
-                const lowerLine = line.toLowerCase().replace(/^[^а-я]/g, '');
+                const lowerLine = line.toLowerCase().replace(/^[^а-яё]+/g, '');
                 if (this.takeStyleByTitle(lowerLine)) return false;
 
                 if (/^[^a-zA-Z\d#]+$/.exec(lowerLine)) {
@@ -683,9 +726,9 @@ export class EditableCom extends Com {
                 }
                 return false;
             });
-        }) || '');
+        });
 
-        return name.replace(/[^а-я!?]+$/i, '');
+        return name.replace(/[^а-я!]+$/i, '');
     }
 
     removeNativeNumber(cat: Cat, exec?: <Val>(v?: Val) => Val | nil) {
