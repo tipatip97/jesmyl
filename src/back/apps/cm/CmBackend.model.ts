@@ -4,6 +4,8 @@ export interface CmMp3Rule {
     url: string,
     attr: string,
     query: string,
+    textQuery?: string,
+    isHTML?: 1,
 }
 
 export interface CmMp3ContainsPageResult {

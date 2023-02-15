@@ -10,7 +10,7 @@ import EditContainerCorrectsInformer from "../../../edit-container-corrects-info
 import { useEditableCols } from "../../useEditableCols";
 import { EditableCom } from "../EditableCom";
 import ComAudio from "./audio/ComAudio";
-import ObserveUrlAudio from "./audio/ObserveUrlAudio";
+import ObserveUrlResource from "./audio/ObserveUrlResource";
 
 export default function NewComposition({ close }: { close: () => void }) {
   const { goTo } = useCmNav();
@@ -77,14 +77,21 @@ export default function NewComposition({ close }: { close: () => void }) {
             </div>
           </div>
         </EditContainerCorrectsInformer>
-        <ObserveUrlAudio
+        <ObserveUrlResource
+          availableWithTextQuery
           onSuccess={({ html, rule }) => {
             const div = document.createElement('div');
             div.innerHTML = html;
             setInnerHTML(html);
             setMp3Rule(rule);
-            const pre: HTMLPreElement | null = div.querySelector('pre#music_text');
-            if (pre) setTextAsValue(pre.innerHTML.replace(/<(\/ ?)?br( ?\/)?>/g, '\n'));
+            if (rule.textQuery) {
+              const pre: HTMLPreElement | null = div.querySelector(rule.textQuery);
+              if (pre) {
+                if (rule.isHTML)
+                  setTextAsValue(pre.innerHTML.replace(/<(\/ ?)?br( ?\/)?>/g, '\n'));
+                else setTextAsValue(pre.innerText);
+              }
+            }
           }}
         />
         <KeyboardInput

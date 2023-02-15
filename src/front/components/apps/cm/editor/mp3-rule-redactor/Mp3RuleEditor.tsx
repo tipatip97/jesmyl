@@ -6,6 +6,8 @@ import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boolean, button?: ReactNode, onComplete?: (rule: CmMp3Rule) => void }) {
     const [url, setUrl] = useState(props.url || '');
     const [attr, setAttr] = useState(props.attr || '');
+    const [textQuery, setTextQuery] = useState(props.textQuery || '');
+    const [isHTML, setIsHTML] = useState<1 | und>(props.isHTML);
     const [query, setQuery] = useState(props.query || '');
     const [isRedact, setIsRedact] = useState(props.redact);
 
@@ -17,15 +19,29 @@ export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boo
                     : <span className="color--7">{url}</span>}
             </div>
             <div className="full-width">
-                Аттрибут с URL: {isRedact
+                Query (mp3): {isRedact
+                    ? <KeyboardInput value={query} onChange={setQuery} />
+                    : <span className="color--7">{query}</span>}
+            </div>
+            <div className="full-width">
+                Аттрибут с URL (mp3): {isRedact
                     ? <KeyboardInput value={attr} onChange={setAttr} />
                     : <span className="color--7">{attr}</span>}
             </div>
             <div className="full-width">
-                QuerySelector: {isRedact
-                    ? <KeyboardInput value={query} onChange={setQuery} />
-                    : <span className="color--7">{query}</span>}
+                Аттрибут (текст): {isRedact
+                    ? <KeyboardInput value={textQuery} onChange={setTextQuery} />
+                    : <span className="color--7">{textQuery || '-'}</span>}
             </div>
+            {textQuery && <div className="full-width">
+                innerHTML (Не innerText): {isRedact
+                    ? <input
+                        type="checkbox"
+                        checked={!!isHTML}
+                        onChange={(event) => setIsHTML(event.currentTarget.checked ? 1 : undefined)}
+                    />
+                    : <span className="color--7">{isHTML ? 'innerHTML' : 'innerText'}</span>}
+            </div>}
             {props.button || (
                 isRedact
                     ? <EvaButton
@@ -35,7 +51,7 @@ export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boo
                         onClick={(() => {
                             setIsRedact(false);
                             props.onComplete?.({
-                                url, attr, query,
+                                url, attr, query, isHTML, textQuery,
                                 w: props.w ?? Date.now() + Math.random()
                             });
                         })}

@@ -8,7 +8,7 @@ import { cmExer } from "../../../../../Cm.store";
 import ComPlayer from "../../../../../col/com/player/ComPlayer";
 import { EditableCom } from "../../EditableCom";
 import { useEditableCcom } from "../../useEditableCcom";
-import ObserveUrlAudio from "./ObserveUrlAudio";
+import ObserveUrlResource from "./ObserveUrlResource";
 
 export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: string, topCom?: EditableCom, topMp3Rule?: CmMp3Rule }) {
   const cEditableCom = useEditableCcom();
@@ -115,12 +115,6 @@ export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: st
           ? <>
             <h2>Добавить аудио</h2>
             {!topHTML && <>
-              <ObserveUrlAudio
-                onSuccess={({ html, rule }) => {
-                  setInnerHTML(html);
-                  setMp3Rule(rule);
-                }}
-              />
               <div className="flex flex-gap pointer" onClick={() => {
                 const text = ccom.texts?.[0];
                 if (text) {
@@ -131,6 +125,12 @@ export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: st
                 Найти песню в гугл
                 <EvaIcon name="google" />
               </div>
+              <ObserveUrlResource
+                onSuccess={({ html, rule }) => {
+                  setInnerHTML(html);
+                  setMp3Rule(rule);
+                }}
+              />
             </>}
             {hrefs.map((src) => {
               if (src && uniqs.indexOf(src) < 0) {
