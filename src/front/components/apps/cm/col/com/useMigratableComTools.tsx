@@ -134,7 +134,7 @@ export default function useMigratableComTools() {
                 title: "Проигрыватель",
                 icon: playerHideMode ? "music" : "music-outline",
                 onClick: () => {
-                  dispatch(setPlayerHideMode(playerHideMode ? null : 'min'));
+                  dispatch(setPlayerHideMode(playerHideMode ? '' : 'min'));
                 },
               }
             );
@@ -165,6 +165,7 @@ export default function useMigratableComTools() {
   };
 
   return {
+    comTopTools,
     topTools: makeToolList(
       spliceMigratableEditableComToolNameList(comTopTools)
     ),

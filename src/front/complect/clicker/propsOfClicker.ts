@@ -22,7 +22,7 @@ export default function propsOfClicker({
                 isContextMenuClicked = true;
                 event.clientX = event.touches[0].clientX;
                 event.clientY = event.touches[0].clientY;
-                onContextMenuTimer = setTimeout(onCtxMenu, 1000, event);
+                onContextMenuTimer = setTimeout(onCtxMenu, 700, event);
             },
             onTouchMove: () => clearTimeout(onContextMenuTimer as never),
             onTouchEnd: () => {

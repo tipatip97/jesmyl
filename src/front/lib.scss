@@ -138,8 +138,14 @@
 }
 
 [attr-mark-badge] {
+  --color: var(--color--ko);
+
   position: relative;
   display: inline-block;
+
+  &[attr-mark-badge-color-7] {
+    --color: var(--color--7);
+  }
 
   &[attr-mark-badge="0"]:before {
     --size: 12px;
@@ -162,7 +168,7 @@
     align-items: center;
     bottom: var(--pos);
     right: var(--pos);
-    background: var(--color--ko);
+    background: var(--color);
     width: var(--size);
     height: var(--size);
     border-radius: 50%;

@@ -19,15 +19,13 @@ export default function ComTools() {
   const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const [chordVisibleVariant] = useChordVisibleVariant();
 
-  const { menuTools, toggleTopTool } = useMigratableComTools();
+  const { menuTools, toggleTopTool, comTopTools } = useMigratableComTools();
 
   if (!ccom) return null;
   return (
     <div className="abs-item flex column">
       <div
-        className={`abs-item ${
-          chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : ""
-        }`}
+        className={`abs-item ${chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : ""}`}
       >
         <EvaIcon name="options-2-outline" className="abs-icon" />
         <div className="title">Тональность</div>
@@ -80,12 +78,16 @@ export default function ComTools() {
             if (onClick()) return;
             closeAbsoluteBottomPopup();
           }}
-          {...propsOfClicker({ onCtxMenu: (event) => {
-            event.preventDefault();
-            toggleTopTool(tool);
-          } }) }
+          {...propsOfClicker({
+            onCtxMenu: (event) => {
+              event.preventDefault();
+              toggleTopTool(tool);
+            }
+          })}
         >
-          <EvaIcon name={icon} className="abs-icon" />
+          <div attr-mark-badge={comTopTools.includes(tool) ? '0' : null} attr-mark-badge-color-7="">
+            <EvaIcon name={icon} className="abs-icon" />
+          </div>
           <div className="title">{title}</div>
           <div className="abs-action" />
         </div>

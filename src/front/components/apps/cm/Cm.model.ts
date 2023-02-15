@@ -2,7 +2,6 @@
 import { ClientExecutionDict } from "../../../complect/exer/Exer.model";
 import { EeStorageStoreType } from "./base/ee-storage/EeStorage.model";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
-import { ParanjaMode } from "./base/useParanja";
 import { IExportableSetts } from "./col/com/block-styles/BlockStyles.model";
 import { ChordPack } from "./col/com/chord-card/ChordCard.model";
 import { MigratableComToolName } from "./col/com/Com.model";
@@ -17,7 +16,6 @@ export interface CmState extends CmStoraged {
     isTranslationBlockVisible: boolean,
     translationBlockPosition: FontSizeContainPropsPosition,
     isCmFullscreen: boolean,
-    paranjaMode: ParanjaMode,
     rollModeMarks: boolean,
 
     numComUpdates: number,
@@ -53,7 +51,7 @@ export interface CmStoraged extends CmEditorStoraged {
     playerHideMode: PlayerHideMode,
 }
 
-export type PlayerHideMode = 'expand' | 'min' | null;
+export type PlayerHideMode = 'expand' | 'min' | '';
 
 export interface CmStorage extends CmStoraged {
     actions: CmAction[],

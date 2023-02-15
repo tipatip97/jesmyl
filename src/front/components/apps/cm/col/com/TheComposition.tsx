@@ -74,12 +74,6 @@ export default function TheComposition() {
                   name={icon}
                   className="action-button"
                   onClick={() => onClick()}
-                  {...propsOfClicker({
-                    onCtxMenu: (event) => {
-                      event.preventDefault();
-                      toggleTopTool(tool);
-                    }
-                  })}
                 />
               ))}
             </div>
