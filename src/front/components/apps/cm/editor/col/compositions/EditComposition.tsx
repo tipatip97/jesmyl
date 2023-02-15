@@ -56,16 +56,11 @@ export default function EditComposition({
                     <span
                       key={`editCompositionNavs ${phase}`}
                       className="pointer"
-                      onClick={() =>
-                        goTo(phase, relativePoint, ccom.isCreated)
-                      }
+                      onClick={() => goTo(phase, relativePoint, ccom.isCreated)}
                     >
                       {icon ? (
                         <EvaIcon
-                          name={
-                            `${icon}${phase === currentChildPhase ? "" : "-outline"
-                            }` as never
-                          }
+                          name={`${icon}${phase === currentChildPhase ? "" : "-outline"}` as never}
                         />
                       ) : (
                         iconText
@@ -75,7 +70,7 @@ export default function EditComposition({
                 }
               )}
             </div>
-            {isOpenPlayer && ccom.audio && <div className="sticky com-player"><ComPlayer src={ccom.audio} /></div>}
+            {isOpenPlayer && ccom.audio && <div className="sticky com-player"><ComPlayer src={ccom.audio.split(/\n+/)} /></div>}
             {outletContent}
           </>
         )

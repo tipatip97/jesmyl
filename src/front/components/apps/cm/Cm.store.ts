@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
 import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
-import { ParanjaMode } from "./base/useParanja";
 import { ChordVisibleVariant, CmRollMode, CmState, FavoriteMeetings, PlayerHideMode } from "./Cm.model";
 import { ChordPack } from "./col/com/chord-card/ChordCard.model";
 import { MigratableComToolName } from "./col/com/Com.model";
@@ -17,8 +16,7 @@ const initialState: CmState = {
   rollMode: null,
   isCmFullscreen: false,
   isMiniAnchor: cmStorage.getOr('isMiniAnchor', false),
-  playerHideMode: cmStorage.getOr('playerHideMode', null),
-  paranjaMode: null,
+  playerHideMode: cmStorage.getOr('playerHideMode', 'min'),
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
   selectedComws: cmStorage.getOr('selectedComws', []),
@@ -90,9 +88,6 @@ export const slice = createSlice({
       state.playerHideMode = action.payload;
       cmStorage.set('playerHideMode', state.playerHideMode);
     },
-    setParanjaMode: (state, action: PayloadAction<ParanjaMode>) => {
-      state.paranjaMode = action.payload;
-    },
     updateLaterComwList: (state, action: PayloadAction<number[]>) => {
       state.laterComwList = action.payload;
     },
@@ -161,7 +156,6 @@ export const {
   setTranslationBlockPosition,
   riseUpTranslationUpdates,
   switchShowTranslationInfo,
-  setParanjaMode,
   updateLaterComwList,
   updateCmChordTracks,
   riseUpAbsolutePopupUpdates,
