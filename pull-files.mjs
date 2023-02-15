@@ -6,6 +6,7 @@ import fetch from 'node-fetch';
     ['apps/cm', 'cols'],
     ['apps/cm', 'eeStorage'],
     ['apps/cm', 'meetings'],
+    ['apps/cm', 'mp3Rules'],
     // ['apps/cm', 'cm-execs'],
     ['apps/cm', 'chords'],
     ['apps/cm', 'chordTracks'],
