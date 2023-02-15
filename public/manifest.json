@@ -3,6 +3,11 @@
     "short_name": "JesmyL",
     "description": "Сборник приложений",
     "prefer_related_applications": false,
+    "intent_filters": {
+      "scope_url_scheme": "https",
+      "scope_url_host": "jesmyl.ru",
+      "scope_url_path": "/"
+    },
     "icons": [
         {
             "src": "android-chrome-192x192.png",
