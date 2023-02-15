@@ -35,7 +35,7 @@ export default function ObserveUrlResource({ onSuccess, availableWithTextQuery }
             />
             <SendButton
                 title="Обзор URL"
-                disabled={!url}
+                disabled={!url || !!errorMessage}
                 onSuccess={onSuccess}
                 onFailure={(errorMessage) => modalService.alert(errorMessage, 'Ошибка')}
                 onSend={() => sendService<CmMp3ContainsPageResult>('getResourceData', url)}

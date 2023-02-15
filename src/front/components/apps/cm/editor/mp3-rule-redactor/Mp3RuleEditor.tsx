@@ -10,12 +10,27 @@ export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boo
     const [isHTML, setIsHTML] = useState<1 | und>(props.isHTML);
     const [query, setQuery] = useState(props.query || '');
     const [isRedact, setIsRedact] = useState(props.redact);
+    const [errorMessage, setErrorMessage] = useState('');
 
     return <>
         <div className="flex column margin-big-gap">
             <div className="full-width">
                 URL-адрес: {isRedact
-                    ? <KeyboardInput value={url} onChange={setUrl} />
+                    ? <>
+                        <KeyboardInput value={url} onChange={(value) => {
+                            try {
+                                const url = new URL(value);
+                                const unnecessary = value.replace(url.origin, '');
+                                if (unnecessary) {
+                                    setErrorMessage(`Ссылка должна быть на корень сайта (без ${unnecessary})`);
+                                } else setErrorMessage('');
+                            } catch (e) {
+                                setErrorMessage('Невалидный URL-адрес');
+                            }
+                            setUrl(value);
+                        }} />
+                        {errorMessage && <div className="error-message">{errorMessage}</div>}
+                    </>
                     : <span className="color--7">{url}</span>}
             </div>
             <div className="full-width">
@@ -47,11 +62,12 @@ export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boo
                     ? <EvaButton
                         name="checkmark-circle"
                         className="color--ok margin-big-gap"
-                        disabled={!url.match(/^https?:\/\/\w+/) || !attr || !query}
+                        disabled={!!errorMessage || !attr || !query}
                         onClick={(() => {
                             setIsRedact(false);
                             props.onComplete?.({
-                                url, attr, query, isHTML, textQuery,
+                                attr, query, isHTML, textQuery,
+                                url: new URL(url).origin, 
                                 w: props.w ?? Date.now() + Math.random()
                             });
                         })}
