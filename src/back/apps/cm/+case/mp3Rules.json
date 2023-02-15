@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://holychords.pro",
+    "attr": "data-audio-file",
+    "query": "[data-audio-file]",
+    "w": 1675948750826.1692
+  },
+  {
+    "url": "https://youthsongs.ru",
+    "attr": "src",
+    "query": "source[src]",
+    "w": 1675952461043.098
+  },
+  {
+    "url": "https://alliluya.com",
+    "attr": "href",
+    "query": "div.filename a[href]",
+    "w": 1675972788074.424
+  },
+  {
+    "url": "https://hvalite.com",
+    "attr": "href",
+    "query": "a[download][href]",
+    "w": 1675974586321.879
+  },
+  {
+    "url": "https://kg-music.club",
+    "attr": "data-audio-file",
+    "query": "[data-audio-file].jp-playlist-item",
+    "w": 1676442467365.221
+  }
+]
