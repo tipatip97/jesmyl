@@ -5,7 +5,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     z-index: 350;
     opacity: 0;
     pointer-events: none;
@@ -84,11 +84,11 @@
         --padding-top: 70vh;
 
         position: absolute;
-        top: calc(100vh - var(--padding-top));
+        top: calc(100% - var(--padding-top));
         left: 0;
         width: 100vw;
-        height: 100vh;
-        padding-top: 100vh;
+        height: 100%;
+        padding-top: 100%;
         overflow-x: hidden;
         transition: top .5s;
 
@@ -112,7 +112,7 @@
             align-items: center;
             flex-direction: column;
             width: 100vw;
-            min-height: calc(100vh - var(--padding-top));
+            min-height: 100%;
             background-color: var(--color--1);
             overflow: hidden;
             padding: 30px;

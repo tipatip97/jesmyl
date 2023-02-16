@@ -11,6 +11,7 @@
         white-space: nowrap;
         overflow: hidden;
         background: var(--color--2);
+        transition: opacity .2s, margin .2s;
 
         &.hidden-controls {
             width: var(--com-player-size);

@@ -18,7 +18,7 @@
         margin: auto;
         width: 500px;
         min-height: max-content;
-        max-height: calc(100vh - 10px);
+        max-height: calc(100% - 10px);
         max-width: calc(100vw - 10px);
         border: solid 1px var(--color--3);
         border-radius: 5px;
@@ -40,7 +40,7 @@
 
         >.app-modal-body {
             padding: 0px 5px;
-            max-height: calc(100vh - 5em);
+            max-height: calc(100% - 5em);
             overflow-y: auto;
             overflow-x: hidden;
             color: var(--color--3);

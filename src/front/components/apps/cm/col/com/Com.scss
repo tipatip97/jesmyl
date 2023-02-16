@@ -4,7 +4,7 @@
 
         .composition-player {
             --transition-speed: .2s;
-            
+
             position: absolute;
             top: var(--header-height);
             left: 0;
@@ -13,6 +13,7 @@
             opacity: 0;
             transition: width var(--transition-speed),
                 background var(--transition-speed),
+                margin var(--transition-speed),
                 opacity var(--transition-speed);
         }
     }
@@ -28,10 +29,10 @@
 
         .composition-content {
             padding-top: var(--content-padding-top);
+        }
 
-            .composition-player {
-                opacity: 1;
-            }
+        .composition-player {
+            opacity: 1;
         }
     }
 
@@ -45,6 +46,16 @@
 
         &::-webkit-scrollbar {
             display: none;
+        }
+    }
+}
+
+.application-container.app_cm {
+    &.fullscreen-mode {
+        .composition-player {
+            margin-top: -20px;
+            opacity: 0;
+            pointer-events: none;
         }
     }
 }
