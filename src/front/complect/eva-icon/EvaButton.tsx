@@ -1,9 +1,6 @@
 import { HTMLAttributes } from "react";
-import * as pack from "../../resource/eva-icons.json";
 import modalService from "../modal/Modal.service";
-import EvaIcon from "./EvaIcon";
-
-export type EvaIconName = keyof typeof pack;
+import EvaIcon, { EvaIconName } from "./EvaIcon";
 
 export default function EvaButton(
   props: HTMLAttributes<HTMLOrSVGElement> & {
