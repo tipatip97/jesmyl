@@ -31,8 +31,8 @@ export default function IndexAbout() {
           </div>
         </div>
       </div>
-      <div className={`absolute pos-bottom padding-giant-gap ${version.num !== appVersion ? 'color--ko' : 'color--7'}`}>
-        v{version.num} {version.num === appVersion ? '- Актуальная' : `(Новая - v${appVersion})`}
+      <div className={`absolute pos-bottom padding-giant-gap ${appVersion ? version.num !== appVersion ? 'color--ko' : 'color--7' : ''}`}>
+        v{version.num} {appVersion ? version.num === appVersion ? '- Актуальная' : `(Новая - v${appVersion})` : ''}
       </div>
     </div>
   );
