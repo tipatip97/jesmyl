@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { AreaHTMLAttributes, ReactNode, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import {
@@ -6,6 +6,7 @@ import {
   switchAbsoluteBottomPopupOpen
 } from "../Complect.store";
 import { isTouchDevice } from "../device-differences";
+import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
 import useMountTransition from "../popups/useMountTransition";
 import Portal from "../popups/[complect]/Portal";
 import "./AbsolutePopup.scss";
@@ -17,6 +18,19 @@ let onOpenPopup: ((close: () => boolean) => void) | und;
 
 const isAbsoluteBottomPopupOpenSelector = (state: RootState) => state.complect.isAbsoluteBottomPopupOpen;
 const numAbsoluteBottomPopupUpdatesSelector = (state: RootState) => state.complect.numAbsoluteBottomPopupUpdates;
+
+export type AbsoluteBottomPopupItem = {
+  className?: string,
+  icon: EvaIconName,
+  title: string,
+  rightNode?: ReactNode,
+  iconWrapperClassName?: string,
+} & AreaHTMLAttributes<HTMLDivElement>
+
+export interface AbsoluteBottomPopupContentProps {
+  items: (AbsoluteBottomPopupItem | AbsoluteBottomPopupItem[] | null)[],
+  footer?: ReactNode,
+}
 
 export default function useAbsoluteBottomPopup() {
   const dispatch = useDispatch();
@@ -30,6 +44,25 @@ export default function useAbsoluteBottomPopup() {
       if (isClosed) return false;
       isClosed = true;
       return true;
+    },
+    prepareAbsoluteBottomPopupContent: ({ items, footer }: AbsoluteBottomPopupContentProps) => {
+      return <div className="abs-item flex column">
+        {items.flat().map((item) => {
+          if (item === null) return null;
+          const { className, icon, title, iconWrapperClassName, rightNode, ...other } = item;
+
+          return <div key={`${icon} ${title}`} {...other} className={`abs-item ${className || ''}`}>
+            <div className="flex flex-gap">
+              <div className={iconWrapperClassName}>
+                <EvaIcon name={icon} className="abs-icon" />
+              </div>
+              <div className="title">{title}</div>
+            </div>
+            {rightNode && <div className="abs-action flex around pointer">{rightNode}</div>}
+          </div>;
+        })}
+        {footer}
+      </div>;
     },
     openAbsoluteBottomPopup: (
       content: ((close: () => void) => ReactNode) | ReactNode,
