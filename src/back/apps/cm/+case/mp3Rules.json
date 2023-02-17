@@ -3,7 +3,9 @@
     "url": "https://holychords.pro",
     "attr": "data-audio-file",
     "query": "[data-audio-file]",
-    "w": 1675948750826.1692
+    "w": 1675948750826.1692,
+    "isHTML": 1,
+    "textQuery": "pre#music_text"
   },
   {
     "url": "https://youthsongs.ru",
@@ -21,7 +23,8 @@
     "url": "https://hvalite.com",
     "attr": "href",
     "query": "a[download][href]",
-    "w": 1675974586321.879
+    "w": 1675974586321.879,
+    "textQuery": "pre#music_text"
   },
   {
     "url": "https://kg-music.club",
