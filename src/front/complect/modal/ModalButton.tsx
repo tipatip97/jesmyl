@@ -18,9 +18,7 @@ export default function ModalButton(topProps: TheModalButtonProps) {
 
   return (
     <button
-      className={`app-modal-footer-button-list-item${
-        button.className ? ` ${button.className}` : ""
-      }`}
+      className={`app-modal-footer-button-list-item${button.className ? ` ${button.className}` : ""}`}
       onClick={(event) => {
         if (typeof button === "string") return;
         topProps.forceUpdate();

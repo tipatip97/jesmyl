@@ -69,7 +69,6 @@ export default function Modal() {
 
   modalService.setConfigSetter((config) => setConfig(config));
 
-  const defTheme = "m-ok";
   const asFunc = (val?: Function | boolean | ReactNode) => {
     if (typeof val === "function") {
       if (config) config.forceUpdate = forceUpdate;
@@ -98,10 +97,9 @@ export default function Modal() {
         </div>
 
         <div
-          className={`app-modal-body${modalService.error ? " with-error" : ""
-            } ${config.theme || defTheme}`}
+          className={`app-modal-body${modalService.error ? " with-error" : ""}`}
         >
-          <div className={`app-modal-body-inner ${config.theme || defTheme}`}>
+          <div className="app-modal-body-inner">
             {config.description && (
               <div className="app-modal-description">
                 <span className="app-modal-description-label">
@@ -131,19 +129,13 @@ export default function Modal() {
           </div>
         </div>
 
-        <div className={`app-modal-footer ${config.theme || defTheme}`}>
+        <div className="app-modal-footer">
           {modalService.error && (
             <div className="app-modal-footer-error">{modalService.error}</div>
           )}
           {!config.theButtons && !config.buttons?.length ? null : (
-            <div
-              className={`app-modal-footer-button-list ${config.theme || defTheme
-                }`}
-            >
-              <div
-                className={`app-modal-footer-button-list-inner ${config.theme || defTheme
-                  }`}
-              >
+            <div className="app-modal-footer-button-list">
+              <div className="app-modal-footer-button-list-inner">
                 {config.theButtons ||
                   config.buttons?.map((button, buttoni) => (
                     <ModalButton
