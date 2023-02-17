@@ -23,7 +23,7 @@ export interface KeyboardInputProps {
     className?: string,
     placeholder?: string,
     onBlur?: () => void,
-    onFocus?: () => void,
+    onFocus?: (event: KeyboardInputEvent) => void,
     onClick?: () => void,
     // срабатывает только при вводе в поле инпута
     onInput?: (value: string, prev: string | null) => void,
@@ -33,6 +33,11 @@ export interface KeyboardInputProps {
     setIsUnknownSymbols?: (char: string) => boolean,
     mapChar?: (char: string) => ReactNode,
     maxLength?: number
+}
+
+export interface KeyboardInputEvent {
+    name: 'focus',
+    blur: () => void,
 }
 
 export type KeyboardMemoryPointAction = 'write' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';

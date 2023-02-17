@@ -34,6 +34,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       onInput,
       onChange,
       onPaste,
+      onFocus,
       type,
       closeButton,
       setIsUnknownSymbols,
@@ -59,6 +60,12 @@ export default function KeyboardInput(props: KeyboardInputProps) {
         })}
         onPaste={onPaste && (async () => {
           invoke(onPaste, await navigator.clipboard.readText());
+        })}
+        onFocus={onFocus && ((event) => {
+          onFocus({
+            name: 'focus',
+            blur: () => (event.target || event.currentTarget).blur(),
+          });
         })}
         ref={el => {
           if (el) {
@@ -103,7 +110,10 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       currentInput?.blur(input !== currentInput);
       currentInput = input;
       topOnFocus(currentInput);
-      props.onFocus?.();
+      props.onFocus?.({
+        name: 'focus',
+        blur: () => input.blur()
+      });
     }
   );
 }
