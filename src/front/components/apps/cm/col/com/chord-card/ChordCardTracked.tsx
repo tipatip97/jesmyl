@@ -58,12 +58,30 @@ export default function ChordCardTracked({
     {lads.map((ladPos, ladPosi) => {
       const x = leftMargin + betweenLad * ladPos;
       const ladNum = ladPosi + baseLad + 1;
+      const markDotX = x - betweenLad / 2;
+      const markDotY = betweenStr * stringsCount ;
 
       return <React.Fragment key={`lad_${ladPos}`}>
         <polyline
           points={`${x},0 ${x},${betweenStr * stringsCount}`}
           className="chord-lad"
         />
+        {(ladNum === 5 || ladNum === 7 || ladNum === 9 || ladNum === 15 || ladNum === 17) &&
+          <polyline
+            points={`${markDotX},${markDotY} ${markDotX},${markDotY}`}
+            className="chord-lad-mark"
+          />}
+        {ladNum === 12 &&
+          <>
+            <polyline
+              points={`${markDotX - 4},${markDotY} ${markDotX - 4},${markDotY}`}
+              className="chord-lad-mark"
+            />
+            <polyline
+              points={`${markDotX + 4},${markDotY} ${markDotX + 4},${markDotY}`}
+              className="chord-lad-mark"
+            />
+          </>}
         <text
           className="chord-lad-number"
           x={x - (ladNum < 10 ? 20 : 38)}

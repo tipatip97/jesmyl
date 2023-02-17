@@ -23,6 +23,13 @@
         stroke-width: 2px;
     }
 
+    .chord-lad-mark {
+        stroke-linecap: round;
+        fill: none;
+        stroke: var(--color--4);
+        stroke-width: 5px;
+    }
+
     .chord-lad-number {
         font-size: 30px;
         font-weight: bolder;
