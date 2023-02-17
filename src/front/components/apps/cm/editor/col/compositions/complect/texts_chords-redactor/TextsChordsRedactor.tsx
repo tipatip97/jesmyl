@@ -1,5 +1,4 @@
 import EvaButton from "../../../../../../../../complect/eva-icon/EvaButton";
-import EvaIcon from "../../../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import mylib from "../../../../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../../../../Cm.store";
@@ -71,9 +70,14 @@ export default function TextsChordsRedactor({
                     ) || []
                   )}
                 </div>
-                <EvaIcon
+                <span>
+                  {!istcoln && /[A-H]b/.exec(col) && <EvaButton
+                    name="hash"
+                    onClick={() => exec(ccom.replaceBemoles(coli))}
+                  />}
+                </span>
+                <EvaButton
                   name="close"
-                  className="pointer"
                   onClick={() => exec(ccom.removeBlock(ccoln, coli))}
                 />
               </div>

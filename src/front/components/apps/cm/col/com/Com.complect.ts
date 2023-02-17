@@ -1,7 +1,8 @@
-
+import { MyLib } from "../../../../../complect/my-lib/MyLib";
 
 export const iRuUaReg = /[уеыаоэяиёюіїє ]/i;
 export const gSimpleHashChordReg = /[ACDEFGH]#?/g;
+export const gSimpleBemoleChordReg = /[ABCDEFGH]b?/g;
 export const gSimpleHashedEachLetterChordReg = /[A-H]#/g;
 
 export const simpleHashChords = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H'];
@@ -99,3 +100,8 @@ export const chordBemoleEquivalent: Record<string, string> = {
     'G#': 'Ab',
 };
 
+export const chordDiezEquivalent: Record<string, string> = {
+    "Bb": "A",
+    "Hb": "A",
+};
+MyLib.entries(chordBemoleEquivalent).forEach(([key, val]) => chordDiezEquivalent[val] = key);

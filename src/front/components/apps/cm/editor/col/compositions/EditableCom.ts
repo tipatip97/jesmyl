@@ -5,6 +5,7 @@ import { Cat } from "../../../col/cat/Cat";
 import { blockStyles } from "../../../col/com/block-styles/BlockStyles";
 import { StyleBlock } from "../../../col/com/block-styles/StyleBlock";
 import { Com } from "../../../col/com/Com";
+import { chordDiezEquivalent, gSimpleBemoleChordReg, gSimpleHashChordReg } from "../../../col/com/Com.complect";
 import { IExportableCom } from "../../../col/com/Com.model";
 import { IExportableOrderTop, INewExportableOrder } from "../../../col/com/order/Order.model";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
@@ -482,6 +483,17 @@ export class EditableCom extends Com {
         this[coln]?.splice(coli, 1);
 
         if (coln === 'chords') this.resetChordLabels();
+    }
+
+    replaceBemoles(coli: number) {
+        if (this.chords) {
+            const col = this.chords[coli];
+            if (col) {
+                console.log(col);
+                const val = col.replace(gSimpleBemoleChordReg, chord => chordDiezEquivalent[chord] || chord);
+                this.changeBlock('chords', coli, val);
+            }
+        }
     }
 
     isImpossibleToMigrateOrder(ord: EditableOrder, ordi: number, ords: EditableOrder[]) {
