@@ -16,20 +16,19 @@ export default function ComTools() {
   const dispatch = useDispatch();
   const ccom = useCcom();
   const fontSize = useSelector(fontSizeSelector);
-  const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const { closeAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   const [chordVisibleVariant] = useChordVisibleVariant();
 
   const { menuTools, toggleTopTool, comTopTools } = useMigratableComTools();
 
   if (!ccom) return null;
-  return (
-    <div className="abs-item flex column">
-      <div
-        className={`abs-item ${chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : ""}`}
-      >
-        <EvaIcon name="options-2-outline" className="abs-icon" />
-        <div className="title">Тональность</div>
-        <div className="abs-action flex around pointer">
+  return prepareAbsoluteBottomPopupContent({
+    items: [
+      {
+        className: chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : "",
+        icon: "options-2-outline",
+        title: 'Тональность',
+        rightNode: <>
           <EvaIcon
             name="minus"
             onClick={() => {
@@ -52,12 +51,12 @@ export default function ComTools() {
               dispatch(riseUpComUpdate());
             }}
           />
-        </div>
-      </div>
-      <div className="abs-item">
-        <EvaIcon name="format-text-variant-outline" className="abs-icon" />
-        <div className="title">Размер шрифта</div>
-        <div className="abs-action flex around pointer">
+        </>
+      },
+      {
+        title: 'Размер шрифта',
+        icon: 'format-text-variant-outline',
+        rightNode: <>
           <EvaIcon
             name="minus-outline"
             onClick={() => dispatch(setComFontSize(fontSize - 1))}
@@ -67,39 +66,33 @@ export default function ComTools() {
             name="plus-outline"
             onClick={() => dispatch(setComFontSize(fontSize + 1))}
           />
-        </div>
-      </div>
-
-      {menuTools.map(({ onClick, title, icon, tool }) => (
-        <div
-          key={tool}
-          className="abs-item abs-full"
-          onClick={() => {
+        </>,
+      },
+      menuTools.map(({ onClick, title, icon, tool }) => (
+        {
+          title,
+          icon,
+          iconWrapperClassName: `com-tool-icon-wrapper ${comTopTools.includes(tool) ? 'in-top-list' : ''}`,
+          onClick: () => {
             if (onClick()) return;
             closeAbsoluteBottomPopup();
-          }}
-          {...propsOfClicker({
+          },
+          ...propsOfClicker({
             onCtxMenu: (event) => {
               event.preventDefault();
               toggleTopTool(tool);
             }
-          })}
-        >
-          <div attr-mark-badge={comTopTools.includes(tool) ? '0' : null} attr-mark-badge-color-7="">
-            <EvaIcon name={icon} className="abs-icon" />
-          </div>
-          <div className="title">{title}</div>
-          <div className="abs-action" />
-        </div>
+          }),
+        }
+      ))
+    ],
+    footer: <div className="fade-05 full-width margin-gap-v">
+      {ccom.catMentions().map((mention, mentioni) => (
+        <React.Fragment key={`mentioni-${mentioni}`}>
+          {mentioni ? ", " : ""}
+          <span className="nowrap">{mention}</span>
+        </React.Fragment>
       ))}
-      <div className="fade-05 full-width margin-gap-v">
-        {ccom.catMentions().map((mention, mentioni) => (
-          <React.Fragment key={`mentioni-${mentioni}`}>
-            {mentioni ? ", " : ""}
-            <span className="nowrap">{mention}</span>
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-  );
+    </div>,
+  });
 }

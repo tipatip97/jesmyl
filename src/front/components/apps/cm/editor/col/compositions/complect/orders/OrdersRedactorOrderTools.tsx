@@ -9,6 +9,7 @@ import TheOrder from "../../../../../col/com/order/TheOrder";
 import { EditableCom } from "../../EditableCom";
 import { EditableOrder } from "./EditableOrder";
 import { ReactNode } from "react";
+import useAbsoluteBottomPopup from "../../../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 
 export default function OrdersRedactorOrderTools({
   ccom,
@@ -23,15 +24,16 @@ export default function OrdersRedactorOrderTools({
 }) {
   const { exec } = useExer(cmExer);
   const blockHeaderHtml = (textPre = "", textPost = "") =>
-    `${textPre && `${textPre} `}${
-      ord.isEmptyHeader ? <s>{blockHeader}</s> : blockHeader
+    `${textPre && `${textPre} `}${ord.isEmptyHeader ? <s>{blockHeader}</s> : blockHeader
     }${textPost && ` ${textPost}`}`;
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return (
-    <>
-      <div
-        className="abs-item abs-full"
-        onClick={() => {
+  return prepareAbsoluteBottomPopupContent({
+    items: [
+      {
+        title: 'Тип блока',
+        icon: 'cube-outline',
+        onClick: () => {
           modalService.open({
             title: "Тип блока",
             description: (
@@ -67,15 +69,12 @@ export default function OrdersRedactorOrderTools({
               } as never;
             }),
           });
-        }}
-      >
-        <EvaIcon name="cube-outline" className="abs-icon" />
-        <div className="title">Тип блока</div>
-        <div className="abs-action" />
-      </div>
-      <div
-        className="abs-item abs-full"
-        onClick={() => {
+        },
+      },
+      {
+        title: 'Аккорды',
+        icon: 'options-2-outline',
+        onClick: () => {
           modalService.open({
             title: "Прикреплённые аккорды",
             description: (
@@ -134,48 +133,33 @@ export default function OrdersRedactorOrderTools({
               };
             }),
           });
-        }}
-      >
-        <EvaIcon name="options-2-outline" className="abs-icon" />
-        <div className="title">Аккорды</div>
-        <div className="abs-action" />
-      </div>
-
-      <div
-        className="abs-item abs-full"
-        onClick={() => {
+        }
+      },
+      {
+        title: ord.isVisible ? "Скрыть блок" : "Показать блок",
+        icon: `eye${ord.isVisible ? "-off" : ""}-outline`,
+        onClick: () => {
           exec(
             ord.setField("v", ord.antiIsVisible, {
               b: blockHeader,
               def: 1,
             })
           );
-        }}
-      >
-        <EvaIcon
-          name={`eye${ord.isVisible ? "-off" : ""}-outline`}
-          className="abs-icon"
-        />
-        <div className="title">
-          {ord.isVisible ? "Скрыть блок" : "Показать блок"}
-        </div>
-        <div className="abs-action" />
-      </div>
-      {ord.isAnchor || ord.top.isInherit ? null : (
-        <div
-          className="abs-item abs-full"
-          onClick={() => exec(ccom.addOrderAnchor(ord))}
-        >
-          <EvaIcon name="link-outline" className="abs-icon" />
-          <div className="title">Ссылка на {ord.top.header?.()}</div>
-          <div className="abs-action" />
-        </div>
-      )}
-
-      {!ord.top.style?.isModulation ? null : (
-        <div
-          className="abs-item abs-full"
-          onClick={() => {
+        }
+      },
+      ord.isAnchor || ord.top.isInherit
+        ? null
+        : {
+          title: `Ссылка на ${ord.top.header?.()}`,
+          icon: 'link-outline',
+          onClick: () => exec(ccom.addOrderAnchor(ord)),
+        },
+      !ord.top.style?.isModulation
+        ? null
+        : {
+          title: 'Значение модуляции',
+          icon: 'flash-outline',
+          onClick: () => {
             modalService.open({
               title: "Установка значения модуляции",
               inputs: "."
@@ -206,116 +190,79 @@ export default function OrdersRedactorOrderTools({
                 }),
               buttons: ["Отмена"],
             });
-          }}
-        >
-          <EvaIcon name="flash-outline" className="abs-icon" />
-          <div className="title">Значение модуляции</div>
-          <div className="abs-action" />
-        </div>
-      )}
-
-      {ord.isAnchor ? (
-        <>
-          <div
-            className="abs-item abs-full"
-            onClick={() =>
-              exec(
-                ord.setField("o", ord.isOpened ? 0 : 1, {
-                  def: 0,
-                })
-              )
-            }
-          >
-            <EvaIcon name="link-outline" className="abs-icon" />
-            <div className="title">
-              {ord.isOpened ? "Скрывать" : "Показывать"} в свёрнутом режиме
-            </div>
-            <div className="abs-action" />
-          </div>
-        </>
-      ) : (
-        <>
-          {ord.texti == null ? null : (
-            <div
-              className="abs-item abs-full"
-              onClick={() => {
-                modalService.open({
-                  title: blockHeaderHtml("Установи Текстовый блок для блока"),
-                  inputs: ccom.texts?.map((text, texti) => {
-                    return !text
-                      ? null
-                      : {
-                          title: (
-                            <>
-                              <b>{texti - -1}</b>
-                              <pre>{text}</pre>
-                            </>
-                          ),
-                          type: "button",
-                          value: `Установить ${texti - -1}-й`,
-                          closable: true,
-                          onClick: () => {
-                            exec(
-                              ord.setField("t", texti, {
-                                def: ord.texti,
-                                i: ordi - -1,
-                                ist: 1,
-                              })
-                            );
-                          },
-                        };
-                  }),
-                  buttons: [{ title: "Отмена" }],
-                });
-              }}
-            >
-              <EvaIcon name="text-outline" className="abs-icon" />
-              <div className="title">Заменить текст</div>
-              <div className="abs-action" />
-            </div>
-          )}
-
-          <div
-            className="abs-item abs-full"
-            onClick={() =>
-              exec(
-                ord.setField("e", ord.isEmptyHeader ? 0 : 1, {
-                  def: 0,
-                })
-              )
-            }
-          >
-            <EvaIcon name="message-square-outline" className="abs-icon" />
-            <div className="title">
-              {ord.isEmptyHeader ? "Вернуть" : "Убрать"} название блока
-            </div>
-            <div className="abs-action" />
-          </div>
-        </>
-      )}
-      <div
-        className="abs-item abs-full"
-        onClick={async () => {
+          }
+        },
+      ord.isAnchor
+        ? {
+          title: `${ord.isOpened ? "Скрывать" : "Показывать"} в свёрнутом режиме`,
+          icon: 'link-outline',
+          onClick: () =>
+            exec(
+              ord.setField("o", ord.isOpened ? 0 : 1, {
+                def: 0,
+              })
+            )
+        }
+        : {
+          title: 'Заменить текст',
+          icon: 'text-outline',
+          onClick: () => {
+            modalService.open({
+              title: blockHeaderHtml("Установи Текстовый блок для блока"),
+              inputs: ccom.texts?.map((text, texti) => {
+                return !text
+                  ? null
+                  : {
+                    title: (
+                      <>
+                        <b>{texti - -1}</b>
+                        <pre>{text}</pre>
+                      </>
+                    ),
+                    type: "button",
+                    value: `Установить ${texti - -1}-й`,
+                    closable: true,
+                    onClick: () => {
+                      exec(
+                        ord.setField("t", texti, {
+                          def: ord.texti,
+                          i: ordi - -1,
+                          ist: 1,
+                        })
+                      );
+                    },
+                  };
+              }),
+              buttons: [{ title: "Отмена" }],
+            });
+          }
+        },
+      {
+        title: `${ord.isEmptyHeader ? "Вернуть" : "Убрать"} название блока`,
+        icon: 'message-square-outline',
+        onClick: () =>
+          exec(
+            ord.setField("e", ord.isEmptyHeader ? 0 : 1, {
+              def: 0,
+            })
+          )
+      },
+      {
+        title: `Удалить ${ord.isAnchor ? "ссылку на " : ""} ${blockHeader}`,
+        icon: 'trash-outline',
+        onClick: async () => {
           if (
             !(await modalService.confirm(
-              `Удалить ${blockHeader}?${
-                (ord.positions || []).length
-                  ? " Данное действие повлечёт за собой уничтожение аппликатуры в данном блоке."
-                  : ""
+              `Удалить ${blockHeader}?${(ord.positions || []).length
+                ? " Данное действие повлечёт за собой уничтожение аппликатуры в данном блоке."
+                : ""
               }`
             ))
           )
             return true;
           exec(ccom.removeOrderBlock(ord));
-        }}
-      >
-        <EvaIcon name="trash-outline" className="abs-icon" />
-        <div className="title">
-          Удалить {ord.isAnchor ? "ссылку на " : ""}
-          {blockHeader}
-        </div>
-        <div className="abs-action" />
-      </div>
-    </>
-  );
+        }
+      }
+    ]
+  });
 }
