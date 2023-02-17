@@ -21,6 +21,25 @@ export default function ObserveUrlResource({ onSuccess, availableWithTextQuery }
             <KeyboardInput
                 className="half-width"
                 placeholder="URL-адрес"
+                value={url}
+                onFocus={async (event) => {
+                    if (url) return;
+                    const val = await navigator.clipboard.readText();
+                    if (val) {
+                        try {
+                            const url = new URL(val);
+                            if (mp3Rules && !mp3Rules.some((u) => new URL(u.url).host === url.host)) {
+                                setErrorMessage('Скопированный текст содержит неизвестный источник');
+                            } else {
+                                setUrl(url.toString());
+                                event.blur();
+                                setErrorMessage('');
+                            }
+                        } catch (e) {
+                            setErrorMessage('Скопированный текст содержит невалидную ссылку');
+                        }
+                    }
+                }}
                 onInput={(value) => {
                     try {
                         const url = new URL(value);
@@ -45,7 +64,11 @@ export default function ObserveUrlResource({ onSuccess, availableWithTextQuery }
 
         <h2>Известные ресурсы:</h2>
         {mp3Rules?.map((rule) => {
-            return (!availableWithTextQuery || rule.textQuery) && <div key={rule.url} className="color--7">{rule.url}</div>;
+            return (!availableWithTextQuery || rule.textQuery) &&
+                <div
+                    key={rule.url}
+                    className={!url || url.startsWith(rule.url) ? "color--7" : ''}
+                >{rule.url}</div>;
         })}
     </div>;
 }

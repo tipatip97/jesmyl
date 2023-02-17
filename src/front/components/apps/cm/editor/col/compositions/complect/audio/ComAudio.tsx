@@ -115,15 +115,21 @@ export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: st
           ? <>
             <h2>Добавить аудио</h2>
             {!topHTML && <>
-              <div className="flex flex-gap pointer" onClick={() => {
-                const text = ccom.texts?.[0];
-                if (text) {
-                  const search = decodeURIComponent(text.replace(/\s+/g, '+'));
-                  window.open(`https://google.com/search?q=${search}`);
-                }
-              }} >
-                Найти песню в гугл
-                <EvaIcon name="google" />
+              <div>
+                <span
+                  className="children-middle pointer"
+                  onClick={() => {
+                    let max = 0;
+                    ccom.texts?.forEach((text) => text.length > max ? max = text.length : 0);
+                    const text = ccom.texts?.find((text) => text.length === max);
+                    if (text) {
+                      const url = new URL('https://google.com/search');
+                      url.searchParams.set('q', text);
+                      window.open(url.toString());
+                    }
+                  }}>
+                  Найти песню в гугл <EvaIcon name="google" />
+                </span>
               </div>
               <ObserveUrlResource
                 onSuccess={({ html, rule }) => {
