@@ -59,7 +59,7 @@ export default function ChordCardTracked({
       const x = leftMargin + betweenLad * ladPos;
       const ladNum = ladPosi + baseLad + 1;
       const markDotX = x - betweenLad / 2;
-      const markDotY = betweenStr * stringsCount ;
+      const markDotY = betweenStr * stringsCount;
 
       return <React.Fragment key={`lad_${ladPos}`}>
         <polyline

@@ -46,15 +46,6 @@
         stroke-linecap: round;
         stroke-width: 12px;
         stroke: var(--color--7);
-
-        &:not(.shadow) {
-            pointer-events: none;
-        }
-
-        &.shadow {
-            stroke: grey;
-            cursor: pointer;
-        }
     }
 
     .first-lad-counter {

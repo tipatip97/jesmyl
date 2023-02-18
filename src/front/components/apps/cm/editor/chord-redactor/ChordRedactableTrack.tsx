@@ -89,14 +89,16 @@ export default function ChordRedactableTrack({ redactableChord, modifyTrack }: {
                                 >&times;</text>
                                 {lads.map(ladNum => {
                                     const lad = track[ladNum] || 0;
+                                    const numStr = '' + strNum;
 
-                                    const strNumInLad = ('' + lad).indexOf('' + strNum);
+                                    const strNumInLad = ('' + lad).indexOf(numStr);
                                     const isPointed = lad > 0 && strNumInLad > -1;
                                     const x = leftMargin + (ladNum * betweenLad - betweenLad / 2);
+                                    const isProblem = isPointed && track.slice(ladNum + 1).some(lad => lad && (lad === -1 || lad === -6 || ('' + lad).includes(numStr) || (lad < 0 && (strNum > -lad / 10 && strNum < ((-lad / 10 - Math.trunc(-lad / 10)) * 10)))));
 
                                     return <polyline
                                         key={`chord-shadow-point-${ladNum}-${strNumi}`}
-                                        className='chord-point shadow'
+                                        className={`chord-point shadow${isProblem ? ' problem' : ''}`}
                                         points={`${x},${y} ${x},${y}`}
                                         onClick={() => {
                                             modifyTrack((track) => {

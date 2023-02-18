@@ -61,6 +61,24 @@
         }
     }
 
+    .chord-board {
+        .chord-point {
+            &:not(.shadow) {
+                pointer-events: none;
+            }
+
+            &.shadow {
+                stroke: grey;
+                cursor: pointer;
+            }
+
+            &.problem {
+                stroke-width: 18px;
+                stroke: var(--color--ko);
+            }
+        }
+    }
+
     .chord-base-title {
         background: var(--color--2);
     }
