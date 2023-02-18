@@ -30,6 +30,7 @@ export interface SokiServerEvent {
         value?: any,
         errorMessage?: string
     },
+    statistic?: SokiStatistic,
 }
 
 export interface SokiClientEventBody {
@@ -42,10 +43,20 @@ export interface SokiClientEventBody {
         requestId: number,
         key: string,
         value?: any,
-    }
+    },
+    subscribe?: SokiSubscribtionName,
+    unsubscribe?: SokiSubscribtionName,
 }
 
+export type SokiSubscribtionName = 'statistic';
+
 export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
+
+export interface SokiStatistic {
+    online: number,
+    authed: number,
+    usages: Partial<Record<SokiAppName, (string | null)[]>>,
+}
 
 export interface SokiClientEvent {
     body: SokiClientEventBody,

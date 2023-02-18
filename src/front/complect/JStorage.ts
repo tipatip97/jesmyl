@@ -14,12 +14,14 @@ export class JStorage<Scope> {
     listeners: Record<keyof Scope, Record<string, JStorageListener<Scope[keyof Scope]>>> = {} as never;
     initialized: (keyof Scope)[] = [] as never;
     updatetOnInit: (keyof Scope)[] = [] as never;
+    nonCachable: (keyof Scope)[] = [] as never;
 
     private dispatchers: Record<keyof Scope, (val: NonUndefined<Scope[any]>) => void> = {} as never;
 
-    constructor(appName: JStorageName) {
+    constructor(appName: JStorageName, config?: { nonCachable?: (keyof Scope)[] }) {
         this.prefix = `[${appName}]:`;
         this.appName = appName;
+        if (config?.nonCachable) this.nonCachable = config.nonCachable;
         Object.entries(localStorage).forEach(([name, val]: string[]) => {
             if (name.startsWith(this.prefix)) {
                 const key = name.replace(this.prefix, '') as keyof Scope;
@@ -108,7 +110,7 @@ export class JStorage<Scope> {
             if (val === null) { this.rem(key); return null; }
             const value = mylib.invokeOrGet(val)(this.properties[key]);
             const string = this.stringify(value);
-            return string && (localStorage[this.lsName(key)] = this.setValue(key, value, string, isRejectPropagation));
+            return string && this.setValue(key, value, string, isRejectPropagation);
         } catch (error) {
             return null;
         }
@@ -116,7 +118,7 @@ export class JStorage<Scope> {
 
     setString<Key extends keyof Scope>(key: Key, string: string): string | null {
         try {
-            return localStorage[this.lsName(key)] = this.setValue(key, this.parse(string), string);
+            return this.setValue(key, this.parse(string), string);
         } catch (error) {
             return null;
         }
@@ -127,6 +129,8 @@ export class JStorage<Scope> {
         this.properties[key] = val;
         this.strings[key] = string as string;
         this.keys.push(key);
+
+        if (!this.nonCachable.includes(key)) localStorage[this.lsName(key)] = string;
 
         if (!isRejectPropagation)
             try {

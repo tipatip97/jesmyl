@@ -8,14 +8,23 @@ import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
 import smylib, { SMyLib } from './complect/SMyLib';
 import { sokiAuther } from './complect/SokiAuther';
-import { SokiCapsule, SokiClientEvent, SokiServerEvent, SokiServicePack } from './soki.model';
+import { SokiCapsule, SokiClientEvent, SokiServerEvent, SokiServicePack, SokiStatistic, SokiSubscribtionName } from './soki.model';
 
 setPolyfills();
 ErrorCatcher.logAllErrors();
 
 filer.load().then().catch(() => { });
 
+const subscriptions: Map<SokiSubscribtionName, Map<WebSocket, SokiCapsule>> = new Map();
+
+export const statistic: SokiStatistic = {
+    online: 0,
+    authed: 0,
+    usages: {}
+};
+
 const capsules = new Map<WebSocket, SokiCapsule>();
+const authedCapsules = new Map<WebSocket, SokiCapsule>();
 const send = (data: SokiServerEvent, client?: WebSocket | null | ((capsule: SokiCapsule, client: WebSocket) => boolean), errorFor?: WebSocket | null) => {
     const event = JSON.stringify(data);
 
@@ -32,6 +41,26 @@ const send = (data: SokiServerEvent, client?: WebSocket | null | ((capsule: Soki
     }
 };
 
+const sendStatistic = () => {
+    const subscribers = subscriptions.get('statistic');
+    if (!subscribers?.size) return;
+
+    statistic.authed = 0;
+    statistic.online = 0;
+    statistic.usages = {};
+
+    capsules.forEach((capsule) => {
+        statistic.online++;
+        if (capsule.auth) statistic.authed++;
+        if (capsule.appName) {
+            if (statistic.usages[capsule.appName] === undefined) statistic.usages[capsule.appName] = [];
+            statistic.usages[capsule.appName]!.push(capsule.auth?.fio || null);
+        }
+    });
+
+    subscribers.forEach((_, client) => send({ statistic }, client));
+};
+
 const connect = (client: WebSocket) => {
     capsules.set(client, { auth: null });
     send({ connect: true }, client);
@@ -40,6 +69,9 @@ const connect = (client: WebSocket) => {
 const disconnect = (client: WebSocket) => {
     const disconnecter = capsules.get(client);
     const isDeleted = capsules.delete(client);
+    authedCapsules.delete(client);
+
+    sendStatistic();
 
     if (isDeleted && disconnecter)
         console.info(`DISCONNECTED: ${disconnecter.auth?.fio || 'Unknown'}`);
@@ -52,6 +84,8 @@ new WebSocketServer({
 })
     .on('connection', (client: WebSocket) => {
         connect(client);
+        sendStatistic();
+
         filer.setWatcher((appName, name, data) => {
             send({
                 pull: {
@@ -130,6 +164,8 @@ new WebSocketServer({
                 if (eventData.appName) {
                     if (capsule) capsule.appName = eventData.appName;
 
+                    sendStatistic();
+
                     const pull = filer.getContents(eventData.appName, eventBody.pull.lastUpdate, eventBody.pull.indexLastUpdate, capsule?.auth);
                     if (pull.contents.length || pull.indexContents.length)
                         send({ pull }, client);
@@ -162,6 +198,16 @@ new WebSocketServer({
                             }
                         }, client);
                     });
+            }
+
+            if (capsule && eventBody.subscribe) {
+                if (!subscriptions.has(eventBody.subscribe)) subscriptions.set(eventBody.subscribe, new Map());
+                subscriptions.get(eventBody.subscribe)!.set(client, capsule);
+                sendStatistic();
+            }
+
+            if (eventBody.unsubscribe) {
+                subscriptions.get(eventBody.unsubscribe)?.delete(client);
             }
 
             if (eventBody.execs) {

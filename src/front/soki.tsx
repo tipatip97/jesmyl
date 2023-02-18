@@ -11,20 +11,20 @@ import { appStorage, indexStorage } from './shared/jstorages';
 export class SokiTrip {
     appName: SokiAppName = 'cm';
     ws?: WebSocket;
-    isClosed = false;
+    isConnected = false;
     watches: ({ name: SokiEventName, cb: <Name extends SokiEventName>(event: SokiServerEvent[Name], name: Name) => void, err?: (event: any) => void })[] = [];
     onConnectWatchers: Record<string, (isConnected: boolean) => void> = {};
+    private onConnectSends: (() => void)[] = [];
 
     constructor() {
         this.appName = indexStorage.getOr('currentApp', 'cm');
     }
 
     start() {
-        this.isClosed = false;
         const ws = this.ws = new WebSocket(`wss://${environment.dns}/websocket/`);
 
         ws.addEventListener('close', () => {
-            this.isClosed = true;
+            this.isConnected = false;
             this._onConnect(false);
             setTimeout(() => this.start(), 1000);
         });
@@ -42,17 +42,19 @@ export class SokiTrip {
                 }
 
                 if (event) {
-                    SMyLib.entries(event as Record<string, SokiServerEvent['authorization']>)
+                    SMyLib.entries(event)
                         .forEach(([eventName, event]) => {
-                            this.watches.forEach(({ name, cb, err }) => name === eventName && event && (event.ok !== false ? cb(event, name) : err?.(event)));
+                            this.watches.forEach(({ name, cb, err }) => name === eventName && event && ((event as { ok: boolean }).ok !== false ? cb(event as never, name) : err?.(event)));
                         });
                     const appStore = appStorage[this.appName];
 
-                    if (event.connect != null) {
+                    if (event.connect !== undefined) {
                         if (event.connect) {
                             this._onConnect(true);
                             this.send({ connect: true });
                             this.pullCurrentAppData();
+                            this.onConnectSends.forEach(cb => cb());
+                            this.onConnectSends = [];
                         } else this.onUnauthorize();
                     }
 
@@ -82,6 +84,8 @@ export class SokiTrip {
                             })
                             .catch();
                     }
+
+                    indexStorage.refreshAreas(['statistic'], event as never);
                 }
             } catch (e) { }
         });
@@ -90,8 +94,9 @@ export class SokiTrip {
     }
 
     private _onConnect(isConnected: boolean) {
-        if (isConnected !== this.isClosed)
+        if (isConnected === this.isConnected)
             MyLib.entries(this.onConnectWatchers).forEach(([, cb]) => cb(isConnected));
+        this.isConnected = isConnected;
     }
 
     setLastUpdates(appName: SokiAppName, appLastUpdate?: number | null, inedxLastUpdate?: number | null) {
@@ -180,9 +185,7 @@ export class SokiTrip {
 
     send(body: SokiClientEvent['body']) {
         return new Promise<void>((res, rej) => {
-            if (this.isClosed) {
-                setTimeout(() => this.send(body), 1000);
-            } else {
+            const send = () => {
                 try {
                     if (this.ws) {
                         const sendEvent = {
@@ -197,7 +200,10 @@ export class SokiTrip {
                 } catch (e) {
                     rej('ERROR');
                 }
-            }
+            };
+
+            if (!this.isConnected) this.onConnectSends.push(send);
+            else send();
         }).catch((error) => {
             console.info(error);
             return error;

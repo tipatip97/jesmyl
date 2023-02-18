@@ -10,7 +10,7 @@ import { TunerStorage } from "../components/apps/tuner/Tuner.model";
 import { IndexStorage } from "../components/index/Index.model";
 
 export const appStorage: Record<JStorageName, JStorage<any>> = {
-    index: new JStorage<NavigationStorage<IndexStorage>>('index'),
+    index: new JStorage<NavigationStorage<IndexStorage>>('index', { nonCachable: ['statistic'] }),
     tuner: new JStorage<NavigationStorage<TunerStorage>>('tuner'),
     admin: new JStorage<NavigationStorage<AdminStorage>>('admin'),
     spy: new JStorage<NavigationStorage<SpyStorage>>('spy'),

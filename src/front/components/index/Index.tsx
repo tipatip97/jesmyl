@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { indexStorage } from "../../shared/jstorages";
 import { IndexApplication } from "./Index.model";
 import "./Index.scss";
-import { setApps, setAppVersion } from "./Index.store";
+import { setApps, setAppVersion, updateIndexStatistic } from "./Index.store";
 
 export default function Index({ content }: { content: ReactNode }) {
   const dispatch = useDispatch();
@@ -13,7 +13,8 @@ export default function Index({ content }: { content: ReactNode }) {
   });
 
   indexStorage.dispatch(dispatch)
-    .it('appVersion', setAppVersion);
+    .it('appVersion', setAppVersion)
+    .it('statistic', updateIndexStatistic);
 
   useEffect(() => {
     indexStorage.update("apps", listener);

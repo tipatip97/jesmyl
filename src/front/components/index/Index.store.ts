@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SokiStatistic } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
 import { NavRouting } from "../../complect/nav-configurer/Navigation.model";
@@ -19,6 +20,7 @@ const initialState: IndexState = {
   apps: indexStorage.getOr('apps', []),
   numModalUpdates: 0,
   errors: {},
+  statistic: null,
   userMessages: indexStorage.getOr("userMessages", []),
 };
 
@@ -28,6 +30,9 @@ export const slice = createSlice({
   reducers: {
     updateIndexRouting: (state, action: PayloadAction<NavRouting>) => {
       state.routing = action.payload;
+    },
+    updateIndexStatistic: (state, action: PayloadAction<SokiStatistic | null>) => {
+      state.statistic = action.payload;
     },
     setAuthData: (state, action: PayloadAction<Auth | null>) => {
       state.auth = action.payload;
@@ -63,6 +68,7 @@ export const slice = createSlice({
 
 export const {
   updateIndexRouting,
+  updateIndexStatistic,
   setError,
   setCurrentApp,
   setApps,
