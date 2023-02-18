@@ -14,7 +14,7 @@
     "name": "br",
     "title": "Библейский ринг",
     "description": "Всекрымский библейский ринг",
-    "disabled": true,
+    "hidden": true,
     "level": 1000
   },
   {
@@ -51,7 +51,7 @@
     "name": "alias",
     "title": "Алиас",
     "description": "The Alias Game",
-    "disabled": true,
+    "hidden": true,
     "level": 1000
   },
   {
@@ -63,7 +63,7 @@
     "name": "im",
     "title": "Империя",
     "description": "The Imperia Game",
-    "disabled": false,
+    "hidden": true,
     "level": 3
   }
 ]

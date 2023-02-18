@@ -19,7 +19,7 @@ const config: FilerAppConfig = {
             prepare: (apps: Application[], auth?: LocalSokiAuth | null) => {
                 const authLevel = auth?.level || 0;
                 return apps.map((app) => {
-                    if ((app.level || 0) <= authLevel) return app;
+                    if (!app.hidden && (app.level || 0) <= authLevel) return app;
                     else return null;
                 }).filter(app => app);
             }
