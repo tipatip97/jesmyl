@@ -11,6 +11,7 @@ export const rootDirective = dir.join('/');
 
 export interface SokiCapsule {
     auth: LocalSokiAuth | null,
+    appName?: SokiAppName,
 }
 
 export interface SokiServerEvent {

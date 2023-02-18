@@ -16,15 +16,19 @@ ErrorCatcher.logAllErrors();
 filer.load().then().catch(() => { });
 
 const capsules = new Map<WebSocket, SokiCapsule>();
-const send = (data: SokiServerEvent, client?: WebSocket | null, errorFor?: WebSocket | null) => {
+const send = (data: SokiServerEvent, client?: WebSocket | null | ((capsule: SokiCapsule, client: WebSocket) => boolean), errorFor?: WebSocket | null) => {
     const event = JSON.stringify(data);
 
-    if (client) client.send(event);
+    if (client instanceof WebSocket) client.send(event);
     else {
         const freeEvent = errorFor ? JSON.stringify({ ...data, errorMessage: null }) : '';
-        if (errorFor)
-            capsules.forEach((_, client) => client.send(errorFor === client ? event : freeEvent));
-        else capsules.forEach((_, client) => client.send(event));
+        if (errorFor) {
+            if (client == null) capsules.forEach((_, cli) => cli.send(errorFor === cli ? event : freeEvent));
+            else capsules.forEach((capsule, cli) => client(capsule, cli) && cli.send(errorFor === cli ? event : freeEvent));
+        } else {
+            if (client == null) capsules.forEach((_, cli) => cli.send(event));
+            else capsules.forEach((capsule, cli) => client(capsule, cli) && cli.send(event));
+        }
     }
 };
 
@@ -124,6 +128,8 @@ new WebSocketServer({
 
             if (eventBody.pull) {
                 if (eventData.appName) {
+                    if (capsule) capsule.appName = eventData.appName;
+
                     const pull = filer.getContents(eventData.appName, eventBody.pull.lastUpdate, eventBody.pull.indexLastUpdate, capsule?.auth);
                     if (pull.contents.length || pull.indexContents.length)
                         send({ pull }, client);
@@ -174,7 +180,7 @@ new WebSocketServer({
                             send({
                                 execs: { list, lastUpdate },
                                 errorMessage,
-                            }, null, client);
+                            }, (capsule) => capsule.appName === eventData.appName, client);
                         });
                     return;
                 } else send({
