@@ -15,8 +15,8 @@ const fetch = (url: string) => {
             res.on('end', () => {
                 resolve(Buffer.concat(data as never).toString());
             });
-        }).on('error', () => {
-            reject('ERROR 512535123');
+        }).on('error', (error) => {
+            reject(`Ошибка 512535123\n${error}`);
         });
     });
 };
@@ -27,7 +27,7 @@ export default function cmService(key: string, value: any) {
             const rules: CmMp3Rule[] = filer.contents.cm?.mp3Rules?.data ?? [];
             const rule = rules.find(({ url }) => value.startsWith(url));
             if (rule)
-                fetch(value).then((html) => resolve({ rule, html })).catch(reject);
+                fetch(value).then((html) => resolve({ rule, html })).catch((error) => reject(`Ошибка 97377213\n${error}`));
             else reject('Ошибка. Этот ресурс неизвестен');
             return;
         }
