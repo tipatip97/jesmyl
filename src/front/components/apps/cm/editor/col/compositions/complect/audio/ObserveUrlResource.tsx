@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { CmMp3ContainsPageResult } from "../../../../../../../../../back/apps/cm/CmBackend.model";
 import KeyboardInput from "../../../../../../../../complect/keyboard/KeyboardInput";
@@ -15,6 +15,17 @@ export default function ObserveUrlResource({ onSuccess, availableWithTextQuery }
     const [errorMessage, setErrorMessage] = useState('');
 
     const mp3Rules = useSelector(mp3RulesSelector);
+
+    useEffect(() => {
+        try {
+            const theUrl = new URL(url);
+            if (mp3Rules && !mp3Rules.some((u) => new URL(u.url).origin === theUrl.origin)) {
+                setErrorMessage('Неизвестный источник');
+            } else setErrorMessage('');
+        } catch (e) {
+            setErrorMessage('Невалидный URL-адрес');
+        }
+    }, [url, mp3Rules]);
 
     return <div>
         <div className="flex flex-between flex-gap">
@@ -40,23 +51,13 @@ export default function ObserveUrlResource({ onSuccess, availableWithTextQuery }
                         }
                     }
                 }}
-                onInput={(value) => {
-                    try {
-                        const url = new URL(value);
-                        if (mp3Rules && !mp3Rules.some((u) => new URL(u.url).host === url.host)) {
-                            setErrorMessage('Неизвестный источник');
-                        } else setErrorMessage('');
-                    } catch (e) {
-                        setErrorMessage('Невалидный URL-адрес');
-                    }
-                    setUrl(value);
-                }}
+                onInput={setUrl}
             />
             <SendButton
                 title="Обзор URL"
                 disabled={!url || !!errorMessage}
                 onSuccess={onSuccess}
-                onFailure={(errorMessage) => modalService.alert(errorMessage, 'Ошибка')}
+                onFailure={(errorMessage) => modalService.alert(<pre>{errorMessage}</pre>, 'Ошибка')}
                 onSend={() => sendService<CmMp3ContainsPageResult>('getResourceData', url)}
             />
         </div>
