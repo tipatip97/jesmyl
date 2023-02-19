@@ -124,7 +124,7 @@ export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: st
                     const text = ccom.texts?.find((text) => text.length === max);
                     if (text) {
                       const url = new URL('https://google.com/search');
-                      url.searchParams.set('q', text);
+                      url.searchParams.set('q', `${ccom.name} ${text.replace(/\n+/g, ' ')}`);
                       window.open(url.toString());
                     }
                   }}>
