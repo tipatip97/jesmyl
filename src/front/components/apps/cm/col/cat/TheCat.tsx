@@ -10,12 +10,11 @@ import "./Cat.scss";
 import { useCcat } from "./useCcat";
 
 export default function TheCat({ all }: { all?: boolean }) {
-  const [ccat, zeroCat] = useCcat();
+  const cat = useCcat(all);
   const { laterComs } = useLaterComList();
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
-  const cat = all ? zeroCat : ccat;
   const { nav, appRouteData: { ccomw } } = useCmNav();
 
   nav.onGeneralFooterButtonClick('all', 'TheCat')(() => scrollToCurrent(true));

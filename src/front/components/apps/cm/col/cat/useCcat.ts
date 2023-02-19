@@ -1,16 +1,14 @@
-import { useMemo } from "react";
 import useCmNav from "../../base/useCmNav";
-import { localCols } from "../../cols/useCols";
+import { useCols } from "../../cols/useCols";
 import { Cat } from "./Cat";
 
-export function useCcat(): [Cat | nil, Cat | undefined] {
+export function useCcat(isTakeZeroCat?: boolean): Cat | nil {
     const { appRouteData } = useCmNav();
+    const [cols] = useCols();
 
-    return useMemo(() => [
-        appRouteData.ccatw !== undefined
-            ? localCols?.cats.find((cat) => appRouteData.ccatw === cat.wid)
-            : undefined,
-        localCols?.cats.find((cat) => 0 === cat.wid)
-    ], [appRouteData.ccatw]);
-
+    return isTakeZeroCat
+        ? cols?.cats.find((cat) => 0 === cat.wid)
+        : appRouteData.ccatw !== undefined
+            ? cols?.cats.find((cat) => appRouteData.ccatw === cat.wid)
+            : undefined;
 }

@@ -8,11 +8,11 @@ import { Com } from "./Com";
 
 
 export default function useComPack(): [Com[] | nil, string] {
-    const [ccat, zcat] = useCcat();
     const { markedComs } = useMarks();
     const { currentMeeting } = useMeetings();
     const { route } = useCmNav();
     const { takeSelectedComs, selectedComws } = useSelectedComs();
+    const cat = useCcat(route?.includes('all'));
 
     return useMemo(() => {
         return route?.includes('marks')
@@ -22,11 +22,9 @@ export default function useComPack(): [Com[] | nil, string] {
                 : route?.includes('selected')
                     ? [takeSelectedComs(), " - Выбранное"]
                     : route?.includes('all')
-                        ? zcat
-                            ? [zcat.wraps.map(wrap => wrap.com), " - " + zcat.name]
+                        ? cat
+                            ? [cat.wraps.map(wrap => wrap.com), " - " + cat.name]
                             : [null, '']
-                        : ccat ?
-                            [ccat.wraps.map(wrap => wrap.com), " - " + ccat.name]
-                            : [null, ""];
-    }, [ccat, currentMeeting, markedComs, route, selectedComws, zcat]);
+                        : [null, ""];
+    }, [cat, currentMeeting, markedComs, route, selectedComws]);
 }
