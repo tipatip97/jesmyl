@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import propsOfClicker from "../clicker/propsOfClicker";
@@ -21,11 +21,14 @@ export default function KeyboardInput(props: KeyboardInputProps) {
   const input = useMemo(() => new KeyboardInputStorage(), []);
   const isNative = useSelector(isUseNativeKeyboardSelector);
   const [updates, setUpdates] = useState(0);
-  const nativeRef = useMemo<{ ref: HTMLTextAreaElement | null }>(() => ({ ref: null }), []);
+  const nativeRef = useRef<HTMLTextAreaElement>(null);
+  const [value, setValue] = useState(props.value);
+
+  useEffect(() => setValue(props.value), [props.value]);
 
   useEffect(() => {
-    !isNative && props.value && input.replaceAll(props.value, false, true);
-  }, [props.value, input, isNative]);
+    !isNative && value && input.replaceAll(value, false, true);
+  }, [value, input, isNative]);
 
   if (isNative) {
     const {
@@ -36,19 +39,25 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       onPaste,
       onFocus,
       type,
-      closeButton,
+      withoutCloseButton,
       setIsUnknownSymbols,
       mapChar,
       preferLanguage,
       ...otherProps
     } = props;
     const invoke = (callback: (value: string, prev: string | null) => void, text: string) => {
-      const prev = type === 'number' ? nativeRef.ref?.value.replace(/\D+/g, '') || '0' : nativeRef.ref?.value;
+      const prev = type === 'number' ? nativeRef.current?.value.replace(/\D+/g, '') || '0' : nativeRef.current?.value;
       const value = type === 'number' ? text.replace(/\D+/g, '') || '0' : text;
       callback(value, prev ?? null);
+      setValue(value);
     };
 
-    return <div className={`input-keyboard-flash-controlled input${multiline ? ' multiline' : ''} ${className || ''}`}>
+    return <div className={
+      'input-keyboard-flash-controlled input '
+      + (className || '')
+      + (multiline ? ' multiline' : '')
+      + (withoutCloseButton ? ' without-close-button' : '')
+    }>
       <textarea
         {...otherProps}
         className="native-input"
@@ -67,26 +76,22 @@ export default function KeyboardInput(props: KeyboardInputProps) {
             blur: () => (event.target || event.currentTarget).blur(),
           });
         })}
-        ref={el => {
-          if (el) {
-            if (multiline) el.rows = el.value.split('\n').length;
-            else el.rows = 1;
-            nativeRef.ref = el;
-          }
-        }}
+        rows={multiline ? value?.split('\n').length : 1}
+        ref={nativeRef}
+        value={value}
       />
-      {nativeRef.ref?.value && <div className="icon-button-container">
+      {!withoutCloseButton && value && <div className="icon-button-container">
         <EvaIcon
           name="close"
           className="icon-button close-button"
           onMouseDown={() => {
-            setTimeout(() => nativeRef.ref?.focus());
+            setTimeout(() => nativeRef.current?.focus());
 
-            if (nativeRef.ref) {
+            if (nativeRef.current) {
               const val = type === 'number' ? '0' : '';
-              onChange?.(val, nativeRef.ref.value || '');
-              onInput?.(val, nativeRef.ref.value || '');
-              nativeRef.ref.value = val;
+              onChange?.(val, nativeRef.current.value || '');
+              onInput?.(val, nativeRef.current.value || '');
+              setValue(val);
             }
           }}
         />

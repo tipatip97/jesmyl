@@ -15,7 +15,6 @@ export default function TextAreaRedactor({
 
   return <KeyboardInput
     multiline
-    closeButton
     className={"cleared-input com-editor-textarea full-width no-resize"}
     value={col}
     setIsUnknownSymbols={(char) => ["\r", "\t"].indexOf(char) > -1}

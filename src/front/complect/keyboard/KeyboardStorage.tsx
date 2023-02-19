@@ -58,7 +58,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
           + (this.isFocused ? " focused" : "")
           + (this.value ? "" : " empty-input")
           + (props.multiline ? " multiline" : "")
-          + (props.closeButton !== false ? "" : " without-close-button")
+          + (props.withoutCloseButton ? " without-close-button" : "")
           + (this.touchNavigationMode || this.isOverflowKeyDown ? " stable-cursor-mode" : "")
         }
         placeholder={props.placeholder}

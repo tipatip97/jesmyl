@@ -98,7 +98,7 @@ export default function NewComposition({ close }: { close: () => void }) {
           value={value}
           className="text-heap-textarea full-width"
           multiline
-          closeButton={false}
+          withoutCloseButton
           placeholder="Начни писать или вставь текст для создания песни"
           onChange={setTextAsValue}
         />
