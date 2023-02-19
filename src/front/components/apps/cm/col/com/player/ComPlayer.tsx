@@ -4,14 +4,15 @@ import JesmylLogo from '../../../../../../complect/jesmyl-logo/JesmylLogo';
 import './ComPlayer.scss';
 import ComPlayerTrack from './ComPlayerTrack';
 
-export default function ComPlayer({ src }: { src: string | string[] }) {
+export default function ComPlayer({ src, split }: { src: string, split?: string | RegExp | boolean }) {
     const audioRef = useRef<HTMLAudioElement>(null);
     const player = audioRef.current;
     const [isError, setIsError] = useState(false);
     const [isPlay, setIsPlay] = useState(false);
     const [isShowLoader, setIsShowLoader] = useState(false);
-    const variants = [src].flat().map((src) => src.trim());
     const [currentVariant, setCurrentVariant] = useState(0);
+    const splitter = split === true ? /\n+/ : split || null;
+    const variants = (splitter ? src.split(splitter).map((src) => src.trim()) : [src.trim()]);
     const currentSrc = variants[currentVariant];
 
     useEffect(() => {

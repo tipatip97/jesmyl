@@ -70,7 +70,7 @@ export default function EditComposition({
                 }
               )}
             </div>
-            {isOpenPlayer && ccom.audio && <div className="sticky com-player"><ComPlayer src={ccom.audio.split(/\n+/)} /></div>}
+            {isOpenPlayer && ccom.audio && <div className="sticky com-player"><ComPlayer src={ccom.audio} split /></div>}
             {outletContent}
           </>
         )
