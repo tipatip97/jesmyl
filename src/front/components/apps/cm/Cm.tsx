@@ -4,7 +4,7 @@ import { cmStorage } from "../../../shared/jstorages";
 import useCmNav, { translationNavPoint } from "./base/useCmNav";
 import useSelectedComs from "./base/useSelectedComs";
 import "./Cm.scss";
-import { updateCmChordTracks, updateEditorExecList, updateMeetingList } from "./Cm.store";
+import { updateCmChordTracks, updateEditorExecList, updateMeetingList, updateMp3Rules } from "./Cm.store";
 import { useCols } from "./cols/useCols";
 import { useEditableCols } from "./editor/col/useEditableCols";
 import useTranslation from "./translation/useTranslation";
@@ -25,6 +25,7 @@ export default function CmApplication({ content }: { content: ReactNode }) {
   cmStorage.dispatch(dispatch)
     .it('chordTracks', updateCmChordTracks)
     .it('meetings', updateMeetingList)
+    .it('mp3Rules', updateMp3Rules)
     .it('execs', updateEditorExecList);
 
   useEffect(() => nav.setData({ selectedComws }), [nav, selectedComws]);

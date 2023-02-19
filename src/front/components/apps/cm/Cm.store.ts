@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CmMp3Rule } from "../../../../back/apps/cm/CmBackend.model";
 import { Exer } from "../../../complect/exer/Exer";
 import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
@@ -52,6 +53,9 @@ export const slice = createSlice({
     },
     updateCmChordTracks: (state, action: PayloadAction<ChordPack>) => {
       state.chordTracks = action.payload;
+    },
+    updateMp3Rules: (state, action: PayloadAction<CmMp3Rule[] | und>) => {
+      state.mp3Rules = action.payload;
     },
     updateMeetingList: (state, action: PayloadAction<IExportableMeetings | und>) => {
       state.meetings = action.payload;
@@ -160,6 +164,7 @@ export const {
   updateCmChordTracks,
   riseUpAbsolutePopupUpdates,
   riseUpMeetingsUpdate,
+  updateMp3Rules,
 } = slice.actions;
 export default slice.actions;
 
