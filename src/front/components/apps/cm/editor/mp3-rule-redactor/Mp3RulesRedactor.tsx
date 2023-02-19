@@ -73,6 +73,7 @@ export default function Mp3RulesRedactor() {
             </h2>
             {isOpenNewRule && <Mp3RuleEditor
                 redact
+                newRule
                 onComplete={(rule) => {
                     updateNewRules([...newRules, rule]);
                     setIsOpenNewRule(false);

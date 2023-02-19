@@ -1,9 +1,14 @@
 import { ReactNode, useState } from "react";
+import { useSelector } from "react-redux";
 import { CmMp3Rule } from "../../../../../../back/apps/cm/CmBackend.model";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
+import { RootState } from "../../../../../shared/store";
 
-export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boolean, button?: ReactNode, onComplete?: (rule: CmMp3Rule) => void }) {
+const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
+
+export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boolean, button?: ReactNode, onComplete?: (rule: CmMp3Rule) => void, newRule?: boolean }) {
+    const mp3Rules = useSelector(mp3RulesSelector);
     const [url, setUrl] = useState(props.url || '');
     const [attr, setAttr] = useState(props.attr || '');
     const [textQuery, setTextQuery] = useState(props.textQuery || '');
@@ -21,7 +26,9 @@ export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boo
                             try {
                                 const url = new URL(value);
                                 const unnecessary = value.replace(url.origin, '');
-                                if (unnecessary) {
+                                if (props.newRule && mp3Rules?.some((rule) => rule.url === url.origin)) setErrorMessage('Такой URL-адрес уже есть');
+                                else  if (url.protocol !== 'https:') setErrorMessage('Ссылка должна начинаться с https://');
+                                else if (unnecessary) {
                                     setErrorMessage(`Ссылка должна быть на корень сайта (без ${unnecessary})`);
                                 } else setErrorMessage('');
                             } catch (e) {
@@ -67,7 +74,7 @@ export default function Mp3RuleEditor(props: Partial<CmMp3Rule> & { redact?: boo
                             setIsRedact(false);
                             props.onComplete?.({
                                 attr, query, isHTML, textQuery,
-                                url: new URL(url).origin, 
+                                url: new URL(url).origin,
                                 w: props.w ?? Date.now() + Math.random()
                             });
                         })}
