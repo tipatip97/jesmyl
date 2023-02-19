@@ -94,7 +94,6 @@ new WebSocketServer({
                     indexContents: appName !== 'index' ? [] : [{ key: name, value: data }],
                     lastUpdate: 0,
                     indexLastUpdate: 0,
-                    isNeedRefresh: true,
                 }
             });
         });

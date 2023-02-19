@@ -151,25 +151,23 @@ export class SokiTrip {
         });
         this.watch('pull')((pull) => {
             if (pull) {
-                const { contents, lastUpdate, indexLastUpdate, indexContents, isNeedRefresh } = pull;
+                const { contents, lastUpdate, indexLastUpdate, indexContents } = pull;
                 const appStore = appStorage[pull.appName];
 
-                if (isNeedRefresh) {
-                    const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown>) => {
-                        if (!pullContents.length) return;
+                const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown>) => {
+                    if (!pullContents.length) return;
 
-                        const fixes: string[] = [];
-                        const contents: Record<string, unknown> = {};
-                        pullContents.forEach(({ key, value }) => {
-                            contents[key] = value;
-                            fixes.push(key);
-                        });
-                        store.refreshAreas(fixes as never, contents);
-                    };
+                    const fixes: string[] = [];
+                    const contents: Record<string, unknown> = {};
+                    pullContents.forEach(({ key, value }) => {
+                        contents[key] = value;
+                        fixes.push(key);
+                    });
+                    store.refreshAreas(fixes as never, contents);
+                };
 
-                    update(contents, appStore);
-                    update(indexContents, appStorage.index);
-                }
+                update(contents, appStore);
+                update(indexContents, appStorage.index);
 
                 contents.forEach(({ key, value }) => appStore.set(key, value));
                 indexContents.forEach(({ key, value }) => indexStorage.set(key as never, value as never));

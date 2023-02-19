@@ -72,7 +72,6 @@ export interface PullEventValue {
     lastUpdate: number,
     indexLastUpdate: number,
     appName: SokiAppName,
-    isNeedRefresh?: boolean,
 }
 
 export interface SokiAuth extends BaseSokiAuth {
