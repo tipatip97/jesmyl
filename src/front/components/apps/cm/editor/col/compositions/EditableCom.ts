@@ -5,7 +5,7 @@ import { Cat } from "../../../col/cat/Cat";
 import { blockStyles } from "../../../col/com/block-styles/BlockStyles";
 import { StyleBlock } from "../../../col/com/block-styles/StyleBlock";
 import { Com } from "../../../col/com/Com";
-import { chordDiezEquivalent, gSimpleBemoleChordReg, gSimpleHashChordReg } from "../../../col/com/Com.complect";
+import { chordDiezEquivalent, gSimpleBemoleChordReg } from "../../../col/com/Com.complect";
 import { IExportableCom } from "../../../col/com/Com.model";
 import { IExportableOrderTop, INewExportableOrder } from "../../../col/com/order/Order.model";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";

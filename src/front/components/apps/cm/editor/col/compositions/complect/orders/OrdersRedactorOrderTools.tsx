@@ -1,15 +1,14 @@
-import EvaIcon from "../../../../../../../../complect/eva-icon/EvaIcon";
+import { ReactNode } from "react";
+import useAbsoluteBottomPopup from "../../../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../../../complect/my-lib/MyLib";
-import { blockStyles } from "../../../../../col/com/block-styles/BlockStyles";
 import { ChordVisibleVariant } from "../../../../../Cm.model";
 import { cmExer } from "../../../../../Cm.store";
+import { blockStyles } from "../../../../../col/com/block-styles/BlockStyles";
 import TheOrder from "../../../../../col/com/order/TheOrder";
 import { EditableCom } from "../../EditableCom";
 import { EditableOrder } from "./EditableOrder";
-import { ReactNode } from "react";
-import useAbsoluteBottomPopup from "../../../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 
 export default function OrdersRedactorOrderTools({
   ccom,

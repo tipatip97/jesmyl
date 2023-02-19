@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import propsOfClicker from "../../../../../complect/clicker/propsOfClicker";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import SwipeableContainer from "../../../../../complect/swipeable/SwipeableContainer";
 import { RootState } from "../../../../../shared/store";
@@ -27,7 +26,7 @@ export default function TheComposition() {
   const ccom = useCcom();
   const { addLaterComw } = useLaterComList();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { topTools, toggleTopTool } = useMigratableComTools();
+  const { topTools } = useMigratableComTools();
   const [comList] = useComPack();
   const [chordVisibleVariant] = useChordVisibleVariant();
   const fontSize = useSelector(fontSizeSelector);
