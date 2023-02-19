@@ -489,7 +489,6 @@ export class EditableCom extends Com {
         if (this.chords) {
             const col = this.chords[coli];
             if (col) {
-                console.log(col);
                 const val = col.replace(gSimpleBemoleChordReg, chord => chordDiezEquivalent[chord] || chord);
                 this.changeBlock('chords', coli, val);
             }
