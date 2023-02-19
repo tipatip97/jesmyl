@@ -4,6 +4,8 @@ import JesmylLogo from '../../../../../../complect/jesmyl-logo/JesmylLogo';
 import './ComPlayer.scss';
 import ComPlayerTrack from './ComPlayerTrack';
 
+let currentAudioNode: HTMLAudioElement | und;
+
 export default function ComPlayer({ src, split }: { src: string, split?: string | RegExp | boolean }) {
     const audioRef = useRef<HTMLAudioElement>(null);
     const player = audioRef.current;
@@ -61,7 +63,11 @@ export default function ComPlayer({ src, split }: { src: string, split?: string 
                     : <>
                         <EvaButton name={`${isPlay ? 'pause' : 'play'}-circle`} onClick={() => {
                             if (isPlay) player.pause();
-                            else player.play();
+                            else {
+                                currentAudioNode?.pause();
+                                currentAudioNode = player;
+                                player.play();
+                            }
                             setIsPlay(!isPlay);
                         }} />
 

@@ -76,7 +76,7 @@ export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: st
       {audio
         ? audio.split('\n').map((src, srci, srca) => {
           if (!src) return null;
-          return <div key={src} className="flex flex-gap margin-gap full-width">
+          return <div key={src} className="flex flex-gap margin-gap-v full-width">
             <ComPlayer src={src} />
             <EvaButton
               className="error-message"
@@ -95,7 +95,7 @@ export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: st
         <h2>Удалённые аудио</h2>
         {MyLib.entries(removedSrcs).map(([index, src]) => {
           if (!src) return null;
-          return <div key={src} className="flex flex-gap margin-gap full-width">
+          return <div key={src} className="flex flex-gap margin-gap-v full-width">
             <ComPlayer src={src} />
             <EvaButton
               name="plus-circle"
@@ -142,7 +142,7 @@ export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: st
               if (src && uniqs.indexOf(src) < 0) {
                 uniqs.push(src);
 
-                return <div key={src} className="flex flex-gap margin-gap full-width">
+                return <div key={src} className="flex flex-gap margin-gap-v full-width">
                   <ComPlayer src={src} />
                   <EvaButton
                     name="plus-circle"
