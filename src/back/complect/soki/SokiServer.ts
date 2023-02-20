@@ -20,11 +20,10 @@ const subscriptions: Map<SokiSubscribtionName, Map<WebSocket, SokiCapsule>> = ne
 export const statistic: SokiStatistic = {
     online: 0,
     authed: 0,
-    usages: {}
+    usages: {},
 };
 
 const capsules = new Map<WebSocket, SokiCapsule>();
-const authedCapsules = new Map<WebSocket, SokiCapsule>();
 const send = (data: SokiServerEvent, client?: WebSocket | null | ((capsule: SokiCapsule, client: WebSocket) => boolean), errorFor?: WebSocket | null) => {
     const event = JSON.stringify(data);
 
@@ -69,7 +68,7 @@ const connect = (client: WebSocket) => {
 const disconnect = (client: WebSocket) => {
     const disconnecter = capsules.get(client);
     const isDeleted = capsules.delete(client);
-    authedCapsules.delete(client);
+    subscriptions.forEach((subs) => subs.delete(client));
 
     sendStatistic();
 
