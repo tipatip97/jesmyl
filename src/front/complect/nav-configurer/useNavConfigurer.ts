@@ -6,7 +6,7 @@ import { RootState } from "../../shared/store";
 import mylib from "../my-lib/MyLib";
 import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
-import { NavigationStorage, NavPhasePoint, NavPhasePointVariated, NavPlaceVariated, NavRouteVariated, UseNavAction } from "./Navigation.model";
+import { NavigationStorage, NavPhasePoint, NavPhasePointVariated, NavPlaceVariated, NavRouteVariated, NavRouting, UseNavAction } from "./Navigation.model";
 
 export default function useNavConfigurer<T, Storage extends NavigationStorage<T>, NavData = {}>(
     appName: AppName,
@@ -17,7 +17,7 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
     const [isFullScreen, switchFullscreen] = useFullScreen();
     const indexRouting = useSelector((state: RootState) => state.index.routing);
     const appRouting = indexRouting?.[appName];
-    const route = appRouting?.current == null ? null : appRouting.routes.find(([phase]) => appRouting.current === phase);// || (nav.rootPhase ? [nav.rootPhase] : nav.routes[0].phase);
+    const route = appRouting?.current == null ? null : appRouting.routes.find(([phase]) => appRouting.current === phase);
     const appRouteData = (appRouting?.data || {}) as Partial<NavData>;
 
     const ret = {
@@ -44,14 +44,14 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
             if (isPreventSave) return;
             indexStorage.set('routing', routing);
         },
-        navigate: (topRoute: NavRouteVariated<NavData>, isPreventSave?: boolean, isLocalStorageData?: boolean) => {
+        navigate: (topRoute: NavRouteVariated<NavData>, isPreventSave?: boolean, routingData?: (currentRouting: NavRouting | null, localData?: NavRouting | null) => NavRouting | nil): NavRouting | und => {
             const theRoute = mylib.isArr(topRoute) ? topRoute : topRoute?.route ?? null;
             const theData = mylib.isArr(topRoute) ? null : topRoute?.data;
 
             const route = theRoute && nav.getGoToRoute([], theRoute);
 
             if (route || theRoute === null) {
-                const theRouting = isLocalStorageData ? indexStorage.get('routing') : indexRouting;
+                const theRouting = routingData?.(indexRouting, indexStorage.get('routing')) ?? indexRouting;
                 const appRouting = theRouting?.[appName];
 
                 let routes = appRouting?.routes || [];
@@ -87,8 +87,9 @@ export default function useNavConfigurer<T, Storage extends NavigationStorage<T>
                 };
 
                 dispatch(updateIndexRouting(routing));
-                if (isPreventSave) return;
+                if (isPreventSave) return routing;
                 indexStorage.set('routing', routing);
+                return routing;
             }
         },
         goTo: (topPhase: NavPlaceVariated<NavData>, relativePoint?: NavPhasePoint | nil, isPreventSave?: boolean) => {

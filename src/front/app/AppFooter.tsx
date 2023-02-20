@@ -56,16 +56,16 @@ export default function AppFooter({ app }: { app: AppName }) {
       {putItems(
         nav,
         (phase) => {
-          navigate(phase, false, true);
-          if (indexRoute) setTimeout(() => indexNavigate(null, false, true));
+          const routing = navigate(phase);
+          if (indexRoute) setTimeout(() => indexNavigate(null, false, () => routing));
         },
         ([phase]) => indexPhase == null && route?.[0] === phase
       )}
       {putItems(
         indexNav,
         () => {
-          indexNavigate(["other"], false, true);
-          navigate(null, false, true);
+          const routing = indexNavigate(["other"]);
+          navigate(null, false, () => routing);
         },
         () => indexPhase != null
       )}

@@ -36,8 +36,8 @@ export default function useApps<NavData>() {
                 dispatch(setCurrentApp(appName));
                 const rootPhase = appConfigs[appName].nav.rootPhase;
                 if (rootPhase || phase) {
-                    appConfigs[appName].navigate(phase ?? [rootPhase!]);
-                    appConfigs.index.navigate(null);
+                    const routing = appConfigs[appName].navigate(phase ?? [rootPhase!]);
+                    appConfigs.index.navigate(null, false, () => routing);
                 }
             };
 
