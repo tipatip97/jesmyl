@@ -57,12 +57,15 @@
                 }
 
                 >.app-modal-body-input-list {
-                    padding: 10px 0;
+                    padding: 10px var(--padding);
 
                     >.app-modal-body-input-list-item>.app-modal-body-input-list-item-input {
+                        display: flex;
+                        align-items: center;
                         width: 100%;
                         min-height: 2em;
                         outline: none;
+                        background: var(--color--1);
                     }
                 }
             }
