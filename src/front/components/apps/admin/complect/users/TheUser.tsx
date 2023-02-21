@@ -1,7 +1,7 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import TheButton from "../../../../../complect/Button";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../../complect/modal/Modal.service";
-import SendButton from "../../../../../complect/SendButton";
 import { adminExer } from "../../Admin.store";
 import PhaseAdminEditorContainer from "../../phase-editor-container/PhaseAdminEditorContainer";
 import UserMore from "./UserMore";
@@ -22,26 +22,50 @@ export default function TheUser() {
           <div className="flex margin-gap">
             Уровень доступа - {currentUser.level}
           </div>
-          <SendButton
-            title="Изменить уровень доступа"
-            onSend={async () => {
-              const passphrase = await modalService.prompt('пароль');
-              if (!passphrase) return;
-              const level = await modalService.prompt('Изменить уровень доступа', currentUser.level + '');
-
-              if (level)
-                return adminExer.send({
-                  action: 'setUserLevel',
-                  method: 'set',
-                  args: {
-                    level: +level,
-                    fio: currentUser.name,
-                    login: currentUser.login,
-                    passphrase
-                  },
+          <TheButton
+            onClick={() => {
+              return new Promise((resolve) => {
+                let passphrase = '';
+                let level = currentUser.level;
+                modalService.open({
+                  title: 'Уровень доступа',
+                  inputs: [
+                    {
+                      title: 'пароль',
+                      onInput: ({ value }) => passphrase = value,
+                    },
+                    {
+                      title: 'Уровень доступа',
+                      value: () => '' + level,
+                      onInput: ({ value }) => level = +value,
+                      type: 'number',
+                    }
+                  ],
+                  buttons: [
+                    {
+                      title: 'Изменить',
+                      onClick: () => {
+                        if (level && passphrase)
+                          return adminExer.send({
+                            action: 'setUserLevel',
+                            method: 'set',
+                            args: {
+                              level,
+                              fio: currentUser.name,
+                              login: currentUser.login,
+                              passphrase
+                            },
+                          }).then(resolve).catch();
+                      }
+                    },
+                    {
+                      title: 'отмена',
+                    }
+                  ],
                 });
+              });
             }}
-          />
+          >Изменить уровень доступа</TheButton>
           <div className="">Сообщения от пользователя</div>
           <div className="messages-box">
             {getMessages(currentUser).map((message) => (
