@@ -4,11 +4,11 @@ import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { qrCodeMaster } from "../../../../../../complect/qr-code/QRCodeMaster";
 import useQRMaster from "../../../../../../complect/qr-code/useQRMaster";
-import { spyStorage } from "../../../../../../shared/jstorages";
 import { RootState } from "../../../../../../shared/store";
 import useAuth from "../../../../../index/useAuth";
 import { OfflineGameShare, SpyRoom, SpyRoomMember, SpyRoomMemberStatus } from "../../../Spy.model";
 import { setSpyCurrentRoomw, updateSpyOfflineGame, updateSpyOfflineRooms } from "../../../Spy.store";
+import spyStorage from "../../../spyStorage";
 import useSpyNav from "../../../useSpyNav";
 import useSpyLocations, { secretSpyRole, SPY_ROLE, unsecretSpyRole } from "../../useSpyLocations";
 

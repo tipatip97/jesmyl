@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { spyStorage } from "../../../shared/jstorages";
 import { OfflineGame, SpyPassport, SpyRoom, SpyState } from "./Spy.model";
+import spyStorage from "./spyStorage";
 
 
 export const spyExer = new Exer('spy', spyStorage);

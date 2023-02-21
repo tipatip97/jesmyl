@@ -33,7 +33,6 @@ export default function useLeaderContexts() {
             dispatch(riseUpNumUpdatesContexts());
             return localContexts;
         },
-        updateContextsImportable: (contexts: LeaderContextsImportable) => dispatch(updateLeaderContexts(contexts)),
         publicateNewContext: (context: LeaderContextCreatable) => {
             leaderExer.send({
                 action: 'addContext',

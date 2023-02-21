@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cmStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
 import useCmNav from "../../base/useCmNav";
 import { riseUpMeetingsUpdate, setCurrentEventw } from "../../Cm.store";
 import { localCols, useCols } from "../../cols/useCols";
 import { MeetingsEvent } from "./MeetingsEvent";
 import { Meetings } from "./Meetings";
+import cmStorage from "../../cmStorage";
 
 let localMeetings: Meetings | nil;
 let currentMeeting: MeetingsEvent | nil;

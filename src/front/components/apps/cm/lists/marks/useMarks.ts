@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
-import { cmStorage } from "../../../../../shared/jstorages";
 import { setMarkList } from "../../Cm.store";
+import cmStorage from "../../cmStorage";
 import { Com } from "../../col/com/Com";
 import { useCols } from "../../cols/useCols";
 

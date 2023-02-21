@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppName } from "../../app/App.model";
 import { updateIndexRouting } from "../../components/index/Index.store";
-import { indexStorage } from "../../shared/jstorages";
+import indexStorage from "../../components/index/indexStorage";
 import { RootState } from "../../shared/store";
 import mylib from "../my-lib/MyLib";
 import useFullScreen from "../useFullscreen";

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import mylib, { MyLib } from "../../../../../complect/my-lib/MyLib";
-import { leaderStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
 import useAuth from "../../../../index/useAuth";
 import { GamesStoreImportable } from "../../Leader.model";
 import { leaderExer, updateRrrorSentComments, updateSendingComments } from "../../Leader.store";
+import leaderStorage from "../../leaderStorage";
 import useGames from "../games/useGames";
 import { LeaderCommentImportable, SendingComment, SendingCommentArea, SendingComments, SendingCommentsAreaName } from "./LeaderComment.model";
 

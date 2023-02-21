@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CmMp3Rule } from "../../../../back/apps/cm/CmBackend.model";
 import { Exer } from "../../../complect/exer/Exer";
-import { cmStorage } from "../../../shared/jstorages";
 import { FontSizeContainPropsPosition } from "./base/font-size-contain/FontSizeContain.model";
 import { ChordVisibleVariant, CmRollMode, CmState, FavoriteMeetings, PlayerHideMode } from "./Cm.model";
+import cmStorage from "./cmStorage";
 import { ChordPack } from "./col/com/chord-card/ChordCard.model";
 import { MigratableComToolName } from "./col/com/Com.model";
 import { Exec } from "./editor/CmEditor.model";

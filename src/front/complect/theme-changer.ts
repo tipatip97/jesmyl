@@ -1,4 +1,4 @@
-import { indexStorage } from "../shared/jstorages";
+import indexStorage from "../components/index/indexStorage";
 
 const minTouches = 3;
 const maxTouches = 3;

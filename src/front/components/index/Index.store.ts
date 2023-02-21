@@ -3,11 +3,11 @@ import { SokiStatistic } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
 import { NavRouting } from "../../complect/nav-configurer/Navigation.model";
-import { indexStorage } from "../../shared/jstorages";
 import {
   Auth, IndexApplication, IndexState,
   IndexStateError
 } from "./Index.model";
+import indexStorage from "./indexStorage";
 
 export const indexExer = new Exer('index', indexStorage);
 

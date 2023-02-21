@@ -2,7 +2,7 @@
 import { ExecutionDict } from "../../../back/complect/executer/Executer.model";
 import { JStorageName } from "../../app/App.model";
 import { Auth } from "../../components/index/Index.model";
-import { indexStorage } from "../../shared/jstorages";
+import indexStorage from "../../components/index/indexStorage";
 import { soki } from "../../soki";
 import { JStorage } from "../JStorage";
 import modalService from "../modal/Modal.service";

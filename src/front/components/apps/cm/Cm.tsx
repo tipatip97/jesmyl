@@ -1,10 +1,10 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { cmStorage } from "../../../shared/jstorages";
 import useCmNav, { translationNavPoint } from "./base/useCmNav";
 import useSelectedComs from "./base/useSelectedComs";
 import "./Cm.scss";
 import { updateCmChordTracks, updateEditorExecList, updateMeetingList, updateMp3Rules } from "./Cm.store";
+import cmStorage from "./cmStorage";
 import { useCols } from "./cols/useCols";
 import { useEditableCols } from "./editor/col/useEditableCols";
 import useTranslation from "./translation/useTranslation";

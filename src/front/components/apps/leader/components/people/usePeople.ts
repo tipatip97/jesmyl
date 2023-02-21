@@ -21,7 +21,6 @@ export default function usePeople() {
             localPeople = new People(val);
             dispatch(riseUpNumUpdatesPeople());
         },
-        updatePeopleImportable: (people: PeopleImportable) => dispatch(updateLeaderPeople(people)),
     };
     return ret;
 }

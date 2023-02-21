@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { adminStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
 import { UserMessage } from "../../../../index/Index.model";
 import { IExportableUser, UserVisits } from "../../Admin.model";
 import { setCurrentUser, updateUserList, updateUserVisits } from "../../Admin.store";
+import adminStorage from "../../adminStorage";
 import useAdminNav from "../../useAdminNav";
 import { User } from "./User";
 

@@ -1,27 +1,26 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import modalService from "../../../complect/modal/Modal.service";
-import { leaderStorage } from "../../../shared/jstorages";
 import useLeaderComments from "./components/comments/useLeaderComments";
 import useLeaderContexts from "./components/contexts/useContexts";
 import useCgame from "./components/games/useGames";
 import useLeaderGroups from "./components/groups/useGroups";
 import usePeople from "./components/people/usePeople";
 import "./Leader.scss";
-import { updateGamesTimers } from "./Leader.store";
+import { updateGamesStore, updateGamesTimers, updateLeaderContexts, updateLeaderPeople } from "./Leader.store";
+import leaderStorage from "./leaderStorage";
 
 export default function LeaderApplication({ content }: { content: ReactNode }) {
   const dispatch = useDispatch();
-  const { updatePeople, peopleImportable, updatePeopleImportable, people } =
+  const { updatePeople, peopleImportable, people } =
     usePeople();
-  const { updateGames, gamesImportable, updateGamesImportable } = useCgame();
+  const { updateGames, gamesImportable } = useCgame();
   const { sendAllComments, sendingComments } = useLeaderComments();
   const {
     updateContexts,
     setCurrentContext,
     ccontext,
     contextsImportable,
-    updateContextsImportable,
   } = useLeaderContexts();
   const { resetCurrentGroup } = useLeaderGroups();
 
@@ -69,19 +68,11 @@ export default function LeaderApplication({ content }: { content: ReactNode }) {
     if (peopleImportable) updatePeople(peopleImportable);
   }, [peopleImportable]);
 
-  leaderStorage.listen("games", "LeaderApplication", (games) => {
-    if (games) updateGamesImportable(games);
-  });
-
-  leaderStorage.listen("people", "LeaderApplication", (people) => {
-    if (people) updatePeopleImportable(people);
-  });
-  leaderStorage.listen("contexts", "LeaderApplication", (contexts) => {
-    if (contexts) updateContextsImportable(contexts);
-  });
-  leaderStorage.listen("gameTimers", "LeaderApplication", (gameTimers) => {
-    if (gameTimers) dispatch(updateGamesTimers(gameTimers));
-  });
+  leaderStorage.dispatch(dispatch)
+    .it("games", updateGamesStore)
+    .it("people", updateLeaderPeople)
+    .it("contexts", updateLeaderContexts)
+    .it("gameTimers", updateGamesTimers);
 
   return <>{content}</>;
 }

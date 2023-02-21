@@ -1,12 +1,15 @@
 import { ReactNode } from "react";
-import { adminStorage } from "../../../shared/jstorages";
+import { useDispatch } from "react-redux";
+import adminStorage from "./adminStorage";
 import useUsers from "./complect/users/useUsers";
 
 export default function AdminApp({ content }: { content: ReactNode }) {
+  const dispatch = useDispatch();
   const { updateVisits, updateUserList } = useUsers();
 
-  adminStorage.listen("userVisits", "AdminApp", (val) => updateVisits(val));
-  adminStorage.listen("userList", "AdminApp", (val) => updateUserList(val));
+  adminStorage.dispatch(dispatch)
+    .it("userVisits", updateVisits)
+    .it("userList", updateUserList);
 
   return <>{content}</>;
 }

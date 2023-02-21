@@ -1,7 +1,5 @@
-import { cmStorage } from "../../../../../shared/jstorages";
+import cmStorage from "../../cmStorage";
 import { EeStorageStoreType } from "./EeStorage.model";
-
-
 
 export class EeStorage {
     store?: EeStorageStoreType;

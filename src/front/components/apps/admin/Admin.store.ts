@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { adminStorage } from "../../../shared/jstorages";
 import { AdminState, IExportableUser, UserVisits } from "./Admin.model";
+import adminStorage from "./adminStorage";
 
 
 export const adminExer = new Exer('admin', adminStorage);

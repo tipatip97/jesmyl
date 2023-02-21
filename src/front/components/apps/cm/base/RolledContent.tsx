@@ -2,10 +2,10 @@ import { HTMLAttributes, PropsWithChildren } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullScreen from "../../../../complect/useFullscreen";
-import { cmStorage } from "../../../../shared/jstorages";
 import { RootState } from "../../../../shared/store";
 import { CmRollMode } from "../Cm.model";
 import { changeRollMode } from "../Cm.store";
+import cmStorage from "../cmStorage";
 import useCmNav from "./useCmNav";
 
 export default function RollControled(

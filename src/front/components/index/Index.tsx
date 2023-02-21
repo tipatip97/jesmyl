@@ -1,9 +1,9 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { indexStorage } from "../../shared/jstorages";
 import { IndexApplication } from "./Index.model";
 import "./Index.scss";
 import { setApps, setAppVersion, updateIndexStatistic } from "./Index.store";
+import indexStorage from "./indexStorage";
 
 export default function Index({ content }: { content: ReactNode }) {
   const dispatch = useDispatch();

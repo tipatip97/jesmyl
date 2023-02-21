@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import mylib, { MyLib } from "../../../../../../complect/my-lib/MyLib";
-import { leaderStorage } from "../../../../../../shared/jstorages";
 import { RootState } from "../../../../../../shared/store";
 import useIsRedactArea from "../../../complect/useIsRedactArea";
 import {
   riseUpNumUpdatesTimers
 } from "../../../Leader.store";
+import leaderStorage from "../../../leaderStorage";
 import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
 import useGames from "../useGames";
 import LeaderGameTimer from "./GameTimer";

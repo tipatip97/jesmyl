@@ -1,10 +1,10 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../complect/exer/useExer";
 import modalService from "../../../../../complect/modal/Modal.service";
-import { adminStorage } from "../../../../../shared/jstorages";
 import { UserMessage } from "../../../../index/Index.model";
 import useAuth from "../../../../index/useAuth";
 import { adminExer } from "../../Admin.store";
+import adminStorage from "../../adminStorage";
 import useUsers from "./useUsers";
 
 export default function UserMore({ message }: { message: UserMessage }) {

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cmStorage } from "../../../../../shared/jstorages";
 import { RootState } from "../../../../../shared/store";
 import useCmNav from "../../base/useCmNav";
 import { riseUpMeetingsUpdate, setCurrentEventw } from "../../Cm.store";
+import cmStorage from "../../cmStorage";
 import { IExportableMeetings } from "../../lists/meetings/Meetings.model";
 import { useEditableCols } from "../col/useEditableCols";
 import { editEventNavPhasePoint } from "../editorNav";

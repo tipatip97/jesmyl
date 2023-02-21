@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import mylib from "../../../../complect/my-lib/MyLib";
-import { cmStorage } from "../../../../shared/jstorages";
 import { RootState } from "../../../../shared/store";
 import { updateSelectedComws } from "../Cm.store";
+import cmStorage from "../cmStorage";
 import { Com } from "../col/com/Com";
 import { useCols } from "../cols/useCols";
 

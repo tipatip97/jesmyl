@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../shared/store";
-import { cmStorage } from "../../../../shared/jstorages";
 import { updateLaterComwList } from "../Cm.store";
+import cmStorage from "../cmStorage";
 import { Com } from "../col/com/Com";
 import { Cols } from "../cols/Cols";
 import { useCols } from "../cols/useCols";

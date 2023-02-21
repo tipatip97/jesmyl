@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { leaderStorage } from "../../../shared/jstorages";
 import { defaultSendingComments, SendingComments } from "./components/comments/LeaderComment.model";
 import { LeaderContextsImportable } from "./components/contexts/Contexts.model";
 import { StoragedGameTimerImportableDict } from "./components/games/timers/GameTimer.model";
 import { HumanListSortVariant, PeopleImportable } from "./components/people/People.model";
 import { GamesStoreImportable, LeaderState } from "./Leader.model";
+import leaderStorage from "./leaderStorage";
 
 export const leaderExer = new Exer('leader', leaderStorage);
 

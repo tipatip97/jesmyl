@@ -6,7 +6,8 @@ import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
 import modalService from './complect/modal/Modal.service';
 import mylib, { MyLib } from './complect/my-lib/MyLib';
-import { appStorage, indexStorage } from './shared/jstorages';
+import indexStorage from './components/index/indexStorage';
+import { appStorage } from './shared/jstorages';
 
 export class SokiTrip {
     appName: SokiAppName = 'cm';
