@@ -1,7 +1,6 @@
 import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
-import { SMyLib } from '../back/complect/soki/complect/SMyLib';
-import { SokiAppName, SokiClientEvent, SokiEventName, SokiServerEvent } from '../back/complect/soki/soki.model';
+import { SokiAppName, SokiClientEvent, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
 import modalService from './complect/modal/Modal.service';
