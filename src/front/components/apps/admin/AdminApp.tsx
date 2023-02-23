@@ -1,15 +1,31 @@
-import { ReactNode } from "react";
-import { useDispatch } from "react-redux";
-import adminStorage from "./adminStorage";
-import useUsers from "./complect/users/useUsers";
+import { ReactNode, useEffect, useState } from "react";
+import adminStorage, { AdminContext, defaultAdminContext } from "./adminStorage";
+import { User } from "./complect/users/User";
+import useAdminNav from "./useAdminNav";
 
 export default function AdminApp({ content }: { content: ReactNode }) {
-  const dispatch = useDispatch();
-  const { updateVisits, updateUserList } = useUsers();
+  const { appRouteData: { cuser } } = useAdminNav();
+  const [context, setContext] = useState(defaultAdminContext);
 
-  adminStorage.dispatch(dispatch)
-    .it("userVisits", updateVisits)
-    .it("userList", updateUserList);
+  useEffect(() => {
+    setContext(prev => {
+      return {
+        ...prev,
+        currentUser: cuser ? context.users.find((user) => user.login === cuser) : undefined
+      };
+    });
+  }, [cuser, context.users]);
 
-  return <>{content}</>;
+  useEffect(() => {
+    adminStorage.listen("userList", 'AdminApp', (val) => {
+      val && setContext(prev => {
+        return {
+          ...prev,
+          users: val.map(auth => new User(auth)).sort((a, b) => (b.level - a.level) || (a.name > b.name ? 1 : -1)),
+        };
+      });
+    });
+  }, [cuser]);
+
+  return <AdminContext.Provider value={context}>{content}</AdminContext.Provider>;
 }

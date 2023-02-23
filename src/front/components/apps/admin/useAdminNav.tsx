@@ -5,13 +5,14 @@ import {
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import Admin from "./Admin";
-import { AdminStorage } from "./Admin.model";
+import { AdminNavData, AdminStorage } from "./Admin.model";
 import AdminApp from "./AdminApp";
 import TheUser from "./complect/users/TheUser";
 
 const adminNavigation = new NavigationConfig<
   AdminStorage,
-  NavigationStorage<AdminStorage>
+  NavigationStorage<AdminStorage>,
+  AdminNavData
 >({
   root: (content) => <AdminApp content={content} />,
   rootPhase: "admin",
@@ -39,7 +40,7 @@ export default function useAdminNav() {
 }
 
 const useAdminNavConfigurer = () =>
-  useNavConfigurer<AdminStorage, NavigationStorage<AdminStorage>>(
+  useNavConfigurer<AdminStorage, NavigationStorage<AdminStorage>, AdminNavData>(
     'admin',
     actions,
     adminNavigation,

@@ -1,15 +1,11 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import TheButton from "../../../../../complect/Button";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../../complect/modal/Modal.service";
-import { adminExer } from "../../Admin.store";
+import { adminExer } from "../../adminExer";
+import { useAdminContext } from "../../adminStorage";
 import PhaseAdminEditorContainer from "../../phase-editor-container/PhaseAdminEditorContainer";
-import UserMore from "./UserMore";
-import useUsers from "./useUsers";
 
 export default function TheUser() {
-  const { currentUser, getMessages } = useUsers();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const { currentUser } = useAdminContext();
 
   if (!currentUser) return null;
 
@@ -66,24 +62,6 @@ export default function TheUser() {
               });
             }}
           >Изменить уровень доступа</TheButton>
-          <div className="">Сообщения от пользователя</div>
-          <div className="messages-box">
-            {getMessages(currentUser).map((message) => (
-              <div
-                key={`message-${message.w}`}
-                className="message flex between"
-              >
-                <span>{message.message}</span>
-                <EvaIcon
-                  name="more-vertical"
-                  className="pointer"
-                  onClick={() => {
-                    openAbsoluteBottomPopup(<UserMore message={message} />);
-                  }}
-                />
-              </div>
-            ))}
-          </div>
         </>
       }
     />

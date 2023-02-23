@@ -1,23 +1,11 @@
+import { Auth } from "../../index/Index.model";
 
-export interface AdminState extends AdminStoraged {
+export type UserAuth = Auth;
+
+export interface AdminNavData {
+    cuser: string,
 }
 
-export interface AdminStorage extends AdminStoraged {
-}
-
-export type UserVisits = { [login: string]: number };
-
-export interface AdminStoraged {
-    userList: IExportableUser[];
-    currentUser?: string;
-    userVisits: UserVisits;
-    appProps?: Record<string, any>;
-}
-
-export interface IExportableUser {
-    login: string;
-    level: number;
-    fio: string;
-    passw: string;
-    _passw: string;
+export interface AdminStorage {
+    userList?: UserAuth[],
 }

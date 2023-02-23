@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { complectReducer } from '../complect/Complect.store';
-import { adminReducer } from '../components/apps/admin/Admin.store';
 import { cmReducer } from '../components/apps/cm/Cm.store';
 import { leaderReducer } from '../components/apps/leader/Leader.store';
 import { spyReducer } from '../components/apps/spy/Spy.store';
@@ -11,7 +10,6 @@ export const store = configureStore({
     reducer: {
         index: indexReducer,
         tuner: tunerReducer,
-        admin: adminReducer,
         spy: spyReducer,
         cm: cmReducer,
         complect: complectReducer,
