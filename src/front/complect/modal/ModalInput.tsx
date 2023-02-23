@@ -41,13 +41,12 @@ export default function ModalInput(topProps: TheModalInputProps) {
         topProps.forceUpdate();
       },
       onClick: (event: Event) => {
-        event.stopPropagation();
         try {
           const clickConfig: ModalConfig = mylib.overlap(
             { input, event },
             props
           );
-          if (input.closable === false) event.stopPropagation();
+          if (input.closable !== true) event.stopPropagation();
 
           const onClick = () => {
             if (input.onClick) {

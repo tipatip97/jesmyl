@@ -65,7 +65,11 @@
                         width: 100%;
                         min-height: 2em;
                         outline: none;
-                        background: var(--color--1);
+
+                        &,
+                        >.native-input {
+                            background: var(--color--1);
+                        }
                     }
                 }
             }
