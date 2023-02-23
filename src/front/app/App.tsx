@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ABSOLUTE__BOTTOM__POPUP } from "../complect/absolute-popup/useAbsoluteBottomPopup";
 import { ABSOLUTE__FLOAT__POPUP } from "../complect/absolute-popup/useAbsoluteFloatPopup";
 import EvaIcon from "../complect/eva-icon/EvaIcon";
@@ -11,6 +11,8 @@ import listenThemeChanges from "../complect/theme-changer";
 import useApps from "../complect/useApps";
 import useFullScreen from "../complect/useFullscreen";
 import { IndexAppName } from "../components/index/Index.model";
+import { setAppVersion, updateIndexStatistic } from "../components/index/Index.store";
+import indexStorage from "../components/index/indexStorage";
 import navConfigurers from "../shared/navConfigurers";
 import { RootState } from "../shared/store";
 import "./App.scss";
@@ -22,6 +24,7 @@ listenThemeChanges();
 const currentAppSelector = (state: RootState) => state.index.currentApp;
 
 function App() {
+  const dispatch = useDispatch();
   const app: IndexAppName = useSelector(currentAppSelector);
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -41,6 +44,10 @@ function App() {
 
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [goBack]);
+
+  indexStorage.dispatch(dispatch)
+    .it('appVersion', setAppVersion)
+    .it('statistic', updateIndexStatistic);
 
   useEffect(() => {
     if (window.location.href.startsWith(jesmylHostName)) {
@@ -78,12 +85,8 @@ function App() {
         <ABSOLUTE__FLOAT__POPUP
           onOpen={(close) => registerBackAction(() => close())}
         />
-        {app ? (
-          <>
-            <AppRouter app={app} />
-            <AppFooter app={app} />
-          </>
-        ) : null}
+        <AppRouter app={app} />
+        <AppFooter app={app} />
       </div>
       <KEYBOARD_FLASH
         onFocus={(input) => {

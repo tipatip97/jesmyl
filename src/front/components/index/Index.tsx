@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { IndexApplication } from "./Index.model";
 import "./Index.scss";
-import { setApps, setAppVersion, updateIndexStatistic } from "./Index.store";
+import { setApps } from "./Index.store";
 import indexStorage from "./indexStorage";
 
 export default function Index({ content }: { content: ReactNode }) {
@@ -11,10 +11,6 @@ export default function Index({ content }: { content: ReactNode }) {
   const listener = indexStorage.listen("apps", "index-listener", (val) => {
     dispatch(setApps(val as IndexApplication[]));
   });
-
-  indexStorage.dispatch(dispatch)
-    .it('appVersion', setAppVersion)
-    .it('statistic', updateIndexStatistic);
 
   useEffect(() => {
     indexStorage.update("apps", listener);
