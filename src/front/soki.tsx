@@ -86,7 +86,7 @@ export class SokiTrip {
                             .catch();
                     }
 
-                    indexStorage.refreshAreas(['statistic'], event as never);
+                    if (event.statistic) indexStorage.refreshAreas(['statistic'], event as never);
                 }
             } catch (e) { }
         });
@@ -132,7 +132,7 @@ export class SokiTrip {
             });
 
             return () => {
-                this.watches = this.watches.filter(({ name, cb }) => topName === name || cb !== callback);
+                this.watches = this.watches.filter(({ name, cb }) => topName !== name || cb !== callback);
             };
         };
     }
