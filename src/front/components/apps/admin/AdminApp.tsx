@@ -3,9 +3,12 @@ import adminStorage, { AdminContext, defaultAdminContext } from "./adminStorage"
 import { User } from "./complect/users/User";
 import useAdminNav from "./useAdminNav";
 
+let localContext = defaultAdminContext;
+
 export default function AdminApp({ content }: { content: ReactNode }) {
   const { appRouteData: { cuser } } = useAdminNav();
-  const [context, setContext] = useState(defaultAdminContext);
+  const [context, setContext] = useState(localContext);
+  localContext = context;
 
   useEffect(() => {
     setContext(prev => {
