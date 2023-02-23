@@ -46,10 +46,10 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       ...otherProps
     } = props;
     const invoke = (callback: (value: string, prev: string | null) => void, text: string) => {
-      const prev = type === 'number' ? nativeRef.current?.value.replace(/\D+/g, '') || '0' : nativeRef.current?.value;
-      const value = type === 'number' ? text.replace(/\D+/g, '') || '0' : text;
-      callback(value, prev ?? null);
-      setValue(value);
+      const prev = type === 'number' ? value?.replace(/\D+/g, '') || '0' : value;
+      const val = type === 'number' ? (value === '0' ? text.replace(/^0/, '') : text).replace(/\D+/g, '') || '0' : text;
+      callback(val, prev ?? null);
+      setValue(val);
     };
 
     return <div className={
@@ -61,6 +61,13 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       <textarea
         {...otherProps}
         className="native-input"
+        onClick={(event) => {
+          otherProps.onClick?.({
+            name: 'click',
+            blur: () => nativeRef.current?.blur(),
+            stopPropagation: event.stopPropagation,
+          });
+        }}
         onInput={onInput && ((event: any) => {
           invoke(onInput, event.target.value);
         })}
@@ -73,7 +80,8 @@ export default function KeyboardInput(props: KeyboardInputProps) {
         onFocus={onFocus && ((event) => {
           onFocus({
             name: 'focus',
-            blur: () => (event.target || event.currentTarget).blur(),
+            blur: () => nativeRef.current?.blur(),
+            stopPropagation: event.stopPropagation,
           });
         })}
         rows={multiline ? value?.split('\n').length : 1}
@@ -117,7 +125,8 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       topOnFocus(currentInput);
       props.onFocus?.({
         name: 'focus',
-        blur: () => input.blur()
+        blur: () => input.blur(),
+        stopPropagation: () => {},
       });
     }
   );

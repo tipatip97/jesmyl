@@ -24,7 +24,7 @@ export interface KeyboardInputProps {
     placeholder?: string,
     onBlur?: () => void,
     onFocus?: (event: KeyboardInputEvent) => void,
-    onClick?: () => void,
+    onClick?: (event: KeyboardInputEvent) => void,
     // срабатывает только при вводе в поле инпута
     onInput?: (value: string, prev: string | null) => void,
     // сабатывает при любом изменении значения
@@ -36,8 +36,9 @@ export interface KeyboardInputProps {
 }
 
 export interface KeyboardInputEvent {
-    name: 'focus',
+    name: 'focus' | 'click',
     blur: () => void,
+    stopPropagation: () => void,
 }
 
 export type KeyboardMemoryPointAction = 'write' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';
