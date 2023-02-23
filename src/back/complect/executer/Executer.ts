@@ -375,11 +375,15 @@ export class Executer {
     }
 
     static execSides(sides: ExecutionRule[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null) {
-        sides.forEach(({ method, value, args, track }) => {
-            if (track) {
-                const { lastTrace, penultimate, target } = this.tracker(track, contents, args, undefined, auth);
-                this.doIt({ method, target, penultimate, lastTrace, value, args, auth });
-            }
+        return new Promise<boolean>((resolve, reject) => {
+            sides.forEach(({ method, value, args, track }) => {
+                if (track) {
+                    const { lastTrace, penultimate, target } = this.tracker(track, contents, args, undefined, auth);
+                    this.doIt({ method, target, penultimate, lastTrace, value, args, auth })
+                        .then(resolve)
+                        .catch((errorMessage) => reject(errorMessage));
+                }
+            });
         });
     }
 
@@ -388,7 +392,7 @@ export class Executer {
     }
 
     static executeReals(contents: Record<string, any>, execs: ExecutionReal[]) {
-        return new Promise<string[]>((res) => {
+        return new Promise<string[]>((resolve, reject) => {
             const fixes: string[] = [];
 
             execs.forEach((exec) => {
@@ -404,16 +408,17 @@ export class Executer {
                     value: exec.value,
                     uniqs: exec.uniqs,
                 }).then((did) => {
-                    if (did && exec.sides) this.execSides(exec.sides, contents);
-                });
+                    if (did && exec.sides) this.execSides(exec.sides, contents)
+                        .then(() => resolve(fixes))
+                        .catch((errorMessage) => reject(errorMessage));
+                    else resolve(fixes);
+                }).catch((errorMessage) => reject(errorMessage));
             });
-
-            res(fixes);
         });
     }
 
     static execute(rules: Record<string, ExecutionRule>, contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
-        return new Promise<ExecuteResults>((res, rej) => {
+        return new Promise<ExecuteResults>((resolve, reject) => {
             try {
                 const replacedExecs: ExecutionReal[] = [];
                 const fixes: string[] = [];
@@ -474,30 +479,41 @@ export class Executer {
                             args: exec.args,
                             method: rule.method,
                             uniqs: rule.uniqs,
-                        }).then((did) => {
-                            if (did && rule.sides) this.execSides(rule.sides, contents, auth);
-                        });
+                        })
+                            .then((did) => {
+                                if (did && rule.sides)
+                                    this.execSides(rule.sides, contents, auth)
+                                        .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
+                            })
+                            .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
                     }
-
                 });
 
-                const errorMessage = SMyLib.entries(errors.sort((a, b) => a.type > b.type ? 1 : a.type < b.type ? -1 : 0)
-                    .reduce<Record<ExecuteErrorType, string[]>>((acc, { type, note }) => ({ ...acc, [type]: (acc[type] || []).concat(note) }), {} as never))
-                    .reduce<string[]>((acc, [title, notes]) => acc.concat(`${title}:\n  ${notes.join(', ')}`), [])
-                    .join('\n');
+                setTimeout(() => {
+                    const errorMessage = SMyLib.entries(errors.sort((a, b) => a.type > b.type ? 1 : a.type < b.type ? -1 : 0)
+                        .reduce<Record<ExecuteErrorType, string[]>>((acc, { type, note }) => ({ ...acc, [type]: (acc[type] || []).concat(note) }), {} as never))
+                        .reduce<string[]>((acc, [title, notes]) => acc.concat(`${title}:\n  ${notes.join(', ')}`), [])
+                        .join('\n');
 
-                res({ fixes, replacedExecs, errorMessage });
+                    resolve({ fixes, replacedExecs, errorMessage });
+                });
             } catch (error) {
-                reportFailError(rej, error);
+                reportFailError(reject, error);
             }
         });
     }
 
-    static isUniq(uniqs: string[] | undefined, target: Record<string, unknown>[], value: any) {
-        return !uniqs || !uniqs.some((uniq) => {
-            if (uniq === '.') return target.includes(value);
-            else return target.some((val) => val[uniq] === value);
-        });
+    static ununiqErrorMessage(uniqs: string[] | Record<string, string> | undefined, target: Record<string, unknown>[], value: any) {
+        if (!uniqs) return null;
+        const key = (smylib.isArr(uniqs) ? uniqs : Object.keys(uniqs))
+            .find((key) => {
+                if (key === '.') return target.includes(value);
+                else return target.some((val) => val[key] === value[key]);
+            });
+
+        if (key == null) return null;
+        if (smylib.isArr(uniqs)) return key ? `Неуникальное значение ${key}` : null;
+        else return uniqs[key];
     }
 
     static doIt({ method, target, penultimate, lastTrace, value, args, auth, uniqs }: {
@@ -508,9 +524,9 @@ export class Executer {
         value: any,
         args?: Record<string, unknown>,
         auth?: LocalSokiAuth | null,
-        uniqs?: string[],
+        uniqs?: string[] | Record<string, string>,
     }) {
-        return new Promise((res, rej) => {
+        return new Promise<boolean>((resolve, reject) => {
             try {
                 switch (method) {
                     case 'set':
@@ -536,10 +552,22 @@ export class Executer {
                         }
                         break;
                     case 'push':
-                        if (smylib.isArr(target) && this.isUniq(uniqs, target, value)) target?.push(smylib.clone(value));
+                        if (smylib.isArr(target)) {
+                            const error = this.ununiqErrorMessage(uniqs, target, value);
+                            if (error) {
+                                reject(error);
+                                return;
+                            }
+                            target?.push(smylib.clone(value));
+                        }
                         break;
                     case 'concat':
-                        if (smylib.isArr(target) && smylib.isArr(value) && this.isUniq(uniqs, target, value)) {
+                        if (smylib.isArr(target) && smylib.isArr(value)) {
+                            const error = this.ununiqErrorMessage(uniqs, target, value);
+                            if (error) {
+                                reject(error);
+                                return;
+                            }
                             smylib.clone(value).forEach((val) => target.push(val));
                         }
                         break;
@@ -560,13 +588,11 @@ export class Executer {
                             });
                         }
                         break;
-                    default:
-                        res(true);
                 }
 
-                res(true);
+                resolve(true);
             } catch (e) {
-                rej(e);
+                reject('' + e);
             }
         });
     }

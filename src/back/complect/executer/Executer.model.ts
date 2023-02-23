@@ -29,7 +29,7 @@ export interface ExecutionRule {
     cloneArgs?: Record<string, string>,
     args?: Record<string, unknown>,
     track?: ExecutionTrack,
-    uniqs?: string[],
+    uniqs?: string[] | Record<string, string>,
     expected?: [] | {},
     access?: string,
     side?: ExecutionRule,
@@ -55,7 +55,7 @@ export interface ExecutionReal extends ExecutionRealAccumulatable {
     isSequre?: boolean,
     level?: number,
     value: any,
-    uniqs?: string[],
+    uniqs?: string[] | Record<string, string>,
     cloneArgs?: Record<string, string>,
     fix: ExecutionRuleTrackBeat,
 }
@@ -79,6 +79,7 @@ export enum ExecuteErrorType {
     Access = 'Запрет',
     NoRule = 'Не найдено',
     Sequre = 'Не верный пароль',
+    Error = 'Ошибка',
 }
 
 export interface ExecuteError {
