@@ -5,9 +5,9 @@ export type FilerAppStore = Record<SokiAppName, FilerAppConfig>;
 
 export interface FilerAppRequirement {
     name: string,
-    ext?: string,
+    rootPath?: string,
+    ext?: string | null,
     level?: number,
-    get?: () => { data: any, mtime: number },
     map?: (data: any) => any,
     prepare?: (data: any, auth?: LocalSokiAuth | null) => any,
     watch?: [string, (content: string) => any],

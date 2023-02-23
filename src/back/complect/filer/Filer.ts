@@ -10,8 +10,6 @@ import smylib, { SMyLib } from '../soki/complect/SMyLib';
 import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName } from '../soki/soki.model';
 import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, FilerWatcher, SimpleKeyValue } from './Filer.model';
 
-const getByConfigLabel = '[GET BY CONFIG]';
-
 const actionsRequirement: FilerAppRequirement = {
   name: 'actions',
   map: (data: Record<string, ExecutionRule>) => {
@@ -30,6 +28,7 @@ const actionsRequirement: FilerAppRequirement = {
             value,
             expected,
             args,
+            uniqs,
           } = rule;
 
           const track = Executer.prepareTrack(key);
@@ -51,7 +50,7 @@ const actionsRequirement: FilerAppRequirement = {
             track: nextTop.track,
             expecteds: nextTop.expecteds,
             value,
-
+            uniqs,
           });
 
           map(rule as never, nextTop);
@@ -68,12 +67,19 @@ const actionsRequirement: FilerAppRequirement = {
 export class Filer {
   contents = {} as FilerContents;
   private watcher: FilerWatcher = () => { };
+  private appConfigs = {
+    index,
+    cm,
+    spy,
+    leader,
+    admin,
+  } as FilerAppStore;
 
   setWatcher(watcher: FilerWatcher) {
     this.watcher = watcher;
   }
 
-  fileName(appName: SokiAppName, name: string, ext = 'json') {
+  fileName(appName: SokiAppName, name: string, ext: string | null = 'json') {
     return `${appName}/${name}${ext ? `.${ext}` : ''}`;
   }
 
@@ -85,25 +91,31 @@ export class Filer {
     return `${rootDirective}/apps/${this.fileName(appName, name, ext)}`;
   }
 
+  rootFileName(path: string, ext: string | null = 'json') {
+    return `${path.replace(/^\//, '')}${ext === null ? '' : `.${ext}`}`;
+  }
+
+  rootPath(rootFileName: string) {
+    return `${rootDirective}/${rootFileName}`;
+  }
+
+  rootNamePath(path: string, ext: string | null = 'json') {
+    return `${rootDirective}/${this.rootFileName(path, ext)}`;
+  }
+
   load() {
     return new Promise<void>((loadRes) => {
-      const apps = {
-        index,
-        cm,
-        spy,
-        leader,
-        admin,
-      } as FilerAppStore;
       let waits = 0;
       let oks = 0;
 
       SMyLib
-        .entries(apps)
+        .entries(this.appConfigs)
         .forEach(([appName, app]) => {
           const content: FilerContent = this.contents[appName] = {} as never;
           const loadInContent = (requ: string | FilerAppRequirement, cb?: () => void) => {
             const {
               name,
+              rootPath = '',
               ext = 'json',
               level = 0,
               prepare = (data: unknown) => data,
@@ -111,21 +123,8 @@ export class Filer {
               watch = null
             } = smylib.isStr(requ) ? { name: requ } : requ;
 
-            if (!smylib.isStr(requ) && requ.get) {
-              const { data, mtime } = requ.get();
-              content[name] = {
-                data,
-                string: getByConfigLabel,
-                mtime,
-                level,
-                prepare,
-                mapped: map(data),
-              };
-              return;
-            }
-
-            const filename = this.fileName(appName, name, ext);
-            const path = this.filePath(filename);
+            const filename = rootPath ? this.rootFileName(rootPath, ext) : this.fileName(appName, name, ext);
+            const path = rootPath ? this.rootPath(filename) : this.filePath(filename);
 
             const createExpected = () => {
               if (content.actions) {
@@ -228,9 +227,9 @@ export class Filer {
   }
 
   saveChanges(fixes: string[], appName: SokiAppName) {
-    return new Promise<number | null>((res, rej) => {
+    return new Promise<number | null>((resolve, reject) => {
       if (fixes.length === 0) {
-        res(null);
+        resolve(null);
         return;
       }
 
@@ -243,16 +242,22 @@ export class Filer {
         fixes.forEach((fileName) => {
           if (!smylib.isStr(fileName)) return;
           const content = this.contents[appName][fileName] || {};
+
           if (!content.data) {
-            if (waits === oks) {
-              res(maxLastUpdate);
-            }
+            if (waits === oks) resolve(maxLastUpdate);
             return;
           }
 
-          const stringContent = JSON.stringify(content.data);
-          const path = this.fileNamePath(appName, fileName);
           waits++;
+
+          const req = this.appConfigs[appName]?.requirements
+            .find((data) => !smylib.isStr(data) && data.name === fileName) as FilerAppRequirement | undefined;
+          const rootPath = req?.rootPath;
+          const stringContent = JSON.stringify(content.data);
+          const path = rootPath
+            ? this.rootNamePath(rootPath, req.ext)
+            : this.fileNamePath(appName, fileName);
+
           fs.writeFile(path, stringContent, (error) => {
             oks++;
             if (error) {
@@ -263,13 +268,11 @@ export class Filer {
             content.string = stringContent;
             const mtime = content.mtime = new Date(stat.mtime).getTime();
             if (maxLastUpdate < mtime) maxLastUpdate = mtime;
-            if (waits === oks) {
-              res(maxLastUpdate);
-            }
+            if (waits === oks) resolve(maxLastUpdate);
           });
         });
       } catch (e) {
-        rej(e);
+        reject('' + e);
       }
     });
   }
