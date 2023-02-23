@@ -65,17 +65,8 @@ export default function ModalInput(topProps: TheModalInputProps) {
           throw error;
         }
       },
-      ref: (element: HTMLInputElement) => {
-        if (element) input.element = element;
-      },
     }
   );
-
-  if (input == null) return null;
-  input.set = (attrn: keyof ModalConfigInput, val) => {
-    if (input.element) input.element.setAttribute(attrn, val);
-  };
-  input.setVal = (val) => input.set && input.set("value", val);
 
   return (
     <label

@@ -70,9 +70,6 @@ export interface ModalConfigInput extends ModalConfig {
 
     onInput: (config: ModalConfigInputRet) => void;
     onClick: (config: ModalConfig) => void;
-    set: (attrn: keyof ModalConfigInput, val: string) => void;
-    element: HTMLElement;
-    setVal: (val: string) => void;
     input: ModalConfigInput;
     confirm: string;
     modal: Function;
