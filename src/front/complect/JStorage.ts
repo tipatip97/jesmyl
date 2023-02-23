@@ -68,8 +68,12 @@ export class JStorage<Scope> {
 
     refreshAreas<Key extends keyof Scope>(areas: Key[], contents: Record<Key, unknown>) {
         areas.forEach((key) => {
-            this.set(key, contents[key] as Scope[Key]);
-            if (contents[key] !== undefined) this.dispatchers[key]?.(contents[key] as never);
+            const val = contents[key] as NonUndefined<Scope[Key]>;
+            this.set(key, val);
+            if (val !== undefined) {
+                this.dispatchers[key]?.(val);
+                this.next(key, val);
+            }
         });
     }
 
