@@ -208,30 +208,20 @@ export class Exer<Storage extends ExerStorage> {
         execs: (ExecutionDict<Value> | null)[], success?: Callback, error?: Callback,
         complete?: Callback
     }) {
-        const {
-            execs = [],
-            success = () => { },
-            error = () => { },
-            complete = () => { }
-        } = S;
-        soki.watch('execs')(() => {
-            const response = {
-                ok: true,
-                rejected: [] as [],
-            };
-            success(response, null);
-            complete(response, null);
-        }, () => error(null, { ok: false }));
-        soki
-            .send({
-                execs: execs.filter((dict) => dict) as ExecutionDict[]
-            })
-            .then(() => {
-            })
-            .catch((err) => {
-                error(null, err);
-                complete(null, err);
-            });
+        soki.send({ execs: S.execs.filter((dict) => dict) as ExecutionDict[] })
+            .on(
+                () => {
+                    const response = {
+                        ok: true,
+                        rejected: [] as [],
+                    };
+                    S.success?.(response, null);
+                    S.complete?.(response, null);
+                },
+                (err) => {
+                    S.error?.(null, err);
+                    S.complete?.(null, err);
+                });
     }
 
     actionAccessedOrUnd(action: string | nil, isNullifyed?: boolean): true | undefined {

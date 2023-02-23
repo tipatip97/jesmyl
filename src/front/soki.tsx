@@ -9,13 +9,19 @@ import mylib, { MyLib } from './complect/my-lib/MyLib';
 import indexStorage from './components/index/indexStorage';
 import { appStorage } from './shared/jstorages';
 
+interface ResponseWaiter {
+    requestId: number,
+    ok: (response: SokiServerEvent) => void,
+    ko?: (errorMessage: string) => boolean | void,
+}
+
 export class SokiTrip {
     appName: SokiAppName = 'cm';
     ws?: WebSocket;
     isConnected = false;
-    watches: ({ name: SokiEventName, cb: <Name extends SokiEventName>(event: SokiServerEvent[Name], name: Name) => void, err?: (event: any) => void })[] = [];
     onConnectWatchers: Record<string, (isConnected: boolean) => void> = {};
     private onConnectSends: (() => void)[] = [];
+    private responseWaiters: ResponseWaiter[] = [];
 
     constructor() {
         this.appName = indexStorage.getOr('currentApp', 'cm');
@@ -35,18 +41,15 @@ export class SokiTrip {
                 const event: SokiServerEvent = JSON.parse(data);
                 console.info(event);
 
-                if (event.errorMessage) {
-                    modalService.open({
-                        title: 'Ошибка',
-                        description: <pre>{event.errorMessage}</pre>
-                    });
+                const waiter = event.requestId && this.responseWaiters.find(({ requestId }) => event.requestId === requestId);
+                if (waiter) {
+                    this.responseWaiters = this.responseWaiters.filter(w => w !== waiter);
+
+                    if (event.errorMessage) waiter.ko?.(event.errorMessage);
+                    else waiter.ok(event);
                 }
 
                 if (event) {
-                    SMyLib.entries(event)
-                        .forEach(([eventName, event]) => {
-                            this.watches.forEach(({ name, cb, err }) => name === eventName && event && ((event as { ok: boolean }).ok !== false ? cb(event as never, name) : err?.(event)));
-                        });
                     const appStore = appStorage[this.appName];
 
                     if (event.connect !== undefined) {
@@ -123,20 +126,6 @@ export class SokiTrip {
         indexStorage.rem('lastUpdates');
     }
 
-    watch<Name extends SokiEventName>(topName: Name) {
-        return (callback: (resp: SokiServerEvent[Name]) => void, err?: (event: SokiServerEvent[Name]) => void) => {
-            this.watches.push({
-                name: topName,
-                cb: callback as never,
-                err
-            });
-
-            return () => {
-                this.watches = this.watches.filter(({ name, cb }) => topName !== name || cb !== callback);
-            };
-        };
-    }
-
     setAppName(appName: SokiAppName) {
         this.appName = appName;
     }
@@ -149,8 +138,7 @@ export class SokiTrip {
                 lastUpdate: appLastUpdate || 0,
                 indexLastUpdate: indexLastUpdate || 0
             }
-        });
-        this.watch('pull')((pull) => {
+        }).on(({ pull }) => {
             if (pull) {
                 const { contents, lastUpdate, indexLastUpdate, indexContents } = pull;
                 const appStore = appStorage[pull.appName];
@@ -183,30 +171,36 @@ export class SokiTrip {
     }
 
     send(body: SokiClientEvent['body']) {
-        return new Promise<void>((res, rej) => {
-            const send = () => {
-                try {
-                    if (this.ws) {
-                        const sendEvent = {
-                            body,
-                            auth: indexStorage.getOr('auth', null),
-                            appName: this.appName,
-                        };
+        let requestId: number | und;
 
-                        this.ws.send(JSON.stringify(sendEvent));
-                    }
-                    res();
-                } catch (e) {
-                    rej('ERROR');
+        const send = () => {
+            try {
+                if (this.ws) {
+                    const sendEvent: SokiClientEvent = {
+                        requestId,
+                        body,
+                        auth: indexStorage.getOr('auth', null),
+                        appName: this.appName,
+                    };
+
+                    this.ws.send(JSON.stringify(sendEvent));
                 }
-            };
+            } catch (e) {
+            }
+        };
 
-            if (!this.isConnected) this.onConnectSends.push(send);
-            else send();
-        }).catch((error) => {
-            console.info(error);
-            return error;
-        });
+        new Promise<void>((resolve) => resolve())
+            .then(() => {
+                if (this.isConnected) send();
+                else this.onConnectSends.push(send);
+            });
+
+        return {
+            on: (ok: ResponseWaiter['ok'], ko?: ResponseWaiter['ko']) => {
+                requestId = +('' + (Date.now() + Math.random()));
+                this.responseWaiters.push({ requestId, ok, ko });
+            },
+        };
     }
 }
 

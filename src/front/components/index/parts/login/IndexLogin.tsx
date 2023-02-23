@@ -135,29 +135,24 @@ export default function IndexLogin() {
                   });
                 } else {
                   setIsInProscess(0);
-                  mode === "login"
+                  (mode === "login"
                     ? loginInSystem({ login, passw })
-                    : registerInSystem({ login, passw, rpassw });
-
-                  const unsubscribe = soki.watch('authorization')(
-                    (resp) => {
-                      if (resp && resp.ok !== false) {
-                        setIsInProscess(1);
-                        removeLastUpdates();
-                        setAuthData(resp.value);
-                      } else {
-                        setError('login', resp?.value || 'Неизвестная ошибка');
+                    : registerInSystem({ login, passw, rpassw }))
+                    .on(
+                      ({ authorization }) => {
+                        if (authorization && authorization.ok !== false) {
+                          setIsInProscess(1);
+                          removeLastUpdates();
+                          setAuthData(authorization.value);
+                        } else {
+                          setError('login', authorization?.value || 'Неизвестная ошибка');
+                          setIsInProscess(2);
+                        }
+                      },
+                      (errorMessage) => {
+                        setError('login', errorMessage);
                         setIsInProscess(2);
-                      }
-                      unsubscribe();
-                    },
-                    (event) => {
-                      if (event && event.ok === false) {
-                        setError('login', event.value);
-                        setIsInProscess(2);
-                        unsubscribe();
-                      }
-                    });
+                      });
                 }
               }}
             >

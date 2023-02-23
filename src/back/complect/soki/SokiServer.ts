@@ -29,8 +29,8 @@ const send = (data: SokiServerEvent, client?: WebSocket | null | ((capsule: Soki
 
     if (client instanceof WebSocket) client.send(event);
     else {
-        const freeEvent = errorFor ? JSON.stringify({ ...data, errorMessage: null }) : '';
         if (errorFor) {
+            const freeEvent = JSON.stringify({ ...data, errorMessage: null });
             if (client == null) capsules.forEach((_, cli) => cli.send(errorFor === cli ? event : freeEvent));
             else capsules.forEach((capsule, cli) => client(capsule, cli) && cli.send(errorFor === cli ? event : freeEvent));
         } else {
@@ -57,12 +57,12 @@ const sendStatistic = () => {
         }
     });
 
-    subscribers.forEach((_, client) => send({ statistic }, client));
+    subscribers.forEach((_, client) => send({ statistic, requestId: 0, }, client));
 };
 
 const connect = (client: WebSocket) => {
     capsules.set(client, { auth: null });
-    send({ connect: true }, client);
+    send({ connect: true, requestId: 0, }, client);
 };
 
 const disconnect = (client: WebSocket) => {
@@ -78,6 +78,19 @@ const disconnect = (client: WebSocket) => {
 };
 
 
+filer.setWatcher((appName, name, data) => {
+    send({
+        pull: {
+            appName,
+            contents: appName === 'index' ? [] : [{ key: name, value: data }],
+            indexContents: appName !== 'index' ? [] : [{ key: name, value: data }],
+            lastUpdate: 0,
+            indexLastUpdate: 0,
+        },
+        requestId: 0,
+    });
+});
+
 new WebSocketServer({
     port: 4446,
 })
@@ -85,20 +98,9 @@ new WebSocketServer({
         connect(client);
         sendStatistic();
 
-        filer.setWatcher((appName, name, data) => {
-            send({
-                pull: {
-                    appName,
-                    contents: appName === 'index' ? [] : [{ key: name, value: data }],
-                    indexContents: appName !== 'index' ? [] : [{ key: name, value: data }],
-                    lastUpdate: 0,
-                    indexLastUpdate: 0,
-                }
-            });
-        });
-
         client.on('message', async (data: WebSocket.RawData) => {
             const eventData: SokiClientEvent = JSON.parse('' + data);
+            const requestId = eventData.requestId || 0;
             const eventBody = eventData.body;
 
             if (eventBody.authorization) {
@@ -108,11 +110,13 @@ new WebSocketServer({
                     .authenticate(event)
                     .then((value) => {
                         send({
+                            requestId,
                             authorization: { ok: true, type: event.type, value },
                         }, client);
                     })
                     .catch((value: string) => {
                         send({
+                            requestId,
                             authorization: { ok: false, type: event.type, value },
                         }, client);
                     });
@@ -131,7 +135,11 @@ new WebSocketServer({
                             if (auth) {
                                 capsule.auth = auth;
                                 console.info(`Client ${auth.fio ?? '???'} connected`);
-                            } else send({ connect: false, errorMessage: 'Некорректные данные авторизации' }, client);
+                            } else send({
+                                requestId,
+                                connect: false,
+                                errorMessage: 'Некорректные данные авторизации'
+                            }, client);
                         });
                     }
                 } else console.info('Unknown client connected');
@@ -140,20 +148,32 @@ new WebSocketServer({
 
             if (eventBody.system && smylib.md5(eventBody.system.passphrase) === sequreMD5Passphrase) {
                 if (eventBody.system.name === 'reloadFiles' && (capsule?.auth?.level || 0) >= 50) {
-                    filer.load().then(() => send({ system: { name: 'reloadFiles', ok: true } })).catch(() => { });
+                    filer.load().then(() => send({
+                        requestId,
+                        system: { name: 'reloadFiles', ok: true },
+                    })).catch(() => { });
                 }
 
                 if (eventBody.system.name === 'restartWS' && (capsule?.auth?.level || 0) >= 80) {
                     exec("systemctl restart jesmyl_soki", (error, stdout, stderr) => {
                         if (error) {
-                            send({ system: { name: 'restartWS', ok: false, error: error.message } }, client);
+                            send({
+                                requestId,
+                                system: { name: 'restartWS', ok: false, error: error.message }
+                            }, client);
                             return;
                         }
                         if (stderr) {
-                            send({ system: { name: 'restartWS', ok: false, error: stderr } }, client);
+                            send({
+                                requestId,
+                                system: { name: 'restartWS', ok: false, error: stderr }
+                            }, client);
                             return;
                         }
-                        send({ system: { name: 'restartWS', ok: true, message: stdout } }, client);
+                        send({
+                            requestId,
+                            system: { name: 'restartWS', ok: true, message: stdout }
+                        }, client);
                     });
                 }
             }
@@ -166,7 +186,7 @@ new WebSocketServer({
 
                     const pull = filer.getContents(eventData.appName, eventBody.pull.lastUpdate, eventBody.pull.indexLastUpdate, capsule?.auth);
                     if (pull.contents.length || pull.indexContents.length)
-                        send({ pull }, client);
+                        send({ requestId, pull }, client);
                 }
                 return;
             }
@@ -181,16 +201,16 @@ new WebSocketServer({
                 services[eventData.appName]?.(eventBody.service.key, eventBody.service.value)
                     .then((value) => {
                         send({
+                            requestId,
                             service: {
-                                requestId: service.requestId,
                                 key: service.key,
                                 value,
                             }
                         }, client);
                     }).catch((error) => {
                         send({
+                            requestId,
                             service: {
-                                requestId: service.requestId,
                                 key: service.key,
                                 errorMessage: error,
                             }
@@ -222,12 +242,14 @@ new WebSocketServer({
                         })
                         .then(({ replacedExecs: list, lastUpdate, errorMessage }) => {
                             send({
+                                requestId,
                                 execs: { list, lastUpdate },
                                 errorMessage,
                             }, (capsule) => capsule.appName === eventData.appName, client);
                         });
                     return;
                 } else send({
+                    requestId,
                     execs: { list: [], lastUpdate: null },
                     errorMessage: 'Не авторизован'
                 }, null, client);

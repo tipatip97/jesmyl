@@ -15,6 +15,7 @@ export interface SokiCapsule {
 }
 
 export interface SokiServerEvent {
+    requestId: number,
     connect?: boolean,
     pull?: PullEventValue,
     authorization?: { type: 'login' | 'register' } & ({ ok: false, value: string } | ({ ok: true, value: LocalSokiAuth })),
@@ -25,7 +26,6 @@ export interface SokiServerEvent {
     errorMessage?: string | null,
     system?: { name: 'reloadFiles' | 'restartWS' } & ({ ok: true, message?: string | null } | { ok: false, error?: string | null }),
     service?: {
-        requestId: number,
         key: string,
         value?: any,
         errorMessage?: string
@@ -40,7 +40,6 @@ export interface SokiClientEventBody {
     execs?: ExecutionDict[],
     system?: { name: 'reloadFiles' | 'restartWS', passphrase: string },
     service?: {
-        requestId: number,
         key: string,
         value?: any,
     },
@@ -59,6 +58,7 @@ export interface SokiStatistic {
 }
 
 export interface SokiClientEvent {
+    requestId?: number,
     body: SokiClientEventBody,
     auth: LocalSokiAuth | null,
     appName: SokiAppName,
