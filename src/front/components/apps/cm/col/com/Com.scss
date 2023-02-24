@@ -60,22 +60,6 @@
     }
 }
 
-.com-tool-icon-wrapper {
-    --size: 2.5em;
-
-    border-radius: 50%;
-    width: var(--size);
-    max-width: var(--size);
-    min-width: var(--size);
-    height: var(--size);
-    max-height: var(--size);
-    min-height: var(--size);
-
-    &.in-top-list {
-        background: var(--color--2);
-    }
-}
-
 .com-ord-list {
     display: inline-block;
     color: var(--color-far);

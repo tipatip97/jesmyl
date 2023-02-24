@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { leaderExer } from "../../Leader.store";
 import useLeaderNav from "../../useLeaderNav";
@@ -18,6 +18,7 @@ export default function GameMore({
   game?: Game;
 }) {
   const { goBack } = useLeaderNav();
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
   return (
     <>
@@ -36,24 +37,23 @@ export default function GameMore({
         title="Списки команд"
         close={close}
       />
-      {leaderExer.actionAccessedOrNull("removeTeamGame") && (
-        <div
-          className="abs-item pointer error-message"
-          onClick={async () => {
-            if (
-              game &&
-              (await modalService.confirm(
-                `Удалить игру "${game.name}" окончательно?`
-              ))
-            )
-              game.remove().then(() => goBack());
-          }}
-        >
-          <EvaIcon name="trash-outline" className="abs-icon" />
-          <div>Удалить игру</div>
-          <div className="abs-action"></div>
-        </div>
-      )}
+      {
+        prepareAbsoluteBottomPopupContent({
+          items: [
+            leaderExer.actionAccessedOrNull("removeTeamGame") &&
+            {
+              title: 'Удалить игру',
+              icon: "trash-outline",
+              isError: true,
+              onClick: async () => {
+                if (
+                  game
+                  && (await modalService.confirm(`Удалить игру "${game.name}" окончательно?`))
+                )
+                  game.remove().then(() => goBack());
+              },
+            }]
+        })}
     </>
   );
 }

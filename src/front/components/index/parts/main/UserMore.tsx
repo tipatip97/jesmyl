@@ -1,25 +1,21 @@
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import modalService from "../../../../complect/modal/Modal.service";
 import useAuth from "../../useAuth";
 
 export default function UserMore() {
   const { logout } = useAuth();
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return (
-    <>
-      <div
-        className="abs-item pointer"
-        onClick={(event) => {
-          event.preventDefault();
-          modalService
-            .confirm("Произвести выход из системы?", "Разлогиниться")
-            .then(isLogout => isLogout && logout());
-        }}
-      >
-        <EvaIcon name="person-outline" className="abs-icon" />
-        <div>Выйти из системы</div>
-        <div className="abs-action" />
-      </div>
-    </>
-  );
+  return prepareAbsoluteBottomPopupContent({
+    items: [{
+      title: 'Выйти из системы',
+      icon: "person-outline",
+      onClick: (event) => {
+        event.preventDefault();
+        modalService
+          .confirm("Произвести выход из системы?", "Разлогиниться")
+          .then(isLogout => isLogout && logout());
+      },
+    }]
+  });
 }

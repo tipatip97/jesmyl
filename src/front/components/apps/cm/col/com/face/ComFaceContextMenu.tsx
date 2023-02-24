@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import useSelectedComs from "../../../base/useSelectedComs";
@@ -24,57 +24,45 @@ export default function ComFaceContextMenu({
     saveSelectedComws,
     getLocalSelectedComws,
   } = useSelectedComs();
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return (
-    <>
-      <div
-        className="abs-item flex"
-        onClick={() => {
+  return <>{
+    prepareAbsoluteBottomPopupContent({
+      items: [{
+        onClick: () => {
           onClick();
           toggleMarked(com.wid);
-        }}
-      >
-        <EvaIcon
-          name={isComMarked ? "star-outline" : "star"}
-          className="abs-icon"
-        />
-        <div>
-          {isComMarked ? "Удалить из Избранного" : "Добавить в Избранное"}
-        </div>
-      </div>
-      <div className="abs-item flex" onClick={() => toggleSelectedCom(com)}>
-        <EvaIcon
-          name={
-            isSelected(com)
-              ? "minus-circle-outline"
-              : "checkmark-circle-2-outline"
+        },
+        icon: isComMarked ? "star-outline" : "star",
+        title: isComMarked ? "Удалить из Избранного" : "Добавить в Избранное"
+      },
+      {
+        icon: isSelected(com)
+          ? "minus-circle-outline"
+          : "checkmark-circle-2-outline",
+        title: isSelected(com) ? "Отменить выбор" : "Выбрать",
+        onClick: () => toggleSelectedCom(com),
+      },
+      selectedComws.length ?
+        [{
+          onClick: () => {
+            modalService
+              .confirm("Очистить список выбранных?")
+              .then((isClear) => isClear && clearSelectedComws());
+          },
+          icon: "close-circle-outline",
+          title: 'Очистить выбранные',
+        },
+        mylib.isEq(getLocalSelectedComws(), selectedComws) ? null :
+          {
+            onClick: () => saveSelectedComws(),
+            icon: "shopping-bag-outline",
+            title: 'Запомнить выбранные',
           }
-          className="abs-icon"
-        />
-        <div>{isSelected(com) ? "Отменить выбор" : "Выбрать"}</div>
-      </div>
-      {selectedComws.length ? (
-        <>
-          <div
-            className="abs-item flex"
-            onClick={() => {
-              modalService
-                .confirm("Очистить список выбранных?")
-                .then((isClear) => isClear && clearSelectedComws());
-            }}
-          >
-            <EvaIcon name="close-circle-outline" className="abs-icon" />
-            <div>Очистить выбранные</div>
-          </div>
-          {mylib.isEq(getLocalSelectedComws(), selectedComws) ? null : (
-            <div className="abs-item flex" onClick={() => saveSelectedComws()}>
-              <EvaIcon name="shopping-bag-outline" className="abs-icon" />
-              <div>Запомнить выбранные</div>
-            </div>
-          )}
-        </>
-      ) : null}
-      <ComFaceContextMenuEditorItems />
-    </>
-  );
+        ] : null
+      ]
+    })
+  }
+    < ComFaceContextMenuEditorItems />
+  </>;
 }

@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { renderComponentInNewWindow } from "../../../../..";
+import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
 
@@ -13,24 +14,21 @@ export default function PrintableBottomItem({
   close: () => void;
 }) {
   const { openFullscreenContent } = useFullscreenContent();
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return (
-    <div
-      className="abs-item pointer"
-      onClick={() => renderComponentInNewWindow(node)}
-    >
-      <EvaIcon name="printer-outline" className="abs-icon" />
-      <div>{title}</div>
-      <div className="abs-action">
-        <EvaIcon
-          name="eye-outline"
-          onClick={(event) => {
-            event.stopPropagation();
-            openFullscreenContent(node, true);
-            close();
-          }}
-        />
-      </div>
-    </div>
-  );
+  return prepareAbsoluteBottomPopupContent({
+    items: [{
+      title,
+      icon: "printer-outline",
+      onClick: () => renderComponentInNewWindow(node),
+      rightNode: <EvaIcon
+        name="eye-outline"
+        onClick={(event) => {
+          event.stopPropagation();
+          openFullscreenContent(node, true);
+          close();
+        }}
+      />
+    }]
+  });
 }

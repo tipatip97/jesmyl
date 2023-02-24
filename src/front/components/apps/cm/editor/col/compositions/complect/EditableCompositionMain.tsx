@@ -39,7 +39,7 @@ export default function EditableCompositionMain() {
           exec();
         }}
       >
-        <EvaIcon name="flag-outline" className="abs-icon" />
+        <EvaIcon name="flag-outline" />
         <div className="title half-width text-center">Язык</div>
         <div className="half-width text-center">{ccom.langn}</div>
       </div>

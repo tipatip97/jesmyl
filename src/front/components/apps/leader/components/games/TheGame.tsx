@@ -48,9 +48,7 @@ export default function TheGame() {
           cgame &&
           leaderExer.actionAccessedOrUnd("addMemberToTeam") &&
           (() => {
-            openAbsoluteBottomPopup(
-              <OutsiderMore game={cgame} human={human} />
-            );
+            openAbsoluteBottomPopup(<OutsiderMore game={cgame} human={human} />);
           })
         }
       />

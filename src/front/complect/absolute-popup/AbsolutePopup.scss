@@ -26,10 +26,6 @@
             }
         }
 
-        .abs-icon {
-            margin: var(--main-gap);
-        }
-
         .abs-action {
             cursor: pointer;
 
@@ -93,6 +89,10 @@
         overflow-x: hidden;
         transition: top .5s;
 
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
         &.not-touch-device {
             padding-top: var(--padding-top);
         }
@@ -120,12 +120,32 @@
             z-index: 150;
 
             .abs-item {
-                padding: 10px 0;
+                padding: 7px 0;
                 justify-content: space-between;
 
                 .title {
                     text-align: center;
                 }
+            }
+        }
+
+        .icon-box {
+            --size: 2.5em;
+
+            border-radius: 50%;
+            width: var(--size);
+            max-width: var(--size);
+            min-width: var(--size);
+            height: var(--size);
+            max-height: var(--size);
+            min-height: var(--size);
+
+            &.active {
+                background: var(--color--2);
+            }
+
+            .abs-icon {
+                margin: var(--main-gap);
             }
         }
     }

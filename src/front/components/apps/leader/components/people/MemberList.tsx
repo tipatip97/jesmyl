@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { renderComponentInNewWindow } from "../../../../../..";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useLeaderContexts from "../contexts/useContexts";
 import LeaderGroup from "../groups/Group";
@@ -15,7 +14,7 @@ import { HumanListComponentProps } from "./People.model";
 export default function MemberList({ ...props }: {} & HumanListComponentProps) {
   const { ccontext } = useLeaderContexts();
   const { openFullscreenContent } = useFullscreenContent();
-  const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const { closeAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   const placeholder = `Поиск по участникам ${ccontext?.name || ""}`;
   const humansRef = { current: [] };
 
@@ -79,31 +78,29 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
             return <div className="error-message">В нескольких группах!</div>;
         }}
         moreNode={
-          <div
-            className="abs-item pointer"
-            onClick={() =>
-              openFullscreenContent((close) => (
-                <AddHumansToContext
-                  chosenPlaceholder={placeholder}
-                  chooseTitle="Выбери участников:"
-                  chosenTitle="Выбранные участники:"
-                  uniq="members"
-                  excludedTitle="Лидер"
-                  redact
-                  fixedList={ccontext?.members.map((human) => human.wid)}
-                  excludes={ccontext?.mentors.map((human) => human.wid)}
-                  onSend={(addList, delList) => {
-                    ccontext?.add_removeHumans(addList, delList, "members");
-                    close();
-                  }}
-                />
-              ))
-            }
-          >
-            <EvaIcon name="person-add-outline" className="abs-icon" />
-            <div>Редактировать список участников</div>
-            <div className="abs-action abs-full" />
-          </div>
+          () => prepareAbsoluteBottomPopupContent({
+            items: [{
+              title: 'Редактировать список участников',
+              icon: "person-add-outline",
+              onClick: () =>
+                openFullscreenContent((close) => (
+                  <AddHumansToContext
+                    chosenPlaceholder={placeholder}
+                    chooseTitle="Выбери участников:"
+                    chosenTitle="Выбранные участники:"
+                    uniq="members"
+                    excludedTitle="Лидер"
+                    redact
+                    fixedList={ccontext?.members.map((human) => human.wid)}
+                    excludes={ccontext?.mentors.map((human) => human.wid)}
+                    onSend={(addList, delList) => {
+                      ccontext?.add_removeHumans(addList, delList, "members");
+                      close();
+                    }}
+                  />
+                )),
+            }]
+          })
         }
       />
     </>

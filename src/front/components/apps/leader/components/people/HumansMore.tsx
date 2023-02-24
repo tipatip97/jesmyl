@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import { setHumanListSortVariant } from "../../Leader.store";
@@ -11,27 +11,26 @@ const humanListSortVariantSelector = (state: RootState) => state.leader.humanLis
 export default function HumansMore({ moreNode }: { moreNode?: ReactNode }) {
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return (
-    <>
-      <div
-        className="abs-item pointer"
-        onClick={(event) => {
+  return <>{
+    prepareAbsoluteBottomPopupContent({
+      items: [{
+        title: 'Сортировать личности',
+        icon: "bar-chart-2-outline",
+        onClick: (event) => {
           event.stopPropagation();
           const next = mylib.findNext(
             mylib.keys(humanFieldTranslations),
             humanListSortVariant
           );
           dispatch(setHumanListSortVariant(next));
-        }}
-      >
-        <EvaIcon name="bar-chart-2-outline" className="abs-icon" />
-        <div>Сортировать личности</div>
-        <div className="abs-action abs-full flex center">
+        },
+        rightNode: <div className="abs-action abs-full flex center">
           {humanFieldTranslations[humanListSortVariant]}
-        </div>
-      </div>
-      {moreNode}
-    </>
-  );
+        </div>,
+      }]
+    })}
+    {moreNode}
+  </>;
 }

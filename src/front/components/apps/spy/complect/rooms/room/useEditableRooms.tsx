@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { SpyRoomMember } from "../../../Spy.model";
 import { spyExer } from "../../../Spy.store";
@@ -15,6 +15,7 @@ export default function useEditableRooms(member?: SpyRoomMember) {
   const cleanLocations = useMemo(() =>
     currentRoom?.locations?.map(location => [unsecretSpyRole(location), location]),
     [currentRoom?.locations]);
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
   const ret = {
     nameNode,
@@ -162,26 +163,15 @@ export default function useEditableRooms(member?: SpyRoomMember) {
       if (possibilities.isOwner) return <>Владелец комнаты</>;
       const isIOwner = memberPossibilities(currentRoom).isOwner;
 
-      return (
-        <>
-          {isIOwner && (
-            <div
-              className="abs-item pointer"
-              onClick={() => ret.toggleAdminStatus(member.login)}
-            >
-              <EvaIcon name="star-outline" />
-              <div>
-                {possibilities.isAdmin ? (
-                  <>Упростить {nameNode} до пользователя</>
-                ) : (
-                  <>Сделать {nameNode} админом</>
-                )}
-              </div>
-              <div className="abs-action" />
-            </div>
-          )}
-        </>
-      );
+      return prepareAbsoluteBottomPopupContent({
+        items: [isIOwner && {
+          title: possibilities.isAdmin
+            ? `Упростить ${nameNode} до пользователя`
+            : `Сделать ${nameNode} админом`,
+          icon: "star-outline",
+          onClick: () => ret.toggleAdminStatus(member.login),
+        }]
+      });
     },
   };
   return ret;

@@ -85,15 +85,18 @@ export default function HumanMaster({
       <div
         className="pointer"
         onClick={() => {
+          const groups = ccontext.groups;
+          if (!groups) return;
           const groupws = wraps.map(({ group: { wid } }) => wid);
 
-          openAbsoluteBottomPopup(
-            ccontext.groups?.map((group) => {
-              return (
-                <div
-                  className={`abs-item pointer ${groupws.indexOf(group.wid) < 0 ? "" : "disabled"
-                    }`}
-                  onClick={async () => {
+          openAbsoluteBottomPopup((close, prepare) => 
+            prepare({
+              items: groups.map((group) => {
+                return {
+                  title: group.name,
+                  icon: "people-outline",
+                  className: groupws.indexOf(group.wid) < 0 ? "" : "disabled",
+                  onClick: async () => {
                     if (
                       human &&
                       (await modalService.confirm(
@@ -108,19 +111,14 @@ export default function HumanMaster({
                         )
                         .then(() => close());
                     }
-                  }}
-                >
-                  <EvaIcon name="people-outline" className="abs-icon" />
-                  <div>{group.name}</div>
-                  <div className="abs-action"></div>
-                </div>
-              );
-            })
-          );
+                  },
+                };
+              }),
+            }));
         }}
       >
         {title()}
-      </div>
+      </div >
     );
   }, []);
 

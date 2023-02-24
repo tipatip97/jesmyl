@@ -60,7 +60,7 @@ export default function useAbsoluteBottomPopup() {
 
             return <div key={`${icon} ${title}`} {...other} className={`abs-item ${className || ''}`}>
               <div className="flex flex-gap">
-                <div className={iconWrapperClassName}>
+                <div className={`icon-box ${iconWrapperClassName || ''}`}>
                   <EvaIcon name={icon} className="abs-icon" />
                 </div>
                 <div className="title">{title}</div>
@@ -75,7 +75,7 @@ export default function useAbsoluteBottomPopup() {
       </div>;
     },
     openAbsoluteBottomPopup: (
-      content: ((close: () => void) => ReactNode) | ReactNode,
+      content: ((close: () => void, contentPreparator: (config: AbsoluteBottomPopupContentProps) => ReactNode) => ReactNode) | ReactNode,
       closable = true
     ) => {
       isClosable = closable;
@@ -84,7 +84,7 @@ export default function useAbsoluteBottomPopup() {
       onOpenPopup?.(ret.closeAbsoluteBottomPopup);
       absolutePopupContent =
         typeof content === "function"
-          ? content(() => ret.closeAbsoluteBottomPopup())
+          ? content(ret.closeAbsoluteBottomPopup, ret.prepareAbsoluteBottomPopupContent)
           : content;
       dispatch(switchAbsoluteBottomPopupOpen(true));
       setTimeout(() => dispatch(riseUpAbsoluteBottomPopupUpdates()));

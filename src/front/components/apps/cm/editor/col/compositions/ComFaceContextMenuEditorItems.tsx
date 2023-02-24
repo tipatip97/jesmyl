@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useExer from "../../../../../../complect/exer/useExer";
 import useFullscreenContent from "../../../../../../complect/fullscreen-content/useFullscreenContent";
 import useSelectedComs from "../../../base/useSelectedComs";
@@ -12,13 +12,15 @@ export default function ComFaceContextMenuEditorItems() {
   const { meetings, goToEvent } = useEditableMeetings();
   const { exec } = useExer(cmExer);
   const { selectedComws } = useSelectedComs();
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return (
-    <>
-      {selectedComws.length ? (
-        <div
-          className="abs-item flex"
-          onClick={() =>
+  return prepareAbsoluteBottomPopupContent({
+    items: [
+      selectedComws.length ?
+        {
+          title: 'Выбранные в событие',
+          icon: "calendar-outline",
+          onClick: () =>
             meetings &&
             openFullscreenContent(
               <div className="full-container padding-big-gap">
@@ -31,13 +33,8 @@ export default function ComFaceContextMenuEditorItems() {
                   }}
                 />
               </div>
-            )
-          }
-        >
-          <EvaIcon name="calendar-outline" className="abs-icon" />
-          <div>Выбранные в событие</div>
-        </div>
-      ) : null}
-    </>
-  );
+            ),
+        } : null
+    ]
+  });
 }

@@ -72,7 +72,7 @@ export default function ComTools() {
         {
           title,
           icon,
-          iconWrapperClassName: `com-tool-icon-wrapper ${comTopTools.includes(tool) ? 'in-top-list' : ''}`,
+          iconWrapperClassName: comTopTools.includes(tool) ? 'active' : '',
           onClick: () => {
             if (onClick()) return;
             closeAbsoluteBottomPopup();

@@ -1,22 +1,17 @@
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import LeaderGameMaster from "./GameMaster";
 
 export default function GamesMore() {
   const { openFullscreenContent } = useFullscreenContent();
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return (
-    <>
-      <div
-        className="abs-item"
-        onClick={() =>
-          openFullscreenContent((close) => <LeaderGameMaster close={close} />)
-        }
-      >
-        <EvaIcon name="people-outline" className="abs-icon" />
-        <div>Новая командная игра</div>
-        <div className="abs-action" />
-      </div>
-    </>
-  );
+  return prepareAbsoluteBottomPopupContent({
+    items: [{
+      title: 'Новая командная игра',
+      icon: "people-outline",
+      onClick: () =>
+        openFullscreenContent((close) => <LeaderGameMaster close={close} />),
+    }]
+  });
 }

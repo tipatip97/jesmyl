@@ -17,9 +17,7 @@ export default function GameList() {
       topClass="template-page-content"
       onMoreClick={
         leaderExer.actionAccessedOrUnd("addTeamGame") &&
-        (() => {
-          openAbsoluteBottomPopup(<GamesMore />);
-        })
+        (() => openAbsoluteBottomPopup(<GamesMore />))
       }
       headTitle={`Командные игры${ccontext?.name ? ` - ${ccontext.name}` : ""}`}
       content={

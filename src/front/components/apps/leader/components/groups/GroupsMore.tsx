@@ -1,4 +1,4 @@
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import useLeaderContexts from "../contexts/useContexts";
@@ -30,28 +30,26 @@ export default function LeaderGroupsMore({ close }: { close: () => void }) {
         }))) ||
     [];
 
-  return (
-    <>
-      <div
-        className="abs-item pointer"
-        onClick={() =>
-          openFullscreenContent((close) => <LeaderGroupMaster close={close} />)
-        }
-      >
-        <EvaIcon name="plus-circle-outline" className="abs-icon" />
-        <div>Новая группа</div>
-        <div className="abs-action" />
-      </div>
-      <PrintableBottomItem
-        title="QR квест точки"
-        node={<QRQuest />}
-        close={close}
-      />
-      <PrintableBottomItem
-        title="Допуск к путешествию"
-        node={<WelcomePageList list={bags} />}
-        close={close}
-      />
-    </>
-  );
+  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+
+  return <>{
+    prepareAbsoluteBottomPopupContent({
+      items: [{
+        title: 'Новая группа',
+        icon: "plus-circle-outline",
+        onClick: () =>
+          openFullscreenContent((close) => <LeaderGroupMaster close={close} />),
+      }]
+    })}
+    <PrintableBottomItem
+      title="QR квест точки"
+      node={<QRQuest />}
+      close={close}
+    />
+    <PrintableBottomItem
+      title="Допуск к путешествию"
+      node={<WelcomePageList list={bags} />}
+      close={close}
+    />
+  </>;
 }
