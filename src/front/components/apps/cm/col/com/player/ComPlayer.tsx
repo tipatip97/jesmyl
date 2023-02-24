@@ -11,6 +11,7 @@ export default function ComPlayer({ src, split }: { src: string, split?: string 
     const player = audioRef.current;
     const [isError, setIsError] = useState(false);
     const [isPlay, setIsPlay] = useState(false);
+    const [isCanLoad, setIsCanLoad] = useState(false);
     const [isShowLoader, setIsShowLoader] = useState(false);
     const [currentVariant, setCurrentVariant] = useState(0);
     const splitter = split === true ? /\n+/ : split || null;
@@ -41,7 +42,7 @@ export default function ComPlayer({ src, split }: { src: string, split?: string 
     }, [src, player]);
 
     return <>
-        {player
+        {player && isCanLoad
             ? <audio
                 ref={audioRef}
                 src={currentSrc}
@@ -55,20 +56,28 @@ export default function ComPlayer({ src, split }: { src: string, split?: string 
                     }
                 }}
             />
-            : <audio ref={audioRef} src={currentSrc} />}
+            : <audio ref={audioRef} />}
         {<div className={`composition-player flex flex-gap ${!player ? 'center' : ''}`}>
             {player
                 ? isError
                     ? <span className="error-message">Файл не найден</span>
                     : <>
                         <EvaButton name={`${isPlay ? 'pause' : 'play'}-circle`} onClick={() => {
-                            if (isPlay) player.pause();
+                            const toggle = () => {
+                                if (isPlay) player.pause();
+                                else {
+                                    currentAudioNode?.pause();
+                                    currentAudioNode = player;
+                                    player.play();
+                                }
+                                setIsPlay(!isPlay);
+                            };
+
+                            if (isCanLoad) toggle();
                             else {
-                                currentAudioNode?.pause();
-                                currentAudioNode = player;
-                                player.play();
+                                setIsCanLoad(true);
+                                setTimeout(() => toggle());
                             }
-                            setIsPlay(!isPlay);
                         }} />
 
                         <ComPlayerTrack player={player} />
