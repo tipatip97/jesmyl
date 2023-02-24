@@ -26,14 +26,15 @@ export class SokiTrip {
         this.appName = indexStorage.getOr('currentApp', 'cm');
     }
 
+    onClose = () => {
+        this._onConnect(false);
+        setTimeout(() => this.start(), 1000);
+    };
+
     start() {
         const ws = this.ws = new WebSocket(`wss://${environment.dns}/websocket/`);
 
-        ws.addEventListener('close', () => {
-            this.isConnected = false;
-            this._onConnect(false);
-            setTimeout(() => this.start(), 1000);
-        });
+        ws.addEventListener('close', this.onClose);
 
         ws.addEventListener('message', ({ data }: { data: string }) => {
             try {
@@ -97,9 +98,16 @@ export class SokiTrip {
     }
 
     private _onConnect(isConnected: boolean) {
-        if (isConnected === this.isConnected)
-            MyLib.entries(this.onConnectWatchers).forEach(([, cb]) => cb(isConnected));
+        if (isConnected !== this.isConnected)
+            Object.values(this.onConnectWatchers).forEach(cb => cb(isConnected));
         this.isConnected = isConnected;
+    }
+
+    onConnect(watcherName: string) {
+        return (callback: (isConnected: boolean) => void) => {
+            this.onConnectWatchers[watcherName] = callback;
+            return () => delete this.onConnectWatchers[watcherName];
+        }
     }
 
     setLastUpdates(appName: SokiAppName, appLastUpdate?: number | null, inedxLastUpdate?: number | null) {
@@ -111,13 +119,6 @@ export class SokiTrip {
 
             return next;
         });
-    }
-
-    onConnect(watcherName: string) {
-        return (callback: (isConnected: boolean) => void) => {
-            this.onConnectWatchers[watcherName] = callback;
-            return () => delete this.onConnectWatchers[watcherName];
-        }
     }
 
     onUnauthorize() {
