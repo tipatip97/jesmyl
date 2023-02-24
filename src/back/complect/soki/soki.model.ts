@@ -15,7 +15,7 @@ export interface SokiCapsule {
 }
 
 export interface SokiServerEvent {
-    requestId: number,
+    requestId?: number,
     connect?: boolean,
     pull?: PullEventValue,
     authorization?: { type: 'login' | 'register' } & ({ ok: false, value: string } | ({ ok: true, value: LocalSokiAuth })),

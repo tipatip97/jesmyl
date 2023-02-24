@@ -57,12 +57,12 @@ const sendStatistic = () => {
         }
     });
 
-    subscribers.forEach((_, client) => send({ statistic, requestId: 0, }, client));
+    subscribers.forEach((_, client) => send({ statistic }, client));
 };
 
 const connect = (client: WebSocket) => {
     capsules.set(client, { auth: null });
-    send({ connect: true, requestId: 0, }, client);
+    send({ connect: true }, client);
 };
 
 const disconnect = (client: WebSocket) => {
@@ -87,7 +87,6 @@ filer.setWatcher((appName, name, data) => {
             lastUpdate: 0,
             indexLastUpdate: 0,
         },
-        requestId: 0,
     });
 });
 
@@ -100,7 +99,7 @@ new WebSocketServer({
 
         client.on('message', async (data: WebSocket.RawData) => {
             const eventData: SokiClientEvent = JSON.parse('' + data);
-            const requestId = eventData.requestId || 0;
+            const requestId = eventData.requestId;
             const eventBody = eventData.body;
 
             if (eventBody.authorization) {
