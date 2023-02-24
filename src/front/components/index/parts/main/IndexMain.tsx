@@ -50,21 +50,21 @@ export default function IndexMain() {
       headClass="flex between"
       headTitle={currentApp?.title || "Другое"}
       head={
-        auth?.fio && (
-          <div
-            className="margin-big-gap-h pointer"
-            onClick={() => {
-              openAbsoluteBottomPopup(<UserMore />);
-            }}
-          >
-            {auth?.fio}
-          </div>
-        )
+        <div className="flex flex-gap">
+          {isConnected || <EvaIcon name="alert-triangle" className="error-message" />}
+          {auth?.fio && (
+            <div
+              className="margin-big-gap-h pointer"
+              onClick={() => openAbsoluteBottomPopup(<UserMore />)}
+            >
+              {auth?.fio}
+            </div>
+          )}
+        </div>
       }
       contentClass="flex column"
       content={
         <>
-          {isConnected || <div className="error-message">Соединение...</div>}
           {auth?.fio ? null : (
             <BrutalItem
               icon="person-outline"
