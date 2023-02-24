@@ -7,6 +7,7 @@ import {
 } from "../Complect.store";
 import { isTouchDevice } from "../device-differences";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
+import mylib from "../my-lib/MyLib";
 import useMountTransition from "../popups/useMountTransition";
 import Portal from "../popups/[complect]/Portal";
 import "./AbsolutePopup.scss";
@@ -24,11 +25,14 @@ export type AbsoluteBottomPopupItem = {
   icon: EvaIconName,
   title: string,
   rightNode?: ReactNode,
+  isError?: boolean,
   iconWrapperClassName?: string,
-} & AreaHTMLAttributes<HTMLDivElement>
+} & AreaHTMLAttributes<HTMLDivElement>;
+
+type SkeletIcon = AbsoluteBottomPopupItem | nil | false | SkeletIcon[];
 
 export interface AbsoluteBottomPopupContentProps {
-  items: (AbsoluteBottomPopupItem | AbsoluteBottomPopupItem[] | null)[],
+  items: SkeletIcon[],
   footer?: ReactNode,
 }
 
@@ -47,19 +51,25 @@ export default function useAbsoluteBottomPopup() {
     },
     prepareAbsoluteBottomPopupContent: ({ items, footer }: AbsoluteBottomPopupContentProps) => {
       return <div className="abs-item flex column">
-        {items.flat().map((item) => {
-          if (item === null) return null;
-          const { className, icon, title, iconWrapperClassName, rightNode, ...other } = item;
+        {items.map((item) => {
+          if (!item) return null;
+          const map = (item: SkeletIcon): ReactNode => {
+            if (!item) return null;
+            if (mylib.isArr(item)) return item.map(item => map(item));
+            const { className, icon, title, iconWrapperClassName, rightNode, ...other } = item;
 
-          return <div key={`${icon} ${title}`} {...other} className={`abs-item ${className || ''}`}>
-            <div className="flex flex-gap">
-              <div className={iconWrapperClassName}>
-                <EvaIcon name={icon} className="abs-icon" />
+            return <div key={`${icon} ${title}`} {...other} className={`abs-item ${className || ''}`}>
+              <div className="flex flex-gap">
+                <div className={iconWrapperClassName}>
+                  <EvaIcon name={icon} className="abs-icon" />
+                </div>
+                <div className="title">{title}</div>
               </div>
-              <div className="title">{title}</div>
-            </div>
-            {rightNode && <div className="abs-action flex around pointer">{rightNode}</div>}
-          </div>;
+              {rightNode && <div className="abs-action flex around pointer">{rightNode}</div>}
+            </div>;
+          };
+
+          return map(item);
         })}
         {footer}
       </div>;
@@ -70,6 +80,7 @@ export default function useAbsoluteBottomPopup() {
     ) => {
       isClosable = closable;
       isClosed = false;
+      isInitialScroll = true;
       onOpenPopup?.(ret.closeAbsoluteBottomPopup);
       absolutePopupContent =
         typeof content === "function"
@@ -87,14 +98,11 @@ let scrollTop = 0;
 let needClose = false;
 let animateScrollInProcess = false;
 let isMouseDown = false;
+let isInitialScroll = true;
 const initialScrollTop = window.innerHeight * 0.3;
 const inactiveScrollTop = window.innerHeight * 0.25;
 
-export function ABSOLUTE__BOTTOM__POPUP({
-  onOpen,
-}: {
-  onOpen: (close: () => boolean) => void;
-}) {
+export function ABSOLUTE__BOTTOM__POPUP({ onOpen }: { onOpen: (close: () => boolean) => void }) {
   const { isAbsoluteBottomPopupOpen, closeAbsoluteBottomPopup } =
     useAbsoluteBottomPopup();
   onOpenPopup = onOpen;
@@ -119,7 +127,10 @@ export function ABSOLUTE__BOTTOM__POPUP({
           scrollTop = bottomContainer.current.scrollTop += 3;
         animateScroll();
       }, 2);
-    } else animateScrollInProcess = false;
+    } else {
+      animateScrollInProcess = false;
+      isInitialScroll = false;
+    }
   };
 
   const [isMounted, className] = useMountTransition(isAbsoluteBottomPopupOpen, 'absolute-bottom-popup', 500);
@@ -135,22 +146,27 @@ export function ABSOLUTE__BOTTOM__POPUP({
     isMounted && <Portal>
       <div className={className} onClick={() => closeAbsoluteBottomPopup()}>
         <div
-          className={`container no-scrollbar${isTouchDevice ? "" : " not-touch-device"
-            } ${scrollableContent ? "" : "not-"}scrollable-content`}
+          className={
+            'container no-scrollbar'
+            + (isTouchDevice ? "" : " not-touch-device")
+            + (`${scrollableContent ? "" : " not-"}scrollable-content`)
+          }
           ref={bottomContainer}
           onScroll={
             isTouchDevice
               ? () => {
-                if (!bottomContainer.current || animateScrollInProcess) return;
-                needClose = bottomContainer.current.scrollTop < scrollTop;
-                scrollTop = bottomContainer.current.scrollTop;
-                clearTimeout(scrollDebounce);
+                setTimeout(() => {
+                  if (!bottomContainer.current || animateScrollInProcess) return;
+                  needClose = !isInitialScroll && bottomContainer.current.scrollTop < scrollTop;
+                  scrollTop = bottomContainer.current.scrollTop;
+                  clearTimeout(scrollDebounce);
 
-                if (!isMouseDown && scrollTop < inactiveScrollTop)
-                  scrollDebounce = setTimeout(() => {
-                    if (needClose) closeAbsoluteBottomPopup();
-                    else animateScroll();
-                  }, 300);
+                  if (!isMouseDown && scrollTop < inactiveScrollTop)
+                    scrollDebounce = setTimeout(() => {
+                      if (needClose) closeAbsoluteBottomPopup();
+                      else animateScroll();
+                    }, 100);
+                });
               }
               : undefined
           }
