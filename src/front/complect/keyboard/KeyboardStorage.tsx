@@ -4,9 +4,15 @@ import EvaIcon from "../eva-icon/EvaIcon";
 import { KeyboardStorageCallbacks } from "./complect/F.Callbacks";
 import {
   KeyboardInputProps,
+  KeyboardInputPropsType,
   keyboardKeyTranslateLangs,
   KeyboardKeyTranslateLanguage,
 } from "./Keyboard.model";
+
+const onTypeDifferent = (type?: KeyboardInputPropsType, callback?: (value: string, prev: string | null) => void,) => {
+  if (type !== 'number' || !callback) return callback;
+  return (value: string, prev: string | null) => callback(value || '0', prev);
+};
 
 export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   isNeedValuesInitialize = true;
@@ -20,8 +26,8 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     onFocus: () => void
   ) {
     this.offsetElements = [];
-    this.onChange = props.onChange;
-    this.onInput = props.onInput;
+    this.onChange = onTypeDifferent(this.type, props.onChange);
+    this.onInput = onTypeDifferent(this.type, props.onInput);
     this.onFocus = onFocus;
     this.forceUpdate = forceUpdater;
     this.onBlur = onBlur;

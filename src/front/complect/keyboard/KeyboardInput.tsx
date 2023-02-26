@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import propsOfClicker from "../clicker/propsOfClicker";
+import EvaButton from "../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
 import {
   keyboardKeyDict,
@@ -21,10 +22,19 @@ export default function KeyboardInput(props: KeyboardInputProps) {
   const input = useMemo(() => new KeyboardInputStorage(), []);
   const isNative = useSelector(isUseNativeKeyboardSelector);
   const [updates, setUpdates] = useState(0);
-  const nativeRef = useRef<HTMLTextAreaElement>(null);
+  const nativeRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   const [value, setValue] = useState(props.value);
+  const [isHiddenPassword, setIsHiddenPassword] = useState(true);
+  const [isForceZero, setIsForceZero] = useState(false);
 
   useEffect(() => setValue(props.value), [props.value]);
+  useEffect(() => {
+    if (props.type === 'number') {
+      if (!value) setValue('0');
+      else if (value.match(/\D/)) setValue('');
+    } else if (value === '0' && props.value !== '0') setValue('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.type]);
 
   useEffect(() => {
     !isNative && value && input.replaceAll(value, false, true);
@@ -46,10 +56,46 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       ...otherProps
     } = props;
     const invoke = (callback: (value: string, prev: string | null) => void, text: string) => {
-      const prev = type === 'number' ? value?.replace(/\D+/g, '') || '0' : value;
-      const val = type === 'number' ? (value === '0' ? text.replace(/^0/, '') : text).replace(/\D+/g, '') || '0' : text;
-      callback(val, prev ?? null);
-      setValue(val);
+      if (type === 'number') {
+        if (text === '00') setIsForceZero(true);
+        else if (!text) setIsForceZero(false);
+
+        const val = (value === '0' && !isForceZero ? text.replace(/^0/, '') : text).replace(/\D+/g, '') || '0';
+        callback(val, value?.replace(/\D+/g, '') || '0');
+        setValue(val);
+      } else {
+        callback(text, value ?? null);
+        setValue(text);
+      }
+    };
+
+    const nativeProps = {
+      className: "native-input",
+      onClick: (event: any) => {
+        otherProps.onClick?.({
+          name: 'click',
+          blur: () => nativeRef.current?.blur(),
+          stopPropagation: event.stopPropagation,
+        });
+      },
+      onInput: onInput && ((event: any) => {
+        invoke(onInput, event.target.value);
+      }),
+      onChange: onChange && ((event: any) => {
+        invoke(onChange, event.target.value);
+      }),
+      onPaste: onPaste && (async () => {
+        invoke(onPaste, await navigator.clipboard.readText());
+      }),
+      onFocus: onFocus && ((event: any) => {
+        onFocus({
+          name: 'focus',
+          blur: () => nativeRef.current?.blur(),
+          stopPropagation: event.stopPropagation,
+        });
+      }),
+      value,
+      ref: nativeRef,
     };
 
     return <div className={
@@ -58,51 +104,38 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       + (multiline ? ' multiline' : '')
       + (withoutCloseButton ? ' without-close-button' : '')
     }>
-      <textarea
-        {...otherProps}
-        className="native-input"
-        onClick={(event) => {
-          otherProps.onClick?.({
-            name: 'click',
-            blur: () => nativeRef.current?.blur(),
-            stopPropagation: event.stopPropagation,
-          });
-        }}
-        onInput={onInput && ((event: any) => {
-          invoke(onInput, event.target.value);
-        })}
-        onChange={onChange && ((event: any) => {
-          invoke(onChange, event.target.value);
-        })}
-        onPaste={onPaste && (async () => {
-          invoke(onPaste, await navigator.clipboard.readText());
-        })}
-        onFocus={onFocus && ((event) => {
-          onFocus({
-            name: 'focus',
-            blur: () => nativeRef.current?.blur(),
-            stopPropagation: event.stopPropagation,
-          });
-        })}
-        rows={multiline ? value?.split('\n').length : 1}
-        ref={nativeRef}
-        value={value}
-      />
-      {!withoutCloseButton && value && <div className="icon-button-container">
-        <EvaIcon
-          name="close"
-          className="icon-button close-button"
-          onMouseDown={() => {
-            setTimeout(() => nativeRef.current?.focus());
-
-            if (nativeRef.current) {
-              const val = type === 'number' ? '0' : '';
-              onChange?.(val, nativeRef.current.value || '');
-              onInput?.(val, nativeRef.current.value || '');
-              setValue(val);
-            }
-          }}
+      {multiline
+        ? <textarea
+          {...otherProps}
+          {...(nativeProps as any)}
+          rows={multiline ? value?.split('\n').length : 1}
         />
+        : <input
+          {...otherProps}
+          {...(nativeProps as any)}
+          type={type === 'password' && !isHiddenPassword ? 'text' : type}
+        />}
+      {type !== 'button' && value && <div className="icon-button-container">
+        {type === 'password'
+          ? <EvaButton
+            name={isHiddenPassword ? 'eye-outline' : 'eye-off-outline'}
+            onClick={() => setIsHiddenPassword(is => !is)}
+          />
+          : !withoutCloseButton && <EvaButton
+            name="close"
+            className="close-button"
+            onMouseDown={() => {
+              setTimeout(() => nativeRef.current?.focus());
+
+              if (nativeRef.current) {
+                setIsForceZero(false);
+                const val = type === 'number' ? '0' : '';
+                onChange?.(val, nativeRef.current.value || '');
+                onInput?.(val, nativeRef.current.value || '');
+                setValue(val);
+              }
+            }}
+          />}
       </div>}
     </div>;
   }
@@ -126,7 +159,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       props.onFocus?.({
         name: 'focus',
         blur: () => input.blur(),
-        stopPropagation: () => {},
+        stopPropagation: () => { },
       });
     }
   );
