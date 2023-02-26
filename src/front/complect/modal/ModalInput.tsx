@@ -46,7 +46,6 @@ export default function ModalInput(topProps: TheModalInputProps) {
             { input, event },
             props
           );
-          if (input.closable !== true) event.stopPropagation();
 
           const onClick = () => {
             if (input.onClick) {
@@ -78,13 +77,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
           {asFunc(input.title)}
         </span>
       )}
-      {isTextArea ? (
-        <textarea {...props}>{input.value}</textarea>
-      ) : (
-        props.type === 'button'
-          ? <input {...props} />
-          : <KeyboardInput {...props} value={asFunc(input.value)} />
-      )}
+      <KeyboardInput {...props} value={asFunc(input.value)} multiline={isTextArea} />
     </label>
   );
 }
