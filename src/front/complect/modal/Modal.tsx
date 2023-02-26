@@ -50,7 +50,7 @@ export const onActionClick = (
       ],
     });
   } else onClick(clickConfig);
-  if ((input as ModalConfigButton).closable === true) {
+  if ((input as ModalConfigInput).type === 'button' && (input as ModalConfigInput).closable !== false) {
     modalService.close(input.value);
     inputPrefix = getInputId();
   }
