@@ -94,7 +94,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
           stopPropagation: event.stopPropagation,
         });
       }),
-      value,
+      value: value || '',
       ref: nativeRef,
     };
 
