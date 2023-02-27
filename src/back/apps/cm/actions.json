@@ -299,8 +299,8 @@
                             "texti": "#number",
                             "chordsi": "#number",
                             "type": "#string",
-                            "anchor": "$number",
-                            "uniq": "$number"
+                            "anchor": "#number",
+                            "uniq": "#number"
                         }
                     },
                     "<addAnc>": {
