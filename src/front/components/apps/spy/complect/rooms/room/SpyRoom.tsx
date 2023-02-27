@@ -38,7 +38,7 @@ export default function SpyRoom() {
   const [loactionsOnLoad, updateLoactionsOnLoad] = useState<
     ["add" | "del", string][]
   >([]);
-  const [spyCount, setSpyCount] = useState(0);
+  const [spyCount, setSpyCount] = useState(1);
 
 
   useLayoutEffect(() => {
@@ -162,6 +162,7 @@ export default function SpyRoom() {
                               <KeyboardInput
                                 type="number"
                                 onInput={(value) => setSpyCount(+value)}
+                                value={'' + spyCount}
                               />
                             </div>
                             {players && (
