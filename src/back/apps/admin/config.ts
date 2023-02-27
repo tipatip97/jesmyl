@@ -8,6 +8,7 @@ const config: FilerAppConfig = {
             name: "userList",
             rootPath: 'bonjour',
             ext: null,
+            refreshTrigger: 'register',
         },
     ]
 }
