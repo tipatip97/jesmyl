@@ -71,27 +71,45 @@ export class MyLib extends SMyLib {
         return -1;
     }
 
-    internationalWordReg(word: string, flags = '') {
-        const reps = [
-            ['ыіi', 'ыії'],
-            ["ъ'ʼ", "ъ'ʼ"],
-            ['эє'],
-            ['гґ'],
-            ['её']
-        ];
+    numberSearchReplacements: [RegExp, string][] = [
+        [/0+/g, ' '],
+        [/1/g, "[^а-яё0-9ґії'ʼє]"],
+        [/2/g, '[абвг]'],
+        [/3/g, '[деёжз]'],
+        [/4/g, '[ийкл]'],
+        [/5/g, '[мноп]'],
+        [/6/g, '[рсту]'],
+        [/7/g, '[фхцч]'],
+        [/8/g, '[шщъы]'],
+        [/9/g, '[ьэюя]'],
+    ];
 
-        return RegExp(reps.reduce((acc, [from, to]) => acc.replace(RegExp(`[${from}]`), `[${to || from}]`), word).toLowerCase(), flags);
+    textSearchReplacements: [RegExp, string][] = [
+        [/[ыіi]/g, '[ыії]'],
+        [/[ъ'ʼ]/g, "[ъ'ʼ]"],
+        [/[эє]/g, '[эє]'],
+        [/[гґ]/g, '[гґ]'],
+        [/[её]/g, '[её]']
+    ];
+
+    internationalWordReg(word: string, isNumberSearch?: boolean) {
+        return RegExp(
+            (isNumberSearch ? this.numberSearchReplacements : this.textSearchReplacements)
+                .reduce((acc, [from, to]) => acc.replace(from, to), word).toLowerCase());
     }
 
     searchRate<FerryType, ObjName extends keyof FerryType = keyof FerryType>(
         objects: FerryType[ObjName][],
         searchWord: string,
         places: (Trace[] | Trace)[],
-        objName: ObjName
+        objName: ObjName,
+        isNumberSearch?: boolean
     ): FerryType[] {
-        const normalWords = searchWord.split(/[^а-яё0-9ґії'ʼє]+/i).filter(word => word);
+        const normalWords = isNumberSearch
+            ? searchWord.split(/0+/).filter(word => word)
+            : searchWord.split(/[^а-яё0-9ґії'ʼє]+/i).filter(word => word);
         const words = normalWords.map(word => word.toLowerCase());
-        const wordRegs = normalWords.map(word => this.internationalWordReg(word));
+        const wordRegs = normalWords.map(word => this.internationalWordReg(word, isNumberSearch));
 
         return objects.reduce((ferries: Ferry<FerryType, ObjName>[], object, objecti) => {
             let rate = 0;
