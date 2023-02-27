@@ -79,6 +79,11 @@ export class Filer {
     this.watcher = watcher;
   }
 
+  private triggers: { refreshTrigger: string, cb: () => void }[] = [];
+  trigger(triggerName: string) {
+    this.triggers.forEach(({ refreshTrigger, cb }) => triggerName === refreshTrigger && cb());
+  }
+
   fileName(appName: SokiAppName, name: string, ext: string | null = 'json') {
     return `${appName}/${name}${ext ? `.${ext}` : ''}`;
   }
@@ -120,8 +125,14 @@ export class Filer {
               level = 0,
               prepare = (data: unknown) => data,
               map = () => null,
-              watch = null
+              watch = null,
+              refreshTrigger = '',
             } = smylib.isStr(requ) ? { name: requ } : requ;
+
+            if (refreshTrigger) this.triggers.push({
+              refreshTrigger,
+              cb: () => loadInContent(requ, cb),
+            });
 
             const filename = rootPath ? this.rootFileName(rootPath, ext) : this.fileName(appName, name, ext);
             const path = rootPath ? this.rootPath(filename) : this.filePath(filename);

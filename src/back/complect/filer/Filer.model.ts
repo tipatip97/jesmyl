@@ -11,6 +11,7 @@ export interface FilerAppRequirement {
     map?: (data: any) => any,
     prepare?: (data: any, auth?: LocalSokiAuth | null) => any,
     watch?: [string, (content: string) => any],
+    refreshTrigger?: string,
 }
 
 export type SimpleKeyValue<Key = string, Value = unknown> = SimpleValueKey<Value, Key>;
