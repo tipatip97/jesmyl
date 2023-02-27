@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DebouncedInput from "../../../../../complect/DebouncedInput";
+import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../complect/exer/useExer";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
@@ -129,8 +129,7 @@ export default function EditMeetingsEvent() {
           </div>
           {!zcat || isClosedComList ? null : (
             <>
-              <DebouncedInput
-                icon="search-outline"
+              <DebouncedSearchInput
                 placeholder="Поиск песен"
                 className="debounced-searcher round-styled margin-gap-v"
                 initialTerm={term}

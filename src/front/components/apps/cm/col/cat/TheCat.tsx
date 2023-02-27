@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
-import DebouncedInput from "../../../../../complect/DebouncedInput";
+import { useSelector } from "react-redux";
+import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
+import { RootState } from "../../../../../shared/store";
 import useCmNav from "../../base/useCmNav";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
@@ -9,9 +11,12 @@ import ComFace from "../com/face/ComFace";
 import "./Cat.scss";
 import { useCcat } from "./useCcat";
 
+const isNumberSearchSelector = (state: RootState) => state.complect.isNumberSearch;
+
 export default function TheCat({ all }: { all?: boolean }) {
   const cat = useCcat(all);
   const { laterComs } = useLaterComList();
+  const isNumberSearch = useSelector(isNumberSearchSelector);
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
@@ -51,13 +56,11 @@ export default function TheCat({ all }: { all?: boolean }) {
         withoutBackButton={all}
         head={
           !cat ? null : (
-            <DebouncedInput
-              uniq={`search in cat ${cat.wid}`}
-              icon="search-outline"
+            <DebouncedSearchInput
               placeholder="Поиск песен"
               className="debounced-searcher round-styled"
               initialTerm={term}
-              onSearch={(term) => cat.search(term)}
+              onSearch={(term) => cat.search(term, isNumberSearch)}
               debounce={500}
               onDebounced={() => {
                 if (listRef.current) listRef.current.scrollTop = 0;
@@ -68,7 +71,7 @@ export default function TheCat({ all }: { all?: boolean }) {
         }
         contentRef={listRef}
         content={
-          !cat ? null : (
+          cat && (
             <>
               <div
                 className={`later-com-list ${all && !term && laterComs.length ? "" : "hidden"}`}

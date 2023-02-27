@@ -1,7 +1,7 @@
 import { HTMLAttributes, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import DebouncedInput from "../../../../../complect/DebouncedInput";
+import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
@@ -40,8 +40,8 @@ export default function HumanList({
         .filter((human) => human) as Human[]) ?? people?.humans;
     const wraps = term
       ? mylib
-          .searchRate<{ human: Human }>(humans, term, ["name"], "human")
-          .map(({ human }) => human)
+        .searchRate<{ human: Human }>(humans, term, ["name"], "human")
+        .map(({ human }) => human)
       : humans;
 
     if (!term) {
@@ -56,9 +56,7 @@ export default function HumanList({
   if (humansRef) humansRef.current = humanList;
 
   const searcher = (
-    <DebouncedInput
-      uniq={`search by human ${uniq}`}
-      icon="search-outline"
+    <DebouncedSearchInput
       placeholder={placeholder ?? "Поиск по личностям"}
       className={`debounced-searcher round-styled ${searcherClass || ""}`}
       initialTerm={term}
@@ -71,11 +69,10 @@ export default function HumanList({
     return (
       <div
         key={`human ${humani}`}
-        className={`${
-          dangers?.some((wid) => human.wid === wid) ? "error-message" : ""
-        } ${
-          successes?.some((wid) => human.wid === wid) ? "success-message" : ""
-        }`}
+        className={
+          (dangers?.some((wid) => human.wid === wid) ? "error-message" : "")
+          + (successes?.some((wid) => human.wid === wid) ? " success-message" : "")
+        }
       >
         <HumanFace
           human={human}

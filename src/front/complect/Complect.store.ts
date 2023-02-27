@@ -8,6 +8,7 @@ const initialState: ComplectState = {
     isAbsoluteFloatPopupOpen: false,
     isAbsoluteBottomPopupOpen: false,
     isFullscreen: false,
+    isNumberSearch: false,
     numAbsoluteBottomPopupUpdates: 0,
     numExerUpdates: 0,
 };
@@ -24,6 +25,9 @@ export const slice = createSlice({
         },
         switchAbsoluteFloatPopupOpen: (state, action: PayloadAction<boolean | nil>) => {
             state.isAbsoluteFloatPopupOpen = action.payload ?? !state.isAbsoluteFloatPopupOpen;
+        },
+        switchIsNumberSearch: (state, action: PayloadAction<boolean | nil>) => {
+            state.isNumberSearch = action.payload ?? !state.isNumberSearch;
         },
         switchAbsoluteBottomPopupOpen: (state, action: PayloadAction<boolean | nil>) => {
             state.isAbsoluteBottomPopupOpen = action.payload ?? !state.isAbsoluteBottomPopupOpen;
@@ -42,6 +46,7 @@ export const {
     switchAbsoluteFloatPopupOpen,
     switchAbsoluteBottomPopupOpen,
     riseUpAbsoluteBottomPopupUpdates,
+    switchIsNumberSearch,
     switchComplectFullscreen,
     riseUpExerUpdates
 } =

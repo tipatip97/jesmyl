@@ -25,7 +25,7 @@ export class EditableCat extends Cat {
     this.coms = this.putComs();
   }
 
-  search(term = this.term, cb?: () => void) {
+  search(term = this.term) {
     if (term) {
       if (term === '@1') {
         this.wraps = this.coms.filter(com => !com.audio.trim()).map(com => ({ com }));
@@ -44,7 +44,6 @@ export class EditableCat extends Cat {
     } else this.wraps = this.coms.map(com => ({ com }));
 
     this.term = term;
-    cb && cb();
   }
 
   putComs() {

@@ -5,10 +5,11 @@ export interface ComplectStorage {
 }
 
 export interface ComplectState extends ComplectStorage {
-    fullscreenContentOpenMode: FullScreenContentOpenMode;
-    isAbsoluteFloatPopupOpen: boolean;
-    isAbsoluteBottomPopupOpen: boolean;
-    numAbsoluteBottomPopupUpdates: number;
-    isFullscreen: boolean;
-    numExerUpdates: number;
+    fullscreenContentOpenMode: FullScreenContentOpenMode,
+    isAbsoluteFloatPopupOpen: boolean,
+    isAbsoluteBottomPopupOpen: boolean,
+    numAbsoluteBottomPopupUpdates: number,
+    isFullscreen: boolean,
+    numExerUpdates: number,
+    isNumberSearch: boolean,
 }

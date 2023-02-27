@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import DebouncedInput from "../../../../../../complect/DebouncedInput";
+import DebouncedSearchInput from "../../../../../../complect/DebouncedSearchInput";
 import useExer from "../../../../../../complect/exer/useExer";
 import LoadIndicatedContent from "../../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../../complect/my-lib/MyLib";
@@ -47,8 +47,7 @@ export default function EditCompositions() {
         onMoreClick={() => openAbsoluteBottomPopup(<EditCompositionsMore />)}
         head={
           !zcat ? null : (
-            <DebouncedInput
-              icon="search-outline"
+            <DebouncedSearchInput
               placeholder="Песни"
               className="debounced-searcher round-styled margin-gap-h"
               initialTerm={term}
