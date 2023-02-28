@@ -36,6 +36,7 @@ export interface ExecutionRule {
     value?: unknown,
     expecteds?: [ExecutionTrack, [] | {}][],
     isSequre?: boolean,
+    fixAccesses?: Record<string, ExecutionTrack>,
 }
 
 export type ExecutionExpectations = [ExecutionTrack, {} | []][];
@@ -45,8 +46,10 @@ export interface ExecutionRealAccumulatable {
     args: Record<string, any>,
     track: ExecutionTrack,
     sides?: ExecutionRule[],
-    accesses: ExecutionTrack[],
+    accesses: string[],
 }
+
+export type ExecutionFixedAccesses = Record<string, () => boolean>;
 
 export interface ExecutionReal extends ExecutionRealAccumulatable {
     action: string;

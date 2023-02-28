@@ -2,7 +2,7 @@
 import { sequreMD5Passphrase } from "../../values";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { ExecuteError, ExecuteErrorType, ExecuteResults, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionTrack, TrackerRet } from "./Executer.model";
+import { ExecuteError, ExecuteErrorType, ExecuteResults, ExecutionDict, ExecutionExpectations, ExecutionFixedAccesses, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionTrack, TrackerRet } from "./Executer.model";
 
 
 const globs: Record<string, any> = {
@@ -37,7 +37,7 @@ export class Executer {
                 else if (!Array.isArray(trace)) targets.push(trace);
 
                 continue;
-            }
+            } else if (trace === '.') continue;
 
             if (target == null) return {
                 penultimate: null,
@@ -321,7 +321,15 @@ export class Executer {
 
     static prepareTrack = (path: string): ExecutionTrack => path.startsWith('<') ? [] : path.slice(1).split('/').map((part) => part.startsWith('[') && part.endsWith(']') ? part.slice(1, -1).split(' ') as ExecutionRuleTrackBeat : part).filter(part => part);
 
-    static findRule(actions: Record<string, ExecutionRule>, action: string, value: unknown, args?: Record<string, unknown>, auth?: LocalSokiAuth | null) {
+    static findRule(
+        actions: Record<string, ExecutionRule>,
+        action: string,
+        value: unknown,
+        fixedAccesses: ExecutionFixedAccesses,
+        contents: Record<string, unknown>,
+        args?: Record<string, unknown>,
+        auth?: LocalSokiAuth | null
+    ) {
         const find = (composit: Record<string, ExecutionRule>, topRule: ExecutionRealAccumulatable = {} as never): ExecutionReal | null => {
             for (const key in composit) {
                 const rule = composit[key];
@@ -333,14 +341,22 @@ export class Executer {
                         args: this.cloneArgs({ ...topRule.args, ...rule.args }, rule.cloneArgs),
                         expecteds: (rule.expected ? topRule.expecteds || [] : topRule.expecteds)
                             ?.concat(rule.expected ? [[accTrack, rule.expected]] : []),
-                        accesses: (rule.access ? topRule.accesses || [] : topRule.accesses)
-                            ?.concat(rule.access ? [(accTrack || []).concat(rule.access)] : []),
+                        accesses: rule.access
+                            ? (topRule.accesses || []).concat(rule.access)
+                            : topRule.accesses,
                         sides: (rule.side ? topRule.sides || [] : topRule.sides)?.concat(
                             Object.entries(rule.side || {})?.map(([key, side]: [string, ExecutionRule]) => {
                                 return { ...side, track: accTrack.concat(this.prepareTrack(key) || []) };
                             }) || []),
 
                     };
+                    if (rule.fixAccesses) {
+                        SMyLib.entries(rule.fixAccesses).forEach(([accessName, track]) => {
+                            fixedAccesses[accessName] = () => {
+                                return !!this.tracker(accTrack.concat(track), contents, args, null, auth).target;
+                            };
+                        });
+                    }
                     if (rule.action === action) {
                         const ret = this.replaceArgs<ExecutionReal>({
                             ...accRule,
@@ -387,8 +403,22 @@ export class Executer {
         });
     }
 
-    static isAccessed(accesses: ExecutionTrack[] | undefined | null, contents: Record<string, unknown>, args?: Record<string, unknown>, auth?: LocalSokiAuth | null) {
-        return !accesses || !accesses.some((track) => !this.tracker(track, contents, args, null, auth).target);
+    static isAccessed(
+        accesses: string[] | undefined | null,
+        fixedAccesses: ExecutionFixedAccesses,
+    ) {
+        return !accesses || !accesses.some((accessFormula) => {
+            try {
+                const body = smylib.stringTemplater(accessFormula, fixedAccesses).replace(/[^()\w|&!?]/g, '');
+                const data: { result?: boolean } = {};
+                // eslint-disable-next-line no-new-func
+                if (body) new Function('data', `data.result = ${body};`)(data);
+                return !data.result;
+            } catch (e) {
+                console.error(e);
+                return true;
+            }
+        });
     }
 
     static executeReals(contents: Record<string, any>, execs: ExecutionReal[]) {
@@ -424,9 +454,10 @@ export class Executer {
                 const fixes: string[] = [];
                 const level = auth?.level;
                 const errors: ExecuteError[] = [];
+                const fixedAccesses: ExecutionFixedAccesses = {};
 
                 execs.forEach((exec) => {
-                    const rule = this.findRule(rules, exec.action, exec.value, exec.args, auth);
+                    const rule = this.findRule(rules, exec.action, exec.value, fixedAccesses, contents, exec.args, auth);
 
                     if (!rule) {
                         errors.push({
@@ -438,7 +469,7 @@ export class Executer {
 
                     const note = rule.shortTitle || rule.action;
 
-                    if (!this.isAccessed(rule.accesses, contents, exec.args, auth)) {
+                    if (!this.isAccessed(rule.accesses, fixedAccesses)) {
                         errors.push({
                             type: ExecuteErrorType.Access,
                             note,
@@ -537,10 +568,10 @@ export class Executer {
                         break;
                     case 'formula':
                         try {
-                            if (penultimate && smylib.isStr(value) && smylib.isNum(target)) {
+                            if (penultimate && smylib.isStr(value)) {
                                 const val = this.replaceArgs(value, args, auth);
                                 if (smylib.isStr(val)) {
-                                    const body = val.replace(/[^()X\d-+* /]/g, '').replace(/X/g, '' + target);
+                                    const body = val.replace(/[^()X\d-+* /]/g, '').replace(/X/g, '' + (target || 0));
                                     const data: { result?: number } = {};
                                     // eslint-disable-next-line no-new-func
                                     new Function('data', `data.result = ${body};`)(data);
@@ -552,23 +583,23 @@ export class Executer {
                         }
                         break;
                     case 'push':
-                        if (smylib.isArr(target)) {
-                            const error = this.ununiqErrorMessage(uniqs, target, value);
-                            if (error) {
-                                reject(error);
-                                return;
-                            }
-                            target?.push(smylib.clone(value));
+                        const pushTarget = smylib.isArr(target) ? target : penultimate[lastTrace] = [];
+                        const error = this.ununiqErrorMessage(uniqs, pushTarget, value);
+                        if (error) {
+                            reject(error);
+                            return;
                         }
+                        pushTarget?.push(smylib.clone(value));
                         break;
                     case 'concat':
-                        if (smylib.isArr(target) && smylib.isArr(value)) {
-                            const error = this.ununiqErrorMessage(uniqs, target, value);
+                        const concatTarget = smylib.isArr(target) ? target : penultimate[lastTrace] = [];
+                        if (smylib.isArr(value)) {
+                            const error = this.ununiqErrorMessage(uniqs, concatTarget, value);
                             if (error) {
                                 reject(error);
                                 return;
                             }
-                            smylib.clone(value).forEach((val) => target.push(val));
+                            smylib.clone(value).forEach((val) => concatTarget.push(val));
                         }
                         break;
                     case 'remove':
