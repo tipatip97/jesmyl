@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SokiStatistic } from "../../../back/complect/soki/soki.model";
-import { AppName } from "../../app/App.model";
+import { AppName, appNames } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
 import { NavRouting } from "../../complect/nav-configurer/Navigation.model";
 import {
@@ -10,10 +10,14 @@ import {
 import indexStorage from "./indexStorage";
 
 export const indexExer = new Exer('index', indexStorage);
+export const defaultAppName = 'cm';
+
+const app = indexStorage.getOr("currentApp", defaultAppName);
+const currentApp = appNames.includes(app) ? app : defaultAppName;
 
 const initialState: IndexState = {
   routing: indexStorage.getOr("routing", null),
-  currentApp: indexStorage.getOr("currentApp", "cm"),
+  currentApp,
   appVersion: indexStorage.get("appVersion"),
   auth: indexStorage.get('auth'),
   isUseNativeKeyboard: indexStorage.get('isUseNativeKeyboard'),
