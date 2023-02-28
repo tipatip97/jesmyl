@@ -11,6 +11,7 @@ import SpyRoomLocationsInGame from "./SpyRoomLocationsInGame";
 import SpyRoomMemberInStartGameMore from "./SpyRoomMemberInStartGameMore";
 import useSpyState from "./useSpyState";
 import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
+import SpyLocations from "./SpyLocations";
 
 export default function SpyRoomContent() {
     const {
@@ -139,8 +140,8 @@ export default function SpyRoomContent() {
                                     />
                                 </div>
                             )}
-                        </>
-                    }
+                            <SpyLocations />
+                        </>}
                 </>}
     </>;
 }

@@ -17,7 +17,7 @@ import GamerOfflineRoom from "./complect/rooms/offline-room/GamerOfflineRoom";
 import SpyCurrentOfflineGameInfo from "./complect/rooms/offline-room/SpyCurrentOfflineGameInfo";
 import SpyOfflineRoomContent from "./complect/rooms/offline-room/SpyOfflineRoomContent";
 import GamerRoom from "./complect/rooms/room/GamerRoom";
-import Spy from "./Gamer";
+import Gamer from "./Gamer";
 import { GamerGameName, GamerNavData, GamerPassport, GamerStorage } from "./Gamer.model";
 import { updateCurrentOfflineGameName, updateSpyOfflineGame } from "./Gamer.store";
 import GamerApp from "./GamerApp";
@@ -82,13 +82,13 @@ const gamerNavigation = new NavigationConfig<
 >({
   root: (content) => <GamerApp content={content} />,
   rootPhase: "gamer",
-  logo: "search",
+  logo: "cube",
   routes: [
     {
       phase: ["gamer"],
-      icon: "search",
-      title: "",
-      node: <Spy />,
+      icon: "cube",
+      title: "Игрок",
+      node: <Gamer />,
       next: [
         {
           phase: ["room"],

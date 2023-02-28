@@ -11,7 +11,7 @@ export default function SpyRoomLocationsInGame({
   onToggleLocation: ((location: string) => 'del' | 'add'),
 }) {
   const [isOpenLocations, setIsOpenLocations] = useState(false);
-  const [loactionsOnLoad, updateLoactionsOnLoad] = useState<
+  const [locationsOnLoad, updateLocationsOnLoad] = useState<
     ["add" | "del", string][]
   >([]);
 
@@ -20,14 +20,14 @@ export default function SpyRoomLocationsInGame({
   useLayoutEffect(() => {
     const newLocationList =
       cleanLocations &&
-      loactionsOnLoad.filter(([action, location]) => {
+      locationsOnLoad.filter(([action, location]) => {
         return cleanLocations
           ? !cleanLocations.some(([loc]) => loc === location)
             ? action === "add"
             : action === "del"
           : false;
       });
-    updateLoactionsOnLoad(newLocationList || []);
+    updateLocationsOnLoad(newLocationList || []);
   }, [state?.locations]);
 
 
@@ -49,7 +49,7 @@ export default function SpyRoomLocationsInGame({
       {isOpenLocations &&
         locations.map((location, locationi) => {
           const [strikedLoc, secretLoc] = cleanLocations?.find(([loc]) => loc === location) ?? [];
-          const isOnLoading = loactionsOnLoad.some(([, loc]) => loc === location);
+          const isOnLoading = locationsOnLoad.some(([, loc]) => loc === location);
 
           return (
             <div
@@ -59,8 +59,8 @@ export default function SpyRoomLocationsInGame({
                 }`}
               onClick={() =>
                 amIManager &&
-                updateLoactionsOnLoad([
-                  ...loactionsOnLoad,
+                updateLocationsOnLoad([
+                  ...locationsOnLoad,
                   [onToggleLocation(secretLoc ?? location), location],
                 ])
               }

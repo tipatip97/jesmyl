@@ -2,6 +2,7 @@ import SendButton from "../../../../../complect/SendButton";
 import { GamerRoomMember, GamerRoomMemberStatus } from "../../Gamer.model";
 import RoomMemberFace from "../../complect/GamerRoomMemberFace";
 import SpyShowMyRole from "./SpyShowMyRole";
+import SpyLocations from "./SpyLocations";
 
 export default function SpyRoomStartedGame({
     iterations,
@@ -47,8 +48,8 @@ export default function SpyRoomStartedGame({
                 />
             );
         })}
-        {onFinishGame ? (
-            <>
+        {onFinishGame
+            ? <>
                 {spies && spies.filter((spyLogin) => retired.includes(spyLogin)).length
                     === spies.length && (
                         <div className="error-message text-center margin-big-gap">
@@ -63,6 +64,7 @@ export default function SpyRoomStartedGame({
                     />
                 </div>
             </>
-        ) : null}
+            : null}
+        <SpyLocations />
     </div>
 }

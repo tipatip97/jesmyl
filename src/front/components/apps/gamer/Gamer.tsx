@@ -6,7 +6,7 @@ import GamerRoomList from "./complect/rooms/room/GamerRoomList";
 import GamerMore from "./complect/GamerMore";
 import "./Gamer.scss";
 
-export default function SpyLocations() {
+export default function Gamer() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   return (
