@@ -89,7 +89,7 @@ export default function HumanMaster({
           if (!groups) return;
           const groupws = wraps.map(({ group: { wid } }) => wid);
 
-          openAbsoluteBottomPopup((close, prepare) => 
+          openAbsoluteBottomPopup((close, prepare) =>
             prepare({
               items: groups.map((group) => {
                 return {
@@ -423,7 +423,7 @@ export default function HumanMaster({
               onSend={() => {
                 return new Promise(async (res, rej) => {
                   if (human) {
-                    leaderExer.load(res, rej);
+                    leaderExer.load().then(res).catch(rej);
                   } else {
                     if ('no data') return;
                     leaderExer.send(
@@ -441,9 +441,7 @@ export default function HumanMaster({
                           isInactive,
                         } as HumanExportable,
                       },
-                      res,
-                      rej
-                    );
+                    ).then(res).catch(rej);
                   }
                 });
               }}

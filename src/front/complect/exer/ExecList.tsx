@@ -7,6 +7,7 @@ import EditContainerCorrectsInformer from "../../components/apps/cm/editor/edit-
 import { Exer } from "./Exer";
 import { ExerStorage } from "./Exer.model";
 import useExer from "./useExer";
+import modalService from "../modal/Modal.service";
 
 export default function ExecList<Storage extends ExerStorage>({
   exer,
@@ -42,18 +43,18 @@ export default function ExecList<Storage extends ExerStorage>({
 
           <EvaIcon
             name="paper-plane-outline"
-            className={`action-button pointer ${
-              isDisabledSendButton ? "disabled" : ""
-            }`}
+            className={`action-button pointer ${isDisabledSendButton ? "disabled" : ""}`}
             onClick={() => {
               setReadyState(0);
-              exer.load(
-                () => {
+              exer.load()
+                .then(() => {
                   dispatch(riseUpExerUpdates());
                   setReadyState(1);
-                },
-                () => setReadyState(2)
-              );
+                })
+                .catch((error) => {
+                  modalService.alert(error, 'Ошибка');
+                  setReadyState(2);
+                });
             }}
           />
         </div>

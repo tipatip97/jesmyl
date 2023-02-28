@@ -10,8 +10,6 @@ import mylib from "../my-lib/MyLib";
 import { Exec } from "./Exec";
 import { ClientExecutionDict, ExecRule, ExerStorage, FreeExecDict, FreeExecDictAntiCallback, FreeExecDictAntiCallbackStrategy } from "./Exer.model";
 
-type Callback = (okRes: any, errRes: any) => void;
-
 export class Exer<Storage extends ExerStorage> {
     appName: JStorageName;
     execs: Exec<any>[] = [];
@@ -120,46 +118,29 @@ export class Exer<Storage extends ExerStorage> {
         return this.storage?.has(this.key);
     }
 
-    send<Value>(fixedExecs: ClientExecutionDict<Value> | (ClientExecutionDict<Value>[]), cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, isRejectShowErrorModal?: boolean) {
-        return this.load(cb, errCb, finCb, [fixedExecs].flat().map(exec => new Exec(exec, this.rules)), isRejectShowErrorModal);
+    send<Value>(fixedExecs: ClientExecutionDict<Value> | (ClientExecutionDict<Value>[])) {
+        return this.load([fixedExecs].flat().map(exec => new Exec(exec, this.rules)))
+            .catch(error => modalService.alert(error));
     }
 
-    load<Value>(cb?: Callback | nil, errCb?: Callback | nil, finCb?: Callback | nil, fixedExecs?: Exec<Value>[] | nil, isRejectShowErrorModal?: boolean) {
-        const execs = (fixedExecs || this.execs)
-            .map(exec => exec.forLoad())
-            .filter(ex => ex);
+    load<Value>(fixedExecs?: Exec<Value>[] | nil) {
+        return new Promise((resolve, reject) => {
+            const execs = (fixedExecs || this.execs)
+                .map(exec => exec.forLoad())
+                .filter(ex => ex);
 
-        if (!execs.length) {
-            cb?.(null, null);
-            return Promise.resolve();
-        }
+            if (!execs.length) {
+                return resolve({ ok: false });
+            }
 
-        const onError = (error: Error) => {
-            if (!isRejectShowErrorModal)
-                modalService.confirm(`${error || `Ошибка!`}\nСохранить локально?`)
-                    .then(isSave => {
-                        if (isSave) this.saveLocally();
-                        else modalService.confirm(`Удалить весь стек?`)
-                            .then(isRemove => {
-                                if (isRemove) {
-                                    this.removeLocals();
-                                    this.execs.length = 0;
-                                }
-                            });
-                    });
-            errCb && errCb(null, error);
-            finCb && finCb(null, error);
-        };
-
-        return new Promise((resolve, reject) => this.fetch({
-            execs,
-            success: resp => {
-                if (!resp.ok) {
-                    onError(resp.errors);
-                    reject(resp.errors);
-                } else {
+            soki.send({ execs: execs.filter((dict) => dict) as ExecutionDict[] })
+                .on(() => {
+                    const response = {
+                        ok: true,
+                        rejected: [] as [],
+                    };
                     this.execs = this.execs.filter(ex => {
-                        const isRejected = resp.rejected?.some((rej: Exec<Value> & { exec: Exec<Value> }) => {
+                        const isRejected = response.rejected?.some((rej: Exec<Value> & { exec: Exec<Value> }) => {
                             if (ex.id === rej.exec.id) {
                                 ex.errors = rej.errors;
                                 return true;
@@ -170,18 +151,9 @@ export class Exer<Storage extends ExerStorage> {
                         return ex.del || isRejected;
                     });
 
-                    cb?.(resp, null);
-                    finCb?.(resp, null);
-                    resolve(resp);
-                }
-            },
-            error: (resp) => {
-                onError(resp);
-                reject(resp);
-            },
-        })).catch((error) => {
-            console.info(error);
-            return error;
+                    resolve(response);
+                },
+                    (err) => reject(err));
         });
     }
 
@@ -202,26 +174,6 @@ export class Exer<Storage extends ExerStorage> {
         if (this.storage?.has(this.key)) {
             this.set(this.storage.get(this.key) as never);
         }
-    }
-
-    fetch<Value>(S: {
-        execs: (ExecutionDict<Value> | null)[], success?: Callback, error?: Callback,
-        complete?: Callback
-    }) {
-        soki.send({ execs: S.execs.filter((dict) => dict) as ExecutionDict[] })
-            .on(
-                () => {
-                    const response = {
-                        ok: true,
-                        rejected: [] as [],
-                    };
-                    S.success?.(response, null);
-                    S.complete?.(response, null);
-                },
-                (err) => {
-                    S.error?.(null, err);
-                    S.complete?.(null, err);
-                });
     }
 
     actionAccessedOrUnd(action: string | nil, isNullifyed?: boolean): true | undefined {

@@ -10,12 +10,14 @@ export default function EvaButton(
     confirm?: string,
   }
 ) {
+  const isClickable = !props.disabled && props.onClick ? true : undefined;
+
   return (
     <>
       <EvaIcon
         {...props}
-        className={`pointer ${props.disabled ? "disabled" : ""} ${props.className}`}
-        onClick={props.disabled ? undefined : props.onClick && (async (event) => {
+        className={`${isClickable ? 'pointer' : ''} ${props.disabled ? "disabled" : ""} ${props.className}`}
+        onClick={isClickable && (async (event) => {
           if (!props.confirm || await modalService.confirm(props.confirm))
             props.onClick!(event);
         })}

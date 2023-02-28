@@ -59,10 +59,11 @@ export default function useLeaderComments() {
                 })
                 .map(({ exec }) => exec);
 
-            leaderExer.send(execs, null, () => {
-                const tss = execs.map(({ args }) => args?.ts) as number[];
-                dispatch(updateRrrorSentComments([...errorSentComments, ...tss]));
-            }, null);
+            leaderExer.send(execs)
+                .catch(() => {
+                    const tss = execs.map(({ args }) => args?.ts) as number[];
+                    dispatch(updateRrrorSentComments([...errorSentComments, ...tss]));
+                });
             ret.saveLocal(throwComments, true);
         },
         saveLocal: (comments: SendingComments, isRejectPropagation?: boolean) => leaderStorage.set('sendingComments', comments, isRejectPropagation),

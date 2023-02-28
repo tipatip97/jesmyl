@@ -136,13 +136,12 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
     }
 
     static publicateNew(args: GameTimerCreatable) {
-        return new Promise((res, rej) => leaderExer.send(
-            {
+        return new Promise((res, rej) =>
+            leaderExer.send({
                 action: "addGameTimer",
                 method: "push",
                 args,
-            }, res, rej, null, true
-        ));
+            }).then(res).catch(rej));
     }
 
     static updateTimerComponents(gamew: number, timerw: number, value: GameTimerUpdatable) {
@@ -151,7 +150,7 @@ export default class LeaderGameTimer extends SourceBased<GameTimerImportable> {
                 action: "updateTimerComponents",
                 method: "set_all",
                 args: { gamew, timerw, value } as GameTimerUpdateExportable,
-            }, res, rej, null, true
-        ));
+            }
+        ).then(res).catch(rej));
     }
 }

@@ -53,7 +53,7 @@ export default class Game extends SourceBased<TeamGameImportable> {
                     gamew: this.wid,
                     list: teams.map((team) => team.toDict())
                 },
-            }, res, rej, null, true);
+            }).then(res).catch(rej);
         });
     }
 
@@ -66,7 +66,7 @@ export default class Game extends SourceBased<TeamGameImportable> {
                     gamew: this.wid,
                     list,
                 },
-            }, res, rej);
+            }).then(res).catch(rej);
         });
     }
 
@@ -79,7 +79,7 @@ export default class Game extends SourceBased<TeamGameImportable> {
                     ...value,
                     gamew: this.wid,
                 },
-            }, res, rej);
+            }).then(res).catch(rej);
         });
     }
 
@@ -90,7 +90,7 @@ export default class Game extends SourceBased<TeamGameImportable> {
             args: {
                 gamew: this.wid
             },
-        }, res, rej))
+        }).then(res).catch(rej))
     }
 
     static sendNewGame({ name, contextw, teams, timerNames, timerFields }: { name: string, contextw: number, timerNames?: string[], teams?: GameTeam[]; timerFields?: GameTimerConfigurable }) {
@@ -105,6 +105,6 @@ export default class Game extends SourceBased<TeamGameImportable> {
                 timerFields,
                 teams: teams?.map((team) => team.toDict()),
             } as TeamGameExportable,
-        }, res, rej, null, true));
+        }).then(res).catch(rej));
     }
 }

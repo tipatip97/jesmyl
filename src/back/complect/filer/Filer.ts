@@ -3,7 +3,7 @@ import admin from '../../apps/admin/config';
 import cm from '../../apps/cm/config';
 import index from '../../apps/index/config';
 import leader from '../../apps/leader/config';
-import spy from '../../apps/spy/config';
+import gamer from '../../apps/gamer/config';
 import { Executer } from '../executer/Executer';
 import { ExecutionRule } from '../executer/Executer.model';
 import smylib, { SMyLib } from '../soki/complect/SMyLib';
@@ -70,7 +70,7 @@ export class Filer {
   private appConfigs = {
     index,
     cm,
-    spy,
+    gamer,
     leader,
     admin,
   } as FilerAppStore;

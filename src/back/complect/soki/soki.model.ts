@@ -1,7 +1,7 @@
 import { ExecutionDict, ExecutionReal } from "../executer/Executer.model";
 import { SimpleKeyValue } from "../filer/Filer.model";
 
-export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'spy', 'leader'] as const;
+export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader'] as const;
 export type SokiAppName = typeof sokiAppNames[number];
 
 

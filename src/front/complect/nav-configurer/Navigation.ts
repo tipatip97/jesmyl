@@ -258,6 +258,7 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
                             outletContent: findContent(throwRoute, items),
                             relativePoint: item.phase,
                             currentChildPhase: throwRoute[0],
+                            childItems: item.next,
                             data: item.data,
                         })
                         : item.node

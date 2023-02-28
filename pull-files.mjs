@@ -12,7 +12,6 @@ import fetch from 'node-fetch';
     ['apps/cm', 'chordTracks'],
     ['apps/leader', 'people'],
     ['apps/leader', 'contexts'],
-    // ['apps/spy', 'cache'],
     // ['S', 'apps'],
     // ['S', 'main', 'css'],
 ].forEach(([path, name, ext = 'json']) => {

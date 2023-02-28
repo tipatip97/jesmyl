@@ -35,7 +35,7 @@ describe('MyLib', () => {
 
     it('stringTemplater:default functions', () => {
         expect(
-            mylib.stringTemplater('Я люблю $switch{{$num}{1}{бфнфны}{2}{яблоки}{3}{апельсины}}!', { num: 2 })
+            mylib.stringTemplater('Я люблю $switch{{$num}{1}{бaнaны}{2}{яблоки}{3}{апельсины}}!', { num: 2 })
         ).toBe('Я люблю яблоки!');
 
         expect(
@@ -102,6 +102,35 @@ describe('MyLib', () => {
                 }
             )
         ).toBe('Каскад ф-ций 5');
+
+        expect(
+            mylib.stringTemplater(
+                'Ф-ция без аргов $func;123',
+                {
+                    func: () => 'STRING'
+                }
+            )
+        ).toBe('Ф-ция без аргов STRING123');
+
+        expect(
+            mylib.stringTemplater(
+                '$true || $funF;',
+                {
+                    funF: () => 'F',
+                    true: true
+                }
+            )
+        ).toBe('true || F');
+
+        expect(
+            mylib.stringTemplater(
+                '$on && $tw',
+                {
+                    on: () => true,
+                    tw: () => false
+                }
+            )
+        ).toBe('true && false');
 
     });
 });

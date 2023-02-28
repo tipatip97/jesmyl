@@ -42,11 +42,11 @@ export interface INavigationConfig<Storage extends ExerStorage, NavData> {
 
 export type INavigationRouteItem<NavData> = INavigationRouteChildItem<NavData> | INavigationRouteRootItem<NavData>;
 
-export interface INavigationRouteChildItem<NavData, Data extends Record<string, any> | und = Record<string, any>> {
-    readonly phase: NavPhasePoint,
+export interface INavigationRouteChildItem<NavData, Data extends Record<string, any> | und = Record<string, any>, PhaseName = string> {
+    readonly phase: NavPhasePoint<PhaseName>,
     // компоненту можно передать содержимое его потомков, если typeof node === 'function'
     // такая фаза считается проходящей
-    node: ReactNode | ((props: NavigationThrowNodeProps) => ReactNode),
+    node: ReactNode | ((props: NavigationThrowNodeProps<NavData>) => ReactNode),
     // если typeof node === 'function' - этот параметр будет указывать,
     // на какой роут нужно перейти по умолчанию
     defaultChild?: NavPhase,
@@ -63,7 +63,7 @@ export interface INavigationRouteRootItem<NavData> extends INavigationRouteChild
     markBadge?: (storeData?: NavData) => number | boolean | nil,
 }
 
-export type NavPhasePoint = [string];
+export type NavPhasePoint<PhaseName = string> = [PhaseName];
 export type NavPhase = string;
 export type NavRoute = NavPhase[];
 
@@ -91,12 +91,13 @@ export interface MainNavigationNodeProps {
     content: ReactNode,
 }
 
-export interface NavigationThrowNodeProps {
+export interface NavigationThrowNodeProps<NavData> {
     outletContent: ReactNode,
     // если фаза является проходящей, она может выступать как относительная точка
     // в этом параметре передаётся картеж относительной точки
     relativePoint: NavPhasePoint | nil,
     currentChildPhase: NavPhase,
+    childItems?: INavigationRouteChildItem<NavData>[],
     data?: Record<string, any> | nil,
 }
 

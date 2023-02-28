@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
-import { riseUpNumUpdatesPeople, updateLeaderPeople } from "../../Leader.store";
+import { riseUpNumUpdatesPeople } from "../../Leader.store";
 import People from "./People";
 import { PeopleImportable } from "./People.model";
 

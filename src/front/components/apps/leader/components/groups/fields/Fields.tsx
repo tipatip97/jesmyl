@@ -74,9 +74,7 @@ export default function LeaderGroupFields() {
                           contextw: ccontext.wid,
                         },
                       },
-                      res,
-                      rej
-                    )
+                    ).then(res).catch(rej)
                   );
               }}
             />

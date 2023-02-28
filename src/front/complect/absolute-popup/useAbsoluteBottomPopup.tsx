@@ -23,16 +23,17 @@ const numAbsoluteBottomPopupUpdatesSelector = (state: RootState) => state.comple
 export type AbsoluteBottomPopupItem = {
   className?: string,
   icon: EvaIconName,
-  title: string,
+  titleNode?: ReactNode,
+  title?: string,
   rightNode?: ReactNode,
   isError?: boolean,
   iconWrapperClassName?: string,
 } & AreaHTMLAttributes<HTMLDivElement>;
 
-type SkeletIcon = AbsoluteBottomPopupItem | nil | false | SkeletIcon[];
+export type BottomPopupSkeletIcon = AbsoluteBottomPopupItem | nil | false | BottomPopupSkeletIcon[];
 
 export interface AbsoluteBottomPopupContentProps {
-  items: SkeletIcon[],
+  items: BottomPopupSkeletIcon[],
   footer?: ReactNode,
 }
 
@@ -53,17 +54,17 @@ export default function useAbsoluteBottomPopup() {
       return <div className="abs-item flex column">
         {items.map((item) => {
           if (!item) return null;
-          const map = (item: SkeletIcon): ReactNode => {
+          const map = (item: BottomPopupSkeletIcon): ReactNode => {
             if (!item) return null;
             if (mylib.isArr(item)) return item.map(item => map(item));
-            const { className, icon, title, iconWrapperClassName, rightNode, ...other } = item;
+            const { className, icon, titleNode, title, iconWrapperClassName, rightNode, ...other } = item;
 
-            return <div key={`${icon} ${title}`} {...other} className={`abs-item ${className || ''}`}>
+            return <div key={`${icon} ${titleNode} ${title}`} {...other} className={`abs-item ${className || ''}`}>
               <div className="flex flex-gap">
                 <div className={`icon-box ${iconWrapperClassName || ''}`}>
                   <EvaIcon name={icon} className="abs-icon" />
                 </div>
-                <div className="title">{title}</div>
+                <div className="title">{titleNode ?? title}</div>
               </div>
               {rightNode && <div className="abs-action flex around pointer">{rightNode}</div>}
             </div>;

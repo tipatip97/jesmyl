@@ -60,6 +60,11 @@
     "description": "Сыграй в шпиона"
   },
   {
+    "name": "gamer",
+    "title": "Игрок",
+    "description": ""
+  },
+  {
     "name": "im",
     "title": "Империя",
     "description": "The Imperia Game",

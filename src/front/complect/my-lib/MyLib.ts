@@ -1,8 +1,6 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable eqeqeq */
-import { ReactNode } from "react";
 import { SMyLib } from "../../../back/complect/soki/complect/SMyLib";
-import { StringTemplaterArgs } from "./MyLib.model";
 
 const constants = {
     REMOVE: ['REMOVE'],
@@ -33,14 +31,6 @@ export class MyLib extends SMyLib {
             call(...args: any[]) { return call(args); },
             invoke(func: Function) { return call([].concat(self.isFunc(func) ? func() : [])); }
         };
-    }
-
-    overlap<T>(...args: any[]): T {
-        if (args.length === 0) return null as never;
-        const zero = this.def(args[0], {});
-
-        args.forEach(arg => arg == null ? null : Object.keys(arg).forEach(arn => zero[arn] = arg[arn]));
-        return zero;
     }
 
     def(...args: any[]): any {
@@ -289,153 +279,6 @@ export class MyLib extends SMyLib {
         return false;
     }
 
-    stringTemplaterFunctions = {
-        ink: (num: number, post = '', pre = '') => num == null ? null : `${pre}${num - -1}${post}`,
-        switch: (...args: any[]) => {
-            let val: any, found: any;
-
-            const ret = args.find((arg, argi) => {
-                if (!argi) {
-                    val = arg;
-                    return false;
-                }
-
-                if (found) return true;
-                if ((argi % 2) && (arg == val)) found = true;
-                return false;
-            });
-
-            return ret == null ? args[args.length - 1] : ret;
-        },
-        declension: (num: number, one: string, two: string, five: string) => mylib.declension(num, one, two, five),
-        isEq: (...args: any[]) => {
-            let val: any;
-
-            return !args.some((arg, argi) => {
-                if (argi) return !this.isEq(arg, val);
-                val = arg;
-                return false;
-            });
-        },
-        isGt: (first: any, second: any) => first > second,
-        isGte: (first: any, second: any) => first >= second,
-        isLt: (first: any, second: any) => first < second,
-        isLte: (first: any, second: any) => first <= second,
-        or: (...args: any[]) => args.some((arg) => arg),
-        and: (...args: any[]) => !args.some((arg) => !arg),
-        if: (condition: any, ifTrue: any, ifFalse: any) => condition ? ifTrue : ifFalse,
-    };
-
-    stringTemplater<Args>(str: string, topArgs: Args): ReactNode {
-        topArgs = Object.assign({}, this.stringTemplaterFunctions, topArgs);
-
-        const dob = '{{';
-        const ocb = '}{';
-        const dcb = '}}';
-        const noObj = {};
-        const norm = (val: any, op?: string) => op === '?' ? val ? val : noObj : op === '!' ? val ? noObj : val : op === '!!' ? val == null ? '' : noObj : val == null ? noObj : val;
-        let lim = 1000;
-
-        const inline = (parts: string[]) => {
-            lim--;
-            if (lim < 0) {
-                return;
-            }
-            let line: any[] = [];
-
-            const addNorm = (val: any, op?: string) => {
-                const value = norm(val, op);
-                line = line.concat(value == noObj || value == null ? '' : value);
-            };
-
-            const getDiapason = (diapason: string[], district: number | null, structItems = false) => {
-                let ballance: number = null as never;
-                let distBallance = 0;
-                let struct: any[] = [];
-                const dists: any[] = [];
-
-                const diap = diapason.filter(txt => {
-                    if (ballance === 0) return false;
-
-                    if (structItems) {
-                        if ((txt === ocb || txt === dcb) && ballance === 1) {
-                            dists.push(inline(struct));
-                            struct = [];
-                        } else if (ballance) struct.push(txt);
-
-                    } else if (district != null) {
-                        if (distBallance === district) dists.push(txt);
-                        if (ballance === 1 && txt === ocb) distBallance++;
-                    }
-
-                    if (txt === dob) ballance++;
-                    else if (txt === dcb) ballance--;
-
-                    return true;
-                });
-
-                return {
-                    list: structItems || district != null ? dists : diap,
-                    len: diap.length,
-                    diap, dists
-                };
-            };
-
-            let escLim = 0;
-
-            parts.forEach((part, parti, parta) => {
-                if (parti && parti <= escLim) return;
-
-                const invokeFunc = (func: (...val: any) => void) => {
-                    const diapason = getDiapason(parta.slice(parti + 1), null, true);
-                    escLim += diapason.len;
-
-                    const nrm = inline(diapason.list) as any[];
-                    addNorm(func.apply(this, nrm));
-                };
-
-                if (part === dob) {
-                } else if (part === dcb || part === ocb) escLim++;
-                else if (this.isStr(part)) {
-                    const match = part.match(/^\$(\w+)(!{1,2}|\?{1,2})?(;?)/);
-                    const [, topArgName, op, semicolon] = (match || []) as [any, keyof StringTemplaterArgs, string, string];
-
-                    if (topArgName != null) {
-                        const val = topArgs[topArgName as keyof Args] as any;
-                        if (semicolon) {
-                            escLim++;
-                            if (this.isFunc(val)) invokeFunc(val);
-                            else addNorm(val, op);
-                        } else if (parta[parti + 1] === dob) {
-                            if (!op && this.isFunc(val)) invokeFunc(val);
-                            else {
-                                const value = norm(val, op);
-                                const diapason = getDiapason(parta.slice(parti + 1), value != noObj ? 0 : 1);
-                                escLim += diapason.len;
-
-                                const nrm = inline(diapason.list);
-                                addNorm(nrm);
-                            }
-                        } else if (this.isFunc(val)) invokeFunc(val);
-                        else {
-                            escLim++;
-                            addNorm(val, op);
-                        }
-                    } else {
-                        parti && escLim++;
-                        addNorm(part.replace(/^\\/, ''), op);
-                    }
-                } else addNorm(part);
-            });
-
-            return line;
-        };
-
-        return inline((str || '')
-            .split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/)
-            .filter(s => s))?.join('') || '';
-    }
-
     intervalToString(begin: number, end: number) {
         const diff = end - begin;
         const ms = this.getMilliseconds();
@@ -459,22 +302,6 @@ export class MyLib extends SMyLib {
         const inYear = inDay * yearDays;
 
         return { inSec, inMin, inHour, inDay, inMonth, inYear };
-    }
-
-    declension(num: number, one?: string, two?: string, five?: string) {
-        if (num % 1) return two;
-        let absNum = Math.abs(num) % 100;
-
-        if (absNum > 10 && absNum < 20)
-            return this.def(five, two);
-
-        absNum %= 10;
-
-        return (absNum > 1 && absNum < 5)
-            ? two
-            : (absNum === 1)
-                ? one
-                : this.def(five, two);
     }
 
     getAllProperties(obj: any) {

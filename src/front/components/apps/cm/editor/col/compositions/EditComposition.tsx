@@ -4,6 +4,7 @@ import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../complect/exer/useExer";
 import { NavigationThrowNodeProps } from "../../../../../../complect/nav-configurer/Navigation.model";
 import useCmNav from "../../../base/useCmNav";
+import { CmNavData } from "../../../Cm.model";
 import { cmExer } from "../../../Cm.store";
 import ComPlayer from "../../../col/com/player/ComPlayer";
 import { editCompositionNavs } from "../../editorNav";
@@ -15,7 +16,7 @@ export default function EditComposition({
   outletContent,
   relativePoint,
   currentChildPhase,
-}: NavigationThrowNodeProps) {
+}: NavigationThrowNodeProps<CmNavData>) {
   const ccom = useEditableCcom();
   const { goTo } = useCmNav();
   const { exec } = useExer(cmExer);

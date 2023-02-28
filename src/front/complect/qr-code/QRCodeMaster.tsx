@@ -15,7 +15,8 @@ let controller: (data: QRMasterControllerData) => TimeOut = () => undefined;
 
 setTimeout(() => renderApplication(<QRCodeMasterApplication controller={(top: (data: QRMasterControllerData) => TimeOut) => controller = top} />, document.querySelector('#qr-code-application-container')));
 
-export const jesmylHostName = new URL(window.location.href).origin;
+const hrefUrl = new URL(window.location.href);
+export const jesmylHostName = `${hrefUrl.protocol}//${hrefUrl.hostname}`;
 
 interface Attrs {
     appName: SokiAppName,

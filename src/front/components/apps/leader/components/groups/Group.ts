@@ -65,7 +65,7 @@ export default class LeaderGroup extends SourceBased<LeaderGroupImportable> {
                     ...group,
                     ts: LeaderGroup.makeNewTs()
                 } as LeaderGroupExportable
-            }, res, rej);
+            }).then(res).catch(rej);
         });
     }
 
@@ -133,6 +133,6 @@ export default class LeaderGroup extends SourceBased<LeaderGroupImportable> {
 
     sendChanges(changes: LeaderGroupChangable) {
         leaderExer.clear();
-        return new Promise((res, rej) => leaderExer.send(this.getChangesStack(changes), res, rej, null, true));
+        return new Promise((res, rej) => leaderExer.send(this.getChangesStack(changes)).then(res).catch(rej));
     }
 }

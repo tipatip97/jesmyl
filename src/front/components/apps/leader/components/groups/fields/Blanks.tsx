@@ -176,7 +176,7 @@ export default function GroupFieldBlanks() {
                   }
 
                   if (execs.length) {
-                    leaderExer.send(execs, res, rej);
+                    leaderExer.send(execs).then(res).catch(rej);
                   }
                 });
             }}

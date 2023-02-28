@@ -4,7 +4,7 @@ import { NavigationStorage } from "../complect/nav-configurer/Navigation.model";
 import admin from "../components/apps/admin/adminStorage";
 import cm from "../components/apps/cm/cmStorage";
 import leader from "../components/apps/leader/leaderStorage";
-import spy from "../components/apps/spy/spyStorage";
+import gamer from "../components/apps/gamer/gamerStorage";
 import index from "../components/index/indexStorage";
 
 interface Sto { }
@@ -14,7 +14,7 @@ export const appStorage: Record<JStorageName, JStorage<any>> = {
     index,
     tuner: stub,
     admin,
-    spy,
+    gamer,
     complect: stub,
     cm,
     leader,

@@ -1,0 +1,26 @@
+.offline-game {
+    border: dashed 2px var(--color--3);
+}
+
+.gamer-passport {
+    .passport-name {
+        .name {
+            max-width: 80vw;
+        }
+    }
+}
+
+.gamer-room {
+    .gamer-game-palette {
+        display: flex;
+
+        .gamer-game-item {
+            --size: 30vw;
+
+            background: var(--color--1);
+            width: var(--size);
+            height: var(--size);
+            border-radius: 20px;
+        }
+    }
+}

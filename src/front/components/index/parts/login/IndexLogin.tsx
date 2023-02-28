@@ -3,7 +3,6 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
 import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import LoadIndicatedContent from "../../../../complect/load-indicated-content/LoadIndicatedContent";
-import { soki } from "../../../../soki";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
 import { AuthMode } from "../../Index.model";
