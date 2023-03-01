@@ -1,8 +1,15 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 import * as pack from "../../resource/eva-icons.json";
+import { MyLib } from "../my-lib/MyLib";
 import './Eva.scss';
 
 export type EvaIconName = keyof typeof pack;
+
+const iconInners: Record<EvaIconName, ReactNode> = {} as never;
+
+MyLib.entries(pack).forEach(([icon, __html]) => {
+  iconInners[icon] = <g dangerouslySetInnerHTML={{ __html }} />
+});
 
 export default function EvaIcon(
   props: HTMLAttributes<HTMLOrSVGElement> & {
@@ -12,7 +19,7 @@ export default function EvaIcon(
 ) {
   return (
     <>
-      {pack[props.name] == null ? (
+      {iconInners[props.name] == null ? (
         props.alt || null
       ) : (
         <svg
@@ -20,13 +27,11 @@ export default function EvaIcon(
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          style={props.style}
-          className={`eva-icon ${props.className || ""} ${
-            props.onClick ? "pointer" : ""
-          }`}
+          className={'eva-icon '
+            + (props.onClick ? 'pointer ' : '')
+            + (props.className || '')}
           fill="var(--svg-color)"
-          dangerouslySetInnerHTML={{ __html: pack[props.name] }}
-        />
+        >{iconInners[props.name]}</svg>
       )}
     </>
   );

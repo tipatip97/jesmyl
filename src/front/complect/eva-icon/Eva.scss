@@ -1,5 +1,6 @@
 .eva-icon {
     --size: 24px;
+    --icon-scale: 1;
 
     width: var(--size);
     min-width: var(--size);
@@ -7,4 +8,5 @@
     height: var(--size);
     min-height: var(--size);
     max-height: var(--size);
+    transform: scale(var(--icon-scale));
 }
