@@ -15,12 +15,20 @@
         display: flex;
 
         .gamer-game-item {
-            --size: 30vw;
+            --size: 45vmin;
+            --max-size: 300px;
 
             background: var(--color--1);
             width: var(--size);
             height: var(--size);
+            max-width: var(--max-size);
+            max-height: var(--max-size);
             border-radius: 20px;
+
+            .eva-icon {
+                --icon-scale: 3;
+                margin-top: 30px
+            }
         }
     }
 }

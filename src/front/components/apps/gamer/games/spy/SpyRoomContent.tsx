@@ -99,10 +99,7 @@ export default function SpyRoomContent() {
             : !locations?.length
                 ? <div className="margin-big-gap text-center">Локаций нет</div>
                 : <>
-                    <GamerRoomMemberList
-                        members={currentRoom?.members}
-                        amIManager={amIManager}
-                    />
+                    <GamerRoomMemberList />
                     <SpyRoomLocationsInGame
                         onToggleLocation={toggleLocation}
                         amIManager={amIManager}

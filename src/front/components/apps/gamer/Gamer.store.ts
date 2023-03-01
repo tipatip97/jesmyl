@@ -19,39 +19,39 @@ export const slice = createSlice({
     name: "gamer",
     initialState,
     reducers: {
-        setSpyCurrentRoomw: (state, action: PayloadAction<number>) => {
+        setGamerCurrentRoomw: (state, action: PayloadAction<number>) => {
             state.roomw = action.payload;
         },
-        updateSpyRooms: (state, action: PayloadAction<GamerRoom[]>) => {
+        updateGamerRooms: (state, action: PayloadAction<GamerRoom[]>) => {
             state.rooms = action.payload;
         },
-        updateSpyOfflineRooms: (state, action: PayloadAction<GamerRoom[]>) => {
+        updateGamerOfflineRooms: (state, action: PayloadAction<GamerRoom[]>) => {
             state.offlineRooms = action.payload;
             gamerStorage.set('offlineRooms', state.offlineRooms);
         },
-        updateSpyLocations: (state, action: PayloadAction<string[]>) => {
-            state.locations = action.payload;
-        },
-        updateSpyPassport: (state, action: PayloadAction<GamerPassport | null>) => {
+        updateGamerPassport: (state, action: PayloadAction<GamerPassport | null>) => {
             state.passport = action.payload ?? undefined;
             if (!state.passport) gamerStorage.rem('passport');
             else gamerStorage.set('passport', state.passport);
         },
-        updateSpyOfflineGame: (state, action: PayloadAction<OfflineSpyGame | null>) => {
-            state.offlineSpyGame = action.payload ?? undefined;
-        },
         updateCurrentOfflineGameName: (state, action: PayloadAction<GamerGameName | null>) => {
             state.currentOfflineGameName = action.payload ?? undefined;
+        },
+        updateSpyLocations: (state, action: PayloadAction<string[]>) => {
+            state.locations = action.payload;
+        },
+        updateSpyOfflineGame: (state, action: PayloadAction<OfflineSpyGame | null>) => {
+            state.offlineSpyGame = action.payload ?? undefined;
         },
     },
 });
 
 export const {
-    updateSpyRooms,
-    updateSpyOfflineRooms,
+    updateGamerRooms,
+    updateGamerOfflineRooms,
     updateSpyLocations,
-    setSpyCurrentRoomw,
-    updateSpyPassport,
+    setGamerCurrentRoomw,
+    updateGamerPassport,
     updateSpyOfflineGame,
     updateCurrentOfflineGameName,
 } = slice.actions;

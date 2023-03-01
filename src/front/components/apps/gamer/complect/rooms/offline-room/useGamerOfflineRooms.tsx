@@ -6,9 +6,9 @@ import useQRMaster from "../../../../../../complect/qr-code/useQRMaster";
 import { RootState } from "../../../../../../shared/store";
 import useAuth from "../../../../../index/useAuth";
 import { GamerGameName, GamerRoom, GamerRoomMember, GamerRoomMemberStatus } from "../../../Gamer.model";
-import { setSpyCurrentRoomw, updateSpyOfflineRooms } from "../../../Gamer.store";
+import { setGamerCurrentRoomw, updateGamerOfflineRooms } from "../../../Gamer.store";
 import gamerStorage from "../../../gamerStorage";
-import useSpyNav, { gamerOfflineRoomGames } from "../../../useGamerNav";
+import useGamerNav, { gamerOfflineRoomGames } from "../../../useGamerNav";
 
 const offlineRoomsSelector = (state: RootState) => state.gamer.offlineRooms;
 const roomwSelector = (state: RootState) => state.gamer.roomw;
@@ -16,7 +16,7 @@ const passportSelector = (state: RootState) => state.gamer.passport;
 
 export default function useGamerOfflineRooms() {
   const dispatch = useDispatch();
-  const { goTo } = useSpyNav();
+  const { goTo } = useGamerNav();
   const roomw = useSelector(roomwSelector);
   const passportData = useSelector(passportSelector);
   const offlineRooms = useSelector(offlineRoomsSelector);
@@ -40,7 +40,7 @@ export default function useGamerOfflineRooms() {
       const roomi = rooms.findIndex(({ w }) => w === roomw);
       if (roomi > -1) {
         rooms[roomi] = newRoom;
-        dispatch(updateSpyOfflineRooms(rooms));
+        dispatch(updateGamerOfflineRooms(rooms));
       }
     }
   };
@@ -64,14 +64,14 @@ export default function useGamerOfflineRooms() {
           const [gameName] = (data.key as string).split('.');
           const offSkelet = gamerOfflineRoomGames.find(({phase: [phase]}) => phase === gameName);
           if (offSkelet) {
-            offSkelet.data?.qr(dispatch, ret.passport, data);
+            offSkelet.data?.qrDataCatcher(dispatch, ret.passport, data);
           }
         }
       });
     },
     goToOfflineRoom: (roomWid: number) => {
       gamerStorage.set('roomw', roomWid);
-      dispatch(setSpyCurrentRoomw(roomWid));
+      dispatch(setGamerCurrentRoomw(roomWid));
       goTo('offlineRoom');
     },
     setRoomGame: (currentGame: GamerGameName) => {
@@ -120,7 +120,7 @@ export default function useGamerOfflineRooms() {
 
       if (!login || !fio) return;
 
-      dispatch(updateSpyOfflineRooms(
+      dispatch(updateGamerOfflineRooms(
         [
           ...offlineRooms || [],
           {
@@ -139,7 +139,7 @@ export default function useGamerOfflineRooms() {
         ]));
     },
     removeOfflineGame: async (roomw: number) => {
-      dispatch(updateSpyOfflineRooms((offlineRooms || []).filter(({ w }) => w !== roomw)));
+      dispatch(updateGamerOfflineRooms((offlineRooms || []).filter(({ w }) => w !== roomw)));
     },
   };
   return ret;

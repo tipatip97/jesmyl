@@ -8,7 +8,7 @@ export type EvaIconName = keyof typeof pack;
 const iconInners: Record<EvaIconName, ReactNode> = {} as never;
 
 MyLib.entries(pack).forEach(([icon, __html]) => {
-  iconInners[icon] = <g dangerouslySetInnerHTML={{ __html }} />
+  iconInners[icon] = <g dangerouslySetInnerHTML={{ __html }} />;
 });
 
 export default function EvaIcon(

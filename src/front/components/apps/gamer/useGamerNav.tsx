@@ -12,7 +12,7 @@ import {
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import { QRCodeReaderData } from "../../../complect/qr-code/QRCodeMaster.model";
-import TheSpyPassport from "./complect/GamerPassport";
+import TheGamerPassport from "./complect/GamerPassport";
 import GamerOfflineRoom from "./complect/rooms/offline-room/GamerOfflineRoom";
 import SpyCurrentOfflineGameInfo from "./complect/rooms/offline-room/SpyCurrentOfflineGameInfo";
 import SpyOfflineRoomContent from "./complect/rooms/offline-room/SpyOfflineRoomContent";
@@ -21,6 +21,7 @@ import Gamer from "./Gamer";
 import { GamerGameName, GamerNavData, GamerPassport, GamerStorage } from "./Gamer.model";
 import { updateCurrentOfflineGameName, updateSpyOfflineGame } from "./Gamer.store";
 import GamerApp from "./GamerApp";
+import AliasRoomContent from "./games/alias/AliasRoomContent";
 import { OfflineGameShare } from "./games/spy/offline-room/SpyOfflineRoom.model";
 import SpyRoomContent from "./games/spy/SpyRoomContent";
 import { SPY_ROLE, unsecretSpyRole } from "./games/spy/useSpyLocations";
@@ -37,11 +38,19 @@ export const gamerRoomGames: GamerRoomGameSkelet[] = [
       title: 'Шпион 1.0',
     },
   },
+  {
+    phase: ['alias'],
+    node: <AliasRoomContent />,
+    data: {
+      icon: 'smiling-face-outline',
+      title: 'Алиас',
+    },
+  },
 ];
 
 export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
   currentNode: ReactNode,
-  qr: (dispatch: Dispatch, passport: LocalSokiAuth | GamerPassport, data: QRCodeReaderData<any, any>) => void
+  qrDataCatcher: (dispatch: Dispatch, passport: LocalSokiAuth | GamerPassport, data: QRCodeReaderData<any, any>) => void
 }>[] = [
     {
       phase: ['spy'],
@@ -50,7 +59,7 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
         icon: 'search',
         title: 'Шпион 1.0',
         currentNode: <SpyCurrentOfflineGameInfo />,
-        qr: (dispatch, passport, data) => {
+        qrDataCatcher: (dispatch, passport, data) => {
           if (!passport.login) return;
           const [location, spiesCount, iterations, memberStrList] = data.value as OfflineGameShare || [];
           const members = memberStrList.match(/\.|.{0,32}/g);
@@ -118,14 +127,14 @@ const gamerNavigation = new NavigationConfig<
       phase: ["passport"],
       icon: "credit-card",
       title: "Паспорт",
-      node: <TheSpyPassport />,
+      node: <TheGamerPassport />,
     },
   ],
 });
 
 const actions: UseNavAction[] = [];
 
-export default function useSpyNav() {
+export default function useGamerNav() {
   return useGamerNavConfigurer();
 }
 

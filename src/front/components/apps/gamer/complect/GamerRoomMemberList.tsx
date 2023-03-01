@@ -1,20 +1,16 @@
 import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import { GamerRoomMember } from "../Gamer.model";
 import RoomMemberFace from "./GamerRoomMemberFace";
 import GamerRoomMemberMore from "./rooms/room/GamerRoomMemberMore";
+import useGamerRooms from "./rooms/room/useGamerRooms";
 
-export default function GamerRoomMemberList({
-  members,
-  amIManager,
-}: {
-  members?: GamerRoomMember[],
-  amIManager?: boolean,
-}) {
+export default function GamerRoomMemberList() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const { currentRoom, memberPossibilities } = useGamerRooms();
+  const amIManager = memberPossibilities().isManager;
 
   return <>
     <h2>Участники</h2>
-    {members?.map((member, memberi) => {
+    {currentRoom?.members?.map((member, memberi) => {
       return <RoomMemberFace
         key={`m ${memberi}`}
         member={member}

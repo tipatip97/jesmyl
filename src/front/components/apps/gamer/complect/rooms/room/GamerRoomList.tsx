@@ -1,4 +1,5 @@
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import { gamerRoomGames } from "../../../useGamerNav";
 import useGamerRooms from "./useGamerRooms";
 
 export default function GamerRoomList() {
@@ -9,6 +10,7 @@ export default function GamerRoomList() {
       {rooms?.map((room) => {
         const possibilities = memberPossibilities(room);
         const iconPostfix = possibilities.isOwner ? '' : '-outline';
+        const gameData = gamerRoomGames.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data;
 
         return (
           <div
@@ -16,8 +18,7 @@ export default function GamerRoomList() {
             className="face-item"
             onClick={() => goToRoom(room.w)}
           >
-            <div
-              className="face-logo">
+            <div className="face-logo">
               <EvaIcon
                 name={
                   possibilities.isRequester
@@ -26,11 +27,17 @@ export default function GamerRoomList() {
                       ? `person-delete${iconPostfix}`
                       : possibilities.isInvalid
                         ? `lock${iconPostfix}`
-                        : `cube${iconPostfix}`
+                        : gameData?.icon
+                          ? gameData.icon
+                          : `cube${iconPostfix}`
+
                 }
               />
             </div>
-            <div className="face-title">{room.name}</div>
+            <div className="face-title">
+              <span className="color--7">{room.name}</span>
+              {gameData?.title ? ` ● ${gameData.title}` : ''}
+            </div>
           </div>
         );
       })}

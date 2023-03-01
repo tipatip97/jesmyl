@@ -5,7 +5,7 @@ import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { NavigationThrowNodeProps } from "../../../../../complect/nav-configurer/Navigation.model";
 import { GamerGameName, GamerNavData, GamerRoom } from "../../Gamer.model";
-import useSpyNav, { GamerRoomGameSkelet } from "../../useGamerNav";
+import useGamerNav, { GamerRoomGameSkelet } from "../../useGamerNav";
 import GamerRoomMemberList from "../GamerRoomMemberList";
 import PhaseGamerContainer from "../PhaseGamerContainer";
 
@@ -21,13 +21,13 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
   namePrefix?: string,
 }) {
   const { openAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
-  const { goTo, goBack } = useSpyNav();
+  const { goTo, goBack } = useGamerNav();
   const [isForceChoose, setIsForceChoose] = useState(false);
 
   const isNeedChooseGame = config.currentChildPhase === 'needChooseGame';
 
   useLayoutEffect(() => {
-    if (!isForceChoose && isNeedChooseGame && room?.currentGame) {
+    if (!isForceChoose && room?.currentGame && (isNeedChooseGame || room?.currentGame !== config.currentChildPhase)) {
       goTo(room.currentGame, config.relativePoint);
     }
   }, [isForceChoose, isNeedChooseGame, room?.currentGame, config.relativePoint]);
@@ -82,10 +82,7 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
               : <>
                 {isNeedChooseGame
                   ? <>
-                    <GamerRoomMemberList
-                      members={room?.members}
-                      amIManager={isManager}
-                    />
+                    <GamerRoomMemberList />
                     {isManager
                       ? <><h2>Игры</h2>
                         <div className="gamer-game-palette flex center full-width flex-wrap flex-gap">
@@ -93,7 +90,7 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
                             if (!data) return null;
                             return <div
                               key={gameName}
-                              className="gamer-game-item flex column center flex-gap pointer"
+                              className="gamer-game-item flex column around flex-gap pointer"
                               onClick={() => {
                                 goTo(gameName, config.relativePoint);
                                 onGameChange(gameName);
@@ -101,13 +98,20 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
                               }}
                             >
                               <EvaIcon name={data.icon} />
-                              <div>{data.title}</div>
+                              <div className="title">{data.title}</div>
                             </div>;
                           })}</div>
                       </>
                       : null}
                   </>
-                  : config.outletContent}
+                  : (
+                    (gameData) => gameData &&
+                      <h2 className="flex center flex-gap">
+                        <EvaIcon name={gameData.icon} />
+                        {gameData.title}
+                      </h2>)
+                    (games.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data)}
+                {config.outletContent}
               </>}
           </>}
       </>}

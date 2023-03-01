@@ -25,9 +25,7 @@ export default function SpyOfflineRoomStartedGame() {
     const myLogin = passport?.login;
     const myRole = myLogin && state?.roles?.[myLogin];
     return myRole ? unsecretSpyRole(myRole) : null
-  },
-    [currentOfflineRoom, passport]
-  );
+  }, [passport, state?.roles]);
 
   return <>{
     currentOfflineRoom && <>

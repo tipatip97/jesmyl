@@ -12,8 +12,8 @@ export interface GamerStoraged {
     roomw: number | nil,
     passport?: GamerPassport,
     offlineRooms?: GamerRoom[],
-    offlineSpyGame?: OfflineSpyGame,
     currentOfflineGameName?: GamerGameName,
+    offlineSpyGame?: OfflineSpyGame,
 }
 
 export interface GamerPassport {
@@ -22,7 +22,7 @@ export interface GamerPassport {
 }
 
 
-const gameNames = ['spy'] as const;
+const gameNames = ['spy', 'alias'] as const;
 export type GamerGameName = typeof gameNames[number];
 
 export interface GamerRoom {
@@ -30,7 +30,7 @@ export interface GamerRoom {
     name: string,
     members: GamerRoomMember[],
     currentGame?: GamerGameName,
-    games?: Record<GamerGameName, unknown>,
+    games?: Partial<Record<GamerGameName, unknown>>,
 }
 
 export interface GamerRoomMember {

@@ -155,7 +155,8 @@
                 "method": "set",
                 "args": {
                     "value": [
-                        "spy"
+                        "spy",
+                        "alias"
                     ]
                 }
             },

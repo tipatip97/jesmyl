@@ -1,15 +1,11 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import { qrCodeMaster } from "../../../../../../complect/qr-code/QRCodeMaster";
-import useQRMaster from "../../../../../../complect/qr-code/useQRMaster";
 import { RootState } from "../../../../../../shared/store";
 import useGamerOfflineRooms from "../../../complect/rooms/offline-room/useGamerOfflineRooms";
-import { updateCurrentOfflineGameName, updateSpyOfflineGame } from "../../../Gamer.store";
 import { SpyRoomState } from "../Spy.model";
 import useSpyLocations, { secretSpyRole, SPY_ROLE, unsecretSpyRole } from "../useSpyLocations";
-import { OfflineGameShare } from "./SpyOfflineRoom.model";
 
 const offlineRoomShareDataKey = 'spy.ofr';
 const offlineRoomsSelector = (state: RootState) => state.gamer.offlineRooms;
@@ -37,7 +33,6 @@ export default function useSpyOfflineRoomState() {
   const spies = useMemo(() => {
     return players?.filter((player) => unsecretSpyRole((state?.roles && state.roles[player.login]) || '') === SPY_ROLE).map(({ login }) => login);
   }, [players, state?.roles]);
-  const { readQR } = useQRMaster();
 
   const updateCurrentState = (updater: (state: SpyRoomState) => SpyRoomState | void | nil) => {
     if (!state) return;
@@ -89,6 +84,7 @@ export default function useSpyOfflineRoomState() {
           ...room.games,
           spy: {
             ...state,
+            iterations: (state?.iterations || 0) + 1,
             roles,
             locations: [...state?.locations || [], secretSpyRole(location)],
           }

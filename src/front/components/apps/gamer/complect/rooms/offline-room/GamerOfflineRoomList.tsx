@@ -20,18 +20,23 @@ export default function GamerOfflineRoomList() {
         <EvaIcon name="qr-code" />
       </span>
       {currentContent}
-      {offlineRooms?.map((room) => (
-        <div
+      {offlineRooms?.map((room) => {
+        const gameData = gamerOfflineRoomGames.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data;
+
+        return <div
           key={`room ${room.w}`}
           className="face-item"
           onClick={() => goToOfflineRoom(room.w)}
         >
           <div className="face-logo">
-            <EvaIcon name="cube" />
+            <EvaIcon name={gameData?.icon ? gameData.icon : "cube"} />
           </div>
-          <div className="face-title">{room.name}</div>
+          <div className="face-title">
+            <span className="color--7">{room.name}</span>
+            {gameData?.title ? ` ● ${gameData.title}` : ''}
+          </div>
         </div>
-      ))}
+      })}
     </>
   );
 }

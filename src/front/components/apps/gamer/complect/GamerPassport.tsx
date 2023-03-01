@@ -8,11 +8,11 @@ import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { qrCodeMaster } from "../../../../complect/qr-code/QRCodeMaster";
 import { GamerPassport } from "../Gamer.model";
-import { updateSpyPassport } from "../Gamer.store";
+import { updateGamerPassport } from "../Gamer.store";
 import PhaseGamerContainer from "./PhaseGamerContainer";
 import useGamerOfflineRooms from "./rooms/offline-room/useGamerOfflineRooms";
 
-export default function TheSpyPassport() {
+export default function TheGamerPassport() {
     const dispatch = useDispatch();
     const { passportData, passport, authData } = useGamerOfflineRooms();
     const [isEdit, setIsEdit] = useState(!passport);
@@ -45,7 +45,7 @@ export default function TheSpyPassport() {
                             disabled={!fio || fio === passport?.fio}
                             onClick={() => {
                                 setIsEdit(false);
-                                dispatch(updateSpyPassport({
+                                dispatch(updateGamerPassport({
                                     fio,
                                     login: passportData?.login || `P:${mylib.md5(`${fio} ${Date.now() + Math.random()}`)}`,
                                 }));
@@ -59,7 +59,7 @@ export default function TheSpyPassport() {
                             confirm
                             onClick={() => {
                                 back(authData);
-                                dispatch(updateSpyPassport(null));
+                                dispatch(updateGamerPassport(null));
                             }}
                         >
                             Сбросить данные
