@@ -108,11 +108,8 @@ class ModalService {
     }));
   }
 
-  alert(description: ReactNode, title = "Подтвердить") {
-    return this.open({
-      title,
-      description,
-    });
+  alert(description: ReactNode, title = "Внимание") {
+    return this.open({ title, description });
   }
 }
 
