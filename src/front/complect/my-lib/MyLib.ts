@@ -63,7 +63,7 @@ export class MyLib extends SMyLib {
 
     numberSearchReplacements: [RegExp, string][] = [
         [/0+/g, ' '],
-        [/1/g, "[^а-яё0-9ґії'ʼє]"],
+        [/1/g, "[^а-яё0-9]"],
         [/2/g, '[абвг]'],
         [/3/g, '[деёжз]'],
         [/4/g, '[ийкл]'],
