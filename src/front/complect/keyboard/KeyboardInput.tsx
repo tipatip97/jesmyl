@@ -29,10 +29,14 @@ export default function KeyboardInput(props: KeyboardInputProps) {
 
   useEffect(() => setValue(props.value), [props.value]);
   useEffect(() => {
+    let newVal: string | und;
+
     if (props.type === 'number') {
-      if (!value) setValue('0');
-      else if (value.match(/\D/)) setValue('');
-    } else if (value === '0' && props.value !== '0') setValue('');
+      if (!value) setValue(newVal = '0');
+      else if (value.match(/\D/)) setValue(newVal = '0');
+    } else if (value === '0' && props.value !== '0') setValue(newVal = '');
+
+    if (newVal !== undefined) props.onChange?.(newVal, value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.type]);
 
@@ -55,7 +59,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       preferLanguage,
       ...otherProps
     } = props;
-    const invoke = (callback: (value: string, prev: string | null) => void, text: string) => {
+    const invoke = (callback: (value: string, prev: string | nil) => void, text: string) => {
       if (type === 'number') {
         if (text === '00') setIsForceZero(true);
         else if (!text) setIsForceZero(false);
@@ -64,7 +68,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
         callback(val, value?.replace(/\D+/g, '') || '0');
         setValue(val);
       } else {
-        callback(text, value ?? null);
+        callback(text, value);
         setValue(text);
       }
     };

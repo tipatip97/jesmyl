@@ -26,9 +26,9 @@ export interface KeyboardInputProps {
     onFocus?: (event: KeyboardInputEvent) => void,
     onClick?: (event: KeyboardInputEvent) => void,
     // срабатывает только при вводе в поле инпута
-    onInput?: (value: string, prev: string | null) => void,
+    onInput?: (value: string, prev: string | nil) => void,
     // сабатывает при любом изменении значения
-    onChange?: (value: string, prev: string | null) => void,
+    onChange?: (value: string, prev: string | nil) => void,
     onPaste?: (value: string) => void,
     setIsUnknownSymbols?: (char: string) => boolean,
     mapChar?: (char: string) => ReactNode,
