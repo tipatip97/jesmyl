@@ -617,6 +617,18 @@ export class Executer {
                                 const val = value[item[lastTrace]];
                                 if (val != null) item[lastTrace] = val;
                             });
+                            let next = +(penultimate as any[]).reduce((fin, currItem) => {
+                                return fin < currItem[lastTrace] ? currItem[lastTrace] : fin;
+                            }, 0) || 0;
+                            const signs: number[] = [];
+
+                            (penultimate as any[]).forEach((item) => {
+                                const sign = item[lastTrace];
+                                if (signs.includes(sign))
+                                    item[lastTrace] = ++next;
+
+                                signs.push(sign);
+                            });
                         }
                         break;
                 }
