@@ -21,16 +21,5 @@ export default function TextAreaRedactor({
     preferLanguage={ccoln === "texts" ? (com.langi ? "ua" : "ru") : "en"}
     autoFocus={!col}
     onChange={(value) => onChange(value)}
-    onPaste={(value) => {
-      com.parseBlocksFromClipboard(value, (blocks): boolean => {
-        if (blocks.length > 1) {
-          if (col !== "") {
-            return false;
-          }
-        } else return false;
-
-        return true;
-      });
-    }}
   />;
 }
