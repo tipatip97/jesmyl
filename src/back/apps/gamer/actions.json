@@ -1,6 +1,6 @@
 {
     "/locations": {
-        "<addNewLocation>": {
+        "<add>": {
             "level": 50,
             "action": "addNewLocation",
             "shortTitle": "Добавить локацию",
@@ -11,6 +11,20 @@
             "value": "{location}",
             "args": {
                 "location": "#String"
+            }
+        }
+    },
+    "/aliasWords": {
+        "<add>": {
+            "level": 50,
+            "action": "addNewAliasWord",
+            "shortTitle": "Добавить Алиас-слово",
+            "method": "push",
+            "uniqs": [
+                "."
+            ],
+            "args": {
+                "value": "#String"
             }
         }
     },
@@ -30,7 +44,8 @@
                         "name": "{*fio}",
                         "status": "owner"
                     }
-                ]
+                ],
+                "games": {}
             },
             "args": {
                 "name": "#String"
@@ -161,7 +176,6 @@
                 }
             },
             "/games": {
-                "expected": {},
                 "/spy": {
                     "access": "$amIManager",
                     "expected": {},
@@ -266,6 +280,12 @@
                                 ]
                             }
                         }
+                    }
+                },
+                "/alias": {
+                    "expected": {},
+                    "/": {
+                        "action": ""
                     }
                 }
             }
