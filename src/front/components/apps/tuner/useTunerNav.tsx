@@ -27,13 +27,9 @@ const tunerNavigation = new NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useTunerNav() {
-  return useTunerNavConfigurer();
-}
-
-const useTunerNavConfigurer = () =>
-  useNavConfigurer<TunerStorage, NavigationStorage<TunerStorage>>(
+  return useNavConfigurer<TunerStorage, NavigationStorage<TunerStorage>>(
     'tuner',
     actions,
     tunerNavigation,
   );
-export { useTunerNavConfigurer };
+}

@@ -100,14 +100,9 @@ const navigation: NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useCmNav() {
-  return useCmNavConfigurer();
-}
-
-const useCmNavConfigurer = () =>
-  useNavConfigurer<CmStorage, NavigationStorage<CmStorage>, CmNavData>(
+  return useNavConfigurer<CmStorage, NavigationStorage<CmStorage>, CmNavData>(
     'cm',
     actions,
     navigation,
   );
-export { useCmNavConfigurer };
-
+}

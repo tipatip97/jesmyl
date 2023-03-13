@@ -1,4 +1,4 @@
-import { useCmNavConfigurer } from "../../../../base/useCmNav";
+import useCmNav from "../../../../base/useCmNav";
 import { cmExer } from "../../../../Cm.store";
 import { MigratableComTool, MigratableComToolName } from "../../../../col/com/Com.model";
 import { editComNavPhasePoint } from "../../../editorNav";
@@ -17,7 +17,7 @@ export const spliceMigratableEditableComToolNameList = (toolList: MigratableComT
 
 export const getMigratableEditableComTool = (
   tool: MigratableEditableComToolName,
-  { jumpTo }: ReturnType<typeof useCmNavConfigurer>
+  { jumpTo }: ReturnType<typeof useCmNav>
 ): MigratableComTool | nil => {
   switch (tool) {
     case "edit-com":

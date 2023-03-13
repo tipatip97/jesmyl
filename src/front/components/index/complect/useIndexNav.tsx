@@ -44,13 +44,9 @@ const navigate = new NavigationConfig<
 });
 
 export default function useIndexNav() {
-  return useIndexNavConfigurer();
-}
-
-const useIndexNavConfigurer = () =>
-  useNavConfigurer<IndexStorage, NavigationStorage<IndexStorage>>(
+  return useNavConfigurer<IndexStorage, NavigationStorage<IndexStorage>>(
     'index',
     actions,
     navigate,
   );
-export { useIndexNavConfigurer };
+}

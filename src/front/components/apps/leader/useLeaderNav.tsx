@@ -72,17 +72,9 @@ const navigation: NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useLeaderNav() {
-  return useLeaderNavConfigurer();
-}
-
-const useLeaderNavConfigurer = () =>
-  useNavConfigurer<
-    LeaderStoraged,
-    NavigationStorage<LeaderStoraged>,
-    LeaderNavData
-  >(
+  return useNavConfigurer<LeaderStoraged, NavigationStorage<LeaderStoraged>, LeaderNavData>(
     'leader',
     actions,
     navigation,
   );
-export { useLeaderNavConfigurer };
+}

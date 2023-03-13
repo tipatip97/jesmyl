@@ -135,14 +135,9 @@ const gamerNavigation = new NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useGamerNav() {
-  return useGamerNavConfigurer();
-}
-
-const useGamerNavConfigurer = () =>
-  useNavConfigurer<GamerStorage, NavigationStorage<GamerStorage>>(
+  return useNavConfigurer<GamerStorage, NavigationStorage<GamerStorage>>(
     'gamer',
     actions,
     gamerNavigation,
   );
-export { useGamerNavConfigurer };
-
+}

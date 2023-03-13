@@ -36,13 +36,9 @@ const adminNavigation = new NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useAdminNav() {
-  return useAdminNavConfigurer();
-}
-
-const useAdminNavConfigurer = () =>
-  useNavConfigurer<AdminStorage, NavigationStorage<AdminStorage>, AdminNavData>(
+  return useNavConfigurer<AdminStorage, NavigationStorage<AdminStorage>, AdminNavData>(
     'admin',
     actions,
     adminNavigation,
   );
-export { useAdminNavConfigurer };
+}

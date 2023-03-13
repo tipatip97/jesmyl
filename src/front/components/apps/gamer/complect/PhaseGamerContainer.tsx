@@ -1,8 +1,8 @@
 import PhaseContainerConfigurer from "../../../../complect/phase-container/PhaseContainerConfigurer";
 import { PhaseContainerProps } from "../../../../complect/phase-container/PhaseContainerConfigurer.model";
-import { useGamerNavConfigurer } from "../useGamerNav";
+import useGamerNav from "../useGamerNav";
 
 export default function PhaseGamerContainer(props: PhaseContainerProps) {
-  const { goBack } = useGamerNavConfigurer();
+  const { goBack } = useGamerNav();
   return <PhaseContainerConfigurer {...props} goBack={goBack} />;
 }
