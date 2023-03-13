@@ -21,15 +21,15 @@ export default function GamerRoomList() {
             <div className="face-logo">
               <EvaIcon
                 name={
-                  possibilities.isRequester
-                    ? `clock${iconPostfix}`
-                    : possibilities.isInactive
-                      ? `person-delete${iconPostfix}`
-                      : possibilities.isInvalid
-                        ? `lock${iconPostfix}`
-                        : gameData?.icon
-                          ? gameData.icon
-                          : `cube${iconPostfix}`
+                  possibilities.isUnauthorized
+                    ? 'question-mark-circle-outline'
+                    : possibilities.isRequester
+                      ? `clock${iconPostfix}`
+                      : possibilities.isInactive
+                        ? `person-delete${iconPostfix}`
+                        : possibilities.isInvalid
+                          ? `lock${iconPostfix}`
+                          : gameData?.icon ?? `cube${iconPostfix}`
 
                 }
               />
