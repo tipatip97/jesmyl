@@ -51,9 +51,10 @@ export default function useGamerRooms(offline?: boolean) {
         currentRoom,
         players,
         memberPossibilities: (room: GamerRoom | null = currentRoom, topLogin = auth?.login) => {
+            if (!auth) return { isUnauthorized: true, isInvalid: true };
             const member = room?.members.find(({ login }) => login === topLogin);
 
-            if (!member) return { isInvalid: true, member };
+            if (!member) return { isInvalid: true };
 
             const isRequester = member.status === GamerRoomMemberStatus.Requester;
             const isInactive = member.isInactive;
@@ -71,9 +72,13 @@ export default function useGamerRooms(offline?: boolean) {
             };
         },
         goToRoom: (roomWid: number) => {
-            const isIMemberSubstance = ret.memberPossibilities(rooms?.find(({ w }) => w === roomWid) ?? null);
-            if (isIMemberSubstance.isInvalid) {
-                if (isIMemberSubstance.member == null) {
+            const possibilities = ret.memberPossibilities(rooms?.find(({ w }) => w === roomWid) ?? null);
+            if (possibilities.isUnauthorized) {
+                modalService.alert('Не авторизован');
+                return;
+            }
+            if (possibilities.isInvalid) {
+                if (possibilities.member == null) {
                     modalService.confirm('Просматривать результаты и участвовать могут только добавленные в комнату участники. Отправить заявку на вступление?')
                         .then((isRequest) => {
                             if (isRequest) gamerExer.send({
@@ -86,7 +91,7 @@ export default function useGamerRooms(offline?: boolean) {
                                 }
                             });
                         });
-                } else if (isIMemberSubstance.isRequester) modalService.alert('Заявка на вступление в комнату отправлена. Дождись принятия, или свяжись с владельцем комнаты.');
+                } else if (possibilities.isRequester) modalService.alert('Заявка на вступление в комнату отправлена. Дождись принятия, или свяжись с владельцем комнаты.');
                 else modalService.alert('Тебя исключили из комнаты');
                 return;
             }
