@@ -125,7 +125,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
             name={isHiddenPassword ? 'eye-outline' : 'eye-off-outline'}
             onClick={() => setIsHiddenPassword(is => !is)}
           />
-          : !withoutCloseButton && <EvaButton
+          : !withoutCloseButton && (type !== 'number' || isForceZero || value !== '0') && <EvaButton
             name="close"
             className="close-button"
             onMouseDown={() => {
