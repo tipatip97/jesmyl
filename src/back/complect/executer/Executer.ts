@@ -11,6 +11,8 @@ const globs: Record<string, any> = {
 
 const reportFailError = (rej: (resp: { ok: false, fail?: boolean, message: string }) => void, error: any) => rej({ ok: false, fail: true, message: error && (error.stack ?? error.message) });
 
+const emptyStub: string[] = ['EMPTY'];
+
 export class Executer {
     findMap<Item, Ret>(arr: Item[], cb: (item: Item, itemi: number, itema: Item[]) => Ret): Ret | undefined {
         let ret = undefined;
@@ -39,12 +41,13 @@ export class Executer {
                 continue;
             } else if (trace === '.') continue;
 
-            if (target == null) return {
-                penultimate: null,
-                lastTrace: null,
-                parent: null,
-                target: null
-            };
+            if (target == null)
+                return {
+                    parent: null,
+                    target: null,
+                    penultimate: targets[targets.length - 2],
+                    lastTrace: track[track.length - 1] as string,
+                };
 
             if (Array.isArray(trace)) {
                 if (Array.isArray(target)) {
@@ -284,13 +287,12 @@ export class Executer {
     static replaceArgs<Value>(value: Value, args: Record<string, any> | null = {}, auth?: LocalSokiAuth | null, defCb?: () => string): any {
         if (smylib.isStr(value)) {
             if (value.includes('{') && value.includes('}')) {
-                const initial: string[] = ['INITIAL'];
-                let val: any = initial;
+                let val: any = emptyStub;
                 const text = value.replace(/\{(([@*?])?(\w+(\(\))?))\}/g, (all, name, prefix, key) => {
                     val = prefix === '@' ? this.getIfGlob(name) : prefix === '*' ? auth?.[key as never] : args?.[key];
                     return val || all || '';
                 });
-                if (val === initial && defCb) return defCb();
+                if (val === emptyStub && defCb) return defCb();
                 return value.match(/{|}/g)?.length === 2 && value.match(/^{|}$/g)?.length === 2 ? val : text;
             } else return defCb ? defCb() : value;
         } else if (smylib.isobj(value)) {
@@ -327,7 +329,7 @@ export class Executer {
         value: unknown,
         fixedAccesses: ExecutionFixedAccesses,
         contents: Record<string, unknown>,
-        args?: Record<string, unknown>,
+        realArgs?: Record<string, unknown>,
         auth?: LocalSokiAuth | null
     ) {
         const find = (composit: Record<string, ExecutionRule>, topRule: ExecutionRealAccumulatable = {} as never): ExecutionReal | null => {
@@ -336,6 +338,11 @@ export class Executer {
                 if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
                     const track = key.startsWith('<') ? [] : this.prepareTrack(key);
                     const accTrack = topRule.track?.concat(track || []) || track;
+
+                    if (realArgs && rule.writeArg) {
+                        realArgs[rule.writeArg] = this.tracker(accTrack, contents, realArgs, null, auth).target;
+                    }
+
                     const accRule: ExecutionRealAccumulatable = {
                         track: accTrack,
                         args: this.cloneArgs({ ...topRule.args, ...rule.args }, rule.cloneArgs),
@@ -345,7 +352,7 @@ export class Executer {
                             ? (topRule.accesses || []).concat(rule.access)
                             : topRule.accesses,
                         sides: (rule.side ? topRule.sides || [] : topRule.sides)?.concat(
-                            Object.entries(rule.side || {})?.map(([key, side]: [string, ExecutionRule]) => {
+                            SMyLib.entries(rule.side || {})?.map(([key, side]: [string, ExecutionRule]) => {
                                 return { ...side, track: accTrack.concat(this.prepareTrack(key) || []) };
                             }) || []),
 
@@ -353,7 +360,7 @@ export class Executer {
                     if (rule.fixAccesses) {
                         SMyLib.entries(rule.fixAccesses).forEach(([accessName, track]) => {
                             fixedAccesses[accessName] = () => {
-                                return !!this.tracker(accTrack.concat(track), contents, args, null, auth).target;
+                                return !!this.tracker(accTrack.concat(track), contents, realArgs, null, auth).target;
                             };
                         });
                     }
@@ -362,8 +369,9 @@ export class Executer {
                             ...accRule,
                             ...rule,
                             fix: accRule.track?.[0],
-                            value: rule.value === undefined ? value ?? args?.value : rule.value,
-                        }, args, auth);
+                            title: rule.title && smylib.stringTemplater(rule.title, realArgs),
+                            value: rule.value === undefined ? value ?? realArgs?.value : rule.value,
+                        }, realArgs, auth);
                         return ret;
                     }
 
@@ -390,15 +398,23 @@ export class Executer {
         return trackered;
     }
 
-    static execSides(sides: ExecutionRule[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null) {
+    static execSides(sides: ExecutionRule[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null, { shortTitle, title }: { shortTitle?: string, title?: string } = {}) {
         return new Promise<boolean>((resolve, reject) => {
-            sides.forEach(({ method, value, args, track }) => {
+            sides.some(({ method, value, args, track }) => {
                 if (track) {
                     const { lastTrace, penultimate, target } = this.tracker(track, contents, args, undefined, auth);
+
+                    if (value === emptyStub) {
+                        reject(`Неизвестное значение попутных модификаций ${lastTrace} для действия "${shortTitle || title}"`);
+                        return true;
+                    }
+
                     this.doIt({ method, target, penultimate, lastTrace, value, args, auth })
                         .then(resolve)
-                        .catch((errorMessage) => reject(errorMessage));
+                        .catch((errorMessage) => reject(`#63674012239 ${errorMessage}`));
                 }
+
+                return false;
             });
         });
     }
@@ -495,26 +511,23 @@ export class Executer {
 
                     if (smylib.isStr(rule.fix) && !fixes.includes(rule.fix)) fixes.push(rule.fix);
 
-                    if (rule?.track) {
-                        const value = rule.value;
-                        const { lastTrace, penultimate, target } = this.checkExpecteds(rule.track, contents, rule.expecteds, rule.args);
-
-                        replacedExecs.push(rule);
-
+                    if (rule.track) {
                         this.doIt({
-                            target,
-                            penultimate,
-                            lastTrace,
-                            value,
+                            ...this.checkExpecteds(rule.track, contents, rule.expecteds, rule.args),
                             auth,
                             args: exec.args,
-                            method: rule.method,
+                            value: rule.value,
                             uniqs: rule.uniqs,
+                            method: rule.method,
                         })
                             .then((did) => {
-                                if (did && rule.sides)
-                                    this.execSides(rule.sides, contents, auth)
-                                        .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
+                                if (did) {
+                                    replacedExecs.push(rule);
+
+                                    if (rule.sides)
+                                        this.execSides(rule.sides, contents, auth, rule)
+                                            .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
+                                }
                             })
                             .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
                     }
