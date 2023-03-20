@@ -2,13 +2,19 @@ import SourceBased from "../../../../../complect/SourceBased";
 
 
 export interface IExportableMeetingsEvent {
-    n: string; // название из IExportableMeetings.names
-    w: number; // уникальный айди
-    r: num; // регулярное ли
-    b: number; // время начала
-    e: number; // время окончания
-    s: number[]; // список песен
-    c: number; // контекстуальная группа
+    n: string, // название из IExportableMeetings.names
+    w: number, // уникальный айди
+    r: num, // регулярное ли
+    b: number, // время начала
+    e: number, // время окончания
+    s: number[], // список песен
+    c: number, // контекстуальная группа
+    h?: IExportableMeetingsEventHistoryItem[], // история
+}
+
+interface IExportableMeetingsEventHistoryItem {
+    w: number,
+    s: number[], // stack
 }
 
 export interface IExportableMeetingsContext {

@@ -1,7 +1,9 @@
 import { useState } from "react";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../complect/exer/useExer";
+import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import useCmNav from "../../base/useCmNav";
 import { cmExer } from "../../Cm.store";
@@ -9,6 +11,7 @@ import ComFace from "../../col/com/face/ComFace";
 import { useEditableCcat } from "../col/categories/useEditableCcat";
 import EditContainerCorrectsInformer from "../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
+import MeetingsEventHistory from "./MeetingsEventHistory";
 import { useEditableMeetings } from "./useEditableMeetings";
 
 export default function EditMeetingsEvent() {
@@ -18,6 +21,8 @@ export default function EditMeetingsEvent() {
   const [term, setTerm] = useState(zcat?.term || "");
   const { goTo } = useCmNav();
   const [isClosedComList, setIsClosedComList] = useState(true);
+  const { openAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const {openFullscreenContent} = useFullscreenContent();
 
   if (!currentEvent) return null;
   const usedComList = (currentEvent.coms || []).concat(
@@ -32,6 +37,15 @@ export default function EditMeetingsEvent() {
       headClass="flex between"
       headTitle={`Событие - ${currentEvent.name}`}
       contentClass="no-padding-top"
+      onMoreClick={() => {
+        openAbsoluteBottomPopup(prepareAbsoluteBottomPopupContent({
+          items: [{
+            icon: 'list',
+            title: 'История',
+            onClick: () => openFullscreenContent((close) => <MeetingsEventHistory close={close} />)
+          }]
+        }));
+      }}
       content={
         <>
           <EditContainerCorrectsInformer>

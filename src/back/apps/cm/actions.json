@@ -570,16 +570,24 @@
             },
             "/[w === {eventw}]": {
                 "<stack>": {
-                    "level": 50,
-                    "action": "setMeetingEventStack",
-                    "title": "В событии \"$eventn\" изменён список песен",
-                    "method": "set_all",
-                    "valueAs": "comw",
-                    "value": {
-                        "s": "{value}"
+                    "side": {
+                        "/h": {
+                            "method": "push",
+                            "value": {
+                                "w": "{@setNewWid()}",
+                                "s": "{currentMeetingEventStack}"
+                            }
+                        }
                     },
-                    "args": {
-                        "value": "#List"
+                    "/s": {
+                        "level": 50,
+                        "action": "setMeetingEventStack",
+                        "title": "В событии \"$eventn\" изменён список песен",
+                        "method": "set",
+                        "args": {
+                            "value": "#List"
+                        },
+                        "writeArg": "currentMeetingEventStack"
                     }
                 },
                 "<ctx>": {
