@@ -85,7 +85,7 @@
         left: 0;
         width: 100vw;
         height: 100%;
-        padding-top: 100%;
+        padding-top: var(--padding-top);
         overflow-x: hidden;
         transition: top .5s;
 
