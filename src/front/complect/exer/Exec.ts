@@ -21,6 +21,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
     muted?: boolean;
     errors?: string[];
     rule?: ExecRuleClient;
+    exec: ClientExecutionDict<Value>;
     corrects?: CorrectsBox;
 
     onSet?: (exec: Exec<Value>) => [];
@@ -29,6 +30,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
 
     constructor(exec: ClientExecutionDict<Value>, rules: ExecRule[]) {
         super(exec);
+        this.exec = exec;
         this.action = exec.action;
         this.method = exec.method;
         this.data = exec.data;
@@ -71,8 +73,10 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
         if (this.rule?.cloneArgs) {
             MyLib.entries(this.rule.cloneArgs).forEach(([from, to]) => args[to] === undefined && (args[to] = args[from]));
         }
-        const argsEntries = MyLib.entries(args);
         const ruleEntries = MyLib.entries(this.rule?.args || {});
+
+        if (!ruleEntries.length) return;
+
         const corrects = this.corrects || new CorrectsBox();
         const add = (message: string) => {
             this.corrects = corrects.merge({ errors: [{ message }] });
@@ -80,7 +84,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
             return corrects;
         }
 
-        if (!ruleEntries.length) return;
+        const argsEntries = MyLib.entries(args);
         if (!argsEntries.length) {
             return add('Нет необходимых аргументов для данного исполнения');;
         }

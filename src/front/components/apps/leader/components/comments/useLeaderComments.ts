@@ -32,7 +32,7 @@ export default function useLeaderComments() {
         sendingComments,
         errorSentComments,
         sendAllComments: (observableComments: SendingComments = sendingComments, observableGames: GamesStoreImportable | und = gamesImportable) => {
-            let throwComments: SendingComments = ret.sendingComments;
+            let throwComments = ret.sendingComments;
 
             const gameWids = observableGames?.teamGames?.map(({ w }) => w) || [];
 
@@ -48,14 +48,14 @@ export default function useLeaderComments() {
                     .map(([areaw, val]) => MyLib.entries(val).map(([listw, realComments]) => {
                         realComments.forEach(() => {
                             throwComments = save(arean, areaw, listw, (comments, area) => {
-                                area[listw] = comments.filter(({ ts }) => commentTss.indexOf(ts) < 0);
+                                area[listw] = comments.filter(({ ts }) => !commentTss.includes(ts));
                             }, throwComments)
                         });
                         return realComments;
                     })))
                 .flat().flat().flat()
                 .filter(({ ts, exec: { args: { areaw } = {} } } = {} as never) => {
-                    return commentTss.indexOf(ts) < 0 && gameWids.indexOf(areaw) > -1;
+                    return !commentTss.includes(ts) && gameWids.includes(areaw);
                 })
                 .map(({ exec }) => exec);
 

@@ -16,7 +16,7 @@ export default function useApps<NavData>() {
     const apps = useSelector(appsSelector);
     const currentAppName = useSelector(currentAppSelector);
 
-    const currentApp = apps.find((app) => app.name === currentAppName);
+    const currentApp = apps?.find((app) => app.name === currentAppName);
     const appConfigs = {} as Record<AppName, ReturnType<typeof useNavConfigurer>>;
 
     MyLib.entries(navConfigurers).forEach(([name, config]) => (appConfigs[name] = config()));

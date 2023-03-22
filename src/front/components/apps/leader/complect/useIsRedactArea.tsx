@@ -8,7 +8,7 @@ export default function useIsRedactArea(
   onEditStart?: () => void
 ) {
   const [isRedact, setIsRedact] = useState(false);
-  const isCanRedact = canRedact === undefined || canRedact;
+  const isCanRedact = canRedact == null || canRedact;
 
   const ret = {
     isRedact:
