@@ -13,8 +13,8 @@ import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, Fil
 const actionsRequirement: FilerAppRequirement = {
   name: 'actions',
   map: (data: Record<string, ExecutionRule>) => {
-    const rules: ExecutionRule[] = [];
-    const map = (data: Record<string, ExecutionRule>, top: Partial<ExecutionRule> = {}): ExecutionRule[] => {
+    const rules: Omit<ExecutionRule, 'method'>[] = [];
+    const map = (data: Record<string, ExecutionRule>, top: Partial<ExecutionRule> = {}) => {
       for (const key in data) {
         if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
           const rule = data[key];
@@ -22,35 +22,25 @@ const actionsRequirement: FilerAppRequirement = {
             title,
             shortTitle,
             level,
-            method,
             action,
             isSequre,
-            value,
-            expected,
             args,
-            uniqs,
+            cloneArgs,
           } = rule;
 
-          const track = Executer.prepareTrack(key);
-          const theTrack = top.track?.concat(track || []) || track;
           const nextTop: Partial<ExecutionRule> = {
             args: { ...top.args, ...args },
-            track: theTrack,
-            expecteds: (top.expecteds || []).concat(expected ? [[theTrack, expected]] : []),
+            cloneArgs: (top.cloneArgs || cloneArgs) && { ...top.cloneArgs, ...cloneArgs },
           };
 
           rules.push({
             title,
             shortTitle,
             level,
-            method,
             action,
             isSequre,
             args: nextTop.args,
-            track: nextTop.track,
-            expecteds: nextTop.expecteds,
-            value,
-            uniqs,
+            cloneArgs: nextTop.cloneArgs,
           });
 
           map(rule as never, nextTop);
