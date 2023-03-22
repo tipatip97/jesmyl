@@ -2,6 +2,8 @@ import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import { switchAbsoluteFloatPopupOpen } from "../Complect.store";
+import useMountTransition from "../popups/useMountTransition";
+import Portal from "../popups/[complect]/Portal";
 import "./AbsolutePopup.scss";
 
 let popupContent: ReactNode = null;
@@ -75,18 +77,22 @@ export function ABSOLUTE__FLOAT__POPUP({
     []
   );
 
-  return (
-    <div
-      className={`absolute-float-popup${isAbsoluteFloatPopupOpen && popupContent ? " open" : ""}`}
-      onClick={() => closeAbsoluteFloatPopup()}
-    >
+  const [isMounted, className] = useMountTransition(isAbsoluteFloatPopupOpen && !!popupContent, 'absolute-float-popup', 500);
+
+  return <>{
+    isMounted && <Portal>
       <div
-        className={`absolute-popup-content`}
-        onClick={(event) => !isClosable && event.stopPropagation()}
-        ref={(elem) => elem && (floatElement = elem)}
+        className={className}
+        onClick={() => closeAbsoluteFloatPopup()}
       >
-        {popupContent}
+        <div
+          className={`absolute-popup-content`}
+          onClick={(event) => !isClosable && event.stopPropagation()}
+          ref={(elem) => elem && (floatElement = elem)}
+        >
+          {popupContent}
+        </div>
       </div>
-    </div>
-  );
+    </Portal>
+  }</>;
 }

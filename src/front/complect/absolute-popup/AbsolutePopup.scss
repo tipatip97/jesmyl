@@ -47,7 +47,7 @@
 }
 
 .absolute-float-popup {
-    &.open {
+    &.mounted {
         opacity: 1;
         pointer-events: all;
     }
