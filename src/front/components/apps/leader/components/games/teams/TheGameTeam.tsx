@@ -62,9 +62,6 @@ export default function TheGameTeam({
 
       {noComments || (
         <LeaderCommentBlock
-          inputId={`commentInput ${team.wid || team.ts} ${
-            team.game?.wid || "##"
-          }`}
           placeholder={`Комментарий о "${team.upperName}"`}
           comments={team.comments}
           arean="gameTeams"

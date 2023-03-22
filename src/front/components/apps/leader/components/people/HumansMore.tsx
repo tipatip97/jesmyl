@@ -31,6 +31,6 @@ export default function HumansMore({ moreNode }: { moreNode?: ReactNode }) {
         </div>,
       }]
     })}
-    {moreNode}
+    {mylib.func(moreNode).call()}
   </>;
 }

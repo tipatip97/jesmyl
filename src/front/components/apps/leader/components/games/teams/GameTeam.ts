@@ -16,7 +16,7 @@ export default class GameTeam extends SourceBased<GameTeamImportable> {
         this.game = game;
     }
 
-    get wid() { return this.getBasic('w'); }
+    get wid() { return this.getBasic('w') || this.ts; }
     get ts() { return this.getBasic('ts'); }
     get name() { return this.getBasic('name'); }
     set name(val) { this.setExportable('name', val); }

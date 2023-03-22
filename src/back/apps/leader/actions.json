@@ -36,7 +36,7 @@
             "<add many>": {
                 "level": 20,
                 "action": "addManyHumans",
-                "setForceInEach": {
+                "setInEachValueItem": {
                     ".": {
                         "w": "{@setNewWid()}"
                     }
@@ -161,13 +161,8 @@
                     "timerFields": "#dict",
                     "contextw": "#Number"
                 },
-                "setForceInEach": {
-                    "teams": {
-                        "fio": "{*fio}",
-                        "owner": "{*login}",
-                        "w": "{@setNewWid()}"
-                    },
-                    "teams[].comments": {
+                "setInEachValueItem": {
+                    "teams, teams.comments": {
                         "fio": "{*fio}",
                         "owner": "{*login}",
                         "w": "{@setNewWid()}"
@@ -221,23 +216,20 @@
                     }
                 },
                 "/teams": {
-                    "level": 30,
-                    "action": "updateGameTeamList",
-                    "method": "set",
-                    "value": "{list}",
-                    "args": {
-                        "list": "#List"
-                    },
-                    "setForceInEach": {
-                        ".": {
-                            "fio": "{*fio}",
-                            "owner": "{*login}",
-                            "w": "{@setNewWid()}"
+                    "<update>": {
+                        "level": 30,
+                        "action": "updateGameTeamList",
+                        "method": "set",
+                        "value": "{list}",
+                        "args": {
+                            "list": "#List"
                         },
-                        "comments": {
-                            "fio": "{*fio}",
-                            "owner": "{*login}",
-                            "w": "{@setNewWid()}"
+                        "setInEachValueItem": {
+                            "., comments": {
+                                "fio": "{*fio}",
+                                "owner": "{*login}",
+                                "w": "{@setNewWid()}"
+                            }
                         }
                     },
                     "/[w === {teamw}]": {
@@ -320,7 +312,7 @@
                         "comments": "#list",
                         "finishes": "#dict"
                     },
-                    "setForceInEach": {
+                    "setInEachValueItem": {
                         "comments": {
                             "fio": "{*fio}",
                             "owner": "{*login}",
@@ -373,20 +365,22 @@
     "/contexts": {
         "expected": {},
         "/list": {
-            "expected": [],
-            "action": "addContext",
-            "level": 30,
-            "method": "push",
-            "value": {
-                "w": "{@setNewWid()}",
-                "name": "{name}",
-                "members": "{members}",
-                "mentors": "{mentors}"
-            },
-            "args": {
-                "name": "#String",
-                "members": "#List",
-                "mentors": "#List"
+            "<add>": {
+                "expected": [],
+                "action": "addContext",
+                "level": 30,
+                "method": "push",
+                "value": {
+                    "w": "{@setNewWid()}",
+                    "name": "{name}",
+                    "members": "{members}",
+                    "mentors": "{mentors}"
+                },
+                "args": {
+                    "name": "#String",
+                    "members": "#List",
+                    "mentors": "#List"
+                }
             },
             "/[w === {contextw}]": {
                 "args": {
@@ -464,24 +458,26 @@
                     }
                 },
                 "/groups": {
-                    "expected": [],
-                    "action": "addContextGroup",
-                    "method": "push",
-                    "uniqs": [
-                        "w"
-                    ],
-                    "value": {
-                        "w": "{@setNewWid()}",
-                        "ts": "{ts}",
-                        "name": "{name}",
-                        "mentors": "{mentors}",
-                        "members": "{members}"
-                    },
-                    "args": {
-                        "ts": "#Number",
-                        "name": "#String",
-                        "members": "#List",
-                        "mentors": "#List"
+                    "<add>": {
+                        "expected": [],
+                        "action": "addContextGroup",
+                        "method": "push",
+                        "uniqs": [
+                            "w"
+                        ],
+                        "value": {
+                            "w": "{@setNewWid()}",
+                            "ts": "{ts}",
+                            "name": "{name}",
+                            "mentors": "{mentors}",
+                            "members": "{members}"
+                        },
+                        "args": {
+                            "ts": "#Number",
+                            "name": "#String",
+                            "members": "#List",
+                            "mentors": "#List"
+                        }
                     },
                     "/[w === {groupw}]": {
                         "args": {
@@ -508,17 +504,17 @@
                                 "fieldn": [
                                     "members",
                                     "mentors"
-                                ],
-                                "args": {
-                                    "value": "#List"
-                                }
+                                ]
                             },
                             "<add>": {
                                 "action": "addContextGroupHumans",
                                 "method": "concat",
                                 "uniqs": [
                                     "."
-                                ]
+                                ],
+                                "args": {
+                                    "value": "#List"
+                                }
                             },
                             "<rem>": {
                                 "action": "delContextGroupHumans",

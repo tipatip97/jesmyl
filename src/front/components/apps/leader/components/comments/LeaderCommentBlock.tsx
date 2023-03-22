@@ -1,4 +1,5 @@
 import { ReactNode, useMemo, useState } from "react";
+import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../complect/my-lib/MyLib";
@@ -42,7 +43,6 @@ textAdditions.forEach(
 
 export default function LeaderCommentBlock({
   comments,
-  inputId,
   placeholder,
   action,
   arean,
@@ -54,7 +54,6 @@ export default function LeaderCommentBlock({
   newCommentTextChange,
 }: {
   comments?: LeaderCommentImportable[];
-  inputId: string;
   placeholder: string;
   arean: SendingCommentsAreaName;
   areaw?: number;
@@ -121,14 +120,17 @@ export default function LeaderCommentBlock({
           <KeyboardInput
             className="margin-gap"
             multiline
+            value={commentText}
             placeholder={placeholder}
-            mapChar={(char) => textAdditionsMap[char]?.node || char}
-            onChange={(value) => newCommentTextChange?.(value)}
+            onChange={(value) => {
+              newCommentTextChange?.(value);
+              setCommentText(value);
+            }}
           />
           <div className="flex full-width between margin-gap pointer-children">
-            <EvaIcon
+            <EvaButton
               name="paper-plane-outline"
-              className={commentText ? "" : "disabled"}
+              disabled={!commentText}
               onClick={() => {
                 const comment = textAdditions.reduce(
                   (text, { char, inText }) =>

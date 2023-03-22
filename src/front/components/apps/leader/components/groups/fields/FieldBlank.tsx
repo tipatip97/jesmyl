@@ -105,7 +105,7 @@ export default function ContextFieldBlank({
       </div>
       {net.map(([title, node]) => {
         return (
-          <div className="flex flex-gap margin-gap-v">
+          <div key={title} className="flex flex-gap margin-gap-v">
             <span className="nowrap">{title}</span>
             <span className="color--3 user-select full-width">
               {node || " - "}

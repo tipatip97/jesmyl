@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
 import propsOfClicker from "../../../../../../complect/clicker/propsOfClicker";
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
+import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
@@ -93,7 +93,7 @@ export default function LeaderGameTimerMaster({
                 <span>Название</span>
                 {!isWriteName &&
                   cgame?.timerNames?.length &&
-                  (!timer.name || cgame.timerNames.indexOf(timer.name) > -1) ? (
+                  (!name || cgame.timerNames.includes(name)) ? (
                   <>
                     <Dropdown
                       placeholder="Выбрать название"
@@ -104,7 +104,7 @@ export default function LeaderGameTimerMaster({
                       }))}
                       onSelect={({ id }) => setName(id)}
                     />
-                    <EvaIcon
+                    <EvaButton
                       name="edit-outline"
                       onClick={() => setIsWriteName(true)}
                     />
@@ -120,7 +120,7 @@ export default function LeaderGameTimerMaster({
                       }}
                     />
                     {!cgame?.timerNames?.length || (
-                      <EvaIcon
+                      <EvaButton
                         name="menu-outline"
                         onClick={() => {
                           setIsWriteName(false);
@@ -200,10 +200,10 @@ export default function LeaderGameTimerMaster({
                       return (
                         <div key={`rowi-${rowi}`} className="row">
                           <div className="cell flex column ellipsis">
-                            {row.map((team, teami) => {
+                            {row.map((team) => {
                               return (
                                 <div
-                                  key={`teami-${teami}`}
+                                  key={`teami-${team.wid}`}
                                   className={`flex center full-max-width ${selectedTeamw === team.wid
                                     ? "selected-team"
                                     : ""}`}
@@ -270,16 +270,12 @@ export default function LeaderGameTimerMaster({
 
                                   {isCanPauseForRow(team.wid) && (
                                     <div
-                                      className={` control-button finish-button flex center pointer margin-gap`}
+                                      className={`control-button finish-button flex center pointer margin-gap`}
                                     >
                                       {!timer.finishes?.[team.wid] ? (
-                                        <EvaIcon
+                                        <EvaButton
                                           name="pause-circle-outline"
-                                          className={
-                                            !timer.startTime(rowi)
-                                              ? "disabled "
-                                              : ""
-                                          }
+                                          disabled={!timer.startTime(rowi)}
                                           onClick={(event) => {
                                             event.stopPropagation();
                                             if (
@@ -291,7 +287,7 @@ export default function LeaderGameTimerMaster({
                                           }}
                                         />
                                       ) : (
-                                        <EvaIcon
+                                        <EvaButton
                                           name="rewind-right-outline"
                                           onClick={(event) => {
                                             event.stopPropagation();
@@ -330,12 +326,12 @@ export default function LeaderGameTimerMaster({
                           {mode !== GameTimerMode.TimerTotal &&
                             (isRedactOld || timer.isNew) ? (
                             <div
-                              className={`control-button start-button flex center pointer margin-gap ${timer.starts?.[rowi] ? "disabled clickable" : ""
-                                }`}
+                              className={`control-button start-button flex center margin-gap`}
                             >
-                              <EvaIcon
+                              <EvaButton
                                 name="play-circle-outline"
                                 onClick={() => startForRow(rowi)}
+                                disabled={!!timer.starts?.[rowi]}
                                 onContextMenu={(event) => {
                                   event.preventDefault();
                                   event.stopPropagation();
@@ -370,7 +366,7 @@ export default function LeaderGameTimerMaster({
             </>
           )}
 
-          {timer.isNew || isRedactOld ? (
+          {/* {timer.isNew || isRedactOld ? (
             <div className="flex around flex-gap margin-big-gap">
               {timer.isStarted && (
                 <span
@@ -411,11 +407,10 @@ export default function LeaderGameTimerMaster({
                   )
               )}
             </div>
-          )}
+          )} */}
           <div className="margin-big-gap-v full-width">
             <LeaderCommentBlock
               action="addCommentForGameTimer"
-              inputId={`addCommentForGameTimer ${timer.wid} ${timer.game?.wid}`}
               listw={timer.wid}
               placeholder="Комментарий к таймеру"
               areaw={timer.game?.wid}

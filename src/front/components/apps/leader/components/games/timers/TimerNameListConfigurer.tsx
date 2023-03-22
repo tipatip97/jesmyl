@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
+import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import SendButton from "../../../../../../complect/SendButton";
-import { useWid } from "../../../../../../complect/useWid";
 import useIsRedactArea from "../../../complect/useIsRedactArea";
 import { leaderExer } from "../../../Leader.store";
 
@@ -19,64 +19,47 @@ export default function TimerNameListConfigurer({
   onUpdate?: (names: string[] | und) => void;
   onSend?: (names: string[]) => Promise<unknown> | und;
 }) {
-  const id = useWid();
-  const [names, updateNames] = useState<string[]>([]);
+  const [names, updateNames] = useState<string[]>(timerNames ?? []);
   const [isSending, setIsSending] = useState(false);
   const { editIcon, isRedact, setIsRedact } = useIsRedactArea(
     redactable,
     redact
   );
 
-  const redactNames = useMemo(() => {
-    return names.length ? names : timerNames ?? [];
-  }, [names, timerNames]);
 
-  const finalNames = useMemo(() => {
-    return mylib.isEq(
-      timerNames,
-      redactNames.filter((name) => name)
-    )
-      ? undefined
-      : redactNames;
-  }, [redactNames, timerNames]);
-
-  useEffect(() => onUpdate?.(finalNames), [finalNames]);
   if (!leaderExer.actionAccessedOrNull("updateGameTimerNames")) return null;
 
   return (
     <div className="margin-gap">
       <h2 className="flex flex-gap">
-        Названия таймеров
+        Названия таймеров (точек)
         {editIcon}
       </h2>
       {isRedact ? (
         <>
           <div className={isSending ? "disabled" : ""}>
-            {redactNames.map((name, namei) => {
-              return (
-                <div key={`namei ${namei}`} className="margin-gap-v">
-                  {
-                    <KeyboardInput
-                      value={name}
-                      onChange={(value) => {
-                        const newNames = [...redactNames];
-                        newNames[namei] = value;
-                        updateNames(newNames);
-                      }}
-                    />
-                  }
-                </div>
-              );
+            {names.map((name, namei) => {
+              return <KeyboardInput
+                key={`namei ${namei}`}
+                className="margin-gap-v"
+                value={name}
+                onChange={(value) => {
+                  const newNames = [...names];
+                  newNames[namei] = value;
+                  onUpdate?.(newNames.filter(n => n));
+                  updateNames(newNames);
+                }}
+              />;
             })}
-            {!redactNames.some((name) => !name) &&
-              <KeyboardInput
-                placeholder="Новое название точки"
-                onChange={(value) => updateNames([...redactNames, value])}
-              />}
+            {!names.some((name) => !name) && <EvaButton
+              name="plus-circle"
+              className="color--ok"
+              onClick={() => updateNames([...names, ''])}
+            />}
           </div>
           {onSend && (
             <div>
-              {finalNames && (
+              {mylib.isEq(timerNames, names) && (
                 <SendButton
                   title="Отправить названия"
                   confirm
@@ -87,7 +70,7 @@ export default function TimerNameListConfigurer({
                   }}
                   onSend={() => {
                     setIsSending(true);
-                    return onSend(finalNames.filter((name) => name));
+                    return onSend(names);
                   }}
                 />
               )}
