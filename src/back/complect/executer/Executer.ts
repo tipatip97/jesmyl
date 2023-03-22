@@ -2,7 +2,7 @@
 import { sequreMD5Passphrase } from "../../values";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { ExecuteError, ExecuteErrorType, ExecuteResults, ExecutionDict, ExecutionExpectations, ExecutionFixedAccesses, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionTrack, TrackerRet } from "./Executer.model";
+import { BasicRule, ExecuteError, ExecuteErrorType, ExecuteResults, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionFixedAccesses, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionTrack, TrackerRet } from "./Executer.model";
 
 
 const globs: Record<string, any> = {
@@ -166,7 +166,7 @@ export class Executer {
         }
     }
 
-    static isCorrectType(value: any, typer: string | string[]): boolean {
+    static isCorrectType(value: any, typer: number | string | (string | number)[]): boolean {
         if (smylib.isStr(typer)) {
             if (typer[0] === '#') {
                 const explodes = smylib.explode(':', typer, 2);
@@ -284,13 +284,13 @@ export class Executer {
         return false;
     }
 
-    static replaceArgs<Value>(value: Value, args: Record<string, any> | null = {}, auth?: LocalSokiAuth | null, defCb?: () => string): any {
+    static replaceArgs<Value>(value: Value, realArgs: Record<string, any> | null = {}, auth?: LocalSokiAuth | null, defCb?: () => Value): Value {
         if (smylib.isStr(value)) {
             if (value.includes('{') && value.includes('}')) {
                 let val: any = emptyStub;
                 const text = value.replace(/\{(([@*?])?(\w+(\(\))?))\}/g, (all, name, prefix, key) => {
-                    val = prefix === '@' ? this.getIfGlob(name) : prefix === '*' ? auth?.[key as never] : args?.[key];
-                    return val || all || '';
+                    val = prefix === '@' ? this.getIfGlob(name) : prefix === '*' ? auth?.[key as never] : realArgs?.[key];
+                    return val ?? all ?? '';
                 });
                 if (val === emptyStub && defCb) return defCb();
                 return value.match(/{|}/g)?.length === 2 && value.match(/^{|}$/g)?.length === 2 ? val : text;
@@ -299,22 +299,23 @@ export class Executer {
             const newValue = smylib.isArr(value) ? [] : {} as Record<string, any>;
 
             for (const key in value) {
-                const val = this.replaceArgs(value[key], args, auth);
+                const val = this.replaceArgs(value[key], realArgs, auth);
 
                 if (val !== undefined) {
-                    const arg = this.replaceArgs(key, args, auth);
+                    const arg = this.replaceArgs(key, realArgs, auth);
                     if (arg != null) newValue[arg] = val;
                     else newValue[key] = val;
                 }
             }
 
-            return newValue;
+            return newValue as never;
         }
 
         return defCb ? defCb() : value;
     }
 
     static cloneArgs(args: Record<string, unknown>, cloneArgs?: Record<string, string>) {
+        if (!cloneArgs) return args;
         SMyLib.entries(cloneArgs || {}).forEach(([from, to]) => {
             if (args[to] === undefined && args[from] !== undefined) args[to] = args[from];
         });
@@ -345,14 +346,15 @@ export class Executer {
 
                     const accRule: ExecutionRealAccumulatable = {
                         track: accTrack,
-                        args: this.cloneArgs({ ...topRule.args, ...rule.args }, rule.cloneArgs),
+                        args: { ...topRule.args, ...rule.args },
+                        cloneArgs: (topRule.cloneArgs || rule.cloneArgs) && { ...topRule.cloneArgs, ...rule.cloneArgs },
                         expecteds: (rule.expected ? topRule.expecteds || [] : topRule.expecteds)
                             ?.concat(rule.expected ? [[accTrack, rule.expected]] : []),
                         accesses: rule.access
                             ? (topRule.accesses || []).concat(rule.access)
                             : topRule.accesses,
                         sides: (rule.side ? topRule.sides || [] : topRule.sides)?.concat(
-                            SMyLib.entries(rule.side || {})?.map(([key, side]: [string, ExecutionRule]) => {
+                            SMyLib.entries(rule.side || {})?.map(([key, side]: [string, BasicRule]) => {
                                 return { ...side, track: accTrack.concat(this.prepareTrack(key) || []) };
                             }) || []),
 
@@ -365,13 +367,23 @@ export class Executer {
                         });
                     }
                     if (rule.action === action) {
-                        const ret = this.replaceArgs<ExecutionReal>({
+                        const nativeRule = { ...rule };
+
+                        for (const rulen in nativeRule)
+                            if (rulen.startsWith('/')) delete nativeRule[rulen as never];
+
+                        const execRule = smylib.clone({
                             ...accRule,
-                            ...rule,
+                            ...nativeRule,
                             fix: accRule.track?.[0],
                             title: rule.title && smylib.stringTemplater(rule.title, realArgs),
                             value: rule.value === undefined ? value ?? realArgs?.value : rule.value,
-                        }, realArgs, auth);
+                        });
+
+                        const ret = this.replaceArgs<ExecutionReal>(execRule, this.cloneArgs({ ...realArgs }, accRule.cloneArgs), auth);
+
+                        ret.nativeRule = nativeRule;
+
                         return ret;
                     }
 
@@ -398,7 +410,7 @@ export class Executer {
         return trackered;
     }
 
-    static execSides(sides: ExecutionRule[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null, { shortTitle, title }: { shortTitle?: string, title?: string } = {}) {
+    static execSides(sides: BasicRule[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null, { shortTitle, title }: { shortTitle?: string, title?: string } = {}) {
         return new Promise<boolean>((resolve, reject) => {
             sides.some(({ method, value, args, track }) => {
                 if (track) {
@@ -409,7 +421,7 @@ export class Executer {
                         return true;
                     }
 
-                    this.doIt({ method, target, penultimate, lastTrace, value, args, auth })
+                    this.doIt({ method, target, penultimate, lastTrace, value, realArgs: args, auth })
                         .then(resolve)
                         .catch((errorMessage) => reject(`#63674012239 ${errorMessage}`));
                 }
@@ -512,10 +524,20 @@ export class Executer {
                     if (smylib.isStr(rule.fix) && !fixes.includes(rule.fix)) fixes.push(rule.fix);
 
                     if (rule.track) {
-                        this.doIt({
-                            ...this.checkExpecteds(rule.track, contents, rule.expecteds, rule.args),
+                        const { target, penultimate, lastTrace } = this.checkExpecteds(rule.track, contents, rule.expecteds, rule.args);
+                        this.setInEachValueItem(
+                            rule.value,
+                            rule.nativeRule?.setInEachValueItem,
+                            exec.args,
                             auth,
-                            args: exec.args,
+                        );
+
+                        this.doIt({
+                            target,
+                            penultimate,
+                            lastTrace,
+                            auth,
+                            realArgs: exec.args,
                             value: rule.value,
                             uniqs: rule.uniqs,
                             method: rule.method,
@@ -547,6 +569,40 @@ export class Executer {
         });
     }
 
+    static setInEachValueItem(value: unknown, forces?: ExecuterSetInEachValueItem, realArgs?: Record<string, unknown>, auth?: LocalSokiAuth | null) {
+        if (!forces) return;
+        const forcesEntries = SMyLib.entries(forces);
+
+        forcesEntries.forEach(([tracky, setts]) => {
+            const setDeepper = (trackys: string[], deepItem: unknown) => {
+                if (!trackys.length) {
+                    if (smylib.isObj(deepItem))
+                        SMyLib.entries(this.replaceArgs(smylib.clone(setts), realArgs, auth))
+                            .forEach(([key, val]) => deepItem[key] = val);
+                    else if (smylib.isArr(deepItem))
+                        deepItem.forEach((nextItem) => setDeepper([], nextItem));
+                    return;
+                }
+
+                const [trackBeat] = trackys;
+
+                if (smylib.isObj(deepItem))
+                    setDeepper(trackys.slice(1), deepItem[trackBeat]);
+
+                if (smylib.isArr(deepItem)) {
+                    const nextTracky = trackys.slice(1);
+                    deepItem.forEach((nextItem) => setDeepper(nextTracky, nextItem[trackBeat]));
+                }
+            };
+
+            tracky.split(/\s*,\s*/)
+                .forEach((trackyBeat) => {
+                    if (trackyBeat === '.') setDeepper([], value);
+                    else setDeepper(trackyBeat.split('.'), value);
+                })
+        });
+    }
+
     static ununiqErrorMessage(uniqs: string[] | Record<string, string> | undefined, target: Record<string, unknown>[], value: any) {
         if (!uniqs) return null;
         const key = (smylib.isArr(uniqs) ? uniqs : Object.keys(uniqs))
@@ -560,13 +616,13 @@ export class Executer {
         else return uniqs[key];
     }
 
-    static doIt({ method, target, penultimate, lastTrace, value, args, auth, uniqs }: {
+    static doIt({ method, target, penultimate, lastTrace, value, realArgs, auth, uniqs }: {
         method: ExecutionMethod,
         target: any,
         penultimate: any,
         lastTrace: string | number,
         value: any,
-        args?: Record<string, unknown>,
+        realArgs?: Record<string, unknown>,
         auth?: LocalSokiAuth | null,
         uniqs?: string[] | Record<string, string>,
     }) {
@@ -582,7 +638,7 @@ export class Executer {
                     case 'formula':
                         try {
                             if (penultimate && smylib.isStr(value)) {
-                                const val = this.replaceArgs(value, args, auth);
+                                const val = this.replaceArgs(value, realArgs, auth);
                                 if (smylib.isStr(val)) {
                                     const body = val.replace(/[^()X\d-+* /]/g, '').replace(/X/g, '' + (target || 0));
                                     const data: { result?: number } = {};
@@ -616,13 +672,17 @@ export class Executer {
                         }
                         break;
                     case 'remove':
-                    case 'remove_each':
                         if (smylib.isArr(target) && value != null)
                             if (smylib.isNum(value)) target.splice(value, 1);
                             else {
-                                const valuei = target.findIndex((source: any) => this.isExpected(source, value, args));
+                                const valuei = target.findIndex((source: any) => this.isExpected(source, value, realArgs));
                                 if (valuei > -1) target.splice(valuei, 1);
                             }
+                        break;
+                    case 'remove_each':
+                        if (smylib.isArr(target) && value != null) {
+                            penultimate[lastTrace] = target.filter((source: any) => !this.isExpected(source, value, realArgs));
+                        }
                         break;
                     case 'migrate':
                         if (penultimate && value) {

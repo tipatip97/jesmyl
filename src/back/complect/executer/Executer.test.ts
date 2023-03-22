@@ -10,7 +10,7 @@ describe('Executer', () => {
         Executer.doIt({ method: 'formula', target: 777, penultimate, lastTrace: fieldn, value: '{*level} + 1', auth: { level: 320 } });
         expect(penultimate[fieldn]).toBe(321);
 
-        Executer.doIt({ method: 'formula', target: 2, penultimate, lastTrace: fieldn, value: '({*level} + 1) * {num} - X', args: { num: 6 }, auth: { level: 5 } });
+        Executer.doIt({ method: 'formula', target: 2, penultimate, lastTrace: fieldn, value: '({*level} + 1) * {num} - X', realArgs: { num: 6 }, auth: { level: 5 } });
         expect(penultimate[fieldn]).toBe(34);
     });
 
@@ -46,6 +46,42 @@ describe('Executer', () => {
         expect(Executer.isExpected({ val: 298 }, ['val', 'not', '#str'])).toBe(true);
         expect(Executer.isExpected({}, ['val', 'is', '#num'])).toBe(true);
         expect(Executer.isExpected({}, ['val', 'not', '#Number'])).toBe(true);
+    });
+
+
+    it('setInEachValueItem', () => {
+        const val = [
+            {
+                me: { itsMe: true },
+                items: [
+                    {
+                        name: 'hhh',
+                        deep: {}
+                    },
+                    {
+                        name: 'aa',
+                        deep: {}
+                    },
+                    {
+                        name: 'bb',
+                        deep: {}
+                    },
+                ]
+            }
+        ];
+
+        Executer.setInEachValueItem(val, {
+            '.': { asd: 456 },
+            'me': { hello: 'Y' },
+            'items': { FIO: '{*fio}' },
+            'items.deep': { w: '{@setNewWid()}', '{fieldn}:::': '{*level}' },
+        }, { fieldn: 'FIELD' }, { fio: 'Jack', level: 911 });
+
+        expect((val[0] as any).asd).toBe(456);
+        expect((val[0] as any).me.hello).toBe('Y');
+        expect((val[0] as any).items[0].FIO).toBe('Jack');
+        expect(typeof (val[0] as any).items[1].deep.w).toBe('number');
+        expect((val[0] as any).items[2].deep['FIELD:::']).toBe(911);
     });
 });
 
