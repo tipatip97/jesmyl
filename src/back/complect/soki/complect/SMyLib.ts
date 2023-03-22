@@ -10,7 +10,7 @@ export type StringTemplaterArgs<Adds = {}> = {
 export class SMyLib {
     isObj(obj: any): obj is Record<string, any> { return obj instanceof Object && !(obj instanceof Array) }
     isobj(obj: any): obj is Record<string | number, any> | any[] { return typeof obj === 'object' && obj != null }
-    isArr(obj: any): obj is any[] { return obj instanceof Array }
+    isArr<Item = any>(obj: any): obj is Item[] { return obj instanceof Array }
     isNum(obj: any): obj is number { return typeof obj === 'number' && !isNaN(obj) }
     isnum(obj: any): obj is number { return parseFloat(obj) == obj }
     isStr(obj: any): obj is string { return typeof obj === 'string' }
