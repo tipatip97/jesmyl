@@ -46,9 +46,8 @@ export class MyLib extends SMyLib {
         return arg == null ? args[0] : arg;
     }
 
-    randomOf(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
+    randomOf = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+    randomIndex = (arr: unknown[]) => this.randomOf(0, arr.length - 1);
 
     findLastIndex<Value>(arr?: Value[], cb: ((val: Value, index: number, array: Value[]) => any) = () => false) {
         if (!Array.isArray(arr)) return null;
@@ -62,16 +61,16 @@ export class MyLib extends SMyLib {
     }
 
     numberSearchReplacements: [RegExp, string][] = [
-        [/0+/g, ' '],
-        [/1/g, "[^а-яё0-9]"],
-        [/2/g, '[абвг]'],
-        [/3/g, '[деёжз]'],
-        [/4/g, '[ийкл]'],
-        [/5/g, '[мноп]'],
-        [/6/g, '[рсту]'],
-        [/7/g, '[фхцч]'],
-        [/8/g, '[шщъы]'],
-        [/9/g, '[ьэюя]'],
+        [/0/g, '[ 0]'],
+        [/1/g, "[^а-яё1]"],
+        [/2/g, '[абвг2]'],
+        [/3/g, '[деёжз3]'],
+        [/4/g, '[ийкл4]'],
+        [/5/g, '[мноп5]'],
+        [/6/g, '[рсту6]'],
+        [/7/g, '[фхцч7]'],
+        [/8/g, '[шщъы8]'],
+        [/9/g, '[ьэюя9]'],
     ];
 
     textSearchReplacements: [RegExp, string][] = [
@@ -320,6 +319,10 @@ export class MyLib extends SMyLib {
         return refElem.parentNode?.insertBefore(elem, refElem.nextSibling);
     }
 
+    takeNewWid() {
+        return Date.now() + Math.random();
+    }
+
     scrollToView(element: Element | null, position = 'center', props: { parent?: HTMLElement; force?: boolean; animationTime?: number; top?: number; } = {} as never) {
         if (!element) return;
         const {
@@ -503,3 +506,5 @@ export class MyLib extends SMyLib {
 
 const mylib = new MyLib();
 export default mylib;
+
+(window as any).mylib = mylib;
