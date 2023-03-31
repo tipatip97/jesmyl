@@ -74,7 +74,7 @@ export class EditableCom extends Com {
             ...this.basics,
             ...this.col.toDict(),
             o: this.ords.map((topOrd) => {
-                const ord = { ...topOrd };
+                const ord = mylib.clone(topOrd);
                 delete ord.originWid;
                 delete ord.header;
 
@@ -408,7 +408,7 @@ export class EditableCom extends Com {
             },
         });
 
-        const ord: IExportableOrderTop = { w, header: () => '', originWid: w };
+        const ord: IExportableOrderTop = { w, header: () => '' };
 
         (['t', 's', 'a', 'u', 'c'] as (keyof IExportableOrderTop)[]).forEach((key) => {
             if (topOrd[key as never] != null) ord[key] = topOrd[key as never];
@@ -541,7 +541,7 @@ export class EditableCom extends Com {
         });
 
         this.orders.forEach(ord => {
-            const originWid = ord.top.source?.originWid;
+            const originWid = ord.originWid;
             if (originWid != null && ord.top.source && ord.top.source.w !== originWid)
                 value[originWid] = ord.top.source.w;
         });
@@ -600,7 +600,7 @@ export class EditableCom extends Com {
             }
         });
 
-        this.ords.push({ a: anchor, w: wid, originWid: wid, header: () => '' });
+        this.ords.push({ a: anchor, w: wid, header: () => '' });
         this.afterOrderChange();
     }
 

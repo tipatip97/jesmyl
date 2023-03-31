@@ -26,6 +26,10 @@ export class EditableOrder extends Order {
         return this._regions;
     }
 
+    get originWid() {
+        return this.top.source ? this.top.source.originWid ?? (this.top.source.originWid = this.wid) : this.wid;
+    }
+
     setField<K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args?: Record<string, any>, onFinish?: () => void, refresh = true, onSet?: () => void | null) {
         const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
             this.exec({
@@ -49,7 +53,7 @@ export class EditableOrder extends Order {
 
         if (this.top.isAnchorInherit) {
             const wid = this.top.leadOrd?.wid;
-            
+
             setExec('setAnchorInheritValue', { inhIndex: this.top.anchorInheritIndex, wid, value }, onSet);
         } else {
             const action = ({

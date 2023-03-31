@@ -244,13 +244,15 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   getInheritance<Key extends keyof IExportableOrder>(fieldn: Key): IExportableOrder[Key] | null {
-    return (this.top.isAnchorInherit
-      && this.top.anchorInheritIndex != null
-      && this.top.leadOrd?.top.source?.inh?.[fieldn]?.[this.top.anchorInheritIndex] != null
-      ? this.top.leadOrd.top.source.inh[fieldn][this.top.anchorInheritIndex]
-      : this.top.source
-        ? this.top.source[fieldn]
-        : null) as never;
+    return (
+      this.top.isAnchorInherit && this.top.anchorInheritIndex !== undefined
+        ? this.top.leadOrd?.top.source?.inh?.[fieldn]?.[this.top.anchorInheritIndex] != null
+          ? this.top.leadOrd.top.source.inh[fieldn][this.top.anchorInheritIndex]
+          : null
+        : this.top.source
+          ? this.top.source[fieldn]
+          : null
+    ) as never;
   }
 
   getSourceFirst<Key extends keyof IExportableOrderTop>(fieldn: Key) {

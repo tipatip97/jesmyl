@@ -317,10 +317,6 @@ export class Com extends BaseNamed<IExportableCom> {
   setOrders() {
     if (!blockStyles) return null;
     const tops = this.ords
-      .map((ord) => {
-        ord.originWid = ord.originWid ?? ord.w;
-        return ord;
-      })
       .sort((a, b) => a.w - b.w);
     const orders: ReturnType<typeof this.orderConstructor>[] = [];
     let minimals: [string?, number?][] = [];

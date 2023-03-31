@@ -26,8 +26,8 @@ export default function CategoryBinds() {
               value={`${ccom.refs?.[cat.wid] || ""}`}
               type="number"
               onChange={(value) => {
-                if (!value) {
-                  exec(ccom.removeNativeNumber(cat, exec));
+                if (!+value) {
+                  if (ccom.refs?.[cat.wid]) exec(ccom.removeNativeNumber(cat, exec));
                   return;
                 }
                 if (value.match(/\D/)) return;
