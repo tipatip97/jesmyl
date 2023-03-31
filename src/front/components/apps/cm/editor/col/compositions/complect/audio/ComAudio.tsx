@@ -159,7 +159,7 @@ export default function ComAudio({ topHTML, topCom, topMp3Rule }: { topHTML?: st
           </>
           : <EvaButton
             name="plus-circle"
-            className="--color--ok margin-big-gap"
+            className="color--ok margin-big-gap"
             onClick={() => setOpenAddBlock(true)}
           />
       }
