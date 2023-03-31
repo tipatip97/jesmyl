@@ -198,7 +198,6 @@
                         }
                     },
                     "<startGame>": {
-                        "access": "$amIManager",
                         "args": {
                             "location": "#String",
                             "spiesCount": "#Number"
@@ -232,7 +231,6 @@
                         }
                     },
                     "/finisher": {
-                        "access": "$amIManager",
                         "action": "finishSpyGame",
                         "shortTitle": "Завершить игру",
                         "method": "set",
@@ -242,7 +240,6 @@
                         }
                     },
                     "<in start game>": {
-                        "access": "$amIManager",
                         "/retired": {
                             "<excludeMember>": {
                                 "action": "excludeSpyMember",
@@ -283,9 +280,56 @@
                     }
                 },
                 "/alias": {
-                    "expected": {},
-                    "/": {
-                        "action": ""
+                    "<start round>": {
+                        "expected": {},
+                        "action": "startAliasRound",
+                        "method": "set_all",
+                        "value": {
+                            "teams": "{teams}",
+                            "queue": "{queue}",
+                            "stack": "{stack}",
+                            "roundTime": "{roundTime}",
+                            "speaker": "{speaker}"
+                        },
+                        "args": {
+                            "teams": "#List",
+                            "queue": "#List",
+                            "stack": "#List",
+                            "roundTime": "#Number",
+                            "speaker": "#Number"
+                        }
+                    },
+                    "<start speech>": {
+                        "action": "startAliasSpeech",
+                        "method": "set_all",
+                        "value": {
+                            "speechTime": "{speechTime}"
+                        },
+                        "args": {
+                            "speechTime": "#Number"
+                        }
+                    },
+                    "<strike word>": {
+                        "side": {
+                            "/stack": {
+                                "method": "remove",
+                                "value": 0
+                            }
+                        },
+                        "/teams/{teami}/{stack}": {
+                            "expected": [],
+                            "action": "strikeAliasWord",
+                            "method": "push",
+                            "value": "{word}",
+                            "args": {
+                                "stack": [
+                                    "cor",
+                                    "inc"
+                                ],
+                                "teami": "#Number",
+                                "word": "#Number"
+                            }
+                        }
                     }
                 }
             }
