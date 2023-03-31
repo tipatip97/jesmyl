@@ -1,13 +1,18 @@
 import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
-import useGamerRooms from "../../complect/rooms/room/useGamerRooms";
+import AliasGameRound from "./AliasGameRound";
 import AliasRoomInitialManagerContent from "./AliasRoomInitialManagerContent";
+import useAliasState from "./useAliasState";
 
 export default function AliasRoomContent() {
-    const { memberPossibilities } = useGamerRooms();
+    const { memberPossibilities, state } = useAliasState();
     const myPossibilities = memberPossibilities();
 
     return <>
-        <GamerRoomMemberList />
-        {myPossibilities.isManager && <AliasRoomInitialManagerContent />}
+        {state?.speaker != null
+            ? <AliasGameRound />
+            : <>
+                <GamerRoomMemberList />
+                {myPossibilities.isManager && <AliasRoomInitialManagerContent />}
+            </>}
     </>;
 }

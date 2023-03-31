@@ -3,24 +3,24 @@ import TheButton from "../../../../../complect/Button";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { getRandomTwiceName } from "../../../leader/resources/getRandomTwiceName";
-import useGamerRooms from "../../complect/rooms/room/useGamerRooms";
+import useAliasState from "./useAliasState";
 
 const roundTimes = [60, 120, 180];
 
 export default function AliasRoomInitialManagerContent() {
-    const { players } = useGamerRooms();
+    const { players, startRound } = useAliasState();
     const [roundTime, setRoundTime] = useState(60);
-    const [groupTitles, setGroupTitle] = useState<string[] | null>(null);
-    const [groupsCount, setGroupsCount] = useState(players ? Math.ceil(players.length / 2) : 1);
+    const [teamsTitles, setGroupTitle] = useState<string[] | undefined>();
+    const [teamsCount, setGroupsCount] = useState(2);
 
     useEffect(() => {
-        if (groupTitles && groupTitles.length !== groupsCount) {
+        if (teamsTitles && teamsTitles.length !== teamsCount) {
             const titles: string[] = [];
-            while (titles.length < groupsCount)
+            while (titles.length < teamsCount)
                 titles.push(getRandomTwiceName().join(' '));
             setGroupTitle(titles);
         }
-    }, [groupTitles, groupsCount]);
+    }, [teamsTitles, teamsCount]);
 
     return <>
         <h2>Настройки</h2>
@@ -35,21 +35,22 @@ export default function AliasRoomInitialManagerContent() {
         <div className="flex flex-gap margin-gap-v">
             <span className="nowrap">Количество команд</span>
             <KeyboardInput
-                value={'' + groupsCount}
+                value={'' + teamsCount}
                 type="number"
                 onChange={(val) => setGroupsCount(+val)}
             />
         </div>
 
         <TheButton
-            onClick={() => setGroupTitle(groupTitles ? null : [])}
-        >{groupTitles ? 'Не называть группы' : 'Задать названия группам'}</TheButton>
-        {groupTitles?.map((groupTitle) => {
+            onClick={() => setGroupTitle(teamsTitles ? undefined : [])}
+        >{teamsTitles ? 'Не называть группы' : 'Задать названия группам'}</TheButton>
+        {teamsTitles?.map((groupTitle) => {
             return <div key={groupTitle}>{groupTitle}</div>;
         })}
         <div className="flex center margin-big-gap">
             <TheButton
-                disabled={!players || players.length < +groupsCount}
+                disabled={!players || players.length < +teamsCount}
+                onClick={() => startRound(teamsCount, roundTime, teamsTitles)}
             >Начать раунд</TheButton>
         </div>
     </>

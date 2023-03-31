@@ -10,6 +10,7 @@ export const gamerExer = new Exer('gamer', gamerStorage);
 const initialState: GamerState = {
     roomw: gamerStorage.get("roomw"),
     rooms: gamerStorage.getOr("rooms", []),
+    aliasWords: gamerStorage.getOr("aliasWords", []),
     offlineRooms: gamerStorage.getOr("offlineRooms", []),
     locations: gamerStorage.getOr("locations", []),
     passport: gamerStorage.get("passport"),

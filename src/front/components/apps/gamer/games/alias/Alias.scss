@@ -1,0 +1,55 @@
+.show-word-area {
+    --ring-size: 50vmin;
+
+    position: relative;
+    height: calc(var(--ring-size) * 1.3);
+    overflow-y: scroll;
+    padding: 30px 0;
+
+    &.start-round {
+        .round-button {
+            background: var(--color--2);
+            color: var(--color--3);
+        }
+
+        .ok-button,
+        .ko-button {
+            opacity: 1;
+            pointer-events: all;
+        }
+    }
+
+    .ok-button,
+    .ko-button {
+        --icon-scale: 4;
+        --pos: 40px;
+
+        position: absolute;
+        bottom: var(--pos);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .5s;
+    }
+
+    .ko-button {
+        left: var(--pos);
+    }
+
+    .ok-button {
+        right: var(--pos);
+    }
+
+    .round-button {
+        width: var(--ring-size);
+        max-width: var(--ring-size);
+        min-width: var(--ring-size);
+        height: var(--ring-size);
+        max-height: var(--ring-size);
+        min-height: var(--ring-size);
+
+        background: var(--color--7);
+        color: var(--color--1);
+        border-radius: var(--ring-size);
+        transition: background .5s;
+    }
+}

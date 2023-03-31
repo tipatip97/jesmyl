@@ -1,3 +1,4 @@
+import { AliasWordsPack } from "./games/alias/Alias.model";
 import { OfflineSpyGame } from "./games/spy/offline-room/SpyOfflineRoom.model";
 
 export interface GamerState extends GamerStoraged {
@@ -7,13 +8,18 @@ export interface GamerStorage extends GamerStoraged {
 }
 
 export interface GamerStoraged {
-    locations?: string[],
     rooms?: GamerRoom[],
     roomw: number | nil,
     passport?: GamerPassport,
     offlineRooms?: GamerRoom[],
     currentOfflineGameName?: GamerGameName,
     offlineSpyGame?: OfflineSpyGame,
+
+    // spy
+    locations?: string[],
+
+    // alias
+    aliasWords: AliasWordsPack[],
 }
 
 export interface GamerPassport {
@@ -21,9 +27,10 @@ export interface GamerPassport {
     login: string,
 }
 
-
 const gameNames = ['spy', 'alias'] as const;
 export type GamerGameName = typeof gameNames[number];
+
+export type GamerRoomMemberLogin = string;
 
 export interface GamerRoom {
     w: number,
