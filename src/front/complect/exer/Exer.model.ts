@@ -33,7 +33,7 @@ export interface FreeExecDict<Value> {
     scope?: string,
     prev?: Value,
     value?: Value,
-    method: ExecutionMethod,
+    method?: ExecutionMethod,
     args?: Record<string, any>,
     generalId?: string | number,
     createByPath?: boolean,
@@ -62,7 +62,7 @@ export interface SetAntiValue<Value> {
 }
 
 export interface ClientExecutionDict<Value = any> extends FreeExecDict<Value>, ExecutionDict<Value> {
-    method: ExecutionMethod;
+    method?: ExecutionMethod;
     corrects?: CorrectsBox;
 }
 

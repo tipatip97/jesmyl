@@ -11,7 +11,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
     title: ReactNode = '';
     prev?: Value;
     value?: Value;
-    method: ExecutionMethod;
+    method?: ExecutionMethod;
     args?: Record<string, any>;
     action: string;
     generalId?: string;

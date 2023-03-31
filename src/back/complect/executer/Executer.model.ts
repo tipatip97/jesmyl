@@ -4,7 +4,7 @@ export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' 
 
 export interface ExecutionDict<Value = any, Args = Record<string, any>> {
     action: string,
-    method: ExecutionMethod,
+    method?: ExecutionMethod,
     value?: Value,
     prev?: Value,
     args?: Args,
