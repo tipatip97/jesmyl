@@ -41,7 +41,7 @@ export default function useTranslation() {
     currTexti,
     texts,
     position: useSelector(translationBlockPositionSelector),
-    comPack: useComPack(),
+    comPack: useComPack(true),
     nextText: () =>
       ret.texts &&
       currTexti < ret.texts.length - 1 &&

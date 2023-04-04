@@ -22,7 +22,7 @@ export default function OrdersRedactor() {
           {
             isEdit: true,
             isTexted: ord.top.isInherit,
-            r: ord.repeatsTitle,
+            repeats: ord.repeatsTitle,
           },
           true
         );

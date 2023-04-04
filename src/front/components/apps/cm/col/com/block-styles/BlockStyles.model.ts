@@ -1,6 +1,6 @@
 export interface IExportableStyleProp {
     key: string;
-    title: string;
+    title: string[];
     isInherit?: boolean;
     group?: number;
     tags?: string[];

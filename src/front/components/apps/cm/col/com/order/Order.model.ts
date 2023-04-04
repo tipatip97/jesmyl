@@ -78,7 +78,7 @@ export interface IExportableOrderTop extends IExportableOrder {
 export interface OrderTopHeaderBag {
     isEdit?: boolean;
     isTexted?: boolean;
-    r?: string;
+    repeats?: string;
 }
 export interface OrderExecArgs<Value> {
     wid?: number | null;

@@ -12,6 +12,7 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
   topComs: Com[];
   coms: Com[];
   wraps: ComWrap[] = [];
+  searchedComs: Com[] = [];
 
   constructor(top: IExportableCat, coms: Com[]) {
     super(top);
@@ -41,6 +42,8 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
       this.wraps = mylib.searchRate<ComWrap>(this.coms, term, ['name', 'number', ['orders', mylib.c.INDEX, 'text']], 'com', isNumberSearch);
 
     } else this.wraps = this.coms.map(com => ({ com }));
+
+    this.searchedComs = this.wraps.map(wrap => wrap.com);
 
     this.term = term;
   }

@@ -14,6 +14,11 @@ import { EditableCol } from "../EditableCol";
 import { EditableCols } from "../EditableCols";
 import { EditableOrder } from "./complect/orders/EditableOrder";
 
+const freeSlavicLineReg_gi = new RegExp(`[^${slavicLowerLettersStr} ]`, 'gi');
+const ruDifferentReg = new RegExp(`[${ruDifferentLowerLettersStr}]`);
+const uaDifferentReg = new RegExp(`[${uaDifferentLowerLettersStr}]`);
+const melodicLettersReg = /[аеёиоуэыяюaeouiіїє]/gi;
+
 export class EditableCom extends Com {
     corrects: Record<string, CorrectsBox | nil> = {};
     initialName: string;
@@ -192,15 +197,12 @@ export class EditableCom extends Com {
             firstLineSlogs?: number,
         };
 
-        const freeSlavicLineReg_gi = new RegExp(`[^${slavicLowerLettersStr} ]`, 'gi');
-        const ruDifferentReg = new RegExp(`[${ruDifferentLowerLettersStr}]`);
-        const uaDifferentReg = new RegExp(`[${uaDifferentLowerLettersStr}]`);
         const units: Unit[] = [];
         let languagei: number | und | null;
         const errors: string[] = [];
         const slogUnits: Record<number, Unit[]> = {};
         const setLanguagei = (reg: RegExp, text: string, langi: number) => {
-            if (reg.exec(text)) {
+            if (text.match(reg)) {
                 if (languagei !== undefined && languagei !== langi) {
                     languagei = null;
                     errors.push('Не удалось определить язык песни');
@@ -211,6 +213,7 @@ export class EditableCom extends Com {
 
         (typeof blocks === 'string' ? blocks.split(/\n+\s*\n+/) : blocks)
             .forEach((block) => {
+                if (!block) return;
                 const unit: Unit = {};
                 const textLines: string[] = [];
                 const chordLines: string[] = [];
@@ -229,11 +232,11 @@ export class EditableCom extends Com {
                         if (unit.style) return;
                     }
 
-                    if (checkIsChordLineReg.exec(freeLine)) {
+                    if (freeLine.match(checkIsChordLineReg)) {
                         chordLines.push(freeLine);
                     } else {
                         if (textLines.length === 0) {
-                            const letters = freeLine.match(/[аеёиоуэыяюaeouiіїє]/gi);
+                            const letters = freeLine.match(melodicLettersReg);
                             const slogs = letters?.length;
                             if (slogs !== undefined) {
                                 if (slogUnits[slogs] === undefined) slogUnits[slogs] = [];
@@ -787,7 +790,7 @@ export class EditableCom extends Com {
                 .trim()
                 .split(/([\n\s ]+)/)
                 .map((chord, chordi) => {
-                    if (!(chordi % 2) && !textedChordReg.exec(chord)) {
+                    if (!(chordi % 2) && !chord.match(textedChordReg)) {
                         errors.push(chord);
                         return `[${chord}]`;
                     }

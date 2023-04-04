@@ -6,7 +6,7 @@ import { StyleBlock } from "./block-styles/StyleBlock";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.complect";
 import { IExportableCom } from "./Com.model";
 import { Order } from "./order/Order";
-import { IExportableOrder, IExportableOrderTop } from "./order/Order.model";
+import { IExportableOrder, IExportableOrderTop, OrderTopHeaderBag } from "./order/Order.model";
 
 export class Com extends BaseNamed<IExportableCom> {
   cols?: Cols;
@@ -324,8 +324,6 @@ export class Com extends BaseNamed<IExportableCom> {
     const groups: Record<string, number> = {};
     let viewIndex = 0;
     let prev, prevOrd;
-    const self = this;
-    const translate = function () { return arguments[self.langi || 0]; };
 
     const getStyle = (o: Partial<IExportableOrderTop> | nil) => {
       return o && o.s != null
@@ -351,11 +349,13 @@ export class Com extends BaseNamed<IExportableCom> {
             : groups[type]
         : '';
 
-      return (bag = {}) => {
-        return mylib.stringTemplater(style.title, mylib.overlap({
-          num: numered ? groups[type] < 2 ? '' : ` ${number}` : '',
-          translate,
-        }, bag));
+      return (bag: OrderTopHeaderBag = {}) => {
+        return style.title[this.langi]
+          + (bag.isEdit
+            ? ' №'
+            : (numered ? groups[type] < 2 ? '' : ` ${number}` : '')
+            + (bag.repeats ? ` ×  ${bag.repeats}р. ` : '')
+            + (bag.isTexted ? ':' : ''));
       };
     };
 

@@ -52,11 +52,7 @@ export default function OrdersRedactorOrderTools({
               if ((ordi === 0 || ord.top.isTarget) && styleBlock.isInherit)
                 return null;
 
-              const newBlockn = mylib.stringTemplater(styleBlock.title, {
-                isModal: true,
-                isEdit: true,
-                translate: (...args: string[]) => args[ccom.langi || 0],
-              });
+              const newBlockn = styleBlock.title[ccom.langi || 0];
               return {
                 type: "button",
                 title: styleBlock.key,
