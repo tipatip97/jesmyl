@@ -5,30 +5,9 @@ import useGamerRooms from "../../complect/rooms/room/useGamerRooms";
 import { GamerRoomMember, GamerRoomMemberLogin } from "../../Gamer.model";
 import { gamerExer } from "../../Gamer.store";
 import { AliasGameTeam, AliasMemberTid, AliasWordNid, GamerAliasRoomState } from "./Alias.model";
+import { AliasHelp } from "./AliasHelp";
 
 const aliasWordsSelector = (state: RootState) => state.gamer.aliasWords;
-
-const decodeMemberNid = (nid?: number): [number, number] | null => {
-    if (nid == null || isNaN(nid)) return null;
-    const [all, teami, , memberi = 0] = ('' + nid).match(/(\d+)(\.(\d+))?/) || [];
-
-    if (all === undefined) return null;
-
-    return [+teami, +memberi];
-};
-
-const encodeMemberNid = (teami: number, memberi: number) => +`${teami}.${memberi}`;
-
-const decodeWordNid = (nid?: number): [number, number, number] | null => {
-    if (nid == null || isNaN(nid)) return null;
-    const [all, packi, , leveli = 0, wordi = 0] = ('' + nid).match(/(\d+)ll(\.(\d))?(\d+)?/) || [];
-
-    if (all === undefined) return null;
-
-    return [+packi, +leveli, +wordi];
-};
-
-const encodeWordNid = (packi: number, leveli: number, wordi: number) => +`${packi}.${leveli}${wordi}`;
 
 export default function useAliasState() {
     const { players, currentRoom, auth, memberPossibilities } = useGamerRooms();
@@ -45,7 +24,7 @@ export default function useAliasState() {
         players,
         memberPossibilities,
         takeCurrentWord: () => {
-            const nids = decodeWordNid(currentWordNid);
+            const nids = AliasHelp.decodeWordNid(currentWordNid);
             if (!nids) return undefined;
             const [packi, leveli, wordi] = nids;
             return aliasWords?.[packi as never]?.words[leveli as never]?.[wordi as never];
@@ -61,7 +40,7 @@ export default function useAliasState() {
         takeSpeakerLogin: () => {
             if (speakerLogin) return speakerLogin;
             if (!auth || !state) return null;
-            const memberNids = decodeMemberNid(state.queue[state.speaker || 0]);
+            const memberNids = AliasHelp.decodeMemberNid(state.queue[state.speaker || 0]);
             if (!memberNids) return null;
             const [teami, memberi] = memberNids;
             if (teami === undefined) return null;
@@ -85,7 +64,7 @@ export default function useAliasState() {
         strikeWord: (stack: 'cor' | 'inc') => {
             if (!state) return;
 
-            const memberNids = decodeMemberNid(state.queue[state.speaker || 0]);
+            const memberNids = AliasHelp.decodeMemberNid(state.queue[state.speaker || 0]);
             if (!memberNids) return null;
             const [teami] = memberNids;
 
@@ -123,7 +102,7 @@ export default function useAliasState() {
                 pack.words.forEach((level, leveli) => {
                     level?.forEach((word, wordi) => {
                         if (word)
-                            stack.push(encodeWordNid(packi, leveli, wordi));
+                            stack.push(AliasHelp.encodeWordNid(packi, leveli, wordi));
                     });
                 });
             });
@@ -151,7 +130,7 @@ export default function useAliasState() {
                 const teamSize = teams[0].members.length;
                 for (let memberi = 0; memberi < teamSize; memberi++)
                     for (let teami = 0; teami < teams.length; teami++)
-                        queue.push(encodeMemberNid(teami, memberi));
+                        queue.push(AliasHelp.encodeMemberNid(teami, memberi));
             }
 
             gamerExer.send({
