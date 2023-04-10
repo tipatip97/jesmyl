@@ -350,7 +350,7 @@ export class Com extends BaseNamed<IExportableCom> {
         : '';
 
       return (bag: OrderTopHeaderBag = {}) => {
-        return style.title[this.langi] || style.title[0]
+        return (style.title[this.langi] || style.title[0])
           + (bag.isEdit
             ? ' №'
             : (numered ? groups[type] < 2 ? '' : ` ${number}` : '')
