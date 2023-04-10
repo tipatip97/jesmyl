@@ -28,7 +28,7 @@ export interface BasicRule {
     value?: unknown,
     args?: Record<string, unknown>,
 }
-export interface ExecutionRule extends BasicRule {
+export interface ExecutionRule extends BasicRule, NativeExecutionRule {
     action: string,
     title?: string,
     shortTitle?: string,
@@ -42,21 +42,19 @@ export interface ExecutionRule extends BasicRule {
     isSequre?: boolean,
     fixAccesses?: Record<string, ExecutionTrack>,
     writeArg?: string,
-    setInEachValueItem?: ExecuterSetInEachValueItem,
 }
 
 export type ExecutionExpectations = [ExecutionTrack, {} | []][];
 
 export type ExecuterSetInEachValueItem = Record<string, Record<string, unknown>>;
 
-export interface ExecutionRealAccumulatable {
+export interface ExecutionRealAccumulatable extends NativeExecutionRule {
     expecteds?: ExecutionExpectations,
-    args: Record<string, any>,
+    args?: Record<string, any>,
     cloneArgs?: Record<string, string>,
     track: ExecutionTrack,
     sides?: BasicRule[],
     accesses: string[],
-    setInEachValueItem?: ExecuterSetInEachValueItem,
 }
 
 export type ExecutionFixedAccesses = Record<string, () => boolean>;
@@ -73,6 +71,10 @@ export interface ExecutionReal extends ExecutionRealAccumulatable {
     cloneArgs?: Record<string, string>,
     fix: ExecutionRuleTrackBeat,
     nativeRule?: ExecutionRule,
+}
+
+export interface NativeExecutionRule {
+    setInEachValueItem?: ExecuterSetInEachValueItem,
 }
 
 export interface TrackerRet {

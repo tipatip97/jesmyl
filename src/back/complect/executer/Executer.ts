@@ -2,7 +2,7 @@
 import { sequreMD5Passphrase } from "../../values";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { BasicRule, ExecuteError, ExecuteErrorType, ExecuteResults, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionFixedAccesses, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionTrack, TrackerRet } from "./Executer.model";
+import { BasicRule, BasicRuleDict, ExecuteError, ExecuteErrorType, ExecuteResults, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionFixedAccesses, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionTrack, NativeExecutionRule, TrackerRet } from "./Executer.model";
 
 
 const globs: Record<string, any> = {
@@ -12,6 +12,8 @@ const globs: Record<string, any> = {
 const reportFailError = (rej: (resp: { ok: false, fail?: boolean, message: string }) => void, error: any) => rej({ ok: false, fail: true, message: error && (error.stack ?? error.message) });
 
 const emptyStub: string[] = ['EMPTY'];
+
+const nativeRuleIncludedFields: (keyof NativeExecutionRule)[] = ['setInEachValueItem'];
 
 export class Executer {
     findMap<Item, Ret>(arr: Item[], cb: (item: Item, itemi: number, itema: Item[]) => Ret): Ret | undefined {
@@ -344,20 +346,40 @@ export class Executer {
                         realArgs[rule.writeArg] = this.tracker(accTrack, contents, realArgs, null, auth).target;
                     }
 
+                    const accSides = () => {
+                        const sides: BasicRule[] = topRule.sides || [];
+                        const accSides = (accSideTrack: ExecutionRuleTrackBeat[], side?: BasicRuleDict) => {
+                            if (!side) return;
+                            SMyLib.entries(side).forEach(([key, side]: [string, BasicRule]) => {
+                                const trackedSide = { ...side };
+                                const sideTrack = accSideTrack.concat(this.prepareTrack(key));
+
+                                SMyLib.entries(trackedSide).forEach(([key, val]) => {
+                                    if (key.startsWith('/')) {
+                                        delete trackedSide[key as never];
+                                        accSides(sideTrack, { [key]: val as never });
+                                    }
+                                });
+
+                                trackedSide.track = sideTrack;
+                                sides.push(trackedSide);
+                            });
+                        };
+
+                        accSides(accTrack, rule.side);
+                        if (sides.length) return sides;
+                    };
+
                     const accRule: ExecutionRealAccumulatable = {
                         track: accTrack,
-                        args: { ...topRule.args, ...rule.args },
+                        // args: { ...topRule.args, ...rule.args },
                         cloneArgs: (topRule.cloneArgs || rule.cloneArgs) && { ...topRule.cloneArgs, ...rule.cloneArgs },
                         expecteds: (rule.expected ? topRule.expecteds || [] : topRule.expecteds)
                             ?.concat(rule.expected ? [[accTrack, rule.expected]] : []),
                         accesses: rule.access
                             ? (topRule.accesses || []).concat(rule.access)
                             : topRule.accesses,
-                        sides: (rule.side ? topRule.sides || [] : topRule.sides)?.concat(
-                            SMyLib.entries(rule.side || {})?.map(([key, side]: [string, BasicRule]) => {
-                                return { ...side, track: accTrack.concat(this.prepareTrack(key) || []) };
-                            }) || []),
-
+                        sides: accSides(),
                     };
                     if (rule.fixAccesses) {
                         SMyLib.entries(rule.fixAccesses).forEach(([accessName, track]) => {
@@ -367,22 +389,28 @@ export class Executer {
                         });
                     }
                     if (rule.action === action) {
-                        const nativeRule = { ...rule };
-
-                        for (const rulen in nativeRule)
-                            if (rulen.startsWith('/')) delete nativeRule[rulen as never];
-
                         const execRule = smylib.clone({
                             ...accRule,
-                            ...nativeRule,
+                            method: rule.method,
+                            action: rule.action,
                             fix: accRule.track?.[0],
                             title: rule.title && smylib.stringTemplater(rule.title, realArgs),
                             value: rule.value === undefined ? value ?? realArgs?.value : rule.value,
                         });
 
+                        const nativeRule = { ...rule };
+                        
+                        for (const rulen in nativeRule)
+                            if (
+                                rulen.startsWith('<')
+                                || rulen.startsWith('/')
+                                || !nativeRuleIncludedFields.includes(rulen as never)
+                            )
+                                delete nativeRule[rulen as never];
+
                         const ret = this.replaceArgs<ExecutionReal>(execRule, this.cloneArgs({ ...realArgs }, accRule.cloneArgs), auth);
 
-                        ret.nativeRule = nativeRule;
+                        if (nativeRule) ret.nativeRule = nativeRule;
 
                         return ret;
                     }
