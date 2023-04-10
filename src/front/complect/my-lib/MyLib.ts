@@ -499,6 +499,16 @@ export class MyLib extends SMyLib {
         return items[(items.indexOf(item) + Math.abs(step)) % items.length];
     }
 
+    nextCircularIndex(currentIndex: number, line: unknown[], dir: 1 | -1 = 1) {
+        return dir < 0
+            ? currentIndex <= 0
+                ? line.length - 1
+                : currentIndex - 1
+            : currentIndex >= line.length - 1
+                ? 0
+                : currentIndex + 1
+    }
+
     invokeOrGet(value: Function | any) {
         return (...args: any[]) => this.isFunc(value) ? value(...args) : value;
     }
