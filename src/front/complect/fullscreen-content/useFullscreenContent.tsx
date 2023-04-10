@@ -80,7 +80,9 @@ export function FULLSCREEN__CONTENT({
             onClick={() => closeFullscreenContent()}
           />
         )}
-        {fullscreenContent}
+        <div className="full-container padding-big-gap">
+          {fullscreenContent}
+        </div>
       </div>
     </Portal>
   ) : null;
