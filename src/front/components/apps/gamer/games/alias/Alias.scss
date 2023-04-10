@@ -6,10 +6,25 @@
     overflow-y: scroll;
     padding: 30px 0;
 
-    &.start-round {
+    .timeout-timer-screen {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 3em;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .round-button {
+        cursor: pointer;
+    }
+
+    &.speech {
         .round-button {
             background: var(--color--2);
             color: var(--color--3);
+            padding: 0 20vmin;
+            cursor: initial;
         }
 
         .ok-button,
@@ -17,6 +32,10 @@
             opacity: 1;
             pointer-events: all;
         }
+    }
+
+    .loader-icon {
+        --icon-size: 50px;
     }
 
     .ok-button,
@@ -29,6 +48,11 @@
         opacity: 0;
         pointer-events: none;
         transition: opacity .5s;
+
+        @media screen and (max-width: 350px) {
+            --icon-scale: 3;
+            --pos: 30px;
+        }
     }
 
     .ko-button {

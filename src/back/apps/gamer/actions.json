@@ -280,49 +280,86 @@
                     }
                 },
                 "/alias": {
-                    "<start round>": {
-                        "expected": {},
-                        "action": "startAliasRound",
-                        "method": "set_all",
-                        "value": {
-                            "teams": "{teams}",
-                            "queue": "{queue}",
-                            "stack": "{stack}",
-                            "roundTime": "{roundTime}",
-                            "speaker": "{speaker}"
+                    "<phases>": {
+                        "<start round>": {
+                            "expected": {},
+                            "action": "startAliasRound",
+                            "method": "set_all",
+                            "value": {
+                                "phase": 1,
+                                "teams": "{teams}",
+                                "speakers": "{speakers}",
+                                "words": "{words}",
+                                "roundTime": "{roundTime}",
+                                "speakeri": "{speakeri}"
+                            },
+                            "args": {
+                                "teams": "#List",
+                                "speakers": "#List",
+                                "words": "#List",
+                                "roundTime": "#Number",
+                                "speakeri": "#Number"
+                            }
                         },
-                        "args": {
-                            "teams": "#List",
-                            "queue": "#List",
-                            "stack": "#List",
-                            "roundTime": "#Number",
-                            "speaker": "#Number"
-                        }
-                    },
-                    "<start speech>": {
-                        "action": "startAliasSpeech",
-                        "method": "set_all",
-                        "value": {
-                            "speechTime": "{speechTime}"
+                        "<start speech>": {
+                            "action": "startAliasSpeech",
+                            "method": "set_all",
+                            "value": {
+                                "phase": 2,
+                                "startTs": "{startTs}"
+                            },
+                            "args": {
+                                "startTs": "#Number"
+                            }
                         },
-                        "args": {
-                            "speechTime": "#Number"
+                        "<finish>": {
+                            "action": "finishAliasSpeech",
+                            "method": "set_all",
+                            "value": {
+                                "phase": 3,
+                                "startTs": 0
+                            }
+                        },
+                        "<compute score>": {
+                            "action": "rememberAliasScore",
+                            "method": "set_all",
+                            "value": {
+                                "phase": 1,
+                                "speakeri": "{nextSpeakeri}"
+                            },
+                            "args": {
+                                "nextSpeakeri": "#Number",
+                                "teami": "#Number",
+                                "scoreIncrement": "#Number"
+                            },
+                            "side": {
+                                "/teams/{teami}": {
+                                    "method": "set_all",
+                                    "value": {
+                                        "inc": null,
+                                        "cor": null
+                                    },
+                                    "/score": {
+                                        "method": "formula",
+                                        "value": "X + {scoreIncrement}"
+                                    }
+                                }
+                            }
                         }
                     },
                     "<strike word>": {
                         "side": {
-                            "/stack": {
+                            "/words": {
                                 "method": "remove",
                                 "value": 0
                             }
                         },
-                        "/teams/{teami}/{stack}": {
-                            "expected": [],
+                        "/teams/{teami}/{scope}": {
                             "action": "strikeAliasWord",
                             "method": "push",
                             "value": "{word}",
                             "args": {
-                                "stack": [
+                                "scope": [
                                     "cor",
                                     "inc"
                                 ],

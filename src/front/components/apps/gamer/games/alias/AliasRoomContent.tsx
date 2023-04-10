@@ -1,18 +1,25 @@
-import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
+import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { GamerAliasRoomStatePhase } from "./Alias.model";
 import AliasGameRound from "./AliasGameRound";
-import AliasRoomInitialManagerContent from "./AliasRoomInitialManagerContent";
+import AliasGameRoundResults from "./AliasGameRoundResults";
+import AliasRoomInitialContent from "./AliasRoomInitialContent";
+import AliasScoreBoard from "./AliasScoreBoard";
 import useAliasState from "./useAliasState";
 
 export default function AliasRoomContent() {
-    const { memberPossibilities, state } = useAliasState();
-    const myPossibilities = memberPossibilities();
+    const { state } = useAliasState();
+    const phase = state?.phase;
+    const { openFullscreenContent } = useFullscreenContent();
 
-    return <>
-        {state?.speaker != null
+    return <div>
+        <div onClick={() => openFullscreenContent(<AliasScoreBoard />, true)}>
+            Посмотреть счёт
+        </div>
+        {phase === GamerAliasRoomStatePhase.Wait
+            || phase === GamerAliasRoomStatePhase.Speech
             ? <AliasGameRound />
-            : <>
-                <GamerRoomMemberList />
-                {myPossibilities.isManager && <AliasRoomInitialManagerContent />}
-            </>}
-    </>;
+            : phase === GamerAliasRoomStatePhase.Results
+                ? <AliasGameRoundResults />
+                : <AliasRoomInitialContent />}
+    </div>
 }
