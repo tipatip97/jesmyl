@@ -1,7 +1,7 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
 import SourceBased from "../../../../../../complect/SourceBased";
 import { Com } from "../Com";
-import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
+import { EditableOrderRegion, IExportableOrderFieldValues, IExportableOrderTop, InheritancableOrder, OrderRepeats, SpecielOrderRepeats } from "./Order.model";
 
 export class Order extends SourceBased<IExportableOrderTop> {
   _regions?: EditableOrderRegion<Order>[];
@@ -48,6 +48,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
 
   get positions(): number[][] | nil {
     return this.getInheritance('p')
+      ?? this.top.watchOrd?.top.source?.p
       ?? this.top.targetOrd?.top.source?.p
       ?? (this.top.source && (this.top.source.p = []));
   }
@@ -107,7 +108,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
   set repeats(val: OrderRepeats | null) {
     if (this.top.isAnchorInherit && this.top.leadOrd?.top.source) {
       const inh = this.top.leadOrd.top.source.inh || { r: {} };
-      const repeats = inh.r = inh.r || {};
+      const repeats = inh.r = (inh.r || {}) as Record<number, OrderRepeats | null>;
 
       if (this.top.anchorInheritIndex != null) repeats[this.top.anchorInheritIndex] = val;
       this.top.leadOrd.top.source.inh = inh as never;
@@ -243,20 +244,13 @@ export class Order extends SourceBased<IExportableOrderTop> {
       });
   }
 
-  getInheritance<Key extends keyof IExportableOrder>(fieldn: Key): IExportableOrder[Key] | null {
+  getInheritance<Key extends keyof InheritancableOrder>(fieldn: Key): InheritancableOrder[Key] | nil {
     return (
-      this.top.isAnchorInherit && this.top.anchorInheritIndex !== undefined
-        ? this.top.leadOrd?.top.source?.inh?.[fieldn]?.[this.top.anchorInheritIndex] != null
-          ? this.top.leadOrd.top.source.inh[fieldn][this.top.anchorInheritIndex]
-          : null
-        : this.top.source
-          ? this.top.source[fieldn]
-          : null
+      this.top.isAnchorInherit
+        ? this.top.watchOrd?.top.source?.inh?.[fieldn]?.[this.top.anchorInheritIndex || 0]
+        ?? this.top.leadOrd?.top.source?.inh?.[fieldn]?.[this.top.anchorInheritIndex || 0]
+        : this.top.source?.[fieldn]
     ) as never;
-  }
-
-  getSourceFirst<Key extends keyof IExportableOrderTop>(fieldn: Key) {
-    return this.getInheritance(fieldn as never) ?? (this.top.targetOrd?.top.source || {} as IExportableOrderTop)[fieldn];
   }
 
   getTargetFirst<Key extends keyof IExportableOrderTop>(fieldn: Key): IExportableOrderTop[Key] {

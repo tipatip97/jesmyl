@@ -2,7 +2,7 @@ import { FreeExecDict, FreeExecDictUniq } from "../../../../../../../../complect
 import mylib from "../../../../../../../../complect/my-lib/MyLib";
 import { cmExer } from "../../../../../Cm.store";
 import { Order } from "../../../../../col/com/order/Order";
-import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, OrderRepeats } from "../../../../../col/com/order/Order.model";
+import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, InheritancableOrder, OrderRepeats } from "../../../../../col/com/order/Order.model";
 import { EditableCom } from "../../EditableCom";
 
 export class EditableOrder extends Order {
@@ -71,17 +71,21 @@ export class EditableOrder extends Order {
 
 
         if (this.top.source) {
+            const inhFieldn = fieldn as keyof InheritancableOrder;
+
             if (this.top.isAnchorInherit) {
                 const src = this.top.leadOrd?.top.source;
                 if (src && !src.inh) src.inh = {} as never;
                 const inh = src?.inh;
 
                 if (inh && this.top.anchorInheritIndex != null) {
-                    if (!inh[fieldn]) inh[fieldn] = {};
-                    inh[fieldn][this.top.anchorInheritIndex] = value as never;
+                    if (!inh[inhFieldn]) inh[inhFieldn] = {};
+                    const inhScope = inh[inhFieldn];
+                    if (inhScope)
+                        inhScope[this.top.anchorInheritIndex] = value as never;
                 }
-            } else this.top.source[fieldn] = value as never;
-            this.setExportable(fieldn, value);
+            } else this.top.source[inhFieldn] = value as never;
+            this.setExportable(inhFieldn, value as never);
         }
 
         if (refresh) {
@@ -139,10 +143,10 @@ export class EditableOrder extends Order {
         });
     }
 
-    isInheritValue<Key extends keyof IExportableOrder>(key: Key) {
+    isInheritValue<Key extends keyof InheritancableOrder>(key: Key) {
         return this.top.isAnchorInherit
             ? this.top.anchorInheritIndex != null
-            && this.top.leadOrd?.top.source?.inh?.[key][this.top.anchorInheritIndex] == null
+            && this.top.leadOrd?.top.source?.inh?.[key]?.[this.top.anchorInheritIndex] == null
             : this.top.isAnchor && this.top.source?.[key] == null
     }
 

@@ -44,9 +44,9 @@ export class Cols extends SourceBased<IExportableCols> implements ICols {
       .sort((a, b) => a.w - b.w)
       .map(cat => new Cat(cat, this.coms));
   }
-  
+
   appendCom(com: IExportableCom) {
-    const prev = this.coms.find(({wid}) => com.w === wid);
+    const prev = this.coms.find(({ wid }) => com.w === wid);
     if (prev) return;
     this.coms.push(new Com(com, this.coms.length, this));
     this.cols.coms.push(com);

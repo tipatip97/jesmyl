@@ -5,20 +5,24 @@ import { Com } from "../Com";
 import { Order } from "./Order";
 
 
-export interface IExportableOrder {
+export interface InheritancableOrder {
+    r?: OrderRepeats | null; // Повторения
+    p?: number[][] | nil; // Позиции аккордов
+    v?: num; // Видимость блока
+}
+
+export interface IExportableOrder extends InheritancableOrder {
     a?: number; // Ссылка на блок
     c?: number; // Блок аккордов
     e?: num; // Без названия
     f?: IExportableOrderFieldValues; // Особые значения
     m?: num; // Минималка
     o?: num; // Открыто в полном режиме
-    p?: number[][] | nil; // Позиции аккордов
-    r?: OrderRepeats | null; // Повторения
     s?: string; // Тип блока
     t?: number | null; // Текстовый блок
     u?: number; // Целевой айди
-    v?: num; // Видимость блока
     w: number; // Уникальный айди
+    inh?: Inheritancables; // 
     originWid?: number; // Неизменяемый уникальный айди
 }
 
@@ -45,7 +49,7 @@ export interface IExportableOrderFieldValues {
 export type SpecielOrderRepeats = Record<string, number>;
 export type OrderRepeats = number | SpecielOrderRepeats;
 
-export type Inheritancables<K extends keyof IExportableOrder = keyof IExportableOrder> = Record<K, Record<number, IExportableOrder[K]>>
+export type Inheritancables<K extends keyof InheritancableOrder = keyof InheritancableOrder> = Partial<Record<K, Record<number, InheritancableOrder[K]>>>
 
 export interface IExportableOrderTop extends IExportableOrder {
     source?: IExportableOrderTop;
@@ -67,7 +71,6 @@ export interface IExportableOrderTop extends IExportableOrder {
     isNextInherit?: boolean;
     isNextAnchorOrd?: boolean;
     isPrevTargetOrd?: boolean;
-    inh?: Inheritancables;
     anchorInheritIndex?: number;
     sourceIndex?: number;
     viewIndex?: number;
