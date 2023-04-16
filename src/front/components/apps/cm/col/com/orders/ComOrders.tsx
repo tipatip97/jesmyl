@@ -1,12 +1,11 @@
-import mylib from "../../../../../../complect/my-lib/MyLib";
-import { ITheOrderProps } from "../order/Order.model";
+import { useState } from "react";
+import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
 import TheOrder from "../order/TheOrder";
 import { IComOrdersProps } from "./ComOrders.model";
 
 export default function ComOrders(props: IComOrdersProps) {
-  const { asOrdComponent, com, fontSize } = props || {};
-
-  let currTransPosition = com.transPosition;
+  const { com, fontSize } = props;
+  const [exMods, updateExMods] = useState<number[]>(com.excludedModulations);
 
   return (
     <div
@@ -16,24 +15,28 @@ export default function ComOrders(props: IComOrdersProps) {
       }}
     >
       {com.orders?.map((orderUnit, orderUniti) => {
-        let trPos = currTransPosition;
-        if (orderUnit.top.style?.isModulation) {
-          trPos = 0;
-          currTransPosition =
-            (com.transPosition || 0) + (orderUnit.fieldValues?.md || 0);
-        }
-        const ordProps: ITheOrderProps = {
-          ...props,
-          orderUnit,
-          orderUniti,
-          currTransPosition: trPos,
-        };
+        const isExcludedModulation = exMods.includes(orderUnit.wid);
 
-        return mylib.isFunc(asOrdComponent) ? (
-          asOrdComponent(ordProps)
-        ) : (
-          <TheOrder key={`com-${com.wid}-order.${orderUniti}`} {...ordProps} />
-        );
+        return <TheOrder
+          key={`order.${orderUniti}`}
+          {...props}
+          orderUnit={orderUnit}
+          orderUniti={orderUniti}
+          asHeaderComponent={({ headerNode }) => {
+            return orderUnit.top.style?.isModulation
+              ? <span
+                className={'pointer flex '
+                  + (isExcludedModulation ? 'color--ko' : 'color--7')}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  updateExMods(com.toggleModulationInclusion(orderUnit));
+                }}>
+                <EvaButton name={isExcludedModulation ? 'eye-outline' : 'eye-off-outline'} />
+                {headerNode}
+              </span>
+              : headerNode;
+          }}
+        />;
       })}
     </div>
   );

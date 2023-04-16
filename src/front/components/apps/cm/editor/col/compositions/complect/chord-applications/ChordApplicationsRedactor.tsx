@@ -22,7 +22,6 @@ export default function ChordApplicationsRedactor() {
             orderUnit={ord}
             chordVisibleVariant={ChordVisibleVariant.Maximal}
             com={ccom}
-            currTransPosition={0}
             orderUniti={ordi}
             asLineComponent={(props) => {
               const { com, textLine, textLinei } = props;

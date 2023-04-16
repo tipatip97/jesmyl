@@ -7,7 +7,6 @@ export default function TheOrder(props: ITheOrderProps) {
     asHeaderComponent,
     orderUnit,
     orderUniti,
-    currTransPosition,
     com,
     chordVisibleVariant,
     isMiniAnchor,
@@ -73,9 +72,8 @@ export default function TheOrder(props: ITheOrderProps) {
       : headerNode;
 
   if (orderUnit.texti == null) {
-    const chords = com.actualChords(orderUnit.chordsi, currTransPosition);
 
-    if (!chords) return null;
+    if (!orderUnit.chords) return null;
 
     return (
       <div
@@ -91,7 +89,7 @@ export default function TheOrder(props: ITheOrderProps) {
             key={`chorded-block-${orderUniti}-content`}
             className={`styled-block chords-block vertical-middle ${className}`}
           >
-            {chords}
+            {orderUnit.chords}
           </div>
         )}
       </div>
@@ -127,7 +125,7 @@ export default function TheOrder(props: ITheOrderProps) {
           };
 
           return (
-            <div key={`song-line:${orderUniti}-${textLinei}`}>
+            <div key={`song-line:${textLinei}`}>
               {typeof asLineComponent === "function" ? (
                 asLineComponent(lineProps)
               ) : (

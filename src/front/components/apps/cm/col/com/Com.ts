@@ -16,6 +16,7 @@ export class Com extends BaseNamed<IExportableCom> {
   firstChord?: string;
   number: string = '';
   initialName: string;
+  excludedModulations: number[] = [];
   protected _translationMap?: number[] | null;
   protected _o?: Order[];
   protected _ords?: IExportableOrder[];
@@ -258,6 +259,20 @@ export class Com extends BaseNamed<IExportableCom> {
     delete this._chordLabels;
   }
 
+  toggleModulationInclusion(order: Order) {
+    const orderWid = order.wid;
+    const isExcluded = this.excludedModulations.includes(orderWid);
+
+    this.excludedModulations =
+      isExcluded
+        ? this.excludedModulations.filter(ordWid => ordWid !== orderWid)
+        : [...this.excludedModulations, orderWid];
+
+    this.updateChordLabels();
+
+    return this.excludedModulations;
+  }
+
   updateChordLabels() {
     this._chordLabels = [];
     this._usedChords = {};
@@ -269,7 +284,7 @@ export class Com extends BaseNamed<IExportableCom> {
       this._chordLabels?.push(ordLabels);
       const chords = this.actualChords(ord.chordsi, currTransPosition);
 
-      if (ord.top.style?.isModulation) {
+      if (!this.excludedModulations.includes(ord.wid) && ord.top.style?.isModulation) {
         currTransPosition = (this.transPosition || 0) + (ord.fieldValues?.md || 0);
       }
 

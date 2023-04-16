@@ -106,7 +106,6 @@ export interface ITheOrderProps {
     isMiniAnchor?: boolean;
     orderUnit: Order;
     orderUniti: number;
-    currTransPosition?: number;
     com: Com;
     chordVisibleVariant: ChordVisibleVariant;
     showInvisibles?: boolean;
