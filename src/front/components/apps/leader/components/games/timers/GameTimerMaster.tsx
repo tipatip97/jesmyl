@@ -69,6 +69,11 @@ export default function LeaderGameTimerMaster({
   const [newCommentText, setNewCommentText] = useState("");
   const [isWriteName, setIsWriteName] = useState(false);
 
+  const changeName = (name: string) => {
+    mapTimer((timer) => (timer.name = name));
+    setName(name);
+  };
+
   const teamNet = mylib.netFromLine(
     teams,
     mode === GameTimerMode.TimerTotal ? 1 : joins,
@@ -102,7 +107,7 @@ export default function LeaderGameTimerMaster({
                         id: name,
                         title: name,
                       }))}
-                      onSelect={({ id }) => setName(id)}
+                      onSelect={({ id }) => changeName(id)}
                     />
                     <EvaButton
                       name="edit-outline"
@@ -114,17 +119,14 @@ export default function LeaderGameTimerMaster({
                     <KeyboardInput
                       preferLanguage="ru"
                       value={name}
-                      onInput={(value) => {
-                        setName(value);
-                        mapTimer((timer) => (timer.name = value));
-                      }}
+                      onInput={(value) => changeName(value)}
                     />
                     {!cgame?.timerNames?.length || (
                       <EvaButton
                         name="menu-outline"
                         onClick={() => {
                           setIsWriteName(false);
-                          setName("");
+                          changeName("");
                         }}
                       />
                     )}
@@ -366,7 +368,7 @@ export default function LeaderGameTimerMaster({
             </>
           )}
 
-          {/* {timer.isNew || isRedactOld ? (
+          {timer.isNew || isRedactOld ? (
             <div className="flex around flex-gap margin-big-gap">
               {timer.isStarted && (
                 <span
@@ -407,7 +409,7 @@ export default function LeaderGameTimerMaster({
                   )
               )}
             </div>
-          )} */}
+          )}
           <div className="margin-big-gap-v full-width">
             <LeaderCommentBlock
               action="addCommentForGameTimer"

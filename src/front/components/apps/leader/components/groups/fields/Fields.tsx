@@ -1,8 +1,8 @@
 import { useState } from "react";
-import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../../complect/SendButton";
-import useIsRedactArea from "../../../complect/useIsRedactArea";
+import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import { leaderExer } from "../../../Leader.store";
+import useIsRedactArea from "../../../complect/useIsRedactArea";
 import useLeaderContexts from "../../contexts/useContexts";
 import useLeaderGroups from "../useGroups";
 
@@ -63,19 +63,15 @@ export default function LeaderGroupFields() {
               }}
               onSend={() => {
                 if (cgroup && ccontext)
-                  return new Promise((res, rej) =>
-                    leaderExer.send(
-                      {
-                        action: "setContextGroupFields",
-                        method: "set_all",
-                        args: {
-                          value: redactFields,
-                          groupw: cgroup.wid,
-                          contextw: ccontext.wid,
-                        },
-                      },
-                    ).then(res).catch(rej)
-                  );
+                  return leaderExer.send({
+                    action: "setContextGroupFields",
+                    method: "set_all",
+                    args: {
+                      value: redactFields,
+                      groupw: cgroup.wid,
+                      contextw: ccontext.wid,
+                    },
+                  });
               }}
             />
           )}

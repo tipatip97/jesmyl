@@ -45,56 +45,50 @@ export default class Game extends SourceBased<TeamGameImportable> {
     }
 
     publicateTeams(teams: GameTeam[]) {
-        return new Promise((res, rej) => {
-            leaderExer.send({
-                action: 'updateGameTeamList',
-                method: 'set',
-                args: {
-                    gamew: this.wid,
-                    list: teams.map((team) => team.toDict())
-                },
-            }).then(res).catch(rej);
+        return leaderExer.send({
+            action: 'updateGameTeamList',
+            method: 'set',
+            args: {
+                gamew: this.wid,
+                list: teams.map((team) => team.toDict())
+            },
         });
     }
 
     publicateTimerNameList(list: string[]) {
-        return new Promise((res, rej) => {
-            leaderExer.send({
-                action: 'updateGameTimerNames',
-                method: 'set',
-                args: {
-                    gamew: this.wid,
-                    list,
-                },
-            }).then(res).catch(rej);
+        return leaderExer.send({
+            action: 'updateGameTimerNames',
+            method: 'set',
+            args: {
+                gamew: this.wid,
+                list,
+            },
         });
     }
 
     publicateGameTimerFields(value: GameTimerConfigurable) {
-        return new Promise((res, rej) => {
-            leaderExer.send({
-                action: 'updateGameTimerFields',
-                method: 'set_all',
-                args: {
-                    ...value,
-                    gamew: this.wid,
-                },
-            }).then(res).catch(rej);
+        return leaderExer.send({
+            action: 'updateGameTimerFields',
+            method: 'set_all',
+            args: {
+                ...value,
+                gamew: this.wid,
+            },
         });
     }
 
     remove() {
-        return new Promise((res, rej) => leaderExer.send({
+        return leaderExer.send({
             action: "removeTeamGame",
             method: "remove",
             args: {
                 gamew: this.wid
             },
-        }).then(res).catch(rej))
+        });
     }
 
     static sendNewGame({ name, contextw, teams, timerNames, timerFields }: { name: string, contextw: number, timerNames?: string[], teams?: GameTeam[]; timerFields?: GameTimerConfigurable }) {
-        return new Promise((res, rej) => leaderExer.send({
+        return leaderExer.send({
             action: "addTeamGame",
             method: "push",
             args: {
@@ -105,6 +99,6 @@ export default class Game extends SourceBased<TeamGameImportable> {
                 timerFields,
                 teams: teams?.map((team) => team.toDict()),
             } as TeamGameExportable,
-        }).then(res).catch(rej));
+        });
     }
 }

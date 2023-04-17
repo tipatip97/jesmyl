@@ -23,7 +23,6 @@ const initialState: LeaderState = {
   numUpdatesContexts: 0,
   numUpdatesPeople: 0,
   numUpdatesGames: 0,
-  numUpdatesTimers: 0,
 };
 
 export const slice = createSlice({
@@ -67,7 +66,6 @@ export const slice = createSlice({
     riseUpNumUpdatesContexts: (state) => { state.numUpdatesContexts++; },
     riseUpNumUpdatesPeople: (state) => { state.numUpdatesPeople++; },
     riseUpNumUpdatesGames: (state) => { state.numUpdatesGames++; },
-    riseUpNumUpdatesTimers: (state) => { state.numUpdatesTimers++; },
   },
 });
 
@@ -84,7 +82,6 @@ export const {
   setCurrentContextw,
   riseUpNumUpdatesPeople,
   riseUpNumUpdatesGames,
-  riseUpNumUpdatesTimers,
   riseUpNumUpdatesContexts
 } = slice.actions;
 export default slice.actions;

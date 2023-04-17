@@ -57,15 +57,13 @@ export default class LeaderGroup extends SourceBased<LeaderGroupImportable> {
     }
 
     static publicateNew(group: LeaderGroupCreatable) {
-        return new Promise((res, rej) => {
-            leaderExer.send({
-                action: 'addContextGroup',
-                method: 'push',
-                args: {
-                    ...group,
-                    ts: LeaderGroup.makeNewTs()
-                } as LeaderGroupExportable
-            }).then(res).catch(rej);
+        return leaderExer.send({
+            action: 'addContextGroup',
+            method: 'push',
+            args: {
+                ...group,
+                ts: LeaderGroup.makeNewTs()
+            } as LeaderGroupExportable
         });
     }
 
@@ -133,6 +131,6 @@ export default class LeaderGroup extends SourceBased<LeaderGroupImportable> {
 
     sendChanges(changes: LeaderGroupChangable) {
         leaderExer.clear();
-        return new Promise((res, rej) => leaderExer.send(this.getChangesStack(changes)).then(res).catch(rej));
+        return leaderExer.send(this.getChangesStack(changes));
     }
 }

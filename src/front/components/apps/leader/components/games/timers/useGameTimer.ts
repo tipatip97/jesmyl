@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import mylib, { MyLib } from "../../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../../shared/store";
 import useIsRedactArea from "../../../complect/useIsRedactArea";
-import {
-  riseUpNumUpdatesTimers
-} from "../../../Leader.store";
+import { updateGamesTimers } from "../../../Leader.store";
 import leaderStorage from "../../../leaderStorage";
 import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
 import useGames from "../useGames";
@@ -18,12 +16,10 @@ import {
 
 let runTimeTimers: StoragedGameTimerDict = { news: {}, redacts: {} };
 
-const numUpdatesTimersSelector = (state: RootState) => state.leader.numUpdatesTimers;
 const gameTimersSelector = (state: RootState) => state.leader.gameTimers;
 
-export default function useGameTimer(topTimerw?: number, fff = '') {
+export default function useGameTimer(topTimerw?: number) {
   const dispatch = useDispatch();
-  useSelector(numUpdatesTimersSelector);
   const { cgame: game } = useGames();
   const gameTimers = useSelector(gameTimersSelector);
 
@@ -40,6 +36,7 @@ export default function useGameTimer(topTimerw?: number, fff = '') {
   const { editIcon, isRedact } = useIsRedactArea(
     !isNewTimer &&
     !!topTimer &&
+    topTimer.mode !== GameTimerMode.TimerTotal &&
     topTimer.teams.length !== MyLib.values(topTimer.finishes).length,
     !!localTimer && !isNewTimer,
     true,
@@ -110,19 +107,17 @@ export default function useGameTimer(topTimerw?: number, fff = '') {
         delete runTimeTimers[arean][gameWid];
 
       const timerStore = { ...leaderStorage.get("gameTimers") };
-
-      timerStore[arean] ??= {};
       const area = { ...timerStore[arean] };
 
-      area[gameWid] ??= {};
       area[gameWid] = { ...area[gameWid], [timerTs]: timer };
+      timerStore[arean] = area;
 
-      leaderStorage.set("gameTimers", {
-        ...timerStore,
-        [arean]: area,
-      });
+      if (timer == null) delete area[gameWid][timerTs];
+      if (area[gameWid] && Object.keys(area[gameWid]).length === 0) delete area[gameWid];
+      if (Object.keys(timerStore[arean] || {}).length === 0) delete timerStore[arean];
 
-      dispatch(riseUpNumUpdatesTimers());
+      leaderStorage.set("gameTimers", timerStore);
+      dispatch(updateGamesTimers(timerStore));
     },
     mapTimer: (
       map: (timer: LeaderGameTimer) => void,

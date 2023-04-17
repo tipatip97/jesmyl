@@ -421,29 +421,22 @@ export default function HumanMaster({
               confirm={human ? null : "Добавить новую личность?"}
               onSuccess={() => close()}
               onSend={() => {
-                return new Promise(async (res, rej) => {
-                  if (human) {
-                    leaderExer.load().then(res).catch(rej);
-                  } else {
-                    if ('no data') return;
-                    leaderExer.send(
-                      {
-                        action: "addHuman",
-                        method: "push",
-                        args: {
-                          name: '<NO NAME>',
-                          isMan,
-                          notes: '<NO NOTES>',
-                          ufp1,
-                          ufp2,
-                          bDay,
-                          ts: Date.now() + Math.random(),
-                          isInactive,
-                        } as HumanExportable,
-                      },
-                    ).then(res).catch(rej);
-                  }
-                });
+                if (human) return leaderExer.load();
+                return leaderExer.send(
+                  {
+                    action: "addHuman",
+                    method: "push",
+                    args: {
+                      name: '<NO NAME>',
+                      isMan,
+                      notes: '<NO NOTES>',
+                      ufp1,
+                      ufp2,
+                      bDay,
+                      ts: Date.now() + Math.random(),
+                      isInactive,
+                    } as HumanExportable,
+                  });
               }}
             />
           ) : null}

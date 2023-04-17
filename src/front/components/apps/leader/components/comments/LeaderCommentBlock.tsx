@@ -141,6 +141,7 @@ export default function LeaderCommentBlock({
                   commentText
                 );
                 setCommentText('');
+                newCommentTextChange?.('');
 
                 if (importantActionOnClick) {
                   importantActionOnClick(comment);

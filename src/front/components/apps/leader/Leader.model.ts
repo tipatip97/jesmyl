@@ -19,7 +19,6 @@ export interface LeaderStoraged {
     gameTimers?: StoragedGameTimerImportableDict;
     sendingComments: SendingComments;
     numUpdatesPeople: number;
-    numUpdatesTimers: number;
     numUpdatesGames: number;
     numUpdatesContexts: number;
 }
