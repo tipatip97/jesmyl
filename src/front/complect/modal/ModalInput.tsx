@@ -69,7 +69,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
 
   return (
     <label
-      className="app-modal-body-input-list-item pointer"
+      className="app-modal-body-input-list-item margin-gap-v block pointer"
       hidden={asFunc(input.hidden)}
     >
       {input.title && (

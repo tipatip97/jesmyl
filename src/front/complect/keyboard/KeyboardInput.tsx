@@ -44,7 +44,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
     !isNative && value && input.replaceAll(value, false, true);
   }, [value, input, isNative]);
 
-  if (isNative) {
+  if (isNative || props.type === 'button') {
     const {
       className,
       multiline,
