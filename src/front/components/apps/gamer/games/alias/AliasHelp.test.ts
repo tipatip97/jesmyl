@@ -13,7 +13,7 @@ describe('AliasHelp', () => {
                         errs.push(`(${decPacki} ${decLeveli} ${decWordi}) expected ${packi} ${leveli} ${wordi}`);
                 }
 
-        console.log(errs);
+        console.info(errs);
 
         expect(errs.length).toBe(0);
     });
@@ -29,7 +29,7 @@ describe('AliasHelp', () => {
                     errs.push(`(${decTeami} ${decMemberi}) expected ${teami} ${memberi}`);
             }
 
-        console.log(errs);
+        console.info(errs);
 
         expect(errs.length).toBe(0);
     });
