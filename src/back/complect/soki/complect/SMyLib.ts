@@ -248,6 +248,13 @@ export class SMyLib {
             .split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/)
             .filter(s => s))?.join('') || '';
     }
+    
+    newInstance<T>(val: T): T {
+        if (this.isArr(val)) return [] as never;
+        else if (this.isObj(val)) return {} as never;
+        
+        return val;
+    }
 }
 
 
