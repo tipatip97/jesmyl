@@ -38,10 +38,11 @@ export interface ExecutionRule extends BasicRule, NativeExecutionRule {
     expected?: [] | {},
     access?: string,
     side?: BasicRuleDict,
-    expecteds?: [ExecutionTrack, [] | {}][],
+    expecteds?: ExecutionExpectations,
     isSequre?: boolean,
     fixAccesses?: Record<string, ExecutionTrack>,
     writeArg?: string,
+    ['/']?: ExecutionRule,
 }
 
 export type ExecutionExpectations = [ExecutionTrack, {} | []][];

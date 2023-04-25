@@ -298,7 +298,7 @@ export class Executer {
                 return value.match(/{|}/g)?.length === 2 && value.match(/^{|}$/g)?.length === 2 ? val : text;
             } else return defCb ? defCb() : value;
         } else if (smylib.isobj(value)) {
-            const newValue = smylib.isArr(value) ? [] : {} as Record<string, any>;
+            const newValue = smylib.newInstance(value) as Record<string, any>;
 
             for (const key in value) {
                 const val = this.replaceArgs(value[key], realArgs, auth);
