@@ -25,7 +25,7 @@ export default class Human extends SourceBased<HumanImportable> {
     set ufp2(val) { this.setExportable('ufp2', val); }
 
     get ufp() {
-        return this.ufp1 && this.ufp2 ? ((this.ufp1 || 0) + (this.ufp2 || 0)) / 2 : 0;
+        return this.ufp1 && this.ufp2 ? (this.ufp1 + this.ufp2) / 2 : 0;
     }
 
     isCanPlayGame() {
