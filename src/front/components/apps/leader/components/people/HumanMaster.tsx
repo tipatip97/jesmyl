@@ -1,12 +1,9 @@
-import { useMemo, useState } from "react";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useState } from "react";
+import SendButton from "../../../../../complect/SendButton";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import modalService from "../../../../../complect/modal/Modal.service";
-import SendButton from "../../../../../complect/SendButton";
 import { leaderExer } from "../../Leader.store";
-import useLeaderContexts from "../contexts/useContexts";
 import Human from "./Human";
 import { HumanExportable } from "./People.model";
 
@@ -45,14 +42,13 @@ export default function HumanMaster({
     (HumanExportable | string)[] | null
   >(null);
   const [name, setName] = useState<string | nil>(human?.name);
+  const [notes, setNotes] = useState<string | und>(human?.name);
   const [ufp1, setUfp1] = useState<number | nil>(human?.ufp1);
   const [ufp2, setUfp2] = useState<number | nil>(human?.ufp2);
   const [bDay, setBDay] = useState<number | nil>(human?.bDay);
   const [isHumanHeap, setIsHumanHeap] = useState(false);
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
-  const { ccontext } = useLeaderContexts();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   const takeName = (value: string) => {
     if (value.match(/^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$/)) {
@@ -74,53 +70,6 @@ export default function HumanMaster({
     return time;
   };
 
-  const includeToGroupButton = useMemo(() => {
-    if (!ccontext) return null;
-    const wraps = (human && ccontext.getMembersInGroups([human.wid])) || [];
-    const title = (txt = "", txt2 = "") =>
-      `${wraps.length ? "Переопределить" : "Определить"
-      }${txt} в группу ${txt2}`;
-
-    return (
-      <div
-        className="pointer"
-        onClick={() => {
-          const groups = ccontext.groups;
-          if (!groups) return;
-          const groupws = wraps.map(({ group: { wid } }) => wid);
-
-          openAbsoluteBottomPopup((close, prepare) =>
-            prepare({
-              items: groups.map((group) => {
-                return {
-                  title: group.name,
-                  icon: "people-outline",
-                  className: groupws.indexOf(group.wid) < 0 ? "" : "disabled",
-                  onClick: async () => {
-                    if (
-                      human &&
-                      (await modalService.confirm(
-                        title(` участника "${human.name}"`, `${group.name}?`)
-                      ))
-                    ) {
-                      group
-                        .replaceMemberToGroup(
-                          ccontext.wid,
-                          human.wid,
-                          wraps.map(({ group }) => group)
-                        )
-                        .then(() => close());
-                    }
-                  },
-                };
-              }),
-            }));
-        }}
-      >
-        {title()}
-      </div >
-    );
-  }, []);
 
   return (
     <div className="full-container flex column padding-giant-gap">
@@ -235,9 +184,9 @@ export default function HumanMaster({
               preferLanguage="ru"
               onInput={!human
                 ? (value) => takeName(value)
-                : (value, prev) => {
-                  const name = takeName(value);
-                  if (name) {
+                : (val, prev) => {
+                  const value = takeName(val);
+                  if (value) {
                     leaderExer.setIfCan({
                       action: "setHumanName",
                       scope: `setHumanName-${human.wid}`,
@@ -305,10 +254,9 @@ export default function HumanMaster({
                     <EvaIcon
                       key={`${fieldn}${ufpi}`}
                       className="pointer"
-                      name={`radio-button-${((placei ? ufp2 : ufp1) || 0) - 1 === ufpi
-                        ? "on"
-                        : "off"
-                        }`}
+                      name={((placei ? ufp2 : ufp1) || 0) - 1 === ufpi
+                        ? "radio-button-on"
+                        : "radio-button-off"}
                       onClick={() => {
                         const value = ufpi + 1;
                         placei ? setUfp2(value) : setUfp1(value);
@@ -366,10 +314,10 @@ export default function HumanMaster({
           <div className="full-width margin-big-gap-v">
             Заметки
             <KeyboardInput
-              value={human?.notes}
+              value={notes}
               preferLanguage="ru"
               onInput={!human
-                ? undefined
+                ? (val) => setNotes(val)
                 : (value, prev) => {
                   leaderExer.setIfCan({
                     action: "setHumanNotes",
@@ -413,7 +361,6 @@ export default function HumanMaster({
                 ? "Разблокировать личность"
                 : "Заблокировать личность"}
             </div>
-            {includeToGroupButton}
           </div>
           {bDay ? (
             <SendButton
@@ -427,9 +374,9 @@ export default function HumanMaster({
                     action: "addHuman",
                     method: "push",
                     args: {
-                      name: '<NO NAME>',
+                      name,
                       isMan,
-                      notes: '<NO NOTES>',
+                      notes,
                       ufp1,
                       ufp2,
                       bDay,
