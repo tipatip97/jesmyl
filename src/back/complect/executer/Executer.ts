@@ -2,8 +2,7 @@
 import { sequreMD5Passphrase } from "../../values";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { BasicRule, BasicRuleDict, ExecuteError, ExecuteErrorType, ExecuteResults, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionFixedAccesses, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionTrack, NativeExecutionRule, TrackerRet } from "./Executer.model";
-
+import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, TrackerRet } from "./Executer.model";
 
 const globs: Record<string, any> = {
     'setNewWid()': () => new Date().getTime() + Math.random()
@@ -11,11 +10,9 @@ const globs: Record<string, any> = {
 
 const reportFailError = (rej: (resp: { ok: false, fail?: boolean, message: string }) => void, error: any) => rej({ ok: false, fail: true, message: error && (error.stack ?? error.message) });
 
-const emptyStub: string[] = ['EMPTY'];
-
-const nativeRuleIncludedFields: (keyof NativeExecutionRule)[] = ['setInEachValueItem'];
-
 export class Executer {
+    static readonly stubEmpty = ['EMPTY'];
+
     findMap<Item, Ret>(arr: Item[], cb: (item: Item, itemi: number, itema: Item[]) => Ret): Ret | undefined {
         let ret = undefined;
         return arr.some((item, itemi, itema) => {
@@ -28,7 +25,7 @@ export class Executer {
         }) ? ret : undefined;
     }
 
-    static tracker(track: ExecutionTrack, parents: Record<string, unknown>, args?: Record<string, unknown> | null, topParent?: Record<string, Object> | null, auth?: LocalSokiAuth | null): TrackerRet {
+    static tracker(track: ExecutionTrack, parents: Record<string, unknown>, realArgs?: Record<string, unknown> | null, topParent?: Record<string, Object> | null, auth?: LocalSokiAuth | null): TrackerRet {
         const targets: any[] = topParent ? [topParent] : [];
 
         for (let tracei = 0; tracei < track.length; tracei++) {
@@ -53,7 +50,7 @@ export class Executer {
 
             if (Array.isArray(trace)) {
                 if (Array.isArray(target)) {
-                    const val = target.find((val) => this.isExpected(val, trace, args, auth));
+                    const val = target.find((val) => this.isExpected(val, trace, realArgs, auth));
                     targets.push(val);
                     continue;
                 }
@@ -289,12 +286,12 @@ export class Executer {
     static replaceArgs<Value>(value: Value, realArgs: Record<string, any> | null = {}, auth?: LocalSokiAuth | null, defCb?: () => Value): Value {
         if (smylib.isStr(value)) {
             if (value.includes('{') && value.includes('}')) {
-                let val: any = emptyStub;
-                const text = value.replace(/\{(([@*?])?(\w+(\(\))?))\}/g, (all, name, prefix, key) => {
+                let val: any = this.stubEmpty;
+                const text = value.replace(/\{(([@*?])?([$\w]+(\(\))?))\}/g, (all, name, prefix, key) => {
                     val = prefix === '@' ? this.getIfGlob(name) : prefix === '*' ? auth?.[key as never] : realArgs?.[key];
                     return val ?? all ?? '';
                 });
-                if (val === emptyStub && defCb) return defCb();
+                if (val === this.stubEmpty && defCb) return defCb();
                 return value.match(/{|}/g)?.length === 2 && value.match(/^{|}$/g)?.length === 2 ? val : text;
             } else return defCb ? defCb() : value;
         } else if (smylib.isobj(value)) {
@@ -316,41 +313,23 @@ export class Executer {
         return defCb ? defCb() : value;
     }
 
-    static cloneArgs(args: Record<string, unknown>, cloneArgs?: Record<string, string>) {
-        if (!cloneArgs) return args;
-        SMyLib.entries(cloneArgs || {}).forEach(([from, to]) => {
-            if (args[to] === undefined && args[from] !== undefined) args[to] = args[from];
-        });
-        return args;
-    }
-
     static prepareTrack = (path: string): ExecutionTrack => path.startsWith('<') ? [] : path.slice(1).split('/').map((part) => part.startsWith('[') && part.endsWith(']') ? part.slice(1, -1).split(' ') as ExecutionRuleTrackBeat : part).filter(part => part);
 
-    static findRule(
-        actions: Record<string, ExecutionRule>,
-        action: string,
-        value: unknown,
-        fixedAccesses: ExecutionFixedAccesses,
-        contents: Record<string, unknown>,
-        realArgs?: Record<string, unknown>,
-        auth?: LocalSokiAuth | null
-    ) {
+    static prepareActionList(actions: Record<string, ExecutionRule>, fixedAccesses: FixedAccesses) {
+        const rules: ExecutionReal[] = [];
+
         const find = (composit: Record<string, ExecutionRule>, topRule: ExecutionRealAccumulatable = {} as never): ExecutionReal | null => {
             for (const key in composit) {
-                const rule = composit[key];
+                const action = composit[key];
                 if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
                     const track = key.startsWith('<') ? [] : this.prepareTrack(key);
                     const accTrack = topRule.track?.concat(track || []) || track;
 
-                    if (realArgs && rule.writeArg) {
-                        realArgs[rule.writeArg] = this.tracker(accTrack, contents, realArgs, null, auth).target;
-                    }
-
                     const accSides = () => {
-                        const sides: BasicRule[] = topRule.sides || [];
-                        const accSides = (accSideTrack: ExecutionRuleTrackBeat[], side?: BasicRuleDict) => {
+                        const sides: ExecutionSide[] = topRule.sides || [];
+                        const accSides = (accSideTrack: ExecutionRuleTrackBeat[], side?: ExecutionSidesDict) => {
                             if (!side) return;
-                            SMyLib.entries(side).forEach(([key, side]: [string, BasicRule]) => {
+                            SMyLib.entries(side).forEach(([key, side]: [string, ExecutionSide]) => {
                                 const trackedSide = { ...side };
                                 const sideTrack = accSideTrack.concat(this.prepareTrack(key));
 
@@ -361,75 +340,135 @@ export class Executer {
                                     }
                                 });
 
-                                trackedSide.track = sideTrack;
+                                trackedSide.trackTail = [accTrack.length, sideTrack];
                                 sides.push(trackedSide);
                             });
                         };
 
-                        accSides(accTrack, rule.side);
+                        accSides([], action.side);
                         if (sides.length) return sides;
                     };
 
                     const accRule: ExecutionRealAccumulatable = {
                         track: accTrack,
-                        // args: { ...topRule.args, ...rule.args },
-                        cloneArgs: (topRule.cloneArgs || rule.cloneArgs) && { ...topRule.cloneArgs, ...rule.cloneArgs },
-                        expecteds: (rule.expected ? topRule.expecteds || [] : topRule.expecteds)
-                            ?.concat(rule.expected ? [[accTrack, rule.expected]] : []),
-                        accesses: rule.access
-                            ? (topRule.accesses || []).concat(rule.access)
+                        args: { ...topRule.args, ...action.args },
+                        expecteds: (action.expected ? topRule.expecteds || [] : topRule.expecteds)
+                            ?.concat(action.expected ? [[accTrack.length, action.expected]] : []),
+                        accesses: action.access
+                            ? (topRule.accesses || []).concat(action.access)
                             : topRule.accesses,
                         sides: accSides(),
                     };
-                    if (rule.fixAccesses) {
-                        SMyLib.entries(rule.fixAccesses).forEach(([accessName, track]) => {
-                            fixedAccesses[accessName] = () => {
-                                return !!this.tracker(accTrack.concat(track), contents, realArgs, null, auth).target;
-                            };
+
+                    if (action.fixAccesses) {
+                        fixedAccesses.push({
+                            track: accTrack,
+                            tail: action.fixAccesses,
                         });
                     }
-                    if (rule.action === action) {
-                        const execRule = smylib.clone({
-                            ...accRule,
-                            method: rule.method,
-                            action: rule.action,
-                            fix: accRule.track?.[0],
-                            title: rule.title && smylib.stringTemplater(rule.title, realArgs),
-                            value: rule.value === undefined ? value ?? realArgs?.value : rule.value,
-                        });
 
-                        const nativeRule = { ...rule };
-                        
-                        for (const rulen in nativeRule)
-                            if (
-                                rulen.startsWith('<')
-                                || rulen.startsWith('/')
-                                || !nativeRuleIncludedFields.includes(rulen as never)
-                            )
-                                delete nativeRule[rulen as never];
+                    const execRule: ExecutionReal = smylib.clone({
+                        ...action,
+                        ...accRule,
+                        fix: accRule.track?.[0],
+                        value: action.value,
+                    });
 
-                        const ret = this.replaceArgs<ExecutionReal>(execRule, this.cloneArgs({ ...realArgs }, accRule.cloneArgs), auth);
+                    SMyLib.entries(execRule).forEach(([argName]) => {
+                        if (argName.startsWith('/') || argName.startsWith('<'))
+                            delete execRule[argName as never];
+                    });
 
-                        if (nativeRule) ret.nativeRule = nativeRule;
+                    if (accRule.accesses) execRule.fixedAccesses = fixedAccesses;
 
-                        return ret;
-                    }
+                    if (execRule.action)
+                        rules.push(execRule);
 
-                    const nextRule = find(rule as never, accRule);
+                    const nextRule = find(action as never, accRule);
                     if (nextRule) return nextRule;
                 }
             }
             return null;
         };
-        return find(actions);
+
+        find(actions);
+
+        return rules;
+    }
+
+    static mapActionList(rules: ExecutionReal[]) {
+        return rules.map(({ title, shortTitle, level, action, isSequre, args }) => {
+            return {
+                title,
+                shortTitle,
+                level,
+                action,
+                isSequre,
+                args,
+            };
+        });
+    }
+
+    static prepareRuleForDo = (() => {
+        const replacedFields: (keyof ExecutionReal)[] = ['value', 'sides'];
+        const simpleFields: (keyof ExecutionReal)[] = [
+            'action',
+            'setInEachValueItem',
+            'fix',
+            'method',
+            'expecteds',
+        ];
+
+        return (rule: ExecutionReal, realRule: ExecutionReal, allArgs: Record<string, unknown>, value: unknown, auth?: LocalSokiAuth | null) => {
+            const ret: ExecutionReal = { ...rule };
+
+            simpleFields.forEach((argn) => ret[argn] = realRule[argn]);
+
+            replacedFields.forEach((argn) => {
+                ret[argn] = this.replaceArgs(realRule[argn], allArgs, auth);
+            });
+
+            if (ret.value === undefined) ret.value = value ?? allArgs?.value;
+
+            return ret;
+        };
+    })();
+
+    static prepareRuleForFeedback(rule: ExecutionReal) {
+        const ret = { ...rule };
+
+        delete ret.setInEachValueItem;
+
+        return ret;
+    }
+
+    static prepareRule(
+        rule: ExecutionReal,
+        value: unknown,
+        contents: Record<string, unknown>,
+        realArgs?: Record<string, unknown>,
+        auth?: LocalSokiAuth | null,
+    ) {
+        const track = this.replaceArgs(rule.track, realArgs, auth);
+        const allArgs: Record<string, unknown> = {
+            ...realArgs,
+            $$currentValue: this.tracker(track, contents, realArgs, null, auth).target,
+        };
+
+        const ret = {
+            track,
+            title: rule.title && smylib.stringTemplater(rule.title, allArgs),
+        } as ExecutionReal;
+
+        return this.prepareRuleForDo(ret, rule, allArgs, value, auth);
     }
 
     static checkExpecteds(track: ExecutionTrack, contents: Record<string, unknown>, expecteds?: ExecutionExpectations, args?: Record<string, unknown>) {
         let trackered = this.tracker(track, contents, args);
 
         if (trackered.target == null && expecteds) {
-            expecteds.forEach(([track, expected]) => {
-                const { penultimate, target, lastTrace } = this.tracker(track, contents, args);
+            expecteds.forEach(([trackEnd, expected]) => {
+                const { penultimate, target, lastTrace } = this.tracker(track.slice(0, trackEnd), contents, args);
                 if (target == null && penultimate) penultimate[lastTrace] = smylib.clone(expected);
             });
 
@@ -438,13 +477,14 @@ export class Executer {
         return trackered;
     }
 
-    static execSides(sides: BasicRule[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null, { shortTitle, title }: { shortTitle?: string, title?: string } = {}) {
+    static execSides(topTrack: ExecutionTrack, sides: ExecutionSide[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null, { shortTitle, title }: { shortTitle?: string, title?: string } = {}) {
         return new Promise<boolean>((resolve, reject) => {
-            sides.some(({ method, value, args, track }) => {
-                if (track) {
+            sides.some(({ method, value, args, trackTail }) => {
+                if (trackTail) {
+                    const track = topTrack.slice(0, trackTail[0]).concat(trackTail[1]);
                     const { lastTrace, penultimate, target } = this.tracker(track, contents, args, undefined, auth);
 
-                    if (value === emptyStub) {
+                    if (value === this.stubEmpty) {
                         reject(`Неизвестное значение попутных модификаций ${lastTrace} для действия "${shortTitle || title}"`);
                         return true;
                     }
@@ -459,13 +499,31 @@ export class Executer {
         });
     }
 
-    static isAccessed(
+    static isAccessDenied(
         accesses: string[] | undefined | null,
-        fixedAccesses: ExecutionFixedAccesses,
+        fixedAccesses: FixedAccesses,
+        contents: Record<string, unknown>,
+        realArgs?: Record<string, unknown>,
+        auth?: LocalSokiAuth | null,
     ) {
-        return !accesses || !accesses.some((accessFormula) => {
+        if (!accesses) return false;
+        const templaterFixedArgs: Record<string, boolean> = {};
+
+        const onUnknownArg = (argName: string): boolean => {
+            const trackFixed = fixedAccesses?.find(({ tail }) => tail[argName]);
+            const track = trackFixed?.track.concat(trackFixed.tail[argName]);
+
+            if (!track) return false;
+
+            const result = !!this.tracker(track, contents, realArgs, null, auth);
+            templaterFixedArgs[argName] = result;
+
+            return result;
+        };
+
+        return accesses.some((accessFormula) => {
             try {
-                const body = smylib.stringTemplater(accessFormula, fixedAccesses).replace(/[^()\w|&!?]/g, '');
+                const body = smylib.stringTemplater(accessFormula, templaterFixedArgs, onUnknownArg).replace(/[^()\w|&!?]/g, '');
                 const data: { result?: boolean } = {};
                 // eslint-disable-next-line no-new-func
                 if (body) new Function('data', `data.result = ${body};`)(data);
@@ -494,7 +552,7 @@ export class Executer {
                     value: exec.value,
                     uniqs: exec.uniqs,
                 }).then((did) => {
-                    if (did && exec.sides) this.execSides(exec.sides, contents)
+                    if (did && exec.sides) this.execSides(exec.track, exec.sides, contents)
                         .then(() => resolve(fixes))
                         .catch((errorMessage) => reject(errorMessage));
                     else resolve(fixes);
@@ -503,42 +561,70 @@ export class Executer {
         });
     }
 
-    static execute(rules: Record<string, ExecutionRule>, contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
-        return new Promise<ExecuteResults>((resolve, reject) => {
+    static execute(rules: ExecutionReal[], contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
+        return new Promise<ExecuteFeedbacks>((resolve, reject) => {
             try {
                 const replacedExecs: ExecutionReal[] = [];
                 const fixes: string[] = [];
                 const level = auth?.level;
                 const errors: ExecuteError[] = [];
-                const fixedAccesses: ExecutionFixedAccesses = {};
 
-                execs.forEach((exec) => {
-                    const rule = this.findRule(rules, exec.action, exec.value, fixedAccesses, contents, exec.args, auth);
-
-                    if (!rule) {
+                execs.some((exec) => {
+                    const prepRule = rules.find((rule) => rule.action === exec.action);
+                    if (!prepRule) {
                         errors.push({
                             type: ExecuteErrorType.NoRule,
                             note: exec.action
                         });
-                        return;
+                        return false;
                     }
+
+                    if (prepRule.fixedAccesses) {
+                        if (!prepRule.accesses || this.isAccessDenied(
+                            prepRule.accesses,
+                            prepRule.fixedAccesses,
+                            contents,
+                            exec.args,
+                            auth
+                        )) {
+                            errors.push({
+                                type: ExecuteErrorType.Access,
+                                note: exec.action,
+                            });
+
+                            return true;
+                        }
+                    }
+
+                    if (!exec.args || !prepRule.args) {
+                        errors.push({
+                            type: ExecuteErrorType.Args,
+                            note: exec.action,
+                        });
+
+                        return true;
+                    } else {
+                        const argErrors = smylib.checkIsCorrectArgs(exec.action, exec.args, prepRule.args);
+                        if (argErrors?.length) {
+                            errors.push({
+                                type: ExecuteErrorType.Args,
+                                note: argErrors.join(';\n'),
+                            });
+
+                            return true;
+                        }
+                    }
+
+                    const rule = this.prepareRule(prepRule, exec.value, contents, exec.args, auth);
 
                     const note = rule.shortTitle || rule.action;
-
-                    if (!this.isAccessed(rule.accesses, fixedAccesses)) {
-                        errors.push({
-                            type: ExecuteErrorType.Access,
-                            note,
-                        });
-                        return;
-                    }
 
                     if (rule.isSequre && (smylib.md5(exec.args?.passphrase || '') !== sequreMD5Passphrase)) {
                         errors.push({
                             type: ExecuteErrorType.Sequre,
                             note,
                         });
-                        return;
+                        return true;
                     }
 
                     if (level != null && rule.level && rule.level > level) {
@@ -546,7 +632,7 @@ export class Executer {
                             type: ExecuteErrorType.Level,
                             note,
                         });
-                        return;
+                        return true;
                     }
 
                     if (smylib.isStr(rule.fix) && !fixes.includes(rule.fix)) fixes.push(rule.fix);
@@ -555,7 +641,7 @@ export class Executer {
                         const { target, penultimate, lastTrace } = this.checkExpecteds(rule.track, contents, rule.expecteds, rule.args);
                         this.setInEachValueItem(
                             rule.value,
-                            rule.nativeRule?.setInEachValueItem,
+                            rule.setInEachValueItem,
                             exec.args,
                             auth,
                         );
@@ -572,15 +658,17 @@ export class Executer {
                         })
                             .then((did) => {
                                 if (did) {
-                                    replacedExecs.push(rule);
+                                    replacedExecs.push(this.prepareRuleForFeedback(rule));
 
                                     if (rule.sides)
-                                        this.execSides(rule.sides, contents, auth, rule)
+                                        this.execSides(rule.track, rule.sides, contents, auth, rule)
                                             .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
                                 }
                             })
                             .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
                     }
+
+                    return false;
                 });
 
                 setTimeout(() => {

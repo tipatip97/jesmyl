@@ -63,11 +63,12 @@ export default function TheGameTeam({
       {noComments || (
         <LeaderCommentBlock
           placeholder={`Комментарий о "${team.upperName}"`}
-          comments={team.comments}
-          arean="gameTeams"
-          areaw={team.game?.wid}
-          listw={team.wid}
           action="addCommentToGameTeam"
+          arean="gameTeams"
+          gamew={team.game?.wid}
+          listw={team.wid}
+          listwNameMask="teamw"
+          comments={team.comments}
           {...(!redactable && {
             isWaitedToSend: true,
             importantActionOnClick: (comment) => {

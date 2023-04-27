@@ -6,7 +6,7 @@ export interface LeaderCommentInitializable {
 }
 
 export interface LeaderCommentExportable extends LeaderCommentInitializable {
-    areaw: number;
+    gamew: number;
     listw: number;
 }
 
@@ -18,7 +18,7 @@ export interface LeaderCommentImportable extends LeaderCommentInitializable {
 
 export type SendingCommentsAreaName = 'gameTimers' | 'gameTeams';
 
-export type SendingComments = Record<SendingCommentsAreaName, { [areaw: number]: SendingCommentArea }>
+export type SendingComments = Record<SendingCommentsAreaName, { [gamew: number]: SendingCommentArea }>
 
 export interface SendingCommentArea { [linew: number]: SendingComment[] }
 

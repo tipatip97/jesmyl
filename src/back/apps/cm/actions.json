@@ -575,7 +575,7 @@
                             "method": "push",
                             "value": {
                                 "w": "{@setNewWid()}",
-                                "s": "{currentMeetingEventStack}"
+                                "s": "{$$currentValue}"
                             }
                         }
                     },
@@ -586,8 +586,7 @@
                         "method": "set",
                         "args": {
                             "value": "#List"
-                        },
-                        "writeArg": "currentMeetingEventStack"
+                        }
                     }
                 },
                 "<ctx>": {

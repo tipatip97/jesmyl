@@ -18,10 +18,10 @@ export default function useLeaderComments() {
     const sendingComments = useSelector(sendingCommentsSelector);
     const errorSentComments = useSelector(errorSentCommentsSelector);
     const { gamesImportable } = useGames();
-    const save = (arean: SendingCommentsAreaName, areaw: number, listw: number, mapper: (comments: SendingComment[], area: SendingCommentArea) => void, throwComments?: SendingComments) => {
+    const save = (arean: SendingCommentsAreaName, gamew: number, listw: number, mapper: (comments: SendingComment[], area: SendingCommentArea) => void, throwComments?: SendingComments) => {
         const generalDict = mylib.clone(throwComments ?? sendingComments);
         const dict = generalDict[arean] ??= {};
-        const area = dict[areaw] ??= {};
+        const area = dict[gamew] ??= {};
         area[listw] ??= [];
         mapper(area[listw], area);
 
@@ -45,17 +45,17 @@ export default function useLeaderComments() {
 
             const execs = MyLib.entries(observableComments)
                 .map(([arean, val]) => MyLib.entries(val)
-                    .map(([areaw, val]) => MyLib.entries(val).map(([listw, realComments]) => {
+                    .map(([gamew, val]) => MyLib.entries(val).map(([listw, realComments]) => {
                         realComments.forEach(() => {
-                            throwComments = save(arean, areaw, listw, (comments, area) => {
+                            throwComments = save(arean, gamew, listw, (comments, area) => {
                                 area[listw] = comments.filter(({ ts }) => !commentTss.includes(ts));
                             }, throwComments)
                         });
                         return realComments;
                     })))
                 .flat().flat().flat()
-                .filter(({ ts, exec: { args: { areaw } = {} } } = {} as never) => {
-                    return !commentTss.includes(ts) && gameWids.includes(areaw);
+                .filter(({ ts, exec: { args: { gamew } = {} } } = {} as never) => {
+                    return !commentTss.includes(ts) && gameWids.includes(gamew);
                 })
                 .map(({ exec }) => exec);
 
@@ -67,13 +67,13 @@ export default function useLeaderComments() {
             ret.saveLocal(throwComments, true);
         },
         saveLocal: (comments: SendingComments, isRejectPropagation?: boolean) => leaderStorage.set('sendingComments', comments, isRejectPropagation),
-        sendComment: (arean: SendingCommentsAreaName, areaw: number, listw: number, comment: SendingComment) => {
-            const commentsDict = save(arean, areaw, listw, (comments) => comments.push(comment));
+        sendComment: (arean: SendingCommentsAreaName, gamew: number, listw: number, comment: SendingComment) => {
+            const commentsDict = save(arean, gamew, listw, (comments) => comments.push(comment));
             dispatch(updateSendingComments(commentsDict));
             ret.saveLocal(commentsDict);
         },
-        rejectSending: (arean: SendingCommentsAreaName, areaw: number, listw: number, commentTs: number) => {
-            const throwComments = save(arean, areaw, listw, (comments, area) => area[listw] = comments.filter(({ ts }) => commentTs !== ts));
+        rejectSending: (arean: SendingCommentsAreaName, gamew: number, listw: number, commentTs: number) => {
+            const throwComments = save(arean, gamew, listw, (comments, area) => area[listw] = comments.filter(({ ts }) => commentTs !== ts));
             dispatch(updateSendingComments(throwComments));
             ret.saveLocal(throwComments, true);
         },

@@ -16,7 +16,7 @@ const config: FilerAppConfig = {
     requirements: [
         {
             name: "apps",
-            prepare: (apps: Application[], auth?: LocalSokiAuth | null) => {
+            prepareContent: (apps: Application[], auth?: LocalSokiAuth | null) => {
                 const authLevel = auth?.level || 0;
                 return apps.map((app) => {
                     if (!app.hidden && (app.level || 0) <= authLevel) return app;

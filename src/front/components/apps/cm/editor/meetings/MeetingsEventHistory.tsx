@@ -13,7 +13,7 @@ export default function MeetingsEventHistory({ close }: { close: () => void }) {
         {currentEvent?.history?.map(({ w, s }) => {
           return <div key={'' + w} className="margin-big-gap-v">
             <div>{new Date(w).toLocaleString()}</div>
-            {s.map((comw) => {
+            {s?.map((comw) => {
               const com = cols?.coms.find((com) => com.wid === comw);
               return <div key={'' + comw}>
                 {com

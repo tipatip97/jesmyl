@@ -140,7 +140,7 @@ export class SMyLib {
         if: (condition: any, ifTrue: any, ifFalse: any) => condition ? ifTrue : ifFalse,
     };
 
-    stringTemplater<Args>(str: string, topArgs: Args) {
+    stringTemplater<Args>(str: string, topArgs: Args, onUnknownArg?: (argName: string) => any) {
         const dob = '{{';
         const ocb = '}{';
         const dcb = '}}';
@@ -212,7 +212,10 @@ export class SMyLib {
 
                     if (topArgName != null) {
                         let val = topArgs[topArgName as keyof Args] as any;
-                        if (val === undefined) val = this.stringTemplaterFunctions[topArgName];
+                        if (val === undefined) {
+                            val = this.stringTemplaterFunctions[topArgName];
+                            if (val === undefined && onUnknownArg) val = onUnknownArg(topArgName);
+                        }
 
                         if (semicolon) {
                             if (this.isFunc(val)) invokeFunc(val);
@@ -248,12 +251,89 @@ export class SMyLib {
             .split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/)
             .filter(s => s))?.join('') || '';
     }
-    
+
     newInstance<T>(val: T): T {
         if (this.isArr(val)) return [] as never;
         else if (this.isObj(val)) return {} as never;
-        
+
         return val;
+    }
+
+    checkIsCorrectArgs(action:string, realArgs: Record<string, any>, typeArgs: Record<string, any>,) {
+        const args = { ...realArgs };
+        const ruleEntries = SMyLib.entries(typeArgs);
+
+        if (!ruleEntries.length) return null;
+        const errors: string[] = [];
+
+        const add = (message: string) => {
+            errors.push(message);
+            if (message) console.error(message);
+            return errors;
+        }
+
+        const argsEntries = SMyLib.entries(args);
+        if (!argsEntries.length) {
+            return add('Нет необходимых аргументов для данного исполнения');;
+        }
+
+        for (const [key, type] of ruleEntries) {
+            const argEntry = argsEntries.find(([argn]) => argn === key);
+            if (!argEntry) {
+                if (this.isRequiredType(type))
+                    add(`Не указан параметр "${key}" для исполнения "${action}"`);;
+                continue;
+            }
+            const [, value] = argEntry;
+            if (!this.isCorrectType(value, type)) add(`Неверный тип параметра "${key}" (${value}) в исполнении "${action}". Ожидалось "${type}"`);
+        }
+
+        return errors;
+    }
+
+    isRequiredType(typer: string | any[]) {
+        const check = (type: string | any) => {
+            if (typeof type === 'string') return type !== type.toLowerCase();
+            else if (type == null) return false;
+            else if (Array.isArray(type))
+                return !type.some((type): boolean => !check(type));
+            else return true;
+        };
+        return check(typer);
+    }
+
+    isCorrectType(value: any, typer: string | any[]): boolean {
+        if (this.isStr(typer)) {
+
+            if (typer[0] === '#') {
+                const explodes = this.explode(':', typer as string, 2);
+                const type = explodes[0].slice(1);
+                const lower = type.toLowerCase();
+
+                if (lower === type && value == null) return true;
+
+                let isCorrect = false;
+
+                if (lower === 'list') isCorrect = this.isArr(value);
+                else if (lower === 'dict') isCorrect = this.isObj(value);
+                else if (lower === 'object') isCorrect = this.isobj(value);
+                else if (lower === 'string') isCorrect = this.isStr(value);
+                else if (lower === 'numeric') isCorrect = this.isnum(value);
+                else if (lower === 'number') isCorrect = this.isNum(value);
+                else if (lower === 'num') isCorrect = value === 0 || value === 1;
+                else if (lower === 'boolean') isCorrect = this.isBool(value);
+                else if (lower === 'simple') isCorrect = this.isStr(value) || this.isNum(value);
+                else if (lower === 'primitive') isCorrect = this.isBool(value) || this.isStr(value) || this.isNum(value);
+                else if (lower === 'any') isCorrect = true;
+
+                return isCorrect;
+
+            } else return value === typer;
+        } else if (this.isArr(typer)) {
+            return (typer as any[]).some(tup => this.isCorrectType(value, tup));
+        }
+
+        return false;
     }
 }
 

@@ -69,38 +69,12 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
     }
 
     checkIsCorrectArgs() {
-        const args = { ...this.args };
-        if (this.rule?.cloneArgs) {
-            MyLib.entries(this.rule.cloneArgs).forEach(([from, to]) => args[to] === undefined && (args[to] = args[from]));
-        }
-        const ruleEntries = MyLib.entries(this.rule?.args || {});
+        if (!this.args || !this.rule?.args) return;
 
-        if (!ruleEntries.length) return;
+        const errors = mylib.checkIsCorrectArgs(this.action, this.args, this.rule.args);
 
-        const corrects = this.corrects || new CorrectsBox();
-        const add = (message: string) => {
-            this.corrects = corrects.merge({ errors: [{ message }] });
-            if (message) console.error(message);
-            return corrects;
-        }
-
-        const argsEntries = MyLib.entries(args);
-        if (!argsEntries.length) {
-            return add('Нет необходимых аргументов для данного исполнения');;
-        }
-
-        for (const [key, type] of ruleEntries) {
-            const argEntry = argsEntries.find(([argn]) => argn === key);
-            if (!argEntry) {
-                if (mylib.isRequiredType(type))
-                    add(`Не указан параметр "${key}" для исполнения "${this.action}"`);;
-                continue;
-            }
-            const [, value] = argEntry;
-            if (!mylib.isCorrectType(value, type)) add(`Неверный тип параметра "${key}" (${value}) в исполнении "${this.action}". Ожидалось "${type}"`);
-        }
-
-        this.corrects = corrects;
+        this.corrects = (this.corrects || new CorrectsBox())
+            .merge({ errors: errors?.map((message) => ({ message })) });
     }
 
     setValue(value?: Value, exec?: FreeExecDict<Value>) {

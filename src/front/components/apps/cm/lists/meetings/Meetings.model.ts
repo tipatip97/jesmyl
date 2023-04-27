@@ -14,7 +14,7 @@ export interface IExportableMeetingsEvent {
 
 interface IExportableMeetingsEventHistoryItem {
     w: number,
-    s: number[], // stack
+    s?: number[], // stack
 }
 
 export interface IExportableMeetingsContext {

@@ -233,51 +233,6 @@ export class MyLib extends SMyLib {
         return last;
     }
 
-    isRequiredType(typer: string | any[]) {
-        const check = (type: string | any) => {
-            if (typeof type === 'string') return type !== type.toLowerCase();
-            else if (type == null) return false;
-            else if (Array.isArray(type))
-                return !type.some((type): boolean => !check(type));
-            else return true;
-        };
-        return check(typer);
-    }
-
-    isCorrectType(value: any, typer: string | any[]): boolean {
-        if (this.isStr(typer)) {
-
-            if (typer[0] === '#') {
-                const explodes = this.explode(':', typer as string, 2);
-                const type = explodes[0].slice(1);
-                const lower = type.toLowerCase();
-
-                if (lower === type && value == null) return true;
-
-                let isCorrect = false;
-
-                if (lower === 'list') isCorrect = this.isArr(value);
-                else if (lower === 'dict') isCorrect = this.isObj(value);
-                else if (lower === 'object') isCorrect = this.isobj(value);
-                else if (lower === 'string') isCorrect = this.isStr(value);
-                else if (lower === 'numeric') isCorrect = this.isnum(value);
-                else if (lower === 'number') isCorrect = this.isNum(value);
-                else if (lower === 'num') isCorrect = value === 0 || value === 1;
-                else if (lower === 'boolean') isCorrect = this.isBool(value);
-                else if (lower === 'simple') isCorrect = this.isStr(value) || this.isNum(value);
-                else if (lower === 'primitive') isCorrect = this.isBool(value) || this.isStr(value) || this.isNum(value);
-                else if (lower === 'any') isCorrect = true;
-
-                return isCorrect;
-
-            } else return value === typer;
-        } else if (this.isArr(typer)) {
-            return (typer as any[]).some(tup => this.isCorrectType(value, tup));
-        }
-
-        return false;
-    }
-
     intervalToString(begin: number, end: number) {
         const diff = end - begin;
         const ms = this.getMilliseconds();

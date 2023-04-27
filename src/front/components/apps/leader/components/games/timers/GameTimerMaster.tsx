@@ -412,13 +412,14 @@ export default function LeaderGameTimerMaster({
           )}
           <div className="margin-big-gap-v full-width">
             <LeaderCommentBlock
-              action="addCommentForGameTimer"
-              listw={timer.wid}
               placeholder="Комментарий к таймеру"
-              areaw={timer.game?.wid}
+              action="addCommentForGameTimer"
+              arean="gameTimers"
+              gamew={timer.game?.wid}
+              listw={timer.wid}
+              listwNameMask="timerw"
               comments={timer.comments}
               newCommentTextChange={(value) => setNewCommentText(value)}
-              arean="gameTimers"
               {...(timer.isNew
                 ? {
                   isWaitedToSend: true,

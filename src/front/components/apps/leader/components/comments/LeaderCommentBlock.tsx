@@ -46,8 +46,9 @@ export default function LeaderCommentBlock({
   placeholder,
   action,
   arean,
-  areaw,
+  gamew,
   listw,
+  listwNameMask,
   isWaitedToSend,
   importantActionOnClick,
   onRejectSend,
@@ -56,8 +57,9 @@ export default function LeaderCommentBlock({
   comments?: LeaderCommentImportable[];
   placeholder: string;
   arean: SendingCommentsAreaName;
-  areaw?: number;
+  gamew?: number;
   listw: number;
+  listwNameMask: string,
   action: string;
   isWaitedToSend?: boolean;
   importantActionOnClick?: (comment: string) => void;
@@ -73,15 +75,15 @@ export default function LeaderCommentBlock({
     () =>
       mylib.unique(
         (comments || []).concat(
-          areaw
-            ? sendingComments[arean]?.[areaw]?.[listw]
+          gamew
+            ? sendingComments[arean]?.[gamew]?.[listw]
               ?.map(({ comment }) => comment)
               .filter((comment) => comment) || []
             : []
         ),
         (comment) => comment.ts ?? NaN
       ),
-    [arean, areaw, comments, listw, sendingComments]
+    [arean, gamew, comments, listw, sendingComments]
   );
   const partOfComments = allComments.slice(-4);
 
@@ -109,7 +111,7 @@ export default function LeaderCommentBlock({
               onRejectSend={() =>
                 onRejectSend
                   ? onRejectSend(comment)
-                  : areaw && rejectSending(arean, areaw, listw, comment.ts)
+                  : gamew && rejectSending(arean, gamew, listw, comment.ts)
               }
             />
           );
@@ -148,16 +150,20 @@ export default function LeaderCommentBlock({
                   return;
                 }
 
-                if (areaw) {
+                if (gamew) {
                   const ts = Date.now() + Math.random();
-                  const args = { comment, areaw, listw, ts };
 
-                  sendComment(arean, areaw, listw, {
+                  sendComment(arean, gamew, listw, {
                     ts,
                     exec: {
                       action,
                       method: "push",
-                      args,
+                      args: {
+                        ts,
+                        gamew,
+                        comment,
+                        [listwNameMask]: listw,
+                      },
                     },
                     comment: {
                       w: 0,

@@ -11,7 +11,7 @@ export interface ExecutionDict<Value = any, Args = Record<string, any>> {
     corrects?: unknown,
 }
 
-export interface ExecuteResults {
+export interface ExecuteFeedbacks {
     fixes: string[],
     replacedExecs: ExecutionReal[],
     errorMessage: string,
@@ -19,43 +19,49 @@ export interface ExecuteResults {
 
 export type ExecutionRuleTrackBeat = string | [string, string, any];
 export type ExecutionTrack = ExecutionRuleTrackBeat[];
+export type ExecutionTrackTail = [number, ExecutionTrack];
 
-export type BasicRuleDict = Record<string, BasicRule>;
+export type ExecutionSidesDict = Record<string, ExecutionSide>;
 
 export interface BasicRule {
     method: ExecutionMethod,
-    track?: ExecutionTrack,
     value?: unknown,
     args?: Record<string, unknown>,
 }
-export interface ExecutionRule extends BasicRule, NativeExecutionRule {
+
+export interface ExecutionSide extends BasicRule {
+    trackTail: ExecutionTrackTail,
+}
+
+export interface ExecutionRule extends BasicRule {
     action: string,
     title?: string,
+    track?: ExecutionTrack,
     shortTitle?: string,
     level?: number,
-    cloneArgs?: Record<string, string>,
     uniqs?: string[] | Record<string, string>,
     expected?: [] | {},
     access?: string,
-    side?: BasicRuleDict,
+    side?: ExecutionSidesDict,
     expecteds?: ExecutionExpectations,
     isSequre?: boolean,
     fixAccesses?: Record<string, ExecutionTrack>,
     writeArg?: string,
+    setInEachValueItem?: ExecuterSetInEachValueItem,
     ['/']?: ExecutionRule,
 }
 
-export type ExecutionExpectations = [ExecutionTrack, {} | []][];
+export type ExecutionExpectations = [number, {} | []][];
 
 export type ExecuterSetInEachValueItem = Record<string, Record<string, unknown>>;
 
-export interface ExecutionRealAccumulatable extends NativeExecutionRule {
+export interface ExecutionRealAccumulatable {
     expecteds?: ExecutionExpectations,
     args?: Record<string, any>,
-    cloneArgs?: Record<string, string>,
     track: ExecutionTrack,
-    sides?: BasicRule[],
+    sides?: ExecutionSide[],
     accesses: string[],
+    setInEachValueItem?: ExecuterSetInEachValueItem,
 }
 
 export type ExecutionFixedAccesses = Record<string, () => boolean>;
@@ -69,14 +75,11 @@ export interface ExecutionReal extends ExecutionRealAccumulatable {
     level?: number,
     value: any,
     uniqs?: string[] | Record<string, string>,
-    cloneArgs?: Record<string, string>,
     fix: ExecutionRuleTrackBeat,
-    nativeRule?: ExecutionRule,
+    fixedAccesses?: FixedAccesses,
 }
 
-export interface NativeExecutionRule {
-    setInEachValueItem?: ExecuterSetInEachValueItem,
-}
+export type FixedAccesses = { track: ExecutionTrack, tail: Record<string, ExecutionTrack> }[];
 
 export interface TrackerRet {
     parent: any;
@@ -95,6 +98,7 @@ export interface ExecutionResponse {
 export enum ExecuteErrorType {
     Level = 'Нет прав',
     Access = 'Запрет',
+    Args = 'Аргументы',
     NoRule = 'Не найдено',
     Sequre = 'Не верный пароль',
     Error = 'Ошибка',

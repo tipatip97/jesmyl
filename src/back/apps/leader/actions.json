@@ -186,10 +186,6 @@
                 "args": {
                     "gamew": "#Number"
                 },
-                "cloneArgs": {
-                    "areaw": "gamew",
-                    "listw": "teamw"
-                },
                 "/timerNames": {
                     "level": 30,
                     "action": "updateGameTimerNames",
@@ -279,50 +275,49 @@
                     }
                 },
                 "/timers": {
-                    "expected": [],
-                    "uniqs": [
-                        "ts"
-                    ],
-                    "level": 20,
-                    "action": "addGameTimer",
-                    "title": "Добавлен новый таймер $name для игры $gamen",
-                    "method": "push",
-                    "value": {
-                        "w": "{@setNewWid()}",
-                        "fio": "{*fio}",
-                        "owner": "{*login}",
-                        "ts": "{ts}",
-                        "name": "{name}",
-                        "mode": "{mode}",
-                        "joins": "{joins}",
-                        "start": "{start}",
-                        "starts": "{starts}",
-                        "teams": "{teams}",
-                        "finishes": "{finishes}",
-                        "comments": "{comments}"
-                    },
-                    "args": {
-                        "ts": "#Number",
-                        "name": "#String",
-                        "mode": "#Number",
-                        "joins": "#number",
-                        "start": "#number",
-                        "starts": "#list",
-                        "teams": "#list",
-                        "comments": "#list",
-                        "finishes": "#dict"
-                    },
-                    "setInEachValueItem": {
-                        "comments": {
+                    "<add>": {
+                        "expected": [],
+                        "uniqs": [
+                            "ts"
+                        ],
+                        "level": 20,
+                        "action": "addGameTimer",
+                        "title": "Добавлен новый таймер $name для игры $gamen",
+                        "method": "push",
+                        "value": {
+                            "w": "{@setNewWid()}",
                             "fio": "{*fio}",
                             "owner": "{*login}",
-                            "w": "{@setNewWid()}"
+                            "ts": "{ts}",
+                            "name": "{name}",
+                            "mode": "{mode}",
+                            "joins": "{joins}",
+                            "start": "{start}",
+                            "starts": "{starts}",
+                            "teams": "{teams}",
+                            "finishes": "{finishes}",
+                            "comments": "{comments}"
+                        },
+                        "args": {
+                            "ts": "#Number",
+                            "name": "#String",
+                            "mode": "#Number",
+                            "joins": "#number",
+                            "start": "#number",
+                            "starts": "#list",
+                            "teams": "#list",
+                            "comments": "#list",
+                            "finishes": "#dict"
+                        },
+                        "setInEachValueItem": {
+                            "comments": {
+                                "fio": "{*fio}",
+                                "owner": "{*login}",
+                                "w": "{@setNewWid()}"
+                            }
                         }
                     },
                     "/[w === {timerw}]": {
-                        "cloneArgs": {
-                            "listw": "timerw"
-                        },
                         "args": {
                             "timerw": "#Number"
                         },

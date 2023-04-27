@@ -21,7 +21,7 @@ export interface SokiServerEvent {
     authorization?: { type: 'login' | 'register' } & ({ ok: false, value: string } | ({ ok: true, value: LocalSokiAuth })),
     execs?: {
         list: ExecutionReal[],
-        lastUpdate: number | null
+        lastUpdate: number | null,
     },
     errorMessage?: string | null,
     system?: { name: 'reloadFiles' | 'restartWS' } & ({ ok: true, message?: string | null } | { ok: false, error?: string | null }),

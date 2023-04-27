@@ -1,57 +1,18 @@
 import fs from 'fs';
 import admin from '../../apps/admin/config';
 import cm from '../../apps/cm/config';
+import gamer from '../../apps/gamer/config';
 import index from '../../apps/index/config';
 import leader from '../../apps/leader/config';
-import gamer from '../../apps/gamer/config';
 import { Executer } from '../executer/Executer';
-import { ExecutionRule } from '../executer/Executer.model';
 import smylib, { SMyLib } from '../soki/complect/SMyLib';
 import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName } from '../soki/soki.model';
 import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, FilerWatcher, SimpleKeyValue } from './Filer.model';
 
 const actionsRequirement: FilerAppRequirement = {
   name: 'actions',
-  map: (data: Record<string, ExecutionRule>) => {
-    const rules: Omit<ExecutionRule, 'method'>[] = [];
-    const map = (data: Record<string, ExecutionRule>, top: Partial<ExecutionRule> = {}) => {
-      for (const key in data) {
-        if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
-          const rule = data[key];
-          const {
-            title,
-            shortTitle,
-            level,
-            action,
-            isSequre,
-            args,
-            cloneArgs,
-          } = rule;
-
-          const nextTop: Partial<ExecutionRule> = {
-            args: { ...top.args, ...args },
-            cloneArgs: (top.cloneArgs || cloneArgs) && { ...top.cloneArgs, ...cloneArgs },
-          };
-
-          rules.push({
-            title,
-            shortTitle,
-            level,
-            action,
-            isSequre,
-            args: nextTop.args,
-            cloneArgs: nextTop.cloneArgs,
-          });
-
-          map(rule as never, nextTop);
-        }
-      }
-
-      return rules;
-    };
-
-    return map(data).filter(({ action }) => action);
-  }
+  transform: (actions) => Executer.prepareActionList(actions, []),
+  map: (rules) => Executer.mapActionList(rules),
 };
 
 export class Filer {
@@ -113,7 +74,8 @@ export class Filer {
               rootPath = '',
               ext = 'json',
               level = 0,
-              prepare = (data: unknown) => data,
+              prepareContent = (data: unknown) => data,
+              transform = (data: unknown) => data,
               map = () => null,
               watch = null,
               refreshTrigger = '',
@@ -135,7 +97,7 @@ export class Filer {
 
                 if (action) {
                   const { expecteds } = action;
-                  const [, expected] = expecteds?.find(([track]) => track.length === 1 && track[0] === name) ?? [];
+                  const [, expected] = expecteds?.find(([trackEnd]) => trackEnd === 1 && action.track[0] === name) ?? [];
                   if (!expected) return;
                   const string = JSON.stringify(expected);
 
@@ -146,13 +108,15 @@ export class Filer {
                     } else console.info(`... ExpectedCreted ${filename}`);
 
                     const stat = fs.statSync(path);
+                    const transformed = transform(expected);
 
                     content[name] = {
                       data: expected,
                       string,
                       level,
-                      prepare,
-                      mapped: map(expected),
+                      prepareContent,
+                      transformed,
+                      mapped: map(transformed),
                       mtime: new Date(stat.mtime).getTime(),
                     };
                   });
@@ -175,14 +139,16 @@ export class Filer {
                 try {
                   const stat = fs.statSync(path);
                   const data = JSON.parse(stringData);
+                  const transformed = transform(data);
 
                   content[name] = {
                     data,
                     string: stringData,
                     mtime: new Date(stat.mtime).getTime(),
                     level,
-                    prepare,
-                    mapped: map(data),
+                    prepareContent,
+                    transformed,
+                    mapped: map(transformed),
                   };
                 } catch (e) { }
                 cb?.();
@@ -194,14 +160,16 @@ export class Filer {
                       if (err) return;
                       try {
                         const data = cb(fileContent);
+                        const transformed = transform(data);
 
                         content[name] = {
                           data,
                           string: fileContent,
                           mtime: new Date(fs.statSync(watchPath).mtime).getTime(),
                           level,
-                          prepare,
-                          mapped: map(data),
+                          prepareContent,
+                          transformed,
+                          mapped: map(transformed),
                         };
 
                         this.watcher(appName, name, data);
@@ -287,7 +255,7 @@ export class Filer {
 
       return {
         key: fixName,
-        value: fixData.prepare(fixData.mapped ?? fixData.data, auth),
+        value: fixData.prepareContent(fixData.mapped ?? fixData.data, auth),
       };
     };
 

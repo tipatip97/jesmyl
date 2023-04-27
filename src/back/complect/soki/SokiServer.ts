@@ -235,17 +235,17 @@ class SokiServer {
                             const contents = filer.contents[eventData.appName];
                             const realParents: Record<string, unknown> = {};
                             SMyLib.entries(contents).forEach(([key, val]) => realParents[key] = val.data);
+                            const actions = contents.actions;
+
+                            if (!actions?.transformed) return;
 
                             Executer
-                                .execute(contents.actions?.data || [], realParents, eventBody.execs, capsule.auth)
+                                .execute(actions.transformed, realParents, eventBody.execs, capsule.auth)
                                 .then(async ({ fixes, replacedExecs, errorMessage }) => {
                                     const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
-                                    return { replacedExecs, lastUpdate, errorMessage };
-                                })
-                                .then(({ replacedExecs: list, lastUpdate, errorMessage }) => {
                                     this.send({
                                         requestId,
-                                        execs: { list, lastUpdate },
+                                        execs: { list: replacedExecs, lastUpdate },
                                         errorMessage,
                                     }, (capsule) => capsule.appName === eventData.appName, client);
                                 });
