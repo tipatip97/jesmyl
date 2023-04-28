@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import { qrCodeMaster } from "../../../../../../complect/qr-code/QRCodeMaster";
 import { RootState } from "../../../../../../shared/store";
 import useGamerOfflineRooms from "../../../complect/rooms/offline-room/useGamerOfflineRooms";
+import useGamerNav from "../../../useGamerNav";
 import { SpyRoomState } from "../Spy.model";
-import useSpyLocations, { secretSpyRole, SPY_ROLE, unsecretSpyRole } from "../useSpyLocations";
+import useSpyLocations, { SPY_ROLE, secretSpyRole, unsecretSpyRole } from "../useSpyLocations";
 
 const offlineRoomShareDataKey = 'spy.ofr';
 const offlineRoomsSelector = (state: RootState) => state.gamer.offlineRooms;
@@ -13,10 +13,10 @@ const roomwSelector = (state: RootState) => state.gamer.roomw;
 const offlineGameSelector = (state: RootState) => state.gamer.offlineSpyGame;
 
 export default function useSpyOfflineRoomState() {
-  const dispatch = useDispatch();
   const { players, passport, updateCurrentOfflineRoom } = useGamerOfflineRooms();
   const offlineRooms = useSelector(offlineRoomsSelector);
   const offlineGame = useSelector(offlineGameSelector);
+  const { nav } = useGamerNav();
 
   const roomw = useSelector(roomwSelector);
   const currentOfflineRoom = offlineRooms?.find(({ w }) => w === roomw);
@@ -120,10 +120,11 @@ export default function useSpyOfflineRoomState() {
         .join('');
       const location = state?.roles?.[newPlayers[0] || ''] || '';
 
-      qrCodeMaster.shareData('gamer', offlineRoomShareDataKey, [location, newSpies.length, state?.iterations, md5s]);
+      nav.shareDataByQr(offlineRoomShareDataKey, [location, newSpies.length, state?.iterations, md5s]);
     },
     reshareGameData: () => {
-      qrCodeMaster.shareData('gamer', offlineRoomShareDataKey, offlineGame?.reshareData);
+      if (offlineGame)
+        nav.shareDataByQr(offlineRoomShareDataKey, offlineGame.reshareData);
     },
   };
   return ret;

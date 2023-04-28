@@ -1,50 +1,27 @@
-import { useDispatch, useSelector } from "react-redux";
-import mylib from "../../../../complect/my-lib/MyLib";
-import { RootState } from "../../../../shared/store";
-import { updateSelectedComws } from "../Cm.store";
-import cmStorage from "../cmStorage";
 import { Com } from "../col/com/Com";
 import { useCols } from "../cols/useCols";
+import useCmNav from "./useCmNav";
 
-let localSelectedComs: Com[] | nil;
-const selectedComwsSelector = (state: RootState) => state.cm.selectedComws;
 
 export default function useSelectedComs() {
-    const dispatch = useDispatch();
     const [cols] = useCols();
+    const { appRouteData: { selectedComws = [] }, setAppRouteData } = useCmNav();
 
     const ret = {
-        selectedComws: useSelector(selectedComwsSelector),
-        takeSelectedComs: (): Com[] => {
-            if (localSelectedComs?.length) return localSelectedComs;
-
-            localSelectedComs = cols && ret.selectedComws
+        selectedComws,
+        takeSelectedComs: () => {
+            return (cols && selectedComws
                 .map(comw => cols.coms.find(com => com.wid === comw))
-                .filter(com => com) as Com[];
-
-            return localSelectedComs ?? [];
+                .filter(com => com) as Com[]) || [];
         },
-        isPreventSaveNav: () => !mylib.isEq(cmStorage.get('selectedComws'), ret.selectedComws),
-        selectedComPosition: (com: Com) => ret.selectedComws.indexOf(com.wid) + 1,
-        updateSelectedComws: (comws: number[]) => {
-            localSelectedComs = null;
-            dispatch(updateSelectedComws(comws));
-        },
-        clearSelectedComws: () => {
-            ret.updateSelectedComws([]);
-            localSelectedComs = null;
-            cmStorage.set('selectedComws', []);
-        },
-        saveSelectedComws: () => {
-            ret.updateSelectedComws(ret.selectedComws);
-            cmStorage.set('selectedComws', ret.selectedComws);
-        },
-        getLocalSelectedComws: () => cmStorage.get('selectedComws'),
+        selectedComPosition: (com: Com) => selectedComws.indexOf(com.wid) + 1,
+        updateSelectedComws: (selectedComws: number[]) => setAppRouteData({ selectedComws }),
+        clearSelectedComws: () => ret.updateSelectedComws([]),
         toggleSelectedCom: (com: Com) => {
             ret.updateSelectedComws(
                 ret.selectedComPosition(com)
-                    ? ret.selectedComws.filter((comw) => com.wid !== comw)
-                    : [...ret.selectedComws, com.wid]
+                    ? selectedComws.filter((comw) => com.wid !== comw)
+                    : [...selectedComws, com.wid]
             );
         }
     };

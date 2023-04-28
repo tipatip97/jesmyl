@@ -1,6 +1,5 @@
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
-  NavigationStorage,
   UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
@@ -16,11 +15,7 @@ import LeaderApplication from "./Leader";
 import { LeaderNavData, LeaderStoraged } from "./Leader.model";
 import { leaderExer } from "./Leader.store";
 
-const navigation: NavigationConfig<
-  LeaderStoraged,
-  NavigationStorage<LeaderStoraged>,
-  LeaderNavData
-> = new NavigationConfig({
+const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new NavigationConfig('leader', {
   root: (content) => <LeaderApplication content={content} />,
   rootPhase: "all",
   logo: "navigation-2",
@@ -72,9 +67,5 @@ const navigation: NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useLeaderNav() {
-  return useNavConfigurer<LeaderStoraged, NavigationStorage<LeaderStoraged>, LeaderNavData>(
-    'leader',
-    actions,
-    navigation,
-  );
+  return useNavConfigurer<LeaderStoraged, LeaderNavData>('leader', actions, navigation);
 }

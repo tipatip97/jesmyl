@@ -10,7 +10,7 @@ import "./Lists.scss";
 export default function Lists() {
   const { goTo } = useCmNav();
   const [cols] = useCols();
-  const { selectedComws, isPreventSaveNav } = useSelectedComs();
+  const { selectedComws } = useSelectedComs();
 
   return (
     <PhaseCmContainer
@@ -34,7 +34,7 @@ export default function Lists() {
             <BrutalItem
               icon="checkmark-circle-2-outline"
               title="Выбранное"
-              onClick={() => goTo("selected", null, isPreventSaveNav())}
+              onClick={() => goTo("selected")}
             />
           ) : null}
           <BrutalScreen>

@@ -25,9 +25,7 @@ export default function SelectedComs() {
           />
         </>
       }
-      content={coms.map((com) => (
-        <ComFace key={`selected-com-${com.wid}`} com={com} />
-      ))}
+      content={coms.map(com => <ComFace key={com.wid} com={com} />)}
     />
   );
 }

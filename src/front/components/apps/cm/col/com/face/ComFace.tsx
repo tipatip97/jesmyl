@@ -24,8 +24,12 @@ export default function ComFace(props: ComFaceProps) {
   return com == null ? null : (
     <>
       <div
-        className={`face-item flex between ${ccom?.wid === com.wid ? "current" : ""
-          } ${groupClass || ""} wid_${com.wid}`}
+        className={
+          'face-item flex between '
+          + (ccom?.wid === com.wid ? " current " : "")
+          + (groupClass || "")
+          + ` wid_${com.wid} `
+        }
         onClick={
           importantOnClick ||
           (() => jumpTo({ phase: comNavPhasePoint, data: { ccomw: com.wid } }))

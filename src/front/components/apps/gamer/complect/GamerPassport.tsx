@@ -6,9 +6,9 @@ import EvaButton from "../../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../complect/my-lib/MyLib";
-import { qrCodeMaster } from "../../../../complect/qr-code/QRCodeMaster";
 import { GamerPassport } from "../Gamer.model";
 import { updateGamerPassport } from "../Gamer.store";
+import useGamerNav from "../useGamerNav";
 import PhaseGamerContainer from "./PhaseGamerContainer";
 import useGamerOfflineRooms from "./rooms/offline-room/useGamerOfflineRooms";
 
@@ -17,6 +17,7 @@ export default function TheGamerPassport() {
     const { passportData, passport, authData } = useGamerOfflineRooms();
     const [isEdit, setIsEdit] = useState(!passport);
     const [fio, setFio] = useState(passport?.fio || '');
+    const { nav } = useGamerNav();
 
     const back = (data: GamerPassport | LocalSokiAuth | nil) => {
         setFio(data?.fio || '');
@@ -81,7 +82,8 @@ export default function TheGamerPassport() {
                         <div
                             className="flex center flex-gap margin-big-gap pointer"
                             onClick={() => {
-                                qrCodeMaster.shareData('gamer', 'passport', [passport.login, passport.fio]);
+                                if (passport.login && passport.fio)
+                                    nav.shareDataByQr('passport', [passport.login, passport.fio]);
                             }}>
                             <EvaIcon name="qr-code" />
                             Предъявить

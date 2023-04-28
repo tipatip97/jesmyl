@@ -1,16 +1,10 @@
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
-import {
-  NavigationStorage,
-  UseNavAction
-} from "../../../complect/nav-configurer/Navigation.model";
+import { UseNavAction } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import TheTuner from "./TheTuner";
 import { TunerStorage } from "./Tuner.model";
 
-const tunerNavigation = new NavigationConfig<
-  TunerStorage,
-  NavigationStorage<TunerStorage>
->({
+const tunerNavigation = new NavigationConfig<TunerStorage>('tuner', {
   root: (content) => <>{content}</>,
   rootPhase: "tuner",
   logo: "music",
@@ -27,9 +21,5 @@ const tunerNavigation = new NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useTunerNav() {
-  return useNavConfigurer<TunerStorage, NavigationStorage<TunerStorage>>(
-    'tuner',
-    actions,
-    tunerNavigation,
-  );
+  return useNavConfigurer<TunerStorage>('tuner', actions, tunerNavigation);
 }

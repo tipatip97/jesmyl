@@ -1,9 +1,8 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import useCmNav, { translationNavPoint } from "./base/useCmNav";
-import useSelectedComs from "./base/useSelectedComs";
 import "./Cm.scss";
 import { updateCmChordTracks, updateEditorExecList, updateMeetingList, updateMp3Rules } from "./Cm.store";
+import useCmNav, { translationNavPoint } from "./base/useCmNav";
 import cmStorage from "./cmStorage";
 import { useCols } from "./cols/useCols";
 import { useEditableCols } from "./editor/col/useEditableCols";
@@ -14,8 +13,7 @@ export default function CmApplication({ content }: { content: ReactNode }) {
   const [, setCols] = useCols();
   const [, setEditableCols] = useEditableCols();
   const { watchTranslation } = useTranslation();
-  const { jumpTo, nav } = useCmNav();
-  const { selectedComws } = useSelectedComs();
+  const { jumpTo } = useCmNav();
 
   cmStorage.listen("cols", "cols-update", (val) => {
     setCols(val);
@@ -27,8 +25,6 @@ export default function CmApplication({ content }: { content: ReactNode }) {
     .it('meetings', updateMeetingList)
     .it('mp3Rules', updateMp3Rules)
     .it('execs', updateEditorExecList);
-
-  useEffect(() => nav.setData({ selectedComws }), [nav, selectedComws]);
 
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {

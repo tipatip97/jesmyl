@@ -2,19 +2,23 @@ import { ReactNode } from "react";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
 import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, JumpByLink, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
+import { qrCodeMaster } from "../qr-code/QRCodeMaster";
+import { AppName } from "../../app/App.model";
 
-export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData = any> implements INavigationConfig<Storage, NavData> {
+export class NavigationConfig<Storage, NavData = {}> implements INavigationConfig<NavigationStorage<Storage>, NavData> {
+    appName: AppName;
     root: (content: ReactNode) => JSX.Element;
     rootPhase: NavPhase | null;
     routes: INavigationRouteRootItem<NavData>[];
-    exer?: Exer<Storage>;
+    exer?: Exer<NavigationStorage<Storage>>;
     logo?: EvaIconName;
     endPoints: [NavPhasePoint, NavPhase[]][];
     jumpByLink?: JumpByLink<NavData>;
     private _data?: Partial<NavData>;
     private onGeneralFooterButtonClicks: Record<NavPhase, Record<string, () => void>> = {};
 
-    constructor({ routes, root, rootPhase, exer, logo, jumpByLink }: INavigationConfig<Storage, NavData>) {
+    constructor(appName: AppName, { routes, root, rootPhase, exer, logo, jumpByLink }: INavigationConfig<NavigationStorage<Storage>, NavData>) {
+        this.appName = appName;
         this.root = root;
         this.rootPhase = rootPhase;
         this.routes = routes;
@@ -31,6 +35,10 @@ export class NavigationConfig<T, Storage extends NavigationStorage<T>, NavData =
 
     invokeGeneralFooterButtonClickListeners(listenLine: NavPhase) {
         Object.values(this.onGeneralFooterButtonClicks[listenLine] || {}).forEach(cb => cb());
+    }
+
+    shareDataByQr<DataName extends keyof NavData>(dataName: DataName, value: NavData[DataName], isExternalDataType?: boolean) {
+        qrCodeMaster.shareData(this.appName, dataName as never, value, isExternalDataType)
     }
 
     onGeneralFooterButtonClick(listenLine: NavPhase, listenerName: string) {

@@ -7,23 +7,22 @@ import mylib from "../../../complect/my-lib/MyLib";
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
   INavigationRouteChildItem,
-  NavigationStorage,
   UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import { QRCodeReaderData } from "../../../complect/qr-code/QRCodeMaster.model";
+import Gamer from "./Gamer";
+import { GamerGameName, GamerNavData, GamerPassport, GamerStorage } from "./Gamer.model";
+import { updateCurrentOfflineGameName, updateSpyOfflineGame } from "./Gamer.store";
+import GamerApp from "./GamerApp";
 import TheGamerPassport from "./complect/GamerPassport";
 import GamerOfflineRoom from "./complect/rooms/offline-room/GamerOfflineRoom";
 import SpyCurrentOfflineGameInfo from "./complect/rooms/offline-room/SpyCurrentOfflineGameInfo";
 import SpyOfflineRoomContent from "./complect/rooms/offline-room/SpyOfflineRoomContent";
 import GamerRoom from "./complect/rooms/room/GamerRoom";
-import Gamer from "./Gamer";
-import { GamerGameName, GamerNavData, GamerPassport, GamerStorage } from "./Gamer.model";
-import { updateCurrentOfflineGameName, updateSpyOfflineGame } from "./Gamer.store";
-import GamerApp from "./GamerApp";
 import AliasRoomContent from "./games/alias/AliasRoomContent";
-import { OfflineGameShare } from "./games/spy/offline-room/SpyOfflineRoom.model";
 import SpyRoomContent from "./games/spy/SpyRoomContent";
+import { OfflineGameShare } from "./games/spy/offline-room/SpyOfflineRoom.model";
 import { SPY_ROLE, unsecretSpyRole } from "./games/spy/useSpyLocations";
 
 
@@ -85,10 +84,7 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
     },
   ];
 
-const gamerNavigation = new NavigationConfig<
-  GamerStorage,
-  NavigationStorage<GamerStorage>
->({
+const gamerNavigation = new NavigationConfig<GamerStorage, GamerNavData>('gamer', {
   root: (content) => <GamerApp content={content} />,
   rootPhase: "gamer",
   logo: "cube",
@@ -135,9 +131,5 @@ const gamerNavigation = new NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useGamerNav() {
-  return useNavConfigurer<GamerStorage, NavigationStorage<GamerStorage>>(
-    'gamer',
-    actions,
-    gamerNavigation,
-  );
+  return useNavConfigurer<GamerStorage, GamerNavData>('gamer', actions, gamerNavigation);
 }

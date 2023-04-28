@@ -6,12 +6,12 @@ import { RootState } from "../../shared/store";
 import mylib from "../my-lib/MyLib";
 import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
-import { NavigationStorage, NavPhasePoint, NavPhasePointVariated, NavPlaceVariated, NavRouteVariated, NavRouting, UseNavAction } from "./Navigation.model";
+import { NavPhasePoint, NavPhasePointVariated, NavPlaceVariated, NavRouteVariated, NavRouting, NavigationStorage, UseNavAction } from "./Navigation.model";
 
-export default function useNavConfigurer<T, Storage extends NavigationStorage<T>, NavData = {}>(
+export default function useNavConfigurer<Storage, NavData = {}>(
     appName: AppName,
     actions: UseNavAction[],
-    nav: NavigationConfig<Storage, Storage, NavData>,
+    nav: NavigationConfig<NavigationStorage<Storage>, NavData>,
 ) {
     const dispatch = useDispatch();
     const [isFullScreen, switchFullscreen] = useFullScreen();

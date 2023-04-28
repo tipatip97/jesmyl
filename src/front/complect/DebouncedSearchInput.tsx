@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../shared/store";
 import { switchIsNumberSearch } from "./Complect.store";
@@ -30,29 +30,8 @@ export default function DebouncedSearchInput(props: {
     className,
   } = props;
   const dispatch = useDispatch();
-  const [term, setTerm] = useState(initialTerm || "");
-  const [termDebounced, setTermDebounced] = useState(initialTerm);
-  const [timeout, setTimeOut] = useState();
+  const timeout = useMemo((): { val?: TimeOut } => ({}), []);
   const isNumberSearch = useSelector(isNumberSearchSelector);
-
-  useLayoutEffect(() => {
-    onSearch?.(term, isNumberSearch);
-
-    if (debounce) {
-      setTimeOut(
-        setTimeout(() => {
-          setTermDebounced?.(term);
-          onTermChange?.(term);
-        }, debounce) as never
-      );
-      clearTimeout(timeout);
-    } else onTermChange?.(term);
-  }, [term, onSearch, debounce, onTermChange, isNumberSearch]);
-
-  useLayoutEffect(
-    () => onDebounced?.(termDebounced),
-    [termDebounced, onDebounced]
-  );
 
   return (
     <div className={`debounced-input ${className}`}>
@@ -63,10 +42,20 @@ export default function DebouncedSearchInput(props: {
         />}
       <KeyboardInput
         type={isNumberSearch ? 'number' : 'text'}
-        value={term}
+        value={initialTerm}
         className="input"
         placeholder={props.placeholder}
-        onChange={(value) => setTerm(value)}
+        onChange={(term) => {
+          onSearch?.(term, isNumberSearch);
+
+          if (debounce) {
+            clearTimeout(timeout.val);
+            timeout.val = setTimeout(() => {
+              onDebounced?.(term);
+              onTermChange?.(term);
+            }, debounce);
+          } else onTermChange?.(term);
+        }}
       />
     </div>
   );

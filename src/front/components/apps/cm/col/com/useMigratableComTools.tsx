@@ -1,14 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import { qrCodeMaster } from "../../../../../complect/qr-code/QRCodeMaster";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
+import { ChordVisibleVariant } from "../../Cm.model";
+import { setPlayerHideMode, switchIsMiniAnchor, updateComTopTools } from "../../Cm.store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useCmNav from "../../base/useCmNav";
 import useSelectedComs from "../../base/useSelectedComs";
-import { ChordVisibleVariant } from "../../Cm.model";
-import { setPlayerHideMode, switchIsMiniAnchor, updateComTopTools } from "../../Cm.store";
 import {
   concatMigratableEditableComToolNameList,
   getMigratableEditableComTool,
@@ -16,12 +15,12 @@ import {
 } from "../../editor/col/compositions/complect/MigratableEditableComTools";
 import { useMarks } from "../../lists/marks/useMarks";
 import useTranslation from "../../translation/useTranslation";
-import ChordImagesList from "./chord-card/ChordImagesList";
 import {
-  menuComToolNameList,
   MigratableComTool,
   MigratableComToolName,
+  menuComToolNameList,
 } from "./Com.model";
+import ChordImagesList from "./chord-card/ChordImagesList";
 import { useCcom } from "./useCcom";
 
 const comTopToolsSelector = (state: RootState) => state.cm.comTopTools;
@@ -155,7 +154,7 @@ export default function useMigratableComTools() {
                 tool,
                 title: "Поделиться по QR",
                 icon: "qr-code",
-                onClick: () => qrCodeMaster.shareData('cm', 'ccomw', ccom.wid, true),
+                onClick: () => nav.nav.shareDataByQr('ccomw', ccom.wid, true),
               }
             );
         }

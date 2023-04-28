@@ -1,7 +1,6 @@
 import { NavigationConfig } from "../../../../complect/nav-configurer/Navigation";
 import {
   INavigationRouteChildItem,
-  NavigationStorage,
   NavPhasePoint,
   UseNavAction
 } from "../../../../complect/nav-configurer/Navigation.model";
@@ -35,18 +34,14 @@ const comNav: INavigationRouteChildItem<CmNavData> = {
 
 const comNext = [comNav, translationNav];
 
-const navigation: NavigationConfig<
-  CmStorage,
-  NavigationStorage<CmStorage>,
-  CmNavData
-> = new NavigationConfig({
+const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig('cm', {
   root: (content) => <CmApplication content={content} />,
   rootPhase: "all",
   logo: "book-open",
   exer: cmExer,
   jumpByLink: (key, value, alt) =>
     key === 'selectedComws'
-      ? ['lists', 'selected']
+      ? { route: ['lists', 'selected'], data: { selectedComws: value as number[] } }
       : key === 'ccomw'
         ? { route: ['all', 'com'], data: { ccomw: value as number } }
         : alt.RootPhase,
@@ -100,9 +95,5 @@ const navigation: NavigationConfig<
 const actions: UseNavAction[] = [];
 
 export default function useCmNav() {
-  return useNavConfigurer<CmStorage, NavigationStorage<CmStorage>, CmNavData>(
-    'cm',
-    actions,
-    navigation,
-  );
+  return useNavConfigurer<CmStorage, CmNavData>('cm', actions, navigation);
 }

@@ -20,7 +20,6 @@ const initialState: CmState = {
   playerHideMode: cmStorage.getOr('playerHideMode', 'min'),
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
-  selectedComws: cmStorage.getOr('selectedComws', []),
   meetings: cmStorage.get('meetings'),
   eventw: cmStorage.get('eventw'),
   comFontSize: cmStorage.getOr('comFontSize', 15),
@@ -63,9 +62,6 @@ export const slice = createSlice({
     updateFavoriteMeetings: (state, action: PayloadAction<FavoriteMeetings>) => {
       state.favoriteMeetings = action.payload;
       cmStorage.set('favoriteMeetings', state.favoriteMeetings);
-    },
-    updateSelectedComws: (state, action: PayloadAction<number[]>) => {
-      state.selectedComws = action.payload;
     },
     updateComTopTools: (state, action: PayloadAction<MigratableComToolName[]>) => {
       state.comTopTools = action.payload;
@@ -149,7 +145,6 @@ export const {
   setMarkList,
   updateMeetingList,
   updateFavoriteMeetings,
-  updateSelectedComws,
   updateComTopTools,
   updateCurrentMeetingsContext,
   updateEditorExecList,

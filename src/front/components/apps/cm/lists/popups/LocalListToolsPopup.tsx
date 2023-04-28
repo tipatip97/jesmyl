@@ -1,6 +1,6 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import { qrCodeMaster } from "../../../../../complect/qr-code/QRCodeMaster";
+import useCmNav from "../../base/useCmNav";
 import { Com } from "../../col/com/Com";
 import useTranslation from "../../translation/useTranslation";
 import FullscreenExpandComList from "./FullscreenExpandComList";
@@ -9,6 +9,7 @@ export default function LocalListToolsPopup({ coms }: { coms?: Com[] }) {
   const { openFullscreenContent } = useFullscreenContent();
   const { goToTranslation: openTranslations, isSelfTranslation: isShowFullscreen } = useTranslation();
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const { nav } = useCmNav();
 
   return prepareAbsoluteBottomPopupContent({
     items: [
@@ -26,7 +27,7 @@ export default function LocalListToolsPopup({ coms }: { coms?: Com[] }) {
       {
         title: 'Поделиться по QR',
         icon: "qr-code",
-        onClick: () => qrCodeMaster.shareData('cm', 'comws', coms.map(({ wid }) => wid)),
+        onClick: () => nav.shareDataByQr('selectedComws', coms.map(({ wid }) => wid), true),
       }] : null
     ]
   });

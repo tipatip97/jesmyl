@@ -1,22 +1,16 @@
 import React, { Suspense } from "react";
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
-import {
-  NavigationStorage,
-  UseNavAction
-} from "../../../complect/nav-configurer/Navigation.model";
+import { UseNavAction } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import Index from "../Index";
 import { IndexStorage } from "../Index.model";
-import IndexLogin from "../parts/login/IndexLogin";
 import IndexSettings from "../parts/Settings";
+import IndexLogin from "../parts/login/IndexLogin";
 
 const Main = React.lazy(() => import("../parts/main/IndexMain"));
 
 const actions: UseNavAction[] = [];
-const navigate = new NavigationConfig<
-  IndexStorage,
-  NavigationStorage<IndexStorage>
->({
+const navigate = new NavigationConfig<IndexStorage>('index', {
   root: (content) => <Index content={content} />,
   rootPhase: null,
   routes: [
@@ -44,9 +38,5 @@ const navigate = new NavigationConfig<
 });
 
 export default function useIndexNav() {
-  return useNavConfigurer<IndexStorage, NavigationStorage<IndexStorage>>(
-    'index',
-    actions,
-    navigate,
-  );
+  return useNavConfigurer<IndexStorage>('index', actions, navigate);
 }

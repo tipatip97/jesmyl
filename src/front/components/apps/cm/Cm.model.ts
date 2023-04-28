@@ -45,7 +45,6 @@ export interface CmStoraged extends CmEditorStoraged {
     isShowTranslationInfo: boolean,
     favoriteMeetings: FavoriteMeetings,
     comTopTools: MigratableComToolName[],
-    selectedComws: number[],
     currentMeetingsContext: number[],
     isMiniAnchor: boolean,
     playerHideMode: PlayerHideMode,

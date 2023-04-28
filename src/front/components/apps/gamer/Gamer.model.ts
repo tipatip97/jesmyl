@@ -54,4 +54,7 @@ export enum GamerRoomMemberStatus {
     Requester = 'requester',
 }
 
-export interface GamerNavData { }
+export interface GamerNavData {
+    'spy.ofr': [string, number, number | und, string],
+    passport: [string, string],
+}

@@ -1,6 +1,5 @@
 import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import modalService from "../../../../../../complect/modal/Modal.service";
-import mylib from "../../../../../../complect/my-lib/MyLib";
 import useSelectedComs from "../../../base/useSelectedComs";
 import ComFaceContextMenuEditorItems from "../../../editor/col/compositions/ComFaceContextMenuEditorItems";
 import { useMarks } from "../../../lists/marks/useMarks";
@@ -21,8 +20,6 @@ export default function ComFaceContextMenu({
     selectedComws,
     selectedComPosition: isSelected,
     toggleSelectedCom,
-    saveSelectedComws,
-    getLocalSelectedComws,
   } = useSelectedComs();
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
@@ -52,14 +49,7 @@ export default function ComFaceContextMenu({
           },
           icon: "close-circle-outline",
           title: 'Очистить выбранные',
-        },
-        mylib.isEq(getLocalSelectedComws(), selectedComws) ? null :
-          {
-            onClick: () => saveSelectedComws(),
-            icon: "shopping-bag-outline",
-            title: 'Запомнить выбранные',
-          }
-        ] : null
+        }] : null
       ]
     })
   }

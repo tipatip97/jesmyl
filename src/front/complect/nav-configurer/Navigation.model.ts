@@ -17,8 +17,7 @@ export type FooterItem<Phase> = null | {
     accessRule?: string,
 }
 
-export type NavigationStorage<T> = T & ExerStorage & {
-}
+export type NavigationStorage<Storage> = Storage & ExerStorage;
 
 export interface JumpByLinkAlt {
     Reject: ['REJECT'],
