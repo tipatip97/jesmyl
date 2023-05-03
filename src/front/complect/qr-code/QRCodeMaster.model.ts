@@ -14,6 +14,7 @@ export type QRMasterControllerData = ({
 } | {
     type: 'showQRs',
     value: string[],
+    linkValue?: string | null,
     isExt?: boolean,
 } | {
     type: 'partsLoaded',

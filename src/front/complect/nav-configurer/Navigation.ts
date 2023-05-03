@@ -37,8 +37,8 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
         Object.values(this.onGeneralFooterButtonClicks[listenLine] || {}).forEach(cb => cb());
     }
 
-    shareDataByQr<DataName extends keyof NavData>(dataName: DataName, value: NavData[DataName], isExternalDataType?: boolean) {
-        qrCodeMaster.shareData(this.appName, dataName as never, value, isExternalDataType)
+    shareDataByQr<DataName extends keyof NavData>(dataName: DataName, value: NavData[DataName], externalData?: boolean | string) {
+        qrCodeMaster.shareData(this.appName, dataName as never, value, externalData)
     }
 
     onGeneralFooterButtonClick(listenLine: NavPhase, listenerName: string) {

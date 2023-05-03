@@ -34,7 +34,14 @@ export default function QRCodeMasterApplication({ controller }: { controller: (c
                         ? event.value.map((qr) =>
                             <div className="qr-container external">
                                 <QRCode text={qr} />
-                                <a className="link-anchor block" target="_blank" rel="noreferrer" href={qr}><EvaIcon name="link" /></a>
+                                <div
+                                    className="link-anchor block"
+                                    onClick={(evt) => {
+                                        evt.stopPropagation();
+                                        navigator.clipboard.writeText(event.linkValue ? `${qr}\n\n${event.linkValue}` : qr);
+                                    }}>
+                                    <EvaIcon name="copy-outline" />
+                                </div>
                             </div>
                         )
                         : event.value.map((qr) => <div className="qr-container internal"><QRCode text={qr} /></div>)

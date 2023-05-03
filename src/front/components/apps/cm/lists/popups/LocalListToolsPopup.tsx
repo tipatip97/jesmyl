@@ -27,7 +27,7 @@ export default function LocalListToolsPopup({ coms }: { coms?: Com[] }) {
       {
         title: 'Поделиться по QR',
         icon: "qr-code",
-        onClick: () => nav.shareDataByQr('selectedComws', coms.map(({ wid }) => wid), true),
+        onClick: () => nav.shareDataByQr('selectedComws', coms.map(({ wid }) => wid), coms.map(com => `${com.number}. ${com.name.trim()}`).join('\n')),
       }] : null
     ]
   });

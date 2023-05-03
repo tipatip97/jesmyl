@@ -33,9 +33,9 @@ export const crossApplicationLinkCoder = new LinkCoder<Attrs>(jesmylHostName, 'v
 class QrCodeMaster {
     private qr?: Html5Qrcode;
 
-    shareData(appName: AppName, key: string, value: unknown, isExternalDataType?: boolean) {
+    shareData(appName: AppName, key: string, value: unknown, externalData?: boolean | string) {
         try {
-            if (isExternalDataType) {
+            if (externalData) {
                 var link = crossApplicationLinkCoder.encode({
                     appName,
                     key,
@@ -46,10 +46,12 @@ class QrCodeMaster {
                     ok: true,
                     type: 'showQRs',
                     value: [link],
+                    linkValue: externalData === true ? null : externalData,
                     isExt: true,
                 });
                 return;
             }
+
             const valueStr = JSON.stringify(value);
             const len = valueStr.length;
             const connectionNumber = Date.now();
