@@ -1,15 +1,13 @@
 import EvaIcon from "../complect/eva-icon/EvaIcon";
 import { ExerStorage } from "../complect/exer/Exer.model";
-import {
-  INavigationConfig,
-  NavPhasePoint
-} from "../complect/nav-configurer/Navigation.model";
+import { INavigationConfig } from "../complect/nav-configurer/Navigation.model";
 import useIndexNav from "../components/index/complect/useIndexNav";
+import { RoutePhasePoint } from "../components/router/Router.model";
 import navConfigurers from "../shared/navConfigurers";
 import { AppName } from "./App.model";
 
-export default function AppFooter({ app }: { app: AppName }) {
-  const { nav, route, navigate } = navConfigurers[app]();
+export default function AppFooter({ appName }: { appName: AppName }) {
+  const { nav, route, navigate } = navConfigurers[appName]();
   const {
     route: indexRoute,
     navigate: indexNavigate,
@@ -20,8 +18,8 @@ export default function AppFooter({ app }: { app: AppName }) {
 
   const putItems = <Storage extends ExerStorage, NavData>(
     nav: INavigationConfig<Storage, NavData>,
-    onClick: (phase: NavPhasePoint) => void,
-    setIsActive: (phase: NavPhasePoint) => boolean
+    onClick: (phase: RoutePhasePoint) => void,
+    setIsActive: (phase: RoutePhasePoint) => boolean
   ) => {
     return nav.routes.map((props) => {
       if (!props) return null;
@@ -56,16 +54,16 @@ export default function AppFooter({ app }: { app: AppName }) {
       {putItems(
         nav,
         (phase) => {
-          const routing = navigate(phase);
-          if (indexRoute) setTimeout(() => indexNavigate(null, false, () => routing));
+          navigate(phase);
+          if (indexRoute) indexNavigate(null, false);
         },
         ([phase]) => indexPhase == null && route?.[0] === phase
       )}
       {putItems(
         indexNav,
         () => {
-          const routing = indexNavigate(["other"]);
-          navigate(null, false, () => routing);
+          indexNavigate(["other"]);
+          navigate(null, false);
         },
         () => indexPhase != null
       )}

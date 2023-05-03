@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SokiStatistic } from "../../../back/complect/soki/soki.model";
 import { AppName, appNames } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
-import { NavRouting } from "../../complect/nav-configurer/Navigation.model";
 import {
   Auth, IndexApplication, IndexState,
   IndexStateError
@@ -16,7 +15,6 @@ const app = indexStorage.getOr("currentApp", defaultAppName);
 const currentApp = appNames.includes(app) ? app : defaultAppName;
 
 const initialState: IndexState = {
-  routing: indexStorage.getOr("routing", null),
   currentApp,
   appVersion: indexStorage.get("appVersion"),
   auth: indexStorage.get('auth'),
@@ -32,9 +30,6 @@ export const slice = createSlice({
   name: "index",
   initialState,
   reducers: {
-    updateIndexRouting: (state, action: PayloadAction<NavRouting>) => {
-      state.routing = action.payload;
-    },
     updateIndexStatistic: (state, action: PayloadAction<SokiStatistic | null>) => {
       state.statistic = action.payload;
     },
@@ -71,7 +66,6 @@ export const slice = createSlice({
 });
 
 export const {
-  updateIndexRouting,
   updateIndexStatistic,
   setError,
   setCurrentApp,

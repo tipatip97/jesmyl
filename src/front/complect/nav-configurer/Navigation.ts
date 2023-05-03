@@ -1,21 +1,22 @@
 import { ReactNode } from "react";
+import { AppName } from "../../app/App.model";
+import { FreeRoutePath, RoutePhase, RoutePhasePoint, RoutePath } from "../../components/router/Router.model";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
-import { FreeNavRoute, INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, JumpByLink, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage, NavPhase, NavPhasePoint, NavRoute } from "./Navigation.model";
 import { qrCodeMaster } from "../qr-code/QRCodeMaster";
-import { AppName } from "../../app/App.model";
+import { INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, JumpByLink, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage } from "./Navigation.model";
 
 export class NavigationConfig<Storage, NavData = {}> implements INavigationConfig<NavigationStorage<Storage>, NavData> {
     appName: AppName;
     root: (content: ReactNode) => JSX.Element;
-    rootPhase: NavPhase | null;
+    rootPhase: RoutePhase | null;
     routes: INavigationRouteRootItem<NavData>[];
     exer?: Exer<NavigationStorage<Storage>>;
     logo?: EvaIconName;
-    endPoints: [NavPhasePoint, NavPhase[]][];
+    endPoints: [RoutePhasePoint, RoutePhase[]][];
     jumpByLink?: JumpByLink<NavData>;
     private _data?: Partial<NavData>;
-    private onGeneralFooterButtonClicks: Record<NavPhase, Record<string, () => void>> = {};
+    private onGeneralFooterButtonClicks: Record<RoutePhase, Record<string, () => void>> = {};
 
     constructor(appName: AppName, { routes, root, rootPhase, exer, logo, jumpByLink }: INavigationConfig<NavigationStorage<Storage>, NavData>) {
         this.appName = appName;
@@ -33,7 +34,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
     private set data(data) { this._data = data; }
     setData(data: Partial<NavData>) { this.data = { ...this.data, ...data }; }
 
-    invokeGeneralFooterButtonClickListeners(listenLine: NavPhase) {
+    invokeGeneralFooterButtonClickListeners(listenLine: RoutePhase) {
         Object.values(this.onGeneralFooterButtonClicks[listenLine] || {}).forEach(cb => cb());
     }
 
@@ -41,7 +42,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
         qrCodeMaster.shareData(this.appName, dataName as never, value, externalData)
     }
 
-    onGeneralFooterButtonClick(listenLine: NavPhase, listenerName: string) {
+    onGeneralFooterButtonClick(listenLine: RoutePhase, listenerName: string) {
         return (cb: () => void) => {
             this.onGeneralFooterButtonClicks[listenLine] ??= {};
             this.onGeneralFooterButtonClicks[listenLine][listenerName] = cb;
@@ -52,7 +53,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
     }
 
     fillEndPoints() {
-        const endPoints: [NavPhasePoint, NavPhase[]][] = [];
+        const endPoints: [RoutePhasePoint, RoutePhase[]][] = [];
         this.forEachPhase({
             slideBy: NavigationForEachPhaseSlideBy.Each,
             onNextRelative: (item, route) => {
@@ -66,8 +67,8 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
         return endPoints;
     }
 
-    checkRoutes(routes: INavigationRouteItem<NavData>[], phases: NavPhase[] = []) {
-        const stack: NavPhase[] = [];
+    checkRoutes(routes: INavigationRouteItem<NavData>[], phases: RoutePhase[] = []) {
+        const stack: RoutePhase[] = [];
         routes.forEach(({ phase: [phase], next }) => {
             if (stack.indexOf(phase) > -1)
                 throw Error(`На уровне "/${phases.join('/')}" найдены одинаковые ключи фазы "${phase}"`);
@@ -77,16 +78,16 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
         });
     }
 
-    isRoutePosible(route?: FreeNavRoute): boolean {
-        if (route == null) return false;
+    isPathPosible(path?: FreeRoutePath): boolean {
+        if (path == null) return false;
 
         let item: INavigationRouteItem<NavData> | nil;
         let items: INavigationRouteItem<NavData>[] = this.routes;
 
-        for (let phasei = 0; phasei < route.length; phasei++) {
-            const currPhase = route[phasei];
+        for (let phasei = 0; phasei < path.length; phasei++) {
+            const currPhase = path[phasei];
             item = items.find(({ phase: [phase] }) => currPhase === phase);
-            if (phasei === (route.length - 1)) break;
+            if (phasei === (path.length - 1)) break;
 
             if (item?.next) items = item.next;
             else {
@@ -99,7 +100,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
     }
 
     forEachPhase({ currentRoute, isEndPoint, onNextRelative, slideBy = NavigationForEachPhaseSlideBy.InlineEach }: NavigationForEachPhaseProps<NavData>) {
-        const makeRoute = (topRoute: NavRoute, routes?: INavigationRouteChildItem<NavData>[], deep?: number): NavRoute | nil => {
+        const makeRoute = (topRoute: RoutePath, routes?: INavigationRouteChildItem<NavData>[], deep?: number): RoutePath | nil => {
             if (!routes) return null;
             for (let routei = 0; routei < routes.length; routei++) {
                 const route = routes[routei];
@@ -146,10 +147,10 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
             makeRoute([], this.routes, 0);
     }
 
-    getJumpToRoute(currentRoute?: FreeNavRoute, phasePoint?: NavPhasePoint): NavRoute | nil {
+    getJumpToRoute(currentRoute?: FreeRoutePath, phasePoint?: RoutePhasePoint): RoutePath | nil {
         const currRoute = currentRoute || [];
         let retRoute;
-        const setSearches = (route?: FreeNavRoute) => {
+        const setSearches = (route?: FreeRoutePath) => {
             if (route) {
                 route[route.length - 1] = route[route.length - 1];
             }
@@ -169,20 +170,20 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
         return setSearches(retRoute);
     }
 
-    getGoToRoute(route: NavRoute, phase: NavPhase | NavPhase[], relativePoint?: NavPhasePoint | nil) {
+    getGoToRoute(route: RoutePath, phase: RoutePhase | RoutePhase[], relativePoint?: RoutePhasePoint | nil): RoutePath | und {
         let item: INavigationRouteItem<NavData> | nil;
         let items: INavigationRouteItem<NavData>[] = this.routes;
-        const newRoute: NavPhase[] = [];
+        const newRoute: RoutePhase[] = [];
         const line = [route, phase].flat();
 
-        const addRelatives = (point?: NavPhase | nil) => {
+        const addRelatives = (point?: RoutePhase | nil) => {
             if (typeof item?.node === 'function') {
                 item = (point
                     ? item.next?.find(({ phase: [phase] }) => phase === point)
                     : item.defaultChild != null
                         ? item.next?.find(({ phase: [phase] }) => phase === item?.defaultChild) ?? item.next?.[0]
                         : item.next?.[0]) as INavigationRouteItem<NavData>;
-                const relativePhase: NavPhasePoint | nil = item?.phase;
+                const relativePhase: RoutePhasePoint | nil = item?.phase;
 
                 if (relativePhase != null) {
                     newRoute.push(relativePhase[0]);
@@ -214,7 +215,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
         return newRoute;
     }
 
-    getGoBackRoute(route: NavRoute): NavPhase[] {
+    getGoBackRoute(route: RoutePath): RoutePhase[] {
         let item: INavigationRouteItem<NavData> | nil;
         let items: INavigationRouteItem<NavData>[] | nil = this.routes;
         let line: INavigationRouteItem<NavData>[] = [];
@@ -238,19 +239,19 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
         return line.map(({ phase: [phase] }) => phase);
     }
 
-    findContent(route?: FreeNavRoute, onImpossible?: () => void): ReactNode {
-        if (!this.isRoutePosible(route)) {
-            if (route) console.error(`Фаза "/${route.join('/')}" не существует!`);
+    findContent(path?: FreeRoutePath, onImpossible?: () => void): ReactNode {
+        if (!this.isPathPosible(path)) {
+            if (path) console.error(`Фаза "/${path.join('/')}" не существует!`);
             setTimeout(() => onImpossible?.());
             return null;
         }
 
-        const findContent = (route: FreeNavRoute | undefined, navigationItems: INavigationRouteItem<NavData>[]): ReactNode => {
+        const findContent = (path: FreeRoutePath | undefined, navigationItems: INavigationRouteItem<NavData>[]): ReactNode => {
             let items: INavigationRouteItem<NavData>[] | nil = navigationItems;
             let throwItem: INavigationRouteChildItem<NavData> | nil;
-            const throwRoute = route?.slice(0) || [];
+            const throwRoute = path?.slice(0) || [];
 
-            const item: INavigationRouteItem<NavData> | nil = route?.reduce<INavigationRouteItem<NavData> | nil>((_, phase) => {
+            const item: INavigationRouteItem<NavData> | nil = path?.reduce<INavigationRouteItem<NavData> | nil>((_, phase) => {
                 if (throwItem) return throwItem;
                 const item = (items as INavigationRouteChildItem<NavData>[])?.find(({ phase: [currPhase] }) => currPhase === phase);
                 items = item?.next as never;
@@ -274,7 +275,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
                 : null;
         };
 
-        const content = findContent(route, this.routes);
+        const content = findContent(path, this.routes);
         if (content == null) onImpossible?.();
         return content;
     }

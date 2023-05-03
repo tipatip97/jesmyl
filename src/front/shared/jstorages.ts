@@ -6,6 +6,7 @@ import cm from "../components/apps/cm/cmStorage";
 import leader from "../components/apps/leader/leaderStorage";
 import gamer from "../components/apps/gamer/gamerStorage";
 import index from "../components/index/indexStorage";
+import router from "../components/router/routerStorage";
 
 interface Sto { }
 const stub: JStorage<NavigationStorage<Sto>> = new JStorage<NavigationStorage<Sto>>('complect');
@@ -15,7 +16,8 @@ export const appStorage: Record<JStorageName, JStorage<any>> = {
     tuner: stub,
     admin,
     gamer,
-    complect: stub,
     cm,
     leader,
+    complect: stub,
+    router,
 };

@@ -2,30 +2,30 @@ import { EvaIconName } from "../../../../complect/eva-icon/EvaIcon";
 import {
   INavigationRouteChildItem,
   INavigationRouteRootItem,
-  NavPhasePoint,
 } from "../../../../complect/nav-configurer/Navigation.model";
+import { RoutePhasePoint } from "../../../router/Router.model";
 import { CmNavData } from "../Cm.model";
 import TheComposition from "../col/com/TheComposition";
 import Translations from "../translation/Translation";
+import Editor from "./Editor";
+import ChordRedactor from "./chord-redactor/ChordRedactor";
 import EditCategories from "./col/categories/EditCategories";
 import EditCategory from "./col/categories/EditCategory";
-import CategoryBinds from "./col/compositions/complect/CategoryBinds";
-import ChordApplicationsRedactor from "./col/compositions/complect/chord-applications/ChordApplicationsRedactor";
-import EditableCompositionMain from "./col/compositions/complect/EditableCompositionMain";
-import OrdersRedactor from "./col/compositions/complect/orders/OrdersRedactor";
-import TextsChordsRedactor from "./col/compositions/complect/texts_chords-redactor/TextsChordsRedactor";
-import ComOnTranslations from "./col/compositions/complect/ComOnTranslations";
-import EditableCompositionWatch from "./col/compositions/complect/Watch";
 import EditComposition from "./col/compositions/EditComposition";
 import EditCompositions from "./col/compositions/EditCompositions";
+import CategoryBinds from "./col/compositions/complect/CategoryBinds";
+import ComOnTranslations from "./col/compositions/complect/ComOnTranslations";
+import EditableCompositionMain from "./col/compositions/complect/EditableCompositionMain";
+import EditableCompositionWatch from "./col/compositions/complect/Watch";
+import ComAudio from "./col/compositions/complect/audio/ComAudio";
+import ChordApplicationsRedactor from "./col/compositions/complect/chord-applications/ChordApplicationsRedactor";
+import OrdersRedactor from "./col/compositions/complect/orders/OrdersRedactor";
+import TextsChordsRedactor from "./col/compositions/complect/texts_chords-redactor/TextsChordsRedactor";
 import ComRepeats from "./col/compositions/repeats/ComRepeats";
-import Editor from "./Editor";
 import EERules from "./ee-rules/EERules";
+import ExecsVisor from "./execs/ExecsVisor";
 import EditMeetings from "./meetings/EditMeetings";
 import EditMeetingsEvent from "./meetings/EditMeetingsEvent";
-import ExecsVisor from "./execs/ExecsVisor";
-import ComAudio from "./col/compositions/complect/audio/ComAudio";
-import ChordRedactor from "./chord-redactor/ChordRedactor";
 import Mp3RulesRedactor from "./mp3-rule-redactor/Mp3RulesRedactor";
 
 export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
@@ -104,8 +104,8 @@ export const editCompositionNavs: INavigationRouteChildItem<CmNavData, {
     },
   ];
 
-export const editComNavPhasePoint: NavPhasePoint = ["com"];
-export const editEventNavPhasePoint: NavPhasePoint = ["event"];
+export const editComNavPhasePoint: RoutePhasePoint = ["com"];
+export const editEventNavPhasePoint: RoutePhasePoint = ["event"];
 
 export const editorRouteItems: INavigationRouteChildItem<CmNavData, {
   title: string;

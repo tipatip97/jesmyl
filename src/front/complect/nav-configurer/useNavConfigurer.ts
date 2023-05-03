@@ -1,110 +1,96 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppName } from "../../app/App.model";
-import { updateIndexRouting } from "../../components/index/Index.store";
-import indexStorage from "../../components/index/indexStorage";
+import { RouteCast, RoutePathVariated, RoutePhasePoint, RoutePhasePointVariated, RoutePlaceVariated } from "../../components/router/Router.model";
+import { routerFixNavigateCast, routerFixNavigateData } from "../../components/router/Router.store";
 import { RootState } from "../../shared/store";
 import mylib from "../my-lib/MyLib";
 import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
-import { NavPhasePoint, NavPhasePointVariated, NavPlaceVariated, NavRouteVariated, NavRouting, NavigationStorage, UseNavAction } from "./Navigation.model";
+import { NavigationStorage, UseNavAction } from "./Navigation.model";
 
-export default function useNavConfigurer<Storage, NavData = {}>(
+const routerStoreSelector = (state: RootState) => state.router;
+
+export default function useNavConfigurer<Storage, NavDataNative = {}>(
     appName: AppName,
     actions: UseNavAction[],
-    nav: NavigationConfig<NavigationStorage<Storage>, NavData>,
+    nav: NavigationConfig<NavigationStorage<Storage>, NavDataNative>,
 ) {
+    type NavData = Partial<NavDataNative>;
+
     const dispatch = useDispatch();
     const [isFullScreen, switchFullscreen] = useFullScreen();
-    const indexRouting = useSelector((state: RootState) => state.index.routing);
-    const appRouting = indexRouting?.[appName];
-    const route = appRouting?.current == null ? null : appRouting.routes.find(([phase]) => appRouting.current === phase);
-    const appRouteData = (appRouting?.data || {}) as Partial<NavData>;
+    const routerStore = useSelector(routerStoreSelector);
+    const appRouteCast = routerStore[appName];
+    const route = appRouteCast?.last === undefined ? null : appRouteCast.net.find(([phase]) => appRouteCast.last === phase);
+    const appRouteData = routerStore[`${appName}.data`] as NavData || {};
 
     const ret = {
         nav,
         route,
         navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
         appRouteData,
-        setAppRouteData: (data: Partial<NavData> | ((prev: Partial<NavData>) => Partial<NavData>), isPreventSave?: boolean, isLocalStorageData?: boolean) => {
-            const theRouting = isLocalStorageData ? indexStorage.get('routing') : indexRouting;
-            const appRouting = theRouting?.[appName];
-
-            const routing = {
-                ...theRouting,
-                [appName]: {
-                    ...appRouting,
-                    data: {
-                        ...appRouting?.data,
-                        ...(mylib.isFunc(data) ? data(appRouteData) : data),
-                    }
+        setAppRouteData: (data: NavData | ((prev?: NavData) => NavData), isPreventSave?: boolean) => {
+            dispatch(routerFixNavigateData({
+                appName,
+                isPreventSave,
+                value: {
+                    ...appRouteData,
+                    ...(mylib.isFunc(data) ? data(appRouteData) : data),
                 }
-            };
-
-            dispatch(updateIndexRouting(routing));
-            if (isPreventSave) return;
-            indexStorage.set('routing', routing);
+            }));
         },
-        navigate: (topRoute: NavRouteVariated<NavData>, isPreventSave?: boolean, routingData?: (currentRouting: NavRouting | null, localData?: NavRouting | null) => NavRouting | nil): NavRouting | und => {
-            const theRoute = mylib.isArr(topRoute) ? topRoute : topRoute?.route ?? null;
-            const theData = mylib.isArr(topRoute) ? null : topRoute?.data;
+        navigate: (pathSlice: RoutePathVariated<NavData>, isPreventSave?: boolean) => {
+            const routePath = mylib.isArr(pathSlice) ? pathSlice : pathSlice?.path;
 
-            const route = theRoute && nav.getGoToRoute([], theRoute);
+            const path = routePath && nav.getGoToRoute([], routePath);
 
-            if (route || theRoute === null) {
-                const theRouting = routingData?.(indexRouting, indexStorage.get('routing')) ?? indexRouting;
-                const appRouting = theRouting?.[appName];
+            if (path || routePath === undefined) {
+                let net = appRouteCast?.net || [];
+                let last = routePath === undefined ? undefined : appRouteCast?.last;
 
-                let routes = appRouting?.routes || [];
-                let current = theRoute === null ? null : appRouting?.current;
+                if (pathSlice && !mylib.isArr(pathSlice))
+                    ret.setAppRouteData(pathSlice.data);
 
-                if (route) {
-                    const [generalPhase] = route;
+                if (path) {
+                    const [generalPhase] = path;
 
-                    if (generalPhase === current) {
+                    if (generalPhase === last) {
                         nav.invokeGeneralFooterButtonClickListeners(generalPhase);
                     }
 
-                    if (theRoute.length > 1 || generalPhase === current) {
-                        routes = routes.filter(([phase]) => generalPhase !== phase).concat([route]);
+                    if (routePath.length > 1 || generalPhase === last) {
+                        net = net.filter(([phase]) => generalPhase !== phase).concat([path]);
                     } else {
-                        routes = routes.some(([phase]) => generalPhase === phase) ? routes : routes.concat([route]);
+                        net = net.some(([phase]) => generalPhase === phase) ? net : net.concat([path]);
                     }
 
-                    current = generalPhase;
+                    last = generalPhase;
                 }
 
-                const routing = {
-                    ...theRouting,
-                    [appName]: {
-                        ...appRouting,
-                        current,
-                        routes,
-                        data: {
-                            ...appRouting?.data,
-                            ...theData,
-                        }
-                    }
+                const value: RouteCast = { ...appRouteCast, last, net };
+
+                const fix = {
+                    appName,
+                    isPreventSave,
+                    value,
                 };
 
-                dispatch(updateIndexRouting(routing));
-                if (isPreventSave) return routing;
-                indexStorage.set('routing', routing);
-                return routing;
+                dispatch(routerFixNavigateCast(fix));
             }
         },
-        goTo: (topPhase: NavPlaceVariated<NavData>, relativePoint?: NavPhasePoint | nil, isPreventSave?: boolean) => {
+        goTo: (topPhase: RoutePlaceVariated<NavData>, relativePoint?: RoutePhasePoint | nil, isPreventSave?: boolean) => {
             const phase = mylib.isArr(topPhase) || mylib.isStr(topPhase) ? topPhase : topPhase.place;
             const data = mylib.isArr(topPhase) || mylib.isStr(topPhase) ? null : topPhase?.data;
 
-            const newRoute = nav.getGoToRoute(ret.route || [], phase, relativePoint);
-            if (newRoute) ret.navigate(data ? { route: newRoute, data } : newRoute, isPreventSave);
+            const path = nav.getGoToRoute(ret.route || [], phase, relativePoint);
+            if (path) ret.navigate(data ? { path, data } : path, isPreventSave);
         },
-        jumpTo: (phasePoint: NavPhasePointVariated<NavData>, isPreventSave?: boolean) => {
+        jumpTo: (phasePoint: RoutePhasePointVariated<NavData>, isPreventSave?: boolean) => {
             const point = mylib.isArr(phasePoint) ? phasePoint : phasePoint?.phase;
             const data = mylib.isArr(phasePoint) ? null : phasePoint?.data;
 
-            const newRoute = nav.getJumpToRoute(ret.route, point);
-            if (newRoute) ret.navigate(data ? { route: newRoute, data } : newRoute, isPreventSave);
+            const path = nav.getJumpToRoute(ret.route, point);
+            if (path) ret.navigate(data ? { path, data } : path, isPreventSave);
         },
         registerBackAction: (action: UseNavAction) => {
             actions.unshift(action);

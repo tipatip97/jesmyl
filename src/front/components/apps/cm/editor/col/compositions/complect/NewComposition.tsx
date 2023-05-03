@@ -3,9 +3,9 @@ import { CmMp3Rule } from "../../../../../../../../back/apps/cm/CmBackend.model"
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import useExer from "../../../../../../../complect/exer/useExer";
 import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
-import { NavPhase } from "../../../../../../../complect/nav-configurer/Navigation.model";
-import useCmNav from "../../../../base/useCmNav";
+import { RoutePhase } from "../../../../../../router/Router.model";
 import { cmExer } from "../../../../Cm.store";
+import useCmNav from "../../../../base/useCmNav";
 import EditContainerCorrectsInformer from "../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
 import { useEditableCols } from "../../useEditableCols";
 import { EditableCom } from "../EditableCom";
@@ -42,7 +42,7 @@ export default function NewComposition({ close }: { close: () => void }) {
     close();
   };
 
-  const publicate = (phase?: NavPhase) => {
+  const publicate = (phase?: RoutePhase) => {
     if (cols?.addCom(com)) {
       com.publicate(() => goToRoute(phase, false));
       exec();

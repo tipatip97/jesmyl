@@ -5,8 +5,9 @@ import navConfigurers from "../shared/navConfigurers";
 import { RootState } from "../shared/store";
 import { soki } from "../soki";
 import { MyLib } from "./my-lib/MyLib";
-import { JumpByLinkAlt, NavRouteVariated } from "./nav-configurer/Navigation.model";
+import { JumpByLinkAlt } from "./nav-configurer/Navigation.model";
 import useNavConfigurer from "./nav-configurer/useNavConfigurer";
+import { RoutePathVariated } from "../components/router/Router.model";
 
 const appsSelector = (state: RootState) => state.index.apps;
 const currentAppSelector = (state: RootState) => state.index.currentApp;
@@ -30,14 +31,14 @@ export default function useApps<NavData>() {
             key?: Key,
             value?: NavData[Key]
         ) => {
-            const jump = (phase?: NavRouteVariated<NavData>) => {
+            const jump = (phase?: RoutePathVariated<NavData>) => {
                 soki.setAppName(appName);
                 soki.onAppChange(appName);
                 dispatch(setCurrentApp(appName));
                 const rootPhase = appConfigs[appName].nav.rootPhase;
                 if (rootPhase || phase) {
-                    const routing = appConfigs[appName].navigate(phase ?? [rootPhase!]);
-                    appConfigs.index.navigate(null, false, () => routing);
+                    appConfigs[appName].navigate(phase ?? [rootPhase!]);
+                    appConfigs.index.navigate(null, false, );
                 }
             };
 

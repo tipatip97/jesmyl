@@ -4,30 +4,27 @@ import useIndexNav from "../components/index/complect/useIndexNav";
 import navConfigurers from "../shared/navConfigurers";
 import { AppName } from "./App.model";
 
-export default function AppRouter({ app }: { app: AppName }) {
+export default function AppRouter({ appName }: { appName: AppName }) {
   const {
     route: indexRoute,
     goBack: indexGoBack,
     nav: indexNav,
   } = useIndexNav();
   const { route, nav, goBack, navigateToRoot } =
-    navConfigurers[app || "index"]();
+    navConfigurers[appName || "index"]();
 
   onBackButton.listen("app-router-listener", () => {
-    if (!app || app === "index") indexGoBack();
+    if (!appName || appName === "index") indexGoBack();
     goBack();
   });
   useEffect(() => () => onBackButton.mute("app-router-listener"), []);
 
   const appContent = useMemo(
-    () =>
-      indexRoute != null
-        ? null
-        : nav.findContent(route, () => navigateToRoot()),
+    () => indexRoute != null ? null : nav.findContent(route, () => navigateToRoot()),
     [indexRoute, route, nav]
   );
   const indexContent = useMemo(
-    () => (indexRoute == null ? null : indexNav.findContent(indexRoute)),
+    () => indexRoute == null ? null : indexNav.findContent(indexRoute),
     [indexRoute, indexNav]
   );
 

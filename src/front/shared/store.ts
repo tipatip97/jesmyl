@@ -5,6 +5,7 @@ import { leaderReducer } from '../components/apps/leader/Leader.store';
 import { gamerReducer } from '../components/apps/gamer/Gamer.store';
 import { tunerReducer } from '../components/apps/tuner/Tuner.store';
 import { indexReducer } from '../components/index/Index.store';
+import { routerReducer } from '../components/router/Router.store';
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         cm: cmReducer,
         complect: complectReducer,
         leader: leaderReducer,
+        router: routerReducer,
     },
 });
 

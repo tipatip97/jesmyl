@@ -1,10 +1,10 @@
 import { NavigationConfig } from "../../../../complect/nav-configurer/Navigation";
 import {
   INavigationRouteChildItem,
-  NavPhasePoint,
   UseNavAction
 } from "../../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../../complect/nav-configurer/useNavConfigurer";
+import { RoutePhasePoint } from "../../../router/Router.model";
 import CmApplication from "../Cm";
 import { CmNavData, CmStorage } from "../Cm.model";
 import { cmExer } from "../Cm.store";
@@ -18,13 +18,13 @@ import TheMeetingsEvent from "../lists/meetings/TheMeetingsEvent";
 import SelectedComs from "../lists/selected-coms/SelectedComs";
 import Translations from "../translation/Translation";
 
-export const translationNavPoint: NavPhasePoint = ["translation"];
+export const translationNavPoint: RoutePhasePoint = ["translation"];
 const translationNav: INavigationRouteChildItem<CmNavData> = {
   phase: translationNavPoint,
   node: <Translations />,
 };
 
-export const comNavPhasePoint: NavPhasePoint = ["com"];
+export const comNavPhasePoint: RoutePhasePoint = ["com"];
 
 const comNav: INavigationRouteChildItem<CmNavData> = {
   phase: comNavPhasePoint,
@@ -41,9 +41,9 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
   exer: cmExer,
   jumpByLink: (key, value, alt) =>
     key === 'selectedComws'
-      ? { route: ['lists', 'selected'], data: { selectedComws: value as number[] } }
+      ? { path: ['lists', 'selected'], data: { selectedComws: value as number[] } }
       : key === 'ccomw'
-        ? { route: ['all', 'com'], data: { ccomw: value as number } }
+        ? { path: ['all', 'com'], data: { ccomw: value as number } }
         : alt.RootPhase,
   routes: [
     {

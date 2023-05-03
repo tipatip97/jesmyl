@@ -1,10 +1,8 @@
 import { LocalSokiAuth, SokiStatistic } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
 import { EvaIconName } from "../../complect/eva-icon/EvaIcon";
-import { NavRouting } from "../../complect/nav-configurer/Navigation.model";
 
 export interface IndexState {
-    routing: NavRouting | null,
     currentApp: AppName,
     appVersion?: number,
     auth: Auth | nil,

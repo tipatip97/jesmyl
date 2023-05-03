@@ -10,7 +10,6 @@ import { crossApplicationLinkCoder, jesmylHostName } from "../complect/qr-code/Q
 import listenThemeChanges from "../complect/theme-changer";
 import useApps from "../complect/useApps";
 import useFullScreen from "../complect/useFullscreen";
-import { IndexAppName } from "../components/index/Index.model";
 import { setAppVersion, updateIndexStatistic } from "../components/index/Index.store";
 import indexStorage from "../components/index/indexStorage";
 import navConfigurers from "../shared/navConfigurers";
@@ -25,10 +24,10 @@ const currentAppSelector = (state: RootState) => state.index.currentApp;
 
 function App() {
   const dispatch = useDispatch();
-  const app: IndexAppName = useSelector(currentAppSelector);
+  const appName = useSelector(currentAppSelector);
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const { goBack, registerBackAction } = navConfigurers[app]();
+  const { goBack, registerBackAction } = navConfigurers[appName || 'index']();
   const { apps, jumpToApp } = useApps();
 
   useEffect(() => {
@@ -68,7 +67,7 @@ function App() {
   return (
     <div className={`above-container ${keyboardOpen ? "keyboard-open" : ""}`}>
       <div
-        className={`application-container app_${app || "index"}${isFullscreen ? " fullscreen-mode" : ""}`}
+        className={`application-container app_${appName}${isFullscreen ? " fullscreen-mode" : ""}`}
       >
         <EvaIcon
           name="collapse-outline"
@@ -85,8 +84,8 @@ function App() {
         <ABSOLUTE__FLOAT__POPUP
           onOpen={(close) => registerBackAction(() => close())}
         />
-        <AppRouter app={app} />
-        <AppFooter app={app} />
+        <AppRouter appName={appName} />
+        <AppFooter appName={appName} />
       </div>
       <KEYBOARD_FLASH
         onFocus={(input) => {
