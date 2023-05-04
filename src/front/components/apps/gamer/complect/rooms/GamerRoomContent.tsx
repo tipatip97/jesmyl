@@ -36,11 +36,8 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
     topClass="gamer-room"
     headTitle={`${namePrefix || ''}Комната ${room?.name ? ` - ${room.name}` : ""}`}
     headClass="flex between"
-    head={
-      isManager && <EvaButton
-        name="more-vertical"
-        className="margin-gap"
-        onClick={() => {
+    onMoreClick={isManager
+      ? () => {
           openAbsoluteBottomPopup(
             prepareAbsoluteBottomPopupContent({
               items: [
@@ -60,16 +57,15 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
                       room &&
                       (await modalService.confirm(`Удалить комнату ${room.name}?`))
                     ) {
-                      await onRoomRemove(room.w);
+                      onRoomRemove(room.w);
                       goBack();
                     }
                   },
                 }
               ]
             }))
-        }}
-      />
-    }
+        }
+      : undefined}
     content={
       <>
         {!room

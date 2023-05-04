@@ -8,7 +8,6 @@ export default function PhaseContainerConfigurer(
   const {
     topClass,
     head,
-    noHead,
     content,
     contentRef,
     withoutBackButton,
@@ -16,15 +15,14 @@ export default function PhaseContainerConfigurer(
     headTitle,
     contentClass,
     goBack,
+    onMoreClick,
   } = props;
 
-  const backButton = (
-    <EvaIcon
-      name="arrow-back"
-      className="action-button"
-      onClick={() => goBack(true)}
-    />
-  );
+  const backButton = <EvaIcon
+    name="arrow-back"
+    className="action-button"
+    onClick={() => goBack(true)}
+  />;
 
   const title = headTitle && (
     <span
@@ -34,48 +32,45 @@ export default function PhaseContainerConfigurer(
       {headTitle}
     </span>
   );
+
   const titled = () => {
-    return title ? (
-      <div className="flex between">
+    return title
+      ? <div className="flex between">
         {backButton}
         {title}
       </div>
-    ) : (
-      backButton
-    );
+      : backButton;
   };
 
+  const headNode = typeof head === "function"
+    ? <>{head(backButton, title)}</>
+    : head == null
+      ? withoutBackButton
+        ? title
+        : titled()
+      : withoutBackButton
+        ? <>{title}{head}</>
+        : <>
+          {titled()}
+          {typeof head === "string"
+            ? <span className="pointer" onClick={() => goBack(true)}>{head}</span>
+            : head}
+        </>
+
   return (
-    <div className={`phase-container ${topClass} ${props.className || ""}`}>
-      {noHead ? null : (
-        <div className={`header ${headClass || "flex"}`}>
-          {typeof head === "function" ? (
-            <>{head(backButton, title)}</>
-          ) : head == null ? (
-            withoutBackButton ? (
-              title
-            ) : (
-              titled()
-            )
-          ) : withoutBackButton ? (
-            <>
-              {title}
-              {head}
-            </>
-          ) : (
-            <>
-              {titled()}
-              {typeof head === "string" ? (
-                <span className="pointer" onClick={() => goBack(true)}>
-                  {head}
-                </span>
-              ) : (
-                head
-              )}
-            </>
-          )}
-        </div>
-      )}
+    <div className={`phase-container ${topClass}`}>
+      <div className="header flex between full-width">
+        {onMoreClick
+          ? <>
+            <span className={headClass || "flex"}>{headNode}</span>
+            <EvaIcon
+              className="action-button"
+              name="more-vertical"
+              onClick={onMoreClick}
+            />
+          </>
+          : headNode}
+      </div>
       <div className={`content ${contentClass || ""}`} ref={contentRef}>
         {content}
       </div>

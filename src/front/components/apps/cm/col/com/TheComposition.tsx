@@ -59,32 +59,21 @@ export default function TheComposition() {
   return (
     <PhaseCmContainer
       topClass={`composition-container ${playerHideMode && comAudio ? `with-open-player ${playerHideMode}` : ''}`}
-      headClass="flex between"
+      headClass="flex between full-width"
       contentClass="composition-content"
       headTitle={ccom.number}
       contentRef={comListElem}
-      head={
-        <>
-          <div className="flex">
-            <div className="com-actions-pannel">
-              {topTools.map(({ icon, onClick, tool }) => (
-                <EvaIcon
-                  key={tool}
-                  name={icon}
-                  className="action-button"
-                  onClick={() => onClick()}
-                />
-              ))}
-            </div>
-
-            <EvaIcon
-              className="action-button"
-              name="more-vertical"
-              onClick={() => openAbsoluteBottomPopup(<ComTools />, false)}
-            />
-          </div>
-        </>
-      }
+      onMoreClick={() => openAbsoluteBottomPopup(<ComTools />, false)}
+      head={<div className="com-actions-pannel">
+        {topTools.map(({ icon, onClick, tool }) => (
+          <EvaIcon
+            key={tool}
+            name={icon}
+            className="action-button"
+            onClick={() => onClick()}
+          />
+        ))}
+      </div>}
       content={<>
         {comAudio && <ComPlayer src={comAudio} split />}
         <RollControled>
