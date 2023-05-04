@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
+import { riseUpMeetingsUpdate } from "../../Cm.store";
 import useCmNav from "../../base/useCmNav";
-import { riseUpMeetingsUpdate, setCurrentEventw } from "../../Cm.store";
-import cmStorage from "../../cmStorage";
 import { IExportableMeetings } from "../../lists/meetings/Meetings.model";
 import { useEditableCols } from "../col/useEditableCols";
 import { editEventNavPhasePoint } from "../editorNav";
@@ -15,14 +14,12 @@ let currentEvent: EditableMeetingsEvent | nil;
 
 const numMeetingsUpdateSelector = (state: RootState) => state.cm.numMeetingsUpdate;
 const meetingsSelector = (state: RootState) => state.cm.meetings;
-const eventwSelector = (state: RootState) => state.cm.eventw;
 
 export function useEditableMeetings() {
     const dispatch = useDispatch();
     useSelector(numMeetingsUpdateSelector);
     const meetings = useSelector(meetingsSelector);
-    const eventw = useSelector(eventwSelector);
-    const { jumpTo } = useCmNav();
+    const { jumpTo, appRouteData: { eventw } } = useCmNav();
     const [cols] = useEditableCols();
 
     useEffect(() => {
@@ -46,9 +43,7 @@ export function useEditableMeetings() {
         },
         goToEvent: (eventw: number) => {
             setCurrEvent(eventw);
-            dispatch(setCurrentEventw(eventw));
-            jumpTo(editEventNavPhasePoint);
-            cmStorage.set('eventw', eventw);
+            jumpTo({ phase: editEventNavPhasePoint, data: { eventw } });
         },
     };
 }

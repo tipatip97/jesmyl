@@ -35,7 +35,6 @@ export enum ChordVisibleVariant {
 export type FavoriteMeetings = Record<'events' | 'contexts', number[]>;
 
 export interface CmStoraged extends CmEditorStoraged {
-    eventw?: number,
     laterComwList: number[],
     chordVisibleVariant: ChordVisibleVariant,
     marks: number[],
@@ -45,7 +44,6 @@ export interface CmStoraged extends CmEditorStoraged {
     isShowTranslationInfo: boolean,
     favoriteMeetings: FavoriteMeetings,
     comTopTools: MigratableComToolName[],
-    currentMeetingsContext: number[],
     isMiniAnchor: boolean,
     playerHideMode: PlayerHideMode,
 }
@@ -73,5 +71,7 @@ export interface CmNavData {
     selectedComws: number[],
     ccomw: number,
     ccatw: number,
+    eventw: number,
+    eventContext: number[],
 }
 

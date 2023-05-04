@@ -4,14 +4,10 @@ import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
 import useCmNav from "../../base/useCmNav";
-import {
-  updateCurrentMeetingsContext,
-  updateFavoriteMeetings,
-} from "../../Cm.store";
+import { updateFavoriteMeetings } from "../../Cm.store";
 import { Meetings } from "./Meetings";
 
 const favoriteMeetingsSelector = (state: RootState) => state.cm.favoriteMeetings;
-const currentMeetingsContextSelector = (state: RootState) => state.cm.currentMeetingsContext;
 
 export default function MeetingsInner<Meets extends Meetings>({
   meetings,
@@ -23,17 +19,15 @@ export default function MeetingsInner<Meets extends Meetings>({
   onContextNavigate?: (context: number[]) => void;
 }) {
   const dispatch = useDispatch();
-  const { registerBackAction } = useCmNav();
+  const { registerBackAction, appRouteData: { eventContext = [] }, setAppRouteData } = useCmNav();
   const favorites = useSelector(favoriteMeetingsSelector);
-  const currContext = useSelector(currentMeetingsContextSelector);
-  const setCurrContext = (context: number[]) =>
-    dispatch(updateCurrentMeetingsContext(context));
+  const setCurrContext = (eventContext: number[]) => setAppRouteData({ eventContext });
 
   useEffect(() => {
-    onContextNavigate?.(currContext);
+    onContextNavigate?.(eventContext);
     const deregister = registerBackAction((isForceBack) => {
-      if (!isForceBack && currContext.length) {
-        setCurrContext(currContext.slice(0, -1));
+      if (!isForceBack && eventContext.length) {
+        setCurrContext(eventContext.slice(0, -1));
         return true;
       }
       return false;
@@ -41,16 +35,16 @@ export default function MeetingsInner<Meets extends Meetings>({
     return () => {
       deregister();
     };
-  }, [currContext, onContextNavigate]);
+  }, [eventContext, onContextNavigate]);
 
   if (!meetings) return null;
 
-  const [contexts, currContextw] = meetings.getContexts(currContext);
-  const names = currContext.map((context, contexti) => (
+  const [contexts, currContextw] = meetings.getContexts(eventContext);
+  const names = eventContext.map((context, contexti) => (
     <span
-      key={`context-${contexti}`}
+      key={contexti}
       className="pointer"
-      onClick={() => setCurrContext([...currContext].slice(0, contexti + 1))}
+      onClick={() => setCurrContext([...eventContext].slice(0, contexti + 1))}
     >
       {contexti ? " - " : ""}
       {meetings.names[context]}
@@ -63,7 +57,7 @@ export default function MeetingsInner<Meets extends Meetings>({
         <span onClick={() => setCurrContext([])}>Контекст: </span>
         {names.length ? names : "Все"}
       </div>
-      {currContext.length ? null : (
+      {eventContext.length ? null : (
         <>
           {favorites.events.map((eventw, eventwi) => {
             const event = meetings.events.find((event) => event.wid === eventw);
@@ -72,7 +66,7 @@ export default function MeetingsInner<Meets extends Meetings>({
 
             return (
               <BrutalItem
-                key={`event-${eventwi}`}
+                key={eventwi}
                 icon="calendar-outline"
                 title={event.name}
                 onClick={() => onEventClick(event)}
@@ -97,7 +91,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             if (!context) return null;
 
             return (
-              <div key={`context-${contextwi}`} className="relative">
+              <div key={contextwi} className="relative">
                 <BrutalItem
                   icon="folder-outline"
                   title={
@@ -123,12 +117,12 @@ export default function MeetingsInner<Meets extends Meetings>({
 
         return (
           <BrutalItem
-            key={`event-${eventi}`}
+            key={eventi}
             icon="calendar-outline"
             title={event.name}
             onClick={() => onEventClick(event)}
             box={
-              currContext.length ? (
+              eventContext.length ? (
                 <EvaIcon
                   name={isFavorite ? "star" : "star-outline"}
                   onClick={(e) => {
@@ -139,8 +133,8 @@ export default function MeetingsInner<Meets extends Meetings>({
                         ...favorites,
                         events: isFavorite
                           ? favorites.events.filter(
-                              (eventw) => eventw !== event.wid
-                            )
+                            (eventw) => eventw !== event.wid
+                          )
                           : [...favorites.events, event.wid],
                       })
                     );
@@ -156,12 +150,12 @@ export default function MeetingsInner<Meets extends Meetings>({
 
         return (
           <BrutalItem
-            key={`folder-${groupi}`}
+            key={groupi}
             icon="folder-outline"
             title={contextn}
-            onClick={() => setCurrContext([...currContext, contexti])}
+            onClick={() => setCurrContext([...eventContext, contexti])}
             box={
-              currContext.length ? (
+              eventContext.length ? (
                 <EvaIcon
                   name={isFavorite ? "star" : "star-outline"}
                   onClick={(e) => {
@@ -172,8 +166,8 @@ export default function MeetingsInner<Meets extends Meetings>({
                         ...favorites,
                         contexts: isFavorite
                           ? favorites.contexts.filter(
-                              (context) => context !== contextw
-                            )
+                            (context) => context !== contextw
+                          )
                           : [...favorites.contexts, contextw],
                       })
                     );

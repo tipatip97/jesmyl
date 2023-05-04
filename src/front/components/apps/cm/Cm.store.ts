@@ -21,7 +21,6 @@ const initialState: CmState = {
   rollModeMarks: false,
   marks: cmStorage.getOr('marks', []),
   meetings: cmStorage.get('meetings'),
-  eventw: cmStorage.get('eventw'),
   comFontSize: cmStorage.getOr('comFontSize', 15),
   chordTracks: cmStorage.getOr('chordTracks', {}),
   isShowTranslationInfo: cmStorage.getOr('isShowTranslationInfo', true),
@@ -31,7 +30,6 @@ const initialState: CmState = {
   translationBlockPosition: 'center',
   favoriteMeetings: cmStorage.getOr('favoriteMeetings', { contexts: [], events: [] }),
   comTopTools: cmStorage.getOr('comTopTools', ["mark-com", "fullscreen-mode"]),
-  currentMeetingsContext: cmStorage.getOr('currentMeetingsContext', []),
 
   numComUpdates: 0,
   numColsUpdates: 0,
@@ -67,15 +65,8 @@ export const slice = createSlice({
       state.comTopTools = action.payload;
       cmStorage.set('comTopTools', action.payload);
     },
-    updateCurrentMeetingsContext: (state, action: PayloadAction<number[]>) => {
-      state.currentMeetingsContext = action.payload;
-      cmStorage.set('currentMeetingsContext', action.payload);
-    },
     updateEditorExecList: (state, action: PayloadAction<Exec[]>) => {
       state.execs = action.payload;
-    },
-    setCurrentEventw: (state, action: PayloadAction<number>) => {
-      state.eventw = action.payload;
     },
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? state.isCmFullscreen;
@@ -146,9 +137,7 @@ export const {
   updateMeetingList,
   updateFavoriteMeetings,
   updateComTopTools,
-  updateCurrentMeetingsContext,
   updateEditorExecList,
-  setCurrentEventw,
   setComFontSize,
   setTranslationBlock,
   switchTranslationBlockVisible,

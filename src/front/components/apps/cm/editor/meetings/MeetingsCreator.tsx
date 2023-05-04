@@ -1,19 +1,17 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import useExer from "../../../../../complect/exer/useExer";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import { RootState } from "../../../../../shared/store";
 import { cmExer } from "../../Cm.store";
+import useCmNav from "../../base/useCmNav";
 import { useEditableMeetings } from "./useEditableMeetings";
-
-const currContextSelector = (state: RootState) => state.cm.currentMeetingsContext;
 
 export default function MeetingsCreator({ close }: { close: () => void }) {
   const [name, setName] = useState("");
   const { meetings } = useEditableMeetings();
   const { exec } = useExer(cmExer);
-  const currContext = useSelector(currContextSelector);
-  const [, currContextw] = meetings?.getContexts(currContext) || [];
+  const { appRouteData: { eventContext = [] } } = useCmNav();
+  
+  const [, currContextw] = meetings?.getContexts(eventContext) || [];
 
   return (
     <div className="full-container flex column full-height padding-big-gap center">
