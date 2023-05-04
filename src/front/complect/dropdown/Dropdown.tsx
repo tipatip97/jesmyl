@@ -12,6 +12,8 @@ export default function Dropdown<
     () => props.items.find((item) => item.id === selectedId),
     [props.items, selectedId]
   );
+  
+  useEffect(() => setId(props.id), [props.id]);
 
   useEffect(() => {
     const close = () => setDropped(false);
@@ -32,9 +34,7 @@ export default function Dropdown<
 
   return (
     <div
-      className={`dropdown-selector ${isDropped ? "dropped" : ""} ${
-        props.className || ""
-      }`}
+      className={`dropdown-selector ${isDropped ? "dropped" : ""} ${props.className || ""}`}
       onClick={(event) => {
         event.stopPropagation();
         setDropped(!isDropped);
@@ -52,9 +52,7 @@ export default function Dropdown<
           return (
             <div
               key={`dropdown-item ${item.id}`}
-              className={`list-item ${item.disabled ? "disabled" : ""} ${
-                item.color ? `colored color_${item.color}` : ""
-              }`}
+              className={`list-item ${item.disabled ? "disabled" : ""} ${item.color ? `colored color_${item.color}` : ""}`}
               onClick={(event) => {
                 event.stopPropagation();
                 setDropped(false);
