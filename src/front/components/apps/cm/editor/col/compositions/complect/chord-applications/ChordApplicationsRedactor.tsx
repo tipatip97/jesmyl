@@ -18,7 +18,7 @@ export default function ChordApplicationsRedactor() {
 
         return (
           <TheOrder
-            key={`order-${ordi}`}
+            key={ordi}
             orderUnit={ord}
             chordVisibleVariant={ChordVisibleVariant.Maximal}
             com={ccom}
@@ -30,17 +30,13 @@ export default function ChordApplicationsRedactor() {
                 (chords[textLinei]?.length || 0) - (linePoss?.length || 0);
 
               return (
-                <>
+                <div>
                   <div
-                    className={`pre binder ${
-                      linePoss?.indexOf(-1) > -1 ? "active" : ""
-                    }`}
-                    onClick={() => {
-                      exec(ord?.setChordPosition(textLinei, -1));
-                    }}
+                    className={`pre binder ${linePoss?.includes(-1) ? "active" : ""}`}
+                    onClick={() => exec(ord?.setChordPosition(textLinei, -1))}
                   />
                   <ComLine
-                    key={`line-${textLinei}`}
+                    key={textLinei}
                     {...props}
                     chordedOrd
                     orderUnit={ord}
@@ -66,24 +62,22 @@ export default function ChordApplicationsRedactor() {
                     }}
                   />
                   <div
-                    className={`post binder ${
-                      linePoss?.indexOf(-2) > -1 ? "active" : ""
-                    }`}
+                    className={'post binder'
+                      + (linePoss?.includes(-2) ? " active" : "")}
                     onClick={() => {
                       exec(ord?.setChordPosition(textLinei, -2));
                     }}
                   />
                   <span
-                    className={`margin-gap-h ${
-                      diffCount < 0 ? "pointer error-message" : ""
-                    }`}
+                    className={'margin-gap-h'
+                      + (diffCount < 0 ? " pointer error-message" : "")}
                     onClick={() => {
                       exec(ord?.cutChordPositions(textLine, textLinei));
                     }}
                   >
                     {diffCount || ""}
                   </span>
-                </>
+                </div>
               );
             }}
           />

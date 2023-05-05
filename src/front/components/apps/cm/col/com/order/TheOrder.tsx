@@ -1,28 +1,20 @@
+import React from "react";
 import ComLine from "../line/ComLine";
 import { IComLineProps, ITheOrderProps } from "./Order.model";
 
 export default function TheOrder(props: ITheOrderProps) {
-  const {
-    asLineComponent,
-    asHeaderComponent,
-    orderUnit,
-    orderUniti,
-    com,
-    chordVisibleVariant,
-    isMiniAnchor,
-    showInvisibles,
-  } = props || {};
+  const { orderUnit, orderUniti } = props;
 
   if (
-    (isMiniAnchor &&
+    (props.isMiniAnchor &&
       (orderUnit.top.isAnchorInherit || orderUnit.top.isAnchorInheritPlus)) ||
-    (!showInvisibles && !orderUnit.isVisible)
+    (!props.showInvisibles && !orderUnit.isVisible)
   )
     return null;
 
   const className = orderUnit.top.style?.getStyleName(orderUnit);
 
-  if (isMiniAnchor && orderUnit.isAnchor && !orderUnit.isOpened) {
+  if (props.isMiniAnchor && orderUnit.isAnchor && !orderUnit.isOpened) {
     return (
       <div
         id={`com-block-${orderUniti}`}
@@ -36,23 +28,21 @@ export default function TheOrder(props: ITheOrderProps) {
 
   const isTexted =
     orderUnit.texti == null
-      ? !(
-          !chordVisibleVariant ||
-          (!orderUnit.isMin && chordVisibleVariant === 1)
-        )
+      ? !(!props.chordVisibleVariant ||
+        (!orderUnit.isMin && props.chordVisibleVariant === 1))
       : true;
 
   const blockHeader = orderUnit.top.isInherit
     ? null
     : orderUnit.top.header?.({
-        isTexted,
-        repeats: orderUnit.texti == null ? orderUnit.repeatsTitle : "",
-      });
+      isTexted,
+      repeats: orderUnit.texti == null ? orderUnit.repeatsTitle : "",
+    });
 
   const chordedOrd = !!(
     (!orderUnit.chordsi || orderUnit.chordsi > -1) &&
-    (chordVisibleVariant === 2 ||
-      (chordVisibleVariant === 1 && orderUnit.isMin))
+    (props.chordVisibleVariant === 2 ||
+      (props.chordVisibleVariant === 1 && orderUnit.isMin))
   );
 
   const headerNode = blockHeader && (
@@ -60,15 +50,15 @@ export default function TheOrder(props: ITheOrderProps) {
   );
 
   const header =
-    typeof asHeaderComponent === "function"
-      ? asHeaderComponent({
-          chordedOrd,
-          orderUnit,
-          orderUniti,
-          com,
-          isJoinLetters: true,
-          headerNode,
-        })
+    typeof props.asHeaderComponent === "function"
+      ? props.asHeaderComponent({
+        chordedOrd,
+        orderUnit,
+        orderUniti,
+        com: props.com,
+        isJoinLetters: true,
+        headerNode,
+      })
       : headerNode;
 
   if (orderUnit.texti == null) {
@@ -78,15 +68,14 @@ export default function TheOrder(props: ITheOrderProps) {
     return (
       <div
         id={`com-block-${orderUniti}`}
-        className={`composition-block styled-block ${
-          orderUnit.isVisible ? "" : "invisible"
-        } flex flex-baseline`}
+        className={'composition-block styled-block flex flex-baseline'
+          + (orderUnit.isVisible ? "" : " invisible")}
         ref={(el) => el && (orderUnit.element = el)}
       >
         {header}
         {!isTexted ? null : (
           <div
-            key={`chorded-block-${orderUniti}-content`}
+            key={orderUniti}
             className={`styled-block chords-block vertical-middle ${className}`}
           >
             {orderUnit.chords}
@@ -99,11 +88,9 @@ export default function TheOrder(props: ITheOrderProps) {
   return (
     <div
       id={`com-block-${orderUniti}`}
-      className={`composition-block ${
-        orderUnit.isVisible ? "" : "invisible"
-      } styled-block ${
-        chordedOrd ? "chorded-block" : "without-chords"
-      } ${className}`}
+      className={`composition-block styled-block ${className}`
+        + (orderUnit.isVisible ? "" : " invisible")
+        + (chordedOrd ? " chorded-block" : " without-chords")}
       ref={(el) => el && (orderUnit.element = el)}
     >
       {header}
@@ -120,18 +107,16 @@ export default function TheOrder(props: ITheOrderProps) {
             orderUniti,
             wordCount: words.length,
             words,
-            com,
+            com: props.com,
             isJoinLetters: true,
           };
 
           return (
-            <div key={`song-line:${textLinei}`}>
-              {typeof asLineComponent === "function" ? (
-                asLineComponent(lineProps)
-              ) : (
-                <ComLine {...lineProps} />
-              )}
-            </div>
+            <React.Fragment key={textLinei}>
+              {typeof props.asLineComponent === "function"
+                ? props.asLineComponent(lineProps)
+                : <ComLine {...lineProps} />}
+            </React.Fragment>
           );
         })}
     </div>

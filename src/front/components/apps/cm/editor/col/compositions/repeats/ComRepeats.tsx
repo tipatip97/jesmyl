@@ -152,9 +152,9 @@ export default function ComRepeats() {
                 return (
                   <ComLine
                     {...props}
-                    setWordClass={(props) => {
+                    setWordClass={(props, wordi) => {
                       if (!start) return "";
-                      const { wordi, wordCount, textLinei } = props;
+                      const { wordCount, textLinei } = props;
 
                       const openers = ord.regions?.reduce(
                         (count: number, { startLinei, startWordi, startKey }) =>
