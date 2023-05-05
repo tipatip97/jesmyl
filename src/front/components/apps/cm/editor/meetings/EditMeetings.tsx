@@ -19,7 +19,6 @@ export default function EditMeetings() {
   return (
     <PhaseCmEditorContainer
       topClass="edit-meeitngs"
-      headClass="flex between"
       headTitle="События"
       onMoreClick={() =>
         openAbsoluteBottomPopup(<EditMeetingsMore currPath={currPath} />)

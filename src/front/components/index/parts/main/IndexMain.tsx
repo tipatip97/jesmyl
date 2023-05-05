@@ -47,7 +47,6 @@ export default function IndexMain() {
     <PhaseIndexContainer
       topClass="index-main"
       withoutBackButton
-      headClass="flex between"
       headTitle={currentApp?.title || "Другое"}
       head={
         <div className="flex flex-gap">

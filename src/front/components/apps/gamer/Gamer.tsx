@@ -13,7 +13,6 @@ export default function Gamer() {
       topClass="spy-locations"
       withoutBackButton
       headTitle="Комнаты"
-      headClass="flex between"
       onMoreClick={() => openAbsoluteBottomPopup(<GamerMore />)}
       content={
         <>

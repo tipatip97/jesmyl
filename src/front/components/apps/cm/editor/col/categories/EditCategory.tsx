@@ -21,7 +21,6 @@ export default function EditCategory() {
   return (
     <PhaseCmEditorContainer
       topClass="edit-category"
-      headClass="flex between"
       headTitle={`Категория - ${ccat.initialName}`}
       content={
         <>

@@ -34,7 +34,6 @@ export default function EditMeetingsEvent() {
   return (
     <PhaseCmEditorContainer
       topClass="edit-meeitngs"
-      headClass="flex between"
       headTitle={`Событие - ${currentEvent.name}`}
       contentClass="no-padding-top"
       onMoreClick={() => {

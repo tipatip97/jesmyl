@@ -50,7 +50,7 @@ export default function TheComposition() {
     return (
       <PhaseCmContainer
         topClass="composition-container"
-        head="Упс"
+        headTitle="Упс"
         content="Песня не найдена("
       />
     );
@@ -59,11 +59,10 @@ export default function TheComposition() {
   return (
     <PhaseCmContainer
       topClass={`composition-container ${playerHideMode && comAudio ? `with-open-player ${playerHideMode}` : ''}`}
-      headClass="flex between full-width"
-      contentClass="composition-content"
       headTitle={ccom.number}
-      contentRef={comListElem}
       onMoreClick={() => openAbsoluteBottomPopup(<ComTools />, false)}
+      contentClass="composition-content"
+      contentRef={comListElem}
       head={<div className="com-actions-pannel">
         {topTools.map(({ icon, onClick, tool }) => (
           <EvaIcon

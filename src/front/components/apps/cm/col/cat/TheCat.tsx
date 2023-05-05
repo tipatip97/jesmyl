@@ -54,21 +54,19 @@ export default function TheCat({ all }: { all?: boolean }) {
       <PhaseCmContainer
         topClass="cat-content"
         withoutBackButton={all}
+        headClass="flex between full-width"
         head={
-          !cat ? null : (
-            <DebouncedSearchInput
-              placeholder="Поиск песен"
-              className="debounced-searcher round-styled"
-              initialTerm={term}
-              onSearch={(term) => cat.search(term, isNumberSearch)}
-              debounce={500}
-              onDebounced={() => {
-                if (listRef.current) listRef.current.scrollTop = 0;
-              }}
-              onTermChange={(term) => setTerm(term)}
-            />
-          )
-        }
+          cat && <DebouncedSearchInput
+            placeholder="Поиск песен"
+            className="debounced-searcher round-styled"
+            initialTerm={term}
+            onSearch={(term) => cat.search(term, isNumberSearch)}
+            debounce={500}
+            onDebounced={() => {
+              if (listRef.current) listRef.current.scrollTop = 0;
+            }}
+            onTermChange={(term) => setTerm(term)}
+          />}
         contentRef={listRef}
         content={
           cat && (

@@ -11,7 +11,6 @@ export default function Marks() {
   return (
     <PhaseCmContainer
       topClass="favorites-container"
-      headClass="flex between"
       headTitle="Избранное"
       onMoreClick={() => openAbsoluteBottomPopup(<LocalListToolsPopup coms={markedComs} />)}
       content={markedComs?.map((com) => (

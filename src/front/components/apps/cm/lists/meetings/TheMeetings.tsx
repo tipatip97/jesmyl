@@ -15,7 +15,7 @@ export default function TheMeetings() {
   return (
     <PhaseCmContainer
       topClass="meetings-container"
-      head="События"
+      headTitle="События"
       onMoreClick={() => {
         openAbsoluteBottomPopup(prepareAbsoluteBottomPopupContent({
           items: [

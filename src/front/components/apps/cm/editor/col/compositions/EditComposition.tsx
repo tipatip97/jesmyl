@@ -27,10 +27,9 @@ export default function EditComposition({
   return (
     <PhaseCmEditorContainer
       topClass="edit-composition"
-      headClass="flex between"
-      headTitle={`Песня - #${ccom.number} ${ccom.initialName || ccom.name}`}
+      headTitle={`#${ccom.number} ${ccom.initialName || ccom.name}`}
       head={<EvaButton
-        name={`music${isOpenPlayer ? '' : '-outline'}`}
+        name={isOpenPlayer ? 'music' : 'music-outline'}
         className="margin-gap"
         onClick={() => setIsOpenPlayer(!isOpenPlayer)}
       />}

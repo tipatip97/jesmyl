@@ -26,9 +26,8 @@ export default function TheGamerPassport() {
 
     return <PhaseGamerContainer
         topClass="spy-passport"
-        headTitle="Паспорт"
-        headClass="flex between"
         withoutBackButton
+        headTitle="Паспорт"
         content={<>
             {isEdit && <div className="flex center margin-big-gap">
                 <KeyboardInput

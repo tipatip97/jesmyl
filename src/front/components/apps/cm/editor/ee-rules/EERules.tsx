@@ -35,7 +35,6 @@ export default function EERules() {
   return (
     <PhaseCmEditorContainer
       topClass="e-e-rules-editor"
-      headClass="flex between"
       headTitle="Ё-Е правила"
       content={
         <>

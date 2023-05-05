@@ -1,6 +1,5 @@
 import { useLayoutEffect, useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { NavigationThrowNodeProps } from "../../../../../complect/nav-configurer/Navigation.model";
@@ -35,7 +34,6 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
   return <PhaseGamerContainer
     topClass="gamer-room"
     headTitle={`${namePrefix || ''}Комната ${room?.name ? ` - ${room.name}` : ""}`}
-    headClass="flex between"
     onMoreClick={isManager
       ? () => {
           openAbsoluteBottomPopup(

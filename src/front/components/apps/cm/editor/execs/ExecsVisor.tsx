@@ -115,7 +115,6 @@ export default function ExecsVisor() {
   return (
     <PhaseCmEditorContainer
       topClass="e-e-rules-editor"
-      headClass="flex between"
       headTitle="Изменения"
       content={list?.map((exec) => {
         return (

@@ -11,7 +11,6 @@ export default function SelectedComs() {
   return (
     <PhaseCmContainer
       topClass="favorites-container"
-      headClass="flex between"
       headTitle="Выбранное"
       onMoreClick={() => openAbsoluteBottomPopup(<LocalListToolsPopup coms={coms} />)}
       content={coms.map(com => <ComFace key={com.wid} com={com} />)}

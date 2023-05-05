@@ -12,7 +12,6 @@ export default function Editor() {
     <PhaseCmEditorContainer
       topClass="cm-editor"
       withoutBackButton
-      headClass="flex between"
       headTitle="Редактор"
       content={
         <>

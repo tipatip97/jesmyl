@@ -58,7 +58,7 @@ export default function IndexLogin() {
   return (
     <PhaseIndexContainer
       topClass="index-login login-page"
-      headClass="flex between"
+      headTitle={mode === "register" ? "Создать профиль" : "Вход"}
       head={!isConnected && <div className="flex flex-end error-message">
         <div>Нет подключения к серверу</div>
         <EvaIcon
@@ -66,7 +66,6 @@ export default function IndexLogin() {
           className="rotate margin-gap"
         />
       </div>}
-      headTitle={mode === "register" ? "Создать профиль" : "Вход"}
       content={
         <LoadIndicatedContent
           className="flex around column full-height full-width"

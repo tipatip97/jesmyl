@@ -17,7 +17,6 @@ export default function Mp3RulesRedactor() {
 
     return <PhaseCmEditorContainer
         topClass="mp3-rules-redactor"
-        headClass="flex between"
         headTitle="Редактор MP3 правил"
         content={<>
             {redactRules.map((rule) => {

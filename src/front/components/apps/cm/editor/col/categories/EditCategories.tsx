@@ -10,7 +10,6 @@ export default function EditCategories() {
   return (
     <PhaseCmEditorContainer
       topClass="edit-categories"
-      headClass="flex between"
       headTitle="Категории"
       content={
         <>

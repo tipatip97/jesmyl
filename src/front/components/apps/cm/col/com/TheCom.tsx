@@ -34,7 +34,7 @@ export default function TheCom({
     return (
       <PhaseCmContainer
         topClass="com-container"
-        head="Упс"
+        headTitle="Упс"
         content="Песня не найдена("
       />
     );

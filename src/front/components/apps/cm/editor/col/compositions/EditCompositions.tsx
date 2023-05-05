@@ -43,13 +43,11 @@ export default function EditCompositions() {
       <PhaseCmEditorContainer
         topClass="edit-compositions"
         headClass="flex between full-width"
-        contentRef={listRef}
-        onMoreClick={() => openAbsoluteBottomPopup(<EditCompositionsMore />)}
         head={
-          !zcat ? null : (
+          zcat && (
             <DebouncedSearchInput
               placeholder="Песни"
-              className="debounced-searcher round-styled margin-gap-h"
+              className="debounced-searcher round-styled"
               initialTerm={term}
               onSearch={(term) => zcat.search(term)}
               debounce={500}
@@ -57,6 +55,8 @@ export default function EditCompositions() {
             />
           )
         }
+        onMoreClick={() => openAbsoluteBottomPopup(<EditCompositionsMore />)}
+        contentRef={listRef}
         content={
           <>
             {zcat?.wraps.map(({ com }, wrapi) => {
