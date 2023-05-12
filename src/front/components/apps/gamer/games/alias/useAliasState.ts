@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
-import useGamerRooms from "../../complect/rooms/room/useGamerRooms";
 import { GamerRoom, GamerRoomMember, GamerRoomMemberLogin } from "../../Gamer.model";
 import { gamerExer } from "../../Gamer.store";
-import { AliasGameTeam, AliasMemberTid, AliasWordNid, GamerAliasRoomState, GamerAliasRoomStatePhase } from "./Alias.model";
+import useGamerRooms from "../../complect/rooms/room/useGamerRooms";
+import { AliasGameTeam, AliasMemberTid, AliasWordNid, GamerAliasRoomState } from "./Alias.model";
 import { AliasHelp } from "./AliasHelp";
 
 const aliasWordsSelector = (state: RootState) => state.gamer.aliasWords;
@@ -143,8 +143,10 @@ export default function useAliasState() {
             aliasWords.forEach((pack, packi) => {
                 pack.words.forEach((level, leveli) => {
                     level?.forEach((word, wordi) => {
-                        if (word)
-                            words.push(AliasHelp.encodeWordNid(packi, leveli, wordi));
+                        if (word) {
+                            const num = AliasHelp.encodeWordNid(packi, leveli, wordi);
+                            if (num !== null) words.push(num);
+                        }
                     });
                 });
             });
@@ -172,8 +174,10 @@ export default function useAliasState() {
             if (players.length % teamsCount === 0) {
                 const teamSize = teams[0].members.length;
                 for (let memberi = 0; memberi < teamSize; memberi++)
-                    for (let teami = 0; teami < teams.length; teami++)
-                        speakers.push(AliasHelp.encodeMemberNid(teami, memberi));
+                    for (let teami = 0; teami < teams.length; teami++) {
+                        const speaker = AliasHelp.encodeMemberNid(teami, memberi);
+                        if (speaker !== null) speakers.push(speaker);
+                    }
             }
 
             const stateArgs: GamerAliasRoomState = {
