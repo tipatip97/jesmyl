@@ -32,9 +32,12 @@
         }
 
         &.chorded:not(.pre) {
-
             >.fragment>* {
                 display: inline-block;
+
+                &:first-letter {
+                    background-color: var(--color--ko);
+                }
             }
 
             &:first-letter,
