@@ -111,17 +111,14 @@ export class SokiTrip {
     }
 
     setLastUpdates(appName: SokiAppName, pullCortage: SokiClientUpdateCortage) {
-        indexStorage.set('updateRequisites', (prev) => {
-            const next = { ...prev };
+        indexStorage.set('updateRequisites', (prev = {}) => {
             const [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] = pullCortage;
 
-            if (appLastUpdate)
-                next[appName] = [appLastUpdate, (appRulesMd5 || next[appName]?.[1]) ?? undefined];
-
-            if (indexLastUpdate)
-                next.index = [indexLastUpdate, (indexRulesMd5 || next.index?.[1]) ?? undefined];
-
-            return next;
+            return {
+                ...prev,
+                [appName]: [appLastUpdate || prev[appName]?.[0] || 0, appRulesMd5 || prev[appName]?.[1] || undefined],
+                index: [indexLastUpdate || prev.index?.[0] || 0, indexRulesMd5 || prev.index?.[1] || undefined],
+            };
         });
     }
 
