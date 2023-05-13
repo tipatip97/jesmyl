@@ -51,20 +51,12 @@ export interface CmStoraged extends CmEditorStoraged {
 export type PlayerHideMode = 'expand' | 'min' | '';
 
 export interface CmStorage extends CmStoraged {
-    actions: CmAction[],
     cols: IExportableCols,
     settings: IExportableSetts,
     eeStorage: EeStorageStoreType,
     executions: ClientExecutionDict[],
 
     speedRollKf: number,
-}
-
-export interface CmAction {
-    title?: string,
-    action: string,
-    level: number,
-    valueAs?: string,
 }
 
 export interface CmNavData {

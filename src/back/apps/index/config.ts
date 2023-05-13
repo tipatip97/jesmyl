@@ -1,5 +1,6 @@
+import { Executer } from "../../complect/executer/Executer";
 import { FilerAppConfig } from "../../complect/filer/Filer.model";
-import { LocalSokiAuth, rootDirective, SokiAppName } from "../../complect/soki/soki.model";
+import { rootDirective, SokiAppName } from "../../complect/soki/soki.model";
 
 export interface Application {
     name: SokiAppName;
@@ -16,7 +17,7 @@ const config: FilerAppConfig = {
     requirements: [
         {
             name: "apps",
-            prepareContent: (apps: Application[], auth?: LocalSokiAuth | null) => {
+            prepareContent: (apps: Application[], auth) => {
                 const authLevel = auth?.level || 0;
                 return apps.map((app) => {
                     if (!app.hidden && (app.level || 0) <= authLevel) return app;
@@ -28,7 +29,8 @@ const config: FilerAppConfig = {
             name: 'appVersion',
             watch: [`${rootDirective}/version.json`, (content) => JSON.parse(content).num],
         }
-    ]
+    ],
+    actions: Executer.prepareActionList({})
 }
 
 export default config;

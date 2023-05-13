@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { CmMp3Rule } from "../../../../../back/apps/cm/CmBackend.model";
-import { CmAction } from "../Cm.model";
+import { ShortRealRule } from "../../../../../back/complect/executer/Executer.model";
 
 
 export interface CmEditorStoraged {
@@ -8,7 +8,7 @@ export interface CmEditorStoraged {
     mp3Rules?: CmMp3Rule[],
 }
 
-export type ExecVision = CmAction & Partial<Exec> & Partial<ExecVisionVisual>;
+export type ExecVision = ShortRealRule & Partial<Exec> & Partial<ExecVisionVisual>;
 
 export interface Exec {
     action: string,

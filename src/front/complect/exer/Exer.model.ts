@@ -1,22 +1,15 @@
-import { ExecutionDict, ExecutionMethod } from "../../../back/complect/executer/Executer.model";
+import { ExecutionDict, ExecutionMethod, ShortRealRule } from "../../../back/complect/executer/Executer.model";
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
 import { Exec } from "./Exec";
 
-export interface ExecRuleClient {
-    action?: string;
-    title?: string;
-    level?: number;
-    args?: Record<string, string | string[]>;
-}
-
-export interface ExecRule extends ExecRuleClient {
+export interface ExecRule extends ShortRealRule {
     track?: (string | string[])[];
     next?: ExecRule[];
     method?: ExecutionMethod;
 }
 
 export interface ExerStorage {
-    actions: ExecRule[];
+    rules: ExecRule[];
 }
 
 

@@ -27,14 +27,14 @@ class SokiServer {
 
     constructor() {
         filer.load().then().catch(() => { });
-        filer.setWatcher((appName, name, data) => {
+        filer.setWatcher((appName, key, value) => {
             this.send({
                 pull: {
                     appName,
-                    contents: appName === 'index' ? [] : [{ key: name, value: data }],
-                    indexContents: appName !== 'index' ? [] : [{ key: name, value: data }],
-                    lastUpdate: 0,
-                    indexLastUpdate: 0,
+                    contents: appName === 'index'
+                        ? [[{ key, value }], []]
+                        : [[], [{ key, value }]],
+                    updates: [null, null, null, null],
                 },
             });
         });
@@ -180,14 +180,14 @@ class SokiServer {
                         }
                     }
 
-                    if (eventBody.pull) {
+                    if (eventBody.pullData) {
                         if (eventData.appName) {
                             if (capsule) capsule.appName = eventData.appName;
 
                             this.sendStatistic();
 
-                            const pull = filer.getContents(eventData.appName, eventBody.pull.lastUpdate, eventBody.pull.indexLastUpdate, capsule?.auth);
-                            if (pull.contents.length || pull.indexContents.length)
+                            const pull = filer.getContents(eventData.appName, eventBody.pullData, capsule?.auth);
+                            if (pull.contents[0].length || pull.contents[1].length)
                                 this.send({ requestId, pull }, client);
                         }
                         return;
@@ -232,15 +232,16 @@ class SokiServer {
 
                     if (eventBody.execs) {
                         if (await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule?.auth.login === eventData.auth?.login) {
+                            const appConfig = filer.appConfigs[eventData.appName];
+
+                            if (!appConfig) return;
+
                             const contents = filer.contents[eventData.appName];
                             const realParents: Record<string, unknown> = {};
                             SMyLib.entries(contents).forEach(([key, val]) => realParents[key] = val.data);
-                            const actions = contents.actions;
-
-                            if (!actions?.transformed) return;
 
                             Executer
-                                .execute(actions.transformed, realParents, eventBody.execs, capsule.auth)
+                                .execute(appConfig.actions.rules, realParents, eventBody.execs, capsule.auth)
                                 .then(async ({ fixes, replacedExecs, errorMessage }) => {
                                     const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
                                     this.send({

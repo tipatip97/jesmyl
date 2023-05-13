@@ -11,7 +11,10 @@ export interface IndexState {
     userMessages: UserMessage[],
     statistic: SokiStatistic | null,
 
-    lastUpdates?: Partial<Record<AppName, number>>,
+    updateRequisites?: Partial<Record<AppName, [
+        number, // last content updated ts
+        string | undefined, // short rules JSON md5
+    ]>>,
     numModalUpdates: number,
     isUseNativeKeyboard?: boolean,
 }
@@ -30,7 +33,7 @@ export interface IndexStorage extends IndexState {
     rejectedComponents: string[],
     registeredApps: AppName[],
     theme: 'light-theme',
-    actions: [],
+    rules: [],
 
     updateOnRefresher: boolean,
 }

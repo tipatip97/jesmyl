@@ -1,8 +1,10 @@
 /* eslint-disable eqeqeq */
+import { ActionBox } from "../../models";
 import { sequreMD5Passphrase } from "../../values";
+import { FilerAppConfigActions } from "../filer/Filer.model";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRealAccumulatable, ExecutionRule, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, TrackerRet } from "./Executer.model";
+import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, RealAccumulatableRule, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, ShortRealRule, TrackerRet } from "./Executer.model";
 
 const globs: Record<string, any> = {
     'setNewWid()': () => new Date().getTime() + Math.random()
@@ -315,13 +317,13 @@ export class Executer {
 
     static prepareTrack = (path: string): ExecutionTrack => path.startsWith('<') ? [] : path.slice(1).split('/').map((part) => part.startsWith('[') && part.endsWith(']') ? part.slice(1, -1).split(' ') as ExecutionRuleTrackBeat : part).filter(part => part);
 
-    static prepareActionList(actions: Record<string, ExecutionRule>, fixedAccesses: FixedAccesses) {
+    static prepareActionList(actions: ActionBox, fixedAccesses: FixedAccesses = []): FilerAppConfigActions {
         const rules: ExecutionReal[] = [];
 
-        const find = (composit: Record<string, ExecutionRule>, topRule: ExecutionRealAccumulatable = {} as never): ExecutionReal | null => {
+        const transform = (composit: ActionBox, topRule: RealAccumulatableRule = {} as never): ExecutionReal | null => {
             for (const key in composit) {
-                const action = composit[key];
-                if (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>'))) {
+                const action = composit[key as never];
+                if (action && (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>')))) {
                     const track = key.startsWith('<') ? [] : this.prepareTrack(key);
                     const accTrack = topRule.track?.concat(track || []) || track;
 
@@ -349,7 +351,7 @@ export class Executer {
                         if (sides.length) return sides;
                     };
 
-                    const accRule: ExecutionRealAccumulatable = {
+                    const accRule: RealAccumulatableRule = {
                         track: accTrack,
                         args: { ...topRule.args, ...action.args },
                         expecteds: (action.expected ? topRule.expecteds || [] : topRule.expecteds)
@@ -370,6 +372,8 @@ export class Executer {
                     const execRule: ExecutionReal = smylib.clone({
                         ...action,
                         ...accRule,
+                        action: action.action!,
+                        method: action.method!,
                         fix: accRule.track?.[0],
                         value: action.value,
                     });
@@ -384,20 +388,25 @@ export class Executer {
                     if (execRule.action)
                         rules.push(execRule);
 
-                    const nextRule = find(action as never, accRule);
+                    const nextRule = transform(action as never, accRule);
                     if (nextRule) return nextRule;
                 }
             }
             return null;
         };
 
-        find(actions);
+        transform(actions);
+        const shortRules = this.mapShortRules(rules);
 
-        return rules;
+        try {
+            return { rules, shortRules, shortRulesMd5: smylib.md5(JSON.stringify(shortRules)) };
+        } catch (error) {
+            return { rules, shortRules, shortRulesMd5: null };
+        }
     }
 
-    static mapActionList(rules: ExecutionReal[]) {
-        return rules.map(({ title, shortTitle, level, action, isSequre, args }) => {
+    static mapShortRules(rules: ExecutionReal[]) {
+        return rules.map(({ title, shortTitle, level, action, isSequre, args }): ShortRealRule => {
             return {
                 title,
                 shortTitle,

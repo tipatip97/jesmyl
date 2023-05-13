@@ -34,7 +34,7 @@ export class Exer<Storage extends ExerStorage> {
             ...Object.entries(this.appVariables || {})
                 .map(([action, level]) => typeof level === 'number' ? { action, level } : null)
                 .filter(rule => rule) as ExecRule[],
-            ...(this.storage?.get('actions') as [] || [])
+            ...(this.storage?.get('rules') as [] || [])
         ];
     }
 

@@ -20,65 +20,65 @@ export default function ExecsVisor() {
   const [cols] = useEditableCols();
   const { meetings, goToEvent } = useEditableMeetings();
   const list: ExecVision[] | nil = useMemo(() => {
-    const actions = cmStorage.get("actions");
+    const rules = cmStorage.get('rules');
     let flowCom: EditableCom | nil = null;
 
     const setAsNode = (value: any, fieldn: string | nil) => {
       return fieldn === "comw"
         ? cols &&
+        [value]
+          .flat()
+          .map((comw: number) => {
+            flowCom = cols.coms.find((com) => com.wid === comw);
+            return (
+              flowCom && (
+                <ComFace
+                  key={`com-${comw}`}
+                  com={flowCom}
+                  rejectScrollToView
+                />
+              )
+            );
+          })
+          .filter((val) => val != null)
+        : fieldn === "tonLevel"
+          ? flowCom
+            ? flowCom.transChord(flowCom.getFirstSimpleChord() || "?", value)
+            : value
+          : fieldn === "eventw"
+            ? meetings &&
             [value]
               .flat()
-              .map((comw: number) => {
-                flowCom = cols.coms.find((com) => com.wid === comw);
+              .map((eventw: number) => {
+                if (eventw == null) return null;
+                const event = meetings.events.find(
+                  (event) => event.wid === eventw
+                );
                 return (
-                  flowCom && (
-                    <ComFace
-                      key={`com-${comw}`}
-                      com={flowCom}
-                      rejectScrollToView
+                  <div
+                    key={`event-${eventw}`}
+                    className={event ? "" : "error-message"}
+                    onClick={() => eventw && goToEvent(eventw)}
+                  >
+                    <EvaIcon
+                      name="calendar-outline"
+                      className="vertical-middle margin-gap"
                     />
-                  )
+                    <span className={`vertical-middle `}>
+                      {event ? event.name : "Неизвестное событие"}
+                    </span>
+                  </div>
                 );
               })
               .filter((val) => val != null)
-        : fieldn === "tonLevel"
-        ? flowCom
-          ? flowCom.transChord(flowCom.getFirstSimpleChord() || "?", value)
-          : value
-        : fieldn === "eventw"
-        ? meetings &&
-          [value]
-            .flat()
-            .map((eventw: number) => {
-              if (eventw == null) return null;
-              const event = meetings.events.find(
-                (event) => event.wid === eventw
-              );
-              return (
-                <div
-                  key={`event-${eventw}`}
-                  className={event ? "" : "error-message"}
-                  onClick={() => eventw && goToEvent(eventw)}
-                >
-                  <EvaIcon
-                    name="calendar-outline"
-                    className="vertical-middle margin-gap"
-                  />
-                  <span className={`vertical-middle `}>
-                    {event ? event.name : "Неизвестное событие"}
-                  </span>
-                </div>
-              );
-            })
-            .filter((val) => val != null)
-        : JSON.stringify(value, null, 2);
+            : JSON.stringify(value, null, 2);
     };
 
     return (
-      actions &&
+      rules &&
       execs
         ?.map((exec): ExecVision => {
-          const action = actions.find(({ action }) => exec.action === action);
+          const action = rules.find(({ action }) => exec.action === action);
           let prevNode: ReactNode;
           let valueNode: ReactNode;
 
@@ -89,23 +89,21 @@ export default function ExecsVisor() {
           ) {
             prevNode = <pre>{exec.args?.prev}</pre>;
             valueNode = <pre>{exec.args?.value}</pre>;
-          } else if (action) {
-            prevNode = setAsNode(exec.args?.prev, action.valueAs);
-            valueNode = setAsNode(exec.args?.value, action.valueAs);
           }
+
           return action
             ? {
-                ...action,
-                ...exec,
-                specials: (
-                  <>
-                    {setAsNode(exec.args?.eventw, "eventw")}
-                    {setAsNode(exec.args?.comw, "comw")}
-                  </>
-                ),
-                prevNode,
-                valueNode,
-              }
+              ...action,
+              ...exec,
+              specials: (
+                <>
+                  {setAsNode(exec.args?.eventw, "eventw")}
+                  {setAsNode(exec.args?.comw, "comw")}
+                </>
+              ),
+              prevNode,
+              valueNode,
+            }
             : { action: "", title: "Неизвестное изменение", level: 0 };
         })
         .sort((a, b) => (b.ts || 0) - (a.ts || 0))

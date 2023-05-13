@@ -33,16 +33,22 @@ export interface SokiServerEvent {
     statistic?: SokiStatistic,
 }
 
+type nil = undefined | null;
+
+export type SokiClientUpdateCortage = [
+    number | nil, // index last update
+    string | nil, // index short rules JSON md5
+    number | nil, // app last update
+    string | nil, // app short rules JSON md5
+];
+
 export interface SokiClientEventBody {
     connect?: true,
     authorization?: ({ type: 'login', value: SokiAuthorizationData } | { type: 'register', value: SokiRegisterData }),
-    pull?: { lastUpdate: number, indexLastUpdate: number },
+    pullData?: SokiClientUpdateCortage,
     execs?: ExecutionDict[],
     system?: { name: 'reloadFiles' | 'restartWS', passphrase: string },
-    service?: {
-        key: string,
-        value?: any,
-    },
+    service?: SimpleKeyValue,
     subscribe?: SokiSubscribtionName,
     unsubscribe?: SokiSubscribtionName,
 }
@@ -67,11 +73,12 @@ export interface SokiClientEvent {
 export interface SokiAuthUnitRights { }
 
 export interface PullEventValue {
-    contents: SimpleKeyValue[],
-    indexContents: SimpleKeyValue[],
-    lastUpdate: number,
-    indexLastUpdate: number,
     appName: SokiAppName,
+    updates: SokiClientUpdateCortage,
+    contents: [
+        SimpleKeyValue[], // index contents
+        SimpleKeyValue[], // app contents
+    ],
 }
 
 export interface SokiAuth extends BaseSokiAuth {

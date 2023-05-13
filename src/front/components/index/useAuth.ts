@@ -12,7 +12,7 @@ import {
 import { indexExer, setAuthData, setCurrentApp, setError } from "./Index.store";
 import indexStorage from "./indexStorage";
 
-const removeLastUpdates = () => indexStorage.rem('lastUpdates');
+const removePullRequisites = () => indexStorage.rem('updateRequisites');
 
 const authSelector = (state: RootState) => state.index.auth;
 const errorsSelector = (state: RootState) => state.index.errors;
@@ -37,7 +37,7 @@ export default function useAuth() {
     auth,
     errors,
     isConnected,
-    removeLastUpdates,
+    removePullRequisites,
     setError: (scope: IndexErrorScope, message: string | nil) =>
       dispatch(setError({ scope, message })),
     writeToDevelopers: (message: string) => {
@@ -65,7 +65,7 @@ export default function useAuth() {
     logout: () => {
       dispatch(setAuthData(null));
       dispatch(setCurrentApp("cm"));
-      removeLastUpdates();
+      removePullRequisites();
       window.location.reload();
     },
     setAuthData: (login: string | LocalSokiAuth) => {
@@ -81,7 +81,7 @@ export default function useAuth() {
       if (auth) {
         dispatch(setAuthData(auth));
         dispatch(setCurrentApp("cm"));
-        removeLastUpdates();
+        removePullRequisites();
       }
     },
     loginInSystem: (state: AuthorizationData) => {

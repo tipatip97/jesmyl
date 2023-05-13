@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
-import { ExecutionMethod } from "../../../back/complect/executer/Executer.model";
+import { ExecutionMethod, ShortRealRule } from "../../../back/complect/executer/Executer.model";
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
-import mylib, { MyLib } from "../my-lib/MyLib";
 import SourceBased from "../SourceBased";
-import { ClientExecutionDict, ExecRule, ExecRuleClient, FreeExecDict } from "./Exer.model";
+import mylib from "../my-lib/MyLib";
+import { ClientExecutionDict, ExecRule, FreeExecDict } from "./Exer.model";
 
 
 export class Exec<Value> extends SourceBased<ClientExecutionDict> {
@@ -20,7 +20,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
     del?: boolean = false;
     muted?: boolean;
     errors?: string[];
-    rule?: ExecRuleClient;
+    rule?: ShortRealRule;
     exec: ClientExecutionDict<Value>;
     corrects?: CorrectsBox;
 

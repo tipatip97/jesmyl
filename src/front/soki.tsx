@@ -1,6 +1,6 @@
 import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
-import { SokiAppName, SokiClientEvent, SokiServerEvent } from '../back/complect/soki/soki.model';
+import { SokiAppName, SokiClientEvent, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
 import modalService from './complect/modal/Modal.service';
@@ -84,7 +84,7 @@ export class SokiTrip {
                             .executeReals(contents, event.execs.list)
                             .then((fixes) => {
                                 appStore.refreshAreas(fixes, contents);
-                                this.setLastUpdates(this.appName, event.execs?.lastUpdate, null);
+                                this.setLastUpdates(this.appName, [null, null, event.execs?.lastUpdate, null]);
                             })
                             .catch();
                     }
@@ -110,12 +110,16 @@ export class SokiTrip {
         }
     }
 
-    setLastUpdates(appName: SokiAppName, appLastUpdate?: number | null, inedxLastUpdate?: number | null) {
-        indexStorage.set('lastUpdates', (prev) => {
+    setLastUpdates(appName: SokiAppName, pullCortage: SokiClientUpdateCortage) {
+        indexStorage.set('updateRequisites', (prev) => {
             const next = { ...prev };
+            const [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] = pullCortage;
 
-            if (appLastUpdate) next[appName] = appLastUpdate;
-            if (inedxLastUpdate) next.index = inedxLastUpdate;
+            if (appLastUpdate)
+                next[appName] = [appLastUpdate, (appRulesMd5 || next[appName]?.[1]) ?? undefined];
+
+            if (indexLastUpdate)
+                next.index = [indexLastUpdate, (indexRulesMd5 || next.index?.[1]) ?? undefined];
 
             return next;
         });
@@ -123,7 +127,7 @@ export class SokiTrip {
 
     onUnauthorize() {
         indexStorage.rem('auth');
-        indexStorage.rem('lastUpdates');
+        indexStorage.rem('updateRequisites');
     }
 
     setAppName(appName: SokiAppName) {
@@ -131,18 +135,12 @@ export class SokiTrip {
     }
 
     pullCurrentAppData() {
-        const { index: indexLastUpdate, [this.appName]: appLastUpdate } = indexStorage.get('lastUpdates') || {};
+        const { index: [indexLastUpdate, indexRulesMd5] = [], [this.appName]: [appLastUpdate, appRulesMd5] = [] } = indexStorage.get('updateRequisites') || {};
 
         this.send({
-            pull: {
-                lastUpdate: appLastUpdate || 0,
-                indexLastUpdate: indexLastUpdate || 0
-            }
+            pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5]
         }).on(({ pull }) => {
             if (pull) {
-                const { contents, lastUpdate, indexLastUpdate, indexContents } = pull;
-                const appStore = appStorage[pull.appName];
-
                 const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown>) => {
                     if (!pullContents.length) return;
 
@@ -154,13 +152,15 @@ export class SokiTrip {
                     });
                     store.refreshAreas(fixes as never, contents);
                 };
+                const { contents: [indexContents, appContents], updates } = pull;
+                const appStore = appStorage[pull.appName];
 
-                update(contents, appStore);
+                update(appContents, appStore);
                 update(indexContents, appStorage.index);
 
-                contents.forEach(({ key, value }) => appStore.set(key, value));
+                appContents.forEach(({ key, value }) => appStore.set(key, value));
                 indexContents.forEach(({ key, value }) => indexStorage.set(key as never, value as never));
-                this.setLastUpdates(pull.appName, lastUpdate, indexLastUpdate);
+                this.setLastUpdates(pull.appName, updates);
             }
         });
     }

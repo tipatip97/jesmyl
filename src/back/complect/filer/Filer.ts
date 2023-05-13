@@ -4,21 +4,16 @@ import cm from '../../apps/cm/config';
 import gamer from '../../apps/gamer/config';
 import index from '../../apps/index/config';
 import leader from '../../apps/leader/config';
-import { Executer } from '../executer/Executer';
 import smylib, { SMyLib } from '../soki/complect/SMyLib';
-import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName } from '../soki/soki.model';
-import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, FilerWatcher, SimpleKeyValue } from './Filer.model';
+import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName, SokiClientUpdateCortage } from '../soki/soki.model';
+import { FilerAppConfig, FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, FilerWatcher, SimpleKeyValue } from './Filer.model';
 
-const actionsRequirement: FilerAppRequirement = {
-  name: 'actions',
-  transform: (actions) => Executer.prepareActionList(actions, []),
-  map: (rules) => Executer.mapActionList(rules),
-};
+type nil = null | undefined;
 
 export class Filer {
   contents = {} as FilerContents;
   private watcher: FilerWatcher = () => { };
-  private appConfigs = {
+  appConfigs = {
     index,
     cm,
     gamer,
@@ -74,12 +69,10 @@ export class Filer {
               rootPath = '',
               ext = 'json',
               level = 0,
-              prepareContent = (data: unknown) => data,
-              transform = (data: unknown) => data,
-              map = () => null,
+              prepareContent,
               watch = null,
               refreshTrigger = '',
-            } = smylib.isStr(requ) ? { name: requ } : requ;
+            } = smylib.isStr(requ) ? { name: requ } as FilerAppRequirement : requ;
 
             if (refreshTrigger) this.triggers.push({
               refreshTrigger,
@@ -90,14 +83,14 @@ export class Filer {
             const path = rootPath ? this.rootPath(filename) : this.filePath(filename);
 
             const createExpected = () => {
-              if (content.actions) {
-                const action = content.actions.mapped.find(({ track, expecteds }) => {
+              if (app.actions) {
+                const action = app.actions.rules?.find(({ track, expecteds }) => {
                   return expecteds !== undefined && track?.[0] === name;
                 });
 
                 if (action) {
-                  const { expecteds } = action;
-                  const [, expected] = expecteds?.find(([trackEnd]) => trackEnd === 1 && action.track[0] === name) ?? [];
+                  const { expecteds, track: [trackFitrst] } = action;
+                  const [, expected] = expecteds?.find(([trackEnd]) => trackEnd === 1 && trackFitrst === name) ?? [];
                   if (!expected) return;
                   const string = JSON.stringify(expected);
 
@@ -108,15 +101,12 @@ export class Filer {
                     } else console.info(`... ExpectedCreted ${filename}`);
 
                     const stat = fs.statSync(path);
-                    const transformed = transform(expected);
 
                     content[name] = {
                       data: expected,
                       string,
                       level,
                       prepareContent,
-                      transformed,
-                      mapped: map(transformed),
                       mtime: new Date(stat.mtime).getTime(),
                     };
                   });
@@ -139,7 +129,6 @@ export class Filer {
                 try {
                   const stat = fs.statSync(path);
                   const data = JSON.parse(stringData);
-                  const transformed = transform(data);
 
                   content[name] = {
                     data,
@@ -147,8 +136,6 @@ export class Filer {
                     mtime: new Date(stat.mtime).getTime(),
                     level,
                     prepareContent,
-                    transformed,
-                    mapped: map(transformed),
                   };
                 } catch (e) { }
                 cb?.();
@@ -160,7 +147,6 @@ export class Filer {
                       if (err) return;
                       try {
                         const data = cb(fileContent);
-                        const transformed = transform(data);
 
                         content[name] = {
                           data,
@@ -168,8 +154,6 @@ export class Filer {
                           mtime: new Date(fs.statSync(watchPath).mtime).getTime(),
                           level,
                           prepareContent,
-                          transformed,
-                          mapped: map(transformed),
                         };
 
                         this.watcher(appName, name, data);
@@ -187,10 +171,7 @@ export class Filer {
             });
           };
 
-          loadInContent(
-            actionsRequirement,
-            () => app.requirements.forEach((data) => loadInContent(data))
-          );
+          app.requirements.forEach((data) => loadInContent(data));
         });
     });
   }
@@ -246,31 +227,61 @@ export class Filer {
     });
   }
 
-  getContents(appName: SokiAppName, topLastUpdate: number, topIndexLastUpdate: number, auth?: LocalSokiAuth | null): PullEventValue {
-    let lastUpdates = { cts: topLastUpdate || 0, ts: topLastUpdate || 0 };
-    let indexLastUpdates = { cts: topIndexLastUpdate || 0, ts: topIndexLastUpdate || 0 };
-    const getContents = ([fixName, fixData]: [string, FilerContentData], ts: { cts: number, ts: number }) => {
-      if (fixData.level > (auth?.level || 0) || ts.ts >= fixData.mtime) return null;
-      if (ts.cts < fixData.mtime) ts.cts = fixData.mtime;
+  getContents(appName: SokiAppName, pullCortage: SokiClientUpdateCortage, auth?: LocalSokiAuth | null): PullEventValue {
+    try {
+      const [pullIndexLastUpdate, pullIndexMd5, pullAppLastUpdate, pullAppMd5] = pullCortage;
+
+      let appLastUpdates = { cts: pullAppLastUpdate || 0, ts: pullAppLastUpdate || 0 };
+      let indexLastUpdates = { cts: pullIndexLastUpdate || 0, ts: pullIndexLastUpdate || 0 };
+
+      const getContents = ([fixName, fixData]: [string, FilerContentData], ts: { cts: number, ts: number }) => {
+        if (fixData.level > (auth?.level || 0) || ts.ts >= fixData.mtime) return null;
+        if (ts.cts < fixData.mtime) ts.cts = fixData.mtime;
+
+        return {
+          key: fixName,
+          value: fixData.prepareContent ? fixData.prepareContent(fixData.data, auth) : fixData.data,
+        };
+      };
+
+      const getRulesData = (config: FilerAppConfig, md5: string | nil) => {
+        return md5 !== config.actions.shortRulesMd5
+          ? { key: 'rules', value: config.actions.shortRules }
+          : null;
+      };
+
+      const indexMd5 = this.appConfigs.index.actions.shortRulesMd5;
+      const appMd5 = this.appConfigs[appName].actions.shortRulesMd5;
 
       return {
-        key: fixName,
-        value: fixData.prepareContent(fixData.mapped ?? fixData.data, auth),
-      };
-    };
+        contents: [
+          SMyLib
+            .entries(this.contents.index)
+            .map((entries) => getContents(entries, indexLastUpdates))
+            .concat(getRulesData(this.appConfigs.index, pullIndexMd5))
+            .filter((data) => data) as SimpleKeyValue<SokiAppName>[],
+          SMyLib
+            .entries(this.contents[appName])
+            .map((entries) => getContents(entries, appLastUpdates))
+            .concat(getRulesData(this.appConfigs[appName], pullAppMd5))
+            .filter((data) => data) as SimpleKeyValue<SokiAppName>[],
+        ],
+        appName,
+        updates: [
+          indexLastUpdates.cts === pullIndexLastUpdate ? 0 : indexLastUpdates.cts,
+          indexMd5 === pullIndexMd5 ? '' : indexMd5,
+          appLastUpdates.cts === pullAppLastUpdate ? 0 : appLastUpdates.cts,
+          appMd5 === pullAppMd5 ? '' : appMd5,
+        ],
+      }
+    } catch (error) {
+      console.error('CATCHED', error);
 
-    return {
-      contents: SMyLib
-        .entries(this.contents[appName])
-        .map((entries) => getContents(entries, lastUpdates))
-        .filter((data) => data) as SimpleKeyValue<SokiAppName>[],
-      indexContents: SMyLib
-        .entries(this.contents.index)
-        .map((entries) => getContents(entries, indexLastUpdates))
-        .filter((data) => data) as SimpleKeyValue<SokiAppName>[],
-      appName,
-      lastUpdate: lastUpdates.cts,
-      indexLastUpdate: indexLastUpdates.cts,
+      return {
+        contents: [[], []],
+        appName,
+        updates: [null, null, null, null],
+      };
     }
   }
 }

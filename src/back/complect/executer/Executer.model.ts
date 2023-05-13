@@ -17,11 +17,11 @@ export interface ExecuteFeedbacks {
     errorMessage: string,
 }
 
-export type ExecutionRuleTrackBeat = string | [string, string, any];
+export type ExecutionRuleTrackBeat = string | [string, string, any] | [string, string, any, string, string, any] | [string, string, any, string, string, any, string, string, any];
 export type ExecutionTrack = ExecutionRuleTrackBeat[];
 export type ExecutionTrackTail = [number, ExecutionTrack];
 
-export type ExecutionSidesDict = Record<string, ExecutionSide>;
+export type ExecutionSidesDict = Record<`/${string}`, ExecutionSide>;
 
 export interface BasicRule {
     method: ExecutionMethod,
@@ -29,8 +29,8 @@ export interface BasicRule {
     args?: Record<string, unknown>,
 }
 
-export interface ExecutionSide extends BasicRule {
-    trackTail: ExecutionTrackTail,
+export interface ExecutionSide extends BasicRule, Partial<ExecutionSidesDict> {
+    trackTail?: ExecutionTrackTail,
 }
 
 export interface ExecutionRule extends BasicRule {
@@ -48,14 +48,13 @@ export interface ExecutionRule extends BasicRule {
     fixAccesses?: Record<string, ExecutionTrack>,
     writeArg?: string,
     setInEachValueItem?: ExecuterSetInEachValueItem,
-    ['/']?: ExecutionRule,
 }
 
 export type ExecutionExpectations = [number, {} | []][];
 
 export type ExecuterSetInEachValueItem = Record<string, Record<string, unknown>>;
 
-export interface ExecutionRealAccumulatable {
+export interface RealAccumulatableRule {
     expecteds?: ExecutionExpectations,
     args?: Record<string, any>,
     track: ExecutionTrack,
@@ -64,15 +63,17 @@ export interface ExecutionRealAccumulatable {
     setInEachValueItem?: ExecuterSetInEachValueItem,
 }
 
-export type ExecutionFixedAccesses = Record<string, () => boolean>;
-
-export interface ExecutionReal extends ExecutionRealAccumulatable {
-    action: string;
-    method: ExecutionMethod,
+export interface ShortRealRule {
+    action: string,
     title?: string,
     shortTitle?: string,
-    isSequre?: boolean,
     level?: number,
+    isSequre?: boolean,
+    args?: Record<string, any>,
+}
+
+export interface ExecutionReal extends RealAccumulatableRule, ShortRealRule {
+    method: ExecutionMethod,
     value: any,
     uniqs?: string[] | Record<string, string>,
     fix: ExecutionRuleTrackBeat,

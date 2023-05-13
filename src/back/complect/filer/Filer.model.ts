@@ -1,4 +1,4 @@
-import { ExecutionReal } from "../executer/Executer.model";
+import { ExecutionReal, ShortRealRule } from "../executer/Executer.model";
 import { LocalSokiAuth, SokiAppName } from "../soki/soki.model";
 
 export type FilerAppStore = Record<SokiAppName, FilerAppConfig>;
@@ -18,26 +18,31 @@ export interface FilerAppRequirement {
 export type SimpleKeyValue<Key = string, Value = unknown> = SimpleValueKey<Value, Key>;
 export type SimpleValueKey<Value = unknown, Key = string> = { key: Key, value: Value };
 
+export interface FilerAppConfigActions {
+    rules: ExecutionReal[],
+    shortRules: ShortRealRule[],
+    shortRulesMd5: string | null,
+}
+
 export interface FilerAppConfig {
     title: string,
     requirements: (string | FilerAppRequirement)[],
+    actions: FilerAppConfigActions,
 }
 
 export interface FilerApp extends FilerAppConfig {
     requirements: FilerAppRequirement[],
 }
 
-export interface FilerContentData<MappedData = unknown> {
+export interface FilerContentData {
     data: any,
-    string: string,
+    string?: string,
     mtime: number,
     level: number,
-    prepareContent: (data: any, auth?: LocalSokiAuth | null) => any,
-    transformed: MappedData,
-    mapped: MappedData,
+    prepareContent?: (data: any, auth?: LocalSokiAuth | null) => any,
 }
 
 export type FilerWatcher = (appName: SokiAppName, name: string, data: any) => void;
 
-export type FilerContent = Record<'actions', FilerContentData<ExecutionReal[]>> & Record<string, FilerContentData>;
+export type FilerContent = Record<string, FilerContentData>;
 export type FilerContents = Record<Partial<SokiAppName>, FilerContent>;

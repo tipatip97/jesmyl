@@ -25,7 +25,7 @@ export default function IndexLogin() {
     isCorrectLoginJSONData,
     setAuthData,
     isConnected,
-    removeLastUpdates,
+    removePullRequisites,
   } = useAuth();
   const { navigate } = useIndexNav();
   const error = (message: string | nil) =>
@@ -140,7 +140,7 @@ export default function IndexLogin() {
                       ({ authorization }) => {
                         if (authorization && authorization.ok !== false) {
                           setIsInProscess(1);
-                          removeLastUpdates();
+                          removePullRequisites();
                           setAuthData(authorization.value);
                         } else {
                           setError('login', authorization?.value || 'Неизвестная ошибка');
