@@ -1,6 +1,6 @@
 import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
-import { SokiAppName, SokiClientEvent, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
+import { PullEventValue, SokiAppName, SokiClientEvent, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
 import modalService from './complect/modal/Modal.service';
@@ -90,6 +90,7 @@ export class SokiTrip {
                     }
 
                     if (event.statistic) indexStorage.refreshAreas(['statistic'], event as never);
+                    if (event.pull) this.updatedPulledData(event.pull);
                 }
             } catch (e) { }
         });
@@ -134,32 +135,31 @@ export class SokiTrip {
     pullCurrentAppData() {
         const { index: [indexLastUpdate, indexRulesMd5] = [], [this.appName]: [appLastUpdate, appRulesMd5] = [] } = indexStorage.get('updateRequisites') || {};
 
-        this.send({
-            pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5]
-        }).on(({ pull }) => {
-            if (pull) {
-                const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown>) => {
-                    if (!pullContents.length) return;
+        this.send({ pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] })
+            .on((event) => event.pull && this.updatedPulledData(event.pull));
+    }
 
-                    const fixes: string[] = [];
-                    const contents: Record<string, unknown> = {};
-                    pullContents.forEach(({ key, value }) => {
-                        contents[key] = value;
-                        fixes.push(key);
-                    });
-                    store.refreshAreas(fixes as never, contents);
-                };
-                const { contents: [indexContents, appContents], updates } = pull;
-                const appStore = appStorage[pull.appName];
+    updatedPulledData(pull: PullEventValue) {
+        const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown>) => {
+            if (!pullContents.length) return;
 
-                update(appContents, appStore);
-                update(indexContents, appStorage.index);
+            const fixes: string[] = [];
+            const contents: Record<string, unknown> = {};
+            pullContents.forEach(({ key, value }) => {
+                contents[key] = value;
+                fixes.push(key);
+            });
+            store.refreshAreas(fixes as never, contents);
+        };
+        const { contents: [indexContents, appContents], updates } = pull;
+        const appStore = appStorage[pull.appName];
 
-                appContents.forEach(({ key, value }) => appStore.set(key, value));
-                indexContents.forEach(({ key, value }) => indexStorage.set(key as never, value as never));
-                this.setLastUpdates(pull.appName, updates);
-            }
-        });
+        update(appContents, appStore);
+        update(indexContents, appStorage.index);
+
+        appContents.forEach(({ key, value }) => appStore.set(key, value));
+        indexContents.forEach(({ key, value }) => indexStorage.set(key as never, value as never));
+        this.setLastUpdates(pull.appName, updates);
     }
 
     onAppChange(appName: SokiAppName) {
