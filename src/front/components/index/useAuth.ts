@@ -47,7 +47,7 @@ export default function useAuth() {
         args: {
           message,
           id: Date.now(),
-          login: auth.login,
+          login: auth.login?.trim(),
           fio: auth.fio,
         }
       });
@@ -64,6 +64,7 @@ export default function useAuth() {
     },
     logout: () => {
       dispatch(setAuthData(null));
+      indexStorage.set('auth', null);
       dispatch(setCurrentApp("cm"));
       removePullRequisites();
       window.location.reload();
@@ -80,21 +81,22 @@ export default function useAuth() {
 
       if (auth) {
         dispatch(setAuthData(auth));
+        indexStorage.set('auth', auth);
         dispatch(setCurrentApp("cm"));
         removePullRequisites();
       }
     },
     loginInSystem: (state: AuthorizationData) => {
       return sendData('login', {
-        login: mylib.md5(state.login),
+        login: mylib.md5(state.login.trim()),
         passw: mylib.md5(state.passw),
       });
     },
     registerInSystem: (state: RegisterData) => {
       return sendData('register', {
-        login: mylib.md5(state.login),
+        login: mylib.md5(state.login.trim()),
         passw: mylib.md5(state.passw),
-        fio: state.login,
+        fio: state.login.trim(),
         rpassw: mylib.md5(state.rpassw),
       });
     },

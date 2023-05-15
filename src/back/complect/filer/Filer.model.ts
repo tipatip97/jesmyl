@@ -42,7 +42,7 @@ export interface FilerContentData {
     prepareContent?: (data: any, auth?: LocalSokiAuth | null) => any,
 }
 
-export type FilerWatcher = (appName: SokiAppName, name: string, data: any) => void;
+export type FilerWatcher = (appName: SokiAppName, name: string, data: unknown, mtime: number) => void;
 
 export type FilerContent = Record<string, FilerContentData>;
 export type FilerContents = Record<Partial<SokiAppName>, FilerContent>;

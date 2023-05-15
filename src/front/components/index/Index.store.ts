@@ -35,7 +35,6 @@ export const slice = createSlice({
     },
     setAuthData: (state, action: PayloadAction<Auth | null>) => {
       state.auth = action.payload;
-      indexStorage.set('auth', action.payload);
     },
     setAppVersion: (state, action: PayloadAction<number>) => {
       state.appVersion = action.payload;

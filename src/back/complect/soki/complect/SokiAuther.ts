@@ -1,70 +1,27 @@
-import fs from 'fs';
-import { LocalSokiAuth, rootDirective, SokiAuth, SokiClientEvent } from '../soki.model';
+import { filer } from '../../filer/Filer';
+import { LocalSokiAuth, SokiAuth, SokiClientEvent } from '../soki.model';
 import smylib from './SMyLib';
 
-const bonjourPath = `${rootDirective}/bonjour`;
-
 export class SokiAuther {
-    authList: SokiAuth[] = [];
     mtime = 0;
-    isReady = false;
-    onReadies: ((authList: SokiAuth[]) => void)[] = [];
 
-    constructor() {
-        this.getAuthList().then((list) => {
-            this.authList = list;
-            this.isReady = true;
-            this.onReadies.forEach((cb) => cb(list));
-        });
-    }
-
-    onReady(cb: (authList: SokiAuth[]) => void) {
-        if (this.isReady) cb(this.authList);
-        else if (this.onReadies.indexOf(cb) < 0) this.onReadies.push(cb);
-    }
-
-    updateMtime() {
-        this.mtime = new Date(fs.statSync(bonjourPath).mtime).getTime();
-    }
-
-    getAuthList() {
-        return new Promise<SokiAuth[]>((res, rej) => {
-            fs.readFile(bonjourPath, 'utf-8', (err, data) => {
-                if (err) {
-                    fs.writeFile(bonjourPath, '[]', null, (error) => {
-                        if (error) rej();
-                        else {
-                            this.updateMtime();
-                            res([]);
-                        }
-                    });
-                } else {
-                    try {
-                        this.updateMtime();
-                        res(JSON.parse(data));
-                    } catch (e) {
-                        rej();
-                    }
-                }
-            });
-        });
+    get authList(): SokiAuth[] | undefined {
+        return filer.contents.admin.userList.data;
     }
 
     isCorrectData(user?: LocalSokiAuth | null) {
-        return new Promise((res, rej) => {
+        return new Promise((res) => {
             const userLogin = user?.login;
             if (!user || !user.login) {
                 res(false);
                 return;
             }
-            this.onReady((authList) => {
-                const userPassw = user?.passw;
-                const auth = authList.find(({ login }) => userLogin === login);
+            const userPassw = user?.passw;
+            const auth = this.authList?.find(({ login }) => userLogin === login);
 
-                if (!auth || (userPassw && smylib.md5(userPassw) !== auth.passw))
-                    res(false);
-                else res(true);
-            });
+            if (!auth || (userPassw && smylib.md5(userPassw) !== auth.passw))
+                res(false);
+            else res(true);
         });
     }
 
@@ -72,44 +29,32 @@ export class SokiAuther {
         return new Promise<SokiAuth>((res, rej) => {
             try {
                 if (event) {
-                    this.onReady((authList) => {
-                        const eventLogin = event.value.login;
-                        const passw = event.value.passw;
-                        const secretPassw = smylib.md5(passw);
-                        const user = authList.find(({ login }) => eventLogin === login);
+                    const eventLogin = event.value.login;
+                    const passw = event.value.passw;
+                    const secretPassw = smylib.md5(passw);
+                    const user = this.authList?.find(({ login }) => eventLogin === login);
 
-                        if (event.type === 'register') {
-                            if (user) {
-                                rej('Такой логин уже есть!');
-                                return;
-                            }
-
-                            const auth = {
-                                level: 3,
-                                fio: event.value.fio,
-                                login: eventLogin,
-                                passw: secretPassw,
-                            };
-
-                            authList.push(auth);
-
-                            try {
-                                const authListText = JSON.stringify(authList);
-                                fs.writeFile(bonjourPath, authListText, null, (error) => {
-                                    if (error) rej('Неизвестная ошибка');
-                                    else {
-                                        this.updateMtime();
-                                        res({ ...auth, passw });
-                                    }
-                                });
-                            } catch (e: any) {
-                                rej(e.message);
-                            }
-                        } else {
-                            if (user?.passw === secretPassw) res({ ...user, passw });
-                            else rej('Неверные данные');
+                    if (event.type === 'register') {
+                        if (user) {
+                            rej('Такой логин уже есть!');
+                            return;
                         }
-                    });
+
+                        const auth = {
+                            level: 3,
+                            fio: event.value.fio,
+                            login: eventLogin,
+                            passw: secretPassw,
+                        };
+
+                        this.authList?.push(auth);
+
+                        filer.saveChanges(['userList'], 'admin')
+                            .then(() => res({ ...auth, passw }));
+                    } else {
+                        if (user?.passw === secretPassw) res({ ...user, passw });
+                        else rej('Неверные данные');
+                    }
 
                 } else rej('Неизвестная ошибка #9384510');
             } catch (e) {

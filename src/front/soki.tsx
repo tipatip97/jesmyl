@@ -47,7 +47,7 @@ export class SokiTrip {
 
                     if (event.errorMessage) waiter.ko?.(event.errorMessage);
                     else waiter.ok(event);
-                }
+                } else if (event.pull) this.updatedPulledData(event.pull);
 
                 if (event) {
                     const appStore = appStorage[this.appName];
@@ -90,7 +90,6 @@ export class SokiTrip {
                     }
 
                     if (event.statistic) indexStorage.refreshAreas(['statistic'], event as never);
-                    if (event.pull) this.updatedPulledData(event.pull);
                 }
             } catch (e) { }
         });

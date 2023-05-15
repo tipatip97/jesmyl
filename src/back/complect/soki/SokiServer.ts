@@ -27,15 +27,19 @@ class SokiServer {
 
     constructor() {
         filer.load().then().catch(() => { });
-        filer.setWatcher((appName, key, value) => {
+        filer.setWatcher((appName, key, value, mtime) => {
             this.send({
-                pull: {
-                    appName,
-                    contents: appName === 'index'
-                        ? [[{ key, value }], []]
-                        : [[], [{ key, value }]],
-                    updates: [null, null, null, null],
-                },
+                pull: appName === 'index'
+                    ? {
+                        appName,
+                        contents: [[{ key, value }], []],
+                        updates: [mtime, null, null, null],
+                    }
+                    : {
+                        appName,
+                        contents: [[], [{ key, value }]],
+                        updates: [null, null, mtime, null],
+                    },
             });
         });
     }
@@ -130,19 +134,26 @@ class SokiServer {
                     if (eventBody.connect) {
                         if (eventData.auth) {
                             if (capsule) {
-                                sokiAuther.onReady((auths) => {
-                                    const eventLogin = eventData.auth?.login;
-                                    const eventPassw = eventData.auth?.passw ? smylib.md5(eventData.auth.passw) : NaN;
-                                    const auth = eventLogin && auths.find(({ login, passw }) => eventLogin === login && eventPassw === passw);
-                                    if (auth) {
-                                        capsule.auth = auth;
-                                        console.info(`Client ${auth.fio ?? '???'} connected`);
-                                    } else this.send({
-                                        requestId,
-                                        connect: false,
-                                        errorMessage: 'Некорректные данные авторизации'
-                                    }, client);
-                                });
+                                const eventLogin = eventData.auth.login;
+                                const passw = eventData.auth.passw;
+                                const secretPassw = passw && smylib.md5(passw);
+                                const auth = eventLogin && secretPassw && sokiAuther.authList?.find(({ login, passw }) => eventLogin === login && secretPassw === passw);
+                                if (auth) {
+                                    capsule.auth = auth;
+                                    console.info(`Client ${auth.fio ?? '???'} connected`);
+                                    if (auth.level !== eventData.auth.level)
+                                        this.send({
+                                            pull: {
+                                                appName: 'index',
+                                                contents: [[{ key: 'auth', value: { ...auth, passw } }], []],
+                                                updates: [null, null, null, null]
+                                            }
+                                        }, client);
+                                } else this.send({
+                                    requestId,
+                                    connect: false,
+                                    errorMessage: 'Некорректные данные авторизации'
+                                }, client);
                             }
                         } else console.info('Unknown client connected');
                         return;

@@ -74,10 +74,11 @@ export class Filer {
               refreshTrigger = '',
             } = smylib.isStr(requ) ? { name: requ } as FilerAppRequirement : requ;
 
-            if (refreshTrigger) this.triggers.push({
-              refreshTrigger,
-              cb: () => loadInContent(requ, cb),
-            });
+            if (refreshTrigger)
+              this.triggers.push({
+                refreshTrigger,
+                cb: () => loadInContent(requ, cb),
+              });
 
             const filename = rootPath ? this.rootFileName(rootPath, ext) : this.fileName(appName, name, ext);
             const path = rootPath ? this.rootPath(filename) : this.filePath(filename);
@@ -147,16 +148,17 @@ export class Filer {
                       if (err) return;
                       try {
                         const data = cb(fileContent);
+                        const mtime = new Date(fs.statSync(watchPath).mtime).getTime();
 
                         content[name] = {
                           data,
                           string: fileContent,
-                          mtime: new Date(fs.statSync(watchPath).mtime).getTime(),
+                          mtime,
                           level,
                           prepareContent,
                         };
 
-                        this.watcher(appName, name, data);
+                        this.watcher(appName, name, data, mtime);
                       } catch (e) { }
                     });
                   };
