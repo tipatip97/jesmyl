@@ -45,7 +45,7 @@ export class JStorage<Scope> {
 
     listen<Key extends keyof Scope>(key: Key, name: string, listener: JStorageListener<Scope[Key]>, isRejectOnInit?: boolean): JStorageListener<Scope[Key]> {
         if (this.listeners[key] == null) this.listeners[key] = {};
-        if (!isRejectOnInit && this.initialized.indexOf(key) > -1 && this.updatetOnInit.indexOf(key) < 0) {
+        if (!isRejectOnInit && this.initialized.includes(key) && !this.updatetOnInit.includes(key)) {
             this.update(key, listener);
             this.updatetOnInit.push(key);
         }

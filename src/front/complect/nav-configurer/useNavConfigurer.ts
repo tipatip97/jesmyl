@@ -61,7 +61,13 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
                     if (routePath.length > 1 || generalPhase === last) {
                         net = net.filter(([phase]) => generalPhase !== phase).concat([path]);
                     } else {
-                        net = net.some(([phase]) => generalPhase === phase) ? net : net.concat([path]);
+                        const prevPathi = net.findIndex(([phase]) => generalPhase === phase);
+                        net = prevPathi > -1 ? net : net.concat([path]);
+
+                        if (prevPathi > -1 && !nav.isPathPosible(net[prevPathi])) {
+                            net = [...net];
+                            net[prevPathi] = path;
+                        }
                     }
 
                     last = generalPhase;
