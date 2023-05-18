@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../shared/store";
 import useCmNav from "../base/useCmNav";
-import { switchShowTranslationInfo } from "../Cm.store";
+import di from "../Cm.store";
 import ComFace from "../col/com/face/ComFace";
 import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import "./Translation.scss";
@@ -79,7 +79,7 @@ export default function Translations({
             </div>
             <EvaIcon
               className="close-info-button"
-              onClick={() => dispatch(switchShowTranslationInfo(false))}
+              onClick={() => dispatch(di.switchShowTranslationInfo(false))}
               name="close-outline"
             />
             <div
@@ -125,7 +125,7 @@ export default function Translations({
               </div>
               <div
                 className={`area-button second open-info-button ${isShowCloseButton ? "show" : ""}`}
-                onClick={() => dispatch(switchShowTranslationInfo(!isShowInfo))}
+                onClick={() => dispatch(di.switchShowTranslationInfo(!isShowInfo))}
               >
                 <EvaIcon name="question-mark-circle-outline" />
               </div>

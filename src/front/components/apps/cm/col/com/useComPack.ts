@@ -4,28 +4,27 @@ import { useMarks } from "../../lists/marks/useMarks";
 import { useMeetings } from "../../lists/meetings/useMeetings";
 import { useCcat } from "../cat/useCcat";
 import { Com } from "./Com";
-import { useCcom } from "./useCcom";
 
+const altComPacComponent: [null, ''] = [null, ''];
 
-export default function useComPack(isSingleInAll?: boolean): [Com[] | nil, string] {
+export default function useComPack(com: Com | nil, isSingleInAll?: boolean): [Com[] | nil, string] {
     const { markedComs } = useMarks();
-    const { currentMeeting } = useMeetings();
+    const { currentEvent } = useMeetings();
     const { route } = useCmNav();
-    const ccom = useCcom();
     const { takeSelectedComs } = useSelectedComs();
     const cat = useCcat(route?.includes('all'));
 
     return route ?
         route.includes('marks')
             ? [markedComs, ' - Избранное']
-            : currentMeeting && route.includes('meetings')
-                ? [currentMeeting.coms, ' - ' + currentMeeting.name]
+            : currentEvent && route.includes('meetings')
+                ? [currentEvent.coms, ' - ' + currentEvent.name]
                 : route.includes('selected')
                     ? [takeSelectedComs(), ' - Выбранное']
-                    : isSingleInAll && ccom
-                        ? [[ccom], ' - ' + ccom.name]
+                    : isSingleInAll && com
+                        ? [[com], ' - ' + com.name]
                         : route.includes('all') && cat
                             ? [cat.searchedComs, ' - ' + cat.name]
-                            : [null, '']
-        : [null, ''];
+                            : altComPacComponent
+        : altComPacComponent;
 }

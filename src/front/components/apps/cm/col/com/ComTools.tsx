@@ -6,15 +6,35 @@ import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import { ChordVisibleVariant } from "../../Cm.model";
-import { riseUpComUpdate, setComFontSize } from "../../Cm.store";
+import di from "../../Cm.store";
 import { useCcom } from "./useCcom";
 import useMigratableComTools from "./useMigratableComTools";
+import { useCols } from "../../cols/useCols";
+import { Cols } from "../../cols/Cols";
+import { Com } from "./Com";
 
 const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
+
+const catMentions = (cols?: Cols, com?: Com): string[] => {
+  if (!cols || !com) return [];
+  const wid = com.wid;
+  const refs = com.refs || {};
+  const natives: string[] = [];
+
+  const inCats = cols.cats
+    .filter(cat => {
+      if (refs[cat.wid]) natives.push(`${cat.name} ${refs[cat.wid]}`);
+      return cat.stack.includes(wid);
+    })
+    .map(cat => cat.name);
+
+  return inCats.concat(natives);
+}
 
 export default function ComTools() {
   const dispatch = useDispatch();
   const ccom = useCcom();
+  const cols = useCols();
   const fontSize = useSelector(fontSizeSelector);
   const { closeAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   const [chordVisibleVariant] = useChordVisibleVariant();
@@ -33,13 +53,13 @@ export default function ComTools() {
             name="minus"
             onClick={() => {
               ccom.transpose(-1);
-              dispatch(riseUpComUpdate());
+              dispatch(di.riseUpComUpdate());
             }}
           />
           <div
             onClick={() => {
               ccom.setChordsInitialTon();
-              dispatch(riseUpComUpdate());
+              dispatch(di.riseUpComUpdate());
             }}
           >
             {ccom.firstChord}
@@ -48,7 +68,7 @@ export default function ComTools() {
             name="plus"
             onClick={() => {
               ccom.transpose(1);
-              dispatch(riseUpComUpdate());
+              dispatch(di.riseUpComUpdate());
             }}
           />
         </>
@@ -59,12 +79,12 @@ export default function ComTools() {
         rightNode: <>
           <EvaIcon
             name="minus-outline"
-            onClick={() => dispatch(setComFontSize(fontSize - 1))}
+            onClick={() => dispatch(di.setComFontSize(fontSize - 1))}
           />
           <div>{fontSize}</div>
           <EvaIcon
             name="plus-outline"
-            onClick={() => dispatch(setComFontSize(fontSize + 1))}
+            onClick={() => dispatch(di.setComFontSize(fontSize + 1))}
           />
         </>,
       },
@@ -87,7 +107,7 @@ export default function ComTools() {
       ))
     ],
     footer: <div className="fade-05 full-width margin-gap-v">
-      {ccom.catMentions().map((mention, mentioni) => (
+      {catMentions(cols, ccom).map((mention, mentioni) => (
         <React.Fragment key={`mentioni-${mentioni}`}>
           {mentioni ? ", " : ""}
           <span className="nowrap">{mention}</span>

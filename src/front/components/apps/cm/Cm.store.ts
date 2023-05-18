@@ -6,12 +6,14 @@ import { ChordVisibleVariant, CmRollMode, CmState, FavoriteMeetings, PlayerHideM
 import cmStorage from "./cmStorage";
 import { ChordPack } from "./col/com/chord-card/ChordCard.model";
 import { MigratableComToolName } from "./col/com/Com.model";
+import { IExportableCols } from "./cols/Cols.model";
 import { Exec } from "./editor/CmEditor.model";
 import { IExportableMeetings } from "./lists/meetings/Meetings.model";
 
 export const cmExer = new Exer('cm', cmStorage);
 
 const initialState: CmState = {
+  cols: cmStorage.get('cols'),
   chordVisibleVariant: cmStorage.getOr('chordVisibleVariant', 0),
   laterComwList: cmStorage.getOr('laterComwList', []),
   rollMode: null,
@@ -32,9 +34,7 @@ const initialState: CmState = {
   comTopTools: cmStorage.getOr('comTopTools', ["mark-com", "fullscreen-mode"]),
 
   numComUpdates: 0,
-  numColsUpdates: 0,
   numAbsolutePopupUpdates: 0,
-  numMeetingsUpdate: 0,
 
   // editor
   execs: cmStorage.getOr('execs', []),
@@ -45,6 +45,9 @@ export const slice = createSlice({
   name: "cm",
   initialState,
   reducers: {
+    setCols: (state, action: PayloadAction<IExportableCols>) => {
+      state.cols = action.payload;
+    },
     setMarkList: (state, action: PayloadAction<number[]>) => {
       state.marks = action.payload;
     },
@@ -113,43 +116,12 @@ export const slice = createSlice({
     riseUpComUpdate: (state) => {
       state.numComUpdates++;
     },
-    riseUpColsUpdates: (state) => {
-      state.numColsUpdates++;
-    },
     riseUpAbsolutePopupUpdates: (state) => {
       state.numAbsolutePopupUpdates++;
-    },
-    riseUpMeetingsUpdate: (state) => {
-      state.numMeetingsUpdate++;
     },
   },
 });
 
-export const {
-  riseUpColsUpdates,
-  switchCmFullscreen,
-  switchIsMiniAnchor,
-  setPlayerHideMode,
-  setChordVisibleVariant,
-  riseUpComUpdate,
-  changeRollMode,
-  setMarkList,
-  updateMeetingList,
-  updateFavoriteMeetings,
-  updateComTopTools,
-  updateEditorExecList,
-  setComFontSize,
-  setTranslationBlock,
-  switchTranslationBlockVisible,
-  setTranslationBlockPosition,
-  riseUpTranslationUpdates,
-  switchShowTranslationInfo,
-  updateLaterComwList,
-  updateCmChordTracks,
-  riseUpAbsolutePopupUpdates,
-  riseUpMeetingsUpdate,
-  updateMp3Rules,
-} = slice.actions;
 export default slice.actions;
 
 export const cmReducer = slice.reducer;

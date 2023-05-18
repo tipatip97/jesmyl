@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
-import { setMarkList } from "../../Cm.store";
+import di from "../../Cm.store";
 import cmStorage from "../../cmStorage";
 import { Com } from "../../col/com/Com";
 import { useCols } from "../../cols/useCols";
@@ -10,7 +10,7 @@ const marksSelector = (state: RootState) => state.cm.marks;
 export function useMarks() {
     const dispatch = useDispatch();
     const marks = useSelector(marksSelector);
-    const [cols] = useCols();
+    const cols = useCols();
     const unsets: number[] = [];
     const markedComs = cols && marks.map(comw => {
         const com = cols.coms.find(com => com.wid === comw);
@@ -23,7 +23,7 @@ export function useMarks() {
         markedComs,
         setMarks: (val: number[]) => {
             cmStorage.set('marks', val);
-            dispatch(setMarkList(val));
+            dispatch(di.setMarkList(val));
         },
         toggleMarked: (comw: number) => ret.isMarked(comw) ? ret.removeMark(comw) : ret.addMarks(comw),
         addMarks: (comws: number | number[]) => ret.marks && ret.setMarks(ret.marks.concat([comws].flat().filter(comw => ret.marks && ret.marks.indexOf(comw) < 0))),

@@ -6,7 +6,7 @@ import { useEditableCols } from "../../useEditableCols";
 import { useEditableCcom } from "../useEditableCcom";
 
 export default function CategoryBinds() {
-  const [cols] = useEditableCols();
+  const cols = useEditableCols();
   const ccom = useEditableCcom();
   const { exec } = useExer(cmExer);
 

@@ -5,15 +5,15 @@ import LocalListToolsPopup from "../popups/LocalListToolsPopup";
 import { useMeetings } from "./useMeetings";
 
 export default function TheMeetingsEvent() {
-  const { currentMeeting } = useMeetings();
+  const { currentEvent } = useMeetings();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   return (
     <PhaseCmContainer
       topClass="meeting-container"
-      headTitle={currentMeeting?.name ?? "Событие"}
-      onMoreClick={() => openAbsoluteBottomPopup(<LocalListToolsPopup coms={currentMeeting?.coms} />)}
-      content={currentMeeting?.coms?.map((com) => (
+      headTitle={currentEvent?.name ?? "Событие"}
+      onMoreClick={() => openAbsoluteBottomPopup(<LocalListToolsPopup coms={currentEvent?.coms} />)}
+      content={currentEvent?.coms?.map((com) => (
         <ComFace
           key={`metting.com-face ${com.wid}`}
           com={com}

@@ -19,9 +19,7 @@ export interface CmState extends CmStoraged {
     rollModeMarks: boolean,
 
     numComUpdates: number,
-    numColsUpdates: number,
     numAbsolutePopupUpdates: number,
-    numMeetingsUpdate: number,
 }
 
 export type CmRollMode = 'pause' | 'play' | null;
@@ -35,6 +33,7 @@ export enum ChordVisibleVariant {
 export type FavoriteMeetings = Record<'events' | 'contexts', number[]>;
 
 export interface CmStoraged extends CmEditorStoraged {
+    cols?: IExportableCols,
     laterComwList: number[],
     chordVisibleVariant: ChordVisibleVariant,
     marks: number[],
@@ -51,7 +50,6 @@ export interface CmStoraged extends CmEditorStoraged {
 export type PlayerHideMode = 'expand' | 'min' | '';
 
 export interface CmStorage extends CmStoraged {
-    cols: IExportableCols,
     settings: IExportableSetts,
     eeStorage: EeStorageStoreType,
     executions: ClientExecutionDict[],

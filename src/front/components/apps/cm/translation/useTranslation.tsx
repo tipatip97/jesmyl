@@ -4,12 +4,7 @@ import { renderApplication } from "../../../../..";
 import { isTouchDevice } from "../../../../complect/device-differences";
 import { RootState } from "../../../../shared/store";
 import useCmNav from "../base/useCmNav";
-import {
-  riseUpTranslationUpdates,
-  setTranslationBlock,
-  setTranslationBlockPosition,
-  switchTranslationBlockVisible,
-} from "../Cm.store";
+import di from "../Cm.store";
 import { Com } from "../col/com/Com";
 import { useCcom } from "../col/com/useCcom";
 import useComPack from "../col/com/useComPack";
@@ -41,7 +36,7 @@ export default function useTranslation() {
     currTexti,
     texts,
     position: useSelector(translationBlockPositionSelector),
-    comPack: useComPack(true),
+    comPack: useComPack(ccom, true),
     nextText: () =>
       ret.texts &&
       currTexti < ret.texts.length - 1 &&
@@ -66,7 +61,7 @@ export default function useTranslation() {
       scrollToView(nextCom);
     },
     setTexti: (blocki: number) => {
-      dispatch(setTranslationBlock(blocki));
+      dispatch(di.setTranslationBlock(blocki));
       const nextd = window.document.getElementById(
         `translation-window-line-${blocki}`
       );
@@ -80,10 +75,10 @@ export default function useTranslation() {
             nextParent.clientWidth / 2;
       }
     },
-    switchVisible: () => dispatch(switchTranslationBlockVisible(!isVisible)),
+    switchVisible: () => dispatch(di.switchTranslationBlockVisible(!isVisible)),
     switchPosition: () => {
       dispatch(
-        setTranslationBlockPosition(
+        di.setTranslationBlockPosition(
           ret.position === "center" ? "top center" : "center"
         )
       );
@@ -128,7 +123,7 @@ export default function useTranslation() {
 
       if (win) {
         currWin = win;
-        dispatch(riseUpTranslationUpdates());
+        dispatch(di.riseUpTranslationUpdates());
         win.document.body.style.margin = "0";
         win.document.body.style.padding = "0";
         win.document.body.style.userSelect = "none";
@@ -138,7 +133,7 @@ export default function useTranslation() {
         win.addEventListener("unload", () => {
           window.removeEventListener("unload", closeWin);
           currWin = null;
-          dispatch(riseUpTranslationUpdates());
+          dispatch(di.riseUpTranslationUpdates());
         });
 
         renderApplication(

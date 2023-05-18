@@ -4,7 +4,7 @@ import { useEditableMeetings } from "./useEditableMeetings";
 
 export default function MeetingsEventHistory({ close }: { close: () => void }) {
   const { currentEvent } = useEditableMeetings();
-  const [cols] = useCols();
+  const cols = useCols();
 
   return (
     <div className="full-container full-height" onClick={() => close()}>

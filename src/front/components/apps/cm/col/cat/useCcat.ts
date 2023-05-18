@@ -4,7 +4,7 @@ import { Cat } from "./Cat";
 
 export function useCcat(isTakeZeroCat?: boolean): Cat | nil {
     const { appRouteData } = useCmNav();
-    const [cols] = useCols();
+    const cols = useCols();
 
     return isTakeZeroCat
         ? cols?.cats.find((cat) => 0 === cat.wid)

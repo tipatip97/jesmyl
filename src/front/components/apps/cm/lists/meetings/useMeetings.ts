@@ -1,46 +1,33 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
-import { riseUpMeetingsUpdate } from "../../Cm.store";
 import useCmNav from "../../base/useCmNav";
-import cmStorage from "../../cmStorage";
-import { localCols, useCols } from "../../cols/useCols";
+import { useCols } from "../../cols/useCols";
 import { Meetings } from "./Meetings";
-import { MeetingsEvent } from "./MeetingsEvent";
+import { IExportableMeetings } from "./Meetings.model";
 
 let localMeetings: Meetings | nil;
-let currentMeeting: MeetingsEvent | nil;
+let localIMeetings: IExportableMeetings | nil;
 
-const numMeetingsUpdateSelector = (state: RootState) => state.cm.numMeetingsUpdate;
 const meetingsSelector = (state: RootState) => state.cm.meetings;
 
 export function useMeetings() {
-    const dispatch = useDispatch();
-    useSelector(numMeetingsUpdateSelector);
-    const meetings = useSelector(meetingsSelector);
+    const imeetings = useSelector(meetingsSelector);
     const { goTo, appRouteData: { eventw } } = useCmNav();
-    const [cols] = useCols();
+    const cols = useCols();
+    const meetings = useMemo(() => {
+        if (localIMeetings && localIMeetings === imeetings)
+            return localMeetings;
 
-    useEffect(() => {
-        if (cols && meetings) {
-            localMeetings = new Meetings(meetings, cols);
-            setCurrEvent(eventw);
-            dispatch(riseUpMeetingsUpdate());
-        }
-    }, [meetings, cols]);
+        localMeetings = new Meetings(imeetings, cols);
+        localIMeetings = imeetings;
+    }, [cols, imeetings]);
 
     return {
-        meetings: localMeetings,
-        currentMeeting,
+        meetings,
+        currentEvent: meetings?.events?.find(meeting => meeting.wid === eventw),
         goToEvent: (eventw: number) => {
-            setCurrEvent(eventw);
             goTo({ place: 'event', data: { eventw } });
         },
     };
 }
-
-cmStorage.listen('meetings', 'useMeetings global', (val) => {
-    localMeetings = new Meetings(val, localCols);
-});
-
-const setCurrEvent = (eventw?: number) => eventw != null && (currentMeeting = localMeetings?.events?.find(meeting => meeting.wid === eventw));

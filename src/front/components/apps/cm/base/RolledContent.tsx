@@ -4,7 +4,7 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullScreen from "../../../../complect/useFullscreen";
 import { RootState } from "../../../../shared/store";
 import { CmRollMode } from "../Cm.model";
-import { changeRollMode } from "../Cm.store";
+import di from "../Cm.store";
 import cmStorage from "../cmStorage";
 import useCmNav from "./useCmNav";
 
@@ -77,7 +77,7 @@ export function useRoll() {
     rollMode: useSelector(rollModeSelector),
     switchRollMode: (topRollMode: CmRollMode) => {
       rollMode = topRollMode;
-      dispatch(changeRollMode(topRollMode));
+      dispatch(di.changeRollMode(topRollMode));
     },
     speedRollKf,
     toggleRoll: () => {

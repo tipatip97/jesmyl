@@ -21,52 +21,49 @@ export default function ComFace(props: ComFaceProps) {
     useAbsoluteFloatPopup();
   const { selectedComPosition, toggleSelectedCom } = useSelectedComs();
 
-  return com == null ? null : (
-    <>
+  return com
+    && <div
+      className={
+        'face-item flex between '
+        + (ccom?.wid === com.wid ? " current " : "")
+        + (groupClass || "")
+        + ` wid_${com.wid} `
+      }
+      onClick={
+        importantOnClick ||
+        (() => jumpTo({ phase: comNavPhasePoint, data: { ccomw: com.wid } }))
+      }
+      ref={
+        rejectScrollToView || ccom?.wid !== com.wid
+          ? undefined
+          : (element) => element?.scrollIntoView()
+      }
+      {...propsOfClicker({
+        onCtxMenu: (event) => {
+          event.preventDefault();
+          selectable !== false &&
+            openAbsoluteFloatPopup(
+              <ComFaceContextMenu
+                onClick={() => closeAbsoluteFloatPopup()}
+                com={com}
+              />,
+              event.clientX,
+              event.clientY
+            );
+        }
+      })}
+    >
       <div
-        className={
-          'face-item flex between '
-          + (ccom?.wid === com.wid ? " current " : "")
-          + (groupClass || "")
-          + ` wid_${com.wid} `
-        }
-        onClick={
-          importantOnClick ||
-          (() => jumpTo({ phase: comNavPhasePoint, data: { ccomw: com.wid } }))
-        }
-        ref={
-          rejectScrollToView || ccom?.wid !== com.wid
-            ? undefined
-            : (element) => element?.scrollIntoView()
-        }
-        {...propsOfClicker({
-          onCtxMenu: (event) => {
-            event.preventDefault();
-            selectable !== false &&
-              openAbsoluteFloatPopup(
-                <ComFaceContextMenu
-                  onClick={() => closeAbsoluteFloatPopup()}
-                  com={com}
-                />,
-                event.clientX,
-                event.clientY
-              );
-          }
-        })}
+        className="face-logo"
+        selected-position={selectedComPosition(com) || undefined}
+        onClick={(event) => {
+          event.stopPropagation();
+          selectable !== false && toggleSelectedCom(com);
+        }}
       >
-        <div
-          className="face-logo"
-          selected-position={selectedComPosition(com) || undefined}
-          onClick={(event) => {
-            event.stopPropagation();
-            selectable !== false && toggleSelectedCom(com);
-          }}
-        >
-          <span>{`${com.number}`}</span>
-        </div>
-        <span className="face-title ellipsis">{com.name}</span>
-        {props.description}
+        <span>{`${com.number}`}</span>
       </div>
-    </>
-  );
+      <span className="face-title ellipsis">{com.name}</span>
+      {props.description}
+    </div>;
 }

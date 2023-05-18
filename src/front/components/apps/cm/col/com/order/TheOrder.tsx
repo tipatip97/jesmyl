@@ -1,9 +1,9 @@
 import React from "react";
 import ComLine from "../line/ComLine";
-import { IComLineProps, ITheOrderProps } from "./Order.model";
+import { ITheOrderProps } from "./Order.model";
 
 export default function TheOrder(props: ITheOrderProps) {
-  const { orderUnit, orderUniti } = props;
+  const { orderUnit, orderUniti, com } = props;
 
   if (
     (props.isMiniAnchor &&
@@ -73,12 +73,12 @@ export default function TheOrder(props: ITheOrderProps) {
         ref={(el) => el && (orderUnit.element = el)}
       >
         {header}
-        {!isTexted ? null : (
+        {isTexted && (
           <div
             key={orderUniti}
             className={`styled-block chords-block vertical-middle ${className}`}
           >
-            {orderUnit.chords}
+            {com.chordLabels[orderUniti].map(line => line.join(' ')).join('\n')}
           </div>
         )}
       </div>
@@ -98,24 +98,34 @@ export default function TheOrder(props: ITheOrderProps) {
         .split(/\n/)
         .map((textLine, textLinei, textLinea) => {
           const words = textLine?.split(/ +/);
-          const lineProps: IComLineProps = {
-            chordedOrd,
-            textLine,
-            textLinei,
-            textLines: textLinea.length,
-            orderUnit,
-            orderUniti,
-            wordCount: words.length,
-            words,
-            com: props.com,
-            isJoinLetters: true,
-          };
 
           return (
             <React.Fragment key={textLinei}>
               {typeof props.asLineComponent === "function"
-                ? props.asLineComponent(lineProps)
-                : <ComLine {...lineProps} />}
+                ? props.asLineComponent({
+                  chordedOrd,
+                  textLine,
+                  textLinei,
+                  textLines: textLinea.length,
+                  orderUnit,
+                  orderUniti,
+                  wordCount: words.length,
+                  words,
+                  com: props.com,
+                  isJoinLetters: true,
+                })
+                : <ComLine
+                  chordedOrd={chordedOrd}
+                  textLine={textLine}
+                  textLinei={textLinei}
+                  textLines={textLinea.length}
+                  orderUnit={orderUnit}
+                  orderUniti={orderUniti}
+                  wordCount={words.length}
+                  words={words}
+                  com={props.com}
+                  isJoinLetters />
+              }
             </React.Fragment>
           );
         })}

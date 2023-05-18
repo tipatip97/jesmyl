@@ -9,7 +9,7 @@ import "./Lists.scss";
 
 export default function Lists() {
   const { goTo } = useCmNav();
-  const [cols] = useCols();
+  const cols = useCols();
   const { selectedComws } = useSelectedComs();
 
   return (

@@ -1,19 +1,19 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
-import { riseUpColsUpdates } from "../../Cm.store";
 import { IExportableCols } from "../../cols/Cols.model";
 import { EditableCols } from "./EditableCols";
+import mylib from "../../../../../complect/my-lib/MyLib";
 
-export let localEditableCols: EditableCols | und;
+const colsSelector = (state: RootState) => state.cm.cols;
+let localCols: EditableCols | und;
+let localICols: IExportableCols | und;
 
-const numColsUpdatesSelector = (state: RootState) => state.cm.numColsUpdates;
+export function useEditableCols() {
+    const cols = useSelector(colsSelector);
 
-export function useEditableCols(): [EditableCols | und, (val: IExportableCols) => void] {
-    useSelector(numColsUpdatesSelector);
-    const dispatch = useDispatch();
+    if (localCols && localICols === cols)
+        return localCols;
 
-    return [localEditableCols, (val: IExportableCols) => {
-        localEditableCols = new EditableCols(val);
-        dispatch(riseUpColsUpdates());
-    }];
+    localCols = cols && new EditableCols(mylib.clone(cols));
+    localICols = cols;
 }

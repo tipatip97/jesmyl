@@ -1,19 +1,19 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../../shared/store";
-import { riseUpColsUpdates } from "../Cm.store";
 import { Cols } from "./Cols";
 import { IExportableCols } from "./Cols.model";
+import mylib from "../../../../complect/my-lib/MyLib";
 
-export let localCols: Cols | und;
+const colsSelector = (state: RootState) => state.cm.cols;
+let localCols: Cols | und;
+let localICols: IExportableCols | und;
 
-const numColsUpdatesSelector = (state: RootState) => state.cm.numColsUpdates;
+export function useCols() {
+    const cols = useSelector(colsSelector);
 
-export function useCols(): [Cols | und, (val: IExportableCols) => void] {
-    useSelector(numColsUpdatesSelector);
-    const dispatch = useDispatch();
+    if (localCols && localICols === cols)
+        return localCols;
 
-    return [localCols, (val: IExportableCols) => {
-        localCols = new Cols(val);
-        dispatch(riseUpColsUpdates());
-    }];
+    localCols = cols && new Cols(mylib.clone(cols), localCols?.coms);
+    localICols = cols;
 }

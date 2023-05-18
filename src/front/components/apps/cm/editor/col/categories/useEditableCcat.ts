@@ -3,7 +3,7 @@ import useCmNav from "../../../base/useCmNav";
 import { useEditableCols } from "../useEditableCols";
 
 export function useEditableCcat(catw?: number) {
-    const [cols] = useEditableCols();
+    const cols = useEditableCols();
     const { appRouteData: { ccatw } } = useCmNav();
 
     return useMemo(() => {

@@ -11,7 +11,6 @@ import { IExportableOrderTop, INewExportableOrder } from "../../../col/com/order
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
 import { checkIsChordLineReg, correctNotSlavicNameReg_i, ruDifferentLowerLettersStr, slavicLowerLettersStr, textedChordReg, uaDifferentLowerLettersStr } from "../../Editor.complect";
 import { EditableCol } from "../EditableCol";
-import { EditableCols } from "../EditableCols";
 import { EditableOrder } from "./complect/orders/EditableOrder";
 
 const freeSlavicLineReg_gi = new RegExp(`[^${slavicLowerLettersStr} ]`, 'gi');
@@ -26,11 +25,11 @@ export class EditableCom extends Com {
     initial: Com;
     protected _o?: EditableOrder[];
 
-    constructor(top: IExportableCom, index: number, cols?: EditableCols) {
-        super(mylib.clone(top), index, cols);
+    constructor(top: IExportableCom, index: number) {
+        super(mylib.clone(top), index);
         this.col = new EditableCol(top);
         this.initialName = this.name;
-        this.initial = new Com(mylib.clone(top), index, cols);
+        this.initial = new Com(mylib.clone(top), index);
     }
 
     get name() { return this.col?.getBasic('n') || ''; }
@@ -44,7 +43,7 @@ export class EditableCom extends Com {
     }
 
     get ords(): IExportableOrderTop[] {
-        if (this._ords == null) this._ords = mylib.clone(this.forcedArray('o'));
+        if (this._ords == null) this._ords = mylib.clone(this.getBasic('o'));
 
         return this._ords as IExportableOrderTop[];
     }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../shared/store";
-import { updateLaterComwList } from "../Cm.store";
+import di from "../Cm.store";
 import cmStorage from "../cmStorage";
 import { Com } from "../col/com/Com";
 import { Cols } from "../cols/Cols";
@@ -14,14 +14,14 @@ const laterComwListSelector = (state: RootState) => state.cm.laterComwList;
 export default function useLaterComList({ maxStack = 4 } = {}) {
     const dispatch = useDispatch();
     const list = useSelector(laterComwListSelector);
-    const [cols] = useCols();
+    const cols = useCols();
 
     if (cols && laterComs == null) setLaterComs(cols, list);
     useEffect(() => { cols && setLaterComs(cols, list); }, [cols, list]);
 
     const ret = {
         laterComs,
-        updateLaterComwList: (list: number[]) => dispatch(updateLaterComwList(list)),
+        updateLaterComwList: (list: number[]) => dispatch(di.updateLaterComwList(list)),
         addLaterComw: (comw: number) => {
             const newList = [comw].concat(list
                 .filter((laterComw) => laterComw !== comw)

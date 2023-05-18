@@ -1,30 +1,22 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import "./Cm.scss";
-import { updateCmChordTracks, updateEditorExecList, updateMeetingList, updateMp3Rules } from "./Cm.store";
+import di from "./Cm.store";
 import useCmNav, { translationNavPoint } from "./base/useCmNav";
 import cmStorage from "./cmStorage";
-import { useCols } from "./cols/useCols";
-import { useEditableCols } from "./editor/col/useEditableCols";
 import useTranslation from "./translation/useTranslation";
 
 export default function CmApplication({ content }: { content: ReactNode }) {
   const dispatch = useDispatch();
-  const [, setCols] = useCols();
-  const [, setEditableCols] = useEditableCols();
   const { watchTranslation } = useTranslation();
   const { jumpTo } = useCmNav();
 
-  cmStorage.listen("cols", "cols-update", (val) => {
-    setCols(val);
-    setEditableCols(val);
-  });
-
   cmStorage.dispatch(dispatch)
-    .it('chordTracks', updateCmChordTracks)
-    .it('meetings', updateMeetingList)
-    .it('mp3Rules', updateMp3Rules)
-    .it('execs', updateEditorExecList);
+    .it('cols', di.setCols)
+    .it('chordTracks', di.updateCmChordTracks)
+    .it('meetings', di.updateMeetingList)
+    .it('mp3Rules', di.updateMp3Rules)
+    .it('execs', di.updateEditorExecList);
 
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {

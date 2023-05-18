@@ -1,6 +1,5 @@
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { BaseNamed } from "../../base/BaseNamed";
-import { Cols } from "../../cols/Cols";
 import { blockStyles } from "./block-styles/BlockStyles";
 import { StyleBlock } from "./block-styles/StyleBlock";
 import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.complect";
@@ -9,7 +8,6 @@ import { Order } from "./order/Order";
 import { IExportableOrder, IExportableOrderTop, OrderTopHeaderBag } from "./order/Order.model";
 
 export class Com extends BaseNamed<IExportableCom> {
-  cols?: Cols;
   initial: Record<string, any>;
   ton?: number;
   tonc?: string;
@@ -23,18 +21,18 @@ export class Com extends BaseNamed<IExportableCom> {
   private _chordLabels?: string[][][];
   private _usedChords?: Record<string, string>;
 
-  constructor(top: IExportableCom, index: number, cols?: Cols) {
+  constructor(top: IExportableCom, index: number) {
     super(top);
     this.initialName = this.name;
     this.number = `${index + (index > 402 ? 2 : 1)}`;
-    this.cols = cols;
+    this.ton = top.ton;
 
     this.initial = {};
 
     this.pullTransPosition(top);
   }
 
-  get texts() { return this.forcedArray('t'); }
+  get texts() { return this.getBasic('t'); }
   set texts(val) { this.setExportable('t', val); }
 
   get audio() { return this.getBasicOr('a', ''); }
@@ -43,14 +41,7 @@ export class Com extends BaseNamed<IExportableCom> {
   get refs() { return this.getBasic('r'); }
   set refs(val) { this.setExportable('r', val); }
 
-  static get fields() {
-    // free: d e f h i j k s u v x y z
-    return ['a', 'b', 'c', 'g', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 't', 'w'];
-  }
-
-  get chords() {
-    return this.forcedArray('c');
-  }
+  get chords() { return this.getBasic('c'); }
   set chords(val) {
     this.setExportable('c', val);
     this.resetChordLabels();
@@ -93,22 +84,6 @@ export class Com extends BaseNamed<IExportableCom> {
       if (obj.ton != null) this.initialTransPosition = obj.p;
       this.transPosition = mylib.def(obj.ton, obj.p);
     }
-  }
-
-  catMentions(): string[] {
-    if (!this.cols) return [];
-    const wid = this.wid;
-    const refs = this.refs || {};
-    const natives: string[] = [];
-
-    const inCats = this.cols.cats
-      .filter(cat => {
-        if (refs[cat.wid]) natives.push(`${cat.name} ${refs[cat.wid]}`);
-        return cat.stack.indexOf(wid) > -1
-      })
-      .map(cat => cat.name);
-
-    return inCats.concat(natives);
   }
 
   turnBemoled() {
@@ -158,11 +133,11 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   transpose(delta: number) {
-    if (this.transPosition != null) this.transPosition -= -delta;
+    if (this.transPosition !== undefined) this.transPosition -= -delta;
     else this.transPosition = delta;
 
     this.ton = this.transPosition;
-    this.tonc = mylib.def(this.tonc, this.chordLabels[0][0][0]);
+    this.tonc = this.tonc ?? this.chordLabels[0][0][0];
     this.updateChordLabels();
   }
 
@@ -319,7 +294,7 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   get ords(): IExportableOrderTop[] {
-    if (this._ords == null) this._ords = this.forcedArray('o');
+    if (this._ords == null) this._ords = [...this.getBasic('o') || []];
 
     return this._ords as IExportableOrderTop[];
   }

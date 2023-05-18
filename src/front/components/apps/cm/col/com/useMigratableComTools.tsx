@@ -4,7 +4,7 @@ import useFullscreenContent from "../../../../../complect/fullscreen-content/use
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
 import { ChordVisibleVariant } from "../../Cm.model";
-import { setPlayerHideMode, switchIsMiniAnchor, updateComTopTools } from "../../Cm.store";
+import di from "../../Cm.store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useCmNav from "../../base/useCmNav";
 import useSelectedComs from "../../base/useSelectedComs";
@@ -133,7 +133,7 @@ export default function useMigratableComTools() {
                 title: "Проигрыватель",
                 icon: playerHideMode ? "music" : "music-outline",
                 onClick: () => {
-                  dispatch(setPlayerHideMode(playerHideMode ? '' : 'min'));
+                  dispatch(di.setPlayerHideMode(playerHideMode ? '' : 'min'));
                 },
               }
             );
@@ -144,7 +144,7 @@ export default function useMigratableComTools() {
                 title: isMiniAnchor ? "Раскрыть ссылки" : "Свернуть ссылки",
                 icon: isMiniAnchor ? "minus" : "menu",
                 onClick: () => {
-                  dispatch(switchIsMiniAnchor(!isMiniAnchor));
+                  dispatch(di.switchIsMiniAnchor(!isMiniAnchor));
                 },
               }
             );
@@ -173,7 +173,7 @@ export default function useMigratableComTools() {
     ),
     toggleTopTool: (tool: MigratableComToolName) => {
       dispatch(
-        updateComTopTools(
+        di.updateComTopTools(
           comTopTools.indexOf(tool) < 0
             ? [...comTopTools, tool]
             : comTopTools.filter((currTool) => tool !== currTool)

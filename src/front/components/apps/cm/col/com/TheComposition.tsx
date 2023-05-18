@@ -27,7 +27,7 @@ export default function TheComposition() {
   const { addLaterComw } = useLaterComList();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { topTools } = useMigratableComTools();
-  const [comList] = useComPack();
+  const [comList] = useComPack(ccom);
   const [chordVisibleVariant] = useChordVisibleVariant();
   const fontSize = useSelector(fontSizeSelector);
   const isMiniAnchor = useSelector(isMiniAnchorSelector);

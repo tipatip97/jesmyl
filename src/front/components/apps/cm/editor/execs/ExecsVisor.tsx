@@ -17,7 +17,7 @@ const execsSelector = (state: RootState) => state.cm.execs;
 export default function ExecsVisor() {
   const [lookList, setLookList] = useState<(number | nil)[]>([]);
   const execs = useSelector(execsSelector);
-  const [cols] = useEditableCols();
+  const cols = useEditableCols();
   const { meetings, goToEvent } = useEditableMeetings();
   const list: ExecVision[] | nil = useMemo(() => {
     const rules = cmStorage.get('rules');

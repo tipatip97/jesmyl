@@ -4,7 +4,7 @@ import useCmNav from "./useCmNav";
 
 
 export default function useSelectedComs() {
-    const [cols] = useCols();
+    const cols = useCols();
     const { appRouteData: { selectedComws = [] }, setAppRouteData } = useCmNav();
 
     const ret = {

@@ -4,7 +4,7 @@ import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
 import useCmNav from "../../base/useCmNav";
-import { updateFavoriteMeetings } from "../../Cm.store";
+import di from "../../Cm.store";
 import { Meetings } from "./Meetings";
 
 const favoriteMeetingsSelector = (state: RootState) => state.cm.favoriteMeetings;
@@ -129,7 +129,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                     e.stopPropagation();
 
                     dispatch(
-                      updateFavoriteMeetings({
+                      di.updateFavoriteMeetings({
                         ...favorites,
                         events: isFavorite
                           ? favorites.events.filter(
@@ -162,7 +162,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                     e.stopPropagation();
 
                     dispatch(
-                      updateFavoriteMeetings({
+                      di.updateFavoriteMeetings({
                         ...favorites,
                         contexts: isFavorite
                           ? favorites.contexts.filter(

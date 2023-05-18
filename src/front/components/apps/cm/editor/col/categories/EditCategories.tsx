@@ -4,7 +4,7 @@ import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorCo
 import { useEditableCols } from "../useEditableCols";
 
 export default function EditCategories() {
-  const [cols] = useEditableCols();
+  const cols = useEditableCols();
   const { goTo } = useCmNav();
 
   return (

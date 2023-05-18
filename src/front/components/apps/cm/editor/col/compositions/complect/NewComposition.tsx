@@ -14,7 +14,7 @@ import ObserveUrlResource from "./audio/ObserveUrlResource";
 
 export default function NewComposition({ close }: { close: () => void }) {
   const { goTo } = useCmNav();
-  const [cols] = useEditableCols();
+  const cols = useEditableCols();
   const { exec } = useExer(cmExer);
   const [value, setValue] = useState("");
   const [name, setName] = useState("");
@@ -24,7 +24,7 @@ export default function NewComposition({ close }: { close: () => void }) {
 
   const com = useMemo(
     () =>
-      new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1, cols).create(),
+      new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1).create(),
     [cols]
   );
 

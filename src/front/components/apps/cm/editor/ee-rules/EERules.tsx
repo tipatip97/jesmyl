@@ -9,12 +9,13 @@ import { useEditableCols } from "../col/useEditableCols";
 import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
 import "./EERules.scss";
 
+const radioTitles = ["И е и ё", "Только е", "Только ё"];
+
 export default function EERules() {
   const [pageSize, setPageSize] = useState(50);
   const [wordList, setWordList] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [cols] = useEditableCols();
-  const radioTitles = ["И е и ё", "Только е", "Только ё"];
+  const cols = useEditableCols();
   const { exec } = useExer(cmExer);
 
   const setWord = (word: string, value: number | number[]) => {
@@ -128,7 +129,7 @@ export default function EERules() {
                         {parts.map((part, parti) => (
                           <td key={`ee-word-letters-part-${word}:${part}`}>
                             {storeType === 2 ||
-                            (storeType as number[])?.[parti] === 2
+                              (storeType as number[])?.[parti] === 2
                               ? part.replace(/е/, "ё")
                               : part}
                           </td>
@@ -151,44 +152,44 @@ export default function EERules() {
                           >
                             {part.endsWith("е")
                               ? radioTitles.map((_, type) => (
-                                  <div key={`ee-word-radio_${word}:${type}`}>
-                                    <input
-                                      type="radio"
-                                      name={`ee-word-radio_${word}-${parti}`}
-                                      style={{
-                                        marginRight: "-.3em",
-                                      }}
-                                      checked={
-                                        storeType === type ||
-                                        (storeType as number[])?.[parti] ===
-                                          type
+                                <div key={`ee-word-radio_${word}:${type}`}>
+                                  <input
+                                    type="radio"
+                                    name={`ee-word-radio_${word}-${parti}`}
+                                    style={{
+                                      marginRight: "-.3em",
+                                    }}
+                                    checked={
+                                      storeType === type ||
+                                      (storeType as number[])?.[parti] ===
+                                      type
+                                    }
+                                    onChange={() => {
+                                      let track = Array.isArray(storeType)
+                                        ? storeType.slice(0)
+                                        : storeType;
+                                      const elen =
+                                        word.match(/е/g)?.length || 0;
+
+                                      if (storeType == null) {
+                                        if (elen > 1) {
+                                          track = "."
+                                            .repeat(elen)
+                                            .split("")
+                                            .map(() => 1);
+                                          track[parti] = type;
+                                        } else track = type;
+                                      } else {
+                                        if (elen > 1)
+                                          (track as number[])[parti] = type;
+                                        else track = type;
                                       }
-                                      onChange={() => {
-                                        let track = Array.isArray(storeType)
-                                          ? storeType.slice(0)
-                                          : storeType;
-                                        const elen =
-                                          word.match(/е/g)?.length || 0;
 
-                                        if (storeType == null) {
-                                          if (elen > 1) {
-                                            track = "."
-                                              .repeat(elen)
-                                              .split("")
-                                              .map(() => 1);
-                                            track[parti] = type;
-                                          } else track = type;
-                                        } else {
-                                          if (elen > 1)
-                                            (track as number[])[parti] = type;
-                                          else track = type;
-                                        }
-
-                                        setWord(word, track);
-                                      }}
-                                    />
-                                  </div>
-                                ))
+                                      setWord(word, track);
+                                    }}
+                                  />
+                                </div>
+                              ))
                               : null}
                           </td>
                         ))}
