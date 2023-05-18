@@ -44,18 +44,6 @@ export default class SourceBased<T> {
         this.basics[fieldn] = val;
     }
 
-    forcedArray<K extends keyof T>(fieldn: K): T[K] {
-        const obj = this.basics[fieldn] ?? this.top[fieldn];
-        if (obj) {
-            if (mylib.isArr(obj)) return obj;
-            else {
-                const list: T = [] as never;
-                (Object.entries(obj) as [K, T][]).sort(([a], [b]) => +(a as string) - +(b as string)).forEach(([k, v]) => !isNaN(+(k as string)) && (list[k] = v as never));
-                return this.basics[fieldn] = list as never;
-            }
-        } else return this.basics[fieldn] = [] as never;
-    }
-
     setReals<Top extends Object>(top: Top, keys: (keyof this)[]) {
         keys.forEach((key) => {
             if (top[key as keyof Top] != null) this[key as keyof this] = (top[key as keyof Top] as never);
