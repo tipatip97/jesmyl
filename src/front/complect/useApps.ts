@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppName } from "../app/App.model";
 import { setCurrentApp } from "../components/index/Index.store";
-import navConfigurers from "../shared/navConfigurers";
+import navConfigurers, { NavDataRegister } from "../shared/navConfigurers";
 import { RootState } from "../shared/store";
 import { soki } from "../soki";
 import { MyLib } from "./my-lib/MyLib";
@@ -12,7 +12,7 @@ import { RoutePathVariated } from "../components/router/Router.model";
 const appsSelector = (state: RootState) => state.index.apps;
 const currentAppSelector = (state: RootState) => state.index.currentApp;
 
-export default function useApps<NavData>() {
+export default function useApps() {
     const dispatch = useDispatch();
     const apps = useSelector(appsSelector);
     const currentAppName = useSelector(currentAppSelector);
@@ -26,8 +26,12 @@ export default function useApps<NavData>() {
         currentApp,
         apps,
         appConfigs,
-        jumpToApp: <Key extends keyof NavData>(
-            appName: AppName,
+        jumpToApp: <
+            GAppName extends AppName,
+            NavData extends NavDataRegister[GAppName],
+            Key extends keyof NavData,
+        >(
+            appName: GAppName,
             key?: Key,
             value?: NavData[Key]
         ) => {
@@ -38,7 +42,7 @@ export default function useApps<NavData>() {
                 const rootPhase = appConfigs[appName].nav.rootPhase;
                 if (rootPhase || phase) {
                     appConfigs[appName].navigate(phase ?? [rootPhase!]);
-                    appConfigs.index.navigate(null, false, );
+                    appConfigs.index.navigate(null, false);
                 }
             };
 

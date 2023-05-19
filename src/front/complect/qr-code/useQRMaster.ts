@@ -3,8 +3,8 @@ import useApps from "../useApps";
 import { qrCodeMaster } from "./QRCodeMaster";
 import { QRCodeReaderData } from "./QRCodeMaster.model";
 
-export default function useQRMaster<NavData>() {
-    const { apps, jumpToApp } = useApps<NavData>();
+export default function useQRMaster() {
+    const { apps, jumpToApp } = useApps();
 
     const ret = {
         readQR: (callback?: (data: QRCodeReaderData<unknown, never>) => void) => {
