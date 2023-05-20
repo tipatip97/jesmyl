@@ -1,16 +1,12 @@
-import { HTMLAttributes } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import Game from "./Game";
+import { TeamGameImportable } from "../../Leader.model";
 import useGames from "./useGames";
 
-export default function TeamGameFace({
-  game,
-  ...props
-}: { game: Game } & HTMLAttributes<HTMLDivElement>) {
+export default function TeamGameFace({ game }: { game: TeamGameImportable }) {
   const { goToGame } = useGames();
 
   return (
-    <div {...props} className="face-item" onClick={() => goToGame(game)}>
+    <div className="face-item" onClick={() => goToGame(game.w)}>
       <span className="face-logo">
         <EvaIcon name="cube-outline" />
       </span>

@@ -1,16 +1,16 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import modalService from "../../../../../complect/modal/Modal.service";
+import { TeamGameImportable } from "../../Leader.model";
 import { leaderExer } from "../../Leader.store";
-import Human from "../people/Human";
-import Game from "./Game";
-import GameTeam from "./teams/GameTeam";
+import { HumanImportable } from "../people/People.model";
+import { GameTeamImportable } from "./teams/GameTeams.model";
 
 export default function OutsiderMore({
   human,
   game,
 }: {
-  human: Human;
-  game: Game;
+  human: HumanImportable;
+  game: TeamGameImportable;
 }) {
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   return prepareAbsoluteBottomPopupContent({
@@ -18,7 +18,7 @@ export default function OutsiderMore({
       title: 'Определить в команду',
       icon: "person-add-outline",
       onClick: () => {
-        let targetTeam: GameTeam;
+        let targetTeam: GameTeamImportable;
 
         modalService.open({
           description: `В какую команду определить участни${human.isMan ? "ка" : "цу"
@@ -41,9 +41,9 @@ export default function OutsiderMore({
                   action: "addMemberToTeam",
                   method: "push",
                   args: {
-                    humanw: human.wid,
-                    teamw: targetTeam.wid,
-                    gamew: game.wid,
+                    humanw: human.w,
+                    teamw: targetTeam.w,
+                    gamew: game.w,
                   },
                 });
               },

@@ -62,7 +62,7 @@ export default function GroupFieldBlanks() {
       {ccontext?.blanks?.map((blank, blanki) => {
         return (
           <ContextFieldBlank
-            key={`blanki-${blanki}`}
+            key={blanki}
             blank={blank}
             redact={keysOnRedact.indexOf(blank.key) > -1}
             onEditStart={() => updateKeysOnRedact([...keysOnRedact, blank.key])}
@@ -95,7 +95,7 @@ export default function GroupFieldBlanks() {
       {addList.map((blank, blanki) => {
         return (
           <ContextFieldBlank
-            key={`blanki-${blanki}`}
+            key={blanki}
             redact
             addition
             blank={blank}
@@ -135,7 +135,7 @@ export default function GroupFieldBlanks() {
                 return new Promise((res, rej) => {
                   const execs: ClientExecutionDict[] = [];
                   const generals = {
-                    contextw: ccontext.wid,
+                    contextw: ccontext.w,
                   };
 
                   redactList.forEach((redactBlank) => {

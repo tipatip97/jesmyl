@@ -8,7 +8,7 @@ import useLeaderGroups from "../useGroups";
 
 export default function LeaderGroupFields() {
   const { ccontext } = useLeaderContexts();
-  const { cgroup } = useLeaderGroups();
+  const { cgroup, getFieldValues } = useLeaderGroups();
   const [redactFields, updateRedactFields] = useState<
     Record<string, string | und>
   >({});
@@ -18,7 +18,7 @@ export default function LeaderGroupFields() {
     null,
     canRedact
   );
-  const fields = cgroup?.getFieldValues() || {};
+  const fields = getFieldValues(ccontext, cgroup?.fields) || {};
 
   return (
     <>
@@ -26,17 +26,17 @@ export default function LeaderGroupFields() {
         Специальные поля
         {editIcon}
       </h2>
-      {ccontext?.blanks?.map(({ name, key, def, value }, blanki) => {
+      {ccontext?.blanks?.map(({ name, key, value }, blanki) => {
         if (value || !canRedact || !isRedact)
           return (
-            <div key={`blanki ${blanki}`} className="flex flex-gap">
+            <div key={blanki} className="flex flex-gap">
               <div className="nowrap">{name}:</div>
               <div className="color--3 pre-line">{fields[key] || "-"}</div>
             </div>
           );
 
         return (
-          <div key={`blanki* ${blanki}`} className="flex flex-gap margin-gap">
+          <div key={blanki} className="flex flex-gap margin-gap">
             <div className="nowrap">{name}</div>
             <KeyboardInput
               value={fields[key]}
@@ -68,8 +68,8 @@ export default function LeaderGroupFields() {
                     method: "set_all",
                     args: {
                       value: redactFields,
-                      groupw: cgroup.wid,
-                      contextw: ccontext.wid,
+                      groupw: cgroup.w,
+                      contextw: ccontext.w,
                     },
                   });
               }}

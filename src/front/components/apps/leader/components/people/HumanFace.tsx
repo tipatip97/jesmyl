@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useLeaderContexts from "../contexts/useContexts";
-import Human from "./Human";
 import HumanMore from "./HumanMore";
+import { HumanImportable } from "./People.model";
 
 export default function HumanFace({
   human,
@@ -11,18 +11,18 @@ export default function HumanFace({
   asMore,
   humanMoreAdditions,
 }: {
-  human: Human;
+  human: HumanImportable;
   onMoreClick?: () => void;
-  asMore?: (human: Human) => ReactNode;
-  humanMoreAdditions?: (human: Human) => ReactNode;
+  asMore?: (human: HumanImportable) => ReactNode;
+  humanMoreAdditions?: (human: HumanImportable) => ReactNode;
 }) {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { ccontext } = useLeaderContexts();
   const groups = ccontext?.groups?.filter((group) =>
-    group.members.some(({ wid }) => wid === human.wid)
+    group.members.some(memberw => memberw === human.w)
   );
   const groupTitles = groups?.length
-    ? `; ${groups.map((group) => group.name).join(", ")}`
+    ? `; ${groups.map(group => group.name).join(", ")}`
     : "";
 
   return (
@@ -41,7 +41,7 @@ export default function HumanFace({
         </span>
         <span className={`face-title ${human.isInactive ? "text-strike" : ""}`}>
           <span className="color--3">{human.name}</span>
-          {`${groupTitles}${human.ufp ? `; ${human.ufp}` : ""}`}
+          {`${groupTitles}${human.ufp1 + human.ufp2 ? `; ${(human.ufp1 + human.ufp2) / 2}` : ""}`}
         </span>
       </div>
       {asMore?.(human) ||

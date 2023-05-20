@@ -1,5 +1,5 @@
 import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
-import Human from "../../people/Human";
+import { HumanImportable } from "../../people/People.model";
 
 export interface GameTeamImportable extends GameTeamExportable {
     w: number;
@@ -13,5 +13,5 @@ export interface GameTeamExportable {
 }
 
 export interface TeamInGameLocal extends GameTeamExportable {
-    humans: Human[];
+    humans: HumanImportable[];
 }

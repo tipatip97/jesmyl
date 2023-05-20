@@ -12,31 +12,17 @@ export const leaderExer = new Exer('leader', leaderStorage);
 const initialState: LeaderState = {
   people: leaderStorage.get('people'),
   contexts: leaderStorage.get('contexts'),
-  ccontextw: leaderStorage.getOr('ccontextw', 0),
   games: leaderStorage.get('games'),
-  cgamew: leaderStorage.get('cgamew'),
-  cgroupw: leaderStorage.get('cgroupw'),
   gameTimers: leaderStorage.getOr('gameTimers', {}),
   humanListSortVariant: leaderStorage.getOr('humanListSortVariant', 'name'),
   sendingComments: leaderStorage.getOr('sendingComments', defaultSendingComments),
   errorSentComments: [],
-  numUpdatesContexts: 0,
-  numUpdatesPeople: 0,
-  numUpdatesGames: 0,
 };
 
 export const slice = createSlice({
   name: "leader",
   initialState,
   reducers: {
-    setCurrentContextw: (state, action: PayloadAction<number | und>) => {
-      state.ccontextw = action.payload;
-      leaderStorage.set('ccontextw', action.payload);
-    },
-    setCurrentGroupw: (state, action: PayloadAction<number | und>) => {
-      state.cgroupw = action.payload;
-      leaderStorage.set('cgroupw', action.payload);
-    },
     setHumanListSortVariant: (state, action: PayloadAction<HumanListSortVariant>) => {
       state.humanListSortVariant = action.payload;
       leaderStorage.set('humanListSortVariant', action.payload);
@@ -53,37 +39,15 @@ export const slice = createSlice({
     updateLeaderContexts: (state, action: PayloadAction<LeaderContextsImportable>) => {
       state.contexts = action.payload;
     },
-    updateCgamew: (state, action: PayloadAction<number>) => {
-      state.cgamew = action.payload;
-      leaderStorage.set('cgamew', action.payload);
-    },
     updateSendingComments: (state, action: PayloadAction<SendingComments>) => {
       state.sendingComments = action.payload;
     },
     updateRrrorSentComments: (state, action: PayloadAction<number[]>) => {
       state.errorSentComments = action.payload;
     },
-    riseUpNumUpdatesContexts: (state) => { state.numUpdatesContexts++; },
-    riseUpNumUpdatesPeople: (state) => { state.numUpdatesPeople++; },
-    riseUpNumUpdatesGames: (state) => { state.numUpdatesGames++; },
   },
 });
 
-export const {
-  setHumanListSortVariant,
-  updateGamesStore,
-  updateCgamew,
-  updateSendingComments,
-  updateRrrorSentComments,
-  updateLeaderPeople,
-  updateGamesTimers,
-  setCurrentGroupw,
-  updateLeaderContexts,
-  setCurrentContextw,
-  riseUpNumUpdatesPeople,
-  riseUpNumUpdatesGames,
-  riseUpNumUpdatesContexts
-} = slice.actions;
 export default slice.actions;
 
 export const leaderReducer = slice.reducer;

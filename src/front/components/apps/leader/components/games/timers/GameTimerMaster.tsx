@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import SendButton from "../../../../../../complect/SendButton";
 import useAbsoluteFloatPopup from "../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
 import propsOfClicker from "../../../../../../complect/clicker/propsOfClicker";
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
@@ -6,13 +7,12 @@ import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import SendButton from "../../../../../../complect/SendButton";
 import { leaderExer } from "../../../Leader.store";
 import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
-import GameTeam from "../teams/GameTeam";
+import { GameTeamImportable } from "../teams/GameTeams.model";
 import useGames from "../useGames";
-import LeaderGameTimer from "./GameTimer";
 import {
+  GameTimerImportable,
   GameTimerMode,
   timerModeAliases
 } from "./GameTimer.model";
@@ -26,74 +26,54 @@ export default function LeaderGameTimerMaster({
   timer: topTimer,
   close,
 }: {
-  timer: LeaderGameTimer;
+  timer: GameTimerImportable;
   close: () => void;
 }) {
-  const { cgame } = useGames();
+  const { cgame, isTimerWasPublicate } = useGames();
+  const use = useGameTimer(topTimer.w);
   const {
-    startTotalTimer,
-    mapTimer,
-    resetTimers,
-    startForRow,
-    pauseForRow,
-    isCanPauseForRow,
-    updateTeamList,
-    removeLocalTimer,
-    saveComment,
-    removeComment,
-    publicateTimer,
-    newTimer,
-    isRedactOld,
-    redactIcon,
-    isCanSendOldTimerUpdates,
-    isTimerOnRedaction,
-  } = useGameTimer(topTimer.wid);
+    isRedactResults,
+    isNewTimer,
+    startTime,
+    timer,
+  } = use;
 
-  const timer = useMemo(
-    () =>
-      isRedactOld
-        ? newTimer
-        : (topTimer.wid &&
-          cgame?.timers?.find((timer) => topTimer.wid === timer.wid)) ||
-        topTimer,
-    [cgame?.timers, topTimer, isRedactOld, newTimer]
-  );
-
-  const [mode, setMode] = useState(timer.mode);
-  const [name, setName] = useState(timer.name);
-  const [joins, setJoins] = useState(timer.joins || 1);
+  const [mode, setMode] = useState(timer?.mode ?? GameTimerMode.None);
+  const [name, setName] = useState(timer?.name);
+  const [joins, setJoins] = useState(timer?.joins || 1);
   const [selectedTeamw, setSelectedTeamw] = useState<number | null>(null);
-  const [teams, updateTeams] = useState<GameTeam[]>(timer.teams);
+  const [teams, updateTeams] = useState<GameTeamImportable[] | und>(cgame?.teams);
 
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const [newCommentText, setNewCommentText] = useState("");
   const [isWriteName, setIsWriteName] = useState(false);
 
+  if (!timer) return null;
+
   const changeName = (name: string) => {
-    mapTimer((timer) => (timer.name = name));
+    use.mapTimer((timer) => ({ ...timer, name: name }));
     setName(name);
   };
 
-  const teamNet = mylib.netFromLine(
+  const teamNet = teams && mylib.netFromLine(
     teams,
     mode === GameTimerMode.TimerTotal ? 1 : joins,
     (team) => team
   );
   const isTeamsTaken = !!teamNet?.length;
 
-  const members = timer.teams.length;
-  const membersInGame = timer.rateSortedTeams(true).length;
+  const membersInGame = cgame?.teams && use.rateSortedTeams(timer, cgame.teams, true).length;
 
   return (
     <div className="game-timer-master full-container padding-giant-gap flex column over-hidden">
-      {topTimer.isNew && cgame?.isTimerWasPublicate(topTimer.ts) ? (
+      {isNewTimer && isTimerWasPublicate(cgame?.timers, topTimer.ts) ? (
         <div className="flex center full-width full-height error-message">
           Этот таймер уже был опубликован! Создай новый.
         </div>
       ) : (
         <>
           <div className="dropdown-ancestor flex full-width flex-gap">
-            {timer.isNew ? (
+            {isNewTimer ? (
               <>
                 <span>Название</span>
                 {!isWriteName &&
@@ -141,29 +121,30 @@ export default function LeaderGameTimerMaster({
                 {mode !== GameTimerMode.Messager && (
                   <div>
                     Команд участвовало:{" "}
-                    {members === membersInGame
-                      ? members
-                      : `${membersInGame} / ${members}`}
+                    {cgame?.teams
+                      && (cgame.teams.length === membersInGame
+                        ? cgame.teams.length
+                        : `${membersInGame} / ${cgame.teams.length}`)}
                   </div>
                 )}
               </div>
             )}
           </div>
-          {timer.isNew && !timer.isStarted && (
+          {isNewTimer && !use.isTimerStarted() && (
             <TimerModeSelector
               hideable
               mode={mode}
               onSelect={({ id }) => {
                 setMode(id);
-                mapTimer((timer) => (timer.mode = id));
+                use.mapTimer((timer) => ({ ...timer, mode: id }));
               }}
             />
           )}
           {mode !== GameTimerMode.Messager && (
             <>
-              {timer.isNew && (
+              {isNewTimer && (
                 <>
-                  {!timer.isStarted && (
+                  {!use.isTimerStarted() && (
                     <>
                       {mode === GameTimerMode.TimerApart && (
                         <TimerCompetitionsSelector
@@ -172,14 +153,14 @@ export default function LeaderGameTimerMaster({
                           teams={teams}
                           onSelect={({ id }) => {
                             setJoins(id);
-                            mapTimer((timer) => (timer.joins = id));
+                            use.mapTimer((timer) => ({ ...timer, joins: id }));
                           }}
                         />
                       )}
                       {mode === GameTimerMode.TimerTotal && (
                         <div
                           className="start-total flex center background--7 color--1 pointer"
-                          onClick={() => startTotalTimer()}
+                          onClick={() => use.startTotalTimer()}
                         >
                           СТАРТ
                         </div>
@@ -194,98 +175,96 @@ export default function LeaderGameTimerMaster({
                   )}
                 </>
               )}
-              <div className="flex flex-end full-width">{redactIcon}</div>
+              <div className="flex flex-end full-width">{use.redactIcon}</div>
               {!teamNet?.length || (
                 <div className="table-centered-wrapper team-list-table margin-big-gap-v">
                   <div className="table">
                     {teamNet.map((row, rowi) => {
                       return (
-                        <div key={`rowi-${rowi}`} className="row">
+                        <div key={rowi} className="row">
                           <div className="cell flex column ellipsis">
                             {row.map((team) => {
                               return (
                                 <div
-                                  key={`teami-${team.wid}`}
-                                  className={`flex center full-max-width ${selectedTeamw === team.wid
+                                  key={team.w}
+                                  className={`flex center full-max-width ${selectedTeamw === team.w
                                     ? "selected-team"
                                     : ""}`}
                                   onClick={() => {
-                                    if (timer.isTeamCantMove(team)) {
-                                      if (team.wid === selectedTeamw)
+                                    if (use.isTeamCantMove(cgame, timer, team.w)) {
+                                      if (team.w === selectedTeamw)
                                         setSelectedTeamw(null);
                                       return;
                                     }
                                     if (!selectedTeamw) {
-                                      if (selectedTeamw === team.wid)
+                                      if (selectedTeamw === team.w)
                                         setSelectedTeamw(null);
                                       return;
                                     }
                                     const newTeams = [
-                                      ...teams.map(({ wid }) => wid),
+                                      ...teams?.map(({ w }) => w) || [],
                                     ];
                                     const selectedi =
                                       newTeams.indexOf(selectedTeamw);
-                                    const teami = newTeams.indexOf(team.wid);
+                                    const teami = newTeams.indexOf(team.w);
                                     [newTeams[selectedi], newTeams[teami]] = [
                                       newTeams[teami],
                                       newTeams[selectedi],
                                     ];
                                     updateTeams(
                                       newTeams
-                                        .map((wid) =>
-                                          teams.find((team) => team.wid === wid)
-                                        )
-                                        .filter((team) => team) as GameTeam[]
+                                        .map((wid) => teams?.find((team) => team.w === wid))
+                                        .filter((team) => team) as GameTeamImportable[]
                                     );
-                                    updateTeamList(newTeams);
+                                    use.updateTeamList(newTeams);
                                     setSelectedTeamw(null);
                                   }}
                                   {...propsOfClicker({
                                     onCtxMenu: (event) => {
                                       event.preventDefault();
-                                      if (timer.isTeamCantMove(team)) {
-                                        if (team.wid === selectedTeamw)
+                                      if (use.isTeamCantMove(cgame, timer, team.w)) {
+                                        if (team.w === selectedTeamw)
                                           setSelectedTeamw(null);
                                         return;
                                       }
                                       setSelectedTeamw(
-                                        team.wid === selectedTeamw
+                                        team.w === selectedTeamw
                                           ? null
-                                          : team.wid
+                                          : team.w
                                       );
                                     }
                                   })}
                                 >
                                   <div className="flex column min-width-90 over-hidden">
                                     <div className="team-box full-max-width ellipsis">
-                                      {team.upperName}
+                                      {team.name}
                                     </div>
 
-                                    {!!timer.finishes?.[team.wid] && (
+                                    {!!timer.finishes?.[team.w] && (
                                       <GameTimerScreen
                                         className="color--3"
-                                        start={timer.startTime(rowi)}
-                                        pause={timer.finishes?.[team.wid]}
+                                        start={startTime(timer, rowi)}
+                                        pause={timer.finishes?.[team.w]}
                                       />
                                     )}
                                   </div>
 
-                                  {isCanPauseForRow(team.wid) && (
+                                  {use.isCanPauseForRow(team.w) && (
                                     <div
                                       className={`control-button finish-button flex center pointer margin-gap`}
                                     >
-                                      {!timer.finishes?.[team.wid] ? (
+                                      {!timer.finishes?.[team.w] ? (
                                         <EvaButton
                                           name="pause-circle-outline"
-                                          disabled={!timer.startTime(rowi)}
+                                          disabled={!startTime(timer, rowi)}
                                           onClick={(event) => {
                                             event.stopPropagation();
                                             if (
-                                              !timer.startTime(rowi) ||
-                                              timer.finishes?.[team.wid]
+                                              !startTime(timer, rowi) ||
+                                              timer.finishes?.[team.w]
                                             )
                                               return;
-                                            pauseForRow(team.wid);
+                                            use.pauseForRow(team.w);
                                           }}
                                         />
                                       ) : (
@@ -297,11 +276,11 @@ export default function LeaderGameTimerMaster({
                                               <div
                                                 className="nowrap"
                                                 onClick={() => {
-                                                  if (timer.startTime(rowi))
-                                                    pauseForRow(team.wid, 0);
+                                                  if (startTime(timer, rowi))
+                                                    use.pauseForRow(team.w, 0);
                                                 }}
                                               >
-                                                Возобновить старый таймер
+                                                Сбросить результат
                                               </div>,
                                               event.clientX,
                                               event.clientY
@@ -314,40 +293,40 @@ export default function LeaderGameTimerMaster({
                                 </div>
                               );
                             })}
-                            {(isRedactOld || timer.isNew) &&
-                              !timer.isRowFinished(rowi) &&
+                            {(isRedactResults || isNewTimer) &&
+                              !use.isRowFinished(timer, cgame?.teams || [], rowi) &&
                               !!timer.starts?.[rowi] && (
                                 <div>
                                   <GameTimerScreen
                                     className="color--3"
-                                    start={timer.startTime(rowi)}
+                                    start={startTime(timer, rowi)}
                                   />
                                 </div>
                               )}
                           </div>
                           {mode !== GameTimerMode.TimerTotal &&
-                            (isRedactOld || timer.isNew) ? (
+                            (isRedactResults || isNewTimer) ? (
                             <div
                               className={`control-button start-button flex center margin-gap`}
                             >
                               <EvaButton
                                 name="play-circle-outline"
-                                onClick={() => startForRow(rowi)}
+                                onClick={() => use.startForRow(rowi)}
                                 disabled={!!timer.starts?.[rowi]}
                                 onContextMenu={(event) => {
                                   event.preventDefault();
                                   event.stopPropagation();
                                   if (
                                     !timer.starts?.[rowi] ||
-                                    timer.isRowFinished(rowi, false)
+                                    use.isRowFinished(timer, cgame?.teams || [], rowi, false)
                                   )
                                     return;
                                   openAbsoluteFloatPopup(
                                     <div
                                       className="nowrap"
                                       onClick={() => {
-                                        if (timer.startTime(rowi))
-                                          startForRow(rowi, 0);
+                                        if (startTime(timer, rowi))
+                                          use.startForRow(rowi, 0);
                                       }}
                                     >
                                       Сбросить начало
@@ -368,24 +347,24 @@ export default function LeaderGameTimerMaster({
             </>
           )}
 
-          {timer.isNew || isRedactOld ? (
+          {isNewTimer || isRedactResults ? (
             <div className="flex around flex-gap margin-big-gap">
-              {timer.isStarted && (
+              {use.isTimerStarted() && (
                 <span
                   className="pointer error-message"
                   onClick={() => {
                     modalService
                       .confirm(
-                        isTimerOnRedaction(timer.ts)
+                        use.isTimerOnRedaction(timer.ts)
                           ? "Сбросить новые изменения таймера?"
                           : mode === GameTimerMode.TimerTotal
                             ? "Сбросить таймер?"
                             : "Сбросить все таймеры?"
                       )
-                      .then((reset) => reset && resetTimers());
+                      .then((reset) => reset && use.resetTimers());
                   }}
                 >
-                  {isTimerOnRedaction(timer.ts)
+                  {use.isTimerOnRedaction(timer.ts)
                     ? "Сбросить изменения"
                     : "Сбросить таймер"}
                 </span>
@@ -393,13 +372,13 @@ export default function LeaderGameTimerMaster({
             </div>
           ) : (
             <div>
-              {timer.rateSortedTeams(true).map(
+              {use.rateSortedTeams(timer, cgame?.teams, true).map(
                 ({ team, start, finish }, bagi) =>
                   !!finish &&
                   !!start && (
-                    <div key={`bagi-${bagi}`} className="flex flex-gap">
+                    <div key={bagi} className="flex flex-gap">
                       <div>{bagi + 1}</div>
-                      <div>{team?.upperName}</div>
+                      <div>{team?.name}</div>
                       <GameTimerScreen
                         className="color--3"
                         start={start}
@@ -415,21 +394,21 @@ export default function LeaderGameTimerMaster({
               placeholder="Комментарий к таймеру"
               action="addCommentForGameTimer"
               arean="gameTimers"
-              gamew={timer.game?.wid}
-              listw={timer.wid}
+              gamew={cgame?.w}
+              listw={timer.w}
               listwNameMask="timerw"
               comments={timer.comments}
               newCommentTextChange={(value) => setNewCommentText(value)}
-              {...(timer.isNew
+              {...(isNewTimer
                 ? {
                   isWaitedToSend: true,
-                  importantActionOnClick: (comment) => saveComment(comment),
-                  onRejectSend: (comment) => removeComment(comment),
+                  importantActionOnClick: (comment) => use.saveComment(comment),
+                  onRejectSend: (comment) => use.removeComment(comment.w),
                 }
                 : null)}
             />
           </div>
-          {isRedactOld || timer.isNew ? (
+          {isRedactResults || isNewTimer ? (
             <div className="flex around flex-gap margin-big-gap">
               {newCommentText ? (
                 <div className="error-message">Комментарий не отправлен</div>
@@ -444,25 +423,24 @@ export default function LeaderGameTimerMaster({
                   Нет остановленных секундомеров
                 </div>
               ) : (
-                (!isRedactOld || isCanSendOldTimerUpdates()) && (
+                (!isRedactResults || use.isCanSendOldTimerUpdates()) && (
                   <SendButton
-                    title={`Опубликовать ${isRedactOld ? "изменения" : "таймер"
+                    title={`Опубликовать ${isRedactResults ? "изменения" : "таймер"
                       }`}
                     confirm
                     onSuccess={() => {
                       close();
-                      resetTimers();
-                      removeLocalTimer();
+                      use.resetTimers();
+                      use.removeLocalTimer();
                     }}
-                    onSend={() => publicateTimer(timer)}
+                    onSend={() => use.publicateTimer(timer)}
                   />
                 )
               )}
             </div>
           ) : (
             <div
-              className={`flex center pointer ${timer.isInactive ? "color--3" : "error-message"
-                }`}
+              className={`flex center pointer ${timer.isInactive ? "color--3" : "error-message"}`}
               onClick={async () => {
                 if (
                   await modalService.confirm(
@@ -476,8 +454,8 @@ export default function LeaderGameTimerMaster({
                     method: "set",
                     args: {
                       value: !timer.isInactive,
-                      gamew: timer.game?.wid,
-                      timerw: timer.wid,
+                      gamew: cgame?.w,
+                      timerw: timer.w,
                     },
                   });
               }}

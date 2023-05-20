@@ -14,16 +14,15 @@ const getHumanList = (
   return (
     <div className="height-30vh-strong over-auto">
       <HumanList
-        uniq={`${isWholeList} context-master ${list === members ? "#" : "*"}`}
         searcherClass="sticky"
         list={() => (isWholeList ? undefined : list)}
         asHumanMore={(human) => {
-          return list.indexOf(human.wid) < 0 ? (
+          return list.indexOf(human.w) < 0 ? (
             <EvaIcon
               name="plus-circle-outline"
               onClick={(event) => {
                 event.stopPropagation();
-                updater([...list, human.wid]);
+                updater([...list, human.w]);
               }}
             />
           ) : (
@@ -31,7 +30,7 @@ const getHumanList = (
               name="minus-circle-outline"
               onClick={(event) => {
                 event.stopPropagation();
-                updater(list.filter((wid) => wid !== human.wid));
+                updater(list.filter((wid) => wid !== human.w));
               }}
             />
           );

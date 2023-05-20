@@ -23,7 +23,7 @@ export default function GameList() {
       content={
         <>
           {teamGames?.map((game, gamei) => (
-            <TeamGameFace key={`gamei-${gamei}`} game={game} />
+            <TeamGameFace key={gamei} game={game} />
           ))}
         </>
       }

@@ -40,7 +40,7 @@ export default function TimerNameListConfigurer({
           <div className={isSending ? "disabled" : ""}>
             {names.map((name, namei) => {
               return <KeyboardInput
-                key={`namei ${namei}`}
+                key={namei}
                 className="margin-gap-v"
                 value={name}
                 onChange={(value) => {
@@ -79,7 +79,7 @@ export default function TimerNameListConfigurer({
         </>
       ) : (
         timerNames?.map((name, namei) => {
-          return <div key={`namei${namei}`}>{name}</div>;
+          return <div key={namei}>{name}</div>;
         })
       )}
     </div>

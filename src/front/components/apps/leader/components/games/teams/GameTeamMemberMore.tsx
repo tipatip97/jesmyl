@@ -1,15 +1,18 @@
 import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import modalService from "../../../../../../complect/modal/Modal.service";
+import { TeamGameImportable } from "../../../Leader.model";
 import { leaderExer } from "../../../Leader.store";
-import Human from "../../people/Human";
-import GameTeam from "./GameTeam";
+import { HumanImportable } from "../../people/People.model";
+import { GameTeamImportable } from "./GameTeams.model";
 
 export default function GameTeamMemberMore({
   human,
   team,
+  game,
 }: {
-  human: Human,
-  team: GameTeam,
+  human: HumanImportable,
+  team: GameTeamImportable,
+  game: TeamGameImportable, 
 }) {
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   return prepareAbsoluteBottomPopupContent({
@@ -17,10 +20,10 @@ export default function GameTeamMemberMore({
       title: 'Исключить личность',
       icon: "person-delete-outline",
       onClick: async () => {
-        if (team.game) {
+        if (game) {
           const isDel = await modalService.confirm(
             `Исключить участни${human.isMan ? "ка" : "цу"} ${human.name
-            } из команды "${team.upperName}"?`,
+            } из команды "${team.name}"?`,
             "Исключить"
           );
 
@@ -29,9 +32,9 @@ export default function GameTeamMemberMore({
               action: "removeMemberFromTeam",
               method: "remove",
               args: {
-                humanw: human.wid,
-                teamw: team.wid,
-                gamew: team.game.wid,
+                humanw: human.w,
+                teamw: team.w,
+                gamew: game.w,
               },
             });
           }

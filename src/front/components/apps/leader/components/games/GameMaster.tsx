@@ -1,23 +1,26 @@
 import { useState } from "react";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../complect/SendButton";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
+import { TeamGameExportable } from "../../Leader.model";
+import { leaderExer } from "../../Leader.store";
 import useLeaderContexts from "../contexts/useContexts";
-import Game from "./Game";
 import GameTeamListComputer from "./GameTeamListComputer";
-import GameTeam from "./teams/GameTeam";
+import { GameTeamImportable } from "./teams/GameTeams.model";
 import { GameTimerConfigurable } from "./timers/GameTimer.model";
 import TimerFieldsConfigurer from "./timers/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/TimerNameListConfigurer";
+import useGames from "./useGames";
 
 export default function LeaderGameMaster({ close }: { close: () => void }) {
   const [isComputeTeamsLater, setIsComputeTeamsLater] = useState(true);
-  const [teams, updateTeams] = useState<GameTeam[] | und>();
+  const [teams, updateTeams] = useState<GameTeamImportable[] | und>();
   const [timerNames, updateTimerNames] = useState<string[] | und>();
   const [timerFields, updateTimerFields] = useState<
     GameTimerConfigurable | und
   >();
   const [name, setName] = useState('');
   const { ccontext } = useLeaderContexts();
+  const { cgame } = useGames();
 
   return (
     <div className="team-maker full-container padding-giant-gap">
@@ -40,7 +43,7 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
         />
         Разбить на команды позже
       </div>
-      {isComputeTeamsLater || <GameTeamListComputer onUpdate={updateTeams} />}
+      {isComputeTeamsLater || (cgame && <GameTeamListComputer onUpdate={updateTeams} game={cgame} />)}
       <div className="flex center">
         {name && (isComputeTeamsLater || teams) ? (
           <SendButton
@@ -50,12 +53,17 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
             onSend={() => {
               if (!ccontext) return;
 
-              return Game.sendNewGame({
-                name,
-                contextw: ccontext.wid,
-                timerNames,
-                teams,
-                timerFields,
+              return leaderExer.send({
+                action: "addTeamGame",
+                method: "push",
+                args: {
+                  ts: Date.now() + Math.random(),
+                  name,
+                  contextw: ccontext.w,
+                  timerNames,
+                  timerFields,
+                  teams,
+                } as TeamGameExportable,
               });
             }}
           />

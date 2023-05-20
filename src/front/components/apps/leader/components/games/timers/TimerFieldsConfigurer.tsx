@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
+import SendButton from "../../../../../../complect/SendButton";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import SendButton from "../../../../../../complect/SendButton";
-import useIsRedactArea from "../../../complect/useIsRedactArea";
+import { TeamGameImportable } from "../../../Leader.model";
 import { leaderExer } from "../../../Leader.store";
-import Game from "../Game";
-import GameTeam from "../teams/GameTeam";
+import useIsRedactArea from "../../../complect/useIsRedactArea";
+import { GameTeamImportable } from "../teams/GameTeams.model";
 import { GameTimerConfigurable, GameTimerMode } from "./GameTimer.model";
 import TimerCompetitionsSelector from "./TimerCompetitionsSelector";
 import TimerModeSelector from "./TimerModeSelector";
+import useGames from "../useGames";
 
 export default function TimerFieldsConfigurer({
   redact,
@@ -20,7 +21,7 @@ export default function TimerFieldsConfigurer({
   timerFields?: GameTimerConfigurable;
   redact?: boolean;
   redactable?: boolean;
-  game?: Game;
+  game?: TeamGameImportable;
   onUpdate?: (fields: GameTimerConfigurable) => void;
   onSend?: (fields: GameTimerConfigurable) => Promise<unknown> | und;
 }) {
@@ -33,6 +34,7 @@ export default function TimerFieldsConfigurer({
     redactable,
     redact
   );
+  const { publicateGameTimerFields } = useGames();
 
   const mode = useMemo(
     () => modeState ?? fields.mode ?? GameTimerMode.None,
@@ -43,13 +45,13 @@ export default function TimerFieldsConfigurer({
     [fields.joins, joinsState]
   );
 
-  const [teamsState, updateTeams] = useState<GameTeam[] | und>(game?.teams);
+  const [teamsState, updateTeams] = useState<GameTeamImportable[] | und>(game?.teams);
   const teams = useMemo(() => {
     const teams = [...(teamsState ?? (game?.teams || []))];
     const fieldTeams = fields.teams;
     if (fieldTeams)
       teams?.sort(
-        ({ wid: a }, { wid: b }) =>
+        ({ w: a }, { w: b }) =>
           fieldTeams.indexOf(a) - fieldTeams.indexOf(b)
       );
 
@@ -65,12 +67,12 @@ export default function TimerFieldsConfigurer({
     () =>
       onUpdate?.({
         ...resultDict,
-        teams: resultDict.teams?.map(({ wid }) => wid),
+        teams: resultDict.teams?.map(({ w }) => w),
       }),
     [resultDict]
   );
 
-  if (!leaderExer.actionAccessedOrNull("updateGameTimerFields")) return null;
+  if (!game || !leaderExer.actionAccessedOrNull("updateGameTimerFields")) return null;
 
   return (
     <div className="margin-gap">
@@ -118,10 +120,10 @@ export default function TimerFieldsConfigurer({
             teams?.map((team, teami) => {
               return (
                 <div
-                  key={`teami-${teami}`}
-                  className={`flex flex-gap ${
-                    joins && !((teami + 1) % joins) ? "margin-big-gap-b" : ""
-                  }`}
+                  key={teami}
+                  className={
+                    'flex flex-gap'
+                    + (joins && !((teami + 1) % joins) ? "margin-big-gap-b" : "")}
                 >
                   <EvaIcon
                     name={teami ? "corner-left-up" : "corner-left-down"}
@@ -139,7 +141,7 @@ export default function TimerFieldsConfigurer({
                           newTeams[teami + 1],
                         ];
 
-                      if (mylib.isEq(newTeams, game?.teams))
+                      if (mylib.isEq(newTeams, game.teams))
                         updateTeams(undefined);
                       else updateTeams(newTeams);
                     }}
@@ -162,9 +164,9 @@ export default function TimerFieldsConfigurer({
             }}
             onSend={() => {
               setIsSending(true);
-              return game?.publicateGameTimerFields({
+              return publicateGameTimerFields(game.w, {
                 ...resultDict,
-                teams: resultDict.teams?.map(({ wid }) => wid),
+                teams: resultDict.teams?.map(({ w }) => w),
               });
             }}
           />

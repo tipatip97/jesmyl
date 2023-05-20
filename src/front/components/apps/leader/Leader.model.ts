@@ -12,15 +12,9 @@ export interface LeaderStoraged {
     people?: PeopleImportable;
     contexts?: LeaderContextsImportable;
     games?: GamesStoreImportable;
-    cgamew?: number;
-    cgroupw?: number;
-    ccontextw?: number;
     humanListSortVariant: HumanListSortVariant;
     gameTimers?: StoragedGameTimerImportableDict;
     sendingComments: SendingComments;
-    numUpdatesPeople: number;
-    numUpdatesGames: number;
-    numUpdatesContexts: number;
 }
 
 export interface TeamGameImportable extends TeamGameExportable {
@@ -42,4 +36,8 @@ export interface GamesStoreImportable {
     teamGames?: TeamGameImportable[];
 }
 
-export interface LeaderNavData { }
+export interface LeaderNavData {
+    gamew: number,
+    groupw: number,
+    contextw: number,
+}

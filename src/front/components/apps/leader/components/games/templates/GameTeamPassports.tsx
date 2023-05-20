@@ -19,7 +19,7 @@ export default function GameTeamPassports({
       selectedTimers
         .map(
           (wid) =>
-            gameTimers.find((timer) => !timer.isInactive && timer.wid === wid)
+            gameTimers.find((timer) => !timer.isInactive && timer.w === wid)
               ?.name
         )
         .filter((timer) => timer)) ||
@@ -33,7 +33,7 @@ export default function GameTeamPassports({
         <>
           {timers?.map((timer, timeri) => {
             return (
-              <React.Fragment key={`timeri${timeri}`}>
+              <React.Fragment key={timeri}>
                 {page(
                   <div className="full-width full-height flex center">
                     <FontSizeContain delay={100}>
@@ -58,7 +58,7 @@ export default function GameTeamPassports({
 
             return (
               <>
-                <React.Fragment key={`teami${teami}`}>
+                <React.Fragment key={teami}>
                   {page(
                     <>
                       <div className="tpl-title">{cgame?.name}</div>
@@ -69,11 +69,11 @@ export default function GameTeamPassports({
                         <div className="table">
                           {pointsNet?.map((row, rowi) => {
                             return (
-                              <div key={`rowi-${rowi}`} className="row">
+                              <div key={rowi} className="row">
                                 {row.map((timer, timeri) => {
                                   return (
                                     <div
-                                      key={`timeri-${timeri}`}
+                                      key={timeri}
                                       className="cell"
                                     >
                                       {timer}

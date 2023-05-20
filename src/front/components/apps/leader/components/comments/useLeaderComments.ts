@@ -3,7 +3,7 @@ import mylib, { MyLib } from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import useAuth from "../../../../index/useAuth";
 import { GamesStoreImportable } from "../../Leader.model";
-import { leaderExer, updateRrrorSentComments, updateSendingComments } from "../../Leader.store";
+import di, { leaderExer } from "../../Leader.store";
 import leaderStorage from "../../leaderStorage";
 import useGames from "../games/useGames";
 import { LeaderCommentImportable, SendingComment, SendingCommentArea, SendingComments, SendingCommentsAreaName } from "./LeaderComment.model";
@@ -17,7 +17,7 @@ export default function useLeaderComments() {
     const login = auth?.login ?? NaN;
     const sendingComments = useSelector(sendingCommentsSelector);
     const errorSentComments = useSelector(errorSentCommentsSelector);
-    const { gamesImportable } = useGames();
+    const { games } = useGames();
     const save = (arean: SendingCommentsAreaName, gamew: number, listw: number, mapper: (comments: SendingComment[], area: SendingCommentArea) => void, throwComments?: SendingComments) => {
         const generalDict = mylib.clone(throwComments ?? sendingComments);
         const dict = generalDict[arean] ??= {};
@@ -31,7 +31,7 @@ export default function useLeaderComments() {
     const ret = {
         sendingComments,
         errorSentComments,
-        sendAllComments: (observableComments: SendingComments = sendingComments, observableGames: GamesStoreImportable | und = gamesImportable) => {
+        sendAllComments: (observableComments: SendingComments = sendingComments, observableGames: GamesStoreImportable | und = games) => {
             let throwComments = ret.sendingComments;
 
             const gameWids = observableGames?.teamGames?.map(({ w }) => w) || [];
@@ -62,19 +62,19 @@ export default function useLeaderComments() {
             leaderExer.send(execs)
                 .catch(() => {
                     const tss = execs.map(({ args }) => args?.ts) as number[];
-                    dispatch(updateRrrorSentComments([...errorSentComments, ...tss]));
+                    dispatch(di.updateRrrorSentComments([...errorSentComments, ...tss]));
                 });
             ret.saveLocal(throwComments, true);
         },
         saveLocal: (comments: SendingComments, isRejectPropagation?: boolean) => leaderStorage.set('sendingComments', comments, isRejectPropagation),
         sendComment: (arean: SendingCommentsAreaName, gamew: number, listw: number, comment: SendingComment) => {
             const commentsDict = save(arean, gamew, listw, (comments) => comments.push(comment));
-            dispatch(updateSendingComments(commentsDict));
+            dispatch(di.updateSendingComments(commentsDict));
             ret.saveLocal(commentsDict);
         },
         rejectSending: (arean: SendingCommentsAreaName, gamew: number, listw: number, commentTs: number) => {
             const throwComments = save(arean, gamew, listw, (comments, area) => area[listw] = comments.filter(({ ts }) => commentTs !== ts));
-            dispatch(updateSendingComments(throwComments));
+            dispatch(di.updateSendingComments(throwComments));
             ret.saveLocal(throwComments, true);
         },
     };

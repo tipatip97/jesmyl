@@ -1,9 +1,9 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import LeaderGroup from "./Group";
 import LeaderGroupMaster from "./GroupMaster";
+import { LeaderGroupImportable } from "./Groups.model";
 
-export default function LeaderGroupMore({ group }: { group: LeaderGroup }) {
+export default function LeaderGroupMore({ group }: { group: LeaderGroupImportable }) {
   const { openFullscreenContent } = useFullscreenContent();
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 

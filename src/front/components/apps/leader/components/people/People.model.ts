@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Human from "./Human";
 
 export type HumanListSortVariant = keyof typeof humanFieldTranslations;
 
@@ -18,9 +17,9 @@ export interface HumanExportable {
     isInactive?: boolean;
 }
 
-export const humanFieldTranslations: Partial<Record<keyof Human, string>> = {
+export const humanFieldTranslations: Partial<Record<keyof HumanImportable, string>> = {
     name: 'имя',
-    ufp: 'УФП',
+    ufp1: 'УФП',
 };
 
 export interface PeopleExportable {
@@ -33,21 +32,19 @@ export interface PeopleImportable {
 
 export interface HumanListComponentProps {
     isAsPage?: boolean;
-    uniq?: string;
     list?: (list?: number[]) => und | number[];
     dangers?: number[];
     successes?: number[];
     searcherClass?: string;
     placeholder?: string;
     onMoreClick?: () => void;
-    moreNode?: ((human: Human) => ReactNode) | ReactNode;
-    asHumanMore?: (human: Human) => ReactNode;
-    humanMoreAdditions?: (human: Human) => ReactNode;
-    humansRef?: { current: Human[] };
+    moreNode?: ((human: HumanImportable) => ReactNode) | ReactNode;
+    asHumanMore?: (human: HumanImportable) => ReactNode;
+    humanMoreAdditions?: (human: HumanImportable) => ReactNode;
+    humansRef?: { current: HumanImportable[] };
 }
 
 export interface SelectHumansComponentProps {
-    uniq: string;
     excludedTitle?: string;
     onListsUpdate?: (addList: number[], delList: number[]) => void;
     chosenPlaceholder: string;

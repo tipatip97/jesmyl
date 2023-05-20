@@ -1,22 +1,22 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import LeaderGroup from "./Group";
+import { LeaderGroupImportable } from "./Groups.model";
 import useLeaderGroups from "./useGroups";
 
 export default function GroupFace({
   group,
   onMoreClick,
 }: {
-  group: LeaderGroup;
+  group: LeaderGroupImportable;
   onMoreClick?: () => void;
 }) {
-  const { goToGroup } = useLeaderGroups();
+  const { goToGroup, humans, extractWidable } = useLeaderGroups();
 
   return (
     <div
       className="face-item flex between"
       onClick={(event) => {
         event.stopPropagation();
-        goToGroup(group);
+        goToGroup(group.w);
       }}
     >
       <div className="face-wrapper">
@@ -27,11 +27,12 @@ export default function GroupFace({
           {group.name}
           {" - "}
           <span className="color--3">
-            {group.mentors
-              .map((mentor) =>
-                mentor.name.replace(/([А-ЯЁ])[а-яё]+ (.+)/, "$2 $1")
-              )
-              .join(", ") || "Лидеров нет"}
+            {(humans
+              && extractWidable(humans, group.mentors)
+                .map((mentor) =>
+                  mentor.name.replace(/([А-ЯЁ])[а-яё]+ (.+)/, "$2 $1")
+                )
+                .join(", ")) || "Лидеров нет"}
           </span>
         </span>
       </div>

@@ -1,109 +1,96 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import SourceBased from "../../../../../../complect/SourceBased";
 import mylib, { MyLib } from "../../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../../shared/store";
+import { TeamGameImportable } from "../../../Leader.model";
+import di, { leaderExer } from "../../../Leader.store";
 import useIsRedactArea from "../../../complect/useIsRedactArea";
-import { updateGamesTimers } from "../../../Leader.store";
 import leaderStorage from "../../../leaderStorage";
-import { LeaderCommentImportable } from "../../comments/LeaderComment.model";
+import { GameTeamImportable } from "../teams/GameTeams.model";
 import useGames from "../useGames";
-import LeaderGameTimer from "./GameTimer";
 import {
   GameTimerImportable,
   GameTimerMode,
+  RateSortedItem,
   StoragedGameTimerDict
 } from "./GameTimer.model";
 
 let runTimeTimers: StoragedGameTimerDict = { news: {}, redacts: {} };
 
 const gameTimersSelector = (state: RootState) => state.leader.gameTimers;
+const getBlankTimer = (): GameTimerImportable => {
+  return {
+    fio: '',
+    mode: GameTimerMode.TimerTotal,
+    name: '',
+    owner: '',
+    ts: Date.now() + Math.random(),
+    w: 0,
+  };
+};
 
 export default function useGameTimer(topTimerw?: number) {
   const dispatch = useDispatch();
-  const { cgame: game } = useGames();
-  const gameTimers = useSelector(gameTimersSelector);
+  const { cgame } = useGames();
+  const timersStorage = useSelector(gameTimersSelector);
 
-  const topTimer = useMemo(() => {
-    return (topTimerw && game?.timers?.find((timer) => timer.wid === topTimerw)) || null;
-  }, [game?.timers, topTimerw]);
+  const gameWid = cgame?.w || 0;
+  const newTimer = topTimerw === undefined
+    ? null
+    : timersStorage?.news?.[gameWid]?.[topTimerw]
+    || (topTimerw === 0 ? getBlankTimer() : null);
 
-  const isNewTimer = !topTimer || topTimer.isNew;
+  const gameTimer = topTimerw === undefined ? null : cgame?.timers?.find((timer) => timer.w === topTimerw) || null;
+  const redactTimer = topTimerw === undefined || newTimer ? null : timersStorage?.redacts?.[gameWid]?.[gameTimer ? gameTimer.ts : topTimerw] || null;
+  const timer = newTimer || redactTimer || gameTimer;
+
+  const isNewTimer = newTimer !== null;
   const arean = isNewTimer ? "news" : "redacts";
-  const gameWid = game?.wid || 0;
-  const localTimer = game && gameTimers?.[arean]?.[gameWid]?.[isNewTimer ? 0 : topTimer?.ts || -1];
-  const timerTs = isNewTimer ? 0 : topTimer?.ts || -1;
+  const timerTs = isNewTimer ? 0 : gameTimer?.ts || -1;
 
-  const { editIcon, isRedact } = useIsRedactArea(
+  const { editIcon, isRedact: isRedactResults } = useIsRedactArea(
     !isNewTimer &&
-    !!topTimer &&
-    topTimer.mode !== GameTimerMode.TimerTotal &&
-    topTimer.teams.length !== MyLib.values(topTimer.finishes).length,
-    !!localTimer && !isNewTimer,
+    !!gameTimer &&
+    gameTimer.mode !== GameTimerMode.TimerTotal &&
+    gameTimer.teams?.length !== MyLib.values(gameTimer.finishes).length,
+    redactTimer !== null,
     true,
-    () => topTimer && ret.onRedactOld(topTimer.toDict())
+    () => ret.updateTimer(gameTimer)
   );
 
   useEffect(() => {
-    if (topTimer) {
-      const timerDict = topTimer.toDict();
-      runTimeTimers[arean][gameWid][timerTs] = new LeaderGameTimer({ ...timerDict, ...localTimer, comments: topTimer.comments }, game, isNewTimer, !isNewTimer);
+    if (gameTimer) {
+      if (runTimeTimers[arean][gameWid] === undefined) runTimeTimers[arean][gameWid] = {};
+      runTimeTimers[arean][gameWid][timerTs] = { ...gameTimer, ...timer, comments: gameTimer.comments };
     }
-  }, [arean, game, gameWid, isNewTimer, localTimer, timerTs, topTimer]);
-
-
-  const newTimer = useMemo(() => {
-    const runTimer = runTimeTimers[arean][gameWid]?.[timerTs];
-
-    runTimeTimers[arean][gameWid] ??= {};
-
-    if (localTimer && !game?.isTimerWasPublicate(localTimer.ts)) {
-      return (runTimeTimers[arean][gameWid][timerTs] ??= new LeaderGameTimer(
-        localTimer,
-        game,
-        true
-      ));
-    }
-
-    const getNewTimer = () => {
-      let timerDict: GameTimerImportable;
-
-      if (isNewTimer) {
-        timerDict = {
-          w: 0,
-          ts: LeaderGameTimer.makeNewTs(),
-          mode: GameTimerMode.TimerApart,
-          name: "",
-          owner: "",
-          fio: "",
-        };
-      } else if (localTimer) {
-        timerDict = { ...localTimer, comments: topTimer.comments };
-      } else timerDict = topTimer.toDict();
-
-      return new LeaderGameTimer(timerDict, game, isNewTimer, !isNewTimer);
-    };
-
-    runTimeTimers[arean][gameWid] ??= {};
-
-    if (
-      isNewTimer &&
-      runTimer &&
-      game?.timers?.some((timer) => timer.ts === runTimer.ts)
-    )
-      return (runTimeTimers[arean][gameWid][timerTs] = getNewTimer());
-    else return (runTimeTimers[arean][gameWid][timerTs] ??= getNewTimer());
-  }, [arean, game, gameWid, isNewTimer, localTimer, timerTs, topTimer]);
+  }, [arean, cgame, gameWid, isNewTimer, timer, timerTs, gameTimer]);
 
   const ret = {
     newTimer,
-    isTimerOnRedaction: (timerTs: number) => !!gameTimers?.redacts?.[gameWid]?.[timerTs],
+    timer,
+    isNewTimer,
+    isTimerOnRedaction: (timerTs: number) => !!timersStorage?.redacts?.[gameWid]?.[timerTs],
     removeLocalTimer: () => ret.updateTimer(null),
+    isTimerStarted: () => !!(timer?.start || timer?.starts?.filter((ts) => ts).length),
+    redactIcon: editIcon,
+    isRedactResults,
+    mapTimer: (
+      map: (timer: GameTimerImportable) => GameTimerImportable,
+      isRejectSave?: boolean
+    ) => {
+      const timer = newTimer || redactTimer;
+      if (timer) {
+        const mappedTimer = map(timer);
+        if (!isRejectSave) ret.updateTimer(mappedTimer);
+      }
+    },
     updateTimer: (timer: GameTimerImportable | null) => {
-      if (!game) return;
+      if (!cgame) return;
 
       const runTimer = runTimeTimers[arean][gameWid]?.[timerTs];
 
-      if (runTimer && game.timers?.some((timer) => timer.ts === runTimer.ts))
+      if (runTimer && cgame.timers?.some((timer) => timer.ts === runTimer.ts))
         delete runTimeTimers[arean][gameWid];
 
       const timerStore = { ...leaderStorage.get("gameTimers") };
@@ -117,86 +104,162 @@ export default function useGameTimer(topTimerw?: number) {
       if (Object.keys(timerStore[arean] || {}).length === 0) delete timerStore[arean];
 
       leaderStorage.set("gameTimers", timerStore);
-      dispatch(updateGamesTimers(timerStore));
-    },
-    mapTimer: (
-      map: (timer: LeaderGameTimer) => void,
-      isRejectSave?: boolean
-    ) => {
-      if (newTimer) {
-        map(newTimer);
-        if (!isRejectSave) ret.saveTimer();
-      }
+      dispatch(di.updateGamesTimers(timerStore));
     },
     saveComment: (comment: string) => {
-      ret.mapTimer((timer) => timer.newComment(comment));
+      ret.mapTimer((timer) => ({
+        ...timer,
+        comments: [...timer.comments || [], {
+          comment,
+          fio: '',
+          owner: '',
+          ts: SourceBased.makeNewTs(),
+          w: 0,
+        }],
+      }));
     },
-    removeComment: (comment: LeaderCommentImportable) => {
-      ret.mapTimer((timer) => timer.removeComment(comment));
-    },
-    saveTimer: () => {
-      if (newTimer) ret.updateTimer(newTimer.toDict());
+    removeComment: (commentTs: number) => {
+      ret.mapTimer((timer) => ({
+        ...timer,
+        comments: timer.comments?.filter(({ ts }) => ts !== commentTs),
+      }));
     },
     startTotalTimer: () => {
-      ret.mapTimer((timer) => (timer.start = Date.now()));
+      ret.mapTimer((timer) => ({ ...timer, start: Date.now() }));
     },
     updateTeamList: (wids: number[]) => {
       ret.mapTimer((timer) => {
-        timer.teamList = wids;
-        timer.setTeams();
+        return {
+          ...timer,
+          teamList: wids,
+        };
       });
     },
     startForRow: (rowi: number, value: number = Date.now()) => {
       ret.mapTimer((timer) => {
-        timer.starts = [...(timer.starts || [])];
-        timer.starts[rowi] = value;
-        timer.starts = timer.starts.map((ts) => ts || 0);
+        const starts = [...(timer.starts || [])];
+        starts[rowi] = value;
+        return {
+          ...timer,
+          starts: starts.map((ts) => ts || 0),
+        };
       });
     },
     isCanPauseForRow: (teamw: number) => {
-      return isRedact ? !topTimer?.finishes?.[teamw] : isNewTimer;
+      return isRedactResults ? !gameTimer?.finishes?.[teamw] : isNewTimer;
     },
     pauseForRow: (teamw: number, value: number = Date.now()) => {
       ret.mapTimer((timer) => {
-        timer.finishes = { ...(timer.finishes || {}) };
-        timer.finishes[teamw] = value;
+        const finishes = { ...(timer.finishes || {}) };
+        finishes[teamw] = value;
+
+        return {
+          ...timer,
+          finishes,
+        };
       });
     },
     resetTimers: () => {
-      if (isRedact) ret.removeLocalTimer();
-      else ret.mapTimer(() => newTimer.resetTimers());
+      if (isRedactResults) ret.removeLocalTimer();
+      else ret.mapTimer((timer) => {
+        return {
+          ...timer,
+          start: null,
+          starts: null,
+          finishes: null,
+        };
+      });
     },
     isCanSendOldTimerUpdates: () => {
-      const topDict = topTimer?.toDict();
       return (
-        topDict &&
-        localTimer &&
-        (!mylib.isEq(localTimer.starts, topDict.starts) ||
-          !mylib.isEq(localTimer.finishes, topDict.finishes) ||
-          !mylib.isEq(localTimer.teams, topDict.teams))
+        gameTimer &&
+        timer &&
+        (!mylib.isEq(timer.starts, gameTimer.starts) ||
+          !mylib.isEq(timer.finishes, gameTimer.finishes) ||
+          !mylib.isEq(timer.teams, gameTimer.teams))
       );
     },
-    onRedactOld: (timer: GameTimerImportable | null) => ret.updateTimer(timer),
-    redactIcon: editIcon,
-    isRedactOld: isRedact,
-    publicateTimer: (timer: LeaderGameTimer) => {
-      if (!game) return;
+    publicateTimer: (timer: GameTimerImportable) => {
+      if (!cgame) return;
 
-      if (isRedact) {
-        const { teams, starts, finishes } = timer.toDict();
-        return LeaderGameTimer.updateTimerComponents(gameWid, timer.wid, {
-          finishes,
-          starts,
-          teams,
+      if (isRedactResults) {
+        const { teams, starts, finishes } = timer;
+        return leaderExer.send({
+          action: "updateTimerComponents",
+          method: "set_all",
+          args: {
+            gamew: gameWid,
+            timerw: timer.w,
+            value: {
+              finishes,
+              starts,
+              teams,
+            }
+          },
         });
       } else {
-        return LeaderGameTimer.publicateNew({
-          ...timer.toDict(),
-          gamew: gameWid,
+        return leaderExer.send({
+          action: "addGameTimer",
+          method: "push",
+          args: {
+            ...timer,
+            gamew: gameWid,
+          },
         });
       }
     },
+    rateSortedTeams,
+    isTeamCantMove,
+    startTime,
+    isRowFinished,
   };
 
   return ret;
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+const isTeamCantMove = (game: TeamGameImportable | und, timer: GameTimerImportable, topTeamw: number) => {
+  if (game?.timerFields?.teams) return true;
+  const rowi = rateSortedTeams(timer, game?.teams || []).find(({ team }) => team && topTeamw === team.w)?.rowi;
+  return rowi != null && startTime(timer, rowi) && timer.finishes?.[topTeamw];
+};
+
+const startTime = (timer: GameTimerImportable, rowi: number) => {
+  return (timer.mode === GameTimerMode.TimerTotal
+    ? timer.start
+    : timer.starts?.[rowi]) || 0;
+};
+
+const isRowFinished = (timer: GameTimerImportable, topTeams: GameTeamImportable[], topRowi: number, isSomeOf = true) => {
+  const finishes = timer.finishes || {};
+
+  const teams = rateSortedTeams(timer, topTeams)
+    .filter(({ rowi }) => topRowi === rowi);
+
+  return !(isSomeOf
+    ? teams.some(({ team }) => team && !finishes[team.w])
+    : !teams.some(({ team }) => team && finishes[team.w]))
+};
+
+const rateSortedTeams = (timer: GameTimerImportable, teams: GameTeamImportable[] = [], isFilterOnlyFinished?: boolean): RateSortedItem[] => {
+  const starts = timer.starts || [];
+  const finishes = timer.finishes || {};
+  const start = timer.start || 0;
+
+  let teamsNet = mylib.netFromLine(teams, timer.joins || 1,
+    timer.mode === GameTimerMode.TimerTotal
+      ? (team, rowi) => ({ team, start, finish: finishes[team.w], rowi })
+      : (team, rowi) => ({ team, start: starts[rowi], finish: finishes[team.w], rowi })
+  ).flat();
+
+  if (isFilterOnlyFinished)
+    teamsNet = teamsNet.filter(({ start, finish }) => start && finish);
+
+  return teamsNet.sort(({ start: aStart, finish: aFinish }, { start: bStart, finish: bFinish }) => {
+    return (aFinish - aStart) - (bFinish - bStart);
+  });
+};

@@ -2,15 +2,19 @@ import React from "react";
 import QRCode from "../../../../../complect/qr-code/QRCode";
 import useLeaderContexts from "../contexts/useContexts";
 import PrintableTemplate from "./PrintableTemplate";
+import useLeaderGroups from "../groups/useGroups";
 
 export default function QRQuest() {
   const { ccontext } = useLeaderContexts();
+  const { getFieldValues } = useLeaderGroups();
+
+  if (!ccontext) return <>Нет контекста</>;
 
   return (
     <PrintableTemplate
       noder={(page) =>
-        ccontext?.groups?.map((group) => {
-          const { qrText, color, initQrPoint } = group.getFieldValues();
+        ccontext.groups?.map((group) => {
+          const { qrText, color, initQrPoint } = getFieldValues(ccontext, group.fields);
           if (!qrText) return null;
 
           return (

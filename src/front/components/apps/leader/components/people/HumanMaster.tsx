@@ -4,8 +4,7 @@ import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { leaderExer } from "../../Leader.store";
-import Human from "./Human";
-import { HumanExportable } from "./People.model";
+import { HumanExportable, HumanImportable } from "./People.model";
 
 const ufpLabels = "1".repeat(10).split("");
 
@@ -35,7 +34,7 @@ export default function HumanMaster({
   human,
   close,
 }: {
-  human?: Human;
+  human?: HumanImportable;
   close: () => void;
 }) {
   const [viewHumanList, updateViewHumanList] = useState<
@@ -105,7 +104,7 @@ export default function HumanMaster({
           {viewHumanList?.map((human, humani) => {
             if (typeof human === "string") {
               return (
-                <div key={`incorrect-humani-${humani}`} className="error-text">
+                <div key={humani} className="error-text">
                   {human}
                 </div>
               );
@@ -113,7 +112,7 @@ export default function HumanMaster({
             const bDay = new Date(human.bDay);
 
             return (
-              <div key={`humani-${humani}`} className="margin-big-gap-v">
+              <div key={humani} className="margin-big-gap-v">
                 <div>
                   Имя:
                   <KeyboardInput
@@ -189,12 +188,12 @@ export default function HumanMaster({
                   if (value) {
                     leaderExer.setIfCan({
                       action: "setHumanName",
-                      scope: `setHumanName-${human.wid}`,
+                      scope: `setHumanName-${human.w}`,
                       method: "set",
                       prev,
                       value,
                       args: {
-                        wid: human.wid,
+                        wid: human.w,
                         value,
                       },
                     });
@@ -224,12 +223,12 @@ export default function HumanMaster({
                 if (human)
                   leaderExer.setIfCan({
                     action: "setHumanIsMan",
-                    scope: `setHumanIsMan-${human.wid}`,
+                    scope: `setHumanIsMan-${human.w}`,
                     method: "set",
                     prev: human.isMan,
                     value: !isMan,
                     args: {
-                      wid: human.wid,
+                      wid: human.w,
                       value: !isMan,
                       humann: human.name,
                     },
@@ -241,7 +240,7 @@ export default function HumanMaster({
             [
               ["УФП1", "ufp1", "setHumanUfp1"],
               ["УФП2", "ufp2", "setHumanUfp2"],
-            ] as [string, keyof Human, string][]
+            ] as [string, keyof HumanImportable, string][]
           ).map(([label, fieldn, action], placei) => {
             return (
               <div
@@ -252,7 +251,7 @@ export default function HumanMaster({
                 {ufpLabels.map((_, ufpi) => {
                   return (
                     <EvaIcon
-                      key={`${fieldn}${ufpi}`}
+                      key={ufpi}
                       className="pointer"
                       name={((placei ? ufp2 : ufp1) || 0) - 1 === ufpi
                         ? "radio-button-on"
@@ -264,12 +263,12 @@ export default function HumanMaster({
                         if (human) {
                           leaderExer.setIfCan({
                             action,
-                            scope: `${action}-${human.wid}`,
+                            scope: `${action}-${human.w}`,
                             method: "set",
                             prev: human[fieldn],
                             value,
                             args: {
-                              wid: human.wid,
+                              wid: human.w,
                               value,
                               humann: human.name,
                             },
@@ -294,12 +293,12 @@ export default function HumanMaster({
                   if (time) {
                     leaderExer.setIfCan({
                       action: "setHumanBDay",
-                      scope: `setHumanBDay-${human.wid}`,
+                      scope: `setHumanBDay-${human.w}`,
                       method: "set",
                       prev: human.bDay,
                       value: time,
                       args: {
-                        wid: human.wid,
+                        wid: human.w,
                         value: time,
                         humann: human.name,
                       },
@@ -321,12 +320,12 @@ export default function HumanMaster({
                 : (value, prev) => {
                   leaderExer.setIfCan({
                     action: "setHumanNotes",
-                    scope: `setHumanNotes-${human.wid}`,
+                    scope: `setHumanNotes-${human.w}`,
                     method: "set",
                     prev,
                     value,
                     args: {
-                      wid: human.wid,
+                      wid: human.w,
                       value,
                       humann: human.name,
                     },
@@ -345,12 +344,12 @@ export default function HumanMaster({
                 if (human)
                   leaderExer.setIfCan({
                     action: "setHumanInactive",
-                    scope: `setHumanInactive-${human.wid}`,
+                    scope: `setHumanInactive-${human.w}`,
                     method: "set",
                     prev: !!human.isInactive,
                     value: !isInactive,
                     args: {
-                      wid: human.wid,
+                      wid: human.w,
                       value: !isInactive,
                       humann: human.name,
                     },

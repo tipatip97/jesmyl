@@ -103,7 +103,7 @@ export default function LeaderCommentBlock({
         (comment, commenti, commenta) => {
           return (
             <LeaderComment
-              key={`commenti-${commenti}`}
+              key={commenti}
               className={`${commenti === 0 ? "first" : ""} ${commenti === commenta.length - 1 ? "last" : ""}`}
               comment={comment}
               isError={errorSentComments.indexOf(comment.ts) > -1}

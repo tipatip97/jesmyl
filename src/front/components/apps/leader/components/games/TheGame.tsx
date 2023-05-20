@@ -1,48 +1,47 @@
 import { useState } from "react";
+import SendButton from "../../../../../complect/SendButton";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import SendButton from "../../../../../complect/SendButton";
+import modalService from "../../../../../complect/modal/Modal.service";
 import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
+import useLeaderNav from "../../useLeaderNav";
 import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import GameMore from "./GameMore";
 import GameTeamListComputer from "./GameTeamListComputer";
 import OutsiderMore from "./OutsiderMore";
-import GameTeam from "./teams/GameTeam";
+import TotalScoreTable from "./TotalScoreTable";
+import { GameTeamExportable } from "./teams/GameTeams.model";
 import TheGameTeam from "./teams/TheGameTeam";
 import LeaderGameTimerFace from "./timers/TimerFace";
 import TimerFieldsConfigurer from "./timers/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/TimerNameListConfigurer";
 import useGameTimer from "./timers/useGameTimer";
-import TotalScoreTable from "./TotalScoreTable";
 import useCgame from "./useGames";
 
 export default function TheGame() {
-  const { cgame } = useCgame();
-  const { ccontext } = useLeaderContexts();
+  const { cgame, publicateTimerNameList, publicateGameTimerFields, publicateTeams, removeGame } = useCgame();
+  const { membersReadyToPlay, contextMembers } = useLeaderContexts();
   const [selectedTimers, updateSelectedTimers] = useState<number[]>([]);
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { openFullscreenContent } = useFullscreenContent();
   const [isTeamsLoading, setIsTeamsLoading] = useState(false);
   const usedHumans =
-    cgame?.teams?.reduce<number[]>(
-      (list, team) => list.concat(team.memberIds),
-      []
-    ) || [];
+    cgame?.teams?.reduce<number[]>((list, team) => list.concat(team.members), []) || [];
 
-  const { newTimer, isTimerOnRedaction } = useGameTimer();
-  const [teams, updateTeams] = useState<GameTeam[] | und>();
+  const { isTimerOnRedaction, isTimerStarted } = useGameTimer();
+  const [teams, updateTeams] = useState<GameTeamExportable[] | und>();
   const [isShowNamesInInput, setIsShowNamesInInput] = useState(false);
+  const { goBack } = useLeaderNav();
 
-  const membersReadyToPlayNode = ccontext
-    ?.membersReadyToPlay()
-    ?.filter((human) => usedHumans.indexOf(human.wid) < 0)
+  const membersReadyToPlayNode = membersReadyToPlay(contextMembers)
+    ?.filter((human) => usedHumans.indexOf(human.w) < 0)
     .map((human, humani) => (
       <HumanFace
-        key={`humani-${humani}`}
+        key={humani}
         human={human}
         onMoreClick={
           cgame &&
@@ -54,27 +53,32 @@ export default function TheGame() {
       />
     ));
 
+  if (!cgame) return null;
+
   return (
     <PhaseLeaderContainer
       topClass="the-game"
-      headTitle={`Игра - ${cgame?.name || ""}`}
+      headTitle={`Игра - ${cgame.name}`}
       onMoreClick={() =>
         openAbsoluteBottomPopup((close) => (
           <GameMore
             close={close}
             selectedTimers={selectedTimers}
-            game={cgame}
+            onGameRemove={async () => {
+              if (cgame && (await modalService.confirm(`Удалить игру "${cgame.name}" окончательно?`)))
+                removeGame(cgame.w).then(() => goBack());
+            }}
           />
         ))
       }
       content={
         <>
           {!leaderExer.actionAccessedOrNull("updateGameTeamList") &&
-            !cgame?.teams ? (
+            !cgame.teams ? (
             <div className="error-message">Команды не сформированы</div>
           ) : (
             <>
-              {cgame?.teams && !!membersReadyToPlayNode?.length && (
+              {cgame.teams && !!membersReadyToPlayNode?.length && (
                 <>
                   <h2 className="margin-gap">Не вошедшие игроки:</h2>
                   {membersReadyToPlayNode}
@@ -82,24 +86,29 @@ export default function TheGame() {
               )}
               <>
                 <h2 className="margin-gap">Таймеры:</h2>
-                {cgame?.timers?.map((timer, timeri) => {
+                {cgame.timers?.map((timer, timeri) => {
                   return (
                     <LeaderGameTimerFace
-                      key={`timer-${timeri}`}
-                      timer={timer}
-                      selectedPosition={selectedTimers.indexOf(timer.wid) + 1}
+                      key={timeri}
+                      timerw={timer.w}
+                      selectedPosition={selectedTimers.indexOf(timer.w) + 1}
                       isTimerOnRedaction={isTimerOnRedaction(timer.ts)}
                       onSelect={() =>
                         updateSelectedTimers(
-                          selectedTimers.indexOf(timer.wid) < 0
-                            ? [...selectedTimers, timer.wid]
-                            : selectedTimers.filter((wid) => wid !== timer.wid)
+                          selectedTimers.includes(timer.w)
+                            ? selectedTimers.filter((wid) => wid !== timer.w)
+                            : [...selectedTimers, timer.w]
                         )
                       }
                     />
                   );
                 })}
-                <LeaderGameTimerFace timer={newTimer} />
+                <LeaderGameTimerFace
+                  timerw={0}
+                  namePostfix={isTimerStarted() && (
+                    <span className="error-message">(Запущен)</span>
+                  )}
+                />
                 {selectedTimers.length > 1 && (
                   <div
                     className="margin-big-gap pointer flex"
@@ -115,14 +124,14 @@ export default function TheGame() {
                 )}
               </>
               <TimerNameListConfigurer
-                timerNames={cgame?.timerNames}
+                timerNames={cgame.timerNames}
                 redactable
-                onSend={(list) => cgame?.publicateTimerNameList(list)}
+                onSend={(list) => publicateTimerNameList(cgame.w, list)}
               />
               <TimerFieldsConfigurer
                 redactable
                 game={cgame}
-                onSend={(list) => cgame?.publicateGameTimerFields(list)}
+                onSend={(list) => publicateGameTimerFields(cgame.w, list)}
               />
               <EvaIcon
                 name="copy-outline"
@@ -130,7 +139,7 @@ export default function TheGame() {
               />
               {isShowNamesInInput ? (
                 <KeyboardInput
-                  value={cgame?.teams?.map(({ name }) => name).join("\n")}
+                  value={cgame.teams?.map(({ name }) => name).join("\n")}
                   multiline
                 />
               ) : (
@@ -138,22 +147,24 @@ export default function TheGame() {
                   <h2 className="margin-big-gap-v margin-gap">
                     Команды{cgame && !cgame.teams ? " не собраны" : ""}
                   </h2>
-                  {cgame?.teams?.map((team, teami) => {
+                  {cgame.teams?.map((team, teami) => {
                     return (
                       <TheGameTeam
-                        key={`teami-${teami}`}
+                        key={teami}
                         team={team}
+                        game={cgame}
                         redactable
                       />
                     );
                   })}
                 </>
               )}
-              {!cgame?.teams && (
+              {!cgame.teams && (
                 <div className={isTeamsLoading ? "disabled" : ""}>
                   {cgame && !cgame.teams && (
                     <GameTeamListComputer
                       onUpdate={(list) => updateTeams(list)}
+                      game={cgame}
                       noComments
                     />
                   )}
@@ -171,7 +182,7 @@ export default function TheGame() {
                     confirm
                     onSend={() => {
                       setIsTeamsLoading(true);
-                      return cgame?.publicateTeams(teams);
+                      return publicateTeams(cgame.w, teams);
                     }}
                   />
                 </div>

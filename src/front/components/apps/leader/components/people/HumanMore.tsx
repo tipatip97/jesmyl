@@ -1,22 +1,24 @@
 import { ReactNode } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import useLeaderContexts from "../contexts/useContexts";
-import Human from "./Human";
-import HumanMaster from "./HumanMaster";
 import modalService from "../../../../../complect/modal/Modal.service";
+import useLeaderContexts from "../contexts/useContexts";
+import useLeaderGroups from "../groups/useGroups";
+import HumanMaster from "./HumanMaster";
+import { HumanImportable } from "./People.model";
 
 export default function HumanMore({
   human,
   humanMoreAdditions,
 }: {
-  human: Human;
-  humanMoreAdditions?: (human: Human) => ReactNode;
+  human: HumanImportable;
+  humanMoreAdditions?: (human: HumanImportable) => ReactNode;
 }) {
   const { openFullscreenContent } = useFullscreenContent();
   const { prepareAbsoluteBottomPopupContent, openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { ccontext } = useLeaderContexts();
-  const wraps = ccontext?.getMembersInGroups([human.wid]) || [];
+  const { ccontext, contextMembers, getMembersInGroups } = useLeaderContexts();
+  const { replaceMemberToGroup } = useLeaderGroups();
+  const wraps = getMembersInGroups(contextMembers, [human.w], ccontext?.groups) || [];
 
   const title = (txt = "", txt2 = "") =>
     `${wraps.length ? "Переопределить" : "Определить"
@@ -38,7 +40,7 @@ export default function HumanMore({
         onClick: () => {
           const groups = ccontext?.groups;
           if (!groups) return;
-          const groupws = wraps.map(({ group: { wid } }) => wid);
+          const groupws = wraps.map(({ group: { w } }) => w);
 
           setTimeout(() => {
             openAbsoluteBottomPopup((close, prepare) =>
@@ -47,7 +49,7 @@ export default function HumanMore({
                   return {
                     title: group.name,
                     icon: "people-outline",
-                    className: !groupws.includes(group.wid) ? "" : "disabled",
+                    className: !groupws.includes(group.w) ? "" : "disabled",
                     onClick: async () => {
                       if (
                         human &&
@@ -55,12 +57,12 @@ export default function HumanMore({
                           title(` участника "${human.name}"`, `${group.name}?`)
                         ))
                       ) {
-                        group
-                          .replaceMemberToGroup(
-                            ccontext.wid,
-                            human.wid,
-                            wraps.map(({ group }) => group)
-                          )
+                        replaceMemberToGroup(
+                          group.w,
+                          ccontext.w,
+                          human.w,
+                          wraps.map(({ group }) => group)
+                        )
                           .then(() => close());
                       }
                     },

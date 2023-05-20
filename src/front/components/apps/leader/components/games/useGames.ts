@@ -1,67 +1,80 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
-import { GamesStoreImportable } from "../../Leader.model";
-import { riseUpNumUpdatesGames, updateCgamew, updateGamesStore } from "../../Leader.store";
+import { leaderExer } from "../../Leader.store";
 import useLeaderNav from "../../useLeaderNav";
-import LeaderContext from "../contexts/Context";
 import useLeaderContexts from "../contexts/useContexts";
-import Game from "./Game";
-import GamesStore from "./GameStore";
+import { GameTeamExportable } from "./teams/GameTeams.model";
+import { GameTimerConfigurable, GameTimerImportable } from "./timers/GameTimer.model";
 
-let cgame: Game | und;
-let localGames: GamesStore | und;
-let teamGames: Game[] | und;
-
-const numUpdatesGamesSelector = (state: RootState) => state.leader.numUpdatesGames;
-const cgamewSelector = (state: RootState) => state.leader.cgamew;
 const gamesSelector = (state: RootState) => state.leader.games;
 
 export default function useGames() {
-    const dispatch = useDispatch();
-    useSelector(numUpdatesGamesSelector);
-    const cgamew = useSelector(cgamewSelector);
     const games = useSelector(gamesSelector);
-    const { ccontext } = useLeaderContexts();
-    const { goTo } = useLeaderNav();
+    const ctx = useLeaderContexts();
+    const { goTo, appRouteData: { gamew } } = useLeaderNav();
 
-    if (!localGames && games) {
-        const members = ccontext?.members;
-        if (members) {
-            localGames = new GamesStore(games, members);
-        }
-    }
-
-    if (!cgame && cgamew != null) cgame = localGames?.teamGames?.find((game) => game.wid === cgamew);
+    const cgame = games?.teamGames?.find((game) => game.w === gamew);
+    const teamGames = games?.teamGames?.filter(({ contextw }) => ctx.ccontext?.w === contextw);
 
     const ret = {
         cgame,
-        gamesImportable: games,
+        games,
+        ctx,
         teamGames,
-        games: localGames,
-        goToGame: (game?: Game) => {
-            if (game) {
-                ret.updateCgame(game);
-                goTo("game");
-            }
-        },
-        updateCgame: (game?: Game) => {
-            if (game) {
-                cgame = game;
-                dispatch(updateCgamew(game.wid));
-                dispatch(riseUpNumUpdatesGames());
-            }
-        },
-        updateGamesImportable: (gamesImportable: GamesStoreImportable) => dispatch(updateGamesStore(gamesImportable)),
-        updateGames: (games: GamesStoreImportable, context: LeaderContext) => {
-            const members = context?.members;
-            if (members) {
-                localGames = new GamesStore(games, members);
-                if (context)
-                    teamGames = localGames.teamGames?.filter(({ contextw }) => context.wid === contextw);
-                ret.updateCgame(localGames.teamGames?.find((game) => game.wid === cgamew));
-                dispatch(riseUpNumUpdatesGames());
-            }
-        },
+        goToGame: (gamew: number) => goTo({ place: "game", data: { gamew } }),
+        getWidable,
+        isTimerWasPublicate,
+        publicateTimerNameList,
+        publicateGameTimerFields,
+        publicateTeams,
+        removeGame,
     };
     return ret;
+}
+
+
+////////////////////////////////////////////////////////////////////////
+
+
+const removeGame = (gamew: number) => {
+    return leaderExer.send({
+        action: "removeTeamGame",
+        method: "remove",
+        args: { gamew },
+    });
+};
+
+const isTimerWasPublicate = (timers: GameTimerImportable[] | und, timerTs: number) => {
+    return timers?.some((timer) => timer.ts === timerTs);
+}
+
+const getWidable = (timers: { w: number }[], timerWid: number) => {
+    return timers?.find((timer) => timer.w === timerWid);
+}
+
+const publicateGameTimerFields = (gamew: number, value: GameTimerConfigurable) => {
+    return leaderExer.send({
+        action: 'updateGameTimerFields',
+        method: 'set_all',
+        args: { ...value, gamew },
+    });
+};
+
+const publicateTimerNameList = (gamew: number, list: string[]) => {
+    return leaderExer.send({
+        action: 'updateGameTimerNames',
+        method: 'set',
+        args: { gamew, list },
+    });
+};
+
+const publicateTeams = (gamew: number, teams: GameTeamExportable[]) => {
+    return leaderExer.send({
+        action: 'updateGameTeamList',
+        method: 'set',
+        args: {
+            gamew,
+            list: teams
+        },
+    });
 }

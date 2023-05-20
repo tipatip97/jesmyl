@@ -1,32 +1,36 @@
 import { useState } from "react";
+import SourceBased from "../../../../../complect/SourceBased";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
+import { TeamGameImportable } from "../../Leader.model";
 import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
-import GameTeam from "./teams/GameTeam";
+import { GameTeamImportable } from "./teams/GameTeams.model";
 import TheGameTeam from "./teams/TheGameTeam";
 
 export default function GameTeamListComputer({
   onUpdate,
   noComments,
+  game,
 }: {
-  onUpdate: (teams: GameTeam[]) => void;
+  game: TeamGameImportable,
+  onUpdate: (teams: GameTeamImportable[]) => void;
   noComments?: boolean;
 }) {
-  const { ccontext } = useLeaderContexts();
-  const [teams, updateTeams] = useState<GameTeam[] | und>();
+  const { membersReadyToPlay, contextMembers } = useLeaderContexts();
+  const [teams, updateTeams] = useState<GameTeamImportable[] | und>();
   const [teamsCount, setTeamsCount] = useState(1);
   const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
 
-  const humanList = ccontext?.membersReadyToPlay();
+  const readyMembers = membersReadyToPlay(contextMembers);
 
-  if (!humanList) return null;
+  if (!readyMembers) return null;
 
-  const countInTeam = teamsCount && humanList.length / teamsCount;
+  const countInTeam = teamsCount && readyMembers.length / teamsCount;
 
   const truncated = Math.trunc(countInTeam);
-  const restCount = humanList?.length % teamsCount;
+  const restCount = readyMembers?.length % teamsCount;
   const restLabelPrefix = mylib.declension(
     restCount,
     `Оставшегося ${restCount} участника`,
@@ -34,11 +38,11 @@ export default function GameTeamListComputer({
     `Оставшихся ${restCount} участников`
   );
 
-  const cantPlayers = ccontext?.members
+  const cantPlayers = contextMembers
     ?.map(
       (human, humani) =>
-        !human.isCanPlayGame() && (
-          <HumanFace key={`humani-${humani}`} human={human} />
+        !readyMembers.some(({ w }) => w === human.w) && (
+          <HumanFace key={humani} human={human} />
         )
     )
     .filter((player) => player);
@@ -48,9 +52,9 @@ export default function GameTeamListComputer({
       {
         <>
           <div>
-            Общее количество участников - {humanList.length}{" "}
+            Общее количество участников - {readyMembers.length}{" "}
             {mylib.declension(
-              humanList.length,
+              readyMembers.length,
               "человек",
               "человека",
               "человек"
@@ -65,7 +69,7 @@ export default function GameTeamListComputer({
               />
             </div>
           </div>
-          {teamsCount <= humanList.length ? (
+          {teamsCount <= readyMembers.length ? (
             <>
               {countInTeam ? (
                 <div>
@@ -113,21 +117,17 @@ export default function GameTeamListComputer({
                     className="the-button"
                     onClick={() => {
                       const teams = mylib.groupByFieldsSoftly(
-                        ["isMan", "ufp"],
-                        humanList,
+                        ["isMan", "ufp1"],
+                        readyMembers,
                         teamsCount,
                         addRestMode
                       );
                       const newTeams = teams.map((humans) => {
-                        return new GameTeam(
-                          {
-                            w: 0,
-                            ts: GameTeam.makeNewTs(),
-                            members: humans.map((human) => human.wid),
-                          },
-                          humans,
-                          null
-                        );
+                        return {
+                          w: 0,
+                          ts: SourceBased.makeNewTs(),
+                          members: humans.map((human) => human.w),
+                        };
                       });
 
                       updateTeams(newTeams);
@@ -150,8 +150,9 @@ export default function GameTeamListComputer({
               {teams?.map((team, teami) => {
                 return (
                   <TheGameTeam
-                    key={`team-${teami}`}
+                    key={teami}
                     team={team}
+                    game={game}
                     noComments={noComments}
                   />
                 );

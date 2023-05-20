@@ -10,7 +10,7 @@ import useLeaderGroups from "./useGroups";
 
 export default function TheLeaderGroup(props: HumanListComponentProps) {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { cgroup } = useLeaderGroups();
+  const { cgroup, getFieldValues, cgroupMembers, cgroupMentors } = useLeaderGroups();
   const { ccontext } = useLeaderContexts();
 
   return (
@@ -23,19 +23,19 @@ export default function TheLeaderGroup(props: HumanListComponentProps) {
       content={
         <div className="margin-big-gap">
           <h2>Лидеры</h2>
-          {cgroup?.mentors.map((human, humani) => {
-            return <HumanFace key={`humani ${humani}`} human={human} />;
+          {cgroupMentors.map((human, humani) => {
+            return <HumanFace key={humani} human={human} />;
           })}
           <h2>Участники</h2>
-          {cgroup?.members.map((human, humani) => {
+          {cgroupMembers.map((human, humani) => {
             return (
               <HumanFace
-                key={`humani ${humani}`}
+                key={humani}
                 human={human}
                 onMoreClick={() =>
                   openAbsoluteBottomPopup((close) => (
                     <GroupMemberMore
-                      group={cgroup}
+                      fields={getFieldValues(ccontext, cgroup?.fields)}
                       member={human}
                       close={close}
                     />

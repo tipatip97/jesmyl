@@ -6,16 +6,18 @@ import HumanList from "./HumanList";
 import { HumanListComponentProps } from "./People.model";
 
 export default function MentorList(props: HumanListComponentProps) {
-  const { ccontext } = useLeaderContexts();
+  const { ccontext, add_removeHumans } = useLeaderContexts();
   const { openFullscreenContent } = useFullscreenContent();
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   const placeholder = `Поиск по лидерам ${ccontext?.name || ""}`;
+
+  if (!ccontext) return null;
 
   return (
     <>
       <HumanList
         {...props}
-        list={() => ccontext?.mentors.map((human) => human.wid) ?? []}
+        list={() => ccontext.mentors ?? []}
         placeholder={placeholder}
         moreNode={
           () => prepareAbsoluteBottomPopupContent({
@@ -28,14 +30,13 @@ export default function MentorList(props: HumanListComponentProps) {
                     chosenPlaceholder={placeholder}
                     chooseTitle="Выбери лидеров:"
                     chosenTitle="Выбранные лидеры:"
-                    uniq="mentors"
                     redactable
                     redact
                     excludedTitle="Участник"
-                    fixedList={ccontext?.mentors.map((human) => human.wid)}
-                    excludes={ccontext?.members.map((human) => human.wid)}
+                    fixedList={ccontext.mentors}
+                    excludes={ccontext.members}
                     onSend={(addList, delList) => {
-                      ccontext?.add_removeHumans(addList, delList, "mentors");
+                      add_removeHumans(ccontext?.w, addList, delList, "mentors");
                       close();
                     }}
                   />

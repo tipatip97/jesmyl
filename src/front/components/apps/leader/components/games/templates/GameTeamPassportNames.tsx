@@ -16,7 +16,7 @@ export default function GameTeamPassportNames({
       selectedTimers
         .map(
           (wid) =>
-            gameTimers.find((timer) => !timer.isInactive && timer.wid === wid)
+            gameTimers.find((timer) => !timer.isInactive && timer.w === wid)
               ?.name
         )
         .filter((timer) => timer)) ||
@@ -39,7 +39,7 @@ export default function GameTeamPassportNames({
                 <div
                   className="for-print break-inside-avoid padding-giant-gap"
                   style={{ borderBottom: "dotted 1px black" }}
-                  key={`teami${teami}`}
+                  key={teami}
                 >
                   <>
                     <div className="tpl-title">{cgame?.name}</div>

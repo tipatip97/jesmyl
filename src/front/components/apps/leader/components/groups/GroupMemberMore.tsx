@@ -1,15 +1,14 @@
-import Human from "../people/Human";
 import PrintableBottomItem from "../PrintableBottomItem";
+import { HumanImportable } from "../people/People.model";
 import WelcomePage from "../templates/WelcomePage";
-import LeaderGroup from "./Group";
 
 export default function GroupMemberMore({
-  group,
+  fields,
   member,
   close,
 }: {
-  group: LeaderGroup;
-  member: Human;
+  fields: Record<string, string>;
+  member: HumanImportable;
   close: () => void;
 }) {
   return (
@@ -18,7 +17,7 @@ export default function GroupMemberMore({
         title="Распечатать Допуск"
         node={
           <WelcomePage
-            bag={{ ...group.getFieldValues(), ...member.toDict() }}
+            bag={{ ...fields, ...member }}
           />
         }
         close={close}

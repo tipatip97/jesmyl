@@ -1,9 +1,6 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import modalService from "../../../../../complect/modal/Modal.service";
 import { leaderExer } from "../../Leader.store";
-import useLeaderNav from "../../useLeaderNav";
 import PrintableBottomItem from "../PrintableBottomItem";
-import Game from "./Game";
 import GameTeamLists from "./templates/GameTeamLists";
 import GameTeamPassportNames from "./templates/GameTeamPassportNames";
 import GameTeamPassports from "./templates/GameTeamPassports";
@@ -11,13 +8,12 @@ import GameTeamPassports from "./templates/GameTeamPassports";
 export default function GameMore({
   selectedTimers,
   close,
-  game,
+  onGameRemove,
 }: {
   selectedTimers?: number[];
   close: () => void;
-  game?: Game;
+  onGameRemove: () => void,
 }) {
-  const { goBack } = useLeaderNav();
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
   return (
@@ -45,13 +41,7 @@ export default function GameMore({
               title: 'Удалить игру',
               icon: "trash-outline",
               isError: true,
-              onClick: async () => {
-                if (
-                  game
-                  && (await modalService.confirm(`Удалить игру "${game.name}" окончательно?`))
-                )
-                  game.remove().then(() => goBack());
-              },
+              onClick: onGameRemove,
             }]
         })}
     </>

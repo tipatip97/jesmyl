@@ -4,7 +4,7 @@ import useGames from "../useGames";
 import "./GameTemplates.scss";
 
 export default function GameTeamLists() {
-  const { cgame } = useGames();
+  const { cgame, ctx } = useGames();
   const joins = cgame?.timerFields?.joins || 1;
   const teams = cgame?.teams || [];
 
@@ -21,28 +21,22 @@ export default function GameTeamLists() {
                 return (
                   <>
                     <tr
-                      key={`rowi-${rowi}`}
+                      key={rowi}
                       className=" flex-gap full-width between for-print break-inside-avoid"
                     >
                       {row?.map((team, teami) => {
                         return (
                           <td
-                            key={`teami${teami}`}
+                            key={teami}
                             className="cell padding-gap text-center column full-height"
                             style={{
-                              width: `calc(${(100 / joins).toFixed(
-                                0
-                              )}vw - 30px)`,
+                              width: `calc(${(100 / joins).toFixed(0)}vw - 30px)`,
                             }}
                           >
                             <h3>{team.name}</h3>
-                            {team.activeMembers.map((member, memberi) => {
-                              return (
-                                <div key={`member${memberi}`}>
-                                  {member.name}
-                                </div>
-                              );
-                            })}
+                            {ctx.extractWidable(ctx.contextMembers, team.members)
+                              .filter((member) => !member.isInactive)
+                              .map((member, memberi) => <div key={memberi}>{member.name}</div>)}
                           </td>
                         );
                       })}

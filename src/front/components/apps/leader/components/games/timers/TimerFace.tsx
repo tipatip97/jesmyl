@@ -1,27 +1,30 @@
-import { HTMLAttributes } from "react";
+import { ReactNode } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../../complect/fullscreen-content/useFullscreenContent";
-import LeaderGameTimer from "./GameTimer";
 import { GameTimerMode } from "./GameTimer.model";
 import LeaderGameTimerMaster from "./GameTimerMaster";
+import useGameTimer from "./useGameTimer";
 
 export default function LeaderGameTimerFace({
-  timer,
+  timerw,
   onSelect,
   selectedPosition,
   isTimerOnRedaction,
-  ...props
+  namePostfix,
 }: {
-  timer: LeaderGameTimer;
+  timerw: number;
   onSelect?: () => void;
   selectedPosition?: number;
   isTimerOnRedaction?: boolean;
-} & HTMLAttributes<HTMLDivElement>) {
+  namePostfix?: ReactNode,
+}) {
   const { openFullscreenContent } = useFullscreenContent();
+  const { timer } = useGameTimer(timerw);
+
+  if (!timer) return null;
 
   return (
     <div
-      {...props}
       className="face-item"
       onClick={() =>
         openFullscreenContent((close) => (
@@ -38,14 +41,12 @@ export default function LeaderGameTimerFace({
         }}
       >
         <EvaIcon
-          name={`${
-            timer.mode === GameTimerMode.Messager ? "message-circle" : "clock"
-          }-outline`}
+          name={timer.mode === GameTimerMode.Messager ? "message-circle-outline" : "clock-outline"}
         />
       </span>
       <span className="face-title flex between full-width">
         <span className="flex flex-gap">
-          {timer.isNew ? (
+          {!timer.w ? (
             <span className="color--7">
               Новый таймер{timer.name ? ` - ${timer.name}` : ""}
             </span>
@@ -55,9 +56,7 @@ export default function LeaderGameTimerFace({
               {timer.fio ? ` (${timer.fio})` : ""}
             </span>
           )}
-          {timer.isNew && timer.isStarted && (
-            <span className="error-message">(Запущен)</span>
-          )}
+          {namePostfix}
           {isTimerOnRedaction && (
             <EvaIcon name="edit-outline" className="fade-05" />
           )}

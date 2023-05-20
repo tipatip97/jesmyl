@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
-import GameTeam from "./teams/GameTeam";
+import { GameTeamImportable } from "./teams/GameTeams.model";
 import { RateSortedItem } from "./timers/GameTimer.model";
 import GameTimerScreen from "./timers/GameTimerScreen";
+import useGameTimer from "./timers/useGameTimer";
 import useGames from "./useGames";
 
 export default function TotalScoreTable({
@@ -11,35 +12,36 @@ export default function TotalScoreTable({
 }) {
   const [openScores, updateOpenScores] = useState<number[]>([]);
   const { cgame } = useGames();
+  const { rateSortedTeams } = useGameTimer();
 
   const scores = useMemo(() => {
     const rateSortedItemsMap = new Map<number, RateSortedItem[]>();
 
     selectedTimers.forEach((timerWid) => {
-      const timer = cgame?.timers?.find((timer) => timer.wid === timerWid);
+      const timer = cgame?.timers?.find((timer) => timer.w === timerWid);
 
-      timer?.rateSortedTeams().forEach((rateSorts) => {
+      timer && rateSortedTeams(timer, cgame?.teams).forEach((rateSorts) => {
         const { team, start, finish } = rateSorts;
         if (start && finish && team) {
-          if (rateSortedItemsMap.has(team.wid))
+          if (rateSortedItemsMap.has(team.w))
             rateSortedItemsMap.set(
-              team.wid,
-              rateSortedItemsMap.get(team.wid)?.concat(rateSorts) ?? []
+              team.w,
+              rateSortedItemsMap.get(team.w)?.concat(rateSorts) ?? []
             );
-          else rateSortedItemsMap.set(team.wid, [rateSorts]);
+          else rateSortedItemsMap.set(team.w, [rateSorts]);
         }
       });
     });
 
     const scores: RateSortedItem[] = [];
 
-    rateSortedItemsMap.forEach((items, team) => {
+    rateSortedItemsMap.forEach((items, teamw) => {
       type ScoreMap = {
         start: number;
         finish: number;
         starts: number[];
         finishes: number[];
-        team?: GameTeam;
+        team?: GameTeamImportable;
       };
 
       const { start, finish } = items.reduce<ScoreMap>(
@@ -53,17 +55,17 @@ export default function TotalScoreTable({
         { start: 0, finish: 0, starts: [], finishes: [] }
       );
 
-      scores.push({ start, finish, rowi: -1, team: cgame?.getTeam(team) });
+      scores.push({ start, finish, rowi: -1, team: cgame?.teams?.find(({ w }) => w === teamw) });
     });
     return scores;
-  }, [selectedTimers]);
+  }, [selectedTimers, cgame?.teams, cgame?.timers]);
 
   const scoresNode = useMemo(() => {
     return scores
       .sort((a, b) => a.finish - a.start - (b.finish - b.start))
       .map(({ team, start, finish }, scorei) => {
         return (
-          <div key={`scorei-${scorei}`} className="margin-gap">
+          <div key={scorei} className="margin-gap">
             <div
               className="flex flex-gap pointer"
               onClick={() => {
@@ -83,16 +85,12 @@ export default function TotalScoreTable({
             {openScores.indexOf(scorei) < 0 || (
               <div className="padding-giant-gap">
                 {selectedTimers.map((timerWid, timeri) => {
-                  const timer = cgame?.getTimer(timerWid);
+                  const timer = cgame?.timers?.find(({ w }) => w === timerWid);
                   if (!timer) return null;
 
-                  const scores = timer.rateSortedTeams();
-                  const teamScores = scores.find(
-                    ({ team: scoreTeam }) => scoreTeam?.wid === team?.wid
-                  );
-                  const teamInTimer = timer.teams.find(
-                    (timerTeam) => team?.wid === timerTeam.wid
-                  );
+                  const scores = rateSortedTeams(timer, cgame?.teams);
+                  const teamScores = scores.find(({ team: t }) => t?.w === team?.w);
+                  const teamInTimer = team && timer.teams?.find(teamw => team.w === teamw);
 
                   return (
                     !!(
@@ -100,11 +98,9 @@ export default function TotalScoreTable({
                       teamScores?.start &&
                       teamScores?.finish
                     ) && (
-                      <div key={`point-${timeri}`} className="flex flex-gap">
+                      <div key={timeri} className="flex flex-gap">
                         <span
-                          className={`${
-                            timer.isInactive ? "text-strike" : ""
-                          } text-bold`}
+                          className={`${timer.isInactive ? "text-strike" : ""} text-bold`}
                         >
                           {timer.name}
                         </span>{" "}
@@ -122,7 +118,7 @@ export default function TotalScoreTable({
           </div>
         );
       });
-  }, [openScores, scores]);
+  }, [openScores, scores, cgame?.teams, cgame?.timers]);
 
   return <div className="full-container padding-giant-gap">{scoresNode}</div>;
 }

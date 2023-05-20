@@ -1,51 +1,53 @@
 import { useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { TeamGameImportable } from "../../../Leader.model";
 import { leaderExer } from "../../../Leader.store";
-import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
-import HumanFace from "../../people/HumanFace";
 import RandomTwiceName from "../../RandomTwiseName";
-import GameTeam from "./GameTeam";
+import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
+import useLeaderContexts from "../../contexts/useContexts";
+import HumanFace from "../../people/HumanFace";
 import GameTeamMemberMore from "./GameTeamMemberMore";
+import { GameTeamImportable } from "./GameTeams.model";
 
 export default function TheGameTeam({
   team,
   redactable,
   noComments,
+  game,
 }: {
-  team: GameTeam;
+  team: GameTeamImportable;
+  game: TeamGameImportable,
   redactable?: boolean;
   noComments?: boolean;
 }) {
-  const [pronoun, noun] = team.name?.split(" ") || [];
   const [isHumansShow, setIsHumansShow] = useState(!(redactable ?? false));
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const [updates, riseUpUpdates] = useState(0);
   const [, setName] = useState("");
-  const forceUpdate = () => riseUpUpdates(updates + 1);
+  const { extractWidable, contextMembers } = useLeaderContexts();
+  const teamMembers = extractWidable(contextMembers, team.members);
 
   return (
     <div className="the-team-card padding-giant-gap">
       <RandomTwiceName
-        pronoun={pronoun}
-        noun={noun}
+        name={team.name}
         canChange={!redactable}
         className="user-select inline-block margin-gap-v text-bold"
-        onNameChange={(name) => setName((team.name = name))}
+        onNameChange={(name) => setName(name)}
       />
       {" (сила - " +
-        team.members.reduce((acc, { ufp }) => acc + ufp, 0).toFixed(1) +
+        teamMembers.reduce((acc, { ufp1, ufp2 }) => acc + (ufp1 + ufp2) / 2, 0).toFixed(1) +
         ") "}
       {isHumansShow &&
-        team.members.map((human, humani) => {
+        teamMembers.map((member, humani) => {
           return (
             <HumanFace
-              key={`human ${humani}`}
-              human={human}
+              key={humani}
+              human={member}
               onMoreClick={
                 leaderExer.actionAccessedOrUnd("removeMemberFromTeam") &&
                 (() => {
                   openAbsoluteBottomPopup(
-                    <GameTeamMemberMore human={human} team={team} />
+                    <GameTeamMemberMore human={member} team={team} game={game} />
                   );
                 })
               }
@@ -57,28 +59,39 @@ export default function TheGameTeam({
         onClick={() => setIsHumansShow(!isHumansShow)}
       >
         {isHumansShow ? "Скрыть" : "Показать"} участников
-        <strong> {team.memberIds.length}</strong>
+        <strong> {team.members.length}</strong>
       </div>
 
       {noComments || (
         <LeaderCommentBlock
-          placeholder={`Комментарий о "${team.upperName}"`}
+          placeholder={`Комментарий о "${team.name}"`}
           action="addCommentToGameTeam"
           arean="gameTeams"
-          gamew={team.game?.wid}
-          listw={team.wid}
+          gamew={game.w}
+          listw={team.w}
           listwNameMask="teamw"
           comments={team.comments}
           {...(!redactable && {
             isWaitedToSend: true,
             importantActionOnClick: (comment) => {
-              team.includeNewComment(comment);
-              forceUpdate();
+              includeNewComment(comment);
             },
-            onRejectSend: (comment) => team.removeComment(comment),
+            onRejectSend: (comment) => removeComment(comment.ts),
           })}
         />
       )}
     </div>
   );
 }
+
+const removeComment = (commentw: number) => {};
+const includeNewComment = (comment: string) => {
+  // if (this.comments == null) this.comments = [];
+  // this.comments = [...this.comments, {
+  //     comment,
+  //     fio: '',
+  //     owner: '',
+  //     ts: SourceBased.makeNewTs(),
+  //     w: 0,
+  // }];
+};

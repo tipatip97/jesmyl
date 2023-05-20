@@ -5,7 +5,6 @@ import HumanList from "./HumanList";
 import { SelectHumansComponentProps } from "./People.model";
 
 export default function SelectHumans({
-  uniq,
   onListsUpdate,
   chosenPlaceholder,
   chooseTitle,
@@ -23,7 +22,6 @@ export default function SelectHumans({
   const { isRedact, editIcon } = useIsRedactArea(redactable, redact);
 
   const getHumanList = (
-    uniq: string,
     isWholeList: boolean,
     placeholder: string
   ) => {
@@ -34,7 +32,6 @@ export default function SelectHumans({
         } min-height-30vh over-auto full-width`}
       >
         <HumanList
-          uniq={uniq}
           className="full-width"
           searcherClass="sticky"
           placeholder={placeholder}
@@ -62,14 +59,14 @@ export default function SelectHumans({
               ? (human) => {
                   if (
                     excludedTitle &&
-                    excludes?.some((exWid) => exWid === human.wid)
+                    excludes?.some((exWid) => exWid === human.w)
                   )
                     return <div className="error-message">{excludedTitle}</div>;
 
                   return (
-                    !fixedList || !fixedList.some((wid) => human.wid === wid)
-                      ? !addList.some((wid) => human.wid === wid)
-                      : delList.some((wid) => human.wid === wid)
+                    !fixedList || !fixedList.some((wid) => human.w === wid)
+                      ? !addList.some((wid) => human.w === wid)
+                      : delList.some((wid) => human.w === wid)
                   ) ? (
                     <EvaIcon
                       name="plus-circle-outline"
@@ -77,11 +74,11 @@ export default function SelectHumans({
                         event.stopPropagation();
                         if (
                           !fixedList ||
-                          !fixedList.some((wid) => human.wid === wid)
+                          !fixedList.some((wid) => human.w === wid)
                         )
-                          updateAddList([...addList, human.wid]);
+                          updateAddList([...addList, human.w]);
                         updateDelList(
-                          delList.filter((wid) => wid !== human.wid)
+                          delList.filter((wid) => wid !== human.w)
                         );
                       }}
                     />
@@ -92,12 +89,12 @@ export default function SelectHumans({
                         event.stopPropagation();
                         if (
                           fixedList &&
-                          fixedList.some((wid) => human.wid === wid)
+                          fixedList.some((wid) => human.w === wid)
                         )
-                          updateDelList([...delList, human.wid]);
+                          updateDelList([...delList, human.w]);
 
                         updateAddList(
-                          addList.filter((wid) => wid !== human.wid)
+                          addList.filter((wid) => wid !== human.w)
                         );
                       }}
                     />
@@ -110,8 +107,8 @@ export default function SelectHumans({
     );
   };
 
-  const chooseNode = getHumanList(`${uniq} choose`, true, "Поиск по личностям");
-  const chosenNode = getHumanList(`${uniq} chosen`, false, chosenPlaceholder);
+  const chooseNode = getHumanList(true, "Поиск по личностям");
+  const chosenNode = getHumanList(false, chosenPlaceholder);
 
   useEffect(() => onListsUpdate?.(addList, delList), [addList, delList]);
 

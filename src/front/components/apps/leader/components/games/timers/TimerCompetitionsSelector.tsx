@@ -1,6 +1,6 @@
 import Dropdown from "../../../../../../complect/dropdown/Dropdown";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import GameTeam from "../teams/GameTeam";
+import { GameTeamImportable } from "../teams/GameTeams.model";
 
 export default function TimerCompetitionsSelector({
   joins,
@@ -11,7 +11,7 @@ export default function TimerCompetitionsSelector({
   hideable,
 }: {
   joins: number;
-  teams?: GameTeam[];
+  teams?: GameTeamImportable[];
   onSelect: (item: { id: number; title: string }) => void;
   isRedact?: boolean;
   hideable?: boolean;

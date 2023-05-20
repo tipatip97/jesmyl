@@ -20,6 +20,11 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
   rootPhase: "all",
   logo: "navigation-2",
   exer: leaderExer,
+  jumpByLink: (key, val, alt) => {
+    return key === 'gamew'
+      ? { path: ['all', 'games', 'game'], data: { gamew: val } }
+      : alt.RootPhase;
+  },
   routes: [
     {
       icon: "navigation-2",

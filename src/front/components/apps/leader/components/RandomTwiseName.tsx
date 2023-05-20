@@ -6,24 +6,26 @@ import { getRandomTwiceName } from "../resources/getRandomTwiceName";
 export default function RandomTwiceName({
   onNameChange,
   canChange,
-  ...props
+  name,
+  className,
 }: {
-  noun?: string;
-  pronoun?: string;
-  canChange?: boolean;
-  onNameChange?: (name: string) => void;
-} & HTMLAttributes<HTMLDivElement>) {
+  name?: string,
+  canChange?: boolean,
+  onNameChange?: (name: string) => void,
+  className?: string,
+}) {
+  const [pronoun, noun] = name?.split(" ") || [];
   const getTwiceName = (pronoun?: string | null, noun?: string) =>
     getRandomTwiceName(pronoun, noun).join(" ").toUpperCase();
   const [twiceName, setTwiceName] = useState(
-    getTwiceName(props.pronoun, props.noun)
+    getTwiceName(pronoun, noun)
   );
 
   useEffect(() => onNameChange?.(twiceName), [twiceName, onNameChange]);
 
   return (
     <span
-      {...props}
+      className={className}
       onClick={(event) => {
         event.stopPropagation();
         if (!canChange) return;
