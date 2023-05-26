@@ -1,5 +1,4 @@
 import Dropdown from "../../../../../../../complect/dropdown/Dropdown";
-import { GameTeamImportable } from "../../teams/GameTeams.model";
 import { GameTimerSortDirection } from "../GameTimer.model";
 
 const sortVariantList = [
