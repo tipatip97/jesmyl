@@ -30,7 +30,7 @@ export default function EvaIcon(
           className={'eva-icon '
             + (props.onClick ? 'pointer ' : '')
             + (props.className || '')}
-          fill="var(--svg-color)"
+          fill="var(--icon-color)"
         >{iconInners[props.name]}</svg>
       )}
     </>

@@ -7,8 +7,8 @@ import useLeaderContexts from "../contexts/useContexts";
 import GameTeamListComputer from "./GameTeamListComputer";
 import { GameTeamImportable } from "./teams/GameTeams.model";
 import { GameTimerConfigurable } from "./timers/GameTimer.model";
-import TimerFieldsConfigurer from "./timers/TimerFieldsConfigurer";
-import TimerNameListConfigurer from "./timers/TimerNameListConfigurer";
+import TimerFieldsConfigurer from "./timers/complect/TimerFieldsConfigurer";
+import TimerNameListConfigurer from "./timers/complect/TimerNameListConfigurer";
 import useGames from "./useGames";
 
 export default function LeaderGameMaster({ close }: { close: () => void }) {
@@ -43,7 +43,7 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
         />
         Разбить на команды позже
       </div>
-      {isComputeTeamsLater || (cgame && <GameTeamListComputer onUpdate={updateTeams} game={cgame} />)}
+      {isComputeTeamsLater || (cgame && <GameTeamListComputer onUpdate={updateTeams} game={cgame} noComments />)}
       <div className="flex center">
         {name && (isComputeTeamsLater || teams) ? (
           <SendButton

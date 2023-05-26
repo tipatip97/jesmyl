@@ -1,4 +1,5 @@
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import { LeaderCleans } from "../LeaderCleans";
 import { LeaderGroupImportable } from "./Groups.model";
 import useLeaderGroups from "./useGroups";
 
@@ -9,7 +10,7 @@ export default function GroupFace({
   group: LeaderGroupImportable;
   onMoreClick?: () => void;
 }) {
-  const { goToGroup, humans, extractWidable } = useLeaderGroups();
+  const { goToGroup, humans } = useLeaderGroups();
 
   return (
     <div
@@ -27,12 +28,7 @@ export default function GroupFace({
           {group.name}
           {" - "}
           <span className="color--3">
-            {(humans
-              && extractWidable(humans, group.mentors)
-                .map((mentor) =>
-                  mentor.name.replace(/([А-ЯЁ])[а-яё]+ (.+)/, "$2 $1")
-                )
-                .join(", ")) || "Лидеров нет"}
+            {LeaderCleans.takeGroupMentorNames(humans, group)}
           </span>
         </span>
       </div>

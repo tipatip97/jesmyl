@@ -57,8 +57,6 @@ export class SokiTrip {
                             this._onConnect(true);
                             this.send({ connect: true });
                             this.pullCurrentAppData();
-                            this.onConnectSends.forEach(cb => cb());
-                            this.onConnectSends = [];
                         } else this.onUnauthorize();
                     }
 
@@ -98,8 +96,11 @@ export class SokiTrip {
     }
 
     private _onConnect(isConnected: boolean) {
-        if (isConnected !== this.isConnected)
+        if (isConnected !== this.isConnected) {
             Object.values(this.onConnectWatchers).forEach(cb => cb(isConnected));
+            this.onConnectSends.forEach(cb => cb());
+            this.onConnectSends = [];
+        }
         this.isConnected = isConnected;
     }
 

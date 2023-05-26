@@ -2,38 +2,37 @@ import { useState } from "react";
 import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import { TeamGameImportable } from "../../../Leader.model";
 import { leaderExer } from "../../../Leader.store";
-import RandomTwiceName from "../../RandomTwiseName";
 import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
 import useLeaderContexts from "../../contexts/useContexts";
 import HumanFace from "../../people/HumanFace";
 import GameTeamMemberMore from "./GameTeamMemberMore";
 import { GameTeamImportable } from "./GameTeams.model";
+import { LeaderCleans } from "../../LeaderCleans";
 
 export default function TheGameTeam({
   team,
   redactable,
   noComments,
   game,
+  onTeamRename,
 }: {
-  team: GameTeamImportable;
+  team: GameTeamImportable,
   game: TeamGameImportable,
-  redactable?: boolean;
-  noComments?: boolean;
+  redactable?: boolean,
+  noComments?: boolean,
+  onTeamRename?: () => void,
 }) {
   const [isHumansShow, setIsHumansShow] = useState(!(redactable ?? false));
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const [, setName] = useState("");
-  const { extractWidable, contextMembers } = useLeaderContexts();
-  const teamMembers = extractWidable(contextMembers, team.members);
+  const { contextMembers } = useLeaderContexts();
+  const teamMembers = LeaderCleans.extractWidables(contextMembers, team.members);
 
   return (
-    <div className="the-team-card padding-giant-gap">
-      <RandomTwiceName
-        name={team.name}
-        canChange={!redactable}
-        className="user-select inline-block margin-gap-v text-bold"
-        onNameChange={(name) => setName(name)}
-      />
+    <div className="the-team-card padding-big-gap">
+      <span
+        className={'text-bold user-select' + (onTeamRename ? ' pointer ' : '')}
+        onClick={onTeamRename}
+      >{team.name}</span>
       {" (сила - " +
         teamMembers.reduce((acc, { ufp1, ufp2 }) => acc + (ufp1 + ufp2) / 2, 0).toFixed(1) +
         ") "}
@@ -66,32 +65,13 @@ export default function TheGameTeam({
         <LeaderCommentBlock
           placeholder={`Комментарий о "${team.name}"`}
           action="addCommentToGameTeam"
-          arean="gameTeams"
           gamew={game.w}
           listw={team.w}
           listwNameMask="teamw"
           comments={team.comments}
-          {...(!redactable && {
-            isWaitedToSend: true,
-            importantActionOnClick: (comment) => {
-              includeNewComment(comment);
-            },
-            onRejectSend: (comment) => removeComment(comment.ts),
-          })}
+          isWaitedToSend={!redactable}
         />
       )}
     </div>
   );
 }
-
-const removeComment = (commentw: number) => {};
-const includeNewComment = (comment: string) => {
-  // if (this.comments == null) this.comments = [];
-  // this.comments = [...this.comments, {
-  //     comment,
-  //     fio: '',
-  //     owner: '',
-  //     ts: SourceBased.makeNewTs(),
-  //     w: 0,
-  // }];
-};

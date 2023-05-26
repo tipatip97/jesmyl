@@ -36,11 +36,11 @@ export default function HumanList({
       (list?.(humans?.map((human) => human.w))
         ?.map((wid) => humans?.find((human) => human.w === wid))
         .filter((human) => human) as HumanImportable[]) ?? humans;
-    const wraps = term
+    const wraps = [...term
       ? mylib
         .searchRate<{ human: HumanImportable }>(memoHumans, term, ["name"], "human")
         .map(({ human }) => human)
-      : memoHumans;
+      : memoHumans];
 
     if (!term) {
       if (humanListSortVariant === "name")

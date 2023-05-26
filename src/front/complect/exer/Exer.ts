@@ -5,7 +5,6 @@ import { Auth } from "../../components/index/Index.model";
 import indexStorage from "../../components/index/indexStorage";
 import { soki } from "../../soki";
 import { JStorage } from "../JStorage";
-import modalService from "../modal/Modal.service";
 import mylib from "../my-lib/MyLib";
 import { Exec } from "./Exec";
 import { ClientExecutionDict, ExecRule, ExerStorage, FreeExecDict, FreeExecDictAntiCallback, FreeExecDictAntiCallbackStrategy } from "./Exer.model";
@@ -119,8 +118,7 @@ export class Exer<Storage extends ExerStorage> {
     }
 
     send<Value>(fixedExecs: ClientExecutionDict<Value> | (ClientExecutionDict<Value>[])) {
-        return this.load([fixedExecs].flat().map(exec => new Exec(exec, this.rules)))
-            .catch(error => modalService.alert(error));
+        return this.load([fixedExecs].flat().map(exec => new Exec(exec, this.rules)));
     }
 
     load<Value>(fixedExecs?: Exec<Value>[] | nil) {

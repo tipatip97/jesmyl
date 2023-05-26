@@ -7,9 +7,9 @@ import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
 import { RootState } from "../../../shared/store";
 import { soki } from "../../../soki";
-import PhaseIndexContainer from "../complect/PhaseIndexContainer";
 import { switchIsUseNativeKeyboard } from "../Index.store";
-import useAuth from "../useAuth";
+import PhaseIndexContainer from "../complect/PhaseIndexContainer";
+import { useSelectAuth } from "../useAuth";
 
 const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 const statisticSelector = (state: RootState) => state.index.statistic;
@@ -18,7 +18,7 @@ const appsSelector = (state: RootState) => state.index.apps;
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
 
 export default function IndexSettings() {
-  const { auth } = useAuth();
+  const auth = useSelectAuth();
   const dispatch = useDispatch();
   const isUseNativeKeyboard = useSelector(isUseNativeKeyboardSelector);
   const statistic = useSelector(statisticSelector);

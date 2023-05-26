@@ -12,7 +12,7 @@ export enum GameTimerMode {
     None = 0,
     TimerTotal = 1,
     TimerApart = 2,
-    Messager = 3,
+    Messager = 4,
 }
 
 export const timerModeAliases = {} as Record<GameTimerMode, string>;
@@ -34,7 +34,7 @@ export const timerModeAliasList = [
 
 timerModeAliasList.forEach(({ id, title }) => timerModeAliases[id] = title);
 
-export interface GameTimerImportable extends GameTimerBasics {
+export interface GameTimerImportable extends GameTimerWithBasics {
     w: number,
     fio: string,
     owner: string,
@@ -54,32 +54,42 @@ export interface GameTimerUpdatable {
     teams?: number[],
 }
 
-export interface GameTimerCreatable extends GameTimerBasics {
+export interface GameTimerCreatable extends GameTimerWithBasics {
     gamew: number,
     comments?: LeaderCommentInitializable[],
 }
 
-export interface GameTimerConfigurable {
-    mode: GameTimerMode,
-    joins?: number,
-    teams?: number[],
+export enum GameTimerSortDirection {
+    Asc = 0,
+    Desc = 1,
 }
 
-export interface GameTimerBasics extends GameTimerUpdatable, GameTimerConfigurable {
+export interface GameTimerConfigurable {
+    mode?: GameTimerMode,
+    joins?: number,
+    teams?: number[],
+    sort?: GameTimerSortDirection,
+}
+
+export interface GameTimerImportableWithStrongConfigurable extends GameTimerBasics, Required<GameTimerConfigurable> { }
+
+export interface GameTimerBasics {
     ts: number,
     name: string,
     start?: number | null,
 }
 
-export interface GameTimerExportable extends GameTimerBasics {
+export interface GameTimerWithBasics extends GameTimerBasics, GameTimerUpdatable, GameTimerConfigurable {
+}
+
+export interface GameTimerExportable extends GameTimerWithBasics {
     comments?: LeaderCommentExportable[],
 }
 
 export type StoragedGameTimerImportable = { [gameWid: number]: { [timerTs: number]: GameTimerImportable | null } };
 
 export interface StoragedGameTimerImportableDict {
-    news?: StoragedGameTimerImportable;
-    redacts?: StoragedGameTimerImportable;
+    news?: StoragedGameTimerImportable,
 }
 
 
@@ -87,5 +97,4 @@ export type StoragedGameTimer = { [gameWid: number]: { [timerTs: number]: GameTi
 
 export interface StoragedGameTimerDict {
     news: StoragedGameTimer,
-    redacts: StoragedGameTimer,
 }

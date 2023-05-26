@@ -8,6 +8,15 @@ const bodyClass = indexStorage.get(lsName);
 const classList = document.body.classList;
 if (bodyClass) classList.add(bodyClass);
 
+const toggleTheme = () => {
+    const className = 'light-theme';
+    classList.toggle(className);
+    if (!classList.contains(className))
+        indexStorage.rem(lsName);
+    else
+        indexStorage.set(lsName, className);
+};
+
 const listenThemeChanges = () => {
     document.body.addEventListener('touchstart', (event) => {
         const touches = event.touches.length;
@@ -15,14 +24,7 @@ const listenThemeChanges = () => {
         if (touches === 4) {
 
         } else if (touches >= minTouches && touches <= maxTouches) {
-            timeout = setTimeout(() => {
-                const className = 'light-theme';
-                classList.toggle(className);
-                if (!classList.contains(className))
-                    indexStorage.rem(lsName);
-                else
-                    indexStorage.set(lsName, className);
-            }, 500);
+            timeout = setTimeout(toggleTheme, 500);
         } else {
             clearTimeout(timeout);
         }
@@ -32,6 +34,10 @@ const listenThemeChanges = () => {
 
         if (touches < minTouches || touches > maxTouches)
             clearTimeout(timeout);
+    });
+    document.body.addEventListener('keyup', (event) => {
+        if (event.code === 'Space' && event.ctrlKey && event.altKey && event.shiftKey)
+            toggleTheme();
     });
 };
 

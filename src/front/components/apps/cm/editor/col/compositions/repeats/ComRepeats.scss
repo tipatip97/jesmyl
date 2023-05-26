@@ -38,19 +38,19 @@
             cursor: pointer;
 
             &.close {
-                --svg-color: var(--color--1);
+                --icon-color: var(--color--1);
 
                 background: var(--color--6);
             }
 
             &.remove {
-                --svg-color: white;
+                --icon-color: white;
 
                 background: var(--color--ko);
             }
 
             &.flag {
-                --svg-color: var(--color--6);
+                --icon-color: var(--color--6);
 
                 background: var(--color--2);
             }

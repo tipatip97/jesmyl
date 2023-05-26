@@ -1,4 +1,4 @@
-import { HTMLAttributes, useState } from "react";
+import { useState } from "react";
 import useAbsoluteFloatPopup from "../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../complect/my-lib/MyLib";
@@ -32,26 +32,27 @@ export default function LeaderComment({
   isError,
   onRejectSend,
   isWaitedToSend,
-  ...props
-}: HTMLAttributes<HTMLDivElement> & {
-  comment: LeaderCommentImportable;
-  isError: boolean;
-  onRejectSend?: () => void;
-  isWaitedToSend?: boolean;
+  className,
+}: {
+  comment: LeaderCommentImportable,
+  isError: boolean,
+  onRejectSend?: () => void,
+  isWaitedToSend?: boolean,
+  className?: string,
 }) {
   const date = comment.w && new Date(comment.w);
-  const isNeedCut = comment.comment.split(/\n/).length > 5;
+  const commentLines = comment.comment.split(/\n/);
+  const isNeedCut = commentLines.length > 5 || comment.comment.length > 150;
   const [isHiddenPart, setIsHiddenPart] = useState(isNeedCut);
   const commentText = isHiddenPart
-    ? comment.comment.split(/\n/).slice(0, 4).join("\n") + " ..."
+    ? commentLines.slice(0, 4).join("\n").slice(0, 150) + " ..."
     : comment.comment;
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const { sendAllComments } = useLeaderComments();
 
   return (
     <div
-      {...props}
-      className={`${props.className || ""} margin-gap comment`}
+      className={`${className || ""} margin-gap comment`}
       onContextMenu={
         isError || isWaitedToSend
           ? (event) => {

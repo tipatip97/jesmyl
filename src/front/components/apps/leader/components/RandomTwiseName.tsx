@@ -1,4 +1,4 @@
-import { HTMLAttributes, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import propsOfClicker from "../../../../complect/clicker/propsOfClicker";
 import modalService from "../../../../complect/modal/Modal.service";
 import { getRandomTwiceName } from "../resources/getRandomTwiceName";

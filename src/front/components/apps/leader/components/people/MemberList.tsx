@@ -2,18 +2,17 @@ import { useEffect } from "react";
 import { renderComponentInNewWindow } from "../../../../../..";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { LeaderCleans } from "../LeaderCleans";
 import PrintableBottomItem from "../PrintableBottomItem";
 import useLeaderContexts from "../contexts/useContexts";
 import { LeaderGroupImportable } from "../groups/Groups.model";
-import useLeaderGroups from "../groups/useGroups";
 import WelcomePageList from "../templates/WelcomePageList";
 import AddHumansToContext from "./AddHumansToContext";
 import HumanList from "./HumanList";
 import { HumanImportable, HumanListComponentProps } from "./People.model";
 
 export default function MemberList({ ...props }: {} & HumanListComponentProps) {
-  const { ccontext, add_removeHumans, getMembersInGroups, contextMembers } = useLeaderContexts();
-  const { getFieldValues } = useLeaderGroups();
+  const { ccontext, contextMembers } = useLeaderContexts();
   const { openFullscreenContent } = useFullscreenContent();
   const { closeAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   const placeholder = `${ccontext?.name || ""}. Участники`;
@@ -23,7 +22,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
     return ccontext && (
       <WelcomePageList
         list={list.map(({ group, member }) => ({
-          ...getFieldValues(ccontext, group.fields),
+          ...LeaderCleans.getContextFieldValues(ccontext, group.fields),
           ...member,
         }))}
       />
@@ -38,7 +37,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
         renderComponentInNewWindow(
           <>
             {getWelcomePages(
-              getMembersInGroups(
+              LeaderCleans.getMembersInGroups(
                 contextMembers,
                 humansRef.current.map(({ wid }) => wid),
                 ccontext.groups,
@@ -64,7 +63,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
         placeholder={placeholder}
         humansRef={humansRef}
         humanMoreAdditions={({ w }) => {
-          const list = getMembersInGroups(contextMembers, [w], ccontext.groups);
+          const list = LeaderCleans.getMembersInGroups(contextMembers, [w], ccontext.groups);
 
           if (list?.length)
             return (
@@ -76,7 +75,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
             );
         }}
         asHumanMore={({ w }) => {
-          const list = getMembersInGroups(contextMembers, [w], ccontext.groups);
+          const list = LeaderCleans.getMembersInGroups(contextMembers, [w], ccontext.groups);
 
           if (!list?.length)
             return <div className="error-message nowrap">Вне групп</div>;
@@ -99,7 +98,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
                     fixedList={ccontext.members}
                     excludes={ccontext.mentors}
                     onSend={(addList, delList) => {
-                      add_removeHumans(ccontext.w, addList, delList, "members");
+                      LeaderCleans.addOrRemoveHumans(ccontext.w, addList, delList, "members");
                       close();
                     }}
                   />

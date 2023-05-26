@@ -1,12 +1,13 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { LeaderCleans } from "../LeaderCleans";
 import useLeaderContexts from "../contexts/useContexts";
 import AddHumansToContext from "./AddHumansToContext";
 import HumanList from "./HumanList";
 import { HumanListComponentProps } from "./People.model";
 
 export default function MentorList(props: HumanListComponentProps) {
-  const { ccontext, add_removeHumans } = useLeaderContexts();
+  const { ccontext } = useLeaderContexts();
   const { openFullscreenContent } = useFullscreenContent();
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   const placeholder = `Поиск по лидерам ${ccontext?.name || ""}`;
@@ -36,7 +37,7 @@ export default function MentorList(props: HumanListComponentProps) {
                     fixedList={ccontext.mentors}
                     excludes={ccontext.members}
                     onSend={(addList, delList) => {
-                      add_removeHumans(ccontext?.w, addList, delList, "mentors");
+                      LeaderCleans.addOrRemoveHumans(ccontext?.w, addList, delList, "mentors");
                       close();
                     }}
                   />

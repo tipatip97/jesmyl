@@ -8,6 +8,9 @@ import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import { GameTeamImportable } from "./teams/GameTeams.model";
 import TheGameTeam from "./teams/TheGameTeam";
+import TheButton from "../../../../../complect/Button";
+import EvaButton from "../../../../../complect/eva-icon/EvaButton";
+import { LeaderCleans } from "../LeaderCleans";
 
 export default function GameTeamListComputer({
   onUpdate,
@@ -18,12 +21,13 @@ export default function GameTeamListComputer({
   onUpdate: (teams: GameTeamImportable[]) => void;
   noComments?: boolean;
 }) {
-  const { membersReadyToPlay, contextMembers } = useLeaderContexts();
+  const { contextMembers } = useLeaderContexts();
   const [teams, updateTeams] = useState<GameTeamImportable[] | und>();
   const [teamsCount, setTeamsCount] = useState(1);
   const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
 
-  const readyMembers = membersReadyToPlay(contextMembers);
+  const readyMembers = LeaderCleans.membersReadyToPlay(contextMembers);
+  const [isShowCantPlayers, setIsShowCantPlayers] = useState(false);
 
   if (!readyMembers) return null;
 
@@ -112,39 +116,43 @@ export default function GameTeamListComputer({
                 />
               ) : null}
               <div className="flex around margin-big-gap">
-                {!isNaN(teamsCount) ? (
-                  <div
-                    className="the-button"
-                    onClick={() => {
-                      const teams = mylib.groupByFieldsSoftly(
-                        ["isMan", "ufp1"],
-                        readyMembers,
-                        teamsCount,
-                        addRestMode
-                      );
-                      const newTeams = teams.map((humans) => {
-                        return {
-                          w: 0,
-                          ts: SourceBased.makeNewTs(),
-                          members: humans.map((human) => human.w),
-                        };
-                      });
+                <TheButton
+                  className="the-button"
+                  disabled={!teamsCount}
+                  onClick={() => {
+                    const teams = mylib.groupByFieldsSoftly(
+                      ["isMan", "ufp1", "ufp2"],
+                      readyMembers,
+                      teamsCount,
+                      addRestMode
+                    );
+                    const newTeams = teams.map((humans) => {
+                      return {
+                        name: LeaderCleans.generateNewTeamName(),
+                        w: 0,
+                        ts: SourceBased.makeNewTs(),
+                        members: humans.map((human) => human.w),
+                      };
+                    });
 
-                      updateTeams(newTeams);
-                      onUpdate(newTeams);
-                    }}
-                  >
-                    Рассчитать{teams ? " заново" : ""}
-                  </div>
-                ) : null}
+                    updateTeams(newTeams);
+                    onUpdate(newTeams);
+                  }}
+                >
+                  Рассчитать{teams ? " заново" : ""}
+                </TheButton>
               </div>
 
               {!!cantPlayers?.length && (
                 <>
-                  <div className="margin-gap error-message">
+                  <div
+                    className="flex flex-gap margin-gap error-message"
+                    onClick={() => setIsShowCantPlayers(is => !is)}
+                  >
                     Не войдут {cantPlayers?.length}
+                    <EvaButton name={isShowCantPlayers ? 'chevron-up' : 'chevron-down'} />
                   </div>
-                  {cantPlayers}
+                  {isShowCantPlayers && cantPlayers}
                 </>
               )}
               {teams?.map((team, teami) => {
@@ -154,6 +162,14 @@ export default function GameTeamListComputer({
                     team={team}
                     game={game}
                     noComments={noComments}
+                    onTeamRename={() => {
+                      const newTeams = [...teams];
+                      newTeams[teami] = {
+                        ...newTeams[teami],
+                        name: LeaderCleans.generateNewTeamName(),
+                      };
+                      updateTeams(newTeams);
+                    }}
                   />
                 );
               })}

@@ -17,10 +17,12 @@ const removePullRequisites = () => indexStorage.rem('updateRequisites');
 const authSelector = (state: RootState) => state.index.auth;
 const errorsSelector = (state: RootState) => state.index.errors;
 
+export const useSelectAuth = () => useSelector(authSelector);
+
 export default function useAuth() {
   const dispatch = useDispatch();
   const [isConnected, setIsConnected] = useState(true);
-  const auth = useSelector(authSelector);
+  const auth = useSelectAuth();
   const errors = useSelector(errorsSelector);
   const sendData = <AuthType extends keyof AuthorizeInSystem>(type: AuthType, data: AuthorizeInSystem[typeof type]) => {
     return soki.send({

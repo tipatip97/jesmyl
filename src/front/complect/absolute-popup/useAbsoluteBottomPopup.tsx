@@ -57,7 +57,7 @@ export default function useAbsoluteBottomPopup() {
           const map = (item: BottomPopupSkeletIcon): ReactNode => {
             if (!item) return null;
             if (mylib.isArr(item)) return item.map(item => map(item));
-            const { className, icon, titleNode, title, iconWrapperClassName, rightNode, ...other } = item;
+            const { className, icon, titleNode, title, iconWrapperClassName, rightNode, isError, ...other } = item;
 
             return <div key={`${icon} ${titleNode} ${title}`} {...other} className={`abs-item ${className || ''}`}>
               <div className="flex flex-gap">

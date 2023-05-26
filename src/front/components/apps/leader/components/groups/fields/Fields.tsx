@@ -3,12 +3,13 @@ import SendButton from "../../../../../../complect/SendButton";
 import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import { leaderExer } from "../../../Leader.store";
 import useIsRedactArea from "../../../complect/useIsRedactArea";
+import { LeaderCleans } from "../../LeaderCleans";
 import useLeaderContexts from "../../contexts/useContexts";
 import useLeaderGroups from "../useGroups";
 
 export default function LeaderGroupFields() {
   const { ccontext } = useLeaderContexts();
-  const { cgroup, getFieldValues } = useLeaderGroups();
+  const { cgroup } = useLeaderGroups();
   const [redactFields, updateRedactFields] = useState<
     Record<string, string | und>
   >({});
@@ -18,7 +19,7 @@ export default function LeaderGroupFields() {
     null,
     canRedact
   );
-  const fields = getFieldValues(ccontext, cgroup?.fields) || {};
+  const fields = LeaderCleans.getContextFieldValues(ccontext, cgroup?.fields) || {};
 
   return (
     <>

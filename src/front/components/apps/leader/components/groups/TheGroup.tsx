@@ -1,5 +1,6 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
+import { LeaderCleans } from "../LeaderCleans";
 import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import { HumanListComponentProps } from "../people/People.model";
@@ -10,7 +11,7 @@ import useLeaderGroups from "./useGroups";
 
 export default function TheLeaderGroup(props: HumanListComponentProps) {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { cgroup, getFieldValues, cgroupMembers, cgroupMentors } = useLeaderGroups();
+  const { cgroup, cgroupMembers, cgroupMentors } = useLeaderGroups();
   const { ccontext } = useLeaderContexts();
 
   return (
@@ -35,7 +36,7 @@ export default function TheLeaderGroup(props: HumanListComponentProps) {
                 onMoreClick={() =>
                   openAbsoluteBottomPopup((close) => (
                     <GroupMemberMore
-                      fields={getFieldValues(ccontext, cgroup?.fields)}
+                      fields={LeaderCleans.getContextFieldValues(ccontext, cgroup?.fields)}
                       member={human}
                       close={close}
                     />

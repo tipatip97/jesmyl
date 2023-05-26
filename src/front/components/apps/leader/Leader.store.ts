@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Exer } from "../../../complect/exer/Exer";
-import { defaultSendingComments, SendingComments } from "./components/comments/LeaderComment.model";
+import { ClientExecutionDict } from "../../../complect/exer/Exer.model";
 import { LeaderContextsImportable } from "./components/contexts/Contexts.model";
 import { StoragedGameTimerImportableDict } from "./components/games/timers/GameTimer.model";
 import { HumanListSortVariant, PeopleImportable } from "./components/people/People.model";
@@ -15,8 +15,8 @@ const initialState: LeaderState = {
   games: leaderStorage.get('games'),
   gameTimers: leaderStorage.getOr('gameTimers', {}),
   humanListSortVariant: leaderStorage.getOr('humanListSortVariant', 'name'),
-  sendingComments: leaderStorage.getOr('sendingComments', defaultSendingComments),
-  errorSentComments: [],
+  sendingComments: leaderStorage.getOr('sendingComments', {}),
+  isSendingMessagesError: false,
 };
 
 export const slice = createSlice({
@@ -39,11 +39,12 @@ export const slice = createSlice({
     updateLeaderContexts: (state, action: PayloadAction<LeaderContextsImportable>) => {
       state.contexts = action.payload;
     },
-    updateSendingComments: (state, action: PayloadAction<SendingComments>) => {
-      state.sendingComments = action.payload;
+    updateSendingComments: (state, action: PayloadAction<ClientExecutionDict[]>) => {
+      state.sendingComments = { comments: action.payload };
+      leaderStorage.set('sendingComments', state.sendingComments);
     },
-    updateRrrorSentComments: (state, action: PayloadAction<number[]>) => {
-      state.errorSentComments = action.payload;
+    updateRrrorSentComments: (state, action: PayloadAction<boolean>) => {
+      state.isSendingMessagesError = action.payload;
     },
   },
 });

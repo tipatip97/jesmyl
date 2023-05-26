@@ -437,15 +437,19 @@ export class MyLib extends SMyLib {
     }
 
     netFromLine<Item, FillItem>(line: Item[], cols: number, map: (item: Item, rowi: number, index: number) => FillItem) {
-        const rows: FillItem[][] = [];
+        if (cols < 2) return line.map((item, itemi) => [map(item, itemi, itemi)]);
 
-        for (let i = 0, rowi = 0; i < line.length;) {
-            const row: FillItem[] = [];
-            rows.push(row);
-            for (let j = 0; j < cols; j++, i++)
-                if (i < line.length) row.push(map(line[i], rowi, i));
-            rowi++;
-        }
+        let lastRow: FillItem[] = [];
+        const rows: FillItem[][] = [];
+        let rowi = 0;
+
+        line.forEach((item, itemi) => {
+            if (!(itemi % cols)) {
+                rows.push(lastRow = []);
+                rowi++;
+            }
+            lastRow.push(map(item, rowi, itemi));
+        });
 
         return rows;
     }

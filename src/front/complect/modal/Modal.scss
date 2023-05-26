@@ -105,3 +105,55 @@
         }
     }
 }
+
+.modal-application-screen {
+    z-index: 9999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    &.type_ {
+        &toast {
+            pointer-events: none;
+        }
+    }
+
+    >.modal-screen-wrapper {
+        &.type_ {
+            &toast {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 5rem;
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        >.modal-screen {
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 30vh;
+            max-width: 95vw;
+            overflow: hidden;
+            
+            &.mood.mood_ {
+                &ko {
+                    background-color: var(--color--ko);
+                    color: var(--color--3);
+                }
+            }
+
+            &.type_ {
+                &toast {
+                    padding: .5rem 1rem;
+                    color: var(--color--1);
+                    background-color: var(--color--3);
+                    border-radius: .5rem;
+                }
+            }
+        }
+    }
+}

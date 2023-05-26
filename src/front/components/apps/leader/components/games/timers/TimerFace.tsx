@@ -4,19 +4,21 @@ import useFullscreenContent from "../../../../../../complect/fullscreen-content/
 import { GameTimerMode } from "./GameTimer.model";
 import LeaderGameTimerMaster from "./GameTimerMaster";
 import useGameTimer from "./useGameTimer";
+import { TeamGameImportable } from "../../../Leader.model";
+import { LeaderCleans } from "../../LeaderCleans";
 
 export default function LeaderGameTimerFace({
   timerw,
   onSelect,
   selectedPosition,
-  isTimerOnRedaction,
   namePostfix,
+  game,
 }: {
-  timerw: number;
-  onSelect?: () => void;
-  selectedPosition?: number;
-  isTimerOnRedaction?: boolean;
+  timerw: number,
+  onSelect?: () => void,
+  selectedPosition?: number,
   namePostfix?: ReactNode,
+  game: TeamGameImportable,
 }) {
   const { openFullscreenContent } = useFullscreenContent();
   const { timer } = useGameTimer(timerw);
@@ -41,7 +43,7 @@ export default function LeaderGameTimerFace({
         }}
       >
         <EvaIcon
-          name={timer.mode === GameTimerMode.Messager ? "message-circle-outline" : "clock-outline"}
+          name={LeaderCleans.getTimerConfigurableField('mode', timer, game) === GameTimerMode.Messager ? "message-circle-outline" : "clock-outline"}
         />
       </span>
       <span className="face-title flex between full-width">
@@ -57,9 +59,6 @@ export default function LeaderGameTimerFace({
             </span>
           )}
           {namePostfix}
-          {isTimerOnRedaction && (
-            <EvaIcon name="edit-outline" className="fade-05" />
-          )}
         </span>
         {!!timer.comments?.length && (
           <div>

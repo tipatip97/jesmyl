@@ -3,18 +3,20 @@ import { useDispatch } from "react-redux";
 import "./Leader.scss";
 import di from "./Leader.store";
 import useLeaderComments from "./components/comments/useLeaderComments";
-import useCgame from "./components/games/useGames";
 import leaderStorage from "./leaderStorage";
+
+let prevSentTs: number = 0;
 
 export default function LeaderApplication({ content }: { content: ReactNode }) {
   const dispatch = useDispatch();
-  const { games } = useCgame();
   const { sendAllComments, sendingComments } = useLeaderComments();
 
   useEffect(() => {
-    if (sendingComments && games)
-      sendAllComments(sendingComments, games);
-  }, [games, sendAllComments, sendingComments]);
+    const now = Date.now();
+    if (now - prevSentTs < 500) return;
+    prevSentTs = now;
+    sendAllComments();
+  }, [sendingComments]);
 
   leaderStorage.dispatch(dispatch)
     .it("games", di.updateGamesStore)

@@ -20,13 +20,13 @@ export const FreeExecDictAntiCallbackStrategy = {
 
 export type FreeExecDictAntiCallback<Value> = (exec: Exec<Value>) => (<Key extends keyof typeof FreeExecDictAntiCallbackStrategy>(strategy: typeof FreeExecDictAntiCallbackStrategy) => typeof FreeExecDictAntiCallbackStrategy[Key] | nil) | void | nil;
 
-export interface FreeExecDict<Value> {
+export interface FreeExecDict<Value, Args = Record<string, any>> {
     action: string,
     scope?: string,
     prev?: Value,
     value?: Value,
     method?: ExecutionMethod,
-    args?: Record<string, any>,
+    args?: Args,
     generalId?: string | number,
     createByPath?: boolean,
     del?: boolean,
@@ -53,7 +53,7 @@ export interface SetAntiValue<Value> {
     value?: Value;
 }
 
-export interface ClientExecutionDict<Value = any> extends FreeExecDict<Value>, ExecutionDict<Value> {
+export interface ClientExecutionDict<Value = any, Args = any> extends FreeExecDict<Value, Args>, ExecutionDict<Value, Args> {
     method?: ExecutionMethod;
     corrects?: CorrectsBox;
 }

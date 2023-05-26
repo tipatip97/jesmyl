@@ -3,9 +3,9 @@ import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAb
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import modalService from "../../../../../complect/modal/Modal.service";
 import useLeaderContexts from "../contexts/useContexts";
-import useLeaderGroups from "../groups/useGroups";
 import HumanMaster from "./HumanMaster";
 import { HumanImportable } from "./People.model";
+import { LeaderCleans } from "../LeaderCleans";
 
 export default function HumanMore({
   human,
@@ -16,9 +16,8 @@ export default function HumanMore({
 }) {
   const { openFullscreenContent } = useFullscreenContent();
   const { prepareAbsoluteBottomPopupContent, openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { ccontext, contextMembers, getMembersInGroups } = useLeaderContexts();
-  const { replaceMemberToGroup } = useLeaderGroups();
-  const wraps = getMembersInGroups(contextMembers, [human.w], ccontext?.groups) || [];
+  const { ccontext, contextMembers, humans } = useLeaderContexts();
+  const wraps = LeaderCleans.getMembersInGroups(contextMembers, [human.w], ccontext?.groups) || [];
 
   const title = (txt = "", txt2 = "") =>
     `${wraps.length ? "Переопределить" : "Определить"
@@ -47,7 +46,10 @@ export default function HumanMore({
               prepare({
                 items: groups.map((group) => {
                   return {
-                    title: group.name,
+                    titleNode: <span>
+                      {group.name}
+                      <span className="color--7"> {LeaderCleans.takeGroupMentorNames(humans, group)}</span>
+                    </span>,
                     icon: "people-outline",
                     className: !groupws.includes(group.w) ? "" : "disabled",
                     onClick: async () => {
@@ -57,7 +59,7 @@ export default function HumanMore({
                           title(` участника "${human.name}"`, `${group.name}?`)
                         ))
                       ) {
-                        replaceMemberToGroup(
+                        LeaderCleans.replaceMemberToGroup(
                           group.w,
                           ccontext.w,
                           human.w,

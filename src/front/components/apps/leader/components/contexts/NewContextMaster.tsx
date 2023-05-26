@@ -3,10 +3,9 @@ import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../complect/modal/Modal.service";
 import HumanList from "../people/HumanList";
-import useLeaderContexts from "./useContexts";
+import { LeaderCleans } from "../LeaderCleans";
 
 const getHumanList = (
-  members: number[],
   isWholeList: boolean,
   list: number[],
   updater: React.Dispatch<React.SetStateAction<number[]>>
@@ -48,24 +47,23 @@ export default function NewLeaderContextMaster({
   const [name, setName] = useState('');
   const [members, updateMembers] = useState<number[]>([]);
   const [mentors, updateMentors] = useState<number[]>([]);
-  const { publicateNewContext } = useLeaderContexts();
 
   const chooseMembersNode = useMemo(
-    () => getHumanList(members, true, members, updateMembers),
+    () => getHumanList(true, members, updateMembers),
     [members]
   );
   const membersNode = useMemo(
-    () => getHumanList(members, false, members, updateMembers),
+    () => getHumanList(false, members, updateMembers),
     [members]
   );
 
   const chooseMentorsNode = useMemo(
-    () => getHumanList(members, true, mentors, updateMentors),
-    [mentors, members]
+    () => getHumanList(true, mentors, updateMentors),
+    [mentors]
   );
   const mentorsNode = useMemo(
-    () => getHumanList(members, false, mentors, updateMentors),
-    [mentors, members]
+    () => getHumanList(false, mentors, updateMentors),
+    [mentors]
   );
 
   return (
@@ -87,7 +85,7 @@ export default function NewLeaderContextMaster({
           className="pointer padding-giant-gap"
           onClick={async () => {
             if (!(await modalService.confirm("Опубликовать контекст?"))) return;
-            publicateNewContext({
+            LeaderCleans.publicateNewContext({
               name,
               mentors: mentors.sort((a, b) => a - b),
               members: members.sort((a, b) => a - b),

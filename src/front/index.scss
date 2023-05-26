@@ -18,7 +18,7 @@ body {
 }
 
 body {
-  --svg-color: var(--color--4);
+  --icon-color: var(--color--4);
   --text-color: var(--color--4);
   --current-bg: var(--color--5);
 
@@ -56,18 +56,18 @@ body {
 
 
 .color--ok {
-  --svg-color: var(--color--ok);
+  --icon-color: var(--color--ok);
   color: var(--color--ok);
 }
 
 .color--ko {
-  --svg-color: var(--color--ko);
+  --icon-color: var(--color--ko);
   color: var(--color--ko);
 }
 
 @for $i from 1 through 8 {
   .color--#{$i} {
-    --svg-color: var(--color--#{$i});
+    --icon-color: var(--color--#{$i});
     color: var(--color--#{$i});
   }
 }
@@ -79,12 +79,12 @@ body {
 }
 
 .error-message {
-  --svg-color: var(--color--ko);
+  --icon-color: var(--color--ko);
   color: var(--color--ko);
 }
 
 .success-message {
-  --svg-color: var(--color--ok);
+  --icon-color: var(--color--ok);
   color: var(--color--ok);
 }
 

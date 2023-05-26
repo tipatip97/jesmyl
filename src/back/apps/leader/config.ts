@@ -7,355 +7,373 @@ const config: FilerAppConfig = {
         'people', 'contexts', 'games'
     ],
     actions: Executer.prepareActionList({
-        "/people": {
+        '/people': {
             expected: {},
-            "/humans": {
+            '/humans': {
                 expected: [],
                 uniqs: [
-                    "name"
+                    'name'
                 ],
-                "<add one>": {
+                '<add one>': {
                     level: 20,
-                    action: "addHuman",
-                    title: "Добавлен новый участник $name",
-                    method: "push",
+                    action: 'addHuman',
+                    title: 'Добавлен новый участник $name',
+                    method: 'push',
                     value: {
-                        w: "{@setNewWid()}",
-                        ts: "{ts}",
-                        name: "{name}",
-                        notes: "{?notes}",
-                        ufp1: "{?ufp1}",
-                        ufp2: "{?ufp2}",
-                        isMan: "{isMan}",
-                        bDay: "{bDay}",
-                        isInactive: "{?isInactive}"
+                        w: '{@setNewWid()}',
+                        ts: '{ts}',
+                        name: '{name}',
+                        notes: '{?notes}',
+                        ufp1: '{?ufp1}',
+                        ufp2: '{?ufp2}',
+                        isMan: '{isMan}',
+                        bDay: '{bDay}',
+                        isInactive: '{?isInactive}'
                     },
                     args: {
-                        ts: "#Number",
-                        name: "#String",
-                        notes: "#string",
-                        ufp1: "#number",
-                        ufp2: "#number",
-                        bDay: "#Number",
-                        isMan: "#Boolean",
-                        isInactive: "#boolean"
+                        ts: '#Number',
+                        name: '#String',
+                        notes: '#string',
+                        ufp1: '#number',
+                        ufp2: '#number',
+                        bDay: '#Number',
+                        isMan: '#Boolean',
+                        isInactive: '#boolean'
                     }
                 },
-                "<add many>": {
+                '<add many>': {
                     level: 20,
-                    action: "addManyHumans",
+                    action: 'addManyHumans',
                     setInEachValueItem: {
-                        ".": {
-                            w: "{@setNewWid()}"
+                        '.': {
+                            w: '{@setNewWid()}'
                         }
                     },
-                    title: "Добавлено несколько участников",
-                    method: "concat",
+                    title: 'Добавлено несколько участников',
+                    method: 'concat',
                     args: {
-                        value: "#List"
+                        value: '#List'
                     }
                 },
-                "/[w === {wid}]": {
-                    "/name": {
+                '/[w === {wid}]': {
+                    '/name': {
                         level: 20,
-                        action: "setHumanName",
-                        title: "Изменено имя участника \"$prev\" на \"$value\"",
-                        method: "set",
+                        action: 'setHumanName',
+                        title: 'Изменено имя участника \'$prev\' на \'$value\'',
+                        method: 'set',
                         args: {
-                            value: "#String"
+                            value: '#String'
                         }
                     },
-                    "/ufp1": {
+                    '/ufp1': {
                         level: 20,
-                        action: "setHumanUfp1",
-                        title: "Изменено значение Уровня физ. подготовки (1) участника \"$humann\"",
-                        method: "set",
+                        action: 'setHumanUfp1',
+                        title: 'Изменено значение Уровня физ. подготовки (1) участника \'$humann\'',
+                        method: 'set',
                         args: {
-                            value: "#Number",
-                            humann: "#String"
+                            value: '#Number',
+                            humann: '#String'
                         }
                     },
-                    "/ufp2": {
+                    '/ufp2': {
                         level: 20,
-                        action: "setHumanUfp2",
-                        title: "Изменено значение Уровня физ. подготовки (2) участника \"$humann\"",
-                        method: "set",
+                        action: 'setHumanUfp2',
+                        title: 'Изменено значение Уровня физ. подготовки (2) участника \'$humann\'',
+                        method: 'set',
                         args: {
-                            value: "#Number",
-                            humann: "#String"
+                            value: '#Number',
+                            humann: '#String'
                         }
                     },
-                    "/isMan": {
+                    '/isMan': {
                         level: 20,
-                        action: "setHumanIsMan",
-                        title: "Изменено значение пола участника \"$humann\"",
-                        method: "set",
+                        action: 'setHumanIsMan',
+                        title: 'Изменено значение пола участника \'$humann\'',
+                        method: 'set',
                         args: {
-                            value: "#Boolean",
-                            humann: "#String"
+                            value: '#Boolean',
+                            humann: '#String'
                         }
                     },
-                    "/notes": {
+                    '/notes': {
                         level: 20,
-                        action: "setHumanNotes",
-                        title: "Изменена заметка участника \"$humann\"",
-                        method: "set",
+                        action: 'setHumanNotes',
+                        title: 'Изменена заметка участника \'$humann\'',
+                        method: 'set',
                         args: {
-                            value: "#String",
-                            humann: "#String"
+                            value: '#String',
+                            humann: '#String'
                         }
                     },
-                    "/bDay": {
+                    '/bDay': {
                         level: 20,
-                        action: "setHumanBDay",
-                        title: "Изменена дата рождения \"$humann\"",
-                        method: "set",
+                        action: 'setHumanBDay',
+                        title: 'Изменена дата рождения \'$humann\'',
+                        method: 'set',
                         args: {
-                            value: "#Number",
-                            humann: "#String"
+                            value: '#Number',
+                            humann: '#String'
                         }
                     },
-                    "/group": {
+                    '/group': {
                         level: 20,
-                        action: "setHumanGroup",
-                        title: "Изменена группа \"$humann\"",
-                        method: "set",
+                        action: 'setHumanGroup',
+                        title: 'Изменена группа \'$humann\'',
+                        method: 'set',
                         args: {
-                            value: "#Number",
-                            humann: "#String"
+                            value: '#Number',
+                            humann: '#String'
                         }
                     },
-                    "/isInactive": {
+                    '/isInactive': {
                         level: 20,
-                        action: "setHumanInactive",
-                        title: "Участник \"$humann\" исключён",
-                        method: "set",
+                        action: 'setHumanInactive',
+                        title: 'Участник \'$humann\' исключён',
+                        method: 'set',
                         args: {
-                            value: "#Boolean",
-                            humann: "#String"
+                            value: '#Boolean',
+                            humann: '#String'
                         }
                     }
                 }
             }
         },
-        "/games": {
+        '/games': {
             expected: {},
-            "/teamGames": {
+            '/teamGames': {
                 expected: [],
-                "<add>": {
-                    uniqs: ["ts"],
+                '<add>': {
+                    uniqs: ['ts'],
                     level: 30,
-                    action: "addTeamGame",
-                    title: "Добавлена новая командная игра $name",
-                    method: "push",
+                    action: 'addTeamGame',
+                    title: 'Добавлена новая командная игра $name',
+                    method: 'push',
                     value: {
-                        w: "{@setNewWid()}",
-                        owner: "{*login}",
-                        fio: "{*fio}",
-                        ts: "{ts}",
-                        name: "{name}",
-                        teams: "{teams}",
-                        timerNames: "{timerNames}",
-                        contextw: "{contextw}",
-                        timerFields: "{timerFields}"
+                        w: '{@setNewWid()}',
+                        owner: '{*login}',
+                        fio: '{*fio}',
+                        ts: '{ts}',
+                        name: '{name}',
+                        teams: '{teams}',
+                        timerNames: '{timerNames}',
+                        contextw: '{contextw}',
+                        timerFields: '{timerFields}'
                     },
                     args: {
-                        ts: "#Number",
-                        name: "#String",
-                        teams: "#list",
-                        timerNames: "#list",
-                        timerFields: "#dict",
-                        contextw: "#Number"
+                        ts: '#Number',
+                        name: '#String',
+                        teams: '#list',
+                        timerNames: '#list',
+                        timerFields: '#dict',
+                        contextw: '#Number'
                     },
                     setInEachValueItem: {
-                        "teams, teams.comments": {
-                            fio: "{*fio}",
-                            owner: "{*login}",
-                            w: "{@setNewWid()}"
+                        'teams, teams.comments': {
+                            fio: '{*fio}',
+                            owner: '{*login}',
+                            w: '{@setNewWid()}'
                         }
                     }
                 },
-                "<rem>": {
+                '<rem>': {
                     level: 30,
-                    action: "removeTeamGame",
-                    method: "remove",
+                    action: 'removeTeamGame',
+                    method: 'remove',
                     value: [
-                        "w",
-                        "===",
-                        "{gamew}"
+                        'w',
+                        '===',
+                        '{gamew}'
                     ],
                     args: {
-                        gamew: "#Number"
+                        gamew: '#Number'
                     }
                 },
-                "/[w === {gamew}]": {
+                '/[w === {gamew}]': {
                     args: {
-                        gamew: "#Number"
+                        gamew: '#Number'
                     },
-                    "/timerNames": {
+                    '/timerNames': {
                         level: 30,
-                        action: "updateGameTimerNames",
-                        method: "set",
-                        value: "{list}",
+                        action: 'updateGameTimerNames',
+                        method: 'set',
+                        value: '{list}',
                         args: {
-                            list: "#List"
+                            list: '#List'
                         }
                     },
-                    "/timerFields": {
+                    '/timerFields': {
                         expected: {},
                         level: 30,
-                        action: "updateGameTimerFields",
-                        method: "set_all",
+                        action: 'updateGameTimerFields',
+                        method: 'set_all',
                         value: {
-                            mode: "{mode}",
-                            teams: "{teams}",
-                            joins: "{joins}"
+                            mode: '{mode}',
+                            teams: '{teams}',
+                            joins: '{joins}',
+                            sort: '{sort}',
                         },
                         args: {
-                            mode: "#Number",
-                            joins: "#Number",
-                            teams: "#list"
+                            mode: '#number',
+                            joins: '#number',
+                            teams: '#list',
+                            sort: '#num',
                         }
                     },
-                    "/teams": {
-                        "<update>": {
+                    '/teams': {
+                        '<update>': {
                             level: 30,
-                            action: "updateGameTeamList",
-                            method: "set",
-                            value: "{list}",
+                            action: 'updateGameTeamList',
+                            method: 'set',
+                            value: '{list}',
                             args: {
-                                list: "#List"
+                                list: '#List'
                             },
                             setInEachValueItem: {
-                                "., comments": {
-                                    fio: "{*fio}",
-                                    owner: "{*login}",
-                                    w: "{@setNewWid()}"
+                                '., comments': {
+                                    fio: '{*fio}',
+                                    owner: '{*login}',
+                                    w: '{@setNewWid()}'
                                 }
                             }
                         },
-                        "/[w === {teamw}]": {
+                        '/[w === {teamw}]': {
                             args: {
-                                teamw: "#Number"
+                                teamw: '#Number'
                             },
-                            "/comments": {
+                            '/comments': {
                                 expected: [],
-                                action: "addCommentToGameTeam",
-                                method: "push",
+                                action: 'addCommentToGameTeam',
+                                method: 'push',
                                 value: {
-                                    w: "{@setNewWid()}",
-                                    ts: "{ts}",
-                                    comment: "{comment}",
-                                    fio: "{*fio}",
-                                    owner: "{*login}"
+                                    w: '{@setNewWid()}',
+                                    comment: '{comment}',
+                                    fio: '{*fio}',
+                                    owner: '{*login}'
                                 },
                                 args: {
-                                    comment: "#String",
-                                    ts: "#Number"
+                                    comment: '#String'
                                 }
                             },
-                            "/members": {
+                            '/members': {
                                 args: {
-                                    humanw: "#Number"
+                                    humanw: '#Number'
                                 },
-                                "<rem>": {
-                                    action: "removeMemberFromTeam",
-                                    method: "remove",
+                                '<rem>': {
+                                    action: 'removeMemberFromTeam',
+                                    method: 'remove',
                                     level: 30,
                                     value: [
-                                        ".",
-                                        "===",
-                                        "{humanw}"
+                                        '.',
+                                        '===',
+                                        '{humanw}'
                                     ]
                                 },
-                                "<add>": {
+                                '<add>': {
                                     uniqs: [
-                                        "."
+                                        '.'
                                     ],
                                     level: 30,
-                                    action: "addMemberToTeam",
-                                    method: "push",
-                                    value: "{humanw}"
+                                    action: 'addMemberToTeam',
+                                    method: 'push',
+                                    value: '{humanw}'
                                 }
                             }
                         }
                     },
-                    "/timers": {
-                        "<add>": {
+                    '/timers': {
+                        '<add>': {
                             expected: [],
                             uniqs: [
-                                "ts"
+                                'ts'
                             ],
                             level: 20,
-                            action: "addGameTimer",
-                            title: "Добавлен новый таймер $name для игры $gamen",
-                            method: "push",
+                            action: 'addGameTimer',
+                            title: 'Добавлен новый таймер $name для игры $gamen',
+                            method: 'push',
                             value: {
-                                w: "{@setNewWid()}",
-                                fio: "{*fio}",
-                                owner: "{*login}",
-                                ts: "{ts}",
-                                name: "{name}",
-                                mode: "{mode}",
-                                joins: "{joins}",
-                                start: "{start}",
-                                starts: "{starts}",
-                                teams: "{teams}",
-                                finishes: "{finishes}",
-                                comments: "{comments}"
+                                w: '{@setNewWid()}',
+                                fio: '{*fio}',
+                                owner: '{*login}',
+                                ts: '{ts}',
+                                name: '{name}',
+                                mode: '{mode}',
+                                sort: '{sort}',
+                                joins: '{joins}',
+                                start: '{start}',
+                                starts: '{starts}',
+                                teams: '{teams}',
+                                finishes: '{finishes}',
+                                comments: '{comments}'
                             },
                             args: {
-                                ts: "#Number",
-                                name: "#String",
-                                mode: "#Number",
-                                joins: "#number",
-                                start: "#number",
-                                starts: "#list",
-                                teams: "#list",
-                                comments: "#list",
-                                finishes: "#dict"
+                                ts: '#Number',
+                                name: '#String',
+                                mode: '#number',
+                                sort: '#num',
+                                joins: '#number',
+                                start: '#number',
+                                starts: '#list',
+                                teams: '#list',
+                                comments: '#list',
+                                finishes: '#dict'
                             },
                             setInEachValueItem: {
                                 comments: {
-                                    fio: "{*fio}",
-                                    owner: "{*login}",
-                                    w: "{@setNewWid()}"
+                                    fio: '{*fio}',
+                                    owner: '{*login}',
+                                    w: '{@setNewWid()}'
                                 }
                             }
                         },
-                        "/[w === {timerw}]": {
+                        '/[w === {timerw}]': {
                             args: {
-                                timerw: "#Number"
+                                timerw: '#Number'
                             },
-                            "/": {
-                                level: 20,
-                                action: "updateTimerComponents",
-                                method: "set_all",
-                                args: {
-                                    value: "#Dict"
-                                }
+                            '/finishes': {
+                                expected: {},
+                                '/{teamw}': {
+                                    level: 20,
+                                    action: 'changeFinishTime',
+                                    method: 'set',
+                                    args: {
+                                        value: '#Number',
+                                        teamw: '#Number'
+                                    }
+                                },
                             },
-                            "/comments": {
+                            '/comments': {
                                 expected: [],
-                                action: "addCommentForGameTimer",
-                                method: "push",
+                                action: 'addCommentForGameTimer',
+                                method: 'push',
                                 value: {
-                                    w: "{@setNewWid()}",
-                                    ts: "{ts}",
-                                    comment: "{comment}",
-                                    fio: "{*fio}",
-                                    owner: "{*login}"
+                                    w: '{@setNewWid()}',
+                                    comment: '{comment}',
+                                    fio: '{*fio}',
+                                    owner: '{*login}'
                                 },
                                 args: {
-                                    comment: "#String",
-                                    ts: "#Number"
+                                    comment: '#String'
                                 }
                             },
-                            "/isInactive": {
-                                action: "setIsIctiveGameTimer",
-                                method: "set",
+                            '/isInactive': {
+                                action: 'setIsInactiveGameTimer',
+                                method: 'set',
                                 args: {
-                                    value: "#Boolean"
+                                    value: '#Boolean'
+                                }
+                            },
+                            '/sort': {
+                                action: 'setTimerResultsSortDirection',
+                                method: 'set',
+                                args: {
+                                    value: '#Num'
+                                }
+                            },
+                            '/teams': {
+                                action: 'updateTimerTeamList',
+                                method: 'set',
+                                args: {
+                                    value: '#List'
                                 }
                             }
                         }
@@ -363,167 +381,167 @@ const config: FilerAppConfig = {
                 }
             }
         },
-        "/contexts": {
+        '/contexts': {
             expected: {},
-            "/list": {
-                "<add>": {
+            '/list': {
+                '<add>': {
                     expected: [],
-                    action: "addContext",
+                    action: 'addContext',
                     level: 30,
-                    method: "push",
+                    method: 'push',
                     value: {
-                        w: "{@setNewWid()}",
-                        name: "{name}",
-                        members: "{members}",
-                        mentors: "{mentors}"
+                        w: '{@setNewWid()}',
+                        name: '{name}',
+                        members: '{members}',
+                        mentors: '{mentors}'
                     },
                     args: {
-                        name: "#String",
-                        members: "#List",
-                        mentors: "#List"
+                        name: '#String',
+                        members: '#List',
+                        mentors: '#List'
                     }
                 },
-                "/[w === {contextw}]": {
+                '/[w === {contextw}]': {
                     args: {
-                        contextw: "#Number"
+                        contextw: '#Number'
                     },
-                    "<rule>": {
-                        action: "ruleIsCanRedactGroupMentorList",
+                    '<rule>': {
+                        action: 'ruleIsCanRedactGroupMentorList',
                         level: 30
                     },
-                    "/{listn}": {
-                        "<add>": {
-                            action: "addHumansToContext",
-                            method: "concat",
+                    '/{listn}': {
+                        '<add>': {
+                            action: 'addHumansToContext',
+                            method: 'concat',
                             uniqs: [
-                                "."
+                                '.'
                             ],
-                            value: "{list}",
+                            value: '{list}',
                             args: {
-                                list: "#List",
+                                list: '#List',
                                 listn: [
-                                    "mentors",
-                                    "members"
+                                    'mentors',
+                                    'members'
                                 ]
                             }
                         },
-                        "<rem>": {
-                            action: "removeHumansFromContext",
-                            method: "remove_each",
+                        '<rem>': {
+                            action: 'removeHumansFromContext',
+                            method: 'remove_each',
                             uniqs: [
-                                "."
+                                '.'
                             ],
                             value: [
-                                ".",
-                                "in",
-                                "{list}"
+                                '.',
+                                'in',
+                                '{list}'
                             ],
                             args: {
-                                list: "#List",
+                                list: '#List',
                                 listn: [
-                                    "mentors",
-                                    "members"
+                                    'mentors',
+                                    'members'
                                 ]
                             }
                         }
                     },
-                    "/blanks": {
+                    '/blanks': {
                         expected: [],
                         level: 40,
-                        action: "addContextGroupFieldBlanks",
-                        method: "concat",
+                        action: 'addContextGroupFieldBlanks',
+                        method: 'concat',
                         uniqs: [
-                            "key"
+                            'key'
                         ],
-                        value: "{list}",
+                        value: '{list}',
                         args: {
-                            list: "#List"
+                            list: '#List'
                         },
-                        "/[key === {key}]": {
+                        '/[key === {key}]': {
                             args: {
-                                key: "#String"
+                                key: '#String'
                             },
-                            "/{fieldn}": {
-                                action: "setContextGroupFieldBlankField",
-                                method: "set",
+                            '/{fieldn}': {
+                                action: 'setContextGroupFieldBlankField',
+                                method: 'set',
                                 args: {
                                     fieldn: [
-                                        "name",
-                                        "def",
-                                        "value",
-                                        "type"
+                                        'name',
+                                        'def',
+                                        'value',
+                                        'type'
                                     ],
-                                    value: "#Any"
+                                    value: '#Any'
                                 }
                             }
                         }
                     },
-                    "/groups": {
-                        "<add>": {
+                    '/groups': {
+                        '<add>': {
                             expected: [],
-                            action: "addContextGroup",
-                            method: "push",
+                            action: 'addContextGroup',
+                            method: 'push',
                             uniqs: [
-                                "w"
+                                'w'
                             ],
                             value: {
-                                w: "{@setNewWid()}",
-                                ts: "{ts}",
-                                name: "{name}",
-                                mentors: "{mentors}",
-                                members: "{members}"
+                                w: '{@setNewWid()}',
+                                ts: '{ts}',
+                                name: '{name}',
+                                mentors: '{mentors}',
+                                members: '{members}'
                             },
                             args: {
-                                ts: "#Number",
-                                name: "#String",
-                                members: "#List",
-                                mentors: "#List"
+                                ts: '#Number',
+                                name: '#String',
+                                members: '#List',
+                                mentors: '#List'
                             }
                         },
-                        "/[w === {groupw}]": {
+                        '/[w === {groupw}]': {
                             args: {
-                                groupw: "#Number"
+                                groupw: '#Number'
                             },
-                            "/name": {
-                                action: "setContextGroupName",
-                                method: "set",
+                            '/name': {
+                                action: 'setContextGroupName',
+                                method: 'set',
                                 args: {
-                                    value: "#String"
+                                    value: '#String'
                                 }
                             },
-                            "/fields": {
+                            '/fields': {
                                 level: 30,
                                 expected: {},
-                                action: "setContextGroupFields",
-                                method: "set_all",
+                                action: 'setContextGroupFields',
+                                method: 'set_all',
                                 args: {
-                                    value: "#Dict"
+                                    value: '#Dict'
                                 }
                             },
-                            "/{fieldn}": {
+                            '/{fieldn}': {
                                 args: {
                                     fieldn: [
-                                        "members",
-                                        "mentors"
+                                        'members',
+                                        'mentors'
                                     ]
                                 },
-                                "<add>": {
-                                    action: "addContextGroupHumans",
-                                    method: "concat",
+                                '<add>': {
+                                    action: 'addContextGroupHumans',
+                                    method: 'concat',
                                     uniqs: [
-                                        "."
+                                        '.'
                                     ],
                                     args: {
-                                        value: "#List"
+                                        value: '#List'
                                     }
                                 },
-                                "<rem>": {
-                                    action: "delContextGroupHumans",
-                                    method: "remove_each",
+                                '<rem>': {
+                                    action: 'delContextGroupHumans',
+                                    method: 'remove_each',
                                     value: [
-                                        ".",
-                                        "in",
-                                        "{value}"
+                                        '.',
+                                        'in',
+                                        '{value}'
                                     ]
                                 }
                             }

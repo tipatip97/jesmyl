@@ -1,4 +1,5 @@
 import mylib from "../../../../../../complect/my-lib/MyLib";
+import { LeaderCleans } from "../../LeaderCleans";
 import PrintableTemplate from "../../templates/PrintableTemplate";
 import useGames from "../useGames";
 import "./GameTemplates.scss";
@@ -34,7 +35,7 @@ export default function GameTeamLists() {
                             }}
                           >
                             <h3>{team.name}</h3>
-                            {ctx.extractWidable(ctx.contextMembers, team.members)
+                            {LeaderCleans.extractWidables(ctx.contextMembers, team.members)
                               .filter((member) => !member.isInactive)
                               .map((member, memberi) => <div key={memberi}>{member.name}</div>)}
                           </td>

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
-import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
-import mylib from "../../../../../../complect/my-lib/MyLib";
-import SendButton from "../../../../../../complect/SendButton";
-import useIsRedactArea from "../../../complect/useIsRedactArea";
-import { leaderExer } from "../../../Leader.store";
+import SendButton from "../../../../../../../complect/SendButton";
+import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
+import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
+import mylib from "../../../../../../../complect/my-lib/MyLib";
+import { leaderExer } from "../../../../Leader.store";
+import useIsRedactArea from "../../../../complect/useIsRedactArea";
 
 export default function TimerNameListConfigurer({
   timerNames,
@@ -25,7 +25,6 @@ export default function TimerNameListConfigurer({
     redactable,
     redact
   );
-
 
   if (!leaderExer.actionAccessedOrNull("updateGameTimerNames")) return null;
 
@@ -59,7 +58,7 @@ export default function TimerNameListConfigurer({
           </div>
           {onSend && (
             <div>
-              {mylib.isEq(timerNames, names) && (
+              {mylib.isEq(timerNames, names) || (
                 <SendButton
                   title="Отправить названия"
                   confirm

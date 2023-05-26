@@ -1,13 +1,14 @@
 import { useState } from "react";
+import CopyTextButton from "../../../../../complect/CopyTextButton";
 import SendButton from "../../../../../complect/SendButton";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import useLeaderNav from "../../useLeaderNav";
+import { LeaderCleans } from "../LeaderCleans";
 import useLeaderContexts from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import GameMore from "./GameMore";
@@ -17,14 +18,14 @@ import TotalScoreTable from "./TotalScoreTable";
 import { GameTeamExportable } from "./teams/GameTeams.model";
 import TheGameTeam from "./teams/TheGameTeam";
 import LeaderGameTimerFace from "./timers/TimerFace";
-import TimerFieldsConfigurer from "./timers/TimerFieldsConfigurer";
-import TimerNameListConfigurer from "./timers/TimerNameListConfigurer";
+import TimerFieldsConfigurer from "./timers/complect/TimerFieldsConfigurer";
+import TimerNameListConfigurer from "./timers/complect/TimerNameListConfigurer";
 import useGameTimer from "./timers/useGameTimer";
 import useCgame from "./useGames";
 
 export default function TheGame() {
-  const { cgame, publicateTimerNameList, publicateGameTimerFields, publicateTeams, removeGame } = useCgame();
-  const { membersReadyToPlay, contextMembers } = useLeaderContexts();
+  const { cgame } = useCgame();
+  const { contextMembers } = useLeaderContexts();
   const [selectedTimers, updateSelectedTimers] = useState<number[]>([]);
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { openFullscreenContent } = useFullscreenContent();
@@ -32,12 +33,11 @@ export default function TheGame() {
   const usedHumans =
     cgame?.teams?.reduce<number[]>((list, team) => list.concat(team.members), []) || [];
 
-  const { isTimerOnRedaction, isTimerStarted } = useGameTimer();
+  const { isTimerStarted } = useGameTimer();
   const [teams, updateTeams] = useState<GameTeamExportable[] | und>();
-  const [isShowNamesInInput, setIsShowNamesInInput] = useState(false);
   const { goBack } = useLeaderNav();
 
-  const membersReadyToPlayNode = membersReadyToPlay(contextMembers)
+  const membersReadyToPlayNode = LeaderCleans.membersReadyToPlay(contextMembers)
     ?.filter((human) => usedHumans.indexOf(human.w) < 0)
     .map((human, humani) => (
       <HumanFace
@@ -66,7 +66,7 @@ export default function TheGame() {
             selectedTimers={selectedTimers}
             onGameRemove={async () => {
               if (cgame && (await modalService.confirm(`Удалить игру "${cgame.name}" окончательно?`)))
-                removeGame(cgame.w).then(() => goBack());
+                LeaderCleans.removeGame(cgame.w).then(() => goBack());
             }}
           />
         ))
@@ -91,8 +91,8 @@ export default function TheGame() {
                     <LeaderGameTimerFace
                       key={timeri}
                       timerw={timer.w}
+                      game={cgame}
                       selectedPosition={selectedTimers.indexOf(timer.w) + 1}
-                      isTimerOnRedaction={isTimerOnRedaction(timer.ts)}
                       onSelect={() =>
                         updateSelectedTimers(
                           selectedTimers.includes(timer.w)
@@ -105,6 +105,7 @@ export default function TheGame() {
                 })}
                 <LeaderGameTimerFace
                   timerw={0}
+                  game={cgame}
                   namePostfix={isTimerStarted() && (
                     <span className="error-message">(Запущен)</span>
                   )}
@@ -126,39 +127,30 @@ export default function TheGame() {
               <TimerNameListConfigurer
                 timerNames={cgame.timerNames}
                 redactable
-                onSend={(list) => publicateTimerNameList(cgame.w, list)}
+                onSend={(list) => LeaderCleans.publicateTimerNameList(cgame.w, list)}
               />
               <TimerFieldsConfigurer
                 redactable
                 game={cgame}
-                onSend={(list) => publicateGameTimerFields(cgame.w, list)}
+                onSend={(list) => LeaderCleans.publicateGameTimerFields(cgame.w, list)}
               />
-              <EvaIcon
-                name="copy-outline"
-                onClick={() => setIsShowNamesInInput(!isShowNamesInInput)}
-              />
-              {isShowNamesInInput ? (
-                <KeyboardInput
-                  value={cgame.teams?.map(({ name }) => name).join("\n")}
-                  multiline
+              <h2 className="margin-big-gap-v margin-gap">
+                <CopyTextButton
+                  text={() => cgame.teams?.map(({ name }) => name).join("\n")}
+                  description={cgame && !cgame.teams ? "Команды не собраны" : "Команды"}
+                  message="Названия команд скопированы"
                 />
-              ) : (
-                <>
-                  <h2 className="margin-big-gap-v margin-gap">
-                    Команды{cgame && !cgame.teams ? " не собраны" : ""}
-                  </h2>
-                  {cgame.teams?.map((team, teami) => {
-                    return (
-                      <TheGameTeam
-                        key={teami}
-                        team={team}
-                        game={cgame}
-                        redactable
-                      />
-                    );
-                  })}
-                </>
-              )}
+              </h2>
+              {cgame.teams?.map((team, teami) => {
+                return (
+                  <TheGameTeam
+                    key={teami}
+                    team={team}
+                    game={cgame}
+                    redactable
+                  />
+                );
+              })}
               {!cgame.teams && (
                 <div className={isTeamsLoading ? "disabled" : ""}>
                   {cgame && !cgame.teams && (
@@ -182,7 +174,7 @@ export default function TheGame() {
                     confirm
                     onSend={() => {
                       setIsTeamsLoading(true);
-                      return publicateTeams(cgame.w, teams);
+                      return LeaderCleans.publicateTeams(cgame.w, teams);
                     }}
                   />
                 </div>

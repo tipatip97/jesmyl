@@ -5,6 +5,7 @@
     background-color: var(--color--7);
     color: var(--color--2);
     white-space: pre-line;
+    word-break: break-word;
 
     &.first {
       border-top-left-radius: var(--radius);

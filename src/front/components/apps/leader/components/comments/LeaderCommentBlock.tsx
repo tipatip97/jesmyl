@@ -2,11 +2,9 @@ import { ReactNode, useMemo, useState } from "react";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import mylib from "../../../../../complect/my-lib/MyLib";
 import LeaderComment from "./LeaderComment";
 import {
   LeaderCommentImportable,
-  SendingCommentsAreaName
 } from "./LeaderComment.model";
 import "./LeaderComment.scss";
 import useLeaderComments from "./useLeaderComments";
@@ -45,7 +43,6 @@ export default function LeaderCommentBlock({
   comments,
   placeholder,
   action,
-  arean,
   gamew,
   listw,
   listwNameMask,
@@ -56,10 +53,9 @@ export default function LeaderCommentBlock({
 }: {
   comments?: LeaderCommentImportable[];
   placeholder: string;
-  arean: SendingCommentsAreaName;
   gamew?: number;
   listw: number;
-  listwNameMask: string,
+  listwNameMask: 'teamw' | 'timerw',
   action: string;
   isWaitedToSend?: boolean;
   importantActionOnClick?: (comment: string) => void;
@@ -68,22 +64,19 @@ export default function LeaderCommentBlock({
 }) {
   const [isCommentsShow, setIsCommentsShow] = useState(false);
   const [commentText, setCommentText] = useState('');
-  const { sendingComments, sendComment, errorSentComments, rejectSending } =
+  const { sendingComments, sendComment, isSendingMessagesError } =
     useLeaderComments();
 
   const allComments = useMemo(
     () =>
-      mylib.unique(
-        (comments || []).concat(
-          gamew
-            ? sendingComments[arean]?.[gamew]?.[listw]
-              ?.map(({ comment }) => comment)
-              .filter((comment) => comment) || []
-            : []
-        ),
-        (comment) => comment.ts ?? NaN
+      (comments || []).concat(
+        gamew
+          ? sendingComments.comments
+            ?.map(({ args }) => gamew === args?.gamew && listw === args?.[listwNameMask] ? { ...args, owner: '', fio: '', w: 0 } : null)
+            .filter(it => it) as LeaderCommentImportable[] || []
+          : []
       ),
-    [arean, gamew, comments, listw, sendingComments]
+    [comments, gamew, sendingComments.comments, listw, listwNameMask]
   );
   const partOfComments = allComments.slice(-4);
 
@@ -106,13 +99,9 @@ export default function LeaderCommentBlock({
               key={commenti}
               className={`${commenti === 0 ? "first" : ""} ${commenti === commenta.length - 1 ? "last" : ""}`}
               comment={comment}
-              isError={errorSentComments.indexOf(comment.ts) > -1}
+              isError={isSendingMessagesError && !comment.w}
               isWaitedToSend={isWaitedToSend}
-              onRejectSend={() =>
-                onRejectSend
-                  ? onRejectSend(comment)
-                  : gamew && rejectSending(arean, gamew, listw, comment.ts)
-              }
+              onRejectSend={() => onRejectSend?.(comment)}
             />
           );
         }
@@ -151,26 +140,12 @@ export default function LeaderCommentBlock({
                 }
 
                 if (gamew) {
-                  const ts = Date.now() + Math.random();
-
-                  sendComment(arean, gamew, listw, {
-                    ts,
-                    exec: {
-                      action,
-                      method: "push",
-                      args: {
-                        ts,
-                        gamew,
-                        comment,
-                        [listwNameMask]: listw,
-                      },
-                    },
-                    comment: {
-                      w: 0,
+                  sendComment({
+                    action,
+                    args: {
+                      gamew,
+                      [listwNameMask]: listw,
                       comment,
-                      fio: "",
-                      owner: "",
-                      ts,
                     },
                   });
                 }

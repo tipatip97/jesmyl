@@ -5,7 +5,7 @@ import { leaderExer } from "../../Leader.store";
 import useLeaderContexts from "../contexts/useContexts";
 import SelectHumans from "../people/SelectHumans";
 import { LeaderGroupImportable } from "./Groups.model";
-import useLeaderGroups from "./useGroups";
+import { LeaderCleans } from "../LeaderCleans";
 
 export default function LeaderGroupMaster({
   group,
@@ -22,7 +22,6 @@ export default function LeaderGroupMaster({
   const [delMembers, updateDelMembers] = useState<number[]>([]);
 
   const { ccontext } = useLeaderContexts();
-  const { publicateNew, sendChanges, getChangesStack } = useLeaderGroups();
 
   if (!ccontext) return null;
 
@@ -68,7 +67,7 @@ export default function LeaderGroupMaster({
         />
       )}
       {(!group ||
-        !!getChangesStack(group.w, group.name, {
+        !!LeaderCleans.getChangesStack(group.w, group.name, {
           name,
           contextw: 0,
           addMembers,
@@ -84,7 +83,7 @@ export default function LeaderGroupMaster({
               if (!ccontext) return;
 
               if (group) {
-                return sendChanges(group.w, group.name, {
+                return LeaderCleans.sendGroupChanges(group.w, group.name, {
                   addMembers,
                   addMentors,
                   contextw: ccontext.w,
@@ -93,7 +92,7 @@ export default function LeaderGroupMaster({
                   name,
                 });
               } else {
-                return publicateNew({
+                return LeaderCleans.publicateNewLeaderGroup({
                   name,
                   members: addMembers,
                   mentors: addMentors,

@@ -2,7 +2,7 @@ import { SokiAppName } from "../soki/soki.model";
 
 export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | 'func' | 'migrate' | 'remove' | 'remove_each' | 'other';
 
-export interface ExecutionDict<Value = any, Args = Record<string, any>> {
+export interface ExecutionDict<Value = any, Args = Record<string, any> & Partial<Record<'value', Value>>> {
     action: string,
     method?: ExecutionMethod,
     value?: Value,
