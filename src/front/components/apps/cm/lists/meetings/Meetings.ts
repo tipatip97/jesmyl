@@ -12,7 +12,7 @@ export class Meetings {
 
   constructor({ events, contexts, names }: IExportableMeetings = {} as IExportableMeetings, cols?: Cols) {
     this.stack = events;
-    this.contexts = this.takeContexts(contexts);
+    this.contexts = this.takeContexts(contexts || {});
     this.events = events?.map(event => new MeetingsEvent(event, cols));
     this.event = this.events[0];
     this.names = [...names];
