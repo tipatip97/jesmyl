@@ -42,8 +42,6 @@ export default function TimerFieldsConfigurer({
     setState(newState);
   };
 
-  console.log(state);
-
   const teams = useMemo(() => {
     const teams = game?.teams ? [...game.teams] : [];
     const stateTeams = state.teams;
