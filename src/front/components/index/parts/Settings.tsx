@@ -4,7 +4,9 @@ import { AppName } from "../../../app/App.model";
 import BrutalItem from "../../../complect/brutal-item/BrutalItem";
 import EvaButton from "../../../complect/eva-icon/EvaButton";
 import modalService from "../../../complect/modal/Modal.service";
+import useModal from "../../../complect/modal/useModal";
 import mylib from "../../../complect/my-lib/MyLib";
+import Noty from "../../../complect/notifications/Noti";
 import { RootState } from "../../../shared/store";
 import { soki } from "../../../soki";
 import { switchIsUseNativeKeyboard } from "../Index.store";
@@ -17,6 +19,8 @@ const appsSelector = (state: RootState) => state.index.apps;
 
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
 
+let pushTimestampDir = 0;
+
 export default function IndexSettings() {
   const auth = useSelectAuth();
   const dispatch = useDispatch();
@@ -24,6 +28,7 @@ export default function IndexSettings() {
   const statistic = useSelector(statisticSelector);
   const apps = useSelector(appsSelector);
   const [expands, setExpands] = useState<AppName[]>([]);
+  const { toast, modalNode } = useModal();
 
   useEffect(() => {
     soki.send({ subscribe: 'statistic' });
@@ -55,6 +60,20 @@ export default function IndexSettings() {
       onClick={async () => { dispatch(switchIsUseNativeKeyboard()) }}
       box={<input type="checkbox" checked={!isUseNativeKeyboard} onChange={() => { }} />}
     />,
+    <BrutalItem
+      icon="message-square-outline"
+      title="Проверить PUSH"
+      onClick={() => {
+        Noty.checkPermission()
+          .then((res) => toast(`PUSH состояние: ${res}`))
+          .catch(() => toast('Ошибка при открытии PUSH', { mood: 'ko' }));
+
+        Noty.simpleNotify('Проверка PUSH', 'Успех!! ', {
+          data: { key: 'evennnt' },
+          timestamp: Date.now() + 300000 * (pushTimestampDir = +!pushTimestampDir),
+        });
+      }}
+    />,
   ].filter((isShow) => isShow);
 
   return (
@@ -62,6 +81,7 @@ export default function IndexSettings() {
       topClass="index-settings"
       headTitle="Настройки"
       content={<>
+        {modalNode}
         {
           settingsList.length
             ? settingsList.map((button, buttoni) => {
