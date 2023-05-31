@@ -7,6 +7,7 @@ import {
   IndexStateError
 } from "./Index.model";
 import indexStorage from "./indexStorage";
+import { ScheduleStorage } from "../../complect/schedule-widget/ScheduleWidget.model";
 
 export const indexExer = new Exer('index', indexStorage);
 export const defaultAppName = 'cm';
@@ -20,6 +21,7 @@ const initialState: IndexState = {
   auth: indexStorage.get('auth'),
   isUseNativeKeyboard: indexStorage.get('isUseNativeKeyboard'),
   apps: indexStorage.getOr('apps', []),
+  schedules: indexStorage.getOr('schedules', { list: [] }),
   numModalUpdates: 0,
   errors: {},
   statistic: null,
@@ -32,6 +34,9 @@ export const slice = createSlice({
   reducers: {
     updateIndexStatistic: (state, action: PayloadAction<SokiStatistic | null>) => {
       state.statistic = action.payload;
+    },
+    updateScheduleStorage: (state, action: PayloadAction<ScheduleStorage>) => {
+      state.schedules = action.payload;
     },
     setAuthData: (state, action: PayloadAction<Auth | null>) => {
       state.auth = action.payload;
@@ -64,16 +69,6 @@ export const slice = createSlice({
   },
 });
 
-export const {
-  updateIndexStatistic,
-  setError,
-  setCurrentApp,
-  setApps,
-  setAuthData,
-  riseUpModalUpdates,
-  switchIsUseNativeKeyboard,
-  setAppVersion,
-} = slice.actions;
 export default slice.actions;
 
 export const indexReducer = slice.reducer;

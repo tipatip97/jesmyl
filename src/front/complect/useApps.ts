@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppName } from "../app/App.model";
-import { setCurrentApp } from "../components/index/Index.store";
+import di from "../components/index/Index.store";
 import navConfigurers, { NavDataRegister } from "../shared/navConfigurers";
 import { RootState } from "../shared/store";
 import { soki } from "../soki";
@@ -38,7 +38,7 @@ export default function useApps() {
             const jump = (phase?: RoutePathVariated<NavData>) => {
                 soki.setAppName(appName);
                 soki.onAppChange(appName);
-                dispatch(setCurrentApp(appName));
+                dispatch(di.setCurrentApp(appName));
                 const rootPhase = appConfigs[appName].nav.rootPhase;
                 if (rootPhase || phase) {
                     appConfigs[appName].navigate(phase ?? [rootPhase!]);

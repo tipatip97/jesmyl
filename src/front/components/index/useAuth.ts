@@ -9,7 +9,7 @@ import {
   AuthorizationData,
   AuthorizeInSystem, IndexErrorScope, RegisterData
 } from "./Index.model";
-import { indexExer, setAuthData, setCurrentApp, setError } from "./Index.store";
+import di, { indexExer } from "./Index.store";
 import indexStorage from "./indexStorage";
 
 const removePullRequisites = () => indexStorage.rem('updateRequisites');
@@ -41,7 +41,7 @@ export default function useAuth() {
     isConnected,
     removePullRequisites,
     setError: (scope: IndexErrorScope, message: string | nil) =>
-      dispatch(setError({ scope, message })),
+      dispatch(di.setError({ scope, message })),
     writeToDevelopers: (message: string) => {
       if (auth) indexExer.send({
         action: 'writeToDevelopers',
@@ -65,9 +65,9 @@ export default function useAuth() {
       }
     },
     logout: () => {
-      dispatch(setAuthData(null));
+      dispatch(di.setAuthData(null));
       indexStorage.set('auth', null);
-      dispatch(setCurrentApp("cm"));
+      dispatch(di.setCurrentApp("cm"));
       removePullRequisites();
       window.location.reload();
     },
@@ -82,9 +82,9 @@ export default function useAuth() {
       } else auth = login;
 
       if (auth) {
-        dispatch(setAuthData(auth));
+        dispatch(di.setAuthData(auth));
         indexStorage.set('auth', auth);
-        dispatch(setCurrentApp("cm"));
+        dispatch(di.setCurrentApp("cm"));
         removePullRequisites();
       }
     },

@@ -9,7 +9,7 @@ import mylib from "../../../complect/my-lib/MyLib";
 import Noty from "../../../complect/notifications/Noti";
 import { RootState } from "../../../shared/store";
 import { soki } from "../../../soki";
-import { switchIsUseNativeKeyboard } from "../Index.store";
+import di from "../Index.store";
 import PhaseIndexContainer from "../complect/PhaseIndexContainer";
 import { useSelectAuth } from "../useAuth";
 
@@ -57,7 +57,7 @@ export default function IndexSettings() {
     <BrutalItem
       icon="keypad-outline"
       title="Фирменная клавиатура"
-      onClick={async () => { dispatch(switchIsUseNativeKeyboard()) }}
+      onClick={async () => { dispatch(di.switchIsUseNativeKeyboard()) }}
       box={<input type="checkbox" checked={!isUseNativeKeyboard} onChange={() => { }} />}
     />,
     <BrutalItem

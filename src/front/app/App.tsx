@@ -10,7 +10,7 @@ import { crossApplicationLinkCoder, jesmylHostName } from "../complect/qr-code/Q
 import listenThemeChanges from "../complect/theme-changer";
 import useApps from "../complect/useApps";
 import useFullScreen from "../complect/useFullscreen";
-import { setAppVersion, updateIndexStatistic } from "../components/index/Index.store";
+import di from "../components/index/Index.store";
 import indexStorage from "../components/index/indexStorage";
 import navConfigurers from "../shared/navConfigurers";
 import { RootState } from "../shared/store";
@@ -45,8 +45,9 @@ function App() {
   }, [goBack]);
 
   indexStorage.dispatch(dispatch)
-    .it('appVersion', setAppVersion)
-    .it('statistic', updateIndexStatistic);
+    .it('schedules', di.updateScheduleStorage)
+    .it('appVersion', di.setAppVersion)
+    .it('statistic', di.updateIndexStatistic);
 
   useEffect(() => {
     if (window.location.href.startsWith(jesmylHostName)) {

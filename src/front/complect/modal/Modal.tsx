@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { riseUpModalUpdates } from "../../components/index/Index.store";
+import di from "../../components/index/Index.store";
 import { RootState } from "../../shared/store";
 import mylib from "../my-lib/MyLib";
 import {
@@ -64,7 +64,7 @@ export default function Modal() {
 
   const dispatch = useDispatch();
   const forceUpdate = () => {
-    dispatch(riseUpModalUpdates());
+    dispatch(di.riseUpModalUpdates());
   };
 
   modalService.setConfigSetter((config) => setConfig(config));

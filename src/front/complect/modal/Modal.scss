@@ -107,12 +107,16 @@
 }
 
 .modal-application-screen {
-    z-index: 9999;
+    z-index: 999;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+
+    &:not(.type_toast) {
+        background: var(--color--1);
+    }
 
     &.type_ {
         &toast {
@@ -120,38 +124,75 @@
         }
     }
 
+    .modal-headder {
+        margin: 10px 0;
+    }
+
+    .modal-body {
+        margin: 20px 0;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+
     >.modal-screen-wrapper {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
         &.type_ {
             &toast {
-                position: absolute;
-                left: 0;
-                right: 0;
                 bottom: 5rem;
-                display: flex;
-                justify-content: center;
+            }
+
+            &screen {
+                align-items: center;
             }
         }
 
         >.modal-screen {
+            --icon-color: var(--color--3);
+
+            position: absolute;
             white-space: pre-wrap;
             word-break: break-word;
-            max-height: 30vh;
-            max-width: 95vw;
             overflow: hidden;
-            
+            padding: .5rem 1rem;
+            display: inline-block;
+            max-width: calc(100vw - 50px);
+            border-radius: 5px;
+            color: var(--color--3);
+            background-color: var(--color--2);
+
+            &:not(.type_toast) {
+                min-height: max-content;
+                max-height: calc(100% - 10px);
+            }
+
             &.mood.mood_ {
                 &ko {
-                    background-color: var(--color--ko);
+                    --icon-color: var(--color--3);
                     color: var(--color--3);
+                    background-color: var(--color--ko);
                 }
             }
 
             &.type_ {
                 &toast {
-                    padding: .5rem 1rem;
-                    color: var(--color--1);
-                    background-color: var(--color--3);
-                    border-radius: .5rem;
+                    max-height: 30vh;
+                    bottom: 0;
+                }
+
+                &screen {
+                    min-width: 20vw;
+                    width: 400px;
                 }
             }
         }
