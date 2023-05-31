@@ -70,6 +70,10 @@ body {
     --icon-color: var(--color--#{$i});
     color: var(--color--#{$i});
   }
+
+  .bgcolor--#{$i} {
+    background-color: var(--color--#{$i});
+  }
 }
 
 * {
@@ -138,6 +142,14 @@ input[type="button"] {
   &-line {
     white-space: pre-line;
   }
+
+  &-wrap {
+    white-space: pre-wrap;
+  }
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 .over- {
@@ -155,7 +167,7 @@ input,
 textarea {
   font-size: 1em;
   font-family: var(--font-family);
-  background-color: var(--color--2);
+  background-color: transparent;
   color: var(--text-color);
 
   &::placeholder {
@@ -257,6 +269,10 @@ textarea {
   &.flex-end {
     justify-content: end;
   }
+}
+
+.self-start {
+  align-self: self-start;
 }
 
 .after-margin-space {
