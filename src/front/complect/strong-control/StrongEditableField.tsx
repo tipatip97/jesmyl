@@ -9,13 +9,16 @@ import { strongPrepareArgsAndSend, useStrongExerContext } from "./useStrongContr
 export default function StrongEditableField(props: StrongControlProps<{
     value?: string,
     title?: string,
+    description?: string,
     type?: 'text' | 'number',
     icon?: EvaIconName,
     placeholder?: string,
     isRedact?: boolean,
+    isPossibleEmptyValue?: boolean,
     postfix?: string,
     multiline?: boolean,
     textClassName?: string,
+    className?: string,
     onChange?: (value: string) => void | Promise<boolean>,
     onSend?: (value: string) => void | Promise<boolean>,
 }>) {
@@ -28,8 +31,11 @@ export default function StrongEditableField(props: StrongControlProps<{
     const exer = useStrongExerContext();
 
     const sendValue = () => {
-        if (stateValue && stateValue.trim() !== props.value?.trim()) {
+        const isSendResuls = stateValue !== undefined
+            && (props.isPossibleEmptyValue || stateValue)
+            && stateValue.trim() !== props.value?.trim();
 
+        if (isSendResuls) {
             const onSendResult = props.onSend?.(stateValue.trim());
 
             if (onSendResult) {
@@ -78,7 +84,7 @@ export default function StrongEditableField(props: StrongControlProps<{
     }, [isUserChange, props.value]);
 
 
-    return <div className="margin-gap-v">
+    return <div className={props.className || 'margin-gap-v'}>
         {modalNode}
         {props.isRedact
             ? <>
@@ -86,6 +92,7 @@ export default function StrongEditableField(props: StrongControlProps<{
                 <div className="flex flex-gap">
 
                     {props.icon && <EvaIcon name={props.icon} />}
+                    {props.description}
                     <KeyboardInput
                         value={stateValue}
                         placeholder={props.placeholder}
