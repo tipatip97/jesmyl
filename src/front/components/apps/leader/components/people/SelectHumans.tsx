@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useIsRedactArea from "../../complect/useIsRedactArea";
+import useIsRedactArea from "../../../../../complect/useIsRedactArea";
 import HumanList from "./HumanList";
 import { SelectHumansComponentProps } from "./People.model";
 

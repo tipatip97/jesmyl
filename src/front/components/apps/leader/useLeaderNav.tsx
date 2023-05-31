@@ -10,10 +10,11 @@ import TheLeaderGroup from "./components/groups/TheGroup";
 import HumanList from "./components/people/HumanList";
 import MemberList from "./components/people/MemberList";
 import MentorList from "./components/people/MentorList";
-import GeneralPage from "./GeneralPage";
+import LeaderGeneralPage from "./GeneralPage";
 import LeaderApplication from "./Leader";
 import { LeaderNavData, LeaderStoraged } from "./Leader.model";
 import { leaderExer } from "./Leader.store";
+import LeaderSchedule from "./LeaderSchedule";
 
 const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new NavigationConfig('leader', {
   root: (content) => <LeaderApplication content={content} />,
@@ -30,7 +31,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       icon: "navigation-2",
       phase: ["all"],
       title: "Лидер",
-      node: <GeneralPage />,
+      node: <LeaderGeneralPage />,
       next: [
         {
           phase: ["humanList"],
@@ -66,6 +67,12 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
         },
       ],
     },
+    {
+      icon: "calendar",
+      phase: ["schedule"],
+      title: "Расписание",
+      node: <LeaderSchedule />,
+    }
   ],
 });
 

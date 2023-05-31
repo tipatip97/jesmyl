@@ -1,12 +1,14 @@
 import { LocalSokiAuth, SokiStatistic } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
 import { EvaIconName } from "../../complect/eva-icon/EvaIcon";
+import { ScheduleStorage } from "../../complect/schedule-widget/ScheduleWidget.model";
 
 export interface IndexState {
     currentApp: AppName,
     appVersion?: number,
     auth: Auth | nil,
     apps: IndexApplication[],
+    schedules: ScheduleStorage,
     errors: Partial<Record<IndexErrorScope, string>>,
     userMessages: UserMessage[],
     statistic: SokiStatistic | null,

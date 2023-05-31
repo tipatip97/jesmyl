@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
-import EvaSendButton from "../../../../../../../complect/eva-icon/EvaSendButton";
-import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
-import mylib from "../../../../../../../complect/my-lib/MyLib";
+import StrongControlDateTimeExtracter from "../../../../../../../complect/strong-control/StrongDateTimeExtracter";
+import { TeamGameImportable } from "../../../../Leader.model";
+import { LeaderCleans } from "../../../LeaderCleans";
 import { GameTeamImportable } from "../../teams/GameTeams.model";
 import { GameTimerImportable } from "../GameTimer.model";
 import TimerControlBoardCellItemStopButton from "./TimerControlBoardCellItemStopButton";
 import TimerScreen from "./TimerScreen";
-import { TeamGameImportable } from "../../../../Leader.model";
-import { LeaderCleans } from "../../../LeaderCleans";
-
-const howMs = mylib.getMilliseconds();
 
 export default function TimerControlBoardCellItem(props: {
     isTeamCantMove: boolean,
@@ -31,42 +27,18 @@ export default function TimerControlBoardCellItem(props: {
     const [isTimeRedact, setIsTimeRedact] = useState(false);
     const start = LeaderCleans.getTimerStartTs(props.timer, props.game, props.rowi);
     const pause = props.timer.finishes?.[props.team.w];
-    const [newTimeImagine, setNewTimeImagine] = useState('');
 
     const getInputValue = (pause: number | und, start: number) => {
         return pause ? LeaderCleans.getTimePeriodAsString(start, pause) : '';
     };
 
     const [inputValue, setInputValue] = useState(() => getInputValue(pause, start));
+    const [timeDelta, setTimeDelta] = useState(0);
 
     useEffect(() => {
         if (pause) setInputValue(getInputValue(pause, start));
     }, [pause, start]);
 
-    useEffect(() => {
-        if (!isTimeRedact) {
-            setNewTimeImagine('');
-            return;
-        }
-        const digits = inputValue.split(/\D+/);
-        const [millisecondsStr, secondsStr, minutesStr, hoursStr] = digits.reverse();
-
-        let hours = +hoursStr?.padStart(2, '0').slice(0, 2);
-        let minutes = +minutesStr?.padStart(2, '0').slice(0, 2);
-        let seconds = +secondsStr?.padStart(2, '0').slice(0, 2);
-        let milliseconds = +millisecondsStr?.padStart(3, '0').slice(0, 3);
-
-        if (minutes && minutes > 59) minutes = 59;
-        if (seconds && seconds > 59) seconds = 59;
-        if (milliseconds && milliseconds > 999) milliseconds = 999;
-
-        setNewTimeImagine(
-            (hours ? `${hours}:`.padStart(3, '0') : '')
-            + (minutes ? `${minutes}:`.padStart(3, '0') : '')
-            + (seconds ? `${seconds}.`.padStart(3, '0') : '')
-            + ('' + milliseconds).padStart(3, '0')
-        );
-    }, [inputValue, isTimeRedact]);
 
     return <div
         className={'TimerControlBoardCellItem flex full-width'
@@ -75,26 +47,10 @@ export default function TimerControlBoardCellItem(props: {
             + (props.selectedTeamw === props.team.w ? ' selected-team ' : '')}
     >
         {!props.isNewTimer || (start && pause)
-            ? isTimeRedact
-                ? <EvaSendButton
-                    name="checkmark-circle-2-outline"
-                    onSend={() => {
-                        const [millisecondsStr, secondsStr, minutesStr, hoursStr] = newTimeImagine.split(/\D/).reverse();
-                        let deltaTime = 0;
-                        if (hoursStr) deltaTime += +hoursStr * howMs.inHour;
-                        if (minutesStr) deltaTime += +minutesStr * howMs.inMin;
-                        if (secondsStr) deltaTime += +secondsStr * howMs.inSec;
-                        if (millisecondsStr) deltaTime += +millisecondsStr;
-
-                        setIsTimeRedact(is => !is);
-                        return props.onFinishTimeChange(deltaTime ? start + deltaTime : 0);
-                    }}
-                    onFailure={it => it}
-                />
-                : <EvaButton
-                    name="edit-2-outline"
-                    onClick={() => setIsTimeRedact(is => !is)}
-                />
+            ? <EvaButton
+                name={isTimeRedact ? 'checkmark-circle-2-outline' : 'edit-2-outline'}
+                onClick={() => setIsTimeRedact(is => !is)}
+            />
             : null}
         <div className="flex column full-width over-hidden">
             <div
@@ -131,12 +87,14 @@ export default function TimerControlBoardCellItem(props: {
 
             {isTimeRedact
                 ? <>
-                    {newTimeImagine}
-                    <KeyboardInput
-                        className="team-rating-manual-redact-input"
-                        placeholder="Пробел - разделитель"
+                    <StrongControlDateTimeExtracter
+                        scope=""
+                        fieldName=""
                         value={inputValue}
-                        onChange={setInputValue}
+                        takeDate="NO"
+                        takeTime="hour-ms"
+                        onComponentsChange={setTimeDelta}
+                        onSend={() => props.onFinishTimeChange(timeDelta ? start + timeDelta : 0)}
                     />
                 </>
                 : (!props.isHiddenTimers || pause) && (props.isNewTimer || pause)

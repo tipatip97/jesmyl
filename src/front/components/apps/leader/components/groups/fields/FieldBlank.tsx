@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../complect/modal/Modal.service";
-import useIsRedactArea from "../../../complect/useIsRedactArea";
+import useIsRedactArea from "../../../../../../complect/useIsRedactArea";
 import {
   ContextFieldBlankExportable,
   contextFieldBlankTypeDictAliases
@@ -21,7 +21,7 @@ export default function ContextFieldBlank({
   addition?: boolean;
   onRedact?: (blank: ContextFieldBlankExportable) => void;
   onDelete?: () => void;
-  onEditStart?: () => void;
+  onEditStart?: (isSelfRedact: boolean) => void;
 }) {
   const [isInit, setIsInit] = useState(true);
   const [key, setKey] = useState(blank.key);
@@ -32,6 +32,7 @@ export default function ContextFieldBlank({
   const { editIcon, isRedact } = useIsRedactArea(
     true,
     redact,
+    null,
     null,
     onEditStart
   );

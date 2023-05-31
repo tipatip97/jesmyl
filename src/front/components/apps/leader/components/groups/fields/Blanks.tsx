@@ -65,7 +65,7 @@ export default function GroupFieldBlanks() {
             key={blanki}
             blank={blank}
             redact={keysOnRedact.indexOf(blank.key) > -1}
-            onEditStart={() => updateKeysOnRedact([...keysOnRedact, blank.key])}
+            onEditStart={(isSelfRedact) => isSelfRedact && updateKeysOnRedact([...keysOnRedact, blank.key])}
             onRedact={(blank) => {
               const redactBlanks = [...redactList];
               const redactBlanki = redactBlanks.findIndex(

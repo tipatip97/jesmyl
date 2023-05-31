@@ -4,7 +4,7 @@ import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../../../complect/my-lib/MyLib";
 import { leaderExer } from "../../../../Leader.store";
-import useIsRedactArea from "../../../../complect/useIsRedactArea";
+import useIsRedactArea from "../../../../../../../complect/useIsRedactArea";
 
 export default function TimerNameListConfigurer({
   timerNames,
@@ -21,7 +21,7 @@ export default function TimerNameListConfigurer({
 }) {
   const [names, updateNames] = useState<string[]>(timerNames ?? []);
   const [isSending, setIsSending] = useState(false);
-  const { editIcon, isRedact, setIsRedact } = useIsRedactArea(
+  const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(
     redactable,
     redact
   );
@@ -65,7 +65,7 @@ export default function TimerNameListConfigurer({
                   onFailure={() => setIsSending(false)}
                   onSuccess={() => {
                     setIsSending(false);
-                    setIsRedact(false);
+                    setIsSelfRedact(false);
                   }}
                   onSend={() => {
                     setIsSending(true);

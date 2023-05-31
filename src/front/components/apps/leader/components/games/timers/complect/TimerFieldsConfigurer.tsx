@@ -5,7 +5,7 @@ import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../../../complect/my-lib/MyLib";
 import { TeamGameImportable } from "../../../../Leader.model";
 import { leaderExer } from "../../../../Leader.store";
-import useIsRedactArea from "../../../../complect/useIsRedactArea";
+import useIsRedactArea from "../../../../../../../complect/useIsRedactArea";
 import { GameTimerConfigurable, GameTimerMode, GameTimerSortDirection } from "../GameTimer.model";
 import TimerCompetitionsSelector from "./TimerCompetitionsSelector";
 import TimerModeSelector from "./TimerModeSelector";
@@ -27,7 +27,7 @@ export default function TimerFieldsConfigurer({
   onSend?: (fields: GameTimerConfigurable) => Promise<unknown> | und;
 }) {
   const [isSending, setIsSending] = useState(false);
-  const { editIcon, isRedact, setIsRedact } = useIsRedactArea(
+  const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(
     redactable,
     redact
   );
@@ -130,7 +130,7 @@ export default function TimerFieldsConfigurer({
             onFailure={() => setIsSending(false)}
             onSuccess={() => {
               setIsSending(false);
-              setIsRedact(false);
+              setIsSelfRedact(false);
             }}
             onSend={() => {
               setIsSending(true);

@@ -2,7 +2,7 @@ import { useState } from "react";
 import SendButton from "../../../../../../complect/SendButton";
 import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import { leaderExer } from "../../../Leader.store";
-import useIsRedactArea from "../../../complect/useIsRedactArea";
+import useIsRedactArea from "../../../../../../complect/useIsRedactArea";
 import { LeaderCleans } from "../../LeaderCleans";
 import useLeaderContexts from "../../contexts/useContexts";
 import useLeaderGroups from "../useGroups";
@@ -14,7 +14,7 @@ export default function LeaderGroupFields() {
     Record<string, string | und>
   >({});
   const canRedact = leaderExer.actionAccessedOrNull("setContextGroupFields");
-  const { editIcon, isRedact, setIsRedact } = useIsRedactArea(
+  const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(
     true,
     null,
     canRedact
@@ -60,7 +60,7 @@ export default function LeaderGroupFields() {
               title="Отправить значения"
               onSuccess={() => {
                 updateRedactFields({});
-                setIsRedact(false);
+                setIsSelfRedact(false);
               }}
               onSend={() => {
                 if (cgroup && ccontext)
