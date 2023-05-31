@@ -1,6 +1,6 @@
 
 import { ExecutionDict } from "../../../back/complect/executer/Executer.model";
-import { JStorageName } from "../../app/App.model";
+import { SokiAppName } from "../../../back/complect/soki/soki.model";
 import { Auth } from "../../components/index/Index.model";
 import indexStorage from "../../components/index/indexStorage";
 import { soki } from "../../soki";
@@ -10,7 +10,7 @@ import { Exec } from "./Exec";
 import { ClientExecutionDict, ExecRule, ExerStorage, FreeExecDict, FreeExecDictAntiCallback, FreeExecDictAntiCallbackStrategy } from "./Exer.model";
 
 export class Exer<Storage extends ExerStorage> {
-    appName: JStorageName;
+    appName: SokiAppName;
     execs: Exec<any>[] = [];
     storage: JStorage<Storage> | nil;
     key = 'execs' as keyof Storage;
@@ -19,7 +19,7 @@ export class Exer<Storage extends ExerStorage> {
     auth: Auth | nil;
     appVariables?: { mutedExecs: boolean };
 
-    constructor(appName: JStorageName, storage: JStorage<Storage> | nil) {
+    constructor(appName: SokiAppName, storage: JStorage<Storage> | nil) {
         this.storage = storage;
         this.appName = appName;
         this.auth = indexStorage.getOr('auth', { level: 0 });
@@ -122,34 +122,23 @@ export class Exer<Storage extends ExerStorage> {
     }
 
     load<Value>(fixedExecs?: Exec<Value>[] | nil) {
-        return new Promise((resolve, reject) => {
+        return new Promise<boolean>((resolve, reject) => {
             const execs = (fixedExecs || this.execs)
                 .map(exec => exec.forLoad())
                 .filter(ex => ex);
 
             if (!execs.length) {
-                return resolve({ ok: false });
+                return resolve(false);
             }
 
-            soki.send({ execs: execs.filter((dict) => dict) as ExecutionDict[] })
+            soki.send({ execs: execs.filter((dict) => dict) as ExecutionDict[] }, this.appName)
                 .on(() => {
-                    const response = {
-                        ok: true,
-                        rejected: [] as [],
-                    };
                     this.execs = this.execs.filter(ex => {
-                        const isRejected = response.rejected?.some((rej: Exec<Value> & { exec: Exec<Value> }) => {
-                            if (ex.id === rej.exec.id) {
-                                ex.errors = rej.errors;
-                                return true;
-                            }
-                            return false;
-                        });
-                        if (!isRejected) ex.onLoad?.(ex);
-                        return ex.del || isRejected;
+                        ex.onLoad?.(ex);
+                        return ex.del;
                     });
 
-                    resolve(response);
+                    resolve(true);
                 },
                     (err) => reject(err));
         });

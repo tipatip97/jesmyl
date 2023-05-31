@@ -50,12 +50,10 @@ export class SokiTrip {
                 } else if (event.pull) this.updatedPulledData(event.pull);
 
                 if (event) {
-                    const appStore = appStorage[this.appName];
-
                     if (event.connect !== undefined) {
                         if (event.connect) {
                             this._onConnect(true);
-                            this.send({ connect: true });
+                            this.send({ connect: true }, this.appName,);
                             this.pullCurrentAppData();
                         } else this.onUnauthorize();
                     }
@@ -77,12 +75,14 @@ export class SokiTrip {
                     }
 
                     if (event.execs) {
+                        const execs = event.execs;
+                        const appStore = appStorage[execs.appName];
                         const contents = mylib.clone(appStore.properties);
                         Executer
                             .executeReals(contents, event.execs.list)
                             .then((fixes) => {
                                 appStore.refreshAreas(fixes, contents);
-                                this.setLastUpdates(this.appName, [null, null, event.execs?.lastUpdate, null]);
+                                this.setLastUpdates(execs.appName, [null, null, execs.lastUpdate, null]);
                             })
                             .catch();
                     }
@@ -117,8 +117,8 @@ export class SokiTrip {
 
             return {
                 ...prev,
-                [appName]: [appLastUpdate || prev[appName]?.[0] || 0, appRulesMd5 || prev[appName]?.[1] || undefined],
                 index: [indexLastUpdate || prev.index?.[0] || 0, indexRulesMd5 || prev.index?.[1] || undefined],
+                [appName]: [appLastUpdate || prev[appName]?.[0] || 0, appRulesMd5 || prev[appName]?.[1] || undefined],
             };
         });
     }
@@ -135,7 +135,7 @@ export class SokiTrip {
     pullCurrentAppData() {
         const { index: [indexLastUpdate, indexRulesMd5] = [], [this.appName]: [appLastUpdate, appRulesMd5] = [] } = indexStorage.get('updateRequisites') || {};
 
-        this.send({ pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] })
+        this.send({ pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] }, this.appName)
             .on((event) => event.pull && this.updatedPulledData(event.pull));
     }
 
@@ -167,7 +167,7 @@ export class SokiTrip {
         this.pullCurrentAppData();
     }
 
-    send(body: SokiClientEvent['body']) {
+    send(body: SokiClientEvent['body'], appName?: SokiAppName) {
         let requestId: number | und;
 
         const send = () => {
@@ -177,7 +177,7 @@ export class SokiTrip {
                         requestId,
                         body,
                         auth: indexStorage.getOr('auth', null),
-                        appName: this.appName,
+                        appName: appName ?? this.appName,
                     };
 
                     this.ws.send(JSON.stringify(sendEvent));
