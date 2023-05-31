@@ -17,8 +17,17 @@ type Ferry<FerryType, ObjName extends keyof FerryType> =
 
 export type AddRestMode = 'strong' | 'weak' | 'random';
 
+
+const inSec = 1000;
+const inMin = inSec * 60;
+const inHour = inMin * 60;
+const inDay = inHour * 24;
+
+
 export class MyLib extends SMyLib {
     c = constants;
+
+    monthFullTitles = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
 
     func(...funcs: any[]) {
         const self = this;
@@ -246,12 +255,15 @@ export class MyLib extends SMyLib {
 
         return '';
     }
+    
+    howMs = {
+        inSec,
+        inMin,
+        inHour,
+        inDay, 
+    };
 
     getMilliseconds(monthDays = 30, yearDays = 365) {
-        const inSec = 1000;
-        const inMin = inSec * 60;
-        const inHour = inMin * 60;
-        const inDay = inHour * 24;
         const inMonth = inDay * monthDays;
         const inYear = inDay * yearDays;
 
