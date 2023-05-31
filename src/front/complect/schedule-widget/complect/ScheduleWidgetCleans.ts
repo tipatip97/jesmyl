@@ -1,4 +1,5 @@
 import mylib from "../../my-lib/MyLib";
+import { IScheduleWidgetDayListItem, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 
 export default class ScheduleWidgetCleans {
 
@@ -9,5 +10,9 @@ export default class ScheduleWidgetCleans {
         return (returnAs === 'number'
             ? +(beginHours || 0) * mylib.howMs.inHour + wakeUpMinutes * mylib.howMs.inMin
             : `${beginHours.padStart(2, '0')}:${('' + wakeUpMinutes).padStart(2, '0')}`) as never;
-    }
+    };
+
+    static takeEventTime = (event: IScheduleWidgetDayListItem, box: ScheduleWidgetDayListItemTypeBox) => {
+        return event.tm ?? box.tm ?? 0;
+    };
 }

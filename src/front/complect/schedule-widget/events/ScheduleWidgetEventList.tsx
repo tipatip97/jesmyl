@@ -16,7 +16,7 @@ const singlesTitleReg = new RegExp(`([${singleTitleSymbols}])(\\1+)`, 'g');
 
 const titleNormalize = (title: string) => title.replace(incorrectsTitleReg, '').replace(singlesTitleReg, (_, __, letters) => letters[0]).trim();
 
-export default function ScheduleWidgetDayEventList({
+export default function ScheduleWidgetEventList({
     buttonTitle,
     schedule,
     scope,

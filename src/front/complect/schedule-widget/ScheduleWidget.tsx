@@ -10,7 +10,7 @@ import { IScheduleWidget, ScheduleWidgetAppAtts } from "./ScheduleWidget.model";
 import './ScheduleWidget.scss';
 import ScheduleWidgetCleans from "./complect/ScheduleWidgetCleans";
 import ScheduleWidgetDay from "./days/ScheduleWidgetDay";
-import ScheduleWidgetDayEventList from "./events/ScheduleWidgetDayEventList";
+import ScheduleWidgetEventList from "./events/ScheduleWidgetEventList";
 import { ScheduleWidgetAppAttsContext, initialScheduleScope } from "./useScheduleWidget";
 
 export default function ScheduleWidget({
@@ -47,11 +47,12 @@ export default function ScheduleWidget({
             </div>
             <div className="margin-big-gap-v">
                 {isRedact ?
-                    <div>
-                        <>Начало: </>
+                    <div className="margin-big-gap">
                         <StrongControlDateTimeExtracter
                             scope={selfScope}
                             fieldName="start"
+                            title="Начало"
+                            icon="clock-outline"
                             value={dateValue}
                             takeDate="day"
                             takeTime="NO"
@@ -67,7 +68,7 @@ export default function ScheduleWidget({
                                 confirm="Дни удалять не возможно! Создать новый?"
                             />
                         </div>
-                        <ScheduleWidgetDayEventList
+                        <ScheduleWidgetEventList
                             selectScope=""
                             selectFieldName=""
                             buttonTitle="События дней"

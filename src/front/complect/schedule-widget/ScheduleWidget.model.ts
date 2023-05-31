@@ -25,10 +25,10 @@ export interface ScheduleWidgetDay {
 export interface IScheduleWidgetDayListItem {
     mi: number,
     type: number,
-    title?: string,
+    topic?: string,
     dsc?: string,
     tm?: number,
-    val?: unknown,
+    atts?: unknown,
 }
 
 export type ScheduleWidgetAttKey<AttAppName extends AppName = AppName> = `[${AttAppName}]:${string}`;

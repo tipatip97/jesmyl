@@ -2,7 +2,7 @@ import React from "react";
 import { IScheduleWidgetDayListItem, ScheduleWidgetAttKey, ScheduleWidgetDay } from "../ScheduleWidget.model";
 import { useScheduleWidgetAppAttsContext } from "../useScheduleWidget";
 
-export default function ScheduleWidgetDayEventAtt(props: {
+export default function ScheduleWidgetEventAtt(props: {
     atts: ScheduleWidgetAttKey[],
     item: IScheduleWidgetDayListItem,
     day: ScheduleWidgetDay,
