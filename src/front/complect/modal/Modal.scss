@@ -130,6 +130,7 @@
 
     .modal-body {
         margin: 20px 0;
+        overflow: auto;
     }
 
     .modal-footer {
@@ -172,8 +173,10 @@
             background-color: var(--color--2);
 
             &:not(.type_toast) {
+                display: flex;
+                flex-direction: column;;
                 min-height: max-content;
-                max-height: calc(100% - 10px);
+                max-height: calc(100vh - 10px);
             }
 
             &.mood.mood_ {

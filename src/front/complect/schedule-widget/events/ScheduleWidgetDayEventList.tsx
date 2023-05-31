@@ -34,7 +34,7 @@ export default function ScheduleWidgetDayEventList({
     const [typesError, seTypesError] = useState<(string | nil)[]>([]);
 
     const { modalNode, screen } = useModal(({ actionButton, footer, header, body }, closeModal) => {
-        return <div>
+        return <>
             {header(<>
                 <div className="flex flex-gap between">
                     <div>События</div>
@@ -130,7 +130,7 @@ export default function ScheduleWidgetDayEventList({
                                 confirm="Добавить новый тип?"
                             /></div>)
                 }</>
-            )}</div>;
+            )}</>;
     });
 
     return <div className="flex flex-gap">
