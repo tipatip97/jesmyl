@@ -2,6 +2,7 @@ import { useState } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
+import mylib from "../../my-lib/MyLib";
 import StrongDiv from "../../strong-control/StrongDiv";
 import StrongEditableField from "../../strong-control/StrongEditableField";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
@@ -22,6 +23,7 @@ export default function ScheduleWidgetDayEventList({
     icon,
     selectScope,
     selectFieldName,
+    usedCounts,
 }: {
     selectScope: string,
     selectFieldName: string,
@@ -29,6 +31,7 @@ export default function ScheduleWidgetDayEventList({
     schedule: IScheduleWidget,
     scope: string,
     icon: EvaIconName,
+    usedCounts?: Record<number, number>,
 }) {
     const [isRedact, setIsRedact] = useState(false);
     const [typesError, seTypesError] = useState<(string | nil)[]>([]);
@@ -48,74 +51,84 @@ export default function ScheduleWidgetDayEventList({
                 {schedule.types?.map((type, typei) => {
                     const typeScope = takeStrongScopeMaker(scope, ' typei:', typei);
 
-                    return <StrongDiv
-                        key={typei}
-                        scope={selectScope}
-                        fieldName={selectFieldName}
-                        className={
-                            'schedule-event-type-select-item'
-                            + (selectScope ? isRedact ? '' : type.title ? ' pointer ' : ' disabled ' : '')
-                        }
-                        mapExecArgs={(args) => {
-                            if (isRedact || !type.title) return;
-                            closeModal();
-                            return {
-                                ...args,
-                                eventType: typei,
-                            };
-                        }}
-                    >
-                        <StrongEditableField
-                            scope={typeScope}
-                            fieldName="field"
-                            value={type.title}
-                            isRedact={isRedact}
-                            icon="credit-card-outline"
-                            title="Название пункта"
-                            onChange={(value) => {
-                                const errors = [...typesError];
-                                const lowerValue = titleNormalize(value.toLowerCase());
-                                if (!lowerValue) {
-                                    if (value) {
-                                        errors[typei] = 'Нет существенных символов!';
-                                    } else errors[typei] = 'Не должно быть пустым!';
-                                } else {
-                                    const prevTitle = schedule.types?.find((schType, schTypei) => schTypei !== typei && schType.title.toLowerCase() === lowerValue);
-                                    if (prevTitle)
-                                        errors[typei] = `"${prevTitle.title}" уже есть!`;
-                                    else errors[typei] = null;
-                                }
-
-                                seTypesError(errors);
-                            }}
-                            mapExecArgs={(args, val) => {
-                                if (typesError[typei]) return;
+                    return <>
+                        <StrongDiv
+                            key={typei}
+                            scope={selectScope}
+                            fieldName={selectFieldName}
+                            className={
+                                'schedule-event-type-select-item'
+                                + (selectScope ? isRedact ? '' : type.title ? ' pointer ' : ' disabled ' : '')
+                            }
+                            mapExecArgs={(args) => {
+                                if (isRedact || !type.title) return;
+                                closeModal();
                                 return {
                                     ...args,
-                                    value: titleNormalize(val),
-                                    key: 'title',
+                                    eventType: typei,
                                 };
                             }}
-                        />
-                        {typesError[typei] && <div className="flex flex-gap center error-message"><EvaIcon name="alert-circle-outline" />{typesError[typei]}</div>}
-                        <StrongEditableField
-                            scope={typeScope}
-                            fieldName="field"
-                            type="number"
-                            value={'' + (type.tm ?? '')}
-                            postfix=" мин"
-                            isRedact={isRedact}
-                            title="Продолжительность, мин"
-                            icon="clock-outline"
-                            mapExecArgs={(args) => ({ ...args, key: 'tm' })}
-                        />
-                        <ScheduleWidgetBindAtts
-                            atts={type.atts}
-                            scope={typeScope}
-                            isRedact={isRedact}
-                            typeTitle={type.title}
-                        />
-                    </StrongDiv>;
+                        >
+                            <StrongEditableField
+                                scope={typeScope}
+                                fieldName="field"
+                                value={type.title}
+                                isRedact={isRedact}
+                                icon="credit-card-outline"
+                                title="Название пункта"
+                                onChange={(value) => {
+                                    const errors = [...typesError];
+                                    const lowerValue = titleNormalize(value.toLowerCase());
+                                    if (!lowerValue) {
+                                        if (value) {
+                                            errors[typei] = 'Нет существенных символов!';
+                                        } else errors[typei] = 'Не должно быть пустым!';
+                                    } else {
+                                        const prevTitle = schedule.types?.find((schType, schTypei) => schTypei !== typei && schType.title.toLowerCase() === lowerValue);
+                                        if (prevTitle)
+                                            errors[typei] = `"${prevTitle.title}" уже есть!`;
+                                        else errors[typei] = null;
+                                    }
+
+                                    seTypesError(errors);
+                                }}
+                                mapExecArgs={(args, val) => {
+                                    if (typesError[typei]) return;
+                                    return {
+                                        ...args,
+                                        value: titleNormalize(val),
+                                        key: 'title',
+                                    };
+                                }}
+                            />
+                            {typesError[typei] && <div className="flex flex-gap center error-message"><EvaIcon name="alert-circle-outline" />{typesError[typei]}</div>}
+                            <StrongEditableField
+                                scope={typeScope}
+                                fieldName="field"
+                                type="number"
+                                value={'' + (type.tm ?? '')}
+                                postfix=" мин"
+                                isRedact={isRedact}
+                                title="Продолжительность, мин"
+                                icon="clock-outline"
+                                mapExecArgs={(args) => ({ ...args, key: 'tm' })}
+                            />
+                            <ScheduleWidgetBindAtts
+                                atts={type.atts}
+                                scope={typeScope}
+                                isRedact={isRedact}
+                                typeTitle={type.title}
+                            />
+                        </StrongDiv>
+                        {usedCounts
+                            ? <div className={'text-right' + (usedCounts[typei] ? '' : ' error-message')}>{
+                                usedCounts[typei]
+                                    ? `Исп. ${usedCounts[typei]} ${mylib.declension(usedCounts[typei], 'раз', 'раза', 'раз')}`
+                                    : 'Не используется'
+                            }</div>
+                            : null
+                        }
+                    </>;
                 })}
             </>)}
             {footer(
