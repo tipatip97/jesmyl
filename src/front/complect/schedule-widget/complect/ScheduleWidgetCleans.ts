@@ -1,5 +1,5 @@
 import mylib from "../../my-lib/MyLib";
-import { IScheduleWidgetDayListItem, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
+import { IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 
 export default class ScheduleWidgetCleans {
 
@@ -12,7 +12,7 @@ export default class ScheduleWidgetCleans {
             : `${beginHours.padStart(2, '0')}:${('' + wakeUpMinutes).padStart(2, '0')}`) as never;
     };
 
-    static takeEventTime = (event: IScheduleWidgetDayListItem, box: ScheduleWidgetDayListItemTypeBox) => {
+    static takeEventTime = (event: IScheduleWidgetDayEvent, box: ScheduleWidgetDayListItemTypeBox) => {
         return event.tm ?? box.tm ?? 0;
     };
 }

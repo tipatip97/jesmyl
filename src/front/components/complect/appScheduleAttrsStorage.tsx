@@ -1,13 +1,9 @@
 import { ScheduleWidgetAppAtts } from "../../complect/schedule-widget/ScheduleWidget.model";
+import { leaderOwnGameResultBoardAppAtt } from "../apps/leader/external-attach-board/leaderExternalGameResultsAttBoard";
 
 
 export const leaderOwnAppAtts: ScheduleWidgetAppAtts<'leader'> = {
-    '[leader]:game': {
-        icon: 'navigation-2-outline',
-        title: 'Игра',
-        description: 'Результаты командной игры контекста',
-        result: () => <></>
-    }
+    ...leaderOwnGameResultBoardAppAtt,
 };
 
 

@@ -137,6 +137,18 @@ const config: FilerAppConfig = {
                                                 key: ['topic', 'dsc', 'tm', 'type'],
                                             }
                                         }
+                                    },
+                                    '/atts': {
+                                        expected: {},
+                                        '/{attKey}': {
+                                            scopeNode: 'attKey',
+                                            U: {
+                                                args: {
+                                                    value: '#Dict',
+                                                    attKey: '#String',
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

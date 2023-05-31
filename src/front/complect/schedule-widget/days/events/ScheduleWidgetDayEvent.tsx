@@ -3,14 +3,13 @@ import mylib from "../../../my-lib/MyLib";
 import StrongEditableField from "../../../strong-control/StrongEditableField";
 import { takeStrongScopeMaker } from "../../../strong-control/useStrongControl";
 import useIsRedactArea from "../../../useIsRedactArea";
-import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayListItem } from "../../ScheduleWidget.model";
+import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent } from "../../ScheduleWidget.model";
 import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
-import ScheduleWidgetDayEventAtts from "../../events/ScheduleWidgetEventAtt";
+import ScheduleWidgetDayEventAtts from "../../events/atts/ScheduleWidgetDayEventAtts";
 
 export default function ScheduleWidgetDayEvent(props: {
-
     scope: string,
-    event: IScheduleWidgetDayListItem,
+    event: IScheduleWidgetDayEvent,
     eventi: number,
     schedule: IScheduleWidget,
     day: IScheduleWidgetDay,
@@ -22,13 +21,14 @@ export default function ScheduleWidgetDayEvent(props: {
 }) {
     const box = props.schedule.types?.[props.event.type];
     let timeMark = '';
-    const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, props.redact || null, null, true);
-    const selfScope = takeStrongScopeMaker(props.scope, ' eventmi:', props.event.mi);
+    const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, null, null, true);
+    const selfScope = takeStrongScopeMaker(props.scope, ' eventmi/', props.event.mi);
     const [isExpand, setIsExpand] = useState(false);
 
     useEffect(() => {
-        if (isSelfRedact) setIsExpand(true);
-    }, [isSelfRedact]);
+        if (props.redact) setIsExpand(false);
+        else if (isSelfRedact) setIsExpand(true);
+    }, [isSelfRedact, props.redact]);
 
     if (!box) return <>Неизвестный тип события</>;
 
@@ -43,7 +43,13 @@ export default function ScheduleWidgetDayEvent(props: {
     return <div className={'day-event' + (isExpand ? ' expand ' : '')}>
         <div className="item-header flex flex-gap between pointer" onClick={() => setIsExpand(is => !is)}>
             <div className="left-part flex flex-gap">
-                <span className="time-mark pointer" onClick={props.onClickOnTs}>{timeMark}</span>
+                <span
+                    className="time-mark pointer"
+                    onClick={event => {
+                        event.stopPropagation();
+                        props.onClickOnTs();
+                    }}
+                >{timeMark}</span>
                 <span className="color--3">{box.title}{props.event.topic ? ': ' : ''}</span>
                 <span>{props.event.topic}</span>
             </div>
@@ -81,11 +87,16 @@ export default function ScheduleWidgetDayEvent(props: {
                 multiline
                 value={props.event.dsc}
                 title="Содержание"
+                textClassName=" "
                 icon="file-text-outline"
                 mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
             />
-            {props.event.dsc && <div className="item-description">{props.event.dsc}</div>}
-            {box.atts && <ScheduleWidgetDayEventAtts atts={box.atts} item={props.event} day={props.day} />}
+            {box.atts && <ScheduleWidgetDayEventAtts
+                scope={selfScope}
+                typeBox={box}
+                event={props.event}
+                day={props.day}
+            />}
         </div>
     </div>;
 }

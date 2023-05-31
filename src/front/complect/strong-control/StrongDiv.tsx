@@ -10,7 +10,7 @@ export default function StrongDiv({
     className,
     children,
     onClick,
-}: StrongControlProps<{ children: ReactNode, className: string, onClick?: () => void }>) {
+}: StrongControlProps<{ children?: ReactNode, className?: string, onClick?: () => void }>) {
     const exer = useStrongExerContext();
 
     return <div

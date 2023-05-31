@@ -14,9 +14,11 @@ export const useStrongExerContent = <Storage extends ExerStorage>(exer: Exer<Sto
         }</StrongExerContext.Provider>;
 };
 
-export const takeStrongScopeMaker = (parentScope: string, scopeName: ` ${string}:`, value: number) => {
+export const takeStrongScopeMaker = (parentScope: string, scopeName: ` ${string}${typeof strongScopeKeyValueSeparator}`, value: number | string) => {
     return `${parentScope}${scopeName}${value}`;
 };
+
+export const strongScopeKeyValueSeparator = '/';
 
 export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType extends string | number>(
     exer: Exer<Storage>,
@@ -31,9 +33,9 @@ export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType ex
     let action = '';
 
     scope?.split(' ').forEach((scopeItem) => {
-        const beats = scopeItem.split(':');
+        const beats = scopeItem.split(strongScopeKeyValueSeparator);
         if (beats.length > 1) {
-            args[beats[0]] = +beats[1];
+            args[beats[0]] = isNaN(+beats[1]) ? beats[1] : +beats[1];
             action += ` ${beats[0]}`;
         } else action += ` ${scopeItem}`;
     });

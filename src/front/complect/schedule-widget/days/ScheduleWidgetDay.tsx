@@ -20,7 +20,7 @@ export default function ScheduleWidgetDay({
     const title = dayFullTitles[date.getDay()];
     const times: number[] = [];
     const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
-    const selfScope = takeStrongScopeMaker(scope, ' dayw:', day.w);
+    const selfScope = takeStrongScopeMaker(scope, ' dayw/', day.w);
 
     day.list.forEach((item) => {
         times.push((item.tm || schedule.types?.[item.type]?.tm || 0) + (times[times.length - 1] || 0));

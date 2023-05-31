@@ -19,26 +19,28 @@ export interface IScheduleWidgetDay {
     wup: number, // wakeup
     topic?: string,
     dsc?: string,
-    list: IScheduleWidgetDayListItem[],
+    list: IScheduleWidgetDayEvent[],
 }
 
-export interface IScheduleWidgetDayListItem {
+export interface IScheduleWidgetDayEvent {
     mi: number,
     type: number,
     topic?: string,
     dsc?: string,
     tm?: number,
-    atts?: unknown,
+    atts?: Record<ScheduleWidgetAttKey, unknown>,
 }
 
 export type ScheduleWidgetAttKey<AttAppName extends AppName = AppName> = `[${AttAppName}]:${string}`;
 
-export type ScheduleWidgetAppAtts<AttAppName extends AppName = AppName> = Record<ScheduleWidgetAttKey<AttAppName>, ScheduleWidgetAppAtt>;
+export type ScheduleWidgetAppAtts<AttAppName extends AppName = AppName, AttValue extends any = any> = Record<ScheduleWidgetAttKey<AttAppName>, ScheduleWidgetAppAtt<AttValue>>;
 
-export interface ScheduleWidgetAppAtt {
+export type ScheduleWidgetAppAttResultItem<AttValue extends any> = (mpValue: () => AttValue, content: ReactNode) => JSX.Element;
+
+export interface ScheduleWidgetAppAtt<AttValue extends any = any> {
     icon: EvaIconName,
     title: string,
-    result: (item: IScheduleWidgetDayListItem, day: IScheduleWidgetDay) => ReactNode,
+    result: (value: AttValue, attItem: ScheduleWidgetAppAttResultItem<AttValue>) => ReactNode,
     description: string,
 }
 

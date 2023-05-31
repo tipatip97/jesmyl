@@ -13,13 +13,12 @@ export default function useGames() {
     const { goTo, appRouteData: { gamew } } = useLeaderNav();
 
     const cgame = games?.teamGames?.find((game) => game.w === gamew);
-    const teamGames = games?.teamGames?.filter(({ contextw }) => ctx.ccontext?.w === contextw);
+    const contextGames = games?.teamGames?.filter(({ contextw }) => ctx.ccontext?.w === contextw);
 
     const ret = {
         cgame,
-        games,
         ctx,
-        teamGames,
+        contextGames,
         goToGame: (gamew: number) => goTo({ place: "game", data: { gamew } }),
     };
     return ret;

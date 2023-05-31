@@ -4,7 +4,7 @@ import EvaButton from "../eva-icon/EvaButton";
 import mylib from "../my-lib/MyLib";
 import StrongControlDateTimeExtracter from "../strong-control/StrongDateTimeExtracter";
 import StrongEvaButton from "../strong-control/StrongEvaButton";
-import { useStrongExerContent } from "../strong-control/useStrongControl";
+import { takeStrongScopeMaker, useStrongExerContent } from "../strong-control/useStrongControl";
 import useIsRedactArea from "../useIsRedactArea";
 import { IScheduleWidget, ScheduleWidgetAppAtts } from "./ScheduleWidget.model";
 import './ScheduleWidget.scss';
@@ -32,7 +32,7 @@ export default function ScheduleWidget({
 
     if (!schedule) return null;
 
-    const selfScope = `${initialScheduleScope} schw:${schedule.w}`;
+    const selfScope = takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedule.w);
 
     const firstWup = schedule.days?.[0].wup;
 

@@ -8,7 +8,7 @@ import GamesMore from "./GamesMore";
 import useGames from "./useGames";
 
 export default function GameList() {
-  const { teamGames } = useGames();
+  const { contextGames } = useGames();
   const { ccontext } = useLeaderContexts();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
@@ -22,7 +22,7 @@ export default function GameList() {
       headTitle={`Командные игры${ccontext?.name ? ` - ${ccontext.name}` : ""}`}
       content={
         <>
-          {teamGames?.map((game, gamei) => (
+          {contextGames?.map((game, gamei) => (
             <TeamGameFace key={gamei} game={game} />
           ))}
         </>

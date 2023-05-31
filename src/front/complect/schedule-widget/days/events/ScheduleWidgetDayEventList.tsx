@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
-import { takeStrongScopeMaker } from "../../../strong-control/useStrongControl";
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../../ScheduleWidget.model";
 import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
-import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
 import ScheduleWidgetEventList from "../../events/ScheduleWidgetEventList";
+import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
 
 export default function ScheduleWidgetDayEventList({
     day, schedule, scope,
@@ -19,7 +18,6 @@ export default function ScheduleWidgetDayEventList({
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
     const times: number[] = [];
     const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
-    const selfScope = takeStrongScopeMaker(scope, ' dayw:', day.w);
     const usedCounts = useMemo(() => {
         const usedCounts: Record<number, number> = {};
         day.list.forEach(({ type }) => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
@@ -10,7 +10,7 @@ import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import { IScheduleWidget } from "../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../atts/ScheduleWidgetBindAtts";
 
-const singleTitleSymbols = '- (),';
+const singleTitleSymbols = '- ().,';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
 const singlesTitleReg = new RegExp(`([${singleTitleSymbols}])(\\1+)`, 'g');
 
@@ -49,11 +49,10 @@ export default function ScheduleWidgetEventList({
             </>)}
             {body(<>
                 {schedule.types?.map((type, typei) => {
-                    const typeScope = takeStrongScopeMaker(scope, ' typei:', typei);
+                    const typeScope = takeStrongScopeMaker(scope, ' typei/', typei);
 
-                    return <>
+                    return <React.Fragment key={typei}>
                         <StrongDiv
-                            key={typei}
                             scope={selectScope}
                             fieldName={selectFieldName}
                             className={
@@ -128,7 +127,7 @@ export default function ScheduleWidgetEventList({
                             }</div>
                             : null
                         }
-                    </>;
+                    </React.Fragment>;
                 })}
             </>)}
             {footer(
