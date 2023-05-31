@@ -166,14 +166,22 @@
     position: relative;
     cursor: text;
     width: 100%;
-    padding-right: 30px;
-    padding-left: 2px;
+
+    .input {
+        padding-left: 3px;
+        background-color: var(--color--2);
+    }
+
+    &:not(.with-native-input) {
+        padding-right: 30px;
+    }
 
     .native-input {
         width: 100%;
         height: 100%;
         resize: none;
-        color: var(--color--7);
+        color: var(--color--3);
+        padding-right: 30px;
 
         &::placeholder {
             color: var(--color--4);
@@ -218,6 +226,11 @@
 
     &.without-close-button {
         padding-right: 0;
+
+
+        .native-input {
+            padding-right: 2px;
+        }
 
         .icon-button-container>.close-button {
             display: none;

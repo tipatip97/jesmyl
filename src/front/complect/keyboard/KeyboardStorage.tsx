@@ -92,7 +92,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
           ) : (
             <EvaIcon
               name="close"
-              className="icon-button close-button"
+              className="icon-button close-button pointer"
               onMouseDown={this.onClearButton}
             />
           )}

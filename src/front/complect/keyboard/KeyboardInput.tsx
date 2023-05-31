@@ -2,7 +2,6 @@ import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import propsOfClicker from "../clicker/propsOfClicker";
-import EvaButton from "../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
 import {
   keyboardKeyDict,
@@ -74,7 +73,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
     };
 
     const nativeProps = {
-      className: "native-input",
+      className: "native-input input ",
       onClick: (event: any) => {
         otherProps.onClick?.({
           name: 'click',
@@ -102,8 +101,10 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       ref: nativeRef,
     };
 
+    const rows = multiline ? value?.split('\n').length : 1;
+
     return <div className={
-      'input-keyboard-flash-controlled input '
+      'input-keyboard-flash-controlled input with-native-input '
       + (className || '')
       + (multiline ? ' multiline' : '')
       + (withoutCloseButton ? ' without-close-button' : '')
@@ -112,22 +113,21 @@ export default function KeyboardInput(props: KeyboardInputProps) {
         ? <textarea
           {...otherProps}
           {...(nativeProps as any)}
-          rows={multiline ? value?.split('\n').length : 1}
+          rows={rows && rows < 2 ? 2 : rows}
         />
         : <input
           {...otherProps}
           {...(nativeProps as any)}
           type={type === 'password' && !isHiddenPassword ? 'text' : type}
-        />}
-      {type !== 'button' && value && <div className="icon-button-container">
+        />}{type !== 'button' && value && <div className="icon-button-container">
         {type === 'password'
-          ? <EvaButton
+          ? <EvaIcon
             name={isHiddenPassword ? 'eye-outline' : 'eye-off-outline'}
-            onClick={() => setIsHiddenPassword(is => !is)}
+            onMouseDown={() => setIsHiddenPassword(is => !is)}
           />
-          : !withoutCloseButton && (type !== 'number' || isForceZero || value !== '0') && <EvaButton
+          : !withoutCloseButton && (type !== 'number' || isForceZero || value !== '0') && <EvaIcon
             name="close"
-            className="close-button"
+            className="close-button pointer"
             onMouseDown={() => {
               setTimeout(() => nativeRef.current?.focus());
 
@@ -140,8 +140,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
               }
             }}
           />}
-      </div>}
-    </div>;
+      </div>}</div>;
   }
 
   return input.node(

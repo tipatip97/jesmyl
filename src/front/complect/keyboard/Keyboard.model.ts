@@ -32,7 +32,9 @@ export interface KeyboardInputProps {
     onPaste?: (value: string) => void,
     setIsUnknownSymbols?: (char: string) => boolean,
     mapChar?: (char: string) => ReactNode,
-    maxLength?: number
+    maxLength?: number,
+    onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void,
+    onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void,
 }
 
 export interface KeyboardInputEvent {
