@@ -124,6 +124,20 @@ const config: FilerAppConfig = {
                                     args: {
                                         eventType: '#Number',
                                     }
+                                },
+                                '/[mi === {eventmi}]': {
+                                    scopeNode: 'eventmi',
+                                    args: {
+                                        eventmi: '#Number',
+                                    },
+                                    '/{key}': {
+                                        scopeNode: 'field',
+                                        U: {
+                                            args: {
+                                                key: ['topic', 'dsc', 'tm', 'type'],
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
