@@ -1,11 +1,11 @@
 import React from "react";
-import { IScheduleWidgetDayListItem, ScheduleWidgetAttKey, ScheduleWidgetDay } from "../ScheduleWidget.model";
+import { IScheduleWidgetDayListItem, ScheduleWidgetAttKey, IScheduleWidgetDay } from "../ScheduleWidget.model";
 import { useScheduleWidgetAppAttsContext } from "../useScheduleWidget";
 
 export default function ScheduleWidgetEventAtt(props: {
     atts: ScheduleWidgetAttKey[],
     item: IScheduleWidgetDayListItem,
-    day: ScheduleWidgetDay,
+    day: IScheduleWidgetDay,
 }) {
     const appAtts = useScheduleWidgetAppAttsContext();
     return <>{props.atts.map((attKey) => {

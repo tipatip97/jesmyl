@@ -3,18 +3,23 @@ import StrongControlDateTimeExtracter from "../../strong-control/StrongDateTimeE
 import StrongEditableField from "../../strong-control/StrongEditableField";
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import useIsRedactArea from "../../useIsRedactArea";
-import { IScheduleWidgetDayProps } from "../ScheduleWidget.model";
-import ScheduleWidgetDayEventList from "./ScheduleWidgetDayEventList";
+import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
+import ScheduleWidgetDayEventList from "./events/ScheduleWidgetDayEventList";
 
 const dayFullTitles = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
 export default function ScheduleWidgetDay({
-    day, dayi, schedule, redact, scope,
-}: IScheduleWidgetDayProps) {
+    day, dayi, schedule, scope,
+}: {
+    day: IScheduleWidgetDay,
+    dayi: number,
+    schedule: IScheduleWidget,
+    scope: string,
+}) {
     const date = new Date(schedule.start + mylib.howMs.inDay * dayi);
     const title = dayFullTitles[date.getDay()];
     const times: number[] = [];
-    const { editIcon, isRedact } = useIsRedactArea(true, redact || null, null, true);
+    const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
     const selfScope = takeStrongScopeMaker(scope, ' dayw:', day.w);
 
     day.list.forEach((item) => {

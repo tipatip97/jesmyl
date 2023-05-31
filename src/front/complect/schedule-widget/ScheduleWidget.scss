@@ -1,5 +1,5 @@
 .schedule-widget {
-    padding: 16px;
+    padding: 5px;
 
     >.schedule-widget-day {
         >.day-title {
@@ -22,13 +22,20 @@
             }
         }
 
-        .list-item {
+        .day-event {
             background-color: var(--color--2);
             padding: .7rem;
             border-radius: .5rem;
             margin: .3rem 0;
 
-            >.title {
+            &.expand {
+                .day-event-content {
+                    opacity: 1;
+                    max-height: 10vh;
+                }
+            }
+
+            >.item-header {
                 >.left-part {
                     >.time-mark {
                         min-width: 2.2rem;
@@ -38,9 +45,11 @@
                 }
             }
 
-            >.item-description {
-                margin: 1rem 0;
-                white-space: pre-line;
+            .day-event-content {
+                max-height: 0px;
+                opacity: 0;
+                overflow: hidden;
+                transition: opacity .2s, max-height .2s;
             }
         }
     }

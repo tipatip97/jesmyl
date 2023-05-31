@@ -10,11 +10,11 @@ export interface IScheduleWidget {
     w: number,
     start: number,
     title?: string,
-    days?: ScheduleWidgetDay[],
+    days?: IScheduleWidgetDay[],
     types?: ScheduleWidgetDayListItemTypeBox[],
 }
 
-export interface ScheduleWidgetDay {
+export interface IScheduleWidgetDay {
     w: number,
     wup: number, // wakeup
     topic?: string,
@@ -38,7 +38,7 @@ export type ScheduleWidgetAppAtts<AttAppName extends AppName = AppName> = Record
 export interface ScheduleWidgetAppAtt {
     icon: EvaIconName,
     title: string,
-    result: (item: IScheduleWidgetDayListItem, day: ScheduleWidgetDay) => ReactNode,
+    result: (item: IScheduleWidgetDayListItem, day: IScheduleWidgetDay) => ReactNode,
     description: string,
 }
 
@@ -47,33 +47,3 @@ export interface ScheduleWidgetDayListItemTypeBox {
     tm?: number,
     atts?: ScheduleWidgetAttKey[],
 }
-
-
-export interface ScheduleWidgetDayListItemProps {
-    scope: string,
-    event: IScheduleWidgetDayListItem,
-    eventi: number,
-    schedule: IScheduleWidget,
-    day: ScheduleWidgetDay,
-    prevTime: number,
-    isShowPeriodsNotTs: boolean,
-    onClickOnTs: () => void,
-    redact: boolean | nil,
-    wakeupMs: number,
-}
-
-export interface IScheduleWidgetDayProps {
-    day: ScheduleWidgetDay,
-    dayi: number,
-    schedule: IScheduleWidget,
-    redact: boolean,
-    scope: string,
-}
-
-export type PossibleScheduleScopeNames = 'schw'| 'dayw';
-
-export type ScheduleWidgetWidScopeLine = WidScopeLine<PossibleScheduleScopeNames>;
-
-export type WidScope<Names extends string> = ` ${Names}:${number}` | '';
-export type WidScopeLine<Names extends string> = `${WidScope<Names>}` | '';
-

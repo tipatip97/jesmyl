@@ -90,7 +90,6 @@ export default function ScheduleWidget({
                             key={dayi}
                             day={day}
                             dayi={dayi}
-                            redact={isRedact}
                             schedule={schedule}
                         />
                     )}

@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import EvaButton from "../../eva-icon/EvaButton";
-import EvaIcon from "../../eva-icon/EvaIcon";
-import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
-import useIsRedactArea from "../../useIsRedactArea";
-import { IScheduleWidget, ScheduleWidgetDay } from "../ScheduleWidget.model";
-import ScheduleWidgetCleans from "../complect/ScheduleWidgetCleans";
-import ScheduleWidgetEvent from "../events/ScheduleWidgetEvent";
-import ScheduleWidgetEventList from "../events/ScheduleWidgetEventList";
+import EvaButton from "../../../eva-icon/EvaButton";
+import EvaIcon from "../../../eva-icon/EvaIcon";
+import { takeStrongScopeMaker } from "../../../strong-control/useStrongControl";
+import useIsRedactArea from "../../../useIsRedactArea";
+import { IScheduleWidget, IScheduleWidgetDay } from "../../ScheduleWidget.model";
+import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
+import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
+import ScheduleWidgetEventList from "../../events/ScheduleWidgetEventList";
 
 export default function ScheduleWidgetDayEventList({
     day, schedule, scope,
 }: {
-    day: ScheduleWidgetDay,
+    day: IScheduleWidgetDay,
     schedule: IScheduleWidget,
     scope: string,
 }) {
@@ -47,9 +47,9 @@ export default function ScheduleWidgetDayEventList({
         </div>
         {isExpand && <>
             {day.list.map((event, eventi) => {
-                return <ScheduleWidgetEvent
+                return <ScheduleWidgetDayEvent
                     key={eventi}
-                    scope={selfScope}
+                    scope={scope}
                     schedule={schedule}
                     day={day}
                     event={event}
@@ -63,7 +63,7 @@ export default function ScheduleWidgetDayEventList({
             })}
             {isRedact && <ScheduleWidgetEventList
                 scope={scope}
-                selectScope={selfScope}
+                selectScope={scope}
                 selectFieldName="list"
                 buttonTitle="Добавить событие"
                 icon="plus-circle-outline"
