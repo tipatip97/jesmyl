@@ -3,12 +3,14 @@ import Portal from "../popups/[complect]/Portal";
 
 export enum ModalType {
     Toast = 'toast',
+    Screen = 'screen',
 };
 
 type ModalConfigMood = 'norm' | 'ko' | 'ok';
 
 interface UserModalConfig {
     mood?: ModalConfigMood,
+    onClose?: () => void,
 }
 
 export interface ModalConfig extends UserModalConfig {
@@ -25,15 +27,31 @@ const defaultUseModalConfig: UseModalConfig = {
     isOpen: false,
 };
 
-export default function useModal<
-    TopContent extends JSX.Element | undefined,
-    Content extends TopContent extends undefined ? ReactNode : null,
->(topContent?: TopContent) {
+const modalElements = {
+    actionButton: (content: ReactNode) => <div className="modal-action-button">{content}</div>,
+    header: (content: ReactNode) => <div className="modal-header">{content}</div>,
+    body: (content: ReactNode) => <div className="modal-body">{content}</div>,
+    footer: (content: ReactNode) => <div className="modal-footer">{content}</div>,
+};
+
+export default function useModal(topContent?: (elements: typeof modalElements, close: () => void) => JSX.Element, onClose?: () => void) {
     const [config, setConfig] = useState(defaultUseModalConfig);
     const typeClassName = ' type_' + config.type;
+    const close = () => {
+        (config.onClose ?? onClose)?.();
+        setConfig((prev) => ({ ...prev, isOpen: false }));
+    };
 
     const ret = {
-        toast: (content: Content, config?: ModalConfig) => {
+        screen: (content?: ReactNode, config?: ModalConfig) => {
+            setConfig({
+                ...config,
+                isOpen: true,
+                type: ModalType.Screen,
+                content,
+            });
+        },
+        toast: (content?: ReactNode, config?: ModalConfig) => {
             setConfig({
                 ...config,
                 isOpen: true,
@@ -43,10 +61,10 @@ export default function useModal<
             setTimeout(() => setConfig((prev) => ({ ...prev, isOpen: false })), config?.showTime ?? 3000);
         },
         modalNode: (config.isOpen && <Portal>
-            <div className={'modal-application-screen ' + typeClassName}>
+            <div className={'modal-application-screen ' + typeClassName} onClick={close}>
                 <div className={'modal-screen-wrapper ' + typeClassName}>
-                    <div className={'modal-screen ' + typeClassName + (' mood mood_' + config.mood)}>
-                        {topContent ?? config.content}
+                    <div className={'modal-screen ' + typeClassName + (' mood mood_' + config.mood)} onClick={(event) => event.stopPropagation()}>
+                        {topContent?.(modalElements, close) ?? config.content}
                     </div>
                 </div>
             </div>
