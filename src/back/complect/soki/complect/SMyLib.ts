@@ -289,7 +289,7 @@ export class SMyLib {
                 continue;
             }
             const [, value] = argEntry;
-            if (!this.isCorrectType(value, type)) add(`Неверный тип параметра "${key}" (${value}) в исполнении "${action}". Ожидалось "${type}"`);
+            if (!this.isCorrectType(value, type)) add(`Неверный тип параметра "${key}" (${value}) в исполнении "${action}". Ожидалось "${this.isArr(type) ? type.join(' | ') : type}"`);
         }
 
         return errors;
