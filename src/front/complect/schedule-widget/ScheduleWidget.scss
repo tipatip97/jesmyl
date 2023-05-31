@@ -1,0 +1,55 @@
+.schedule-widget {
+    padding: 16px;
+
+    >.schedule-widget-day {
+        >.day-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color--3);
+        }
+
+        >.day-info {
+            margin: 1rem 0;
+
+            .day-topic {
+                font-size: 1.2rem;
+                color: var(--color--7);
+            }
+
+            .day-description {
+                font-size: .9rem;
+                color: var(--color--3);
+            }
+        }
+
+        >.list-item {
+            background-color: var(--color--2);
+            padding: .7rem;
+            border-radius: .5rem;
+            margin: .3rem 0;
+
+            >.title {
+                >.left-part {
+                    >.time-mark {
+                        min-width: 2.2rem;
+                        min-height: 1rem;
+                        font-size: .9rem;
+                    }
+                }
+            }
+
+            >.item-description {
+                margin: 1rem 0;
+                white-space: pre-line;
+            }
+        }
+    }
+}
+
+
+.schedule-event-type-select-item {
+    background: var(--color--1);
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin: 7px 0;
+}

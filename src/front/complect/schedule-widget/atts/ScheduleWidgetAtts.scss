@@ -1,0 +1,33 @@
+.schedule-widget-bind-secs {
+    --att-size: 70px;
+
+    transition: height .1s;
+
+    &.empty {
+        height: 1.5em;
+    }
+
+    &.redact {
+        height: var(--att-size);
+    }
+}
+
+.schedule-widget-att {
+    --att-size: 70px;
+
+    position: relative;
+    background-color: var(--color--2);
+    width: var(--att-size);
+    min-width: var(--att-size);
+    max-width: var(--att-size);
+    height: var(--att-size);
+    min-height: var(--att-size);
+    max-height: var(--att-size);
+    border-radius: 3px;
+
+    .close-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}

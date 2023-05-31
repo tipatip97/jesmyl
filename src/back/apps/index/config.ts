@@ -15,6 +15,7 @@ export interface Application {
 const config: FilerAppConfig = {
     title: 'JESMYL',
     requirements: [
+        'schedules',
         {
             name: "apps",
             prepareContent: (apps: Application[], auth) => {
@@ -30,7 +31,107 @@ const config: FilerAppConfig = {
             watch: [`${rootDirective}/version.json`, (content) => JSON.parse(content).num],
         }
     ],
-    actions: Executer.prepareActionList({})
+    actions: Executer.prepareActionList({
+        '/schedules': {
+            scopeNode: 'schs',
+            expected: { list: [] },
+            '/list': {
+                C: {
+                    value: {
+                        w: '{schw}',
+                        title: '{title}',
+                    },
+                    args: {
+                        schw: '#Number',
+                        title: '#String',
+                    },
+                },
+                '/[w === {schw}]': {
+                    scopeNode: 'schw',
+                    args: {
+                        schw: '#Number',
+                    },
+                    '/start': {
+                        U: {
+                            args: {
+                                value: '#Number',
+                            }
+                        }
+                    },
+                    '/types': {
+                        expected: [],
+                        C: {
+                            value: {
+                                title: '',
+                            },
+                        },
+                        '/{typei}': {
+                            scopeNode: 'typei',
+                            args: {
+                                typei: '#Number',
+                            },
+                            '/atts': {
+                                C: {
+                                    args: {
+                                        value: '#String'
+                                    }
+                                },
+                                D: {
+                                    value: ['.', '===', '{attn}'],
+                                    args: {
+                                        attn: '#String'
+                                    }
+                                }
+                            },
+                            '/{key}': {
+                                scopeNode: 'field',
+                                U: {
+                                    args: {
+                                        key: ['tm', 'title']
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    '/days': {
+                        expected: [],
+                        C: {
+                            value: {
+                                w: '{@setNewWid()}',
+                                list: [],
+                                wup: 7,
+                            }
+                        },
+                        '/[w === {dayw}]': {
+                            scopeNode: 'dayw',
+                            args: {
+                                dayw: '#Number'
+                            },
+                            '/{key}': {
+                                scopeNode: 'field',
+                                U: {
+                                    args: {
+                                        key: '#String'
+                                    },
+                                }
+                            },
+                            '/list': {
+                                C: {
+                                    setSystems: ['mi'],
+                                    value: {
+                                        type: '{eventType}',
+                                    },
+                                    args: {
+                                        eventType: '#Number',
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
 }
 
 export default config;
