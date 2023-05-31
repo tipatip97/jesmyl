@@ -1,3 +1,4 @@
+import { ActionBoxSetSystems } from "../../models";
 import { SokiAppName } from "../soki/soki.model";
 
 export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | 'func' | 'migrate' | 'remove' | 'remove_each' | 'other';
@@ -55,6 +56,7 @@ export type ExecutionExpectations = [number, {} | []][];
 export type ExecuterSetInEachValueItem = Record<string, Record<string, unknown>>;
 
 export interface RealAccumulatableRule {
+    scopeNode?: string,
     expecteds?: ExecutionExpectations,
     args?: Record<string, any>,
     track: ExecutionTrack,
@@ -78,6 +80,7 @@ export interface ExecutionReal extends RealAccumulatableRule, ShortRealRule {
     uniqs?: string[] | Record<string, string>,
     fix: ExecutionRuleTrackBeat,
     fixedAccesses?: FixedAccesses,
+    setSystems?: ActionBoxSetSystems[],
 }
 
 export type FixedAccesses = { track: ExecutionTrack, tail: Record<string, ExecutionTrack> }[];

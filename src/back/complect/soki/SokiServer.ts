@@ -257,14 +257,24 @@ class SokiServer {
                                     const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
                                     this.send({
                                         requestId,
-                                        execs: { list: replacedExecs, lastUpdate },
+                                        execs: {
+                                            appName: eventData.appName,
+                                            list: replacedExecs,
+                                            lastUpdate,
+                                        },
                                         errorMessage,
-                                    }, (capsule) => capsule.appName === eventData.appName, client);
+                                    }, eventData.appName === 'index'
+                                        ? () => true
+                                        : (capsule) => capsule.appName === eventData.appName, client);
                                 });
                             return;
                         } else this.send({
                             requestId,
-                            execs: { list: [], lastUpdate: null },
+                            execs: {
+                                appName: eventData.appName,
+                                list: [],
+                                lastUpdate: null,
+                            },
                             errorMessage: 'Не авторизован'
                         }, null, client);
                     }

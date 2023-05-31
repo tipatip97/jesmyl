@@ -20,6 +20,7 @@ export interface SokiServerEvent {
     pull?: PullEventValue,
     authorization?: { type: 'login' | 'register' } & ({ ok: false, value: string } | ({ ok: true, value: LocalSokiAuth })),
     execs?: {
+        appName: SokiAppName,
         list: ExecutionReal[],
         lastUpdate: number | null,
     },

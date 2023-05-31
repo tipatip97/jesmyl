@@ -22,7 +22,11 @@ export class SMyLib {
     isNan(obj: any): obj is typeof NaN { return isNaN(obj) }
 
     static entries<T>(obj: T): T extends Record<infer Key, infer V> ? [Key, V][] : [string, unknown][] {
-        return Object.entries(obj || []) as never;
+        return Object.entries(obj || {}) as never;
+    }
+
+    static keys<T>(obj: T): T extends Record<infer Key, any> ? Key[] : string[] {
+        return Object.keys(obj || {}) as never;
     }
 
     explode(separator: string, string: string, lim?: number) {

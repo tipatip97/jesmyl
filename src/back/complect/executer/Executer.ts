@@ -1,10 +1,10 @@
 /* eslint-disable eqeqeq */
-import { ActionBox } from "../../models";
-import { sequreMD5Passphrase } from "../../values";
+import { ActionBox, ActionBoxSetSystems } from "../../models";
+import { actionBoxSetSystems, sequreMD5Passphrase } from "../../values";
 import { FilerAppConfigActions } from "../filer/Filer.model";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, RealAccumulatableRule, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, ShortRealRule, TrackerRet } from "./Executer.model";
+import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, RealAccumulatableRule, ShortRealRule, TrackerRet } from "./Executer.model";
 
 const globs: Record<string, any> = {
     'setNewWid()': () => new Date().getTime() + Math.random()
@@ -317,13 +317,13 @@ export class Executer {
 
     static prepareTrack = (path: string): ExecutionTrack => path.startsWith('<') ? [] : path.slice(1).split('/').map((part) => part.startsWith('[') && part.endsWith(']') ? part.slice(1, -1).split(' ') as ExecutionRuleTrackBeat : part).filter(part => part);
 
-    static prepareActionList(actions: ActionBox, fixedAccesses: FixedAccesses = []): FilerAppConfigActions {
+    static prepareActionList(boxes: ActionBox, fixedAccesses: FixedAccesses = []): FilerAppConfigActions {
         const rules: ExecutionReal[] = [];
 
         const transform = (composit: ActionBox, topRule: RealAccumulatableRule = {} as never): ExecutionReal | null => {
             for (const key in composit) {
-                const action = composit[key as never];
-                if (action && (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>')))) {
+                const box = composit[key as never];
+                if (box && (key.startsWith('/') || (key.startsWith('<') && key.endsWith('>')))) {
                     const track = key.startsWith('<') ? [] : this.prepareTrack(key);
                     const accTrack = topRule.track?.concat(track || []) || track;
 
@@ -347,36 +347,38 @@ export class Executer {
                             });
                         };
 
-                        accSides([], action.side);
+                        accSides([], box.side);
                         if (sides.length) return sides;
                     };
 
                     const accRule: RealAccumulatableRule = {
                         track: accTrack,
-                        args: { ...topRule.args, ...action.args },
-                        expecteds: (action.expected ? topRule.expecteds || [] : topRule.expecteds)
-                            ?.concat(action.expected ? [[accTrack.length, action.expected]] : []),
-                        accesses: action.access
-                            ? (topRule.accesses || []).concat(action.access)
+                        args: { ...topRule.args, ...box.args },
+                        expecteds: (box.expected ? topRule.expecteds || [] : topRule.expecteds)
+                            ?.concat(box.expected ? [[accTrack.length, box.expected]] : []),
+                        accesses: box.access
+                            ? (topRule.accesses || []).concat(box.access)
                             : topRule.accesses,
                         sides: accSides(),
+                        scopeNode: `${topRule.scopeNode || ''}${topRule.scopeNode ? box.scopeNode ? ` ${box.scopeNode}` : '' : box.scopeNode}`,
                     };
 
-                    if (action.fixAccesses) {
+                    if (box.fixAccesses) {
                         fixedAccesses.push({
                             track: accTrack,
-                            tail: action.fixAccesses,
+                            tail: box.fixAccesses,
                         });
                     }
 
                     const execRule: ExecutionReal = smylib.clone({
-                        ...action,
+                        ...box,
                         ...accRule,
-                        action: action.action!,
-                        method: action.method!,
+                        action: box.action!,
+                        method: box.method!,
                         fix: accRule.track?.[0],
-                        value: action.value,
+                        value: box.value,
                     });
+
 
                     SMyLib.entries(execRule).forEach(([argName]) => {
                         if (argName.startsWith('/') || argName.startsWith('<'))
@@ -385,17 +387,42 @@ export class Executer {
 
                     if (accRule.accesses) execRule.fixedAccesses = fixedAccesses;
 
-                    if (execRule.action)
-                        rules.push(execRule);
+                    if (box.C || box.U || box.D) {
+                        (['C', 'U', 'D'] as const).forEach((crudName) => {
+                            const boxCrudBox = box[crudName];
+                            if (boxCrudBox) {
+                                const boxAction: ExecutionReal = {
+                                    ...execRule,
+                                    ...boxCrudBox,
+                                    action: `${execRule.scopeNode}${!box.scopeNode && track[track.length - 1] ? ` ${track[track.length - 1]}` : ''} [${crudName}]`,
+                                    method: boxCrudBox.method ?? crudName === 'C' ? 'push' : crudName === 'D' ? 'remove' : 'set',
+                                    args: {
+                                        ...execRule.args,
+                                        ...boxCrudBox.args,
+                                    }
+                                };
+                                rules.push(boxAction);
 
-                    const nextRule = transform(action as never, accRule);
+                                delete (boxAction as any).C;
+                                delete (boxAction as any).U;
+                                delete (boxAction as any).D;
+                            }
+                        });
+                    } else {
+                        if (execRule.action)
+                            rules.push(execRule);
+                    }
+
+                    delete execRule.scopeNode;
+
+                    const nextRule = transform(box as never, accRule);
                     if (nextRule) return nextRule;
                 }
             }
             return null;
         };
 
-        transform(actions);
+        transform(boxes);
         const shortRules = this.mapShortRules(rules);
 
         try {
@@ -426,6 +453,7 @@ export class Executer {
             'fix',
             'method',
             'expecteds',
+            'setSystems',
         ];
 
         return (rule: ExecutionReal, realRule: ExecutionReal, allArgs: Record<string, unknown>, value: unknown, auth?: LocalSokiAuth | null) => {
@@ -655,6 +683,12 @@ export class Executer {
                             auth,
                         );
 
+                        this.setSystemsValues(
+                            target,
+                            rule.value,
+                            rule.setSystems,
+                        );
+
                         this.doIt({
                             target,
                             penultimate,
@@ -691,6 +725,13 @@ export class Executer {
             } catch (error) {
                 reportFailError(reject, error);
             }
+        });
+    }
+
+    static setSystemsValues(list: any[], value: any, systems?: ActionBoxSetSystems[]) {
+        systems?.forEach((mapperName) => {
+            const result = actionBoxSetSystems[mapperName]?.(list);
+            if (result !== undefined) value[mapperName] = result;
         });
     }
 
