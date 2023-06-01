@@ -107,6 +107,9 @@ export default function ScheduleWidgetDayEventList({
                             confirm={`Удалить событие ${schedule.types?.[event.type].title}: ${event.topic}?`}
                             className="color--ko"
                             disabled={moveEventMi !== null}
+                            mapExecArgs={(args) => {
+                                return { ...args, eventmi: event.mi, value: undefined };
+                            }}
                         />
                     </>}
                     {insertControl(eventi + 1)}
