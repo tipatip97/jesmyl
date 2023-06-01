@@ -131,6 +131,7 @@
     .modal-body {
         margin: 20px 0;
         overflow: auto;
+        max-height: 80vh;
     }
 
     .modal-footer {
@@ -174,9 +175,8 @@
 
             &:not(.type_toast) {
                 display: flex;
-                flex-direction: column;;
+                flex-direction: column;
                 min-height: max-content;
-                max-height: calc(100vh - 10px);
             }
 
             &.mood.mood_ {
