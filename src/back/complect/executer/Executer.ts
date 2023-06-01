@@ -395,7 +395,7 @@ export class Executer {
                                     ...execRule,
                                     ...boxCrudBox,
                                     action: `${execRule.scopeNode}${!box.scopeNode && track[track.length - 1] ? ` ${track[track.length - 1]}` : ''} [${crudName}]`,
-                                    method: boxCrudBox.method ?? crudName === 'C' ? 'push' : crudName === 'D' ? 'remove' : 'set',
+                                    method: boxCrudBox.method ?? (crudName === 'C' ? 'push' : crudName === 'D' ? 'remove' : 'set'),
                                     args: {
                                         ...execRule.args,
                                         ...boxCrudBox.args,
@@ -826,6 +826,19 @@ export class Executer {
                         }
                         pushTarget?.push(smylib.clone(value));
                         break;
+                    case 'insert_beforei': {
+                        if (!smylib.isArr(target) || !value) break;
+                        const { find, beforei } = value;
+                        if (!smylib.isArr(find) || !smylib.isNum(beforei)) break;
+                        const spreadTarget = [...target];
+                        const index = spreadTarget.findIndex((item) => this.isExpected(item, find));
+                        const fakeArr: [] = [];
+                        const [item] = spreadTarget.splice(index, 1, fakeArr);
+                        spreadTarget.splice(beforei, 0, item);
+
+                        penultimate[lastTrace] = spreadTarget.filter(it => it !== fakeArr);
+                        break;
+                    }
                     case 'concat':
                         const concatTarget = smylib.isArr(target) ? target : penultimate[lastTrace] = [];
                         if (smylib.isArr(value)) {
