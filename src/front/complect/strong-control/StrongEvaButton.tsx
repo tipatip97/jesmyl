@@ -11,10 +11,12 @@ export default function StrongEvaButton({
     mapExecArgs,
     confirm,
     className,
+    disabled,
 }: StrongControlProps<{
     name: EvaIconName,
     confirm?: string,
     className?: string,
+    disabled?: boolean,
 }>) {
     const exer = useStrongExerContext();
 
@@ -22,6 +24,7 @@ export default function StrongEvaButton({
         name={name}
         confirm={confirm}
         className={className}
+        disabled={disabled}
         onSend={() => {
             strongPrepareArgsAndSend(exer, scope, fieldName, cud ?? 'C', undefined, () => { }, mapExecArgs);
         }}
