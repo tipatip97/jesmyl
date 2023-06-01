@@ -1,4 +1,5 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ThrowEvent } from "../ThrowEvent";
 import Portal from "../popups/[complect]/Portal";
 
 export enum ModalType {
@@ -37,10 +38,16 @@ const modalElements = {
 export default function useModal(topContent?: (elements: typeof modalElements, close: () => void) => JSX.Element, onClose?: () => void) {
     const [config, setConfig] = useState(defaultUseModalConfig);
     const typeClassName = ' type_' + config.type;
-    const close = () => {
+    const close = useCallback(() => {
         (config.onClose ?? onClose)?.();
         setConfig((prev) => ({ ...prev, isOpen: false }));
-    };
+    }, [config.onClose, onClose]);
+
+    useEffect(() => {
+        if (config.isOpen && config.type !== ModalType.Toast) {
+            return ThrowEvent.listenKeyDown('Escape', close);
+        }
+    }, [close, config.isOpen, config.type]);
 
     const ret = {
         screen: (content?: ReactNode, config?: ModalConfig) => {
