@@ -21,6 +21,7 @@ export default function useIsRedactArea(
       ? isCanRedact && !(redact ?? isSelfRedact)
         ? <EvaButton
           name="edit-outline"
+          className="edit-button"
           onClick={(event) => {
             event.stopPropagation();
             if (redact == null) setIsSelfRedact(true);
@@ -29,7 +30,7 @@ export default function useIsRedactArea(
         />
         : isShowDoneButton && <EvaButton
           name="checkmark-circle-2-outline"
-          className="color--ok"
+          className="edit-button color--ok"
           disabled={redact === true && !isSelfRedact}
           onClick={(event) => {
             event.stopPropagation();
