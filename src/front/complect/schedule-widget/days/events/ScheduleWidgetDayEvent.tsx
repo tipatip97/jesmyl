@@ -26,9 +26,8 @@ export default function ScheduleWidgetDayEvent(props: {
     const [isExpand, setIsExpand] = useState(false);
 
     useEffect(() => {
-        if (props.redact) setIsExpand(false);
-        else if (isSelfRedact) setIsExpand(true);
-    }, [isSelfRedact, props.redact]);
+        if (isSelfRedact) setIsExpand(true);
+    }, [isSelfRedact]);
 
     if (!box) return <>Неизвестный тип события</>;
 
@@ -40,7 +39,7 @@ export default function ScheduleWidgetDayEvent(props: {
         timeMark = `${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
     }
 
-    return <div className={'day-event' + (isExpand ? ' expand ' : '')}>
+    return <div className={'day-event' + (isExpand && !props.redact ? ' expand ' : '')}>
         <div className="item-header flex flex-gap between pointer" onClick={() => setIsExpand(is => !is)}>
             <div className="left-part flex flex-gap">
                 <span
