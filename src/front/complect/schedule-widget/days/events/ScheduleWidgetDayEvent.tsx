@@ -39,8 +39,8 @@ export default function ScheduleWidgetDayEvent(props: {
         timeMark = `${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
     }
 
-    return <div className={'day-event' + (isExpand && !props.redact ? ' expand ' : '')}>
-        <div className="item-header flex flex-gap between pointer" onClick={() => setIsExpand(is => !is)}>
+    return <div className={'day-event' + (isExpand && !props.redact ? ' expand' : '')}>
+        <div className={'item-header flex flex-gap between' + (props.redact ? '' : ' pointer')} onClick={() => !props.redact && setIsExpand(is => !is)}>
             <div className="left-part flex flex-gap">
                 <span
                     className="time-mark pointer"

@@ -125,6 +125,23 @@ const config: FilerAppConfig = {
                                         eventType: '#Number',
                                     }
                                 },
+                                U: {
+                                    method: 'insert_beforei',
+                                    value: {
+                                        find: ['mi', '===', '{eventmi}'],
+                                        beforei: '{value}',
+                                    },
+                                    args: {
+                                        eventmi: '#Number',
+                                        value: '#Number',
+                                    }
+                                },
+                                D: {
+                                    value: ['mi', '===', '{eventmi}'],
+                                    args: {
+                                        eventmi: '#Number',
+                                    }
+                                },
                                 '/[mi === {eventmi}]': {
                                     scopeNode: 'eventmi',
                                     args: {
