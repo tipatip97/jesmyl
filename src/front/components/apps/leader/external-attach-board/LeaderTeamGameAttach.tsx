@@ -16,7 +16,7 @@ export default function LeaderTeamGameAttach({
     value: LeaderResultBoardAttachValues,
     attItem: ScheduleWidgetAppAttResultItem<LeaderResultBoardAttachValues>,
 }) {
-    const { contextGames } = useGames();
+    const { contextGames, jumpToGame } = useGames();
 
     const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
         return <>
@@ -43,13 +43,14 @@ export default function LeaderTeamGameAttach({
 
     return <div>
         {modalNode}
-        <div className="flex flex-gap">
+        <div className="flex flex-gap margin-gap-h">
             {game
                 ? <span>{game.name}</span>
                 : value.gamew
                     ? <span className="error-message">Игра удалена</span>
                     : <span>Не определена</span>
             }
+            {game && <EvaButton name="external-link-outline" onClick={() => jumpToGame(game.w)} />}
             <EvaButton name="edit-outline" onClick={() => screen()} />
         </div>
         {game && <LeaderGameTotalScoreTable game={game} />}

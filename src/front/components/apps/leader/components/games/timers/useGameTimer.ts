@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SourceBased from "../../../../../../complect/SourceBased";
 import { RootState } from "../../../../../../shared/store";
+import { TeamGameImportable } from "../../../Leader.model";
 import di from "../../../Leader.store";
 import leaderStorage from "../../../leaderStorage";
-import useGames from "../useGames";
+import { LeaderCleans } from "../../LeaderCleans";
 import {
   GameTimerImportable,
   StoragedGameTimerDict
 } from "./GameTimer.model";
-import { LeaderCleans } from "../../LeaderCleans";
 
 let runTimeTimers: StoragedGameTimerDict = { news: {} };
 
@@ -24,18 +24,17 @@ const getBlankTimer = (): GameTimerImportable => {
   };
 };
 
-export default function useGameTimer(topTimerw?: number) {
+export default function useGameTimer(game?: TeamGameImportable, topTimerw?: number) {
   const dispatch = useDispatch();
-  const { cgame } = useGames();
   const timersStorage = useSelector(gameTimersSelector);
 
-  const gameWid = cgame?.w || 0;
+  const gameWid = game?.w || 0;
   const newTimer = topTimerw === undefined
     ? null
     : timersStorage?.news?.[gameWid]?.[topTimerw]
     || (topTimerw === 0 ? getBlankTimer() : null);
 
-  const gameTimer = topTimerw === undefined ? null : cgame?.timers?.find((timer) => timer.w === topTimerw);
+  const gameTimer = topTimerw === undefined ? null : game?.timers?.find((timer) => timer.w === topTimerw);
   const timer = newTimer || gameTimer;
 
   const isNewTimer = newTimer !== null;
@@ -46,7 +45,7 @@ export default function useGameTimer(topTimerw?: number) {
       if (runTimeTimers.news[gameWid] === undefined) runTimeTimers.news[gameWid] = {};
       runTimeTimers.news[gameWid][timerTs] = { ...gameTimer, ...timer, comments: gameTimer.comments };
     }
-  }, [cgame, gameWid, isNewTimer, timer, timerTs, gameTimer]);
+  }, [game, gameWid, isNewTimer, timer, timerTs, gameTimer]);
 
   const ret = {
     newTimer,
@@ -64,11 +63,11 @@ export default function useGameTimer(topTimerw?: number) {
       }
     },
     updateTimer: (timer: GameTimerImportable | null) => {
-      if (!cgame) return;
+      if (!game) return;
 
       const runTimer = runTimeTimers.news[gameWid]?.[timerTs];
 
-      if (runTimer && cgame.timers?.some((timer) => timer.ts === runTimer.ts))
+      if (runTimer && game.timers?.some((timer) => timer.ts === runTimer.ts))
         delete runTimeTimers.news[gameWid];
 
       const timerStore = { ...leaderStorage.get("gameTimers") };
@@ -102,8 +101,8 @@ export default function useGameTimer(topTimerw?: number) {
     updateTeamList: (teams: number[] | und) => {
       if (isNewTimer) {
         ret.mapTimer((timer) => ({ ...timer, teams }));
-      } else if (cgame && timer && teams)
-        return LeaderCleans.updateTimerTeamList(cgame.w, timer.w, teams);
+      } else if (game && timer && teams)
+        return LeaderCleans.updateTimerTeamList(game.w, timer.w, teams);
 
       return Promise.resolve();
     },
@@ -114,7 +113,7 @@ export default function useGameTimer(topTimerw?: number) {
         return {
           ...timer,
           starts: starts.map((ts) => ts || 0),
-          teams: timer.teams ?? cgame?.timerFields?.teams ?? cgame?.teams?.map(timer => timer.w),
+          teams: timer.teams ?? game?.timerFields?.teams ?? game?.teams?.map(timer => timer.w),
         };
       });
     },

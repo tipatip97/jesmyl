@@ -28,7 +28,7 @@ export default function TimerControlBoard({
 }) {
     const [selectedTeamw, setSelectedTeamw] = useState<number | null>(null);
     const [isTeamsResortProcess, setIsTeamsResortProcess] = useState(false);
-    const use = useGameTimer(timer.w);
+    const use = useGameTimer(game, timer.w);
     const { toast, modalNode } = useModal();
     const isCanPlay = mode !== GameTimerMode.TimerTotal && use.isNewTimer && (!timer.finishes || use.isTimerStarted());
 

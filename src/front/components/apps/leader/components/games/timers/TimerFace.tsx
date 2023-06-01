@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../../../complect/fullscreen-content/useFullscreenContent";
+import { TeamGameImportable } from "../../../Leader.model";
+import { LeaderCleans } from "../../LeaderCleans";
 import { GameTimerMode } from "./GameTimer.model";
 import LeaderGameTimerMaster from "./GameTimerMaster";
 import useGameTimer from "./useGameTimer";
-import { TeamGameImportable } from "../../../Leader.model";
-import { LeaderCleans } from "../../LeaderCleans";
 
 export default function LeaderGameTimerFace({
   timerw,
@@ -21,7 +21,7 @@ export default function LeaderGameTimerFace({
   game: TeamGameImportable,
 }) {
   const { openFullscreenContent } = useFullscreenContent();
-  const { timer } = useGameTimer(timerw);
+  const { timer } = useGameTimer(game, timerw);
 
   if (!timer) return null;
 
@@ -30,7 +30,7 @@ export default function LeaderGameTimerFace({
       className="face-item"
       onClick={() =>
         openFullscreenContent((close) => (
-          <LeaderGameTimerMaster close={close} timer={timer} />
+          <LeaderGameTimerMaster game={game} close={close} timer={timer} />
         ))
       }
     >

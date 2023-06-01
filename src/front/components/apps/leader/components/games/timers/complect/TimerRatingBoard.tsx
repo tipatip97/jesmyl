@@ -11,9 +11,11 @@ export default function TimerRatingBoard(
   {
     timer,
     game,
+    withoutControls,
   }: {
     timer: GameTimerImportable,
     game: TeamGameImportable,
+    withoutControls?: boolean
   }) {
 
   const [sortDirection, setSortDirection] = useState<GameTimerSortDirection>();
@@ -28,7 +30,7 @@ export default function TimerRatingBoard(
   return <>
     {rating.length > 0 &&
       <div className="TimerResults">
-        <CopyTextButton
+        {withoutControls || <CopyTextButton
           message="Рейтинг команд скопированы"
           className="text-bold margin-gap-b"
           description="Рейтинг"
@@ -43,9 +45,9 @@ export default function TimerRatingBoard(
 
             return `${timer.name}\n\n${list}`;
           }}
-        />
+        />}
         <div className="flex flex-gap">
-          <EvaSendButton
+          {withoutControls || <EvaSendButton
             name={sortDirection ? 'arrow-downward-outline' : 'arrow-upward-outline'}
             onSend={() => {
               const val = +!sortDirection;
@@ -53,7 +55,7 @@ export default function TimerRatingBoard(
               return LeaderCleans.setTimerResultsSortDirection(game.w, timer.w, val);
             }}
             onFailure={(error) => error}
-          />
+          />}
           <div>
             {rating.map(
               ({ team, start, finish }, bagi) => {
@@ -71,7 +73,7 @@ export default function TimerRatingBoard(
                     start={start}
                     pause={finish}
                   />
-                  <EvaButton
+                  {withoutControls || <EvaButton
                     name={isHidden ? "eye-outline" : "eye-off-outline"}
                     onClick={() =>
                       setHiddenTeams((list) =>
@@ -79,7 +81,7 @@ export default function TimerRatingBoard(
                           ? list.filter(teamw => teamw !== team.w)
                           : [...list, team.w])
                     }
-                  />
+                  />}
                 </div>;
               })}
           </div>

@@ -54,6 +54,6 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
                 <EvaButton name={isExpand ? 'chevron-up' : 'chevron-down'} />
             </span>
         </div>
-        {attContent}
+        <div className="margin-big-gap-l">{attContent}</div>
     </>;
 }

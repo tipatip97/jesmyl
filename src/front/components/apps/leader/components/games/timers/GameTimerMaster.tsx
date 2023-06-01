@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import TheButton from "../../../../../../complect/Button";
 import mylib from "../../../../../../complect/my-lib/MyLib";
+import { TeamGameImportable } from "../../../Leader.model";
 import { LeaderCleans } from "../../LeaderCleans";
 import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
 import { GameTeamImportable } from "../teams/GameTeams.model";
-import useGames from "../useGames";
 import {
   GameTimerImportable,
   GameTimerMode
@@ -25,22 +25,20 @@ const altObj = {};
 export default function LeaderGameTimerMaster({
   timer: topTimer,
   close,
+  game,
 }: {
-  timer: GameTimerImportable;
-  close: () => void;
+  game: TeamGameImportable,
+  timer: GameTimerImportable,
+  close: () => void,
 }) {
-  const { cgame } = useGames();
-  const use = useGameTimer(topTimer.w);
-  const {
-    timer,
-    isNewTimer,
-  } = use;
+  const use = useGameTimer(game, topTimer.w);
+  const { timer, isNewTimer } = use;
 
   const [name, setName] = useState(timer?.name);
-  const [mode, setMode] = useState(LeaderCleans.getTimerConfigurableField('mode', timer, cgame));
-  const [joins, setJoins] = useState(LeaderCleans.getTimerConfigurableField('joins', timer, cgame));
+  const [mode, setMode] = useState(LeaderCleans.getTimerConfigurableField('mode', timer, game));
+  const [joins, setJoins] = useState(LeaderCleans.getTimerConfigurableField('joins', timer, game));
 
-  const teamList = useMemo(() => LeaderCleans.takeTimerTeamList(timer, cgame), [cgame, timer]);
+  const teamList = useMemo(() => LeaderCleans.takeTimerTeamList(timer, game), [game, timer]);
 
   const [teams, updateTeams] = useState<GameTeamImportable[]>(teamList);
 
@@ -48,7 +46,7 @@ export default function LeaderGameTimerMaster({
 
   useEffect(() => updateTeams(teamList), [teamList]);
 
-  if (!timer || !cgame) return null;
+  if (!timer || !game) return null;
 
   const isTimerStarted = use.isTimerStarted();
 
@@ -59,7 +57,7 @@ export default function LeaderGameTimerMaster({
   );
 
   return <div className="game-timer-master full-container flex column over-hidden">
-    {isNewTimer && LeaderCleans.isTimerWasPublicate(cgame.timers, topTimer.ts)
+    {isNewTimer && LeaderCleans.isTimerWasPublicate(game.timers, topTimer.ts)
       ? <div className="flex column center flex-gap full-width full-height">
         <span className="error-message">Этот таймер уже был опубликован! Создай новый.</span>
         <TheButton
@@ -74,11 +72,11 @@ export default function LeaderGameTimerMaster({
           <TimerInfoPanel
             onMapTimer={use.mapTimer}
             onNameChange={setName}
-            game={cgame}
+            game={game}
             isNewTimer={isNewTimer}
             mode={mode}
             joins={joins}
-            sort={LeaderCleans.getTimerConfigurableField('sort', timer, cgame)}
+            sort={LeaderCleans.getTimerConfigurableField('sort', timer, game)}
             timer={timer}
           />
         </div>
@@ -124,7 +122,7 @@ export default function LeaderGameTimerMaster({
             teamNet={teamNet}
             teams={teams}
             timer={timer}
-            game={cgame}
+            game={game}
           />
         </>}
 
@@ -133,13 +131,13 @@ export default function LeaderGameTimerMaster({
             onTimerReset={() => use.resetTimers()}
             isCanReset={isTimerStarted || Object.keys(timer.finishes || altObj).length > 0}
           />
-          : <TimerRatingBoard timer={timer} game={cgame} />}
+          : <TimerRatingBoard timer={timer} game={game} />}
 
         <div className="margin-big-gap-v full-width">
           <LeaderCommentBlock
             placeholder="Комментарий к таймеру"
             action="addCommentForGameTimer"
-            gamew={cgame.w}
+            gamew={game.w}
             listw={timer.w}
             listwNameMask="timerw"
             comments={timer.comments}
@@ -158,7 +156,7 @@ export default function LeaderGameTimerMaster({
           name={name}
           isTeamsTaken={!!teamNet?.length}
           timer={timer}
-          game={cgame}
+          game={game}
           generalTimerw={topTimer.w}
           onSuccess={close}
         />

@@ -33,7 +33,7 @@ export default function TheGame() {
   const usedHumans =
     cgame?.teams?.reduce<number[]>((list, team) => list.concat(team.members), []) || [];
 
-  const { isTimerStarted } = useGameTimer();
+  const { isTimerStarted } = useGameTimer(cgame);
   const [teams, updateTeams] = useState<GameTeamExportable[] | und>();
   const { goBack } = useLeaderNav();
 
@@ -53,7 +53,11 @@ export default function TheGame() {
       />
     ));
 
-  if (!cgame) return null;
+  if (!cgame) return <PhaseLeaderContainer
+    topClass="the-game"
+    headTitle="Игра"
+    content={<div className="error-message flex center">Игра удалена</div>}
+  />;
 
   return (
     <PhaseLeaderContainer

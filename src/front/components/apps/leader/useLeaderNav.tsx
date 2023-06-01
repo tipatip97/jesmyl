@@ -3,6 +3,7 @@ import {
   UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
+import { RoutePhasePoint } from "../../router/Router.model";
 import GameList from "./components/games/GameList";
 import TheGame from "./components/games/TheGame";
 import GroupList from "./components/groups/GroupList";
@@ -15,6 +16,8 @@ import LeaderApplication from "./Leader";
 import { LeaderNavData, LeaderStoraged } from "./Leader.model";
 import { leaderExer } from "./Leader.store";
 import LeaderSchedule from "./LeaderSchedule";
+
+export const leaderNavGamePhase: RoutePhasePoint = ["game"];
 
 const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new NavigationConfig('leader', {
   root: (content) => <LeaderApplication content={content} />,
@@ -60,7 +63,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
           node: <GameList />,
           next: [
             {
-              phase: ["game"],
+              phase: leaderNavGamePhase,
               node: <TheGame />,
             },
           ],

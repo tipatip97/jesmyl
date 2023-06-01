@@ -22,9 +22,9 @@ export default function TimerPublicateControls({
     name?: string,
     isTeamsTaken: boolean,
     timer: GameTimerImportable,
-    game?: TeamGameImportable,
+    game: TeamGameImportable,
 }) {
-    const use = useGameTimer(generalTimerw);
+    const use = useGameTimer(game, generalTimerw);
 
     if (!game) return null;
 
@@ -45,14 +45,16 @@ export default function TimerPublicateControls({
                                 use.updateTimer(null);
                                 onSuccess();
                             }}
-                            onSend={() =>
-                                LeaderCleans.publicateTimer(game.w, {
+                            onSend={() => {
+                                if (!game.teams) return;
+                                return LeaderCleans.publicateTimer(game.w, {
                                     ...timer,
                                     mode: LeaderCleans.getTimerConfigurableField('mode', timer, game),
                                     joins: LeaderCleans.getTimerConfigurableField('joins', timer, game),
                                     sort: LeaderCleans.getTimerConfigurableField('sort', timer, game),
-                                    teams: LeaderCleans.getTimerConfigurableField('teams', timer, game),
-                                })}
+                                    teams: LeaderCleans.getTimerConfigurableFieldAsIs('teams', timer, game) ?? game.teams.map(it => it.w),
+                                });
+                            }}
                         />}
         </div>
         : <div
