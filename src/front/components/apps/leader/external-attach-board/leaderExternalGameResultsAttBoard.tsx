@@ -13,3 +13,7 @@ export const leaderOwnGameResultBoardAppAtt: ScheduleWidgetAppAtts<'leader', Lea
         result: (value, attItem) => <LeaderTeamGameAttach attItem={attItem} value={value} />,
     }
 };
+
+export const leaderOwnAppAtts: ScheduleWidgetAppAtts<'leader'> = {
+    ...leaderOwnGameResultBoardAppAtt,
+};

@@ -1,22 +1,5 @@
-import { ScheduleWidgetAppAtts } from "../../complect/schedule-widget/ScheduleWidget.model";
-import { leaderOwnGameResultBoardAppAtt } from "../apps/leader/external-attach-board/leaderExternalGameResultsAttBoard";
-
-
-export const leaderOwnAppAtts: ScheduleWidgetAppAtts<'leader'> = {
-    ...leaderOwnGameResultBoardAppAtt,
-};
-
-
-export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm'> = {
-    '[cm]:coms': {
-        icon: 'music-outline',
-        title: 'Песни',
-        description: 'Список известных песен',
-        result: () => <></>
-    }
-};
-
-
+import { cmOwnAppAtts } from "../apps/cm/external/cmExternalAttach";
+import { leaderOwnAppAtts } from "../apps/leader/external-attach-board/leaderExternalGameResultsAttBoard";
 
 export const leaderAppAtts = {
     ...leaderOwnAppAtts,
