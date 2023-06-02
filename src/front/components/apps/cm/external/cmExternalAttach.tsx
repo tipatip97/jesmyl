@@ -10,6 +10,7 @@ export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
         icon: 'music-outline',
         title: 'Песни',
         description: 'Список известных песен',
+        initialAttValue: {},
         result: (value, attItem) => <CmExternalComListAtt attItem={attItem} value={value} />
     }
 };

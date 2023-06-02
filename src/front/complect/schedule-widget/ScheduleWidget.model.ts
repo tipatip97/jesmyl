@@ -42,10 +42,10 @@ export interface ScheduleWidgetAppAtt<AttValue extends any = any> {
     title: string,
     result: (value: AttValue, attItem: ScheduleWidgetAppAttResultItem<AttValue>) => ReactNode,
     description: string,
+    initialAttValue: AttValue,
 }
 
 export interface ScheduleWidgetDayListItemTypeBox {
     title: string,
     tm?: number,
-    atts?: ScheduleWidgetAttKey[],
 }
