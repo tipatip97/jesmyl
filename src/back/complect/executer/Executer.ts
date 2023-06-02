@@ -798,6 +798,9 @@ export class Executer {
                     case 'set':
                         if (penultimate) penultimate[lastTrace] = smylib.clone(value);
                         break;
+                    case 'delete':
+                        if (penultimate) delete penultimate[lastTrace];
+                        break;
                     case 'set_all':
                         if (target) SMyLib.entries(smylib.clone(value)).forEach(([key, val]) => target[key] = val);
                         break;

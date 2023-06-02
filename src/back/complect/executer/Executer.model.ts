@@ -1,7 +1,7 @@
 import { ActionBoxSetSystems } from "../../models";
 import { SokiAppName } from "../soki/soki.model";
 
-export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | 'func' | 'migrate' | 'insert_beforei' | 'remove' | 'remove_each' | 'other';
+export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | 'func' | 'migrate' | 'insert_beforei' | 'remove' | 'remove_each' | 'delete' | 'other';
 
 export interface ExecutionDict<Value = any, Args = Record<string, any> & Partial<Record<'value', Value>>> {
     action: string,
