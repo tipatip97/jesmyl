@@ -2,9 +2,7 @@ import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import SwipeableContainer from "../../../../../complect/swipeable/SwipeableContainer";
 import { RootState } from "../../../../../shared/store";
-import RollControled from "../../base/RolledContent";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
 import useCmNav from "../../base/useCmNav";
 import useLaterComList from "../../base/useLaterComList";
@@ -12,28 +10,24 @@ import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import { Com } from "./Com";
 import "./Com.scss";
 import ComTools from "./ComTools";
+import TheControlledCom from "./TheControlledCom";
 import ComPlayer from "./player/ComPlayer";
-import TheCom from "./TheCom";
 import { useCcom } from "./useCcom";
 import useComPack from "./useComPack";
 import useMigratableComTools from "./useMigratableComTools";
 
-const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
-const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
 const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 
 export default function TheComposition() {
+  const [chordVisibleVariant] = useChordVisibleVariant();
   const ccom = useCcom();
   const { addLaterComw } = useLaterComList();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { topTools } = useMigratableComTools();
   const [comList] = useComPack(ccom);
-  const [chordVisibleVariant] = useChordVisibleVariant();
-  const fontSize = useSelector(fontSizeSelector);
-  const isMiniAnchor = useSelector(isMiniAnchorSelector);
   const playerHideMode = useSelector(playerHideModeSelector);
-  const { setAppRouteData } = useCmNav();
   const comAudio = ccom?.audio.trim();
+  const { setAppRouteData } = useCmNav();
   const setCom = (com: Com) => setAppRouteData({ ccomw: com.wid });
 
   useEffect(() => {
@@ -75,32 +69,12 @@ export default function TheComposition() {
       </div>}
       content={<>
         {comAudio && <ComPlayer src={comAudio} split />}
-        <RollControled>
-          <SwipeableContainer
-            props={{ diapasonMoveVKf: 50, diapasonMoveHKf: 70 }}
-            onHorizontalSwipe={(dir) => {
-              if (!comList) return;
-              const comi = comList.findIndex((com) => com === ccom);
-
-              if (comi > -1) {
-                if ("l" === dir)
-                  if (comi < comList.length - 1) setCom(comList[comi + 1]);
-                  else setCom(comList[0]);
-
-                if ("r" === dir)
-                  if (comi > 0) setCom(comList[comi - 1]);
-                  else setCom(comList[comList.length - 1]);
-              }
-            }}
-            content={
-              <TheCom
-                fontSize={fontSize}
-                chordVisibleVariant={chordVisibleVariant}
-                isMiniAnchor={isMiniAnchor}
-              />
-            }
-          />
-        </RollControled>
+        <TheControlledCom
+          com={ccom}
+          comList={comList}
+          chordVisibleVariant={chordVisibleVariant}
+          onComSet={setCom}
+        />
       </>}
     />
   );
