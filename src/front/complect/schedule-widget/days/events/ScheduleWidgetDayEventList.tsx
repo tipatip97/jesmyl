@@ -72,7 +72,7 @@ export default function ScheduleWidgetDayEventList({
                     </div>;
 
                 return <div
-                    key={eventi}
+                    key={event.mi}
                     className={
                         'day-event-wrapper flex flex-gap'
                         + (moveEventMi === event.mi ? ' move-me' : '')

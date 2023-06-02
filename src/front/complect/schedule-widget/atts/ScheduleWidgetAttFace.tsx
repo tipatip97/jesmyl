@@ -12,7 +12,7 @@ export default function ScheduleWidgetAttFace({
     isRedact,
 }: StrongComponentProps<{
     isRedact: boolean,
-    att: ScheduleWidgetAppAtt,
+    att?: ScheduleWidgetAppAtt,
     attKey: ScheduleWidgetAttKey,
     typeTitle: string,
 }>) {
@@ -23,7 +23,7 @@ export default function ScheduleWidgetAttFace({
             cud="D"
             name="close"
             className="close-button"
-            confirm={`Убрать вложение "${att.title}" из типа "${typeTitle}"`}
+            confirm={`Убрать вложение "${att?.title || '??'}" из типа "${typeTitle}"`}
             mapExecArgs={(args) => {
                 return {
                     ...args,
@@ -31,7 +31,17 @@ export default function ScheduleWidgetAttFace({
                 };
             }}
         />}
-        <EvaIcon name={att.icon} />
-        <div>{att.title}</div>
+        {att
+            ? <>
+                <EvaIcon name={att.icon} />
+                <div>{att.title}</div>
+            </>
+            : <>
+                <EvaIcon
+                    name="question-mark-circle-outline"
+                    className="color--ko"
+                />
+                <div className="color--ko">Не изв.</div>
+            </>}
     </div>;
 }
