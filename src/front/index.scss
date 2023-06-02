@@ -162,6 +162,10 @@ input[type="button"] {
   &auto {
     overflow: auto;
   }
+
+  &y-auto {
+    overflow-y: auto;
+  }
 }
 
 .input,
