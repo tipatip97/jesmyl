@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppName } from "../../app/App.model";
 import { RouteCast, RoutePathVariated, RoutePhasePoint, RoutePhasePointVariated, RoutePlaceVariated } from "../../components/router/Router.model";
-import { routerFixNavigateCast, routerFixNavigateData } from "../../components/router/Router.store";
+import di from "../../components/router/Router.store";
 import { RootState } from "../../shared/store";
 import mylib from "../my-lib/MyLib";
 import useFullScreen from "../useFullscreen";
@@ -30,7 +30,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
         navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
         appRouteData,
         setAppRouteData: (data: NavData | ((prev?: NavData) => NavData), isPreventSave?: boolean) => {
-            dispatch(routerFixNavigateData({
+            dispatch(di.routerFixNavigateData({
                 appName,
                 isPreventSave,
                 value: {
@@ -81,7 +81,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
                     value,
                 };
 
-                dispatch(routerFixNavigateCast(fix));
+                dispatch(di.routerFixNavigateCast(fix));
             }
         },
         goTo: (topPhase: RoutePlaceVariated<NavData>, relativePoint?: RoutePhasePoint | nil, isPreventSave?: boolean) => {

@@ -19,7 +19,7 @@ const initialState: IndexState = {
   currentApp,
   appVersion: indexStorage.get("appVersion"),
   auth: indexStorage.get('auth'),
-  isUseNativeKeyboard: indexStorage.get('isUseNativeKeyboard'),
+  isUseNativeKeyboard: indexStorage.getOr('isUseNativeKeyboard', true),
   apps: indexStorage.getOr('apps', []),
   schedules: indexStorage.getOr('schedules', { list: [] }),
   numModalUpdates: 0,

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { MyLib } from "../../complect/my-lib/MyLib";
-import { RouterNavigateData, RouterNavigateCast, RouterState } from "./Router.model";
+import { RouterNavigateCast, RouterNavigateData, RouterState } from "./Router.model";
 import routerStorage from "./routerStorage";
 
 const initialState: RouterState = {};
@@ -26,10 +26,6 @@ export const slice = createSlice({
   },
 });
 
-export const {
-  routerFixNavigateCast,
-  routerFixNavigateData,
-} = slice.actions;
 export default slice.actions;
 
 export const routerReducer = slice.reducer;

@@ -12,6 +12,7 @@ import { soki } from "../../../soki";
 import di from "../Index.store";
 import PhaseIndexContainer from "../complect/PhaseIndexContainer";
 import { useSelectAuth } from "../useAuth";
+import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 
 const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 const statisticSelector = (state: RootState) => state.index.statistic;
@@ -58,7 +59,7 @@ export default function IndexSettings() {
       icon="keypad-outline"
       title="Фирменная клавиатура"
       onClick={async () => { dispatch(di.switchIsUseNativeKeyboard()) }}
-      box={<input type="checkbox" checked={!isUseNativeKeyboard} onChange={() => { }} />}
+      box={<EvaIcon name={isUseNativeKeyboard ? 'square-outline' : 'checkmark-square-2-outline'} />}
     />,
     <BrutalItem
       icon="message-square-outline"
