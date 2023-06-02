@@ -74,18 +74,23 @@ export default function TheCat({ all }: { all?: boolean }) {
               <div
                 className={`later-com-list ${all && !term && laterComs.length ? "" : "hidden"}`}
               >
-                <div className="list-title sticky">Последние:</div>
+                <div
+                  className="list-title sticky"
+                  onClick={() => scrollToCurrent()}
+                >
+                  Последние:
+                </div>
                 {laterComs.map((com) => (
                   <ComFace
                     key={com.wid}
                     com={com}
-                    rejectScrollToView
                   />
                 ))}
               </div>
               <div
                 className="flex between sticky list-title"
                 ref={categoryTitleRef}
+                onClick={() => scrollToCurrent()}
               >
                 <div>{cat.name}:</div>
                 {cat.wraps && (
@@ -102,7 +107,6 @@ export default function TheCat({ all }: { all?: boolean }) {
                   <ComFace
                     key={wrap.com.wid}
                     {...wrap}
-                    rejectScrollToView
                     groupClass="com-of-cat"
                   />
                 ))}

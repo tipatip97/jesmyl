@@ -52,6 +52,9 @@ export default function EditCompositions() {
               onSearch={(term) => zcat.search(term)}
               debounce={500}
               onTermChange={(term) => setTerm(term)}
+              onDebounced={() => {
+                if (listRef.current) listRef.current.scrollTop = 0;
+              }}
             />
           )
         }

@@ -35,7 +35,6 @@ export default function ExecsVisor() {
                 <ComFace
                   key={`com-${comw}`}
                   com={flowCom}
-                  rejectScrollToView
                 />
               )
             );

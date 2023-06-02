@@ -13,7 +13,6 @@ export default function ComFace(props: ComFaceProps) {
     importantOnClick,
     groupClass,
     selectable,
-    rejectScrollToView,
   } = props;
   const ccom = useCcom();
   const { jumpTo } = useCmNav();
@@ -32,11 +31,6 @@ export default function ComFace(props: ComFaceProps) {
       onClick={
         importantOnClick ||
         (() => jumpTo({ phase: comNavPhasePoint, data: { ccomw: com.wid } }))
-      }
-      ref={
-        rejectScrollToView || ccom?.wid !== com.wid
-          ? undefined
-          : (element) => element?.scrollIntoView()
       }
       {...propsOfClicker({
         onCtxMenu: (event) => {
