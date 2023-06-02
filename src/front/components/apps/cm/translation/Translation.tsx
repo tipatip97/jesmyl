@@ -160,7 +160,7 @@ export default function Translations({
   return (
     <PhaseCmContainer
       topClass={`translation-container ${position}`}
-      head={`Трансляция${titlePostfix}`}
+      headTitle={`Трансляция${titlePostfix}`}
       content={
         <>
           <div className="flex">

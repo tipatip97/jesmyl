@@ -17,11 +17,13 @@ export function useEditableMeetings() {
     const { jumpTo, appRouteData: { eventw } } = useCmNav();
     const cols = useEditableCols();
     const meetings = useMemo(() => {
+        if (!cols) return;
         if (localIMeetings && localIMeetings === imeetings)
             return localMeetings;
 
         localMeetings = new EditableMeetings(imeetings, cols);
         localIMeetings = imeetings;
+        return localMeetings;
     }, [cols, imeetings]);
 
     return {

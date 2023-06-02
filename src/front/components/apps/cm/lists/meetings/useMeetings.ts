@@ -16,11 +16,13 @@ export function useMeetings() {
     const { goTo, appRouteData: { eventw } } = useCmNav();
     const cols = useCols();
     const meetings = useMemo(() => {
+        if (!cols) return;
         if (localIMeetings && localIMeetings === imeetings)
             return localMeetings;
 
         localMeetings = new Meetings(imeetings, cols);
         localIMeetings = imeetings;
+        return localMeetings;
     }, [cols, imeetings]);
 
     return {

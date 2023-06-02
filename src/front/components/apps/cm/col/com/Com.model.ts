@@ -37,9 +37,9 @@ export const menuComToolNameList = [
     "share-by-qr",
     "is-mini-anchor",
     "open-player",
-  ] as const;
+] as const;
 
-  export interface MigratableComTool {
+export interface MigratableComTool {
     title: string;
     icon: EvaIconName;
     onClick: () => void | boolean;

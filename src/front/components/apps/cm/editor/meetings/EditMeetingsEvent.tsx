@@ -1,12 +1,12 @@
 import { useState } from "react";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
+import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../complect/exer/useExer";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import useCmNav from "../../base/useCmNav";
 import { cmExer } from "../../Cm.store";
+import useCmNav from "../../base/useCmNav";
 import ComFace from "../../col/com/face/ComFace";
 import { useEditableCcat } from "../col/categories/useEditableCcat";
 import EditContainerCorrectsInformer from "../edit-container-corrects-informer/EditContainerCorrectsInformer";
@@ -22,12 +22,10 @@ export default function EditMeetingsEvent() {
   const { goTo } = useCmNav();
   const [isClosedComList, setIsClosedComList] = useState(true);
   const { openAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
-  const {openFullscreenContent} = useFullscreenContent();
+  const { openFullscreenContent } = useFullscreenContent();
 
   if (!currentEvent) return null;
-  const usedComList = (currentEvent.coms || []).concat(
-    currentEvent.prevComs || []
-  );
+  const usedComList = (currentEvent.coms || []).concat(currentEvent.prevComs || []);
   const comsLength = currentEvent.coms?.length || 0;
   const prevComsLength = currentEvent.prevComs?.length || 0;
 
