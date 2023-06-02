@@ -1,22 +1,25 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
-import useCmNav from "../../base/useCmNav";
 import di from "../../Cm.store";
+import useCmNav from "../../base/useCmNav";
 import { Meetings } from "./Meetings";
+import { MeetingsEvent } from "./MeetingsEvent";
 
 const favoriteMeetingsSelector = (state: RootState) => state.cm.favoriteMeetings;
 
 export default function MeetingsInner<Meets extends Meetings>({
   meetings,
   onEventClick,
+  asEventBox,
   onContextNavigate,
 }: {
   meetings: Meets;
   onEventClick: (event: Meets["event"]) => void;
   onContextNavigate?: (context: number[]) => void;
+  asEventBox?: (event: MeetingsEvent) => ReactNode,
 }) {
   const dispatch = useDispatch();
   const { registerBackAction, appRouteData: { eventContext = [] }, setAppRouteData } = useCmNav();
@@ -70,7 +73,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                 icon="calendar-outline"
                 title={event.name}
                 onClick={() => onEventClick(event)}
-                box={<EvaIcon className="fade-05" name="star" />}
+                box={asEventBox ? asEventBox(event) : <EvaIcon className="fade-05" name="star" />}
                 description={
                   <span
                     onClick={(event) => {
@@ -122,25 +125,27 @@ export default function MeetingsInner<Meets extends Meetings>({
             title={event.name}
             onClick={() => onEventClick(event)}
             box={
-              eventContext.length ? (
-                <EvaIcon
-                  name={isFavorite ? "star" : "star-outline"}
-                  onClick={(e) => {
-                    e.stopPropagation();
+              asEventBox
+                ? asEventBox(event)
+                : (eventContext.length ? (
+                  <EvaIcon
+                    name={isFavorite ? "star" : "star-outline"}
+                    onClick={(e) => {
+                      e.stopPropagation();
 
-                    dispatch(
-                      di.updateFavoriteMeetings({
-                        ...favorites,
-                        events: isFavorite
-                          ? favorites.events.filter(
-                            (eventw) => eventw !== event.wid
-                          )
-                          : [...favorites.events, event.wid],
-                      })
-                    );
-                  }}
-                />
-              ) : null
+                      dispatch(
+                        di.updateFavoriteMeetings({
+                          ...favorites,
+                          events: isFavorite
+                            ? favorites.events.filter(
+                              (eventw) => eventw !== event.wid
+                            )
+                            : [...favorites.events, event.wid],
+                        })
+                      );
+                    }}
+                  />
+                ) : null)
             }
           />
         );
