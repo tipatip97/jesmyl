@@ -11,7 +11,7 @@ export default function ScheduleWidgetAttFace({
     scope,
     isRedact,
 }: StrongComponentProps<{
-    isRedact: boolean,
+    isRedact?: boolean,
     att?: ScheduleWidgetAppAtt,
     attKey: ScheduleWidgetAttKey,
     typeTitle: string,
@@ -19,11 +19,11 @@ export default function ScheduleWidgetAttFace({
     return <div className="schedule-widget-att flex center column">
         {isRedact && <StrongEvaButton
             scope={scope}
-            fieldName="atts"
+            fieldName=""
             cud="D"
             name="close"
             className="close-button"
-            confirm={`Убрать вложение "${att?.title || '??'}" из типа "${typeTitle}"`}
+            confirm={`Убрать вложение "${att?.title || '??'}" из события "${typeTitle}"`}
             mapExecArgs={(args) => {
                 return {
                     ...args,

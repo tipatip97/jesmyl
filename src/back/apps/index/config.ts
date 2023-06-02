@@ -159,11 +159,17 @@ const config: FilerAppConfig = {
                                         expected: {},
                                         '/{attKey}': {
                                             scopeNode: 'attKey',
+                                            args: {
+                                                attKey: '#String',
+                                            },
                                             U: {
                                                 args: {
                                                     value: '#Dict',
                                                     attKey: '#String',
                                                 }
+                                            },
+                                            D: {
+                                                method: 'delete',
                                             }
                                         }
                                     }

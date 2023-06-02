@@ -3,8 +3,7 @@ import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongDiv from "../../../strong-control/StrongDiv";
-import { takeStrongScopeMaker } from "../../../strong-control/useStrongControl";
-import { IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetAttKey, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
+import { IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetAppAtt, ScheduleWidgetAttKey, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
 import { useScheduleWidgetAppAttsContext } from "../../useScheduleWidget";
 
 const altVal = {};
@@ -14,6 +13,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     event: IScheduleWidgetDayEvent,
     day: IScheduleWidgetDay,
     attKey: ScheduleWidgetAttKey,
+    att: ScheduleWidgetAppAtt<unknown>
 }>) {
     const appAtts = useScheduleWidgetAppAttsContext();
     const appAtt = appAtts[props.attKey];
@@ -21,12 +21,10 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
 
     if (!appAtt) return <div className="error-message">Неизвестное вложение</div>;
 
-    const selfScope = takeStrongScopeMaker(props.scope, ' attKey/', props.attKey);
-
     let attContent = null;
     const attachItem = (mapValue: () => unknown, content: ReactNode) => {
         return <StrongDiv
-            scope={selfScope}
+            scope={props.scope}
             fieldName=""
             cud="U"
             mapExecArgs={(args) => {
@@ -41,7 +39,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     };
 
     try {
-        attContent = isExpand && <div className="">{appAtt.result?.(props.event.atts?.[props.attKey] ?? altVal, attachItem)}</div>;
+        attContent = isExpand && <div>{appAtt.result?.(props.att ?? altVal, attachItem)}</div>;
     } catch (error) {
         attContent = <div className="error-message">Контент не доступен</div>;
     }
@@ -49,7 +47,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     return <>
         <div className="flex flex-gap between color--7">
             <span className="flex flex-gap pointer" onClick={() => setIsExpand(is => !is)}>
-                <EvaIcon name={appAtt.icon} className="" />
+                <EvaIcon name={appAtt.icon} />
                 {appAtt.title}
                 <EvaButton name={isExpand ? 'chevron-up' : 'chevron-down'} />
             </span>

@@ -8,7 +8,6 @@ import StrongEditableField from "../../strong-control/StrongEditableField";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import { IScheduleWidget } from "../ScheduleWidget.model";
-import ScheduleWidgetBindAtts from "../atts/ScheduleWidgetBindAtts";
 
 const singleTitleSymbols = '- ().,';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
@@ -111,12 +110,6 @@ export default function ScheduleWidgetEventList({
                                 title="Продолжительность, мин"
                                 icon="clock-outline"
                                 mapExecArgs={(args) => ({ ...args, key: 'tm' })}
-                            />
-                            <ScheduleWidgetBindAtts
-                                atts={type.atts}
-                                scope={typeScope}
-                                isRedact={isRedact}
-                                typeTitle={type.title}
                             />
                         </StrongDiv>
                         {usedCounts

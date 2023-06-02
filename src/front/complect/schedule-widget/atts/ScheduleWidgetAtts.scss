@@ -1,22 +1,15 @@
 .schedule-widget-bind-secs {
     --att-size: 70px;
 
-    transition: height .1s;
-
-    &.empty {
-        height: 1.5em;
-    }
-
-    &.redact {
-        height: var(--att-size);
-    }
+    height: var(--att-size);
 }
+
 
 .schedule-widget-att {
     --att-size: 70px;
 
     position: relative;
-    background-color: var(--color--2);
+    background-color: var(--color--5);
     width: var(--att-size);
     min-width: var(--att-size);
     max-width: var(--att-size);
