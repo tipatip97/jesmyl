@@ -5,9 +5,10 @@ import Portal from "../popups/[complect]/Portal";
 
 export type FullContentOpenMode = null | "open" | "closable";
 
-export default function useFullContent(content: (close: () => void) => ReactNode): [ReactNode, (isClosable?: boolean) => void, () => void] {
+export default function useFullContent<PassValue>(content: (close: () => void, passValue?: PassValue) => ReactNode): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {
     const [openMode, setOpenMode] = useState<FullContentOpenMode>(null);
     const close = () => setOpenMode(null);
+    const [passValue, setPassValue] = useState<PassValue>();
 
     useEffect(() => {
         if (openMode) {
@@ -31,8 +32,13 @@ export default function useFullContent(content: (close: () => void) => ReactNode
                 />
             )}
             <div className="full-container padding-big-gap">
-                {content(close)}
+                {content(close, passValue)}
             </div>
         </div>
-    </Portal>, (isClosable?: boolean) => setOpenMode(isClosable ? 'closable' : 'open'), close];
+    </Portal>,
+    (isClosable?: boolean, passValue?: PassValue) => {
+        setOpenMode(isClosable ? 'closable' : 'open');
+        setPassValue(passValue);
+    },
+        close];
 }
