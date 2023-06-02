@@ -31,16 +31,18 @@ export interface IScheduleWidgetDayEvent {
     atts?: Record<ScheduleWidgetAttKey, unknown>,
 }
 
-export type ScheduleWidgetAttKey<AttAppName extends AppName = AppName> = `[${AttAppName}]:${string}`;
+export type AttKey = AppName | 'SCH';
 
-export type ScheduleWidgetAppAtts<AttAppName extends AppName = AppName, AttValue extends any = any> = Record<ScheduleWidgetAttKey<AttAppName>, ScheduleWidgetAppAtt<AttValue>>;
+export type ScheduleWidgetAttKey<AttAppName extends AttKey = AttKey> = `[${AttAppName}]:${string}`;
+
+export type ScheduleWidgetAppAtts<AttAppName extends AttKey = AttKey, AttValue extends any = any> = Record<ScheduleWidgetAttKey<AttAppName>, ScheduleWidgetAppAtt<AttValue>>;
 
 export type ScheduleWidgetAppAttResultItem<AttValue extends any> = (mpValue: () => AttValue, content: ReactNode) => JSX.Element;
 
 export interface ScheduleWidgetAppAtt<AttValue extends any = any> {
     icon: EvaIconName,
     title: string,
-    result: (value: AttValue, attItem: ScheduleWidgetAppAttResultItem<AttValue>) => ReactNode,
+    result: (value: AttValue, attItem: ScheduleWidgetAppAttResultItem<AttValue>, scope: string) => ReactNode,
     description: string,
     initialAttValue: AttValue,
 }

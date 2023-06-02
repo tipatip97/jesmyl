@@ -39,7 +39,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     };
 
     try {
-        attContent = isExpand && <div>{appAtt.result?.(props.att ?? altVal, attachItem)}</div>;
+        attContent = isExpand && <div>{appAtt.result?.(props.att ?? appAtt.initialAttValue, attachItem, props.scope)}</div>;
     } catch (error) {
         attContent = <div className="error-message">Контент не доступен</div>;
     }

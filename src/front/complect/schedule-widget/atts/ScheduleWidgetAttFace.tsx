@@ -34,7 +34,7 @@ export default function ScheduleWidgetAttFace({
         {att
             ? <>
                 <EvaIcon name={att.icon} />
-                <div>{att.title}</div>
+                <div className="ellipsis full-max-width">{att.title}</div>
             </>
             : <>
                 <EvaIcon

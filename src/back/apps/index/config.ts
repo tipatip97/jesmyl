@@ -170,6 +170,36 @@ const config: FilerAppConfig = {
                                             },
                                             D: {
                                                 method: 'delete',
+                                            },
+                                            '/list': {
+                                                '<check list>': {
+                                                    scopeNode: 'checkList',
+                                                    C: {
+                                                        value: [0, ''],
+                                                    },
+                                                    '/{itemi}': {
+                                                        scopeNode: 'itemi',
+                                                        args: {
+                                                            itemi: '#Number',
+                                                        },
+                                                        '/0': {
+                                                            scopeNode: 'check',
+                                                            U: {
+                                                                args: {
+                                                                    value: '#Num',
+                                                                }
+                                                            },
+                                                        },
+                                                        '/1': {
+                                                            scopeNode: 'title',
+                                                            U: {
+                                                                args: {
+                                                                    value: '#String',
+                                                                }
+                                                            }
+                                                        },
+                                                    }
+                                                }
                                             }
                                         }
                                     }

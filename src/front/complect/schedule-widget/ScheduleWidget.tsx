@@ -8,6 +8,7 @@ import { takeStrongScopeMaker, useStrongExerContent } from "../strong-control/us
 import useIsRedactArea from "../useIsRedactArea";
 import { IScheduleWidget, ScheduleWidgetAppAtts } from "./ScheduleWidget.model";
 import './ScheduleWidget.scss';
+import { scheduleOwnAtts } from "./atts/attachments/scheduleOwnAtts";
 import ScheduleWidgetCleans from "./complect/ScheduleWidgetCleans";
 import ScheduleWidgetDay from "./days/ScheduleWidgetDay";
 import ScheduleWidgetEventList from "./events/ScheduleWidgetEventList";
@@ -29,6 +30,7 @@ export default function ScheduleWidget({
 
     const date = useMemo(() => new Date(schedule?.start || new Date().setMonth(new Date().getMonth() + 1)), [schedule?.start]);
     const dateValue = useMemo(() => date.getTime() ? date.toLocaleDateString().replace(/\./g, ' ') : '', [date]);
+    const atts = useMemo(() => ({ ...appAtts, ...scheduleOwnAtts }), [appAtts]);
 
     if (!schedule) return null;
 
@@ -36,7 +38,7 @@ export default function ScheduleWidget({
 
     const firstWup = schedule.days?.[0].wup;
 
-    return content(<ScheduleWidgetAppAttsContext.Provider value={appAtts}>
+    return content(<ScheduleWidgetAppAttsContext.Provider value={atts}>
         <div className="schedule-widget">
             <div className="flex flex-gap">
                 <div className="flex flex-gap pointer" onClick={() => setIsExpand(is => !is)}>
