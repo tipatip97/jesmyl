@@ -7,6 +7,7 @@ import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent } from "..
 import ScheduleWidgetBindAtts from "../../atts/ScheduleWidgetBindAtts";
 import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
 import ScheduleWidgetDayEventAtts from "../../events/atts/ScheduleWidgetDayEventAtts";
+import { useIsSchWidgetExpand } from "../../useScheduleWidget";
 
 export default function ScheduleWidgetDayEvent(props: {
     scope: string,
@@ -25,10 +26,10 @@ export default function ScheduleWidgetDayEvent(props: {
     let timerClassNamePlus = '';
     const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, null, null, true);
     const selfScope = takeStrongScopeMaker(props.scope, ' eventmi/', props.event.mi);
-    const [isExpand, setIsExpand] = useState(false);
+    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(selfScope);
 
     useEffect(() => {
-        if (isSelfRedact) setIsExpand(true);
+        if (isSelfRedact) switchIsExpand(true);
     }, [isSelfRedact]);
 
     if (!box) return <>Неизвестный тип события</>;
@@ -44,7 +45,10 @@ export default function ScheduleWidgetDayEvent(props: {
     }
 
     return <div className={'day-event' + (isExpand && !props.redact ? ' expand' : '')}>
-        <div className={'item-header flex flex-gap between' + (props.redact ? '' : ' pointer')} onClick={() => !props.redact && setIsExpand(is => !is)}>
+        <div
+            className={'item-header flex flex-gap between' + (props.redact ? '' : ' pointer')}
+            onClick={() => !props.redact && switchIsExpand()}
+        >
             <div className="left-part flex flex-gap">
                 <span
                     className={'time-mark pointer' + timerClassNamePlus}

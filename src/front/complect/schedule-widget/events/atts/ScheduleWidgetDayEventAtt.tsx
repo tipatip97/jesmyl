@@ -1,12 +1,10 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongDiv from "../../../strong-control/StrongDiv";
 import { IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetAppAtt, ScheduleWidgetAttKey, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
-import { useScheduleWidgetAppAttsContext } from "../../useScheduleWidget";
-
-const altVal = {};
+import { useIsSchWidgetExpand, useScheduleWidgetAppAttsContext } from "../../useScheduleWidget";
 
 export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     typeBox: ScheduleWidgetDayListItemTypeBox,
@@ -17,7 +15,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
 }>) {
     const appAtts = useScheduleWidgetAppAttsContext();
     const appAtt = appAtts[props.attKey];
-    const [isExpand, setIsExpand] = useState(false);
+    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(props.scope);
 
     if (!appAtt) return <div className="error-message">Неизвестное вложение</div>;
 
@@ -46,7 +44,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
 
     return <>
         <div className="flex flex-gap between color--7 margin-gap-v">
-            <span className="flex flex-gap pointer" onClick={() => setIsExpand(is => !is)}>
+            <span className="flex flex-gap pointer" onClick={() => switchIsExpand()}>
                 <EvaIcon name={appAtt.icon} />
                 {appAtt.title}
                 <EvaButton name={isExpand ? 'chevron-up' : 'chevron-down'} />

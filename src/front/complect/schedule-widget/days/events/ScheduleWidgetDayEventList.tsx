@@ -8,6 +8,7 @@ import { IScheduleWidget, IScheduleWidgetDay } from "../../ScheduleWidget.model"
 import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
 import ScheduleWidgetEventList from "../../events/ScheduleWidgetEventList";
 import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
+import { useIsSchWidgetExpand } from "../../useScheduleWidget";
 
 export default function ScheduleWidgetDayEventList({
     day, schedule, scope, scheduleScope,
@@ -17,7 +18,7 @@ export default function ScheduleWidgetDayEventList({
     scope: string,
     scheduleScope: string,
 }) {
-    const [isExpand, setIsExpand] = useState(false);
+    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(scope);
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
     const times: number[] = [];
     const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
@@ -37,13 +38,13 @@ export default function ScheduleWidgetDayEventList({
     });
 
     useEffect(() => {
-        if (isRedact) setIsExpand(true);
+        if (isRedact) switchIsExpand(true);
         else setMoveEventMi(null);
     }, [isRedact]);
 
     return <div className={'schedule-widget-day-event-list' + (isRedact ? ' redact' : '') + (moveEventMi === null ? '' : ' event-movement')}>
         <div className="flex flex-gap pointer margin-gap-v between">
-            <span className="flex flex-gap" onClick={() => setIsExpand(is => !is)}>
+            <span className="flex flex-gap" onClick={() => switchIsExpand()}>
                 <EvaIcon name="list" className="color--7" />
                 Распорядок
                 <EvaButton name={isExpand ? 'chevron-up' : 'chevron-down'} />

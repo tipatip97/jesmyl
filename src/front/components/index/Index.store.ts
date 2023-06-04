@@ -69,6 +69,8 @@ export const slice = createSlice({
   },
 });
 
-export default slice.actions;
+const indexStoreActions = slice.actions;
+
+export default indexStoreActions;
 
 export const indexReducer = slice.reducer;

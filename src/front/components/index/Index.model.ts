@@ -36,6 +36,7 @@ export interface IndexStorage extends IndexState {
     registeredApps: AppName[],
     theme: 'light-theme',
     rules: [],
+    schExpandes: string[],
 
     updateOnRefresher: boolean,
 }
