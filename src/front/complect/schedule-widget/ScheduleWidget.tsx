@@ -73,7 +73,7 @@ export default function ScheduleWidget({
                         <ScheduleWidgetEventList
                             selectScope=""
                             selectFieldName=""
-                            buttonTitle="События дней"
+                            buttonTitle="Типы событий"
                             icon="eye-outline"
                             schedule={schedule}
                             scope={selfScope}

@@ -104,7 +104,7 @@ export default function ScheduleWidgetDayEventList({
                             fieldName="list"
                             cud="D"
                             name="trash-2-outline"
-                            confirm={`Удалить событие ${schedule.types?.[event.type].title}: ${event.topic}?`}
+                            confirm={`Удалить событие ${schedule.types?.[event.type].title}${event.topic ? `: ${event.topic}` : ''}?`}
                             className="color--ko"
                             disabled={moveEventMi !== null}
                             mapExecArgs={(args) => {

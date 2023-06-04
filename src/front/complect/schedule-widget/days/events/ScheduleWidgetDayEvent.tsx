@@ -98,7 +98,7 @@ export default function ScheduleWidgetDayEvent(props: {
                 <ScheduleWidgetBindAtts
                     atts={props.event.atts}
                     scope={selfScope}
-                    forTitle={`${box.title}: ${props.event.topic}`}
+                    forTitle={`${box.title}${props.event.topic ? `: ${props.event.topic}` : ''}`}
                 />
                 : <ScheduleWidgetDayEventAtts
                     scope={selfScope}

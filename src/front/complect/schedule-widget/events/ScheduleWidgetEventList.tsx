@@ -39,7 +39,7 @@ export default function ScheduleWidgetEventList({
         return <>
             {header(<>
                 <div className="flex flex-gap between">
-                    <div>События</div>
+                    <div>Типы событий</div>
                     <EvaButton
                         name={isRedact ? 'checkmark-circle-2-outline' : 'edit-outline'}
                         onClick={() => setIsRedact(is => !is)}
@@ -73,7 +73,7 @@ export default function ScheduleWidgetEventList({
                                 value={type.title}
                                 isRedact={isRedact}
                                 icon="credit-card-outline"
-                                title="Название пункта"
+                                title="Название"
                                 onChange={(value) => {
                                     const errors = [...typesError];
                                     const lowerValue = titleNormalize(value.toLowerCase());

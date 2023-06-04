@@ -45,7 +45,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     }
 
     return <>
-        <div className="flex flex-gap between color--7">
+        <div className="flex flex-gap between color--7 margin-gap-v">
             <span className="flex flex-gap pointer" onClick={() => setIsExpand(is => !is)}>
                 <EvaIcon name={appAtt.icon} />
                 {appAtt.title}

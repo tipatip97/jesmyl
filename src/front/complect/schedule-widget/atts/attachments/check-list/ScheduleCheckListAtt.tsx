@@ -22,11 +22,11 @@ export default function ScheduleCheckListAtt({
             {editIcon}
             {value.list.map(([isDone, title], itemi) => {
                 const itemScope = takeStrongScopeMaker(attScope, ' itemi/', itemi);
-                return <div key={itemi} className="flex flex-gap full-width">
+                return <div key={itemi} className="flex flex-gap full-width margin-gap-v">
                     <StrongEvaButton
                         scope={itemScope}
                         fieldName="check"
-                        className={isDone ? '' : 'color--7'}
+                        className={'self-start' + (isDone ? '' : ' color--7')}
                         cud="U"
                         name={isDone ? 'checkmark-square-outline' : 'square-outline'}
                         mapExecArgs={(args) => {
@@ -41,8 +41,9 @@ export default function ScheduleCheckListAtt({
                         fieldName="title"
                         className="full-width"
                         value={title}
+                        multiline
                         isRedact={isRedact}
-                        textClassName=" "
+                        textClassName={isDone ? ' ' : 'color--7'}
                     />
                 </div>;
             })}

@@ -23,7 +23,7 @@ export default function ScheduleWidgetAttFace({
             cud="D"
             name="close"
             className="close-button"
-            confirm={`Убрать вложение "${att?.title || '??'}" из события "${typeTitle}"`}
+            confirm={`Убрать вложение "${att?.title || '??'}" из события "${typeTitle}"?`}
             mapExecArgs={(args) => {
                 return {
                     ...args,
