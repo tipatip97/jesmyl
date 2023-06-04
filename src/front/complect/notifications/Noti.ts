@@ -4,11 +4,16 @@ type NotifyOptions<Omits extends string = never> = Omit<NotificationOptions, 'ic
 const icon = './apple-touch-icon.png';
 
 const openNotifies: { [key: string]: Notification } = {};
+const isNoNotifications = window.Notification == null;
 
 export default class Noty {
-    static checkPermission = () => Notification.requestPermission();
+    static checkPermission = () => {
+        if (isNoNotifications) return;
+        return Notification.requestPermission();
+    };
 
     static notify = (title: string, options?: NotifyOptions) => {
+        if (isNoNotifications) return;
         const key = options?.data?.key;
         const prevNoty = key ? openNotifies[key] || null : null;
         const silent = options?.silent === true || (prevNoty !== null && options?.silent !== false);
@@ -48,4 +53,7 @@ export default class Noty {
     };
 }
 
-Noty.checkPermission();
+try {
+    Noty.checkPermission();
+} catch (error) { }
+

@@ -66,7 +66,7 @@ export default function IndexSettings() {
       title="Проверить PUSH"
       onClick={() => {
         Noty.checkPermission()
-          .then((res) => toast(`PUSH состояние: ${res}`))
+          ?.then((res) => toast(`PUSH состояние: ${res}`))
           .catch(() => toast('Ошибка при открытии PUSH', { mood: 'ko' }));
 
         Noty.simpleNotify('Проверка PUSH', 'Успех!! ', {
