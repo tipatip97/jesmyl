@@ -1,3 +1,4 @@
+import Markdown from "markdown-to-jsx";
 import { useEffect, useState } from "react";
 import EvaButton from "../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
@@ -128,10 +129,12 @@ export default function StrongEditableField(props: StrongControlProps<{
             : <span className="flex flex-gap">
                 {props.icon && <EvaIcon name={props.icon} className="color--7 self-start" />}
                 {props.value
-                    ? <span className={
-                        (props.textClassName || 'color--7 ')
-                        + (props.multiline ? ' white-pre-wrap ' : '')
-                    }>{props.value}{props.postfix || ''}</span>
+                    ? props.multiline
+                        ? <Markdown>{props.value}</Markdown>
+                        : <span className={
+                            (props.textClassName || 'color--7 ')
+                            + (props.multiline ? ' white-pre-wrap ' : '')
+                        }>{props.value}{props.postfix || ''}</span>
                     : 'Без значения'}
             </span>}
     </div>;
