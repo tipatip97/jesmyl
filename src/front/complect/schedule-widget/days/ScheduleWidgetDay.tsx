@@ -73,6 +73,7 @@ export default function ScheduleWidgetDay({
             day={day}
             schedule={schedule}
             scope={selfScope}
+            scheduleScope={scope}
         />
     </div>;
 }

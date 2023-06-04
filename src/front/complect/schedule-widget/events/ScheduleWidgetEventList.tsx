@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
@@ -14,6 +14,8 @@ const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
 const singlesTitleReg = new RegExp(`([${singleTitleSymbols}])(\\1+)`, 'g');
 
 const titleNormalize = (title: string) => title.replace(incorrectsTitleReg, '').replace(singlesTitleReg, (_, __, letters) => letters[0]).trim();
+const altArr: [] = [];
+
 
 export default function ScheduleWidgetEventList({
     buttonTitle,
@@ -34,6 +36,19 @@ export default function ScheduleWidgetEventList({
 }) {
     const [isRedact, setIsRedact] = useState(false);
     const [typesError, seTypesError] = useState<(string | nil)[]>([]);
+    const types = schedule.types || altArr;
+    const sortedTypes = useMemo(() => {
+        if (!usedCounts) return types;
+        const sortedTypes = [...types];
+
+        sortedTypes.sort((a, b) => {
+            const ai = types.indexOf(a);
+            const bi = types.indexOf(b);
+            return (a.title ? usedCounts[ai] || 0 : -1) - (b.title ? usedCounts[bi] || 0 : -1);
+        });
+
+        return sortedTypes;
+    }, [types, usedCounts]);
 
     const { modalNode, screen } = useModal(({ actionButton, footer, header, body }, closeModal) => {
         return <>
@@ -47,7 +62,8 @@ export default function ScheduleWidgetEventList({
                 </div>
             </>)}
             {body(<>
-                {schedule.types?.map((type, typei) => {
+                {sortedTypes.map((type) => {
+                    const typei = types.indexOf(type);
                     const typeScope = takeStrongScopeMaker(scope, ' typei/', typei);
 
                     return <React.Fragment key={typei}>

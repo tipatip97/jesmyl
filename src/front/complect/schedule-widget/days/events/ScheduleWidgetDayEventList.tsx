@@ -10,11 +10,12 @@ import ScheduleWidgetEventList from "../../events/ScheduleWidgetEventList";
 import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
 
 export default function ScheduleWidgetDayEventList({
-    day, schedule, scope,
+    day, schedule, scope, scheduleScope,
 }: {
     day: IScheduleWidgetDay,
     schedule: IScheduleWidget,
     scope: string,
+    scheduleScope: string,
 }) {
     const [isExpand, setIsExpand] = useState(false);
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
@@ -116,7 +117,7 @@ export default function ScheduleWidgetDayEventList({
                 </div>;
             })}
             {isRedact && moveEventMi === null && <ScheduleWidgetEventList
-                scope={scope}
+                scope={scheduleScope}
                 selectScope={scope}
                 selectFieldName="list"
                 buttonTitle="Добавить событие"

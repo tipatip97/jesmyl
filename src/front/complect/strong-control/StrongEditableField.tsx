@@ -89,10 +89,22 @@ export default function StrongEditableField(props: StrongControlProps<{
         {modalNode}
         {props.isRedact
             ? <>
-                {props.title && <div>{props.title}</div>}
-                <div className="flex flex-gap">
-
+                {props.title && <div className="flex flex-gap">
                     {props.icon && <EvaIcon name={props.icon} />}
+                    {props.title}
+                    {isError
+                        ? <EvaIcon name="alert-triangle-outline" className="error-message" />
+                        : isLoading
+                            ? <EvaIcon name="loader-outline" className="rotate" />
+                            : props.value && stateValue !== props.value
+                                ? <EvaButton
+                                    name="undo-outline"
+                                    className="pointer"
+                                    onMouseDown={() => setStateValue(props.value)}
+                                />
+                                : <EvaIcon name="cloud-upload-outline" className="fade-05" />}
+                </div>}
+                <div className="flex flex-gap">
                     {props.description}
                     <KeyboardInput
                         value={stateValue}
@@ -113,17 +125,6 @@ export default function StrongEditableField(props: StrongControlProps<{
                                 sendValue();
                         }}
                     />
-                    {isError
-                        ? <EvaIcon name="alert-triangle-outline" className="error-message" />
-                        : isLoading
-                            ? <EvaIcon name="loader-outline" className="rotate" />
-                            : props.value && stateValue !== props.value
-                                ? <EvaButton
-                                    name="undo-outline"
-                                    className="pointer"
-                                    onMouseDown={() => setStateValue(props.value)}
-                                />
-                                : <EvaIcon name="cloud-upload-outline" className="fade-05" />}
                 </div>
             </>
             : <span className="flex flex-gap">
