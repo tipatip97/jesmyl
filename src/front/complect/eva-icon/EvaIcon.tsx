@@ -11,6 +11,8 @@ MyLib.entries(pack).forEach(([icon, __html]) => {
   iconInners[icon] = <g dangerouslySetInnerHTML={{ __html }} />;
 });
 
+export const evaPackNames: EvaIconName[] = MyLib.keys(pack);
+
 export default function EvaIcon(
   props: HTMLAttributes<HTMLOrSVGElement> & {
     name: EvaIconName;
@@ -27,7 +29,9 @@ export default function EvaIcon(
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          className={'eva-icon ' + (props.className || '')}
+          className={'eva-icon '
+            + (props.onClick ? 'pointer ' : '')
+            + (props.className || '')}
           fill="var(--icon-color)"
         >{iconInners[props.name]}</svg>
       )}

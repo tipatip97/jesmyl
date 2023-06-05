@@ -3,17 +3,17 @@ import modalService from "../modal/Modal.service";
 import useModal from "../modal/useModal";
 import EvaIcon, { EvaIconName } from "./EvaIcon";
 
-export default function EvaSendButton<Value>(
-  props: {
-    name: EvaIconName,
-    confirm?: string | false | null,
-    disabled?: boolean,
-    onSend?: () => Promise<Value> | void | nil,
-    onSuccess?: (val: Value) => void,
-    onFailure?: (errorMessage: string) => string | void,
-    className?: string,
-  }
-) {
+export interface EvaSendButtonProps<Value> {
+  name: EvaIconName,
+  confirm?: string | false | null,
+  disabled?: boolean,
+  onSend?: () => Promise<Value> | void | nil,
+  onSuccess?: (val: Value) => void,
+  onFailure?: (errorMessage: string) => string | void,
+  className?: string,
+}
+
+export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { toast, modalNode } = useModal();
