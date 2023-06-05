@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import mylib from "../my-lib/MyLib";
 import { StrongControlProps } from "./Strong.model";
-import StrongEditableField from "./StrongEditableField";
+import StrongEditableField from "./field/StrongEditableField";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 
 type TakeDateComponent = 'NO' | 'year' | 'month' | 'day';

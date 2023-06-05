@@ -4,7 +4,7 @@ import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
 import mylib from "../../my-lib/MyLib";
 import StrongDiv from "../../strong-control/StrongDiv";
-import StrongEditableField from "../../strong-control/StrongEditableField";
+import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import { IScheduleWidget } from "../ScheduleWidget.model";

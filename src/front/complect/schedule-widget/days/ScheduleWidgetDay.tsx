@@ -1,6 +1,6 @@
 import mylib from "../../my-lib/MyLib";
 import StrongControlDateTimeExtracter from "../../strong-control/StrongDateTimeExtracter";
-import StrongEditableField from "../../strong-control/StrongEditableField";
+import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";

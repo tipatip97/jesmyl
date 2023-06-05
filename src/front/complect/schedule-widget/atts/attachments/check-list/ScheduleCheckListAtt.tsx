@@ -1,4 +1,4 @@
-import StrongEditableField from "../../../../strong-control/StrongEditableField";
+import StrongEditableField from "../../../../strong-control/field/StrongEditableField";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
 import { takeStrongScopeMaker } from "../../../../strong-control/useStrongControl";
 import useIsRedactArea from "../../../../useIsRedactArea";

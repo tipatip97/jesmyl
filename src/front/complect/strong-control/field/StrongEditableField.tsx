@@ -1,11 +1,11 @@
-import Markdown from "markdown-to-jsx";
 import { useEffect, useState } from "react";
-import EvaButton from "../eva-icon/EvaButton";
-import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
-import KeyboardInput from "../keyboard/KeyboardInput";
-import useModal from "../modal/useModal";
-import { StrongControlProps } from "./Strong.model";
-import { strongPrepareArgsAndSend, useStrongExerContext } from "./useStrongControl";
+import EvaButton from "../../eva-icon/EvaButton";
+import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
+import KeyboardInput from "../../keyboard/KeyboardInput";
+import useModal from "../../modal/useModal";
+import { StrongControlProps } from "../Strong.model";
+import { strongPrepareArgsAndSend, useStrongExerContext } from "../useStrongControl";
+import StrongEditableFieldMultiline from "./StrongEditableFieldMultiline";
 
 export default function StrongEditableField(props: StrongControlProps<{
     value?: string,
@@ -131,7 +131,7 @@ export default function StrongEditableField(props: StrongControlProps<{
                 {props.icon && <EvaIcon name={props.icon} className="color--7 self-start" />}
                 {props.value
                     ? props.multiline
-                        ? <Markdown>{props.value}</Markdown>
+                        ? <StrongEditableFieldMultiline value={props.value} />
                         : <span className={
                             (props.textClassName || 'color--7 ')
                             + (props.multiline ? ' white-pre-wrap ' : '')

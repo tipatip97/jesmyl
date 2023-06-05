@@ -2,8 +2,19 @@ import { ReactNode } from "react";
 import { AppName } from "../../app/App.model";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 
+
+export enum AccessRuleType {
+    Free,
+    CRUDAccess
+}
+
+export interface AccessRule {
+    type: AccessRuleType,
+}
+
 export interface ScheduleStorage {
     list: IScheduleWidget[];
+    rules?: AccessRule,
 }
 
 export interface IScheduleWidget {

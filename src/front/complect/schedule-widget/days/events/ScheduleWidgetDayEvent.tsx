@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import mylib from "../../../my-lib/MyLib";
-import StrongEditableField from "../../../strong-control/StrongEditableField";
+import StrongEditableField from "../../../strong-control/field/StrongEditableField";
 import { takeStrongScopeMaker } from "../../../strong-control/useStrongControl";
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent } from "../../ScheduleWidget.model";
