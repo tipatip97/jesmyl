@@ -108,6 +108,14 @@ class SokiServer {
                     const requestId = eventData.requestId;
                     const eventBody = eventData.body;
 
+                    if (eventBody.ping) {
+                        this.send({
+                            pong: true,
+                            requestId,
+                        });
+                        return;
+                    }
+
                     if (eventBody.authorization) {
                         const event = eventBody.authorization;
 

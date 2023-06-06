@@ -17,6 +17,7 @@ export interface SokiCapsule {
 export interface SokiServerEvent {
     requestId?: number,
     connect?: boolean,
+    pong?: true,
     pull?: PullEventValue,
     authorization?: { type: 'login' | 'register' } & ({ ok: false, value: string } | ({ ok: true, value: LocalSokiAuth })),
     execs?: {
@@ -45,6 +46,7 @@ export type SokiClientUpdateCortage = [
 
 export interface SokiClientEventBody {
     connect?: true,
+    ping?: true,
     authorization?: ({ type: 'login', value: SokiAuthorizationData } | { type: 'register', value: SokiRegisterData }),
     pullData?: SokiClientUpdateCortage,
     execs?: ExecutionDict[],
