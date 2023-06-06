@@ -20,7 +20,7 @@ export default function useGamerOfflineRooms() {
   const roomw = useSelector(roomwSelector);
   const passportData = useSelector(passportSelector);
   const offlineRooms = useSelector(offlineRoomsSelector);
-  const { auth: authData } = useAuth();
+  const authData = useAuth();
   const currentOfflineRoom = offlineRooms?.find(({ w }) => w === roomw);
   const { readQR } = useQRMaster();
 

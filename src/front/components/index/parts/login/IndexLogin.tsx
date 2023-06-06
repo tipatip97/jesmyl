@@ -1,15 +1,26 @@
 import { useEffect, useState } from "react";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { LocalSokiAuth } from "../../../../../back/complect/soki/soki.model";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
 import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import LoadIndicatedContent from "../../../../complect/load-indicated-content/LoadIndicatedContent";
+import mylib from "../../../../complect/my-lib/MyLib";
+import { RootState } from "../../../../shared/store";
+import { soki } from "../../../../soki";
+import { Auth, AuthMode, AuthorizationData, AuthorizeInSystem, IndexErrorScope, RegisterData } from "../../Index.model";
+import di from "../../Index.store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
-import { AuthMode } from "../../Index.model";
-import useAuth from "../../useAuth";
+import indexStorage from "../../indexStorage";
+import { removePullRequisites } from "../../useAuth";
+import useConnectionState from "../../useConnectionState";
 import "./IndexLogin.scss";
 
+
+const errorsSelector = (state: RootState) => state.index.errors;
+
 export default function IndexLogin() {
+  const dispatch = useDispatch();
   const [login, setLogin] = useState("");
   const [passw, setPassword] = useState("");
   const [rpassw, setRPassword] = useState("");
@@ -17,19 +28,70 @@ export default function IndexLogin() {
   const [mode, setMode] = useState<AuthMode>("login");
   const [isInProcess, setIsInProscess] = useState(1);
 
-  const {
-    loginInSystem,
-    registerInSystem,
-    setError,
-    errors,
-    isCorrectLoginJSONData,
-    setAuthData,
-    isConnected,
-    removePullRequisites,
-  } = useAuth();
+  const connectionNode = useConnectionState();
+  const errors = useSelector(errorsSelector);
   const { navigate } = useIndexNav();
   const error = (message: string | nil) =>
     message && <div className="login-error-message">{message}</div>;
+
+
+  const setError = (scope: IndexErrorScope, message: string | nil) =>
+    dispatch(di.setError({ scope, message }));
+
+  const sendData = <AuthType extends keyof AuthorizeInSystem>(type: AuthType, data: AuthorizeInSystem[typeof type]) => {
+    return soki.send({
+      authorization: {
+        type,
+        value: data as never
+      }
+    });
+  };
+
+  const loginInSystem = (state: AuthorizationData) => {
+    return sendData('login', {
+      login: mylib.md5(state.login.trim()),
+      passw: mylib.md5(state.passw),
+    });
+  };
+
+
+  const isCorrectLoginJSONData = (json: string) => {
+    try {
+      const data: Auth = JSON.parse(json);
+      return typeof data.login === 'string'
+        && typeof data.fio === 'string'
+        && (typeof data.level === 'number' || typeof data.level === 'string');
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const setAuthData = (login: string | LocalSokiAuth) => {
+    let auth;
+
+    if (typeof login === 'string') {
+      if (isCorrectLoginJSONData(login)) {
+        indexStorage.setString('auth', login);
+        auth = indexStorage.get('auth');
+      }
+    } else auth = login;
+
+    if (auth) {
+      dispatch(di.setAuthData(auth));
+      indexStorage.set('auth', auth);
+      dispatch(di.setCurrentApp("cm"));
+      removePullRequisites();
+    }
+  };
+
+  const registerInSystem = (state: RegisterData) => {
+    return sendData('register', {
+      login: mylib.md5(state.login.trim()),
+      passw: mylib.md5(state.passw),
+      fio: state.login.trim(),
+      rpassw: mylib.md5(state.rpassw),
+    });
+  };
 
   useEffect(() => {
     if (isCorrectLoginJSONData(login)) {
@@ -59,13 +121,7 @@ export default function IndexLogin() {
     <PhaseIndexContainer
       topClass="index-login login-page"
       headTitle={mode === "register" ? "Создать профиль" : "Вход"}
-      head={!isConnected && <div className="flex flex-end error-message">
-        <div>Нет подключения к серверу</div>
-        <EvaIcon
-          name="loader-outline"
-          className="rotate margin-gap"
-        />
-      </div>}
+      head={connectionNode}
       content={
         <LoadIndicatedContent
           className="flex around column full-height full-width"
@@ -122,7 +178,7 @@ export default function IndexLogin() {
             ) : null}
             <button
               className="send-button"
-              disabled={!isConnected || (!isJSONDataLogin && Object.keys(errors).length > 0)}
+              disabled={!connectionNode || (!isJSONDataLogin && Object.keys(errors).length > 0)}
               onClick={async () => {
                 if (mode === 'check') return;
                 if (isJSONDataLogin) {
