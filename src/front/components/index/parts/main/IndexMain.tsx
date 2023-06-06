@@ -9,6 +9,7 @@ import useApps from "../../../../complect/useApps";
 import navConfigurers from "../../../../shared/navConfigurers";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useAuth from "../../useAuth";
+import useConnectionState from "../../useConnectionState";
 import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
 import UserMore from "./UserMore";
@@ -21,8 +22,9 @@ export default function IndexMain() {
   const { apps, currentApp, appConfigs, jumpToApp } = useApps();
 
   const filteredApps = apps.filter((app) => app !== currentApp && appNames.indexOf(app.name) > -1);
-  const { auth, isConnected } = useAuth();
+  const auth = useAuth();
   const { readQR } = useQRMaster();
+  const connectionNode = useConnectionState();
 
   const appList =
     filteredApps.length === 0
@@ -50,7 +52,7 @@ export default function IndexMain() {
       headTitle={currentApp?.title || "Другое"}
       head={
         <div className="flex flex-gap">
-          {isConnected || <EvaIcon name="alert-triangle" className="error-message" />}
+          {connectionNode}
           {auth?.fio && (
             <div
               className="margin-big-gap-h pointer"
