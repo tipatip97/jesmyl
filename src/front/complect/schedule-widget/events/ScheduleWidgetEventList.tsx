@@ -54,7 +54,7 @@ export default function ScheduleWidgetEventList({
         return <>
             {header(<>
                 <div className="flex flex-gap between">
-                    <div>Типы событий</div>
+                    <div>Шаблоны событий</div>
                     <EvaButton
                         name={isRedact ? 'checkmark-circle-2-outline' : 'edit-outline'}
                         onClick={() => setIsRedact(is => !is)}
@@ -143,12 +143,12 @@ export default function ScheduleWidgetEventList({
                 <>{
                     isRedact && !schedule.types?.some((type) => !type.title) && actionButton(
                         <div className="flex flex-gap ">
-                            Новый тип
+                            Новый шаблон
                             <StrongEvaButton
                                 scope={scope}
                                 fieldName="types"
                                 name="plus-circle-outline"
-                                confirm="Добавить новый тип?"
+                                confirm="Добавить новый шаблон?"
                             /></div>)
                 }</>
             )}</>;

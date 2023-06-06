@@ -1,8 +1,7 @@
 import { useState } from "react";
-import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
-import { ScheduleWidgetAppAttResultItem } from "../../../../../complect/schedule-widget/ScheduleWidget.model";
+import StrongDiv from "../../../../../complect/strong-control/StrongDiv";
 import { ChordVisibleVariant } from "../../Cm.model";
 import { Com } from "../../col/com/Com";
 import ComFace from "../../col/com/face/ComFace";
@@ -15,30 +14,43 @@ const onEventClick = () => { };
 
 export default function CmExternalComListAtt({
     value,
-    attItem,
+    scope,
+    isRedact,
+    switchIsRedact,
 }: {
     value: CmComBindAttach,
-    attItem: ScheduleWidgetAppAttResultItem<CmComBindAttach>,
+    scope: string,
+    isRedact: boolean,
+    switchIsRedact: (is?: boolean) => void,
 }) {
     const { meetings } = useMeetings();
     const [ccom, setCcom] = useState<Com | und>();
-    const [meetingsSelectorNode, showMeetingsSelector] = useFullContent((closeFull) => {
+    const [meetingsSelectorNode] = useFullContent(() => {
         return <>{meetings &&
             <MeetingsInner
                 meetings={meetings}
                 onEventClick={onEventClick}
-                asEventBox={(event) => attItem(
-                    () => {
-                        closeFull();
-                        return { eventw: event.wid };
-                    },
-                    <EvaIcon
-                        name={event.wid === value.eventw ? 'checkmark-square-2-outline' : 'square-outline'}
-                    />
-                )}
+                asEventBox={(event) =>
+                    <StrongDiv
+                        scope={scope}
+                        fieldName=""
+                        cud="U"
+                        onClick={() => switchIsRedact(false)}
+                        mapExecArgs={(args) => {
+                            return {
+                                ...args,
+                                value: { eventw: event.wid },
+                            };
+                        }}
+                    >
+                        <EvaIcon
+                            name={event.wid === value.eventw ? 'checkmark-square-2-outline' : 'square-outline'}
+                        />
+                    </StrongDiv>
+                }
             />
         }</>;
-    });
+    }, isRedact ? 'open' : null, switchIsRedact);
 
     const event = value.eventw ? meetings?.events.find((event) => event.wid === value.eventw) : null;
 
@@ -64,7 +76,7 @@ export default function CmExternalComListAtt({
                     ? <span className="color--ko">Событие не найдено</span>
                     : <span>Событие не определено</span>
             }
-            <EvaButton name="edit-outline" onClick={() => showMeetingsSelector()} />
+            {/* <EvaButton name="edit-outline" onClick={() => showMeetingsSelector()} /> */}
         </div>
         {event?.coms?.map(com => {
             return <ComFace

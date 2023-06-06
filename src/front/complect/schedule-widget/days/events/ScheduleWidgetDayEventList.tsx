@@ -86,6 +86,7 @@ export default function ScheduleWidgetDayEventList({
                     {eventi === 0 && insertControl(0)}
                     <ScheduleWidgetDayEvent
                         scope={scope}
+                        scheduleScope={scheduleScope}
                         schedule={schedule}
                         day={day}
                         event={event}

@@ -58,6 +58,37 @@ const config: FilerAppConfig = {
                             }
                         }
                     },
+                    '/atts': {
+                        expected: [],
+                        C: {
+                            setSystems: ['mi'],
+                            args: {
+                                value: '#Dict',
+                            },
+                        },
+                        '/[mi === {attMi}]': {
+                            scopeNode: 'attMi',
+                            '/{key}': {
+                                scopeNode: 'field',
+                                U: {
+                                    args: { key: '#String' }
+                                }
+                            },
+                            '/titles': {
+                                C: {
+                                    value: '',
+                                },
+                                '/{titlei}': {
+                                    scopeNode: 'titlei',
+                                    U: {
+                                        args: {
+                                            titlei: '#Number',
+                                        }
+                                    }
+                                }
+                            },
+                        }
+                    },
                     '/types': {
                         expected: [],
                         C: {
@@ -172,33 +203,54 @@ const config: FilerAppConfig = {
                                                 method: 'delete',
                                             },
                                             '/list': {
-                                                '<check list>': {
-                                                    scopeNode: 'checkList',
-                                                    C: {
-                                                        value: [0, ''],
+                                                scopeNode: 'checkList',
+                                                C: {
+                                                    value: [0, ''],
+                                                },
+                                                '/{itemi}': {
+                                                    scopeNode: 'itemi',
+                                                    args: {
+                                                        itemi: '#Number',
                                                     },
-                                                    '/{itemi}': {
-                                                        scopeNode: 'itemi',
-                                                        args: {
-                                                            itemi: '#Number',
-                                                        },
-                                                        '/0': {
-                                                            scopeNode: 'check',
-                                                            U: {
-                                                                args: {
-                                                                    value: '#Num',
-                                                                }
-                                                            },
-                                                        },
-                                                        '/1': {
-                                                            scopeNode: 'title',
-                                                            U: {
-                                                                args: {
-                                                                    value: '#String',
-                                                                }
+                                                    '/0': {
+                                                        scopeNode: 'check',
+                                                        U: {
+                                                            args: {
+                                                                value: '#Num',
                                                             }
                                                         },
-                                                    }
+                                                    },
+                                                    '/1': {
+                                                        scopeNode: 'title',
+                                                        U: {
+                                                            args: {
+                                                                value: '#String',
+                                                            }
+                                                        }
+                                                    },
+                                                },
+                                            },
+                                            '/values': {
+                                                scopeNode: 'keyValue',
+                                                C: {
+                                                    value: ['{key}', ''],
+                                                    args: {
+                                                        key: '#String',
+                                                    },
+                                                },
+                                                '/{itemi}': {
+                                                    scopeNode: 'itemi',
+                                                    args: {
+                                                        itemi: '#Number',
+                                                    },
+                                                    '/1': {
+                                                        scopeNode: 'value',
+                                                        U: {
+                                                            args: {
+                                                                value: '#String',
+                                                            }
+                                                        }
+                                                    },
                                                 }
                                             }
                                         }

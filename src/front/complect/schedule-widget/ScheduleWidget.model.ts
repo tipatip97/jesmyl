@@ -23,6 +23,7 @@ export interface IScheduleWidget {
     title?: string,
     days?: IScheduleWidgetDay[],
     types?: ScheduleWidgetDayListItemTypeBox[],
+    atts?: ScheduleWidgetAppAttCustomized[],
 }
 
 export interface IScheduleWidgetDay {
@@ -50,12 +51,39 @@ export type ScheduleWidgetAppAtts<AttAppName extends AttKey = AttKey, AttValue e
 
 export type ScheduleWidgetAppAttResultItem<AttValue extends any> = (mpValue: () => AttValue, content: ReactNode) => JSX.Element;
 
-export interface ScheduleWidgetAppAtt<AttValue extends any = any> {
+export enum ScheduleWidgetAppAttCustomizableType {
+    KeyValue = 0,
+}
+
+export interface ScheduleWidgetAppAttCustomizableValue {
+    list?: [string, string][],
+}
+
+export interface ScheduleWidgetAppAttCustomizable extends ScheduleWidgetAppAttBasic<ScheduleWidgetAppAttCustomizableValue> {
+    type: ScheduleWidgetAppAttCustomizableType,
+    titles?: string[],
+}
+
+export interface ScheduleWidgetAppAttCustomized extends ScheduleWidgetAppAttCustomizable {
+    mi: number,
+    isCustomize: true,
+}
+
+export interface ScheduleWidgetAppAttBasic<AttValue extends any = any> {
     icon: EvaIconName,
     title: string,
-    result: (value: AttValue, attItem: ScheduleWidgetAppAttResultItem<AttValue>, scope: string) => ReactNode,
     description: string,
-    initialAttValue: AttValue,
+    initVal: AttValue,
+    isCustomize?: true;
+}
+
+export interface ScheduleWidgetAppAtt<AttValue extends any = any> extends ScheduleWidgetAppAttBasic<AttValue> {
+    result: (
+        value: AttValue,
+        scope: string,
+        isRedact: boolean,
+        switchIsRedact: (isRedact?: boolean) => void,
+    ) => ReactNode,
 }
 
 export interface ScheduleWidgetDayListItemTypeBox {

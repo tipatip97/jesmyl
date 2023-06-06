@@ -10,8 +10,13 @@ export const leaderOwnGameResultBoardAppAtt: ScheduleWidgetAppAtts<'leader', Lea
         icon: 'navigation-2-outline',
         title: 'Игра',
         description: 'Результаты командной игры контекста',
-        initialAttValue: {},
-        result: (value, attItem) => <LeaderTeamGameAttach attItem={attItem} value={value} />,
+        initVal: {},
+        result: (value, scope, isRedact, switchIsRedact) => <LeaderTeamGameAttach
+            switchIsRedact={switchIsRedact}
+            isRedact={isRedact}
+            scope={scope}
+            value={value}
+        />,
     }
 };
 

@@ -8,7 +8,9 @@ import { takeStrongScopeMaker, useStrongExerContent } from "../strong-control/us
 import useIsRedactArea from "../useIsRedactArea";
 import { IScheduleWidget, ScheduleWidgetAppAtts } from "./ScheduleWidget.model";
 import './ScheduleWidget.scss';
+import ScheduleKeyValueListAtt from "./atts/attachments/key-value/ScheduleKeyValueListAtt";
 import { scheduleOwnAtts } from "./atts/attachments/scheduleOwnAtts";
+import ScheduleWidgetCustomAttachments from "./atts/custom/ScheduleWidgetCustomAttachments";
 import ScheduleWidgetCleans from "./complect/ScheduleWidgetCleans";
 import ScheduleWidgetDay from "./days/ScheduleWidgetDay";
 import ScheduleWidgetEventList from "./events/ScheduleWidgetEventList";
@@ -30,7 +32,17 @@ export default function ScheduleWidget({
 
     const date = useMemo(() => new Date(schedule?.start || new Date().setMonth(new Date().getMonth() + 1)), [schedule?.start]);
     const dateValue = useMemo(() => date.getTime() ? date.toLocaleDateString().replace(/\./g, ' ') : '', [date]);
-    const atts = useMemo(() => ({ ...appAtts, ...scheduleOwnAtts }), [appAtts]);
+    const atts = useMemo(() => {
+        const atts: ScheduleWidgetAppAtts<'SCH'> = {};
+        schedule?.atts?.forEach((att) => {
+            atts[`[SCH]:custom:${att.mi}`] = {
+                ...att,
+                isCustomize: true,
+                result: (value, scope, isRedact) => <ScheduleKeyValueListAtt isRedact={isRedact} att={att} scope={scope} value={value} />,
+            };
+        });
+        return { ...appAtts, ...scheduleOwnAtts, ...atts };
+    }, [appAtts, schedule?.atts]);
 
     if (!schedule) return null;
 
@@ -61,6 +73,15 @@ export default function ScheduleWidget({
                             onComponentsChange={(_, __, ___, date) => setStartTime(date.getTime())}
                             mapExecArgs={(args) => ({ ...args, value: startTime })}
                         />
+                        <ScheduleWidgetEventList
+                            selectScope=""
+                            selectFieldName=""
+                            buttonTitle="Шаблоны событий"
+                            icon="eye-outline"
+                            schedule={schedule}
+                            scope={selfScope}
+                        />
+                        <ScheduleWidgetCustomAttachments scope={selfScope} atts={schedule.atts} />
                         <div className="flex flex-gap margin-big-gap-v">
                             Добавить день
                             <StrongEvaButton
@@ -70,14 +91,6 @@ export default function ScheduleWidget({
                                 confirm="Дни удалять не возможно! Создать новый?"
                             />
                         </div>
-                        <ScheduleWidgetEventList
-                            selectScope=""
-                            selectFieldName=""
-                            buttonTitle="Типы событий"
-                            icon="eye-outline"
-                            schedule={schedule}
-                            scope={selfScope}
-                        />
                     </div>
                     : schedule.start && <div>
                         Начало: {date.getDate()} {mylib.monthFullTitles[date.getMonth()]} {date.getFullYear()}

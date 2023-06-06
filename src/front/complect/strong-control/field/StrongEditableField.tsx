@@ -84,6 +84,18 @@ export default function StrongEditableField(props: StrongControlProps<{
         if (!isUserChange) setStateValue(props.value);
     }, [isUserChange, props.value]);
 
+    const indicatorNode = isError
+        ? <EvaIcon name="alert-triangle-outline" className="error-message" />
+        : isLoading
+            ? <EvaIcon name="loader-outline" className="rotate" />
+            : props.value && stateValue !== props.value
+                ? <EvaButton
+                    name="undo-outline"
+                    className="pointer"
+                    onMouseDown={() => setStateValue(props.value)}
+                />
+                : <EvaIcon name="cloud-upload-outline" className="fade-05" />;
+
 
     return <div className={props.className || 'margin-gap-v'}>
         {modalNode}
@@ -92,17 +104,7 @@ export default function StrongEditableField(props: StrongControlProps<{
                 {props.title && <div className="flex flex-gap">
                     {props.icon && <EvaIcon name={props.icon} />}
                     {props.title}
-                    {isError
-                        ? <EvaIcon name="alert-triangle-outline" className="error-message" />
-                        : isLoading
-                            ? <EvaIcon name="loader-outline" className="rotate" />
-                            : props.value && stateValue !== props.value
-                                ? <EvaButton
-                                    name="undo-outline"
-                                    className="pointer"
-                                    onMouseDown={() => setStateValue(props.value)}
-                                />
-                                : <EvaIcon name="cloud-upload-outline" className="fade-05" />}
+                    {indicatorNode}
                 </div>}
                 <div className="flex flex-gap">
                     {props.description}
@@ -125,6 +127,7 @@ export default function StrongEditableField(props: StrongControlProps<{
                                 sendValue();
                         }}
                     />
+                    {props.title ? null : indicatorNode}
                 </div>
             </>
             : <span className="flex flex-gap">

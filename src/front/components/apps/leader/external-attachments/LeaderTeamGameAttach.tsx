@@ -1,7 +1,7 @@
 import React from "react";
 import EvaButton from "../../../../complect/eva-icon/EvaButton";
 import useModal from "../../../../complect/modal/useModal";
-import { ScheduleWidgetAppAttResultItem } from "../../../../complect/schedule-widget/ScheduleWidget.model";
+import StrongDiv from "../../../../complect/strong-control/StrongDiv";
 import TeamGameFace from "../components/games/GameFace";
 import LeaderGameTotalScoreTable from "../components/games/LeaderGameTotalScoreTable";
 import useGames from "../components/games/useGames";
@@ -11,10 +11,14 @@ const importantOnClick = () => { };
 
 export default function LeaderTeamGameAttach({
     value,
-    attItem
+    scope,
+    isRedact,
+    switchIsRedact,
 }: {
     value: LeaderResultBoardAttachValues,
-    attItem: ScheduleWidgetAppAttResultItem<LeaderResultBoardAttachValues>,
+    scope: string,
+    isRedact: boolean,
+    switchIsRedact: (is?: boolean) => void,
 }) {
     const { contextGames, jumpToGame } = useGames();
 
@@ -24,20 +28,28 @@ export default function LeaderTeamGameAttach({
             {body(<>
                 {contextGames?.map((game, gamei) => {
                     return <React.Fragment key={gamei}>
-                        {attItem(
-                            () => {
+                        <StrongDiv
+                            scope={scope}
+                            fieldName=""
+                            cud="U"
+                            mapExecArgs={(args) => {
                                 closeModal();
-                                return { gamew: game.w };
-                            },
+                                return {
+                                    ...args,
+                                    value: { gamew: game.w },
+                                };
+                            }}
+                        >
                             <TeamGameFace
                                 game={game}
                                 importantOnClick={importantOnClick}
-                            />)}
+                            />
+                        </StrongDiv>
                     </React.Fragment>;
                 })}
             </>)}
         </>;
-    });
+    }, null, isRedact, switchIsRedact);
 
     const game = value.gamew && contextGames?.find((game) => game.w === value.gamew);
 
@@ -51,7 +63,6 @@ export default function LeaderTeamGameAttach({
                     : <span>Не определена</span>
             }
             {game && <EvaButton name="external-link-outline" onClick={() => jumpToGame(game.w)} />}
-            <EvaButton name="edit-outline" onClick={() => screen()} />
         </div>
         {game && <LeaderGameTotalScoreTable game={game} />}
     </div>;

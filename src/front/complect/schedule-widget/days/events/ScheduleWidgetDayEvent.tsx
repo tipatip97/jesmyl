@@ -11,6 +11,7 @@ import { useIsSchWidgetExpand } from "../../useScheduleWidget";
 
 export default function ScheduleWidgetDayEvent(props: {
     scope: string,
+    scheduleScope: string,
     event: IScheduleWidgetDayEvent,
     eventi: number,
     schedule: IScheduleWidget,
@@ -32,7 +33,7 @@ export default function ScheduleWidgetDayEvent(props: {
         if (isSelfRedact) switchIsExpand(true);
     }, [isSelfRedact]);
 
-    if (!box) return <>Неизвестный тип события</>;
+    if (!box) return <>Неизвестный шаблон события</>;
 
     const eventTm = ScheduleWidgetCleans.takeEventTime(props.event, box);
     if (props.isShowPeriodsNotTs) {
@@ -102,6 +103,7 @@ export default function ScheduleWidgetDayEvent(props: {
                 <ScheduleWidgetBindAtts
                     atts={props.event.atts}
                     scope={selfScope}
+                    scheduleScope={props.scheduleScope}
                     forTitle={`${box.title}${props.event.topic ? `: ${props.event.topic}` : ''}`}
                 />
                 : <ScheduleWidgetDayEventAtts

@@ -10,7 +10,7 @@ export const checkListAtt: ScheduleWidgetAppAtts<'SCH', ScheduleChListAtt> = {
         title: 'Выполнить',
         description: 'Пункты с галочками',
         icon: 'list',
-        initialAttValue: { list: [] },
-        result: (value, attItem, scope) => <ScheduleCheckListAtt attItem={attItem} value={value} scope={scope}/>,
+        initVal: { list: [] },
+        result: (value, scope, isRedact) => <ScheduleCheckListAtt isRedact={isRedact} value={value} scope={scope}/>,
     }
 };

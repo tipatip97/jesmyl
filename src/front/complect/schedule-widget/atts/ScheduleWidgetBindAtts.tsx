@@ -14,7 +14,9 @@ export default function ScheduleWidgetBindAtts({
     atts,
     forTitle,
     scope,
+    scheduleScope,
 }: StrongComponentProps<{
+    scheduleScope: string,
     forTitle: string,
     atts?: Record<ScheduleWidgetAttKey, unknown>,
 }>) {
@@ -26,6 +28,7 @@ export default function ScheduleWidgetBindAtts({
             {header(`Вложение для "${forTitle}"`)}
             {body(<>
                 {appAttList.map(([attKey, att]) => {
+                    if (!att.title || !att.description) return null;
                     const attScope = takeStrongScopeMaker(scope, ' attKey/', attKey);
 
                     return <StrongDiv
@@ -40,13 +43,14 @@ export default function ScheduleWidgetBindAtts({
                             if (atts?.[attKey]) return;
                             return {
                                 ...args,
-                                value: att.initialAttValue,
+                                value: att.initVal,
                             };
                         }}
                         onClick={closeModal}
                     >
                         <ScheduleWidgetAttFace
                             scope={scope}
+                            scheduleScope={scheduleScope}
                             att={att}
                             typeTitle={forTitle}
                             attKey={attKey}
@@ -72,6 +76,7 @@ export default function ScheduleWidgetBindAtts({
                     isRedact
                     key={attKey}
                     scope={attScope}
+                    scheduleScope={scheduleScope}
                     att={appAtts[attKey as never]}
                     attKey={attKey as never}
                     typeTitle={forTitle}
