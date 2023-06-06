@@ -20,7 +20,6 @@ export class SokiTrip {
     ws?: WebSocket;
     isConnected = false;
     onConnectWatchers: Record<'is', ((isConnected: boolean) => void)[]> = { is: [] };
-    private onConnectSends: (() => void)[] = [];
     private responseWaiters: ResponseWaiter[] = [];
 
     constructor() {
@@ -178,10 +177,10 @@ export class SokiTrip {
             }
         };
 
-        new Promise<void>((resolve) => resolve())
+        Promise.resolve()
             .then(() => {
                 if (this.isConnected) send();
-                else this.onConnectSends.push(send);
+                else this.onConnect(send);
             });
 
         return {
