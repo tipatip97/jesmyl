@@ -28,7 +28,8 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
         + (props.disabled ? ' disabled ' : '')
         + (isLoading ? ' rotate ' : '')
         + (isError ? ' color--ko ' : '')}
-      onClick={async () => {
+      onClick={async (event) => {
+        event.stopPropagation();
         if (props.disabled) return;
         if (
           props.confirm != null &&
