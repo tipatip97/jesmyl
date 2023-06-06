@@ -1,4 +1,4 @@
-import Eventer, { EventerCallback } from "./Eventer";
+import Eventer, { EventerCallback, theIdleMark } from "./Eventer";
 
 type ThrowEventKeyDownKey = 'Escape';
 
@@ -7,8 +7,9 @@ class ThrowEventClass {
         Escape: [],
     };
 
-    private isOnlineListens: Record<'is', EventerCallback<boolean>[]> = {
+    private windowEvents: Record<'is' | 'focus', EventerCallback<boolean>[]> = {
         is: [],
+        focus: [],
     };
 
     constructor() {
@@ -16,11 +17,18 @@ class ThrowEventClass {
             Eventer.invoke(this.keyDownListens, event.code as never, event);
         });
 
+        window.addEventListener('focus', () => {
+            Eventer.invoke(this.windowEvents, 'focus', true);
+        });
+        window.addEventListener('blur', () => {
+            Eventer.invoke(this.windowEvents, 'focus', false);
+        });
+
         window.addEventListener('online', () => {
-            Eventer.invoke(this.isOnlineListens, 'is', true);
+            Eventer.invoke(this.windowEvents, 'is', true);
         });
         window.addEventListener('offline', () => {
-            Eventer.invoke(this.isOnlineListens, 'is', false);
+            Eventer.invoke(this.windowEvents, 'is', false);
         });
     }
 
@@ -33,11 +41,20 @@ class ThrowEventClass {
     };
 
     listenIsOnline = (cb: EventerCallback<boolean>) => {
-        return Eventer.listen(this.isOnlineListens, 'is', cb);
+        cb(window.navigator?.onLine, theIdleMark);
+        return Eventer.listen(this.windowEvents, 'is', cb);
     };
 
     muteIsOnline = (cb: EventerCallback<boolean>) => {
-        Eventer.mute(this.isOnlineListens, 'is', cb);
+        Eventer.mute(this.windowEvents, 'is', cb);
+    };
+
+    listenIsWinFocused = (cb: EventerCallback<boolean>) => {
+        return Eventer.listen(this.windowEvents, 'focus', cb);
+    };
+
+    muteIsWinFocused = (cb: EventerCallback<boolean>) => {
+        Eventer.mute(this.windowEvents, 'focus', cb);
     };
 
 }
