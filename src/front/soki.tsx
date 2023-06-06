@@ -3,6 +3,7 @@ import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
 import { PullEventValue, SokiAppName, SokiClientEvent, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
+import Eventer from './complect/eventer/Eventer';
 import modalService from './complect/modal/Modal.service';
 import mylib from './complect/my-lib/MyLib';
 import indexStorage from './components/index/indexStorage';
@@ -18,7 +19,7 @@ export class SokiTrip {
     appName: SokiAppName = 'cm';
     ws?: WebSocket;
     isConnected = false;
-    onConnectWatchers: Record<string, (isConnected: boolean) => void> = {};
+    onConnectWatchers: Record<'is', ((isConnected: boolean) => void)[]> = { is: [] };
     private onConnectSends: (() => void)[] = [];
     private responseWaiters: ResponseWaiter[] = [];
 
@@ -27,7 +28,8 @@ export class SokiTrip {
     }
 
     onClose = () => {
-        this._onConnect(false);
+        Eventer.invoke(this.onConnectWatchers, 'is', false);
+        this.isConnected = false;
         setTimeout(() => this.start(), 1000);
     };
 
@@ -52,7 +54,8 @@ export class SokiTrip {
                 if (event) {
                     if (event.connect !== undefined) {
                         if (event.connect) {
-                            this._onConnect(true);
+                            Eventer.invoke(this.onConnectWatchers, 'is', true);
+                            this.isConnected = true;
                             this.send({ connect: true }, this.appName,);
                             this.pullCurrentAppData();
                         } else this.onUnauthorize();
@@ -95,20 +98,9 @@ export class SokiTrip {
         return this;
     }
 
-    private _onConnect(isConnected: boolean) {
-        if (isConnected !== this.isConnected) {
-            Object.values(this.onConnectWatchers).forEach(cb => cb(isConnected));
-            this.onConnectSends.forEach(cb => cb());
-            this.onConnectSends = [];
-        }
-        this.isConnected = isConnected;
-    }
-
-    onConnect(watcherName: string) {
-        return (callback: (isConnected: boolean) => void) => {
-            this.onConnectWatchers[watcherName] = callback;
-            return () => delete this.onConnectWatchers[watcherName];
-        }
+    onConnect(callback: (isConnected: boolean) => void) {
+        callback(this.isConnected);
+        return Eventer.listen(this.onConnectWatchers, 'is', callback);
     }
 
     setLastUpdates(appName: SokiAppName, pullCortage: SokiClientUpdateCortage) {
