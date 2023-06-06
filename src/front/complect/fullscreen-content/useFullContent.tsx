@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { ThrowEvent } from "../ThrowEvent";
+import { ThrowEvent } from "../eventer/ThrowEvent";
 import EvaButton from "../eva-icon/EvaButton";
 import Portal from "../popups/[complect]/Portal";
 

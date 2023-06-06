@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
-import { ThrowEvent } from "../ThrowEvent";
+import { ThrowEvent } from "../eventer/ThrowEvent";
 import Portal from "../popups/[complect]/Portal";
 
 export enum ModalType {
