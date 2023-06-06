@@ -35,11 +35,17 @@ const modalElements = {
     footer: (content: ReactNode) => <div className="modal-footer">{content}</div>,
 };
 
-export default function useModal(topContent?: (elements: typeof modalElements, close: () => void) => JSX.Element, onClose?: () => void) {
+export default function useModal(topContent?: (
+    elements: typeof modalElements, close: () => void) => JSX.Element,
+    onClose?: (() => void) | nil,
+    isForceOpen?: boolean,
+    switchIsForceOpen?: (is?: boolean) => void,
+) {
     const [config, setConfig] = useState(defaultUseModalConfig);
-    const typeClassName = ' type_' + config.type;
+    const typeClassName = ' type_' + (isForceOpen ? 'screen' : config.type);
     const close = useCallback(() => {
         (config.onClose ?? onClose)?.();
+        switchIsForceOpen?.(false);
         setConfig((prev) => ({ ...prev, isOpen: false }));
     }, [config.onClose, onClose]);
 
@@ -67,7 +73,7 @@ export default function useModal(topContent?: (elements: typeof modalElements, c
             });
             setTimeout(() => setConfig((prev) => ({ ...prev, isOpen: false })), config?.showTime ?? 3000);
         },
-        modalNode: (config.isOpen && <Portal>
+        modalNode: ((isForceOpen || config.isOpen) && <Portal>
             <div className={'modal-application-screen ' + typeClassName} onClick={close}>
                 <div className={'modal-screen-wrapper ' + typeClassName}>
                     <div className={'modal-screen ' + typeClassName + (' mood mood_' + config.mood)} onClick={(event) => event.stopPropagation()}>

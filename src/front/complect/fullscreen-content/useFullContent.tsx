@@ -5,30 +5,32 @@ import Portal from "../popups/[complect]/Portal";
 
 export type FullContentOpenMode = null | "open" | "closable";
 
-export default function useFullContent<PassValue>(content: (close: () => void, passValue?: PassValue) => ReactNode): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {
+export default function useFullContent<PassValue>(content: (close: () => void, passValue?: PassValue) => ReactNode, forceOpenMode?: FullContentOpenMode, switchIsForceOpen?: (is?: boolean) => void): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {
     const [openMode, setOpenMode] = useState<FullContentOpenMode>(null);
     const close = () => setOpenMode(null);
     const [passValue, setPassValue] = useState<PassValue>();
+    const mode = (forceOpenMode === undefined ? openMode : forceOpenMode);
+    const onClose = () => {
+            close();
+            switchIsForceOpen?.(false);
+        };
 
     useEffect(() => {
-        if (openMode) {
-            return ThrowEvent.listenKeyDown('Escape', () => setOpenMode(null));
+        if (mode) {
+            return ThrowEvent.listenKeyDown('Escape', () => onClose());
         }
-    }, [openMode]);
+    }, [mode]);
 
-    return [openMode && <Portal>
-        <div className={`fullscreen-content-container ${openMode || ""}`}
-            onClick={
-                openMode === "closable"
-                    ? () => close()
-                    : undefined
-            }
+    return [mode && <Portal>
+        <div
+            className={`fullscreen-content-container ${mode || ""}`}
+            onClick={mode === "closable" ? onClose : undefined}
         >
-            {openMode === "closable" ? null : (
+            {mode === "closable" ? null : (
                 <EvaButton
                     name="close"
                     className="close-button"
-                    onClick={() => close()}
+                    onClick={onClose}
                 />
             )}
             <div className="full-container padding-big-gap">
