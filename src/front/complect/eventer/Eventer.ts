@@ -1,4 +1,4 @@
-const theIdleMark = ['THE IDLE CALLBACK: ' + Date.now()] as const;
+export const theIdleMark = ['THE IDLE CALLBACK: ' + Date.now()] as const;
 export type EventerCallback<Ev> = ((event: Ev, idleMark: typeof theIdleMark) => void | typeof theIdleMark);
 export type EventerListeners<Key extends string = string, Ev extends any = any> = Record<Key, EventerCallback<Ev>[]>;
 
