@@ -126,7 +126,7 @@ export class Filer {
             waits++;
             fs.readFile(path, 'utf-8', async (err, stringData) => {
               oks++;
-              if (!err) {
+              if (!err && stringData) {
                 try {
                   const stat = fs.statSync(path);
                   const data = JSON.parse(stringData);
