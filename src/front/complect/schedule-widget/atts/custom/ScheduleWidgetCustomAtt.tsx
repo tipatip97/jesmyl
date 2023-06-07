@@ -54,6 +54,7 @@ export default function ScheduleWidgetCustomAtt({ att, scope, isRedact }: Strong
             fieldName="field"
             value={att.title}
             isRedact={isRedact}
+            isImpossibleEmptyValue
             icon="bookmark-outline"
             title="Название"
             mapExecArgs={(args) => ({ ...args, key: 'title' })}
@@ -65,6 +66,7 @@ export default function ScheduleWidgetCustomAtt({ att, scope, isRedact }: Strong
             multiline
             isRedact={isRedact}
             icon="file-text-outline"
+            isImpossibleEmptyValue
             title="Описание вложения"
             mapExecArgs={(args) => ({ ...args, key: 'description' })}
         />

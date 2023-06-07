@@ -28,6 +28,7 @@ export default function ScheduleWidgetCustomAttTitles({ att, scope, isRedact }: 
                 key={titlei}
                 scope={titleScope}
                 fieldName=""
+                isImpossibleEmptyValue
                 value={title}
                 isRedact={isRedact}
             />;

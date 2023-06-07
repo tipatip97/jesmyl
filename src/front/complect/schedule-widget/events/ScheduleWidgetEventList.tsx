@@ -90,6 +90,7 @@ export default function ScheduleWidgetEventList({
                                 isRedact={isRedact}
                                 icon="credit-card-outline"
                                 title="Название"
+                                isImpossibleEmptyValue
                                 onChange={(value) => {
                                     const errors = [...typesError];
                                     const lowerValue = titleNormalize(value.toLowerCase());

@@ -15,7 +15,7 @@ export default function StrongEditableField(props: StrongControlProps<{
     icon?: EvaIconName,
     placeholder?: string,
     isRedact?: boolean,
-    isPossibleEmptyValue?: boolean,
+    isImpossibleEmptyValue?: boolean,
     postfix?: string,
     multiline?: boolean,
     textClassName?: string,
@@ -33,7 +33,7 @@ export default function StrongEditableField(props: StrongControlProps<{
 
     const sendValue = () => {
         const isSendResuls = stateValue !== undefined
-            && (props.isPossibleEmptyValue || stateValue)
+            && (props.isImpossibleEmptyValue !== true || stateValue.trim())
             && stateValue.trim() !== props.value?.trim();
 
         if (isSendResuls) {

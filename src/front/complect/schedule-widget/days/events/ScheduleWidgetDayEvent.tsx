@@ -80,7 +80,6 @@ export default function ScheduleWidgetDayEvent(props: {
                     isRedact
                     scope={selfScope}
                     fieldName="field"
-                    isPossibleEmptyValue
                     value={props.event.topic}
                     title="Тема"
                     icon="bookmark-outline"
@@ -91,7 +90,6 @@ export default function ScheduleWidgetDayEvent(props: {
                 isRedact={isRedact}
                 scope={selfScope}
                 fieldName="field"
-                isPossibleEmptyValue
                 multiline
                 value={props.event.dsc}
                 title="Содержание"
