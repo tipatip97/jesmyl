@@ -1,0 +1,9 @@
+.ScheduleWidgetAlarm {
+    --icon-color: var(--color--1);
+    width: calc(100% + var(--main-gap) * 2);
+    height: 3em;
+    background-color: var(--color--4);
+    color: var(--color--1);
+    margin-top: calc(0px - var(--main-gap));
+    padding: var(--main-big-gap) var(--main-gap);
+}

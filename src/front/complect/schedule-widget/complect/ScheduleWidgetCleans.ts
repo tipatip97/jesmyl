@@ -3,8 +3,10 @@ import { IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from "../Sc
 
 export default class ScheduleWidgetCleans {
 
+    static wupsReg = /(\d+)(\.(\d+))?/;
+
     static computeDayWakeUpTime = <ReturnAs extends 'number' | 'string'>(wup: number, returnAs: ReturnAs): ReturnAs extends 'number' ? number : string => {
-        const [, beginHours, , beginMinutes] = ('' + wup).match(/(\d+)(\.(\d+))?/) || [];
+        const [, beginHours, , beginMinutes] = ('' + wup).match(this.wupsReg) || [];
         const wakeUpMinutes = +(beginMinutes?.padEnd(2, '0') || 0);
 
         return (returnAs === 'number'
