@@ -6,8 +6,10 @@ import { ScheduleWidgetAppAtts } from "./ScheduleWidget.model";
 
 const schedulesSelector = (state: RootState) => state.index.schedules;
 
+export const useSchedules = () => useSelector(schedulesSelector);
+
 export default function useScheduleWidget(schedulew?: number) {
-    const schedules = useSelector(schedulesSelector);
+    const schedules = useSchedules();
 
     const ret = {
         schedule: schedulew === undefined
