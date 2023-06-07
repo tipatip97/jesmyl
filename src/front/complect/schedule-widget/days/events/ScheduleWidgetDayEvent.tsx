@@ -40,7 +40,7 @@ export default function ScheduleWidgetDayEvent(props: {
         timeMark = eventTm + 'м';
         timerClassNamePlus = props.event.tm == null || props.event.tm === box.tm || (props.event.tm === 0 && box.tm == null) ? '' : ' color--7';
     } else {
-        const date = new Date(props.schedule.start);
+        const date = new Date(props.schedule.start || Date.now());
         date.setHours(0, 0, 0, props.wakeupMs + (props.prevTime - eventTm) * mylib.howMs.inMin);
         timeMark = `${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
     }

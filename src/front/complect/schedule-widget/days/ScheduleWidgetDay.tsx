@@ -16,11 +16,11 @@ export default function ScheduleWidgetDay({
     schedule: IScheduleWidget,
     scope: string,
 }) {
-    const date = new Date(schedule.start + mylib.howMs.inDay * dayi);
+    const date = new Date((schedule.start || Date.now()) + mylib.howMs.inDay * dayi);
     const title = dayFullTitles[date.getDay()];
     const times: number[] = [];
     const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
-    const selfScope = takeStrongScopeMaker(scope, ' dayw/', day.w);
+    const selfScope = takeStrongScopeMaker(scope, ' dayMi/', day.mi);
 
     day.list.forEach((item) => {
         times.push((item.tm || schedule.types?.[item.type]?.tm || 0) + (times[times.length - 1] || 0));

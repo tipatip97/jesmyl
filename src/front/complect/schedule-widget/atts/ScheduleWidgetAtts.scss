@@ -1,12 +1,13 @@
 .schedule-widget-bind-secs {
-    --att-size: 70px;
-
-    height: var(--att-size);
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-right: var(--margin-gap);
 }
 
 
 .schedule-widget-att {
-    --att-size: 70px;
+    --att-size: 90px;
 
     position: relative;
     background-color: var(--color--5);

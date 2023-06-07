@@ -18,7 +18,7 @@ export default function ScheduleKeyValueListAtt({
 
     return <>{
         <div>
-            {value.list?.map(([title, value], itemi) => {
+            {value.values?.map(([title, value], itemi) => {
                 if (!isRedact && !value) return null;
                 const itemScope = takeStrongScopeMaker(attScope, ' itemi/', itemi);
                 return <div key={itemi} className="margin-big-gap-b">
@@ -35,8 +35,9 @@ export default function ScheduleKeyValueListAtt({
                 </div>;
             })}
             {isRedact && att.titles
-                ?.filter(title => !value.list?.some(li => li[0] === title))
+                ?.filter(title => !value.values?.some(li => li[0] === title))
                 .map((title, titlei) => {
+                    if (!title) return null;
                     return <div key={titlei} className="flex flex-gap">
                         {title}
                         <StrongEvaButton

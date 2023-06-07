@@ -27,7 +27,7 @@ export interface IScheduleWidget {
 }
 
 export interface IScheduleWidgetDay {
-    w: number,
+    mi: number,
     wup: number, // wakeup
     topic?: string,
     dsc?: string,
@@ -56,7 +56,7 @@ export enum ScheduleWidgetAppAttCustomizableType {
 }
 
 export interface ScheduleWidgetAppAttCustomizableValue {
-    list?: [string, string][],
+    values?: [string, string][],
 }
 
 export interface ScheduleWidgetAppAttCustomizable extends ScheduleWidgetAppAttBasic<ScheduleWidgetAppAttCustomizableValue> {

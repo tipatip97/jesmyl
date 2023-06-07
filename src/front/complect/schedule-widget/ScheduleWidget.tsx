@@ -30,7 +30,7 @@ export default function ScheduleWidget({
     const [startTime, setStartTime] = useState(schedule?.start);
     const content = useStrongExerContent(indexExer);
 
-    const date = useMemo(() => new Date(schedule?.start || new Date().setMonth(new Date().getMonth() + 1)), [schedule?.start]);
+    const date = useMemo(() => new Date(schedule?.start || Date.now()), [schedule?.start]);
     const dateValue = useMemo(() => date.getTime() ? date.toLocaleDateString().replace(/\./g, ' ') : '', [date]);
     const atts = useMemo(() => {
         const atts: ScheduleWidgetAppAtts<'SCH'> = {};
@@ -82,7 +82,7 @@ export default function ScheduleWidget({
                             scope={selfScope}
                         />
                         <ScheduleWidgetCustomAttachments scope={selfScope} atts={schedule.atts} />
-                        <div className="flex flex-gap margin-big-gap-v">
+                        {!!schedule.start && <div className="flex flex-gap margin-big-gap-v">
                             Добавить день
                             <StrongEvaButton
                                 scope={selfScope}
@@ -90,7 +90,7 @@ export default function ScheduleWidget({
                                 name="plus-circle-outline"
                                 confirm="Дни удалять не возможно! Создать новый?"
                             />
-                        </div>
+                        </div>}
                     </div>
                     : schedule.start && <div>
                         Начало: {date.getDate()} {mylib.monthFullTitles[date.getMonth()]} {date.getFullYear()}

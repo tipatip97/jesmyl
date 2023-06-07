@@ -64,28 +64,32 @@ export default function ScheduleWidgetBindAtts({
 
     const attEntries = MyLib.entries(atts);
 
-    return <div
-        className="schedule-widget-bind-secs flex flex-gap">
+    return <>
         {modalNode}
-        <EvaIcon name="attach" />
-        {attEntries?.length
-            ? attEntries.map(([attKey]) => {
-                const attScope = takeStrongScopeMaker(scope, ' attKey/', attKey);
+        <div className="flex flex-gap">
+            <EvaIcon name="attach" />
+            Вложения
+            <EvaButton
+                name="plus-circle-outline"
+                onClick={() => screen()}
+            />
+        </div>
+        <div className="schedule-widget-bind-secs flex flex-gap no-scrollbar">
+            {attEntries?.length
+                ? attEntries.map(([attKey]) => {
+                    const attScope = takeStrongScopeMaker(scope, ' attKey/', attKey);
 
-                return <ScheduleWidgetAttFace
-                    isRedact
-                    key={attKey}
-                    scope={attScope}
-                    scheduleScope={scheduleScope}
-                    att={appAtts[attKey as never]}
-                    attKey={attKey as never}
-                    typeTitle={forTitle}
-                />;
-            })
-            : <span className="color--7">Вложений нет</span>}
-        <EvaButton
-            name="plus-circle-outline"
-            onClick={() => screen()}
-        />
-    </div>;
+                    return <ScheduleWidgetAttFace
+                        isRedact
+                        key={attKey}
+                        scope={attScope}
+                        scheduleScope={scheduleScope}
+                        att={appAtts[attKey as never]}
+                        attKey={attKey as never}
+                        typeTitle={forTitle}
+                    />;
+                })
+                : <span className="color--7">Вложений нет</span>}
+        </div>
+    </>;
 }

@@ -127,16 +127,16 @@ const config: FilerAppConfig = {
                     '/days': {
                         expected: [],
                         C: {
+                            setSystems: ['mi'],
                             value: {
-                                w: '{@setNewWid()}',
                                 list: [],
                                 wup: 7,
                             }
                         },
-                        '/[w === {dayw}]': {
-                            scopeNode: 'dayw',
+                        '/[mi === {dayMi}]': {
+                            scopeNode: 'dayMi',
                             args: {
-                                dayw: '#Number'
+                                dayMi: '#Number'
                             },
                             '/{key}': {
                                 scopeNode: 'field',
