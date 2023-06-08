@@ -24,6 +24,7 @@ export interface IScheduleWidget {
     days?: IScheduleWidgetDay[],
     types?: ScheduleWidgetDayListItemTypeBox[],
     atts?: ScheduleWidgetAppAttCustomized[],
+    app: AppName,
 }
 
 export interface IScheduleWidgetDay {

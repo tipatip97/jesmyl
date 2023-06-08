@@ -8,6 +8,7 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
     typeBox: ScheduleWidgetDayListItemTypeBox,
     event: IScheduleWidgetDayEvent,
     day: IScheduleWidgetDay,
+    isPast: boolean,
 }>) {
     return <>
         {MyLib.entries(props.event.atts).map(([attKey, att]) => {
@@ -21,6 +22,7 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
                 attKey={attKey as never}
                 day={props.day}
                 event={props.event}
+                isPast={props.isPast}
             />;
         })}
     </>;

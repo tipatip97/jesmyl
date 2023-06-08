@@ -9,11 +9,15 @@ import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
 import ScheduleWidgetDayEventAtts from "../../events/atts/ScheduleWidgetDayEventAtts";
 import { useIsSchWidgetExpand } from "../../useScheduleWidget";
 
+const msInMin = mylib.howMs.inMin;
+const msInDay = mylib.howMs.inDay;
+
 export default function ScheduleWidgetDayEvent(props: {
     scope: string,
     scheduleScope: string,
     event: IScheduleWidgetDayEvent,
     eventi: number,
+    dayi: number,
     schedule: IScheduleWidget,
     day: IScheduleWidgetDay,
     prevTime: number,
@@ -21,31 +25,41 @@ export default function ScheduleWidgetDayEvent(props: {
     onClickOnTs: () => void,
     redact: boolean | nil,
     wakeupMs: number,
+    isPastDay: boolean,
 }) {
     const box = props.schedule.types?.[props.event.type];
     let timeMark = '';
     let timerClassNamePlus = '';
     const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, null, null, true);
     const selfScope = takeStrongScopeMaker(props.scope, ' eventmi/', props.event.mi);
-    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(selfScope);
+
+    const eventTm = ScheduleWidgetCleans.takeEventTm(props.event, box);
+    const eventFinishMs = props.schedule.start + props.wakeupMs + props.prevTime * msInMin + props.dayi * msInDay;
+    const eventStartMs = eventFinishMs - eventTm * msInMin;
+    const isPastEvent = Date.now() > eventFinishMs;
+
+    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(selfScope, isPastEvent || props.isPastDay);
 
     useEffect(() => {
         if (isSelfRedact) switchIsExpand(true);
-    }, [isSelfRedact]);
+    }, [isSelfRedact, switchIsExpand]);
 
     if (!box) return <>Неизвестный шаблон события</>;
 
-    const eventTm = ScheduleWidgetCleans.takeEventTime(props.event, box);
     if (props.isShowPeriodsNotTs) {
         timeMark = eventTm + 'м';
         timerClassNamePlus = props.event.tm == null || props.event.tm === box.tm || (props.event.tm === 0 && box.tm == null) ? '' : ' color--7';
     } else {
-        const date = new Date(props.schedule.start || Date.now());
-        date.setHours(0, 0, 0, props.wakeupMs + (props.prevTime - eventTm) * mylib.howMs.inMin);
+        const date = new Date(eventStartMs);
         timeMark = `${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
     }
 
-    return <div className={'day-event' + (isExpand && !props.redact ? ' expand' : '')}>
+    return <div
+        className={
+            'day-event'
+            + (isExpand && !props.redact ? ' expand' : '')
+            + (props.isPastDay ? '' : isPastEvent ? ' past' : '')
+        }>
         <div
             className={'item-header flex flex-gap between' + (props.redact ? '' : ' pointer')}
             onClick={() => !props.redact && switchIsExpand()}
@@ -109,6 +123,7 @@ export default function ScheduleWidgetDayEvent(props: {
                     typeBox={box}
                     event={props.event}
                     day={props.day}
+                    isPast={isPastEvent || props.isPastDay}
                 />}
         </div>
     </div>;

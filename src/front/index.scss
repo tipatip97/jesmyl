@@ -236,6 +236,10 @@ textarea {
     gap: var(--main-gap);
   }
 
+  &.flex-big-gap {
+    gap: var(--main-big-gap);
+  }
+
   &.flex-wrap {
     flex-wrap: wrap;
   }

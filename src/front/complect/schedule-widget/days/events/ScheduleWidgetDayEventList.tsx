@@ -11,12 +11,14 @@ import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
 import { useIsSchWidgetExpand } from "../../useScheduleWidget";
 
 export default function ScheduleWidgetDayEventList({
-    day, schedule, scope, scheduleScope,
+    day, schedule, scope, scheduleScope, isPastDay, dayi,
 }: {
     day: IScheduleWidgetDay,
     schedule: IScheduleWidget,
     scope: string,
     scheduleScope: string,
+    isPastDay: boolean,
+    dayi: number,
 }) {
     const [isExpand, switchIsExpand] = useIsSchWidgetExpand(scope);
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
@@ -40,7 +42,7 @@ export default function ScheduleWidgetDayEventList({
     useEffect(() => {
         if (isRedact) switchIsExpand(true);
         else setMoveEventMi(null);
-    }, [isRedact]);
+    }, [isRedact, switchIsExpand]);
 
     return <div className={'schedule-widget-day-event-list' + (isRedact ? ' redact' : '') + (moveEventMi === null ? '' : ' event-movement')}>
         <div className="flex flex-gap pointer margin-gap-v between">
@@ -88,9 +90,11 @@ export default function ScheduleWidgetDayEventList({
                         scope={scope}
                         scheduleScope={scheduleScope}
                         schedule={schedule}
+                        isPastDay={isPastDay}
                         day={day}
                         event={event}
                         eventi={eventi}
+                        dayi={dayi}
                         redact={isRedact}
                         prevTime={times[eventi]}
                         wakeupMs={ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number')}

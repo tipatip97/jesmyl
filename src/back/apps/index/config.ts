@@ -40,10 +40,12 @@ const config: FilerAppConfig = {
                     value: {
                         w: '{schw}',
                         title: '{title}',
+                        app: '{app}',
                     },
                     args: {
                         schw: '#Number',
                         title: '#String',
+                        app: '#String',
                     },
                 },
                 '/[w === {schw}]': {

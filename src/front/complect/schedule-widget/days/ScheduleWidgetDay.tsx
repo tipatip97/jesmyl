@@ -4,19 +4,24 @@ import StrongEditableField from "../../strong-control/field/StrongEditableField"
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
+import "./ScheduleWidgetDay.scss";
 import ScheduleWidgetDayEventList from "./events/ScheduleWidgetDayEventList";
 
 const dayFullTitles = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-
-export default function ScheduleWidgetDay({
-    day, dayi, schedule, scope,
-}: {
+export interface ScheduleWidgetDayProps {
     day: IScheduleWidgetDay,
     dayi: number,
     schedule: IScheduleWidget,
     scope: string,
-}) {
-    const date = new Date((schedule.start || Date.now()) + mylib.howMs.inDay * dayi);
+}
+
+
+export default function ScheduleWidgetDay({
+    day, dayi, schedule, scope,
+}: ScheduleWidgetDayProps) {
+    const dayStartMs = schedule.start + mylib.howMs.inDay * dayi;
+    const date = new Date(dayStartMs);
+    const isPastDay = Date.now() > dayStartMs + mylib.howMs.inDay;
     const title = dayFullTitles[date.getDay()];
     const times: number[] = [];
     const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
@@ -26,7 +31,7 @@ export default function ScheduleWidgetDay({
         times.push((item.tm || schedule.types?.[item.type]?.tm || 0) + (times[times.length - 1] || 0));
     });
 
-    return <div className="schedule-widget-day">
+    return <div className={'ScheduleWidgetDay' + (isPastDay ? ' past' : '')}>
         <div className="day-title flex flex-gap">
             {dayi + 1} день, {title}
             {editIcon}
@@ -71,9 +76,11 @@ export default function ScheduleWidgetDay({
         </div>
         <ScheduleWidgetDayEventList
             day={day}
+            dayi={dayi}
             schedule={schedule}
             scope={selfScope}
             scheduleScope={scope}
+            isPastDay={isPastDay}
         />
     </div>;
 }

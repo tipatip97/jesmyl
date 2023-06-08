@@ -6,7 +6,7 @@ import Portal from "../popups/[complect]/Portal";
 export type FullContentOpenMode = null | "open" | "closable";
 export type FullContentValue<PassValue = unknown> = (close: () => void, passValue?: PassValue) => ReactNode;
 
-export default function useFullContent<PassValue>(content: FullContentValue<PassValue>, forceOpenMode?: FullContentOpenMode, switchIsForceOpen?: (is?: boolean) => void): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {
+export default function useFullContent<PassValue>(content: FullContentValue<PassValue> | null, forceOpenMode?: FullContentOpenMode, switchIsForceOpen?: (is: boolean) => void): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {
     const [openMode, setOpenMode] = useState<FullContentOpenMode>(null);
     const close = () => setOpenMode(null);
     const [passValue, setPassValue] = useState<PassValue>();
@@ -36,7 +36,7 @@ export default function useFullContent<PassValue>(content: FullContentValue<Pass
                 />
             )}
             <div className="full-container padding-big-gap">
-                {content(close, passValue)}
+                {content?.(close, passValue)}
             </div>
         </div>
     </Portal>,

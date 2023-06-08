@@ -14,7 +14,7 @@ export default class ScheduleWidgetCleans {
             : `${beginHours.padStart(2, '0')}:${('' + wakeUpMinutes).padStart(2, '0')}`) as never;
     };
 
-    static takeEventTime = (event: IScheduleWidgetDayEvent, box: ScheduleWidgetDayListItemTypeBox) => {
-        return event.tm ?? box.tm ?? 0;
+    static takeEventTm = (event: IScheduleWidgetDayEvent, box?: ScheduleWidgetDayListItemTypeBox) => {
+        return event.tm ?? box?.tm ?? 0;
     };
 }

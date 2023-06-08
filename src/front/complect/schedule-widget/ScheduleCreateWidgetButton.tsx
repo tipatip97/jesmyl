@@ -1,3 +1,4 @@
+import { AppName } from "../../app/App.model";
 import StrongButton from "../strong-control/StrongButton";
 import './ScheduleWidget.scss';
 import { initialScheduleScope } from "./useScheduleWidget";
@@ -5,9 +6,11 @@ import { initialScheduleScope } from "./useScheduleWidget";
 export default function ScheduleCreateWidgetButton({
     title,
     schw,
+    appName,
 }: {
     title: string,
     schw: number,
+    appName: AppName,
 }) {
 
     return <StrongButton
@@ -19,6 +22,7 @@ export default function ScheduleCreateWidgetButton({
                 ...args,
                 schw,
                 title,
+                app: appName,
             };
         }}
         cud="C"

@@ -2,7 +2,6 @@ import useAbsoluteBottomPopup from "../../../complect/absolute-popup/useAbsolute
 import ScheduleCreateWidgetButton from "../../../complect/schedule-widget/ScheduleCreateWidgetButton";
 import ScheduleWidget from "../../../complect/schedule-widget/ScheduleWidget";
 import useScheduleWidget from "../../../complect/schedule-widget/useScheduleWidget";
-import { leaderAppAtts } from "../../complect/appScheduleAttrsStorage";
 import useConnectionState from "../../index/useConnectionState";
 import GeneralMore from "./GeneralMore";
 import "./Leader.scss";
@@ -25,8 +24,12 @@ export default function LeaderSchedule() {
     content={
       ccontext
         ? schedule
-          ? <ScheduleWidget schedule={schedule} expand appAtts={leaderAppAtts} />
-          : <ScheduleCreateWidgetButton title={ccontext.name} schw={ccontext.w} />
+          ? <ScheduleWidget schedule={schedule} expand />
+          : <ScheduleCreateWidgetButton
+            appName="leader"
+            title={ccontext.name}
+            schw={ccontext.w}
+          />
         : <CurrentContextSelect />
     }
   />;

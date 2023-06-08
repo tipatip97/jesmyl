@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
+import useFullContent, { FullContentValue } from "../../fullscreen-content/useFullContent";
 import mylib from "../../my-lib/MyLib";
 import ScheduleWidgetCleans from "../complect/ScheduleWidgetCleans";
 import { useSchedules } from "../useScheduleWidget";
+import ScheduleAlarmDay from "./ScheduleAlarmDay";
 import "./ScheduleWidgetAlarm.scss";
 
 const msInDay = mylib.howMs.inDay;
@@ -15,6 +17,7 @@ export default function ScheduleWidgetAlarm() {
     const schedules = useSchedules();
     const now = Date.now();
     const [updates, setUpdates] = useState<null | number>(null);
+    const [isFullOpen, setIsFullOpen] = useState(false);
 
     useEffect(() => {
         let time = msInMin;
@@ -55,8 +58,10 @@ export default function ScheduleWidgetAlarm() {
             .filter(itNNull);
     }, [schedules.list]);
 
-    const node = useMemo(() => {
+    const [node, fullValue, isCanOpenFull]: [ReactNode, FullContentValue | null, true | und] = useMemo(() => {
         let node = null;
+        let fullValue: FullContentValue | null = null;
+        let isCanOpenFull: true | und = undefined;
 
         if (node === null) {
             const currSchWr = scheduleList.find((box) => {
@@ -71,9 +76,11 @@ export default function ScheduleWidgetAlarm() {
                 });
 
                 if (currDayi > -1 && currDayi < currSchWr.days.length) {
+                    const currDay = currSchWr.days[currDayi];
                     const dayBeginMs = currSchWr.sch.start + currDayi * msInDay;
                     const dayStartMs = dayBeginMs + currSchWr.dayStartMsList[currDayi];
-                    const events = currSchWr.days[currDayi].list;
+                    const dayFinishMs = dayStartMs + currSchWr.dayMsList[currDayi];
+                    const events = currDay.list;
 
                     let currEventMs = dayStartMs;
                     let lastCompEventMs = 0;
@@ -87,25 +94,68 @@ export default function ScheduleWidgetAlarm() {
                         return false;
                     });
 
-                    const currEventType = events[currEventi] && currSchWr.types[events[currEventi].type];
-                    const nextEventType = events[currEventi + 1] && currSchWr.types[events[currEventi + 1].type];
                     const minTo = Math.ceil(((currEventMs + lastCompEventMs) - now) / msInMin);
 
-                    const nextDay = currSchWr.days[currDayi + 1];
-                    const nextDayFirstEvent = nextDay?.list[0];
+                    isCanOpenFull = true;
 
-                    node = <div className="flex flex-gap">
-                        {currEventType === undefined
-                            ? nextDayFirstEvent
-                                ? <>Конец дня. Завтра {currSchWr.types[nextDayFirstEvent.type].title} в {ScheduleWidgetCleans.computeDayWakeUpTime(nextDay.wup, 'string')}</>
-                                : <>Это был последний день <EvaIcon name="smiling-face-outline" /></>
-                            : <><span>{currEventType.title}</span>
-                                <span>через {minTo}м.</span>
-                                {nextEventType === undefined
-                                    ? <div>конец дня</div>
-                                    : <span>{nextEventType.title}</span>}
-                            </>}
-                    </div>;
+                    fullValue = () => {
+                        return <ScheduleAlarmDay
+                            day={currDay}
+                            dayi={currDayi}
+                            schedule={currSchWr.sch}
+                        />
+                    };
+
+                    if (currEventi < 0) {
+                        let content = null;
+
+                        if (now < dayStartMs) {
+                            let timeMessage = '';
+
+                            if (dayStartMs - now < msInHour) {
+                                const minutesTo = Math.ceil((dayStartMs - now) / msInMin);
+                                timeMessage = `через ${minutesTo} ${mylib.declension(minutesTo, 'минуту', 'минуты', 'минут')}`
+                            } else
+                                timeMessage = `в ${ScheduleWidgetCleans.computeDayWakeUpTime(currDay.wup, 'string')}`;
+
+                            content = events[0] && <>{currSchWr.types[events[0].type].title} {timeMessage}</>;
+                        } else if (now > dayFinishMs) {
+                            const nextDay = currSchWr.days[currDayi + 1];
+                            const nextDayFirstEvent = nextDay?.list[0];
+
+                            if (nextDayFirstEvent)
+                                content = <>Завтра {
+                                    currSchWr.types[nextDayFirstEvent.type].title
+                                } в {
+                                        ScheduleWidgetCleans.computeDayWakeUpTime(nextDay.wup, 'string')
+                                    }</>;
+                        }
+
+                        if (content === null) {
+                            content = <>Это был последний день <EvaIcon name="smiling-face-outline" /></>;
+                        }
+
+                        node = <div className="flex flex-gap">{content}</div>;
+                    } else {
+                        const currEventType = events[currEventi] && currSchWr.types[events[currEventi].type];
+                        const nextEventType = events[currEventi + 1] && currSchWr.types[events[currEventi + 1].type];
+
+                        node = <div>
+                            <div className="flex flex-big-gap">
+                                <span>Сейчас</span>
+                                <span>{currEventType.title}{events[currEventi]?.topic ? `: ${events[currEventi]?.topic}` : ''}</span>
+                            </div>
+                            <div className="flex flex-big-gap">
+                                <span>Через {minTo}м.</span>
+                                <span>
+                                    {nextEventType === undefined
+                                        ? 'конец дня'
+                                        : `${nextEventType.title}${events[currEventi + 1]?.topic ? `: ${events[currEventi + 1]?.topic}` : ''}`}
+                                </span>
+                            </div>
+
+                        </div>;
+                    }
                 }
             }
         }
@@ -131,10 +181,18 @@ export default function ScheduleWidgetAlarm() {
             }
         }
 
-        return node;
+        if (!fullValue) setIsFullOpen(false);
+
+        return [node, fullValue, isCanOpenFull];
     }, [now, scheduleList]);
 
-    return <div className="ScheduleWidgetAlarm flex">
+    const [fullNode] = useFullContent(fullValue, isFullOpen ? 'open' : null, setIsFullOpen);
+
+    return <div
+        className={'ScheduleWidgetAlarm flex' + (isCanOpenFull ? ' pointer' : '')}
+        onClick={isCanOpenFull && (() => setIsFullOpen(true))}
+    >
+        {fullNode}
         <EvaButton name="calendar" className="margin-big-gap" />
         {node ?? <>Расписаний нет</>}
     </div>;

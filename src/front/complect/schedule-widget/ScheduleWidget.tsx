@@ -4,26 +4,23 @@ import EvaButton from "../eva-icon/EvaButton";
 import mylib from "../my-lib/MyLib";
 import StrongControlDateTimeExtracter from "../strong-control/StrongDateTimeExtracter";
 import StrongEvaButton from "../strong-control/StrongEvaButton";
-import { takeStrongScopeMaker, useStrongExerContent } from "../strong-control/useStrongControl";
+import { useStrongExerContent } from "../strong-control/useStrongControl";
 import useIsRedactArea from "../useIsRedactArea";
-import { IScheduleWidget, ScheduleWidgetAppAtts } from "./ScheduleWidget.model";
+import { IScheduleWidget } from "./ScheduleWidget.model";
 import './ScheduleWidget.scss';
-import ScheduleKeyValueListAtt from "./atts/attachments/key-value/ScheduleKeyValueListAtt";
-import { scheduleOwnAtts } from "./atts/attachments/scheduleOwnAtts";
 import ScheduleWidgetCustomAttachments from "./atts/custom/ScheduleWidgetCustomAttachments";
 import ScheduleWidgetCleans from "./complect/ScheduleWidgetCleans";
 import ScheduleWidgetDay from "./days/ScheduleWidgetDay";
 import ScheduleWidgetEventList from "./events/ScheduleWidgetEventList";
-import { ScheduleWidgetAppAttsContext, initialScheduleScope } from "./useScheduleWidget";
+import { ScheduleWidgetAppAttsContext, makeAttStorage, takeScheduleStrongScopeMaker } from "./useScheduleWidget";
+
 
 export default function ScheduleWidget({
     schedule,
     expand,
-    appAtts,
 }: {
     schedule?: IScheduleWidget,
     expand?: boolean,
-    appAtts: ScheduleWidgetAppAtts,
 }) {
     const [isExpand, setIsExpand] = useState<und | boolean>(expand);
     const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
@@ -32,21 +29,11 @@ export default function ScheduleWidget({
 
     const date = useMemo(() => new Date(schedule?.start || Date.now()), [schedule?.start]);
     const dateValue = useMemo(() => date.getTime() ? date.toLocaleDateString().replace(/\./g, ' ') : '', [date]);
-    const atts = useMemo(() => {
-        const atts: ScheduleWidgetAppAtts<'SCH'> = {};
-        schedule?.atts?.forEach((att) => {
-            atts[`[SCH]:custom:${att.mi}`] = {
-                ...att,
-                isCustomize: true,
-                result: (value, scope, isRedact) => <ScheduleKeyValueListAtt isRedact={isRedact} att={att} scope={scope} value={value} />,
-            };
-        });
-        return { ...appAtts, ...scheduleOwnAtts, ...atts };
-    }, [appAtts, schedule?.atts]);
+    const atts = useMemo(() => makeAttStorage(schedule), [schedule]);
 
     if (!schedule) return null;
 
-    const selfScope = takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedule.w);
+    const selfScope = takeScheduleStrongScopeMaker(schedule.w);
 
     const firstWup = schedule.days?.[0].wup;
 

@@ -12,11 +12,12 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     event: IScheduleWidgetDayEvent,
     day: IScheduleWidgetDay,
     attKey: ScheduleWidgetAttKey,
-    att: ScheduleWidgetAppAtt<unknown>
+    att: ScheduleWidgetAppAtt<unknown>,
+    isPast: boolean,
 }>) {
     const appAtts = useScheduleWidgetAppAttsContext();
     const appAtt = appAtts[props.attKey];
-    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(props.scope);
+    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(props.scope, props.isPast);
     const { isRedact, editIcon, setIsSelfRedact } = useIsRedactArea(true, null, true, true);
 
     if (!appAtt) return <div className="error-message">Неизвестное вложение</div>;
