@@ -12,7 +12,6 @@ export interface LeaderContextImportable extends LeaderContextExportable {
 }
 
 export interface LeaderContextExportable extends LeaderContextCreatable {
-    ts: number,
 }
 
 export interface LeaderContextCreatable {

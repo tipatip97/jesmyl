@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../shared/store";
 import useLeaderNav, { leaderNavGamePhase } from "../../useLeaderNav";
-import useLeaderContexts from "../contexts/useContexts";
+import useLeaderContext from "../contexts/useContexts";
 
 const gamesSelector = (state: RootState) => state.leader.games;
 
@@ -9,7 +9,7 @@ export const useSelectGames = () => useSelector(gamesSelector);
 
 export default function useGames() {
     const games = useSelectGames();
-    const ctx = useLeaderContexts();
+    const ctx = useLeaderContext();
     const { jumpTo,goTo, appRouteData: { gamew } } = useLeaderNav();
 
     const cgame = games?.teamGames?.find((game) => game.w === gamew);

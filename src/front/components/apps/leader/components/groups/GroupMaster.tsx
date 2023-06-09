@@ -2,10 +2,10 @@ import { useState } from "react";
 import SendButton from "../../../../../complect/SendButton";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { leaderExer } from "../../Leader.store";
-import useLeaderContexts from "../contexts/useContexts";
+import { LeaderCleans } from "../LeaderCleans";
+import { useLeaderCcontext } from "../contexts/useContexts";
 import SelectHumans from "../people/SelectHumans";
 import { LeaderGroupImportable } from "./Groups.model";
-import { LeaderCleans } from "../LeaderCleans";
 
 export default function LeaderGroupMaster({
   group,
@@ -21,7 +21,7 @@ export default function LeaderGroupMaster({
   const [addMembers, updateAddMembers] = useState<number[]>([]);
   const [delMembers, updateDelMembers] = useState<number[]>([]);
 
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
 
   if (!ccontext) return null;
 

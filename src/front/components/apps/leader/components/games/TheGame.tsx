@@ -9,7 +9,7 @@ import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import useLeaderNav from "../../useLeaderNav";
 import { LeaderCleans } from "../LeaderCleans";
-import useLeaderContexts from "../contexts/useContexts";
+import useLeaderContext from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import GameMore from "./GameMore";
 import GameTeamListComputer from "./GameTeamListComputer";
@@ -25,7 +25,7 @@ import useCgame from "./useGames";
 
 export default function TheGame() {
   const { cgame } = useCgame();
-  const { contextMembers } = useLeaderContexts();
+  const { contextMembers } = useLeaderContext();
   const [selectedTimers, updateSelectedTimers] = useState<number[]>([]);
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { openFullscreenContent } = useFullscreenContent();

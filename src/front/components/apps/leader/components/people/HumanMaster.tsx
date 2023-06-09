@@ -20,7 +20,7 @@ const lineAsHuman = (line: string): HumanExportable | string => {
     return "[Date]" + line;
 
   return {
-    ts: Date.now() + Math.random(),
+    // ts: Date.now() + Math.random(),
     notes: "",
     name: name.trim().replace(/\s+/g, " "),
     bDay: new Date(+year, +month - 1, +day).getTime(),

@@ -27,79 +27,78 @@ export default function SelectHumans({
   ) => {
     return (
       <div
-        className={`${
-          isRedact ? "height-30vh-strong" : ""
-        } min-height-30vh over-auto full-width`}
+        className={`${isRedact ? "height-30vh-strong" : ""
+          } min-height-30vh over-auto full-width`}
       >
         <HumanList
           className="full-width"
           searcherClass="sticky"
           placeholder={placeholder}
-          dangers={delList}
-          successes={addList}
-          list={(list) => {
-            if (isWholeList) {
-              if (!isShowExcluded && excludes)
-                return (
-                  (wholeList ?? list)?.filter(
-                    (wid) => !excludes.some((exWid) => exWid === wid)
-                  ) ?? []
-                );
-              else return wholeList ?? list;
-            }
+          // dangers={delList}
+          // successes={addList}
+          // list={(list) => {
+          //   if (isWholeList) {
+          //     if (!isShowExcluded && excludes)
+          //       return (
+          //         (wholeList ?? list?.map(({ w }) => w))?.filter(
+          //           (wid) => !excludes.some((exWid) => exWid === wid)
+          //         ) ?? []
+          //       );
+          //     else return wholeList ?? list?.map(({ w }) => w);
+          //   }
 
-            if (fixedList) {
-              return fixedList
-                .concat(addList)
-                .filter((humanWid) => !delList.some((wid) => humanWid === wid));
-            } else return addList;
-          }}
+          //   if (fixedList) {
+          //     return fixedList
+          //       .concat(addList)
+          //       .filter((humanWid) => !delList.some((wid) => humanWid === wid));
+          //   } else return addList;
+          // }}
           asHumanMore={
             isRedact
               ? (human) => {
-                  if (
-                    excludedTitle &&
-                    excludes?.some((exWid) => exWid === human.w)
-                  )
-                    return <div className="error-message">{excludedTitle}</div>;
+                if (
+                  excludedTitle &&
+                  excludes?.some((exWid) => exWid === human.w)
+                )
+                  return <div className="error-message">{excludedTitle}</div>;
 
-                  return (
-                    !fixedList || !fixedList.some((wid) => human.w === wid)
-                      ? !addList.some((wid) => human.w === wid)
-                      : delList.some((wid) => human.w === wid)
-                  ) ? (
-                    <EvaIcon
-                      name="plus-circle-outline"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        if (
-                          !fixedList ||
-                          !fixedList.some((wid) => human.w === wid)
-                        )
-                          updateAddList([...addList, human.w]);
-                        updateDelList(
-                          delList.filter((wid) => wid !== human.w)
-                        );
-                      }}
-                    />
-                  ) : (
-                    <EvaIcon
-                      name="minus-circle-outline"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        if (
-                          fixedList &&
-                          fixedList.some((wid) => human.w === wid)
-                        )
-                          updateDelList([...delList, human.w]);
+                return (
+                  !fixedList || !fixedList.some((wid) => human.w === wid)
+                    ? !addList.some((wid) => human.w === wid)
+                    : delList.some((wid) => human.w === wid)
+                ) ? (
+                  <EvaIcon
+                    name="plus-circle-outline"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (
+                        !fixedList ||
+                        !fixedList.some((wid) => human.w === wid)
+                      )
+                        updateAddList([...addList, human.w]);
+                      updateDelList(
+                        delList.filter((wid) => wid !== human.w)
+                      );
+                    }}
+                  />
+                ) : (
+                  <EvaIcon
+                    name="minus-circle-outline"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (
+                        fixedList &&
+                        fixedList.some((wid) => human.w === wid)
+                      )
+                        updateDelList([...delList, human.w]);
 
-                        updateAddList(
-                          addList.filter((wid) => wid !== human.w)
-                        );
-                      }}
-                    />
-                  );
-                }
+                      updateAddList(
+                        addList.filter((wid) => wid !== human.w)
+                      );
+                    }}
+                  />
+                );
+              }
               : undefined
           }
         />

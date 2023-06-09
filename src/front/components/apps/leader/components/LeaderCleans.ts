@@ -117,12 +117,12 @@ export class LeaderCleans {
             .join(", ")) || 'Лидеров нет';
     };
 
-    static getMembersInGroups = (members: HumanImportable[], wids: number[], groups: LeaderGroupImportable[] | und): { member: HumanImportable, group: LeaderGroupImportable }[] => {
+    static getMembersInGroups = (participantListName: 'members' | 'mentors', contextParticipants: HumanImportable[], wids: number[], groups: LeaderGroupImportable[] | und): { member: HumanImportable, group: LeaderGroupImportable }[] => {
         return groups?.map(
             (group) =>
-                group.members
+                group[participantListName]
                     .map((memberw) => {
-                        const member = members.find(({ w }) => w === memberw);
+                        const member = contextParticipants.find(({ w }) => w === memberw);
                         return !member?.isInactive && wids.includes(member?.w || -1) ? { member, group } : null
                     })
                     .filter(this.truthableFilter) as never)
@@ -147,27 +147,26 @@ export class LeaderCleans {
     //// execs
 
 
-    static addOrRemoveHumans = (contextw: number, addList: number[], delList: number[], listn: 'mentors' | 'members') => {
-        const execs: ClientExecutionDict[] = [];
-        if (addList.length)
-            execs.push({
-                action: 'addHumansToContext',
-                args: {
-                    contextw,
-                    listn,
-                    list: addList,
-                }
-            });
-        if (delList.length)
-            execs.push({
-                action: 'removeHumansFromContext',
-                args: {
-                    contextw,
-                    listn,
-                    list: delList,
-                }
-            });
-        return leaderExer.send(execs);
+    static addContextHuman = (contextw: number, humanw: number, listn: 'mentors' | 'members') => {
+        return leaderExer.send({
+            action: 'addHumanToContext',
+            args: {
+                contextw,
+                listn,
+                humanw,
+            }
+        });
+    };
+
+    static removeContextHuman = (contextw: number, humanw: number, listn: 'mentors' | 'members') => {
+        return leaderExer.send({
+            action: 'removeHumanFromContext',
+            args: {
+                contextw,
+                listn,
+                humanw,
+            }
+        });
     };
 
     static publicateNewContext = (context: LeaderContextCreatable) => {
@@ -308,14 +307,14 @@ export class LeaderCleans {
         }
     }
 
-    static replaceMemberToGroup = (groupw: number, contextw: number, humanw: number, excludeGroups: LeaderGroupImportable[]) => {
+    static replaceMemberToGroup = (groupw: number, contextw: number, humanw: number, excludeGroups: LeaderGroupImportable[], participantListName: 'members' | 'mentors') => {
         leaderExer.clear();
         const stack: ClientExecutionDict<unknown>[] = [];
 
-        stack.push(this.makeHumansToGroupExecDict([humanw], { contextw, groupw }, 'members', 'add'));
+        stack.push(this.makeHumansToGroupExecDict([humanw], { contextw, groupw }, participantListName, 'add'));
 
         excludeGroups.forEach((group) => {
-            stack.push(this.makeHumansToGroupExecDict([humanw], { contextw, groupw: group.w }, 'members', 'del'));
+            stack.push(this.makeHumansToGroupExecDict([humanw], { contextw, groupw: group.w }, participantListName, 'del'));
         });
 
         return leaderExer.send(stack);

@@ -1,20 +1,14 @@
 import { useEffect } from "react";
 import { renderComponentInNewWindow } from "../../../../../..";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import { LeaderCleans } from "../LeaderCleans";
-import PrintableBottomItem from "../PrintableBottomItem";
-import useLeaderContexts from "../contexts/useContexts";
+import useLeaderContext from "../contexts/useContexts";
 import { LeaderGroupImportable } from "../groups/Groups.model";
 import WelcomePageList from "../templates/WelcomePageList";
-import AddHumansToContext from "./AddHumansToContext";
 import HumanList from "./HumanList";
 import { HumanImportable, HumanListComponentProps } from "./People.model";
 
 export default function MemberList({ ...props }: {} & HumanListComponentProps) {
-  const { ccontext, contextMembers } = useLeaderContexts();
-  const { openFullscreenContent } = useFullscreenContent();
-  const { closeAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const { ccontext, contextMembers } = useLeaderContext();
   const placeholder = `${ccontext?.name || ""}. Участники`;
   const humansRef = { current: [] };
 
@@ -38,6 +32,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
           <>
             {getWelcomePages(
               LeaderCleans.getMembersInGroups(
+                'members',
                 contextMembers,
                 humansRef.current.map(({ wid }) => wid),
                 ccontext.groups,
@@ -59,53 +54,25 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
     <>
       <HumanList
         {...props}
-        list={() => contextMembers.map((human) => human.w) ?? []}
+        list={contextMembers.map((human) => human.w) ?? []}
         placeholder={placeholder}
         humansRef={humansRef}
-        humanMoreAdditions={({ w }) => {
-          const list = LeaderCleans.getMembersInGroups(contextMembers, [w], ccontext.groups);
-
-          if (list?.length)
-            return (
-              <PrintableBottomItem
-                title="Распечатать Допуск"
-                node={getWelcomePages(list)}
-                close={() => closeAbsoluteBottomPopup()}
-              />
-            );
+        excludedHumans={ccontext.mentors}
+        excludedLabel="лидер"
+        onAddHuman={(human) => {
+          return LeaderCleans.addContextHuman(ccontext.w, human.w, 'members');
+        }}
+        onRemoveHuman={(human) => {
+          return LeaderCleans.removeContextHuman(ccontext.w, human.w, 'members');
         }}
         asHumanMore={({ w }) => {
-          const list = LeaderCleans.getMembersInGroups(contextMembers, [w], ccontext.groups);
+          const list = LeaderCleans.getMembersInGroups('members', contextMembers, [w], ccontext.groups);
 
           if (!list?.length)
             return <div className="error-message nowrap">Вне групп</div>;
           else if (list.length > 1)
             return <div className="error-message">В нескольких группах!</div>;
         }}
-        moreNode={
-          () => prepareAbsoluteBottomPopupContent({
-            items: [{
-              title: 'Редактировать список участников',
-              icon: "person-add-outline",
-              onClick: () =>
-                openFullscreenContent((close) => (
-                  <AddHumansToContext
-                    chosenPlaceholder={placeholder}
-                    chooseTitle="Выбери участников:"
-                    chosenTitle="Выбранные участники:"
-                    excludedTitle="Лидер"
-                    redact
-                    fixedList={ccontext.members}
-                    excludes={ccontext.mentors}
-                    onSend={(addList, delList) => {
-                      LeaderCleans.addOrRemoveHumans(ccontext.w, addList, delList, "members");
-                      close();
-                    }}
-                  />
-                )),
-            }]
-          })
-        }
       />
     </>
   );

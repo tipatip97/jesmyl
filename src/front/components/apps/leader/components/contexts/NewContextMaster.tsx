@@ -14,7 +14,7 @@ const getHumanList = (
     <div className="height-30vh-strong over-auto">
       <HumanList
         searcherClass="sticky"
-        list={() => (isWholeList ? undefined : list)}
+        list={isWholeList ? undefined : list}
         asHumanMore={(human) => {
           return list.indexOf(human.w) < 0 ? (
             <EvaIcon

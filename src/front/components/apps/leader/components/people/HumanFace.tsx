@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useLeaderContexts from "../contexts/useContexts";
+import { useLeaderCcontext } from "../contexts/useContexts";
 import HumanMore from "./HumanMore";
 import { HumanImportable } from "./People.model";
 
@@ -17,9 +17,10 @@ export default function HumanFace({
   humanMoreAdditions?: (human: HumanImportable) => ReactNode;
 }) {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
   const groups = ccontext?.groups?.filter((group) =>
-    group.members.some(memberw => memberw === human.w)
+    group.members.some(memberw => memberw === human.w) ||
+    group.mentors.some(memberw => memberw === human.w)
   );
   const groupTitles = groups?.length
     ? `; ${groups.map(group => group.name).join(", ")}`

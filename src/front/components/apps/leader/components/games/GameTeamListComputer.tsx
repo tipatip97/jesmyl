@@ -4,7 +4,7 @@ import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
 import { TeamGameImportable } from "../../Leader.model";
-import useLeaderContexts from "../contexts/useContexts";
+import useLeaderContext from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
 import { GameTeamImportable } from "./teams/GameTeams.model";
 import TheGameTeam from "./teams/TheGameTeam";
@@ -21,7 +21,7 @@ export default function GameTeamListComputer({
   onUpdate: (teams: GameTeamImportable[]) => void;
   noComments?: boolean;
 }) {
-  const { contextMembers } = useLeaderContexts();
+  const { contextMembers } = useLeaderContext();
   const [teams, updateTeams] = useState<GameTeamImportable[] | und>();
   const [teamsCount, setTeamsCount] = useState(1);
   const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");

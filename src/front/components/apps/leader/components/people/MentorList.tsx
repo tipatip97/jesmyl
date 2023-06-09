@@ -1,15 +1,10 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import { LeaderCleans } from "../LeaderCleans";
-import useLeaderContexts from "../contexts/useContexts";
-import AddHumansToContext from "./AddHumansToContext";
+import { useLeaderCcontext } from "../contexts/useContexts";
 import HumanList from "./HumanList";
 import { HumanListComponentProps } from "./People.model";
 
 export default function MentorList(props: HumanListComponentProps) {
-  const { ccontext } = useLeaderContexts();
-  const { openFullscreenContent } = useFullscreenContent();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const ccontext = useLeaderCcontext();
   const placeholder = `Поиск по лидерам ${ccontext?.name || ""}`;
 
   if (!ccontext) return null;
@@ -18,33 +13,16 @@ export default function MentorList(props: HumanListComponentProps) {
     <>
       <HumanList
         {...props}
-        list={() => ccontext.mentors ?? []}
+        list={ccontext.mentors ?? []}
         placeholder={placeholder}
-        moreNode={
-          () => prepareAbsoluteBottomPopupContent({
-            items: [{
-              title: 'Редактировать список лидеров',
-              icon: "person-add-outline",
-              onClick: () =>
-                openFullscreenContent((close) => (
-                  <AddHumansToContext
-                    chosenPlaceholder={placeholder}
-                    chooseTitle="Выбери лидеров:"
-                    chosenTitle="Выбранные лидеры:"
-                    redactable
-                    redact
-                    excludedTitle="Участник"
-                    fixedList={ccontext.mentors}
-                    excludes={ccontext.members}
-                    onSend={(addList, delList) => {
-                      LeaderCleans.addOrRemoveHumans(ccontext?.w, addList, delList, "mentors");
-                      close();
-                    }}
-                  />
-                )),
-            }]
-          })
-        }
+        excludedHumans={ccontext.members}
+        excludedLabel="участник"
+        onAddHuman={(human) => {
+          return LeaderCleans.addContextHuman(ccontext.w, human.w, 'mentors');
+        }}
+        onRemoveHuman={(human) => {
+          return LeaderCleans.removeContextHuman(ccontext.w, human.w, 'mentors');
+        }}
       />
     </>
   );

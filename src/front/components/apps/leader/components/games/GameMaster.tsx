@@ -3,7 +3,7 @@ import SendButton from "../../../../../complect/SendButton";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { TeamGameExportable } from "../../Leader.model";
 import { leaderExer } from "../../Leader.store";
-import useLeaderContexts from "../contexts/useContexts";
+import { useLeaderCcontext } from "../contexts/useContexts";
 import GameTeamListComputer from "./GameTeamListComputer";
 import { GameTeamImportable } from "./teams/GameTeams.model";
 import { GameTimerConfigurable } from "./timers/GameTimer.model";
@@ -19,7 +19,7 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
     GameTimerConfigurable | und
   >();
   const [name, setName] = useState('');
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
   const { cgame } = useGames();
 
   return (

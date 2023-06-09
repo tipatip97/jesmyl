@@ -13,6 +13,7 @@ export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Par
     expected?: [] | {},
     setInEachValueItem?: Record<string, Record<string, unknown>>,
     isSequre?: boolean,
+    setSystems?: ActionBoxSetSystems[],
     C?: ActionCRUD,
     U?: ActionCRUD,
     D?: ActionCRUD,

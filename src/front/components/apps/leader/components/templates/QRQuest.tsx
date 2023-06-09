@@ -1,11 +1,11 @@
 import React from "react";
 import QRCode from "../../../../../complect/qr-code/QRCode";
-import useLeaderContexts from "../contexts/useContexts";
-import PrintableTemplate from "./PrintableTemplate";
 import { LeaderCleans } from "../LeaderCleans";
+import { useLeaderCcontext } from "../contexts/useContexts";
+import PrintableTemplate from "./PrintableTemplate";
 
 export default function QRQuest() {
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
 
   if (!ccontext) return <>Нет контекста</>;
 

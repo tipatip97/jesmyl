@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import useLeaderNav from "../../useLeaderNav";
 import { LeaderCleans } from "../LeaderCleans";
-import useLeaderContexts from "../contexts/useContexts";
+import useLeaderContext from "../contexts/useContexts";
 
 
 export default function useLeaderGroups() {
-    const { ccontext, humans } = useLeaderContexts();
+    const { ccontext, humans } = useLeaderContext();
     const { goTo, appRouteData: { groupw } } = useLeaderNav();
 
     const cgroup = ccontext?.groups?.find(({ w }) => w === groupw);

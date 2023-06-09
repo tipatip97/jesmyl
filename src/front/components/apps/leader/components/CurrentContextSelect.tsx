@@ -1,9 +1,9 @@
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import useLeaderNav from "../useLeaderNav";
-import useLeaderContexts from "./contexts/useContexts";
+import useLeaderContext from "./contexts/useContexts";
 
 export default function CurrentContextSelect() {
-    const { contexts } = useLeaderContexts();
+    const { contexts } = useLeaderContext();
     const { setAppRouteData } = useLeaderNav();
 
     return <>

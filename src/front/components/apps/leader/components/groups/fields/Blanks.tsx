@@ -1,15 +1,15 @@
 import { useMemo, useState } from "react";
+import SendButton from "../../../../../../complect/SendButton";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import { ClientExecutionDict } from "../../../../../../complect/exer/Exer.model";
 import mylib, { MyLib } from "../../../../../../complect/my-lib/MyLib";
-import SendButton from "../../../../../../complect/SendButton";
 import { leaderExer } from "../../../Leader.store";
-import useLeaderContexts from "../../contexts/useContexts";
+import { useLeaderCcontext } from "../../contexts/useContexts";
 import { ContextFieldBlankExportable } from "./Blanks.model";
 import ContextFieldBlank from "./FieldBlank";
 
 export default function GroupFieldBlanks() {
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
   const [addList, updateAddList] = useState<ContextFieldBlankExportable[]>([]);
   const [redactList, updateRedactList] = useState<
     ContextFieldBlankExportable[]

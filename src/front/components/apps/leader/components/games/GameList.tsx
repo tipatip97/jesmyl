@@ -2,14 +2,14 @@ import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAb
 import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import { getRandomTwiceName } from "../../resources/getRandomTwiceName";
-import useLeaderContexts from "../contexts/useContexts";
+import { useLeaderCcontext } from "../contexts/useContexts";
 import TeamGameFace from "./GameFace";
 import GamesMore from "./GamesMore";
 import useGames from "./useGames";
 
 export default function GameList() {
   const { contextGames } = useGames();
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   return (

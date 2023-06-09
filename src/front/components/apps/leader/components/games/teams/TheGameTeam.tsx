@@ -3,7 +3,7 @@ import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/us
 import { TeamGameImportable } from "../../../Leader.model";
 import { leaderExer } from "../../../Leader.store";
 import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
-import useLeaderContexts from "../../contexts/useContexts";
+import useLeaderContext from "../../contexts/useContexts";
 import HumanFace from "../../people/HumanFace";
 import GameTeamMemberMore from "./GameTeamMemberMore";
 import { GameTeamImportable } from "./GameTeams.model";
@@ -24,7 +24,7 @@ export default function TheGameTeam({
 }) {
   const [isHumansShow, setIsHumansShow] = useState(!(redactable ?? false));
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { contextMembers } = useLeaderContexts();
+  const { contextMembers } = useLeaderContext();
   const teamMembers = LeaderCleans.extractWidables(contextMembers, team.members);
 
   return (

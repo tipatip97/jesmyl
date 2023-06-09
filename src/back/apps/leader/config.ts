@@ -382,23 +382,19 @@ const config: FilerAppConfig = {
             }
         },
         '/contexts': {
-            expected: {},
+            expected: { list: [] },
             '/list': {
                 '<add>': {
-                    expected: [],
                     action: 'addContext',
                     level: 30,
                     method: 'push',
+                    setSystems: ['w'],
                     value: {
-                        w: '{@setNewWid()}',
                         name: '{name}',
-                        members: '{members}',
-                        mentors: '{mentors}'
+                        participants: []
                     },
                     args: {
                         name: '#String',
-                        members: '#List',
-                        mentors: '#List'
                     }
                 },
                 '/[w === {contextw}]': {
@@ -411,14 +407,14 @@ const config: FilerAppConfig = {
                     },
                     '/{listn}': {
                         '<add>': {
-                            action: 'addHumansToContext',
-                            method: 'concat',
+                            action: 'addHumanToContext',
+                            method: 'push',
                             uniqs: [
                                 '.'
                             ],
-                            value: '{list}',
+                            value: '{humanw}',
                             args: {
-                                list: '#List',
+                                humanw: '#Number',
                                 listn: [
                                     'mentors',
                                     'members'
@@ -426,18 +422,14 @@ const config: FilerAppConfig = {
                             }
                         },
                         '<rem>': {
-                            action: 'removeHumansFromContext',
+                            action: 'removeHumanFromContext',
                             method: 'remove_each',
                             uniqs: [
                                 '.'
                             ],
-                            value: [
-                                '.',
-                                'in',
-                                '{list}'
-                            ],
+                            value: ['.', '===', '{humanw}'],
                             args: {
-                                list: '#List',
+                                humanw: '#Number',
                                 listn: [
                                     'mentors',
                                     'members'

@@ -1,6 +1,6 @@
 import useAbsoluteBottomPopup from "../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import BrutalItem from "../../../complect/brutal-item/BrutalItem";
-import useLeaderContexts from "./components/contexts/useContexts";
+import { useLeaderCcontext } from "./components/contexts/useContexts";
 import CurrentContextSelect from "./components/CurrentContextSelect";
 import GeneralMore from "./GeneralMore";
 import "./Leader.scss";
@@ -10,7 +10,7 @@ import useLeaderNav from "./useLeaderNav";
 export default function LeaderGeneralPage() {
   const { goTo } = useLeaderNav();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
 
   return (
     <PhaseLeaderContainer

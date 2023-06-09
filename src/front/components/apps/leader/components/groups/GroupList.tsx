@@ -1,13 +1,13 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
-import useLeaderContexts from "../contexts/useContexts";
+import { useLeaderCcontext } from "../contexts/useContexts";
 import GroupFieldBlanks from "./fields/Blanks";
 import GroupFace from "./GroupFace";
 import LeaderGroupsMore from "./GroupsMore";
 
 export default function GroupList() {
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
 
   if (!ccontext) return null;

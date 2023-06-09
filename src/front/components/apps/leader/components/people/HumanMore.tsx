@@ -2,10 +2,10 @@ import { ReactNode } from "react";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import modalService from "../../../../../complect/modal/Modal.service";
-import useLeaderContexts from "../contexts/useContexts";
+import { LeaderCleans } from "../LeaderCleans";
+import useLeaderContext from "../contexts/useContexts";
 import HumanMaster from "./HumanMaster";
 import { HumanImportable } from "./People.model";
-import { LeaderCleans } from "../LeaderCleans";
 
 export default function HumanMore({
   human,
@@ -16,8 +16,12 @@ export default function HumanMore({
 }) {
   const { openFullscreenContent } = useFullscreenContent();
   const { prepareAbsoluteBottomPopupContent, openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { ccontext, contextMembers, humans } = useLeaderContexts();
-  const wraps = LeaderCleans.getMembersInGroups(contextMembers, [human.w], ccontext?.groups) || [];
+  const { ccontext, contextMembers, contextMentors, humans } = useLeaderContext();
+  const isMentor = ccontext?.mentors.includes(human.w);
+  const participantListName= isMentor ? 'mentors' : 'members';
+  const wraps = isMentor
+    ? LeaderCleans.getMembersInGroups(participantListName, contextMentors, [human.w], ccontext?.groups)
+    : LeaderCleans.getMembersInGroups(participantListName, contextMembers, [human.w], ccontext?.groups) || [];
 
   const title = (txt = "", txt2 = "") =>
     `${wraps.length ? "Переопределить" : "Определить"
@@ -63,7 +67,8 @@ export default function HumanMore({
                           group.w,
                           ccontext.w,
                           human.w,
-                          wraps.map(({ group }) => group)
+                          wraps.map(({ group }) => group),
+                          participantListName
                         )
                           .then(() => close());
                       }
