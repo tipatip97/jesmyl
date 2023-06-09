@@ -52,14 +52,14 @@ export default function useAbsoluteBottomPopup() {
     },
     prepareAbsoluteBottomPopupContent: ({ items, footer }: AbsoluteBottomPopupContentProps) => {
       return <div className="abs-item flex column">
-        {items.map((item) => {
+        {items.map((item, itemi) => {
           if (!item) return null;
-          const map = (item: BottomPopupSkeletIcon): ReactNode => {
+          const map = (item: BottomPopupSkeletIcon, itemi: number): ReactNode => {
             if (!item) return null;
-            if (mylib.isArr(item)) return item.map(item => map(item));
+            if (mylib.isArr(item)) return item.map((item, itemi) => map(item, itemi));
             const { className, icon, titleNode, title, iconWrapperClassName, rightNode, isError, ...other } = item;
 
-            return <div key={`${icon} ${titleNode} ${title}`} {...other} className={`abs-item ${className || ''}`}>
+            return <div key={itemi} {...other} className={`abs-item ${className || ''}`}>
               <div className="flex flex-gap">
                 <div className={`icon-box ${iconWrapperClassName || ''}`}>
                   <EvaIcon name={icon} className="abs-icon" />
@@ -70,7 +70,7 @@ export default function useAbsoluteBottomPopup() {
             </div>;
           };
 
-          return map(item);
+          return map(item, itemi);
         })}
         {footer}
       </div>;
