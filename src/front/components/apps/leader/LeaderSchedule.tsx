@@ -6,12 +6,12 @@ import useConnectionState from "../../index/useConnectionState";
 import GeneralMore from "./GeneralMore";
 import "./Leader.scss";
 import CurrentContextSelect from "./components/CurrentContextSelect";
-import useLeaderContexts from "./components/contexts/useContexts";
+import { useLeaderCcontext } from "./components/contexts/useContexts";
 import PhaseLeaderContainer from "./phase-container/PhaseLeaderContainer";
 
 export default function LeaderSchedule() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { ccontext } = useLeaderContexts();
+  const ccontext = useLeaderCcontext();
   const { schedule } = useScheduleWidget(ccontext?.w);
   const connectionNode = useConnectionState();
 
