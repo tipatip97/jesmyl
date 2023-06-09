@@ -4,6 +4,11 @@
 
     &.past {
         filter: grayscale(.7);
+
+        >.day-title {
+            font-size: 1.1rem;
+            opacity: .5;
+        }
     }
 
     >.day-title {

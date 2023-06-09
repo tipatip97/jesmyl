@@ -60,6 +60,15 @@ const config: FilerAppConfig = {
                             }
                         }
                     },
+                    '/{key}': {
+                        scopeNode: 'field',
+                        U: {
+                            args: {
+                                key: ['topic', 'dsc'],
+                                value: '#String',
+                            }
+                        }
+                    },
                     '/atts': {
                         expected: [],
                         C: {
@@ -161,24 +170,24 @@ const config: FilerAppConfig = {
                                 U: {
                                     method: 'insert_beforei',
                                     value: {
-                                        find: ['mi', '===', '{eventmi}'],
+                                        find: ['mi', '===', '{eventMi}'],
                                         beforei: '{value}',
                                     },
                                     args: {
-                                        eventmi: '#Number',
+                                        eventMi: '#Number',
                                         value: '#Number',
                                     }
                                 },
                                 D: {
-                                    value: ['mi', '===', '{eventmi}'],
+                                    value: ['mi', '===', '{eventMi}'],
                                     args: {
-                                        eventmi: '#Number',
+                                        eventMi: '#Number',
                                     }
                                 },
-                                '/[mi === {eventmi}]': {
-                                    scopeNode: 'eventmi',
+                                '/[mi === {eventMi}]': {
+                                    scopeNode: 'eventMi',
                                     args: {
-                                        eventmi: '#Number',
+                                        eventMi: '#Number',
                                     },
                                     '/{key}': {
                                         scopeNode: 'field',
@@ -197,7 +206,7 @@ const config: FilerAppConfig = {
                                             },
                                             U: {
                                                 args: {
-                                                    value: '#Dict',
+                                                    value: ['#Dict', '#List'],
                                                     attKey: '#String',
                                                 }
                                             },

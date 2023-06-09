@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import modalService from "../modal/Modal.service";
 import useModal from "../modal/useModal";
 import EvaIcon, { EvaIconName } from "./EvaIcon";
 
 export interface EvaSendButtonProps<Value> {
   name: EvaIconName,
-  confirm?: string | false | null,
+  confirm?: ReactNode | false | null,
   disabled?: boolean,
   onSend?: () => Promise<Value> | void | nil,
   onSuccess?: (val: Value) => void,

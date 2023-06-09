@@ -1,12 +1,14 @@
+import { ReactNode } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
-import { MyLib } from "../../my-lib/MyLib";
+import mylib, { MyLib } from "../../my-lib/MyLib";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongDiv from "../../strong-control/StrongDiv";
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
-import { ScheduleWidgetAttKey } from "../ScheduleWidget.model";
+import { IScheduleWidget, ScheduleWidgetDayEventAttValues } from "../ScheduleWidget.model";
 import { useScheduleWidgetAppAttsContext } from "../useScheduleWidget";
+import ScheduleWidgetBindAttRefKeyButton from "./BindAttRefKeyButton";
 import ScheduleWidgetAttFace from "./ScheduleWidgetAttFace";
 import "./ScheduleWidgetAtts.scss";
 
@@ -15,12 +17,14 @@ export default function ScheduleWidgetBindAtts({
     forTitle,
     scope,
     scheduleScope,
+    schedule,
 }: StrongComponentProps<{
     scheduleScope: string,
-    forTitle: string,
-    atts?: Record<ScheduleWidgetAttKey, unknown>,
+    forTitle: ReactNode,
+    atts?: ScheduleWidgetDayEventAttValues,
+    schedule: IScheduleWidget,
 }>) {
-    const appAtts = useScheduleWidgetAppAttsContext();
+    const [appAtts, attRefs] = useScheduleWidgetAppAttsContext();
     const appAttList = MyLib.entries(appAtts);
 
     const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
@@ -37,7 +41,7 @@ export default function ScheduleWidgetBindAtts({
                         fieldName=""
                         cud="U"
                         className={
-                            'flex flex-gap bgcolor--1 padding-gap margin-big-gap-v pointer'
+                            'relative flex flex-gap bgcolor--1 padding-gap margin-big-gap-v pointer'
                             + (atts?.[attKey] ? ' disabled ' : '')}
                         mapExecArgs={(args) => {
                             if (atts?.[attKey]) return;
@@ -56,13 +60,23 @@ export default function ScheduleWidgetBindAtts({
                             attKey={attKey}
                         />
                         <div className="fade-05 ">{att.description}</div>
+                        {!!attRefs[attKey]?.length &&
+                            <ScheduleWidgetBindAttRefKeyButton
+                                refs={attRefs[attKey]}
+                                forTitle={forTitle}
+                                attScope={attScope}
+                                att={att}
+                                attKey={attKey}
+                                atts={atts}
+                                schedule={schedule}
+                            />}
                     </StrongDiv>;
                 })}
             </>)}
         </>;
     });
 
-    const attEntries = MyLib.entries(atts);
+    const attEntries = atts ? MyLib.entries(atts) : [];
 
     return <>
         {modalNode}
@@ -84,9 +98,10 @@ export default function ScheduleWidgetBindAtts({
                         key={attKey}
                         scope={attScope}
                         scheduleScope={scheduleScope}
-                        att={appAtts[attKey as never]}
-                        attKey={attKey as never}
+                        att={appAtts[attKey]}
+                        attKey={attKey}
                         typeTitle={forTitle}
+                        isLink={mylib.isArr(atts?.[attKey])}
                     />;
                 })
                 : <span className="color--7">Вложений нет</span>}

@@ -10,3 +10,9 @@
     max-height: var(--icon-size);
     transform: scale(var(--icon-scale));
 }
+
+.icon-scale- {
+    &05 {
+        --icon-scale: .5;
+    }
+}

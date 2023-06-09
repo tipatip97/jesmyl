@@ -67,7 +67,7 @@ export default function IndexMain() {
       contentClass="flex column"
       content={
         <>
-          <ScheduleWidgetAlarm />
+          {auth && auth.level >= 20 && <ScheduleWidgetAlarm />}
           {auth?.fio ? null : (
             <BrutalItem
               icon="person-outline"

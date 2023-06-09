@@ -17,4 +17,28 @@ export default class ScheduleWidgetCleans {
     static takeEventTm = (event: IScheduleWidgetDayEvent, box?: ScheduleWidgetDayListItemTypeBox) => {
         return event.tm ?? box?.tm ?? 0;
     };
+
+    static daysToText = (days: number, isNeedCalculate?: boolean) => {
+        const daysTo = isNeedCalculate ? Math.ceil(days / mylib.howMs.inDay) : days;
+        return daysTo + ' ' + mylib.declension(daysTo, 'день', 'дня', 'дней');
+    };
+    static hoursToText = (hoursTo: number) => hoursTo + ' ' + mylib.declension(hoursTo, 'час', 'часа', 'часов');
+    static minutesToText = (minutes: number, isNeedCalculate?: boolean) => {
+        const minutesTo = isNeedCalculate ? Math.ceil(minutes / mylib.howMs.inMin) : minutes;
+        return minutesTo + ' ' + mylib.declension(minutesTo, 'минуту', 'минуты', 'минут');
+    };
+
+    static minutesToTextTemplate = (minutes: number, text: string) => {
+        const minutesTo = Math.ceil(minutes / mylib.howMs.inMin);
+
+        return mylib.stringTemplater(text,
+            {
+                num: minutesTo,
+                onNum: (one: string, more: string) => minutesTo === 1 ? one : more,
+                txt: mylib.declension(minutesTo, (minutesTo % 10) === 1 ? 'минута' : 'минуту', 'минуты', 'минут'),
+            }
+        );
+    };
+
+    static termsToText = (termsTo: number) => termsTo + ' ' + mylib.declension(termsTo, 'раз', 'раза', 'раз');
 }

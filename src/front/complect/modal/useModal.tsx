@@ -74,7 +74,12 @@ export default function useModal(topContent?: (
             setTimeout(() => setConfig((prev) => ({ ...prev, isOpen: false })), config?.showTime ?? 3000);
         },
         modalNode: ((isForceOpen || config.isOpen) && <Portal>
-            <div className={'modal-application-screen ' + typeClassName} onClick={close}>
+            <div
+                className={'modal-application-screen ' + typeClassName}
+                onClick={(event) => {
+                    event.stopPropagation();
+                    close();
+                }}>
                 <div className={'modal-screen-wrapper ' + typeClassName}>
                     <div className={'modal-screen ' + typeClassName + (' mood mood_' + config.mood)} onClick={(event) => event.stopPropagation()}>
                         {topContent?.(modalElements, close) ?? config.content}

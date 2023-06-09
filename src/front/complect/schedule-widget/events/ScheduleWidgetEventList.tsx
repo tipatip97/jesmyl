@@ -2,12 +2,12 @@ import React, { useMemo, useState } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
-import mylib from "../../my-lib/MyLib";
 import StrongDiv from "../../strong-control/StrongDiv";
-import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
+import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import { IScheduleWidget } from "../ScheduleWidget.model";
+import ScheduleWidgetCleans from "../complect/ScheduleWidgetCleans";
 
 const singleTitleSymbols = '- ().,';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
@@ -132,7 +132,7 @@ export default function ScheduleWidgetEventList({
                         {usedCounts
                             ? <div className={'text-right' + (usedCounts[typei] ? '' : ' error-message')}>{
                                 usedCounts[typei]
-                                    ? `Исп. ${usedCounts[typei]} ${mylib.declension(usedCounts[typei], 'раз', 'раза', 'раз')}`
+                                    ? `Исп. ${ScheduleWidgetCleans.termsToText(usedCounts[typei])}`
                                     : 'Не используется'
                             }</div>
                             : null

@@ -6,9 +6,10 @@ import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../../ScheduleWidget.model";
 import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
+import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetEventList from "../../events/ScheduleWidgetEventList";
-import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
 import { useIsSchWidgetExpand } from "../../useScheduleWidget";
+import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
 
 export default function ScheduleWidgetDayEventList({
     day, schedule, scope, scheduleScope, isPastDay, dayi,
@@ -67,7 +68,7 @@ export default function ScheduleWidgetDayEventList({
                             className="flex flex-gap pointer"
                             mapExecArgs={(args) => {
                                 setMoveEventMi(null);
-                                return { ...args, value: beforei, eventmi: movementEvent?.mi };
+                                return { ...args, value: beforei, eventMi: movementEvent?.mi };
                             }}
                         >
                             {movementBox && <span className="fade-05">{movementBox.title} будет здесь</span>}
@@ -94,6 +95,7 @@ export default function ScheduleWidgetDayEventList({
                         day={day}
                         event={event}
                         eventi={eventi}
+                        isLastEvent={eventa.length - 1 === eventi}
                         dayi={dayi}
                         redact={isRedact}
                         prevTime={times[eventi]}
@@ -106,18 +108,24 @@ export default function ScheduleWidgetDayEventList({
                             name="crop"
                             onClick={() => setMoveEventMi(event.mi)}
                         />
-                        <StrongEvaButton
+                        {schedule.types && <StrongEvaButton
                             scope={scope}
                             fieldName="list"
                             cud="D"
                             name="trash-2-outline"
-                            confirm={`Удалить событие ${schedule.types?.[event.type].title}${event.topic ? `: ${event.topic}` : ''}?`}
+                            confirm={<>
+                                Удалить событие{' '}
+                                <ScheduleWidgetTopicTitle
+                                    titleBox={schedule.types[event.type]}
+                                    topicBox={event}
+                                />?
+                            </>}
                             className="color--ko"
                             disabled={moveEventMi !== null}
                             mapExecArgs={(args) => {
-                                return { ...args, eventmi: event.mi, value: undefined };
+                                return { ...args, eventMi: event.mi, value: undefined };
                             }}
-                        />
+                        />}
                     </>}
                     {insertControl(eventi + 1)}
                 </div>;

@@ -411,20 +411,26 @@ textarea {
 
 .absolute,
 .relative {
-  &.pos-bottom {
-    bottom: 0;
-  }
+  &.pos- {
+    &bottom {
+      bottom: 0;
 
-  &.pos-top {
-    top: 0;
-  }
+      &-over {
+        bottom: -100%;
+      }
+    }
 
-  &.pos-left {
-    left: 0;
-  }
+    &top {
+      top: 0;
+    }
 
-  &.pos-right {
-    right: 0;
+    &left {
+      left: 0;
+    }
+
+    &right {
+      right: 0;
+    }
   }
 }
 
@@ -463,6 +469,10 @@ textarea {
 
 .inactive {
   opacity: 0.7;
+}
+
+[class~="font-size:0.7em"] {
+  font-size: .7em;
 }
 
 ::-webkit-scrollbar {

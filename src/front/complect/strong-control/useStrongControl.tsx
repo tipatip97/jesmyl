@@ -14,7 +14,8 @@ export const useStrongExerContent = <Storage extends ExerStorage>(exer: Exer<Sto
         }</StrongExerContext.Provider>;
 };
 
-export const takeStrongScopeMaker = (parentScope: string, scopeName: ` ${string}${typeof strongScopeKeyValueSeparator}`, value: number | string) => {
+export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'titlei' | 'attMi' | 'itemi';
+export const takeStrongScopeMaker = (parentScope: string, scopeName: ` ${ScheduleWidgetScopePhase}${typeof strongScopeKeyValueSeparator}`, value: number | string) => {
     return `${parentScope}${scopeName}${value}`;
 };
 

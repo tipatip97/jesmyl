@@ -21,6 +21,8 @@ export interface IScheduleWidget {
     w: number,
     start: number,
     title?: string,
+    topic?: string,
+    dsc?: string,
     days?: IScheduleWidgetDay[],
     types?: ScheduleWidgetDayListItemTypeBox[],
     atts?: ScheduleWidgetAppAttCustomized[],
@@ -35,20 +37,27 @@ export interface IScheduleWidgetDay {
     list: IScheduleWidgetDayEvent[],
 }
 
+export type ScheduleWidgetDayEventAttValue = Record<string, unknown> | ScheduleWidgetAttRef;
+export type ScheduleWidgetDayEventAttValues = Record<ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue>;
+
 export interface IScheduleWidgetDayEvent {
     mi: number,
     type: number,
     topic?: string,
     dsc?: string,
     tm?: number,
-    atts?: Record<ScheduleWidgetAttKey, unknown>,
+    atts?: ScheduleWidgetDayEventAttValues,
 }
 
 export type AttKey = AppName | 'SCH';
 
+export type ScheduleWidgetAttRef = [number, number];
+export type ScheduleWidgetAttRefs = Record<ScheduleWidgetAttKey<AttKey>, ScheduleWidgetAttRef[]>;
+
 export type ScheduleWidgetAttKey<AttAppName extends AttKey = AttKey> = `[${AttAppName}]:${string}`;
 
-export type ScheduleWidgetAppAtts<AttAppName extends AttKey = AttKey, AttValue extends any = any> = Record<ScheduleWidgetAttKey<AttAppName>, ScheduleWidgetAppAtt<AttValue>>;
+export type ScheduleWidgetAppAtts<AttAppName extends AttKey = AttKey, AttValue extends any = any> =
+    Record<ScheduleWidgetAttKey<AttAppName>, ScheduleWidgetAppAtt<AttValue>>;
 
 export type ScheduleWidgetAppAttResultItem<AttValue extends any> = (mpValue: () => AttValue, content: ReactNode) => JSX.Element;
 

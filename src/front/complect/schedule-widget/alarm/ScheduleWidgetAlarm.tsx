@@ -4,6 +4,7 @@ import EvaIcon from "../../eva-icon/EvaIcon";
 import useFullContent, { FullContentValue } from "../../fullscreen-content/useFullContent";
 import mylib from "../../my-lib/MyLib";
 import ScheduleWidgetCleans from "../complect/ScheduleWidgetCleans";
+import ScheduleWidgetTopicTitle from "../complect/TopicTitle";
 import { useSchedules } from "../useScheduleWidget";
 import ScheduleAlarmDay from "./ScheduleAlarmDay";
 import "./ScheduleWidgetAlarm.scss";
@@ -16,12 +17,13 @@ const itNNull = (it: unknown) => it !== null;
 export default function ScheduleWidgetAlarm() {
     const schedules = useSchedules();
     const now = Date.now();
-    const [updates, setUpdates] = useState<null | number>(null);
     const [isFullOpen, setIsFullOpen] = useState(false);
 
+    const [updates, setUpdates] = useState<null | number>(null);
     useEffect(() => {
         let time = msInMin;
         if (updates === null) {
+            const now = Date.now();
             time = time - Math.floor((now / time - Math.floor(now / time)) * time);
         }
         const to = setTimeout(setUpdates, time, updates! + 1);
@@ -114,7 +116,7 @@ export default function ScheduleWidgetAlarm() {
 
                             if (dayStartMs - now < msInHour) {
                                 const minutesTo = Math.ceil((dayStartMs - now) / msInMin);
-                                timeMessage = `через ${minutesTo} ${mylib.declension(minutesTo, 'минуту', 'минуты', 'минут')}`
+                                timeMessage = `через ${ScheduleWidgetCleans.minutesToText(minutesTo)}`
                             } else
                                 timeMessage = `в ${ScheduleWidgetCleans.computeDayWakeUpTime(currDay.wup, 'string')}`;
 
@@ -143,17 +145,20 @@ export default function ScheduleWidgetAlarm() {
                         node = <div>
                             <div className="flex flex-big-gap">
                                 <span>Сейчас</span>
-                                <span>{currEventType.title}{events[currEventi]?.topic ? `: ${events[currEventi]?.topic}` : ''}</span>
+                                <ScheduleWidgetTopicTitle
+                                    titleBox={currEventType}
+                                    topicBox={events[currEventi]}
+                                />
                             </div>
                             <div className="flex flex-big-gap">
                                 <span>Через {minTo}м.</span>
-                                <span>
-                                    {nextEventType === undefined
-                                        ? 'конец дня'
-                                        : `${nextEventType.title}${events[currEventi + 1]?.topic ? `: ${events[currEventi + 1]?.topic}` : ''}`}
-                                </span>
+                                {nextEventType === undefined
+                                    ? <div>конец дня</div>
+                                    : <ScheduleWidgetTopicTitle
+                                        titleBox={nextEventType}
+                                        topicBox={events[currEventi + 1]}
+                                    />}
                             </div>
-
                         </div>;
                     }
                 }
@@ -168,14 +173,19 @@ export default function ScheduleWidgetAlarm() {
                 const hoursTo = Math.floor(msTo / msInHour);
 
                 node = <div>
-                    {willSchWr.sch.title}{' '}
+                    <ScheduleWidgetTopicTitle
+                        titleBox={willSchWr.sch!}
+                        altTitle="Расписание"
+                        topicBox={willSchWr.sch}
+                    />
+                    {' '}
                     {daysTo === 0
                         ? (msTo / msInHour) < 1
                             ? <>скоро начало</>
-                            : <>до начала {hoursTo} {mylib.declension(hoursTo, 'час', 'часа', 'часов')}</>
+                            : <>до начала {ScheduleWidgetCleans.hoursToText(hoursTo)}</>
                         : daysTo === 1
                             ? <>начало завтра</>
-                            : <>до начала {daysTo} {mylib.declension(daysTo, 'день', 'дня', 'дней')}
+                            : <>до начала {ScheduleWidgetCleans.daysToText(daysTo)}
                             </>}
                 </div>;
             }

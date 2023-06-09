@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
@@ -13,12 +14,14 @@ export default function ScheduleWidgetAttFace({
     scope,
     isRedact,
     scheduleScope,
+    isLink,
 }: StrongComponentProps<{
     isRedact?: boolean,
     att?: ScheduleWidgetAppAtt,
     attKey: ScheduleWidgetAttKey,
-    typeTitle: string,
+    typeTitle: ReactNode,
     scheduleScope: string,
+    isLink?: boolean
 }>) {
     const { modalNode, screen } = useModal(att && (() => {
         return <ScheduleWidgetCustomAtt att={att as never} isRedact scope={scheduleScope} />;
@@ -27,18 +30,19 @@ export default function ScheduleWidgetAttFace({
     return <>
         {modalNode}
         <div
-            className={'schedule-widget-att flex center column' + (att?.isCustomize ? ' color--7 pointer' : '')}
+            className={'schedule-widget-att relative flex center column' + (att?.isCustomize ? ' color--7 pointer' : '')}
             onClick={() => {
                 if (att?.isCustomize) screen();
             }}
         >
+            {isLink && <EvaIcon name="link-2" className="absolute pos-left pos-top color--3 fade-05" />}
             {isRedact && <StrongEvaButton
                 scope={scope}
                 fieldName=""
                 cud="D"
                 name="close"
                 className="close-button"
-                confirm={`Убрать вложение "${att?.title || '??'}" из события "${typeTitle}"?`}
+                confirm={<>Убрать вложение "{att?.title || '??'}" из события "{typeTitle}"?</>}
                 mapExecArgs={(args) => {
                     return {
                         ...args,
