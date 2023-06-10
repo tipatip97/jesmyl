@@ -65,28 +65,28 @@ export default function ScheduleWidget({
                 {editIcon}
             </div>
             <div className="margin-big-gap-v">
+                {isRedact && <StrongEditableField
+                    scope={selfScope}
+                    fieldName="field"
+                    value={schedule.topic}
+                    isRedact={isRedact}
+                    icon="bookmark-outline"
+                    title="Название"
+                    mapExecArgs={(args) => ({ ...args, key: 'topic' })}
+                />}
+                <StrongEditableField
+                    scope={selfScope}
+                    fieldName="field"
+                    value={schedule.dsc}
+                    isRedact={isRedact}
+                    multiline
+                    textClassName=" "
+                    icon="file-text-outline"
+                    title="Описание"
+                    mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
+                />
                 {isRedact ?
-                    <div className="margin-big-gap">
-                        <StrongEditableField
-                            scope={selfScope}
-                            fieldName="field"
-                            value={schedule.topic}
-                            isRedact={isRedact}
-                            icon="bookmark-outline"
-                            title="Название"
-                            mapExecArgs={(args) => ({ ...args, key: 'topic' })}
-                        />
-                        <StrongEditableField
-                            scope={selfScope}
-                            fieldName="field"
-                            value={schedule.dsc}
-                            isRedact={isRedact}
-                            multiline
-                            textClassName=" "
-                            icon="file-text-outline"
-                            title="Описание"
-                            mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
-                        />
+                    <>
                         <StrongControlDateTimeExtracter
                             scope={selfScope}
                             fieldName="start"
@@ -116,7 +116,7 @@ export default function ScheduleWidget({
                                 confirm="Дни удалять не возможно! Создать новый?"
                             />
                         </div>}
-                    </div>
+                    </>
                     : schedule.start && <div>
                         Начало: {date.getDate()} {mylib.monthFullTitles[date.getMonth()]} {date.getFullYear()}
                         {firstWup && ', ' + ScheduleWidgetCleans.computeDayWakeUpTime(firstWup, 'string')}

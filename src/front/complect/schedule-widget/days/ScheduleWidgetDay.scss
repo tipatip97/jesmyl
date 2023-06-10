@@ -90,7 +90,7 @@
         .day-event-wrapper {
             position: relative;
             margin: .3rem 0;
-            transition: margin-bottom .2s, margin-top .2s, opacity .2s;
+            transition: margin-bottom .2s, margin-top .2s, opacity .7s;
 
             &.move-me {
                 opacity: .5;
@@ -102,7 +102,7 @@
                 height: 25px;
                 overflow: hidden;
                 right: 70px;
-                transition: height .2s, opacity .2s, right .2s;
+                transition: height .7s, opacity .2s, right .2s;
                 opacity: .5;
                 pointer-events: none;
             }

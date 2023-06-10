@@ -23,6 +23,7 @@ export default function ScheduleWidgetDayEventList({
 }) {
     const [isExpand, switchIsExpand] = useIsSchWidgetExpand(scope);
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
+    const [isReplacementInProcess, setIsReplacementInProcess] = useState(false);
     const times: number[] = [];
     const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
     const usedCounts = useMemo(() => {
@@ -33,7 +34,7 @@ export default function ScheduleWidgetDayEventList({
         return usedCounts;
     }, [day.list]);
     const [moveEventMi, setMoveEventMi] = useState<number | null>(null);
-    const movementEvent = moveEventMi ? day.list.find(event => event.mi === moveEventMi) : undefined;
+    const movementEvent = moveEventMi !== null ? day.list.find(event => event.mi === moveEventMi) : undefined;
     const movementBox = movementEvent && schedule.types?.[movementEvent.type];
 
     day.list.forEach((item) => {
@@ -67,8 +68,12 @@ export default function ScheduleWidgetDayEventList({
                             cud="U"
                             className="flex flex-gap pointer"
                             mapExecArgs={(args) => {
-                                setMoveEventMi(null);
+                                setIsReplacementInProcess(true);
                                 return { ...args, value: beforei, eventMi: movementEvent?.mi };
+                            }}
+                            onSuccess={() => {
+                                setIsReplacementInProcess(false);
+                                setTimeout(() => setMoveEventMi(null), 300);
                             }}
                         >
                             {movementBox && <span className="fade-05">{movementBox.title} будет здесь</span>}
@@ -104,10 +109,12 @@ export default function ScheduleWidgetDayEventList({
                         onClickOnTs={() => setIsShowTsNotPeriods(is => !is)}
                     />
                     {isRedact && <>
-                        <EvaButton
-                            name="crop"
-                            onClick={() => setMoveEventMi(event.mi)}
-                        />
+                        {isReplacementInProcess && moveEventMi === event.mi
+                            ? <EvaIcon name="loader-outline" className="rotate" />
+                            : <EvaButton
+                                name="crop"
+                                onClick={() => setMoveEventMi(event.mi)}
+                            />}
                         {schedule.types && <StrongEvaButton
                             scope={scope}
                             fieldName="list"
