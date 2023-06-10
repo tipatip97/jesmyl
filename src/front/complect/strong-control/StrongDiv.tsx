@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 import { StrongControlProps } from "./Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "./useStrongControl";
 
+const fakeCb = () => { };
+
 export default function StrongDiv({
     scope,
     fieldName,
@@ -10,7 +12,15 @@ export default function StrongDiv({
     className,
     children,
     onClick,
-}: StrongControlProps<{ children?: ReactNode, className?: string, onClick?: () => void }>) {
+    onSuccess,
+    onFailure
+}: StrongControlProps<{
+    children?: ReactNode,
+    className?: string,
+    onClick?: () => void,
+    onSuccess?: () => void,
+    onFailure?: () => void,
+}>) {
     const exer = useStrongExerContext();
 
     return <div
@@ -18,7 +28,9 @@ export default function StrongDiv({
         onClick={scope
             ? () => {
                 onClick?.();
-                strongPrepareArgsAndSend(exer, scope, fieldName, cud ?? 'C', '', () => { }, mapExecArgs);
+                strongPrepareArgsAndSend(exer, scope, fieldName, cud ?? 'C', '', fakeCb, mapExecArgs)
+                    ?.then(onSuccess)
+                    .catch(onFailure);
             }
             : undefined}
         children={children}
