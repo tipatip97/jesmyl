@@ -106,7 +106,7 @@ export class MyLib extends SMyLib {
     ): FerryType[] {
         const normalWords = isNumberSearch
             ? searchWord.split(/0+/).filter(word => word)
-            : searchWord.split(/[^а-яё0-9ґії'ʼє]+/i).filter(word => word);
+            : searchWord.split(/[^а-яёa-z0-9ґї'ʼє]+/i).filter(word => word);
         const words = normalWords.map(word => word.toLowerCase());
         const wordRegs = normalWords.map(word => this.internationalWordReg(word, isNumberSearch));
 
