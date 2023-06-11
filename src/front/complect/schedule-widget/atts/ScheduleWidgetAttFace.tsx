@@ -42,7 +42,7 @@ export default function ScheduleWidgetAttFace({
                 cud="D"
                 name="close"
                 className="close-button"
-                confirm={<>Убрать вложение "{att?.title || '??'}" из события "{typeTitle}"?</>}
+                confirm={<div className="flex flex-gap">Убрать {isLink ? 'ссылку вложения' : 'вложение'} {att?.title || '??'} из события <div className="flex">{typeTitle}?</div></div>}
                 mapExecArgs={(args) => {
                     return {
                         ...args,

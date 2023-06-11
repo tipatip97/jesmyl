@@ -7,6 +7,7 @@ import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetAttKey, ScheduleWidgetAttRef, ScheduleWidgetDayEventAttValue, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import { useIsSchWidgetExpand, useScheduleWidgetAppAttsContext } from "../../useScheduleWidget";
+import ScheduleWidgetDayEventPeriodicTranslation from "./DayEventPeriodicTranslationAtt";
 
 const isNIs = (is: unknown) => !is;
 const makeReg = (phase: ScheduleWidgetScopePhase) => {
@@ -31,19 +32,34 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     const { isRedact, editIcon, setIsSelfRedact } = useIsRedactArea(true, null, true, true);
 
     if (!appAtt) return <div className="error-message">Неизвестное вложение</div>;
-    const isAttRef = mylib.isArr(props.att);
+    let notateNode = null;
 
     let linkTitle = null;
     let attContent = null;
+    let isCanRedact = true;
 
     try {
         let attValue = props.att;
         let scope = props.scope;
 
-        if (isAttRef) {
+        if (mylib.isArr(props.att)) {
             const [dayMi, eventMi] = props.att as ScheduleWidgetAttRef;
             const day = props.schedule.days?.find(day => day.mi === dayMi);
             const event = day?.list.find(event => event.mi === eventMi);
+
+
+            if (attValue[0] as number < 0) {
+                isCanRedact = false;
+                notateNode = <EvaIcon name="eye-outline" className="color--3 icon-scale-05" />;
+
+                attContent = isExpand && <ScheduleWidgetDayEventPeriodicTranslation
+                    att={attValue as [1, 2]}
+                    attKey={props.attKey}
+                    schedule={props.schedule}
+                    day={props.day}
+                    appAtt={appAtt}
+                />;
+            } else notateNode = <EvaIcon name="link-2" className="color--3 icon-scale-05" />;
 
             if (props.schedule.days && day && event?.atts) {
                 scope = scope
@@ -53,7 +69,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
                 attValue = event.atts[props.attKey];
 
                 if (props.schedule.types)
-                    linkTitle = <div className="flex margin-big-gap-l margin-gap-b">
+                    linkTitle = isExpand && <div className="flex margin-big-gap-l margin-gap-b">
                         <EvaIcon name="link-2" className="color--3 icon-scale-05" />
                         <ScheduleWidgetTopicTitle
                             titleBox={props.schedule.types[event.type]}
@@ -63,7 +79,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
                             }
                         />
                     </div>;
-            } else attContent = <div className="error-message">Источник удалён</div>;
+            } else attContent ??= <div className="error-message">Источник удалён</div>;
         }
 
         attContent ??= isExpand && <div>
@@ -86,8 +102,8 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
                 <EvaButton name={isExpand ? 'chevron-up' : 'chevron-down'} />
             </div>
             <div className="flex">
-                {isExpand && editIcon}
-                {isAttRef && <EvaIcon name="link-2" className="color--3 icon-scale-05" />}
+                {isCanRedact && isExpand && editIcon}
+                {notateNode}
             </div>
         </div>
         {linkTitle}

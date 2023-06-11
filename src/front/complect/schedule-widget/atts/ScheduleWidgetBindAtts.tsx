@@ -18,19 +18,25 @@ export default function ScheduleWidgetBindAtts({
     scope,
     scheduleScope,
     schedule,
+    mapExecArgs,
+    cantBindLinks,
+    topContent,
 }: StrongComponentProps<{
     scheduleScope: string,
     forTitle: ReactNode,
     atts?: ScheduleWidgetDayEventAttValues,
     schedule: IScheduleWidget,
+    cantBindLinks?: boolean,
+    topContent?: ReactNode,
 }>) {
     const [appAtts, attRefs] = useScheduleWidgetAppAttsContext();
     const appAttList = MyLib.entries(appAtts);
 
     const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
         return <>
-            {header(`Вложение для "${forTitle}"`)}
+            {header(<>Вложение для <span className="color--7">{forTitle}</span></>)}
             {body(<>
+                {topContent}
                 {appAttList.map(([attKey, att]) => {
                     if (!att.title || !att.description) return null;
                     const attScope = takeStrongScopeMaker(scope, ' attKey/', attKey);
@@ -43,13 +49,13 @@ export default function ScheduleWidgetBindAtts({
                         className={
                             'relative flex flex-gap bgcolor--1 padding-gap margin-big-gap-v pointer'
                             + (atts?.[attKey] ? ' disabled ' : '')}
-                        mapExecArgs={(args) => {
+                        mapExecArgs={mapExecArgs || ((args) => {
                             if (atts?.[attKey]) return;
                             return {
                                 ...args,
                                 value: att.initVal,
                             };
-                        }}
+                        })}
                         onClick={closeModal}
                     >
                         <ScheduleWidgetAttFace
@@ -60,7 +66,7 @@ export default function ScheduleWidgetBindAtts({
                             attKey={attKey}
                         />
                         <div className="fade-05 ">{att.description}</div>
-                        {!!attRefs[attKey]?.length &&
+                        {!cantBindLinks && !!attRefs[attKey]?.length &&
                             <ScheduleWidgetBindAttRefKeyButton
                                 refs={attRefs[attKey]}
                                 forTitle={forTitle}

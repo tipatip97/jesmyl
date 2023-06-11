@@ -12,7 +12,7 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
     schedule: IScheduleWidget,
 }>) {
     return <>
-        {props.event.atts && MyLib.entries(props.event.atts).map(([attKey, att]) => {
+        {MyLib.entries({ ...props.typeBox.atts, ...props.event.atts }).map(([attKey, att]) => {
             const scope = takeStrongScopeMaker(props.scope, ' attKey/', attKey);
 
             return <ScheduleWidgetDayEventAtt

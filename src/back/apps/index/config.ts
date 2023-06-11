@@ -113,15 +113,20 @@ const config: FilerAppConfig = {
                                 typei: '#Number',
                             },
                             '/atts': {
-                                C: {
+                                expected: {},
+                                '/{attKey}': {
+                                    scopeNode: 'attKey',
                                     args: {
-                                        value: '#String'
-                                    }
-                                },
-                                D: {
-                                    value: ['.', '===', '{attn}'],
-                                    args: {
-                                        attn: '#String'
+                                        attKey: '#String',
+                                    },
+                                    U: {
+                                        value: ['{value}'],
+                                        args: {
+                                            value: '#Number',
+                                        }
+                                    },
+                                    D: {
+                                        method: 'delete',
                                     }
                                 }
                             },

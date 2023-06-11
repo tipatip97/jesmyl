@@ -101,6 +101,7 @@ export default function ScheduleWidget({
                         <ScheduleWidgetEventList
                             selectScope=""
                             selectFieldName=""
+                            scheduleScope={selfScope}
                             buttonTitle="Шаблоны событий"
                             icon="eye-outline"
                             schedule={schedule}

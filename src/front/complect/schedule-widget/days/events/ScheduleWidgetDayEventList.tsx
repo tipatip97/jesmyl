@@ -140,6 +140,7 @@ export default function ScheduleWidgetDayEventList({
             {isRedact && moveEventMi === null && <ScheduleWidgetEventList
                 scope={scheduleScope}
                 selectScope={scope}
+                scheduleScope={scheduleScope}
                 selectFieldName="list"
                 buttonTitle="Добавить событие"
                 icon="plus-circle-outline"

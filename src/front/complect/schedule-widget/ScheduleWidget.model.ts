@@ -99,4 +99,5 @@ export interface ScheduleWidgetAppAtt<AttValue extends any = any> extends Schedu
 export interface ScheduleWidgetDayListItemTypeBox {
     title: string,
     tm?: number,
+    atts?: ScheduleWidgetDayEventAttValues,
 }

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import Dropdown from "../../dropdown/Dropdown";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
@@ -6,8 +7,12 @@ import StrongDiv from "../../strong-control/StrongDiv";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
+import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget } from "../ScheduleWidget.model";
+import ScheduleWidgetBindAtts from "../atts/ScheduleWidgetBindAtts";
 import ScheduleWidgetCleans from "../complect/ScheduleWidgetCleans";
+import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
+import { MyLib } from "../../my-lib/MyLib";
 
 const singleTitleSymbols = '- ().,';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
@@ -17,25 +22,30 @@ const titleNormalize = (title: string) => title.replace(incorrectsTitleReg, '').
 const altArr: [] = [];
 
 
+
+
 export default function ScheduleWidgetEventList({
+    scope,
+    selectScope,
+    scheduleScope,
     buttonTitle,
     schedule,
-    scope,
     icon,
-    selectScope,
     selectFieldName,
     usedCounts,
 }: {
+    scope: string,
     selectScope: string,
+    scheduleScope: string,
     selectFieldName: string,
     buttonTitle: string,
     schedule: IScheduleWidget,
-    scope: string,
     icon: EvaIconName,
     usedCounts?: Record<number, number>,
 }) {
-    const [isRedact, setIsRedact] = useState(false);
+    const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(true, null, true, true);
     const [typesError, seTypesError] = useState<(string | nil)[]>([]);
+    const [attTranslatorType, setAttTranslatorType] = useState(AttTranslatorType.Today);
     const types = schedule.types || altArr;
     const sortedTypes = useMemo(() => {
         if (!usedCounts) return types;
@@ -51,20 +61,24 @@ export default function ScheduleWidgetEventList({
     }, [types, usedCounts]);
 
     const { modalNode, screen } = useModal(({ actionButton, footer, header, body }, closeModal) => {
+        const attTranslatorTypeDropdown = <Dropdown
+            id={attTranslatorType}
+            items={attTranslatorTypes}
+            onSelect={({ id }) => setAttTranslatorType(id)}
+        />;
+
         return <>
             {header(<>
                 <div className="flex flex-gap between">
                     <div>Шаблоны событий</div>
-                    <EvaButton
-                        name={isRedact ? 'checkmark-circle-2-outline' : 'edit-outline'}
-                        onClick={() => setIsRedact(is => !is)}
-                    />
+                    {editIcon}
                 </div>
             </>)}
             {body(<>
                 {sortedTypes.map((type) => {
                     const typei = types.indexOf(type);
                     const typeScope = takeStrongScopeMaker(scope, ' typei/', typei);
+                    const attEntries = (type.atts ? MyLib.keys(type.atts) : []).length;
 
                     return <React.Fragment key={typei}>
                         <StrongDiv
@@ -128,6 +142,28 @@ export default function ScheduleWidgetEventList({
                                 icon="clock-outline"
                                 mapExecArgs={(args) => ({ ...args, key: 'tm' })}
                             />
+                            {isRedact
+                                ? <ScheduleWidgetBindAtts
+                                    scope={typeScope}
+                                    schedule={schedule}
+                                    scheduleScope={scheduleScope}
+                                    atts={type.atts}
+                                    forTitle={'Шаблона: ' + type.title}
+                                    cantBindLinks
+                                    topContent={attTranslatorTypeDropdown}
+                                    mapExecArgs={(args) => {
+                                        return {
+                                            ...args,
+                                            value: attTranslatorType,
+                                        }
+                                    }}
+                                />
+                                : !attEntries || <div>
+                                    <div className="flex flex-gap">
+                                        <EvaIcon name="attach-2-outline" />
+                                        Вложения
+                                    </div>
+                                </div>}
                         </StrongDiv>
                         {usedCounts
                             ? <div className={'text-right' + (usedCounts[typei] ? '' : ' error-message')}>{
@@ -160,7 +196,7 @@ export default function ScheduleWidgetEventList({
         {buttonTitle}
         <EvaButton
             name={icon}
-            onClick={() => screen(null, { onClose: () => setIsRedact(false) })}
+            onClick={() => screen(null, { onClose: () => setIsSelfRedact(false) })}
         />
     </div>;
 }
