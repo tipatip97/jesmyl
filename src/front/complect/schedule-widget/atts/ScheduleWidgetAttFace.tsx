@@ -15,16 +15,18 @@ export default function ScheduleWidgetAttFace({
     isRedact,
     scheduleScope,
     isLink,
+    customAttTopContent,
 }: StrongComponentProps<{
     isRedact?: boolean,
     att?: ScheduleWidgetAppAtt,
     attKey: ScheduleWidgetAttKey,
     typeTitle: ReactNode,
+    customAttTopContent?: (scope: string, attKey: ScheduleWidgetAttKey) => ReactNode,
     scheduleScope: string,
-    isLink?: boolean
+    isLink?: boolean,
 }>) {
     const { modalNode, screen } = useModal(att && (() => {
-        return <ScheduleWidgetCustomAtt att={att as never} isRedact scope={scheduleScope} />;
+        return <ScheduleWidgetCustomAtt att={att as never} isRedact scope={scheduleScope} topContent={customAttTopContent?.(scope, attKey)} />;
     }));
 
     return <>

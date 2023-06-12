@@ -6,7 +6,7 @@ import mylib, { MyLib } from "../../my-lib/MyLib";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongDiv from "../../strong-control/StrongDiv";
 import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
-import { IScheduleWidget, ScheduleWidgetDayEventAttValues } from "../ScheduleWidget.model";
+import { IScheduleWidget, ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValues } from "../ScheduleWidget.model";
 import { useScheduleWidgetAppAttsContext } from "../useScheduleWidget";
 import ScheduleWidgetBindAttRefKeyButton from "./BindAttRefKeyButton";
 import ScheduleWidgetAttFace from "./ScheduleWidgetAttFace";
@@ -22,6 +22,7 @@ export default function ScheduleWidgetBindAtts({
     mapExecArgs,
     cantBindLinks,
     topContent,
+    customAttTopContent,
 }: StrongComponentProps<{
     scheduleScope: string,
     forTitle: ReactNode,
@@ -29,6 +30,7 @@ export default function ScheduleWidgetBindAtts({
     schedule: IScheduleWidget,
     cantBindLinks?: boolean,
     topContent?: ReactNode,
+    customAttTopContent?: (scope: string, attKey: ScheduleWidgetAttKey) => ReactNode,
 }>) {
     const [appAtts, attRefs] = useScheduleWidgetAppAttsContext();
     const appAttList = MyLib.entries(appAtts);
@@ -115,6 +117,7 @@ export default function ScheduleWidgetBindAtts({
                         attKey={attKey}
                         typeTitle={forTitle}
                         isLink={mylib.isArr(atts?.[attKey])}
+                        customAttTopContent={customAttTopContent}
                     />;
                 })
                 : <span className="color--7">Вложений нет</span>}

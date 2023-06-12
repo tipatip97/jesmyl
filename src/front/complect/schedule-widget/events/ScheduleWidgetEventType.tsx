@@ -9,6 +9,7 @@ import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../atts/ScheduleWidgetBindAtts";
 import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
+import StrongDropdown from "../../strong-control/StrongDropdown";
 
 const singleTitleSymbols = '- ().,';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
@@ -119,6 +120,15 @@ export default function ScheduleWidgetEventType({
                         id={attTranslatorType}
                         items={attTranslatorTypes}
                         onSelect={({ id }) => setAttTranslatorType(id)}
+                    />}
+                    customAttTopContent={(scope, attKey) => <StrongDropdown
+                        id={typeBox.atts?.[attKey]?.[0] as AttTranslatorType}
+                        scope={scope}
+                        fieldName="period"
+                        cud="U"
+                        items={attTranslatorTypes}
+                        onSelect={({ id }) => setAttTranslatorType(id)}
+                        className="margin-gap-b"
                     />}
                     mapExecArgs={(args) => {
                         return {

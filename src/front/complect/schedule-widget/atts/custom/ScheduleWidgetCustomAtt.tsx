@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import EvaButton from "../../../eva-icon/EvaButton";
 import { evaPackNames } from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";
@@ -10,9 +11,10 @@ import ScheduleWidgetCustomAttTitles from "./ScheduleWidgetCustomAttTitles";
 
 const icons = evaPackNames.filter(name => name.endsWith('-outline'));
 
-export default function ScheduleWidgetCustomAtt({ att, scope, isRedact }: StrongComponentProps<{
+export default function ScheduleWidgetCustomAtt({ att, scope, isRedact, topContent }: StrongComponentProps<{
     att: ScheduleWidgetAppAttCustomized,
     isRedact: boolean,
+    topContent?: ReactNode,
 }>) {
     const selfScope = takeStrongScopeMaker(scope, ' attMi/', att.mi);
     const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
@@ -43,6 +45,7 @@ export default function ScheduleWidgetCustomAtt({ att, scope, isRedact }: Strong
 
     return <div className="bgcolor--5 padding-gap margin-gap-v">
         {modalNode}
+        {topContent}
         <div className="flex between full-width">
             {isRedact && <span className="flex flex-gap pointer" onClick={() => screen()}>
                 <EvaButton name={att.icon} />
