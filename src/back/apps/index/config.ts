@@ -127,6 +127,14 @@ const config: FilerAppConfig = {
                                     },
                                     D: {
                                         method: 'delete',
+                                    },
+                                    '/0': {
+                                        scopeNode: 'period',
+                                        U: {
+                                            args: {
+                                                value: '#Number',
+                                            }
+                                        },
                                     }
                                 }
                             },
