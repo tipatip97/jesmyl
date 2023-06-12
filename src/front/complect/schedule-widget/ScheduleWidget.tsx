@@ -65,6 +65,10 @@ export default function ScheduleWidget({
                 {editIcon}
             </div>
             <div className="margin-big-gap-v">
+                {!isRedact && schedule.start && <div>
+                    Начало: {date.getDate()} {mylib.monthFullTitles[date.getMonth()]} {date.getFullYear()}
+                    {firstWup && ', ' + ScheduleWidgetCleans.computeDayWakeUpTime(firstWup, 'string')}
+                </div>}
                 {isRedact && <StrongEditableField
                     scope={selfScope}
                     fieldName="field"
@@ -85,43 +89,38 @@ export default function ScheduleWidget({
                     title="Описание"
                     mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
                 />
-                {isRedact ?
-                    <>
-                        <StrongControlDateTimeExtracter
+                {isRedact && <>
+                    <StrongControlDateTimeExtracter
+                        scope={selfScope}
+                        fieldName="start"
+                        title="Начало"
+                        icon="clock-outline"
+                        value={dateValue}
+                        takeDate="day"
+                        takeTime="NO"
+                        onComponentsChange={(_, __, ___, date) => setStartTime(date.getTime())}
+                        mapExecArgs={(args) => ({ ...args, value: startTime })}
+                    />
+                    <ScheduleWidgetEventList
+                        selectScope=""
+                        selectFieldName=""
+                        scheduleScope={selfScope}
+                        buttonTitle="Шаблоны событий"
+                        icon="eye-outline"
+                        schedule={schedule}
+                        scope={selfScope}
+                    />
+                    <ScheduleWidgetCustomAttachments scope={selfScope} atts={schedule.atts} />
+                    {!!schedule.start && <div className="flex flex-gap margin-big-gap-v">
+                        Добавить день
+                        <StrongEvaButton
                             scope={selfScope}
-                            fieldName="start"
-                            title="Начало"
-                            icon="clock-outline"
-                            value={dateValue}
-                            takeDate="day"
-                            takeTime="NO"
-                            onComponentsChange={(_, __, ___, date) => setStartTime(date.getTime())}
-                            mapExecArgs={(args) => ({ ...args, value: startTime })}
+                            fieldName="days"
+                            name="plus-circle-outline"
+                            confirm="Дни удалять не возможно! Создать новый?"
                         />
-                        <ScheduleWidgetEventList
-                            selectScope=""
-                            selectFieldName=""
-                            scheduleScope={selfScope}
-                            buttonTitle="Шаблоны событий"
-                            icon="eye-outline"
-                            schedule={schedule}
-                            scope={selfScope}
-                        />
-                        <ScheduleWidgetCustomAttachments scope={selfScope} atts={schedule.atts} />
-                        {!!schedule.start && <div className="flex flex-gap margin-big-gap-v">
-                            Добавить день
-                            <StrongEvaButton
-                                scope={selfScope}
-                                fieldName="days"
-                                name="plus-circle-outline"
-                                confirm="Дни удалять не возможно! Создать новый?"
-                            />
-                        </div>}
-                    </>
-                    : schedule.start && <div>
-                        Начало: {date.getDate()} {mylib.monthFullTitles[date.getMonth()]} {date.getFullYear()}
-                        {firstWup && ', ' + ScheduleWidgetCleans.computeDayWakeUpTime(firstWup, 'string')}
                     </div>}
+                </>}
             </div>
             {
                 isExpand && <>

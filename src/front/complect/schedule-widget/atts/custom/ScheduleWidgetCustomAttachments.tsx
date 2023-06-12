@@ -58,7 +58,7 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
     return <div>
         {modalNode}
         <div className="flex flex-gap pointer margin-big-gap-v" onClick={() => screen()}>
-            Шаблоны вложений <EvaIcon name="edit-outline" />
+            Шаблоны вложений <EvaIcon name="eye-outline" />
         </div>
     </div>;
 }

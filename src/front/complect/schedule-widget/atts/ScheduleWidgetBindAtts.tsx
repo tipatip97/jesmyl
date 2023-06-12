@@ -11,6 +11,7 @@ import { useScheduleWidgetAppAttsContext } from "../useScheduleWidget";
 import ScheduleWidgetBindAttRefKeyButton from "./BindAttRefKeyButton";
 import ScheduleWidgetAttFace from "./ScheduleWidgetAttFace";
 import "./ScheduleWidgetAtts.scss";
+import ScheduleWidgetCustomAttachments from "./custom/ScheduleWidgetCustomAttachments";
 
 export default function ScheduleWidgetBindAtts({
     atts,
@@ -32,9 +33,9 @@ export default function ScheduleWidgetBindAtts({
     const [appAtts, attRefs] = useScheduleWidgetAppAttsContext();
     const appAttList = MyLib.entries(appAtts);
 
-    const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
+    const { modalNode, screen } = useModal(({ header, body, footer }, closeModal) => {
         return <>
-            {header(<>Вложение для <span className="color--7">{forTitle}</span></>)}
+            {header(<div className="flex flex-gap">Вложение на <span className="color--7">{forTitle}</span></div>)}
             {body(<>
                 {topContent}
                 {appAttList.map(([attKey, att]) => {
@@ -78,6 +79,12 @@ export default function ScheduleWidgetBindAtts({
                             />}
                     </StrongDiv>;
                 })}
+            </>)}
+            {footer(<>
+                <ScheduleWidgetCustomAttachments
+                    scope={scheduleScope}
+                    atts={schedule.atts}
+                />
             </>)}
         </>;
     });

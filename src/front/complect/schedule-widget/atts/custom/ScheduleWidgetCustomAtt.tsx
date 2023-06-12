@@ -44,9 +44,9 @@ export default function ScheduleWidgetCustomAtt({ att, scope, isRedact }: Strong
     return <div className="bgcolor--5 padding-gap margin-gap-v">
         {modalNode}
         <div className="flex between full-width">
-            {<span className="flex flex-gap">
+            {isRedact && <span className="flex flex-gap pointer" onClick={() => screen()}>
                 <EvaButton name={att.icon} />
-                {isRedact && <span className="pointer" onClick={() => screen()}>Изменить иконку</span>}
+                Изменить иконку
             </span>}
         </div>
         <StrongEditableField
@@ -55,7 +55,7 @@ export default function ScheduleWidgetCustomAtt({ att, scope, isRedact }: Strong
             value={att.title}
             isRedact={isRedact}
             isImpossibleEmptyValue
-            icon="bookmark-outline"
+            icon={isRedact ? 'bookmark-outline' : att.icon}
             title="Название"
             mapExecArgs={(args) => ({ ...args, key: 'title' })}
         />

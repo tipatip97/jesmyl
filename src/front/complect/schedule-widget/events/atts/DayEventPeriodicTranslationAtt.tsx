@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { MyLib } from "../../../my-lib/MyLib";
+import mylib, { MyLib } from "../../../my-lib/MyLib";
 import { IScheduleWidget, IScheduleWidgetDay, ScheduleWidgetAppAtt, ScheduleWidgetAttKey, ScheduleWidgetAttRef } from "../../ScheduleWidget.model";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import { AttTranslatorType, attTranslatorTypes } from "../../complect/attTranslatorType";
@@ -86,7 +86,7 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
                 const type = types[event.type];
 
                 event.atts && MyLib.entries(event.atts).forEach(([attKey, att]) => {
-                    if (attKey !== props.attKey) return;
+                    if (attKey !== props.attKey || mylib.isArr(att)) return;
                     node.push(<>
                         <ScheduleWidgetTopicTitle
                             prefix={title + titlePostfix}
@@ -109,8 +109,8 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
 
     return <>
         <div className="flex flex-gap margin-gap-v">
-            Показано за
-            <span className="color--7">{periodTitle}</span>
+            Обзор на
+            <span className="color--7">{periodTitle}:</span>
         </div>
         {attTranslatorType === AttTranslatorType.Tomorrow && todayi === days.length - 1
             ? <div>Сегодня последний день</div>
