@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { DropdownItem, DropdownProps } from "./Dropdown.model";
 import "./Dropdown.scss";
+import EvaIcon from "../eva-icon/EvaIcon";
+import useModal from "../modal/useModal";
 
 export default function Dropdown<
   Id,
@@ -12,7 +14,7 @@ export default function Dropdown<
     () => props.items.find((item) => item.id === selectedId),
     [props.items, selectedId]
   );
-  
+
   useEffect(() => setId(props.id), [props.id]);
 
   useEffect(() => {
@@ -31,16 +33,20 @@ export default function Dropdown<
       document.removeEventListener("keydown", onKeydown);
     };
   }, [isDropped]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const { modalNode, toast } = useModal();
 
   return (
     <div
-      className={`dropdown-selector ${isDropped ? "dropped" : ""} ${props.className || ""}`}
+      className={`dropdown-selector flex between ${isDropped ? "dropped" : ""} ${props.className || ""}`}
       onClick={(event) => {
         event.stopPropagation();
         setDropped(!isDropped);
       }}
     >
-      <div className="selected-item">
+      {modalNode}
+      <div className="selected-item ellipsis full-max-width">
         {selectedItem?.title || (
           <span className="not-selected">
             {props.placeholder ?? "Не выбрано"}
@@ -57,7 +63,29 @@ export default function Dropdown<
                 event.stopPropagation();
                 setDropped(false);
                 setId(item.id);
-                props.onSelect?.(item);
+                const selectResult = props.onSelect?.(item);
+
+                if (selectResult instanceof Promise) {
+                  setIsLoading(true);
+                  setIsError(false);
+
+                  selectResult
+                    .then((isOk) => {
+                      setIsLoading(false);
+                      if (!isOk) {
+                        setId(props.id);
+                        setIsError(true);
+                        setTimeout(() => setIsError(false), 3000);
+                      }
+                    })
+                    .catch((error) => {
+                      setId(props.id);
+                      setIsLoading(false);
+                      setIsError(true);
+                      setTimeout(() => setIsError(false), 3000);
+                      toast(error, { mood: 'ko' });
+                    });
+                }
               }}
             >
               {item.title}
@@ -65,6 +93,9 @@ export default function Dropdown<
           );
         })}
       </div>
+      {isError
+        ? <EvaIcon name="alert-circle-outline" className="color--ko" />
+        : isLoading && <EvaIcon name="loader-outline" className="rotate" />}
     </div>
   );
 }

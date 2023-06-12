@@ -4,7 +4,7 @@ export interface DropdownProps<Id , Item extends DropdownItem<Id>> {
     items: Item[];
     placeholder?: string;
     id?: Id;
-    onSelect?: (item: Item) => void;
+    onSelect?: (item: Item) => und | void | null | Promise<boolean>;
     className?: string;
 }
 
