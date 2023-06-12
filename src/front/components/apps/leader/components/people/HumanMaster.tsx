@@ -134,7 +134,7 @@ export default function HumanMaster({
                         title: "Женский",
                       },
                     ]}
-                    onSelect={({ id }) => (human.isMan = id)}
+                    onSelect={({ id }) => { human.isMan = id; }}
                   />
                 </div>
                 <div className={bDay.getTime() ? "" : "error-message"}>
