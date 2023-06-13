@@ -3,11 +3,11 @@ import EvaButton from "../../eva-icon/EvaButton";
 import mylib from "../../my-lib/MyLib";
 import StrongControlDateTimeExtracter from "../../strong-control/StrongDateTimeExtracter";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
-import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
 import "./ScheduleWidgetDay.scss";
 import ScheduleWidgetDayEventList from "./events/ScheduleWidgetDayEventList";
+import { takeStrongScopeMaker } from "../useScheduleWidget";
 
 export interface ScheduleWidgetDayProps {
     day: IScheduleWidgetDay,

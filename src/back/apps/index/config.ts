@@ -36,11 +36,19 @@ const config: FilerAppConfig = {
             scopeNode: 'schs',
             expected: { list: [] },
             '/list': {
+                D: {
+                    value: ['w', '===', '{value}'],
+                },
                 C: {
                     value: {
                         w: '{schw}',
                         title: '{title}',
                         app: '{app}',
+                        roles: [{
+                            mi: 0,
+                            title: 'Координатор',
+                            user: { fio: '{*fio}', login: '{*login}' },
+                        }]
                     },
                     args: {
                         schw: '#Number',
@@ -67,6 +75,47 @@ const config: FilerAppConfig = {
                                 key: ['topic', 'dsc'],
                                 value: '#String',
                             }
+                        }
+                    },
+                    '/roles': {
+                        expected: [],
+                        C: {
+                            setSystems: ['mi'],
+                            value: {
+                                title: '',
+                            },
+                        },
+                        '/[mi === {roleMi}]': {
+                            scopeNode: 'roleMi',
+                            '/{key}': {
+                                scopeNode: 'field',
+                                U: {
+                                    args: { key: '#String' }
+                                },
+                            },
+                            '/req': {
+                                D: {
+                                    method: 'delete'
+                                },
+                                C: {
+                                    method: 'set',
+                                    value: { fio: '{*fio}', login: '{*login}' },
+                                },
+                            },
+                            '/user': {
+                                U: {
+                                    args: { value: '#Dict' }
+                                },
+                                '/{key}': {
+                                    scopeNode: 'userField',
+                                    U: {
+                                        args: {
+                                            value: '#String',
+                                            key: ['title', 'alias'],
+                                        }
+                                    },
+                                },
+                            },
                         }
                     },
                     '/atts': {
@@ -259,13 +308,21 @@ const config: FilerAppConfig = {
                                                 C: {
                                                     value: ['{key}', ''],
                                                     args: {
-                                                        key: '#String',
+                                                        key: ['#String', '#Number', '#Boolean'],
                                                     },
                                                 },
                                                 '/{itemi}': {
                                                     scopeNode: 'itemi',
                                                     args: {
                                                         itemi: '#Number',
+                                                    },
+                                                    '/0': {
+                                                        scopeNode: 'key',
+                                                        U: {
+                                                            args: {
+                                                                value: ['#String', '#Number', '#Boolean'],
+                                                            }
+                                                        }
                                                     },
                                                     '/1': {
                                                         scopeNode: 'value',

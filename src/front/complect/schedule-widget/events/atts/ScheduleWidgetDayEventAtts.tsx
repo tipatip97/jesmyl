@@ -1,7 +1,7 @@
 import { MyLib } from "../../../my-lib/MyLib";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
-import { takeStrongScopeMaker } from "../../../strong-control/useStrongControl";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
+import { takeStrongScopeMaker } from "../../useScheduleWidget";
 import ScheduleWidgetDayEventAtt from "./ScheduleWidgetDayEventAtt";
 
 export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{

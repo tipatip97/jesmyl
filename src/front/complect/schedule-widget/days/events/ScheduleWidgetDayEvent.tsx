@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import mylib from "../../../my-lib/MyLib";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
-import { takeStrongScopeMaker } from "../../../strong-control/useStrongControl";
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent } from "../../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../../atts/ScheduleWidgetBindAtts";
 import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetDayEventAtts from "../../events/atts/ScheduleWidgetDayEventAtts";
-import { useIsSchWidgetExpand } from "../../useScheduleWidget";
+import { takeStrongScopeMaker, useIsSchWidgetExpand } from "../../useScheduleWidget";
 
 const msInMin = mylib.howMs.inMin;
 const msInDay = mylib.howMs.inDay;

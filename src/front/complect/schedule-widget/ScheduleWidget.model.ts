@@ -27,6 +27,7 @@ export interface IScheduleWidget {
     types?: ScheduleWidgetDayListItemTypeBox[],
     atts?: ScheduleWidgetAppAttCustomized[],
     app: AppName,
+    roles: IScheduleWidgetRole[],
 }
 
 export interface IScheduleWidgetDay {
@@ -66,7 +67,7 @@ export enum ScheduleWidgetAppAttCustomizableType {
 }
 
 export interface ScheduleWidgetAppAttCustomizableValue {
-    values?: [string, string][],
+    values?: [string | number | boolean, string][],
 }
 
 export interface ScheduleWidgetAppAttCustomizable extends ScheduleWidgetAppAttBasic<ScheduleWidgetAppAttCustomizableValue> {
@@ -100,4 +101,22 @@ export interface ScheduleWidgetDayListItemTypeBox {
     title: string,
     tm?: number,
     atts?: ScheduleWidgetDayEventAttValues,
+}
+
+export interface IScheduleWidgetRoleUser {
+    login: string,
+    fio: string,
+    alias?: string,
+}
+
+
+export interface IScheduleWidgetRole {
+    mi: number,
+    title: string,
+    user?: IScheduleWidgetRoleUser,
+    icon?: EvaIconName,
+    req?: {
+        login: string,
+        fio: string,
+    },
 }

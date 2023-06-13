@@ -1,6 +1,6 @@
 import StrongEditableField from "../../../../strong-control/field/StrongEditableField";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
-import { takeStrongScopeMaker } from "../../../../strong-control/useStrongControl";
+import { takeStrongScopeMaker } from "../../../useScheduleWidget";
 import { ScheduleChListAtt } from "./checkListAtt";
 
 export default function ScheduleCheckListAtt({

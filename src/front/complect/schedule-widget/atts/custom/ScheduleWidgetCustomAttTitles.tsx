@@ -2,8 +2,8 @@ import EvaButton from "../../../eva-icon/EvaButton";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
-import { takeStrongScopeMaker } from "../../../strong-control/useStrongControl";
 import { ScheduleWidgetAppAttCustomized } from "../../ScheduleWidget.model";
+import { takeStrongScopeMaker } from "../../useScheduleWidget";
 
 const itIt = (it: unknown) => it;
 const itNIt = (it: unknown) => !it;

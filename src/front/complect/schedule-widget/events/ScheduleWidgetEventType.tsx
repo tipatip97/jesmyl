@@ -4,12 +4,12 @@ import EvaIcon from "../../eva-icon/EvaIcon";
 import { MyLib } from "../../my-lib/MyLib";
 import StrongDiv from "../../strong-control/StrongDiv";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
-import { takeStrongScopeMaker } from "../../strong-control/useStrongControl";
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../atts/ScheduleWidgetBindAtts";
 import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
 import StrongDropdown from "../../strong-control/StrongDropdown";
+import { takeStrongScopeMaker } from "../useScheduleWidget";
 
 const singleTitleSymbols = '- ().,';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');

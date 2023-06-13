@@ -4,7 +4,7 @@ import { appAttsStore } from "../../components/complect/appScheduleAttrsStorage"
 import indexStorage from "../../components/index/indexStorage";
 import { RootState } from "../../shared/store";
 import mylib, { MyLib } from "../my-lib/MyLib";
-import { takeStrongScopeMaker } from "../strong-control/useStrongControl";
+import { makeStrongScopeMaker } from "../strong-control/useStrongControl";
 import { IScheduleWidget, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
 import ScheduleKeyValueListAtt from "./atts/attachments/key-value/ScheduleKeyValueListAtt";
 import { scheduleOwnAtts } from "./atts/attachments/scheduleOwnAtts";
@@ -62,12 +62,18 @@ export const useIsSchWidgetExpand = (scope: string, isSelfExpandOnly?: boolean):
 export const ScheduleWidgetAppAttsContext = React.createContext<[ScheduleWidgetAppAtts, ScheduleWidgetAttRefs]>([{}, {}]);
 export const useScheduleWidgetAppAttsContext = () => useContext(ScheduleWidgetAppAttsContext);
 
+export const ScheduleWidgetIsMainRoleContext = React.createContext<boolean>(false);
+export const useScheduleWidgetIsMainRoleContext = () => useContext(ScheduleWidgetIsMainRoleContext);
+
 export const ScheduleWidgetAppAttRefsContext = React.createContext<ScheduleWidgetAttRefs>({});
 export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidgetAppAttRefsContext);
 
 export const initialScheduleScope = 'schs';
 
-export const takeScheduleStrongScopeMaker = (schedulew: number) => takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew)
+export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'titlei' | 'attMi' | 'itemi' | 'roleMi';
+
+export const takeStrongScopeMaker = makeStrongScopeMaker<ScheduleWidgetScopePhase>();
+export const takeScheduleStrongScopeMaker = (schedulew: number) => takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);
 
 
 export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAtts<'SCH'>, ScheduleWidgetAttRefs] => {
@@ -87,7 +93,7 @@ export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAt
         atts[`[SCH]:custom:${att.mi}`] = {
             ...att,
             isCustomize: true,
-            result: (value, scope, isRedact) => <ScheduleKeyValueListAtt isRedact={isRedact} att={att} scope={scope} value={value} />,
+            result: (value, scope, isRedact) => <ScheduleKeyValueListAtt isRedact={isRedact} att={att} scope={scope} value={value} schedule={schedule} />,
         };
     });
     return [{ ...(schedule?.app && appAttsStore[schedule.app as never] as {}), ...scheduleOwnAtts, ...atts }, attRefs];

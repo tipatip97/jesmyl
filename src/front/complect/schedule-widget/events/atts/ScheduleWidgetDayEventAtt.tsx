@@ -2,11 +2,11 @@ import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import mylib from "../../../my-lib/MyLib";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
-import { ScheduleWidgetScopePhase, strongScopeKeyValueSeparator } from "../../../strong-control/useStrongControl";
+import { strongScopeKeyValueSeparator } from "../../../strong-control/useStrongControl";
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetAttKey, ScheduleWidgetAttRef, ScheduleWidgetDayEventAttValue, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
-import { useIsSchWidgetExpand, useScheduleWidgetAppAttsContext } from "../../useScheduleWidget";
+import { ScheduleWidgetScopePhase, useIsSchWidgetExpand, useScheduleWidgetAppAttsContext } from "../../useScheduleWidget";
 import ScheduleWidgetDayEventPeriodicTranslation from "./DayEventPeriodicTranslationAtt";
 
 const isNIs = (is: unknown) => !is;
