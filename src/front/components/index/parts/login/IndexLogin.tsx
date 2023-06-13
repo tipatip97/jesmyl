@@ -178,7 +178,7 @@ export default function IndexLogin() {
             ) : null}
             <button
               className="send-button"
-              disabled={!connectionNode || (!isJSONDataLogin && Object.keys(errors).length > 0)}
+              disabled={!isJSONDataLogin && Object.keys(errors).length > 0}
               onClick={async () => {
                 if (mode === 'check') return;
                 if (isJSONDataLogin) {
