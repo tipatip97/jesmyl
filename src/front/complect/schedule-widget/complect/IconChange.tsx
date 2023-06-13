@@ -10,12 +10,15 @@ const icons = evaPackNames.filter(name => name.endsWith('-outline'));
 export default function ScheduleWidgetIconChange(props: StrongControlProps<{
     icon: EvaIconName,
     header: ReactNode,
+    exclude?: (EvaIconName | und)[],
 }>) {
     const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
         return <>
             {header(props.header)}
             {body(<>{
                 icons.map((icon) => {
+                    if (icon !== props.icon && props.exclude?.includes(icon)) return null;
+
                     return <StrongEvaButton
                         key={icon}
                         scope={props.scope}

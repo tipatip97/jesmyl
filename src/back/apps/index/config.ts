@@ -47,6 +47,7 @@ const config: FilerAppConfig = {
                         roles: [{
                             mi: 0,
                             title: 'Координатор',
+                            icon: 'github-outline',
                             user: { fio: '{*fio}', login: '{*login}' },
                         }]
                     },
@@ -103,6 +104,9 @@ const config: FilerAppConfig = {
                                 },
                             },
                             '/user': {
+                                D: {
+                                    method: 'delete',
+                                },
                                 U: {
                                     args: { value: '#Dict' }
                                 },

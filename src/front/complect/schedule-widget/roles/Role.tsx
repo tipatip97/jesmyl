@@ -29,20 +29,29 @@ export default function ScheduleWidgetRole({
     const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
         const usersMap: Map<string, IScheduleWidgetRoleUser> = new Map();
 
-        schedule.roles.forEach((role) => {
-            if (role.user && !usersMap.has(role.user.login)) usersMap.set(role.user.login, role.user);
-            if (role.req && !usersMap.has(role.req.login)) usersMap.set(role.req.login, role.req);
-        });
+        if (role.user)
+            schedule.roles.forEach(({ user, req }) => {
+                if (user && user.login !== role.user!.login) {
+                    const name = user.login + '*' + (user.alias || user.fio);
+                    if (!usersMap.has(name))
+                        usersMap.set(name, user);
+                }
+                if (req && req.login !== role.user!.login) {
+                    const name = req.login + '*' + req.fio;
+                    if (!usersMap.has(name))
+                        usersMap.set(name, req);
+                }
+            });
 
         return <div className="">
             {header(<div className="flex">
                 Роль <span className="color--7">{role.title}</span> займёт
             </div>)}
-            {body(<div className="flex flex-gap">
-                {Array.from(usersMap.values()).map((user) => {
+            {body(<div className="">
+                {Array.from(usersMap.values()).map((user, useri) => {
                     if (!user || !role.user || user.login === role.user.login) return null;
                     return <StrongEvaButton
-                        key={role.mi}
+                        key={useri}
                         scope={roleScope}
                         fieldName="user"
                         cud="U"
@@ -69,17 +78,35 @@ export default function ScheduleWidgetRole({
             {isSelfRedact && role.user && <EvaButton name="sync" onClick={() => screen()} />}
             {editIcon}
         </div>
-        {isRedact && <ScheduleWidgetIconChange
+        {(isIMainAdmin ? isRedact : auth && auth.login === role.user?.login)
+            && <ScheduleWidgetIconChange
+                scope={roleScope}
+                fieldName="field"
+                header={`Иконка для роли ${role.title}`}
+                icon={role.icon ?? 'person-outline'}
+                exclude={schedule.roles.map(role => role.icon)}
+                mapExecArgs={(args) => {
+                    return {
+                        ...args,
+                        key: 'icon',
+                    };
+                }}
+            />}
+        {isRedact && role.mi !== 0 && role.user && <StrongEvaButton
             scope={roleScope}
-            fieldName="field"
-            header={`Иконка для роли ${role.title}`}
-            icon={role.icon ?? 'person-outline'}
-            mapExecArgs={(args) => {
-                return {
-                    ...args,
-                    key: 'icon',
-                };
-            }}
+            fieldName="user"
+            cud="D"
+            name="person-delete-outline"
+            confirm={`${role.user.alias || role.user.fio} больше не ${role.title}?`}
+            postfix="Освободить роль"
+        />}
+        {isRedact && role.req && <StrongEvaButton
+            scope={roleScope}
+            fieldName="req"
+            cud="D"
+            name="person-delete-outline"
+            confirm={`${role.req.fio} больше не претендует на роль ${role.title}?`}
+            postfix={`Убрать кандидата (${role.req.fio})`}
         />}
         <StrongEditableField
             scope={roleScope}
@@ -114,34 +141,35 @@ export default function ScheduleWidgetRole({
                 {!role.user && <div className="flex flex-gap">
                     <EvaIcon name="person-add-outline" />
                     {role.req
-                        ? <div className="flex flex-gap">
-                            <div>
-                                {role.req.fio}{' '}
-                                на роль{' '}
-                                <span className="color--7">{role.title}</span>
+                        ? isIMainAdmin
+                            ? <div className="flex flex-gap">
+                                <div>
+                                    <span className="color--7">{role.req.fio} </span>
+                                    на эту роль
+                                </div>
+                                <StrongEvaButton
+                                    scope={roleScope}
+                                    fieldName="user"
+                                    cud="U"
+                                    name="checkmark-circle-2-outline"
+                                    className="color--ok"
+                                    confirm={`Утвердить ${role.req.fio} на роль ${role.title}?`}
+                                    mapExecArgs={(args) => {
+                                        return {
+                                            ...args,
+                                            value: role.req,
+                                        };
+                                    }}
+                                />
+                                <StrongEvaButton
+                                    scope={roleScope}
+                                    fieldName="req"
+                                    cud="D"
+                                    name="close-circle-outline"
+                                    confirm={`Сбросить кандидата ${role.req.fio} на роль ${role.title}?`}
+                                />
                             </div>
-                            <StrongEvaButton
-                                scope={roleScope}
-                                fieldName="user"
-                                cud="U"
-                                name="checkmark-circle-2-outline"
-                                className="color--ok"
-                                confirm={`Утвердить ${role.req.fio} на роль ${role.title}?`}
-                                mapExecArgs={(args) => {
-                                    return {
-                                        ...args,
-                                        value: role.req,
-                                    };
-                                }}
-                            />
-                            <StrongEvaButton
-                                scope={roleScope}
-                                fieldName="req"
-                                cud="D"
-                                name="close-circle-outline"
-                                confirm={`Сбросить кандидата ${role.req.fio} на роль ${role.title}?`}
-                            />
-                        </div>
+                            : <><span className="color--7">{role.req.fio}</span> ожидает подтверждения</>
                         : auth
                             ? <StrongDiv
                                 scope={roleScope}
