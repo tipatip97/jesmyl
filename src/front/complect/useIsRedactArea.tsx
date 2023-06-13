@@ -17,8 +17,8 @@ export default function useIsRedactArea(
       isCanRedact &&
       (redact ?? (redactable == null ? isSelfRedact : redactable && isSelfRedact)),
     setIsSelfRedact,
-    editIcon: redactable
-      ? isCanRedact && !(redact ?? isSelfRedact)
+    editIcon: redactable && isCanRedact
+      ? !(redact ?? isSelfRedact)
         ? <EvaButton
           name="edit-outline"
           className="edit-button"
