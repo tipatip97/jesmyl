@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import KeyboardInput from "../../keyboard/KeyboardInput";
@@ -6,17 +6,19 @@ import useModal from "../../modal/useModal";
 import { StrongControlProps } from "../Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "../useStrongControl";
 import StrongEditableFieldMultiline from "./StrongEditableFieldMultiline";
+import useIsRedactArea from "../../useIsRedactArea";
 
 export default function StrongEditableField(props: StrongControlProps<{
     value?: string,
     title?: string,
-    description?: string,
+    description?: ReactNode,
     type?: 'text' | 'number',
     icon?: EvaIconName,
     placeholder?: string,
     isRedact?: boolean,
+    setSelfRedact?: boolean,
     isImpossibleEmptyValue?: boolean,
-    postfix?: string,
+    postfix?: ReactNode,
     multiline?: boolean,
     textClassName?: string,
     className?: string,
@@ -28,6 +30,7 @@ export default function StrongEditableField(props: StrongControlProps<{
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const { modalNode, toast } = useModal();
+    const { editIcon, isSelfRedact } = useIsRedactArea(true, null, true, true);
 
     const exer = useStrongExerContext();
 
@@ -99,11 +102,12 @@ export default function StrongEditableField(props: StrongControlProps<{
 
     return <div className={props.className || 'margin-gap-v'}>
         {modalNode}
-        {props.isRedact
+        {(props.isRedact && (!props.setSelfRedact || isSelfRedact))
             ? <>
-                {props.title && <div className="flex flex-gap">
+                {(props.title || props.setSelfRedact) && <div className="flex flex-gap">
                     {props.icon && <EvaIcon name={props.icon} />}
                     {props.title}
+                    {props.isRedact && props.setSelfRedact && editIcon}
                     {indicatorNode}
                 </div>}
                 <div className="flex flex-gap">
@@ -127,7 +131,7 @@ export default function StrongEditableField(props: StrongControlProps<{
                                 sendValue();
                         }}
                     />
-                    {props.title ? null : indicatorNode}
+                    {props.title || props.setSelfRedact ? null : indicatorNode}
                 </div>
             </>
             : <span className="flex flex-gap">
@@ -140,6 +144,7 @@ export default function StrongEditableField(props: StrongControlProps<{
                             + (props.multiline ? ' white-pre-wrap ' : '')
                         }>{props.value}{props.postfix || ''}</span>
                     : 'Без значения'}
+                {props.isRedact && props.setSelfRedact && editIcon}
             </span>}
     </div>;
 }
