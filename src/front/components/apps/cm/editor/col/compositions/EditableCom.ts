@@ -43,7 +43,7 @@ export class EditableCom extends Com {
     }
 
     get ords(): IExportableOrderTop[] {
-        if (this._ords == null) this._ords = mylib.clone(this.getBasic('o'));
+        if (this._ords == null) this._ords = mylib.clone(this.getBasic('o')) ?? [];
 
         return this._ords as IExportableOrderTop[];
     }
@@ -77,6 +77,9 @@ export class EditableCom extends Com {
             ...this.top,
             ...this.basics,
             ...this.col.toDict(),
+            n: this.name,
+            c: this.chords,
+            t: this.texts,
             o: this.ords.map((topOrd) => {
                 const ord = mylib.clone(topOrd);
                 delete ord.originWid;
@@ -89,7 +92,7 @@ export class EditableCom extends Com {
         };
     }
 
-    exec<Value>(bag: FreeExecDict<Value>) {
+    setCreatedCom(elseCb?: () => void) {
         if (this.isCreated)
             setTimeout(() => this.col.execCol({
                 action: 'comAdd',
@@ -99,7 +102,11 @@ export class EditableCom extends Com {
                     value: this.toCreateDict()
                 },
             }, 'com'));
-        else this.col.execCol(bag, 'com');
+        else elseCb?.();
+    }
+
+    exec<Value>(bag: FreeExecDict<Value>) {
+        this.setCreatedCom(() => this.col.execCol(bag, 'com'));
     }
 
     rename(name: string, onCorrecting?: ((val?: string) => any | nil | void) | nil, isSetExec = true, isSetAllText?: boolean) {
@@ -107,6 +114,8 @@ export class EditableCom extends Com {
             this.rename(correct, onCorrecting);
             onCorrecting?.(correct);
         }, isSetExec, isSetAllText);
+
+        this.setCreatedCom();
     }
 
     setField<Fieldn extends keyof IExportableCom>(fieldn: Fieldn, value: IExportableCom[Fieldn], defVal?: IExportableCom[Fieldn]) {
@@ -623,7 +632,7 @@ export class EditableCom extends Com {
     }
 
     getNextOrdWid() {
-        return this.ords.reduce((w, ord) => (ord.w == null || ord.w < w) ? w : ord.w, -1) - -1;
+        return (this.ords?.reduce((w, ord) => (ord.w == null || ord.w < w) ? w : ord.w, -1) ?? -1) - -1;
     }
 
     changeBlock(coln: 'texts' | 'chords', coli: number, val: string, isInsert = false) {

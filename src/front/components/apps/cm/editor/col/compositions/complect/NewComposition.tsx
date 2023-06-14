@@ -24,7 +24,7 @@ export default function NewComposition({ close }: { close: () => void }) {
 
   const com = useMemo(
     () =>
-      new EditableCom({ n: "", w: Date.now() }, cols?.coms.length || -1).create(),
+      new EditableCom({ n: "", w: Date.now(), t: [], c: [], o: [] }, cols?.coms.length || -1).create(),
     [cols]
   );
 
