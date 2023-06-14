@@ -3,12 +3,12 @@ import Dropdown from "../../dropdown/Dropdown";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import { MyLib } from "../../my-lib/MyLib";
 import StrongDiv from "../../strong-control/StrongDiv";
+import StrongDropdown from "../../strong-control/StrongDropdown";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
-import useIsRedactArea from "../../useIsRedactArea";
+import { useIsRedactAreaWithInit } from "../../useIsRedactArea";
 import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../atts/ScheduleWidgetBindAtts";
 import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
-import StrongDropdown from "../../strong-control/StrongDropdown";
 import { takeStrongScopeMaker } from "../useScheduleWidget";
 
 const singleTitleSymbols = '- ().,';
@@ -23,7 +23,6 @@ export default function ScheduleWidgetEventType({
     scheduleScope,
     schedule,
     selectFieldName,
-    redact,
     typei,
     typeBox,
     onSelect,
@@ -32,13 +31,12 @@ export default function ScheduleWidgetEventType({
     selectScope: string,
     scheduleScope: string,
     selectFieldName: string,
-    redact: boolean,
     schedule: IScheduleWidget,
     typei: number,
     typeBox: ScheduleWidgetDayListItemTypeBox,
     onSelect: () => void,
 }) {
-    const { editIcon, isRedact } = useIsRedactArea(true, redact || null, true, true);
+    const { editIcon, isRedact } = useIsRedactAreaWithInit(!typeBox.title, true, null, true, true);
     const [typesError, seTypesError] = useState<(string | nil)[]>([]);
     const [attTranslatorType, setAttTranslatorType] = useState(AttTranslatorType.Today);
 

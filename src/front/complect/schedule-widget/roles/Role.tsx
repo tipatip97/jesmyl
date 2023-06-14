@@ -9,51 +9,36 @@ import StrongEditableField from "../../strong-control/field/StrongEditableField"
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetRoleUser } from "../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../complect/IconChange";
-import { takeStrongScopeMaker, useScheduleWidgetIsMainRoleContext } from "../useScheduleWidget";
+import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetIsMainRoleContext } from "../useScheduleWidget";
 
 export default function ScheduleWidgetRole({
     scope,
     schedule,
     role,
-    redact,
 }: StrongComponentProps<{
     schedule: IScheduleWidget,
     role: IScheduleWidgetRole,
-    redact: boolean,
 }>) {
     const roleScope = takeStrongScopeMaker(scope, ' roleMi/', role.mi);
     const isIMainAdmin = useScheduleWidgetIsMainRoleContext();
-    const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, redact || null, isIMainAdmin, true);
+    const { editIcon, isRedact } = useIsRedactArea(true, !role.title || null, isIMainAdmin, true);
     const auth = useAuth();
+    const roleUser = extractScheduleWidgetRoleUser(schedule, 0, role);
+    const catsRedact = useIsRedactArea(true, null, true, true);
 
-    const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
-        const usersMap: Map<string, IScheduleWidgetRoleUser> = new Map();
-
-        if (role.user)
-            schedule.roles.forEach(({ user, req }) => {
-                if (user && user.login !== role.user!.login) {
-                    const name = user.login + '*' + (user.alias || user.fio);
-                    if (!usersMap.has(name))
-                        usersMap.set(name, user);
-                }
-                if (req && req.login !== role.user!.login) {
-                    const name = req.login + '*' + req.fio;
-                    if (!usersMap.has(name))
-                        usersMap.set(name, req);
-                }
-            });
-
-        return <div className="">
+    const userSetModal = useModal(({ header, body }, closeModal) => {
+        return <>
             {header(<div className="flex">
                 Роль <span className="color--7">{role.title}</span> займёт
             </div>)}
             {body(<div className="">
-                {Array.from(usersMap.values()).map((user, useri) => {
-                    if (!user || !role.user || user.login === role.user.login) return null;
+                {schedule.roles.users.map((user, useri) => {
+                    if (user && roleUser && user.login === roleUser.login) return null;
+
                     return <StrongEvaButton
                         key={useri}
                         scope={roleScope}
-                        fieldName="user"
+                        fieldName="field"
                         cud="U"
                         confirm={`Теперь ${user?.alias || user?.fio} займёт роль ${role.title}?`}
                         className="flex flex-gap pointer"
@@ -63,122 +48,120 @@ export default function ScheduleWidgetRole({
                         mapExecArgs={(args) => {
                             return {
                                 ...args,
-                                value: user,
+                                key: 'user',
+                                value: user.mi,
                             };
                         }}
                     />
                 })}
             </div>)}
-        </div>;
+        </>;
     });
 
-    return <div className="margin-big-gap-v">
-        {modalNode}
-        <div className="flex flex-gap flex-end">
-            {isSelfRedact && role.user && <EvaButton name="sync" onClick={() => screen()} />}
-            {editIcon}
-        </div>
-        {(isIMainAdmin ? isRedact : auth && auth.login === role.user?.login)
-            && <ScheduleWidgetIconChange
-                scope={roleScope}
-                fieldName="field"
-                header={`Иконка для роли ${role.title}`}
-                icon={role.icon ?? 'person-outline'}
-                exclude={schedule.roles.map(role => role.icon)}
-                mapExecArgs={(args) => {
-                    return {
-                        ...args,
-                        key: 'icon',
-                    };
-                }}
-            />}
-        {isRedact && role.mi !== 0 && role.user && <StrongEvaButton
-            scope={roleScope}
-            fieldName="user"
-            cud="D"
-            name="person-delete-outline"
-            confirm={`${role.user.alias || role.user.fio} больше не ${role.title}?`}
-            postfix="Освободить роль"
-        />}
-        {isRedact && role.req && <StrongEvaButton
-            scope={roleScope}
-            fieldName="req"
-            cud="D"
-            name="person-delete-outline"
-            confirm={`${role.req.fio} больше не претендует на роль ${role.title}?`}
-            postfix={`Убрать кандидата (${role.req.fio})`}
-        />}
-        <StrongEditableField
-            scope={roleScope}
-            fieldName="field"
-            isRedact={isRedact}
-            title="Роль"
-            icon={role.icon ?? 'person-outline'}
-            value={role.title}
-            mapExecArgs={(args) => {
-                return {
-                    ...args,
-                    key: 'title',
-                };
-            }}
-        />
-        {role.title &&
-            <>
-                {role.user && <StrongEditableField
+    const catSetModal = useModal(({ header, body, footer }, closeModal) => {
+        return <>
+            {header(<div className="flex between">
+                <span><span className="color--7">{role.title}</span> в категорию</span>
+
+                {catsRedact.editIcon}
+            </div>)}
+            {body(<>
+                {catsRedact.isRedact
+                    ? schedule.roles.cats.map((catName, catNamei) => {
+                        const catScope = takeStrongScopeMaker(scope + ' categories', ' cati/', catNamei);
+
+                        return <StrongEditableField
+                            key={catNamei}
+                            scope={catScope}
+                            fieldName=""
+                            isRedact
+                            value={catName}
+                        />
+                    })
+                    : schedule.roles.cats.map((catName, catNamei) => {
+                        return <StrongEvaButton
+                            key={catNamei}
+                            scope={roleScope}
+                            fieldName="field"
+                            cud="U"
+                            className="flex flex-gap pointer"
+                            name="folder-outline"
+                            postfix={catName}
+                            onSuccess={() => closeModal()}
+                            mapExecArgs={(args) => {
+                                return {
+                                    ...args,
+                                    key: 'cat',
+                                    value: catNamei,
+                                };
+                            }}
+                        />
+                    })}
+            </>)}
+            {footer(<>
+                {!schedule.roles.cats.includes('') && catsRedact.isRedact && <StrongEvaButton
+                    scope={scope}
+                    fieldName="categories"
+                    name="folder-add-outline"
+                />}
+            </>)}
+        </>;
+    });
+
+    return <div className="margin-gap-v padding-gap bgcolor--5">
+        {userSetModal.modalNode}
+        {catSetModal.modalNode}
+        <div className="flex flex-gap between">
+            <div className="full-width">
+                <StrongEditableField
                     scope={roleScope}
-                    fieldName="userField"
-                    title={role.user.fio}
+                    fieldName="field"
                     isRedact={isRedact}
-                    icon="person-done-outline"
-                    value={role.user.alias || role.user.fio}
+                    title="Роль"
+                    icon={isRedact || !role.icon ? 'credit-card-outline' : role.icon}
+                    value={role.title}
+                    postfix={roleUser && (' - ' + (roleUser.alias || roleUser.fio))}
                     mapExecArgs={(args) => {
                         return {
                             ...args,
-                            key: 'alias',
+                            key: 'title',
                         };
                     }}
-                />}
-                {!role.user && <div className="flex flex-gap">
-                    <EvaIcon name="person-add-outline" />
-                    {role.req
-                        ? isIMainAdmin
-                            ? <div className="flex flex-gap">
-                                <div>
-                                    <span className="color--7">{role.req.fio} </span>
-                                    на эту роль
-                                </div>
-                                <StrongEvaButton
-                                    scope={roleScope}
-                                    fieldName="user"
-                                    cud="U"
-                                    name="checkmark-circle-2-outline"
-                                    className="color--ok"
-                                    confirm={`Утвердить ${role.req.fio} на роль ${role.title}?`}
-                                    mapExecArgs={(args) => {
-                                        return {
-                                            ...args,
-                                            value: role.req,
-                                        };
-                                    }}
-                                />
-                                <StrongEvaButton
-                                    scope={roleScope}
-                                    fieldName="req"
-                                    cud="D"
-                                    name="close-circle-outline"
-                                    confirm={`Сбросить кандидата ${role.req.fio} на роль ${role.title}?`}
-                                />
-                            </div>
-                            : <><span className="color--7">{role.req.fio}</span> ожидает подтверждения</>
-                        : auth
-                            ? <StrongDiv
-                                scope={roleScope}
-                                fieldName="req"
-                                confirm={`Отикликнуться на вакансию ${role.title}?`}
-                                className="text-underline pointer"
-                            >Откликнуться</StrongDiv>
-                            : 'Отклика нет'}
-                </div>}
-            </>}
+                />
+                {(isIMainAdmin ? isRedact : auth && auth.login === roleUser?.login)
+                    && <ScheduleWidgetIconChange
+                        scope={roleScope}
+                        fieldName="field"
+                        header={`Иконка для роли ${role.title}`}
+                        icon={role.icon ?? 'person-outline'}
+                        exclude={schedule.roles.list.map(role => role.icon)}
+                        mapExecArgs={(args) => {
+                            return {
+                                ...args,
+                                key: 'icon',
+                            };
+                        }}
+                    />}
+                {isRedact && <>
+                    {role.mi !== 0 && roleUser && <StrongEvaButton
+                        scope={roleScope}
+                        fieldName="user"
+                        cud="D"
+                        name="person-delete-outline"
+                        confirm={`${roleUser.alias || roleUser.fio} больше не ${role.title}?`}
+                        postfix="Освободить роль"
+                    />}
+                    {roleUser
+                        ? <EvaButton name="sync" onClick={() => userSetModal.screen()} postfix="Заменить человека" />
+                        : <EvaButton name="person-add-outline" onClick={() => userSetModal.screen()} postfix="Назначить человека" />}
+                    {role.mi > 0 && <EvaButton
+                        name="grid-outline"
+                        onClick={() => catSetModal.screen()}
+                        postfix={`Сменить категорию (${schedule.roles.cats[role.cat || 0] || 'Основное'})`}
+                    />}
+                </>}
+            </div>
+            {editIcon}
+        </div>
     </div>;
 }

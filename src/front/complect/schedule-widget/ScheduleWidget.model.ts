@@ -27,7 +27,7 @@ export interface IScheduleWidget {
     types?: ScheduleWidgetDayListItemTypeBox[],
     atts?: ScheduleWidgetAppAttCustomized[],
     app: AppName,
-    roles: IScheduleWidgetRole[],
+    roles: IScheduleWidgetRoles,
 }
 
 export interface IScheduleWidgetDay {
@@ -104,19 +104,23 @@ export interface ScheduleWidgetDayListItemTypeBox {
 }
 
 export interface IScheduleWidgetRoleUser {
+    mi: number,
     login: string,
     fio: string,
     alias?: string,
 }
 
 
+export interface IScheduleWidgetRoles {
+    cats: string[],
+    list: IScheduleWidgetRole[],
+    users: IScheduleWidgetRoleUser[],
+}
+
 export interface IScheduleWidgetRole {
     mi: number,
     title: string,
-    user?: IScheduleWidgetRoleUser,
+    user?: number,
     icon?: EvaIconName,
-    req?: {
-        login: string,
-        fio: string,
-    },
+    cat?: number,
 }

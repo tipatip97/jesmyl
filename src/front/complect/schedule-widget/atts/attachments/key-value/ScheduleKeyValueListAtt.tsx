@@ -1,10 +1,13 @@
+import { useMemo, useState } from "react";
+import EvaButton from "../../../../eva-icon/EvaButton";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../../strong-control/field/StrongEditableField";
 import useIsExpand from "../../../../useIsExpand";
-import { IScheduleWidget, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
+import { IScheduleWidget, IScheduleWidgetRole, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
 import ScheduleWidgetRoleFace from "../../../roles/RoleFace";
-import { takeStrongScopeMaker } from "../../../useScheduleWidget";
+import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetIsMainRoleContext } from "../../../useScheduleWidget";
+import useAuth from "../../../../../components/index/useAuth";
 
 export default function ScheduleKeyValueListAtt({
     value,
@@ -21,15 +24,31 @@ export default function ScheduleKeyValueListAtt({
 }) {
     const attScope = scope + ' keyValue';
     const [rolesTitle, isExpand] = useIsExpand(false, <>Роли</>);
+    const auth = useAuth();
+    const isIMainRole = useScheduleWidgetIsMainRoleContext();
+    const myUser = auth && schedule.roles.users.find(user => user.login === auth.login);
+    const categories = useMemo(() => {
+        const sorted = [...schedule.roles.list].sort((a, b) => (a.cat || 0) - (b.cat || 0));
+        const roles: IScheduleWidgetRole[][] = [];
+        sorted.forEach(role => {
+            if (!role.title || value.values?.some(li => li[0] === role.mi)) return;
+            const list = roles[role.cat || 0] ??= [];
+            list.push(role);
+        });
+        return roles;
+    }, [schedule.roles.list]);
+    const [catExpands, setCatExpands] = useState([0]);
 
     return <>{
         <div>
             {value.values?.map(([key, value], itemi) => {
                 if (!isRedact && !value) return null;
                 const itemScope = takeStrongScopeMaker(attScope, ' itemi/', itemi);
+                const role = typeof key === 'number' ? extractScheduleWidgetRole(schedule, key) : undefined;
+
                 return <div key={itemi} className="margin-big-gap-b">
                     {typeof key === 'number'
-                        ? <ScheduleWidgetRoleFace role={schedule.roles.find((role) => role.mi === key)} />
+                        ? <ScheduleWidgetRoleFace role={role} schedule={schedule} />
                         : typeof key === 'boolean'
                             ? <StrongEvaButton
                                 scope={itemScope}
@@ -52,6 +71,7 @@ export default function ScheduleKeyValueListAtt({
                         value={value}
                         multiline
                         isRedact={isRedact}
+                        setSelfRedact={!isIMainRole && typeof key === 'number' && !!myUser && (extractScheduleWidgetRoleUser(schedule, 0, role)?.login !== myUser.login)}
                         mapExecArgs={(args) => ({ ...args, })}
                     />
                 </div>;
@@ -78,23 +98,32 @@ export default function ScheduleKeyValueListAtt({
                     mapExecArgs={(args) => ({ ...args, key: false, })}
                 />
                 <div className="color--3 margin-gap-v">{rolesTitle}</div>
-                {isExpand && <>{schedule.roles.map((role) => {
-                    if (!role.title || value.values?.some(li => li[0] === role.mi)) return null;
-
-                    return <div
-                        key={role.mi}
-                        className="flex flex-gap"
-                    >
-                        <ScheduleWidgetRoleFace role={role} />
-                        <StrongEvaButton
-                            name="plus"
-                            scope={attScope}
-                            fieldName=""
-                            mapExecArgs={(args) => ({ ...args, key: role.mi, })}
-                        />
-                    </div>;
-                })}</>}
-            </>}
+                {isExpand
+                    && categories.map((list, listi) => {
+                        const isExpand = catExpands.includes(listi);
+                        return <div key={listi}>
+                            <EvaButton
+                                name={isExpand ? 'chevron-up' : 'chevron-down'}
+                                prefix={schedule.roles.cats[listi]}
+                                className="color--4"
+                                onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}
+                            />
+                            {isExpand && list.map((role) => {
+                                return <div
+                                    key={role.mi}
+                                    className="flex flex-gap"
+                                >
+                                    <ScheduleWidgetRoleFace role={role} schedule={schedule} />
+                                    <StrongEvaButton
+                                        name="plus"
+                                        scope={attScope}
+                                        fieldName=""
+                                        mapExecArgs={(args) => ({ ...args, key: role.mi, })}
+                                    />
+                                </div>
+                            })}
+                        </div>;
+                    })}</>}
         </div>
     }</>;
 }

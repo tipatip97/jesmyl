@@ -44,12 +44,16 @@ const config: FilerAppConfig = {
                         w: '{schw}',
                         title: '{title}',
                         app: '{app}',
-                        roles: [{
-                            mi: 0,
-                            title: 'Координатор',
-                            icon: 'github-outline',
-                            user: { fio: '{*fio}', login: '{*login}' },
-                        }]
+                        roles: {
+                            cats: ['Основное'],
+                            users: [{ mi: 0, fio: '{*fio}', login: '{*login}' }],
+                            list: [{
+                                mi: 0,
+                                title: 'Координатор',
+                                icon: 'github-outline',
+                                user: 0
+                            }]
+                        }
                     },
                     args: {
                         schw: '#Number',
@@ -79,48 +83,60 @@ const config: FilerAppConfig = {
                         }
                     },
                     '/roles': {
-                        expected: [],
-                        C: {
-                            setSystems: ['mi'],
-                            value: {
-                                title: '',
+                        '/cats': {
+                            scopeNode: 'categories',
+                            C: {
+                                value: '',
                             },
+                            '/{cati}': {
+                                scopeNode: 'cati',
+                                U: {}
+                            }
                         },
-                        '/[mi === {roleMi}]': {
-                            scopeNode: 'roleMi',
-                            '/{key}': {
-                                scopeNode: 'field',
-                                U: {
-                                    args: { key: '#String' }
-                                },
+                        '/users': {
+                            C: {
+                                setSystems: ['mi'],
+                                value: { fio: '{*fio}', login: '{*login}' },
                             },
-                            '/req': {
-                                D: {
-                                    method: 'delete'
+                            '/[mi === {userMi}]': {
+                                scopeNode: 'userMi',
+                                args: {
+                                    userMi: '#Number',
                                 },
-                                C: {
-                                    method: 'set',
-                                    value: { fio: '{*fio}', login: '{*login}' },
-                                },
-                            },
-                            '/user': {
-                                D: {
-                                    method: 'delete',
-                                },
-                                U: {
-                                    args: { value: '#Dict' }
-                                },
-                                '/{key}': {
-                                    scopeNode: 'userField',
+                                '/alias': {
                                     U: {
                                         args: {
                                             value: '#String',
-                                            key: ['title', 'alias'],
                                         }
                                     },
                                 },
                             },
-                        }
+                        },
+                        '/list': {
+                            '<roles>': {
+                                scopeNode: 'roles',
+                                C: {
+                                    setSystems: ['mi'],
+                                    value: {
+                                        title: '',
+                                    },
+                                },
+                            },
+                            '/[mi === {roleMi}]': {
+                                scopeNode: 'roleMi',
+                                '/{key}': {
+                                    scopeNode: 'field',
+                                    U: {
+                                        args: { key: '#String' }
+                                    },
+                                },
+                                '/user': {
+                                    D: {
+                                        method: 'delete',
+                                    },
+                                },
+                            }
+                        },
                     },
                     '/atts': {
                         expected: [],

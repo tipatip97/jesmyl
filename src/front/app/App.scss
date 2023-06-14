@@ -37,6 +37,10 @@ body {
         padding: var(--main-gap);
     }
 
+    .padding-gap-v {
+        padding: var(--main-gap) 0;
+    }
+
     .margin-big-gap {
         margin: var(--main-big-gap);
     }

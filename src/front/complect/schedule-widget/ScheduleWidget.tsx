@@ -16,7 +16,7 @@ import ScheduleWidgetTopicTitle from "./complect/TopicTitle";
 import ScheduleWidgetDay from "./days/ScheduleWidgetDay";
 import ScheduleWidgetEventList from "./events/ScheduleWidgetEventList";
 import ScheduleWidgetRoleList from "./roles/RoleList";
-import { ScheduleWidgetAppAttsContext, ScheduleWidgetIsMainRoleContext, initialScheduleScope, makeAttStorage, takeScheduleStrongScopeMaker } from "./useScheduleWidget";
+import { ScheduleWidgetAppAttsContext, ScheduleWidgetIsMainRoleContext, extractScheduleWidgetRoleUser, initialScheduleScope, makeAttStorage, takeScheduleStrongScopeMaker } from "./useScheduleWidget";
 
 const msInMin = mylib.howMs.inMin;
 
@@ -48,6 +48,12 @@ export default function ScheduleWidget({
         return () => clearTimeout(to);
     }, [updates]);
 
+    const isMainRole = useMemo(() => {
+        if (!auth || !schedule) return false;
+        const user = extractScheduleWidgetRoleUser(schedule, 0);
+        return !!user && auth.login === user.login;
+    }, [auth, schedule]);
+
     if (!schedule) return null;
 
     const selfScope = takeScheduleStrongScopeMaker(schedule.w);
@@ -55,7 +61,7 @@ export default function ScheduleWidget({
     const firstWup = schedule.days?.[0].wup;
 
     return content(
-        <ScheduleWidgetIsMainRoleContext.Provider value={!!(auth && auth.login === schedule.roles.find((role) => role.mi === 0)?.user?.login)}>
+        <ScheduleWidgetIsMainRoleContext.Provider value={isMainRole}>
             <ScheduleWidgetAppAttsContext.Provider value={atts}>
                 <div className="schedule-widget">
                     <div className="flex flex-gap">

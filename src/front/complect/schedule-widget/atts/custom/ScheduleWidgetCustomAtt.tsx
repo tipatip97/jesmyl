@@ -1,34 +1,35 @@
 import { ReactNode } from "react";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
+import { useIsRedactAreaWithInit } from "../../../useIsRedactArea";
 import { ScheduleWidgetAppAttCustomized } from "../../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../../complect/IconChange";
 import { takeStrongScopeMaker } from "../../useScheduleWidget";
 import ScheduleWidgetCustomAttTitles from "./ScheduleWidgetCustomAttTitles";
 
-export default function ScheduleWidgetCustomAtt({ att, scope, isRedact, topContent }: StrongComponentProps<{
+export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent }: StrongComponentProps<{
     att: ScheduleWidgetAppAttCustomized,
-    isRedact: boolean,
+    redact?: boolean,
     topContent?: ReactNode,
 }>) {
     const selfScope = takeStrongScopeMaker(scope, ' attMi/', att.mi);
+    const { editIcon, isRedact } = useIsRedactAreaWithInit(!att.title || !att.description, true, redact, true, true);
 
     return <div className="bgcolor--5 padding-gap margin-gap-v">
         {topContent}
-        <div className="flex between full-width">
-            {isRedact && <ScheduleWidgetIconChange
-                scope={selfScope}
-                fieldName="field"
-                icon={att.icon}
-                header={<>Иконка для вложения {att.title}</>}
-                mapExecArgs={(args) => {
-                    return {
-                        ...args,
-                        key: 'icon',
-                    };
-                }}
-            />}
-        </div>
+        <div className="flex flex-end full-width">{editIcon}</div>
+        {isRedact && <ScheduleWidgetIconChange
+            scope={selfScope}
+            fieldName="field"
+            icon={att.icon}
+            header={<>Иконка для вложения {att.title}</>}
+            mapExecArgs={(args) => {
+                return {
+                    ...args,
+                    key: 'icon',
+                };
+            }}
+        />}
         <StrongEditableField
             scope={selfScope}
             fieldName="field"

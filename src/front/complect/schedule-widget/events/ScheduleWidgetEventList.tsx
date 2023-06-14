@@ -44,12 +44,17 @@ export default function ScheduleWidgetEventList({
         return sortedTypes;
     }, [types, usedCounts]);
 
-    const { modalNode, screen } = useModal(({ actionButton, footer, header, body }, closeModal) => {
+    const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
         return <>
             {header(<>
                 <div className="flex flex-gap between">
                     <div>Шаблоны событий</div>
-                    {editIcon}
+                    {!schedule.types?.some((type) => !type.title) && <StrongEvaButton
+                        scope={scope}
+                        fieldName="types"
+                        name="plus-circle-outline"
+                        confirm="Добавить новый шаблон?"
+                    />}
                 </div>
             </>)}
             {body(<>
@@ -59,7 +64,6 @@ export default function ScheduleWidgetEventList({
                     return <React.Fragment key={typei}>
                         <ScheduleWidgetEventType
                             onSelect={closeModal}
-                            redact={isRedact}
                             schedule={schedule}
                             scheduleScope={scheduleScope}
                             scope={scope}
@@ -78,27 +82,15 @@ export default function ScheduleWidgetEventList({
                     </React.Fragment>;
                 })}
             </>)}
-            {footer(
-                <>{
-                    isRedact && !schedule.types?.some((type) => !type.title) && actionButton(
-                        <div className="flex flex-gap ">
-                            Новый шаблон
-                            <StrongEvaButton
-                                scope={scope}
-                                fieldName="types"
-                                name="plus-circle-outline"
-                                confirm="Добавить новый шаблон?"
-                            /></div>)
-                }</>
-            )}</>;
+        </>;
     });
 
     return <div className="flex flex-gap">
         {modalNode}
-        {buttonTitle}
         <EvaButton
             name={icon}
-            onClick={() => screen(null, { onClose: () => setIsSelfRedact(false) })}
+            prefix={buttonTitle}
+            onClick={() => screen()}
         />
     </div>;
 }

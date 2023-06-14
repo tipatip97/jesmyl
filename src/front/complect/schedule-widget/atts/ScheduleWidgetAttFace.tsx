@@ -26,7 +26,7 @@ export default function ScheduleWidgetAttFace({
     isLink?: boolean,
 }>) {
     const { modalNode, screen } = useModal(att && (() => {
-        return <ScheduleWidgetCustomAtt att={att as never} isRedact scope={scheduleScope} topContent={customAttTopContent?.(scope, attKey)} />;
+        return <ScheduleWidgetCustomAtt att={att as never} redact scope={scheduleScope} topContent={customAttTopContent?.(scope, attKey)} />;
     }));
 
     return <>

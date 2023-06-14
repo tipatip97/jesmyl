@@ -5,7 +5,7 @@ import indexStorage from "../../components/index/indexStorage";
 import { RootState } from "../../shared/store";
 import mylib, { MyLib } from "../my-lib/MyLib";
 import { makeStrongScopeMaker } from "../strong-control/useStrongControl";
-import { IScheduleWidget, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
+import { IScheduleWidget, IScheduleWidgetRole, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
 import ScheduleKeyValueListAtt from "./atts/attachments/key-value/ScheduleKeyValueListAtt";
 import { scheduleOwnAtts } from "./atts/attachments/scheduleOwnAtts";
 
@@ -70,11 +70,22 @@ export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidge
 
 export const initialScheduleScope = 'schs';
 
-export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'titlei' | 'attMi' | 'itemi' | 'roleMi';
+export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'titlei' | 'attMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati';
 
 export const takeStrongScopeMaker = makeStrongScopeMaker<ScheduleWidgetScopePhase>();
 export const takeScheduleStrongScopeMaker = (schedulew: number) => takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);
 
+export const extractScheduleWidgetRole = (schedule: IScheduleWidget, roleMi: number) => {
+    return schedule.roles.list.find((role) => role.mi === roleMi);
+};
+
+export const extractScheduleWidgetRoleUser = (schedule: IScheduleWidget, roleMi: number, role?: IScheduleWidgetRole | nil) => {
+    const roleUserMi = (role ?? extractScheduleWidgetRole(schedule, roleMi))?.user;
+    if (roleUserMi === undefined) return null;
+    const roleUser = schedule.roles.users.find(user => user.mi === roleUserMi);
+    if (roleUser === undefined) return null;
+    return roleUser;
+};
 
 export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAtts<'SCH'>, ScheduleWidgetAttRefs] => {
     const atts: ScheduleWidgetAppAtts<'SCH'> = {};
