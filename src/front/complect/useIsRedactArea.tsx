@@ -1,14 +1,34 @@
 import { useState } from "react";
 import EvaButton from "./eva-icon/EvaButton";
 
+type booleanOrNil = boolean | nil;
+type OnEditStart = ((isSelfRedact: boolean) => void) | nil;
+
 export default function useIsRedactArea(
-  redactable: boolean | nil,
-  redact: boolean | nil,
-  canRedact?: boolean | nil,
-  isShowDoneButton?: boolean | nil,
-  onEditStart?: ((isSelfRedact: boolean) => void) | nil,
+  redactable?: booleanOrNil,
+  redact?: booleanOrNil,
+  canRedact?: booleanOrNil,
+  isShowDoneButton?: booleanOrNil,
+  onEditStart?: OnEditStart,
 ) {
-  const [isSelfRedact, setIsSelfRedact] = useState(false);
+  return useIsRedactAreaWithInit(false,
+    redactable,
+    redact,
+    canRedact,
+    isShowDoneButton,
+    onEditStart
+  );
+}
+
+export function useIsRedactAreaWithInit(
+  init: boolean,
+  redactable?: booleanOrNil,
+  redact?: booleanOrNil,
+  canRedact?: booleanOrNil,
+  isShowDoneButton?: booleanOrNil,
+  onEditStart?: OnEditStart,
+) {
+  const [isSelfRedact, setIsSelfRedact] = useState(init);
   const isCanRedact = !!(canRedact == null || canRedact);
 
   const ret = {
