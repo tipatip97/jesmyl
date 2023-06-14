@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 
 [
     ['', 'package'],
+    ['apps/index', 'schedules'],
     ['apps/cm', 'cols'],
     ['apps/cm', 'eeStorage'],
     ['apps/cm', 'meetings'],
