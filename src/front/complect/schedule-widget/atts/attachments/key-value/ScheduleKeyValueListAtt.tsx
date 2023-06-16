@@ -6,7 +6,7 @@ import StrongEditableField from "../../../../strong-control/field/StrongEditable
 import useIsExpand from "../../../../useIsExpand";
 import { IScheduleWidget, IScheduleWidgetRole, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
 import ScheduleWidgetRoleFace from "../../../roles/RoleFace";
-import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetIsMainRoleContext } from "../../../useScheduleWidget";
+import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../../../useScheduleWidget";
 import useAuth from "../../../../../components/index/useAuth";
 
 export default function ScheduleKeyValueListAtt({
@@ -25,7 +25,7 @@ export default function ScheduleKeyValueListAtt({
     const attScope = scope + ' keyValue';
     const [rolesTitle, isExpand] = useIsExpand(false, <>Роли</>);
     const auth = useAuth();
-    const isIMainRole = useScheduleWidgetIsMainRoleContext();
+    const { isCanTotalRedact } = useScheduleWidgetRolesContext();
     const myUser = auth && schedule.roles.users.find(user => user.login === auth.login);
     const categories = useMemo(() => {
         const sorted = [...schedule.roles.list].sort((a, b) => (a.cat || 0) - (b.cat || 0));
@@ -36,7 +36,7 @@ export default function ScheduleKeyValueListAtt({
             list.push(role);
         });
         return roles;
-    }, [schedule.roles.list]);
+    }, [schedule.roles.list, value.values]);
     const [catExpands, setCatExpands] = useState([0]);
 
     return <>{
@@ -71,7 +71,7 @@ export default function ScheduleKeyValueListAtt({
                         value={value}
                         multiline
                         isRedact={isRedact}
-                        setSelfRedact={!isIMainRole && typeof key === 'number' && !!myUser && (extractScheduleWidgetRoleUser(schedule, 0, role)?.login !== myUser.login)}
+                        setSelfRedact={!isCanTotalRedact && typeof key === 'number' && !!myUser && (extractScheduleWidgetRoleUser(schedule, 0, role)?.login !== myUser.login)}
                         mapExecArgs={(args) => ({ ...args, })}
                     />
                 </div>;

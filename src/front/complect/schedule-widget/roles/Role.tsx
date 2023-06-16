@@ -1,15 +1,16 @@
+import { ScheduleWidgetRights } from "../../../../back/apps/index/complect";
 import useAuth from "../../../components/index/useAuth";
 import EvaButton from "../../eva-icon/EvaButton";
-import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
-import StrongDiv from "../../strong-control/StrongDiv";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../../useIsRedactArea";
-import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetRoleUser } from "../ScheduleWidget.model";
+import { IScheduleWidget, IScheduleWidgetRole } from "../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../complect/IconChange";
-import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetIsMainRoleContext } from "../useScheduleWidget";
+import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../useScheduleWidget";
+
+const mainRoleRights = ScheduleWidgetRights.getAllRights();
 
 export default function ScheduleWidgetRole({
     scope,
@@ -20,8 +21,8 @@ export default function ScheduleWidgetRole({
     role: IScheduleWidgetRole,
 }>) {
     const roleScope = takeStrongScopeMaker(scope, ' roleMi/', role.mi);
-    const isIMainAdmin = useScheduleWidgetIsMainRoleContext();
-    const { editIcon, isRedact } = useIsRedactArea(true, !role.title || null, isIMainAdmin, true);
+    const { isCanTotalRedact } = useScheduleWidgetRolesContext();
+    const { editIcon, isRedact } = useIsRedactArea(true, !role.title || null, isCanTotalRedact, true);
     const auth = useAuth();
     const roleUser = extractScheduleWidgetRoleUser(schedule, 0, role);
     const catsRedact = useIsRedactArea(true, null, true, true);
@@ -33,7 +34,7 @@ export default function ScheduleWidgetRole({
             </div>)}
             {body(<div className="">
                 {schedule.roles.users.map((user, useri) => {
-                    if (user && roleUser && user.login === roleUser.login) return null;
+                    if ((roleUser && user.login === roleUser.login) || (role.mi === 0 && user.R !== mainRoleRights)) return null;
 
                     return <StrongEvaButton
                         key={useri}
@@ -128,7 +129,7 @@ export default function ScheduleWidgetRole({
                         };
                     }}
                 />
-                {(isIMainAdmin ? isRedact : auth && auth.login === roleUser?.login)
+                {(isCanTotalRedact ? isRedact : auth && auth.login === roleUser?.login)
                     && <ScheduleWidgetIconChange
                         scope={roleScope}
                         fieldName="field"

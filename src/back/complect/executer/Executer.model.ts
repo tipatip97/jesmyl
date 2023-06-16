@@ -16,6 +16,7 @@ export interface ExecuteFeedbacks {
     fixes: string[],
     replacedExecs: ExecutionReal[],
     errorMessage: string,
+    rules: ExecutionReal[],
 }
 
 export type ExecutionRuleTrackBeat = string | [string, string, any] | [string, string, any, string, string, any] | [string, string, any, string, string, any, string, string, any];
@@ -63,6 +64,7 @@ export interface RealAccumulatableRule {
     sides?: ExecutionSide[],
     accesses: string[],
     setInEachValueItem?: ExecuterSetInEachValueItem,
+    RRej?: boolean | number,
 }
 
 export interface ShortRealRule {

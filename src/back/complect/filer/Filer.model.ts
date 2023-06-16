@@ -1,16 +1,17 @@
-import { ExecutionReal, ShortRealRule } from "../executer/Executer.model";
+import { sokiWhenRejButTs } from "../../values";
+import { ExecutionDict, ExecutionReal, ShortRealRule } from "../executer/Executer.model";
 import { LocalSokiAuth, SokiAppName } from "../soki/soki.model";
 
 export type FilerAppStore = Record<SokiAppName, FilerAppConfig>;
 
 export interface FilerAppRequirement {
-    name: string,
     rootPath?: string,
     ext?: string | null,
     level?: number,
     map?: (data: any) => any,
     prepareContent?: (data: any, auth?: LocalSokiAuth | null) => any,
     transform?: (data: any, auth?: LocalSokiAuth | null) => any,
+    onCantRead?: (isRead: boolean, exec: ExecutionDict, rule: ExecutionReal, auth: LocalSokiAuth | null | undefined, bag: any, data: any, whenRejButTs: typeof sokiWhenRejButTs) => string | null | typeof sokiWhenRejButTs,
     watch?: [string, (content: string) => any],
     refreshTrigger?: string,
 }
@@ -24,14 +25,13 @@ export interface FilerAppConfigActions {
     shortRulesMd5: string | null,
 }
 
-export interface FilerAppConfig {
+export interface FilerAppConfig extends FilerApp {
     title: string,
-    requirements: (string | FilerAppRequirement)[],
     actions: FilerAppConfigActions,
 }
 
-export interface FilerApp extends FilerAppConfig {
-    requirements: FilerAppRequirement[],
+export interface FilerApp {
+    requirements: Record<string, FilerAppRequirement | null>,
 }
 
 export interface FilerContentData {

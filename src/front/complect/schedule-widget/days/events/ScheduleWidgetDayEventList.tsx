@@ -8,7 +8,7 @@ import { IScheduleWidget, IScheduleWidgetDay } from "../../ScheduleWidget.model"
 import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetEventList from "../../events/ScheduleWidgetEventList";
-import { useIsSchWidgetExpand } from "../../useScheduleWidget";
+import { useIsSchWidgetExpand, useScheduleWidgetRolesContext } from "../../useScheduleWidget";
 import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
 
 export default function ScheduleWidgetDayEventList({
@@ -24,8 +24,8 @@ export default function ScheduleWidgetDayEventList({
     const [isExpand, switchIsExpand] = useIsSchWidgetExpand(scope);
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
     const [isReplacementInProcess, setIsReplacementInProcess] = useState(false);
-    const times: number[] = [];
-    const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
+    const userRights = useScheduleWidgetRolesContext();
+    const { editIcon, isRedact } = useIsRedactArea(true, null, userRights.isCanRedact, true);
     const usedCounts = useMemo(() => {
         const usedCounts: Record<number, number> = {};
         day.list.forEach(({ type }) => {
@@ -37,8 +37,10 @@ export default function ScheduleWidgetDayEventList({
     const movementEvent = moveEventMi !== null ? day.list.find(event => event.mi === moveEventMi) : undefined;
     const movementBox = movementEvent && schedule.types?.[movementEvent.type];
 
-    day.list.forEach((item) => {
-        times.push((item.tm || schedule.types?.[item.type]?.tm || 0) + (times[times.length - 1] || 0));
+    let secretTime = 0;
+    const times: number[] = [];
+    day.list.forEach((event) => {
+        times.push((event.tm || schedule.types?.[event.type]?.tm || 0) + (times[times.length - 1] || 0));
     });
 
     useEffect(() => {
@@ -57,6 +59,11 @@ export default function ScheduleWidgetDayEventList({
         </div>
         {isExpand && <>
             {day.list.map((event, eventi, eventa) => {
+                if (!userRights.isCanReadSpecials) {
+                    if (eventa[eventi + 1]?.secret) secretTime += event.tm ?? schedule.types?.[event.type].tm ?? 0;
+                    if (event.secret) return null;
+                }
+
                 const isNeighbour = moveEventMi === event.mi || moveEventMi === eventa[eventi + 1]?.mi;
                 const insertControl = (beforei: number) => isRedact &&
                     <div className={'insert-panel flex flex-gap'
@@ -81,7 +88,7 @@ export default function ScheduleWidgetDayEventList({
                         </StrongDiv>
                     </div>;
 
-                return <div
+                const node = <div
                     key={event.mi}
                     className={
                         'day-event-wrapper flex flex-gap'
@@ -104,6 +111,7 @@ export default function ScheduleWidgetDayEventList({
                         dayi={dayi}
                         redact={isRedact}
                         prevTime={times[eventi]}
+                        secretTime={secretTime}
                         wakeupMs={ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number')}
                         isShowPeriodsNotTs={isShowPeriodsNotTs}
                         onClickOnTs={() => setIsShowTsNotPeriods(is => !is)}
@@ -136,6 +144,10 @@ export default function ScheduleWidgetDayEventList({
                     </>}
                     {insertControl(eventi + 1)}
                 </div>;
+
+                secretTime = 0;
+
+                return node;
             })}
             {isRedact && moveEventMi === null && <ScheduleWidgetEventList
                 scope={scheduleScope}

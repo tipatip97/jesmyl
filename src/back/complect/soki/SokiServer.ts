@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import WebSocket, { WebSocketServer } from 'ws';
 import cmService from '../../apps/cm/service';
-import { sequreMD5Passphrase } from '../../values';
+import { sequreMD5Passphrase, sokiWhenRejButTs } from '../../values';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
 import { filer } from '../filer/Filer';
@@ -14,8 +14,7 @@ setPolyfills();
 ErrorCatcher.logAllErrors();
 
 
-
-class SokiServer {
+export class SokiServer {
     subscriptions: Map<SokiSubscribtionName, Map<WebSocket, SokiCapsule>> = new Map();
     capsules = new Map<WebSocket, SokiCapsule>();
 
@@ -76,18 +75,46 @@ class SokiServer {
         else console.info('Disconnected Unknown client');
     }
 
-    send(data: SokiServerEvent, client?: WebSocket | null | ((capsule: SokiCapsule, client: WebSocket) => boolean), errorFor?: WebSocket | null) {
+    send(
+        data: SokiServerEvent,
+        client?: WebSocket | null | ((capsule: SokiCapsule, client: WebSocket, whenRejButTs: typeof sokiWhenRejButTs) => boolean | typeof sokiWhenRejButTs),
+        errorFor?: WebSocket | null,
+        rejEvent?: SokiServerEvent,
+    ) {
         const event = JSON.stringify(data);
 
         if (client instanceof WebSocket) client.send(event);
         else {
-            if (errorFor) {
+            let rejEventStr: null | string = null;
+
+            if (errorFor != null) {
+                let freeRejEventStr: null | string = null;
+
                 const freeEvent = JSON.stringify({ ...data, errorMessage: null });
                 if (client == null) this.capsules.forEach((_, cli) => cli.send(errorFor === cli ? event : freeEvent));
-                else this.capsules.forEach((capsule, cli) => client(capsule, cli) && cli.send(errorFor === cli ? event : freeEvent));
+                else this.capsules.forEach((capsule, cli) => {
+                    const res = client(capsule, cli, sokiWhenRejButTs);
+                    if (res === sokiWhenRejButTs) {
+                        if (errorFor === cli)
+                            cli.send(rejEventStr === null
+                                ? rejEventStr = JSON.stringify(rejEvent)
+                                : rejEventStr);
+                        else
+                            cli.send(freeRejEventStr === null
+                                ? freeRejEventStr = JSON.stringify({ ...rejEvent, errorMessage: null })
+                                : freeRejEventStr);
+                    } else if (res) cli.send(errorFor === cli ? event : freeEvent);
+                });
             } else {
                 if (client == null) this.capsules.forEach((_, cli) => cli.send(event));
-                else this.capsules.forEach((capsule, cli) => client(capsule, cli) && cli.send(event));
+                else this.capsules.forEach((capsule, cli) => {
+                    const res = client(capsule, cli, sokiWhenRejButTs)
+                    if (res === sokiWhenRejButTs)
+                        cli.send(rejEventStr === null
+                            ? rejEventStr = JSON.stringify(rejEvent)
+                            : rejEventStr);
+                    else if (res) cli.send(event);
+                });
             }
         }
     };
@@ -258,22 +285,43 @@ class SokiServer {
                             const contents = filer.contents[eventData.appName];
                             const realParents: Record<string, unknown> = {};
                             SMyLib.entries(contents).forEach(([key, val]) => realParents[key] = val.data);
+                            const authLogin = eventData.auth?.login ?? '';
+                            const bag: Record<string, unknown> = {};
 
                             Executer
-                                .execute(appConfig.actions.rules, realParents, eventBody.execs, capsule.auth)
-                                .then(async ({ fixes, replacedExecs, errorMessage }) => {
+                                .execute(appConfig, realParents, eventBody.execs, capsule.auth)
+                                .then(async ({ fixes, replacedExecs, errorMessage, rules }) => {
                                     const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
-                                    this.send({
-                                        requestId,
-                                        execs: {
-                                            appName: eventData.appName,
-                                            list: replacedExecs,
-                                            lastUpdate,
+                                    this.send(
+                                        {
+                                            requestId,
+                                            execs: {
+                                                appName: eventData.appName,
+                                                list: replacedExecs,
+                                                lastUpdate,
+                                            },
+                                            errorMessage,
                                         },
-                                        errorMessage,
-                                    }, eventData.appName === 'index'
-                                        ? () => true
-                                        : (capsule) => capsule.appName === eventData.appName, client);
+                                        fixes[0] === 'schedules'
+                                            ? (capsule, _, whenRejButTs) => {
+                                                const res = capsule.auth?.login === authLogin
+                                                    || appConfig.requirements['schedules']?.onCantRead?.(true, replacedExecs[0], rules[0], capsule.auth, bag, realParents.schedules, whenRejButTs);
+
+                                                return res === whenRejButTs ? whenRejButTs : res === true || res == null;
+                                            }
+                                            : eventData.appName === 'index'
+                                                ? () => true
+                                                : (capsule) => capsule.appName === eventData.appName,
+                                        client,
+                                        {
+                                            requestId,
+                                            execs: {
+                                                appName: eventData.appName,
+                                                list: [],
+                                                lastUpdate,
+                                            },
+                                            errorMessage,
+                                        });
                                 });
                             return;
                         } else this.send({

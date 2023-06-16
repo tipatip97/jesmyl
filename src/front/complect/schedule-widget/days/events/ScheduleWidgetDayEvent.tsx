@@ -7,7 +7,10 @@ import ScheduleWidgetBindAtts from "../../atts/ScheduleWidgetBindAtts";
 import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetDayEventAtts from "../../events/atts/ScheduleWidgetDayEventAtts";
-import { takeStrongScopeMaker, useIsSchWidgetExpand } from "../../useScheduleWidget";
+import { takeStrongScopeMaker, useIsSchWidgetExpand, useScheduleWidgetRolesContext } from "../../useScheduleWidget";
+import StrongEvaButton from "../../../strong-control/StrongEvaButton";
+import EvaButton from "../../../eva-icon/EvaButton";
+import EvaIcon from "../../../eva-icon/EvaIcon";
 
 const msInMin = mylib.howMs.inMin;
 const msInDay = mylib.howMs.inDay;
@@ -21,6 +24,7 @@ export default function ScheduleWidgetDayEvent(props: {
     schedule: IScheduleWidget,
     day: IScheduleWidgetDay,
     prevTime: number,
+    secretTime: number,
     isShowPeriodsNotTs: boolean,
     onClickOnTs: () => void,
     redact: boolean | nil,
@@ -31,49 +35,51 @@ export default function ScheduleWidgetDayEvent(props: {
     const box = props.schedule.types?.[props.event.type];
     let timeMark = '';
     let timerClassNamePlus = '';
-    const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, null, null, true);
+    const userRights = useScheduleWidgetRolesContext();
+    const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, null, userRights.isCanRedact, true);
     const selfScope = takeStrongScopeMaker(props.scope, ' eventMi/', props.event.mi);
 
     const now = Date.now();
     const eventTm = ScheduleWidgetCleans.takeEventTm(props.event, box);
-    const eventFinishMs = props.schedule.start + props.wakeupMs + props.prevTime * msInMin + props.dayi * msInDay;
+    const eventFinishMs = props.schedule.start + props.wakeupMs + (props.prevTime ) * msInMin + props.dayi * msInDay;
     const eventStartMs = eventFinishMs - eventTm * msInMin;
     const isPastEvent = now > eventFinishMs;
 
-    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(selfScope, isPastEvent || props.isPastDay);
+    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(selfScope, isPastEvent || props.isPastDay || !userRights.isCanReadTitles);
 
     useEffect(() => {
         if (isSelfRedact) switchIsExpand(true);
     }, [isSelfRedact, switchIsExpand]);
 
     if (!box) return <>Неизвестный шаблон события</>;
+    const isExpandEvent = isExpand && userRights.isCanReadTitles && !props.redact;
 
     if (props.isShowPeriodsNotTs) {
-        timeMark = eventTm + 'м';
+        timeMark = eventTm + props.secretTime + 'м';
         timerClassNamePlus = props.event.tm == null || props.event.tm === box.tm || (props.event.tm === 0 && box.tm == null) ? '' : ' color--7';
     } else {
         const date = new Date(eventStartMs);
         timeMark = `${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
     }
 
-    const timeToTitle = !props.redact && now > eventStartMs && now < eventFinishMs &&
+    const timeToTitle = userRights.isCanReadSpecials && !props.redact && now > eventStartMs && now < eventFinishMs &&
         <div className="absolute pos-left pos-bottom margin-big-gap-l font-size:0.7em">
             {props.isLastEvent
                 ? ScheduleWidgetCleans.minutesToTextTemplate(eventFinishMs - now, 'остал$onNum{{ась}{ось}} $num $txt')
-                : 'через ' + ScheduleWidgetCleans.minutesToText(eventFinishMs - now, true)} 
+                : 'через ' + ScheduleWidgetCleans.minutesToText(eventFinishMs - now, true)}
         </div>;
 
     return <>
         <div
             className={
                 'day-event relative'
-                + (isExpand && !props.redact ? ' expand' : '')
+                + (isExpandEvent ? ' expand' : '')
                 + (props.isPastDay ? '' : isPastEvent ? ' past' : '')
                 + (timeToTitle ? ' margin-big-gap-b' : '')
             }
         >
             <div
-                className={'item-header flex flex-gap between' + (props.redact ? '' : ' pointer')}
+                className={'item-header flex flex-gap between' + (props.redact || !userRights.isCanReadTitles ? '' : ' pointer')}
                 onClick={() => !props.redact && switchIsExpand()}
             >
                 <div className="left-part flex flex-gap">
@@ -84,6 +90,10 @@ export default function ScheduleWidgetDayEvent(props: {
                             props.onClickOnTs();
                         }}
                     >{timeMark}</span>
+                    {!isExpandEvent && !!props.event.secret && <EvaIcon
+                        name="gift-outline"
+                        className="color--ko"
+                    />}
                     <ScheduleWidgetTopicTitle
                         className="color--3"
                         titleBox={box}
@@ -93,38 +103,53 @@ export default function ScheduleWidgetDayEvent(props: {
                 {editIcon}
             </div>
             <div className="day-event-content">
-                {isRedact && <>
-                    <StrongEditableField
-                        isRedact
-                        scope={selfScope}
-                        fieldName="field"
-                        type="number"
-                        value={'' + eventTm}
-                        postfix=" мин"
-                        title="Продолжительность, мин"
-                        icon="clock-outline"
-                        mapExecArgs={(args) => ({ ...args, key: 'tm' })}
-                    />
-                    <StrongEditableField
-                        isRedact
-                        scope={selfScope}
-                        fieldName="field"
-                        value={props.event.topic}
-                        title="Тема"
-                        icon="bookmark-outline"
-                        mapExecArgs={(args) => ({ ...args, key: 'topic' })}
-                    />
-                </>}
+                {isRedact
+                    ? <>
+                        <StrongEvaButton
+                            scope={selfScope}
+                            fieldName="field"
+                            cud="U"
+                            name={props.event.secret ? 'checkmark-square-2-outline' : 'square-outline'}
+                            confirm={`Событие ${box.title} ${props.event.secret ? 'больше не секретное' : 'будет секретным'}?`}
+                            mapExecArgs={(args) => ({ ...args, key: 'secret', value: props.event.secret ? 0 : 1 })}
+                            postfix="Секретное событие"
+                        />
+                        <StrongEditableField
+                            isRedact
+                            scope={selfScope}
+                            fieldName="field"
+                            type="number"
+                            value={'' + eventTm}
+                            postfix=" мин"
+                            title="Продолжительность, мин"
+                            icon="clock-outline"
+                            mapExecArgs={(args) => ({ ...args, key: 'tm' })}
+                        />
+                        <StrongEditableField
+                            isRedact
+                            scope={selfScope}
+                            fieldName="txtField"
+                            value={props.event.topic}
+                            title="Тема"
+                            icon="bookmark-outline"
+                            mapExecArgs={(args) => ({ ...args, txtKey: 'topic' })}
+                        />
+                    </>
+                    : !!props.event.secret && <EvaButton
+                        name="gift-outline"
+                        className="color--ko margin-gap-v"
+                        postfix="Это секретное событие"
+                    />}
                 <StrongEditableField
                     isRedact={isRedact}
                     scope={selfScope}
-                    fieldName="field"
+                    fieldName="txtField"
                     multiline
                     value={props.event.dsc}
                     title="Содержание"
                     textClassName=" "
                     icon="file-text-outline"
-                    mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
+                    mapExecArgs={(args) => ({ ...args, txtKey: 'dsc' })}
                 />
                 {isRedact ?
                     <ScheduleWidgetBindAtts

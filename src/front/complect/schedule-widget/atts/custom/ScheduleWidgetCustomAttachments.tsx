@@ -2,7 +2,7 @@ import EvaIcon from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
-import { ScheduleWidgetAppAttCustomizable, ScheduleWidgetAppAttCustomizableType, ScheduleWidgetAppAttCustomized } from "../../ScheduleWidget.model";
+import { ScheduleWidgetAppAttCustomizable, ScheduleWidgetAppAttCustomized } from "../../ScheduleWidget.model";
 import ScheduleWidgetCustomAtt from "./ScheduleWidgetCustomAtt";
 
 export default function ScheduleWidgetCustomAttachments(props: StrongComponentProps<{
@@ -23,7 +23,6 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
                             icon: 'attach-2-outline',
                             initVal: {},
                             title: '',
-                            type: ScheduleWidgetAppAttCustomizableType.KeyValue,
                         };
 
                         return {

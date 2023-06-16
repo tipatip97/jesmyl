@@ -14,6 +14,7 @@ export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Par
     setInEachValueItem?: Record<string, Record<string, unknown>>,
     isSequre?: boolean,
     setSystems?: ActionBoxSetSystems[],
+    RRej?: number,
     C?: ActionCRUD,
     U?: ActionCRUD,
     D?: ActionCRUD,
@@ -29,6 +30,7 @@ export interface ActionCRUD {
     value?: any,
     args?: Record<string, string | any[]>,
     setSystems?: ActionBoxSetSystems[],
+    RRej?: boolean | number,
 }
 
 export type ActionBoxSetSystems = keyof typeof actionBoxSetSystems;

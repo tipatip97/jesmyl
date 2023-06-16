@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useScheduleWidgetRolesContext } from "../useScheduleWidget";
 
 export default function ScheduleWidgetTopicTitle<
     TitleBox extends { title?: string },
@@ -10,9 +11,11 @@ export default function ScheduleWidgetTopicTitle<
     className?: string,
     prefix?: ReactNode,
 } & (TitleBox['title'] extends string ? { altTitle?: string } : { altTitle: string })) {
+    const userRights = useScheduleWidgetRolesContext();
+
     return <div className={className}>
         {prefix}
         {titleBox.title ?? altTitle}
-        {topicBox?.topic ? `: ${topicBox?.topic}` : ''}
+        {userRights.isCanReadTitles && topicBox?.topic ? `: ${topicBox?.topic}` : ''}
     </div>;
 }

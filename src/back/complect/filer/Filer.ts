@@ -63,21 +63,20 @@ export class Filer {
         .entries(this.appConfigs)
         .forEach(([appName, app]) => {
           const content: FilerContent = this.contents[appName] = {} as never;
-          const loadInContent = (requ: string | FilerAppRequirement, cb?: () => void) => {
+          const loadInContent = (name: string, requ: null | FilerAppRequirement, cb?: () => void) => {
             const {
-              name,
               rootPath = '',
               ext = 'json',
               level = 0,
               prepareContent,
               watch = null,
               refreshTrigger = '',
-            } = smylib.isStr(requ) ? { name: requ } as FilerAppRequirement : requ;
+            } = requ === null ? { name } as FilerAppRequirement : requ;
 
             if (refreshTrigger)
               this.triggers.push({
                 refreshTrigger,
-                cb: () => loadInContent(requ, cb),
+                cb: () => loadInContent(name, requ, cb),
               });
 
             const filename = rootPath ? this.rootFileName(rootPath, ext) : this.fileName(appName, name, ext);
@@ -173,7 +172,7 @@ export class Filer {
             });
           };
 
-          app.requirements.forEach((data) => loadInContent(data));
+          SMyLib.entries(app.requirements).forEach(([name, data]) => loadInContent(name, data));
         });
     });
   }
@@ -202,8 +201,8 @@ export class Filer {
 
           waits++;
 
-          const req = this.appConfigs[appName]?.requirements
-            .find((data) => !smylib.isStr(data) && data.name === fileName) as FilerAppRequirement | undefined;
+          const req = SMyLib.entries(this.appConfigs[appName]?.requirements)
+            .find(([name, data]) => data === null && name === fileName) as FilerAppRequirement | undefined;
           const rootPath = req?.rootPath;
           const stringContent = JSON.stringify(content.data);
           const path = rootPath

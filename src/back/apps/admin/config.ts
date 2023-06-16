@@ -3,15 +3,14 @@ import { FilerAppConfig } from "../../complect/filer/Filer.model";
 
 const config: FilerAppConfig = {
     title: 'ADMINO',
-    requirements: [
-        {
+    requirements: {
+        userList: {
             level: 100,
-            name: "userList",
             rootPath: 'bonjour',
             ext: null,
             refreshTrigger: 'register',
         },
-    ],
+    },
     actions: Executer.prepareActionList({
         "/userList/[login === {login}]/level": {
             action: "setUserLevel",

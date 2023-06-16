@@ -3,21 +3,20 @@ import { FilerAppConfig } from "../../complect/filer/Filer.model";
 
 const config: FilerAppConfig = {
     title: 'Аккорд Мастер',
-    requirements: [
-        "cols", "meetings", "chordTracks",
-        {
+    requirements: {
+        cols: null,
+        meetings: null,
+        chordTracks: null,
+        mp3Rules: {
             level: 50,
-            name: "mp3Rules",
         },
-        {
+        eeStorage: {
             level: 50,
-            name: "eeStorage",
         },
-        {
+        execs: {
             level: 100,
-            name: "execs",
         }
-    ],
+    },
     actions: Executer.prepareActionList({
         "<canWatch>": {
             level: 100,

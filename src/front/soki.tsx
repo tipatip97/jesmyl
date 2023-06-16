@@ -55,7 +55,7 @@ export class SokiTrip {
                         if (event.connect) {
                             Eventer.invoke(this.onConnectWatchers, 'is', true);
                             this.isConnected = true;
-                            this.send({ connect: true }, this.appName,);
+                            this.send({ connect: true }, this.appName);
                             this.pullCurrentAppData();
                         } else this.onUnauthorize();
                     }
@@ -163,7 +163,7 @@ export class SokiTrip {
 
         const send = () => {
             try {
-                if (this.ws) {
+                if (this.ws && this.ws.OPEN) {
                     const sendEvent: SokiClientEvent = {
                         requestId,
                         body,
@@ -172,7 +172,7 @@ export class SokiTrip {
                     };
 
                     this.ws.send(JSON.stringify(sendEvent));
-                }
+                } else setTimeout(() => send(), 5000);
             } catch (e) {
             }
         };

@@ -1,92 +1,13 @@
 import { ReactNode } from "react";
-import { AppName } from "../../app/App.model";
+import { Back } from "../../../back/apps/index/models/ScheduleWidget.model";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 
-
-export enum AccessRuleType {
-    Free,
-    CRUDAccess
-}
-
-export interface AccessRule {
-    type: AccessRuleType,
-}
-
-export interface ScheduleStorage {
-    list: IScheduleWidget[];
-    rules?: AccessRule,
-}
-
-export interface IScheduleWidget {
-    w: number,
-    start: number,
-    title?: string,
-    topic?: string,
-    dsc?: string,
-    days?: IScheduleWidgetDay[],
-    types?: ScheduleWidgetDayListItemTypeBox[],
-    atts?: ScheduleWidgetAppAttCustomized[],
-    app: AppName,
-    roles: IScheduleWidgetRoles,
-}
-
-export interface IScheduleWidgetDay {
-    mi: number,
-    wup: number, // wakeup
-    topic?: string,
-    dsc?: string,
-    list: IScheduleWidgetDayEvent[],
-}
-
-export type ScheduleWidgetDayEventAttValue = Record<string, unknown> | ScheduleWidgetAttRef;
-export type ScheduleWidgetDayEventAttValues = Record<ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue>;
-
-export interface IScheduleWidgetDayEvent {
-    mi: number,
-    type: number,
-    topic?: string,
-    dsc?: string,
-    tm?: number,
-    atts?: ScheduleWidgetDayEventAttValues,
-}
-
-export type AttKey = AppName | 'SCH';
-
-export type ScheduleWidgetAttRef = [number, number];
 export type ScheduleWidgetAttRefs = Record<ScheduleWidgetAttKey<AttKey>, ScheduleWidgetAttRef[]>;
-
-export type ScheduleWidgetAttKey<AttAppName extends AttKey = AttKey> = `[${AttAppName}]:${string}`;
 
 export type ScheduleWidgetAppAtts<AttAppName extends AttKey = AttKey, AttValue extends any = any> =
     Record<ScheduleWidgetAttKey<AttAppName>, ScheduleWidgetAppAtt<AttValue>>;
 
 export type ScheduleWidgetAppAttResultItem<AttValue extends any> = (mpValue: () => AttValue, content: ReactNode) => JSX.Element;
-
-export enum ScheduleWidgetAppAttCustomizableType {
-    KeyValue = 0,
-}
-
-export interface ScheduleWidgetAppAttCustomizableValue {
-    values?: [string | number | boolean, string][],
-}
-
-export interface ScheduleWidgetAppAttCustomizable extends ScheduleWidgetAppAttBasic<ScheduleWidgetAppAttCustomizableValue> {
-    type: ScheduleWidgetAppAttCustomizableType,
-    titles?: string[],
-}
-
-export interface ScheduleWidgetAppAttCustomized extends ScheduleWidgetAppAttCustomizable {
-    mi: number,
-    isCustomize: true,
-}
-
-export interface ScheduleWidgetAppAttBasic<AttValue extends any = any> {
-    icon: EvaIconName,
-    title: string,
-    description: string,
-    initVal: AttValue,
-    isCustomize?: true;
-}
 
 export interface ScheduleWidgetAppAtt<AttValue extends any = any> extends ScheduleWidgetAppAttBasic<AttValue> {
     result: (
@@ -97,30 +18,21 @@ export interface ScheduleWidgetAppAtt<AttValue extends any = any> extends Schedu
     ) => ReactNode,
 }
 
-export interface ScheduleWidgetDayListItemTypeBox {
-    title: string,
-    tm?: number,
-    atts?: ScheduleWidgetDayEventAttValues,
-}
 
-export interface IScheduleWidgetRoleUser {
-    mi: number,
-    login: string,
-    fio: string,
-    alias?: string,
-}
-
-
-export interface IScheduleWidgetRoles {
-    cats: string[],
-    list: IScheduleWidgetRole[],
-    users: IScheduleWidgetRoleUser[],
-}
-
-export interface IScheduleWidgetRole {
-    mi: number,
-    title: string,
-    user?: number,
-    icon?: EvaIconName,
-    cat?: number,
-}
+export type IScheduleWidget = Back<EvaIconName>['IScheduleWidget'];
+export type ScheduleStorage = Back<EvaIconName>['ScheduleStorage'];
+export type IScheduleWidgetDay = Back<EvaIconName>['IScheduleWidgetDay'];
+export type ScheduleWidgetDayListItemTypeBox = Back<EvaIconName>['ScheduleWidgetDayListItemTypeBox'];
+export type ScheduleWidgetAppAttCustomized = Back<EvaIconName>['ScheduleWidgetAppAttCustomized'];
+export type ScheduleWidgetAppAttCustomizable = Back<EvaIconName>['ScheduleWidgetAppAttCustomizable'];
+export type IScheduleWidgetRoles = Back<EvaIconName>['IScheduleWidgetRoles'];
+export type IScheduleWidgetDayEvent = Back<EvaIconName>['IScheduleWidgetDayEvent'];
+export type ScheduleWidgetDayEventAttValues = Back<EvaIconName>['ScheduleWidgetDayEventAttValues'];
+export type ScheduleWidgetAppAttBasic<AttValue extends any = any> = Back<EvaIconName, AttValue>['ScheduleWidgetAppAttBasic'];
+export type ScheduleWidgetAppAttCustomizableValue = Back<EvaIconName>['ScheduleWidgetAppAttCustomizableValue'];
+export type IScheduleWidgetRole = Back<EvaIconName>['IScheduleWidgetRole'];
+export type IScheduleWidgetRoleUser = Back<EvaIconName>['IScheduleWidgetRoleUser'];
+export type AttKey = Back<EvaIconName>['AttKey'];
+export type ScheduleWidgetAttKey<AttAppName extends AttKey = AttKey> = Back<EvaIconName, AttAppName>['ScheduleWidgetAttKey'];
+export type ScheduleWidgetDayEventAttValue = Back<EvaIconName>['ScheduleWidgetDayEventAttValue'];
+export type ScheduleWidgetAttRef = Back<EvaIconName>['ScheduleWidgetAttRef'];

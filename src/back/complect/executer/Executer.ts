@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import { ActionBox, ActionBoxSetSystems } from "../../models";
-import { actionBoxSetSystems, sequreMD5Passphrase } from "../../values";
-import { FilerAppConfigActions } from "../filer/Filer.model";
+import { actionBoxSetSystems, sequreMD5Passphrase, sokiWhenRejButTs } from "../../values";
+import { FilerAppConfig, FilerAppConfigActions } from "../filer/Filer.model";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
 import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, RealAccumulatableRule, ShortRealRule, TrackerRet } from "./Executer.model";
@@ -360,6 +360,7 @@ export class Executer {
                             ? (topRule.accesses || []).concat(box.access)
                             : topRule.accesses,
                         sides: accSides(),
+                        RRej: box.RRej === undefined ? topRule.RRej : box.RRej,
                         scopeNode: `${topRule.scopeNode || ''}${topRule.scopeNode ? box.scopeNode ? ` ${box.scopeNode}` : '' : box.scopeNode}`,
                     };
 
@@ -495,6 +496,7 @@ export class Executer {
         const ret = {
             track,
             title: rule.title && smylib.stringTemplater(rule.title, allArgs),
+            args: allArgs,
         } as ExecutionReal;
 
         return this.prepareRuleForDo(ret, rule, allArgs, value, auth);
@@ -576,6 +578,8 @@ export class Executer {
         return new Promise<string[]>((resolve, reject) => {
             const fixes: string[] = [];
 
+            if (execs.length === 0) resolve(fixes);
+
             execs.forEach((exec) => {
                 const firstTrace = exec.track[0];
                 if (smylib.isStr(firstTrace) && !fixes.includes(firstTrace)) fixes.push(firstTrace);
@@ -598,22 +602,38 @@ export class Executer {
         });
     }
 
-    static execute(rules: ExecutionReal[], contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
+    static execute(config: FilerAppConfig, contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
         return new Promise<ExecuteFeedbacks>((resolve, reject) => {
             try {
                 const replacedExecs: ExecutionReal[] = [];
+                const rules: ExecutionReal[] = [];
                 const fixes: string[] = [];
                 const level = auth?.level;
                 const errors: ExecuteError[] = [];
+                const bag: Record<string, unknown> = {};
 
                 execs.some((exec) => {
-                    const prepRule = rules.find((rule) => rule.action === exec.action);
+                    const prepRule = config.actions.rules.find((rule) => rule.action === exec.action);
                     if (!prepRule) {
                         errors.push({
                             type: ExecuteErrorType.NoRule,
                             note: exec.action
                         });
                         return false;
+                    }
+
+                    rules.push(prepRule);
+
+                    if (typeof prepRule.track[0] === 'string') {
+                        const onCantRead = config.requirements[prepRule.track[0]]?.onCantRead?.(false, exec, prepRule, auth, bag, contents[prepRule.track[0]], sokiWhenRejButTs);
+                        if (onCantRead != null) {
+                            errors.push({
+                                type: ExecuteErrorType.Access,
+                                note: `Доступ к редактированию ограничен #${smylib.isArr(onCantRead) ? '<333>' : onCantRead}`,
+                            });
+
+                            return true;
+                        }
                     }
 
                     if (prepRule.fixedAccesses) {
@@ -720,7 +740,7 @@ export class Executer {
                         .reduce<string[]>((acc, [title, notes]) => acc.concat(`${title}:\n  ${notes.join(', ')}`), [])
                         .join('\n');
 
-                    resolve({ fixes, replacedExecs, errorMessage });
+                    resolve({ fixes, replacedExecs, errorMessage, rules });
                 });
             } catch (error) {
                 reportFailError(reject, error);

@@ -7,7 +7,7 @@ import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
 import "./ScheduleWidgetDay.scss";
 import ScheduleWidgetDayEventList from "./events/ScheduleWidgetDayEventList";
-import { takeStrongScopeMaker } from "../useScheduleWidget";
+import { takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../useScheduleWidget";
 
 export interface ScheduleWidgetDayProps {
     day: IScheduleWidgetDay,
@@ -26,9 +26,10 @@ export default function ScheduleWidgetDay({
     const isPastDay = Date.now() > dayStartMs + mylib.howMs.inDay;
     const title = mylib.dayFullTitles[date.getDay()];
     const times: number[] = [];
-    const { editIcon, isRedact } = useIsRedactArea(true, null, null, true);
     const selfScope = takeStrongScopeMaker(scope, ' dayMi/', day.mi);
     const [isShowDay, setIsShowDay] = useState(!isPastDay);
+    const userRights = useScheduleWidgetRolesContext();
+    const { editIcon, isRedact } = useIsRedactArea(true, null, userRights.isCanRedact, true);
 
     day.list.forEach((item) => {
         times.push((item.tm || schedule.types?.[item.type]?.tm || 0) + (times[times.length - 1] || 0));
@@ -49,7 +50,7 @@ export default function ScheduleWidgetDay({
         </div>
         {isShowDay &&
             <>
-                <div className="day-info">
+                {userRights.isCanReadTitles && <div className="day-info">
                     <StrongEditableField
                         scope={selfScope}
                         fieldName="field"
@@ -86,7 +87,7 @@ export default function ScheduleWidgetDay({
                             };
                         }}
                     />}
-                </div>
+                </div>}
                 <ScheduleWidgetDayEventList
                     day={day}
                     dayi={dayi}

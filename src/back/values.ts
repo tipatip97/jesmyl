@@ -12,3 +12,5 @@ export const actionBoxSetSystems = {
         return max + 1;
     },
 };
+
+export const sokiWhenRejButTs = ['return this array if need send empty exec list, but sent lastUpdate', 'JSON STR DATA'] as const;

@@ -1,13 +1,15 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { appAttsStore } from "../../components/complect/appScheduleAttrsStorage";
 import indexStorage from "../../components/index/indexStorage";
 import { RootState } from "../../shared/store";
 import mylib, { MyLib } from "../my-lib/MyLib";
 import { makeStrongScopeMaker } from "../strong-control/useStrongControl";
-import { IScheduleWidget, IScheduleWidgetRole, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
+import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetRoleUser, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
 import ScheduleKeyValueListAtt from "./atts/attachments/key-value/ScheduleKeyValueListAtt";
 import { scheduleOwnAtts } from "./atts/attachments/scheduleOwnAtts";
+import { ScheduleWidgetRights, ScheduleWidgetUserRoleRight } from "../../../back/apps/index/complect";
+import useAuth from "../../components/index/useAuth";
 
 const schedulesSelector = (state: RootState) => state.index.schedules;
 
@@ -62,8 +64,70 @@ export const useIsSchWidgetExpand = (scope: string, isSelfExpandOnly?: boolean):
 export const ScheduleWidgetAppAttsContext = React.createContext<[ScheduleWidgetAppAtts, ScheduleWidgetAttRefs]>([{}, {}]);
 export const useScheduleWidgetAppAttsContext = () => useContext(ScheduleWidgetAppAttsContext);
 
-export const ScheduleWidgetIsMainRoleContext = React.createContext<boolean>(false);
-export const useScheduleWidgetIsMainRoleContext = () => useContext(ScheduleWidgetIsMainRoleContext);
+export interface ScheduleWidgetRoles extends ScheduleWidgetUserRights {
+    myUser: IScheduleWidgetRoleUser | nil,
+    mainRole: IScheduleWidgetRole | nil,
+    isMyMainRole: boolean,
+}
+
+export type ScheduleWidgetUserRights = Record<`isCan${keyof typeof ScheduleWidgetUserRoleRight}`, boolean>;
+
+export const defScheduleWidgetUserRights: ScheduleWidgetUserRights = {
+    isCanTotalRedact: false,
+    isCanRead: false,
+    isCanReadSpecials: false,
+    isCanReadTitles: false,
+    isCanRedact: false,
+};
+
+export const ScheduleWidgetRolesContext = React.createContext<ScheduleWidgetRoles>({
+    ...defScheduleWidgetUserRights,
+    mainRole: null,
+    myUser: null,
+    isMyMainRole: false,
+});
+export const useScheduleWidgetRolesContext = () => useContext(ScheduleWidgetRolesContext);
+export const useScheduleWidgetRoles = (schedule: IScheduleWidget | und) => {
+    const auth = useAuth();
+
+    return useMemo((): ScheduleWidgetRoles => {
+        const myUser = auth && schedule?.roles.users.find(user => user.login === auth.login);
+        const mainRole = schedule?.roles.list.find(role => role.mi === 0);
+
+        if (mainRole && mainRole.user === myUser?.mi) {
+            return {
+                myUser,
+                mainRole,
+                isCanTotalRedact: true,
+                isCanRead: true,
+                isCanReadSpecials: true,
+                isCanReadTitles: true,
+                isCanRedact: true,
+                isMyMainRole: true,
+            };
+        }
+
+        const isCanRead = ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Read);
+        const isCanReadTitles = isCanRead && ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadTitles);
+        const isCanReadSpecials = isCanReadTitles && ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadSpecials);
+        const isCanRedact = isCanReadSpecials && ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Redact);
+        const isCanTotalRedact = isCanRedact && ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.TotalRedact);
+
+        return {
+            myUser,
+            mainRole,
+            isCanTotalRedact,
+            isCanRead,
+            isCanReadSpecials,
+            isCanReadTitles,
+            isCanRedact,
+            isMyMainRole: !!mainRole && mainRole.user === myUser?.mi,
+        };
+    }, [auth, schedule?.roles.list, schedule?.roles.users]);
+};
+
+export const ScheduleWidgetSchContext = React.createContext<nil | IScheduleWidget>(null);
+export const useScheduleWidgetSchContext = () => useContext(ScheduleWidgetSchContext);
 
 export const ScheduleWidgetAppAttRefsContext = React.createContext<ScheduleWidgetAttRefs>({});
 export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidgetAppAttRefsContext);
