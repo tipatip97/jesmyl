@@ -56,19 +56,20 @@ export default function ScheduleWidgetDayEvent(props: {
     }, [isSelfRedact, switchIsExpand]);
 
     const isExpandEvent = isExpand && userRights.isCanReadTitles && !props.redact;
-    let prefix = null;
+    let ratingTitleNodePrefix = null;
 
     if (isExpandEvent) {
         const ratingSum = props.event.rate === undefined ? 0 : MyLib.values(props.event.rate).reduce((sum, [rate]) => sum + rate, 0);
 
-        prefix = <>
+        ratingTitleNodePrefix = <>
             <EvaIcon name="heart-outline" />
             Рейтинг события
             <span className="event-rating-display">{ratingSum}</span>
         </>;
     }
 
-    const [ratingTitleNode, isRatingExpand] = useIsExpand(false, prefix);
+    const [ratingTitleNode, isRatingExpand] = useIsExpand(false, ratingTitleNodePrefix);
+    const [otherRatesTitleNode, isOtherRatesTitleExpand] = useIsExpand(false, <>Другие оценки</>);
 
     if (!box) return <>Неизвестный шаблон события</>;
 
@@ -197,8 +198,8 @@ export default function ScheduleWidgetDayEvent(props: {
                         isPast={isPastEvent || props.isPastDay}
                     />}
                 <div className="color--3 margin-gap-t">{ratingTitleNode}</div>
-                {isRatingExpand && <>
-                    <div className="flex margin-big-gap-l margin-gap-v">
+                {isRatingExpand && <div className="margin-big-gap-l margin-gap-v">
+                    <div className="flex margin-gap-v">
                         {ratePoints.map((ratePoint) => {
                             const isFill = ratePoint === 0
                                 ? myRate[0] === 0
@@ -230,12 +231,31 @@ export default function ScheduleWidgetDayEvent(props: {
                         icon="message-square-outline"
                         value={myRate[1]}
                         title="Комментарий"
-                        className="margin-gap-v margin-big-gap-h"
+                        className="margin-gap-v"
                         isRedact
                         setSelfRedact
                         multiline
                     />
-                </>}
+                    {userRights.isCanTotalRedact && props.event.rate && <>
+                        <div className="color--3">{otherRatesTitleNode}</div>
+                        {isOtherRatesTitleExpand && props.schedule.roles.users.map((user) => {
+                            if (userRights.myUser && userRights.myUser.mi === user.mi) return null;
+                            const rate = props.event.rate![user.mi];
+                            if (rate === undefined) return null;
+
+                            return <div key={user.mi} className="flex flex-gap">
+                                <div className="color--3 margin-gap-t nowrap self-start">{user.alias || user.fio}: {rate[0]}</div>
+                                {rate[1] &&
+                                    <StrongEditableField
+                                        scope={rateScope}
+                                        fieldName="description"
+                                        value={rate[1]}
+                                        multiline
+                                    />}
+                            </div>;
+                        })}
+                    </>}
+                </div>}
             </div>}
         </div>
         {timeToTitle}
