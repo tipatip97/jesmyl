@@ -6,8 +6,8 @@ import { RootState } from "../../shared/store";
 import mylib, { MyLib } from "../my-lib/MyLib";
 import { makeStrongScopeMaker } from "../strong-control/useStrongControl";
 import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetRoleUser, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
-import ScheduleKeyValueListAtt from "./atts/attachments/key-value/ScheduleKeyValueListAtt";
-import { scheduleOwnAtts } from "./atts/attachments/scheduleOwnAtts";
+import ScheduleKeyValueListAtt from "./atts/attachments/key-value/KeyValueListAtt";
+import { scheduleOwnAtts } from "./atts/attachments/ownAtts";
 import { ScheduleWidgetRights, ScheduleWidgetUserRoleRight } from "../../../back/apps/index/complect";
 import useAuth from "../../components/index/useAuth";
 

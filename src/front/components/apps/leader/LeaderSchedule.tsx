@@ -1,5 +1,5 @@
 import useAbsoluteBottomPopup from "../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import ScheduleCreateWidgetButton from "../../../complect/schedule-widget/ScheduleCreateWidgetButton";
+import ScheduleCreateWidgetButton from "../../../complect/schedule-widget/CreateWidgetButton";
 import ScheduleWidget from "../../../complect/schedule-widget/ScheduleWidget";
 import useScheduleWidget from "../../../complect/schedule-widget/useScheduleWidget";
 import useConnectionState from "../../index/useConnectionState";

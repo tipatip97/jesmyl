@@ -7,7 +7,7 @@ import StrongDropdown from "../../strong-control/StrongDropdown";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import { useIsRedactAreaWithInit } from "../../useIsRedactArea";
 import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
-import ScheduleWidgetBindAtts from "../atts/ScheduleWidgetBindAtts";
+import ScheduleWidgetBindAtts from "../atts/BindAtts";
 import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
 import { takeStrongScopeMaker } from "../useScheduleWidget";
 

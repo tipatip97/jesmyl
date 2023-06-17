@@ -5,7 +5,7 @@ import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
 import useQRMaster from "../../../../complect/qr-code/useQRMaster";
-import ScheduleWidgetAlarm from "../../../../complect/schedule-widget/alarm/ScheduleWidgetAlarm";
+import ScheduleWidgetAlarm from "../../../../complect/schedule-widget/alarm/Alarm";
 import useApps from "../../../../complect/useApps";
 import navConfigurers from "../../../../shared/navConfigurers";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";

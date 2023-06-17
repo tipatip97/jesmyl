@@ -1,5 +1,5 @@
 import { ScheduleWidgetAppAtts } from "../../../ScheduleWidget.model";
-import ScheduleCheckListAtt from "./ScheduleCheckListAtt";
+import ScheduleCheckListAtt from "./TheCheckListAtt";
 
 export interface ScheduleChListAtt {
     list: [num, string][];

@@ -3,11 +3,11 @@ import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import useFullContent, { FullContentValue } from "../../fullscreen-content/useFullContent";
 import mylib from "../../my-lib/MyLib";
-import ScheduleWidgetCleans from "../complect/ScheduleWidgetCleans";
+import ScheduleWidgetCleans from "../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../complect/TopicTitle";
 import { useSchedules } from "../useScheduleWidget";
-import ScheduleAlarmDay from "./ScheduleAlarmDay";
-import "./ScheduleWidgetAlarm.scss";
+import ScheduleAlarmDay from "./AlarmDay";
+import "./Alarm.scss";
 
 const msInDay = mylib.howMs.inDay;
 const msInHour = mylib.howMs.inHour;

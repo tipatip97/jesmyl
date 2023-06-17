@@ -4,8 +4,8 @@ import useModal from "../../modal/useModal";
 import mylib from "../../my-lib/MyLib";
 import StrongDiv from "../../strong-control/StrongDiv";
 import { IScheduleWidget, ScheduleWidgetDayEventAttValues, ScheduleWidgetAppAtt, ScheduleWidgetAttKey, ScheduleWidgetAttRef } from "../ScheduleWidget.model";
-import ScheduleWidgetAttFace from "./ScheduleWidgetAttFace";
-import "./ScheduleWidgetAtts.scss";
+import ScheduleWidgetAttFace from "./AttFace";
+import "./Atts.scss";
 
 export default function ScheduleWidgetBindAttRefKeyButton({
     atts,

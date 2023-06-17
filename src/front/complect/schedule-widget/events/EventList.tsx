@@ -5,8 +5,8 @@ import useModal from "../../modal/useModal";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget } from "../ScheduleWidget.model";
-import ScheduleWidgetCleans from "../complect/ScheduleWidgetCleans";
-import ScheduleWidgetEventType from "./ScheduleWidgetEventType";
+import ScheduleWidgetCleans from "../complect/Cleans";
+import ScheduleWidgetEventType from "./EventType";
 
 const altArr: [] = [];
 

@@ -5,11 +5,11 @@ import StrongDiv from "../../../strong-control/StrongDiv";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../../ScheduleWidget.model";
-import ScheduleWidgetCleans from "../../complect/ScheduleWidgetCleans";
+import ScheduleWidgetCleans from "../../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
-import ScheduleWidgetEventList from "../../events/ScheduleWidgetEventList";
+import ScheduleWidgetEventList from "../../events/EventList";
 import { useIsSchWidgetExpand, useScheduleWidgetRolesContext } from "../../useScheduleWidget";
-import ScheduleWidgetDayEvent from "./ScheduleWidgetDayEvent";
+import ScheduleWidgetDayEvent from "./DayEvent";
 
 export default function ScheduleWidgetDayEventList({
     day, schedule, scope, scheduleScope, isPastDay, dayi,

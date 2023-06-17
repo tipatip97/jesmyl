@@ -5,7 +5,7 @@ import { useIsRedactAreaWithInit } from "../../../useIsRedactArea";
 import { ScheduleWidgetAppAttCustomized } from "../../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../../complect/IconChange";
 import { takeStrongScopeMaker } from "../../useScheduleWidget";
-import ScheduleWidgetCustomAttTitles from "./ScheduleWidgetCustomAttTitles";
+import ScheduleWidgetCustomAttTitles from "./CustomAttTitles";
 
 export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent }: StrongComponentProps<{
     att: ScheduleWidgetAppAttCustomized,

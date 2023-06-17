@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import ScheduleWidgetTopicTitle from "../complect/TopicTitle";
-import ScheduleWidgetDay, { ScheduleWidgetDayProps } from "../days/ScheduleWidgetDay";
+import ScheduleWidgetDay, { ScheduleWidgetDayProps } from "../days/Day";
 import { ScheduleWidgetAppAttsContext, ScheduleWidgetRolesContext, ScheduleWidgetSchContext, makeAttStorage, takeScheduleStrongScopeMaker, useScheduleWidgetRoles } from "../useScheduleWidget";
 
 export default function ScheduleAlarmDay(props: Omit<ScheduleWidgetDayProps, 'scope'>) {

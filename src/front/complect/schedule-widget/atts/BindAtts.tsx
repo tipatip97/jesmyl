@@ -8,9 +8,9 @@ import StrongDiv from "../../strong-control/StrongDiv";
 import { IScheduleWidget, ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValues } from "../ScheduleWidget.model";
 import { takeStrongScopeMaker, useScheduleWidgetAppAttsContext } from "../useScheduleWidget";
 import ScheduleWidgetBindAttRefKeyButton from "./BindAttRefKeyButton";
-import ScheduleWidgetAttFace from "./ScheduleWidgetAttFace";
-import "./ScheduleWidgetAtts.scss";
-import ScheduleWidgetCustomAttachments from "./custom/ScheduleWidgetCustomAttachments";
+import ScheduleWidgetAttFace from "./AttFace";
+import "./Atts.scss";
+import ScheduleWidgetCustomAttachments from "./custom/CustomAttachments";
 
 export default function ScheduleWidgetBindAtts({
     atts,

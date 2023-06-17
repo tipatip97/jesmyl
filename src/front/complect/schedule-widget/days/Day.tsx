@@ -5,9 +5,9 @@ import StrongControlDateTimeExtracter from "../../strong-control/StrongDateTimeE
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
-import "./ScheduleWidgetDay.scss";
-import ScheduleWidgetDayEventList from "./events/ScheduleWidgetDayEventList";
 import { takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../useScheduleWidget";
+import "./Day.scss";
+import ScheduleWidgetDayEventList from "./events/DayEventList";
 
 export interface ScheduleWidgetDayProps {
     day: IScheduleWidgetDay,

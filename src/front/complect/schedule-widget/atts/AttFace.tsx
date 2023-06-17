@@ -4,7 +4,7 @@ import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import { ScheduleWidgetAppAtt, ScheduleWidgetAttKey } from "../ScheduleWidget.model";
-import ScheduleWidgetCustomAtt from "./custom/ScheduleWidgetCustomAtt";
+import ScheduleWidgetCustomAtt from "./custom/CustomAtt";
 
 
 export default function ScheduleWidgetAttFace({
