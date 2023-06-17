@@ -138,6 +138,10 @@ input[type="button"] {
   white-space: nowrap;
 }
 
+.break-word {
+  word-break: break-word;
+}
+
 .white-pre {
   white-space: pre;
 
@@ -278,6 +282,10 @@ textarea {
 
   &.flex-end {
     justify-content: end;
+  }
+
+  &.flex-start {
+    justify-content: flex-start;
   }
 }
 
