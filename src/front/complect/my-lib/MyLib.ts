@@ -256,12 +256,12 @@ export class MyLib extends SMyLib {
 
         return '';
     }
-    
+
     howMs = {
         inSec,
         inMin,
         inHour,
-        inDay, 
+        inDay,
     };
 
     getMilliseconds(monthDays = 30, yearDays = 365) {
@@ -378,12 +378,8 @@ export class MyLib extends SMyLib {
         return arr.filter(item => exclusives.indexOf(by(item)) === -1 ? exclusives.push(by(item)) : false);
     }
 
-    static values<T extends {} | []>(obj: T | nil) {
+    static values<T extends {} | [], R extends T extends Record<any, infer V> ? V : unknown>(obj: T | nil): R[] {
         return obj ? Object.values(obj) : [];
-    }
-
-    keys<Item extends {}>(item: Item): (keyof Item)[] {
-        return Object.keys(item) as never;
     }
 
     randomSort<Item>(items: Item[]) {
