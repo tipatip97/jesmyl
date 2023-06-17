@@ -8,14 +8,14 @@ export default function StrongEditableFieldMultiline({
 }: {
     value: string,
 }) {
-    const lines = value.split(/\n+/, 6);
+    const lines = value.split(/\n/, 6);
     const shortValue = lines.slice(0, 4).join('\n').slice(0, 150);
     const isExpandable = lines.length > 4 || shortValue !== value;
     const [isExpand, setisExpand] = useState(false);
     const expandMessage = isExpandable ? isExpand || <span className="color--3">Часть текста скрыта</span> : null;
 
     return <div
-        className={isExpandable ? 'pointer' : ''}
+        className={'white-pre-wrap break-word' + (isExpandable ? ' pointer' : '')}
         onClick={isExpandable
             ? () => setisExpand(isNIs)
             : undefined}

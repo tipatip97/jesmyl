@@ -135,17 +135,16 @@ export default function StrongEditableField(props: StrongControlProps<{
                     {props.title || props.setSelfRedact ? null : indicatorNode}
                 </div>
             </>
-            : <span className="flex flex-gap">
+            : <div className="flex flex-gap">
                 {props.icon && <EvaIcon name={props.icon} className="color--7 self-start" />}
                 {props.value
                     ? props.multiline
                         ? <StrongEditableFieldMultiline value={props.value} />
-                        : <span className={
-                            (props.textClassName || 'color--7 ')
-                            + (props.multiline ? ' white-pre-wrap ' : '')
-                        }>{props.value}{props.postfix || ''}</span>
+                        : <div className={'break-word ' + (props.textClassName || 'color--7 ')}>
+                            {props.value}{props.postfix || ''}
+                        </div>
                     : 'Без значения'}
                 {props.isRedact && props.setSelfRedact && editIcon}
-            </span>}
+            </div>}
     </div>;
 }
