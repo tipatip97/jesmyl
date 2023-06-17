@@ -49,7 +49,7 @@ export default function ScheduleWidgetDayEventList({
     }, [isRedact, switchIsExpand]);
 
     return <div className={'schedule-widget-day-event-list' + (isRedact ? ' redact' : '') + (moveEventMi === null ? '' : ' event-movement')}>
-        <div className="flex flex-gap pointer margin-gap-v between">
+        <div className="flex flex-gap pointer margin-gap-v between hide-on-print">
             <span className="flex flex-gap" onClick={() => switchIsExpand()}>
                 <EvaIcon name="list" className="color--7" />
                 Распорядок

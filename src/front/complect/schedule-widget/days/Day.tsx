@@ -8,6 +8,8 @@ import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
 import { takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../useScheduleWidget";
 import "./Day.scss";
 import ScheduleWidgetDayEventList from "./events/DayEventList";
+import { renderComponentInNewWindow } from "../../../..";
+import ScheduleWidgetPrintableDay from "./PrintableDay";
 
 export interface ScheduleWidgetDayProps {
     day: IScheduleWidgetDay,
@@ -79,22 +81,37 @@ export default function ScheduleWidgetDay({
                         title="Описание дня"
                         mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
                     />
-                    {isRedact && <StrongControlDateTimeExtracter
-                        scope={selfScope}
-                        fieldName="field"
-                        value={day.wup?.toFixed?.(2).replace(/\./, ' ') || ''}
-                        icon="clock-outline"
-                        title="Начало дня"
-                        takeDate="NO"
-                        takeTime="hour-min"
-                        mapExecArgs={(args, value) => {
-                            return {
-                                ...args,
-                                key: 'wup',
-                                value: +value.replace(/:/, '.'),
-                            };
-                        }}
-                    />}
+                    {isRedact && <>
+                        <StrongControlDateTimeExtracter
+                            scope={selfScope}
+                            fieldName="field"
+                            value={day.wup?.toFixed?.(2).replace(/\./, ' ') || ''}
+                            icon="clock-outline"
+                            title="Начало дня"
+                            takeDate="NO"
+                            takeTime="hour-min"
+                            mapExecArgs={(args, value) => {
+                                return {
+                                    ...args,
+                                    key: 'wup',
+                                    value: +value.replace(/:/, '.'),
+                                };
+                            }}
+                        />
+                        <EvaButton
+                            name="printer-outline"
+                            className="margin-gap-v"
+                            onClick={() => renderComponentInNewWindow(
+                                (win) => <ScheduleWidgetPrintableDay
+                                    day={day}
+                                    dayi={dayi}
+                                    schedule={schedule}
+                                    scope={scope}
+                                    win={win}
+                                />)}
+                            postfix="Распечатать распорядок дня"
+                        />
+                    </>}
                     <EvaButton
                         name="heart-outline"
                         className={dayRating < 0 ? 'color--ko' : dayRating > 0 ? 'color--ok' : 'color--3'}

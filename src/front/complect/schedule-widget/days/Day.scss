@@ -150,6 +150,29 @@
     }
 }
 
+.for-print {
+    padding: 30px;
+    font-size: 20px;
+
+    .ScheduleWidgetDay {
+        * {
+            color: black;
+            font-size: 1rem;
+            user-select: text;
+        }
+
+        .hide-on-print {
+            display: none;
+        }
+
+        .schedule-widget-day-event-list .day-event-wrapper .day-event {
+            background: none;
+            background-color: none;
+            padding: 0;
+        }
+    }
+}
+
 .event-rating-display {
     width: 1.5em;
     text-align: center;
@@ -166,3 +189,6 @@
         opacity: 1;
     }
 }
+
+
+
