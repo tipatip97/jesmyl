@@ -3,14 +3,44 @@ import { FilerAppConfig } from "../../complect/filer/Filer.model";
 import { rootDirective } from "../../complect/soki/soki.model";
 import { ScheduleWidgetRights, ScheduleWidgetUserRoleRight } from "./complect";
 import { Application } from "./models/Application";
-import { IScheduleWidget, IScheduleWidgetRoleUser, ScheduleStorage } from "./models/ScheduleWidget.model";
-
-const notNull = (it: unknown) => it !== null;
+import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetRoleUser, ScheduleStorage } from "./models/ScheduleWidget.model";
 
 interface SchedulesBag {
     users: IScheduleWidgetRoleUser[],
     schw: number,
 }
+
+const mapCantReadTitlesDayEvent = (event: IScheduleWidgetDayEvent) => ({
+    ...event,
+    topic: undefined,
+    dsc: undefined,
+    atts: undefined,
+    rate: undefined,
+});
+
+const mapCantReadTitlesDay = (day: IScheduleWidgetDay) => ({
+    ...day,
+    topic: undefined,
+    dsc: undefined,
+    list: day.list.map(mapCantReadTitlesDayEvent),
+});
+
+const mapCantReadSpecialsDayEvent = (event: IScheduleWidgetDayEvent) => {
+    return event.secret
+        ? {
+            ...event,
+            topic: undefined,
+            dsc: undefined,
+            atts: undefined,
+            rate: undefined,
+        }
+        : event;
+};
+
+const mapCantReadSpecialsDay = (day: IScheduleWidgetDay) => ({
+    ...day,
+    list: day.list.map(mapCantReadSpecialsDayEvent),
+});
 
 const config: FilerAppConfig = {
     title: 'JESMYL',
@@ -66,12 +96,7 @@ const config: FilerAppConfig = {
                         if (!ScheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles))
                             return {
                                 ...schedule,
-                                days: schedule.days?.map(day => ({
-                                    ...day,
-                                    topic: undefined,
-                                    dsc: undefined,
-                                    list: day.list.map(event => ({ mi: event.mi, type: event.type, tm: event.tm })),
-                                })),
+                                days: schedule.days?.map(mapCantReadTitlesDay),
                                 topic: undefined,
                                 atts: undefined,
                                 dsc: undefined,
@@ -85,12 +110,17 @@ const config: FilerAppConfig = {
                         if (!ScheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
                             return {
                                 ...schedule,
-                                days: schedule.days?.map(day => ({
-                                    ...day,
-                                    list: day.list.map(event => {
-                                        return { mi: event.mi, type: event.type, tm: event.tm, secret: event.secret }
-                                    }),
-                                })),
+                                days: schedule.days?.map(mapCantReadSpecialsDay),
+                                roles: {
+                                    cats: [],
+                                    list: [],
+                                    users: schedule.roles.users,
+                                }
+                            };
+
+                        if (!ScheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Redact))
+                            return {
+                                ...schedule,
                                 roles: {
                                     cats: [],
                                     list: [],
@@ -99,7 +129,7 @@ const config: FilerAppConfig = {
                             };
 
                         return schedule;
-                    }).filter(notNull),
+                    }),
                 };
             }
         },
