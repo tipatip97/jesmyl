@@ -20,7 +20,7 @@ export const renderApplication = (
 };
 renderApplication(<App />, document.getElementById("root"));
 
-export const renderComponentInNewWindow = (reactNode: ReactNode) => {
+export const renderComponentInNewWindow = (reactNode: ReactNode | ((win: typeof window) => void)) => {
   const linkNode = document.querySelector(
     "link[href][rel='stylesheet']"
   ) as HTMLLinkElement | null;
@@ -47,7 +47,7 @@ export const renderComponentInNewWindow = (reactNode: ReactNode) => {
     div.classList.add("above-container");
     win.document.body.appendChild(div);
 
-    renderApplication(reactNode, div);
+    renderApplication(typeof reactNode === 'function' ? reactNode(win as never) : reactNode, div);
   }
 };
 
