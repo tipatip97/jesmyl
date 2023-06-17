@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
-import mylib from "../../my-lib/MyLib";
+import mylib, { MyLib } from "../../my-lib/MyLib";
 import StrongControlDateTimeExtracter from "../../strong-control/StrongDateTimeExtracter";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../../useIsRedactArea";
@@ -30,6 +30,14 @@ export default function ScheduleWidgetDay({
     const [isShowDay, setIsShowDay] = useState(!isPastDay);
     const userRights = useScheduleWidgetRolesContext();
     const { editIcon, isRedact } = useIsRedactArea(true, null, userRights.isCanRedact, true);
+
+    const dayRating = useMemo(() => {
+        let rating = 0;
+        day.list.forEach((event) => {
+            event.rate && MyLib.values(event.rate).forEach(rate => rating += rate[0]);
+        });
+        return rating;
+    }, [day.list]);
 
     day.list.forEach((item) => {
         times.push((item.tm || schedule.types?.[item.type]?.tm || 0) + (times[times.length - 1] || 0));
@@ -87,6 +95,11 @@ export default function ScheduleWidgetDay({
                             };
                         }}
                     />}
+                    <EvaButton
+                        name="heart-outline"
+                        className={dayRating < 0 ? 'color--ko' : dayRating > 0 ? 'color--ok' : 'color--3'}
+                        postfix={'Рейтинг дня: ' + dayRating}
+                    />
                 </div>}
                 <ScheduleWidgetDayEventList
                     day={day}

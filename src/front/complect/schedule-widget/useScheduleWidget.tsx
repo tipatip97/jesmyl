@@ -134,7 +134,7 @@ export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidge
 
 export const initialScheduleScope = 'schs';
 
-export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'titlei' | 'attMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati';
+export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'rateMi' | 'titlei' | 'attMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati';
 
 export const takeStrongScopeMaker = makeStrongScopeMaker<ScheduleWidgetScopePhase>();
 export const takeScheduleStrongScopeMaker = (schedulew: number) => takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);

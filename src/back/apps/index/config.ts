@@ -385,6 +385,29 @@ const config: FilerAppConfig = {
                                             }
                                         }
                                     },
+                                    '/rate': {
+                                        expected: {},
+                                        '/{rateMi}': {
+                                            expected: [0, ''],
+                                            scopeNode: 'rateMi',
+                                            '/0': {
+                                                scopeNode: 'rate',
+                                                U: {
+                                                    args: {
+                                                        value: '#Number',
+                                                    }
+                                                }
+                                            },
+                                            '/1': {
+                                                scopeNode: 'description',
+                                                U: {
+                                                    args: {
+                                                        value: '#String',
+                                                    }
+                                                }
+                                            },
+                                        }
+                                    },
                                     '/atts': {
                                         RRej: ScheduleWidgetUserRoleRight.ReadTitles,
                                         expected: {},

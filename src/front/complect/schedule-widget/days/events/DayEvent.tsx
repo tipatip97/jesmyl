@@ -1,6 +1,10 @@
 import { useEffect } from "react";
-import mylib from "../../../my-lib/MyLib";
+import EvaButton from "../../../eva-icon/EvaButton";
+import EvaIcon from "../../../eva-icon/EvaIcon";
+import mylib, { MyLib } from "../../../my-lib/MyLib";
+import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
+import useIsExpand from "../../../useIsExpand";
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent } from "../../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../../atts/BindAtts";
@@ -8,12 +12,12 @@ import ScheduleWidgetCleans from "../../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetDayEventAtts from "../../events/atts/DayEventAtts";
 import { takeStrongScopeMaker, useIsSchWidgetExpand, useScheduleWidgetRolesContext } from "../../useScheduleWidget";
-import StrongEvaButton from "../../../strong-control/StrongEvaButton";
-import EvaButton from "../../../eva-icon/EvaButton";
-import EvaIcon from "../../../eva-icon/EvaIcon";
 
 const msInMin = mylib.howMs.inMin;
 const msInDay = mylib.howMs.inDay;
+
+const ratePoints = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+const defRate: [number, string] = [0, ''];
 
 export default function ScheduleWidgetDayEvent(props: {
     scope: string,
@@ -41,7 +45,7 @@ export default function ScheduleWidgetDayEvent(props: {
 
     const now = Date.now();
     const eventTm = ScheduleWidgetCleans.takeEventTm(props.event, box);
-    const eventFinishMs = props.schedule.start + props.wakeupMs + (props.prevTime ) * msInMin + props.dayi * msInDay;
+    const eventFinishMs = props.schedule.start + props.wakeupMs + (props.prevTime) * msInMin + props.dayi * msInDay;
     const eventStartMs = eventFinishMs - eventTm * msInMin;
     const isPastEvent = now > eventFinishMs;
 
@@ -51,8 +55,22 @@ export default function ScheduleWidgetDayEvent(props: {
         if (isSelfRedact) switchIsExpand(true);
     }, [isSelfRedact, switchIsExpand]);
 
-    if (!box) return <>Неизвестный шаблон события</>;
     const isExpandEvent = isExpand && userRights.isCanReadTitles && !props.redact;
+    let prefix = null;
+
+    if (isExpandEvent) {
+        const ratingSum = props.event.rate === undefined ? 0 : MyLib.values(props.event.rate).reduce((sum, [rate]) => sum + rate, 0);
+
+        prefix = <>
+            <EvaIcon name="heart-outline" />
+            Рейтинг события
+            <span className="event-rating-display">{ratingSum}</span>
+        </>;
+    }
+
+    const [ratingTitleNode, isRatingExpand] = useIsExpand(false, prefix);
+
+    if (!box) return <>Неизвестный шаблон события</>;
 
     if (props.isShowPeriodsNotTs) {
         timeMark = eventTm + props.secretTime + 'м';
@@ -60,6 +78,14 @@ export default function ScheduleWidgetDayEvent(props: {
     } else {
         const date = new Date(eventStartMs);
         timeMark = `${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
+    }
+
+    let myRate = defRate;
+    let rateScope = '';
+
+    if (isExpandEvent && isRatingExpand) {
+        myRate = (userRights.myUser && props.event.rate?.[userRights.myUser?.mi]) ?? defRate;
+        if (userRights.myUser) rateScope = takeStrongScopeMaker(selfScope, ' rateMi/', userRights.myUser.mi);;
     }
 
     const timeToTitle = userRights.isCanReadSpecials && !props.redact && now > eventStartMs && now < eventFinishMs &&
@@ -73,7 +99,6 @@ export default function ScheduleWidgetDayEvent(props: {
         <div
             className={
                 'day-event relative'
-                + (isExpandEvent ? ' expand' : '')
                 + (props.isPastDay ? '' : isPastEvent ? ' past' : '')
                 + (timeToTitle ? ' margin-big-gap-b' : '')
             }
@@ -102,7 +127,7 @@ export default function ScheduleWidgetDayEvent(props: {
                 </div>
                 {editIcon}
             </div>
-            <div className="day-event-content">
+            {isExpandEvent && <div className="day-event-content no-scrollbar">
                 {isRedact
                     ? <>
                         <StrongEvaButton
@@ -171,7 +196,47 @@ export default function ScheduleWidgetDayEvent(props: {
                         schedule={props.schedule}
                         isPast={isPastEvent || props.isPastDay}
                     />}
-            </div>
+                <div className="color--3 margin-gap-t">{ratingTitleNode}</div>
+                {isRatingExpand && <>
+                    <div className="flex margin-big-gap-l margin-gap-v">
+                        {ratePoints.map((ratePoint) => {
+                            const isFill = ratePoint === 0
+                                ? myRate[0] === 0
+                                : ratePoint < 0
+                                    ? myRate[0] <= ratePoint
+                                    : myRate[0] >= ratePoint;
+
+                            return <StrongEvaButton
+                                key={ratePoint}
+                                scope={rateScope}
+                                fieldName="rate"
+                                cud="U"
+                                className={(ratePoint < 0 ? 'color--ko' : ratePoint > 0 ? 'color--ok' : 'color--3') + (isFill ? '' : ' fade-05')}
+                                name={ratePoint < 0 ? 'heart-off-outline' : ratePoint === 0 ? 'question-mark-circle-outline' : 'heart-outline'}
+                                mapExecArgs={(args) => {
+                                    if (ratePoint === myRate[0]) return;
+                                    return {
+                                        ...args,
+                                        value: ratePoint,
+                                    };
+                                }}
+                            />;
+                        })}
+                        <span className={'event-rating-display margin-gap-l' + (myRate[0] === 0 ? ' color--3' : myRate[0] < 0 ? ' color--ko' : ' color--ok')}>{myRate[0]}</span>
+                    </div>
+                    <StrongEditableField
+                        scope={rateScope}
+                        fieldName="description"
+                        icon="message-square-outline"
+                        value={myRate[1]}
+                        title="Комментарий"
+                        className="margin-gap-v margin-big-gap-h"
+                        isRedact
+                        setSelfRedact
+                        multiline
+                    />
+                </>}
+            </div>}
         </div>
         {timeToTitle}
     </>;
