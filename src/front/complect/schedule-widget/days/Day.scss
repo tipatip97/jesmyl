@@ -117,11 +117,19 @@
                     filter: grayscale(.7);
                 }
 
+                .sign-line {
+                    background: var(--color--4);
+                    height: 1px;
+                    width: 100%;
+                    margin: 5px 0;
+                    opacity: .3;
+                }
+
                 .day-event-content {
                     max-height: 0px;
                     opacity: 0;
                     overflow: auto;
-                    animation: expand-content .5s ease-in-out  forwards;
+                    animation: expand-content .5s ease-in-out forwards;
                 }
 
                 >.item-header {
