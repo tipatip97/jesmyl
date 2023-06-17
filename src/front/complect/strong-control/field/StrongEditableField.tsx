@@ -108,7 +108,7 @@ export default function StrongEditableField(props: StrongControlProps<{
                 {(props.title || props.setSelfRedact) && <div className="flex flex-gap">
                     {props.icon && <EvaIcon name={props.icon} />}
                     {props.title}
-                    {editIcon}
+                    {props.setSelfRedact && editIcon}
                     {indicatorNode}
                 </div>}
                 <div className="flex flex-gap">

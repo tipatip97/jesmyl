@@ -129,6 +129,7 @@ export default function ScheduleWidgetDayEvent(props: {
                 {editIcon}
             </div>
             {isExpandEvent && <div className="day-event-content no-scrollbar">
+                <div className="sign-line" />
                 {isRedact
                     ? <>
                         <StrongEvaButton
@@ -256,6 +257,7 @@ export default function ScheduleWidgetDayEvent(props: {
                         })}
                     </>}
                 </div>}
+                <div className="sign-line" />
             </div>}
         </div>
         {timeToTitle}
