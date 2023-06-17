@@ -31,6 +31,7 @@ export default function StrongEditableField(props: StrongControlProps<{
     const [isError, setIsError] = useState(false);
     const { modalNode, toast } = useModal();
     const { editIcon, isSelfRedact } = useIsRedactArea(true, null, true, true);
+    const isRedact = props.setSelfRedact ? isSelfRedact : props.isRedact;
 
     const exer = useStrongExerContext();
 
@@ -102,12 +103,12 @@ export default function StrongEditableField(props: StrongControlProps<{
 
     return <div className={props.className || 'margin-gap-v'}>
         {modalNode}
-        {(props.isRedact && (!props.setSelfRedact || isSelfRedact))
+        {isRedact
             ? <>
                 {(props.title || props.setSelfRedact) && <div className="flex flex-gap">
                     {props.icon && <EvaIcon name={props.icon} />}
                     {props.title}
-                    {props.isRedact && props.setSelfRedact && editIcon}
+                    {editIcon}
                     {indicatorNode}
                 </div>}
                 <div className="flex flex-gap">
