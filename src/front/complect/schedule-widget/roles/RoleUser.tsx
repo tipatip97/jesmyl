@@ -1,4 +1,4 @@
-import { scheduleWidgetRights } from "../../../../back/apps/index/config";
+import { scheduleWidgetRights } from "../../../../back/apps/index/rights";
 import EvaButton from "../../eva-icon/EvaButton";
 import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";

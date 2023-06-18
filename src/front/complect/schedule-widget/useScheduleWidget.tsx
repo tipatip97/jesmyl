@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { ScheduleWidgetUserRoleRight, scheduleWidgetRights } from "../../../back/apps/index/config";
+import { ScheduleWidgetUserRoleRight, scheduleWidgetRights } from "../../../back/apps/index/rights";
 import { appAttsStore } from "../../components/complect/appScheduleAttrsStorage";
 import indexStorage from "../../components/index/indexStorage";
 import useAuth from "../../components/index/useAuth";
