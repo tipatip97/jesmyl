@@ -1,55 +1,14 @@
 import { Executer } from "../../complect/executer/Executer";
 import { FilerAppConfig } from "../../complect/filer/Filer.model";
 import { rootDirective } from "../../complect/soki/soki.model";
-import { ScheduleWidgetRights } from "./complect";
 import { Application } from "./models/Application";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetRoleUser, ScheduleStorage } from "./models/ScheduleWidget.model";
+import { ScheduleWidgetUserRoleRight, scheduleWidgetRights } from "./rights";
 
 interface SchedulesBag {
     users: IScheduleWidgetRoleUser[],
     schw: number,
 }
-
-export enum ScheduleWidgetUserRoleRight {
-    TotalRedact = 1,
-    Read,
-    Redact,
-    ReadTitles,
-    ReadSpecials,
-}
-
-const rightsOrder = [
-    ScheduleWidgetUserRoleRight.Read,
-    ScheduleWidgetUserRoleRight.ReadTitles,
-    ScheduleWidgetUserRoleRight.ReadSpecials,
-    ScheduleWidgetUserRoleRight.Redact,
-    ScheduleWidgetUserRoleRight.TotalRedact,
-];
-
-const textList = [
-    {
-        id: ScheduleWidgetUserRoleRight.Read,
-        title: 'Чтение',
-    },
-    {
-        id: ScheduleWidgetUserRoleRight.ReadTitles,
-        title: 'Чтение текстов',
-    },
-    {
-        id: ScheduleWidgetUserRoleRight.ReadSpecials,
-        title: 'Чтение спец. событий',
-    },
-    {
-        id: ScheduleWidgetUserRoleRight.Redact,
-        title: 'Редактирование',
-    },
-    {
-        id: ScheduleWidgetUserRoleRight.TotalRedact,
-        title: 'Полный доступ',
-    },
-];
-
-export const scheduleWidgetRights = new ScheduleWidgetRights<typeof ScheduleWidgetUserRoleRight, ScheduleWidgetUserRoleRight>(ScheduleWidgetUserRoleRight, textList, rightsOrder);
 
 const mapCantReadTitlesDayEvent = (event: IScheduleWidgetDayEvent) => ({
     ...event,
