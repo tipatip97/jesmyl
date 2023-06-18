@@ -14,7 +14,7 @@ export class ScheduleWidgetRights<Enum extends StandardEnum<unknown>, Right exte
 
     constructor(rightsEnum: Enum, enumList: { id: Right, title: string }[], enumOrder?: Right[]) {
         this.rightsEnum = rightsEnum;
-        if (enumOrder === undefined) enumOrder = enumList.map(({id}) => id)
+        if (enumOrder === undefined) enumOrder = enumList.map(({ id }) => id)
         this.enumOrder = enumOrder;
 
         this.textList = [
@@ -27,6 +27,11 @@ export class ScheduleWidgetRights<Enum extends StandardEnum<unknown>, Right exte
 
     getAllRights = () => {
         return parseInt(Array(this.textList.length).fill('1').join(''), 2);
+    };
+
+    checkIsHasIndividualRights = (R: number | null | undefined, rightKey: Right) => {
+        if (R === undefined || R === null || R === 0) return false;
+        return R.toString(2)[rightKey] === '1';
     };
 
     checkIsHasRights = (R: number | null | undefined, rightKey: Right) => {
