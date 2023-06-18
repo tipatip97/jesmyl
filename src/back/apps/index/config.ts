@@ -159,16 +159,6 @@ const config: FilerAppConfig = {
                                 }
                             };
 
-                        if (!scheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Redact))
-                            return {
-                                ...schedule,
-                                roles: {
-                                    cats: [],
-                                    list: [],
-                                    users: schedule.roles.users,
-                                }
-                            };
-
                         return schedule;
                     }),
                 };
