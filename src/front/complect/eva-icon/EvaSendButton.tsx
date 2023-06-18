@@ -61,9 +61,11 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
     {modalNode}
     {props.prefix === undefined && props.postfix === undefined
       ? icon
-      : <span
-        className={'flex flex-gap ' + className}
-        onClick={onClick}
-      >{props.prefix}{icon}{props.postfix}</span>}
+      : <span className="flex">
+        <span
+          className={'flex flex-gap ' + className}
+          onClick={onClick}
+        >{props.prefix}{icon}{props.postfix}</span>
+      </span>}
   </>;
 }
