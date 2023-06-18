@@ -9,6 +9,8 @@ import ScheduleWidgetIconChange from "../../complect/IconChange";
 import { takeStrongScopeMaker } from "../../useScheduleWidget";
 import ScheduleWidgetCustomAttTitles from "./CustomAttTitles";
 
+const isIs = (is: unknown) => is;
+
 export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent }: StrongComponentProps<{
     att: ScheduleWidgetAppAttCustomized,
     redact?: boolean,
@@ -16,6 +18,7 @@ export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent
 }>) {
     const selfScope = takeStrongScopeMaker(scope, ' attMi/', att.mi);
     const { editIcon, isRedact } = useIsRedactAreaWithInit(!att.title || !att.description, true, redact, true, true);
+    const usedLists = customAttUseRightsTitles.map(({ title, id }) => customAttUseRights.checkIsHasIndividualRights(att.use, id) && title).filter(isIs);
 
     return <div className="bgcolor--5 padding-gap margin-gap-v">
         {topContent}
@@ -53,23 +56,29 @@ export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent
             title="Описание вложения"
             mapExecArgs={(args) => ({ ...args, key: 'description' })}
         />
-        {isRedact && customAttUseRightsTitles.map(({ title, id }) => {
-            return <StrongEvaButton
-                key={id}
-                scope={selfScope}
-                fieldName="field"
-                cud="U"
-                name={customAttUseRights.checkIsHasIndividualRights(att.use, id) ? 'checkmark-square-2-outline' : 'square-outline'}
-                postfix={'Использовать ' + title}
-                mapExecArgs={(args) => {
-                    return {
-                        ...args,
-                        key: 'use',
-                        value: customAttUseRights.switchRights(att.use, id),
-                    };
-                }}
-            />;
-        })}
+        {isRedact
+            ? customAttUseRightsTitles.map(({ title, id }) => {
+                return <StrongEvaButton
+                    key={id}
+                    scope={selfScope}
+                    fieldName="field"
+                    cud="U"
+                    name={customAttUseRights.checkIsHasIndividualRights(att.use, id) ? 'checkmark-square-2-outline' : 'square-outline'}
+                    postfix={'Использовать ' + title}
+                    mapExecArgs={(args) => {
+                        return {
+                            ...args,
+                            key: 'use',
+                            value: customAttUseRights.switchRights(att.use, id),
+                        };
+                    }}
+                />;
+            })
+            : !usedLists.length ||
+            <span className="color--4">
+                Используются
+                <span className="color--3"> {usedLists.join(', ')}</span>
+            </span>}
         {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Titles) && <ScheduleWidgetCustomAttTitles
             scope={selfScope}
             att={att}
