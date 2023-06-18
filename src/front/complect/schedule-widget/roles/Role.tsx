@@ -1,4 +1,4 @@
-import { ScheduleWidgetRights } from "../../../../back/apps/index/complect";
+import { scheduleWidgetRights } from "../../../../back/apps/index/config";
 import useAuth from "../../../components/index/useAuth";
 import EvaButton from "../../eva-icon/EvaButton";
 import useModal from "../../modal/useModal";
@@ -10,7 +10,7 @@ import { IScheduleWidget, IScheduleWidgetRole } from "../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../complect/IconChange";
 import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../useScheduleWidget";
 
-const mainRoleRights = ScheduleWidgetRights.getAllRights();
+const mainRoleRights = scheduleWidgetRights.getAllRights();
 
 export default function ScheduleWidgetRole({
     scope,

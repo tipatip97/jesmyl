@@ -1,15 +1,15 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { ScheduleWidgetUserRoleRight, scheduleWidgetRights } from "../../../back/apps/index/config";
 import { appAttsStore } from "../../components/complect/appScheduleAttrsStorage";
 import indexStorage from "../../components/index/indexStorage";
+import useAuth from "../../components/index/useAuth";
 import { RootState } from "../../shared/store";
 import mylib, { MyLib } from "../my-lib/MyLib";
 import { makeStrongScopeMaker } from "../strong-control/useStrongControl";
 import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetRoleUser, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
 import ScheduleKeyValueListAtt from "./atts/attachments/key-value/KeyValueListAtt";
 import { scheduleOwnAtts } from "./atts/attachments/ownAtts";
-import { ScheduleWidgetRights, ScheduleWidgetUserRoleRight } from "../../../back/apps/index/complect";
-import useAuth from "../../components/index/useAuth";
 
 const schedulesSelector = (state: RootState) => state.index.schedules;
 
@@ -107,11 +107,11 @@ export const useScheduleWidgetRoles = (schedule: IScheduleWidget | und) => {
             };
         }
 
-        const isCanRead = ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Read);
-        const isCanReadTitles = isCanRead && ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadTitles);
-        const isCanReadSpecials = isCanReadTitles && ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadSpecials);
-        const isCanRedact = isCanReadSpecials && ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Redact);
-        const isCanTotalRedact = isCanRedact && ScheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.TotalRedact);
+        const isCanRead = scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Read);
+        const isCanReadTitles = isCanRead && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadTitles);
+        const isCanReadSpecials = isCanReadTitles && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadSpecials);
+        const isCanRedact = isCanReadSpecials && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Redact);
+        const isCanTotalRedact = isCanRedact && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.TotalRedact);
 
         return {
             myUser,

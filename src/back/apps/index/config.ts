@@ -1,7 +1,7 @@
 import { Executer } from "../../complect/executer/Executer";
 import { FilerAppConfig } from "../../complect/filer/Filer.model";
 import { rootDirective } from "../../complect/soki/soki.model";
-import { ScheduleWidgetRights, ScheduleWidgetUserRoleRight } from "./complect";
+import { ScheduleWidgetRights } from "./complect";
 import { Application } from "./models/Application";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetRoleUser, ScheduleStorage } from "./models/ScheduleWidget.model";
 
@@ -9,6 +9,47 @@ interface SchedulesBag {
     users: IScheduleWidgetRoleUser[],
     schw: number,
 }
+
+export enum ScheduleWidgetUserRoleRight {
+    TotalRedact = 1,
+    Read,
+    Redact,
+    ReadTitles,
+    ReadSpecials,
+}
+
+const rightsOrder = [
+    ScheduleWidgetUserRoleRight.Read,
+    ScheduleWidgetUserRoleRight.ReadTitles,
+    ScheduleWidgetUserRoleRight.ReadSpecials,
+    ScheduleWidgetUserRoleRight.Redact,
+    ScheduleWidgetUserRoleRight.TotalRedact,
+];
+
+const textList = [
+    {
+        id: ScheduleWidgetUserRoleRight.Read,
+        title: 'Чтение',
+    },
+    {
+        id: ScheduleWidgetUserRoleRight.ReadTitles,
+        title: 'Чтение текстов',
+    },
+    {
+        id: ScheduleWidgetUserRoleRight.ReadSpecials,
+        title: 'Чтение спец. событий',
+    },
+    {
+        id: ScheduleWidgetUserRoleRight.Redact,
+        title: 'Редактирование',
+    },
+    {
+        id: ScheduleWidgetUserRoleRight.TotalRedact,
+        title: 'Полный доступ',
+    },
+];
+
+export const scheduleWidgetRights = new ScheduleWidgetRights<typeof ScheduleWidgetUserRoleRight, ScheduleWidgetUserRoleRight>(ScheduleWidgetUserRoleRight, textList, rightsOrder);
 
 const mapCantReadTitlesDayEvent = (event: IScheduleWidgetDayEvent) => ({
     ...event,
@@ -65,7 +106,7 @@ const config: FilerAppConfig = {
                 const user = bag.users.find(user => auth.login === user.login);
                 if (user === undefined) return '4<';
 
-                return ScheduleWidgetRights.checkIsHasRights(user.R, rule.RRej)
+                return scheduleWidgetRights.checkIsHasRights(user.R, rule.RRej)
                     ? null
                     : whenRejButTs;
             },
@@ -78,7 +119,7 @@ const config: FilerAppConfig = {
                     list: schedules.list.map((schedule): IScheduleWidget<string> => {
                         const user = schedule.roles.users.find(user => user.login === authLogin);
 
-                        if (user === undefined || !ScheduleWidgetRights.checkIsHasRights(user?.R, ScheduleWidgetUserRoleRight.Read))
+                        if (user === undefined || !scheduleWidgetRights.checkIsHasRights(user?.R, ScheduleWidgetUserRoleRight.Read))
                             return {
                                 ...schedule,
                                 days: undefined,
@@ -93,7 +134,7 @@ const config: FilerAppConfig = {
                                 }
                             };
 
-                        if (!ScheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles))
+                        if (!scheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles))
                             return {
                                 ...schedule,
                                 days: schedule.days?.map(mapCantReadTitlesDay),
@@ -107,7 +148,7 @@ const config: FilerAppConfig = {
                                 }
                             };
 
-                        if (!ScheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
+                        if (!scheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
                             return {
                                 ...schedule,
                                 days: schedule.days?.map(mapCantReadSpecialsDay),
@@ -118,7 +159,7 @@ const config: FilerAppConfig = {
                                 }
                             };
 
-                        if (!ScheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Redact))
+                        if (!scheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Redact))
                             return {
                                 ...schedule,
                                 roles: {
@@ -161,13 +202,17 @@ const config: FilerAppConfig = {
                         app: '{app}',
                         roles: {
                             cats: ['Основное'],
-                            users: [{ mi: 0, fio: '{*fio}', login: '{*login}' }],
+                            users: [{
+                                mi: 0,
+                                fio: '{*fio}',
+                                login: '{*login}',
+                                R: scheduleWidgetRights.getAllRights(),
+                            }],
                             list: [{
                                 mi: 0,
                                 title: 'Координатор',
                                 icon: 'github-outline',
                                 user: 0,
-                                R: ScheduleWidgetRights.getAllRights(),
                             }]
                         }
                     },

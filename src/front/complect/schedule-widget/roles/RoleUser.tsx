@@ -1,4 +1,4 @@
-import { ScheduleWidgetRights } from "../../../../back/apps/index/complect";
+import { scheduleWidgetRights } from "../../../../back/apps/index/config";
 import EvaButton from "../../eva-icon/EvaButton";
 import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
@@ -23,9 +23,9 @@ export default function ScheduleWidgetRoleUser({
     const { modalNode, screen } = useModal(({ header, body }) => {
         return <>
             {header(`Правила доступа для ${user.alias ? `${user.alias} (${user.fio})` : user.fio} `)}
-            {body(ScheduleWidgetRights.textList.map(({ title, id }) => {
+            {body(scheduleWidgetRights.textList.map(({ title, id }) => {
                 if (!title) return null;
-                const isHas = isCan && (!isCanEditRights || ScheduleWidgetRights.checkIsHasRights(user.R, id));
+                const isHas = isCan && (!isCanEditRights || scheduleWidgetRights.checkIsHasRights(user.R, id));
 
                 const node = <div key={id} className="flex between full-width margin-gap-v over-hidden">
                     {title}
@@ -39,7 +39,7 @@ export default function ScheduleWidgetRoleUser({
                         mapExecArgs={(args) => {
                             return {
                                 ...args,
-                                value: ScheduleWidgetRights.switchRights(user.R, id, isHas ? '0' : '1'),
+                                value: scheduleWidgetRights.switchRights(user.R, id, isHas ? '0' : '1'),
                             };
                         }}
                     />
