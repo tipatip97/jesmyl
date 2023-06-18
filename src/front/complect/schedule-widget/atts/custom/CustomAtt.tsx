@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
+import { CustomAttUseRights, customAttUseRights, customAttUseRightsTitles } from "../../../../../back/apps/index/rights";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
+import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
 import { useIsRedactAreaWithInit } from "../../../useIsRedactArea";
 import { ScheduleWidgetAppAttCustomized } from "../../ScheduleWidget.model";
@@ -51,10 +53,27 @@ export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent
             title="Описание вложения"
             mapExecArgs={(args) => ({ ...args, key: 'description' })}
         />
-        <ScheduleWidgetCustomAttTitles
+        {isRedact && customAttUseRightsTitles.map(({ title, id }) => {
+            return <StrongEvaButton
+                key={id}
+                scope={selfScope}
+                fieldName="field"
+                cud="U"
+                name={customAttUseRights.checkIsHasIndividualRights(att.use, id) ? 'checkmark-square-2-outline' : 'square-outline'}
+                postfix={'Использовать ' + title}
+                mapExecArgs={(args) => {
+                    return {
+                        ...args,
+                        key: 'use',
+                        value: customAttUseRights.switchRights(att.use, id),
+                    };
+                }}
+            />;
+        })}
+        {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Titles) && <ScheduleWidgetCustomAttTitles
             scope={selfScope}
             att={att}
             isRedact={isRedact}
-        />
+        />}
     </div>;
 }

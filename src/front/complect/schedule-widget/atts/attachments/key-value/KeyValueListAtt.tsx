@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { CustomAttUseRights, customAttUseRights } from "../../../../../../back/apps/index/rights";
+import useAuth from "../../../../../components/index/useAuth";
 import EvaButton from "../../../../eva-icon/EvaButton";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
@@ -7,7 +9,6 @@ import useIsExpand from "../../../../useIsExpand";
 import { IScheduleWidget, IScheduleWidgetRole, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
 import ScheduleWidgetRoleFace from "../../../roles/RoleFace";
 import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../../../useScheduleWidget";
-import useAuth from "../../../../../components/index/useAuth";
 
 export default function ScheduleKeyValueListAtt({
     value,
@@ -77,7 +78,7 @@ export default function ScheduleKeyValueListAtt({
                 </div>;
             })}
             {isRedact && <>
-                {att.titles
+                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Titles) && att.titles
                     ?.map((title, titlei) => {
                         if (!title || value.values?.some(li => li[0] === title)) return null;
                         return <div key={titlei} className="flex flex-gap">
@@ -90,40 +91,44 @@ export default function ScheduleKeyValueListAtt({
                             />
                         </div>;
                     })}
-                <StrongEvaButton
+                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Checkboxes) && <StrongEvaButton
                     scope={attScope}
                     fieldName=""
                     name="plus"
                     prefix={<><EvaIcon name="checkmark-square-outline" />Чекбокс</>}
                     mapExecArgs={(args) => ({ ...args, key: false, })}
-                />
-                <div className="color--3 margin-gap-v">{rolesTitle}</div>
-                {isExpand
-                    && categories.map((list, listi) => {
-                        const isExpand = catExpands.includes(listi);
-                        return <div key={listi}>
-                            <EvaButton
-                                name={isExpand ? 'chevron-up' : 'chevron-down'}
-                                prefix={schedule.roles.cats[listi]}
-                                className="color--4"
-                                onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}
-                            />
-                            {isExpand && list.map((role) => {
-                                return <div
-                                    key={role.mi}
-                                    className="flex flex-gap"
-                                >
-                                    <ScheduleWidgetRoleFace role={role} schedule={schedule} />
-                                    <StrongEvaButton
-                                        name="plus"
-                                        scope={attScope}
-                                        fieldName=""
-                                        mapExecArgs={(args) => ({ ...args, key: role.mi, })}
+                />}
+                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles) &&
+                    <>
+                        <div className="color--3 margin-gap-v">{rolesTitle}</div>
+                        {isExpand
+                            && categories.map((list, listi) => {
+                                const isExpand = catExpands.includes(listi);
+                                return <div key={listi}>
+                                    <EvaButton
+                                        name={isExpand ? 'chevron-up' : 'chevron-down'}
+                                        prefix={schedule.roles.cats[listi]}
+                                        className="color--4"
+                                        onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}
                                     />
-                                </div>
+                                    {isExpand && list.map((role) => {
+                                        return <div
+                                            key={role.mi}
+                                            className="flex flex-gap"
+                                        >
+                                            <ScheduleWidgetRoleFace role={role} schedule={schedule} />
+                                            <StrongEvaButton
+                                                name="plus"
+                                                scope={attScope}
+                                                fieldName=""
+                                                mapExecArgs={(args) => ({ ...args, key: role.mi, })}
+                                            />
+                                        </div>
+                                    })}
+                                </div>;
                             })}
-                        </div>;
-                    })}</>}
+                    </>}
+            </>}
         </div>
     }</>;
 }
