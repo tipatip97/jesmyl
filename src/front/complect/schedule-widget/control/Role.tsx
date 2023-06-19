@@ -158,7 +158,7 @@ export default function ScheduleWidgetRole({
                     {role.mi > 0 && <EvaButton
                         name="grid-outline"
                         onClick={() => catSetModal.screen()}
-                        postfix={`Сменить категорию (${schedule.ctrl.cats[role.cat || 0] || 'Основное'})`}
+                        postfix={`Категория ${schedule.ctrl.cats[role.cat || 0] || 'Основное'}`}
                     />}
                 </>}
             </div>
