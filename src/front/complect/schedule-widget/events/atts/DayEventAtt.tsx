@@ -42,18 +42,18 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
         let attValue = props.att;
         let scope = props.scope;
 
-        if (mylib.isArr(props.att)) {
-            const [dayMi, eventMi] = props.att as ScheduleWidgetAttRef;
+        if (mylib.isArr(attValue)) {
+            const [dayMi, eventMi] = attValue;
             const day = props.schedule.days?.find(day => day.mi === dayMi);
             const event = day?.list.find(event => event.mi === eventMi);
 
 
-            if (attValue[0] as number < 0) {
+            if (attValue[0] < 0) {
                 isCanRedact = false;
                 notateNode = <EvaIcon name="eye-outline" className="color--3 icon-scale-05" />;
 
                 attContent = isExpand && <ScheduleWidgetDayEventPeriodicTranslation
-                    att={attValue as [1, 2]}
+                    att={attValue}
                     attKey={props.attKey}
                     schedule={props.schedule}
                     day={props.day}

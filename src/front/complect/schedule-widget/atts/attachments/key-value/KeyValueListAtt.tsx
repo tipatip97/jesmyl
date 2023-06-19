@@ -7,7 +7,7 @@ import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../../strong-control/field/StrongEditableField";
 import useIsExpand from "../../../../useIsExpand";
 import { IScheduleWidget, IScheduleWidgetRole, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
-import ScheduleWidgetRoleFace from "../../../roles/RoleFace";
+import ScheduleWidgetRoleFace from "../../../control/RoleFace";
 import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../../../useScheduleWidget";
 
 export default function ScheduleKeyValueListAtt({
@@ -27,9 +27,9 @@ export default function ScheduleKeyValueListAtt({
     const [rolesTitle, isExpand] = useIsExpand(false, <>Роли</>);
     const auth = useAuth();
     const { isCanTotalRedact } = useScheduleWidgetRolesContext();
-    const myUser = auth && schedule.roles.users.find(user => user.login === auth.login);
+    const myUser = auth && schedule.ctrl.users.find(user => user.login === auth.login);
     const categories = useMemo(() => {
-        const sorted = [...schedule.roles.list].sort((a, b) => (a.cat || 0) - (b.cat || 0));
+        const sorted = [...schedule.ctrl.roles].sort((a, b) => (a.cat || 0) - (b.cat || 0));
         const roles: IScheduleWidgetRole[][] = [];
         sorted.forEach(role => {
             if (!role.title || value.values?.some(li => li[0] === role.mi)) return;
@@ -37,7 +37,7 @@ export default function ScheduleKeyValueListAtt({
             list.push(role);
         });
         return roles;
-    }, [schedule.roles.list, value.values]);
+    }, [schedule.ctrl.roles, value.values]);
     const [catExpands, setCatExpands] = useState([0]);
 
     return <>{
@@ -107,7 +107,7 @@ export default function ScheduleKeyValueListAtt({
                                 return <div key={listi}>
                                     <EvaButton
                                         name={isExpand ? 'chevron-up' : 'chevron-down'}
-                                        prefix={schedule.roles.cats[listi]}
+                                        prefix={schedule.ctrl.cats[listi]}
                                         className="color--4"
                                         onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}
                                     />

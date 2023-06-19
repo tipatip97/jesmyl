@@ -8,47 +8,59 @@ import useIsExpand from "../../useIsExpand";
 import { IScheduleWidget, IScheduleWidgetRole } from "../ScheduleWidget.model";
 import { useScheduleWidgetRolesContext } from "../useScheduleWidget";
 import ScheduleWidgetRole from "./Role";
-import ScheduleWidgetRoleUser from "./RoleUser";
+import ScheduleWidgetUser from "./User";
 
-export default function ScheduleWidgetRoleList({
+export default function ScheduleWidgetControl({
     scope,
     schedule,
 }: StrongComponentProps<{
     schedule: IScheduleWidget,
 }>) {
     const userRoles = useScheduleWidgetRolesContext();
-    const [usersExpandNode, isUsersExpand] = useIsExpand(false, <>Пользователи</>);
+    const [usersExpandNode, isUsersExpand] = useIsExpand(false, <>Участники</>);
+    const [rolesExpandNode, isRolesExpand] = useIsExpand(false, <>Роли</>);
     const categories = useMemo(() => {
-        const sorted = [...schedule.roles.list].sort((a, b) => (a.cat || 0) - (b.cat || 0));
+        const sorted = [...schedule.ctrl.roles].sort((a, b) => (a.cat || 0) - (b.cat || 0));
         const roles: IScheduleWidgetRole[][] = [];
         sorted.forEach(role => {
             const list = roles[role.cat || 0] ??= [];
             list.push(role);
         });
         return roles;
-    }, [schedule.roles.list]);
+    }, [schedule.ctrl.roles]);
     const [catExpands, setCatExpands] = useState([0]);
 
     const { modalNode, screen } = useModal(({ header, body }) => {
         return userRoles.isCanRedact
             ? <div className="">
-                {header(<div className="flex between">
-                    Участники
-                    {!schedule.roles?.list.some((role) => !role.title) && <StrongEvaButton
-                        scope={scope}
-                        fieldName="roles"
-                        name="plus"
-                        prefix="роль"
-                        confirm="Добавить новую роль?"
-                    />}
-                </div>)}
+                {header(<>Управление</>)}
                 {body(<>
-                    {categories.map((list, listi) => {
+                    {usersExpandNode}
+                    {isUsersExpand && <div className="margin-gap-v">
+                        {schedule.ctrl.users.map((user) => {
+                            return <ScheduleWidgetUser
+                                key={user.mi}
+                                scope={scope}
+                                user={user}
+                            />
+                        })}
+                    </div>}
+                    <div className="flex between">
+                        {rolesExpandNode}
+                        {isRolesExpand && !schedule.ctrl?.roles.some((role) => !role.title) && <StrongEvaButton
+                            scope={scope}
+                            fieldName="roles"
+                            name="plus"
+                            prefix="роль"
+                            confirm="Добавить новую роль?"
+                        />}
+                    </div>
+                    {isRolesExpand && categories.map((list, listi) => {
                         const isExpand = catExpands.includes(listi);
                         return <div key={listi}>
                             <EvaButton
                                 name={isExpand ? 'chevron-up' : 'chevron-down'}
-                                prefix={schedule.roles.cats[listi]}
+                                prefix={schedule.ctrl.cats[listi]}
                                 className="color--4"
                                 onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}
                             />
@@ -62,22 +74,12 @@ export default function ScheduleWidgetRoleList({
                             })}
                         </div>;
                     })}
-                    <div className="margin-big-gap-v">
-                        {usersExpandNode}
-                        {isUsersExpand && schedule.roles.users.map((user) => {
-                            return <ScheduleWidgetRoleUser
-                                key={user.mi}
-                                scope={scope}
-                                user={user}
-                            />
-                        })}
-                    </div>
                 </>)}
             </div>
             : <>
                 {header(<div>Участники</div>)}
-                {body(schedule.roles.users.map((user) => {
-                    return <ScheduleWidgetRoleUser
+                {body(schedule.ctrl.users.map((user) => {
+                    return <ScheduleWidgetUser
                         key={user.mi}
                         scope={scope}
                         user={user}
@@ -88,9 +90,11 @@ export default function ScheduleWidgetRoleList({
 
     return <>
         {modalNode}
-        <div className="ScheduleWidgetVacancyList flex flex-gap pointer margin-big-gap-v" onClick={() => screen()}>
-            Участники
-            <EvaIcon name="eye-outline" />
-        </div>
+        <EvaButton
+            name="settings-2-outline"
+            postfix={<>Управление <EvaIcon name="chevron-right" /></>}
+            onClick={() => screen()}
+            className="margin-gap-v"
+        />
     </>;
 }

@@ -15,9 +15,10 @@ import ScheduleWidgetCleans from "./complect/Cleans";
 import ScheduleWidgetTopicTitle from "./complect/TopicTitle";
 import ScheduleWidgetDay from "./days/Day";
 import ScheduleWidgetEventList from "./events/EventList";
-import ScheduleWidgetRoleList from "./roles/RoleList";
+import ScheduleWidgetControl from "./control/Control";
 import { ScheduleWidgetAppAttsContext, ScheduleWidgetRolesContext, ScheduleWidgetSchContext, initialScheduleScope, makeAttStorage, takeScheduleStrongScopeMaker, useScheduleWidgetRoles } from "./useScheduleWidget";
 import StrongButton from "../strong-control/StrongButton";
+import EvaIcon from "../eva-icon/EvaIcon";
 
 const msInMin = mylib.howMs.inMin;
 
@@ -79,7 +80,7 @@ export default function ScheduleWidget({
                                         scope={selfScope}
                                         fieldName="start"
                                         title="Начало"
-                                        icon="clock-outline"
+                                        icon="calendar-outline"
                                         value={dateValue}
                                         takeDate="day"
                                         takeTime="NO"
@@ -112,27 +113,26 @@ export default function ScheduleWidget({
                                             title="Описание"
                                             mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
                                         />}
-                                        <ScheduleWidgetRoleList schedule={schedule} scope={selfScope} />
+                                        <ScheduleWidgetControl schedule={schedule} scope={selfScope} />
                                         {isRedact && <>
                                             <ScheduleWidgetEventList
                                                 selectScope=""
                                                 selectFieldName=""
                                                 scheduleScope={selfScope}
-                                                buttonTitle="Шаблоны событий"
-                                                icon="eye-outline"
+                                                postfix={<>Шаблоны событий <EvaIcon name="chevron-right" /></>}
+                                                icon="list"
                                                 schedule={schedule}
                                                 scope={selfScope}
                                             />
-                                            <ScheduleWidgetCustomAttachments scope={selfScope} atts={schedule.atts} />
-                                            {!schedule.start || <div className="flex flex-gap margin-big-gap-v">
-                                                Добавить день
-                                                <StrongEvaButton
-                                                    scope={selfScope}
-                                                    fieldName="days"
-                                                    name="plus-circle-outline"
-                                                    confirm="Дни удалять не возможно! Создать новый?"
-                                                />
-                                            </div>}
+                                            <ScheduleWidgetCustomAttachments scope={selfScope} tatts={schedule.tatts} />
+                                            {!schedule.start || <StrongEvaButton
+                                                scope={selfScope}
+                                                fieldName="days"
+                                                name="plus-outline"
+                                                postfix="Добавить день"
+                                                confirm="Дни удалять не возможно! Создать новый?"
+                                                className="margin-gap-v"
+                                            />}
                                             {auth && auth.level >= 80 && <StrongEvaButton
                                                 scope={initialScheduleScope}
                                                 fieldName="list"
@@ -140,7 +140,7 @@ export default function ScheduleWidget({
                                                 className="color--ko"
                                                 name="trash-outline"
                                                 confirm="Восстановить расписание будет не возможно. Продолжить?"
-                                                prefix="Удалить расписание"
+                                                postfix="Удалить расписание"
                                                 mapExecArgs={(args) => {
                                                     return {
                                                         ...args,
@@ -162,7 +162,7 @@ export default function ScheduleWidget({
                                     : <></>}
                             </div>
                         </>}
-                        {auth && !schedule.roles.users.some(user => user.login === auth.login)
+                        {auth && !schedule.ctrl.users.some(user => user.login === auth.login)
                             && <StrongButton
                                 scope={selfScope}
                                 fieldName="users"

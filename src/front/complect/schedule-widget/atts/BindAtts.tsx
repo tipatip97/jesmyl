@@ -39,8 +39,8 @@ export default function ScheduleWidgetBindAtts({
             {header(<div className="flex flex-gap">Вложение на <span className="color--7">{forTitle}</span></div>)}
             {body(<>
                 {topContent}
-                {appAttList.map(([attKey, att]) => {
-                    if (!att.title || !att.description) return null;
+                {appAttList.map(([attKey, tatt]) => {
+                    if (!tatt.title || !tatt.description) return null;
                     const attScope = takeStrongScopeMaker(scope, ' attKey/', attKey);
 
                     return <StrongDiv
@@ -55,7 +55,7 @@ export default function ScheduleWidgetBindAtts({
                             if (atts?.[attKey]) return;
                             return {
                                 ...args,
-                                value: att.initVal,
+                                value: tatt.initVal,
                             };
                         })}
                         onClick={closeModal}
@@ -63,17 +63,17 @@ export default function ScheduleWidgetBindAtts({
                         <ScheduleWidgetAttFace
                             scope={scope}
                             scheduleScope={scheduleScope}
-                            att={att}
+                            tatt={tatt}
                             typeTitle={forTitle}
                             attKey={attKey}
                         />
-                        <div className="fade-05 ">{att.description}</div>
+                        <div className="fade-05 ">{tatt.description}</div>
                         {!cantBindLinks && !!attRefs[attKey]?.length &&
                             <ScheduleWidgetBindAttRefKeyButton
                                 refs={attRefs[attKey]}
                                 forTitle={forTitle}
                                 attScope={attScope}
-                                att={att}
+                                tatt={tatt}
                                 attKey={attKey}
                                 atts={atts}
                                 schedule={schedule}
@@ -84,7 +84,7 @@ export default function ScheduleWidgetBindAtts({
             {footer(<>
                 <ScheduleWidgetCustomAttachments
                     scope={scheduleScope}
-                    atts={schedule.atts}
+                    tatts={schedule.tatts}
                 />
             </>)}
         </>;
@@ -98,7 +98,7 @@ export default function ScheduleWidgetBindAtts({
             <EvaIcon name="attach" />
             Вложения
             <EvaButton
-                name="plus-circle-outline"
+                name="plus-outline"
                 onClick={() => screen()}
             />
         </div>
@@ -112,7 +112,7 @@ export default function ScheduleWidgetBindAtts({
                         key={attKey}
                         scope={attScope}
                         scheduleScope={scheduleScope}
-                        att={appAtts[attKey]}
+                        tatt={appAtts[attKey]}
                         attKey={attKey}
                         typeTitle={forTitle}
                         isLink={mylib.isArr(atts?.[attKey])}

@@ -92,7 +92,7 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
                             prefix={title + titlePostfix}
                             titleBox={type}
                             topicBox={event}
-                            className="color- -3 text-underline"
+                            className="text-underline"
                         />
                         <div className="margin-gap-l">
                             {blockText || props.appAtt.result?.(

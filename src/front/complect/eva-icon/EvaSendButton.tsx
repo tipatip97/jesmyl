@@ -27,7 +27,7 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
     if (props.disabled) return;
     if (
       props.confirm != null &&
-      !(props.confirm && await modalService.confirm(props.confirm))
+      !(props.confirm && await modalService.confirm(<span className="flex flex-gap">{props.confirm}</span>))
     )
       return;
 

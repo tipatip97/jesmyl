@@ -25,7 +25,8 @@ export default function ScheduleWidgetDayEventList({
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
     const [isReplacementInProcess, setIsReplacementInProcess] = useState(false);
     const userRights = useScheduleWidgetRolesContext();
-    const { editIcon, isRedact } = useIsRedactArea(true, null, userRights.isCanRedact, true);
+    const [isIndividualReplacement, setIsIndividualReplacement] = useState(false);
+    const { editIcon, isRedact } = useIsRedactArea(true, isIndividualReplacement, userRights.isCanRedact, true);
     const usedCounts = useMemo(() => {
         const usedCounts: Record<number, number> = {};
         day.list.forEach(({ type }) => {
@@ -80,6 +81,7 @@ export default function ScheduleWidgetDayEventList({
                             }}
                             onSuccess={() => {
                                 setIsReplacementInProcess(false);
+                                setIsIndividualReplacement(false);
                                 setTimeout(() => setMoveEventMi(null), 300);
                             }}
                         >
@@ -96,7 +98,12 @@ export default function ScheduleWidgetDayEventList({
                         + (isNeighbour ? ' neighbour' : '')
                         + (eventi === 0 ? ' first' : '')
                     }
-                    onClick={moveEventMi === event.mi ? () => setMoveEventMi(null) : undefined}
+                    onClick={moveEventMi === event.mi
+                        ? () => {
+                            setIsIndividualReplacement(false);
+                            setMoveEventMi(null);
+                        }
+                        : undefined}
                 >
                     {eventi === 0 && insertControl(0)}
                     <ScheduleWidgetDayEvent
@@ -115,8 +122,38 @@ export default function ScheduleWidgetDayEventList({
                         wakeupMs={ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number')}
                         isShowPeriodsNotTs={isShowPeriodsNotTs}
                         onClickOnTs={() => setIsShowTsNotPeriods(is => !is)}
+                        bottomContent={(isRedact) => isRedact && <>
+                            {isReplacementInProcess && moveEventMi === event.mi
+                                ? <EvaIcon name="loader-outline" className="rotate" />
+                                : <EvaButton
+                                    name="crop"
+                                    postfix="Вырезать событие"
+                                    className="margin-gap-v"
+                                    onClick={() => {
+                                        setIsIndividualReplacement(true);
+                                        setMoveEventMi(event.mi);
+                                    }}
+                                />}
+                            {schedule.types && <StrongEvaButton
+                                scope={scope}
+                                fieldName="list"
+                                cud="D"
+                                name="trash-2-outline"
+                                postfix="Удалить событие"
+                                confirm={<ScheduleWidgetTopicTitle
+                                    prefix="Удалить событие "
+                                    titleBox={schedule.types[event.type]}
+                                    topicBox={event}
+                                />}
+                                className="color--ko margin-gap-v"
+                                disabled={moveEventMi !== null}
+                                mapExecArgs={(args) => {
+                                    return { ...args, eventMi: event.mi };
+                                }}
+                            />}
+                        </>}
                     />
-                    {isRedact && <>
+                    {!isIndividualReplacement && isRedact && <>
                         {isReplacementInProcess && moveEventMi === event.mi
                             ? <EvaIcon name="loader-outline" className="rotate" />
                             : <EvaButton
@@ -128,17 +165,15 @@ export default function ScheduleWidgetDayEventList({
                             fieldName="list"
                             cud="D"
                             name="trash-2-outline"
-                            confirm={<>
-                                Удалить событие{' '}
-                                <ScheduleWidgetTopicTitle
-                                    titleBox={schedule.types[event.type]}
-                                    topicBox={event}
-                                />?
-                            </>}
+                            confirm={<ScheduleWidgetTopicTitle
+                                prefix="Удалить событие "
+                                titleBox={schedule.types[event.type]}
+                                topicBox={event}
+                            />}
                             className="color--ko"
                             disabled={moveEventMi !== null}
                             mapExecArgs={(args) => {
-                                return { ...args, eventMi: event.mi, value: undefined };
+                                return { ...args, eventMi: event.mi };
                             }}
                         />}
                     </>}
@@ -154,8 +189,8 @@ export default function ScheduleWidgetDayEventList({
                 selectScope={scope}
                 scheduleScope={scheduleScope}
                 selectFieldName="list"
-                buttonTitle="Добавить событие"
-                icon="plus-circle-outline"
+                postfix="Добавить событие"
+                icon="plus-outline"
                 schedule={schedule}
                 usedCounts={usedCounts}
             />}

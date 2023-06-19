@@ -13,7 +13,7 @@ export default function ScheduleWidgetBindAttRefKeyButton({
     attScope,
     attKey,
     refs,
-    att,
+    tatt,
     schedule,
 }: {
     forTitle: ReactNode,
@@ -21,7 +21,7 @@ export default function ScheduleWidgetBindAttRefKeyButton({
     attKey: ScheduleWidgetAttKey,
     refs: ScheduleWidgetAttRef[],
     attScope: string,
-    att: ScheduleWidgetAppAtt,
+    tatt: ScheduleWidgetAppAtt,
     schedule: IScheduleWidget,
 }) {
     const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
@@ -61,12 +61,12 @@ export default function ScheduleWidgetBindAttRefKeyButton({
                             <ScheduleWidgetAttFace
                                 scope=""
                                 scheduleScope=""
-                                att={att}
+                                tatt={tatt}
                                 typeTitle={forTitle}
                                 attKey={attKey}
                                 isLink
                             />
-                            <div className="fade-05">{att.description}</div>
+                            <div className="fade-05">{tatt.description}</div>
                         </div>
                     </StrongDiv>;
                 })}

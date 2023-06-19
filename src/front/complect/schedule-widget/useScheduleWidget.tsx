@@ -91,8 +91,8 @@ export const useScheduleWidgetRoles = (schedule: IScheduleWidget | und) => {
     const auth = useAuth();
 
     return useMemo((): ScheduleWidgetRoles => {
-        const myUser = auth && schedule?.roles.users.find(user => user.login === auth.login);
-        const mainRole = schedule?.roles.list.find(role => role.mi === 0);
+        const myUser = auth && schedule?.ctrl.users.find(user => user.login === auth.login);
+        const mainRole = schedule?.ctrl.roles.find(role => role.mi === 0);
 
         if (mainRole && mainRole.user === myUser?.mi) {
             return {
@@ -123,7 +123,7 @@ export const useScheduleWidgetRoles = (schedule: IScheduleWidget | und) => {
             isCanRedact,
             isMyMainRole: !!mainRole && mainRole.user === myUser?.mi,
         };
-    }, [auth, schedule?.roles.list, schedule?.roles.users]);
+    }, [auth, schedule?.ctrl.roles, schedule?.ctrl.users]);
 };
 
 export const ScheduleWidgetSchContext = React.createContext<nil | IScheduleWidget>(null);
@@ -134,19 +134,19 @@ export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidge
 
 export const initialScheduleScope = 'schs';
 
-export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'rateMi' | 'titlei' | 'attMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati';
+export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'rateMi' | 'titlei' | 'tattMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati';
 
 export const takeStrongScopeMaker = makeStrongScopeMaker<ScheduleWidgetScopePhase>();
 export const takeScheduleStrongScopeMaker = (schedulew: number) => takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);
 
 export const extractScheduleWidgetRole = (schedule: IScheduleWidget, roleMi: number) => {
-    return schedule.roles.list.find((role) => role.mi === roleMi);
+    return schedule.ctrl.roles.find((role) => role.mi === roleMi);
 };
 
 export const extractScheduleWidgetRoleUser = (schedule: IScheduleWidget, roleMi: number, role?: IScheduleWidgetRole | nil) => {
     const roleUserMi = (role ?? extractScheduleWidgetRole(schedule, roleMi))?.user;
     if (roleUserMi === undefined) return null;
-    const roleUser = schedule.roles.users.find(user => user.mi === roleUserMi);
+    const roleUser = schedule.ctrl.users.find(user => user.mi === roleUserMi);
     if (roleUser === undefined) return null;
     return roleUser;
 };
@@ -164,7 +164,7 @@ export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAt
         });
     });
 
-    schedule?.atts?.forEach((att) => {
+    schedule?.tatts?.forEach((att) => {
         atts[`[SCH]:custom:${att.mi}`] = {
             ...att,
             isCustomize: true,

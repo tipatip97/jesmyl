@@ -8,7 +8,7 @@ import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidgetRoleUser } from "../ScheduleWidget.model";
 import { takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../useScheduleWidget";
 
-export default function ScheduleWidgetRoleUser({
+export default function ScheduleWidgetUser({
     scope,
     user,
 }: StrongComponentProps<{
@@ -59,7 +59,7 @@ export default function ScheduleWidgetRoleUser({
                 isRedact={isRedact}
                 title={user.fio}
                 postfix={user.alias && user.alias !== user.fio && <> ({user.fio})</>}
-                icon="credit-card-outline"
+                icon="person-outline"
                 value={user.alias || user.fio}
             />
             {isRedact && <EvaButton

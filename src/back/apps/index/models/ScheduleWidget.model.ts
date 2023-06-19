@@ -13,9 +13,9 @@ export interface IScheduleWidget<EvaIconName> {
     dsc?: string,
     days?: IScheduleWidgetDay[],
     types?: ScheduleWidgetDayListItemTypeBox[],
-    atts?: ScheduleWidgetAppAttCustomized<EvaIconName>[],
+    tatts?: ScheduleWidgetAppAttCustomized<EvaIconName>[],
     app: SokiAppName,
-    roles: IScheduleWidgetRoles<EvaIconName>,
+    ctrl: IScheduleWidgetCtrl<EvaIconName>,
 }
 
 
@@ -44,9 +44,9 @@ export interface ScheduleWidgetAppAttCustomizable<EvaIconName> extends ScheduleW
     titles?: string[],
 }
 
-export interface IScheduleWidgetRoles<EvaIconName> {
+export interface IScheduleWidgetCtrl<EvaIconName> {
     cats: string[],
-    list: IScheduleWidgetRole<EvaIconName>[],
+    roles: IScheduleWidgetRole<EvaIconName>[],
     users: IScheduleWidgetRoleUser[],
 }
 
@@ -112,7 +112,7 @@ export interface Back<EvaIconName, Param = unknown> {
     ScheduleWidgetDayListItemTypeBox: ScheduleWidgetDayListItemTypeBox,
     ScheduleWidgetAppAttCustomized: ScheduleWidgetAppAttCustomized<EvaIconName>,
     ScheduleWidgetAppAttCustomizable: ScheduleWidgetAppAttCustomizable<EvaIconName>,
-    IScheduleWidgetRoles: IScheduleWidgetRoles<EvaIconName>,
+    IScheduleWidgetCtrl: IScheduleWidgetCtrl<EvaIconName>,
     IScheduleWidgetDayEvent: IScheduleWidgetDayEvent,
     ScheduleWidgetDayEventAttValues: ScheduleWidgetDayEventAttValues,
     ScheduleWidgetAppAttBasic: ScheduleWidgetAppAttBasic<EvaIconName, Param>,

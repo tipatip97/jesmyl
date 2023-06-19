@@ -57,7 +57,7 @@ const config: FilerAppConfig = {
                     bag.schw = exec.args?.schw;
                     if (bag.schw === undefined) return '2<';
 
-                    bag.users = schedules.list.find(sch => sch.w === bag.schw)?.roles.users!;
+                    bag.users = schedules.list.find(sch => sch.w === bag.schw)?.ctrl.users!;
                 }
 
                 if (bag.users === undefined) return '3<';
@@ -76,19 +76,19 @@ const config: FilerAppConfig = {
                 return {
                     ...schedules,
                     list: schedules.list.map((schedule): IScheduleWidget<string> => {
-                        const user = schedule.roles.users.find(user => user.login === authLogin);
+                        const user = schedule.ctrl.users.find(user => user.login === authLogin);
 
                         if (user === undefined || !scheduleWidgetRights.checkIsHasRights(user?.R, ScheduleWidgetUserRoleRight.Read))
                             return {
                                 ...schedule,
                                 days: undefined,
                                 topic: undefined,
-                                atts: undefined,
+                                tatts: undefined,
                                 dsc: undefined,
                                 types: undefined,
-                                roles: {
+                                ctrl: {
                                     cats: [],
-                                    list: [],
+                                    roles: [],
                                     users: user === undefined ? [] : [user],
                                 }
                             };
@@ -98,12 +98,12 @@ const config: FilerAppConfig = {
                                 ...schedule,
                                 days: schedule.days?.map(mapCantReadTitlesDay),
                                 topic: undefined,
-                                atts: undefined,
+                                tatts: undefined,
                                 dsc: undefined,
-                                roles: {
+                                ctrl: {
                                     cats: [],
-                                    list: [],
-                                    users: schedule.roles.users,
+                                    roles: [],
+                                    users: schedule.ctrl.users,
                                 }
                             };
 
@@ -111,10 +111,10 @@ const config: FilerAppConfig = {
                             return {
                                 ...schedule,
                                 days: schedule.days?.map(mapCantReadSpecialsDay),
-                                roles: {
+                                ctrl: {
                                     cats: [],
-                                    list: [],
-                                    users: schedule.roles.users,
+                                    roles: [],
+                                    users: schedule.ctrl.users,
                                 }
                             };
 
@@ -149,7 +149,7 @@ const config: FilerAppConfig = {
                         w: '{schw}',
                         title: '{title}',
                         app: '{app}',
-                        roles: {
+                        ctrl: {
                             cats: ['Основное'],
                             users: [{
                                 mi: 0,
@@ -157,7 +157,7 @@ const config: FilerAppConfig = {
                                 login: '{*login}',
                                 R: scheduleWidgetRights.getAllRights(),
                             }],
-                            list: [{
+                            roles: [{
                                 mi: 0,
                                 title: 'Координатор',
                                 icon: 'github-outline',
@@ -193,7 +193,7 @@ const config: FilerAppConfig = {
                             }
                         }
                     },
-                    '/roles': {
+                    '/ctrl': {
                         '/cats': {
                             scopeNode: 'categories',
                             C: {
@@ -231,14 +231,11 @@ const config: FilerAppConfig = {
                                 },
                             },
                         },
-                        '/list': {
-                            '<roles>': {
-                                scopeNode: 'roles',
-                                C: {
-                                    setSystems: ['mi'],
-                                    value: {
-                                        title: '',
-                                    },
+                        '/roles': {
+                            C: {
+                                setSystems: ['mi'],
+                                value: {
+                                    title: '',
                                 },
                             },
                             '/[mi === {roleMi}]': {
@@ -257,7 +254,7 @@ const config: FilerAppConfig = {
                             }
                         },
                     },
-                    '/atts': {
+                    '/tatts': {
                         RRej: ScheduleWidgetUserRoleRight.ReadTitles,
                         expected: [],
                         C: {
@@ -266,8 +263,8 @@ const config: FilerAppConfig = {
                                 value: '#Dict',
                             },
                         },
-                        '/[mi === {attMi}]': {
-                            scopeNode: 'attMi',
+                        '/[mi === {tattMi}]': {
+                            scopeNode: 'tattMi',
                             '/{key}': {
                                 scopeNode: 'field',
                                 U: {

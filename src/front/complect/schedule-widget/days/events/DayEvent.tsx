@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import mylib, { MyLib } from "../../../my-lib/MyLib";
@@ -35,6 +35,7 @@ export default function ScheduleWidgetDayEvent(props: {
     wakeupMs: number,
     isPastDay: boolean,
     isLastEvent: boolean,
+    bottomContent: (isRedact: boolean) => ReactNode,
 }) {
     const box = props.schedule.types?.[props.event.type];
     let timeMark = '';
@@ -121,7 +122,6 @@ export default function ScheduleWidgetDayEvent(props: {
                         className="color--ko"
                     />}
                     <ScheduleWidgetTopicTitle
-                        className="color--3"
                         titleBox={box}
                         topicBox={props.event}
                     />
@@ -198,6 +198,7 @@ export default function ScheduleWidgetDayEvent(props: {
                         schedule={props.schedule}
                         isPast={isPastEvent || props.isPastDay}
                     />}
+                {props.bottomContent(isRedact)}
                 <div className="color--3 margin-gap-t">{ratingTitleNode}</div>
                 {isRatingExpand && <div className="margin-big-gap-l margin-gap-v">
                     <div className="flex margin-gap-v">
@@ -239,7 +240,7 @@ export default function ScheduleWidgetDayEvent(props: {
                     />
                     {userRights.isCanTotalRedact && props.event.rate && <>
                         <div className="color--3">{otherRatesTitleNode}</div>
-                        {isOtherRatesTitleExpand && props.schedule.roles.users.map((user) => {
+                        {isOtherRatesTitleExpand && props.schedule.ctrl.users.map((user) => {
                             if (userRights.myUser && userRights.myUser.mi === user.mi) return null;
                             const rate = props.event.rate![user.mi];
                             if (rate === undefined) return null;

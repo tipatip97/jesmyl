@@ -8,8 +8,8 @@ import { takeStrongScopeMaker } from "../../useScheduleWidget";
 const itIt = (it: unknown) => it;
 const itNIt = (it: unknown) => !it;
 
-export default function ScheduleWidgetCustomAttTitles({ att, scope, isRedact }: StrongComponentProps<{
-    att: ScheduleWidgetAppAttCustomized,
+export default function ScheduleWidgetCustomAttTitles({ tatt, scope, isRedact }: StrongComponentProps<{
+    tatt: ScheduleWidgetAppAttCustomized,
     isRedact: boolean,
 }>) {
 
@@ -18,10 +18,10 @@ export default function ScheduleWidgetCustomAttTitles({ att, scope, isRedact }: 
             <EvaButton name="list" className="color--7" />
             {isRedact
                 ? <>Заголовки</>
-                : <>{att.titles?.filter(itIt).join(', ') || <span className="color--7">Список пуст</span>}</>}
+                : <>{tatt.titles?.filter(itIt).join(', ') || <span className="color--7">Список пуст</span>}</>}
 
         </div>
-        {isRedact && att.titles?.map((title, titlei) => {
+        {isRedact && tatt.titles?.map((title, titlei) => {
             const titleScope = takeStrongScopeMaker(scope, ' titlei/', titlei);
 
             return <StrongEditableField
@@ -33,7 +33,7 @@ export default function ScheduleWidgetCustomAttTitles({ att, scope, isRedact }: 
                 isRedact={isRedact}
             />;
         })}
-        {isRedact && !att.titles?.some(itNIt) &&
+        {isRedact && !tatt.titles?.some(itNIt) &&
             <StrongEvaButton
                 scope={scope}
                 fieldName="titles"

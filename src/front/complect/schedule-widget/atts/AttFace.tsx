@@ -8,7 +8,7 @@ import ScheduleWidgetCustomAtt from "./custom/CustomAtt";
 
 
 export default function ScheduleWidgetAttFace({
-    att,
+    tatt,
     typeTitle,
     attKey,
     scope,
@@ -18,23 +18,23 @@ export default function ScheduleWidgetAttFace({
     customAttTopContent,
 }: StrongComponentProps<{
     isRedact?: boolean,
-    att?: ScheduleWidgetAppAtt,
+    tatt?: ScheduleWidgetAppAtt,
     attKey: ScheduleWidgetAttKey,
     typeTitle: ReactNode,
     customAttTopContent?: (scope: string, attKey: ScheduleWidgetAttKey) => ReactNode,
     scheduleScope: string,
     isLink?: boolean,
 }>) {
-    const { modalNode, screen } = useModal(att && (() => {
-        return <ScheduleWidgetCustomAtt att={att as never} redact scope={scheduleScope} topContent={customAttTopContent?.(scope, attKey)} />;
+    const { modalNode, screen } = useModal(tatt && (() => {
+        return <ScheduleWidgetCustomAtt tatt={tatt as never} redact scope={scheduleScope} topContent={customAttTopContent?.(scope, attKey)} />;
     }));
 
     return <>
         {modalNode}
         <div
-            className={'schedule-widget-att relative flex center column' + (att?.isCustomize ? ' color--7 pointer' : '')}
+            className={'schedule-widget-tatt relative flex center column' + (tatt?.isCustomize ? ' color--7 pointer' : '')}
             onClick={() => {
-                if (att?.isCustomize) screen();
+                if (tatt?.isCustomize) screen();
             }}
         >
             {isLink && <EvaIcon name="link-2" className="absolute pos-left pos-top color--3 fade-05" />}
@@ -44,7 +44,7 @@ export default function ScheduleWidgetAttFace({
                 cud="D"
                 name="close"
                 className="close-button"
-                confirm={<div className="flex flex-gap">Убрать {isLink ? 'ссылку вложения' : 'вложение'} {att?.title || '??'} из события <div className="flex">{typeTitle}?</div></div>}
+                confirm={<div className="flex flex-gap">Убрать {isLink ? 'ссылку вложения' : 'вложение'} {tatt?.title || '??'} из события <div className="flex">{typeTitle}?</div></div>}
                 mapExecArgs={(args) => {
                     return {
                         ...args,
@@ -52,10 +52,10 @@ export default function ScheduleWidgetAttFace({
                     };
                 }}
             />}
-            {att
+            {tatt
                 ? <>
-                    <EvaIcon name={att.icon} />
-                    <div className="ellipsis full-max-width">{att.title}</div>
+                    <EvaIcon name={tatt.icon} />
+                    <div className="ellipsis full-max-width">{tatt.title}</div>
                 </>
                 : <>
                     <EvaIcon

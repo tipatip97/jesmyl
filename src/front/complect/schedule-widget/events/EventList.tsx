@@ -1,9 +1,8 @@
-import React, { useMemo } from "react";
+import React, { ReactNode, useMemo } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import { EvaIconName } from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
-import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget } from "../ScheduleWidget.model";
 import ScheduleWidgetCleans from "../complect/Cleans";
 import ScheduleWidgetEventType from "./EventType";
@@ -14,7 +13,7 @@ export default function ScheduleWidgetEventList({
     scope,
     selectScope,
     scheduleScope,
-    buttonTitle,
+    postfix,
     schedule,
     icon,
     selectFieldName,
@@ -24,12 +23,11 @@ export default function ScheduleWidgetEventList({
     selectScope: string,
     scheduleScope: string,
     selectFieldName: string,
-    buttonTitle: string,
+    postfix: ReactNode,
     schedule: IScheduleWidget,
     icon: EvaIconName,
     usedCounts?: Record<number, number>,
 }) {
-    const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(true, null, true, true);
     const types = schedule.types || altArr;
     const sortedTypes = useMemo(() => {
         if (!usedCounts) return types;
@@ -52,7 +50,7 @@ export default function ScheduleWidgetEventList({
                     {!schedule.types?.some((type) => !type.title) && <StrongEvaButton
                         scope={scope}
                         fieldName="types"
-                        name="plus-circle-outline"
+                        name="plus-outline"
                         confirm="Добавить новый шаблон?"
                     />}
                 </div>
@@ -85,12 +83,12 @@ export default function ScheduleWidgetEventList({
         </>;
     });
 
-    return <div className="flex flex-gap">
+    return <>
         {modalNode}
         <EvaButton
             name={icon}
-            prefix={buttonTitle}
+            postfix={postfix}
             onClick={() => screen()}
         />
-    </div>;
+    </>;
 }

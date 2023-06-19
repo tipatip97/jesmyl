@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { IScheduleWidget, IScheduleWidgetRole } from "../ScheduleWidget.model";
-import EvaIcon from "../../eva-icon/EvaIcon";
-import { extractScheduleWidgetRoleUser } from "../useScheduleWidget";
 import useAuth from "../../../components/index/useAuth";
+import EvaIcon from "../../eva-icon/EvaIcon";
+import { IScheduleWidget, IScheduleWidgetRole } from "../ScheduleWidget.model";
+import { extractScheduleWidgetRoleUser } from "../useScheduleWidget";
 
 export default function ScheduleWidgetRoleFace({
     role,
@@ -18,7 +17,7 @@ export default function ScheduleWidgetRoleFace({
     return <div
         className={'flex flex-gap pointer' + (auth && roleUser && auth.login === roleUser.login ? ' color--7' : ' color--3')}
     >
-        <EvaIcon name={role.icon ?? 'person-outline'} />
+        <EvaIcon name={role.icon ?? 'github-outline'} />
         <div className="face-title">
             {role.title}{' - '}
             {roleUser?.alias || roleUser?.fio || <span className="color--3 text-italic">Вакант</span>}

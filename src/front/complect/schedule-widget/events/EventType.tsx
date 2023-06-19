@@ -11,7 +11,7 @@ import ScheduleWidgetBindAtts from "../atts/BindAtts";
 import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
 import { takeStrongScopeMaker } from "../useScheduleWidget";
 
-const singleTitleSymbols = '- ().,';
+const singleTitleSymbols = '- ().,/';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
 const singlesTitleReg = new RegExp(`([${singleTitleSymbols}])(\\1+)`, 'g');
 

@@ -11,14 +11,14 @@ import ScheduleWidgetCustomAttTitles from "./CustomAttTitles";
 
 const isIs = (is: unknown) => is;
 
-export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent }: StrongComponentProps<{
-    att: ScheduleWidgetAppAttCustomized,
+export default function ScheduleWidgetCustomAtt({ tatt, scope, redact, topContent }: StrongComponentProps<{
+    tatt: ScheduleWidgetAppAttCustomized,
     redact?: boolean,
     topContent?: ReactNode,
 }>) {
-    const selfScope = takeStrongScopeMaker(scope, ' attMi/', att.mi);
-    const { editIcon, isRedact } = useIsRedactAreaWithInit(!att.title || !att.description, true, redact, true, true);
-    const usedLists = customAttUseRightsTitles.map(({ title, id }) => customAttUseRights.checkIsHasIndividualRights(att.use, id) && title).filter(isIs);
+    const selfScope = takeStrongScopeMaker(scope, ' tattMi/', tatt.mi);
+    const { editIcon, isRedact } = useIsRedactAreaWithInit(!tatt.title || !tatt.description, true, redact, true, true);
+    const usedLists = customAttUseRightsTitles.map(({ title, id }) => customAttUseRights.checkIsHasIndividualRights(tatt.use, id) && title).filter(isIs);
 
     return <div className="bgcolor--5 padding-gap margin-gap-v">
         {topContent}
@@ -26,8 +26,8 @@ export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent
         {isRedact && <ScheduleWidgetIconChange
             scope={selfScope}
             fieldName="field"
-            icon={att.icon}
-            header={<>Иконка для вложения {att.title}</>}
+            icon={tatt.icon}
+            header={<>Иконка для вложения {tatt.title}</>}
             mapExecArgs={(args) => {
                 return {
                     ...args,
@@ -38,17 +38,17 @@ export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent
         <StrongEditableField
             scope={selfScope}
             fieldName="field"
-            value={att.title}
+            value={tatt.title}
             isRedact={isRedact}
             isImpossibleEmptyValue
-            icon={isRedact ? 'bookmark-outline' : att.icon}
+            icon={isRedact ? 'bookmark-outline' : tatt.icon}
             title="Название"
             mapExecArgs={(args) => ({ ...args, key: 'title' })}
         />
         <StrongEditableField
             scope={selfScope}
             fieldName="field"
-            value={att.description}
+            value={tatt.description}
             multiline
             isRedact={isRedact}
             icon="file-text-outline"
@@ -63,13 +63,13 @@ export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent
                     scope={selfScope}
                     fieldName="field"
                     cud="U"
-                    name={customAttUseRights.checkIsHasIndividualRights(att.use, id) ? 'checkmark-square-2-outline' : 'square-outline'}
+                    name={customAttUseRights.checkIsHasIndividualRights(tatt.use, id) ? 'checkmark-square-2-outline' : 'square-outline'}
                     postfix={'Использовать ' + title}
                     mapExecArgs={(args) => {
                         return {
                             ...args,
                             key: 'use',
-                            value: customAttUseRights.switchRights(att.use, id),
+                            value: customAttUseRights.switchRights(tatt.use, id),
                         };
                     }}
                 />;
@@ -79,9 +79,9 @@ export default function ScheduleWidgetCustomAtt({ att, scope, redact, topContent
                 Используются
                 <span className="color--3"> {usedLists.join(', ')}</span>
             </span>}
-        {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Titles) && <ScheduleWidgetCustomAttTitles
+        {customAttUseRights.checkIsHasIndividualRights(tatt.use, CustomAttUseRights.Titles) && <ScheduleWidgetCustomAttTitles
             scope={selfScope}
-            att={att}
+            tatt={tatt}
             isRedact={isRedact}
         />}
     </div>;

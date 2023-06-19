@@ -33,7 +33,7 @@ export default function ScheduleWidgetRole({
                 Роль <span className="color--7">{role.title}</span> займёт
             </div>)}
             {body(<div className="">
-                {schedule.roles.users.map((user, useri) => {
+                {schedule.ctrl.users.map((user, useri) => {
                     if ((roleUser && user.login === roleUser.login) || (role.mi === 0 && user.R !== mainRoleRights)) return null;
 
                     return <StrongEvaButton
@@ -68,7 +68,7 @@ export default function ScheduleWidgetRole({
             </div>)}
             {body(<>
                 {catsRedact.isRedact
-                    ? schedule.roles.cats.map((catName, catNamei) => {
+                    ? schedule.ctrl.cats.map((catName, catNamei) => {
                         const catScope = takeStrongScopeMaker(scope + ' categories', ' cati/', catNamei);
 
                         return <StrongEditableField
@@ -79,7 +79,7 @@ export default function ScheduleWidgetRole({
                             value={catName}
                         />
                     })
-                    : schedule.roles.cats.map((catName, catNamei) => {
+                    : schedule.ctrl.cats.map((catName, catNamei) => {
                         return <StrongEvaButton
                             key={catNamei}
                             scope={roleScope}
@@ -100,7 +100,7 @@ export default function ScheduleWidgetRole({
                     })}
             </>)}
             {footer(<>
-                {!schedule.roles.cats.includes('') && catsRedact.isRedact && <StrongEvaButton
+                {!schedule.ctrl.cats.includes('') && catsRedact.isRedact && <StrongEvaButton
                     scope={scope}
                     fieldName="categories"
                     name="folder-add-outline"
@@ -119,7 +119,7 @@ export default function ScheduleWidgetRole({
                     fieldName="field"
                     isRedact={isRedact}
                     title="Роль"
-                    icon={isRedact || !role.icon ? 'credit-card-outline' : role.icon}
+                    icon={isRedact || !role.icon ? 'github-outline' : role.icon}
                     value={role.title}
                     postfix={roleUser && (' - ' + (roleUser.alias || roleUser.fio))}
                     mapExecArgs={(args) => {
@@ -134,8 +134,8 @@ export default function ScheduleWidgetRole({
                         scope={roleScope}
                         fieldName="field"
                         header={`Иконка для роли ${role.title}`}
-                        icon={role.icon ?? 'person-outline'}
-                        exclude={schedule.roles.list.map(role => role.icon)}
+                        icon={role.icon ?? 'github-outline'}
+                        used={schedule.ctrl.roles.map(role => role.icon)}
                         mapExecArgs={(args) => {
                             return {
                                 ...args,
@@ -158,7 +158,7 @@ export default function ScheduleWidgetRole({
                     {role.mi > 0 && <EvaButton
                         name="grid-outline"
                         onClick={() => catSetModal.screen()}
-                        postfix={`Сменить категорию (${schedule.roles.cats[role.cat || 0] || 'Основное'})`}
+                        postfix={`Сменить категорию (${schedule.ctrl.cats[role.cat || 0] || 'Основное'})`}
                     />}
                 </>}
             </div>

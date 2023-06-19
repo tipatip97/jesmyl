@@ -1,3 +1,4 @@
+import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
@@ -6,15 +7,15 @@ import { ScheduleWidgetAppAttCustomizable, ScheduleWidgetAppAttCustomized } from
 import ScheduleWidgetCustomAtt from "./CustomAtt";
 
 export default function ScheduleWidgetCustomAttachments(props: StrongComponentProps<{
-    atts?: ScheduleWidgetAppAttCustomized[],
+    tatts?: ScheduleWidgetAppAttCustomized[],
 }>) {
     const { modalNode, screen } = useModal(({ header, body }) => {
         return <>
             {header(<div className="flex full-width between">
                 Шаблоны вложений
-                {!props.atts?.some((att) => !att.title || !att.description) && <StrongEvaButton
+                {!props.tatts?.some((att) => !att.title || !att.description) && <StrongEvaButton
                     scope={props.scope}
-                    fieldName="atts"
+                    fieldName="tatts"
                     name="plus"
                     confirm="Создать шаблон вложения?"
                     mapExecArgs={(args) => {
@@ -32,11 +33,11 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
                     }}
                 />}
             </div>)}
-            {body(props.atts?.map((att) => {
+            {body(props.tatts?.map((tatt) => {
                 return <ScheduleWidgetCustomAtt
-                    key={att.mi}
+                    key={tatt.mi}
                     scope={props.scope}
-                    att={att}
+                    tatt={tatt}
                 />;
             }))}
         </>;
@@ -44,8 +45,11 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
 
     return <div>
         {modalNode}
-        <div className="flex flex-gap pointer margin-big-gap-v" onClick={() => screen()}>
-            Шаблоны вложений <EvaIcon name="eye-outline" />
-        </div>
+        <EvaButton
+            name="attach-2"
+            postfix={<>Шаблоны вложений <EvaIcon name="chevron-right" /></>}
+            onClick={() => screen()}
+            className="margin-gap-v"
+        />
     </div>;
 }
