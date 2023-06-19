@@ -26,7 +26,7 @@ export default function ScheduleWidgetDayEventList({
     const [isReplacementInProcess, setIsReplacementInProcess] = useState(false);
     const userRights = useScheduleWidgetRolesContext();
     const [isIndividualReplacement, setIsIndividualReplacement] = useState(false);
-    const { editIcon, isRedact } = useIsRedactArea(true, isIndividualReplacement, userRights.isCanRedact, true);
+    const { editIcon, isRedact } = useIsRedactArea(true, isIndividualReplacement || null, userRights.isCanRedact, true);
     const usedCounts = useMemo(() => {
         const usedCounts: Record<number, number> = {};
         day.list.forEach(({ type }) => {
@@ -49,7 +49,7 @@ export default function ScheduleWidgetDayEventList({
         else setMoveEventMi(null);
     }, [isRedact, switchIsExpand]);
 
-    return <div className={'schedule-widget-day-event-list' + (isRedact ? ' redact' : '') + (moveEventMi === null ? '' : ' event-movement')}>
+    return <div className={'schedule-widget-day-event-list' + (isRedact ? ' redact' : '') + (moveEventMi === null ? '' : ' event-movement') + (isIndividualReplacement ? ' individual-replacement' : '')}>
         <div className="flex flex-gap pointer margin-gap-v between hide-on-print">
             <span className="flex flex-gap" onClick={() => switchIsExpand()}>
                 <EvaIcon name="list" className="color--7" />
@@ -85,7 +85,10 @@ export default function ScheduleWidgetDayEventList({
                                 setTimeout(() => setMoveEventMi(null), 300);
                             }}
                         >
-                            {movementBox && <span className="fade-05">{movementBox.title} будет здесь</span>}
+                            {movementBox && <div className="flex flex-gap fade-05">
+                                <div className="movement-here-title ellipsis nowrap">{movementBox.title}</div>
+                                <div className="nowrap">будет здесь</div>
+                            </div>}
                             <EvaIcon name="arrowhead-left-outline" />
                         </StrongDiv>
                     </div>;
