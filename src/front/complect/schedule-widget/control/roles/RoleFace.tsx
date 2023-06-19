@@ -1,7 +1,7 @@
-import useAuth from "../../../components/index/useAuth";
-import EvaIcon from "../../eva-icon/EvaIcon";
-import { IScheduleWidget, IScheduleWidgetRole } from "../ScheduleWidget.model";
-import { extractScheduleWidgetRoleUser } from "../useScheduleWidget";
+import useAuth from "../../../../components/index/useAuth";
+import EvaIcon from "../../../eva-icon/EvaIcon";
+import { IScheduleWidget, IScheduleWidgetRole } from "../../ScheduleWidget.model";
+import { extractScheduleWidgetRoleUser } from "../../useScheduleWidget";
 
 export default function ScheduleWidgetRoleFace({
     role,

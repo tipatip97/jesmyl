@@ -1,13 +1,11 @@
-import { useMemo, useState } from "react";
 import { CustomAttUseRights, customAttUseRights } from "../../../../../../back/apps/index/rights";
 import useAuth from "../../../../../components/index/useAuth";
-import EvaButton from "../../../../eva-icon/EvaButton";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../../strong-control/field/StrongEditableField";
-import useIsExpand from "../../../../useIsExpand";
-import { IScheduleWidget, IScheduleWidgetRole, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
-import ScheduleWidgetRoleFace from "../../../control/RoleFace";
+import { IScheduleWidget, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
+import ScheduleWidgetRoleFace from "../../../control/roles/RoleFace";
+import ScheduleWidgetRoleList from "../../../control/roles/RoleList";
 import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../../../useScheduleWidget";
 
 export default function ScheduleKeyValueListAtt({
@@ -24,21 +22,9 @@ export default function ScheduleKeyValueListAtt({
     schedule: IScheduleWidget,
 }) {
     const attScope = scope + ' keyValue';
-    const [rolesTitle, isExpand] = useIsExpand(false, <>Роли</>);
     const auth = useAuth();
     const { isCanTotalRedact } = useScheduleWidgetRolesContext();
     const myUser = auth && schedule.ctrl.users.find(user => user.login === auth.login);
-    const categories = useMemo(() => {
-        const sorted = [...schedule.ctrl.roles].sort((a, b) => (a.cat || 0) - (b.cat || 0));
-        const roles: IScheduleWidgetRole[][] = [];
-        sorted.forEach(role => {
-            if (!role.title || value.values?.some(li => li[0] === role.mi)) return;
-            const list = roles[role.cat || 0] ??= [];
-            list.push(role);
-        });
-        return roles;
-    }, [schedule.ctrl.roles, value.values]);
-    const [catExpands, setCatExpands] = useState([0]);
 
     return <>{
         <div>
@@ -98,36 +84,26 @@ export default function ScheduleKeyValueListAtt({
                     prefix={<><EvaIcon name="checkmark-square-outline" />Чекбокс</>}
                     mapExecArgs={(args) => ({ ...args, key: false, })}
                 />}
-                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles) &&
-                    <>
-                        <div className="color--3 margin-gap-v">{rolesTitle}</div>
-                        {isExpand
-                            && categories.map((list, listi) => {
-                                const isExpand = catExpands.includes(listi);
-                                return <div key={listi}>
-                                    <EvaButton
-                                        name={isExpand ? 'chevron-up' : 'chevron-down'}
-                                        prefix={schedule.ctrl.cats[listi]}
-                                        className="color--4"
-                                        onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}
-                                    />
-                                    {isExpand && list.map((role) => {
-                                        return <div
-                                            key={role.mi}
-                                            className="flex flex-gap"
-                                        >
-                                            <ScheduleWidgetRoleFace role={role} schedule={schedule} />
-                                            <StrongEvaButton
-                                                name="plus"
-                                                scope={attScope}
-                                                fieldName=""
-                                                mapExecArgs={(args) => ({ ...args, key: role.mi, })}
-                                            />
-                                        </div>
-                                    })}
-                                </div>;
-                            })}
-                    </>}
+                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles)
+                    && <ScheduleWidgetRoleList
+                        schedule={schedule}
+                        roles={list => list.map((role) => {
+                            if (!role.title || value.values?.some(li => li[0] === role.mi)) return null;
+
+                            return <div
+                                key={role.mi}
+                                className="flex flex-gap"
+                            >
+                                <ScheduleWidgetRoleFace role={role} schedule={schedule} />
+                                <StrongEvaButton
+                                    name="plus"
+                                    scope={attScope}
+                                    fieldName=""
+                                    mapExecArgs={(args) => ({ ...args, key: role.mi, })}
+                                />
+                            </div>
+                        })}
+                    />}
             </>}
         </div>
     }</>;

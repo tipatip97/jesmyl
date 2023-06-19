@@ -1,14 +1,14 @@
-import { scheduleWidgetRights } from "../../../../back/apps/index/rights";
-import useAuth from "../../../components/index/useAuth";
-import EvaButton from "../../eva-icon/EvaButton";
-import useModal from "../../modal/useModal";
-import { StrongComponentProps } from "../../strong-control/Strong.model";
-import StrongEvaButton from "../../strong-control/StrongEvaButton";
-import StrongEditableField from "../../strong-control/field/StrongEditableField";
-import useIsRedactArea from "../../useIsRedactArea";
-import { IScheduleWidget, IScheduleWidgetRole } from "../ScheduleWidget.model";
-import ScheduleWidgetIconChange from "../complect/IconChange";
-import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../useScheduleWidget";
+import { scheduleWidgetRights } from "../../../../../back/apps/index/rights";
+import useAuth from "../../../../components/index/useAuth";
+import EvaButton from "../../../eva-icon/EvaButton";
+import useModal from "../../../modal/useModal";
+import { StrongComponentProps } from "../../../strong-control/Strong.model";
+import StrongEvaButton from "../../../strong-control/StrongEvaButton";
+import StrongEditableField from "../../../strong-control/field/StrongEditableField";
+import useIsRedactArea from "../../../useIsRedactArea";
+import { IScheduleWidget, IScheduleWidgetRole } from "../../ScheduleWidget.model";
+import ScheduleWidgetIconChange from "../../complect/IconChange";
+import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../../useScheduleWidget";
 
 const mainRoleRights = scheduleWidgetRights.getAllRights();
 
