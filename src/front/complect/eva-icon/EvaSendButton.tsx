@@ -20,7 +20,6 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
   const [isError, setIsError] = useState(false);
   const { toast, modalNode } = useModal();
   const className = 'pointer '
-    + props.className
     + (props.disabled ? ' disabled ' : '')
     + (isError ? ' color--ko ' : '');
   const onClick = async (event: React.MouseEvent<unknown>) => {
@@ -51,21 +50,26 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
     }
   };
 
-  const icon = <EvaIcon
-    name={isLoading ? 'loader-outline' : props.name}
-    className={className + (isLoading ? ' rotate ' : '')}
-    onClick={props.prefix === undefined && props.postfix === undefined ? onClick : undefined}
-  />;
+  const icon = props.prefix === undefined && props.postfix === undefined
+    ? <EvaIcon
+      name={isLoading ? 'loader-outline' : props.name}
+      className={className
+        + (isLoading ? ' rotate ' : '')
+        + (props.className || '')}
+      onClick={onClick}
+    />
+    : <EvaIcon
+      name={isLoading ? 'loader-outline' : props.name}
+      className={className + (isLoading ? ' rotate ' : '')}
+    />;
 
   return <>
     {modalNode}
     {props.prefix === undefined && props.postfix === undefined
       ? icon
-      : <span className="flex">
-        <span
-          className={'flex flex-gap ' + className}
-          onClick={onClick}
-        >{props.prefix}{icon}{props.postfix}</span>
-      </span>}
+      : <span
+        className={'flex flex-gap flex-max ' + className + (props.className || '')}
+        onClick={onClick}
+      >{props.prefix}{icon}{props.postfix}</span>}
   </>;
 }

@@ -236,6 +236,10 @@ textarea {
 .flex {
   display: flex;
 
+  &.flex-max {
+    width: max-content;
+  }
+
   &.flex-gap {
     gap: var(--main-gap);
   }
