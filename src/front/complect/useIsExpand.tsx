@@ -7,8 +7,10 @@ export default function useIsExpand(initIsExpand: boolean, prefix?: ReactNode, p
     const [isExpand, setIsExpand] = useState(initIsExpand);
     return [
         <span className="flex flex-gap flex-max pointer" onClick={() => setIsExpand(!isExpand)}>
-            {prefix}
-            <EvaIcon name={isExpand ? 'chevron-up' : 'chevron-down'} />
+            <span className="flex flex-gap flex-max">
+                {prefix}
+                <EvaIcon name={isExpand ? 'chevron-up' : 'chevron-down'} />
+            </span>
             {postfix}
         </span>,
         isExpand,
