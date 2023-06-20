@@ -7,26 +7,46 @@ type StandardEnum<T> = {
     [nu: number]: string;
 }
 
-export class ScheduleWidgetRights<Enum extends StandardEnum<unknown>, Right extends number> {
+export interface ScheduleWidgetRightTexts<Right> {
+    id: Right,
+    title: string,
+    description?: string,
+    always?: boolean,
+    hidden?: boolean,
+}
+
+export class ScheduleWidgetRights<Enum extends StandardEnum<unknown> = StandardEnum<unknown>, Right extends number = number> {
     rightsEnum: Enum;
-    textList: { id: Right, title: string }[];
+    texts: ScheduleWidgetRightTexts<Right>[];
     enumOrder: Right[];
 
-    constructor(rightsEnum: Enum, enumList: { id: Right, title: string }[], enumOrder?: Right[]) {
+    constructor(rightsEnum: Enum, texts: ScheduleWidgetRightTexts<Right>[], enumOrder?: Right[]) {
         this.rightsEnum = rightsEnum;
-        if (enumOrder === undefined) enumOrder = enumList.map(({ id }) => id)
+        if (enumOrder === undefined) enumOrder = texts.map(({ id }) => id)
         this.enumOrder = enumOrder;
 
-        this.textList = [
+        this.texts = [
             {
-                id: enumList.length + 30,
+                id: texts.length + 30,
                 title: '',
+                hidden: true,
             } as never
-        ].concat(enumList as never).sort((a, b) => this.enumOrder.indexOf(a) - this.enumOrder.indexOf(b));
+        ].concat(texts as never).sort((a, b) => this.enumOrder.indexOf(a) - this.enumOrder.indexOf(b));
     }
 
     getAllRights = () => {
-        return parseInt(Array(this.textList.length).fill('1').join(''), 2);
+        return parseInt(Array(this.texts.length).fill('1').join(''), 2);
+    };
+
+    rightsBalance = (R: number | null | undefined): number => {
+        if (R === undefined || R === null || R === 0) return -1;
+        const rstr = R.toString(2);
+
+        for (let i = 0; i < this.enumOrder.length; i++) {
+            if (rstr[this.enumOrder[i] as never] !== '1') return i;
+        }
+
+        return this.enumOrder.length;
     };
 
     checkIsHasIndividualRights = (R: number | null | undefined, rightKey: Right) => {
@@ -52,7 +72,7 @@ export class ScheduleWidgetRights<Enum extends StandardEnum<unknown>, Right exte
         if (set == null) arr[rightKey as never] = '' + +!+arr[rightKey as never];
         else arr[rightKey as never] = set;
 
-        const bin = this.textList.map((_, i) => arr[i] === '1' ? '1' : '0').join('').replace(zeroEndTrimReg, '');
+        const bin = this.texts.map((_, i) => arr[i] === '1' ? '1' : '0').join('').replace(zeroEndTrimReg, '');
 
         return parseInt(bin || '1', 2);
     };

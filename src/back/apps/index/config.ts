@@ -194,6 +194,13 @@ const config: FilerAppConfig = {
                         }
                     },
                     '/ctrl': {
+                        '/type': {
+                            U: {
+                                args: {
+                                    value: '#Number',
+                                }
+                            }
+                        },
                         '/cats': {
                             scopeNode: 'categories',
                             C: {

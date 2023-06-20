@@ -3,12 +3,13 @@ import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
-import useIsExpand from "../../useIsExpand";
 import { IScheduleWidget } from "../ScheduleWidget.model";
 import { useScheduleWidgetRolesContext } from "../useScheduleWidget";
-import ScheduleWidgetUser from "./User";
+import ScheduleWidgetRegisterType from "./RegisterType";
 import ScheduleWidgetRole from "./roles/Role";
 import ScheduleWidgetRoleList from "./roles/RoleList";
+import ScheduleWidgetUser from "./users/User";
+import ScheduleWidgetUserList from "./users/UserList";
 
 export default function ScheduleWidgetControl({
     scope,
@@ -17,23 +18,16 @@ export default function ScheduleWidgetControl({
     schedule: IScheduleWidget,
 }>) {
     const userRoles = useScheduleWidgetRolesContext();
-    const [usersExpandNode, isUsersExpand] = useIsExpand(false, <>Участники</>);
 
     const { modalNode, screen } = useModal(({ header, body }) => {
         return userRoles.isCanRedact
             ? <>
                 {header(<>Управление</>)}
                 {body(<>
-                    {usersExpandNode}
-                    {isUsersExpand && <div className="margin-gap-v">
-                        {schedule.ctrl.users.map((user) => {
-                            return <ScheduleWidgetUser
-                                key={user.mi}
-                                scope={scope}
-                                user={user}
-                            />
-                        })}
-                    </div>}
+                    <ScheduleWidgetUserList
+                        scope={scope}
+                        schedule={schedule}
+                    />
                     <ScheduleWidgetRoleList
                         schedule={schedule}
                         expandContent={!schedule.ctrl?.roles.some((role) => !role.title)
@@ -53,6 +47,7 @@ export default function ScheduleWidgetControl({
                             />;
                         })}
                     />
+                    <ScheduleWidgetRegisterType schedule={schedule} scope={scope} />
                 </>)}
             </>
             : <>

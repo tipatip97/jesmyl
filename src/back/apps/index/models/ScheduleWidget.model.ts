@@ -48,6 +48,7 @@ export interface IScheduleWidgetCtrl<EvaIconName> {
     cats: string[],
     roles: IScheduleWidgetRole<EvaIconName>[],
     users: IScheduleWidgetRoleUser[],
+    type?: number,
 }
 
 export interface IScheduleWidgetDayEvent {
