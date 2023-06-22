@@ -1,12 +1,12 @@
-import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
+import { useIsRememberExpand } from "../../../expand/useIsRememberExpand";
 import mylib from "../../../my-lib/MyLib";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import { strongScopeKeyValueSeparator } from "../../../strong-control/useStrongControl";
 import useIsRedactArea from "../../../useIsRedactArea";
-import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetAttKey, ScheduleWidgetAttRef, ScheduleWidgetDayEventAttValue, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
+import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
-import { ScheduleWidgetScopePhase, useIsSchWidgetExpand, useScheduleWidgetAppAttsContext } from "../../useScheduleWidget";
+import { ScheduleWidgetScopePhase, useScheduleWidgetAppAttsContext } from "../../useScheduleWidget";
 import ScheduleWidgetDayEventPeriodicTranslation from "./DayEventPeriodicTranslationAtt";
 
 const isNIs = (is: unknown) => !is;
@@ -28,7 +28,12 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
 }>) {
     const [appAtts] = useScheduleWidgetAppAttsContext();
     const appAtt = appAtts[props.attKey];
-    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(props.scope, props.isPast);
+    const [attTitleNode, isExpand] = useIsRememberExpand(props.scope,
+        <>
+            <EvaIcon name={appAtt.icon} />
+            {appAtt.title}
+        </>,
+        null, props.isPast);
     const { isRedact, editIcon, setIsSelfRedact } = useIsRedactArea(true, null, true, true);
 
     if (!appAtt) return <div className="error-message">Неизвестное вложение</div>;
@@ -96,11 +101,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
 
     return <>
         <div className="flex flex-gap between color--7 margin-gap-v">
-            <div className="flex flex-gap pointer" onClick={() => switchIsExpand()}>
-                <EvaIcon name={appAtt.icon} />
-                {appAtt.title}
-                <EvaButton name={isExpand ? 'chevron-up' : 'chevron-down'} />
-            </div>
+            {attTitleNode}
             <div className="flex">
                 {isCanRedact && isExpand && editIcon}
                 {notateNode}

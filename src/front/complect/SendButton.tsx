@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import TheButton from "./Button";
 import EvaIcon from "./eva-icon/EvaIcon";
 import modalService from "./modal/Modal.service";
@@ -12,7 +12,7 @@ export default function SendButton<Value>({
   disabled,
 }: {
   title: string;
-  confirm?: string | boolean | null;
+  confirm?: ReactNode | boolean | null;
   disabled?: boolean;
   onSend?: () => Promise<Value> | void | nil;
   onSuccess?: (val: Value) => void;

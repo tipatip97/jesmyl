@@ -3,7 +3,7 @@ import { SokiAppName } from "../soki/soki.model";
 
 export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | 'func' | 'migrate' | 'insert_beforei' | 'remove' | 'remove_each' | 'delete' | 'other';
 
-export interface ExecutionDict<Value = any, Args = Record<string, any> & Partial<Record<'value', Value>>> {
+export interface ExecutionDict<Value = any, Args = ExecutionArgs<any, Value>> {
     action: string,
     method?: ExecutionMethod,
     value?: Value,
@@ -28,7 +28,7 @@ export type ExecutionSidesDict = Record<`/${string}`, ExecutionSide>;
 export interface BasicRule {
     method: ExecutionMethod,
     value?: unknown,
-    args?: Record<string, unknown>,
+    args?: ExecutionArgs,
 }
 
 export interface ExecutionSide extends BasicRule, Partial<ExecutionSidesDict> {
@@ -56,27 +56,34 @@ export type ExecutionExpectations = [number, {} | []][];
 
 export type ExecuterSetInEachValueItem = Record<string, Record<string, unknown>>;
 
-export interface RealAccumulatableRule {
+export type ExecutionArgs<Value = unknown, Args = Record<string, unknown>, Vars = Partial<Record<string, unknown>>> = Partial<
+    Args
+    & Record<'$$vars', Vars>
+    & Record<'value', Value>
+>;
+
+export interface RealAccumulatableRule<Value = unknown, Args = Record<string, unknown>, Vars = Partial<Record<string, unknown>>> {
     scopeNode?: string,
     expecteds?: ExecutionExpectations,
-    args?: Record<string, any>,
+    args?: ExecutionArgs<Value, Args, Vars>,
     track: ExecutionTrack,
     sides?: ExecutionSide[],
     accesses: string[],
     setInEachValueItem?: ExecuterSetInEachValueItem,
     RRej?: boolean | number,
+    $$vars: Record<`$$${string}`, number>,
 }
 
-export interface ShortRealRule {
+export interface ShortRealRule<Value = unknown, Args = Record<string, unknown>, Vars = Partial<Record<string, unknown>>> {
     action: string,
     title?: string,
     shortTitle?: string,
     level?: number,
     isSequre?: boolean,
-    args?: Record<string, any>,
+    args?: ExecutionArgs<Value, Args, Vars>,
 }
 
-export interface ExecutionReal extends RealAccumulatableRule, ShortRealRule {
+export interface ExecutionReal<Value = unknown, Args = Record<string, unknown>, Vars = Partial<Record<string, unknown>>> extends RealAccumulatableRule<Value, Args, Vars>, ShortRealRule<Value, Args, Vars> {
     method: ExecutionMethod,
     value: any,
     uniqs?: string[] | Record<string, string>,

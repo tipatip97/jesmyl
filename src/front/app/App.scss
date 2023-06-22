@@ -1,6 +1,7 @@
 body {
     --full-height: 100%;
     --main-gap: 8px;
+    --main-sm-gap: 5px;
     --main-big-gap: 18px;
     --main-giant-gap: 40px;
     --header-padding-top: 23px;
@@ -25,78 +26,55 @@ body {
 
     overflow: hidden;
 
-    .padding-giant-gap {
-        padding: var(--main-giant-gap);
+    @mixin gap-builder($general, $size: '') {
+        .#{$general} {
+            &#{$size}-gap {
+                #{$general}: var(--main#{$size}-gap);
+
+                &-t,
+                &-v {
+                    #{$general}-top: var(--main#{$size}-gap);
+                }
+
+                &-b,
+                &-v {
+                    #{$general}-bottom: var(--main#{$size}-gap);
+                }
+
+                &-l,
+                &-h {
+                    #{$general}-left: var(--main#{$size}-gap);
+                }
+
+                &-r,
+                &-h {
+                    #{$general}-right: var(--main#{$size}-gap);
+                }
+            }
+        }
     }
 
-    .padding-big-gap {
-        padding: var(--main-big-gap);
+    @include gap-builder('margin');
+    @include gap-builder('margin', '-big');
+    @include gap-builder('margin', '-sm');
+
+    @include gap-builder('padding');
+    @include gap-builder('padding', '-big');
+    @include gap-builder('padding', '-sm');
+
+    @mixin font-size-builder($metric) {
+        @for $i from 1 through 9 {
+            [class~='font-size:#{$i / 10}#{$metric}'] {
+                font-size: #{$i / 10}#{$metric};
+            }
+            [class~='font-size:#{$i}#{$metric}'] {
+                font-size: #{$i}#{$metric};
+            }
+        }
     }
 
-    .padding-gap {
-        padding: var(--main-gap);
-    }
-
-    .padding-gap-v {
-        padding: var(--main-gap) 0;
-    }
-
-    .margin-big-gap {
-        margin: var(--main-big-gap);
-    }
-
-    .margin-big-gap-v {
-        margin-top: var(--main-big-gap);
-        margin-bottom: var(--main-big-gap);
-    }
-
-    .margin-big-gap-b {
-        margin-bottom: var(--main-big-gap);
-    }
-
-    .margin-big-gap-l {
-        margin-left: var(--main-big-gap);
-    }
-
-    .margin-big-gap-r {
-        margin-right: var(--main-big-gap);
-    }
-
-    .margin-gap-l {
-        margin-left: var(--main-gap);
-    }
-
-    .margin-gap-t {
-        margin-top: var(--main-gap);
-    }
-
-    .margin-gap-r {
-        margin-right: var(--main-gap);
-    }
-
-    .margin-gap-b {
-        margin-bottom: var(--main-gap);
-    }
-
-    .margin-big-gap-h {
-        margin-left: var(--main-big-gap);
-        margin-right: var(--main-big-gap);
-    }
-
-    .margin-gap {
-        margin: var(--main-gap);
-    }
-
-    .margin-gap-v {
-        margin-top: var(--main-gap);
-        margin-bottom: var(--main-gap);
-    }
-
-    .margin-gap-h {
-        margin-left: var(--main-gap);
-        margin-right: var(--main-gap);
-    }
-
+    @include font-size-builder('rem');
+    @include font-size-builder('em');
 
     .above-container.keyboard-open {
         --keyboard-flash-height: 30vh;

@@ -2,9 +2,10 @@ import { FullScreenContentOpenMode } from "./fullscreen-content/useFullscreenCon
 
 
 export interface ComplectStorage {
+    rememberExpandes: string[],
 }
 
-export interface ComplectState extends ComplectStorage {
+export interface ComplectState {
     fullscreenContentOpenMode: FullScreenContentOpenMode,
     isAbsoluteFloatPopupOpen: boolean,
     isAbsoluteBottomPopupOpen: boolean,

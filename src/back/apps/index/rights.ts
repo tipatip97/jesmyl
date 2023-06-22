@@ -21,27 +21,27 @@ const textList: ScheduleWidgetRightTexts<ScheduleWidgetUserRoleRight>[] = [
     {
         id: ScheduleWidgetUserRoleRight.Read,
         title: 'Чтение',
-        description: 'Базовый доступ',
+        description: ['Базовый доступ'],
     },
     {
         id: ScheduleWidgetUserRoleRight.ReadTitles,
         title: 'Чтение текстов',
-        description: 'Доступ к темам и описаниям',
+        description: ['Доступ к темам и описаниям'],
     },
     {
         id: ScheduleWidgetUserRoleRight.ReadSpecials,
         title: 'Спец. события',
-        description: 'Доступ к специальным событиям',
+        description: ['Доступ к специальным событиям'],
     },
     {
         id: ScheduleWidgetUserRoleRight.Redact,
         title: 'Редактирование',
-        description: 'Редактирование чего-либо',
+        description: ['Редактирование чего-либо'],
     },
     {
         id: ScheduleWidgetUserRoleRight.TotalRedact,
         title: 'Полный доступ',
-        description: 'Выдача прав, просмотр спец. информации',
+        description: ['Выдача прав, просмотр спец. информации'],
     },
 ];
 
@@ -57,7 +57,7 @@ export enum CustomAttUseRights {
     Roles,
 }
 
-export const customAttUseRightsTitles: { id: CustomAttUseRights, title: string }[] = [
+export const customAttUseRightsTitles: ScheduleWidgetRightTexts<CustomAttUseRights>[] = [
     {
         id: CustomAttUseRights.Roles,
         title: 'роли',
@@ -77,34 +77,37 @@ export const customAttUseRights = new ScheduleWidgetRights(CustomAttUseRights, c
 ///////////////////////////////
 
 
-export enum ScheduleWidgrtRegType {
-    QRCode,
-    Free = 1,
-    FreeRead,
+export enum ScheduleWidgetRegType {
+    Public = 1,
+    BeforeRegistration,
+    HideContent,
 }
 
-export const scheduleWidgrtRegTypeOrder = [
-    ScheduleWidgrtRegType.Free,
-    ScheduleWidgrtRegType.FreeRead,
+export const scheduleWidgetRegTypeTitles: ScheduleWidgetRightTexts<ScheduleWidgetRegType>[] = [
+    {
+        id: ScheduleWidgetRegType.Public,
+        title: 'Публичное мероприятие',
+        description: [
+            'Мероприятие доступно всем',
+            'Уполномоченные добавляют участников считыванием JesmyL-паспортов (QR-код)',
+        ],
+    },
+    {
+        id: ScheduleWidgetRegType.BeforeRegistration,
+        title: 'Предварительная регистрация',
+        description: [
+            'Участники могут регистрироваться сами',
+            'Любой пользователь сможет иметь доступ к содержимому',
+        ],
+    },
+    {
+        id: ScheduleWidgetRegType.HideContent,
+        title: 'Скрывать содержимое',
+        description: [
+            'Для просмотра содержимого зарегистрированному участнику необходимо выдать соответствующие права',
+            'Зарегистрированные участники могут сразу просматривать содержимое',
+        ],
+    },
 ];
 
-export const scheduleWidgetRegTypeTitles: { id: ScheduleWidgrtRegType, title: string, description: string, always?: true }[] = [
-    {
-        id: ScheduleWidgrtRegType.QRCode,
-        title: 'QR-добавление',
-        description: 'Список участников пополняется модераторами при считывании JesmyL-паспортов',
-        always: true,
-    },
-    {
-        id: ScheduleWidgrtRegType.Free,
-        title: 'Свободная',
-        description: 'Участники могут регистрироваться самостоятельно, не видят содержание до выдачи прав',
-    },
-    {
-        id: ScheduleWidgrtRegType.FreeRead,
-        title: 'Открытая',
-        description: 'Регистрируюясь, участники могут сразу просматривать содержание',
-    },
-];
-
-export const scheduleWidgetRegTypeRights = new ScheduleWidgetRights(ScheduleWidgrtRegType, scheduleWidgetRegTypeTitles, scheduleWidgrtRegTypeOrder);
+export const scheduleWidgetRegTypeRights = new ScheduleWidgetRights(ScheduleWidgetRegType, scheduleWidgetRegTypeTitles);

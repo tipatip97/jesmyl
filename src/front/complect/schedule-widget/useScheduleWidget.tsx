@@ -1,6 +1,6 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { ReactNode, useCallback, useContext, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { ScheduleWidgetUserRoleRight, scheduleWidgetRights } from "../../../back/apps/index/rights";
+import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetRights } from "../../../back/apps/index/rights";
 import { appAttsStore } from "../../components/complect/appScheduleAttrsStorage";
 import indexStorage from "../../components/index/indexStorage";
 import useAuth from "../../components/index/useAuth";
@@ -10,6 +10,7 @@ import { makeStrongScopeMaker } from "../strong-control/useStrongControl";
 import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetRoleUser, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
 import ScheduleKeyValueListAtt from "./atts/attachments/key-value/KeyValueListAtt";
 import { scheduleOwnAtts } from "./atts/attachments/ownAtts";
+import EvaIcon from "../eva-icon/EvaIcon";
 
 const schedulesSelector = (state: RootState) => state.index.schedules;
 
@@ -27,50 +28,17 @@ export default function useScheduleWidget(schedulew?: number) {
     return ret;
 }
 
-const expandes: string[] = indexStorage.getOr('schExpandes', []);
-const isNIs = (is: boolean) => !is;
-const clear = (scope: string) => {
-    const scopeIndex = expandes.indexOf(scope);
-    expandes.splice(scopeIndex, 1);
-    indexStorage.set('schExpandes', expandes);
-};
-
-export const useIsSchWidgetExpand = (scope: string, isSelfExpandOnly?: boolean): [
-    boolean,
-    (isExpand?: boolean) => void
-] => {
-    const [isExpand, setIsExpand] = useState(isSelfExpandOnly ? false : expandes.includes(scope));
-
-    if (isSelfExpandOnly && expandes.includes(scope)) clear(scope);
-
-    return [isExpand, useCallback((isExpand) => {
-        if (isSelfExpandOnly) setIsExpand(isExpand ?? isNIs);
-
-        if (expandes.includes(scope)) {
-            if (isExpand === undefined || isExpand === false) {
-                clear(scope);
-                if (!isSelfExpandOnly) setIsExpand(isNIs);
-            }
-        } else if (!isSelfExpandOnly) {
-            if (isExpand === undefined || isExpand === true) {
-                expandes.push(scope);
-                setIsExpand(isNIs);
-                indexStorage.set('schExpandes', expandes);
-            }
-        }
-    }, [isSelfExpandOnly, scope])];
-};
-
 export const ScheduleWidgetAppAttsContext = React.createContext<[ScheduleWidgetAppAtts, ScheduleWidgetAttRefs]>([{}, {}]);
 export const useScheduleWidgetAppAttsContext = () => useContext(ScheduleWidgetAppAttsContext);
 
-export interface ScheduleWidgetRoles extends ScheduleWidgetUserRights {
+export interface ScheduleWidgetRights extends ScheduleWidgetUserRights, ScheduleWidgetScheduleWidgetRegType {
     myUser: IScheduleWidgetRoleUser | nil,
     mainRole: IScheduleWidgetRole | nil,
     isMyMainRole: boolean,
 }
 
 export type ScheduleWidgetUserRights = Record<`isCan${keyof typeof ScheduleWidgetUserRoleRight}`, boolean>;
+export type ScheduleWidgetScheduleWidgetRegType = Record<`isSw${keyof typeof ScheduleWidgetRegType}`, boolean>;
 
 export const defScheduleWidgetUserRights: ScheduleWidgetUserRights = {
     isCanTotalRedact: false,
@@ -80,19 +48,26 @@ export const defScheduleWidgetUserRights: ScheduleWidgetUserRights = {
     isCanRedact: false,
 };
 
-export const ScheduleWidgetRolesContext = React.createContext<ScheduleWidgetRoles>({
+export const ScheduleWidgetRightsContext = React.createContext<ScheduleWidgetRights>({
     ...defScheduleWidgetUserRights,
     mainRole: null,
     myUser: null,
     isMyMainRole: false,
+    isSwBeforeRegistration: false,
+    isSwHideContent: false,
+    isSwPublic: false,
 });
-export const useScheduleWidgetRolesContext = () => useContext(ScheduleWidgetRolesContext);
-export const useScheduleWidgetRoles = (schedule: IScheduleWidget | und) => {
+export const useScheduleWidgetRightsContext = () => useContext(ScheduleWidgetRightsContext);
+export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?: ScheduleWidgetRights) => {
     const auth = useAuth();
 
-    return useMemo((): ScheduleWidgetRoles => {
+    return useMemo((): ScheduleWidgetRights => {
+        if (rights !== undefined) return rights;
         const myUser = auth && schedule?.ctrl.users.find(user => user.login === auth.login);
         const mainRole = schedule?.ctrl.roles.find(role => role.mi === 0);
+        const isSwPublic = scheduleWidgetRegTypeRights.checkIsHasRights(schedule?.ctrl.type, ScheduleWidgetRegType.Public,);
+        const isSwBeforeRegistration = scheduleWidgetRegTypeRights.checkIsHasRights(schedule?.ctrl.type, ScheduleWidgetRegType.BeforeRegistration);
+        const isSwHideContent = scheduleWidgetRegTypeRights.checkIsHasRights(schedule?.ctrl.type, ScheduleWidgetRegType.HideContent);
 
         if (mainRole && mainRole.user === myUser?.mi) {
             return {
@@ -104,11 +79,14 @@ export const useScheduleWidgetRoles = (schedule: IScheduleWidget | und) => {
                 isCanReadTitles: true,
                 isCanRedact: true,
                 isMyMainRole: true,
+                isSwBeforeRegistration,
+                isSwHideContent,
+                isSwPublic,
             };
         }
 
         const isCanRead = scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Read);
-        const isCanReadTitles = isCanRead && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadTitles);
+        const isCanReadTitles = (isSwPublic && !isSwBeforeRegistration) || (isCanRead && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadTitles));
         const isCanReadSpecials = isCanReadTitles && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadSpecials);
         const isCanRedact = isCanReadSpecials && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Redact);
         const isCanTotalRedact = isCanRedact && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.TotalRedact);
@@ -122,8 +100,11 @@ export const useScheduleWidgetRoles = (schedule: IScheduleWidget | und) => {
             isCanReadTitles,
             isCanRedact,
             isMyMainRole: !!mainRole && mainRole.user === myUser?.mi,
+            isSwBeforeRegistration,
+            isSwHideContent,
+            isSwPublic,
         };
-    }, [auth, schedule?.ctrl.roles, schedule?.ctrl.users]);
+    }, [auth, schedule, rights]);
 };
 
 export const ScheduleWidgetSchContext = React.createContext<nil | IScheduleWidget>(null);

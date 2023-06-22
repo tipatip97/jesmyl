@@ -263,7 +263,7 @@ export class SMyLib {
         return val;
     }
 
-    checkIsCorrectArgs(action:string, realArgs: Record<string, any>, typeArgs: Record<string, any>,) {
+    checkIsCorrectArgs(action: string, realArgs: Record<string, any>, typeArgs: Record<string, any>,) {
         const args = { ...realArgs };
         const ruleEntries = SMyLib.entries(typeArgs);
 
@@ -282,6 +282,7 @@ export class SMyLib {
         }
 
         for (const [key, type] of ruleEntries) {
+            if (key === '$$vars') continue;
             const argEntry = argsEntries.find(([argn]) => argn === key);
             if (!argEntry) {
                 if (this.isRequiredType(type))
@@ -337,7 +338,7 @@ export class SMyLib {
             return (typer as any[]).some(tup => this.isCorrectType(value, tup));
         }
 
-        return false;
+        return value === typer;
     }
 }
 

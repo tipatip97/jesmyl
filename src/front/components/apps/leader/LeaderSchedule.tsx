@@ -24,7 +24,7 @@ export default function LeaderSchedule() {
     content={
       ccontext
         ? schedule
-          ? <ScheduleWidget schedule={schedule} expand />
+          ? <ScheduleWidget schedule={schedule} />
           : <ScheduleCreateWidgetButton
             appName="leader"
             title={ccontext.name}

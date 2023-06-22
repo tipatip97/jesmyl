@@ -8,7 +8,7 @@ import StrongEditableField from "../../../strong-control/field/StrongEditableFie
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetRole } from "../../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../../complect/IconChange";
-import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../../useScheduleWidget";
+import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 
 const mainRoleRights = scheduleWidgetRights.getAllRights();
 
@@ -21,7 +21,7 @@ export default function ScheduleWidgetRole({
     role: IScheduleWidgetRole,
 }>) {
     const roleScope = takeStrongScopeMaker(scope, ' roleMi/', role.mi);
-    const { isCanTotalRedact } = useScheduleWidgetRolesContext();
+    const { isCanTotalRedact } = useScheduleWidgetRightsContext();
     const { editIcon, isRedact } = useIsRedactArea(true, !role.title || null, isCanTotalRedact, true);
     const auth = useAuth();
     const roleUser = extractScheduleWidgetRoleUser(schedule, 0, role);

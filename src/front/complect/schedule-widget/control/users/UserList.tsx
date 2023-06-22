@@ -1,6 +1,6 @@
 import { scheduleWidgetRights } from "../../../../../back/apps/index/rights";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
-import useIsExpand from "../../../useIsExpand";
+import useIsExpand from "../../../expand/useIsExpand";
 import { IScheduleWidget } from "../../ScheduleWidget.model";
 import ScheduleWidgetUser from "./User";
 

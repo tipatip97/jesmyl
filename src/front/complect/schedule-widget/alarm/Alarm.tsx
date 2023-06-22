@@ -1,13 +1,13 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import useFullContent, { FullContentValue } from "../../fullscreen-content/useFullContent";
 import mylib from "../../my-lib/MyLib";
 import ScheduleWidgetCleans from "../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../complect/TopicTitle";
 import { useSchedules } from "../useScheduleWidget";
-import ScheduleAlarmDay from "./AlarmDay";
 import "./Alarm.scss";
+import ScheduleAlarmDay from "./AlarmDay";
+import ScheduleWidgetAlarmScheduleList from "./schedules/AlarmScheduleList";
 
 const msInDay = mylib.howMs.inDay;
 const msInHour = mylib.howMs.inHour;
@@ -18,6 +18,7 @@ export default function ScheduleWidgetAlarm() {
     const schedules = useSchedules();
     const now = Date.now();
     const [isFullOpen, setIsFullOpen] = useState(false);
+
 
     const [updates, setUpdates] = useState<null | number>(null);
     useEffect(() => {
@@ -198,12 +199,17 @@ export default function ScheduleWidgetAlarm() {
 
     const [fullNode] = useFullContent(fullValue, isFullOpen ? 'open' : null, setIsFullOpen);
 
-    return <div
-        className={'ScheduleWidgetAlarm flex' + (isCanOpenFull ? ' pointer' : '')}
-        onClick={isCanOpenFull && (() => setIsFullOpen(true))}
-    >
+    return <>
         {fullNode}
-        <EvaButton name="calendar" className="margin-big-gap" />
-        {node ?? <>Расписаний нет</>}
-    </div>;
+        <div
+            className={'ScheduleWidgetAlarm flex flex-gap between' + (isCanOpenFull ? ' pointer' : '')}
+            onClick={isCanOpenFull && (() => setIsFullOpen(true))}
+        >
+            <div className="flex ">
+                <EvaIcon name="calendar" className="margin-big-gap" />
+                {node ?? <>Мероприятий нет</>}
+            </div>
+            <ScheduleWidgetAlarmScheduleList schedules={schedules} />
+        </div>
+    </>;
 }

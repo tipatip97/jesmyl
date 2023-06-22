@@ -10,7 +10,7 @@ type StandardEnum<T> = {
 export interface ScheduleWidgetRightTexts<Right> {
     id: Right,
     title: string,
-    description?: string,
+    description?: [string, string?],
     always?: boolean,
     hidden?: boolean,
 }

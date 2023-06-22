@@ -1,15 +1,15 @@
 import { useMemo } from "react";
 import ScheduleWidgetTopicTitle from "../complect/TopicTitle";
 import ScheduleWidgetDay, { ScheduleWidgetDayProps } from "../days/Day";
-import { ScheduleWidgetAppAttsContext, ScheduleWidgetRolesContext, ScheduleWidgetSchContext, makeAttStorage, takeScheduleStrongScopeMaker, useScheduleWidgetRoles } from "../useScheduleWidget";
+import { ScheduleWidgetAppAttsContext, ScheduleWidgetRightsContext, ScheduleWidgetSchContext, makeAttStorage, takeScheduleStrongScopeMaker, useScheduleWidgetRights } from "../useScheduleWidget";
 
 export default function ScheduleAlarmDay(props: Omit<ScheduleWidgetDayProps, 'scope'>) {
     const atts = useMemo(() => makeAttStorage(props.schedule), [props.schedule]);
     const scope = takeScheduleStrongScopeMaker(props.schedule.w);
-    const roles = useScheduleWidgetRoles(props.schedule);
+    const roles = useScheduleWidgetRights(props.schedule);
 
     return <ScheduleWidgetSchContext.Provider value={props.schedule}>
-        <ScheduleWidgetRolesContext.Provider value={roles}>
+        <ScheduleWidgetRightsContext.Provider value={roles}>
             <ScheduleWidgetAppAttsContext.Provider value={atts}>
                 <ScheduleWidgetTopicTitle
                     titleBox={props.schedule}
@@ -23,6 +23,6 @@ export default function ScheduleAlarmDay(props: Omit<ScheduleWidgetDayProps, 'sc
                     scope={scope}
                 />
             </ScheduleWidgetAppAttsContext.Provider>
-        </ScheduleWidgetRolesContext.Provider>
+        </ScheduleWidgetRightsContext.Provider>
     </ScheduleWidgetSchContext.Provider>;
 }

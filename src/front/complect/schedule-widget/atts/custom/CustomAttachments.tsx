@@ -49,7 +49,7 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
             name="attach-2"
             postfix={<>Шаблоны вложений <EvaIcon name="chevron-right" /></>}
             onClick={() => screen()}
-            className="margin-gap-v"
+            className="flex-max margin-gap-v"
         />
     </div>;
 }

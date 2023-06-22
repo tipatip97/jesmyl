@@ -1,14 +1,18 @@
 import { Executer } from "../../complect/executer/Executer";
+import { ExecutionArgs, ExecutionDict, ExecutionReal } from "../../complect/executer/Executer.model";
 import { FilerAppConfig } from "../../complect/filer/Filer.model";
 import { rootDirective } from "../../complect/soki/soki.model";
 import { Application } from "./models/Application";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetRoleUser, ScheduleStorage } from "./models/ScheduleWidget.model";
-import { ScheduleWidgetUserRoleRight, scheduleWidgetRights } from "./rights";
+import { ScheduleWidgetUserRoleRight, ScheduleWidgetRegType, scheduleWidgetRegTypeRights, scheduleWidgetRights as scheduleWidgetUserRights } from "./rights";
 
 interface SchedulesBag {
     users: IScheduleWidgetRoleUser[],
     schw: number,
+    schedule: IScheduleWidget<string>,
 }
+
+const emptyArray: any[] = [];
 
 const mapCantReadTitlesDayEvent = (event: IScheduleWidgetDayEvent) => ({
     ...event,
@@ -26,7 +30,7 @@ const mapCantReadTitlesDay = (day: IScheduleWidgetDay) => ({
 });
 
 const mapCantReadSpecialsDayEvent = (event: IScheduleWidgetDayEvent) => {
-    return event.secret
+    return event.secret === 1
         ? {
             ...event,
             topic: undefined,
@@ -42,84 +46,158 @@ const mapCantReadSpecialsDay = (day: IScheduleWidgetDay) => ({
     list: day.list.map(mapCantReadSpecialsDayEvent),
 });
 
+type ScheduleWidgetOnCantReadExec = ExecutionDict<
+    unknown,
+    ExecutionArgs<
+        unknown,
+        { schw: number },
+        { $$event: IScheduleWidgetDayEvent }
+    >
+>;
+
+type ScheduleWidgetOnCantReadRule = ExecutionReal<
+    unknown,
+    ExecutionArgs<
+        unknown,
+        { schw: number },
+        { isSecretChange: boolean, }
+    >
+>;
+
 const config: FilerAppConfig = {
     title: 'JESMYL',
     requirements: {
         schedules: {
-            onCantRead: (isRead, exec, rule, auth, bag: SchedulesBag, schedules: ScheduleStorage<string>, whenRejButTs) => {
-                if (rule.RRej == null) return null;
-                if (rule.RRej === true) return isRead ? '0<' : null;
+            onCantRead: (isRead, exec: ScheduleWidgetOnCantReadExec, rule: ScheduleWidgetOnCantReadRule, auth, bag: SchedulesBag, schedules: ScheduleStorage<string>, whenRejButTs): string | null | typeof whenRejButTs => {
+                if (rule.RRej === true) return isRead ? 'block' : null;
                 if (rule.RRej === false) return null;
 
-                if (auth == null) return '1<';
+                if (bag.schedule === undefined || bag.schw !== exec.args?.schw) {
+                    bag.schw = exec.args?.schw!;
+                    if (bag.schw === undefined) return 'no_schw';
 
-                if (bag.users === undefined || bag.schw !== exec.args?.schw) {
-                    bag.schw = exec.args?.schw;
-                    if (bag.schw === undefined) return '2<';
-
-                    bag.users = schedules.list.find(sch => sch.w === bag.schw)?.ctrl.users!;
+                    bag.schedule = schedules.list.find(sch => sch.w === bag.schw)!;
+                    if (bag.schedule === undefined) return 'no_sch';
+                    bag.users = bag.schedule.ctrl.users!;
                 }
 
-                if (bag.users === undefined) return '3<';
+                if (auth == null) return 'unauth';
+                if (bag.users === undefined) return 'no_users';
 
                 const user = bag.users.find(user => auth.login === user.login);
-                if (user === undefined) return '4<';
+                if (user === undefined) return whenRejButTs;
 
-                return scheduleWidgetRights.checkIsHasRights(user.R, rule.RRej)
+                if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials) && exec.args?.$$vars?.$$event.secret) {
+                    return whenRejButTs;
+                }
+
+                if (rule.RRej == null) return null;
+
+                return scheduleWidgetUserRights.checkIsHasRights(user.R, rule.RRej)
                     ? null
                     : whenRejButTs;
             },
             prepareContent: (schedules: ScheduleStorage<string>, auth): ScheduleStorage<string> => {
-                if (!auth) return { list: [] };
+                if (!auth) return { list: emptyArray };
                 const authLogin = auth.login;
+                const list: IScheduleWidget<string>[] = [];
 
-                return {
-                    ...schedules,
-                    list: schedules.list.map((schedule): IScheduleWidget<string> => {
-                        const user = schedule.ctrl.users.find(user => user.login === authLogin);
+                schedules.list.forEach((schedule): void => {
+                    const user = schedule.ctrl.users.find(user => user.login === authLogin);
 
-                        if (user === undefined || !scheduleWidgetRights.checkIsHasRights(user?.R, ScheduleWidgetUserRoleRight.Read))
-                            return {
+                    if (user === undefined) {
+                        if (scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public)) {
+                            list.push({
                                 ...schedule,
-                                days: undefined,
-                                topic: undefined,
+                                days: schedule.days?.[0] && [{ wup: schedule.days[0].wup, mi: 0, list: emptyArray }],
                                 tatts: undefined,
                                 dsc: undefined,
                                 types: undefined,
                                 ctrl: {
-                                    cats: [],
-                                    roles: [],
-                                    users: user === undefined ? [] : [user],
+                                    cats: emptyArray,
+                                    roles: emptyArray,
+                                    users: emptyArray,
+                                    type: schedule.ctrl.type,
                                 }
-                            };
+                            });
+                            return;
+                        }
+                        return;
+                    }
 
-                        if (!scheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles))
-                            return {
-                                ...schedule,
-                                days: schedule.days?.map(mapCantReadTitlesDay),
-                                topic: undefined,
-                                tatts: undefined,
-                                dsc: undefined,
-                                ctrl: {
-                                    cats: [],
-                                    roles: [],
-                                    users: schedule.ctrl.users,
-                                }
-                            };
+                    if (
+                        (user.R === undefined || user.R === 0)
+                        && scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public)
+                        && !scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)
+                    ) {
+                        list.push({
+                            ...schedule,
+                            days: schedule.days?.map(mapCantReadSpecialsDay),
+                            ctrl: {
+                                cats: emptyArray,
+                                roles: emptyArray,
+                                users: emptyArray,
+                                type: schedule.ctrl.type,
+                            }
+                        });
+                        return;
+                    }
 
-                        if (!scheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
-                            return {
-                                ...schedule,
-                                days: schedule.days?.map(mapCantReadSpecialsDay),
-                                ctrl: {
-                                    cats: [],
-                                    roles: [],
-                                    users: schedule.ctrl.users,
-                                }
-                            };
+                    if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read)) {
+                        list.push({
+                            ...schedule,
+                            days: undefined,
+                            topic: undefined,
+                            tatts: undefined,
+                            dsc: undefined,
+                            types: undefined,
+                            ctrl: {
+                                cats: emptyArray,
+                                roles: emptyArray,
+                                users: user === undefined ? emptyArray : [user],
+                                type: schedule.ctrl.type,
+                            },
+                        });
+                        return;
+                    }
 
-                        return schedule;
-                    }),
+                    if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles)) {
+                        list.push({
+                            ...schedule,
+                            days: schedule.days?.map(mapCantReadTitlesDay),
+                            topic: undefined,
+                            tatts: undefined,
+                            dsc: undefined,
+                            ctrl: {
+                                cats: emptyArray,
+                                roles: emptyArray,
+                                users: schedule.ctrl.users,
+                                type: schedule.ctrl.type,
+                            }
+                        });
+                        return;
+                    }
+
+                    if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials)) {
+                        list.push({
+                            ...schedule,
+                            days: schedule.days?.map(mapCantReadSpecialsDay),
+                            ctrl: {
+                                cats: emptyArray,
+                                roles: emptyArray,
+                                users: schedule.ctrl.users,
+                                type: schedule.ctrl.type,
+                            }
+                        });
+                        return;
+                    }
+
+                    list.push(schedule);
+                });
+
+                return {
+                    ...schedules,
+                    list,
                 };
             }
         },
@@ -155,7 +233,7 @@ const config: FilerAppConfig = {
                                 mi: 0,
                                 fio: '{*fio}',
                                 login: '{*login}',
-                                R: scheduleWidgetRights.getAllRights(),
+                                R: scheduleWidgetUserRights.getAllRights(),
                             }],
                             roles: [{
                                 mi: 0,
@@ -196,6 +274,7 @@ const config: FilerAppConfig = {
                     '/ctrl': {
                         '/type': {
                             U: {
+                                RRej: true,
                                 args: {
                                     value: '#Number',
                                 }
@@ -393,6 +472,7 @@ const config: FilerAppConfig = {
                                 },
                                 '/[mi === {eventMi}]': {
                                     scopeNode: 'eventMi',
+                                    $$var: '$$event',
                                     args: {
                                         eventMi: '#Number',
                                     },
@@ -405,11 +485,21 @@ const config: FilerAppConfig = {
                                             }
                                         }
                                     },
+                                    '/secret': {
+                                        U: {
+                                            args: {
+                                                value: '#Num',
+                                                $$vars: {
+                                                    isSecretChange: true
+                                                }
+                                            }
+                                        }
+                                    },
                                     '/{key}': {
                                         scopeNode: 'field',
                                         U: {
                                             args: {
-                                                key: ['tm', 'type', 'secret'],
+                                                key: ['tm', 'type'],
                                             }
                                         }
                                     },

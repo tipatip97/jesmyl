@@ -4,14 +4,15 @@ import EvaIcon from "../../../eva-icon/EvaIcon";
 import mylib, { MyLib } from "../../../my-lib/MyLib";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
-import useIsExpand from "../../../useIsExpand";
 import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent } from "../../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../../atts/BindAtts";
 import ScheduleWidgetCleans from "../../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetDayEventAtts from "../../events/atts/DayEventAtts";
-import { takeStrongScopeMaker, useIsSchWidgetExpand, useScheduleWidgetRolesContext } from "../../useScheduleWidget";
+import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
+import useIsExpand from "../../../expand/useIsExpand";
+import { useIsRememberExpand } from "../../../expand/useIsRememberExpand";
 
 const msInMin = mylib.howMs.inMin;
 const msInDay = mylib.howMs.inDay;
@@ -40,7 +41,7 @@ export default function ScheduleWidgetDayEvent(props: {
     const box = props.schedule.types?.[props.event.type];
     let timeMark = '';
     let timerClassNamePlus = '';
-    const userRights = useScheduleWidgetRolesContext();
+    const userRights = useScheduleWidgetRightsContext();
     const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, null, userRights.isCanRedact, true);
     const selfScope = takeStrongScopeMaker(props.scope, ' eventMi/', props.event.mi);
 
@@ -50,7 +51,7 @@ export default function ScheduleWidgetDayEvent(props: {
     const eventStartMs = eventFinishMs - eventTm * msInMin;
     const isPastEvent = now > eventFinishMs;
 
-    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(selfScope, isPastEvent || props.isPastDay || !userRights.isCanReadTitles);
+    const [, isExpand, switchIsExpand] = useIsRememberExpand(selfScope, null, null, isPastEvent || props.isPastDay || !userRights.isCanReadTitles);
 
     useEffect(() => {
         if (isSelfRedact) switchIsExpand(true);
@@ -134,11 +135,11 @@ export default function ScheduleWidgetDayEvent(props: {
                     ? <>
                         <StrongEvaButton
                             scope={selfScope}
-                            fieldName="field"
+                            fieldName="secret"
                             cud="U"
                             name={props.event.secret ? 'checkmark-square-2-outline' : 'square-outline'}
                             confirm={`Событие ${box.title} ${props.event.secret ? 'больше не секретное' : 'будет секретным'}?`}
-                            mapExecArgs={(args) => ({ ...args, key: 'secret', value: props.event.secret ? 0 : 1 })}
+                            mapExecArgs={(args) => ({ ...args, value: props.event.secret ? 0 : 1 })}
                             postfix="Секретное событие"
                         />
                         <StrongEditableField

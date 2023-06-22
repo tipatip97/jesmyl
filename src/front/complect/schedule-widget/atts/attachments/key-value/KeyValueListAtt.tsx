@@ -6,7 +6,7 @@ import StrongEditableField from "../../../../strong-control/field/StrongEditable
 import { IScheduleWidget, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
 import ScheduleWidgetRoleFace from "../../../control/roles/RoleFace";
 import ScheduleWidgetRoleList from "../../../control/roles/RoleList";
-import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../../../useScheduleWidget";
+import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../../useScheduleWidget";
 
 export default function ScheduleKeyValueListAtt({
     value,
@@ -23,7 +23,7 @@ export default function ScheduleKeyValueListAtt({
 }) {
     const attScope = scope + ' keyValue';
     const auth = useAuth();
-    const { isCanTotalRedact } = useScheduleWidgetRolesContext();
+    const rights = useScheduleWidgetRightsContext();
     const myUser = auth && schedule.ctrl.users.find(user => user.login === auth.login);
 
     return <>{
@@ -58,7 +58,7 @@ export default function ScheduleKeyValueListAtt({
                         value={value}
                         multiline
                         isRedact={isRedact}
-                        setSelfRedact={!isCanTotalRedact && typeof key === 'number' && !!myUser && (extractScheduleWidgetRoleUser(schedule, 0, role)?.login !== myUser.login)}
+                        setSelfRedact={!rights.isCanTotalRedact && typeof key === 'number' && !!myUser && (extractScheduleWidgetRoleUser(schedule, 0, role)?.login !== myUser.login)}
                         mapExecArgs={(args) => ({ ...args, })}
                     />
                 </div>;

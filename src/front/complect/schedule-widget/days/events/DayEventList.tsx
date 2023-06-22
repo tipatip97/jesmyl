@@ -8,8 +8,9 @@ import { IScheduleWidget, IScheduleWidgetDay } from "../../ScheduleWidget.model"
 import ScheduleWidgetCleans from "../../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetEventList from "../../events/EventList";
-import { useIsSchWidgetExpand, useScheduleWidgetRolesContext } from "../../useScheduleWidget";
+import { useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import ScheduleWidgetDayEvent from "./DayEvent";
+import { useIsRememberExpand } from "../../../expand/useIsRememberExpand";
 
 export default function ScheduleWidgetDayEventList({
     day, schedule, scope, scheduleScope, isPastDay, dayi,
@@ -21,12 +22,12 @@ export default function ScheduleWidgetDayEventList({
     isPastDay: boolean,
     dayi: number,
 }) {
-    const [isExpand, switchIsExpand] = useIsSchWidgetExpand(scope);
+    const [, isExpand, switchIsExpand] = useIsRememberExpand(scope);
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
     const [isReplacementInProcess, setIsReplacementInProcess] = useState(false);
-    const userRights = useScheduleWidgetRolesContext();
+    const rights = useScheduleWidgetRightsContext();
     const [isIndividualReplacement, setIsIndividualReplacement] = useState(false);
-    const { editIcon, isRedact } = useIsRedactArea(true, isIndividualReplacement || null, userRights.isCanRedact, true);
+    const { editIcon, isRedact } = useIsRedactArea(true, isIndividualReplacement || null, rights.isCanRedact, true);
     const usedCounts = useMemo(() => {
         const usedCounts: Record<number, number> = {};
         day.list.forEach(({ type }) => {
@@ -39,6 +40,7 @@ export default function ScheduleWidgetDayEventList({
     const movementBox = movementEvent && schedule.types?.[movementEvent.type];
 
     let secretTime = 0;
+    let isFirstSecrets = true;
     const times: number[] = [];
     day.list.forEach((event) => {
         times.push((event.tm || schedule.types?.[event.type]?.tm || 0) + (times[times.length - 1] || 0));
@@ -60,9 +62,10 @@ export default function ScheduleWidgetDayEventList({
         </div>
         {isExpand && <>
             {day.list.map((event, eventi, eventa) => {
-                if (!userRights.isCanReadSpecials) {
-                    if (eventa[eventi + 1]?.secret) secretTime += event.tm ?? schedule.types?.[event.type].tm ?? 0;
+                if (!rights.isCanReadSpecials) {
+                    if (!isFirstSecrets && eventa[eventi + 1]?.secret) secretTime += event.tm ?? schedule.types?.[event.type].tm ?? 0;
                     if (event.secret) return null;
+                    isFirstSecrets = false;
                 }
 
                 const isNeighbour = moveEventMi === event.mi || moveEventMi === eventa[eventi + 1]?.mi;

@@ -5,7 +5,7 @@ import StrongControlDateTimeExtracter from "../../strong-control/StrongDateTimeE
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
-import { takeStrongScopeMaker, useScheduleWidgetRolesContext } from "../useScheduleWidget";
+import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import "./Day.scss";
 import ScheduleWidgetDayEventList from "./events/DayEventList";
 import { renderComponentInNewWindow } from "../../../..";
@@ -30,7 +30,7 @@ export default function ScheduleWidgetDay({
     const times: number[] = [];
     const selfScope = takeStrongScopeMaker(scope, ' dayMi/', day.mi);
     const [isShowDay, setIsShowDay] = useState(!isPastDay);
-    const userRights = useScheduleWidgetRolesContext();
+    const userRights = useScheduleWidgetRightsContext();
     const { editIcon, isRedact } = useIsRedactArea(true, null, userRights.isCanRedact, true);
 
     const dayRating = useMemo(() => {

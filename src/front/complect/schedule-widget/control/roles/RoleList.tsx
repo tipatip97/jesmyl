@@ -1,6 +1,6 @@
 import { ReactNode, useMemo, useState } from "react";
 import EvaButton from "../../../eva-icon/EvaButton";
-import useIsExpand from "../../../useIsExpand";
+import useIsExpand from "../../../expand/useIsExpand";
 import { IScheduleWidget, IScheduleWidgetRole } from "../../ScheduleWidget.model";
 
 export default function ScheduleWidgetRoleList({

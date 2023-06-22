@@ -1,4 +1,4 @@
-import { ExecutionMethod, ExecutionSidesDict, ExecutionTrack } from "./complect/executer/Executer.model";
+import { ExecutionArgs, ExecutionMethod, ExecutionSidesDict, ExecutionTrack } from "./complect/executer/Executer.model";
 import { actionBoxSetSystems } from "./values";
 
 export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Partial<Record<`<${string}>`, ActionBox>> {
@@ -18,17 +18,18 @@ export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Par
     C?: ActionCRUD,
     U?: ActionCRUD,
     D?: ActionCRUD,
+    $$var?: `$$${string}`,
 
     action?: string,
     method?: ExecutionMethod,
     value?: any,
-    args?: Record<string, string | any[]>,
+    args?: ExecutionArgs<string | any[]>,
 };
 
 export interface ActionCRUD {
     method?: ExecutionMethod,
     value?: any,
-    args?: Record<string, string | any[]>,
+    args?: ExecutionArgs<string | any[]>,
     setSystems?: ActionBoxSetSystems[],
     RRej?: boolean | number,
 }

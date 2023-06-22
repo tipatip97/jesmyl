@@ -1,45 +1,45 @@
 import { useEffect, useMemo, useState } from "react";
 import { indexExer } from "../../components/index/Index.store";
 import useAuth from "../../components/index/useAuth";
+import EvaIcon from "../eva-icon/EvaIcon";
 import mylib from "../my-lib/MyLib";
 import StrongControlDateTimeExtracter from "../strong-control/StrongDateTimeExtracter";
 import StrongEvaButton from "../strong-control/StrongEvaButton";
 import StrongEditableField from "../strong-control/field/StrongEditableField";
 import { useStrongExerContent } from "../strong-control/useStrongControl";
-import useIsExpand from "../useIsExpand";
 import useIsRedactArea from "../useIsRedactArea";
 import { IScheduleWidget } from "./ScheduleWidget.model";
 import './ScheduleWidget.scss';
+import ScheduleWidgetStartTimeText from "./StartTimeText";
 import ScheduleWidgetCustomAttachments from "./atts/custom/CustomAttachments";
-import ScheduleWidgetCleans from "./complect/Cleans";
 import ScheduleWidgetTopicTitle from "./complect/TopicTitle";
+import ScheduleWidgetControl from "./control/Control";
 import ScheduleWidgetDay from "./days/Day";
 import ScheduleWidgetEventList from "./events/EventList";
-import ScheduleWidgetControl from "./control/Control";
-import { ScheduleWidgetAppAttsContext, ScheduleWidgetRolesContext, ScheduleWidgetSchContext, initialScheduleScope, makeAttStorage, takeScheduleStrongScopeMaker, useScheduleWidgetRoles } from "./useScheduleWidget";
-import StrongButton from "../strong-control/StrongButton";
-import EvaIcon from "../eva-icon/EvaIcon";
+import { ScheduleWidgetAppAttsContext, ScheduleWidgetRights, ScheduleWidgetRightsContext, ScheduleWidgetSchContext, initialScheduleScope, makeAttStorage, takeScheduleStrongScopeMaker, useScheduleWidgetRights } from "./useScheduleWidget";
+import { useIsRememberExpand } from "../expand/useIsRememberExpand";
 
 const msInMin = mylib.howMs.inMin;
 
 export default function ScheduleWidget({
     schedule,
-    expand,
+    rights: topRights,
 }: {
     schedule?: IScheduleWidget,
-    expand?: boolean,
+    rights?: ScheduleWidgetRights,
 }) {
-    const [expandNode, isExpand] = useIsExpand(
-        expand ?? false, null,
+    const selfScope = schedule ? takeScheduleStrongScopeMaker(schedule.w) : '';
+    const [expandNode, isExpand] = useIsRememberExpand(selfScope,
+        null,
         <ScheduleWidgetTopicTitle
             titleBox={schedule ?? {}}
             altTitle="Расписание"
             topicBox={schedule}
         />);
     const auth = useAuth();
-    const roles = useScheduleWidgetRoles(schedule);
+    const rights = useScheduleWidgetRights(schedule, topRights);
 
-    const { editIcon, isRedact } = useIsRedactArea(true, null, roles.isCanRedact, true);
+    const { editIcon, isRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
     const [startTime, setStartTime] = useState(schedule?.start);
     const content = useStrongExerContent(indexExer);
 
@@ -60,14 +60,10 @@ export default function ScheduleWidget({
 
     if (!schedule) return null;
 
-    const selfScope = takeScheduleStrongScopeMaker(schedule.w);
-
-    const firstWup = schedule.days?.[0].wup;
-
     return content(
         <ScheduleWidgetSchContext.Provider value={schedule}>
             <ScheduleWidgetAppAttsContext.Provider value={atts}>
-                <ScheduleWidgetRolesContext.Provider value={roles}>
+                <ScheduleWidgetRightsContext.Provider value={rights}>
                     <div className="schedule-widget">
                         <div className="flex flex-gap">
                             {expandNode}
@@ -75,7 +71,7 @@ export default function ScheduleWidget({
                         </div>
                         {isExpand && <>
                             <div className="margin-big-gap-v">
-                                {roles.isCanRedact && isRedact
+                                {rights.isCanRedact && isRedact
                                     ? <StrongControlDateTimeExtracter
                                         scope={selfScope}
                                         fieldName="start"
@@ -87,11 +83,8 @@ export default function ScheduleWidget({
                                         onComponentsChange={(_, __, ___, date) => setStartTime(date.getTime())}
                                         mapExecArgs={(args) => ({ ...args, value: startTime })}
                                     />
-                                    : schedule.start && <div>
-                                        Начало: {date.getDate()} {mylib.monthFullTitles[date.getMonth()]} {date.getFullYear()}
-                                        {firstWup && ', ' + ScheduleWidgetCleans.computeDayWakeUpTime(firstWup, 'string')}
-                                    </div>}
-                                {roles.isCanRead
+                                    : <ScheduleWidgetStartTimeText schedule={schedule} date={date} />}
+                                {rights.isCanRead
                                     ? <>
                                         {isRedact && <StrongEditableField
                                             scope={selfScope}
@@ -102,7 +95,7 @@ export default function ScheduleWidget({
                                             title="Название"
                                             mapExecArgs={(args) => ({ ...args, key: 'topic' })}
                                         />}
-                                        {roles.isCanReadTitles && <StrongEditableField
+                                        {(rights.isCanReadTitles) && <StrongEditableField
                                             scope={selfScope}
                                             fieldName="field"
                                             value={schedule.dsc}
@@ -162,14 +155,8 @@ export default function ScheduleWidget({
                                     : <></>}
                             </div>
                         </>}
-                        {auth && !schedule.ctrl.users.some(user => user.login === auth.login)
-                            && <StrongButton
-                                scope={selfScope}
-                                fieldName="users"
-                                title="Хочу участвовать"
-                            />}
                     </div>
-                </ScheduleWidgetRolesContext.Provider>
+                </ScheduleWidgetRightsContext.Provider>
             </ScheduleWidgetAppAttsContext.Provider>
         </ScheduleWidgetSchContext.Provider>);
 }

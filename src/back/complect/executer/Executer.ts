@@ -4,7 +4,7 @@ import { actionBoxSetSystems, sequreMD5Passphrase, sokiWhenRejButTs } from "../.
 import { FilerAppConfig, FilerAppConfigActions } from "../filer/Filer.model";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, RealAccumulatableRule, ShortRealRule, TrackerRet } from "./Executer.model";
+import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionArgs, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, RealAccumulatableRule, ShortRealRule, TrackerRet } from "./Executer.model";
 
 const globs: Record<string, any> = {
     'setNewWid()': () => new Date().getTime() + Math.random()
@@ -205,7 +205,7 @@ export class Executer {
         return false;
     }
 
-    static isExpected(source: Record<string, unknown>, inspector: (number | string | (number | string)[])[], args?: Record<string, unknown> | null, auth?: LocalSokiAuth | null): boolean {
+    static isExpected(source: Record<string, unknown>, inspector: (number | string | (number | string)[])[], args?: ExecutionArgs | null, auth?: LocalSokiAuth | null): boolean {
         if (inspector == null) return false;
 
         if (smylib.isobj(inspector)) {
@@ -285,12 +285,18 @@ export class Executer {
         return false;
     }
 
-    static replaceArgs<Value>(value: Value, realArgs: Record<string, any> | null = {}, auth?: LocalSokiAuth | null, defCb?: () => Value): Value {
+    static replaceArgs<Value>(value: Value, realArgs?: ExecutionArgs | null, auth?: LocalSokiAuth | null, defCb?: () => Value): Value {
         if (smylib.isStr(value)) {
             if (value.includes('{') && value.includes('}')) {
                 let val: any = this.stubEmpty;
                 const text = value.replace(/\{(([@*?])?([$\w]+(\(\))?))\}/g, (all, name, prefix, key) => {
-                    val = prefix === '@' ? this.getIfGlob(name) : prefix === '*' ? auth?.[key as never] : realArgs?.[key];
+                    val = prefix === '@'
+                        ? this.getIfGlob(name)
+                        : prefix === '*'
+                            ? auth?.[key as never]
+                            : realArgs != null
+                                ? realArgs[key] ?? realArgs.$$vars?.[key]
+                                : null;
                     return val ?? all ?? '';
                 });
                 if (val === this.stubEmpty && defCb) return defCb();
@@ -362,6 +368,7 @@ export class Executer {
                         sides: accSides(),
                         RRej: box.RRej === undefined ? topRule.RRej : box.RRej,
                         scopeNode: `${topRule.scopeNode || ''}${topRule.scopeNode ? box.scopeNode ? ` ${box.scopeNode}` : '' : box.scopeNode}`,
+                        $$vars: box.$$var ? { ...topRule.$$vars, [box.$$var]: accTrack.length } : topRule.$$vars,
                     };
 
                     if (box.fixAccesses) {
@@ -457,7 +464,7 @@ export class Executer {
             'setSystems',
         ];
 
-        return (rule: ExecutionReal, realRule: ExecutionReal, allArgs: Record<string, unknown>, value: unknown, auth?: LocalSokiAuth | null) => {
+        return (rule: ExecutionReal, realRule: ExecutionReal, allArgs: ExecutionArgs, value: unknown, auth?: LocalSokiAuth | null) => {
             const ret: ExecutionReal = { ...rule };
 
             simpleFields.forEach((argn) => ret[argn] = realRule[argn]);
@@ -484,14 +491,23 @@ export class Executer {
         rule: ExecutionReal,
         value: unknown,
         contents: Record<string, unknown>,
-        realArgs?: Record<string, unknown>,
+        realArgs?: ExecutionArgs,
         auth?: LocalSokiAuth | null,
     ) {
         const track = this.replaceArgs(rule.track, realArgs, auth);
-        const allArgs: Record<string, unknown> = {
+        const $$vars: Record<string, unknown> = {};
+
+        if (rule.$$vars)
+            SMyLib.entries(rule.$$vars).forEach(([key, trackLen]) => {
+                $$vars[key] = smylib.clone(this.tracker(track.slice(0, trackLen), contents, realArgs, null, auth).target);
+            });
+
+        const allArgs: ExecutionArgs = {
             ...realArgs,
-            $$currentValue: this.tracker(track, contents, realArgs, null, auth).target,
+            $$vars,
         };
+
+        $$vars.$$currentValue = this.tracker(track, contents, realArgs, null, auth).target;
 
         const ret = {
             track,
@@ -755,7 +771,7 @@ export class Executer {
         });
     }
 
-    static setInEachValueItem(value: unknown, forces?: ExecuterSetInEachValueItem, realArgs?: Record<string, unknown>, auth?: LocalSokiAuth | null) {
+    static setInEachValueItem(value: unknown, forces?: ExecuterSetInEachValueItem, realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) {
         if (!forces) return;
         const forcesEntries = SMyLib.entries(forces);
 
@@ -808,7 +824,7 @@ export class Executer {
         penultimate: any,
         lastTrace: string | number,
         value: any,
-        realArgs?: Record<string, unknown>,
+        realArgs?: ExecutionArgs,
         auth?: LocalSokiAuth | null,
         uniqs?: string[] | Record<string, string>,
     }) {

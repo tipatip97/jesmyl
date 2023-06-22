@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import EvaIcon from "./eva-icon/EvaIcon";
+import EvaIcon from "../eva-icon/EvaIcon";
 
 const isNIs = (is: boolean) => !is;
 
