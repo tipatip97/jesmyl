@@ -1,41 +1,53 @@
-import { CustomAttUseRights, customAttUseRights } from "../../../../../../back/apps/index/rights";
-import useAuth from "../../../../../components/index/useAuth";
+import { CustomAttUseRights, CustomAttUseTaleId, customAttUseRights } from "../../../../../../back/apps/index/rights";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../../strong-control/field/StrongEditableField";
-import { IScheduleWidget, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
+import { ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
 import ScheduleWidgetRoleFace from "../../../control/roles/RoleFace";
-import ScheduleWidgetRoleList from "../../../control/roles/RoleList";
+import ScheduleWidgetListUnitFace from "../../../lists/UnitFace";
 import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../../useScheduleWidget";
+
+const checkIsTaleIdUnit = (num: number, taleId: 0.1 | number) => Math.trunc(num) + taleId === num;
 
 export default function ScheduleKeyValueListAtt({
     value,
     scope,
     att,
     isRedact,
-    schedule,
 }: {
     value: ScheduleWidgetAppAttCustomizableValue,
     scope: string,
     att: ScheduleWidgetAppAttCustomized,
     isRedact: boolean,
-    schedule: IScheduleWidget,
 }) {
     const attScope = scope + ' keyValue';
-    const auth = useAuth();
     const rights = useScheduleWidgetRightsContext();
-    const myUser = auth && schedule.ctrl.users.find(user => user.login === auth.login);
 
     return <>{
         <div>
             {value.values?.map(([key, value], itemi) => {
                 if (!isRedact && !value) return null;
                 const itemScope = takeStrongScopeMaker(attScope, ' itemi/', itemi);
-                const role = typeof key === 'number' ? extractScheduleWidgetRole(schedule, key) : undefined;
+                const role = typeof key === 'number' && checkIsTaleIdUnit(key, CustomAttUseTaleId.Roles)
+                    ? extractScheduleWidgetRole(rights.schedule, key)
+                    : undefined;
+                let setSelfRedact = false;
+
+                if (!rights.isCanTotalRedact && typeof key === 'number') {
+                    if (checkIsTaleIdUnit(key, CustomAttUseTaleId.Roles))
+                        setSelfRedact = !!rights.myUser && (extractScheduleWidgetRoleUser(rights.schedule, 0, role)?.login !== rights.myUser.login);
+                    else if (rights.myUser?.li) {
+                        const unit = rights.schedule.lists.units.find(unit => unit.mi === key - CustomAttUseTaleId.Lists);
+                        if (unit)
+                            setSelfRedact = rights.myUser.li[unit.cat] !== -unit.mi;
+                    }
+                }
 
                 return <div key={itemi} className="margin-big-gap-b">
                     {typeof key === 'number'
-                        ? <ScheduleWidgetRoleFace role={role} schedule={schedule} />
+                        ? checkIsTaleIdUnit(key, CustomAttUseTaleId.Lists)
+                            ? <ScheduleWidgetListUnitFace unitMi={Math.trunc(key)} />
+                            : <ScheduleWidgetRoleFace role={role} schedule={rights.schedule} />
                         : typeof key === 'boolean'
                             ? <StrongEvaButton
                                 scope={itemScope}
@@ -58,12 +70,24 @@ export default function ScheduleKeyValueListAtt({
                         value={value}
                         multiline
                         isRedact={isRedact}
-                        setSelfRedact={!rights.isCanTotalRedact && typeof key === 'number' && !!myUser && (extractScheduleWidgetRoleUser(schedule, 0, role)?.login !== myUser.login)}
+                        setSelfRedact={setSelfRedact}
                         mapExecArgs={(args) => ({ ...args, })}
                     />
                 </div>;
             })}
             {isRedact && <>
+                <div className="margin-gap-v color--7">Вставить поле ввода:</div>
+                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Checkboxes)
+                    && <div className="flex flex-gap margin-gap-v">
+                        <EvaIcon name="checkmark-square-outline" />
+                        <span className="text-italic">Пункт</span>
+                        <StrongEvaButton
+                            scope={attScope}
+                            fieldName=""
+                            name="plus"
+                            mapExecArgs={(args) => ({ ...args, key: false, })}
+                        />
+                    </div>}
                 {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Titles) && att.titles
                     ?.map((title, titlei) => {
                         if (!title || value.values?.some(li => li[0] === title)) return null;
@@ -77,24 +101,16 @@ export default function ScheduleKeyValueListAtt({
                             />
                         </div>;
                     })}
-                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Checkboxes) && <StrongEvaButton
-                    scope={attScope}
-                    fieldName=""
-                    name="plus"
-                    prefix={<><EvaIcon name="checkmark-square-outline" />Чекбокс</>}
-                    mapExecArgs={(args) => ({ ...args, key: false, })}
-                />}
-                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles)
-                    && <ScheduleWidgetRoleList
-                        schedule={schedule}
-                        roles={list => list.map((role) => {
-                            if (!role.title || value.values?.some(li => li[0] === role.mi)) return null;
+                <div className="margin-big-gap-v">
+                    {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles)
+                        && rights.schedule.ctrl.roles.map((role) => {
+                            if ((role.cat || 0) !== att.roles || !role.title || value.values?.some(li => li[0] === role.mi)) return null;
 
                             return <div
                                 key={role.mi}
-                                className="flex flex-gap"
+                                className="flex flex-gap margin-gap-v"
                             >
-                                <ScheduleWidgetRoleFace role={role} schedule={schedule} />
+                                <ScheduleWidgetRoleFace role={role} schedule={rights.schedule} />
                                 <StrongEvaButton
                                     name="plus"
                                     scope={attScope}
@@ -103,7 +119,24 @@ export default function ScheduleKeyValueListAtt({
                                 />
                             </div>
                         })}
-                    />}
+                </div>
+                <div className="margin-big-gap-v">
+                    {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Lists)
+                        && rights.schedule.lists.units.map((unit) => {
+                            if (unit.cat !== att.list || !unit.title || value.values?.some(li => li[0] === unit.mi + CustomAttUseTaleId.Lists)) return null;
+
+                            return <ScheduleWidgetListUnitFace
+                                key={unit.mi}
+                                unit={unit}
+                                postfix={<StrongEvaButton
+                                    name="plus"
+                                    scope={attScope}
+                                    fieldName=""
+                                    mapExecArgs={(args) => ({ ...args, key: unit.mi + CustomAttUseTaleId.Lists })}
+                                />}
+                            />
+                        })}
+                </div>
             </>}
         </div>
     }</>;

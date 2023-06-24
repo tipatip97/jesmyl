@@ -18,6 +18,7 @@ import ScheduleWidgetDay from "./days/Day";
 import ScheduleWidgetEventList from "./events/EventList";
 import { ScheduleWidgetAppAttsContext, ScheduleWidgetRights, ScheduleWidgetRightsContext, ScheduleWidgetSchContext, initialScheduleScope, makeAttStorage, takeScheduleStrongScopeMaker, useScheduleWidgetRights } from "./useScheduleWidget";
 import { useIsRememberExpand } from "../expand/useIsRememberExpand";
+import ScheduleWidgetLists from "./lists/Lists";
 
 const msInMin = mylib.howMs.inMin;
 
@@ -29,19 +30,22 @@ export default function ScheduleWidget({
     rights?: ScheduleWidgetRights,
 }) {
     const selfScope = schedule ? takeScheduleStrongScopeMaker(schedule.w) : '';
-    const [expandNode, isExpand] = useIsRememberExpand(selfScope,
-        null,
-        <ScheduleWidgetTopicTitle
-            titleBox={schedule ?? {}}
-            altTitle="Расписание"
-            topicBox={schedule}
-        />);
     const auth = useAuth();
     const rights = useScheduleWidgetRights(schedule, topRights);
 
     const { editIcon, isRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
     const [startTime, setStartTime] = useState(schedule?.start);
     const content = useStrongExerContent(indexExer);
+    const [expandNode, isExpand] = useIsRememberExpand(
+        selfScope,
+        <ScheduleWidgetTopicTitle
+            prefix={<EvaIcon name="calendar-outline" />}
+            titleBox={schedule ?? {}}
+            altTitle="Расписание"
+            topicBox={schedule}
+        />,
+        (isExpand) => isExpand && editIcon
+    );
 
     const date = useMemo(() => new Date(schedule?.start || Date.now()), [schedule?.start]);
     const dateValue = useMemo(() => date.getTime() ? date.toLocaleDateString().replace(/\./g, ' ') : '', [date]);
@@ -65,10 +69,7 @@ export default function ScheduleWidget({
             <ScheduleWidgetAppAttsContext.Provider value={atts}>
                 <ScheduleWidgetRightsContext.Provider value={rights}>
                     <div className="schedule-widget">
-                        <div className="flex flex-gap">
-                            {expandNode}
-                            {editIcon}
-                        </div>
+                        {expandNode}
                         {isExpand && <>
                             <div className="margin-big-gap-v">
                                 {rights.isCanRedact && isRedact
@@ -106,14 +107,15 @@ export default function ScheduleWidget({
                                             title="Описание"
                                             mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
                                         />}
-                                        <ScheduleWidgetControl schedule={schedule} scope={selfScope} />
+                                        <ScheduleWidgetControl scope={selfScope} />
+                                        <ScheduleWidgetLists scope={selfScope} />
                                         {isRedact && <>
                                             <ScheduleWidgetEventList
                                                 selectScope=""
                                                 selectFieldName=""
                                                 scheduleScope={selfScope}
                                                 postfix={<>Шаблоны событий <EvaIcon name="chevron-right" /></>}
-                                                icon="list"
+                                                icon="at"
                                                 schedule={schedule}
                                                 scope={selfScope}
                                             />

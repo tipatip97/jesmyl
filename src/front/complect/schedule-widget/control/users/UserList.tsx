@@ -1,42 +1,57 @@
+import { ReactNode } from "react";
 import { scheduleWidgetRights } from "../../../../../back/apps/index/rights";
-import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import useIsExpand from "../../../expand/useIsExpand";
-import { IScheduleWidget } from "../../ScheduleWidget.model";
+import { StrongComponentProps } from "../../../strong-control/Strong.model";
+import { useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import ScheduleWidgetUser from "./User";
+import { IScheduleWidgetUser } from "../../ScheduleWidget.model";
 
 export default function ScheduleWidgetUserList({
-    schedule,
     scope,
+    asUserPlusPrefix,
+    filter,
+    title = <>Участники</>,
+    isInitExpand,
 }: StrongComponentProps & {
-    schedule: IScheduleWidget,
+    asUserPlusPrefix?: (userNode: ReactNode, userScope: string, user: IScheduleWidgetUser, balance: number) => ReactNode,
+    filter?: (user: IScheduleWidgetUser, useri: number, usera: IScheduleWidgetUser[]) => boolean,
+    title?: ReactNode,
+    isInitExpand?: boolean,
 }) {
-    const [expandNode, isExpand] = useIsExpand(false, <>Участники</>);
+    const rights = useScheduleWidgetRightsContext();
+    const [expandNode, isExpand] = useIsExpand(isInitExpand ?? false, title);
 
-    const users = [...schedule.ctrl.users]
-        .map(user => {
-            return {
-                user,
-                balance: scheduleWidgetRights.rightsBalance(user.R),
-                _: user.alias + user.fio,
-            };
-        })
-        .sort((a, b) => {
-            return a.balance < b.balance ? 1 : a.balance > b.balance
-                ? -1
-                : a._ < b._
+    const users =
+        (filter === undefined
+            ? [...rights.schedule.ctrl.users]
+            : [...rights.schedule.ctrl.users].filter(filter)
+        )
+            .map(user => {
+                return {
+                    user,
+                    balance: scheduleWidgetRights.rightsBalance(user.R),
+                    _: user.alias + user.fio,
+                };
+            })
+            .sort((a, b) => {
+                return a.balance < b.balance ? 1 : a.balance > b.balance
                     ? -1
-                    : 1;
-        });
+                    : a._ < b._
+                        ? -1
+                        : 1;
+            });
 
     return <>
         {expandNode}
         {isExpand && <div className="margin-gap-v margin-gap-l">
+            {!users.length && <div className="text-italic color--7">Список пуст</div>}
             {users.map(({ user, balance }) => {
                 return <ScheduleWidgetUser
                     key={user.mi}
                     scope={scope}
                     user={user}
                     balance={balance}
+                    asUserPlusPrefix={asUserPlusPrefix}
                 />
             })}
         </div>}

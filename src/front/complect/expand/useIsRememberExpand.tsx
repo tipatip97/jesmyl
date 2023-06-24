@@ -10,7 +10,7 @@ const clear = (scope: string) => {
     complectStorage.set('rememberExpandes', expandes);
 };
 
-export const useIsRememberExpand = (scope: string, prefix?: ReactNode, postfix?: ReactNode, isSelfExpandOnly?: boolean): [
+export const useIsRememberExpand = (scope: string, prefix?: ReactNode, postfix?: ReactNode | ((isExpand: boolean) => ReactNode), isSelfExpandOnly?: boolean): [
     ReactNode,
     boolean,
     (isExpand?: boolean) => void,
@@ -36,12 +36,12 @@ export const useIsRememberExpand = (scope: string, prefix?: ReactNode, postfix?:
     }, [isSelfExpandOnly, scope]);
 
     return [
-        <span className="flex flex-gap flex-max pointer" onClick={() => switchExpand()}>
-            <span className="flex flex-gap flex-max">
+        <span className="flex flex-gap between margin-gap-v">
+            <span className="flex flex-gap flex-max pointer" onClick={() => switchExpand()}>
                 {prefix}
                 <EvaIcon name={isExpand ? 'chevron-up' : 'chevron-down'} />
             </span>
-            {postfix}
+            {typeof postfix === 'function' ? postfix(isExpand) : postfix}
         </span>,
         isExpand,
         switchExpand,

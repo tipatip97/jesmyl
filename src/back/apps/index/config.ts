@@ -3,11 +3,11 @@ import { ExecutionArgs, ExecutionDict, ExecutionReal } from "../../complect/exec
 import { FilerAppConfig } from "../../complect/filer/Filer.model";
 import { rootDirective } from "../../complect/soki/soki.model";
 import { Application } from "./models/Application";
-import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetRoleUser, ScheduleStorage } from "./models/ScheduleWidget.model";
-import { ScheduleWidgetUserRoleRight, ScheduleWidgetRegType, scheduleWidgetRegTypeRights, scheduleWidgetRights as scheduleWidgetUserRights } from "./rights";
+import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetLists, IScheduleWidgetUser, ScheduleStorage } from "./models/ScheduleWidget.model";
+import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetRights as scheduleWidgetUserRights } from "./rights";
 
 interface SchedulesBag {
-    users: IScheduleWidgetRoleUser[],
+    users: IScheduleWidgetUser[],
     schw: number,
     schedule: IScheduleWidget<string>,
 }
@@ -85,7 +85,11 @@ const config: FilerAppConfig = {
                 if (bag.users === undefined) return 'no_users';
 
                 const user = bag.users.find(user => auth.login === user.login);
-                if (user === undefined) return whenRejButTs;
+                if (user === undefined) {
+                    if (scheduleWidgetRegTypeRights.checkIsHasRights(bag.schedule.ctrl.type, ScheduleWidgetRegType.Public))
+                        return null;
+                    return whenRejButTs;
+                }
 
                 if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials) && exec.args?.$$vars?.$$event.secret) {
                     return whenRejButTs;
@@ -241,7 +245,23 @@ const config: FilerAppConfig = {
                                 icon: 'github-outline',
                                 user: 0,
                             }]
-                        }
+                        },
+                        lists: {
+                            cats: [
+                                {
+                                    icon: 'people-outline',
+                                    title: 'Группа',
+                                    titles: ['Наставники', 'Участники']
+                                }
+                            ],
+                            units: [
+                                {
+                                    cat: 0,
+                                    mi: 1,
+                                    title: 'Первая',
+                                }
+                            ],
+                        } as IScheduleWidgetLists<string>
                     },
                     args: {
                         schw: '#Number',
@@ -315,6 +335,18 @@ const config: FilerAppConfig = {
                                         }
                                     },
                                 },
+                                '/li': {
+                                    expected: {},
+                                    '/{cati}': {
+                                        scopeNode: 'cati',
+                                        C: {
+                                            method: 'set',
+                                        },
+                                        D: {
+                                            method: 'delete',
+                                        },
+                                    }
+                                }
                             },
                         },
                         '/roles': {
@@ -336,6 +368,53 @@ const config: FilerAppConfig = {
                                     D: {
                                         method: 'delete',
                                     },
+                                },
+                            }
+                        },
+                    },
+                    '/lists': {
+                        scopeNode: 'lists',
+                        '/cats': {
+                            C: {
+                                value: {
+                                    title: '',
+                                    icon: 'list',
+                                    titles: ['Руководители', 'Участники'],
+                                },
+                            },
+                            '/{cati}': {
+                                scopeNode: 'cati',
+                                '/{key}': {
+                                    scopeNode: 'field',
+                                    U: {}
+                                },
+                                '/titles': {
+                                    '/0': {
+                                        scopeNode: 'mentorsTitle',
+                                        U: {}
+                                    },
+                                    '/1': {
+                                        scopeNode: 'membersTitle',
+                                        U: {}
+                                    },
+                                }
+                            }
+                        },
+                        '/units': {
+                            C: {
+                                setSystems: ['mi'],
+                                value: {
+                                    cat: '{cati}',
+                                    title: '',
+                                },
+                                args: {
+                                    cati: '#Number',
+                                }
+                            },
+                            '/[mi === {unitMi}]': {
+                                scopeNode: 'unitMi',
+                                '/title': {
+                                    U: {}
                                 },
                             }
                         },

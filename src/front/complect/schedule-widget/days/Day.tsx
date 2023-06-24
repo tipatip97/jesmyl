@@ -112,11 +112,11 @@ export default function ScheduleWidgetDay({
                             postfix="Распечатать распорядок дня"
                         />
                     </>}
-                    <EvaButton
+                    {!isRedact && <EvaButton
                         name="heart-outline"
                         className={dayRating < 0 ? 'color--ko' : dayRating > 0 ? 'color--ok' : 'color--3'}
                         postfix={'Рейтинг дня: ' + dayRating}
-                    />
+                    />}
                 </div>}
                 <ScheduleWidgetDayEventList
                     day={day}

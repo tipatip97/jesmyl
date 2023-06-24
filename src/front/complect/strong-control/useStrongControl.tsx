@@ -14,7 +14,7 @@ export const useStrongExerContent = <Storage extends ExerStorage>(exer: Exer<Sto
         }</StrongExerContext.Provider>;
 };
 
-export const makeStrongScopeMaker = <Phase extends string = string>() => (parentScope: string, scopeName: ` ${Phase}${typeof strongScopeKeyValueSeparator}`, value: number | string) => {
+export const strongScopeMakerBuilder = <Phase extends string = string>() => (parentScope: string, scopeName: ` ${Phase}${typeof strongScopeKeyValueSeparator}`, value: number | string) => {
     return `${parentScope}${scopeName}${value}`;
 };
 

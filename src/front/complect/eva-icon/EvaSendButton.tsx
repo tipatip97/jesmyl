@@ -19,8 +19,7 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { toast, modalNode } = useModal();
-  const className = 'pointer '
-    + (props.disabled ? ' disabled ' : '')
+  const className = (props.disabled ? ' disabled ' : ' pointer ')
     + (isError ? ' color--ko ' : '');
   const onClick = async (event: React.MouseEvent<unknown>) => {
     event.stopPropagation();

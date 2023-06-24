@@ -6,7 +6,7 @@ import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../../../useIsRedactArea";
-import { IScheduleWidget, IScheduleWidgetRole } from "../../ScheduleWidget.model";
+import { IScheduleWidgetRole } from "../../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../../complect/IconChange";
 import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 
@@ -14,17 +14,15 @@ const mainRoleRights = scheduleWidgetRights.getAllRights();
 
 export default function ScheduleWidgetRole({
     scope,
-    schedule,
     role,
 }: StrongComponentProps<{
-    schedule: IScheduleWidget,
     role: IScheduleWidgetRole,
 }>) {
     const roleScope = takeStrongScopeMaker(scope, ' roleMi/', role.mi);
-    const { isCanTotalRedact } = useScheduleWidgetRightsContext();
-    const { editIcon, isRedact } = useIsRedactArea(true, !role.title || null, isCanTotalRedact, true);
+    const rights = useScheduleWidgetRightsContext();
+    const { editIcon, isRedact } = useIsRedactArea(true, !role.title || null, rights.isCanTotalRedact, true);
     const auth = useAuth();
-    const roleUser = extractScheduleWidgetRoleUser(schedule, 0, role);
+    const roleUser = extractScheduleWidgetRoleUser(rights.schedule, 0, role);
     const catsRedact = useIsRedactArea(true, null, true, true);
 
     const userSetModal = useModal(({ header, body }, closeModal) => {
@@ -32,8 +30,8 @@ export default function ScheduleWidgetRole({
             {header(<div className="flex">
                 Роль <span className="color--7">{role.title}</span> займёт
             </div>)}
-            {body(<div className="">
-                {schedule.ctrl.users.map((user, useri) => {
+            {body(<div>
+                {rights.schedule.ctrl.users.map((user, useri) => {
                     if ((roleUser && user.login === roleUser.login) || (role.mi === 0 && user.R !== mainRoleRights)) return null;
 
                     return <StrongEvaButton
@@ -68,7 +66,7 @@ export default function ScheduleWidgetRole({
             </div>)}
             {body(<>
                 {catsRedact.isRedact
-                    ? schedule.ctrl.cats.map((catName, catNamei) => {
+                    ? rights.schedule.ctrl.cats.map((catName, catNamei) => {
                         const catScope = takeStrongScopeMaker(scope + ' categories', ' cati/', catNamei);
 
                         return <StrongEditableField
@@ -79,7 +77,7 @@ export default function ScheduleWidgetRole({
                             value={catName}
                         />
                     })
-                    : schedule.ctrl.cats.map((catName, catNamei) => {
+                    : rights.schedule.ctrl.cats.map((catName, catNamei) => {
                         return <StrongEvaButton
                             key={catNamei}
                             scope={roleScope}
@@ -100,7 +98,7 @@ export default function ScheduleWidgetRole({
                     })}
             </>)}
             {footer(<>
-                {!schedule.ctrl.cats.includes('') && catsRedact.isRedact && <StrongEvaButton
+                {!rights.schedule.ctrl.cats.includes('') && catsRedact.isRedact && <StrongEvaButton
                     scope={scope}
                     fieldName="categories"
                     name="folder-add-outline"
@@ -129,19 +127,12 @@ export default function ScheduleWidgetRole({
                         };
                     }}
                 />
-                {(isCanTotalRedact ? isRedact : auth && auth.login === roleUser?.login)
+                {(rights.isCanTotalRedact ? isRedact : auth && auth.login === roleUser?.login)
                     && <ScheduleWidgetIconChange
                         scope={roleScope}
-                        fieldName="field"
                         header={`Иконка для роли ${role.title}`}
                         icon={role.icon ?? 'github-outline'}
-                        used={schedule.ctrl.roles.map(role => role.icon)}
-                        mapExecArgs={(args) => {
-                            return {
-                                ...args,
-                                key: 'icon',
-                            };
-                        }}
+                        used={rights.schedule.ctrl.roles.map(role => role.icon)}
                     />}
                 {isRedact && <>
                     {role.mi !== 0 && roleUser && <StrongEvaButton
@@ -158,7 +149,7 @@ export default function ScheduleWidgetRole({
                     {role.mi > 0 && <EvaButton
                         name="grid-outline"
                         onClick={() => catSetModal.screen()}
-                        postfix={`Категория ${schedule.ctrl.cats[role.cat || 0] || 'Основное'}`}
+                        postfix={`Категория ${rights.schedule.ctrl.cats[role.cat || 0] || 'Основное'}`}
                     />}
                 </>}
             </div>

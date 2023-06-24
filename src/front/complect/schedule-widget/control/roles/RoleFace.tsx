@@ -15,7 +15,7 @@ export default function ScheduleWidgetRoleFace({
     if (role === undefined) return <div className="color--ko">Неизвестная роль</div>;
 
     return <div
-        className={'flex flex-gap pointer' + (auth && roleUser && auth.login === roleUser.login ? ' color--7' : ' color--3')}
+        className={'flex flex-gap' + (auth && roleUser && auth.login === roleUser.login ? ' color--7' : ' color--3')}
     >
         <EvaIcon name={role.icon ?? 'github-outline'} />
         <div className="face-title">

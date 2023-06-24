@@ -5,6 +5,23 @@ export interface ScheduleStorage<EvaIconName> {
     list: IScheduleWidget<EvaIconName>[],
 }
 
+export interface IScheduleWidgetLists<EvaIconName> {
+    cats: IScheduleWidgetListCat<EvaIconName>[],
+    units: IScheduleWidgetListUnit[],
+}
+
+export interface IScheduleWidgetListUnit {
+    mi: number,
+    cat: number,
+    title: string,
+}
+
+export interface IScheduleWidgetListCat<EvaIconName> {
+    title: string,
+    icon: EvaIconName,
+    titles: [string, string],
+}
+
 export interface IScheduleWidget<EvaIconName> {
     w: number,
     start: number,
@@ -16,6 +33,7 @@ export interface IScheduleWidget<EvaIconName> {
     tatts?: ScheduleWidgetAppAttCustomized<EvaIconName>[],
     app: SokiAppName,
     ctrl: IScheduleWidgetCtrl<EvaIconName>,
+    lists: IScheduleWidgetLists<EvaIconName>,
 }
 
 
@@ -41,13 +59,16 @@ export interface ScheduleWidgetAppAttCustomized<EvaIconName> extends ScheduleWid
 }
 
 export interface ScheduleWidgetAppAttCustomizable<EvaIconName> extends ScheduleWidgetAppAttBasic<EvaIconName, ScheduleWidgetAppAttCustomizableValue> {
+    use?: number,
     titles?: string[],
+    roles?: number,
+    list?: number,
 }
 
 export interface IScheduleWidgetCtrl<EvaIconName> {
     cats: string[],
     roles: IScheduleWidgetRole<EvaIconName>[],
-    users: IScheduleWidgetRoleUser[],
+    users: IScheduleWidgetUser[],
     type: number,
 }
 
@@ -70,7 +91,6 @@ export interface ScheduleWidgetAppAttBasic<EvaIconName, AttValue extends any = a
     description: string,
     initVal: AttValue,
     isCustomize?: true,
-    use?: number,
 }
 
 export interface ScheduleWidgetAppAttCustomizableValue {
@@ -85,12 +105,17 @@ export interface IScheduleWidgetRole<EvaIconName> {
     cat?: number,
 }
 
-export interface IScheduleWidgetRoleUser {
+type Cati = number;
+type UnitMi = number;
+
+
+export interface IScheduleWidgetUser {
     mi: number,
     login: string,
     fio: string,
     alias?: string,
     R?: number,
+    li?: Record<Cati, UnitMi>,
 }
 
 
@@ -119,9 +144,12 @@ export interface Back<EvaIconName, Param = unknown> {
     ScheduleWidgetAppAttBasic: ScheduleWidgetAppAttBasic<EvaIconName, Param>,
     ScheduleWidgetAppAttCustomizableValue: ScheduleWidgetAppAttCustomizableValue,
     IScheduleWidgetRole: IScheduleWidgetRole<EvaIconName>,
-    IScheduleWidgetRoleUser: IScheduleWidgetRoleUser,
+    IScheduleWidgetUser: IScheduleWidgetUser,
     AttKey: AttKey,
     ScheduleWidgetAttKey: ScheduleWidgetAttKey,
     ScheduleWidgetDayEventAttValue: ScheduleWidgetDayEventAttValue,
     ScheduleWidgetAttRef: ScheduleWidgetAttRef,
+    IScheduleWidgetLists: IScheduleWidgetLists<EvaIconName>,
+    IScheduleWidgetListUnit: IScheduleWidgetListUnit,
+    IScheduleWidgetListCat: IScheduleWidgetListCat<EvaIconName>,
 }

@@ -50,21 +50,30 @@ export const scheduleWidgetRights = new ScheduleWidgetRights<typeof ScheduleWidg
 
 ///////////////////////////////
 
+export enum CustomAttUseTaleId {
+    Roles,
+    Lists = .1,
+}
 
 export enum CustomAttUseRights {
     Titles = 1,
     Checkboxes,
     Roles,
+    Lists,
 }
 
 export const customAttUseRightsTitles: ScheduleWidgetRightTexts<CustomAttUseRights>[] = [
+    {
+        id: CustomAttUseRights.Checkboxes,
+        title: 'вып. пункты',
+    },
     {
         id: CustomAttUseRights.Roles,
         title: 'роли',
     },
     {
-        id: CustomAttUseRights.Checkboxes,
-        title: 'чекбоксы',
+        id: CustomAttUseRights.Lists,
+        title: 'список',
     },
     {
         id: CustomAttUseRights.Titles,

@@ -14,7 +14,7 @@ export default function ScheduleWidgetTopicTitle<
 } & (TitleBox['title'] extends string ? { altTitle?: string } : { altTitle: string })) {
     const userRights = useScheduleWidgetRightsContext();
 
-    return <div className={className}>
+    return <div className={(className || '') + ' flex flex-gap'}>
         {prefix}
         {(iForceShowTopic || userRights.isCanReadTitles) && topicBox?.topic
             ? <>

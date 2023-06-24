@@ -57,24 +57,42 @@ body {
     @include gap-builder('margin');
     @include gap-builder('margin', '-big');
     @include gap-builder('margin', '-sm');
+    @include gap-builder('margin', '-giant');
 
     @include gap-builder('padding');
     @include gap-builder('padding', '-big');
-    @include gap-builder('padding', '-sm');
+    @include gap-builder('padding', '-giant');
 
-    @mixin font-size-builder($metric) {
+    @mixin numeric-1-9-builder($metric) {
         @for $i from 1 through 9 {
             [class~='font-size:#{$i / 10}#{$metric}'] {
                 font-size: #{$i / 10}#{$metric};
             }
+
             [class~='font-size:#{$i}#{$metric}'] {
                 font-size: #{$i}#{$metric};
+            }
+
+            [class~='max-width:#{$i}#{$metric}'] {
+                max-width: #{$i}#{$metric};
+            }
+
+            [class~='width:#{$i}#{$metric}'] {
+                max-width: #{$i}#{$metric};
+            }
+
+            [class~='max-height:#{$i}#{$metric}'] {
+                max-height: #{$i}#{$metric};
+            }
+
+            [class~='height:#{$i}#{$metric}'] {
+                max-height: #{$i}#{$metric};
             }
         }
     }
 
-    @include font-size-builder('rem');
-    @include font-size-builder('em');
+    @include numeric-1-9-builder('rem');
+    @include numeric-1-9-builder('em');
 
     .above-container.keyboard-open {
         --keyboard-flash-height: 30vh;

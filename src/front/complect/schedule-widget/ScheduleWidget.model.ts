@@ -31,8 +31,11 @@ export type ScheduleWidgetDayEventAttValues = Back<EvaIconName>['ScheduleWidgetD
 export type ScheduleWidgetAppAttBasic<AttValue extends any = any> = Back<EvaIconName, AttValue>['ScheduleWidgetAppAttBasic'];
 export type ScheduleWidgetAppAttCustomizableValue = Back<EvaIconName>['ScheduleWidgetAppAttCustomizableValue'];
 export type IScheduleWidgetRole = Back<EvaIconName>['IScheduleWidgetRole'];
-export type IScheduleWidgetRoleUser = Back<EvaIconName>['IScheduleWidgetRoleUser'];
+export type IScheduleWidgetUser = Back<EvaIconName>['IScheduleWidgetUser'];
 export type AttKey = Back<EvaIconName>['AttKey'];
 export type ScheduleWidgetAttKey<AttAppName extends AttKey = AttKey> = Back<EvaIconName, AttAppName>['ScheduleWidgetAttKey'];
 export type ScheduleWidgetDayEventAttValue = Back<EvaIconName>['ScheduleWidgetDayEventAttValue'];
 export type ScheduleWidgetAttRef = Back<EvaIconName>['ScheduleWidgetAttRef'];
+export type IScheduleWidgetLists = Back<EvaIconName>['IScheduleWidgetLists'];
+export type IScheduleWidgetListUnit = Back<EvaIconName>['IScheduleWidgetListUnit'];
+export type IScheduleWidgetListCat = Back<EvaIconName>['IScheduleWidgetListCat'];

@@ -32,7 +32,7 @@ export default function StrongInputDateTimeExtracter({
     icon,
     title,
     className,
-}: StrongControlProps<{
+}: StrongControlProps & {
     value: string,
     icon?: EvaIconName,
     title?: string,
@@ -41,7 +41,7 @@ export default function StrongInputDateTimeExtracter({
     takeTime: TakeTimeDiapason,
     onSend?: (isChanged: boolean, stringValue: string) => void,
     onComponentsChange?: (timeDelta: number, timeString: string, dateString: string, date: Date) => void,
-}>) {
+}) {
     const [initTs, setInitTs] = useState<number | null>(null);
     const [currentTs, setCurrentTs] = useState<number | null>(null);
     const [inputValue, setInputValue] = useState(value);

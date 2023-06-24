@@ -1,16 +1,14 @@
-import React, { ReactNode, useCallback, useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetRights } from "../../../back/apps/index/rights";
 import { appAttsStore } from "../../components/complect/appScheduleAttrsStorage";
-import indexStorage from "../../components/index/indexStorage";
 import useAuth from "../../components/index/useAuth";
 import { RootState } from "../../shared/store";
 import mylib, { MyLib } from "../my-lib/MyLib";
-import { makeStrongScopeMaker } from "../strong-control/useStrongControl";
-import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetRoleUser, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
+import { strongScopeMakerBuilder } from "../strong-control/useStrongControl";
+import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetUser, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
 import ScheduleKeyValueListAtt from "./atts/attachments/key-value/KeyValueListAtt";
 import { scheduleOwnAtts } from "./atts/attachments/ownAtts";
-import EvaIcon from "../eva-icon/EvaIcon";
 
 const schedulesSelector = (state: RootState) => state.index.schedules;
 
@@ -31,10 +29,27 @@ export default function useScheduleWidget(schedulew?: number) {
 export const ScheduleWidgetAppAttsContext = React.createContext<[ScheduleWidgetAppAtts, ScheduleWidgetAttRefs]>([{}, {}]);
 export const useScheduleWidgetAppAttsContext = () => useContext(ScheduleWidgetAppAttsContext);
 
+export const defaultSchwduleWidget: IScheduleWidget = {
+    app: 'index',
+    ctrl: {
+        cats: [],
+        roles: [],
+        type: 0,
+        users: [],
+    },
+    start: 0,
+    w: 0,
+    lists: {
+        cats: [],
+        units: [],
+    }
+};
+
 export interface ScheduleWidgetRights extends ScheduleWidgetUserRights, ScheduleWidgetScheduleWidgetRegType {
-    myUser: IScheduleWidgetRoleUser | nil,
+    myUser: IScheduleWidgetUser | nil,
     mainRole: IScheduleWidgetRole | nil,
     isMyMainRole: boolean,
+    schedule: IScheduleWidget,
 }
 
 export type ScheduleWidgetUserRights = Record<`isCan${keyof typeof ScheduleWidgetUserRoleRight}`, boolean>;
@@ -56,6 +71,7 @@ export const ScheduleWidgetRightsContext = React.createContext<ScheduleWidgetRig
     isSwBeforeRegistration: false,
     isSwHideContent: false,
     isSwPublic: false,
+    schedule: defaultSchwduleWidget,
 });
 export const useScheduleWidgetRightsContext = () => useContext(ScheduleWidgetRightsContext);
 export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?: ScheduleWidgetRights) => {
@@ -63,11 +79,26 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
 
     return useMemo((): ScheduleWidgetRights => {
         if (rights !== undefined) return rights;
-        const myUser = auth && schedule?.ctrl.users.find(user => user.login === auth.login);
-        const mainRole = schedule?.ctrl.roles.find(role => role.mi === 0);
-        const isSwPublic = scheduleWidgetRegTypeRights.checkIsHasRights(schedule?.ctrl.type, ScheduleWidgetRegType.Public,);
-        const isSwBeforeRegistration = scheduleWidgetRegTypeRights.checkIsHasRights(schedule?.ctrl.type, ScheduleWidgetRegType.BeforeRegistration);
-        const isSwHideContent = scheduleWidgetRegTypeRights.checkIsHasRights(schedule?.ctrl.type, ScheduleWidgetRegType.HideContent);
+        if (schedule === undefined) return {
+            isCanRead: false,
+            isCanReadSpecials: false,
+            isCanReadTitles: false,
+            isCanRedact: false,
+            isCanTotalRedact: false,
+            isMyMainRole: false,
+            isSwBeforeRegistration: false,
+            isSwHideContent: false,
+            isSwPublic: false,
+            mainRole: null,
+            myUser: null,
+            schedule: defaultSchwduleWidget,
+        };
+
+        const myUser = auth && schedule.ctrl.users.find(user => user.login === auth.login);
+        const mainRole = schedule.ctrl.roles.find(role => role.mi === 0);
+        const isSwPublic = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public,);
+        const isSwBeforeRegistration = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration);
+        const isSwHideContent = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.HideContent);
 
         if (mainRole && mainRole.user === myUser?.mi) {
             return {
@@ -82,6 +113,7 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
                 isSwBeforeRegistration,
                 isSwHideContent,
                 isSwPublic,
+                schedule,
             };
         }
 
@@ -103,6 +135,7 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
             isSwBeforeRegistration,
             isSwHideContent,
             isSwPublic,
+            schedule,
         };
     }, [auth, schedule, rights]);
 };
@@ -115,9 +148,9 @@ export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidge
 
 export const initialScheduleScope = 'schs';
 
-export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'rateMi' | 'titlei' | 'tattMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati';
+export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'rateMi' | 'titlei' | 'tattMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati' | 'unitMi';
 
-export const takeStrongScopeMaker = makeStrongScopeMaker<ScheduleWidgetScopePhase>();
+export const takeStrongScopeMaker = strongScopeMakerBuilder<ScheduleWidgetScopePhase>();
 export const takeScheduleStrongScopeMaker = (schedulew: number) => takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);
 
 export const extractScheduleWidgetRole = (schedule: IScheduleWidget, roleMi: number) => {
@@ -149,7 +182,7 @@ export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAt
         atts[`[SCH]:custom:${att.mi}`] = {
             ...att,
             isCustomize: true,
-            result: (value, scope, isRedact) => <ScheduleKeyValueListAtt isRedact={isRedact} att={att} scope={scope} value={value} schedule={schedule} />,
+            result: (value, scope, isRedact) => <ScheduleKeyValueListAtt isRedact={isRedact} att={att} scope={scope} value={value} />,
         };
     });
     return [{ ...(schedule?.app && appAttsStore[schedule.app as never] as {}), ...scheduleOwnAtts, ...atts }, attRefs];

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
+import { useIsRememberExpand } from "../../../expand/useIsRememberExpand";
 import StrongDiv from "../../../strong-control/StrongDiv";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import useIsRedactArea from "../../../useIsRedactArea";
@@ -10,7 +11,6 @@ import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetEventList from "../../events/EventList";
 import { useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import ScheduleWidgetDayEvent from "./DayEvent";
-import { useIsRememberExpand } from "../../../expand/useIsRememberExpand";
 
 export default function ScheduleWidgetDayEventList({
     day, schedule, scope, scheduleScope, isPastDay, dayi,
@@ -22,12 +22,17 @@ export default function ScheduleWidgetDayEventList({
     isPastDay: boolean,
     dayi: number,
 }) {
-    const [, isExpand, switchIsExpand] = useIsRememberExpand(scope);
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
     const [isReplacementInProcess, setIsReplacementInProcess] = useState(false);
     const rights = useScheduleWidgetRightsContext();
     const [isIndividualReplacement, setIsIndividualReplacement] = useState(false);
     const { editIcon, isRedact } = useIsRedactArea(true, isIndividualReplacement || null, rights.isCanRedact, true);
+    const [listTitle, isExpand, switchIsExpand] = useIsRememberExpand(
+        scope,
+        <><EvaIcon name="list" className="color--7" /> Распорядок</>,
+        isExpand => isExpand && editIcon
+    );
+
     const usedCounts = useMemo(() => {
         const usedCounts: Record<number, number> = {};
         day.list.forEach(({ type }) => {
@@ -52,14 +57,7 @@ export default function ScheduleWidgetDayEventList({
     }, [isRedact, switchIsExpand]);
 
     return <div className={'schedule-widget-day-event-list' + (isRedact ? ' redact' : '') + (moveEventMi === null ? '' : ' event-movement') + (isIndividualReplacement ? ' individual-replacement' : '')}>
-        <div className="flex flex-gap pointer margin-gap-v between hide-on-print">
-            <span className="flex flex-gap" onClick={() => switchIsExpand()}>
-                <EvaIcon name="list" className="color--7" />
-                Распорядок
-                <EvaButton name={isExpand ? 'chevron-up' : 'chevron-down'} />
-            </span>
-            {editIcon}
-        </div>
+        <div className="max-width hide-on-print">{listTitle}</div>
         {isExpand && <>
             {day.list.map((event, eventi, eventa) => {
                 if (!rights.isCanReadSpecials) {
@@ -115,7 +113,6 @@ export default function ScheduleWidgetDayEventList({
                     <ScheduleWidgetDayEvent
                         scope={scope}
                         scheduleScope={scheduleScope}
-                        schedule={schedule}
                         isPastDay={isPastDay}
                         day={day}
                         event={event}

@@ -3,7 +3,6 @@ import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
-import { IScheduleWidget } from "../ScheduleWidget.model";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import ScheduleWidgetRegisterType from "./RegisterType";
 import ScheduleWidgetRole from "./roles/Role";
@@ -12,24 +11,20 @@ import ScheduleWidgetUserList from "./users/UserList";
 
 export default function ScheduleWidgetControl({
     scope,
-    schedule,
 }: StrongComponentProps<{
-    schedule: IScheduleWidget,
 }>) {
     const rights = useScheduleWidgetRightsContext();
 
     const { modalNode, screen } = useModal(({ header, body }) => {
         return rights.isCanRedact
             ? <>
-                {header(<>Управление <span className="color--7">{schedule.title}</span></>)}
+                {header(<>Управление <span className="color--7">{rights.schedule.title}</span></>)}
                 {body(<>
                     <ScheduleWidgetUserList
                         scope={scope}
-                        schedule={schedule}
                     />
                     <ScheduleWidgetRoleList
-                        schedule={schedule}
-                        expandContent={!schedule.ctrl?.roles.some((role) => !role.title)
+                        expandContent={!rights.schedule.ctrl?.roles.some((role) => !role.title)
                             && <StrongEvaButton
                                 scope={scope}
                                 fieldName="roles"
@@ -41,17 +36,16 @@ export default function ScheduleWidgetControl({
                             return <ScheduleWidgetRole
                                 key={role.mi}
                                 scope={scope}
-                                schedule={schedule}
                                 role={role}
                             />;
                         })}
                     />
-                    <ScheduleWidgetRegisterType schedule={schedule} scope={scope} />
+                    <ScheduleWidgetRegisterType scope={scope} />
                 </>)}
             </>
             : <>
                 {header(<div>Участники</div>)}
-                {body(schedule.ctrl.users.map((user) => {
+                {body(rights.schedule.ctrl.users.map((user) => {
                     return <div key={user.mi} className="margin-gap-v">
                         {user.alias ? `${user.alias} (${user.fio})` : user.fio}
                     </div>

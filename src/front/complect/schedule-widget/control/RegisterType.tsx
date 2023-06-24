@@ -1,15 +1,14 @@
 import { scheduleWidgetRegTypeRights } from "../../../../back/apps/index/rights";
-import { StrongComponentProps } from "../../strong-control/Strong.model";
 import useIsExpand from "../../expand/useIsExpand";
-import { IScheduleWidget } from "../ScheduleWidget.model";
+import { StrongComponentProps } from "../../strong-control/Strong.model";
+import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import ScheduleWidgetRightControlList from "./RightControlList";
 
 export default function ScheduleWidgetRegisterType({
     scope,
-    schedule,
 }: StrongComponentProps<{
-    schedule: IScheduleWidget,
 }>) {
+    const rights = useScheduleWidgetRightsContext();
     const [expandNode, isExpand] = useIsExpand(false, <>Тип мероприятия</>);
 
     return <>
@@ -19,7 +18,7 @@ export default function ScheduleWidgetRegisterType({
                 scope={scope}
                 fieldName="type"
                 rights={scheduleWidgetRegTypeRights}
-                R={schedule.ctrl.type}
+                R={rights.schedule.ctrl.type}
                 className="margin-gap-l"
                 isDescriptionsCollect
             />}
