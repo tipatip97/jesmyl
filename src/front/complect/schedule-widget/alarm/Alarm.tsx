@@ -44,7 +44,7 @@ export default function ScheduleWidgetAlarm() {
                     return ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number');
                 });
                 const dayMsList = days.map(day =>
-                    day.list.reduce((sum, event) => sum + (event.tm ?? types[event.type].tm ?? 0), 0) * msInMin);
+                    day.list.reduce((sum, event) => sum + (event.tm ?? types[event.type]?.tm ?? 0), 0) * msInMin);
 
                 return {
                     sch,
@@ -88,7 +88,7 @@ export default function ScheduleWidgetAlarm() {
                     let currEventMs = dayStartMs;
                     let lastCompEventMs = 0;
                     const currEventi = events.findIndex((event) => {
-                        lastCompEventMs = (event.tm ?? currSchWr.types[event.type].tm ?? 0) * msInMin;
+                        lastCompEventMs = (event.tm ?? currSchWr.types[event.type]?.tm ?? 0) * msInMin;
                         if (now > currEventMs && now < (currEventMs + lastCompEventMs))
                             return true;
 

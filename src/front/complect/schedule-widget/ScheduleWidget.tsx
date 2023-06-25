@@ -139,7 +139,7 @@ export default function ScheduleWidget({
                                                 mapExecArgs={(args) => {
                                                     return {
                                                         ...args,
-                                                        value: schedule.w
+                                                        schw: schedule.w
                                                     };
                                                 }}
                                             />}

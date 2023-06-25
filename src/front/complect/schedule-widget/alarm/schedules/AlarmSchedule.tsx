@@ -13,7 +13,7 @@ export default function ScheduleWidgetAlarmSchedule({
 }) {
     const schScope = takeScheduleStrongScopeMaker(schedule.w);
     const rights = useScheduleWidgetRights(schedule);
-    const [titleNode, isExpand] = useIsExpand(false, null, <ScheduleWidgetTopicTitle
+    const [titleNode, isExpand] = useIsExpand(false, <ScheduleWidgetTopicTitle
         titleBox={schedule}
         topicBox={schedule}
         altTitle=""
@@ -31,13 +31,13 @@ export default function ScheduleWidgetAlarmSchedule({
                     title="Буду участвовать"
                     confirm="Вы будете записаны как участник"
                 />;
-            } else {
-                content = <div className="color--7 font-size:0.8em">Предварительной регистрация на мероприятие нет</div>
-            }
+            } else if (rights.isSwHideContent)
+                content = <div className="color--7 font-size:0.8em">Предварительной регистрации на мероприятие нет</div>
         }
     } else {
         if (rights.myUser.R === undefined || rights.myUser.R === 0) {
-            content = <div className="color--7">Заявка принята</div>;
+            if (!rights.isSwPublic || rights.isSwHideContent)
+                content = <div className="color--7">Заявка принята</div>;
         } else if (!rights.isCanRead) {
             content = <div className="color--ko">Доступ к содержимому ограничен</div>;
         }

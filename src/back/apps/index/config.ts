@@ -13,6 +13,7 @@ interface SchedulesBag {
 }
 
 const emptyArray: any[] = [];
+const emptyLists = { cats: [], units: [] };
 
 const mapCantReadTitlesDayEvent = (event: IScheduleWidgetDayEvent) => ({
     ...event,
@@ -91,7 +92,7 @@ const config: FilerAppConfig = {
                     return whenRejButTs;
                 }
 
-                if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials) && exec.args?.$$vars?.$$event.secret) {
+                if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials) && exec.args?.$$vars?.$$event?.secret) {
                     return whenRejButTs;
                 }
 
@@ -111,12 +112,28 @@ const config: FilerAppConfig = {
 
                     if (user === undefined) {
                         if (scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public)) {
+                            if (!scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)) {
+                                list.push({
+                                    ...schedule,
+                                    days: schedule.days?.map(mapCantReadSpecialsDay),
+                                    lists: emptyLists,
+                                    ctrl: {
+                                        cats: emptyArray,
+                                        roles: emptyArray,
+                                        users: emptyArray,
+                                        type: schedule.ctrl.type,
+                                    }
+                                });
+                                return;
+                            }
+
                             list.push({
                                 ...schedule,
                                 days: schedule.days?.[0] && [{ wup: schedule.days[0].wup, mi: 0, list: emptyArray }],
                                 tatts: undefined,
                                 dsc: undefined,
                                 types: undefined,
+                                lists: emptyLists,
                                 ctrl: {
                                     cats: emptyArray,
                                     roles: emptyArray,
@@ -129,10 +146,10 @@ const config: FilerAppConfig = {
                         return;
                     }
 
-                    if (
-                        (user.R === undefined || user.R === 0)
+                    if ((user.R === undefined || user.R === 0)
                         && scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public)
-                        && !scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)
+                        && (!scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)
+                            || !scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.HideContent))
                     ) {
                         list.push({
                             ...schedule,
@@ -140,7 +157,7 @@ const config: FilerAppConfig = {
                             ctrl: {
                                 cats: emptyArray,
                                 roles: emptyArray,
-                                users: emptyArray,
+                                users: user === undefined ? emptyArray : [user],
                                 type: schedule.ctrl.type,
                             }
                         });
@@ -155,6 +172,7 @@ const config: FilerAppConfig = {
                             tatts: undefined,
                             dsc: undefined,
                             types: undefined,
+                            lists: emptyLists,
                             ctrl: {
                                 cats: emptyArray,
                                 roles: emptyArray,
@@ -224,9 +242,10 @@ const config: FilerAppConfig = {
             expected: { list: [] },
             '/list': {
                 D: {
-                    value: ['w', '===', '{value}'],
+                    value: ['w', '===', '{schw}'],
                 },
                 C: {
+                    RRej: false,
                     value: {
                         w: '{schw}',
                         title: '{title}',
