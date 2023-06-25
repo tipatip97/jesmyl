@@ -1,5 +1,5 @@
 import { filer } from '../../filer/Filer';
-import { LocalSokiAuth, SokiAuth, SokiClientEvent } from '../soki.model';
+import { LocalSokiAuth, SokiAuth, SokiClientEventBody } from '../soki.model';
 import smylib from './SMyLib';
 
 export class SokiAuther {
@@ -25,7 +25,7 @@ export class SokiAuther {
         });
     }
 
-    authenticate(event: SokiClientEvent['body']['authorization']) {
+    authenticate(event: SokiClientEventBody['authorization']) {
         return new Promise<SokiAuth>((res, rej) => {
             try {
                 if (event) {

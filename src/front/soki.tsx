@@ -1,6 +1,6 @@
 import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
-import { PullEventValue, SokiAppName, SokiClientEvent, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
+import { PullEventValue, SokiAppName, SokiClientEvent, SokiClientEventBody, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
 import Eventer from './complect/eventer/Eventer';
@@ -158,7 +158,7 @@ export class SokiTrip {
         this.pullCurrentAppData();
     }
 
-    send(body: SokiClientEvent['body'], appName?: SokiAppName) {
+    send(body: SokiClientEventBody, appName?: SokiAppName) {
         let requestId: number | und;
 
         const send = () => {

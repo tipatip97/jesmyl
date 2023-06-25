@@ -201,8 +201,7 @@ export class Filer {
 
           waits++;
 
-          const req = SMyLib.entries(this.appConfigs[appName]?.requirements)
-            .find(([name, data]) => data === null && name === fileName) as FilerAppRequirement | undefined;
+          const req = this.appConfigs[appName]?.requirements[fileName];
           const rootPath = req?.rootPath;
           const stringContent = JSON.stringify(content.data);
           const path = rootPath
