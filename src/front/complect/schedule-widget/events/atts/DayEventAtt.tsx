@@ -100,7 +100,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     }
 
     return <>
-        <div className="flex flex-gap between color--7 margin-gap-v">
+        <div className="flex flex-gap inline-block between color--7">
             {attTitleNode}
             <div className="flex">
                 {isCanRedact && isExpand && editIcon}
