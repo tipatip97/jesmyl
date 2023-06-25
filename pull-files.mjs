@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 [
     ['', 'package'],
     ['apps/index', 'schedules'],
+    ['', 'bonjour', null],
     ['apps/cm', 'cols'],
     ['apps/cm', 'eeStorage'],
     ['apps/cm', 'meetings'],
@@ -17,7 +18,8 @@ import fetch from 'node-fetch';
     // ['S', 'apps'],
     // ['S', 'main', 'css'],
 ].forEach(([path, name, ext = 'json']) => {
-    const filePath = `${path}/${name}.${ext}`;
+    const fileExt = ext === null ? '' : `.${ext}`;
+    const filePath = `${path}/${name}${fileExt}`;
 
     fetch(`https://jesmyl.ru/${filePath}`)
         .then(r => r.text())
@@ -35,11 +37,11 @@ import fetch from 'node-fetch';
                 return;
             }
 
-            file_system.writeFile(`${caseDir}/${name}.json`,
+            file_system.writeFile(`${caseDir}/${name}${fileExt}`,
                 ext === 'json'
                     ? JSON.stringify(content, null, 2)
                     : content,
-                () => console.info(`File ${path}/${name}.${ext} checked!`)
+                () => console.info(`File ${path}/${name}${fileExt} checked!`)
             );
         }
         )
