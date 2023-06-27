@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import ScheduleWidgetDay, { ScheduleWidgetDayProps } from "./Day";
+import { useScheduleWidgetRights } from "../useScheduleWidget";
+import ScheduleWidgetContextWrapper from "../ContextWrapper";
 
 export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps & { win: typeof window }) {
-    const [fontSize, setFontSize] = useState(20);
+    const [fontSize, setFontSize] = useState(40);
     const page = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -20,8 +22,18 @@ export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps
 
     const html = props.win.document.querySelector('html');
     if (html) html.style.fontSize = `${fontSize}px`;
+    const rights = useScheduleWidgetRights(props.schedule);
 
-    return <div className="for-print canvas" ref={page}>
-        <ScheduleWidgetDay {...props} />
-    </div>;
+    return <ScheduleWidgetContextWrapper schedule={props.schedule} rights={{
+        ...rights,
+        isCanRead: true,
+        isCanTotalRedact: false,
+        isCanReadSpecials: false,
+        isCanReadTitles: false,
+        isCanRedact: false,
+    }}>
+        <div className="for-print canvas" ref={page}>
+            <ScheduleWidgetDay {...props} />
+        </div>
+    </ScheduleWidgetContextWrapper>;
 }

@@ -33,6 +33,7 @@ export function ScheduleWidgetListCategory({
         <><EvaIcon name={cat.icon} /> {title}</>,
         rights.isCanRedact
             ? isExpand => isExpand
+                && rights.isCanTotalRedact
                 && <div className="flex flex-gap">
                     <div className="ellipsis max-width:5em">{cat.title.toLowerCase()}</div>
                     {!rights.schedule.lists?.units.some(unit => !unit.title)
@@ -68,14 +69,9 @@ export function ScheduleWidgetListCategory({
                 fieldName="field"
                 icon="credit-card-outline"
                 title="Название списка"
-                value={cat.title}
+                value={cat}
+                fieldKey="title"
                 isRedact
-                mapExecArgs={args => {
-                    return {
-                        ...args,
-                        key: 'title',
-                    };
-                }}
             />
             <StrongEditableField
                 scope={catScope}

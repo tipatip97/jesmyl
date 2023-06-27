@@ -41,13 +41,24 @@ export default function ScheduleWidgetListUnit({
 
     const { modalNode, screen } = useModal(({ header }) => {
         return <>
-            {header(<div className="flex flex-gap">{title}</div>)}
+            {header(<div className="flex flex-gap"><EvaIcon name={cat.icon} />{title}</div>)}
             <StrongEditableField
                 scope={unitScope}
-                fieldName="title"
-                icon={cat.icon}
+                fieldName="field"
+                icon="bookmark-outline"
                 title="Название"
-                value={unit.title}
+                value={unit}
+                fieldKey="title"
+                isRedact
+            />
+            <StrongEditableField
+                scope={unitScope}
+                fieldName="field"
+                icon="file-text-outline"
+                title="Описание"
+                value={unit}
+                fieldKey="dsc"
+                multiline
                 isRedact
             />
             <ScheduleWidgetUserList
@@ -63,13 +74,8 @@ export default function ScheduleWidgetListUnit({
                                 scope={userScope + catScopePostfix}
                                 cud="C"
                                 fieldName=""
+                                fieldValue={isForMember ? unit.mi : -unit.mi}
                                 disabled={user.R === undefined}
-                                mapExecArgs={(args) => {
-                                    return {
-                                        ...args,
-                                        value: isForMember ? unit.mi : -unit.mi,
-                                    };
-                                }}
                                 className="nowrap"
                                 postfix={user.R === undefined
                                     ? <EvaIcon name="person-delete-outline" />
@@ -102,6 +108,17 @@ export default function ScheduleWidgetListUnit({
         {modalNode}
         <div className="margin-big-gap-v">
             <span className="color--3">{unitTitile}</span>
+            {unit.dsc && <StrongEditableField
+                scope={unitScope}
+                fieldName="field"
+                icon="file-text-outline"
+                value={unit}
+                title="Описание"
+                fieldKey="dsc"
+                multiline
+                setSelfRedact
+                isRedact
+            />}
             {isExpand && <div className="margin-big-gap-h">
                 <ScheduleWidgetUserList
                     scope={scheduleScope}

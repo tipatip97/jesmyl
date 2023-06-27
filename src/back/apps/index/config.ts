@@ -432,7 +432,8 @@ const config: FilerAppConfig = {
                             },
                             '/[mi === {unitMi}]': {
                                 scopeNode: 'unitMi',
-                                '/title': {
+                                '/{key}': {
+                                    scopeNode: 'field',
                                     U: {}
                                 },
                             }
@@ -574,8 +575,8 @@ const config: FilerAppConfig = {
                                     args: {
                                         eventMi: '#Number',
                                     },
-                                    '/{txtKey}': {
-                                        scopeNode: 'txtField',
+                                    '/{key}': {
+                                        scopeNode: 'field',
                                         U: {
                                             RRej: ScheduleWidgetUserRoleRight.ReadTitles,
                                             args: {
@@ -593,8 +594,8 @@ const config: FilerAppConfig = {
                                             }
                                         }
                                     },
-                                    '/{key}': {
-                                        scopeNode: 'field',
+                                    '/{techKey}': {
+                                        scopeNode: 'techField',
                                         U: {
                                             args: {
                                                 key: ['tm', 'type'],
@@ -672,7 +673,7 @@ const config: FilerAppConfig = {
                                             '/values': {
                                                 scopeNode: 'keyValue',
                                                 C: {
-                                                    value: ['{key}', ''],
+                                                    value: ['{key}', '+'],
                                                     args: {
                                                         key: ['#String', '#Number', '#Boolean'],
                                                     },

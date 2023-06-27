@@ -39,22 +39,25 @@ export default function ScheduleWidgetUser({
                 <ScheduleWidgetRightControlList
                     scope={userScope}
                     fieldName="R"
-                    rights={scheduleWidgetRights}
+                    rightCtrl={scheduleWidgetRights}
+                    rights={rights}
                     R={user.R}
                     isCantEdit={!(rights.myUser && rights.mainRole && rights.mainRole.user !== user.mi && rights.myUser.mi !== user.mi)}
                 />
             </>)}
         </>;
     });
-    const userNode = <EvaButton
-        name="edit-outline"
-        prefix={<span className="flex flex-gap">
-            {userName}
-            {rights.isCanTotalRedact && balance !== undefined && <span className="color--7">{balance < 0 ? <EvaIcon name="person-delete-outline" /> : balance}</span>}
-        </span>}
-        className="flex between full-width margin-gap-v"
-        onClick={rights.isCanTotalRedact ? (() => screen()) : undefined}
-    />;
+    const userNode = !rights.isCanTotalRedact
+        ? <div className="flex flex-gap margin-gap-v">{userName}</div>
+        : <EvaButton
+            name="edit-outline"
+            prefix={<span className="flex flex-gap">
+                {userName}
+                {balance !== undefined && <span className="color--7">{balance < 0 ? <EvaIcon name="person-delete-outline" /> : balance}</span>}
+            </span>}
+            className="flex between full-width margin-gap-v"
+            onClick={() => screen()}
+        />;
 
     return <>
         {modalNode}

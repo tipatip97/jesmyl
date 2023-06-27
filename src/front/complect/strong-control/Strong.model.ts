@@ -10,4 +10,7 @@ export type StrongComponentProps<Props = {}, ValType extends string | number = s
 
 export type StrongControlProps<Props = {}> = StrongComponentProps<Props> & {
     fieldName: string,
+    fieldKey?: unknown,
+    fieldValue?: unknown,
+    isCanSend?: boolean,
 };

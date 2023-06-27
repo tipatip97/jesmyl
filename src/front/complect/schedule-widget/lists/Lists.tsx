@@ -4,21 +4,24 @@ import useIsExpand from "../../expand/useIsExpand";
 import useFullContent from "../../fullscreen-content/useFullContent";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
+import ScheduleWidgetRoleList from "../control/roles/RoleList";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import { ScheduleWidgetListCategory } from "./Category";
 
-export default function ScheduleWidgetLists({ scope }: StrongComponentProps) {
+export default function ScheduleWidgetLists({ scope, scheduleScope }: StrongComponentProps & { scheduleScope: string }) {
     const rights = useScheduleWidgetRightsContext();
     const listsScope = scope + ' lists';
     const [listsTitle, isExpand] = useIsExpand(true,
         'Списки',
-        isExpand => isExpand && <StrongEvaButton
-            scope={listsScope}
-            fieldName="cats"
-            name="plus"
-            prefix="список"
-            confirm="Создать новый список?"
-        />);
+        isExpand => isExpand
+            && rights.isCanTotalRedact
+            && <StrongEvaButton
+                scope={listsScope}
+                fieldName="cats"
+                name="plus"
+                prefix="список"
+                confirm="Создать новый список?"
+            />);
 
     const [modalNode, screen] = useFullContent(() => {
         return <>
@@ -34,6 +37,7 @@ export default function ScheduleWidgetLists({ scope }: StrongComponentProps) {
                     cati={cati}
                 />
             })}
+            <ScheduleWidgetRoleList scope={scheduleScope} />
         </>;
     });
 

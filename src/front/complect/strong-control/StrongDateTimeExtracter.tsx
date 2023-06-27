@@ -20,19 +20,8 @@ const takeInPeriod = (num: string | null, finish: string, start?: number) => {
             : ` ${('' + numFinish).padStart(finish.length, '0')}`;
 };
 
-export default function StrongInputDateTimeExtracter({
-    scope,
-    fieldName,
-    value,
-    takeDate,
-    takeTime,
-    onSend,
-    onComponentsChange,
-    mapExecArgs,
-    icon,
-    title,
-    className,
-}: StrongControlProps & {
+export default function StrongInputDateTimeExtracter(props: StrongControlProps & {
+    fieldKey?: string,
     value: string,
     icon?: EvaIconName,
     title?: string,
@@ -44,7 +33,7 @@ export default function StrongInputDateTimeExtracter({
 }) {
     const [initTs, setInitTs] = useState<number | null>(null);
     const [currentTs, setCurrentTs] = useState<number | null>(null);
-    const [inputValue, setInputValue] = useState(value);
+    const [inputValue, setInputValue] = useState(props.value);
     const [timeImagine, setTimeImagine] = useState('');
 
     useEffect(() => {
@@ -58,11 +47,11 @@ export default function StrongInputDateTimeExtracter({
         let pointer = -1;
         const takeNextDigit = () => digits[++pointer] ? digits[pointer] : null;
 
-        if (takeTime !== 'NO') {
-            const tkHours = takeTime.indexOf('hour');
-            const tkMin = takeTime.indexOf('min');
-            const tkSec = takeTime.indexOf('sec');
-            const tkMs = takeTime.indexOf('ms');
+        if (props.takeTime !== 'NO') {
+            const tkHours = props.takeTime.indexOf('hour');
+            const tkMin = props.takeTime.indexOf('min');
+            const tkSec = props.takeTime.indexOf('sec');
+            const tkMs = props.takeTime.indexOf('ms');
 
             if ((tkHours === 0 || tkMin === 0 || tkSec === 0 || tkMs > -1)
                 && tkMs > -1) {
@@ -98,9 +87,9 @@ export default function StrongInputDateTimeExtracter({
             timeString = timeString.trim().replace(/ (\d{3})/, '.$1').replace(/ /g, ':');
         } else date.setHours(0, 0, 0, 0);
 
-        if (takeDate !== 'NO') {
-            const isTakeMonth = takeDate === 'month';
-            const isTakeDay = takeDate === 'day';
+        if (props.takeDate !== 'NO') {
+            const isTakeMonth = props.takeDate === 'month';
+            const isTakeDay = props.takeDate === 'day';
 
             const txt = takeInPeriod(takeNextDigit(), '4000', 1970);
             date.setFullYear(+txt.trim());
@@ -121,26 +110,24 @@ export default function StrongInputDateTimeExtracter({
 
         setTimeImagine(`${dateString}${timeString && dateString ? ', ' : ''}${timeString}`);
 
-        onComponentsChange?.(timeDelta, timeString, dateString, date);
+        props.onComponentsChange?.(timeDelta, timeString, dateString, date);
         setCurrentTs(date.getTime());
         if (initTs === null) setInitTs(date.getTime());
 
-    }, [inputValue, takeDate, takeTime, initTs]);
+    }, [inputValue, props.takeDate, props, props.takeTime, initTs]);
 
     return <>
         <StrongEditableField
-            fieldName={fieldName}
-            scope={scope}
-            className={className}
+            {...props}
             isRedact
-            title={title}
             description={timeImagine}
-            icon={icon}
             placeholder="Нецифра - разделитель"
-            value={value}
             onChange={setInputValue}
-            mapExecArgs={mapExecArgs && ((args) => mapExecArgs(args, timeImagine))}
-            onSend={() => onSend?.(initTs !== currentTs, timeImagine)}
+            mapExecArgs={props.mapExecArgs && ((args) => props.mapExecArgs!(args, timeImagine))}
+            onSend={() => {
+                if (props.isCanSend === false) return;
+                return props.onSend?.(initTs !== currentTs, timeImagine);
+            }}
         />
     </>;
 }

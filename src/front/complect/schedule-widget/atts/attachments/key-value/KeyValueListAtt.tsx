@@ -1,3 +1,4 @@
+import { ScheduleWidgetRightsCtrl } from "../../../../../../back/apps/index/complect";
 import { CustomAttUseRights, CustomAttUseTaleId, customAttUseRights } from "../../../../../../back/apps/index/rights";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
@@ -8,6 +9,7 @@ import ScheduleWidgetListUnitFace from "../../../lists/UnitFace";
 import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../../useScheduleWidget";
 
 const checkIsTaleIdUnit = (num: number, taleId: 0.1 | number) => Math.trunc(num) + taleId === num;
+const itIt = (it: unknown) => it;
 
 export default function ScheduleKeyValueListAtt({
     value,
@@ -23,6 +25,84 @@ export default function ScheduleKeyValueListAtt({
     const attScope = scope + ' keyValue';
     const rights = useScheduleWidgetRightsContext();
 
+    let insertionNode = null;
+
+    if (isRedact) {
+        const checkboxes = customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Checkboxes)
+            && <div className="flex flex-gap margin-gap-v">
+                <EvaIcon name="checkmark-square-outline" />
+                <span className="text-italic">Пункт</span>
+                <StrongEvaButton
+                    scope={attScope}
+                    fieldName=""
+                    fieldKey={false}
+                    name="plus"
+                />
+            </div>;
+
+        const titles = customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Titles) && att.titles
+            ?.map((title, titlei) => {
+                if (!title || value.values?.some(li => li[0] === title)) return null;
+                return <div key={titlei} className="flex flex-gap">
+                    {title}
+                    <StrongEvaButton
+                        name="plus"
+                        scope={attScope}
+                        fieldName=""
+                        fieldKey={title}
+                    />
+                </div>;
+            }).filter(itIt);
+
+        const roles = customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles)
+            && rights.schedule.ctrl.roles.map((role) => {
+                if (
+                    !ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(att.roles, (role.cat || 0))
+                    || !role.title || value.values?.some(li => li[0] === role.mi)) return null;
+
+                return <div
+                    key={role.mi}
+                    className="flex flex-gap margin-gap-v"
+                >
+                    <ScheduleWidgetRoleFace role={role} schedule={rights.schedule} />
+                    <StrongEvaButton
+                        name="plus"
+                        scope={attScope}
+                        fieldName=""
+                        fieldKey={role.mi}
+                    />
+                </div>
+            }).filter(itIt);
+
+        const lists = customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Lists)
+            && rights.schedule.lists.units.map((unit) => {
+                if (
+                    !ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(att.list, unit.cat)
+                    || !unit.title || value.values?.some(li => li[0] === unit.mi + CustomAttUseTaleId.Lists)) return null;
+
+                return <ScheduleWidgetListUnitFace
+                    key={unit.mi}
+                    unit={unit}
+                    postfix={<StrongEvaButton
+                        name="plus"
+                        scope={attScope}
+                        fieldName=""
+                        fieldKey={unit.mi + CustomAttUseTaleId.Lists}
+                    />}
+                />
+            }).filter(itIt);
+
+        if (checkboxes || (titles && titles.length) || (roles && roles.length) || (lists && lists.length)) {
+            insertionNode = <>
+                <div className="margin-gap-v color--7">Вставить поле ввода:</div>
+                <div className="margin-big-gap-v">{checkboxes}</div>
+                <div className="margin-big-gap-v">{titles}</div>
+                <div className="margin-big-gap-v">{roles}</div>
+                <div className="margin-big-gap-v">{lists}</div>
+            </>;
+        } else insertionNode = <div className="margin-big-gap-v text-italic">{att.title}. Вставлять нечего</div>
+    }
+
     return <>{
         <div>
             {value.values?.map(([key, value], itemi) => {
@@ -31,7 +111,7 @@ export default function ScheduleKeyValueListAtt({
                 const role = typeof key === 'number' && checkIsTaleIdUnit(key, CustomAttUseTaleId.Roles)
                     ? extractScheduleWidgetRole(rights.schedule, key)
                     : undefined;
-                let setSelfRedact = false;
+                let setSelfRedact = typeof key === 'number';
 
                 if (!rights.isCanTotalRedact && typeof key === 'number') {
                     if (checkIsTaleIdUnit(key, CustomAttUseTaleId.Roles))
@@ -52,18 +132,13 @@ export default function ScheduleKeyValueListAtt({
                             ? <StrongEvaButton
                                 scope={itemScope}
                                 fieldName="key"
+                                fieldValue={!key}
                                 className={'self-start' + (key ? '' : ' color--7')}
                                 cud="U"
                                 name={key ? 'checkmark-square-outline' : 'square-outline'}
-                                mapExecArgs={(args) => {
-                                    return {
-                                        ...args,
-                                        value: !key,
-                                    };
-                                }}
                             />
                             : <div className="color--3">{key}</div>}
-                    <StrongEditableField
+                    {(isRedact || value !== '+') && <StrongEditableField
                         scope={itemScope}
                         fieldName="value"
                         className={'margin-gap-l' + (typeof key !== 'boolean' || key ? '' : ' color--7')}
@@ -71,73 +146,10 @@ export default function ScheduleKeyValueListAtt({
                         multiline
                         isRedact={isRedact}
                         setSelfRedact={setSelfRedact}
-                        mapExecArgs={(args) => ({ ...args, })}
-                    />
+                    />}
                 </div>;
             })}
-            {isRedact && <>
-                <div className="margin-gap-v color--7">Вставить поле ввода:</div>
-                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Checkboxes)
-                    && <div className="flex flex-gap margin-gap-v">
-                        <EvaIcon name="checkmark-square-outline" />
-                        <span className="text-italic">Пункт</span>
-                        <StrongEvaButton
-                            scope={attScope}
-                            fieldName=""
-                            name="plus"
-                            mapExecArgs={(args) => ({ ...args, key: false, })}
-                        />
-                    </div>}
-                {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Titles) && att.titles
-                    ?.map((title, titlei) => {
-                        if (!title || value.values?.some(li => li[0] === title)) return null;
-                        return <div key={titlei} className="flex flex-gap">
-                            {title}
-                            <StrongEvaButton
-                                name="plus"
-                                scope={attScope}
-                                fieldName=""
-                                mapExecArgs={(args) => ({ ...args, key: title })}
-                            />
-                        </div>;
-                    })}
-                <div className="margin-big-gap-v">
-                    {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles)
-                        && rights.schedule.ctrl.roles.map((role) => {
-                            if ((role.cat || 0) !== att.roles || !role.title || value.values?.some(li => li[0] === role.mi)) return null;
-
-                            return <div
-                                key={role.mi}
-                                className="flex flex-gap margin-gap-v"
-                            >
-                                <ScheduleWidgetRoleFace role={role} schedule={rights.schedule} />
-                                <StrongEvaButton
-                                    name="plus"
-                                    scope={attScope}
-                                    fieldName=""
-                                    mapExecArgs={(args) => ({ ...args, key: role.mi, })}
-                                />
-                            </div>
-                        })}
-                </div>
-                <div className="margin-big-gap-v">
-                    {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Lists)
-                        && rights.schedule.lists.units.map((unit) => {
-                            if (unit.cat !== att.list || !unit.title || value.values?.some(li => li[0] === unit.mi + CustomAttUseTaleId.Lists)) return null;
-
-                            return <ScheduleWidgetListUnitFace
-                                key={unit.mi}
-                                unit={unit}
-                                postfix={<StrongEvaButton
-                                    name="plus"
-                                    scope={attScope}
-                                    fieldName=""
-                                    mapExecArgs={(args) => ({ ...args, key: unit.mi + CustomAttUseTaleId.Lists })}
-                                />}
-                            />
-                        })}
-                </div>
-            </>}
+            {insertionNode}
         </div>
     }</>;
 }

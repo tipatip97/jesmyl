@@ -8,8 +8,12 @@ import { strongPrepareArgsAndSend, useStrongExerContext } from "../useStrongCont
 import StrongEditableFieldMultiline from "./StrongEditableFieldMultiline";
 import useIsRedactArea from "../../useIsRedactArea";
 
-export default function StrongEditableField(props: StrongControlProps<{
-    value?: string,
+export default function StrongEditableField<
+    Key extends string,
+    Value extends string | Partial<Record<Key, string>>,
+>(props: StrongControlProps<{
+    fieldKey?: Key,
+    value?: Value,
     title?: string,
     description?: ReactNode,
     type?: 'text' | 'number',
@@ -25,7 +29,8 @@ export default function StrongEditableField(props: StrongControlProps<{
     onChange?: (value: string) => void | Promise<boolean>,
     onSend?: (value: string) => void | Promise<boolean>,
 }>) {
-    const [stateValue, setStateValue] = useState(props.value);
+    const value = typeof props.value === 'string' ? props.value : props.value?.[props.fieldKey as never] ?? '';
+    const [stateValue, setStateValue] = useState(value);
     const [isUserChange, setIsUserChange] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -38,7 +43,7 @@ export default function StrongEditableField(props: StrongControlProps<{
     const sendValue = () => {
         const isSendResuls = stateValue !== undefined
             && (props.isImpossibleEmptyValue !== true || stateValue.trim())
-            && stateValue.trim() !== props.value?.trim();
+            && stateValue.trim() !== value?.trim();
 
         if (isSendResuls) {
             const onSendResult = props.onSend?.(stateValue.trim());
@@ -68,7 +73,9 @@ export default function StrongEditableField(props: StrongControlProps<{
                         setIsLoading(true);
                         setIsError(false);
                     },
-                    props.mapExecArgs
+                    props.mapExecArgs,
+                    props.fieldKey,
+                    props.fieldValue,
                 )
                     ?.then((isOk) => {
                         if (isOk) {
@@ -81,22 +88,22 @@ export default function StrongEditableField(props: StrongControlProps<{
                         setIsError(true);
                     });
             }
-        } else setStateValue(props.value);
+        } else setStateValue(value);
     };
 
     useEffect(() => {
-        if (!isUserChange) setStateValue(props.value);
-    }, [isUserChange, props.value]);
+        if (!isUserChange) setStateValue(value);
+    }, [isUserChange, value]);
 
     const indicatorNode = isError
         ? <EvaIcon name="alert-triangle-outline" className="error-message" />
         : isLoading
             ? <EvaIcon name="loader-outline" className="rotate" />
-            : props.value && stateValue !== props.value
+            : value && stateValue !== value
                 ? <EvaButton
                     name="undo-outline"
                     className="pointer"
-                    onMouseDown={() => setStateValue(props.value)}
+                    onMouseDown={() => setStateValue(value)}
                 />
                 : <EvaIcon name="cloud-upload-outline" className="fade-05" />;
 
@@ -137,11 +144,11 @@ export default function StrongEditableField(props: StrongControlProps<{
             </>
             : <div className="flex flex-gap">
                 {props.icon && <EvaIcon name={props.icon} className="color--7 self-start" />}
-                {props.value
+                {value
                     ? props.multiline
-                        ? <StrongEditableFieldMultiline value={props.value} />
+                        ? <StrongEditableFieldMultiline value={value} />
                         : <div className={'break-word ' + (props.textClassName || 'color--7 ')}>
-                            {props.value}{props.postfix || ''}
+                            {value}{props.postfix || ''}
                         </div>
                     : 'Без значения'}
                 {props.isRedact && props.setSelfRedact && editIcon}

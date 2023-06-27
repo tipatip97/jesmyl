@@ -7,10 +7,9 @@ import { IScheduleWidget } from "../ScheduleWidget.model";
 import ScheduleWidgetCleans from "../complect/Cleans";
 import ScheduleWidgetEventType from "./EventType";
 
-const altArr: [] = [];
+const emptyArr: [] = [];
 
 export default function ScheduleWidgetEventList({
-    scope,
     selectScope,
     scheduleScope,
     postfix,
@@ -19,7 +18,6 @@ export default function ScheduleWidgetEventList({
     selectFieldName,
     usedCounts,
 }: {
-    scope: string,
     selectScope: string,
     scheduleScope: string,
     selectFieldName: string,
@@ -28,7 +26,7 @@ export default function ScheduleWidgetEventList({
     icon: EvaIconName,
     usedCounts?: Record<number, number>,
 }) {
-    const types = schedule.types || altArr;
+    const types = schedule.types || emptyArr;
     const sortedTypes = useMemo(() => {
         if (!usedCounts) return types;
         const sortedTypes = [...types];
@@ -48,7 +46,7 @@ export default function ScheduleWidgetEventList({
                 <div className="flex flex-gap between">
                     <div>Шаблоны событий</div>
                     {!schedule.types?.some((type) => !type.title) && <StrongEvaButton
-                        scope={scope}
+                        scope={scheduleScope}
                         fieldName="types"
                         name="plus-outline"
                         confirm="Добавить новый шаблон?"
@@ -64,7 +62,6 @@ export default function ScheduleWidgetEventList({
                             onSelect={closeModal}
                             schedule={schedule}
                             scheduleScope={scheduleScope}
-                            scope={scope}
                             selectFieldName={selectFieldName}
                             selectScope={selectScope}
                             typeBox={typeBox}

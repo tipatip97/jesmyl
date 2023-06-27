@@ -6,6 +6,13 @@ import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import { ScheduleWidgetAppAttCustomizable, ScheduleWidgetAppAttCustomized } from "../../ScheduleWidget.model";
 import ScheduleWidgetCustomAtt from "./CustomAtt";
 
+const newTatt: ScheduleWidgetAppAttCustomizable = {
+    description: '',
+    icon: 'attach-2-outline',
+    initVal: {},
+    title: '',
+};
+
 export default function ScheduleWidgetCustomAttachments(props: StrongComponentProps<{
     tatts?: ScheduleWidgetAppAttCustomized[],
 }>) {
@@ -13,25 +20,14 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
         return <>
             {header(<div className="flex full-width between">
                 Шаблоны вложений
-                {!props.tatts?.some((att) => !att.title || !att.description) && <StrongEvaButton
-                    scope={props.scope}
-                    fieldName="tatts"
-                    name="plus"
-                    confirm="Создать шаблон вложения?"
-                    mapExecArgs={(args) => {
-                        const value: ScheduleWidgetAppAttCustomizable = {
-                            description: '',
-                            icon: 'attach-2-outline',
-                            initVal: {},
-                            title: '',
-                        };
-
-                        return {
-                            ...args,
-                            value,
-                        };
-                    }}
-                />}
+                {!props.tatts?.some((att) => !att.title || !att.description)
+                    && <StrongEvaButton
+                        scope={props.scope}
+                        fieldName="tatts"
+                        fieldValue={newTatt}
+                        name="plus"
+                        confirm="Создать шаблон вложения?"
+                    />}
             </div>)}
             {body(props.tatts?.map((tatt) => {
                 return <ScheduleWidgetCustomAtt
@@ -47,7 +43,10 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
         {modalNode}
         <EvaButton
             name="attach-2"
-            postfix={<>Шаблоны вложений <EvaIcon name="chevron-right" /></>}
+            postfix={<>
+                Шаблоны вложений
+                <EvaIcon name="chevron-right" />
+            </>}
             onClick={() => screen()}
             className="flex-max margin-gap-v"
         />

@@ -2,17 +2,11 @@ import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
-import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import ScheduleWidgetRegisterType from "./RegisterType";
-import ScheduleWidgetRole from "./roles/Role";
-import ScheduleWidgetRoleList from "./roles/RoleList";
 import ScheduleWidgetUserList from "./users/UserList";
 
-export default function ScheduleWidgetControl({
-    scope,
-}: StrongComponentProps<{
-}>) {
+export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
     const rights = useScheduleWidgetRightsContext();
 
     const { modalNode, screen } = useModal(({ header, body }) => {
@@ -20,26 +14,7 @@ export default function ScheduleWidgetControl({
             ? <>
                 {header(<>Управление <span className="color--7">{rights.schedule.title}</span></>)}
                 {body(<>
-                    <ScheduleWidgetUserList
-                        scope={scope}
-                    />
-                    <ScheduleWidgetRoleList
-                        expandContent={!rights.schedule.ctrl?.roles.some((role) => !role.title)
-                            && <StrongEvaButton
-                                scope={scope}
-                                fieldName="roles"
-                                name="plus"
-                                prefix="роль"
-                                confirm="Добавить новую роль?"
-                            />}
-                        roles={(list) => list.map((role) => {
-                            return <ScheduleWidgetRole
-                                key={role.mi}
-                                scope={scope}
-                                role={role}
-                            />;
-                        })}
-                    />
+                    <ScheduleWidgetUserList scope={scope} />
                     <ScheduleWidgetRegisterType scope={scope} />
                 </>)}
             </>

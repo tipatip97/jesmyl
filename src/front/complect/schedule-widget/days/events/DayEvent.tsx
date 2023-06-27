@@ -17,6 +17,8 @@ import ScheduleWidgetDayEventRating from "./DayEventRating";
 const msInMin = mylib.howMs.inMin;
 const msInDay = mylib.howMs.inDay;
 
+const mapExecTmArgs = (args: {}) => ({ ...args, techKey: 'tm' });
+
 export default function ScheduleWidgetDayEvent(props: {
     scope: string,
     scheduleScope: string,
@@ -110,31 +112,31 @@ export default function ScheduleWidgetDayEvent(props: {
                         <StrongEvaButton
                             scope={selfScope}
                             fieldName="secret"
+                            fieldValue={props.event.secret ? 0 : 1}
                             cud="U"
                             name={props.event.secret ? 'checkmark-square-2-outline' : 'square-outline'}
                             confirm={`Событие ${box.title} ${props.event.secret ? 'больше не секретное' : 'будет секретным'}?`}
-                            mapExecArgs={(args) => ({ ...args, value: props.event.secret ? 0 : 1 })}
                             postfix="Секретное событие"
                         />
                         <StrongEditableField
                             isRedact
                             scope={selfScope}
-                            fieldName="field"
+                            fieldName="techField"
                             type="number"
                             value={'' + eventTm}
                             postfix=" мин"
                             title="Продолжительность, мин"
                             icon="clock-outline"
-                            mapExecArgs={(args) => ({ ...args, key: 'tm' })}
+                            mapExecArgs={mapExecTmArgs}
                         />
                         <StrongEditableField
                             isRedact
                             scope={selfScope}
-                            fieldName="txtField"
-                            value={props.event.topic}
+                            fieldName="field"
+                            value={props.event}
+                            fieldKey="topic"
                             title="Тема"
                             icon="bookmark-outline"
-                            mapExecArgs={(args) => ({ ...args, txtKey: 'topic' })}
                         />
                     </>
                     : !!props.event.secret && <EvaButton
@@ -145,13 +147,13 @@ export default function ScheduleWidgetDayEvent(props: {
                 <StrongEditableField
                     isRedact={isRedact}
                     scope={selfScope}
-                    fieldName="txtField"
+                    fieldName="field"
                     multiline
-                    value={props.event.dsc}
+                    value={props.event}
+                    fieldKey="dsc"
                     title="Содержание"
                     textClassName=" "
                     icon="file-text-outline"
-                    mapExecArgs={(args) => ({ ...args, txtKey: 'dsc' })}
                 />
                 {isRedact ?
                     <ScheduleWidgetBindAtts

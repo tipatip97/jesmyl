@@ -4,10 +4,7 @@ import { StrongComponentProps } from "../../strong-control/Strong.model";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import ScheduleWidgetRightControlList from "./RightControlList";
 
-export default function ScheduleWidgetRegisterType({
-    scope,
-}: StrongComponentProps<{
-}>) {
+export default function ScheduleWidgetRegisterType({ scope }: StrongComponentProps) {
     const rights = useScheduleWidgetRightsContext();
     const [expandNode, isExpand] = useIsExpand(false, <>Тип мероприятия</>);
 
@@ -17,8 +14,9 @@ export default function ScheduleWidgetRegisterType({
             && <ScheduleWidgetRightControlList
                 scope={scope}
                 fieldName="type"
-                rights={scheduleWidgetRegTypeRights}
+                rightCtrl={scheduleWidgetRegTypeRights}
                 R={rights.schedule.ctrl.type}
+                rights={rights}
                 className="margin-gap-l"
                 isDescriptionsCollect
             />}

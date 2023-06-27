@@ -11,6 +11,8 @@ import ScheduleWidgetDayEventList from "./events/DayEventList";
 import { renderComponentInNewWindow } from "../../../..";
 import ScheduleWidgetPrintableDay from "./PrintableDay";
 
+const dotReg = /\./;
+
 export interface ScheduleWidgetDayProps {
     day: IScheduleWidgetDay,
     dayi: number,
@@ -30,8 +32,8 @@ export default function ScheduleWidgetDay({
     const times: number[] = [];
     const selfScope = takeStrongScopeMaker(scope, ' dayMi/', day.mi);
     const [isShowDay, setIsShowDay] = useState(!isPastDay);
-    const userRights = useScheduleWidgetRightsContext();
-    const { editIcon, isRedact } = useIsRedactArea(true, null, userRights.isCanRedact, true);
+    const rights = useScheduleWidgetRightsContext();
+    const { editIcon, isRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
 
     const dayRating = useMemo(() => {
         let rating = 0;
@@ -45,9 +47,11 @@ export default function ScheduleWidgetDay({
         times.push((item.tm || schedule.types?.[item.type]?.tm || 0) + (times[times.length - 1] || 0));
     });
 
-    return <div className={'ScheduleWidgetDay' + (isPastDay ? ' past' : '')}>
-        <div className="day-title flex flex-gap">
-            {dayi + 1} день, {title}
+    return <div className={'ScheduleWidgetDay relative' + (isPastDay ? ' past' : '')}>
+        <div className="day-title flex flex-gap padding-gap-b sticky pos-top">
+        {title}, {dayi + 1} день
+        </div>
+        <div className="edit-day-panel absolute pos-top pos-right">
             {isPastDay
                 ? <>
                     <EvaButton
@@ -60,32 +64,32 @@ export default function ScheduleWidgetDay({
         </div>
         {isShowDay &&
             <>
-                {userRights.isCanReadTitles && <div className="day-info">
+                {rights.isCanReadTitles && <div className="day-info">
                     <StrongEditableField
                         scope={selfScope}
                         fieldName="field"
-                        value={day.topic}
+                        value={day}
+                        fieldKey="topic"
                         isRedact={isRedact}
                         icon="bookmark-outline"
                         title="Тема дня"
-                        mapExecArgs={(args) => ({ ...args, key: 'topic' })}
                     />
                     <StrongEditableField
                         scope={selfScope}
                         fieldName="field"
-                        value={day.dsc}
+                        value={day}
+                        fieldKey="dsc"
                         isRedact={isRedact}
                         multiline
                         textClassName=" "
                         icon="file-text-outline"
                         title="Описание дня"
-                        mapExecArgs={(args) => ({ ...args, key: 'dsc' })}
                     />
                     {isRedact && <>
                         <StrongControlDateTimeExtracter
                             scope={selfScope}
                             fieldName="field"
-                            value={day.wup?.toFixed?.(2).replace(/\./, ' ') || ''}
+                            value={day.wup?.toFixed?.(2).replace(dotReg, ' ') || ''}
                             icon="clock-outline"
                             title="Начало дня"
                             takeDate="NO"
@@ -121,7 +125,6 @@ export default function ScheduleWidgetDay({
                 <ScheduleWidgetDayEventList
                     day={day}
                     dayi={dayi}
-                    schedule={schedule}
                     scope={selfScope}
                     scheduleScope={scope}
                     isPastDay={isPastDay}

@@ -23,15 +23,10 @@ export default function ScheduleCheckListAtt({
                     <StrongEvaButton
                         scope={itemScope}
                         fieldName="check"
+                        fieldValue={isDone ? 0 : 1}
                         className={'self-start' + (isDone ? '' : ' color--7')}
                         cud="U"
                         name={isDone ? 'checkmark-square-outline' : 'square-outline'}
-                        mapExecArgs={(args) => {
-                            return {
-                                ...args,
-                                value: isDone ? 0 : 1,
-                            };
-                        }}
                     />
                     <StrongEditableField
                         scope={itemScope}

@@ -4,14 +4,9 @@ import { StrongControlProps } from "./Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "./useStrongControl";
 import useModal from "../modal/useModal";
 
-export default function StrongButton({
-    title,
-    scope,
-    fieldName,
-    cud,
-    mapExecArgs,
-    confirm,
-}: StrongControlProps<{
+const simpleFunc = () => { };
+
+export default function StrongButton(props: StrongControlProps<{
     title: string,
     confirm?: ReactNode,
 }>) {
@@ -21,11 +16,21 @@ export default function StrongButton({
     return <>
         {modalNode}
         <SendButton
-            title={title}
-            confirm={confirm}
+            title={props.title}
+            confirm={props.confirm}
             onFailure={(errorMessage) => toast(errorMessage, { mood: 'ko' })}
             onSend={() => {
-                return strongPrepareArgsAndSend(exer, scope, fieldName, cud ?? 'C', '', () => { }, mapExecArgs);
+                return strongPrepareArgsAndSend(
+                    exer,
+                    props.scope,
+                    props.fieldName,
+                    props.cud ?? 'C',
+                    '',
+                    simpleFunc,
+                    props.mapExecArgs,
+                    props.fieldKey,
+                    props.fieldValue,
+                );
             }}
         />
     </>;

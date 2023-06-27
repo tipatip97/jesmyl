@@ -22,7 +22,7 @@ export default function LeaderTeamGameAttach({
 }) {
     const { contextGames, jumpToGame } = useGames();
 
-    const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
+    const { modalNode } = useModal(({ header, body }, closeModal) => {
         return <>
             {header(<div>Вложить результат игры</div>)}
             {body(<>

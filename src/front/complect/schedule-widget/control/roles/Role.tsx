@@ -9,6 +9,7 @@ import useIsRedactArea from "../../../useIsRedactArea";
 import { IScheduleWidgetRole } from "../../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../../complect/IconChange";
 import { extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
+import ScheduleWidgetRoleFace from "./RoleFace";
 
 const mainRoleRights = scheduleWidgetRights.getAllRights();
 
@@ -20,7 +21,6 @@ export default function ScheduleWidgetRole({
 }>) {
     const roleScope = takeStrongScopeMaker(scope, ' roleMi/', role.mi);
     const rights = useScheduleWidgetRightsContext();
-    const { editIcon, isRedact } = useIsRedactArea(true, !role.title || null, rights.isCanTotalRedact, true);
     const auth = useAuth();
     const roleUser = extractScheduleWidgetRoleUser(rights.schedule, 0, role);
     const catsRedact = useIsRedactArea(true, null, true, true);
@@ -38,19 +38,14 @@ export default function ScheduleWidgetRole({
                         key={useri}
                         scope={roleScope}
                         fieldName="field"
+                        fieldKey="user"
+                        fieldValue={user.mi}
                         cud="U"
                         confirm={`Теперь ${user?.alias || user?.fio} займёт роль ${role.title}?`}
                         className="flex flex-gap pointer"
                         name="person"
                         postfix={user?.alias || user?.fio}
                         onSuccess={() => closeModal()}
-                        mapExecArgs={(args) => {
-                            return {
-                                ...args,
-                                key: 'user',
-                                value: user.mi,
-                            };
-                        }}
                     />
                 })}
             </div>)}
@@ -82,18 +77,13 @@ export default function ScheduleWidgetRole({
                             key={catNamei}
                             scope={roleScope}
                             fieldName="field"
+                            fieldKey="cat"
+                            fieldValue={catNamei}
                             cud="U"
                             className="flex flex-gap pointer"
                             name="folder-outline"
                             postfix={catName}
                             onSuccess={() => closeModal()}
-                            mapExecArgs={(args) => {
-                                return {
-                                    ...args,
-                                    key: 'cat',
-                                    value: catNamei,
-                                };
-                            }}
                         />
                     })}
             </>)}
@@ -107,34 +97,27 @@ export default function ScheduleWidgetRole({
         </>;
     });
 
-    return <div className="margin-gap-v padding-gap bgcolor--5">
-        {userSetModal.modalNode}
-        {catSetModal.modalNode}
-        <div className="flex flex-gap between">
-            <div className="full-width">
+    const redactRoleModal = useModal(({ header, body }) => {
+        return <>
+            {header(<div>Редактирование роли {role.title}</div>)}
+            {body(<>
                 <StrongEditableField
                     scope={roleScope}
                     fieldName="field"
-                    isRedact={isRedact}
-                    title="Роль"
-                    icon={isRedact || !role.icon ? 'github-outline' : role.icon}
-                    value={role.title}
+                    isRedact
+                    title="Название"
+                    icon="credit-card-outline"
+                    value={role}
+                    fieldKey="title"
                     postfix={roleUser && (' - ' + (roleUser.alias || roleUser.fio))}
-                    mapExecArgs={(args) => {
-                        return {
-                            ...args,
-                            key: 'title',
-                        };
-                    }}
                 />
-                {(rights.isCanTotalRedact ? isRedact : auth && auth.login === roleUser?.login)
-                    && <ScheduleWidgetIconChange
-                        scope={roleScope}
-                        header={`Иконка для роли ${role.title}`}
-                        icon={role.icon ?? 'github-outline'}
-                        used={rights.schedule.ctrl.roles.map(role => role.icon)}
-                    />}
-                {isRedact && <>
+                <ScheduleWidgetIconChange
+                    scope={roleScope}
+                    header={`Иконка для роли ${role.title}`}
+                    icon={role.icon ?? 'github-outline'}
+                    used={rights.schedule.ctrl.roles.map(role => role.icon)}
+                />
+                {rights.isCanTotalRedact && <>
                     {role.mi !== 0 && roleUser && <StrongEvaButton
                         scope={roleScope}
                         fieldName="user"
@@ -142,18 +125,33 @@ export default function ScheduleWidgetRole({
                         name="person-delete-outline"
                         confirm={`${roleUser.alias || roleUser.fio} больше не ${role.title}?`}
                         postfix="Освободить роль"
+                        className="margin-gap-v"
                     />}
                     {roleUser
-                        ? <EvaButton name="sync" onClick={() => userSetModal.screen()} postfix="Заменить человека" />
-                        : <EvaButton name="person-add-outline" onClick={() => userSetModal.screen()} postfix="Назначить человека" />}
+                        ? <EvaButton name="sync" onClick={() => userSetModal.screen()} postfix="Заменить человека" className="margin-gap-v" />
+                        : <EvaButton name="person-add-outline" onClick={() => userSetModal.screen()} postfix="Назначить человека" className="margin-gap-v" />}
                     {role.mi > 0 && <EvaButton
                         name="grid-outline"
                         onClick={() => catSetModal.screen()}
                         postfix={`Категория ${rights.schedule.ctrl.cats[role.cat || 0] || 'Основное'}`}
+                        className="margin-gap-v"
                     />}
                 </>}
-            </div>
-            {editIcon}
-        </div>
+            </>)}</>
+    });
+
+    return <div className="flex flex-gap between margin-gap">
+        {userSetModal.modalNode}
+        {catSetModal.modalNode}
+        {redactRoleModal.modalNode}
+        <ScheduleWidgetRoleFace
+            schedule={rights.schedule}
+            role={role}
+        />
+        {(rights.isCanTotalRedact || (rights.isCanRedact && auth && auth.login === roleUser?.login))
+            && <EvaButton
+                name="edit-outline"
+                onClick={() => redactRoleModal.screen()}
+            />}
     </div>;
 }

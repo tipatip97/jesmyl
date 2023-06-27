@@ -3,20 +3,9 @@ import modalService from "../modal/Modal.service";
 import { StrongControlProps } from "./Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "./useStrongControl";
 
-const fakeCb = () => { };
+const simpleFunc = () => { };
 
-export default function StrongDiv({
-    scope,
-    fieldName,
-    cud,
-    mapExecArgs,
-    className,
-    children,
-    onClick,
-    onSuccess,
-    onFailure,
-    confirm,
-}: StrongControlProps<{
+export default function StrongDiv(props: StrongControlProps<{
     children?: ReactNode,
     className?: string,
     onClick?: () => void,
@@ -27,18 +16,29 @@ export default function StrongDiv({
     const exer = useStrongExerContext();
 
     return <div
-        className={className}
-        onClick={scope
+        className={props.className}
+        onClick={props.scope
             ? async () => {
-                if (confirm != null && !(confirm && await modalService.confirm(confirm)))
+                if (props.isCanSend === false) return;
+                if (props.confirm != null && !(props.confirm && await modalService.confirm(props.confirm)))
                     return;
 
-                onClick?.();
-                strongPrepareArgsAndSend(exer, scope, fieldName, cud ?? 'C', '', fakeCb, mapExecArgs)
-                    ?.then(onSuccess)
-                    .catch(onFailure);
+                    props.onClick?.();
+                strongPrepareArgsAndSend(
+                    exer,
+                    props.scope,
+                    props.fieldName,
+                    props.cud ?? 'C',
+                    '',
+                    simpleFunc,
+                    props.mapExecArgs,
+                    props.fieldKey,
+                    props.fieldValue,
+                )
+                    ?.then(props.onSuccess)
+                    .catch(props.onFailure);
             }
             : undefined}
-        children={children}
+        children={props.children}
     />
 }

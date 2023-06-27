@@ -1,11 +1,5 @@
-type nil = null | undefined;
 
 const zeroEndTrimReg = /0+$/;
-
-type StandardEnum<T> = {
-    [id: string]: T | string;
-    [nu: number]: string;
-}
 
 export interface ScheduleWidgetRightTexts<Right> {
     id: Right,
@@ -15,13 +9,11 @@ export interface ScheduleWidgetRightTexts<Right> {
     hidden?: boolean,
 }
 
-export class ScheduleWidgetRights<Enum extends StandardEnum<unknown> = StandardEnum<unknown>, Right extends number = number> {
-    rightsEnum: Enum;
+export class ScheduleWidgetRightsCtrl<Right extends number = number> {
     texts: ScheduleWidgetRightTexts<Right>[];
     enumOrder: Right[];
 
-    constructor(rightsEnum: Enum, texts: ScheduleWidgetRightTexts<Right>[], enumOrder?: Right[]) {
-        this.rightsEnum = rightsEnum;
+    constructor(texts: ScheduleWidgetRightTexts<Right>[], enumOrder?: Right[]) {
         if (enumOrder === undefined) enumOrder = texts.map(({ id }) => id)
         this.enumOrder = enumOrder;
 
@@ -30,8 +22,8 @@ export class ScheduleWidgetRights<Enum extends StandardEnum<unknown> = StandardE
                 id: texts.length + 30,
                 title: '',
                 hidden: true,
-            } as never
-        ].concat(texts as never).sort((a, b) => this.enumOrder.indexOf(a) - this.enumOrder.indexOf(b));
+            } as ScheduleWidgetRightTexts<Right>
+        ].concat(texts).sort((a, b) => this.enumOrder.indexOf(a.id) - this.enumOrder.indexOf(b.id));
     }
 
     getAllRights = () => {
@@ -60,7 +52,7 @@ export class ScheduleWidgetRights<Enum extends StandardEnum<unknown> = StandardE
         const ind = this.enumOrder.indexOf(rightKey);
 
         for (let i = 0; i <= ind; i++) {
-            if (rstr[this.enumOrder[i] as never] !== '1') return false;
+            if (rstr[this.enumOrder[i]] !== '1') return false;
         }
 
         return true;
@@ -69,11 +61,26 @@ export class ScheduleWidgetRights<Enum extends StandardEnum<unknown> = StandardE
     switchRights = (R: number | null | undefined, rightKey: Right, set?: '1' | '0' | nil) => {
         let arr = (R || 1).toString(2).split('');
 
-        if (set == null) arr[rightKey as never] = '' + +!+arr[rightKey as never];
-        else arr[rightKey as never] = set;
+        if (set == null) arr[rightKey] = '' + +!+arr[rightKey];
+        else arr[rightKey] = set;
 
         const bin = this.texts.map((_, i) => arr[i] === '1' ? '1' : '0').join('').replace(zeroEndTrimReg, '');
+        return parseInt(bin || '1', 2);
+    };
+
+    
+    static switchRights = (R: number | null | undefined, rightKey: number, len: number) => {
+        let arr = (R || 1).toString(2).split('');
+
+        arr[rightKey + 1] = '' + +!+arr[rightKey + 1];
+
+        const bin = Array(len + 1).fill('').map((_, i) => arr[i] === '1' ? '1' : '0').join('').replace(zeroEndTrimReg, '');
 
         return parseInt(bin || '1', 2);
+    };
+
+    static checkIsHasIndividualRights = (R: number | null | undefined, rightKey: number) => {
+        if (R === undefined || R === null || R === 0) return false;
+        return R.toString(2)[rightKey + 1] === '1';
     };
 }

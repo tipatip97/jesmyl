@@ -27,7 +27,9 @@ export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType ex
     cud: CUD,
     value: ValType | undefined,
     onBeforeSend: () => void,
-    mapExecArgs?: StrongComponentProps<Storage, ValType>['mapExecArgs'],
+    mapExecArgs: StrongComponentProps<Storage, ValType>['mapExecArgs'],
+    fieldKey: unknown,
+    fieldValue: unknown,
 ): Promise<boolean> | void => {
     let args: Record<string, unknown> = value === undefined ? {} : { value };
     let action = '';
@@ -49,7 +51,13 @@ export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType ex
     onBeforeSend();
 
     return exer.send({
-        args,
+        args: fieldKey === undefined && fieldValue === undefined
+            ? args
+            : {
+                key: fieldKey,
+                value: fieldValue,
+                ...args,
+            },
         action: action.trim() + (fieldName ? ` ${fieldName}` : '') + ` [${cud}]`,
     });
 }

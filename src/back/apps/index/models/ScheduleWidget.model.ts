@@ -14,6 +14,7 @@ export interface IScheduleWidgetListUnit {
     mi: number,
     cat: number,
     title: string,
+    dsc: string,
 }
 
 export interface IScheduleWidgetListCat<EvaIconName> {

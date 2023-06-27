@@ -48,16 +48,11 @@ export default function ScheduleWidgetDayEventRating(props: StrongComponentProps
                         key={ratePoint}
                         scope={rateScope}
                         fieldName="rate"
+                        isCanSend={ratePoint !== myRate[0]}
+                        fieldValue={ratePoint}
                         cud="U"
                         className={(ratePoint < 0 ? 'color--ko' : ratePoint > 0 ? 'color--ok' : 'color--3') + (isFill ? '' : ' fade-05')}
                         name={ratePoint < 0 ? 'heart-off-outline' : ratePoint === 0 ? 'question-mark-circle-outline' : 'heart-outline'}
-                        mapExecArgs={(args) => {
-                            if (ratePoint === myRate[0]) return;
-                            return {
-                                ...args,
-                                value: ratePoint,
-                            };
-                        }}
                     />;
                 })}
                 <span className={'event-rating-display margin-gap-l' + (myRate[0] === 0 ? ' color--3' : myRate[0] < 0 ? ' color--ko' : ' color--ok')}>{myRate[0]}</span>

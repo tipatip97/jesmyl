@@ -5,18 +5,18 @@ import { useIsRememberExpand } from "../../../expand/useIsRememberExpand";
 import StrongDiv from "../../../strong-control/StrongDiv";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import useIsRedactArea from "../../../useIsRedactArea";
-import { IScheduleWidget, IScheduleWidgetDay } from "../../ScheduleWidget.model";
+import { IScheduleWidgetDay } from "../../ScheduleWidget.model";
 import ScheduleWidgetCleans from "../../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import ScheduleWidgetEventList from "../../events/EventList";
 import { useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import ScheduleWidgetDayEvent from "./DayEvent";
+import { ScheduleWidgetDayEventEventActions } from "./EventActions";
 
 export default function ScheduleWidgetDayEventList({
-    day, schedule, scope, scheduleScope, isPastDay, dayi,
+    day, scope, scheduleScope, isPastDay, dayi,
 }: {
     day: IScheduleWidgetDay,
-    schedule: IScheduleWidget,
     scope: string,
     scheduleScope: string,
     isPastDay: boolean,
@@ -42,13 +42,13 @@ export default function ScheduleWidgetDayEventList({
     }, [day.list]);
     const [moveEventMi, setMoveEventMi] = useState<number | null>(null);
     const movementEvent = moveEventMi !== null ? day.list.find(event => event.mi === moveEventMi) : undefined;
-    const movementBox = movementEvent && schedule.types?.[movementEvent.type];
+    const movementBox = movementEvent && rights.schedule.types?.[movementEvent.type];
 
     let secretTime = 0;
     let isFirstSecrets = true;
     const times: number[] = [];
     day.list.forEach((event) => {
-        times.push((event.tm || schedule.types?.[event.type]?.tm || 0) + (times[times.length - 1] || 0));
+        times.push((event.tm || rights.schedule.types?.[event.type]?.tm || 0) + (times[times.length - 1] || 0));
     });
 
     useEffect(() => {
@@ -56,12 +56,16 @@ export default function ScheduleWidgetDayEventList({
         else setMoveEventMi(null);
     }, [isRedact, switchIsExpand]);
 
-    return <div className={'schedule-widget-day-event-list' + (isRedact ? ' redact' : '') + (moveEventMi === null ? '' : ' event-movement') + (isIndividualReplacement ? ' individual-replacement' : '')}>
+    return <div className={'schedule-widget-day-event-list'
+        + (isRedact ? ' redact' : '')
+        + (moveEventMi === null ? '' : ' event-movement')
+        + (isIndividualReplacement ? ' individual-replacement' : '')
+    }>
         <div className="max-width hide-on-print">{listTitle}</div>
         {isExpand && <>
             {day.list.map((event, eventi, eventa) => {
                 if (!rights.isCanReadSpecials) {
-                    if (!isFirstSecrets && eventa[eventi + 1]?.secret) secretTime += event.tm ?? schedule.types?.[event.type].tm ?? 0;
+                    if (!isFirstSecrets && eventa[eventi + 1]?.secret) secretTime += event.tm ?? rights.schedule.types?.[event.type].tm ?? 0;
                     if (event.secret) return null;
                     isFirstSecrets = false;
                 }
@@ -128,32 +132,16 @@ export default function ScheduleWidgetDayEventList({
                         bottomContent={(isRedact) => isRedact && <>
                             {isReplacementInProcess && moveEventMi === event.mi
                                 ? <EvaIcon name="loader-outline" className="rotate" />
-                                : <EvaButton
-                                    name="crop"
-                                    postfix="Вырезать событие"
-                                    className="margin-gap-v"
-                                    onClick={() => {
+                                : <ScheduleWidgetDayEventEventActions
+                                    scope={scope}
+                                    event={event}
+                                    schedule={rights.schedule}
+                                    scheduleScope={scheduleScope}
+                                    onEventCut={() => {
                                         setIsIndividualReplacement(true);
                                         setMoveEventMi(event.mi);
                                     }}
                                 />}
-                            {schedule.types && <StrongEvaButton
-                                scope={scope}
-                                fieldName="list"
-                                cud="D"
-                                name="trash-2-outline"
-                                postfix="Удалить событие"
-                                confirm={<ScheduleWidgetTopicTitle
-                                    prefix="Удалить событие "
-                                    titleBox={schedule.types[event.type]}
-                                    topicBox={event}
-                                />}
-                                className="color--ko margin-gap-v"
-                                disabled={moveEventMi !== null}
-                                mapExecArgs={(args) => {
-                                    return { ...args, eventMi: event.mi };
-                                }}
-                            />}
                         </>}
                     />
                     {!isIndividualReplacement && isRedact && <>
@@ -163,14 +151,14 @@ export default function ScheduleWidgetDayEventList({
                                 name="crop"
                                 onClick={() => setMoveEventMi(event.mi)}
                             />}
-                        {schedule.types && <StrongEvaButton
+                        {rights.schedule.types && <StrongEvaButton
                             scope={scope}
                             fieldName="list"
                             cud="D"
                             name="trash-2-outline"
                             confirm={<ScheduleWidgetTopicTitle
                                 prefix="Удалить событие "
-                                titleBox={schedule.types[event.type]}
+                                titleBox={rights.schedule.types[event.type]}
                                 topicBox={event}
                             />}
                             className="color--ko"
@@ -188,13 +176,12 @@ export default function ScheduleWidgetDayEventList({
                 return node;
             })}
             {isRedact && moveEventMi === null && <ScheduleWidgetEventList
-                scope={scheduleScope}
                 selectScope={scope}
                 scheduleScope={scheduleScope}
                 selectFieldName="list"
                 postfix="Добавить событие"
                 icon="plus-outline"
-                schedule={schedule}
+                schedule={rights.schedule}
                 usedCounts={usedCounts}
             />}
         </>}

@@ -1,4 +1,4 @@
-import { ScheduleWidgetRightTexts, ScheduleWidgetRights } from "./complect";
+import { ScheduleWidgetRightTexts, ScheduleWidgetRightsCtrl } from "./complect";
 
 
 export enum ScheduleWidgetUserRoleRight {
@@ -45,7 +45,7 @@ const textList: ScheduleWidgetRightTexts<ScheduleWidgetUserRoleRight>[] = [
     },
 ];
 
-export const scheduleWidgetRights = new ScheduleWidgetRights<typeof ScheduleWidgetUserRoleRight, ScheduleWidgetUserRoleRight>(ScheduleWidgetUserRoleRight, textList, rightsOrder);
+export const scheduleWidgetRights = new ScheduleWidgetRightsCtrl(textList, rightsOrder);
 
 
 ///////////////////////////////
@@ -81,7 +81,7 @@ export const customAttUseRightsTitles: ScheduleWidgetRightTexts<CustomAttUseRigh
     },
 ];
 
-export const customAttUseRights = new ScheduleWidgetRights(CustomAttUseRights, customAttUseRightsTitles);
+export const customAttUseRights = new ScheduleWidgetRightsCtrl(customAttUseRightsTitles);
 
 ///////////////////////////////
 
@@ -119,4 +119,4 @@ export const scheduleWidgetRegTypeTitles: ScheduleWidgetRightTexts<ScheduleWidge
     },
 ];
 
-export const scheduleWidgetRegTypeRights = new ScheduleWidgetRights(ScheduleWidgetRegType, scheduleWidgetRegTypeTitles);
+export const scheduleWidgetRegTypeRights = new ScheduleWidgetRightsCtrl(scheduleWidgetRegTypeTitles);

@@ -4,6 +4,8 @@ import { ExerStorage } from "../exer/Exer.model";
 import { StrongControlProps } from "./Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "./useStrongControl";
 
+const simpleFunc = () => { };
+
 export default function StrongDropdown<Storage extends ExerStorage,
     Id extends string | number,
     Item extends DropdownItem<Id> = DropdownItem<Id>
@@ -12,6 +14,8 @@ export default function StrongDropdown<Storage extends ExerStorage,
     fieldName,
     cud,
     mapExecArgs,
+    fieldKey,
+    fieldValue,
     ...props
 }: StrongControlProps<DropdownProps<Id, Item>>) {
     const exer = useStrongExerContext();
@@ -19,7 +23,18 @@ export default function StrongDropdown<Storage extends ExerStorage,
     return <Dropdown<Id, Item>
         {...props}
         onSelect={({ id }) => {
-            return strongPrepareArgsAndSend<Storage, Id>(exer, scope, fieldName, cud ?? 'C', id, () => { }, mapExecArgs as never);
+            if (props.isCanSend === false) return;
+            return strongPrepareArgsAndSend<Storage, Id>(
+                exer,
+                scope,
+                fieldName,
+                cud ?? 'C',
+                id,
+                simpleFunc,
+                mapExecArgs as never,
+                fieldKey,
+                fieldValue,
+            );
         }}
     />;
 }

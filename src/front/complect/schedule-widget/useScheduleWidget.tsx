@@ -141,9 +141,6 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
     }, [auth, schedule, rights]);
 };
 
-export const ScheduleWidgetSchContext = React.createContext<nil | IScheduleWidget>(null);
-export const useScheduleWidgetSchContext = () => useContext(ScheduleWidgetSchContext);
-
 export const ScheduleWidgetAppAttRefsContext = React.createContext<ScheduleWidgetAttRefs>({});
 export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidgetAppAttRefsContext);
 

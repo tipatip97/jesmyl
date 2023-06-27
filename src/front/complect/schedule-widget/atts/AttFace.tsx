@@ -26,7 +26,12 @@ export default function ScheduleWidgetAttFace({
     isLink?: boolean,
 }>) {
     const { modalNode, screen } = useModal(tatt && (() => {
-        return <ScheduleWidgetCustomAtt tatt={tatt as never} redact scope={scheduleScope} topContent={customAttTopContent?.(scope, attKey)} />;
+        return <ScheduleWidgetCustomAtt
+            tatt={tatt as never}
+            isRedact
+            scope={scheduleScope}
+            topContent={customAttTopContent?.(scope, attKey)}
+        />;
     }));
 
     return <>
@@ -45,12 +50,6 @@ export default function ScheduleWidgetAttFace({
                 name="close"
                 className="close-button"
                 confirm={<div className="flex flex-gap">Убрать {isLink ? 'ссылку вложения' : 'вложение'} {tatt?.title || '??'} из события <div className="flex">{typeTitle}?</div></div>}
-                mapExecArgs={(args) => {
-                    return {
-                        ...args,
-                        attn: attKey,
-                    };
-                }}
             />}
             {tatt
                 ? <>

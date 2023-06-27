@@ -39,7 +39,7 @@ export default function useModal(topContent?: (
     elements: typeof modalElements, close: () => void) => JSX.Element,
     onClose?: (() => void) | nil,
     isForceOpen?: boolean,
-    switchIsForceOpen?: (is?: boolean) => void,
+    switchIsForceOpen?: (is: boolean) => void,
 ) {
     const [config, setConfig] = useState(defaultUseModalConfig);
     const typeClassName = ' type_' + (isForceOpen ? 'screen' : config.type);
@@ -47,7 +47,7 @@ export default function useModal(topContent?: (
         (config.onClose ?? onClose)?.();
         switchIsForceOpen?.(false);
         setConfig((prev) => ({ ...prev, isOpen: false }));
-    }, [config.onClose, onClose]);
+    }, [config.onClose, onClose, switchIsForceOpen]);
 
     useEffect(() => {
         if (config.isOpen && config.type !== ModalType.Toast) {

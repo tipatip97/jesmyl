@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Dropdown from "../../dropdown/Dropdown";
+import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
+import useModal from "../../modal/useModal";
 import { MyLib } from "../../my-lib/MyLib";
 import StrongDiv from "../../strong-control/StrongDiv";
 import StrongDropdown from "../../strong-control/StrongDropdown";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
-import { useIsRedactAreaWithInit } from "../../useIsRedactArea";
 import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../atts/BindAtts";
 import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
@@ -17,55 +18,61 @@ const singlesTitleReg = new RegExp(`([${singleTitleSymbols}])(\\1+)`, 'g');
 
 const titleNormalize = (title: string) => title.replace(incorrectsTitleReg, '').replace(singlesTitleReg, (_, __, letters) => letters[0]).trim();
 
-export default function ScheduleWidgetEventType({
-    scope,
-    selectScope,
-    scheduleScope,
-    schedule,
-    selectFieldName,
-    typei,
-    typeBox,
-    onSelect,
-}: {
-    scope: string,
+export default function ScheduleWidgetEventType(props: {
     selectScope: string,
     scheduleScope: string,
     selectFieldName: string,
     schedule: IScheduleWidget,
     typei: number,
     typeBox: ScheduleWidgetDayListItemTypeBox,
-    onSelect: () => void,
+    onSelect?: () => void,
+    isRedact?: boolean,
 }) {
-    const { editIcon, isRedact } = useIsRedactAreaWithInit(!typeBox.title, true, null, true, true);
     const [typesError, seTypesError] = useState<(string | nil)[]>([]);
     const [attTranslatorType, setAttTranslatorType] = useState(AttTranslatorType.Today);
 
-    const selfScope = takeStrongScopeMaker(scope, ' typei/', typei);
-    const attEntries = (typeBox.atts ? MyLib.keys(typeBox.atts) : []).length;
+    const selfScope = takeStrongScopeMaker(props.scheduleScope, ' typei/', props.typei);
+    const attEntries = (props.typeBox.atts ? MyLib.keys(props.typeBox.atts) : []).length;
+
+    const modal = useModal(({ header, body }) => {
+        return <>
+            {header(<>Редактирование шаблона {props.typeBox.title}</>)}
+            {body(<>
+                <ScheduleWidgetEventType
+                    {...props}
+                    isRedact
+                />
+            </>)}
+        </>;
+    });
 
     return <>
+        {modal.modalNode}
         <StrongDiv
-            scope={selectScope}
-            fieldName={selectFieldName}
+            scope={props.selectScope}
+            fieldName={props.selectFieldName}
             className={
                 'schedule-event-type-select-item'
-                + (selectScope ? isRedact ? '' : typeBox.title ? ' pointer ' : ' disabled ' : '')
+                + (props.selectScope ? props.isRedact ? '' : props.typeBox.title ? ' pointer ' : ' disabled ' : '')
+                + (props.isRedact ? '' : ' bgcolor--5 padding-gap margin-gap-v')
             }
             mapExecArgs={(args) => {
-                if (isRedact || !typeBox.title) return;
-                onSelect();
+                if (props.isRedact || !props.typeBox.title) return;
+                props.onSelect?.();
                 return {
                     ...args,
-                    eventType: typei,
+                    eventType: props.typei,
                 };
             }}
         >
-            <div className="flex flex-end">{editIcon}</div>
+            {props.isRedact || <div className="flex flex-end full-width">
+                <EvaButton name="edit-outline" onClick={() => modal.screen()} />
+            </div>}
             <StrongEditableField
                 scope={selfScope}
                 fieldName="field"
-                value={typeBox.title}
-                isRedact={isRedact}
+                value={props.typeBox.title}
+                isRedact={props.isRedact}
                 icon="credit-card-outline"
                 title="Название"
                 isImpossibleEmptyValue
@@ -74,19 +81,19 @@ export default function ScheduleWidgetEventType({
                     const lowerValue = titleNormalize(value.toLowerCase());
                     if (!lowerValue) {
                         if (value) {
-                            errors[typei] = 'Нет существенных символов!';
-                        } else errors[typei] = 'Не должно быть пустым!';
+                            errors[props.typei] = 'Нет существенных символов!';
+                        } else errors[props.typei] = 'Не должно быть пустым!';
                     } else {
-                        const prevTitle = schedule.types?.find((schType, schTypei) => schTypei !== typei && schType.title.toLowerCase() === lowerValue);
+                        const prevTitle = props.schedule.types?.find((schType, schTypei) => schTypei !== props.typei && schType.title.toLowerCase() === lowerValue);
                         if (prevTitle)
-                            errors[typei] = `"${prevTitle.title}" уже есть!`;
-                        else errors[typei] = null;
+                            errors[props.typei] = `"${prevTitle.title}" уже есть!`;
+                        else errors[props.typei] = null;
                     }
 
                     seTypesError(errors);
                 }}
                 mapExecArgs={(args, val) => {
-                    if (typesError[typei]) return;
+                    if (typesError[props.typei]) return;
                     return {
                         ...args,
                         value: titleNormalize(val),
@@ -94,25 +101,25 @@ export default function ScheduleWidgetEventType({
                     };
                 }}
             />
-            {typesError[typei] && <div className="flex flex-gap center error-message"><EvaIcon name="alert-circle-outline" />{typesError[typei]}</div>}
+            {typesError[props.typei] && <div className="flex flex-gap center error-message"><EvaIcon name="alert-circle-outline" />{typesError[props.typei]}</div>}
             <StrongEditableField
                 scope={selfScope}
                 fieldName="field"
+                fieldKey="tm"
                 type="number"
-                value={'' + (typeBox.tm ?? '')}
+                value={'' + (props.typeBox.tm ?? '')}
                 postfix=" мин"
-                isRedact={isRedact}
+                isRedact={props.isRedact}
                 title="Продолжительность, мин"
                 icon="clock-outline"
-                mapExecArgs={(args) => ({ ...args, key: 'tm' })}
             />
-            {isRedact
+            {props.isRedact
                 ? <ScheduleWidgetBindAtts
                     scope={selfScope}
-                    schedule={schedule}
-                    scheduleScope={scheduleScope}
-                    atts={typeBox.atts}
-                    forTitle={'Шаблона: ' + typeBox.title}
+                    schedule={props.schedule}
+                    scheduleScope={props.scheduleScope}
+                    atts={props.typeBox.atts}
+                    forTitle={'Шаблона: ' + props.typeBox.title}
                     cantBindLinks
                     topContent={<Dropdown
                         id={attTranslatorType}
@@ -120,7 +127,7 @@ export default function ScheduleWidgetEventType({
                         onSelect={({ id }) => setAttTranslatorType(id)}
                     />}
                     customAttTopContent={(scope, attKey) => <StrongDropdown
-                        id={typeBox.atts?.[attKey]?.[0] as AttTranslatorType}
+                        id={props.typeBox.atts?.[attKey]?.[0] as AttTranslatorType}
                         scope={scope}
                         fieldName="period"
                         cud="U"
