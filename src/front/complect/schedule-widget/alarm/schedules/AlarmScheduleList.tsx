@@ -1,27 +1,19 @@
-import EvaButton from "../../../eva-icon/EvaButton";
-import useFullContent from "../../../fullscreen-content/useFullContent";
-import { ScheduleStorage } from "../../ScheduleWidget.model";
+import PhaseIndexContainer from "../../../../components/index/complect/PhaseIndexContainer";
+import useConnectionState from "../../../../components/index/useConnectionState";
+import { useSchedules } from "../../useScheduleWidget";
 import ScheduleWidgetAlarmSchedule from "./AlarmSchedule";
 
-export default function ScheduleWidgetAlarmScheduleList({
-    schedules
-}: {
-    schedules: ScheduleStorage,
-}) {
-    const [modalNode, screen] = useFullContent(() => {
-        return <>
-            {schedules.list.map((schedule) => {
-                if (!schedule.start) return null;
-                return <ScheduleWidgetAlarmSchedule key={schedule.w} schedule={schedule} />;
-            })}
-        </>;
-    });
+export default function ScheduleWidgetAlarmScheduleList() {
+    const schedules = useSchedules();
+    const connectionNode = useConnectionState();
 
-    return <>
-        {modalNode}
-        <EvaButton
-            name="list"
-            onClick={() => screen()}
-        />
-    </>;
+    return <PhaseIndexContainer
+        topClass="index-schedules"
+        headTitle="События"
+        head={connectionNode}
+        content={schedules.list.map((schedule) => {
+            if (!schedule.start) return null;
+            return <ScheduleWidgetAlarmSchedule key={schedule.w} schedule={schedule} />;
+        })}
+    />;
 }

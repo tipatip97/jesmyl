@@ -6,6 +6,7 @@ import Index from "../Index";
 import { IndexNavData, IndexStorage } from "../Index.model";
 import IndexSettings from "../parts/Settings";
 import IndexLogin from "../parts/login/IndexLogin";
+import ScheduleWidgetAlarmScheduleList from "../../../complect/schedule-widget/alarm/schedules/AlarmScheduleList";
 
 const Main = React.lazy(() => import("../parts/main/IndexMain"));
 
@@ -31,6 +32,10 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
         {
           phase: ["login"],
           node: <IndexLogin />,
+        },
+        {
+          phase: ["schedules"],
+          node: <ScheduleWidgetAlarmScheduleList />,
         },
       ],
     },
