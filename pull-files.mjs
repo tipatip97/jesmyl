@@ -29,18 +29,13 @@ import fetch from 'node-fetch';
             if (!file_system.existsSync(caseDir))
                 file_system.mkdirSync(caseDir);
 
-            let content;
+            let content = contentStr;
             try {
-                content = ext === 'json' ? JSON.parse(contentStr) : contentStr;
-            } catch (e) {
-                console.error(filePath, contentStr);
-                return;
-            }
+                content = JSON.stringify(JSON.parse(contentStr), null, 2);
+            } catch (e) { }
 
             file_system.writeFile(`${caseDir}/${name}${fileExt}`,
-                ext === 'json'
-                    ? JSON.stringify(content, null, 2)
-                    : content,
+                content,
                 () => console.info(`File ${path}/${name}${fileExt} checked!`)
             );
         }
