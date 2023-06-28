@@ -285,8 +285,14 @@ export class Executer {
         return false;
     }
 
-    static replaceArgs<Value>(value: Value, realArgs?: ExecutionArgs | null, auth?: LocalSokiAuth | null, defCb?: () => Value): Value {
-        if (smylib.isStr(value)) {
+    static replaceArgs<Value, Ret extends Value extends Function ? Value | undefined : Value>(value: Value, realArgs?: ExecutionArgs | null, auth?: LocalSokiAuth | null, defCb?: () => Value): Ret {
+        if (smylib.isFunc(value)) {
+            try {
+                return value(realArgs, auth);
+            } catch (error) {
+                return (defCb? defCb() : undefined) as never;
+            }
+        } else if (smylib.isStr(value)) {
             if (value.includes('{') && value.includes('}')) {
                 let val: any = this.stubEmpty;
                 const text = value.replace(/\{(([@*?])?([$\w]+(\(\))?))\}/g, (all, name, prefix, key) => {
@@ -299,9 +305,9 @@ export class Executer {
                                 : null;
                     return val ?? all ?? '';
                 });
-                if (val === this.stubEmpty && defCb) return defCb();
+                if (val === this.stubEmpty && defCb) return defCb() as never;
                 return value.match(/{|}/g)?.length === 2 && value.match(/^{|}$/g)?.length === 2 ? val : text;
-            } else return defCb ? defCb() : value;
+            } else return (defCb ? defCb() : value) as never;
         } else if (smylib.isobj(value)) {
             const newValue = smylib.newInstance(value) as Record<string, any>;
 
@@ -318,7 +324,7 @@ export class Executer {
             return newValue as never;
         }
 
-        return defCb ? defCb() : value;
+        return (defCb ? defCb() : value) as never;
     }
 
     static prepareTrack = (path: string): ExecutionTrack => path.startsWith('<') ? [] : path.slice(1).split('/').map((part) => part.startsWith('[') && part.endsWith(']') ? part.slice(1, -1).split(' ') as ExecutionRuleTrackBeat : part).filter(part => part);
