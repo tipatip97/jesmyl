@@ -40,6 +40,16 @@ export interface IndexStorage extends IndexState {
     updateOnRefresher: boolean,
 }
 
+export interface JesmylPassport {
+    login: string,
+    fio: string,
+    alias?: string,
+}
+
+export interface IndexNavData {
+    passport: JesmylPassport,
+}
+
 export interface UserMessage {
     at: string,
     fio: string,

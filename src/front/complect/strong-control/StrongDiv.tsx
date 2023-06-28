@@ -29,7 +29,7 @@ export default function StrongDiv(props: StrongControlProps<{
                     props.scope,
                     props.fieldName,
                     props.cud ?? 'C',
-                    '',
+                    undefined,
                     simpleFunc,
                     props.mapExecArgs,
                     props.fieldKey,

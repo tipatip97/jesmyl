@@ -67,6 +67,15 @@ body {
   color: var(--color--ko);
 }
 
+.mood- {
+  &for-2 {
+    &.the-button {
+      border-color: var(--color--1);
+      color: var(--color--4);
+    }
+  }
+}
+
 @for $i from 1 through 8 {
   .color--#{$i} {
     --icon-color: var(--color--#{$i});

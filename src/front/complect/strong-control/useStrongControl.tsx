@@ -42,6 +42,24 @@ export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType ex
         } else action += ` ${scopeItem}`;
     });
 
+    args = fieldKey === undefined && fieldValue === undefined
+        ? args
+        : fieldKey === undefined
+            ? {
+                ...args,
+                value: fieldValue,
+            }
+            : fieldValue === undefined
+                ? {
+                    ...args,
+                    key: fieldKey,
+                }
+                : {
+                    ...args,
+                    key: fieldKey,
+                    value: fieldValue,
+                };
+
     if (mapExecArgs) {
         const mappedArgs = mapExecArgs(args, (value ?? '') as never);
         if (mappedArgs == null) return;
@@ -51,13 +69,7 @@ export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType ex
     onBeforeSend();
 
     return exer.send({
-        args: fieldKey === undefined && fieldValue === undefined
-            ? args
-            : {
-                key: fieldKey,
-                value: fieldValue,
-                ...args,
-            },
+        args,
         action: action.trim() + (fieldName ? ` ${fieldName}` : '') + ` [${cud}]`,
     });
 }

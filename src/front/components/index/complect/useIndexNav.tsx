@@ -3,14 +3,14 @@ import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import { UseNavAction } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import Index from "../Index";
-import { IndexStorage } from "../Index.model";
+import { IndexNavData, IndexStorage } from "../Index.model";
 import IndexSettings from "../parts/Settings";
 import IndexLogin from "../parts/login/IndexLogin";
 
 const Main = React.lazy(() => import("../parts/main/IndexMain"));
 
 const actions: UseNavAction[] = [];
-const navigate = new NavigationConfig<IndexStorage>('index', {
+const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
   root: (content) => <Index content={content} />,
   rootPhase: null,
   routes: [
@@ -38,5 +38,5 @@ const navigate = new NavigationConfig<IndexStorage>('index', {
 });
 
 export default function useIndexNav() {
-  return useNavConfigurer<IndexStorage>('index', actions, navigate);
+  return useNavConfigurer<IndexStorage, IndexNavData>('index', actions, navigate);
 }

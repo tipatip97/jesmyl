@@ -105,45 +105,51 @@ const config: FilerAppConfig = {
             prepareContent: (schedules: ScheduleStorage<string>, auth): ScheduleStorage<string> => {
                 if (!auth) return { list: emptyArray };
                 const authLogin = auth.login;
-                const list: IScheduleWidget<string>[] = [];
-
-                schedules.list.forEach((schedule): void => {
+                const list = schedules.list.map((schedule): IScheduleWidget<string> => {
                     const user = schedule.ctrl.users.find(user => user.login === authLogin);
 
                     if (user === undefined) {
                         if (scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public)) {
                             if (!scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)) {
-                                list.push({
+                                return ({
                                     ...schedule,
                                     days: schedule.days?.map(mapCantReadSpecialsDay),
-                                    lists: emptyLists,
                                     ctrl: {
                                         cats: emptyArray,
                                         roles: emptyArray,
-                                        users: emptyArray,
+                                        users: schedule.ctrl.users,
                                         type: schedule.ctrl.type,
                                     }
                                 });
-                                return;
                             }
 
-                            list.push({
+                            return {
                                 ...schedule,
                                 days: schedule.days?.[0] && [{ wup: schedule.days[0].wup, mi: 0, list: emptyArray }],
                                 tatts: undefined,
                                 dsc: undefined,
                                 types: undefined,
-                                lists: emptyLists,
                                 ctrl: {
                                     cats: emptyArray,
                                     roles: emptyArray,
                                     users: emptyArray,
                                     type: schedule.ctrl.type,
                                 }
-                            });
-                            return;
+                            };
                         }
-                        return;
+
+                        return {
+                            app: schedule.app,
+                            w: schedule.w,
+                            lists: emptyLists,
+                            start: 0,
+                            ctrl: {
+                                cats: emptyArray,
+                                roles: emptyArray,
+                                users: emptyArray,
+                                type: schedule.ctrl.type,
+                            },
+                        };
                     }
 
                     if ((user.R === undefined || user.R === 0)
@@ -151,7 +157,7 @@ const config: FilerAppConfig = {
                         && (!scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)
                             || !scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.HideContent))
                     ) {
-                        list.push({
+                        return {
                             ...schedule,
                             days: schedule.days?.map(mapCantReadSpecialsDay),
                             ctrl: {
@@ -160,12 +166,11 @@ const config: FilerAppConfig = {
                                 users: user === undefined ? emptyArray : [user],
                                 type: schedule.ctrl.type,
                             }
-                        });
-                        return;
+                        };
                     }
 
                     if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read)) {
-                        list.push({
+                        return {
                             ...schedule,
                             days: undefined,
                             topic: undefined,
@@ -179,12 +184,11 @@ const config: FilerAppConfig = {
                                 users: user === undefined ? emptyArray : [user],
                                 type: schedule.ctrl.type,
                             },
-                        });
-                        return;
+                        };
                     }
 
                     if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles)) {
-                        list.push({
+                        return {
                             ...schedule,
                             days: schedule.days?.map(mapCantReadTitlesDay),
                             topic: undefined,
@@ -196,12 +200,11 @@ const config: FilerAppConfig = {
                                 users: schedule.ctrl.users,
                                 type: schedule.ctrl.type,
                             }
-                        });
-                        return;
+                        };
                     }
 
                     if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials)) {
-                        list.push({
+                        return {
                             ...schedule,
                             days: schedule.days?.map(mapCantReadSpecialsDay),
                             ctrl: {
@@ -210,11 +213,10 @@ const config: FilerAppConfig = {
                                 users: schedule.ctrl.users,
                                 type: schedule.ctrl.type,
                             }
-                        });
-                        return;
+                        };
                     }
 
-                    list.push(schedule);
+                    return schedule;
                 });
 
                 return {
@@ -245,11 +247,17 @@ const config: FilerAppConfig = {
                     value: ['w', '===', '{schw}'],
                 },
                 C: {
-                    RRej: false,
+                    RRej: true,
                     value: {
                         w: '{schw}',
                         title: '{title}',
                         app: '{app}',
+                        start: () => {
+                            const date = new Date();
+                            date.setMonth(date.getMonth() + 1);
+                            date.setHours(0, 0, 0, 0);
+                            return date.getTime();
+                        },
                         ctrl: {
                             cats: ['Основное'],
                             users: [{
@@ -263,7 +271,8 @@ const config: FilerAppConfig = {
                                 title: 'Координатор',
                                 icon: 'github-outline',
                                 user: 0,
-                            }]
+                            }],
+                            type: scheduleWidgetRegTypeRights.collectRights(),
                         },
                         lists: {
                             cats: [
@@ -333,6 +342,12 @@ const config: FilerAppConfig = {
                             C: {
                                 setSystems: ['mi'],
                                 value: { fio: '{*fio}', login: '{*login}' },
+                            },
+                            '<add user>': {
+                                scopeNode: 'newUser',
+                                C: {
+                                    setSystems: ['mi'],
+                                }
                             },
                             '/[mi === {userMi}]': {
                                 scopeNode: 'userMi',

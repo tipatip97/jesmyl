@@ -1,6 +1,8 @@
 
 const zeroEndTrimReg = /0+$/;
 
+type nil = undefined | null;
+
 export interface ScheduleWidgetRightTexts<Right> {
     id: Right,
     title: string,
@@ -30,6 +32,14 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
         return parseInt(Array(this.texts.length).fill('1').join(''), 2);
     };
 
+    rightLevel = (rightKey: Right) => this.enumOrder.indexOf(rightKey);
+
+    collectRights = (...args: Right[]) => {
+        let R = 1;
+        args.forEach(right => R = this.switchRights(R, right, '1'));
+        return R;
+    };
+
     rightsBalance = (R: number | null | undefined): number => {
         if (R === undefined || R === null || R === 0) return -1;
         const rstr = R.toString(2);
@@ -47,7 +57,7 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
     };
 
     checkIsHasRights = (R: number | null | undefined, rightKey: Right) => {
-        if (R === undefined || R === null || R === 0) return false;
+        if (R === undefined || R === null || R === 0 || R === 1) return false;
         const rstr = R.toString(2);
         const ind = this.enumOrder.indexOf(rightKey);
 
@@ -68,7 +78,7 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
         return parseInt(bin || '1', 2);
     };
 
-    
+
     static switchRights = (R: number | null | undefined, rightKey: number, len: number) => {
         let arr = (R || 1).toString(2).split('');
 

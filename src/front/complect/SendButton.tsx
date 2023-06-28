@@ -10,20 +10,22 @@ export default function SendButton<Value>({
   onSuccess,
   onFailure,
   disabled,
+  className,
 }: {
-  title: string;
-  confirm?: ReactNode | boolean | null;
-  disabled?: boolean;
-  onSend?: () => Promise<Value> | void | nil;
-  onSuccess?: (val: Value) => void;
-  onFailure?: (errorMessage: string) => void;
+  title: string,
+  confirm?: ReactNode | boolean | null,
+  disabled?: boolean,
+  onSend?: () => Promise<Value> | void | nil,
+  onSuccess?: (val: Value) => void,
+  onFailure?: (errorMessage: string) => void,
+  className?: string,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   return (
     <TheButton
-      className={`margin-gap ${disabled ? "disabled" : ""} ${
+      className={`${className || ''} margin-gap ${disabled ? "disabled" : ""} ${
         isLoading && !isError ? "pointers-none" : ""
       }`}
       onClick={async () => {

@@ -9,6 +9,7 @@ import useGamerNav from "../components/apps/gamer/useGamerNav";
 import { LeaderNavData } from "../components/apps/leader/Leader.model";
 import useLeaderNav from "../components/apps/leader/useLeaderNav";
 import useTunerNav from "../components/apps/tuner/useTunerNav";
+import { IndexNavData } from "../components/index/Index.model";
 import useIndexNav from "../components/index/complect/useIndexNav";
 
 const navConfigurers: Record<AppName, () => ReturnType<typeof useNavConfigurer>> = {
@@ -24,7 +25,7 @@ export default navConfigurers;
 export type NavDataRegister = {
     cm: CmNavData,
     leader: LeaderNavData,
-    index: unknown,
+    index: IndexNavData,
     tuner: unknown,
     admin: AdminNavData,
     gamer: GamerNavData,

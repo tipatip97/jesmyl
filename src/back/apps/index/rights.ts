@@ -7,6 +7,7 @@ export enum ScheduleWidgetUserRoleRight {
     Redact,
     ReadTitles,
     ReadSpecials,
+    RedactUsers,
 }
 
 const rightsOrder = [
@@ -14,6 +15,7 @@ const rightsOrder = [
     ScheduleWidgetUserRoleRight.ReadTitles,
     ScheduleWidgetUserRoleRight.ReadSpecials,
     ScheduleWidgetUserRoleRight.Redact,
+    ScheduleWidgetUserRoleRight.RedactUsers,
     ScheduleWidgetUserRoleRight.TotalRedact,
 ];
 
@@ -37,6 +39,11 @@ const textList: ScheduleWidgetRightTexts<ScheduleWidgetUserRoleRight>[] = [
         id: ScheduleWidgetUserRoleRight.Redact,
         title: 'Редактирование',
         description: ['Редактирование чего-либо'],
+    },
+    {
+        id: ScheduleWidgetUserRoleRight.RedactUsers,
+        title: 'Редактирование участников',
+        description: ['Добавление, выдача прав'],
     },
     {
         id: ScheduleWidgetUserRoleRight.TotalRedact,

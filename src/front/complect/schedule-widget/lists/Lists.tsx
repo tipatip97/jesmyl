@@ -37,7 +37,7 @@ export default function ScheduleWidgetLists({ scope, scheduleScope }: StrongComp
                     cati={cati}
                 />
             })}
-            <ScheduleWidgetRoleList scope={scheduleScope} />
+            {rights.isCanRedact && <ScheduleWidgetRoleList scope={scheduleScope} />}
         </>;
     });
 

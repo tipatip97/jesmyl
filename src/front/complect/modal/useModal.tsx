@@ -31,7 +31,7 @@ const defaultUseModalConfig: UseModalConfig = {
 const modalElements = {
     actionButton: (content: ReactNode) => <div className="modal-action-button">{content}</div>,
     header: (content: ReactNode) => <div className="modal-header">{content}</div>,
-    body: (content: ReactNode) => <div className="modal-body">{content}</div>,
+    body: (content: ReactNode) => <div className="modal-body margin-big-gap-v">{content}</div>,
     footer: (content: ReactNode) => <div className="modal-footer">{content}</div>,
 };
 
@@ -50,10 +50,10 @@ export default function useModal(topContent?: (
     }, [config.onClose, onClose, switchIsForceOpen]);
 
     useEffect(() => {
-        if (config.isOpen && config.type !== ModalType.Toast) {
+        if ((isForceOpen || config.isOpen) && config.type !== ModalType.Toast) {
             return ThrowEvent.listenKeyDown('Escape', close);
         }
-    }, [close, config.isOpen, config.type]);
+    }, [close, isForceOpen, config.isOpen, config.type]);
 
     const ret = {
         screen: (content?: ReactNode, config?: ModalConfig) => {

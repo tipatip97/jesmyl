@@ -9,8 +9,8 @@ export default function ScheduleWidgetRegisterType({ scope }: StrongComponentPro
     const [expandNode, isExpand] = useIsExpand(false, <>Тип мероприятия</>);
 
     return <>
-        {expandNode}
-        {isExpand
+        <div className="margin-gap-v">{expandNode}</div>
+        <div className="margin-big-gap-v">{isExpand
             && <ScheduleWidgetRightControlList
                 scope={scope}
                 fieldName="type"
@@ -18,7 +18,9 @@ export default function ScheduleWidgetRegisterType({ scope }: StrongComponentPro
                 R={rights.schedule.ctrl.type}
                 rights={rights}
                 className="margin-gap-l"
+                isCantEdit={!rights.isCanTotalRedact}
                 isDescriptionsCollect
             />}
+        </div>
     </>;
 }

@@ -10,8 +10,7 @@ export default function useQRMaster() {
         readQR: (callback?: (data: QRCodeReaderData<unknown, never>) => void) => {
             qrCodeMaster.read()
                 .then((data) => {
-                    const app = apps.find(({ name }) => name === data.appName);
-                    if (app) {
+                    if (data.appName === 'index' || apps.some(({ name }) => name === data.appName)) {
                         if (callback) callback(data);
                         else jumpToApp(data.appName, data.key, data.value);
                     } else modalService.alert('Ссылка на неизвестное приложение!');

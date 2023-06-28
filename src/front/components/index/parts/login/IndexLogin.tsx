@@ -7,7 +7,7 @@ import LoadIndicatedContent from "../../../../complect/load-indicated-content/Lo
 import mylib from "../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../shared/store";
 import { soki } from "../../../../soki";
-import { Auth, AuthMode, AuthorizationData, AuthorizeInSystem, IndexErrorScope, RegisterData } from "../../Index.model";
+import { Auth, AuthMode, AuthorizationData, AuthorizeInSystem, RegisterData } from "../../Index.model";
 import di from "../../Index.store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
@@ -33,10 +33,6 @@ export default function IndexLogin() {
   const { navigate } = useIndexNav();
   const error = (message: string | nil) =>
     message && <div className="login-error-message">{message}</div>;
-
-
-  const setError = (scope: IndexErrorScope, message: string | nil) =>
-    dispatch(di.setError({ scope, message }));
 
   const sendData = <AuthType extends keyof AuthorizeInSystem>(type: AuthType, data: AuthorizeInSystem[typeof type]) => {
     return soki.send({
@@ -96,26 +92,27 @@ export default function IndexLogin() {
   useEffect(() => {
     if (isCorrectLoginJSONData(login)) {
       setIsJSONDataLogin(true);
-      setError("login", null);
+      dispatch(di.setError({ scope: 'login', message: null }));
     } else {
       setIsJSONDataLogin(false);
-      setError(
-        "login",
-        login.length < 3
+      dispatch(di.setError({
+        scope: 'login',
+        message: login.length < 3
           ? "Минимум 3 символа"
           : login.length > 20
             ? "Максимум 20 символов"
             : null
-      );
+      }));
     }
-  }, [login]);
+  }, [login, dispatch]);
 
   useEffect(() => {
-    setError(
-      "rpassw",
-      mode === "register" && rpassw !== passw ? "Пароли не совпадают" : null
-    );
-  }, [passw, rpassw, mode]);
+    dispatch(di.setError({
+      scope: 'rpassw',
+      message:
+        mode === "register" && rpassw !== passw ? "Пароли не совпадают" : null
+    }));
+  }, [passw, rpassw, mode, dispatch]);
 
   return (
     <PhaseIndexContainer
@@ -199,12 +196,18 @@ export default function IndexLogin() {
                           removePullRequisites();
                           setAuthData(authorization.value);
                         } else {
-                          setError('login', authorization?.value || 'Неизвестная ошибка');
+                          dispatch(di.setError({
+                            scope: 'login',
+                            message: authorization?.value || 'Неизвестная ошибка',
+                          }));
                           setIsInProscess(2);
                         }
                       },
                       (errorMessage) => {
-                        setError('login', errorMessage);
+                        dispatch(di.setError({
+                          scope: 'login',
+                          message: errorMessage,
+                        }));
                         setIsInProscess(2);
                       });
                 }

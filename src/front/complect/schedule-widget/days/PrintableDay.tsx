@@ -9,12 +9,10 @@ export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps
 
     useEffect(() => {
         props.win.onclick = (event) => {
-            props.win.console.log(event);
             setFontSize(fontSize + (event.clientX > props.win.innerWidth / 2 ? 1 : -1));
             if (page.current) props.win.navigator.clipboard.writeText(page.current.innerText);
         };
         props.win.onkeyup = (event) => {
-            props.win.console.log(event);
             if (event.code === 'Equal') setFontSize(fontSize + 1);
             else if (event.code === 'Minus') setFontSize(fontSize - 1);
         };

@@ -27,6 +27,7 @@ export default function StrongEditableField<
     textClassName?: string,
     className?: string,
     onChange?: (value: string) => void | Promise<boolean>,
+    onUpdate?: (value: string) => void | Promise<boolean>,
     onSend?: (value: string) => void | Promise<boolean>,
 }>) {
     const value = typeof props.value === 'string' ? props.value : props.value?.[props.fieldKey as never] ?? '';
@@ -44,6 +45,11 @@ export default function StrongEditableField<
         const isSendResuls = stateValue !== undefined
             && (props.isImpossibleEmptyValue !== true || stateValue.trim())
             && stateValue.trim() !== value?.trim();
+
+        if (props.onUpdate !== undefined) {
+            props.onUpdate(stateValue.trim());
+            return;
+        }
 
         if (isSendResuls) {
             const onSendResult = props.onSend?.(stateValue.trim());

@@ -11,6 +11,7 @@ export default function ScheduleWidgetAlarmScheduleList({
     const [modalNode, screen] = useFullContent(() => {
         return <>
             {schedules.list.map((schedule) => {
+                if (!schedule.start) return null;
                 return <ScheduleWidgetAlarmSchedule key={schedule.w} schedule={schedule} />;
             })}
         </>;

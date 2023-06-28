@@ -61,6 +61,7 @@ export const defScheduleWidgetUserRights: ScheduleWidgetUserRights = {
     isCanReadSpecials: false,
     isCanReadTitles: false,
     isCanRedact: false,
+    isCanRedactUsers: false,
 };
 
 export const ScheduleWidgetRightsContext = React.createContext<ScheduleWidgetRights>({
@@ -84,6 +85,7 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
             isCanReadSpecials: false,
             isCanReadTitles: false,
             isCanRedact: false,
+            isCanRedactUsers: false,
             isCanTotalRedact: false,
             isMyMainRole: false,
             isSwBeforeRegistration: false,
@@ -109,6 +111,7 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
                 isCanReadSpecials: true,
                 isCanReadTitles: true,
                 isCanRedact: true,
+                isCanRedactUsers: true,
                 isMyMainRole: true,
                 isSwBeforeRegistration,
                 isSwHideContent,
@@ -120,9 +123,10 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
         const isCanRead = (isSwPublic && !isSwHideContent) || scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Read);
         const isCanReadTitles = (isSwPublic && !isSwBeforeRegistration)
             || (isCanRead && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadTitles));
-        const isCanReadSpecials = isCanReadTitles && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadSpecials);
-        const isCanRedact = isCanReadSpecials && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Redact);
-        const isCanTotalRedact = isCanRedact && scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.TotalRedact);
+        const isCanReadSpecials = scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.ReadSpecials);
+        const isCanRedact = scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Redact);
+        const isCanRedactUsers = scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.RedactUsers);
+        const isCanTotalRedact = scheduleWidgetRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.TotalRedact);
 
         return {
             myUser,
@@ -132,6 +136,7 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
             isCanReadSpecials,
             isCanReadTitles,
             isCanRedact,
+            isCanRedactUsers,
             isMyMainRole: !!mainRole && mainRole.user === myUser?.mi,
             isSwBeforeRegistration,
             isSwHideContent,

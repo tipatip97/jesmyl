@@ -3,11 +3,14 @@ import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsol
 import modalService from "../../../../complect/modal/Modal.service";
 import di from "../../Index.store";
 import indexStorage from "../../indexStorage";
-import { removePullRequisites } from "../../useAuth";
+import useAuth, { removePullRequisites } from "../../useAuth";
+import useIndexNav from "../../complect/useIndexNav";
 
 export default function UserMore() {
   const dispatch = useDispatch();
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const { nav } = useIndexNav();
+  const auth = useAuth();
 
   const logout = () => {
     dispatch(di.setAuthData(null));
@@ -18,15 +21,29 @@ export default function UserMore() {
   };
 
   return prepareAbsoluteBottomPopupContent({
-    items: [{
-      title: 'Выйти из системы',
-      icon: "person-outline",
-      onClick: (event) => {
-        event.preventDefault();
-        modalService
-          .confirm("Произвести выход из системы?", "Разлогиниться")
-          .then(isLogout => isLogout && logout());
+    items: [
+      {
+        title: 'Выйти из системы',
+        icon: "person-outline",
+        onClick: (event) => {
+          event.preventDefault();
+          modalService
+            .confirm("Произвести выход из системы?", "Разлогиниться")
+            .then(isLogout => isLogout && logout());
+        },
       },
-    }]
+      {
+        title: 'Предъявить JesmyL-паспорт',
+        icon: "qr-code",
+        onClick: (event) => {
+          event.preventDefault();
+          if (auth?.fio && auth.login)
+            nav.shareDataByQr('passport', {
+              fio: auth.fio,
+              login: auth.login,
+            });
+        },
+      },
+    ]
   });
 }

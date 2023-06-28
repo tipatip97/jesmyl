@@ -11,15 +11,17 @@ export default function ScheduleWidgetUserList({
     asUserPlusPrefix,
     filter,
     title = <>Участники</>,
+    titlePostfix,
     isInitExpand,
 }: StrongComponentProps & {
     asUserPlusPrefix?: (userNode: ReactNode, userScope: string, user: IScheduleWidgetUser, balance: number) => ReactNode,
     filter?: (user: IScheduleWidgetUser, useri: number, usera: IScheduleWidgetUser[]) => boolean,
     title?: ReactNode,
+    titlePostfix?: ReactNode | ((isExpand: boolean) => ReactNode),
     isInitExpand?: boolean,
 }) {
     const rights = useScheduleWidgetRightsContext();
-    const [expandNode, isExpand] = useIsExpand(isInitExpand ?? false, title);
+    const [expandNode, isExpand] = useIsExpand(isInitExpand ?? false, title, titlePostfix);
 
     const users =
         (filter === undefined
@@ -42,8 +44,8 @@ export default function ScheduleWidgetUserList({
             });
 
     return <>
-        {expandNode}
-        {isExpand && <div className="margin-gap-v margin-gap-l">
+        <div className="margin-gap-v">{expandNode}</div>
+        {isExpand && <div className="margin-big-gap-v margin-gap-l">
             {!users.length && <div className="text-italic color--7">Список пуст</div>}
             {users.map(({ user, balance }) => {
                 return <ScheduleWidgetUser
