@@ -3,10 +3,10 @@ import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import KeyboardInput from "../../keyboard/KeyboardInput";
 import useModal from "../../modal/useModal";
+import useIsRedactArea from "../../useIsRedactArea";
 import { StrongControlProps } from "../Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "../useStrongControl";
 import StrongEditableFieldMultiline from "./StrongEditableFieldMultiline";
-import useIsRedactArea from "../../useIsRedactArea";
 
 export default function StrongEditableField<
     Key extends string,
@@ -105,7 +105,7 @@ export default function StrongEditableField<
         ? <EvaIcon name="alert-triangle-outline" className="error-message" />
         : isLoading
             ? <EvaIcon name="loader-outline" className="rotate" />
-            : value && stateValue !== value
+            : stateValue !== value
                 ? <EvaButton
                     name="undo-outline"
                     className="pointer"

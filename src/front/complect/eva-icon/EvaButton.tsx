@@ -28,8 +28,13 @@ export default function EvaButton(
       alt={props.alt}
       className={className}
       onClick={onClick}
+      onMouseDown={props.onMouseDown}
     />
-    : <span className={`flex flex-gap ${className || 'flex-max'}`} onClick={onClick}>
+    : <span
+      className={`flex flex-gap ${className || 'flex-max'}`}
+      onClick={onClick}
+      onMouseDown={props.onMouseDown}
+    >
       {props.prefix}
       <EvaIcon
         name={props.name}

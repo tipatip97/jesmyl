@@ -44,6 +44,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
   }, [value, input, isNative]);
 
   if (isNative || props.type === 'button') {
+    let isCanBlur = true;
     const {
       className,
       multiline,
@@ -101,7 +102,29 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       ref: nativeRef,
     };
 
-    const rows = multiline ? value?.split('\n').length : 1;
+    let inputNode = null;
+
+    if (multiline) {
+      const rows = multiline ? value?.split('\n').length : 1;
+
+      inputNode = <textarea
+        {...otherProps}
+        {...(nativeProps as any)}
+        onBlur={otherProps.onBlur && (() => {
+          isCanBlur && otherProps.onBlur?.();
+        })}
+        rows={rows && rows < 2 ? 2 : rows}
+      />;
+    } else {
+      inputNode = <input
+        {...otherProps}
+        {...(nativeProps as any)}
+        onBlur={otherProps.onBlur && (() => {
+          isCanBlur && otherProps.onBlur?.();
+        })}
+        type={type === 'password' && !isHiddenPassword ? 'text' : type}
+      />
+    }
 
     return <div className={
       'input-keyboard-flash-controlled input with-native-input '
@@ -109,17 +132,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       + (multiline ? ' multiline' : '')
       + (withoutCloseButton ? ' without-close-button' : '')
     }>
-      {multiline
-        ? <textarea
-          {...otherProps}
-          {...(nativeProps as any)}
-          rows={rows && rows < 2 ? 2 : rows}
-        />
-        : <input
-          {...otherProps}
-          {...(nativeProps as any)}
-          type={type === 'password' && !isHiddenPassword ? 'text' : type}
-        />}{type !== 'button' && value && <div className="icon-button-container">
+      {inputNode}{type !== 'button' && value && <div className="icon-button-container">
         {type === 'password'
           ? <EvaIcon
             name={isHiddenPassword ? 'eye-outline' : 'eye-off-outline'}
@@ -129,14 +142,21 @@ export default function KeyboardInput(props: KeyboardInputProps) {
             name="close"
             className="close-button pointer"
             onMouseDown={() => {
-              setTimeout(() => nativeRef.current?.focus());
+              isCanBlur = false;
 
               if (nativeRef.current) {
-                setIsForceZero(false);
-                const val = type === 'number' ? '0' : '';
-                onChange?.(val, nativeRef.current.value || '');
-                onInput?.(val, nativeRef.current.value || '');
-                setValue(val);
+                const value = nativeRef.current.value;
+
+                nativeRef.current.focus();
+                setTimeout(() => nativeRef.current?.focus());
+
+                setTimeout(() => {
+                  setIsForceZero(false);
+                  const val = type === 'number' ? '0' : '';
+                  onChange?.(val, value || '');
+                  onInput?.(val, value || '');
+                  setValue(val);
+                });
               }
             }}
           />}
