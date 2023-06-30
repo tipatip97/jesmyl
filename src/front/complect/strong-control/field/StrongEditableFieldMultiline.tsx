@@ -1,7 +1,35 @@
 import Markdown from "markdown-to-jsx";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import style from "./Multiline.module.scss";
 
 const isNIs = (is: boolean) => !is;
+const onImageClick: React.MouseEventHandler<HTMLImageElement> = (event) => {
+    event.stopPropagation();
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else {
+        event.currentTarget.requestFullscreen();
+    }
+};
+
+const ImgContainer = ({ src, alt }: { src: string, alt: string }) => {
+    const imgRef = useRef<HTMLImageElement | null>(null);
+
+    return <span className={style.imgContainer}>
+        <img
+            ref={imgRef}
+            src={src}
+            alt={alt}
+            onClick={onImageClick}
+        />
+    </span>;
+};
+
+const options = {
+    overrides: {
+        img: ImgContainer
+    }
+};
 
 export default function StrongEditableFieldMultiline({
     value,
@@ -15,13 +43,13 @@ export default function StrongEditableFieldMultiline({
     const expandMessage = isExpandable ? isExpand || <span className="color--3">Часть текста скрыта</span> : null;
 
     return <div
-        className={'white-pre-wrap break-word' + (isExpandable ? ' pointer' : '')}
+        className={style.markdownFieldContent + ' white-pre-wrap break-word' + (isExpandable ? ' pointer' : '')}
         onClick={isExpandable
             ? () => setisExpand(isNIs)
             : undefined}
     >
         {expandMessage}
-        <Markdown>{isExpand ? value : shortValue}</Markdown>
+        <Markdown options={options}>{isExpand ? value : shortValue}</Markdown>
         {expandMessage}
     </div>;
 }
