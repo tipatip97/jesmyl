@@ -25,6 +25,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     att: ScheduleWidgetDayEventAttValue,
     isPast: boolean,
     schedule: IScheduleWidget,
+    isCanRedact: boolean,
 }>) {
     const [appAtts] = useScheduleWidgetAppAttsContext();
     const appAtt = appAtts[props.attKey];
@@ -34,6 +35,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
             {appAtt.title}
         </>,
         null, props.isPast);
+
     const { isRedact, editIcon, setIsSelfRedact } = useIsRedactArea(true, null, true, true);
 
     if (!appAtt) return <div className="error-message">Неизвестное вложение</div>;
@@ -41,7 +43,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
 
     let linkTitle = null;
     let attContent = null;
-    let isCanRedact = true;
+    let isCanRedact = props.isCanRedact;
 
     try {
         let attValue = props.att;

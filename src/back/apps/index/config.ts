@@ -4,7 +4,7 @@ import { FilerAppConfig } from "../../complect/filer/Filer.model";
 import { rootDirective } from "../../complect/soki/soki.model";
 import { Application } from "./models/Application";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetLists, IScheduleWidgetUser, ScheduleStorage } from "./models/ScheduleWidget.model";
-import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetRights as scheduleWidgetUserRights } from "./rights";
+import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetUserRights } from "./rights";
 
 interface SchedulesBag {
     users: IScheduleWidgetUser[],
@@ -51,8 +51,12 @@ type ScheduleWidgetOnCantReadExec = ExecutionDict<
     unknown,
     ExecutionArgs<
         unknown,
-        { schw: number },
-        { $$event: IScheduleWidgetDayEvent }
+        {
+            schw: number,
+            tattMi?: number,
+            attKey?: string,
+        },
+        { $$event?: IScheduleWidgetDayEvent }
     >
 >;
 
@@ -90,6 +94,27 @@ const config: FilerAppConfig = {
                     if (scheduleWidgetRegTypeRights.checkIsHasRights(bag.schedule.ctrl.type, ScheduleWidgetRegType.Public))
                         return null;
                     return whenRejButTs;
+                }
+
+                if (exec.args !== undefined) {
+                    let tattMi = -1;
+
+                    try {
+                        if (exec.args.tattMi !== undefined) tattMi = exec.args.tattMi;
+
+                        if (exec.args.attKey !== undefined) {
+                            tattMi = +exec.args.attKey.split(':')[2];
+                            if (isNaN(tattMi)) tattMi = -1;
+                        }
+
+                        if (tattMi >= 0) {
+                            const tatt = bag.schedule.tatts?.find((tatt) => tatt.mi === exec.args!.tattMi);
+                            if (tatt !== undefined) {
+                                if (!scheduleWidgetUserRights.checkIsCan(user.R, tatt.R))
+                                    return whenRejButTs;
+                            }
+                        }
+                    } catch (error) { }
                 }
 
                 if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials) && exec.args?.$$vars?.$$event?.secret) {
@@ -647,6 +672,7 @@ const config: FilerAppConfig = {
                                             scopeNode: 'attKey',
                                             args: {
                                                 attKey: '#String',
+                                                isAttEdit: true,
                                             },
                                             U: {
                                                 args: {
@@ -688,7 +714,7 @@ const config: FilerAppConfig = {
                                             '/values': {
                                                 scopeNode: 'keyValue',
                                                 C: {
-                                                    value: ['{key}', '+'],
+                                                    value: ['{key}', '{value}'],
                                                     args: {
                                                         key: ['#String', '#Number', '#Boolean'],
                                                     },

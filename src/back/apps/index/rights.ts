@@ -2,6 +2,7 @@ import { ScheduleWidgetRightTexts, ScheduleWidgetRightsCtrl } from "./complect";
 
 
 export enum ScheduleWidgetUserRoleRight {
+    Free = 0,
     TotalRedact = 1,
     Read,
     Redact,
@@ -52,7 +53,7 @@ const textList: ScheduleWidgetRightTexts<ScheduleWidgetUserRoleRight>[] = [
     },
 ];
 
-export const scheduleWidgetRights = new ScheduleWidgetRightsCtrl(textList, rightsOrder);
+export const scheduleWidgetUserRights = new ScheduleWidgetRightsCtrl(textList, rightsOrder);
 
 
 ///////////////////////////////
@@ -67,9 +68,10 @@ export enum CustomAttUseRights {
     Checkboxes,
     Roles,
     Lists,
+    CheckTitles,
 }
 
-export const customAttUseRightsTitles: ScheduleWidgetRightTexts<CustomAttUseRights>[] = [
+export const customAttUseRightsTitles: (ScheduleWidgetRightTexts<CustomAttUseRights> & { top?: CustomAttUseRights })[] = [
     {
         id: CustomAttUseRights.Checkboxes,
         title: 'вып. пункты',
@@ -85,6 +87,11 @@ export const customAttUseRightsTitles: ScheduleWidgetRightTexts<CustomAttUseRigh
     {
         id: CustomAttUseRights.Titles,
         title: 'заголовки',
+    },
+    {
+        id: CustomAttUseRights.CheckTitles,
+        title: 'вып. заголовки',
+        top: CustomAttUseRights.Titles,
     },
 ];
 

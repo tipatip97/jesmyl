@@ -1,7 +1,8 @@
+import { scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
 import { MyLib } from "../../../my-lib/MyLib";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";
-import { takeStrongScopeMaker } from "../../useScheduleWidget";
+import { takeStrongScopeMaker, useScheduleWidgetAppAttsContext, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import ScheduleWidgetDayEventAtt from "./DayEventAtt";
 
 export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
@@ -11,20 +12,27 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
     isPast: boolean,
     schedule: IScheduleWidget,
 }>) {
+    const [appAtts] = useScheduleWidgetAppAttsContext();
+    const rights = useScheduleWidgetRightsContext();
+    const myUserR = rights.myUser?.R;
+
     return <>
         {MyLib.entries({ ...props.typeBox.atts, ...props.event.atts }).map(([attKey, att]) => {
+            const appAtt = appAtts[attKey];
+            if (!scheduleWidgetUserRights.checkIsCan(myUserR, appAtt.R)) return null;
             const scope = takeStrongScopeMaker(props.scope, ' attKey/', attKey);
 
             return <ScheduleWidgetDayEventAtt
+                key={attKey}
                 scope={scope}
                 typeBox={props.typeBox}
-                key={attKey}
                 att={att}
                 attKey={attKey}
                 day={props.day}
                 schedule={props.schedule}
                 event={props.event}
                 isPast={props.isPast}
+                isCanRedact={scheduleWidgetUserRights.checkIsCan(myUserR, appAtt.U)}
             />;
         })}
     </>;

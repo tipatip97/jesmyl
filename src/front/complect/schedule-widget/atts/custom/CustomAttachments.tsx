@@ -1,3 +1,4 @@
+import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";
@@ -11,6 +12,8 @@ const newTatt: ScheduleWidgetAppAttCustomizable = {
     icon: 'attach-2-outline',
     initVal: {},
     title: '',
+    R: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
+    U: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
 };
 
 export default function ScheduleWidgetCustomAttachments(props: StrongComponentProps<{

@@ -129,7 +129,8 @@
     }
 
     .modal-body {
-        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
         max-height: 80vh;
     }
 

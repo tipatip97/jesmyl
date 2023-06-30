@@ -6,11 +6,12 @@ import mylib, { MyLib } from "../../my-lib/MyLib";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongDiv from "../../strong-control/StrongDiv";
 import { IScheduleWidget, ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValues } from "../ScheduleWidget.model";
-import { takeStrongScopeMaker, useScheduleWidgetAppAttsContext } from "../useScheduleWidget";
+import { takeStrongScopeMaker, useScheduleWidgetAppAttsContext, useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import ScheduleWidgetBindAttRefKeyButton from "./BindAttRefKeyButton";
 import ScheduleWidgetAttFace from "./AttFace";
 import "./Atts.scss";
 import ScheduleWidgetCustomAttachments from "./custom/CustomAttachments";
+import { scheduleWidgetUserRights } from "../../../../back/apps/index/rights";
 
 export default function ScheduleWidgetBindAtts({
     atts,
@@ -33,6 +34,8 @@ export default function ScheduleWidgetBindAtts({
 }>) {
     const [appAtts, attRefs] = useScheduleWidgetAppAttsContext();
     const appAttList = MyLib.entries(appAtts);
+    const rights = useScheduleWidgetRightsContext();
+    const myUserR = rights.myUser?.R;
 
     const { modalNode, screen } = useModal(({ header, body, footer }, closeModal) => {
         return <>
@@ -40,7 +43,9 @@ export default function ScheduleWidgetBindAtts({
             {body(<>
                 {topContent}
                 {appAttList.map(([attKey, tatt]) => {
-                    if (!tatt.title || !tatt.description) return null;
+                    if (!tatt.title
+                        || !scheduleWidgetUserRights.checkIsCan(myUserR, tatt.R)
+                        || !scheduleWidgetUserRights.checkIsCan(myUserR, tatt.U)) return null;
                     const attScope = takeStrongScopeMaker(scope, ' attKey/', attKey);
 
                     return <StrongDiv

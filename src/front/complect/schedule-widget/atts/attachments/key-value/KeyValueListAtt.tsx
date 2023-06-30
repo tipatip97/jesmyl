@@ -43,15 +43,28 @@ export default function ScheduleKeyValueListAtt({
         const titles = customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Titles) && att.titles
             ?.map((title, titlei) => {
                 if (!title || value.values?.some(li => li[0] === title)) return null;
-                return <div key={titlei} className="flex flex-gap">
-                    {title}
-                    <StrongEvaButton
-                        name="plus"
-                        scope={attScope}
-                        fieldName=""
-                        fieldKey={title}
-                    />
-                </div>;
+                return customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.CheckTitles)
+                    ? <div key={titlei} className="flex flex-gap">
+                        <EvaIcon name="checkmark-square-outline" />
+                        {title}
+                        <StrongEvaButton
+                            name="plus"
+                            scope={attScope}
+                            fieldName=""
+                            fieldKey={false}
+                            fieldValue={title}
+                        />
+                    </div>
+                    : <div key={titlei} className="flex flex-gap">
+                        {title}
+                        <StrongEvaButton
+                            name="plus"
+                            scope={attScope}
+                            fieldName=""
+                            fieldKey={title}
+                            fieldValue="+"
+                        />
+                    </div>;
             }).filter(itIt);
 
         const roles = customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles)
@@ -136,17 +149,19 @@ export default function ScheduleKeyValueListAtt({
                                 className={'self-start' + (key ? '' : ' color--7')}
                                 cud="U"
                                 name={key ? 'checkmark-square-outline' : 'square-outline'}
+                                isCanSend={customAttUseRights.checkIsCan(rights.myUser?.R, att.U)}
                             />
                             : <div className="color--3">{key}</div>}
-                    {(isRedact || value !== '+') && <StrongEditableField
-                        scope={itemScope}
-                        fieldName="value"
-                        className={'margin-gap-l' + (typeof key !== 'boolean' || key ? '' : ' color--7')}
-                        value={value}
-                        multiline
-                        isRedact={isRedact}
-                        setSelfRedact={setSelfRedact}
-                    />}
+                    {(isRedact || value !== '+')
+                        && <StrongEditableField
+                            scope={itemScope}
+                            fieldName="value"
+                            className={'margin-gap-l' + (typeof key !== 'boolean' || key ? '' : ' color--7')}
+                            value={value}
+                            multiline
+                            isRedact={isRedact}
+                            setSelfRedact={setSelfRedact}
+                        />}
                 </div>;
             })}
             {insertionNode}

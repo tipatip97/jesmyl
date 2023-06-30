@@ -5,6 +5,8 @@ import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import { ScheduleWidgetAppAtt, ScheduleWidgetAttKey } from "../ScheduleWidget.model";
 import ScheduleWidgetCustomAtt from "./custom/CustomAtt";
+import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
+import { scheduleWidgetUserRights } from "../../../../back/apps/index/rights";
 
 
 export default function ScheduleWidgetAttFace({
@@ -25,6 +27,8 @@ export default function ScheduleWidgetAttFace({
     scheduleScope: string,
     isLink?: boolean,
 }>) {
+    const rights = useScheduleWidgetRightsContext();
+    const myUserR = rights.myUser?.R;
     const { modalNode, screen } = useModal(tatt && (() => {
         return <ScheduleWidgetCustomAtt
             tatt={tatt as never}
@@ -33,17 +37,19 @@ export default function ScheduleWidgetAttFace({
             topContent={customAttTopContent?.(scope, attKey)}
         />;
     }));
+    if (!scheduleWidgetUserRights.checkIsCan(myUserR, tatt?.R)) return null;
+    const isCanRedact = scheduleWidgetUserRights.checkIsCan(myUserR, tatt?.U);
 
     return <>
         {modalNode}
         <div
-            className={'schedule-widget-tatt relative flex center column' + (tatt?.isCustomize ? ' color--7 pointer' : '')}
-            onClick={() => {
-                if (tatt?.isCustomize) screen();
-            }}
+            className={'schedule-widget-tatt relative flex center column' + (isCanRedact && tatt?.isCustomize ? ' color--7 pointer' : '')}
+            onClick={isCanRedact && tatt?.isCustomize
+                ? () => screen()
+                : undefined}
         >
             {isLink && <EvaIcon name="link-2" className="absolute pos-left pos-top color--3 fade-05" />}
-            {isRedact && <StrongEvaButton
+            {isRedact && isCanRedact && <StrongEvaButton
                 scope={scope}
                 fieldName=""
                 cud="D"

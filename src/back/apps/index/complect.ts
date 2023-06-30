@@ -13,7 +13,7 @@ export interface ScheduleWidgetRightTexts<Right> {
 
 export class ScheduleWidgetRightsCtrl<Right extends number = number> {
     texts: ScheduleWidgetRightTexts<Right>[];
-    enumOrder: Right[];
+    private enumOrder: Right[];
 
     constructor(texts: ScheduleWidgetRightTexts<Right>[], enumOrder?: Right[]) {
         if (enumOrder === undefined) enumOrder = texts.map(({ id }) => id)
@@ -32,16 +32,31 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
         return parseInt(Array(this.texts.length).fill('1').join(''), 2);
     };
 
-    rightLevel = (rightKey: Right) => this.enumOrder.indexOf(rightKey);
+    rightLevel = (ruleKey: Right) => this.enumOrder.indexOf(ruleKey);
 
     collectRights = (...args: Right[]) => {
         let R = 1;
-        args.forEach(right => R = this.switchRights(R, right, '1'));
+        args.forEach(ruleKey => R = this.switchRights(R, ruleKey, '1'));
         return R;
     };
 
-    rightsBalance = (R: number | null | undefined): number => {
-        if (R === undefined || R === null || R === 0) return -1;
+    includeRightsUpTo = (ruleKey: Right) => {
+        let R = 1;
+        const ind = this.enumOrder.indexOf(ruleKey);
+
+        for (let i = 0; i < ind; i++) {
+            R = this.switchRights(R, this.enumOrder[i], '1');
+        }
+
+        return R;
+    };
+
+    checkIsCan = (R: number | nil, rightR: number | nil) => {
+        return this.rightsBalance(R) > this.rightsBalance(rightR);
+    };
+
+    rightsBalance = (R: number | nil): number => {
+        if (isEmptyR(R)) return -1;
         const rstr = R.toString(2);
 
         for (let i = 0; i < this.enumOrder.length; i++) {
@@ -51,15 +66,17 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
         return this.enumOrder.length;
     };
 
-    checkIsHasIndividualRights = (R: number | null | undefined, rightKey: Right) => {
-        if (R === undefined || R === null || R === 0) return false;
-        return R.toString(2)[rightKey] === '1';
+    checkIsHasIndividualRights = (R: number | nil, ruleKey: Right) => {
+        if (isEmptyR(R)) return false;
+        return R.toString(2)[ruleKey] === '1';
     };
 
-    checkIsHasRights = (R: number | null | undefined, rightKey: Right) => {
-        if (R === undefined || R === null || R === 0 || R === 1) return false;
+    checkIsHasRights = (R: number | nil, ruleKey: Right) => {
+        if (isEmptyR(R)) return false;
         const rstr = R.toString(2);
-        const ind = this.enumOrder.indexOf(rightKey);
+        const ind = this.enumOrder.indexOf(ruleKey);
+
+        if (ind < 0) return false;
 
         for (let i = 0; i <= ind; i++) {
             if (rstr[this.enumOrder[i]] !== '1') return false;
@@ -68,29 +85,31 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
         return true;
     };
 
-    switchRights = (R: number | null | undefined, rightKey: Right, set?: '1' | '0' | nil) => {
+    switchRights = (R: number | nil, ruleKey: Right, set?: '1' | '0' | nil) => {
         let arr = (R || 1).toString(2).split('');
 
-        if (set == null) arr[rightKey] = '' + +!+arr[rightKey];
-        else arr[rightKey] = set;
+        if (set == null) arr[ruleKey] = '' + +!+arr[ruleKey];
+        else arr[ruleKey] = set;
 
         const bin = this.texts.map((_, i) => arr[i] === '1' ? '1' : '0').join('').replace(zeroEndTrimReg, '');
         return parseInt(bin || '1', 2);
     };
 
 
-    static switchRights = (R: number | null | undefined, rightKey: number, len: number) => {
+    static switchRights = (R: number | nil, ruleKey: number, len: number) => {
         let arr = (R || 1).toString(2).split('');
 
-        arr[rightKey + 1] = '' + +!+arr[rightKey + 1];
+        arr[ruleKey + 1] = '' + +!+arr[ruleKey + 1];
 
         const bin = Array(len + 1).fill('').map((_, i) => arr[i] === '1' ? '1' : '0').join('').replace(zeroEndTrimReg, '');
 
         return parseInt(bin || '1', 2);
     };
 
-    static checkIsHasIndividualRights = (R: number | null | undefined, rightKey: number) => {
-        if (R === undefined || R === null || R === 0) return false;
-        return R.toString(2)[rightKey + 1] === '1';
+    static checkIsHasIndividualRights = (R: number | nil, ruleKey: number) => {
+        if (isEmptyR(R)) return false;
+        return R.toString(2)[ruleKey + 1] === '1';
     };
 }
+
+const isEmptyR = (R: number | nil): R is nil => R === undefined || R === null || R < 2;

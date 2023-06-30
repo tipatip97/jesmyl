@@ -48,10 +48,10 @@ export default function ScheduleWidgetDay({
     });
 
     return <div className={'ScheduleWidgetDay relative' + (isPastDay ? ' past' : '')}>
-        <div className="day-title flex flex-gap padding-gap-b sticky pos-top">
+        <div className="day-title flex flex-gap padding-gap-v sticky pos-top">
         {title}, {dayi + 1} день
         </div>
-        <div className="edit-day-panel absolute pos-top pos-right">
+        <div className="edit-day-panel absolute pos-top pos-right margin-gap-t">
             {isPastDay
                 ? <>
                     <EvaButton

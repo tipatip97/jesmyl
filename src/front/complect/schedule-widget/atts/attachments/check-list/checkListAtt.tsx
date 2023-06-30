@@ -1,3 +1,4 @@
+import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../../../back/apps/index/rights";
 import { ScheduleWidgetAppAtts } from "../../../ScheduleWidget.model";
 import ScheduleCheckListAtt from "./TheCheckListAtt";
 
@@ -12,5 +13,7 @@ export const checkListAtt: ScheduleWidgetAppAtts<'SCH', ScheduleChListAtt> = {
         icon: 'list',
         initVal: { list: [] },
         result: (value, scope, isRedact) => <ScheduleCheckListAtt isRedact={isRedact} value={value} scope={scope}/>,
+        R: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
+        U: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
     }
 };

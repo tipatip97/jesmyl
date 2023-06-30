@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { scheduleWidgetRights } from "../../../../../back/apps/index/rights";
+import { scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
 import useIsExpand from "../../../expand/useIsExpand";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import { useScheduleWidgetRightsContext } from "../../useScheduleWidget";
@@ -31,7 +31,7 @@ export default function ScheduleWidgetUserList({
             .map(user => {
                 return {
                     user,
-                    balance: scheduleWidgetRights.rightsBalance(user.R),
+                    balance: scheduleWidgetUserRights.rightsBalance(user.R),
                     _: user.alias + user.fio,
                 };
             })

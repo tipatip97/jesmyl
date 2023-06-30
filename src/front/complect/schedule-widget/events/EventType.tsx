@@ -46,8 +46,12 @@ export default function ScheduleWidgetEventType(props: {
         </>;
     });
 
-    return <>
+    return <div className="relative">
         {modal.modalNode}
+        {props.isRedact
+            || <div className="flex flex-end full-width absolute pos-top pos-right margin-sm-gap z-index:5">
+                <EvaButton name="edit-outline" onClick={() => modal.screen()} />
+            </div>}
         <StrongDiv
             scope={props.selectScope}
             fieldName={props.selectFieldName}
@@ -65,9 +69,6 @@ export default function ScheduleWidgetEventType(props: {
                 };
             }}
         >
-            {props.isRedact || <div className="flex flex-end full-width">
-                <EvaButton name="edit-outline" onClick={() => modal.screen()} />
-            </div>}
             <StrongEditableField
                 scope={selfScope}
                 fieldName="field"
@@ -149,5 +150,5 @@ export default function ScheduleWidgetEventType(props: {
                     </div>
                 </div>}
         </StrongDiv>
-    </>;
+    </div>;
 }

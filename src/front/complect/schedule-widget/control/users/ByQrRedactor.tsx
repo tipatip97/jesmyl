@@ -18,8 +18,6 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
         const oldUser = rights.schedule.ctrl.users.find(user => user.login === passport.login);
         const user = oldUser ?? passport;
 
-        console.log(user);
-
         return <>
             {header(<>{oldUser == null ? 'Добавление' : 'Редактирование'} участника <span className="color--7">{user.alias ?? user.fio}</span></>)}
             {body(<>
@@ -38,10 +36,6 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
                     className="mood-for-2"
                     fieldValue={user}
                     title="Добавить участника"
-                    mapExecArgs={(args) => {
-                        console.log(args);
-                        return args;
-                    }}
                 />
             </div>)}
         </>
@@ -53,7 +47,6 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
         <EvaButton
             name="qr-code"
             onClick={() => readQR((data) => {
-                console.log(data)
                 if (data.appName === 'index' && data.key === 'passport')
                     setPassport(data.value);
             })}

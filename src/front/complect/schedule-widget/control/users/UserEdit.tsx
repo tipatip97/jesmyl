@@ -1,11 +1,11 @@
-import { ScheduleWidgetUserRoleRight, scheduleWidgetRights } from "../../../../../back/apps/index/rights";
+import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
 import { IScheduleWidgetUser } from "../../ScheduleWidget.model";
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import ScheduleWidgetRightControlList from "../RightControlList";
 
-const accessLevel = scheduleWidgetRights.rightLevel(ScheduleWidgetUserRoleRight.ReadTitles);
+const accessLevel = scheduleWidgetUserRights.rightLevel(ScheduleWidgetUserRoleRight.ReadTitles);
 
 export function ScheduleWidgetUserEdit({
     scope,
@@ -32,15 +32,15 @@ export function ScheduleWidgetUserEdit({
         {rights.myUser && <ScheduleWidgetRightControlList
             scope={userScope}
             fieldName="R"
-            rightCtrl={scheduleWidgetRights}
-            rights={rights}
+            rightCtrl={scheduleWidgetUserRights}
             R={user.R}
             isHidden={rights.isCanTotalRedact
                 ? undefined
-                : ((type) => accessLevel < scheduleWidgetRights.rightLevel(type.id))}
-            isCantEdit={rights.myUser.mi === user.mi
+                : ((type) => accessLevel < scheduleWidgetUserRights.rightLevel(type.id))}
+            isCantEdit={!rights.isCanRedactUsers
+                || rights.myUser.mi === user.mi
                 || (!rights.isCanTotalRedact
-                    && scheduleWidgetRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.TotalRedact))}
+                    && scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.TotalRedact))}
             onUpdate={onUpdate && ((value) => onUpdate('R', value))}
         />}
     </>;

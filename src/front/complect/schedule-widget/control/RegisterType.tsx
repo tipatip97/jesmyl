@@ -16,7 +16,6 @@ export default function ScheduleWidgetRegisterType({ scope }: StrongComponentPro
                 fieldName="type"
                 rightCtrl={scheduleWidgetRegTypeRights}
                 R={rights.schedule.ctrl.type}
-                rights={rights}
                 className="margin-gap-l"
                 isCantEdit={!rights.isCanTotalRedact}
                 isDescriptionsCollect

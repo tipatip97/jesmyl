@@ -21,7 +21,7 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
   const { toast, modalNode } = useModal();
   const className = (props.disabled ? ' disabled ' : ' pointer ')
     + (isError ? ' color--ko ' : '');
-  const onClick = async (event: React.MouseEvent<unknown>) => {
+  const onClick = props.onSend && (async (event: React.MouseEvent<unknown>) => {
     event.stopPropagation();
     if (props.disabled) return;
     if (
@@ -47,7 +47,7 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
           if (error) toast(error, { mood: 'ko' });
         });
     }
-  };
+  });
 
   const icon = props.prefix === undefined && props.postfix === undefined
     ? <EvaIcon

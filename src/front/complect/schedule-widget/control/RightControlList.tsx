@@ -9,21 +9,24 @@ export default function ScheduleWidgetRightControlList({
     scope,
     rightCtrl,
     fieldName,
+    fieldKey,
     className,
     isCantEdit,
     isDescriptionsCollect,
-    rights,
     onUpdate,
     isHidden,
+    isReverse,
+    isDisabled,
 }: StrongControlProps<{
     R?: number,
     className?: string,
     isCantEdit?: boolean,
     rightCtrl: ScheduleWidgetRightsCtrl,
     isDescriptionsCollect?: boolean,
-    rights: ScheduleWidgetRights,
     onUpdate?: (newR: number) => void,
     isHidden?: (type: ScheduleWidgetRightTexts<number>, typei: number) => boolean,
+    isReverse?: boolean,
+    isDisabled?: (type: ScheduleWidgetRightTexts<number>, typei: number) => boolean,
 }>) {
     let isCan = true;
 
@@ -43,10 +46,11 @@ export default function ScheduleWidgetRightControlList({
                 <StrongEvaButton
                     scope={scope}
                     fieldName={fieldName}
+                    fieldKey={fieldKey}
                     cud="U"
-                    disabled={isCantEdit || !isCan || type.always || !rights.isCanRedactUsers}
-                    className={isHas ? 'color--ok' : 'color--3'}
-                    name={isHas ? 'toggle-right-outline' : 'toggle-left-outline'}
+                    disabled={isCantEdit || !isCan || type.always || !!isDisabled?.(type, typei)}
+                    className={(isReverse ? !isHas : isHas) ? 'color--ok' : 'color--3'}
+                    name={(isReverse ? !isHas : isHas) ? 'toggle-right-outline' : 'toggle-left-outline'}
                     mapExecArgs={(args) => {
                         if (onUpdate !== undefined) {
                             onUpdate(rightCtrl.switchRights(R, type.id));

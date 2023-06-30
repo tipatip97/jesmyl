@@ -92,6 +92,8 @@ export interface ScheduleWidgetAppAttBasic<EvaIconName, AttValue extends any = a
     description: string,
     initVal: AttValue,
     isCustomize?: true,
+    R: number,
+    U: number,
 }
 
 export interface ScheduleWidgetAppAttCustomizableValue {

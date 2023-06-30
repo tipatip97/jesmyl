@@ -55,7 +55,9 @@ export default function ScheduleWidgetDayEvent(props: {
         if (isSelfRedact) switchIsExpand(true);
     }, [isSelfRedact, switchIsExpand]);
 
-    const isExpandEvent = isExpand && rights.isCanReadTitles && !props.redact;
+    const isCanExpandEvent = rights.isCanReadTitles && !props.redact;
+    const isCanReadDetails = rights.myUser && rights.isCanReadTitles && !props.redact;
+    const isExpandEvent = isExpand && isCanExpandEvent;
 
     if (!box) return <>Неизвестный шаблон события</>;
 
@@ -83,16 +85,18 @@ export default function ScheduleWidgetDayEvent(props: {
             }
         >
             <div
-                className={'item-header flex flex-gap between' + (props.redact || !rights.isCanReadTitles ? '' : ' pointer')}
+                className={'item-header flex flex-gap between' + (props.redact || !isCanExpandEvent ? '' : ' pointer')}
                 onClick={() => !props.redact && switchIsExpand()}
             >
                 <div className="left-part flex flex-gap">
                     <span
-                        className={'time-mark pointer' + timerClassNamePlus}
-                        onClick={event => {
-                            event.stopPropagation();
-                            props.onClickOnTs();
-                        }}
+                        className={'time-mark' + timerClassNamePlus + (isCanReadDetails ? ' pointer' : '')}
+                        onClick={isCanReadDetails
+                            ? event => {
+                                event.stopPropagation();
+                                props.onClickOnTs();
+                            }
+                            : undefined}
                     >{timeMark}</span>
                     {!isExpandEvent && !!props.event.secret && <EvaIcon
                         name="gift-outline"
@@ -176,10 +180,11 @@ export default function ScheduleWidgetDayEvent(props: {
                             schedule={rights.schedule}
                             isPast={isPastEvent || props.isPastDay}
                         />
-                        <ScheduleWidgetDayEventRating
-                            scope={selfScope}
-                            event={props.event}
-                        />
+                        {rights.isCanReadTitles && rights.myUser
+                            && <ScheduleWidgetDayEventRating
+                                scope={selfScope}
+                                event={props.event}
+                            />}
                     </>}
                 {props.bottomContent(isRedact)}
                 <div className="sign-line" />

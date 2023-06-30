@@ -17,13 +17,12 @@ export default function StrongDiv(props: StrongControlProps<{
 
     return <div
         className={props.className}
-        onClick={props.scope
+        onClick={props.scope && props.isCanSend !== false
             ? async () => {
-                if (props.isCanSend === false) return;
                 if (props.confirm != null && !(props.confirm && await modalService.confirm(props.confirm)))
                     return;
 
-                    props.onClick?.();
+                props.onClick?.();
                 strongPrepareArgsAndSend(
                     exer,
                     props.scope,

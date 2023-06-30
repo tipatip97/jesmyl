@@ -25,20 +25,21 @@ export default function StrongEvaButton({
         <EvaSendButton<boolean>
             {...props}
             onFailure={(errorMessage) => toast(errorMessage, { mood: 'ko' })}
-            onSend={() => {
-                if (props.isCanSend === false) return;
-                return strongPrepareArgsAndSend(
-                    exer,
-                    scope,
-                    fieldName,
-                    cud ?? 'C',
-                    undefined,
-                    simpleFunc,
-                    mapExecArgs,
-                    fieldKey,
-                    fieldValue,
-                );
-            }}
+            onSend={props.isCanSend !== false
+                ? () => {
+                    return strongPrepareArgsAndSend(
+                        exer,
+                        scope,
+                        fieldName,
+                        cud ?? 'C',
+                        undefined,
+                        simpleFunc,
+                        mapExecArgs,
+                        fieldKey,
+                        fieldValue,
+                    );
+                }
+                : undefined}
         />
     </>;
 }

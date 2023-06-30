@@ -411,6 +411,14 @@ textarea {
   }
 }
 
+@for $i from 0 through 500 {
+  $value: $i * 5;
+
+  [class~='z-index:#{$value}'] {
+    z-index: $value;
+  }
+}
+
 @for $i from 1 through 9 {
   @include strong-height(#{$i * 10}vmin);
   @include strong-height(#{$i * 10}vmax);

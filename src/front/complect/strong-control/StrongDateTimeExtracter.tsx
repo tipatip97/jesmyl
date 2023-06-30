@@ -124,10 +124,9 @@ export default function StrongInputDateTimeExtracter(props: StrongControlProps &
             placeholder="Нецифра - разделитель"
             onChange={setInputValue}
             mapExecArgs={props.mapExecArgs && ((args) => props.mapExecArgs!(args, timeImagine))}
-            onSend={() => {
-                if (props.isCanSend === false) return;
-                return props.onSend?.(initTs !== currentTs, timeImagine);
-            }}
+            onSend={props.isCanSend !== false && props.onSend
+                ? () => props.onSend!(initTs !== currentTs, timeImagine)
+                : undefined}
         />
     </>;
 }
