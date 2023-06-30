@@ -65,7 +65,7 @@ type ScheduleWidgetOnCantReadRule = ExecutionReal<
     ExecutionArgs<
         unknown,
         { schw: number },
-        { isSecretChange: boolean, }
+        {}
     >
 >;
 
@@ -104,11 +104,13 @@ const config: FilerAppConfig = {
 
                         if (exec.args.attKey !== undefined) {
                             tattMi = +exec.args.attKey.split(':')[2];
+                            console.log(tattMi, exec.args);
                             if (isNaN(tattMi)) tattMi = -1;
                         }
 
                         if (tattMi >= 0) {
-                            const tatt = bag.schedule.tatts?.find((tatt) => tatt.mi === exec.args!.tattMi);
+                            const tatt = bag.schedule.tatts?.find((tatt) => tatt.mi === tattMi);
+                            console.log(tatt, bag.schedule.tatts);
                             if (tatt !== undefined) {
                                 if (!scheduleWidgetUserRights.checkIsCan(user.R, tatt.R))
                                     return whenRejButTs;
@@ -628,9 +630,6 @@ const config: FilerAppConfig = {
                                         U: {
                                             args: {
                                                 value: '#Num',
-                                                $$vars: {
-                                                    isSecretChange: true
-                                                }
                                             }
                                         }
                                     },
@@ -672,7 +671,6 @@ const config: FilerAppConfig = {
                                             scopeNode: 'attKey',
                                             args: {
                                                 attKey: '#String',
-                                                isAttEdit: true,
                                             },
                                             U: {
                                                 args: {

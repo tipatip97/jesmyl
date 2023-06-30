@@ -19,7 +19,7 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
     return <>
         {MyLib.entries({ ...props.typeBox.atts, ...props.event.atts }).map(([attKey, att]) => {
             const appAtt = appAtts[attKey];
-            if (!scheduleWidgetUserRights.checkIsCan(myUserR, appAtt.R)) return null;
+            if (!appAtt || !scheduleWidgetUserRights.checkIsCan(myUserR, appAtt.R)) return null;
             const scope = takeStrongScopeMaker(props.scope, ' attKey/', attKey);
 
             return <ScheduleWidgetDayEventAtt
