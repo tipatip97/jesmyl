@@ -1,36 +1,23 @@
 import useAbsoluteBottomPopup from "../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import ScheduleCreateWidgetButton from "../../../complect/schedule-widget/CreateWidgetButton";
-import ScheduleWidget from "../../../complect/schedule-widget/ScheduleWidget";
-import useScheduleWidget from "../../../complect/schedule-widget/useScheduleWidget";
-import useConnectionState from "../../index/useConnectionState";
+import ScheduleWidgetPage from "../../../complect/schedule-widget/ScheduleWidgetPage";
 import GeneralMore from "./GeneralMore";
 import "./Leader.scss";
-import CurrentContextSelect from "./components/CurrentContextSelect";
+import { CurrentContextSelectPage } from "./components/CurrentContextSelectPage";
 import { useLeaderCcontext } from "./components/contexts/useContexts";
-import PhaseLeaderContainer from "./phase-container/PhaseLeaderContainer";
+import useLeaderNav from "./useLeaderNav";
 
 export default function LeaderSchedule() {
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const ccontext = useLeaderCcontext();
-  const { schedule } = useScheduleWidget(ccontext?.w);
-  const connectionNode = useConnectionState();
+  const { goBack } = useLeaderNav();
 
-  return <PhaseLeaderContainer
-    topClass="template-page-content"
-    withoutBackButton
-    headTitle={`Расписание${ccontext ? ` - ${ccontext.name}` : ""}`}
-    head={connectionNode}
-    onMoreClick={() => openAbsoluteBottomPopup((close) => <GeneralMore close={close} />)}
-    content={
-      ccontext
-        ? schedule
-          ? <ScheduleWidget schedule={schedule} />
-          : <ScheduleCreateWidgetButton
-            appName="leader"
-            title={ccontext.name}
-            schw={ccontext.w}
-          />
-        : <CurrentContextSelect />
-    }
-  />;
+  return ccontext === undefined
+    ? <CurrentContextSelectPage />
+    : <ScheduleWidgetPage
+      appName="leader"
+      goBack={goBack}
+      schedulew={ccontext.w}
+      onMoreClick={() => openAbsoluteBottomPopup((close) => <GeneralMore close={close} />)}
+      title={ccontext.name}
+    />
 }

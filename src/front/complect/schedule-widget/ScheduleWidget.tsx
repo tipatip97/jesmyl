@@ -3,6 +3,7 @@ import useAuth from "../../components/index/useAuth";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { useIsRememberExpand } from "../expand/useIsRememberExpand";
 import mylib from "../my-lib/MyLib";
+import StrongButton from "../strong-control/StrongButton";
 import StrongControlDateTimeExtracter from "../strong-control/StrongDateTimeExtracter";
 import StrongEvaButton from "../strong-control/StrongEvaButton";
 import StrongEditableField from "../strong-control/field/StrongEditableField";
@@ -59,7 +60,44 @@ export default function ScheduleWidget({
         return () => clearTimeout(to);
     }, [updates]);
 
+    let blockContent = null;
+
+    if (rights.myUser == null) {
+        if (rights.isSwPublic) {
+            if (rights.isSwBeforeRegistration) {
+                blockContent = <StrongButton
+                    scope={selfScope}
+                    fieldName="users"
+                    title="Буду участвовать"
+                    confirm="Вы будете записаны как участник"
+                />;
+            } else if (rights.isSwHideContent)
+                blockContent = <div className="color--7 font-size:0.8em">Предварительной регистрации на мероприятие нет</div>
+        }
+    } else {
+        if (rights.myUser.R === undefined || rights.myUser.R === 0) {
+            if (!rights.isSwPublic || rights.isSwHideContent)
+                blockContent = <div className="color--7">Заявка принята</div>;
+        } else if (!rights.isCanRead) {
+            blockContent = <div className="color--ko">Доступ к содержимому ограничен</div>;
+        }
+    }
+
+    if (blockContent)
+        return <div className="margin-sm-gap">
+            <div className="margin-gap-v">{expandNode}</div>
+            {isExpand && <>
+                <ScheduleWidgetStartTimeText schedule={schedule} />
+                {blockContent}
+            </>}
+        </div>;
+
     if (!schedule) return null;
+
+    if (blockContent)
+        return <ScheduleWidgetContextWrapper schedule={schedule} rights={rights}>
+            {blockContent}
+        </ScheduleWidgetContextWrapper>;
 
     return <ScheduleWidgetContextWrapper schedule={schedule} rights={rights}>
         <div className="schedule-widget">
