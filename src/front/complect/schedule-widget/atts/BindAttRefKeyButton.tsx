@@ -26,7 +26,7 @@ export default function ScheduleWidgetBindAttRefKeyButton({
 }) {
     const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
         return <>
-            {header(`Ссылка на вложение для "${forTitle}"`)}
+            {header(<>{forTitle} - Сослаться на вложение</>)}
             {body(<>
                 {refs.map((attRef) => {
                     const [dayMi, eventMi] = attRef;

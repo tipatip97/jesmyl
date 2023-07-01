@@ -96,7 +96,26 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
             const data = mylib.isArr(phasePoint) ? null : phasePoint?.data;
 
             const path = nav.getJumpToRoute(ret.route, point);
-            if (path) ret.navigate(data ? { path, data } : path, isPreventSave);
+            if (path) {
+                ret.navigate(data ? { path, data } : path, isPreventSave);
+
+                if (appName !== 'index') {
+                    const indexRouteCast = routerStore.index;
+                    const value: RouteCast = {
+                        ...indexRouteCast,
+                        last: undefined,
+                        net: indexRouteCast?.net ?? [],
+                    };
+
+                    const fix = {
+                        appName: 'index' as never,
+                        isPreventSave,
+                        value,
+                    };
+
+                    dispatch(di.routerFixNavigateCast(fix));
+                }
+            }
         },
         registerBackAction: (action: UseNavAction) => {
             actions.unshift(action);

@@ -36,7 +36,7 @@ export default function ScheduleWidgetEventType(props: {
 
     const modal = useModal(({ header, body }) => {
         return <>
-            {header(<>Редактирование шаблона {props.typeBox.title}</>)}
+            {header(<><span className="color--7">{props.typeBox.title}</span> - Редактирование шаблона</>)}
             {body(<>
                 <ScheduleWidgetEventType
                     {...props}
@@ -120,7 +120,7 @@ export default function ScheduleWidgetEventType(props: {
                     schedule={props.schedule}
                     scheduleScope={props.scheduleScope}
                     atts={props.typeBox.atts}
-                    forTitle={'Шаблона: ' + props.typeBox.title}
+                    forTitle={<>Шаблон <span className="color--7">{props.typeBox.title}</span></>}
                     cantBindLinks
                     topContent={<Dropdown
                         id={attTranslatorType}

@@ -29,13 +29,16 @@ export default function ScheduleWidgetAttFace({
 }>) {
     const rights = useScheduleWidgetRightsContext();
     const myUserR = rights.myUser?.R;
-    const { modalNode, screen } = useModal(tatt && (() => {
-        return <ScheduleWidgetCustomAtt
-            tatt={tatt as never}
-            isRedact
-            scope={scheduleScope}
-            topContent={customAttTopContent?.(scope, attKey)}
-        />;
+    const { modalNode, screen } = useModal(tatt && (({ header, body }) => {
+        return <>
+            {header(<>Вложение <span className="color--7">{tatt.title}</span></>)}
+            {body(<ScheduleWidgetCustomAtt
+                tatt={tatt as never}
+                isRedact
+                scope={scheduleScope}
+                topContent={customAttTopContent?.(scope, attKey)}
+            />)}
+        </>;
     }));
     if (!scheduleWidgetUserRights.checkIsCan(myUserR, tatt?.R)) return null;
     const isCanRedact = scheduleWidgetUserRights.checkIsCan(myUserR, tatt?.U);
@@ -55,7 +58,7 @@ export default function ScheduleWidgetAttFace({
                 cud="D"
                 name="close"
                 className="close-button"
-                confirm={<div className="flex flex-gap">Убрать {isLink ? 'ссылку вложения' : 'вложение'} {tatt?.title || '??'} из события <div className="flex">{typeTitle}?</div></div>}
+                confirm={<>Убрать {isLink ? 'ссылку вложения' : 'вложение'} <span className="color--7">{tatt?.title || '??'}</span> из события {typeTitle}?</>}
             />}
             {tatt
                 ? <>

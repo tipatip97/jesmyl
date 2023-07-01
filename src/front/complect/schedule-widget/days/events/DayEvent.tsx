@@ -85,7 +85,7 @@ export default function ScheduleWidgetDayEvent(props: {
             }
         >
             <div
-                className={'item-header flex flex-gap between' + (props.redact || !isCanExpandEvent ? '' : ' pointer')}
+                className={'event-header flex flex-gap between' + (props.redact || !isCanExpandEvent ? '' : ' pointer')}
                 onClick={() => !props.redact && switchIsExpand()}
             >
                 <div className="left-part flex flex-gap">
@@ -165,11 +165,7 @@ export default function ScheduleWidgetDayEvent(props: {
                         scope={selfScope}
                         schedule={rights.schedule}
                         scheduleScope={props.scheduleScope}
-                        forTitle={
-                            <ScheduleWidgetTopicTitle
-                                titleBox={box}
-                                topicBox={props.event}
-                            />}
+                        forTitle={<span className="color--7">{box.title}</span>}
                     />
                     : <>
                         <ScheduleWidgetDayEventAtts

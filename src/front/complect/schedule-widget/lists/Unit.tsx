@@ -39,68 +39,70 @@ export default function ScheduleWidgetListUnit({
             : null
     );
 
-    const { modalNode, screen } = useModal(({ header }) => {
+    const { modalNode, screen } = useModal(({ header, body }) => {
         return <>
             {header(<div className="flex flex-gap"><EvaIcon name={cat.icon} />{title}</div>)}
-            <StrongEditableField
-                scope={unitScope}
-                fieldName="field"
-                icon="bookmark-outline"
-                title="Название"
-                value={unit}
-                fieldKey="title"
-                isRedact
-            />
-            <StrongEditableField
-                scope={unitScope}
-                fieldName="field"
-                icon="file-text-outline"
-                title="Описание"
-                value={unit}
-                fieldKey="dsc"
-                multiline
-                isRedact
-            />
-            <ScheduleWidgetUserList
-                scope={scheduleScope}
-                title="Состав"
-                filter={() => true}
-                asUserPlusPrefix={(userNode, userScope, user, balance) => {
-                    const isForMember = balance < 3;
-                    return <div className="flex flex-gap">
-                        {user.li?.[cati] === undefined
-                            ? <StrongEvaButton
-                                name="square-outline"
-                                scope={userScope + catScopePostfix}
-                                cud="C"
-                                fieldName=""
-                                fieldValue={isForMember ? unit.mi : -unit.mi}
-                                disabled={user.R === undefined}
-                                className="nowrap"
-                                postfix={user.R === undefined
-                                    ? <EvaIcon name="person-delete-outline" />
-                                    : isForMember ? shortTitles[1] : shortTitles[0]}
-                            />
-                            : <StrongEvaButton
-                                name="checkmark-square-2-outline"
-                                scope={userScope + catScopePostfix}
-                                cud="D"
-                                fieldName=""
-                                postfix={user.li[cati] < 0 ? shortTitles[0] : shortTitles[1]}
-                                disabled={user.R === undefined || (user.li[cati] !== unit.mi && user.li[cati] !== -unit.mi)}
-                                className={'flex flex-gap nowrap'
-                                    + (user.li[cati] > 0
-                                        ? isForMember
-                                            ? ' color--7'
-                                            : ' color--ko'
-                                        : !isForMember
-                                            ? ' color--7'
-                                            : ' color--ko')}
-                            />}
-                        {userNode}
-                    </div>
-                }}
-            />
+            {body(<>
+                <StrongEditableField
+                    scope={unitScope}
+                    fieldName="field"
+                    icon="bookmark-outline"
+                    title="Название"
+                    value={unit}
+                    fieldKey="title"
+                    isRedact
+                />
+                <StrongEditableField
+                    scope={unitScope}
+                    fieldName="field"
+                    icon="file-text-outline"
+                    title="Описание"
+                    value={unit}
+                    fieldKey="dsc"
+                    multiline
+                    isRedact
+                />
+                <ScheduleWidgetUserList
+                    scope={scheduleScope}
+                    title="Состав"
+                    filter={() => true}
+                    asUserPlusPrefix={(userNode, userScope, user, balance) => {
+                        const isForMember = balance < 3;
+                        return <div className="flex flex-gap">
+                            {user.li?.[cati] === undefined
+                                ? <StrongEvaButton
+                                    name="square-outline"
+                                    scope={userScope + catScopePostfix}
+                                    cud="C"
+                                    fieldName=""
+                                    fieldValue={isForMember ? unit.mi : -unit.mi}
+                                    disabled={user.R === undefined}
+                                    className="nowrap"
+                                    postfix={user.R === undefined
+                                        ? <EvaIcon name="person-delete-outline" />
+                                        : isForMember ? shortTitles[1] : shortTitles[0]}
+                                />
+                                : <StrongEvaButton
+                                    name="checkmark-square-2-outline"
+                                    scope={userScope + catScopePostfix}
+                                    cud="D"
+                                    fieldName=""
+                                    postfix={user.li[cati] < 0 ? shortTitles[0] : shortTitles[1]}
+                                    disabled={user.R === undefined || (user.li[cati] !== unit.mi && user.li[cati] !== -unit.mi)}
+                                    className={'flex flex-gap nowrap'
+                                        + (user.li[cati] > 0
+                                            ? isForMember
+                                                ? ' color--7'
+                                                : ' color--ko'
+                                            : !isForMember
+                                                ? ' color--7'
+                                                : ' color--ko')}
+                                />}
+                            {userNode}
+                        </div>
+                    }}
+                />
+            </>)}
         </>;
     });
 

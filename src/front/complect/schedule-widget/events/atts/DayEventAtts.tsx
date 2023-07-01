@@ -15,9 +15,14 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
     const [appAtts] = useScheduleWidgetAppAttsContext();
     const rights = useScheduleWidgetRightsContext();
     const myUserR = rights.myUser?.R;
+    const atts = MyLib.entries(props.event.atts);
+
+    MyLib.entries(props.typeBox.atts).forEach((attEntry) => {
+        if (!atts.some(entry => entry[0] === attEntry[0])) atts.push(attEntry);
+    });
 
     return <>
-        {MyLib.entries({ ...props.typeBox.atts, ...props.event.atts }).map(([attKey, att]) => {
+        {atts.map(([attKey, att]) => {
             const appAtt = appAtts[attKey];
             if (!appAtt || !scheduleWidgetUserRights.checkIsCan(myUserR, appAtt.R)) return null;
             const scope = takeStrongScopeMaker(props.scope, ' attKey/', attKey);

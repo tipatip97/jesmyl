@@ -59,7 +59,7 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
 
     const setRuleModal = useModal(({ header, body }) => {
         return <>
-            {header(<>Кто {whoCan.action} {props.tatt.title}</>)}
+            {header(<>Кто {whoCan.action} вложение <span className="color--7">{props.tatt.title}</span></>)}
             {body(<>
                 <ScheduleWidgetRightControlList
                     scope={selfScope}
@@ -76,7 +76,7 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
 
     const redactModal = useModal(({ header, body }) => {
         return <>
-            {header(<>Редактирование шаблона {props.tatt.title}</>)}
+            {header(<><span className="color--7">{props.tatt.title}</span> - Редактирование шаблона</>)}
             {body(<>
                 <ScheduleWidgetCustomAtt
                     {...props}

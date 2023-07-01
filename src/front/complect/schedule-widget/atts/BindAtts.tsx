@@ -39,7 +39,7 @@ export default function ScheduleWidgetBindAtts({
 
     const { modalNode, screen } = useModal(({ header, body, footer }, closeModal) => {
         return <>
-            {header(<div className="flex flex-gap">Вложение на <span className="color--7">{forTitle}</span></div>)}
+            {header(<>{forTitle} - Вставить вложение</>)}
             {body(<>
                 {topContent}
                 {appAttList.map(([attKey, tatt]) => {

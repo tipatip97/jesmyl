@@ -56,37 +56,39 @@ export function ScheduleWidgetListCategory({
             : null
     );
 
-    const { modalNode, screen } = useModal(({ header }) => {
+    const { modalNode, screen } = useModal(({ header, body }) => {
         return <>
             {header(<div className="flex flex-gap">{title}</div>)}
-            <ScheduleWidgetIconChange
-                scope={catScope}
-                header={`Иконка для списка ${cat.title}`}
-                icon={cat.icon}
-            />
-            <StrongEditableField
-                scope={catScope}
-                fieldName="field"
-                icon="credit-card-outline"
-                title="Название списка"
-                value={cat}
-                fieldKey="title"
-                isRedact
-            />
-            <StrongEditableField
-                scope={catScope}
-                fieldName="mentorsTitle"
-                title="Заголовок руководителям"
-                value={cat.titles[0]}
-                isRedact
-            />
-            <StrongEditableField
-                scope={catScope}
-                fieldName="membersTitle"
-                title="Заголовок участникам"
-                value={cat.titles[1]}
-                isRedact
-            />
+            {body(<>
+                <ScheduleWidgetIconChange
+                    scope={catScope}
+                    header={`Иконка для списка ${cat.title}`}
+                    icon={cat.icon}
+                />
+                <StrongEditableField
+                    scope={catScope}
+                    fieldName="field"
+                    icon="credit-card-outline"
+                    title="Название списка"
+                    value={cat}
+                    fieldKey="title"
+                    isRedact
+                />
+                <StrongEditableField
+                    scope={catScope}
+                    fieldName="mentorsTitle"
+                    title="Заголовок руководителям"
+                    value={cat.titles[0]}
+                    isRedact
+                />
+                <StrongEditableField
+                    scope={catScope}
+                    fieldName="membersTitle"
+                    title="Заголовок участникам"
+                    value={cat.titles[1]}
+                    isRedact
+                />
+            </>)}
         </>;
     });
 

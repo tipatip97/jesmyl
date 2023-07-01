@@ -21,8 +21,8 @@ export class SMyLib {
     isNull(obj: any): obj is null { return obj === null }
     isNan(obj: any): obj is typeof NaN { return isNaN(obj) }
 
-    static entries<T>(obj: T): T extends Record<infer Key, infer V> ? [Key, V][] : [string, unknown][] {
-        return Object.entries(obj || {}) as never;
+    static entries<T>(obj: T): [keyof T, T[keyof T]][] {
+        return (obj == null ? [] : Object.entries(obj)) as never;
     }
 
     static keys<T>(obj: T): T extends Record<infer Key, any> ? Key[] : string[] {

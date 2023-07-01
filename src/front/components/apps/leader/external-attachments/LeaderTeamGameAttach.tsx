@@ -20,13 +20,13 @@ export default function LeaderTeamGameAttach({
     isRedact: boolean,
     switchIsRedact: (is?: boolean) => void,
 }) {
-    const { contextGames, jumpToGame } = useGames();
+    const { games, jumpToGame } = useGames();
 
     const { modalNode } = useModal(({ header, body }, closeModal) => {
         return <>
             {header(<div>Вложить результат игры</div>)}
             {body(<>
-                {contextGames?.map((game, gamei) => {
+                {games?.teamGames?.map((game, gamei) => {
                     return <React.Fragment key={gamei}>
                         <StrongDiv
                             scope={scope}
@@ -51,13 +51,13 @@ export default function LeaderTeamGameAttach({
         </>;
     }, null, isRedact, switchIsRedact);
 
-    const game = value.gamew && contextGames?.find((game) => game.w === value.gamew);
+    const game = value.gamew && games?.teamGames?.find((game) => game.w === value.gamew);
 
     return <div>
         {modalNode}
         <div className="flex flex-gap margin-gap-h">
             {game
-                ? <span>{game.name}</span>
+                ? <span className="text-italic">{game.name}</span>
                 : value.gamew
                     ? <span className="error-message">Игра удалена</span>
                     : <span>Не определена</span>

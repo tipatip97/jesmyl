@@ -148,7 +148,9 @@
                     animation: expand-content .5s ease-in-out forwards;
                 }
 
-                >.item-header {
+                >.event-header {
+                    height: 1.2em;
+
                     >.left-part {
                         >.time-mark {
                             width: 2.2rem;
