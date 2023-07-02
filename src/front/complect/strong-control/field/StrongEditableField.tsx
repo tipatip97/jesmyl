@@ -7,6 +7,11 @@ import useIsRedactArea from "../../useIsRedactArea";
 import { StrongControlProps } from "../Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "../useStrongControl";
 import StrongEditableFieldMultiline from "./StrongEditableFieldMultiline";
+import { onStrongFieldBlur, onStrongFieldDragStart, onStrongFieldFocus } from "./clipboard/Picker";
+
+const onFocus = onStrongFieldFocus;
+const onBlur = onStrongFieldBlur;
+const onDragStart = onStrongFieldDragStart;
 
 export default function StrongEditableField<
     Key extends string,
@@ -114,7 +119,11 @@ export default function StrongEditableField<
                 : <EvaIcon name="cloud-upload-outline" className="fade-05" />;
 
 
-    return <div className={props.className || 'margin-gap-v'}>
+    return <div
+        className={props.className || 'margin-gap-v'}
+        attr-id={props.scope + props.fieldName + (props.fieldKey === undefined ? '' : props.fieldKey)}
+        attr-text={stateValue}
+    >
         {modalNode}
         {isRedact
             ? <>
@@ -136,7 +145,11 @@ export default function StrongEditableField<
                             setIsUserChange(true);
                             props.onChange?.(val);
                         }}
-                        onBlur={() => sendValue()}
+                        onFocus={onFocus}
+                        onBlur={() => {
+                            onBlur();
+                            sendValue();
+                        }}
                         onKeyUp={(event) => {
                             if (event.key === 'Escape')
                                 setIsUserChange(false);
@@ -148,7 +161,11 @@ export default function StrongEditableField<
                     {props.title || props.setSelfRedact ? null : indicatorNode}
                 </div>
             </>
-            : <div className="flex flex-gap">
+            : <div
+                draggable={!!value}
+                className="flex flex-gap"
+                onDragStart={onDragStart as never}
+            >
                 {props.icon && <EvaIcon name={props.icon} className="color--7 self-start" />}
                 {value
                     ? props.multiline

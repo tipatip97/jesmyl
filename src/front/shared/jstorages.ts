@@ -19,5 +19,6 @@ export const appStorage: Record<JStorageName, JStorage<any>> = {
     cm,
     leader,
     complect: stub,
+    strong: stub,
     router,
 };

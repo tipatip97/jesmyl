@@ -1,8 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
 import { complectReducer } from '../complect/Complect.store';
+import { strongReducer } from '../complect/strong-control/Strong.store';
 import { cmReducer } from '../components/apps/cm/Cm.store';
-import { leaderReducer } from '../components/apps/leader/Leader.store';
 import { gamerReducer } from '../components/apps/gamer/Gamer.store';
+import { leaderReducer } from '../components/apps/leader/Leader.store';
 import { tunerReducer } from '../components/apps/tuner/Tuner.store';
 import { indexReducer } from '../components/index/Index.store';
 import { routerReducer } from '../components/router/Router.store';
@@ -16,6 +17,7 @@ export const store = configureStore({
         complect: complectReducer,
         leader: leaderReducer,
         router: routerReducer,
+        strong: strongReducer,
     },
 });
 

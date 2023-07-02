@@ -11,6 +11,7 @@ import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWi
 import ScheduleWidgetBindAtts from "../atts/BindAtts";
 import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
 import { takeStrongScopeMaker } from "../useScheduleWidget";
+import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
 
 const singleTitleSymbols = '- ().,/';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
@@ -36,7 +37,13 @@ export default function ScheduleWidgetEventType(props: {
 
     const modal = useModal(({ header, body }) => {
         return <>
-            {header(<><span className="color--7">{props.typeBox.title}</span> - Редактирование шаблона</>)}
+            {header(<span className="flex flex-gap full-width between">
+                <span>
+                    <span className="color--7">{props.typeBox.title} </span>
+                    - Редактирование шаблона
+                </span>
+                <StrongClipboardPicker />
+            </span>)}
             {body(<>
                 <ScheduleWidgetEventType
                     {...props}

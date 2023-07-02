@@ -80,6 +80,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
           name: 'click',
           blur: () => nativeRef.current?.blur(),
           stopPropagation: event.stopPropagation,
+          realEvent: event,
         });
       },
       onInput: onInput && ((event: any) => {
@@ -96,6 +97,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
           name: 'focus',
           blur: () => nativeRef.current?.blur(),
           stopPropagation: event.stopPropagation,
+          realEvent: event,
         });
       }),
       value: value || '',
@@ -183,6 +185,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
         name: 'focus',
         blur: () => input.blur(),
         stopPropagation: () => { },
+        realEvent: null,
       });
     }
   );

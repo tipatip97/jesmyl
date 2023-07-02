@@ -106,6 +106,16 @@
     }
 }
 
+@keyframes modal-blur {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: .4;
+        pointer-events: none;
+    }
+}
+
 .modal-application-screen {
     z-index: 999;
     position: absolute;
@@ -113,6 +123,10 @@
     left: 0;
     right: 0;
     bottom: 0;
+
+    &.force-hidden {
+        animation: modal-blur .3s forwards;
+    }
 
     &:not(.type_toast) {
         background: var(--color--1);

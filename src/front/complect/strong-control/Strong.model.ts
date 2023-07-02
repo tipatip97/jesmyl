@@ -14,3 +14,16 @@ export type StrongControlProps<Props = {}> = StrongComponentProps<Props> & {
     fieldValue?: unknown,
     isCanSend?: boolean,
 };
+
+export interface ClipboardStoreItem {
+    text: string,
+}
+type StrongScope = string;
+
+export interface ClipboardStore {
+    items: Record<StrongScope, ClipboardStoreItem>,
+}
+
+export interface StrongState {
+    clipboard: ClipboardStore,
+}

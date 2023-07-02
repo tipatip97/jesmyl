@@ -172,12 +172,36 @@ input[type="button"] {
     overflow: hidden;
   }
 
+  &x-hidden {
+    overflow-x: hidden;
+  }
+
+  &y-hidden {
+    overflow-y: hidden;
+  }
+
   &auto {
+    max-width: 100%;
+    max-height: 100%;
     overflow: auto;
   }
 
+  &x-auto {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
   &y-auto {
+    max-height: 100%;
     overflow-y: auto;
+  }
+}
+
+.border-radius {
+  border-radius: var(--main-gap);
+
+  &-big {
+    border-radius: var(--main-gap);
   }
 }
 

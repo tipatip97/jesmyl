@@ -30,13 +30,14 @@ const options = {
     }
 };
 
+const newlReg = /\n/;
+
 export default function StrongEditableFieldMultiline({ value }: { value: string }) {
-    const lines = value.split(/\n/, 6);
+    const lines = value.split(newlReg, 6);
     const shortValue = lines.slice(0, 4).join('\n').slice(0, 150);
     const isExpandable = lines.length > 4 || shortValue !== value;
     const [isExpand, setisExpand] = useState(false);
-    const expandMessage = isExpandable ? isExpand || <span className="color--3">Часть текста скрыта</span> : null;
-    const content = isExpand ? value : shortValue;
+    const content = isExpand ? value : (shortValue + (isExpandable ? ' ...' : ''));
 
     return <div
         className={style.markdownFieldContent + ' white-pre-wrap break-word' + (isExpandable ? ' pointer' : '')}
@@ -44,12 +45,10 @@ export default function StrongEditableFieldMultiline({ value }: { value: string 
             ? () => setisExpand(isNIs)
             : undefined}
     >
-        {expandMessage}
         <Markdown options={options}>
             {content.includes('![')
                 ? content.replace(refReg, '*[Ссылки не работают]*')
                 : content}
         </Markdown>
-        {expandMessage}
     </div>;
 }

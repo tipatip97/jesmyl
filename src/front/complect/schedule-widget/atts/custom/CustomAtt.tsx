@@ -12,6 +12,7 @@ import ScheduleWidgetRightControlList from "../../control/RightControlList";
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import ScheduleWidgetCustomAttTitles from "./CustomAttTitles";
 import { EvaIconName } from "../../../eva-icon/EvaIcon";
+import StrongClipboardPicker from "../../../strong-control/field/clipboard/Picker";
 
 const itIt = (it: unknown) => it;
 const itNIt = (it: unknown) => !it;
@@ -76,7 +77,13 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
 
     const redactModal = useModal(({ header, body }) => {
         return <>
-            {header(<><span className="color--7">{props.tatt.title}</span> - Редактирование шаблона</>)}
+            {header(<span className="flex flex-gap full-width between">
+                <span>
+                    <span className="color--7">{props.tatt.title} </span>
+                    - Редактирование шаблона
+                </span>
+                <StrongClipboardPicker />
+            </span>)}
             {body(<>
                 <ScheduleWidgetCustomAtt
                     {...props}

@@ -75,7 +75,7 @@ export default function useModal(topContent?: (
         },
         modalNode: ((isForceOpen || config.isOpen) && <Portal>
             <div
-                className={'modal-application-screen ' + typeClassName}
+                className={'modal-application-screen ' + typeClassName + (isForceOpen === false ? ' force-hidden' : '')}
                 onClick={(event) => {
                     event.stopPropagation();
                     close();
