@@ -84,7 +84,7 @@ export default function OrdersRedactor() {
                 );
               }}
             />
-            {ccom.isImpossibleToMigrateOrder(ord, ordi, orda) ? null : (
+            {ccom.isImpossibleToMigrateOrder(ord, ordi, orda) || (
               <EvaIcon
                 name="swap-outline"
                 className={`pointer ${ccom.isCantMigrateOrder(ord, ordi) ? "disabled" : ""}`}

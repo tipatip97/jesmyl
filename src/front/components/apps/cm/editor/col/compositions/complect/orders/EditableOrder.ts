@@ -8,6 +8,7 @@ import { EditableCom } from "../../EditableCom";
 export class EditableOrder extends Order {
     _regions?: EditableOrderRegion<EditableOrder>[];
     com: EditableCom;
+    readonly originWid = this.top.source ? this.top.source.originWid ?? (this.top.source.originWid = this.wid) : this.wid;;
 
     constructor(top: IExportableOrderTop, com: EditableCom) {
         super(top, com);
@@ -24,10 +25,6 @@ export class EditableOrder extends Order {
         if (this._regions === undefined) this.setRegions();
 
         return this._regions;
-    }
-
-    get originWid() {
-        return this.top.source ? this.top.source.originWid ?? (this.top.source.originWid = this.wid) : this.wid;
     }
 
     setField<K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args?: Record<string, any>, onFinish?: () => void, refresh = true, onSet?: () => void | null) {
@@ -121,6 +118,7 @@ export class EditableOrder extends Order {
     isWithHead() {
         return !this.top.isInherit &&
             !this.top.isAnchorInheritPlus &&
+            (this.texti != null || this.chordsi != null) &&
             !this.isEmptyHeader;
     }
 
