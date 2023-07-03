@@ -40,7 +40,7 @@ export default function StrongEditableFieldMultiline({ value }: { value: string 
     const content = isExpand ? value : (shortValue + (isExpandable ? ' ...' : ''));
 
     return <div
-        className={style.markdownFieldContent + ' white-pre-wrap break-word' + (isExpandable ? ' pointer' : '')}
+        className={style.markdownFieldContent + ' markdownFieldContent white-pre-wrap break-word' + (isExpandable ? ' pointer' : '')}
         onClick={isExpandable
             ? () => setisExpand(isNIs)
             : undefined}

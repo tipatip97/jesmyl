@@ -27,6 +27,31 @@
 }
 
 .icon-indent-text {
-    text-indent: 30px;
+    --indent: 24px;
     margin-top: -1.7em;
+
+    .markdownFieldContent {
+
+        >span,
+        >h1,
+        >h2,
+        >h3,
+        >h4,
+        >h5,
+        >h6,
+        >*>[prop-src] {
+            margin-left: var(--indent);
+        }
+
+        >*>table {
+            margin-left: var(--indent);
+            width: calc(100% - var(--indent));
+        }
+
+
+        >div>p:first-child,
+        >p:first-child {
+            text-indent: var(--indent);
+        }
+    }
 }
