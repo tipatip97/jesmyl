@@ -4,6 +4,7 @@ import { IScheduleWidget, IScheduleWidgetDay, ScheduleWidgetAppAtt, ScheduleWidg
 import ScheduleWidgetTopicTitle from "../../complect/TopicTitle";
 import { AttTranslatorType, attTranslatorTypes } from "../../complect/attTranslatorType";
 
+const emptyFunc = () => { };
 
 export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
     day: IScheduleWidgetDay,
@@ -99,7 +100,7 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
                                 att ?? props.appAtt.initVal,
                                 '',
                                 false,
-                                () => { },
+                                emptyFunc,
                             )}
                         </div>
                     </>);
@@ -116,9 +117,7 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
             ? <div>Сегодня последний день</div>
             : nodes.map((nodes, nodesi) => {
                 return <React.Fragment key={nodesi}>
-                    {nodes.map((node, nodei) => {
-                        return <div key={nodei}>{node}</div>
-                    })}
+                    {nodes.map((node, nodei) => <div key={nodei}>{node}</div>)}
                 </React.Fragment>
             })}
     </>;

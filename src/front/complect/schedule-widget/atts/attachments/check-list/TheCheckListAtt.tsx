@@ -12,7 +12,7 @@ export default function ScheduleCheckListAtt({
     scope: string,
     isRedact: boolean,
 }) {
-    const attScope = scope + ` checkList`;
+    const attScope = scope + ' checkList';
 
     return <>{
         <div>
@@ -26,6 +26,7 @@ export default function ScheduleCheckListAtt({
                         fieldValue={isDone ? 0 : 1}
                         className={'self-start' + (isDone ? '' : ' color--7')}
                         cud="U"
+                        isCanSend={!!scope}
                         name={isDone ? 'checkmark-square-outline' : 'square-outline'}
                     />
                     <StrongEditableField

@@ -149,7 +149,7 @@ export default function ScheduleKeyValueListAtt({
                                 className={'self-start' + (key ? '' : ' color--7')}
                                 cud="U"
                                 name={key ? 'checkmark-square-outline' : 'square-outline'}
-                                isCanSend={customAttUseRights.checkIsCan(rights.myUser?.R, att.U)}
+                                isCanSend={!!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U)}
                             />
                             : <div className="color--3">{key}</div>}
                     {(isRedact || value !== '+')

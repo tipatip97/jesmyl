@@ -39,17 +39,21 @@
         >h4,
         >h5,
         >h6,
-        >*>[prop-src] {
-            margin-left: var(--indent);
+        >:first-child>[prop-src],
+        >:first-child>:first-child>[prop-src] {
+            &:first-child {
+                margin-left: var(--indent);
+            }
         }
 
-        >*>table {
+        >:first-child>table:first-child,
+        >table:first-child {
             margin-left: var(--indent);
             width: calc(100% - var(--indent));
         }
 
 
-        >div>p:first-child,
+        >div:first-child>p:first-child,
         >p:first-child {
             text-indent: var(--indent);
         }
