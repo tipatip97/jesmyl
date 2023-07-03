@@ -156,7 +156,11 @@ export default function ScheduleKeyValueListAtt({
                         && <StrongEditableField
                             scope={itemScope}
                             fieldName="value"
-                            className={'margin-gap-l' + (typeof key !== 'boolean' || key ? '' : ' color--7')}
+                            className={
+                                'margin-gap-l'
+                                + (typeof key !== 'boolean' || key ? '' : ' color--7')
+                                + (!isRedact && typeof key === 'boolean' ? ' icon-indent-text' : '')
+                            }
                             value={value}
                             multiline
                             isRedact={isRedact}
