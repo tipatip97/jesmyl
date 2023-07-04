@@ -194,6 +194,15 @@ const config: FilerAppConfig = {
                     args: {
                         gamew: '#Number'
                     },
+                    '/dsc': {
+                        level: 30,
+                        action: 'setGameDescription',
+                        method: 'set',
+                        value: '{dsc}',
+                        args: {
+                            dsc: '#String'
+                        }
+                    },
                     '/timerNames': {
                         level: 30,
                         action: 'updateGameTimerNames',

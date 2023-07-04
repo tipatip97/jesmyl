@@ -26,6 +26,7 @@ export interface TeamGameExportable {
     ts: number,
     contextw: number,
     name: string,
+    dsc?: string,
     timerNames?: string[],
     timerFields?: GameTimerConfigurable,
     teams?: GameTeamExportable[],

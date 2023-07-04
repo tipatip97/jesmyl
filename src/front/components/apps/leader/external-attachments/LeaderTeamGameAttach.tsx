@@ -35,6 +35,12 @@ export default function LeaderTeamGameAttach({
             }
             {game && <EvaButton name="external-link-outline" onClick={() => jumpToGame(game.w)} />}
         </div>
-        {game && <LeaderGameTotalScoreTable game={game} />}
+        {game && <>
+            <div className="margin-big-gap-l margin-gap-v">
+                <div className="color--3">Заметки игры</div>
+                {game.dsc ||<span className="text-italic">Пусто</span>}
+            </div>
+            <LeaderGameTotalScoreTable game={game} />
+        </>}
     </div>;
 }

@@ -22,6 +22,7 @@ import TimerFieldsConfigurer from "./timers/complect/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/complect/TimerNameListConfigurer";
 import useGameTimer from "./timers/useGameTimer";
 import useCgame from "./useGames";
+import StrongEditableField from "../../../../../complect/strong-control/field/StrongEditableField";
 
 export default function TheGame() {
   const { cgame } = useCgame();
@@ -97,6 +98,17 @@ export default function TheGame() {
             <div className="error-message">Команды не сформированы</div>
           ) : (
             <>
+              <StrongEditableField
+                scope=""
+                fieldName=""
+                value={cgame.dsc}
+                multiline
+                isRedact
+                setSelfRedact
+                icon="file-text-outline"
+                title="Заметки"
+                onSend={(dsc) => LeaderCleans.setGameDescription(cgame.w, dsc)}
+              />
               {cgame.teams && !!membersReadyToPlayNode?.length && (
                 <>
                   <h2 className="margin-gap">Не вошедшие игроки:</h2>

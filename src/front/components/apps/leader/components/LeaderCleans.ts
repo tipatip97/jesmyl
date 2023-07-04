@@ -198,6 +198,13 @@ export class LeaderCleans {
         });
     };
 
+    static setGameDescription = (gamew: number, dsc: string) => {
+        return leaderExer.send({
+            action: 'setGameDescription',
+            args: { gamew, dsc },
+        });
+    };
+
     static publicateTeams = (gamew: number, teams: GameTeamExportable[]) => {
         return leaderExer.send({
             action: 'updateGameTeamList',
