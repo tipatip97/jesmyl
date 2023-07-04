@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import useIsExpand from "../../../expand/useIsExpand";
 import { MyLib } from "../../../my-lib/MyLib";
@@ -9,6 +10,7 @@ import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useS
 
 const ratePoints = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
 const defRate: [number, string] = [0, ''];
+const isNNull = (is: unknown) => is !== null;
 
 export default function ScheduleWidgetDayEventRating(props: StrongComponentProps & {
     event: IScheduleWidgetDayEvent,
@@ -31,6 +33,42 @@ export default function ScheduleWidgetDayEventRating(props: StrongComponentProps
     if (isExpand) {
         myRate = (rights.myUser && props.event.rate?.[rights.myUser?.mi]) ?? defRate;
         if (rights.myUser) rateScope = takeStrongScopeMaker(props.scope, ' rateMi/', rights.myUser.mi);;
+    }
+
+    let rateNode = null;
+
+    if (rights.isCanTotalRedact && props.event.rate && rights.myUser) {
+        let usersRateNode: ReactNode = null;
+        const myUser = rights.myUser;
+        const rates = props.event.rate;
+
+        if (isOtherRatesTitleExpand) {
+            const usersRateNodeList = rights.schedule.ctrl.users.map((user) => {
+                if (myUser.mi === user.mi) return null;
+                const rate = rates[user.mi];
+                if (rate === undefined) return null;
+
+                return <div key={user.mi} className="flex flex-gap">
+                    <div className="color--3 margin-gap-t nowrap self-start">{user.alias || user.fio}: {rate[0]}</div>
+                    {rate[1] &&
+                        <StrongEditableField
+                            scope={rateScope}
+                            fieldName="description"
+                            value={rate[1]}
+                            multiline
+                        />}
+                </div>;
+            }).filter(isNNull);
+
+            usersRateNode = usersRateNodeList.length
+                ? usersRateNodeList
+                : <span className="color--7 text-italic margin-gap-l">Оценок нет</span>
+        }
+
+        rateNode = <>
+            <div className="color--3">{otherRatesTitleNode}</div>
+            {usersRateNode}
+        </>
     }
 
     return <>
@@ -68,25 +106,7 @@ export default function ScheduleWidgetDayEventRating(props: StrongComponentProps
                 setSelfRedact
                 multiline
             />
-            {rights.isCanTotalRedact && props.event.rate && <>
-                <div className="color--3">{otherRatesTitleNode}</div>
-                {isOtherRatesTitleExpand && rights.schedule.ctrl.users.map((user) => {
-                    if (rights.myUser && rights.myUser.mi === user.mi) return null;
-                    const rate = props.event.rate![user.mi];
-                    if (rate === undefined) return null;
-
-                    return <div key={user.mi} className="flex flex-gap">
-                        <div className="color--3 margin-gap-t nowrap self-start">{user.alias || user.fio}: {rate[0]}</div>
-                        {rate[1] &&
-                            <StrongEditableField
-                                scope={rateScope}
-                                fieldName="description"
-                                value={rate[1]}
-                                multiline
-                            />}
-                    </div>;
-                })}
-            </>}
+            {rateNode}
         </div>}
     </>;
 }
