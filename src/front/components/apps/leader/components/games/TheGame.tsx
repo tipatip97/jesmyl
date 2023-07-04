@@ -11,6 +11,7 @@ import useLeaderNav from "../../useLeaderNav";
 import { LeaderCleans } from "../LeaderCleans";
 import useLeaderContext from "../contexts/useContexts";
 import HumanFace from "../people/HumanFace";
+import { GameDescription } from "./GameDescription";
 import GameMore from "./GameMore";
 import GameTeamListComputer from "./GameTeamListComputer";
 import OutsiderMore from "./OutsiderMore";
@@ -22,7 +23,6 @@ import TimerFieldsConfigurer from "./timers/complect/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/complect/TimerNameListConfigurer";
 import useGameTimer from "./timers/useGameTimer";
 import useCgame from "./useGames";
-import StrongEditableField from "../../../../../complect/strong-control/field/StrongEditableField";
 
 export default function TheGame() {
   const { cgame } = useCgame();
@@ -98,17 +98,7 @@ export default function TheGame() {
             <div className="error-message">Команды не сформированы</div>
           ) : (
             <>
-              <StrongEditableField
-                scope=""
-                fieldName=""
-                value={cgame.dsc}
-                multiline
-                isRedact
-                setSelfRedact
-                icon="file-text-outline"
-                title="Заметки"
-                onSend={(dsc) => LeaderCleans.setGameDescription(cgame.w, dsc)}
-              />
+              <GameDescription game={cgame} redactable />
               {cgame.teams && !!membersReadyToPlayNode?.length && (
                 <>
                   <h2 className="margin-gap">Не вошедшие игроки:</h2>

@@ -1,4 +1,5 @@
 import EvaButton from "../../../../complect/eva-icon/EvaButton";
+import { GameDescription } from "../components/games/GameDescription";
 import LeaderGameTotalScoreTable from "../components/games/LeaderGameTotalScoreTable";
 import useGames from "../components/games/useGames";
 import LeaderTeamGameAttachRedact from "./LeaderTeamGameAttachRedact";
@@ -38,7 +39,7 @@ export default function LeaderTeamGameAttach({
         {game && <>
             <div className="margin-big-gap-l margin-gap-v">
                 <div className="color--3">Заметки игры</div>
-                {game.dsc ||<span className="text-italic">Пусто</span>}
+                <GameDescription game={game} />
             </div>
             <LeaderGameTotalScoreTable game={game} />
         </>}

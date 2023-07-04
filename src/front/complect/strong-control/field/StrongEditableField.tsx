@@ -34,6 +34,7 @@ export default function StrongEditableField<
     onChange?: (value: string) => void | Promise<boolean>,
     onUpdate?: (value: string) => void | Promise<boolean>,
     onSend?: (value: string) => void | Promise<boolean>,
+    onSelfRedactChange?: (is: boolean) => void,
 }>) {
     const value = typeof props.value === 'string' ? props.value : props.value?.[props.fieldKey as never] ?? '';
     const [stateValue, setStateValue] = useState(value);
@@ -41,7 +42,7 @@ export default function StrongEditableField<
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const { modalNode, toast } = useModal();
-    const { editIcon, isSelfRedact } = useIsRedactArea(true, null, true, true);
+    const { editIcon, isSelfRedact } = useIsRedactArea(true, null, true, true, props.onSelfRedactChange);
     const isRedact = props.setSelfRedact ? isSelfRedact : props.isRedact;
 
     const exer = useStrongExerContext();
