@@ -4,27 +4,35 @@ import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { leaderExer } from "../../Leader.store";
+import useLeaderContext from "../contexts/useContexts";
 import { HumanExportable, HumanImportable } from "./People.model";
 
 const ufpLabels = "1".repeat(10).split("");
+const isNNull = (it: unknown) => it !== null;
 
-const lineAsHuman = (line: string): HumanExportable | string => {
-  const match = line.match(/^([А-ЯЁа-яё\s]+)([\d.]+)\s*([дмДМ])$/);
+const prepareSearchName = (name: string) => {
+  return name.replace(/ё/i, 'е').toUpperCase();
+};
 
-  if (match == null) return line;
+const lineAsHuman = (line: string, upperExistsNames: string[]): HumanExportable => {
+  const match = line.match(/^([А-ЯЁа-яё\s]+)([\d.]+)\s*([дмДМ])?$/);
 
-  const [, name, bDay, sex] = match;
+  if (match == null) return null!;
+  const [, humanName, bDay, sex] = match;
+  const name = humanName.trim().replace(/\s+/g, " ");
+
+  if (upperExistsNames.includes(prepareSearchName(name)) || upperExistsNames.includes(prepareSearchName(name.split(' ').reverse().join(' ')))) return null!;
+
   const [day, month, year] = bDay?.split(/\./) || [];
 
-  if (isNaN(new Date(+year, +month - 1, +day).getTime()))
-    return "[Date]" + line;
+  if (isNaN(new Date(+year, +month - 1, +day).getTime())) return null!;
+
 
   return {
-    // ts: Date.now() + Math.random(),
     notes: "",
-    name: name.trim().replace(/\s+/g, " "),
+    name,
     bDay: new Date(+year, +month - 1, +day).getTime(),
-    isMan: !!/[м]/i.exec(sex),
+    isMan: sex ? !!/м/i.exec(sex) : name.match(/[^аяь]$/i) !== null,
     ufp1: 0,
     ufp2: 0,
   };
@@ -48,6 +56,7 @@ export default function HumanMaster({
   const [isHumanHeap, setIsHumanHeap] = useState(false);
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
+  const { humans } = useLeaderContext();
 
   const takeName = (value: string) => {
     if (value.match(/^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$/)) {
@@ -97,7 +106,9 @@ export default function HumanMaster({
               multiline
               placeholder="Массив личностей"
               onChange={(value) => {
-                updateViewHumanList(value.split(/\n+/).map((line) => lineAsHuman(line)));
+                const existsNames = humans?.map(human => prepareSearchName(human.name)) ?? [];
+
+                updateViewHumanList(value.split(/\n+/).map((line) => lineAsHuman(line, existsNames)).filter(isNNull));
               }}
             />
           </div>
@@ -158,7 +169,7 @@ export default function HumanMaster({
             );
           })}
           {<div
-            className="pointer"
+            className="margin-big-gap pointer"
             onClick={() => {
               leaderExer.send({
                 action: "addManyHumans",
@@ -170,7 +181,7 @@ export default function HumanMaster({
               close();
             }}
           >
-            Разобрать
+            Отправить список
           </div>}
         </>
       ) : (

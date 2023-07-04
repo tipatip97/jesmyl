@@ -21,8 +21,8 @@ const config: FilerAppConfig = {
                     action: 'addHuman',
                     title: 'Добавлен новый участник $name',
                     method: 'push',
+                    setSystems: ['w'],
                     value: {
-                        w: '{@setNewWid()}',
                         ts: '{ts}',
                         name: '{name}',
                         notes: '{?notes}',
@@ -46,11 +46,7 @@ const config: FilerAppConfig = {
                 '<add many>': {
                     level: 20,
                     action: 'addManyHumans',
-                    setInEachValueItem: {
-                        '.': {
-                            w: '{@setNewWid()}'
-                        }
-                    },
+                    setSystems: ['w'],
                     title: 'Добавлено несколько участников',
                     method: 'concat',
                     args: {
@@ -420,9 +416,7 @@ const config: FilerAppConfig = {
                         '<add>': {
                             action: 'addHumanToContext',
                             method: 'push',
-                            uniqs: [
-                                '.'
-                            ],
+                            uniqs: ['.'],
                             value: '{humanw}',
                             args: {
                                 humanw: '#Number',
@@ -435,9 +429,7 @@ const config: FilerAppConfig = {
                         '<rem>': {
                             action: 'removeHumanFromContext',
                             method: 'remove_each',
-                            uniqs: [
-                                '.'
-                            ],
+                            uniqs: ['.'],
                             value: ['.', '===', '{humanw}'],
                             args: {
                                 humanw: '#Number',
@@ -453,9 +445,7 @@ const config: FilerAppConfig = {
                         level: 40,
                         action: 'addContextGroupFieldBlanks',
                         method: 'concat',
-                        uniqs: [
-                            'key'
-                        ],
+                        uniqs: ['key'],
                         value: '{list}',
                         args: {
                             list: '#List'
@@ -484,9 +474,7 @@ const config: FilerAppConfig = {
                             expected: [],
                             action: 'addContextGroup',
                             method: 'push',
-                            uniqs: [
-                                'w'
-                            ],
+                            uniqs: ['w'],
                             value: {
                                 w: '{@setNewWid()}',
                                 ts: '{ts}',
@@ -531,9 +519,7 @@ const config: FilerAppConfig = {
                                 '<add>': {
                                     action: 'addContextGroupHumans',
                                     method: 'concat',
-                                    uniqs: [
-                                        '.'
-                                    ],
+                                    uniqs: ['.'],
                                     args: {
                                         value: '#List'
                                     }
@@ -541,11 +527,7 @@ const config: FilerAppConfig = {
                                 '<rem>': {
                                     action: 'delContextGroupHumans',
                                     method: 'remove_each',
-                                    value: [
-                                        '.',
-                                        'in',
-                                        '{value}'
-                                    ]
+                                    value: ['.', 'in', '{value}']
                                 }
                             }
                         }
