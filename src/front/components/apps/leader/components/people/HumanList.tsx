@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import EvaSendButton from "../../../../../complect/eva-icon/EvaSendButton";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import useIsRedactArea from "../../../../../complect/useIsRedactArea";
@@ -9,7 +9,7 @@ import { RootState } from "../../../../../shared/store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import useLeaderContext from "../contexts/useContexts";
 import HumanFace from "./HumanFace";
-import HumansMore from "./HumansMore";
+import { HumansMore } from "./HumansMore";
 import { HumanImportable, HumanListComponentProps } from "./People.model";
 
 const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
@@ -32,7 +32,7 @@ export default function HumanList({
 }: HumanListComponentProps) {
   const { humans } = useLeaderContext();
   const [term, setTerm] = useState("");
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [humansMoreNode, openHumansMore] = useBottomPopup((_, prepare) => <HumansMore moreNode={moreNode} prepare={prepare} />);
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
   const { editIcon, isRedact } = useIsRedactArea(true, null, true, true);
 
@@ -100,10 +100,11 @@ export default function HumanList({
       headClass="flex between full-width"
       onMoreClick={
         onMoreClick ||
-        (() => openAbsoluteBottomPopup(<HumansMore moreNode={moreNode} />))
+        (() => openHumansMore())
       }
       head={searcher}
       content={<>
+        {humansMoreNode}
         <div>{editIcon}</div>
         {humansNode}
       </>}

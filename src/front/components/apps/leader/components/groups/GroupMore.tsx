@@ -1,20 +1,22 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { BottomPopupContenter } from "../../../../../complect/absolute-popup/useBottomPopup";
+import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import LeaderGroupMaster from "./GroupMaster";
 import { LeaderGroupImportable } from "./Groups.model";
 
-export default function LeaderGroupMore({ group }: { group: LeaderGroupImportable }) {
-  const { openFullscreenContent } = useFullscreenContent();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+export const LeaderGroupMoreContenter: BottomPopupContenter<{ group?: LeaderGroupImportable }> = (_, prepare, { group }) => {
+  const [groupMasterNode, openGroupMaster] = useFullContent((close) => (
+    <LeaderGroupMaster close={close} group={group} />
+  ));
 
-  return prepareAbsoluteBottomPopupContent({
-    items: [{
-      title: 'Редактировать',
-      icon: "edit-outline",
-      onClick: () =>
-        openFullscreenContent((close) => (
-          <LeaderGroupMaster close={close} group={group} />
-        )),
-    }]
-  });
+  return [
+    groupMasterNode,
+    prepare({
+      items: [{
+        title: 'Редактировать',
+        icon: "edit-outline",
+        onClick: () =>
+          openGroupMaster(),
+      }]
+    })
+  ];
 }

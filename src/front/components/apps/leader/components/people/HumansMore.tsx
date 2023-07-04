@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import di from "../../Leader.store";
@@ -8,13 +8,12 @@ import { humanFieldTranslations } from "./People.model";
 
 const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
 
-export default function HumansMore({ moreNode }: { moreNode?: ReactNode }) {
+export function HumansMore({ moreNode, prepare }: { moreNode?: ReactNode, prepare: BottomPopupContenterPreparer }) {
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
   return <>{
-    prepareAbsoluteBottomPopupContent({
+    prepare({
       items: [{
         title: 'Сортировать личности',
         icon: "bar-chart-2-outline",

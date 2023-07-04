@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { useLeaderCcontext } from "../contexts/useContexts";
-import HumanMore from "./HumanMore";
+import { HumanMoreContenter } from "./HumanMore";
 import { HumanImportable } from "./People.model";
 
 export default function HumanFace({
@@ -16,7 +16,7 @@ export default function HumanFace({
   asMore?: (human: HumanImportable) => ReactNode;
   humanMoreAdditions?: (human: HumanImportable) => ReactNode;
 }) {
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [humanMoreNode, openHumanMore] = useBottomPopup((close, prepare) => HumanMoreContenter(close, prepare, { human, humanMoreAdditions }));
   const ccontext = useLeaderCcontext();
   const groups = ccontext?.groups?.filter((group) =>
     group.members.some(memberw => memberw === human.w) ||
@@ -26,14 +26,13 @@ export default function HumanFace({
     ? `; ${groups.map(group => group.name).join(", ")}`
     : "";
 
-  return (
+  return <>
+    {humanMoreNode}
     <div
       className="face-item flex between"
       onClick={(event) => {
         event.stopPropagation();
-        openAbsoluteBottomPopup(
-          <HumanMore human={human} humanMoreAdditions={humanMoreAdditions} />
-        );
+        openHumanMore();
       }}
     >
       <div className="face-wrapper">
@@ -56,5 +55,5 @@ export default function HumanFace({
           />
         ))}
     </div>
-  );
+  </>;
 }

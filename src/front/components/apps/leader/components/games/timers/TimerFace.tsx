@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
-import useFullscreenContent from "../../../../../../complect/fullscreen-content/useFullscreenContent";
+import useFullContent from "../../../../../../complect/fullscreen-content/useFullContent";
 import { TeamGameImportable } from "../../../Leader.model";
 import { LeaderCleans } from "../../LeaderCleans";
 import { GameTimerMode } from "./GameTimer.model";
@@ -20,19 +20,20 @@ export default function LeaderGameTimerFace({
   namePostfix?: ReactNode,
   game: TeamGameImportable,
 }) {
-  const { openFullscreenContent } = useFullscreenContent();
   const { timer } = useGameTimer(game, timerw);
+
+  const [timerNode, openTimer] = useFullContent((close) => {
+    if (timer == null) return null;
+    return <LeaderGameTimerMaster game={game} close={close} timer={timer} />
+  });
 
   if (!timer) return null;
 
-  return (
+  return <>
+    {timerNode}
     <div
       className="face-item"
-      onClick={() =>
-        openFullscreenContent((close) => (
-          <LeaderGameTimerMaster game={game} close={close} timer={timer} />
-        ))
-      }
+      onClick={() => openTimer()}
     >
       <span
         className={`face-logo ${selectedPosition ? "selected" : ""}`}
@@ -68,5 +69,5 @@ export default function LeaderGameTimerFace({
         )}
       </span>
     </div>
-  );
+  </>;
 }

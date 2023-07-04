@@ -1,15 +1,15 @@
-import useAbsoluteBottomPopup from "../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../complect/absolute-popup/useBottomPopup";
 import BrutalItem from "../../../complect/brutal-item/BrutalItem";
 import { useLeaderCcontext } from "./components/contexts/useContexts";
 import { CurrentContextSelectPage } from "./components/CurrentContextSelectPage";
-import GeneralMore from "./GeneralMore";
+import { GeneralMoreContenter } from "./GeneralMore";
 import "./Leader.scss";
 import PhaseLeaderContainer from "./phase-container/PhaseLeaderContainer";
 import useLeaderNav from "./useLeaderNav";
 
 export default function LeaderGeneralPage() {
   const { goTo } = useLeaderNav();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [generalMoreNode, openGeneralMore] = useBottomPopup(GeneralMoreContenter);
   const ccontext = useLeaderCcontext();
 
   if (ccontext === undefined)
@@ -20,8 +20,9 @@ export default function LeaderGeneralPage() {
       topClass="template-page-content"
       withoutBackButton
       headTitle={`Лидер - ${ccontext.name}`}
-      onMoreClick={() => openAbsoluteBottomPopup((close) => <GeneralMore close={close} />)}
+      onMoreClick={() => openGeneralMore()}
       content={<>
+        {generalMoreNode}
         <BrutalItem
           title="Участники"
           icon="person-outline"

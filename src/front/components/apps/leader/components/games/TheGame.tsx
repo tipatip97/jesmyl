@@ -1,9 +1,9 @@
 import { useState } from "react";
 import CopyTextButton from "../../../../../complect/CopyTextButton";
 import SendButton from "../../../../../complect/SendButton";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
@@ -27,8 +27,30 @@ export default function TheGame() {
   const { cgame } = useCgame();
   const { contextMembers } = useLeaderContext();
   const [selectedTimers, updateSelectedTimers] = useState<number[]>([]);
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { openFullscreenContent } = useFullscreenContent();
+  const [outsiderw, setOutsiderw] = useState(0);
+  const [outsiderMoreNode, openOutsiderMore] = useBottomPopup((_, prepare) => {
+    if (cgame == null || outsiderw === 0) return null;
+    const outsider = contextMembers.find(member => member.w === outsiderw);
+    if (outsider === undefined) return null;
+
+    return <OutsiderMore
+      game={cgame}
+      human={outsider}
+      prepare={prepare}
+    />;
+  });
+  const [gameMoreNode, openGameMore] = useBottomPopup((close, prepare) => (
+    <GameMore
+      close={close}
+      selectedTimers={selectedTimers}
+      prepare={prepare}
+      onGameRemove={async () => {
+        if (cgame && (await modalService.confirm(`Удалить игру "${cgame.name}" окончательно?`)))
+          LeaderCleans.removeGame(cgame.w).then(() => goBack());
+      }}
+    />
+  ));
+  const [fullNode, openFullContent] = useFullContent(() => <TotalScoreTable selectedTimers={selectedTimers} />);
   const [isTeamsLoading, setIsTeamsLoading] = useState(false);
   const usedHumans =
     cgame?.teams?.reduce<number[]>((list, team) => list.concat(team.members), []) || [];
@@ -47,7 +69,8 @@ export default function TheGame() {
           cgame &&
           leaderExer.actionAccessedOrUnd("addMemberToTeam") &&
           (() => {
-            openAbsoluteBottomPopup(<OutsiderMore game={cgame} human={human} />);
+            setOutsiderw(human.w);
+            openOutsiderMore();
           })
         }
       />
@@ -63,20 +86,12 @@ export default function TheGame() {
     <PhaseLeaderContainer
       topClass="the-game"
       headTitle={`Игра - ${cgame.name}`}
-      onMoreClick={() =>
-        openAbsoluteBottomPopup((close) => (
-          <GameMore
-            close={close}
-            selectedTimers={selectedTimers}
-            onGameRemove={async () => {
-              if (cgame && (await modalService.confirm(`Удалить игру "${cgame.name}" окончательно?`)))
-                LeaderCleans.removeGame(cgame.w).then(() => goBack());
-            }}
-          />
-        ))
-      }
+      onMoreClick={() => openGameMore()}
       content={
         <>
+          {fullNode}
+          {gameMoreNode}
+          {outsiderMoreNode}
           {!leaderExer.actionAccessedOrNull("updateGameTeamList") &&
             !cgame.teams ? (
             <div className="error-message">Команды не сформированы</div>
@@ -117,11 +132,7 @@ export default function TheGame() {
                 {selectedTimers.length > 1 && (
                   <div
                     className="margin-big-gap pointer flex"
-                    onClick={() =>
-                      openFullscreenContent(
-                        <TotalScoreTable selectedTimers={selectedTimers} />
-                      )
-                    }
+                    onClick={() => openFullContent()}
                   >
                     <EvaIcon name="eye-outline" className="margin-gap" />
                     Просмотреть объединённые результаты

@@ -1,27 +1,28 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { BottomPopupContenter } from "../../../../../complect/absolute-popup/useBottomPopup";
+import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import PrintableBottomItem from "../PrintableBottomItem";
 import QRQuest from "../templates/QRQuest";
 import LeaderGroupMaster from "./GroupMaster";
 
-export default function LeaderGroupsMore({ close }: { close: () => void }) {
-  const { openFullscreenContent } = useFullscreenContent();
+export const LeaderGroupsMore: BottomPopupContenter = (close, prepare) => {
+  const [groupMasterNode, openGroupMaster] = useFullContent((close) => <LeaderGroupMaster close={close} />);
 
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
-
-  return <>{
-    prepareAbsoluteBottomPopupContent({
-      items: [{
-        title: 'Новая группа',
-        icon: "plus-circle-outline",
-        onClick: () =>
-          openFullscreenContent((close) => <LeaderGroupMaster close={close} />),
-      }]
-    })}
-    <PrintableBottomItem
-      title="QR квест точки"
-      node={<QRQuest />}
-      close={close}
-    />
-  </>;
+  return [
+    groupMasterNode,
+    <>
+      {prepare({
+        items: [{
+          title: 'Новая группа',
+          icon: "plus-circle-outline",
+          onClick: () => openGroupMaster()
+        }]
+      })}
+      <PrintableBottomItem
+        title="QR квест точки"
+        node={<QRQuest />}
+        close={close}
+        prepare={prepare}
+      />
+    </>
+  ];
 }

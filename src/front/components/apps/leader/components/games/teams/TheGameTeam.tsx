@@ -1,13 +1,13 @@
 import { useState } from "react";
-import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../../complect/absolute-popup/useBottomPopup";
 import { TeamGameImportable } from "../../../Leader.model";
 import { leaderExer } from "../../../Leader.store";
+import { LeaderCleans } from "../../LeaderCleans";
 import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
 import useLeaderContext from "../../contexts/useContexts";
 import HumanFace from "../../people/HumanFace";
 import GameTeamMemberMore from "./GameTeamMemberMore";
 import { GameTeamImportable } from "./GameTeams.model";
-import { LeaderCleans } from "../../LeaderCleans";
 
 export default function TheGameTeam({
   team,
@@ -23,12 +23,19 @@ export default function TheGameTeam({
   onTeamRename?: () => void,
 }) {
   const [isHumansShow, setIsHumansShow] = useState(!(redactable ?? false));
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [memberw, setMemberw] = useState(0);
   const { contextMembers } = useLeaderContext();
   const teamMembers = LeaderCleans.extractWidables(contextMembers, team.members);
+  const [memberMoreNode, openMemberMore] = useBottomPopup((_, prepare) => {
+    const member = teamMembers.find(member => member.w === memberw);
+    if (member === undefined) return null;
+
+    return <GameTeamMemberMore human={member} team={team} game={game} prepare={prepare} />
+  });
 
   return (
     <div className="the-team-card padding-big-gap">
+      {memberMoreNode}
       <span
         className={'text-bold user-select' + (onTeamRename ? ' pointer ' : '')}
         onClick={onTeamRename}
@@ -45,9 +52,8 @@ export default function TheGameTeam({
               onMoreClick={
                 leaderExer.actionAccessedOrUnd("removeMemberFromTeam") &&
                 (() => {
-                  openAbsoluteBottomPopup(
-                    <GameTeamMemberMore human={member} team={team} game={game} />
-                  );
+                  setMemberw(member.w);
+                  openMemberMore();
                 })
               }
             />

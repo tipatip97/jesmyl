@@ -1,17 +1,18 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import { BottomPopupContenter } from "../../../../../complect/absolute-popup/useBottomPopup";
+import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import LeaderGameMaster from "./GameMaster";
 
-export default function GamesMore() {
-  const { openFullscreenContent } = useFullscreenContent();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+export const GamesMoreContenter: BottomPopupContenter = (_, prepare) => {
+  const [fullNode, openFull] = useFullContent((close) => <LeaderGameMaster close={close} />);
 
-  return prepareAbsoluteBottomPopupContent({
-    items: [{
-      title: 'Новая командная игра',
-      icon: "people-outline",
-      onClick: () =>
-        openFullscreenContent((close) => <LeaderGameMaster close={close} />),
-    }]
-  });
+  return [
+    fullNode,
+    prepare({
+      items: [{
+        title: 'Новая командная игра',
+        icon: "people-outline",
+        onClick: () => openFull(),
+      }]
+    }),
+  ];
 }

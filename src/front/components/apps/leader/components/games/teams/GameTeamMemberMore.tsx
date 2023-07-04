@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import { TeamGameImportable } from "../../../Leader.model";
 import { leaderExer } from "../../../Leader.store";
@@ -9,13 +9,14 @@ export default function GameTeamMemberMore({
   human,
   team,
   game,
+  prepare,
 }: {
   human: HumanImportable,
   team: GameTeamImportable,
-  game: TeamGameImportable, 
+  game: TeamGameImportable,
+  prepare: BottomPopupContenterPreparer,
 }) {
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
-  return prepareAbsoluteBottomPopupContent({
+  return prepare({
     items: [{
       title: 'Исключить личность',
       icon: "person-delete-outline",

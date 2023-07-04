@@ -1,14 +1,14 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import { useLeaderCcontext } from "../contexts/useContexts";
 import GroupFieldBlanks from "./fields/Blanks";
 import GroupFace from "./GroupFace";
-import LeaderGroupsMore from "./GroupsMore";
+import { LeaderGroupsMore } from "./GroupsMore";
 
 export default function GroupList() {
   const ccontext = useLeaderCcontext();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [groupsMoreNode, openGroupsMore] = useBottomPopup(LeaderGroupsMore);
 
   if (!ccontext) return null;
 
@@ -16,10 +16,11 @@ export default function GroupList() {
     <PhaseLeaderContainer
       topClass=""
       headTitle={`Группы - ${ccontext.name}`}
-      onMoreClick={() => openAbsoluteBottomPopup((close) => <LeaderGroupsMore close={close} />)}
+      onMoreClick={() => openGroupsMore()}
       contentClass="padding-big-gap"
       content={
         <>
+          {groupsMoreNode}
           {ccontext.groups?.map((group, groupi) => {
             return <GroupFace key={groupi} group={group} />;
           })}

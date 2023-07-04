@@ -1,34 +1,38 @@
 import { ReactNode } from "react";
 import { renderComponentInNewWindow } from "../../../../..";
-import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../complect/absolute-popup/useBottomPopup";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
+import useFullContent from "../../../../complect/fullscreen-content/useFullContent";
 
 export default function PrintableBottomItem({
   node,
   title,
   close,
+  prepare,
 }: {
-  node: ReactNode;
-  title: string;
-  close: () => void;
+  node: ReactNode,
+  title: string,
+  close: () => void,
+  prepare: BottomPopupContenterPreparer,
 }) {
-  const { openFullscreenContent } = useFullscreenContent();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const [printerNode, openFullscreenContent] = useFullContent(() => node);
 
-  return prepareAbsoluteBottomPopupContent({
-    items: [{
-      title,
-      icon: "printer-outline",
-      onClick: () => renderComponentInNewWindow(node),
-      rightNode: <EvaIcon
-        name="eye-outline"
-        onClick={(event) => {
-          event.stopPropagation();
-          openFullscreenContent(node, true);
-          close();
-        }}
-      />
-    }]
-  });
+  return <>
+    {printerNode}
+    {prepare({
+      items: [{
+        title,
+        icon: "printer-outline",
+        onClick: () => renderComponentInNewWindow(node),
+        rightNode: <EvaIcon
+          name="eye-outline"
+          onClick={(event) => {
+            event.stopPropagation();
+            openFullscreenContent();
+            close();
+          }}
+        />
+      }]
+    })}
+  </>;
 }

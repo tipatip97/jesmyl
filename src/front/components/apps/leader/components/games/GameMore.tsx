@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
 import { leaderExer } from "../../Leader.store";
 import PrintableBottomItem from "../PrintableBottomItem";
 import GameTeamLists from "./templates/GameTeamLists";
@@ -9,12 +9,13 @@ export default function GameMore({
   selectedTimers,
   close,
   onGameRemove,
+  prepare,
 }: {
-  selectedTimers?: number[];
-  close: () => void;
+  selectedTimers?: number[],
+  close: () => void,
   onGameRemove: () => void,
+  prepare: BottomPopupContenterPreparer,
 }) {
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
   return (
     <>
@@ -22,19 +23,22 @@ export default function GameMore({
         node={<GameTeamPassports selectedTimers={selectedTimers} />}
         title="Игровые паспорта"
         close={close}
+        prepare={prepare}
       />
       <PrintableBottomItem
         node={<GameTeamPassportNames selectedTimers={selectedTimers} />}
         title="Игровые названия паспортов"
         close={close}
+        prepare={prepare}
       />
       <PrintableBottomItem
         node={<GameTeamLists />}
         title="Списки команд"
         close={close}
+        prepare={prepare}
       />
       {
-        prepareAbsoluteBottomPopupContent({
+        prepare({
           items: [
             leaderExer.actionAccessedOrNull("removeTeamGame") &&
             {

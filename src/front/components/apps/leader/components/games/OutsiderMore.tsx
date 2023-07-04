@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { TeamGameImportable } from "../../Leader.model";
 import { leaderExer } from "../../Leader.store";
@@ -8,12 +8,13 @@ import { GameTeamImportable } from "./teams/GameTeams.model";
 export default function OutsiderMore({
   human,
   game,
+  prepare,
 }: {
-  human: HumanImportable;
-  game: TeamGameImportable;
+  human: HumanImportable,
+  game: TeamGameImportable,
+  prepare: BottomPopupContenterPreparer,
 }) {
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
-  return prepareAbsoluteBottomPopupContent({
+  return prepare({
     items: [{
       title: 'Определить в команду',
       icon: "person-add-outline",
