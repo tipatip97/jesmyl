@@ -27,7 +27,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
     const ret = {
         nav,
         route,
-        navigateToRoot: () => nav.rootPhase && ret.navigate([nav.rootPhase]),
+        navigateToRoot: () => nav.nav.rootPhase && ret.navigate([nav.nav.rootPhase]),
         appRouteData,
         setAppRouteData: (data: NavData | ((prev?: NavData) => NavData), isPreventSave?: boolean) => {
             dispatch(di.routerFixNavigateData({
@@ -137,7 +137,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
             if (ret.route) {
                 const line = nav.getGoBackRoute(ret.route);
                 if (line.length) ret.navigate(line);
-                else ret.navigate(nav.rootPhase === null ? null : [nav.rootPhase]);
+                else ret.navigate(nav.nav.rootPhase === null ? null : [nav.nav.rootPhase]);
             }
         }
     };

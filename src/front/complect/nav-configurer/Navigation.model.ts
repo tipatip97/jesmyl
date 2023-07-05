@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { FreeRoutePath, RoutePhase, RoutePhasePoint, RoutePath, RoutePathVariated } from "../../components/router/Router.model";
+import { FreeRoutePath, RoutePath, RoutePathVariated, RoutePhase, RoutePhasePoint } from "../../components/router/Router.model";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 import { Exer } from "../exer/Exer";
 import { ExerStorage } from "../exer/Exer.model";
@@ -37,6 +37,9 @@ export interface INavigationConfig<Storage extends ExerStorage, NavData> {
     exer?: Exer<Storage>,
     logo?: EvaIconName,
     jumpByLink?: JumpByLink<NavData>,
+    title: string,
+    level?: number,
+    useIsCanRead?: (value?: any) => boolean,
 }
 
 export type INavigationRouteItem<NavData> = INavigationRouteChildItem<NavData> | INavigationRouteRootItem<NavData>;

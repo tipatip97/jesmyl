@@ -14,6 +14,7 @@ import di from "../components/index/Index.store";
 import indexStorage from "../components/index/indexStorage";
 import navConfigurers from "../shared/navConfigurers";
 import { RootState } from "../shared/store";
+import { appNames } from "./App.model";
 import "./App.scss";
 import AppFooter from "./AppFooter";
 import AppRouter from "./AppRouter";
@@ -28,7 +29,7 @@ function App() {
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const { goBack, registerBackAction } = navConfigurers[appName || 'index']();
-  const { apps, jumpToApp } = useApps();
+  const { jumpToApp } = useApps();
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -57,7 +58,7 @@ function App() {
         if (appName && key && value !== undefined) {
           window.history.pushState({}, "", jesmylHostName);
 
-          if (apps.some(({ name }) => name === appName)) {
+          if (appNames.some((name) => name === appName)) {
             jumpToApp(appName, key as never, value);
           }
         }

@@ -7,6 +7,8 @@ import AdminApp from "./AdminApp";
 import TheUser from "./complect/users/TheUser";
 
 const adminNavigation = new NavigationConfig<AdminStorage, AdminNavData>('admin', {
+  title: 'Админ',
+  level: 100,
   root: (content) => <AdminApp content={content} />,
   rootPhase: "admin",
   logo: 'twitter',

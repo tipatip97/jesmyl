@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SokiStatistic } from "../../../back/complect/soki/soki.model";
 import { AppName, appNames } from "../../app/App.model";
 import { Exer } from "../../complect/exer/Exer";
+import { ScheduleStorage } from "../../complect/schedule-widget/ScheduleWidget.model";
 import {
-  Auth, IndexApplication, IndexState,
+  Auth, IndexState,
   IndexStateError
 } from "./Index.model";
 import indexStorage from "./indexStorage";
-import { ScheduleStorage } from "../../complect/schedule-widget/ScheduleWidget.model";
 
 export const indexExer = new Exer('index', indexStorage);
 export const defaultAppName = 'cm';
@@ -20,7 +20,6 @@ const initialState: IndexState = {
   appVersion: indexStorage.get("appVersion"),
   auth: indexStorage.get('auth'),
   isUseNativeKeyboard: indexStorage.getOr('isUseNativeKeyboard', true),
-  apps: indexStorage.getOr('apps', []),
   schedules: indexStorage.getOr('schedules', { list: [] }),
   numModalUpdates: 0,
   errors: {},
@@ -44,9 +43,6 @@ export const slice = createSlice({
     setAppVersion: (state, action: PayloadAction<number>) => {
       state.appVersion = action.payload;
       indexStorage.set('appVersion', action.payload);
-    },
-    setApps: (state, action: PayloadAction<IndexApplication[]>) => {
-      state.apps = action.payload;
     },
     setCurrentApp: (state, action: PayloadAction<AppName>) => {
       state.currentApp = action.payload;

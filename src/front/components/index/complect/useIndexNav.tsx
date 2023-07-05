@@ -12,6 +12,7 @@ const Main = React.lazy(() => import("../parts/main/IndexMain"));
 
 const actions: UseNavAction[] = [];
 const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
+  title: 'Index',
   root: (content) => <Index content={content} />,
   rootPhase: null,
   routes: [

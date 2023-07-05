@@ -5,18 +5,19 @@ import useLeaderContext from "./contexts/useContexts";
 
 export function CurrentContextSelectPage() {
     const { contexts } = useLeaderContext();
-    const { setAppRouteData } = useLeaderNav();
+    const { setAppRouteData, nav } = useLeaderNav();
 
     return <PhaseLeaderContainer
         topClass="CurrentContextSelectPage"
         withoutBackButton
         headTitle="Выбор контекста"
-        content={contexts?.list?.map((schedule) => {
+        content={contexts?.list?.map((context) => {
+            if (!nav.nav.useIsCanRead?.(context?.w)) return null;
             return <BrutalItem
-                key={schedule.w}
-                title={schedule.name}
+                key={context.w}
+                title={context.name}
                 icon="calendar-outline"
-                onClick={() => setAppRouteData({ contextw: schedule.w })}
+                onClick={() => setAppRouteData({ contextw: context.w })}
             />
         })}
     />

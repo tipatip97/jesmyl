@@ -35,6 +35,7 @@ const comNav: INavigationRouteChildItem<CmNavData> = {
 const comNext = [comNav, translationNav];
 
 const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig('cm', {
+  title: 'Песни возрождённых',
   root: (content) => <CmApplication content={content} />,
   rootPhase: "all",
   logo: "book-open",

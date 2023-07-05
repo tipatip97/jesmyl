@@ -17,24 +17,17 @@ export class Exer<Storage extends ExerStorage> {
     rules: ExecRule[] = [];
     checkedActions: Record<string, true | null> = {};
     auth: Auth | nil;
-    appVariables?: { mutedExecs: boolean };
 
     constructor(appName: SokiAppName, storage: JStorage<Storage> | nil) {
         this.storage = storage;
         this.appName = appName;
         this.auth = indexStorage.getOr('auth', { level: 0 });
 
-        this.appVariables = indexStorage.get('apps')?.find((app) => app.name === this.appName)?.variables;
         this.updateRules();
     }
 
     updateRules() {
-        this.rules = [
-            ...Object.entries(this.appVariables || {})
-                .map(([action, level]) => typeof level === 'number' ? { action, level } : null)
-                .filter(rule => rule) as ExecRule[],
-            ...(this.storage?.get('rules') as [] || [])
-        ];
+        this.rules = [...(this.storage?.get('rules') as [] || [])];
     }
 
     setIfCan<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
@@ -49,7 +42,7 @@ export class Exer<Storage extends ExerStorage> {
         if (!freeExec) return null;
         let retExec: Exec<Value> | null = null;
         const { scope, value, method = 'set', anti, friendly } = freeExec;
-        const exec = { ...freeExec, method, muted: this.appVariables?.mutedExecs ?? freeExec.muted };
+        const exec = { ...freeExec, method };
 
         setTimeout(() => console.info(exec, this.execs));
 

@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { appNames } from "../../../../app/App.model";
 import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
@@ -14,43 +15,50 @@ import useConnectionState from "../../useConnectionState";
 import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
 import UserMore from "./UserMore";
+import { RootState } from "../../../../shared/store";
 
+const isNNull = (it: unknown) => it !== null;
+const currentAppSelector = (state: RootState) => state.index.currentApp;
 
 export default function IndexMain() {
+  const currentAppName = useSelector(currentAppSelector);
   const { openFullscreenContent } = useFullscreenContent();
-  const { goTo } = navConfigurers["index"]();
+  const { goTo } = navConfigurers.index();
   const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
-  const { apps, currentApp, appConfigs, jumpToApp } = useApps();
+  const { appConfigs, jumpToApp } = useApps();
 
-  const filteredApps = apps.filter((app) => app !== currentApp && appNames.indexOf(app.name) > -1);
   const auth = useAuth();
   const { readQR } = useQRMaster();
   const connectionNode = useConnectionState();
+  const appList = appNames.map((appName) => {
+    if (currentAppName === appName || appName === 'index') return null;
+    const navs = appConfigs[appName];
 
-  const appList =
-    filteredApps.length === 0
-      ? null
-      : filteredApps.map((app) => {
-        return (
-          <div
-            key={`thematic-cat-${app.name}`}
-            className="item flex"
-            onClick={() => jumpToApp(app.name)}
-          >
-            <EvaIcon
-              name={appConfigs[app.name].nav.logo || "cube-outline"}
-              className="margin-big-gap"
-            />
-            <div className="app-title-label">{app.title}</div>
-          </div>
-        );
-      });
+    if (navs == null) return null!;
+    const { nav } = navs;
+    if (nav.nav.level !== undefined && (auth == null || nav.nav.level > auth.level)) return null!;
+    if (nav.nav.useIsCanRead?.() === false) return null;
+
+    return (
+      <div
+        key={nav.appName}
+        className="item flex"
+        onClick={() => jumpToApp(nav.appName)}
+      >
+        <EvaIcon
+          name={nav.nav.logo || "cube-outline"}
+          className="margin-big-gap"
+        />
+        <div className="app-title-label">{nav.nav.title}</div>
+      </div>
+    );
+  }).filter(isNNull);
 
   return (
     <PhaseIndexContainer
       topClass="index-main"
       withoutBackButton
-      headTitle={currentApp?.title || "Другое"}
+      headTitle={appConfigs[currentAppName]?.nav.nav.title || "Другое"}
       head={
         <div className="flex flex-gap">
           {connectionNode}

@@ -52,7 +52,7 @@ export default function AppFooter({ appName }: { appName: AppName }) {
   return (
     <div className="footer">
       {putItems(
-        nav,
+        nav.nav,
         (phase) => {
           navigate(phase);
           if (indexRoute) indexNavigate(null, false);
@@ -60,7 +60,7 @@ export default function AppFooter({ appName }: { appName: AppName }) {
         ([phase]) => indexPhase == null && route?.[0] === phase
       )}
       {putItems(
-        indexNav,
+        indexNav.nav,
         () => {
           indexNavigate(["other"]);
           navigate(null, false);

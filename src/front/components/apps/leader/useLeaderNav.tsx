@@ -1,9 +1,13 @@
+import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from "../../../../back/apps/index/rights";
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
   UseNavAction
 } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
+import { useSchedules } from "../../../complect/schedule-widget/useScheduleWidget";
+import useAuth from "../../index/useAuth";
 import { RoutePhasePoint } from "../../router/Router.model";
+import { useLeaderContexts } from "./components/contexts/useContexts";
 import GameList from "./components/games/GameList";
 import TheGame from "./components/games/TheGame";
 import GroupList from "./components/groups/GroupList";
@@ -20,6 +24,7 @@ import LeaderSchedule from "./LeaderSchedule";
 export const leaderNavGamePhase: RoutePhasePoint = ["game"];
 
 const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new NavigationConfig('leader', {
+  title: 'Лидер',
   root: (content) => <LeaderApplication content={content} />,
   rootPhase: "all",
   logo: "navigation-2",
@@ -28,6 +33,24 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
     return key === 'gamew'
       ? { path: ['all', 'games', 'game'], data: { gamew: val } }
       : alt.RootPhase;
+  },
+  useIsCanRead: (contextw: number) => {
+    const schedules = useSchedules();
+    const contexts = useLeaderContexts();
+    const auth = useAuth();
+    if (auth == null) return false;
+
+    const check = (contextw: number) => {
+      const schedule = schedules.list.find((schedule) => schedule.w === contextw);
+      if (schedule === undefined) return contextw !== undefined && auth.level > 10;
+      const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
+      if (myUser === undefined) return false;
+      return scheduleWidgetUserRights.checkIsHasRights(myUser.R, ScheduleWidgetUserRoleRight.Redact);
+    };
+
+    return contextw === undefined
+      ? !!contexts?.list?.some((ctx) => check(ctx.w))
+      : check(contextw);
   },
   routes: [
     {

@@ -1,32 +1,21 @@
 import { ReactNode } from "react";
 import { AppName } from "../../app/App.model";
-import { FreeRoutePath, RoutePhase, RoutePhasePoint, RoutePath } from "../../components/router/Router.model";
-import { EvaIconName } from "../eva-icon/EvaIcon";
-import { Exer } from "../exer/Exer";
+import { FreeRoutePath, RoutePath, RoutePhase, RoutePhasePoint } from "../../components/router/Router.model";
 import { qrCodeMaster } from "../qr-code/QRCodeMaster";
-import { INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, INavigationRouteRootItem, JumpByLink, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage } from "./Navigation.model";
+import { INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage } from "./Navigation.model";
 
-export class NavigationConfig<Storage, NavData = {}> implements INavigationConfig<NavigationStorage<Storage>, NavData> {
+
+export class NavigationConfig<Storage, NavData = {}> {
     appName: AppName;
-    root: (content: ReactNode) => JSX.Element;
-    rootPhase: RoutePhase | null;
-    routes: INavigationRouteRootItem<NavData>[];
-    exer?: Exer<NavigationStorage<Storage>>;
-    logo?: EvaIconName;
+    nav: INavigationConfig<NavigationStorage<Storage>, NavData>;
     endPoints: [RoutePhasePoint, RoutePhase[]][];
-    jumpByLink?: JumpByLink<NavData>;
     private _data?: Partial<NavData>;
     private onGeneralFooterButtonClicks: Record<RoutePhase, Record<string, () => void>> = {};
 
-    constructor(appName: AppName, { routes, root, rootPhase, exer, logo, jumpByLink }: INavigationConfig<NavigationStorage<Storage>, NavData>) {
+    constructor(appName: AppName, nav: INavigationConfig<NavigationStorage<Storage>, NavData>) {
         this.appName = appName;
-        this.root = root;
-        this.rootPhase = rootPhase;
-        this.routes = routes;
-        this.checkRoutes(routes);
-        this.exer = exer;
-        this.logo = logo;
-        this.jumpByLink = jumpByLink;
+        this.nav = nav;
+        this.checkRoutes(nav.routes);
         this.endPoints = this.fillEndPoints();
     }
 
@@ -82,7 +71,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
         if (path == null) return false;
 
         let item: INavigationRouteItem<NavData> | nil;
-        let items: INavigationRouteItem<NavData>[] = this.routes;
+        let items: INavigationRouteItem<NavData>[] = this.nav.routes;
 
         for (let phasei = 0; phasei < path.length; phasei++) {
             const currPhase = path[phasei];
@@ -134,17 +123,17 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
             slideBy === NavigationForEachPhaseSlideBy.Inline
             || slideBy === NavigationForEachPhaseSlideBy.InlineEach
         )
-            makeRoute([], this.routes, 0);
+            makeRoute([], this.nav.routes, 0);
 
         if (
             slideBy === NavigationForEachPhaseSlideBy.Each
             || slideBy === NavigationForEachPhaseSlideBy.EachInline
             || slideBy === NavigationForEachPhaseSlideBy.InlineEach
         )
-            makeRoute([], this.routes);
+            makeRoute([], this.nav.routes);
 
         if (slideBy === NavigationForEachPhaseSlideBy.EachInline)
-            makeRoute([], this.routes, 0);
+            makeRoute([], this.nav.routes, 0);
     }
 
     getJumpToRoute(currentRoute?: FreeRoutePath, phasePoint?: RoutePhasePoint): RoutePath | nil {
@@ -172,7 +161,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
 
     getGoToRoute(route: RoutePath, phase: RoutePhase | RoutePhase[], relativePoint?: RoutePhasePoint | nil): RoutePath | und {
         let item: INavigationRouteItem<NavData> | nil;
-        let items: INavigationRouteItem<NavData>[] = this.routes;
+        let items: INavigationRouteItem<NavData>[] = this.nav.routes;
         const newRoute: RoutePhase[] = [];
         const line = [route, phase].flat();
 
@@ -217,7 +206,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
 
     getGoBackRoute(route: RoutePath): RoutePhase[] {
         let item: INavigationRouteItem<NavData> | nil;
-        let items: INavigationRouteItem<NavData>[] | nil = this.routes;
+        let items: INavigationRouteItem<NavData>[] | nil = this.nav.routes;
         let line: INavigationRouteItem<NavData>[] = [];
 
         for (let phasei = 0; phasei < route.length; phasei++) {
@@ -261,7 +250,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
             }, null);
 
             return item
-                ? (item.accessRule == null || (this.exer != null && this.exer.actionAccessedOrNull(item.accessRule)))
+                ? (item.accessRule == null || (this.nav.exer != null && this.nav.exer.actionAccessedOrNull(item.accessRule)))
                     ? typeof item.node === 'function'
                         ? item.node({
                             outletContent: findContent(throwRoute, items),
@@ -275,7 +264,7 @@ export class NavigationConfig<Storage, NavData = {}> implements INavigationConfi
                 : null;
         };
 
-        const content = findContent(path, this.routes);
+        const content = findContent(path, this.nav.routes);
         if (content == null) onImpossible?.();
         return content;
     }

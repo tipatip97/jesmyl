@@ -398,7 +398,8 @@ const config: FilerAppConfig = {
                     setSystems: ['w'],
                     value: {
                         name: '{name}',
-                        participants: []
+                        mentors: [],
+                        members: [],
                     },
                     args: {
                         name: '#String',

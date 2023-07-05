@@ -1,5 +1,6 @@
 import { useBottomPopup } from "../../../complect/absolute-popup/useBottomPopup";
 import BrutalItem from "../../../complect/brutal-item/BrutalItem";
+import PhaseContainerConfigurer from "../../../complect/phase-container/PhaseContainerConfigurer";
 import { useLeaderCcontext } from "./components/contexts/useContexts";
 import { CurrentContextSelectPage } from "./components/CurrentContextSelectPage";
 import { GeneralMoreContenter } from "./GeneralMore";
@@ -8,9 +9,24 @@ import PhaseLeaderContainer from "./phase-container/PhaseLeaderContainer";
 import useLeaderNav from "./useLeaderNav";
 
 export default function LeaderGeneralPage() {
-  const { goTo } = useLeaderNav();
+  const { goTo, nav, goBack } = useLeaderNav();
   const [generalMoreNode, openGeneralMore] = useBottomPopup(GeneralMoreContenter);
   const ccontext = useLeaderCcontext();
+
+  if (!nav.nav.useIsCanRead?.(ccontext?.w) && ccontext)
+    return <PhaseContainerConfigurer
+      goBack={goBack}
+      withoutBackButton
+      headTitle="Лидер"
+      topClass=""
+      onMoreClick={() => openGeneralMore()}
+      content={<>
+        {generalMoreNode}
+        <div className="flex center margin-giant-gap-v color--ko">
+          Контент не доступен
+        </div>
+      </>}
+    />;
 
   if (ccontext === undefined)
     return <CurrentContextSelectPage />;

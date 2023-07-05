@@ -85,6 +85,7 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
   ];
 
 const gamerNavigation = new NavigationConfig<GamerStorage, GamerNavData>('gamer', {
+  title: 'Игрок',
   root: (content) => <GamerApp content={content} />,
   rootPhase: "gamer",
   logo: "cube",

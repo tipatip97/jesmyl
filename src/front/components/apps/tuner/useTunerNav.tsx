@@ -5,6 +5,7 @@ import TheTuner from "./TheTuner";
 import { TunerStorage } from "./Tuner.model";
 
 const tunerNavigation = new NavigationConfig<TunerStorage>('tuner', {
+  title: 'Тюнер',
   root: (content) => <>{content}</>,
   rootPhase: "tuner",
   logo: "music",
