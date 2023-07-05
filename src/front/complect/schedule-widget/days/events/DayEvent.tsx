@@ -56,7 +56,6 @@ export default function ScheduleWidgetDayEvent(props: {
     }, [isSelfRedact, switchIsExpand]);
 
     const isCanExpandEvent = rights.isCanReadTitles && !props.redact;
-    const isCanReadDetails = rights.myUser && rights.isCanReadTitles && !props.redact;
     const isExpandEvent = isExpand && isCanExpandEvent;
 
     if (!box) return <>Неизвестный шаблон события</>;
@@ -90,8 +89,8 @@ export default function ScheduleWidgetDayEvent(props: {
             >
                 <div className="left-part flex flex-gap">
                     <span
-                        className={'time-mark' + timerClassNamePlus + (isCanReadDetails ? ' pointer' : '')}
-                        onClick={isCanReadDetails
+                        className={'time-mark' + timerClassNamePlus}
+                        onClick={rights.isCanReadSpecials && rights.myUser && !props.redact
                             ? event => {
                                 event.stopPropagation();
                                 props.onClickOnTs();
