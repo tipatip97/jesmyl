@@ -290,7 +290,7 @@ export class Executer {
             try {
                 return value(realArgs, auth);
             } catch (error) {
-                return (defCb? defCb() : undefined) as never;
+                return (defCb ? defCb() : undefined) as never;
             }
         } else if (smylib.isStr(value)) {
             if (value.includes('{') && value.includes('}')) {
@@ -772,6 +772,16 @@ export class Executer {
 
     static setSystemsValues(list: any[], value: any, systems?: ActionBoxSetSystems[]) {
         systems?.forEach((mapperName) => {
+            if (smylib.isArr(value)) {
+                value.forEach((value) => {
+                    const result = actionBoxSetSystems[mapperName]?.(list);
+                    if (result !== undefined) {
+                        value[mapperName] = result;
+                        list = list.concat(value);
+                    }
+                });
+                return;
+            }
             const result = actionBoxSetSystems[mapperName]?.(list);
             if (result !== undefined) value[mapperName] = result;
         });
