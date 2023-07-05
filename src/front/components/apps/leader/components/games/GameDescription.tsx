@@ -34,7 +34,6 @@ export function GameDescription({ game, redactable }: { game: TeamGameImportable
                     if (lineParts !== null) {
                         const [, teamTitle, separation, numbers, , rest] = lineParts;
                         const num = +numbers.replace(/,/, '.');
-                        console.log(num);
                         if (max < num) max = num + 1;
                         if (min > num) min = num - 1;
 
