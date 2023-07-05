@@ -31,29 +31,35 @@
     margin-top: -1.7em;
 
     .markdownFieldContent {
+        ol, ul {
+            padding-inline-start: 15px;
 
-        >span,
-        >h1,
-        >h2,
-        >h3,
-        >h4,
-        >h5,
-        >h6,
-        >:first-child>[prop-src],
-        >:first-child>:first-child>[prop-src] {
-            &:first-child {
-                margin-left: var(--indent);
+            >li>ol {
+                list-style-type: lower-latin;
+
+                >li>ol {
+                    list-style-type: lower-roman;
+
+                    >li>ol {
+                        list-style-type: lower-greek;
+                    }
+                }
             }
         }
 
-        >:first-child>table:first-child,
-        >table:first-child {
-            margin-left: var(--indent);
-            width: calc(100% - var(--indent));
+        >:not(p, div),
+        >p:has([prop-src], table),
+        >div:has([prop-src], table) {
+            &:first-child {
+                margin-left: var(--indent);
+
+                &:not([prop-src]) {
+                    width: calc(100% - var(--indent));
+                }
+            }
         }
 
-
-        >div:first-child>p:first-child,
+        >*:first-child>p:first-child,
         >p:first-child {
             text-indent: var(--indent);
         }
