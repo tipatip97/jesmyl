@@ -3,8 +3,8 @@ import mylib, { MyLib } from "../my-lib/MyLib";
 const objMarker = '*';
 const objMarkerReg = new RegExp(`\\${objMarker}`);
 
-const stringEncodeValue = (value: any) => JSON.stringify(value).replace(/\*/g, '%2a').replace(/ /g, '*');
-const stringDecodeValue = (value: string) => JSON.parse(value.replace(/\*/g, ' ').replace(/%2a/g, '*'));
+const stringEncodeValue = (value: any) => JSON.stringify(value).replace(/\*/g, '%2a').replace(/ /g, '*').replace(/"/g, '%22');
+const stringDecodeValue = (value: string) => JSON.parse(value.replace(/\*/g, ' ').replace(/%2a/g, '*').replace(/%22/g, '"'));
 
 export default class LinkCoder<
     Args extends Record<string, string | any>,

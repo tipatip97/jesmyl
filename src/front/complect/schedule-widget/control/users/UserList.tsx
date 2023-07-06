@@ -32,7 +32,7 @@ export default function ScheduleWidgetUserList({
                 return {
                     user,
                     balance: scheduleWidgetUserRights.rightsBalance(user.R),
-                    _: user.alias + user.fio,
+                    _: '' + user.alias + user.fio,
                 };
             })
             .sort((a, b) => {
@@ -46,16 +46,18 @@ export default function ScheduleWidgetUserList({
     return <>
         <div className="margin-gap-v">{expandNode}</div>
         {isExpand && <div className="margin-big-gap-v margin-gap-l">
-            {!users.length && <div className="text-italic color--7">Список пуст</div>}
-            {users.map(({ user, balance }) => {
-                return <ScheduleWidgetUser
-                    key={user.mi}
-                    scope={scope}
-                    user={user}
-                    balance={balance}
-                    asUserPlusPrefix={asUserPlusPrefix}
-                />
-            })}
+            {users.length
+                ? users.map(({ user, balance }) => {
+                    return <ScheduleWidgetUser
+                        key={user.mi}
+                        scope={scope}
+                        user={user}
+                        balance={balance}
+                        asUserPlusPrefix={asUserPlusPrefix}
+                    />
+                })
+                : <div className="text-italic color--7">Список пуст</div>
+            }
         </div>}
     </>;
 }

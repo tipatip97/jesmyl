@@ -1,9 +1,11 @@
 import { exec } from 'child_process';
 import WebSocket, { WebSocketServer } from 'ws';
 import cmService from '../../apps/cm/service';
+import { indexService } from '../../apps/index/service';
 import { sequreMD5Passphrase, sokiWhenRejButTs } from '../../values';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
+import { ExecutionDict } from '../executer/Executer.model';
 import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
 import smylib, { SMyLib } from './complect/SMyLib';
@@ -139,7 +141,7 @@ export class SokiServer {
                         this.send({
                             pong: true,
                             requestId,
-                        });
+                        }, client);
                         return;
                     }
 
@@ -175,6 +177,7 @@ export class SokiServer {
                                 const auth = eventLogin && secretPassw && sokiAuther.authList?.find(({ login, passw }) => eventLogin === login && secretPassw === passw);
                                 if (auth) {
                                     capsule.auth = auth;
+                                    this.send({ authorized: true }, client);
                                     console.info(`Client ${auth.fio ?? '???'} connected`);
                                     if (auth.level !== eventData.auth.level)
                                         this.send({
@@ -190,7 +193,10 @@ export class SokiServer {
                                     errorMessage: 'Некорректные данные авторизации'
                                 }, client);
                             }
-                        } else console.info('Unknown client connected');
+                        } else {
+                            this.send({ authorized: false }, client);
+                            console.info('Unknown client connected');
+                        }
                         return;
                     }
 
@@ -244,9 +250,18 @@ export class SokiServer {
 
                         const services: SokiServicePack = {
                             cm: cmService,
+                            index: indexService,
                         };
 
-                        services[eventData.appName]?.(eventBody.service.key, eventBody.service.value)
+                        if (services[eventData.appName] === undefined) {
+                            this.send({
+                                requestId,
+                                service: {
+                                    key: service.key,
+                                    errorMessage: 'У данного приложения нет сервиса',
+                                }
+                            }, client);
+                        } else services[eventData.appName]?.(eventBody.service.key, eventBody.service.value, eventData, capsule, client)
                             .then((value) => {
                                 this.send({
                                     requestId,
@@ -276,64 +291,7 @@ export class SokiServer {
                         this.subscriptions.get(eventBody.unsubscribe)?.delete(client);
                     }
 
-                    if (eventBody.execs) {
-                        if (await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule?.auth.login === eventData.auth?.login) {
-                            const appConfig = filer.appConfigs[eventData.appName];
-
-                            if (!appConfig) return;
-
-                            const contents = filer.contents[eventData.appName];
-                            const realParents: Record<string, unknown> = {};
-                            SMyLib.entries(contents).forEach(([key, val]) => realParents[key] = val.data);
-                            const authLogin = eventData.auth?.login ?? '';
-                            const bag: Record<string, unknown> = {};
-
-                            Executer
-                                .execute(appConfig, realParents, eventBody.execs, capsule.auth)
-                                .then(async ({ fixes, replacedExecs, errorMessage, rules }) => {
-                                    const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
-                                    this.send(
-                                        {
-                                            requestId,
-                                            execs: {
-                                                appName: eventData.appName,
-                                                list: replacedExecs,
-                                                lastUpdate,
-                                            },
-                                            errorMessage,
-                                        },
-                                        fixes[0] === 'schedules'
-                                            ? (capsule, _, whenRejButTs) => {
-                                                const res = capsule.auth?.login === authLogin
-                                                    || appConfig.requirements['schedules']?.onCantRead?.(true, replacedExecs[0], rules[0], capsule.auth, bag, realParents.schedules, whenRejButTs);
-
-                                                return res === whenRejButTs ? whenRejButTs : res === true || res == null;
-                                            }
-                                            : eventData.appName === 'index'
-                                                ? () => true
-                                                : (capsule) => capsule.appName === eventData.appName,
-                                        client,
-                                        {
-                                            requestId,
-                                            execs: {
-                                                appName: eventData.appName,
-                                                list: [],
-                                                lastUpdate,
-                                            },
-                                            errorMessage,
-                                        });
-                                });
-                            return;
-                        } else this.send({
-                            requestId,
-                            execs: {
-                                appName: eventData.appName,
-                                list: [],
-                                lastUpdate: null,
-                            },
-                            errorMessage: 'Не авторизован'
-                        }, null, client);
-                    }
+                    if (eventBody.execs) this.execExecs(eventBody.execs, eventData, capsule, client, requestId);
 
                 });
 
@@ -341,6 +299,68 @@ export class SokiServer {
             });
 
         console.info('SokiServer started');
+    }
+
+    async execExecs(execs: ExecutionDict[], eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket, requestId: number | undefined) {
+        if (await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule.auth.login === eventData.auth?.login) {
+            const appConfig = filer.appConfigs[eventData.appName];
+
+            if (!appConfig) return;
+
+            const contents = filer.contents[eventData.appName];
+            const realParents: Record<string, unknown> = {};
+            SMyLib.entries(contents).forEach(([key, val]) => realParents[key] = val.data);
+            const authLogin = eventData.auth?.login ?? '';
+            const bag: Record<string, unknown> = {};
+
+            return Executer
+                .execute(appConfig, realParents, execs, capsule?.auth)
+                .then(async ({ fixes, replacedExecs, errorMessage, rules }) => {
+                    const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
+                    this.send(
+                        {
+                            requestId,
+                            execs: {
+                                appName: eventData.appName,
+                                list: replacedExecs,
+                                lastUpdate,
+                            },
+                            errorMessage,
+                        },
+                        fixes[0] === 'schedules'
+                            ? (capsule, _, whenRejButTs) => {
+                                const res = capsule.auth?.login === authLogin
+                                    || appConfig.requirements['schedules']?.onCantRead?.(true, replacedExecs[0], rules[0], capsule.auth, bag, realParents.schedules, whenRejButTs);
+
+                                return res === whenRejButTs ? whenRejButTs : res === true || res == null;
+                            }
+                            : eventData.appName === 'index'
+                                ? () => true
+                                : (capsule) => capsule.appName === eventData.appName,
+                        client,
+                        {
+                            requestId,
+                            execs: {
+                                appName: eventData.appName,
+                                list: [],
+                                lastUpdate,
+                            },
+                            errorMessage,
+                        });
+                });
+        } else {
+            this.send({
+                requestId,
+                execs: {
+                    appName: eventData.appName,
+                    list: [],
+                    lastUpdate: null,
+                },
+                errorMessage: 'Не авторизован'
+            }, null, client);
+
+            throw 'Не авторизован';
+        }
     }
 }
 

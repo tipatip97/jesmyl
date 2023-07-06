@@ -18,6 +18,7 @@ export const GeneralMoreContenter: BottomPopupContenter = (_, prepare) => {
     </>,
     prepare({
       items: [
+        leaderExer.actionAccessedOrNull("addContext") &&
         {
           title: 'Добавить личность',
           icon: "person-add-outline",

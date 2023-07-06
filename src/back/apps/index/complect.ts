@@ -1,3 +1,4 @@
+import smylib from "../../complect/soki/complect/SMyLib";
 
 const zeroEndTrimReg = /0+$/;
 
@@ -113,3 +114,7 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
 }
 
 const isEmptyR = (R: number | nil): R is nil => R === undefined || R === null || R < 2;
+
+export const packScheduleWidgetInviteLink = (schedulew: number, userMi: number) => {
+    return smylib.md5(schedulew + ':' + userMi);
+};

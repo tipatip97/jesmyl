@@ -1,3 +1,4 @@
+import WebSocket from 'ws';
 import { ExecutionDict, ExecutionReal } from "../executer/Executer.model";
 import { SimpleKeyValue } from "../filer/Filer.model";
 
@@ -18,6 +19,7 @@ export interface SokiServerEvent {
     requestId?: number,
     connect?: boolean,
     pong?: true,
+    authorized?: boolean,
     pull?: PullEventValue,
     authorization?: { type: 'login' | 'register' } & ({ ok: false, value: string } | ({ ok: true, value: LocalSokiAuth })),
     execs?: {
@@ -116,4 +118,5 @@ export interface AuthorizeInSystem {
     login: SokiAuthorizationData,
 }
 
-export type SokiServicePack = Partial<Record<SokiAppName, (key: string, value: any) => Promise<any>>>;
+export type SokiServiceCallback = (key: string, value: any, eventData: SokiClientEvent, capsule: SokiCapsule| undefined, client: WebSocket) => Promise<any>;
+export type SokiServicePack = Partial<Record<SokiAppName, SokiServiceCallback>>;

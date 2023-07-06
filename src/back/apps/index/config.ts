@@ -377,6 +377,11 @@ const config: FilerAppConfig = {
                                 args: {
                                     userMi: '#Number',
                                 },
+                                '<join>': {
+                                    action: 'joinUserByLink',
+                                    method: 'set_all',
+                                    value: { fio: '{*fio}', login: '{*login}' },
+                                },
                                 '/alias': {
                                     U: {
                                         args: {

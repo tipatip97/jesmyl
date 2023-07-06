@@ -30,7 +30,7 @@ export default function CopyTextButton({
             }}>
             {description}
             <EvaButton
-                name="copy-outline"
+                name="copy"
                 disabled={disabled}
             />
         </span>

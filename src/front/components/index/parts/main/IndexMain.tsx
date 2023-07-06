@@ -9,13 +9,13 @@ import useQRMaster from "../../../../complect/qr-code/useQRMaster";
 import ScheduleWidgetAlarm from "../../../../complect/schedule-widget/alarm/Alarm";
 import useApps from "../../../../complect/useApps";
 import navConfigurers from "../../../../shared/navConfigurers";
+import { RootState } from "../../../../shared/store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useAuth from "../../useAuth";
 import useConnectionState from "../../useConnectionState";
 import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
 import UserMore from "./UserMore";
-import { RootState } from "../../../../shared/store";
 
 const isNNull = (it: unknown) => it !== null;
 const currentAppSelector = (state: RootState) => state.index.currentApp;
@@ -36,12 +36,12 @@ export default function IndexMain() {
 
     if (navs == null) return null!;
     const { nav } = navs;
-    if (nav.nav.level !== undefined && (auth == null || nav.nav.level > auth.level)) return null!;
     if (nav.nav.useIsCanRead?.() === false) return null;
+    if (nav.nav.level !== undefined && (auth == null || nav.nav.level > auth.level)) return null!;
 
     return (
       <div
-        key={nav.appName}
+        key={appName}
         className="item flex"
         onClick={() => jumpToApp(nav.appName)}
       >

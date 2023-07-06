@@ -18,8 +18,8 @@ interface ResponseWaiter {
 export class SokiTrip {
     appName: SokiAppName = 'cm';
     ws?: WebSocket;
-    isConnected = false;
-    onConnectWatchers: Record<'is', ((isConnected: boolean) => void)[]> = { is: [] };
+    isAuthorized = false;
+    onAuthorizeWatchers: Record<'is', ((isConnected: boolean) => void)[]> = { is: [] };
     private responseWaiters: ResponseWaiter[] = [];
 
     constructor() {
@@ -27,8 +27,8 @@ export class SokiTrip {
     }
 
     onClose = () => {
-        Eventer.invoke(this.onConnectWatchers, 'is', false);
-        this.isConnected = false;
+        Eventer.invoke(this.onAuthorizeWatchers, 'is', false);
+        this.isAuthorized = false;
         setTimeout(() => this.start(), 1000);
     };
 
@@ -51,11 +51,14 @@ export class SokiTrip {
                 } else if (event.pull) this.updatedPulledData(event.pull);
 
                 if (event) {
+                    if (event.authorized !== undefined) {
+                        this.isAuthorized = true;
+                        Eventer.invoke(this.onAuthorizeWatchers, 'is', true);
+                    }
+
                     if (event.connect !== undefined) {
                         if (event.connect) {
-                            Eventer.invoke(this.onConnectWatchers, 'is', true);
-                            this.isConnected = true;
-                            this.send({ connect: true }, this.appName);
+                            this.sendForce({ connect: true }, this.appName);
                             this.pullCurrentAppData();
                         } else this.onUnauthorize();
                     }
@@ -97,9 +100,9 @@ export class SokiTrip {
         return this;
     }
 
-    onConnect(callback: (isConnected: boolean) => void) {
-        callback(this.isConnected);
-        return Eventer.listen(this.onConnectWatchers, 'is', callback);
+    onAuthorize(callback: (isConnected: boolean) => void, isRejectInitInvoke?: boolean) {
+        if (!isRejectInitInvoke) callback(this.isAuthorized);
+        return Eventer.listen(this.onAuthorizeWatchers, 'is', callback);
     }
 
     setLastUpdates(appName: SokiAppName, pullCortage: SokiClientUpdateCortage) {
@@ -158,29 +161,33 @@ export class SokiTrip {
         this.pullCurrentAppData();
     }
 
+    sendForce(body: SokiClientEventBody, appName?: SokiAppName, requestId?: number) {
+        try {
+            if (this.ws && this.ws.readyState === 1) {
+                const sendEvent: SokiClientEvent = {
+                    requestId,
+                    body,
+                    auth: indexStorage.getOr('auth', null),
+                    appName: appName ?? this.appName,
+                };
+
+                this.ws.send(JSON.stringify(sendEvent));
+            }
+        } catch (event) { }
+    }
+
     send(body: SokiClientEventBody, appName?: SokiAppName) {
         let requestId: number | und;
 
-        const send = () => {
-            try {
-                if (this.ws && this.ws.OPEN) {
-                    const sendEvent: SokiClientEvent = {
-                        requestId,
-                        body,
-                        auth: indexStorage.getOr('auth', null),
-                        appName: appName ?? this.appName,
-                    };
-
-                    this.ws.send(JSON.stringify(sendEvent));
-                } else setTimeout(() => send(), 5000);
-            } catch (e) {
-            }
+        const send = (_isConnected: boolean, theIdleMark?: unknown) => {
+            this.sendForce(body, appName, requestId);
+            return theIdleMark;
         };
 
         Promise.resolve()
             .then(() => {
-                if (this.isConnected) send();
-                else this.onConnect(send);
+                if (this.isAuthorized) send(true);
+                else this.onAuthorize(send, true);
             });
 
         return {

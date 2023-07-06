@@ -4,6 +4,7 @@ import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import ScheduleWidgetRegisterType from "./RegisterType";
+import { ScheduleWidgetUserByLinkInvite } from "./users/ByLinkInvite";
 import { ScheduleWidgetUserByQrRedactor } from "./users/ByQrRedactor";
 import ScheduleWidgetUserList from "./users/UserList";
 
@@ -19,7 +20,10 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                         scope={scope}
                         titlePostfix={rights.isCanRedactUsers
                             && (isExpand => isExpand
-                                && <ScheduleWidgetUserByQrRedactor scope={scope} />)
+                                && <span className="flex flex-gap">
+                                    <ScheduleWidgetUserByLinkInvite scope={scope} />
+                                    <ScheduleWidgetUserByQrRedactor scope={scope} />
+                                </span>)
                         }
                     />
                     <ScheduleWidgetRegisterType scope={scope} />
@@ -28,7 +32,7 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
             : <>
                 {header(<div>Участники</div>)}
                 {body(rights.schedule.ctrl.users.map((user) => {
-                    if (!user.R) return null;
+                    if (!user.R || user.login === undefined) return null;
                     return <div key={user.mi} className="margin-gap-v">
                         {user.alias && user.alias !== user.fio ? `${user.alias} (${user.fio})` : user.fio}
                     </div>

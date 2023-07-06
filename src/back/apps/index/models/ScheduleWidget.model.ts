@@ -114,8 +114,8 @@ type UnitMi = number;
 
 export interface IScheduleWidgetUser {
     mi: number,
-    login: string,
-    fio: string,
+    login?: string,
+    fio?: string,
     alias?: string,
     R?: number,
     li?: Record<Cati, UnitMi>,

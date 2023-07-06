@@ -45,6 +45,7 @@ export interface JesmylPassport {
 
 export interface IndexNavData {
     passport: JesmylPassport,
+    swInvite: string,
 }
 
 export interface UserMessage {

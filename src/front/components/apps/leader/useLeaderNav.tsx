@@ -34,23 +34,25 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       ? { path: ['all', 'games', 'game'], data: { gamew: val } }
       : alt.RootPhase;
   },
-  useIsCanRead: (contextw: number) => {
+  useIsCanRead: (topContextw: number) => {
     const schedules = useSchedules();
     const contexts = useLeaderContexts();
     const auth = useAuth();
+
     if (auth == null) return false;
+    if (contexts === undefined) return auth.level > 2;
 
     const check = (contextw: number) => {
       const schedule = schedules.list.find((schedule) => schedule.w === contextw);
-      if (schedule === undefined) return contextw !== undefined && auth.level > 10;
+      if (schedule === undefined) return topContextw !== undefined && auth.level > 10;
       const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
       if (myUser === undefined) return false;
       return scheduleWidgetUserRights.checkIsHasRights(myUser.R, ScheduleWidgetUserRoleRight.Redact);
     };
 
-    return contextw === undefined
-      ? !!contexts?.list?.some((ctx) => check(ctx.w))
-      : check(contextw);
+    return topContextw === undefined
+      ? !!contexts.list?.some((ctx) => check(ctx.w))
+      : check(topContextw);
   },
   routes: [
     {

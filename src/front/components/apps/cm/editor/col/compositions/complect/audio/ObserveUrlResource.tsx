@@ -4,13 +4,13 @@ import { CmMp3ContainsPageResult } from "../../../../../../../../../back/apps/cm
 import KeyboardInput from "../../../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import SendButton from "../../../../../../../../complect/SendButton";
-import useService from "../../../../../../../../complect/service/useService";
+import serviceMaster from "../../../../../../../../complect/service/serviceMaster";
 import { RootState } from "../../../../../../../../shared/store";
 
 const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
 
 export default function ObserveUrlResource({ onSuccess, availableWithTextQuery }: { onSuccess: (val: CmMp3ContainsPageResult) => void, availableWithTextQuery?: boolean }) {
-    const sendService = useService();
+    const sendService = serviceMaster();
     const [url, setUrl] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 

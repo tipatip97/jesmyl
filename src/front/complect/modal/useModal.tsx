@@ -82,7 +82,7 @@ export default function useModal(topContent?: (
                 }}>
                 <div className={'modal-screen-wrapper ' + typeClassName}>
                     <div className={'modal-screen ' + typeClassName + (' mood mood_' + config.mood)} onClick={(event) => event.stopPropagation()}>
-                        {topContent?.(modalElements, close) ?? config.content}
+                        {config.content ?? topContent?.(modalElements, close)}
                     </div>
                 </div>
             </div>

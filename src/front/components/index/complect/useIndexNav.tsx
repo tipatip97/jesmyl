@@ -1,7 +1,9 @@
 import React, { Suspense } from "react";
+import modalService from "../../../complect/modal/Modal.service";
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import { UseNavAction } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
+import serviceMaster from "../../../complect/service/serviceMaster";
 import Index from "../Index";
 import { IndexNavData, IndexStorage } from "../Index.model";
 import IndexSettings from "../parts/Settings";
@@ -15,6 +17,15 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
   title: 'Index',
   root: (content) => <Index content={content} />,
   rootPhase: null,
+  jumpByLink: (key, value, alt) => {
+    if (key === 'swInvite') {
+      serviceMaster('index')<string>(key, value)
+        .then((text) => modalService.alert(text, 'Успех'))
+        .catch((errorMessage) => modalService.alert(errorMessage))
+    }
+
+    return alt.Reject;
+  },
   routes: [
     {
       phase: ["other"],
