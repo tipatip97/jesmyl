@@ -762,7 +762,7 @@ export class Executer {
                         .reduce<string[]>((acc, [title, notes]) => acc.concat(`${title}:\n  ${notes.join(', ')}`), [])
                         .join('\n');
 
-                    resolve({ fixes, replacedExecs, errorMessage, rules });
+                    resolve({ fixes, replacedExecs, errorMessage: errorMessage || undefined, rules });
                 });
             } catch (error) {
                 reportFailError(reject, error);

@@ -109,10 +109,8 @@ const config: FilerAppConfig = {
 
                         if (tattMi >= 0) {
                             const tatt = bag.schedule.tatts?.find((tatt) => tatt.mi === tattMi);
-                            if (tatt !== undefined) {
-                                if (!scheduleWidgetUserRights.checkIsCan(user.R, tatt.R))
-                                    return whenRejButTs;
-                            }
+                            if (tatt !== undefined && !scheduleWidgetUserRights.checkIsCan(user.R, tatt.R))
+                                return whenRejButTs;
                         }
                     } catch (error) { }
                 }

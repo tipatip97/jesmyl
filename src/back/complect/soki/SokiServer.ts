@@ -90,7 +90,7 @@ export class SokiServer {
             if (errorFor != null) {
                 let freeRejEventStr: null | string = null;
 
-                const freeEvent = JSON.stringify({ ...data, errorMessage: null });
+                const freeEvent = JSON.stringify({ ...data, errorMessage: undefined });
                 if (client == null) this.capsules.forEach((_, cli) => cli.send(errorFor === cli ? event : freeEvent));
                 else this.capsules.forEach((capsule, cli) => {
                     const res = client(capsule, cli, sokiWhenRejButTs);
@@ -101,7 +101,7 @@ export class SokiServer {
                                 : rejEventStr);
                         else
                             cli.send(freeRejEventStr === null
-                                ? freeRejEventStr = JSON.stringify({ ...rejEvent, errorMessage: null })
+                                ? freeRejEventStr = JSON.stringify({ ...rejEvent, errorMessage: undefined })
                                 : freeRejEventStr);
                     } else if (res) cli.send(errorFor === cli ? event : freeEvent);
                 });

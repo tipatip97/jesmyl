@@ -15,7 +15,7 @@ export interface ExecutionDict<Value = any, Args = ExecutionArgs<any, Value>> {
 export interface ExecuteFeedbacks {
     fixes: string[],
     replacedExecs: ExecutionReal[],
-    errorMessage: string,
+    errorMessage: string | undefined,
     rules: ExecutionReal[],
 }
 
