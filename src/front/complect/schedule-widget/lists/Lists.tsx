@@ -25,9 +25,7 @@ export default function ScheduleWidgetLists({ scope, scheduleScope }: StrongComp
 
     const [modalNode, screen] = useFullContent(() => {
         return <>
-            <h3 className="flex flex-gap">
-                {listsTitle}
-            </h3>
+            <h3 className="flex flex-gap">{listsTitle}</h3>
             {isExpand && rights.schedule.lists.cats.map((cat, cati) => {
                 return <ScheduleWidgetListCategory
                     key={cati}

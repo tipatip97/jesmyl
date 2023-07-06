@@ -37,7 +37,7 @@ export default function ScheduleWidgetIconChange(props: {
             name={props.icon}
             postfix="Изменить иконку"
             onClick={() => screen()}
-            className="margin-gap-v"
+            className="flex-max margin-gap-v"
         />
     </>;
 }

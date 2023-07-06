@@ -67,7 +67,7 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
     {props.prefix === undefined && props.postfix === undefined
       ? icon
       : <span
-        className={'flex flex-gap flex-max ' + className + (props.className || '')}
+        className={'flex flex-gap ' + (className || 'flex-max ') + (props.className || '')}
         onClick={onClick}
       >{props.prefix}{icon}{props.postfix}</span>}
   </>;

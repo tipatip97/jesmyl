@@ -123,18 +123,32 @@ export default function ScheduleWidgetRole({
                         fieldName="user"
                         cud="D"
                         name="person-delete-outline"
-                        confirm={`${roleUser.alias || roleUser.fio} больше не ${role.title}?`}
+                        confirm={<>
+                            <span className="color--7">{roleUser.alias || roleUser.fio} </span>
+                            больше не
+                            <span className="color--7"> {role.title}</span>?
+                        </>}
                         postfix="Освободить роль"
-                        className="margin-gap-v"
+                        className="flex-max margin-gap-v"
                     />}
                     {roleUser
-                        ? <EvaButton name="sync" onClick={() => userSetModal.screen()} postfix="Заменить человека" className="margin-gap-v" />
-                        : <EvaButton name="person-add-outline" onClick={() => userSetModal.screen()} postfix="Назначить человека" className="margin-gap-v" />}
+                        ? <EvaButton
+                            name="sync"
+                            onClick={() => userSetModal.screen()}
+                            postfix="Заменить человека"
+                            className="flex-max margin-gap-v"
+                        />
+                        : <EvaButton
+                            name="person-add-outline"
+                            onClick={() => userSetModal.screen()}
+                            postfix="Назначить человека"
+                            className="flex-max margin-gap-v"
+                        />}
                     {role.mi > 0 && <EvaButton
                         name="grid-outline"
                         onClick={() => catSetModal.screen()}
                         postfix={`Категория ${rights.schedule.ctrl.cats[role.cat || 0] || 'Основное'}`}
-                        className="margin-gap-v"
+                        className="flex-max margin-gap-v"
                     />}
                 </>}
             </>)}</>

@@ -33,16 +33,14 @@ export default function ScheduleWidgetRoleList({ scope }: StrongComponentProps) 
     const [catExpands, setCatExpands] = useState([0]);
 
     return <>
-        <h3 className="flex between flex-gap">
-            {rolesExpandNode}
-        </h3>
+        <h3 className="flex between flex-gap">{rolesExpandNode}</h3>
         {isRolesExpand && categories.map((list, listi) => {
             const isExpand = catExpands.includes(listi);
             return <div key={listi}>
                 <EvaButton
                     name={isExpand ? 'chevron-up' : 'chevron-down'}
                     prefix={rights.schedule.ctrl.cats[listi]}
-                    className="color--4"
+                    className="flex-max color--4"
                     onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}
                 />
                 {isExpand && list.map((role) => {
