@@ -86,7 +86,6 @@ export default function ScheduleWidgetEventList({
             name={icon}
             postfix={postfix}
             onClick={() => screen()}
-            className="flex-max"
         />
     </>;
 }

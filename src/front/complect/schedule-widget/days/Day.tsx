@@ -104,7 +104,7 @@ export default function ScheduleWidgetDay({
                         />
                         <EvaButton
                             name="printer-outline"
-                            className="margin-gap-v"
+                            className="flex-max margin-gap-v"
                             onClick={() => renderComponentInNewWindow(
                                 (win) => <ScheduleWidgetPrintableDay
                                     day={day}
@@ -118,7 +118,7 @@ export default function ScheduleWidgetDay({
                     </>}
                     {!isRedact && <EvaButton
                         name="heart-outline"
-                        className={dayRating < 0 ? 'color--ko' : dayRating > 0 ? 'color--ok' : 'color--3'}
+                        className={'flex-max ' + (dayRating < 0 ? 'color--ko' : dayRating > 0 ? 'color--ok' : 'color--3')}
                         postfix={'Рейтинг дня: ' + dayRating}
                     />}
                 </div>}

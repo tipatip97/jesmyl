@@ -40,13 +40,13 @@ export function ScheduleWidgetDayEventEventActions({
         <EvaButton
             name="at"
             postfix="Редактировать шаблон события"
-            className="margin-gap-v"
+            className="flex-max margin-gap-v"
             onClick={() => modal.screen()}
         />
         <EvaButton
             name="crop"
             postfix="Вырезать событие"
-            className="margin-gap-v"
+            className="flex-max margin-gap-v"
             onClick={onEventCut}
         />
         {schedule.types && <StrongEvaButton
@@ -60,7 +60,7 @@ export function ScheduleWidgetDayEventEventActions({
                 titleBox={schedule.types[event.type]}
                 topicBox={event}
             />}
-            className="color--ko margin-gap-v"
+            className="flex-max color--ko margin-gap-v"
             mapExecArgs={(args) => {
                 return { ...args, eventMi: event.mi };
             }}
