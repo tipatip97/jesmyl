@@ -140,7 +140,7 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
                                 </span>
                                 {isRedact && isCanRedact && <EvaButton name="edit-outline" onClick={() => setWhoCani(whoCani)} />}
                             </div>}
-                            className="margin-gap-v"
+                            className="flex-max margin-gap-v"
                         />
                     })}
                 </div>
