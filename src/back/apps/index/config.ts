@@ -91,6 +91,7 @@ const config: FilerAppConfig = {
 
                 const user = bag.users.find(user => auth.login === user.login);
                 if (user === undefined) {
+                    if (rule.action === 'joinUserByLink') return isRead ? whenRejButTs : null;
                     if (scheduleWidgetRegTypeRights.checkIsHasRights(bag.schedule.ctrl.type, ScheduleWidgetRegType.Public))
                         return null;
                     return whenRejButTs;

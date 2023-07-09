@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 import { exec } from 'child_process';
 import WebSocket, { WebSocketServer } from 'ws';
 import cmService from '../../apps/cm/service';
@@ -138,10 +139,7 @@ export class SokiServer {
                     const eventBody = eventData.body;
 
                     if (eventBody.ping) {
-                        this.send({
-                            pong: true,
-                            requestId,
-                        }, client);
+                        this.send({ requestId, pong: true }, client);
                         return;
                     }
 
@@ -189,7 +187,7 @@ export class SokiServer {
                                         }, client);
                                 } else this.send({
                                     requestId,
-                                    connect: false,
+                                    unregister: true,
                                     errorMessage: 'Некорректные данные авторизации'
                                 }, client);
                             }
@@ -241,6 +239,7 @@ export class SokiServer {
                             const pull = filer.getContents(eventData.appName, eventBody.pullData, capsule?.auth);
                             if (pull.contents[0].length || pull.contents[1].length)
                                 this.send({ requestId, pull }, client);
+                            else this.send({ requestId }, client);
                         }
                         return;
                     }
@@ -301,7 +300,7 @@ export class SokiServer {
         console.info('SokiServer started');
     }
 
-    async execExecs(execs: ExecutionDict[], eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket, requestId: number | undefined) {
+    async execExecs(execs: ExecutionDict[], eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket, requestId?: string) {
         if (await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule.auth.login === eventData.auth?.login) {
             const appConfig = filer.appConfigs[eventData.appName];
 

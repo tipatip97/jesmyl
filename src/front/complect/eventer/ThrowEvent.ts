@@ -1,4 +1,4 @@
-import Eventer, { EventerCallback, theIdleMark } from "./Eventer";
+import Eventer, { EventerCallback, eventerAlt } from "./Eventer";
 
 type ThrowEventKeyDownKey = 'Escape';
 
@@ -41,7 +41,7 @@ class ThrowEventClass {
     };
 
     listenIsOnline = (cb: EventerCallback<boolean>) => {
-        cb(window.navigator?.onLine, theIdleMark);
+        cb(window.navigator?.onLine, eventerAlt);
         return Eventer.listen(this.windowEvents, 'is', cb);
     };
 

@@ -3,23 +3,29 @@ import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
 import { PullEventValue, SokiAppName, SokiClientEvent, SokiClientEventBody, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
-import Eventer from './complect/eventer/Eventer';
-import modalService from './complect/modal/Modal.service';
+import Eventer, { EventerCallback, EventerListeners, eventerAlt } from './complect/eventer/Eventer';
 import mylib from './complect/my-lib/MyLib';
 import indexStorage from './components/index/indexStorage';
 import { appStorage } from './shared/jstorages';
 
+export type ResponseWaiterCallback = (ok: ResponseWaiter['ok'], ko?: ResponseWaiter['ko']) => void;
+
 interface ResponseWaiter {
-    requestId: number,
+    requestId: string,
     ok: (response: SokiServerEvent) => void,
     ko?: (errorMessage: string) => boolean | void,
 }
+
+type Waiters = EventerListeners<'auth', boolean>;
+
+let pingTimeout: TimeOut;
+const invokeOnceResult = [eventerAlt.invokeOnce, eventerAlt.passPropagation];
 
 export class SokiTrip {
     appName: SokiAppName = 'cm';
     ws?: WebSocket;
     isAuthorized = false;
-    onAuthorizeWatchers: Record<'is', ((isConnected: boolean) => void)[]> = { is: [] };
+    waiters: Waiters = { auth: [] };
     private responseWaiters: ResponseWaiter[] = [];
 
     constructor() {
@@ -27,56 +33,47 @@ export class SokiTrip {
     }
 
     onClose = () => {
-        Eventer.invoke(this.onAuthorizeWatchers, 'is', false);
+        Eventer.invoke(this.waiters, 'auth', false);
         this.isAuthorized = false;
         setTimeout(() => this.start(), 1000);
     };
 
+    onConnect = () => this.sendForce({ connect: true }, this.appName);
+
     start() {
-        const ws = this.ws = new WebSocket(`wss://${environment.dns}/websocket/`);
+        this.ws = new WebSocket(`wss://${environment.dns}/websocket/`);
 
-        ws.addEventListener('close', this.onClose);
+        this.ws.onclose = this.onClose;
+        this.ws.onopen = this.onConnect;
 
-        ws.addEventListener('message', ({ data }: { data: string }) => {
+        this.ws.onmessage = ({ data }: { data: string }) => {
             try {
                 const event: SokiServerEvent = JSON.parse(data);
                 console.info(event);
 
-                const waiter = event.requestId && this.responseWaiters.find(({ requestId }) => event.requestId === requestId);
+                const waiter = event.requestId && this.responseWaiters.find((waiter) => event.requestId === waiter.requestId);
                 if (waiter) {
-                    this.responseWaiters = this.responseWaiters.filter(w => w !== waiter);
+                    this.responseWaiters = this.responseWaiters.filter((w) => w.requestId !== waiter.requestId);
 
                     if (event.errorMessage) waiter.ko?.(event.errorMessage);
                     else waiter.ok(event);
                 } else if (event.pull) this.updatedPulledData(event.pull);
 
                 if (event) {
-                    if (event.authorized !== undefined) {
-                        this.isAuthorized = true;
-                        Eventer.invoke(this.onAuthorizeWatchers, 'is', true);
+                    if (event.unregister) {
+                        this.onUnregister();
+                        return;
                     }
 
-                    if (event.connect !== undefined) {
-                        if (event.connect) {
-                            this.sendForce({ connect: true }, this.appName);
-                            this.pullCurrentAppData();
-                        } else this.onUnauthorize();
+                    if (event.authorized !== undefined) {
+                        this.isAuthorized = true;
+                        Eventer.invoke(this.waiters, 'auth', true);
+                        this.pullCurrentAppData();
                     }
 
                     if (event.system) {
                         if (event.system.name === 'reloadFiles') this.pullCurrentAppData();
-                        if (event.system.name === 'restartWS') {
-                            const { ok, message, error } = event.system as never;
-                            modalService.alert(
-                                <>
-                                    {ok
-                                        ? <div style={{ color: 'green' }}>Ok</div>
-                                        : <div style={{ color: 'red' }}>Error</div>
-                                    }
-                                    <div>{message || error}</div>
-                                </>
-                            );
-                        }
+                        if (event.system.name === 'restartWS') { }
                     }
 
                     if (event.execs) {
@@ -95,14 +92,21 @@ export class SokiTrip {
                     if (event.statistic) indexStorage.refreshAreas(['statistic'], event as never);
                 }
             } catch (e) { }
-        });
+        };
 
         return this;
     }
 
-    onAuthorize(callback: (isConnected: boolean) => void, isRejectInitInvoke?: boolean) {
-        if (!isRejectInitInvoke) callback(this.isAuthorized);
-        return Eventer.listen(this.onAuthorizeWatchers, 'is', callback);
+    onAuthorize(callback: EventerCallback<boolean>, isRejectInitInvoke?: boolean) {
+        return Eventer.listen(
+            this.waiters,
+            'auth',
+            (is, alt) => {
+                callback(is, alt);
+                return invokeOnceResult;
+            },
+            isRejectInitInvoke !== true ? this.isAuthorized : undefined
+        );
     }
 
     setLastUpdates(appName: SokiAppName, pullCortage: SokiClientUpdateCortage) {
@@ -117,7 +121,7 @@ export class SokiTrip {
         });
     }
 
-    onUnauthorize() {
+    onUnregister() {
         indexStorage.rem('auth');
         indexStorage.rem('updateRequisites');
     }
@@ -161,9 +165,9 @@ export class SokiTrip {
         this.pullCurrentAppData();
     }
 
-    sendForce(body: SokiClientEventBody, appName?: SokiAppName, requestId?: number) {
+    sendForce(body: SokiClientEventBody, appName?: SokiAppName, requestId?: string) {
         try {
-            if (this.ws && this.ws.readyState === 1) {
+            if (this.ws && this.ws.readyState === this.ws.OPEN) {
                 const sendEvent: SokiClientEvent = {
                     requestId,
                     body,
@@ -176,27 +180,27 @@ export class SokiTrip {
         } catch (event) { }
     }
 
-    send(body: SokiClientEventBody, appName?: SokiAppName) {
-        let requestId: number | und;
-
-        const send = (_isConnected: boolean, theIdleMark?: unknown) => {
-            this.sendForce(body, appName, requestId);
-            return theIdleMark;
-        };
+    send = (body: SokiClientEventBody, appName?: SokiAppName): { on: ResponseWaiterCallback } => {
+        let requestId: string | und;
 
         Promise.resolve()
             .then(() => {
-                if (this.isAuthorized) send(true);
-                else this.onAuthorize(send, true);
+                if (this.isAuthorized) this.sendForce(body, appName, requestId);
+                else this.onAuthorize(() => this.sendForce(body, appName, requestId), true);
             });
 
         return {
-            on: (ok: ResponseWaiter['ok'], ko?: ResponseWaiter['ko']) => {
-                requestId = +('' + (Date.now() + Math.random()));
+            on: (ok, ko) => {
+                requestId = '' + Date.now() + Math.random();
                 this.responseWaiters.push({ requestId, ok, ko });
             },
         };
-    }
+    };
+
+    ping: ResponseWaiterCallback = (on, ko) => {
+        clearTimeout(pingTimeout);
+        pingTimeout = setTimeout(() => this.send({ ping: true }).on(on, ko), 0);
+    };
 }
 
 export const soki = new SokiTrip().start();

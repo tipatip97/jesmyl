@@ -18,23 +18,21 @@ const itNNull = (it: unknown) => it !== null;
 
 
 const makeNextDayFirstEventNode = (scheduleTitle: string | und, nextDay: IScheduleWidgetDay | und, types: ScheduleWidgetDayListItemTypeBox[], now: number, dayFinishMs: number) => {
-    if (now > dayFinishMs) {
-        if (nextDay !== undefined && nextDay.list[0] !== undefined)
-            return <>
-                {'Завтра '}
-                {types[nextDay.list[0].type].title}
-                {' в '}
-                {ScheduleWidgetCleans.computeDayWakeUpTime(nextDay.wup, 'string')}
-            </>;
-    } else return <div>
+    if (now > dayFinishMs && nextDay !== undefined && nextDay.list[0] !== undefined)
+        return <>
+            {'Завтра '}
+            {types[nextDay.list[0].type].title}
+            {' в '}
+            {ScheduleWidgetCleans.computeDayWakeUpTime(nextDay.wup, 'string')}
+        </>;
+
+    return <div>
         {scheduleTitle && <div className="color--7">{scheduleTitle}</div>}
         <div className="flex flex-gap">
             Это был последний день
             <EvaIcon name="smiling-face-outline" />
         </div>
     </div>;
-
-    return null;
 };
 
 export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => void }) {
@@ -194,8 +192,7 @@ export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => v
                                 const nextEventType = nextEvent && currSchWr.types[nextEvent.type];
 
                                 if (event !== events[currEventi] && nextEvent == null) {
-                                    return makeNextDayFirstEventNode(currSchWr.sch.title, currSchWr.days[currDayi + 1], currSchWr.types, now, dayFinishMs)
-                                        ?? <div>Больше событий нет</div>;
+                                    return makeNextDayFirstEventNode(currSchWr.sch.title, currSchWr.days[currDayi + 1], currSchWr.types, now, dayFinishMs);
                                 }
 
                                 return <div>

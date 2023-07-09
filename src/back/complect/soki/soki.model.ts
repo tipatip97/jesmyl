@@ -16,8 +16,9 @@ export interface SokiCapsule {
 }
 
 export interface SokiServerEvent {
-    requestId?: number,
+    requestId?: string,
     connect?: boolean,
+    unregister?: true,
     pong?: true,
     authorized?: boolean,
     pull?: PullEventValue,
@@ -69,7 +70,7 @@ export interface SokiStatistic {
 }
 
 export interface SokiClientEvent {
-    requestId?: number,
+    requestId?: string,
     body: SokiClientEventBody,
     auth: LocalSokiAuth | null,
     appName: SokiAppName,

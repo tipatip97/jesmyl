@@ -14,11 +14,10 @@ export default function useConnectionState() {
     useEffect(() => {
         if (isFocused) {
             const to = setTimeout(() => setIsConnected(false), 500);
-            soki.send({ ping: true })
-                .on(() => {
-                    clearTimeout(to);
-                    setIsConnected(true);
-                });
+            soki.ping(() => {
+                clearTimeout(to);
+                setIsConnected(true);
+            });
 
             return () => clearTimeout(to);
         }
