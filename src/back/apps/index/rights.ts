@@ -24,31 +24,37 @@ const textList: ScheduleWidgetRightTexts<ScheduleWidgetUserRoleRight>[] = [
     {
         id: ScheduleWidgetUserRoleRight.Read,
         title: 'Чтение',
+        role: ['Наблюдатель', 'Наблюдателя'],
         description: ['Базовый доступ'],
     },
     {
         id: ScheduleWidgetUserRoleRight.ReadTitles,
         title: 'Чтение текстов',
+        role: ['Участник', 'Участника'],
         description: ['Доступ к темам и описаниям'],
     },
     {
         id: ScheduleWidgetUserRoleRight.ReadSpecials,
         title: 'Спец. события',
+        role: ['Суперучастник', 'Суперучастника'],
         description: ['Доступ к специальным событиям'],
     },
     {
         id: ScheduleWidgetUserRoleRight.Redact,
         title: 'Редактирование',
+        role: ['Редактор', 'Редактора'],
         description: ['Редактирование чего-либо'],
     },
     {
         id: ScheduleWidgetUserRoleRight.RedactUsers,
         title: 'Редактирование участников',
+        role: ['Администратор', 'Администратора'],
         description: ['Добавление, выдача прав'],
     },
     {
         id: ScheduleWidgetUserRoleRight.TotalRedact,
         title: 'Полный доступ',
+        role: ['Управляющий', 'Управляющего'],
         description: ['Выдача прав, просмотр спец. информации'],
     },
 ];

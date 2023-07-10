@@ -163,6 +163,7 @@ const config: FilerAppConfig = {
                         }
 
                         return {
+                            title: '',
                             app: schedule.app,
                             w: schedule.w,
                             lists: emptyLists,

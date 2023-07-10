@@ -27,13 +27,15 @@ export default function useApps() {
             value?: NavData[Key]
         ) => {
             const jump = (phase?: RoutePathVariated<NavData>) => {
-                soki.setAppName(appName);
-                soki.onAppChange(appName);
-                dispatch(di.setCurrentApp(appName));
+                if (appName !== 'index') {
+                    soki.setAppName(appName);
+                    soki.onAppChange(appName);
+                    dispatch(di.setCurrentApp(appName));
+                }
                 const rootPhase = appConfigs[appName].nav.nav.rootPhase;
                 if (rootPhase || phase) {
                     appConfigs[appName].navigate(phase ?? [rootPhase!]);
-                    appConfigs.index.navigate(null, false);
+                    if (appName !== 'index') appConfigs.index.navigate(null, false);
                 }
             };
 
@@ -47,7 +49,7 @@ export default function useApps() {
                 RootPhase: ['ROOT_PHASE']
             };
 
-            const jumpRoute = appConfigs[appName].nav.nav.jumpByLink?.(key as never, value as never, alt);
+            const jumpRoute = appConfigs[appName].nav.nav.jumpByLink?.[key]?.(value, key, alt);
 
             if (jumpRoute === alt.Reject) return;
             else if (jumpRoute === alt.RootPhase) jump();

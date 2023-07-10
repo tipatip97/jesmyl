@@ -26,7 +26,7 @@ export interface IScheduleWidgetListCat<EvaIconName> {
 export interface IScheduleWidget<EvaIconName> {
     w: number,
     start: number,
-    title?: string,
+    title: string,
     topic?: string,
     dsc?: string,
     days?: IScheduleWidgetDay[],

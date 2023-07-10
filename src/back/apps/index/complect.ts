@@ -10,6 +10,7 @@ export interface ScheduleWidgetRightTexts<Right> {
     description?: [string, string?],
     always?: boolean,
     hidden?: boolean,
+    role?: string[],
 }
 
 export class ScheduleWidgetRightsCtrl<Right extends number = number> {

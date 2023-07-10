@@ -14,13 +14,15 @@ const schedulesSelector = (state: RootState) => state.index.schedules;
 
 export const useSchedules = () => useSelector(schedulesSelector);
 
-export default function useScheduleWidget(schedulew?: number) {
+export default function useScheduleWidget(schedulew?: number, schedule?: IScheduleWidget) {
     const schedules = useSchedules();
 
     const ret = {
-        schedule: schedulew === undefined
-            ? undefined
-            : schedules.list.find(({ w }) => w === schedulew),
+        schedule: schedule === undefined
+            ? schedulew === undefined
+                ? undefined
+                : schedules.list.find(({ w }) => w === schedulew)
+            : schedule,
     };
 
     return ret;
@@ -30,6 +32,7 @@ export const ScheduleWidgetAppAttsContext = React.createContext<[ScheduleWidgetA
 export const useScheduleWidgetAppAttsContext = () => useContext(ScheduleWidgetAppAttsContext);
 
 export const defaultSchwduleWidget: IScheduleWidget = {
+    title: '',
     app: 'index',
     ctrl: {
         cats: [],

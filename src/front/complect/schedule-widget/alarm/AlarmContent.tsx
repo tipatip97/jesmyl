@@ -35,7 +35,13 @@ const makeNextDayFirstEventNode = (scheduleTitle: string | und, nextDay: ISchedu
     </div>;
 };
 
-export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => void }) {
+export default function ScheduleWidgetAlarmContent({
+    onGoTo,
+    observeSchw,
+}: {
+    onGoTo: () => void,
+    observeSchw?: number,
+}) {
     const schedules = useSchedules();
     const now = Date.now();
     const [isFullOpen, setIsFullOpen] = useState(false);
@@ -55,10 +61,8 @@ export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => v
         return [...schedules.list]
             .sort((a, b) => a.start - b.start)
             .map(sch => {
-                if (!sch.days?.length) return null!;
-                const lastFullDayIndex = mylib.findLastIndex(sch.days, (day) => day.list.length);
-                if (lastFullDayIndex === null) return null!;
-                const days = sch.days.slice(0, lastFullDayIndex + 1) ?? [];
+                const lastFullDayIndex = mylib.findLastIndex(sch.days, (day) => day.list.length) ?? -1;
+                const days = sch.days?.slice(0, lastFullDayIndex + 1) ?? [];
                 const types = sch.types ?? [];
                 const dayStartMsList = days.map((day) => {
                     return ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number');
@@ -81,17 +85,38 @@ export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => v
             .filter(itNNull);
     }, [schedules.list]);
 
-    const [node, fullValue, isCanOpenFull]: [ReactNode, FullContentValue | null, true | und] = useMemo(() => {
+    const [node, fullValue, isCanOpenFull, observeSchedule]: [ReactNode, FullContentValue | null, true | und, typeof scheduleList[number] | und] = useMemo(() => {
         let node = null;
         let fullValue: FullContentValue | null = null;
         let isCanOpenFull: true | und = undefined;
+        let schWr;
+
+        if (observeSchw !== undefined) {
+            schWr = scheduleList.find((wr) => wr.sch.w === observeSchw);
+            if (schWr === undefined)
+                node = <span className="color--ko">Расписание не найдено</span>;
+            else if (schWr.days.length === 0)
+                node = <div>
+                    <ScheduleWidgetTopicTitle
+                        titleBox={schWr.sch!}
+                        altTitle="Расписание"
+                        topicBox={schWr.sch}
+                    />
+                    <div className="text-italic">Составляется</div>
+                </div>;
+        }
 
         if (node === null) {
-            const currSchWr = scheduleList.find((box) => {
+            const filter: (box: typeof scheduleList[number]) => boolean = (box) => {
                 if (box.days.length === 0) return false;
                 const endMs = box.startMs + box.days.length * msInDay + box.lastDayTm;
                 return endMs > now && box.startMs < now;
-            });
+            };
+            const currSchWr = schWr === undefined
+                ? scheduleList.find(filter)
+                : filter(schWr)
+                    ? schWr
+                    : undefined;
 
             if (currSchWr) {
                 const currDayi = currSchWr.days.findIndex((_, dayi) => {
@@ -225,7 +250,12 @@ export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => v
         }
 
         if (node === null) {
-            const willSchWr = scheduleList.find((box) => box.startMs > now);
+            const willSchWr = schWr === undefined
+                ? scheduleList.find((box) => box.startMs > now)
+                : schWr.startMs > now
+                    ? schWr
+                    : undefined;
+
             if (willSchWr) {
                 const nowDate = new Date();
                 const startDate = new Date(willSchWr.startMs);
@@ -242,7 +272,7 @@ export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => v
                         ? (msTo / msInHour) < 1
                             ? <>скоро начало</>
                             : <>до начала {ScheduleWidgetCleans.hoursToText(Math.floor(msTo / msInHour))}</>
-                        : startDate.getDate() === nowDate.getDate() - 1
+                        : (startDate.getDate() === nowDate.getDate() - 1 && startDate.getFullYear() === nowDate.getFullYear())
                             ? <>начало завтра</>
                             : <>до начала {ScheduleWidgetCleans.daysToText(Math.floor(msTo / msInDay) + 1)}
                             </>}
@@ -252,8 +282,8 @@ export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => v
 
         if (!fullValue) setIsFullOpen(false);
 
-        return [node, fullValue, isCanOpenFull];
-    }, [now, scheduleList]);
+        return [node, fullValue, isCanOpenFull, schWr];
+    }, [now, scheduleList, observeSchw]);
 
     const [fullNode] = useFullContent(fullValue, isFullOpen ? 'open' : null, setIsFullOpen);
 
@@ -265,9 +295,22 @@ export default function ScheduleWidgetAlarmContent({ onGoTo }: { onGoTo: () => v
         >
             <div className="flex">
                 <EvaIcon name="calendar" className="margin-big-gap" />
-                {node ?? <>Мероприятий нет</>}
+                {node ?? (observeSchedule !== undefined
+                    ? <div>
+                        <ScheduleWidgetTopicTitle
+                            titleBox={observeSchedule.sch!}
+                            altTitle="Расписание"
+                            topicBox={observeSchedule.sch}
+                        />
+                        <span className="text-italic">Мероприятие прошло</span>
+                    </div>
+                    : <>Мероприятий нет</>)}
             </div>
-            <EvaButton name="list" onClick={() => onGoTo()} />
+            <EvaButton
+                name={observeSchw !== undefined ? 'arrow-forward' : 'list'}
+                className="margin-gap"
+                onClick={() => onGoTo()}
+            />
         </div>
     </>;
 }

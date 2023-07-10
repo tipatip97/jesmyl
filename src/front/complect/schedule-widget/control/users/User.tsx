@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { packScheduleWidgetInviteLink } from "../../../../../back/apps/index/complect";
-import CopyTextButton from "../../../CopyTextButton";
+import { scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";
@@ -25,9 +25,17 @@ export default function ScheduleWidgetUser({
         ? user.alias || <span className="color--7 text-italic">Ссылка</span>
         : `${user.alias && user.alias !== user.fio ? `${user.alias} (${user.fio})` : user.fio} `;
 
-    const { modalNode, screen } = useModal(({ header, body }) => {
+    const { modalNode, screen, toast } = useModal(({ header, body }) => {
         return <>
-            {header(<>{user.fio && 'Участник'} {userName}</>)}
+            {header(<>
+                {userName}
+                {' - '}
+                {balance < 0
+                    ? user.R == null
+                        ? 'Новый'
+                        : 'в блоке'
+                    : scheduleWidgetUserRights.texts[balance]?.role?.[0] || 'Неизвестный'}
+            </>)}
             {body(<ScheduleWidgetUserEdit scope={scope} user={user} />)}
         </>;
     });
@@ -37,24 +45,39 @@ export default function ScheduleWidgetUser({
             : <>
                 <span className="flex flex-gap">
                     {userName}
-                    {balance !== undefined && <span className="color--7">
+                    {balance !== undefined && <span className="flex flex-gap color--7">
 
                         {user.login === undefined
                             ? <>
-                                {balance < 0 ? null : balance}
                                 <EvaIcon name="link-2" className="color--7 icon-scale-05" />
+                                {balance < 0 ? null : balance}
                             </>
                             : balance < 0 ? <EvaIcon name="person-delete-outline" /> : balance}
                     </span>}
                 </span>
                 <span className="flex flex-gap">
-                    {user.login === undefined && <CopyTextButton
-                        className="flex between full-width"
-                        text={crossApplicationLinkCoder.encode({
-                            appName: 'index',
-                            key: 'swInvite',
-                            value: packScheduleWidgetInviteLink(rights.schedule.w, user.mi),
-                        })}
+                    {user.login === undefined && <EvaButton
+                        className="flex between color--7 full-width"
+                        name="link-2"
+                        onClick={() => {
+                            if (balance < 1) {
+                                toast('Необходимо выдать права');
+                                return;
+                            }
+                            const levelTitle = scheduleWidgetUserRights.texts[balance].role?.[1];
+
+                            navigator.share({
+                                url: crossApplicationLinkCoder.encode({
+                                    appName: 'index',
+                                    key: 'swInvite',
+                                    value: packScheduleWidgetInviteLink(rights.schedule.w, user.mi),
+                                }),
+                                title: `Приглашение ${levelTitle}${user.alias ? ` - ${user.alias}` : ''}`,
+                                text: user.alias
+                                    ? `${user.alias}, приветствую! Приглашаю вас в качестве ${levelTitle} на мероприятие ${rights.schedule.title}`
+                                    : undefined,
+                            })
+                        }}
                     />}
                     <EvaButton
                         name="edit-outline"

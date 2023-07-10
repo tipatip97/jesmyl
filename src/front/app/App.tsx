@@ -28,7 +28,7 @@ function App() {
   const appName = useSelector(currentAppSelector);
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const { goBack, registerBackAction } = navConfigurers[appName || 'index']();
+  const { goBack, registerBackAction } = navConfigurers[appName]();
   const { jumpToApp } = useApps();
 
   useEffect(() => {

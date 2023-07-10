@@ -40,12 +40,10 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
   rootPhase: "all",
   logo: "book-open",
   exer: cmExer,
-  jumpByLink: (key, value, alt) =>
-    key === 'selectedComws'
-      ? { path: ['lists', 'selected'], data: { selectedComws: value as number[] } }
-      : key === 'ccomw'
-        ? { path: ['all', 'com'], data: { ccomw: value as number } }
-        : alt.RootPhase,
+  jumpByLink: {
+    selectedComws: selectedComws => ({ path: ['lists', 'selected'], data: { selectedComws } }),
+    ccomw: ccomw => ({ path: ['all', 'com'], data: { ccomw } }),
+  },
   routes: [
     {
       icon: "list",

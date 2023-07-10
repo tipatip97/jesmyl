@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import useAuth from "../../components/index/useAuth";
+import EvaButton from "../eva-icon/EvaButton";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { useIsRememberExpand } from "../expand/useIsRememberExpand";
 import mylib from "../my-lib/MyLib";
+import { crossApplicationLinkCoder } from "../qr-code/QRCodeMaster";
 import StrongButton from "../strong-control/StrongButton";
 import StrongControlDateTimeExtracter from "../strong-control/StrongDateTimeExtracter";
 import StrongEvaButton from "../strong-control/StrongEvaButton";
@@ -25,9 +27,11 @@ const msInMin = mylib.howMs.inMin;
 export default function ScheduleWidget({
     schedule,
     rights: topRights,
+    altActionsNode,
 }: {
     schedule?: IScheduleWidget,
     rights?: ScheduleWidgetRights,
+    altActionsNode?: ReactNode,
 }) {
     const selfScope = schedule ? takeScheduleStrongScopeMaker(schedule.w) : '';
     const auth = useAuth();
@@ -43,7 +47,26 @@ export default function ScheduleWidget({
             altTitle="Расписание"
             topicBox={schedule}
         />,
-        (isExpand) => isExpand && editIcon
+        (isExpand) => isExpand
+            ? <span className="flex flex-gap">
+                <EvaButton
+                    name="link-2"
+                    onClick={() => {
+                        if (schedule)
+                            navigator.share({
+                                url: crossApplicationLinkCoder.encode({
+                                    appName: 'index',
+                                    key: 'schw',
+                                    value: schedule.w,
+                                }),
+                                title: schedule.title,
+                                text: `Расписание ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`,
+                            });
+                    }}
+                />
+                {editIcon}
+            </span>
+            : altActionsNode
     );
 
     const date = useMemo(() => new Date(schedule?.start || Date.now()), [schedule?.start]);

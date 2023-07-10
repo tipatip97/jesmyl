@@ -24,10 +24,9 @@ export interface JumpByLinkAlt {
     RootPhase: ['ROOT_PHASE'],
 }
 
-export type JumpByLink<
-    NavData,
-    DataName extends keyof NavData = keyof NavData
-> = (key: DataName, value: NavData[DataName] | und, alt: JumpByLinkAlt) => RoutePathVariated<NavData> | JumpByLinkAlt[keyof JumpByLinkAlt];
+type JumpByLink<NavData> = Partial<{
+    [Key in keyof NavData]: (value: NavData[Key], key: Key, alt: JumpByLinkAlt) => RoutePathVariated<NavData> | JumpByLinkAlt[keyof JumpByLinkAlt];
+}>;
 
 export interface INavigationConfig<Storage extends ExerStorage, NavData> {
     root: (content: ReactNode) => JSX.Element,
