@@ -1,5 +1,7 @@
 .ScheduleWidgetDay {
-    margin-top: 50px;
+    &:not(.past) {
+        margin-top: 50px;
+    }
 
     &.past {
         filter: grayscale(.7);

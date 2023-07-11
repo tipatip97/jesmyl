@@ -32,7 +32,7 @@ export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigu
                     key={schedule.w}
                     schedule={schedule}
                     altActionsNode={<EvaButton
-                        name="eye-outline"
+                        name="bell-outline"
                         onClick={() => props.onScheduleObserve(schedule)}
                     />}
                 />;

@@ -27,9 +27,9 @@ export default function ScheduleWidgetAlarmScheduleList() {
             appName={schedule.app}
             schedulew={schedule.w}
             schedule={schedule}
-            title="Расписание"
+            title={'Расписание ' + schedule.title}
             altActionsNode={<EvaButton
-                name="eye-off-outline"
+                name="bell-off-outline"
                 onClick={() => setAppRouteData({ schw: undefined })}
             />}
         />;
