@@ -1,13 +1,13 @@
 import { useState } from "react";
-import useModal from "../../../../../../../complect/modal/useModal";
+import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
+import useToast from "../../../../../../../complect/modal/useToast";
 import { TeamGameImportable } from "../../../../Leader.model";
+import { LeaderCleans } from "../../../LeaderCleans";
 import { GameTeamImportable } from "../../teams/GameTeams.model";
 import { GameTimerImportable, GameTimerMode } from "../GameTimer.model";
 import useGameTimer from "../useGameTimer";
 import TimerControlBoardCellItem from "./TimerControlBoardCellItem";
 import TimerControlBoardRowPlayButton from "./TimerControlBoardRowPlayButton";
-import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
-import { LeaderCleans } from "../../../LeaderCleans";
 
 export default function TimerControlBoard({
     teams,
@@ -29,7 +29,7 @@ export default function TimerControlBoard({
     const [selectedTeamw, setSelectedTeamw] = useState<number | null>(null);
     const [isTeamsResortProcess, setIsTeamsResortProcess] = useState(false);
     const use = useGameTimer(game, timer.w);
-    const { toast, modalNode } = useModal();
+    const [modalNode, toast] = useToast();
     const isCanPlay = mode !== GameTimerMode.TimerTotal && use.isNewTimer && (!timer.finishes || use.isTimerStarted());
 
     const tableContentNode = teamNet?.map((row, rowi) => {

@@ -65,7 +65,7 @@ export default function StrongClipboardPicker() {
         return () => window.removeEventListener('drop', onPast);
     }, []);
 
-    const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
+    const [modalNode, screen] = useModal(({ header, body }, closeModal) => {
         let addButton = null;
 
         if (clipboardFocusedElem) {

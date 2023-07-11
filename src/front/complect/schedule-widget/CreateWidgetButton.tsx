@@ -18,8 +18,8 @@ export default function ScheduleCreateWidgetButton({
     appName: AppName,
 }) {
     const [title, setTitle] = useState(topTitle);
-    const toster = useModal();
-    const modal = useModal(({ header, body, footer }, closeModal) => {
+    const [tosterNode, toast] = useModal();
+    const [modalNode, screen] = useModal(({ header, body, footer }, closeModal) => {
         return <>
             {header(<>Новое расписание</>)}
             {body(<>
@@ -45,7 +45,7 @@ export default function ScheduleCreateWidgetButton({
                     }}
                     mapExecArgs={(args) => {
                         if (!title) {
-                            toster.toast('Нужно дать название!');
+                            toast('Нужно дать название!');
                             return;
                         }
 
@@ -71,8 +71,8 @@ export default function ScheduleCreateWidgetButton({
     });
 
     return <>
-        {modal.modalNode}
-        {toster.modalNode}
+        {modalNode}
+        {tosterNode}
         <StrongButton
             title="Создать расписание"
             scope={initialScheduleScope}
@@ -80,7 +80,7 @@ export default function ScheduleCreateWidgetButton({
             cud="C"
             mapExecArgs={(args) => {
                 if (!title) {
-                    modal.screen();
+                    screen();
                     return;
                 }
                 setTitle('');

@@ -35,7 +35,7 @@ export default function ScheduleWidgetEventType(props: {
     const selfScope = takeStrongScopeMaker(props.scheduleScope, ' typei/', props.typei);
     const attEntries = (props.typeBox.atts ? MyLib.keys(props.typeBox.atts) : []).length;
 
-    const modal = useModal(({ header, body }) => {
+    const [modalNode, screen] = useModal(({ header, body }) => {
         return <>
             {header(<span className="flex flex-gap full-width between">
                 <span>
@@ -54,10 +54,10 @@ export default function ScheduleWidgetEventType(props: {
     });
 
     return <div className="relative">
-        {modal.modalNode}
+        {modalNode}
         {props.isRedact
             || <div className="flex flex-end full-width absolute pos-top pos-right margin-sm-gap z-index:5">
-                <EvaButton name="edit-outline" onClick={() => modal.screen()} />
+                <EvaButton name="edit-outline" onClick={() => screen()} />
             </div>}
         <StrongDiv
             scope={props.selectScope}

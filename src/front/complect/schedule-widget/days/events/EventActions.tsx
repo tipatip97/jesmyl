@@ -18,7 +18,7 @@ export function ScheduleWidgetDayEventEventActions({
     scheduleScope: string,
     onEventCut: () => void,
 }) {
-    const modal = useModal(({ header, body }) => {
+    const [modalNode, screen] = useModal(({ header, body }) => {
         return <>
             {header(<>Шаблон события <span className="color--7">{schedule.types?.[event.type].title}</span></>)}
             {body(schedule.types?.[event.type]
@@ -36,12 +36,12 @@ export function ScheduleWidgetDayEventEventActions({
     });
 
     return <>
-        {modal.modalNode}
+        {modalNode}
         <EvaButton
             name="at"
             postfix="Редактировать шаблон события"
             className="flex-max margin-gap-v"
-            onClick={() => modal.screen()}
+            onClick={() => screen()}
         />
         <EvaButton
             name="crop"

@@ -24,7 +24,7 @@ export default function ScheduleWidgetBindAttRefKeyButton({
     tatt: ScheduleWidgetAppAtt,
     schedule: IScheduleWidget,
 }) {
-    const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
+    const [modalNode, screen] = useModal(({ header, body }, closeModal) => {
         return <>
             {header(<>{forTitle} - Сослаться на вложение</>)}
             {body(<>

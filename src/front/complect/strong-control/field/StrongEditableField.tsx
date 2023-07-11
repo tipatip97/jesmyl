@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon, { EvaIconName } from "../../eva-icon/EvaIcon";
 import KeyboardInput from "../../keyboard/KeyboardInput";
-import useModal from "../../modal/useModal";
+import useToast from "../../modal/useToast";
 import useIsRedactArea from "../../useIsRedactArea";
 import { StrongControlProps } from "../Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "../useStrongControl";
@@ -41,7 +41,7 @@ export default function StrongEditableField<
     const [isUserChange, setIsUserChange] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
-    const { modalNode, toast } = useModal();
+    const [modalNode, toast] = useToast();
     const { editIcon, isSelfRedact } = useIsRedactArea(true, null, true, true, props.onSelfRedactChange);
     const isRedact = props.setSelfRedact ? isSelfRedact : props.isRedact;
 

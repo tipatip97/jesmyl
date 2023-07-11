@@ -5,7 +5,7 @@ import BrutalItem from "../../../complect/brutal-item/BrutalItem";
 import EvaButton from "../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../complect/modal/Modal.service";
-import useModal from "../../../complect/modal/useModal";
+import useToast from "../../../complect/modal/useToast";
 import mylib from "../../../complect/my-lib/MyLib";
 import Noty from "../../../complect/notifications/Noti";
 import useApps from "../../../complect/useApps";
@@ -28,7 +28,7 @@ export default function IndexSettings() {
   const isUseNativeKeyboard = useSelector(isUseNativeKeyboardSelector);
   const statistic = useSelector(statisticSelector);
   const [expands, setExpands] = useState<AppName[]>([]);
-  const { toast, modalNode } = useModal();
+  const [modalNode, toast] = useToast();
   const { appConfigs } = useApps();
 
   useEffect(() => {

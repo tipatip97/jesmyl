@@ -2,17 +2,17 @@ import { ReactNode, useState } from "react";
 import { ScheduleWidgetRightsCtrl } from "../../../../../back/apps/index/complect";
 import { CustomAttUseRights, customAttUseRights, customAttUseRightsTitles, scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
 import EvaButton from "../../../eva-icon/EvaButton";
+import { EvaIconName } from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
+import StrongClipboardPicker from "../../../strong-control/field/clipboard/Picker";
 import { ScheduleWidgetAppAttCustomized } from "../../ScheduleWidget.model";
 import ScheduleWidgetIconChange from "../../complect/IconChange";
 import ScheduleWidgetRightControlList from "../../control/RightControlList";
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import ScheduleWidgetCustomAttTitles from "./CustomAttTitles";
-import { EvaIconName } from "../../../eva-icon/EvaIcon";
-import StrongClipboardPicker from "../../../strong-control/field/clipboard/Picker";
 
 const itIt = (it: unknown) => it;
 const itNIt = (it: unknown) => !it;
@@ -58,7 +58,7 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
     const isCanRedact = scheduleWidgetUserRights.checkIsCan(rights.myUser?.R, props.tatt.U);
     const isRedact = props.isRedact;
 
-    const setRuleModal = useModal(({ header, body }) => {
+    const [setRuleModalNode] = useModal(({ header, body }) => {
         return <>
             {header(<>Кто {whoCan.action} вложение <span className="color--7">{props.tatt.title}</span></>)}
             {body(<>
@@ -75,7 +75,7 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
         </>;
     }, null, whoCani !== WhoCan.No, is => !is && setWhoCani(WhoCan.No));
 
-    const redactModal = useModal(({ header, body }) => {
+    const [redactModalNode, redactModalScreen] = useModal(({ header, body }) => {
         return <>
             {header(<span className="flex flex-gap full-width between">
                 <span>
@@ -94,12 +94,12 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
     });
 
     return <>
-        {isCanRedact && redactModal.modalNode}
-        {isCanRedact && setRuleModal.modalNode}
+        {isCanRedact && redactModalNode}
+        {isCanRedact && setRuleModalNode}
         <div className={'margin-gap-v' + (isRedact ? '' : ' padding-gap bgcolor--5')}>
             {props.topContent}
             {isRedact || (isCanRedact && <div className="flex flex-end full-width">
-                <EvaButton name="edit-outline" onClick={() => redactModal.screen()} />
+                <EvaButton name="edit-outline" onClick={() => redactModalScreen()} />
             </div>)}
             {isRedact && <ScheduleWidgetIconChange
                 scope={selfScope}

@@ -18,7 +18,7 @@ export interface EvaSendButtonProps<Value> {
 export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const { toast, modalNode } = useModal();
+  const [modalNode, toast] = useModal();
   const className = (props.disabled ? ' disabled ' : ' pointer ')
     + (isError ? ' color--ko ' : '');
   const onClick = props.onSend && (async (event: React.MouseEvent<unknown>) => {

@@ -2,10 +2,6 @@ import { ReactNode, useCallback, useEffect, useState } from "react";
 import { ThrowEvent } from "../eventer/ThrowEvent";
 import Portal from "../popups/[complect]/Portal";
 
-export enum ModalType {
-    Toast = 'toast',
-    Screen = 'screen',
-};
 
 type ModalConfigMood = 'norm' | 'ko' | 'ok';
 
@@ -14,14 +10,12 @@ interface UserModalConfig {
     onClose?: () => void,
 }
 
-export interface ModalConfig extends UserModalConfig {
-    showTime?: number,
+export interface ScreenModalConfig extends UserModalConfig {
 }
 
 interface UseModalConfig extends UserModalConfig {
     isOpen: boolean,
     content?: ReactNode,
-    type?: ModalType,
 }
 
 const defaultUseModalConfig: UseModalConfig = {
@@ -40,9 +34,8 @@ export default function useModal(topContent?: (
     onClose?: (() => void) | nil,
     isForceOpen?: boolean,
     switchIsForceOpen?: (is: boolean) => void,
-) {
+): [ReactNode, (content?: ReactNode, config?: ScreenModalConfig) => void] {
     const [config, setConfig] = useState(defaultUseModalConfig);
-    const typeClassName = ' type_' + (isForceOpen ? 'screen' : config.type);
     const close = useCallback(() => {
         (config.onClose ?? onClose)?.();
         switchIsForceOpen?.(false);
@@ -50,43 +43,35 @@ export default function useModal(topContent?: (
     }, [config.onClose, onClose, switchIsForceOpen]);
 
     useEffect(() => {
-        if ((isForceOpen || config.isOpen) && config.type !== ModalType.Toast) {
+        if (isForceOpen || config.isOpen) {
             return ThrowEvent.listenKeyDown('Escape', close);
         }
-    }, [close, isForceOpen, config.isOpen, config.type]);
+    }, [close, isForceOpen, config.isOpen]);
 
-    const ret = {
-        screen: (content?: ReactNode, config?: ModalConfig) => {
-            setConfig({
-                ...config,
-                isOpen: true,
-                type: ModalType.Screen,
-                content,
-            });
-        },
-        toast: (content?: ReactNode, config?: ModalConfig) => {
-            setConfig({
-                ...config,
-                isOpen: true,
-                type: ModalType.Toast,
-                content,
-            });
-            setTimeout(() => setConfig((prev) => ({ ...prev, isOpen: false })), config?.showTime ?? 3000);
-        },
-        modalNode: ((isForceOpen || config.isOpen) && <Portal>
+    return [
+        (isForceOpen || config.isOpen) && <Portal>
             <div
-                className={'modal-application-screen ' + typeClassName + (isForceOpen === false ? ' force-hidden' : '')}
+                className={'modal-application-screen type_screen' + (isForceOpen === false ? ' force-hidden' : '')}
                 onClick={(event) => {
                     event.stopPropagation();
                     close();
                 }}>
-                <div className={'modal-screen-wrapper ' + typeClassName}>
-                    <div className={'modal-screen ' + typeClassName + (' mood mood_' + config.mood)} onClick={(event) => event.stopPropagation()}>
+                <div className="modal-screen-wrapper type_screen">
+                    <div
+                        className={'modal-screen type_screen mood mood_' + config.mood}
+                        onClick={(event) => event.stopPropagation()}
+                    >
                         {config.content ?? topContent?.(modalElements, close)}
                     </div>
                 </div>
             </div>
-        </Portal>) as ReactNode,
-    };
-    return ret;
+        </Portal>,
+        (content?: ReactNode, config?: ScreenModalConfig) => {
+            setConfig({
+                ...config,
+                isOpen: true,
+                content,
+            });
+        },
+    ];
 }

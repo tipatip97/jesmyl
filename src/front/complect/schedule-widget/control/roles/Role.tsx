@@ -25,7 +25,7 @@ export default function ScheduleWidgetRole({
     const roleUser = extractScheduleWidgetRoleUser(rights.schedule, 0, role);
     const catsRedact = useIsRedactArea(true, null, true, true);
 
-    const userSetModal = useModal(({ header, body }, closeModal) => {
+    const [userSetModalNode, userSetModalScreen] = useModal(({ header, body }, closeModal) => {
         return <>
             {header(<div className="flex">
                 Роль <span className="color--7">{role.title}</span> займёт
@@ -52,7 +52,7 @@ export default function ScheduleWidgetRole({
         </>;
     });
 
-    const catSetModal = useModal(({ header, body, footer }, closeModal) => {
+    const [catSetModalNode, catSetModalScreen] = useModal(({ header, body, footer }, closeModal) => {
         return <>
             {header(<div className="flex between">
                 <span><span className="color--7">{role.title}</span> в категорию</span>
@@ -97,7 +97,7 @@ export default function ScheduleWidgetRole({
         </>;
     });
 
-    const redactRoleModal = useModal(({ header, body }) => {
+    const [redactRoleModalNode, redactRoleModalScreen] = useModal(({ header, body }) => {
         return <>
             {header(<div>Редактирование роли {role.title}</div>)}
             {body(<>
@@ -134,19 +134,19 @@ export default function ScheduleWidgetRole({
                     {roleUser
                         ? <EvaButton
                             name="sync"
-                            onClick={() => userSetModal.screen()}
+                            onClick={() => userSetModalScreen()}
                             postfix="Заменить человека"
                             className="flex-max margin-gap-v"
                         />
                         : <EvaButton
                             name="person-add-outline"
-                            onClick={() => userSetModal.screen()}
+                            onClick={() => userSetModalScreen()}
                             postfix="Назначить человека"
                             className="flex-max margin-gap-v"
                         />}
                     {role.mi > 0 && <EvaButton
                         name="grid-outline"
-                        onClick={() => catSetModal.screen()}
+                        onClick={() => catSetModalScreen()}
                         postfix={`Категория ${rights.schedule.ctrl.cats[role.cat || 0] || 'Основное'}`}
                         className="flex-max margin-gap-v"
                     />}
@@ -155,9 +155,9 @@ export default function ScheduleWidgetRole({
     });
 
     return <div className="flex flex-gap between margin-gap">
-        {userSetModal.modalNode}
-        {catSetModal.modalNode}
-        {redactRoleModal.modalNode}
+        {userSetModalNode}
+        {catSetModalNode}
+        {redactRoleModalNode}
         <ScheduleWidgetRoleFace
             schedule={rights.schedule}
             role={role}
@@ -165,7 +165,7 @@ export default function ScheduleWidgetRole({
         {(rights.isCanTotalRedact || (rights.isCanRedact && auth && auth.login === roleUser?.login))
             && <EvaButton
                 name="edit-outline"
-                onClick={() => redactRoleModal.screen()}
+                onClick={() => redactRoleModalScreen()}
             />}
     </div>;
 }

@@ -29,7 +29,7 @@ export default function ScheduleWidgetAttFace({
 }>) {
     const rights = useScheduleWidgetRightsContext();
     const myUserR = rights.myUser?.R;
-    const { modalNode, screen } = useModal(tatt && (({ header, body }) => {
+    const [modalNode, screen] = useModal(tatt && (({ header, body }) => {
         return <>
             {header(<>Вложение <span className="color--7">{tatt.title}</span></>)}
             {body(<ScheduleWidgetCustomAtt

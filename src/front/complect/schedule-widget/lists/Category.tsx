@@ -56,7 +56,7 @@ export function ScheduleWidgetListCategory({
             : null
     );
 
-    const { modalNode, screen } = useModal(({ header, body }) => {
+    const [modalNode, screen] = useModal(({ header, body }) => {
         return <>
             {header(<div className="flex flex-gap">{title}</div>)}
             {body(<>

@@ -8,7 +8,7 @@ import StrongButton from "../../../strong-control/StrongButton";
 export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) {
     const [alias, setAlias] = useState('');
 
-    const modal = useModal(({ header, body, footer }, closeModal) => {
+    const [modalNode, screen] = useModal(({ header, body, footer }, closeModal) => {
         return <>
             {header(<>Индивидуальная сылка для участника</>)}
             {body(<>
@@ -34,10 +34,10 @@ export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) 
 
 
     return <>
-        {modal.modalNode}
+        {modalNode}
         <EvaButton
             name="link-2"
-            onClick={() => modal.screen()}
+            onClick={() => screen()}
         />
     </>;
 }

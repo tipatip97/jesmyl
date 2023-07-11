@@ -19,7 +19,7 @@ const newTatt: ScheduleWidgetAppAttCustomizable = {
 export default function ScheduleWidgetCustomAttachments(props: StrongComponentProps<{
     tatts?: ScheduleWidgetAppAttCustomized[],
 }>) {
-    const { modalNode, screen } = useModal(({ header, body }) => {
+    const [modalNode, screen] = useModal(({ header, body }) => {
         return <>
             {header(<div className="flex full-width between">
                 Шаблоны вложений

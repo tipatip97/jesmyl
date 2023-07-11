@@ -12,7 +12,7 @@ export default function ScheduleWidgetIconChange(props: {
     header: ReactNode,
     used?: (EvaIconName | und)[],
 }) {
-    const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
+    const [modalNode, screen] = useModal(({ header, body }, closeModal) => {
         return <>
             {header(props.header)}
             {body(icons.map((icon) => {

@@ -39,7 +39,7 @@ export default function ScheduleWidgetListUnit({
             : null
     );
 
-    const { modalNode, screen } = useModal(({ header, body }) => {
+    const [modalNode, screen] = useModal(({ header, body }) => {
         return <>
             {header(<div className="flex flex-gap"><EvaIcon name={cat.icon} />{title}</div>)}
             {body(<>

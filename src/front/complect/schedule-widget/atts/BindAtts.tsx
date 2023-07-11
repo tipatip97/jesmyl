@@ -37,7 +37,7 @@ export default function ScheduleWidgetBindAtts({
     const rights = useScheduleWidgetRightsContext();
     const myUserR = rights.myUser?.R;
 
-    const { modalNode, screen } = useModal(({ header, body, footer }, closeModal) => {
+    const [modalNode, screen] = useModal(({ header, body, footer }, closeModal) => {
         return <>
             {header(<>{forTitle} - Вставить вложение</>)}
             {body(<>

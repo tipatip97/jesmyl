@@ -11,7 +11,7 @@ import ScheduleWidgetUserList from "./users/UserList";
 export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
     const rights = useScheduleWidgetRightsContext();
 
-    const { modalNode, screen } = useModal(({ header, body }) => {
+    const [modalNode, screen] = useModal(({ header, body }) => {
         return rights.isCanRedact
             ? <>
                 {header(<>Управление <span className="color--7">{rights.schedule.title}</span></>)}

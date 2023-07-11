@@ -35,7 +35,7 @@ export default function Dropdown<
   }, [isDropped]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const { modalNode, toast } = useModal();
+  const [modalNode, toast] = useModal();
 
   return (
     <div

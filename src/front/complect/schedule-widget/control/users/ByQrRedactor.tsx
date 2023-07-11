@@ -13,7 +13,7 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
     const { readQR } = useQRMaster();
     const [passport, setPassport] = useState<IScheduleWidgetUser | null>(null);
 
-    const { modalNode } = useModal(({ header, body, footer }) => {
+    const [modalNode] = useModal(({ header, body, footer }) => {
         if (passport === null) return <></>;
         const oldUser = rights.schedule.ctrl.users.find(user => user.login === passport.login);
         const user = oldUser ?? passport;

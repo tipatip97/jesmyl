@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import SendButton from "../SendButton";
+import useToast from "../modal/useToast";
 import { StrongControlProps } from "./Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "./useStrongControl";
-import useModal from "../modal/useModal";
 
 const simpleFunc = () => { };
 
@@ -13,7 +13,7 @@ export default function StrongButton(props: StrongControlProps & {
     onSuccess?: () => void,
 }) {
     const exer = useStrongExerContext();
-    const { modalNode, toast } = useModal();
+    const [modalNode, toast] = useToast();
 
     return <>
         {modalNode}

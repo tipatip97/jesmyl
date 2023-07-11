@@ -15,7 +15,7 @@ export default function CopyTextButton({
     className?: string,
     message?: ReactNode,
 }) {
-    const { toast, modalNode } = useModal();
+    const [modalNode, toast] = useModal();
 
     return <>
         {modalNode}

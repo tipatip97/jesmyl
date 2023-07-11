@@ -9,6 +9,7 @@ import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import { IScheduleWidgetUser } from "../../ScheduleWidget.model";
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../useScheduleWidget";
 import { ScheduleWidgetUserEdit } from "./UserEdit";
+import useToast from "../../../modal/useToast";
 
 export default function ScheduleWidgetUser({
     scope,
@@ -25,7 +26,8 @@ export default function ScheduleWidgetUser({
         ? user.alias || <span className="color--7 text-italic">Ссылка</span>
         : `${user.alias && user.alias !== user.fio ? `${user.alias} (${user.fio})` : user.fio} `;
 
-    const { modalNode, screen, toast } = useModal(({ header, body }) => {
+    const [toastNode, toast] = useToast();
+    const [modalNode, screen] = useModal(({ header, body }) => {
         return <>
             {header(<>
                 {userName}
@@ -90,6 +92,7 @@ export default function ScheduleWidgetUser({
 
     return <>
         {modalNode}
+        {toastNode}
         {asUserPlusPrefix === undefined
             ? userNode
             : asUserPlusPrefix(

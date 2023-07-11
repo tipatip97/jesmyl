@@ -1,5 +1,5 @@
 import EvaSendButton, { EvaSendButtonProps } from "../eva-icon/EvaSendButton";
-import useModal from "../modal/useModal";
+import useToast from "../modal/useToast";
 import { StrongControlProps } from "./Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "./useStrongControl";
 
@@ -18,7 +18,7 @@ export default function StrongEvaButton({
     fieldKey?: unknown,
 }) {
     const exer = useStrongExerContext();
-    const { modalNode, toast } = useModal();
+    const [modalNode, toast] = useToast();
 
     return <>
         {modalNode}

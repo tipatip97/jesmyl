@@ -40,7 +40,7 @@ export default function ScheduleWidgetEventList({
         return sortedTypes;
     }, [types, usedCounts]);
 
-    const { modalNode, screen } = useModal(({ header, body }, closeModal) => {
+    const [modalNode, screen] = useModal(({ header, body }, closeModal) => {
         return <>
             {header(<>
                 <div className="flex flex-gap between">
