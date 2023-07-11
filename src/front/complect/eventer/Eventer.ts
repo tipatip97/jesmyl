@@ -41,13 +41,14 @@ export default class Eventer {
             for (let i = listeners.length - 1; i > -1; i--) {
                 const cb = listeners[i];
                 const result = cb(event, eventerAlt);
-                if (result !== undefined) {
-                    for (let j = 0; j < result.length; j++) {
-                        if (result[j] === invokeOnce) splices.push(i);
-                    }
 
-                    if (!result.includes(passPropagation)) break;
+                if (result === undefined) break;
+
+                for (let j = 0; j < result.length; j++) {
+                    if (result[j] === invokeOnce) splices.push(i);
                 }
+
+                if (!result.includes(passPropagation)) break;
             }
 
             for (let i = 0; i < splices.length; i++) {
