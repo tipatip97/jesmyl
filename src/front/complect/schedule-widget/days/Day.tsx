@@ -65,7 +65,7 @@ export default function ScheduleWidgetDay({
         {isShowDay &&
             <>
                 {rights.isCanReadTitles && <div className="day-info">
-                    <StrongEditableField
+                    {(isRedact || day.topic) && <StrongEditableField
                         scope={selfScope}
                         fieldName="field"
                         value={day}
@@ -73,8 +73,8 @@ export default function ScheduleWidgetDay({
                         isRedact={isRedact}
                         icon="bookmark-outline"
                         title="Тема дня"
-                    />
-                    <StrongEditableField
+                    />}
+                    {(isRedact || day.dsc) && <StrongEditableField
                         scope={selfScope}
                         fieldName="field"
                         value={day}
@@ -84,7 +84,7 @@ export default function ScheduleWidgetDay({
                         textClassName=" "
                         icon="file-text-outline"
                         title="Описание дня"
-                    />
+                    />}
                     {isRedact && <>
                         <StrongControlDateTimeExtracter
                             scope={selfScope}

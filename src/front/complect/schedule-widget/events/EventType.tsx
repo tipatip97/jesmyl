@@ -140,14 +140,13 @@ export default function ScheduleWidgetEventType(props: {
                         fieldName="period"
                         cud="U"
                         items={attTranslatorTypes}
-                        onSelect={({ id }) => setAttTranslatorType(id)}
                         className="margin-gap-b"
                     />}
                     mapExecArgs={(args) => {
                         return {
                             ...args,
                             value: attTranslatorType,
-                        }
+                        };
                     }}
                 />
                 : !attEntries || <div>

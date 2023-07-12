@@ -19,6 +19,7 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
     const types = props.schedule.types ?? [];
     const days = props.schedule.days ?? [];
     const todayi = days.findIndex(day => day.mi === props.day.mi);
+    let date: Date;
 
     if (todayi > -1)
         days.forEach((day, dayi) => {
@@ -28,6 +29,9 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
 
             switch (attTranslatorType) {
                 case AttTranslatorType.AllTime: {
+                    if (date === undefined) date = new Date(props.schedule.start);
+
+                    title = (mylib.dayShortTitles[(date.getDay() + dayi) % 7]) + ', день ' + (dayi + 1);
                     break;
                 }
                 case AttTranslatorType.Today: {

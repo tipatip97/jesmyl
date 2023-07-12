@@ -123,7 +123,7 @@ export default function ScheduleWidget({
         </ScheduleWidgetContextWrapper>;
 
     return <ScheduleWidgetContextWrapper schedule={schedule} rights={rights}>
-        <div className="schedule-widget">
+        <div className={'schedule-widget' + (isExpand ? ' expand' : '')}>
             {expandNode}
             {isExpand && <>
                 <div className="margin-big-gap-v">
@@ -142,6 +142,15 @@ export default function ScheduleWidget({
                         : <ScheduleWidgetStartTimeText schedule={schedule} date={date} />}
                     {rights.isCanRead
                         ? <>
+                            {isRedact &&  <StrongEditableField
+                                scope={selfScope}
+                                fieldName="field"
+                                fieldKey="title"
+                                value={schedule}
+                                isRedact
+                                icon="credit-card-outline"
+                                title="Заголовок"
+                            />}
                             {isRedact && <StrongEditableField
                                 scope={selfScope}
                                 fieldName="field"
@@ -151,7 +160,7 @@ export default function ScheduleWidget({
                                 icon="bookmark-outline"
                                 title="Название"
                             />}
-                            {(rights.isCanReadTitles) && <StrongEditableField
+                            {(rights.isCanReadTitles) && (isRedact || schedule.dsc) &&  <StrongEditableField
                                 scope={selfScope}
                                 fieldName="field"
                                 fieldKey="dsc"
