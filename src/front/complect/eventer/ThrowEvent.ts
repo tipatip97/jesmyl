@@ -1,10 +1,11 @@
 import Eventer, { EventerCallback, eventerAlt } from "./Eventer";
 
-type ThrowEventKeyDownKey = 'Escape';
+type ThrowEventKeyDownKey = 'Escape' | 'Enter';
 
 class ThrowEventClass {
     private keyDownListens: Record<ThrowEventKeyDownKey, EventerCallback<KeyboardEvent>[]> = {
         Escape: [],
+        Enter: [],
     };
 
     private windowEvents: Record<'is' | 'focus', EventerCallback<boolean>[]> = {

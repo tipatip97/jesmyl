@@ -39,7 +39,7 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
                 />
             </div>)}
         </>
-    }, null, passport !== null, () => { setPassport(null) });
+    }, is => !is && setPassport(null), passport !== null);
 
 
     return <>

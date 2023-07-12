@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
-import { AppName } from "../../app/App.model";
-import useConnectionState from "../../components/index/useConnectionState";
-import PhaseContainerConfigurer from "../phase-container/PhaseContainerConfigurer";
-import { PhaseContainerConfigurerProps } from "../phase-container/PhaseContainerConfigurer.model";
-import StrongClipboardPicker from "../strong-control/field/clipboard/Picker";
-import ScheduleCreateWidgetButton from "./CreateWidgetButton";
-import ScheduleWidget from "./ScheduleWidget";
-import { IScheduleWidget } from "./ScheduleWidget.model";
-import './ScheduleWidget.scss';
-import useScheduleWidget from "./useScheduleWidget";
+import { AppName } from "../../../app/App.model";
+import useConnectionState from "../../../components/index/useConnectionState";
+import PhaseContainerConfigurer from "../../phase-container/PhaseContainerConfigurer";
+import { PhaseContainerConfigurerProps } from "../../phase-container/PhaseContainerConfigurer.model";
+import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
+import ScheduleCreateWidgetButton from "./CreateButton";
+import ScheduleWidget from "../ScheduleWidget";
+import { IScheduleWidget } from "../ScheduleWidget.model";
+import '../ScheduleWidget.scss';
+import useScheduleWidget from "../useScheduleWidget";
 
 export default function ScheduleWidgetPage(props: Omit<PhaseContainerConfigurerProps, 'content' | 'topClass'> & {
     schedulew: number,

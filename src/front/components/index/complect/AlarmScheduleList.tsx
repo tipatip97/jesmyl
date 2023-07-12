@@ -1,7 +1,7 @@
 import EvaButton from "../../../complect/eva-icon/EvaButton";
 import PhaseContainerConfigurer from "../../../complect/phase-container/PhaseContainerConfigurer";
-import ScheduleWidgetListPage from "../../../complect/schedule-widget/ScheduleWidgetListPage";
-import ScheduleWidgetPage from "../../../complect/schedule-widget/ScheduleWidgetPage";
+import ScheduleWidgetListPage from "../../../complect/schedule-widget/general/ListPage";
+import ScheduleWidgetPage from "../../../complect/schedule-widget/general/Page";
 import { useSchedules } from "../../../complect/schedule-widget/useScheduleWidget";
 import useIndexNav from "./useIndexNav";
 

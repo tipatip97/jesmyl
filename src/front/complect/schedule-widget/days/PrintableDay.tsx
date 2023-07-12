@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ScheduleWidgetDay, { ScheduleWidgetDayProps } from "./Day";
 import { useScheduleWidgetRights } from "../useScheduleWidget";
-import ScheduleWidgetContextWrapper from "../ContextWrapper";
+import ScheduleWidgetContextWrapper from "../general/ContextWrapper";
 
 export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps & { win: typeof window }) {
     const [fontSize, setFontSize] = useState(40);

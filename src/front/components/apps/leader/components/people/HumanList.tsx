@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
 import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
-import EvaSendButton from "../../../../../complect/eva-icon/EvaSendButton";
+import EvaSendButton from "../../../../../complect/eva-icon/send-button/EvaSendButton";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import useIsRedactArea from "../../../../../complect/useIsRedactArea";
 import { RootState } from "../../../../../shared/store";

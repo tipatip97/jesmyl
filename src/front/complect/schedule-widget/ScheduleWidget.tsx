@@ -10,10 +10,10 @@ import StrongControlDateTimeExtracter from "../strong-control/StrongDateTimeExtr
 import StrongEvaButton from "../strong-control/StrongEvaButton";
 import StrongEditableField from "../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../useIsRedactArea";
-import ScheduleWidgetContextWrapper from "./ContextWrapper";
+import ScheduleWidgetContextWrapper from "./general/ContextWrapper";
 import { IScheduleWidget } from "./ScheduleWidget.model";
 import './ScheduleWidget.scss';
-import ScheduleWidgetStartTimeText from "./StartTimeText";
+import ScheduleWidgetStartTimeText from "./complect/StartTimeText";
 import ScheduleWidgetCustomAttachments from "./atts/custom/CustomAttachments";
 import ScheduleWidgetTopicTitle from "./complect/TopicTitle";
 import ScheduleWidgetControl from "./control/Control";
@@ -21,6 +21,7 @@ import ScheduleWidgetDay from "./days/Day";
 import ScheduleWidgetEventList from "./events/EventList";
 import ScheduleWidgetLists from "./lists/Lists";
 import { ScheduleWidgetRights, initialScheduleScope, takeScheduleStrongScopeMaker, useScheduleWidgetRights } from "./useScheduleWidget";
+import { ScheduleWidgetCopy } from "./general/Copy";
 
 const msInMin = mylib.howMs.inMin;
 
@@ -142,7 +143,7 @@ export default function ScheduleWidget({
                         : <ScheduleWidgetStartTimeText schedule={schedule} date={date} />}
                     {rights.isCanRead
                         ? <>
-                            {isRedact &&  <StrongEditableField
+                            {isRedact && <StrongEditableField
                                 scope={selfScope}
                                 fieldName="field"
                                 fieldKey="title"
@@ -160,7 +161,7 @@ export default function ScheduleWidget({
                                 icon="bookmark-outline"
                                 title="Название"
                             />}
-                            {(rights.isCanReadTitles) && (isRedact || schedule.dsc) &&  <StrongEditableField
+                            {(rights.isCanReadTitles) && (isRedact || schedule.dsc) && <StrongEditableField
                                 scope={selfScope}
                                 fieldName="field"
                                 fieldKey="dsc"
@@ -186,6 +187,8 @@ export default function ScheduleWidget({
                                     schedule={schedule}
                                 />
                                 <ScheduleWidgetCustomAttachments scope={selfScope} tatts={schedule.tatts} />
+                                {!schedule.days?.length && !schedule.tatts?.length && !schedule.types?.length && 
+                                    <ScheduleWidgetCopy />}
                                 {!schedule.start || <StrongEvaButton
                                     scope={selfScope}
                                     fieldName="days"

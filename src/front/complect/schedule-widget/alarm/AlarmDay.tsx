@@ -1,4 +1,4 @@
-import ScheduleWidgetContextWrapper from "../ContextWrapper";
+import ScheduleWidgetContextWrapper from "../general/ContextWrapper";
 import ScheduleWidgetTopicTitle from "../complect/TopicTitle";
 import ScheduleWidgetDay, { ScheduleWidgetDayProps } from "../days/Day";
 import { takeScheduleStrongScopeMaker } from "../useScheduleWidget";

@@ -7,7 +7,7 @@ type ModalConfigMood = 'norm' | 'ko' | 'ok';
 
 interface UserModalConfig {
     mood?: ModalConfigMood,
-    onClose?: () => void,
+    onOpenSwitch?: () => void,
 }
 
 export interface ScreenModalConfig extends UserModalConfig {
@@ -15,7 +15,7 @@ export interface ScreenModalConfig extends UserModalConfig {
 
 interface UseModalConfig extends UserModalConfig {
     isOpen: boolean,
-    content?: ReactNode,
+    content?: Contenter,
 }
 
 const defaultUseModalConfig: UseModalConfig = {
@@ -29,18 +29,19 @@ const modalElements = {
     footer: (content: ReactNode) => <div className="modal-footer">{content}</div>,
 };
 
-export default function useModal(topContent?: (
-    elements: typeof modalElements, close: () => void) => JSX.Element,
-    onClose?: (() => void) | nil,
+type Contenter = (elements: typeof modalElements, close: () => void) => JSX.Element;
+
+export default function useModal(
+    topContent?: Contenter,
+    onOpenSwitch?: (is: boolean) => void,
     isForceOpen?: boolean,
-    switchIsForceOpen?: (is: boolean) => void,
-): [ReactNode, (content?: ReactNode, config?: ScreenModalConfig) => void] {
+): [ReactNode, (content?: Contenter, config?: ScreenModalConfig) => void, () => void] {
     const [config, setConfig] = useState(defaultUseModalConfig);
     const close = useCallback(() => {
-        (config.onClose ?? onClose)?.();
-        switchIsForceOpen?.(false);
+        config.onOpenSwitch?.();
+        onOpenSwitch?.(false);
         setConfig((prev) => ({ ...prev, isOpen: false }));
-    }, [config.onClose, onClose, switchIsForceOpen]);
+    }, [config, onOpenSwitch]);
 
     useEffect(() => {
         if (isForceOpen || config.isOpen) {
@@ -61,17 +62,21 @@ export default function useModal(topContent?: (
                         className={'modal-screen type_screen mood mood_' + config.mood}
                         onClick={(event) => event.stopPropagation()}
                     >
-                        {config.content ?? topContent?.(modalElements, close)}
+                        {config.content === undefined
+                            ? topContent?.(modalElements, close)
+                            : config.content(modalElements, close)}
                     </div>
                 </div>
             </div>
         </Portal>,
-        (content?: ReactNode, config?: ScreenModalConfig) => {
+        (content?: Contenter, config?: ScreenModalConfig) => {
+            onOpenSwitch?.(true);
             setConfig({
                 ...config,
                 isOpen: true,
                 content,
             });
         },
+        close,
     ];
 }

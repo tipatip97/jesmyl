@@ -73,7 +73,7 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
                 />
             </>)}
         </>;
-    }, null, whoCani !== WhoCan.No, is => !is && setWhoCani(WhoCan.No));
+    }, is => !is && setWhoCani(WhoCan.No), whoCani !== WhoCan.No);
 
     const [redactModalNode, redactModalScreen] = useModal(({ header, body }) => {
         return <>

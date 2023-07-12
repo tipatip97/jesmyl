@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import EvaButton from "./eva-icon/EvaButton";
-import useModal from "./modal/useModal";
+import useToast from "./modal/useToast";
 
 export default function CopyTextButton({
     text,
@@ -15,7 +15,7 @@ export default function CopyTextButton({
     className?: string,
     message?: ReactNode,
 }) {
-    const [modalNode, toast] = useModal();
+    const [modalNode, toast] = useToast();
 
     return <>
         {modalNode}

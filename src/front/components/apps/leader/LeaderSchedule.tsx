@@ -1,6 +1,6 @@
 import { useBottomPopup } from "../../../complect/absolute-popup/useBottomPopup";
 import PhaseContainerConfigurer from "../../../complect/phase-container/PhaseContainerConfigurer";
-import ScheduleWidgetPage from "../../../complect/schedule-widget/ScheduleWidgetPage";
+import ScheduleWidgetPage from "../../../complect/schedule-widget/general/Page";
 import { GeneralMoreContenter } from "./GeneralMore";
 import "./Leader.scss";
 import { CurrentContextSelectPage } from "./components/CurrentContextSelectPage";

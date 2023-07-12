@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../shared/store";
 import EvaButton from "../../../eva-icon/EvaButton";
 import { KeyboardInputEvent } from "../../../keyboard/Keyboard.model";
+import modalService from "../../../modal/Modal.service";
 import useModal from "../../../modal/useModal";
 import { MyLib } from "../../../my-lib/MyLib";
 import di from "../../Strong.store";
-import StrongClipboardItem from "./Item";
 import "./Clipboard.scss";
-import modalService from "../../../modal/Modal.service";
+import StrongClipboardItem from "./Item";
 
 let clipboardFocusedElem: EventTarget & HTMLTextAreaElement | nil = null;
 let updates = 0;
@@ -134,7 +134,8 @@ export default function StrongClipboardPicker() {
                 })}
             </>)}
         </>;
-    }, () => {
+    }, is => {
+        if (is) return;
         isCanBlur = true;
         setIsOpenModal(false);
         clipboardFocusedElem?.focus?.();

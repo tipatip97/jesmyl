@@ -1,8 +1,8 @@
-import mylib from "../my-lib/MyLib";
-import { IScheduleWidget } from "./ScheduleWidget.model";
-import './ScheduleWidget.scss';
-import ScheduleWidgetCleans from "./complect/Cleans";
-import { ScheduleWidgetRights, useScheduleWidgetRights } from "./useScheduleWidget";
+import mylib from "../../my-lib/MyLib";
+import { IScheduleWidget } from "../ScheduleWidget.model";
+import '../ScheduleWidget.scss';
+import ScheduleWidgetCleans from "./Cleans";
+import { ScheduleWidgetRights, useScheduleWidgetRights } from "../useScheduleWidget";
 
 export default function ScheduleWidgetStartTimeText({
     schedule,
@@ -37,5 +37,5 @@ export default function ScheduleWidgetStartTimeText({
                 Начало: {date.getDate()} {mylib.monthFullTitles[date.getMonth()]} {date.getFullYear()}
                 {!firstWup || ', ' + timeDate.getHours().toString().padStart(2, '0') + ':' + timeDate.getMinutes().toString().padStart(2, '0')}
             </div>}
-    </>
+    </>;
 }

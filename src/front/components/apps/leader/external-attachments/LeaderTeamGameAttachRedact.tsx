@@ -44,7 +44,7 @@ export default function LeaderTeamGameAttachRedact({
                 })}
             </>)}
         </>;
-    }, null, isRedact, switchIsRedact);
+    }, switchIsRedact, isRedact);
 
     return <div>{modalNode}</div>;
 }

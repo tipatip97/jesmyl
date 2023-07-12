@@ -1,14 +1,14 @@
-import useAuth from "../../components/index/useAuth";
-import useConnectionState from "../../components/index/useConnectionState";
-import EvaButton from "../eva-icon/EvaButton";
-import PhaseContainerConfigurer from "../phase-container/PhaseContainerConfigurer";
-import { PhaseContainerConfigurerProps } from "../phase-container/PhaseContainerConfigurer.model";
-import StrongClipboardPicker from "../strong-control/field/clipboard/Picker";
-import ScheduleCreateWidgetButton from "./CreateWidgetButton";
-import ScheduleWidget from "./ScheduleWidget";
-import { IScheduleWidget } from "./ScheduleWidget.model";
-import './ScheduleWidget.scss';
-import { useSchedules } from "./useScheduleWidget";
+import useAuth from "../../../components/index/useAuth";
+import useConnectionState from "../../../components/index/useConnectionState";
+import EvaButton from "../../eva-icon/EvaButton";
+import PhaseContainerConfigurer from "../../phase-container/PhaseContainerConfigurer";
+import { PhaseContainerConfigurerProps } from "../../phase-container/PhaseContainerConfigurer.model";
+import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
+import ScheduleCreateWidgetButton from "./CreateButton";
+import ScheduleWidget from "../ScheduleWidget";
+import { IScheduleWidget } from "../ScheduleWidget.model";
+import '../ScheduleWidget.scss';
+import { useSchedules } from "../useScheduleWidget";
 
 export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigurerProps, 'content' | 'topClass'> & {
     onScheduleObserve: (schedule: IScheduleWidget) => void,

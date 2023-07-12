@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { AppName } from "../../app/App.model";
-import EvaButton from "../eva-icon/EvaButton";
-import KeyboardInput from "../keyboard/KeyboardInput";
-import useModal from "../modal/useModal";
-import StrongButton from "../strong-control/StrongButton";
-import StrongEvaButton from "../strong-control/StrongEvaButton";
-import './ScheduleWidget.scss';
-import { initialScheduleScope } from "./useScheduleWidget";
+import { AppName } from "../../../app/App.model";
+import EvaButton from "../../eva-icon/EvaButton";
+import KeyboardInput from "../../keyboard/KeyboardInput";
+import useModal from "../../modal/useModal";
+import useToast from "../../modal/useToast";
+import StrongButton from "../../strong-control/StrongButton";
+import StrongEvaButton from "../../strong-control/StrongEvaButton";
+import '../ScheduleWidget.scss';
+import { initialScheduleScope } from "../useScheduleWidget";
 
 export default function ScheduleCreateWidgetButton({
     title: topTitle,
@@ -18,7 +19,7 @@ export default function ScheduleCreateWidgetButton({
     appName: AppName,
 }) {
     const [title, setTitle] = useState(topTitle);
-    const [tosterNode, toast] = useModal();
+    const [tosterNode, toast] = useToast();
     const [modalNode, screen] = useModal(({ header, body, footer }, closeModal) => {
         return <>
             {header(<>Новое расписание</>)}
