@@ -334,5 +334,23 @@
     "fio": "ViolettaVernet1",
     "login": "9d42952a3a812a83cd613e5960c637e2",
     "passw": "96d914f034684d7f5959627bfcb13b83"
+  },
+  {
+    "level": 3,
+    "fio": "OchenKrutoy",
+    "login": "e96e70d4fe802ceefa61943ce23a4a32",
+    "passw": "aae4b0cf190843fe83a137edbf994f77"
+  },
+  {
+    "level": 3,
+    "fio": "Дима Снежко",
+    "login": "70e59259296f3c373b373565baf6fe19",
+    "passw": "af6eb6dd1fdb46b1efb25189fdaba1fc"
+  },
+  {
+    "level": 3,
+    "fio": "Pavel_Ned16",
+    "login": "de99d4c5d2744e803caf2a9caa5ed982",
+    "passw": "2c1aa6bbd1a7e3659ace34dea787a18d"
   }
 ]
