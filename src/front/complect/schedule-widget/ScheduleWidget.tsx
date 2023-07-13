@@ -10,18 +10,18 @@ import StrongControlDateTimeExtracter from "../strong-control/StrongDateTimeExtr
 import StrongEvaButton from "../strong-control/StrongEvaButton";
 import StrongEditableField from "../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../useIsRedactArea";
-import ScheduleWidgetContextWrapper from "./general/ContextWrapper";
 import { IScheduleWidget } from "./ScheduleWidget.model";
 import './ScheduleWidget.scss';
-import ScheduleWidgetStartTimeText from "./complect/StartTimeText";
 import ScheduleWidgetCustomAttachments from "./atts/custom/CustomAttachments";
+import ScheduleWidgetStartTimeText from "./complect/StartTimeText";
 import ScheduleWidgetTopicTitle from "./complect/TopicTitle";
 import ScheduleWidgetControl from "./control/Control";
 import ScheduleWidgetDay from "./days/Day";
 import ScheduleWidgetEventList from "./events/EventList";
+import ScheduleWidgetContextWrapper from "./general/ContextWrapper";
+import { ScheduleWidgetCopy } from "./general/Copy";
 import ScheduleWidgetLists from "./lists/Lists";
 import { ScheduleWidgetRights, initialScheduleScope, takeScheduleStrongScopeMaker, useScheduleWidgetRights } from "./useScheduleWidget";
-import { ScheduleWidgetCopy } from "./general/Copy";
 
 const msInMin = mylib.howMs.inMin;
 
@@ -161,7 +161,7 @@ export default function ScheduleWidget({
                                 icon="bookmark-outline"
                                 title="Название"
                             />}
-                            {(rights.isCanReadTitles) && (isRedact || schedule.dsc) && <StrongEditableField
+                            {(isRedact || schedule.dsc) && <StrongEditableField
                                 scope={selfScope}
                                 fieldName="field"
                                 fieldKey="dsc"
@@ -172,11 +172,13 @@ export default function ScheduleWidget({
                                 icon="file-text-outline"
                                 title="Описание"
                             />}
-                            <ScheduleWidgetControl scope={selfScope} />
-                            <ScheduleWidgetLists
-                                scope={selfScope}
-                                scheduleScope={selfScope}
-                            />
+                            {rights.isCanReadTitles && <>
+                                <ScheduleWidgetControl scope={selfScope} />
+                                <ScheduleWidgetLists
+                                    scope={selfScope}
+                                    scheduleScope={selfScope}
+                                />
+                            </>}
                             {isRedact && <>
                                 <ScheduleWidgetEventList
                                     selectScope=""
@@ -187,7 +189,7 @@ export default function ScheduleWidget({
                                     schedule={schedule}
                                 />
                                 <ScheduleWidgetCustomAttachments scope={selfScope} tatts={schedule.tatts} />
-                                {!schedule.days?.length && !schedule.tatts?.length && !schedule.types?.length && 
+                                {!schedule.days?.length && !schedule.tatts?.length && !schedule.types?.length &&
                                     <ScheduleWidgetCopy />}
                                 {!schedule.start || <StrongEvaButton
                                     scope={selfScope}

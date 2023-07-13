@@ -651,7 +651,7 @@ export class Executer {
                         if (onCantRead != null) {
                             errors.push({
                                 type: ExecuteErrorType.Access,
-                                note: `Доступ к редактированию ограничен #${smylib.isArr(onCantRead) ? '<333>' : onCantRead}`,
+                                note: `Доступ к редактированию ограничен ${smylib.isArr(onCantRead) ? '<333>' : '#' + onCantRead}`,
                             });
 
                             return true;

@@ -19,9 +19,9 @@ export default function ScheduleWidgetTopicTitle<
         {titleBox != null &&
             ((iForceShowTopic || userRights.isCanReadTitles) && topicBox?.topic
                 ? <>
-                    <span className="color--3">{titleBox.title ?? altTitle}: </span>
+                    <span className="color--3">{titleBox.title || altTitle}: </span>
                     {topicBox.topic}
                 </>
-                : <span className="color--3">{titleBox.title ?? altTitle}</span>)}
+                : <span className="color--3">{titleBox.title || altTitle}</span>)}
     </div>;
 }

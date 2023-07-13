@@ -73,8 +73,8 @@ const config: FilerAppConfig = {
     title: 'JESMYL',
     requirements: {
         schedules: {
-            onCantRead: (isRead, exec: ScheduleWidgetOnCantReadExec, rule: ScheduleWidgetOnCantReadRule, auth, bag: SchedulesBag, schedules: ScheduleStorage<string>, whenRejButTs): string | null | typeof whenRejButTs => {
-                if (rule.RRej === true) return isRead ? 'block' : null;
+            onCantRead: (isShareData, exec: ScheduleWidgetOnCantReadExec, rule: ScheduleWidgetOnCantReadRule, auth, bag: SchedulesBag, schedules: ScheduleStorage<string>, whenRejButTs): string | null | typeof whenRejButTs => {
+                if (rule.RRej === true) return isShareData ? 'block' : null;
                 if (rule.RRej === false) return null;
 
                 if (bag.schedule === undefined || bag.schw !== exec.args?.schw) {
@@ -91,7 +91,7 @@ const config: FilerAppConfig = {
 
                 const user = bag.users.find(user => auth.login === user.login);
                 if (user === undefined) {
-                    if (rule.action === 'joinUserByLink') return isRead ? whenRejButTs : null;
+                    if (rule.action === 'joinUserByLink') return isShareData ? whenRejButTs : null;
                     if (scheduleWidgetRegTypeRights.checkIsHasRights(bag.schedule.ctrl.type, ScheduleWidgetRegType.Public))
                         return null;
                     return whenRejButTs;
@@ -365,6 +365,7 @@ const config: FilerAppConfig = {
                         },
                         '/users': {
                             C: {
+                                RRej: ScheduleWidgetUserRoleRight.Read,
                                 setSystems: ['mi'],
                                 value: { fio: '{*fio}', login: '{*login}' },
                             },
