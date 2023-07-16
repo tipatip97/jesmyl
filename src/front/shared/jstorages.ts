@@ -9,9 +9,9 @@ import index from "../components/index/indexStorage";
 import router from "../components/router/routerStorage";
 
 interface Sto { }
-const stub: JStorage<NavigationStorage<Sto>> = new JStorage<NavigationStorage<Sto>>('complect');
+const stub = new JStorage<NavigationStorage<Sto>, unknown>('complect');
 
-export const appStorage: Record<JStorageName, JStorage<any>> = {
+export const appStorage: Record<JStorageName, JStorage<any, any>> = {
     index,
     tuner: stub,
     admin,

@@ -4,6 +4,7 @@ import { ABSOLUTE__BOTTOM__POPUP } from "../complect/absolute-popup/useAbsoluteB
 import { ABSOLUTE__FLOAT__POPUP } from "../complect/absolute-popup/useAbsoluteFloatPopup";
 import EvaIcon from "../complect/eva-icon/EvaIcon";
 import { FULLSCREEN__CONTENT } from "../complect/fullscreen-content/useFullscreenContent";
+import JesmylLogo from "../complect/jesmyl-logo/JesmylLogo";
 import { KEYBOARD_FLASH } from "../complect/keyboard/KeyboardInput";
 import Modal from "../complect/modal/Modal";
 import { crossApplicationLinkCoder, jesmylHostName } from "../complect/qr-code/QRCodeMaster";
@@ -12,6 +13,8 @@ import useApps from "../complect/useApps";
 import useFullScreen from "../complect/useFullscreen";
 import di from "../components/index/Index.store";
 import indexStorage from "../components/index/indexStorage";
+import routerStoreActions from "../components/router/Router.store";
+import routerStorage from "../components/router/routerStorage";
 import navConfigurers from "../shared/navConfigurers";
 import { RootState } from "../shared/store";
 import { appNames } from "./App.model";
@@ -22,6 +25,7 @@ import AppRouter from "./AppRouter";
 listenThemeChanges();
 
 const currentAppSelector = (state: RootState) => state.index.currentApp;
+const emptyArr: [] = [];
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +34,7 @@ function App() {
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const { goBack, registerBackAction } = navConfigurers[appName]();
   const { jumpToApp } = useApps();
+  const [isShowLogo, setIsShowLogo] = useState(true);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -45,10 +50,11 @@ function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [goBack]);
 
-  indexStorage.dispatch(dispatch)
-    .it('schedules', di.updateScheduleStorage)
-    .it('appVersion', di.setAppVersion)
-    .it('statistic', di.updateIndexStatistic);
+  routerStorage.initDispatches(dispatch, routerStoreActions);
+  indexStorage.initDispatches(dispatch, di);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { setTimeout(setIsShowLogo, 1200, false) }, emptyArr);
 
   useEffect(() => {
     if (window.location.href.startsWith(jesmylHostName)) {
@@ -64,10 +70,14 @@ function App() {
         }
       }
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, emptyArr);
 
   return (
     <div className={`above-container ${keyboardOpen ? "keyboard-open" : ""}`}>
+      {isShowLogo && <div className="jesmyl-smile-box flex center absolute full-width full-height z-index:5">
+        <JesmylLogo className="no-fade-in-effect" />
+      </div>}
       <div
         className={`application-container app_${appName}${isFullscreen ? " fullscreen-mode" : ""}`}
       >

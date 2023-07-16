@@ -4,7 +4,7 @@ import modalService from "../../../../../../complect/modal/Modal.service";
 import { RootState } from "../../../../../../shared/store";
 import { useSelectAuth } from "../../../../../index/useAuth";
 import { GamerGameName, GamerRoom, GamerRoomMemberStatus } from "../../../Gamer.model";
-import { gamerExer, setGamerCurrentRoomw } from "../../../Gamer.store";
+import di, { gamerExer } from "../../../Gamer.store";
 import gamerStorage from "../../../gamerStorage";
 import useGamerNav from "../../../useGamerNav";
 
@@ -50,7 +50,7 @@ export default function useGamerRooms(offline?: boolean) {
         rooms,
         currentRoom,
         players,
-        memberPossibilities: (room: GamerRoom | null = currentRoom, topLogin = auth?.login) => {
+        memberPossibilities: (room: GamerRoom | null = currentRoom, topLogin = auth.login) => {
             if (!auth) return { isUnauthorized: true, isInvalid: true };
             const member = room?.members.find(({ login }) => login === topLogin);
 
@@ -85,8 +85,8 @@ export default function useGamerRooms(offline?: boolean) {
                                 action: 'requestAddToRoom',
                                 method: 'push',
                                 args: {
-                                    login: auth?.login,
-                                    fio: auth?.fio,
+                                    login: auth.login,
+                                    fio: auth.fio,
                                     roomw: roomWid,
                                 }
                             });
@@ -97,7 +97,7 @@ export default function useGamerRooms(offline?: boolean) {
             }
 
             gamerStorage.set('roomw', roomWid);
-            dispatch(setGamerCurrentRoomw(roomWid));
+            dispatch(di.roomw(roomWid));
             goTo('room');
         },
         setCurrentGame: (value: GamerGameName) => {

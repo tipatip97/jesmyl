@@ -1,12 +1,15 @@
 import indexStorage from "../components/index/indexStorage";
 
+const classList = document.body.classList;
 const minTouches = 3;
 const maxTouches = 3;
 let timeout: any = null;
 const lsName = 'theme';
-const bodyClass = indexStorage.get(lsName);
-const classList = document.body.classList;
-if (bodyClass) classList.add(bodyClass);
+
+(async () => {
+    const bodyClass = await indexStorage.getAsync(lsName);
+    if (bodyClass) classList.add(bodyClass);
+})();
 
 const toggleTheme = () => {
     const className = 'light-theme';

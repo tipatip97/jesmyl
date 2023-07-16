@@ -13,7 +13,7 @@ import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer"
 import { QRCodeReaderData } from "../../../complect/qr-code/QRCodeMaster.model";
 import Gamer from "./Gamer";
 import { GamerGameName, GamerNavData, GamerPassport, GamerStorage } from "./Gamer.model";
-import { updateCurrentOfflineGameName, updateSpyOfflineGame } from "./Gamer.store";
+import di from "./Gamer.store";
 import GamerApp from "./GamerApp";
 import TheGamerPassport from "./complect/GamerPassport";
 import GamerOfflineRoom from "./complect/rooms/offline-room/GamerOfflineRoom";
@@ -72,12 +72,12 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
             const newMembers = [...members];
             newMembers[memberi] = '.';
 
-            dispatch(updateSpyOfflineGame({
+            dispatch(di.offlineSpyGame({
               iterations,
               location: memberi < spiesCount ? SPY_ROLE : unsecretSpyRole(location),
               reshareData: [location, spiesCount, iterations, newMembers.join('')],
             }));
-            dispatch(updateCurrentOfflineGameName('spy'));
+            dispatch(di.currentOfflineGameName('spy'));
           }
         }
       },

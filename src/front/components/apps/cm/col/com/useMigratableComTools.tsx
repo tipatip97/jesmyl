@@ -3,6 +3,7 @@ import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAb
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
+import useAuth from "../../../../index/useAuth";
 import { ChordVisibleVariant } from "../../Cm.model";
 import di from "../../Cm.store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
@@ -30,6 +31,7 @@ const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
   const ccom = useCcom();
+  const auth = useAuth();
   const { goToTranslation: openTranslations } = useTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
@@ -133,7 +135,7 @@ export default function useMigratableComTools() {
                 title: "Проигрыватель",
                 icon: playerHideMode ? "music" : "music-outline",
                 onClick: () => {
-                  dispatch(di.setPlayerHideMode(playerHideMode ? '' : 'min'));
+                  dispatch(di.playerHideMode(playerHideMode ? '' : 'min'));
                 },
               }
             );
@@ -166,14 +168,14 @@ export default function useMigratableComTools() {
   return {
     comTopTools,
     topTools: makeToolList(
-      spliceMigratableEditableComToolNameList(comTopTools)
+      spliceMigratableEditableComToolNameList(comTopTools, auth)
     ),
     menuTools: makeToolList(
-      concatMigratableEditableComToolNameList(menuComToolNameList as never)
+      concatMigratableEditableComToolNameList(menuComToolNameList as never, auth)
     ),
     toggleTopTool: (tool: MigratableComToolName) => {
       dispatch(
-        di.updateComTopTools(
+        di.comTopTools(
           comTopTools.indexOf(tool) < 0
             ? [...comTopTools, tool]
             : comTopTools.filter((currTool) => tool !== currTool)

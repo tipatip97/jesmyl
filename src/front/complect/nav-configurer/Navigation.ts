@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { AppName } from "../../app/App.model";
+import { Auth } from "../../components/index/Index.model";
 import { FreeRoutePath, RoutePath, RoutePhase, RoutePhasePoint } from "../../components/router/Router.model";
 import { qrCodeMaster } from "../qr-code/QRCodeMaster";
 import { INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage } from "./Navigation.model";
@@ -228,7 +229,7 @@ export class NavigationConfig<Storage, NavData = {}> {
         return line.map(({ phase: [phase] }) => phase);
     }
 
-    findContent(path?: FreeRoutePath, onImpossible?: () => void): ReactNode {
+    findContent(auth: Auth, path?: FreeRoutePath, onImpossible?: () => void): ReactNode {
         if (!this.isPathPosible(path)) {
             if (path) console.error(`Фаза "/${path.join('/')}" не существует!`);
             setTimeout(() => onImpossible?.());
@@ -250,7 +251,7 @@ export class NavigationConfig<Storage, NavData = {}> {
             }, null);
 
             return item
-                ? (item.accessRule == null || (this.nav.exer != null && this.nav.exer.actionAccessedOrNull(item.accessRule)))
+                ? (item.accessRule == null || (this.nav.exer != null && this.nav.exer.actionAccessedOrNull(item.accessRule, auth)))
                     ? typeof item.node === 'function'
                         ? item.node({
                             outletContent: findContent(throwRoute, items),

@@ -1,4 +1,5 @@
 import { DetailedHTMLProps, PropsWithChildren } from "react";
+import useAuth from "../../../../index/useAuth";
 import { cmExer } from "../../Cm.store";
 import { CorrectsBox } from "../corrects-box/CorrectsBox";
 import { ICorrect } from "../corrects-box/CorrectsBox.model";
@@ -11,13 +12,14 @@ export default function EditContainerCorrectsInformer(
   }> &
     DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ) {
+  const auth = useAuth();
   const { corrects, children, access } = props;
   const errors = corrects?.errors || [];
   const warnings = corrects?.warnings || [];
   const unknowns = corrects?.unknowns || [];
 
   return (
-    cmExer.actionAccessedOrNull(access, true) && (
+    cmExer.actionAccessedOrNull(access, auth, true) && (
       <div
         {...props}
         className={`edit-container-corrects-informer ${props.className || ""}`}

@@ -22,7 +22,7 @@ export default function GamerRoomMemberMore({ member }: { member: GamerRoomMembe
         icon: "plus",
         onClick: () => acceptMemberToCurrentRoom(member.login),
       },
-      !possibilities.isOwner && possibilities.member?.login !== auth?.login && {
+      !possibilities.isOwner && possibilities.member?.login !== auth.login && {
         titleNode: <>{possibilities.isInactive ? "Разблокировать участника" : "Заблокировать участника"} {nameNode}</>,
         icon: "slash",
         onClick: () =>

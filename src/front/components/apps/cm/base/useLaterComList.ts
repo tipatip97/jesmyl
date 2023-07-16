@@ -21,7 +21,7 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
 
     const ret = {
         laterComs,
-        updateLaterComwList: (list: number[]) => dispatch(di.updateLaterComwList(list)),
+        updateLaterComwList: (list: number[]) => dispatch(di.laterComwList(list)),
         addLaterComw: (comw: number) => {
             const newList = [comw].concat(list
                 .filter((laterComw) => laterComw !== comw)

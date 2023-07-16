@@ -4,6 +4,7 @@ import { ShortRealRule } from "../../../../../back/complect/executer/Executer.mo
 
 
 export interface CmEditorStoraged {
+    rules?: ShortRealRule[],
     execs?: Exec[],
     mp3Rules?: CmMp3Rule[],
 }

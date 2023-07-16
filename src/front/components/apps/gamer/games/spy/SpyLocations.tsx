@@ -4,9 +4,11 @@ import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../complect/SendButton";
 import { gamerExer } from "../../Gamer.store";
 import useSpyLocations from "./useSpyLocations";
+import useAuth from "../../../../index/useAuth";
 
 export default function SpyLocations() {
   const { locations } = useSpyLocations();
+  const auth = useAuth();
 
   const [newName, setNewName] = useState('');
   const isShortNewName = newName.length < 3;
@@ -37,7 +39,7 @@ export default function SpyLocations() {
             return <div key={`l ${locationi}`}>{location}</div>;
           })}
         </div>
-        {!isOpenAdder && gamerExer.actionAccessedOrNull("addNewLocation") &&
+        {!isOpenAdder && gamerExer.actionAccessedOrNull("addNewLocation", auth) &&
           <EvaButton
             className="margin-gap color--ok"
             name="plus-circle-outline"

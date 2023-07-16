@@ -32,33 +32,33 @@ export default function IndexSettings() {
   const { appConfigs } = useApps();
 
   useEffect(() => {
-    soki.send({ subscribe: 'statistic' });
+    soki.send({ subscribe: 'statistic' }, 'index');
     return () => {
-      soki.send({ unsubscribe: 'statistic' });
+      soki.send({ unsubscribe: 'statistic' }, 'index');
     };
   }, []);
 
   const settingsList = [
-    (auth?.level || 0) >= 50 && <BrutalItem
+    (auth.level || 0) >= 50 && <BrutalItem
       icon="sync"
       title="Перечитать файлы"
       onClick={async () => {
         const passphrase = await modalService.prompt('пароль');
-        passphrase && soki.send({ system: { name: 'reloadFiles', passphrase } });
+        passphrase && soki.send({ system: { name: 'reloadFiles', passphrase } }, 'index');
       }}
     />,
-    (auth?.level || 0) >= 80 && <BrutalItem
+    (auth.level || 0) >= 80 && <BrutalItem
       icon="sync"
       title="Перезапустить сокет"
       onClick={async () => {
         const passphrase = await modalService.prompt('пароль');
-        passphrase && soki.send({ system: { name: 'restartWS', passphrase } });
+        passphrase && soki.send({ system: { name: 'restartWS', passphrase } }, 'index');
       }}
     />,
     <BrutalItem
       icon="keypad-outline"
       title="Фирменная клавиатура"
-      onClick={async () => { dispatch(di.switchIsUseNativeKeyboard()) }}
+      onClick={async () => { dispatch(di.isUseNativeKeyboard()) }}
       box={<EvaIcon name={isUseNativeKeyboard ? 'square-outline' : 'checkmark-square-2-outline'} />}
     />,
     <BrutalItem

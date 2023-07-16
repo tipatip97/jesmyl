@@ -10,7 +10,7 @@ import { RootState } from "../../../../../../../../shared/store";
 const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
 
 export default function ObserveUrlResource({ onSuccess, availableWithTextQuery }: { onSuccess: (val: CmMp3ContainsPageResult) => void, availableWithTextQuery?: boolean }) {
-    const sendService = serviceMaster();
+    const sendService = serviceMaster('cm');
     const [url, setUrl] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 

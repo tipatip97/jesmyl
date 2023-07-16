@@ -20,14 +20,16 @@ export default function AdminApp({ content }: { content: ReactNode }) {
   }, [cuser, context.users]);
 
   useEffect(() => {
-    adminStorage.listen("userList", 'AdminApp', (val) => {
-      val && setContext(prev => {
-        return {
-          ...prev,
-          users: val.map(auth => new User(auth)).sort((a, b) => (b.level - a.level) || (a.name > b.name ? 1 : -1)),
-        };
-      });
-    });
+    (async () => {
+      const val = await adminStorage.getAsync("userList");
+      if (val)
+        setContext(prev => {
+          return {
+            ...prev,
+            users: val.map(auth => new User(auth)).sort((a, b) => (b.level - a.level) || (a.name > b.name ? 1 : -1)),
+          };
+        });
+    })();
   }, [cuser]);
 
   return <AdminContext.Provider value={context}>{content}</AdminContext.Provider>;

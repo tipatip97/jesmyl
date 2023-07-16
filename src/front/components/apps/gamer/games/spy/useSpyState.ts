@@ -32,7 +32,7 @@ export default function useSpyState() {
             return players?.map((player) => unsecretSpyRole((state?.roles?.[player.login]) || '')).find(loc => loc);
         }, [players, state]),
         getMyRoleName: () => {
-            return state?.roles && auth?.login && unsecretSpyRole(state.roles[auth.login]);
+            return state?.roles && auth.login && unsecretSpyRole(state.roles[auth.login]);
         },
         finishGame: () => {
             return gamerExer.send({

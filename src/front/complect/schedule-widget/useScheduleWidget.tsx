@@ -99,7 +99,7 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
             schedule: defaultSchwduleWidget,
         };
 
-        const myUser = auth == null ? undefined : schedule.ctrl.users.find(user => user.login === auth.login);
+        const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
         const mainRole = schedule.ctrl.roles.find(role => role.mi === 0);
         const isSwPublic = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public,);
         const isSwBeforeRegistration = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration);

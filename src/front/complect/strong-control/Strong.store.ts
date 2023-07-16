@@ -1,22 +1,19 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { JStorage } from "../JStorage";
 import { NavigationStorage } from "../nav-configurer/Navigation.model";
-import { ClipboardStore, StrongState } from "./Strong.model";
+import { StrongState } from "./Strong.model";
 
-export const strongStorage: JStorage<NavigationStorage<StrongState>> = new JStorage<NavigationStorage<StrongState>>('strong');
+export const strongStorage = new JStorage<NavigationStorage<StrongState>, StrongState>('strong');
 
 const initialState: StrongState = {
-    clipboard: strongStorage.getOr('clipboard', { items: {} }),
+    clipboard: { items: {} },
 };
 
 export const slice = createSlice({
     name: "strong",
     initialState,
     reducers: {
-        clipboard: (state, action: PayloadAction<ClipboardStore>) => {
-            state.clipboard = action.payload;
-            strongStorage.set('clipboard', action.payload);
-        },
+        ...strongStorage.initializators(['clipboard']),
     },
 });
 

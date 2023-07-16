@@ -31,13 +31,13 @@ export default function IndexMain() {
   const { readQR } = useQRMaster();
   const connectionNode = useConnectionState();
   const appList = appNames.map((appName) => {
-    if (currentAppName === appName || appName === 'index') return null;
     const navs = appConfigs[appName];
+    if (navs?.nav.nav.useIsCanRead?.() === false) return null;
+    if (currentAppName === appName || appName === 'index') return null;
 
     if (navs == null) return null!;
     const { nav } = navs;
-    if (nav.nav.useIsCanRead?.() === false) return null;
-    if (nav.nav.level !== undefined && (auth == null || nav.nav.level > auth.level)) return null!;
+    if (nav.nav.level !== undefined && nav.nav.level > auth.level) return null!;
 
     return (
       <div
@@ -62,12 +62,12 @@ export default function IndexMain() {
       head={
         <div className="flex flex-gap">
           {connectionNode}
-          {auth?.fio && (
+          {auth.fio && (
             <div
               className="margin-big-gap-h pointer"
               onClick={() => openAbsoluteBottomPopup(<UserMore />)}
             >
-              {auth?.fio}
+              {auth.fio}
             </div>
           )}
         </div>
@@ -76,7 +76,7 @@ export default function IndexMain() {
       content={
         <>
           <ScheduleWidgetAlarm onGoTo={() => goTo('schedules')} />
-          {auth?.fio ? null : (
+          {auth.fio ? null : (
             <BrutalItem
               icon="person-outline"
               title="Войти"

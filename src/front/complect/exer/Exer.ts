@@ -2,7 +2,6 @@
 import { ExecutionDict } from "../../../back/complect/executer/Executer.model";
 import { SokiAppName } from "../../../back/complect/soki/soki.model";
 import { Auth } from "../../components/index/Index.model";
-import indexStorage from "../../components/index/indexStorage";
 import { soki } from "../../soki";
 import { JStorage } from "../JStorage";
 import mylib from "../my-lib/MyLib";
@@ -16,22 +15,21 @@ export class Exer<Storage extends ExerStorage> {
     key = 'execs' as keyof Storage;
     rules: ExecRule[] = [];
     checkedActions: Record<string, true | null> = {};
-    auth: Auth | nil;
 
-    constructor(appName: SokiAppName, storage: JStorage<Storage> | nil) {
+    constructor(appName: SokiAppName, storage: JStorage<Storage, any> | nil) {
         this.storage = storage;
         this.appName = appName;
-        this.auth = indexStorage.getOr('auth', { level: 0 });
+        // this.auth = indexStorage.getOr('auth', { level: 0 });
 
         this.updateRules();
     }
 
-    updateRules() {
-        this.rules = [...(this.storage?.get('rules') as [] || [])];
+    async updateRules() {
+        this.rules = [...(await this.storage?.getAsync('rules') as [] || [])];
     }
 
-    setIfCan<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
-        return this.actionAccessedOrNull(freeExec.action) && this.set(freeExec);
+    setIfCan<Value>(freeExec: FreeExecDict<Value>, auth: Auth): Exec<Value> | null {
+        return this.actionAccessedOrNull(freeExec.action, auth) && this.set(freeExec);
     }
 
     clear() {
@@ -106,10 +104,6 @@ export class Exer<Storage extends ExerStorage> {
         return retExec;
     }
 
-    isThereLocals() {
-        return this.storage?.has(this.key);
-    }
-
     send<Value>(fixedExecs: ClientExecutionDict<Value> | (ClientExecutionDict<Value>[])) {
         return this.load([fixedExecs].flat().map(exec => new Exec(exec, this.rules)));
     }
@@ -137,30 +131,11 @@ export class Exer<Storage extends ExerStorage> {
         });
     }
 
-    saveLocally() {
-        this.storage?.set(this.key, this.execs.map(exec => exec.toDict()) as never);
+    actionAccessedOrUnd(action: string | nil, auth: Auth, isNullifyed?: boolean): true | undefined {
+        return this.actionAccessedOrNull(action, auth, isNullifyed) ?? undefined;
     }
 
-    removeLocals() {
-        this.storage?.rem(this.key);
-    }
-
-    removeAll() {
-        this.execs = [];
-        this.removeLocals();
-    }
-
-    setLocals() {
-        if (this.storage?.has(this.key)) {
-            this.set(this.storage.get(this.key) as never);
-        }
-    }
-
-    actionAccessedOrUnd(action: string | nil, isNullifyed?: boolean): true | undefined {
-        return this.actionAccessedOrNull(action, isNullifyed) ?? undefined;
-    }
-
-    actionAccessedOrNull(action: string | nil, isNullifyed?: boolean): true | null {
+    actionAccessedOrNull(action: string | nil, auth: Auth, isNullifyed?: boolean): true | null {
         if (action == null) return isNullifyed ? true : null;
         if (this.checkedActions[action] !== undefined) return this.checkedActions[action] || null;
         if (!this.rules?.length) return null;
@@ -169,7 +144,7 @@ export class Exer<Storage extends ExerStorage> {
         if (!rule)
             console.error(`Зарегистрировано правило на неизвестное действие ${action}`);
 
-        return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +(this.auth?.level ?? 0) ? true : null) : null);
+        return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +(auth.level ?? 0) ? true : null) : null);
     }
 }
 

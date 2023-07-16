@@ -2,6 +2,7 @@ import EvaIcon from "../complect/eva-icon/EvaIcon";
 import { ExerStorage } from "../complect/exer/Exer.model";
 import { INavigationConfig } from "../complect/nav-configurer/Navigation.model";
 import useIndexNav from "../components/index/complect/useIndexNav";
+import useAuth from "../components/index/useAuth";
 import { RoutePhasePoint } from "../components/router/Router.model";
 import navConfigurers from "../shared/navConfigurers";
 import { AppName } from "./App.model";
@@ -13,6 +14,7 @@ export default function AppFooter({ appName }: { appName: AppName }) {
     navigate: indexNavigate,
     nav: indexNav,
   } = useIndexNav();
+  const auth = useAuth();
 
   const [indexPhase] = indexRoute || [];
 
@@ -27,7 +29,7 @@ export default function AppFooter({ appName }: { appName: AppName }) {
       if (
         accessRule != null &&
         nav.exer &&
-        !nav.exer.actionAccessedOrNull(accessRule)
+        !nav.exer.actionAccessedOrNull(accessRule, auth)
       )
         return null;
       const isActive = setIsActive(phase);

@@ -5,7 +5,7 @@ import { ScheduleStorage } from "../../complect/schedule-widget/ScheduleWidget.m
 export interface IndexState {
     currentApp: AppName,
     appVersion?: number,
-    auth: Auth | nil,
+    auth: Auth,
     schedules: ScheduleStorage,
     errors: Partial<Record<IndexErrorScope, string>>,
     userMessages: UserMessage[],
@@ -27,7 +27,6 @@ export interface IndexStateError {
 }
 
 export interface IndexStorage extends IndexState {
-    auth: Auth | nil,
     currentApp: AppName,
     rejectedComponents: string[],
     registeredApps: AppName[],

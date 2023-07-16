@@ -11,6 +11,7 @@ import { editCompositionNavs } from "../../editorNav";
 import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
 import "./EditComposition.scss";
 import { useEditableCcom } from "./useEditableCcom";
+import useAuth from "../../../../../index/useAuth";
 
 export default function EditComposition({
   outletContent,
@@ -21,6 +22,7 @@ export default function EditComposition({
   const { goTo } = useCmNav();
   const { exec } = useExer(cmExer);
   const [isOpenPlayer, setIsOpenPlayer] = useState(false);
+  const auth = useAuth();
 
   if (!ccom) return null;
 
@@ -50,7 +52,7 @@ export default function EditComposition({
                   phase: [phase],
                   accessRule,
                 }) => {
-                  if (accessRule && !cmExer.actionAccessedOrNull(accessRule))
+                  if (accessRule && !cmExer.actionAccessedOrNull(accessRule, auth))
                     return null;
                   return (
                     <span

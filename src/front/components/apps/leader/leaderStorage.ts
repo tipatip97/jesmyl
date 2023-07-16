@@ -1,6 +1,6 @@
 import { JStorage } from "../../../complect/JStorage";
 import { NavigationStorage } from "../../../complect/nav-configurer/Navigation.model";
-import { LeaderStoraged } from "./Leader.model";
+import { LeaderState, LeaderStoraged } from "./Leader.model";
 
-const leaderStorage: JStorage<NavigationStorage<LeaderStoraged>> = new JStorage<NavigationStorage<LeaderStoraged>>('leader');
+const leaderStorage = new JStorage<NavigationStorage<LeaderStoraged>, LeaderState>('leader');
 export default leaderStorage;

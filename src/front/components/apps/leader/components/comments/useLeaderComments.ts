@@ -20,15 +20,15 @@ export default function useLeaderComments() {
 
             leaderExer.send(execs)
                 .then(() => {
-                    dispatch(di.updateSendingComments([]));
-                    dispatch(di.updateRrrorSentComments(false));
+                    dispatch(di.sendingComments([]));
+                    dispatch(di.isSendingMessagesError(false));
                 })
                 .catch(() => {
-                    dispatch(di.updateRrrorSentComments(true));
+                    dispatch(di.isSendingMessagesError(true));
                 });
         },
         sendComment: (exec: SendingComment) => {
-            dispatch(di.updateSendingComments([...sendingComments.comments || [], exec]));
+            dispatch(di.sendingComments([...sendingComments.comments || [], exec]));
         },
     };
     return ret;

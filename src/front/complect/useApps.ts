@@ -28,9 +28,8 @@ export default function useApps() {
         ) => {
             const jump = (phase?: RoutePathVariated<NavData>) => {
                 if (appName !== 'index') {
-                    soki.setAppName(appName);
                     soki.onAppChange(appName);
-                    dispatch(di.setCurrentApp(appName));
+                    dispatch(di.currentApp(appName));
                 }
                 const rootPhase = appConfigs[appName].nav.nav.rootPhase;
                 if (rootPhase || phase) {

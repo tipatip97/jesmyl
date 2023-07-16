@@ -40,7 +40,7 @@ export default function IndexLogin() {
         type,
         value: data as never
       }
-    });
+    }, 'index');
   };
 
   const loginInSystem = (state: AuthorizationData) => {
@@ -62,20 +62,20 @@ export default function IndexLogin() {
     }
   };
 
-  const setAuthData = (login: string | LocalSokiAuth) => {
+  const setAuthData = async (login: string | LocalSokiAuth) => {
     let auth;
 
     if (typeof login === 'string') {
       if (isCorrectLoginJSONData(login)) {
-        indexStorage.setString('auth', login);
-        auth = indexStorage.get('auth');
+        // indexStorage.setString('auth', login);
+        auth = await indexStorage.getAsync('auth');
       }
     } else auth = login;
 
     if (auth) {
-      dispatch(di.setAuthData(auth));
+      dispatch(di.auth(auth));
       indexStorage.set('auth', auth);
-      dispatch(di.setCurrentApp("cm"));
+      dispatch(di.currentApp("cm"));
       removePullRequisites();
     }
   };

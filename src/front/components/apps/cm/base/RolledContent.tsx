@@ -8,11 +8,14 @@ import di from "../Cm.store";
 import cmStorage from "../cmStorage";
 import useCmNav from "./useCmNav";
 
+const speedRollKfSelector = (state: RootState) => state.cm.speedRollKf;
+
 export default function RollControled(
   props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>
 ) {
   const { toggleRoll, rollMode } = useRoll();
   const [isFullscreen] = useFullScreen();
+  speedRollKf = useSelector(speedRollKfSelector);
 
   return (
     <div
@@ -59,7 +62,7 @@ export default function RollControled(
 const setRollInterval = (): number =>
   (interval = (20 - speedRollKf || 0.7) * 30);
 
-let speedRollKf = cmStorage.getOr("speedRollKf", 10);
+let speedRollKf = 10;
 let container: HTMLElement | null = null;
 let speedScreen: HTMLDivElement | null = null;
 let interval: number;
@@ -77,7 +80,7 @@ export function useRoll() {
     rollMode: useSelector(rollModeSelector),
     switchRollMode: (topRollMode: CmRollMode) => {
       rollMode = topRollMode;
-      dispatch(di.changeRollMode(topRollMode));
+      dispatch(di.rollMode(topRollMode));
     },
     speedRollKf,
     toggleRoll: () => {

@@ -11,7 +11,7 @@ import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
 import smylib, { SMyLib } from './complect/SMyLib';
 import { sokiAuther } from './complect/SokiAuther';
-import { SokiCapsule, SokiClientEvent, SokiServerEvent, SokiServicePack, SokiStatistic, SokiSubscribtionName } from './soki.model';
+import { SokiAppName, SokiCapsule, SokiClientEvent, SokiServerEvent, SokiServicePack, SokiStatistic, SokiSubscribtionName } from './soki.model';
 
 setPolyfills();
 ErrorCatcher.logAllErrors();
@@ -31,6 +31,7 @@ export class SokiServer {
         filer.load().then().catch(() => { });
         filer.setWatcher((appName, key, value, mtime) => {
             this.send({
+                appName,
                 pull: appName === 'index'
                     ? {
                         appName,
@@ -63,7 +64,7 @@ export class SokiServer {
             }
         });
 
-        subscribers.forEach((_, client) => this.send({ statistic: this.statistic }, client));
+        subscribers.forEach((_, client) => this.send({ statistic: this.statistic, appName: 'index', }, client));
     }
 
     onClientDisconnect(client: WebSocket) {
@@ -124,7 +125,7 @@ export class SokiServer {
 
     private connect(client: WebSocket) {
         this.capsules.set(client, { auth: null });
-        this.send({ connect: true }, client);
+        this.send({ connect: true, appName: 'index' }, client);
     }
 
     start() {
@@ -137,9 +138,10 @@ export class SokiServer {
                     const eventData: SokiClientEvent = JSON.parse('' + data);
                     const requestId = eventData.requestId;
                     const eventBody = eventData.body;
+                    const appName = eventData.appName;
 
                     if (eventBody.ping) {
-                        this.send({ requestId, pong: true }, client);
+                        this.send({ requestId, pong: true, appName }, client);
                         return;
                     }
 
@@ -153,12 +155,14 @@ export class SokiServer {
                                 this.send({
                                     requestId,
                                     authorization: { ok: true, type: event.type, value },
+                                    appName,
                                 }, client);
                             })
                             .catch((value: string) => {
                                 this.send({
                                     requestId,
                                     authorization: { ok: false, type: event.type, value },
+                                    appName,
                                 }, client);
                             });
                         return;
@@ -175,10 +179,11 @@ export class SokiServer {
                                 const auth = eventLogin && secretPassw && sokiAuther.authList?.find(({ login, passw }) => eventLogin === login && secretPassw === passw);
                                 if (auth) {
                                     capsule.auth = auth;
-                                    this.send({ authorized: true }, client);
+                                    this.send({ authorized: true, appName }, client);
                                     console.info(`Client ${auth.fio ?? '???'} connected`);
                                     if (auth.level !== eventData.auth.level)
                                         this.send({
+                                            appName: 'index',
                                             pull: {
                                                 appName: 'index',
                                                 contents: [[{ key: 'auth', value: { ...auth, passw } }], []],
@@ -188,11 +193,12 @@ export class SokiServer {
                                 } else this.send({
                                     requestId,
                                     unregister: true,
-                                    errorMessage: 'Некорректные данные авторизации'
+                                    errorMessage: 'Некорректные данные авторизации',
+                                    appName,
                                 }, client);
                             }
                         } else {
-                            this.send({ authorized: false }, client);
+                            this.send({ authorized: false, appName: eventData.appName }, client);
                             console.info('Unknown client connected');
                         }
                         return;
@@ -203,6 +209,7 @@ export class SokiServer {
                             filer.load().then(() => this.send({
                                 requestId,
                                 system: { name: 'reloadFiles', ok: true },
+                                appName,
                             })).catch(() => { });
                         }
 
@@ -211,20 +218,23 @@ export class SokiServer {
                                 if (error) {
                                     this.send({
                                         requestId,
-                                        system: { name: 'restartWS', ok: false, error: error.message }
+                                        system: { name: 'restartWS', ok: false, error: error.message },
+                                        appName,
                                     }, client);
                                     return;
                                 }
                                 if (stderr) {
                                     this.send({
                                         requestId,
-                                        system: { name: 'restartWS', ok: false, error: stderr }
+                                        system: { name: 'restartWS', ok: false, error: stderr },
+                                        appName,
                                     }, client);
                                     return;
                                 }
                                 this.send({
                                     requestId,
-                                    system: { name: 'restartWS', ok: true, message: stdout }
+                                    system: { name: 'restartWS', ok: true, message: stdout },
+                                    appName,
                                 }, client);
                             });
                         }
@@ -238,13 +248,13 @@ export class SokiServer {
 
                             const pull = filer.getContents(eventData.appName, eventBody.pullData, capsule?.auth);
                             if (pull.contents[0].length || pull.contents[1].length)
-                                this.send({ requestId, pull }, client);
-                            else this.send({ requestId }, client);
+                                this.send({ requestId, pull, appName }, client);
+                            else this.send({ requestId, appName }, client);
                         }
                         return;
                     }
 
-                    if (eventBody.service) {
+                    if (eventBody.service && eventData.appName) {
                         const service = eventBody.service;
 
                         const services: SokiServicePack = {
@@ -258,7 +268,8 @@ export class SokiServer {
                                 service: {
                                     key: service.key,
                                     errorMessage: 'У данного приложения нет сервиса',
-                                }
+                                },
+                                appName,
                             }, client);
                         } else services[eventData.appName]?.(eventBody.service.key, eventBody.service.value, eventData, capsule, client)
                             .then((value) => {
@@ -267,7 +278,8 @@ export class SokiServer {
                                     service: {
                                         key: service.key,
                                         value,
-                                    }
+                                    },
+                                    appName,
                                 }, client);
                             }).catch((error) => {
                                 this.send({
@@ -275,7 +287,8 @@ export class SokiServer {
                                     service: {
                                         key: service.key,
                                         errorMessage: error,
-                                    }
+                                    },
+                                    appName,
                                 }, client);
                             });
                     }
@@ -290,7 +303,7 @@ export class SokiServer {
                         this.subscriptions.get(eventBody.unsubscribe)?.delete(client);
                     }
 
-                    if (eventBody.execs) this.execExecs(eventBody.execs, eventData, capsule, client, requestId);
+                    if (eventBody.execs) this.execExecs(appName, eventBody.execs, eventData, capsule, client, requestId);
 
                 });
 
@@ -300,8 +313,8 @@ export class SokiServer {
         console.info('SokiServer started');
     }
 
-    async execExecs(execs: ExecutionDict[], eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket, requestId?: string) {
-        if (await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule.auth.login === eventData.auth?.login) {
+    async execExecs(appName: SokiAppName, execs: ExecutionDict[], eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket, requestId?: string) {
+        if (eventData.appName && await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule.auth.login === eventData.auth?.login) {
             const appConfig = filer.appConfigs[eventData.appName];
 
             if (!appConfig) return;
@@ -315,16 +328,17 @@ export class SokiServer {
             return Executer
                 .execute(appConfig, realParents, execs, capsule?.auth)
                 .then(async ({ fixes, replacedExecs, errorMessage, rules }) => {
-                    const lastUpdate = await filer.saveChanges(fixes, eventData.appName);
+                    const lastUpdate = await filer.saveChanges(fixes, eventData.appName!);
                     this.send(
                         {
                             requestId,
                             execs: {
-                                appName: eventData.appName,
+                                appName: eventData.appName!,
                                 list: replacedExecs,
                                 lastUpdate,
                             },
                             errorMessage,
+                            appName,
                         },
                         fixes[0] === 'schedules'
                             ? (capsule, _, whenRejButTs) => {
@@ -340,23 +354,26 @@ export class SokiServer {
                         {
                             requestId,
                             execs: {
-                                appName: eventData.appName,
+                                appName: eventData.appName!,
                                 list: [],
                                 lastUpdate,
                             },
                             errorMessage,
+                            appName,
                         });
                 });
         } else {
-            this.send({
-                requestId,
-                execs: {
-                    appName: eventData.appName,
-                    list: [],
-                    lastUpdate: null,
-                },
-                errorMessage: 'Не авторизован'
-            }, null, client);
+            if (eventData.appName)
+                this.send({
+                    requestId,
+                    execs: {
+                        appName: eventData.appName,
+                        list: [],
+                        lastUpdate: null,
+                    },
+                    errorMessage: 'Не авторизован',
+                    appName,
+                }, null, client);
 
             throw 'Не авторизован';
         }

@@ -134,7 +134,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                       e.stopPropagation();
 
                       dispatch(
-                        di.updateFavoriteMeetings({
+                        di.favoriteMeetings({
                           ...favorites,
                           events: isFavorite
                             ? favorites.events.filter(
@@ -167,7 +167,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                     e.stopPropagation();
 
                     dispatch(
-                      di.updateFavoriteMeetings({
+                      di.favoriteMeetings({
                         ...favorites,
                         contexts: isFavorite
                           ? favorites.contexts.filter(

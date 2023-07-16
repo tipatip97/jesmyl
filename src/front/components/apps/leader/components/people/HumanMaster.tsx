@@ -6,6 +6,7 @@ import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { leaderExer } from "../../Leader.store";
 import useLeaderContext from "../contexts/useContexts";
 import { HumanExportable, HumanImportable } from "./People.model";
+import useAuth from "../../../../index/useAuth";
 
 const ufpLabels = "1".repeat(10).split("");
 const isNNull = (it: unknown) => it !== null;
@@ -57,6 +58,7 @@ export default function HumanMaster({
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
   const { humans } = useLeaderContext();
+  const auth = useAuth();
 
   const takeName = (value: string) => {
     if (value.match(/^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$/)) {
@@ -207,7 +209,7 @@ export default function HumanMaster({
                         wid: human.w,
                         value,
                       },
-                    });
+                    }, auth);
                   }
                 }}
             />
@@ -243,7 +245,7 @@ export default function HumanMaster({
                       value: !isMan,
                       humann: human.name,
                     },
-                  });
+                  }, auth);
               }}
             />
           </div>
@@ -283,7 +285,7 @@ export default function HumanMaster({
                               value,
                               humann: human.name,
                             },
-                          });
+                          }, auth);
                         }
                       }}
                     />
@@ -313,7 +315,7 @@ export default function HumanMaster({
                         value: time,
                         humann: human.name,
                       },
-                    });
+                    }, auth);
                   }
                 }}
             />
@@ -340,7 +342,7 @@ export default function HumanMaster({
                       value,
                       humann: human.name,
                     },
-                  });
+                  }, auth);
                 }}
             />
           </div>
@@ -364,7 +366,7 @@ export default function HumanMaster({
                       value: !isInactive,
                       humann: human.name,
                     },
-                  });
+                  }, auth);
               }}
             >
               {isInactive

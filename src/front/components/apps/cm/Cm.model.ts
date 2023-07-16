@@ -45,6 +45,8 @@ export interface CmStoraged extends CmEditorStoraged {
     comTopTools: MigratableComToolName[],
     isMiniAnchor: boolean,
     playerHideMode: PlayerHideMode,
+
+    speedRollKf: number,
 }
 
 export type PlayerHideMode = 'expand' | 'min' | '';
@@ -53,8 +55,6 @@ export interface CmStorage extends CmStoraged {
     settings: IExportableSetts,
     eeStorage: EeStorageStoreType,
     executions: ClientExecutionDict[],
-
-    speedRollKf: number,
 }
 
 export interface CmNavData {

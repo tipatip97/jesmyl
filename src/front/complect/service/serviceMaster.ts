@@ -1,7 +1,7 @@
 import { AppName } from "../../app/App.model";
 import { soki } from "../../soki";
 
-export default function serviceMaster(appName?: AppName) {
+export default function serviceMaster(appName: AppName) {
     return <ReturnValue, Value = unknown>(key: string, value?: Value) => {
 
         return new Promise<ReturnValue>((resolve, reject) => {

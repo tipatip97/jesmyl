@@ -3,6 +3,7 @@ import useExer from "../../../../../../../complect/exer/useExer";
 import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../../complect/my-lib/MyLib";
+import useAuth from "../../../../../../index/useAuth";
 import { ChordVisibleVariant } from "../../../../Cm.model";
 import { cmExer } from "../../../../Cm.store";
 import ComOrders from "../../../../col/com/orders/ComOrders";
@@ -13,6 +14,7 @@ import { useEditableCcom } from "../useEditableCcom";
 export default function EditableCompositionMain() {
   const ccom = useEditableCcom();
   const { exec } = useExer(cmExer);
+  const auth = useAuth();
 
   if (!ccom) return null;
 
@@ -107,7 +109,7 @@ export default function EditableCompositionMain() {
         </div>
         <div className="half-width" />
       </div>
-      {cmExer.actionAccessedOrNull("canWatch") && (
+      {cmExer.actionAccessedOrNull("canWatch", auth) && (
         <div
           className="flex full-width between error-message margin-gap-v pointer"
           onClick={() => {

@@ -6,14 +6,16 @@ import { leaderExer } from "../../../Leader.store";
 import { LeaderCleans } from "../../LeaderCleans";
 import { useLeaderCcontext } from "../../contexts/useContexts";
 import useLeaderGroups from "../useGroups";
+import useAuth from "../../../../../index/useAuth";
 
 export default function LeaderGroupFields() {
   const ccontext = useLeaderCcontext();
   const { cgroup } = useLeaderGroups();
+  const auth = useAuth();
   const [redactFields, updateRedactFields] = useState<
     Record<string, string | und>
   >({});
-  const canRedact = leaderExer.actionAccessedOrNull("setContextGroupFields");
+  const canRedact = leaderExer.actionAccessedOrNull("setContextGroupFields", auth);
   const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(
     true,
     null,

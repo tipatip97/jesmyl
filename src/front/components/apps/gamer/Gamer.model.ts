@@ -9,7 +9,7 @@ export interface GamerStorage extends GamerStoraged {
 
 export interface GamerStoraged {
     rooms?: GamerRoom[],
-    roomw: number | nil,
+    roomw?: number | nil,
     passport?: GamerPassport,
     offlineRooms?: GamerRoom[],
     currentOfflineGameName?: GamerGameName,

@@ -1,4 +1,5 @@
 import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import useAuth from "../../../../index/useAuth";
 import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import { useLeaderCcontext } from "../contexts/useContexts";
@@ -9,6 +10,7 @@ import { LeaderGroupsMore } from "./GroupsMore";
 export default function GroupList() {
   const ccontext = useLeaderCcontext();
   const [groupsMoreNode, openGroupsMore] = useBottomPopup(LeaderGroupsMore);
+  const auth = useAuth();
 
   if (!ccontext) return null;
 
@@ -24,7 +26,7 @@ export default function GroupList() {
           {ccontext.groups?.map((group, groupi) => {
             return <GroupFace key={groupi} group={group} />;
           })}
-          {leaderExer.actionAccessedOrNull("addContextGroupFieldBlanks") && (
+          {leaderExer.actionAccessedOrNull("addContextGroupFieldBlanks", auth) && (
             <GroupFieldBlanks />
           )}
         </>

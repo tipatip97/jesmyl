@@ -18,11 +18,13 @@ export default function LeaderApplication({ content }: { content: ReactNode }) {
     sendAllComments();
   }, [sendingComments]);
 
-  leaderStorage.dispatch(dispatch)
-    .it("games", di.updateGamesStore)
-    .it("people", di.updateLeaderPeople)
-    .it("contexts", di.updateLeaderContexts)
-    .it("gameTimers", di.updateGamesTimers);
+  leaderStorage.initDispatches(dispatch, di);
+
+  // leaderStorage.dispatch(dispatch)
+  //   .it("games", di.games)
+  //   .it("people", di.people)
+  //   .it("contexts", di.contexts)
+  //   .it("gameTimers", di.gameTimers);
 
   return <>{content}</>;
 }

@@ -23,9 +23,11 @@ import TimerFieldsConfigurer from "./timers/complect/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/complect/TimerNameListConfigurer";
 import useGameTimer from "./timers/useGameTimer";
 import useCgame from "./useGames";
+import useAuth from "../../../../index/useAuth";
 
 export default function TheGame() {
   const { cgame } = useCgame();
+  const auth = useAuth();
   const { contextMembers } = useLeaderContext();
   const [selectedTimers, updateSelectedTimers] = useState<number[]>([]);
   const [outsiderw, setOutsiderw] = useState(0);
@@ -68,7 +70,7 @@ export default function TheGame() {
         human={human}
         onMoreClick={
           cgame &&
-          leaderExer.actionAccessedOrUnd("addMemberToTeam") &&
+          leaderExer.actionAccessedOrUnd("addMemberToTeam", auth) &&
           (() => {
             setOutsiderw(human.w);
             openOutsiderMore();
@@ -93,7 +95,7 @@ export default function TheGame() {
           {fullNode}
           {gameMoreNode}
           {outsiderMoreNode}
-          {!leaderExer.actionAccessedOrNull("updateGameTeamList") &&
+          {!leaderExer.actionAccessedOrNull("updateGameTeamList", auth) &&
             !cgame.teams ? (
             <div className="error-message">Команды не сформированы</div>
           ) : (
@@ -179,7 +181,7 @@ export default function TheGame() {
                   )}
                 </div>
               )}
-              {teams && leaderExer.actionAccessedOrUnd("updateGameTeamList") && (
+              {teams && leaderExer.actionAccessedOrUnd("updateGameTeamList", auth) && (
                 <div className="flex center">
                   <SendButton
                     title="Обубликовать команды"

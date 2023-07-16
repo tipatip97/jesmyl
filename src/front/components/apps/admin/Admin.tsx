@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import DebouncedSearchInput from "../../../complect/DebouncedSearchInput";
 import mylib from "../../../complect/my-lib/MyLib";
 import "./Admin.scss";
-import { useAdminContext } from "./adminStorage";
+import adminStorage, { useAdminContext } from "./adminStorage";
 import { User } from "./complect/users/User";
 import UserFace from "./complect/users/UserFace";
 import PhaseAdminEditorContainer from "./phase-editor-container/PhaseAdminEditorContainer";
+import { useDispatch } from "react-redux";
 
 export default function Admin() {
   const { users } = useAdminContext();
@@ -18,6 +19,8 @@ export default function Admin() {
         .map(({ user }) => user)
       : users);
   };
+
+  // adminStorage.initValues(useDispatch(), );
 
   useEffect(() => search(term, users), [term, users]);
 

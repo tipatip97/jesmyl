@@ -6,7 +6,10 @@
     position: relative;
     width: var(--jesmyl-smile-size);
     height: var(--jesmyl-smile-size);
-    animation: fade-in .3s;
+
+    &:not(.no-fade-in-effect) {
+        animation: fade-in .3s;
+    }
 
     &.ringify {
         &::before {

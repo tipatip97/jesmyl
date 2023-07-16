@@ -11,12 +11,14 @@ export default function CmApplication({ content }: { content: ReactNode }) {
   const { watchTranslation } = useTranslation();
   const { jumpTo } = useCmNav();
 
-  cmStorage.dispatch(dispatch)
-    .it('cols', di.setCols)
-    .it('chordTracks', di.updateCmChordTracks)
-    .it('meetings', di.updateMeetingList)
-    .it('mp3Rules', di.updateMp3Rules)
-    .it('execs', di.updateEditorExecList);
+  cmStorage.initDispatches(dispatch, di);
+
+  // cmStorage.dispatch(dispatch)
+  //   .it('cols', di.cols)
+  //   .it('chordTracks', di.chordTracks)
+  //   .it('meetings', di.meetings)
+  //   .it('mp3Rules', di.mp3Rules)
+  //   .it('execs', di.execs);
 
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {

@@ -23,7 +23,7 @@ export function HumansMore({ moreNode, prepare }: { moreNode?: ReactNode, prepar
             mylib.keys(humanFieldTranslations),
             humanListSortVariant
           );
-          dispatch(di.setHumanListSortVariant(next));
+          dispatch(di.humanListSortVariant(next));
         },
         rightNode: <div className="abs-action abs-full flex center">
           {humanFieldTranslations[humanListSortVariant]}

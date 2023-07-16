@@ -62,7 +62,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
         if (!isRejectSave) ret.updateTimer(mappedTimer);
       }
     },
-    updateTimer: (timer: GameTimerImportable | null) => {
+    updateTimer: async (timer: GameTimerImportable | null) => {
       if (!game) return;
 
       const runTimer = runTimeTimers.news[gameWid]?.[timerTs];
@@ -70,7 +70,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
       if (runTimer && game.timers?.some((timer) => timer.ts === runTimer.ts))
         delete runTimeTimers.news[gameWid];
 
-      const timerStore = { ...leaderStorage.get("gameTimers") };
+      const timerStore = { ...await leaderStorage.getAsync("gameTimers") };
       const area = { ...timerStore.news };
 
       area[gameWid] = { ...area[gameWid], [timerTs]: timer };
@@ -81,7 +81,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
       if (Object.keys(timerStore.news || {}).length === 0) delete timerStore.news;
 
       leaderStorage.set("gameTimers", timerStore);
-      dispatch(di.updateGamesTimers(timerStore));
+      dispatch(di.gameTimers(timerStore));
     },
     saveComment: (comment: string) => {
       ret.mapTimer((timer) => ({

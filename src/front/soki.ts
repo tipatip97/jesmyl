@@ -22,14 +22,15 @@ let pingTimeout: TimeOut;
 const invokeOnceResult = [eventerAlt.invokeOnce, eventerAlt.passPropagation];
 
 export class SokiTrip {
-    appName: SokiAppName = 'cm';
+    // appName: SokiAppName = 'cm';
     ws?: WebSocket;
     isAuthorized = false;
     waiters: Waiters = { auth: [] };
     private responseWaiters: ResponseWaiter[] = [];
 
-    constructor() {
-        this.appName = indexStorage.getOr('currentApp', 'cm');
+
+    async appName() {
+        return await indexStorage.getOrAsync('currentApp', 'cm');
     }
 
     onClose = () => {
@@ -38,7 +39,7 @@ export class SokiTrip {
         setTimeout(() => this.start(), 1000);
     };
 
-    onConnect = () => this.sendForce({ connect: true }, this.appName);
+    onConnect = async () => this.sendForce({ connect: true }, await this.appName());
 
     start() {
         this.ws = new WebSocket(`wss://${environment.dns}/websocket/`);
@@ -68,23 +69,25 @@ export class SokiTrip {
                     if (event.authorized !== undefined) {
                         this.isAuthorized = true;
                         Eventer.invoke(this.waiters, 'auth', true);
-                        this.pullCurrentAppData();
+                        if (event.appName !== undefined) this.pullCurrentAppData(event.appName);
                     }
 
                     if (event.system) {
-                        if (event.system.name === 'reloadFiles') this.pullCurrentAppData();
+                        if (event.system.name === 'reloadFiles')
+                            if (event.appName !== undefined)
+                                this.pullCurrentAppData(event.appName);
                         if (event.system.name === 'restartWS') { }
                     }
 
-                    if (event.execs) {
+                    if (event.execs && event.appName) {
                         const execs = event.execs;
-                        const appStore = appStorage[execs.appName];
+                        const appStore = appStorage[event.appName];
                         const contents = mylib.clone(appStore.properties);
                         Executer
                             .executeReals(contents, event.execs.list)
                             .then((fixes) => {
                                 appStore.refreshAreas(fixes, contents);
-                                this.setLastUpdates(execs.appName, [null, null, execs.lastUpdate, null]);
+                                this.setLastUpdates(event.appName!, [null, null, execs.lastUpdate, null]);
                             })
                             .catch();
                     }
@@ -126,19 +129,19 @@ export class SokiTrip {
         indexStorage.rem('updateRequisites');
     }
 
-    setAppName(appName: SokiAppName) {
-        this.appName = appName;
-    }
+    // setAppName(appName: SokiAppName) {
+    //     this.appName = appName;
+    // }
 
-    pullCurrentAppData() {
-        const { index: [indexLastUpdate, indexRulesMd5] = [], [this.appName]: [appLastUpdate, appRulesMd5] = [] } = indexStorage.get('updateRequisites') || {};
+    async pullCurrentAppData(appName: SokiAppName) {
+        const { index: [indexLastUpdate = 0, indexRulesMd5 = ''] = [], [appName]: [appLastUpdate = 0, appRulesMd5 = ''] = [] } = await indexStorage.getAsync('updateRequisites') || {};
 
-        this.send({ pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] }, this.appName)
+        this.send({ pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] }, appName)
             .on((event) => event.pull && this.updatedPulledData(event.pull));
     }
 
     updatedPulledData(pull: PullEventValue) {
-        const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown>) => {
+        const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown, unknown>) => {
             if (!pullContents.length) return;
 
             const fixes: string[] = [];
@@ -161,18 +164,18 @@ export class SokiTrip {
     }
 
     onAppChange(appName: SokiAppName) {
-        this.setAppName(appName);
-        this.pullCurrentAppData();
+        // this.setAppName(appName);
+        this.pullCurrentAppData(appName);
     }
 
-    sendForce(body: SokiClientEventBody, appName?: SokiAppName, requestId?: string) {
+    async sendForce(body: SokiClientEventBody, appName: SokiAppName, requestId?: string) {
         try {
             if (this.ws && this.ws.readyState === this.ws.OPEN) {
                 const sendEvent: SokiClientEvent = {
                     requestId,
                     body,
-                    auth: indexStorage.getOr('auth', null),
-                    appName: appName ?? this.appName,
+                    auth: await indexStorage.getAsync('auth'),
+                    appName,
                 };
 
                 this.ws.send(JSON.stringify(sendEvent));
@@ -180,13 +183,13 @@ export class SokiTrip {
         } catch (event) { }
     }
 
-    send = (body: SokiClientEventBody, appName?: SokiAppName): { on: ResponseWaiterCallback } => {
+    send = (body: SokiClientEventBody, appName: SokiAppName): { on: ResponseWaiterCallback } => {
         let requestId: string | und;
 
         Promise.resolve()
             .then(() => {
                 if (this.isAuthorized) this.sendForce(body, appName, requestId);
-                else this.onAuthorize(() => this.sendForce(body, appName, requestId), true);
+                else this.onAuthorize(() => { this.sendForce(body, appName, requestId) }, true);
             });
 
         return {
@@ -199,7 +202,7 @@ export class SokiTrip {
 
     ping: ResponseWaiterCallback = (on, ko) => {
         clearTimeout(pingTimeout);
-        pingTimeout = setTimeout(() => this.send({ ping: true }).on(on, ko), 0);
+        pingTimeout = setTimeout(() => this.send({ ping: true }, 'index').on(on, ko), 0);
     };
 }
 

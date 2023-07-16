@@ -23,7 +23,7 @@ export function useMarks() {
         markedComs,
         setMarks: (val: number[]) => {
             cmStorage.set('marks', val);
-            dispatch(di.setMarkList(val));
+            dispatch(di.marks(val));
         },
         toggleMarked: (comw: number) => ret.isMarked(comw) ? ret.removeMark(comw) : ret.addMarks(comw),
         addMarks: (comws: number | number[]) => ret.marks && ret.setMarks(ret.marks.concat([comws].flat().filter(comw => ret.marks && ret.marks.indexOf(comw) < 0))),

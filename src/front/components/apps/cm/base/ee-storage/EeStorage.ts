@@ -8,9 +8,9 @@ export class EeStorage {
         this.load();
     }
 
-    load() {
+    async load() {
         if (this.store != null) return this.store;
-        return this.store = cmStorage.getOr('eeStorage', {});
+        return this.store = await cmStorage.getOrAsync('eeStorage', {});
     }
 
     save() {

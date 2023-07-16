@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
-import cmStorage from "../../cmStorage";
 import ComFace from "../../col/com/face/ComFace";
 import { ExecVision } from "../CmEditor.model";
 import { EditableCom } from "../col/compositions/EditableCom";
@@ -13,14 +12,15 @@ import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorConta
 import "./ExecsVisor.scss";
 
 const execsSelector = (state: RootState) => state.cm.execs;
+const rulesSelector = (state: RootState) => state.cm.rules;
 
 export default function ExecsVisor() {
   const [lookList, setLookList] = useState<(number | nil)[]>([]);
   const execs = useSelector(execsSelector);
+  const rules = useSelector(rulesSelector);
   const cols = useEditableCols();
   const { meetings, goToEvent } = useEditableMeetings();
   const list: ExecVision[] | nil = useMemo(() => {
-    const rules = cmStorage.get('rules');
     let flowCom: EditableCom | nil = null;
 
     const setAsNode = (value: any, fieldn: string | nil) => {
@@ -77,7 +77,7 @@ export default function ExecsVisor() {
       rules &&
       execs
         ?.map((exec): ExecVision => {
-          const action = rules.find(({ action }) => exec.action === action);
+          const rule = rules.find(({ action }) => exec.action === action);
           let prevNode: ReactNode;
           let valueNode: ReactNode;
 
@@ -90,9 +90,9 @@ export default function ExecsVisor() {
             valueNode = <pre>{exec.args?.value}</pre>;
           }
 
-          return action
+          return rule
             ? {
-              ...action,
+              ...rule,
               ...exec,
               specials: (
                 <>
@@ -107,7 +107,7 @@ export default function ExecsVisor() {
         })
         .sort((a, b) => (b.ts || 0) - (a.ts || 0))
     );
-  }, [cols, execs, meetings]);
+  }, [cols, execs, meetings, rules]);
 
   return (
     <PhaseCmEditorContainer

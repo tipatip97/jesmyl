@@ -61,7 +61,7 @@ export default function useTranslation() {
       scrollToView(nextCom);
     },
     setTexti: (blocki: number) => {
-      dispatch(di.setTranslationBlock(blocki));
+      dispatch(di.translationBlock(blocki));
       const nextd = window.document.getElementById(
         `translation-window-line-${blocki}`
       );
@@ -75,10 +75,10 @@ export default function useTranslation() {
             nextParent.clientWidth / 2;
       }
     },
-    switchVisible: () => dispatch(di.switchTranslationBlockVisible(!isVisible)),
+    switchVisible: () => dispatch(di.isTranslationBlockVisible(!isVisible)),
     switchPosition: () => {
       dispatch(
-        di.setTranslationBlockPosition(
+        di.translationBlockPosition(
           ret.position === "center" ? "top center" : "center"
         )
       );

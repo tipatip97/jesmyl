@@ -13,9 +13,9 @@ export default function UserMore() {
   const auth = useAuth();
 
   const logout = () => {
-    dispatch(di.setAuthData(null));
-    indexStorage.set('auth', null);
-    dispatch(di.setCurrentApp("cm"));
+    dispatch(di.auth(null));
+    indexStorage.rem('auth');
+    dispatch(di.currentApp("cm"));
     removePullRequisites();
     window.location.reload();
   };
@@ -37,7 +37,7 @@ export default function UserMore() {
         icon: "qr-code",
         onClick: (event) => {
           event.preventDefault();
-          if (auth?.fio && auth.login)
+          if (auth.fio && auth.login)
             nav.shareDataByQr('passport', {
               fio: auth.fio,
               login: auth.login,

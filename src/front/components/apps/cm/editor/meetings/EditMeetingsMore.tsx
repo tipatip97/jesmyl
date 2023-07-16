@@ -1,5 +1,6 @@
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import useAuth from "../../../../index/useAuth";
 import { cmExer } from "../../Cm.store";
 import AddContext from "./AddContext";
 import MeetingsCreator from "./MeetingsCreator";
@@ -7,6 +8,7 @@ import MeetingsCreator from "./MeetingsCreator";
 export default function EditMeetingsMore({ currPath }: { currPath: number[] }) {
   const { openFullscreenContent } = useFullscreenContent();
   const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const auth = useAuth();
 
   return prepareAbsoluteBottomPopupContent({
     items: [
@@ -16,7 +18,7 @@ export default function EditMeetingsMore({ currPath }: { currPath: number[] }) {
         onClick: () =>
           openFullscreenContent((close) => <MeetingsCreator close={close} />),
       },
-      cmExer.actionAccessedOrNull("addMeetingsContext") && (
+      cmExer.actionAccessedOrNull("addMeetingsContext", auth) && (
         {
           title: 'Создать контекст',
           icon: "folder-add-outline",

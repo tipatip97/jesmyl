@@ -7,7 +7,7 @@ import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { GamerPassport } from "../Gamer.model";
-import { updateGamerPassport } from "../Gamer.store";
+import di from "../Gamer.store";
 import useGamerNav from "../useGamerNav";
 import PhaseGamerContainer from "./PhaseGamerContainer";
 import useGamerOfflineRooms from "./rooms/offline-room/useGamerOfflineRooms";
@@ -45,7 +45,7 @@ export default function TheGamerPassport() {
                             disabled={!fio || fio === passport?.fio}
                             onClick={() => {
                                 setIsEdit(false);
-                                dispatch(updateGamerPassport({
+                                dispatch(di.passport({
                                     fio,
                                     login: passportData?.login || `P:${mylib.md5(`${fio} ${Date.now() + Math.random()}`)}`,
                                 }));
@@ -59,7 +59,7 @@ export default function TheGamerPassport() {
                             confirm
                             onClick={() => {
                                 back(authData);
-                                dispatch(updateGamerPassport(null));
+                                dispatch(di.passport(null));
                             }}
                         >
                             Сбросить данные

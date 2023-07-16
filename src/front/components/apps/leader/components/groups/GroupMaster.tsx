@@ -6,6 +6,7 @@ import { LeaderCleans } from "../LeaderCleans";
 import { useLeaderCcontext } from "../contexts/useContexts";
 import SelectHumans from "../people/SelectHumans";
 import { LeaderGroupImportable } from "./Groups.model";
+import useAuth from "../../../../index/useAuth";
 
 export default function LeaderGroupMaster({
   group,
@@ -20,6 +21,7 @@ export default function LeaderGroupMaster({
   const [delMentors, updateDelMentors] = useState<number[]>([]);
   const [addMembers, updateAddMembers] = useState<number[]>([]);
   const [delMembers, updateDelMembers] = useState<number[]>([]);
+  const auth = useAuth();
 
   const ccontext = useLeaderCcontext();
 
@@ -50,7 +52,7 @@ export default function LeaderGroupMaster({
         }}
       />
 
-      {leaderExer.actionAccessedOrNull("ruleIsCanRedactGroupMentorList") && (
+      {leaderExer.actionAccessedOrNull("ruleIsCanRedactGroupMentorList", auth) && (
         <SelectHumans
           chooseTitle={`Выбор из участников ${ccontext?.name || "контекста"}`}
           chosenPlaceholder="Поиск по лидерам группы"

@@ -78,8 +78,8 @@ export default function SpyRoomContent() {
                     spies={spies}
                 />
                 : !amIManager &&
-                    state.retired?.includes(auth?.login || "")
-                    ? spies?.includes(auth?.login || "")
+                    state.retired?.includes(auth.login || "")
+                    ? spies?.includes(auth.login || "")
                         ? "Тебя разоблачили!"
                         : "Ты больше не в игре. Не сообщай, пожалуйста, название локации до конца игры"
                     : <SpyRoomStartedGame

@@ -13,7 +13,7 @@ export function useChordVisibleVariant(): [ChordVisibleVariant, (val: ChordVisib
         useSelector(chordVisibleVariantSelector),
         (val: ChordVisibleVariant) => {
             cmStorage.set('chordVisibleVariant', val);
-            dispatch(di.setChordVisibleVariant(val));
+            dispatch(di.chordVisibleVariant(val));
         }
     ];
 }
