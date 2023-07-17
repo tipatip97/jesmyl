@@ -22,7 +22,6 @@ let pingTimeout: TimeOut;
 const invokeOnceResult = [eventerAlt.invokeOnce, eventerAlt.passPropagation];
 
 export class SokiTrip {
-    // appName: SokiAppName = 'cm';
     ws?: WebSocket;
     isAuthorized = false;
     waiters: Waiters = { auth: [] };
@@ -30,7 +29,7 @@ export class SokiTrip {
 
 
     async appName() {
-        return await indexStorage.getOrAsync('currentApp', 'cm');
+        return await indexStorage.getOr('currentApp', 'cm');
     }
 
     onClose = () => {
@@ -129,12 +128,8 @@ export class SokiTrip {
         indexStorage.rem('updateRequisites');
     }
 
-    // setAppName(appName: SokiAppName) {
-    //     this.appName = appName;
-    // }
-
-    async pullCurrentAppData(appName: SokiAppName) {
-        const { index: [indexLastUpdate = 0, indexRulesMd5 = ''] = [], [appName]: [appLastUpdate = 0, appRulesMd5 = ''] = [] } = await indexStorage.getAsync('updateRequisites') || {};
+    private async pullCurrentAppData(appName: SokiAppName) {
+        const { index: [indexLastUpdate = 0, indexRulesMd5 = ''] = [], [appName]: [appLastUpdate = 0, appRulesMd5 = ''] = [] } = await indexStorage.get('updateRequisites') || {};
 
         this.send({ pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] }, appName)
             .on((event) => event.pull && this.updatedPulledData(event.pull));
@@ -164,7 +159,6 @@ export class SokiTrip {
     }
 
     onAppChange(appName: SokiAppName) {
-        // this.setAppName(appName);
         this.pullCurrentAppData(appName);
     }
 
@@ -174,7 +168,7 @@ export class SokiTrip {
                 const sendEvent: SokiClientEvent = {
                     requestId,
                     body,
-                    auth: await indexStorage.getAsync('auth'),
+                    auth: await indexStorage.get('auth'),
                     appName,
                 };
 

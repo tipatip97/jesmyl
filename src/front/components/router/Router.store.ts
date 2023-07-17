@@ -1,13 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { MyLib } from "../../complect/my-lib/MyLib";
 import { RouterNavigateCast, RouterNavigateData, RouterState } from "./Router.model";
 import routerStorage from "./routerStorage";
 
-const initialState: RouterState = {};
-
-MyLib.entries(routerStorage.properties).forEach(([key, val]) => {
-  initialState[key as keyof RouterState] = val;
-});
+const initialState: RouterState = {
+  isReady: false,
+};
 
 export const slice = createSlice({
   name: "router",
@@ -27,6 +24,7 @@ export const slice = createSlice({
       'tuner',
       'tuner.data',
       'rules',
+      'isReady',
     ]),
     routerFixNavigateCast: (state, action: PayloadAction<RouterNavigateCast>) => {
       state[action.payload.appName] = action.payload.value;

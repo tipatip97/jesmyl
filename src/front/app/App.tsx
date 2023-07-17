@@ -26,6 +26,7 @@ listenThemeChanges();
 
 const currentAppSelector = (state: RootState) => state.index.currentApp;
 const emptyArr: [] = [];
+const setIsReady = () => routerStoreActions.isReady(true);
 
 function App() {
   const dispatch = useDispatch();
@@ -48,9 +49,9 @@ function App() {
     window.addEventListener("keydown", onKeyDown);
 
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [goBack]);
+  }, [goBack, switchFullscreen]);
 
-  routerStorage.initDispatches(dispatch, routerStoreActions);
+  routerStorage.initDispatches(dispatch, routerStoreActions, setIsReady);
   indexStorage.initDispatches(dispatch, di);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

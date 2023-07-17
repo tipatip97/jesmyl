@@ -10,7 +10,7 @@ export class EeStorage {
 
     async load() {
         if (this.store != null) return this.store;
-        return this.store = await cmStorage.getOrAsync('eeStorage', {});
+        return this.store = await cmStorage.getOr('eeStorage', {});
     }
 
     save() {

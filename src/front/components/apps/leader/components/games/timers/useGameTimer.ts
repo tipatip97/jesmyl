@@ -70,7 +70,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
       if (runTimer && game.timers?.some((timer) => timer.ts === runTimer.ts))
         delete runTimeTimers.news[gameWid];
 
-      const timerStore = { ...await leaderStorage.getAsync("gameTimers") };
+      const timerStore = { ...await leaderStorage.get("gameTimers") };
       const area = { ...timerStore.news };
 
       area[gameWid] = { ...area[gameWid], [timerTs]: timer };

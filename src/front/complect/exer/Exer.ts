@@ -19,13 +19,12 @@ export class Exer<Storage extends ExerStorage> {
     constructor(appName: SokiAppName, storage: JStorage<Storage, any> | nil) {
         this.storage = storage;
         this.appName = appName;
-        // this.auth = indexStorage.getOr('auth', { level: 0 });
 
         this.updateRules();
     }
 
     async updateRules() {
-        this.rules = [...(await this.storage?.getAsync('rules') as [] || [])];
+        this.rules = [...(await this.storage?.get('rules') as [] || [])];
     }
 
     setIfCan<Value>(freeExec: FreeExecDict<Value>, auth: Auth): Exec<Value> | null {

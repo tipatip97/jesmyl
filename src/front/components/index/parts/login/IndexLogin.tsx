@@ -67,8 +67,7 @@ export default function IndexLogin() {
 
     if (typeof login === 'string') {
       if (isCorrectLoginJSONData(login)) {
-        // indexStorage.setString('auth', login);
-        auth = await indexStorage.getAsync('auth');
+        auth = await indexStorage.get('auth');
       }
     } else auth = login;
 

@@ -52,7 +52,7 @@ export default function CmExternalComListAtt({
         }</>;
     }, isRedact ? 'open' : null, switchIsRedact);
 
-    const event = value.eventw ? meetings?.events.find((event) => event.wid === value.eventw) : null;
+    const event = value.eventw ? meetings?.events?.find((event) => event.wid === value.eventw) : null;
 
     const [compositionNode, showComposition] = useFullContent(() => {
         return <TheComForFullScreen

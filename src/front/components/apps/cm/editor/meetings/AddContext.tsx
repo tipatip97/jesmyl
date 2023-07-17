@@ -37,7 +37,7 @@ export default function AddContext({
             </div>
           );
         }),
-    [meetings?.contexts, name]
+    [contexts, name]
   );
 
   const switchEvent = (event: EditableMeetingsEvent) => {
@@ -46,7 +46,7 @@ export default function AddContext({
       : setBindEvents([...bindEvents, event]);
   };
   const eventsStack = meetings?.events
-    .map((event, eventi) => {
+    ?.map((event, eventi) => {
       if (event.contextw && event.contextw !== currGroupw) return null;
       return (
         <BrutalItem

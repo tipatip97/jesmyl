@@ -229,10 +229,11 @@ export class NavigationConfig<Storage, NavData = {}> {
         return line.map(({ phase: [phase] }) => phase);
     }
 
-    findContent(auth: Auth, path?: FreeRoutePath, onImpossible?: () => void): ReactNode {
+    findContent(auth: Auth, path?: FreeRoutePath, onImpossible?: () => void, isReadyInvokeImpossible?: boolean): ReactNode {
         if (!this.isPathPosible(path)) {
             if (path) console.error(`Фаза "/${path.join('/')}" не существует!`);
-            setTimeout(() => onImpossible?.());
+            if (isReadyInvokeImpossible && onImpossible !== undefined)
+                setTimeout(onImpossible, 100);
             return null;
         }
 
@@ -266,7 +267,8 @@ export class NavigationConfig<Storage, NavData = {}> {
         };
 
         const content = findContent(path, this.nav.routes);
-        if (content == null) onImpossible?.();
+        if (isReadyInvokeImpossible && content == null && onImpossible !== undefined)
+            setTimeout(onImpossible, 100);
         return content;
     }
 }

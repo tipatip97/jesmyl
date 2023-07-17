@@ -17,7 +17,7 @@ export default function MeetingsInner<Meets extends Meetings>({
   onContextNavigate,
 }: {
   meetings: Meets;
-  onEventClick: (event: Meets["event"]) => void;
+  onEventClick: (event: NonUndefined<Meets["event"]>) => void;
   onContextNavigate?: (context: number[]) => void;
   asEventBox?: (event: MeetingsEvent) => ReactNode,
 }) {
@@ -63,7 +63,7 @@ export default function MeetingsInner<Meets extends Meetings>({
       {eventContext.length ? null : (
         <>
           {favorites.events.map((eventw, eventwi) => {
-            const event = meetings.events.find((event) => event.wid === eventw);
+            const event = meetings.events?.find((event) => event.wid === eventw);
             if (!event) return null;
             const { context } = meetings.contexts[event.contextw] || {};
 
@@ -72,7 +72,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                 key={eventwi}
                 icon="calendar-outline"
                 title={event.name}
-                onClick={() => onEventClick(event)}
+                onClick={() => onEventClick(event as never)}
                 box={asEventBox ? asEventBox(event) : <EvaIcon className="fade-05" name="star" />}
                 description={
                   <span
@@ -114,7 +114,7 @@ export default function MeetingsInner<Meets extends Meetings>({
           })}
         </>
       )}
-      {meetings.events.map((event, eventi) => {
+      {meetings.events?.map((event, eventi) => {
         if (event.contextw && event.contextw !== currContextw) return null;
         const isFavorite = favorites.events.indexOf(event.wid) > -1;
 
@@ -123,7 +123,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             key={eventi}
             icon="calendar-outline"
             title={event.name}
-            onClick={() => onEventClick(event)}
+            onClick={() => onEventClick(event as never)}
             box={
               asEventBox
                 ? asEventBox(event)

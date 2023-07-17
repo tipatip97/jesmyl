@@ -7,8 +7,10 @@ import mylib from "../my-lib/MyLib";
 import useFullScreen from "../useFullscreen";
 import { NavigationConfig } from "./Navigation";
 import { NavigationStorage, UseNavAction } from "./Navigation.model";
+import { useMemo } from "react";
 
 const routerStoreSelector = (state: RootState) => state.router;
+const emptyDict = {};
 
 export default function useNavConfigurer<Storage, NavDataNative = {}>(
     appName: AppName,
@@ -22,9 +24,9 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
     const routerStore = useSelector(routerStoreSelector);
     const appRouteCast = routerStore[appName];
     const route = appRouteCast?.last === undefined ? null : appRouteCast.net.find(([phase]) => appRouteCast.last === phase);
-    const appRouteData = routerStore[`${appName}.data`] as NavData || {};
+    const appRouteData = routerStore[`${appName}.data`] as NavData || emptyDict;
 
-    const ret = {
+    const ret = useMemo(() => ({
         nav,
         route,
         navigateToRoot: () => nav.nav.rootPhase && ret.navigate([nav.nav.rootPhase]),
@@ -140,7 +142,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
                 else ret.navigate(nav.nav.rootPhase === null ? null : [nav.nav.rootPhase]);
             }
         }
-    };
+    }), [actions, appName, appRouteCast, appRouteData, dispatch, isFullScreen, nav, route, routerStore, switchFullscreen]);
 
     return ret;
 }

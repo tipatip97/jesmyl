@@ -34,8 +34,8 @@ export type MeetingsContextMap = Record<number, MeetingsContext>;
 export type IExportableMeetingsContextMap = Record<number, IExportableMeetingsContext>;
 
 export interface IExportableMeetings {
-    names: string[];
-    events: IExportableMeetingsEvent[];
+    names?: string[];
+    events?: IExportableMeetingsEvent[];
     contexts: IExportableMeetingsContextMap;
 }
 

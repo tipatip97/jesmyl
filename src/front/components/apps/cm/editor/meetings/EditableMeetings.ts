@@ -6,9 +6,9 @@ import { EditableCols } from "../col/EditableCols";
 import { EditableMeetingsEvent } from "./EditableMeetingsEvent";
 
 export class EditableMeetings extends Meetings {
-    event: EditableMeetingsEvent;
+    event?: EditableMeetingsEvent;
     stack?: IExportableMeetingsEvent[];
-    events: EditableMeetingsEvent[];
+    events?: EditableMeetingsEvent[];
     contexts: MeetingsContextMap;
     names: string[];
     cols?: EditableCols;
@@ -21,9 +21,9 @@ export class EditableMeetings extends Meetings {
         this.cols = cols;
         this.stack = events;
         this.contexts = this.takeContexts(contexts);
-        this.names = [...names];
+        this.names = [...(names ?? [])];
         this.events = events?.map(event => new EditableMeetingsEvent(event, cols));
-        this.event = this.events[0];
+        this.event = this.events?.[0];
     }
 
     scope(action: string, uniq?: number) {
@@ -89,6 +89,6 @@ export class EditableMeetings extends Meetings {
             args: event.execArgs()
         });
 
-        this.events.push(event);
+        this.events?.push(event);
     }
 }

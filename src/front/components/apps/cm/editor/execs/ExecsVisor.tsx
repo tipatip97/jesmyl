@@ -50,9 +50,7 @@ export default function ExecsVisor() {
               .flat()
               .map((eventw: number) => {
                 if (eventw == null) return null;
-                const event = meetings.events.find(
-                  (event) => event.wid === eventw
-                );
+                const event = meetings.events?.find(event => event.wid === eventw);
                 return (
                   <div
                     key={`event-${eventw}`}

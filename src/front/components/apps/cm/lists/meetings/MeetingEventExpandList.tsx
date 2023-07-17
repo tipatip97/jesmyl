@@ -24,7 +24,7 @@ export default function MeetingEventExpandList() {
     if (!meetings) return null;
 
     const events = meetings.events
-        .sort((a, b) => {
+        ?.sort((a, b) => {
             const aCtx = meetings.contexts[a.contextw].context;
             const bCtx = meetings.contexts[b.contextw].context;
             return mylib.findMap(aCtx, (ctx, ctxi) => ctx - bCtx[ctxi], 0) || aCtx.length - bCtx.length;
@@ -39,7 +39,7 @@ export default function MeetingEventExpandList() {
         const eventGroups: MeetingsEvent[][] = [];
         let lastContextw = 0;
 
-        events.forEach((event) => {
+        events?.forEach((event) => {
             if (copyMode === CopyMode.All ||
                 (copyMode === CopyMode.ExpandedOnly
                     ? expandedEventLists.includes(event.wid)
@@ -63,7 +63,7 @@ export default function MeetingEventExpandList() {
     };
 
     return <>{
-        events.map((event, eventi) => {
+        events?.map((event, eventi) => {
             const context = meetings.contexts[event.contextw].context;
 
             if (eventContext.some((ctx, ctxi) => context[ctxi] !== ctx)) return null;

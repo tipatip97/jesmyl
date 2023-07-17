@@ -4,7 +4,7 @@ import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import { UseNavAction } from "../../../complect/nav-configurer/Navigation.model";
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import serviceMaster from "../../../complect/service/serviceMaster";
-import Index from "../Index";
+import { Index } from "../Index";
 import { IndexNavData, IndexStorage } from "../Index.model";
 import IndexSettings from "../parts/Settings";
 import IndexLogin from "../parts/login/IndexLogin";

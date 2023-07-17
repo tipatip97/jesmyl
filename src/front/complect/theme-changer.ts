@@ -7,7 +7,7 @@ let timeout: any = null;
 const lsName = 'theme';
 
 (async () => {
-    const bodyClass = await indexStorage.getAsync(lsName);
+    const bodyClass = await indexStorage.get(lsName);
     if (bodyClass) classList.add(bodyClass);
 })();
 

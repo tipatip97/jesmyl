@@ -4,9 +4,9 @@ import { IExportableMeetingsEvent, IExportableMeetings, MeetingsContextMap, Meet
 import mylib from "../../../../../complect/my-lib/MyLib";
 
 export class Meetings {
-  event: MeetingsEvent;
+  event?: MeetingsEvent;
   stack?: IExportableMeetingsEvent[];
-  events: MeetingsEvent[];
+  events?: MeetingsEvent[];
   contexts: MeetingsContextMap;
   names: string[];
 
@@ -14,8 +14,8 @@ export class Meetings {
     this.stack = events;
     this.contexts = this.takeContexts(contexts || {});
     this.events = events?.map(event => new MeetingsEvent(event, cols));
-    this.event = this.events[0];
-    this.names = [...names];
+    this.event = this.events?.[0];
+    this.names = names === undefined ? [] : [...names];
   }
 
   takeContexts(contexts: IExportableMeetingsContextMap) {
@@ -26,33 +26,33 @@ export class Meetings {
   }
 
   getNames(currPath: number[]): string[][] {
-      const usedNameis: number[] = [];
-      const usedNames: string[] = [];
-      Object.values(this.contexts || {}).forEach((path) => {
-          if (!currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx)) {
-              usedNameis.push(path.context[currPath.length]);
-              usedNames.push(this.names[path.context[currPath.length]]);
-          }
-      });
-      return [this.names.filter((_, contexti) => usedNameis.indexOf(contexti) < 0), usedNames];
+    const usedNameis: number[] = [];
+    const usedNames: string[] = [];
+    Object.values(this.contexts || {}).forEach((path) => {
+      if (!currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx)) {
+        usedNameis.push(path.context[currPath.length]);
+        usedNames.push(this.names[path.context[currPath.length]]);
+      }
+    });
+    return [this.names.filter((_, contexti) => usedNameis.indexOf(contexti) < 0), usedNames];
   }
 
   getContexts(currPath: number[]): [[number, string, number][], number | null] {
-      let currGroupw: number | null = null;
+    let currGroupw: number | null = null;
 
-      const contexts = Object.entries(this.contexts || {})
-          .map(([groupw, path]): null | [number, string, number] => {
-              if (currPath.length === path.context.length && mylib.isEq(currPath, path.context))
-                  currGroupw = +groupw;
-              if (currPath.length !== path.context.length - 1 || currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx)) return null;
+    const contexts = Object.entries(this.contexts || {})
+      .map(([groupw, path]): null | [number, string, number] => {
+        if (currPath.length === path.context.length && mylib.isEq(currPath, path.context))
+          currGroupw = +groupw;
+        if (currPath.length !== path.context.length - 1 || currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx)) return null;
 
-              const contexti = path.context[currPath.length];
-              const context = this.names[contexti];
+        const contexti = path.context[currPath.length];
+        const context = this.names[contexti];
 
-              return context ? [contexti, context, +groupw] : null;
-          })
-          .filter((context) => context);
+        return context ? [contexti, context, +groupw] : null;
+      })
+      .filter((context) => context);
 
-      return [contexts as [number, string, number][], currGroupw];
+    return [contexts as [number, string, number][], currGroupw];
   }
 }

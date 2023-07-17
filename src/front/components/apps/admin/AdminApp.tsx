@@ -21,7 +21,7 @@ export default function AdminApp({ content }: { content: ReactNode }) {
 
   useEffect(() => {
     (async () => {
-      const val = await adminStorage.getAsync("userList");
+      const val = await adminStorage.get("userList");
       if (val)
         setContext(prev => {
           return {

@@ -4,7 +4,7 @@ import EvaIcon from "../eva-icon/EvaIcon";
 
 const isNIs = (is: boolean) => !is;
 let expandes: string[] = [];
-(async () => expandes = await complectStorage.getOrAsync('rememberExpandes', []))();
+(async () => expandes = await complectStorage.getOr('rememberExpandes', []))();
 const clear = (scope: string) => {
     const scopeIndex = expandes.indexOf(scope);
     expandes.splice(scopeIndex, 1);

@@ -38,6 +38,7 @@
             width: 100%;
 
             >.input {
+                --input-keyboard-background: var(--color--2);
                 --autofill-background-color: var(--color--2);
                 --autofill-color: var(--text-color);
 
