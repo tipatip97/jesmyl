@@ -47,9 +47,9 @@ export class JStorage<Scope, State = Scope> {
 
     get<Key extends keyof Scope>(key: Key): Promise<Scope[Key] | undefined> {
         return new Promise((resolve) => {
-            const read = () => {
+            const read = async () => {
                 if (this.dbOpen.readyState !== 'done') {
-                    resolve(undefined);
+                    resolve(await this.get(key));
                     return;
                 }
                 const data = this.dbOpen.result
@@ -90,7 +90,10 @@ export class JStorage<Scope, State = Scope> {
 
         setTimeout(() => {
             if (this.dbOpen.readyState !== 'done') {
-                setTimeout(() => this.initDispatches(dispatch, actions), 10);
+                setTimeout(() => {
+                    this.isContentInitialized = false;
+                    this.initDispatches(dispatch, actions);
+                });
                 return;
             }
             const data = this.dbOpen.result
@@ -131,7 +134,7 @@ export class JStorage<Scope, State = Scope> {
             if (this.nonCachable.includes(key)) return;
 
             if (this.dbOpen.readyState !== 'done') {
-                setTimeout(() => this.set(key, val), 10);
+                setTimeout(() => this.set(key, val));
                 return;
             }
 
@@ -146,7 +149,7 @@ export class JStorage<Scope, State = Scope> {
 
     rem(key: keyof Scope) {
         if (this.dbOpen.readyState !== 'done') {
-            setTimeout(() => this.rem(key), 10);
+            setTimeout(() => this.rem(key));
             return;
         }
         this.dbOpen.result
