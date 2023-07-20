@@ -7,6 +7,9 @@ import "./front/lib.scss";
 import reportWebVitals from "./front/reportWebVitals";
 import * as serviceWorkerRegistration from "./front/serviceWorkerRegistration";
 import { store } from "./front/shared/store";
+import { catchAllErrors } from "./catch-errors";
+
+catchAllErrors();
 
 export const renderApplication = (
   reactNode: ReactNode,
