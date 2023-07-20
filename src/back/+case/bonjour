@@ -352,5 +352,53 @@
     "fio": "Pavel_Ned16",
     "login": "de99d4c5d2744e803caf2a9caa5ed982",
     "passw": "2c1aa6bbd1a7e3659ace34dea787a18d"
+  },
+  {
+    "level": 3,
+    "fio": "Светик",
+    "login": "fb8c351428a9e268a4c24b4b28693e94",
+    "passw": "c656620bbc3fc5c550e0536fffce8c1b"
+  },
+  {
+    "level": 3,
+    "fio": "tipatip",
+    "login": "71863b65f20cfda681daa75aa61b392d",
+    "passw": "311e90f7ed8772f9aab256d61a99b082"
+  },
+  {
+    "level": 3,
+    "fio": "Alexev",
+    "login": "42558f35c6d57b2d06e0078582053bed",
+    "passw": "47d3b20d848471cf670b3d2deff148fb"
+  },
+  {
+    "level": 3,
+    "fio": "Seyferot",
+    "login": "2d78cf30e17f563f9fcb0c5a076f186b",
+    "passw": "bda9fe7e86f458b8855989c537d62366"
+  },
+  {
+    "level": 3,
+    "fio": "Artemkadjam",
+    "login": "16d0e0d747fd06d1a3d91ecb00ed39ec",
+    "passw": "f28aec6eea303d69d910f4290f43a4c2"
+  },
+  {
+    "level": 3,
+    "fio": "tata19",
+    "login": "25899e9227a0ec1ae4c6f33ec9bacb4a",
+    "passw": "077529cacdad40c86f82568c55e7d167"
+  },
+  {
+    "level": 3,
+    "fio": "Ggg",
+    "login": "c42c46186170b79155ed6816636c8899",
+    "passw": "2131a73f682aaa6e8b08e0aa84986a1d"
+  },
+  {
+    "level": 3,
+    "fio": "Anita",
+    "login": "9888cd5c082b9e015300afd756fc7f13",
+    "passw": "095a1b084060da872826fb651293b042"
   }
 ]
