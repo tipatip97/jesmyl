@@ -83,6 +83,7 @@ export default function ScheduleKeyValueListAtt({
                         scope={attScope}
                         fieldName=""
                         fieldKey={role.mi}
+                        fieldValue="+"
                     />
                 </div>
             }).filter(itIt);
@@ -101,6 +102,7 @@ export default function ScheduleKeyValueListAtt({
                         scope={attScope}
                         fieldName=""
                         fieldKey={unit.mi + CustomAttUseTaleId.Lists}
+                        fieldValue="+"
                     />}
                 />
             }).filter(itIt);

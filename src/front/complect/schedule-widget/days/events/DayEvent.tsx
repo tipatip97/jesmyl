@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import { useIsRememberExpand } from "../../../expand/useIsRememberExpand";
@@ -40,7 +40,7 @@ export default function ScheduleWidgetDayEvent(props: {
     let timerClassNamePlus = '';
     const rights = useScheduleWidgetRightsContext();
     const box = rights.schedule.types?.[props.event.type];
-    const { editIcon, isRedact, isSelfRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
+    const { editIcon, isRedact, isSelfRedact, setIsSelfRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
     const selfScope = takeStrongScopeMaker(props.scope, ' eventMi/', props.event.mi);
 
     const now = Date.now();
@@ -51,12 +51,8 @@ export default function ScheduleWidgetDayEvent(props: {
 
     const [, isExpand, switchIsExpand] = useIsRememberExpand(selfScope, null, null, isPastEvent || props.isPastDay || !rights.isCanReadTitles);
 
-    useEffect(() => {
-        if (isSelfRedact) switchIsExpand(true);
-    }, [isSelfRedact, switchIsExpand]);
-
     const isCanExpandEvent = rights.isCanReadTitles && !props.redact;
-    const isExpandEvent = isExpand && isCanExpandEvent;
+    const isExpandEvent = (isSelfRedact || isExpand) && isCanExpandEvent;
 
     if (!box) return <>Неизвестный шаблон события</>;
 
@@ -85,7 +81,10 @@ export default function ScheduleWidgetDayEvent(props: {
         >
             <div
                 className={'event-header flex flex-gap between' + (props.redact || !isCanExpandEvent ? '' : ' pointer')}
-                onClick={() => !props.redact && switchIsExpand()}
+                onClick={() => {
+                    !props.redact && switchIsExpand();
+                    setIsSelfRedact(false);
+                }}
             >
                 <div className="left-part flex flex-gap">
                     <span
@@ -147,7 +146,7 @@ export default function ScheduleWidgetDayEvent(props: {
                         className="color--ko margin-gap-v"
                         postfix="Это секретное событие"
                     />}
-                <StrongEditableField
+                {(isRedact || props.event.dsc) && <StrongEditableField
                     isRedact={isRedact}
                     scope={selfScope}
                     fieldName="field"
@@ -157,7 +156,7 @@ export default function ScheduleWidgetDayEvent(props: {
                     title="Содержание"
                     textClassName=" "
                     icon="file-text-outline"
-                />
+                />}
                 {isRedact ?
                     <ScheduleWidgetBindAtts
                         atts={props.event.atts}
