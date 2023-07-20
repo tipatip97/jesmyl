@@ -9,9 +9,11 @@ import indexStorage from './components/index/indexStorage';
 import { appStorage } from './shared/jstorages';
 
 export type ResponseWaiterCallback = (ok: ResponseWaiter['ok'], ko?: ResponseWaiter['ko']) => void;
+const info = console.info;
 
 interface ResponseWaiter {
     requestId: string,
+    isPing?: true,
     ok: (response: SokiServerEvent) => void,
     ko?: (errorMessage: string) => boolean | void,
 }
@@ -35,7 +37,7 @@ export class SokiTrip {
     onClose = () => {
         Eventer.invoke(this.waiters, 'auth', false);
         this.isAuthorized = false;
-        setTimeout(() => this.start(), 1000);
+        setTimeout(() => this.start(), 500);
     };
 
     onConnect = async () => this.sendForce({ connect: true }, await this.appName());
@@ -49,15 +51,21 @@ export class SokiTrip {
         this.ws.onmessage = ({ data }: { data: string }) => {
             try {
                 const event: SokiServerEvent = JSON.parse(data);
-                console.info(event);
+                info(event);
+                let waiter: ResponseWaiter | null = null;
 
-                const waiter = event.requestId && this.responseWaiters.find((waiter) => event.requestId === waiter.requestId);
-                if (waiter) {
-                    this.responseWaiters = this.responseWaiters.filter((w) => w.requestId !== waiter.requestId);
+                for (let i = this.responseWaiters.length - 1; i > -1; i--) {
+                    waiter = this.responseWaiters[i];
 
-                    if (event.errorMessage) waiter.ko?.(event.errorMessage);
-                    else waiter.ok(event);
-                } else if (event.pull) this.updatedPulledData(event.pull);
+                    if (waiter.requestId === event.requestId || waiter.isPing === true) {
+                        if (event.errorMessage) waiter.ko?.(event.errorMessage);
+                        else waiter.ok(event);
+
+                        this.responseWaiters.splice(i, 1);
+                    }
+                }
+
+                if ((waiter === null || waiter.requestId !== event.requestId) && event.pull) this.updatedPulledData(event.pull);
 
                 if (event) {
                     if (event.unregister) {
@@ -189,14 +197,14 @@ export class SokiTrip {
         return {
             on: (ok, ko) => {
                 requestId = '' + Date.now() + Math.random();
-                this.responseWaiters.push({ requestId, ok, ko });
+                this.responseWaiters.push({ requestId, ok, ko, isPing: body.ping });
             },
         };
     };
 
-    ping: ResponseWaiterCallback = (on, ko) => {
+    ping: ResponseWaiterCallback = (ok, ko) => {
         clearTimeout(pingTimeout);
-        pingTimeout = setTimeout(() => this.send({ ping: true }, 'index').on(on, ko), 0);
+        pingTimeout = setTimeout(() => this.send({ ping: true }, 'index').on(ok, ko), 0);
     };
 }
 
