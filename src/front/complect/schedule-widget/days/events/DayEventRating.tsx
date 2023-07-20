@@ -73,7 +73,7 @@ export default function ScheduleWidgetDayEventRating(props: StrongComponentProps
     }
 
     return <>
-        <div className="color--3 margin-gap-t">{titleNode}</div>
+        <div className="color--3 margin-gap-v">{titleNode}</div>
         {isExpand && <div className="margin-big-gap-l margin-gap-v">
             <div className="flex margin-gap-v">
                 {ratePoints.map((ratePoint) => {
