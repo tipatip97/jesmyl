@@ -339,7 +339,7 @@ const config: FilerAppConfig = {
                         U: {
                             RRej: ScheduleWidgetUserRoleRight.ReadTitles,
                             args: {
-                                key: ['topic', 'dsc'],
+                                key: ['topic', 'dsc', 'title'],
                                 value: '#String',
                             }
                         }
