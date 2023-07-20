@@ -358,6 +358,8 @@
 
         .input-keyboard-flash-controlled-char-list-inner {
             white-space: nowrap;
+            padding-left: 3px;
+            padding-bottom: 3px;
 
             .input-keyboard-flash-controlled-char-list-line {
                 border-left: var(--cursor-border);
