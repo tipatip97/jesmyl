@@ -29,16 +29,15 @@ export default function ScheduleWidgetBindAttRefKeyButton({
             {header(<>{forTitle} - Сослаться на вложение</>)}
             {body(<>
                 {refs.map((attRef) => {
-                    const [dayMi, eventMi] = attRef;
                     if (!schedule.days) return null;
-                    const dayi = schedule.days.findIndex((day) => day.mi === dayMi);
+                    const [dayi, eventMi] = attRef;
                     if (dayi < 0) return null;
                     const event = schedule.days[dayi].list.find((event) => event.mi === eventMi);
                     if (!event) return null;
                     const dayDate = new Date(schedule.start + dayi * mylib.howMs.inDay);
 
                     return <StrongDiv
-                        key={attKey + dayMi + eventMi}
+                        key={attKey + dayi + eventMi}
                         scope={attScope}
                         fieldName=""
                         cud="U"
@@ -52,7 +51,7 @@ export default function ScheduleWidgetBindAttRefKeyButton({
                         }}
                         onClick={closeModal}
                     >
-                        <div className="color--7">{dayi + 1} день, {mylib.dayFullTitles[dayDate.getDay()]} - {schedule.types?.[event.type].title}</div>
+                        <div className="color--7">{dayi + 1} день, {mylib.dayFullTitles[dayDate.getDay()]} - {schedule.types[event.type].title}</div>
                         <div
                             className={
                                 'flex flex-gap bgcolor--1 padding-gap pointer'

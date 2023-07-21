@@ -32,7 +32,14 @@ export const ScheduleWidgetAppAttsContext = React.createContext<[ScheduleWidgetA
 export const useScheduleWidgetAppAttsContext = () => useContext(ScheduleWidgetAppAttsContext);
 
 export const defaultSchwduleWidget: IScheduleWidget = {
+    w: 0,
+    start: 0,
     title: '',
+    topic: '',
+    dsc: '',
+    days: [],
+    tatts: [],
+    types: [],
     app: 'index',
     ctrl: {
         cats: [],
@@ -40,12 +47,10 @@ export const defaultSchwduleWidget: IScheduleWidget = {
         type: 0,
         users: [],
     },
-    start: 0,
-    w: 0,
     lists: {
         cats: [],
         units: [],
-    }
+    },
 };
 
 export interface ScheduleWidgetRights extends ScheduleWidgetUserRights, ScheduleWidgetScheduleWidgetRegType {
@@ -154,7 +159,7 @@ export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidge
 
 export const initialScheduleScope = 'schs';
 
-export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayMi' | 'eventMi' | 'rateMi' | 'titlei' | 'tattMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati' | 'unitMi';
+export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayi' | 'eventMi' | 'rateMi' | 'titlei' | 'tattMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati' | 'unitMi';
 
 export const takeStrongScopeMaker = strongScopeMakerBuilder<ScheduleWidgetScopePhase>();
 export const takeScheduleStrongScopeMaker = (schedulew: number) => takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);
@@ -176,7 +181,7 @@ export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAt
 
     const attRefs: ScheduleWidgetAttRefs = {};
 
-    schedule?.days?.forEach((day) => {
+    schedule?.days.forEach((day) => {
         day.list.forEach((event) => {
             event.atts && MyLib.entries(event.atts).forEach(([attKey, att]) => {
                 if (!mylib.isArr(att)) (attRefs[attKey] ??= []).push([day.mi, event.mi]);
@@ -184,7 +189,7 @@ export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAt
         });
     });
 
-    schedule?.tatts?.forEach((att) => {
+    schedule?.tatts.forEach((att) => {
         atts[`[SCH]:custom:${att.mi}`] = {
             ...att,
             isCustomize: true,

@@ -42,13 +42,13 @@ export default function ScheduleWidgetDayEventList({
     }, [day.list]);
     const [moveEventMi, setMoveEventMi] = useState<number | null>(null);
     const movementEvent = moveEventMi !== null ? day.list.find(event => event.mi === moveEventMi) : undefined;
-    const movementBox = movementEvent && rights.schedule.types?.[movementEvent.type];
+    const movementBox = movementEvent && rights.schedule.types[movementEvent.type];
 
     let secretTime = 0;
     let isFirstSecrets = true;
     const times: number[] = [];
     day.list.forEach((event) => {
-        times.push((event.tm || rights.schedule.types?.[event.type]?.tm || 0) + (times[times.length - 1] || 0));
+        times.push((event.tm || rights.schedule.types[event.type]?.tm || 0) + (times[times.length - 1] || 0));
     });
 
     useEffect(() => {
@@ -65,7 +65,7 @@ export default function ScheduleWidgetDayEventList({
         {isExpand && <>
             {day.list.map((event, eventi, eventa) => {
                 if (!rights.isCanReadSpecials) {
-                    if (!isFirstSecrets && eventa[eventi + 1]?.secret) secretTime += event.tm ?? rights.schedule.types?.[event.type].tm ?? 0;
+                    if (!isFirstSecrets && eventa[eventi + 1]?.secret) secretTime += event.tm ?? rights.schedule.types[event.type].tm ?? 0;
                     if (event.secret) return null;
                     isFirstSecrets = false;
                 }

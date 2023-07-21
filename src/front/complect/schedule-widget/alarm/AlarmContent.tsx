@@ -62,13 +62,12 @@ export default function ScheduleWidgetAlarmContent({
             .sort((a, b) => a.start - b.start)
             .map(sch => {
                 const lastFullDayIndex = mylib.findLastIndex(sch.days, (day) => day.list.length) ?? -1;
-                const days = sch.days?.slice(0, lastFullDayIndex + 1) ?? [];
-                const types = sch.types ?? [];
+                const days = sch.days.slice(0, lastFullDayIndex + 1) ?? [];
                 const dayStartMsList = days.map((day) => {
                     return ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number');
                 });
                 const dayMsList = days.map(day =>
-                    day.list.reduce((sum, event) => sum + (event.tm ?? types[event.type]?.tm ?? 0), 0) * msInMin);
+                    day.list.reduce((sum, event) => sum + (event.tm ?? sch.types[event.type]?.tm ?? 0), 0) * msInMin);
 
                 return {
                     sch,
@@ -76,7 +75,7 @@ export default function ScheduleWidgetAlarmContent({
                     startMs: sch.start + dayStartMsList[0],
                     dayStartMsList,
                     dayMsList,
-                    types,
+                    types: sch.types,
                     lastDayTm: lastFullDayIndex == null
                         ? 0
                         : dayMsList[lastFullDayIndex]

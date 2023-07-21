@@ -14,7 +14,7 @@ export interface LeaderStoraged {
     games?: GamesStoreImportable,
     humanListSortVariant: HumanListSortVariant,
     gameTimers?: StoragedGameTimerImportableDict,
-    sendingComments: { comments?: SendingComment[] },
+    sendingComments: SendingComment[],
 }
 
 export interface TeamGameImportable extends TeamGameExportable {

@@ -35,3 +35,12 @@ export interface ActionCRUD {
 }
 
 export type ActionBoxSetSystems = keyof typeof actionBoxSetSystems;
+
+export type ActionBoxValue<Value> =
+    Value extends string | number | boolean
+    ? `{${string}}` | Value | (() => Value)
+    : Value extends Array<infer Val>
+    ? Array<ActionBoxValue<Val>>
+    : Value extends {}
+    ? { [Key in keyof Value]: ActionBoxValue<Value[Key]> }
+    : Value;

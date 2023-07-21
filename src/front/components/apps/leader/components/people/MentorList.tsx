@@ -17,6 +17,7 @@ export default function MentorList(props: HumanListComponentProps) {
         placeholder={placeholder}
         excludedHumans={ccontext.members}
         excludedLabel="участник"
+        fieldLabel="mentors"
         onAddHuman={(human) => {
           return LeaderCleans.addContextHuman(ccontext.w, human.w, 'mentors');
         }}

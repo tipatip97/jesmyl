@@ -2,6 +2,7 @@ import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
+import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import ScheduleWidgetRegisterType from "./RegisterType";
 import { ScheduleWidgetUserByLinkInvite } from "./users/ByLinkInvite";
@@ -27,6 +28,16 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                         }
                     />
                     <ScheduleWidgetRegisterType scope={scope} />
+                    {rights.isCanTotalRedact && <StrongEvaButton
+                        scope={scope}
+                        cud="U"
+                        fieldName="withTech"
+                        fieldValue={rights.schedule.withTech ? 0 : 1}
+                        name={rights.schedule.withTech ? 'checkmark-square-2-outline' : 'square-outline'}
+                        postfix="Первый - технический день"
+                        confirm={`Сделать первый день ${rights.schedule.withTech ? 'обычным' : 'подготовительным'}?`}
+                        className="margin-big-gap-b"
+                    />}
                 </>)}
             </>
             : <>

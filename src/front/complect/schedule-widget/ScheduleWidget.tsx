@@ -143,24 +143,26 @@ export default function ScheduleWidget({
                         : <ScheduleWidgetStartTimeText schedule={schedule} date={date} />}
                     {rights.isCanRead
                         ? <>
-                            {isRedact && <StrongEditableField
-                                scope={selfScope}
-                                fieldName="field"
-                                fieldKey="title"
-                                value={schedule}
-                                isRedact
-                                icon="credit-card-outline"
-                                title="Заголовок"
-                            />}
-                            {isRedact && <StrongEditableField
-                                scope={selfScope}
-                                fieldName="field"
-                                fieldKey="topic"
-                                value={schedule}
-                                isRedact
-                                icon="bookmark-outline"
-                                title="Название"
-                            />}
+                            {isRedact && <>
+                                <StrongEditableField
+                                    scope={selfScope}
+                                    fieldName="field"
+                                    fieldKey="title"
+                                    value={schedule}
+                                    isRedact
+                                    icon="credit-card-outline"
+                                    title="Заголовок"
+                                />
+                                <StrongEditableField
+                                    scope={selfScope}
+                                    fieldName="field"
+                                    fieldKey="topic"
+                                    value={schedule}
+                                    isRedact
+                                    icon="bookmark-outline"
+                                    title="Название"
+                                />
+                            </>}
                             {(isRedact || schedule.dsc) && <StrongEditableField
                                 scope={selfScope}
                                 fieldName="field"
@@ -189,7 +191,7 @@ export default function ScheduleWidget({
                                     schedule={schedule}
                                 />
                                 <ScheduleWidgetCustomAttachments scope={selfScope} tatts={schedule.tatts} />
-                                {!schedule.days?.length && !schedule.tatts?.length && !schedule.types?.length &&
+                                {!schedule.days.length && !schedule.tatts.length && !schedule.types.length &&
                                     <ScheduleWidgetCopy />}
                                 {!schedule.start || <StrongEvaButton
                                     scope={selfScope}
@@ -215,15 +217,17 @@ export default function ScheduleWidget({
                                     }}
                                 />}
                             </>}
-                            {schedule.days?.map((day, dayi) =>
-                                <ScheduleWidgetDay
+                            {schedule.days.map((day, dayi) => {
+                                if (dayi === 0 && schedule.withTech && !rights.isCanReadSpecials) return null;
+
+                                return <ScheduleWidgetDay
                                     scope={selfScope}
                                     key={dayi}
                                     day={day}
                                     dayi={dayi}
                                     schedule={schedule}
                                 />
-                            )}
+                            })}
                         </>
                         : <></>}
                 </div>

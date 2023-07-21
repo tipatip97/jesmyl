@@ -1,6 +1,6 @@
 
 import { ExecutionDict } from "../../../back/complect/executer/Executer.model";
-import { SokiAppName } from "../../../back/complect/soki/soki.model";
+import { SokiAppName, SokiServerEvent } from "../../../back/complect/soki/soki.model";
 import { Auth } from "../../components/index/Index.model";
 import { soki } from "../../soki";
 import { JStorage } from "../JStorage";
@@ -108,23 +108,23 @@ export class Exer<Storage extends ExerStorage> {
     }
 
     load<Value>(fixedExecs?: Exec<Value>[] | nil) {
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise<SokiServerEvent | null>((resolve, reject) => {
             const execs = (fixedExecs || this.execs)
                 .map(exec => exec.forLoad())
                 .filter(ex => ex);
 
             if (!execs.length) {
-                return resolve(false);
+                return resolve(null);
             }
 
             soki.send({ execs: execs.filter((dict) => dict) as ExecutionDict[] }, this.appName)
-                .on(() => {
-                    this.execs = this.execs.filter(ex => {
-                        ex.onLoad?.(ex);
+                .on((result) => {
+                    this.execs = (fixedExecs as Exec<any>[] || this.execs).filter(ex => {
+                        ex.onLoad?.(ex, result);
                         return ex.del;
                     });
 
-                    resolve(true);
+                    resolve(result);
                 },
                     (err) => reject(err));
         });

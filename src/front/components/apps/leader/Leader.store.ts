@@ -8,7 +8,7 @@ export const leaderExer = new Exer('leader', leaderStorage);
 const initialState: LeaderState = {
   gameTimers: {},
   humanListSortVariant: 'name',
-  sendingComments: {},
+  sendingComments: [],
   isSendingMessagesError: false,
 };
 

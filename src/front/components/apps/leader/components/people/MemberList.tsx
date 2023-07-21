@@ -59,6 +59,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
         humansRef={humansRef}
         excludedHumans={ccontext.mentors}
         excludedLabel="лидер"
+        fieldLabel="members"
         onAddHuman={(human) => {
           return LeaderCleans.addContextHuman(ccontext.w, human.w, 'members');
         }}

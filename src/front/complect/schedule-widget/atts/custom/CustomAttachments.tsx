@@ -17,13 +17,13 @@ const newTatt: ScheduleWidgetAppAttCustomizable = {
 };
 
 export default function ScheduleWidgetCustomAttachments(props: StrongComponentProps<{
-    tatts?: ScheduleWidgetAppAttCustomized[],
+    tatts: ScheduleWidgetAppAttCustomized[],
 }>) {
     const [modalNode, screen] = useModal(({ header, body }) => {
         return <>
             {header(<div className="flex full-width between">
                 Шаблоны вложений
-                {!props.tatts?.some((att) => !att.title || !att.description)
+                {!props.tatts.some((att) => !att.title || !att.description)
                     && <StrongEvaButton
                         scope={props.scope}
                         fieldName="tatts"
@@ -32,7 +32,7 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
                         confirm="Создать шаблон вложения?"
                     />}
             </div>)}
-            {body(props.tatts?.map((tatt) => {
+            {body(props.tatts.map((tatt) => {
                 return <ScheduleWidgetCustomAtt
                     key={tatt.mi}
                     scope={props.scope}

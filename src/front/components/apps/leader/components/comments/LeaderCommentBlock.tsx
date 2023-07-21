@@ -71,12 +71,12 @@ export default function LeaderCommentBlock({
     () =>
       (comments || []).concat(
         gamew
-          ? sendingComments.comments
+          ? sendingComments
             ?.map(({ args }) => gamew === args?.gamew && listw === args?.[listwNameMask] ? { ...args, owner: '', fio: '', w: 0 } : null)
             .filter(it => it) as LeaderCommentImportable[] || []
           : []
       ),
-    [comments, gamew, sendingComments.comments, listw, listwNameMask]
+    [comments, gamew, sendingComments, listw, listwNameMask]
   );
   const partOfComments = allComments.slice(-4);
 

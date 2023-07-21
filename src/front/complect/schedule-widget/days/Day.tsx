@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { renderComponentInNewWindow } from "../../../..";
 import EvaButton from "../../eva-icon/EvaButton";
 import mylib, { MyLib } from "../../my-lib/MyLib";
 import StrongControlDateTimeExtracter from "../../strong-control/StrongDateTimeExtracter";
@@ -7,9 +8,8 @@ import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import "./Day.scss";
-import ScheduleWidgetDayEventList from "./events/DayEventList";
-import { renderComponentInNewWindow } from "../../../..";
 import ScheduleWidgetPrintableDay from "./PrintableDay";
+import ScheduleWidgetDayEventList from "./events/DayEventList";
 
 const dotReg = /\./;
 
@@ -25,12 +25,12 @@ const isNIs = (is: unknown) => !is;
 export default function ScheduleWidgetDay({
     day, dayi, schedule, scope,
 }: ScheduleWidgetDayProps) {
-    const dayStartMs = schedule.start + mylib.howMs.inDay * dayi;
+    const dayStartMs = (schedule.start + mylib.howMs.inDay * dayi) - (schedule.withTech ? mylib.howMs.inDay : 0);
     const date = new Date(dayStartMs);
     const isPastDay = Date.now() > dayStartMs + mylib.howMs.inDay;
     const title = mylib.dayFullTitles[date.getDay()];
     const times: number[] = [];
-    const selfScope = takeStrongScopeMaker(scope, ' dayMi/', day.mi);
+    const selfScope = takeStrongScopeMaker(scope, ' dayi/', dayi);
     const [isShowDay, setIsShowDay] = useState(!isPastDay);
     const rights = useScheduleWidgetRightsContext();
     const { editIcon, isRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
@@ -44,12 +44,17 @@ export default function ScheduleWidgetDay({
     }, [day.list]);
 
     day.list.forEach((item) => {
-        times.push((item.tm || schedule.types?.[item.type]?.tm || 0) + (times[times.length - 1] || 0));
+        times.push((item.tm || schedule.types[item.type]?.tm || 0) + (times[times.length - 1] || 0));
     });
 
     return <div className={'ScheduleWidgetDay relative' + (isPastDay ? ' past' : '')}>
         <div className="day-title flex flex-gap padding-gap-v sticky pos-top">
-        {title}, {dayi + 1} день
+            {title}
+            {schedule.withTech
+                ? dayi === 0
+                    ? <span className="color--ko"> подготовка</span>
+                    : <>, {dayi} день</>
+                : <>, {dayi + 1} день</>}
         </div>
         <div className="edit-day-panel absolute pos-top pos-right margin-gap-t">
             {isPastDay

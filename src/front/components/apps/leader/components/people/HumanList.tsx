@@ -9,7 +9,7 @@ import { RootState } from "../../../../../shared/store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import useLeaderContext from "../contexts/useContexts";
 import HumanFace from "./HumanFace";
-import { HumansMore } from "./HumansMore";
+import { HumansMoreContenter } from "./HumansMore";
 import { HumanImportable, HumanListComponentProps } from "./People.model";
 
 const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
@@ -17,7 +17,7 @@ const humanListSortVariantSelector = (state: RootState) => state.leader.humanLis
 export default function HumanList({
   isAsPage,
   onMoreClick,
-  moreNode,
+  fieldLabel,
   searcherClass,
   placeholder,
   asHumanMore,
@@ -32,7 +32,7 @@ export default function HumanList({
 }: HumanListComponentProps) {
   const { humans } = useLeaderContext();
   const [term, setTerm] = useState("");
-  const [humansMoreNode, openHumansMore] = useBottomPopup((_, prepare) => <HumansMore moreNode={moreNode} prepare={prepare} />);
+  const [humansMoreNode, openHumansMore] = useBottomPopup(HumansMoreContenter, { fieldLabel });
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
   const { editIcon, isRedact } = useIsRedactArea(true, null, true, true);
 
@@ -84,7 +84,7 @@ export default function HumanList({
                 return excludedHumans?.includes(human.w)
                   ? <span className="color--3">{excludedLabel}</span>
                   : list?.some((humanw) => humanw === human.w)
-                    ? <EvaSendButton name="minus-square-outline" className="color--3" onSend={onRemoveHuman && (() => onRemoveHuman(human))} />
+                    ? <EvaSendButton name="minus-square-outline" className="color--ko" onSend={onRemoveHuman && (() => onRemoveHuman(human))} />
                     : <EvaSendButton name="plus-circle-outline" className="color--7" onSend={onAddHuman && (() => onAddHuman(human))} />;
               }
               : asHumanMore}

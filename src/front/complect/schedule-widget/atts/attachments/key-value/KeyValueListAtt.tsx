@@ -148,7 +148,7 @@ export default function ScheduleKeyValueListAtt({
                                 scope={itemScope}
                                 fieldName="key"
                                 fieldValue={!key}
-                                className={'self-start' + (key ? '' : ' color--3')}
+                                className={'self-start relative z-index:15 color--3 ' + (key ? 'fade-05' : '')}
                                 cud="U"
                                 name={key ? 'checkmark-square-outline' : 'square-outline'}
                                 isCanSend={!!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U)}
@@ -159,8 +159,8 @@ export default function ScheduleKeyValueListAtt({
                             scope={itemScope}
                             fieldName="value"
                             className={
-                                'margin-gap-l mood-for-2'
-                                + (typeof key !== 'boolean' || key ? '' : ' color--3')
+                                'margin-gap-l mood-for-2 relative z-index:5 '
+                                + (typeof key === 'boolean' ? key ? 'color--3 fade-05' : 'color--3' : '')
                                 + (!isRedact && typeof key === 'boolean' ? ' icon-indent-text' : '')
                             }
                             value={value}

@@ -3,6 +3,7 @@ import { indexExer } from "../../components/index/Index.store";
 import { Exer } from "../exer/Exer";
 import { ExerStorage } from "../exer/Exer.model";
 import { CUD, StrongComponentProps } from "./Strong.model";
+import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 
 export const StrongExerContext = React.createContext<Exer<any>>(indexExer);
 export const useStrongExerContext = () => useContext(StrongExerContext);
@@ -30,7 +31,7 @@ export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType ex
     mapExecArgs: StrongComponentProps<Storage, ValType>['mapExecArgs'],
     fieldKey: unknown,
     fieldValue: unknown,
-): Promise<boolean> | void => {
+): Promise<SokiServerEvent | null> | void => {
     let args: Record<string, unknown> = value === undefined ? {} : { value };
     let action = '';
 

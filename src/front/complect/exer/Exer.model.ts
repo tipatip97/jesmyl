@@ -1,4 +1,5 @@
 import { ExecutionDict, ExecutionMethod, ShortRealRule } from "../../../back/complect/executer/Executer.model";
+import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
 import { Exec } from "./Exec";
 
@@ -42,7 +43,7 @@ export interface FreeExecDict<Value, Args = Record<string, any>> {
     friendly?: FreeExecDictAntiCallback<Value> | FreeExecDictAntiCallback<Value>[],
 
     onSet?: (exec: Exec<Value>) => void,
-    onLoad?: (exec: Exec<Value>) => void,
+    onLoad?: (exec: Exec<Value>, result: SokiServerEvent) => void,
     data?: Record<string, any>,
 }
 

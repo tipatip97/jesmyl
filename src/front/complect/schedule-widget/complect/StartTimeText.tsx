@@ -1,8 +1,8 @@
 import mylib from "../../my-lib/MyLib";
 import { IScheduleWidget } from "../ScheduleWidget.model";
 import '../ScheduleWidget.scss';
-import ScheduleWidgetCleans from "./Cleans";
 import { ScheduleWidgetRights, useScheduleWidgetRights } from "../useScheduleWidget";
+import ScheduleWidgetCleans from "./Cleans";
 
 export default function ScheduleWidgetStartTimeText({
     schedule,
@@ -18,9 +18,9 @@ export default function ScheduleWidgetStartTimeText({
     if (!schedule) return null;
     const date = topDate ?? new Date(schedule.start);
 
-    const firstDay = schedule.days?.[0];
-    let firstWup = schedule.start + (firstDay ? ScheduleWidgetCleans.computeDayWakeUpTime(firstDay.wup, 'number') : 0);
-    const types = schedule.types || [];
+    const firstDay = schedule.days[schedule.withTech ? 1 : 0];
+    let firstWup = schedule.start + (firstDay === undefined ? 0 : ScheduleWidgetCleans.computeDayWakeUpTime(firstDay.wup, 'number'));
+    const types = schedule.types;
     if (!rights.isCanReadSpecials) firstDay?.list.some((event) => {
         if (event.secret) {
             firstWup += (event.tm ?? types[event.type]?.tm ?? 0) * mylib.howMs.inMin;

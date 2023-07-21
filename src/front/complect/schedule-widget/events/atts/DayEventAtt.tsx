@@ -14,7 +14,7 @@ const makeReg = (phase: ScheduleWidgetScopePhase) => {
     return new RegExp(`(${phase}${strongScopeKeyValueSeparator})\\d+`);
 };
 
-const dayPhaseMarkerReg = makeReg('dayMi');
+const dayPhaseMarkerReg = makeReg('dayi');
 const eventPhaseMarkerReg = makeReg('eventMi');
 
 export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
@@ -50,8 +50,8 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
         let scope = props.scope;
 
         if (mylib.isArr(attValue)) {
-            const [dayMi, eventMi] = attValue;
-            const day = props.schedule.days?.find(day => day.mi === dayMi);
+            const [dayi, eventMi] = attValue;
+            const day = props.schedule.days[dayi];
             const event = day?.list.find(event => event.mi === eventMi);
 
 
@@ -70,7 +70,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
 
             if (props.schedule.days && day && event?.atts) {
                 scope = scope
-                    .replace(dayPhaseMarkerReg, `$1${day.mi}`)
+                    .replace(dayPhaseMarkerReg, `$1${dayi}`)
                     .replace(eventPhaseMarkerReg, `$1${event.mi}`);
 
                 attValue = event.atts[props.attKey];

@@ -1,3 +1,4 @@
+import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 import EvaSendButton from "../eva-icon/send-button/EvaSendButton";
 import { EvaSendButtonProps } from "../eva-icon/send-button/EvaSendButton.model";
 import useToast from "../modal/useToast";
@@ -14,7 +15,7 @@ export default function StrongEvaButton({
     cud,
     mapExecArgs,
     ...props
-}: StrongControlProps<EvaSendButtonProps<boolean>> & {
+}: StrongControlProps<EvaSendButtonProps<SokiServerEvent | null>> & {
     fieldValue?: unknown,
     fieldKey?: unknown,
 }) {
@@ -23,7 +24,7 @@ export default function StrongEvaButton({
 
     return <>
         {modalNode}
-        <EvaSendButton<boolean>
+        <EvaSendButton<SokiServerEvent | null>
             {...props}
             onFailure={(errorMessage) => toast(errorMessage, { mood: 'ko' })}
             onSend={props.isCanSend !== false

@@ -1,10 +1,11 @@
+import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 
 
 export interface DropdownProps<Id , Item extends DropdownItem<Id>> {
     items: Item[];
     placeholder?: string;
     id?: Id;
-    onSelect?: (item: Item) => und | void | null | Promise<boolean>;
+    onSelect?: (item: Item) => und | void | null | Promise<SokiServerEvent | null>;
     className?: string;
 }
 

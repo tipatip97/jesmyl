@@ -15,7 +15,7 @@ export default function useLeaderComments() {
         sendingComments,
         isSendingMessagesError,
         sendAllComments: () => {
-            const execs = ret.sendingComments.comments;
+            const execs = ret.sendingComments;
             if (!execs?.length) return;
 
             leaderExer.send(execs)
@@ -28,7 +28,7 @@ export default function useLeaderComments() {
                 });
         },
         sendComment: (exec: SendingComment) => {
-            dispatch(di.sendingComments([...sendingComments.comments || [], exec]));
+            dispatch(di.sendingComments([...sendingComments || [], exec]));
         },
     };
     return ret;

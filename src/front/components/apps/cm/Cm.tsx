@@ -13,13 +13,6 @@ export default function CmApplication({ content }: { content: ReactNode }) {
 
   cmStorage.initDispatches(dispatch, di);
 
-  // cmStorage.dispatch(dispatch)
-  //   .it('cols', di.cols)
-  //   .it('chordTracks', di.chordTracks)
-  //   .it('meetings', di.meetings)
-  //   .it('mp3Rules', di.mp3Rules)
-  //   .it('execs', di.execs);
-
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {
       if (event.key === "F5") {

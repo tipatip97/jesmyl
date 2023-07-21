@@ -20,8 +20,8 @@ export function ScheduleWidgetDayEventEventActions({
 }) {
     const [modalNode, screen] = useModal(({ header, body }) => {
         return <>
-            {header(<>Шаблон события <span className="color--7">{schedule.types?.[event.type].title}</span></>)}
-            {body(schedule.types?.[event.type]
+            {header(<>Шаблон события <span className="color--7">{schedule.types[event.type].title}</span></>)}
+            {body(schedule.types[event.type]
                 ? <ScheduleWidgetEventType
                     schedule={schedule}
                     scheduleScope={scheduleScope}

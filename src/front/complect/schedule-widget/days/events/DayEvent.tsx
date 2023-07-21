@@ -39,13 +39,13 @@ export default function ScheduleWidgetDayEvent(props: {
     let timeMark = '';
     let timerClassNamePlus = '';
     const rights = useScheduleWidgetRightsContext();
-    const box = rights.schedule.types?.[props.event.type];
+    const box = rights.schedule.types[props.event.type];
     const { editIcon, isRedact, isSelfRedact, setIsSelfRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
     const selfScope = takeStrongScopeMaker(props.scope, ' eventMi/', props.event.mi);
 
     const now = Date.now();
     const eventTm = ScheduleWidgetCleans.takeEventTm(props.event, box);
-    const eventFinishMs = rights.schedule.start + props.wakeupMs + (props.prevTime) * msInMin + props.dayi * msInDay;
+    const eventFinishMs = rights.schedule.start + props.wakeupMs + (props.prevTime) * msInMin + props.dayi * msInDay - (rights.schedule.withTech ? mylib.howMs.inDay : 0);
     const eventStartMs = eventFinishMs - eventTm * msInMin;
     const isPastEvent = now > eventFinishMs;
 

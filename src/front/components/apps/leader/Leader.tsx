@@ -20,11 +20,5 @@ export default function LeaderApplication({ content }: { content: ReactNode }) {
 
   leaderStorage.initDispatches(dispatch, di);
 
-  // leaderStorage.dispatch(dispatch)
-  //   .it("games", di.games)
-  //   .it("people", di.people)
-  //   .it("contexts", di.contexts)
-  //   .it("gameTimers", di.gameTimers);
-
   return <>{content}</>;
 }

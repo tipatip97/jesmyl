@@ -36,7 +36,7 @@ export interface HumanListComponentProps {
     searcherClass?: string,
     placeholder?: string,
     onMoreClick?: () => void,
-    moreNode?: ((human: HumanImportable) => ReactNode) | ReactNode,
+    fieldLabel?: 'mentors' | 'members',
     asHumanMore?: (human: HumanImportable) => ReactNode,
     humanMoreAdditions?: (human: HumanImportable) => ReactNode,
     humansRef?: { current: HumanImportable[] },

@@ -23,7 +23,7 @@ export default function ScheduleCheckListAtt({
                     scope={itemScope}
                     fieldName="check"
                     fieldValue={isDone ? 0 : 1}
-                    className={'self-start' + (isDone ? '' : ' color--3')}
+                    className={'self-start relative z-index:15 color--3 ' + (isDone ? 'fade-05' : '')}
                     cud="U"
                     isCanSend={!!scope}
                     name={isDone ? 'checkmark-square-outline' : 'square-outline'}
@@ -34,7 +34,7 @@ export default function ScheduleCheckListAtt({
                     className="full-width"
                     value={title}
                     isRedact={isRedact}
-                    textClassName={isDone ? ' ' : 'color--3'}
+                    textClassName={'mood-for-2 relative z-index:5 color--3 ' + (isDone ? 'fade-05' : '')}
                 />
             </div>;
         })}

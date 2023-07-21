@@ -4,6 +4,7 @@ import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/Correc
 import SourceBased from "../SourceBased";
 import mylib from "../my-lib/MyLib";
 import { ClientExecutionDict, ExecRule, FreeExecDict } from "./Exer.model";
+import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 
 
 export class Exec<Value> extends SourceBased<ClientExecutionDict> {
@@ -25,7 +26,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
     corrects?: CorrectsBox;
 
     onSet?: (exec: Exec<Value>) => [];
-    onLoad?: (exec: Exec<Value>) => '';
+    onLoad?: (exec: Exec<Value>, result: SokiServerEvent) => '';
     data?: Record<string, any>;
 
     constructor(exec: ClientExecutionDict<Value>, rules: ExecRule[]) {

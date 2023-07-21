@@ -2,8 +2,9 @@ import { Executer } from "../../complect/executer/Executer";
 import { ExecutionArgs, ExecutionDict, ExecutionReal } from "../../complect/executer/Executer.model";
 import { FilerAppConfig } from "../../complect/filer/Filer.model";
 import { rootDirective } from "../../complect/soki/soki.model";
+import { ActionBoxValue } from "../../models";
 import { Application } from "./models/Application";
-import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetLists, IScheduleWidgetUser, ScheduleStorage } from "./models/ScheduleWidget.model";
+import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, IScheduleWidgetUser, ScheduleStorage } from "./models/ScheduleWidget.model";
 import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetUserRights } from "./rights";
 
 interface SchedulesBag {
@@ -42,10 +43,21 @@ const mapCantReadSpecialsDayEvent = (event: IScheduleWidgetDayEvent) => {
         : event;
 };
 
-const mapCantReadSpecialsDay = (day: IScheduleWidgetDay) => ({
+const mapCantReadSpecialsDay = (day: IScheduleWidgetDay): IScheduleWidgetDay => ({
     ...day,
     list: day.list.map(mapCantReadSpecialsDayEvent),
 });
+
+const mapCantReadSpecialsDayWithoutTech = (day: IScheduleWidgetDay, dayi: number): IScheduleWidgetDay => (dayi === 0
+    ? {
+        list: emptyArray,
+        mi: 0,
+        wup: 0,
+    }
+    : {
+        ...day,
+        list: day.list.map(mapCantReadSpecialsDayEvent),
+    });
 
 type ScheduleWidgetOnCantReadExec = ExecutionDict<
     unknown,
@@ -55,6 +67,7 @@ type ScheduleWidgetOnCantReadExec = ExecutionDict<
             schw: number,
             tattMi?: number,
             attKey?: string,
+            dayi?: number,
         },
         { $$event?: IScheduleWidgetDayEvent }
     >
@@ -68,6 +81,56 @@ type ScheduleWidgetOnCantReadRule = ExecutionReal<
         {}
     >
 >;
+
+const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
+    w: '{schw}',
+    title: '{title}',
+    app: '{app}',
+    dsc: '',
+    topic: '',
+    days: emptyArray,
+    tatts: emptyArray,
+    types: emptyArray,
+    start: () => {
+        const date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        date.setHours(0, 0, 0, 0);
+        return date.getTime();
+    },
+    ctrl: {
+        cats: ['Основное'],
+        users: [{
+            mi: 0,
+            fio: '{*fio}',
+            login: '{*login}',
+            R: scheduleWidgetUserRights.getAllRights(),
+        }],
+        roles: [{
+            mi: 0,
+            title: 'Координатор',
+            icon: 'github-outline',
+            user: 0,
+        }],
+        type: scheduleWidgetRegTypeRights.collectRights(),
+    },
+    lists: {
+        cats: [
+            {
+                icon: 'people-outline',
+                title: 'Группа',
+                titles: ['Наставники', 'Участники']
+            }
+        ],
+        units: [
+            {
+                cat: 0,
+                mi: 1,
+                title: 'Первая',
+                dsc: '',
+            }
+        ],
+    }
+};
 
 const config: FilerAppConfig = {
     title: 'JESMYL',
@@ -109,15 +172,19 @@ const config: FilerAppConfig = {
                         }
 
                         if (tattMi >= 0) {
-                            const tatt = bag.schedule.tatts?.find((tatt) => tatt.mi === tattMi);
+                            const tatt = bag.schedule.tatts.find((tatt) => tatt.mi === tattMi);
                             if (tatt !== undefined && !scheduleWidgetUserRights.checkIsCan(user.R, tatt.R))
                                 return whenRejButTs;
                         }
                     } catch (error) { }
                 }
 
-                if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials) && exec.args?.$$vars?.$$event?.secret) {
-                    return whenRejButTs;
+                if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials)) {
+                    if (exec.args !== undefined && (
+                        (bag.schedule.withTech === 1 && exec.args.dayi === 0)
+                        || exec.args.$$vars?.$$event?.secret === 1)
+                    )
+                        return whenRejButTs;
                 }
 
                 if (rule.RRej == null) return null;
@@ -137,7 +204,11 @@ const config: FilerAppConfig = {
                             if (!scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)) {
                                 return ({
                                     ...schedule,
-                                    days: schedule.days?.map(mapCantReadSpecialsDay),
+                                    days: schedule.days.map(
+                                        schedule.withTech === 1
+                                            ? mapCantReadSpecialsDayWithoutTech
+                                            : mapCantReadSpecialsDay
+                                    ),
                                     ctrl: {
                                         cats: emptyArray,
                                         roles: emptyArray,
@@ -149,10 +220,18 @@ const config: FilerAppConfig = {
 
                             return {
                                 ...schedule,
-                                days: schedule.days?.[0] && [{ wup: schedule.days[0].wup, mi: 0, list: emptyArray }],
-                                tatts: undefined,
-                                dsc: undefined,
-                                types: undefined,
+                                days:
+                                    schedule.days[0]
+                                        ? schedule.days[1]
+                                            ? [
+                                                { wup: schedule.days[0].wup, mi: 0, list: emptyArray },
+                                                { wup: schedule.days[1].wup, mi: 1, list: emptyArray },
+                                            ]
+                                            : [{ wup: schedule.days[0].wup, mi: 0, list: emptyArray }]
+                                        : emptyArray,
+                                dsc: '',
+                                tatts: emptyArray,
+                                types: emptyArray,
                                 ctrl: {
                                     cats: emptyArray,
                                     roles: emptyArray,
@@ -168,6 +247,11 @@ const config: FilerAppConfig = {
                             w: schedule.w,
                             lists: emptyLists,
                             start: 0,
+                            days: emptyArray,
+                            tatts: emptyArray,
+                            types: emptyArray,
+                            dsc: '',
+                            topic: '',
                             ctrl: {
                                 cats: emptyArray,
                                 roles: emptyArray,
@@ -184,7 +268,11 @@ const config: FilerAppConfig = {
                     ) {
                         return {
                             ...schedule,
-                            days: schedule.days?.map(mapCantReadSpecialsDay),
+                            days: schedule.days.map(
+                                schedule.withTech === 1
+                                    ? mapCantReadSpecialsDayWithoutTech
+                                    : mapCantReadSpecialsDay
+                            ),
                             ctrl: {
                                 cats: emptyArray,
                                 roles: emptyArray,
@@ -197,11 +285,11 @@ const config: FilerAppConfig = {
                     if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read)) {
                         return {
                             ...schedule,
-                            days: undefined,
-                            topic: undefined,
-                            tatts: undefined,
-                            dsc: undefined,
-                            types: undefined,
+                            days: emptyArray,
+                            topic: '',
+                            tatts: emptyArray,
+                            dsc: '',
+                            types: emptyArray,
                             lists: emptyLists,
                             ctrl: {
                                 cats: emptyArray,
@@ -215,10 +303,10 @@ const config: FilerAppConfig = {
                     if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles)) {
                         return {
                             ...schedule,
-                            days: schedule.days?.map(mapCantReadTitlesDay),
-                            topic: undefined,
-                            tatts: undefined,
-                            dsc: undefined,
+                            days: schedule.days.map(mapCantReadTitlesDay),
+                            topic: '',
+                            tatts: emptyArray,
+                            dsc: '',
                             ctrl: {
                                 cats: emptyArray,
                                 roles: emptyArray,
@@ -231,7 +319,11 @@ const config: FilerAppConfig = {
                     if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials)) {
                         return {
                             ...schedule,
-                            days: schedule.days?.map(mapCantReadSpecialsDay),
+                            days: schedule.days.map(
+                                schedule.withTech === 1
+                                    ? mapCantReadSpecialsDayWithoutTech
+                                    : mapCantReadSpecialsDay
+                            ),
                             ctrl: {
                                 cats: emptyArray,
                                 roles: emptyArray,
@@ -273,49 +365,7 @@ const config: FilerAppConfig = {
                 },
                 C: {
                     RRej: true,
-                    value: {
-                        w: '{schw}',
-                        title: '{title}',
-                        app: '{app}',
-                        start: () => {
-                            const date = new Date();
-                            date.setMonth(date.getMonth() + 1);
-                            date.setHours(0, 0, 0, 0);
-                            return date.getTime();
-                        },
-                        ctrl: {
-                            cats: ['Основное'],
-                            users: [{
-                                mi: 0,
-                                fio: '{*fio}',
-                                login: '{*login}',
-                                R: scheduleWidgetUserRights.getAllRights(),
-                            }],
-                            roles: [{
-                                mi: 0,
-                                title: 'Координатор',
-                                icon: 'github-outline',
-                                user: 0,
-                            }],
-                            type: scheduleWidgetRegTypeRights.collectRights(),
-                        },
-                        lists: {
-                            cats: [
-                                {
-                                    icon: 'people-outline',
-                                    title: 'Группа',
-                                    titles: ['Наставники', 'Участники']
-                                }
-                            ],
-                            units: [
-                                {
-                                    cat: 0,
-                                    mi: 1,
-                                    title: 'Первая',
-                                }
-                            ],
-                        } as IScheduleWidgetLists<string>
-                    },
+                    value: newSchedule,
                     args: {
                         schw: '#Number',
                         title: '#String',
@@ -343,6 +393,14 @@ const config: FilerAppConfig = {
                                 value: '#String',
                             }
                         }
+                    },
+                    '/withTech': {
+                        U: {
+                            RRej: true,
+                            args: {
+                                value: '#Num',
+                            },
+                        },
                     },
                     '/ctrl': {
                         '/type': {
@@ -575,10 +633,10 @@ const config: FilerAppConfig = {
                                 wup: 7,
                             }
                         },
-                        '/[mi === {dayMi}]': {
-                            scopeNode: 'dayMi',
+                        '/{dayi}': {
+                            scopeNode: 'dayi',
                             args: {
-                                dayMi: '#Number'
+                                dayi: '#Number',
                             },
                             '/{key}': {
                                 scopeNode: 'field',

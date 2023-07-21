@@ -92,7 +92,7 @@ export default function ScheduleWidgetEventType(props: {
                             errors[props.typei] = 'Нет существенных символов!';
                         } else errors[props.typei] = 'Не должно быть пустым!';
                     } else {
-                        const prevTitle = props.schedule.types?.find((schType, schTypei) => schTypei !== props.typei && schType.title.toLowerCase() === lowerValue);
+                        const prevTitle = props.schedule.types.find((schType, schTypei) => schTypei !== props.typei && schType.title.toLowerCase() === lowerValue);
                         if (prevTitle)
                             errors[props.typei] = `"${prevTitle.title}" уже есть!`;
                         else errors[props.typei] = null;

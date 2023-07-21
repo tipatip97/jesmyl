@@ -8,6 +8,7 @@ import { StrongControlProps } from "../Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "../useStrongControl";
 import StrongEditableFieldMultiline from "./StrongEditableFieldMultiline";
 import { onStrongFieldBlur, onStrongFieldDragStart, onStrongFieldFocus } from "./clipboard/Picker";
+import { SokiServerEvent } from "../../../../back/complect/soki/soki.model";
 
 const onFocus = onStrongFieldFocus;
 const onBlur = onStrongFieldBlur;
@@ -33,7 +34,7 @@ export default function StrongEditableField<
     className?: string,
     onChange?: (value: string) => void | Promise<boolean>,
     onUpdate?: (value: string) => void | Promise<boolean>,
-    onSend?: (value: string) => void | Promise<boolean>,
+    onSend?: (value: string) => void | Promise<SokiServerEvent | null>,
     onSelfRedactChange?: (is: boolean) => void,
 }>) {
     const value = typeof props.value === 'string' ? props.value : props.value?.[props.fieldKey as never] ?? '';

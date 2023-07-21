@@ -3,13 +3,36 @@ import SendButton from "../../../../../complect/SendButton";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
+import useAuth from "../../../../index/useAuth";
 import { leaderExer } from "../../Leader.store";
+import { LeaderCleans } from "../LeaderCleans";
 import useLeaderContext from "../contexts/useContexts";
 import { HumanExportable, HumanImportable } from "./People.model";
-import useAuth from "../../../../index/useAuth";
 
 const ufpLabels = "1".repeat(10).split("");
 const isNNull = (it: unknown) => it !== null;
+
+const sexItems = [
+  {
+    id: true,
+    title: "Мужской",
+  },
+  {
+    id: false,
+    title: "Женский",
+  },
+];
+
+const heapItems = [
+  {
+    id: true,
+    title: "Добавить несколько личностей",
+  },
+  {
+    id: false,
+    title: "Добавление личности",
+  },
+];
 
 const prepareSearchName = (name: string) => {
   return name.replace(/ё/i, 'е').toUpperCase();
@@ -42,9 +65,11 @@ const lineAsHuman = (line: string, upperExistsNames: string[]): HumanExportable 
 export default function HumanMaster({
   human,
   close,
+  pushInCcontextAs,
 }: {
-  human?: HumanImportable;
-  close: () => void;
+  human?: HumanImportable,
+  close: () => void,
+  pushInCcontextAs?: 'mentors' | 'members',
 }) {
   const [viewHumanList, updateViewHumanList] = useState<
     (HumanExportable | string)[] | null
@@ -57,7 +82,7 @@ export default function HumanMaster({
   const [isHumanHeap, setIsHumanHeap] = useState(false);
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
-  const { humans } = useLeaderContext();
+  const { humans, ccontext } = useLeaderContext();
   const auth = useAuth();
 
   const takeName = (value: string) => {
@@ -83,20 +108,11 @@ export default function HumanMaster({
 
   return (
     <div className="full-container flex column padding-giant-gap">
-      {human ? null : (
+      {pushInCcontextAs || human ? null : (
         <Dropdown
           id={isHumanHeap}
           className="margin-big-gap-v"
-          items={[
-            {
-              id: true,
-              title: "Добавить несколько личностей",
-            },
-            {
-              id: false,
-              title: "Добавление личности",
-            },
-          ]}
+          items={heapItems}
           onSelect={({ id }) => setIsHumanHeap(id)}
         />
       )}
@@ -137,16 +153,7 @@ export default function HumanMaster({
                   Пол:{" "}
                   <Dropdown
                     id={human.isMan}
-                    items={[
-                      {
-                        id: true,
-                        title: "Мужской",
-                      },
-                      {
-                        id: false,
-                        title: "Женский",
-                      },
-                    ]}
+                    items={sexItems}
                     onSelect={({ id }) => { human.isMan = id; }}
                   />
                 </div>
@@ -221,16 +228,7 @@ export default function HumanMaster({
             <Dropdown
               id={isMan}
               placeholder="Пол не указан"
-              items={[
-                {
-                  id: true,
-                  title: "Мужской",
-                },
-                {
-                  id: false,
-                  title: "Женский",
-                },
-              ]}
+              items={sexItems}
               onSelect={({ id }) => {
                 setIsMan(id);
                 if (human)
@@ -378,7 +376,15 @@ export default function HumanMaster({
             <SendButton
               title={human ? "Сохранить" : "Добавить"}
               confirm={human ? null : "Добавить новую личность?"}
-              onSuccess={() => close()}
+              onSuccess={(result) => {
+                if (pushInCcontextAs && result && ccontext) {
+                  const humanw = result.execs?.list[0]?.value.w;
+                  if (humanw)
+                    LeaderCleans
+                      .addContextHuman(ccontext.w, humanw, pushInCcontextAs)
+                      .then(() => close());
+                }
+              }}
               onSend={() => {
                 if (human) return leaderExer.load();
                 return leaderExer.send(
@@ -395,6 +401,9 @@ export default function HumanMaster({
                       ts: Date.now() + Math.random(),
                       isInactive,
                     } as HumanExportable,
+                    onLoad: (exec, result) => {
+
+                    },
                   });
               }}
             />

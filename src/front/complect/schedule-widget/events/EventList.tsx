@@ -45,7 +45,7 @@ export default function ScheduleWidgetEventList({
             {header(<>
                 <div className="flex flex-gap between">
                     <div>Шаблоны событий</div>
-                    {!schedule.types?.some((type) => !type.title) && <StrongEvaButton
+                    {!schedule.types.some((type) => !type.title) && <StrongEvaButton
                         scope={scheduleScope}
                         fieldName="types"
                         name="plus-outline"
