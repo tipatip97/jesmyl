@@ -288,7 +288,7 @@
     "passw": "7162e050cff7067b81a20ad8832815e3"
   },
   {
-    "level": 20,
+    "level": 3,
     "fio": "gri_lid",
     "login": "aadd039b4e5b14f01ddcba41d4c66ac0",
     "passw": "e9e34dd476e4b2eb1a06483d7509a0c4"
@@ -400,5 +400,47 @@
     "fio": "Anita",
     "login": "9888cd5c082b9e015300afd756fc7f13",
     "passw": "095a1b084060da872826fb651293b042"
+  },
+  {
+    "level": 3,
+    "fio": "ViolettaVerner",
+    "login": "f58caae0aad3402b8221e754f35b59a3",
+    "passw": "f21a7c71baf8c1569dae620d44885d4a"
+  },
+  {
+    "level": 3,
+    "fio": "naz",
+    "login": "004e05b2919c367782281eebfcbcf519",
+    "passw": "cd6a446ddb22f9ac6b86e75145230ccd"
+  },
+  {
+    "level": 3,
+    "fio": "AndreyKar",
+    "login": "6d19f48124a3799023fc73d31ebe5261",
+    "passw": "779e031855dc2c547405d4f277e9248f"
+  },
+  {
+    "level": 3,
+    "fio": "Parfenyuk_julya",
+    "login": "79ac0424f795403564094e2848189a7f",
+    "passw": "6355eed9d290c59dfbaff68fd39b5f16"
+  },
+  {
+    "level": 3,
+    "fio": "yaremenko",
+    "login": "3a7e1e50cd901bb8d872f5d002f0bded",
+    "passw": "4800c003b82f2f44f1978df9072e93d2"
+  },
+  {
+    "level": 3,
+    "fio": "Герман",
+    "login": "f4b4a84bcf24973792973f66418795e7",
+    "passw": "aec3666f3d05c879d85be5210d37176b"
+  },
+  {
+    "level": 3,
+    "fio": "sab",
+    "login": "2ef4d613a5cc85d9e2217a295b003815",
+    "passw": "dfba83d2e5dfa4c67c054d08db3b435b"
   }
 ]
