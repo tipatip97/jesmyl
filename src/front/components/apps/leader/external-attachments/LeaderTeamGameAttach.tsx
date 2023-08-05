@@ -1,4 +1,5 @@
 import EvaButton from "../../../../complect/eva-icon/EvaButton";
+import LeaderApplication from "../Leader";
 import { GameDescription } from "../components/games/GameDescription";
 import LeaderGameTotalScoreTable from "../components/games/LeaderGameTotalScoreTable";
 import useGames from "../components/games/useGames";
@@ -21,6 +22,7 @@ export default function LeaderTeamGameAttach({
     const game = value.gamew && games?.teamGames?.find((game) => game.w === value.gamew);
 
     return <div>
+        <LeaderApplication content={null} />
         {isRedact
             && <LeaderTeamGameAttachRedact
                 isRedact

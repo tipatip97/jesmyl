@@ -3,7 +3,7 @@ import { ScheduleWidgetAppAtts } from "../../../../complect/schedule-widget/Sche
 import CmExternalComListAtt from "./complect/CmExternalComListAtt";
 
 export interface CmComBindAttach {
-    eventw?: number,
+    comws?: number[],
 }
 
 export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {

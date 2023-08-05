@@ -1,4 +1,6 @@
+import { packScheduleWidgetInviteLink } from "../../../../../back/apps/index/complect";
 import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
+import { crossApplicationLinkCoder } from "../../../qr-code/QRCodeMaster";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
 import { IScheduleWidgetUser } from "../../ScheduleWidget.model";
@@ -43,5 +45,12 @@ export function ScheduleWidgetUserEdit({
                     && scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.TotalRedact))}
             onUpdate={onUpdate && ((value) => onUpdate('R', value))}
         />}
+        {!user.login && <div className="user-select margin-giant-gap-t">
+            {crossApplicationLinkCoder.encode({
+                appName: 'index',
+                key: 'swInvite',
+                value: packScheduleWidgetInviteLink(rights.schedule.w, user.mi),
+            })}
+        </div>}
     </>;
 }

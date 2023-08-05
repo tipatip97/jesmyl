@@ -15,10 +15,10 @@ export default function ScheduleCheckListAtt({
     const attScope = scope + ' checkList';
 
     return <>
-        {value.list.map(([isDone, title], itemi) => {
+        {value.list.map(([isDone, title], itemMi) => {
             if (!isRedact && !title) return null;
-            const itemScope = takeStrongScopeMaker(attScope, ' itemi/', itemi);
-            return <div key={itemi} className="flex flex-gap full-width margin-big-gap-b">
+            const itemScope = takeStrongScopeMaker(attScope, ' itemMi/', itemMi);
+            return <div key={itemMi} className="flex flex-gap full-width margin-big-gap-b">
                 <StrongEvaButton
                     scope={itemScope}
                     fieldName="check"

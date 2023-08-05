@@ -6,6 +6,7 @@ export interface DropdownProps<Id , Item extends DropdownItem<Id>> {
     placeholder?: string;
     id?: Id;
     onSelect?: (item: Item) => und | void | null | Promise<SokiServerEvent | null>;
+    onSelectId?: (item: Id) => und | void | null | Promise<SokiServerEvent | null>;
     className?: string;
 }
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../shared/store";
 import di from "../Cm.store";
@@ -19,7 +19,7 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
     if (cols && laterComs == null) setLaterComs(cols, list);
     useEffect(() => { cols && setLaterComs(cols, list); }, [cols, list]);
 
-    const ret = {
+    const ret = useMemo(() => ({
         laterComs,
         updateLaterComwList: (list: number[]) => dispatch(di.laterComwList(list)),
         addLaterComw: (comw: number) => {
@@ -30,6 +30,6 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
             ret.updateLaterComwList(newList);
             cmStorage.set('laterComwList', newList);
         },
-    };
+    }), [dispatch, list, maxStack]);
     return ret;
 }

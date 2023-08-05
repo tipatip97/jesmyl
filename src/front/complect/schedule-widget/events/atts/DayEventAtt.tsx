@@ -21,6 +21,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
     typeBox: ScheduleWidgetDayListItemTypeBox,
     event: IScheduleWidgetDayEvent,
     day: IScheduleWidgetDay,
+    dayi: number,
     attKey: ScheduleWidgetAttKey,
     att: ScheduleWidgetDayEventAttValue,
     isPast: boolean,
@@ -64,6 +65,7 @@ export default function ScheduleWidgetDayEventAtt(props: StrongComponentProps<{
                     attKey={props.attKey}
                     schedule={props.schedule}
                     day={props.day}
+                    dayi={props.dayi}
                     appAtt={appAtt}
                 />;
             } else notateNode = <EvaIcon name="link-2" className="color--3 icon-scale-05" />;

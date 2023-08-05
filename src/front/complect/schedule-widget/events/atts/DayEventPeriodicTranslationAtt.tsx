@@ -8,6 +8,7 @@ const emptyFunc = () => { };
 
 export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
     day: IScheduleWidgetDay,
+    dayi: number,
     attKey: ScheduleWidgetAttKey,
     att: ScheduleWidgetAttRef,
     schedule: IScheduleWidget,
@@ -18,7 +19,7 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
     const nodes: ReactNode[][] = [];
     const types = props.schedule.types ?? [];
     const days = props.schedule.days ?? [];
-    const todayi = days.findIndex(day => day.mi === props.day.mi);
+    const todayi = days.findIndex((_, dayi) => dayi === props.dayi);
     let date: Date;
 
     if (todayi > -1)

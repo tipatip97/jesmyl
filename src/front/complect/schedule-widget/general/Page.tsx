@@ -1,14 +1,16 @@
 import { ReactNode } from "react";
 import { AppName } from "../../../app/App.model";
+import useAuth from "../../../components/index/useAuth";
 import useConnectionState from "../../../components/index/useConnectionState";
 import PhaseContainerConfigurer from "../../phase-container/PhaseContainerConfigurer";
 import { PhaseContainerConfigurerProps } from "../../phase-container/PhaseContainerConfigurer.model";
+import StrongButton from "../../strong-control/StrongButton";
 import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
-import ScheduleCreateWidgetButton from "./CreateButton";
 import ScheduleWidget from "../ScheduleWidget";
 import { IScheduleWidget } from "../ScheduleWidget.model";
 import '../ScheduleWidget.scss';
-import useScheduleWidget from "../useScheduleWidget";
+import useScheduleWidget, { takeScheduleStrongScopeMaker } from "../useScheduleWidget";
+import ScheduleCreateWidgetButton from "./CreateButton";
 
 export default function ScheduleWidgetPage(props: Omit<PhaseContainerConfigurerProps, 'content' | 'topClass'> & {
     schedulew: number,
@@ -19,6 +21,7 @@ export default function ScheduleWidgetPage(props: Omit<PhaseContainerConfigurerP
 }) {
     const { schedule } = useScheduleWidget(props.schedulew);
     const connectionNode = useConnectionState();
+    const auth = useAuth();
 
     return <PhaseContainerConfigurer
         {...props}
@@ -31,7 +34,15 @@ export default function ScheduleWidgetPage(props: Omit<PhaseContainerConfigurerP
         </span>}
         content={
             schedule
-                ? <ScheduleWidget schedule={schedule} altActionsNode={props.altActionsNode} />
+                ? schedule.start === 0
+                    ? schedule.ctrl.users.some(user => user.login === auth.login)
+                        ? <>Заявка отправлена</>
+                        : <StrongButton
+                            scope={takeScheduleStrongScopeMaker(schedule.w)}
+                            fieldName="addMeByLink"
+                            title="Буду участвовать"
+                        />
+                    : <ScheduleWidget schedule={schedule} altActionsNode={props.altActionsNode} />
                 : <ScheduleCreateWidgetButton
                     appName={props.appName}
                     title={props.title}

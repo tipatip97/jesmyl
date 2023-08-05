@@ -8,6 +8,7 @@ import reportWebVitals from "./front/reportWebVitals";
 import * as serviceWorkerRegistration from "./front/serviceWorkerRegistration";
 import { store } from "./front/shared/store";
 import { catchAllErrors } from "./catch-errors";
+import { setPolyfills } from "./back/complect/polyfills";
 
 catchAllErrors();
 
@@ -63,3 +64,5 @@ serviceWorkerRegistration.register();
 // to log results (for example: reportWebVitals(conso le.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+setPolyfills();

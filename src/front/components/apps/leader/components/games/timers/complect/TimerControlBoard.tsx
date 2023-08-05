@@ -64,9 +64,14 @@ export default function TimerControlBoard({
                         onFinishTimeChange={(value) => {
                             if (timer.finishes?.[team.w] === value) {
                                 toast('Значение не поменялось');
-                                return;
+                                return Promise.resolve();
                             }
-                            if (isNewTimer) use.mapTimer((prevTimer) => ({ ...prevTimer, finishes: { ...prevTimer.finishes, [team.w]: value } }));
+
+                            if (isNewTimer) use.mapTimer((prevTimer) => {
+                                const finishes = { ...prevTimer.finishes, [team.w]: value };
+                                if (!value) delete finishes[team.w];
+                                return { ...prevTimer, finishes };
+                            });
                             else return LeaderCleans.changeFinishTime(game.w, timer.w, team.w, value);
                         }}
                     />;

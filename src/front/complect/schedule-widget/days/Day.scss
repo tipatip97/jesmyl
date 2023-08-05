@@ -185,10 +185,24 @@
             display: none;
         }
 
+        .not-printable {
+            text-decoration: line-through;
+        }
+
         .schedule-widget-day-event-list .day-event-wrapper .day-event {
             background: none;
             background-color: none;
             padding: 0;
+        }
+    }
+}
+
+@media print {
+    .for-print {
+        .ScheduleWidgetDay {
+            .not-printable {
+                display: none;
+            }
         }
     }
 }

@@ -5,10 +5,10 @@ export const sequreMD5Passphrase = 'dbd2f9f2ccd2c687c3e2cf63fc662a78';
 
 export const actionBoxSetSystems = {
     w: () => Date.now() + Math.random(),
-    mi: (list?: { mi: number }[]) => {
-        if (!smylib.isArr(list)) return undefined;
+    mi: (field: string, list?: any[]) => {
+        if (!smylib.isArr(list)) return 0;
         let max = -1;
-        list?.forEach?.((item) => item.mi > max && (max = item.mi));
+        list.forEach?.((item) => item[field] != null && item[field] > max && (max = item[field]));
         return max + 1;
     },
 };

@@ -8,6 +8,9 @@ import { GameTeamImportable } from "./teams/GameTeams.model";
 import LeaderGameTimerMaster from "./timers/GameTimerMaster";
 import TimerRatingBoard from "./timers/complect/TimerRatingBoard";
 import TimerSortRatingVariantSelector from "./timers/complect/TimerSortRatingVariantSelector";
+import { MyLib } from "../../../../../complect/my-lib/MyLib";
+
+const itIt = (it: unknown) => it;
 
 export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImportable }) {
     const [expandedTimers, setExpandedTimers] = useState<number[]>([]);
@@ -20,14 +23,19 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
     const node = useMemo(() => {
         if (!game.teams) return null;
         const teamRating: Map<GameTeamImportable, number> = new Map();
+        const singleTimes: Map<GameTeamImportable, number> = new Map();
+        let isSingleTimers = true;
 
         game.timers?.forEach((timer) => {
             if (timer.isInactive) return;
             const teamsPlayed = LeaderCleans
                 .rateSortedTimerTeams(timer, game, true);
-            const teamsLen = teamsPlayed.length;
 
-            if (teamsLen > 1)
+            if (teamsPlayed.length > 1) {
+                isSingleTimers = false;
+
+                const teamsLen = teamsPlayed.length;
+
                 teamsPlayed.forEach(({ team, finish }, ratei) => {
                     if (!team || !finish) return;
                     const score = teamsLen - ratei;
@@ -35,13 +43,23 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
                         ? teamRating.get(team)! + score
                         : score);
                 });
+            }
+
+            if (isSingleTimers && teamsPlayed[0]?.team)
+                singleTimes.set(teamsPlayed[0].team, (teamsPlayed[0].finish - teamsPlayed[0].start));
         });
 
-        return Array.from(teamRating.entries())
+        const results = Array.from(isSingleTimers ? singleTimes.entries() : teamRating.entries())
             .sort((b, a) => a[1] - b[1])
             .map(([team, balance]) => {
-                return <div key={team.w}>{team.name}: {balance}</div>;
+                return <div key={team.w}>{team.name}: {
+                    isSingleTimers
+                        ? <span className="color--3">{LeaderCleans.computeMinFromMs(balance)}</span>
+                        : balance
+                }</div>;
             });
+
+        return isSingleTimers ? results.reverse() : results;
     }, [game]);
 
     return <>
@@ -53,7 +71,9 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
                 : <div className="margin-gap-h">Нет активных таймеров</div>}
         </div>
         {game.timers?.map(timer => {
-            return <div key={timer.w} className={'margin-big-gap-v' + (timer.isInactive ? ' fade-05 ' : '')}>
+            const playedLen = MyLib.values(timer.finishes).filter(itIt).length;
+
+            return <div key={timer.w} className={'margin-big-gap-v' + (timer.isInactive || playedLen === 0 ? ' fade-05 ' : '')}>
                 <div
                     className="flex flex-gap pointer"
                     onClick={() => setExpandedTimers(expandedTimers.includes(timer.w)
@@ -74,7 +94,8 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
                     />
                 </div>
                 {expandedTimers.includes(timer.w) && <div className="margin-big-gap">
-                    <TimerSortRatingVariantSelector isRedact={false} sort={LeaderCleans.getTimerConfigurableField('sort', timer, game)} />
+                    {playedLen > 1 &&
+                        <TimerSortRatingVariantSelector isRedact={false} sort={LeaderCleans.getTimerConfigurableField('sort', timer, game)} />}
                     <TimerRatingBoard timer={timer} game={game} withoutControls />
                 </div>}
             </div>;

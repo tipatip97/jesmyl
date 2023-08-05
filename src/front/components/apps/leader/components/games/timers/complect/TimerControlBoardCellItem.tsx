@@ -36,7 +36,7 @@ export default function TimerControlBoardCellItem(props: {
     const [timeDelta, setTimeDelta] = useState(0);
 
     useEffect(() => {
-        if (pause) setInputValue(getInputValue(pause, start));
+        setInputValue(getInputValue(pause, start));
     }, [pause, start]);
 
 

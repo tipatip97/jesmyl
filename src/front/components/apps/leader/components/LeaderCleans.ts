@@ -83,6 +83,13 @@ export class LeaderCleans {
         );
     };
 
+    static computeMinFromMs(ms: number) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const date = new Date(today.getTime() + ms);
+        return `${date.getHours() ? `${date.getHours()}::` : ''}${date.getMinutes()}:${('' + date.getSeconds()).padStart(2, '0')}.${date.getMilliseconds()}`;
+    };
+
     static getTimerConfigurableField = <Key extends keyof GameTimerConfigurable>(key: Key, timer: GameTimerImportable | nil, game: TeamGameImportable | nil): NonNullable<GameTimerConfigurable[Key]> => {
         return this.getTimerConfigurableFieldAsIs(key, timer, game)
             ?? (key === 'mode' ? GameTimerMode.TimerTotal : key === 'joins' ? 1 : key === 'sort' ? GameTimerSortDirection.Desc : []) as never;

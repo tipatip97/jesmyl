@@ -13,7 +13,7 @@ const initialState: IndexState = {
   currentApp: defaultAppName,
   appVersion: 0,
   auth: { level: 0 },
-  isUseNativeKeyboard: false,
+  isUseNativeKeyboard: true,
   schedules: { list: [] },
   numModalUpdates: 0,
   errors: {},

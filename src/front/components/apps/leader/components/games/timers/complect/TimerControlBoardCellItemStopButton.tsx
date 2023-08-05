@@ -1,4 +1,3 @@
-import useAbsoluteFloatPopup from "../../../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import { TeamGameImportable } from "../../../../Leader.model";
 import { LeaderCleans } from "../../../LeaderCleans";
@@ -20,7 +19,6 @@ export default function TimerControlBoardCellItemStopButton({
     onTeamwSelect: (teamw: number | null) => void,
     onPauseForRow: (teamw: number, value?: number) => void,
 }) {
-    const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
 
     return <>
         {!timer.finishes?.[team.w] ? (
@@ -43,21 +41,11 @@ export default function TimerControlBoardCellItemStopButton({
             <EvaButton
                 name="trash-2-outline"
                 className="reset-button"
+                confirm="Сбросить результат"
                 onClick={(event) => {
                     event.stopPropagation();
-                    openAbsoluteFloatPopup(
-                        <div
-                            className="nowrap pointer"
-                            onClick={() => {
-                                onTeamwSelect(null);
-                                onPauseForRow(team.w, 0);
-                            }}
-                        >
-                            Сбросить результат
-                        </div>,
-                        event.clientX,
-                        event.clientY
-                    );
+                    onTeamwSelect(null);
+                    onPauseForRow(team.w, 0);
                 }}
             />
         )}

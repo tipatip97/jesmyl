@@ -16,8 +16,9 @@ import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
 const singleTitleSymbols = '- ().,/';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
 const singlesTitleReg = new RegExp(`([${singleTitleSymbols}])(\\1+)`, 'g');
+const titleLettersNormalizer = (_: string, __: string, letters: string) => letters[0];
 
-const titleNormalize = (title: string) => title.replace(incorrectsTitleReg, '').replace(singlesTitleReg, (_, __, letters) => letters[0]).trim();
+const titleNormalize = (title: string) => title.replace(incorrectsTitleReg, '').replace(singlesTitleReg, titleLettersNormalizer).trim();
 
 export default function ScheduleWidgetEventType(props: {
     selectScope: string,

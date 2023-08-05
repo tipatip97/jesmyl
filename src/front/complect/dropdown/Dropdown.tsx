@@ -63,7 +63,7 @@ export default function Dropdown<
                 event.stopPropagation();
                 setDropped(false);
                 setId(item.id);
-                const selectResult = props.onSelect?.(item);
+                const selectResult = (props.onSelect === undefined ? props.onSelectId?.(item.id) : props.onSelect(item));
 
                 if (selectResult instanceof Promise) {
                   setIsLoading(true);

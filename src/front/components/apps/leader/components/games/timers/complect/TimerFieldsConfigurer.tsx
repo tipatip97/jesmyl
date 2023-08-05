@@ -4,9 +4,7 @@ import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
 import mylib from "../../../../../../../complect/my-lib/MyLib";
 import useIsRedactArea from "../../../../../../../complect/useIsRedactArea";
-import useAuth from "../../../../../../index/useAuth";
 import { TeamGameImportable } from "../../../../Leader.model";
-import { leaderExer } from "../../../../Leader.store";
 import { LeaderCleans } from "../../../LeaderCleans";
 import { GameTimerConfigurable, GameTimerMode, GameTimerSortDirection } from "../GameTimer.model";
 import TimerCompetitionsSelector from "./TimerCompetitionsSelector";
@@ -28,7 +26,6 @@ export default function TimerFieldsConfigurer({
   onSend?: (fields: GameTimerConfigurable) => Promise<unknown> | und;
 }) {
   const [isSending, setIsSending] = useState(false);
-  const auth = useAuth();
   const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(
     redactable,
     redact
@@ -55,7 +52,7 @@ export default function TimerFieldsConfigurer({
     return teams;
   }, [state.teams, game?.teams]);
 
-  if (!game || !leaderExer.actionAccessedOrNull("updateGameTimerFields", auth)) return null;
+  if (!game) return null;
 
   return (
     <div className="margin-gap">

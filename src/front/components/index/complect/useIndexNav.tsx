@@ -21,7 +21,7 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
     swInvite: (value, key, alt) => {
       serviceMaster('index')<string>(key, value)
         .then((text) => modalService.alert(text, 'Успех'))
-        .catch((errorMessage) => modalService.alert(errorMessage))
+        .catch((errorMessage) => modalService.alert(errorMessage));
 
       return alt.Reject;
     },

@@ -118,13 +118,14 @@ export default function ScheduleWidgetAlarmContent({
                     : undefined;
 
             if (currSchWr) {
+                const start = currSchWr.sch.start - (currSchWr.sch.withTech ? msInDay : 0);
                 const currDayi = currSchWr.days.findIndex((_, dayi) => {
-                    return (currSchWr.sch.start + dayi * msInDay) < now && (currSchWr.sch.start + (dayi + 1) * msInDay) > now;
+                    return (start + dayi * msInDay) < now && (start + (dayi + 1) * msInDay) > now;
                 });
 
                 if (currDayi > -1 && currDayi < currSchWr.days.length) {
                     const currDay = currSchWr.days[currDayi];
-                    const dayBeginMs = currSchWr.sch.start + currDayi * msInDay;
+                    const dayBeginMs = start + currDayi * msInDay;
                     const dayStartMs = dayBeginMs + currSchWr.dayStartMsList[currDayi];
                     const dayFinishMs = dayStartMs + currSchWr.dayMsList[currDayi];
                     const events = currDay.list;
@@ -149,7 +150,7 @@ export default function ScheduleWidgetAlarmContent({
                             day={currDay}
                             dayi={currDayi}
                             schedule={currSchWr.sch}
-                        />
+                        />;
                     };
 
                     if (currEventi < 0) {
@@ -266,14 +267,13 @@ export default function ScheduleWidgetAlarmContent({
                         altTitle="Расписание"
                         topicBox={willSchWr.sch}
                     />
-                    {' '}
                     {startDate.getDate() === nowDate.getDate()
                         ? (msTo / msInHour) < 1
-                            ? <>скоро начало</>
+                            ? <>до начала меньше часа</>
                             : <>до начала {ScheduleWidgetCleans.hoursToText(Math.floor(msTo / msInHour))}</>
-                        : (startDate.getDate() === nowDate.getDate() - 1 && startDate.getFullYear() === nowDate.getFullYear())
+                        : (startDate.getDate() === nowDate.getDate() + 1 && startDate.getFullYear() === nowDate.getFullYear())
                             ? <>начало завтра</>
-                            : <>до начала {ScheduleWidgetCleans.daysToText(Math.floor(msTo / msInDay) + 1)}
+                            : <>до начала {ScheduleWidgetCleans.daysToText(Math.floor(msTo / msInDay))}
                             </>}
                 </div>;
             }

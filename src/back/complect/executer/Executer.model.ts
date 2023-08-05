@@ -90,6 +90,7 @@ export interface ExecutionReal<Value = unknown, Args = Record<string, unknown>, 
     fix: ExecutionRuleTrackBeat,
     fixedAccesses?: FixedAccesses,
     setSystems?: ActionBoxSetSystems[],
+    setItemSystems?: ActionBoxSetSystems[],
 }
 
 export type FixedAccesses = { track: ExecutionTrack, tail: Record<string, ExecutionTrack> }[];

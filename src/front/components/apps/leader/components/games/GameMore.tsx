@@ -1,6 +1,4 @@
 import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
-import useAuth from "../../../../index/useAuth";
-import { leaderExer } from "../../Leader.store";
 import PrintableBottomItem from "../PrintableBottomItem";
 import GameTeamLists from "./templates/GameTeamLists";
 import GameTeamPassportNames from "./templates/GameTeamPassportNames";
@@ -17,8 +15,6 @@ export default function GameMore({
   onGameRemove: () => void,
   prepare: BottomPopupContenterPreparer,
 }) {
-  const auth = useAuth();
-
   return (
     <>
       <PrintableBottomItem
@@ -41,14 +37,12 @@ export default function GameMore({
       />
       {
         prepare({
-          items: [
-            leaderExer.actionAccessedOrNull("removeTeamGame", auth) &&
-            {
-              title: 'Удалить игру',
-              icon: "trash-outline",
-              isError: true,
-              onClick: onGameRemove,
-            }]
+          items: [{
+            title: 'Удалить игру',
+            icon: "trash-outline",
+            isError: true,
+            onClick: onGameRemove,
+          }]
         })}
     </>
   );

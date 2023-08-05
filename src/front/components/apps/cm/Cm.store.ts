@@ -8,7 +8,6 @@ export const cmExer = new Exer('cm', cmStorage);
 const initialState: CmState = {
   chordVisibleVariant: 0,
   laterComwList: [],
-  rollMode: null,
   isCmFullscreen: false,
   isMiniAnchor: false,
   playerHideMode: 'min',
@@ -60,7 +59,6 @@ export const slice = createSlice({
       'translationBlockPosition',
       'isTranslationBlockVisible',
       'translationBlock',
-      'rollMode',
     ]),
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? state.isCmFullscreen;

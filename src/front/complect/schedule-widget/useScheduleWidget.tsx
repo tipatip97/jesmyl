@@ -159,7 +159,7 @@ export const useScheduleWidgetAppAttRefsContext = () => useContext(ScheduleWidge
 
 export const initialScheduleScope = 'schs';
 
-export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayi' | 'eventMi' | 'rateMi' | 'titlei' | 'tattMi' | 'itemi' | 'roleMi' | 'userMi' | 'cati' | 'unitMi';
+export type ScheduleWidgetScopePhase = 'schs' | 'schw' | 'typei' | 'attKey' | 'dayi' | 'eventMi' | 'rateMi' | 'titlei' | 'tattMi' | 'itemMi' | 'roleMi' | 'userMi' | 'cati' | 'unitMi';
 
 export const takeStrongScopeMaker = strongScopeMakerBuilder<ScheduleWidgetScopePhase>();
 export const takeScheduleStrongScopeMaker = (schedulew: number) => takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);
@@ -196,5 +196,5 @@ export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAt
             result: (value, scope, isRedact) => <ScheduleKeyValueListAtt isRedact={isRedact} att={att} scope={scope} value={value} />,
         };
     });
-    return [{ ...(schedule?.app && appAttsStore[schedule.app as never] as {}), ...scheduleOwnAtts, ...atts }, attRefs];
+    return [{ ...appAttsStore, ...scheduleOwnAtts, ...atts }, attRefs];
 };

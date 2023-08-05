@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import { ActionBox, ActionBoxSetSystems } from "../../models";
+import { ActionBox, ActionBoxSetSystems, ActionBoxSetSystemsFree } from "../../models";
 import { actionBoxSetSystems, sequreMD5Passphrase, sokiWhenRejButTs } from "../../values";
 import { FilerAppConfig, FilerAppConfigActions } from "../filer/Filer.model";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
@@ -7,7 +7,7 @@ import { LocalSokiAuth } from "../soki/soki.model";
 import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionArgs, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, RealAccumulatableRule, ShortRealRule, TrackerRet } from "./Executer.model";
 
 const globs: Record<string, any> = {
-    'setNewWid()': () => new Date().getTime() + Math.random()
+    'setNewWid()': () => new Date().getTime() + Math.random(),
 };
 
 const reportFailError = (rej: (resp: { ok: false, fail?: boolean, message: string }) => void, error: any) => rej({ ok: false, fail: true, message: error && (error.stack ?? error.message) });
@@ -214,12 +214,11 @@ export class Executer {
 
                 if (valLen === 1) return !!inspector[0];
                 else if (valLen > 2) {
-                    const step = 3;
                     let happensCount = 0;
                     let wholeCount = 0;
                     let prevLogicEnd: '' | '&' | '|' = '';
 
-                    for (let i = 0; i < valLen; i += step) {
+                    for (let i = 0; i < valLen; i += 3) {
                         wholeCount += 1;
 
                         const field = this.replaceArgs(inspector[i], args, auth, () => this.getAttribute(source, inspector[i]));
@@ -237,16 +236,16 @@ export class Executer {
                             if (logicEnd && logics.indexOf(logicEnd) > -1)
                                 operator = operator?.slice(0, -1);
 
-                            if (operator === "==") result = field == sign;
-                            else if (operator === "===") result = field === sign;
-                            else if (operator === ">=") result = field >= sign;
-                            else if (operator === "<=") result = field <= sign;
-                            else if (operator === "!=") result = field != sign;
-                            else if (operator === "!==") result = field !== sign;
-                            else if (operator === "<") result = field < sign;
-                            else if (operator === ">") result = field > sign;
-                            else if (operator === "is" || operator === "not") {
-                                const isNot = operator === "not";
+                            if (operator === '==') result = field == sign;
+                            else if (operator === '===') result = field === sign;
+                            else if (operator === '>=') result = field >= sign;
+                            else if (operator === '<=') result = field <= sign;
+                            else if (operator === '!=') result = field != sign;
+                            else if (operator === '!==') result = field !== sign;
+                            else if (operator === '<') result = field < sign;
+                            else if (operator === '>') result = field > sign;
+                            else if (operator === 'is' || operator === 'not') {
+                                const isNot = operator === 'not';
 
                                 result = sign === 'Truthy'
                                     ? (isNot ? !field : !!field)
@@ -468,6 +467,7 @@ export class Executer {
             'method',
             'expecteds',
             'setSystems',
+            'setItemSystems',
         ];
 
         return (rule: ExecutionReal, realRule: ExecutionReal, allArgs: ExecutionArgs, value: unknown, auth?: LocalSokiAuth | null) => {
@@ -486,9 +486,10 @@ export class Executer {
     })();
 
     static prepareRuleForFeedback(rule: ExecutionReal) {
-        const ret = { ...rule };
+        const ret = { ...rule, args: { ...rule.args } };
 
         delete ret.setInEachValueItem;
+        delete ret.args.$$vars;
 
         return ret;
     }
@@ -606,6 +607,13 @@ export class Executer {
                 const firstTrace = exec.track[0];
                 if (smylib.isStr(firstTrace) && !fixes.includes(firstTrace)) fixes.push(firstTrace);
                 const { penultimate, target, lastTrace } = this.checkExpecteds(exec.track, contents, exec.expecteds);
+
+                this.setSystemsValues(
+                    target,
+                    exec.value,
+                    exec.setSystems,
+                    exec.setItemSystems,
+                );
 
                 this.doIt({
                     method: exec.method,
@@ -729,6 +737,7 @@ export class Executer {
                             target,
                             rule.value,
                             rule.setSystems,
+                            rule.setItemSystems,
                         );
 
                         this.doIt({
@@ -770,21 +779,36 @@ export class Executer {
         });
     }
 
-    static setSystemsValues(list: any[], value: any, systems?: ActionBoxSetSystems[]) {
+    static setSystemsValues(list: any[] | undefined, value: any, systems?: ActionBoxSetSystems[], itemSystems?: ActionBoxSetSystems[]) {
         systems?.forEach((mapperName) => {
-            if (smylib.isArr(value)) {
+            const [name, sName] = mapperName.split(':') as [ActionBoxSetSystemsFree, string];
+            const realName = sName || name;
+
+            list?.forEach((li) => {
+                if (li[realName] == null) {
+                    const result = actionBoxSetSystems[name]?.(realName, list);
+                    if (result !== undefined) li[realName] = result;
+                }
+            });
+
+            const result = actionBoxSetSystems[name]?.(realName, list);
+            if (result !== undefined) value[realName] = result;
+        });
+
+        if (smylib.isArr(value)) {
+            itemSystems?.forEach((mapperName) => {
+                const [name, sName] = mapperName.split(':') as [ActionBoxSetSystemsFree, string];
+                const realName = sName || name;
                 value.forEach((value) => {
-                    const result = actionBoxSetSystems[mapperName]?.(list);
+                    const result = actionBoxSetSystems[name]?.(realName, list);
                     if (result !== undefined) {
-                        value[mapperName] = result;
-                        list = list.concat(value);
+                        value[realName] = result;
+                        list = (list || []).concat(value);
                     }
                 });
                 return;
-            }
-            const result = actionBoxSetSystems[mapperName]?.(list);
-            if (result !== undefined) value[mapperName] = result;
-        });
+            });
+        }
     }
 
     static setInEachValueItem(value: unknown, forces?: ExecuterSetInEachValueItem, realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) {
@@ -882,16 +906,15 @@ export class Executer {
                         pushTarget?.push(smylib.clone(value));
                         break;
                     case 'insert_beforei': {
-                        if (!smylib.isArr(target) || !value) break;
+                        if (!smylib.isArr(target) || value == null) break;
                         const { find, beforei } = value;
                         if (!smylib.isArr(find) || !smylib.isNum(beforei)) break;
                         const spreadTarget = [...target];
                         const index = spreadTarget.findIndex((item) => this.isExpected(item, find));
-                        const fakeArr: [] = [];
-                        const [item] = spreadTarget.splice(index, 1, fakeArr);
+                        const [item] = spreadTarget.splice(index, 1, insertBeforeiFakeArr);
                         spreadTarget.splice(beforei, 0, item);
 
-                        penultimate[lastTrace] = spreadTarget.filter(it => it !== fakeArr);
+                        penultimate[lastTrace] = spreadTarget.filter(insertBeforeiItIt);
                         break;
                     }
                     case 'concat':
@@ -947,3 +970,6 @@ export class Executer {
         });
     }
 }
+
+const insertBeforeiFakeArr: [] = [];
+const insertBeforeiItIt = (it: unknown) => it !== insertBeforeiFakeArr;

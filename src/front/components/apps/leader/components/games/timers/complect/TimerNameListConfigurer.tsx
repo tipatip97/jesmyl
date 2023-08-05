@@ -3,9 +3,7 @@ import SendButton from "../../../../../../../complect/SendButton";
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../../../complect/my-lib/MyLib";
-import { leaderExer } from "../../../../Leader.store";
 import useIsRedactArea from "../../../../../../../complect/useIsRedactArea";
-import useAuth from "../../../../../../index/useAuth";
 
 export default function TimerNameListConfigurer({
   timerNames,
@@ -21,14 +19,11 @@ export default function TimerNameListConfigurer({
   onSend?: (names: string[]) => Promise<unknown> | und;
 }) {
   const [names, updateNames] = useState<string[]>(timerNames ?? []);
-  const auth = useAuth();
   const [isSending, setIsSending] = useState(false);
   const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(
     redactable,
     redact
   );
-
-  if (!leaderExer.actionAccessedOrNull("updateGameTimerNames", auth)) return null;
 
   return (
     <div className="margin-gap">

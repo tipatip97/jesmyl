@@ -53,7 +53,7 @@ export default function ScheduleWidget({
                 <EvaButton
                     name="link-2"
                     onClick={() => {
-                        if (schedule)
+                        if (schedule) {
                             navigator.share({
                                 url: crossApplicationLinkCoder.encode({
                                     appName: 'index',
@@ -63,6 +63,7 @@ export default function ScheduleWidget({
                                 title: schedule.title,
                                 text: `Расписание ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`,
                             });
+                        }
                     }}
                 />
                 {editIcon}
@@ -192,7 +193,7 @@ export default function ScheduleWidget({
                                 />
                                 <ScheduleWidgetCustomAttachments scope={selfScope} tatts={schedule.tatts} />
                                 {!schedule.days.length && !schedule.tatts.length && !schedule.types.length &&
-                                    <ScheduleWidgetCopy />}
+                                    <ScheduleWidgetCopy schw={schedule.w} />}
                                 {!schedule.start || <StrongEvaButton
                                     scope={selfScope}
                                     fieldName="days"
@@ -226,6 +227,7 @@ export default function ScheduleWidget({
                                     day={day}
                                     dayi={dayi}
                                     schedule={schedule}
+                                    isCanOpenFull
                                 />
                             })}
                         </>

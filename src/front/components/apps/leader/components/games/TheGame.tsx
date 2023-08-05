@@ -5,7 +5,6 @@ import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottom
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import modalService from "../../../../../complect/modal/Modal.service";
-import { leaderExer } from "../../Leader.store";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import useLeaderNav from "../../useLeaderNav";
 import { LeaderCleans } from "../LeaderCleans";
@@ -23,11 +22,9 @@ import TimerFieldsConfigurer from "./timers/complect/TimerFieldsConfigurer";
 import TimerNameListConfigurer from "./timers/complect/TimerNameListConfigurer";
 import useGameTimer from "./timers/useGameTimer";
 import useCgame from "./useGames";
-import useAuth from "../../../../index/useAuth";
 
 export default function TheGame() {
   const { cgame } = useCgame();
-  const auth = useAuth();
   const { contextMembers } = useLeaderContext();
   const [selectedTimers, updateSelectedTimers] = useState<number[]>([]);
   const [outsiderw, setOutsiderw] = useState(0);
@@ -70,7 +67,6 @@ export default function TheGame() {
         human={human}
         onMoreClick={
           cgame &&
-          leaderExer.actionAccessedOrUnd("addMemberToTeam", auth) &&
           (() => {
             setOutsiderw(human.w);
             openOutsiderMore();
@@ -95,110 +91,103 @@ export default function TheGame() {
           {fullNode}
           {gameMoreNode}
           {outsiderMoreNode}
-          {!leaderExer.actionAccessedOrNull("updateGameTeamList", auth) &&
-            !cgame.teams ? (
-            <div className="error-message">Команды не сформированы</div>
-          ) : (
+          <GameDescription game={cgame} redactable />
+          {cgame.teams && !!membersReadyToPlayNode?.length && (
             <>
-              <GameDescription game={cgame} redactable />
-              {cgame.teams && !!membersReadyToPlayNode?.length && (
-                <>
-                  <h2 className="margin-gap">Не вошедшие игроки:</h2>
-                  {membersReadyToPlayNode}
-                </>
-              )}
-              <>
-                <h2 className="margin-gap">Таймеры:</h2>
-                {cgame.timers?.map((timer, timeri) => {
-                  return (
-                    <LeaderGameTimerFace
-                      key={timeri}
-                      timerw={timer.w}
-                      game={cgame}
-                      selectedPosition={selectedTimers.indexOf(timer.w) + 1}
-                      onSelect={() =>
-                        updateSelectedTimers(
-                          selectedTimers.includes(timer.w)
-                            ? selectedTimers.filter((wid) => wid !== timer.w)
-                            : [...selectedTimers, timer.w]
-                        )
-                      }
-                    />
-                  );
-                })}
-                <LeaderGameTimerFace
-                  timerw={0}
-                  game={cgame}
-                  namePostfix={isTimerStarted() && (
-                    <span className="error-message">(Запущен)</span>
-                  )}
-                />
-                {selectedTimers.length > 1 && (
-                  <div
-                    className="margin-big-gap pointer flex"
-                    onClick={() => openFullContent()}
-                  >
-                    <EvaIcon name="eye-outline" className="margin-gap" />
-                    Просмотреть объединённые результаты
-                  </div>
-                )}
-              </>
-              <TimerNameListConfigurer
-                timerNames={cgame.timerNames}
-                redactable
-                onSend={(list) => LeaderCleans.publicateTimerNameList(cgame.w, list)}
-              />
-              <TimerFieldsConfigurer
-                redactable
-                game={cgame}
-                onSend={(list) => LeaderCleans.publicateGameTimerFields(cgame.w, list)}
-              />
-              <h2 className="margin-big-gap-v margin-gap">
-                <CopyTextButton
-                  text={() => cgame.teams?.map(({ name }) => name).join("\n")}
-                  description={cgame && !cgame.teams ? "Команды не собраны" : "Команды"}
-                  message="Названия команд скопированы"
-                />
-              </h2>
-              {cgame.teams?.map((team, teami) => {
-                return (
-                  <TheGameTeam
-                    key={teami}
-                    team={team}
-                    game={cgame}
-                    redactable
-                  />
-                );
-              })}
-              {!cgame.teams && (
-                <div className={isTeamsLoading ? "disabled" : ""}>
-                  {cgame && !cgame.teams && (
-                    <GameTeamListComputer
-                      onUpdate={(list) => updateTeams(list)}
-                      game={cgame}
-                      noComments
-                    />
-                  )}
-                </div>
-              )}
-              {teams && leaderExer.actionAccessedOrUnd("updateGameTeamList", auth) && (
-                <div className="flex center">
-                  <SendButton
-                    title="Обубликовать команды"
-                    onSuccess={() => {
-                      setIsTeamsLoading(false);
-                      updateTeams(undefined);
-                    }}
-                    onFailure={() => setIsTeamsLoading(false)}
-                    confirm
-                    onSend={() => {
-                      setIsTeamsLoading(true);
-                      return LeaderCleans.publicateTeams(cgame.w, teams);
-                    }}
-                  />
-                </div>
-              )}
+              <h2 className="margin-gap">Не вошедшие игроки:</h2>
+              {membersReadyToPlayNode}
             </>
+          )}
+          <>
+            <h2 className="margin-gap">Таймеры:</h2>
+            {cgame.timers?.map((timer, timeri) => {
+              return (
+                <LeaderGameTimerFace
+                  key={timeri}
+                  timerw={timer.w}
+                  game={cgame}
+                  selectedPosition={selectedTimers.indexOf(timer.w) + 1}
+                  onSelect={() =>
+                    updateSelectedTimers(
+                      selectedTimers.includes(timer.w)
+                        ? selectedTimers.filter((wid) => wid !== timer.w)
+                        : [...selectedTimers, timer.w]
+                    )
+                  }
+                />
+              );
+            })}
+            <LeaderGameTimerFace
+              timerw={0}
+              game={cgame}
+              namePostfix={isTimerStarted() && (
+                <span className="error-message">(Запущен)</span>
+              )}
+            />
+            {selectedTimers.length > 1 && (
+              <div
+                className="margin-big-gap pointer flex"
+                onClick={() => openFullContent()}
+              >
+                <EvaIcon name="eye-outline" className="margin-gap" />
+                Просмотреть объединённые результаты
+              </div>
+            )}
+          </>
+          <TimerNameListConfigurer
+            timerNames={cgame.timerNames}
+            redactable
+            onSend={(list) => LeaderCleans.publicateTimerNameList(cgame.w, list)}
+          />
+          <TimerFieldsConfigurer
+            redactable
+            game={cgame}
+            onSend={(list) => LeaderCleans.publicateGameTimerFields(cgame.w, list)}
+          />
+          <h2 className="margin-big-gap-v margin-gap">
+            <CopyTextButton
+              text={() => cgame.teams?.map(({ name }) => name).join("\n")}
+              description={cgame && !cgame.teams ? "Команды не собраны" : "Команды"}
+              message="Названия команд скопированы"
+            />
+          </h2>
+          {cgame.teams?.map((team, teami) => {
+            return (
+              <TheGameTeam
+                key={teami}
+                team={team}
+                game={cgame}
+                redactable
+              />
+            );
+          })}
+          {!cgame.teams && (
+            <div className={isTeamsLoading ? "disabled" : ""}>
+              {cgame && !cgame.teams && (
+                <GameTeamListComputer
+                  onUpdate={(list) => updateTeams(list)}
+                  game={cgame}
+                  noComments
+                />
+              )}
+            </div>
+          )}
+          {teams && (
+            <div className="flex center">
+              <SendButton
+                title="Обубликовать команды"
+                onSuccess={() => {
+                  setIsTeamsLoading(false);
+                  updateTeams(undefined);
+                }}
+                onFailure={() => setIsTeamsLoading(false)}
+                confirm
+                onSend={() => {
+                  setIsTeamsLoading(true);
+                  return LeaderCleans.publicateTeams(cgame.w, teams);
+                }}
+              />
+            </div>
           )}
         </>
       }

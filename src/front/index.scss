@@ -143,6 +143,7 @@ input[type="button"] {
 }
 
 .ellipsis {
+  display: inline-block;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -183,6 +184,18 @@ input[type="button"] {
 
   &y-hidden {
     overflow-y: hidden;
+  }
+
+  &visible {
+    overflow: visible;
+  }
+
+  &x-visible {
+    overflow-x: visible;
+  }
+
+  &y-visible {
+    overflow-y: visible;
   }
 
   &auto {
@@ -627,6 +640,7 @@ input::-webkit-inner-spin-button {
 }
 
 input[type=number] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 

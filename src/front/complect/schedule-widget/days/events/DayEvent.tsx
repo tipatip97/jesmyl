@@ -97,7 +97,7 @@ export default function ScheduleWidgetDayEvent(props: {
                             : undefined}
                     >{timeMark}</span>
                     {!isExpandEvent && !!props.event.secret && <EvaIcon
-                        name="gift-outline"
+                        name="eye-off-outline"
                         className="color--ko"
                     />}
                     <ScheduleWidgetTopicTitle
@@ -142,7 +142,7 @@ export default function ScheduleWidgetDayEvent(props: {
                         />
                     </>
                     : !!props.event.secret && <EvaButton
-                        name="gift-outline"
+                        name="eye-off-outline"
                         className="color--ko margin-gap-v"
                         postfix="Это секретное событие"
                     />}
@@ -171,6 +171,7 @@ export default function ScheduleWidgetDayEvent(props: {
                             typeBox={box}
                             event={props.event}
                             day={props.day}
+                            dayi={props.dayi}
                             schedule={rights.schedule}
                             isPast={isPastEvent || props.isPastDay}
                         />

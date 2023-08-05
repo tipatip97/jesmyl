@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import EvaButton from "./eva-icon/EvaButton";
 import useToast from "./modal/useToast";
+import useModal from "./modal/useModal";
 
 export default function CopyTextButton({
     text,
@@ -15,18 +16,30 @@ export default function CopyTextButton({
     className?: string,
     message?: ReactNode,
 }) {
-    const [modalNode, toast] = useToast();
+    const [toastNode, toast] = useToast();
+    const [modalNode, modal] = useModal();
 
     return <>
         {modalNode}
+        {toastNode}
         <span
             className={(className || '') + ' flex flex-gap pointer'}
             onClick={event => {
                 event.stopPropagation();
                 const textToWrite = typeof text === 'string' ? text : text();
-                if (textToWrite == null) return;
-                navigator.clipboard.writeText(textToWrite);
-                toast(message ?? 'Текст скопирован');
+
+                try {
+                    if (textToWrite == null) return;
+                    navigator.clipboard.writeText(textToWrite);
+                    toast(message ?? 'Текст скопирован');
+                } catch (e) {
+                    modal(({ header, body }) => {
+                        return <>
+                            {header(<>Не удалось скопировать текст:</>)}
+                            {body(<div className="user-select">{textToWrite}</div>)}
+                        </>;
+                    });
+                }
             }}>
             {description}
             <EvaButton

@@ -31,7 +31,7 @@ export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps
         isCanRedact: false,
     }}>
         <div className="for-print canvas" ref={page}>
-            <ScheduleWidgetDay {...props} />
+            <ScheduleWidgetDay {...props} isPrint />
         </div>
     </ScheduleWidgetContextWrapper>;
 }

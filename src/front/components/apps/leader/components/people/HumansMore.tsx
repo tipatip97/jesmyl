@@ -4,8 +4,7 @@ import { BottomPopupContenter } from "../../../../../complect/absolute-popup/use
 import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
-import useAuth from "../../../../index/useAuth";
-import di, { leaderExer } from "../../Leader.store";
+import di from "../../Leader.store";
 import HumanMaster from "./HumanMaster";
 import { humanFieldTranslations } from "./People.model";
 
@@ -15,7 +14,6 @@ export const HumansMoreContenter: BottomPopupContenter<{ moreNode?: ReactNode, f
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
   const [humanMasterNode, openHumanMaster] = useFullContent((close) => <HumanMaster pushInCcontextAs={fieldLabel} close={close} />);
-  const auth = useAuth();
 
   return [
     <>
@@ -24,7 +22,6 @@ export const HumansMoreContenter: BottomPopupContenter<{ moreNode?: ReactNode, f
     <>{
       prepare({
         items: [
-          leaderExer.actionAccessedOrNull("addContext", auth) &&
           {
             title: 'Добавить нового участника',
             icon: "person-add-outline",

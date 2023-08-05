@@ -155,6 +155,7 @@ const config: FilerAppConfig = {
                 const user = bag.users.find(user => auth.login === user.login);
                 if (user === undefined) {
                     if (rule.action === 'joinUserByLink') return isShareData ? whenRejButTs : null;
+                    if (rule.args?.$$vars?.accessActionWithoutUser === true) return null;
                     if (scheduleWidgetRegTypeRights.checkIsHasRights(bag.schedule.ctrl.type, ScheduleWidgetRegType.Public))
                         return null;
                     return whenRejButTs;
@@ -340,7 +341,7 @@ const config: FilerAppConfig = {
                     ...schedules,
                     list,
                 };
-            }
+            },
         },
         apps: {
             prepareContent: (apps: Application[], auth) => {
@@ -376,6 +377,15 @@ const config: FilerAppConfig = {
                     scopeNode: 'schw',
                     args: {
                         schw: '#Number',
+                    },
+                    '<copy>': {
+                        scopeNode: 'copy',
+                        C: {
+                            method: 'set_all',
+                            args: {
+                                value: '#Dict',
+                            },
+                        },
                     },
                     '/start': {
                         U: {
@@ -426,6 +436,22 @@ const config: FilerAppConfig = {
                                 RRej: ScheduleWidgetUserRoleRight.Read,
                                 setSystems: ['mi'],
                                 value: { fio: '{*fio}', login: '{*login}' },
+                            },
+                            '<add me by link>': {
+                                scopeNode: 'addMeByLink',
+                                C: {
+                                    setSystems: ['mi'],
+                                    args: {
+                                        $$vars: {
+                                            accessActionWithoutUser: true,
+                                        },
+                                    },
+                                    value: {
+                                        fio: '{*fio}',
+                                        login: '{*login}',
+                                        R: scheduleWidgetUserRights.collectRights(ScheduleWidgetUserRoleRight.Read),
+                                    },
+                                },
                             },
                             '<add user>': {
                                 scopeNode: 'newUser',
@@ -743,15 +769,31 @@ const config: FilerAppConfig = {
                                             D: {
                                                 method: 'delete',
                                             },
+                                            '/{key}': {
+                                                scopeNode: 'listKey',
+                                                C: {},
+                                                D: {
+                                                    method: 'remove',
+                                                },
+                                                '<move>': {
+                                                    scopeNode: 'move',
+                                                    U: {
+                                                        method: 'insert_beforei',
+                                                    },
+                                                },
+                                                '/{selector}': {
+                                                    U: {},
+                                                },
+                                            },
                                             '/list': {
                                                 scopeNode: 'checkList',
                                                 C: {
                                                     value: [0, ''],
                                                 },
-                                                '/{itemi}': {
-                                                    scopeNode: 'itemi',
+                                                '/[2 === {itemMi}]': {
+                                                    scopeNode: 'itemMi',
                                                     args: {
-                                                        itemi: '#Number',
+                                                        itemMi: '#Number',
                                                     },
                                                     '/0': {
                                                         scopeNode: 'check',
@@ -774,23 +816,37 @@ const config: FilerAppConfig = {
                                             '/values': {
                                                 scopeNode: 'keyValue',
                                                 C: {
+                                                    setSystems: ['mi:2'],
                                                     value: ['{key}', '{value}'],
                                                     args: {
                                                         key: ['#String', '#Number', '#Boolean'],
                                                     },
                                                 },
-                                                '/{itemi}': {
-                                                    scopeNode: 'itemi',
+                                                '<move>': {
+                                                    scopeNode: 'move',
+                                                    U: {
+                                                        method: 'insert_beforei',
+                                                        value: {
+                                                            find: [2, '===', '{key}'],
+                                                            beforei: '{value}',
+                                                        },
+                                                    },
+                                                },
+                                                D: {
+                                                    value: [2, '===', '{key}'],
+                                                },
+                                                '/[2 === {itemMi}]': {
+                                                    scopeNode: 'itemMi',
                                                     args: {
-                                                        itemi: '#Number',
+                                                        itemMi: '#Number',
                                                     },
                                                     '/0': {
                                                         scopeNode: 'key',
                                                         U: {
                                                             args: {
                                                                 value: ['#String', '#Number', '#Boolean'],
-                                                            }
-                                                        }
+                                                            },
+                                                        },
                                                     },
                                                     '/1': {
                                                         scopeNode: 'value',

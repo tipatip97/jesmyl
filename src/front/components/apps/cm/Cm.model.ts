@@ -10,7 +10,6 @@ import { CmEditorStoraged } from "./editor/CmEditor.model";
 import { IExportableMeetings } from "./lists/meetings/Meetings.model";
 
 export interface CmState extends CmStoraged {
-    rollMode: CmRollMode,
     translationUpdates: number,
     translationBlock: number,
     isTranslationBlockVisible: boolean,

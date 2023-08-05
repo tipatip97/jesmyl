@@ -9,6 +9,7 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
     typeBox: ScheduleWidgetDayListItemTypeBox,
     event: IScheduleWidgetDayEvent,
     day: IScheduleWidgetDay,
+    dayi: number,
     isPast: boolean,
     schedule: IScheduleWidget,
 }>) {
@@ -34,6 +35,7 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
                 att={att}
                 attKey={attKey}
                 day={props.day}
+                dayi={props.dayi}
                 schedule={props.schedule}
                 event={props.event}
                 isPast={props.isPast}

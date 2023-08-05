@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useBottomPopup } from "../../../../../../complect/absolute-popup/useBottomPopup";
-import useAuth from "../../../../../index/useAuth";
 import { TeamGameImportable } from "../../../Leader.model";
-import { leaderExer } from "../../../Leader.store";
 import { LeaderCleans } from "../../LeaderCleans";
 import LeaderCommentBlock from "../../comments/LeaderCommentBlock";
 import useLeaderContext from "../../contexts/useContexts";
@@ -25,7 +23,6 @@ export default function TheGameTeam({
 }) {
   const [isHumansShow, setIsHumansShow] = useState(!(redactable ?? false));
   const [memberw, setMemberw] = useState(0);
-  const auth = useAuth();
   const { contextMembers } = useLeaderContext();
   const teamMembers = LeaderCleans.extractWidables(contextMembers, team.members);
   const [memberMoreNode, openMemberMore] = useBottomPopup((_, prepare) => {
@@ -51,13 +48,10 @@ export default function TheGameTeam({
             <HumanFace
               key={humani}
               human={member}
-              onMoreClick={
-                leaderExer.actionAccessedOrUnd("removeMemberFromTeam", auth) &&
-                (() => {
-                  setMemberw(member.w);
-                  openMemberMore();
-                })
-              }
+              onMoreClick={() => {
+                setMemberw(member.w);
+                openMemberMore();
+              }}
             />
           );
         })}

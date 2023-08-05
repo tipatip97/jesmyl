@@ -1,11 +1,10 @@
-import { HTMLAttributes, PropsWithChildren } from "react";
+import { HTMLAttributes, PropsWithChildren, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullScreen from "../../../../complect/useFullscreen";
 import { RootState } from "../../../../shared/store";
 import { CmRollMode } from "../Cm.model";
 import di from "../Cm.store";
-import cmStorage from "../cmStorage";
 import useCmNav from "./useCmNav";
 
 const speedRollKfSelector = (state: RootState) => state.cm.speedRollKf;
@@ -16,26 +15,26 @@ export default function RollControled(
   const { toggleRoll, rollMode } = useRoll();
   const [isFullscreen] = useFullScreen();
   speedRollKf = useSelector(speedRollKfSelector);
+  const dispatch = useDispatch();
 
   return (
     <div
       {...props}
-      onClick={() => toggleRoll()}
+      onClick={toggleRoll}
       ref={(element) => element && (container = element.parentElement)}
-      className={`roll-controled-container full-width full-height ${
-        isFullscreen ? "fullscreen" : ""
-      }`}
+      className={'roll-controled-container full-width full-height'
+        + (isFullscreen ? " fullscreen" : "")}
     >
       <div
-        className={`roll-controls flex column center ${
-          rollMode === "play" ? "open" : ""
-        }`}
+        className={'roll-controls flex column center'
+          + (rollMode === "play" ? " open" : "")}
       >
         <EvaIcon
           name="minus"
           onClick={(event) => {
             event.stopPropagation();
             updateSpeedRollKf(-1);
+            dispatch(di.speedRollKf(speedRollKf));
           }}
         />
         <div
@@ -43,6 +42,7 @@ export default function RollControled(
             if (element) {
               speedScreen = element;
               updateSpeedRollKf(0);
+              dispatch(di.speedRollKf(speedRollKf));
             }
           }}
         />
@@ -51,6 +51,7 @@ export default function RollControled(
           onClick={(event) => {
             event.stopPropagation();
             updateSpeedRollKf(1);
+            dispatch(di.speedRollKf(speedRollKf));
           }}
         />
       </div>
@@ -69,18 +70,17 @@ let interval: number;
 let rollMode: CmRollMode = null;
 
 const rollModeMarksSelector = (state: RootState) => state.cm.rollModeMarks;
-const rollModeSelector = (state: RootState) => state.cm.rollMode;
 
 export function useRoll() {
-  const dispatch = useDispatch();
   const { registerBackAction } = useCmNav();
+  const [rollModeState, setRollMode] = useState<CmRollMode>(null);
 
   const ret = {
     rollModeMarks: useSelector(rollModeMarksSelector),
-    rollMode: useSelector(rollModeSelector),
+    rollMode: rollModeState,
     switchRollMode: (topRollMode: CmRollMode) => {
       rollMode = topRollMode;
-      dispatch(di.rollMode(topRollMode));
+      setRollMode(topRollMode);
     },
     speedRollKf,
     toggleRoll: () => {
@@ -109,7 +109,6 @@ const updateSpeedRollKf = (delta: 1 | -1 | 0) => {
     return;
   speedRollKf += delta;
   setRollInterval();
-  cmStorage.set("speedRollKf", speedRollKf);
   speedScreen.innerText = (speedRollKf / 10).toFixed(1);
 };
 

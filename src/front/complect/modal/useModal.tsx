@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, TouchEventHandler, useCallback, useEffect, useState } from "react";
 import { ThrowEvent } from "../eventer/ThrowEvent";
 import Portal from "../popups/[complect]/Portal";
 
@@ -9,6 +9,8 @@ interface UserModalConfig {
     mood?: ModalConfigMood,
     onOpenSwitch?: () => void,
 }
+
+const stoppedEvent: TouchEventHandler<HTMLDivElement> = (event) => event.stopPropagation();
 
 export interface ScreenModalConfig extends UserModalConfig {
 }
@@ -52,6 +54,7 @@ export default function useModal(
     return [
         (isForceOpen || config.isOpen) && <Portal>
             <div
+                onTouchStart={stoppedEvent}
                 className={'modal-application-screen type_screen' + (isForceOpen === false ? ' force-hidden' : '')}
                 onClick={(event) => {
                     event.stopPropagation();

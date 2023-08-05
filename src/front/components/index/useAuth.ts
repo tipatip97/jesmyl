@@ -8,5 +8,5 @@ const authSelector = (state: RootState) => state.index.auth;
 
 export const useSelectAuth = () => useSelector(authSelector);
 
-const useAuth = () => useSelectAuth()
+const useAuth = () => useSelectAuth();
 export default useAuth; 

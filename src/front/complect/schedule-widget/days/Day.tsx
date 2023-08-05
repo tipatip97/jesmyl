@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
 import { renderComponentInNewWindow } from "../../../..";
 import EvaButton from "../../eva-icon/EvaButton";
+import useFullContent from "../../fullscreen-content/useFullContent";
 import mylib, { MyLib } from "../../my-lib/MyLib";
 import StrongControlDateTimeExtracter from "../../strong-control/StrongDateTimeExtracter";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../../useIsRedactArea";
 import { IScheduleWidget, IScheduleWidgetDay } from "../ScheduleWidget.model";
+import ScheduleAlarmDay from "../alarm/AlarmDay";
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import "./Day.scss";
 import ScheduleWidgetPrintableDay from "./PrintableDay";
@@ -18,12 +20,18 @@ export interface ScheduleWidgetDayProps {
     dayi: number,
     schedule: IScheduleWidget,
     scope: string,
+    isPrint?: boolean,
+    isCanOpenFull?: boolean,
 }
 
 const isNIs = (is: unknown) => !is;
 
+const defaultPrint = {
+    title: true,
+};
+
 export default function ScheduleWidgetDay({
-    day, dayi, schedule, scope,
+    day, dayi, schedule, scope, isPrint, isCanOpenFull
 }: ScheduleWidgetDayProps) {
     const dayStartMs = (schedule.start + mylib.howMs.inDay * dayi) - (schedule.withTech ? mylib.howMs.inDay : 0);
     const date = new Date(dayStartMs);
@@ -34,6 +42,7 @@ export default function ScheduleWidgetDay({
     const [isShowDay, setIsShowDay] = useState(!isPastDay);
     const rights = useScheduleWidgetRightsContext();
     const { editIcon, isRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
+    const [print, setPrint] = useState(defaultPrint);
 
     const dayRating = useMemo(() => {
         let rating = 0;
@@ -47,14 +56,33 @@ export default function ScheduleWidgetDay({
         times.push((item.tm || schedule.types[item.type]?.tm || 0) + (times[times.length - 1] || 0));
     });
 
-    return <div className={'ScheduleWidgetDay relative' + (isPastDay ? ' past' : '')}>
-        <div className="day-title flex flex-gap padding-gap-v sticky pos-top">
+    const [fullDayNode, openFullDay] = useFullContent(() => <ScheduleAlarmDay
+        day={day}
+        dayi={dayi}
+        schedule={schedule}
+    />);
+
+    return <div className={'ScheduleWidgetDay relative' + (isPastDay ? ' past' : '') + (isPrint ? ' print' : '')}>
+        {fullDayNode}
+        <div
+            className={'day-title flex flex-gap padding-gap-v sticky pos-top' + (print.title ? '' : ' not-printable')}
+            onClick={isCanOpenFull ? () => openFullDay() : undefined}
+        >
             {title}
             {schedule.withTech
                 ? dayi === 0
                     ? <span className="color--ko"> подготовка</span>
                     : <>, {dayi} день</>
                 : <>, {dayi + 1} день</>}
+            {isPrint &&
+                <EvaButton
+                    name={print.title ? 'eye-outline' : 'eye-off-outline'}
+                    className="not-printable"
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        setPrint(prev => ({ ...prev, title: !prev.title }));
+                    }}
+                />}
         </div>
         <div className="edit-day-panel absolute pos-top pos-right margin-gap-t">
             {isPastDay

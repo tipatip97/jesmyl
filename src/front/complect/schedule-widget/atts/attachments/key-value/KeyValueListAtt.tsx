@@ -120,9 +120,9 @@ export default function ScheduleKeyValueListAtt({
 
     return <>{
         <div>
-            {value.values?.map(([key, value], itemi) => {
+            {value.values?.map(([key, value, itemMi], itemi, itema) => {
                 if (!isRedact && !value) return null;
-                const itemScope = takeStrongScopeMaker(attScope, ' itemi/', itemi);
+                const itemScope = takeStrongScopeMaker(attScope, ' itemMi/', itemMi);
                 const role = typeof key === 'number' && checkIsTaleIdUnit(key, CustomAttUseTaleId.Roles)
                     ? extractScheduleWidgetRole(rights.schedule, key)
                     : undefined;
@@ -138,22 +138,45 @@ export default function ScheduleKeyValueListAtt({
                     }
                 }
 
-                return <div key={itemi} className="margin-big-gap-b">
-                    {typeof key === 'number'
-                        ? checkIsTaleIdUnit(key, CustomAttUseTaleId.Lists)
-                            ? <ScheduleWidgetListUnitFace unitMi={Math.trunc(key)} />
-                            : <ScheduleWidgetRoleFace role={role} schedule={rights.schedule} />
-                        : typeof key === 'boolean'
-                            ? <StrongEvaButton
-                                scope={itemScope}
-                                fieldName="key"
-                                fieldValue={!key}
-                                className={'self-start relative z-index:15 color--3 ' + (key ? 'fade-05' : '')}
-                                cud="U"
-                                name={key ? 'checkmark-square-outline' : 'square-outline'}
-                                isCanSend={!!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U)}
-                            />
-                            : <div className="color--3">{key}</div>}
+                return <div key={itemMi} className="margin-big-gap-b">
+                    <div className="flex flex-gap between margin-gap-b">
+                        {typeof key === 'number'
+                            ? checkIsTaleIdUnit(key, CustomAttUseTaleId.Lists)
+                                ? <ScheduleWidgetListUnitFace unitMi={Math.trunc(key)} />
+                                : <ScheduleWidgetRoleFace role={role} schedule={rights.schedule} />
+                            : typeof key === 'boolean'
+                                ? <StrongEvaButton
+                                    scope={itemScope}
+                                    fieldName="key"
+                                    fieldValue={!key}
+                                    className={'self-start relative z-index:15 color--3 ' + (key ? 'fade-05' : '')}
+                                    cud="U"
+                                    name={key ? 'checkmark-square-outline' : 'square-outline'}
+                                    isCanSend={!!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U)}
+                                />
+                                : <div className="color--3">{key}</div>}
+                        {isRedact && !!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U) &&
+                            <div className="flex flex-gap margin-giant-gap-r">
+                                {itema.length > 1 && <StrongEvaButton
+                                    scope={attScope}
+                                    fieldName="move"
+                                    fieldValue={itemi === 0 ? 2 : itemi - 1}
+                                    fieldKey={itemMi}
+                                    className="relative z-index:15 color--7"
+                                    cud="U"
+                                    name={itemi > 0 ? 'corner-right-up-outline' : 'corner-left-down-outline'}
+                                />}
+                                <StrongEvaButton
+                                    scope={attScope}
+                                    fieldName=""
+                                    fieldKey={itemMi}
+                                    className="relative z-index:15 color--ko"
+                                    cud="D"
+                                    confirm="Удалить пункт?"
+                                    name="trash-2-outline"
+                                />
+                            </div>}
+                    </div>
                     {(isRedact || value !== '+')
                         && <StrongEditableField
                             scope={itemScope}

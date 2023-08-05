@@ -33,7 +33,7 @@ export default function TheComposition() {
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
     return () => clearTimeout(add);
-  }, [ccom]);
+  }, [addLaterComw, ccom]);
 
   const comListElem = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -57,6 +57,7 @@ export default function TheComposition() {
       onMoreClick={() => openAbsoluteBottomPopup(<ComTools />, false)}
       contentClass="composition-content"
       contentRef={comListElem}
+      withoutBackSwipe
       head={<div className="com-actions-pannel">
         {topTools.map(({ icon, onClick, tool }) => (
           <EvaIcon

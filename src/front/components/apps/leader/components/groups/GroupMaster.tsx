@@ -1,12 +1,10 @@
 import { useState } from "react";
 import SendButton from "../../../../../complect/SendButton";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import { leaderExer } from "../../Leader.store";
 import { LeaderCleans } from "../LeaderCleans";
 import { useLeaderCcontext } from "../contexts/useContexts";
 import SelectHumans from "../people/SelectHumans";
 import { LeaderGroupImportable } from "./Groups.model";
-import useAuth from "../../../../index/useAuth";
 
 export default function LeaderGroupMaster({
   group,
@@ -21,7 +19,6 @@ export default function LeaderGroupMaster({
   const [delMentors, updateDelMentors] = useState<number[]>([]);
   const [addMembers, updateAddMembers] = useState<number[]>([]);
   const [delMembers, updateDelMembers] = useState<number[]>([]);
-  const auth = useAuth();
 
   const ccontext = useLeaderCcontext();
 
@@ -51,23 +48,20 @@ export default function LeaderGroupMaster({
           updateDelMembers(delList);
         }}
       />
-
-      {leaderExer.actionAccessedOrNull("ruleIsCanRedactGroupMentorList", auth) && (
-        <SelectHumans
-          chooseTitle={`Выбор из участников ${ccontext?.name || "контекста"}`}
-          chosenPlaceholder="Поиск по лидерам группы"
-          chosenTitle="Список лидеров группы"
-          excludedTitle="Участник"
-          redact
-          fixedList={group?.mentors}
-          wholeList={ccontext?.mentors}
-          excludes={ccontext?.members}
-          onListsUpdate={(addList, delList) => {
-            updateAddMentors(addList);
-            updateDelMentors(delList);
-          }}
-        />
-      )}
+      <SelectHumans
+        chooseTitle={`Выбор из участников ${ccontext?.name || "контекста"}`}
+        chosenPlaceholder="Поиск по лидерам группы"
+        chosenTitle="Список лидеров группы"
+        excludedTitle="Участник"
+        redact
+        fixedList={group?.mentors}
+        wholeList={ccontext?.mentors}
+        excludes={ccontext?.members}
+        onListsUpdate={(addList, delList) => {
+          updateAddMentors(addList);
+          updateDelMentors(delList);
+        }}
+      />
       {(!group ||
         !!LeaderCleans.getChangesStack(group.w, group.name, {
           name,

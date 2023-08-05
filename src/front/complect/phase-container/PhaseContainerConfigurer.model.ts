@@ -13,5 +13,6 @@ export interface PhaseContainerProps {
     head?: ReactNode,
     content: ReactNode,
     contentRef?: React.LegacyRef<HTMLDivElement>,
-    onMoreClick?: (() => void) ,
+    onMoreClick?: (() => void),
+    withoutBackSwipe?: boolean,
 }
