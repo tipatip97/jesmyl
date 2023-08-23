@@ -442,5 +442,47 @@
     "fio": "sab",
     "login": "2ef4d613a5cc85d9e2217a295b003815",
     "passw": "dfba83d2e5dfa4c67c054d08db3b435b"
+  },
+  {
+    "level": 3,
+    "fio": "Mary",
+    "login": "e39e74fb4e80ba656f773669ed50315a",
+    "passw": "21e1c5de6397c9d2b6820082d59067d2"
+  },
+  {
+    "level": 3,
+    "fio": "Татьяна",
+    "login": "37339a5698d5e3ea0b50dd53c319f8b4",
+    "passw": "5a80887c45e19fe094ab737ccba3be40"
+  },
+  {
+    "level": 3,
+    "fio": "Валерия",
+    "login": "feb694cfe2161229c5a9f97e07843884",
+    "passw": "9358783ae4823a518c5950fe6c5107be"
+  },
+  {
+    "level": 3,
+    "fio": "Sevilia",
+    "login": "09fb497e00e7c313a1eef2ee20fc15b8",
+    "passw": "b398537941f1a8a14cc8f9241fb95633"
+  },
+  {
+    "level": 3,
+    "fio": "alexandra.ye",
+    "login": "3aa4a78aa4c4d5028ceaf9a4ed8ae6ad",
+    "passw": "6758bd0b89cb18535892e61812ee4752"
+  },
+  {
+    "level": 3,
+    "fio": "Den-ver",
+    "login": "1434364de60e2dbf3d1a70805e6b9b3b",
+    "passw": "7a6eec635eb2bb2265ceafd459c1d1ef"
+  },
+  {
+    "level": 3,
+    "fio": "Natalie GL",
+    "login": "2a271be0a0decb71ded17e8612ce91b7",
+    "passw": "f0ef20605e2ca7b0e695def65404e0cc"
   }
 ]
