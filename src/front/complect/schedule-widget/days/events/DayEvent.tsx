@@ -51,7 +51,7 @@ export default function ScheduleWidgetDayEvent(props: {
 
     const [, isExpand, switchIsExpand] = useIsRememberExpand(selfScope, null, null, isPastEvent || props.isPastDay || !rights.isCanReadTitles);
 
-    const isCanExpandEvent = rights.isCanReadTitles && !props.redact;
+    const isCanExpandEvent = rights.myUser && rights.isCanReadTitles && !props.redact;
     const isExpandEvent = (isSelfRedact || isExpand) && isCanExpandEvent;
 
     if (!box) return <>Неизвестный шаблон события</>;
@@ -81,10 +81,12 @@ export default function ScheduleWidgetDayEvent(props: {
         >
             <div
                 className={'event-header flex flex-gap between' + (props.redact || !isCanExpandEvent ? '' : ' pointer')}
-                onClick={() => {
-                    !props.redact && switchIsExpand();
-                    setIsSelfRedact(false);
-                }}
+                onClick={isCanExpandEvent
+                    ? () => {
+                        !props.redact && switchIsExpand();
+                        setIsSelfRedact(false);
+                    }
+                    : undefined}
             >
                 <div className="left-part flex flex-gap">
                     <span

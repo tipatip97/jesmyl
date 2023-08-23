@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import useAuth from "../../components/index/useAuth";
-import EvaButton from "../eva-icon/EvaButton";
+import ShareEvaButton from "../ShareEvaButton";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { useIsRememberExpand } from "../expand/useIsRememberExpand";
 import mylib from "../my-lib/MyLib";
@@ -50,22 +50,15 @@ export default function ScheduleWidget({
         />,
         (isExpand) => isExpand
             ? <span className="flex flex-gap">
-                <EvaButton
-                    name="link-2"
-                    onClick={() => {
-                        if (schedule) {
-                            navigator.share({
-                                url: crossApplicationLinkCoder.encode({
-                                    appName: 'index',
-                                    key: 'schw',
-                                    value: schedule.w,
-                                }),
-                                title: schedule.title,
-                                text: `Расписание ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`,
-                            });
-                        }
-                    }}
-                />
+                {schedule && <ShareEvaButton
+                    url={crossApplicationLinkCoder.encode({
+                        appName: 'index',
+                        key: 'schw',
+                        value: schedule.w,
+                    })}
+                    title={schedule.title}
+                    text={`Расписание ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`}
+                />}
                 {editIcon}
             </span>
             : altActionsNode
@@ -176,7 +169,7 @@ export default function ScheduleWidget({
                                 title="Описание"
                             />}
                             {rights.isCanReadTitles && <>
-                                <ScheduleWidgetControl scope={selfScope} />
+                                {rights.myUser && <ScheduleWidgetControl scope={selfScope} />}
                                 <ScheduleWidgetLists
                                     scope={selfScope}
                                     scheduleScope={selfScope}
@@ -218,6 +211,12 @@ export default function ScheduleWidget({
                                     }}
                                 />}
                             </>}
+                            {rights.myUser === undefined && <StrongButton
+                                scope={takeScheduleStrongScopeMaker(schedule.w)}
+                                fieldName="addMeByLink"
+                                title="Хочу комментить события"
+                                className="margin-giant-gap-t"
+                            />}
                             {schedule.days.map((day, dayi) => {
                                 if (dayi === 0 && schedule.withTech && !rights.isCanReadSpecials) return null;
 

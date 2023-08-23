@@ -41,7 +41,7 @@ export function ScheduleWidgetDayEventEventActions({
             name="at"
             postfix="Редактировать шаблон события"
             className="flex-max margin-gap-v"
-            onClick={() => screen()}
+            onClick={screen}
         />
         <EvaButton
             name="crop"

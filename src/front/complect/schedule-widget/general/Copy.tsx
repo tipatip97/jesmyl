@@ -1,12 +1,16 @@
 import { useState } from "react";
+import { CustomAttUseTaleId } from "../../../../back/apps/index/rights";
 import useAuth from "../../../components/index/useAuth";
 import EvaButton from "../../eva-icon/EvaButton";
 import useModal from "../../modal/useModal";
 import mylib, { MyLib } from "../../my-lib/MyLib";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import { IScheduleWidget, ScheduleWidgetDayEventAttValues } from "../ScheduleWidget.model";
+import ScheduleWidgetCleans from "../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../complect/TopicTitle";
 import { takeScheduleStrongScopeMaker, useSchedules } from "../useScheduleWidget";
+
+const itNNull = (it: unknown) => it !== null;
 
 export function ScheduleWidgetCopy(props: { schw: number }) {
     const [schw, setSchw] = useState(0);
@@ -80,8 +84,8 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
                                                                     ...attValue,
                                                                     list: attValue.list.map(att => {
                                                                         return att[0] === 1
-                                                                        ? [0, ...att.slice(1)]
-                                                                        : att;
+                                                                            ? [0, ...att.slice(1)]
+                                                                            : att;
                                                                     })
                                                                 };
                                                             else
@@ -90,10 +94,12 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
                                                             atts[attKey] = {
                                                                 ...attValue,
                                                                 values: attValue.values.map((val) => {
-                                                                    return val[0] === true
-                                                                        ? [false, ...val.slice(1)]
-                                                                        : val;
-                                                                })
+                                                                    return typeof val[1] === 'number' && ScheduleWidgetCleans.checkIsTaleIdUnit(val[1], CustomAttUseTaleId.Users)
+                                                                        ? null
+                                                                        : val[0] === true
+                                                                            ? [false, ...val.slice(1)]
+                                                                            : val;
+                                                                }).filter(itNNull),
                                                             };
                                                         }
                                                     });
@@ -124,7 +130,7 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
         <EvaButton
             name="copy"
             postfix="Скопировать расписание"
-            onClick={() => openModal()}
+            onClick={openModal}
         />
     </>;
 }

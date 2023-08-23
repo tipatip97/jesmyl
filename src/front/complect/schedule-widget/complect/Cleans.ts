@@ -1,9 +1,12 @@
+import { CustomAttUseTaleId } from "../../../../back/apps/index/rights";
 import mylib from "../../my-lib/MyLib";
 import { IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 
 export default class ScheduleWidgetCleans {
 
     static wupsReg = /(\d+)(\.(\d+))?/;
+
+    static checkIsTaleIdUnit = (num: number, taleId: CustomAttUseTaleId) => Math.trunc(num) + taleId === num;
 
     static computeDayWakeUpTime = <ReturnAs extends 'number' | 'string'>(wup: number, returnAs: ReturnAs): ReturnAs extends 'number' ? number : string => {
         const [, beginHours, , beginMinutes] = ('' + wup).match(this.wupsReg) || [];

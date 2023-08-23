@@ -33,7 +33,7 @@ export default function TheComposition() {
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
     return () => clearTimeout(add);
-  }, [addLaterComw, ccom]);
+  }, [ccom]);
 
   const comListElem = useRef<HTMLDivElement>(null);
   useEffect(() => {

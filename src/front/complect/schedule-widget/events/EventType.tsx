@@ -58,7 +58,7 @@ export default function ScheduleWidgetEventType(props: {
         {modalNode}
         {props.isRedact
             || <div className="flex flex-end full-width absolute pos-top pos-right margin-sm-gap z-index:5">
-                <EvaButton name="edit-outline" onClick={() => screen()} />
+                <EvaButton name="edit-outline" onClick={screen} />
             </div>}
         <StrongDiv
             scope={props.selectScope}

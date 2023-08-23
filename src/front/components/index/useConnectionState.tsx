@@ -26,6 +26,10 @@ export default function useConnectionState() {
     return isOnline
         ? isConnected
             ? null
-            : <EvaIcon name="loader-outline" className="rotate" />
+            : <EvaIcon
+                name="loader-outline"
+                className="rotate"
+                onClick={() => soki.ping(() => setIsConnected(true))}
+            />
         : <EvaIcon name="alert-triangle" className="color--ko" />;
 }

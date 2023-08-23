@@ -395,15 +395,18 @@ export class MyLib extends SMyLib {
         return def;
     }
 
-    groupByFieldsSoftly<Item extends Record<Fieldn, Item[Fieldn]>, Fieldn extends string>(fieldns: Fieldn[], items: Item[], numOf: number, addRestMode: AddRestMode) {
+    groupByFieldsSoftly<Item, Fieldn extends keyof Item>(fieldns: (Fieldn | ((item: Item) => number))[], items: Item[], numOf: number, addRestMode: AddRestMode) {
         const lastFieldn = fieldns[fieldns.length - 1];
         const wraps = items
             .map((item) => ({ item }))
             .sort(({ item: a }, { item: b }) => {
                 return this.findMap(fieldns, (fieldn, fieldni, fieldna) => {
-                    return a[fieldn] > b[fieldn]
+                    const theA = typeof fieldn === 'function' ? fieldn(a) : a[fieldn as never];
+                    const theB = typeof fieldn === 'function' ? fieldn(b) : b[fieldn as never];
+
+                    return theA > theB
                         ? -1
-                        : a[fieldn] < b[fieldn]
+                        : theA < theB
                             ? 1
                             : fieldni === fieldna.length - 1
                                 ? this.randomOf(-1, 1)
@@ -431,7 +434,7 @@ export class MyLib extends SMyLib {
                 : () => this.randomOf(-1, 1);
 
         const map = teams
-            .map((team, teami) => [team.reduce((rate, item) => rate + item[lastFieldn], 0), teami])
+            .map((team, teami) => [team.reduce((rate, item) => rate + item[lastFieldn as never], 0), teami])
             .sort(sorter);
 
         rest.forEach((item, itemi) => {

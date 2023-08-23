@@ -71,16 +71,14 @@ export default function TheCat({ all }: { all?: boolean }) {
         content={
           cat && (
             <>
-              <div
-                className={`later-com-list ${all && !term && laterComs.length ? "" : "hidden"}`}
-              >
+              <div className={`later-com-list ${all && !term && laterComs?.length ? "" : "hidden"}`}>
                 <div
                   className="list-title sticky"
                   onClick={() => scrollToCurrent()}
                 >
                   Последние:
                 </div>
-                {laterComs.map((com) => (
+                {laterComs?.map((com) => (
                   <ComFace
                     key={com.wid}
                     com={com}

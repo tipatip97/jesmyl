@@ -57,7 +57,7 @@ export function GameDescription({ game, redactable }: { game: TeamGameImportable
             fieldName=""
             value={value}
             multiline
-            title="Заметки"
+            title="Рейт. калькулятор"
             icon={redactable && "file-text-outline"}
             onSend={redactable && ((dsc) => LeaderCleans.setGameDescription(game.w, dsc))}
             isRedact={redactable}

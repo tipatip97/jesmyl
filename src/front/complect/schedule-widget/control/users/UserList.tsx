@@ -32,15 +32,17 @@ export default function ScheduleWidgetUserList({
                 return {
                     user,
                     balance: scheduleWidgetUserRights.rightsBalance(user.R),
-                    _: '' + user.alias + user.fio,
+                    _: (user.alias === undefined ? '' : '' + user.alias) + user.fio,
                 };
             })
             .sort((a, b) => {
-                return a.balance < b.balance ? 1 : a.balance > b.balance
-                    ? -1
-                    : a._ < b._
+                return a.balance < b.balance
+                    ? 1
+                    : a.balance > b.balance
                         ? -1
-                        : 1;
+                        : a._ < b._
+                            ? -1
+                            : 1;
             });
 
     return <>

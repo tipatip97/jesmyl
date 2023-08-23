@@ -476,6 +476,10 @@ textarea {
   min-height: 30vh;
 }
 
+wbr:after {
+  content: "\00200B";
+}
+
 .margin-auto {
   margin: auto;
 }
@@ -578,14 +582,26 @@ textarea {
   user-select: text;
 }
 
+.user-select-all {
+  -moz-user-select: all;
+  -webkit-user-select: all;
+  -ms-user-select: all;
+  user-select: all;
+}
+
 .for-print {
   &.canvas {
-    background: white;
     position: absolute;
+    overflow: auto;
+    background: white;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+
+    @media print {
+      overflow: visible;
+    }
   }
 
   &.print-as-a4 {

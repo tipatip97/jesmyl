@@ -9,6 +9,7 @@ import { strongScopeMakerBuilder } from "../strong-control/useStrongControl";
 import { IScheduleWidget, IScheduleWidgetRole, IScheduleWidgetUser, ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from "./ScheduleWidget.model";
 import ScheduleKeyValueListAtt from "./atts/attachments/key-value/KeyValueListAtt";
 import { scheduleOwnAtts } from "./atts/attachments/ownAtts";
+import { LocalSokiAuth } from "../../../back/complect/soki/soki.model";
 
 const schedulesSelector = (state: RootState) => state.index.schedules;
 
@@ -55,9 +56,8 @@ export const defaultSchwduleWidget: IScheduleWidget = {
 
 export interface ScheduleWidgetRights extends ScheduleWidgetUserRights, ScheduleWidgetScheduleWidgetRegType {
     myUser: IScheduleWidgetUser | undefined,
-    mainRole: IScheduleWidgetRole | undefined,
-    isMyMainRole: boolean,
     schedule: IScheduleWidget,
+    auth: LocalSokiAuth,
 }
 
 export type ScheduleWidgetUserRights = Record<`isCan${Exclude<keyof typeof ScheduleWidgetUserRoleRight, 'Free'>}`, boolean>;
@@ -74,12 +74,11 @@ export const defScheduleWidgetUserRights: ScheduleWidgetUserRights = {
 
 export const ScheduleWidgetRightsContext = React.createContext<ScheduleWidgetRights>({
     ...defScheduleWidgetUserRights,
-    mainRole: undefined,
     myUser: undefined,
-    isMyMainRole: false,
     isSwBeforeRegistration: false,
     isSwHideContent: false,
     isSwPublic: false,
+    auth: { level: 0 },
     schedule: defaultSchwduleWidget,
 });
 export const useScheduleWidgetRightsContext = () => useContext(ScheduleWidgetRightsContext);
@@ -89,44 +88,24 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
     return useMemo((): ScheduleWidgetRights => {
         if (rights !== undefined) return rights;
         if (schedule === undefined) return {
+            auth,
             isCanRead: false,
             isCanReadSpecials: false,
             isCanReadTitles: false,
             isCanRedact: false,
             isCanRedactUsers: false,
             isCanTotalRedact: false,
-            isMyMainRole: false,
             isSwBeforeRegistration: false,
             isSwHideContent: false,
             isSwPublic: false,
-            mainRole: undefined,
             myUser: undefined,
             schedule: defaultSchwduleWidget,
         };
 
         const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
-        const mainRole = schedule.ctrl.roles.find(role => role.mi === 0);
         const isSwPublic = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public,);
         const isSwBeforeRegistration = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration);
         const isSwHideContent = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.HideContent);
-
-        if (mainRole && mainRole.user === myUser?.mi) {
-            return {
-                myUser,
-                mainRole,
-                isCanTotalRedact: true,
-                isCanRead: true,
-                isCanReadSpecials: true,
-                isCanReadTitles: true,
-                isCanRedact: true,
-                isCanRedactUsers: true,
-                isMyMainRole: true,
-                isSwBeforeRegistration,
-                isSwHideContent,
-                isSwPublic,
-                schedule,
-            };
-        }
 
         const isCanRead = (isSwPublic && !isSwHideContent) || scheduleWidgetUserRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.Read);
         const isCanReadTitles = (isSwPublic && !isSwBeforeRegistration)
@@ -137,15 +116,14 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
         const isCanTotalRedact = scheduleWidgetUserRights.checkIsHasRights(myUser?.R, ScheduleWidgetUserRoleRight.TotalRedact);
 
         return {
+            auth,
             myUser,
-            mainRole,
             isCanTotalRedact,
             isCanRead,
             isCanReadSpecials,
             isCanReadTitles,
             isCanRedact,
             isCanRedactUsers,
-            isMyMainRole: !!mainRole && mainRole.user === myUser?.mi,
             isSwBeforeRegistration,
             isSwHideContent,
             isSwPublic,

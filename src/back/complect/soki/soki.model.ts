@@ -18,7 +18,6 @@ export interface SokiCapsule {
 export interface SokiServerEvent {
     appName: SokiAppName,
     requestId?: string,
-    connect?: boolean,
     unregister?: true,
     pong?: true,
     authorized?: boolean,
@@ -68,6 +67,8 @@ export interface SokiStatistic {
     online: number,
     authed: number,
     usages: Partial<Record<SokiAppName, (string | null)[]>>,
+    visits: string[],
+    pastVisits: Record<string, number>,
 }
 
 export interface SokiClientEvent {

@@ -50,7 +50,7 @@ export function ScheduleWidgetListCategory({
                         />}
                     <EvaButton
                         name="edit-outline"
-                        onClick={() => screen()}
+                        onClick={screen}
                     />
                 </div>
             : null

@@ -34,6 +34,7 @@ export default function LeaderSchedule() {
     <ScheduleWidgetPage
       appName="leader"
       goBack={goBack}
+      withoutBackButton
       schedulew={ccontext.w}
       onMoreClick={() => openGeneralMore()}
       title={ccontext.name}

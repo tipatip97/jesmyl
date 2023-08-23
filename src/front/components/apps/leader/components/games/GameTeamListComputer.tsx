@@ -121,7 +121,7 @@ export default function GameTeamListComputer({
                   disabled={!teamsCount}
                   onClick={() => {
                     const teams = mylib.groupByFieldsSoftly(
-                      ["isMan", "ufp1", "ufp2"],
+                      ['isMan', user => user.ufp1 + user.ufp2, 'bDay'],
                       readyMembers,
                       teamsCount,
                       addRestMode

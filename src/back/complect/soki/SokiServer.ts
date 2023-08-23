@@ -20,11 +20,14 @@ ErrorCatcher.logAllErrors();
 export class SokiServer {
     subscriptions: Map<SokiSubscribtionName, Map<WebSocket, SokiCapsule>> = new Map();
     capsules = new Map<WebSocket, SokiCapsule>();
+    lastVisit = new Date().toLocaleDateString();
 
     statistic: SokiStatistic = {
         online: 0,
         authed: 0,
         usages: {},
+        visits: [],
+        pastVisits: {},
     };
 
     constructor() {
@@ -45,6 +48,16 @@ export class SokiServer {
                     },
             });
         });
+    }
+
+    setVisit(fio: string) {
+        if (this.lastVisit !== new Date().toLocaleDateString()) {
+            this.statistic.pastVisits[this.lastVisit] = this.statistic.visits.length;
+            this.statistic.visits = [];
+            this.lastVisit = new Date().toLocaleDateString();
+        }
+
+        this.statistic.visits.push(fio);
     }
 
     sendStatistic() {
@@ -125,7 +138,6 @@ export class SokiServer {
 
     private connect(client: WebSocket) {
         this.capsules.set(client, { auth: null });
-        this.send({ connect: true, appName: 'index' }, client);
     }
 
     start() {
@@ -177,10 +189,14 @@ export class SokiServer {
                                 const passw = eventData.auth.passw;
                                 const secretPassw = passw && smylib.md5(passw);
                                 const auth = eventLogin && secretPassw && sokiAuther.authList?.find(({ login, passw }) => eventLogin === login && secretPassw === passw);
+                                
                                 if (auth) {
+                                    if (auth.level < 100)
+                                        this.setVisit(auth.fio);
                                     capsule.auth = auth;
                                     this.send({ authorized: true, appName }, client);
                                     console.info(`Client ${auth.fio ?? '???'} connected`);
+
                                     if (auth.level !== eventData.auth.level)
                                         this.send({
                                             appName: 'index',
@@ -198,6 +214,7 @@ export class SokiServer {
                                 }, client);
                             }
                         } else {
+                            this.setVisit('*unk*');
                             this.send({ authorized: false, appName: eventData.appName }, client);
                             console.info('Unknown client connected');
                         }

@@ -36,7 +36,7 @@ export default function ScheduleWidgetIconChange(props: {
         <EvaButton
             name={props.icon}
             postfix="Изменить иконку"
-            onClick={() => screen()}
+            onClick={screen}
             className="flex-max margin-gap-v"
         />
     </>;

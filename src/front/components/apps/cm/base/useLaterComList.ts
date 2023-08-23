@@ -7,7 +7,7 @@ import { Com } from "../col/com/Com";
 import { Cols } from "../cols/Cols";
 import { useCols } from "../cols/useCols";
 
-let laterComs: Com[];
+let laterComs: Com[] | und;
 const setLaterComs = (cols: Cols, list: number[]) => laterComs = list.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[];
 const laterComwListSelector = (state: RootState) => state.cm.laterComwList;
 
@@ -19,7 +19,7 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
     if (cols && laterComs == null) setLaterComs(cols, list);
     useEffect(() => { cols && setLaterComs(cols, list); }, [cols, list]);
 
-    const ret = useMemo(() => ({
+    const ret = {
         laterComs,
         updateLaterComwList: (list: number[]) => dispatch(di.laterComwList(list)),
         addLaterComw: (comw: number) => {
@@ -30,6 +30,6 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
             ret.updateLaterComwList(newList);
             cmStorage.set('laterComwList', newList);
         },
-    }), [dispatch, list, maxStack]);
+    };
     return ret;
 }

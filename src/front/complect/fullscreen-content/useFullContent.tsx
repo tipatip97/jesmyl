@@ -15,7 +15,7 @@ export type FullContentOpenMode = null | "open" | "closable";
 export type FullContentValue<PassValue = unknown> = (close: () => void, passValue?: PassValue) => ReactNode;
 
 export default function useFullContent<PassValue>(
-    content: FullContentValue<PassValue> | null,
+    content: FullContentValue<PassValue> | nil,
     forceOpenMode?: FullContentOpenMode,
     switchIsForceOpen?: (is: boolean) => void
 ): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {

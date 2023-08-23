@@ -48,7 +48,7 @@ export default function ScheduleWidgetAttFace({
         <div
             className={'schedule-widget-tatt relative flex center column' + (isCanRedact && tatt?.isCustomize ? ' color--7 pointer' : '')}
             onClick={isCanRedact && tatt?.isCustomize
-                ? () => screen()
+                ? screen
                 : undefined}
         >
             {isLink && <EvaIcon name="link-2" className="absolute pos-left pos-top color--3 fade-05" />}

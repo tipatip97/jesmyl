@@ -50,7 +50,7 @@ export default function ScheduleWidgetCustomAttachments(props: StrongComponentPr
                 Шаблоны вложений
                 <EvaIcon name="chevron-right" />
             </>}
-            onClick={() => screen()}
+            onClick={screen}
             className="flex-max margin-gap-v"
         />
     </div>;

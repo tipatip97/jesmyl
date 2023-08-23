@@ -19,6 +19,7 @@ export class SMyLib {
     isUnd(obj: any): obj is undefined { return obj === undefined }
     isBool(obj: any): obj is boolean { return typeof obj === 'boolean' }
     isNull(obj: any): obj is null { return obj === null }
+    isNil(obj: any): obj is null | undefined { return obj === null || obj === undefined }
     isNan(obj: any): obj is typeof NaN { return isNaN(obj) }
 
     static entries<T>(obj: T): [keyof T, T[keyof T]][] {
@@ -65,7 +66,7 @@ export class SMyLib {
         if (typeof base === 'object') {
             const bEntries = Object.entries(base).filter(([, val]) => val !== undefined);
 
-            if (bEntries.length !== Object.values(source).filter((val) => val !== undefined).length
+            if (bEntries?.length !== Object.values(source).filter((val) => val !== undefined).length
                 || bEntries.some(([bKey, bVal]) => !this.isEq(source[bKey], bVal))
             ) return false;
         } else if (base !== source) return false;

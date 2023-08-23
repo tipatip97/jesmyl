@@ -16,5 +16,5 @@ export const setPolyfills = () => {
     }
     if (!Array.prototype.at)
         // eslint-disable-next-line no-extend-native
-        Array.prototype.at = function (pos) { return this.slice(pos, pos + 1)[0] }
+        Array.prototype.at = function (pos) { return pos < 0 ? this[this.length + pos] : this[pos] };
 };

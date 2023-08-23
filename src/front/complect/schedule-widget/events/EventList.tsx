@@ -85,7 +85,7 @@ export default function ScheduleWidgetEventList({
         <EvaButton
             name={icon}
             postfix={postfix}
-            onClick={() => screen()}
+            onClick={screen}
         />
     </>;
 }

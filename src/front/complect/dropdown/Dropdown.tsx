@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import EvaIcon from "../eva-icon/EvaIcon";
+import useToast from "../modal/useToast";
 import { DropdownItem, DropdownProps } from "./Dropdown.model";
 import "./Dropdown.scss";
-import EvaIcon from "../eva-icon/EvaIcon";
-import useModal from "../modal/useModal";
 
 export default function Dropdown<
   Id,
@@ -11,7 +11,7 @@ export default function Dropdown<
   const [selectedId, setId] = useState(props.id);
   const [isDropped, setDropped] = useState(false);
   const selectedItem = useMemo(
-    () => props.items.find((item) => item.id === selectedId),
+    () => props.items.find((item) => item?.id === selectedId),
     [props.items, selectedId]
   );
 
@@ -35,7 +35,7 @@ export default function Dropdown<
   }, [isDropped]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [modalNode, toast] = useModal();
+  const [modalNode, toast] = useToast();
 
   return (
     <div
@@ -55,7 +55,7 @@ export default function Dropdown<
       </div>
       <div className="item-list">
         {props.items.map((item) => {
-          return (
+          return item && (
             <div
               key={`dropdown-item ${item.id}`}
               className={`list-item ${item.disabled ? "disabled" : ""} ${item.color ? `colored color_${item.color}` : ""}`}

@@ -70,7 +70,6 @@ export class JStorage<Scope, State = Scope> {
 
     initializators<Key extends keyof Scope | keyof State>(keys: Key[]): Record<Key, CaseReducer<State, { payload: any; type: string; }>> {
         const actions: Record<string, (state: Record<Key, unknown>, action: PayloadAction<unknown>) => void> = {};
-
         keys.forEach(key => actions[key as string] = (state, action) => {
             state[key] = action.payload;
             this.set(key as never, action.payload as never);
@@ -127,24 +126,20 @@ export class JStorage<Scope, State = Scope> {
     }
 
     set<Key extends keyof Scope>(key: Key, val: Scope[Key] | ((prevValue: Scope[Key]) => Scope[Key])): void {
-        try {
-            if (val === null) { this.rem(key); return; }
-            this.properties[key] = (typeof val === 'function') ? (val as <V>(v: V) => V)(this.properties[key]) : val;
+        if (val === null) { this.rem(key); return; }
+        this.properties[key] = (typeof val === 'function') ? (val as <V>(v: V) => V)(this.properties[key]) : val;
 
-            if (this.nonCachable.includes(key)) return;
+        if (this.nonCachable.includes(key)) return;
 
-            if (this.dbOpen.readyState !== 'done') {
-                setTimeout(() => this.set(key, val));
-                return;
-            }
-
-            this.dbOpen.result
-                .transaction('data', 'readwrite')
-                .objectStore('data')
-                .put(this.properties[key], key as string);
-        } catch (error) {
+        if (this.dbOpen.readyState !== 'done') {
+            setTimeout(() => this.set(key, val));
             return;
         }
+
+        this.dbOpen.result
+            .transaction('data', 'readwrite')
+            .objectStore('data')
+            .put(this.properties[key], key as string);
     }
 
     rem(key: keyof Scope) {

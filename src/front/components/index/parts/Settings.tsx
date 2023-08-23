@@ -6,7 +6,7 @@ import EvaButton from "../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../complect/modal/Modal.service";
 import useToast from "../../../complect/modal/useToast";
-import mylib from "../../../complect/my-lib/MyLib";
+import mylib, { MyLib } from "../../../complect/my-lib/MyLib";
 import Noty from "../../../complect/notifications/Noti";
 import useApps from "../../../complect/useApps";
 import { RootState } from "../../../shared/store";
@@ -27,7 +27,7 @@ export default function IndexSettings() {
   const dispatch = useDispatch();
   const isUseNativeKeyboard = useSelector(isUseNativeKeyboardSelector);
   const statistic = useSelector(statisticSelector);
-  const [expands, setExpands] = useState<AppName[]>([]);
+  const [expands, setExpands] = useState<(AppName | '')[]>([]);
   const [modalNode, toast] = useToast();
   const { appConfigs } = useApps();
 
@@ -96,7 +96,32 @@ export default function IndexSettings() {
             <div className="margin-gap-v">
               <div><span className="color--7">В сети</span> {visitorsDeclension(statistic.online)}</div>
               <div><span className="color--7">Авторизованых </span>{statistic.authed ? visitorsDeclension(statistic.authed) : ' нет'}</div>
+              <div className="flex flex-gap">
+                <span className="color--7">Посещений за день </span>
+                {statistic.visits.length ? statistic.visits.length : ' нет'}
+                {(auth.level >= 80 || expands.includes('')) && <EvaButton
+                  name={expands.includes('') ? "chevron-up" : "chevron-down"}
+                  onClick={() => setExpands(expands.includes('') ? expands.filter(name => name !== '') : [...expands, ''])}
+                />}
+              </div>
             </div>
+            {expands.includes('') && <div className="margin-big-gap-b margin-gap-l color--3">
+              <div className="margin-gap-v color--7">
+                {MyLib.entries(statistic.pastVisits)
+                  .map(([dateStr, val]) => [new Date(dateStr).getTime(), val])
+                  .sort((a, b) => a[0] - b[0])
+                  .map(([ts, val]) => {
+                    return <div key={ts}>
+                      {new Date(ts).toLocaleDateString()}
+                      {' - '}
+                      {val}
+                    </div>;
+                  })}
+              </div>
+              {statistic.visits.map((visitor, visitori) => {
+                return <div key={visitori}>{visitor}</div>;
+              })}
+            </div>}
             {appNames.map((appName) => {
               const app = appConfigs[appName];
               if (appName === 'index' || (app.nav.nav.level !== undefined && app.nav.nav.level > auth.level)) return null;

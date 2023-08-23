@@ -37,7 +37,7 @@ export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) 
         {modalNode}
         <EvaButton
             name="link-2"
-            onClick={() => screen()}
+            onClick={screen}
         />
     </>;
 }

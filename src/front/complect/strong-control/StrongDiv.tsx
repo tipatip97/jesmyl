@@ -16,7 +16,7 @@ export default function StrongDiv(props: StrongControlProps<{
     const exer = useStrongExerContext();
 
     return <div
-        className={props.className}
+        className={'pointer ' + props.className}
         onClick={props.scope && props.isCanSend !== false
             ? async () => {
                 if (props.confirm != null && !(props.confirm && await modalService.confirm(props.confirm)))

@@ -15,6 +15,7 @@ interface SchedulesBag {
 
 const emptyArray: any[] = [];
 const emptyLists = { cats: [], units: [] };
+const itNNull = (it: unknown) => it !== null;
 
 const mapCantReadTitlesDayEvent = (event: IScheduleWidgetDayEvent) => ({
     ...event,
@@ -195,7 +196,31 @@ const config: FilerAppConfig = {
                     : whenRejButTs;
             },
             prepareContent: (schedules: ScheduleStorage<string>, auth): ScheduleStorage<string> => {
-                if (!auth) return { list: emptyArray };
+                if (!auth) {
+                    const list = schedules.list.map((schedule): IScheduleWidget<string> => {
+                        if (scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public)
+                            && !scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration))
+                            return ({
+                                ...schedule,
+                                days: schedule.days.map(
+                                    schedule.withTech === 1
+                                        ? mapCantReadSpecialsDayWithoutTech
+                                        : mapCantReadSpecialsDay
+                                ),
+                                ctrl: {
+                                    cats: emptyArray,
+                                    roles: emptyArray,
+                                    users: emptyArray,
+                                    type: schedule.ctrl.type,
+                                },
+                            });
+
+                        return null!;
+                    }).filter(itNNull);
+
+                    return { list };
+                }
+
                 const authLogin = auth.login;
                 const list = schedules.list.map((schedule): IScheduleWidget<string> => {
                     const user = schedule.ctrl.users.find(user => user.login === authLogin);
@@ -215,7 +240,7 @@ const config: FilerAppConfig = {
                                         roles: emptyArray,
                                         users: schedule.ctrl.users,
                                         type: schedule.ctrl.type,
-                                    }
+                                    },
                                 });
                             }
 
@@ -468,6 +493,13 @@ const config: FilerAppConfig = {
                                     action: 'joinUserByLink',
                                     method: 'set_all',
                                     value: { fio: '{*fio}', login: '{*login}' },
+                                },
+                                '<userData>': {
+                                    scopeNode: 'userData',
+                                    U: {
+                                        method: 'set_all',
+                                        value: { fio: '{fio}', login: '{login}' },
+                                    },
                                 },
                                 '/alias': {
                                     U: {
@@ -852,9 +884,30 @@ const config: FilerAppConfig = {
                                                         scopeNode: 'value',
                                                         U: {
                                                             args: {
-                                                                value: '#String',
+                                                                value: ['#List', '#String'],
                                                             }
-                                                        }
+                                                        },
+                                                        '<list>': {
+                                                            scopeNode: 'list',
+                                                            C: {},
+                                                            D: {
+                                                                value: '{key}',
+                                                            },
+                                                            '<move>': {
+                                                                scopeNode: 'move',
+                                                                U: {
+                                                                    method: 'insert_beforei',
+                                                                    value: {
+                                                                        find: '{find}',
+                                                                        beforei: '{value}',
+                                                                    },
+                                                                },
+                                                            },
+                                                            '/{key}': {
+                                                                scopeNode: 'key',
+                                                                U: {},
+                                                            }
+                                                        },
                                                     },
                                                 }
                                             }

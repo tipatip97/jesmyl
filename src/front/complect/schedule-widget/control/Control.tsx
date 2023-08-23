@@ -57,13 +57,13 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
             ? <EvaButton
                 name="settings-2-outline"
                 postfix={<>Управление <EvaIcon name="chevron-right" /></>}
-                onClick={() => screen()}
+                onClick={screen}
                 className="margin-gap-v flex-max"
             />
             : <EvaButton
                 name="people-outline"
                 postfix={<>Участники <EvaIcon name="chevron-right" /></>}
-                onClick={() => screen()}
+                onClick={screen}
                 className="margin-gap-v flex-max"
             />}
     </>;

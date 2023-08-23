@@ -33,10 +33,10 @@ export default function CopyTextButton({
                     navigator.clipboard.writeText(textToWrite);
                     toast(message ?? 'Текст скопирован');
                 } catch (e) {
-                    modal(({ header, body }) => {
+                    modal(event, ({ header, body }) => {
                         return <>
                             {header(<>Не удалось скопировать текст:</>)}
-                            {body(<div className="user-select">{textToWrite}</div>)}
+                            {body(<div className="user-select-all">{textToWrite}</div>)}
                         </>;
                     });
                 }

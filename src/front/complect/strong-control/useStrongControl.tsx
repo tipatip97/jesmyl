@@ -1,9 +1,9 @@
 import React, { ReactNode, useContext } from "react";
+import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 import { indexExer } from "../../components/index/Index.store";
 import { Exer } from "../exer/Exer";
 import { ExerStorage } from "../exer/Exer.model";
 import { CUD, StrongComponentProps } from "./Strong.model";
-import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 
 export const StrongExerContext = React.createContext<Exer<any>>(indexExer);
 export const useStrongExerContext = () => useContext(StrongExerContext);
@@ -61,16 +61,27 @@ export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType ex
                     value: fieldValue,
                 };
 
+    const send = () => {
+        onBeforeSend();
+
+        return exer.send({
+            args,
+            action: action.trim() + (fieldName ? ` ${fieldName}` : '') + ` [${cud}]`,
+        });
+    };
+
     if (mapExecArgs) {
         const mappedArgs = mapExecArgs(args, (value ?? '') as never);
         if (mappedArgs == null) return;
-        args = mappedArgs;
+        if (mappedArgs instanceof Promise) {
+            return (async () => {
+                args = (await mappedArgs)!;
+                if (args == null) return null;
+
+                return send();
+            })();
+        } else args = mappedArgs;
     }
 
-    onBeforeSend();
-
-    return exer.send({
-        args,
-        action: action.trim() + (fieldName ? ` ${fieldName}` : '') + ` [${cud}]`,
-    });
+    return send();
 }

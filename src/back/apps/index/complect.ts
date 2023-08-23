@@ -46,7 +46,7 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
         let R = 1;
         const ind = this.enumOrder.indexOf(ruleKey);
 
-        for (let i = 0; i < ind; i++) {
+        for (let i = this.enumOrder.length - 1; i >= ind; i--) {
             R = this.switchRights(R, this.enumOrder[i], '1');
         }
 
@@ -54,7 +54,7 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
     };
 
     checkIsCan = (R: number | nil, rightR: number | nil) => {
-        return this.rightsBalance(R) > this.rightsBalance(rightR);
+        return this.rightsBalance(R) >= this.rightsBalance(rightR);
     };
 
     rightsBalance = (R: number | nil): number => {

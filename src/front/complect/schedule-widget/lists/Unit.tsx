@@ -34,7 +34,7 @@ export default function ScheduleWidgetListUnit({
         rights.isCanRedact
             ? isExpand => isExpand && <EvaButton
                 name="edit-outline"
-                onClick={() => screen()}
+                onClick={screen}
             />
             : null
     );

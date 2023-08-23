@@ -14,12 +14,13 @@ import ScheduleWidgetDayEvent from "./DayEvent";
 import { ScheduleWidgetDayEventEventActions } from "./EventActions";
 
 export default function ScheduleWidgetDayEventList({
-    day, scope, scheduleScope, isPastDay, dayi,
+    day, scope, scheduleScope, isPastDay, dayi, isForceExpand,
 }: {
     day: IScheduleWidgetDay,
     scope: string,
     scheduleScope: string,
     isPastDay: boolean,
+    isForceExpand?: boolean,
     dayi: number,
 }) {
     const [isShowPeriodsNotTs, setIsShowTsNotPeriods] = useState(false);
@@ -62,7 +63,7 @@ export default function ScheduleWidgetDayEventList({
         + (isIndividualReplacement ? ' individual-replacement' : '')
     }>
         <div className="max-width hide-on-print">{listTitle}</div>
-        {isExpand && <>
+        {(isExpand || isForceExpand) && <>
             {day.list.map((event, eventi, eventa) => {
                 if (!rights.isCanReadSpecials) {
                     if (!isFirstSecrets && eventa[eventi + 1]?.secret) secretTime += event.tm ?? rights.schedule.types[event.type].tm ?? 0;

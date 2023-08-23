@@ -147,14 +147,15 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
                 {isRedact
                     ? customAttUseRightsTitles.map(({ title, id, top }) => {
                         return <div key={id}>
-                            {(id !== CustomAttUseRights.CheckTitles || customAttUseRights.checkIsHasIndividualRights(props.tatt.use, CustomAttUseRights.Titles))
+                            {((id !== CustomAttUseRights.CheckTitles || customAttUseRights.checkIsHasIndividualRights(props.tatt.use, CustomAttUseRights.Titles))
+                                && (id !== CustomAttUseRights.CheckUsers || customAttUseRights.checkIsHasIndividualRights(props.tatt.use, CustomAttUseRights.Users)))
                                 && <StrongEvaButton
                                     scope={selfScope}
                                     fieldName="field"
                                     fieldKey="use"
                                     cud="U"
                                     name={customAttUseRights.checkIsHasIndividualRights(props.tatt.use, id) ? 'checkmark-square-2-outline' : 'square-outline'}
-                                    className={(id === CustomAttUseRights.CheckTitles ? 'margin-big-gap-l ' : '')
+                                    className={(top ? 'margin-big-gap-l ' : '')
                                         + (customAttUseRights.checkIsHasIndividualRights(props.tatt.use, id)
                                             && (id !== CustomAttUseRights.Roles || (props.tatt.roles ?? 0) > 1)
                                             && (id !== CustomAttUseRights.Lists || (props.tatt.list ?? 0) > 1)

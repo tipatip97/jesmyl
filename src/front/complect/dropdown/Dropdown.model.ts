@@ -1,8 +1,9 @@
+import { ReactNode } from "react";
 import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 
 
 export interface DropdownProps<Id , Item extends DropdownItem<Id>> {
-    items: Item[];
+    items: (Item | null)[];
     placeholder?: string;
     id?: Id;
     onSelect?: (item: Item) => und | void | null | Promise<SokiServerEvent | null>;
@@ -11,7 +12,7 @@ export interface DropdownProps<Id , Item extends DropdownItem<Id>> {
 }
 
 export interface DropdownItem<Id> {
-    title: string;
+    title: ReactNode;
     id: Id;
     disabled?: boolean;
     color?: DropdownItemColor | null;

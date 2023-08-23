@@ -97,8 +97,10 @@ export interface ScheduleWidgetAppAttBasic<EvaIconName, AttValue extends any = a
     U: number,
 }
 
+export type ScheduleWidgetAppAttCustomizableValueItem = [string | number | boolean, null | string | number | (string | number)[], number];
+
 export interface ScheduleWidgetAppAttCustomizableValue {
-    values?: [string | number | boolean, string, number][],
+    values?: ScheduleWidgetAppAttCustomizableValueItem[],
 }
 
 export interface IScheduleWidgetRole<EvaIconName> {

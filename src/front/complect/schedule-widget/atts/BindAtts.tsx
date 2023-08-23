@@ -104,7 +104,7 @@ export default function ScheduleWidgetBindAtts({
             Вложения
             <EvaButton
                 name="plus-outline"
-                onClick={() => screen()}
+                onClick={screen}
             />
         </div>
         <div className="schedule-widget-bind-secs flex flex-gap no-scrollbar">

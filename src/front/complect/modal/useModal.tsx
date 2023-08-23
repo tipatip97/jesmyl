@@ -37,7 +37,7 @@ export default function useModal(
     topContent?: Contenter,
     onOpenSwitch?: (is: boolean) => void,
     isForceOpen?: boolean,
-): [ReactNode, (content?: Contenter, config?: ScreenModalConfig) => void, () => void] {
+): [ReactNode, (_event?: any, content?: Contenter, config?: ScreenModalConfig) => void, () => void] {
     const [config, setConfig] = useState(defaultUseModalConfig);
     const close = useCallback(() => {
         config.onOpenSwitch?.();
@@ -72,7 +72,7 @@ export default function useModal(
                 </div>
             </div>
         </Portal>,
-        (content?: Contenter, config?: ScreenModalConfig) => {
+        (_event, content, config) => {
             onOpenSwitch?.(true);
             setConfig({
                 ...config,

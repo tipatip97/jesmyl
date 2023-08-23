@@ -161,6 +161,7 @@ export default function ScheduleWidgetDay({
                     scope={selfScope}
                     scheduleScope={scope}
                     isPastDay={isPastDay}
+                    isForceExpand={isPrint}
                 />
             </>}
     </div>;

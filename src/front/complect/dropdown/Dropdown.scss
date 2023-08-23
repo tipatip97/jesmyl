@@ -11,10 +11,18 @@
   cursor: pointer;
   z-index: 300;
 
-  + .dropdown-selector {
+  &.mood-for-2 {
+
+    >.item-list {
+      background-color: var(--color--5);
+      color: var(--color--3);
+    }
+  }
+
+  +.dropdown-selector {
     z-index: 299;
 
-    + .dropdown-selector {
+    +.dropdown-selector {
       z-index: 298;
     }
   }
@@ -22,12 +30,12 @@
   &.dropped {
     border-radius: 5px 5px 0 0;
 
-    > .item-list {
+    >.item-list {
       max-height: 30vh;
     }
   }
 
-  > .item-list {
+  >.item-list {
     position: absolute;
     top: var(--selector-height);
     left: 0;
@@ -40,7 +48,7 @@
     transition: max-height 0.2s linear;
     border-radius: 0 0 5px 5px;
 
-    > .list-item {
+    >.list-item {
       padding: 5px;
 
       &.colored {
@@ -52,23 +60,21 @@
   }
 }
 
-.dropdown-ancestor {
+@mixin dropdown-ancestor($zIndex) {
   .dropdown-selector {
-    z-index: 300;
+    z-index: #{$zIndex};
   }
-  + .dropdown-ancestor {
-    .dropdown-selector {
-      z-index: 299;
-    }
-    + .dropdown-ancestor {
-      .dropdown-selector {
-        z-index: 298;
-      }
-      + .dropdown-ancestor {
-        .dropdown-selector {
-          z-index: 297;
-        }
-      }
+
+  @if ($zIndex > $dropdown-ancestor-minZIndex) {
+    +.dropdown-ancestor {
+      @include dropdown-ancestor($zIndex - 1);
     }
   }
+}
+
+$dropdown-ancestor-maxZIndex: 300;
+$dropdown-ancestor-minZIndex: 250;
+
+.dropdown-ancestor {
+  @include dropdown-ancestor($dropdown-ancestor-maxZIndex);
 }

@@ -72,7 +72,7 @@ export default function ScheduleWidgetAlarmContent({
                 return {
                     sch,
                     days,
-                    startMs: sch.start + dayStartMsList[0],
+                    startMs: sch.start + ((sch.withTech ? dayStartMsList[1] : dayStartMsList[0]) || 0),
                     dayStartMsList,
                     dayMsList,
                     types: sch.types,
@@ -84,10 +84,9 @@ export default function ScheduleWidgetAlarmContent({
             .filter(itNNull);
     }, [schedules.list]);
 
-    const [node, fullValue, isCanOpenFull, observeSchedule]: [ReactNode, FullContentValue | null, true | und, typeof scheduleList[number] | und] = useMemo(() => {
+    const [node, fullValue, observeSchedule]: [ReactNode, FullContentValue | und, typeof scheduleList[number] | und] = useMemo(() => {
         let node = null;
-        let fullValue: FullContentValue | null = null;
-        let isCanOpenFull: true | und = undefined;
+        let fullValue: FullContentValue | und;
         let schWr;
 
         if (observeSchw !== undefined) {
@@ -141,9 +140,6 @@ export default function ScheduleWidgetAlarmContent({
 
                         return false;
                     });
-
-
-                    isCanOpenFull = true;
 
                     fullValue = () => {
                         return <ScheduleAlarmDay
@@ -261,6 +257,26 @@ export default function ScheduleWidgetAlarmContent({
                 const startDate = new Date(willSchWr.startMs);
                 const msTo = willSchWr.startMs - now;
 
+                if (startDate.getDate() === nowDate.getDate()) {
+                    if (willSchWr.sch.withTech)
+                        if (willSchWr.days[1])
+                            fullValue = () => {
+                                return <ScheduleAlarmDay
+                                    day={willSchWr.days[1]}
+                                    dayi={1}
+                                    schedule={willSchWr.sch}
+                                />;
+                            };
+                        else if (willSchWr.days[0])
+                            fullValue = () => {
+                                return <ScheduleAlarmDay
+                                    day={willSchWr.days[0]}
+                                    dayi={0}
+                                    schedule={willSchWr.sch}
+                                />;
+                            };
+                }
+
                 node = <div>
                     <ScheduleWidgetTopicTitle
                         titleBox={willSchWr.sch!}
@@ -281,7 +297,7 @@ export default function ScheduleWidgetAlarmContent({
 
         if (!fullValue) setIsFullOpen(false);
 
-        return [node, fullValue, isCanOpenFull, schWr];
+        return [node, fullValue, schWr];
     }, [now, scheduleList, observeSchw]);
 
     const [fullNode] = useFullContent(fullValue, isFullOpen ? 'open' : null, setIsFullOpen);
@@ -289,8 +305,8 @@ export default function ScheduleWidgetAlarmContent({
     return <>
         {fullNode}
         <div
-            className={'ScheduleWidgetAlarm flex flex-gap between' + (isCanOpenFull ? ' pointer' : '')}
-            onClick={isCanOpenFull && (() => setIsFullOpen(true))}
+            className={'ScheduleWidgetAlarm flex flex-gap between' + (fullValue ? ' pointer' : '')}
+            onClick={fullValue && (() => setIsFullOpen(true))}
         >
             <div className="flex">
                 <EvaIcon name="calendar" className="margin-big-gap" />

@@ -44,27 +44,30 @@ export const backSwipableContainerMaker = (goBack: () => void, goForward?: () =>
     };
 
     const onTouchStart: TouchEventHandler<HTMLDivElement> = (event) => {
-        event.stopPropagation();
+        if (event.touches.length === 1) event.stopPropagation();
         pageX = event.touches[0].pageX;
         pageY = event.touches[0].pageY;
+        event.currentTarget.style.transition = initTransition;
     };
 
     const onTouchMove: TouchEventHandler<HTMLDivElement> = (event) => {
-        event.stopPropagation();
+        if (event.touches.length === 1) event.stopPropagation();
         if (!isCanGo) return;
         deltaX = event.touches[0].pageX - pageX;
         if (isHorizontalMoving === null) isHorizontalMoving = deltaX !== 0 && Math.abs(event.touches[0].pageY - pageY) < 5;
 
         if (Math.abs(deltaX) < minLim) event.currentTarget.style.filter = '';
 
-        if (isHorizontalMoving && (isCanGoForward || deltaX >= 0)) {
-            event.currentTarget.style.left = deltaX.toFixed(0) + 'px';
-            if (Math.abs(deltaX) > minLim) event.currentTarget.style.filter = 'blur(' + (Math.abs(deltaX) / 20).toFixed(0) + 'px)';
+        if (isHorizontalMoving) {
+            if (isCanGoForward || deltaX >= 0) {
+                event.currentTarget.style.left = deltaX.toFixed(0) + 'px';
+                if (Math.abs(deltaX) > minLim) event.currentTarget.style.filter = 'blur(' + (Math.abs(deltaX) / 20).toFixed(0) + 'px)';
+            } else if (deltaX < 0) event.currentTarget.style.left = '0';
         }
     };
 
     const onTouchEnd: TouchEventHandler<HTMLDivElement> = (event) => {
-        event.stopPropagation();
+        if (event.touches.length === 1) event.stopPropagation();
 
         if (isCanGo && isHorizontalMoving) {
 
