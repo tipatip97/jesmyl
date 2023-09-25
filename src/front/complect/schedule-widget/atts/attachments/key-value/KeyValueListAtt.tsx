@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 import { ScheduleWidgetRightsCtrl } from "../../../../../../back/apps/index/complect";
-import { CustomAttUseRights, CustomAttUseTaleId, ScheduleWidgetUserRoleRight, customAttUseRights, scheduleWidgetUserRights } from "../../../../../../back/apps/index/rights";
+import { CustomAttUseRights, CustomAttUseTaleId, customAttUseRights } from "../../../../../../back/apps/index/rights";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
 import mylib from "../../../../my-lib/MyLib";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../../strong-control/field/StrongEditableField";
 import { IScheduleWidgetListUnit, IScheduleWidgetRole, IScheduleWidgetUser, ScheduleWidgetAppAttCustomizableValue, ScheduleWidgetAppAttCustomized } from "../../../ScheduleWidget.model";
+import ScheduleWidgetCleans from "../../../complect/Cleans";
 import ScheduleWidgetRoleFace from "../../../control/roles/RoleFace";
 import ScheduleWidgetListUnitFace from "../../../lists/UnitFace";
 import { extractScheduleWidgetRole, extractScheduleWidgetRoleUser, takeStrongScopeMaker, useScheduleWidgetRightsContext } from "../../../useScheduleWidget";
@@ -13,7 +14,6 @@ import ScheduleKeyValueListAttArrayItemKeyChange from "./ArrayItemSignChange";
 import KeyValueListAttNumberMember from "./KeyValueListAttNumberMember";
 import ScheduleKeyValueListAttLiItemDropdown from "./LiItemDropdown";
 import ScheduleKeyValueListAttStatistic from "./Statistic";
-import ScheduleWidgetCleans from "../../../complect/Cleans";
 
 const itIt = (it: unknown) => it;
 
@@ -168,16 +168,29 @@ export default function ScheduleKeyValueListAtt({
             );
         }
 
+        const itemNode = <div className="flex flex-gap margin-big-gap-v">
+            <EvaIcon name="text" />
+            Пункт
+            <StrongEvaButton
+                name="plus"
+                scope={attScope}
+                fieldName=""
+                fieldKey="Пункт"
+                fieldValue="+"
+            />
+        </div>;
+
         if (checkboxes || (users || titles || roles || lists || null)?.length) {
             insertionNode = <>
                 <div className="margin-gap-v color--7">Вставить поле ввода:</div>
+                {itemNode}
                 <div className="margin-big-gap-v">{checkboxes}</div>
                 <div className="margin-big-gap-v">{titles}</div>
                 <div className="margin-big-gap-v">{roles}</div>
                 <div className="margin-big-gap-v">{lists}</div>
                 <div className="margin-big-gap-v">{users}</div>
             </>;
-        } else insertionNode = <div className="margin-big-gap-v text-italic">{att.title}. Вставлять нечего</div>
+        } else insertionNode = itemNode || <div className="margin-big-gap-v text-italic">{att.title}. Вставлять нечего</div>
     }
 
     return <div>
@@ -206,7 +219,13 @@ export default function ScheduleKeyValueListAtt({
                     }
             }
 
-            return <div key={itemMi} className={'dropdown-ancestor' + (mylib.isArr(value) ? isRedact ? ' margin-giant-gap-b margin-big-gap-t' : ' margin-big-gap-b' : ' margin-gap-b')}>
+            return <div
+                key={itemMi}
+                className={
+                    'dropdown-ancestor'
+                    + (mylib.isArr(value) ? isRedact ? ' margin-giant-gap-b margin-big-gap-t' : ' margin-big-gap-b' : ' margin-gap-b')
+                }
+            >
                 <div className="flex flex-gap between margin-gap-b">
                     <div className="flex flex-gap">
                         {generalNode !== null
@@ -224,7 +243,14 @@ export default function ScheduleKeyValueListAtt({
                                     />
                                     {mylib.isNum(value) && <KeyValueListAttNumberMember value={value} />}
                                 </div>
-                                : <div className="color--3">{key}</div>}
+                                : mylib.isStr(key) && <StrongEditableField
+                                    scope={itemScope}
+                                    fieldName="key"
+                                    className="margin-gap-l mood-for-2 relative z-index:5"
+                                    value={key}
+                                    isRedact={isRedact}
+                                    setSelfRedact
+                                />}
                         {isRedact && <>
                             {!mylib.isNum(value) && !mylib.isBool(key) && !mylib.isNil(value) && (value === '+' || value.length < 1)
                                 && <StrongEvaButton
@@ -284,12 +310,10 @@ export default function ScheduleKeyValueListAtt({
                         : isRedact
                             ? <div>
                                 {value?.map((val, vali, vala) => {
-                                    return <div
-                                        key={vali}
-                                        className="flex flex-gap"
-                                    >
+                                    return <div key={vali}>
                                         {!!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U) &&
-                                            <div className="flex flex-gap ">
+                                            <div className="flex flex-gap">
+                                            <span className="flex self-start">{vali + 1}.</span>
                                                 {vala.length > 1 && <StrongEvaButton
                                                     scope={itemScope}
                                                     fieldName="value list move"
@@ -297,7 +321,7 @@ export default function ScheduleKeyValueListAtt({
                                                     fieldKey={vali}
                                                     className="relative z-index:15 color--7"
                                                     cud="U"
-                                                    name={vali > 0 ? 'corner-right-up-outline' : 'corner-left-down-outline'}
+                                                    name={vali > 0 ? 'corner-left-up-outline' : 'corner-right-down-outline'}
                                                     mapExecArgs={args => {
                                                         return {
                                                             ...args,
@@ -368,7 +392,7 @@ export default function ScheduleKeyValueListAtt({
                             : <div>
                                 {value?.map((val, vali) => {
                                     return <div key={vali} className="flex flex-gap margin-big-gap-l">
-                                        &#9679;
+                                        <span className="flex self-start">{vali + 1}.</span>
                                         {mylib.isNum(val)
                                             ? <KeyValueListAttNumberMember value={val} />
                                             : <div>{val}</div>}
