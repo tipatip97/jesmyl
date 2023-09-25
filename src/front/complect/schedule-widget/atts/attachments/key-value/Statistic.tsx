@@ -6,6 +6,7 @@ import ScheduleWidgetCleans from "../../../complect/Cleans";
 import { useScheduleWidgetRightsContext } from "../../../useScheduleWidget";
 
 const itNNil = (it: unknown) => it != null;
+const mapSetItemNumber = (l: string | nil, li: number) => (li + 1) + '. ' + l!;
 
 export default function ScheduleKeyValueListAttStatistic(props: {
     list: ScheduleWidgetAppAttCustomizableValueItem[] | und,
@@ -54,33 +55,33 @@ export default function ScheduleKeyValueListAttStatistic(props: {
                 return props.list?.map(([key, value]) => {
                     let text = '';
 
-                    if (key === true) text += '[+]';
-                    else if (key === false) text += '[ ]';
-                    else if (mylib.isStr(key)) {
-                        text += key;
-                    } else if (mylib.isNum(key)) {
+                    const takeTextById = (key: number) => {
                         const id = Math.trunc(key);
 
                         if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Users)) {
                             const user = rights.schedule.ctrl.users.find((user) => user.mi === id);
-                            text += user?.alias || user?.fio || key;
+                            return user?.alias || user?.fio || key;
                         }
 
                         if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Roles)) {
-                            text += rights.schedule.ctrl.roles.find((role) => role.mi === id)?.title ?? '';
+                            return rights.schedule.ctrl.roles.find((role) => role.mi === id)?.title ?? '';
                         }
 
                         if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Lists)) {
-                            text += rights.schedule.lists.units.find((unit) => unit.mi === id)?.title ?? '';
+                            return rights.schedule.lists.units.find((unit) => unit.mi === id)?.title ?? '';
                         }
-                    } else text += key;
+                    };
 
-                    if (mylib.isStr(value)) {
-                        text += (mylib.isStr(key) ? ':\n' : '') + value;
-                    } else if (mylib.isNum(value)) {
-                        text += value;
-                    } else if (mylib.isArr(value)) {
-                        text += '\n- '
+                    if (key === true) text += '[+] ';
+                    else if (key === false) text += '[ ] ';
+                    else if (mylib.isStr(key)) text += key;
+                    else if (mylib.isNum(key)) text += takeTextById(key);
+                    else text += key;
+
+                    if (mylib.isStr(value)) text += (mylib.isStr(key) ? ':\n' : '') + value;
+                    else if (mylib.isNum(value)) text += takeTextById(value);
+                    else if (mylib.isArr(value))
+                        text += '\n'
                             + value.map((val) => {
                                 if (mylib.isStr(val)) return val;
                                 const id = Math.trunc(val);
@@ -99,13 +100,10 @@ export default function ScheduleKeyValueListAttStatistic(props: {
                                 }
 
                                 return null;
-                            })
-                                .filter(itNNil)
-                                .join('\n- ');
-                    }
+                            }).filter(itNNil).map(mapSetItemNumber).join('\n') + '\n';
 
                     return text;
-                }).join('\n\n');
+                }).join('\n');
             }}
         />
         {!len || <div className="margin-big-gap-v">
