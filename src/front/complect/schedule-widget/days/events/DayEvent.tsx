@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import { useIsRememberExpand } from "../../../expand/useIsRememberExpand";
-import mylib from "../../../my-lib/MyLib";
+import mylib, { MyLib } from "../../../my-lib/MyLib";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../../../useIsRedactArea";
@@ -51,7 +51,7 @@ export default function ScheduleWidgetDayEvent(props: {
 
     const [, isExpand, switchIsExpand] = useIsRememberExpand(selfScope, null, null, isPastEvent || props.isPastDay || !rights.isCanReadTitles);
 
-    const isCanExpandEvent = rights.myUser && rights.isCanReadTitles && !props.redact;
+    const isCanExpandEvent = ((rights.myUser && rights.isCanReadTitles) || (props.event.atts && MyLib.entries(props.event.atts).some((item) => item[0] === '[cm]:coms'))) && !props.redact;
     const isExpandEvent = (isSelfRedact || isExpand) && isCanExpandEvent;
 
     if (!box) return <>Неизвестный шаблон события</>;

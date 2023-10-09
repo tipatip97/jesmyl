@@ -211,7 +211,7 @@ export default function ScheduleWidget({
                                     }}
                                 />}
                             </>}
-                            {rights.myUser === undefined && <StrongButton
+                            {rights.myUser === undefined && rights.auth.level > 0 && <StrongButton
                                 scope={takeScheduleStrongScopeMaker(schedule.w)}
                                 fieldName="addMeByLink"
                                 title="Хочу комментить события"
