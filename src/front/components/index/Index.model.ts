@@ -10,6 +10,7 @@ export interface IndexState {
     errors: Partial<Record<IndexErrorScope, string>>,
     userMessages: UserMessage[],
     statistic: SokiStatistic | null,
+    deviceId: string,
 
     updateRequisites?: Partial<Record<AppName, [
         number, // last content updated ts

@@ -50,14 +50,20 @@ export class SokiServer {
         });
     }
 
-    setVisit(fio: string) {
+    setVisit(fio: string, deviceId?: string, browser?: string) {
         if (this.lastVisit !== new Date().toLocaleDateString()) {
             this.statistic.pastVisits[this.lastVisit] = this.statistic.visits.length;
             this.statistic.visits = [];
             this.lastVisit = new Date().toLocaleDateString();
         }
 
-        this.statistic.visits.push(fio);
+        const date = new Date();
+        this.statistic.visits.push({
+            fio,
+            deviceId,
+            browser,
+            time: `${date.getHours()}:${date.getMinutes()}.${date.getMilliseconds()}`,
+        });
     }
 
     sendStatistic() {
@@ -189,10 +195,10 @@ export class SokiServer {
                                 const passw = eventData.auth.passw;
                                 const secretPassw = passw && smylib.md5(passw);
                                 const auth = eventLogin && secretPassw && sokiAuther.authList?.find(({ login, passw }) => eventLogin === login && secretPassw === passw);
-                                
+
                                 if (auth) {
                                     if (auth.level < 100)
-                                        this.setVisit(auth.fio);
+                                        this.setVisit(auth.fio, eventData.deviceId, eventData.browser);
                                     capsule.auth = auth;
                                     this.send({ authorized: true, appName }, client);
                                     console.info(`Client ${auth.fio ?? '???'} connected`);
@@ -214,7 +220,7 @@ export class SokiServer {
                                 }, client);
                             }
                         } else {
-                            this.setVisit('*unk*');
+                            this.setVisit('*unk*', eventData.deviceId, eventData.browser);
                             this.send({ authorized: false, appName: eventData.appName }, client);
                             console.info('Unknown client connected');
                         }

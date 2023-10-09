@@ -5,6 +5,7 @@ import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
 import Eventer, { EventerCallback, EventerListeners, eventerAlt } from './complect/eventer/Eventer';
 import mylib from './complect/my-lib/MyLib';
+import { takeDeviceId } from './components/index/complect/takeDeviceId';
 import indexStorage from './components/index/indexStorage';
 import { appStorage } from './shared/jstorages';
 
@@ -40,7 +41,13 @@ export class SokiTrip {
         setTimeout(() => this.start(), 500);
     };
 
-    onConnect = async () => this.sendForce({ connect: true }, await this.appName());
+    onConnect = async () => this.sendForce(
+        { connect: true },
+        await this.appName(),
+        '',
+        await takeDeviceId(),
+        navigator.userAgent
+    );
 
     start() {
         this.ws = new WebSocket(`wss://${environment.dns}/websocket/`);
@@ -170,7 +177,7 @@ export class SokiTrip {
         this.pullCurrentAppData(appName);
     }
 
-    async sendForce(body: SokiClientEventBody, appName: SokiAppName, requestId?: string) {
+    async sendForce(body: SokiClientEventBody, appName: SokiAppName, requestId?: string, deviceId?: string, browser?: string) {
         try {
             if (this.ws && this.ws.readyState === this.ws.OPEN) {
                 const sendEvent: SokiClientEvent = {
@@ -178,6 +185,8 @@ export class SokiTrip {
                     body,
                     auth: await indexStorage.get('auth'),
                     appName,
+                    deviceId,
+                    browser,
                 };
 
                 this.ws.send(JSON.stringify(sendEvent));

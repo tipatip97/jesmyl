@@ -59,6 +59,7 @@ export class MyLib extends SMyLib {
 
     randomOf = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
     randomIndex = (arr: unknown[]) => this.randomOf(0, arr.length - 1);
+    randomItem = (arr: unknown[]) => arr[this.randomIndex(arr)];
 
     findLastIndex<Value>(arr?: Value[], cb: ((val: Value, index: number, array: Value[]) => any) = () => false) {
         if (!Array.isArray(arr)) return null;

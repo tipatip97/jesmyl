@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppName, appNames } from "../../../app/App.model";
-import BrutalItem from "../../../complect/brutal-item/BrutalItem";
-import EvaButton from "../../../complect/eva-icon/EvaButton";
-import EvaIcon from "../../../complect/eva-icon/EvaIcon";
-import modalService from "../../../complect/modal/Modal.service";
-import useToast from "../../../complect/modal/useToast";
-import mylib, { MyLib } from "../../../complect/my-lib/MyLib";
-import Noty from "../../../complect/notifications/Noti";
-import useApps from "../../../complect/useApps";
-import { RootState } from "../../../shared/store";
-import { soki } from "../../../soki";
-import di from "../Index.store";
-import PhaseIndexContainer from "../complect/PhaseIndexContainer";
-import { useSelectAuth } from "../useAuth";
+import { AppName, appNames } from "../../../../app/App.model";
+import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
+import EvaButton from "../../../../complect/eva-icon/EvaButton";
+import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
+import modalService from "../../../../complect/modal/Modal.service";
+import useToast from "../../../../complect/modal/useToast";
+import mylib from "../../../../complect/my-lib/MyLib";
+import Noty from "../../../../complect/notifications/Noti";
+import useApps from "../../../../complect/useApps";
+import { RootState } from "../../../../shared/store";
+import { soki } from "../../../../soki";
+import di from "../../Index.store";
+import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
+import { useSelectAuth } from "../../useAuth";
+import { Visits } from "./Visits";
 
 const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 const statisticSelector = (state: RootState) => state.index.statistic;
@@ -86,7 +87,7 @@ export default function IndexSettings() {
         {
           settingsList.length
             ? settingsList.map((button, buttoni) => {
-              return <React.Fragment key={`k-${buttoni}`}>{button}</React.Fragment>
+              return <React.Fragment key={buttoni}>{button}</React.Fragment>
             })
             : <div className="text-center">Раздел пуст</div>
         }
@@ -105,23 +106,7 @@ export default function IndexSettings() {
                 />}
               </div>
             </div>
-            {expands.includes('') && <div className="margin-big-gap-b margin-gap-l color--3">
-              <div className="margin-gap-v color--7">
-                {MyLib.entries(statistic.pastVisits)
-                  .map(([dateStr, val]) => [new Date(dateStr).getTime(), val])
-                  .sort((a, b) => a[0] - b[0])
-                  .map(([ts, val]) => {
-                    return <div key={ts}>
-                      {new Date(ts).toLocaleDateString()}
-                      {' - '}
-                      {val}
-                    </div>;
-                  })}
-              </div>
-              {statistic.visits.map((visitor, visitori) => {
-                return <div key={visitori}>{visitor}</div>;
-              })}
-            </div>}
+            {expands.includes('') && <Visits statistic={statistic} />}
             {appNames.map((appName) => {
               const app = appConfigs[appName];
               if (appName === 'index' || (app.nav.nav.level !== undefined && app.nav.nav.level > auth.level)) return null;
@@ -138,7 +123,7 @@ export default function IndexSettings() {
                   />}
                 </div>
                 {expands.includes(appName) && statistic.usages[appName]?.map((fio, fioi) => {
-                  return <div key={`${fioi}`} className="margin-gap-h">
+                  return <div key={fioi} className="margin-gap-h">
                     {fio
                       ? <span className="color--3">{fio}</span>
                       : <span className="color--ko">Неизвестный</span>}

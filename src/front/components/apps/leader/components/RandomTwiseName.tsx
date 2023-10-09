@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import propsOfClicker from "../../../../complect/clicker/propsOfClicker";
 import modalService from "../../../../complect/modal/Modal.service";
-import { getRandomTwiceName } from "../resources/getRandomTwiceName";
+import { getRandomTwiceName } from "../../../../complect/random-twice-name/getRandomTwiceName";
 
 export default function RandomTwiceName({
   onNameChange,

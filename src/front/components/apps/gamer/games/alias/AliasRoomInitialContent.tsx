@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import TheButton from "../../../../../complect/Button";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import { getRandomTwiceName } from "../../../leader/resources/getRandomTwiceName";
+import { getRandomTwiceName } from "../../../../../complect/random-twice-name/getRandomTwiceName";
 import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
 import useAliasState from "./useAliasState";
 

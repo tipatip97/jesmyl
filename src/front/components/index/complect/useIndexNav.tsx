@@ -6,7 +6,7 @@ import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer"
 import serviceMaster from "../../../complect/service/serviceMaster";
 import { Index } from "../Index";
 import { IndexNavData, IndexStorage } from "../Index.model";
-import IndexSettings from "../parts/Settings";
+import IndexSettings from "../parts/settings/Settings";
 import IndexLogin from "../parts/login/IndexLogin";
 import ScheduleWidgetAlarmScheduleList from "./AlarmScheduleList";
 

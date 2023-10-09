@@ -63,11 +63,18 @@ export type SokiSubscribtionName = 'statistic';
 
 export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
 
+export interface SokiVisitor {
+    fio: string,
+    deviceId?: string,
+    browser?: string,
+    time: string,
+}
+
 export interface SokiStatistic {
     online: number,
     authed: number,
     usages: Partial<Record<SokiAppName, (string | null)[]>>,
-    visits: string[],
+    visits: SokiVisitor[],
     pastVisits: Record<string, number>,
 }
 
@@ -76,6 +83,8 @@ export interface SokiClientEvent {
     body: SokiClientEventBody,
     auth?: LocalSokiAuth,
     appName: SokiAppName,
+    deviceId?: string,
+    browser?: string,
 }
 
 export interface SokiAuthUnitRights { }
@@ -121,5 +130,5 @@ export interface AuthorizeInSystem {
     login: SokiAuthorizationData,
 }
 
-export type SokiServiceCallback = (key: string, value: any, eventData: SokiClientEvent, capsule: SokiCapsule| undefined, client: WebSocket) => Promise<any>;
+export type SokiServiceCallback = (key: string, value: any, eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket) => Promise<any>;
 export type SokiServicePack = Partial<Record<SokiAppName, SokiServiceCallback>>;

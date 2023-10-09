@@ -1,4 +1,4 @@
-import mylib from "../../../../complect/my-lib/MyLib";
+import mylib from "../my-lib/MyLib";
 import * as wordStorage from './randomTwiceNameStorage.json';
 
 const storage = wordStorage as Record<'nouns' | 'pronouns', string[]>;
@@ -11,17 +11,20 @@ export const getRandomTwiceName = (topPronoun?: string | null, topNoun?: string)
     if (/[ыи,]$/.exec(noun)) { // весенний быстрый скоростной учащийся
         pronoun = pronoun
             .replace(/йся$/, 'еся')
+            .replace(/ичий/, 'ичьи')
             .replace(/ый$/, 'ые')
             .replace(/ий$/, 'ие')
             .replace(/ой$/, 'ые');
     } else if (/[аяь:]$/.exec(noun)) {
         pronoun = pronoun
+            .replace(/ичий/, 'ичья')
             .replace(/([жшчщ])[иоы]й/, '$1ая')
             .replace(/ний$/, 'няя')
             .replace(/[иоы]й$/, 'ая');
     } else if (/[оеё.]$/.exec(noun)) {
         pronoun = pronoun
             .replace(/ний$/, 'нее')
+            .replace(/ичий/, 'ичье')
             .replace(/([жшчщ])[иоы]й/, '$1ее')
             .replace(/[иоы]й$/, 'ое');
     }
@@ -29,7 +32,12 @@ export const getRandomTwiceName = (topPronoun?: string | null, topNoun?: string)
     return [pronoun, noun.replace(/[^- а-яё\d"]/ig, '') + (noun.startsWith('"') ? '"' : '')];
 }
 
-// console.info(getRandomTwiceName(null, 'тиндер',).join(' '));
+// console.log(getRandomTwiceName('птичий', 'устройство').join(' '));
+
+// storage.nouns.some((noun, wordi) => {
+//     if (wordi === 141) return true;
+//     console.log(wordi, getRandomTwiceName('лесничий').join(' '));
+// });
 
 // console.info(
 //     JSON.stringify(

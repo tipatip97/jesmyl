@@ -19,28 +19,30 @@ const initialState: IndexState = {
   errors: {},
   statistic: null,
   userMessages: [],
+  deviceId: '',
 };
 
 export const slice = createSlice({
-  name: "index",
+  name: 'index',
   initialState,
   reducers: {
     ...indexStorage.initializators([
       'appVersion',
-      "auth",
-      "currentApp",
-      "errors",
-      "isUseNativeKeyboard",
-      "numModalUpdates",
-      "registeredApps",
-      "rejectedComponents",
-      "rules",
-      "schedules",
-      "statistic",
-      "theme",
-      "updateRequisites",
-      "updateOnRefresher",
-      "userMessages",
+      'auth',
+      'currentApp',
+      'errors',
+      'isUseNativeKeyboard',
+      'numModalUpdates',
+      'registeredApps',
+      'rejectedComponents',
+      'rules',
+      'schedules',
+      'statistic',
+      'theme',
+      'updateRequisites',
+      'updateOnRefresher',
+      'userMessages',
+      'deviceId',
     ]),
     setError: (state, action: PayloadAction<IndexStateError>) => {
       if (action.payload.scope) {
@@ -51,7 +53,7 @@ export const slice = createSlice({
     },
     isUseNativeKeyboard: (state, action: PayloadAction<boolean | und>) => {
       state.isUseNativeKeyboard = action.payload ?? !state.isUseNativeKeyboard;
-      indexStorage.set("isUseNativeKeyboard", state.isUseNativeKeyboard);
+      indexStorage.set('isUseNativeKeyboard', state.isUseNativeKeyboard);
     },
     riseUpModalUpdates: (state) => {
       state.numModalUpdates++;

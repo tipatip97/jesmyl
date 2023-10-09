@@ -3,7 +3,7 @@ import { ClientExecutionDict } from "../../../../complect/exer/Exer.model";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { TeamGameImportable } from "../Leader.model";
 import { leaderExer } from "../Leader.store";
-import { getRandomTwiceName } from "../resources/getRandomTwiceName";
+import { getRandomTwiceName } from "../../../../complect/random-twice-name/getRandomTwiceName";
 import { LeaderContextCreatable, LeaderContextImportable } from "./contexts/Contexts.model";
 import { GameTeamExportable } from "./games/teams/GameTeams.model";
 import { GameTimerConfigurable, GameTimerImportable, GameTimerImportableWithStrongConfigurable, GameTimerMode, GameTimerSortDirection, RateSortedItem } from "./games/timers/GameTimer.model";
