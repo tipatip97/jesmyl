@@ -822,7 +822,7 @@ const config: FilerAppConfig = {
                                                 C: {
                                                     value: [0, ''],
                                                 },
-                                                '/[2 === {itemMi}]': {
+                                                '/{itemMi}': {
                                                     scopeNode: 'itemMi',
                                                     args: {
                                                         itemMi: '#Number',
