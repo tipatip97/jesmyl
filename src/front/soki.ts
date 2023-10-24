@@ -41,13 +41,17 @@ export class SokiTrip {
         setTimeout(() => this.start(), 500);
     };
 
-    onConnect = async () => this.sendForce(
-        { connect: true },
-        await this.appName(),
-        '',
-        await takeDeviceId(),
-        navigator.userAgent
-    );
+    onConnect = async () => {
+        const date = new Date();
+        
+        this.sendForce(
+            { connect: true },
+            await this.appName(),
+            '',
+            await takeDeviceId(),
+            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}\n${navigator.userAgent}`
+        );
+    };
 
     start() {
         this.ws = new WebSocket(`wss://${environment.dns}/websocket/`);
@@ -177,7 +181,7 @@ export class SokiTrip {
         this.pullCurrentAppData(appName);
     }
 
-    async sendForce(body: SokiClientEventBody, appName: SokiAppName, requestId?: string, deviceId?: string, browser?: string) {
+    async sendForce(body: SokiClientEventBody, appName: SokiAppName, requestId?: string, deviceId: string = '', browser?: string) {
         try {
             if (this.ws && this.ws.readyState === this.ws.OPEN) {
                 const sendEvent: SokiClientEvent = {

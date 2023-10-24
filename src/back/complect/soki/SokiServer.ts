@@ -51,18 +51,19 @@ export class SokiServer {
     }
 
     setVisit(fio: string, deviceId?: string, browser?: string) {
-        if (this.lastVisit !== new Date().toLocaleDateString()) {
+        const date = new Date();
+
+        if (this.lastVisit !== date.toLocaleDateString()) {
             this.statistic.pastVisits[this.lastVisit] = this.statistic.visits.length;
             this.statistic.visits = [];
-            this.lastVisit = new Date().toLocaleDateString();
+            this.lastVisit = date.toLocaleDateString();
         }
 
-        const date = new Date();
         this.statistic.visits.push({
             fio,
             deviceId,
             browser,
-            time: `${date.getHours()}:${date.getMinutes()}.${date.getMilliseconds()}`,
+            time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}`,
         });
     }
 
@@ -74,12 +75,12 @@ export class SokiServer {
         this.statistic.online = 0;
         this.statistic.usages = {};
 
-        sokiServer.capsules.forEach((capsule) => {
+        this.capsules.forEach((capsule) => {
             this.statistic.online++;
             if (capsule.auth) this.statistic.authed++;
             if (capsule.appName) {
                 if (this.statistic.usages[capsule.appName] === undefined) this.statistic.usages[capsule.appName] = [];
-                this.statistic.usages[capsule.appName]!.push(capsule.auth?.fio || null);
+                this.statistic.usages[capsule.appName]!.push(`${capsule.auth?.fio || '*unk*'} ${capsule.deviceId}`);
             }
         });
 
@@ -143,7 +144,7 @@ export class SokiServer {
     };
 
     private connect(client: WebSocket) {
-        this.capsules.set(client, { auth: null });
+        this.capsules.set(client, { auth: null, deviceId: '' });
     }
 
     start() {
@@ -200,6 +201,7 @@ export class SokiServer {
                                     if (auth.level < 100)
                                         this.setVisit(auth.fio, eventData.deviceId, eventData.browser);
                                     capsule.auth = auth;
+                                    capsule.deviceId = eventData.deviceId;
                                     this.send({ authorized: true, appName }, client);
                                     console.info(`Client ${auth.fio ?? '???'} connected`);
 

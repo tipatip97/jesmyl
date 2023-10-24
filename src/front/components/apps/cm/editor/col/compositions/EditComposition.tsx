@@ -12,6 +12,7 @@ import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorCo
 import "./EditComposition.scss";
 import { useEditableCcom } from "./useEditableCcom";
 import useAuth from "../../../../../index/useAuth";
+import useConnectionState from "../../../../../index/useConnectionState";
 
 export default function EditComposition({
   outletContent,
@@ -23,6 +24,7 @@ export default function EditComposition({
   const { exec } = useExer(cmExer);
   const [isOpenPlayer, setIsOpenPlayer] = useState(false);
   const auth = useAuth();
+  const connectionNode = useConnectionState('margin-gap');
 
   if (!ccom) return null;
 
@@ -30,11 +32,14 @@ export default function EditComposition({
     <PhaseCmEditorContainer
       topClass="edit-composition"
       headTitle={`#${ccom.number} ${ccom.initialName || ccom.name}`}
-      head={<EvaButton
-        name={isOpenPlayer ? 'music' : 'music-outline'}
-        className="margin-gap"
-        onClick={() => setIsOpenPlayer(!isOpenPlayer)}
-      />}
+      head={<>
+        {connectionNode}
+        <EvaButton
+          name={isOpenPlayer ? 'music' : 'music-outline'}
+          className="margin-gap"
+          onClick={() => setIsOpenPlayer(!isOpenPlayer)}
+        />
+      </>}
       content={
         ccom.col.removed ? (
           <div className="flex column">

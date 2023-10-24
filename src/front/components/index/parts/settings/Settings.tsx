@@ -13,8 +13,9 @@ import { RootState } from "../../../../shared/store";
 import { soki } from "../../../../soki";
 import di from "../../Index.store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
-import { useSelectAuth } from "../../useAuth";
+import useAuth, { useDeviceId } from "../../useAuth";
 import { Visits } from "./Visits";
+import useConnectionState from "../../useConnectionState";
 
 const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 const statisticSelector = (state: RootState) => state.index.statistic;
@@ -24,7 +25,8 @@ const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'ч�
 let pushTimestampDir = 0;
 
 export default function IndexSettings() {
-  const auth = useSelectAuth();
+  const auth = useAuth();
+  const deviceId = useDeviceId();
   const dispatch = useDispatch();
   const isUseNativeKeyboard = useSelector(isUseNativeKeyboardSelector);
   const statistic = useSelector(statisticSelector);
@@ -77,11 +79,13 @@ export default function IndexSettings() {
       }}
     />,
   ].filter((isShow) => isShow);
+  const connectionNode = useConnectionState('margin-gap');
 
   return (
     <PhaseIndexContainer
       topClass="index-settings"
       headTitle="Настройки"
+      head={connectionNode}
       content={<>
         {modalNode}
         {
@@ -125,7 +129,7 @@ export default function IndexSettings() {
                 {expands.includes(appName) && statistic.usages[appName]?.map((fio, fioi) => {
                   return <div key={fioi} className="margin-gap-h">
                     {fio
-                      ? <span className="color--3">{fio}</span>
+                      ? <span className={'color--3' + (fio?.includes(deviceId) ? ' text-underline' : '')}>{fio}</span>
                       : <span className="color--ko">Неизвестный</span>}
                   </div>;
                 })}

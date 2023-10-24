@@ -3,7 +3,7 @@ import EvaIcon from "../../complect/eva-icon/EvaIcon";
 import { ThrowEvent } from "../../complect/eventer/ThrowEvent";
 import { soki } from "../../soki";
 
-export default function useConnectionState() {
+export default function useConnectionState(className?: string) {
     const [isConnected, setIsConnected] = useState(true);
     const [isOnline, setIsOnline] = useState(true);
     const [isFocused, setIsFocused] = useState(true);
@@ -28,8 +28,8 @@ export default function useConnectionState() {
             ? null
             : <EvaIcon
                 name="loader-outline"
-                className="rotate"
+                className={'rotate ' + className}
                 onClick={() => soki.ping(() => setIsConnected(true))}
             />
-        : <EvaIcon name="alert-triangle" className="color--ko" />;
+        : <EvaIcon name="alert-triangle" className={'color--ko ' + className} />;
 }

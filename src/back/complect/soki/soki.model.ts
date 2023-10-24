@@ -13,6 +13,7 @@ export const rootDirective = dir.join('/');
 export interface SokiCapsule {
     auth: LocalSokiAuth | null,
     appName?: SokiAppName,
+    deviceId: string,
 }
 
 export interface SokiServerEvent {
@@ -83,7 +84,7 @@ export interface SokiClientEvent {
     body: SokiClientEventBody,
     auth?: LocalSokiAuth,
     appName: SokiAppName,
-    deviceId?: string,
+    deviceId: string,
     browser?: string,
 }
 

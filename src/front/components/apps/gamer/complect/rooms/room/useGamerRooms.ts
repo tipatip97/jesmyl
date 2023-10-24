@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import { RootState } from "../../../../../../shared/store";
-import { useSelectAuth } from "../../../../../index/useAuth";
+import useAuth from "../../../../../index/useAuth";
 import { GamerGameName, GamerRoom, GamerRoomMemberStatus } from "../../../Gamer.model";
 import di, { gamerExer } from "../../../Gamer.store";
 import gamerStorage from "../../../gamerStorage";
@@ -26,7 +26,7 @@ export default function useGamerRooms(offline?: boolean) {
     const roomw = useSelector(roomwSelector);
     const { goTo } = useGamerNav();
     const currentRoom = (roomw && (offline ? offlineRooms : rooms)?.find(({ w }) => roomw === w)) || null;
-    const auth = useSelectAuth();
+    const auth = useAuth();
 
     const canPlayMembers = useMemo(
         () =>
