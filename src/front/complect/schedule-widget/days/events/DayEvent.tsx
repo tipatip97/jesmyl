@@ -107,7 +107,13 @@ export default function ScheduleWidgetDayEvent(props: {
                         topicBox={props.event}
                     />
                 </div>
-                {(isExpand || isRedact) && editIcon}
+                {rights.isCanRedact
+                    ? (isExpand || isRedact) && editIcon
+                    : isCanExpandEvent
+                        ? isExpand
+                            ? <EvaIcon name="chevron-up" />
+                            : <EvaIcon name="chevron-down" />
+                        : null}
             </div>
             {isExpandEvent && <div className="day-event-content no-scrollbar">
                 <div className="sign-line" />

@@ -181,12 +181,7 @@ export default function CmExternalComListAtt({
         {comOrderNode}
         {selectorNode}
         {compositionNode}
-        <div className="flex flex-gap">
-            {value.comws?.length
-                ? <span>Песни</span>
-                : <span>Песен нет</span>}
-
-        </div>
+        {!value.comws?.length && <div>Песен нет</div>}
         {value.comws?.map(comw => {
             const com = cat?.coms.find(com => com.wid === comw);
             if (com === undefined) return null;
