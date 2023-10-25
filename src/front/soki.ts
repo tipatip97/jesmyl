@@ -2,12 +2,15 @@ import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
 import { PullEventValue, SokiAppName, SokiClientEvent, SokiClientEventBody, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
+import * as versionNum from '../back/version.json';
 import { JStorage } from './complect/JStorage';
 import Eventer, { EventerCallback, EventerListeners, eventerAlt } from './complect/eventer/Eventer';
 import mylib from './complect/my-lib/MyLib';
 import { takeDeviceId } from './components/index/complect/takeDeviceId';
 import indexStorage from './components/index/indexStorage';
 import { appStorage } from './shared/jstorages';
+
+const version = { ...versionNum };
 
 export type ResponseWaiterCallback = (ok: ResponseWaiter['ok'], ko?: ResponseWaiter['ko']) => void;
 const info = console.info;
@@ -43,7 +46,7 @@ export class SokiTrip {
 
     onConnect = async () => {
         const date = new Date();
-        
+
         this.sendForce(
             { connect: true },
             await this.appName(),
@@ -190,6 +193,7 @@ export class SokiTrip {
                     auth: await indexStorage.get('auth'),
                     appName,
                     deviceId,
+                    version: version.num,
                     browser,
                 };
 

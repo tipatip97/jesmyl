@@ -4,7 +4,7 @@ import indexStorage from "../indexStorage";
 
 let deviceId: string | und;
 const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.repeat(3).split('');
-const symbols = '@#$%^&+?><|\\/-_*'.repeat(3).split('').concat(letters);
+const symbols = '@#$%^&+=:;.,\'~!?><|\\/-_*'.repeat(3).split('').concat(letters);
 
 const takeRandomSymbols = (take = 3) =>
     Array(take)

@@ -50,7 +50,7 @@ export class SokiServer {
         });
     }
 
-    setVisit(fio: string, deviceId?: string, browser?: string) {
+    setVisit(fio: string, version: number, deviceId?: string, browser?: string) {
         const date = new Date();
 
         if (this.lastVisit !== date.toLocaleDateString()) {
@@ -63,6 +63,7 @@ export class SokiServer {
             fio,
             deviceId,
             browser,
+            version,
             time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}`,
         });
     }
@@ -80,7 +81,7 @@ export class SokiServer {
             if (capsule.auth) this.statistic.authed++;
             if (capsule.appName) {
                 if (this.statistic.usages[capsule.appName] === undefined) this.statistic.usages[capsule.appName] = [];
-                this.statistic.usages[capsule.appName]!.push(`${capsule.auth?.fio || '*unk*'} ${capsule.deviceId}`);
+                this.statistic.usages[capsule.appName]!.push(`${capsule.auth?.fio || '*unk*'} ${capsule.version ? `v${capsule.version}` : '?'} ${capsule.deviceId}`);
             }
         });
 
@@ -144,7 +145,7 @@ export class SokiServer {
     };
 
     private connect(client: WebSocket) {
-        this.capsules.set(client, { auth: null, deviceId: '' });
+        this.capsules.set(client, { auth: null, deviceId: '', version: -1 });
     }
 
     start() {
@@ -199,9 +200,11 @@ export class SokiServer {
 
                                 if (auth) {
                                     if (auth.level < 100)
-                                        this.setVisit(auth.fio, eventData.deviceId, eventData.browser);
+                                        this.setVisit(auth.fio, eventData.version, eventData.deviceId, eventData.browser);
                                     capsule.auth = auth;
                                     capsule.deviceId = eventData.deviceId;
+                                    capsule.version = eventData.version;
+
                                     this.send({ authorized: true, appName }, client);
                                     console.info(`Client ${auth.fio ?? '???'} connected`);
 
@@ -222,7 +225,7 @@ export class SokiServer {
                                 }, client);
                             }
                         } else {
-                            this.setVisit('*unk*', eventData.deviceId, eventData.browser);
+                            this.setVisit('*unk*', eventData.version, eventData.deviceId, eventData.browser);
                             this.send({ authorized: false, appName: eventData.appName }, client);
                             console.info('Unknown client connected');
                         }

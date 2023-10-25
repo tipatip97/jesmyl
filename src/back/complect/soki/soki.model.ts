@@ -14,6 +14,7 @@ export interface SokiCapsule {
     auth: LocalSokiAuth | null,
     appName?: SokiAppName,
     deviceId: string,
+    version: number,
 }
 
 export interface SokiServerEvent {
@@ -66,6 +67,7 @@ export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
 
 export interface SokiVisitor {
     fio: string,
+    version: number,
     deviceId?: string,
     browser?: string,
     time: string,
@@ -85,6 +87,7 @@ export interface SokiClientEvent {
     auth?: LocalSokiAuth,
     appName: SokiAppName,
     deviceId: string,
+    version: number,
     browser?: string,
 }
 
