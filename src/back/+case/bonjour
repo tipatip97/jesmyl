@@ -484,5 +484,53 @@
     "fio": "Natalie GL",
     "login": "2a271be0a0decb71ded17e8612ce91b7",
     "passw": "f0ef20605e2ca7b0e695def65404e0cc"
+  },
+  {
+    "level": 3,
+    "fio": "Alexev8",
+    "login": "448571494e39aba25ddcbfe93f769556",
+    "passw": "bb091d01434515489eb66f7d45f4ae1f"
+  },
+  {
+    "level": 3,
+    "fio": "krimmirk84@mail.ru",
+    "login": "67526a7298197d74de35ac28ec63ddbd",
+    "passw": "b6679092ca7b2487219b5adc7c968c69"
+  },
+  {
+    "level": 3,
+    "fio": "David1230",
+    "login": "63fda0c0a5632d8d47664d52387251b3",
+    "passw": "a2bce5f15e85b25149f35887d7ec1820"
+  },
+  {
+    "level": 3,
+    "fio": "Lenka Terzi",
+    "login": "6807d760a7b5e577c89ca4fa98b2c374",
+    "passw": "08b76e125c809515cc396065949d4c01"
+  },
+  {
+    "level": 3,
+    "fio": "Kisilovvlad",
+    "login": "da85c4d6ec14b0ac254e98f5e356c396",
+    "passw": "897c8fde25c5cc5270cda61425eed3c8"
+  },
+  {
+    "level": 3,
+    "fio": "123",
+    "login": "202cb962ac59075b964b07152d234b70",
+    "passw": "a10b4eda7b1f84fdbd17eb6148962abf"
+  },
+  {
+    "level": 3,
+    "fio": "sonya",
+    "login": "4346e11916fbde332f90dc7d9914b098",
+    "passw": "57b0a185f58afe49bebf71ea1c881239"
+  },
+  {
+    "level": 3,
+    "fio": "alliluya",
+    "login": "842dee09ba6d778920d0c34c17b47b8b",
+    "passw": "ad73d73a44b7128f52eb212cb935fa2a"
   }
 ]
