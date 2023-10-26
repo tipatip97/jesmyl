@@ -331,7 +331,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
     const header = (ord: IExportableOrderTop, style: StyleBlock, numered = true) => {
       const type = style.key.trim();
-      const number = numered
+      const number = numered && ord.v !== 0
         ? groups[type] = groups[type] == null
           ? 1
           : ord.a == null
