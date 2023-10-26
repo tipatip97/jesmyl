@@ -32,7 +32,7 @@ export default function ScheduleWidgetRole({
             </div>)}
             {body(<div>
                 {rights.schedule.ctrl.users.map((user, useri) => {
-                    if ((roleUser && user.login === roleUser.login) || (role.mi === 0 && user.R !== mainRoleRights)) return null;
+                    if ((roleUser && user.login === roleUser.login) || (role.mi === 0 && (user.R ?? rights.schedule.ctrl.defu) !== mainRoleRights)) return null;
 
                     return <StrongEvaButton
                         key={useri}

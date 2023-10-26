@@ -119,6 +119,7 @@ export const customAttUseRights = new ScheduleWidgetRightsCtrl(customAttUseRight
 
 
 export enum ScheduleWidgetRegType {
+    Private = 0,
     Public = 1,
     BeforeRegistration,
     HideContent,

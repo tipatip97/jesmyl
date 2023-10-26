@@ -1,7 +1,6 @@
 import { ScheduleWidgetRightTexts, ScheduleWidgetRightsCtrl } from "../../../../back/apps/index/complect";
 import { StrongControlProps } from "../../strong-control/Strong.model";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
-import { ScheduleWidgetRights } from "../useScheduleWidget";
 import styles from "./Control.module.scss";
 
 export default function ScheduleWidgetRightControlList({

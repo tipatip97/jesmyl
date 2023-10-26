@@ -45,7 +45,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       if (schedule === undefined) return topContextw !== undefined && auth.level > 10;
       const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
       if (myUser === undefined) return false;
-      return scheduleWidgetUserRights.checkIsHasRights(myUser.R, ScheduleWidgetUserRoleRight.Redact);
+      return scheduleWidgetUserRights.checkIsHasRights(myUser.R ?? schedule.ctrl.defu, ScheduleWidgetUserRoleRight.Redact);
     };
 
     return topContextw === undefined

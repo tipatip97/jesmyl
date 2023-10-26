@@ -35,7 +35,7 @@ export default function ScheduleWidgetBindAtts({
     const [appAtts, attRefs] = useScheduleWidgetAppAttsContext();
     const appAttList = MyLib.entries(appAtts);
     const rights = useScheduleWidgetRightsContext();
-    const myUserR = rights.myUser?.R;
+    const myUserR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
 
     const [modalNode, screen] = useModal(({ header, body, footer }, closeModal) => {
         return <>

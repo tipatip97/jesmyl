@@ -32,11 +32,11 @@ export const getRandomTwiceName = (topPronoun?: string | null, topNoun?: string)
     return [pronoun, noun.replace(/[^- а-яё\d"]/ig, '') + (noun.startsWith('"') ? '"' : '')];
 }
 
-// console.log(getRandomTwiceName('птичий', 'устройство').join(' '));
+// console.info(getRandomTwiceName('птичий', 'устройство').join(' '));
 
 // storage.nouns.some((noun, wordi) => {
 //     if (wordi === 141) return true;
-//     console.log(wordi, getRandomTwiceName('лесничий').join(' '));
+//     console.info(wordi, getRandomTwiceName('лесничий').join(' '));
 // });
 
 // console.info(

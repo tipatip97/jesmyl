@@ -211,12 +211,17 @@ export default function ScheduleWidget({
                                     }}
                                 />}
                             </>}
-                            {rights.myUser === undefined && rights.auth.level > 0 && <StrongButton
-                                scope={takeScheduleStrongScopeMaker(schedule.w)}
-                                fieldName="addMeByLink"
-                                title="Хочу комментить события"
-                                className="margin-giant-gap-t"
-                            />}
+                            {rights.myUser === undefined &&
+                                (rights.auth.level > 0
+                                    ? <StrongButton
+                                        scope={takeScheduleStrongScopeMaker(schedule.w)}
+                                        fieldName="addMeByLink"
+                                        title="Хочу комментить события"
+                                        className="margin-giant-gap-t"
+                                    />
+                                    : <div className="margin-big-gap-t">
+                                        Комментировать события могут только регистрированные пользователи
+                                    </div>)}
                             {schedule.days.map((day, dayi) => {
                                 if (dayi === 0 && schedule.withTech && !rights.isCanReadSpecials) return null;
 

@@ -54,8 +54,9 @@ export default function ScheduleWidgetCustomAtt(props: StrongComponentProps<{
         }).filter(itIt);
     const [whoCani, setWhoCani] = useState(WhoCan.No);
     const whoCan = whoCanUnits[whoCani];
-    const myBalance = scheduleWidgetUserRights.rightsBalance(rights.myUser?.R);
-    const isCanRedact = scheduleWidgetUserRights.checkIsCan(rights.myUser?.R, props.tatt.U);
+    const userR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
+    const myBalance = scheduleWidgetUserRights.rightsBalance(userR);
+    const isCanRedact = scheduleWidgetUserRights.checkIsCan(userR, props.tatt.U);
     const isRedact = props.isRedact;
 
     const [setRuleModalNode] = useModal(({ header, body }) => {

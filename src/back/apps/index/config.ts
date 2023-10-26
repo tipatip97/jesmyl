@@ -113,6 +113,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
             user: 0,
         }],
         type: scheduleWidgetRegTypeRights.collectRights(),
+        defu: scheduleWidgetUserRights.collectRights(ScheduleWidgetUserRoleRight.Read),
     },
     lists: {
         cats: [
@@ -162,6 +163,8 @@ const config: FilerAppConfig = {
                     return whenRejButTs;
                 }
 
+                const userR = user.R ?? bag.schedule.ctrl.defu;
+
                 if (exec.args !== undefined) {
                     let tattMi = -1;
 
@@ -175,13 +178,13 @@ const config: FilerAppConfig = {
 
                         if (tattMi >= 0) {
                             const tatt = bag.schedule.tatts.find((tatt) => tatt.mi === tattMi);
-                            if (tatt !== undefined && !scheduleWidgetUserRights.checkIsCan(user.R, tatt.R))
+                            if (tatt !== undefined && !scheduleWidgetUserRights.checkIsCan(userR, tatt.R))
                                 return whenRejButTs;
                         }
                     } catch (error) { }
                 }
 
-                if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials)) {
+                if (!scheduleWidgetUserRights.checkIsHasRights(userR, ScheduleWidgetUserRoleRight.ReadSpecials)) {
                     if (exec.args !== undefined && (
                         (bag.schedule.withTech === 1 && exec.args.dayi === 0)
                         || exec.args.$$vars?.$$event?.secret === 1)
@@ -191,7 +194,7 @@ const config: FilerAppConfig = {
 
                 if (rule.RRej == null) return null;
 
-                return scheduleWidgetUserRights.checkIsHasRights(user.R, rule.RRej)
+                return scheduleWidgetUserRights.checkIsHasRights(userR, rule.RRej)
                     ? null
                     : whenRejButTs;
             },
@@ -212,6 +215,7 @@ const config: FilerAppConfig = {
                                     roles: emptyArray,
                                     users: emptyArray,
                                     type: schedule.ctrl.type,
+                                    defu: schedule.ctrl.defu,
                                 },
                             });
 
@@ -240,6 +244,7 @@ const config: FilerAppConfig = {
                                         roles: emptyArray,
                                         users: schedule.ctrl.users,
                                         type: schedule.ctrl.type,
+                                        defu: schedule.ctrl.defu,
                                     },
                                 });
                             }
@@ -263,6 +268,7 @@ const config: FilerAppConfig = {
                                     roles: emptyArray,
                                     users: emptyArray,
                                     type: schedule.ctrl.type,
+                                    defu: schedule.ctrl.defu,
                                 }
                             };
                         }
@@ -283,11 +289,14 @@ const config: FilerAppConfig = {
                                 roles: emptyArray,
                                 users: emptyArray,
                                 type: schedule.ctrl.type,
+                                defu: schedule.ctrl.defu,
                             },
                         };
                     }
 
-                    if ((user.R === undefined || user.R === 0)
+                    const userR = user.R ?? schedule.ctrl.defu;
+
+                    if ((userR === undefined || userR === 0)
                         && scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public)
                         && (!scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)
                             || !scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.HideContent))
@@ -304,11 +313,12 @@ const config: FilerAppConfig = {
                                 roles: emptyArray,
                                 users: user === undefined ? emptyArray : [user],
                                 type: schedule.ctrl.type,
+                                defu: schedule.ctrl.defu,
                             }
                         };
                     }
 
-                    if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read)) {
+                    if (!scheduleWidgetUserRights.checkIsHasRights(userR, ScheduleWidgetUserRoleRight.Read)) {
                         return {
                             ...schedule,
                             days: emptyArray,
@@ -322,11 +332,12 @@ const config: FilerAppConfig = {
                                 roles: emptyArray,
                                 users: user === undefined ? emptyArray : [user],
                                 type: schedule.ctrl.type,
+                                defu: schedule.ctrl.defu,
                             },
                         };
                     }
 
-                    if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles)) {
+                    if (!scheduleWidgetUserRights.checkIsHasRights(userR, ScheduleWidgetUserRoleRight.ReadTitles)) {
                         return {
                             ...schedule,
                             days: schedule.days.map(mapCantReadTitlesDay),
@@ -338,11 +349,12 @@ const config: FilerAppConfig = {
                                 roles: emptyArray,
                                 users: schedule.ctrl.users,
                                 type: schedule.ctrl.type,
+                                defu: schedule.ctrl.defu,
                             }
                         };
                     }
 
-                    if (!scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials)) {
+                    if (!scheduleWidgetUserRights.checkIsHasRights(userR, ScheduleWidgetUserRoleRight.ReadSpecials)) {
                         return {
                             ...schedule,
                             days: schedule.days.map(
@@ -355,6 +367,7 @@ const config: FilerAppConfig = {
                                 roles: emptyArray,
                                 users: schedule.ctrl.users,
                                 type: schedule.ctrl.type,
+                                defu: schedule.ctrl.defu,
                             }
                         };
                     }
@@ -446,6 +459,14 @@ const config: FilerAppConfig = {
                                 }
                             }
                         },
+                        '/defu': {
+                            U: {
+                                RRej: true,
+                                args: {
+                                    value: '#Number',
+                                }
+                            }
+                        },
                         '/cats': {
                             scopeNode: 'categories',
                             C: {
@@ -474,7 +495,6 @@ const config: FilerAppConfig = {
                                     value: {
                                         fio: '{*fio}',
                                         login: '{*login}',
-                                        R: scheduleWidgetUserRights.collectRights(ScheduleWidgetUserRoleRight.Read),
                                     },
                                 },
                             },

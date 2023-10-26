@@ -15,7 +15,7 @@ export default function ScheduleWidgetDayEventAtts(props: StrongComponentProps<{
 }>) {
     const [appAtts] = useScheduleWidgetAppAttsContext();
     const rights = useScheduleWidgetRightsContext();
-    const myUserR = rights.myUser?.R;
+    const myUserR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
     const atts = MyLib.entries(props.event.atts);
 
     MyLib.entries(props.typeBox.atts).forEach((attEntry) => {

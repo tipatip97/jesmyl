@@ -1,4 +1,5 @@
 import { SokiAppName } from "../../../complect/soki/soki.model";
+import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight } from "../rights";
 
 
 export interface ScheduleStorage<EvaIconName> {
@@ -71,7 +72,8 @@ export interface IScheduleWidgetCtrl<EvaIconName> {
     cats: string[],
     roles: IScheduleWidgetRole<EvaIconName>[],
     users: IScheduleWidgetUser[],
-    type: number,
+    type: ScheduleWidgetRegType,
+    defu: ScheduleWidgetUserRoleRight,
 }
 
 export interface IScheduleWidgetDayEvent {

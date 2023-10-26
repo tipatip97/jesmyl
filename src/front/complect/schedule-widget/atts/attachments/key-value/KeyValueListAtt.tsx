@@ -45,6 +45,8 @@ export default function ScheduleKeyValueListAtt({
     let exclusiveUsers: IScheduleWidgetUser[] = [];
     let exclusiveLists: IScheduleWidgetListUnit[] | und;
     let exclusiveRoles: IScheduleWidgetRole[] | und;
+    
+    const userR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
 
     if (isRedact) {
         checkboxes = customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Checkboxes)
@@ -239,7 +241,7 @@ export default function ScheduleKeyValueListAtt({
                                         className="self-start relative z-index:15"
                                         cud="U"
                                         name={key ? 'checkmark-square-outline' : 'square-outline'}
-                                        isCanSend={!!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U)}
+                                        isCanSend={!!scope && customAttUseRights.checkIsCan(userR, att.U)}
                                     />
                                     {mylib.isNum(value) && <KeyValueListAttNumberMember value={value} />}
                                 </div>
@@ -270,7 +272,7 @@ export default function ScheduleKeyValueListAtt({
                                 />}
                         </>}
                     </div>
-                    {isRedact && !!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U) &&
+                    {isRedact && !!scope && customAttUseRights.checkIsCan(userR, att.U) &&
                         <div className={'flex flex-gap' + (mylib.isStr(value) ? ' margin-giant-gap-r' : '')}>
                             {itema.length > 1 && <StrongEvaButton
                                 scope={attScope}
@@ -311,7 +313,7 @@ export default function ScheduleKeyValueListAtt({
                             ? <div>
                                 {value?.map((val, vali, vala) => {
                                     return <div key={vali}>
-                                        {!!scope && customAttUseRights.checkIsCan(rights.myUser?.R, att.U) &&
+                                        {!!scope && customAttUseRights.checkIsCan(userR, att.U) &&
                                             <div className="flex flex-gap">
                                             <span className="flex self-start">{vali + 1}.</span>
                                                 {vala.length > 1 && <StrongEvaButton
