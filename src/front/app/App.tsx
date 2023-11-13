@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ABSOLUTE__BOTTOM__POPUP } from "../complect/absolute-popup/useAbsoluteBottomPopup";
 import { ABSOLUTE__FLOAT__POPUP } from "../complect/absolute-popup/useAbsoluteFloatPopup";
@@ -6,6 +6,7 @@ import EvaIcon from "../complect/eva-icon/EvaIcon";
 import { FULLSCREEN__CONTENT } from "../complect/fullscreen-content/useFullscreenContent";
 import JesmylLogo from "../complect/jesmyl-logo/JesmylLogo";
 import { KEYBOARD_FLASH } from "../complect/keyboard/KeyboardInput";
+import { KeyboardInputStorage } from "../complect/keyboard/KeyboardStorage";
 import Modal from "../complect/modal/Modal";
 import { crossApplicationLinkCoder, jesmylHostName } from "../complect/qr-code/QRCodeMaster";
 import listenThemeChanges from "../complect/theme-changer";
@@ -74,6 +75,19 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, emptyArr);
 
+  const onOpen = useCallback((close: () => boolean) => registerBackAction(() => close()), [registerBackAction]);
+  const keyboardProps = useMemo(() => {
+    return {
+      onFocus: (input: KeyboardInputStorage | nil) => {
+        setKeyboardOpen(true);
+        registerBackAction(() => !input || input.blur());
+      },
+      onBlur: () => {
+        setKeyboardOpen(false);
+      }
+    };
+  }, [registerBackAction]);
+
   return (
     <div className={`above-container ${keyboardOpen ? "keyboard-open" : ""}`}>
       {isShowLogo && <div className="jesmyl-smile-box flex center absolute full-width full-height z-index:5">
@@ -88,27 +102,13 @@ function App() {
           onClick={() => switchFullscreen(false)}
         />
         <Modal />
-        <FULLSCREEN__CONTENT
-          onOpen={(close) => registerBackAction(() => close())}
-        />
-        <ABSOLUTE__BOTTOM__POPUP
-          onOpen={(close) => registerBackAction(() => close())}
-        />
-        <ABSOLUTE__FLOAT__POPUP
-          onOpen={(close) => registerBackAction(() => close())}
-        />
+        <FULLSCREEN__CONTENT onOpen={onOpen} />
+        <ABSOLUTE__BOTTOM__POPUP onOpen={onOpen} />
+        <ABSOLUTE__FLOAT__POPUP onOpen={onOpen} />
         <AppRouter appName={appName} />
         <AppFooter appName={appName} />
       </div>
-      <KEYBOARD_FLASH
-        onFocus={(input) => {
-          setKeyboardOpen(true);
-          registerBackAction(() => !input || input.blur());
-        }}
-        onBlur={() => {
-          setKeyboardOpen(false);
-        }}
-      />
+      <KEYBOARD_FLASH {...keyboardProps} />
     </div>
   );
 }

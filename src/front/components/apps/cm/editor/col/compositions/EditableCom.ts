@@ -262,7 +262,7 @@ export class EditableCom extends Com {
 
                 const pushTextLines = (chordLinesCount: number) => {
                     for (let i = 0; i < chordLinesCount; i++) {
-                        const lines = textLines.slice(i * chordLinesCount, (i + 1) * chordLinesCount);
+                        const lines = textLines;//.slice(i * chordLinesCount, (i + 1) * chordLinesCount);
                         if (lines.length) unitTextLines.push(lines);
                     }
                 };
@@ -284,9 +284,7 @@ export class EditableCom extends Com {
                     if (chordLinesCount < textLinesCount) {
                         const partsCount = textLinesCount / chordLinesCount;
                         if (partsCount !== Math.trunc(partsCount)) unitTextLines.push(textLines);
-                        else {
-                            pushTextLines(chordLinesCount);
-                        }
+                        else pushTextLines(chordLinesCount);
                     } else unitTextLines.push(textLines);
                 }
 

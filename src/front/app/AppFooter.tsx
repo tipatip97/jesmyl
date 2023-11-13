@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import EvaIcon from "../complect/eva-icon/EvaIcon";
 import { ExerStorage } from "../complect/exer/Exer.model";
 import { INavigationConfig } from "../complect/nav-configurer/Navigation.model";
@@ -6,6 +7,8 @@ import useAuth from "../components/index/useAuth";
 import { RoutePhasePoint } from "../components/router/Router.model";
 import navConfigurers from "../shared/navConfigurers";
 import { AppName } from "./App.model";
+
+const docTitle = document.title;
 
 export default function AppFooter({ appName }: { appName: AppName }) {
   const { nav, route, navigate } = navConfigurers[appName]();
@@ -50,6 +53,16 @@ export default function AppFooter({ appName }: { appName: AppName }) {
       );
     });
   };
+
+  useEffect(() => {
+    const [phase] = indexRoute || route || [];
+    const routes = indexRoute ? indexNav.nav.routes : route ? nav.nav.routes : [];
+    const footerRoute = routes.find((route) => route.phase[0] === phase);
+    
+    if (!footerRoute) return;
+
+    document.title = `${footerRoute.title} - ${docTitle}`;
+  }, [indexNav, indexPhase, indexRoute, nav, route]);
 
   return (
     <div className="footer">

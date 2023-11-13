@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactNode, memo, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import propsOfClicker from "../clicker/propsOfClicker";
@@ -191,7 +191,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
   );
 }
 
-export function KEYBOARD_FLASH({
+export const KEYBOARD_FLASH = memo(function ({
   onBlur,
   onFocus,
 }: {
@@ -300,12 +300,12 @@ export function KEYBOARD_FLASH({
             {keyboardNumberScreenLines.map((line, linei) => {
               return (
                 <div
-                  key={`line-nums-${linei}`}
+                  key={linei}
                   className="keyboard-flash-line number-type"
                 >
                   {line.map((key, keyi) => {
                     return (
-                      <React.Fragment key={`key-num-${keyi}`}>
+                      <React.Fragment key={keyi}>
                         {keyNode("writable", key)}
                       </React.Fragment>
                     );
@@ -344,7 +344,7 @@ export function KEYBOARD_FLASH({
               currentInput.event.shiftKey ? "upper" : "lower"
             ].map((line, linei) => {
               return (
-                <div key={`line-${linei}`} className="keyboard-flash-line">
+                <div key={linei} className="keyboard-flash-line">
                   {linei === 3
                     ? keyNode(
                       `shift-key ${currentInput.isCapsLock ? "caps-lock" : ""
@@ -369,7 +369,7 @@ export function KEYBOARD_FLASH({
                     : null}
                   {line.map((key, keyi) => {
                     return (
-                      <React.Fragment key={`key-${keyi}`}>
+                      <React.Fragment key={keyi}>
                         {keyNode("writable", key)}
                       </React.Fragment>
                     );
@@ -500,4 +500,4 @@ export function KEYBOARD_FLASH({
       ) : null}
     </div>
   );
-}
+});

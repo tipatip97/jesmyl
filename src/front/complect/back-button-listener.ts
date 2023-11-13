@@ -1,6 +1,6 @@
 let isFirst = true;
-if (window.location.hash === '#;J') window.location.hash = ':J';
-else window.location.hash = ';J';
+if (window.location.hash === '#Jesmyl') window.location.hash = 'Jеsmyl';
+else window.location.hash = 'Jesmyl';
 
 window.addEventListener('load', () => window.history.pushState({}, ''));
 
@@ -10,12 +10,15 @@ window.addEventListener('popstate', () => {
     else next();
 });
 
-const listeners: Record<string, () => void> = {};
+const listeners: (() => void)[] = [];
 const next = () => Object.values(listeners).forEach(listener => listener());
 
 const onBackButton = {
-    listen: (name: string, listener: () => void) => listeners[name] = listener,
-    mute: (name: string) => { delete listeners[name] },
+    listen: (listener: () => void) => {
+        listeners.push(listener);
+        return () => onBackButton.mute(listener);
+    },
+    mute: (listener: () => void) => { listeners.splice(listeners.indexOf(listener), 1) },
 };
 
 export default onBackButton;
