@@ -7,6 +7,7 @@ import { GamerGameName, GamerNavData, GamerRoom } from "../../Gamer.model";
 import useGamerNav, { GamerRoomGameSkelet } from "../../useGamerNav";
 import GamerRoomMemberList from "../GamerRoomMemberList";
 import PhaseGamerContainer from "../PhaseGamerContainer";
+import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 
 export default function GamerRoomContent({ config, isInactive, isManager, isOwner, room, onRoomRemove, games, onGameChange, namePrefix }: {
   config: NavigationThrowNodeProps<GamerNavData>,
@@ -34,6 +35,13 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
   return <PhaseGamerContainer
     topClass="gamer-room"
     headTitle={`${namePrefix || ''}Комната ${room?.name ? ` - ${room.name}` : ""}`}
+    head={((gameData) => gameData &&
+      <EvaButton
+        name={gameData.icon}
+        className="color--7 margin-gap-r"
+        postfix={gameData.title}
+      />)
+      (games.find(({ phase: [gameName] }) => room?.currentGame === gameName)?.data)}
     onMoreClick={isManager
       ? () => {
         openAbsoluteBottomPopup(
@@ -99,13 +107,7 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
                       </>
                       : null}
                   </>
-                  : (
-                    (gameData) => gameData &&
-                      <h2 className="flex center flex-gap">
-                        <EvaIcon name={gameData.icon} />
-                        {gameData.title}
-                      </h2>)
-                    (games.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data)}
+                  : null}
                 {config.outletContent}
               </>}
           </>}
