@@ -1,7 +1,7 @@
 import { ActionBoxSetSystems } from "../../models";
-import { SokiAppName } from "../soki/soki.model";
+import { LocalSokiAuth, SokiAppName } from "../soki/soki.model";
 
-export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | 'func' | 'migrate' | 'insert_beforei' | 'remove' | 'remove_each' | 'delete' | 'other';
+export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | '' | 'migrate' | 'insert_beforei' | 'remove' | 'remove_each' | 'delete' | 'other';
 
 export interface ExecutionDict<Value = any, Args = ExecutionArgs<any, Value>> {
     action: string,
@@ -10,6 +10,18 @@ export interface ExecutionDict<Value = any, Args = ExecutionArgs<any, Value>> {
     prev?: Value,
     args?: Args,
     corrects?: unknown,
+    delay?: ExecuteReplaceableField<number>,
+}
+
+export interface ExecuteDoItProps {
+    method: ExecutionMethod,
+    target: any,
+    penultimate: any,
+    lastTrace: string | number,
+    value: any,
+    realArgs?: ExecutionArgs,
+    auth?: LocalSokiAuth | null,
+    uniqs?: string[] | Record<string, string>,
 }
 
 export interface ExecuteFeedbacks {
@@ -23,13 +35,15 @@ export type ExecutionRuleTrackBeat = string | [string, string, any] | [string, s
 export type ExecutionTrack = ExecutionRuleTrackBeat[];
 export type ExecutionTrackTail = [number, ExecutionTrack];
 
-export type ExecutionSidesDict = Record<`/${string}`, ExecutionSide>;
+export type ExecutionSidesDict = Record<`/${any}`, ExecutionSide>;
 
 export interface BasicRule {
     method: ExecutionMethod,
-    value?: unknown,
+    value?: ((props: ExecutionArgs | null) => any) | string | number | null | any[] | {},
     args?: ExecutionArgs,
 }
+
+export type ExecuteReplaceableField<Ret, Join = Ret> = Join | `{${string}}` | ((props: ExecutionArgs | null) => Ret | void);
 
 export interface ExecutionSide extends BasicRule, Partial<ExecutionSidesDict> {
     trackTail?: ExecutionTrackTail,
@@ -56,18 +70,20 @@ export type ExecutionExpectations = [number, {} | []][];
 
 export type ExecuterSetInEachValueItem = Record<string, Record<string, unknown>>;
 
-export type ExecutionArgs<Value = unknown, Args = Record<string, unknown>, Vars = Partial<Record<string, unknown>>> = Partial<
+export type ExecutionArgs<Value = unknown, Args = Record<string, any>, Vars = Partial<Record<string, any> & Record<'$$currentValue', any>>> = Partial<
     Args
     & Record<'$$vars', Vars>
     & Record<'value', Value>
 >;
+
+export type RealAccumulatableRuleSides = ExecutionSide[] | ((realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) => ExecutionSide[] | undefined);
 
 export interface RealAccumulatableRule<Value = unknown, Args = Record<string, unknown>, Vars = Partial<Record<string, unknown>>> {
     scopeNode?: string,
     expecteds?: ExecutionExpectations,
     args?: ExecutionArgs<Value, Args, Vars>,
     track: ExecutionTrack,
-    sides?: ExecutionSide[],
+    sides?: RealAccumulatableRuleSides,
     accesses: string[],
     setInEachValueItem?: ExecuterSetInEachValueItem,
     RRej?: boolean | number,
@@ -85,12 +101,13 @@ export interface ShortRealRule<Value = unknown, Args = Record<string, unknown>, 
 
 export interface ExecutionReal<Value = unknown, Args = Record<string, unknown>, Vars = Partial<Record<string, unknown>>> extends RealAccumulatableRule<Value, Args, Vars>, ShortRealRule<Value, Args, Vars> {
     method: ExecutionMethod,
-    value: any,
+    value: any | ((props: ExecuteDoItProps) => any),
     uniqs?: string[] | Record<string, string>,
     fix: ExecutionRuleTrackBeat,
     fixedAccesses?: FixedAccesses,
     setSystems?: ActionBoxSetSystems[],
     setItemSystems?: ActionBoxSetSystems[],
+    delay?: ExecuteReplaceableField<number>,
 }
 
 export type FixedAccesses = { track: ExecutionTrack, tail: Record<string, ExecutionTrack> }[];

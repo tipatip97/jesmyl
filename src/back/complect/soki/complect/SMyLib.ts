@@ -29,6 +29,34 @@ export class SMyLib {
     static keys<T>(obj: T): T extends Record<infer Key, any> ? Key[] : string[] {
         return Object.keys(obj || {}) as never;
     }
+    
+    func(...funcs: any[]) {
+        const self = this;
+        const call = (...args: any[]) => {
+            const func = funcs.find(this.isFunc);
+            return func && func.apply(this, ...args);
+        };
+
+        return {
+            call(...args: any[]) { return call(args); },
+            invoke(func: Function) { return call([].concat(self.isFunc(func) ? func() : [])); }
+        };
+    }
+
+    mapFilter = <Item, Val>(items: Item[], cb: (item: Item, index: number, items: Item[]) => Val | undefined): Exclude<Val, undefined>[] => {
+        const result: Exclude<Val, undefined>[] = [];
+
+        for (let i = 0; i < items.length; i++) {
+            const val = cb(items[i], i, items);
+            if (val !== undefined) result.push(val as never);
+        }
+
+        return result;
+    }
+    
+    randomOf = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+    randomIndex = (arr: unknown[]) => this.randomOf(0, arr.length - 1);
+    randomItem = <Item>(arr: Item[]) => arr[this.randomIndex(arr)];
 
     explode(separator: string, string: string, lim?: number) {
         const limit = lim && Math.abs(lim);

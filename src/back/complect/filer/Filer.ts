@@ -8,8 +8,6 @@ import smylib, { SMyLib } from '../soki/complect/SMyLib';
 import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName, SokiClientUpdateCortage } from '../soki/soki.model';
 import { FilerAppConfig, FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, FilerWatcher, SimpleKeyValue } from './Filer.model';
 
-type nil = null | undefined;
-
 export class Filer {
   contents = {} as FilerContents;
   private watcher: FilerWatcher = () => { };

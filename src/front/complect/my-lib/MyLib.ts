@@ -31,19 +31,6 @@ export class MyLib extends SMyLib {
     dayFullTitles = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
     dayShortTitles = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 
-    func(...funcs: any[]) {
-        const self = this;
-        const call = (...args: any[]) => {
-            const func = funcs.find(this.isFunc);
-            return func && func.apply(this, ...args);
-        };
-
-        return {
-            call(...args: any[]) { return call(args); },
-            invoke(func: Function) { return call([].concat(self.isFunc(func) ? func() : [])); }
-        };
-    }
-
     def(...args: any[]): any {
         const res = args.find(some => some != null);
         return res == null ? args[args.length - 1] : res;
@@ -56,10 +43,6 @@ export class MyLib extends SMyLib {
         const arg = args.find((arg, argi) => argi && this.typeOf(arg) === type);
         return arg == null ? args[0] : arg;
     }
-
-    randomOf = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
-    randomIndex = (arr: unknown[]) => this.randomOf(0, arr.length - 1);
-    randomItem = (arr: unknown[]) => arr[this.randomIndex(arr)];
 
     findLastIndex<Value>(arr?: Value[], cb: ((val: Value, index: number, array: Value[]) => any) = () => false) {
         if (!Array.isArray(arr)) return null;

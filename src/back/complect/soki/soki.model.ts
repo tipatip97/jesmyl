@@ -40,8 +40,6 @@ export interface SokiServerEvent {
     statistic?: SokiStatistic,
 }
 
-type nil = undefined | null;
-
 export type SokiClientUpdateCortage = [
     number | nil, // index last update
     string | nil, // index short rules JSON md5

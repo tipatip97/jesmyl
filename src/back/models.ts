@@ -1,5 +1,8 @@
-import { ExecutionArgs, ExecutionMethod, ExecutionSidesDict, ExecutionTrack } from "./complect/executer/Executer.model";
+import { ExecuteReplaceableField, ExecutionArgs, ExecutionMethod, ExecutionSidesDict, ExecutionTrack } from "./complect/executer/Executer.model";
+import { LocalSokiAuth } from "./complect/soki/soki.model";
 import { actionBoxSetSystems } from "./values";
+
+export type ActionBoxSide = ExecutionSidesDict | ((realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) => ExecutionSidesDict);
 
 export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Partial<Record<`<${string}>`, ActionBox>> {
     level?: number,
@@ -9,7 +12,7 @@ export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Par
     access?: string,
     uniqs?: string[],
     fixAccesses?: Record<string, ExecutionTrack>,
-    side?: ExecutionSidesDict,
+    side?: ActionBoxSide,
     expected?: [] | {},
     setInEachValueItem?: Record<string, Record<string, unknown>>,
     isSequre?: boolean,
@@ -22,8 +25,9 @@ export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Par
     $$var?: `$$${string}`,
 
     action?: string,
+    delay?: ExecuteReplaceableField<number>,
     method?: ExecutionMethod,
-    value?: any,
+    value?: ExecuteReplaceableField<any, {} | null>,
     args?: ExecutionArgs<string | any[]>,
 };
 
@@ -47,3 +51,19 @@ export type ActionBoxValue<Value> =
     : Value extends {}
     ? { [Key in keyof Value]: ActionBoxValue<Value[Key]> }
     : Value;
+
+
+declare global {
+    type num = 0 | 1;
+    type str = '' | '1';
+    type nil = null | undefined;
+    type und = undefined;
+    type ArrayMapCb<T> = (box: T, boxi: number, boxa: T[]) => T;
+    type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
+    type TimeOut = ReturnType<typeof setTimeout> | und;
+
+    type NonUndefined<T> = T extends undefined ? never : T;
+    type NonNull<T> = T extends null ? never : T;
+    type NonNil<T> = T extends nil ? never : T;
+}
+

@@ -4,7 +4,7 @@ import { actionBoxSetSystems, sequreMD5Passphrase, sokiWhenRejButTs } from "../.
 import { FilerAppConfig, FilerAppConfigActions } from "../filer/Filer.model";
 import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
-import { ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionArgs, ExecutionDict, ExecutionExpectations, ExecutionMethod, ExecutionReal, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, RealAccumulatableRule, ShortRealRule, TrackerRet } from "./Executer.model";
+import { ExecuteDoItProps, ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionArgs, ExecutionDict, ExecutionExpectations, ExecutionReal, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, RealAccumulatableRule, RealAccumulatableRuleSides, ShortRealRule, TrackerRet } from "./Executer.model";
 
 const globs: Record<string, any> = {
     'setNewWid()': () => new Date().getTime() + Math.random(),
@@ -300,7 +300,7 @@ export class Executer {
                         : prefix === '*'
                             ? auth?.[key as never]
                             : realArgs != null
-                                ? realArgs[key] ?? realArgs.$$vars?.[key]
+                                ? realArgs[key] ?? realArgs.$$vars?.[key as '$$currentValue']
                                 : null;
                     return val ?? all ?? '';
                 });
@@ -339,27 +339,36 @@ export class Executer {
                     const accTrack = topRule.track?.concat(track || []) || track;
 
                     const accSides = () => {
-                        const sides: ExecutionSide[] = topRule.sides || [];
-                        const accSides = (accSideTrack: ExecutionRuleTrackBeat[], side?: ExecutionSidesDict) => {
-                            if (!side) return;
-                            SMyLib.entries(side).forEach(([key, side]: [string, ExecutionSide]) => {
-                                const trackedSide = { ...side };
-                                const sideTrack = accSideTrack.concat(this.prepareTrack(key));
+                        const accSides = (side?: ExecutionSidesDict) => {
+                            if (smylib.isFunc(topRule.sides)) return;
 
-                                SMyLib.entries(trackedSide).forEach(([key, val]) => {
-                                    if (key.startsWith('/')) {
-                                        delete trackedSide[key as never];
-                                        accSides(sideTrack, { [key]: val as never });
-                                    }
+                            const sides: ExecutionSide[] = topRule.sides || [];
+                            const accSides = (accSideTrack: ExecutionRuleTrackBeat[], side?: ExecutionSidesDict) => {
+                                if (!side) return;
+                                SMyLib.entries(side).forEach(([key, side]: [string, ExecutionSide]) => {
+                                    const trackedSide = { ...side };
+                                    const sideTrack = accSideTrack.concat(this.prepareTrack(key));
+
+                                    SMyLib.entries(trackedSide).forEach(([key, val]) => {
+                                        if (key.startsWith('/')) {
+                                            delete trackedSide[key as never];
+                                            accSides(sideTrack, { [key]: val as never });
+                                        }
+                                    });
+
+                                    trackedSide.trackTail = [accTrack.length, sideTrack];
+                                    sides.push(trackedSide);
                                 });
+                            };
 
-                                trackedSide.trackTail = [accTrack.length, sideTrack];
-                                sides.push(trackedSide);
-                            });
+                            accSides([], side);
+                            if (sides.length) return sides;
                         };
 
-                        accSides([], box.side);
-                        if (sides.length) return sides;
+                        if (smylib.isFunc(box.side)) {
+                            const side = box.side;
+                            return (props: any) => accSides(side(props));
+                        } else return accSides(box.side);
                     };
 
                     const accRule: RealAccumulatableRule = {
@@ -539,9 +548,19 @@ export class Executer {
         return trackered;
     }
 
-    static execSides(topTrack: ExecutionTrack, sides: ExecutionSide[], contents: Record<string, unknown>, auth?: LocalSokiAuth | null, { shortTitle, title }: { shortTitle?: string, title?: string } = {}) {
+    static execSides(
+        topTrack: ExecutionTrack,
+        sides: RealAccumulatableRuleSides | undefined,
+        contents: Record<string, unknown>,
+        realArgs?: ExecutionArgs,
+        auth?: LocalSokiAuth | null,
+        { shortTitle, title }: { shortTitle?: string, title?: string } = {}
+    ) {
         return new Promise<boolean>((resolve, reject) => {
-            sides.some(({ method, value, args, trackTail }) => {
+            sides = smylib.isFunc(sides) ? this.replaceArgs(sides, realArgs, auth) as never : sides;
+            sides = this.replaceArgs(sides, realArgs, auth);
+
+            sides?.some(({ method, value, args, trackTail }) => {
                 if (trackTail) {
                     const track = topTrack.slice(0, trackTail[0]).concat(trackTail[1]);
                     const { lastTrace, penultimate, target } = this.tracker(track, contents, args, undefined, auth);
@@ -623,7 +642,7 @@ export class Executer {
                     value: exec.value,
                     uniqs: exec.uniqs,
                 }).then((did) => {
-                    if (did && exec.sides) this.execSides(exec.track, exec.sides, contents)
+                    if (did && exec.sides) this.execSides(exec.track, exec.sides, contents, exec.args)
                         .then(() => resolve(fixes))
                         .catch((errorMessage) => reject(errorMessage));
                     else resolve(fixes);
@@ -632,7 +651,7 @@ export class Executer {
         });
     }
 
-    static execute(config: FilerAppConfig, contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null) {
+    static execute(config: FilerAppConfig, contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null, isIgnoreDelay?: boolean) {
         return new Promise<ExecuteFeedbacks>((resolve, reject) => {
             try {
                 const replacedExecs: ExecutionReal[] = [];
@@ -642,17 +661,15 @@ export class Executer {
                 const errors: ExecuteError[] = [];
                 const bag: Record<string, unknown> = {};
 
-                execs.some((exec) => {
+                for (const exec of execs) {
                     const prepRule = config.actions.rules.find((rule) => rule.action === exec.action);
                     if (!prepRule) {
                         errors.push({
                             type: ExecuteErrorType.NoRule,
                             note: exec.action
                         });
-                        return false;
+                        continue;
                     }
-
-                    rules.push(prepRule);
 
                     if (typeof prepRule.track[0] === 'string') {
                         const onCantRead = config.requirements[prepRule.track[0]]?.onCantRead?.(false, exec, prepRule, auth, bag, contents[prepRule.track[0]], sokiWhenRejButTs);
@@ -662,7 +679,7 @@ export class Executer {
                                 note: `Доступ к редактированию ограничен ${smylib.isArr(onCantRead) ? '<333>' : '#' + onCantRead}`,
                             });
 
-                            return true;
+                            break;
                         }
                     }
 
@@ -679,7 +696,7 @@ export class Executer {
                                 note: exec.action,
                             });
 
-                            return true;
+                            break;
                         }
                     }
 
@@ -689,7 +706,7 @@ export class Executer {
                             note: exec.action,
                         });
 
-                        return true;
+                        break;
                     } else {
                         const argErrors = smylib.checkIsCorrectArgs(exec.action, exec.args, prepRule.args);
                         if (argErrors?.length) {
@@ -698,11 +715,20 @@ export class Executer {
                                 note: argErrors.join(';\n'),
                             });
 
-                            return true;
+                            break;
                         }
                     }
 
                     const rule = this.prepareRule(prepRule, exec.value, contents, exec.args, auth);
+
+                    if (!isIgnoreDelay && prepRule.delay !== undefined) {
+                        const delay = this.replaceArgs(prepRule.delay, rule.args, auth);
+                        if (!smylib.isNum(delay)) continue;
+                        setTimeout(() => this.execute(config, contents, [exec], auth, true).then(resolve).catch(reject), delay);
+                        return;
+                    }
+
+                    rules.push(prepRule);
 
                     const note = rule.shortTitle || rule.action;
 
@@ -711,7 +737,7 @@ export class Executer {
                             type: ExecuteErrorType.Sequre,
                             note,
                         });
-                        return true;
+                        break;
                     }
 
                     if (level != null && rule.level && rule.level > level) {
@@ -719,7 +745,7 @@ export class Executer {
                             type: ExecuteErrorType.Level,
                             note,
                         });
-                        return true;
+                        break;
                     }
 
                     if (smylib.isStr(rule.fix) && !fixes.includes(rule.fix)) fixes.push(rule.fix);
@@ -755,15 +781,13 @@ export class Executer {
                                     replacedExecs.push(this.prepareRuleForFeedback(rule));
 
                                     if (rule.sides)
-                                        this.execSides(rule.track, rule.sides, contents, auth, rule)
+                                        this.execSides(rule.track, rule.sides, contents, exec.args, auth, rule)
                                             .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
                                 }
                             })
                             .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
                     }
-
-                    return false;
-                });
+                };
 
                 setTimeout(() => {
                     const errorMessage = SMyLib.entries(errors.sort((a, b) => a.type > b.type ? 1 : a.type < b.type ? -1 : 0)
@@ -858,16 +882,7 @@ export class Executer {
         else return uniqs[key];
     }
 
-    static doIt({ method, target, penultimate, lastTrace, value, realArgs, auth, uniqs }: {
-        method: ExecutionMethod,
-        target: any,
-        penultimate: any,
-        lastTrace: string | number,
-        value: any,
-        realArgs?: ExecutionArgs,
-        auth?: LocalSokiAuth | null,
-        uniqs?: string[] | Record<string, string>,
-    }) {
+    static doIt({ method, target, penultimate, lastTrace, value, realArgs, auth, uniqs }: ExecuteDoItProps) {
         return new Promise<boolean>((resolve, reject) => {
             try {
                 switch (method) {
