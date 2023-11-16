@@ -1,5 +1,7 @@
 import { Executer } from "../../complect/executer/Executer";
 import { FilerAppConfig } from "../../complect/filer/Filer.model";
+import smylib from "../../complect/soki/complect/SMyLib";
+import { GamerAliasRoomState, GamerAliasRoomStatePhase } from "./games/alias.model";
 
 const config: FilerAppConfig = {
     title: 'Игрок',
@@ -296,16 +298,17 @@ const config: FilerAppConfig = {
                                 action: "startAliasRound",
                                 method: "set_all",
                                 value: {
-                                    phase: 1,
+                                    phase: GamerAliasRoomStatePhase.Wait,
                                     teams: "{teams}",
-                                    speakers: "{speakers}",
+                                    speaks: "{speaks}",
                                     words: "{words}",
                                     roundTime: "{roundTime}",
-                                    speakeri: "{speakeri}"
+                                    speakeri: "{speakeri}",
+                                    dream: "{dream}",
                                 },
                                 args: {
                                     teams: "#List",
-                                    speakers: "#List",
+                                    speaks: "#List",
                                     words: "#List",
                                     roundTime: "#Number",
                                     speakeri: "#Number"
@@ -315,45 +318,102 @@ const config: FilerAppConfig = {
                                 action: "startAliasSpeech",
                                 method: "set_all",
                                 value: {
-                                    phase: 2,
+                                    phase: GamerAliasRoomStatePhase.Speech,
                                     startTs: "{startTs}"
                                 },
                                 args: {
                                     startTs: "#Number"
-                                }
+                                },
                             },
-                            "<finish>": {
-                                action: "finishAliasSpeech",
+                            "<start timeout>": {
+                                action: "startAliasSpeechTimeout",
+                                delay: (props) => (props?.$$vars?.$$currentValue?.roundTime || 1) * 1000,
                                 method: "set_all",
                                 value: {
-                                    phase: 3,
-                                    startTs: 0
+                                    phase: GamerAliasRoomStatePhase.Results,
+                                    startTs: 0,
+                                }
+                            },
+                            "<reset game>": {
+                                action: "resetAliasGame",
+                                method: "set_all",
+                                value: {
+                                    phase: GamerAliasRoomStatePhase.Initial,
+                                    startTs: 0,
                                 }
                             },
                             "<compute score>": {
                                 action: "rememberAliasScore",
                                 method: "set_all",
                                 value: {
-                                    phase: 1,
-                                    speakeri: "{nextSpeakeri}"
+                                    phase: GamerAliasRoomStatePhase.Wait,
                                 },
                                 args: {
-                                    nextSpeakeri: "#Number",
                                     teami: "#Number",
                                     scoreIncrement: "#Number"
                                 },
-                                side: {
-                                    "/teams/{teami}": {
-                                        method: "set_all",
-                                        value: {
-                                            inc: null,
-                                            cor: null
-                                        },
-                                        "/score": {
-                                            method: "formula",
-                                            value: "X + {scoreIncrement}"
+                                side: (props) => {
+                                    const state: GamerAliasRoomState = props?.$$vars?.$$currentValue;
+                                    let members: string[] = [];
+                                    let currTeami = -1;
+                                    const currentSpeakeri = state.speakeri || 0;
+
+                                    let startNextMembersi = -1;
+                                    let finishNextMembersi = -1;
+
+                                    state.teams.forEach((team, teami, teama) => {
+                                        members = members.concat(team.members);
+
+                                        if (currTeami !== -1 || members.length <= currentSpeakeri) return;
+
+                                        currTeami = teami;
+
+                                        if (teami === teama.length - 1) {
+                                            startNextMembersi = 0;
+                                            finishNextMembersi = teama[0].members.length;
+                                        } else {
+                                            startNextMembersi = members.length;
+                                            finishNextMembersi = members.length + teama[teami + 1].members.length;
                                         }
-                                    }
+                                    });
+
+                                    const nextTeamSpeaks = state.speaks.slice(startNextMembersi, finishNextMembersi);
+                                    const minSpeak = Math.min(...nextTeamSpeaks);
+                                    const speaksii = smylib.mapFilter(nextTeamSpeaks, (speaks, speaksi) => speaks === minSpeak ? speaksi : undefined);
+
+                                    const speakeri: number = startNextMembersi + smylib.randomItem(speaksii);
+
+                                    return {
+                                        '/': {
+                                            method: 'set_all',
+                                            value: {
+                                                speakeri,
+                                            },
+                                        },
+                                        '/words': {
+                                            method: 'remove',
+                                            value: 0,
+                                        },
+                                        [`/speaks/${state.speakeri}`]: {
+                                            method: 'formula' as const,
+                                            value: 'X + 1'
+                                        },
+                                        [`/teams/{teami}`]: {
+                                            method: "set_all",
+                                            value: {
+                                                inc: null,
+                                                cor: null
+                                            },
+                                            '/score': {
+                                                method: "formula",
+                                                value: "X + {scoreIncrement}"
+                                            },
+                                            '/rounds': {
+                                                method: "formula",
+                                                value: "X + 1"
+                                            }
+                                        }
+                                    };
                                 }
                             }
                         },

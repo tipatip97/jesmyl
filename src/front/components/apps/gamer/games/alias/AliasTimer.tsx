@@ -4,7 +4,7 @@ import useAliasState from "./useAliasState";
 
 const takeSeconds = (time: number, start: number) => time - Math.floor((Date.now() - start) / 1000);
 
-export default function GamerAliasTimer({ onTimeOut }: { onTimeOut?: () => Promise<unknown> | und }) {
+export default function GamerAliasTimer() {
     const [seconds, setSeconds] = useState<number | null>(null);
     const { state } = useAliasState();
     const start = state?.startTs;
@@ -19,12 +19,9 @@ export default function GamerAliasTimer({ onTimeOut }: { onTimeOut?: () => Promi
         }
 
         if (seconds > 0)
-            setTimeout(() => {
-                setSeconds(takeSeconds(time, start));
-            }, 1000);
-        else onTimeOut?.();
+            setTimeout(() => setSeconds(takeSeconds(time, start)), 1000);
 
-    }, [seconds, start, time, onTimeOut]);
+    }, [seconds, start, time]);
 
     if (!start || (seconds && seconds < 0)) return null;
 

@@ -2,8 +2,6 @@ import smylib from "../../complect/soki/complect/SMyLib";
 
 const zeroEndTrimReg = /0+$/;
 
-type nil = undefined | null;
-
 export interface ScheduleWidgetRightTexts<Right> {
     id: Right,
     title: string,

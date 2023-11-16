@@ -36,33 +36,33 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
     headTitle={`${namePrefix || ''}Комната ${room?.name ? ` - ${room.name}` : ""}`}
     onMoreClick={isManager
       ? () => {
-          openAbsoluteBottomPopup(
-            prepareAbsoluteBottomPopupContent({
-              items: [
-                config.relativePoint && {
-                  title: 'Сменить игру',
-                  icon: "undo-outline",
-                  onClick: () => {
-                    goTo('needChooseGame', config.relativePoint);
-                    setIsForceChoose(true);
-                  },
+        openAbsoluteBottomPopup(
+          prepareAbsoluteBottomPopupContent({
+            items: [
+              config.relativePoint && {
+                title: 'Сменить игру',
+                icon: "undo-outline",
+                onClick: () => {
+                  goTo('needChooseGame', config.relativePoint);
+                  setIsForceChoose(true);
                 },
-                isOwner && {
-                  title: 'Удалить комнату',
-                  icon: "trash-2-outline",
-                  onClick: async () => {
-                    if (
-                      room &&
-                      (await modalService.confirm(`Удалить комнату ${room.name}?`))
-                    ) {
-                      onRoomRemove(room.w);
-                      goBack();
-                    }
-                  },
-                }
-              ]
-            }))
-        }
+              },
+              isOwner && {
+                title: 'Удалить комнату',
+                icon: "trash-2-outline",
+                onClick: async () => {
+                  if (
+                    room &&
+                    (await modalService.confirm(`Удалить комнату ${room.name}?`))
+                  ) {
+                    onRoomRemove(room.w);
+                    goBack();
+                  }
+                },
+              }
+            ]
+          }))
+      }
       : undefined}
     content={
       <>
@@ -94,7 +94,8 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
                               <EvaIcon name={data.icon} />
                               <div className="title">{data.title}</div>
                             </div>;
-                          })}</div>
+                          })}
+                        </div>
                       </>
                       : null}
                   </>

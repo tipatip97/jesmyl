@@ -11,7 +11,7 @@ export default function AliasRoomContent() {
     const phase = state?.phase;
     const { openFullscreenContent } = useFullscreenContent();
 
-    return <div>
+    return <>
         <div onClick={() => openFullscreenContent(<AliasScoreBoard />, true)}>
             Посмотреть счёт
         </div>
@@ -21,5 +21,5 @@ export default function AliasRoomContent() {
             : phase === GamerAliasRoomStatePhase.Results
                 ? <AliasGameRoundResults />
                 : <AliasRoomInitialContent />}
-    </div>
+    </>
 }

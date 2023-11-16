@@ -1,6 +1,9 @@
 import { AliasWordsPack } from "./games/alias/Alias.model";
 import { OfflineSpyGame } from "./games/spy/offline-room/SpyOfflineRoom.model";
 
+import { GamerRoom, GamerGameName } from "../../../../back/apps/gamer/gamer.model";
+export * from "../../../../back/apps/gamer/gamer.model";
+
 export interface GamerState extends GamerStoraged {
 }
 
@@ -27,32 +30,6 @@ export interface GamerPassport {
     login: string,
 }
 
-const gameNames = ['spy', 'alias'] as const;
-export type GamerGameName = typeof gameNames[number];
-
-export type GamerRoomMemberLogin = string;
-
-export interface GamerRoom {
-    w: number,
-    name: string,
-    members: GamerRoomMember[],
-    currentGame?: GamerGameName,
-    games?: Partial<Record<GamerGameName, unknown>>,
-}
-
-export interface GamerRoomMember {
-    login: string,
-    name: string,
-    status: GamerRoomMemberStatus,
-    isInactive: boolean,
-}
-
-export enum GamerRoomMemberStatus {
-    Owner = 'owner',
-    Admin = 'admin',
-    Member = 'member',
-    Requester = 'requester',
-}
 
 export interface GamerNavData {
     'spy.ofr': [string, number, number | und, string],
