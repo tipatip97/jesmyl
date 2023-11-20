@@ -14,7 +14,7 @@ export default function GamerRoomList() {
 
         return (
           <div
-            key={`room ${room.w}`}
+            key={room.w}
             className="face-item"
             onClick={() => goToRoom(room.w)}
           >

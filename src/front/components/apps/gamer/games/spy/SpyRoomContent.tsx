@@ -5,7 +5,7 @@ import mylib from "../../../../../complect/my-lib/MyLib";
 import SendButton from "../../../../../complect/SendButton";
 import { memberStatusPriority } from "../../complect/rooms/room/useGamerRooms";
 import { GamerRoomMemberStatus } from "../../Gamer.model";
-import SpyRoomStartedGame from "./SpyRoomStartedGame";
+import SpyRoomStartedGame from "./started/StartedGame";
 import SpyRoomGameFinished from "./SpyRoomGameFinished";
 import SpyRoomLocationsInGame from "./SpyRoomLocationsInGame";
 import SpyRoomMemberInStartGameMore from "./SpyRoomMemberInStartGameMore";

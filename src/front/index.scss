@@ -92,6 +92,11 @@ body {
   }
 }
 
+
+.bgcolor--ko {
+  background-color: var(--color--ko);
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
   outline: 0;
@@ -487,7 +492,7 @@ wbr:after {
 .absolute,
 .relative {
   &.pos- {
-    &bottom {
+    &bottom, &sea {
       bottom: 0;
 
       &-over {
@@ -495,15 +500,15 @@ wbr:after {
       }
     }
 
-    &top {
+    &top, &ski {
       top: 0;
     }
 
-    &left {
+    &left, &ski, &sea {
       left: 0;
     }
 
-    &right {
+    &right, &ski, &sea {
       right: 0;
     }
   }

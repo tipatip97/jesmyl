@@ -17,4 +17,16 @@ export const setPolyfills = () => {
     if (!Array.prototype.at)
         // eslint-disable-next-line no-extend-native
         Array.prototype.at = function (pos) { return pos < 0 ? this[this.length + pos] : this[pos] };
+
+    (window as any).setTimeoutEffect = (handler: TimerHandler, timeout: number, ...args: any[]) => {
+        const timer = setTimeout(handler, timeout, ...args);
+
+        return () => clearTimeout(timer);
+    };
 };
+
+declare global {
+    function setTimeoutEffect(handler: TimerHandler, timeout?: number, ...args: any[]): () => void;
+}
+
+export { };

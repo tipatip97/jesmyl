@@ -60,7 +60,7 @@ declare global {
     type und = undefined;
     type ArrayMapCb<T> = (box: T, boxi: number, boxa: T[]) => T;
     type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
-    type TimeOut = ReturnType<typeof setTimeout> | und;
+    type TimeOut = ReturnType<typeof setTimeout> | und | number;
 
     type NonUndefined<T> = T extends undefined ? never : T;
     type NonNull<T> = T extends null ? never : T;
