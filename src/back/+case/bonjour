@@ -6,7 +6,7 @@
     "passw": "52008ded1c78b4bb52843b553aa5a430"
   },
   {
-    "level": 80,
+    "level": 3,
     "fio": "EgorEast",
     "login": "d42011c01d915b34f37240492d3edff4",
     "passw": "8f77cb282a1f65a28f01f740da3c97a9"
@@ -532,5 +532,23 @@
     "fio": "alliluya",
     "login": "842dee09ba6d778920d0c34c17b47b8b",
     "passw": "ad73d73a44b7128f52eb212cb935fa2a"
+  },
+  {
+    "level": 3,
+    "fio": "Svetik",
+    "login": "c1cdda28e691710d6c93fea159f016c2",
+    "passw": "db80b9aa37ae77339d4bc2b290d44231"
+  },
+  {
+    "level": 3,
+    "fio": "Ilyshka",
+    "login": "50e50df99798cebdb4d8ba777c50caef",
+    "passw": "7d2d8a0d26e74cfcfe48bfd53603a38c"
+  },
+  {
+    "level": 3,
+    "fio": "Оксик)",
+    "login": "85ec7505e3a362aa5e0b54c4d6df3de3",
+    "passw": "557346342d243bf27fef2fce5aba8f60"
   }
 ]
