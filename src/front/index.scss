@@ -492,7 +492,9 @@ wbr:after {
 .absolute,
 .relative {
   &.pos- {
-    &bottom, &sea {
+
+    &bottom,
+    &sea {
       bottom: 0;
 
       &-over {
@@ -500,15 +502,20 @@ wbr:after {
       }
     }
 
-    &top, &ski {
+    &top,
+    &ski {
       top: 0;
     }
 
-    &left, &ski, &sea {
+    &left,
+    &ski,
+    &sea {
       left: 0;
     }
 
-    &right, &ski, &sea {
+    &right,
+    &ski,
+    &sea {
       right: 0;
     }
   }

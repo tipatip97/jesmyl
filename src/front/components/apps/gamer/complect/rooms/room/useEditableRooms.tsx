@@ -14,7 +14,7 @@ export default function useEditableRooms(member?: GamerRoomMember) {
     createRoom: (name: string) =>
       gamerExer.send({
         action: 'addNewRoom',
-        method: 'push',
+        method: 'push', 
         args: { name },
       }),
     removeRoom: (roomw: number) =>

@@ -79,7 +79,7 @@ export interface AuthResponse extends Auth {
     errorId: IndexErrorScope,
 }
 
-export type AuthMode = 'check' | 'login' | 'register';
+export type AuthMode = 'check' | 'login' | 'register' | 'auth';
 
 export type IndexPhase = 'main' | 'apps' | 'settings' | 'login' | 'register';
 export type IndexSpecialPhase = AppName;

@@ -19,7 +19,7 @@ import "./IndexLogin.scss";
 
 const errorsSelector = (state: RootState) => state.index.errors;
 
-export default function IndexLogin() {
+export default function IndexLoginAuth() {
   const dispatch = useDispatch();
   const [login, setLogin] = useState("");
   const [passw, setPassword] = useState("");

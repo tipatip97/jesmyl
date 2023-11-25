@@ -121,19 +121,19 @@ export class SMyLib {
     }
 
     declension(num: number, one?: string, two?: string, five?: string) {
-        if (num % 1) return two;
+        if (num % 1) return two!;
         let absNum = Math.abs(num) % 100;
 
         if (absNum > 10 && absNum < 20)
-            return five ?? two;
+            return five ?? two!;
 
         absNum %= 10;
 
         return (absNum > 1 && absNum < 5)
-            ? two
+            ? two!
             : (absNum === 1)
-                ? one
-                : five ?? two;
+                ? one!
+                : five ?? two!;
     }
 
     stringTemplaterFunctions = {

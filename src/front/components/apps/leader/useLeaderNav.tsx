@@ -38,7 +38,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
     const auth = useAuth();
 
     if (schedules === undefined) return false;
-    if (contexts === undefined) return auth.level > 2;
+    if (contexts === undefined) return auth?.level > 2;
 
     const check = (contextw: number) => {
       const schedule = schedules.list.find((schedule) => schedule.w === contextw);

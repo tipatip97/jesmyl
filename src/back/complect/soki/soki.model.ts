@@ -24,6 +24,7 @@ export interface SokiServerEvent {
     pong?: true,
     authorized?: boolean,
     pull?: PullEventValue,
+    tgAuthorization?: ({ ok: false, value: string } | { ok: true, value: LocalSokiAuth }),
     authorization?: { type: 'login' | 'register' } & ({ ok: false, value: string } | ({ ok: true, value: LocalSokiAuth })),
     execs?: {
         appName: SokiAppName,
@@ -50,6 +51,7 @@ export type SokiClientUpdateCortage = [
 export interface SokiClientEventBody {
     connect?: true,
     ping?: true,
+    tgAuthorization?: number,
     authorization?: ({ type: 'login', value: SokiAuthorizationData } | { type: 'register', value: SokiRegisterData }),
     pullData?: SokiClientUpdateCortage,
     execs?: ExecutionDict[],
@@ -64,7 +66,8 @@ export type SokiSubscribtionName = 'statistic';
 export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
 
 export interface SokiVisitor {
-    fio: string,
+    fio?: string,
+    username?: string,
     version: number,
     deviceId?: string,
     browser?: string,
@@ -74,7 +77,7 @@ export interface SokiVisitor {
 export interface SokiStatistic {
     online: number,
     authed: number,
-    usages: Partial<Record<SokiAppName, (string | null)[]>>,
+    usages: Partial<Record<SokiAppName, { fio?: string, username?: string, version: number, deviceId: string }[]>>,
     visits: SokiVisitor[],
     pastVisits: Record<string, number>,
 }
@@ -108,6 +111,7 @@ export interface SokiAuth extends BaseSokiAuth {
 export interface BaseSokiAuth {
     fio: string,
     login: string,
+    tgId?: number,
 }
 
 export interface LocalSokiAuth extends Partial<BaseSokiAuth> {

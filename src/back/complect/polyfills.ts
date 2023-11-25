@@ -18,7 +18,7 @@ export const setPolyfills = () => {
         // eslint-disable-next-line no-extend-native
         Array.prototype.at = function (pos) { return pos < 0 ? this[this.length + pos] : this[pos] };
 
-    (window as any).setTimeoutEffect = (handler: TimerHandler, timeout: number, ...args: any[]) => {
+    (globalThis as any).setTimeoutEffect = (handler: (...args: any[]) => void, timeout: number, ...args: any[]) => {
         const timer = setTimeout(handler, timeout, ...args);
 
         return () => clearTimeout(timer);
@@ -26,7 +26,7 @@ export const setPolyfills = () => {
 };
 
 declare global {
-    function setTimeoutEffect(handler: TimerHandler, timeout?: number, ...args: any[]): () => void;
+    function setTimeoutEffect(handler: (...args: any[]) => void, timeout?: number, ...args: any[]): () => void;
 }
 
 export { };

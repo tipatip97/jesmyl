@@ -35,7 +35,7 @@ export default function IndexMain() {
     if (navs?.nav.nav.useIsCanRead?.() === false) return null;
     if (currentAppName === appName || appName === 'index') return null;
 
-    if (navs == null) return null!;
+    if (navs == null || auth == null) return null!;
     const { nav } = navs;
     if (nav.nav.level !== undefined && nav.nav.level > auth.level) return null!;
 

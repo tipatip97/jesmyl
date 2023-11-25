@@ -14,8 +14,9 @@ import { soki } from "../../../../soki";
 import di from "../../Index.store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useAuth, { useDeviceId } from "../../useAuth";
-import { Visits } from "./Visits";
 import useConnectionState from "../../useConnectionState";
+import { Visits } from "./Visits";
+import { TgLinkOrFio } from "./TgLinkOrFio";
 
 const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 const statisticSelector = (state: RootState) => state.index.statistic;
@@ -126,11 +127,11 @@ export default function IndexSettings() {
                     onClick={() => setExpands(expands.includes(appName) ? expands.filter(name => name !== appName) : [...expands, appName])}
                   />}
                 </div>
-                {expands.includes(appName) && statistic.usages[appName]?.map((fio, fioi) => {
-                  return <div key={fioi} className="margin-gap-h">
-                    {fio
-                      ? <span className={'color--3' + (fio?.includes(deviceId) ? ' text-underline' : '')}>{fio}</span>
-                      : <span className="color--ko">Неизвестный</span>}
+                {expands.includes(appName) && statistic.usages[appName]?.map((usage, usagei) => {
+                  return <div key={usagei} className="margin-gap-h">
+                    {<span className={'color--3' + (deviceId === usage.deviceId ? ' text-underline' : '')}>
+                      <TgLinkOrFio profile={usage} /> {usage.version} {usage.deviceId}
+                    </span>}
                   </div>;
                 })}
               </div>

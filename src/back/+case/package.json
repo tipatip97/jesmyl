@@ -5,6 +5,7 @@
     "core-js": "^3.27.0",
     "md5": "^2.3.0",
     "ws": "^8.11.0",
+    "ts-node": "^10.9.1",
     "node-telegram-bot-api": "^0.64.0"
   },
   "devDependencies": {
@@ -13,5 +14,10 @@
     "@types/ws": "^8.5.3",
     "@types/node-telegram-bot-api": "^0.63.2",
     "tslib": "^2.4.1"
+  },
+  "scripts": {
+    "relog": "fuser -k 4446/tcp & ts-node /var/www/jesmyl.ru/complect/soki/SokiServer.ts",
+    "re-start": "systemctl restart jesmyl_soki",
+    "re-status": "systemctl status jesmyl_soki"
   }
 }

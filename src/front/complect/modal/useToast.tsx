@@ -20,7 +20,7 @@ const defaultUseModalConfig: UseModalConfig = {
     isOpen: false,
 };
 
-export default function useToast(): [ReactNode, (content?: ReactNode, config?: ToastModalConfig) => void] {
+export default function useToast(topConfig?: ToastModalConfig): [ReactNode, (content?: ReactNode, config?: ToastModalConfig) => void] {
     const [config, setConfig] = useState(defaultUseModalConfig);
 
     return [
@@ -28,7 +28,7 @@ export default function useToast(): [ReactNode, (content?: ReactNode, config?: T
             <div
                 className="modal-application-screen type_toast">
                 <div className="modal-screen-wrapper type_toast">
-                    <div className={'modal-screen type_toast mood mood_' + config.mood}>
+                    <div className={'modal-screen type_toast mood mood_' + (topConfig ?? config).mood}>
                         {config.content}
                     </div>
                 </div>

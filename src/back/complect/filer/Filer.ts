@@ -249,7 +249,7 @@ export class Filer {
       };
 
       const indexMd5 = this.appConfigs.index.actions.shortRulesMd5;
-      const appMd5 = this.appConfigs[appName].actions.shortRulesMd5;
+      const appMd5 = this.appConfigs[appName]?.actions.shortRulesMd5;
 
       return {
         contents: [

@@ -1,8 +1,13 @@
 /* eslint-disable no-throw-literal */
 import { exec } from 'child_process';
+import { User } from 'node-telegram-bot-api';
 import WebSocket, { WebSocketServer } from 'ws';
 import cmService from '../../apps/cm/service';
 import { indexService } from '../../apps/index/service';
+import { controlTelegramBot } from '../../sides/telegram-bot/control/control-bot';
+import { supportTelegramAuthorizations } from '../../sides/telegram-bot/prod/authorize';
+import { prodTelegramBot } from '../../sides/telegram-bot/prod/prod-bot';
+import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
 import { sequreMD5Passphrase, sokiWhenRejButTs } from '../../values';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
@@ -11,7 +16,7 @@ import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
 import smylib, { SMyLib } from './complect/SMyLib';
 import { sokiAuther } from './complect/SokiAuther';
-import { SokiAppName, SokiCapsule, SokiClientEvent, SokiServerEvent, SokiServicePack, SokiStatistic, SokiSubscribtionName } from './soki.model';
+import { LocalSokiAuth, SokiAppName, SokiCapsule, SokiClientEvent, SokiServerEvent, SokiServicePack, SokiStatistic, SokiSubscribtionName } from './soki.model';
 
 setPolyfills();
 ErrorCatcher.logAllErrors();
@@ -50,7 +55,7 @@ export class SokiServer {
         });
     }
 
-    setVisit(fio: string, version: number, deviceId?: string, browser?: string) {
+    setVisit(version: number, fio?: string, tgId?: number, deviceId?: string, browser?: string) {
         const date = new Date();
 
         if (this.lastVisit !== date.toLocaleDateString()) {
@@ -60,7 +65,8 @@ export class SokiServer {
         }
 
         this.statistic.visits.push({
-            fio,
+            fio: tgId ? undefined : fio,
+            username: tgId ? fio : undefined,
             deviceId,
             browser,
             version,
@@ -81,7 +87,13 @@ export class SokiServer {
             if (capsule.auth) this.statistic.authed++;
             if (capsule.appName) {
                 if (this.statistic.usages[capsule.appName] === undefined) this.statistic.usages[capsule.appName] = [];
-                this.statistic.usages[capsule.appName]!.push(`${capsule.auth?.fio || '*unk*'} ${capsule.version ? `v${capsule.version}` : '?'} ${capsule.deviceId}`);
+                this.statistic.usages[capsule.appName]!.push(
+                    {
+                        fio: capsule.auth?.tgId ? undefined : capsule.auth?.fio,
+                        username: capsule.auth?.tgId ? capsule.auth?.fio : undefined,
+                        version: capsule.version,
+                        deviceId: capsule.deviceId,
+                    });
             }
         });
 
@@ -148,6 +160,11 @@ export class SokiServer {
         this.capsules.set(client, { auth: null, deviceId: '', version: -1 });
     }
 
+    makePassw(id?: number, username?: string, level?: number) {
+        const date = new Date();
+        return smylib.md5(`{ [${level}]: ${id}.${username}@${date.getMonth()} - ${date.getFullYear()}} `);
+    }
+
     start() {
         new WebSocketServer({ port: 4446 })
             .on('connection', (client: WebSocket) => {
@@ -190,46 +207,126 @@ export class SokiServer {
 
                     const capsule = this.capsules.get(client);
 
-                    if (eventBody.connect) {
-                        if (eventData.auth) {
-                            if (capsule) {
-                                const eventLogin = eventData.auth.login;
-                                const passw = eventData.auth.passw;
-                                const secretPassw = passw && smylib.md5(passw);
-                                const auth = eventLogin && secretPassw && sokiAuther.authList?.find(({ login, passw }) => eventLogin === login && secretPassw === passw);
+                    if (eventBody.connect || eventBody.tgAuthorization) {
+                        const sendErrorMessage = (errorMessage: string) => {
+                            this.send({
+                                requestId,
+                                unregister: true,
+                                errorMessage,
+                                appName,
+                            }, client);
+                        }
 
-                                if (auth) {
-                                    if (auth.level < 100)
-                                        this.setVisit(auth.fio, eventData.version, eventData.deviceId, eventData.browser);
-                                    capsule.auth = auth;
-                                    capsule.deviceId = eventData.deviceId;
-                                    capsule.version = eventData.version;
+                        const getTgAuth = async (tgId: number): Promise<LocalSokiAuth | null> => {
+                            const admin = supportTelegramBot.admins[tgId];
+                            let user: User | und = admin?.user;
 
-                                    this.send({ authorized: true, appName }, client);
-                                    console.info(`Client ${auth.fio ?? '???'} connected`);
+                            try {
+                                user = (await prodTelegramBot.tryIsUserMember(tgId)).user;
+                            } catch (err) {
+                                sendErrorMessage('Пользователь не состоит в канале');
 
-                                    if (auth.level !== eventData.auth.level)
-                                        this.send({
-                                            appName: 'index',
-                                            pull: {
-                                                appName: 'index',
-                                                contents: [[{ key: 'auth', value: { ...auth, passw } }], []],
-                                                updates: [null, null, null, null]
-                                            }
-                                        }, client);
-                                } else this.send({
+                                return null;
+                            }
+
+                            if (user == null) {
+                                sendErrorMessage('Нет публичного имени');
+                                return null;
+                            }
+
+                            let level = 3;
+
+                            if (admin !== undefined) {
+                                if (admin.status === 'creator') level = 100;
+                                else {
+                                    const adminLevel = parseInt((admin as any).custom_title);
+                                    if (!isNaN(adminLevel))
+                                        level = adminLevel;
+                                }
+                            }
+
+                            const fio = user.username || controlTelegramBot.convertLoginFromId(user.id);
+
+                            return {
+                                level,
+                                fio,
+                                login: smylib.md5('' + user.id),
+                                passw: this.makePassw(user.id, fio, level),
+                                tgId: user.id,
+                            };
+                        };
+
+                        if (eventBody.tgAuthorization) {
+                            const authId = eventBody.tgAuthorization;
+
+                            if (supportTelegramAuthorizations[authId] === undefined) {
+                                sendErrorMessage('Не верный код');
+                            } else {
+                                const { from } = supportTelegramAuthorizations[authId]();
+                                const auth = await getTgAuth(from.id);
+
+                                if (auth == null) return;
+
+                                this.send({
                                     requestId,
-                                    unregister: true,
-                                    errorMessage: 'Некорректные данные авторизации',
+                                    tgAuthorization: {
+                                        ok: true,
+                                        value: auth,
+                                    },
                                     appName,
                                 }, client);
                             }
-                        } else {
-                            this.setVisit('*unk*', eventData.version, eventData.deviceId, eventData.browser);
-                            this.send({ authorized: false, appName: eventData.appName }, client);
-                            console.info('Unknown client connected');
+                            return;
                         }
-                        return;
+
+                        if (eventBody.connect) {
+                            if (eventData.auth) {
+                                if (capsule) {
+                                    let auth: LocalSokiAuth | null;
+                                    const passw = eventData.auth.passw;
+
+                                    if (eventData.auth.tgId) {
+                                        const passw = this.makePassw(eventData.auth.tgId, eventData.auth.fio, eventData.auth.level);
+                                        if (eventData.auth.passw !== passw) {
+                                            sendErrorMessage('Данные авторизации устарели');
+                                            return;
+                                        }
+
+                                        auth = await getTgAuth(eventData.auth.tgId);
+                                    } else {
+                                        const eventLogin = eventData.auth.login;
+                                        const secretPassw = passw && smylib.md5(passw);
+                                        auth = (eventLogin && secretPassw && sokiAuther.authList?.find(({ login, passw }) => eventLogin === login && secretPassw === passw)) || null;
+                                    }
+
+                                    if (auth) {
+                                        if (auth.level < 100)
+                                            this.setVisit(eventData.version, auth.fio, auth.tgId, eventData.deviceId, eventData.browser);
+                                        capsule.auth = auth;
+                                        capsule.deviceId = eventData.deviceId;
+                                        capsule.version = eventData.version;
+
+                                        this.send({ authorized: true, appName }, client);
+                                        console.info(`Client ${auth.fio ?? '???'} connected`);
+
+                                        if (auth.level !== eventData.auth.level)
+                                            this.send({
+                                                appName: 'index',
+                                                pull: {
+                                                    appName: 'index',
+                                                    contents: [[{ key: 'auth', value: { ...auth, passw } }], []],
+                                                    updates: [null, null, null, null]
+                                                }
+                                            }, client);
+                                    } else sendErrorMessage('Некорректные данные авторизации');
+                                }
+                            } else {
+                                this.setVisit(eventData.version, undefined, undefined, eventData.deviceId, eventData.browser);
+                                this.send({ authorized: false, appName: eventData.appName }, client);
+                                console.info('Unknown client connected');
+                            }
+                            return;
+                        }
                     }
 
                     if (eventBody.system && smylib.md5(eventBody.system.passphrase) === sequreMD5Passphrase) {
@@ -342,7 +439,10 @@ export class SokiServer {
     }
 
     async execExecs(appName: SokiAppName, execs: ExecutionDict[], eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket, requestId?: string) {
-        if (eventData.appName && await sokiAuther.isCorrectData(eventData.auth) && capsule?.auth && capsule.auth.login === eventData.auth?.login) {
+        if (eventData.appName && capsule?.auth && capsule.auth.login === eventData.auth?.login
+            && (eventData.auth?.tgId
+                ? eventData.auth.passw === this.makePassw(eventData.auth.tgId, eventData.auth.fio, eventData.auth.level)
+                : await sokiAuther.isCorrectData(eventData.auth))) {
             const appConfig = filer.appConfigs[eventData.appName];
 
             if (!appConfig) return;
@@ -409,6 +509,9 @@ export class SokiServer {
 }
 
 const sokiServer = new SokiServer();
-sokiServer.start();
+
+supportTelegramBot
+    .getAdmins()
+    .finally(() => sokiServer.start());
 
 export default sokiServer;
