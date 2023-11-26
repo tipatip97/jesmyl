@@ -1,4 +1,4 @@
-import { CallbackQuery, SendMessageOptions } from "node-telegram-bot-api";
+import { CallbackQuery, ChatMember, SendMessageOptions } from "node-telegram-bot-api";
 import smylib from "../../../complect/soki/complect/SMyLib";
 import { JTgBotCallbackQuery } from "../tg-bot";
 
@@ -28,17 +28,33 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
         return res;
     };
 
+    let member: ChatMember | und;
+
     try {
-        await prodBot.tryIsUserMember(id);
+        member = await prodBot.tryIsUserMember(id);
     } catch (err) {
         return unsubscribedAlert;
     }
+
+    let user = member.user;
+
+    const prefix = `\n\n${user.first_name || ''
+        } ${user.last_name || ''
+        } (${user.username
+            ? member.status === 'creator'
+                ? `<code>${user.username}</code>`
+                : `@${user.username}`
+            : `<i>${prodBot.convertLoginFromId(user.id)}</i>`
+        }, ${user.id})`;;
 
     if (telegramAuthorizationUsers[id] !== undefined) {
         sendMessage(
             'Повторный запрос кода\n\nЛогин: '
             + (query.from.username || prodBot.convertLoginFromId(query.from.id))
             + `\nКод: <code>${telegramAuthorizationUsers[id]}</code>`);
+
+
+        prodBot.log(`Повторный запрос кода авторизации${prefix}`);
 
         return 'Код отправлен повторно';
     }
@@ -74,6 +90,8 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
                 + `Через ${minutesText} этот код будет упразднён`)).ok
         ) return;
     } catch (error) { }
+
+    prodBot.log(`Запрос кода авторизации${prefix}`);
 
     return 'Код отправлен';
 };

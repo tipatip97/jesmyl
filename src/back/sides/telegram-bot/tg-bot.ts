@@ -114,8 +114,6 @@ export class JesmylTelegramBot {
 
         if (!member || member.status === 'kicked' || member.status === 'left') throw Error();
 
-        this.log(`${member.user.first_name || ''} ${member.user.last_name || ''} (${member.user.username || `<i>${this.convertLoginFromId(member.user.id)}</i>`}, ${member.user.id})\nзапросил код доступа`);
-
         return member;
     }
 
