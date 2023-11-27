@@ -34,7 +34,7 @@ const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOp
     ],
 ]);
 
-controlTelegramBot.listenChatMessages(async (bot, message) => {
+controlTelegramBot.onChatMessages(async (bot, message) => {
     if (!message.text) return;
 
     if (bot.messageCase('/start', message.text)) {

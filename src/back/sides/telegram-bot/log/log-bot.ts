@@ -3,7 +3,6 @@ import { JesmylTelegramBot } from "../tg-bot";
 
 export const logTelegramBot = new JesmylTelegramBot({
     bot: jesmylTgBot,
-    logBot: null!,
     chatId: -1002087759235,
 });
 

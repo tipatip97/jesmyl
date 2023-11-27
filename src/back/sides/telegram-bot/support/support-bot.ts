@@ -10,7 +10,7 @@ export const supportTelegramBot = new JesmylTelegramBot({
 });
 
 
-supportTelegramBot.listenChatMessages(async (bot, message) => {
+supportTelegramBot.onChatMessages(async (bot, message) => {
     if (!message.text) return;
     const id = message.from?.id;
 

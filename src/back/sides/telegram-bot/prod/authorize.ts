@@ -45,7 +45,7 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
                 ? `<code>${user.username}</code>`
                 : `@${user.username}`
             : `<i>${prodBot.convertLoginFromId(user.id)}</i>`
-        }, ${user.id})`;;
+        }, ${user.id})`;
 
     if (telegramAuthorizationUsers[id] !== undefined) {
         sendMessage(

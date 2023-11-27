@@ -12,13 +12,6 @@ export const prodTelegramBot = new JesmylTelegramBot({
 });
 
 
-prodTelegramBot.bot.setMyCommands([
-    {
-        command: '/start',
-        description: 'Старт бота',
-    }
-]);
-
 export const prodStartOptions: SendMessageOptions = prodTelegramBot.makeSendMessageOptions([
     [
         {
@@ -41,7 +34,7 @@ const prodStartMessage = (botName: string) => `Введи код в прилож
 
 В дальнейшем начинай с пункта 3`;
 
-prodTelegramBot.listenChatMessages((bot, message) => {
+prodTelegramBot.onChatMessages((bot, message) => {
     if (!message.text) return;
 
     if (bot.messageCase('/start', message.text)) {
