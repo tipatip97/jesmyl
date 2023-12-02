@@ -114,7 +114,7 @@ export default function ChordRedactor() {
     };
 
     return <PhaseCmEditorContainer
-        topClass="chord-redactor"
+        className="chord-redactor"
         contentClass={`chord-redactor-content ${isNewChord ? 'chord-addition' : ''}`}
         headTitle="Редактор аккордов"
         content={

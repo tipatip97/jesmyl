@@ -1,6 +1,5 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import "./Cm.scss";
 import di from "./Cm.store";
 import useCmNav, { translationNavPoint } from "./base/useCmNav";
 import cmStorage from "./cmStorage";

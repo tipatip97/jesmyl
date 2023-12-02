@@ -10,12 +10,11 @@ import mylib from "../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../shared/store";
 import { soki } from "../../../../soki";
 import di from "../../Index.store";
-import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
 import indexStorage from "../../indexStorage";
 import { removePullRequisites } from "../../useAuth";
 import useConnectionState from "../../useConnectionState";
-import "./IndexLogin.scss";
+import { LoginIndex } from "./IndexLoginAuth";
 
 const errorsSelector = (state: RootState) => state.index.errors;
 
@@ -41,8 +40,8 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
   };
 
   return (
-    <PhaseIndexContainer
-      topClass="index-login login-page"
+    <LoginIndex
+      className=""
       headTitle="Авторизация"
       head={connectionNode}
       content={

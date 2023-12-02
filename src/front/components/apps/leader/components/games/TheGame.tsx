@@ -76,14 +76,14 @@ export default function TheGame() {
     ));
 
   if (!cgame) return <PhaseLeaderContainer
-    topClass="the-game"
+    className="the-game"
     headTitle="Игра"
     content={<div className="error-message flex center">Игра удалена</div>}
   />;
 
   return (
     <PhaseLeaderContainer
-      topClass="the-game"
+      className="the-game"
       headTitle={`Игра - ${cgame.name}`}
       onMoreClick={() => openGameMore()}
       content={

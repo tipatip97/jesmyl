@@ -18,7 +18,7 @@ export default function LeaderGeneralPage() {
       goBack={goBack}
       withoutBackButton
       headTitle="Лидер"
-      topClass=""
+      className=""
       onMoreClick={() => openGeneralMore()}
       content={<>
         {generalMoreNode}
@@ -33,7 +33,7 @@ export default function LeaderGeneralPage() {
 
   return (
     <PhaseLeaderContainer
-      topClass="template-page-content"
+      className="template-page-content"
       withoutBackButton
       headTitle={`Лидер - ${ccontext.name}`}
       onMoreClick={() => openGeneralMore()}

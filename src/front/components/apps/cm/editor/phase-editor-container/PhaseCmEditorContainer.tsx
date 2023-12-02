@@ -7,7 +7,7 @@ import "./PhaseCmEditorContainer.scss";
 export default function PhaseCmEditorContainer(props: PhaseContainerProps) {
   return <PhaseCmContainer
     {...props}
-    topClass={`phase-cm-editor-container ${props.topClass || ''}`}
+    className={`phase-cm-editor-container ${props.className || ''}`}
     head={<>{props.head}{useExer(cmExer).lookIcon}</>}
   />;
 }

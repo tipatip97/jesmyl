@@ -2,7 +2,6 @@ import { ReactNode, useMemo } from "react";
 import { indexExer } from "../../../components/index/Index.store";
 import { useStrongExerContent } from "../../strong-control/useStrongControl";
 import { IScheduleWidget } from "../ScheduleWidget.model";
-import '../ScheduleWidget.scss';
 import { ScheduleWidgetAppAttsContext, ScheduleWidgetRights, ScheduleWidgetRightsContext, makeAttStorage, useScheduleWidgetRights } from "../useScheduleWidget";
 
 export default function ScheduleWidgetContextWrapper({

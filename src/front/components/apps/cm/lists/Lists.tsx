@@ -14,7 +14,7 @@ export default function Lists() {
 
   return (
     <PhaseCmContainer
-      topClass="lists-container"
+      className="lists-container"
       withoutBackButton
       headTitle="Списки"
       contentClass="flex between column"

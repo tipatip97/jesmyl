@@ -17,7 +17,7 @@ export default function LeaderSchedule() {
       goBack={goBack}
       headTitle="Лидер"
       withoutBackButton
-      topClass=""
+      className=""
       onMoreClick={() => openGeneralMore()}
       content={<>
         {generalMoreNode}

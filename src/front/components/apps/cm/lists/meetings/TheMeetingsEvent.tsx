@@ -10,7 +10,7 @@ export default function TheMeetingsEvent() {
 
   return (
     <PhaseCmContainer
-      topClass="meeting-container"
+      className="meeting-container"
       headTitle={currentEvent?.name ?? "Событие"}
       onMoreClick={() => openAbsoluteBottomPopup(<LocalListToolsPopup coms={currentEvent?.coms} />)}
       content={currentEvent?.coms?.map((com) => (

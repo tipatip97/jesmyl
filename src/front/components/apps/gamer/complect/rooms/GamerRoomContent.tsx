@@ -1,13 +1,14 @@
 import { useLayoutEffect, useState } from "react";
+import styled from "styled-components";
 import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
+import EvaButton from "../../../../../complect/eva-icon/EvaButton";
+import EvaIcon, { IconEva } from "../../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { NavigationThrowNodeProps } from "../../../../../complect/nav-configurer/Navigation.model";
 import { GamerGameName, GamerNavData, GamerRoom } from "../../Gamer.model";
 import useGamerNav, { GamerRoomGameSkelet } from "../../useGamerNav";
 import GamerRoomMemberList from "../GamerRoomMemberList";
 import PhaseGamerContainer from "../PhaseGamerContainer";
-import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 
 export default function GamerRoomContent({ config, isInactive, isManager, isOwner, room, onRoomRemove, games, onGameChange, namePrefix }: {
   config: NavigationThrowNodeProps<GamerNavData>,
@@ -32,8 +33,8 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
     }
   }, [isForceChoose, isNeedChooseGame, room?.currentGame, config.relativePoint]);
 
-  return <PhaseGamerContainer
-    topClass="gamer-room"
+  return <GamerRoomDiv
+    className=""
     headTitle={`${namePrefix || ''}Комната ${room?.name ? ` - ${room.name}` : ""}`}
     head={((gameData) => gameData &&
       <EvaButton
@@ -115,3 +116,26 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
       </>}
   />;
 }
+
+const GamerRoomDiv = styled(PhaseGamerContainer)`
+.gamer-game-palette {
+  display: flex;
+
+  .gamer-game-item {
+    --size: 45vmin;
+    --max-size: 300px;
+
+    background: var(--color--1);
+    width: var(--size);
+    height: var(--size);
+    max-width: var(--max-size);
+    max-height: var(--max-size);
+    border-radius: 20px;
+
+    ${IconEva} {
+      --icon-scale: 3;
+      margin-top: 30px
+    }
+  }
+}
+`;

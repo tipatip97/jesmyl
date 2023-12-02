@@ -84,7 +84,7 @@ export default function IndexSettings() {
 
   return (
     <PhaseIndexContainer
-      topClass="index-settings"
+      className="index-settings"
       headTitle="Настройки"
       head={connectionNode}
       content={<>

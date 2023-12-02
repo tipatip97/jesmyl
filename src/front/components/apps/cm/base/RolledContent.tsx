@@ -1,5 +1,6 @@
 import { HTMLAttributes, PropsWithChildren, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullScreen from "../../../../complect/useFullscreen";
 import { RootState } from "../../../../shared/store";
@@ -18,7 +19,7 @@ export default function RollControled(
   const dispatch = useDispatch();
 
   return (
-    <div
+    <RollContent
       {...props}
       onClick={toggleRoll}
       ref={(element) => element && (container = element.parentElement)}
@@ -56,7 +57,7 @@ export default function RollControled(
         />
       </div>
       {props.children}
-    </div>
+    </RollContent>
   );
 }
 
@@ -128,3 +129,35 @@ const startRoll = (switchRollMode: (rollMode: CmRollMode) => void) => {
 
   scroll(10, container);
 };
+
+const RollContent = styled.div`
+  padding: 0;
+  transition: padding .3s;
+
+  &.fullscreen {
+      padding-top: 30%;
+  }
+
+  .roll-controls {
+      --height: 100px;
+
+      position: fixed;
+      top: calc(50vh - var(--height) / 2);
+      right: 10px;
+      height: var(--height);
+      opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
+      transition: opacity .7s;
+      z-index: 1;
+
+      >* {
+          margin: 5px;
+      }
+
+      &.open {
+          opacity: .7;
+          pointer-events: all;
+      }
+}
+`;

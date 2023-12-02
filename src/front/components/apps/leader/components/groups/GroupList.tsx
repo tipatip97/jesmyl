@@ -13,7 +13,7 @@ export default function GroupList() {
 
   return (
     <PhaseLeaderContainer
-      topClass=""
+      className=""
       headTitle={`Группы - ${ccontext.name}`}
       onMoreClick={() => openGroupsMore()}
       contentClass="padding-big-gap"

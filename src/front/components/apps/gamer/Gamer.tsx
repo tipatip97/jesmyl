@@ -1,5 +1,4 @@
 import useAbsoluteBottomPopup from "../../../complect/absolute-popup/useAbsoluteBottomPopup";
-import "./Gamer.scss";
 import GamerMore from "./complect/GamerMore";
 import PhaseGamerContainer from "./complect/PhaseGamerContainer";
 import GamerOfflineRoomList from "./complect/rooms/offline-room/GamerOfflineRoomList";
@@ -10,7 +9,7 @@ export default function Gamer() {
 
   return (
     <PhaseGamerContainer
-      topClass="spy-locations"
+      className="spy-locations"
       withoutBackButton
       headTitle="Комнаты"
       onMoreClick={() => openAbsoluteBottomPopup(<GamerMore />)}

@@ -6,7 +6,6 @@ import useModal from "../../modal/useModal";
 import useToast from "../../modal/useToast";
 import StrongButton from "../../strong-control/StrongButton";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
-import '../ScheduleWidget.scss';
 import { initialScheduleScope } from "../useScheduleWidget";
 
 export default function ScheduleCreateWidgetButton({

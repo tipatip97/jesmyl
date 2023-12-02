@@ -11,7 +11,6 @@ import StrongEvaButton from "../strong-control/StrongEvaButton";
 import StrongEditableField from "../strong-control/field/StrongEditableField";
 import useIsRedactArea from "../useIsRedactArea";
 import { IScheduleWidget } from "./ScheduleWidget.model";
-import './ScheduleWidget.scss';
 import ScheduleWidgetCustomAttachments from "./atts/custom/CustomAttachments";
 import ScheduleWidgetStartTimeText from "./complect/StartTimeText";
 import ScheduleWidgetTopicTitle from "./complect/TopicTitle";
@@ -22,6 +21,7 @@ import ScheduleWidgetContextWrapper from "./general/ContextWrapper";
 import { ScheduleWidgetCopy } from "./general/Copy";
 import ScheduleWidgetLists from "./lists/Lists";
 import { ScheduleWidgetRights, initialScheduleScope, takeScheduleStrongScopeMaker, useScheduleWidgetRights } from "./useScheduleWidget";
+import styled from "styled-components";
 
 const msInMin = mylib.howMs.inMin;
 
@@ -118,7 +118,7 @@ export default function ScheduleWidget({
         </ScheduleWidgetContextWrapper>;
 
     return <ScheduleWidgetContextWrapper schedule={schedule} rights={rights}>
-        <div className={'schedule-widget' + (isExpand ? ' expand' : '')}>
+        <Widget className={'schedule-widget' + (isExpand ? ' expand' : '')}>
             {expandNode}
             {isExpand && <>
                 <div className="margin-big-gap-v">
@@ -238,6 +238,19 @@ export default function ScheduleWidget({
                         : <></>}
                 </div>
             </>}
-        </div>
+        </Widget>
     </ScheduleWidgetContextWrapper>;
 }
+
+const Widget = styled.div`
+    padding: 5px;
+    transition: margin .3s;
+
+    &.expand {
+        margin-bottom: 50px;
+    }
+
+    .icon-scale-05 {
+        --icon-scale: .5;
+    }
+`;

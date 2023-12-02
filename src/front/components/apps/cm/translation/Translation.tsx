@@ -159,7 +159,7 @@ export default function Translations({
 
   return (
     <PhaseCmContainer
-      topClass={`translation-container ${position}`}
+      className={`translation-container ${position}`}
       headTitle={`Трансляция${titlePostfix}`}
       content={
         <>

@@ -1,7 +1,7 @@
+import styled from "styled-components";
 import { backSwipableContainerMaker } from "../backSwipableContainerMaker";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { PhaseContainerConfigurerProps } from "./PhaseContainerConfigurer.model";
-import "./PhaseContainerConfigurer.scss";
 
 let goBack: (isForceBack?: boolean | undefined) => void;
 const swiper = backSwipableContainerMaker(() => goBack(true));
@@ -36,11 +36,46 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
   </>;
 
   return props.withoutBackButton || props.withoutBackSwipe
-    ? <div className={`phase-container relative ${props.topClass || ''}`}>{content}</div>
-    : <div
+    ? <ContainerPhase className={`phase-container relative ${props.className || ''}`}>{content}</ContainerPhase>
+    : <ContainerPhase
       {...swiper}
-      className={`phase-container relative ${props.topClass || ''}`}
+      className={`phase-container relative ${props.className || ''}`}
     >
       {content}
-    </div>;
+    </ContainerPhase>;
 }
+
+const ContainerPhase = styled.div`
+  >.header {
+    width: 100vw;
+    background-color: var(--color--1);
+    height: var(--header-height);
+    padding: var(--header-padding);
+    transition: var(--fullscreen-transition);
+    margin-top: var(--header-top);
+
+    .action-button {
+        padding: var(--main-gap);
+        cursor: pointer;
+    }
+}
+
+>.content {
+    position: static;
+    width: 100vw;
+    background-color: var(--color--5);
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: var(--fullscreen-transition);
+    height: var(--content-height);
+    padding: var(--main-gap);
+
+    &.no-padding-top {
+        padding-top: 0;
+    }
+
+    >.phase-content {
+        height: 100%;
+    }
+  }
+`;

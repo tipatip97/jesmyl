@@ -175,6 +175,14 @@
     font-size: 20px;
 
     .ScheduleWidgetDay {
+        margin-top: 0;
+
+        .day-title {
+            background-color: none;
+            background: none;
+            margin-bottom: 30px;
+        }
+
         * {
             color: black;
             font-size: 1rem;
@@ -230,17 +238,5 @@
     100% {
         max-height: 900vh;
         opacity: 1;
-    }
-}
-
-.for-print {
-    .ScheduleWidgetDay {
-        margin-top: 0;
-
-        .day-title {
-            background-color: none;
-            background: none;
-            margin-bottom: 30px;
-        }
     }
 }

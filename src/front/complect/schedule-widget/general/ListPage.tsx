@@ -7,10 +7,9 @@ import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
 import ScheduleCreateWidgetButton from "./CreateButton";
 import ScheduleWidget from "../ScheduleWidget";
 import { IScheduleWidget } from "../ScheduleWidget.model";
-import '../ScheduleWidget.scss';
 import { useSchedules } from "../useScheduleWidget";
 
-export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigurerProps, 'content' | 'topClass'> & {
+export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigurerProps, 'content' | 'className'> & {
     onScheduleObserve: (schedule: IScheduleWidget) => void,
 }) {
     const schedules = useSchedules();
@@ -19,7 +18,7 @@ export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigu
 
     return <PhaseContainerConfigurer
         {...props}
-        topClass="ScheduleWidgetPage ScheduleWidgetListPage"
+        className="ScheduleWidgetPage ScheduleWidgetListPage"
         head={<span className="flex flex-gap margin-gap">
             {connectionNode}
             <StrongClipboardPicker />

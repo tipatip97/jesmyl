@@ -23,7 +23,7 @@ export default function TheTuner() {
   return (
     <PhaseContainerConfigurer
       goBack={goBack}
-      topClass="tuner-application"
+      className="tuner-application"
       withoutBackButton
       headTitle="Тюнер"
       contentClass={`tuner-container ${started ? "started" : ""}`}

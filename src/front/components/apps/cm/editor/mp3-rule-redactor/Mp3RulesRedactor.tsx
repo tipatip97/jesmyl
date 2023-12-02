@@ -16,7 +16,7 @@ export default function Mp3RulesRedactor() {
     const [isOpenNewRule, setIsOpenNewRule] = useState(false);
 
     return <PhaseCmEditorContainer
-        topClass="mp3-rules-redactor"
+        className="mp3-rules-redactor"
         headTitle="Редактор MP3 правил"
         content={<>
             {redactRules.map((rule) => {

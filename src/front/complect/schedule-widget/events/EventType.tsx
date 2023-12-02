@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 import Dropdown from "../../dropdown/Dropdown";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
@@ -7,11 +8,11 @@ import { MyLib } from "../../my-lib/MyLib";
 import StrongDiv from "../../strong-control/StrongDiv";
 import StrongDropdown from "../../strong-control/StrongDropdown";
 import StrongEditableField from "../../strong-control/field/StrongEditableField";
+import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
 import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 import ScheduleWidgetBindAtts from "../atts/BindAtts";
 import { AttTranslatorType, attTranslatorTypes } from "../complect/attTranslatorType";
 import { takeStrongScopeMaker } from "../useScheduleWidget";
-import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
 
 const singleTitleSymbols = '- ().,/';
 const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
@@ -60,7 +61,7 @@ export default function ScheduleWidgetEventType(props: {
             || <div className="flex flex-end full-width absolute pos-top pos-right margin-sm-gap z-index:5">
                 <EvaButton name="edit-outline" onClick={screen} />
             </div>}
-        <StrongDiv
+        <SelectItem
             scope={props.selectScope}
             fieldName={props.selectFieldName}
             className={
@@ -156,6 +157,10 @@ export default function ScheduleWidgetEventType(props: {
                         Вложения
                     </div>
                 </div>}
-        </StrongDiv>
+        </SelectItem>
     </div>;
 }
+
+const SelectItem = styled(StrongDiv)`
+    border-radius: 3px;
+`;

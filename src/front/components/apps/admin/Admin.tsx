@@ -23,7 +23,7 @@ export default function Admin() {
 
   return (
     <PhaseAdminEditorContainer
-      topClass="admin-application"
+      className="admin-application"
       withoutBackButton
       headClass="full-width"
       head={

@@ -8,7 +8,7 @@ import "./PhaseAdminEditorContainer.scss";
 export default function PhaseAdminEditorContainer(props: PhaseContainerProps) {
   return <PhaseAdminContainer
     {...props}
-    topClass={`phase-admin-editor-container ${props.topClass}`}
+    className={`phase-admin-editor-container ${props.className}`}
     head={<>{props.head}{useExer(adminExer).lookIcon}</>}
   />;
 }

@@ -41,7 +41,7 @@ export default function EditCompositions() {
   return (
     <LoadIndicatedContent isLoading={false} onLoad={scrollToCurrent}>
       <PhaseCmEditorContainer
-        topClass="edit-compositions"
+        className="edit-compositions"
         headClass="flex between full-width"
         head={
           zcat && (

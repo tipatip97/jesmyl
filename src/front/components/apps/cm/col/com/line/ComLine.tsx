@@ -1,5 +1,6 @@
 import React from "react";
 import { IComLineProps } from "../order/Order.model";
+import styled from "styled-components";
 
 const spacePlusReg_g = / +/g;
 const spaceReg = / /;
@@ -40,7 +41,7 @@ export default function ComLine(props: IComLineProps) {
   const isHasPost = linePoss.includes(-2);
 
   return (
-    <div className="composition-line" onClick={props.onClick}>
+    <Line className="composition-line" onClick={props.onClick}>
       {points.map((index, indexi, indexa) => {
         const isLast = indexi === indexa.length - 1;
         const firstTextBit = indexi === 0 ? props.textLine.slice(0, index) : "";
@@ -95,6 +96,94 @@ export default function ComLine(props: IComLineProps) {
           </React.Fragment>
         );
       })}
-    </div>
+    </Line>
   );
 }
+
+const Line = styled.div`
+  .chorded {
+      position: relative;
+      display: inline-block;
+      line-height: 1;
+      white-space: pre;
+
+      &:not(.pre):not(.post):before {
+          left: 0;
+      }
+
+      &:not(.post) {
+
+          &:before,
+          &:after {
+              position: absolute;
+              z-index: 0;
+              top: -1em;
+              font-size: 1em;
+              pointer-events: none;
+          }
+
+          .fragment {
+
+              &:before {
+                  content: attr(attr-pchord);
+                  position: absolute;
+                  top: -1em;
+                  left: 100%;
+              }
+
+              &:after {
+                  content: attr(attr-chord);
+                  display: block;
+                  margin-top: -1em;
+                  color: transparent;
+              }
+          }
+      }
+
+      &.spaced-word:not(.post):after {
+          content: '.';
+          color: transparent;
+          top: 0;
+          width: .3em;
+      }
+
+      &.pre:before,
+      &:not(.pre):not(.post):before {
+          content: attr(attr-chord);
+          white-space: nowrap;
+          max-width: 500px;
+      }
+
+      &.pre:before {
+          left: -.5em;
+      }
+
+      &.post {
+          .fragment {
+              position: relative;
+              display: inline-block;
+
+              &:before {
+                  content: attr(attr-chord);
+                  height: 1em;
+                  display: block;
+                  margin-top: -1em;
+              }
+          }
+
+          &:before {
+              position: absolute;
+              right: 0;
+              top: -1em;
+          }
+
+          &:after {
+              content: attr(attr-pchord);
+              position: relative;
+              top: -1em;
+              margin-left: .2em;
+              display: inline-block;
+          }
+      }
+  }
+`;

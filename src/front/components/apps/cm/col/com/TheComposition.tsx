@@ -15,6 +15,7 @@ import ComPlayer from "./player/ComPlayer";
 import { useCcom } from "./useCcom";
 import useComPack from "./useComPack";
 import useMigratableComTools from "./useMigratableComTools";
+import styled from "styled-components";
 
 const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 
@@ -42,8 +43,8 @@ export default function TheComposition() {
 
   if (ccom == null) {
     return (
-      <PhaseCmContainer
-        topClass="composition-container"
+      <ComContainer
+        className="composition-container"
         headTitle="Упс"
         content="Песня не найдена("
       />
@@ -51,8 +52,8 @@ export default function TheComposition() {
   }
 
   return (
-    <PhaseCmContainer
-      topClass={`composition-container ${playerHideMode && comAudio ? `with-open-player ${playerHideMode}` : ''}`}
+    <ComContainer
+      className={`composition-container ${playerHideMode && comAudio ? `with-open-player ${playerHideMode}` : ''}`}
       headTitle={ccom.number}
       onMoreClick={() => openAbsoluteBottomPopup(<ComTools />, false)}
       contentClass="composition-content"
@@ -80,3 +81,55 @@ export default function TheComposition() {
     />
   );
 }
+
+const ComContainer = styled(PhaseCmContainer)`
+  .composition-content {
+      transition: padding-top .2s;
+
+      .composition-player {
+          --transition-speed: .2s;
+
+          position: absolute;
+          top: var(--header-height);
+          left: 0;
+          right: 0;
+          z-index: 1;
+          opacity: 0;
+          transition: width var(--transition-speed),
+              background var(--transition-speed),
+              margin var(--transition-speed),
+              opacity var(--transition-speed);
+      }
+  }
+
+  &.with-open-player {
+      &.expand {
+          --content-padding-top: var(--com-player-expand-height);
+      }
+
+      &.min {
+          --content-padding-top: var(--com-player-height);
+      }
+
+      .composition-content {
+          padding-top: var(--content-padding-top);
+      }
+
+      .composition-player {
+          opacity: 1;
+      }
+  }
+
+  .com-actions-pannel {
+      max-width: calc(100vw - 130px);
+      height: 40px;
+      padding-left: 10px;
+      white-space: nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+
+      &::-webkit-scrollbar {
+          display: none;
+      }
+  }
+`;

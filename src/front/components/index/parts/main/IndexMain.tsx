@@ -56,7 +56,7 @@ export default function IndexMain() {
 
   return (
     <PhaseIndexContainer
-      topClass="index-main"
+      className="index-main"
       withoutBackButton
       headTitle={appConfigs[currentAppName]?.nav.nav.title || "Другое"}
       head={

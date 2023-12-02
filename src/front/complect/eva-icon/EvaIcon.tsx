@@ -1,7 +1,7 @@
 import { HTMLAttributes, ReactNode } from "react";
 import * as pack from "../../resource/eva-icons.json";
 import { MyLib } from "../my-lib/MyLib";
-import './Eva.scss';
+import styled from "styled-components";
 
 export type EvaIconName = keyof typeof pack;
 
@@ -24,7 +24,7 @@ export default function EvaIcon(
       {iconInners[props.name] == null ? (
         props.alt || null
       ) : (
-        <svg
+        <IconEva
           {...props}
           width="24"
           height="24"
@@ -33,8 +33,21 @@ export default function EvaIcon(
             + (props.onClick ? 'pointer ' : '')
             + (props.className || '')}
           fill="var(--icon-color)"
-        >{iconInners[props.name]}</svg>
+        >{iconInners[props.name]}</IconEva>
       )}
     </>
   );
 }
+
+export const IconEva = styled.svg`
+  --icon-size: 24px;
+  --icon-scale: 1;
+
+  width: var(--icon-size);
+  min-width: var(--icon-size);
+  max-width: var(--icon-size);
+  height: var(--icon-size);
+  min-height: var(--icon-size);
+  max-height: var(--icon-size);
+  transform: scale(var(--icon-scale));
+`;

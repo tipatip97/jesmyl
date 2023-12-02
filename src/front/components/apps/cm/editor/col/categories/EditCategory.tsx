@@ -20,7 +20,7 @@ export default function EditCategory() {
 
   return (
     <PhaseCmEditorContainer
-      topClass="edit-category"
+      className="edit-category"
       headTitle={`Категория - ${ccat.initialName}`}
       content={
         <>

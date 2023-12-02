@@ -15,7 +15,7 @@ export default function ScheduleWidgetAlarmScheduleList() {
         if (schedule === undefined)
             return <PhaseContainerConfigurer
                 goBack={() => setAppRouteData({ schw: undefined })}
-                topClass="ScheduleWidgetAlarmScheduleList"
+                className="ScheduleWidgetAlarmScheduleList"
                 headTitle="Расписание"
                 content={<div className="color--ko flex center margin-giant-gap-v">
                     Расписание не найдено

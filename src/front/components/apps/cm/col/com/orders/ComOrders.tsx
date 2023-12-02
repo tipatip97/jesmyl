@@ -2,13 +2,14 @@ import { useState } from "react";
 import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
 import TheOrder from "../order/TheOrder";
 import { IComOrdersProps } from "./ComOrders.model";
+import styled from "styled-components";
 
 export default function ComOrders(props: IComOrdersProps) {
   const { com, fontSize } = props;
   const [exMods, updateExMods] = useState<number[]>(com.excludedModulations);
 
   return (
-    <div
+    <OrdList
       className="com-ord-list"
       style={{
         fontSize: `${fontSize}px`,
@@ -38,6 +39,15 @@ export default function ComOrders(props: IComOrdersProps) {
           }}
         />;
       })}
-    </div>
+    </OrdList>
   );
 }
+
+const OrdList = styled.div`
+  display: inline-block;
+  color: var(--color-far);
+  padding-top: .06em;
+  transition: padding .2s;
+  padding-bottom: 100px;
+  min-height: 100%;
+`;

@@ -11,7 +11,7 @@ export default function TheUser() {
 
   return (
     <PhaseAdminEditorContainer
-      topClass="user-application"
+      className="user-application"
       headTitle={`Пользователь - ${currentUser.name}`}
       content={
         <>

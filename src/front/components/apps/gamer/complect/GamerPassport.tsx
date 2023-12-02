@@ -25,7 +25,7 @@ export default function TheGamerPassport() {
     };
 
     return <PhaseGamerContainer
-        topClass="spy-passport"
+        className="spy-passport"
         withoutBackButton
         headTitle="Паспорт"
         content={<>

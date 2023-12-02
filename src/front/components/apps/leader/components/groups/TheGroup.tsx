@@ -29,7 +29,7 @@ export default function TheLeaderGroup() {
 
   return (
     <PhaseLeaderContainer
-      topClass=""
+      className=""
       headTitle={`Группа${cgroup ? ` - ${cgroup.name}` : ""}`}
       onMoreClick={() => cgroup && openGroupMore()}
       content={<>

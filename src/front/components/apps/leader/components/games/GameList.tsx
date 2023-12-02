@@ -13,7 +13,7 @@ export default function GameList() {
 
   return (
     <PhaseLeaderContainer
-      topClass="template-page-content"
+      className="template-page-content"
       onMoreClick={() => openGamesMore()}
       headTitle={`Командные игры${ccontext?.name ? ` - ${ccontext.name}` : ""}`}
       content={

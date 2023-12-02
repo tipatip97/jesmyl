@@ -16,7 +16,7 @@ export function CurrentContextSelectPageInner({ list }: { list: LeaderContextImp
     const { setAppRouteData, nav } = useLeaderNav();
 
     return <PhaseLeaderContainer
-        topClass="CurrentContextSelectPage"
+        className="CurrentContextSelectPage"
         withoutBackButton
         headTitle="Выбор контекста"
         content={list.map((context) => {

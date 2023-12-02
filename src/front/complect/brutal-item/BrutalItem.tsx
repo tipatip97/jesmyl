@@ -1,6 +1,6 @@
 import { HtmlHTMLAttributes, ReactNode } from "react";
+import styled from "styled-components";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
-import "./BrutalItem.scss";
 
 export default function BrutalItem({
   onClick,
@@ -17,8 +17,8 @@ export default function BrutalItem({
   markBadge?: number | boolean,
 } & HtmlHTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className="brutal-item flex between relative"
+    <Item
+      className="flex between relative"
       attr-mark-badge={markBadge === true || markBadge === 0 ? 0 : markBadge || null}
       onClick={onClick}
     >
@@ -38,6 +38,60 @@ export default function BrutalItem({
           </div>
         </div>
       )}
-    </div>
+    </Item>
   );
 }
+
+const Item = styled.div`
+--brutal-item-height: 60px;
+--brutal-item-gap-v: 7px;
+
+border-radius: 10px;
+background-color: var(--color--2);
+width: 100%;
+height: var(--brutal-item-height);
+cursor: pointer;
+margin-top: var(--brutal-item-gap-v);
+
+>.item-description {
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    justify-content: center;
+    width: 100%;
+    opacity: 0.5;
+    pointer-events: none;
+
+    >.item-description-inner {
+        position: relative;
+        pointer-events: all;
+        white-space: nowrap;
+        width: 80%;
+        overflow: hidden;
+        text-align: center;
+
+        >.item-description-title {
+            display: inline-block;
+            text-align: right;
+            overflow: hidden;
+            vertical-align: middle;
+            max-width: 100%;
+
+            &:after {
+                content: "";
+                position: absolute;
+                left: -1.3em;
+                bottom: 0;
+                height: 1em;
+                width: 2.5em;
+                background: linear-gradient(to left, transparent, var(--color--2) 50%);
+            }
+
+            >.item-description-title-inner {
+                white-space: nowrap;
+                float: right;
+            }
+        }
+    }
+}
+`;

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
 import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
 import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
@@ -8,7 +9,6 @@ import useCmNav from "../../base/useCmNav";
 import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import ComFace from "../com/face/ComFace";
-import "./Cat.scss";
 import { useCcat } from "./useCcat";
 
 const isNumberSearchSelector = (state: RootState) => state.complect.isNumberSearch;
@@ -51,8 +51,8 @@ export default function TheCat({ all }: { all?: boolean }) {
 
   return (
     <LoadIndicatedContent isLoading={!cat} onLoad={() => scrollToCurrent()}>
-      <PhaseCmContainer
-        topClass="cat-content"
+      <CatPhaseContainer
+        className="cat-content"
         withoutBackButton={all}
         headClass="flex between full-width"
         head={
@@ -116,3 +116,19 @@ export default function TheCat({ all }: { all?: boolean }) {
     </LoadIndicatedContent>
   );
 }
+
+const CatPhaseContainer = styled(PhaseCmContainer)`
+  .list-title {
+      cursor: ns-resize;
+  }
+
+  >.content {
+      padding-top: 0;
+  }
+
+  .later-com-list {
+      &.hidden {
+          display: none;
+      }
+}
+`;

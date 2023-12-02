@@ -30,7 +30,7 @@ export default function EditComposition({
 
   return (
     <PhaseCmEditorContainer
-      topClass="edit-composition"
+      className="edit-composition"
       headTitle={`#${ccom.number} ${ccom.initialName || ccom.name}`}
       head={<>
         {connectionNode}

@@ -96,7 +96,7 @@ export default function HumanList({
 
   return isAsPage ? (
     <PhaseLeaderContainer
-      topClass="template-page-content"
+      className="template-page-content"
       headClass="flex between full-width"
       onMoreClick={
         onMoreClick ||

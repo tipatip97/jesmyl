@@ -12,7 +12,7 @@ export default function Editor() {
 
   return (
     <PhaseCmEditorContainer
-      topClass="cm-editor"
+      className="cm-editor"
       withoutBackButton
       headTitle="Редактор"
       content={

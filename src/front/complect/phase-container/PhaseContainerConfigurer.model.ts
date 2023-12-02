@@ -5,7 +5,7 @@ export interface PhaseContainerConfigurerProps extends PhaseContainerProps {
 }
 
 export interface PhaseContainerProps {
-    topClass: string,
+    className: string,
     headClass?: string,
     contentClass?: string,
     withoutBackButton?: boolean,

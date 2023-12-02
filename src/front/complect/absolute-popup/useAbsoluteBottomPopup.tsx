@@ -37,6 +37,7 @@ export interface AbsoluteBottomPopupContentProps {
   footer?: ReactNode,
 }
 
+
 export default function useAbsoluteBottomPopup() {
   const dispatch = useDispatch();
   const isAbsoluteBottomPopupOpen = useSelector(isAbsoluteBottomPopupOpenSelector);

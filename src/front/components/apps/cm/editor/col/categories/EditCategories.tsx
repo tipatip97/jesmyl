@@ -9,7 +9,7 @@ export default function EditCategories() {
 
   return (
     <PhaseCmEditorContainer
-      topClass="edit-categories"
+      className="edit-categories"
       headTitle="Категории"
       content={
         <>

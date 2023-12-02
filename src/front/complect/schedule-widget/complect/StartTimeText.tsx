@@ -1,6 +1,5 @@
 import mylib from "../../my-lib/MyLib";
 import { IScheduleWidget } from "../ScheduleWidget.model";
-import '../ScheduleWidget.scss';
 import { ScheduleWidgetRights, useScheduleWidgetRights } from "../useScheduleWidget";
 import ScheduleWidgetCleans from "./Cleans";
 

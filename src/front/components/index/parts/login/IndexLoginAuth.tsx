@@ -14,7 +14,7 @@ import useIndexNav from "../../complect/useIndexNav";
 import indexStorage from "../../indexStorage";
 import { removePullRequisites } from "../../useAuth";
 import useConnectionState from "../../useConnectionState";
-import "./IndexLogin.scss";
+import styled from "styled-components";
 
 
 const errorsSelector = (state: RootState) => state.index.errors;
@@ -114,8 +114,8 @@ export default function IndexLoginAuth() {
   }, [passw, rpassw, mode, dispatch]);
 
   return (
-    <PhaseIndexContainer
-      topClass="index-login login-page"
+    <LoginIndex
+      className=""
       headTitle={mode === "register" ? "Создать профиль" : "Вход"}
       head={connectionNode}
       content={
@@ -225,3 +225,100 @@ export default function IndexLoginAuth() {
     />
   );
 }
+
+export const LoginIndex = styled(PhaseIndexContainer)`
+.logo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    >.logo-container {
+        background-color: var(--color--3);
+        padding: 15px;
+        border-radius: 100%;
+
+        >.jesmyl-smile {
+            --jesmyl-smile-color: var(--color--2);
+        }
+    }
+
+    >.text {
+        font-size: 2em;
+        margin-top: .3em;
+    }
+}
+
+.input-container {
+    --padding-h: .8em;
+    position: relative;
+    width: 100%;
+    max-width: 500px;    
+    margin: 5px 0;
+
+    .icon-button-container {
+        margin-right: 10px;
+    }
+
+    >.input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+
+        >.input {
+            --input-keyboard-background: var(--color--2);
+            --autofill-background-color: var(--color--2);
+            --autofill-color: var(--text-color);
+
+            background-color: var(--color--2);
+            color: var(--text-color);
+            padding: 0.5em var(--padding-h);
+            padding-right: 1.5em;
+            width: 100%;
+            border-radius: 0.7em;
+            font-size: 1.5em;
+            border: var(--color--2) 2px solid;
+            height: 60px;            
+
+            &::placeholder {
+                color: var(--text-color);
+            }
+        }
+
+        >.eva-icon {
+            position: absolute;
+            right: var(--padding-h);
+            cursor: pointer;
+        }
+    }
+}
+
+.send-button {
+    background-color: var(--color--3);
+    color: var(--color--2);
+    padding: .5em 2em;
+    font-size: 1.5em;
+    border-radius: 0.8em;
+    margin: 1.5em 0;
+    cursor: pointer;
+}
+
+.login-error-message {
+    position: absolute;
+    color: var(--color--ko);
+    bottom: -7px;
+    width: 100%;
+    text-align: center;
+
+    +.input-wrapper {
+        margin-bottom: 1em;
+
+        >input {
+            border-color: var(--color--ko);
+        }
+        >.eva-icon {
+            --icon-color: var(--color--ko);
+        }
+    }
+}
+`;

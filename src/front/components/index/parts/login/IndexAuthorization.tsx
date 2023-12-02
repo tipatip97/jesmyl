@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./IndexLogin.scss";
 import IndexLoginAuth from "./IndexLoginAuth";
 import IndexTelegramAuth from "./IndexTelegramAuth";
 
