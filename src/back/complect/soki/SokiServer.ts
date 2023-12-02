@@ -14,8 +14,8 @@ import { Executer } from '../executer/Executer';
 import { ExecutionDict } from '../executer/Executer.model';
 import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
-import smylib, { SMyLib } from './complect/SMyLib';
-import { sokiAuther } from './complect/SokiAuther';
+import smylib, { SMyLib } from '../../shared/SMyLib';
+import { sokiAuther } from './SokiAuther';
 import { LocalSokiAuth, SokiAppName, SokiCapsule, SokiClientEvent, SokiServerEvent, SokiServicePack, SokiStatistic, SokiSubscribtionName } from './soki.model';
 
 setPolyfills();

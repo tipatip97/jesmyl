@@ -1,7 +1,7 @@
-import { ActionBoxSetSystems } from "../../models";
+import { ActionBoxSetSystems, ActionTimer } from "../../models";
 import { LocalSokiAuth, SokiAppName } from "../soki/soki.model";
 
-export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | '' | 'migrate' | 'insert_beforei' | 'remove' | 'remove_each' | 'delete' | 'other';
+export type ExecutionMethod = 'formula' | 'set' | 'set_all' | 'push' | 'concat' | 'toggle' | 'toggle_by' | 'migrate' | 'insert_beforei' | 'remove' | 'remove_each' | 'delete' | 'other';
 
 export interface ExecutionDict<Value = any, Args = ExecutionArgs<any, Value>> {
     action: string,
@@ -10,7 +10,7 @@ export interface ExecutionDict<Value = any, Args = ExecutionArgs<any, Value>> {
     prev?: Value,
     args?: Args,
     corrects?: unknown,
-    delay?: ExecuteReplaceableField<number>,
+    timer?: ExecuteReplaceableField<ActionTimer>,
 }
 
 export interface ExecuteDoItProps {
@@ -107,7 +107,7 @@ export interface ExecutionReal<Value = unknown, Args = Record<string, unknown>, 
     fixedAccesses?: FixedAccesses,
     setSystems?: ActionBoxSetSystems[],
     setItemSystems?: ActionBoxSetSystems[],
-    delay?: ExecuteReplaceableField<number>,
+    timer?: ExecuteReplaceableField<ActionTimer>,
 }
 
 export type FixedAccesses = { track: ExecutionTrack, tail: Record<string, ExecutionTrack> }[];

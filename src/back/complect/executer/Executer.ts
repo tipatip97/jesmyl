@@ -1,8 +1,8 @@
 /* eslint-disable eqeqeq */
-import { ActionBox, ActionBoxSetSystems, ActionBoxSetSystemsFree } from "../../models";
+import { ActionBox, ActionBoxSetSystems, ActionBoxSetSystemsFree, ActionTimer } from "../../models";
+import smylib, { SMyLib } from "../../shared/SMyLib";
 import { actionBoxSetSystems, sequreMD5Passphrase, sokiWhenRejButTs } from "../../values";
 import { FilerAppConfig, FilerAppConfigActions } from "../filer/Filer.model";
-import smylib, { SMyLib } from "../soki/complect/SMyLib";
 import { LocalSokiAuth } from "../soki/soki.model";
 import { ExecuteDoItProps, ExecuteError, ExecuteErrorType, ExecuteFeedbacks, ExecuterSetInEachValueItem, ExecutionArgs, ExecutionDict, ExecutionExpectations, ExecutionReal, ExecutionRuleTrackBeat, ExecutionSide, ExecutionSidesDict, ExecutionTrack, FixedAccesses, RealAccumulatableRule, RealAccumulatableRuleSides, ShortRealRule, TrackerRet } from "./Executer.model";
 
@@ -367,7 +367,7 @@ export class Executer {
 
                         if (smylib.isFunc(box.side)) {
                             const side = box.side;
-                            return (props: any) => accSides(side(props));
+                            return (...props: any[]) => accSides(side(...props));
                         } else return accSides(box.side);
                     };
 
@@ -651,6 +651,8 @@ export class Executer {
         });
     }
 
+    private static delayTimeouts: Record<string, TimeOut> = {};
+
     static execute(config: FilerAppConfig, contents: Record<string, unknown>, execs: ExecutionDict[], auth?: LocalSokiAuth | null, isIgnoreDelay?: boolean) {
         return new Promise<ExecuteFeedbacks>((resolve, reject) => {
             try {
@@ -721,10 +723,17 @@ export class Executer {
 
                     const rule = this.prepareRule(prepRule, exec.value, contents, exec.args, auth);
 
-                    if (!isIgnoreDelay && prepRule.delay !== undefined) {
-                        const delay = this.replaceArgs(prepRule.delay, rule.args, auth);
-                        if (!smylib.isNum(delay)) continue;
-                        setTimeout(() => this.execute(config, contents, [exec], auth, true).then(resolve).catch(reject), delay);
+                    if (!isIgnoreDelay && prepRule.timer !== undefined) {
+                        const timer: ActionTimer = this.replaceArgs(prepRule.timer, rule.args, auth);
+                        if (timer.clearId) {
+                            clearTimeout(this.delayTimeouts[timer.clearId]);
+                            delete this.delayTimeouts[timer.clearId];
+                        }
+                        const callback = () => this.execute(config, contents, [exec], auth, true).then(resolve).catch(reject);
+
+                        if (timer.startId !== undefined) this.delayTimeouts[timer.startId] = setTimeout(callback, timer.startMs);
+                        else callback();
+
                         return;
                     }
 
@@ -919,6 +928,30 @@ export class Executer {
                             return;
                         }
                         pushTarget?.push(smylib.clone(value));
+                        break;
+                    case 'toggle':
+                        if (!smylib.isArr(target)) {
+                            reject(`Целевой объект (${smylib.typeOf(target)?.replace('is', '')}) не является массивом`);
+                            break;
+                        }
+
+                        if (target.includes(value)) target.splice(target.indexOf(value), 1);
+                        else target?.push(smylib.clone(value));
+                        break;
+                    case 'toggle_by':
+                        if (!smylib.isArr(target)) {
+                            reject(`Целевой объект (${smylib.typeOf(target)?.replace('is', '')}) не является массивом`);
+                            break;
+                        }
+                        if (value == null || !smylib.isStr(value.by)) {
+                            reject('Отсутствует аргумент by#String');
+                            break;
+                        }
+                        const { by, val } = value;
+                        const itemi = target.findIndex((item) => item[by] === val);
+
+                        if (itemi > -1) target.splice(itemi, 1);
+                        else target?.push(smylib.clone(value));
                         break;
                     case 'insert_beforei': {
                         if (!smylib.isArr(target) || value == null) break;

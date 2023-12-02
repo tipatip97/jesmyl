@@ -1,25 +1,28 @@
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import { GamerAliasRoomStatePhase } from "./Alias.model";
 import AliasGameRound from "./AliasGameRound";
 import AliasGameRoundResults from "./AliasGameRoundResults";
 import AliasRoomInitialContent from "./AliasRoomInitialContent";
 import AliasScoreBoard from "./AliasScoreBoard";
-import useAliasState from "./useAliasState";
+import { AliasStateContext, useAliasContextStateMaker } from "./useAliasState";
 
 export default function AliasRoomContent() {
-    const { state } = useAliasState();
-    const phase = state?.phase;
-    const { openFullscreenContent } = useFullscreenContent();
+    const aliasState = useAliasContextStateMaker();
+    const phase = aliasState.state?.phase;
+    const [scoreNode, openFullscreenContent] = useFullContent(() => <AliasScoreBoard />);
 
-    return <>
-        <div onClick={() => openFullscreenContent(<AliasScoreBoard />, true)}>
-            Посмотреть счёт
-        </div>
-        {phase === GamerAliasRoomStatePhase.Wait
-            || phase === GamerAliasRoomStatePhase.Speech
-            ? <AliasGameRound />
-            : phase === GamerAliasRoomStatePhase.Results
-                ? <AliasGameRoundResults />
-                : <AliasRoomInitialContent />}
-    </>
+    return <AliasStateContext.Provider value={aliasState}>
+        {scoreNode}
+        {aliasState && <>
+            <div onClick={() => openFullscreenContent(true)}>
+                Посмотреть счёт
+            </div>
+            {phase === GamerAliasRoomStatePhase.Wait
+                || phase === GamerAliasRoomStatePhase.Speech
+                ? <AliasGameRound />
+                : phase === GamerAliasRoomStatePhase.Results
+                    ? <AliasGameRoundResults />
+                    : <AliasRoomInitialContent />}
+        </>}
+    </AliasStateContext.Provider>;
 }

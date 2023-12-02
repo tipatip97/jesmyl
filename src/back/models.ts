@@ -2,9 +2,15 @@ import { ExecuteReplaceableField, ExecutionArgs, ExecutionMethod, ExecutionSides
 import { LocalSokiAuth } from "./complect/soki/soki.model";
 import { actionBoxSetSystems } from "./values";
 
-export type ActionBoxSide = ExecutionSidesDict | ((realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) => ExecutionSidesDict);
+export type ActionBoxSide = ExecutionSidesDict | ((realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) => ExecutionSidesDict | und);
 
-export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Partial<Record<`<${string}>`, ActionBox>> {
+export interface ActionTimer {
+    startMs?: number,
+    startId?: string,
+    clearId?: string,
+}
+
+export interface ActionBox<Value = any> extends Partial<Record<`/${string}`, ActionBox>>, Partial<Record<`<${string}>`, ActionBox>> {
     level?: number,
     scopeNode?: string,
     shortTitle?: string,
@@ -25,9 +31,9 @@ export interface ActionBox extends Partial<Record<`/${string}`, ActionBox>>, Par
     $$var?: `$$${string}`,
 
     action?: string,
-    delay?: ExecuteReplaceableField<number>,
+    timer?: ExecuteReplaceableField<ActionTimer>,
     method?: ExecutionMethod,
-    value?: ExecuteReplaceableField<any, {} | null>,
+    value?: ExecuteReplaceableField<Value, {} | null>,
     args?: ExecutionArgs<string | any[]>,
 };
 

@@ -4,7 +4,7 @@ import cm from '../../apps/cm/config';
 import gamer from '../../apps/gamer/config';
 import index from '../../apps/index/config';
 import leader from '../../apps/leader/config';
-import smylib, { SMyLib } from '../soki/complect/SMyLib';
+import smylib, { SMyLib } from '../../shared/SMyLib';
 import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName, SokiClientUpdateCortage } from '../soki/soki.model';
 import { FilerAppConfig, FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, FilerWatcher, SimpleKeyValue } from './Filer.model';
 

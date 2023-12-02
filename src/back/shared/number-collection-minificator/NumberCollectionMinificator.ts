@@ -1,4 +1,5 @@
-import mylib from "../my-lib/MyLib";
+import smylib from "../SMyLib";
+
 
 type InsideDigit = 1 | 2 | 3 | 4;
 
@@ -16,8 +17,7 @@ export function NumberCollectionMinificator<InsideDigits extends [InsideDigit?, 
         (insideDigits?.map(digits => `(${digits === 1 ? '\\d' : `\\d{1,${digits}}`})?`).join('') || '') +
         ')?(\\d+)?'
     );
-    const repeatZero = String.prototype.repeat.bind('0');
-    const zeroEndedReg = /([1-9]+)(0+)/;
+    const zeroEndedReg = /(\d+)([1-9]*)(0+)$/;
 
     return {
         check: <Digits = InsideDigits>(digits: Digits) => digits,
@@ -28,24 +28,27 @@ export function NumberCollectionMinificator<InsideDigits extends [InsideDigit?, 
             try {
                 let sNum = '';
                 let numbersStr = '';
-                let dir = -1;
+                let dir = general < 0 ? 1 : -1;
                 let tail: number | string = last;
 
                 if (insideDigits && insideNumbers)
                     insideNumbers.forEach((num, numi) => {
                         if ((sNum = '' + num).length > insideDigits[numi]!)
-                            throw new Error(`Ошибка ширины цифры! Ожидается максимум ${insideDigits[numi]!} ${mylib.declension(insideDigits[numi]!, 'порядок', 'порядка', 'порядков')}, а получено число ${num}`);
+                            throw new Error(`Ошибка ширины цифры! Ожидается максимум ${insideDigits[numi]!} ${smylib.declension(insideDigits[numi]!, 'порядок', 'порядка', 'порядков')}, а получено число ${num}`);
 
                         numbersStr += sNum.padStart(insideDigits[numi]!, '0');
                     });
 
-                if (!last || last % 10) dir = 1;
-                else if (last > 999999999) tail++;
+                if (!last || last % 10) {
+                    dir = 1;
+                    const num = +('' + last).slice(-1);
+                    tail = general < 0 && num && num < 4 ? last + '3' : last;
+                } else if (last > 999999999) tail += general < 0 ? 2 : 1;
                 else {
                     const comps = ('' + last).match(zeroEndedReg);
                     if (comps) {
-                        const [, digits, zeros] = comps;
-                        tail = digits + zeros.length;
+                        const [, digits, nines, zeros] = comps;
+                        tail = digits + nines + zeros.slice(0, -1) + (general < 0 ? '2' : '1');
                     }
                 }
 
@@ -66,13 +69,15 @@ export function NumberCollectionMinificator<InsideDigits extends [InsideDigit?, 
             const lastStrNum = strNumbers[strNumbers.length - 1];
 
             return [
-                +general,
+                (num < 0 && lastStrNum?.slice(-1) !== '1' ? -1 : 1) * +general,
                 (insideDigits ? strNumbers.map((num, numi) => +(num?.padEnd(insideDigits[numi]!, '0') || 0)).slice(0, -1) : []) as never,
                 lastStrNum !== undefined
                     ? num < 0
-                        ? +(lastStrNum.slice(0, -1) + repeatZero(+lastStrNum - Math.trunc(+lastStrNum / 10) * 10))
+                        ? +lastStrNum.slice(-1) < 4
+                            ? +(lastStrNum.slice(0, -1) + (lastStrNum.slice(-1) === '3' ? '' : '0'))
+                            : +lastStrNum
                         : +lastStrNum
-                    : 0
+                    : 0,
             ];
         }
     };

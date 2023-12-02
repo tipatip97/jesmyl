@@ -1,4 +1,4 @@
-import useAliasState from "./useAliasState";
+import { useAliasState } from "./useAliasState";
 
 export default function AliasScoreBoard() {
     const { state, players } = useAliasState();

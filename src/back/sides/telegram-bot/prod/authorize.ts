@@ -1,5 +1,5 @@
 import { CallbackQuery, ChatMember, SendMessageOptions } from "node-telegram-bot-api";
-import smylib from "../../../complect/soki/complect/SMyLib";
+import smylib from "../../../shared/SMyLib";
 import { JTgBotCallbackQuery } from "../tg-bot";
 
 export const supportTelegramAuthorizations: Record<number, () => CallbackQuery> = {};

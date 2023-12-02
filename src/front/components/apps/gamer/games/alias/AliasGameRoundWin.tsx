@@ -1,5 +1,5 @@
 import SendButton from "../../../../../complect/SendButton";
-import useAliasState from "./useAliasState";
+import { useAliasState } from "./useAliasState";
 
 export default function AliasGameRoundWin({ maxScore }: { maxScore: number }) {
     const { state, resetGame, memberPossibilities } = useAliasState();

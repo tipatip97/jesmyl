@@ -1,4 +1,4 @@
-import smylib from "../../complect/soki/complect/SMyLib";
+import smylib from "../../shared/SMyLib";
 
 const zeroEndTrimReg = /0+$/;
 

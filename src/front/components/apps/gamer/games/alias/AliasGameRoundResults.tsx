@@ -1,51 +1,45 @@
-import { useState } from "react";
 import SendButton from "../../../../../complect/SendButton";
-import { AliasWordNid } from "./Alias.model";
+import { MyLib } from "../../../../../complect/my-lib/MyLib";
 import AliasGameRoundResultsAnswerList from "./ResultsAnswerList";
-import useAliasState from "./useAliasState";
+import { useAliasState } from "./useAliasState";
 
 export default function AliasGameRoundResults() {
-    const { rememberScore, getAnswerList, isMySpeech, state, memberPossibilities, resetGame, takeSpeaker } = useAliasState();
-    const [corStrikedNods, updateCorStrikedNids] = useState<AliasWordNid[]>([]);
-    const [incStrikedNods, updateIncStrikedNids] = useState<AliasWordNid[]>([]);
-    const correctNids = getAnswerList('cor') || [];
-    const incorrectNids = getAnswerList('inc') || [];
-    const scoreIncrement = (correctNids.length + incStrikedNods.length * 2) - (incorrectNids.length + corStrikedNods.length * 2);
+    const { rememberScore, computeScore, state, memberPossibilities, resetGame, isMySpeech } = useAliasState();
+    const { corrects, incorrects, score } = computeScore();
 
-    if (!isMySpeech()) return <>
-        Смотрит результаты - {takeSpeaker()?.name}
-
+    return <>
+        <div className="full-height over-y-auto">
+            <h2>Будет засчитано: {score}</h2>
+            <AliasGameRoundResultsAnswerList
+                answers={corrects}
+                isInc={false}
+            />
+            <AliasGameRoundResultsAnswerList
+                answers={incorrects}
+                isInc={true}
+            />
+            {isMySpeech() && <div className="flex center margin-gap">
+                <SendButton
+                    title="Отправить данные"
+                    disabled={
+                        ((answers) => state?.rej
+                            && MyLib.entries(state.rej)
+                                .some(([strNid, rejs]) => answers?.includes(+strNid)
+                                    && rejs.length > 0
+                                    && !state.fix.includes(+strNid))
+                        )(state?.cor.concat(state.inc))
+                    }
+                    onSend={rememberScore}
+                />
+            </div>}
+        </div>
         {state?.startTs === 0 && memberPossibilities().isManager &&
-            <div className="flex center absolute pos-bottom full-width margin-big-gap-b">
+            <div className="flex center margin-big-gap-b">
                 <SendButton
                     title="Завершить игру"
                     confirm
                     onSend={resetGame}
                 />
             </div>}
-    </>;
-
-    return <>
-        <h2>Будет засчитано: {scoreIncrement}</h2>
-        <AliasGameRoundResultsAnswerList
-            answers={correctNids}
-            strikes={corStrikedNods}
-            setter={updateCorStrikedNids}
-            getAnswerList={getAnswerList}
-            isInc={false}
-        />
-        <AliasGameRoundResultsAnswerList
-            answers={incorrectNids}
-            strikes={incStrikedNods}
-            setter={updateIncStrikedNids}
-            getAnswerList={getAnswerList}
-            isInc={true}
-        />
-        <div className="flex center">
-            <SendButton
-                title="Отправить данные"
-                onSend={() => rememberScore(scoreIncrement)}
-            />
-        </div>
     </>
 }

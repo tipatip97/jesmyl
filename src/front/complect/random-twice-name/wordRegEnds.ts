@@ -88,8 +88,6 @@ const regEnds: [RegExp, [RegExp, EndVariantsDict][]][] =
         MyLib.entries(variants).map(([end, dict]) => [new RegExp(end), dict]),
     ]);
 
-console.log(regEnds);
-
 const allAll = (all: string) => all;
 
 const fixNoun = (() => {

@@ -1,5 +1,5 @@
 import TgBot, { BotCommand, CallbackQuery, InlineKeyboardButton } from 'node-telegram-bot-api';
-import smylib from '../../complect/soki/complect/SMyLib';
+import smylib from '../../shared/SMyLib';
 import { JesmylTelegramBot } from './tg-bot';
 
 

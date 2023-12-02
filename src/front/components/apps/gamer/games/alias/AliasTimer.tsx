@@ -1,6 +1,7 @@
 
 import { useLayoutEffect, useState } from "react";
-import useAliasState from "./useAliasState";
+import { useAliasState } from "./useAliasState";
+import styled from "styled-components";
 
 const takeSeconds = (time: number, start: number) => time - Math.floor((Date.now() - start) / 1000);
 
@@ -25,5 +26,14 @@ export default function GamerAliasTimer() {
 
     if (!start || (seconds && seconds < 0)) return null;
 
-    return <div className="timeout-timer-screen">{seconds}</div>;
+    return <Timer>{seconds}</Timer>;
 }
+
+const Timer = styled.div`
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3em;
+    font-weight: bold;
+    text-align: center;
+`;

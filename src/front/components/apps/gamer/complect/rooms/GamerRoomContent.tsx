@@ -42,6 +42,7 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
         postfix={gameData.title}
       />)
       (games.find(({ phase: [gameName] }) => room?.currentGame === gameName)?.data)}
+    contentClass="flex column custom-align-items"
     onMoreClick={isManager
       ? () => {
         openAbsoluteBottomPopup(

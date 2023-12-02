@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
-import mylib from "../../../../../complect/my-lib/MyLib";
+import mylib, { MyLib } from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import { GamerRoom, GamerRoomMember, GamerRoomMemberLogin } from "../../Gamer.model";
 import { gamerExer } from "../../Gamer.store";
 import useGamerRooms from "../../complect/rooms/room/useGamerRooms";
 import { AliasGameTeam, AliasWordNid, GamerAliasRoomState } from "./Alias.model";
 import { AliasHelp } from "./AliasHelp";
+import React, { useContext } from "react";
 
 const aliasWordsSelector = (state: RootState) => state.gamer.aliasWords;
 
@@ -24,7 +25,9 @@ const sendExec = (action: string, args?: Record<string, unknown>) => {
     });
 };
 
-export default function useAliasState() {
+const isIs = (is: unknown) => is;
+
+export const useAliasContextStateMaker = () => {
     const { players, currentRoom, auth, memberPossibilities } = useGamerRooms();
 
     localCurrentRoom = currentRoom;
@@ -42,21 +45,11 @@ export default function useAliasState() {
         auth,
         players,
         memberPossibilities,
-        getWord: (nid?: AliasWordNid) => {
-            const nids = AliasHelp.decodeWordNid(nid);
-            if (!nids) return undefined;
-            const [packi, leveli, wordi] = nids;
-            return aliasWords?.[packi as never]?.words[leveli as never]?.[wordi as never];
-        },
-        takeCurrentWord: () => {
-            return ret.getWord(currentWordNid);
-        },
-        getAnswerList: (scope: 'cor' | 'inc'): [AliasWordNid, string?][] | nil => {
-            return ret.takeCurrentTeam('team')?.[scope]?.map((wordNid) => [wordNid, ret.getWord(wordNid)]);
-        },
-        isMySpeech: () => {
-            return auth ? auth.login === ret.takeSpeakerLogin() : null;
-        },
+        aliasWords,
+        currentWordNid,
+        getWordInfo: (nid?: number) => AliasHelp.takeWordInfo(aliasWords, state?.dicts, nid),
+        takeCurrentWord: () => ret.getWordInfo(currentWordNid)?.word,
+        isMySpeech: () => auth ? auth.login === ret.takeSpeakerLogin() : null,
         takeSpeaker: () => {
             if (speaker) return speaker;
             const memberLogin = ret.takeSpeakerLogin();
@@ -100,16 +93,22 @@ export default function useAliasState() {
                 word: currentWordNid,
             });
         },
-        rememberScore: (scoreIncrement: number) => {
-            if (state?.speakeri == null) return;
-            const teami = ret.takeCurrentTeam('index');
+        rememberScore: () => sendExec('computeAliasScore'),
+        resetSpeech: () => sendExec('resetAliasSpeech'),
+        fixWord: (nid: number) => sendExec('fixAliasWord', { nid }),
+        computeScore: () => {
+            const corrects = state?.cor.map((wordNid) => ret.getWordInfo(wordNid)!).filter(isIs) || [];
+            const incorrects = state?.inc.map((wordNid) => ret.getWordInfo(wordNid)!).filter(isIs) || [];
 
-            if (teami === null) return;
+            const score = !state
+                ? 0
+                : AliasHelp.computeGameScore(corrects, incorrects, state.fix);
 
-            return sendExec('rememberAliasScore', {
-                teami,
-                scoreIncrement,
-            });
+            return {
+                score,
+                corrects,
+                incorrects,
+            };
         },
         startSpeech: () => {
             if (!currentRoom) return;
@@ -120,7 +119,16 @@ export default function useAliasState() {
             });
             sendExec('startAliasSpeechTimeout');
         },
-        startRound: (isComputeNewTeams: boolean, teamsCount: number, roundTime: number, dream: number, teamsTitles: string[]) => {
+        rejectWord: (nid: number) => state?.cor.concat(state.inc).includes(nid) ? sendExec('rejectAliasWord', { nid }) : null,
+        startRound: (props: {
+            isComputeNewTeams: boolean,
+            isPrevWords: boolean,
+            teamsCount: number,
+            roundTime: number,
+            dream: number,
+            dicts: number[],
+            teamsTitles: string[]
+        }) => {
             if (!players || !currentRoom) return;
 
             let teams: AliasGameTeam[] = [];
@@ -129,22 +137,22 @@ export default function useAliasState() {
             const sortedPlayers = mylib.randomSort([...players]);
             const speaks = players.reduce<number[]>((acc) => acc.concat(0), []);
 
-            if (!state || state.words.length < 10) {
+            if (!props.isPrevWords || !state) {
                 aliasWords.forEach((pack, packi) => {
-                    pack.words.forEach((level, leveli) => {
-                        level?.forEach((word, wordi) => {
-                            if (word) {
-                                const num = AliasHelp.encodeWordNid(packi, leveli, wordi);
-                                if (num !== null) words.push(num);
-                            }
-                        });
+                    const max = props.dicts[packi];
+                    if (max === 0) return;
+
+                    MyLib.entries(pack.words).forEach(([word, weight], wordi) => {
+                        if (weight > max || word === '' || weight === 0) return;
+                        const num = AliasHelp.encodeWordNid(packi, weight, wordi);
+                        if (num !== null) words.push(num);
                     });
                 });
                 mylib.randomSort(words);
             } else words = state.words;
 
             while (sortedPlayers.length)
-                for (let i = 0; i < teamsCount; i++) {
+                for (let i = 0; i < props.teamsCount; i++) {
                     if (teamMembers[i] === undefined) teamMembers[i] = [];
                     const member = sortedPlayers.shift();
                     if (member) teamMembers[i].push(member.login);
@@ -152,14 +160,14 @@ export default function useAliasState() {
 
             mylib.randomSort(teamMembers);
 
-            if (isComputeNewTeams)
-                for (let i = 0; i < teamsCount; i++) {
+            if (props.isComputeNewTeams)
+                for (let i = 0; i < props.teamsCount; i++) {
                     teams.push({
                         members: teamMembers[i],
                         messages: [],
                         score: 0,
                         rounds: 0,
-                        title: teamsTitles[i],
+                        title: props.teamsTitles[i],
                     });
                 }
             else {
@@ -174,14 +182,15 @@ export default function useAliasState() {
                 }) || [];
             }
 
-            const stateArgs: GamerAliasRoomState = {
+            const stateArgs: Partial<GamerAliasRoomState> = {
                 teams,
-                roundTime,
+                roundTime: props.roundTime,
                 speaks,
                 speakeri: 0,
                 words,
                 startTs: 0,
-                dream,
+                dream: props.dream,
+                dicts: props.dicts,
             };
 
             sendExec('startAliasRound', stateArgs as never);
@@ -190,3 +199,6 @@ export default function useAliasState() {
     };
     return ret;
 }
+
+export const AliasStateContext = React.createContext<ReturnType<typeof useAliasContextStateMaker> | null>(null);
+export const useAliasState = () => useContext(AliasStateContext)!;

@@ -1,6 +1,6 @@
-import { filer } from '../../filer/Filer';
-import { LocalSokiAuth, SokiAuth, SokiClientEventBody } from '../soki.model';
-import smylib from './SMyLib';
+import { filer } from '../filer/Filer';
+import { LocalSokiAuth, SokiAuth, SokiClientEventBody } from './soki.model';
+import smylib from '../../shared/SMyLib';
 
 export class SokiAuther {
     mtime = 0;

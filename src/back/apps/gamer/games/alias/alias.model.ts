@@ -1,12 +1,9 @@
-import { GamerRoomMemberLogin } from "../gamer.model";
-
+import { GamerRoomMemberLogin } from "../../gamer.model";
 
 export interface AliasGameTeam {
     title: string,
     members: GamerRoomMemberLogin[],
     messages: string[],
-    cor?: AliasWordNid[] | nil,
-    inc?: AliasWordNid[] | nil,
     score: number,
     rounds: number,
 }
@@ -23,7 +20,7 @@ export enum GamerAliasRoomStatePhase {
 
 export interface AliasWordsPack {
     title: string,
-    words: (string[] | null)[],
+    words: Record<string, number>,
 }
 
 
@@ -36,4 +33,17 @@ export interface GamerAliasRoomState {
     startTs?: number,
     words: AliasWordNid[],
     dream: number,
+    dicts: number[],
+    cor: AliasWordNid[],
+    inc: AliasWordNid[],
+    fix: AliasWordNid[],
+    rej?: Record<AliasWordNid, string[]>,
+}
+
+export interface AliasWordInfo {
+    word: string,
+    weight: number,
+    packi: number,
+    nid: AliasWordNid,
+    max: number,
 }

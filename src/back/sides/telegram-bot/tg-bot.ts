@@ -1,5 +1,5 @@
 import TgBot, { CallbackQuery, ChatMember, InlineKeyboardButton, User } from 'node-telegram-bot-api';
-import smylib from '../../complect/soki/complect/SMyLib';
+import smylib from '../../shared/SMyLib';
 import { JTgBotChatMessageCallback, JesmylTelegramBotWrapper } from './tg-bot-wrapper';
 
 const botName = 'jesmylbot';
