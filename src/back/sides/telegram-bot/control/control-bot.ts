@@ -4,6 +4,8 @@ import { logTelegramBot } from "../log/log-bot";
 import { prodTelegramBot } from "../prod/prod-bot";
 import { supportTelegramBot } from "../support/support-bot";
 import { JesmylTelegramBot } from "../tg-bot";
+import { filer } from "../../../complect/filer/Filer";
+import sokiServer from "../../../complect/soki/SokiServer";
 
 export const controlTelegramBot = new JesmylTelegramBot({
     bot: jesmylTgBot,
@@ -29,6 +31,17 @@ const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOp
                     .catch((error) => {
                         bot.postMessage(`Ошибка обновления списка админов ${error}`);
                     });
+            },
+        },
+    ],
+    [
+        {
+            text: '💫 Перечитать файлы',
+            callback_data: 'refresh_files',
+            cb: async (bot) => {
+                sokiServer.reloadFiles()
+                    .then(() => bot.log(`Файлы были перечитаны`))
+                    .catch((error) => bot.log(`Ошибка перечитывания файлов\n\n${error}`));
             },
         },
     ],

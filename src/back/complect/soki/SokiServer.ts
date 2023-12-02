@@ -165,6 +165,17 @@ export class SokiServer {
         return smylib.md5(`{ [${level}]: ${id}.${username}@${date.getMonth()} - ${date.getFullYear()}} `);
     }
 
+    reloadFiles() {
+        return filer.load()
+            .then((r) => {
+                this.send({
+                    system: { name: 'reloadFiles', ok: true },
+                    appName: 'index',
+                })
+                return r;
+            });
+    }
+
     start() {
         new WebSocketServer({ port: 4446 })
             .on('connection', (client: WebSocket) => {

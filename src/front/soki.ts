@@ -62,7 +62,7 @@ export class SokiTrip {
         this.ws.onclose = this.onClose;
         this.ws.onopen = this.onConnect;
 
-        this.ws.onmessage = ({ data }: { data: string }) => {
+        this.ws.onmessage = async ({ data }: { data: string }) => {
             try {
                 const event: SokiServerEvent = JSON.parse(data);
                 info(event);
@@ -90,14 +90,13 @@ export class SokiTrip {
                     if (event.authorized !== undefined) {
                         this.isAuthorized = true;
                         Eventer.invoke(this.waiters, 'auth', true);
-                        if (event.appName !== undefined) this.pullCurrentAppData(event.appName);
+                        this.pullCurrentAppData(await this.appName());
                     }
 
                     if (event.system) {
+                        console.log(event);
                         if (event.system.name === 'reloadFiles')
-                            if (event.appName !== undefined)
-                                this.pullCurrentAppData(event.appName);
-                        if (event.system.name === 'restartWS') { }
+                            this.pullCurrentAppData(await this.appName());
                     }
 
                     if (event.execs && event.appName) {
