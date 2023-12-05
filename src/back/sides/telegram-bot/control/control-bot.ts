@@ -1,16 +1,16 @@
 import { SendMessageOptions } from "node-telegram-bot-api";
+import sokiServer from "../../../complect/soki/SokiServer";
 import { jesmylTgBot } from "../bot";
 import { logTelegramBot } from "../log/log-bot";
 import { prodTelegramBot } from "../prod/prod-bot";
 import { supportTelegramBot } from "../support/support-bot";
 import { JesmylTelegramBot } from "../tg-bot";
-import { filer } from "../../../complect/filer/Filer";
-import sokiServer from "../../../complect/soki/SokiServer";
 
 export const controlTelegramBot = new JesmylTelegramBot({
     bot: jesmylTgBot,
     chatId: -1002054074700,
     logBot: logTelegramBot,
+    logAllAsJSON: true,
 });
 
 const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOptions([
@@ -40,8 +40,14 @@ const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOp
             callback_data: 'refresh_files',
             cb: async (bot) => {
                 sokiServer.reloadFiles()
-                    .then(() => bot.log(`Файлы были перечитаны`))
-                    .catch((error) => bot.log(`Ошибка перечитывания файлов\n\n${error}`));
+                    .then(() => {
+                        bot.log(`💫 Файлы были перечитаны`);
+                        bot.postMessage(`💫 Файлы были перечитаны`);
+                    })
+                    .catch((error) => {
+                        bot.log(`💫 Ошибка перечитывания файлов\n\n${error}`);
+                        bot.postMessage(`💫 Ошибка перечитывания файлов\n\n${error}`);
+                    });
             },
         },
     ],

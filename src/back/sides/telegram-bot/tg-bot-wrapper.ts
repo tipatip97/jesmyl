@@ -4,8 +4,8 @@ import { JesmylTelegramBot } from './tg-bot';
 
 
 export type FreeAnswerCallbackQueryOptions = Omit<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
-export type JTgBotCallbackQueryWithoutBot = (message: CallbackQuery, answer: (options: string | FreeAnswerCallbackQueryOptions) => void) => string | void | undefined | Promise<FreeAnswerCallbackQueryOptions | undefined | void | string>;
-export type JTgBotCallbackQuery = (bot: JesmylTelegramBot, message: CallbackQuery, answer: (options: string | FreeAnswerCallbackQueryOptions) => void) => string | void | undefined | Promise<FreeAnswerCallbackQueryOptions | undefined | void | string>;
+export type JTgBotCallbackQueryWithoutBot = (query: CallbackQuery, answer: (options: string | FreeAnswerCallbackQueryOptions) => void) => string | void | undefined | Promise<FreeAnswerCallbackQueryOptions | undefined | void | string>;
+export type JTgBotCallbackQuery = (bot: JesmylTelegramBot, query: CallbackQuery, answer: (options: string | FreeAnswerCallbackQueryOptions) => void) => string | void | undefined | Promise<FreeAnswerCallbackQueryOptions | undefined | void | string>;
 export type JTgBotChatMessageCallbackWithoutBot = (message: TgBot.Message, metadata: TgBot.Metadata) => any;
 export type JTgBotChatMessageCallback = (bot: JesmylTelegramBot, message: TgBot.Message, metadata: TgBot.Metadata) => any;
 export type JTgBotPersonalMessageCallback = (bot: JesmylTelegramBotWrapper, message: TgBot.Message, metadata: TgBot.Metadata) => any;
@@ -13,6 +13,7 @@ export type JTgBotPersonalMessageCallback = (bot: JesmylTelegramBotWrapper, mess
 export class JesmylTelegramBotWrapper {
     bot: TgBot;
     private callbackQueries: Record<string, JTgBotCallbackQueryWithoutBot> = {};
+    private queryListeners: Record<string, JTgBotCallbackQueryWithoutBot> = {};
     private chatMessages: Record<string, JTgBotChatMessageCallbackWithoutBot> = {};
 
     constructor(token: string, options?: TgBot.ConstructorOptions, onPersonalMessages?: JTgBotPersonalMessageCallback) {
@@ -29,18 +30,25 @@ export class JesmylTelegramBotWrapper {
             }
         });
 
-        this.bot.on('callback_query', async message => {
-            if (!message.data || this.callbackQueries[message.data] === undefined) return;
-
+        this.bot.on('callback_query', async query => {
             const callback = (options: string | FreeAnswerCallbackQueryOptions) => {
-                this.bot.answerCallbackQuery(message.id, smylib.isStr(options)
-                    ? { text: options, callback_query_id: message.id }
-                    : { show_alert: true, ...options, callback_query_id: message.id });
+                this.bot.answerCallbackQuery(query.id, smylib.isStr(options)
+                    ? { text: options, callback_query_id: query.id }
+                    : { show_alert: true, ...options, callback_query_id: query.id });
             };
 
-            const answer = await this.callbackQueries[message.data](message, callback);
+            if (query.data && this.callbackQueries[query.data] !== undefined) {
+                const answer = await this.callbackQueries[query.data](query, callback);
+                if (answer !== undefined) {
+                    callback(answer);
+                    return;
+                }
+            }
 
-            if (answer !== undefined) callback(answer);
+            if (query.message !== undefined && this.queryListeners[query.message.chat.id] !== undefined) {
+                const answer = await this.queryListeners[query.message.chat.id](query, callback);
+                if (answer !== undefined) callback(answer);
+            }
         });
     }
 
@@ -70,5 +78,9 @@ export class JesmylTelegramBotWrapper {
 
     registerOnChatMessages(bot: JesmylTelegramBot, chatId: number, cb: JTgBotChatMessageCallback) {
         this.chatMessages[chatId] = (message, metadata) => cb(bot, message, metadata);
+    }
+
+    registerQueryListener(bot: JesmylTelegramBot, chatId: number, cb: JTgBotCallbackQuery) {
+        this.queryListeners[chatId] = (query, answerCallback) => cb(bot, query, answerCallback);
     }
 }

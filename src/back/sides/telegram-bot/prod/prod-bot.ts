@@ -9,6 +9,7 @@ export const prodTelegramBot = new JesmylTelegramBot({
     bot: jesmylTgBot,
     chatId: -1001304718820,
     logBot: logTelegramBot,
+    logAllAsJSON: true,
 });
 
 
@@ -22,7 +23,7 @@ export const prodStartOptions: SendMessageOptions = prodTelegramBot.makeSendMess
     ],
 ]);
 
-const prodStartMessage = (botName: string) => `Введи код в приложение
+const prodStartMessage = (botName: string) => `Это кнопка для входа
 
 Привет!
 Теперь есть возможность авторизоваться в приложении <a href="https://jesmyl.ru">JesmyL</a> через Телеграм-бота
@@ -35,9 +36,16 @@ const prodStartMessage = (botName: string) => `Введи код в прилож
 В дальнейшем начинай с пункта 3`;
 
 prodTelegramBot.onChatMessages((bot, message) => {
+    if (message.new_chat_members) {
+        bot.deleteMessage(message.message_id);
+    }
+
     if (!message.text) return;
 
     if (bot.messageCase('/start', message.text)) {
         bot.postMessage(prodStartMessage(bot.botName), prodStartOptions);
     }
 });
+
+if (!'change message')
+    prodTelegramBot.editMessageText(551, prodStartMessage(prodTelegramBot.botName), prodStartOptions);

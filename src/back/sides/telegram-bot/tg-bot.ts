@@ -1,24 +1,25 @@
-import TgBot, { CallbackQuery, ChatMember, InlineKeyboardButton, User } from 'node-telegram-bot-api';
+import TgBot, { ChatMember, InlineKeyboardButton, InlineKeyboardMarkup, SendMessageOptions, User } from 'node-telegram-bot-api';
 import smylib from '../../shared/SMyLib';
-import { JTgBotChatMessageCallback, JesmylTelegramBotWrapper } from './tg-bot-wrapper';
+import { JTgBotCallbackQuery, JTgBotChatMessageCallback, JesmylTelegramBotWrapper } from './tg-bot-wrapper';
 
 const botName = 'jesmylbot';
 
 const emptyAdmins = { 0: {} as never };
 
 export type FreeAnswerCallbackQueryOptions = Omit<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
-export type JTgBotCallbackQuery = (bot: JesmylTelegramBot, message: CallbackQuery, answer: (options: string | FreeAnswerCallbackQueryOptions) => void) => string | void | undefined | Promise<FreeAnswerCallbackQueryOptions | undefined | void | string>;
 
 export class JesmylTelegramBot {
     private chatId: number;
     private logBot?: JesmylTelegramBot;
+    private logAllAsJSON?: boolean;
     private _bot: JesmylTelegramBotWrapper;
     admins: Record<number, ChatMember> = emptyAdmins;
     botName = botName;
 
-    constructor(props: { chatId: number, bot: JesmylTelegramBotWrapper, logBot?: JesmylTelegramBot }) {
+    constructor(props: { logAllAsJSON?: boolean, chatId: number, bot: JesmylTelegramBotWrapper, logBot?: JesmylTelegramBot }) {
         this.logBot = props.logBot;
         this.chatId = props.chatId;
+        this.logAllAsJSON = props.logAllAsJSON;
         this._bot = props.bot;
     }
 
@@ -26,10 +27,10 @@ export class JesmylTelegramBot {
         const reg = /./g;
         const callback = (all: string) => 'jesmylibot'[all as never];
 
-        return (id: number) => 't.' + ('' + id).replace(reg, callback);
+        return (id: number, addTPrefix?: boolean) => (addTPrefix === false ? '' : 't.') + ('' + id).replace(reg, callback);
     })();
 
-    makeSendMessageOptions(keyboard: (InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][])  {
+    makeSendMessageOptions(keyboard: (InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][]) {
         return this._bot.makeOptionsKeyboard(this, keyboard);
     }
 
@@ -39,7 +40,48 @@ export class JesmylTelegramBot {
     }
 
     onChatMessages(cb: JTgBotChatMessageCallback) {
-        this._bot.registerOnChatMessages(this, this.chatId, cb);
+        this._bot.registerOnChatMessages(this, this.chatId,
+            this.logAllAsJSON && this.logBot
+                ? (bot, message, metadata) => {
+                    this.logAsJson({ message, metadata });
+                    cb(bot, message, metadata);
+                }
+                : cb);
+    }
+
+    onChatQueries(cb: JTgBotCallbackQuery) {
+        this._bot.registerQueryListener(this, this.chatId,
+            this.logAllAsJSON && this.logBot
+                ? (bot, query, metadata) => {
+                    this.logAsJson({ query });
+                    cb(bot, query, metadata);
+                }
+                : cb);
+    }
+
+    deleteMessage(messageId: number) {
+        this._bot.bot.deleteMessage(this.chatId, messageId);
+    }
+
+    editMessageText(messageId: number, text: string, keyboard?: SendMessageOptions) {
+        try {
+            this._bot.bot.editMessageText(text, {
+                chat_id: this.chatId,
+                message_id: messageId,
+                parse_mode: 'HTML',
+                reply_markup: keyboard === undefined
+                    ? undefined
+                    : {
+                        inline_keyboard: (keyboard.reply_markup as InlineKeyboardMarkup)?.inline_keyboard,
+                    },
+            }).then(this.logAllAsJSON
+                ? (message) => {
+                    if (message)
+                        if (message === true) this.log(`Изменено сообщение в чате:\n\n` + text);
+                        else this.log(`Изменено сообщение #${messageId} в чате ${message.chat.title}:\n\n` + text);
+                }
+                : undefined);
+        } catch (error) { }
     }
 
     getAdmins() {
@@ -61,7 +103,15 @@ export class JesmylTelegramBot {
         });
     }
 
+    logAsJson(data: unknown) {
+        try {
+            this.log('<code>' + JSON.stringify(data, null, 1) + '</code>');
+        } catch (error) { }
+    }
+
     postMessage(message: string, options?: TgBot.SendMessageOptions) {
+        if (this.logAllAsJSON) this.logAsJson({ message, options });
+
         return this._bot.bot.sendMessage(this.chatId, message, { parse_mode: 'HTML', ...options });
     }
 
