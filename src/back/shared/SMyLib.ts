@@ -29,7 +29,7 @@ export class SMyLib {
     static keys<T>(obj: T): T extends Record<infer Key, any> ? Key[] : string[] {
         return Object.keys(obj || {}) as never;
     }
-    
+
     func(...funcs: any[]) {
         const self = this;
         const call = (...args: any[]) => {
@@ -53,10 +53,11 @@ export class SMyLib {
 
         return result;
     }
-    
+
     randomOf = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
-    randomIndex = (arr: unknown[]) => this.randomOf(0, arr.length - 1);
-    randomItem = <Item>(arr: Item[]) => arr[this.randomIndex(arr)];
+    randomIndex = (arr: unknown[] | string) => this.randomOf(0, arr.length - 1);
+    randomItem = <Item extends any[] | string, RetItem extends Item extends (infer It)[] ? It : string>
+        (arr: Item): RetItem => arr[this.randomIndex(arr)];
 
     explode(separator: string, string: string, lim?: number) {
         const limit = lim && Math.abs(lim);
@@ -118,6 +119,10 @@ export class SMyLib {
 
     keys<T extends {}>(o: T): (keyof T)[] {
         return Object.keys(o) as never;
+    }
+
+    values<T extends {}>(o: T): (T[keyof T])[] {
+        return Object.values(o) as never;
     }
 
     declension(num: number, one?: string, two?: string, five?: string) {
