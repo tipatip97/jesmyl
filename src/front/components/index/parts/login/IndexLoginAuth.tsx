@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import { LocalSokiAuth } from "../../../../../back/complect/soki/soki.model";
+import TheButton from "../../../../complect/Button";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
 import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import LoadIndicatedContent from "../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../shared/store";
 import { soki } from "../../../../soki";
-import { Auth, AuthMode, AuthorizationData, AuthorizeInSystem, RegisterData } from "../../Index.model";
+import { AuthMode, AuthorizationData, AuthorizeInSystem, RegisterData } from "../../Index.model";
 import di from "../../Index.store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
 import indexStorage from "../../indexStorage";
 import { removePullRequisites } from "../../useAuth";
 import useConnectionState from "../../useConnectionState";
-import styled from "styled-components";
 
 
 const errorsSelector = (state: RootState) => state.index.errors;
 
 export default function IndexLoginAuth() {
   const dispatch = useDispatch();
-  const [login, setLogin] = useState("");
+  const [nick, setNick] = useState("");
   const [passw, setPassword] = useState("");
   const [rpassw, setRPassword] = useState("");
-  const [isJSONDataLogin, setIsJSONDataLogin] = useState(false);
   const [mode, setMode] = useState<AuthMode>("login");
   const [isInProcess, setIsInProscess] = useState(1);
 
@@ -45,65 +45,42 @@ export default function IndexLoginAuth() {
 
   const loginInSystem = (state: AuthorizationData) => {
     return sendData('login', {
-      login: mylib.md5(state.login.trim()),
+      nick: mylib.md5(state.nick.trim()),
       passw: mylib.md5(state.passw),
     });
   };
 
-
-  const isCorrectLoginJSONData = (json: string) => {
-    try {
-      const data: Auth = JSON.parse(json);
-      return typeof data.login === 'string'
-        && typeof data.fio === 'string'
-        && (typeof data.level === 'number' || typeof data.level === 'string');
-    } catch (e) {
-      return false;
-    }
+  const setAuthData = async (auth: LocalSokiAuth) => {
+    dispatch(di.auth(auth));
+    indexStorage.set('auth', auth);
+    dispatch(di.currentApp("cm"));
+    removePullRequisites();
   };
 
-  const setAuthData = async (login: string | LocalSokiAuth) => {
-    let auth;
+  const registerInSystem = (state: Omit<RegisterData, 'login'>) => {
+    const nick = state.nick.trim();
 
-    if (typeof login === 'string') {
-      if (isCorrectLoginJSONData(login)) {
-        auth = await indexStorage.get('auth');
-      }
-    } else auth = login;
-
-    if (auth) {
-      dispatch(di.auth(auth));
-      indexStorage.set('auth', auth);
-      dispatch(di.currentApp("cm"));
-      removePullRequisites();
-    }
-  };
-
-  const registerInSystem = (state: RegisterData) => {
     return sendData('register', {
-      login: mylib.md5(state.login.trim()),
+      login: mylib.md5(nick),
       passw: mylib.md5(state.passw),
-      fio: state.login.trim(),
+      fio: nick,
+      nick,
       rpassw: mylib.md5(state.rpassw),
     });
   };
 
   useEffect(() => {
-    if (isCorrectLoginJSONData(login)) {
-      setIsJSONDataLogin(true);
-      dispatch(di.setError({ scope: 'login', message: null }));
-    } else {
-      setIsJSONDataLogin(false);
-      dispatch(di.setError({
-        scope: 'login',
-        message: login.length < 3
-          ? "Минимум 3 символа"
-          : login.length > 20
-            ? "Максимум 20 символов"
+    dispatch(di.setError({
+      scope: 'login',
+      message: /[^\w._]/.test(nick)
+        ? 'Недопустимые символы'
+        : nick.length < 3
+          ? 'Минимум 3 символа'
+          : nick.length > 20
+            ? 'Максимум 20 символов'
             : null
-      }));
-    }
-  }, [login, dispatch]);
+    }));
+  }, [nick, dispatch]);
 
   useEffect(() => {
     dispatch(di.setError({
@@ -138,8 +115,8 @@ export default function IndexLoginAuth() {
               <div className="input-wrapper">
                 <KeyboardInput
                   preferLanguage="en"
-                  onChange={(value) => setLogin(value)}
-                  value={login}
+                  onChange={(value) => setNick(value)}
+                  value={nick}
                   placeholder="Логин"
                 />
               </div>
@@ -174,51 +151,43 @@ export default function IndexLoginAuth() {
             ) : null}
             <button
               className="send-button"
-              disabled={!isJSONDataLogin && Object.keys(errors).length > 0}
+              disabled={Object.keys(errors).length > 0}
               onClick={async () => {
                 if (mode === 'check') return;
-                if (isJSONDataLogin) {
-                  setIsInProscess(0);
-                  setTimeout(() => {
-                    setAuthData(login);
-                    setIsInProscess(1);
-                  });
-                } else {
-                  setIsInProscess(0);
-                  (mode === "login"
-                    ? loginInSystem({ login, passw })
-                    : registerInSystem({ login, passw, rpassw }))
-                    .on(
-                      ({ authorization }) => {
-                        if (authorization && authorization.ok !== false) {
-                          setIsInProscess(1);
-                          removePullRequisites();
-                          setAuthData(authorization.value);
-                        } else {
-                          dispatch(di.setError({
-                            scope: 'login',
-                            message: authorization?.value || 'Неизвестная ошибка',
-                          }));
-                          setIsInProscess(2);
-                        }
-                      },
-                      (errorMessage) => {
+                setIsInProscess(0);
+                (mode === "login"
+                  ? loginInSystem({ nick, passw })
+                  : registerInSystem({ nick, passw, rpassw }))
+                  .on(
+                    ({ authorization }) => {
+                      if (authorization && authorization.ok !== false) {
+                        setIsInProscess(1);
+                        removePullRequisites();
+                        setAuthData(authorization.value);
+                      } else {
                         dispatch(di.setError({
                           scope: 'login',
-                          message: errorMessage,
+                          message: authorization?.value || 'Неизвестная ошибка',
                         }));
                         setIsInProscess(2);
-                      });
-                }
+                      }
+                    },
+                    (errorMessage) => {
+                      dispatch(di.setError({
+                        scope: 'login',
+                        message: errorMessage,
+                      }));
+                      setIsInProscess(2);
+                    });
               }}
             >
               {mode === "register" ? "Создать профиль" : "Войти"}
             </button>
           </div>
           {mode === "register" ? null : (
-            <div className="the-button" onClick={() => setMode("register")}>
+            <TheButton onClick={() => setMode("register")}>
               Создать профиль
-            </div>
+            </TheButton>
           )}
         </LoadIndicatedContent>
       }

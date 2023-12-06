@@ -44,13 +44,13 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
             ? member.status === 'creator'
                 ? `<code>${user.username}</code>`
                 : `@${user.username}`
-            : `<i>${prodBot.convertLoginFromId(user.id)}</i>`
+            : `<i>${prodBot.convertNickFromId(user.id)}</i>`
         }, ${user.id})`;
 
     if (telegramAuthorizationUsers[id] !== undefined) {
         sendMessage(
             'Повторный запрос кода\n\nЛогин: '
-            + (query.from.username || prodBot.convertLoginFromId(query.from.id))
+            + (query.from.username || prodBot.convertNickFromId(query.from.id))
             + `\nКод: <code>${telegramAuthorizationUsers[id]}</code>`);
 
 
@@ -84,7 +84,7 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
         if (
             !(await sendMessage(`Твой одноразовый код: <code>${randId}</code>.\n`
                 + 'Логин: '
-                + (query.from.username || prodBot.convertLoginFromId(query.from.id))
+                + (query.from.username || prodBot.convertNickFromId(query.from.id))
                 + '\n\nЗайди в приложение <a href="https://jesmyl.ru">JesmyL</a>, '
                 + 'перейди в раздел Другое - Войти, и введи его в поле ввода.\n\n'
                 + `Через ${minutesText} этот код будет упразднён`)).ok

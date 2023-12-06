@@ -25,9 +25,9 @@ export default function ScheduleWidgetUser({
     asUserPlusPrefix?: (userNode: ReactNode, userScope: string, user: IScheduleWidgetUser, balance: number) => ReactNode,
 }>) {
     const rights = useScheduleWidgetRightsContext();
-    const userName = user.fio === undefined
-        ? user.alias || <span className="color--7 text-italic">Ссылка</span>
-        : `${user.alias && user.alias !== user.fio ? `${user.alias} (${user.fio})` : user.fio} `;
+    const userName = user.nick === undefined
+        ? user.fio || <span className="color--7 text-italic">Ссылка</span>
+        : `${user.fio && user.fio !== user.nick ? `${user.fio} (${user.nick})` : user.nick} `;
     const { readQR } = useQRMaster();
 
     const [toastNode, toast] = useToast();
@@ -104,9 +104,9 @@ export default function ScheduleWidgetUser({
                                         key: 'swInvite',
                                         value: packScheduleWidgetInviteLink(rights.schedule.w, user.mi),
                                     }),
-                                    title: `Приглашение ${levelTitle}${user.alias ? ` - ${user.alias}` : ''}`,
-                                    text: user.alias
-                                        ? `${user.alias}, приветствую! Приглашаю вас в качестве ${levelTitle} на мероприятие ${rights.schedule.title}`
+                                    title: `Приглашение ${levelTitle}${user.fio ? ` - ${user.fio}` : ''}`,
+                                    text: user.fio
+                                        ? `${user.fio}, приветствую! Приглашаю вас в качестве ${levelTitle} на мероприятие ${rights.schedule.title}`
                                         : undefined,
                                 };
                             }}

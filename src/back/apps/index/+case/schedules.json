@@ -13,17 +13,17 @@
         "users": [
           {
             "mi": 0,
-            "fio": "JESMYL",
+            "nick": "JESMYL",
             "login": "1cd799804adadac7bebf6f355fe7a58b",
-            "alias": "Павел В",
+            "fio": "Павел В",
             "R": 127,
             "li": {}
           },
           {
-            "fio": "gri_lid",
+            "nick": "gri_lid",
             "login": "aadd039b4e5b14f01ddcba41d4c66ac0",
             "mi": 2,
-            "alias": "Лида Т",
+            "fio": "Лида Т",
             "R": 47,
             "li": {
               "0": -11,
@@ -31,58 +31,58 @@
             }
           },
           {
-            "fio": "Anzhelina",
+            "nick": "Anzhelina",
             "login": "021956a87afb98f42d975a06ece2c8a7",
             "mi": 3,
-            "alias": "Анжела О",
+            "fio": "Анжела О",
             "R": 47,
             "li": {
               "1": -2
             }
           },
           {
-            "fio": "Alexandra",
+            "nick": "Alexandra",
             "login": "b9d8881709557855a1eea1b3c789c0ff",
             "mi": 4,
-            "alias": "Саша Е",
+            "fio": "Саша Е",
             "R": 21,
             "li": {}
           },
           {
-            "fio": "AntonZ",
+            "nick": "AntonZ",
             "login": "29100f94395816bcc1c1343403fd5449",
             "mi": 6,
             "R": 127,
-            "alias": "Антон З",
+            "fio": "Антон З",
             "li": {}
           },
           {
-            "fio": "mari.kartushina",
+            "nick": "mari.kartushina",
             "login": "786077144e34b1b4d08db397d5628bb5",
             "mi": 7,
             "R": 127,
-            "alias": "Маша К"
+            "fio": "Маша К"
           },
           {
-            "fio": "Vika",
+            "nick": "Vika",
             "login": "400355a81efd4ff1a8b407ad09a41531",
             "mi": 8,
             "R": 43,
-            "alias": "Вика В"
+            "fio": "Вика В"
           },
           {
-            "fio": "SMS",
+            "nick": "SMS",
             "login": "4cecb21b44628b17c436739bf6301af2",
             "mi": 9,
-            "alias": "Миша С",
+            "fio": "Миша С",
             "R": 47,
             "li": {}
           },
           {
-            "fio": "Den",
+            "nick": "Den",
             "login": "e6490076287c7308bd26deca4c0e98f5",
             "mi": 10,
-            "alias": "Денис Э",
+            "fio": "Денис Э",
             "R": 47,
             "li": {
               "0": -13,
@@ -90,71 +90,71 @@
             }
           },
           {
-            "fio": "alena",
+            "nick": "alena",
             "login": "416a93c4851b0a1c3712a4bd850c5b5c",
             "mi": 11,
-            "alias": "Алёна Р",
+            "fio": "Алёна Р",
             "R": 47,
             "li": {}
           },
           {
-            "fio": "ithil_randir",
+            "nick": "ithil_randir",
             "login": "5531a25eba3ba0a0c88cc13962a9e7eb",
             "mi": 12,
             "R": 21,
-            "alias": "Эдик О"
+            "fio": "Эдик О"
           },
           {
-            "fio": "AndreyKa",
+            "nick": "AndreyKa",
             "login": "a2d41e8942eeb31fc1c6e7fe1e7ae861",
             "mi": 13,
             "R": 39,
-            "alias": ".",
+            "fio": ".",
             "li": {}
           },
           {
-            "fio": "краш",
+            "nick": "краш",
             "login": "4962356bc69252968e29e60324d56f64",
             "mi": 14,
             "R": 47,
-            "alias": "Нозар Щ",
+            "fio": "Нозар Щ",
             "li": {
               "0": -12,
               "1": -4
             }
           },
           {
-            "fio": "Admin",
+            "nick": "Admin",
             "login": "e3afed0047b08059d0fada10f400c1e5",
             "mi": 15,
             "R": 63,
             "li": {},
-            "alias": "Невидимка 🥷"
+            "fio": "Невидимка 🥷"
           },
           {
-            "fio": "Sevilya",
+            "nick": "Sevilya",
             "login": "13360db01696fc61539ee0659fb91622",
             "R": 47,
             "mi": 16,
-            "alias": "Севиля Э",
+            "fio": "Севиля Э",
             "li": {
               "0": -3,
               "1": -9
             }
           },
           {
-            "alias": "Артём Г",
+            "fio": "Артём Г",
             "mi": 17,
             "R": 47,
-            "fio": "Superartemko",
+            "nick": "Superartemko",
             "login": "8bd6e15722826771fdd60d88379e55b2",
             "li": {}
           },
           {
-            "alias": "Виолетта В",
+            "fio": "Виолетта В",
             "mi": 18,
             "R": 47,
-            "fio": "ViolettaVernet1",
+            "nick": "ViolettaVernet1",
             "login": "9d42952a3a812a83cd613e5960c637e2",
             "li": {
               "0": -1,
@@ -162,7 +162,7 @@
             }
           },
           {
-            "alias": "Вита З",
+            "fio": "Вита З",
             "mi": 19,
             "R": 47,
             "li": {
@@ -170,63 +170,63 @@
             }
           },
           {
-            "alias": "Саша Я",
+            "fio": "Саша Я",
             "mi": 20,
             "R": 47,
             "li": {
               "0": -14
             },
-            "fio": "yaremenko",
+            "nick": "yaremenko",
             "login": "3a7e1e50cd901bb8d872f5d002f0bded"
           },
           {
-            "alias": "Женька",
+            "fio": "Женька",
             "mi": 21,
             "R": 127,
-            "fio": "Genia",
+            "nick": "Genia",
             "login": "fbf1d992893c5817aea2f6e643866afc"
           },
           {
-            "alias": "Артём Ж",
+            "fio": "Артём Ж",
             "mi": 22,
             "R": 95,
-            "fio": "Artemkadjam",
+            "nick": "Artemkadjam",
             "login": "16d0e0d747fd06d1a3d91ecb00ed39ec",
             "li": {
               "0": -13
             }
           },
           {
-            "alias": "Таня О",
+            "fio": "Таня О",
             "mi": 23,
             "R": 47,
-            "fio": "tata19",
+            "nick": "tata19",
             "login": "25899e9227a0ec1ae4c6f33ec9bacb4a",
             "li": {}
           },
           {
-            "alias": "Юля П",
+            "fio": "Юля П",
             "mi": 24,
             "R": 47,
             "li": {
               "0": -3,
               "1": -6
             },
-            "fio": "Parfenyuk_julya",
+            "nick": "Parfenyuk_julya",
             "login": "79ac0424f795403564094e2848189a7f"
           },
           {
-            "alias": "Герман",
+            "fio": "Герман",
             "mi": 25,
             "R": 47,
             "li": {
               "0": -12
             },
-            "fio": "Герман",
+            "nick": "Герман",
             "login": "f4b4a84bcf24973792973f66418795e7"
           },
           {
-            "alias": "Андрей 🥔",
+            "fio": "Андрей 🥔",
             "mi": 26,
             "R": 47,
             "li": {
@@ -235,7 +235,7 @@
             }
           },
           {
-            "fio": "AndreyKar",
+            "nick": "AndreyKar",
             "login": "6d19f48124a3799023fc73d31ebe5261",
             "R": 47,
             "mi": 27
@@ -5521,72 +5521,72 @@
         ],
         "users": [
           {
-            "fio": "mari.kartushina",
+            "nick": "mari.kartushina",
             "login": "786077144e34b1b4d08db397d5628bb5",
             "mi": 7,
             "R": 127,
-            "alias": "Маша К"
+            "fio": "Маша К"
           },
           {
-            "fio": "JESMYL",
+            "nick": "JESMYL",
             "login": "1cd799804adadac7bebf6f355fe7a58b",
             "R": 127,
             "mi": 8,
-            "alias": "Пашка"
+            "fio": "Пашка"
           },
           {
-            "alias": "Артём Иванович",
+            "fio": "Артём Иванович",
             "mi": 9,
             "R": 47,
             "li": {
               "0": -14
             },
-            "fio": "Superartemko",
+            "nick": "Superartemko",
             "login": "8bd6e15722826771fdd60d88379e55b2"
           },
           {
-            "alias": "Лида Т",
+            "fio": "Лида Т",
             "mi": 10,
             "R": 47,
-            "fio": "gri_lid",
+            "nick": "gri_lid",
             "login": "aadd039b4e5b14f01ddcba41d4c66ac0"
           },
           {
-            "fio": "Admin",
+            "nick": "Admin",
             "login": "e3afed0047b08059d0fada10f400c1e5",
             "R": 47,
             "mi": 11,
             "li": {}
           },
           {
-            "fio": "Валерия",
+            "nick": "Валерия",
             "login": "feb694cfe2161229c5a9f97e07843884",
             "R": 47,
             "mi": 12,
-            "alias": "Валерия Г"
+            "fio": "Валерия Г"
           },
           {
-            "fio": "8DrUnya6",
+            "nick": "8DrUnya6",
             "login": "87118740749e32edfa29cd7cf822b131",
             "R": 47,
             "mi": 13,
-            "alias": "Дроня"
+            "fio": "Дроня"
           },
           {
-            "fio": "Anzhelina",
+            "nick": "Anzhelina",
             "login": "021956a87afb98f42d975a06ece2c8a7",
             "R": 47,
             "mi": 14
           },
           {
-            "fio": "ithil_randir",
+            "nick": "ithil_randir",
             "login": "5531a25eba3ba0a0c88cc13962a9e7eb",
             "R": 47,
             "mi": 15,
-            "alias": "Эдик"
+            "fio": "Эдик"
           },
           {
-            "fio": "Den",
+            "nick": "Den",
             "login": "e6490076287c7308bd26deca4c0e98f5",
             "R": 47,
             "mi": 16,
@@ -5595,21 +5595,21 @@
             }
           },
           {
-            "fio": "yaremenko",
+            "nick": "yaremenko",
             "login": "3a7e1e50cd901bb8d872f5d002f0bded",
             "R": 47,
             "mi": 17,
-            "alias": "Саня"
+            "fio": "Саня"
           },
           {
-            "fio": "Sevilia",
+            "nick": "Sevilia",
             "login": "09fb497e00e7c313a1eef2ee20fc15b8",
             "R": 47,
             "mi": 18,
-            "alias": "Севиля"
+            "fio": "Севиля"
           },
           {
-            "fio": "alexandra.ye",
+            "nick": "alexandra.ye",
             "login": "3aa4a78aa4c4d5028ceaf9a4ed8ae6ad",
             "R": 5,
             "mi": 19
@@ -5844,7 +5844,7 @@
         "users": [
           {
             "mi": 0,
-            "fio": "Maunrus",
+            "nick": "Maunrus",
             "login": "400a251648826d9593333ac0f150fa53",
             "R": 127
           }
@@ -6106,26 +6106,26 @@
         "users": [
           {
             "mi": 0,
-            "fio": "danikpon",
+            "nick": "danikpon",
             "login": "3c8fa92ccf6aef73939853b9a9e2aac9",
             "R": 127,
-            "alias": "Даня Пон"
+            "fio": "Даня Пон"
           },
           {
-            "alias": "Паша Админ",
+            "fio": "Паша Админ",
             "mi": 1,
             "R": 127,
-            "fio": "JESMYL",
+            "nick": "JESMYL",
             "login": "1cd799804adadac7bebf6f355fe7a58b"
           },
           {
-            "fio": "Admin1",
+            "nick": "Admin1",
             "login": "2e33a9b0b06aa0a01ede70995674ee23",
             "R": 21,
             "mi": 2
           },
           {
-            "fio": "alliluya",
+            "nick": "alliluya",
             "login": "842dee09ba6d778920d0c34c17b47b8b",
             "R": 21,
             "mi": 3

@@ -42,6 +42,7 @@ export interface KeyboardInputEvent {
     blur: () => void,
     stopPropagation: () => void,
     realEvent: React.MouseEvent<HTMLTextAreaElement, MouseEvent> | React.FocusEvent<HTMLTextAreaElement, Element> | null,
+    value: (set?: string) => string,
 }
 
 export type KeyboardMemoryPointAction = 'write' | 'delete' | 'backspace' | 'replaceAll' | 'replaceSelected' | 'memoShift';

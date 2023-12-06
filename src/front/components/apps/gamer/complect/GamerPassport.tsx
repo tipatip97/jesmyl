@@ -47,7 +47,8 @@ export default function TheGamerPassport() {
                                 setIsEdit(false);
                                 dispatch(di.passport({
                                     fio,
-                                    login: passportData?.login || `P:${mylib.md5(`${fio} ${Date.now() + Math.random()}`)}`,
+                                    nick: passportData?.nick,
+                                    login: passportData?.login || 'G' + mylib.md5(`${fio} ${Date.now() + Math.random()}`).slice(1),
                                 }));
                             }}
                         >

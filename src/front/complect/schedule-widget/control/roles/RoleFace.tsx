@@ -20,7 +20,7 @@ export default function ScheduleWidgetRoleFace({
         <EvaIcon name={role.icon ?? 'github-outline'} />
         <div className="face-title">
             {role.title}{' - '}
-            {roleUser?.alias || roleUser?.fio || <span className="color--3 text-italic">Вакант</span>}
+            {roleUser?.fio || roleUser?.nick || <span className="color--3 text-italic">Вакант</span>}
         </div>
     </div>;
 }

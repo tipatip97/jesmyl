@@ -49,7 +49,7 @@ export default function ScheduleWidgetDayEventRating(props: StrongComponentProps
 
                     return <div key={user.mi} className="flex flex-gap">
                         <div className={'margin-gap-t nowrap self-start text-bold' + (rate[0] < 0 ? ' color--ko' : rate[0] > 0 ? ' color--ok' : ' color--3')}>
-                            {user.alias || user.fio}: {rate[0]}
+                            {user.fio || user.nick}: {rate[0]}
                         </div>
                         {rate[1] &&
                             <StrongEditableField

@@ -12,7 +12,7 @@ import { appStorage } from './shared/jstorages';
 
 const version = { ...versionNum };
 
-export type ResponseWaiterCallback = (ok: ResponseWaiter['ok'], ko?: ResponseWaiter['ko']) => void;
+export type ResponseWaiterCallback = (ok: ResponseWaiter['ok'], ko?: ResponseWaiter['ko'], final?: ResponseWaiter['final']) => void;
 const info = console.info;
 
 interface ResponseWaiter {
@@ -20,6 +20,7 @@ interface ResponseWaiter {
     isPing?: true,
     ok: (response: SokiServerEvent) => void,
     ko?: (errorMessage: string) => boolean | void,
+    final?: () => void,
 }
 
 type Waiters = EventerListeners<'auth', boolean>;
@@ -75,6 +76,7 @@ export class SokiTrip {
                         if (event.errorMessage) waiter.ko?.(event.errorMessage);
                         else waiter.ok(event);
 
+                        waiter.final?.();
                         this.responseWaiters.splice(i, 1);
                     }
                 }
@@ -211,16 +213,16 @@ export class SokiTrip {
             });
 
         return {
-            on: (ok, ko) => {
+            on: (ok, ko, final) => {
                 requestId = '' + Date.now() + Math.random();
-                this.responseWaiters.push({ requestId, ok, ko, isPing: body.ping });
+                this.responseWaiters.push({ requestId, ok, ko, final, isPing: body.ping });
             },
         };
     };
 
-    ping: ResponseWaiterCallback = (ok, ko) => {
+    ping: ResponseWaiterCallback = (ok, ko, final) => {
         clearTimeout(pingTimeout);
-        pingTimeout = setTimeout(() => this.send({ ping: true }, 'index').on(ok, ko), 0);
+        pingTimeout = setTimeout(() => this.send({ ping: true }, 'index').on(ok, ko, final), 0);
     };
 }
 

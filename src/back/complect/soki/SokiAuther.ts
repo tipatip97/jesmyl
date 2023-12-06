@@ -40,9 +40,10 @@ export class SokiAuther {
                             return;
                         }
 
-                        const auth = {
+                        const auth: SokiAuth = {
                             level: 3,
                             fio: event.value.fio,
+                            nick: event.value.nick,
                             login: eventLogin,
                             passw: secretPassw,
                         };

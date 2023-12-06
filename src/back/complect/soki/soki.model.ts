@@ -67,7 +67,7 @@ export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
 
 export interface SokiVisitor {
     fio?: string,
-    username?: string,
+    nick?: string,
     version: number,
     deviceId?: string,
     browser?: string,
@@ -77,7 +77,7 @@ export interface SokiVisitor {
 export interface SokiStatistic {
     online: number,
     authed: number,
-    usages: Partial<Record<SokiAppName, { fio?: string, username?: string, version: number, deviceId: string }[]>>,
+    usages: Partial<Record<SokiAppName, { fio?: string, nick?: string, version: number, deviceId: string }[]>>,
     visits: SokiVisitor[],
     pastVisits: Record<string, number>,
 }
@@ -110,6 +110,7 @@ export interface SokiAuth extends BaseSokiAuth {
 
 export interface BaseSokiAuth {
     fio: string,
+    nick: string,
     login: string,
     tgId?: number,
 }
@@ -129,6 +130,7 @@ export interface SokiRegisterData {
     passw: string,
     rpassw: string,
     fio: string,
+    nick: string,
 }
 
 export interface AuthorizeInSystem {

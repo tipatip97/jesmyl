@@ -23,12 +23,14 @@ export class JesmylTelegramBot {
         this._bot = props.bot;
     }
 
-    convertLoginFromId = (() => {
+    convertNickFromId = (() => {
         const reg = /./g;
         const callback = (all: string) => 'jesmylibot'[all as never];
 
         return (id: number, addTPrefix?: boolean) => (addTPrefix === false ? '' : 't.') + ('' + id).replace(reg, callback);
     })();
+
+    makeLoginFromId = (id: number) => 'T' + smylib.md5('' + id).slice(1);
 
     makeSendMessageOptions(keyboard: (InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][]) {
         return this._bot.makeOptionsKeyboard(this, keyboard);

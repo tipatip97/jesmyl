@@ -3,6 +3,7 @@ body {
     --main-gap: 8px;
     --main-sm-gap: 5px;
     --main-big-gap: 18px;
+    --main-large-gap: 26px;
     --main-giant-gap: 40px;
     --header-padding-top: 23px;
     --header-padding: var(--header-padding-top) var(--main-gap) var(--main-gap) var(--main-gap);
@@ -55,12 +56,15 @@ body {
     }
 
     @include gap-builder('margin');
-    @include gap-builder('margin', '-big');
     @include gap-builder('margin', '-sm');
+    @include gap-builder('margin', '-big');
+    @include gap-builder('margin', '-large');
     @include gap-builder('margin', '-giant');
 
     @include gap-builder('padding');
+    @include gap-builder('padding', '-sm');
     @include gap-builder('padding', '-big');
+    @include gap-builder('padding', '-large');
     @include gap-builder('padding', '-giant');
 
     @mixin numeric-1-9-builder($metric) {

@@ -21,6 +21,7 @@ const errorsSelector = (state: RootState) => state.index.errors;
 export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => void }) {
   const dispatch = useDispatch();
   const [authCode, setAuthCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const connectionNode = useConnectionState();
   const errors = useSelector(errorsSelector);
@@ -29,6 +30,14 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
     message && <div className="login-error-message">{message}</div>;
   const [toastNode, showToast] = useToast({ mood: 'ko' });
 
+  const onAuthSend = (codeStr?: string) => {
+    setIsLoading(true);
+
+    return new Promise<SokiServerEvent>(
+      (res, rej) =>
+        soki.send({ tgAuthorization: codeStr === undefined ? +authCode : +codeStr }, 'index')
+          .on(res, rej, () => setIsLoading(false)));
+  };
 
   const setAuthData = async (auth: LocalSokiAuth) => {
     if (auth) {
@@ -37,6 +46,12 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
       dispatch(di.currentApp("cm"));
       removePullRequisites();
     }
+  };
+
+  const onAuthSuccess = ({ tgAuthorization: authorization }: SokiServerEvent) => {
+    if (!authorization || !authorization.ok || mylib.isStr(authorization.value)) return;
+    setAuthData(authorization.value);
+    navigate(["other"]);
   };
 
   return (
@@ -96,25 +111,28 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                   onChange={setAuthCode}
                   value={authCode}
                   placeholder="Одноразовый код"
+                  onFocus={async (event) => {
+                    const codeStr = await navigator.clipboard.readText();
+                    if (authCode === codeStr) return;
+
+                    if (/^\d{5,6}$/.test(codeStr)) {
+                      setAuthCode(codeStr);
+                      onAuthSend(codeStr)
+                        .catch(showToast)
+                        .then((event) => event && onAuthSuccess(event));
+                      event.value(codeStr);
+                    }
+                  }}
                 />
               </div>
             </div>
             <SendButton
               title="Авторизоваться"
               className="send-button"
-              disabled={authCode.length < 3}
-              onSuccess={({ tgAuthorization: authorization }) => {
-                if (!authorization || !authorization.ok || mylib.isStr(authorization.value)) return;
-                setAuthData(authorization.value);
-                navigate(["other"]);
-              }}
+              disabled={isLoading || authCode.length < 3}
+              onSuccess={onAuthSuccess}
               onFailure={showToast}
-              onSend={() => {
-                return new Promise<SokiServerEvent>(
-                  (res, rej) =>
-                    soki.send({ tgAuthorization: +authCode }, 'index')
-                      .on(res, rej));
-              }}
+              onSend={onAuthSend}
             />
           </div>
           <div className="flex pointer color--3">

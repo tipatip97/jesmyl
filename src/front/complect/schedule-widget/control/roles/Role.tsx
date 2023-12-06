@@ -41,10 +41,10 @@ export default function ScheduleWidgetRole({
                         fieldKey="user"
                         fieldValue={user.mi}
                         cud="U"
-                        confirm={`Теперь ${user?.alias || user?.fio} займёт роль ${role.title}?`}
+                        confirm={`Теперь ${user?.fio || user?.nick} займёт роль ${role.title}?`}
                         className="flex flex-gap pointer"
                         name="person"
-                        postfix={user?.alias || user?.fio}
+                        postfix={user?.fio || user?.nick}
                         onSuccess={() => closeModal()}
                     />
                 })}
@@ -109,7 +109,7 @@ export default function ScheduleWidgetRole({
                     icon="credit-card-outline"
                     value={role}
                     fieldKey="title"
-                    postfix={roleUser && (' - ' + (roleUser.alias || roleUser.fio))}
+                    postfix={roleUser && (' - ' + (roleUser.fio || roleUser.nick))}
                 />
                 <ScheduleWidgetIconChange
                     scope={roleScope}
@@ -124,7 +124,7 @@ export default function ScheduleWidgetRole({
                         cud="D"
                         name="person-delete-outline"
                         confirm={<>
-                            <span className="color--7">{roleUser.alias || roleUser.fio} </span>
+                            <span className="color--7">{roleUser.fio || roleUser.nick} </span>
                             больше не
                             <span className="color--7"> {role.title}</span>?
                         </>}

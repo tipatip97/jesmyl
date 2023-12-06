@@ -6,7 +6,7 @@ import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongButton from "../../../strong-control/StrongButton";
 
 export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) {
-    const [alias, setAlias] = useState('');
+    const [fio, setAlias] = useState('');
 
     const [modalNode, screen] = useModal(({ header, body, footer }, closeModal) => {
         return <>
@@ -14,7 +14,7 @@ export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) 
             {body(<>
                 <div>Кого ожидать по ссылке?</div>
                 <KeyboardInput
-                    value={alias}
+                    value={fio}
                     onChange={setAlias}
                     placeholder="Имя участника"
                 />
@@ -24,7 +24,7 @@ export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) 
                     scope={scope}
                     fieldName="newUser"
                     className="mood-for-2"
-                    fieldValue={{ alias }}
+                    fieldValue={{ fio }}
                     title="Создать ссылку"
                     onSuccess={closeModal}
                 />

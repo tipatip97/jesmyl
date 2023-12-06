@@ -37,10 +37,12 @@ export default function UserMore() {
         icon: "qr-code",
         onClick: (event) => {
           event.preventDefault();
-          if (auth.fio && auth.login)
+          if (auth.nick && auth.login)
             nav.shareDataByQr('passport', {
-              fio: auth.fio,
+              nick: auth.nick,
+              fio: auth.fio || auth.nick,
               login: auth.login,
+              tgId: auth.tgId,
             });
         },
       },

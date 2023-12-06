@@ -139,16 +139,17 @@ export default function ScheduleKeyValueListAtt({
 
         if (customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Users)) {
             dropdownUsers = [...rights.schedule.ctrl.users]
-                .sort((a, b) => (a.alias || a.fio || '') < (b.alias || b.fio || '') ? -1 : (a.alias || a.fio) === (b.alias || b.fio) ? 0 : 1);
+                .sort((a, b) => (a.fio || a.nick || '') < (b.fio || b.nick || '') ? -1 : (a.fio || a.nick) === (b.fio || b.nick) ? 0 : 1);
 
             exclusiveUsers = dropdownUsers.filter(user => {
-                return (user.fio || user.alias) && !attValue.values?.some(li => li[0] === user.mi + CustomAttUseTaleId.Users || li[1] === user.mi + CustomAttUseTaleId.Users);
+                return (user.nick || user.fio) && !attValue.values?.some(li => li[0] === user.mi + CustomAttUseTaleId.Users || li[1] === user.mi + CustomAttUseTaleId.Users);
             });
+            
             users = exclusiveUsers.map((user) =>
                 customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.CheckUsers)
                     ? <div key={user.mi} className="flex flex-gap">
                         <EvaIcon name="checkmark-square-outline" />
-                        {user.alias || user.fio}
+                        {user.fio || user.nick}
                         <StrongEvaButton
                             name="plus"
                             scope={attScope}
@@ -158,7 +159,7 @@ export default function ScheduleKeyValueListAtt({
                         />
                     </div>
                     : <div key={user.mi} className="flex flex-gap">
-                        {user.alias || user.fio}
+                        {user.fio || user.nick}
                         <StrongEvaButton
                             name="plus"
                             scope={attScope}

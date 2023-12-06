@@ -87,6 +87,7 @@ export default function useGamerRooms(offline?: boolean) {
                                 args: {
                                     login: auth.login,
                                     fio: auth.fio,
+                                    nick: auth.nick,
                                     roomw: roomWid,
                                 }
                             });

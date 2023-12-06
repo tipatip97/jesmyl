@@ -43,6 +43,19 @@ export default function KeyboardInput(props: KeyboardInputProps) {
     !isNative && value && input.replaceAll(value, false, true);
   }, [value, input, isNative]);
 
+  const valueGetterSetter = (set?: string) => {
+    if (currentInput !== undefined) {
+      if (set !== undefined) currentInput.replaceAll(set);
+      return currentInput.value;
+    }
+
+    if (nativeRef.current != null) {
+      if (set !== undefined) nativeRef.current.value = set;
+      return nativeRef.current.value;
+    }
+
+    return '';
+  };
   if (isNative || props.type === 'button') {
     let isCanBlur = true;
     const {
@@ -81,6 +94,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
           blur: () => nativeRef.current?.blur(),
           stopPropagation: event.stopPropagation,
           realEvent: event,
+          value: valueGetterSetter,
         });
       },
       onInput: onInput && ((event: any) => {
@@ -98,6 +112,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
           blur: () => nativeRef.current?.blur(),
           stopPropagation: event.stopPropagation,
           realEvent: event,
+          value: valueGetterSetter,
         });
       }),
       value: value || '',
@@ -186,6 +201,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
         blur: () => input.blur(),
         stopPropagation: () => { },
         realEvent: null,
+        value: valueGetterSetter,
       });
     }
   );

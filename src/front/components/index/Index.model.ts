@@ -8,7 +8,6 @@ export interface IndexState {
     auth: Auth,
     schedules: ScheduleStorage,
     errors: Partial<Record<IndexErrorScope, string>>,
-    userMessages: UserMessage[],
     statistic: SokiStatistic | null,
     deviceId: string,
 
@@ -39,8 +38,9 @@ export interface IndexStorage extends IndexState {
 
 export interface JesmylPassport {
     login: string,
-    fio: string,
-    alias?: string,
+    nick: string,
+    fio?: string,
+    tgId?: number,
 }
 
 export interface IndexNavData {
@@ -52,6 +52,7 @@ export interface IndexNavData {
 export interface UserMessage {
     at: string,
     fio: string,
+    nick: string,
     login: string,
     message: string,
     read?: boolean,
@@ -61,7 +62,7 @@ export interface UserMessage {
 export type Auth = LocalSokiAuth;
 
 export interface AuthorizationData {
-    login: string,
+    nick: string,
     passw: string,
 }
 
@@ -70,6 +71,7 @@ export interface RegisterData {
     passw: string,
     rpassw: string,
     fio?: string,
+    nick: string,
 }
 
 export interface AuthResponse extends Auth {

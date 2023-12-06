@@ -29,7 +29,7 @@ export default function ScheduleWidgetListUnitFace({
             <EvaIcon name={cat?.icon} />
             {isShowMentors
                 ? mentors.length
-                    ? mentors.map(user => user.alias || user.fio).join(', ')
+                    ? mentors.map(user => user.fio || user.nick).join(', ')
                     : <span className="text-italic">{cat.titles[0]}</span>
                 : <>{cat.title}
                     <span>{unit.title}</span>

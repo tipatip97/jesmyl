@@ -102,6 +102,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
         cats: ['Основное'],
         users: [{
             mi: 0,
+            nick: '{*nick}',
             fio: '{*fio}',
             login: '{*login}',
             R: scheduleWidgetUserRights.getAllRights(),
@@ -481,7 +482,7 @@ const config: FilerAppConfig = {
                             C: {
                                 RRej: ScheduleWidgetUserRoleRight.Read,
                                 setSystems: ['mi'],
-                                value: { fio: '{*fio}', login: '{*login}' },
+                                value: { fio: '{*fio}', nick: '{*nick}', login: '{*login}' },
                             },
                             '<add me by link>': {
                                 scopeNode: 'addMeByLink',
@@ -495,6 +496,7 @@ const config: FilerAppConfig = {
                                     value: {
                                         fio: '{*fio}',
                                         login: '{*login}',
+                                        nick: '{*nick}',
                                     },
                                 },
                             },
@@ -512,16 +514,24 @@ const config: FilerAppConfig = {
                                 '<join>': {
                                     action: 'joinUserByLink',
                                     method: 'set_all',
-                                    value: { fio: '{*fio}', login: '{*login}' },
+                                    value: {
+                                        fio: '{*fio}',
+                                        nick: '{*nick}',
+                                        login: '{*login}',
+                                    },
                                 },
                                 '<userData>': {
                                     scopeNode: 'userData',
                                     U: {
                                         method: 'set_all',
-                                        value: { fio: '{fio}', login: '{login}' },
+                                        value: {
+                                            fio: '{fio}',
+                                            nick: '{*nick}',
+                                            login: '{login}',
+                                        },
                                     },
                                 },
-                                '/alias': {
+                                '/fio': {
                                     U: {
                                         args: {
                                             value: '#String',

@@ -25,9 +25,12 @@ export default function SendButton<Value>({
 
   return (
     <TheButton
-      className={`${className || ''} margin-gap ${disabled ? "disabled" : ""} ${
-        isLoading && !isError ? "pointers-none" : ""
-      }`}
+      className={
+        (className || '')
+        + ' margin-gap'
+        + (disabled ? ' disabled' : '')
+        + (isLoading && !isError ? ' pointers-none' : '')
+      }
       onClick={async () => {
         if (disabled) return;
         if (
@@ -57,14 +60,13 @@ export default function SendButton<Value>({
       }}
     >
       {title}
-      {isError ? (
-        <EvaIcon name="alert-circle-outline" className="error-message" />
-      ) : (
-        <EvaIcon
-          name="loader-outline"
-          className={`rotate ${isLoading ? "" : "fade-00"}`}
-        />
-      )}
+      <div className="absolute full-height flex center pos-right pos-top margin-large-gap-r">
+        {isError
+          ? <EvaIcon name="alert-circle-outline" className="error-message" />
+          : isLoading
+            ? <EvaIcon name="loader-outline" className="rotate color--5" />
+            : null}
+      </div>
     </TheButton>
   );
 }

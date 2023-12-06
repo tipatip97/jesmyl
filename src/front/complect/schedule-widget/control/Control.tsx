@@ -45,7 +45,7 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                 {body(rights.schedule.ctrl.users.map((user) => {
                     if (!user.R || user.login === undefined) return null;
                     return <div key={user.mi} className="margin-gap-v">
-                        {user.alias && user.alias !== user.fio ? `${user.alias} (${user.fio})` : user.fio}
+                        {user.fio && user.fio !== user.nick ? `${user.fio} (${user.nick})` : user.nick}
                     </div>
                 }))}
             </>;

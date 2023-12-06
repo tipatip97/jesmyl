@@ -117,7 +117,6 @@ export default function GameTeamListComputer({
               ) : null}
               <div className="flex around margin-big-gap">
                 <TheButton
-                  className="the-button"
                   disabled={!teamsCount}
                   onClick={() => {
                     const teams = mylib.groupByFieldsSoftly(

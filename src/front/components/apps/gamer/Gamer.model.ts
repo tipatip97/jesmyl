@@ -27,6 +27,7 @@ export interface GamerStoraged {
 
 export interface GamerPassport {
     fio: string,
+    nick?: string,
     login: string,
 }
 

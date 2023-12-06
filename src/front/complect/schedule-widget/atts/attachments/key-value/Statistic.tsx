@@ -60,7 +60,7 @@ export default function ScheduleKeyValueListAttStatistic(props: {
 
                         if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Users)) {
                             const user = rights.schedule.ctrl.users.find((user) => user.mi === id);
-                            return user?.alias || user?.fio || key;
+                            return user?.fio || user?.nick || key;
                         }
 
                         if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Roles)) {
@@ -88,7 +88,7 @@ export default function ScheduleKeyValueListAttStatistic(props: {
 
                                 if (ScheduleWidgetCleans.checkIsTaleIdUnit(val, CustomAttUseTaleId.Users)) {
                                     const user = rights.schedule.ctrl.users.find((user) => user.mi === id);
-                                    return user?.alias || user?.fio;
+                                    return user?.fio || user?.nick;
                                 }
 
                                 if (ScheduleWidgetCleans.checkIsTaleIdUnit(val, CustomAttUseTaleId.Roles)) {

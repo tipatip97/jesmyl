@@ -18,7 +18,7 @@ export default function KeyValueListAttNumberMember({ value }: { value: number }
         const user = rights.schedule.ctrl.users.find(user => user.mi === userMi);
         return user === undefined
             ? <div className="color--ko">Участник не найден</div>
-            : <div className="color--3 flex flex-gap"><EvaIcon name="person" />{user.alias || user.fio}</div>;
+            : <div className="color--3 flex flex-gap"><EvaIcon name="person" />{user.fio || user.nick}</div>;
     }
 
     return null;

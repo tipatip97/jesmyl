@@ -55,7 +55,7 @@ export class SokiServer {
         });
     }
 
-    setVisit(version: number, fio?: string, tgId?: number, deviceId?: string, browser?: string) {
+    setVisit(visit: { version: number, fio?: string, nick?: string, tgId?: number, deviceId?: string, browser?: string }) {
         const date = new Date();
 
         if (this.lastVisit !== date.toLocaleDateString()) {
@@ -65,11 +65,7 @@ export class SokiServer {
         }
 
         this.statistic.visits.push({
-            fio: tgId ? undefined : fio,
-            username: tgId ? fio : undefined,
-            deviceId,
-            browser,
-            version,
+            ...visit,
             time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}`,
         });
     }
@@ -89,8 +85,8 @@ export class SokiServer {
                 if (this.statistic.usages[capsule.appName] === undefined) this.statistic.usages[capsule.appName] = [];
                 this.statistic.usages[capsule.appName]!.push(
                     {
-                        fio: capsule.auth?.tgId ? undefined : capsule.auth?.fio,
-                        username: capsule.auth?.tgId ? capsule.auth?.fio : undefined,
+                        fio: capsule.auth?.fio,
+                        nick: capsule.auth?.nick,
                         version: capsule.version,
                         deviceId: capsule.deviceId,
                     });
@@ -160,9 +156,9 @@ export class SokiServer {
         this.capsules.set(client, { auth: null, deviceId: '', version: -1 });
     }
 
-    makePassw(id?: number, username?: string, level?: number) {
+    makePassw(id?: number, nick?: string, level?: number) {
         const date = new Date();
-        return smylib.md5(`{ [${level}]: ${id}.${username}@${date.getMonth()} - ${date.getFullYear()}} `);
+        return smylib.md5(`{ [${level}]: ${id}.${nick}@${date.getMonth()} - ${date.getFullYear()}} `);
     }
 
     async reloadFiles() {
@@ -253,13 +249,14 @@ export class SokiServer {
                                 }
                             }
 
-                            const fio = user.username || controlTelegramBot.convertLoginFromId(user.id);
+                            const nick = user.username || controlTelegramBot.convertNickFromId(user.id);
 
                             return {
                                 level,
-                                fio,
-                                login: smylib.md5('' + user.id),
-                                passw: this.makePassw(user.id, fio, level),
+                                nick,
+                                fio: `${user.first_name}${user.last_name !== undefined ? ` ${user.last_name}` : ''}`,
+                                login: controlTelegramBot.makeLoginFromId(user.id),
+                                passw: this.makePassw(user.id, nick, level),
                                 tgId: user.id,
                             };
                         };
@@ -294,7 +291,7 @@ export class SokiServer {
                                     const passw = eventData.auth.passw;
 
                                     if (eventData.auth.tgId) {
-                                        const passw = this.makePassw(eventData.auth.tgId, eventData.auth.fio, eventData.auth.level);
+                                        const passw = this.makePassw(eventData.auth.tgId, eventData.auth.nick, eventData.auth.level);
                                         if (eventData.auth.passw !== passw) {
                                             sendErrorMessage('Данные авторизации устарели');
                                             return;
@@ -309,15 +306,26 @@ export class SokiServer {
 
                                     if (auth) {
                                         if (auth.level < 100)
-                                            this.setVisit(eventData.version, auth.fio, auth.tgId, eventData.deviceId, eventData.browser);
+                                            this.setVisit({
+                                                version: eventData.version,
+                                                fio: auth.fio,
+                                                nick: auth.nick,
+                                                tgId: auth.tgId,
+                                                deviceId: eventData.deviceId,
+                                                browser: eventData.browser,
+                                            });
                                         capsule.auth = auth;
                                         capsule.deviceId = eventData.deviceId;
                                         capsule.version = eventData.version;
 
                                         this.send({ authorized: true, appName }, client);
-                                        console.info(`Client ${auth.fio ?? '???'} connected`);
+                                        console.info(`Client ${auth.fio !== undefined && auth.fio !== auth.nick ? `${auth.fio} (${auth.nick})` : auth.nick ?? '???'} connected`);
 
-                                        if (auth.level !== eventData.auth.level)
+                                        if (
+                                            auth.level !== eventData.auth.level
+                                            || auth.nick !== eventData.auth.nick
+                                            || auth.fio !== eventData.auth.fio
+                                        )
                                             this.send({
                                                 appName: 'index',
                                                 pull: {
@@ -329,7 +337,11 @@ export class SokiServer {
                                     } else sendErrorMessage('Некорректные данные авторизации');
                                 }
                             } else {
-                                this.setVisit(eventData.version, undefined, undefined, eventData.deviceId, eventData.browser);
+                                this.setVisit({
+                                    version: eventData.version,
+                                    deviceId: eventData.deviceId,
+                                    browser: eventData.browser,
+                                });
                                 this.send({ authorized: false, appName: eventData.appName }, client);
                                 console.info('Unknown client connected');
                             }
@@ -449,7 +461,7 @@ export class SokiServer {
     async execExecs(appName: SokiAppName, execs: ExecutionDict[], eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket, requestId?: string) {
         if (eventData.appName && capsule?.auth && capsule.auth.login === eventData.auth?.login
             && (eventData.auth?.tgId
-                ? eventData.auth.passw === this.makePassw(eventData.auth.tgId, eventData.auth.fio, eventData.auth.level)
+                ? eventData.auth.passw === this.makePassw(eventData.auth.tgId, eventData.auth.nick, eventData.auth.level)
                 : await sokiAuther.isCorrectData(eventData.auth))) {
             const appConfig = filer.appConfigs[eventData.appName];
 

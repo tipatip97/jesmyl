@@ -23,13 +23,13 @@ export function ScheduleWidgetUserEdit({
     return <>
         <StrongEditableField
             scope={userScope}
-            fieldName="alias"
+            fieldName="fio"
             isRedact
             setSelfRedact
             title="Имя"
             icon="person-outline"
-            value={user.alias || user.fio}
-            onUpdate={onUpdate && ((value) => onUpdate('alias', value))}
+            value={user.fio || user.nick}
+            onUpdate={onUpdate && ((value) => onUpdate('fio', value))}
         />
         {rights.myUser && <ScheduleWidgetRightControlList
             scope={userScope}

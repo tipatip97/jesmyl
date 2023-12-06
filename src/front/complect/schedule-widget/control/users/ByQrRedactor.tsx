@@ -19,7 +19,7 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
         const user = oldUser ?? passport;
 
         return <>
-            {header(<>{oldUser == null ? 'Добавление' : 'Редактирование'} участника <span className="color--7">{user.alias ?? user.fio}</span></>)}
+            {header(<>{oldUser == null ? 'Добавление' : 'Редактирование'} участника <span className="color--7">{user.fio ?? user.nick}</span></>)}
             {body(<>
                 <ScheduleWidgetUserEdit
                     scope={scope}

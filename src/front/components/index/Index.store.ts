@@ -18,7 +18,6 @@ const initialState: IndexState = {
   numModalUpdates: 0,
   errors: {},
   statistic: null,
-  userMessages: [],
   deviceId: '',
 };
 
@@ -41,7 +40,6 @@ export const slice = createSlice({
       'theme',
       'updateRequisites',
       'updateOnRefresher',
-      'userMessages',
       'deviceId',
     ]),
     setError: (state, action: PayloadAction<IndexStateError>) => {

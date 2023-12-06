@@ -121,7 +121,7 @@ export interface IScheduleWidgetUser {
     mi: number,
     login?: string,
     fio?: string,
-    alias?: string,
+    nick?: string,
     R?: number,
     li?: Record<Cati, UnitMi>,
 }
