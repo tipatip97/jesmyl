@@ -79,13 +79,12 @@ export default function IndexMain() {
             onGoTo={() => goTo('schedules')}
             isForceShow={auth.level >= 50}
           />
-          {auth.fio ? null : (
-            <BrutalItem
+          {!auth.nick
+            && <BrutalItem
               icon="person-outline"
-              title="Войти"
+              title="Авторизоваться"
               onClick={() => goTo("login")}
-            />
-          )}
+            />}
           <BrutalItem
             icon="settings-2-outline"
             title="Настройки"
