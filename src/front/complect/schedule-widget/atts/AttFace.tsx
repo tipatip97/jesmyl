@@ -7,6 +7,7 @@ import { ScheduleWidgetAppAtt, ScheduleWidgetAttKey } from "../ScheduleWidget.mo
 import ScheduleWidgetCustomAtt from "./custom/CustomAtt";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
 import { scheduleWidgetUserRights } from "../../../../back/apps/index/rights";
+import styled from "styled-components";
 
 
 export default function ScheduleWidgetAttFace({
@@ -45,8 +46,8 @@ export default function ScheduleWidgetAttFace({
 
     return <>
         {modalNode}
-        <div
-            className={'schedule-widget-tatt relative flex center column' + (isCanRedact && tatt?.isCustomize ? ' color--7 pointer' : '')}
+        <Tatt
+            className={'relative flex center column' + (isCanRedact && tatt?.isCustomize ? ' color--7 pointer' : '')}
             onClick={isCanRedact && tatt?.isCustomize
                 ? screen
                 : undefined}
@@ -72,6 +73,26 @@ export default function ScheduleWidgetAttFace({
                     />
                     <div className="color--ko">Не изв.</div>
                 </>}
-        </div>
+        </Tatt>
     </>;
 }
+
+const Tatt = styled.div`
+    --att-size: 90px;
+
+    position: relative;
+    background-color: var(--color--5);
+    width: var(--att-size);
+    min-width: var(--att-size);
+    max-width: var(--att-size);
+    height: var(--att-size);
+    min-height: var(--att-size);
+    max-height: var(--att-size);
+    border-radius: 3px;
+
+    .close-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+`;

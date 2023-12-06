@@ -1,7 +1,7 @@
+import styled from "styled-components";
 import { ScheduleWidgetRightTexts, ScheduleWidgetRightsCtrl } from "../../../../back/apps/index/complect";
 import { StrongControlProps } from "../../strong-control/Strong.model";
 import StrongEvaButton from "../../strong-control/StrongEvaButton";
-import styles from "./Control.module.scss";
 
 export default function ScheduleWidgetRightControlList({
     R,
@@ -39,7 +39,9 @@ export default function ScheduleWidgetRightControlList({
                 <div>
                     <div>{type.title}</div>
                     {type.description && (!isDescriptionsCollect || isCan)
-                        && <div className={styles.description + ' color--4 margin-gap-l'}>{isHas ? type.description[0] : type.description[1] || type.description[0]}</div>}
+                        && <Desc className="color--4 margin-gap-l">
+                            {isHas ? type.description[0] : type.description[1] || type.description[0]}
+                        </Desc>}
                 </div>
 
                 <StrongEvaButton
@@ -68,3 +70,7 @@ export default function ScheduleWidgetRightControlList({
             return node;
         })}</>;
 }
+
+const Desc = styled.div`
+    font-size: .7em;
+`;

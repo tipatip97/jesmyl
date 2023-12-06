@@ -7,9 +7,9 @@ import { IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetDayListItemT
 import ScheduleWidgetCleans from "../complect/Cleans";
 import ScheduleWidgetTopicTitle from "../complect/TopicTitle";
 import { useSchedules } from "../useScheduleWidget";
-import "./Alarm.scss";
 import ScheduleAlarmDay from "./AlarmDay";
 import { ScheduleWidgetAlarmInfoContent } from "./InfoContent";
+import styled from "styled-components";
 
 const msInDay = mylib.howMs.inDay;
 const msInHour = mylib.howMs.inHour;
@@ -304,8 +304,8 @@ export default function ScheduleWidgetAlarmContent({
 
     return <>
         {fullNode}
-        <div
-            className={'ScheduleWidgetAlarm flex flex-gap between' + (fullValue ? ' pointer' : '')}
+        <Alarm
+            className={'flex flex-gap between' + (fullValue ? ' pointer' : '')}
             onClick={fullValue && (() => setIsFullOpen(true))}
         >
             <div className="flex">
@@ -326,6 +326,17 @@ export default function ScheduleWidgetAlarmContent({
                 className="margin-gap"
                 onClick={() => onGoTo()}
             />
-        </div>
+        </Alarm>
     </>;
 }
+
+const Alarm = styled.div`
+    --icon-color: var(--color--3);
+
+    width: calc(100% + var(--main-gap) * 2);
+    height: 4em;
+    background-color: var(--color--1);
+    color: var(--color--4);
+    margin-top: calc(0px - var(--main-gap) + 5px);
+    padding: var(--main-big-gap) var(--main-gap);
+`;

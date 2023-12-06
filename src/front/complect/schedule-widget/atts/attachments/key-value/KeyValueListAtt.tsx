@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import styled from "styled-components";
 import { ScheduleWidgetRightsCtrl } from "../../../../../../back/apps/index/complect";
 import { CustomAttUseRights, CustomAttUseTaleId, customAttUseRights } from "../../../../../../back/apps/index/rights";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
@@ -45,7 +46,7 @@ export default function ScheduleKeyValueListAtt({
     let exclusiveUsers: IScheduleWidgetUser[] = [];
     let exclusiveLists: IScheduleWidgetListUnit[] | und;
     let exclusiveRoles: IScheduleWidgetRole[] | und;
-    
+
     const userR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
 
     if (isRedact) {
@@ -144,7 +145,7 @@ export default function ScheduleKeyValueListAtt({
             exclusiveUsers = dropdownUsers.filter(user => {
                 return (user.nick || user.fio) && !attValue.values?.some(li => li[0] === user.mi + CustomAttUseTaleId.Users || li[1] === user.mi + CustomAttUseTaleId.Users);
             });
-            
+
             users = exclusiveUsers.map((user) =>
                 customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.CheckUsers)
                     ? <div key={user.mi} className="flex flex-gap">
@@ -297,13 +298,14 @@ export default function ScheduleKeyValueListAtt({
                 </div>
                 {(isRedact || value !== '+') && !mylib.isNum(value)
                     && (mylib.isStr(value)
-                        ? <StrongEditableField
+                        ? <StrongField
+                            $indent={!isRedact && mylib.isBool(key)}
+
                             scope={itemScope}
                             fieldName="value"
                             className={
                                 'margin-gap-l mood-for-2 relative z-index:5 '
                                 + (mylib.isBool(key) ? key ? 'color--3 fade-05' : 'color--3' : '')
-                                + (!isRedact && mylib.isBool(key) ? ' icon-indent-text' : '')
                             }
                             value={value}
                             multiline
@@ -316,7 +318,7 @@ export default function ScheduleKeyValueListAtt({
                                     return <div key={vali}>
                                         {!!scope && customAttUseRights.checkIsCan(userR, att.U) &&
                                             <div className="flex flex-gap">
-                                            <span className="flex self-start">{vali + 1}.</span>
+                                                <span className="flex self-start">{vali + 1}.</span>
                                                 {vala.length > 1 && <StrongEvaButton
                                                     scope={itemScope}
                                                     fieldName="value list move"
@@ -410,3 +412,46 @@ export default function ScheduleKeyValueListAtt({
         />
     </div>;
 }
+
+const StrongField = styled(StrongEditableField) <{ $indent: boolean }>`
+    ${props => props.$indent && `
+        --indent: 24px;
+
+        margin-top: -1.7em;
+
+        .markdownFieldContent {
+            ol, ul {
+                padding-inline-start: 15px;
+
+                >li>ol {
+                    list-style-type: lower-latin;
+
+                    >li>ol {
+                        list-style-type: lower-roman;
+
+                        >li>ol {
+                            list-style-type: lower-greek;
+                        }
+                    }
+                }
+            }
+
+            >:not(p, div),
+            >p:has([prop-src], table),
+            >div:has([prop-src], table) {
+                &:first-child {
+                    margin-left: var(--indent);
+
+                    &:not([prop-src]) {
+                        width: calc(100% - var(--indent));
+                    }
+                }
+            }
+
+            >*:first-child>p:first-child,
+            >p:first-child {
+                text-indent: var(--indent);
+            }
+        }
+    `}
+`;

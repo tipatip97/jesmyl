@@ -1,4 +1,6 @@
 import { ReactNode } from "react";
+import styled from "styled-components";
+import { scheduleWidgetUserRights } from "../../../../back/apps/index/rights";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";
@@ -7,11 +9,9 @@ import { StrongComponentProps } from "../../strong-control/Strong.model";
 import StrongDiv from "../../strong-control/StrongDiv";
 import { IScheduleWidget, ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValues } from "../ScheduleWidget.model";
 import { takeStrongScopeMaker, useScheduleWidgetAppAttsContext, useScheduleWidgetRightsContext } from "../useScheduleWidget";
-import ScheduleWidgetBindAttRefKeyButton from "./BindAttRefKeyButton";
 import ScheduleWidgetAttFace from "./AttFace";
-import "./Atts.scss";
+import ScheduleWidgetBindAttRefKeyButton from "./BindAttRefKeyButton";
 import ScheduleWidgetCustomAttachments from "./custom/CustomAttachments";
-import { scheduleWidgetUserRights } from "../../../../back/apps/index/rights";
 
 export default function ScheduleWidgetBindAtts({
     atts,
@@ -107,7 +107,7 @@ export default function ScheduleWidgetBindAtts({
                 onClick={screen}
             />
         </div>
-        <div className="schedule-widget-bind-secs flex flex-gap no-scrollbar">
+        <Secs className="flex flex-gap no-scrollbar">
             {attEntries?.length
                 ? attEntries.map(([attKey]) => {
                     const attScope = takeStrongScopeMaker(scope, ' attKey/', attKey);
@@ -125,6 +125,13 @@ export default function ScheduleWidgetBindAtts({
                     />;
                 })
                 : <span className="color--7">Вложений нет</span>}
-        </div>
+        </Secs>
     </>;
 }
+
+const Secs = styled.div`
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-right: var(--margin-gap);
+`;
