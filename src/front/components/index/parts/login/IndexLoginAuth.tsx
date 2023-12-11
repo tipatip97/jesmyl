@@ -9,7 +9,7 @@ import LoadIndicatedContent from "../../../../complect/load-indicated-content/Lo
 import mylib from "../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../shared/store";
 import { soki } from "../../../../soki";
-import { AuthMode, AuthorizationData, AuthorizeInSystem, RegisterData } from "../../Index.model";
+import { AuthMode, ClientAuthorizationData, ServerAuthorizeInSystem, ClientRegisterData } from "../../Index.model";
 import di from "../../Index.store";
 import PhaseIndexContainer from "../../complect/PhaseIndexContainer";
 import useIndexNav from "../../complect/useIndexNav";
@@ -34,7 +34,7 @@ export default function IndexLoginAuth() {
   const error = (message: string | nil) =>
     message && <div className="login-error-message">{message}</div>;
 
-  const sendData = <AuthType extends keyof AuthorizeInSystem>(type: AuthType, data: AuthorizeInSystem[typeof type]) => {
+  const sendData = <AuthType extends keyof ServerAuthorizeInSystem>(type: AuthType, data: ServerAuthorizeInSystem[typeof type]) => {
     return soki.send({
       authorization: {
         type,
@@ -43,9 +43,9 @@ export default function IndexLoginAuth() {
     }, 'index');
   };
 
-  const loginInSystem = (state: AuthorizationData) => {
+  const loginInSystem = (state: ClientAuthorizationData) => {
     return sendData('login', {
-      nick: mylib.md5(state.nick.trim()),
+      login: mylib.md5(state.nick.trim()),
       passw: mylib.md5(state.passw),
     });
   };
@@ -57,7 +57,7 @@ export default function IndexLoginAuth() {
     removePullRequisites();
   };
 
-  const registerInSystem = (state: Omit<RegisterData, 'login'>) => {
+  const registerInSystem = (state: Omit<ClientRegisterData, 'login'>) => {
     const nick = state.nick.trim();
 
     return sendData('register', {
@@ -157,7 +157,7 @@ export default function IndexLoginAuth() {
                 setIsInProscess(0);
                 (mode === "login"
                   ? loginInSystem({ nick, passw })
-                  : registerInSystem({ nick, passw, rpassw }))
+                  : registerInSystem({ nick, passw, rpassw, fio: nick }))
                   .on(
                     ({ authorization }) => {
                       if (authorization && authorization.ok !== false) {

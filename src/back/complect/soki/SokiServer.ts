@@ -55,7 +55,7 @@ export class SokiServer {
         });
     }
 
-    setVisit(visit: { version: number, fio?: string, nick?: string, tgId?: number, deviceId?: string, browser?: string }) {
+    setVisit(visit: { version: number, fio?: string, nick: string, tgId?: number, deviceId?: string, browser?: string }) {
         const date = new Date();
 
         if (this.lastVisit !== date.toLocaleDateString()) {
@@ -81,15 +81,21 @@ export class SokiServer {
         this.capsules.forEach((capsule) => {
             this.statistic.online++;
             if (capsule.auth) this.statistic.authed++;
+            else return;
+
             if (capsule.appName) {
-                if (this.statistic.usages[capsule.appName] === undefined) this.statistic.usages[capsule.appName] = [];
-                this.statistic.usages[capsule.appName]!.push(
-                    {
-                        fio: capsule.auth?.fio,
-                        nick: capsule.auth?.nick,
-                        version: capsule.version,
-                        deviceId: capsule.deviceId,
-                    });
+                if (this.statistic.usages[capsule.appName] === undefined)
+                    this.statistic.usages[capsule.appName] = [];
+
+                if (capsule.auth.nick)
+                    this.statistic.usages[capsule.appName]!.push(
+                        {
+                            ...capsule.auth,
+                            nick: capsule.auth.nick,
+                            version: capsule.version,
+                            deviceId: capsule.deviceId,
+                            time: '',
+                        });
             }
         });
 
@@ -305,7 +311,7 @@ export class SokiServer {
                                     }
 
                                     if (auth) {
-                                        if (auth.level < 100)
+                                        if (auth.level < 100 && auth.nick !== undefined)
                                             this.setVisit({
                                                 version: eventData.version,
                                                 fio: auth.fio,
@@ -341,6 +347,7 @@ export class SokiServer {
                                     version: eventData.version,
                                     deviceId: eventData.deviceId,
                                     browser: eventData.browser,
+                                    nick: '',
                                 });
                                 this.send({ authorized: false, appName: eventData.appName }, client);
                                 console.info('Unknown client connected');

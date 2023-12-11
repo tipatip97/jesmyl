@@ -41,6 +41,7 @@ export const slice = createSlice({
       'updateRequisites',
       'updateOnRefresher',
       'deviceId',
+      'nounPronsWords',
     ]),
     setError: (state, action: PayloadAction<IndexStateError>) => {
       if (action.payload.scope) {

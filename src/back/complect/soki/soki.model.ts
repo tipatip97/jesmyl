@@ -52,7 +52,7 @@ export interface SokiClientEventBody {
     connect?: true,
     ping?: true,
     tgAuthorization?: number,
-    authorization?: ({ type: 'login', value: SokiAuthorizationData } | { type: 'register', value: SokiRegisterData }),
+    authorization?: ({ type: 'login', value: ServerAuthorizationData } | { type: 'register', value: ServerRegisterData }),
     pullData?: SokiClientUpdateCortage,
     execs?: ExecutionDict[],
     system?: { name: 'reloadFiles' | 'restartWS', passphrase: string },
@@ -67,17 +67,18 @@ export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
 
 export interface SokiVisitor {
     fio?: string,
-    nick?: string,
+    nick: string,
     version: number,
     deviceId?: string,
     browser?: string,
     time: string,
+    tgId?: number,
 }
 
 export interface SokiStatistic {
     online: number,
     authed: number,
-    usages: Partial<Record<SokiAppName, { fio?: string, nick?: string, version: number, deviceId: string }[]>>,
+    usages: Partial<Record<SokiAppName, SokiVisitor[]>>,
     visits: SokiVisitor[],
     pastVisits: Record<string, number>,
 }
@@ -120,12 +121,12 @@ export interface LocalSokiAuth extends Partial<BaseSokiAuth> {
     passw?: string,
 }
 
-export interface SokiAuthorizationData {
+export interface ServerAuthorizationData {
     login: string,
     passw: string,
 }
 
-export interface SokiRegisterData {
+export interface ServerRegisterData {
     login: string,
     passw: string,
     rpassw: string,
@@ -134,8 +135,8 @@ export interface SokiRegisterData {
 }
 
 export interface AuthorizeInSystem {
-    register: SokiRegisterData,
-    login: SokiAuthorizationData,
+    register: ServerRegisterData,
+    login: ServerAuthorizationData,
 }
 
 export type SokiServiceCallback = (key: string, value: any, eventData: SokiClientEvent, capsule: SokiCapsule | undefined, client: WebSocket) => Promise<any>;

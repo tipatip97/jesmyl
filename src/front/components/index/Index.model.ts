@@ -1,4 +1,4 @@
-import { LocalSokiAuth, SokiStatistic } from "../../../back/complect/soki/soki.model";
+import { LocalSokiAuth, ServerAuthorizationData, ServerRegisterData, SokiStatistic } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
 import { ScheduleStorage } from "../../complect/schedule-widget/ScheduleWidget.model";
 
@@ -10,6 +10,7 @@ export interface IndexState {
     errors: Partial<Record<IndexErrorScope, string>>,
     statistic: SokiStatistic | null,
     deviceId: string,
+    nounPronsWords?: Record<'pronouns' | 'nouns', Record<string, number>>,
 
     updateRequisites?: Partial<Record<AppName, [
         number, // last content updated ts
@@ -19,7 +20,7 @@ export interface IndexState {
     isUseNativeKeyboard?: boolean,
 }
 
-export type IndexErrorScope = keyof RegisterData;
+export type IndexErrorScope = keyof ClientRegisterData;
 
 export interface IndexStateError {
     message?: string | nil,
@@ -61,16 +62,16 @@ export interface UserMessage {
 
 export type Auth = LocalSokiAuth;
 
-export interface AuthorizationData {
+export interface ClientAuthorizationData {
     nick: string,
     passw: string,
 }
 
-export interface RegisterData {
+export interface ClientRegisterData {
     login: string,
     passw: string,
     rpassw: string,
-    fio?: string,
+    fio: string,
     nick: string,
 }
 
@@ -87,7 +88,7 @@ export type IndexPhase = 'main' | 'apps' | 'settings' | 'login' | 'register';
 export type IndexSpecialPhase = AppName;
 export type IndexAppName = AppName | null;
 
-export interface AuthorizeInSystem {
-    register: RegisterData,
-    login: AuthorizationData,
+export interface ServerAuthorizeInSystem {
+    register: ServerRegisterData,
+    login: ServerAuthorizationData,
 }
