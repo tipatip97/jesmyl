@@ -55,9 +55,9 @@ export class SMyLib {
     }
 
     randomOf = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
-    randomIndex = (arr: unknown[] | string) => this.randomOf(0, arr.length - 1);
+    randomIndex = (arr: unknown[] | string, sliceEnd?: number) => this.randomOf(0, arr.length - 1 + (sliceEnd === undefined ? 0 : sliceEnd));
     randomItem = <Item extends any[] | string, RetItem extends Item extends (infer It)[] ? It : string>
-        (arr: Item): RetItem => arr[this.randomIndex(arr)];
+        (arr: Item, sliceEnd?: number): RetItem => arr[this.randomIndex(arr, sliceEnd)];
 
     explode(separator: string, string: string, lim?: number) {
         const limit = lim && Math.abs(lim);
