@@ -27,7 +27,7 @@ export class JesmylTelegramBot {
         const reg = /./g;
         const callback = (all: string) => 'jesmylibot'[all as never];
 
-        return (id: number, addTPrefix?: boolean) => (addTPrefix === false ? '' : 't.') + ('' + id).replace(reg, callback);
+        return (id: number, addTPrefix?: boolean) => (addTPrefix === false ? '' : 't:') + ('' + id).replace(reg, callback);
     })();
 
     makeLoginFromId = (id: number) => 'T' + smylib.md5('' + id).slice(1);
