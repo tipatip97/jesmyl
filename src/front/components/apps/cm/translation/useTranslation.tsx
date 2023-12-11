@@ -13,12 +13,12 @@ import TranslationScreen from "./TranslationScreen";
 
 let currWin: Window | null = null;
 
-const startViewTransition = (callback: () => void) => {
-  if (mylib.isFunc((document as any).startViewTransition)) {
+const startViewTransition = mylib.isFunc((document as any).startViewTransition)
+  ? (callback: () => void) => {
     (currWin?.document as any)?.startViewTransition(callback);
     (document as any).startViewTransition(callback);
-  } else callback();
-};
+  }
+  : (callback: () => void) => callback();
 
 const translationUpdatesSelector = (state: RootState) => state.cm.translationUpdates;
 const translationBlockSelector = (state: RootState) => state.cm.translationBlock;
