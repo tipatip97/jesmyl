@@ -16,7 +16,7 @@ else {
   $steps = [];
 
   if ($versionNum) {
-    file_put_contents('./version.json', json_encode(['num' => intval($versionNum)], JSON_UNESCAPED_UNICODE));
+    file_put_contents('./+version.json', json_encode(['num' => intval($versionNum)], JSON_UNESCAPED_UNICODE));
   }
 
   foreach ($_FILES as $file) {

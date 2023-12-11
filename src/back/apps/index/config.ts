@@ -392,8 +392,9 @@ const config: FilerAppConfig = {
             }
         },
         appVersion: {
-            watch: [`${rootDirective}/version.json`, (content) => JSON.parse(content).num],
-        }
+            watch: [`${rootDirective}/+version.json`, (content) => JSON.parse(content).num],
+        },
+        nounPronsWords: null,
     },
     actions: Executer.prepareActionList({
         '/schedules': {

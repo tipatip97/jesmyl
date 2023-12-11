@@ -2,7 +2,7 @@ import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
 import { PullEventValue, SokiAppName, SokiClientEvent, SokiClientEventBody, SokiClientUpdateCortage, SokiServerEvent } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
-import * as versionNum from '../back/version.json';
+import * as versionNum from '../back/+version.json';
 import { JStorage } from './complect/JStorage';
 import Eventer, { EventerCallback, EventerListeners, eventerAlt } from './complect/eventer/Eventer';
 import mylib from './complect/my-lib/MyLib';
@@ -96,7 +96,6 @@ export class SokiTrip {
                     }
 
                     if (event.system) {
-                        console.log(event);
                         if (event.system.name === 'reloadFiles')
                             this.pullCurrentAppData(await this.appName());
                     }

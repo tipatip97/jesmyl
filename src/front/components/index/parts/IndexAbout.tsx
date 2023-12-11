@@ -1,6 +1,6 @@
 import EvaIcon from "../../../complect/eva-icon/EvaIcon";
 import QRCode from "../../../complect/qr-code/QRCode";
-import * as versionNum from '../../../../back/version.json';
+import * as versionNum from '../../../../back/+version.json';
 import { useSelector } from "react-redux";
 import { RootState } from "../../../shared/store";
 
