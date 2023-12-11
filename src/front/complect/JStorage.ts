@@ -19,6 +19,8 @@ export class JStorage<Scope, State = Scope> {
         if (config?.nonCachable) this.nonCachable = config.nonCachable;
         this.dbOpen = indexedDB.open(appName);
         this.initDB(this.dbOpen);
+
+        (window as any)[`${appName}Storage`] = this;
     }
 
     private initDB(dbOpen: IDBOpenDBRequest) {
