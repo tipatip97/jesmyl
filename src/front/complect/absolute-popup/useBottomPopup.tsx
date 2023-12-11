@@ -61,31 +61,23 @@ const prepare = ({ items, footer }: BottomPopupContentProps) => {
   </div>;
 };
 
+export const bottomPopupContentPreparer = prepare;
+
 export type BottomPopupContenterPreparer = (props: BottomPopupContentProps) => JSX.Element;
-export type BottomPopupContenter<Props extends Record<string, unknown> = {}>
+export type BottomPopupContenter<Props = {}>
   = (
     close: () => void,
     prepare: BottomPopupContenterPreparer,
     props: Props,
   ) => [ReactNode, ReactNode] | JSX.Element | nil;
 
-const emptyProps = {};
+type OpenCallback = (passEvent?: any, isOpen?: boolean | null) => void;
+type OpenWithPropsCallback<Props> = (props: Props, isOpen?: boolean | null) => void;
 
-export function useBottomPopup<
-  Contenter extends BottomPopupContenter,
-  Props extends ReturnType<Contenter> extends [ReactNode, ReactNode] ? Record<string, unknown> : Partial<Record<string, unknown>>,
->(contenter: Contenter, props: Props = emptyProps as never): [ReactNode, (isOpen?: boolean) => void] {
-  const close = () => setIsOpen(false);
-  const contentScalar = contenter(close, prepare, props);
-  let throwContent = null;
-  let content = null;
-
-  if (mylib.isArr(contentScalar)) {
-    [throwContent, content] = contentScalar;
-  } else content = contentScalar;
-
+export function useBottomPopup<Props>(contenter: BottomPopupContenter<Props>, topProps: Props = {} as never): [ReactNode, OpenCallback, OpenWithPropsCallback<Props>] {
   const bottomContentContainer = useRef<HTMLDivElement>(null);
   const bottomContainer = useRef<HTMLDivElement>(null);
+  const [props, setProps] = useState(topProps);
 
   const scrollableContent =
     (bottomContentContainer.current?.clientHeight || 0) - 5 > initialScrollTop;
@@ -105,7 +97,6 @@ export function useBottomPopup<
   };
 
   const [isOpen, setIsOpen] = useState(false);
-
   const [isMounted, className] = useMountTransition(isOpen, 'absolute-bottom-popup', 500);
 
   useEffect(() => {
@@ -115,65 +106,81 @@ export function useBottomPopup<
       else bottomContainer.current.scrollTop = scrollTop = 0;
 
     if (isOpen) {
-      return ThrowEvent.listenKeyDown('Escape', () => close());
+      return ThrowEvent.listenKeyDown('Escape', () => setIsOpen(false));
     }
   }, [isOpen]);
 
-  return [<>
-    {throwContent}
-    {isMounted && <Portal>
-      <div className={className} onClick={() => close()}>
-        <div
-          className={
-            'container no-scrollbar'
-            + (isTouchDevice ? "" : " not-touch-device")
-            + (`${scrollableContent ? "" : " not-"}scrollable-content`)
-          }
-          ref={bottomContainer}
-          onScroll={
-            isTouchDevice
-              ? () => {
-                setTimeout(() => {
-                  if (!bottomContainer.current || animateScrollInProcess) return;
-                  needClose = !isInitialScroll && bottomContainer.current.scrollTop < scrollTop;
-                  scrollTop = bottomContainer.current.scrollTop;
-                  clearTimeout(scrollDebounce);
+  const contentScalar = contenter(() => setIsOpen(false), prepare, props);
+  let throwContent = null;
+  let content = null;
+  console.log(contentScalar);
 
-                  if (!isMouseDown && scrollTop < inactiveScrollTop)
-                    scrollDebounce = setTimeout(() => {
-                      if (needClose) close();
-                      else animateScroll();
-                    }, 100);
-                });
-              }
-              : undefined
-          }
-          onTouchStart={() => (isMouseDown = true)}
-          onTouchEnd={
-            isTouchDevice
-              ? () => {
-                isMouseDown = false;
-                if (scrollTop < inactiveScrollTop)
-                  if (needClose) close();
-                  else animateScroll();
-              }
-              : undefined
-          }
-        >
-          <div className="absolute full-width flex center margin-gap-v">
-            <div className="badge" />
-          </div>
+  if (mylib.isArr(contentScalar)) {
+    [throwContent, content] = contentScalar;
+  } else content = contentScalar;
+
+  console.log(content);
+
+  return [
+    <>
+      {throwContent}
+      {isMounted && <Portal>
+        <div className={className} onClick={() => setIsOpen(false)}>
           <div
-            className="content"
-            // onClick={(event) => !isClosable && event.stopPropagation()}
-            ref={bottomContentContainer}
+            className={
+              'container no-scrollbar'
+              + (isTouchDevice ? "" : " not-touch-device")
+              + (`${scrollableContent ? "" : " not-"}scrollable-content`)
+            }
+            ref={bottomContainer}
+            onScroll={
+              isTouchDevice
+                ? () => {
+                  setTimeout(() => {
+                    if (!bottomContainer.current || animateScrollInProcess) return;
+                    needClose = !isInitialScroll && bottomContainer.current.scrollTop < scrollTop;
+                    scrollTop = bottomContainer.current.scrollTop;
+                    clearTimeout(scrollDebounce);
+
+                    if (!isMouseDown && scrollTop < inactiveScrollTop)
+                      scrollDebounce = setTimeout(() => {
+                        if (needClose) setIsOpen(false);
+                        else animateScroll();
+                      }, 100);
+                  });
+                }
+                : undefined
+            }
+            onTouchStart={() => (isMouseDown = true)}
+            onTouchEnd={
+              isTouchDevice
+                ? () => {
+                  isMouseDown = false;
+                  if (scrollTop < inactiveScrollTop)
+                    if (needClose) setIsOpen(false);
+                    else animateScroll();
+                }
+                : undefined
+            }
           >
-            {content}
+            <div className="absolute full-width flex center margin-gap-v">
+              <div className="badge" />
+            </div>
+            <div
+              className="content"
+              // onClick={(event) => !isClosable && event.stopPropagation()}
+              ref={bottomContentContainer}
+            >
+              {content}
+            </div>
           </div>
         </div>
-      </div>
-    </Portal>
-    }</>,
-  (isOpen?: boolean) => setIsOpen(isOpen ?? isNIs)
+      </Portal>
+      }</>,
+    (_passEvent, isOpen) => setIsOpen(isOpen ?? isNIs),
+    (props, isOpen) => {
+      setIsOpen(isOpen ?? isNIs);
+      setProps(props);
+    },
   ];
 }
