@@ -57,9 +57,9 @@ const archive = (isFront, onError, versionNum) => {
 
 if (~process.argv.indexOf('--push-front')) {
     const riseVersion = (version, cb) =>
-        file_system.writeFile('src/back/version.json', version, () => cb?.());
+        file_system.writeFile('src/back/+version.json', version, () => cb?.());
 
-    file_system.readFile('src/back/version.json', 'utf8', (err, versionStr) => {
+    file_system.readFile('src/back/+version.json', 'utf8', (err, versionStr) => {
         if (err) {
             console.error('version not inkremented', err);
             return;
