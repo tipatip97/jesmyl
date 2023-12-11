@@ -3,7 +3,6 @@ import { ClientExecutionDict } from "../../../../complect/exer/Exer.model";
 import mylib from "../../../../complect/my-lib/MyLib";
 import { TeamGameImportable } from "../Leader.model";
 import { leaderExer } from "../Leader.store";
-import { getRandomTwiceName } from "../../../../complect/random-twice-name/getRandomTwiceName";
 import { LeaderContextCreatable, LeaderContextImportable } from "./contexts/Contexts.model";
 import { GameTeamExportable } from "./games/teams/GameTeams.model";
 import { GameTimerConfigurable, GameTimerImportable, GameTimerImportableWithStrongConfigurable, GameTimerMode, GameTimerSortDirection, RateSortedItem } from "./games/timers/GameTimer.model";
@@ -115,8 +114,6 @@ export class LeaderCleans {
     static isTimerWasPublicate = (timers: GameTimerImportable[] | und, timerTs: number) => {
         return timers?.some((timer) => timer.ts === timerTs);
     }
-
-    static generateNewTeamName = () => getRandomTwiceName().join(' ').toUpperCase();
 
     static takeGroupMentorNames = (humans: HumanImportable[] | und, group: LeaderGroupImportable) => {
         return (humans && this.extractWidables(humans, group.mentors)

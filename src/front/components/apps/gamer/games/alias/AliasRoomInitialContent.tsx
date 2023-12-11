@@ -4,11 +4,11 @@ import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import EvaCheckbox from "../../../../../complect/eva-icon/EvaCheckbox";
 import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
+import { useGetRandomTwiceName } from "../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import { getRandomTwiceName } from "../../../../../complect/random-twice-name/getRandomTwiceName";
+import mylib from "../../../../../complect/my-lib/MyLib";
 import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
 import { useAliasState } from "./useAliasState";
-import mylib from "../../../../../complect/my-lib/MyLib";
 
 const roundTimesItems = [10, 60, 120, 180].map(id => ({ title: `${id} сек.`, id }));
 const dreamItems = [10, 30, 50, 70, 100].map(id => ({ title: `${id} слов`, id }));
@@ -36,30 +36,46 @@ export default function AliasRoomInitialContent() {
     const myPossibilities = memberPossibilities();
     const isImpossibleToCreate = (!state && !dicts.length) || (state && (!state.words.length && isPrevWords)) || !players || players.length < teamsCount || teamsCount < 2;
     const [isComputeNewTeams, setIsComputeNewTeams] = useState(true);
+    const nameRandomizer = useGetRandomTwiceName();
 
     const [dictsNode, openDicts] = useFullContent(() => {
         return <>
             {aliasWords.map((pack, packi) => {
-                const levels: number[] = [0];
-                Object.values(pack.words).forEach((num) => levels[num] = (levels[num] || 0) + 1);
+                let selectNode = null;
+                const onSelect = (id: number) => {
+                    const newDicts: number[] = [...dicts];
+                    newDicts[packi] = id;
+
+                    while (newDicts[newDicts.length - 1] === 0)
+                        newDicts.pop();
+
+                    setDicts(newDicts);
+                };
+
+                if (mylib.isNum(pack.words)) {
+                    if (pack.variants)
+                        selectNode = <Dropdown
+                            id={dicts[packi]}
+                            items={pack.variants.map((count) => ({ title: `${count} слов`, id: count }))}
+                            onSelectId={onSelect}
+                        />;
+                } else {
+                    const levels: number[] = [0];
+                    Object.values(pack.words).forEach((num) => levels[num] = (levels[num] || 0) + 1);
+
+                    selectNode = <Dropdown
+                        id={dicts[packi]}
+                        items={levels.map((_, leveli) => ({ title: `${levelGradationTitles[leveli]}${leveli ? ` (${levels[leveli]} сл.)` : ''}`, id: leveli }))}
+                        onSelectId={onSelect}
+                    />;
+                }
+
                 return <div
                     key={pack.title}
                     className="flex flex-gap margin-gap-v dropdown-ancestor"
                 >
                     {pack.title}
-                    <Dropdown
-                        id={dicts[packi]}
-                        items={levels.map((_, leveli) => ({ title: `${levelGradationTitles[leveli]}${leveli ? ` (${levels[leveli]} сл.)` : ''}`, id: leveli }))}
-                        onSelectId={(id) => {
-                            const newDicts: number[] = [...dicts];
-                            newDicts[packi] = id;
-
-                            while (newDicts[newDicts.length - 1] === 0)
-                                newDicts.pop();
-
-                            setDicts(newDicts);
-                        }}
-                    />
+                    {selectNode}
                 </div>;
             })}
         </>;
@@ -69,10 +85,10 @@ export default function AliasRoomInitialContent() {
         if (!teamsTitles.length || (teamsTitles.length !== teamsCount && !isImpossibleToCreate)) {
             const titles: string[] = [];
             while (titles.length < teamsCount)
-                titles.push(getRandomTwiceName().join(' '));
+                titles.push(nameRandomizer().join(' '));
             setGroupTitle(titles);
         }
-    }, [teamsTitles, teamsCount, isImpossibleToCreate]);
+    }, [teamsTitles, teamsCount, isImpossibleToCreate, nameRandomizer]);
 
     return <>
         {dictsNode}
@@ -102,8 +118,11 @@ export default function AliasRoomInitialContent() {
                             {dicts.length
                                 ? dicts.map((level, leveli) =>
                                     aliasWords[leveli].title
-                                    + (' (' + levelGradationTitles[level])
-                                    + (' - ' + Object.values(aliasWords[leveli].words).reduce((acc, num) => acc + +(num <= level), 0))
+                                    + ' ('
+                                    + (mylib.isNum(aliasWords[leveli].words)
+                                        ? level
+                                        : (levelGradationTitles[level])
+                                        + (' - ' + Object.values(aliasWords[leveli].words).reduce((acc, num) => acc + +(num <= level), 0)))
                                     + ' сл.)'
                                 ).join(' + ')
                                 : <span className="color--ko">Не выбраны</span>}

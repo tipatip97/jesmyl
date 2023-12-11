@@ -1,6 +1,5 @@
 import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
-import { getRandomTwiceName } from "../../../../../complect/random-twice-name/getRandomTwiceName";
 import { useLeaderCcontext } from "../contexts/useContexts";
 import TeamGameFace from "./GameFace";
 import { GamesMoreContenter } from "./GamesMore";
@@ -27,5 +26,3 @@ export default function GameList() {
     />
   );
 }
-
-getRandomTwiceName();

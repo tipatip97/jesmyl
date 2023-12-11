@@ -22,12 +22,13 @@ export default function AliasGameRoundResults() {
                 <SendButton
                     title="Отправить данные"
                     disabled={
-                        ((answers) => state?.rej
-                            && MyLib.entries(state.rej)
-                                .some(([strNid, rejs]) => answers?.includes(+strNid)
-                                    && rejs.length > 0
-                                    && !state.fix.includes(+strNid))
-                        )(state?.cor.concat(state.inc))
+                        state?.rej
+                        && MyLib.entries(state.rej)
+                            .some(([strNid, rejs]) => rejs.length > 0
+                                && state.fix.includes(+strNid)
+                                && (state.inc.includes(+strNid) || !state.cor.includes(+strNid)))
+
+
                     }
                     onSend={rememberScore}
                 />

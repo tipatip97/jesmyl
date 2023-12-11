@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import propsOfClicker from "../../../../complect/clicker/propsOfClicker";
 import modalService from "../../../../complect/modal/Modal.service";
-import { getRandomTwiceName } from "../../../../complect/random-twice-name/getRandomTwiceName";
+import { useGetRandomTwiceName } from "../../../../complect/hooks/random-twice-name/useGetRandomTwiceName";
 
 export default function RandomTwiceName({
   onNameChange,
@@ -15,8 +15,9 @@ export default function RandomTwiceName({
   className?: string,
 }) {
   const [pronoun, noun] = name?.split(" ") || [];
+  const nameRandomizer = useGetRandomTwiceName();
   const getTwiceName = (pronoun?: string | null, noun?: string) =>
-    getRandomTwiceName(pronoun, noun).join(" ").toUpperCase();
+  nameRandomizer(pronoun, noun).join(" ").toUpperCase();
   const [twiceName, setTwiceName] = useState(
     getTwiceName(pronoun, noun)
   );

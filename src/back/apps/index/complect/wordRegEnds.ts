@@ -1,4 +1,4 @@
-import mylib, { MyLib } from "../my-lib/MyLib";
+import smylib, { SMyLib } from "../../../shared/SMyLib";
 
 type Replacer<Ret> = (substring: string, ...args: any[]) => Ret;
 
@@ -83,9 +83,9 @@ const wordRegEnds: Record<string, Record<string, EndVariantsDict>> = {
 };
 
 const regEnds: [RegExp, [RegExp, EndVariantsDict][]][] =
-    MyLib.entries(wordRegEnds).map(([end, variants]) => [
+    SMyLib.entries(wordRegEnds).map(([end, variants]) => [
         new RegExp(end),
-        MyLib.entries(variants).map(([end, dict]) => [new RegExp(end), dict]),
+        SMyLib.entries(variants).map(([end, dict]) => [new RegExp(end), dict]),
     ]);
 
 const allAll = (all: string) => all;
@@ -104,7 +104,7 @@ export const replacePronounEnd = (pronoun: string, noun: string): [string, strin
             for (let j = 0; j < regEnd.length; j++) {
                 if (regEnd[j][0].exec(pronoun)) {
                     const invoke = (funcOrString: any) => {
-                        return mylib.isFunc(funcOrString)
+                        return smylib.isFunc(funcOrString)
                             ? funcOrString(...match)
                             : funcOrString || allAll;
                     };

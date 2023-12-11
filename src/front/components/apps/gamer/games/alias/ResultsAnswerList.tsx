@@ -46,10 +46,10 @@ export default function AliasGameRoundResultsAnswerList({ answers, isInc }: {
                         onFailure={showKoToast}
                     />
                     : (isItMySpeech || !isMyTeam) && <EvaSendButton
-                        name={!isRej && isStriked ? 'alert-triangle-outline' : 'alert-triangle'}
+                        name={isStriked ? 'alert-triangle-outline' : 'alert-triangle'}
                         className={
                             'margin-sm-gap-l'
-                            + (isRej && !isStriked ? ' color--ko' : '')
+                            + (isRej ? ' color--ko' : '')
                         }
                         onSend={() => isItMySpeech ? fixWord(nid) : rejectWord(nid)}
                         onFailure={showKoToast}

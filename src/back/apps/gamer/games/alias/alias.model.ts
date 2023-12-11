@@ -20,7 +20,8 @@ export enum GamerAliasRoomStatePhase {
 
 export interface AliasWordsPack {
     title: string,
-    words: Record<string, number>,
+    words: Record<string, number> | number,
+    variants?: number[],
 }
 
 
@@ -46,4 +47,6 @@ export interface AliasWordInfo {
     packi: number,
     nid: AliasWordNid,
     max: number,
+    plus: number,
+    minus: number,
 }

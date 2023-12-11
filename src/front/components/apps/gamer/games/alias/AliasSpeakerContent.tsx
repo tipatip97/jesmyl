@@ -6,6 +6,8 @@ import { GamerAliasRoomStatePhase } from "./Alias.model";
 import GamerAliasTimer from "./AliasTimer";
 import { useAliasState } from "./useAliasState";
 
+const altWordInfo = { minus: 0, weight: 0, plus: 0 };
+
 export default function AliasSpeakerContent() {
     const {
         state,
@@ -25,7 +27,7 @@ export default function AliasSpeakerContent() {
     if (!state) return null;
     const myTeam = takeCurrentTeam('team');
     const { score } = computeScore();
-    const { max, weight } = getWordInfo(currentWordNid) || {};
+    const { minus, plus } = getWordInfo(currentWordNid) ?? altWordInfo;
 
     return <>
         {state.words.length
@@ -48,7 +50,7 @@ export default function AliasSpeakerContent() {
                 }
                 <div className="flex full-width between">
                     <AboveButton className="flex column">
-                        <ScoreInc>+{weight || 0}</ScoreInc>
+                        <ScoreInc>+{plus}</ScoreInc>
                         <Button
                             name="checkmark-circle-2-outline"
                             className="color--ok"
@@ -61,7 +63,7 @@ export default function AliasSpeakerContent() {
                     </AboveButton>
                     {myTeam && <div>{score}</div>}
                     <AboveButton className="flex column">
-                        <ScoreInc>{-((max || 0) + 1 - (weight || 0))}</ScoreInc>
+                        <ScoreInc>-{minus}</ScoreInc>
                         <Button
                             name="close-circle-outline"
                             className="color--ko"

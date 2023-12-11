@@ -1,3 +1,4 @@
+import React, { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
 import mylib, { MyLib } from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
@@ -6,7 +7,6 @@ import { gamerExer } from "../../Gamer.store";
 import useGamerRooms from "../../complect/rooms/room/useGamerRooms";
 import { AliasGameTeam, AliasWordNid, GamerAliasRoomState } from "./Alias.model";
 import { AliasHelp } from "./AliasHelp";
-import React, { useContext } from "react";
 
 const aliasWordsSelector = (state: RootState) => state.gamer.aliasWords;
 
@@ -26,9 +26,17 @@ const sendExec = (action: string, args?: Record<string, unknown>) => {
 };
 
 const isIs = (is: unknown) => is;
+const randomNounPronsStorageSelector = (state: RootState) => state.index.nounPronsWords;
 
 export const useAliasContextStateMaker = () => {
     const { players, currentRoom, auth, memberPossibilities } = useGamerRooms();
+    const randomNounProns = useSelector(randomNounPronsStorageSelector);
+    const nounPronsLines = useMemo(() => {
+        return {
+            pronouns: randomNounProns?.pronouns ? mylib.keys(randomNounProns.pronouns) : [],
+            nouns: randomNounProns?.nouns ? mylib.keys(randomNounProns.nouns) : [],
+        };
+    }, [randomNounProns]);
 
     localCurrentRoom = currentRoom;
 
@@ -47,7 +55,7 @@ export const useAliasContextStateMaker = () => {
         memberPossibilities,
         aliasWords,
         currentWordNid,
-        getWordInfo: (nid?: number) => AliasHelp.takeWordInfo(aliasWords, state?.dicts, nid),
+        getWordInfo: (nid?: number) => AliasHelp.takeWordInfo(aliasWords, state?.dicts, nid, nounPronsLines),
         takeCurrentWord: () => ret.getWordInfo(currentWordNid)?.word,
         isMySpeech: () => auth ? auth.login === ret.takeSpeakerLogin() : null,
         takeSpeaker: () => {
@@ -138,9 +146,29 @@ export const useAliasContextStateMaker = () => {
             const speaks = players.reduce<number[]>((acc) => acc.concat(0), []);
 
             if (!props.isPrevWords || !state) {
+                const nouns = randomNounProns ? mylib.keys(randomNounProns.nouns) : [];
+                const pronouns = randomNounProns ? mylib.keys(randomNounProns.pronouns) : [];
+
                 aliasWords.forEach((pack, packi) => {
                     const max = props.dicts[packi];
-                    if (max === 0) return;
+                    if (max === 0 || max === undefined) return;
+
+                    if (mylib.isNum(pack.words)) {
+                        while (words.length < max) {
+                            const nouni = mylib.randomIndex(nouns);
+                            const pronouni = mylib.randomIndex(pronouns, -1);
+
+                            const weight = randomNounProns
+                                ? randomNounProns.nouns[nouns[nouni]]
+                                + randomNounProns.pronouns[pronouns[pronouni]]
+                                : 1;
+
+                            const num = AliasHelp.encodeWordNid(pack.words + pronouni, weight > 9 ? 0 : weight, nouni);
+
+                            if (num !== null) words.push(num);
+                        }
+                        return;
+                    }
 
                     MyLib.entries(pack.words).forEach(([word, weight], wordi) => {
                         if (weight > max || word === '' || weight === 0) return;

@@ -1,5 +1,5 @@
+import { makeRandomTwiceName } from "../../../complect/hooks/random-twice-name/useGetRandomTwiceName";
 import mylib from "../../../complect/my-lib/MyLib";
-import { getRandomTwiceName } from "../../../complect/random-twice-name/getRandomTwiceName";
 import indexStorage from "../indexStorage";
 
 let deviceId: string | und;
@@ -18,9 +18,10 @@ const takeRandomSymbols = (take = 3) =>
 export const takeDeviceId = async () => {
     if (deviceId !== undefined) return deviceId;
     deviceId = await indexStorage.get('deviceId');
+    const storage = await indexStorage.get('nounPronsWords');
 
     if (!deviceId) {
-        deviceId = getRandomTwiceName().join('_') + '_' + takeRandomSymbols();
+        deviceId = makeRandomTwiceName(storage).join('_') + '_' + takeRandomSymbols();
         indexStorage.set('deviceId', deviceId);
     }
 

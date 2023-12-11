@@ -11,6 +11,7 @@ import TheGameTeam from "./teams/TheGameTeam";
 import TheButton from "../../../../../complect/Button";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import { LeaderCleans } from "../LeaderCleans";
+import { useGetRandomTwiceName } from "../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName";
 
 export default function GameTeamListComputer({
   onUpdate,
@@ -25,6 +26,7 @@ export default function GameTeamListComputer({
   const [teams, updateTeams] = useState<GameTeamImportable[] | und>();
   const [teamsCount, setTeamsCount] = useState(1);
   const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
+  const nameRandomizer = useGetRandomTwiceName();
 
   const readyMembers = LeaderCleans.membersReadyToPlay(contextMembers);
   const [isShowCantPlayers, setIsShowCantPlayers] = useState(false);
@@ -127,7 +129,7 @@ export default function GameTeamListComputer({
                     );
                     const newTeams = teams.map((humans) => {
                       return {
-                        name: LeaderCleans.generateNewTeamName(),
+                        name: nameRandomizer().join(' '),
                         w: 0,
                         ts: SourceBased.makeNewTs(),
                         members: humans.map((human) => human.w),
@@ -165,7 +167,7 @@ export default function GameTeamListComputer({
                       const newTeams = [...teams];
                       newTeams[teami] = {
                         ...newTeams[teami],
-                        name: LeaderCleans.generateNewTeamName(),
+                        name: nameRandomizer().join(' '),
                       };
                       updateTeams(newTeams);
                     }}
