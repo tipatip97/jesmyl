@@ -78,9 +78,11 @@
         background: black;
         color: white;
         border-radius: var(--radius);
+        scroll-snap-type: x mandatory;
 
         .translations-line-item {
             margin: 0 7px;
+            scroll-snap-align: center;
 
             .translations-line-item-inner {
                 display: flex;
