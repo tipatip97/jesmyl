@@ -1,14 +1,13 @@
 import { useDispatch } from "react-redux";
-import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../complect/absolute-popup/useBottomPopup";
 import modalService from "../../../../complect/modal/Modal.service";
 import di from "../../Index.store";
+import useIndexNav from "../../complect/useIndexNav";
 import indexStorage from "../../indexStorage";
 import useAuth, { removePullRequisites } from "../../useAuth";
-import useIndexNav from "../../complect/useIndexNav";
 
 export default function UserMore() {
   const dispatch = useDispatch();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   const { nav } = useIndexNav();
   const auth = useAuth();
 
@@ -20,7 +19,7 @@ export default function UserMore() {
     window.location.reload();
   };
 
-  return prepareAbsoluteBottomPopupContent({
+  return bottomPopupContentPreparer({
     items: [
       {
         title: 'Выйти из системы',

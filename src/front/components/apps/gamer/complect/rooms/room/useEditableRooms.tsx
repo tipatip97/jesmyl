@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
 import { GamerRoomMember } from "../../../Gamer.model";
 import { gamerExer } from "../../../Gamer.store";
 import useGamerRooms from "./useGamerRooms";
@@ -7,14 +7,13 @@ import useGamerRooms from "./useGamerRooms";
 export default function useEditableRooms(member?: GamerRoomMember) {
   const { currentRoom, memberPossibilities } = useGamerRooms();
   const nameNode = member && <span className="color--3">{member.name}</span>;
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
   const ret = {
     nameNode,
     createRoom: (name: string) =>
       gamerExer.send({
         action: 'addNewRoom',
-        method: 'push', 
+        method: 'push',
         args: { name },
       }),
     removeRoom: (roomw: number) =>
@@ -69,7 +68,7 @@ export default function useEditableRooms(member?: GamerRoomMember) {
       if (possibilities.isOwner) return <>Владелец комнаты</>;
       const isIOwner = memberPossibilities(currentRoom).isOwner;
 
-      return prepareAbsoluteBottomPopupContent({
+      return bottomPopupContentPreparer({
         items: [isIOwner && {
           titleNode: possibilities.isAdmin
             ? <>Упростить {nameNode} до пользователя</>

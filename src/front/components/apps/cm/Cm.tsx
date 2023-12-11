@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import di from "./Cm.store";
 import useCmNav, { translationNavPoint } from "./base/useCmNav";
 import cmStorage from "./cmStorage";
-import useTranslation from "./translation/useTranslation";
+import { useTranslation } from "./translation/useTranslation";
 
 export default function CmApplication({ content }: { content: ReactNode }) {
   const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { appNames } from "../../../../app/App.model";
-import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../complect/absolute-popup/useBottomPopup";
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
@@ -20,11 +20,13 @@ import UserMore from "./UserMore";
 const isNNull = (it: unknown) => it !== null;
 const currentAppSelector = (state: RootState) => state.index.currentApp;
 
+const funcNode = () => <UserMore />;
+
 export default function IndexMain() {
   const currentAppName = useSelector(currentAppSelector);
   const { openFullscreenContent } = useFullscreenContent();
   const { goTo } = navConfigurers.index();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [popupNode, openPopup] = useBottomPopup(funcNode);
   const { appConfigs, jumpToApp } = useApps();
 
   const auth = useAuth();
@@ -65,7 +67,7 @@ export default function IndexMain() {
           {auth.fio && (
             <div
               className="margin-big-gap-h pointer"
-              onClick={() => openAbsoluteBottomPopup(<UserMore />)}
+              onClick={openPopup}
             >
               {auth.fio}
             </div>
@@ -75,6 +77,7 @@ export default function IndexMain() {
       contentClass="flex column"
       content={
         <>
+          {popupNode}
           <ScheduleWidgetAlarm
             onGoTo={() => goTo('schedules')}
             isForceShow={auth.level >= 50}

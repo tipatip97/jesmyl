@@ -1,4 +1,5 @@
-import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+
+import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import useSelectedComs from "../../../base/useSelectedComs";
 import ComFaceContextMenuEditorItems from "../../../editor/col/compositions/ComFaceContextMenuEditorItems";
@@ -21,10 +22,9 @@ export default function ComFaceContextMenu({
     selectedComPosition: isSelected,
     toggleSelectedCom,
   } = useSelectedComs();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
   return <>{
-    prepareAbsoluteBottomPopupContent({
+    bottomPopupContentPreparer({
       items: [{
         onClick: () => {
           onClick();
@@ -53,6 +53,6 @@ export default function ComFaceContextMenu({
       ]
     })
   }
-    < ComFaceContextMenuEditorItems />
+    <ComFaceContextMenuEditorItems />
   </>;
 }

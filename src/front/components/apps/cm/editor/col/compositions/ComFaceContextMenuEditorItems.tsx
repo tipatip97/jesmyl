@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
 import useExer from "../../../../../../complect/exer/useExer";
 import useFullscreenContent from "../../../../../../complect/fullscreen-content/useFullscreenContent";
 import useSelectedComs from "../../../base/useSelectedComs";
@@ -12,9 +12,8 @@ export default function ComFaceContextMenuEditorItems() {
   const { meetings, goToEvent } = useEditableMeetings();
   const { exec } = useExer(cmExer);
   const { selectedComws } = useSelectedComs();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return prepareAbsoluteBottomPopupContent({
+  return bottomPopupContentPreparer({
     items: [
       selectedComws.length ?
         {

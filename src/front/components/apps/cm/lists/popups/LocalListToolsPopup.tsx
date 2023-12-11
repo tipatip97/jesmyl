@@ -1,17 +1,16 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useCmNav from "../../base/useCmNav";
 import { Com } from "../../col/com/Com";
-import useTranslation from "../../translation/useTranslation";
+import { useTranslation } from "../../translation/useTranslation";
 import FullscreenExpandComList from "./FullscreenExpandComList";
 
 export default function LocalListToolsPopup({ coms }: { coms?: Com[] }) {
   const { openFullscreenContent } = useFullscreenContent();
-  const { goToTranslation: openTranslations, isSelfTranslation: isShowFullscreen } = useTranslation();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const { goToTranslation, isSelfTranslation: isShowFullscreen } = useTranslation();
   const { nav } = useCmNav();
 
-  return prepareAbsoluteBottomPopupContent({
+  return bottomPopupContentPreparer({
     items: [
       coms ? [{
         title: 'Раскрыть песни списка',
@@ -22,7 +21,7 @@ export default function LocalListToolsPopup({ coms }: { coms?: Com[] }) {
       {
         title: 'Показывать слайды списка',
         icon: isShowFullscreen ? "play-outline" : "monitor-outline",
-        onClick: () => openTranslations(true),
+        onClick: () => goToTranslation(true),
       },
       {
         title: 'Поделиться по QR',

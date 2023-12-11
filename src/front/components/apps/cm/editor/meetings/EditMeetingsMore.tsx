@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useAuth from "../../../../index/useAuth";
 import { cmExer } from "../../Cm.store";
@@ -7,10 +7,9 @@ import MeetingsCreator from "./MeetingsCreator";
 
 export default function EditMeetingsMore({ currPath }: { currPath: number[] }) {
   const { openFullscreenContent } = useFullscreenContent();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
   const auth = useAuth();
 
-  return prepareAbsoluteBottomPopupContent({
+  return bottomPopupContentPreparer({
     items: [
       {
         icon: "plus-circle-outline",

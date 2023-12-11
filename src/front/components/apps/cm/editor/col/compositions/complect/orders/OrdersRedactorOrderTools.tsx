@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import useAbsoluteBottomPopup from "../../../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../../../complect/absolute-popup/useBottomPopup";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../../../complect/my-lib/MyLib";
@@ -10,24 +10,25 @@ import TheOrder from "../../../../../col/com/order/TheOrder";
 import { EditableCom } from "../../EditableCom";
 import { EditableOrder } from "./EditableOrder";
 
+interface Props {
+  ccom: EditableCom,
+  ord: EditableOrder,
+  ordi: number,
+  blockHeader: ReactNode,
+}
+
 export default function OrdersRedactorOrderTools({
   ccom,
   ord,
   ordi,
   blockHeader,
-}: {
-  ccom: EditableCom;
-  ord: EditableOrder;
-  ordi: number;
-  blockHeader: ReactNode;
-}) {
+}: Props) {
   const { exec } = useExer(cmExer);
   const blockHeaderHtml = (textPre = "", textPost = "") =>
     `${textPre && `${textPre} `}${ord.isEmptyHeader ? <s>{blockHeader}</s> : blockHeader
     }${textPost && ` ${textPost}`}`;
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return prepareAbsoluteBottomPopupContent({
+  return bottomPopupContentPreparer({
     items: [
       {
         title: 'Тип блока',

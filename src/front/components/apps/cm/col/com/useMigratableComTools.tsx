@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
@@ -15,7 +14,7 @@ import {
   spliceMigratableEditableComToolNameList,
 } from "../../editor/col/compositions/complect/MigratableEditableComTools";
 import { useMarks } from "../../lists/marks/useMarks";
-import useTranslation from "../../translation/useTranslation";
+import { useTranslation } from "../../translation/useTranslation";
 import {
   MigratableComTool,
   MigratableComToolName,
@@ -32,13 +31,12 @@ export default function useMigratableComTools() {
   const dispatch = useDispatch();
   const ccom = useCcom();
   const auth = useAuth();
-  const { goToTranslation: openTranslations } = useTranslation();
+  const { goToTranslation } = useTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] =
     useChordVisibleVariant();
   const { openFullscreenContent } = useFullscreenContent();
   const { toggleSelectedCom, selectedComPosition: isSelected } =
     useSelectedComs();
-  const { closeAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   const { isMarked, toggleMarked } = useMarks();
   const [, switchFullscreen] = useFullScreen();
   const comTopTools = useSelector(comTopToolsSelector);
@@ -58,8 +56,7 @@ export default function useMigratableComTools() {
               title: "Слайды",
               icon: "monitor-outline",
               onClick: () => {
-                closeAbsoluteBottomPopup();
-                setTimeout(() => openTranslations());
+                setTimeout(() => goToTranslation());
               },
             };
           case "chords-variant":

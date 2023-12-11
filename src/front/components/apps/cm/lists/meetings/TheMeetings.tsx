@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import MeetingEventExpandList from "./MeetingEventExpandList";
@@ -7,7 +7,17 @@ import { useMeetings } from "./useMeetings";
 
 export default function TheMeetings() {
   const { meetings, goToEvent } = useMeetings();
-  const { openAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const [popupNode, openPopup] = useBottomPopup((_, prepare) => prepare({
+    items: [
+      {
+        icon: 'list',
+        title: 'Посмотреть заголовки',
+        onClick: () => {
+          openFullscreenContent(<MeetingEventExpandList />);
+        }
+      }
+    ]
+  }));
   const { openFullscreenContent } = useFullscreenContent();
 
   if (!meetings) return null;
@@ -16,24 +26,15 @@ export default function TheMeetings() {
     <PhaseCmContainer
       className="meetings-container"
       headTitle="События"
-      onMoreClick={() => {
-        openAbsoluteBottomPopup(prepareAbsoluteBottomPopupContent({
-          items: [
-            {
-              icon: 'list',
-              title: 'Посмотреть заголовки',
-              onClick: () => {
-                openFullscreenContent(<MeetingEventExpandList />);
-              }
-            }
-          ]
-        }));
-      }}
+      onMoreClick={openPopup}
       content={
-        <MeetingsInner
-          meetings={meetings}
-          onEventClick={(event) => goToEvent(event.wid)}
-        />
+        <>
+          {popupNode}
+          <MeetingsInner
+            meetings={meetings}
+            onEventClick={(event) => goToEvent(event.wid)}
+          />
+        </>
       }
     />
   );

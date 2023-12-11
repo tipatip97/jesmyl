@@ -1,22 +1,37 @@
-import useAbsoluteBottomPopup from "../../../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { ReactNode } from "react";
+import { useBottomPopup } from "../../../../../../../../complect/absolute-popup/useBottomPopup";
 import EvaIcon from "../../../../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import { ChordVisibleVariant } from "../../../../../Cm.model";
 import { cmExer } from "../../../../../Cm.store";
 import TheOrder from "../../../../../col/com/order/TheOrder";
+import { EditableCom } from "../../EditableCom";
 import { useEditableCcom } from "../../useEditableCcom";
+import { EditableOrder } from "./EditableOrder";
 import OrdersRedactorAdditions from "./OrdersRedactorAdditions";
 import OrdersRedactorOrderTools from "./OrdersRedactorOrderTools";
 
+interface PopupProps {
+  ccom: EditableCom,
+  ord: EditableOrder,
+  ordi: number,
+  blockHeader: ReactNode,
+}
+
 export default function OrdersRedactor() {
   const ccom = useEditableCcom();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [popupToolsNode, , openToolsPopup] = useBottomPopup<PopupProps>((_close, _prepare, props) =>
+    <OrdersRedactorOrderTools {...props} />);
+  const [popupAddsNode, , openAddsPopup] = useBottomPopup<{ ccom: EditableCom }>((_close, _prepare, props) =>
+    <OrdersRedactorAdditions ccom={props.ccom}  />);
   const { exec } = useExer(cmExer);
 
   if (!ccom) return null;
 
   return (
     <div className="orders-redactor">
+      {popupToolsNode}
+      {popupAddsNode}
       {ccom.orders?.map((ord, ordi, orda) => {
         const leadHeader = ord.top.header?.(
           {
@@ -34,16 +49,7 @@ export default function OrdersRedactor() {
           <EvaIcon
             name="edit-outline"
             className="margin-gap-h pointer vertical-middle"
-            onClick={() => {
-              openAbsoluteBottomPopup(
-                <OrdersRedactorOrderTools
-                  ccom={ccom}
-                  ord={ord}
-                  ordi={ordi}
-                  blockHeader={blockHeader}
-                />
-              );
-            }}
+            onClick={() => openToolsPopup({ blockHeader, ccom, ord, ordi })}
           />
         );
         const isWithHead = ord.isWithHead();
@@ -99,9 +105,7 @@ export default function OrdersRedactor() {
         <EvaIcon
           name="plus-circle-outline"
           className="pointer margin-gap-h"
-          onClick={() => {
-            openAbsoluteBottomPopup(<OrdersRedactorAdditions ccom={ccom} />);
-          }}
+          onClick={() => openAddsPopup({ ccom })}
         />
       </div>
     </div>

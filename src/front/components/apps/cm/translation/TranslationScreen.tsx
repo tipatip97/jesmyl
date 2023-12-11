@@ -1,17 +1,14 @@
+import styled from "styled-components";
+import { makeWid } from "../../../../complect/useWid";
 import FontSizeContain from "../base/font-size-contain/FontSizeContain";
 import { TranslationScreenProps } from "./Translations.model";
-import useTranslation from "./useTranslation";
+import { useTranslation } from "./useTranslation";
 
 export default function TranslationScreen(props: TranslationScreenProps) {
-  const { currWin, currText, onKeyTranslations, position } =
-    useTranslation();
-
-  if (currWin) currWin.onkeydown = onKeyTranslations;
-  window.onkeydown = onKeyTranslations;
+  const { currText, position } = useTranslation();
 
   return (
-    <div
-      className="translation-screen-wrapper-inner"
+    <Screen
       style={{
         width: "100%",
         height: "100%",
@@ -23,7 +20,6 @@ export default function TranslationScreen(props: TranslationScreenProps) {
       }}
     >
       <FontSizeContain
-        containerId={props.fontSizeContainId}
         position={position}
         updater={(update) => props.updater && props.updater(update)}
       >
@@ -32,6 +28,19 @@ export default function TranslationScreen(props: TranslationScreenProps) {
           dangerouslySetInnerHTML={{ __html: currText || "" }}
         />
       </FontSizeContain>
-    </div>
+    </Screen>
   );
 }
+
+const transitionName = makeWid();
+
+const Screen = styled.div`
+  view-transition-name: ${transitionName};
+`;
+
+export const globalTranslationScreenStyle = `
+  ::view-transition-old(${transitionName}),
+  ::view-transition-new(${transitionName}) {
+    animation-duration: .4s;
+  }
+`;

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import styled from "styled-components";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
@@ -15,7 +16,6 @@ import ComPlayer from "./player/ComPlayer";
 import { useCcom } from "./useCcom";
 import useComPack from "./useComPack";
 import useMigratableComTools from "./useMigratableComTools";
-import styled from "styled-components";
 
 const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 
@@ -23,7 +23,7 @@ export default function TheComposition() {
   const [chordVisibleVariant] = useChordVisibleVariant();
   const ccom = useCcom();
   const { addLaterComw } = useLaterComList();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [popupComToolsNode, openPopuComTools] = useBottomPopup((close) => <ComTools close={close} />);
   const { topTools } = useMigratableComTools();
   const [comList] = useComPack(ccom);
   const playerHideMode = useSelector(playerHideModeSelector);
@@ -55,7 +55,7 @@ export default function TheComposition() {
     <ComContainer
       className={`composition-container ${playerHideMode && comAudio ? `with-open-player ${playerHideMode}` : ''}`}
       headTitle={ccom.number}
-      onMoreClick={() => openAbsoluteBottomPopup(<ComTools />, false)}
+      onMoreClick={openPopuComTools}
       contentClass="composition-content"
       contentRef={comListElem}
       withoutBackSwipe
@@ -70,6 +70,7 @@ export default function TheComposition() {
         ))}
       </div>}
       content={<>
+        {popupComToolsNode}
         {comAudio && <ComPlayer src={comAudio} split />}
         <TheControlledCom
           com={ccom}

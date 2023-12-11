@@ -31,7 +31,7 @@ export default function TheLeaderGroup() {
     <PhaseLeaderContainer
       className=""
       headTitle={`Группа${cgroup ? ` - ${cgroup.name}` : ""}`}
-      onMoreClick={() => cgroup && openGroupMore()}
+      onMoreClick={cgroup && openGroupMore}
       content={<>
         {memberMoreNode}
         {groupMoreNode}

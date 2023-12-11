@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import ComFace from "../../col/com/face/ComFace";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import LocalListToolsPopup from "../popups/LocalListToolsPopup";
@@ -6,19 +6,22 @@ import { useMeetings } from "./useMeetings";
 
 export default function TheMeetingsEvent() {
   const { currentEvent } = useMeetings();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [popupNode, openPopup] = useBottomPopup(() => <LocalListToolsPopup coms={currentEvent?.coms} />);
 
   return (
     <PhaseCmContainer
       className="meeting-container"
       headTitle={currentEvent?.name ?? "Событие"}
-      onMoreClick={() => openAbsoluteBottomPopup(<LocalListToolsPopup coms={currentEvent?.coms} />)}
-      content={currentEvent?.coms?.map((com) => (
-        <ComFace
-          key={`metting.com-face ${com.wid}`}
-          com={com}
-        />
-      ))}
+      onMoreClick={openPopup}
+      content={<>
+        {popupNode}
+        {currentEvent?.coms?.map((com) => (
+          <ComFace
+            key={`metting.com-face ${com.wid}`}
+            com={com}
+          />
+        ))}
+      </>}
     />
   );
 }

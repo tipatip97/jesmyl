@@ -8,6 +8,7 @@ import "./front/lib.scss";
 import reportWebVitals from "./front/reportWebVitals";
 import * as serviceWorkerRegistration from "./front/serviceWorkerRegistration";
 import { store } from "./front/shared/store";
+import GlobalStyles from './globalStyles';
 
 export const renderApplication = (
   reactNode: ReactNode,
@@ -15,13 +16,19 @@ export const renderApplication = (
 ) => {
   createRoot(node).render(
     <React.StrictMode>
+      <GlobalStyles />
       <Provider store={store}>{reactNode}</Provider>
     </React.StrictMode>
   );
 };
 renderApplication(<App />, document.getElementById("root"));
 
-export const renderComponentInNewWindow = (reactNode: ReactNode | ((win: typeof window) => void)) => {
+export const renderComponentInNewWindow = (
+  reactNode: ReactNode | ((win: typeof window) => ReactNode),
+  url?: string | URL,
+  target?: string,
+  features?: string
+) => {
   const linkNode = document.querySelector(
     "link[href][rel='stylesheet']"
   ) as HTMLLinkElement | null;
@@ -40,7 +47,7 @@ export const renderComponentInNewWindow = (reactNode: ReactNode | ((win: typeof 
     style.innerText = styles;
   }
 
-  const win = window.open();
+  const win = window.open(url, target, features);
   if (win) {
     win.document.head.appendChild(style);
     win.document.head.appendChild(link);

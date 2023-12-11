@@ -18,7 +18,7 @@ export default function LeaderSchedule() {
       headTitle="Лидер"
       withoutBackButton
       className=""
-      onMoreClick={() => openGeneralMore()}
+      onMoreClick={openGeneralMore}
       content={<>
         {generalMoreNode}
         <div className="flex center margin-giant-gap-v color--ko">
@@ -36,7 +36,7 @@ export default function LeaderSchedule() {
       goBack={goBack}
       withoutBackButton
       schedulew={ccontext.w}
-      onMoreClick={() => openGeneralMore()}
+      onMoreClick={openGeneralMore}
       title={ccontext.name}
     />
   </>

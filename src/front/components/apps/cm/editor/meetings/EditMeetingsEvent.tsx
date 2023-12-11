@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../complect/exer/useExer";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
@@ -21,7 +21,15 @@ export default function EditMeetingsEvent() {
   const [term, setTerm] = useState(zcat?.term || "");
   const { goTo } = useCmNav();
   const [isClosedComList, setIsClosedComList] = useState(true);
-  const { openAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const [popupNode, openPopup] = useBottomPopup((_, prepare) => {
+    return prepare({
+      items: [{
+        icon: 'list',
+        title: 'История',
+        onClick: () => openFullscreenContent((close) => <MeetingsEventHistory close={close} />)
+      }]
+    });
+  });
   const { openFullscreenContent } = useFullscreenContent();
 
   if (!currentEvent) return null;
@@ -34,17 +42,10 @@ export default function EditMeetingsEvent() {
       className="edit-meeitngs"
       headTitle={`Событие - ${currentEvent.name}`}
       contentClass="no-padding-top"
-      onMoreClick={() => {
-        openAbsoluteBottomPopup(prepareAbsoluteBottomPopupContent({
-          items: [{
-            icon: 'list',
-            title: 'История',
-            onClick: () => openFullscreenContent((close) => <MeetingsEventHistory close={close} />)
-          }]
-        }));
-      }}
+      onMoreClick={openPopup}
       content={
         <>
+          {popupNode}
           <EditContainerCorrectsInformer>
             Название
             <KeyboardInput

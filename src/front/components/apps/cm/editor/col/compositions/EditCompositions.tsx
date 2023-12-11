@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import useAbsoluteBottomPopup from "../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
 import DebouncedSearchInput from "../../../../../../complect/DebouncedSearchInput";
+import { useBottomPopup } from "../../../../../../complect/absolute-popup/useBottomPopup";
 import useExer from "../../../../../../complect/exer/useExer";
 import LoadIndicatedContent from "../../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../../complect/my-lib/MyLib";
-import useCmNav from "../../../base/useCmNav";
 import { cmExer } from "../../../Cm.store";
+import useCmNav from "../../../base/useCmNav";
 import ComFace from "../../../col/com/face/ComFace";
 import { useCcom } from "../../../col/com/useCcom";
 import { CorrectsBox } from "../../corrects-box/CorrectsBox";
@@ -19,7 +19,7 @@ export default function EditCompositions() {
   const { goTo } = useCmNav();
   const zcat = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || "");
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [popupNode, openPopup] = useBottomPopup(() => <EditCompositionsMore />);
   useExer(cmExer);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -40,6 +40,7 @@ export default function EditCompositions() {
 
   return (
     <LoadIndicatedContent isLoading={false} onLoad={scrollToCurrent}>
+      {popupNode}
       <PhaseCmEditorContainer
         className="edit-compositions"
         headClass="flex between full-width"
@@ -58,7 +59,7 @@ export default function EditCompositions() {
             />
           )
         }
-        onMoreClick={() => openAbsoluteBottomPopup(<EditCompositionsMore />)}
+        onMoreClick={openPopup}
         contentRef={listRef}
         content={
           <>

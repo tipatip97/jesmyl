@@ -1,26 +1,23 @@
-import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../complect/absolute-popup/useBottomPopup";
+import { GamerRoomMember } from "../Gamer.model";
 import RoomMemberFace from "./GamerRoomMemberFace";
 import GamerRoomMemberMore from "./rooms/room/GamerRoomMemberMore";
 import useGamerRooms from "./rooms/room/useGamerRooms";
 
 export default function GamerRoomMemberList() {
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
+  const [popupNode, , openPopup] = useBottomPopup<GamerRoomMember>((_, __, member) => <GamerRoomMemberMore member={member} />);
   const { currentRoom, memberPossibilities } = useGamerRooms();
   const amIManager = memberPossibilities().isManager;
 
   return <>
+    {popupNode}
     <h2>Участники</h2>
-    {currentRoom?.members?.map((member, memberi) => {
+    {currentRoom?.members?.map((member) => {
       return <RoomMemberFace
-        key={`m ${memberi}`}
+        key={member.login}
         member={member}
         isClickable={amIManager}
-        onClick={() =>
-          amIManager &&
-          openAbsoluteBottomPopup(
-            <GamerRoomMemberMore member={member} />
-          )
-        }
+        onClick={amIManager && (() => openPopup(member))}
       />;
     })}
   </>;

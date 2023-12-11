@@ -1,12 +1,12 @@
-import useAbsoluteBottomPopup from "../../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../../complect/absolute-popup/useBottomPopup";
 import useFullscreenContent from "../../../../../../../complect/fullscreen-content/useFullscreenContent";
 import NewComposition from "./NewComposition";
 
 export default function EditCompositionsMore() {
   const { openFullscreenContent, closeFullscreenContent } =
     useFullscreenContent();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
-  return prepareAbsoluteBottomPopupContent({
+
+  return bottomPopupContentPreparer({
     items: [
       {
         onClick: () =>

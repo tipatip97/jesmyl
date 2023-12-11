@@ -1,17 +1,17 @@
 import { useLayoutEffect, useMemo, useState } from "react";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import SendButton from "../../../../../complect/SendButton";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import SendButton from "../../../../../complect/SendButton";
+import { GamerRoomMember, GamerRoomMemberStatus } from "../../Gamer.model";
+import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
 import { memberStatusPriority } from "../../complect/rooms/room/useGamerRooms";
-import { GamerRoomMemberStatus } from "../../Gamer.model";
-import SpyRoomStartedGame from "./started/StartedGame";
+import SpyLocations from "./SpyLocations";
 import SpyRoomGameFinished from "./SpyRoomGameFinished";
 import SpyRoomLocationsInGame from "./SpyRoomLocationsInGame";
 import SpyRoomMemberInStartGameMore from "./SpyRoomMemberInStartGameMore";
+import SpyRoomStartedGame from "./started/StartedGame";
 import useSpyState from "./useSpyState";
-import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
-import SpyLocations from "./SpyLocations";
 
 export default function SpyRoomContent() {
     const {
@@ -30,7 +30,7 @@ export default function SpyRoomContent() {
         toggleLocation,
         startGame,
     } = useSpyState();
-    const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup()
+    const [popupNode, , openPopup] = useBottomPopup<GamerRoomMember>((_, __, member) => <SpyRoomMemberInStartGameMore member={member} />);
 
     const [loactionsOnLoad, updateLoactionsOnLoad] = useState<["add" | "del", string][]>([]);
 
@@ -67,6 +67,7 @@ export default function SpyRoomContent() {
     if (!currentRoom) return null;
 
     return <>
+        {popupNode}
         {state?.roles
             ? state.finisher
                 ? <SpyRoomGameFinished
@@ -92,9 +93,7 @@ export default function SpyRoomContent() {
                         spies={spies}
                         onMemberClick={(member) =>
                             amIManager &&
-                            openAbsoluteBottomPopup(
-                                <SpyRoomMemberInStartGameMore member={member} />
-                            )}
+                            openPopup(member)}
                     />
             : !locations?.length
                 ? <div className="margin-big-gap text-center">Локаций нет</div>

@@ -19,7 +19,7 @@ export default function LeaderGeneralPage() {
       withoutBackButton
       headTitle="Лидер"
       className=""
-      onMoreClick={() => openGeneralMore()}
+      onMoreClick={openGeneralMore}
       content={<>
         {generalMoreNode}
         <div className="flex center margin-giant-gap-v color--ko">
@@ -36,7 +36,7 @@ export default function LeaderGeneralPage() {
       className="template-page-content"
       withoutBackButton
       headTitle={`Лидер - ${ccontext.name}`}
-      onMoreClick={() => openGeneralMore()}
+      onMoreClick={openGeneralMore}
       content={<>
         {generalMoreNode}
         <BrutalItem

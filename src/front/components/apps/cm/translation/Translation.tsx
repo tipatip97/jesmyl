@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../shared/store";
-import useCmNav from "../base/useCmNav";
 import di from "../Cm.store";
+import useCmNav from "../base/useCmNav";
 import ComFace from "../col/com/face/ComFace";
 import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
 import "./Translation.scss";
 import TranslationScreen from "./TranslationScreen";
-import useTranslation from "./useTranslation";
+import { useTranslation } from "./useTranslation";
 
 const isShowTranslationInfoSelector = (state: RootState) => state.cm.isShowTranslationInfo;
 
@@ -24,6 +24,7 @@ export default function Translations({
   const isShowInfo = useSelector(isShowTranslationInfoSelector);
   const { setAppRouteData } = useCmNav();
 
+  const state = useTranslation();
   const {
     currWin,
     watchTranslation,
@@ -41,7 +42,62 @@ export default function Translations({
     isSelfTranslation: isShowFullscreen,
     isTranslationBlockVisible,
     comPack: [comList, titlePostfix],
-  } = useTranslation();
+  } = state;
+  const stateRef = useRef(state);
+  stateRef.current = state;
+
+  useEffect(() => {
+    const onKeyTranslations = async (event: KeyboardEvent) => {
+      const state = stateRef.current;
+
+      switch (event.code) {
+        case "Enter":
+          state.watchTranslation(200, 200);
+          break;
+
+        case "ArrowUp":
+          if (event.ctrlKey) state.prevCom();
+          break;
+
+        case "ArrowDown":
+          if (event.ctrlKey) state.nextCom();
+          break;
+
+        case "ArrowLeft":
+          state.prevText();
+          break;
+
+        case "ArrowRight":
+          state.nextText();
+          break;
+
+        case "Escape":
+          if (state.isSelfTranslation) state.closeTranslation();
+          else state.switchVisible();
+          break;
+
+        case "KeyV":
+          state.switchVisible();
+          break;
+
+        case "KeyF":
+          state.currWin && state.currWin.focus();
+          break;
+
+        case "KeyT":
+          state.switchPosition();
+          break;
+      }
+    };
+
+    if (state.currWin) state.currWin.onkeydown = onKeyTranslations;
+    window.onkeydown = onKeyTranslations;
+
+    return () => {
+      if (state.currWin) state.currWin.onkeydown = null;
+      window.onkeydown = null;
+    };
+  }, [state.currWin]);
 
   if (isShowFullscreen)
     return (
@@ -51,7 +107,6 @@ export default function Translations({
             className={`fullscreen-translation ${isShowInfo ? "open-info" : ""} ${isRotateScreen ? "rotate-fullscreen-translation" : ""}`}
           >
             <TranslationScreen
-              fontSizeContainId="translation-native-window"
               position={position}
               updater={(update) =>
                 window.addEventListener("resize", () => update())
@@ -170,7 +225,6 @@ export default function Translations({
             >
               <div className="translation-screen-wrapper-inner">
                 <TranslationScreen
-                  fontSizeContainId="translation-native-window"
                   position={position}
                   updater={(update) =>
                     window.addEventListener("resize", () => update())

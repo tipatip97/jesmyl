@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import styled from "styled-components";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import EvaIcon, { IconEva } from "../../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../../complect/modal/Modal.service";
@@ -21,7 +21,31 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
   onGameChange: (gameName: GamerGameName) => void,
   namePrefix?: string,
 }) {
-  const { openAbsoluteBottomPopup, prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
+  const [popupNode, openPopup] = useBottomPopup((_, prepare) => prepare({
+    items: [
+      config.relativePoint && {
+        title: 'Сменить игру',
+        icon: "undo-outline",
+        onClick: () => {
+          goTo('needChooseGame', config.relativePoint);
+          setIsForceChoose(true);
+        },
+      },
+      isOwner && {
+        title: 'Удалить комнату',
+        icon: "trash-2-outline",
+        onClick: async () => {
+          if (
+            room &&
+            (await modalService.confirm(`Удалить комнату ${room.name}?`))
+          ) {
+            onRoomRemove(room.w);
+            goBack();
+          }
+        },
+      }
+    ]
+  }));
   const { goTo, goBack } = useGamerNav();
   const [isForceChoose, setIsForceChoose] = useState(false);
 
@@ -44,38 +68,10 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
       />)
       (games.find(({ phase: [gameName] }) => room?.currentGame === gameName)?.data)}
     contentClass="flex column custom-align-items"
-    onMoreClick={isManager
-      ? () => {
-        openAbsoluteBottomPopup(
-          prepareAbsoluteBottomPopupContent({
-            items: [
-              config.relativePoint && {
-                title: 'Сменить игру',
-                icon: "undo-outline",
-                onClick: () => {
-                  goTo('needChooseGame', config.relativePoint);
-                  setIsForceChoose(true);
-                },
-              },
-              isOwner && {
-                title: 'Удалить комнату',
-                icon: "trash-2-outline",
-                onClick: async () => {
-                  if (
-                    room &&
-                    (await modalService.confirm(`Удалить комнату ${room.name}?`))
-                  ) {
-                    onRoomRemove(room.w);
-                    goBack();
-                  }
-                },
-              }
-            ]
-          }))
-      }
-      : undefined}
+    onMoreClick={isManager ? openPopup : undefined}
     content={
       <>
+        {popupNode}
         {!room
           ? <div className="error-message text-center padding-giant-gap">
             Комната не найдена

@@ -98,10 +98,7 @@ export default function HumanList({
     <PhaseLeaderContainer
       className="template-page-content"
       headClass="flex between full-width"
-      onMoreClick={
-        onMoreClick ||
-        (() => openHumansMore())
-      }
+      onMoreClick={onMoreClick || openHumansMore}
       head={searcher}
       content={<>
         {humansMoreNode}

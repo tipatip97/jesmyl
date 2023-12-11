@@ -2,7 +2,6 @@ import { FontSizeContainPropsPosition } from "../base/font-size-contain/FontSize
 
 
 export interface TranslationScreenProps {
-    fontSizeContainId?: string;
-    updater?: (resizer: (containerId?: string) => void) => void;
+    updater?: (resizer: () => void) => void;
     position?: FontSizeContainPropsPosition;
 }

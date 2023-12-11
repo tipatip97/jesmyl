@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../../../complect/absolute-popup/useBottomPopup";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import { cmExer } from "../../../../../Cm.store";
@@ -6,9 +6,8 @@ import { EditableCom } from "../../EditableCom";
 
 export default function OrdersRedactorAdditions({ ccom }: { ccom: EditableCom }) {
   const { exec } = useExer(cmExer);
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return prepareAbsoluteBottomPopupContent({
+  return bottomPopupContentPreparer({
     items: [{
       title: 'Текстовый блок',
       icon: "text",

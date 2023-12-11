@@ -1,4 +1,4 @@
-import useAbsoluteBottomPopup from "../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../complect/absolute-popup/useBottomPopup";
 import useFullscreenContent from "../../../../complect/fullscreen-content/useFullscreenContent";
 import modalService from "../../../../complect/modal/Modal.service";
 import useAuth from "../../../index/useAuth";
@@ -10,9 +10,8 @@ export default function GamerMore() {
   const auth = useAuth();
   const { openFullscreenContent } = useFullscreenContent();
   const { passport } = useGamerOfflineRooms();
-  const { prepareAbsoluteBottomPopupContent } = useAbsoluteBottomPopup();
 
-  return prepareAbsoluteBottomPopupContent({
+  return bottomPopupContentPreparer({
     items: [
       gamerExer.actionAccessedOrNull('addNewRoom', auth) && {
         title: 'Новая комната',

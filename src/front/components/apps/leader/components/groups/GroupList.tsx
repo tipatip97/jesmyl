@@ -15,7 +15,7 @@ export default function GroupList() {
     <PhaseLeaderContainer
       className=""
       headTitle={`Группы - ${ccontext.name}`}
-      onMoreClick={() => openGroupsMore()}
+      onMoreClick={openGroupsMore}
       contentClass="padding-big-gap"
       content={
         <>

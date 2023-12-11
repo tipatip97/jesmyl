@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useAbsoluteBottomPopup from "../../../../../complect/absolute-popup/useAbsoluteBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import useExer from "../../../../../complect/exer/useExer";
 import { cmExer } from "../../Cm.store";
 import MeetingsInner from "../../lists/meetings/MeetingsInner";
@@ -10,9 +10,9 @@ import { useEditableMeetings } from "./useEditableMeetings";
 
 export default function EditMeetings() {
   const { meetings, goToEvent } = useEditableMeetings();
-  const { openAbsoluteBottomPopup } = useAbsoluteBottomPopup();
   useExer(cmExer);
   const [currPath, setCurrPath] = useState<number[]>([]);
+  const [popupNode, openPopup] = useBottomPopup(() => <EditMeetingsMore currPath={currPath} />);
 
   if (!meetings) return null;
 
@@ -20,15 +20,16 @@ export default function EditMeetings() {
     <PhaseCmEditorContainer
       className="edit-meeitngs"
       headTitle="События"
-      onMoreClick={() =>
-        openAbsoluteBottomPopup(<EditMeetingsMore currPath={currPath} />)
-      }
+      onMoreClick={openPopup}
       content={
-        <MeetingsInner
-          meetings={meetings}
-          onEventClick={(event) => goToEvent(event.wid)}
-          onContextNavigate={(context) => setCurrPath(context)}
-        />
+        <>
+          {popupNode}
+          <MeetingsInner
+            meetings={meetings}
+            onEventClick={(event) => goToEvent(event.wid)}
+            onContextNavigate={(context) => setCurrPath(context)}
+          />
+        </>
       }
     />
   );
