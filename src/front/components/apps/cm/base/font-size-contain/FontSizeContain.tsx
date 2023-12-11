@@ -16,12 +16,9 @@ export default function FontSizeContain({
       ref={(element) => {
         if (element) {
           const compute = () => {
-            const res = (containerId?: string) => {
-              if (
-                containerId === undefined ||
-                containerId === props.containerId
-              )
-                resize(element, props.fixOnly, props.position);
+            const res = () => {
+              if (!element.innerText) return;
+              resize(element, props.fixOnly, props.position);
             };
 
             res();

@@ -9,10 +9,9 @@ export type FontSizeContainResizer = (
 ) => void;
 
 export interface FontSizeContainProps {
-    containerId?: string;
     fixOnly?: FontSizeContainPropsFixOnly;
     position?: FontSizeContainPropsPosition;
-    updater?: (resizer: (containerId?: string) => void) => void;
+    updater?: (resizer: () => void) => void;
     delay?: number;
 }
 
