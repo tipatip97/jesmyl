@@ -113,13 +113,10 @@ export function useBottomPopup<Props>(contenter: BottomPopupContenter<Props>, to
   const contentScalar = contenter(() => setIsOpen(false), prepare, props);
   let throwContent = null;
   let content = null;
-  console.log(contentScalar);
 
   if (mylib.isArr(contentScalar)) {
     [throwContent, content] = contentScalar;
   } else content = contentScalar;
-
-  console.log(content);
 
   return [
     <>
