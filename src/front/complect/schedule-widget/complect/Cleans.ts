@@ -1,4 +1,4 @@
-import { CustomAttUseTaleId } from "../../../../back/apps/index/rights";
+import { CustomAttUseTaleId } from "../../../models";
 import mylib from "../../my-lib/MyLib";
 import { IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from "../ScheduleWidget.model";
 

@@ -1,4 +1,4 @@
-import { LocalSokiAuth, ServerAuthorizationData, ServerRegisterData, SokiStatistic } from "../../../back/complect/soki/soki.model";
+import { LocalSokiAuth, ServerAuthorizationData, ServerRegisterData, SokiStatistic } from "../../models";
 import { AppName } from "../../app/App.model";
 import { ScheduleStorage } from "../../complect/schedule-widget/ScheduleWidget.model";
 

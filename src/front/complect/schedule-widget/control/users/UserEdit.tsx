@@ -1,5 +1,5 @@
-import { packScheduleWidgetInviteLink } from "../../../../../back/apps/index/complect";
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
+import { packScheduleWidgetInviteLink } from "../../../../models";
+import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../models";
 import { crossApplicationLinkCoder } from "../../../qr-code/QRCodeMaster";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEditableField from "../../../strong-control/field/StrongEditableField";

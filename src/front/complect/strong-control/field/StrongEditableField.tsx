@@ -8,7 +8,7 @@ import { StrongControlProps } from "../Strong.model";
 import { strongPrepareArgsAndSend, useStrongExerContext } from "../useStrongControl";
 import StrongEditableFieldMultiline from "./StrongEditableFieldMultiline";
 import { onStrongFieldBlur, onStrongFieldDragStart, onStrongFieldFocus } from "./clipboard/Picker";
-import { SokiServerEvent } from "../../../../back/complect/soki/soki.model";
+import { SokiServerEvent } from "../../../models";
 
 const onFocus = onStrongFieldFocus;
 const onBlur = onStrongFieldBlur;

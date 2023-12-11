@@ -1,4 +1,4 @@
-import { CustomAttUseTaleId } from "../../../../../../back/apps/index/rights";
+import { CustomAttUseTaleId } from "../../../../../models";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
 import ScheduleWidgetCleans from "../../../complect/Cleans";
 import ScheduleWidgetRoleFace from "../../../control/roles/RoleFace";

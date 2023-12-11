@@ -1,4 +1,4 @@
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
+import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../models";
 import { ScheduleWidgetAppAtts } from "../../../../complect/schedule-widget/ScheduleWidget.model";
 import CmExternalComListAtt from "./complect/CmExternalComListAtt";
 

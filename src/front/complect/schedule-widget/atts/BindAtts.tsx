@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
-import { scheduleWidgetUserRights } from "../../../../back/apps/index/rights";
+import { scheduleWidgetUserRights } from "../../../models";
 import EvaButton from "../../eva-icon/EvaButton";
 import EvaIcon from "../../eva-icon/EvaIcon";
 import useModal from "../../modal/useModal";

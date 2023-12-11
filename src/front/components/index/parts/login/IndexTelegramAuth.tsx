@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LocalSokiAuth, SokiServerEvent } from "../../../../../back/complect/soki/soki.model";
+import { LocalSokiAuth, SokiServerEvent } from "../../../../models";
 import SendButton from "../../../../complect/SendButton";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";

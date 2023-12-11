@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { useSelector } from "react-redux";
-import { CmMp3Rule } from "../../../../../../back/apps/cm/CmBackend.model";
+import { CmMp3Rule } from "../../../../../models";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { RootState } from "../../../../../shared/store";

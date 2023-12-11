@@ -1,6 +1,7 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable eqeqeq */
-import { SMyLib } from "../../../back/shared/SMyLib";
+
+import { SMyLib } from "../../models";
 
 const constants = {
     REMOVE: ['REMOVE'],

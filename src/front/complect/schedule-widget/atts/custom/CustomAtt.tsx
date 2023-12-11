@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
-import { ScheduleWidgetRightsCtrl } from "../../../../../back/apps/index/complect";
-import { CustomAttUseRights, customAttUseRights, customAttUseRightsTitles, scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
+import { ScheduleWidgetRightsCtrl } from "../../../../models";
+import { CustomAttUseRights, customAttUseRights, customAttUseRightsTitles, scheduleWidgetUserRights } from "../../../../models";
 import EvaButton from "../../../eva-icon/EvaButton";
 import { EvaIconName } from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";

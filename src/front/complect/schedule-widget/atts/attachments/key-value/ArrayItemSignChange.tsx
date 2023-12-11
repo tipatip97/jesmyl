@@ -1,4 +1,4 @@
-import { CustomAttUseTaleId } from "../../../../../../back/apps/index/rights";
+import { CustomAttUseTaleId } from "../../../../../models";
 import EvaButton from "../../../../eva-icon/EvaButton";
 import useModal from "../../../../modal/useModal";
 import StrongDiv from "../../../../strong-control/StrongDiv";

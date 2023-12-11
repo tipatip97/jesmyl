@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
+import { replacePronounEnd } from "../../../models";
 import { RootState } from "../../../shared/store";
 import mylib from "../../my-lib/MyLib";
-import { replacePronounEnd } from "../../../../back/apps/index/complect/wordRegEnds";
 
 const storageSelector = (state: RootState) => state.index.nounPronsWords;
 

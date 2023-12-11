@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Back } from "../../../back/apps/index/models/ScheduleWidget.model";
+import { Back } from "../../models";
 import { EvaIconName } from "../eva-icon/EvaIcon";
 
 export type ScheduleWidgetAttRefs = Record<ScheduleWidgetAttKey<AttKey>, ScheduleWidgetAttRef[]>;

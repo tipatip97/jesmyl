@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { CmMp3Rule } from "../../../../../back/apps/cm/CmBackend.model";
-import { ShortRealRule } from "../../../../../back/complect/executer/Executer.model";
+import { CmMp3Rule } from "../../../../models";
+import { ShortRealRule } from "../../../../models";
 
 
 export interface CmEditorStoraged {

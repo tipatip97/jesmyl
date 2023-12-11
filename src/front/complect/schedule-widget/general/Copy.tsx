@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CustomAttUseTaleId } from "../../../../back/apps/index/rights";
+import { CustomAttUseTaleId } from "../../../models";
 import useAuth from "../../../components/index/useAuth";
 import EvaButton from "../../eva-icon/EvaButton";
 import useModal from "../../modal/useModal";

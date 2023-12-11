@@ -1,4 +1,4 @@
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
+import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from "../../../../models";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";

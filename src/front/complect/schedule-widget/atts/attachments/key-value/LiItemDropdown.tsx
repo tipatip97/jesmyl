@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ScheduleWidgetAppAttCustomizableValueItem } from "../../../../../../back/apps/index/models/ScheduleWidget.model";
-import { CustomAttUseTaleId } from "../../../../../../back/apps/index/rights";
+import { ScheduleWidgetAppAttCustomizableValueItem } from "../../../../../models";
+import { CustomAttUseTaleId } from "../../../../../models";
 import EvaButton from "../../../../eva-icon/EvaButton";
 import mylib from "../../../../my-lib/MyLib";
 import StrongDropdown from "../../../../strong-control/StrongDropdown";

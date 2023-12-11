@@ -6,7 +6,7 @@ import StrongEvaButton from "../../strong-control/StrongEvaButton";
 import { ScheduleWidgetAppAtt, ScheduleWidgetAttKey } from "../ScheduleWidget.model";
 import ScheduleWidgetCustomAtt from "./custom/CustomAtt";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";
-import { scheduleWidgetUserRights } from "../../../../back/apps/index/rights";
+import { scheduleWidgetUserRights } from "../../../models";
 import styled from "styled-components";
 
 

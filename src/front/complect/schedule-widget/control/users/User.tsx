@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { packScheduleWidgetInviteLink } from "../../../../../back/apps/index/complect";
-import { scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
+import { packScheduleWidgetInviteLink } from "../../../../models";
+import { scheduleWidgetUserRights } from "../../../../models";
 import ShareEvaButton from "../../../ShareEvaButton";
 import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";

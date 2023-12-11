@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { ReactNode } from "react";
-import { LocalSokiAuth } from "../../../../back/complect/soki/soki.model";
+import { LocalSokiAuth } from "../../../models";
 import { EvaIconName } from "../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";

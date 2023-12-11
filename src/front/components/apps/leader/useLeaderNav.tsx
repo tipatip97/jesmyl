@@ -1,4 +1,4 @@
-import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from "../../../../back/apps/index/rights";
+import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from "../../../models";
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import {
   UseNavAction

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SokiVisitor } from "../../../../../back/complect/soki/soki.model";
+import { SokiVisitor } from "../../../../models";
 import { TgLinkOrFio } from "./TgLinkOrFio";
 import { useDeviceId } from "../../useAuth";
 

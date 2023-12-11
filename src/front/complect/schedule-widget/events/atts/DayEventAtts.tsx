@@ -1,4 +1,4 @@
-import { scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
+import { scheduleWidgetUserRights } from "../../../../models";
 import { MyLib } from "../../../my-lib/MyLib";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from "../../ScheduleWidget.model";

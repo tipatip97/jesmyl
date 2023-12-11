@@ -1,4 +1,4 @@
-import { scheduleWidgetRegTypeRights } from "../../../../back/apps/index/rights";
+import { scheduleWidgetRegTypeRights } from "../../../models";
 import useIsExpand from "../../expand/useIsExpand";
 import { StrongComponentProps } from "../../strong-control/Strong.model";
 import { useScheduleWidgetRightsContext } from "../useScheduleWidget";

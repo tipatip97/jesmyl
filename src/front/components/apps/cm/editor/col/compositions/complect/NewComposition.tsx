@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { CmMp3Rule } from "../../../../../../../../back/apps/cm/CmBackend.model";
+import { CmMp3Rule } from "../../../../../../../models";
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
 import useExer from "../../../../../../../complect/exer/useExer";
 import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";

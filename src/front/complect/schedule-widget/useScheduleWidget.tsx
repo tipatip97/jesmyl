@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetUserRights } from "../../../back/apps/index/rights";
-import { LocalSokiAuth } from "../../../back/complect/soki/soki.model";
+import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetUserRights } from "../../models";
+import { LocalSokiAuth } from "../../models";
 import { appAttsStore } from "../../components/complect/appScheduleAttrsStorage";
 import useAuth from "../../components/index/useAuth";
 import { RootState } from "../../shared/store";

@@ -1,6 +1,5 @@
-import { ExecutionDict, ExecutionMethod, ShortRealRule } from "../../../back/complect/executer/Executer.model";
-import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
+import { ExecutionDict, ExecutionMethod, ShortRealRule, SokiServerEvent } from "../../models";
 import { Exec } from "./Exec";
 
 export interface ExecRule extends ShortRealRule {

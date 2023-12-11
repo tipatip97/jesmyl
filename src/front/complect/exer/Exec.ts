@@ -1,10 +1,9 @@
 import { ReactNode } from "react";
-import { ExecutionMethod, ShortRealRule } from "../../../back/complect/executer/Executer.model";
 import { CorrectsBox } from "../../components/apps/cm/editor/corrects-box/CorrectsBox";
+import { ExecutionMethod, ShortRealRule, SokiServerEvent } from "../../models";
 import SourceBased from "../SourceBased";
 import mylib from "../my-lib/MyLib";
 import { ClientExecutionDict, ExecRule, FreeExecDict } from "./Exer.model";
-import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
 
 
 export class Exec<Value> extends SourceBased<ClientExecutionDict> {

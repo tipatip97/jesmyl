@@ -1,12 +1,12 @@
 import { Html5Qrcode } from "html5-qrcode";
 import { renderApplication } from "../../..";
-import { SokiAppName } from "../../../back/complect/soki/soki.model";
 import { AppName } from "../../app/App.model";
 import LinkCoder from "../link-coder/LinkCoder";
 import mylib from "../my-lib/MyLib";
 import './QRCode.scss';
 import { QRCodeReaderData, QRMasterConnectData, QRMasterControllerData } from "./QRCodeMaster.model";
 import QRCodeMasterApplication from "./QRCodeMasterApplication";
+import { SokiAppName } from "../../models";
 
 export const qrCodePassphraseSign = ':J';
 export const qrCodeMasterContainerId = "qr-code-master";

@@ -1,5 +1,5 @@
-import { ScheduleWidgetAppAttCustomizableValueItem } from "../../../../../../back/apps/index/models/ScheduleWidget.model";
-import { CustomAttUseTaleId } from "../../../../../../back/apps/index/rights";
+import { ScheduleWidgetAppAttCustomizableValueItem } from "../../../../../models";
+import { CustomAttUseTaleId } from "../../../../../models";
 import CopyTextButton from "../../../../CopyTextButton";
 import mylib from "../../../../my-lib/MyLib";
 import ScheduleWidgetCleans from "../../../complect/Cleans";

@@ -1,4 +1,4 @@
-import { SokiVisitor } from "../../../../../back/complect/soki/soki.model";
+import { SokiVisitor } from "../../../../models";
 
 const eventStoppedPropagation = (event: { stopPropagation(): void }) => event.stopPropagation();
 

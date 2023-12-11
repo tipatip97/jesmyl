@@ -1,7 +1,5 @@
-
-import { ExecutionDict } from "../../../back/complect/executer/Executer.model";
-import { SokiAppName, SokiServerEvent } from "../../../back/complect/soki/soki.model";
 import { Auth } from "../../components/index/Index.model";
+import { ExecutionDict, SokiAppName, SokiServerEvent } from "../../models";
 import { soki } from "../../soki";
 import { JStorage } from "../JStorage";
 import mylib from "../my-lib/MyLib";

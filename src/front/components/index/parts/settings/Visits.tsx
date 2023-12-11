@@ -1,4 +1,4 @@
-import { SokiStatistic } from "../../../../../back/complect/soki/soki.model";
+import { SokiStatistic } from "../../../../models";
 import { MyLib } from "../../../../complect/my-lib/MyLib";
 import { Visitor } from "./Visitor";
 

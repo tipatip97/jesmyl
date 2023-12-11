@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { LocalSokiAuth } from "../../../../../back/complect/soki/soki.model";
+import { LocalSokiAuth } from "../../../../models";
 import TheButton from "../../../../complect/Button";
 import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
 import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";

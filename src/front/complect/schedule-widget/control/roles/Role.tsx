@@ -1,4 +1,4 @@
-import { scheduleWidgetUserRights } from "../../../../../back/apps/index/rights";
+import { scheduleWidgetUserRights } from "../../../../models";
 import useAuth from "../../../../components/index/useAuth";
 import EvaButton from "../../../eva-icon/EvaButton";
 import useModal from "../../../modal/useModal";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { CmMp3ContainsPageResult } from "../../../../../../../../../back/apps/cm/CmBackend.model";
+import { CmMp3ContainsPageResult } from "../../../../../../../../models";
 import KeyboardInput from "../../../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import SendButton from "../../../../../../../../complect/SendButton";

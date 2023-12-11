@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
-import { ScheduleWidgetRightsCtrl } from "../../../../../../back/apps/index/complect";
-import { CustomAttUseRights, CustomAttUseTaleId, customAttUseRights } from "../../../../../../back/apps/index/rights";
+import { ScheduleWidgetRightsCtrl } from "../../../../../models";
+import { CustomAttUseRights, CustomAttUseTaleId, customAttUseRights } from "../../../../../models";
 import EvaIcon from "../../../../eva-icon/EvaIcon";
 import mylib from "../../../../my-lib/MyLib";
 import StrongEvaButton from "../../../../strong-control/StrongEvaButton";

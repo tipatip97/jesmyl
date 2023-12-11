@@ -1,5 +1,5 @@
 import React, { ReactNode, useContext } from "react";
-import { SokiServerEvent } from "../../../back/complect/soki/soki.model";
+import { SokiServerEvent } from "../../models";
 import { indexExer } from "../../components/index/Index.store";
 import { Exer } from "../exer/Exer";
 import { ExerStorage } from "../exer/Exer.model";
