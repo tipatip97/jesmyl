@@ -17,9 +17,7 @@ body {
   --color--8: var(--color--5);
   --color--ko: #ec6969;
   --color--ok: #9bec69;
-}
 
-body {
   --icon-color: var(--color--4);
   --text-color: var(--color--4);
   --current-bg: var(--color--5);
@@ -56,6 +54,11 @@ body {
   }
 }
 
+html,
+body,
+#root {
+  overscroll-behavior: none;
+}
 
 .color--ok {
   --icon-color: var(--color--ok);
@@ -101,6 +104,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   outline: 0;
   border: none;
+  scrollbar-gutter: stable;
 }
 
 .error-message {
