@@ -8,18 +8,15 @@ export default function BrutalItem({
   title,
   box,
   description,
-  markBadge,
 }: {
   icon: EvaIconName;
   title: string;
   box?: ReactNode;
   description?: ReactNode;
-  markBadge?: number | boolean,
 } & HtmlHTMLAttributes<HTMLDivElement>) {
   return (
     <Item
       className="flex between relative"
-      attr-mark-badge={markBadge === true || markBadge === 0 ? 0 : markBadge || null}
       onClick={onClick}
     >
       <div className="nowrap over-hidden">

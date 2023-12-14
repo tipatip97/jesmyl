@@ -2,32 +2,30 @@ import { useState } from "react";
 import styled from "styled-components";
 import SendButton from "../../../../../complect/SendButton";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
+import { useMyPossibilitiesCurrentRoom } from "../../complect/rooms/room/hooks/possibilities";
 import { GamerAliasRoomStatePhase } from "./Alias.model";
 import GamerAliasTimer from "./AliasTimer";
-import { useAliasState } from "./useAliasState";
+import { useAliasComputeScore } from "./hooks/compute-score";
+import { useAliasCurrentTeamNaked } from "./hooks/current-team";
+import { useAliasSimpleExecs, useAliasStrikeWord } from "./hooks/execs";
+import { useAliasRoomState } from "./hooks/state";
+import { useAliasCurrentWordInfo } from "./hooks/word";
 
 const altWordInfo = { minus: 0, weight: 0, plus: 0 };
 
 export default function AliasSpeakerContent() {
-    const {
-        state,
-        startSpeech,
-        takeCurrentWord,
-        strikeWord,
-        takeCurrentTeam,
-        memberPossibilities,
-        resetGame,
-        computeScore,
-        getWordInfo,
-        currentWordNid,
-        resetSpeech: passSpeechEnd,
-    } = useAliasState();
     const [isWordSending, setIsWordSending] = useState(false);
 
+    const state = useAliasRoomState();
+    const wordInfo = useAliasCurrentWordInfo();
+    const strikeWord = useAliasStrikeWord();
+    const myTeam = useAliasCurrentTeamNaked('team');
+    const { score } = useAliasComputeScore();
+    const { minus, plus } = useAliasCurrentWordInfo() ?? altWordInfo;
+    const { resetGame, resetSpeech, startSpeech } = useAliasSimpleExecs();
+    const myPossibilities = useMyPossibilitiesCurrentRoom();
+
     if (!state) return null;
-    const myTeam = takeCurrentTeam('team');
-    const { score } = computeScore();
-    const { minus, plus } = getWordInfo(currentWordNid) ?? altWordInfo;
 
     return <>
         {state.words.length
@@ -39,7 +37,7 @@ export default function AliasSpeakerContent() {
                 <GamerAliasTimer />
                 {state?.phase === GamerAliasRoomStatePhase.Speech
                     ? <div className="round-button flex center">
-                        {takeCurrentWord()}
+                        {wordInfo?.word}
                     </div>
                     : <div
                         className="round-button flex center"
@@ -77,12 +75,12 @@ export default function AliasSpeakerContent() {
                 </div>
             </ShowWordArea>
             : <div className="half-height flex center color--ko">Слов в арсенале не осталось...</div>}
-        {memberPossibilities().isManager
+        {myPossibilities.isManager
             && <div className="flex center absolute pos-bottom full-width margin-big-gap-b">
                 <SendButton
                     title="Завершить спич"
                     confirm
-                    onSend={passSpeechEnd}
+                    onSend={resetSpeech}
                 />
                 {!state.startTs
                     && <SendButton

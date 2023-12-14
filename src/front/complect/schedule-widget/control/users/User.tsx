@@ -6,8 +6,7 @@ import EvaButton from "../../../eva-icon/EvaButton";
 import EvaIcon from "../../../eva-icon/EvaIcon";
 import useModal from "../../../modal/useModal";
 import useToast from "../../../modal/useToast";
-import { crossApplicationLinkCoder } from "../../../qr-code/QRCodeMaster";
-import useQRMaster from "../../../qr-code/useQRMaster";
+import useQRMaster, { crossApplicationLinkCoder } from "../../../qr-code/useQRMaster";
 import { StrongComponentProps } from "../../../strong-control/Strong.model";
 import StrongEvaButton from "../../../strong-control/StrongEvaButton";
 import { IScheduleWidgetUser } from "../../ScheduleWidget.model";
@@ -28,7 +27,7 @@ export default function ScheduleWidgetUser({
     const userName = user.nick === undefined
         ? user.fio || <span className="color--7 text-italic">Ссылка</span>
         : `${user.fio && user.fio !== user.nick ? `${user.fio} (${user.nick})` : user.nick} `;
-    const { readQR } = useQRMaster();
+    const { readQR, qrNode } = useQRMaster();
 
     const [toastNode, toast] = useToast();
     const [modalNode, screen] = useModal(({ header, body }) => {
@@ -123,6 +122,7 @@ export default function ScheduleWidgetUser({
     return <>
         {modalNode}
         {toastNode}
+        {qrNode}
         {asUserPlusPrefix === undefined
             ? userNode
             : asUserPlusPrefix(

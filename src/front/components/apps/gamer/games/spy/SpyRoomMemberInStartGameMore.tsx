@@ -1,17 +1,15 @@
 import { bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
 import { GamerRoomMember } from "../../Gamer.model";
-import useEditableRooms from "../../complect/rooms/room/useEditableRooms";
-import useGamerRooms from "../../complect/rooms/room/useGamerRooms";
-import useSpyState from "./useSpyState";
+import { useGamerRoomActions } from "../../complect/rooms/hooks/actions";
+import { useGamerCurrentRoom } from "../../complect/rooms/room/hooks/current-room";
+import { useGamerUserPossibilities } from "../../complect/rooms/room/hooks/possibilities";
+import { useSpyExcludeMember } from "./hooks/actions";
 
-export default function SpyRoomMemberInStartGameMore({
-  member,
-}: {
-  member: GamerRoomMember;
-}) {
-  const { moreButtons, nameNode } = useEditableRooms(member);
-  const { excludeMember } = useSpyState();
-  const { memberPossibilities, currentRoom } = useGamerRooms();
+export default function SpyRoomMemberInStartGameMore({ member }: { member: GamerRoomMember }) {
+  const { moreButtons, nameNode } = useGamerRoomActions(member);
+  const excludeMember = useSpyExcludeMember();
+  const currentRoom = useGamerCurrentRoom();
+  const memberPossibilities = useGamerUserPossibilities();
   const possibilities = memberPossibilities(currentRoom, member.login);
 
   return <>{

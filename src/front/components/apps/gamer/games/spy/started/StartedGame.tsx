@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
 import { GamerRoomMember, GamerRoomMemberStatus } from "../../../Gamer.model";
 import RoomMemberFace from "../../../complect/GamerRoomMemberFace";
@@ -25,7 +24,7 @@ export default function SpyRoomStartedGame({
 }) {
 
     return <div className="flex column between full-height full-width">
-        <MemberList className="full-width margin-big-gap-b no-scrollbar">
+        <div className="full-width margin-big-gap-b no-scrollbar">
             <div className="list">
                 {members?.map((member, memberi) => {
                     if (member.isInactive || member.status === GamerRoomMemberStatus.Requester) return null;
@@ -44,7 +43,7 @@ export default function SpyRoomStartedGame({
                     />;
                 })}
             </div>
-        </MemberList>
+        </div>
         <LocationHideScreen
             isAllSpiesFound={
                 spies && spies.filter((spyLogin) => retired.includes(spyLogin)).length === spies.length
@@ -58,18 +57,10 @@ export default function SpyRoomStartedGame({
             rightContent={
                 onFinishGame && <EvaButton
                     name="close-square-outline"
+                    className="color--ko"
                     confirm="Завершить игру"
                     onClick={onFinishGame}
                 />}
         />
-    </div>
+    </div>;
 }
-
-const MemberList = styled.div`
-    overflow-y: auto;
-
-    > .list {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-    }
-`;

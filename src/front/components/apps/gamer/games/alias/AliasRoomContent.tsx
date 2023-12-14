@@ -4,25 +4,21 @@ import AliasGameRound from "./AliasGameRound";
 import AliasGameRoundResults from "./AliasGameRoundResults";
 import AliasRoomInitialContent from "./AliasRoomInitialContent";
 import AliasScoreBoard from "./AliasScoreBoard";
-import { AliasStateContext, useAliasContextStateMaker } from "./useAliasState";
+import { useAliasRoomState } from "./hooks/state";
 
 export default function AliasRoomContent() {
-    const aliasState = useAliasContextStateMaker();
-    const phase = aliasState.state?.phase;
-    const [scoreNode, openFullscreenContent] = useFullContent(() => <AliasScoreBoard />);
+    const state = useAliasRoomState();
+    const phase = state?.phase;
+    const [scoreNode, openScore] = useFullContent(() => <AliasScoreBoard />);
 
-    return <AliasStateContext.Provider value={aliasState}>
+    return <>
         {scoreNode}
-        {aliasState && <>
-            <div onClick={() => openFullscreenContent(true)}>
-                Посмотреть счёт
-            </div>
-            {phase === GamerAliasRoomStatePhase.Wait
-                || phase === GamerAliasRoomStatePhase.Speech
-                ? <AliasGameRound />
-                : phase === GamerAliasRoomStatePhase.Results
-                    ? <AliasGameRoundResults />
-                    : <AliasRoomInitialContent />}
-        </>}
-    </AliasStateContext.Provider>;
+        <div onClick={() => openScore(true)}>Посмотреть счёт</div>
+        {phase === GamerAliasRoomStatePhase.Wait
+            || phase === GamerAliasRoomStatePhase.Speech
+            ? <AliasGameRound />
+            : phase === GamerAliasRoomStatePhase.Results
+                ? <AliasGameRoundResults />
+                : <AliasRoomInitialContent />}
+    </>;
 }

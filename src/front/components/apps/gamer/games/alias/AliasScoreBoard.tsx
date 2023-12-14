@@ -1,7 +1,11 @@
-import { useAliasState } from "./useAliasState";
+import { useGamerPlayersNaked } from "../../complect/rooms/hooks/players";
+import { useAliasRoomState } from "./hooks/state";
+
 
 export default function AliasScoreBoard() {
-    const { state, players } = useAliasState();
+    const players = useGamerPlayersNaked();
+    const state = useAliasRoomState();
+
     return <>
         <h1>Цель: {state?.dream}</h1>
         {state?.teams.map((team, teami) => {

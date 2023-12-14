@@ -3,25 +3,32 @@ import TheButton from "../../../../../../complect/Button";
 import EvaButton from "../../../../../../complect/eva-icon/EvaButton";
 import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
 import RoomMemberFace from "../../../complect/GamerRoomMemberFace";
-import useSpyLocations from "../useSpyLocations";
-import useGamerOfflineRooms from "../../../complect/rooms/offline-room/useGamerOfflineRooms";
-import useSpyOfflineRoomState from "./useSpyOfflineRoomState";
+import useGamerOfflineRoomsActions from "../../../complect/rooms/offline-room/hooks/actions";
+import { useGamerOfflineRoom } from "../../../complect/rooms/offline-room/hooks/current-room";
+import { useGamerOfflineRoomsPlayers } from "../../../complect/rooms/offline-room/hooks/players";
+import { useSpyActualLocations, useSpyLocations, useSpyStrikedLocationsNaked } from "../hooks/locations";
+import useSpyOfflineRoomStateUpdaters from "./hooks/updaters";
 
 export default function SpyOfflineRoomReadyToStart() {
-  const {
-    currentOfflineRoom,
-    switchMemberInactive,
-    addNewMember,
-    players,
-  } = useGamerOfflineRooms();
-  const {
-    startOfflineGame,
-    strikedLocations,
-    switchLocation,
-  } = useSpyOfflineRoomState();
   const [isOpenLocations, setIsOpenLocations] = useState(false);
   const [spiesCount, setSpiesCount] = useState(1);
-  const { locations, actualLocations } = useSpyLocations(strikedLocations);
+
+  const currentOfflineRoom = useGamerOfflineRoom();
+  const players = useGamerOfflineRoomsPlayers();
+
+  const locations = useSpyLocations();
+  const strikedLocations = useSpyStrikedLocationsNaked();
+  const actualLocations = useSpyActualLocations(locations, strikedLocations);
+
+  const {
+    switchMemberInactive,
+    addNewMember,
+  } = useGamerOfflineRoomsActions();
+
+  const {
+    startOfflineGame,
+    switchLocation,
+  } = useSpyOfflineRoomStateUpdaters();
 
   return (<>
     <h2 className="flex">

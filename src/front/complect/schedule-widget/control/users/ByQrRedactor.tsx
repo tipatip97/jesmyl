@@ -10,7 +10,7 @@ import { ScheduleWidgetUserEdit } from "./UserEdit";
 
 export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) {
     const rights = useScheduleWidgetRightsContext();
-    const { readQR } = useQRMaster();
+    const { readQR, qrNode } = useQRMaster();
     const [passport, setPassport] = useState<IScheduleWidgetUser | null>(null);
 
     const [modalNode] = useModal(({ header, body, footer }) => {
@@ -44,6 +44,7 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
 
     return <>
         {modalNode}
+        {qrNode}
         <EvaButton
             name="qr-code"
             onClick={() => readQR((data) => {

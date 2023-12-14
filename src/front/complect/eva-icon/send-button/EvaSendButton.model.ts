@@ -6,7 +6,7 @@ export interface EvaSendButtonProps<Value> {
     confirm?: ReactNode,
     disabled?: boolean,
     onSend?: () => Promise<Value> | void | nil,
-    onSuccess?: (val: Value) => void,
+    onSuccess?: ((val: Value) => void) | nil,
     onFailure?: (errorMessage: string) => string | void,
     className?: string,
     prefix?: null | ReactNode,

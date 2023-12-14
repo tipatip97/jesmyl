@@ -8,7 +8,11 @@ import { useGetRandomTwiceName } from "../../../../../complect/hooks/random-twic
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
-import { useAliasState } from "./useAliasState";
+import { useGamerRoomPlayers } from "../../complect/rooms/room/hooks/players";
+import { useMyPossibilitiesCurrentRoom } from "../../complect/rooms/room/hooks/possibilities";
+import { useAliasStartRound } from "./hooks/execs";
+import { useAliasPacks } from "./hooks/packs";
+import { useAliasRoomState } from "./hooks/state";
 
 const roundTimesItems = [10, 60, 120, 180].map(id => ({ title: `${id} сек.`, id }));
 const dreamItems = [10, 30, 50, 70, 100].map(id => ({ title: `${id} слов`, id }));
@@ -26,21 +30,25 @@ const levelGradationTitles = [
 const emptyList: any[] = [];
 
 export default function AliasRoomInitialContent() {
-    const { players, startRound, memberPossibilities, state, aliasWords } = useAliasState();
+    const state = useAliasRoomState();
+    const packs = useAliasPacks();
+    const players = useGamerRoomPlayers();
+    const startRound = useAliasStartRound(state, packs, players);
+
     const [roundTime, setRoundTime] = useState(state?.roundTime || 60);
     const [dream, setDream] = useState(state?.dream || 50);
     const [isPrevWords, setIsPrevWords] = useState(true);
     const [dicts, setDicts] = useState(state?.dicts || emptyList);
     const [teamsTitles, setGroupTitle] = useState<string[]>(emptyList);
     const [teamsCount, setGroupsCount] = useState(state?.teams.length || 2);
-    const myPossibilities = memberPossibilities();
+    const myPossibilities = useMyPossibilitiesCurrentRoom();
     const isImpossibleToCreate = (!state && !dicts.length) || (state && (!state.words.length && isPrevWords)) || !players || players.length < teamsCount || teamsCount < 2;
     const [isComputeNewTeams, setIsComputeNewTeams] = useState(true);
     const nameRandomizer = useGetRandomTwiceName();
 
     const [dictsNode, openDicts] = useFullContent(() => {
         return <>
-            {aliasWords.map((pack, packi) => {
+            {packs.map((pack, packi) => {
                 let selectNode = null;
                 const onSelect = (id: number) => {
                     const newDicts: number[] = [...dicts];
@@ -117,12 +125,12 @@ export default function AliasRoomInitialContent() {
                             {'Выбрать словари - '}
                             {dicts.length
                                 ? dicts.map((level, leveli) =>
-                                    aliasWords[leveli].title
+                                    packs[leveli].title
                                     + ' ('
-                                    + (mylib.isNum(aliasWords[leveli].words)
+                                    + (mylib.isNum(packs[leveli].words)
                                         ? level
                                         : (levelGradationTitles[level])
-                                        + (' - ' + Object.values(aliasWords[leveli].words).reduce((acc, num) => acc + +(num <= level), 0)))
+                                        + (' - ' + Object.values(packs[leveli].words).reduce((acc, num) => acc + +(num <= level), 0)))
                                     + ' сл.)'
                                 ).join(' + ')
                                 : <span className="color--ko">Не выбраны</span>}

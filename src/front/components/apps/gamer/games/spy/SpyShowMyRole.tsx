@@ -1,6 +1,6 @@
 import { useState } from "react";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import { SPY_ROLE } from "./useSpyLocations";
+import { SPY_ROLE } from "./hooks/locations";
 
 export default function SpyShowMyRole({ role }: { role: string }) {
     const [isShow, setIsShow] = useState(false);

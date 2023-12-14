@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { AppName } from "../../app/App.model";
 import { Auth } from "../../components/index/Index.model";
 import { FreeRoutePath, RoutePath, RoutePhase, RoutePhasePoint } from "../../components/router/Router.model";
-import { qrCodeMaster } from "../qr-code/QRCodeMaster";
 import { INavigationConfig, INavigationRouteChildItem, INavigationRouteItem, NavigationForEachPhaseProps, NavigationForEachPhaseSlideBy, NavigationStorage } from "./Navigation.model";
 
 
@@ -26,10 +25,6 @@ export class NavigationConfig<Storage, NavData = {}> {
 
     invokeGeneralFooterButtonClickListeners(listenLine: RoutePhase) {
         Object.values(this.onGeneralFooterButtonClicks[listenLine] || {}).forEach(cb => cb());
-    }
-
-    shareDataByQr<DataName extends keyof NavData>(dataName: DataName, value: NavData[DataName], externalData?: boolean | string) {
-        qrCodeMaster.shareData(this.appName, dataName as never, value, externalData)
     }
 
     onGeneralFooterButtonClick(listenLine: RoutePhase, listenerName: string) {

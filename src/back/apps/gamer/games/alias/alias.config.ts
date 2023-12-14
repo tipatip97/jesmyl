@@ -35,7 +35,7 @@ export const aliasGameConfig: ActionBox = {
                 cor: [],
                 inc: [],
                 fix: [],
-                rej: {},
+                invert: {},
             },
             args: {
                 teams: "#List",
@@ -147,7 +147,7 @@ export const aliasGameConfig: ActionBox = {
                             inc: [],
                             cor: [],
                             fix: [],
-                            rej: {},
+                            invert: {},
                         },
                     },
                     '/words': {
@@ -199,13 +199,13 @@ export const aliasGameConfig: ActionBox = {
             nid: "#Number"
         },
     },
-    "/rej": {
+    "/invert": {
         expected: {},
         action: "rejectAliasWord",
         side: (props, auth) => {
-            const rej = getCurrValue<Record<number, number[]>>(props);
+            const invert = getCurrValue<Record<number, number[]>>(props);
             return {
-                '/{nid}': rej?.[props?.nid]
+                '/{nid}': invert?.[props?.nid]
                     ? {
                         method: "toggle",
                         value: auth?.login,

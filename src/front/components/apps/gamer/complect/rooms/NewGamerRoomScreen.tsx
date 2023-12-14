@@ -1,16 +1,18 @@
 import { useState } from "react";
 import TheButton from "../../../../../complect/Button";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../complect/SendButton";
-import useGamerOfflineRooms from "./offline-room/useGamerOfflineRooms";
-import useEditableRooms from "./room/useEditableRooms";
-import useGamerRooms from "./room/useGamerRooms";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
+import { useGamerRoomActions } from "./hooks/actions";
+import useGamerOfflineRoomsActions from "./offline-room/hooks/actions";
+import { useGamerOfflineRooms } from "./offline-room/hooks/rooms";
+import { useGamerRooms } from "./room/hooks/rooms";
 
 export default function NewGamerRoomScreen({ close, offline }: { close: () => void, offline?: boolean }) {
   const [isInclusiveRoomName, setIsInclusiveRoomName] = useState(false);
-  const { createRoom } = useEditableRooms();
-  const { rooms } = useGamerRooms();
-  const { offlineRooms, addOfflineRoom } = useGamerOfflineRooms();
+  const { createRoom } = useGamerRoomActions();
+  const rooms = useGamerRooms();
+  const { addOfflineRoom } = useGamerOfflineRoomsActions();
+  const offlineRooms = useGamerOfflineRooms();
   const [name, setName] = useState('');
 
   return (

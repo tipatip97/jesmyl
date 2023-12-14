@@ -2,6 +2,7 @@ import { AliasWordsPack } from "./games/alias/Alias.model";
 import { OfflineSpyGame } from "./games/spy/offline-room/SpyOfflineRoom.model";
 
 import { GamerRoom, GamerGameName } from "../../../models";
+import { offlineRoomShareDataKey } from "./games/spy/offline-room/hooks/share-game";
 export * from "../../../models";
 
 export interface GamerState extends GamerStoraged {
@@ -33,6 +34,6 @@ export interface GamerPassport {
 
 
 export interface GamerNavData {
-    'spy.ofr': [string, number, number | und, string],
+    [offlineRoomShareDataKey]: [string, number, number | und, string],
     passport: [string, string],
 }

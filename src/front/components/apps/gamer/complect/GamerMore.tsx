@@ -4,12 +4,12 @@ import modalService from "../../../../complect/modal/Modal.service";
 import useAuth from "../../../index/useAuth";
 import { gamerExer } from "../Gamer.store";
 import NewGamerRoomScreen from "./rooms/NewGamerRoomScreen";
-import useGamerOfflineRooms from "./rooms/offline-room/useGamerOfflineRooms";
+import { useGamerOfflineRoomsPassport } from "./rooms/offline-room/hooks/passport";
 
 export default function GamerMore() {
   const auth = useAuth();
   const { openFullscreenContent } = useFullscreenContent();
-  const { passport } = useGamerOfflineRooms();
+  const passport = useGamerOfflineRoomsPassport();
 
   return bottomPopupContentPreparer({
     items: [

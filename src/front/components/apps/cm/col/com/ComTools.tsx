@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenter, bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
 import propsOfClicker from "../../../../../complect/clicker/propsOfClicker";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
@@ -31,89 +31,101 @@ const catMentions = (cols?: Cols, com?: Com): string[] => {
   return inCats.concat(natives);
 }
 
-export default function ComTools({ close }: { close: () => void }) {
+export const ComTools: BottomPopupContenter = (close) => {
   const dispatch = useDispatch();
   const ccom = useCcom();
   const cols = useCols();
   const fontSize = useSelector(fontSizeSelector);
   const [chordVisibleVariant] = useChordVisibleVariant();
-  const { menuTools, toggleTopTool, comTopTools } = useMigratableComTools();
+  const { menuTools, toggleTopTool, comTopTools, anchorNode } = useMigratableComTools();
 
   if (!ccom) return null;
 
-  return <>
-    {bottomPopupContentPreparer({
-      items: [
-        {
-          className: chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : "",
-          icon: "options-2-outline",
-          title: 'Тональность',
-          rightNode: <>
-            <EvaIcon
-              name="minus"
-              onClick={() => {
-                ccom.transpose(-1);
-                dispatch(di.riseUpComUpdate());
-              }}
-            />
-            <div
-              onClick={() => {
-                ccom.setChordsInitialTon();
-                dispatch(di.riseUpComUpdate());
-              }}
-            >
-              {ccom.firstChord}
-            </div>
-            <EvaIcon
-              name="plus"
-              onClick={() => {
-                ccom.transpose(1);
-                dispatch(di.riseUpComUpdate());
-              }}
-            />
-          </>
-        },
-        {
-          title: 'Размер шрифта',
-          icon: 'format-text-variant-outline',
-          rightNode: <>
-            <EvaIcon
-              name="minus-outline"
-              onClick={() => dispatch(di.setComFontSize(fontSize - 1))}
-            />
-            <div>{fontSize}</div>
-            <EvaIcon
-              name="plus-outline"
-              onClick={() => dispatch(di.setComFontSize(fontSize + 1))}
-            />
-          </>,
-        },
-        menuTools.map(({ onClick, title, icon, tool }) => (
+  return [
+    null,
+    <>
+      {bottomPopupContentPreparer({
+        items: [
           {
-            title,
-            icon,
-            iconWrapperClassName: comTopTools.includes(tool) ? 'active' : '',
-            onClick: () => {
-              if (onClick()) return;
-              close();
-            },
-            ...propsOfClicker({
-              onCtxMenu: (event) => {
-                event.preventDefault();
-                toggleTopTool(tool);
-              }
-            }),
-          }
-        ))
-      ],
-      footer: <div className="fade-05 full-width margin-gap-v">
-        {catMentions(cols, ccom).map((mention, mentioni) => (
-          <React.Fragment key={`mentioni-${mentioni}`}>
-            {mentioni ? ", " : ""}
-            <span className="nowrap">{mention}</span>
-          </React.Fragment>
-        ))}
-      </div>,
-    })
-    }</>;
+            className: chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : "",
+            icon: "options-2-outline",
+            title: 'Тональность',
+            rightNode: <>
+              <EvaIcon
+                name="minus"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  ccom.transpose(-1);
+                  dispatch(di.riseUpComUpdate());
+                }}
+              />
+              <div
+                onClick={(event) => {
+                  event.stopPropagation();
+                  ccom.setChordsInitialTon();
+                  dispatch(di.riseUpComUpdate());
+                }}
+              >
+                {ccom.firstChord}
+              </div>
+              <EvaIcon
+                name="plus"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  ccom.transpose(1);
+                  dispatch(di.riseUpComUpdate());
+                }}
+              />
+            </>
+          },
+          {
+            title: 'Размер шрифта',
+            icon: 'format-text-variant-outline',
+            rightNode: <>
+              <EvaIcon
+                name="minus-outline"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  dispatch(di.setComFontSize(fontSize - 1));
+                }}
+              />
+              <div>{fontSize}</div>
+              <EvaIcon
+                name="plus-outline"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  dispatch(di.setComFontSize(fontSize + 1));
+                }}
+              />
+            </>,
+          },
+          menuTools.map((tool) => (
+            {
+              ...tool,
+              iconWrapperClassName: comTopTools.includes(tool.tool) ? 'active' : '',
+              onClick: () => {
+                if (tool.onClick()) return;
+                close();
+              },
+              ...propsOfClicker({
+                onCtxMenu: (event) => {
+                  event.preventDefault();
+                  toggleTopTool(tool.tool);
+                }
+              }),
+            }
+          ))
+        ],
+        footer: <div className="fade-05 full-width margin-gap-v">
+          {catMentions(cols, ccom).map((mention, mentioni) => (
+            <React.Fragment key={`mentioni-${mentioni}`}>
+              {mentioni ? ", " : ""}
+              <span className="nowrap">{mention}</span>
+            </React.Fragment>
+          ))}
+        </div>,
+      })
+      }</>,
+    <>{anchorNode}</>,
+  ];
 }

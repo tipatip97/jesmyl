@@ -1,5 +1,5 @@
 import { AppName } from "../../app/App.model";
-import { qrCodePassphraseSign } from "./QRCodeMaster";
+import { qrCodePassphraseSign } from "./useQRMaster";
 
 export type QRMasterConnectData<Data> = [typeof qrCodePassphraseSign, AppName, string, number, number, number, string | Data];
 

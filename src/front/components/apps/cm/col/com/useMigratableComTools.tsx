@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
+import useQRMaster from "../../../../../complect/qr-code/useQRMaster";
 import useFullScreen from "../../../../../complect/useFullscreen";
 import { RootState } from "../../../../../shared/store";
 import useAuth from "../../../../index/useAuth";
@@ -43,6 +44,7 @@ export default function useMigratableComTools() {
   const isMiniAnchor = useSelector(isMiniAnchorSelector);
   const playerHideMode = useSelector(playerHideModeSelector);
   const nav = useCmNav();
+  const { shareQrData, qrNode } = useQRMaster();
 
   const makeToolList = (
     tools: MigratableComToolName[]
@@ -153,7 +155,7 @@ export default function useMigratableComTools() {
                 tool,
                 title: "Поделиться по QR",
                 icon: "qr-code",
-                onClick: () => nav.nav.shareDataByQr('ccomw', ccom.wid, true),
+                onClick: () => shareQrData(nav.nav, 'ccomw', ccom.wid, true),
               }
             );
         }
@@ -163,6 +165,9 @@ export default function useMigratableComTools() {
   };
 
   return {
+    anchorNode: <>
+      {qrNode}
+    </>,
     comTopTools,
     topTools: makeToolList(
       spliceMigratableEditableComToolNameList(comTopTools, auth)

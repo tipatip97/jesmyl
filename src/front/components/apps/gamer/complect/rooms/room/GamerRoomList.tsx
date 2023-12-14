@@ -1,9 +1,13 @@
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import { gamerRoomGames } from "../../../useGamerNav";
-import useGamerRooms from "./useGamerRooms";
+import useGamerOfflineRoomsActions from "./hooks/actions";
+import { useGamerRooms } from "./hooks/rooms";
+import { useMyPossibilitiesInRoom } from "./hooks/possibilities";
 
 export default function GamerRoomList() {
-  const { rooms, memberPossibilities, goToRoom } = useGamerRooms();
+  const rooms = useGamerRooms();
+  const { goToRoom } = useGamerOfflineRoomsActions();
+  const memberPossibilities = useMyPossibilitiesInRoom();
 
   return (
     <>

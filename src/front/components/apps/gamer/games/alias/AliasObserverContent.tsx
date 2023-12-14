@@ -1,25 +1,35 @@
 import SendButton from "../../../../../complect/SendButton";
+import { useMyPossibilitiesCurrentRoom } from "../../complect/rooms/room/hooks/possibilities";
 import GamerAliasTimer from "./AliasTimer";
-import AliasGameRoundResultsAnswerList from "./ResultsAnswerList";
-import { useAliasState } from "./useAliasState";
+import AliasGameRoundResultsAnswerList from "./AnswerList";
+import { useAliasComputeScore } from "./hooks/compute-score";
+import { useAliasSimpleExecs } from "./hooks/execs";
+import { useAliasIsMyTeam } from "./hooks/is-my-speech";
+import { useAliasSpeaker } from "./hooks/speaker";
+import { useAliasRoomState } from "./hooks/state";
+import { useAliasCurrentWordInfo } from "./hooks/word";
 
 export default function AliasObserverContent() {
-    const { takeSpeaker, state, memberPossibilities, resetGame, computeScore, takeCurrentWord, takeCurrentTeam, auth } = useAliasState();
-    const { corrects, incorrects } = computeScore();
-    const isMyTeam = auth.login && takeCurrentTeam('team')?.members.includes(auth.login);
+    const { corrects, incorrects } = useAliasComputeScore();
+    const state = useAliasRoomState();
+    const isMyTeam = useAliasIsMyTeam();
+    const myPossibilities = useMyPossibilitiesCurrentRoom();
+    const speaker = useAliasSpeaker();
+    const { resetGame } = useAliasSimpleExecs();
+    const wordInfo = useAliasCurrentWordInfo();
 
     return <div className="relative full-height margin-gap-v">
         <GamerAliasTimer />
-        <div>Спикер - {takeSpeaker()?.name}</div>
+        <div>Спикер - {speaker?.name}</div>
         {isMyTeam || !state?.startTs
             || <div>
                 Текущее слово - {
-                    takeCurrentWord()
+                    wordInfo?.word
                     ?? (!state.words.length
                         && <span className="color--ko">Слов в арсенале не осталось...</span>)}
             </div>
         }
-        {state?.startTs === 0 && memberPossibilities().isManager &&
+        {state?.startTs === 0 && myPossibilities.isManager &&
             <div className="flex center absolute pos-bottom full-width margin-big-gap-b">
                 <SendButton
                     title="Завершить игру"
@@ -29,11 +39,10 @@ export default function AliasObserverContent() {
             </div>}
         <AliasGameRoundResultsAnswerList
             answers={corrects}
-            isInc={false}
         />
         <AliasGameRoundResultsAnswerList
             answers={incorrects}
-            isInc={true}
+            myIncorrects
         />
     </div>;
 }

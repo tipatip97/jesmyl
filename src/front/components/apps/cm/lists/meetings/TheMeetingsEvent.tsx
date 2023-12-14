@@ -1,12 +1,12 @@
 import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import ComFace from "../../col/com/face/ComFace";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
-import LocalListToolsPopup from "../popups/LocalListToolsPopup";
+import { LocalListToolsPopup } from "../popups/LocalListToolsPopup";
 import { useMeetings } from "./useMeetings";
 
 export default function TheMeetingsEvent() {
   const { currentEvent } = useMeetings();
-  const [popupNode, openPopup] = useBottomPopup(() => <LocalListToolsPopup coms={currentEvent?.coms} />);
+  const [popupNode, openPopup] = useBottomPopup(LocalListToolsPopup, currentEvent?.coms);
 
   return (
     <PhaseCmContainer

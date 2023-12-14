@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { ReactNode } from "react";
-import { LocalSokiAuth } from "../../../models";
+import { LocalSokiAuth } from "../../../../back/complect/soki/soki.model";
 import { EvaIconName } from "../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
@@ -23,7 +23,7 @@ import GamerRoom from "./complect/rooms/room/GamerRoom";
 import AliasRoomContent from "./games/alias/AliasRoomContent";
 import SpyRoomContent from "./games/spy/SpyRoomContent";
 import { OfflineGameShare } from "./games/spy/offline-room/SpyOfflineRoom.model";
-import { SPY_ROLE, unsecretSpyRole } from "./games/spy/useSpyLocations";
+import { SPY_ROLE, unsecretSpyRole } from "./games/spy/hooks/locations";
 
 
 export type GamerRoomGameSkelet<DataDifference = {}> = INavigationRouteChildItem<GamerNavData, { icon: EvaIconName, title: string } & DataDifference, GamerGameName>;

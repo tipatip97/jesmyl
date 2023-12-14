@@ -4,7 +4,6 @@ import ShareEvaButton from "../ShareEvaButton";
 import EvaIcon from "../eva-icon/EvaIcon";
 import { useIsRememberExpand } from "../expand/useIsRememberExpand";
 import mylib from "../my-lib/MyLib";
-import { crossApplicationLinkCoder } from "../qr-code/QRCodeMaster";
 import StrongButton from "../strong-control/StrongButton";
 import StrongControlDateTimeExtracter from "../strong-control/StrongDateTimeExtracter";
 import StrongEvaButton from "../strong-control/StrongEvaButton";
@@ -22,6 +21,7 @@ import { ScheduleWidgetCopy } from "./general/Copy";
 import ScheduleWidgetLists from "./lists/Lists";
 import { ScheduleWidgetRights, initialScheduleScope, takeScheduleStrongScopeMaker, useScheduleWidgetRights } from "./useScheduleWidget";
 import styled from "styled-components";
+import { crossApplicationLinkCoder } from "../qr-code/useQRMaster";
 
 const msInMin = mylib.howMs.inMin;
 

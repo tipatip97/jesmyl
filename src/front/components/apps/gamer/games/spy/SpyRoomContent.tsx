@@ -1,67 +1,46 @@
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import SendButton from "../../../../../complect/SendButton";
 import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../complect/my-lib/MyLib";
-import { GamerRoomMember, GamerRoomMemberStatus } from "../../Gamer.model";
+import useAuth from "../../../../index/useAuth";
+import { GamerRoomMember } from "../../Gamer.model";
 import GamerRoomMemberList from "../../complect/GamerRoomMemberList";
-import { memberStatusPriority } from "../../complect/rooms/room/useGamerRooms";
+import useGamerMembersCanPlay from "../../complect/rooms/hooks/members-can-play";
+import { useGamerCurrentRoom } from "../../complect/rooms/room/hooks/current-room";
+import { useGamerRoomPlayers } from "../../complect/rooms/room/hooks/players";
+import { useMyPossibilitiesCurrentRoom } from "../../complect/rooms/room/hooks/possibilities";
 import SpyLocations from "./SpyLocations";
 import SpyRoomGameFinished from "./SpyRoomGameFinished";
 import SpyRoomLocationsInGame from "./SpyRoomLocationsInGame";
 import SpyRoomMemberInStartGameMore from "./SpyRoomMemberInStartGameMore";
+import { useSpyFinishGame, useSpyResetResults, useSpyStartGame } from "./hooks/actions";
+import { useSpyCurrentLocation } from "./hooks/current-location";
+import { useSpyActualLocationsNaked, useSpyLocations } from "./hooks/locations";
+import { useSpyMyRole } from "./hooks/my-role";
+import { useGamerCurrentRoomSpies } from "./hooks/spies";
+import { useSpyRoomState } from "./hooks/state";
 import SpyRoomStartedGame from "./started/StartedGame";
-import useSpyState from "./useSpyState";
 
 export default function SpyRoomContent() {
-    const {
-        auth,
-        state,
-        currentRoom,
-        getMyRoleName,
-        spies,
-        currentLocation,
-        memberPossibilities,
-        resetResults,
-        finishGame,
-        players,
-        locations,
-        actualLocations,
-        toggleLocation,
-        startGame,
-    } = useSpyState();
+    const auth = useAuth();
+    const players = useGamerRoomPlayers();
+    const locations = useSpyLocations();
+    const actualLocations = useSpyActualLocationsNaked();
+    const currentRoom = useGamerCurrentRoom();
+    const state = useSpyRoomState(currentRoom);
+    const spies = useGamerCurrentRoomSpies(state, players);
+    const currentLocation = useSpyCurrentLocation(state, players);
+    const myRole = useSpyMyRole(state, auth);
+    const finishGame = useSpyFinishGame();
+    const resetResults = useSpyResetResults();
+
+    const startGame = useSpyStartGame();
     const [popupNode, , openPopup] = useBottomPopup<GamerRoomMember>((_, __, member) => <SpyRoomMemberInStartGameMore member={member} />);
 
-    const [loactionsOnLoad, updateLoactionsOnLoad] = useState<["add" | "del", string][]>([]);
-
-    const possibilities = memberPossibilities(currentRoom);
+    const possibilities = useMyPossibilitiesCurrentRoom();
     const amIManager = possibilities.isManager;
-    const myRole = getMyRoleName();
-
-    useLayoutEffect(() => {
-        const newLocationList =
-            state?.locations &&
-            loactionsOnLoad.filter(([action, location]) => {
-                return state?.locations
-                    ? state.locations.indexOf(location) < 0
-                        ? action === "add"
-                        : action === "del"
-                    : false;
-            });
-        updateLoactionsOnLoad(newLocationList || []);
-    }, [state]);
-
-    const canPlayMembers = useMemo(
-        () =>
-            currentRoom?.members
-                .filter((member) => member.status !== GamerRoomMemberStatus.Requester)
-                .sort(
-                    (a, b) =>
-                        memberStatusPriority.indexOf(a.status) -
-                        memberStatusPriority.indexOf(b.status)
-                ),
-        [currentRoom]
-    );
+    const canPlayMembers = useGamerMembersCanPlay(currentRoom);
     const [spyCount, setSpyCount] = useState(1);
 
     if (!currentRoom) return null;
@@ -89,20 +68,15 @@ export default function SpyRoomContent() {
                         retired={state.retired ?? []}
                         isMeInactive={possibilities.isInactive}
                         members={canPlayMembers}
-                        onFinishGame={amIManager ? finishGame : undefined}
                         spies={spies}
-                        onMemberClick={(member) =>
-                            amIManager &&
-                            openPopup(member)}
+                        onFinishGame={amIManager && finishGame}
+                        onMemberClick={amIManager && openPopup}
                     />
             : !locations?.length
                 ? <div className="margin-big-gap text-center">Локаций нет</div>
                 : <>
                     <GamerRoomMemberList />
-                    <SpyRoomLocationsInGame
-                        onToggleLocation={toggleLocation}
-                        amIManager={amIManager}
-                    />
+                    <SpyRoomLocationsInGame />
                     {!actualLocations.length
                         ? <div className="color--3 margin-big-gap text-center">
                             Свободных локаций не осталось

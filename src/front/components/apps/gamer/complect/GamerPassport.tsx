@@ -1,23 +1,28 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { LocalSokiAuth } from "../../../../models";
 import TheButton from "../../../../complect/Button";
 import EvaButton from "../../../../complect/eva-icon/EvaButton";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../complect/my-lib/MyLib";
+import useQRMaster from "../../../../complect/qr-code/useQRMaster";
+import { LocalSokiAuth } from "../../../../models";
+import useAuth from "../../../index/useAuth";
 import { GamerPassport } from "../Gamer.model";
 import di from "../Gamer.store";
 import useGamerNav from "../useGamerNav";
 import PhaseGamerContainer from "./PhaseGamerContainer";
-import useGamerOfflineRooms from "./rooms/offline-room/useGamerOfflineRooms";
+import { useGamerOfflineRoomsPassport, useGamerOfflineRoomsPassportData } from "./rooms/offline-room/hooks/passport";
 
 export default function TheGamerPassport() {
     const dispatch = useDispatch();
-    const { passportData, passport, authData } = useGamerOfflineRooms();
+    const authData = useAuth();
+    const passport = useGamerOfflineRoomsPassport();
+    const passportData = useGamerOfflineRoomsPassportData();
     const [isEdit, setIsEdit] = useState(!passport);
     const [fio, setFio] = useState(passport?.fio || '');
     const { nav } = useGamerNav();
+    const { shareQrData, qrNode } = useQRMaster();
 
     const back = (data: GamerPassport | LocalSokiAuth | nil) => {
         setFio(data?.fio || '');
@@ -29,6 +34,7 @@ export default function TheGamerPassport() {
         withoutBackButton
         headTitle="Паспорт"
         content={<>
+            {qrNode}
             {isEdit && <div className="flex center margin-big-gap">
                 <KeyboardInput
                     value={fio}
@@ -83,7 +89,7 @@ export default function TheGamerPassport() {
                             className="flex center flex-gap margin-big-gap pointer"
                             onClick={() => {
                                 if (passport.login && passport.fio)
-                                    nav.shareDataByQr('passport', [passport.login, passport.fio]);
+                                    shareQrData(nav, 'passport', [passport.login, passport.fio]);
                             }}>
                             <EvaIcon name="qr-code" />
                             Предъявить

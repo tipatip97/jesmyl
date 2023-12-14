@@ -1,11 +1,10 @@
 import SpyOfflineRoomReadyToStart from "../../../games/spy/offline-room/SpyOfflineRoomReadyToStart";
 import SpyOfflineRoomStartedGame from "../../../games/spy/offline-room/SpyOfflineRoomStartedGame";
-import useSpyOfflineRoomState from "../../../games/spy/offline-room/useSpyOfflineRoomState";
+import { useSpyOfflineCurrentRoomState } from "../../../games/spy/offline-room/hooks/state";
 
 export default function SpyOfflineRoomContent() {
-    const { state } = useSpyOfflineRoomState();
     return <>
-        {state?.roles
+        {useSpyOfflineCurrentRoomState()?.roles
             ? <SpyOfflineRoomStartedGame />
             : <SpyOfflineRoomReadyToStart />}
     </>;

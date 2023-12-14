@@ -19,7 +19,7 @@ export class AliasHelp {
         return ncmWords.encode(packi, [weight], wordi);
     };
 
-    static takeWordInfo = (aliasWords: AliasWordsPack[], dicts?: number[], nid?: AliasWordNid, randomNounProns?: Record<"pronouns" | "nouns", string[]>): null | AliasWordInfo => {
+    static takeWordInfo = (packs: AliasWordsPack[], dicts?: number[], nid?: AliasWordNid, randomNounProns?: Record<"pronouns" | "nouns", string[]>): null | AliasWordInfo => {
         if (nid == null) return null;
         const nids = AliasHelp.decodeWordNid(nid);
         if (!nids) return null;
@@ -50,11 +50,11 @@ export class AliasHelp {
             };
         }
 
-        if (aliasWords?.[packi] === undefined) return null;
+        if (packs?.[packi] === undefined) return null;
         const max = dicts?.[packi] ?? 1;
 
         return {
-            word: smylib.keys(aliasWords[packi].words)[wordi],
+            word: smylib.keys(packs[packi].words)[wordi],
             packi,
             nid,
             weight,

@@ -1,20 +1,22 @@
 import { ReactNode, useState } from "react";
+import styled from "styled-components";
 import EvaIcon from "../eva-icon/EvaIcon";
 import QRCode from "./QRCode";
-import { qrCodeMaster, qrCodeMasterContainerId } from "./QRCodeMaster";
 import { QRMasterControllerData } from "./QRCodeMaster.model";
+import useQRMaster, { qrCodeMasterContainerId } from "./useQRMaster";
 
 let slideQRCodeTimeout: TimeOut;
 const qrReaderReadAreaSize = Math.min(window.innerHeight, window.innerWidth) * .9;
 let tsInterval = 100;
 
-export default function QRCodeMasterApplication({ controller }: { controller: (ctrl: (data: QRMasterControllerData) => TimeOut) => void }) {
+export function QRCodeMasterApplication({ controller }: { controller: (ctrl: (data: QRMasterControllerData) => TimeOut) => void }) {
     const [isOpenReader, setIsOpenReader] = useState(false);
     const [isOpenQRSlider, setIsOpenQRSlider] = useState(false);
     const [qrNodes, setQrNodes] = useState<ReactNode[]>([]);
     const [currentQr, setCurrentQr] = useState(0);
     const [partsLoaded, setPartsLoaded] = useState(0);
     const [partsToLoad, setPartsToLoad] = useState(0);
+    const { closeReader } = useQRMaster()
 
     controller((event) => {
         if (event.ok) {
@@ -71,35 +73,81 @@ export default function QRCodeMasterApplication({ controller }: { controller: (c
         return slideQRCodeTimeout;
     });
 
-    return (
-        <>
-            <div
-                className={`qr-code-screen${isOpenReader ? ' open-reader' : ''}${isOpenQRSlider ? ' open-slider' : ''}`}
-                onClick={() => {
-                    if (isOpenQRSlider) {
-                        clearTimeout(slideQRCodeTimeout);
-                        setIsOpenQRSlider(false);
-                    }
-                    if (isOpenReader) {
-                        qrCodeMaster.closeReader();
-                    }
-                }}
-            >
-                <div style={{ width: `${qrReaderReadAreaSize}px` }} id={qrCodeMasterContainerId}></div>
-                {
-                    isOpenReader && (
-                        partsToLoad
-                            ? <div>{partsLoaded} / {partsToLoad}</div>
-                            : <div>Наведи камеру на QR</div>
-                    )
-                }
-                {isOpenQRSlider &&
-                    <div className="qr-code-slider">
-                        {qrNodes[currentQr]}
-                        <div className="flex full-width center">{currentQr + 1} / {qrNodes.length}</div>
-                    </div>
-                }
+    return <Screen
+        className={`${isOpenReader ? ' open-reader' : ''}${isOpenQRSlider ? ' open-slider' : ''}`}
+        onClick={() => {
+            if (isOpenQRSlider) {
+                clearTimeout(slideQRCodeTimeout);
+                setIsOpenQRSlider(false);
+            }
+            if (isOpenReader) {
+                closeReader();
+            }
+        }}
+    >
+        <div style={{ width: `${qrReaderReadAreaSize}px` }} id={qrCodeMasterContainerId}></div>
+        {isOpenReader && (
+            partsToLoad
+                ? <div>{partsLoaded} / {partsToLoad}</div>
+                : <div>Наведи камеру на QR</div>
+        )}
+        {isOpenQRSlider &&
+            <div className="qr-code-slider">
+                {qrNodes[currentQr]}
+                <div className="flex full-width center">{currentQr + 1} / {qrNodes.length}</div>
             </div>
-        </>
-    );
+        }
+    </Screen>;
 }
+
+const Screen = styled.div`
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+    background-color: var(--current-bg);
+    opacity: 0;
+    transition: opacity .5s;
+    z-index: 10000000;
+
+    &.open-reader,
+    &.open-slider {
+        display: flex;
+        opacity: .9;
+    }
+
+    .qr-container {
+        position: relative;
+
+        &.external {
+            .link-anchor {
+                position: absolute;
+                right: 0;
+            }
+        }
+
+        &.internal {
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--color--7);
+                opacity: .5;
+            }
+        }
+    }
+
+    .qr-code {
+        width: 90vmin;
+    }
+`;

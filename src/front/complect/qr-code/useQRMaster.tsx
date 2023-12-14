@@ -1,19 +1,20 @@
 import { Html5Qrcode } from "html5-qrcode";
-import { renderApplication } from "../../..";
-import { AppName } from "../../app/App.model";
-import LinkCoder from "../link-coder/LinkCoder";
-import mylib from "../my-lib/MyLib";
-import './QRCode.scss';
-import { QRCodeReaderData, QRMasterConnectData, QRMasterControllerData } from "./QRCodeMaster.model";
-import QRCodeMasterApplication from "./QRCodeMasterApplication";
+import { useCallback, useMemo, useState } from "react";
+import { AppName, appNames } from "../../app/App.model";
 import { SokiAppName } from "../../models";
+import LinkCoder from "../link-coder/LinkCoder";
+import modalService from "../modal/Modal.service";
+import mylib from "../my-lib/MyLib";
+import { NavigationConfig } from "../nav-configurer/Navigation";
+import Portal from "../popups/[complect]/Portal";
+import useApps from "../useApps";
+import { QRCodeReaderData, QRMasterConnectData, QRMasterControllerData } from "./QRCodeMaster.model";
+import { QRCodeMasterApplication } from "./QRCodeMasterApplication";
 
 export const qrCodePassphraseSign = ':J';
 export const qrCodeMasterContainerId = "qr-code-master";
 
 let controller: (data: QRMasterControllerData) => TimeOut = () => undefined;
-
-setTimeout(() => renderApplication(<QRCodeMasterApplication controller={(top: (data: QRMasterControllerData) => TimeOut) => controller = top} />, document.querySelector('#qr-code-application-container')));
 
 const hrefUrl = new URL(window.location.href);
 export const jesmylHostName = `${hrefUrl.protocol}//${hrefUrl.host}`;
@@ -30,10 +31,14 @@ export const crossApplicationLinkCoder = new LinkCoder<Attrs>(jesmylHostName, 'v
     value: 'v',
 });
 
-class QrCodeMaster {
-    private qr?: Html5Qrcode;
+export default function useQRMaster() {
+    const { jumpToApp } = useApps();
+    const [qr, setQr] = useState<Html5Qrcode | undefined>();
+    const qrNode = useMemo(() => {
+        return <Portal><QRCodeMasterApplication controller={top => controller = top} /></Portal>;
+    }, []);
 
-    shareData(appName: AppName, key: string, value: unknown, externalData?: boolean | string) {
+    const shareData = useCallback((appName: AppName, key: string, value: unknown, externalData?: boolean | string) => {
         try {
             if (externalData) {
                 var link = crossApplicationLinkCoder.encode({
@@ -91,16 +96,30 @@ class QrCodeMaster {
                 errorMessage: 'Неудалось распознать данные для передачи',
             });
         }
-    }
+    }, []);
 
-    read<Data, Key extends keyof Data>(facingMode: 'user' | 'environment' = 'environment') {
+    const shareQrData = useCallback(<Store, NavData, DataName extends keyof NavData>(nav: NavigationConfig<Store, NavData>, dataName: DataName, value: NavData[DataName], externalData?: boolean | string) => {
+        shareData(nav.appName, dataName as never, value, externalData);
+    }, [shareData]);
+
+    const closeReader = useCallback(() => {
+        clearTimeout(controller({
+            ok: true,
+            type: 'openReader',
+            value: false,
+        }));
+        qr?.stop();
+    }, [qr]);
+
+    const read = useCallback(<Data, Key extends keyof Data>(facingMode: 'user' | 'environment' = 'environment') => {
         controller({
             ok: true,
             type: 'openReader',
             value: true,
         });
         return new Promise<QRCodeReaderData<Data, Key>>((res) => {
-            this.qr = new Html5Qrcode(qrCodeMasterContainerId);
+            const qr = new Html5Qrcode(qrCodeMasterContainerId);
+            setQr(qr);
             const vmin = Math.min(window.innerHeight, window.innerWidth);
             const size = vmin * .5;
             let currAppName: AppName;
@@ -111,7 +130,7 @@ class QrCodeMaster {
             let partsLoaded = 0;
             let partsToLoad = 0;
 
-            this.qr.start(
+            qr.start(
                 { facingMode },
                 {
                     fps: 10,
@@ -131,7 +150,7 @@ class QrCodeMaster {
                                     isExternalLink: true,
                                 } as QRCodeReaderData<Data, Key>);
                             }
-                            this.closeReader();
+                            closeReader();
                             return;
                         }
                         const [passphrase, appName, key, connectionNumber, count, part, value]: QRMasterConnectData<unknown> = JSON.parse(decodedText);
@@ -152,7 +171,7 @@ class QrCodeMaster {
                                 key,
                                 value,
                             } as QRCodeReaderData<Data, Key>);
-                            this.closeReader();
+                            closeReader();
                         } else {
                             if (currAppName !== appName || currKey !== key || currCount !== count || connectionNumber !== currConnectionNumber) {
                                 currAppName = appName;
@@ -182,7 +201,7 @@ class QrCodeMaster {
                                     key,
                                     value: JSON.parse(dataParts.join(''))
                                 } as QRCodeReaderData<Data, Key>);
-                                this.closeReader();
+                                closeReader();
                             }
                         }
                     } catch (e) { }
@@ -191,16 +210,34 @@ class QrCodeMaster {
             )
                 .catch(() => { });
         });
-    }
+    }, [closeReader]);
 
-    closeReader() {
-        clearTimeout(controller({
-            ok: true,
-            type: 'openReader',
-            value: false,
-        }));
-        this.qr?.stop();
-    }
+    const readQR = useCallback(<Ret,>(callback?: (data: QRCodeReaderData<unknown, never>) => Ret | null): Promise<Ret | null> => {
+        return new Promise((resolve, reject) =>
+            read()
+                .then((data) => {
+                    if (data.appName === 'index' || appNames.some((appName) => appName === data.appName)) {
+                        if (callback) resolve(callback(data));
+                        else {
+                            resolve(null);
+                            jumpToApp(data.appName, data.key, data.value);
+                        }
+                    } else {
+                        reject();
+                        modalService.alert('Ссылка на неизвестное приложение!');
+                    }
+                })
+        );
+    }, [jumpToApp, read]);
+
+    return useMemo(() => {
+        return {
+            qrNode,
+            shareQrData,
+            readQR,
+            shareData,
+            read,
+            closeReader,
+        }
+    }, [closeReader, qrNode, read, readQR, shareData, shareQrData]);
 }
-
-export const qrCodeMaster = new QrCodeMaster();

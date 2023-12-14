@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
-import useSpyOfflineRoomState from "../../../games/spy/offline-room/useSpyOfflineRoomState";
 import SpyShowMyRole from "../../../games/spy/SpyShowMyRole";
+import { useJoinedOfflineGame } from "../../../games/spy/offline-room/hooks/join-game";
+import { useSpyOfflineRoomReshareGameData } from "../../../games/spy/offline-room/hooks/share-game";
 
 export default function SpyCurrentOfflineGameInfo() {
-    const { offlineGame, reshareGameData } = useSpyOfflineRoomState();
+    const offlineGame = useJoinedOfflineGame();
+    const reshareGameData = useSpyOfflineRoomReshareGameData();
 
     return <>
         {offlineGame && <>

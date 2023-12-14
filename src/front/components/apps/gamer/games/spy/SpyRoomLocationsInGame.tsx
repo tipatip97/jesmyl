@@ -1,87 +1,37 @@
-import { useLayoutEffect, useState } from "react";
-import EvaButton from "../../../../../complect/eva-icon/EvaButton";
-import useSpyState from "./useSpyState";
+import EvaSendButton from "../../../../../complect/eva-icon/send-button/EvaSendButton";
+import useIsExpand from "../../../../../complect/expand/useIsExpand";
+import { useSpyToggleLocation } from "./hooks/actions";
+import { useSpyCleanLocations, useSpyLocations } from "./hooks/locations";
+import { useSpyRoomStateNaked } from "./hooks/state";
 
 
-export default function SpyRoomLocationsInGame({
-  onToggleLocation,
-  amIManager,
-}: {
-  amIManager?: boolean,
-  onToggleLocation: ((location: string) => 'del' | 'add'),
-}) {
-  const [isOpenLocations, setIsOpenLocations] = useState(false);
-  const [locationsOnLoad, updateLocationsOnLoad] = useState<
-    ["add" | "del", string][]
-  >([]);
+export default function SpyRoomLocationsInGame() {
+  const [title, isExpand] = useIsExpand(false, <h2>Локации</h2>);
 
-  const { state, cleanLocations, locations } = useSpyState();
+  const onToggleLocation = useSpyToggleLocation();
+  const state = useSpyRoomStateNaked();
+  const locations = useSpyLocations();
+  const cleanLocations = useSpyCleanLocations(state);
 
-  useLayoutEffect(() => {
-    const newLocationList =
-      cleanLocations &&
-      locationsOnLoad.filter(([action, location]) => {
-        return cleanLocations
-          ? !cleanLocations.some(([loc]) => loc === location)
-            ? action === "add"
-            : action === "del"
-          : false;
-      });
-    updateLocationsOnLoad(newLocationList || []);
-  }, [state?.locations]);
-
-
-  return <>
-    {!locations?.length ? <div className="margin-big-gap text-center">Локаций нет</div> : <>
-      <h2
-        className="flex flex-gap pointer"
-        onClick={() => setIsOpenLocations(!isOpenLocations)}
-      >
-        Локации
-        <EvaButton
-          name={
-            isOpenLocations
-              ? "arrow-ios-upward-outline"
-              : "arrow-ios-downward-outline"
-          }
-        />
-      </h2>
-      {isOpenLocations &&
-        locations.map((location, locationi) => {
+  return !locations?.length
+    ? <div className='margin-big-gap text-center'>Локаций нет</div>
+    : <>
+      {title}
+      {isExpand &&
+        locations.map((location) => {
           const [strikedLoc, secretLoc] = cleanLocations?.find(([loc]) => loc === location) ?? [];
-          const isOnLoading = locationsOnLoad.some(([, loc]) => loc === location);
 
-          return (
-            <div
-              key={`l ${locationi}`}
-              className={`flex flex-gap margin-gap-v ${amIManager ? "pointer" : ""
-                } ${isOnLoading ? "disabled" : ""} ${strikedLoc ? "error-message" : ""
-                }`}
-              onClick={() =>
-                amIManager &&
-                updateLocationsOnLoad([
-                  ...locationsOnLoad,
-                  [onToggleLocation(secretLoc ?? location), location],
-                ])
-              }
-            >
-              <EvaButton
-                name={
-                  isOnLoading
-                    ? "loader-outline"
-                    : strikedLoc
-                      ? "close-circle-outline"
-                      : "checkmark-circle-2-outline"
-                }
-                className={isOnLoading ? "rotate" : ""}
-              />
-              <span className={strikedLoc ? "text-strike" : ""}>
-                {location}
-              </span>
-            </div>
-          );
+          return <EvaSendButton
+            key={location}
+            name={strikedLoc
+              ? 'close-circle-outline'
+              : 'checkmark-circle-2-outline'}
+            className={'margin-gap-t '
+              + (strikedLoc ? ' text-strike ' : '')
+              + (strikedLoc ? ' color--ko ' : '')}
+            postfix={location}
+            onSend={() => onToggleLocation(secretLoc ?? location)}
+          />;
         })}
-
-    </>}
-  </>
+    </>;
 }

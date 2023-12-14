@@ -10,7 +10,7 @@ import useGamerNav, { GamerRoomGameSkelet } from "../../useGamerNav";
 import GamerRoomMemberList from "../GamerRoomMemberList";
 import PhaseGamerContainer from "../PhaseGamerContainer";
 
-export default function GamerRoomContent({ config, isInactive, isManager, isOwner, room, onRoomRemove, games, onGameChange, namePrefix }: {
+export default function GamerRoomContent({ config, isInactive, isManager, isOwner, room, onRoomRemove, games, onGameChange }: {
   config: NavigationThrowNodeProps<GamerNavData>,
   isOwner?: boolean,
   isManager?: boolean,
@@ -19,7 +19,6 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
   games: GamerRoomGameSkelet[],
   onRoomRemove: (roomw: number) => void,
   onGameChange: (gameName: GamerGameName) => void,
-  namePrefix?: string,
 }) {
   const [popupNode, openPopup] = useBottomPopup((_, prepare) => prepare({
     items: [
@@ -59,7 +58,7 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
 
   return <GamerRoomDiv
     className=""
-    headTitle={`${namePrefix || ''}Комната ${room?.name ? ` - ${room.name}` : ""}`}
+    headTitle={room?.name ? `${room.name}` : 'Комната'}
     head={((gameData) => gameData &&
       <EvaButton
         name={gameData.icon}

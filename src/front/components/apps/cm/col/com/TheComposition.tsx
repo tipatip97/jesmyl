@@ -10,7 +10,7 @@ import useLaterComList from "../../base/useLaterComList";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
 import { Com } from "./Com";
 import "./Com.scss";
-import ComTools from "./ComTools";
+import { ComTools } from "./ComTools";
 import TheControlledCom from "./TheControlledCom";
 import ComPlayer from "./player/ComPlayer";
 import { useCcom } from "./useCcom";
@@ -23,7 +23,7 @@ export default function TheComposition() {
   const [chordVisibleVariant] = useChordVisibleVariant();
   const ccom = useCcom();
   const { addLaterComw } = useLaterComList();
-  const [popupComToolsNode, openPopuComTools] = useBottomPopup((close) => <ComTools close={close} />);
+  const [popupComToolsNode, openPopuComTools] = useBottomPopup(ComTools);
   const { topTools } = useMigratableComTools();
   const [comList] = useComPack(ccom);
   const playerHideMode = useSelector(playerHideModeSelector);
@@ -34,7 +34,7 @@ export default function TheComposition() {
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
     return () => clearTimeout(add);
-  }, [ccom]);
+  }, [addLaterComw, ccom]);
 
   const comListElem = useRef<HTMLDivElement>(null);
   useEffect(() => {

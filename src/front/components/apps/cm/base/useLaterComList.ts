@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../shared/store";
 import di from "../Cm.store";
@@ -19,17 +19,20 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
     if (cols && laterComs == null) setLaterComs(cols, list);
     useEffect(() => { cols && setLaterComs(cols, list); }, [cols, list]);
 
-    const ret = {
+    const updateLaterComwList = useCallback((list: number[]) => dispatch(di.laterComwList(list)), [dispatch]);
+
+    const addLaterComw = useCallback((comw: number) => {
+        const newList = [comw].concat(list
+            .filter((laterComw) => laterComw !== comw)
+            .filter((_, laterComwi) => maxStack - 1 > laterComwi)
+        );
+        updateLaterComwList(newList);
+        cmStorage.set('laterComwList', newList);
+    }, [list, maxStack, updateLaterComwList]);
+
+    return useMemo(() => ({
         laterComs,
-        updateLaterComwList: (list: number[]) => dispatch(di.laterComwList(list)),
-        addLaterComw: (comw: number) => {
-            const newList = [comw].concat(list
-                .filter((laterComw) => laterComw !== comw)
-                .filter((_, laterComwi) => maxStack - 1 > laterComwi)
-            );
-            ret.updateLaterComwList(newList);
-            cmStorage.set('laterComwList', newList);
-        },
-    };
-    return ret;
+        updateLaterComwList,
+        addLaterComw,
+    }), [addLaterComw, updateLaterComwList]);
 }

@@ -1,40 +1,39 @@
 import SendButton from "../../../../../complect/SendButton";
-import { MyLib } from "../../../../../complect/my-lib/MyLib";
-import AliasGameRoundResultsAnswerList from "./ResultsAnswerList";
-import { useAliasState } from "./useAliasState";
+import { useMyPossibilitiesCurrentRoom } from "../../complect/rooms/room/hooks/possibilities";
+import AliasGameRoundResultsAnswerList from "./AnswerList";
+import { useAliasComputeScore } from "./hooks/compute-score";
+import { useAliasSimpleExecs } from "./hooks/execs";
+import { useAliasIsCantConfirmResults } from "./hooks/is-cant-confirm";
+import { useAliasIsMySpeech } from "./hooks/is-my-speech";
+import { useAliasRoomState } from "./hooks/state";
 
 export default function AliasGameRoundResults() {
-    const { rememberScore, computeScore, state, memberPossibilities, resetGame, isMySpeech } = useAliasState();
-    const { corrects, incorrects, score } = computeScore();
+    const isMySpeech = useAliasIsMySpeech();
+    const myPossibilities = useMyPossibilitiesCurrentRoom();
+    const state = useAliasRoomState();
+    const isCantSend = useAliasIsCantConfirmResults(state);
+    const { resetGame, rememberScore } = useAliasSimpleExecs();
+    const { corrects, incorrects, score } = useAliasComputeScore();
 
     return <>
         <div className="full-height over-y-auto">
             <h2>Будет засчитано: {score}</h2>
             <AliasGameRoundResultsAnswerList
                 answers={corrects}
-                isInc={false}
             />
             <AliasGameRoundResultsAnswerList
                 answers={incorrects}
-                isInc={true}
+                myIncorrects
             />
-            {isMySpeech() && <div className="flex center margin-gap">
+            {isMySpeech && <div className="flex center margin-gap">
                 <SendButton
                     title="Отправить данные"
-                    disabled={
-                        state?.rej
-                        && MyLib.entries(state.rej)
-                            .some(([strNid, rejs]) => rejs.length > 0
-                                && state.fix.includes(+strNid)
-                                && (state.inc.includes(+strNid) || !state.cor.includes(+strNid)))
-
-
-                    }
+                    disabled={isCantSend}
                     onSend={rememberScore}
                 />
             </div>}
         </div>
-        {state?.startTs === 0 && memberPossibilities().isManager &&
+        {state?.startTs === 0 && myPossibilities.isManager &&
             <div className="flex center margin-big-gap-b">
                 <SendButton
                     title="Завершить игру"

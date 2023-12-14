@@ -2,11 +2,11 @@ import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottom
 import useSelectedComs from "../../base/useSelectedComs";
 import ComFace from "../../col/com/face/ComFace";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
-import LocalListToolsPopup from "../popups/LocalListToolsPopup";
+import { LocalListToolsPopup } from "../popups/LocalListToolsPopup";
 
 export default function SelectedComs() {
-  const [popup, openPopup] = useBottomPopup(() => <LocalListToolsPopup coms={coms} />);
   const coms = useSelectedComs().takeSelectedComs();
+  const [popup, openPopup] = useBottomPopup(LocalListToolsPopup, coms);
 
   return (
     <PhaseCmContainer

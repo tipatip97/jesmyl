@@ -31,6 +31,11 @@ export default function PasswordTyping({ setIsOpen, setTitle }: { setIsOpen: (is
         }
 
         const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setPassword('');
+                return;
+            }
+
             if (event.key.length === 1) setPassword(password + event.key);
         };
 

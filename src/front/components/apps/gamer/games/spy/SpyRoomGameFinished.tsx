@@ -2,7 +2,7 @@ import SendButton from "../../../../../complect/SendButton";
 import RoomMemberFace from "../../complect/GamerRoomMemberFace";
 import { GamerRoomMember } from "../../Gamer.model";
 import { SpyRoomState } from "./Spy.model";
-import { SPY_ROLE } from "./useSpyLocations";
+import { SPY_ROLE } from "./hooks/locations";
 
 export default function SpyRoomGameFinished({
     state,

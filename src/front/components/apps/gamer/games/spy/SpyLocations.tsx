@@ -1,43 +1,33 @@
 import { useState } from "react";
-import EvaButton from "../../../../../complect/eva-icon/EvaButton";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import SendButton from "../../../../../complect/SendButton";
-import { gamerExer } from "../../Gamer.store";
-import useSpyLocations from "./useSpyLocations";
+import EvaButton from "../../../../../complect/eva-icon/EvaButton";
+import useIsExpand from "../../../../../complect/expand/useIsExpand";
+import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import useAuth from "../../../../index/useAuth";
+import { gamerExer } from "../../Gamer.store";
+import { useSpyLocations } from "./hooks/locations";
+
+const incorrectNameReg = /[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i;
 
 export default function SpyLocations() {
-  const { locations } = useSpyLocations();
+  const [isOpenAdder, setIsOpenAdder] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [title, isExpand] = useIsExpand(false, <h2>Все локации</h2>);
+
+  const locations = useSpyLocations();
   const auth = useAuth();
 
-  const [newName, setNewName] = useState('');
   const isShortNewName = newName.length < 3;
-  const incorrectsInNewName = newName.match(/[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i);
+  const incorrectsInNewName = newName.match(incorrectNameReg);
   const upperName = newName.toUpperCase();
   const isInclusiveNewName = locations?.some((loc) => loc === upperName);
-  const [isOpenLocations, setIsOpenLocations] = useState(false);
-  const [isOpenAdder, setIsOpenAdder] = useState(false);
 
   return <>
-    <h2
-      className="flex flex-gap pointer"
-      onClick={() => setIsOpenLocations(!isOpenLocations)}
-    >
-      Все локации
-      <EvaButton
-        name={
-          isOpenLocations
-            ? "arrow-ios-upward-outline"
-            : "arrow-ios-downward-outline"
-        }
-      />
-    </h2>
-    {isOpenLocations &&
+    {title}
+    {isExpand &&
       <>
         <div>
-          {locations?.map((location, locationi) => {
-            return <div key={`l ${locationi}`}>{location}</div>;
-          })}
+          {locations?.map((location) => <div key={location}>{location}</div>)}
         </div>
         {!isOpenAdder && gamerExer.actionAccessedOrNull("addNewLocation", auth) &&
           <EvaButton

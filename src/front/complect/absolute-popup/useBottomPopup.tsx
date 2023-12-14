@@ -1,22 +1,9 @@
-import { AreaHTMLAttributes, ReactNode, useEffect, useRef, useState } from "react";
-import { isTouchDevice } from "../device-differences";
+import { AreaHTMLAttributes, ReactNode, useCallback, useState } from "react";
 import EvaIcon, { EvaIconName } from "../eva-icon/EvaIcon";
-import { ThrowEvent } from "../eventer/ThrowEvent";
 import mylib from "../my-lib/MyLib";
-import Portal from "../popups/[complect]/Portal";
-import useMountTransition from "../popups/useMountTransition";
 import "./AbsolutePopup.scss";
+import { BottomPopup } from "./BottomPopup";
 
-const isNIs = (is: unknown) => !is;
-const initialScrollTop = window.innerHeight * 0.3;
-const inactiveScrollTop = window.innerHeight * 0.25;
-
-let scrollDebounce: any;
-let scrollTop = 0;
-let needClose = false;
-let animateScrollInProcess = false;
-let isMouseDown = false;
-let isInitialScroll = true;
 
 export type AbsoluteBottomPopupItem = {
   className?: string,
@@ -26,6 +13,7 @@ export type AbsoluteBottomPopupItem = {
   rightNode?: ReactNode,
   isError?: boolean,
   iconWrapperClassName?: string,
+  anchorNode?: ReactNode,
 } & AreaHTMLAttributes<HTMLDivElement>;
 
 export type BottomPopupSkeletIcon = AbsoluteBottomPopupItem | nil | false | BottomPopupSkeletIcon[];
@@ -42,9 +30,10 @@ const prepare = ({ items, footer }: BottomPopupContentProps) => {
       const map = (item: BottomPopupSkeletIcon, itemi: number): ReactNode => {
         if (!item) return null;
         if (mylib.isArr(item)) return item.map((item, itemi) => map(item, itemi));
-        const { className, icon, titleNode, title, iconWrapperClassName, rightNode, isError, ...other } = item;
+        const { className, icon, titleNode, title, iconWrapperClassName, rightNode, isError, anchorNode, ...other } = item;
 
         return <div key={itemi} {...other} className={`abs-item ${className || ''}`}>
+          {anchorNode}
           <div className="flex flex-gap">
             <div className={`icon-box ${iconWrapperClassName || ''}`}>
               <EvaIcon name={icon} className="abs-icon" />
@@ -69,115 +58,40 @@ export type BottomPopupContenter<Props = {}>
     close: () => void,
     prepare: BottomPopupContenterPreparer,
     props: Props,
-  ) => [ReactNode, ReactNode] | JSX.Element | nil;
+  ) => [ReactNode/* permanent rendered node */, ReactNode/* popup content node */, ReactNode?/* permanent after open popup node */] | JSX.Element | nil;
 
-type OpenCallback = (passEvent?: any, isOpen?: boolean | null) => void;
-type OpenWithPropsCallback<Props> = (props: Props, isOpen?: boolean | null) => void;
+type OpenCallback = () => void;
+type OpenWithPropsCallback<Props> = (props: Props) => void;
 
 export function useBottomPopup<Props>(contenter: BottomPopupContenter<Props>, topProps: Props = {} as never): [ReactNode, OpenCallback, OpenWithPropsCallback<Props>] {
-  const bottomContentContainer = useRef<HTMLDivElement>(null);
-  const bottomContainer = useRef<HTMLDivElement>(null);
-  const [props, setProps] = useState(topProps);
-
-  const scrollableContent =
-    (bottomContentContainer.current?.clientHeight || 0) - 5 > initialScrollTop;
-
-  const animateScroll = () => {
-    if (inactiveScrollTop > scrollTop) {
-      animateScrollInProcess = true;
-      setTimeout(() => {
-        if (bottomContainer.current)
-          scrollTop = bottomContainer.current.scrollTop += 3;
-        animateScroll();
-      }, 2);
-    } else {
-      animateScrollInProcess = false;
-      isInitialScroll = false;
-    }
-  };
-
+  const [props, setProps] = useState<Props | und>();
   const [isOpen, setIsOpen] = useState(false);
-  const [isMounted, className] = useMountTransition(isOpen, 'absolute-bottom-popup', 500);
+  const [isWasOpen, setIsWasOpen] = useState(false);
+  const close = useCallback(() => setIsOpen(false), []);
+  const contentScalar = contenter(close, prepare, props === undefined ? topProps! : props);
 
-  useEffect(() => {
-    if (isOpen && bottomContainer.current)
-      if (isTouchDevice)
-        bottomContainer.current.scrollTop = scrollTop = initialScrollTop;
-      else bottomContainer.current.scrollTop = scrollTop = 0;
-
-    if (isOpen) {
-      return ThrowEvent.listenKeyDown('Escape', () => setIsOpen(false));
-    }
-  }, [isOpen]);
-
-  const contentScalar = contenter(() => setIsOpen(false), prepare, props);
   let throwContent = null;
   let content = null;
+  let afterOpenNode = null;
 
   if (mylib.isArr(contentScalar)) {
-    [throwContent, content] = contentScalar;
+    [throwContent, content, afterOpenNode] = contentScalar;
   } else content = contentScalar;
 
   return [
     <>
       {throwContent}
-      {isMounted && <Portal>
-        <div className={className} onClick={() => setIsOpen(false)}>
-          <div
-            className={
-              'container no-scrollbar'
-              + (isTouchDevice ? "" : " not-touch-device")
-              + (`${scrollableContent ? "" : " not-"}scrollable-content`)
-            }
-            ref={bottomContainer}
-            onScroll={
-              isTouchDevice
-                ? () => {
-                  setTimeout(() => {
-                    if (!bottomContainer.current || animateScrollInProcess) return;
-                    needClose = !isInitialScroll && bottomContainer.current.scrollTop < scrollTop;
-                    scrollTop = bottomContainer.current.scrollTop;
-                    clearTimeout(scrollDebounce);
-
-                    if (!isMouseDown && scrollTop < inactiveScrollTop)
-                      scrollDebounce = setTimeout(() => {
-                        if (needClose) setIsOpen(false);
-                        else animateScroll();
-                      }, 100);
-                  });
-                }
-                : undefined
-            }
-            onTouchStart={() => (isMouseDown = true)}
-            onTouchEnd={
-              isTouchDevice
-                ? () => {
-                  isMouseDown = false;
-                  if (scrollTop < inactiveScrollTop)
-                    if (needClose) setIsOpen(false);
-                    else animateScroll();
-                }
-                : undefined
-            }
-          >
-            <div className="absolute full-width flex center margin-gap-v">
-              <div className="badge" />
-            </div>
-            <div
-              className="content"
-              // onClick={(event) => !isClosable && event.stopPropagation()}
-              ref={bottomContentContainer}
-            >
-              {content}
-            </div>
-          </div>
-        </div>
-      </Portal>
-      }</>,
-    (_passEvent, isOpen) => setIsOpen(isOpen ?? isNIs),
-    (props, isOpen) => {
-      setIsOpen(isOpen ?? isNIs);
+      {isWasOpen && afterOpenNode}
+      {isOpen && <BottomPopup content={content} close={close} />}
+    </>,
+    () => {
+      setIsOpen(true);
+      setIsWasOpen(true);
+    },
+    (props) => {
       setProps(props);
+      setIsOpen(true);
+      setIsWasOpen(true);
     },
   ];
 }

@@ -1,18 +1,21 @@
 import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
+import useAuth from "../../../../../index/useAuth";
 import { GamerRoomMember } from "../../../Gamer.model";
-import useEditableRooms from "./useEditableRooms";
-import useGamerRooms from "./useGamerRooms";
+import { useGamerRoomActions } from "../hooks/actions";
+import { useGamerCurrentRoom } from "./hooks/current-room";
+import { useGamerUserPossibilities } from "./hooks/possibilities";
 
-export default function GamerRoomMemberMore({ member }: { member: GamerRoomMember }) {
+export const GamerRoomMemberMore = ({ member }: { member: GamerRoomMember }) => {
   const {
     acceptMemberToCurrentRoom,
     banCurrentRoomMember,
     unbanCurrentRoomMember,
     moreButtons,
     nameNode,
-  } = useEditableRooms(member);
-  const { memberPossibilities, auth, currentRoom } = useGamerRooms();
-  const possibilities = memberPossibilities(currentRoom, member.login);
+  } = useGamerRoomActions(member);
+  const auth = useAuth();
+  const currentRoom = useGamerCurrentRoom();
+  const possibilities = useGamerUserPossibilities()(currentRoom, member.login);
 
   return <>
     {bottomPopupContentPreparer({

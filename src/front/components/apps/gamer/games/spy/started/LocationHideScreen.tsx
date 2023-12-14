@@ -2,7 +2,7 @@ import { ReactNode, useRef, useState } from "react";
 import styled from 'styled-components';
 import FingerprintScreen from "./Fingerprint";
 import PasswordTyping from "./PasswordTyping";
-import { SPY_ROLE } from "../useSpyLocations";
+import { SPY_ROLE } from "../hooks/locations";
 
 const isTouchDevice =
     (('ontouchstart' in window) ||

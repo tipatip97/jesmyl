@@ -1,13 +1,13 @@
 
 import { useLayoutEffect, useState } from "react";
-import { useAliasState } from "./useAliasState";
 import styled from "styled-components";
+import { useAliasRoomState } from "./hooks/state";
 
 const takeSeconds = (time: number, start: number) => time - Math.floor((Date.now() - start) / 1000);
 
 export default function GamerAliasTimer() {
     const [seconds, setSeconds] = useState<number | null>(null);
-    const { state } = useAliasState();
+    const state = useAliasRoomState();
     const start = state?.startTs;
     const time = state?.roundTime;
 

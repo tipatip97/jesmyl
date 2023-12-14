@@ -7,7 +7,6 @@ import JesmylLogo from "../complect/jesmyl-logo/JesmylLogo";
 import { KEYBOARD_FLASH } from "../complect/keyboard/KeyboardInput";
 import { KeyboardInputStorage } from "../complect/keyboard/KeyboardStorage";
 import Modal from "../complect/modal/Modal";
-import { crossApplicationLinkCoder, jesmylHostName } from "../complect/qr-code/QRCodeMaster";
 import listenThemeChanges from "../complect/theme-changer";
 import useApps from "../complect/useApps";
 import useFullScreen from "../complect/useFullscreen";
@@ -21,6 +20,7 @@ import { appNames } from "./App.model";
 import "./App.scss";
 import AppFooter from "./AppFooter";
 import AppRouter from "./AppRouter";
+import { crossApplicationLinkCoder, jesmylHostName } from "../complect/qr-code/useQRMaster";
 
 listenThemeChanges();
 

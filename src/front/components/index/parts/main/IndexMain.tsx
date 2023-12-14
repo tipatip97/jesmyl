@@ -15,22 +15,20 @@ import useAuth from "../../useAuth";
 import useConnectionState from "../../useConnectionState";
 import IndexAbout from "../IndexAbout";
 import "./IndexMain.scss";
-import UserMore from "./UserMore";
+import { UserMore } from "./UserMore";
 
 const isNNull = (it: unknown) => it !== null;
 const currentAppSelector = (state: RootState) => state.index.currentApp;
-
-const funcNode = () => <UserMore />;
 
 export default function IndexMain() {
   const currentAppName = useSelector(currentAppSelector);
   const { openFullscreenContent } = useFullscreenContent();
   const { goTo } = navConfigurers.index();
-  const [popupNode, openPopup] = useBottomPopup(funcNode);
+  const [popupNode, openPopup] = useBottomPopup(UserMore);
   const { appConfigs, jumpToApp } = useApps();
 
   const auth = useAuth();
-  const { readQR } = useQRMaster();
+  const { readQR, qrNode } = useQRMaster();
   const connectionNode = useConnectionState();
   const appList = appNames.map((appName) => {
     const navs = appConfigs[appName];
@@ -78,6 +76,7 @@ export default function IndexMain() {
       content={
         <>
           {popupNode}
+          {qrNode}
           <ScheduleWidgetAlarm
             onGoTo={() => goTo('schedules')}
             isForceShow={auth.level >= 50}

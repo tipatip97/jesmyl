@@ -38,7 +38,7 @@ export interface GamerAliasRoomState {
     cor: AliasWordNid[],
     inc: AliasWordNid[],
     fix: AliasWordNid[],
-    rej?: Record<AliasWordNid, string[]>,
+    invert?: Record<AliasWordNid, string[]>,
 }
 
 export interface AliasWordInfo {
