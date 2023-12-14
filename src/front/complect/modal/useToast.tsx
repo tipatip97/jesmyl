@@ -22,6 +22,7 @@ const defaultUseModalConfig: UseModalConfig = {
 
 export default function useToast(topConfig?: ToastModalConfig): [ReactNode, (content?: ReactNode, config?: ToastModalConfig) => void] {
     const [config, setConfig] = useState(defaultUseModalConfig);
+    const [timer, setTimer] = useState<TimeOut>();
 
     return [
         (config.isOpen) && <Portal>
@@ -40,7 +41,10 @@ export default function useToast(topConfig?: ToastModalConfig): [ReactNode, (con
                 isOpen: true,
                 content,
             });
-            setTimeout(() => setConfig((prev) => ({ ...prev, isOpen: false })), config?.showTime ?? 3000);
+            clearTimeout(timer);
+            setTimer(setTimeout(() => {
+                setConfig((prev) => ({ ...prev, isOpen: false }));
+            }, config?.showTime ?? 3000));
         },
     ];
 }
