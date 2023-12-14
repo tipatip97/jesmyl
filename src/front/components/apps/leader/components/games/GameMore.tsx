@@ -1,4 +1,4 @@
-import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/bottom-popup/model";
 import PrintableBottomItem from "../PrintableBottomItem";
 import GameTeamLists from "./templates/GameTeamLists";
 import GameTeamPassportNames from "./templates/GameTeamPassportNames";

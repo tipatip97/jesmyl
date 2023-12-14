@@ -1,4 +1,4 @@
-import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/bottom-popup/model";
 import PrintableBottomItem from "../PrintableBottomItem";
 import { HumanImportable } from "../people/People.model";
 import WelcomePage from "../templates/WelcomePage";

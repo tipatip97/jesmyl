@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
 import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";

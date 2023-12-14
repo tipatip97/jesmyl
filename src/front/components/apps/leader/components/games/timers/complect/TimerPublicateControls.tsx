@@ -1,4 +1,4 @@
-import SendButton from "../../../../../../../complect/SendButton";
+import SendButton from "../../../../../../../complect/sends/send-button/SendButton";
 import modalService from "../../../../../../../complect/modal/Modal.service";
 import { TeamGameImportable } from "../../../../Leader.model";
 import { LeaderCleans } from "../../../LeaderCleans";

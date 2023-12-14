@@ -1,4 +1,4 @@
-import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
 import { useLeaderCcontext } from "../contexts/useContexts";
 import TeamGameFace from "./GameFace";

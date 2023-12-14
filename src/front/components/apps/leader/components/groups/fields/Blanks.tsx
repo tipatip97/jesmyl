@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import SendButton from "../../../../../../complect/SendButton";
+import SendButton from "../../../../../../complect/sends/send-button/SendButton";
 import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
 import { ClientExecutionDict } from "../../../../../../complect/exer/Exer.model";
 import mylib, { MyLib } from "../../../../../../complect/my-lib/MyLib";

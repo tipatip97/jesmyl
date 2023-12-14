@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BottomPopupContenter, bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenter } from "../../../../../complect/absolute-popup/bottom-popup/model";
 import propsOfClicker from "../../../../../complect/clicker/propsOfClicker";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { RootState } from "../../../../../shared/store";
@@ -31,7 +31,7 @@ const catMentions = (cols?: Cols, com?: Com): string[] => {
   return inCats.concat(natives);
 }
 
-export const ComTools: BottomPopupContenter = (close) => {
+export const ComTools: BottomPopupContenter = (close, prepare) => {
   const dispatch = useDispatch();
   const ccom = useCcom();
   const cols = useCols();
@@ -44,7 +44,7 @@ export const ComTools: BottomPopupContenter = (close) => {
   return [
     null,
     <>
-      {bottomPopupContentPreparer({
+      {prepare({
         items: [
           {
             className: chordVisibleVariant === ChordVisibleVariant.None ? "disabled" : "",

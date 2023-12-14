@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import useExer from "../../../../../complect/exer/useExer";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";

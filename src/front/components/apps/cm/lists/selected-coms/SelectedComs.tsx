@@ -1,4 +1,4 @@
-import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import useSelectedComs from "../../base/useSelectedComs";
 import ComFace from "../../col/com/face/ComFace";
 import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";

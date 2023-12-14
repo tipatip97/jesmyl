@@ -166,7 +166,6 @@ export const useAliasSimpleExecs = () => {
         rememberScore: () => sendExec(currentRoom, 'computeAliasScore'),
         resetSpeech: () => sendExec(currentRoom, 'resetAliasSpeech'),
         fixWord: (nid: number) => sendExec(currentRoom, 'fixAliasWord', { nid }),
-        resetGame: () => sendExec(currentRoom, 'resetAliasGame'),
         startSpeech: () => {
             if (!currentRoom) return;
 
@@ -178,3 +177,5 @@ export const useAliasSimpleExecs = () => {
         },
     }), [currentRoom]);
 };
+
+export const toStopAliasGame = (currentRoom: GamerRoom | und) => sendExec(currentRoom, 'resetAliasGame');

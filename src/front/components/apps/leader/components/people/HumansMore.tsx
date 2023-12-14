@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BottomPopupContenter } from "../../../../../complect/absolute-popup/useBottomPopup";
 import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import { RootState } from "../../../../../shared/store";
 import di from "../../Leader.store";
 import HumanMaster from "./HumanMaster";
 import { humanFieldTranslations } from "./People.model";
+import { BottomPopupContenter } from "../../../../../complect/absolute-popup/bottom-popup/model";
 
 const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
 

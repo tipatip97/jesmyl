@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import { BottomPopupContenter, useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenter } from "../../../../../complect/absolute-popup/bottom-popup/model";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import modalService from "../../../../../complect/modal/Modal.service";
 import { LeaderCleans } from "../LeaderCleans";

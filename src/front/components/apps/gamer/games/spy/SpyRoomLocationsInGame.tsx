@@ -1,5 +1,5 @@
-import EvaSendButton from "../../../../../complect/eva-icon/send-button/EvaSendButton";
 import useIsExpand from "../../../../../complect/expand/useIsExpand";
+import EvaSendButton from "../../../../../complect/sends/eva-send-button/EvaSendButton";
 import { useSpyToggleLocation } from "./hooks/actions";
 import { useSpyCleanLocations, useSpyLocations } from "./hooks/locations";
 import { useSpyRoomStateNaked } from "./hooks/state";

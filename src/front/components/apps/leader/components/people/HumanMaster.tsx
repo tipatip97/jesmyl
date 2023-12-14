@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SendButton from "../../../../../complect/SendButton";
+import SendButton from "../../../../../complect/sends/send-button/SendButton";
 import Dropdown from "../../../../../complect/dropdown/Dropdown";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";

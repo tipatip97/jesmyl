@@ -1,4 +1,4 @@
-import { BottomPopupContenter } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenter } from "../../../../../complect/absolute-popup/bottom-popup/model";
 import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
 import LeaderGroupMaster from "./GroupMaster";
 import { LeaderGroupImportable } from "./Groups.model";

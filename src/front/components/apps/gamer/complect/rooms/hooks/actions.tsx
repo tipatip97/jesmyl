@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/bottom-popup/item-preparer";
 import { GamerGameName, GamerRoomMember } from "../../../Gamer.model";
 import { gamerExer } from "../../../Gamer.store";
 import { useGamerCurrentRoom } from "../room/hooks/current-room";

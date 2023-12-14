@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { renderComponentInNewWindow } from "../../../../..";
-import { BottomPopupContenterPreparer } from "../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../complect/absolute-popup/bottom-popup/model";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
 import useFullContent from "../../../../complect/fullscreen-content/useFullContent";
 

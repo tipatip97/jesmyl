@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import DebouncedSearchInput from "../../../../../../complect/DebouncedSearchInput";
-import { useBottomPopup } from "../../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import useExer from "../../../../../../complect/exer/useExer";
 import LoadIndicatedContent from "../../../../../../complect/load-indicated-content/LoadIndicatedContent";
 import mylib from "../../../../../../complect/my-lib/MyLib";

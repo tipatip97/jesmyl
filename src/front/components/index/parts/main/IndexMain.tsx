@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { appNames } from "../../../../app/App.model";
-import { useBottomPopup } from "../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
 import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
 import EvaIcon from "../../../../complect/eva-icon/EvaIcon";

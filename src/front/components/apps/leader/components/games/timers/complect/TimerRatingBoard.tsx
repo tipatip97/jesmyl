@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CopyTextButton from "../../../../../../../complect/CopyTextButton";
 import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
-import EvaSendButton from "../../../../../../../complect/eva-icon/send-button/EvaSendButton";
+import EvaSendButton from "../../../../../../../complect/sends/eva-send-button/EvaSendButton";
 import { TeamGameImportable } from "../../../../Leader.model";
 import { LeaderCleans } from "../../../LeaderCleans";
 import { GameTimerImportable, GameTimerSortDirection } from "../GameTimer.model";

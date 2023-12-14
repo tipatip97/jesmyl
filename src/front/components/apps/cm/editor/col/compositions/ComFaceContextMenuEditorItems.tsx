@@ -1,4 +1,4 @@
-import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/bottom-popup/item-preparer";
 import useExer from "../../../../../../complect/exer/useExer";
 import useFullscreenContent from "../../../../../../complect/fullscreen-content/useFullscreenContent";
 import useSelectedComs from "../../../base/useSelectedComs";

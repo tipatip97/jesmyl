@@ -1,4 +1,4 @@
-import { useBottomPopup } from "../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import { GamerRoomMember } from "../Gamer.model";
 import RoomMemberFace from "./GamerRoomMemberFace";
 import {GamerRoomMemberMore} from "./rooms/room/GamerRoomMemberMore";

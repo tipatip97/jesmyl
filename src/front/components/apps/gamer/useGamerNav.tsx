@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { ReactNode } from "react";
-import { LocalSokiAuth } from "../../../../back/complect/soki/soki.model";
+import { LocalSokiAuth, SokiServerEvent } from "../../../../back/complect/soki/soki.model";
 import { EvaIconName } from "../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../complect/modal/Modal.service";
 import mylib from "../../../complect/my-lib/MyLib";
@@ -12,21 +12,27 @@ import {
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import { QRCodeReaderData } from "../../../complect/qr-code/QRCodeMaster.model";
 import Gamer from "./Gamer";
-import { GamerGameName, GamerNavData, GamerPassport, GamerStorage } from "./Gamer.model";
+import { GamerGameName, GamerNavData, GamerPassport, GamerRoom, GamerStorage } from "./Gamer.model";
 import di from "./Gamer.store";
 import GamerApp from "./GamerApp";
 import TheGamerPassport from "./complect/GamerPassport";
 import GamerOfflineRoom from "./complect/rooms/offline-room/GamerOfflineRoom";
 import SpyCurrentOfflineGameInfo from "./complect/rooms/offline-room/SpyCurrentOfflineGameInfo";
 import SpyOfflineRoomContent from "./complect/rooms/offline-room/SpyOfflineRoomContent";
-import GamerRoom from "./complect/rooms/room/GamerRoom";
+import TheGamerRoom from "./complect/rooms/room/GamerRoom";
 import AliasRoomContent from "./games/alias/AliasRoomContent";
+import { toStopAliasGame } from "./games/alias/hooks/execs";
 import SpyRoomContent from "./games/spy/SpyRoomContent";
-import { OfflineGameShare } from "./games/spy/offline-room/SpyOfflineRoom.model";
 import { SPY_ROLE, unsecretSpyRole } from "./games/spy/hooks/locations";
+import { OfflineGameShare } from "./games/spy/offline-room/SpyOfflineRoom.model";
 
+interface GameData {
+  icon: EvaIconName,
+  title: string,
+  onResetGame?: (room: GamerRoom | und) => Promise<SokiServerEvent | null> | nil,
+}
 
-export type GamerRoomGameSkelet<DataDifference = {}> = INavigationRouteChildItem<GamerNavData, { icon: EvaIconName, title: string } & DataDifference, GamerGameName>;
+export type GamerRoomGameSkelet<DataDifference = {}> = INavigationRouteChildItem<GamerNavData, GameData & DataDifference, GamerGameName>;
 
 export const gamerRoomGames: GamerRoomGameSkelet[] = [
   {
@@ -43,6 +49,7 @@ export const gamerRoomGames: GamerRoomGameSkelet[] = [
     data: {
       icon: 'smiling-face-outline',
       title: 'Алиас',
+      onResetGame: toStopAliasGame,
     },
   },
 ];
@@ -98,7 +105,7 @@ const gamerNavigation = new NavigationConfig<GamerStorage, GamerNavData>('gamer'
       next: [
         {
           phase: ["room"],
-          node: (config) => <GamerRoom config={config} />,
+          node: (config) => <TheGamerRoom config={config} />,
           next: [
             {
               phase: ['needChooseGame'],

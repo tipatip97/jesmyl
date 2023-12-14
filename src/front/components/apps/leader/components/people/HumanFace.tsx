@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
 import { useLeaderCcontext } from "../contexts/useContexts";
 import { HumanMoreContenter } from "./HumanMore";

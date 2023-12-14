@@ -1,6 +1,6 @@
 import { useState } from "react";
-import SendButton from "../../../../../complect/SendButton";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import SendButton from "../../../../../complect/sends/send-button/SendButton";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import mylib from "../../../../../complect/my-lib/MyLib";
 import useAuth from "../../../../index/useAuth";

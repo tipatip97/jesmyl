@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TheButton from "../../../../../complect/Button";
-import SendButton from "../../../../../complect/SendButton";
+import SendButton from "../../../../../complect/sends/send-button/SendButton";
 import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
 import { useGamerRoomActions } from "./hooks/actions";
 import useGamerOfflineRoomsActions from "./offline-room/hooks/actions";

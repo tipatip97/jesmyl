@@ -1,4 +1,4 @@
-import SendButton from "../../../../../complect/SendButton";
+import SendButton from "../../../../../complect/sends/send-button/SendButton";
 import RoomMemberFace from "../../complect/GamerRoomMemberFace";
 import { GamerRoomMember } from "../../Gamer.model";
 import { SpyRoomState } from "./Spy.model";

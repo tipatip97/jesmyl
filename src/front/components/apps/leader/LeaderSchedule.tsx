@@ -1,4 +1,4 @@
-import { useBottomPopup } from "../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import PhaseContainerConfigurer from "../../../complect/phase-container/PhaseContainerConfigurer";
 import ScheduleWidgetPage from "../../../complect/schedule-widget/general/Page";
 import { GeneralMoreContenter } from "./GeneralMore";

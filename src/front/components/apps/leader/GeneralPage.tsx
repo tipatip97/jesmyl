@@ -1,4 +1,4 @@
-import { useBottomPopup } from "../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import BrutalItem from "../../../complect/brutal-item/BrutalItem";
 import PhaseContainerConfigurer from "../../../complect/phase-container/PhaseContainerConfigurer";
 import { useLeaderCcontext } from "./components/contexts/useContexts";

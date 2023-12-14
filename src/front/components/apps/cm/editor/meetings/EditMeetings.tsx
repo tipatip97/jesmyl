@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import useExer from "../../../../../complect/exer/useExer";
 import { cmExer } from "../../Cm.store";
 import MeetingsInner from "../../lists/meetings/MeetingsInner";

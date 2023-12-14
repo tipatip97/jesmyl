@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import SendButton from "../../../../../complect/SendButton";
+import SendButton from "../../../../../complect/sends/send-button/SendButton";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import { useMyPossibilitiesCurrentRoom } from "../../complect/rooms/room/hooks/possibilities";
 import { GamerAliasRoomStatePhase } from "./Alias.model";
@@ -22,7 +22,7 @@ export default function AliasSpeakerContent() {
     const myTeam = useAliasCurrentTeamNaked('team');
     const { score } = useAliasComputeScore();
     const { minus, plus } = useAliasCurrentWordInfo() ?? altWordInfo;
-    const { resetGame, resetSpeech, startSpeech } = useAliasSimpleExecs();
+    const { resetSpeech, startSpeech } = useAliasSimpleExecs();
     const myPossibilities = useMyPossibilitiesCurrentRoom();
 
     if (!state) return null;
@@ -82,12 +82,6 @@ export default function AliasSpeakerContent() {
                     confirm
                     onSend={resetSpeech}
                 />
-                {!state.startTs
-                    && <SendButton
-                        title="Завершить игру"
-                        confirm
-                        onSend={resetGame}
-                    />}
             </div>}
     </>;
 }

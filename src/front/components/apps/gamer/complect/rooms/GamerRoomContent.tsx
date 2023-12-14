@@ -1,9 +1,10 @@
 import { useLayoutEffect, useState } from "react";
 import styled from "styled-components";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
 import EvaIcon, { IconEva } from "../../../../../complect/eva-icon/EvaIcon";
 import modalService from "../../../../../complect/modal/Modal.service";
+import { useConfirm } from "../../../../../complect/modal/useConfirm";
 import { NavigationThrowNodeProps } from "../../../../../complect/nav-configurer/Navigation.model";
 import { GamerGameName, GamerNavData, GamerRoom } from "../../Gamer.model";
 import useGamerNav, { GamerRoomGameSkelet } from "../../useGamerNav";
@@ -20,6 +21,9 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
   onRoomRemove: (roomw: number) => void,
   onGameChange: (gameName: GamerGameName) => void,
 }) {
+  const gameData = games.find(({ phase: [gameName] }) => room?.currentGame === gameName)?.data;
+  const [stopGameConfirmNode, stopGame] = useConfirm(() => room && gameData?.onResetGame?.(room));
+
   const [popupNode, openPopup] = useBottomPopup((_, prepare) => prepare({
     items: [
       config.relativePoint && {
@@ -30,9 +34,15 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
           setIsForceChoose(true);
         },
       },
+      isManager && gameData?.onResetGame && room && {
+        title: 'Завершить игру',
+        icon: 'close',
+        onClick: () => stopGame('Завершить игру?'),
+      },
       isOwner && {
         title: 'Удалить комнату',
         icon: "trash-2-outline",
+        className: 'color--ko',
         onClick: async () => {
           if (
             room &&
@@ -42,7 +52,7 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
             goBack();
           }
         },
-      }
+      },
     ]
   }));
   const { goTo, goBack } = useGamerNav();
@@ -59,18 +69,18 @@ export default function GamerRoomContent({ config, isInactive, isManager, isOwne
   return <GamerRoomDiv
     className=""
     headTitle={room?.name ? `${room.name}` : 'Комната'}
-    head={((gameData) => gameData &&
+    head={gameData &&
       <EvaButton
         name={gameData.icon}
         className="color--7 margin-gap-r"
         postfix={gameData.title}
-      />)
-      (games.find(({ phase: [gameName] }) => room?.currentGame === gameName)?.data)}
+      />}
     contentClass="flex column custom-align-items"
     onMoreClick={isManager ? openPopup : undefined}
     content={
       <>
         {popupNode}
+        {stopGameConfirmNode}
         {!room
           ? <div className="error-message text-center padding-giant-gap">
             Комната не найдена

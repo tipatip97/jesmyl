@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useBottomPopup } from "../../../../../../complect/absolute-popup/useBottomPopup";
+import { useBottomPopup } from "../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
 import { TeamGameImportable } from "../../../Leader.model";
 import { LeaderCleans } from "../../LeaderCleans";
 import LeaderCommentBlock from "../../comments/LeaderCommentBlock";

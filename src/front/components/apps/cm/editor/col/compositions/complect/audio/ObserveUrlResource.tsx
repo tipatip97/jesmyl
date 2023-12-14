@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { CmMp3ContainsPageResult } from "../../../../../../../../models";
 import KeyboardInput from "../../../../../../../../complect/keyboard/KeyboardInput";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
-import SendButton from "../../../../../../../../complect/SendButton";
+import SendButton from "../../../../../../../../complect/sends/send-button/SendButton";
 import serviceMaster from "../../../../../../../../complect/service/serviceMaster";
 import { RootState } from "../../../../../../../../shared/store";
 
@@ -57,7 +57,6 @@ export default function ObserveUrlResource({ onSuccess, availableWithTextQuery }
                 title="Обзор URL"
                 disabled={!url || !!errorMessage}
                 onSuccess={onSuccess}
-                onFailure={(errorMessage) => modalService.alert(<pre>{errorMessage}</pre>, 'Ошибка')}
                 onSend={() => sendService<CmMp3ContainsPageResult>('getResourceData', url)}
             />
         </div>

@@ -1,4 +1,4 @@
-import { BottomPopupContenter } from "../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenter } from "../../../complect/absolute-popup/bottom-popup/model";
 import useFullContent from "../../../complect/fullscreen-content/useFullContent";
 import NewLeaderContextMaster from "./components/contexts/NewContextMaster";
 import HumanMaster from "./components/people/HumanMaster";

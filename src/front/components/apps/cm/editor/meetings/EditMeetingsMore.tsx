@@ -1,4 +1,4 @@
-import { bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/bottom-popup/item-preparer";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useAuth from "../../../../index/useAuth";
 import { cmExer } from "../../Cm.store";

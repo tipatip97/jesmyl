@@ -1,5 +1,5 @@
 import React from "react";
-import EvaSendButton from "../../../../../complect/eva-icon/send-button/EvaSendButton";
+import EvaSendButton from "../../../../../complect/sends/eva-send-button/EvaSendButton";
 import useToast from "../../../../../complect/modal/useToast";
 import useAuth from "../../../../index/useAuth";
 import { AliasWordInfo } from "./Alias.model";

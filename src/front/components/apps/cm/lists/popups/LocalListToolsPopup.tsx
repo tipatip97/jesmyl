@@ -1,4 +1,4 @@
-import { BottomPopupContenter } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenter } from "../../../../../complect/absolute-popup/bottom-popup/model";
 import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
 import useQRMaster from "../../../../../complect/qr-code/useQRMaster";
 import useCmNav from "../../base/useCmNav";

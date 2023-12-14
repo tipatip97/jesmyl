@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
-import { BottomPopupContenter } from "../../../../complect/absolute-popup/useBottomPopup";
 import modalService from "../../../../complect/modal/Modal.service";
 import useQRMaster from "../../../../complect/qr-code/useQRMaster";
 import di from "../../Index.store";
 import useIndexNav from "../../complect/useIndexNav";
 import indexStorage from "../../indexStorage";
 import useAuth, { removePullRequisites } from "../../useAuth";
+import { BottomPopupContenter } from "../../../../complect/absolute-popup/bottom-popup/model";
 
 export const UserMore: BottomPopupContenter = (_, prepare) => {
   const dispatch = useDispatch();

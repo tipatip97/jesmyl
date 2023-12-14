@@ -1,4 +1,4 @@
-import { bottomPopupContentPreparer } from "../../../../../../../../complect/absolute-popup/useBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../../../complect/absolute-popup/bottom-popup/item-preparer";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import { cmExer } from "../../../../../Cm.store";

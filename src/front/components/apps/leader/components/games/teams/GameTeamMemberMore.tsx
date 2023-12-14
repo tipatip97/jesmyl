@@ -1,4 +1,4 @@
-import { BottomPopupContenterPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
+import { BottomPopupContenterPreparer } from "../../../../../../complect/absolute-popup/bottom-popup/model";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import { TeamGameImportable } from "../../../Leader.model";
 import { leaderExer } from "../../../Leader.store";

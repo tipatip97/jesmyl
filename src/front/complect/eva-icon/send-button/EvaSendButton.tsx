@@ -1,59 +1,31 @@
-import { useState } from "react";
-import useToast from "../../modal/useToast";
-import { EvaSendButtonBody } from "./Body";
+import EvaIcon from "../EvaIcon";
 import { EvaSendButtonProps } from "./EvaSendButton.model";
-import { EvaSendButtonWithConfirm } from "./WithConfirm";
 
-export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [toastNode, toast] = useToast();
-
-  const sysClassName = (props.disabled ? ' disabled ' : ' pointer ')
-    + (isError ? ' color--ko ' : '');
-
-  const onClick = !props.disabled && props.onSend !== undefined
-    ? (async (event: React.MouseEvent<unknown> | KeyboardEvent) => {
-      event.stopPropagation();
-
-      const promise = props.onSend?.();
-      if (promise instanceof Promise) {
-        setIsError(false);
-        setIsLoading(true);
-        promise
-          .then((val) => {
-            setIsLoading(false);
-            props.onSuccess?.(val);
-          })
-          .catch((errorMessage) => {
-            setIsLoading(false);
-            setIsError(true);
-            setTimeout(setIsError, 3000, false);
-            const error = props.onFailure?.(errorMessage);
-            if (error) toast(error, { mood: 'ko' });
-          });
-      }
-    })
-    : undefined;
-
-  if (props.confirm != null && onClick !== undefined)
+export function EvaSendButton<Value>(props: EvaSendButtonProps<Value> &
+{
+    onClick?: (event: React.MouseEvent<unknown>) => void,
+    isLoading: boolean,
+    sysClassName: string,
+}) {
     return <>
-      {toastNode}
-      <EvaSendButtonWithConfirm<Value>
-        {...props}
-        isLoading={isLoading}
-        onClick={onClick}
-        sysClassName={sysClassName}
-      />
+        {props.prefix === undefined && props.postfix === undefined
+            ? <EvaIcon
+                name={props.isLoading ? 'loader-outline' : props.name}
+                className={props.sysClassName
+                    + (props.isLoading ? ' rotate ' : '')
+                    + (props.className || '')}
+                onClick={props.onClick}
+            />
+            : <span
+                className={'flex flex-gap ' + (props.sysClassName || 'flex-max ') + (props.className || '')}
+                onClick={props.onClick}
+            >
+                {props.prefix}
+                <EvaIcon
+                    name={props.isLoading ? 'loader-outline' : props.name}
+                    className={props.sysClassName + (props.isLoading ? ' rotate ' : '')}
+                />
+                {props.postfix}
+            </span>}
     </>;
-
-  return <>
-    {toastNode}
-    <EvaSendButtonBody<Value>
-      {...props}
-      onClick={onClick}
-      isLoading={isLoading}
-      sysClassName={sysClassName}
-    />
-  </>;
 }

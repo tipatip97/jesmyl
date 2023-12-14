@@ -1,5 +1,5 @@
 
-import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/useBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../complect/absolute-popup/bottom-popup/item-preparer";
 import modalService from "../../../../../../complect/modal/Modal.service";
 import useSelectedComs from "../../../base/useSelectedComs";
 import ComFaceContextMenuEditorItems from "../../../editor/col/compositions/ComFaceContextMenuEditorItems";

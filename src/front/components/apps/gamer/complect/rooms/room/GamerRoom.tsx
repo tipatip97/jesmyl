@@ -6,7 +6,7 @@ import { useGamerRoomActions } from "../hooks/actions";
 import { useGamerCurrentRoom } from "./hooks/current-room";
 import { useMyPossibilitiesCurrentRoom } from "./hooks/possibilities";
 
-export default function GamerRoom({ config }: { config: NavigationThrowNodeProps<GamerNavData> }) {
+export default function TheGamerRoom({ config }: { config: NavigationThrowNodeProps<GamerNavData> }) {
   const possibilities = useMyPossibilitiesCurrentRoom();
   const { removeRoom, setCurrentGame } = useGamerRoomActions();
   const currentRoom = useGamerCurrentRoom();

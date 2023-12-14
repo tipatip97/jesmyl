@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { bottomPopupContentPreparer } from "../../../../../../../../complect/absolute-popup/useBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../../../../complect/absolute-popup/bottom-popup/item-preparer";
 import useExer from "../../../../../../../../complect/exer/useExer";
 import modalService from "../../../../../../../../complect/modal/Modal.service";
 import mylib from "../../../../../../../../complect/my-lib/MyLib";

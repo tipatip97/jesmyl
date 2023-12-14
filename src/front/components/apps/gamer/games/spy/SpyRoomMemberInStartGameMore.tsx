@@ -1,4 +1,4 @@
-import { bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/useBottomPopup";
+import { bottomPopupContentPreparer } from "../../../../../complect/absolute-popup/bottom-popup/item-preparer";
 import { GamerRoomMember } from "../../Gamer.model";
 import { useGamerRoomActions } from "../../complect/rooms/hooks/actions";
 import { useGamerCurrentRoom } from "../../complect/rooms/room/hooks/current-room";
