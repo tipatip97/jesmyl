@@ -1,4 +1,3 @@
-import React, { Suspense } from "react";
 import modalService from "../../../complect/modal/Modal.service";
 import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
 import { UseNavAction } from "../../../complect/nav-configurer/Navigation.model";
@@ -10,7 +9,7 @@ import { IndexAuthorization } from "../parts/login/IndexAuthorization";
 import IndexSettings from "../parts/settings/Settings";
 import ScheduleWidgetAlarmScheduleList from "./AlarmScheduleList";
 
-const Main = React.lazy(() => import("../parts/main/IndexMain"));
+import Main from "../parts/main/IndexMain";
 
 const actions: UseNavAction[] = [];
 const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
@@ -32,11 +31,7 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
       phase: ["other"],
       title: "Другое",
       icon: "arrow-circle-right",
-      node: (
-        <Suspense fallback={<></>}>
-          <Main />
-        </Suspense>
-      ),
+      node: <Main />,
       next: [
         {
           phase: ["settings"],
