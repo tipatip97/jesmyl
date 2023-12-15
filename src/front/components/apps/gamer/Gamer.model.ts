@@ -23,7 +23,7 @@ export interface GamerStoraged {
     locations?: string[],
 
     // alias
-    aliasWords: AliasWordsPack[],
+    aliasWordPacks: AliasWordsPack[],
 }
 
 export interface GamerPassport {

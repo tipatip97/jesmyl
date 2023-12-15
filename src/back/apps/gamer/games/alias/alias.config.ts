@@ -128,10 +128,10 @@ export const aliasGameConfig: ActionBox = {
 
                 const speakeri: number = startNextMembersi + smylib.randomItem(speaksii);
 
-                const aliasWords: AliasWordsPack[] = filer.contents.gamer?.aliasWords?.data;
-                const mapper = (nid: number) => AliasHelp.takeWordInfo(aliasWords, state.dicts, nid)!;
+                const aliasWordPacks: AliasWordsPack[] = filer.contents.gamer?.aliasWordPacks?.data;
+                const mapper = (nid: number) => AliasHelp.takeWordInfo(aliasWordPacks, state.dicts, nid)!;
 
-                const score = aliasWords
+                const score = aliasWordPacks
                     ? AliasHelp.computeGameScore(
                         state.cor.map(mapper).filter(isIs),
                         state.inc.map(mapper).filter(isIs),

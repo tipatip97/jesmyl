@@ -8,7 +8,7 @@ const config: FilerAppConfig = {
     requirements: {
         locations: null,
         rooms: null,
-        aliasWords: null,
+        aliasWordPacks: null,
     },
     actions: Executer.prepareActionList({
         "/locations": {
