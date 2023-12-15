@@ -124,15 +124,20 @@ export default function AliasRoomInitialContent() {
                         postfix={<>
                             {'Выбрать словари - '}
                             {dicts.length
-                                ? dicts.map((level, leveli) =>
-                                    packs[leveli].title
-                                    + ' ('
-                                    + (mylib.isNum(packs[leveli].words)
-                                        ? level
-                                        : (levelGradationTitles[level])
-                                        + (' - ' + Object.values(packs[leveli].words).reduce((acc, num) => acc + +(num <= level), 0)))
-                                    + ' сл.)'
-                                ).join(' + ')
+                                ? dicts
+                                    .map((level, leveli) =>
+                                        !level
+                                            ? ''
+                                            : packs[leveli].title
+                                            + ' ('
+                                            + (mylib.isNum(packs[leveli].words)
+                                                ? level
+                                                : (levelGradationTitles[level])
+                                                + (' - ' + Object.values(packs[leveli].words).reduce((acc, num) => acc + +(num <= level), 0)))
+                                            + ' сл.)'
+                                    )
+                                    .filter(it => it)
+                                    .join(' + ')
                                 : <span className="color--ko">Не выбраны</span>}
                         </>}
                         onClick={() => openDicts()}
