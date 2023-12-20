@@ -12,7 +12,7 @@ import {
 import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
 import { QRCodeReaderData } from "../../../complect/qr-code/QRCodeMaster.model";
 import Gamer from "./Gamer";
-import { GamerGameName, GamerNavData, GamerPassport, GamerRoom, GamerStorage } from "./Gamer.model";
+import { GamerNavData, GamerPassport,GamerStorage } from "./Gamer.model";
 import di from "./Gamer.store";
 import GamerApp from "./GamerApp";
 import TheGamerPassport from "./complect/GamerPassport";
@@ -25,6 +25,7 @@ import { toStopAliasGame } from "./games/alias/hooks/execs";
 import SpyRoomContent from "./games/spy/SpyRoomContent";
 import { SPY_ROLE, unsecretSpyRole } from "./games/spy/hooks/locations";
 import { OfflineGameShare } from "./games/spy/offline-room/SpyOfflineRoom.model";
+import { GamerGameName, GamerRoom } from "./Gamer.back-model";
 
 interface GameData {
   icon: EvaIconName,

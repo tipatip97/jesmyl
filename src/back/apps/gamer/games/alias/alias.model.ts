@@ -8,8 +8,6 @@ export interface AliasGameTeam {
     rounds: number,
 }
 
-export type AliasWordPackNid = number; // (\d+).(\d) => (packi, leveli)
-export type AliasWordNid = number; // (\d+).(\d)(\d+) => (packi, leveli, wordi)
 
 export enum GamerAliasRoomStatePhase {
     Initial,
@@ -25,28 +23,36 @@ export interface AliasWordsPack {
 }
 
 
-export interface GamerAliasRoomState {
-    phase?: GamerAliasRoomStatePhase,
+export interface StartAliasRoundState {
     teams: AliasGameTeam[],
     roundTime: number,
-    speaks: number[],
-    speakeri?: number,
-    startTs?: number,
-    words: AliasWordNid[],
     dream: number,
     dicts: number[],
-    cor: AliasWordNid[],
-    inc: AliasWordNid[],
-    fix: AliasWordNid[],
-    invert?: Record<AliasWordNid, string[]>,
+}
+
+export interface GamerAliasRoomState extends StartAliasRoundState {
+    phase: GamerAliasRoomStatePhase,
+    speaks: number[],
+    speakeri: number,
+    wordsi: number,
+    startTs: number,
+    lens: number[] | und,
+    token: string,
+    cor: number[],
+    inc: number[],
+    fix: number[],
+    invert: Record<number, string[]>,
+}
+
+export interface StartAliasRoundProps extends StartAliasRoundState {
+    isResortWords: boolean,
 }
 
 export interface AliasWordInfo {
     word: string,
     weight: number,
     packi: number,
-    nid: AliasWordNid,
-    max: number,
+    wordi: number,
     plus: number,
     minus: number,
 }

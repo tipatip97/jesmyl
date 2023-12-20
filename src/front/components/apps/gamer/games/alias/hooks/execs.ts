@@ -1,19 +1,16 @@
 import { useCallback, useMemo } from "react";
-import mylib, { MyLib } from "../../../../../../complect/my-lib/MyLib";
+import mylib from "../../../../../../complect/my-lib/MyLib";
 import { GamerRoom, GamerRoomMember, GamerRoomMemberLogin } from "../../../Gamer.model";
 import { gamerExer } from "../../../Gamer.store";
 import { useGamerPlayers } from "../../../complect/rooms/hooks/players";
 import { useGamerCurrentRoom } from "../../../complect/rooms/room/hooks/current-room";
-import { AliasGameTeam, AliasWordNid, AliasWordsPack, GamerAliasRoomState } from "../Alias.model";
-import { AliasHelp } from "../AliasHelp";
+import { AliasGameTeam, GamerAliasRoomState, StartAliasRoundProps } from "../Alias.model";
 import { useAliasCurrentTeamNaked } from "./current-team";
-import { useNounsPronouns } from "./nouns-pronouns-lines";
-import { useAliasPacks } from "./packs";
 import { useAliasRoomState } from "./state";
-import { takeAliasCurrentWordNid } from "./word";
+import { useAliasCurrentWordInfo } from "./word";
 
 
-const sendExec = (room: GamerRoom | und, action: string, args?: Record<string, unknown>) => {
+const sendExec = (room: GamerRoom | und, action: string, args?: {}) => {
     if (!room) return;
 
     return gamerExer.send({
@@ -29,6 +26,7 @@ export const useAliasStrikeWord = () => {
     const state = useAliasRoomState();
     const currentRoom = useGamerCurrentRoom();
     const teami = useAliasCurrentTeamNaked('index');
+    const wordInfo = useAliasCurrentWordInfo(state);
 
     return useCallback((scope: 'cor' | 'inc') => {
         if (!state || !currentRoom) return;
@@ -39,78 +37,43 @@ export const useAliasStrikeWord = () => {
             roomw: currentRoom.w,
             scope,
             teami,
-            word: takeAliasCurrentWordNid(state),
+            word: wordInfo.word,
         });
-    }, [currentRoom, state, teami]);
+    }, [currentRoom, state, teami, wordInfo.word]);
 };
 
 export const useAliasRejectWord = () => {
     const currentRoom = useGamerCurrentRoom();
     const state = useAliasRoomState();
 
-    return useCallback((nid: number) => {
-        return state?.cor.concat(state.inc).includes(nid)
-            ? sendExec(currentRoom, 'rejectAliasWord', { nid })
+    return useCallback((wordi: number) => {
+        return state?.cor.merge(state.inc).includes(wordi)
+            ? sendExec(currentRoom, 'rejectAliasWord', { wordi })
             : null
     }, [currentRoom, state?.cor, state?.inc]);
 };
 
-export const useAliasStartRoundNaked = () => useAliasStartRound(useAliasRoomState(), useAliasPacks(), useGamerPlayers(useGamerCurrentRoom()));
+export const useAliasStartRoundNaked = () => useAliasStartRound(useAliasRoomState(), useGamerPlayers(useGamerCurrentRoom()));
 
-export const useAliasStartRound = (state: GamerAliasRoomState | und, packs: AliasWordsPack[], players: GamerRoomMember[] | und) => {
+export interface AliasNewRoundState {
+    isComputeNewTeams: boolean,
+    isResortWords: boolean,
+    teamsCount: number,
+    roundTime: number,
+    dream: number,
+    dicts: number[],
+    teamsTitles: string[],
+}
+
+export const useAliasStartRound = (state: GamerAliasRoomState | und, players: GamerRoomMember[] | und) => {
     const currentRoom = useGamerCurrentRoom();
-    const randomNounProns = useNounsPronouns();
 
-    return useCallback((props: {
-        isComputeNewTeams: boolean,
-        isPrevWords: boolean,
-        teamsCount: number,
-        roundTime: number,
-        dream: number,
-        dicts: number[],
-        teamsTitles: string[]
-    }) => {
+    return useCallback((props: AliasNewRoundState) => {
         if (!players || !currentRoom) return;
 
         let teams: AliasGameTeam[] = [];
-        let words: AliasWordNid[] = [];
         const teamMembers: GamerRoomMemberLogin[][] = [];
         const sortedPlayers = mylib.randomSort([...players]);
-        const speaks = players.reduce<number[]>((acc) => acc.concat(0), []);
-
-        if (!props.isPrevWords || !state) {
-            const nouns = randomNounProns ? mylib.keys(randomNounProns.nouns) : [];
-            const pronouns = randomNounProns ? mylib.keys(randomNounProns.pronouns) : [];
-
-            packs.forEach((pack, packi) => {
-                const max = props.dicts[packi];
-                if (max === 0 || max === undefined) return;
-
-                if (mylib.isNum(pack.words)) {
-                    while (words.length < max) {
-                        const nouni = mylib.randomIndex(nouns);
-                        const pronouni = mylib.randomIndex(pronouns, -1);
-
-                        const weight = randomNounProns
-                            ? randomNounProns.nouns[nouns[nouni]]
-                            + randomNounProns.pronouns[pronouns[pronouni]]
-                            : 1;
-
-                        const num = AliasHelp.encodeWordNid(pack.words + pronouni, weight > 9 ? 0 : weight, nouni);
-
-                        if (num !== null) words.push(num);
-                    }
-                    return;
-                }
-
-                MyLib.entries(pack.words).forEach(([word, weight], wordi) => {
-                    if (weight > max || word === '' || weight === 0) return;
-                    const num = AliasHelp.encodeWordNid(packi, weight, wordi);
-                    if (num !== null) words.push(num);
-                });
-            });
-            mylib.randomSort(words);
-        } else words = state.words;
 
         while (sortedPlayers.length)
             for (let i = 0; i < props.teamsCount; i++) {
@@ -143,19 +106,16 @@ export const useAliasStartRound = (state: GamerAliasRoomState | und, packs: Alia
             }) || [];
         }
 
-        const stateArgs: Partial<GamerAliasRoomState> = {
+        const startProps: StartAliasRoundProps = {
             teams,
             roundTime: props.roundTime,
-            speaks,
-            speakeri: 0,
-            words,
-            startTs: 0,
             dream: props.dream,
             dicts: props.dicts,
+            isResortWords: props.isResortWords,
         };
 
-        sendExec(currentRoom, 'startAliasRound', stateArgs as never);
-    }, [currentRoom, packs, players, randomNounProns, state]);
+        sendExec(currentRoom, 'startAliasRound', startProps);
+    }, [currentRoom, players, state]);
 };
 
 
@@ -164,8 +124,9 @@ export const useAliasSimpleExecs = () => {
 
     return useMemo(() => ({
         rememberScore: () => sendExec(currentRoom, 'computeAliasScore'),
+        skipTheMemberTurn: () => sendExec(currentRoom, 'skipTheMemberTurn'),
         resetSpeech: () => sendExec(currentRoom, 'resetAliasSpeech'),
-        fixWord: (nid: number) => sendExec(currentRoom, 'fixAliasWord', { nid }),
+        fixWord: (wordi: number) => sendExec(currentRoom, 'fixAliasWord', { wordi }),
         startSpeech: () => {
             if (!currentRoom) return;
 

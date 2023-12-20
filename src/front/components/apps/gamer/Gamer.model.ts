@@ -1,9 +1,9 @@
+import { GamerGameName, GamerRoom } from "./Gamer.back-model";
 import { AliasWordsPack } from "./games/alias/Alias.model";
 import { OfflineSpyGame } from "./games/spy/offline-room/SpyOfflineRoom.model";
 
-import { GamerRoom, GamerGameName } from "../../../models";
 import { offlineRoomShareDataKey } from "./games/spy/offline-room/hooks/share-game";
-export * from "../../../models";
+export * from "./Gamer.back-model";
 
 export interface GamerState extends GamerStoraged {
 }

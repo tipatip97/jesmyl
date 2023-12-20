@@ -1,6 +1,6 @@
 import React from "react";
-import EvaSendButton from "../../../../../complect/sends/eva-send-button/EvaSendButton";
 import useToast from "../../../../../complect/modal/useToast";
+import EvaSendButton from "../../../../../complect/sends/eva-send-button/EvaSendButton";
 import useAuth from "../../../../index/useAuth";
 import { AliasWordInfo } from "./Alias.model";
 import { useAliasRejectWord, useAliasSimpleExecs } from "./hooks/execs";
@@ -27,16 +27,16 @@ export default function AliasGameRoundResultsAnswerList({ answers, myIncorrects 
 
     return <>
         {toastNode}
-        {answers?.map(({ nid, word, weight, max }) => {
-            const isStriked = fix.includes(nid);
-            const scoreNum = (isStriked ? !myIncorrects : myIncorrects) ? -(max - weight) - 1 : weight;
-            const isInvert = state.invert?.[nid] && (
+        {answers?.map(({ wordi, word, minus, plus }) => {
+            const isStriked = fix.includes(wordi);
+            const scoreNum = (isStriked ? !myIncorrects : myIncorrects) ? -minus : plus;
+            const isInvert = state.invert?.[wordi] && (
                 isItMySpeech
-                    ? state.invert[nid].length
-                    : auth.login && state.invert[nid].includes(auth.login));
+                    ? state.invert[wordi].length
+                    : auth.login && state.invert[wordi].includes(auth.login));
 
 
-            return <React.Fragment key={nid}>
+            return <React.Fragment key={word}>
                 <div className="flex glex-gap">
                     <div
                         className={
@@ -48,7 +48,7 @@ export default function AliasGameRoundResultsAnswerList({ answers, myIncorrects 
                     {isItMySpeech && !isInvert
                         ? <EvaSendButton
                             name={`${(isStriked ? myIncorrects : !myIncorrects) ? 'minus-circle' : 'plus-circle'}${isStriked ? '-outline' : ''}`}
-                            onSend={() => fixWord(nid)}
+                            onSend={() => fixWord(wordi)}
                             className="margin-gap-l"
                             onFailure={showKo}
                             onSuccess={isItMySpeech && myIncorrects && !isStriked
@@ -59,7 +59,7 @@ export default function AliasGameRoundResultsAnswerList({ answers, myIncorrects 
                             name={`${myIncorrects ? 'checkmark-square-2' : 'alert-triangle'}${isStriked ? '-outline' : ''}`}
                             className={'margin-sm-gap-l'
                                 + (isInvert ? myIncorrects ? ' color--ok' : ' color--ko' : '')}
-                            onSend={() => isItMySpeech ? fixWord(nid) : rejectWord(nid)}
+                            onSend={() => isItMySpeech ? fixWord(wordi) : rejectWord(wordi)}
                             onFailure={showKo}
                             onSuccess={isItMySpeech
                                 ? !myIncorrects && isInvert
@@ -77,7 +77,7 @@ export default function AliasGameRoundResultsAnswerList({ answers, myIncorrects 
                 {isItMySpeech
                     && <div className="margin-gap-l">
                         {!myIncorrects && !isStriked && isInvert
-                            ? `(есть возражение соперников ${state.invert?.[nid].length})`
+                            ? `(есть возражение соперников ${state.invert?.[wordi].length})`
                             : myIncorrects && isStriked && !isInvert && '(нет согласных соперников)'}
                     </div>}
             </React.Fragment>;

@@ -15,4 +15,7 @@ export const useAliasCurrentTeam = <RetMode extends 'index' | 'team'>(returnMode
     }, [memberList, returnMode, state]);
 };
 
-export const useAliasCurrentTeamNaked = <RetMode extends 'index' | 'team'>(returnMode: RetMode) => useAliasCurrentTeam(returnMode, useAliasRoomState(), useAliasMemberList());
+export const useAliasCurrentTeamNaked = <RetMode extends 'index' | 'team'>(returnMode: RetMode) => {
+    const state = useAliasRoomState();
+    return useAliasCurrentTeam(returnMode, state, useAliasMemberList(state));
+};

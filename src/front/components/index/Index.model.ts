@@ -1,4 +1,4 @@
-import { LocalSokiAuth, ServerAuthorizationData, ServerRegisterData, SokiStatistic } from "../../models";
+import { LocalSokiAuth, NounPronsType, ServerAuthorizationData, ServerRegisterData, SokiStatistic } from "../../models";
 import { AppName } from "../../app/App.model";
 import { ScheduleStorage } from "../../complect/schedule-widget/ScheduleWidget.model";
 
@@ -10,7 +10,7 @@ export interface IndexState {
     errors: Partial<Record<IndexErrorScope, string>>,
     statistic: SokiStatistic | null,
     deviceId: string,
-    nounPronsWords?: Record<'pronouns' | 'nouns', Record<string, number>>,
+    nounPronsWords?: NounPronsType,
 
     updateRequisites?: Partial<Record<AppName, [
         number, // last content updated ts

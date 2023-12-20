@@ -1,5 +1,5 @@
+import { LocalSokiAuth } from "../../../../../../models";
 import useAuth from "../../../../../index/useAuth";
-import { LocalSokiAuth } from "../../../Gamer.model";
 import { useAliasCurrentTeamNaked } from "./current-team";
 import { useAliasSpeakerLogin } from "./speaker-login";
 
