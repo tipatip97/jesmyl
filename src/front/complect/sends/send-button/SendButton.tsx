@@ -28,7 +28,7 @@ export default function SendButton<Value>(props: SendButtonProps<Value>) {
         onClick={props.disabled ? undefined : onClick}
       >
         {props.title}
-        <div className="absolute full-height flex center pos-right pos-top margin-large-gap-r">
+        <div className="absolute full-height flex center pos-right pos-top margin-big-gap-r">
           {error
             ? <EvaIcon name="alert-circle-outline" className="error-message" />
             : isLoading
