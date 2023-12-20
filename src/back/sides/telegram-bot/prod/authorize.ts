@@ -54,7 +54,7 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
             + `\nКод: <code>${telegramAuthorizationUsers[id]}</code>`);
 
 
-        prodBot.log(`Повторный запрос кода авторизации${prefix}`);
+        prodBot.logger.codeRequest(`Повторный запрос кода авторизации${prefix}`);
 
         return 'Код отправлен повторно';
     }
@@ -91,7 +91,7 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
         ) return;
     } catch (error) { }
 
-    prodBot.log(`Запрос кода авторизации${prefix}`);
+    prodBot.logger.codeRequest(`Запрос кода авторизации${prefix}`);
 
     return 'Код отправлен';
 };

@@ -1,12 +1,12 @@
 import { jesmylTgBot } from "../bot";
-import { logTelegramBot } from "../log/log-bot";
+import { tglogger } from "../log/log-bot";
 import { prodStartOptions } from "../prod/prod-bot";
 import { JesmylTelegramBot } from "../tg-bot";
 
 export const supportTelegramBot = new JesmylTelegramBot({
     bot: jesmylTgBot,
     chatId: -1001938269237,
-    logBot: logTelegramBot,
+    logger: tglogger,
 });
 
 

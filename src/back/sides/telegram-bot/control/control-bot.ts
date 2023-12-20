@@ -1,7 +1,7 @@
 import { SendMessageOptions } from "node-telegram-bot-api";
 import sokiServer from "../../../complect/soki/SokiServer";
 import { jesmylTgBot } from "../bot";
-import { logTelegramBot } from "../log/log-bot";
+import { tglogger } from "../log/log-bot";
 import { prodTelegramBot } from "../prod/prod-bot";
 import { supportTelegramBot } from "../support/support-bot";
 import { JesmylTelegramBot } from "../tg-bot";
@@ -9,8 +9,7 @@ import { JesmylTelegramBot } from "../tg-bot";
 export const controlTelegramBot = new JesmylTelegramBot({
     bot: jesmylTgBot,
     chatId: -1002054074700,
-    logBot: logTelegramBot,
-    logAllAsJSON: true,
+    logger: tglogger,
 });
 
 const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOptions([
@@ -41,11 +40,11 @@ const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOp
             cb: async (bot) => {
                 sokiServer.reloadFiles()
                     .then(() => {
-                        bot.log(`💫 Файлы были перечитаны`);
+                        bot.logger.log(`💫 Файлы были перечитаны`);
                         bot.postMessage(`💫 Файлы были перечитаны`);
                     })
                     .catch((error) => {
-                        bot.log(`💫 Ошибка перечитывания файлов\n\n${error}`);
+                        bot.logger.log(`💫 Ошибка перечитывания файлов\n\n${error}`);
                         bot.postMessage(`💫 Ошибка перечитывания файлов\n\n${error}`);
                     });
             },

@@ -1,6 +1,7 @@
 import TgBot, { ChatMember, InlineKeyboardButton, InlineKeyboardMarkup, SendMessageOptions, User } from 'node-telegram-bot-api';
 import smylib from '../../shared/SMyLib';
 import { JTgBotCallbackQuery, JTgBotChatMessageCallback, JesmylTelegramBotWrapper } from './tg-bot-wrapper';
+import { TgLogger } from './log/log-bot';
 
 const botName = 'jesmylbot';
 
@@ -10,14 +11,14 @@ export type FreeAnswerCallbackQueryOptions = Omit<Partial<TgBot.AnswerCallbackQu
 
 export class JesmylTelegramBot {
     private chatId: number;
-    private logBot?: JesmylTelegramBot;
+    logger: TgLogger;
     private logAllAsJSON?: boolean;
     private _bot: JesmylTelegramBotWrapper;
     admins: Record<number, ChatMember> = emptyAdmins;
     botName = botName;
 
-    constructor(props: { logAllAsJSON?: boolean, chatId: number, bot: JesmylTelegramBotWrapper, logBot?: JesmylTelegramBot }) {
-        this.logBot = props.logBot;
+    constructor(props: { logAllAsJSON?: boolean, chatId: number, bot: JesmylTelegramBotWrapper, logger: TgLogger }) {
+        this.logger = props.logger;
         this.chatId = props.chatId;
         this.logAllAsJSON = props.logAllAsJSON;
         this._bot = props.bot;
@@ -43,9 +44,9 @@ export class JesmylTelegramBot {
 
     onChatMessages(cb: JTgBotChatMessageCallback) {
         this._bot.registerOnChatMessages(this, this.chatId,
-            this.logAllAsJSON && this.logBot
+            this.logAllAsJSON && this.logger
                 ? (bot, message, metadata) => {
-                    this.logAsJson({ message, metadata });
+                    this.logger.jsonCode({ message, metadata });
                     cb(bot, message, metadata);
                 }
                 : cb);
@@ -53,9 +54,9 @@ export class JesmylTelegramBot {
 
     onChatQueries(cb: JTgBotCallbackQuery) {
         this._bot.registerQueryListener(this, this.chatId,
-            this.logAllAsJSON && this.logBot
+            this.logAllAsJSON && this.logger
                 ? (bot, query, metadata) => {
-                    this.logAsJson({ query });
+                    this.logger.jsonCode({ query });
                     cb(bot, query, metadata);
                 }
                 : cb);
@@ -79,8 +80,8 @@ export class JesmylTelegramBot {
             }).then(this.logAllAsJSON
                 ? (message) => {
                     if (message)
-                        if (message === true) this.log(`Изменено сообщение в чате:\n\n` + text);
-                        else this.log(`Изменено сообщение #${messageId} в чате ${message.chat.title}:\n\n` + text);
+                        if (message === true) this.logger.log(`Изменено сообщение в чате:\n\n` + text);
+                        else this.logger.log(`Изменено сообщение #${messageId} в чате ${message.chat.title}:\n\n` + text);
                 }
                 : undefined);
         } catch (error) { }
@@ -105,16 +106,10 @@ export class JesmylTelegramBot {
         });
     }
 
-    logAsJson(data: unknown) {
-        try {
-            this.log('<code>' + JSON.stringify(data, null, 1) + '</code>');
-        } catch (error) { }
-    }
+    postMessage(text: string, options?: TgBot.SendMessageOptions) {
+        if (this.logAllAsJSON) this.logger.jsonCode({ message: text, options });
 
-    postMessage(message: string, options?: TgBot.SendMessageOptions) {
-        if (this.logAllAsJSON) this.logAsJson({ message, options });
-
-        return this._bot.bot.sendMessage(this.chatId, message, { parse_mode: 'HTML', ...options });
+        return this._bot.bot.sendMessage(this.chatId, text, { parse_mode: 'HTML', ...options });
     }
 
     getUserData(id: number) {
@@ -133,16 +128,12 @@ export class JesmylTelegramBot {
         return prefix === text || `${prefix}@${botName}` === text;
     }
 
-    log(text: string) {
-        return this.logBot?.postMessage(text);
-    }
-
     sendMessage(userOrId: User | number, text: string, options?: TgBot.SendMessageOptions) {
         return new Promise<{ ok: false, value: string } | { ok: true, value: TgBot.Message }>((res) => {
             this._bot.bot.sendMessage(smylib.isNum(userOrId) ? userOrId : userOrId.id, text, { parse_mode: 'HTML', ...options })
                 .then((message) => res({ ok: true, value: message }))
                 .catch(() => {
-                    this.log(`<b>!!!!!!!!!!!!!\n!!!!!!!!!!!!!\n!!!!!!!!!!!!!\n\nПопытка отправки сообщения неизвестному пользователю</b>\n\n<code>${JSON.stringify(userOrId, null, 1)}</code>\n\n${text}`);
+                    this.logger.error(`Попытка отправки сообщения неизвестному пользователю\n\n<code>${JSON.stringify(userOrId, null, 1)}</code>\n\n${text}`);
                     res({ ok: false, value: 'Бот @jesmylbot не запущен' });
                 });
         });

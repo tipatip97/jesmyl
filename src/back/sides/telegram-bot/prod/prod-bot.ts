@@ -1,14 +1,14 @@
 
 import { SendMessageOptions } from "node-telegram-bot-api";
 import { jesmylTgBot } from "../bot";
-import { logTelegramBot } from "../log/log-bot";
+import { tglogger } from "../log/log-bot";
 import { JesmylTelegramBot } from "../tg-bot";
 import { authorizeTelegramCb } from "./authorize";
 
 export const prodTelegramBot = new JesmylTelegramBot({
     bot: jesmylTgBot,
     chatId: -1001304718820,
-    logBot: logTelegramBot,
+    logger: tglogger,
     logAllAsJSON: true,
 });
 
