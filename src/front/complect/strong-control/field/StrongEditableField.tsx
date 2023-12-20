@@ -116,7 +116,7 @@ export default function StrongEditableField<
                 ? <EvaButton
                     name="undo-outline"
                     className="pointer"
-                    onMouseDown={() => setStateValue(value)}
+                    onPointerDown={() => setStateValue(value)}
                 />
                 : <EvaIcon name="cloud-upload-outline" className="fade-05" />;
 

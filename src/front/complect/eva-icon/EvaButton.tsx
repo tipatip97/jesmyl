@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { isTouchDevice } from "../device-differences";
 import modalService from "../modal/Modal.service";
 import EvaIcon, { EvaIconName } from "./EvaIcon";
 
@@ -12,7 +13,7 @@ export default function EvaButton(
     postfix?: null | ReactNode,
     className?: string,
     onClick?: (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => void,
-    onMouseDown?: (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => void,
+    onPointerDown?: (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent> | React.TouchEvent) => void,
   }
 ) {
   const isClickable = !props.disabled && props.onClick ? true : undefined;
@@ -28,12 +29,14 @@ export default function EvaButton(
       alt={props.alt}
       className={className}
       onClick={onClick}
-      onMouseDown={props.onMouseDown}
+      onMouseDown={isTouchDevice ? undefined : props.onPointerDown}
+      onTouchStart={isTouchDevice ? props.onPointerDown as never : undefined}
     />
     : <span
       className={`flex flex-gap ${className || 'flex-max'}`}
       onClick={onClick}
-      onMouseDown={props.onMouseDown}
+      onMouseDown={isTouchDevice ? undefined : props.onPointerDown}
+      onTouchStart={isTouchDevice ? props.onPointerDown : undefined}
     >
       {props.prefix}
       <EvaIcon

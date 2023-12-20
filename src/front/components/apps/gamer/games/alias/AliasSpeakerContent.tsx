@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import SendButton from "../../../../../complect/sends/send-button/SendButton";
 import EvaButton from "../../../../../complect/eva-icon/EvaButton";
+import SendButton from "../../../../../complect/sends/send-button/SendButton";
 import { useMyPossibilitiesCurrentRoom } from "../../complect/rooms/room/hooks/possibilities";
 import { GamerAliasRoomStatePhase } from "./Alias.model";
 import GamerAliasTimer from "./AliasTimer";
@@ -10,6 +10,8 @@ import { useAliasCurrentTeamNaked } from "./hooks/current-team";
 import { useAliasSimpleExecs, useAliasStrikeWord } from "./hooks/execs";
 import { useAliasRoomState } from "./hooks/state";
 import { useAliasCurrentWordInfo } from "./hooks/word";
+import { useTokenSortedWordsNaked } from "./hooks/token-sorted-words";
+import { isTouchDevice } from "../../../../../complect/device-differences";
 
 const altWordInfo = { minus: 0, weight: 0, plus: 0 };
 
@@ -17,18 +19,36 @@ export default function AliasSpeakerContent() {
     const [isWordSending, setIsWordSending] = useState(false);
 
     const state = useAliasRoomState();
-    const wordInfo = useAliasCurrentWordInfo();
+    const wordInfo = useAliasCurrentWordInfo(state);
     const strikeWord = useAliasStrikeWord();
     const myTeam = useAliasCurrentTeamNaked('team');
     const { score } = useAliasComputeScore();
-    const { minus, plus } = useAliasCurrentWordInfo() ?? altWordInfo;
+    const { minus, plus } = wordInfo ?? altWordInfo;
     const { resetSpeech, startSpeech } = useAliasSimpleExecs();
     const myPossibilities = useMyPossibilitiesCurrentRoom();
+    const infos = useTokenSortedWordsNaked();
+    const sendWord = (scope: 'cor' | 'inc') => {
+        setIsWordSending(true);
+        strikeWord(scope)?.then(() => setIsWordSending(false));
+    };
+
+    useEffect(() => {
+        if (isTouchDevice || !state?.startTs) return;
+        const onKey = (event: KeyboardEvent) => {
+            if (event.key === 'ArrowLeft') sendWord('cor');
+            if (event.key === 'ArrowRight') sendWord('inc');
+        };
+        window.addEventListener('keyup', onKey);
+
+        return () => {
+            window.removeEventListener('keyup', onKey);
+        };
+    }, [state?.startTs]);
 
     if (!state) return null;
 
     return <>
-        {state.words.length
+        {infos.length - 1 !== state.wordsi
             ? <ShowWordArea
                 className={
                     'flex column center text-center no-scrollbar'
@@ -53,9 +73,9 @@ export default function AliasSpeakerContent() {
                             name="checkmark-circle-2-outline"
                             className="color--ok"
                             disabled={isWordSending}
-                            onClick={() => {
-                                setIsWordSending(true);
-                                strikeWord('cor')?.then(() => setIsWordSending(false));
+                            onPointerDown={(event) => {
+                                event.preventDefault();
+                                sendWord('cor');
                             }}
                         />
                     </AboveButton>
@@ -66,9 +86,9 @@ export default function AliasSpeakerContent() {
                             name="close-circle-outline"
                             className="color--ko"
                             disabled={isWordSending}
-                            onClick={() => {
-                                setIsWordSending(true);
-                                strikeWord('inc')?.then(() => setIsWordSending(false));
+                            onPointerDown={(event) => {
+                                event.preventDefault();
+                                sendWord('inc');
                             }}
                         />
                     </AboveButton>

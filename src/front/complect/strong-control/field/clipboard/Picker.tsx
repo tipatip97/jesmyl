@@ -176,7 +176,7 @@ export default function StrongClipboardPicker() {
             <EvaButton
                 name="clipboard-outline"
                 className={'pointer' + (clipboardFocusedElem === null ? '' : ' color--7')}
-                onMouseDown={onClipboardMouseDown}
+                onPointerDown={onClipboardMouseDown}
                 onClick={() => {
                     setIsOpenModal(true);
                     screen();
