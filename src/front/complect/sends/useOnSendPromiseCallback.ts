@@ -21,7 +21,6 @@ export const useOnSendPromiseCallback = <Value>(
 
             return () => {
                 const promise = onSend();
-                console.log(promise);
 
                 if (promise instanceof Promise) {
                     setIsLoading(true);
