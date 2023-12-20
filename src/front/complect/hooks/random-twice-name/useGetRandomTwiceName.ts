@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
-import { replacePronounEnd } from "../../../models";
+import { NounPronsType, makeTwiceKnownName } from "../../../models";
 import { RootState } from "../../../shared/store";
 import mylib from "../../my-lib/MyLib";
 
 const storageSelector = (state: RootState) => state.index.nounPronsWords;
 
-export const makeRandomTwiceName = (storage?: Record<"pronouns" | "nouns", Record<string, number>>, topPronoun?: string | nil, topNoun?: string | nil): [string, string] => {
+export const makeRandomTwiceName = (storage?: NounPronsType, topPronoun?: string | nil, topNoun?: string | nil): [string, string] => {
     let pronoun = topPronoun;
     if (!pronoun && storage) {
         pronoun = mylib.randomItem(mylib.keys(storage.pronouns), -1);
@@ -18,7 +18,7 @@ export const makeRandomTwiceName = (storage?: Record<"pronouns" | "nouns", Recor
 
     if (!pronoun || !noun) return ['', ''];
 
-    return replacePronounEnd(pronoun, noun);
+    return makeTwiceKnownName(pronoun, noun);
 };
 
 export const useGetRandomTwiceName = () => {
