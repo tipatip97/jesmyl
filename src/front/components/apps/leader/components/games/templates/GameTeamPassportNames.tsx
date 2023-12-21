@@ -10,15 +10,15 @@ export default function GameTeamPassportNames({ selectedTimers }: { selectedTime
     (selectedTimers?.length &&
       gameTimers &&
       selectedTimers
-        .map((wid) => gameTimers.find((timer) => !timer.isInactive && timer.w === wid)?.name)
-        .filter((timer) => timer)) ||
+        .map(wid => gameTimers.find(timer => !timer.isInactive && timer.w === wid)?.name)
+        .filter(timer => timer)) ||
     cgame?.timerNames;
 
   let carouselTimers = timers || [];
 
   return (
     <PrintableTemplate
-      noder={(page) => (
+      noder={page => (
         <>
           {cgame?.teams?.map((team, teami) => {
             if (teami && (!joins || !(teami % joins))) {

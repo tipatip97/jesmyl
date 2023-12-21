@@ -24,7 +24,7 @@ export default function StrongClipboardItem({
       {...props}
       className="StrongClipboardItem relative text-italic margin-gap-v pointer"
       draggable
-      onDragStart={(event) => {
+      onDragStart={event => {
         event.dataTransfer.setData('text/plain', item.text);
         onDragStart?.(event);
       }}
@@ -33,7 +33,7 @@ export default function StrongClipboardItem({
         name="close"
         className="absolute pos-top pos-right"
         confirm="Удалить запись?"
-        onClick={(event) => {
+        onClick={event => {
           event.stopPropagation();
           const items = {
             ...clipboard.items,

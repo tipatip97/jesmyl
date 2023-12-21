@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ScheduleWidgetRightsCtrl } from '../../../../../models';
 import { CustomAttUseRights, CustomAttUseTaleId, customAttUseRights } from '../../../../../models';
 import EvaIcon from '../../../../eva-icon/EvaIcon';
@@ -65,7 +65,13 @@ export default function ScheduleKeyValueListAtt({
       <div className="flex flex-gap margin-gap-v">
         <EvaIcon name="checkmark-square-outline" />
         <span className="text-italic">Пункт</span>
-        <StrongEvaButton scope={attScope} fieldName="" fieldKey={false} fieldValue="" name="plus" />
+        <StrongEvaButton
+          scope={attScope}
+          fieldName=""
+          fieldKey={false}
+          fieldValue=""
+          name="plus"
+        />
       </div>
     );
 
@@ -74,18 +80,36 @@ export default function ScheduleKeyValueListAtt({
 
       titles = att.titles
         ?.map((title, titlei) => {
-          if (!title || attValue.values?.some((li) => li[0] === title)) return null;
+          if (!title || attValue.values?.some(li => li[0] === title)) return null;
 
           return customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.CheckTitles) ? (
-            <div key={titlei} className="flex flex-gap">
+            <div
+              key={titlei}
+              className="flex flex-gap"
+            >
               <EvaIcon name="checkmark-square-outline" />
               {title}
-              <StrongEvaButton name="plus" scope={attScope} fieldName="" fieldKey={false} fieldValue={title} />
+              <StrongEvaButton
+                name="plus"
+                scope={attScope}
+                fieldName=""
+                fieldKey={false}
+                fieldValue={title}
+              />
             </div>
           ) : (
-            <div key={titlei} className="flex flex-gap">
+            <div
+              key={titlei}
+              className="flex flex-gap"
+            >
               {title}
-              <StrongEvaButton name="plus" scope={attScope} fieldName="" fieldKey={title} fieldValue="+" />
+              <StrongEvaButton
+                name="plus"
+                scope={attScope}
+                fieldName=""
+                fieldKey={title}
+                fieldValue="+"
+              />
             </div>
           );
         })
@@ -93,35 +117,47 @@ export default function ScheduleKeyValueListAtt({
     }
 
     if (customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles)) {
-      dropdownRoles = rights.schedule.ctrl.roles.filter((role) =>
+      dropdownRoles = rights.schedule.ctrl.roles.filter(role =>
         ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(att.roles, role.cat || 0),
       );
-      exclusiveRoles = dropdownRoles.filter((role) => {
-        return role.title && !attValue.values?.some((li) => li[0] === role.mi || li[1] === role.mi);
+      exclusiveRoles = dropdownRoles.filter(role => {
+        return role.title && !attValue.values?.some(li => li[0] === role.mi || li[1] === role.mi);
       });
 
-      roles = exclusiveRoles.map((role) => (
-        <div key={role.mi} className="flex flex-gap margin-gap-v">
-          <ScheduleWidgetRoleFace role={role} schedule={rights.schedule} />
-          <StrongEvaButton name="plus" scope={attScope} fieldName="" fieldKey={role.mi} fieldValue="+" />
+      roles = exclusiveRoles.map(role => (
+        <div
+          key={role.mi}
+          className="flex flex-gap margin-gap-v"
+        >
+          <ScheduleWidgetRoleFace
+            role={role}
+            schedule={rights.schedule}
+          />
+          <StrongEvaButton
+            name="plus"
+            scope={attScope}
+            fieldName=""
+            fieldKey={role.mi}
+            fieldValue="+"
+          />
         </div>
       ));
     }
 
     if (customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Lists)) {
-      dropdownLists = rights.schedule.lists.units.filter((unit) =>
+      dropdownLists = rights.schedule.lists.units.filter(unit =>
         ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(att.list, unit.cat),
       );
-      exclusiveLists = dropdownLists.filter((unit) => {
+      exclusiveLists = dropdownLists.filter(unit => {
         return (
           unit.title &&
           !attValue.values?.some(
-            (li) => li[0] === unit.mi + CustomAttUseTaleId.Lists || li[1] === unit.mi + CustomAttUseTaleId.Lists,
+            li => li[0] === unit.mi + CustomAttUseTaleId.Lists || li[1] === unit.mi + CustomAttUseTaleId.Lists,
           )
         );
       });
 
-      lists = exclusiveLists.map((unit) => (
+      lists = exclusiveLists.map(unit => (
         <ScheduleWidgetListUnitFace
           key={unit.mi}
           unit={unit}
@@ -143,18 +179,21 @@ export default function ScheduleKeyValueListAtt({
         (a.fio || a.nick || '') < (b.fio || b.nick || '') ? -1 : (a.fio || a.nick) === (b.fio || b.nick) ? 0 : 1,
       );
 
-      exclusiveUsers = dropdownUsers.filter((user) => {
+      exclusiveUsers = dropdownUsers.filter(user => {
         return (
           (user.nick || user.fio) &&
           !attValue.values?.some(
-            (li) => li[0] === user.mi + CustomAttUseTaleId.Users || li[1] === user.mi + CustomAttUseTaleId.Users,
+            li => li[0] === user.mi + CustomAttUseTaleId.Users || li[1] === user.mi + CustomAttUseTaleId.Users,
           )
         );
       });
 
-      users = exclusiveUsers.map((user) =>
+      users = exclusiveUsers.map(user =>
         customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.CheckUsers) ? (
-          <div key={user.mi} className="flex flex-gap">
+          <div
+            key={user.mi}
+            className="flex flex-gap"
+          >
             <EvaIcon name="checkmark-square-outline" />
             {user.fio || user.nick}
             <StrongEvaButton
@@ -166,7 +205,10 @@ export default function ScheduleKeyValueListAtt({
             />
           </div>
         ) : (
-          <div key={user.mi} className="flex flex-gap">
+          <div
+            key={user.mi}
+            className="flex flex-gap"
+          >
             {user.fio || user.nick}
             <StrongEvaButton
               name="plus"
@@ -184,7 +226,13 @@ export default function ScheduleKeyValueListAtt({
       <div className="flex flex-gap margin-big-gap-v">
         <EvaIcon name="text" />
         Пункт
-        <StrongEvaButton name="plus" scope={attScope} fieldName="" fieldKey="Пункт" fieldValue="+" />
+        <StrongEvaButton
+          name="plus"
+          scope={attScope}
+          fieldName=""
+          fieldKey="Пункт"
+          fieldValue="+"
+        />
       </div>
     );
 
@@ -227,7 +275,7 @@ export default function ScheduleKeyValueListAtt({
                 extractScheduleWidgetRoleUser(rights.schedule, 0, role)?.login !== rights.myUser.login;
             else if (rights.myUser?.li) {
               const id = Math.trunc(key);
-              const unit = rights.schedule.lists.units.find((unit) => unit.mi === id);
+              const unit = rights.schedule.lists.units.find(unit => unit.mi === id);
               if (unit) setSelfRedact = rights.myUser.li[unit.cat] !== -unit.mi;
             }
         }
@@ -357,7 +405,7 @@ export default function ScheduleKeyValueListAtt({
                                 className="relative z-index:15 color--7"
                                 cud="U"
                                 name={vali > 0 ? 'corner-left-up-outline' : 'corner-right-down-outline'}
-                                mapExecArgs={(args) => {
+                                mapExecArgs={args => {
                                   return {
                                     ...args,
                                     find: ['.', '===', val],
@@ -435,7 +483,10 @@ export default function ScheduleKeyValueListAtt({
                 <div>
                   {value?.map((val, vali) => {
                     return (
-                      <div key={vali} className="flex flex-gap margin-big-gap-l">
+                      <div
+                        key={vali}
+                        className="flex flex-gap margin-big-gap-l"
+                      >
                         <span className="flex self-start">{vali + 1}.</span>
                         {mylib.isNum(val) ? <KeyValueListAttNumberMember value={val} /> : <div>{val}</div>}
                       </div>
@@ -453,46 +504,49 @@ export default function ScheduleKeyValueListAtt({
 }
 
 const StrongField = styled(StrongEditableField)<{ $indent: boolean }>`
-  ${(props) =>
-    props.$indent &&
-    `
+  & {
+    ${props =>
+      props.$indent &&
+      css`
         --indent: 24px;
 
         margin-top: -1.7em;
 
         .markdownFieldContent {
-            ol, ul {
-                padding-inline-start: 15px;
+          ol,
+          ul {
+            padding-inline-start: 15px;
 
-                >li>ol {
-                    list-style-type: lower-latin;
+            > li > ol {
+              list-style-type: lower-latin;
 
-                    >li>ol {
-                        list-style-type: lower-roman;
+              > li > ol {
+                list-style-type: lower-roman;
 
-                        >li>ol {
-                            list-style-type: lower-greek;
-                        }
-                    }
+                > li > ol {
+                  list-style-type: lower-greek;
                 }
+              }
             }
+          }
 
-            >:not(p, div),
-            >p:has([prop-src], table),
-            >div:has([prop-src], table) {
-                &:first-child {
-                    margin-left: var(--indent);
+          > :not(p, div),
+          > p:has([prop-src], table),
+          > div:has([prop-src], table) {
+            &:first-child {
+              margin-left: var(--indent);
 
-                    &:not([prop-src]) {
-                        width: calc(100% - var(--indent));
-                    }
-                }
+              &:not([prop-src]) {
+                width: calc(100% - var(--indent));
+              }
             }
+          }
 
-            >*:first-child>p:first-child,
-            >p:first-child {
-                text-indent: var(--indent);
-            }
+          > *:first-child > p:first-child,
+          > p:first-child {
+            text-indent: var(--indent);
+          }
         }
-    `}
+      `}
+  }
 `;

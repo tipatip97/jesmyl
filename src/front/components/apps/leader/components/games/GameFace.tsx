@@ -12,7 +12,10 @@ export default function TeamGameFace({
   const { goToGame } = useGames();
 
   return (
-    <div className="face-item" onClick={importantOnClick || (() => goToGame(game.w))}>
+    <div
+      className="face-item"
+      onClick={importantOnClick || (() => goToGame(game.w))}
+    >
       <span className="face-logo">
         <EvaIcon name="cube-outline" />
       </span>

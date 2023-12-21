@@ -34,7 +34,7 @@ export default function ComPlayerTrack({ player }: { player: HTMLAudioElement })
       <div
         className="player-track"
         style={{ '--track-progress-width': progressWidth } as never}
-        onClick={(event) => {
+        onClick={event => {
           player.currentTime = calcCurrentTime(
             player.duration,
             event.nativeEvent.offsetX,

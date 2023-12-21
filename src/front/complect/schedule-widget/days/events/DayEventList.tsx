@@ -36,9 +36,13 @@ export default function ScheduleWidgetDayEventList({
   const [listTitle, isExpand, switchIsExpand] = useIsRememberExpand(
     scope,
     <>
-      <EvaIcon name="list" className="color--7" /> Распорядок
+      <EvaIcon
+        name="list"
+        className="color--7"
+      />{' '}
+      Распорядок
     </>,
-    (isExpand) => isExpand && editIcon,
+    isExpand => isExpand && editIcon,
   );
 
   const usedCounts = useMemo(() => {
@@ -49,13 +53,13 @@ export default function ScheduleWidgetDayEventList({
     return usedCounts;
   }, [day.list]);
   const [moveEventMi, setMoveEventMi] = useState<number | null>(null);
-  const movementEvent = moveEventMi !== null ? day.list.find((event) => event.mi === moveEventMi) : undefined;
+  const movementEvent = moveEventMi !== null ? day.list.find(event => event.mi === moveEventMi) : undefined;
   const movementBox = movementEvent && rights.schedule.types[movementEvent.type];
 
   let secretTime = 0;
   let isFirstSecrets = true;
   const times: number[] = [];
-  day.list.forEach((event) => {
+  day.list.forEach(event => {
     times.push((event.tm || rights.schedule.types[event.type]?.tm || 0) + (times[times.length - 1] || 0));
   });
 
@@ -93,7 +97,7 @@ export default function ScheduleWidgetDayEventList({
                     fieldName="list"
                     cud="U"
                     className="flex flex-gap pointer"
-                    mapExecArgs={(args) => {
+                    mapExecArgs={args => {
                       setIsReplacementInProcess(true);
                       return { ...args, value: beforei, eventMi: movementEvent?.mi };
                     }}
@@ -147,12 +151,15 @@ export default function ScheduleWidgetDayEventList({
                   secretTime={secretTime}
                   wakeupMs={ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number')}
                   isShowPeriodsNotTs={isShowPeriodsNotTs}
-                  onClickOnTs={() => setIsShowTsNotPeriods((is) => !is)}
-                  bottomContent={(isRedact) =>
+                  onClickOnTs={() => setIsShowTsNotPeriods(is => !is)}
+                  bottomContent={isRedact =>
                     isRedact && (
                       <>
                         {isReplacementInProcess && moveEventMi === event.mi ? (
-                          <EvaIcon name="loader-outline" className="rotate" />
+                          <EvaIcon
+                            name="loader-outline"
+                            className="rotate"
+                          />
                         ) : (
                           <ScheduleWidgetDayEventEventActions
                             scope={scope}
@@ -172,9 +179,15 @@ export default function ScheduleWidgetDayEventList({
                 {!isIndividualReplacement && isRedact && (
                   <>
                     {isReplacementInProcess && moveEventMi === event.mi ? (
-                      <EvaIcon name="loader-outline" className="rotate" />
+                      <EvaIcon
+                        name="loader-outline"
+                        className="rotate"
+                      />
                     ) : (
-                      <EvaButton name="crop" onClick={() => setMoveEventMi(event.mi)} />
+                      <EvaButton
+                        name="crop"
+                        onClick={() => setMoveEventMi(event.mi)}
+                      />
                     )}
                     {rights.schedule.types && (
                       <StrongEvaButton
@@ -191,7 +204,7 @@ export default function ScheduleWidgetDayEventList({
                         }
                         className="color--ko"
                         disabled={moveEventMi !== null}
-                        mapExecArgs={(args) => {
+                        mapExecArgs={args => {
                           return { ...args, eventMi: event.mi };
                         }}
                       />

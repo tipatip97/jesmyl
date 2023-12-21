@@ -106,16 +106,22 @@ export default function Translations({ hideComList }: { hideComList?: boolean })
           >
             <TranslationScreen
               position={position}
-              updater={(update) => window.addEventListener('resize', () => update())}
+              updater={update => window.addEventListener('resize', () => update())}
             />
-            <div className="top-area info-area left" onDoubleClick={() => prevCom()}>
+            <div
+              className="top-area info-area left"
+              onDoubleClick={() => prevCom()}
+            >
               <div className="description">
                 дважды клик&nbsp;-
                 <br />
                 предыдущая песня
               </div>
             </div>
-            <div className="top-area info-area right" onDoubleClick={() => nextCom()}>
+            <div
+              className="top-area info-area right"
+              onDoubleClick={() => nextCom()}
+            >
               <div className="description">
                 дважды клик&nbsp;-
                 <br />
@@ -127,14 +133,20 @@ export default function Translations({ hideComList }: { hideComList?: boolean })
               onClick={() => dispatch(di.switchShowTranslationInfo(false))}
               name="close-outline"
             />
-            <div className="bottom-area info-area left" onClick={() => prevText()}>
+            <div
+              className="bottom-area info-area left"
+              onClick={() => prevText()}
+            >
               <div className="description">
                 клик&nbsp;-
                 <br />
                 предыдущий слайд
               </div>
             </div>
-            <div className="bottom-area info-area right" onClick={() => nextText()}>
+            <div
+              className="bottom-area info-area right"
+              onClick={() => nextText()}
+            >
               <div className="description">
                 клик&nbsp;-
                 <br />
@@ -155,7 +167,7 @@ export default function Translations({ hideComList }: { hideComList?: boolean })
               </div>
               <div
                 className={`area-button ${isShowCloseButton ? 'show' : ''}`}
-                onClick={(event) => {
+                onClick={event => {
                   event.stopPropagation();
                   closeTranslation();
                 }}
@@ -183,7 +195,7 @@ export default function Translations({ hideComList }: { hideComList?: boolean })
               </div>
               <div
                 className={`area-button ${isShowTurnButton ? 'show' : ''}`}
-                onClick={(event) => {
+                onClick={event => {
                   event.stopPropagation();
                   rotateScreen(!isRotateScreen);
                 }}
@@ -203,14 +215,20 @@ export default function Translations({ hideComList }: { hideComList?: boolean })
       content={
         <>
           <div className="flex">
-            <div className="translation-screen-wrapper" onClick={() => switchVisible()}>
+            <div
+              className="translation-screen-wrapper"
+              onClick={() => switchVisible()}
+            >
               <div className="translation-screen-wrapper-inner">
                 <TranslationScreen
                   position={position}
-                  updater={(update) => window.addEventListener('resize', () => update())}
+                  updater={update => window.addEventListener('resize', () => update())}
                 />
                 {isTranslationBlockVisible ? null : (
-                  <div title="esc, V" className="absolute pos-bottom full-width margin-gap-v text-center">
+                  <div
+                    title="esc, V"
+                    className="absolute pos-bottom full-width margin-gap-v text-center"
+                  >
                     Нажми для показа
                   </div>
                 )}
@@ -218,7 +236,7 @@ export default function Translations({ hideComList }: { hideComList?: boolean })
             </div>
             {hideComList ? null : (
               <div className="translation-com-list">
-                {comList?.map((com) => {
+                {comList?.map(com => {
                   return (
                     <ComFace
                       key={`mark-to-translation_${com.wid}`}
@@ -254,16 +272,22 @@ export default function Translations({ hideComList }: { hideComList?: boolean })
             </div>
           )}
           <div className="control-panel flex between">
-            <div className="button" onClick={() => prevText()}>
+            <div
+              className="button"
+              onClick={() => prevText()}
+            >
               <EvaIcon name="chevron-left-outline" />
             </div>
-            <div className="button" onClick={() => nextText()}>
+            <div
+              className="button"
+              onClick={() => nextText()}
+            >
               <EvaIcon name="chevron-right-outline" />
             </div>
             <div
               title={currWin ? '' : 'Enter'}
               className="start-translation button flex center"
-              onClick={(event) => {
+              onClick={event => {
                 watchTranslation(
                   (event.view as any).screenLeft + event.clientX - 70,
                   (event.view as any).screenTop + event.clientY + 70,
@@ -279,7 +303,11 @@ export default function Translations({ hideComList }: { hideComList?: boolean })
             >
               <EvaIcon name="upload-outline" />
             </div>
-            <div title="esc, V" className="button" onClick={() => switchVisible()}>
+            <div
+              title="esc, V"
+              className="button"
+              onClick={() => switchVisible()}
+            >
               <EvaIcon name="square-outline" />
             </div>
           </div>

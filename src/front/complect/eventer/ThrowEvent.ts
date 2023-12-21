@@ -14,7 +14,7 @@ class ThrowEventClass {
   };
 
   constructor() {
-    window.addEventListener('keydown', (event) => {
+    window.addEventListener('keydown', event => {
       Eventer.invoke(this.keyDownListens, event.code as never, event);
     });
 

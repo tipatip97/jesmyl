@@ -37,7 +37,10 @@ export default function EditCompositions() {
   };
 
   return (
-    <LoadIndicatedContent isLoading={false} onLoad={scrollToCurrent}>
+    <LoadIndicatedContent
+      isLoading={false}
+      onLoad={scrollToCurrent}
+    >
       {popupNode}
       <PhaseCmEditorContainer
         className="edit-compositions"
@@ -48,9 +51,9 @@ export default function EditCompositions() {
               placeholder="Песни"
               className="debounced-searcher round-styled"
               initialTerm={term}
-              onSearch={(term) => zcat.search(term)}
+              onSearch={term => zcat.search(term)}
               debounce={500}
-              onTermChange={(term) => setTerm(term)}
+              onTermChange={term => setTerm(term)}
               onDebounced={() => {
                 if (listRef.current) listRef.current.scrollTop = 0;
               }}

@@ -37,10 +37,10 @@ export const slice = createSlice({
     switchAbsoluteBottomPopupOpen: (state, action: PayloadAction<boolean | nil>) => {
       state.isAbsoluteBottomPopupOpen = action.payload ?? !state.isAbsoluteBottomPopupOpen;
     },
-    riseUpAbsoluteBottomPopupUpdates: (state) => {
+    riseUpAbsoluteBottomPopupUpdates: state => {
       state.numAbsoluteBottomPopupUpdates++;
     },
-    riseUpExerUpdates: (state) => {
+    riseUpExerUpdates: state => {
       state.numExerUpdates++;
     },
   },

@@ -36,7 +36,7 @@ export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (_, prepar
                     nav,
                     'selectedComws',
                     coms.map(({ wid }) => wid),
-                    coms.map((com) => `${com.number}. ${com.name.trim()}`).join('\n'),
+                    coms.map(com => `${com.number}. ${com.name.trim()}`).join('\n'),
                   ),
               },
             ]

@@ -51,11 +51,11 @@ export default function ScheduleWidgetUser({
                 fieldName="userData"
                 cud="U"
                 name="qr-code"
-                mapExecArgs={async (args) => {
-                  return await readQR((data) => {
+                mapExecArgs={async args => {
+                  return await readQR(data => {
                     if (data.appName === 'index' && data.key === 'passport') {
                       const valueLogin = (data.value as { login: '' }).login;
-                      if (rights.schedule.ctrl.users.some((user) => valueLogin === user.login)) {
+                      if (rights.schedule.ctrl.users.some(user => valueLogin === user.login)) {
                         toast('Пользователь уже является участником!', { mood: 'ko' });
                         return;
                       }
@@ -71,7 +71,12 @@ export default function ScheduleWidgetUser({
             )}
           </div>,
         )}
-        {body(<ScheduleWidgetUserEdit scope={scope} user={user} />)}
+        {body(
+          <ScheduleWidgetUserEdit
+            scope={scope}
+            user={user}
+          />,
+        )}
       </>
     );
   });
@@ -88,7 +93,10 @@ export default function ScheduleWidgetUser({
               <span className="flex flex-gap color--7">
                 {user.login === undefined ? (
                   <>
-                    <EvaIcon name="link-2" className="color--7 icon-scale-05" />
+                    <EvaIcon
+                      name="link-2"
+                      className="color--7 icon-scale-05"
+                    />
                     {balance < 0 ? null : balance}
                   </>
                 ) : balance < 0 ? (
@@ -124,7 +132,11 @@ export default function ScheduleWidgetUser({
                 }}
               />
             )}
-            <EvaButton name="edit-outline" className="flex between full-width" onClick={screen} />
+            <EvaButton
+              name="edit-outline"
+              className="flex between full-width"
+              onClick={screen}
+            />
           </span>
         </>
       )}

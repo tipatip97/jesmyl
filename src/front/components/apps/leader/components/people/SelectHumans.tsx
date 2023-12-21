@@ -49,32 +49,31 @@ export default function SelectHumans({
           // }}
           asHumanMore={
             isRedact
-              ? (human) => {
-                  if (excludedTitle && excludes?.some((exWid) => exWid === human.w))
+              ? human => {
+                  if (excludedTitle && excludes?.some(exWid => exWid === human.w))
                     return <div className="error-message">{excludedTitle}</div>;
 
                   return (
-                    !fixedList || !fixedList.some((wid) => human.w === wid)
-                      ? !addList.some((wid) => human.w === wid)
-                      : delList.some((wid) => human.w === wid)
+                    !fixedList || !fixedList.some(wid => human.w === wid)
+                      ? !addList.some(wid => human.w === wid)
+                      : delList.some(wid => human.w === wid)
                   ) ? (
                     <EvaIcon
                       name="plus-circle-outline"
-                      onClick={(event) => {
+                      onClick={event => {
                         event.stopPropagation();
-                        if (!fixedList || !fixedList.some((wid) => human.w === wid))
-                          updateAddList([...addList, human.w]);
-                        updateDelList(delList.filter((wid) => wid !== human.w));
+                        if (!fixedList || !fixedList.some(wid => human.w === wid)) updateAddList([...addList, human.w]);
+                        updateDelList(delList.filter(wid => wid !== human.w));
                       }}
                     />
                   ) : (
                     <EvaIcon
                       name="minus-circle-outline"
-                      onClick={(event) => {
+                      onClick={event => {
                         event.stopPropagation();
-                        if (fixedList && fixedList.some((wid) => human.w === wid)) updateDelList([...delList, human.w]);
+                        if (fixedList && fixedList.some(wid => human.w === wid)) updateDelList([...delList, human.w]);
 
-                        updateAddList(addList.filter((wid) => wid !== human.w));
+                        updateAddList(addList.filter(wid => wid !== human.w));
                       }}
                     />
                   );
@@ -98,7 +97,10 @@ export default function SelectHumans({
           <h2>{chooseTitle}</h2>
           {chooseNode}
           {!!(excludes && excludedTitle) && (
-            <div className="pointer" onClick={() => setIsShowExcluded(!isShowExcluded)}>
+            <div
+              className="pointer"
+              onClick={() => setIsShowExcluded(!isShowExcluded)}
+            >
               {isShowExcluded ? 'Скрыть недоступные личности' : 'Показать недоступные личности'}
             </div>
           )}

@@ -25,14 +25,14 @@ export default function RandomTwiceName({
   return (
     <span
       className={className}
-      onClick={(event) => {
+      onClick={event => {
         event.stopPropagation();
         if (!canChange) return;
         const name = getTwiceName();
         setTwiceName(name);
       }}
       {...propsOfClicker({
-        onCtxMenu: (event) => {
+        onCtxMenu: event => {
           event.stopPropagation();
           event.preventDefault();
           if (!canChange) return;

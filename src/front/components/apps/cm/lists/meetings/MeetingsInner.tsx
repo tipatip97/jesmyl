@@ -32,7 +32,7 @@ export default function MeetingsInner<Meets extends Meetings>({
 
   useEffect(() => {
     onContextNavigate?.(eventContext);
-    const deregister = registerBackAction((isForceBack) => {
+    const deregister = registerBackAction(isForceBack => {
       if (!isForceBack && eventContext.length) {
         setCurrContext(eventContext.slice(0, -1));
         return true;
@@ -48,7 +48,11 @@ export default function MeetingsInner<Meets extends Meetings>({
 
   const [contexts, currContextw] = meetings.getContexts(eventContext);
   const names = eventContext.map((context, contexti) => (
-    <span key={contexti} className="pointer" onClick={() => setCurrContext([...eventContext].slice(0, contexti + 1))}>
+    <span
+      key={contexti}
+      className="pointer"
+      onClick={() => setCurrContext([...eventContext].slice(0, contexti + 1))}
+    >
       {contexti ? ' - ' : ''}
       {meetings.names[context]}
     </span>
@@ -63,7 +67,7 @@ export default function MeetingsInner<Meets extends Meetings>({
       {eventContext.length ? null : (
         <>
           {favorites.events.map((eventw, eventwi) => {
-            const event = meetings.events?.find((event) => event.wid === eventw);
+            const event = meetings.events?.find(event => event.wid === eventw);
             if (!event) return null;
             const { context } = meetings.contexts[event.contextw] || {};
 
@@ -73,15 +77,24 @@ export default function MeetingsInner<Meets extends Meetings>({
                 icon="calendar-outline"
                 title={event.name}
                 onClick={() => onEventClick(event as never)}
-                box={asEventBox ? asEventBox(event) : <EvaIcon className="fade-05" name="star" />}
+                box={
+                  asEventBox ? (
+                    asEventBox(event)
+                  ) : (
+                    <EvaIcon
+                      className="fade-05"
+                      name="star"
+                    />
+                  )
+                }
                 description={
                   <span
-                    onClick={(event) => {
+                    onClick={event => {
                       event.stopPropagation();
                       setCurrContext(context);
                     }}
                   >
-                    {context?.map((context) => meetings.names[context]).join(' - ')}
+                    {context?.map(context => meetings.names[context]).join(' - ')}
                   </span>
                 }
               />
@@ -92,17 +105,25 @@ export default function MeetingsInner<Meets extends Meetings>({
             if (!context) return null;
 
             return (
-              <div key={contextwi} className="relative">
+              <div
+                key={contextwi}
+                className="relative"
+              >
                 <BrutalItem
                   icon="folder-outline"
                   title={meetings.names[context.context[context.context.length - 1]]}
                   onClick={() => setCurrContext(context.context)}
-                  box={<EvaIcon className="fade-05" name="star" />}
+                  box={
+                    <EvaIcon
+                      className="fade-05"
+                      name="star"
+                    />
+                  }
                 />
                 <div className="absolute flex center full-width pos-bottom fade-05 pointers-none">
                   {context.context
                     ?.slice(0, -1)
-                    .map((context) => meetings.names[context])
+                    .map(context => meetings.names[context])
                     .join(' - ')}
                 </div>
               </div>
@@ -126,14 +147,14 @@ export default function MeetingsInner<Meets extends Meetings>({
               ) : eventContext.length ? (
                 <EvaIcon
                   name={isFavorite ? 'star' : 'star-outline'}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
 
                     dispatch(
                       di.favoriteMeetings({
                         ...favorites,
                         events: isFavorite
-                          ? favorites.events.filter((eventw) => eventw !== event.wid)
+                          ? favorites.events.filter(eventw => eventw !== event.wid)
                           : [...favorites.events, event.wid],
                       }),
                     );
@@ -157,14 +178,14 @@ export default function MeetingsInner<Meets extends Meetings>({
               eventContext.length ? (
                 <EvaIcon
                   name={isFavorite ? 'star' : 'star-outline'}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
 
                     dispatch(
                       di.favoriteMeetings({
                         ...favorites,
                         contexts: isFavorite
-                          ? favorites.contexts.filter((context) => context !== contextw)
+                          ? favorites.contexts.filter(context => context !== contextw)
                           : [...favorites.contexts, contextw],
                       }),
                     );

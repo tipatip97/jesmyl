@@ -36,7 +36,10 @@ export default function SpyOfflineRoomStartedGame() {
       {currentOfflineRoom && (
         <>
           <h2 className="flex center">Игра #{state?.iterations}</h2>
-          <div className="flex center flex-gap pointer" onClick={() => shareGameData()}>
+          <div
+            className="flex center flex-gap pointer"
+            onClick={() => shareGameData()}
+          >
             <EvaIcon name="qr-code" />
             Оповестить
           </div>
@@ -45,7 +48,7 @@ export default function SpyOfflineRoomStartedGame() {
           </div>
 
           <h2 className="flex">Участники</h2>
-          {players?.map((member) => {
+          {players?.map(member => {
             return (
               <RoomMemberFace
                 key={`m ${member.login}`}
@@ -59,7 +62,7 @@ export default function SpyOfflineRoomStartedGame() {
                     : ''
                 }
                 onClick={() => {
-                  modalService.confirm('Участник выбыл?', 'Выбыл', 'Да', 'Отмена').then((isRetire) => {
+                  modalService.confirm('Участник выбыл?', 'Выбыл', 'Да', 'Отмена').then(isRetire => {
                     if (isRetire) excludeMember(member.login);
                   });
                 }}
@@ -67,7 +70,11 @@ export default function SpyOfflineRoomStartedGame() {
             );
           })}
           <div className="flex center">
-            <TheButton className="margin-gap" onClick={() => finishGame()} confirm>
+            <TheButton
+              className="margin-gap"
+              onClick={() => finishGame()}
+              confirm
+            >
               Закончить игру
             </TheButton>
           </div>

@@ -30,7 +30,7 @@ export function useEditableMeetings() {
 
   return {
     meetings,
-    currentEvent: meetings?.events?.find((meeting) => meeting.wid === eventw),
+    currentEvent: meetings?.events?.find(meeting => meeting.wid === eventw),
     goToEvent: (eventw: number) => {
       jumpTo({ phase: editEventNavPhasePoint, data: { eventw } });
     },

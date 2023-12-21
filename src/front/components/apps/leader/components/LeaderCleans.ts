@@ -30,7 +30,7 @@ export class LeaderCleans {
 
   static extractWidables = <Item extends { w: number }>(widables: Item[], list: number[]): Item[] => {
     return widables
-      ? list.map((wid) => this.extractWidable(widables, wid)!).filter(this.truthableFilter)
+      ? list.map(wid => this.extractWidable(widables, wid)!).filter(this.truthableFilter)
       : ([] as Item[]);
   };
 
@@ -147,24 +147,24 @@ export class LeaderCleans {
 
     return (
       this.getTimerConfigurableFieldAsIs('teams', timer, game)
-        ?.map((teamw) => teams.find((team) => team.w === teamw)!)
+        ?.map(teamw => teams.find(team => team.w === teamw)!)
         .filter(this.truthableFilter) ?? game.teams
     );
   };
 
   static membersReadyToPlay = (members: HumanImportable[]) => {
-    return members.filter((member) => !member.isInactive && member.ufp1 + member.ufp2);
+    return members.filter(member => !member.isInactive && member.ufp1 + member.ufp2);
   };
 
   static isTimerWasPublicate = (timers: GameTimerImportable[] | und, timerTs: number) => {
-    return timers?.some((timer) => timer.ts === timerTs);
+    return timers?.some(timer => timer.ts === timerTs);
   };
 
   static takeGroupMentorNames = (humans: HumanImportable[] | und, group: LeaderGroupImportable) => {
     return (
       (humans &&
         this.extractWidables(humans, group.mentors)
-          .map((mentor) => mentor.name.replace(/([А-ЯЁ])[а-яё]+ (.+)/, '$2 $1'))
+          .map(mentor => mentor.name.replace(/([А-ЯЁ])[а-яё]+ (.+)/, '$2 $1'))
           .join(', ')) ||
       'Лидеров нет'
     );
@@ -179,9 +179,9 @@ export class LeaderCleans {
     return (
       groups
         ?.map(
-          (group) =>
+          group =>
             group[participantListName]
-              .map((memberw) => {
+              .map(memberw => {
                 const member = contextParticipants.find(({ w }) => w === memberw);
                 return !member?.isInactive && wids.includes(member?.w || -1) ? { member, group } : null;
               })
@@ -395,7 +395,7 @@ export class LeaderCleans {
 
     stack.push(this.makeHumansToGroupExecDict([humanw], { contextw, groupw }, participantListName, 'add'));
 
-    excludeGroups.forEach((group) => {
+    excludeGroups.forEach(group => {
       stack.push(this.makeHumansToGroupExecDict([humanw], { contextw, groupw: group.w }, participantListName, 'del'));
     });
 

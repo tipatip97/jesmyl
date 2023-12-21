@@ -25,7 +25,7 @@ export default function useGamerOfflineRoomsActions() {
       modalService.alert('Не авторизован');
       return;
     }
-    readQR((data) => {
+    readQR(data => {
       if (!passport?.login) return;
       if (data.appName === 'gamer' && mylib.isStr(data.key)) {
         const [gameName] = (data.key as string).split('.');
@@ -48,7 +48,7 @@ export default function useGamerOfflineRoomsActions() {
 
   const setRoomGame = useCallback(
     (currentGame: GamerGameName) => {
-      updateCurrentOfflineRoom((room) => ({
+      updateCurrentOfflineRoom(room => ({
         ...room,
         currentGame,
       }));
@@ -58,7 +58,7 @@ export default function useGamerOfflineRoomsActions() {
 
   const addNewMember = useCallback(() => {
     const addMember = (member: GamerRoomMember) => {
-      updateCurrentOfflineRoom((room) => {
+      updateCurrentOfflineRoom(room => {
         const newRoom = { ...room, members: [...room.members] };
         const memberi = newRoom.members.findIndex(({ login }) => login === member.login);
         if (memberi < 0) newRoom.members.push(member);
@@ -68,7 +68,7 @@ export default function useGamerOfflineRoomsActions() {
       });
     };
 
-    readQR((data) => {
+    readQR(data => {
       if (data.appName === 'gamer' && data.key === 'passport') {
         addMember({
           login: data.value[0],
@@ -82,7 +82,7 @@ export default function useGamerOfflineRoomsActions() {
 
   const switchMemberInactive = useCallback(
     (memberLogin: string) => {
-      updateCurrentOfflineRoom((room) => {
+      updateCurrentOfflineRoom(room => {
         const members = [...room.members];
         const memberi = members.findIndex(({ login }) => login === memberLogin);
         const member = { ...members[memberi] };

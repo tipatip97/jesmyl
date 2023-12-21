@@ -11,7 +11,7 @@ export const memberStatusPriority = [
 export default function useGamerMembersCanPlay(room?: GamerRoom) {
   return useMemo(() => {
     return room?.members
-      .filter((member) => member.status !== GamerRoomMemberStatus.Requester)
+      .filter(member => member.status !== GamerRoomMemberStatus.Requester)
       .sort((a, b) => memberStatusPriority.indexOf(a.status) - memberStatusPriority.indexOf(b.status));
   }, [room]);
 }

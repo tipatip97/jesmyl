@@ -21,17 +21,16 @@ export default function HumanFace({
   );
   const ccontext = useLeaderCcontext();
   const groups = ccontext?.groups?.filter(
-    (group) =>
-      group.members.some((memberw) => memberw === human.w) || group.mentors.some((memberw) => memberw === human.w),
+    group => group.members.some(memberw => memberw === human.w) || group.mentors.some(memberw => memberw === human.w),
   );
-  const groupTitles = groups?.length ? `; ${groups.map((group) => group.name).join(', ')}` : '';
+  const groupTitles = groups?.length ? `; ${groups.map(group => group.name).join(', ')}` : '';
 
   return (
     <>
       {humanMoreNode}
       <div
         className="face-item flex between"
-        onClick={(event) => {
+        onClick={event => {
           event.stopPropagation();
           openHumanMore();
         }}
@@ -49,7 +48,7 @@ export default function HumanFace({
           (onMoreClick && (
             <EvaIcon
               name="more-vertical"
-              onClick={(event) => {
+              onClick={event => {
                 event.stopPropagation();
                 onMoreClick();
               }}

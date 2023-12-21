@@ -60,7 +60,7 @@ export default function Modal() {
     dispatch(di.riseUpModalUpdates());
   };
 
-  modalService.setConfigSetter((config) => setConfig(config));
+  modalService.setConfigSetter(config => setConfig(config));
 
   const asFunc = (val?: Function | boolean | ReactNode) => {
     if (typeof val === 'function') {
@@ -77,12 +77,21 @@ export default function Modal() {
   };
 
   return config == null ? null : (
-    <div className="app-modal-window" onClick={onClose}>
-      <div className="app-modal" onClick={(event) => event.stopPropagation()}>
+    <div
+      className="app-modal-window"
+      onClick={onClose}
+    >
+      <div
+        className="app-modal"
+        onClick={event => event.stopPropagation()}
+      >
         <div className="app-modal-title">
           <span className="app-modal-title-label">{config.title}</span>
           {config.withoutCloseButton ? null : (
-            <span className="app-modal-title-close-icon" onClick={onClose}>
+            <span
+              className="app-modal-title-close-icon"
+              onClick={onClose}
+            >
               ×
             </span>
           )}
@@ -124,7 +133,11 @@ export default function Modal() {
               <div className="app-modal-footer-button-list-inner">
                 {config.theButtons ||
                   config.buttons?.map((button, buttoni) => (
-                    <ModalButton key={`modal-button-${buttoni}`} config={[button, buttoni]} forceUpdate={forceUpdate} />
+                    <ModalButton
+                      key={`modal-button-${buttoni}`}
+                      config={[button, buttoni]}
+                      forceUpdate={forceUpdate}
+                    />
                   ))}
               </div>
             </div>

@@ -173,7 +173,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
             {type === 'password' ? (
               <EvaIcon
                 name={isHiddenPassword ? 'eye-outline' : 'eye-off-outline'}
-                onMouseDown={() => setIsHiddenPassword((is) => !is)}
+                onMouseDown={() => setIsHiddenPassword(is => !is)}
               />
             ) : (
               !withoutCloseButton &&
@@ -291,12 +291,12 @@ export const KEYBOARD_FLASH = memo(function ({
       <div
         className={`keyboard-flash-key ${className} ${keyInFix === key ? 'key-in-fix' : ''}`}
         onMouseUp={onMouseUp || (() => currentInput.write(key))}
-        onMouseDown={(event) => {
+        onMouseDown={event => {
           event.stopPropagation();
           setKeyInFix(key);
         }}
         onMouseOver={() => keyInFix && setKeyInFix(key)}
-        onTouchStart={(event) => {
+        onTouchStart={event => {
           event.stopPropagation();
           setKeyInFix(key);
           onTouchStart?.(event);
@@ -304,7 +304,14 @@ export const KEYBOARD_FLASH = memo(function ({
         {...propsOfClicker({ onCtxMenu: onContextMenu })}
       >
         {children}
-        {iconName ? <EvaIcon name={iconName} className="key-button" /> : <div>{key}</div>}
+        {iconName ? (
+          <EvaIcon
+            name={iconName}
+            className="key-button"
+          />
+        ) : (
+          <div>{key}</div>
+        )}
       </div>
     );
   };
@@ -312,19 +319,19 @@ export const KEYBOARD_FLASH = memo(function ({
   return (
     <div
       className={`keyboard-flash ${currentInput?.isFocused ? 'active' : ''} ${moreClosed ? '' : 'more-open'}`}
-      onMouseDown={(event) => {
+      onMouseDown={event => {
         event.stopPropagation();
         setKeyInFix('CLOSE-MORE');
       }}
-      onTouchEnd={(event) => {
+      onTouchEnd={event => {
         event.stopPropagation();
         setKeyInFix(null);
         currentInput.onTouchNavigationEnd(event);
       }}
-      onTouchMove={(event) => {
+      onTouchMove={event => {
         currentInput.onTouchNavigationMove(event, event.targetTouches[0].clientX);
       }}
-      onMouseUp={(event) => {
+      onMouseUp={event => {
         event.stopPropagation();
         setKeyInFix(null);
         !moreClosed && setMoreClosed(true);
@@ -335,7 +342,10 @@ export const KEYBOARD_FLASH = memo(function ({
           <>
             {keyboardNumberScreenLines.map((line, linei) => {
               return (
-                <div key={linei} className="keyboard-flash-line number-type">
+                <div
+                  key={linei}
+                  className="keyboard-flash-line number-type"
+                >
                   {line.map((key, keyi) => {
                     return <React.Fragment key={keyi}>{keyNode('writable', key)}</React.Fragment>;
                   })}
@@ -356,7 +366,7 @@ export const KEYBOARD_FLASH = memo(function ({
                 () => currentInput.redo(),
               )}
               {keyNode('writable self-width', '0')}
-              {keyNode('backspace full-width', 'BACKSPACE', 'backspace-outline', (event) =>
+              {keyNode('backspace full-width', 'BACKSPACE', 'backspace-outline', event =>
                 currentInput.backspace(event),
               )}
               {keyNode('full-width', 'BLUR', 'arrowhead-down-outline', () => currentInput.blur())}
@@ -367,7 +377,10 @@ export const KEYBOARD_FLASH = memo(function ({
             {keyboardKeyDict[currentInput.currentLanguage][currentInput.event.shiftKey ? 'upper' : 'lower'].map(
               (line, linei) => {
                 return (
-                  <div key={linei} className="keyboard-flash-line">
+                  <div
+                    key={linei}
+                    className="keyboard-flash-line"
+                  >
                     {linei === 3
                       ? keyNode(
                           `shift-key ${currentInput.isCapsLock ? 'caps-lock' : ''} ${
@@ -377,11 +390,11 @@ export const KEYBOARD_FLASH = memo(function ({
                           'arrow-upward-outline',
                           () => currentInput.switchCaps(),
                           null,
-                          (event) => {
+                          event => {
                             event.preventDefault();
                             currentInput.switchCtrlKey();
                           },
-                          (event) => currentInput.onTouchNavigationStart('select', event.targetTouches[0].clientX),
+                          event => currentInput.onTouchNavigationStart('select', event.targetTouches[0].clientX),
                         )
                       : null}
                     {line.map((key, keyi) => {
@@ -392,10 +405,10 @@ export const KEYBOARD_FLASH = memo(function ({
                           'backspace',
                           'BACKSPACE',
                           'backspace-outline',
-                          (event) => currentInput.backspace(event),
+                          event => currentInput.backspace(event),
                           null,
                           undefined,
-                          (event) => currentInput.onTouchNavigationStart('delete', event.targetTouches[0].clientX),
+                          event => currentInput.onTouchNavigationStart('delete', event.targetTouches[0].clientX),
                         )
                       : null}
                   </div>
@@ -408,7 +421,7 @@ export const KEYBOARD_FLASH = memo(function ({
                 currentInput.canUndo() ? 'undo-action' : 'undo-action disabled',
                 'UNDO',
                 'corner-up-left-outline',
-                (event) => {
+                event => {
                   event.stopPropagation();
                   setKeyInFix(null);
                   currentInput.undo();
@@ -422,7 +435,7 @@ export const KEYBOARD_FLASH = memo(function ({
                 moreClosed ? null : (
                   <div
                     className="keyboard-flash-key-more-box-list no-scrollbar"
-                    ref={(elem) => elem && keyInFix === null && (elem.scrollTop = window.innerHeight)}
+                    ref={elem => elem && keyInFix === null && (elem.scrollTop = window.innerHeight)}
                   >
                     <div className="keyboard-flash-key-more-box-inner">
                       {keyNode(
@@ -460,7 +473,7 @@ export const KEYBOARD_FLASH = memo(function ({
                         currentInput.canRedo() ? '' : ' disabled',
                         'REDO',
                         'corner-up-right-outline',
-                        (event) => {
+                        event => {
                           event.stopPropagation();
                           setKeyInFix(null);
                           currentInput.redo();
@@ -471,7 +484,7 @@ export const KEYBOARD_FLASH = memo(function ({
                   </div>
                 ),
               )}
-              {keyNode('space-key', ' ', undefined, undefined, null, undefined, (event) =>
+              {keyNode('space-key', ' ', undefined, undefined, null, undefined, event =>
                 currentInput.onTouchNavigationStart('navigate', event.targetTouches[0].clientX),
               )}
               {keyNode('', 'LANG', 'globe-outline', () => currentInput.switchLanguage(), null)}

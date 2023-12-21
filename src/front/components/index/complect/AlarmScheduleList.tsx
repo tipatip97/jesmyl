@@ -10,7 +10,7 @@ export default function ScheduleWidgetAlarmScheduleList() {
   const { setAppRouteData, appRouteData, goBack } = useIndexNav();
 
   if (appRouteData.schw !== undefined) {
-    const schedule = schedules.list.find((schedule) => schedule.w === appRouteData.schw);
+    const schedule = schedules.list.find(schedule => schedule.w === appRouteData.schw);
 
     if (schedule === undefined)
       return (
@@ -29,7 +29,12 @@ export default function ScheduleWidgetAlarmScheduleList() {
         schedulew={schedule.w}
         schedule={schedule}
         title={'Расписание ' + schedule.title}
-        altActionsNode={<EvaButton name="bell-off-outline" onClick={() => setAppRouteData({ schw: undefined })} />}
+        altActionsNode={
+          <EvaButton
+            name="bell-off-outline"
+            onClick={() => setAppRouteData({ schw: undefined })}
+          />
+        }
       />
     );
   }
@@ -38,7 +43,7 @@ export default function ScheduleWidgetAlarmScheduleList() {
     <ScheduleWidgetListPage
       headTitle="Расписания"
       goBack={goBack}
-      onScheduleObserve={(schedule) => setAppRouteData({ schw: schedule.w })}
+      onScheduleObserve={schedule => setAppRouteData({ schw: schedule.w })}
     />
   );
 }

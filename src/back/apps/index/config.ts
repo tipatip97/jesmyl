@@ -164,7 +164,7 @@ const config: FilerAppConfig = {
           bag.schw = exec.args?.schw!;
           if (bag.schw === undefined) return 'no_schw';
 
-          bag.schedule = schedules.list.find((sch) => sch.w === bag.schw)!;
+          bag.schedule = schedules.list.find(sch => sch.w === bag.schw)!;
           if (bag.schedule === undefined) return 'no_sch';
           bag.users = bag.schedule.ctrl.users!;
         }
@@ -172,7 +172,7 @@ const config: FilerAppConfig = {
         if (auth == null) return 'unauth';
         if (bag.users === undefined) return 'no_users';
 
-        const user = bag.users.find((user) => auth.login === user.login);
+        const user = bag.users.find(user => auth.login === user.login);
         if (user === undefined) {
           if (rule.action === 'joinUserByLink') return isShareData ? whenRejButTs : null;
           if (rule.args?.$$vars?.accessActionWithoutUser === true) return null;
@@ -195,7 +195,7 @@ const config: FilerAppConfig = {
             }
 
             if (tattMi >= 0) {
-              const tatt = bag.schedule.tatts.find((tatt) => tatt.mi === tattMi);
+              const tatt = bag.schedule.tatts.find(tatt => tatt.mi === tattMi);
               if (tatt !== undefined && !scheduleWidgetUserRights.checkIsCan(userR, tatt.R)) return whenRejButTs;
             }
           } catch (error) {}
@@ -247,7 +247,7 @@ const config: FilerAppConfig = {
 
         const authLogin = auth.login;
         const list = schedules.list.map((schedule): IScheduleWidget<string> => {
-          const user = schedule.ctrl.users.find((user) => user.login === authLogin);
+          const user = schedule.ctrl.users.find(user => user.login === authLogin);
 
           if (user === undefined) {
             if (scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public)) {
@@ -407,15 +407,15 @@ const config: FilerAppConfig = {
       prepareContent: (apps: Application[], auth) => {
         const authLevel = auth?.level || 0;
         return apps
-          .map((app) => {
+          .map(app => {
             if (!app.hidden && (app.level || 0) <= authLevel) return app;
             else return null;
           })
-          .filter((app) => app);
+          .filter(app => app);
       },
     },
     appVersion: {
-      watch: [`${rootDirective}/+version.json`, (content) => JSON.parse(content).num],
+      watch: [`${rootDirective}/+version.json`, content => JSON.parse(content).num],
     },
     nounPronsWords: null,
   },

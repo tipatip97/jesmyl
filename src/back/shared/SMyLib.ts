@@ -129,7 +129,7 @@ export class SMyLib {
       const bEntries = Object.entries(base).filter(([, val]) => val !== undefined);
 
       if (
-        bEntries?.length !== Object.values(source).filter((val) => val !== undefined).length ||
+        bEntries?.length !== Object.values(source).filter(val => val !== undefined).length ||
         bEntries.some(([bKey, bVal]) => !this.isEq(source[bKey], bVal))
       )
         return false;
@@ -154,8 +154,8 @@ export class SMyLib {
     if (args.length === 0) return null as never;
     const zero = args[0] ?? {};
 
-    args.forEach((arg) =>
-      arg == null ? null : this.keys(arg).forEach((arn) => arg[arn] !== undefined && (zero[arn] = arg[arn])),
+    args.forEach(arg =>
+      arg == null ? null : this.keys(arg).forEach(arn => arg[arn] !== undefined && (zero[arn] = arg[arn])),
     );
     return zero;
   }
@@ -211,8 +211,8 @@ export class SMyLib {
     isGte: (first: any, second: any) => first >= second,
     isLt: (first: any, second: any) => first < second,
     isLte: (first: any, second: any) => first <= second,
-    or: (...args: any[]) => args.some((arg) => arg),
-    and: (...args: any[]) => !args.some((arg) => !arg),
+    or: (...args: any[]) => args.some(arg => arg),
+    and: (...args: any[]) => !args.some(arg => !arg),
     if: (condition: any, ifTrue: any, ifFalse: any) => (condition ? ifTrue : ifFalse),
   };
 
@@ -255,7 +255,7 @@ export class SMyLib {
         let struct: any[] = [];
         const dists: any[] = [];
 
-        const diap = (diapason[0] === dob ? diapason : []).filter((txt) => {
+        const diap = (diapason[0] === dob ? diapason : []).filter(txt => {
           if (ballance === 0) return false;
 
           if (structItems) {
@@ -338,7 +338,7 @@ export class SMyLib {
       return line;
     };
 
-    return inline((str || '').split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/).filter((s) => s))?.join('') || '';
+    return inline((str || '').split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/).filter(s => s))?.join('') || '';
   }
 
   newInstance<T>(val: T): T {
@@ -421,7 +421,7 @@ export class SMyLib {
         return isCorrect;
       } else return value === typer;
     } else if (this.isArr(typer)) {
-      return (typer as any[]).some((tup) => this.isCorrectType(value, tup));
+      return (typer as any[]).some(tup => this.isCorrectType(value, tup));
     }
 
     return value === typer;

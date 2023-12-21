@@ -25,11 +25,16 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
             corrects={ccom.corrects[`${ccoln}-block-${coli}`]}
           >
             <div>
-              {!coli && <EvaButton name="plus-circle-outline" onClick={() => exec(ccom.insertBlocks(ccoln, -1, ''))} />}
+              {!coli && (
+                <EvaButton
+                  name="plus-circle-outline"
+                  onClick={() => exec(ccom.insertBlocks(ccoln, -1, ''))}
+                />
+              )}
               <div className="flex between">
                 <div>
                   {coli + 1 + '. '}
-                  {((ords) => (
+                  {(ords => (
                     <span
                       style={{
                         color: ords.length ? 'grey' : 'red',
@@ -39,35 +44,44 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
                           ? mylib
                               .unique(
                                 ords.map(
-                                  (o) =>
+                                  o =>
                                     `${
                                       o.top.isAnchor || o.top.isAnchorInherit || o.top.isAnchorInheritPlus
                                         ? '&#9875;'
                                         : ''
                                     }${o.top.header?.()}${o.top.style?.isInherit ? ` ${o.top.style.key}` : ''}`,
                                 ),
-                                (o) => o,
+                                o => o,
                               )
                               .join(', ')
                           : 'Нет упоминаний этого блока',
                       }}
                     />
-                  ))(ccom.orders?.filter((ord) => (istcoln ? ord.texti : ord.chordsi) === coli) || [])}
+                  ))(ccom.orders?.filter(ord => (istcoln ? ord.texti : ord.chordsi) === coli) || [])}
                 </div>
                 <span>
                   {!istcoln && /[A-H]b/.exec(col) && (
-                    <EvaButton name="hash" onClick={() => exec(ccom.replaceBemoles(coli))} />
+                    <EvaButton
+                      name="hash"
+                      onClick={() => exec(ccom.replaceBemoles(coli))}
+                    />
                   )}
                 </span>
-                <EvaButton name="close" onClick={() => exec(ccom.removeBlock(ccoln, coli))} />
+                <EvaButton
+                  name="close"
+                  onClick={() => exec(ccom.removeBlock(ccoln, coli))}
+                />
               </div>
               <TextAreaRedactor
                 ccoln={ccoln}
                 com={ccom}
                 col={col}
-                onChange={(value) => exec(ccom.changeBlock(ccoln, coli, value))}
+                onChange={value => exec(ccom.changeBlock(ccoln, coli, value))}
               />
-              <EvaButton name="plus-circle-outline" onClick={() => exec(ccom.insertBlocks(ccoln, coli, ''))} />
+              <EvaButton
+                name="plus-circle-outline"
+                onClick={() => exec(ccom.insertBlocks(ccoln, coli, ''))}
+              />
             </div>
           </EditContainerCorrectsInformer>
         );

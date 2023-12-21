@@ -212,7 +212,7 @@ export class EditableOrder extends Order {
     const positions = line.sort((a, b) => a - b);
     if (this.positions) this.positions[linei] = positions;
 
-    positions.forEach((pos) => {
+    positions.forEach(pos => {
       const vowel = lineSplitted[vowels[pos]];
 
       if (vowel && vowel.length === 1) lineSplitted[vowels[pos]] = `[${vowel}]`;
@@ -229,7 +229,7 @@ export class EditableOrder extends Order {
         value: line,
         ordw: this.getTargetFirst('w'),
       },
-      onSet: (exec) => {
+      onSet: exec => {
         const lineSplitted = textLine.split('');
         const prev = exec.args?.prev || [];
 

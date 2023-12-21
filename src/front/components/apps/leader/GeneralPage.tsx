@@ -41,10 +41,26 @@ export default function LeaderGeneralPage() {
       content={
         <>
           {generalMoreNode}
-          <BrutalItem title="Участники" icon="person-outline" onClick={() => goTo('memberList')} />
-          <BrutalItem title="Лидеры" icon="person-outline" onClick={() => goTo('leaderList')} />
-          <BrutalItem title="Группы" icon="people-outline" onClick={() => goTo('groupList')} />
-          <BrutalItem title="Игры" icon="cube-outline" onClick={() => goTo('games')} />
+          <BrutalItem
+            title="Участники"
+            icon="person-outline"
+            onClick={() => goTo('memberList')}
+          />
+          <BrutalItem
+            title="Лидеры"
+            icon="person-outline"
+            onClick={() => goTo('leaderList')}
+          />
+          <BrutalItem
+            title="Группы"
+            icon="people-outline"
+            onClick={() => goTo('groupList')}
+          />
+          <BrutalItem
+            title="Игры"
+            icon="cube-outline"
+            onClick={() => goTo('games')}
+          />
         </>
       }
     />

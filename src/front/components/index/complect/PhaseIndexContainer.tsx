@@ -4,5 +4,10 @@ import useIndexNav from './useIndexNav';
 
 export default function PhaseIndexContainer(props: PhaseContainerProps) {
   const { goBack } = useIndexNav();
-  return <PhaseContainerConfigurer {...props} goBack={goBack} />;
+  return (
+    <PhaseContainerConfigurer
+      {...props}
+      goBack={goBack}
+    />
+  );
 }

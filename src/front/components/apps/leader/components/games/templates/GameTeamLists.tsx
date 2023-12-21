@@ -9,7 +9,7 @@ export default function GameTeamLists() {
   const joins = cgame?.timerFields?.joins || 1;
   const teams = cgame?.teams || [];
 
-  const pointsNet = mylib.netFromLine(teams, joins, (item) => item);
+  const pointsNet = mylib.netFromLine(teams, joins, item => item);
 
   return (
     <PrintableTemplate
@@ -21,7 +21,10 @@ export default function GameTeamLists() {
               {pointsNet.map((row, rowi) => {
                 return (
                   <>
-                    <tr key={rowi} className=" flex-gap full-width between for-print break-inside-avoid">
+                    <tr
+                      key={rowi}
+                      className=" flex-gap full-width between for-print break-inside-avoid"
+                    >
                       {row?.map((team, teami) => {
                         return (
                           <td
@@ -33,7 +36,7 @@ export default function GameTeamLists() {
                           >
                             <h3>{team.name}</h3>
                             {LeaderCleans.extractWidables(ctx.contextMembers, team.members)
-                              .filter((member) => !member.isInactive)
+                              .filter(member => !member.isInactive)
                               .map((member, memberi) => (
                                 <div key={memberi}>{member.name}</div>
                               ))}

@@ -26,8 +26,8 @@ export default function EditMeetings() {
           {popupNode}
           <MeetingsInner
             meetings={meetings}
-            onEventClick={(event) => goToEvent(event.wid)}
-            onContextNavigate={(context) => setCurrPath(context)}
+            onEventClick={event => goToEvent(event.wid)}
+            onContextNavigate={context => setCurrPath(context)}
           />
         </>
       }

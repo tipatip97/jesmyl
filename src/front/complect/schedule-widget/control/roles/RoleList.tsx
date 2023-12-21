@@ -12,17 +12,23 @@ export default function ScheduleWidgetRoleList({ scope }: StrongComponentProps) 
   const [rolesExpandNode, isRolesExpand] = useIsExpand(
     false,
     <>Роли</>,
-    (isExpand) =>
+    isExpand =>
       isExpand &&
       rights.isCanTotalRedact &&
-      !rights.schedule.ctrl?.roles.some((role) => !role.title) && (
-        <StrongEvaButton scope={scope} fieldName="roles" name="plus" prefix="роль" confirm="Добавить новую роль?" />
+      !rights.schedule.ctrl?.roles.some(role => !role.title) && (
+        <StrongEvaButton
+          scope={scope}
+          fieldName="roles"
+          name="plus"
+          prefix="роль"
+          confirm="Добавить новую роль?"
+        />
       ),
   );
   const categories = useMemo(() => {
     const sorted = [...rights.schedule.ctrl.roles].sort((a, b) => (a.cat || 0) - (b.cat || 0));
     const roles: IScheduleWidgetRole[][] = [];
-    sorted.forEach((role) => {
+    sorted.forEach(role => {
       const list = (roles[role.cat || 0] ??= []);
       list.push(role);
     });
@@ -42,13 +48,17 @@ export default function ScheduleWidgetRoleList({ scope }: StrongComponentProps) 
                 name={isExpand ? 'chevron-up' : 'chevron-down'}
                 prefix={rights.schedule.ctrl.cats[listi]}
                 className="flex-max color--4"
-                onClick={() =>
-                  setCatExpands(isExpand ? catExpands.filter((it) => it !== listi) : [...catExpands, listi])
-                }
+                onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}
               />
               {isExpand &&
-                list.map((role) => {
-                  return <ScheduleWidgetRole key={role.mi} scope={scope} role={role} />;
+                list.map(role => {
+                  return (
+                    <ScheduleWidgetRole
+                      key={role.mi}
+                      scope={scope}
+                      role={role}
+                    />
+                  );
                 })}
             </div>
           );

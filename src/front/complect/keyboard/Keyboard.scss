@@ -1,20 +1,20 @@
 .keyboard-flash {
-  position: absolute;
   display: flex;
-  justify-content: space-around;
-  flex-direction: column;
+  position: absolute;
   bottom: 0;
-  width: 100%;
-  height: 0;
+  flex-direction: column;
+  justify-content: space-around;
   z-index: 1000000000000;
-  overflow: hidden;
   transition: height 0.2s;
   background: var(--keyboard-flash-background);
+  width: 100%;
+  height: 0;
+  overflow: hidden;
   pointer-events: none;
 
   &.active {
-    height: var(--keyboard-flash-height);
     animation: pointer-events-on 1s forwards;
+    height: var(--keyboard-flash-height);
   }
 
   &.more-open {
@@ -22,15 +22,15 @@
       &.bottom-line {
         > .keyboard-flash-key:not(.more-box):not(.undo-action) {
           opacity: 0.5;
-          pointer-events: none;
           filter: blur(5px);
+          pointer-events: none;
         }
       }
 
       &:not(.bottom-line) {
         opacity: 0.5;
-        pointer-events: none;
         filter: blur(5px);
+        pointer-events: none;
       }
     }
   }
@@ -41,10 +41,10 @@
     height: 100%;
 
     &.number-type {
-      max-width: 90%;
-      min-width: 200px;
-      width: 100%;
       margin: auto;
+      width: 100%;
+      min-width: 200px;
+      max-width: 90%;
     }
 
     &:not(.bottom-line) {
@@ -57,11 +57,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 0.2em;
+      cursor: pointer;
       border-radius: 0.2em;
+      padding: 0.2em;
       width: 2.3em;
       height: 2.6em;
-      cursor: pointer;
 
       @media screen and (max-width: 350px) {
         min-width: 1em;
@@ -77,11 +77,11 @@
         > .keyboard-flash-key-more-box-list {
           position: absolute;
           bottom: 2.6em;
-          overflow-y: auto;
-          overflow-x: visible;
-          max-height: calc(var(--keyboard-flash-height) - 50px);
-          width: 70vw;
           left: 0;
+          width: 70vw;
+          max-height: calc(var(--keyboard-flash-height) - 50px);
+          overflow-x: visible;
+          overflow-y: auto;
 
           > .keyboard-flash-key-more-box-inner {
             display: flex;
@@ -98,9 +98,9 @@
       }
 
       > .key-button {
+        border-radius: 0.2em;
         background: var(--keyboard-flash-tool-button-background);
         padding: 0.2em;
-        border-radius: 0.2em;
       }
 
       &.shift-key {
@@ -115,12 +115,12 @@
         }
 
         &.is-control-key-label:before {
-          content: 'ctrl';
           position: absolute;
-          bottom: 0;
           right: 0;
-          font-size: 0.5em;
+          bottom: 0;
           z-index: 1;
+          content: 'ctrl';
+          font-size: 0.5em;
         }
       }
 
@@ -146,11 +146,11 @@
         width: 50%;
 
         > * {
-          width: 100%;
-          height: 30px;
+          border-radius: 0.2em;
           background: var(--keyboard-flash-tool-button-background);
           padding: 0.2em;
-          border-radius: 0.2em;
+          width: 100%;
+          height: 30px;
         }
       }
     }
@@ -166,8 +166,8 @@
   width: 100%;
 
   .input {
-    padding-left: 3px;
     background-color: var(--input-keyboard-background);
+    padding-left: 3px;
   }
 
   &:not(.with-native-input) {
@@ -175,11 +175,11 @@
   }
 
   .native-input {
+    padding-right: 30px;
     width: 100%;
     height: 100%;
     resize: none;
     color: var(--color--3);
-    padding-right: 30px;
 
     &::placeholder {
       color: var(--color--4);
@@ -241,8 +241,8 @@
   &.empty-input {
     &.no-lines {
       .input-keyboard-flash-controlled-char-list {
-        height: 1.3em;
         border-left: var(--cursor-border);
+        height: 1.3em;
 
         .input-keyboard-flash-controlled-char-list-line {
           height: 1.3em;
@@ -251,10 +251,10 @@
     }
 
     &:before {
-      content: attr(placeholder);
       position: absolute;
       opacity: 0.7;
       pointer-events: none;
+      content: attr(placeholder);
       white-space: nowrap;
     }
 
@@ -318,29 +318,29 @@
   }
 
   > .menu-actions-with-selected {
-    position: absolute;
     display: flex;
+    position: absolute;
     bottom: -2.3em;
-    background: var(--keyboard-flash-selected-background);
-    color: var(--keyboard-flash-selected-color);
     z-index: 10000000;
-    border-radius: 0 0.5em 0.5em 0.5em;
-    padding: 0 0.3em;
-    font-size: 0.7em;
     transition: opacity 0.2s;
+    border-radius: 0 0.5em 0.5em 0.5em;
+    background: var(--keyboard-flash-selected-background);
+    padding: 0 0.3em;
+    color: var(--keyboard-flash-selected-color);
+    font-size: 0.7em;
 
     > * {
-      padding: 0.3em;
       cursor: pointer;
+      padding: 0.3em;
 
       &:not(:last-child):after {
-        content: '';
+        display: inline-block;
+        position: absolute;
         top: 0.4em;
         margin-left: 3px;
-        height: 1.2em;
-        position: absolute;
         border-left: solid 1px var(--keyboard-flash-selected-color);
-        display: inline-block;
+        height: 1.2em;
+        content: '';
       }
     }
   }
@@ -351,23 +351,23 @@
     }
 
     .input-keyboard-flash-controlled-char-list-inner {
-      white-space: nowrap;
-      padding-left: 3px;
       padding-bottom: 3px;
+      padding-left: 3px;
+      white-space: nowrap;
 
       .input-keyboard-flash-controlled-char-list-line {
         border-left: var(--cursor-border);
         min-height: 1.4em;
 
         .input-keyboard-flash-controlled-char {
-          position: relative;
           display: inline-block;
+          position: relative;
+          vertical-align: bottom;
           margin-left: -1px;
-          white-space: pre;
           border-right: var(--cursor-border);
           min-width: 0.2em;
-          vertical-align: bottom;
           min-height: 1.3em;
+          white-space: pre;
 
           &.newline-char {
             display: block;
@@ -375,12 +375,12 @@
           }
 
           &:before {
-            content: '';
-            position: absolute;
             display: inline-block;
+            position: absolute;
+            left: -0.2em;
             width: 0.5em;
             height: 1.4em;
-            left: -0.2em;
+            content: '';
           }
 
           &:first-child {
@@ -397,12 +397,12 @@
   }
 
   > .icon-button-container {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
     display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
     align-items: center;
+    height: 100%;
   }
 }
 

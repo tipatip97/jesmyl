@@ -6,10 +6,10 @@ export default function QRCode({ text, ...props }: HTMLAttributes<HTMLCanvasElem
     <canvas
       {...props}
       className={`qr-code ${props.className || ''}`}
-      ref={(element) => {
+      ref={element => {
         if (!element) return;
 
-        QRCodeGenerator.toCanvas(element, text, (error) => {
+        QRCodeGenerator.toCanvas(element, text, error => {
           if (error) console.error(error);
           else {
             element.style.width = null as never;

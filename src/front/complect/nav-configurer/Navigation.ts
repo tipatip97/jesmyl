@@ -36,7 +36,7 @@ export class NavigationConfig<Storage, NavData = {}> {
   }
 
   invokeGeneralFooterButtonClickListeners(listenLine: RoutePhase) {
-    Object.values(this.onGeneralFooterButtonClicks[listenLine] || {}).forEach((cb) => cb());
+    Object.values(this.onGeneralFooterButtonClicks[listenLine] || {}).forEach(cb => cb());
   }
 
   onGeneralFooterButtonClick(listenLine: RoutePhase, listenerName: string) {
@@ -122,7 +122,7 @@ export class NavigationConfig<Storage, NavData = {}> {
           while (onNextRelative && typeof item.node === 'function') {
             const defaultChild = item.defaultChild;
             const nextItem = (
-              item.defaultChild ? item.next?.find((it) => defaultChild === it.phase[0]) : item.next?.[0]
+              item.defaultChild ? item.next?.find(it => defaultChild === it.phase[0]) : item.next?.[0]
             ) as INavigationRouteItem<NavData> | nil;
 
             if (!nextItem) break;

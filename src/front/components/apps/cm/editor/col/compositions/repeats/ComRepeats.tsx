@@ -72,7 +72,7 @@ export default function ComRepeats() {
             onClick={
               ord.text
                 ? undefined
-                : (event) => {
+                : event => {
                     if (start == null || !isChordBlock) {
                       setStart({
                         orderUnit: ord,
@@ -99,7 +99,7 @@ export default function ComRepeats() {
               com={ccom}
               orderUnit={ord}
               orderUniti={ordi}
-              asHeaderComponent={(props) => {
+              asHeaderComponent={props => {
                 return (
                   <>
                     {props.headerNode}
@@ -116,7 +116,7 @@ export default function ComRepeats() {
                           name="pin-outline"
                           className={`vertical-middle pointer ${ord.isInheritValue('r') ? 'disabled' : ''}`}
                           onClick={() => {
-                            modalService.confirm('Очистить собственные правила повторения?').then((isClear) => {
+                            modalService.confirm('Очистить собственные правила повторения?').then(isClear => {
                               if (isClear) exec(ord.removeInheritance('r'));
                             });
                           }}
@@ -126,7 +126,7 @@ export default function ComRepeats() {
                   </>
                 );
               }}
-              asLineComponent={(props) => {
+              asLineComponent={props => {
                 return (
                   <ComLine
                     {...props}
@@ -177,15 +177,15 @@ export default function ComRepeats() {
                         ? ''
                         : 'inactive-word';
                     }}
-                    onClick={(event) => {
+                    onClick={event => {
                       const clicked = event.nativeEvent
                         .composedPath()
-                        .find((span) => (span as HTMLSpanElement)?.classList?.contains('com-word')) as HTMLSpanElement;
+                        .find(span => (span as HTMLSpanElement)?.classList?.contains('com-word')) as HTMLSpanElement;
 
                       const [, wordi] =
                         (clicked &&
                           Array.from(clicked.classList)
-                            .find((className) => className.startsWith('wordi_'))
+                            .find(className => className.startsWith('wordi_'))
                             ?.split('_')) ||
                         [];
 
@@ -251,7 +251,7 @@ export default function ComRepeats() {
                 >
                   <div
                     className="button close"
-                    onClick={(event) => {
+                    onClick={event => {
                       event.stopPropagation();
                       reset();
                     }}
@@ -261,7 +261,7 @@ export default function ComRepeats() {
                   {!flashes.length ? null : (
                     <div
                       className="button remove"
-                      onClick={async (event) => {
+                      onClick={async event => {
                         event.stopPropagation();
 
                         if (isChordBlock) {
@@ -281,7 +281,7 @@ export default function ComRepeats() {
                           title: 'Сброс границ',
                           inputs: ord.regions
                             ?.filter(({ startLinei, startWordi }) => textLinei === startLinei && wordi === startWordi)
-                            .map((flash) => {
+                            .map(flash => {
                               const { startLinei, startWordi, endLinei, endWordi, startOrd, endOrd, startKey, count } =
                                 flash;
                               const fill = (
@@ -296,7 +296,7 @@ export default function ComRepeats() {
                                 return (
                                   isBeg ? lines.slice(l || 0, fl == null ? fl : fl + 1) : lines.slice(0, (l || 0) + 1)
                                 )
-                                  .map((line) =>
+                                  .map(line =>
                                     (isBeg
                                       ? (line || '').split(/ +/).slice(w || 0, fw == null ? fw : fw + 1)
                                       : (line || '').split(/ +/).slice(0, (w || 0) + 1)
@@ -382,7 +382,7 @@ export default function ComRepeats() {
                       <EvaIcon name="trash-2-outline" />
                     </div>
                   )}
-                  {[2, 3, 4, 5].map((currFlashCount) => {
+                  {[2, 3, 4, 5].map(currFlashCount => {
                     return (
                       <div
                         key={`flash-${currFlashCount}`}

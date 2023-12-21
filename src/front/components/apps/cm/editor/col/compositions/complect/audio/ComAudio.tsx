@@ -44,7 +44,7 @@ export default function ComAudio({
       const { attr, query, url } = mp3Rule;
       updateHrefs(
         Array.from(div.querySelectorAll(query))
-          .map((e) => {
+          .map(e => {
             let attrUrl: URL | und;
             let serverUrl: URL | und;
             const attribute = e.getAttribute(attr);
@@ -74,7 +74,7 @@ export default function ComAudio({
 
             return '';
           })
-          .filter((src) => src),
+          .filter(src => src),
       );
       div.remove();
     }
@@ -89,7 +89,10 @@ export default function ComAudio({
         audio.split('\n').map((src, srci, srca) => {
           if (!src) return null;
           return (
-            <div key={src} className="flex flex-gap margin-gap-v full-width">
+            <div
+              key={src}
+              className="flex flex-gap margin-gap-v full-width"
+            >
               <ComPlayer src={src} />
               <EvaButton
                 className="error-message"
@@ -113,7 +116,10 @@ export default function ComAudio({
           {MyLib.entries(removedSrcs).map(([index, src]) => {
             if (!src) return null;
             return (
-              <div key={src} className="flex flex-gap margin-gap-v full-width">
+              <div
+                key={src}
+                className="flex flex-gap margin-gap-v full-width"
+              >
                 <ComPlayer src={src} />
                 <EvaButton
                   name="plus-circle"
@@ -141,8 +147,8 @@ export default function ComAudio({
                   className="children-middle pointer"
                   onClick={() => {
                     let max = 0;
-                    ccom.texts?.forEach((text) => (text.length > max ? (max = text.length) : 0));
-                    const text = ccom.texts?.find((text) => text.length === max);
+                    ccom.texts?.forEach(text => (text.length > max ? (max = text.length) : 0));
+                    const text = ccom.texts?.find(text => text.length === max);
                     if (text) {
                       const url = new URL('https://google.com/search');
                       url.searchParams.set('q', `${ccom.name} ${text.replace(/\n+/g, ' ')}`);
@@ -161,17 +167,20 @@ export default function ComAudio({
               />
             </>
           )}
-          {hrefs.map((src) => {
+          {hrefs.map(src => {
             if (src && uniqs.indexOf(src) < 0) {
               uniqs.push(src);
 
               return (
-                <div key={src} className="flex flex-gap margin-gap-v full-width">
+                <div
+                  key={src}
+                  className="flex flex-gap margin-gap-v full-width"
+                >
                   <ComPlayer src={src} />
                   <EvaButton
                     name="plus-circle"
                     onClick={() => {
-                      updateHrefs(hrefs.filter((href) => href !== src));
+                      updateHrefs(hrefs.filter(href => href !== src));
                       setAudioExec(`${audio}\n${src}`);
                     }}
                   />
@@ -183,7 +192,11 @@ export default function ComAudio({
           })}
         </>
       ) : (
-        <EvaButton name="plus-circle" className="color--ok margin-big-gap" onClick={() => setOpenAddBlock(true)} />
+        <EvaButton
+          name="plus-circle"
+          className="color--ok margin-big-gap"
+          onClick={() => setOpenAddBlock(true)}
+        />
       )}
     </>
   );

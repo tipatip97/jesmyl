@@ -55,7 +55,10 @@ export default function OrdersRedactor() {
         const isWithHead = ord.isWithHead();
 
         return (
-          <div key={`order-${ordi}`} className={ord.top.isAnchorInherit ? 'inherit-block' : ''}>
+          <div
+            key={`order-${ordi}`}
+            className={ord.top.isAnchorInherit ? 'inherit-block' : ''}
+          >
             <div className="margin-big-gap-h">
               {isWithHead ? null : ord.top.isAnchorInherit ? (
                 <EvaIcon
@@ -99,7 +102,11 @@ export default function OrdersRedactor() {
         );
       })}
       <div className="flex">
-        <EvaIcon name="plus-circle-outline" className="pointer margin-gap-h" onClick={() => openAddsPopup({ ccom })} />
+        <EvaIcon
+          name="plus-circle-outline"
+          className="pointer margin-gap-h"
+          onClick={() => openAddsPopup({ ccom })}
+        />
       </div>
     </div>
   );

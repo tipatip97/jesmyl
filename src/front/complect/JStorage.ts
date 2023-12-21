@@ -37,7 +37,7 @@ export class JStorage<Scope, State = Scope> {
   }
 
   refreshAreas<Key extends keyof Scope>(areas: Key[], contents: Record<Key, unknown>) {
-    areas.forEach((key) => {
+    areas.forEach(key => {
       const val = contents[key] as NonUndefined<Scope[Key]>;
       if (val !== undefined) {
         this.set(key, val);
@@ -47,7 +47,7 @@ export class JStorage<Scope, State = Scope> {
   }
 
   get<Key extends keyof Scope>(key: Key): Promise<Scope[Key] | undefined> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const read = async () => {
         if (this.dbOpen.readyState !== 'done') {
           resolve(await this.get(key));
@@ -74,7 +74,7 @@ export class JStorage<Scope, State = Scope> {
   ): Record<Key, CaseReducer<State, { payload: any; type: string }>> {
     const actions: Record<string, (state: Record<Key, unknown>, action: PayloadAction<unknown>) => void> = {};
     keys.forEach(
-      (key) =>
+      key =>
         (actions[key as string] = (state, action) => {
           state[key] = action.payload;
           this.set(key as never, action.payload as never);
@@ -107,7 +107,7 @@ export class JStorage<Scope, State = Scope> {
       keys.onsuccess = () => {
         if (!keys.result.length && this.isFirstInit && onInit !== undefined) setTimeout(() => dispatch(onInit()), 100);
 
-        keys.result.forEach((key) => {
+        keys.result.forEach(key => {
           if (onInit !== undefined) tries++;
 
           if (actions[key as keyof Scope] !== undefined) {

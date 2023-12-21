@@ -21,7 +21,7 @@ export const useIsRememberExpand = (
 
   if (isSelfExpandOnly && expandes.includes(scope)) clear(scope);
   const switchExpand: (isExpand?: boolean) => void = useCallback(
-    (isExpand) => {
+    isExpand => {
       if (isSelfExpandOnly) setIsExpand(isExpand ?? isNIs);
 
       if (expandes.includes(scope)) {
@@ -42,7 +42,10 @@ export const useIsRememberExpand = (
 
   return [
     <span className="flex flex-gap between margin-gap-v">
-      <span className="flex flex-gap flex-max pointer" onClick={() => switchExpand()}>
+      <span
+        className="flex flex-gap flex-max pointer"
+        onClick={() => switchExpand()}
+      >
         {prefix}
         <EvaIcon name={isExpand ? 'chevron-up' : 'chevron-down'} />
       </span>

@@ -20,7 +20,10 @@ export default function EditContainerCorrectsInformer(
 
   return (
     cmExer.actionAccessedOrNull(access, auth, true) && (
-      <div {...props} className={`edit-container-corrects-informer ${props.className || ''}`}>
+      <div
+        {...props}
+        className={`edit-container-corrects-informer ${props.className || ''}`}
+      >
         {children}
         <div className="corrects-container">
           {(
@@ -32,10 +35,16 @@ export default function EditContainerCorrectsInformer(
           ).map(([correct, line]) => {
             return line.map(({ message, onFix, fixLabel }, correcti) => {
               return (
-                <div key={`${correct}-corrects-for action : ${correcti}`} className={`${correct} correct-box`}>
+                <div
+                  key={`${correct}-corrects-for action : ${correcti}`}
+                  className={`${correct} correct-box`}
+                >
                   {message}
                   {onFix && (
-                    <div className="fix-button" onClick={() => onFix()}>
+                    <div
+                      className="fix-button"
+                      onClick={() => onFix()}
+                    >
                       {fixLabel || 'Исправить'}
                     </div>
                   )}

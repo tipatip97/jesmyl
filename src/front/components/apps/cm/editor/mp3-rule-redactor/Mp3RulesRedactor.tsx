@@ -21,12 +21,12 @@ export default function Mp3RulesRedactor() {
       headTitle="Редактор MP3 правил"
       content={
         <>
-          {redactRules.map((rule) => {
+          {redactRules.map(rule => {
             return (
               <Mp3RuleEditor
                 key={`mp3-redact-rule#${rule.w}`}
                 {...rule}
-                onComplete={(newRule) => {
+                onComplete={newRule => {
                   const index = redactRules.findIndex(({ w }) => rule.w === w);
                   if (index > -1) {
                     const newRedacts = [...redactRules];
@@ -62,11 +62,10 @@ export default function Mp3RulesRedactor() {
                         action: 'addMp3Rule',
                         method: 'push',
                         anti: ({ args, action }) => {
-                          if (action === 'addMp3Rule' && args && args.value.w === w)
-                            return (action) => action.RemoveNew;
+                          if (action === 'addMp3Rule' && args && args.value.w === w) return action => action.RemoveNew;
                         },
                       });
-                      updateNewRules(newRules.filter((rule) => rule.w !== w));
+                      updateNewRules(newRules.filter(rule => rule.w !== w));
                     }}
                   />
                 }
@@ -75,13 +74,18 @@ export default function Mp3RulesRedactor() {
           })}
           <h2 className="flex flex-gap">
             Новое правило
-            {!isOpenNewRule && <EvaButton name="plus-circle" onClick={() => setIsOpenNewRule(true)} />}
+            {!isOpenNewRule && (
+              <EvaButton
+                name="plus-circle"
+                onClick={() => setIsOpenNewRule(true)}
+              />
+            )}
           </h2>
           {isOpenNewRule && (
             <Mp3RuleEditor
               redact
               newRule
-              onComplete={(rule) => {
+              onComplete={rule => {
                 updateNewRules([...newRules, rule]);
                 setIsOpenNewRule(false);
                 cmExer.set({

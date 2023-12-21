@@ -19,10 +19,14 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
     () =>
       name &&
       contexts
-        .filter((ctx) => ctx.toLowerCase().search(name.toLowerCase()) > -1)
-        .map((context) => {
+        .filter(ctx => ctx.toLowerCase().search(name.toLowerCase()) > -1)
+        .map(context => {
           return (
-            <div key={`context-${context}`} className="context-item" onClick={() => setName(context)}>
+            <div
+              key={`context-${context}`}
+              className="context-item"
+              onClick={() => setName(context)}
+            >
               {context}
             </div>
           );
@@ -32,7 +36,7 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
 
   const switchEvent = (event: EditableMeetingsEvent) => {
     bindEvents.indexOf(event) > -1
-      ? setBindEvents(bindEvents.filter((eventw) => eventw !== event))
+      ? setBindEvents(bindEvents.filter(eventw => eventw !== event))
       : setBindEvents([...bindEvents, event]);
   };
   const eventsStack = meetings?.events
@@ -44,15 +48,25 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
           icon="calendar-outline"
           title={event.name}
           onClick={() => switchEvent(event)}
-          box={<input type="checkbox" checked={bindEvents.indexOf(event) > -1} onChange={() => switchEvent(event)} />}
+          box={
+            <input
+              type="checkbox"
+              checked={bindEvents.indexOf(event) > -1}
+              onChange={() => switchEvent(event)}
+            />
+          }
         />
       );
     })
-    .filter((item) => item);
+    .filter(item => item);
 
   return (
     <div className="add-context full-container flex column full-height padding-big-gap center">
-      <KeyboardInput className="full-width" value={name} onChange={(value) => setName(value)} />
+      <KeyboardInput
+        className="full-width"
+        value={name}
+        onChange={value => setName(value)}
+      />
       {stack}
       {eventsStack?.length ? (
         <>

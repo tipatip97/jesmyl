@@ -17,7 +17,7 @@ export default function ScheduleWidgetLists({
   const [listsTitle, isExpand] = useIsExpand(
     true,
     'Списки',
-    (isExpand) =>
+    isExpand =>
       isExpand &&
       rights.isCanTotalRedact && (
         <StrongEvaButton
@@ -37,7 +37,13 @@ export default function ScheduleWidgetLists({
         {isExpand &&
           rights.schedule.lists.cats.map((cat, cati) => {
             return (
-              <ScheduleWidgetListCategory key={cati} scope={listsScope} scheduleScope={scope} cat={cat} cati={cati} />
+              <ScheduleWidgetListCategory
+                key={cati}
+                scope={listsScope}
+                scheduleScope={scope}
+                cat={cat}
+                cati={cati}
+              />
             );
           })}
         {rights.isCanRedact && <ScheduleWidgetRoleList scope={scheduleScope} />}

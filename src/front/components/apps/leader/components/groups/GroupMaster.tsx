@@ -22,7 +22,11 @@ export default function LeaderGroupMaster({ group, close }: { group?: LeaderGrou
     <div className="full-container flex column padding-giant-gap">
       <div className="flex flex-gap full-width">
         <div>Название:</div>
-        <KeyboardInput value={group?.name} preferLanguage="ru" onInput={(value) => setName(value)} />
+        <KeyboardInput
+          value={group?.name}
+          preferLanguage="ru"
+          onInput={value => setName(value)}
+        />
       </div>
       <SelectHumans
         chooseTitle={`Выбор из участников ${ccontext?.name || 'контекста'}`}

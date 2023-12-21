@@ -38,7 +38,7 @@ export default function DebouncedSearchInput(props: {
         value={initialTerm}
         className="input"
         placeholder={props.placeholder}
-        onChange={(term) => {
+        onChange={term => {
           onSearch?.(term, isNumberSearch);
 
           if (debounce) {

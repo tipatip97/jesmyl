@@ -21,7 +21,12 @@ export default function GroupList() {
         <>
           {groupsMoreNode}
           {ccontext.groups?.map((group, groupi) => {
-            return <GroupFace key={groupi} group={group} />;
+            return (
+              <GroupFace
+                key={groupi}
+                group={group}
+              />
+            );
           })}
           <GroupFieldBlanks />
         </>

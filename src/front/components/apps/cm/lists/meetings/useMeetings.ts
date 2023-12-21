@@ -29,7 +29,7 @@ export function useMeetings() {
 
   return {
     meetings,
-    currentEvent: meetings?.events?.find((meeting) => meeting.wid === eventw),
+    currentEvent: meetings?.events?.find(meeting => meeting.wid === eventw),
     goToEvent: (eventw: number) => {
       goTo({ place: 'event', data: { eventw } });
     },

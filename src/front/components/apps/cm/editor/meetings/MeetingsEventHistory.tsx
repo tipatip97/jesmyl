@@ -7,15 +7,21 @@ export default function MeetingsEventHistory({ close }: { close: () => void }) {
   const cols = useCols();
 
   return (
-    <div className="full-container full-height" onClick={() => close()}>
+    <div
+      className="full-container full-height"
+      onClick={() => close()}
+    >
       <div className="margin-gap flex center color--3">История события "{currentEvent?.name}"</div>
       <div className="flex column center">
         {currentEvent?.history?.map(({ w, s }) => {
           return (
-            <div key={'' + w} className="margin-big-gap-v">
+            <div
+              key={'' + w}
+              className="margin-big-gap-v"
+            >
               <div>{new Date(w).toLocaleString()}</div>
-              {s?.map((comw) => {
-                const com = cols?.coms.find((com) => com.wid === comw);
+              {s?.map(comw => {
+                const com = cols?.coms.find(com => com.wid === comw);
                 return (
                   <div key={'' + comw}>
                     {com ? <ComFace com={com} /> : <span className="error-message">Неизвестная песня</span>}

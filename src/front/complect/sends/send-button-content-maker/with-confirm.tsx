@@ -10,7 +10,10 @@ export const SendButtonContentMakerWithConfirm = <Value,>(props: SendButtonConte
   return (
     <>
       {confirmNode}
-      <SendButtonContentMakerBody<Value> {...props} onClick={() => confirm(props.confirm)} />
+      <SendButtonContentMakerBody<Value>
+        {...props}
+        onClick={() => confirm(props.confirm)}
+      />
     </>
   );
 };

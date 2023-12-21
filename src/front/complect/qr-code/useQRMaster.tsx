@@ -37,7 +37,7 @@ export default function useQRMaster() {
   const qrNode = useMemo(() => {
     return (
       <Portal>
-        <QRCodeMasterApplication controller={(top) => (controller = top)} />
+        <QRCodeMasterApplication controller={top => (controller = top)} />
       </Portal>
     );
   }, []);
@@ -78,17 +78,17 @@ export default function useQRMaster() {
         const parts: QRMasterConnectData<string>[] =
           valueStr
             .match(/(.{0,100})/g)
-            ?.filter((part) => part)
+            ?.filter(part => part)
             .map((part, parti, parta) => partMapper(part, parti, parta.length)) || [];
         if (parts) {
           let max = 0;
           const strings = parts
-            .map((data) => {
+            .map(data => {
               const string = JSON.stringify(data);
               if (max < string.length) max = string.length;
               return string;
             })
-            .map((string) => string.padEnd(max + 1, ' '));
+            .map(string => string.padEnd(max + 1, ' '));
           controller({
             ok: true,
             type: 'showQRs',
@@ -144,7 +144,7 @@ export default function useQRMaster() {
         type: 'openReader',
         value: true,
       });
-      return new Promise<QRCodeReaderData<Data, Key>>((res) => {
+      return new Promise<QRCodeReaderData<Data, Key>>(res => {
         const qr = new Html5Qrcode(qrCodeMasterContainerId);
         setQr(qr);
         const vmin = Math.min(window.innerHeight, window.innerWidth);
@@ -163,7 +163,7 @@ export default function useQRMaster() {
             fps: 10,
             qrbox: { width: size, height: size },
           },
-          (decodedText) => {
+          decodedText => {
             try {
               if (decodedText.startsWith(jesmylHostName)) {
                 const decoded = crossApplicationLinkCoder.decode(decodedText);
@@ -228,7 +228,7 @@ export default function useQRMaster() {
                   }
                 }
 
-                if (dataParts.filter((data) => data).length >= count) {
+                if (dataParts.filter(data => data).length >= count) {
                   res({
                     appName,
                     key,
@@ -249,8 +249,8 @@ export default function useQRMaster() {
   const readQR = useCallback(
     <Ret,>(callback?: (data: QRCodeReaderData<unknown, never>) => Ret | null): Promise<Ret | null> => {
       return new Promise((resolve, reject) =>
-        read().then((data) => {
-          if (data.appName === 'index' || appNames.some((appName) => appName === data.appName)) {
+        read().then(data => {
+          if (data.appName === 'index' || appNames.some(appName => appName === data.appName)) {
             if (callback) resolve(callback(data));
             else {
               resolve(null);

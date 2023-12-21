@@ -37,7 +37,7 @@ export const translationPushKinds = [
     10: 46,
     0: 4,
   },
-].map((rule) => {
+].map(rule => {
   const rules = Object.entries(rule)
     .map(([key, val]) => [+key, val])
     .sort(([a], [b]) => (a === 0 ? 1 : b === 0 ? -1 : Math.abs(a) - Math.abs(b) || a - b));

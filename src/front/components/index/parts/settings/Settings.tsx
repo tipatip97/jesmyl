@@ -75,7 +75,7 @@ export default function IndexSettings() {
       title="Проверить PUSH"
       onClick={() => {
         Noty.checkPermission()
-          ?.then((res) => toast(`PUSH состояние: ${res}`))
+          ?.then(res => toast(`PUSH состояние: ${res}`))
           .catch(() => toast('Ошибка при открытии PUSH', { mood: 'ko' }));
 
         Noty.simpleNotify('Проверка PUSH', 'Успех!! ', {
@@ -84,7 +84,7 @@ export default function IndexSettings() {
         });
       }}
     />,
-  ].filter((isShow) => isShow);
+  ].filter(isShow => isShow);
   const connectionNode = useConnectionState('margin-gap');
 
   return (
@@ -122,14 +122,14 @@ export default function IndexSettings() {
                         <EvaButton
                           name={expands.includes('') ? 'chevron-up' : 'chevron-down'}
                           onClick={() =>
-                            setExpands(expands.includes('') ? expands.filter((name) => name !== '') : [...expands, ''])
+                            setExpands(expands.includes('') ? expands.filter(name => name !== '') : [...expands, ''])
                           }
                         />
                       )}
                     </div>
                   </div>
                   {expands.includes('') && <Visits statistic={statistic} />}
-                  {appNames.map((appName) => {
+                  {appNames.map(appName => {
                     const app = appConfigs[appName];
                     if (appName === 'index' || (app.nav.nav.level !== undefined && app.nav.nav.level > auth.level))
                       return null;
@@ -150,7 +150,7 @@ export default function IndexSettings() {
                               onClick={() =>
                                 setExpands(
                                   expands.includes(appName)
-                                    ? expands.filter((name) => name !== appName)
+                                    ? expands.filter(name => name !== appName)
                                     : [...expands, appName],
                                 )
                               }
@@ -159,7 +159,12 @@ export default function IndexSettings() {
                         </div>
                         <div className="margin-big-gap-l">
                           {expands.includes(appName) &&
-                            statistic.usages[appName]?.map((usage, usagei) => <Visitor key={usagei} visitor={usage} />)}
+                            statistic.usages[appName]?.map((usage, usagei) => (
+                              <Visitor
+                                key={usagei}
+                                visitor={usage}
+                              />
+                            ))}
                         </div>
                       </div>
                     );

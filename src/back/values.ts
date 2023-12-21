@@ -7,7 +7,7 @@ export const actionBoxSetSystems = {
   mi: (field: string, list?: any[]) => {
     if (!smylib.isArr(list)) return 0;
     let max = -1;
-    list.forEach?.((item) => item[field] != null && item[field] > max && (max = item[field]));
+    list.forEach?.(item => item[field] != null && item[field] > max && (max = item[field]));
     return max + 1;
   },
 };

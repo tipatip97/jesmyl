@@ -1,29 +1,29 @@
 .user-face {
   --size: 2.5em;
   --logo-border-size: 2px;
+  display: flex;
 
   position: relative;
-  display: flex;
-  height: var(--size);
   align-items: center;
-  padding: 0.4em;
-  margin-bottom: calc(var(--logo-border-size) * 2 + 2px);
   cursor: pointer;
+  margin-bottom: calc(var(--logo-border-size) * 2 + 2px);
+  padding: 0.4em;
+  height: var(--size);
 
   &.selected .logo {
     border-color: var(--color--3);
   }
 
   > .logo {
-    position: absolute;
     display: flex;
+    position: absolute;
     justify-content: center;
     align-items: center;
-    background: var(--color--1);
+    border: solid 4px transparent;
     border-radius: 50%;
+    background: var(--color--1);
     width: var(--size);
     height: var(--size);
-    border: solid 4px transparent;
   }
 
   > .title {
@@ -33,10 +33,10 @@
 
 .messages-box {
   .message {
+    margin-top: 10px;
+    border-radius: 10px;
     background-color: var(--color--2);
     padding: 10px;
-    border-radius: 10px;
-    margin-top: 10px;
     color: var(--color--3);
   }
 }

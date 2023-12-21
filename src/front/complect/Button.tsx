@@ -15,11 +15,11 @@ export default function TheButton({
       onClick={
         !confirm
           ? onClick
-          : (event) => {
+          : event => {
               if (onClick)
                 modalService
                   .confirm(confirm === true ? props.children : confirm, 'Подтверди')
-                  .then((is) => is && onClick(event));
+                  .then(is => is && onClick(event));
             }
       }
     />
@@ -27,15 +27,17 @@ export default function TheButton({
 }
 
 const Button = styled.div`
-  position: relative;
-  display: inline-block;
-  border: var(--color--2) 4px solid;
-  padding: 0.5em 2em;
-  border-radius: 2em;
-  cursor: pointer;
+  & {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    border: var(--color--2) 4px solid;
+    border-radius: 2em;
+    padding: 0.5em 2em;
 
-  .eva-icon {
-    position: absolute;
-    margin-left: 2px;
+    .eva-icon {
+      position: absolute;
+      margin-left: 2px;
+    }
   }
 `;

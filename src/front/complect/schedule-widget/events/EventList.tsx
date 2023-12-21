@@ -47,7 +47,7 @@ export default function ScheduleWidgetEventList({
           <>
             <div className="flex flex-gap between">
               <div>Шаблоны событий</div>
-              {!schedule.types.some((type) => !type.title) && (
+              {!schedule.types.some(type => !type.title) && (
                 <StrongEvaButton
                   scope={scheduleScope}
                   fieldName="types"
@@ -60,7 +60,7 @@ export default function ScheduleWidgetEventList({
         )}
         {body(
           <>
-            {sortedTypes.map((typeBox) => {
+            {sortedTypes.map(typeBox => {
               const typei = types.indexOf(typeBox);
 
               return (
@@ -93,7 +93,11 @@ export default function ScheduleWidgetEventList({
   return (
     <>
       {modalNode}
-      <EvaButton name={icon} postfix={postfix} onClick={screen} />
+      <EvaButton
+        name={icon}
+        postfix={postfix}
+        onClick={screen}
+      />
     </>
   );
 }

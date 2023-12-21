@@ -16,7 +16,7 @@ export default function useGames() {
     appRouteData: { gamew },
   } = useLeaderNav();
 
-  const cgame = games?.teamGames?.find((game) => game.w === gamew);
+  const cgame = games?.teamGames?.find(game => game.w === gamew);
   const contextGames = games?.teamGames?.filter(({ contextw }) => ctx.ccontext?.w === contextw);
 
   const ret = {

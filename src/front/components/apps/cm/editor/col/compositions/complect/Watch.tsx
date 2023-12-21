@@ -7,5 +7,11 @@ export default function EditableCompositionWatch() {
 
   if (!ccom) return null;
 
-  return <TheCom com={ccom} chordVisibleVariant={ChordVisibleVariant.Maximal} isMiniAnchor={false} />;
+  return (
+    <TheCom
+      com={ccom}
+      chordVisibleVariant={ChordVisibleVariant.Maximal}
+      isMiniAnchor={false}
+    />
+  );
 }

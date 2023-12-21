@@ -24,7 +24,7 @@ export default function StrongButton(
         title={props.title}
         confirm={props.confirm}
         onSuccess={props.onSuccess}
-        onFailure={(errorMessage) => toast(errorMessage, { mood: 'ko' })}
+        onFailure={errorMessage => toast(errorMessage, { mood: 'ko' })}
         className={props.className}
         onSend={() => {
           return strongPrepareArgsAndSend(

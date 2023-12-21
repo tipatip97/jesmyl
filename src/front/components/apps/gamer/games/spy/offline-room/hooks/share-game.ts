@@ -29,8 +29,8 @@ export const useSpyOfflineRoomShareGameData = () => {
       .map(({ login }) => login);
     const myLogin = passport?.login;
     const md5s = [...newSpies, ...newPlayers]
-      .map((login) => (login === myLogin ? null : login))
-      .map((login) => (login === null ? '.' : mylib.md5(login)))
+      .map(login => (login === myLogin ? null : login))
+      .map(login => (login === null ? '.' : mylib.md5(login)))
       .join('');
     const location = state?.roles?.[newPlayers[0] || ''] || '';
 

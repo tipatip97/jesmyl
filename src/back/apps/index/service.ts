@@ -15,11 +15,11 @@ export const indexService: SokiServiceCallback = (key, value, eventData, capsule
       const schedules: ScheduleStorage<string> = filer.contents.index?.schedules?.data;
       let isRejected = false;
 
-      const isSetted = schedules.list.some((schedule) => {
-        return schedule.ctrl.users.some((user) => {
+      const isSetted = schedules.list.some(schedule => {
+        return schedule.ctrl.users.some(user => {
           if (user.login !== undefined) return false;
           if (packScheduleWidgetInviteLink(schedule.w, user.mi) === value) {
-            if (schedule.ctrl.users.some((u) => u.login === capsule.auth!.login)) {
+            if (schedule.ctrl.users.some(u => u.login === capsule.auth!.login)) {
               reject(`Вы уже являетесь участником ${schedule.title || 'этого события'}`);
               isRejected = true;
               return true;

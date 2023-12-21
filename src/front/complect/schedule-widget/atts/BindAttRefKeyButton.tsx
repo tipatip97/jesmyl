@@ -35,11 +35,11 @@ export default function ScheduleWidgetBindAttRefKeyButton({
         {header(<>{forTitle} - Сослаться на вложение</>)}
         {body(
           <>
-            {refs.map((attRef) => {
+            {refs.map(attRef => {
               if (!schedule.days) return null;
               const [dayi, eventMi] = attRef;
               if (dayi < 0) return null;
-              const event = schedule.days[dayi].list.find((event) => event.mi === eventMi);
+              const event = schedule.days[dayi].list.find(event => event.mi === eventMi);
               if (!event) return null;
               const dayDate = new Date(schedule.start + dayi * mylib.howMs.inDay);
 
@@ -50,7 +50,7 @@ export default function ScheduleWidgetBindAttRefKeyButton({
                   fieldName=""
                   cud="U"
                   className="margin-big-gap-v"
-                  mapExecArgs={(args) => {
+                  mapExecArgs={args => {
                     if (atts?.[attKey]) return;
                     return {
                       ...args,
@@ -91,7 +91,7 @@ export default function ScheduleWidgetBindAttRefKeyButton({
         name="link-2-outline"
         disabled={!!atts?.[attKey]}
         className="absolute pos-top pos-right padding-gap"
-        onClick={(event) => {
+        onClick={event => {
           event.stopPropagation();
           screen();
         }}

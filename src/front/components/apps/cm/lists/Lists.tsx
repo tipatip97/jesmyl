@@ -20,21 +20,36 @@ export default function Lists() {
       contentClass="flex between column"
       content={
         <>
-          <BrutalItem icon="star-outline" title="Избранное" onClick={() => goTo('marks')} />
-          <BrutalItem icon="calendar-outline" title="События" onClick={() => goTo('meetings')} />
+          <BrutalItem
+            icon="star-outline"
+            title="Избранное"
+            onClick={() => goTo('marks')}
+          />
+          <BrutalItem
+            icon="calendar-outline"
+            title="События"
+            onClick={() => goTo('meetings')}
+          />
           {selectedComws.length ? (
-            <BrutalItem icon="checkmark-circle-2-outline" title="Выбранное" onClick={() => goTo('selected')} />
+            <BrutalItem
+              icon="checkmark-circle-2-outline"
+              title="Выбранное"
+              onClick={() => goTo('selected')}
+            />
           ) : null}
           <BrutalScreen>
             <div className="title sticky bg-inherit">Тематические:</div>
-            {cols?.cats.map((cat) => {
+            {cols?.cats.map(cat => {
               return !cat.wid ? null : (
                 <div
                   key={`thematic-cat-${cat.wid}`}
                   className="item flex"
                   onClick={() => goTo({ place: 'cat', data: { ccatw: cat.wid } })}
                 >
-                  <EvaIcon name="book-open-outline" className="margin-big-gap" />
+                  <EvaIcon
+                    name="book-open-outline"
+                    className="margin-big-gap"
+                  />
                   <div>{cat.name}</div>
                 </div>
               );

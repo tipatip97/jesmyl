@@ -236,7 +236,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
                 const letter: string | undefined = (/[a-z]/i.exec(key) || [])[0];
 
                 if (letter) {
-                  const [first, second, third] = key.split(/[a-z:]/i).map((num) => parseInt(num));
+                  const [first, second, third] = key.split(/[a-z:]/i).map(num => parseInt(num));
                   const isBeg = /^[a-z]/i.exec(key);
                   let others: number[] = [];
                   let finishKey: string = '';
@@ -244,12 +244,12 @@ export class Order extends SourceBased<IExportableOrderTop> {
                   const ord = this.regionsOrders()?.find(
                     (ord: Order) =>
                       !mylib.isNum(ord.repeats) &&
-                      Object.keys(ord.repeats || {}).some((key) => {
+                      Object.keys(ord.repeats || {}).some(key => {
                         if (key[!isBeg ? 'startsWith' : 'endsWith'](letter)) {
                           others = key
                             .split(/[a-z:]/i)
-                            .filter((s) => s)
-                            .map((num) => +num);
+                            .filter(s => s)
+                            .map(num => +num);
                           finishKey = key;
                           return true;
                         }
@@ -288,8 +288,8 @@ export class Order extends SourceBased<IExportableOrderTop> {
                   ) as EditableOrderRegion<Ord>;
                 } else {
                   const [beg, end] = key.split(/-/);
-                  const [startLinei, startWordi = 0] = beg.split(/:/).map((num) => parseInt(num));
-                  let [endLinei, endWordi] = (end || '').split(/:/).map((num) => parseInt(num));
+                  const [startLinei, startWordi = 0] = beg.split(/:/).map(num => parseInt(num));
+                  let [endLinei, endWordi] = (end || '').split(/:/).map(num => parseInt(num));
                   if (end) {
                     if (endWordi == null) {
                       endWordi = (text[endLinei] || '').length - 1;
@@ -363,7 +363,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
 
           return acount - bcount;
         })
-        .forEach((key) => {
+        .forEach(key => {
           if (key === '.') return;
 
           const pushRep = (linei: number, wordi: number, fix = 1) => {

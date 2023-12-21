@@ -28,7 +28,7 @@ export default function TimerControlBoardRowPlayButton({
         onClick={() => onStartForRow(rowi)}
         disabled={!!timer.starts?.[rowi]}
         {...propsOfClicker({
-          onCtxMenu: (event) => {
+          onCtxMenu: event => {
             event.preventDefault();
             event.stopPropagation();
             if (!timer.starts?.[rowi] || LeaderCleans.isTimerRowFinished(timer, game, rowi, false)) return;

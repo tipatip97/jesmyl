@@ -14,8 +14,8 @@
   &.content-is-ready,
   &.ending-process,
   &.loading-process {
-    height: 100%;
     width: 100%;
+    height: 100%;
 
     > .load-indicated-content-spinner-container {
       > .jesmyl-smile {
@@ -68,11 +68,11 @@
   }
 
   > .load-indicated-content-spinner-container {
-    height: 100%;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
   }
 }
 

@@ -7,7 +7,7 @@ import './Dropdown.scss';
 export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownItem<Id>>(props: DropdownProps<Id, Item>) {
   const [selectedId, setId] = useState(props.id);
   const [isDropped, setDropped] = useState(false);
-  const selectedItem = useMemo(() => props.items.find((item) => item?.id === selectedId), [props.items, selectedId]);
+  const selectedItem = useMemo(() => props.items.find(item => item?.id === selectedId), [props.items, selectedId]);
 
   useEffect(() => setId(props.id), [props.id]);
 
@@ -34,7 +34,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
   return (
     <div
       className={`dropdown-selector flex between ${isDropped ? 'dropped' : ''} ${props.className || ''}`}
-      onClick={(event) => {
+      onClick={event => {
         event.stopPropagation();
         setDropped(!isDropped);
       }}
@@ -44,7 +44,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
         {selectedItem?.title || <span className="not-selected">{props.placeholder ?? 'Не выбрано'}</span>}
       </div>
       <div className="item-list">
-        {props.items.map((item) => {
+        {props.items.map(item => {
           return (
             item && (
               <div
@@ -52,7 +52,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
                 className={`list-item ${item.disabled ? 'disabled' : ''} ${
                   item.color ? `colored color_${item.color}` : ''
                 }`}
-                onClick={(event) => {
+                onClick={event => {
                   event.stopPropagation();
                   setDropped(false);
                   setId(item.id);
@@ -64,7 +64,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
                     setIsError(false);
 
                     selectResult
-                      .then((isOk) => {
+                      .then(isOk => {
                         setIsLoading(false);
                         if (!isOk) {
                           setId(props.id);
@@ -72,7 +72,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
                           setTimeout(() => setIsError(false), 3000);
                         }
                       })
-                      .catch((error) => {
+                      .catch(error => {
                         setId(props.id);
                         setIsLoading(false);
                         setIsError(true);
@@ -89,9 +89,17 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
         })}
       </div>
       {isError ? (
-        <EvaIcon name="alert-circle-outline" className="color--ko" />
+        <EvaIcon
+          name="alert-circle-outline"
+          className="color--ko"
+        />
       ) : (
-        isLoading && <EvaIcon name="loader-outline" className="rotate" />
+        isLoading && (
+          <EvaIcon
+            name="loader-outline"
+            className="rotate"
+          />
+        )
       )}
     </div>
   );

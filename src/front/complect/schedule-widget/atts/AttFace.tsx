@@ -61,7 +61,12 @@ export default function ScheduleWidgetAttFace({
         className={'relative flex center column' + (isCanRedact && tatt?.isCustomize ? ' color--7 pointer' : '')}
         onClick={isCanRedact && tatt?.isCustomize ? screen : undefined}
       >
-        {isLink && <EvaIcon name="link-2" className="absolute pos-left pos-top color--3 fade-05" />}
+        {isLink && (
+          <EvaIcon
+            name="link-2"
+            className="absolute pos-left pos-top color--3 fade-05"
+          />
+        )}
         {isRedact && isCanRedact && (
           <StrongEvaButton
             scope={scope}
@@ -84,7 +89,10 @@ export default function ScheduleWidgetAttFace({
           </>
         ) : (
           <>
-            <EvaIcon name="question-mark-circle-outline" className="color--ko" />
+            <EvaIcon
+              name="question-mark-circle-outline"
+              className="color--ko"
+            />
             <div className="color--ko">Не изв.</div>
           </>
         )}
@@ -94,21 +102,23 @@ export default function ScheduleWidgetAttFace({
 }
 
 const Tatt = styled.div`
-  --att-size: 90px;
+  & {
+    --att-size: 90px;
 
-  position: relative;
-  background-color: var(--color--5);
-  width: var(--att-size);
-  min-width: var(--att-size);
-  max-width: var(--att-size);
-  height: var(--att-size);
-  min-height: var(--att-size);
-  max-height: var(--att-size);
-  border-radius: 3px;
+    position: relative;
+    border-radius: 3px;
+    background-color: var(--color--5);
+    width: var(--att-size);
+    min-width: var(--att-size);
+    max-width: var(--att-size);
+    height: var(--att-size);
+    min-height: var(--att-size);
+    max-height: var(--att-size);
 
-  .close-button {
-    position: absolute;
-    top: 0;
-    right: 0;
+    .close-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
 `;

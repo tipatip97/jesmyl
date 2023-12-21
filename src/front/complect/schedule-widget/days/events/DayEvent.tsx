@@ -63,7 +63,7 @@ export default function ScheduleWidgetDayEvent(props: {
 
   const isCanExpandEvent =
     ((rights.myUser && rights.isCanReadTitles) ||
-      (props.event.atts && MyLib.entries(props.event.atts).some((item) => item[0] === '[cm]:coms'))) &&
+      (props.event.atts && MyLib.entries(props.event.atts).some(item => item[0] === '[cm]:coms'))) &&
     !props.redact;
   const isExpandEvent = (isSelfRedact || isExpand) && isCanExpandEvent;
 
@@ -113,7 +113,7 @@ export default function ScheduleWidgetDayEvent(props: {
               className={'time-mark' + timerClassNamePlus}
               onClick={
                 rights.isCanReadSpecials && rights.myUser && !props.redact
-                  ? (event) => {
+                  ? event => {
                       event.stopPropagation();
                       props.onClickOnTs();
                     }
@@ -122,8 +122,16 @@ export default function ScheduleWidgetDayEvent(props: {
             >
               {timeMark}
             </span>
-            {!isExpandEvent && !!props.event.secret && <EvaIcon name="eye-off-outline" className="color--ko" />}
-            <ScheduleWidgetTopicTitle titleBox={box} topicBox={props.event} />
+            {!isExpandEvent && !!props.event.secret && (
+              <EvaIcon
+                name="eye-off-outline"
+                className="color--ko"
+              />
+            )}
+            <ScheduleWidgetTopicTitle
+              titleBox={box}
+              topicBox={props.event}
+            />
           </div>
           {rights.isCanRedact ? (
             (isExpand || isRedact) && editIcon
@@ -172,7 +180,11 @@ export default function ScheduleWidgetDayEvent(props: {
               </>
             ) : (
               !!props.event.secret && (
-                <EvaButton name="eye-off-outline" className="color--ko margin-gap-v" postfix="Это секретное событие" />
+                <EvaButton
+                  name="eye-off-outline"
+                  className="color--ko margin-gap-v"
+                  postfix="Это секретное событие"
+                />
               )
             )}
             {(isRedact || props.event.dsc) && (
@@ -208,7 +220,10 @@ export default function ScheduleWidgetDayEvent(props: {
                   isPast={isPastEvent || props.isPastDay}
                 />
                 {rights.isCanReadTitles && rights.myUser && (
-                  <ScheduleWidgetDayEventRating scope={selfScope} event={props.event} />
+                  <ScheduleWidgetDayEventRating
+                    scope={selfScope}
+                    event={props.event}
+                  />
                 )}
               </>
             )}

@@ -60,7 +60,10 @@ export default function AliasSpeakerContent() {
           {state?.phase === GamerAliasRoomStatePhase.Speech ? (
             <div className="round-button flex center">{wordInfo?.word}</div>
           ) : (
-            <div className="round-button flex center" onClick={startSpeech}>
+            <div
+              className="round-button flex center"
+              onClick={startSpeech}
+            >
               Начать
             </div>
           )}
@@ -71,7 +74,7 @@ export default function AliasSpeakerContent() {
                 name="checkmark-circle-2-outline"
                 className="color--ok"
                 disabled={isWordSending}
-                onPointerDown={(event) => {
+                onPointerDown={event => {
                   event.preventDefault();
                   sendWord('cor');
                 }}
@@ -84,7 +87,7 @@ export default function AliasSpeakerContent() {
                 name="close-circle-outline"
                 className="color--ko"
                 disabled={isWordSending}
-                onPointerDown={(event) => {
+                onPointerDown={event => {
                   event.preventDefault();
                   sendWord('inc');
                 }}
@@ -97,7 +100,11 @@ export default function AliasSpeakerContent() {
       )}
       {myPossibilities.isManager && (
         <div className="flex center absolute pos-bottom full-width margin-big-gap-b">
-          <SendButton title="Завершить спич" confirm onSend={resetSpeech} />
+          <SendButton
+            title="Завершить спич"
+            confirm
+            onSend={resetSpeech}
+          />
         </div>
       )}
     </>
@@ -105,69 +112,78 @@ export default function AliasSpeakerContent() {
 }
 
 const ScoreInc = styled.div`
-  display: inline-block;
-  margin-top: -2.5em;
-  margin-bottom: 2.5em;
+  & {
+    display: inline-block;
+    margin-top: -2.5em;
+    margin-bottom: 2.5em;
+  }
 `;
 
 const Button = styled(EvaButton)`
-  --icon-scale: 4;
+  & {
+    --icon-scale: 4;
+  }
 `;
 
 const AboveButton = styled.div`
+  & {
     --pos: 40px;
 
-    margin: var(--pos);
     opacity: 0;
+    transition: opacity 0.5s;
+
+    margin: var(--pos);
     pointer-events: none;
-    transition: opacity .5s;
 
     @media screen and (max-width: 350px) {
-        --icon - scale: 3;
-        --pos: 30px;
+      --icon-scale: 3;
+      --pos: 30px;
     }
+  }
 `;
 
 const ShowWordArea = styled.div`
+  & {
     --ring-size: 50vmin;
 
     position: relative;
-    overflow-y: scroll;
     padding: 30px 0;
+    overflow-y: scroll;
 
     .round-button {
-        cursor: pointer;
+      cursor: pointer;
     }
 
     &.speech {
-        .round - button {
-            background: var(--color--2);
-            color: var(--color--3);
-            padding: 0 20vmin;
-            cursor: initial;
-        }
+      .round-button {
+        cursor: initial;
+        background: var(--color--2);
+        padding: 0 20vmin;
+        color: var(--color--3);
+      }
 
-        ${AboveButton} {
-            opacity: 1;
-            pointer-events: all;
-        }
+      ${AboveButton} {
+        opacity: 1;
+        pointer-events: all;
+      }
     }
 
     .loader-icon {
-        --icon - size: 50px;
+      --icon-size: 50px;
     }
 
     .round-button {
-        width: var(--ring-size);
-        max-width: var(--ring-size);
-        min-width: var(--ring-size);
-        height: var(--ring-size);
-        max-height: var(--ring-size);
-        min-height: var(--ring-size);
+      transition: background 0.5s;
+      border-radius: var(--ring-size);
 
-        background: var(--color--7);
-        color: var(--color--1);
-        border-radius: var(--ring-size);
-        transition: background .5s;
+      background: var(--color--7);
+      width: var(--ring-size);
+      min-width: var(--ring-size);
+      max-width: var(--ring-size);
+      height: var(--ring-size);
+      min-height: var(--ring-size);
+      max-height: var(--ring-size);
+      color: var(--color--1);
     }
+  }
 `;

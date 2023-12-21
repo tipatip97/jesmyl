@@ -44,7 +44,7 @@ export class JesmylTelegramBotWrapper {
       }
     });
 
-    this.bot.on('callback_query', async (query) => {
+    this.bot.on('callback_query', async query => {
       const callback = (options: string | FreeAnswerCallbackQueryOptions) => {
         this.bot.answerCallbackQuery(
           query.id,
@@ -74,7 +74,7 @@ export class JesmylTelegramBotWrapper {
   }
 
   makeOptionsKeyboard(bot: JesmylTelegramBot, keyboard: (InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][]) {
-    keyboard.flat().forEach((key) => {
+    keyboard.flat().forEach(key => {
       if (!key.callback_data || !key.cb) return;
 
       if (this.callbackQueries[key.callback_data] !== undefined) throw Error('Повторяющиеся ключи callback_query');

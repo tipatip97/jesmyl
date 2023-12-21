@@ -46,14 +46,14 @@ export default function EERules() {
               if (!cols) return;
 
               [cols.cats, cols.coms].flat().forEach(
-                (col) =>
+                col =>
                   col &&
-                  [col.name, (col as EditableCom).texts || []].flat().forEach((text) => {
+                  [col.name, (col as EditableCom).texts || []].flat().forEach(text => {
                     (text || '')
                       .toLowerCase()
                       .replace(/[^а-яёіїєґ]/gi, ' ')
                       .split(' ')
-                      .forEach((freeWord) => {
+                      .forEach(freeWord => {
                         const word = freeWord.replace(/ё/g, 'е');
                         if (!/[іїєґ]/.exec(word) && words.indexOf(word) < 0 && /е/.exec(word)) words.push(word);
                       });
@@ -65,7 +65,7 @@ export default function EERules() {
           >
             Проверить наличие неизвестных слов
           </button>
-          {[10, 30, 50].map((size) => (
+          {[10, 30, 50].map(size => (
             <button
               key={`page-size-button-switcher${size}`}
               className="margin-gap"
@@ -88,7 +88,7 @@ export default function EERules() {
                     title: words[0],
                     id: page,
                     disabled: currentPage === page,
-                    color: words.some((word) => eeStorage.get(word) == null) ? 'ko' : null,
+                    color: words.some(word => eeStorage.get(word) == null) ? 'ko' : null,
                   };
                 })}
             />
@@ -98,9 +98,12 @@ export default function EERules() {
             const storeType = eeStorage.get(word);
 
             return (
-              <table key={`word ${wordi}`} className="margin-big-gap-v">
+              <table
+                key={`word ${wordi}`}
+                className="margin-big-gap-v"
+              >
                 <tbody>
-                  {((parts) => (
+                  {(parts => (
                     <>
                       <tr>
                         <th
@@ -166,7 +169,7 @@ export default function EERules() {
                         ))}
                       </tr>
                     </>
-                  ))(word.split(/([а-дж-я]*е)/).filter((w) => w))}
+                  ))(word.split(/([а-дж-я]*е)/).filter(w => w))}
                 </tbody>
               </table>
             );

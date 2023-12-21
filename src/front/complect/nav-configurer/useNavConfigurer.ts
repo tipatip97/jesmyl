@@ -103,7 +103,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
     (isForceBack = false) => {
       if (actions.length) {
         if (
-          actions.some((action) => {
+          actions.some(action => {
             actions.shift();
             return action?.(isForceBack);
           }) &&
@@ -177,7 +177,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
       actions.unshift(action);
       return () =>
         actions.splice(
-          actions.findIndex((ac) => ac !== action),
+          actions.findIndex(ac => ac !== action),
           1,
         );
     },

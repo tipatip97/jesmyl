@@ -27,7 +27,7 @@ export class EditableMeetings extends Meetings {
     this.stack = events;
     this.contexts = this.takeContexts(contexts);
     this.names = [...(names ?? [])];
-    this.events = events?.map((event) => new EditableMeetingsEvent(event, cols));
+    this.events = events?.map(event => new EditableMeetingsEvent(event, cols));
     this.event = this.events?.[0];
   }
 
@@ -77,7 +77,7 @@ export class EditableMeetings extends Meetings {
 
     this.contexts[contextw] = new MeetingsContext({ c: context });
 
-    bindEvents.forEach((event) => event.setContext(contextw));
+    bindEvents.forEach(event => event.setContext(contextw));
   }
 
   addEvent(name: string, contextw: number) {

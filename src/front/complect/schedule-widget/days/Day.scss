@@ -7,17 +7,17 @@
     filter: grayscale(0.7);
 
     > .day-title {
-      font-size: 1.1rem;
       opacity: 0.5;
+      font-size: 1.1rem;
     }
   }
 
   > .day-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--color--3);
     top: -10px;
     background-color: var(--color--5);
+    color: var(--color--3);
+    font-weight: bold;
+    font-size: 1.5rem;
   }
 
   > .edit-day-panel {
@@ -28,13 +28,13 @@
     margin: 1rem 0;
 
     .day-topic {
-      font-size: 1.2rem;
       color: var(--color--7);
+      font-size: 1.2rem;
     }
 
     .day-description {
-      font-size: 0.9rem;
       color: var(--color--3);
+      font-size: 0.9rem;
     }
   }
 
@@ -74,11 +74,11 @@
 
         .day-event {
           .edit-button {
+            display: inline-block;
+            transition: none;
             margin-right: -40px;
             width: 0;
             overflow: hidden;
-            display: inline-block;
-            transition: none;
           }
         }
       }
@@ -87,8 +87,8 @@
     &.event-movement {
       .day-event-wrapper {
         > .insert-panel {
-          opacity: 1;
           right: 100px;
+          opacity: 1;
           pointer-events: all;
         }
       }
@@ -97,8 +97,8 @@
     &.individual-replacement {
       .day-event-wrapper {
         > .insert-panel {
-          opacity: 1;
           right: 10px;
+          opacity: 1;
           pointer-events: all;
         }
       }
@@ -106,11 +106,11 @@
 
     .day-event-wrapper {
       position: relative;
-      margin: 0.3rem 0;
       transition:
         margin-bottom 0.2s,
         margin-top 0.2s,
         opacity 0.7s;
+      margin: 0.3rem 0;
 
       &.move-me {
         opacity: 0.5;
@@ -119,21 +119,21 @@
 
       > .insert-panel {
         position: absolute;
-        height: 25px;
-        overflow: hidden;
         right: 70px;
+        opacity: 0.5;
         transition:
           height 0.7s,
           opacity 0.2s,
           right 0.2s;
-        opacity: 0.5;
+        height: 25px;
+        overflow: hidden;
         pointer-events: none;
       }
 
       .day-event {
+        border-radius: 0.5rem;
         background-color: var(--color--2);
         padding: 0.7rem;
-        border-radius: 0.5rem;
         width: 100%;
         overflow: hidden;
 
@@ -142,18 +142,18 @@
         }
 
         .sign-line {
-          background: var(--color--4);
-          height: 1px;
-          width: 100%;
-          margin: 5px 0;
           opacity: 0.3;
+          margin: 5px 0;
+          background: var(--color--4);
+          width: 100%;
+          height: 1px;
         }
 
         .day-event-content {
-          max-height: 0px;
           opacity: 0;
-          overflow: auto;
           animation: expand-content 0.5s cubic-bezier(0.39, 0.58, 0.57, 1) forwards;
+          max-height: 0px;
+          overflow: auto;
         }
 
         > .event-header {
@@ -184,9 +184,9 @@
     margin-top: 0;
 
     .day-title {
+      margin-bottom: 30px;
       background-color: none;
       background: none;
-      margin-bottom: 30px;
     }
 
     * {
@@ -232,17 +232,17 @@
 
 @keyframes expand-content {
   0% {
-    max-height: 0px;
     opacity: 0;
+    max-height: 0px;
   }
 
   90% {
-    max-height: 100vh;
     opacity: 1;
+    max-height: 100vh;
   }
 
   100% {
-    max-height: 900vh;
     opacity: 1;
+    max-height: 900vh;
   }
 }

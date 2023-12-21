@@ -13,10 +13,10 @@ export default function AdminApp({ content }: { content: ReactNode }) {
   localContext = context;
 
   useEffect(() => {
-    setContext((prev) => {
+    setContext(prev => {
       return {
         ...prev,
-        currentUser: cuser ? context.users.find((user) => user.login === cuser) : undefined,
+        currentUser: cuser ? context.users.find(user => user.login === cuser) : undefined,
       };
     });
   }, [cuser, context.users]);
@@ -25,10 +25,10 @@ export default function AdminApp({ content }: { content: ReactNode }) {
     (async () => {
       const val = await adminStorage.get('userList');
       if (val)
-        setContext((prev) => {
+        setContext(prev => {
           return {
             ...prev,
-            users: val.map((auth) => new User(auth)).sort((a, b) => b.level - a.level || (a.name > b.name ? 1 : -1)),
+            users: val.map(auth => new User(auth)).sort((a, b) => b.level - a.level || (a.name > b.name ? 1 : -1)),
           };
         });
     })();

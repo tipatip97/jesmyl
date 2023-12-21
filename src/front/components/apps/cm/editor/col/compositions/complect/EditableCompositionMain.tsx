@@ -21,18 +21,21 @@ export default function EditableCompositionMain() {
   return (
     <>
       {
-        <EditContainerCorrectsInformer corrects={ccom?.corrects.name} className="flex">
+        <EditContainerCorrectsInformer
+          corrects={ccom?.corrects.name}
+          className="flex"
+        >
           <div className="margin-gap-h">Название</div>
           <KeyboardInput
             value={ccom?.name}
             className="full-width"
-            onChange={(value) => exec(ccom?.rename(value, exec))}
+            onChange={value => exec(ccom?.rename(value, exec))}
           />
         </EditContainerCorrectsInformer>
       }
       <div
         className="flex full-width between margin-gap-v pointer"
-        onClick={(event) => {
+        onClick={event => {
           event.stopPropagation();
           ccom.switchLang();
           exec();
@@ -56,8 +59,13 @@ export default function EditableCompositionMain() {
 
           modalService.open({
             title: 'Тональность песни',
-            description: () => <ComOrders com={ccom} chordVisibleVariant={ChordVisibleVariant.Maximal} />,
-            inputs: dotts.map((position) => {
+            description: () => (
+              <ComOrders
+                com={ccom}
+                chordVisibleVariant={ChordVisibleVariant.Maximal}
+              />
+            ),
+            inputs: dotts.map(position => {
               return {
                 type: 'button',
                 closable: false,
@@ -102,7 +110,7 @@ export default function EditableCompositionMain() {
         <div
           className="flex full-width between error-message margin-gap-v pointer"
           onClick={() => {
-            modalService.confirm(`Удалить песню "${ccom.name}"?`).then((isRemove) => isRemove && exec(ccom.remove()));
+            modalService.confirm(`Удалить песню "${ccom.name}"?`).then(isRemove => isRemove && exec(ccom.remove()));
           }}
         >
           <EvaIcon name="trash-2-outline" />
@@ -111,7 +119,11 @@ export default function EditableCompositionMain() {
         </div>
       )}
 
-      <TheCom com={ccom} chordVisibleVariant={ChordVisibleVariant.Maximal} isMiniAnchor={false} />
+      <TheCom
+        com={ccom}
+        chordVisibleVariant={ChordVisibleVariant.Maximal}
+        isMiniAnchor={false}
+      />
     </>
   );
 }

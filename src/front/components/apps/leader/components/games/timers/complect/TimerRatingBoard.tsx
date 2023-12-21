@@ -43,7 +43,7 @@ export default function TimerRatingBoard({
                     teamPosition++;
                     return `${teamPosition} ${team.name} ${LeaderCleans.getTimePeriodAsString(start, finish)}`;
                   })
-                  .filter((it) => it)
+                  .filter(it => it)
                   .join('\n');
 
                 return `${timer.name}\n\n${list}`;
@@ -59,7 +59,7 @@ export default function TimerRatingBoard({
                   setSortDirection(val);
                   return LeaderCleans.setTimerResultsSortDirection(game.w, timer.w, val);
                 }}
-                onFailure={(error) => error}
+                onFailure={error => error}
               />
             )}
             <div>
@@ -69,16 +69,23 @@ export default function TimerRatingBoard({
                 if (!isHidden) ++teamPosition;
 
                 return (
-                  <div key={bagi} className={'flex flex-gap' + (isHidden ? ' text-strike ' : '')}>
+                  <div
+                    key={bagi}
+                    className={'flex flex-gap' + (isHidden ? ' text-strike ' : '')}
+                  >
                     {isHidden ? <div className="width-1em"></div> : <div className="width-1em">{teamPosition}</div>}
                     <div>{team.name}</div>
-                    <TimerScreen className="color--3" start={start} pause={finish} />
+                    <TimerScreen
+                      className="color--3"
+                      start={start}
+                      pause={finish}
+                    />
                     {withoutControls || (
                       <EvaButton
                         name={isHidden ? 'eye-outline' : 'eye-off-outline'}
                         onClick={() =>
-                          setHiddenTeams((list) =>
-                            isHidden ? list.filter((teamw) => teamw !== team.w) : [...list, team.w],
+                          setHiddenTeams(list =>
+                            isHidden ? list.filter(teamw => teamw !== team.w) : [...list, team.w],
                           )
                         }
                       />

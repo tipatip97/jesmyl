@@ -20,7 +20,12 @@ export const Visits = ({ statistic }: { statistic: SokiStatistic }) => {
           })}
       </div>
       {statistic.visits.map((visitor, visitori) => {
-        return <Visitor key={visitori} visitor={visitor} />;
+        return (
+          <Visitor
+            key={visitori}
+            visitor={visitor}
+          />
+        );
       })}
     </div>
   );

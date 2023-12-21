@@ -15,7 +15,7 @@ const itNNull = (it: unknown) => it !== null;
 export function ScheduleWidgetCopy(props: { schw: number }) {
   const [schw, setSchw] = useState(0);
   const schedules = useSchedules();
-  const schedule = schw === 0 ? undefined : schedules.list.find((sch) => sch.w === schw);
+  const schedule = schw === 0 ? undefined : schedules.list.find(sch => sch.w === schw);
   const auth = useAuth();
 
   const [modalNode, openModal] = useModal(({ header, body }, closeModal) => {
@@ -25,12 +25,19 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
           {header(<>Какое расписание копировать?</>)}
           {body(
             <>
-              {schedules.list.map((schedule) => {
+              {schedules.list.map(schedule => {
                 if (props.schw === schedule.w) return null;
 
                 return (
-                  <div key={schedule.w} className="pointer margin-gap-v" onClick={() => setSchw(schedule.w)}>
-                    <ScheduleWidgetTopicTitle titleBox={schedule} topicBox={schedule} />
+                  <div
+                    key={schedule.w}
+                    className="pointer margin-gap-v"
+                    onClick={() => setSchw(schedule.w)}
+                  >
+                    <ScheduleWidgetTopicTitle
+                      titleBox={schedule}
+                      topicBox={schedule}
+                    />
                   </div>
                 );
               })}
@@ -51,8 +58,8 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
                 name="copy"
                 postfix="Скопировать"
                 onSuccess={closeModal}
-                mapExecArgs={(args) => {
-                  const myUser = schedule.ctrl.users.find((user) => user.login === auth.login);
+                mapExecArgs={args => {
+                  const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
                   if (auth == null || myUser == null) return;
 
                   const value: IScheduleWidget = {
@@ -61,17 +68,17 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
                     ctrl: {
                       ...schedule.ctrl,
                       users: [myUser],
-                      roles: schedule.ctrl.roles.map((role) => {
+                      roles: schedule.ctrl.roles.map(role => {
                         return {
                           ...role,
                           user: undefined,
                         };
                       }),
                     },
-                    days: schedule.days.map((day) => {
+                    days: schedule.days.map(day => {
                       return {
                         ...day,
-                        list: day.list.map((event) => {
+                        list: day.list.map(event => {
                           const atts: ScheduleWidgetDayEventAttValues = {};
 
                           if (event.atts)
@@ -85,7 +92,7 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
                                 )
                                   atts[attKey] = {
                                     ...attValue,
-                                    list: attValue.list.map((att) => {
+                                    list: attValue.list.map(att => {
                                       return att[0] === 1 ? [0, ...att.slice(1)] : att;
                                     }),
                                   };
@@ -94,7 +101,7 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
                                 atts[attKey] = {
                                   ...attValue,
                                   values: attValue.values
-                                    .map((val) => {
+                                    .map(val => {
                                       return typeof val[1] === 'number' &&
                                         ScheduleWidgetCleans.checkIsTaleIdUnit(val[1], CustomAttUseTaleId.Users)
                                         ? null
@@ -133,7 +140,11 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
   return (
     <>
       {modalNode}
-      <EvaButton name="copy" postfix="Скопировать расписание" onClick={openModal} />
+      <EvaButton
+        name="copy"
+        postfix="Скопировать расписание"
+        onClick={openModal}
+      />
     </>
   );
 }

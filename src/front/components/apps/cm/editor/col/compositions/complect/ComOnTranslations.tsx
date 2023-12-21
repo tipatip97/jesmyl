@@ -31,7 +31,12 @@ export default function ComOnTranslations() {
               whiteSpace: 'pre-wrap',
             }}
           >
-            {lines?.map((text, texti) => <div key={`text-${texti}`} dangerouslySetInnerHTML={{ __html: text }} />)}
+            {lines?.map((text, texti) => (
+              <div
+                key={`text-${texti}`}
+                dangerouslySetInnerHTML={{ __html: text }}
+              />
+            ))}
           </div>
         );
       })}

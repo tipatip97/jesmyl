@@ -14,7 +14,7 @@ export default function ChordApplicationsRedactor() {
     <div className="chord-application-redactor">
       {ccom?.orders?.map((ord, ordi) => {
         if (!ord.isVisible) return null;
-        const chords = ord.chords?.split('\n').map((line) => line.split(' '));
+        const chords = ord.chords?.split('\n').map(line => line.split(' '));
 
         return (
           <TheOrder
@@ -23,7 +23,7 @@ export default function ChordApplicationsRedactor() {
             chordVisibleVariant={ChordVisibleVariant.Maximal}
             com={ccom}
             orderUniti={ordi}
-            asLineComponent={(props) => {
+            asLineComponent={props => {
               const { com, textLine, textLinei } = props;
               const linePoss = ord.positions?.[textLinei] ?? [];
               const diffCount = (chords[textLinei]?.length || 0) - (linePoss?.length || 0);
@@ -42,16 +42,14 @@ export default function ChordApplicationsRedactor() {
                     com={com}
                     orderUniti={ordi}
                     isJoinLetters={false}
-                    onClick={(event) => {
+                    onClick={event => {
                       const clicked = event.nativeEvent
                         .composedPath()
-                        .find(
-                          (span) => (span as HTMLSpanElement)?.classList?.contains('com-letter'),
-                        ) as HTMLSpanElement;
+                        .find(span => (span as HTMLSpanElement)?.classList?.contains('com-letter')) as HTMLSpanElement;
 
                       const [, letteri] =
                         Array.from(clicked.classList)
-                          .find((className) => className.startsWith('letteri_'))
+                          .find(className => className.startsWith('letteri_'))
                           ?.split('_') || [];
 
                       if (letteri != null) exec(ord?.setChordPosition(textLinei, +letteri));

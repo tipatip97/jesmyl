@@ -34,9 +34,12 @@ export default function TimerControlBoard({
 
   const tableContentNode = teamNet?.map((row, rowi) => {
     return (
-      <div key={rowi} className="row">
+      <div
+        key={rowi}
+        className="row"
+      >
         <div className="cell flex column ellipsis">
-          {row.map((team) => {
+          {row.map(team => {
             return (
               <TimerControlBoardCellItem
                 key={team.w}
@@ -50,7 +53,7 @@ export default function TimerControlBoard({
                 isHiddenTimers={mode === GameTimerMode.TimerTotal}
                 isTeamCantMove={LeaderCleans.isTeamCantMove(timer, team.w)}
                 isCanPauseForRow={use.isCanPauseForRow(team.w)}
-                onTeamwSelect={(teamw) => setSelectedTeamw(teamw)}
+                onTeamwSelect={teamw => setSelectedTeamw(teamw)}
                 onPauseForRow={(teamw, value) => use.pauseForRow(teamw, value)}
                 onTeamsUpdate={(newTeams, teamws) => {
                   setIsTeamsResortProcess(true);
@@ -64,14 +67,14 @@ export default function TimerControlBoard({
                       if (teams) onTeamsUpdate(teams);
                     });
                 }}
-                onFinishTimeChange={(value) => {
+                onFinishTimeChange={value => {
                   if (timer.finishes?.[team.w] === value) {
                     toast('Значение не поменялось');
                     return Promise.resolve();
                   }
 
                   if (isNewTimer)
-                    use.mapTimer((prevTimer) => {
+                    use.mapTimer(prevTimer => {
                       const finishes = { ...prevTimer.finishes, [team.w]: value };
                       if (!value) delete finishes[team.w];
                       return { ...prevTimer, finishes };

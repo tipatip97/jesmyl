@@ -42,7 +42,13 @@ export default function TheComposition() {
   }, [ccom?.wid]);
 
   if (ccom == null) {
-    return <ComContainer className="composition-container" headTitle="Упс" content="Песня не найдена(" />;
+    return (
+      <ComContainer
+        className="composition-container"
+        headTitle="Упс"
+        content="Песня не найдена("
+      />
+    );
   }
 
   return (
@@ -56,15 +62,30 @@ export default function TheComposition() {
       head={
         <div className="com-actions-pannel">
           {topTools.map(({ icon, onClick, tool }) => (
-            <EvaIcon key={tool} name={icon} className="action-button" onClick={() => onClick()} />
+            <EvaIcon
+              key={tool}
+              name={icon}
+              className="action-button"
+              onClick={() => onClick()}
+            />
           ))}
         </div>
       }
       content={
         <>
           {popupComToolsNode}
-          {comAudio && <ComPlayer src={comAudio} split />}
-          <TheControlledCom com={ccom} comList={comList} chordVisibleVariant={chordVisibleVariant} onComSet={setCom} />
+          {comAudio && (
+            <ComPlayer
+              src={comAudio}
+              split
+            />
+          )}
+          <TheControlledCom
+            com={ccom}
+            comList={comList}
+            chordVisibleVariant={chordVisibleVariant}
+            onComSet={setCom}
+          />
         </>
       }
     />
@@ -72,54 +93,56 @@ export default function TheComposition() {
 }
 
 const ComContainer = styled(PhaseCmContainer)`
-  .composition-content {
-    transition: padding-top 0.2s;
-
-    .composition-player {
-      --transition-speed: 0.2s;
-
-      position: absolute;
-      top: var(--header-height);
-      left: 0;
-      right: 0;
-      z-index: 1;
-      opacity: 0;
-      transition:
-        width var(--transition-speed),
-        background var(--transition-speed),
-        margin var(--transition-speed),
-        opacity var(--transition-speed);
-    }
-  }
-
-  &.with-open-player {
-    &.expand {
-      --content-padding-top: var(--com-player-expand-height);
-    }
-
-    &.min {
-      --content-padding-top: var(--com-player-height);
-    }
-
+  & {
     .composition-content {
-      padding-top: var(--content-padding-top);
+      transition: padding-top 0.2s;
+
+      .composition-player {
+        --transition-speed: 0.2s;
+
+        position: absolute;
+        top: var(--header-height);
+        right: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 1;
+        transition:
+          width var(--transition-speed),
+          background var(--transition-speed),
+          margin var(--transition-speed),
+          opacity var(--transition-speed);
+      }
     }
 
-    .composition-player {
-      opacity: 1;
+    &.with-open-player {
+      &.expand {
+        --content-padding-top: var(--com-player-expand-height);
+      }
+
+      &.min {
+        --content-padding-top: var(--com-player-height);
+      }
+
+      .composition-content {
+        padding-top: var(--content-padding-top);
+      }
+
+      .composition-player {
+        opacity: 1;
+      }
     }
-  }
 
-  .com-actions-pannel {
-    max-width: calc(100vw - 130px);
-    height: 40px;
-    padding-left: 10px;
-    white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    .com-actions-pannel {
+      padding-left: 10px;
+      max-width: calc(100vw - 130px);
+      height: 40px;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      white-space: nowrap;
 
-    &::-webkit-scrollbar {
-      display: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
   }
 `;

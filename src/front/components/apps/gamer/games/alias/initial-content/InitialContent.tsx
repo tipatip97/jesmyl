@@ -11,7 +11,7 @@ import { useAliasRoomState } from '../hooks/state';
 import { AliasRoomTeamsConfigures, initialAliasTeamsPropsPart } from './TeamsConfigures';
 import { AliasRoomWordsConfigures, initialAliasDictsPropsPart } from './words/WordsConfigures';
 
-const roundTimesItems = [10, 60, 120, 180].map((id) => ({ title: `${id} сек.`, id }));
+const roundTimesItems = [10, 60, 120, 180].map(id => ({ title: `${id} сек.`, id }));
 
 export const AliasRoomInitialContent = () => {
   const state = useAliasRoomState();
@@ -41,10 +41,21 @@ export const AliasRoomInitialContent = () => {
             )}
             )
           </h2>
-          <AliasRoomWordsConfigures setIsDictsRejToStart={setIsDictsRejToStart} stateRef={dictsRef} />
+          <AliasRoomWordsConfigures
+            setIsDictsRejToStart={setIsDictsRejToStart}
+            stateRef={dictsRef}
+          />
           <div className="flex flex-gap margin-gap-v dropdown-ancestor">
-            <EvaButton name="clock-outline" className="nowrap" postfix="Время раунда" />
-            <Dropdown id={roundTime} items={roundTimesItems} onSelectId={setRoundTime} />
+            <EvaButton
+              name="clock-outline"
+              className="nowrap"
+              postfix="Время раунда"
+            />
+            <Dropdown
+              id={roundTime}
+              items={roundTimesItems}
+              onSelectId={setRoundTime}
+            />
           </div>
           <AliasRoomTeamsConfigures
             isCantStartRound={isCantStartRound}

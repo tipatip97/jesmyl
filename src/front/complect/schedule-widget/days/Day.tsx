@@ -51,18 +51,22 @@ export default function ScheduleWidgetDay({
 
   const dayRating = useMemo(() => {
     let rating = 0;
-    day.list.forEach((event) => {
-      event.rate && MyLib.values(event.rate).forEach((rate) => (rating += rate[0]));
+    day.list.forEach(event => {
+      event.rate && MyLib.values(event.rate).forEach(rate => (rating += rate[0]));
     });
     return rating;
   }, [day.list]);
 
-  day.list.forEach((item) => {
+  day.list.forEach(item => {
     times.push((item.tm || schedule.types[item.type]?.tm || 0) + (times[times.length - 1] || 0));
   });
 
   const [fullDayNode, openFullDay] = useFullContent(() => (
-    <ScheduleAlarmDay day={day} dayi={dayi} schedule={schedule} />
+    <ScheduleAlarmDay
+      day={day}
+      dayi={dayi}
+      schedule={schedule}
+    />
   ));
 
   return (
@@ -86,9 +90,9 @@ export default function ScheduleWidgetDay({
           <EvaButton
             name={print.title ? 'eye-outline' : 'eye-off-outline'}
             className="not-printable"
-            onClick={(event) => {
+            onClick={event => {
               event.stopPropagation();
-              setPrint((prev) => ({ ...prev, title: !prev.title }));
+              setPrint(prev => ({ ...prev, title: !prev.title }));
             }}
           />
         )}
@@ -96,7 +100,10 @@ export default function ScheduleWidgetDay({
       <div className="edit-day-panel absolute pos-top pos-right margin-gap-t">
         {isPastDay ? (
           <>
-            <EvaButton name={isShowDay ? 'eye-off-outline' : 'eye-outline'} onClick={() => setIsShowDay(isNIs)} />
+            <EvaButton
+              name={isShowDay ? 'eye-off-outline' : 'eye-outline'}
+              onClick={() => setIsShowDay(isNIs)}
+            />
             {isShowDay && editIcon}
           </>
         ) : (
@@ -153,8 +160,14 @@ export default function ScheduleWidgetDay({
                     name="printer-outline"
                     className="flex-max margin-gap-v"
                     onClick={() =>
-                      renderComponentInNewWindow((win) => (
-                        <ScheduleWidgetPrintableDay day={day} dayi={dayi} schedule={schedule} scope={scope} win={win} />
+                      renderComponentInNewWindow(win => (
+                        <ScheduleWidgetPrintableDay
+                          day={day}
+                          dayi={dayi}
+                          schedule={schedule}
+                          scope={scope}
+                          win={win}
+                        />
                       ))
                     }
                     postfix="Распечатать распорядок дня"

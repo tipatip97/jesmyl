@@ -47,7 +47,10 @@ export const BottomPopup = ({ content, close }: { content: ReactNode; close: () 
     <>
       {isMounted && (
         <Portal>
-          <div className={className} onClick={() => close()}>
+          <div
+            className={className}
+            onClick={() => close()}
+          >
             <div
               className={
                 'container no-scrollbar' +

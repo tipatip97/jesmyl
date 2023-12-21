@@ -42,7 +42,7 @@ export default function TheGamerPassport() {
               <KeyboardInput
                 value={fio}
                 placeholder="Твой ник-нейм"
-                onChange={(value) => setFio(value)}
+                onChange={value => setFio(value)}
                 maxLength={50}
               />
             </div>
@@ -80,7 +80,10 @@ export default function TheGamerPassport() {
                   </TheButton>
                 )}
               </div>
-              <div className="flex center padding-giant-gap pointer" onClick={() => back(passport)}>
+              <div
+                className="flex center padding-giant-gap pointer"
+                onClick={() => back(passport)}
+              >
                 Назад
               </div>
             </div>
@@ -88,7 +91,10 @@ export default function TheGamerPassport() {
             <>
               <h2 className="flex center passport-name">
                 <div className="name ellipsis">{passport?.fio}</div>
-                <EvaButton name="edit-outline" onClick={() => setIsEdit(true)} />
+                <EvaButton
+                  name="edit-outline"
+                  onClick={() => setIsEdit(true)}
+                />
               </h2>
               {passport && (
                 <div className="flex center margin-big-gap">

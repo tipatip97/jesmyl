@@ -22,9 +22,15 @@ export default function LeaderGameTimerFace({
 }) {
   const { timer } = useGameTimer(game, timerw);
 
-  const [timerNode, openTimer] = useFullContent((close) => {
+  const [timerNode, openTimer] = useFullContent(close => {
     if (timer == null) return null;
-    return <LeaderGameTimerMaster game={game} close={close} timer={timer} />;
+    return (
+      <LeaderGameTimerMaster
+        game={game}
+        close={close}
+        timer={timer}
+      />
+    );
   });
 
   if (!timer) return null;
@@ -32,11 +38,14 @@ export default function LeaderGameTimerFace({
   return (
     <>
       {timerNode}
-      <div className="face-item" onClick={() => openTimer()}>
+      <div
+        className="face-item"
+        onClick={() => openTimer()}
+      >
         <span
           className={`face-logo ${selectedPosition ? 'selected' : ''}`}
           selected-position={selectedPosition || null}
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
             onSelect?.();
           }}

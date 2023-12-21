@@ -18,7 +18,7 @@ export default function TheUser() {
           <div className="flex margin-gap">Уровень доступа - {currentUser.level}</div>
           <TheButton
             onClick={() => {
-              return new Promise((resolve) => {
+              return new Promise(resolve => {
                 let passphrase = '';
                 let level = currentUser.level;
                 modalService.open({

@@ -26,7 +26,7 @@ export default function TimerControlBoardCellItemStopButton({
           name="pause-circle-outline"
           className="finish-button"
           disabled={!LeaderCleans.getTimerStartTs(timer, game, rowi)}
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
             onTeamwSelect(null);
             if (!LeaderCleans.getTimerStartTs(timer, game, rowi) || timer.finishes?.[team.w]) return;
@@ -38,7 +38,7 @@ export default function TimerControlBoardCellItemStopButton({
           name="trash-2-outline"
           className="reset-button"
           confirm="Сбросить результат"
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
             onTeamwSelect(null);
             onPauseForRow(team.w, 0);

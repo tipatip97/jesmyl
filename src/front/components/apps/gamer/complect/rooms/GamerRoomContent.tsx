@@ -80,7 +80,15 @@ export default function GamerRoomContent({
     <GamerRoomDiv
       className=""
       headTitle={room?.name ? `${room.name}` : 'Комната'}
-      head={gameData && <EvaButton name={gameData.icon} className="color--7 margin-gap-r" postfix={gameData.title} />}
+      head={
+        gameData && (
+          <EvaButton
+            name={gameData.icon}
+            className="color--7 margin-gap-r"
+            postfix={gameData.title}
+          />
+        )
+      }
       contentClass="flex column custom-align-items"
       onMoreClick={isManager ? openPopup : undefined}
       content={
@@ -136,23 +144,27 @@ export default function GamerRoomContent({
 }
 
 const GamerRoomDiv = styled(PhaseGamerContainer)`
-  .gamer-game-palette {
-    display: flex;
+  & {
+    .gamer-game-palette {
+      display: flex;
 
-    .gamer-game-item {
-      --size: 45vmin;
-      --max-size: 300px;
+      .gamer-game-item {
+        --size: 45vmin;
+        --max-size: 300px;
 
-      background: var(--color--1);
-      width: var(--size);
-      height: var(--size);
-      max-width: var(--max-size);
-      max-height: var(--max-size);
-      border-radius: 20px;
+        border-radius: 20px;
 
-      ${IconEva} {
-        --icon-scale: 3;
-        margin-top: 30px;
+        background: var(--color--1);
+        width: var(--size);
+        max-width: var(--max-size);
+        height: var(--size);
+        max-height: var(--max-size);
+
+        ${IconEva} {
+          --icon-scale: 3;
+
+          margin-top: 30px;
+        }
       }
     }
   }

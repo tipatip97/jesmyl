@@ -30,7 +30,7 @@ export function ScheduleWidgetUserEdit({
         title="Имя"
         icon="person-outline"
         value={user.fio || user.nick}
-        onUpdate={onUpdate && ((value) => onUpdate('fio', value))}
+        onUpdate={onUpdate && (value => onUpdate('fio', value))}
       />
       {rights.myUser && (
         <ScheduleWidgetRightControlList
@@ -39,7 +39,7 @@ export function ScheduleWidgetUserEdit({
           rightCtrl={scheduleWidgetUserRights}
           R={user.R}
           isHidden={
-            rights.isCanTotalRedact ? undefined : (type) => accessLevel < scheduleWidgetUserRights.rightLevel(type.id)
+            rights.isCanTotalRedact ? undefined : type => accessLevel < scheduleWidgetUserRights.rightLevel(type.id)
           }
           isCantEdit={
             !rights.isCanRedactUsers ||
@@ -47,7 +47,7 @@ export function ScheduleWidgetUserEdit({
             (!rights.isCanTotalRedact &&
               scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.TotalRedact))
           }
-          onUpdate={onUpdate && ((value) => onUpdate('R', value))}
+          onUpdate={onUpdate && (value => onUpdate('R', value))}
         />
       )}
       {!user.login && (

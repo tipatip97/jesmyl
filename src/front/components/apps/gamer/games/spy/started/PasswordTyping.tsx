@@ -65,7 +65,7 @@ export default function PasswordTyping({
       className="relative pointer"
       name={isTyping ? 'toggle-right-outline' : 'toggle-left-outline'}
       onClick={() => {
-        setIsTyping((is) => !is);
+        setIsTyping(is => !is);
         setPassword('');
         setIsShow(false);
       }}
@@ -74,6 +74,8 @@ export default function PasswordTyping({
 }
 
 const Button = styled(EvaButton)`
-  transform: scale(2);
-  margin: 15px 0;
+  & {
+    transform: scale(2);
+    margin: 15px 0;
+  }
 `;

@@ -12,7 +12,13 @@ export const checkListAtt: ScheduleWidgetAppAtts<'SCH', ScheduleChListAtt> = {
     description: 'Пункты с галочками',
     icon: 'list',
     initVal: { list: [] },
-    result: (value, scope, isRedact) => <ScheduleCheckListAtt isRedact={isRedact} value={value} scope={scope} />,
+    result: (value, scope, isRedact) => (
+      <ScheduleCheckListAtt
+        isRedact={isRedact}
+        value={value}
+        scope={scope}
+      />
+    ),
     R: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
     U: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
   },

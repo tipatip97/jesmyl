@@ -20,7 +20,10 @@ export default function ScheduleCheckListAtt({
         if (!isRedact && !title) return null;
         const itemScope = takeStrongScopeMaker(attScope, ' itemMi/', itemMi);
         return (
-          <div key={itemMi} className="flex flex-gap full-width margin-big-gap-b">
+          <div
+            key={itemMi}
+            className="flex flex-gap full-width margin-big-gap-b"
+          >
             <StrongEvaButton
               scope={itemScope}
               fieldName="check"
@@ -41,8 +44,13 @@ export default function ScheduleCheckListAtt({
           </div>
         );
       })}
-      {isRedact && !value.list.some((li) => !li[1]) && (
-        <StrongEvaButton scope={attScope} fieldName="" name="plus" prefix="Пункт" />
+      {isRedact && !value.list.some(li => !li[1]) && (
+        <StrongEvaButton
+          scope={attScope}
+          fieldName=""
+          name="plus"
+          prefix="Пункт"
+        />
       )}
     </>
   );

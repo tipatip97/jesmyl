@@ -50,7 +50,7 @@ export const slice = createSlice({
       state.isUseNativeKeyboard = action.payload ?? !state.isUseNativeKeyboard;
       indexStorage.set('isUseNativeKeyboard', state.isUseNativeKeyboard);
     },
-    riseUpModalUpdates: (state) => {
+    riseUpModalUpdates: state => {
       state.numModalUpdates++;
     },
   },

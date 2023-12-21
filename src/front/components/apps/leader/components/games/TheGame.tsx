@@ -30,10 +30,16 @@ export default function TheGame() {
   const [outsiderw, setOutsiderw] = useState(0);
   const [outsiderMoreNode, openOutsiderMore] = useBottomPopup((_, prepare) => {
     if (cgame == null || outsiderw === 0) return null;
-    const outsider = contextMembers.find((member) => member.w === outsiderw);
+    const outsider = contextMembers.find(member => member.w === outsiderw);
     if (outsider === undefined) return null;
 
-    return <OutsiderMore game={cgame} human={outsider} prepare={prepare} />;
+    return (
+      <OutsiderMore
+        game={cgame}
+        human={outsider}
+        prepare={prepare}
+      />
+    );
   });
   const [gameMoreNode, openGameMore] = useBottomPopup((close, prepare) => (
     <GameMore
@@ -55,7 +61,7 @@ export default function TheGame() {
   const { goBack } = useLeaderNav();
 
   const membersReadyToPlayNode = LeaderCleans.membersReadyToPlay(contextMembers)
-    ?.filter((human) => usedHumans.indexOf(human.w) < 0)
+    ?.filter(human => usedHumans.indexOf(human.w) < 0)
     .map((human, humani) => (
       <HumanFace
         key={humani}
@@ -89,7 +95,10 @@ export default function TheGame() {
           {fullNode}
           {gameMoreNode}
           {outsiderMoreNode}
-          <GameDescription game={cgame} redactable />
+          <GameDescription
+            game={cgame}
+            redactable
+          />
           {cgame.teams && !!membersReadyToPlayNode?.length && (
             <>
               <h2 className="margin-gap">Не вошедшие игроки:</h2>
@@ -108,7 +117,7 @@ export default function TheGame() {
                   onSelect={() =>
                     updateSelectedTimers(
                       selectedTimers.includes(timer.w)
-                        ? selectedTimers.filter((wid) => wid !== timer.w)
+                        ? selectedTimers.filter(wid => wid !== timer.w)
                         : [...selectedTimers, timer.w],
                     )
                   }
@@ -121,8 +130,14 @@ export default function TheGame() {
               namePostfix={isTimerStarted() && <span className="error-message">(Запущен)</span>}
             />
             {selectedTimers.length > 1 && (
-              <div className="margin-big-gap pointer flex" onClick={() => openFullContent()}>
-                <EvaIcon name="eye-outline" className="margin-gap" />
+              <div
+                className="margin-big-gap pointer flex"
+                onClick={() => openFullContent()}
+              >
+                <EvaIcon
+                  name="eye-outline"
+                  className="margin-gap"
+                />
                 Просмотреть объединённые результаты
               </div>
             )}
@@ -130,12 +145,12 @@ export default function TheGame() {
           <TimerNameListConfigurer
             timerNames={cgame.timerNames}
             redactable
-            onSend={(list) => LeaderCleans.publicateTimerNameList(cgame.w, list)}
+            onSend={list => LeaderCleans.publicateTimerNameList(cgame.w, list)}
           />
           <TimerFieldsConfigurer
             redactable
             game={cgame}
-            onSend={(list) => LeaderCleans.publicateGameTimerFields(cgame.w, list)}
+            onSend={list => LeaderCleans.publicateGameTimerFields(cgame.w, list)}
           />
           <h2 className="margin-big-gap-v margin-gap">
             <CopyTextButton
@@ -145,12 +160,23 @@ export default function TheGame() {
             />
           </h2>
           {cgame.teams?.map((team, teami) => {
-            return <TheGameTeam key={teami} team={team} game={cgame} redactable />;
+            return (
+              <TheGameTeam
+                key={teami}
+                team={team}
+                game={cgame}
+                redactable
+              />
+            );
           })}
           {!cgame.teams && (
             <div className={isTeamsLoading ? 'disabled' : ''}>
               {cgame && !cgame.teams && (
-                <GameTeamListComputer onUpdate={(list) => updateTeams(list)} game={cgame} noComments />
+                <GameTeamListComputer
+                  onUpdate={list => updateTeams(list)}
+                  game={cgame}
+                  noComments
+                />
               )}
             </div>
           )}

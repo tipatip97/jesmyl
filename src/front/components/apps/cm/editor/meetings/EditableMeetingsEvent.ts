@@ -23,8 +23,8 @@ export class EditableMeetingsEvent extends MeetingsEvent {
     return (
       this.cols &&
       (this.stack
-        .map((comw) => (this.cols as EditableCols).coms.find((com) => com.wid === comw))
-        .filter((com) => com) as EditableCom[])
+        .map(comw => (this.cols as EditableCols).coms.find(com => com.wid === comw))
+        .filter(com => com) as EditableCom[])
     );
   }
 
@@ -71,7 +71,7 @@ export class EditableMeetingsEvent extends MeetingsEvent {
 
   removeCom(com: EditableCom) {
     this.setStack(() => {
-      this.stack = this.stack.filter((comw) => com.wid !== comw);
+      this.stack = this.stack.filter(comw => com.wid !== comw);
 
       if (this.prevComs) this.prevComs.push(com);
       else this.prevComs = [com];
@@ -103,14 +103,14 @@ export class EditableMeetingsEvent extends MeetingsEvent {
 
       this.stack = isNoPrevComs
         ? mylib.clone(value)
-        : this.stack.filter((comw) => value.indexOf(comw) < 0).concat(mylib.clone(value));
+        : this.stack.filter(comw => value.indexOf(comw) < 0).concat(mylib.clone(value));
     });
   }
 
   mergePrevComs(coms?: EditableCom[]) {
     if (coms) {
-      this.mergeStack(coms.map((com) => com.wid));
-      this.prevComs = this.prevComs?.filter((prev) => !coms.some((com) => prev === com));
+      this.mergeStack(coms.map(com => com.wid));
+      this.prevComs = this.prevComs?.filter(prev => !coms.some(com => prev === com));
     }
   }
 

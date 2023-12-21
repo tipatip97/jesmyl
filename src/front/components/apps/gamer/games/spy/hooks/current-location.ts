@@ -13,6 +13,6 @@ export const useSpyCurrentLocation = (state: SpyRoomState | und, players: GamerR
   return useMemo(() => {
     const roles = state?.roles;
 
-    return roles == null ? '' : players?.map((player) => unsecretSpyRole(roles[player.login] || '')).find(itIt);
+    return roles == null ? '' : players?.map(player => unsecretSpyRole(roles[player.login] || '')).find(itIt);
   }, [players, state?.roles]);
 };

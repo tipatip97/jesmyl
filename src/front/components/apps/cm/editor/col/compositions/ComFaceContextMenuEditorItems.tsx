@@ -24,7 +24,7 @@ export default function ComFaceContextMenuEditorItems() {
                 <div className="full-container padding-big-gap">
                   <MeetingsInner
                     meetings={meetings}
-                    onEventClick={(event) => {
+                    onEventClick={event => {
                       exec(event.mergeStack(selectedComws));
                       goToEvent(event.wid);
                       closeFullscreenContent();

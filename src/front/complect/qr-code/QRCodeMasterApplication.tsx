@@ -22,13 +22,13 @@ export function QRCodeMasterApplication({
   const [partsToLoad, setPartsToLoad] = useState(0);
   const { closeReader } = useQRMaster();
 
-  controller((event) => {
+  controller(event => {
     if (event.ok) {
       switch (event.type) {
         case 'openReader':
           setPartsLoaded(0);
           setPartsToLoad(0);
-          setIsOpenReader((isOpen) => {
+          setIsOpenReader(isOpen => {
             const open = event.value ?? !isOpen;
             if (!open) clearTimeout(slideQRCodeTimeout);
 
@@ -37,12 +37,12 @@ export function QRCodeMasterApplication({
           break;
         case 'showQRs': {
           const nodes = event.isExt
-            ? event.value.map((qr) => (
+            ? event.value.map(qr => (
                 <div className="qr-container external">
                   <QRCode text={qr} />
                   <div
                     className="link-anchor block"
-                    onClick={(evt) => {
+                    onClick={evt => {
                       evt.stopPropagation();
                       navigator.clipboard.writeText(event.linkValue ? `${qr}\n\n${event.linkValue}` : qr);
                     }}
@@ -51,7 +51,7 @@ export function QRCodeMasterApplication({
                   </div>
                 </div>
               ))
-            : event.value.map((qr) => (
+            : event.value.map(qr => (
                 <div className="qr-container internal">
                   <QRCode text={qr} />
                 </div>
@@ -95,7 +95,10 @@ export function QRCodeMasterApplication({
         }
       }}
     >
-      <div style={{ width: `${qrReaderReadAreaSize}px` }} id={qrCodeMasterContainerId}></div>
+      <div
+        style={{ width: `${qrReaderReadAreaSize}px` }}
+        id={qrCodeMasterContainerId}
+      ></div>
       {isOpenReader &&
         (partsToLoad ? (
           <div>
@@ -117,52 +120,54 @@ export function QRCodeMasterApplication({
 }
 
 const Screen = styled.div`
-  position: absolute;
-  display: none;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 50px;
-  background-color: var(--current-bg);
-  opacity: 0;
-  transition: opacity 0.5s;
-  z-index: 10000000;
+  & {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    opacity: 0;
+    z-index: 10000000;
+    transition: opacity 0.5s;
+    background-color: var(--current-bg);
+    width: 100vw;
+    height: 100%;
 
-  &.open-reader,
-  &.open-slider {
-    display: flex;
-    opacity: 0.9;
-  }
+    &.open-reader,
+    &.open-slider {
+      display: flex;
+      opacity: 0.9;
+    }
 
-  .qr-container {
-    position: relative;
+    .qr-container {
+      position: relative;
 
-    &.external {
-      .link-anchor {
-        position: absolute;
-        right: 0;
+      &.external {
+        .link-anchor {
+          position: absolute;
+          right: 0;
+        }
+      }
+
+      &.internal {
+        &::after {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          opacity: 0.5;
+          background: var(--color--7);
+          content: '';
+        }
       }
     }
 
-    &.internal {
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--color--7);
-        opacity: 0.5;
-      }
+    .qr-code {
+      width: 90vmin;
     }
-  }
-
-  .qr-code {
-    width: 90vmin;
   }
 `;

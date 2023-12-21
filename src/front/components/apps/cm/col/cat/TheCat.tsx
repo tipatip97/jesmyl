@@ -51,7 +51,10 @@ export default function TheCat({ all }: { all?: boolean }) {
   };
 
   return (
-    <LoadIndicatedContent isLoading={!cat} onLoad={() => scrollToCurrent()}>
+    <LoadIndicatedContent
+      isLoading={!cat}
+      onLoad={() => scrollToCurrent()}
+    >
       <CatPhaseContainer
         className="cat-content"
         withoutBackButton={all}
@@ -62,12 +65,12 @@ export default function TheCat({ all }: { all?: boolean }) {
               placeholder="Поиск песен"
               className="debounced-searcher round-styled"
               initialTerm={term}
-              onSearch={(term) => cat.search(term, isNumberSearch)}
+              onSearch={term => cat.search(term, isNumberSearch)}
               debounce={500}
               onDebounced={() => {
                 if (listRef.current) listRef.current.scrollTop = 0;
               }}
-              onTermChange={(term) => setTerm(term)}
+              onTermChange={term => setTerm(term)}
             />
           )
         }
@@ -76,12 +79,24 @@ export default function TheCat({ all }: { all?: boolean }) {
           cat && (
             <>
               <div className={`later-com-list ${all && !term && laterComs?.length ? '' : 'hidden'}`}>
-                <div className="list-title sticky" onClick={() => scrollToCurrent()}>
+                <div
+                  className="list-title sticky"
+                  onClick={() => scrollToCurrent()}
+                >
                   Последние:
                 </div>
-                {laterComs?.map((com) => <ComFace key={com.wid} com={com} />)}
+                {laterComs?.map(com => (
+                  <ComFace
+                    key={com.wid}
+                    com={com}
+                  />
+                ))}
               </div>
-              <div className="flex between sticky list-title" ref={categoryTitleRef} onClick={() => scrollToCurrent()}>
+              <div
+                className="flex between sticky list-title"
+                ref={categoryTitleRef}
+                onClick={() => scrollToCurrent()}
+              >
                 <div>{cat.name}:</div>
                 {cat.wraps && (
                   <div>
@@ -90,8 +105,12 @@ export default function TheCat({ all }: { all?: boolean }) {
                 )}
               </div>
               <div className="com-list">
-                {cat.wraps.map((wrap) => (
-                  <ComFace key={wrap.com.wid} {...wrap} groupClass="com-of-cat" />
+                {cat.wraps.map(wrap => (
+                  <ComFace
+                    key={wrap.com.wid}
+                    {...wrap}
+                    groupClass="com-of-cat"
+                  />
                 ))}
               </div>
             </>
@@ -103,17 +122,19 @@ export default function TheCat({ all }: { all?: boolean }) {
 }
 
 const CatPhaseContainer = styled(PhaseCmContainer)`
-  .list-title {
-    cursor: ns-resize;
-  }
+  & {
+    .list-title {
+      cursor: ns-resize;
+    }
 
-  > .content {
-    padding-top: 0;
-  }
+    > .content {
+      padding-top: 0;
+    }
 
-  .later-com-list {
-    &.hidden {
-      display: none;
+    .later-com-list {
+      &.hidden {
+        display: none;
+      }
     }
   }
 `;

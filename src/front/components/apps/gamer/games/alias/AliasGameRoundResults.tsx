@@ -17,10 +17,17 @@ export default function AliasGameRoundResults() {
     <div className="full-height over-y-auto">
       <h2>Будет засчитано: {score}</h2>
       <AliasGameRoundResultsAnswerList answers={corrects} />
-      <AliasGameRoundResultsAnswerList answers={incorrects} myIncorrects />
+      <AliasGameRoundResultsAnswerList
+        answers={incorrects}
+        myIncorrects
+      />
       {isMySpeech && (
         <div className="flex center margin-gap">
-          <SendButton title="Отправить данные" disabled={isCantSend} onSend={rememberScore} />
+          <SendButton
+            title="Отправить данные"
+            disabled={isCantSend}
+            onSend={rememberScore}
+          />
         </div>
       )}
     </div>

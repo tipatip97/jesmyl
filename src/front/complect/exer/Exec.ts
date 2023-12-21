@@ -38,7 +38,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
 
     this.setReals(exec, ['scope', 'onLoad', 'value', 'args', 'generalId', 'createByPath', 'muted']);
 
-    this.rule = rules.find((rule) => rule.action === this.action);
+    this.rule = rules.find(rule => rule.action === this.action);
     if (!this.rule) console.error(`Неизвестное правило "${this.action}"`);
 
     this.updateTitle();
@@ -72,7 +72,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
 
     const errors = mylib.checkIsCorrectArgs(this.action, this.args, this.rule.args);
 
-    this.corrects = (this.corrects || new CorrectsBox()).merge({ errors: errors?.map((message) => ({ message })) });
+    this.corrects = (this.corrects || new CorrectsBox()).merge({ errors: errors?.map(message => ({ message })) });
   }
 
   setValue(value?: Value, exec?: FreeExecDict<Value>) {

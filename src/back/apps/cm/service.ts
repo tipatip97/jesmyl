@@ -22,7 +22,7 @@ const fetch = (url: string) => {
           });
         },
       )
-      .on('error', (error) => {
+      .on('error', error => {
         reject(`Ошибка 512535123\n${error}`);
       });
   });
@@ -35,8 +35,8 @@ export default function cmService(key: string, value: any) {
       const rule = rules.find(({ url }) => value.startsWith(url));
       if (rule)
         fetch(value)
-          .then((html) => resolve({ rule, html }))
-          .catch((error) => reject(`Ошибка 97377213\n${error}`));
+          .then(html => resolve({ rule, html }))
+          .catch(error => reject(`Ошибка 97377213\n${error}`));
       else reject('Ошибка. Этот ресурс неизвестен');
       return;
     }

@@ -67,7 +67,7 @@ function App() {
         if (appName && key && value !== undefined) {
           window.history.pushState({}, '', jesmylHostName);
 
-          if (appNames.some((name) => name === appName)) {
+          if (appNames.some(name => name === appName)) {
             jumpToApp(appName, key as never, value);
           }
         }

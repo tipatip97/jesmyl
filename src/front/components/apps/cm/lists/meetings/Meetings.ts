@@ -19,7 +19,7 @@ export class Meetings {
   constructor({ events, contexts, names }: IExportableMeetings = {} as IExportableMeetings, cols?: Cols) {
     this.stack = events;
     this.contexts = this.takeContexts(contexts || {});
-    this.events = events?.map((event) => new MeetingsEvent(event, cols));
+    this.events = events?.map(event => new MeetingsEvent(event, cols));
     this.event = this.events?.[0];
     this.names = names === undefined ? [] : [...names];
   }
@@ -34,7 +34,7 @@ export class Meetings {
   getNames(currPath: number[]): string[][] {
     const usedNameis: number[] = [];
     const usedNames: string[] = [];
-    Object.values(this.contexts || {}).forEach((path) => {
+    Object.values(this.contexts || {}).forEach(path => {
       if (!currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx)) {
         usedNameis.push(path.context[currPath.length]);
         usedNames.push(this.names[path.context[currPath.length]]);
@@ -57,7 +57,7 @@ export class Meetings {
 
         return context ? [contexti, context, +groupw] : null;
       })
-      .filter((context) => context);
+      .filter(context => context);
 
     return [contexts as [number, string, number][], currGroupw];
   }

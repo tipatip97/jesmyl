@@ -13,15 +13,15 @@ export default function GameTeamPassports({ selectedTimers }: { selectedTimers?:
     (selectedTimers?.length &&
       gameTimers &&
       selectedTimers
-        .map((wid) => gameTimers.find((timer) => !timer.isInactive && timer.w === wid)?.name)
-        .filter((timer) => timer)) ||
+        .map(wid => gameTimers.find(timer => !timer.isInactive && timer.w === wid)?.name)
+        .filter(timer => timer)) ||
     cgame?.timerNames;
 
   let carouselTimers = timers || [];
 
   return (
     <PrintableTemplate
-      noder={(page) => (
+      noder={page => (
         <>
           {timers?.map((timer, timeri) => {
             return (
@@ -42,7 +42,7 @@ export default function GameTeamPassports({ selectedTimers }: { selectedTimers?:
               carouselTimers.push(carouselTimers.splice(0, 1)[0]);
             }
 
-            const pointsNet = mylib.netFromLine(carouselTimers, 2, (item) => item);
+            const pointsNet = mylib.netFromLine(carouselTimers, 2, item => item);
 
             return (
               <>
@@ -55,10 +55,16 @@ export default function GameTeamPassports({ selectedTimers }: { selectedTimers?:
                         <div className="table">
                           {pointsNet?.map((row, rowi) => {
                             return (
-                              <div key={rowi} className="row">
+                              <div
+                                key={rowi}
+                                className="row"
+                              >
                                 {row.map((timer, timeri) => {
                                   return (
-                                    <div key={timeri} className="cell">
+                                    <div
+                                      key={timeri}
+                                      className="cell"
+                                    >
                                       {timer}
                                     </div>
                                   );

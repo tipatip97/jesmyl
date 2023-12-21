@@ -10,7 +10,7 @@ export default function UserFace({ user }: { user: User }) {
     <div
       className="user-face flex between full-width"
       onClick={() => goTo({ place: 'user', data: { cuser: user.login } })}
-      {...propsOfClicker({ onCtxMenu: (event) => event.preventDefault() })}
+      {...propsOfClicker({ onCtxMenu: event => event.preventDefault() })}
     >
       <div className="logo">
         <EvaIcon name="person-outline" />

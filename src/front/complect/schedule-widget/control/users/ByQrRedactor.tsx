@@ -16,7 +16,7 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
   const [modalNode] = useModal(
     ({ header, body, footer }) => {
       if (passport === null) return <></>;
-      const oldUser = rights.schedule.ctrl.users.find((user) => user.login === passport.login);
+      const oldUser = rights.schedule.ctrl.users.find(user => user.login === passport.login);
       const user = oldUser ?? passport;
 
       return (
@@ -57,7 +57,7 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
         </>
       );
     },
-    (is) => !is && setPassport(null),
+    is => !is && setPassport(null),
     passport !== null,
   );
 
@@ -68,7 +68,7 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
       <EvaButton
         name="qr-code"
         onClick={() =>
-          readQR((data) => {
+          readQR(data => {
             if (data.appName === 'index' && data.key === 'passport') setPassport(data.value);
           })
         }

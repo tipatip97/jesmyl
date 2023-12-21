@@ -32,7 +32,7 @@ export default function TimerInfoPanel({
   const [name, setName] = useState(timer?.name);
 
   const changeName = (name: string) => {
-    onMapTimer((timer) => ({ ...timer, name: name }));
+    onMapTimer(timer => ({ ...timer, name: name }));
     onNameChange(name);
     setName(name);
   };
@@ -49,17 +49,24 @@ export default function TimerInfoPanel({
               <Dropdown
                 placeholder="Выбрать название"
                 id={timer.name}
-                items={game.timerNames.map((name) => ({
+                items={game.timerNames.map(name => ({
                   id: name,
                   title: name,
                 }))}
                 onSelect={({ id }) => changeName(id)}
               />
-              <EvaButton name="edit-2-outline" onClick={() => setIsWriteName(true)} />
+              <EvaButton
+                name="edit-2-outline"
+                onClick={() => setIsWriteName(true)}
+              />
             </>
           ) : (
             <>
-              <KeyboardInput preferLanguage="ru" value={name} onInput={(value) => changeName(value)} />
+              <KeyboardInput
+                preferLanguage="ru"
+                value={name}
+                onInput={value => changeName(value)}
+              />
               {!game?.timerNames?.length || (
                 <EvaButton
                   name="list-outline"
@@ -75,9 +82,18 @@ export default function TimerInfoPanel({
       ) : (
         <div>
           <div className="text-bold color--7">{timer.name}</div>
-          <TimerModeSelector mode={mode} isRedact={false} />
-          <TimerCompetitionsSelector joins={joins} isRedact={false} />
-          <TimerSortRatingVariantSelector isRedact={false} sort={sort} />
+          <TimerModeSelector
+            mode={mode}
+            isRedact={false}
+          />
+          <TimerCompetitionsSelector
+            joins={joins}
+            isRedact={false}
+          />
+          <TimerSortRatingVariantSelector
+            isRedact={false}
+            sort={sort}
+          />
           {mode !== GameTimerMode.Messager && (
             <div>
               Команд участвовало:{' '}

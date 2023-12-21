@@ -27,7 +27,10 @@ export default function ScheduleCreateWidgetButton({
           <>
             <div>Создать расписание с названием</div>
             <div>
-              <KeyboardInput value={title} onChange={setTitle} />
+              <KeyboardInput
+                value={title}
+                onChange={setTitle}
+              />
             </div>
           </>,
         )}
@@ -44,7 +47,7 @@ export default function ScheduleCreateWidgetButton({
                 closeModal();
                 setTitle('');
               }}
-              mapExecArgs={(args) => {
+              mapExecArgs={args => {
                 if (!title) {
                   toast('Нужно дать название!');
                   return;
@@ -82,7 +85,7 @@ export default function ScheduleCreateWidgetButton({
         scope={initialScheduleScope}
         fieldName="list"
         cud="C"
-        mapExecArgs={(args) => {
+        mapExecArgs={args => {
           if (!title) {
             screen();
             return;

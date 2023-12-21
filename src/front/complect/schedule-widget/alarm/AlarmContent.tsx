@@ -69,14 +69,14 @@ export default function ScheduleWidgetAlarmContent({
   const scheduleList = useMemo(() => {
     return [...schedules.list]
       .sort((a, b) => a.start - b.start)
-      .map((sch) => {
-        const lastFullDayIndex = mylib.findLastIndex(sch.days, (day) => day.list.length) ?? -1;
+      .map(sch => {
+        const lastFullDayIndex = mylib.findLastIndex(sch.days, day => day.list.length) ?? -1;
         const days = sch.days.slice(0, lastFullDayIndex + 1) ?? [];
-        const dayStartMsList = days.map((day) => {
+        const dayStartMsList = days.map(day => {
           return ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number');
         });
         const dayMsList = days.map(
-          (day) => day.list.reduce((sum, event) => sum + (event.tm ?? sch.types[event.type]?.tm ?? 0), 0) * msInMin,
+          day => day.list.reduce((sum, event) => sum + (event.tm ?? sch.types[event.type]?.tm ?? 0), 0) * msInMin,
         );
 
         return {
@@ -99,19 +99,23 @@ export default function ScheduleWidgetAlarmContent({
       let schWr;
 
       if (observeSchw !== undefined) {
-        schWr = scheduleList.find((wr) => wr.sch.w === observeSchw);
+        schWr = scheduleList.find(wr => wr.sch.w === observeSchw);
         if (schWr === undefined) node = <span className="color--ko">Расписание не найдено</span>;
         else if (schWr.days.length === 0)
           node = (
             <div>
-              <ScheduleWidgetTopicTitle titleBox={schWr.sch!} altTitle="Расписание" topicBox={schWr.sch} />
+              <ScheduleWidgetTopicTitle
+                titleBox={schWr.sch!}
+                altTitle="Расписание"
+                topicBox={schWr.sch}
+              />
               <div className="text-italic">Составляется</div>
             </div>
           );
       }
 
       if (node === null) {
-        const filter: (box: (typeof scheduleList)[number]) => boolean = (box) => {
+        const filter: (box: (typeof scheduleList)[number]) => boolean = box => {
           if (box.days.length === 0) return false;
           const endMs = box.startMs + box.days.length * msInDay + box.lastDayTm;
           return endMs > now && box.startMs < now;
@@ -133,7 +137,7 @@ export default function ScheduleWidgetAlarmContent({
 
             let currEventMs = dayStartMs;
             let lastCompEventMs = 0;
-            const currEventi = events.findIndex((event) => {
+            const currEventi = events.findIndex(event => {
               lastCompEventMs = (event.tm ?? currSchWr.types[event.type]?.tm ?? 0) * msInMin;
               if (now > currEventMs && now < currEventMs + lastCompEventMs) return true;
 
@@ -143,7 +147,13 @@ export default function ScheduleWidgetAlarmContent({
             });
 
             fullValue = () => {
-              return <ScheduleAlarmDay day={currDay} dayi={currDayi} schedule={currSchWr.sch} />;
+              return (
+                <ScheduleAlarmDay
+                  day={currDay}
+                  dayi={currDayi}
+                  schedule={currSchWr.sch}
+                />
+              );
             };
 
             if (currEventi < 0) {
@@ -179,7 +189,7 @@ export default function ScheduleWidgetAlarmContent({
               node = (
                 <ScheduleWidgetAlarmInfoContent
                   schedule={currSchWr.sch}
-                  content={(rights) => {
+                  content={rights => {
                     let event: IScheduleWidgetDayEvent | null = events[currEventi];
                     let nextEvent: IScheduleWidgetDayEvent | null = events[currEventi + 1];
                     let minTo = Math.ceil((currEventMs + lastCompEventMs - now) / msInMin);
@@ -236,7 +246,10 @@ export default function ScheduleWidgetAlarmContent({
                           {event === null ? (
                             <span className="color--3 text-italic">Тех. перерыв</span>
                           ) : (
-                            <ScheduleWidgetTopicTitle titleBox={currSchWr.types[event.type]} topicBox={event} />
+                            <ScheduleWidgetTopicTitle
+                              titleBox={currSchWr.types[event.type]}
+                              topicBox={event}
+                            />
                           )}
                         </div>
                         {nextEvent === null || nextEventType === null || (
@@ -245,7 +258,10 @@ export default function ScheduleWidgetAlarmContent({
                             {nextEventType === undefined ? (
                               <div>конец дня</div>
                             ) : (
-                              <ScheduleWidgetTopicTitle titleBox={nextEventType} topicBox={nextEvent} />
+                              <ScheduleWidgetTopicTitle
+                                titleBox={nextEventType}
+                                topicBox={nextEvent}
+                              />
                             )}
                           </div>
                         )}
@@ -261,7 +277,7 @@ export default function ScheduleWidgetAlarmContent({
 
       if (node === null) {
         const willSchWr =
-          schWr === undefined ? scheduleList.find((box) => box.startMs > now) : schWr.startMs > now ? schWr : undefined;
+          schWr === undefined ? scheduleList.find(box => box.startMs > now) : schWr.startMs > now ? schWr : undefined;
 
         if (willSchWr) {
           const nowDate = new Date();
@@ -272,17 +288,33 @@ export default function ScheduleWidgetAlarmContent({
             if (willSchWr.sch.withTech)
               if (willSchWr.days[1])
                 fullValue = () => {
-                  return <ScheduleAlarmDay day={willSchWr.days[1]} dayi={1} schedule={willSchWr.sch} />;
+                  return (
+                    <ScheduleAlarmDay
+                      day={willSchWr.days[1]}
+                      dayi={1}
+                      schedule={willSchWr.sch}
+                    />
+                  );
                 };
               else if (willSchWr.days[0])
                 fullValue = () => {
-                  return <ScheduleAlarmDay day={willSchWr.days[0]} dayi={0} schedule={willSchWr.sch} />;
+                  return (
+                    <ScheduleAlarmDay
+                      day={willSchWr.days[0]}
+                      dayi={0}
+                      schedule={willSchWr.sch}
+                    />
+                  );
                 };
           }
 
           node = (
             <div>
-              <ScheduleWidgetTopicTitle titleBox={willSchWr.sch!} altTitle="Расписание" topicBox={willSchWr.sch} />
+              <ScheduleWidgetTopicTitle
+                titleBox={willSchWr.sch!}
+                altTitle="Расписание"
+                topicBox={willSchWr.sch}
+              />
               {startDate.getDate() === nowDate.getDate() ? (
                 msTo / msInHour < 1 ? (
                   <>до начала меньше часа</>
@@ -314,7 +346,10 @@ export default function ScheduleWidgetAlarmContent({
         onClick={fullValue && (() => setIsFullOpen(true))}
       >
         <div className="flex">
-          <EvaIcon name="calendar" className="margin-big-gap" />
+          <EvaIcon
+            name="calendar"
+            className="margin-big-gap"
+          />
           {node ??
             (observeSchedule !== undefined ? (
               <div>
@@ -340,12 +375,15 @@ export default function ScheduleWidgetAlarmContent({
 }
 
 const Alarm = styled.div`
-  --icon-color: var(--color--3);
+  & {
+    --icon-color: var(--color--3);
 
-  width: calc(100% + var(--main-gap) * 2);
-  height: 4em;
-  background-color: var(--color--1);
-  color: var(--color--4);
-  margin-top: calc(0px - var(--main-gap) + 5px);
-  padding: var(--main-big-gap) var(--main-gap);
+    margin-top: calc(0px - var(--main-gap) + 5px);
+    background-color: var(--color--1);
+    padding: var(--main-big-gap) var(--main-gap);
+
+    width: calc(100% + var(--main-gap) * 2);
+    height: 4em;
+    color: var(--color--4);
+  }
 `;

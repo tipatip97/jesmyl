@@ -153,7 +153,7 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   transBlock(cblock: string, delta = this.transPosition) {
-    return cblock?.replace(gSimpleHashChordReg, (chord) => this.transChord(chord, delta));
+    return cblock?.replace(gSimpleHashChordReg, chord => this.transChord(chord, delta));
   }
 
   transBlocks(delta?: number) {
@@ -192,7 +192,7 @@ export class Com extends BaseNamed<IExportableCom> {
       ?.reduce((text, ord) => text + (!this.isCanAddTranslationPart(ord) ? '' : (text ? '\n' : '') + ord.repeated), '')
       .split(/\n/);
 
-    const texts = this.translationMap().map((peaceSize) => {
+    const texts = this.translationMap().map(peaceSize => {
       return textBeats?.splice(0, peaceSize);
     });
 
@@ -287,7 +287,7 @@ export class Com extends BaseNamed<IExportableCom> {
     const isExcluded = this.excludedModulations.includes(orderWid);
 
     this.excludedModulations = isExcluded
-      ? this.excludedModulations.filter((ordWid) => ordWid !== orderWid)
+      ? this.excludedModulations.filter(ordWid => ordWid !== orderWid)
       : [...this.excludedModulations, orderWid];
 
     this.updateChordLabels();
@@ -301,7 +301,7 @@ export class Com extends BaseNamed<IExportableCom> {
     let currTransPosition = this.transPosition;
     let firstChord: string = '';
 
-    this.orders?.forEach((ord) => {
+    this.orders?.forEach(ord => {
       const ordLabels: string[][] = [];
       this._chordLabels?.push(ordLabels);
       const chords = this.actualChords(ord.chordsi, currTransPosition);
@@ -310,14 +310,14 @@ export class Com extends BaseNamed<IExportableCom> {
         currTransPosition = (this.transPosition || 0) + (ord.fieldValues?.md || 0);
       }
 
-      (chords || '').split(/\s*\n+\s*/).forEach((line) => {
+      (chords || '').split(/\s*\n+\s*/).forEach(line => {
         const lineLabels: string[] = [];
         ordLabels.push(lineLabels);
 
-        (line || '').split(/ +/).forEach((chordSchema) => {
+        (line || '').split(/ +/).forEach(chordSchema => {
           chordSchema
             .split(/[^#A-Z/0-9]+/i)
-            .forEach((chord) => this._usedChords && (this._usedChords[chord.replace(/B/, 'A#')] = chord));
+            .forEach(chord => this._usedChords && (this._usedChords[chord.replace(/B/, 'A#')] = chord));
           lineLabels.push(chordSchema);
           if (!firstChord) firstChord = chordSchema;
         });
@@ -329,7 +329,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
   static withBemoles(chords?: string, isSet: num = 0) {
     return (
-      isSet ? chords?.replace(gSimpleHashedEachLetterChordReg, (all) => chordBemoleEquivalent[all] || all) : chords
+      isSet ? chords?.replace(gSimpleHashedEachLetterChordReg, all => chordBemoleEquivalent[all] || all) : chords
     )?.replace(/A#/g, 'B');
   }
 
@@ -398,7 +398,7 @@ export class Com extends BaseNamed<IExportableCom> {
         orders.push(this.orderConstructor({ header: () => '' } as never));
         continue;
       }
-      const targetOrd: Order | nil = ordTop.a == null ? null : orders.find((o) => o.unique === ordTop.a);
+      const targetOrd: Order | nil = ordTop.a == null ? null : orders.find(o => o.unique === ordTop.a);
       const top = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, ordTop);
 
       const style = getStyle(top);
@@ -423,7 +423,7 @@ export class Com extends BaseNamed<IExportableCom> {
       top.targetOrd = targetOrd;
       top.watchOrd = targetOrd;
       top.isAnchor = ordTop.a != null;
-      top.isTarget = ordTop.u != null && tops.some((o) => o.a === ordTop.u);
+      top.isTarget = ordTop.u != null && tops.some(o => o.a === ordTop.u);
       top.viewIndex = viewIndex++;
       top.sourceIndex = tops.indexOf(ordTop);
 

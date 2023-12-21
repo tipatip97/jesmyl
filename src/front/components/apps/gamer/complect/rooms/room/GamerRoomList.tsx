@@ -11,13 +11,17 @@ export default function GamerRoomList() {
 
   return (
     <>
-      {rooms?.map((room) => {
+      {rooms?.map(room => {
         const possibilities = memberPossibilities(room);
         const iconPostfix = possibilities.isOwner ? '' : '-outline';
         const gameData = gamerRoomGames.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data;
 
         return (
-          <div key={room.w} className="face-item" onClick={() => goToRoom(room.w)}>
+          <div
+            key={room.w}
+            className="face-item"
+            onClick={() => goToRoom(room.w)}
+          >
             <div className="face-logo">
               <EvaIcon
                 name={

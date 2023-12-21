@@ -30,13 +30,18 @@ export function useBottomPopup<Props>(
     <>
       {throwContent}
       {isWasOpen && afterOpenNode}
-      {isOpen && <BottomPopup content={content} close={close} />}
+      {isOpen && (
+        <BottomPopup
+          content={content}
+          close={close}
+        />
+      )}
     </>,
     () => {
       setIsOpen(true);
       setIsWasOpen(true);
     },
-    (props) => {
+    props => {
       setProps(props);
       setIsOpen(true);
       setIsWasOpen(true);

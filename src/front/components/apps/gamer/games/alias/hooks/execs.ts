@@ -101,7 +101,7 @@ export const useAliasStartRound = (state: GamerAliasRoomState | und, players: Ga
         }
       else {
         teams =
-          state?.teams.map((team) => {
+          state?.teams.map(team => {
             return {
               ...team,
               rounds: 0,

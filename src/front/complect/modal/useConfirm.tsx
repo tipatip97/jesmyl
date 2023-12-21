@@ -16,7 +16,7 @@ export const useConfirm = <Content extends ReactNode, ConfirmProps extends any>(
 
   useEffect(() => {
     if (isModalOpen)
-      return ThrowEvent.listenKeyDown('Enter', (event) => {
+      return ThrowEvent.listenKeyDown('Enter', event => {
         onConfirmRef.current(event, confirmProps!);
         setIsModalOpen(false);
       });
@@ -32,14 +32,17 @@ export const useConfirm = <Content extends ReactNode, ConfirmProps extends any>(
             <span className="flex flex-gap">
               <span
                 className="pointer"
-                onClick={(event) => {
+                onClick={event => {
                   onConfirm(event, confirmProps!);
                   closeModal();
                 }}
               >
                 Да
               </span>
-              <span className="pointer" onClick={() => closeModal()}>
+              <span
+                className="pointer"
+                onClick={() => closeModal()}
+              >
                 Нет
               </span>
             </span>,
@@ -47,7 +50,7 @@ export const useConfirm = <Content extends ReactNode, ConfirmProps extends any>(
         </>
       );
     },
-    (is) => !is && setIsModalOpen(false),
+    is => !is && setIsModalOpen(false),
     isModalOpen,
   );
 

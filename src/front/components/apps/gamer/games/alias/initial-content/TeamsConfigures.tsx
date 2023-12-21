@@ -33,7 +33,7 @@ export const AliasRoomTeamsConfigures = ({ isCantStartRound, setIsTeamsRejToStar
   const membersInPrevRound = useAliasMemberList(state);
   const isCantComputeNewTeams =
     membersInPrevRound?.length !== players?.length ||
-    (membersInPrevRound && players?.some((member) => !membersInPrevRound.includes(member.login)));
+    (membersInPrevRound && players?.some(member => !membersInPrevRound.includes(member.login)));
   const nameRandomizer = useGetRandomTwiceName();
   const [isComputeNewTeamsState, setIsComputeNewTeamsState] = useState(initialAliasTeamsPropsPart.isComputeNewTeams);
   const [isHystericsModeState, setIsHystericsModeState] = useState(false);
@@ -75,17 +75,28 @@ export const AliasRoomTeamsConfigures = ({ isCantStartRound, setIsTeamsRejToStar
       {isComputeNewTeams && (
         <>
           <div className="flex flex-gap margin-gap-v">
-            <EvaButton name="people-outline" className="nowrap" postfix="Количество команд" />
+            <EvaButton
+              name="people-outline"
+              className="nowrap"
+              postfix="Количество команд"
+            />
             {isHystericsMode ? (
               <span className="color--7">
                 {teamsCount} {mylib.declension(teamsCount, 'пара', 'пары', 'пар')}
               </span>
             ) : (
-              <KeyboardInput value={'' + teamsCountState} type="number" onChange={(val) => setTeamsCountState(+val)} />
+              <KeyboardInput
+                value={'' + teamsCountState}
+                type="number"
+                onChange={val => setTeamsCountState(+val)}
+              />
             )}
           </div>
-          {teamsTitles.map((teamTitle) => (
-            <div key={teamTitle} className="margin-giant-gap-l color--3">
+          {teamsTitles.map(teamTitle => (
+            <div
+              key={teamTitle}
+              className="margin-giant-gap-l color--3"
+            >
               {teamTitle}
             </div>
           ))}

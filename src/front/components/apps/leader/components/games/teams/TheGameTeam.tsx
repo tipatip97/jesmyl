@@ -26,16 +26,26 @@ export default function TheGameTeam({
   const { contextMembers } = useLeaderContext();
   const teamMembers = LeaderCleans.extractWidables(contextMembers, team.members);
   const [memberMoreNode, openMemberMore] = useBottomPopup((_, prepare) => {
-    const member = teamMembers.find((member) => member.w === memberw);
+    const member = teamMembers.find(member => member.w === memberw);
     if (member === undefined) return null;
 
-    return <GameTeamMemberMore human={member} team={team} game={game} prepare={prepare} />;
+    return (
+      <GameTeamMemberMore
+        human={member}
+        team={team}
+        game={game}
+        prepare={prepare}
+      />
+    );
   });
 
   return (
     <div className="the-team-card padding-big-gap">
       {memberMoreNode}
-      <span className={'text-bold user-select' + (onTeamRename ? ' pointer ' : '')} onClick={onTeamRename}>
+      <span
+        className={'text-bold user-select' + (onTeamRename ? ' pointer ' : '')}
+        onClick={onTeamRename}
+      >
         {team.name}
       </span>
       {' (сила - ' + teamMembers.reduce((acc, { ufp1, ufp2 }) => acc + (ufp1 + ufp2) / 2, 0).toFixed(1) + ') '}
@@ -52,7 +62,10 @@ export default function TheGameTeam({
             />
           );
         })}
-      <div className="margin-gap pointer" onClick={() => setIsHumansShow(!isHumansShow)}>
+      <div
+        className="margin-gap pointer"
+        onClick={() => setIsHumansShow(!isHumansShow)}
+      >
         {isHumansShow ? 'Скрыть' : 'Показать'} участников
         <strong> {team.members.length}</strong>
       </div>

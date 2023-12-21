@@ -19,7 +19,7 @@ export default function useSpyOfflineRoomStateUpdaters() {
       if (!state) return;
       const newState = updater(state);
 
-      updateCurrentOfflineRoom((room) => ({
+      updateCurrentOfflineRoom(room => ({
         ...room,
         games: {
           ...room.games,
@@ -33,7 +33,7 @@ export default function useSpyOfflineRoomStateUpdaters() {
   const ret = {
     joinGame,
     finishGame: () => {
-      updateCurrentState((state) => {
+      updateCurrentState(state => {
         return {
           ...state,
           retired: null,
@@ -51,11 +51,11 @@ export default function useSpyOfflineRoomStateUpdaters() {
         if (spies.indexOf(player.login) < 0) spies.push(player.login);
       }
 
-      players?.forEach((player) => {
+      players?.forEach(player => {
         roles[player.login] = secretSpyRole(spies.indexOf(player.login) < 0 ? location : 'ШПИОН'.split(''));
       });
 
-      updateCurrentOfflineRoom((room) => ({
+      updateCurrentOfflineRoom(room => ({
         ...room,
         games: {
           ...room.games,
@@ -74,15 +74,15 @@ export default function useSpyOfflineRoomStateUpdaters() {
           return {
             ...state,
             locations:
-              state.locations && state.locations?.some((loc) => unsecretSpyRole(loc) === location)
-                ? state.locations?.filter((loc) => unsecretSpyRole(loc) !== location)
+              state.locations && state.locations?.some(loc => unsecretSpyRole(loc) === location)
+                ? state.locations?.filter(loc => unsecretSpyRole(loc) !== location)
                 : (state.locations || []).concat(secretSpyRole(location.split(''))),
           };
         });
     },
     excludeMember: useCallback(
       (memberLogin: string) => {
-        updateCurrentState((state) => {
+        updateCurrentState(state => {
           return { ...state, retired: [...(state.retired || []), memberLogin] };
         });
       },

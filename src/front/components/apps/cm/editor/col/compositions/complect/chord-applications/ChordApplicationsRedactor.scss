@@ -5,11 +5,11 @@
 
   .binder {
     display: inline-block;
-    width: 1em;
-    height: 1em;
-    background-color: var(--color--2);
     vertical-align: middle;
     cursor: pointer;
+    background-color: var(--color--2);
+    width: 1em;
+    height: 1em;
 
     &.active {
       background-color: var(--color--3);

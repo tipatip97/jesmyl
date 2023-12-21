@@ -36,7 +36,7 @@ export default function ScheduleKeyValueListAttStatistic(props: {
     if (mylib.isArr(value)) {
       lists++;
 
-      value.forEach((val) => {
+      value.forEach(val => {
         subLists++;
 
         if (mylib.isNum(val) && ScheduleWidgetCleans.checkIsTaleIdUnit(val, CustomAttUseTaleId.Users)) {
@@ -61,16 +61,16 @@ export default function ScheduleKeyValueListAttStatistic(props: {
                 const id = Math.trunc(key);
 
                 if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Users)) {
-                  const user = rights.schedule.ctrl.users.find((user) => user.mi === id);
+                  const user = rights.schedule.ctrl.users.find(user => user.mi === id);
                   return user?.fio || user?.nick || key;
                 }
 
                 if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Roles)) {
-                  return rights.schedule.ctrl.roles.find((role) => role.mi === id)?.title ?? '';
+                  return rights.schedule.ctrl.roles.find(role => role.mi === id)?.title ?? '';
                 }
 
                 if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Lists)) {
-                  return rights.schedule.lists.units.find((unit) => unit.mi === id)?.title ?? '';
+                  return rights.schedule.lists.units.find(unit => unit.mi === id)?.title ?? '';
                 }
               };
 
@@ -86,21 +86,21 @@ export default function ScheduleKeyValueListAttStatistic(props: {
                 text +=
                   '\n' +
                   value
-                    .map((val) => {
+                    .map(val => {
                       if (mylib.isStr(val)) return val;
                       const id = Math.trunc(val);
 
                       if (ScheduleWidgetCleans.checkIsTaleIdUnit(val, CustomAttUseTaleId.Users)) {
-                        const user = rights.schedule.ctrl.users.find((user) => user.mi === id);
+                        const user = rights.schedule.ctrl.users.find(user => user.mi === id);
                         return user?.fio || user?.nick;
                       }
 
                       if (ScheduleWidgetCleans.checkIsTaleIdUnit(val, CustomAttUseTaleId.Roles)) {
-                        return rights.schedule.ctrl.roles.find((role) => role.mi === id)?.title;
+                        return rights.schedule.ctrl.roles.find(role => role.mi === id)?.title;
                       }
 
                       if (ScheduleWidgetCleans.checkIsTaleIdUnit(val, CustomAttUseTaleId.Lists)) {
-                        return rights.schedule.lists.units.find((unit) => unit.mi === id)?.title;
+                        return rights.schedule.lists.units.find(unit => unit.mi === id)?.title;
                       }
 
                       return null;

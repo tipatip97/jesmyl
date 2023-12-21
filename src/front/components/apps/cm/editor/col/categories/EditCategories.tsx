@@ -13,7 +13,7 @@ export default function EditCategories() {
       headTitle="Категории"
       content={
         <>
-          {cols?.cats.map((cat) => {
+          {cols?.cats.map(cat => {
             return (
               <BrutalItem
                 key={`category-on-change_${cat.wid}`}

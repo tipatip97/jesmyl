@@ -43,7 +43,7 @@ export default function OrdersRedactorOrderTools({ ccom, ord, ordi, blockHeader 
                 />
               </pre>
             ),
-            inputs: blockStyles?.styles.map((styleBlock) => {
+            inputs: blockStyles?.styles.map(styleBlock => {
               if ((ordi === 0 || ord.top.isTarget) && styleBlock.isInherit) return null;
 
               const newBlockn = styleBlock.title[ccom.langi || 0];
@@ -150,7 +150,7 @@ export default function OrdersRedactorOrderTools({ ccom, ord, ordi, blockHeader 
                   .split('')
                   .map((_, i) => i + 1)
                   .reverse()
-                  .map((position) => {
+                  .map(position => {
                     return {
                       value: `На ${position} ${mylib.declension(
                         position,

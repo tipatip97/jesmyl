@@ -18,7 +18,12 @@ export default function GameList() {
       content={
         <>
           {gamesMoreNode}
-          {contextGames?.map((game, gamei) => <TeamGameFace key={gamei} game={game} />)}
+          {contextGames?.map((game, gamei) => (
+            <TeamGameFace
+              key={gamei}
+              game={game}
+            />
+          ))}
         </>
       }
     />

@@ -29,7 +29,7 @@ export default function PrintableBottomItem({
             rightNode: (
               <EvaIcon
                 name="eye-outline"
-                onClick={(event) => {
+                onClick={event => {
                   event.stopPropagation();
                   openFullscreenContent();
                   close();

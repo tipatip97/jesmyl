@@ -12,7 +12,10 @@ export default function IndexAbout() {
 
   return (
     <div className="full-container flex center">
-      <div className="flex custom-align-items column" onClick={(event) => event.stopPropagation()}>
+      <div
+        className="flex custom-align-items column"
+        onClick={event => event.stopPropagation()}
+      >
         <div className="padding-giant-gap">
           <QRCode text="https://t.me/jesmyl_space" />
           <div className="flex center">

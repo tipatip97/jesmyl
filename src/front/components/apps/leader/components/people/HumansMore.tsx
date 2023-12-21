@@ -17,8 +17,11 @@ export const HumansMoreContenter: BottomPopupContenter<{ moreNode?: ReactNode; f
 ) => {
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
-  const [humanMasterNode, openHumanMaster] = useFullContent((close) => (
-    <HumanMaster pushInCcontextAs={fieldLabel} close={close} />
+  const [humanMasterNode, openHumanMaster] = useFullContent(close => (
+    <HumanMaster
+      pushInCcontextAs={fieldLabel}
+      close={close}
+    />
   ));
 
   return [
@@ -34,7 +37,7 @@ export const HumansMoreContenter: BottomPopupContenter<{ moreNode?: ReactNode; f
           {
             title: 'Сортировать личности',
             icon: 'bar-chart-2-outline',
-            onClick: (event) => {
+            onClick: event => {
               event.stopPropagation();
               const next = mylib.findNext(mylib.keys(humanFieldTranslations), humanListSortVariant);
               dispatch(di.humanListSortVariant(next));

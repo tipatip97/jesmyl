@@ -15,7 +15,12 @@ export default function TimerModeSelector({
       <div className="dropdown-ancestor margin-big-gap-v flex flex-gap full-width">
         <span className="nowrap">Тип таймера</span>
         {isRedact ? (
-          <Dropdown id={mode} items={timerModeAliasList} onSelect={onSelect} placeholder="Тип не выбран" />
+          <Dropdown
+            id={mode}
+            items={timerModeAliasList}
+            onSelect={onSelect}
+            placeholder="Тип не выбран"
+          />
         ) : (
           <div className="color--3">{timerModeAliases[mode] || ' - '}</div>
         )}

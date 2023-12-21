@@ -8,8 +8,17 @@ export default function ScheduleAlarmDay(props: Omit<ScheduleWidgetDayProps, 'sc
 
   return (
     <ScheduleWidgetContextWrapper schedule={props.schedule}>
-      <ScheduleWidgetTopicTitle titleBox={props.schedule} altTitle="Расписание" topicBox={props.schedule} />
-      <ScheduleWidgetDay day={props.day} dayi={props.dayi} schedule={props.schedule} scope={scope} />
+      <ScheduleWidgetTopicTitle
+        titleBox={props.schedule}
+        altTitle="Расписание"
+        topicBox={props.schedule}
+      />
+      <ScheduleWidgetDay
+        day={props.day}
+        dayi={props.dayi}
+        schedule={props.schedule}
+        scope={scope}
+      />
     </ScheduleWidgetContextWrapper>
   );
 }

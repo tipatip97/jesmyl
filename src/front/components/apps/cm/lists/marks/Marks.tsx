@@ -16,7 +16,12 @@ export default function Marks() {
       content={
         <>
           {popupNode}
-          {markedComs?.map((com) => <ComFace key={`marked-com-${com.wid}`} com={com} />)}
+          {markedComs?.map(com => (
+            <ComFace
+              key={`marked-com-${com.wid}`}
+              com={com}
+            />
+          ))}
         </>
       }
     />

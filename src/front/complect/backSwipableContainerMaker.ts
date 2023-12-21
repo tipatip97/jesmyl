@@ -41,7 +41,7 @@ export const backSwipableContainerMaker = (goBack: () => void, goForward?: () =>
     container.style.left = '0';
 
     setTimeOut(
-      (container) => {
+      container => {
         container.style.transition = transformTransition;
         container.style.transform = 'scale(1)';
       },
@@ -52,14 +52,14 @@ export const backSwipableContainerMaker = (goBack: () => void, goForward?: () =>
     setTimeOut(withInitLeftAction, toInitLeftTimeout, container);
   };
 
-  const onTouchStart: TouchEventHandler<HTMLDivElement> = (event) => {
+  const onTouchStart: TouchEventHandler<HTMLDivElement> = event => {
     if (event.touches.length === 1) event.stopPropagation();
     pageX = event.touches[0].pageX;
     pageY = event.touches[0].pageY;
     event.currentTarget.style.transition = initTransition;
   };
 
-  const onTouchMove: TouchEventHandler<HTMLDivElement> = (event) => {
+  const onTouchMove: TouchEventHandler<HTMLDivElement> = event => {
     if (event.touches.length === 1) event.stopPropagation();
     if (!isCanGo) return;
     deltaX = event.touches[0].pageX - pageX;
@@ -76,7 +76,7 @@ export const backSwipableContainerMaker = (goBack: () => void, goForward?: () =>
     }
   };
 
-  const onTouchEnd: TouchEventHandler<HTMLDivElement> = (event) => {
+  const onTouchEnd: TouchEventHandler<HTMLDivElement> = event => {
     if (event.touches.length === 1) event.stopPropagation();
 
     if (isCanGo && isHorizontalMoving) {

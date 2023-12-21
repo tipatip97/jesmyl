@@ -39,7 +39,7 @@ export default function ScheduleWidgetPage(
       content={
         schedule ? (
           schedule.start === 0 ? (
-            schedule.ctrl.users.some((user) => user.login === auth.login) ? (
+            schedule.ctrl.users.some(user => user.login === auth.login) ? (
               <>Заявка отправлена</>
             ) : (
               <StrongButton
@@ -49,10 +49,17 @@ export default function ScheduleWidgetPage(
               />
             )
           ) : (
-            <ScheduleWidget schedule={schedule} altActionsNode={props.altActionsNode} />
+            <ScheduleWidget
+              schedule={schedule}
+              altActionsNode={props.altActionsNode}
+            />
           )
         ) : (
-          <ScheduleCreateWidgetButton appName={props.appName} title={props.title} schw={props.schedulew} />
+          <ScheduleCreateWidgetButton
+            appName={props.appName}
+            title={props.title}
+            schw={props.schedulew}
+          />
         )
       }
     />

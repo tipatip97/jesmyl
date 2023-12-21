@@ -26,11 +26,11 @@ class ModalService {
   }
 
   open<RetVal>(config: Partial<ModalConfig> | ((res: (is: RetVal) => void) => Partial<ModalConfig>)): Promise<RetVal> {
-    if (typeof config === 'function') return new Promise<RetVal>((res) => this.open(config(res)));
+    if (typeof config === 'function') return new Promise<RetVal>(res => this.open(config(res)));
 
     const defaults = {
       getInput: (index: number = 0) => {
-        return config.inputs?.filter((input) => !Array.isArray(input))[index];
+        return config.inputs?.filter(input => !Array.isArray(input))[index];
       },
     };
     this.configs.push(Object.assign(defaults, config) as ModalConfig);
@@ -39,7 +39,7 @@ class ModalService {
     if (current) config.onOpen?.(current);
 
     this.refresh();
-    return new Promise<RetVal>((res) => this.resolves.push(res));
+    return new Promise<RetVal>(res => this.resolves.push(res));
   }
 
   close(value: any) {
@@ -71,7 +71,7 @@ class ModalService {
   }
 
   prompt(description: ReactNode, value = '', title = 'Ответ', okButton = 'применить', cancelButton = 'отмена') {
-    return this.open<string | null>((res) => ({
+    return this.open<string | null>(res => ({
       title,
       description,
       inputs: [

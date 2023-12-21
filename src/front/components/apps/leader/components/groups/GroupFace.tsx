@@ -9,7 +9,7 @@ export default function GroupFace({ group, onMoreClick }: { group: LeaderGroupIm
   return (
     <div
       className="face-item flex between"
-      onClick={(event) => {
+      onClick={event => {
         event.stopPropagation();
         goToGroup(group.w);
       }}
@@ -27,7 +27,7 @@ export default function GroupFace({ group, onMoreClick }: { group: LeaderGroupIm
       {onMoreClick && (
         <EvaIcon
           name="more-vertical"
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
             onMoreClick();
           }}

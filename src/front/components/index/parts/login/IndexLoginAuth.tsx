@@ -122,7 +122,7 @@ export default function IndexLoginAuth() {
               <div className="input-wrapper">
                 <KeyboardInput
                   preferLanguage="en"
-                  onChange={(value) => setNick(value)}
+                  onChange={value => setNick(value)}
                   value={nick}
                   placeholder="Логин"
                 />
@@ -134,7 +134,7 @@ export default function IndexLoginAuth() {
                 <KeyboardInput
                   preferLanguage="en"
                   type="password"
-                  onChange={(value) => setPassword(value)}
+                  onChange={value => setPassword(value)}
                   value={passw}
                   placeholder="Пароль"
                 />
@@ -148,7 +148,7 @@ export default function IndexLoginAuth() {
                     <KeyboardInput
                       preferLanguage="en"
                       type="password"
-                      onChange={(value) => setRPassword(value)}
+                      onChange={value => setRPassword(value)}
                       value={rpassw}
                       placeholder="Подтверди пароль"
                     />
@@ -181,7 +181,7 @@ export default function IndexLoginAuth() {
                       setIsInProscess(2);
                     }
                   },
-                  (errorMessage) => {
+                  errorMessage => {
                     dispatch(
                       di.setError({
                         scope: 'login',
@@ -204,97 +204,101 @@ export default function IndexLoginAuth() {
 }
 
 export const LoginIndex = styled(PhaseIndexContainer)`
-  .logo {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    > .logo-container {
-      background-color: var(--color--3);
-      padding: 15px;
-      border-radius: 100%;
-
-      > .jesmyl-smile {
-        --jesmyl-smile-color: var(--color--2);
-      }
-    }
-
-    > .text {
-      font-size: 2em;
-      margin-top: 0.3em;
-    }
-  }
-
-  .input-container {
-    --padding-h: 0.8em;
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    margin: 5px 0;
-
-    .icon-button-container {
-      margin-right: 10px;
-    }
-
-    > .input-wrapper {
-      position: relative;
+  & {
+    .logo {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      width: 100%;
 
-      > .input {
-        --input-keyboard-background: var(--color--2);
-        --autofill-background-color: var(--color--2);
-        --autofill-color: var(--text-color);
+      > .logo-container {
+        border-radius: 100%;
+        background-color: var(--color--3);
+        padding: 15px;
 
-        background-color: var(--color--2);
-        color: var(--text-color);
-        padding: 0.5em var(--padding-h);
-        padding-right: 1.5em;
-        width: 100%;
-        border-radius: 0.7em;
-        font-size: 1.5em;
-        border: var(--color--2) 2px solid;
-        height: 60px;
-
-        &::placeholder {
-          color: var(--text-color);
+        > .jesmyl-smile {
+          --jesmyl-smile-color: var(--color--2);
         }
       }
 
-      > .eva-icon {
-        position: absolute;
-        right: var(--padding-h);
-        cursor: pointer;
+      > .text {
+        margin-top: 0.3em;
+        font-size: 2em;
       }
     }
-  }
 
-  .send-button {
-    background-color: var(--color--3);
-    color: var(--color--2);
-    padding: 0.5em 2em;
-    font-size: 1.5em;
-    border-radius: 0.8em;
-    margin: 1.5em 0;
-    cursor: pointer;
-  }
+    .input-container {
+      --padding-h: 0.8em;
 
-  .login-error-message {
-    position: absolute;
-    color: var(--color--ko);
-    bottom: -7px;
-    width: 100%;
-    text-align: center;
+      position: relative;
+      margin: 5px 0;
+      width: 100%;
+      max-width: 500px;
 
-    + .input-wrapper {
-      margin-bottom: 1em;
-
-      > input {
-        border-color: var(--color--ko);
+      .icon-button-container {
+        margin-right: 10px;
       }
-      > .eva-icon {
-        --icon-color: var(--color--ko);
+
+      > .input-wrapper {
+        display: flex;
+        position: relative;
+        align-items: center;
+        width: 100%;
+
+        > .input {
+          --input-keyboard-background: var(--color--2);
+          --autofill-background-color: var(--color--2);
+          --autofill-color: var(--text-color);
+
+          border: var(--color--2) 2px solid;
+          border-radius: 0.7em;
+
+          background-color: var(--color--2);
+          padding: 0.5em var(--padding-h);
+          padding-right: 1.5em;
+          width: 100%;
+          height: 60px;
+          color: var(--text-color);
+          font-size: 1.5em;
+
+          &::placeholder {
+            color: var(--text-color);
+          }
+        }
+
+        > .eva-icon {
+          position: absolute;
+          right: var(--padding-h);
+          cursor: pointer;
+        }
+      }
+    }
+
+    .send-button {
+      cursor: pointer;
+      margin: 1.5em 0;
+      border-radius: 0.8em;
+      background-color: var(--color--3);
+      padding: 0.5em 2em;
+      color: var(--color--2);
+      font-size: 1.5em;
+    }
+
+    .login-error-message {
+      position: absolute;
+      bottom: -7px;
+      width: 100%;
+      color: var(--color--ko);
+      text-align: center;
+
+      + .input-wrapper {
+        margin-bottom: 1em;
+
+        > input {
+          border-color: var(--color--ko);
+        }
+        > .eva-icon {
+          --icon-color: var(--color--ko);
+        }
       }
     }
   }

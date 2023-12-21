@@ -26,9 +26,13 @@ export default function TimerSortRatingVariantSelector({
       <div className="TimerCompetitionsSelector dropdown-ancestor margin-big-gap-v flex flex-gap full-width">
         Принцип рейтинга
         {isRedact || isRedact == null ? (
-          <Dropdown id={sort} items={sortVariantList} onSelect={onSelect} />
+          <Dropdown
+            id={sort}
+            items={sortVariantList}
+            onSelect={onSelect}
+          />
         ) : (
-          <div className="color--3">{sortVariantList.find((item) => item.id === sort)?.title || ' - '}</div>
+          <div className="color--3">{sortVariantList.find(item => item.id === sort)?.title || ' - '}</div>
         )}
       </div>
     </>

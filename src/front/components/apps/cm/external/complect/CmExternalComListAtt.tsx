@@ -30,12 +30,12 @@ export default function CmExternalComListAtt({
 
   const [comOrderNode, openComOrder] = useFullContent(() => {
     const comws = value.comws;
-    const uniqRemovedComws = comws === undefined ? removedComws : removedComws.filter((comw) => !comws.includes(comw));
+    const uniqRemovedComws = comws === undefined ? removedComws : removedComws.filter(comw => !comws.includes(comw));
 
     return (
       <div className="margin-giant-gap-t">
         {comws?.map((comw, comwi) => {
-          const com = cat?.coms.find((com) => com.wid === comw);
+          const com = cat?.coms.find(com => com.wid === comw);
 
           if (com === undefined) return null;
 
@@ -71,7 +71,7 @@ export default function CmExternalComListAtt({
                     cud="D"
                     name="trash-2-outline"
                     onSuccess={
-                      removedComws.includes(comw) ? undefined : () => setRemovedComws((comws) => [...comws, comw])
+                      removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
                     }
                     className="color--ko"
                   />
@@ -83,8 +83,8 @@ export default function CmExternalComListAtt({
         {!uniqRemovedComws.length || (
           <>
             <h2>Удалённые песни</h2>
-            {uniqRemovedComws.map((comw) => {
-              const com = cat?.coms.find((com) => com.wid === comw);
+            {uniqRemovedComws.map(comw => {
+              const com = cat?.coms.find(com => com.wid === comw);
 
               return (
                 com && (
@@ -105,7 +105,7 @@ export default function CmExternalComListAtt({
                         name="undo-outline"
                         className="color--ok"
                         onSuccess={
-                          removedComws.includes(comw) ? undefined : () => setRemovedComws((comws) => [...comws, comw])
+                          removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
                         }
                       />
                     }
@@ -135,12 +135,12 @@ export default function CmExternalComListAtt({
                 placeholder="Поиск песен"
                 className="debounced-searcher round-styled margin-gap-v"
                 initialTerm={term}
-                onSearch={(term) => cat.search(term)}
+                onSearch={term => cat.search(term)}
                 debounce={500}
-                onTermChange={(term) => setTerm(term)}
+                onTermChange={term => setTerm(term)}
               />
               <div className="margin-gap-t full-height full-width over-y-auto">
-                {cat.wraps.map((wrap) => {
+                {cat.wraps.map(wrap => {
                   const isIncludes = value.comws?.includes(wrap.com.wid);
 
                   return (
@@ -191,9 +191,7 @@ export default function CmExternalComListAtt({
       <TheComForFullScreen
         com={ccom}
         chordVisibleVariant={ChordVisibleVariant.Maximal}
-        comList={[
-          ...((cat && value.comws?.map((comw) => cat.coms.find((com) => com.wid === comw)!).filter(itIt)) ?? []),
-        ]}
+        comList={[...((cat && value.comws?.map(comw => cat.coms.find(com => com.wid === comw)!).filter(itIt)) ?? [])]}
         onComSet={setCcom}
       />
     );
@@ -205,8 +203,8 @@ export default function CmExternalComListAtt({
       {selectorNode}
       {compositionNode}
       {!value.comws?.length && <div>Песен нет</div>}
-      {value.comws?.map((comw) => {
-        const com = cat?.coms.find((com) => com.wid === comw);
+      {value.comws?.map(comw => {
+        const com = cat?.coms.find(com => com.wid === comw);
         if (com === undefined) return null;
 
         return (

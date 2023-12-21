@@ -32,6 +32,9 @@ export default function useConnectionState(className?: string) {
       />
     )
   ) : (
-    <EvaIcon name="alert-triangle" className={'color--ko ' + className} />
+    <EvaIcon
+      name="alert-triangle"
+      className={'color--ko ' + className}
+    />
   );
 }

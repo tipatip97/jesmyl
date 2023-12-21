@@ -8,8 +8,11 @@ export const LeaderGroupMoreContenter: BottomPopupContenter<{ group?: LeaderGrou
   prepare,
   { group },
 ) => {
-  const [groupMasterNode, openGroupMaster] = useFullContent((close) => (
-    <LeaderGroupMaster close={close} group={group} />
+  const [groupMasterNode, openGroupMaster] = useFullContent(close => (
+    <LeaderGroupMaster
+      close={close}
+      group={group}
+    />
   ));
 
   return [

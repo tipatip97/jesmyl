@@ -69,7 +69,7 @@ export default function ScheduleWidgetBindAtts({
                   }
                   mapExecArgs={
                     mapExecArgs ||
-                    ((args) => {
+                    (args => {
                       if (atts?.[attKey]) return;
                       return {
                         ...args,
@@ -105,7 +105,10 @@ export default function ScheduleWidgetBindAtts({
         )}
         {footer(
           <>
-            <ScheduleWidgetCustomAttachments scope={scheduleScope} tatts={schedule.tatts} />
+            <ScheduleWidgetCustomAttachments
+              scope={scheduleScope}
+              tatts={schedule.tatts}
+            />
           </>,
         )}
       </>
@@ -120,7 +123,10 @@ export default function ScheduleWidgetBindAtts({
       <div className="flex flex-gap">
         <EvaIcon name="attach" />
         Вложения
-        <EvaButton name="plus-outline" onClick={screen} />
+        <EvaButton
+          name="plus-outline"
+          onClick={screen}
+        />
       </div>
       <Secs className="flex flex-gap no-scrollbar">
         {attEntries?.length ? (
@@ -150,8 +156,10 @@ export default function ScheduleWidgetBindAtts({
 }
 
 const Secs = styled.div`
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-right: var(--margin-gap);
+  & {
+    padding-right: var(--margin-gap);
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
 `;

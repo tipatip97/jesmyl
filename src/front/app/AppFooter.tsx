@@ -22,7 +22,7 @@ export default function AppFooter({ appName }: { appName: AppName }) {
     onClick: (phase: RoutePhasePoint) => void,
     setIsActive: (phase: RoutePhasePoint) => boolean,
   ) => {
-    return nav.routes.map((props) => {
+    return nav.routes.map(props => {
       if (!props) return null;
       const { phase, title, icon, accessRule } = props;
       if (accessRule != null && nav.exer && !nav.exer.actionAccessedOrNull(accessRule, auth)) return null;
@@ -46,7 +46,7 @@ export default function AppFooter({ appName }: { appName: AppName }) {
   useEffect(() => {
     const [phase] = indexRoute || route || [];
     const routes = indexRoute ? indexNav.nav.routes : route ? nav.nav.routes : [];
-    const footerRoute = routes.find((route) => route.phase[0] === phase);
+    const footerRoute = routes.find(route => route.phase[0] === phase);
 
     if (!footerRoute) return;
 
@@ -57,7 +57,7 @@ export default function AppFooter({ appName }: { appName: AppName }) {
     <div className="footer">
       {putItems(
         nav.nav,
-        (phase) => {
+        phase => {
           navigate(phase);
           if (indexRoute) indexNavigate(null, false);
         },

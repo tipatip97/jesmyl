@@ -109,8 +109,8 @@ body {
   }
 
   .jesmyl-smile-box {
-    pointer-events: none;
     animation: fade-out 1s forwards;
+    pointer-events: none;
 
     @keyframes fade-out {
       from {
@@ -130,10 +130,10 @@ body {
   .application-container {
     position: absolute;
     top: 0;
-    overflow: hidden;
-    height: 100%;
-    width: 100vw;
     animation: blur-in 1s forwards linear;
+    width: 100vw;
+    height: 100%;
+    overflow: hidden;
 
     @keyframes blur-in {
       from {
@@ -149,9 +149,9 @@ body {
       position: absolute;
       top: -40px;
       right: 0;
-      margin: 10px;
-      transition: top 0.2s;
       z-index: 50;
+      transition: top 0.2s;
+      margin: 10px;
     }
 
     .phase-container {
@@ -172,42 +172,42 @@ body {
     }
 
     > .footer {
-      position: absolute;
-      z-index: 200;
-      bottom: var(--footer-bottom);
-      width: 100vw;
       display: flex;
+      position: absolute;
+      bottom: var(--footer-bottom);
       justify-content: space-around;
       align-items: center;
-      background-color: var(--color--1);
-      height: var(--footer-height);
-      transition: var(--fullscreen-transition);
-      overflow: hidden;
       opacity: var(--footer-opacity);
+      z-index: 200;
+      transition: var(--fullscreen-transition);
+      background-color: var(--color--1);
+      width: 100vw;
+      height: var(--footer-height);
+      overflow: hidden;
 
       > .footer-item {
         display: flex;
-        align-items: center;
         flex-direction: column;
-        width: 25%;
+        align-items: center;
         cursor: pointer;
+        width: 25%;
 
         > .icon-container {
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 24px;
-          height: 30px;
-          border-radius: 30px;
           transition:
             width 0.1s,
             background-color 0.05s;
+          border-radius: 30px;
+          width: 24px;
+          height: 30px;
         }
 
         &.active {
           > .icon-container {
-            width: 50px;
             background-color: var(--color--2);
+            width: 50px;
             color: var(--color--3);
           }
         }

@@ -27,16 +27,16 @@
 
   .imgContainer {
     display: block;
+    background-size: contain;
+    background-repeat: no-repeat;
     width: 150px;
     height: 150px;
     overflow: auto;
-    background-size: contain;
-    background-repeat: no-repeat;
   }
 
   table {
-    width: 100%;
     border-spacing: 0;
+    width: 100%;
 
     &,
     th,

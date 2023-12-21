@@ -16,14 +16,20 @@ export default function GamerMore() {
       gamerExer.actionAccessedOrNull('addNewRoom', auth) && {
         title: 'Новая комната',
         icon: 'plus',
-        onClick: () => openFullscreenContent((close) => <NewGamerRoomScreen close={close} />),
+        onClick: () => openFullscreenContent(close => <NewGamerRoomScreen close={close} />),
       },
       {
         title: 'Новая оффлайн комната',
         icon: 'plus',
         className: passport ? '' : ' fade-05',
         onClick: () => {
-          if (passport) openFullscreenContent((close) => <NewGamerRoomScreen close={close} offline />);
+          if (passport)
+            openFullscreenContent(close => (
+              <NewGamerRoomScreen
+                close={close}
+                offline
+              />
+            ));
           else modalService.alert('Нужно создать паспорт для добавления оффлайн комнат', 'Пойми!');
         },
       },

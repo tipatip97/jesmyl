@@ -25,12 +25,12 @@ const getParentAttr = (elem: EventTarget & HTMLTextAreaElement, attrName: string
   return null;
 };
 
-export const onStrongFieldDragStart: (event: DragEvent) => void = (event) => {
+export const onStrongFieldDragStart: (event: DragEvent) => void = event => {
   event.dataTransfer?.setData('text/plain', getParentAttr(event.currentTarget as never, 'attr-text') ?? '');
   clipboardFocusedElem = event.currentTarget as never;
 };
 
-export const onStrongFieldFocus: (event: KeyboardInputEvent) => void = (event) => {
+export const onStrongFieldFocus: (event: KeyboardInputEvent) => void = event => {
   if (event.realEvent) {
     clipboardFocusedElem = event.realEvent.currentTarget;
     update(++updates);
@@ -141,7 +141,7 @@ export default function StrongClipboardPicker() {
         </>
       );
     },
-    (is) => {
+    is => {
       if (is) return;
       isCanBlur = true;
       setIsOpenModal(false);
@@ -187,7 +187,7 @@ export default function StrongClipboardPicker() {
             }
           }
         }}
-        onDragOver={(event) => event.preventDefault()}
+        onDragOver={event => event.preventDefault()}
       >
         <EvaButton
           name="clipboard-outline"

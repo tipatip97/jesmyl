@@ -18,16 +18,23 @@ export default function GamerOfflineRoomList() {
   return (
     <>
       <h2>Оффлайн комнаты</h2>
-      <span className="flex flex-gap margin-gap pointer" onClick={() => joinByQrCode()}>
+      <span
+        className="flex flex-gap margin-gap pointer"
+        onClick={() => joinByQrCode()}
+      >
         {currentContent ? 'Перечитать' : 'Присоединиться'}
         <EvaIcon name="qr-code" />
       </span>
       {currentContent}
-      {offlineRooms?.map((room) => {
+      {offlineRooms?.map(room => {
         const gameData = gamerOfflineRoomGames.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data;
 
         return (
-          <div key={`room ${room.w}`} className="face-item" onClick={() => goToOfflineRoom(room.w)}>
+          <div
+            key={`room ${room.w}`}
+            className="face-item"
+            onClick={() => goToOfflineRoom(room.w)}
+          >
             <div className="face-logo">
               <EvaIcon name={gameData?.icon ? gameData.icon : 'cube'} />
             </div>

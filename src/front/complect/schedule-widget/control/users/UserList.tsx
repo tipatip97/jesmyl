@@ -26,7 +26,7 @@ export default function ScheduleWidgetUserList({
   const users = (
     filter === undefined ? [...rights.schedule.ctrl.users] : [...rights.schedule.ctrl.users].filter(filter)
   )
-    .map((user) => {
+    .map(user => {
       return {
         user,
         balance: scheduleWidgetUserRights.rightsBalance(user.R),

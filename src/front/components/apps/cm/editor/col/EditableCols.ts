@@ -11,7 +11,7 @@ export class EditableCols extends Cols {
     super(cols);
     this.coms = [...cols.coms].sort((a, b) => a.w - b.w).map((com, comi) => new EditableCom(com, comi));
 
-    this.cats = cols.cats.map((cat) => new EditableCat(cat, this.coms));
+    this.cats = cols.cats.map(cat => new EditableCat(cat, this.coms));
   }
 
   isComExists(com: EditableCom) {
@@ -21,7 +21,7 @@ export class EditableCols extends Cols {
   addCom(com: EditableCom) {
     if (this.isComExists(com)) return false;
     this.coms?.push(com);
-    this.cats.forEach((cat) => cat.putComs());
+    this.cats.forEach(cat => cat.putComs());
     return true;
   }
 }

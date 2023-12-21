@@ -31,7 +31,7 @@ export default function IndexMain() {
   const { readQR, qrNode } = useQRMaster();
   const connectionNode = useConnectionState();
   const appList = appNames
-    .map((appName) => {
+    .map(appName => {
       const navs = appConfigs[appName];
       if (navs?.nav.nav.useIsCanRead?.() === false) return null;
       if (currentAppName === appName || appName === 'index') return null;
@@ -41,8 +41,15 @@ export default function IndexMain() {
       if (nav.nav.level !== undefined && nav.nav.level > auth.level) return null!;
 
       return (
-        <div key={appName} className="item flex" onClick={() => jumpToApp(nav.appName)}>
-          <EvaIcon name={nav.nav.logo || 'cube-outline'} className="margin-big-gap" />
+        <div
+          key={appName}
+          className="item flex"
+          onClick={() => jumpToApp(nav.appName)}
+        >
+          <EvaIcon
+            name={nav.nav.logo || 'cube-outline'}
+            className="margin-big-gap"
+          />
           <div className="app-title-label">{nav.nav.title}</div>
         </div>
       );
@@ -58,7 +65,10 @@ export default function IndexMain() {
         <div className="flex flex-gap">
           {connectionNode}
           {auth.fio && (
-            <div className="margin-big-gap-h pointer" onClick={openPopup}>
+            <div
+              className="margin-big-gap-h pointer"
+              onClick={openPopup}
+            >
               {auth.fio}
             </div>
           )}
@@ -69,10 +79,27 @@ export default function IndexMain() {
         <>
           {popupNode}
           {qrNode}
-          <ScheduleWidgetAlarm onGoTo={() => goTo('schedules')} isForceShow={auth.level >= 50} />
-          {!auth.nick && <BrutalItem icon="person-outline" title="Авторизоваться" onClick={() => goTo('login')} />}
-          <BrutalItem icon="settings-2-outline" title="Настройки" onClick={() => goTo('settings')} />
-          <BrutalItem icon="qr-code" title="Читать QR" onClick={() => readQR()} />
+          <ScheduleWidgetAlarm
+            onGoTo={() => goTo('schedules')}
+            isForceShow={auth.level >= 50}
+          />
+          {!auth.nick && (
+            <BrutalItem
+              icon="person-outline"
+              title="Авторизоваться"
+              onClick={() => goTo('login')}
+            />
+          )}
+          <BrutalItem
+            icon="settings-2-outline"
+            title="Настройки"
+            onClick={() => goTo('settings')}
+          />
+          <BrutalItem
+            icon="qr-code"
+            title="Читать QR"
+            onClick={() => readQR()}
+          />
           <BrutalItem
             icon="info-outline"
             title="О приложении"

@@ -33,13 +33,13 @@ const comNext = [comNav, translationNav];
 
 const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig('cm', {
   title: 'Песни возрождённых',
-  root: (content) => <CmApplication content={content} />,
+  root: content => <CmApplication content={content} />,
   rootPhase: 'all',
   logo: 'book-open',
   exer: cmExer,
   jumpByLink: {
-    selectedComws: (selectedComws) => ({ path: ['lists', 'selected'], data: { selectedComws } }),
-    ccomw: (ccomw) => ({ path: ['all', 'com'], data: { ccomw } }),
+    selectedComws: selectedComws => ({ path: ['lists', 'selected'], data: { selectedComws } }),
+    ccomw: ccomw => ({ path: ['all', 'com'], data: { ccomw } }),
   },
   routes: [
     {
@@ -68,7 +68,7 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
         {
           phase: ['selected'],
           node: <SelectedComs />,
-          slideBackOn: (navData) => !navData.selectedComws?.length,
+          slideBackOn: navData => !navData.selectedComws?.length,
           next: [...comNext],
         },
         {

@@ -1,21 +1,21 @@
 .tuner-application {
   .notes {
-    margin: auto;
-    width: 400px;
     position: fixed;
     top: 50%;
-    left: 0;
     right: 0;
+    left: 0;
+    margin: auto;
+    width: 400px;
     text-align: center;
   }
 
   .note {
-    font-size: 90px;
-    font-weight: bold;
-    position: relative;
     display: inline-block;
+    position: relative;
     padding-right: 30px;
     padding-left: 10px;
+    font-weight: bold;
+    font-size: 90px;
   }
 
   .note.active {
@@ -41,8 +41,8 @@
   .note span {
     position: absolute;
     right: 0.25em;
-    font-size: 40%;
     font-weight: normal;
+    font-size: 40%;
   }
 
   .note-sharp {
@@ -58,56 +58,56 @@
   }
 
   .frequency span {
-    font-size: 50%;
     margin-left: 0.25em;
+    font-size: 50%;
   }
 
   .meter {
     position: fixed;
-    left: 0;
     right: 0;
     bottom: 50%;
+    left: 0;
+    margin: 0 auto 5vh auto;
     width: 400px;
     height: 33%;
-    margin: 0 auto 5vh auto;
   }
 
   .meter-pointer {
-    width: 2px;
-    height: 100%;
-    background: #2c3e50;
+    position: absolute;
+    right: 50%;
     transform: rotate(45deg);
     transform-origin: bottom;
     transition: transform 0.5s;
-    position: absolute;
-    right: 50%;
+    background: #2c3e50;
+    width: 2px;
+    height: 100%;
   }
 
   .meter-dot {
+    position: absolute;
+    right: 50%;
+    bottom: -5px;
+    margin-right: -4px;
+    border-radius: 50%;
+    background: #2c3e50;
     width: 10px;
     height: 10px;
-    background: #2c3e50;
-    border-radius: 50%;
-    position: absolute;
-    bottom: -5px;
-    right: 50%;
-    margin-right: -4px;
   }
 
   .meter-scale {
-    width: 1px;
-    height: 100%;
+    position: absolute;
+    right: 50%;
     transform-origin: bottom;
     transition: transform 0.2s;
     box-sizing: border-box;
     border-top: 10px solid;
-    position: absolute;
-    right: 50%;
+    width: 1px;
+    height: 100%;
   }
 
   .meter-scale-strong {
-    width: 2px;
     border-top-width: 20px;
+    width: 2px;
   }
 
   .frequency-bars {

@@ -53,7 +53,7 @@ export default function ScheduleWidget({
       altTitle="Расписание"
       topicBox={schedule}
     />,
-    (isExpand) =>
+    isExpand =>
       isExpand ? (
         <span className="flex flex-gap">
           {schedule && (
@@ -129,13 +129,19 @@ export default function ScheduleWidget({
 
   if (blockContent)
     return (
-      <ScheduleWidgetContextWrapper schedule={schedule} rights={rights}>
+      <ScheduleWidgetContextWrapper
+        schedule={schedule}
+        rights={rights}
+      >
         {blockContent}
       </ScheduleWidgetContextWrapper>
     );
 
   return (
-    <ScheduleWidgetContextWrapper schedule={schedule} rights={rights}>
+    <ScheduleWidgetContextWrapper
+      schedule={schedule}
+      rights={rights}
+    >
       <Widget className={'schedule-widget' + (isExpand ? ' expand' : '')}>
         {expandNode}
         {isExpand && (
@@ -151,10 +157,13 @@ export default function ScheduleWidget({
                   takeDate="day"
                   takeTime="NO"
                   onComponentsChange={(_, __, ___, date) => setStartTime(date.getTime())}
-                  mapExecArgs={(args) => ({ ...args, value: startTime })}
+                  mapExecArgs={args => ({ ...args, value: startTime })}
                 />
               ) : (
-                <ScheduleWidgetStartTimeText schedule={schedule} date={date} />
+                <ScheduleWidgetStartTimeText
+                  schedule={schedule}
+                  date={date}
+                />
               )}
               {rights.isCanRead ? (
                 <>
@@ -196,7 +205,10 @@ export default function ScheduleWidget({
                   {rights.isCanReadTitles && (
                     <>
                       {rights.myUser && <ScheduleWidgetControl scope={selfScope} />}
-                      <ScheduleWidgetLists scope={selfScope} scheduleScope={selfScope} />
+                      <ScheduleWidgetLists
+                        scope={selfScope}
+                        scheduleScope={selfScope}
+                      />
                     </>
                   )}
                   {isRedact && (
@@ -213,7 +225,10 @@ export default function ScheduleWidget({
                         icon="at"
                         schedule={schedule}
                       />
-                      <ScheduleWidgetCustomAttachments scope={selfScope} tatts={schedule.tatts} />
+                      <ScheduleWidgetCustomAttachments
+                        scope={selfScope}
+                        tatts={schedule.tatts}
+                      />
                       {!schedule.days.length && !schedule.tatts.length && !schedule.types.length && (
                         <ScheduleWidgetCopy schw={schedule.w} />
                       )}
@@ -236,7 +251,7 @@ export default function ScheduleWidget({
                           name="trash-outline"
                           confirm="Восстановить расписание будет не возможно. Продолжить?"
                           postfix="Удалить расписание"
-                          mapExecArgs={(args) => {
+                          mapExecArgs={args => {
                             return {
                               ...args,
                               schw: schedule.w,
@@ -286,14 +301,16 @@ export default function ScheduleWidget({
 }
 
 const Widget = styled.div`
-  padding: 5px;
-  transition: margin 0.3s;
+  & {
+    transition: margin 0.3s;
+    padding: 5px;
 
-  &.expand {
-    margin-bottom: 50px;
-  }
+    &.expand {
+      margin-bottom: 50px;
+    }
 
-  .icon-scale-05 {
-    --icon-scale: 0.5;
+    .icon-scale-05 {
+      --icon-scale: 0.5;
+    }
   }
 `;

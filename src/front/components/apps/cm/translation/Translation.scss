@@ -8,37 +8,37 @@
   z-index: 300;
 
   &.fullscreen {
-    background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: black;
     width: 100vw;
     height: 100vh;
   }
 
   .translation-screen-wrapper {
-    position: relative;
     display: inline-block;
+    position: relative;
     vertical-align: middle;
     width: var(--size);
-    height: var(--size);
-    max-width: var(--max-size);
-    max-height: var(--max-size);
     min-width: var(--min-size);
+    max-width: var(--max-size);
+    height: var(--size);
     min-height: var(--min-size);
+    max-height: var(--max-size);
 
     .translation-screen-wrapper-inner {
-      user-select: none;
       cursor: pointer;
-      background: black;
-      white-space: pre;
-      color: var(--color-far);
       border: solid 1px transparent;
-      font-size: 14px;
-      overflow: hidden;
+      border-radius: var(--radius);
+      background: black;
       width: 100%;
       height: 100%;
-      border-radius: var(--radius);
+      overflow: hidden;
+      color: var(--color-far);
+      font-size: 14px;
+      user-select: none;
+      white-space: pre;
 
       &.active {
         border-color: var(--color-far);
@@ -49,8 +49,8 @@
   .translation-com-list {
     width: 50%;
     height: var(--size);
-    max-height: var(--max-size);
     min-height: var(--min-size);
+    max-height: var(--max-size);
     overflow-x: hidden;
     overflow-y: auto;
 
@@ -72,13 +72,13 @@
   .translations-line {
     display: flex;
     margin: 1em 0;
+    border-radius: var(--radius);
+    background: black;
     padding: 1em 0;
     overflow: auto;
-    white-space: nowrap;
-    background: black;
-    color: white;
-    border-radius: var(--radius);
     scroll-snap-type: x mandatory;
+    color: white;
+    white-space: nowrap;
 
     .translations-line-item {
       margin: 0 7px;
@@ -86,17 +86,17 @@
 
       .translations-line-item-inner {
         display: flex;
-        user-select: none;
         cursor: pointer;
-        background: black;
-        white-space: pre;
-        color: var(--color-far);
         border: solid 1px transparent;
-        font-size: 14px;
-        overflow: hidden;
-        text-align: center;
-        height: calc(100% - 1.5em);
+        background: black;
         padding: 5px;
+        height: calc(100% - 1.5em);
+        overflow: hidden;
+        color: var(--color-far);
+        font-size: 14px;
+        user-select: none;
+        text-align: center;
+        white-space: pre;
 
         &.active {
           border-color: var(--color-far);
@@ -108,14 +108,14 @@
   .control-panel {
     > .button {
       display: flex;
-      align-items: center;
       justify-content: center;
-      height: 30px;
-      width: 100%;
+      align-items: center;
+      cursor: pointer;
       border-radius: 15px;
       background-color: var(--color--1);
+      width: 100%;
+      height: 30px;
       color: var(--color--4);
-      cursor: pointer;
 
       &.center {
         min-width: 40vw;
@@ -140,13 +140,13 @@
     --half-safe-gap: calc(var(--safe-gap) / 3);
     --block-width: calc((100% - var(--safe-gap) * 2 - var(--center-width)) / 2);
     --center-left: calc(var(--safe-gap) + var(--block-width));
+    z-index: 1000;
+    transition: transform 0.1s;
 
     background: black;
     width: 100vw;
     height: 100vh;
     color: white;
-    z-index: 1000;
-    transition: transform 0.1s;
 
     &.rotate-fullscreen-translation {
       transform: rotate(90deg);
@@ -236,8 +236,8 @@
       top: var(--half-safe-gap);
       right: var(--half-safe-gap);
       opacity: 0;
-      pointer-events: none;
       cursor: pointer;
+      pointer-events: none;
     }
 
     .open-info-button {
@@ -249,9 +249,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      color: #0000;
       cursor: pointer;
+      color: #0000;
+      text-align: center;
     }
 
     > .bottom-area,
@@ -283,8 +283,8 @@
       --active-second-position: calc(var(--safe-gap) / 1.5);
 
       position: absolute;
-      width: var(--center-width);
       left: var(--center-left);
+      width: var(--center-width);
       height: var(--block-height);
 
       &.top {
@@ -317,12 +317,12 @@
 
       .area-button {
         position: absolute;
+        left: calc(50% - 24px / 2);
+        z-index: 10000;
         transition:
           top 0.4s,
           bottom 0.4s;
-        left: calc(50% - 24px / 2);
         cursor: pointer;
-        z-index: 10000;
 
         &.second {
           transition:

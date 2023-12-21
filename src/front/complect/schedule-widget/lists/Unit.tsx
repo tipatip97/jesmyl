@@ -31,7 +31,15 @@ export default function ScheduleWidgetListUnit({
   const [unitTitile, isExpand] = useIsExpand(
     false,
     title,
-    rights.isCanRedact ? (isExpand) => isExpand && <EvaButton name="edit-outline" onClick={screen} /> : null,
+    rights.isCanRedact
+      ? isExpand =>
+          isExpand && (
+            <EvaButton
+              name="edit-outline"
+              onClick={screen}
+            />
+          )
+      : null,
   );
 
   const [modalNode, screen] = useModal(({ header, body }) => {
@@ -145,13 +153,13 @@ export default function ScheduleWidgetListUnit({
             <ScheduleWidgetUserList
               scope={scheduleScope}
               title={cat.titles[0]}
-              filter={(user) => user.li?.[cati] === -unit.mi}
+              filter={user => user.li?.[cati] === -unit.mi}
               isInitExpand
             />
             <ScheduleWidgetUserList
               scope={scheduleScope}
               title={cat.titles[1]}
-              filter={(user) => user.li?.[cati] === unit.mi}
+              filter={user => user.li?.[cati] === unit.mi}
             />
           </div>
         )}

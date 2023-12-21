@@ -46,7 +46,10 @@ export default function EditComposition({
         ccom.col.removed ? (
           <div className="flex column">
             <h2 className="error-message">Песня удалена</h2>
-            <div className="pointer" onClick={() => exec(ccom.comeBack())}>
+            <div
+              className="pointer"
+              onClick={() => exec(ccom.comeBack())}
+            >
               Восстановить
             </div>
           </div>
@@ -72,7 +75,10 @@ export default function EditComposition({
             </div>
             {isOpenPlayer && ccom.audio && (
               <div className="sticky com-player">
-                <ComPlayer src={ccom.audio} split />
+                <ComPlayer
+                  src={ccom.audio}
+                  split
+                />
               </div>
             )}
             {outletContent}

@@ -8,8 +8,11 @@ export default function ScheduleWidgetAlarm({ onGoTo, isForceShow }: { onGoTo: (
 
   return (
     <>
-      {(isForceShow || schedules.list.some((schedule) => schedule.start)) && (
-        <ScheduleWidgetAlarmContent onGoTo={onGoTo} observeSchw={nav.appRouteData.schw} />
+      {(isForceShow || schedules.list.some(schedule => schedule.start)) && (
+        <ScheduleWidgetAlarmContent
+          onGoTo={onGoTo}
+          observeSchw={nav.appRouteData.schw}
+        />
       )}
     </>
   );

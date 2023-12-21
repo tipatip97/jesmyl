@@ -25,11 +25,14 @@ export default function ComFace(props: ComFaceProps) {
         }
         onClick={importantOnClick || (() => jumpTo({ phase: comNavPhasePoint, data: { ccomw: com.wid } }))}
         {...propsOfClicker({
-          onCtxMenu: (event) => {
+          onCtxMenu: event => {
             event.preventDefault();
             selectable !== false &&
               openAbsoluteFloatPopup(
-                <ComFaceContextMenu onClick={() => closeAbsoluteFloatPopup()} com={com} />,
+                <ComFaceContextMenu
+                  onClick={() => closeAbsoluteFloatPopup()}
+                  com={com}
+                />,
                 event.clientX,
                 event.clientY,
               );
@@ -39,7 +42,7 @@ export default function ComFace(props: ComFaceProps) {
         <div
           className="face-logo"
           selected-position={selectedComPosition(com) || undefined}
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
             selectable !== false && toggleSelectedCom(com);
           }}

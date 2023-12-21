@@ -13,7 +13,7 @@ export default function TimerResetButton({
         <span
           className="pointer error-message"
           onClick={() => {
-            modalService.confirm('Сброс?').then((reset) => reset && onTimerReset());
+            modalService.confirm('Сброс?').then(reset => reset && onTimerReset());
           }}
         >
           Сброс

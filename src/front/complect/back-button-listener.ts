@@ -11,7 +11,7 @@ window.addEventListener('popstate', () => {
 });
 
 const listeners: (() => void)[] = [];
-const next = () => Object.values(listeners).forEach((listener) => listener());
+const next = () => Object.values(listeners).forEach(listener => listener());
 
 const onBackButton = {
   listen: (listener: () => void) => {

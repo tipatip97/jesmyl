@@ -12,11 +12,11 @@ export default function TotalScoreTable({ selectedTimers }: { selectedTimers: nu
   const scores = useMemo(() => {
     const rateSortedItemsMap = new Map<number, RateSortedItem[]>();
 
-    selectedTimers.forEach((timerWid) => {
-      const timer = cgame?.timers?.find((timer) => timer.w === timerWid);
+    selectedTimers.forEach(timerWid => {
+      const timer = cgame?.timers?.find(timer => timer.w === timerWid);
 
       timer &&
-        LeaderCleans.rateSortedTimerTeams(timer, cgame).forEach((rateSorts) => {
+        LeaderCleans.rateSortedTimerTeams(timer, cgame).forEach(rateSorts => {
           const { team, start, finish } = rateSorts;
           if (start && finish && team) {
             if (rateSortedItemsMap.has(team.w))
@@ -58,19 +58,25 @@ export default function TotalScoreTable({ selectedTimers }: { selectedTimers: nu
       .sort((a, b) => a.finish - a.start - (b.finish - b.start))
       .map(({ team, start, finish }, scorei) => {
         return (
-          <div key={scorei} className="margin-gap">
+          <div
+            key={scorei}
+            className="margin-gap"
+          >
             <div
               className="flex flex-gap pointer"
               onClick={() => {
                 const index = openScores.indexOf(scorei);
                 if (index < 0) updateOpenScores([...openScores, scorei]);
-                else updateOpenScores(openScores.filter((scoreIndex) => scoreIndex !== scorei));
+                else updateOpenScores(openScores.filter(scoreIndex => scoreIndex !== scorei));
               }}
             >
               <span>
                 {scorei + 1}. {team?.name} -
               </span>
-              <TimerScreen start={start} pause={finish} />
+              <TimerScreen
+                start={start}
+                pause={finish}
+              />
             </div>
             {openScores.indexOf(scorei) < 0 || (
               <div className="padding-giant-gap">
@@ -80,13 +86,19 @@ export default function TotalScoreTable({ selectedTimers }: { selectedTimers: nu
 
                   const scores = LeaderCleans.rateSortedTimerTeams(timer, cgame);
                   const teamScores = scores.find(({ team: t }) => t?.w === team?.w);
-                  const teamInTimer = team && timer.teams?.find((teamw) => team.w === teamw);
+                  const teamInTimer = team && timer.teams?.find(teamw => team.w === teamw);
 
                   return (
                     !!(teamInTimer && teamScores?.start && teamScores?.finish) && (
-                      <div key={timeri} className="flex flex-gap">
+                      <div
+                        key={timeri}
+                        className="flex flex-gap"
+                      >
                         <span className={`${timer.isInactive ? 'text-strike' : ''} text-bold`}>{timer.name}</span> -
-                        <TimerScreen start={teamScores.start} pause={teamScores.finish} />
+                        <TimerScreen
+                          start={teamScores.start}
+                          pause={teamScores.finish}
+                        />
                       </div>
                     )
                   );

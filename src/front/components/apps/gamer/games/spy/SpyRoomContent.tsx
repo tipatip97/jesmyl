@@ -95,7 +95,11 @@ export default function SpyRoomContent() {
                 </h2>
                 <div className="full-width">
                   <span>Количество шпионов:</span>
-                  <KeyboardInput type="number" onInput={(value) => setSpyCount(+value)} value={'' + spyCount} />
+                  <KeyboardInput
+                    type="number"
+                    onInput={value => setSpyCount(+value)}
+                    value={'' + spyCount}
+                  />
                 </div>
                 {players && (
                   <div className="flex center padding-giant-gap">

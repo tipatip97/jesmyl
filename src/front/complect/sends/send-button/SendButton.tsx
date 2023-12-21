@@ -12,7 +12,7 @@ export default function SendButton<Value>(props: SendButtonProps<Value>) {
       {...props}
       confirm={props.confirm === true ? props.title : props.confirm}
       anchorNodes={<>{toastNode}</>}
-      onFailure={(error) => {
+      onFailure={error => {
         props.onFailure?.(error);
         toast(error, { mood: 'ko' });
       }}
@@ -30,9 +30,15 @@ export default function SendButton<Value>(props: SendButtonProps<Value>) {
             {props.title}
             <div className="absolute full-height flex center pos-right pos-top margin-big-gap-r">
               {error ? (
-                <EvaIcon name="alert-circle-outline" className="error-message" />
+                <EvaIcon
+                  name="alert-circle-outline"
+                  className="error-message"
+                />
               ) : isLoading ? (
-                <EvaIcon name="loader-outline" className="rotate color--5" />
+                <EvaIcon
+                  name="loader-outline"
+                  className="rotate color--5"
+                />
               ) : null}
             </div>
           </TheButton>

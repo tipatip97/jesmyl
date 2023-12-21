@@ -16,7 +16,7 @@ export default function TheLeaderGroup() {
   const { ccontext, humans } = useLeaderContext();
   const [memberMoreNode, openMemberMore] = useBottomPopup((close, prepare) => {
     if (memberw === 0) return null;
-    const human = humans?.find((human) => human.w === memberw);
+    const human = humans?.find(human => human.w === memberw);
     if (human === undefined) return null;
 
     return (
@@ -41,7 +41,12 @@ export default function TheLeaderGroup() {
           <div className="margin-big-gap">
             <h2>Лидеры</h2>
             {cgroupMentors.map((human, humani) => {
-              return <HumanFace key={humani} human={human} />;
+              return (
+                <HumanFace
+                  key={humani}
+                  human={human}
+                />
+              );
             })}
             <h2>Участники</h2>
             {cgroupMembers.map((human, humani) => {

@@ -75,7 +75,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<start timeout>': {
       action: 'startAliasSpeechTimeout',
-      timer: (props) => {
+      timer: props => {
         const state = extractState<GamerAliasRoomState | nil>(props);
         if (!state) return;
         return {
@@ -117,7 +117,7 @@ export const aliasGameConfig: ActionBox = {
         fix: [],
         invert: {},
       },
-      side: (props) => {
+      side: props => {
         const state = extractState<GamerAliasRoomState | nil>(props);
         if (state == null) return;
         const [speakeri, currTeami] = AliasHelp.takeSpeakerDetails(state);
@@ -170,19 +170,19 @@ export const aliasGameConfig: ActionBox = {
   '<skip member turn>': {
     action: 'skipTheMemberTurn',
     method: 'set_all',
-    value: (props) => {
+    value: props => {
       const state = extractState<GamerAliasRoomState | nil>(props);
       const [speakeri] = state ? AliasHelp.takeSpeakerDetails(state, state.speakeri) : [0];
       const aliasWordPacks =
         state &&
         AliasHelp.getTokenizedWordInfos(state.token, state.dicts, state.lens, getWordPacks(), getNounPronsWords());
-      console.log(aliasWordPacks?.map((it) => it.word).slice(0, 20));
+      console.log(aliasWordPacks?.map(it => it.word).slice(0, 20));
       return { speakeri };
     },
   },
   '<strike word>': {
     action: 'strikeAliasWord',
-    side: (props) => {
+    side: props => {
       const state = extractState<GamerAliasRoomState | nil>(props);
 
       return {

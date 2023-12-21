@@ -15,9 +15,17 @@ const itIt = (it: unknown) => it;
 export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImportable }) {
   const [expandedTimers, setExpandedTimers] = useState<number[]>([]);
   const [openTimerw, setOpenTimerw] = useState(0);
-  const openTimer = openTimerw ? game.timers?.find((it) => it.w === openTimerw) : null;
-  const [fullContent, openFullContent] = useFullContent((close) => {
-    return openTimer && <LeaderGameTimerMaster game={game} close={close} timer={openTimer} />;
+  const openTimer = openTimerw ? game.timers?.find(it => it.w === openTimerw) : null;
+  const [fullContent, openFullContent] = useFullContent(close => {
+    return (
+      openTimer && (
+        <LeaderGameTimerMaster
+          game={game}
+          close={close}
+          timer={openTimer}
+        />
+      )
+    );
   });
 
   const node = useMemo(() => {
@@ -26,7 +34,7 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
     const singleTimes: Map<GameTeamImportable, number> = new Map();
     let isSingleTimers = true;
 
-    game.timers?.forEach((timer) => {
+    game.timers?.forEach(timer => {
       if (timer.isInactive) return;
       const teamsPlayed = LeaderCleans.rateSortedTimerTeams(timer, game, true);
 
@@ -67,17 +75,20 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
         <div className="color--3">Общий рейтинг (баллы)</div>
         {node?.length ? node : <div className="margin-gap-h">Нет активных таймеров</div>}
       </div>
-      {game.timers?.map((timer) => {
+      {game.timers?.map(timer => {
         const playedLen = MyLib.values(timer.finishes).filter(itIt).length;
 
         return (
-          <div key={timer.w} className={'margin-big-gap-v' + (timer.isInactive || playedLen === 0 ? ' fade-05 ' : '')}>
+          <div
+            key={timer.w}
+            className={'margin-big-gap-v' + (timer.isInactive || playedLen === 0 ? ' fade-05 ' : '')}
+          >
             <div
               className="flex flex-gap pointer"
               onClick={() =>
                 setExpandedTimers(
                   expandedTimers.includes(timer.w)
-                    ? expandedTimers.filter((it) => it !== timer.w)
+                    ? expandedTimers.filter(it => it !== timer.w)
                     : [...expandedTimers, timer.w],
                 )
               }
@@ -87,7 +98,7 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
               <span className="color--7">{timer.name}</span>
               <EvaButton
                 name="browser-outline"
-                onClick={(event) => {
+                onClick={event => {
                   event.stopPropagation();
 
                   setOpenTimerw(timer.w);
@@ -103,7 +114,11 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
                     sort={LeaderCleans.getTimerConfigurableField('sort', timer, game)}
                   />
                 )}
-                <TimerRatingBoard timer={timer} game={game} withoutControls />
+                <TimerRatingBoard
+                  timer={timer}
+                  game={game}
+                  withoutControls
+                />
               </div>
             )}
           </div>

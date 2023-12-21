@@ -37,17 +37,21 @@ export default function TimerNameListConfigurer({
                   key={namei}
                   className="margin-gap-v"
                   value={name}
-                  onChange={(value) => {
+                  onChange={value => {
                     const newNames = [...names];
                     newNames[namei] = value;
-                    onUpdate?.(newNames.filter((n) => n));
+                    onUpdate?.(newNames.filter(n => n));
                     updateNames(newNames);
                   }}
                 />
               );
             })}
-            {!names.some((name) => !name) && (
-              <EvaButton name="plus-circle" className="color--ok" onClick={() => updateNames([...names, ''])} />
+            {!names.some(name => !name) && (
+              <EvaButton
+                name="plus-circle"
+                className="color--ok"
+                onClick={() => updateNames([...names, ''])}
+              />
             )}
           </div>
           {onSend && (

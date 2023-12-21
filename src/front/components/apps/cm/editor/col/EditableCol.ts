@@ -60,7 +60,7 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
         action: `${coln}ComeBack`,
         method: 'set',
         anti: ({ action, args }) => {
-          if (action === `${coln}Del` && args?.[`${coln}w`] === this.wid) return (strategy) => strategy.RemoveNew;
+          if (action === `${coln}Del` && args?.[`${coln}w`] === this.wid) return strategy => strategy.RemoveNew;
         },
       },
       coln,
@@ -155,11 +155,11 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     const warnings: ICorrect[] = [];
     const unknowns: ICorrect[] = [];
 
-    text.split(/[^а-яёіґїє]/i).forEach((realWord) => {
+    text.split(/[^а-яёіґїє]/i).forEach(realWord => {
       if (!realWord.match(/[её]/i) || realWord.match(/[іґїє]/i)) return;
       const lower = realWord.toLowerCase();
       const word = lower.replace(/ё/g, 'е');
-      const parts = lower.split(/[а-дж-я]*([её])/).filter((p) => p);
+      const parts = lower.split(/[а-дж-я]*([её])/).filter(p => p);
 
       if (eeStorage.get(word) == null) {
         unknowns.push({

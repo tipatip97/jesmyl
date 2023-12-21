@@ -29,7 +29,12 @@ export default function GameMore({
         close={close}
         prepare={prepare}
       />
-      <PrintableBottomItem node={<GameTeamLists />} title="Списки команд" close={close} prepare={prepare} />
+      <PrintableBottomItem
+        node={<GameTeamLists />}
+        title="Списки команд"
+        close={close}
+        prepare={prepare}
+      />
       {prepare({
         items: [
           {

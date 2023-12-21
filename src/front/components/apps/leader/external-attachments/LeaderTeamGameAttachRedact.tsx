@@ -31,7 +31,7 @@ export default function LeaderTeamGameAttachRedact({
                       scope={scope}
                       fieldName=""
                       cud="U"
-                      mapExecArgs={(args) => {
+                      mapExecArgs={args => {
                         closeModal();
                         return {
                           ...args,
@@ -39,7 +39,10 @@ export default function LeaderTeamGameAttachRedact({
                         };
                       }}
                     >
-                      <TeamGameFace game={game} importantOnClick={importantOnClick} />
+                      <TeamGameFace
+                        game={game}
+                        importantOnClick={importantOnClick}
+                      />
                     </StrongDiv>
                   </React.Fragment>
                 );

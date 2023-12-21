@@ -15,11 +15,11 @@ const getHumanList = (
       <HumanList
         searcherClass="sticky"
         list={isWholeList ? undefined : list}
-        asHumanMore={(human) => {
+        asHumanMore={human => {
           return list.indexOf(human.w) < 0 ? (
             <EvaIcon
               name="plus-circle-outline"
-              onClick={(event) => {
+              onClick={event => {
                 event.stopPropagation();
                 updater([...list, human.w]);
               }}
@@ -27,9 +27,9 @@ const getHumanList = (
           ) : (
             <EvaIcon
               name="minus-circle-outline"
-              onClick={(event) => {
+              onClick={event => {
                 event.stopPropagation();
-                updater(list.filter((wid) => wid !== human.w));
+                updater(list.filter(wid => wid !== human.w));
               }}
             />
           );

@@ -16,8 +16,11 @@ export default function SelectedComs() {
       content={
         <>
           {popup}
-          {coms.map((com) => (
-            <ComFace key={com.wid} com={com} />
+          {coms.map(com => (
+            <ComFace
+              key={com.wid}
+              com={com}
+            />
           ))}
         </>
       }

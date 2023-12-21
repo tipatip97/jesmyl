@@ -44,10 +44,7 @@ export default function useFullscreenContent() {
 export function FULLSCREEN__CONTENT({ onOpen }: { onOpen: (close: () => boolean) => void }) {
   onOpenPopup = onOpen;
   const { fullscreenContentOpenMode, closeFullscreenContent } = useFullscreenContent();
-  useEffect(
-    () => window.addEventListener('keydown', (event) => event.code === 'Escape' && closeFullscreenContent()),
-    [],
-  );
+  useEffect(() => window.addEventListener('keydown', event => event.code === 'Escape' && closeFullscreenContent()), []);
 
   return fullscreenContentOpenMode ? (
     <Portal>
@@ -56,7 +53,11 @@ export function FULLSCREEN__CONTENT({ onOpen }: { onOpen: (close: () => boolean)
         onClick={fullscreenContentOpenMode === 'closable' ? () => closeFullscreenContent() : undefined}
       >
         {fullscreenContentOpenMode === 'closable' ? null : (
-          <EvaIcon name="close" className="close-button" onClick={() => closeFullscreenContent()} />
+          <EvaIcon
+            name="close"
+            className="close-button"
+            onClick={() => closeFullscreenContent()}
+          />
         )}
         <div className="full-container padding-big-gap">{fullscreenContent}</div>
       </div>

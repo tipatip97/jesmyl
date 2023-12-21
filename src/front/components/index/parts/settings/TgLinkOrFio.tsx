@@ -9,7 +9,11 @@ export const TgLinkOrFio = ({ profile }: { profile: SokiVisitor }) => {
         profile.nick.startsWith('t:') || profile.nick.startsWith('t.') ? (
           <span className="color--7">{profile.nick}</span>
         ) : (
-          <a href={`https://t.me/${profile.nick}`} className="color--7 text-italic" onClick={eventStoppedPropagation}>
+          <a
+            href={`https://t.me/${profile.nick}`}
+            className="color--7 text-italic"
+            onClick={eventStoppedPropagation}
+          >
             {profile.nick}
           </a>
         )

@@ -45,8 +45,16 @@ export default function GameTeamListComputer({
   );
 
   const cantPlayers = contextMembers
-    ?.map((human, humani) => !readyMembers.some(({ w }) => w === human.w) && <HumanFace key={humani} human={human} />)
-    .filter((player) => player);
+    ?.map(
+      (human, humani) =>
+        !readyMembers.some(({ w }) => w === human.w) && (
+          <HumanFace
+            key={humani}
+            human={human}
+          />
+        ),
+    )
+    .filter(player => player);
 
   return (
     <>
@@ -59,7 +67,10 @@ export default function GameTeamListComputer({
           <div className="flex full-width">
             <div className="nowrap">Количество команд</div>
             <div className="full-width margin-gap-h">
-              <KeyboardInput type="number" onChange={(value) => setTeamsCount(+value)} />
+              <KeyboardInput
+                type="number"
+                onChange={value => setTeamsCount(+value)}
+              />
             </div>
           </div>
           {teamsCount <= readyMembers.length ? (
@@ -98,17 +109,17 @@ export default function GameTeamListComputer({
                   disabled={!teamsCount}
                   onClick={() => {
                     const teams = mylib.groupByFieldsSoftly(
-                      ['isMan', (user) => user.ufp1 + user.ufp2, 'bDay'],
+                      ['isMan', user => user.ufp1 + user.ufp2, 'bDay'],
                       readyMembers,
                       teamsCount,
                       addRestMode,
                     );
-                    const newTeams = teams.map((humans) => {
+                    const newTeams = teams.map(humans => {
                       return {
                         name: nameRandomizer().join(' '),
                         w: 0,
                         ts: SourceBased.makeNewTs(),
-                        members: humans.map((human) => human.w),
+                        members: humans.map(human => human.w),
                       };
                     });
 
@@ -124,7 +135,7 @@ export default function GameTeamListComputer({
                 <>
                   <div
                     className="flex flex-gap margin-gap error-message"
-                    onClick={() => setIsShowCantPlayers((is) => !is)}
+                    onClick={() => setIsShowCantPlayers(is => !is)}
                   >
                     Не войдут {cantPlayers?.length}
                     <EvaButton name={isShowCantPlayers ? 'chevron-up' : 'chevron-down'} />

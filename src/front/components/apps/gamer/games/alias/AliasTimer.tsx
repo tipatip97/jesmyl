@@ -27,10 +27,12 @@ export default function GamerAliasTimer() {
 }
 
 const Timer = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 3em;
-  font-weight: bold;
-  text-align: center;
+  & {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3em;
+    font-weight: bold;
+    text-align: center;
+  }
 `;

@@ -15,7 +15,14 @@ export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
     R: ScheduleWidgetUserRoleRight.Free,
     U: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
     result: (value, scope, isRedact, switchIsRedact) => {
-      return <CmExternalComListAtt switchIsRedact={switchIsRedact} isRedact={isRedact} scope={scope} value={value} />;
+      return (
+        <CmExternalComListAtt
+          switchIsRedact={switchIsRedact}
+          isRedact={isRedact}
+          scope={scope}
+          value={value}
+        />
+      );
     },
   },
 };

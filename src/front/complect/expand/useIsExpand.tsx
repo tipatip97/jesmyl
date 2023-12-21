@@ -11,13 +11,16 @@ export default function useIsExpand(
   const [isExpand, setIsExpand] = useState(initIsExpand);
   return [
     <span className="flex flex-gap full-width between">
-      <span className="flex flex-gap flex-max pointer" onClick={() => setIsExpand(!isExpand)}>
+      <span
+        className="flex flex-gap flex-max pointer"
+        onClick={() => setIsExpand(!isExpand)}
+      >
         {prefix}
         <EvaIcon name={isExpand ? 'chevron-up' : 'chevron-down'} />
       </span>
       {typeof postfix === 'function' ? postfix(isExpand) : postfix}
     </span>,
     isExpand,
-    (isExpand) => setIsExpand(isExpand ?? isNIs),
+    isExpand => setIsExpand(isExpand ?? isNIs),
   ];
 }

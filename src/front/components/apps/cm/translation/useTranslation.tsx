@@ -120,7 +120,7 @@ export function useTranslation() {
       }
 
       renderComponentInNewWindow(
-        (win) => {
+        win => {
           currWin = win;
           dispatch(di.riseUpTranslationUpdates());
           win.document.body.style.margin = '0';
@@ -135,7 +135,7 @@ export function useTranslation() {
             dispatch(di.riseUpTranslationUpdates());
           });
 
-          return <TranslationScreen updater={(update) => win.addEventListener('resize', () => update())} />;
+          return <TranslationScreen updater={update => win.addEventListener('resize', () => update())} />;
         },
         undefined,
         'translation-win',
@@ -149,7 +149,7 @@ export function useTranslation() {
 
 const getComi = (comw?: number, comList?: Com[] | nil) => {
   if (!comList) return -1;
-  return comw == null ? -1 : comList.findIndex((com) => comw === com.wid);
+  return comw == null ? -1 : comList.findIndex(com => comw === com.wid);
 };
 
 const scrollToView = (com: Com) => {

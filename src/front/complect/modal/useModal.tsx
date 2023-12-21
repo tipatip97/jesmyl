@@ -9,7 +9,7 @@ interface UserModalConfig {
   onOpenSwitch?: () => void;
 }
 
-const stoppedEvent: TouchEventHandler<HTMLDivElement> = (event) => event.stopPropagation();
+const stoppedEvent: TouchEventHandler<HTMLDivElement> = event => event.stopPropagation();
 
 export interface ScreenModalConfig extends UserModalConfig {}
 
@@ -40,7 +40,7 @@ export default function useModal(
   const close = useCallback(() => {
     config.onOpenSwitch?.();
     onOpenSwitch?.(false);
-    setConfig((prev) => ({ ...prev, isOpen: false }));
+    setConfig(prev => ({ ...prev, isOpen: false }));
   }, [config, onOpenSwitch]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function useModal(
         <div
           onTouchStart={stoppedEvent}
           className={'modal-application-screen type_screen' + (isForceOpen === false ? ' force-hidden' : '')}
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
             close();
           }}
@@ -63,7 +63,7 @@ export default function useModal(
           <div className="modal-screen-wrapper type_screen">
             <div
               className={'modal-screen type_screen mood mood_' + config.mood}
-              onClick={(event) => event.stopPropagation()}
+              onClick={event => event.stopPropagation()}
             >
               {config.content === undefined ? topContent?.(modalElements, close) : config.content(modalElements, close)}
             </div>

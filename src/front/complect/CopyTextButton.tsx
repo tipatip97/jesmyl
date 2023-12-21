@@ -25,7 +25,7 @@ export default function CopyTextButton({
       {toastNode}
       <span
         className={(className || '') + ' flex flex-gap pointer'}
-        onClick={(event) => {
+        onClick={event => {
           event.stopPropagation();
           const textToWrite = typeof text === 'string' ? text : text();
 
@@ -46,7 +46,10 @@ export default function CopyTextButton({
         }}
       >
         {description}
-        <EvaButton name="copy" disabled={disabled} />
+        <EvaButton
+          name="copy"
+          disabled={disabled}
+        />
       </span>
     </>
   );

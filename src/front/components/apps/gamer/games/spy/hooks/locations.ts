@@ -36,8 +36,7 @@ export const useSpyLocations = () => useSelector(locationsSelector);
 
 export const useSpyActualLocations = (locations: string[] | und, strikedLocations: string[] | und) => {
   return useMemo(
-    () =>
-      (strikedLocations ? locations?.filter((location) => strikedLocations.indexOf(location) < 0) : locations) || [],
+    () => (strikedLocations ? locations?.filter(location => strikedLocations.indexOf(location) < 0) : locations) || [],
     [strikedLocations, locations],
   );
 };
@@ -49,14 +48,12 @@ export const useSpyStrikedLocationsNaked = () => useSpyStrikedLocations(useSpyRo
 
 export const useSpyStrikedLocations = (state: SpyRoomState | und) => {
   return useMemo(() => {
-    return (state?.locations || [])
-      .map((location) => unsecretSpyRole(location))
-      .filter((location) => location) as string[];
+    return (state?.locations || []).map(location => unsecretSpyRole(location)).filter(location => location) as string[];
   }, [state?.locations]);
 };
 
 export const useSpyCleanLocationsNaked = () => useSpyCleanLocations(useSpyRoomStateNaked());
 
 export const useSpyCleanLocations = (state: SpyRoomState | und) => {
-  return useMemo(() => state?.locations?.map((location) => [unsecretSpyRole(location), location]), [state?.locations]);
+  return useMemo(() => state?.locations?.map(location => [unsecretSpyRole(location), location]), [state?.locations]);
 };

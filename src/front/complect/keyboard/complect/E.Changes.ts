@@ -31,7 +31,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
     let lastLine: ReactNode[] = [];
     const lines: ReactNode[][] = [lastLine];
 
-    this.valueChars.forEach((char) => {
+    this.valueChars.forEach(char => {
       if (char === '\n') {
         if (this.isMultiline) {
           lastLine = [];

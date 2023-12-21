@@ -62,7 +62,7 @@ export class Filer {
   }
 
   load() {
-    return new Promise<void>((loadRes) => {
+    return new Promise<void>(loadRes => {
       let waits = 0;
       let oks = 0;
 
@@ -102,7 +102,7 @@ export class Filer {
                 if (!expected) return;
                 const string = JSON.stringify(expected);
 
-                fs.writeFile(path, string, (err) => {
+                fs.writeFile(path, string, err => {
                   if (err) {
                     console.error(`!!! WriteError ${filename}`);
                     cb?.();
@@ -197,7 +197,7 @@ export class Filer {
         let oks = 0;
         let errors: NodeJS.ErrnoException[] = [];
 
-        fixes.forEach((fileName) => {
+        fixes.forEach(fileName => {
           if (!smylib.isStr(fileName)) return;
           const content = this.contents[appName][fileName] || {};
 
@@ -213,7 +213,7 @@ export class Filer {
           const stringContent = JSON.stringify(content.data);
           const path = rootPath ? this.rootNamePath(rootPath, req.ext) : this.fileNamePath(appName, fileName);
 
-          fs.writeFile(path, stringContent, (error) => {
+          fs.writeFile(path, stringContent, error => {
             oks++;
             if (error) {
               errors.push(error);
@@ -259,13 +259,13 @@ export class Filer {
       return {
         contents: [
           SMyLib.entries(this.contents.index)
-            .map((entries) => getContents(entries, indexLastUpdates))
+            .map(entries => getContents(entries, indexLastUpdates))
             .concat(getRulesData(this.appConfigs.index, pullIndexMd5))
-            .filter((data) => data) as SimpleKeyValue<SokiAppName>[],
+            .filter(data => data) as SimpleKeyValue<SokiAppName>[],
           SMyLib.entries(this.contents[appName])
-            .map((entries) => getContents(entries, appLastUpdates))
+            .map(entries => getContents(entries, appLastUpdates))
             .concat(getRulesData(this.appConfigs[appName], pullAppMd5))
-            .filter((data) => data) as SimpleKeyValue<SokiAppName>[],
+            .filter(data => data) as SimpleKeyValue<SokiAppName>[],
         ],
         appName,
         updates: [

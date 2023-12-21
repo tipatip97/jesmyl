@@ -28,13 +28,33 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
           <KeyboardInput onChange={setName} />
         </div>
       </div>
-      <TimerNameListConfigurer redact onUpdate={updateTimerNames} />
-      <TimerFieldsConfigurer redactable onUpdate={updateTimerFields} />
-      <div className="flex flex-gap margin-gap-v pointer" onClick={() => setIsComputeTeamsLater(!isComputeTeamsLater)}>
-        <input type="checkbox" checked={isComputeTeamsLater} onChange={() => {}} />
+      <TimerNameListConfigurer
+        redact
+        onUpdate={updateTimerNames}
+      />
+      <TimerFieldsConfigurer
+        redactable
+        onUpdate={updateTimerFields}
+      />
+      <div
+        className="flex flex-gap margin-gap-v pointer"
+        onClick={() => setIsComputeTeamsLater(!isComputeTeamsLater)}
+      >
+        <input
+          type="checkbox"
+          checked={isComputeTeamsLater}
+          onChange={() => {}}
+        />
         Разбить на команды позже
       </div>
-      {isComputeTeamsLater || (cgame && <GameTeamListComputer onUpdate={updateTeams} game={cgame} noComments />)}
+      {isComputeTeamsLater ||
+        (cgame && (
+          <GameTeamListComputer
+            onUpdate={updateTeams}
+            game={cgame}
+            noComments
+          />
+        ))}
       <div className="flex center">
         {name && (isComputeTeamsLater || teams) ? (
           <SendButton

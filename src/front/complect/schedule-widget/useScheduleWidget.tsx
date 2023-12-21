@@ -124,7 +124,7 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
         schedule: defaultSchwduleWidget,
       };
 
-    const myUser = schedule.ctrl.users.find((user) => user.login === auth.login);
+    const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
     const isSwPublic = scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public);
     const isSwBeforeRegistration = scheduleWidgetRegTypeRights.checkIsHasRights(
       schedule.ctrl.type,
@@ -201,7 +201,7 @@ export const takeScheduleStrongScopeMaker = (schedulew: number) =>
   takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);
 
 export const extractScheduleWidgetRole = (schedule: IScheduleWidget, roleMi: number) => {
-  return schedule.ctrl.roles.find((role) => role.mi === roleMi);
+  return schedule.ctrl.roles.find(role => role.mi === roleMi);
 };
 
 export const extractScheduleWidgetRoleUser = (
@@ -211,7 +211,7 @@ export const extractScheduleWidgetRoleUser = (
 ) => {
   const roleUserMi = (role ?? extractScheduleWidgetRole(schedule, roleMi))?.user;
   if (roleUserMi === undefined) return null;
-  const roleUser = schedule.ctrl.users.find((user) => user.mi === roleUserMi);
+  const roleUser = schedule.ctrl.users.find(user => user.mi === roleUserMi);
   if (roleUser === undefined) return null;
   return roleUser;
 };
@@ -221,8 +221,8 @@ export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAt
 
   const attRefs: ScheduleWidgetAttRefs = {};
 
-  schedule?.days.forEach((day) => {
-    day.list.forEach((event) => {
+  schedule?.days.forEach(day => {
+    day.list.forEach(event => {
       event.atts &&
         MyLib.entries(event.atts).forEach(([attKey, att]) => {
           if (!mylib.isArr(att)) (attRefs[attKey] ??= []).push([day.mi, event.mi]);
@@ -230,12 +230,17 @@ export const makeAttStorage = (schedule?: IScheduleWidget): [ScheduleWidgetAppAt
     });
   });
 
-  schedule?.tatts.forEach((att) => {
+  schedule?.tatts.forEach(att => {
     atts[`[SCH]:custom:${att.mi}`] = {
       ...att,
       isCustomize: true,
       result: (value, scope, isRedact) => (
-        <ScheduleKeyValueListAtt isRedact={isRedact} att={att} scope={scope} value={value} />
+        <ScheduleKeyValueListAtt
+          isRedact={isRedact}
+          att={att}
+          scope={scope}
+          value={value}
+        />
       ),
     };
   });

@@ -25,7 +25,7 @@ const textAdditions = (
       },
     },
   ] as Addition[]
-).map((item) => {
+).map(item => {
   return {
     ...item,
     node: <EvaIcon name={item.icon} />,
@@ -33,7 +33,7 @@ const textAdditions = (
 });
 
 const textAdditionsMap: Record<string, Addition> = {};
-textAdditions.forEach((adds) => adds.char && (textAdditionsMap[adds.char] = adds));
+textAdditions.forEach(adds => adds.char && (textAdditionsMap[adds.char] = adds));
 
 export default function LeaderCommentBlock({
   comments,
@@ -70,7 +70,7 @@ export default function LeaderCommentBlock({
               ?.map(({ args }) =>
                 gamew === args?.gamew && listw === args?.[listwNameMask] ? { ...args, owner: '', fio: '', w: 0 } : null,
               )
-              .filter((it) => it) as LeaderCommentImportable[]) || []
+              .filter(it => it) as LeaderCommentImportable[]) || []
           : [],
       ),
     [comments, gamew, sendingComments, listw, listwNameMask],
@@ -80,7 +80,10 @@ export default function LeaderCommentBlock({
   return (
     <div className="leader-comment-block full-width">
       {partOfComments.length !== allComments.length && (
-        <div className="margin-gap pointer" onClick={() => setIsCommentsShow(!isCommentsShow)}>
+        <div
+          className="margin-gap pointer"
+          onClick={() => setIsCommentsShow(!isCommentsShow)}
+        >
           {isCommentsShow ? 'Скрыть часть комментариев' : 'Показать все комментарии'}
         </div>
       )}
@@ -103,7 +106,7 @@ export default function LeaderCommentBlock({
             multiline
             value={commentText}
             placeholder={placeholder}
-            onChange={(value) => {
+            onChange={value => {
               newCommentTextChange?.(value);
               setCommentText(value);
             }}

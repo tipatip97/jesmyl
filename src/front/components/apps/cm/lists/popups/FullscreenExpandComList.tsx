@@ -14,10 +14,15 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
     <ExpandContent className="com-expand-content full-container">
       <RollControled>
         <div className="inner-content">
-          {coms?.map((com) => (
+          {coms?.map(com => (
             <div key={`expand-com-number-${com.wid}`}>
               <div className="com-number">#{com.number}</div>
-              <ComOrders com={com} fontSize={fontSize} chordVisibleVariant={2} isMiniAnchor={false} />
+              <ComOrders
+                com={com}
+                fontSize={fontSize}
+                chordVisibleVariant={2}
+                isMiniAnchor={false}
+              />
             </div>
           ))}
         </div>
@@ -27,21 +32,23 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
 }
 
 const ExpandContent = styled.div`
-  overflow: auto;
+  & {
+    overflow: auto;
 
-  .inner-content {
-    padding-top: 50vh;
-  }
+    .inner-content {
+      padding-top: 50vh;
+    }
 
-  .com-number {
-    text-align: center;
-  }
+    .com-number {
+      text-align: center;
+    }
 
-  .com-ord-list {
-    width: 100%;
-  }
+    .com-ord-list {
+      width: 100%;
+    }
 
-  :not(:last-child) .com-ord-list {
-    border-bottom: 2px var(--text-color) dashed;
+    :not(:last-child) .com-ord-list {
+      border-bottom: 2px var(--text-color) dashed;
+    }
   }
 `;

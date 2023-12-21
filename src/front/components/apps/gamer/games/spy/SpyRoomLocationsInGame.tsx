@@ -18,7 +18,7 @@ export default function SpyRoomLocationsInGame() {
     <>
       {title}
       {isExpand &&
-        locations.map((location) => {
+        locations.map(location => {
           const [strikedLoc, secretLoc] = cleanLocations?.find(([loc]) => loc === location) ?? [];
 
           return (

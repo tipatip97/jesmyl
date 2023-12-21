@@ -15,11 +15,18 @@ export const bottomPopupContentPreparer = ({ items, footer }: BottomPopupContent
             item;
 
           return (
-            <div key={itemi} {...other} className={`abs-item ${className || ''}`}>
+            <div
+              key={itemi}
+              {...other}
+              className={`abs-item ${className || ''}`}
+            >
               {anchorNode}
               <div className="flex flex-gap">
                 <div className={`icon-box ${iconWrapperClassName || ''}`}>
-                  <EvaIcon name={icon} className="abs-icon" />
+                  <EvaIcon
+                    name={icon}
+                    className="abs-icon"
+                  />
                 </div>
                 <div className="title">{titleNode ?? title}</div>
               </div>

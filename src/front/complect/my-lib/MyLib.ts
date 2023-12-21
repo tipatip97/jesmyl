@@ -43,7 +43,7 @@ export class MyLib extends SMyLib {
   dayShortTitles = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 
   def(...args: any[]): any {
-    const res = args.find((some) => some != null);
+    const res = args.find(some => some != null);
     return res == null ? args[args.length - 1] : res;
   }
 
@@ -101,10 +101,10 @@ export class MyLib extends SMyLib {
     isNumberSearch?: boolean,
   ): FerryType[] {
     const normalWords = isNumberSearch
-      ? searchWord.split(/0+/).filter((word) => word)
-      : searchWord.split(/[^а-яёa-z0-9ґї'ʼє]+/i).filter((word) => word);
-    const words = normalWords.map((word) => word.toLowerCase());
-    const wordRegs = normalWords.map((word) => this.internationalWordReg(word, isNumberSearch));
+      ? searchWord.split(/0+/).filter(word => word)
+      : searchWord.split(/[^а-яёa-z0-9ґї'ʼє]+/i).filter(word => word);
+    const words = normalWords.map(word => word.toLowerCase());
+    const wordRegs = normalWords.map(word => this.internationalWordReg(word, isNumberSearch));
 
     return objects
       .reduce((ferries: Ferry<FerryType, ObjName>[], object, objecti) => {
@@ -118,7 +118,7 @@ export class MyLib extends SMyLib {
             const num = ([this.c.INDEX, this.c.POSITION] as Trace[]).indexOf(place as never);
             if (num > -1) {
               if (
-                words.some((word) =>
+                words.some(word =>
                   word && words.length > 1
                     ? (objecti + num).toString() === word
                     : (objecti + num).toString().startsWith(word),
@@ -175,7 +175,7 @@ export class MyLib extends SMyLib {
 
   correctRegExp(str: string, flags = '', transformer?: (str: string, reps: number) => string) {
     let reps = 0;
-    const string = str.replace(/[[\]\\$^*()+|?.<>{}]/g, (all) => {
+    const string = str.replace(/[[\]\\$^*()+|?.<>{}]/g, all => {
       reps++;
       return `\\${all}`;
     });
@@ -283,7 +283,7 @@ export class MyLib extends SMyLib {
     const allProps: string[] = [];
     let curr = obj;
     do {
-      Object.getOwnPropertyNames(curr).forEach((prop) => {
+      Object.getOwnPropertyNames(curr).forEach(prop => {
         if (allProps.indexOf(prop) === -1) allProps.push(prop);
       });
     } while ((curr = Object.getPrototypeOf(curr)));
@@ -371,7 +371,7 @@ export class MyLib extends SMyLib {
 
   unique<Item, Res>(arr: Item[], by: (f: Item) => Res) {
     const exclusives: Res[] = [];
-    return arr.filter((item) => (exclusives.indexOf(by(item)) === -1 ? exclusives.push(by(item)) : false));
+    return arr.filter(item => (exclusives.indexOf(by(item)) === -1 ? exclusives.push(by(item)) : false));
   }
 
   static values<T extends {} | [], R extends T extends Record<any, infer V> ? V : unknown>(obj: T | nil): R[] {
@@ -398,7 +398,7 @@ export class MyLib extends SMyLib {
   ) {
     const lastFieldn = fieldns[fieldns.length - 1];
     const wraps = items
-      .map((item) => ({ item }))
+      .map(item => ({ item }))
       .sort(({ item: a }, { item: b }) => {
         return this.findMap(
           fieldns,
@@ -419,7 +419,7 @@ export class MyLib extends SMyLib {
       const team: Item[] = [];
       teams.push(team);
       // eslint-disable-next-line no-loop-func
-      groups.forEach((group) => {
+      groups.forEach(group => {
         if (group.length === numOf) team.push(group[i]);
         else rest = group;
       });
@@ -441,7 +441,7 @@ export class MyLib extends SMyLib {
       teams[index].push(item);
     });
 
-    teams.sort(() => this.randomOf(-1, 1)).forEach((team) => team.sort(() => this.randomOf(-1, 1)));
+    teams.sort(() => this.randomOf(-1, 1)).forEach(team => team.sort(() => this.randomOf(-1, 1)));
 
     return teams;
   }

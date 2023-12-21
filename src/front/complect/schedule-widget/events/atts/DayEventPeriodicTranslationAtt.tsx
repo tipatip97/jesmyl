@@ -89,7 +89,7 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
       const node: ReactNode[] = [];
       nodes.push(node);
 
-      day.list.forEach((event) => {
+      day.list.forEach(event => {
         const type = types[event.type];
 
         event.atts &&

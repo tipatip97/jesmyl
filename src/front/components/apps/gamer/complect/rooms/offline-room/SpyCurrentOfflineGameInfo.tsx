@@ -14,7 +14,10 @@ export default function SpyCurrentOfflineGameInfo() {
         <>
           <OfflineGame>
             <h3 className="flex center">Игра #{offlineGame.iterations}</h3>
-            <div className="flex center flex-gap pointer" onClick={() => reshareGameData()}>
+            <div
+              className="flex center flex-gap pointer"
+              onClick={() => reshareGameData()}
+            >
               Поделиться <EvaIcon name="qr-code" />
             </div>
             <SpyShowMyRole role={offlineGame.location} />
@@ -26,5 +29,7 @@ export default function SpyCurrentOfflineGameInfo() {
 }
 
 const OfflineGame = styled.div`
-  border: dashed 2px var(--color--3);
+  & {
+    border: dashed 2px var(--color--3);
+  }
 `;

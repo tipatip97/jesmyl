@@ -17,6 +17,6 @@ export const useGamerOfflineCurrentRoomSpies = (state: SpyRoomState | und, playe
 
     return roles == null
       ? []
-      : players?.filter((player) => unsecretSpyRole(roles[player.login]) === SPY_ROLE).map(extractLogin);
+      : players?.filter(player => unsecretSpyRole(roles[player.login]) === SPY_ROLE).map(extractLogin);
   }, [players, state?.roles]);
 };

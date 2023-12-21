@@ -46,7 +46,7 @@ export default function TimerCompetitionsSelector({
           />
         ) : (
           <div className="color--3">
-            {joins < 2 ? dropdownTeamList[0].title : dropdownTeamList.find((item) => item.id === joins)?.title || ' - '}
+            {joins < 2 ? dropdownTeamList[0].title : dropdownTeamList.find(item => item.id === joins)?.title || ' - '}
           </div>
         )}
       </div>

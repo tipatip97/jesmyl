@@ -86,7 +86,7 @@ export default function ChordRedactor() {
           <div className={`sticky chord-base-title ${currentChord[0] === chordBase ? 'text-bold' : ''}`}>
             {chordBase}
           </div>
-          {names.map((chordName) => {
+          {names.map(chordName => {
             return (
               <div
                 key={chordName}
@@ -130,15 +130,21 @@ export default function ChordRedactor() {
           <div className="chord-list">
             <div className="chords-scroll">{chordNodes}</div>
             <div className="add-chord-button flex center">
-              <EvaButton name="plus-circle" onClick={() => setIsNewChord(true)} />
+              <EvaButton
+                name="plus-circle"
+                onClick={() => setIsNewChord(true)}
+              />
             </div>
           </div>
           <div className="flex column center old-chord">
             {isNewChord ? (
               <>
-                <KeyboardInput onInput={(value) => setNewChordName(value)} />
+                <KeyboardInput onInput={value => setNewChordName(value)} />
                 {newNameError && <div className="error-message margin-gap">{newNameError}</div>}
-                <div className="padding-giant-gap pointer" onClick={() => setIsNewChord(false)}>
+                <div
+                  className="padding-giant-gap pointer"
+                  onClick={() => setIsNewChord(false)}
+                >
                   Вернуться к редактированию
                 </div>
               </>
@@ -155,7 +161,10 @@ export default function ChordRedactor() {
             {currentChord || isNewChord ? (
               <>
                 {redactableChord && !isNewChord && (
-                  <ChordRedactableTrack modifyTrack={modifyTrack} redactableChord={redactableChord} />
+                  <ChordRedactableTrack
+                    modifyTrack={modifyTrack}
+                    redactableChord={redactableChord}
+                  />
                 )}
                 <TheButton
                   className="margin-big-gap"

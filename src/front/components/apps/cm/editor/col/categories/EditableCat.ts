@@ -27,17 +27,17 @@ export class EditableCat extends Cat {
   search(term = this.term) {
     if (term) {
       if (term === '@1') {
-        this.wraps = this.coms.filter((com) => !com.audio.trim()).map((com) => ({ com }));
+        this.wraps = this.coms.filter(com => !com.audio.trim()).map(com => ({ com }));
       } else if (term === '@2') {
         this.wraps = this.coms
-          .map((com) => {
+          .map(com => {
             com.texts?.forEach((text, texti) => com.setBlockCorrects('texts', texti, text, true));
             com.chords?.forEach((chords, chordsi) => com.setBlockCorrects('chords', chordsi, chords, true));
             com.rename(com.name, null, false, true);
 
-            return Object.values(com.corrects).some((correct) => correct?.isSome()) ? { com } : null;
+            return Object.values(com.corrects).some(correct => correct?.isSome()) ? { com } : null;
           })
-          .filter((wrap) => wrap) as never;
+          .filter(wrap => wrap) as never;
       } else {
         this.wraps = mylib.searchRate<ComWrap<EditableCom>>(
           this.coms,
@@ -46,14 +46,14 @@ export class EditableCat extends Cat {
           'com',
         ) as ComWrap<EditableCom>[];
       }
-    } else this.wraps = this.coms.map((com) => ({ com }));
+    } else this.wraps = this.coms.map(com => ({ com }));
 
     this.term = term;
   }
 
   putComs() {
     const { select } = catTrackers.find(({ id }) => id === this.kind) || {};
-    this.coms = select ? this.topComs.filter((com) => select(com, this)) : [];
+    this.coms = select ? this.topComs.filter(com => select(com, this)) : [];
 
     this.search();
 
@@ -80,7 +80,7 @@ export class EditableCat extends Cat {
       action: 'catClearStack',
       method: 'set',
       anti: ({ action }) => {
-        if (action === 'catClearStack' && !isNeedClear) return (strategy) => strategy.RememberNew;
+        if (action === 'catClearStack' && !isNeedClear) return strategy => strategy.RememberNew;
       },
     });
 
@@ -123,7 +123,7 @@ export class EditableCat extends Cat {
         },
         anti: ({ action, args }) => {
           if (action === 'catUnbindCom' && args && args.comw === com.wid && args.catw === this.wid)
-            return (strategy) => strategy.RemoveNew;
+            return strategy => strategy.RemoveNew;
         },
       });
       this.stack.push(com.wid);
@@ -137,7 +137,7 @@ export class EditableCat extends Cat {
         },
         anti: ({ action, args }) => {
           if (action === 'catBindCom' && args && args.comw === com.wid && args.catw === this.wid)
-            return (strategy) => strategy.RemoveNew;
+            return strategy => strategy.RemoveNew;
         },
       });
       this.stack.splice(index, 1);

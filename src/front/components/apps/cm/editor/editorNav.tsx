@@ -142,7 +142,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     next: [
       {
         phase: editComNavPhasePoint,
-        node: (props) => <EditComposition {...props} />,
+        node: props => <EditComposition {...props} />,
         next: editCompositionNavs,
       },
     ],

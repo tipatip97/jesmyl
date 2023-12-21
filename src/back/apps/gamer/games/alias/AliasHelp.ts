@@ -77,7 +77,7 @@ export class AliasHelp {
   private static transformTokenbit = (token: string, base = 2) => {
     return token
       .split('')
-      .map((letter) => letter.charCodeAt(0).toString(base))
+      .map(letter => letter.charCodeAt(0).toString(base))
       .join('');
   };
 
@@ -158,7 +158,7 @@ export class AliasHelp {
         const words = smylib
           .keys(packWords)
           .slice(0, -1)
-          .filter((word) => packWords[word] <= max);
+          .filter(word => packWords[word] <= max);
 
         packInfos.push(
           this.sortItemsByTokenbit(
@@ -185,10 +185,10 @@ export class AliasHelp {
 
     if (packInfos.length < 2) infoLine = packInfos.flat();
     else {
-      const lengths = packInfos.map((it) => it.length);
+      const lengths = packInfos.map(it => it.length);
       const min = Math.min(...lengths);
       const max = Math.max(...lengths);
-      const diffs = packInfos.map((it) => Math.floor((it.length - min) / (max * 0.1)));
+      const diffs = packInfos.map(it => Math.floor((it.length - min) / (max * 0.1)));
 
       const computePackPointerTokenbit = () => {
         const bits = this.transformTokenbit(token, packInfos.length).split('').map(Number);

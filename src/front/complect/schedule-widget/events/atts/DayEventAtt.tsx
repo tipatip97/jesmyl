@@ -65,11 +65,16 @@ export default function ScheduleWidgetDayEventAtt(
     if (mylib.isArr(attValue)) {
       const [dayi, eventMi] = attValue;
       const day = props.schedule.days[dayi];
-      const event = day?.list.find((event) => event.mi === eventMi);
+      const event = day?.list.find(event => event.mi === eventMi);
 
       if (attValue[0] < 0) {
         isCanRedact = false;
-        notateNode = <EvaIcon name="eye-outline" className="color--3 icon-scale-05" />;
+        notateNode = (
+          <EvaIcon
+            name="eye-outline"
+            className="color--3 icon-scale-05"
+          />
+        );
 
         attContent = isExpand && (
           <ScheduleWidgetDayEventPeriodicTranslation
@@ -81,7 +86,13 @@ export default function ScheduleWidgetDayEventAtt(
             appAtt={appAtt}
           />
         );
-      } else notateNode = <EvaIcon name="link-2" className="color--3 icon-scale-05" />;
+      } else
+        notateNode = (
+          <EvaIcon
+            name="link-2"
+            className="color--3 icon-scale-05"
+          />
+        );
 
       if (props.schedule.days && day && event?.atts) {
         scope = scope.replace(dayPhaseMarkerReg, `$1${dayi}`).replace(eventPhaseMarkerReg, `$1${event.mi}`);
@@ -91,7 +102,10 @@ export default function ScheduleWidgetDayEventAtt(
         if (props.schedule.types)
           linkTitle = isExpand && (
             <div className="flex margin-big-gap-l margin-gap-b">
-              <EvaIcon name="link-2" className="color--3 icon-scale-05" />
+              <EvaIcon
+                name="link-2"
+                className="color--3 icon-scale-05"
+              />
               <ScheduleWidgetTopicTitle
                 titleBox={props.schedule.types[event.type]}
                 topicBox={event}
@@ -103,7 +117,7 @@ export default function ScheduleWidgetDayEventAtt(
     }
 
     attContent ??= isExpand && (
-      <div>{appAtt.result?.(attValue ?? appAtt.initVal, scope, isRedact, (is) => setIsSelfRedact(is ?? isNIs))}</div>
+      <div>{appAtt.result?.(attValue ?? appAtt.initVal, scope, isRedact, is => setIsSelfRedact(is ?? isNIs))}</div>
     );
   } catch (error) {
     attContent = <div className="error-message">Контент не доступен</div>;

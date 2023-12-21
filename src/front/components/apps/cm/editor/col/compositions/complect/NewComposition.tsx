@@ -53,7 +53,10 @@ export default function NewComposition({ close }: { close: () => void }) {
       <div className="full-container new-composition">
         <div className="title">Новая песня</div>
 
-        <EditContainerCorrectsInformer className="full-width" corrects={com.col.corrects.name}>
+        <EditContainerCorrectsInformer
+          className="full-width"
+          corrects={com.col.corrects.name}
+        >
           <div className="flex full-width">
             <span className="margin-gap-h">Название </span>
             <div className="full-width">
@@ -61,9 +64,9 @@ export default function NewComposition({ close }: { close: () => void }) {
                 className="full-width"
                 value={name}
                 onInput={() => setIsTakeName(false)}
-                onChange={(value) => {
+                onChange={value => {
                   setName(com.correctName(value));
-                  exec(com.rename(value, (correctName) => exec(correctName && setName(correctName))));
+                  exec(com.rename(value, correctName => exec(correctName && setName(correctName))));
                 }}
               />
             </div>
@@ -93,7 +96,13 @@ export default function NewComposition({ close }: { close: () => void }) {
           placeholder="Начни писать или вставь текст для создания песни"
           onChange={setTextAsValue}
         />
-        {innerHTML && <ComAudio topCom={com} topHTML={innerHTML} topMp3Rule={mp3Rule} />}
+        {innerHTML && (
+          <ComAudio
+            topCom={com}
+            topHTML={innerHTML}
+            topMp3Rule={mp3Rule}
+          />
+        )}
         <EvaButton
           name="done-all-outline"
           className="parse-com-data-button pointer margin-big-gap"

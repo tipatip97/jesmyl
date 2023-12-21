@@ -36,7 +36,7 @@ export const AliasSelectedDictsTextInfo = ({ dicts }: Props) => {
                         Object.values(packs[leveli].words).reduce((acc, num) => acc + +(num && num <= level), 0))) +
                   ' сл.)';
           })
-          .filter((it) => it)
+          .filter(it => it)
           .join(' + ')
       ) : (
         <span className="color--ko">Не выбраны</span>

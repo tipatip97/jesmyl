@@ -12,11 +12,11 @@
 }
 
 .styled-header {
-  font-weight: bold;
-  text-decoration: underline;
-  margin-bottom: 0.5em;
   display: inline-block;
   vertical-align: middle;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  text-decoration: underline;
 
   &.enter,
   &.trans {
@@ -28,15 +28,15 @@
   }
 
   &.anchor {
-    color: grey;
     margin: 10px 10px 10px 0;
+    color: grey;
   }
 }
 
 .styled-block {
   &.chords-block {
-    margin-left: 0.5em;
     margin-bottom: 0.5em;
+    margin-left: 0.5em;
     white-space: pre-line;
   }
 

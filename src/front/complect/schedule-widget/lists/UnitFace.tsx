@@ -15,11 +15,11 @@ export default function ScheduleWidgetListUnitFace({
   const rights = useScheduleWidgetRightsContext();
   const [isShowMentors, setIsShowMentors] = useState(false);
 
-  const unit = topUnit ?? rights.schedule.lists?.units.find((unit) => unit.mi === unitMi);
+  const unit = topUnit ?? rights.schedule.lists?.units.find(unit => unit.mi === unitMi);
   if (unit === undefined) return null;
   const cat = rights.schedule.lists.cats[unit.cat];
   if (cat === undefined) return null;
-  const mentors = rights.schedule.ctrl.users.filter((user) => user.li?.[unit.cat] === -unit.mi);
+  const mentors = rights.schedule.ctrl.users.filter(user => user.li?.[unit.cat] === -unit.mi);
 
   return (
     <div className="flex flex-gap margin-gap-v">
@@ -30,7 +30,7 @@ export default function ScheduleWidgetListUnitFace({
         <EvaIcon name={cat?.icon} />
         {isShowMentors ? (
           mentors.length ? (
-            mentors.map((user) => user.fio || user.nick).join(', ')
+            mentors.map(user => user.fio || user.nick).join(', ')
           ) : (
             <span className="text-italic">{cat.titles[0]}</span>
           )

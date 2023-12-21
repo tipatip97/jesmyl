@@ -33,9 +33,9 @@ export default function ScheduleKeyValueListAttArrayItemKeyChange(props: {
         {header(<KeyValueListAttNumberMember value={props.theKey} />)}
         {body(
           <>
-            {props.lists?.map((item) => item.mi + CustomAttUseTaleId.Lists).map(map)}
-            {props.roles?.map((item) => item.mi + CustomAttUseTaleId.Roles).map(map)}
-            {props.users?.map((item) => item.mi + CustomAttUseTaleId.Users).map(map)}
+            {props.lists?.map(item => item.mi + CustomAttUseTaleId.Lists).map(map)}
+            {props.roles?.map(item => item.mi + CustomAttUseTaleId.Roles).map(map)}
+            {props.users?.map(item => item.mi + CustomAttUseTaleId.Users).map(map)}
           </>,
         )}
       </>
@@ -45,7 +45,10 @@ export default function ScheduleKeyValueListAttArrayItemKeyChange(props: {
   return (
     <>
       {modalNode}
-      <EvaButton name="sync" onClick={openModal} />
+      <EvaButton
+        name="sync"
+        onClick={openModal}
+      />
     </>
   );
 }

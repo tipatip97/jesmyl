@@ -30,7 +30,7 @@ export default function useGamerOfflineRoomsActions() {
             .confirm(
               'Просматривать результаты и участвовать могут только добавленные в комнату участники. Отправить заявку на вступление?',
             )
-            .then((isRequest) => {
+            .then(isRequest => {
               if (isRequest)
                 gamerExer.send({
                   action: 'requestAddToRoom',

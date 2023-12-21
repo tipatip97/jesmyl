@@ -35,7 +35,7 @@ export function useIsRedactAreaWithInit(
           <EvaButton
             name="edit-outline"
             className="edit-button"
-            onClick={(event) => {
+            onClick={event => {
               event.stopPropagation();
               if (redact == null) setIsSelfRedact(true);
               onEditStart?.(true);
@@ -47,7 +47,7 @@ export function useIsRedactAreaWithInit(
               name="checkmark-circle-2-outline"
               className="edit-button color--ok"
               disabled={redact === true && !isSelfRedact}
-              onClick={(event) => {
+              onClick={event => {
                 event.stopPropagation();
                 setIsSelfRedact(false);
                 onEditStart?.(false);

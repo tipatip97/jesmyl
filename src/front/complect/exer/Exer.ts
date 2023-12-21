@@ -48,7 +48,7 @@ export class Exer<Storage extends ExerStorage> {
 
     setTimeout(() => console.info(exec, this.execs));
 
-    const prevExeci = this.execs.findIndex((ex) => ex.scope === scope && ex.method === method);
+    const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
     const prevExec: Exec<Value> = this.execs[prevExeci];
     const lasti = this.execs.length - 1;
     const lastExec: Exec<Value> = this.execs[lasti];
@@ -70,7 +70,7 @@ export class Exer<Storage extends ExerStorage> {
         }
         if (isPrevented) break;
       }
-      remIndexes.sort((a, b) => b - a).forEach((execi) => this.execs.splice(execi, 1));
+      remIndexes.sort((a, b) => b - a).forEach(execi => this.execs.splice(execi, 1));
     };
 
     if (anti) removeNabors([anti].flat(), () => (isPrevented = true));
@@ -105,27 +105,27 @@ export class Exer<Storage extends ExerStorage> {
   }
 
   send<Value>(fixedExecs: ClientExecutionDict<Value> | ClientExecutionDict<Value>[]) {
-    return this.load([fixedExecs].flat().map((exec) => new Exec(exec, this.rules)));
+    return this.load([fixedExecs].flat().map(exec => new Exec(exec, this.rules)));
   }
 
   load<Value>(fixedExecs?: Exec<Value>[] | nil) {
     return new Promise<SokiServerEvent | null>((resolve, reject) => {
-      const execs = (fixedExecs || this.execs).map((exec) => exec.forLoad()).filter((ex) => ex);
+      const execs = (fixedExecs || this.execs).map(exec => exec.forLoad()).filter(ex => ex);
 
       if (!execs.length) {
         return resolve(null);
       }
 
-      soki.send({ execs: execs.filter((dict) => dict) as ExecutionDict[] }, this.appName).on(
-        (result) => {
-          this.execs = ((fixedExecs as Exec<any>[]) || this.execs).filter((ex) => {
+      soki.send({ execs: execs.filter(dict => dict) as ExecutionDict[] }, this.appName).on(
+        result => {
+          this.execs = ((fixedExecs as Exec<any>[]) || this.execs).filter(ex => {
             ex.onLoad?.(ex, result);
             return ex.del;
           });
 
           resolve(result);
         },
-        (err) => reject(err),
+        err => reject(err),
       );
     });
   }
@@ -139,7 +139,7 @@ export class Exer<Storage extends ExerStorage> {
     if (this.checkedActions[action] !== undefined) return this.checkedActions[action] || null;
     if (!this.rules?.length) return null;
 
-    const rule = this.rules.find((right) => right.action === action) as ExecRule;
+    const rule = this.rules.find(right => right.action === action) as ExecRule;
     if (!rule) console.error(`Зарегистрировано правило на неизвестное действие ${action}`);
 
     return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +(auth.level ?? 0) ? true : null) : null);

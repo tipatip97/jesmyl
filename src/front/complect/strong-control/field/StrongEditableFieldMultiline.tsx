@@ -3,7 +3,7 @@ import { useState } from 'react';
 import style from './Multiline.module.scss';
 
 const isNIs = (is: boolean) => !is;
-const onImageClick: React.MouseEventHandler<HTMLImageElement> = (event) => {
+const onImageClick: React.MouseEventHandler<HTMLImageElement> = event => {
   event.stopPropagation();
   const src = event.currentTarget.getAttribute('prop-src');
   if (src) window.open(src);

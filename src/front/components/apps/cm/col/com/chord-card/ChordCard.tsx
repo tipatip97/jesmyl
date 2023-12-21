@@ -16,5 +16,10 @@ export default function ChordCard({
   const chords = useChords();
   const track = (resource ?? chords)[chordName];
 
-  return <ChordCardTracked {...props} track={track} />;
+  return (
+    <ChordCardTracked
+      {...props}
+      track={track}
+    />
+  );
 }

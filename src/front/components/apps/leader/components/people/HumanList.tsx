@@ -40,9 +40,7 @@ export default function HumanList({
     const memoHumans =
       (isRedact
         ? humans
-        : (list
-            ?.map((wid) => humans?.find((human) => human.w === wid))
-            .filter((human) => human) as HumanImportable[])) ??
+        : (list?.map(wid => humans?.find(human => human.w === wid)).filter(human => human) as HumanImportable[])) ??
       humans ??
       [];
     const filteredHumans = [
@@ -67,12 +65,12 @@ export default function HumanList({
       className={`debounced-searcher round-styled ${searcherClass || ''}`}
       initialTerm={term}
       debounce={500}
-      onTermChange={(term) => setTerm(term.toLowerCase())}
+      onTermChange={term => setTerm(term.toLowerCase())}
     />
   );
 
   const humansNode = (
-    term || !excludedHumans ? humanList : humanList?.filter((human) => !excludedHumans.includes(human.w))
+    term || !excludedHumans ? humanList : humanList?.filter(human => !excludedHumans.includes(human.w))
   )?.map((human, humani) => {
     return (
       <div key={humani}>
@@ -83,7 +81,7 @@ export default function HumanList({
               ? () => {
                   return excludedHumans?.includes(human.w) ? (
                     <span className="color--3">{excludedLabel}</span>
-                  ) : list?.some((humanw) => humanw === human.w) ? (
+                  ) : list?.some(humanw => humanw === human.w) ? (
                     <EvaSendButton
                       name="minus-square-outline"
                       className="color--ko"

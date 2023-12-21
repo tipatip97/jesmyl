@@ -10,7 +10,7 @@ export class SokiAuther {
   }
 
   isCorrectData(user?: LocalSokiAuth | null) {
-    return new Promise((res) => {
+    return new Promise(res => {
       const userLogin = user?.login;
       if (!user || !user.login) {
         res(false);

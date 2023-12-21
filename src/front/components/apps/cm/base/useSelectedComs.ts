@@ -13,9 +13,7 @@ export default function useSelectedComs() {
   } = useCmNav();
   const takeSelectedComs = useCallback(() => {
     return (
-      (cols &&
-        (selectedComws.map((comw) => cols.coms.find((com) => com.wid === comw)).filter((com) => com) as Com[])) ||
-      []
+      (cols && (selectedComws.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[])) || []
     );
   }, [cols, selectedComws]);
 
@@ -27,7 +25,7 @@ export default function useSelectedComs() {
     clearSelectedComws: () => ret.updateSelectedComws([]),
     toggleSelectedCom: (com: Com) => {
       ret.updateSelectedComws(
-        ret.selectedComPosition(com) ? selectedComws.filter((comw) => com.wid !== comw) : [...selectedComws, com.wid],
+        ret.selectedComPosition(com) ? selectedComws.filter(comw => com.wid !== comw) : [...selectedComws, com.wid],
       );
     },
   };

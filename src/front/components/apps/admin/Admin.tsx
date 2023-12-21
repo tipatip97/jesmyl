@@ -28,14 +28,17 @@ export default function Admin() {
           className="debounced-searcher round-styled full-width"
           initialTerm={term}
           debounce={500}
-          onDebounced={(term) => search(term, users)}
-          onTermChange={(term) => setTerm(term)}
+          onDebounced={term => search(term, users)}
+          onTermChange={term => setTerm(term)}
         />
       }
       content={
         <>
-          {userList.map((user) => (
-            <UserFace key={`user-${user.login}`} user={user} />
+          {userList.map(user => (
+            <UserFace
+              key={`user-${user.login}`}
+              user={user}
+            />
           ))}
         </>
       }

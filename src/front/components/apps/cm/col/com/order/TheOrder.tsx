@@ -18,7 +18,7 @@ export default function TheOrder(props: ITheOrderProps) {
       <div
         id={`com-block-${orderUniti}`}
         className={`${className} styled-header anchor`}
-        ref={(el) => el && (orderUnit.element = el)}
+        ref={el => el && (orderUnit.element = el)}
       >
         {orderUnit.top.header?.({ isTexted: false, repeats: orderUnit.repeatsTitle })}
       </div>
@@ -63,12 +63,15 @@ export default function TheOrder(props: ITheOrderProps) {
       <div
         id={`com-block-${orderUniti}`}
         className={'composition-block styled-block flex flex-baseline' + (orderUnit.isVisible ? '' : ' invisible')}
-        ref={(el) => el && (orderUnit.element = el)}
+        ref={el => el && (orderUnit.element = el)}
       >
         {header}
         {isTexted && (
-          <div key={orderUniti} className={`styled-block chords-block vertical-middle ${className}`}>
-            {com.chordLabels[orderUniti].map((line) => line.join(' ')).join('\n')}
+          <div
+            key={orderUniti}
+            className={`styled-block chords-block vertical-middle ${className}`}
+          >
+            {com.chordLabels[orderUniti].map(line => line.join(' ')).join('\n')}
           </div>
         )}
       </div>
@@ -83,7 +86,7 @@ export default function TheOrder(props: ITheOrderProps) {
         (orderUnit.isVisible ? '' : ' invisible') +
         (chordedOrd ? ' chorded-block' : ' without-chords')
       }
-      ref={(el) => el && (orderUnit.element = el)}
+      ref={el => el && (orderUnit.element = el)}
     >
       {header}
       {(orderUnit.repeated || '').split(/\n/).map((textLine, textLinei, textLinea) => {

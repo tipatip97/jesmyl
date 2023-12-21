@@ -8,5 +8,5 @@ export function useEditableCcom() {
     appRouteData: { ccomw },
   } = useCmNav();
 
-  return useMemo(() => zcat?.coms.find((com) => com.wid === ccomw), [ccomw, zcat]);
+  return useMemo(() => zcat?.coms.find(com => com.wid === ccomw), [ccomw, zcat]);
 }

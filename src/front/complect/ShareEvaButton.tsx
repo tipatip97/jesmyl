@@ -33,7 +33,7 @@ export default function ShareEvaButton({
         disabled={disabled}
         prefix={description}
         className={className}
-        onClick={(event) => {
+        onClick={event => {
           event.stopPropagation();
           const textToWrite = mylib.isStr(text) ? text : text?.();
           if (!textToWrite && prepare === undefined) return null;

@@ -20,20 +20,20 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
     <RollContent
       {...props}
       onClick={toggleRoll}
-      ref={(element) => element && (container = element.parentElement)}
+      ref={element => element && (container = element.parentElement)}
       className={'roll-controled-container full-width full-height' + (isFullscreen ? ' fullscreen' : '')}
     >
       <div className={'roll-controls flex column center' + (rollMode === 'play' ? ' open' : '')}>
         <EvaIcon
           name="minus"
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
             updateSpeedRollKf(-1);
             dispatch(di.speedRollKf(speedRollKf));
           }}
         />
         <div
-          ref={(element) => {
+          ref={element => {
             if (element) {
               speedScreen = element;
               updateSpeedRollKf(0);
@@ -43,7 +43,7 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
         />
         <EvaIcon
           name="plus"
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
             updateSpeedRollKf(1);
             dispatch(di.speedRollKf(speedRollKf));
@@ -120,33 +120,35 @@ const startRoll = (switchRollMode: (rollMode: CmRollMode) => void) => {
 };
 
 const RollContent = styled.div`
-  padding: 0;
-  transition: padding 0.3s;
+  & {
+    transition: padding 0.3s;
+    padding: 0;
 
-  &.fullscreen {
-    padding-top: 30%;
-  }
-
-  .roll-controls {
-    --height: 100px;
-
-    position: fixed;
-    top: calc(50vh - var(--height) / 2);
-    right: 10px;
-    height: var(--height);
-    opacity: 0;
-    pointer-events: none;
-    cursor: pointer;
-    transition: opacity 0.7s;
-    z-index: 1;
-
-    > * {
-      margin: 5px;
+    &.fullscreen {
+      padding-top: 30%;
     }
 
-    &.open {
-      opacity: 0.7;
-      pointer-events: all;
+    .roll-controls {
+      --height: 100px;
+
+      position: fixed;
+      top: calc(50vh - var(--height) / 2);
+      right: 10px;
+      opacity: 0;
+      z-index: 1;
+      transition: opacity 0.7s;
+      cursor: pointer;
+      height: var(--height);
+      pointer-events: none;
+
+      > * {
+        margin: 5px;
+      }
+
+      &.open {
+        opacity: 0.7;
+        pointer-events: all;
+      }
     }
   }
 `;

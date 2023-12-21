@@ -46,7 +46,7 @@ export default function useToast(
       setTimer(
         setTimeout(
           () => {
-            setConfig((prev) => ({ ...prev, isOpen: false }));
+            setConfig(prev => ({ ...prev, isOpen: false }));
           },
           config?.showTime ?? 3000,
         ),

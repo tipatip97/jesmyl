@@ -22,7 +22,7 @@ export default function ScheduleWidgetStartTimeText({
     schedule.start + (firstDay === undefined ? 0 : ScheduleWidgetCleans.computeDayWakeUpTime(firstDay.wup, 'number'));
   const types = schedule.types;
   if (!rights.isCanReadSpecials)
-    firstDay?.list.some((event) => {
+    firstDay?.list.some(event => {
       if (event.secret) {
         firstWup += (event.tm ?? types[event.type]?.tm ?? 0) * mylib.howMs.inMin;
         return false;

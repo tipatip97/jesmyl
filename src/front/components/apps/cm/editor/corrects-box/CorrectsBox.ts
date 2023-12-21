@@ -15,7 +15,7 @@ export class CorrectsBox {
   }
 
   correctifyLine(line: ICorrect[]) {
-    return line.map((correct) => this.correctify(correct));
+    return line.map(correct => this.correctify(correct));
   }
 
   correctify(correct: ICorrect) {
@@ -48,7 +48,7 @@ export class CorrectsBox {
     return this;
   }
 
-  filter(cb: ArrayCb<ICorrect> = (e) => e) {
+  filter(cb: ArrayCb<ICorrect> = e => e) {
     if (!Array.isArray(this.collection)) return this;
     this.collection = this.collection.filter(cb);
 
@@ -62,8 +62,8 @@ export class CorrectsBox {
 
       if (Array.isArray(target)) {
         if (Array.isArray(source))
-          source.forEach((src) => {
-            const previ = target.findIndex((tar) => tar.uniq === src.uniq);
+          source.forEach(src => {
+            const previ = target.findIndex(tar => tar.uniq === src.uniq);
 
             if (previ < 0) target.push(this.correctify(src));
             else target.splice(previ, 1, this.correctify(src));
@@ -71,7 +71,7 @@ export class CorrectsBox {
       } else if (Array.isArray(source)) this[name] = [source].flat();
     };
 
-    args.forEach((arg) => {
+    args.forEach(arg => {
       if (arg == null) return;
       merge(arg, 'errors');
       merge(arg, 'warnings');
@@ -101,11 +101,11 @@ export class CorrectsBox {
   }
 
   remove(errors: Correct[] | null, warnings: Correct[] | null, unknowns: Correct[] | null) {
-    this.errors = errors == null ? this.errors : this.errors?.filter((correct) => errors.indexOf(correct) < 0) ?? null;
+    this.errors = errors == null ? this.errors : this.errors?.filter(correct => errors.indexOf(correct) < 0) ?? null;
     this.warnings =
-      warnings == null ? this.warnings : this.warnings?.filter((correct) => warnings.indexOf(correct) < 0) ?? null;
+      warnings == null ? this.warnings : this.warnings?.filter(correct => warnings.indexOf(correct) < 0) ?? null;
     this.unknowns =
-      unknowns == null ? this.unknowns : this.unknowns?.filter((correct) => unknowns.indexOf(correct) < 0) ?? null;
+      unknowns == null ? this.unknowns : this.unknowns?.filter(correct => unknowns.indexOf(correct) < 0) ?? null;
   }
 
   removeFrom(box: CorrectsBox | nil) {

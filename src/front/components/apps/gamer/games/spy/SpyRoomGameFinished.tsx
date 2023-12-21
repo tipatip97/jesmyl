@@ -39,14 +39,18 @@ export default function SpyRoomGameFinished({
               state.retired && state.retired.indexOf(member.login) > -1 ? 'Выбыл' : '',
               spies && spies.indexOf(member.login) > -1 ? 'Шпион' : '',
             ]
-              .filter((label) => label)
+              .filter(label => label)
               .join(' - ')}
           />
         );
       })}
       {onResetResults && (
         <div className="flex center">
-          <SendButton title="Сбросить результаты" confirm onSend={onResetResults} />
+          <SendButton
+            title="Сбросить результаты"
+            confirm
+            onSend={onResetResults}
+          />
         </div>
       )}
     </div>

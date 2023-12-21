@@ -10,7 +10,7 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
     <SendButtonContentMaker
       {...props}
       anchorNodes={<>{toastNode}</>}
-      onFailure={(error) => {
+      onFailure={error => {
         props.onFailure?.(error);
         toast(error, { mood: 'ko' });
       }}

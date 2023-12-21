@@ -102,7 +102,7 @@ export class EditableCom extends Com {
       n: this.name,
       c: this.chords,
       t: this.texts,
-      o: this.ords.map((topOrd) => {
+      o: this.ords.map(topOrd => {
         const ord = mylib.clone(topOrd);
         delete ord.originWid;
         delete ord.header;
@@ -226,7 +226,7 @@ export class EditableCom extends Com {
       uniq: cat.wid,
       anti: ({ action, args }) => {
         if (action === 'removeNativeNum' && (args ? args.catw === cat.wid && args.comw === this.wid : false))
-          return (strategy) => strategy.RememberNew;
+          return strategy => strategy.RememberNew;
       },
       args: {
         catn: cat.name,
@@ -271,7 +271,7 @@ export class EditableCom extends Com {
     };
     const inheritStyle = blockStyles?.styles.find(({ isInherit }) => isInherit);
 
-    (typeof blocks === 'string' ? blocks.split(/\n+\s*\n+/) : blocks).forEach((block) => {
+    (typeof blocks === 'string' ? blocks.split(/\n+\s*\n+/) : blocks).forEach(block => {
       if (!block) return;
       const unit: Unit = {};
       const textLines: string[] = [];
@@ -344,7 +344,7 @@ export class EditableCom extends Com {
 
         currUnit.text = lines.join('\n');
         currUnit.chords = chords;
-        currUnit.cleanText = lines.map((line) => line.replace(freeSlavicLineReg_gi, '')).join('\n');
+        currUnit.cleanText = lines.map(line => line.replace(freeSlavicLineReg_gi, '')).join('\n');
 
         if (linesi > 0) {
           currUnit.style = inheritStyle;
@@ -371,7 +371,7 @@ export class EditableCom extends Com {
           const style = blockStyles.getNextLevelSortedStyle(prevUnit.style);
           if (style) unit.style = style;
         } else {
-          const uniti = unitSlogGroups.findIndex((units) => units.includes(unit));
+          const uniti = unitSlogGroups.findIndex(units => units.includes(unit));
           if (uniti !== undefined) {
             const style = blockStyles.getNextLevelSortedStyle(uniti);
             if (style) unit.style = style;
@@ -381,7 +381,7 @@ export class EditableCom extends Com {
 
       if (unit.text) {
         let texti: number;
-        const sameTextUnit = units.find((u) => u.cleanText === unit.cleanText && u.texti !== undefined);
+        const sameTextUnit = units.find(u => u.cleanText === unit.cleanText && u.texti !== undefined);
 
         if (sameTextUnit?.texti !== undefined) texti = sameTextUnit.texti;
         else texti = texts.push(unit.text) - 1;
@@ -391,7 +391,7 @@ export class EditableCom extends Com {
 
       if (unit.chords) {
         let chordsi: number;
-        const sameChordsUnit = units.find((u) => u.chords === unit.chords && u.chordsi !== undefined);
+        const sameChordsUnit = units.find(u => u.chords === unit.chords && u.chordsi !== undefined);
 
         if (sameChordsUnit?.chordsi !== undefined) chordsi = sameChordsUnit.chordsi;
         else chordsi = chords.push(unit.chords) - 1;
@@ -402,7 +402,7 @@ export class EditableCom extends Com {
       const ord: INewExportableOrder = {};
 
       const similarOrd = orders.find(
-        (ord) => ord.c === unit.chordsi && ord.t === unit.texti && ord.s === unit.style?.key,
+        ord => ord.c === unit.chordsi && ord.t === unit.texti && ord.s === unit.style?.key,
       );
       if (similarOrd) {
         if (similarOrd.u === undefined) similarOrd.u = uniq++;
@@ -431,7 +431,7 @@ export class EditableCom extends Com {
       .toLowerCase()
       .replace(/[^а-я]/g, '')
       .trim();
-    return blockStyles?.styles.find((style) => style.tags?.some((tag) => preparedText.startsWith(tag)));
+    return blockStyles?.styles.find(style => style.tags?.some(tag => preparedText.startsWith(tag)));
   }
 
   afterOrderChange() {
@@ -440,12 +440,12 @@ export class EditableCom extends Com {
   }
 
   addOrders(orderDicts: INewExportableOrder[] = []) {
-    orderDicts.forEach((dict) => this.addOrder(dict, false));
+    orderDicts.forEach(dict => this.addOrder(dict, false));
     this.afterOrderChange();
   }
 
   add(fieldn: 'texts' | 'chords', value: string | string[], isInsert = false) {
-    const emptyIndex = (mylib.findLastIndex(fieldn === 'texts' ? this.texts : this.chords, (ch) => ch) || 0) - -1;
+    const emptyIndex = (mylib.findLastIndex(fieldn === 'texts' ? this.texts : this.chords, ch => ch) || 0) - -1;
 
     [value].flat().forEach((block, blocki) => {
       this.changeBlock(fieldn, emptyIndex + blocki, block, isInsert);
@@ -474,7 +474,7 @@ export class EditableCom extends Com {
 
     const ord: IExportableOrderTop = { w, header: () => '' };
 
-    (['t', 's', 'a', 'u', 'c'] as (keyof IExportableOrderTop)[]).forEach((key) => {
+    (['t', 's', 'a', 'u', 'c'] as (keyof IExportableOrderTop)[]).forEach(key => {
       if (topOrd[key as never] != null) ord[key] = topOrd[key as never];
     });
 
@@ -498,7 +498,7 @@ export class EditableCom extends Com {
 
     if (coln === 'texts') {
       anchors = this.orders.filter((ord, ordi) => {
-        return containers.some((contOrd) => {
+        return containers.some(contOrd => {
           const isAnch = ord.isAnchor && contOrd.top.u === ord.top.a;
           if (isAnch) indexes.push({ ordi, ord });
           return isAnch;
@@ -530,16 +530,16 @@ export class EditableCom extends Com {
         value: coli,
         coln: colnLiteral,
       },
-      anti: (exec) => {
+      anti: exec => {
         const { action, args, data } = exec;
         if (action === 'changeBlocks' && args && args.coln === colnLiteral && args.comw === this.wid) {
           if (args.index === coli)
             return data?.isInsert
-              ? (strategy) => strategy.RemoveNew
+              ? strategy => strategy.RemoveNew
               : args.value === ''
-                ? (strategy) => strategy.RememberNew
+                ? strategy => strategy.RememberNew
                 : null;
-          else if (currLen !== undefined && args.index === currLen - 1) return (strategy) => strategy.RememberNew;
+          else if (currLen !== undefined && args.index === currLen - 1) return strategy => strategy.RememberNew;
         }
       },
     });
@@ -552,7 +552,7 @@ export class EditableCom extends Com {
     if (this.chords) {
       const col = this.chords[coli];
       if (col) {
-        const val = col.replace(gSimpleBemoleChordReg, (chord) => chordDiezEquivalent[chord] || chord);
+        const val = col.replace(gSimpleBemoleChordReg, chord => chordDiezEquivalent[chord] || chord);
         this.changeBlock('chords', coli, val);
       }
     }
@@ -564,7 +564,7 @@ export class EditableCom extends Com {
     return (
       ord.top.isAnchorInherit ||
       ordi === ords.length - 1 ||
-      !ords.some((currOrd) => {
+      !ords.some(currOrd => {
         if (currOrd === ord) {
           isSelfOrd = true;
           return false;
@@ -580,8 +580,8 @@ export class EditableCom extends Com {
       (!ordi && ord.top.isNextInherit) ||
       ord.top.isNextAnchorOrd ||
       (ord.top.isNextAnchorOrd && !ordi) ||
-      ((index) => !(index < 0 || index === cmExer.execs.length - 1))(
-        cmExer.execs.findIndex((exec) => exec.action === 'comMigrateOrders' && exec.args?.comw === this.wid),
+      (index => !(index < 0 || index === cmExer.execs.length - 1))(
+        cmExer.execs.findIndex(exec => exec.action === 'comMigrateOrders' && exec.args?.comw === this.wid),
       )
     );
   }
@@ -600,18 +600,18 @@ export class EditableCom extends Com {
     const min = Math.min(from, to);
     const max = Math.max(from, to);
 
-    this.ords.forEach((ord) => {
+    this.ords.forEach(ord => {
       if (ord.w > min && ord.w <= max) {
         prev[ord.w] = ord.w - 1;
         prev[ord.w - 1] = ord.w;
       }
     });
 
-    this.orders.forEach((ord) => {
+    this.orders.forEach(ord => {
       if (ord.top.source && prev[ord.wid] != null && !ord.top.isAnchorInherit) ord.top.source.w = prev[ord.wid];
     });
 
-    this.orders.forEach((ord) => {
+    this.orders.forEach(ord => {
       const originWid = ord.originWid;
       if (originWid != null && ord.top.source && ord.top.source.w !== originWid) value[originWid] = ord.top.source.w;
     });
@@ -640,10 +640,10 @@ export class EditableCom extends Com {
       },
       anti: ({ action, args, args: { comw } = {} }) => {
         if (action === 'comAddOrderBlock' && comw === this.wid && wid === args?.wid)
-          return (strategy) => strategy.RememberNew;
+          return strategy => strategy.RememberNew;
       },
     });
-    const index = this.ords.findIndex((o) => o.w === wid);
+    const index = this.ords.findIndex(o => o.w === wid);
 
     this.ords.splice(index, 1);
     this.afterOrderChange();
@@ -796,8 +796,8 @@ export class EditableCom extends Com {
   takeCorrectName(text: string) {
     let name = '';
 
-    text.split(/\n\s*\n/).find((block) => {
-      return block.split('\n').find((line) => {
+    text.split(/\n\s*\n/).find(block => {
+      return block.split('\n').find(line => {
         const lowerLine = line.toLowerCase().replace(/^[^а-яё]+/g, '');
         if (this.takeStyleByTitle(lowerLine)) return false;
 
@@ -834,7 +834,7 @@ export class EditableCom extends Com {
       anti: [
         ({ action, args }) => {
           if (action === 'setNativeNum' && (args ? args.catw === cat.wid && args.comw === this.wid : false))
-            return (strategy) => (null == prev ? strategy.RemoveNew : strategy.RememberNew);
+            return strategy => (null == prev ? strategy.RemoveNew : strategy.RememberNew);
         },
       ],
     });
@@ -876,7 +876,7 @@ export class EditableCom extends Com {
     } else {
       let isThereErrors;
       let mistakes = '';
-      const text = (value || '').replace(/[^-ієїа-яё().,":;!?\s']+/gi, (all) => {
+      const text = (value || '').replace(/[^-ієїа-яё().,":;!?\s']+/gi, all => {
         isThereErrors = true;
         mistakes += all;
         return `[${all}]`;
@@ -904,10 +904,10 @@ export class EditableCom extends Com {
 
   getRegionNextLetter() {
     const chars = this.orders
-      ?.map((ord) => Object.keys(ord.repeats || {}).map((key) => (key.match(/[a-z]/i) || [])[0]))
+      ?.map(ord => Object.keys(ord.repeats || {}).map(key => (key.match(/[a-z]/i) || [])[0]))
       .flat()
-      .filter((s) => s)
-      .map((letter) => letter?.charCodeAt(0));
+      .filter(s => s)
+      .map(letter => letter?.charCodeAt(0));
 
     const next =
       chars &&
@@ -915,7 +915,7 @@ export class EditableCom extends Com {
         .repeat(26)
         .split('')
         .map((_, ci) => 97 + ci)
-        .find((num) => chars.indexOf(num) < 0);
+        .find(num => chars.indexOf(num) < 0);
 
     return next && String.fromCharCode(next);
   }

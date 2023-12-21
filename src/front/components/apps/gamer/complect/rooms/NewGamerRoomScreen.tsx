@@ -19,7 +19,7 @@ export default function NewGamerRoomScreen({ close, offline }: { close: () => vo
     <div className="full-container flex center column padding-giant-gap">
       <KeyboardInput
         placeholder="Название комнаты"
-        onInput={(value) => {
+        onInput={value => {
           setName(value);
           setIsInclusiveRoomName(
             !!rooms?.some(({ name }) => name === value) || !!offlineRooms?.some(({ name }) => name === value),

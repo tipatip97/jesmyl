@@ -27,7 +27,7 @@ export default function ScheduleWidgetCustomAttachments(
         {header(
           <div className="flex full-width between">
             Шаблоны вложений
-            {!props.tatts.some((att) => !att.title || !att.description) && (
+            {!props.tatts.some(att => !att.title || !att.description) && (
               <StrongEvaButton
                 scope={props.scope}
                 fieldName="tatts"
@@ -39,8 +39,14 @@ export default function ScheduleWidgetCustomAttachments(
           </div>,
         )}
         {body(
-          props.tatts.map((tatt) => {
-            return <ScheduleWidgetCustomAtt key={tatt.mi} scope={props.scope} tatt={tatt} />;
+          props.tatts.map(tatt => {
+            return (
+              <ScheduleWidgetCustomAtt
+                key={tatt.mi}
+                scope={props.scope}
+                tatt={tatt}
+              />
+            );
           }),
         )}
       </>

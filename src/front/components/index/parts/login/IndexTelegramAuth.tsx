@@ -76,7 +76,10 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                 <li className="children-middle">
                   Запустить бота
                   <span className="margin-gap">
-                    <a href="https://t.me/jesmylbot" className="children-middle">
+                    <a
+                      href="https://t.me/jesmylbot"
+                      className="children-middle"
+                    >
                       <EvaIcon name="telegram" />
                       jesmylbot
                     </a>
@@ -85,7 +88,10 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                 <li>
                   Состоять в канале
                   <span className="margin-gap">
-                    <a href="https://t.me/jesmyl_space" className="children-middle">
+                    <a
+                      href="https://t.me/jesmyl_space"
+                      className="children-middle"
+                    >
                       <EvaIcon name="telegram" />
                       jesmyl space
                     </a>
@@ -105,7 +111,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                   onChange={setAuthCode}
                   value={authCode}
                   placeholder="Одноразовый код"
-                  onFocus={async (event) => {
+                  onFocus={async event => {
                     const codeStr = await navigator.clipboard.readText();
                     if (authCode === codeStr) return;
 
@@ -113,7 +119,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                       setAuthCode(codeStr);
                       onAuthSend(codeStr)
                         .catch(showToast)
-                        .then((event) => event && onAuthSuccess(event));
+                        .then(event => event && onAuthSuccess(event));
                       event.value(codeStr);
                     }
                   }}

@@ -51,7 +51,7 @@ export default function Resizer(props: Partial<ResizerProps>) {
 
   return (
     <div
-      ref={(element) => (panel = element || panel)}
+      ref={element => (panel = element || panel)}
       className="range-panel"
       onClick={() => prop('onClick')(value, percents)}
       style={
@@ -60,13 +60,19 @@ export default function Resizer(props: Partial<ResizerProps>) {
         } as CSSProperties
       }
     >
-      <div ref={(element) => (blurRing = element || blurRing)} className="blur-ring">
-        <span ref={(element) => (blurText = element || blurText)} className="text">
+      <div
+        ref={element => (blurRing = element || blurRing)}
+        className="blur-ring"
+      >
+        <span
+          ref={element => (blurText = element || blurText)}
+          className="text"
+        >
           {view()}
         </span>
       </div>
       <div
-        ref={(element) => {
+        ref={element => {
           if (element) {
             farvater = element;
             updateCurrPx();
@@ -75,20 +81,20 @@ export default function Resizer(props: Partial<ResizerProps>) {
         className="range-farvater"
       />
       <div
-        ref={(element) => (ring = element || ring)}
+        ref={element => (ring = element || ring)}
         className={`ring ${props.icon || ''}`}
         onClick={() => {
           updateCurr(-curr);
           if (curr < 0) prop('onRange')(curr, percents);
           prop('onChange')(curr, percents);
         }}
-        onTouchStart={(event) => {
+        onTouchStart={event => {
           if (curr < 0) return;
           const { clientX: x, clientY: y } = event.targetTouches[0];
           start.x = x;
           start.y = y;
         }}
-        onTouchMove={(event) => {
+        onTouchMove={event => {
           event.stopPropagation();
           if (curr < 0) return;
 
@@ -180,7 +186,10 @@ export default function Resizer(props: Partial<ResizerProps>) {
           }
         }}
       >
-        <div ref={(element) => (ringText = element || ringText)} className="text">
+        <div
+          ref={element => (ringText = element || ringText)}
+          className="text"
+        >
           {view()}
         </div>
       </div>

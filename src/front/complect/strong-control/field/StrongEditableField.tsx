@@ -66,13 +66,13 @@ export default function StrongEditableField<Key extends string, Value extends st
         setIsError(false);
 
         onSendResult
-          ?.then((isOk) => {
+          ?.then(isOk => {
             if (isOk) {
               setIsLoading(false);
               setIsUserChange(false);
             } else setIsError(true);
           })
-          .catch((errorMessage) => {
+          .catch(errorMessage => {
             toast(errorMessage, { mood: 'ko' });
             setIsError(true);
           });
@@ -91,13 +91,13 @@ export default function StrongEditableField<Key extends string, Value extends st
           props.fieldKey,
           props.fieldValue,
         )
-          ?.then((isOk) => {
+          ?.then(isOk => {
             if (isOk) {
               setIsLoading(false);
               setIsUserChange(false);
             } else setIsError(true);
           })
-          .catch((errorMessage) => {
+          .catch(errorMessage => {
             toast(errorMessage, { mood: 'ko' });
             setIsError(true);
           });
@@ -110,13 +110,26 @@ export default function StrongEditableField<Key extends string, Value extends st
   }, [isUserChange, value]);
 
   const indicatorNode = isError ? (
-    <EvaIcon name="alert-triangle-outline" className="error-message" />
+    <EvaIcon
+      name="alert-triangle-outline"
+      className="error-message"
+    />
   ) : isLoading ? (
-    <EvaIcon name="loader-outline" className="rotate" />
+    <EvaIcon
+      name="loader-outline"
+      className="rotate"
+    />
   ) : stateValue !== value ? (
-    <EvaButton name="undo-outline" className="pointer" onPointerDown={() => setStateValue(value)} />
+    <EvaButton
+      name="undo-outline"
+      className="pointer"
+      onPointerDown={() => setStateValue(value)}
+    />
   ) : (
-    <EvaIcon name="cloud-upload-outline" className="fade-05" />
+    <EvaIcon
+      name="cloud-upload-outline"
+      className="fade-05"
+    />
   );
 
   return (
@@ -143,7 +156,7 @@ export default function StrongEditableField<Key extends string, Value extends st
               placeholder={props.placeholder}
               multiline={props.multiline}
               type={props.type}
-              onChange={(val) => {
+              onChange={val => {
                 setStateValue(val);
                 setIsUserChange(true);
                 props.onChange?.(val);
@@ -153,7 +166,7 @@ export default function StrongEditableField<Key extends string, Value extends st
                 onBlur();
                 sendValue();
               }}
-              onKeyUp={(event) => {
+              onKeyUp={event => {
                 if (event.key === 'Escape') setIsUserChange(false);
 
                 if (event.key === 'Enter' && (!props.multiline || event.ctrlKey)) sendValue();
@@ -163,8 +176,17 @@ export default function StrongEditableField<Key extends string, Value extends st
           </div>
         </>
       ) : (
-        <div draggable={!!value} className="flex flex-gap" onDragStart={onDragStart as never}>
-          {props.icon && <EvaIcon name={props.icon} className="color--7 self-start" />}
+        <div
+          draggable={!!value}
+          className="flex flex-gap"
+          onDragStart={onDragStart as never}
+        >
+          {props.icon && (
+            <EvaIcon
+              name={props.icon}
+              className="color--7 self-start"
+            />
+          )}
           {value ? (
             props.multiline ? (
               <StrongEditableFieldMultiline value={value} />

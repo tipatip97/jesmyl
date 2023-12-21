@@ -36,7 +36,7 @@ export const renderComponentInNewWindow = (
     link.rel = 'stylesheet';
   } else {
     let styles = '';
-    Array.from(document.querySelectorAll('style')).forEach((box) => {
+    Array.from(document.querySelectorAll('style')).forEach(box => {
       styles += box.innerText;
     });
     style.innerText = styles;

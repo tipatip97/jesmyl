@@ -47,13 +47,16 @@ export default function ScheduleWidgetDayEventRating(
 
       if (isOtherRatesTitleExpand && rates) {
         usersRateNode = rights.schedule.ctrl.users
-          .map((user) => {
+          .map(user => {
             if (myUser.mi === user.mi) return null;
             const rate = rates[user.mi];
             if (rate === undefined) return null;
 
             return (
-              <div key={user.mi} className="flex flex-gap">
+              <div
+                key={user.mi}
+                className="flex flex-gap"
+              >
                 <div
                   className={
                     'margin-gap-t nowrap self-start text-bold' +
@@ -62,7 +65,14 @@ export default function ScheduleWidgetDayEventRating(
                 >
                   {user.fio || user.nick}: {rate[0]}
                 </div>
-                {rate[1] && <StrongEditableField scope={rateScope} fieldName="description" value={rate[1]} multiline />}
+                {rate[1] && (
+                  <StrongEditableField
+                    scope={rateScope}
+                    fieldName="description"
+                    value={rate[1]}
+                    multiline
+                  />
+                )}
               </div>
             );
           })
@@ -89,7 +99,7 @@ export default function ScheduleWidgetDayEventRating(
       {isExpand && (
         <div className="margin-big-gap-l margin-gap-v">
           <div className="flex margin-gap-v">
-            {ratePoints.map((ratePoint) => {
+            {ratePoints.map(ratePoint => {
               const isFill =
                 ratePoint === 0 ? myRate[0] === 0 : ratePoint < 0 ? myRate[0] <= ratePoint : myRate[0] >= ratePoint;
 

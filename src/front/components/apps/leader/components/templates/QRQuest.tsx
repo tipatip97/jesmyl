@@ -11,8 +11,8 @@ export default function QRQuest() {
 
   return (
     <PrintableTemplate
-      noder={(page) =>
-        ccontext.groups?.map((group) => {
+      noder={page =>
+        ccontext.groups?.map(group => {
           const { qrText, color, initQrPoint } = LeaderCleans.getContextFieldValues(ccontext, group.fields);
           if (!qrText) return null;
 
@@ -21,8 +21,14 @@ export default function QRQuest() {
               {page(
                 <div className="relative flex center full-width full-height">
                   <div className="flex center full-width margin-big-gap relative">
-                    <QRCode className="qr-code full-width" text={qrText} />
-                    <div className={`absolute full-fill fade-03`} style={{ background: color }} />
+                    <QRCode
+                      className="qr-code full-width"
+                      text={qrText}
+                    />
+                    <div
+                      className={`absolute full-fill fade-03`}
+                      style={{ background: color }}
+                    />
                   </div>
                 </div>,
               )}
@@ -31,7 +37,10 @@ export default function QRQuest() {
                   <div className="full-width margin-big-gap relative">
                     <div className={`relative flex text-center margin-auto padding-giant-gap strong-square-50vmin`}>
                       {initQrPoint}
-                      <div className="absolute full-fill fade-03" style={{ background: color, color: 'black' }}></div>
+                      <div
+                        className="absolute full-fill fade-03"
+                        style={{ background: color, color: 'black' }}
+                      ></div>
                     </div>
                   </div>
                 </div>,

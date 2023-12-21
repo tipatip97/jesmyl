@@ -85,7 +85,11 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
               onMouseDown={this.onPasswordEyeButton}
             />
           ) : (
-            <EvaIcon name="close" className="icon-button close-button pointer" onMouseDown={this.onClearButton} />
+            <EvaIcon
+              name="close"
+              className="icon-button close-button pointer"
+              onMouseDown={this.onClearButton}
+            />
           )}
         </div>
         {this.nullOrContextMenu() && (

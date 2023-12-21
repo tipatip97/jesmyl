@@ -40,14 +40,20 @@ export default function LeaderComment({
       className={`${className || ''} margin-gap comment`}
       onContextMenu={
         isError || isWaitedToSend
-          ? (event) => {
+          ? event => {
               event.preventDefault();
               openAbsoluteFloatPopup(
                 <>
-                  <div className="pointer error-text" onClick={() => onRejectSend?.()}>
+                  <div
+                    className="pointer error-text"
+                    onClick={() => onRejectSend?.()}
+                  >
                     Отменить отправку
                   </div>
-                  <div className="pointer" onClick={() => sendAllComments()}>
+                  <div
+                    className="pointer"
+                    onClick={() => sendAllComments()}
+                  >
                     Повторить отправку всех
                   </div>
                 </>,
@@ -65,9 +71,15 @@ export default function LeaderComment({
             {isWaitedToSend ? (
               <EvaIcon name="pause-circle-outline" />
             ) : isError ? (
-              <EvaIcon className="absolute pos-right error-message" name="alert-circle-outline" />
+              <EvaIcon
+                className="absolute pos-right error-message"
+                name="alert-circle-outline"
+              />
             ) : (
-              <EvaIcon className="rotate absolute pos-right" name="loader-outline" />
+              <EvaIcon
+                className="rotate absolute pos-right"
+                name="loader-outline"
+              />
             )}
           </>
         ) : (
@@ -87,7 +99,10 @@ export default function LeaderComment({
       </div>
       {isNeedCut && (
         <div className="flex flex-end">
-          <span className="pointer" onClick={() => setIsHiddenPart(!isHiddenPart)}>
+          <span
+            className="pointer"
+            onClick={() => setIsHiddenPart(!isHiddenPart)}
+          >
             {isHiddenPart ? 'Показать полностью' : 'Скрыть часть текста'}
           </span>
         </div>

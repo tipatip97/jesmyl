@@ -20,26 +20,29 @@ export default function SpyLocations() {
   const isShortNewName = newName.length < 3;
   const incorrectsInNewName = newName.match(incorrectNameReg);
   const upperName = newName.toUpperCase();
-  const isInclusiveNewName = locations?.some((loc) => loc === upperName);
+  const isInclusiveNewName = locations?.some(loc => loc === upperName);
 
   return (
     <>
       {title}
       {isExpand && (
         <>
-          <div>{locations?.map((location) => <div key={location}>{location}</div>)}</div>
+          <div>{locations?.map(location => <div key={location}>{location}</div>)}</div>
           {!isOpenAdder && gamerExer.actionAccessedOrNull('addNewLocation', auth) && (
             <EvaButton
               className="margin-gap color--ok"
               name="plus-circle-outline"
-              onClick={() => setIsOpenAdder((is) => !is)}
+              onClick={() => setIsOpenAdder(is => !is)}
             />
           )}
           {isOpenAdder && (
             <div className="margin-big-gap-v">
               <div className="full-width">
                 Новая локация
-                <KeyboardInput value={newName} onChange={(value) => setNewName(value)} />
+                <KeyboardInput
+                  value={newName}
+                  onChange={value => setNewName(value)}
+                />
               </div>
               {isInclusiveNewName && <div className="error-message text-center">Такая локация уже существует</div>}
               {incorrectsInNewName && (

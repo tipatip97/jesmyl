@@ -38,7 +38,7 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
 
   collectRights = (...args: Right[]) => {
     let R = 1;
-    args.forEach((ruleKey) => (R = this.switchRights(R, ruleKey, '1')));
+    args.forEach(ruleKey => (R = this.switchRights(R, ruleKey, '1')));
     return R;
   };
 

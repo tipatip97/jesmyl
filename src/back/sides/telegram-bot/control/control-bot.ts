@@ -17,12 +17,12 @@ const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOp
     {
       text: 'Обновить список админов',
       callback_data: 'refresh_admins',
-      cb: async (bot) => {
+      cb: async bot => {
         Promise.all([bot.refreshAdmins(), prodTelegramBot.refreshAdmins(), supportTelegramBot.refreshAdmins()])
           .then(() => {
             bot.postMessage('Список админов обновлён');
           })
-          .catch((error) => {
+          .catch(error => {
             bot.postMessage(`Ошибка обновления списка админов ${error}`);
           });
       },
@@ -32,14 +32,14 @@ const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOp
     {
       text: '💫 Перечитать файлы',
       callback_data: 'refresh_files',
-      cb: async (bot) => {
+      cb: async bot => {
         sokiServer
           .reloadFiles()
           .then(() => {
             bot.logger.log(`💫 Файлы были перечитаны`);
             bot.postMessage(`💫 Файлы были перечитаны`);
           })
-          .catch((error) => {
+          .catch(error => {
             bot.logger.log(`💫 Ошибка перечитывания файлов\n\n${error}`);
             bot.postMessage(`💫 Ошибка перечитывания файлов\n\n${error}`);
           });

@@ -18,10 +18,10 @@ export default function MentorList(props: HumanListComponentProps) {
         excludedHumans={ccontext.members}
         excludedLabel="участник"
         fieldLabel="mentors"
-        onAddHuman={(human) => {
+        onAddHuman={human => {
           return LeaderCleans.addContextHuman(ccontext.w, human.w, 'mentors');
         }}
-        onRemoveHuman={(human) => {
+        onRemoveHuman={human => {
           return LeaderCleans.removeContextHuman(ccontext.w, human.w, 'mentors');
         }}
       />

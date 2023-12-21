@@ -8,10 +8,16 @@ const spaceReg = / /;
 export default function ComLine(props: IComLineProps) {
   if (!props.chordedOrd)
     return (
-      <div className="composition-line" onClick={props.onClick}>
+      <div
+        className="composition-line"
+        onClick={props.onClick}
+      >
         {props.words.map((word, wordi, worda) => {
           return (
-            <span key={wordi} className={`com-word wordi_${wordi} ${props.setWordClass?.(props, wordi) || ''}`}>
+            <span
+              key={wordi}
+              className={`com-word wordi_${wordi} ${props.setWordClass?.(props, wordi) || ''}`}
+            >
               {word && <span dangerouslySetInnerHTML={{ __html: word }} />}
               {wordi !== worda.length - 1 && (
                 <>
@@ -42,7 +48,10 @@ export default function ComLine(props: IComLineProps) {
   const isHasPost = linePoss.includes(-2);
 
   return (
-    <Line className="composition-line" onClick={props.onClick}>
+    <Line
+      className="composition-line"
+      onClick={props.onClick}
+    >
       {points.map((index, indexi, indexa) => {
         const isLast = indexi === indexa.length - 1;
         const firstTextBit = indexi === 0 ? props.textLine.slice(0, index) : '';
@@ -89,7 +98,11 @@ export default function ComLine(props: IComLineProps) {
               }
             >
               {chorded || chordedLast ? (
-                <span className="fragment" attr-chord={chord} attr-pchord={pchord}>
+                <span
+                  className="fragment"
+                  attr-chord={chord}
+                  attr-pchord={pchord}
+                >
                   {origBits}
                 </span>
               ) : (
@@ -104,86 +117,88 @@ export default function ComLine(props: IComLineProps) {
 }
 
 const Line = styled.div`
-  .chorded {
-    position: relative;
-    display: inline-block;
-    line-height: 1;
-    white-space: pre;
+  & {
+    .chorded {
+      display: inline-block;
+      position: relative;
+      line-height: 1;
+      white-space: pre;
 
-    &:not(.pre):not(.post):before {
-      left: 0;
-    }
-
-    &:not(.post) {
-      &:before,
-      &:after {
-        position: absolute;
-        z-index: 0;
-        top: -1em;
-        font-size: 1em;
-        pointer-events: none;
+      &:not(.pre):not(.post):before {
+        left: 0;
       }
 
-      .fragment {
-        &:before {
-          content: attr(attr-pchord);
+      &:not(.post) {
+        &:before,
+        &:after {
           position: absolute;
           top: -1em;
-          left: 100%;
+          z-index: 0;
+          pointer-events: none;
+          font-size: 1em;
+        }
+
+        .fragment {
+          &:before {
+            position: absolute;
+            top: -1em;
+            left: 100%;
+            content: attr(attr-pchord);
+          }
+
+          &:after {
+            display: block;
+            margin-top: -1em;
+            content: attr(attr-chord);
+            color: transparent;
+          }
+        }
+      }
+
+      &.spaced-word:not(.post):after {
+        top: 0;
+        width: 0.3em;
+        content: '.';
+        color: transparent;
+      }
+
+      &.pre:before,
+      &:not(.pre):not(.post):before {
+        max-width: 500px;
+        content: attr(attr-chord);
+        white-space: nowrap;
+      }
+
+      &.pre:before {
+        left: -0.5em;
+      }
+
+      &.post {
+        .fragment {
+          display: inline-block;
+          position: relative;
+
+          &:before {
+            display: block;
+            margin-top: -1em;
+            height: 1em;
+            content: attr(attr-chord);
+          }
+        }
+
+        &:before {
+          position: absolute;
+          top: -1em;
+          right: 0;
         }
 
         &:after {
-          content: attr(attr-chord);
-          display: block;
-          margin-top: -1em;
-          color: transparent;
+          display: inline-block;
+          position: relative;
+          top: -1em;
+          margin-left: 0.2em;
+          content: attr(attr-pchord);
         }
-      }
-    }
-
-    &.spaced-word:not(.post):after {
-      content: '.';
-      color: transparent;
-      top: 0;
-      width: 0.3em;
-    }
-
-    &.pre:before,
-    &:not(.pre):not(.post):before {
-      content: attr(attr-chord);
-      white-space: nowrap;
-      max-width: 500px;
-    }
-
-    &.pre:before {
-      left: -0.5em;
-    }
-
-    &.post {
-      .fragment {
-        position: relative;
-        display: inline-block;
-
-        &:before {
-          content: attr(attr-chord);
-          height: 1em;
-          display: block;
-          margin-top: -1em;
-        }
-      }
-
-      &:before {
-        position: absolute;
-        right: 0;
-        top: -1em;
-      }
-
-      &:after {
-        content: attr(attr-pchord);
-        position: relative;
-        top: -1em;
-        margin-left: 0.2em;
-        display: inline-block;
       }
     }
   }

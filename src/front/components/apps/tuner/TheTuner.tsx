@@ -30,7 +30,7 @@ export default function TheTuner() {
       content={
         <>
           <div
-            ref={(elem) => {
+            ref={elem => {
               if (elem && !tunerContainer) {
                 tunerContainer = elem;
                 tunerApplication = new TunerApplication();
@@ -59,7 +59,10 @@ export default function TheTuner() {
                 <span>Hz</span>
               </div>
             </div>
-            <div hidden className="a4">
+            <div
+              hidden
+              className="a4"
+            >
               A<sub>4</sub> = <span>440</span> Hz
             </div>
           </div>

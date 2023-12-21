@@ -18,7 +18,7 @@ export default function ComPlayer({ src, split }: { src: string; split?: string 
   const [isShowLoader, setIsShowLoader] = useState(false);
   const [currentVariant, setCurrentVariant] = useState(0);
   const splitter = split === true ? /\n+/ : split || null;
-  const variants = splitter ? src.split(splitter).map((src) => src.trim()) : [src.trim()];
+  const variants = splitter ? src.split(splitter).map(src => src.trim()) : [src.trim()];
   const currentSrc = variants[currentVariant];
   const moves = useMemo(movesMemoCallback, emptyArr);
 
@@ -72,12 +72,12 @@ export default function ComPlayer({ src, split }: { src: string; split?: string 
       {
         <div
           className={'composition-player flex flex-gap' + (player ? '' : ' center')}
-          onTouchEnd={(event) => {
+          onTouchEnd={event => {
             event.stopPropagation();
             moves.onEnd();
             moves.prevX = 0;
           }}
-          onTouchMove={(event) => {
+          onTouchMove={event => {
             event.stopPropagation();
             if (
               player &&

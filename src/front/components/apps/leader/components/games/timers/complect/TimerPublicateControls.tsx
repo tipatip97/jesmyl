@@ -53,8 +53,7 @@ export default function TimerPublicateControls({
                   mode: LeaderCleans.getTimerConfigurableField('mode', timer, game),
                   joins: LeaderCleans.getTimerConfigurableField('joins', timer, game),
                   sort: LeaderCleans.getTimerConfigurableField('sort', timer, game),
-                  teams:
-                    LeaderCleans.getTimerConfigurableFieldAsIs('teams', timer, game) ?? game.teams.map((it) => it.w),
+                  teams: LeaderCleans.getTimerConfigurableFieldAsIs('teams', timer, game) ?? game.teams.map(it => it.w),
                 });
               }}
             />

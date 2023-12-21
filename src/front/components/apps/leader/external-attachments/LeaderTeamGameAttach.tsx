@@ -19,12 +19,18 @@ export default function LeaderTeamGameAttach({
 }) {
   const { games, jumpToGame } = useGames();
 
-  const game = value.gamew && games?.teamGames?.find((game) => game.w === value.gamew);
+  const game = value.gamew && games?.teamGames?.find(game => game.w === value.gamew);
 
   return (
     <div>
       <LeaderApplication content={null} />
-      {isRedact && <LeaderTeamGameAttachRedact isRedact scope={scope} switchIsRedact={switchIsRedact} />}
+      {isRedact && (
+        <LeaderTeamGameAttachRedact
+          isRedact
+          scope={scope}
+          switchIsRedact={switchIsRedact}
+        />
+      )}
       <div className="flex flex-gap margin-gap-h">
         {game ? (
           <span className="text-italic">{game.name}</span>
@@ -33,7 +39,12 @@ export default function LeaderTeamGameAttach({
         ) : (
           <span>Не определена</span>
         )}
-        {game && <EvaButton name="external-link-outline" onClick={() => jumpToGame(game.w)} />}
+        {game && (
+          <EvaButton
+            name="external-link-outline"
+            onClick={() => jumpToGame(game.w)}
+          />
+        )}
       </div>
       {game && (
         <>

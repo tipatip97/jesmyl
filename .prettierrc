@@ -1,7 +1,11 @@
 {
-  "jsxBracketSameLine": true,
+  "jsxBracketSameLine": false,
   "printWidth": 120,
   "singleQuote": true,
   "tabWidth": 2,
-  "trailingComma": "all"
+  "singleAttributePerLine": true,
+  "trailingComma": "all",
+  "plugins": ["prettier-plugin-css-order"],
+  "cssDeclarationSorterOrder": "concentric-css",
+  "arrowParens": "avoid"
 }

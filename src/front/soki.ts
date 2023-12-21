@@ -114,7 +114,7 @@ export class SokiTrip {
             const appStore = appStorage[event.appName];
             const contents = mylib.clone(appStore.properties);
             Executer.executeReals(contents, event.execs.list)
-              .then((fixes) => {
+              .then(fixes => {
                 appStore.refreshAreas(fixes, contents);
                 this.setLastUpdates(event.appName!, [null, null, execs.lastUpdate, null]);
               })
@@ -165,7 +165,7 @@ export class SokiTrip {
     } = (await indexStorage.get('updateRequisites')) || {};
 
     this.send({ pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] }, appName).on(
-      (event) => event.pull && this.updatedPulledData(event.pull),
+      event => event.pull && this.updatedPulledData(event.pull),
     );
   }
 

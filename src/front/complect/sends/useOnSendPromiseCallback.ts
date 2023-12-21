@@ -24,11 +24,11 @@ export const useOnSendPromiseCallback = <Value>(
         if (promise instanceof Promise) {
           setIsLoading(true);
           promise
-            .then((val) => {
+            .then(val => {
               setIsLoading(false);
               onSuccessRef.current?.(val);
             })
-            .catch((errorMessage) => {
+            .catch(errorMessage => {
               setIsLoading(false);
               setError(errorMessage);
               onFailureRef.current?.(errorMessage);

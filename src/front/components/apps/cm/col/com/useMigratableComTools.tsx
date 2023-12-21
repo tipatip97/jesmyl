@@ -67,7 +67,7 @@ export default function useMigratableComTools() {
                 setChordVisibleVariant(
                   chordVisibleVariant === ChordVisibleVariant.Maximal
                     ? ChordVisibleVariant.None
-                    : !ccom?.orders?.some((ord) => !ord.isMin && ord.texti != null)
+                    : !ccom?.orders?.some(ord => !ord.isMin && ord.texti != null)
                       ? chordVisibleVariant === ChordVisibleVariant.None
                         ? ChordVisibleVariant.Minimal
                         : ChordVisibleVariant.None
@@ -147,7 +147,7 @@ export default function useMigratableComTools() {
         }
         return getMigratableEditableComTool(tool, nav);
       })
-      .filter((tool) => tool) as MigratableComTool[];
+      .filter(tool => tool) as MigratableComTool[];
   };
 
   return {
@@ -158,7 +158,7 @@ export default function useMigratableComTools() {
     toggleTopTool: (tool: MigratableComToolName) => {
       dispatch(
         di.comTopTools(
-          comTopTools.indexOf(tool) < 0 ? [...comTopTools, tool] : comTopTools.filter((currTool) => tool !== currTool),
+          comTopTools.indexOf(tool) < 0 ? [...comTopTools, tool] : comTopTools.filter(currTool => tool !== currTool),
         ),
       );
     },

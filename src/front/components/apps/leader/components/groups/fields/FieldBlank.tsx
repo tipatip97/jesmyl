@@ -34,12 +34,37 @@ export default function ContextFieldBlank({
   let valueNode;
 
   if (isRedact) {
-    nameNode = <KeyboardInput onInput={(value) => setName(value)} value={name} multiline />;
-    defNode = <KeyboardInput onInput={(value) => setDef(value)} value={def} multiline />;
-    valueNode = <KeyboardInput onInput={(value) => setValue(value)} value={value} multiline />;
+    nameNode = (
+      <KeyboardInput
+        onInput={value => setName(value)}
+        value={name}
+        multiline
+      />
+    );
+    defNode = (
+      <KeyboardInput
+        onInput={value => setDef(value)}
+        value={def}
+        multiline
+      />
+    );
+    valueNode = (
+      <KeyboardInput
+        onInput={value => setValue(value)}
+        value={value}
+        multiline
+      />
+    );
 
     if (redact && addition) {
-      keyNode = <KeyboardInput preferLanguage="en" onInput={(value) => setKey(value)} value={key} multiline />;
+      keyNode = (
+        <KeyboardInput
+          preferLanguage="en"
+          onInput={value => setKey(value)}
+          value={key}
+          multiline
+        />
+      );
     }
   } else {
     nameNode = name;
@@ -79,7 +104,10 @@ export default function ContextFieldBlank({
       </div>
       {net.map(([title, node]) => {
         return (
-          <div key={title} className="flex flex-gap margin-gap-v">
+          <div
+            key={title}
+            className="flex flex-gap margin-gap-v"
+          >
             <span className="nowrap">{title}</span>
             <span className="color--3 user-select full-width">{node || ' - '}</span>
           </div>

@@ -4,7 +4,7 @@ import { EvaIconName, evaPackNames } from '../../eva-icon/EvaIcon';
 import useModal from '../../modal/useModal';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 
-const icons = evaPackNames.filter((name) => name.endsWith('-outline'));
+const icons = evaPackNames.filter(name => name.endsWith('-outline'));
 
 export default function ScheduleWidgetIconChange(props: {
   scope: string;
@@ -17,7 +17,7 @@ export default function ScheduleWidgetIconChange(props: {
       <>
         {header(props.header)}
         {body(
-          icons.map((icon) => {
+          icons.map(icon => {
             return (
               <StrongEvaButton
                 key={icon}
@@ -42,7 +42,12 @@ export default function ScheduleWidgetIconChange(props: {
   return (
     <>
       {modalNode}
-      <EvaButton name={props.icon} postfix="Изменить иконку" onClick={screen} className="flex-max margin-gap-v" />
+      <EvaButton
+        name={props.icon}
+        postfix="Изменить иконку"
+        onClick={screen}
+        className="flex-max margin-gap-v"
+      />
     </>
   );
 }

@@ -47,7 +47,7 @@ export default function SpyRoomStartedGame({
         </div>
       </div>
       <LocationHideScreen
-        isAllSpiesFound={spies && spies.filter((spyLogin) => retired.includes(spyLogin)).length === spies.length}
+        isAllSpiesFound={spies && spies.filter(spyLogin => retired.includes(spyLogin)).length === spies.length}
         myRole={myRole}
         leftContent={
           <div>

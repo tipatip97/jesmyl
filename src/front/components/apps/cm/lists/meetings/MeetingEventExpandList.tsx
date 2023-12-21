@@ -31,7 +31,7 @@ export default function MeetingEventExpandList() {
       const bCtx = meetings.contexts[b.contextw].context;
       return mylib.findMap(aCtx, (ctx, ctxi) => ctx - bCtx[ctxi], 0) || aCtx.length - bCtx.length;
     })
-    .filter((event) => {
+    .filter(event => {
       const context = meetings.contexts[event.contextw].context;
 
       return !eventContext.some((ctx, ctxi) => context[ctxi] !== ctx);
@@ -41,7 +41,7 @@ export default function MeetingEventExpandList() {
     const eventGroups: MeetingsEvent[][] = [];
     let lastContextw = 0;
 
-    events?.forEach((event) => {
+    events?.forEach(event => {
       if (
         copyMode === CopyMode.All ||
         (copyMode === CopyMode.ExpandedOnly
@@ -55,14 +55,14 @@ export default function MeetingEventExpandList() {
       }
     });
     return eventGroups
-      .map((group) => {
+      .map(group => {
         return group
-          .map((event) => {
+          .map(event => {
             const context = meetings.contexts[event.contextw].context;
-            const titles = context.slice(eventContext.length).map((ctx) => meetings.names[ctx]);
+            const titles = context.slice(eventContext.length).map(ctx => meetings.names[ctx]);
 
             return `${event.name}${titles.length ? ` (${titles.join(' - ')})` : ''}\n${event.coms
-              ?.map((com) => `${com.number}. ${com.name.trim()}`)
+              ?.map(com => `${com.number}. ${com.name.trim()}`)
               .join('\n')}`;
           })
           .join('\n\n');
@@ -81,7 +81,7 @@ export default function MeetingEventExpandList() {
 
         currentEventListPathName = '' + context;
         const isExpanded = expandedEventLists.includes(event.wid);
-        const titles = context.slice(eventContext.length).map((ctx) => names[ctx]);
+        const titles = context.slice(eventContext.length).map(ctx => names[ctx]);
 
         return (
           <div key={eventi}>
@@ -90,10 +90,10 @@ export default function MeetingEventExpandList() {
               className="flex pointer"
               onClick={() => {
                 if (isExpanded) {
-                  setExpandedEventLists((list) => list.filter((li) => li !== event.wid));
+                  setExpandedEventLists(list => list.filter(li => li !== event.wid));
                   if (expandedEventLists.length === 1) setCopyMode(CopyMode.All);
                 } else {
-                  setExpandedEventLists((list) => [...list, event.wid]);
+                  setExpandedEventLists(list => [...list, event.wid]);
                   if (expandedEventLists.length === 0) setCopyMode(CopyMode.ExpandedOnly);
                 }
               }}
@@ -102,8 +102,14 @@ export default function MeetingEventExpandList() {
               <EvaButton name={isExpanded ? 'chevron-up' : 'chevron-down'} />
             </h3>
             {isExpanded &&
-              event.coms?.map((com) => {
-                return <ComFace key={com.wid} com={com} importantOnClick={() => {}} />;
+              event.coms?.map(com => {
+                return (
+                  <ComFace
+                    key={com.wid}
+                    com={com}
+                    importantOnClick={() => {}}
+                  />
+                );
               })}
           </div>
         );
@@ -128,7 +134,10 @@ export default function MeetingEventExpandList() {
           onSelect={({ id }) => setCopyMode(id)}
         />
         <div className="full-width flex center">
-          <span className="flex flex-gap pointer" onClick={() => navigator.clipboard.writeText(prepareCopyText())}>
+          <span
+            className="flex flex-gap pointer"
+            onClick={() => navigator.clipboard.writeText(prepareCopyText())}
+          >
             Копировать
             <EvaIcon name="copy-outline" />
           </span>

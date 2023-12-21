@@ -6,7 +6,10 @@ export default function SpyShowMyRole({ role }: { role: string }) {
   const [isShow, setIsShow] = useState(false);
 
   return (
-    <div className="flex center flex-gap margin-gap pointer" onClick={() => setIsShow(!isShow)}>
+    <div
+      className="flex center flex-gap margin-gap pointer"
+      onClick={() => setIsShow(!isShow)}
+    >
       <EvaIcon name={isShow ? 'eye-off-outline' : 'eye-outline'} />
       {isShow ? (
         role === SPY_ROLE ? (

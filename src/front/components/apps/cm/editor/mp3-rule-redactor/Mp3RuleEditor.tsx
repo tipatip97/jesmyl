@@ -33,11 +33,11 @@ export default function Mp3RuleEditor(
             <>
               <KeyboardInput
                 value={url}
-                onChange={(value) => {
+                onChange={value => {
                   try {
                     const url = new URL(value);
                     const unnecessary = value.replace(url.origin, '');
-                    if (props.newRule && mp3Rules?.some((rule) => rule.url === url.origin))
+                    if (props.newRule && mp3Rules?.some(rule => rule.url === url.origin))
                       setErrorMessage('Такой URL-адрес уже есть');
                     else if (url.protocol !== 'https:') setErrorMessage('Ссылка должна начинаться с https://');
                     else if (unnecessary) {
@@ -57,16 +57,33 @@ export default function Mp3RuleEditor(
         </div>
         <div className="full-width">
           Query (mp3):{' '}
-          {isRedact ? <KeyboardInput value={query} onChange={setQuery} /> : <span className="color--7">{query}</span>}
+          {isRedact ? (
+            <KeyboardInput
+              value={query}
+              onChange={setQuery}
+            />
+          ) : (
+            <span className="color--7">{query}</span>
+          )}
         </div>
         <div className="full-width">
           Аттрибут с URL (mp3):{' '}
-          {isRedact ? <KeyboardInput value={attr} onChange={setAttr} /> : <span className="color--7">{attr}</span>}
+          {isRedact ? (
+            <KeyboardInput
+              value={attr}
+              onChange={setAttr}
+            />
+          ) : (
+            <span className="color--7">{attr}</span>
+          )}
         </div>
         <div className="full-width">
           Аттрибут (текст):{' '}
           {isRedact ? (
-            <KeyboardInput value={textQuery} onChange={setTextQuery} />
+            <KeyboardInput
+              value={textQuery}
+              onChange={setTextQuery}
+            />
           ) : (
             <span className="color--7">{textQuery || '-'}</span>
           )}
@@ -78,7 +95,7 @@ export default function Mp3RuleEditor(
               <input
                 type="checkbox"
                 checked={!!isHTML}
-                onChange={(event) => setIsHTML(event.currentTarget.checked ? 1 : undefined)}
+                onChange={event => setIsHTML(event.currentTarget.checked ? 1 : undefined)}
               />
             ) : (
               <span className="color--7">{isHTML ? 'innerHTML' : 'innerText'}</span>
@@ -104,7 +121,10 @@ export default function Mp3RuleEditor(
               }}
             />
           ) : (
-            <EvaButton name="edit-outline" onClick={() => setIsRedact(true)} />
+            <EvaButton
+              name="edit-outline"
+              onClick={() => setIsRedact(true)}
+            />
           ))}
       </div>
     </>

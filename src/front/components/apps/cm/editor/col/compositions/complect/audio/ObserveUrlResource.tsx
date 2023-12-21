@@ -25,7 +25,7 @@ export default function ObserveUrlResource({
   useEffect(() => {
     try {
       const theUrl = new URL(url);
-      if (mp3Rules && !mp3Rules.some((u) => new URL(u.url).origin === theUrl.origin)) {
+      if (mp3Rules && !mp3Rules.some(u => new URL(u.url).origin === theUrl.origin)) {
         setErrorMessage('Неизвестный источник');
       } else setErrorMessage('');
     } catch (e) {
@@ -40,13 +40,13 @@ export default function ObserveUrlResource({
           className="half-width"
           placeholder="URL-адрес"
           value={url}
-          onFocus={async (event) => {
+          onFocus={async event => {
             if (url) return;
             const val = await navigator.clipboard.readText();
             if (val) {
               try {
                 const url = new URL(val);
-                if (mp3Rules && !mp3Rules.some((u) => new URL(u.url).host === url.host)) {
+                if (mp3Rules && !mp3Rules.some(u => new URL(u.url).host === url.host)) {
                   setErrorMessage('Скопированный текст содержит неизвестный источник');
                 } else {
                   setUrl(url.toString());
@@ -70,10 +70,13 @@ export default function ObserveUrlResource({
       {errorMessage && <div className="error-message">{errorMessage}</div>}
 
       <h2>Известные ресурсы:</h2>
-      {mp3Rules?.map((rule) => {
+      {mp3Rules?.map(rule => {
         return (
           (!availableWithTextQuery || rule.textQuery) && (
-            <div key={rule.url} className={!url || url.startsWith(rule.url) ? 'color--7' : ''}>
+            <div
+              key={rule.url}
+              className={!url || url.startsWith(rule.url) ? 'color--7' : ''}
+            >
               {rule.url}
             </div>
           )

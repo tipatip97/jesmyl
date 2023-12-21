@@ -31,7 +31,13 @@ export default function TheCom({
   }, []);
 
   if (com == null) {
-    return <PhaseCmContainer className="com-container" headTitle="Упс" content="Песня не найдена(" />;
+    return (
+      <PhaseCmContainer
+        className="com-container"
+        headTitle="Упс"
+        content="Песня не найдена("
+      />
+    );
   }
 
   return (

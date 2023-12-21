@@ -28,7 +28,7 @@ export default function ComOrders(props: IComOrdersProps) {
               return orderUnit.top.style?.isModulation ? (
                 <span
                   className={'pointer flex ' + (isExcludedModulation ? 'color--ko' : 'color--7')}
-                  onClick={(event) => {
+                  onClick={event => {
                     event.stopPropagation();
                     updateExMods(com.toggleModulationInclusion(orderUnit));
                   }}
@@ -48,10 +48,12 @@ export default function ComOrders(props: IComOrdersProps) {
 }
 
 const OrdList = styled.div`
-  display: inline-block;
-  color: var(--color-far);
-  padding-top: 0.06em;
-  transition: padding 0.2s;
-  padding-bottom: 100px;
-  min-height: 100%;
+  & {
+    display: inline-block;
+    transition: padding 0.2s;
+    padding-top: 0.06em;
+    padding-bottom: 100px;
+    min-height: 100%;
+    color: var(--color-far);
+  }
 `;

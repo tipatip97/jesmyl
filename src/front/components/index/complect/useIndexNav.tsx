@@ -14,17 +14,17 @@ import Main from '../parts/main/IndexMain';
 const actions: UseNavAction[] = [];
 const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
   title: 'Index',
-  root: (content) => <Index content={content} />,
+  root: content => <Index content={content} />,
   rootPhase: null,
   jumpByLink: {
     swInvite: (value, key, alt) => {
       serviceMaster('index')<string>(key, value)
-        .then((text) => modalService.alert(text, 'Успех'))
-        .catch((errorMessage) => modalService.alert(errorMessage));
+        .then(text => modalService.alert(text, 'Успех'))
+        .catch(errorMessage => modalService.alert(errorMessage));
 
       return alt.Reject;
     },
-    schw: (schw) => ({ data: { schw }, path: ['other', 'schedules'] }),
+    schw: schw => ({ data: { schw }, path: ['other', 'schedules'] }),
   },
   routes: [
     {

@@ -4,5 +4,10 @@ import useAdminNav from '../useAdminNav';
 
 export default function PhaseAdminContainer(props: PhaseContainerProps) {
   const { goBack } = useAdminNav();
-  return <PhaseContainerConfigurer {...props} goBack={goBack} />;
+  return (
+    <PhaseContainerConfigurer
+      {...props}
+      goBack={goBack}
+    />
+  );
 }

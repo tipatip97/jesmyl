@@ -20,7 +20,7 @@ export function GameDescription({ game, redactable }: { game: TeamGameImportable
   if (!isRedact && value) {
     const blocks = value.split(newl2moreReg);
     value = '';
-    blocks.forEach((block) => {
+    blocks.forEach(block => {
       const blocks = block.split(newlReg);
       value += '\n';
       let max = 0;
@@ -61,7 +61,7 @@ export function GameDescription({ game, redactable }: { game: TeamGameImportable
         multiline
         title="Рейт. калькулятор"
         icon={redactable && 'file-text-outline'}
-        onSend={redactable && ((dsc) => LeaderCleans.setGameDescription(game.w, dsc))}
+        onSend={redactable && (dsc => LeaderCleans.setGameDescription(game.w, dsc))}
         isRedact={redactable}
         setSelfRedact={redactable}
         onSelfRedactChange={redactable && setIsRedact}

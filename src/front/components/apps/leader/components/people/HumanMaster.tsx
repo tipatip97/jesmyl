@@ -123,13 +123,13 @@ export default function HumanMaster({
               className="input"
               multiline
               placeholder="Массив личностей"
-              onChange={(value) => {
-                const existsNames = humans?.map((human) => prepareSearchName(human.name)) ?? [];
+              onChange={value => {
+                const existsNames = humans?.map(human => prepareSearchName(human.name)) ?? [];
 
                 updateViewHumanList(
                   value
                     .split(/\n+/)
-                    .map((line) => lineAsHuman(line, existsNames))
+                    .map(line => lineAsHuman(line, existsNames))
                     .filter(isNNull),
                 );
               }}
@@ -138,7 +138,10 @@ export default function HumanMaster({
           {viewHumanList?.map((human, humani) => {
             if (typeof human === 'string') {
               return (
-                <div key={humani} className="error-text">
+                <div
+                  key={humani}
+                  className="error-text"
+                >
                   {human}
                 </div>
               );
@@ -146,10 +149,16 @@ export default function HumanMaster({
             const bDay = new Date(human.bDay);
 
             return (
-              <div key={humani} className="margin-big-gap-v">
+              <div
+                key={humani}
+                className="margin-big-gap-v"
+              >
                 <div>
                   Имя:
-                  <KeyboardInput value={human.name} onChange={(value) => (human.name = value)} />
+                  <KeyboardInput
+                    value={human.name}
+                    onChange={value => (human.name = value)}
+                  />
                 </div>
                 <div>
                   Пол:{' '}
@@ -165,7 +174,7 @@ export default function HumanMaster({
                   Дата рождения:
                   <KeyboardInput
                     value={(bDay.getTime() ? bDay : null)?.toLocaleDateString()}
-                    onChange={(value) => {
+                    onChange={value => {
                       const [day, month, year] = value?.split(/\./) || [];
                       human.bDay = new Date(+year, +month - 1, +day).getTime();
                     }}
@@ -173,7 +182,10 @@ export default function HumanMaster({
                 </div>
                 <div>
                   Заметка:
-                  <KeyboardInput value={human.notes} onChange={(value) => (human.notes = value)} />
+                  <KeyboardInput
+                    value={human.notes}
+                    onChange={value => (human.notes = value)}
+                  />
                 </div>
               </div>
             );
@@ -202,11 +214,11 @@ export default function HumanMaster({
             Фамилия, Имя
             <KeyboardInput
               value={human?.name}
-              setIsUnknownSymbols={(char) => !!/[^а-яё ]/i.exec(char)}
+              setIsUnknownSymbols={char => !!/[^а-яё ]/i.exec(char)}
               preferLanguage="ru"
               onInput={
                 !human
-                  ? (value) => takeName(value)
+                  ? value => takeName(value)
                   : (val, prev) => {
                       const value = takeName(val);
                       if (value) {
@@ -263,7 +275,10 @@ export default function HumanMaster({
             ] as [string, keyof HumanImportable, string][]
           ).map(([label, fieldn, action], placei) => {
             return (
-              <div key={action} className="full-width margin-big-gap-v flex between">
+              <div
+                key={action}
+                className="full-width margin-big-gap-v flex between"
+              >
                 {label + ' '}
                 {ufpLabels.map((_, ufpi) => {
                   return (
@@ -306,8 +321,8 @@ export default function HumanMaster({
               preferLanguage="ru"
               onInput={
                 !human
-                  ? (value) => takeTime(value)
-                  : (value) => {
+                  ? value => takeTime(value)
+                  : value => {
                       const time = takeTime(value);
                       if (time) {
                         leaderExer.setIfCan(
@@ -338,7 +353,7 @@ export default function HumanMaster({
               preferLanguage="ru"
               onInput={
                 !human
-                  ? (val) => setNotes(val)
+                  ? val => setNotes(val)
                   : (value, prev) => {
                       leaderExer.setIfCan(
                         {
@@ -392,7 +407,7 @@ export default function HumanMaster({
             <SendButton
               title={human ? 'Сохранить' : 'Добавить'}
               confirm={human ? null : 'Добавить новую личность?'}
-              onSuccess={(result) => {
+              onSuccess={result => {
                 if (pushInCcontextAs && result && ccontext) {
                   const humanw = result.execs?.list[0]?.value.w;
                   if (humanw) LeaderCleans.addContextHuman(ccontext.w, humanw, pushInCcontextAs).then(() => close());

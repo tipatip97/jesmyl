@@ -13,7 +13,7 @@ export const concatMigratableEditableComToolNameList = (toolList: MigratableComT
 export const spliceMigratableEditableComToolNameList = (toolList: MigratableComToolName[], auth: Auth) =>
   cmExer.actionAccessedOrNull('canRedact', auth)
     ? toolList
-    : toolList.filter((tool) => migratableEditableComToolNameList.indexOf(tool as never) < 0);
+    : toolList.filter(tool => migratableEditableComToolNameList.indexOf(tool as never) < 0);
 
 export const getMigratableEditableComTool = (
   tool: MigratableEditableComToolName,

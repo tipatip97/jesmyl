@@ -28,17 +28,17 @@ export const UserMore: BottomPopupContenter = (_, prepare) => {
         {
           title: 'Выйти из системы',
           icon: 'person-outline',
-          onClick: (event) => {
+          onClick: event => {
             event.preventDefault();
             modalService
               .confirm('Произвести выход из системы?', 'Разлогиниться')
-              .then((isLogout) => isLogout && logout());
+              .then(isLogout => isLogout && logout());
           },
         },
         {
           title: 'Предъявить JesmyL-паспорт',
           icon: 'qr-code',
-          onClick: (event) => {
+          onClick: event => {
             event.preventDefault();
             if (auth.nick && auth.login)
               shareQrData(nav, 'passport', {

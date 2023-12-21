@@ -50,7 +50,10 @@ export default function LoadIndicatedContent(
         className="load-indicated-content-spinner-container"
         onAnimationEnd={() => state === State.Ending && onEnd()}
       >
-        <JesmylLogo className="ringify" onAnimationIteration={() => state === State.Ready && setState(State.Ending)} />
+        <JesmylLogo
+          className="ringify"
+          onAnimationIteration={() => state === State.Ready && setState(State.Ending)}
+        />
       </div>
       {state === State.Loaded ? props.children : null}
     </div>

@@ -22,11 +22,21 @@ export default function useExer<Storage extends ExerStorage>(exer: Exer<Storage>
     },
     execs: exer.execs,
     lookIcon: exer.execs.length ? (
-      <span className="show-execs-icon" execs-count={exer.execs.length}>
+      <span
+        className="show-execs-icon"
+        execs-count={exer.execs.length}
+      >
         <EvaIcon
           name="eye-outline"
           className="action-button pointer"
-          onClick={() => openFullscreenContent(<ExecList exer={exer} onLoad={() => closeFullscreenContent()} />)}
+          onClick={() =>
+            openFullscreenContent(
+              <ExecList
+                exer={exer}
+                onLoad={() => closeFullscreenContent()}
+              />,
+            )
+          }
         />
       </span>
     ) : null,

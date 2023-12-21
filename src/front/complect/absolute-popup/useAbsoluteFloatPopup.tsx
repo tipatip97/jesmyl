@@ -55,7 +55,7 @@ export function ABSOLUTE__FLOAT__POPUP({ onOpen }: { onOpen: (close: () => boole
   const { isAbsoluteFloatPopupOpen, closeAbsoluteFloatPopup } = useAbsoluteFloatPopup();
 
   useEffect(
-    () => window.addEventListener('keydown', (event) => event.code === 'Escape' && closeAbsoluteFloatPopup()),
+    () => window.addEventListener('keydown', event => event.code === 'Escape' && closeAbsoluteFloatPopup()),
     [],
   );
 
@@ -69,11 +69,14 @@ export function ABSOLUTE__FLOAT__POPUP({ onOpen }: { onOpen: (close: () => boole
     <>
       {isMounted && (
         <Portal>
-          <div className={className} onClick={() => closeAbsoluteFloatPopup()}>
+          <div
+            className={className}
+            onClick={() => closeAbsoluteFloatPopup()}
+          >
             <div
               className={`absolute-popup-content`}
-              onClick={(event) => !isClosable && event.stopPropagation()}
-              ref={(elem) => elem && (floatElement = elem)}
+              onClick={event => !isClosable && event.stopPropagation()}
+              ref={elem => elem && (floatElement = elem)}
             >
               {popupContent}
             </div>

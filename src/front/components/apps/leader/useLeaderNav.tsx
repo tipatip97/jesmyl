@@ -23,12 +23,12 @@ export const leaderNavGamePhase: RoutePhasePoint = ['game'];
 
 const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new NavigationConfig('leader', {
   title: 'Лидер',
-  root: (content) => <LeaderApplication content={content} />,
+  root: content => <LeaderApplication content={content} />,
   rootPhase: 'all',
   logo: 'navigation-2',
   exer: leaderExer,
   jumpByLink: {
-    gamew: (gamew) => ({ path: ['all', 'games', 'game'], data: { gamew } }),
+    gamew: gamew => ({ path: ['all', 'games', 'game'], data: { gamew } }),
   },
   useIsCanRead: (topContextw: number) => {
     const schedules = useSchedules();
@@ -39,9 +39,9 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
     if (contexts === undefined) return auth?.level > 2;
 
     const check = (contextw: number) => {
-      const schedule = schedules.list.find((schedule) => schedule.w === contextw);
+      const schedule = schedules.list.find(schedule => schedule.w === contextw);
       if (schedule === undefined) return topContextw !== undefined && auth.level > 10;
-      const myUser = schedule.ctrl.users.find((user) => user.login === auth.login);
+      const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
       if (myUser === undefined) return false;
       return scheduleWidgetUserRights.checkIsHasRights(
         myUser.R ?? schedule.ctrl.defu,
@@ -49,7 +49,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       );
     };
 
-    return topContextw === undefined ? !!contexts.list?.some((ctx) => check(ctx.w)) : check(topContextw);
+    return topContextw === undefined ? !!contexts.list?.some(ctx => check(ctx.w)) : check(topContextw);
   },
   routes: [
     {

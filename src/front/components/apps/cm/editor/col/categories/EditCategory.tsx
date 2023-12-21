@@ -28,16 +28,26 @@ export default function EditCategory() {
             <EditContainerCorrectsInformer corrects={ccat?.col.corrects.name}>
               <div className="flex">
                 <div className="margin-gap-h">Название:</div>
-                <KeyboardInput value={ccat.name} onChange={(value) => exec(ccat.rename(value, exec))} />
+                <KeyboardInput
+                  value={ccat.name}
+                  onChange={value => exec(ccat.rename(value, exec))}
+                />
               </div>
             </EditContainerCorrectsInformer>
           }
           {
-            <EditContainerCorrectsInformer access="catSetKind" corrects={ccat?.col.corrects.catSetKind}>
+            <EditContainerCorrectsInformer
+              access="catSetKind"
+              corrects={ccat?.col.corrects.catSetKind}
+            >
               <div className="flex between">
                 <span>Тип:</span>
                 <div className="half-width">
-                  <Dropdown id={ccat.kind} items={catTrackers} onSelect={(kind) => exec(ccat.setKind(kind, exec))} />
+                  <Dropdown
+                    id={ccat.kind}
+                    items={catTrackers}
+                    onSelect={kind => exec(ccat.setKind(kind, exec))}
+                  />
                 </div>
                 {(ccat.kind !== 'list' && ccat.coms.length > 0) || isCleared ? (
                   <div
@@ -51,15 +61,22 @@ export default function EditCategory() {
                   </div>
                 ) : null}
               </div>
-              <div className="pointer" onClick={() => setIsShowComs(!isShowComs)}>
+              <div
+                className="pointer"
+                onClick={() => setIsShowComs(!isShowComs)}
+              >
                 {isShowComs ? ' Скрыть' : ' Показать'} список песен {ccat.coms.length}
               </div>
             </EditContainerCorrectsInformer>
           }
           {isShowComs ? (
             <LoadIndicatedContent isLoading={!ccat.coms.length}>
-              {ccat.coms.map((com) => (
-                <ComFace key={`edit-category-com-list-com_${com.wid}`} com={com} importantOnClick={() => {}} />
+              {ccat.coms.map(com => (
+                <ComFace
+                  key={`edit-category-com-list-com_${com.wid}`}
+                  com={com}
+                  importantOnClick={() => {}}
+                />
               ))}
             </LoadIndicatedContent>
           ) : null}

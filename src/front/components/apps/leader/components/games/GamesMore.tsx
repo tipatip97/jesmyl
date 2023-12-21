@@ -3,7 +3,7 @@ import useFullContent from '../../../../../complect/fullscreen-content/useFullCo
 import LeaderGameMaster from './GameMaster';
 
 export const GamesMoreContenter: BottomPopupContenter = (_, prepare) => {
-  const [fullNode, openFull] = useFullContent((close) => <LeaderGameMaster close={close} />);
+  const [fullNode, openFull] = useFullContent(close => <LeaderGameMaster close={close} />);
 
   return [
     fullNode,

@@ -15,7 +15,11 @@ export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) 
         {body(
           <>
             <div>Кого ожидать по ссылке?</div>
-            <KeyboardInput value={fio} onChange={setAlias} placeholder="Имя участника" />
+            <KeyboardInput
+              value={fio}
+              onChange={setAlias}
+              placeholder="Имя участника"
+            />
           </>,
         )}
         {footer(
@@ -37,7 +41,10 @@ export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) 
   return (
     <>
       {modalNode}
-      <EvaButton name="link-2" onClick={screen} />
+      <EvaButton
+        name="link-2"
+        onClick={screen}
+      />
     </>
   );
 }

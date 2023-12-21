@@ -32,13 +32,13 @@
 
   &::before,
   &::after {
-    content: none;
-    position: absolute;
     display: block;
+    position: absolute;
+    border-radius: 100%;
     background-color: var(--jesmyl-smile-color);
     width: var(--jesmyl-smile-dot-size);
     height: var(--jesmyl-smile-dot-size);
-    border-radius: 100%;
+    content: none;
   }
 
   &::before {
@@ -62,9 +62,9 @@
   }
 
   > .smile-container {
+    display: block;
     position: absolute;
     left: 21%;
-    display: block;
     height: 101%;
 
     > .smile-line {

@@ -10,7 +10,7 @@ import { useTokenSortedWordsNaked } from '../../hooks/token-sorted-words';
 import { AliasRoomLessWordsCompute } from './LessWordsCompute';
 import { AliasSelectedDictsTextInfo, levelGradationTitles } from './SelectedDictsTextInfo';
 
-const dreamItems = [10, 30, 50, 70, 100].map((id) => ({ title: `${id} слов`, id }));
+const dreamItems = [10, 30, 50, 70, 100].map(id => ({ title: `${id} слов`, id }));
 
 export interface AliasDictsPropsPart {
   dream: number;
@@ -70,13 +70,13 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
               selectNode = (
                 <Dropdown
                   id={dicts[packi]}
-                  items={pack.variants.map((count) => ({ title: `${count} слов`, id: count }))}
+                  items={pack.variants.map(count => ({ title: `${count} слов`, id: count }))}
                   onSelectId={onSelect}
                 />
               );
           } else {
             const levels: number[] = [0];
-            Object.values(pack.words).forEach((num) => (levels[num] = (levels[num] || 0) + 1));
+            Object.values(pack.words).forEach(num => (levels[num] = (levels[num] || 0) + 1));
 
             selectNode = (
               <Dropdown
@@ -91,7 +91,10 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
           }
 
           return (
-            <div key={pack.title} className="flex flex-gap margin-gap-v dropdown-ancestor">
+            <div
+              key={pack.title}
+              className="flex flex-gap margin-gap-v dropdown-ancestor"
+            >
               {pack.title}
               {selectNode}
             </div>
@@ -126,8 +129,16 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
         />
       )}
       <div className="flex flex-gap margin-gap-v dropdown-ancestor">
-        <EvaButton name="award-outline" className="nowrap" postfix="Цель раунда" />
-        <Dropdown id={dream} items={dreamItems} onSelectId={setDream} />
+        <EvaButton
+          name="award-outline"
+          className="nowrap"
+          postfix="Цель раунда"
+        />
+        <Dropdown
+          id={dream}
+          items={dreamItems}
+          onSelectId={setDream}
+        />
       </div>
     </>
   );

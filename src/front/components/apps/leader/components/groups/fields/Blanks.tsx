@@ -60,8 +60,8 @@ export default function GroupFieldBlanks() {
             key={blanki}
             blank={blank}
             redact={keysOnRedact.indexOf(blank.key) > -1}
-            onEditStart={(isSelfRedact) => isSelfRedact && updateKeysOnRedact([...keysOnRedact, blank.key])}
-            onRedact={(blank) => {
+            onEditStart={isSelfRedact => isSelfRedact && updateKeysOnRedact([...keysOnRedact, blank.key])}
+            onRedact={blank => {
               const redactBlanks = [...redactList];
               const redactBlanki = redactBlanks.findIndex(({ key }) => blank.key === key);
 
@@ -89,7 +89,7 @@ export default function GroupFieldBlanks() {
             redact
             addition
             blank={blank}
-            onRedact={(blank) => {
+            onRedact={blank => {
               const blanks = [...addList];
               blanks[blanki] = blank;
               updateAddList(blanks);
@@ -122,8 +122,8 @@ export default function GroupFieldBlanks() {
                     contextw: ccontext.w,
                   };
 
-                  redactList.forEach((redactBlank) => {
-                    const blank = (ccontext.blanks || []).find((blank) => blank.key === redactBlank.key);
+                  redactList.forEach(redactBlank => {
+                    const blank = (ccontext.blanks || []).find(blank => blank.key === redactBlank.key);
 
                     if (blank) {
                       MyLib.entries(redactBlank).forEach(([fieldn, value]) => {

@@ -38,7 +38,7 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
 
   putComs() {
     const { select } = catTrackers.find(({ id }) => id === this.kind) || {};
-    this.coms = select ? this.topComs.filter((com) => select(com, this)) : [];
+    this.coms = select ? this.topComs.filter(com => select(com, this)) : [];
 
     this.search();
 
@@ -54,9 +54,9 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
         'com',
         isNumberSearch,
       );
-    } else this.wraps = this.coms.map((com) => ({ com }));
+    } else this.wraps = this.coms.map(com => ({ com }));
 
-    this.searchedComs = this.wraps.map((wrap) => wrap.com);
+    this.searchedComs = this.wraps.map(wrap => wrap.com);
 
     this.term = term;
   }

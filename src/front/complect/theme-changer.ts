@@ -19,7 +19,7 @@ const toggleTheme = () => {
 };
 
 const listenThemeChanges = () => {
-  document.body.addEventListener('touchstart', (event) => {
+  document.body.addEventListener('touchstart', event => {
     const touches = event.touches.length;
 
     if (touches === 4) {
@@ -29,12 +29,12 @@ const listenThemeChanges = () => {
       clearTimeout(timeout);
     }
   });
-  document.body.addEventListener('touchend', (event) => {
+  document.body.addEventListener('touchend', event => {
     const touches = event.touches.length;
 
     if (touches < minTouches || touches > maxTouches) clearTimeout(timeout);
   });
-  document.body.addEventListener('keyup', (event) => {
+  document.body.addEventListener('keyup', event => {
     if (event.code === 'Space' && event.ctrlKey && event.altKey && event.shiftKey) toggleTheme();
   });
 };

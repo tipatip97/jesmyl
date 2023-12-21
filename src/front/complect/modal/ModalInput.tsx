@@ -52,9 +52,16 @@ export default function ModalInput(topProps: TheModalInputProps) {
   });
 
   return (
-    <label className="app-modal-body-input-list-item margin-gap-v block pointer" hidden={asFunc(input.hidden)}>
+    <label
+      className="app-modal-body-input-list-item margin-gap-v block pointer"
+      hidden={asFunc(input.hidden)}
+    >
       {input.title && <span className="app-modal-body-input-list-item-title">{asFunc(input.title)}</span>}
-      <KeyboardInput {...props} value={asFunc(input.value)} multiline={isTextArea} />
+      <KeyboardInput
+        {...props}
+        value={asFunc(input.value)}
+        multiline={isTextArea}
+      />
     </label>
   );
 }

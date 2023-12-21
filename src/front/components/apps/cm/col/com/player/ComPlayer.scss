@@ -4,36 +4,36 @@
   --com-player-expand-height: calc(var(--com-player-size) * 2);
 
   .composition-player {
-    padding: 0 5px;
-    height: var(--com-player-height);
-    width: 100%;
-    font-size: 0.8em;
-    white-space: nowrap;
-    overflow: hidden;
-    background: var(--color--2);
     transition:
       opacity 0.2s,
       margin 0.2s;
+    background: var(--color--2);
+    padding: 0 5px;
+    width: 100%;
+    height: var(--com-player-height);
+    overflow: hidden;
+    font-size: 0.8em;
+    white-space: nowrap;
 
     &.hidden-controls {
-      width: var(--com-player-size);
-      padding: 0;
       justify-content: center;
-      background: rgba(0, 0, 0, 0);
       opacity: 0.5;
+      background: rgba(0, 0, 0, 0);
+      padding: 0;
+      width: var(--com-player-size);
     }
 
     .current-variant-badge {
       --size: 1.8em;
 
       border-radius: 50%;
+      background: var(--color--3);
       width: var(--size);
-      max-width: var(--size);
       min-width: var(--size);
+      max-width: var(--size);
       height: var(--size);
       min-height: var(--size);
       max-height: var(--size);
-      background: var(--color--3);
       color: var(--color--2);
     }
 
@@ -43,21 +43,21 @@
 
     .player-track {
       position: relative;
+      cursor: pointer;
+      border-radius: 5px;
+      background: var(--color--1);
       width: calc(100% - 80px);
       height: 10px;
-      background: var(--color--1);
-      border-radius: 5px;
       overflow: hidden;
-      cursor: pointer;
 
       &:after {
-        content: '';
         position: absolute;
-        left: 0;
         top: 0;
-        height: 100%;
-        width: var(--track-progress-width);
+        left: 0;
         background: var(--color--3);
+        width: var(--track-progress-width);
+        height: 100%;
+        content: '';
       }
     }
   }

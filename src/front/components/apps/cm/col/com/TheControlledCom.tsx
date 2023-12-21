@@ -47,8 +47,16 @@ export default function TheControlledCom({
 
   return (
     <RollControled className="composition-content">
-      <div {...swiper} className="relative full-height">
-        <TheCom com={com} fontSize={fontSize} chordVisibleVariant={chordVisibleVariant} isMiniAnchor={isMiniAnchor} />
+      <div
+        {...swiper}
+        className="relative full-height"
+      >
+        <TheCom
+          com={com}
+          fontSize={fontSize}
+          chordVisibleVariant={chordVisibleVariant}
+          isMiniAnchor={isMiniAnchor}
+        />
       </div>
     </RollControled>
   );

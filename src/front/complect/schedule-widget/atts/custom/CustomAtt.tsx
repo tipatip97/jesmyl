@@ -88,14 +88,14 @@ export default function ScheduleWidgetCustomAtt(
                 rightCtrl={scheduleWidgetUserRights}
                 R={props.tatt[whoCan.rule]}
                 isReverse
-                isDisabled={(type) => myBalance < scheduleWidgetUserRights.rightLevel(type.id) + 2}
+                isDisabled={type => myBalance < scheduleWidgetUserRights.rightLevel(type.id) + 2}
               />
             </>,
           )}
         </>
       );
     },
-    (is) => !is && setWhoCani(WhoCan.No),
+    is => !is && setWhoCani(WhoCan.No),
     whoCani !== WhoCan.No,
   );
 
@@ -112,7 +112,10 @@ export default function ScheduleWidgetCustomAtt(
         )}
         {body(
           <>
-            <ScheduleWidgetCustomAtt {...props} isRedact />
+            <ScheduleWidgetCustomAtt
+              {...props}
+              isRedact
+            />
           </>,
         )}
       </>
@@ -128,7 +131,10 @@ export default function ScheduleWidgetCustomAtt(
         {isRedact ||
           (isCanRedact && (
             <div className="flex flex-end full-width">
-              <EvaButton name="edit-outline" onClick={() => redactModalScreen()} />
+              <EvaButton
+                name="edit-outline"
+                onClick={() => redactModalScreen()}
+              />
             </div>
           ))}
         {isRedact && (
@@ -176,7 +182,10 @@ export default function ScheduleWidgetCustomAtt(
                           </span>
                         </span>
                         {isRedact && isCanRedact && (
-                          <EvaButton name="edit-outline" onClick={() => setWhoCani(whoCani)} />
+                          <EvaButton
+                            name="edit-outline"
+                            onClick={() => setWhoCani(whoCani)}
+                          />
                         )}
                       </div>
                     }
@@ -213,7 +222,7 @@ export default function ScheduleWidgetCustomAtt(
                               : '')
                           }
                           postfix={(top ? '' : 'Использовать ') + title}
-                          mapExecArgs={(args) => {
+                          mapExecArgs={args => {
                             return {
                               ...args,
                               value: customAttUseRights.switchRights(props.tatt.use, id),
@@ -245,7 +254,7 @@ export default function ScheduleWidgetCustomAtt(
                                     : ''
                                 }
                                 postfix={cat}
-                                mapExecArgs={(args) => {
+                                mapExecArgs={args => {
                                   return {
                                     ...args,
                                     value: ScheduleWidgetRightsCtrl.switchRights(props.tatt.roles, cati, cata.length),
@@ -278,7 +287,7 @@ export default function ScheduleWidgetCustomAtt(
                                     : ''
                                 }
                                 postfix={cat.title}
-                                mapExecArgs={(args) => {
+                                mapExecArgs={args => {
                                   return {
                                     ...args,
                                     value: ScheduleWidgetRightsCtrl.switchRights(props.tatt.list, cati, cata.length),
@@ -311,7 +320,11 @@ export default function ScheduleWidgetCustomAtt(
                             );
                           })}
                           {!props.tatt.titles?.some(itNIt) && (
-                            <StrongEvaButton scope={selfScope} fieldName="titles" name="plus" />
+                            <StrongEvaButton
+                              scope={selfScope}
+                              fieldName="titles"
+                              name="plus"
+                            />
                           )}
                         </div>
                       )}

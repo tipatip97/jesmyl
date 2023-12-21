@@ -27,7 +27,7 @@ export default function StrongEvaButton({
       {modalNode}
       <EvaSendButton<SokiServerEvent | null>
         {...props}
-        onFailure={(errorMessage) => toast(errorMessage, { mood: 'ko' })}
+        onFailure={errorMessage => toast(errorMessage, { mood: 'ko' })}
         onSend={
           props.isCanSend !== false
             ? () => {

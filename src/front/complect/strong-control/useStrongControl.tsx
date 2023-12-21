@@ -34,7 +34,7 @@ export const strongPrepareArgsAndSend = <Storage extends ExerStorage, ValType ex
   let args: Record<string, unknown> = value === undefined ? {} : { value };
   let action = '';
 
-  scope?.split(' ').forEach((scopeItem) => {
+  scope?.split(' ').forEach(scopeItem => {
     const beats = scopeItem.split(strongScopeKeyValueSeparator);
     if (beats.length > 1) {
       args[beats[0]] = isNaN(+beats[1]) ? beats[1] : +beats[1];

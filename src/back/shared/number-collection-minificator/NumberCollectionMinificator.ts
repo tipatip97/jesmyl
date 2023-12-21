@@ -15,7 +15,7 @@ export function NumberCollectionMinificator<InsideDigits extends [InsideDigit?, 
 
   const decodeReg = new RegExp(
     '(\\d+)(\\.' +
-      (insideDigits?.map((digits) => `(${digits === 1 ? '\\d' : `\\d{1,${digits}}`})?`).join('') || '') +
+      (insideDigits?.map(digits => `(${digits === 1 ? '\\d' : `\\d{1,${digits}}`})?`).join('') || '') +
       ')?(\\d+)?',
   );
   const zeroEndedReg = /(\d+)([1-9]*)(0+)$/;

@@ -30,18 +30,16 @@ export default function ScheduleKeyValueListAttLiItemDropdown({
   const filter = (id: number) =>
     !value.includes(id) &&
     (isShowAll ||
-      !topValues.some(
-        (value) => value[0] === id || value[1] === id || (mylib.isArr(value[1]) && value[1].includes(id)),
-      ));
+      !topValues.some(value => value[0] === id || value[1] === id || (mylib.isArr(value[1]) && value[1].includes(id))));
 
   const sort = isShowAll
     ? zeroFunc
     : (aid: number, bid: number) => {
         const isAIn = topValues.some(
-          (value) => value[0] === aid || value[1] === aid || (mylib.isArr(value[1]) && value[1].includes(aid)),
+          value => value[0] === aid || value[1] === aid || (mylib.isArr(value[1]) && value[1].includes(aid)),
         );
         const isBIn = topValues.some(
-          (value) => value[0] === bid || value[1] === bid || (mylib.isArr(value[1]) && value[1].includes(bid)),
+          value => value[0] === bid || value[1] === bid || (mylib.isArr(value[1]) && value[1].includes(bid)),
         );
 
         return isAIn ? (isBIn ? 0 : 1) : -1;
@@ -52,7 +50,7 @@ export default function ScheduleKeyValueListAttLiItemDropdown({
   });
 
   const titles =
-    topTitles?.map((title) => {
+    topTitles?.map(title => {
       if (value.includes(title)) return null;
 
       return {
@@ -63,19 +61,19 @@ export default function ScheduleKeyValueListAttLiItemDropdown({
 
   const users =
     topUsers
-      ?.map((user) => user.mi + CustomAttUseTaleId.Users)
+      ?.map(user => user.mi + CustomAttUseTaleId.Users)
       .filter(filter)
       .sort(sort)
       .map(map) ?? [];
   const roles =
     topRoles
-      ?.map((user) => user.mi + CustomAttUseTaleId.Roles)
+      ?.map(user => user.mi + CustomAttUseTaleId.Roles)
       .filter(filter)
       .sort(sort)
       .map(map) ?? [];
   const lists =
     topLists
-      ?.map((user) => user.mi + CustomAttUseTaleId.Lists)
+      ?.map(user => user.mi + CustomAttUseTaleId.Lists)
       .filter(filter)
       .sort(sort)
       .map(map) ?? [];
@@ -84,7 +82,10 @@ export default function ScheduleKeyValueListAttLiItemDropdown({
 
   return (
     <div className="flex flex-gap">
-      <EvaButton name={isShowAll ? 'eye-outline' : 'eye-off-outline'} onClick={() => setIsShowAll(!isShowAll)} />
+      <EvaButton
+        name={isShowAll ? 'eye-outline' : 'eye-off-outline'}
+        onClick={() => setIsShowAll(!isShowAll)}
+      />
       <StrongDropdown
         scope={scope}
         fieldName="value list"

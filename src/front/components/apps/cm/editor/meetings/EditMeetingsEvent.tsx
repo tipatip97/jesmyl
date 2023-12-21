@@ -27,7 +27,7 @@ export default function EditMeetingsEvent() {
         {
           icon: 'list',
           title: 'История',
-          onClick: () => openFullscreenContent((close) => <MeetingsEventHistory close={close} />),
+          onClick: () => openFullscreenContent(close => <MeetingsEventHistory close={close} />),
         },
       ],
     });
@@ -53,7 +53,7 @@ export default function EditMeetingsEvent() {
             <KeyboardInput
               value={currentEvent.name}
               onFocus={() => setIsClosedComList(true)}
-              onChange={(value) => {
+              onChange={value => {
                 setIsClosedComList(true);
                 exec(currentEvent.rename(value));
               }}
@@ -73,7 +73,7 @@ export default function EditMeetingsEvent() {
                       <EvaIcon
                         name={comi ? 'arrow-upward' : 'arrow-downward'}
                         className="margin-big-gap-h"
-                        onClick={(event) => {
+                        onClick={event => {
                           event.stopPropagation();
                           exec(currentEvent.moveCom(comi));
                         }}
@@ -81,7 +81,7 @@ export default function EditMeetingsEvent() {
                     )}
                     <EvaIcon
                       name="close-circle-outline"
-                      onClick={(event) => {
+                      onClick={event => {
                         event.stopPropagation();
                         exec(currentEvent.removeCom(com));
                       }}
@@ -102,14 +102,14 @@ export default function EditMeetingsEvent() {
                   <EvaIcon
                     name={comsLength ? 'arrowhead-up-outline' : 'plus-outline'}
                     className="pointer"
-                    onClick={(event) => {
+                    onClick={event => {
                       event.stopPropagation();
                       exec(currentEvent.mergePrevComs(currentEvent.prevComs));
                     }}
                   />
                 )}
               </div>
-              {currentEvent.prevComs?.map((com) => (
+              {currentEvent.prevComs?.map(com => (
                 <ComFace
                   key={`event-${com.wid}`}
                   com={com}
@@ -117,7 +117,7 @@ export default function EditMeetingsEvent() {
                   description={
                     <EvaIcon
                       name={comsLength ? 'arrow-ios-upward-outline' : 'plus-circle-outline'}
-                      onClick={(event) => {
+                      onClick={event => {
                         event.stopPropagation();
                         exec(currentEvent.mergePrevComs([com]));
                       }}
@@ -141,9 +141,9 @@ export default function EditMeetingsEvent() {
                 placeholder="Поиск песен"
                 className="debounced-searcher round-styled margin-gap-v"
                 initialTerm={term}
-                onSearch={(term) => zcat.search(term)}
+                onSearch={term => zcat.search(term)}
                 debounce={500}
-                onTermChange={(term) => setTerm(term)}
+                onTermChange={term => setTerm(term)}
               />
               {zcat?.wraps.map(({ com }) => {
                 return (
@@ -158,7 +158,7 @@ export default function EditMeetingsEvent() {
                       usedComList.indexOf(com) < 0 ? (
                         <EvaIcon
                           name="plus-circle-outline"
-                          onClick={(event) => {
+                          onClick={event => {
                             event.stopPropagation();
                             exec(currentEvent.mergeStack([com.wid]));
                           }}

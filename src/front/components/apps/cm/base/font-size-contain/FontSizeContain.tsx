@@ -7,7 +7,7 @@ export default function FontSizeContain({ delay, ...props }: PropsWithChildren<F
   return (
     <div
       style={{ display: 'inline-block' }}
-      ref={(element) => {
+      ref={element => {
         if (element) {
           const compute = () => {
             const res = () => {

@@ -22,11 +22,11 @@ const catMentions = (cols?: Cols, com?: Com): string[] => {
   const natives: string[] = [];
 
   const inCats = cols.cats
-    .filter((cat) => {
+    .filter(cat => {
       if (refs[cat.wid]) natives.push(`${cat.name} ${refs[cat.wid]}`);
       return cat.stack.includes(wid);
     })
-    .map((cat) => cat.name);
+    .map(cat => cat.name);
 
   return inCats.concat(natives);
 };
@@ -54,14 +54,14 @@ export const ComTools: BottomPopupContenter = (close, prepare) => {
               <>
                 <EvaIcon
                   name="minus"
-                  onClick={(event) => {
+                  onClick={event => {
                     event.stopPropagation();
                     ccom.transpose(-1);
                     dispatch(di.riseUpComUpdate());
                   }}
                 />
                 <div
-                  onClick={(event) => {
+                  onClick={event => {
                     event.stopPropagation();
                     ccom.setChordsInitialTon();
                     dispatch(di.riseUpComUpdate());
@@ -71,7 +71,7 @@ export const ComTools: BottomPopupContenter = (close, prepare) => {
                 </div>
                 <EvaIcon
                   name="plus"
-                  onClick={(event) => {
+                  onClick={event => {
                     event.stopPropagation();
                     ccom.transpose(1);
                     dispatch(di.riseUpComUpdate());
@@ -87,7 +87,7 @@ export const ComTools: BottomPopupContenter = (close, prepare) => {
               <>
                 <EvaIcon
                   name="minus-outline"
-                  onClick={(event) => {
+                  onClick={event => {
                     event.stopPropagation();
                     dispatch(di.setComFontSize(fontSize - 1));
                   }}
@@ -95,7 +95,7 @@ export const ComTools: BottomPopupContenter = (close, prepare) => {
                 <div>{fontSize}</div>
                 <EvaIcon
                   name="plus-outline"
-                  onClick={(event) => {
+                  onClick={event => {
                     event.stopPropagation();
                     dispatch(di.setComFontSize(fontSize + 1));
                   }}
@@ -103,7 +103,7 @@ export const ComTools: BottomPopupContenter = (close, prepare) => {
               </>
             ),
           },
-          menuTools.map((tool) => ({
+          menuTools.map(tool => ({
             ...tool,
             iconWrapperClassName: comTopTools.includes(tool.tool) ? 'active' : '',
             onClick: () => {
@@ -111,7 +111,7 @@ export const ComTools: BottomPopupContenter = (close, prepare) => {
               close();
             },
             ...propsOfClicker({
-              onCtxMenu: (event) => {
+              onCtxMenu: event => {
                 event.preventDefault();
                 toggleTopTool(tool.tool);
               },

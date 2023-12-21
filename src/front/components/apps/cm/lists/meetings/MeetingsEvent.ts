@@ -60,7 +60,7 @@ export class MeetingsEvent extends BaseNamed<IExportableMeetingsEvent> {
   takeComs() {
     return (
       this.cols &&
-      (this.stack.map((comw) => (this.cols as Cols).coms.find((com) => com.wid === comw)).filter((com) => com) as Com[])
+      (this.stack.map(comw => (this.cols as Cols).coms.find(com => com.wid === comw)).filter(com => com) as Com[])
     );
   }
 

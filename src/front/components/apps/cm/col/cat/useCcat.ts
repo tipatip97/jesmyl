@@ -7,8 +7,8 @@ export function useCcat(isTakeZeroCat?: boolean): Cat | nil {
   const cols = useCols();
 
   return isTakeZeroCat
-    ? cols?.cats.find((cat) => 0 === cat.wid)
+    ? cols?.cats.find(cat => 0 === cat.wid)
     : appRouteData.ccatw !== undefined
-      ? cols?.cats.find((cat) => appRouteData.ccatw === cat.wid)
+      ? cols?.cats.find(cat => appRouteData.ccatw === cat.wid)
       : undefined;
 }

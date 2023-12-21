@@ -39,7 +39,10 @@ export default function ScheduleWidgetRightControlList({
         const isHas = (type.always || isCan) && rightCtrl.checkIsHasRights(R, type.id);
 
         const node = (
-          <div key={type.id} className={'flex flex-gap between margin-gap-v over-hidden ' + className}>
+          <div
+            key={type.id}
+            className={'flex flex-gap between margin-gap-v over-hidden ' + className}
+          >
             <div>
               <div>{type.title}</div>
               {type.description && (!isDescriptionsCollect || isCan) && (
@@ -57,7 +60,7 @@ export default function ScheduleWidgetRightControlList({
               disabled={isCantEdit || !isCan || type.always || !!isDisabled?.(type, typei)}
               className={(isReverse ? !isHas : isHas) ? 'color--ok' : 'color--3'}
               name={(isReverse ? !isHas : isHas) ? 'toggle-right-outline' : 'toggle-left-outline'}
-              mapExecArgs={(args) => {
+              mapExecArgs={args => {
                 if (onUpdate !== undefined) {
                   onUpdate(rightCtrl.switchRights(R, type.id));
                   return;
@@ -80,5 +83,7 @@ export default function ScheduleWidgetRightControlList({
 }
 
 const Desc = styled.div`
-  font-size: 0.7em;
+  & {
+    font-size: 0.7em;
+  }
 `;

@@ -8,11 +8,11 @@ export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps
   const page = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    props.win.onclick = (event) => {
+    props.win.onclick = event => {
       setFontSize(fontSize + (event.clientX > props.win.innerWidth / 2 ? 1 : -1));
       if (page.current) props.win.navigator.clipboard.writeText(page.current.innerText);
     };
-    props.win.onkeyup = (event) => {
+    props.win.onkeyup = event => {
       if (event.code === 'Equal') setFontSize(fontSize + 1);
       else if (event.code === 'Minus') setFontSize(fontSize - 1);
     };
@@ -34,8 +34,14 @@ export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps
         isCanRedact: false,
       }}
     >
-      <div className="for-print canvas" ref={page}>
-        <ScheduleWidgetDay {...props} isPrint />
+      <div
+        className="for-print canvas"
+        ref={page}
+      >
+        <ScheduleWidgetDay
+          {...props}
+          isPrint
+        />
       </div>
     </ScheduleWidgetContextWrapper>
   );

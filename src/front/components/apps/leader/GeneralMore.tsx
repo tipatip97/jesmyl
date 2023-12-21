@@ -5,8 +5,8 @@ import HumanMaster from './components/people/HumanMaster';
 import useLeaderNav from './useLeaderNav';
 
 export const GeneralMoreContenter: BottomPopupContenter = (_, prepare) => {
-  const [humanMasterNode, openHumanMaster] = useFullContent((close) => <HumanMaster close={close} />);
-  const [newLeaderContextMasterNode, openNewLeaderContextMaster] = useFullContent((close) => (
+  const [humanMasterNode, openHumanMaster] = useFullContent(close => <HumanMaster close={close} />);
+  const [newLeaderContextMasterNode, openNewLeaderContextMaster] = useFullContent(close => (
     <NewLeaderContextMaster close={close} />
   ));
   const { setAppRouteData } = useLeaderNav();

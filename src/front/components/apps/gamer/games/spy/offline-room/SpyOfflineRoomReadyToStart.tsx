@@ -28,9 +28,13 @@ export default function SpyOfflineRoomReadyToStart() {
     <>
       <h2 className="flex">
         Участники
-        <EvaButton name="plus-circle-outline" className="margin-gap-h" onClick={() => addNewMember()} />
+        <EvaButton
+          name="plus-circle-outline"
+          className="margin-gap-h"
+          onClick={() => addNewMember()}
+        />
       </h2>
-      {currentOfflineRoom?.members.map((member) => {
+      {currentOfflineRoom?.members.map(member => {
         return (
           <RoomMemberFace
             key={`m ${member.login}`}
@@ -40,14 +44,20 @@ export default function SpyOfflineRoomReadyToStart() {
           />
         );
       })}
-      <h2 className="flex flex-gap pointer" onClick={() => setIsOpenLocations(!isOpenLocations)}>
+      <h2
+        className="flex flex-gap pointer"
+        onClick={() => setIsOpenLocations(!isOpenLocations)}
+      >
         Локации
         <EvaButton name={isOpenLocations ? 'arrow-ios-upward-outline' : 'arrow-ios-downward-outline'} />
       </h2>
       {isOpenLocations &&
-        locations?.map((location) => {
+        locations?.map(location => {
           return (
-            <div key={location} className="margin-gap">
+            <div
+              key={location}
+              className="margin-gap"
+            >
               <span
                 className={`pointer ${strikedLocations.indexOf(location) > -1 ? 'text-strike' : ''}`}
                 onClick={() => switchLocation(location)}
@@ -66,10 +76,13 @@ export default function SpyOfflineRoomReadyToStart() {
             value={'' + spiesCount}
             type="number"
             maxLength={2}
-            onInput={(value) => setSpiesCount(+value)}
+            onInput={value => setSpiesCount(+value)}
           />
           <div className="flex center margin-gap">
-            <TheButton onClick={() => startOfflineGame(spiesCount)} disabled={!players?.length}>
+            <TheButton
+              onClick={() => startOfflineGame(spiesCount)}
+              disabled={!players?.length}
+            >
               Начать игру
             </TheButton>
           </div>

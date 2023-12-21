@@ -34,17 +34,17 @@ export function ScheduleWidgetListCategory({
       <EvaIcon name={cat.icon} /> {title}
     </>,
     rights.isCanRedact
-      ? (isExpand) =>
+      ? isExpand =>
           isExpand &&
           rights.isCanTotalRedact && (
             <div className="flex flex-gap">
               <div className="ellipsis max-width:5em">{cat.title.toLowerCase()}</div>
-              {!rights.schedule.lists?.units.some((unit) => !unit.title) && (
+              {!rights.schedule.lists?.units.some(unit => !unit.title) && (
                 <StrongEvaButton
                   scope={scope}
                   fieldName="units"
                   name="plus"
-                  mapExecArgs={(args) => {
+                  mapExecArgs={args => {
                     return {
                       ...args,
                       cati,
@@ -52,7 +52,10 @@ export function ScheduleWidgetListCategory({
                   }}
                 />
               )}
-              <EvaButton name="edit-outline" onClick={screen} />
+              <EvaButton
+                name="edit-outline"
+                onClick={screen}
+              />
             </div>
           )
       : null,
@@ -64,7 +67,11 @@ export function ScheduleWidgetListCategory({
         {header(<div className="flex flex-gap">{title}</div>)}
         {body(
           <>
-            <ScheduleWidgetIconChange scope={catScope} header={`Иконка для списка ${cat.title}`} icon={cat.icon} />
+            <ScheduleWidgetIconChange
+              scope={catScope}
+              header={`Иконка для списка ${cat.title}`}
+              icon={cat.icon}
+            />
             <StrongEditableField
               scope={catScope}
               fieldName="field"
@@ -100,7 +107,7 @@ export function ScheduleWidgetListCategory({
       <div className="full-width">{catTitle}</div>
       <div className="margin-big-gap-h">
         {isExpand &&
-          rights.schedule.lists?.units.map((unit) => {
+          rights.schedule.lists?.units.map(unit => {
             if (unit.cat !== cati) return null;
 
             return (

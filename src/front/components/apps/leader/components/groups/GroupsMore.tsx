@@ -5,7 +5,7 @@ import QRQuest from '../templates/QRQuest';
 import LeaderGroupMaster from './GroupMaster';
 
 export const LeaderGroupsMore: BottomPopupContenter = (close, prepare) => {
-  const [groupMasterNode, openGroupMaster] = useFullContent((close) => <LeaderGroupMaster close={close} />);
+  const [groupMasterNode, openGroupMaster] = useFullContent(close => <LeaderGroupMaster close={close} />);
 
   return [
     groupMasterNode,
@@ -19,7 +19,12 @@ export const LeaderGroupsMore: BottomPopupContenter = (close, prepare) => {
           },
         ],
       })}
-      <PrintableBottomItem title="QR квест точки" node={<QRQuest />} close={close} prepare={prepare} />
+      <PrintableBottomItem
+        title="QR квест точки"
+        node={<QRQuest />}
+        close={close}
+        prepare={prepare}
+      />
     </>,
   ];
 };

@@ -14,13 +14,18 @@ export default function EditMeetingsMore({ currPath }: { currPath: number[] }) {
       {
         icon: 'plus-circle-outline',
         title: 'Создать событие',
-        onClick: () => openFullscreenContent((close) => <MeetingsCreator close={close} />),
+        onClick: () => openFullscreenContent(close => <MeetingsCreator close={close} />),
       },
       cmExer.actionAccessedOrNull('addMeetingsContext', auth) && {
         title: 'Создать контекст',
         icon: 'folder-add-outline',
         onClick: () => {
-          openFullscreenContent((close) => <AddContext close={close} currPath={currPath} />);
+          openFullscreenContent(close => (
+            <AddContext
+              close={close}
+              currPath={currPath}
+            />
+          ));
         },
       },
     ],

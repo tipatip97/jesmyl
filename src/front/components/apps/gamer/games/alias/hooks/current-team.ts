@@ -14,8 +14,8 @@ export const useAliasCurrentTeam = <RetMode extends 'index' | 'team'>(
     const member = memberList[state.speakeri || 0];
     return (
       returnMode === 'index'
-        ? state.teams.findIndex((team) => team.members.includes(member))
-        : state.teams.find((team) => team.members.includes(member)) ?? null
+        ? state.teams.findIndex(team => team.members.includes(member))
+        : state.teams.find(team => team.members.includes(member)) ?? null
     ) as never;
   }, [memberList, returnMode, state]);
 };

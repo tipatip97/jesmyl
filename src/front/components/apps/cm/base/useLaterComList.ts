@@ -9,7 +9,7 @@ import { useCols } from '../cols/useCols';
 
 let laterComs: Com[] | und;
 const setLaterComs = (cols: Cols, list: number[]) =>
-  (laterComs = list.map((comw) => cols.coms.find((com) => com.wid === comw)).filter((com) => com) as Com[]);
+  (laterComs = list.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[]);
 const laterComwListSelector = (state: RootState) => state.cm.laterComwList;
 
 export default function useLaterComList({ maxStack = 4 } = {}) {
@@ -27,7 +27,7 @@ export default function useLaterComList({ maxStack = 4 } = {}) {
   const addLaterComw = useCallback(
     (comw: number) => {
       const newList = [comw].concat(
-        list.filter((laterComw) => laterComw !== comw).filter((_, laterComwi) => maxStack - 1 > laterComwi),
+        list.filter(laterComw => laterComw !== comw).filter((_, laterComwi) => maxStack - 1 > laterComwi),
       );
       updateLaterComwList(newList);
       cmStorage.set('laterComwList', newList);

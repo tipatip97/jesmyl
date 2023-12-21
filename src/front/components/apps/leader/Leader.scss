@@ -1,7 +1,7 @@
 .template-page-content {
   .human-heap {
-    border: dotted 1px var(--text-color);
     margin: 20px 0;
+    border: dotted 1px var(--text-color);
   }
 }
 
@@ -10,14 +10,14 @@
   color: black;
 
   .tpl-title {
-    font-size: 20px;
     font-weight: bold;
+    font-size: 20px;
     text-align: center;
   }
 
   .tpl-subtitle {
-    font-size: 17px;
     font-weight: bold;
+    font-size: 17px;
     text-align: center;
   }
 }

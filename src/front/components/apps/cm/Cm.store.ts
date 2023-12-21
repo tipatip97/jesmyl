@@ -77,13 +77,13 @@ export const slice = createSlice({
       state.isShowTranslationInfo = action.payload;
       if (!state.isShowTranslationInfo) cmStorage.set('isShowTranslationInfo', false);
     },
-    riseUpTranslationUpdates: (state) => {
+    riseUpTranslationUpdates: state => {
       state.translationUpdates++;
     },
-    riseUpComUpdate: (state) => {
+    riseUpComUpdate: state => {
       state.numComUpdates++;
     },
-    riseUpAbsolutePopupUpdates: (state) => {
+    riseUpAbsolutePopupUpdates: state => {
       state.numAbsolutePopupUpdates++;
     },
   },

@@ -31,17 +31,28 @@ export default function ScheduleWidgetListPage(
       }
       content={
         <>
-          {schedules.list.map((schedule) => {
+          {schedules.list.map(schedule => {
             if (!schedule.start) return null;
             return (
               <ScheduleWidget
                 key={schedule.w}
                 schedule={schedule}
-                altActionsNode={<EvaButton name="bell-outline" onClick={() => props.onScheduleObserve(schedule)} />}
+                altActionsNode={
+                  <EvaButton
+                    name="bell-outline"
+                    onClick={() => props.onScheduleObserve(schedule)}
+                  />
+                }
               />
             );
           })}
-          {auth && auth.level > 29 && <ScheduleCreateWidgetButton appName="index" schw={Date.now()} title="" />}
+          {auth && auth.level > 29 && (
+            <ScheduleCreateWidgetButton
+              appName="index"
+              schw={Date.now()}
+              title=""
+            />
+          )}
         </>
       }
     />

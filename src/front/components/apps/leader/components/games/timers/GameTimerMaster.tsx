@@ -47,7 +47,7 @@ export default function LeaderGameTimerMaster({
 
   const isTimerStarted = use.isTimerStarted();
 
-  const teamNet = teams && mylib.netFromLine(teams, mode === GameTimerMode.TimerTotal ? 1 : joins, (team) => team);
+  const teamNet = teams && mylib.netFromLine(teams, mode === GameTimerMode.TimerTotal ? 1 : joins, team => team);
 
   return (
     <div className="game-timer-master full-container flex column over-hidden">
@@ -82,7 +82,7 @@ export default function LeaderGameTimerMaster({
               mode={mode ?? GameTimerMode.Messager}
               onSelect={({ id }) => {
                 setMode(id);
-                use.mapTimer((timer) => ({ ...timer, mode: id }));
+                use.mapTimer(timer => ({ ...timer, mode: id }));
               }}
             />
           )}
@@ -98,7 +98,7 @@ export default function LeaderGameTimerMaster({
                           teams={teams}
                           onSelect={({ id }) => {
                             setJoins(id);
-                            use.mapTimer((timer) => ({ ...timer, joins: id }));
+                            use.mapTimer(timer => ({ ...timer, joins: id }));
                           }}
                         />
                       )}
@@ -113,14 +113,17 @@ export default function LeaderGameTimerMaster({
                     </>
                   )}
                   {mode === GameTimerMode.TimerTotal && (
-                    <TimerScreen className="total-timer padding-giant-gap" start={timer.start || 0} />
+                    <TimerScreen
+                      className="total-timer padding-giant-gap"
+                      start={timer.start || 0}
+                    />
                   )}
                 </>
               )}
               <TimerControlBoard
                 isNewTimer={isNewTimer}
                 mode={mode}
-                onTeamsUpdate={(teams) => updateTeams(teams)}
+                onTeamsUpdate={teams => updateTeams(teams)}
                 teamNet={teamNet}
                 teams={teams}
                 timer={timer}
@@ -135,7 +138,10 @@ export default function LeaderGameTimerMaster({
               isCanReset={isTimerStarted || Object.keys(timer.finishes || altObj).length > 0}
             />
           ) : (
-            <TimerRatingBoard timer={timer} game={game} />
+            <TimerRatingBoard
+              timer={timer}
+              game={game}
+            />
           )}
 
           <div className="margin-big-gap-v full-width">
@@ -146,11 +152,11 @@ export default function LeaderGameTimerMaster({
               listw={timer.w}
               listwNameMask="timerw"
               comments={timer.comments}
-              newCommentTextChange={(value) => setNewCommentText(value)}
+              newCommentTextChange={value => setNewCommentText(value)}
               {...(isNewTimer
                 ? {
                     isWaitedToSend: true,
-                    importantActionOnClick: (comment) => use.saveComment(comment),
+                    importantActionOnClick: comment => use.saveComment(comment),
                   }
                 : null)}
             />

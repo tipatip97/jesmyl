@@ -94,7 +94,7 @@ export class JesmylTelegramBot {
         })
         .then(
           this.logAllAsJSON
-            ? (message) => {
+            ? message => {
                 if (message)
                   if (message === true) this.logger.log(`Изменено сообщение в чате:\n\n` + text);
                   else this.logger.log(`Изменено сообщение #${messageId} в чате ${message.chat.title}:\n\n` + text);
@@ -107,7 +107,7 @@ export class JesmylTelegramBot {
   getAdmins() {
     const updateAdmins = (adminList: ChatMember[]) => {
       this.admins = {};
-      adminList.forEach((admin) => (this.admins![admin.user.id] = admin));
+      adminList.forEach(admin => (this.admins![admin.user.id] = admin));
       return this.admins;
     };
 
@@ -119,7 +119,7 @@ export class JesmylTelegramBot {
 
       this._bot.bot
         .getChatAdministrators(this.chatId)
-        .then((admins) => res(updateAdmins(admins)))
+        .then(admins => res(updateAdmins(admins)))
         .catch(rej);
     });
   }
@@ -147,10 +147,10 @@ export class JesmylTelegramBot {
   };
 
   sendMessage(userOrId: User | number, text: string, options?: TgBot.SendMessageOptions) {
-    return new Promise<{ ok: false; value: string } | { ok: true; value: TgBot.Message }>((res) => {
+    return new Promise<{ ok: false; value: string } | { ok: true; value: TgBot.Message }>(res => {
       this._bot.bot
         .sendMessage(smylib.isNum(userOrId) ? userOrId : userOrId.id, text, { parse_mode: 'HTML', ...options })
-        .then((message) => res({ ok: true, value: message }))
+        .then(message => res({ ok: true, value: message }))
         .catch(() => {
           this.logger.error(
             `Попытка отправки сообщения неизвестному пользователю\n\n<code>${JSON.stringify(

@@ -16,7 +16,7 @@ export default function GamerRoomMemberList() {
     <>
       {popupNode}
       <h2>Участники</h2>
-      {currentRoom?.members?.map((member) => {
+      {currentRoom?.members?.map(member => {
         return (
           <RoomMemberFace
             key={member.login}

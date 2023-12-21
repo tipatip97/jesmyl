@@ -80,7 +80,7 @@ export class Executer {
 
       if (Array.isArray(trace)) {
         if (Array.isArray(target)) {
-          const val = target.find((val) => this.isExpected(val, trace, realArgs, auth));
+          const val = target.find(val => this.isExpected(val, trace, realArgs, auth));
           targets.push(val);
           continue;
         }
@@ -374,12 +374,12 @@ export class Executer {
       : path
           .slice(1)
           .split('/')
-          .map((part) =>
+          .map(part =>
             part.startsWith('[') && part.endsWith(']')
               ? (part.slice(1, -1).split(' ') as ExecutionRuleTrackBeat)
               : part,
           )
-          .filter((part) => part);
+          .filter(part => part);
 
   static prepareActionList(boxes: ActionBox, fixedAccesses: FixedAccesses = []): FilerAppConfigActions {
     const rules: ExecutionReal[] = [];
@@ -462,7 +462,7 @@ export class Executer {
           if (accRule.accesses) execRule.fixedAccesses = fixedAccesses;
 
           if (box.C || box.U || box.D) {
-            (['C', 'U', 'D'] as const).forEach((crudName) => {
+            (['C', 'U', 'D'] as const).forEach(crudName => {
               const boxCrudBox = box[crudName];
               if (boxCrudBox) {
                 const boxAction: ExecutionReal = {
@@ -541,9 +541,9 @@ export class Executer {
     ) => {
       const ret: ExecutionReal = { ...rule };
 
-      simpleFields.forEach((argn) => (ret[argn] = realRule[argn]));
+      simpleFields.forEach(argn => (ret[argn] = realRule[argn]));
 
-      replacedFields.forEach((argn) => {
+      replacedFields.forEach(argn => {
         ret[argn] = this.replaceArgs(realRule[argn], allArgs, auth);
       });
 
@@ -636,7 +636,7 @@ export class Executer {
 
           this.doIt({ method, target, penultimate, lastTrace, value, realArgs: args, auth })
             .then(resolve)
-            .catch((errorMessage) => reject(`#63674012239 ${errorMessage}`));
+            .catch(errorMessage => reject(`#63674012239 ${errorMessage}`));
         }
 
         return false;
@@ -666,7 +666,7 @@ export class Executer {
       return result;
     };
 
-    return accesses.some((accessFormula) => {
+    return accesses.some(accessFormula => {
       try {
         const body = smylib
           .stringTemplater(accessFormula, templaterFixedArgs, onUnknownArg)
@@ -688,7 +688,7 @@ export class Executer {
 
       if (execs.length === 0) resolve(fixes);
 
-      execs.forEach((exec) => {
+      execs.forEach(exec => {
         const firstTrace = exec.track[0];
         if (smylib.isStr(firstTrace) && !fixes.includes(firstTrace)) fixes.push(firstTrace);
         const { penultimate, target, lastTrace } = this.checkExpecteds(exec.track, contents, exec.expecteds);
@@ -703,14 +703,14 @@ export class Executer {
           value: exec.value,
           uniqs: exec.uniqs,
         })
-          .then((did) => {
+          .then(did => {
             if (did && exec.sides)
               this.execSides(exec.track, exec.sides, contents, exec.args)
                 .then(() => resolve(fixes))
-                .catch((errorMessage) => reject(errorMessage));
+                .catch(errorMessage => reject(errorMessage));
             else resolve(fixes);
           })
-          .catch((errorMessage) => reject(errorMessage));
+          .catch(errorMessage => reject(errorMessage));
       });
     });
   }
@@ -734,7 +734,7 @@ export class Executer {
         const bag: Record<string, unknown> = {};
 
         for (const exec of execs) {
-          const prepRule = config.actions.rules.find((rule) => rule.action === exec.action);
+          const prepRule = config.actions.rules.find(rule => rule.action === exec.action);
           if (!prepRule) {
             errors.push({
               type: ExecuteErrorType.NoRule,
@@ -855,17 +855,17 @@ export class Executer {
               uniqs: rule.uniqs,
               method: rule.method,
             })
-              .then((did) => {
+              .then(did => {
                 if (did) {
                   replacedExecs.push(this.prepareRuleForFeedback(rule));
 
                   if (rule.sides)
-                    this.execSides(rule.track, rule.sides, contents, exec.args, auth, rule).catch((note) =>
+                    this.execSides(rule.track, rule.sides, contents, exec.args, auth, rule).catch(note =>
                       errors.push({ note, type: ExecuteErrorType.Error }),
                     );
                 }
               })
-              .catch((note) => errors.push({ note, type: ExecuteErrorType.Error }));
+              .catch(note => errors.push({ note, type: ExecuteErrorType.Error }));
           }
         }
 
@@ -895,11 +895,11 @@ export class Executer {
     systems?: ActionBoxSetSystems[],
     itemSystems?: ActionBoxSetSystems[],
   ) {
-    systems?.forEach((mapperName) => {
+    systems?.forEach(mapperName => {
       const [name, sName] = mapperName.split(':') as [ActionBoxSetSystemsFree, string];
       const realName = sName || name;
 
-      list?.forEach((li) => {
+      list?.forEach(li => {
         if (li[realName] == null) {
           const result = actionBoxSetSystems[name]?.(realName, list);
           if (result !== undefined) li[realName] = result;
@@ -911,10 +911,10 @@ export class Executer {
     });
 
     if (smylib.isArr(value)) {
-      itemSystems?.forEach((mapperName) => {
+      itemSystems?.forEach(mapperName => {
         const [name, sName] = mapperName.split(':') as [ActionBoxSetSystemsFree, string];
         const realName = sName || name;
-        value.forEach((value) => {
+        value.forEach(value => {
           const result = actionBoxSetSystems[name]?.(realName, list);
           if (result !== undefined) {
             value[realName] = result;
@@ -942,7 +942,7 @@ export class Executer {
             SMyLib.entries(this.replaceArgs(smylib.clone(setts), realArgs, auth)).forEach(
               ([key, val]) => (deepItem[key] = val),
             );
-          else if (smylib.isArr(deepItem)) deepItem.forEach((nextItem) => setDeepper([], nextItem));
+          else if (smylib.isArr(deepItem)) deepItem.forEach(nextItem => setDeepper([], nextItem));
           return;
         }
 
@@ -952,11 +952,11 @@ export class Executer {
 
         if (smylib.isArr(deepItem)) {
           const nextTracky = trackys.slice(1);
-          deepItem.forEach((nextItem) => setDeepper(nextTracky, nextItem[trackBeat]));
+          deepItem.forEach(nextItem => setDeepper(nextTracky, nextItem[trackBeat]));
         }
       };
 
-      tracky.split(/\s*,\s*/).forEach((trackyBeat) => {
+      tracky.split(/\s*,\s*/).forEach(trackyBeat => {
         if (trackyBeat === '.') setDeepper([], value);
         else setDeepper(trackyBeat.split('.'), value);
       });
@@ -969,9 +969,9 @@ export class Executer {
     value: any,
   ) {
     if (!uniqs) return null;
-    const key = (smylib.isArr(uniqs) ? uniqs : Object.keys(uniqs)).find((key) => {
+    const key = (smylib.isArr(uniqs) ? uniqs : Object.keys(uniqs)).find(key => {
       if (key === '.') return target.includes(value);
-      else return target.some((val) => val[key] === value[key]);
+      else return target.some(val => val[key] === value[key]);
     });
 
     if (key == null) return null;
@@ -1037,7 +1037,7 @@ export class Executer {
                 break;
               }
               const { by, val } = value;
-              const itemi = target.findIndex((item) => item[by] === val);
+              const itemi = target.findIndex(item => item[by] === val);
 
               if (itemi > -1) target.splice(itemi, 1);
               else target?.push(smylib.clone(value));
@@ -1047,7 +1047,7 @@ export class Executer {
               const { find, beforei } = value;
               if (!smylib.isArr(find) || !smylib.isNum(beforei)) break;
               const spreadTarget = [...target];
-              const index = spreadTarget.findIndex((item) => this.isExpected(item, find));
+              const index = spreadTarget.findIndex(item => this.isExpected(item, find));
               const [item] = spreadTarget.splice(index, 1, insertBeforeiFakeArr);
               spreadTarget.splice(beforei, 0, item);
 
@@ -1062,7 +1062,7 @@ export class Executer {
                   reject(error);
                   return;
                 }
-                smylib.clone(value).forEach((val) => concatTarget.push(val));
+                smylib.clone(value).forEach(val => concatTarget.push(val));
               }
               break;
             case 'remove':
@@ -1090,7 +1090,7 @@ export class Executer {
                   }, 0) || 0;
                 const signs: number[] = [];
 
-                (penultimate as any[]).forEach((item) => {
+                (penultimate as any[]).forEach(item => {
                   const sign = item[lastTrace];
                   if (signs.includes(sign)) item[lastTrace] = ++next;
 

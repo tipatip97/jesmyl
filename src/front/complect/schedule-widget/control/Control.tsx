@@ -26,7 +26,7 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
               scope={scope}
               titlePostfix={
                 rights.isCanRedactUsers &&
-                ((isExpand) =>
+                (isExpand =>
                   isExpand && (
                     <span className="flex flex-gap">
                       <ScheduleWidgetUserByLinkInvite scope={scope} />
@@ -55,10 +55,13 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
       <>
         {header(<div>Участники</div>)}
         {body(
-          rights.schedule.ctrl.users.map((user) => {
+          rights.schedule.ctrl.users.map(user => {
             if (!user.R || user.login === undefined) return null;
             return (
-              <div key={user.mi} className="margin-gap-v">
+              <div
+                key={user.mi}
+                className="margin-gap-v"
+              >
                 {user.fio && user.fio !== user.nick ? `${user.fio} (${user.nick})` : user.nick}
               </div>
             );

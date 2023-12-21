@@ -18,7 +18,7 @@ export function CurrentContextSelectPageInner({ list }: { list: LeaderContextImp
       className="CurrentContextSelectPage"
       withoutBackButton
       headTitle="Выбор контекста"
-      content={list.map((context) => {
+      content={list.map(context => {
         if (!nav.nav.useIsCanRead?.(context?.w) || !context?.w) return null;
         return (
           <BrutalItem

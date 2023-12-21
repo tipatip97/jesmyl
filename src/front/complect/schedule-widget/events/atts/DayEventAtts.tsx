@@ -29,8 +29,8 @@ export default function ScheduleWidgetDayEventAtts(
   const myUserR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
   const atts = MyLib.entries(props.event.atts);
 
-  MyLib.entries(props.typeBox.atts).forEach((attEntry) => {
-    if (!atts.some((entry) => entry[0] === attEntry[0])) atts.push(attEntry);
+  MyLib.entries(props.typeBox.atts).forEach(attEntry => {
+    if (!atts.some(entry => entry[0] === attEntry[0])) atts.push(attEntry);
   });
 
   return (

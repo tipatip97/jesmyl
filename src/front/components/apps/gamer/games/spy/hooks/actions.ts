@@ -60,7 +60,7 @@ export const useSpyStartGame = () => {
         if (!spies.includes(player.login)) spies.push(player.login);
       }
 
-      players.forEach((player) => {
+      players.forEach(player => {
         roles[player.login] = secretSpyRole(spies.includes(player.login) ? splittedSPY : location);
       });
 

@@ -101,7 +101,7 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
 
 const gamerNavigation = new NavigationConfig<GamerStorage, GamerNavData>('gamer', {
   title: 'Игрок',
-  root: (content) => <GamerApp content={content} />,
+  root: content => <GamerApp content={content} />,
   rootPhase: 'gamer',
   logo: 'cube',
   routes: [
@@ -113,7 +113,7 @@ const gamerNavigation = new NavigationConfig<GamerStorage, GamerNavData>('gamer'
       next: [
         {
           phase: ['room'],
-          node: (config) => <TheGamerRoom config={config} />,
+          node: config => <TheGamerRoom config={config} />,
           next: [
             {
               phase: ['needChooseGame'],
@@ -124,7 +124,7 @@ const gamerNavigation = new NavigationConfig<GamerStorage, GamerNavData>('gamer'
         },
         {
           phase: ['offlineRoom'],
-          node: (config) => <GamerOfflineRoom config={config} />,
+          node: config => <GamerOfflineRoom config={config} />,
           next: [
             {
               phase: ['needChooseGame'],

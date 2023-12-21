@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { makeWid } from '../../../../complect/useWid';
 import FontSizeContain from '../base/font-size-contain/FontSizeContain';
 import { TranslationScreenProps } from './Translations.model';
@@ -18,7 +18,10 @@ export default function TranslationScreen(props: TranslationScreenProps) {
         backgroundColor: 'black',
       }}
     >
-      <FontSizeContain position={position} updater={(update) => props.updater && props.updater(update)}>
+      <FontSizeContain
+        position={position}
+        updater={update => props.updater && props.updater(update)}
+      >
         <div
           style={{ whiteSpace: 'pre', textAlign: 'center', padding: '10px' }}
           dangerouslySetInnerHTML={{ __html: currText || '' }}
@@ -31,12 +34,15 @@ export default function TranslationScreen(props: TranslationScreenProps) {
 const transitionName = makeWid();
 
 const Screen = styled.div`
-  view-transition-name: ${transitionName};
+  & {
+    view-transition-name: ${transitionName};
+  }
 `;
 
-export const globalTranslationScreenStyle = `
+export const globalTranslationScreenStyle = css`
   ::view-transition-old(${transitionName}),
   ::view-transition-new(${transitionName}) {
-    animation-duration: .4s;
+    display: asdasdd;
+    animation-duration: 0.4s;
   }
 `;

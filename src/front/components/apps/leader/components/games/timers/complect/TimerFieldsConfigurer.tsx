@@ -72,7 +72,11 @@ export default function TimerFieldsConfigurer({
           <div className="flex flex-gap">
             Последовательность команд
             {isRedact ? (
-              <EvaButton name="close" disabled={!state.teams} onClick={() => updateState('teams', undefined)} />
+              <EvaButton
+                name="close"
+                disabled={!state.teams}
+                onClick={() => updateState('teams', undefined)}
+              />
             ) : (
               <div className="color--3">{state.teams ? 'Специальная сортировка' : 'По умолчанию'}</div>
             )}
@@ -88,7 +92,7 @@ export default function TimerFieldsConfigurer({
                     name={teami ? 'corner-left-up' : 'corner-left-down'}
                     className="as-button-circle"
                     onClick={() => {
-                      const gameTeamws = game.teams?.map((team) => team.w);
+                      const gameTeamws = game.teams?.map(team => team.w);
                       const newTeams = state.teams ? [...state.teams] : [...(gameTeamws || [])];
 
                       if (teami) [newTeams[teami - 1], newTeams[teami]] = [newTeams[teami], newTeams[teami - 1]];

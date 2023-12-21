@@ -90,7 +90,7 @@ export class SokiServer {
     this.statistic.online = 0;
     this.statistic.usages = {};
 
-    this.capsules.forEach((capsule) => {
+    this.capsules.forEach(capsule => {
       this.statistic.online++;
       if (capsule.auth) this.statistic.authed++;
       else return;
@@ -115,7 +115,7 @@ export class SokiServer {
   onClientDisconnect(client: WebSocket) {
     const disconnecter = this.capsules.get(client);
     const isDeleted = this.capsules.delete(client);
-    this.subscriptions.forEach((subs) => subs.delete(client));
+    this.subscriptions.forEach(subs => subs.delete(client));
 
     this.sendStatistic();
 
@@ -212,7 +212,7 @@ export class SokiServer {
 
           sokiAuther
             .authenticate(event)
-            .then((value) => {
+            .then(value => {
               filer.trigger(event.type);
               this.send(
                 {
@@ -480,7 +480,7 @@ export class SokiServer {
             );
           } else
             services[eventData.appName]?.(eventBody.service.key, eventBody.service.value, eventData, capsule, client)
-              .then((value) => {
+              .then(value => {
                 this.send(
                   {
                     requestId,
@@ -493,7 +493,7 @@ export class SokiServer {
                   client,
                 );
               })
-              .catch((error) => {
+              .catch(error => {
                 this.send(
                   {
                     requestId,
@@ -585,7 +585,7 @@ export class SokiServer {
                 }
               : eventData.appName === 'index'
                 ? () => true
-                : (capsule) => capsule.appName === eventData.appName,
+                : capsule => capsule.appName === eventData.appName,
             client,
             {
               requestId,

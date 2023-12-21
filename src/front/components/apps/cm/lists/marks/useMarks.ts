@@ -15,15 +15,15 @@ export function useMarks() {
   const markedComs =
     cols &&
     (marks
-      .map((comw) => {
-        const com = cols.coms.find((com) => com.wid === comw);
+      .map(comw => {
+        const com = cols.coms.find(com => com.wid === comw);
         if (com === undefined) unsets.push(comw);
         return com;
       })
-      .filter((com) => com) as Com[]);
+      .filter(com => com) as Com[]);
 
   const ret = {
-    marks: markedComs?.map((com) => com.wid),
+    marks: markedComs?.map(com => com.wid),
     markedComs,
     setMarks: (val: number[]) => {
       cmStorage.set('marks', val);
@@ -32,8 +32,8 @@ export function useMarks() {
     toggleMarked: (comw: number) => (ret.isMarked(comw) ? ret.removeMark(comw) : ret.addMarks(comw)),
     addMarks: (comws: number | number[]) =>
       ret.marks &&
-      ret.setMarks(ret.marks.concat([comws].flat().filter((comw) => ret.marks && ret.marks.indexOf(comw) < 0))),
-    removeMark: (comw: number) => ret.marks && ret.setMarks(ret.marks.filter((mark) => mark !== comw)),
+      ret.setMarks(ret.marks.concat([comws].flat().filter(comw => ret.marks && ret.marks.indexOf(comw) < 0))),
+    removeMark: (comw: number) => ret.marks && ret.setMarks(ret.marks.filter(mark => mark !== comw)),
     isMarked: (comw: number) => !!ret.marks && ret.marks.indexOf(comw) > -1,
     bumerangMarks: (comw: number) => {
       if (!ret.marks || ret.marks.length < 2) return;
@@ -60,7 +60,7 @@ export function useMarks() {
     ret.marks &&
       cmStorage.set(
         'marks',
-        ret.marks.filter((comw) => unsets.indexOf(comw) === -1),
+        ret.marks.filter(comw => unsets.indexOf(comw) === -1),
       );
 
   return ret;

@@ -12,7 +12,12 @@ export const HumanMoreContenter: BottomPopupContenter<{
   human: HumanImportable;
   humanMoreAdditions?: (human: HumanImportable) => ReactNode;
 }> = (_, prepare, { human, humanMoreAdditions }) => {
-  const [humanMasterNode, openHumanMaster] = useFullContent((close) => <HumanMaster close={close} human={human} />);
+  const [humanMasterNode, openHumanMaster] = useFullContent(close => (
+    <HumanMaster
+      close={close}
+      human={human}
+    />
+  ));
   const { ccontext, contextMembers, contextMentors, humans } = useLeaderContext();
   const isMentor = ccontext?.mentors.includes(human.w);
   const participantListName = isMentor ? 'mentors' : 'members';
@@ -28,7 +33,7 @@ export const HumanMoreContenter: BottomPopupContenter<{
     const groupws = wraps.map(({ group: { w } }) => w);
 
     return prepare({
-      items: groups.map((group) => {
+      items: groups.map(group => {
         return {
           titleNode: (
             <span>

@@ -27,7 +27,10 @@ export default function AliasObserverContent() {
       <GamerAliasTimer />
       <div>Спикер - {speaker?.name}</div>
       {!state?.startTs && isIManager && (
-        <SendButton title={speaker?.name + ' пропускает ход'} onSend={skipTheMemberTurn} />
+        <SendButton
+          title={speaker?.name + ' пропускает ход'}
+          onSend={skipTheMemberTurn}
+        />
       )}
       {(members && members.length < 3) || isMyTeam || !state?.startTs || (
         <div>
@@ -37,7 +40,10 @@ export default function AliasObserverContent() {
         </div>
       )}
       <AliasGameRoundResultsAnswerList answers={corrects} />
-      <AliasGameRoundResultsAnswerList answers={incorrects} myIncorrects />
+      <AliasGameRoundResultsAnswerList
+        answers={incorrects}
+        myIncorrects
+      />
     </div>
   );
 }

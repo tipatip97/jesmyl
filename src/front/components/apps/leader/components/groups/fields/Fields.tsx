@@ -23,19 +23,25 @@ export default function LeaderGroupFields() {
       {ccontext?.blanks?.map(({ name, key, value }, blanki) => {
         if (value || !isRedact)
           return (
-            <div key={blanki} className="flex flex-gap">
+            <div
+              key={blanki}
+              className="flex flex-gap"
+            >
               <div className="nowrap">{name}:</div>
               <div className="color--3 pre-line">{fields[key] || '-'}</div>
             </div>
           );
 
         return (
-          <div key={blanki} className="flex flex-gap margin-gap">
+          <div
+            key={blanki}
+            className="flex flex-gap margin-gap"
+          >
             <div className="nowrap">{name}</div>
             <KeyboardInput
               value={fields[key]}
               multiline
-              onChange={(value) => {
+              onChange={value => {
                 let val: und | string = value;
 
                 if (fields[key] === value) val = undefined;

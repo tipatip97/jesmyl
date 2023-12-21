@@ -29,8 +29,8 @@ export const keyboardNumberScreenLines = [
 export const keyboardKeyDict: KeyboardKeyDict = {} as KeyboardKeyDict;
 MyLib.entries(languagedKeys).forEach(([lang, { lower, upper }]) => {
   keyboardKeyDict[lang] = {
-    lower: lower.map((line) => line.split('')),
-    upper: upper.map((line) => line.split('')),
+    lower: lower.map(line => line.split('')),
+    upper: upper.map(line => line.split('')),
   };
 });
 

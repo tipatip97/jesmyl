@@ -51,7 +51,7 @@ export default function TimerControlBoardCellItem(props: {
       {!props.isNewTimer || (start && pause) ? (
         <EvaButton
           name={isTimeRedact ? 'checkmark-circle-2-outline' : 'edit-2-outline'}
-          onClick={() => setIsTimeRedact((is) => !is)}
+          onClick={() => setIsTimeRedact(is => !is)}
         />
       ) : null}
       <div className="flex column full-width over-hidden">
@@ -74,8 +74,8 @@ export default function TimerControlBoardCellItem(props: {
             [newTeams[selectedi], newTeams[teami]] = [newTeams[teami], newTeams[selectedi]];
             props.onTeamsUpdate(
               newTeams
-                .map((wid) => props.teams?.find((team) => team.w === wid))
-                .filter((team) => team) as GameTeamImportable[],
+                .map(wid => props.teams?.find(team => team.w === wid))
+                .filter(team => team) as GameTeamImportable[],
               newTeams,
             );
             props.onTeamwSelect(null);
@@ -97,7 +97,11 @@ export default function TimerControlBoardCellItem(props: {
             />
           </>
         ) : (!props.isHiddenTimers || pause) && (props.isNewTimer || pause) ? (
-          <TimerScreen className="color--3" start={start} pause={pause} />
+          <TimerScreen
+            className="color--3"
+            start={start}
+            pause={pause}
+          />
         ) : null}
       </div>
 

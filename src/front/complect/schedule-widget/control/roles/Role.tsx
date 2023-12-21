@@ -86,7 +86,15 @@ export default function ScheduleWidgetRole({
               ? rights.schedule.ctrl.cats.map((catName, catNamei) => {
                   const catScope = takeStrongScopeMaker(scope + ' categories', ' cati/', catNamei);
 
-                  return <StrongEditableField key={catNamei} scope={catScope} fieldName="" isRedact value={catName} />;
+                  return (
+                    <StrongEditableField
+                      key={catNamei}
+                      scope={catScope}
+                      fieldName=""
+                      isRedact
+                      value={catName}
+                    />
+                  );
                 })
               : rights.schedule.ctrl.cats.map((catName, catNamei) => {
                   return (
@@ -109,7 +117,11 @@ export default function ScheduleWidgetRole({
         {footer(
           <>
             {!rights.schedule.ctrl.cats.includes('') && catsRedact.isRedact && (
-              <StrongEvaButton scope={scope} fieldName="categories" name="folder-add-outline" />
+              <StrongEvaButton
+                scope={scope}
+                fieldName="categories"
+                name="folder-add-outline"
+              />
             )}
           </>,
         )}
@@ -137,7 +149,7 @@ export default function ScheduleWidgetRole({
               scope={roleScope}
               header={`Иконка для роли ${role.title}`}
               icon={role.icon ?? 'github-outline'}
-              used={rights.schedule.ctrl.roles.map((role) => role.icon)}
+              used={rights.schedule.ctrl.roles.map(role => role.icon)}
             />
             {rights.isCanTotalRedact && (
               <>
@@ -194,9 +206,15 @@ export default function ScheduleWidgetRole({
       {userSetModalNode}
       {catSetModalNode}
       {redactRoleModalNode}
-      <ScheduleWidgetRoleFace schedule={rights.schedule} role={role} />
+      <ScheduleWidgetRoleFace
+        schedule={rights.schedule}
+        role={role}
+      />
       {(rights.isCanTotalRedact || (rights.isCanRedact && auth && auth.login === roleUser?.login)) && (
-        <EvaButton name="edit-outline" onClick={() => redactRoleModalScreen()} />
+        <EvaButton
+          name="edit-outline"
+          onClick={() => redactRoleModalScreen()}
+        />
       )}
     </div>
   );

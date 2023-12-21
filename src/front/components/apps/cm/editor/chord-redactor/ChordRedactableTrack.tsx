@@ -24,7 +24,7 @@ export default function ChordRedactableTrack({
           id: lad,
         }))}
         onSelect={({ id }) => {
-          modifyTrack((track) => {
+          modifyTrack(track => {
             track[0] = +`${id}.${('' + track[0]).split('.')[1] || ''}`;
           });
         }}
@@ -38,7 +38,7 @@ export default function ChordRedactableTrack({
 
             return (
               <>
-                {lads.map((lad) => {
+                {lads.map(lad => {
                   const x1 = leftMargin + (lad * betweenLad - betweenLad / 2);
                   const y1 = ladHeight;
                   const wt = betweenLad / 5;
@@ -54,7 +54,7 @@ export default function ChordRedactableTrack({
                       className={`chord-bare-adder ${isBare ? 'fill' : ''}`}
                       points={`${x1},${y1} ${x2},${y2} ${x3},${y2}`}
                       onClick={() => {
-                        modifyTrack((track) => {
+                        modifyTrack(track => {
                           if (isBare) track[lad] = position === -1 ? 0 : -position;
                           else {
                             if (position > 100) {
@@ -78,9 +78,9 @@ export default function ChordRedactableTrack({
                         x={leftMargin - 5}
                         y={y + 4}
                         onClick={() => {
-                          modifyTrack((track) => {
+                          modifyTrack(track => {
                             if (mutes.includes(strNum)) {
-                              const newMutes = mutes.filter((num) => num !== strNum);
+                              const newMutes = mutes.filter(num => num !== strNum);
                               track[0] = +`${baseLad}.${newMutes.sort().join('')}`;
                             } else {
                               return track.map((trace, tracei) => {
@@ -90,7 +90,7 @@ export default function ChordRedactableTrack({
                                 const strNumStr = '' + strNum;
 
                                 if (points.includes(strNumStr)) {
-                                  return +points.filter((point) => point !== strNumStr).join('');
+                                  return +points.filter(point => point !== strNumStr).join('');
                                 } else return trace;
                               });
                             }
@@ -99,7 +99,7 @@ export default function ChordRedactableTrack({
                       >
                         &times;
                       </text>
-                      {lads.map((ladNum) => {
+                      {lads.map(ladNum => {
                         const lad = track[ladNum] || 0;
                         const numStr = '' + strNum;
 
@@ -111,7 +111,7 @@ export default function ChordRedactableTrack({
                           track
                             .slice(ladNum + 1)
                             .some(
-                              (lad) =>
+                              lad =>
                                 lad &&
                                 (lad === -1 ||
                                   lad === -6 ||
@@ -125,7 +125,7 @@ export default function ChordRedactableTrack({
                             className={`chord-point shadow${isProblem ? ' problem' : ''}`}
                             points={`${x},${y} ${x},${y}`}
                             onClick={() => {
-                              modifyTrack((track) => {
+                              modifyTrack(track => {
                                 if (isPointed) {
                                   const digits = ('' + lad).split('');
                                   digits.splice(strNumInLad, 1);
@@ -141,7 +141,7 @@ export default function ChordRedactableTrack({
                                       .join('');
 
                                   if (mutes.includes(strNum)) {
-                                    const newMutes = mutes.filter((num) => num !== strNum);
+                                    const newMutes = mutes.filter(num => num !== strNum);
                                     track[0] = +`${baseLad}.${newMutes.sort().join('')}`;
                                   }
                                 }
@@ -158,7 +158,10 @@ export default function ChordRedactableTrack({
           }}
         />
         {redactableChord.length < 6 && (
-          <EvaButton name="plus-circle" onClick={() => modifyTrack((track) => track.push(0))} />
+          <EvaButton
+            name="plus-circle"
+            onClick={() => modifyTrack(track => track.push(0))}
+          />
         )}
       </div>
     </>

@@ -32,9 +32,7 @@ export default function ComFaceContextMenu({ onClick, com }: { onClick: () => vo
             ? [
                 {
                   onClick: () => {
-                    modalService
-                      .confirm('Очистить список выбранных?')
-                      .then((isClear) => isClear && clearSelectedComws());
+                    modalService.confirm('Очистить список выбранных?').then(isClear => isClear && clearSelectedComws());
                   },
                   icon: 'close-circle-outline',
                   title: 'Очистить выбранные',

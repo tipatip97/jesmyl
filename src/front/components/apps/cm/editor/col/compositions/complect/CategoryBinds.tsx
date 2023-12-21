@@ -15,7 +15,7 @@ export default function CategoryBinds() {
   return (
     <>
       <div className="cat-list-title">Сборники</div>
-      {cols?.cats.map((cat) => {
+      {cols?.cats.map(cat => {
         return cat.kind !== 'dict' ? null : (
           <EditContainerCorrectsInformer
             key={`cat-for-bind-${cat.wid}`}
@@ -25,7 +25,7 @@ export default function CategoryBinds() {
             <KeyboardInput
               value={`${ccom.refs?.[cat.wid] || ''}`}
               type="number"
-              onChange={(value) => {
+              onChange={value => {
                 if (!+value) {
                   if (ccom.refs?.[cat.wid]) exec(ccom.removeNativeNumber(cat, exec));
                   return;
@@ -35,7 +35,10 @@ export default function CategoryBinds() {
               }}
             />
             {ccom.refs?.[cat.wid] != null ? (
-              <span className="pointer" onClick={() => exec(ccom.removeNativeNumber(cat, exec))}>
+              <span
+                className="pointer"
+                onClick={() => exec(ccom.removeNativeNumber(cat, exec))}
+              >
                 {' ' + (isNaN(ccom.refs?.[cat.wid]) ? 'Корректно очистить' : 'Удалить')}
               </span>
             ) : null}
@@ -43,7 +46,7 @@ export default function CategoryBinds() {
         );
       })}
       <div className="cat-list-title">Списки</div>
-      {cols?.cats.map((cat) => {
+      {cols?.cats.map(cat => {
         return cat.kind !== 'list' ? null : (
           <EditContainerCorrectsInformer
             key={`cat-for-bind-${cat.wid}`}
@@ -52,7 +55,7 @@ export default function CategoryBinds() {
             <span>{cat.name} </span>
             <input
               type="checkbox"
-              checked={cat.stack.some((comw) => ccom.wid === comw)}
+              checked={cat.stack.some(comw => ccom.wid === comw)}
               onChange={() => exec(cat?.toggleComExistence(ccom, exec))}
             />
           </EditContainerCorrectsInformer>

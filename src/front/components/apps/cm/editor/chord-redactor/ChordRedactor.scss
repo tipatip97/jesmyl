@@ -6,13 +6,13 @@
   height: 100%;
 
   @media screen and (max-width: 410px) {
-    grid-template-areas: 'old' 'list' 'new';
     grid-template-rows: 5fr 3em 5fr;
+    grid-template-areas: 'old' 'list' 'new';
 
     .chord-list {
       border-bottom: var(--simple-border);
-      overflow: hidden;
       padding-right: 26px;
+      overflow: hidden;
 
       .chords-scroll {
         display: flex;
@@ -36,9 +36,9 @@
   }
 
   @media screen and (min-width: 411px) {
-    grid-template-areas: 'list old' 'list new';
-    grid-template-columns: 2fr 7fr;
     grid-template-rows: 1fr 1fr;
+    grid-template-columns: 2fr 7fr;
+    grid-template-areas: 'list old' 'list new';
 
     .chord-list {
       border-right: var(--simple-border);
@@ -95,8 +95,8 @@
   }
 
   .mute-string-indicator {
-    font-size: 15px;
     cursor: pointer;
+    font-size: 15px;
 
     &:not(.button) {
       pointer-events: none;
@@ -109,8 +109,8 @@
   }
 
   .chord-list {
-    grid-area: list;
     position: relative;
+    grid-area: list;
 
     .chords-scroll {
       width: 100%;
@@ -119,8 +119,8 @@
 
     .add-chord-button {
       position: absolute;
-      bottom: 0;
       right: 0;
+      bottom: 0;
       z-index: 1;
     }
   }

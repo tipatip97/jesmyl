@@ -32,7 +32,10 @@ export default function TheMeetings() {
       content={
         <>
           {popupNode}
-          <MeetingsInner meetings={meetings} onEventClick={(event) => goToEvent(event.wid)} />
+          <MeetingsInner
+            meetings={meetings}
+            onEventClick={event => goToEvent(event.wid)}
+          />
         </>
       }
     />

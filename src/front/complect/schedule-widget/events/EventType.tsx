@@ -51,7 +51,10 @@ export default function ScheduleWidgetEventType(props: {
         )}
         {body(
           <>
-            <ScheduleWidgetEventType {...props} isRedact />
+            <ScheduleWidgetEventType
+              {...props}
+              isRedact
+            />
           </>,
         )}
       </>
@@ -63,7 +66,10 @@ export default function ScheduleWidgetEventType(props: {
       {modalNode}
       {props.isRedact || (
         <div className="flex flex-end full-width absolute pos-top pos-right margin-sm-gap z-index:5">
-          <EvaButton name="edit-outline" onClick={screen} />
+          <EvaButton
+            name="edit-outline"
+            onClick={screen}
+          />
         </div>
       )}
       <SelectItem
@@ -74,7 +80,7 @@ export default function ScheduleWidgetEventType(props: {
           (props.selectScope ? (props.isRedact ? '' : props.typeBox.title ? ' pointer ' : ' disabled ') : '') +
           (props.isRedact ? '' : ' bgcolor--5 padding-gap margin-gap-v')
         }
-        mapExecArgs={(args) => {
+        mapExecArgs={args => {
           if (props.isRedact || !props.typeBox.title) return;
           props.onSelect?.();
           return {
@@ -91,7 +97,7 @@ export default function ScheduleWidgetEventType(props: {
           icon="credit-card-outline"
           title="Название"
           isImpossibleEmptyValue
-          onChange={(value) => {
+          onChange={value => {
             const errors = [...typesError];
             const lowerValue = titleNormalize(value.toLowerCase());
             if (!lowerValue) {
@@ -163,7 +169,7 @@ export default function ScheduleWidgetEventType(props: {
                 className="margin-gap-b"
               />
             )}
-            mapExecArgs={(args) => {
+            mapExecArgs={args => {
               return {
                 ...args,
                 value: attTranslatorType,
@@ -186,5 +192,7 @@ export default function ScheduleWidgetEventType(props: {
 }
 
 const SelectItem = styled(StrongDiv)`
-  border-radius: 3px;
+  & {
+    border-radius: 3px;
+  }
 `;

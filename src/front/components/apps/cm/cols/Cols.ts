@@ -19,7 +19,7 @@ export class Cols extends SourceBased<IExportableCols> implements ICols {
 
           const comw = com.w;
           let prevCom;
-          prevCom = prevComs.find((c) => c.wid === comw);
+          prevCom = prevComs.find(c => c.wid === comw);
           if (prevCom && prevCom.ton != null) {
             top = {
               ...com,
@@ -31,6 +31,6 @@ export class Cols extends SourceBased<IExportableCols> implements ICols {
         });
     } else this.coms = [...(cols?.coms || [])].sort((a, b) => a.w - b.w).map((com, comi) => new Com(com, comi));
 
-    this.cats = [...(cols?.cats || [])].sort((a, b) => a.w - b.w).map((cat) => new Cat(cat, this.coms));
+    this.cats = [...(cols?.cats || [])].sort((a, b) => a.w - b.w).map(cat => new Cat(cat, this.coms));
   }
 }

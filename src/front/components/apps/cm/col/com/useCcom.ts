@@ -12,5 +12,5 @@ export function useCcom() {
   const {
     appRouteData: { ccomw },
   } = useCmNav();
-  return useMemo(() => cols?.coms.find((com) => com.wid === ccomw), [ccomw, cols]);
+  return useMemo(() => cols?.coms.find(com => com.wid === ccomw), [ccomw, cols]);
 }

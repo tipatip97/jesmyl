@@ -2,10 +2,10 @@
   position: relative;
 
   &[execs-count]::after {
-    content: attr(execs-count);
     position: absolute;
-    bottom: 0.5em;
     right: 0.5em;
+    bottom: 0.5em;
+    content: attr(execs-count);
     font-size: 0.7em;
   }
 }

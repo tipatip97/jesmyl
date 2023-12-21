@@ -63,7 +63,10 @@ export default function ChordCardTracked({
           className="chord-zero-line"
         />
       ) : (
-        <polyline points={`${leftMargin},0 ${leftMargin},${betweenStr * stringsCount}`} className="chord-lad" />
+        <polyline
+          points={`${leftMargin},0 ${leftMargin},${betweenStr * stringsCount}`}
+          className="chord-lad"
+        />
       )}
       {lads.map((ladPos, ladPosi) => {
         const x = leftMargin + betweenLad * ladPos;
@@ -73,9 +76,15 @@ export default function ChordCardTracked({
 
         return (
           <React.Fragment key={`lad_${ladPos}`}>
-            <polyline points={`${x},0 ${x},${betweenStr * stringsCount}`} className="chord-lad" />
+            <polyline
+              points={`${x},0 ${x},${betweenStr * stringsCount}`}
+              className="chord-lad"
+            />
             {(ladNum === 5 || ladNum === 7 || ladNum === 9 || ladNum === 15 || ladNum === 17) && (
-              <polyline points={`${markDotX},${markDotY} ${markDotX},${markDotY}`} className="chord-lad-mark" />
+              <polyline
+                points={`${markDotX},${markDotY} ${markDotX},${markDotY}`}
+                className="chord-lad-mark"
+              />
             )}
             {ladNum === 12 && (
               <>
@@ -89,14 +98,18 @@ export default function ChordCardTracked({
                 />
               </>
             )}
-            <text className="chord-lad-number" x={x - (ladNum < 10 ? 20 : 38)} y={betweenStr * stringsCount - 3}>
+            <text
+              className="chord-lad-number"
+              x={x - (ladNum < 10 ? 20 : 38)}
+              y={betweenStr * stringsCount - 3}
+            >
               {ladNum}
             </text>
           </React.Fragment>
         );
       })}
       {additions?.(lads, strings, stringsCount, leftMargin, betweenStr, betweenLad, track, mutes, baseLad)}
-      {strings.map((stringPos) => {
+      {strings.map(stringPos => {
         const y = betweenStr * stringPos - betweenStr / 2;
 
         return (
@@ -107,7 +120,11 @@ export default function ChordCardTracked({
               strokeWidth={0.5 + stringPos / 5}
             />
             {mutes.includes(stringPos) && (
-              <text className="mute-string-indicator" x={leftMargin - 5} y={y + 4}>
+              <text
+                className="mute-string-indicator"
+                x={leftMargin - 5}
+                y={y + 4}
+              >
                 &times;
               </text>
             )}
@@ -132,9 +149,15 @@ export default function ChordCardTracked({
           );
         }
 
-        return [('' + trace).split('')].flat().map((pos) => {
+        return [('' + trace).split('')].flat().map(pos => {
           const y = betweenStr * +pos - betweenStr / 2;
-          return <polyline key={`chord-point-${pos}`} className="chord-point" points={`${x},${y} ${x},${y}`} />;
+          return (
+            <polyline
+              key={`chord-point-${pos}`}
+              className="chord-point"
+              points={`${x},${y} ${x},${y}`}
+            />
+          );
         });
       })}
     </svg>

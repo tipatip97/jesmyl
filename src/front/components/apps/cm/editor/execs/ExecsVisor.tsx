@@ -29,10 +29,17 @@ export default function ExecsVisor() {
             [value]
               .flat()
               .map((comw: number) => {
-                flowCom = cols.coms.find((com) => com.wid === comw);
-                return flowCom && <ComFace key={`com-${comw}`} com={flowCom} />;
+                flowCom = cols.coms.find(com => com.wid === comw);
+                return (
+                  flowCom && (
+                    <ComFace
+                      key={`com-${comw}`}
+                      com={flowCom}
+                    />
+                  )
+                );
               })
-              .filter((val) => val != null)
+              .filter(val => val != null)
         : fieldn === 'tonLevel'
           ? flowCom
             ? flowCom.transChord(flowCom.getFirstSimpleChord() || '?', value)
@@ -43,19 +50,22 @@ export default function ExecsVisor() {
                 .flat()
                 .map((eventw: number) => {
                   if (eventw == null) return null;
-                  const event = meetings.events?.find((event) => event.wid === eventw);
+                  const event = meetings.events?.find(event => event.wid === eventw);
                   return (
                     <div
                       key={`event-${eventw}`}
                       className={event ? '' : 'error-message'}
                       onClick={() => eventw && goToEvent(eventw)}
                     >
-                      <EvaIcon name="calendar-outline" className="vertical-middle margin-gap" />
+                      <EvaIcon
+                        name="calendar-outline"
+                        className="vertical-middle margin-gap"
+                      />
                       <span className={`vertical-middle `}>{event ? event.name : 'Неизвестное событие'}</span>
                     </div>
                   );
                 })
-                .filter((val) => val != null)
+                .filter(val => val != null)
             : JSON.stringify(value, null, 2);
     };
 
@@ -95,15 +105,18 @@ export default function ExecsVisor() {
     <PhaseCmEditorContainer
       className="e-e-rules-editor"
       headTitle="Изменения"
-      content={list?.map((exec) => {
+      content={list?.map(exec => {
         return (
-          <div key={`exec-${exec.ts}`} className="exec-visor margin-big-gap-v pointer padding-gap full-width">
+          <div
+            key={`exec-${exec.ts}`}
+            className="exec-visor margin-big-gap-v pointer padding-gap full-width"
+          >
             <div className="flex between full-width">
               <span>{exec.author}</span>
               <span
                 onClick={() => {
                   setLookList(
-                    lookList.indexOf(exec.ts) < 0 ? [...lookList, exec.ts] : lookList.filter((ts) => ts !== exec.ts),
+                    lookList.indexOf(exec.ts) < 0 ? [...lookList, exec.ts] : lookList.filter(ts => ts !== exec.ts),
                   );
                 }}
               >

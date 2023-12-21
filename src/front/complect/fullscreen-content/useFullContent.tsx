@@ -49,7 +49,13 @@ export default function useFullContent<PassValue>(
           onClick={mode === 'closable' ? onClose : undefined}
           {...swiper}
         >
-          {mode === 'closable' ? null : <EvaButton name="close" className="close-button" onClick={onClose} />}
+          {mode === 'closable' ? null : (
+            <EvaButton
+              name="close"
+              className="close-button"
+              onClick={onClose}
+            />
+          )}
           <div className="full-container padding-big-gap">{content?.(close, passValue)}</div>
         </div>
       </Portal>

@@ -56,16 +56,16 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
     <>
       <HumanList
         {...props}
-        list={contextMembers.map((human) => human.w) ?? []}
+        list={contextMembers.map(human => human.w) ?? []}
         placeholder={placeholder}
         humansRef={humansRef}
         excludedHumans={ccontext.mentors}
         excludedLabel="лидер"
         fieldLabel="members"
-        onAddHuman={(human) => {
+        onAddHuman={human => {
           return LeaderCleans.addContextHuman(ccontext.w, human.w, 'members');
         }}
-        onRemoveHuman={(human) => {
+        onRemoveHuman={human => {
           return LeaderCleans.removeContextHuman(ccontext.w, human.w, 'members');
         }}
         asHumanMore={({ w }) => {

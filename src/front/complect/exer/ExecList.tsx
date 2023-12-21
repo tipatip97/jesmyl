@@ -18,16 +18,22 @@ export default function ExecList<Storage extends ExerStorage>({
 }) {
   const dispatch = useDispatch();
   const { execs } = useExer(exer);
-  const isDisabledSendButton = execs.some((exec) => exec.corrects?.errors?.length);
+  const isDisabledSendButton = execs.some(exec => exec.corrects?.errors?.length);
   const [readyState, setReadyState] = useState(1);
 
   return (
     <div className="full-container">
-      <LoadIndicatedContent isLoading={!readyState} onLoaded={() => readyState !== 2 && onLoad()}>
+      <LoadIndicatedContent
+        isLoading={!readyState}
+        onLoaded={() => readyState !== 2 && onLoad()}
+      >
         <div className="flex center column">
-          {execs.map((exec) => {
+          {execs.map(exec => {
             return (
-              <EditContainerCorrectsInformer key={`exec-list*${exec.scope}+${exec.id}`} corrects={exec?.corrects}>
+              <EditContainerCorrectsInformer
+                key={`exec-list*${exec.scope}+${exec.id}`}
+                corrects={exec?.corrects}
+              >
                 {exec.title}
               </EditContainerCorrectsInformer>
             );
@@ -44,7 +50,7 @@ export default function ExecList<Storage extends ExerStorage>({
                   dispatch(riseUpExerUpdates());
                   setReadyState(1);
                 })
-                .catch((error) => {
+                .catch(error => {
                   modalService.alert(error, 'Ошибка');
                   setReadyState(2);
                 });

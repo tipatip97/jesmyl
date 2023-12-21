@@ -5,5 +5,10 @@ import { SendButtonContentMakerWithConfirm } from './with-confirm';
 export const SendButtonContentMaker = <Value,>(props: SendButtonContentMakerProps<Value>) => {
   if (props.confirm != null) return <SendButtonContentMakerWithConfirm<Value> {...props} />;
 
-  return <SendButtonContentMakerBody<Value> {...props} onClick={() => props.onSend?.()} />;
+  return (
+    <SendButtonContentMakerBody<Value>
+      {...props}
+      onClick={() => props.onSend?.()}
+    />
+  );
 };
