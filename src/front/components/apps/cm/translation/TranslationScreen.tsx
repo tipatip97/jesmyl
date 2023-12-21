@@ -42,7 +42,6 @@ const Screen = styled.div`
 export const globalTranslationScreenStyle = css`
   ::view-transition-old(${transitionName}),
   ::view-transition-new(${transitionName}) {
-    display: asdasdd;
     animation-duration: 0.4s;
   }
 `;
