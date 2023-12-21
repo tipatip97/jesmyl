@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import useIsRedactArea from '../../../../../complect/useIsRedactArea';
 import HumanList from './HumanList';
@@ -20,6 +20,8 @@ export default function SelectHumans({
   const [delList, updateDelList] = useState<number[]>([]);
   const [isShowExcluded, setIsShowExcluded] = useState(false);
   const { isRedact, editIcon } = useIsRedactArea(redactable, redact);
+  const onListsUpdateRef = useRef(onListsUpdate);
+  onListsUpdateRef.current = onListsUpdate;
 
   const getHumanList = (isWholeList: boolean, placeholder: string) => {
     return (
@@ -88,7 +90,7 @@ export default function SelectHumans({
   const chooseNode = getHumanList(true, 'Поиск по личностям');
   const chosenNode = getHumanList(false, chosenPlaceholder);
 
-  useEffect(() => onListsUpdate?.(addList, delList), [addList, delList]);
+  useEffect(() => onListsUpdateRef.current?.(addList, delList), [addList, delList]);
 
   return (
     <>

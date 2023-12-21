@@ -1,6 +1,6 @@
 import smylib, { SMyLib } from '../../../shared/SMyLib';
 
-type Replacer<Ret> = (substring: string, ...args: any[]) => Ret;
+type Replacer<Ret> = (substring: string, ...args: string[]) => Ret;
 
 interface EndVariantsDict {
   pronoun: string | Replacer<Replacer<string>>;
@@ -87,11 +87,11 @@ export const makeTwiceKnownName = (pronoun: string, noun: string): [string, stri
 
       for (let j = 0; j < regEnd.length; j++) {
         if (regEnd[j][0].exec(pronoun)) {
-          const invoke = (funcOrString: any) => {
+          const invoke = (funcOrString: string | ((...match: string[]) => void)) => {
             return smylib.isFunc(funcOrString) ? funcOrString(...match) : funcOrString || allAll;
           };
 
-          return [pronoun.replace(regEnd[j][0], invoke(regEnd[j][1].pronoun)), fixNoun(noun)];
+          return [pronoun.replace(regEnd[j][0], invoke(regEnd[j][1].pronoun) as never), fixNoun(noun)];
         }
       }
     }

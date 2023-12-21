@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { renderComponentInNewWindow } from '../../../../../..';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
@@ -7,23 +7,26 @@ import WelcomePageList from '../templates/WelcomePageList';
 import HumanList from './HumanList';
 import { HumanImportable, HumanListComponentProps } from './People.model';
 
-export default function MemberList({ ...props }: {} & HumanListComponentProps) {
+export default function MemberList(props: HumanListComponentProps) {
   const { ccontext, contextMembers } = useLeaderContext();
   const placeholder = `${ccontext?.name || ''}. Участники`;
-  const humansRef = { current: [] };
+  const humansRef = useRef([]);
 
-  const getWelcomePages = useCallback((list: { group: LeaderGroupImportable; member: HumanImportable }[]) => {
-    return (
-      ccontext && (
-        <WelcomePageList
-          list={list.map(({ group, member }) => ({
-            ...LeaderCleans.getContextFieldValues(ccontext, group.fields),
-            ...member,
-          }))}
-        />
-      )
-    );
-  }, []);
+  const getWelcomePages = useCallback(
+    (list: { group: LeaderGroupImportable; member: HumanImportable }[]) => {
+      return (
+        ccontext && (
+          <WelcomePageList
+            list={list.map(({ group, member }) => ({
+              ...LeaderCleans.getContextFieldValues(ccontext, group.fields),
+              ...member,
+            }))}
+          />
+        )
+      );
+    },
+    [ccontext],
+  );
 
   useEffect(() => {
     if (!ccontext) return;

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import EvaIcon from '../complect/eva-icon/EvaIcon';
 import { ExerStorage } from '../complect/exer/Exer.model';
 import { INavigationConfig } from '../complect/nav-configurer/Navigation.model';

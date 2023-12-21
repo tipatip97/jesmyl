@@ -5,7 +5,7 @@ import { catTrackers } from './Cat.complect';
 import { ComWrap, ICat, IExportableCat } from './Cat.model';
 
 export class Cat extends BaseNamed<IExportableCat> implements ICat {
-  searchTimeout: any;
+  searchTimeout: TimeOut;
 
   index: number = -1;
   term?: string;

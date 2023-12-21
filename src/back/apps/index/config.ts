@@ -24,7 +24,7 @@ interface SchedulesBag {
   schedule: IScheduleWidget<string>;
 }
 
-const emptyArray: any[] = [];
+const emptyArray: [] = [];
 const emptyLists = { cats: [], units: [] };
 const itNNull = (it: unknown) => it !== null;
 

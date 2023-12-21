@@ -23,9 +23,10 @@ export default function ExecsVisor() {
   const list: ExecVision[] | nil = useMemo(() => {
     let flowCom: EditableCom | nil = null;
 
-    const setAsNode = (value: any, fieldn: string | nil) => {
+    const setAsNode = (value: unknown, fieldn: string | nil) => {
       return fieldn === 'comw'
         ? cols &&
+            mylib.isNum(value) &&
             [value]
               .flat()
               .map((comw: number) => {
@@ -41,11 +42,12 @@ export default function ExecsVisor() {
               })
               .filter(val => val != null)
         : fieldn === 'tonLevel'
-          ? flowCom
+          ? mylib.isNum(value) && flowCom
             ? flowCom.transChord(flowCom.getFirstSimpleChord() || '?', value)
             : value
           : fieldn === 'eventw'
             ? meetings &&
+              mylib.isNum(value) &&
               [value]
                 .flat()
                 .map((eventw: number) => {

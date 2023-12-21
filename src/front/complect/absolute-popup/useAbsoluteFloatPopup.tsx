@@ -54,11 +54,6 @@ export function ABSOLUTE__FLOAT__POPUP({ onOpen }: { onOpen: (close: () => boole
   onOpenPopup = onOpen;
   const { isAbsoluteFloatPopupOpen, closeAbsoluteFloatPopup } = useAbsoluteFloatPopup();
 
-  useEffect(
-    () => window.addEventListener('keydown', event => event.code === 'Escape' && closeAbsoluteFloatPopup()),
-    [],
-  );
-
   const [isMounted, className] = useMountTransition(
     isAbsoluteFloatPopupOpen && !!popupContent,
     'absolute-float-popup',

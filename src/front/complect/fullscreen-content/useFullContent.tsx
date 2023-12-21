@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode, useEffect, useState } from 'react';
+import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import EvaButton from '../eva-icon/EvaButton';
 import Eventer from '../eventer/Eventer';
@@ -18,16 +18,18 @@ export default function useFullContent<PassValue>(
   content: FullContentValue<PassValue> | nil,
   forceOpenMode?: FullContentOpenMode,
   switchIsForceOpen?: (is: boolean) => void,
-): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {
+): [ReactNode, (_event?: unknown, isClosable?: boolean, passValue?: PassValue) => void, () => void] {
   const [openMode, setOpenMode] = useState<FullContentOpenMode>(null);
-  const close = () => setOpenMode(null);
   const [passValue, setPassValue] = useState<PassValue>();
   const mode = forceOpenMode === undefined ? openMode : forceOpenMode;
-  const onClose = <El,>(event?: MouseEvent<El>) => {
+  const switchIsForceOpenRef = useRef(switchIsForceOpen);
+  switchIsForceOpenRef.current = switchIsForceOpen;
+
+  const onClose = useCallback(<El,>(event?: MouseEvent<El>) => {
     event?.stopPropagation();
-    close();
-    switchIsForceOpen?.(false);
-  };
+    setOpenMode(null);
+    switchIsForceOpenRef.current?.(false);
+  }, []);
 
   useEffect(() => {
     if (mode) {
@@ -39,7 +41,7 @@ export default function useFullContent<PassValue>(
         escape();
       };
     }
-  }, [mode]);
+  }, [mode, onClose]);
 
   return [
     mode && (
@@ -56,14 +58,14 @@ export default function useFullContent<PassValue>(
               onClick={onClose}
             />
           )}
-          <div className="full-container padding-big-gap">{content?.(close, passValue)}</div>
+          <div className="full-container padding-big-gap">{content?.(() => setOpenMode(null), passValue)}</div>
         </div>
       </Portal>
     ),
-    (isClosable?: boolean, passValue?: PassValue) => {
+    (_event, isClosable, passValue) => {
       setOpenMode(isClosable ? 'closable' : 'open');
       setPassValue(passValue);
     },
-    close,
+    () => setOpenMode(null),
   ];
 }

@@ -3,7 +3,7 @@ import indexStorage from '../components/index/indexStorage';
 const classList = document.body.classList;
 const minTouches = 3;
 const maxTouches = 3;
-let timeout: any = null;
+let timeout: TimeOut;
 const lsName = 'theme';
 
 (async () => {
