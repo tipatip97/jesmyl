@@ -89,13 +89,17 @@ export interface GameTimerExportable extends GameTimerWithBasics {
   comments?: LeaderCommentExportable[];
 }
 
-export type StoragedGameTimerImportable = { [gameWid: number]: { [timerTs: number]: GameTimerImportable | null } };
+export type StoragedGameTimerImportable = {
+  [gameWid: number]: { [timerTs: number]: GameTimerImportable | null };
+};
 
 export interface StoragedGameTimerImportableDict {
   news?: StoragedGameTimerImportable;
 }
 
-export type StoragedGameTimer = { [gameWid: number]: { [timerTs: number]: GameTimerImportable | null } };
+export type StoragedGameTimer = {
+  [gameWid: number]: { [timerTs: number]: GameTimerImportable | null };
+};
 
 export interface StoragedGameTimerDict {
   news: StoragedGameTimer;

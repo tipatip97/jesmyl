@@ -38,7 +38,12 @@ export class KeyboardStorageBase {
     this.forceUpdate();
   }
 
-  scrollToView(arg: ScrollIntoViewOptions | boolean = { block: 'nearest', inline: 'nearest' }) {
+  scrollToView(
+    arg: ScrollIntoViewOptions | boolean = {
+      block: 'nearest',
+      inline: 'nearest',
+    },
+  ) {
     if (this.isFocused) this.focusedCharItem?.scrollIntoView(arg);
   }
 }

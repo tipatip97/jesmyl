@@ -23,9 +23,9 @@ export default function OrdersRedactor() {
   const [popupToolsNode, , openToolsPopup] = useBottomPopup<PopupProps>((_close, _prepare, props) => (
     <OrdersRedactorOrderTools {...props} />
   ));
-  const [popupAddsNode, , openAddsPopup] = useBottomPopup<{ ccom: EditableCom }>((_close, _prepare, props) => (
-    <OrdersRedactorAdditions ccom={props.ccom} />
-  ));
+  const [popupAddsNode, , openAddsPopup] = useBottomPopup<{
+    ccom: EditableCom;
+  }>((_close, _prepare, props) => <OrdersRedactorAdditions ccom={props.ccom} />);
   const { exec } = useExer(cmExer);
 
   if (!ccom) return null;

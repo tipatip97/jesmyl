@@ -10,7 +10,10 @@ import { useTokenSortedWordsNaked } from '../../hooks/token-sorted-words';
 import { AliasRoomLessWordsCompute } from './LessWordsCompute';
 import { AliasSelectedDictsTextInfo, levelGradationTitles } from './SelectedDictsTextInfo';
 
-const dreamItems = [10, 30, 50, 70, 100].map(id => ({ title: `${id} слов`, id }));
+const dreamItems = [10, 30, 50, 70, 100].map(id => ({
+  title: `${id} слов`,
+  id,
+}));
 
 export interface AliasDictsPropsPart {
   dream: number;
@@ -70,7 +73,10 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
               selectNode = (
                 <Dropdown
                   id={dicts[packi]}
-                  items={pack.variants.map(count => ({ title: `${count} слов`, id: count }))}
+                  items={pack.variants.map(count => ({
+                    title: `${count} слов`,
+                    id: count,
+                  }))}
                   onSelectId={onSelect}
                 />
               );

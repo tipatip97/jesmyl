@@ -32,7 +32,9 @@ export default function HumanList({
 }: HumanListComponentProps) {
   const { humans } = useLeaderContext();
   const [term, setTerm] = useState('');
-  const [humansMoreNode, openHumansMore] = useBottomPopup(HumansMoreContenter, { fieldLabel });
+  const [humansMoreNode, openHumansMore] = useBottomPopup(HumansMoreContenter, {
+    fieldLabel,
+  });
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
   const { editIcon, isRedact } = useIsRedactArea(true, null, true, true);
 

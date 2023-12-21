@@ -10,11 +10,10 @@ import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bot
 
 const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
 
-export const HumansMoreContenter: BottomPopupContenter<{ moreNode?: ReactNode; fieldLabel?: 'mentors' | 'members' }> = (
-  _,
-  prepare,
-  { moreNode, fieldLabel },
-) => {
+export const HumansMoreContenter: BottomPopupContenter<{
+  moreNode?: ReactNode;
+  fieldLabel?: 'mentors' | 'members';
+}> = (_, prepare, { moreNode, fieldLabel }) => {
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
   const [humanMasterNode, openHumanMaster] = useFullContent(close => (

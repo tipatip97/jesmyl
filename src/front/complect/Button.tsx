@@ -7,7 +7,10 @@ export default function TheButton({
   confirm,
   onClick,
   ...props
-}: HTMLAttributes<HTMLDivElement> & { disabled?: boolean; confirm?: boolean | string }) {
+}: HTMLAttributes<HTMLDivElement> & {
+  disabled?: boolean;
+  confirm?: boolean | string;
+}) {
   return (
     <Button
       {...props}

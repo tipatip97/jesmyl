@@ -14,13 +14,22 @@ export type RoutePhase = string;
 export type RoutePath = RoutePhase[];
 export type FreeRoutePath = RoutePath | null;
 
-export type RoutePlaceWithData<NavData> = { place: RoutePhase | RoutePath; data: Partial<NavData> };
+export type RoutePlaceWithData<NavData> = {
+  place: RoutePhase | RoutePath;
+  data: Partial<NavData>;
+};
 export type RoutePlaceVariated<NavData> = RoutePlaceWithData<NavData> | RoutePhase | RoutePath;
 
-export type RoutePhasePointWithData<NavData> = { phase: RoutePhasePoint; data: Partial<NavData> };
+export type RoutePhasePointWithData<NavData> = {
+  phase: RoutePhasePoint;
+  data: Partial<NavData>;
+};
 export type RoutePhasePointVariated<NavData> = RoutePhasePointWithData<NavData> | RoutePhasePoint | null;
 
-export type RoutePathWithData<NavData> = { path: RoutePath; data: Partial<NavData> };
+export type RoutePathWithData<NavData> = {
+  path: RoutePath;
+  data: Partial<NavData>;
+};
 export type RoutePathVariated<NavData> = RoutePathWithData<NavData> | RoutePath | null;
 
 export interface RouterNavigateCast {

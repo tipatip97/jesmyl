@@ -40,7 +40,7 @@ export default function QRQuest() {
                       <div
                         className="absolute full-fill fade-03"
                         style={{ background: color, color: 'black' }}
-                      ></div>
+                      />
                     </div>
                   </div>
                 </div>,

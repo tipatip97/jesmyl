@@ -1,9 +1,11 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
 import useAuth from '../../components/index/useAuth';
 import ShareEvaButton from '../ShareEvaButton';
 import EvaIcon from '../eva-icon/EvaIcon';
 import { useIsRememberExpand } from '../expand/useIsRememberExpand';
 import mylib from '../my-lib/MyLib';
+import { crossApplicationLinkCoder } from '../qr-code/useQRMaster';
 import StrongButton from '../strong-control/StrongButton';
 import StrongControlDateTimeExtracter from '../strong-control/StrongDateTimeExtracter';
 import StrongEvaButton from '../strong-control/StrongEvaButton';
@@ -25,8 +27,6 @@ import {
   takeScheduleStrongScopeMaker,
   useScheduleWidgetRights,
 } from './useScheduleWidget';
-import styled from 'styled-components';
-import { crossApplicationLinkCoder } from '../qr-code/useQRMaster';
 
 const msInMin = mylib.howMs.inMin;
 
@@ -165,7 +165,7 @@ export default function ScheduleWidget({
                   date={date}
                 />
               )}
-              {rights.isCanRead ? (
+              {rights.isCanRead && (
                 <>
                   {isRedact && (
                     <>
@@ -289,8 +289,6 @@ export default function ScheduleWidget({
                     );
                   })}
                 </>
-              ) : (
-                <></>
               )}
             </div>
           </>

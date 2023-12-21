@@ -164,7 +164,20 @@ export class EditableCom extends Com {
     this.col.setFieldCol<keyof IExportableCom, 'com'>(
       fieldn,
       value,
-      { b: 'comSetDefaultBemolType', a: '', c: '', k: '', l: '', n: '', o: '', p: '', r: '', t: '', ton: '', w: '' },
+      {
+        b: 'comSetDefaultBemolType',
+        a: '',
+        c: '',
+        k: '',
+        l: '',
+        n: '',
+        o: '',
+        p: '',
+        r: '',
+        t: '',
+        ton: '',
+        w: '',
+      },
       'com',
       defVal,
     );
@@ -506,7 +519,11 @@ export class EditableCom extends Com {
       });
     }
 
-    return { containers, anchors, indexes: indexes.sort((a, b) => b.ordi - a.ordi) };
+    return {
+      containers,
+      anchors,
+      indexes: indexes.sort((a, b) => b.ordi - a.ordi),
+    };
   }
 
   removeBlock(coln: 'texts' | 'chords', coli: number) {

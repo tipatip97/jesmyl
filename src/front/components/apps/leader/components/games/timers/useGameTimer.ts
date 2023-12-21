@@ -40,7 +40,11 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
   useEffect(() => {
     if (gameTimer) {
       if (runTimeTimers.news[gameWid] === undefined) runTimeTimers.news[gameWid] = {};
-      runTimeTimers.news[gameWid][timerTs] = { ...gameTimer, ...timer, comments: gameTimer.comments };
+      runTimeTimers.news[gameWid][timerTs] = {
+        ...gameTimer,
+        ...timer,
+        comments: gameTimer.comments,
+      };
     }
   }, [game, gameWid, isNewTimer, timer, timerTs, gameTimer]);
 

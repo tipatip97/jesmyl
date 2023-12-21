@@ -56,7 +56,9 @@ export default function ScheduleWidgetUser({
                     if (data.appName === 'index' && data.key === 'passport') {
                       const valueLogin = (data.value as { login: '' }).login;
                       if (rights.schedule.ctrl.users.some(user => valueLogin === user.login)) {
-                        toast('Пользователь уже является участником!', { mood: 'ko' });
+                        toast('Пользователь уже является участником!', {
+                          mood: 'ko',
+                        });
                         return;
                       }
                     }

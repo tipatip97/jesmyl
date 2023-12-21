@@ -126,7 +126,9 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     const msg = (msg?: string) =>
       msg && `"${name}" - не корректное имя для ${coln === 'cat' ? 'категории' : 'песни'}. ${msg}`;
     const ret = (err?: string, onFix?: () => void) =>
-      this.textCorrects(name, undefined, isSetAllText).merge({ errors: err ? [{ message: err, onFix, uniq }] : null });
+      this.textCorrects(name, undefined, isSetAllText).merge({
+        errors: err ? [{ message: err, onFix, uniq }] : null,
+      });
 
     if (!mylib.isStr(name)) return ret(msg('Не верный формат'));
     if (name === '?' && coln === 'com') return ret('');

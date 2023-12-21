@@ -21,9 +21,7 @@ export default function EvaIcon(
 ) {
   return (
     <>
-      {iconInners[props.name] == null ? (
-        props.alt || null
-      ) : (
+      {iconInners[props.name] && (
         <IconEva
           {...props}
           width="24"

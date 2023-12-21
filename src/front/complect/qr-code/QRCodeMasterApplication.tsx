@@ -98,7 +98,7 @@ export function QRCodeMasterApplication({
       <div
         style={{ width: `${qrReaderReadAreaSize}px` }}
         id={qrCodeMasterContainerId}
-      ></div>
+      />
       {isOpenReader &&
         (partsToLoad ? (
           <div>

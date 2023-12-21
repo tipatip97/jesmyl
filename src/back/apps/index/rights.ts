@@ -78,39 +78,40 @@ export enum CustomAttUseRights {
   CheckUsers,
 }
 
-export const customAttUseRightsTitles: (ScheduleWidgetRightTexts<CustomAttUseRights> & { top?: CustomAttUseRights })[] =
-  [
-    {
-      id: CustomAttUseRights.Checkboxes,
-      title: 'вып. пункты',
-    },
-    {
-      id: CustomAttUseRights.Roles,
-      title: 'роли',
-    },
-    {
-      id: CustomAttUseRights.Lists,
-      title: 'список',
-    },
-    {
-      id: CustomAttUseRights.Users,
-      title: 'участников',
-    },
-    {
-      id: CustomAttUseRights.CheckUsers,
-      title: 'вып. участники',
-      top: CustomAttUseRights.Users,
-    },
-    {
-      id: CustomAttUseRights.Titles,
-      title: 'заголовки',
-    },
-    {
-      id: CustomAttUseRights.CheckTitles,
-      title: 'вып. заголовки',
-      top: CustomAttUseRights.Titles,
-    },
-  ];
+export const customAttUseRightsTitles: (ScheduleWidgetRightTexts<CustomAttUseRights> & {
+  top?: CustomAttUseRights;
+})[] = [
+  {
+    id: CustomAttUseRights.Checkboxes,
+    title: 'вып. пункты',
+  },
+  {
+    id: CustomAttUseRights.Roles,
+    title: 'роли',
+  },
+  {
+    id: CustomAttUseRights.Lists,
+    title: 'список',
+  },
+  {
+    id: CustomAttUseRights.Users,
+    title: 'участников',
+  },
+  {
+    id: CustomAttUseRights.CheckUsers,
+    title: 'вып. участники',
+    top: CustomAttUseRights.Users,
+  },
+  {
+    id: CustomAttUseRights.Titles,
+    title: 'заголовки',
+  },
+  {
+    id: CustomAttUseRights.CheckTitles,
+    title: 'вып. заголовки',
+    top: CustomAttUseRights.Titles,
+  },
+];
 
 export const customAttUseRights = new ScheduleWidgetRightsCtrl(customAttUseRightsTitles);
 

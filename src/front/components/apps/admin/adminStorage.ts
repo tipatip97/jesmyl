@@ -16,6 +16,8 @@ export const defaultAdminContext: AdminContextModel = {
   users: [],
 };
 
-export const AdminContext = React.createContext<AdminContextModel>({ users: [] } as never);
+export const AdminContext = React.createContext<AdminContextModel>({
+  users: [],
+} as never);
 
 export const useAdminContext = () => useContext(AdminContext);

@@ -99,7 +99,11 @@ export default function ScheduleWidgetDayEventList({
                     className="flex flex-gap pointer"
                     mapExecArgs={args => {
                       setIsReplacementInProcess(true);
-                      return { ...args, value: beforei, eventMi: movementEvent?.mi };
+                      return {
+                        ...args,
+                        value: beforei,
+                        eventMi: movementEvent?.mi,
+                      };
                     }}
                     onSuccess={() => {
                       setIsReplacementInProcess(false);

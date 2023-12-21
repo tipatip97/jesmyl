@@ -75,7 +75,10 @@ export default function TimerControlBoard({
 
                   if (isNewTimer)
                     use.mapTimer(prevTimer => {
-                      const finishes = { ...prevTimer.finishes, [team.w]: value };
+                      const finishes = {
+                        ...prevTimer.finishes,
+                        [team.w]: value,
+                      };
                       if (!value) delete finishes[team.w];
                       return { ...prevTimer, finishes };
                     });

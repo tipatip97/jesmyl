@@ -301,7 +301,12 @@ export class MyLib extends SMyLib {
   scrollToView(
     element: Element | null,
     position = 'center',
-    props: { parent?: HTMLElement; force?: boolean; animationTime?: number; top?: number } = {} as never,
+    props: {
+      parent?: HTMLElement;
+      force?: boolean;
+      animationTime?: number;
+      top?: number;
+    } = {} as never,
   ) {
     if (!element) return;
     const { parent = element.parentElement, force = true, animationTime = 0, top = 0 } = props;

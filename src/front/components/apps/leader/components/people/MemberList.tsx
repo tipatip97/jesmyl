@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { renderComponentInNewWindow } from '../../../../../..';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
@@ -12,7 +12,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
   const placeholder = `${ccontext?.name || ''}. Участники`;
   const humansRef = { current: [] };
 
-  const getWelcomePages = (list: { group: LeaderGroupImportable; member: HumanImportable }[]) => {
+  const getWelcomePages = useCallback((list: { group: LeaderGroupImportable; member: HumanImportable }[]) => {
     return (
       ccontext && (
         <WelcomePageList
@@ -23,7 +23,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
         />
       )
     );
-  };
+  }, []);
 
   useEffect(() => {
     if (!ccontext) return;
@@ -48,7 +48,7 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
     return () => {
       window.removeEventListener('keyup', onPrint);
     };
-  }, [ccontext, contextMembers]);
+  }, [ccontext, contextMembers, getWelcomePages]);
 
   if (!ccontext) return null;
 

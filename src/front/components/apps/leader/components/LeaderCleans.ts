@@ -93,7 +93,12 @@ export class LeaderCleans {
         this.getTimerConfigurableField('joins', timer, game),
         this.getTimerConfigurableField('mode', timer, game) === GameTimerMode.TimerTotal
           ? (team, rowi) => ({ team, start, finish: finishes[team.w], rowi })
-          : (team, rowi) => ({ team, start: starts[rowi] || 0, finish: finishes[team.w], rowi }),
+          : (team, rowi) => ({
+              team,
+              start: starts[rowi] || 0,
+              finish: finishes[team.w],
+              rowi,
+            }),
       )
       .flat();
 

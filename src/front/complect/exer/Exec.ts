@@ -72,7 +72,9 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
 
     const errors = mylib.checkIsCorrectArgs(this.action, this.args, this.rule.args);
 
-    this.corrects = (this.corrects || new CorrectsBox()).merge({ errors: errors?.map(message => ({ message })) });
+    this.corrects = (this.corrects || new CorrectsBox()).merge({
+      errors: errors?.map(message => ({ message })),
+    });
   }
 
   setValue(value?: Value, exec?: FreeExecDict<Value>) {

@@ -57,7 +57,10 @@ export default function FingerprintScreen({
 }
 
 const fingerprintPanelAnimWid = makeWid();
-export const Fingerprint = styled.div<{ $isScanning: boolean; $height?: number }>`
+export const Fingerprint = styled.div<{
+  $isScanning: boolean;
+  $height?: number;
+}>`
   & {
     opacity: 0;
     transition:

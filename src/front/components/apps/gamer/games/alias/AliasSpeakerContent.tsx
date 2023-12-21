@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
@@ -27,23 +27,26 @@ export default function AliasSpeakerContent() {
   const { resetSpeech, startSpeech } = useAliasSimpleExecs();
   const myPossibilities = useMyPossibilitiesCurrentRoom();
   const infos = useTokenSortedWordsNaked();
-  const sendWord = (scope: 'cor' | 'inc') => {
-    setIsWordSending(true);
-    strikeWord(scope)?.then(() => setIsWordSending(false));
-  };
+  const sendWord = useCallback((scope?: 'cor' | 'inc') => {
+    return (event: { preventDefault(): void }) => {
+      event.preventDefault();
+      setIsWordSending(true);
+      scope && strikeWord(scope)?.then(() => setIsWordSending(false));
+    };
+  }, []);
 
   useEffect(() => {
     if (isTouchDevice || !state?.startTs) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft') sendWord('cor');
-      if (event.key === 'ArrowRight') sendWord('inc');
+      if (event.key === 'ArrowLeft') sendWord('cor')(event);
+      if (event.key === 'ArrowRight') sendWord('inc')(event);
     };
     window.addEventListener('keyup', onKey);
 
     return () => {
       window.removeEventListener('keyup', onKey);
     };
-  }, [state?.startTs]);
+  }, [state?.startTs, sendWord]);
 
   if (!state) return null;
 
@@ -74,10 +77,7 @@ export default function AliasSpeakerContent() {
                 name="checkmark-circle-2-outline"
                 className="color--ok"
                 disabled={isWordSending}
-                onPointerDown={event => {
-                  event.preventDefault();
-                  sendWord('cor');
-                }}
+                onPointerDown={sendWord('cor')}
               />
             </AboveButton>
             {myTeam && <div>{score}</div>}
@@ -87,10 +87,7 @@ export default function AliasSpeakerContent() {
                 name="close-circle-outline"
                 className="color--ko"
                 disabled={isWordSending}
-                onPointerDown={event => {
-                  event.preventDefault();
-                  sendWord('inc');
-                }}
+                onPointerDown={sendWord('inc')}
               />
             </AboveButton>
           </div>

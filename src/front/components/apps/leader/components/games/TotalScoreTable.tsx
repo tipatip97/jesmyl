@@ -48,7 +48,12 @@ export default function TotalScoreTable({ selectedTimers }: { selectedTimers: nu
         { start: 0, finish: 0, starts: [], finishes: [] },
       );
 
-      scores.push({ start, finish, rowi: -1, team: cgame?.teams?.find(({ w }) => w === teamw) });
+      scores.push({
+        start,
+        finish,
+        rowi: -1,
+        team: cgame?.teams?.find(({ w }) => w === teamw),
+      });
     });
     return scores;
   }, [selectedTimers, cgame]);

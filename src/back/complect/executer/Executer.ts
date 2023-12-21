@@ -30,7 +30,11 @@ const globs: Record<string, any> = {
 };
 
 const reportFailError = (rej: (resp: { ok: false; fail?: boolean; message: string }) => void, error: any) =>
-  rej({ ok: false, fail: true, message: error && (error.stack ?? error.message) });
+  rej({
+    ok: false,
+    fail: true,
+    message: error && (error.stack ?? error.message),
+  });
 
 export class Executer {
   static readonly stubEmpty = ['EMPTY'];
@@ -501,7 +505,11 @@ export class Executer {
     const shortRules = this.mapShortRules(rules);
 
     try {
-      return { rules, shortRules, shortRulesMd5: smylib.md5(JSON.stringify(shortRules)) };
+      return {
+        rules,
+        shortRules,
+        shortRulesMd5: smylib.md5(JSON.stringify(shortRules)),
+      };
     } catch (error) {
       return { rules, shortRules, shortRulesMd5: null };
     }
@@ -634,7 +642,15 @@ export class Executer {
             return true;
           }
 
-          this.doIt({ method, target, penultimate, lastTrace, value, realArgs: args, auth })
+          this.doIt({
+            method,
+            target,
+            penultimate,
+            lastTrace,
+            value,
+            realArgs: args,
+            auth,
+          })
             .then(resolve)
             .catch(errorMessage => reject(`#63674012239 ${errorMessage}`));
         }
@@ -874,14 +890,22 @@ export class Executer {
             errors
               .sort((a, b) => (a.type > b.type ? 1 : a.type < b.type ? -1 : 0))
               .reduce<Record<ExecuteErrorType, string[]>>(
-                (acc, { type, note }) => ({ ...acc, [type]: (acc[type] || []).concat(note) }),
+                (acc, { type, note }) => ({
+                  ...acc,
+                  [type]: (acc[type] || []).concat(note),
+                }),
                 {} as never,
               ),
           )
             .reduce<string[]>((acc, [title, notes]) => acc.concat(`${title}:\n  ${notes.join(', ')}`), [])
             .join('\n');
 
-          resolve({ fixes, replacedExecs, errorMessage: errorMessage || undefined, rules });
+          resolve({
+            fixes,
+            replacedExecs,
+            errorMessage: errorMessage || undefined,
+            rules,
+          });
         });
       } catch (error) {
         reportFailError(reject, error);

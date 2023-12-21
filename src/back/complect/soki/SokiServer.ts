@@ -156,7 +156,10 @@ export class SokiServer {
               else
                 cli.send(
                   freeRejEventStr === null
-                    ? (freeRejEventStr = JSON.stringify({ ...rejEvent, errorMessage: undefined }))
+                    ? (freeRejEventStr = JSON.stringify({
+                        ...rejEvent,
+                        errorMessage: undefined,
+                      }))
                     : freeRejEventStr,
                 );
             } else if (res) cli.send(errorFor === cli ? event : freeEvent);
@@ -415,7 +418,11 @@ export class SokiServer {
                 this.send(
                   {
                     requestId,
-                    system: { name: 'restartWS', ok: false, error: error.message },
+                    system: {
+                      name: 'restartWS',
+                      ok: false,
+                      error: error.message,
+                    },
                     appName,
                   },
                   client,

@@ -49,9 +49,11 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
             item && (
               <div
                 key={`dropdown-item ${item.id}`}
-                className={`list-item ${item.disabled ? 'disabled' : ''} ${
-                  item.color ? `colored color_${item.color}` : ''
-                }`}
+                className={
+                  'list-item ' +
+                  (item.disabled ? ' disabled ' : '') +
+                  (item.color ? ` colored color_${item.color} ` : '')
+                }
                 onClick={event => {
                   event.stopPropagation();
                   setDropped(false);

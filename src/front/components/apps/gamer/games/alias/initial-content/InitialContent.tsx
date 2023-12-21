@@ -11,7 +11,10 @@ import { useAliasRoomState } from '../hooks/state';
 import { AliasRoomTeamsConfigures, initialAliasTeamsPropsPart } from './TeamsConfigures';
 import { AliasRoomWordsConfigures, initialAliasDictsPropsPart } from './words/WordsConfigures';
 
-const roundTimesItems = [10, 60, 120, 180].map(id => ({ title: `${id} сек.`, id }));
+const roundTimesItems = [10, 60, 120, 180].map(id => ({
+  title: `${id} сек.`,
+  id,
+}));
 
 export const AliasRoomInitialContent = () => {
   const state = useAliasRoomState();

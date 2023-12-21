@@ -47,13 +47,13 @@ export default function TheTuner() {
             Start
           </div>
           <div className="tuner-content">
-            <canvas className="frequency-bars"></canvas>
+            <canvas className="frequency-bars" />
             <div className="meter">
-              <div className="meter-dot"></div>
-              <div className="meter-pointer"></div>
+              <div className="meter-dot" />
+              <div className="meter-pointer" />
             </div>
             <div className="notes">
-              <div className="notes-list"></div>
+              <div className="notes-list" />
               <div className="frequency">
                 {' '}
                 <span>Hz</span>

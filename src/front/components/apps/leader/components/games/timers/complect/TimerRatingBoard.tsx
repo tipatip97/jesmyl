@@ -73,7 +73,7 @@ export default function TimerRatingBoard({
                     key={bagi}
                     className={'flex flex-gap' + (isHidden ? ' text-strike ' : '')}
                   >
-                    {isHidden ? <div className="width-1em"></div> : <div className="width-1em">{teamPosition}</div>}
+                    {isHidden ? <div className="width-1em" /> : <div className="width-1em">{teamPosition}</div>}
                     <div>{team.name}</div>
                     <TimerScreen
                       className="color--3"

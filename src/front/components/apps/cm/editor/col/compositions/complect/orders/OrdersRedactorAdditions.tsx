@@ -15,7 +15,7 @@ export default function OrdersRedactorAdditions({ ccom }: { ccom: EditableCom })
         onClick: () => {
           modalService.open({
             title: 'Новый текст',
-            description: <pre></pre>,
+            description: <pre />,
             inputs: ccom.texts?.map((text, texti) => {
               return {
                 type: 'button',

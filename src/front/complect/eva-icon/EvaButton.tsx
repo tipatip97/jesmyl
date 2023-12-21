@@ -39,10 +39,7 @@ export default function EvaButton(props: {
       onTouchStart={isTouchDevice ? props.onPointerDown : undefined}
     >
       {props.prefix}
-      <EvaIcon
-        name={props.name}
-        alt={props.alt}
-      />
+      <EvaIcon name={props.name} />
       {props.postfix}
     </span>
   );

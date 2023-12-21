@@ -164,9 +164,12 @@ export class SokiTrip {
       [appName]: [appLastUpdate = 0, appRulesMd5 = ''] = [],
     } = (await indexStorage.get('updateRequisites')) || {};
 
-    this.send({ pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] }, appName).on(
-      event => event.pull && this.updatedPulledData(event.pull),
-    );
+    this.send(
+      {
+        pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5],
+      },
+      appName,
+    ).on(event => event.pull && this.updatedPulledData(event.pull));
   }
 
   updatedPulledData(pull: PullEventValue) {
@@ -237,7 +240,13 @@ export class SokiTrip {
     return {
       on: (ok, ko, final) => {
         requestId = '' + Date.now() + Math.random();
-        this.responseWaiters.push({ requestId, ok, ko, final, isPing: body.ping });
+        this.responseWaiters.push({
+          requestId,
+          ok,
+          ko,
+          final,
+          isPing: body.ping,
+        });
       },
     };
   };

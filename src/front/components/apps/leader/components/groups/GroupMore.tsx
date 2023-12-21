@@ -3,11 +3,9 @@ import useFullContent from '../../../../../complect/fullscreen-content/useFullCo
 import LeaderGroupMaster from './GroupMaster';
 import { LeaderGroupImportable } from './Groups.model';
 
-export const LeaderGroupMoreContenter: BottomPopupContenter<{ group?: LeaderGroupImportable }> = (
-  _,
-  prepare,
-  { group },
-) => {
+export const LeaderGroupMoreContenter: BottomPopupContenter<{
+  group?: LeaderGroupImportable;
+}> = (_, prepare, { group }) => {
   const [groupMasterNode, openGroupMaster] = useFullContent(close => (
     <LeaderGroupMaster
       close={close}

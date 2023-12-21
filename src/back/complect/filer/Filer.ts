@@ -236,8 +236,14 @@ export class Filer {
     try {
       const [pullIndexLastUpdate, pullIndexMd5, pullAppLastUpdate, pullAppMd5] = pullCortage;
 
-      let appLastUpdates = { cts: pullAppLastUpdate || 0, ts: pullAppLastUpdate || 0 };
-      let indexLastUpdates = { cts: pullIndexLastUpdate || 0, ts: pullIndexLastUpdate || 0 };
+      let appLastUpdates = {
+        cts: pullAppLastUpdate || 0,
+        ts: pullAppLastUpdate || 0,
+      };
+      let indexLastUpdates = {
+        cts: pullIndexLastUpdate || 0,
+        ts: pullIndexLastUpdate || 0,
+      };
 
       const getContents = ([fixName, fixData]: [string, FilerContentData], ts: { cts: number; ts: number }) => {
         if (fixData.level > (auth?.level || 0) || ts.ts >= fixData.mtime) return null;

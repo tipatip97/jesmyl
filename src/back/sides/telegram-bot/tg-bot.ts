@@ -127,7 +127,10 @@ export class JesmylTelegramBot {
   postMessage(text: string, options?: TgBot.SendMessageOptions) {
     if (this.logAllAsJSON) this.logger.jsonCode({ message: text, options });
 
-    return this._bot.bot.sendMessage(this.chatId, text, { parse_mode: 'HTML', ...options });
+    return this._bot.bot.sendMessage(this.chatId, text, {
+      parse_mode: 'HTML',
+      ...options,
+    });
   }
 
   getUserData(id: number) {
@@ -149,7 +152,10 @@ export class JesmylTelegramBot {
   sendMessage(userOrId: User | number, text: string, options?: TgBot.SendMessageOptions) {
     return new Promise<{ ok: false; value: string } | { ok: true; value: TgBot.Message }>(res => {
       this._bot.bot
-        .sendMessage(smylib.isNum(userOrId) ? userOrId : userOrId.id, text, { parse_mode: 'HTML', ...options })
+        .sendMessage(smylib.isNum(userOrId) ? userOrId : userOrId.id, text, {
+          parse_mode: 'HTML',
+          ...options,
+        })
         .then(message => res({ ok: true, value: message }))
         .catch(() => {
           this.logger.error(
