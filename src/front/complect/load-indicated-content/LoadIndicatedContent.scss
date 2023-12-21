@@ -1,160 +1,159 @@
 .load-indicated-content-container {
+  height: 100%;
+
+  &.initial-state {
+    > .load-indicated-content-spinner-container {
+      > .jesmyl-smile {
+        > .smile-container {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &.content-is-ready,
+  &.ending-process,
+  &.loading-process {
     height: 100%;
+    width: 100%;
 
-    &.initial-state {
-        >.load-indicated-content-spinner-container {
-            >.jesmyl-smile {
-                >.smile-container {
-                    display: none;
-                }
-            }
+    > .load-indicated-content-spinner-container {
+      > .jesmyl-smile {
+        &::before,
+        &::after {
+          content: '';
         }
+      }
+    }
+  }
+
+  &.content-is-ready,
+  &.loading-process {
+    > :not(.load-indicated-content-spinner-container) {
+      display: none;
     }
 
-    &.content-is-ready,
-    &.ending-process,
-    &.loading-process {
-        height: 100%;
-        width: 100%;
-
-        >.load-indicated-content-spinner-container {
-            >.jesmyl-smile {
-
-                &::before,
-                &::after {
-                    content: '';
-                }
-            }
-        }
+    > .load-indicated-content-spinner-container {
+      > .jesmyl-smile {
+        animation:
+          fade-in 0.3s,
+          rotate 0.7s infinite linear;
+      }
     }
+  }
 
-    &.content-is-ready,
-    &.loading-process {
-        >:not(.load-indicated-content-spinner-container) {
-            display: none;
+  &.ending-process {
+    --animation-time: 0.8s;
+
+    > .load-indicated-content-spinner-container {
+      animation: fade-out var(--animation-time);
+      animation-delay: var(--animation-time);
+
+      > .jesmyl-smile {
+        &::after {
+          animation: aringify var(--animation-time) forwards;
         }
 
-        >.load-indicated-content-spinner-container {
-            >.jesmyl-smile {
-                animation: fade-in .3s, rotate .7s infinite linear;
-            }
+        &::before {
+          animation: bringify var(--animation-time) forwards;
         }
+      }
     }
+  }
 
-    &.ending-process {
-        --animation-time: .8s;
-
-        >.load-indicated-content-spinner-container {
-            animation: fade-out var(--animation-time);
-            animation-delay: var(--animation-time);
-
-            >.jesmyl-smile {
-                &::after {
-                    animation: aringify var(--animation-time) forwards;
-                }
-
-                &::before {
-                    animation: bringify var(--animation-time) forwards;
-                }
-            }
-        }
+  &.content-loaded {
+    > .load-indicated-content-spinner-container {
+      display: none;
     }
+  }
 
-
-    &.content-loaded {
-        >.load-indicated-content-spinner-container {
-            display: none;
-        }
-    }
-
-    >.load-indicated-content-spinner-container {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-    }
+  > .load-indicated-content-spinner-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 @keyframes bringify {
-    from {
-        top: var(--beye-ringify-top);
-        left: var(--beye-ringify-left);
-    }
+  from {
+    top: var(--beye-ringify-top);
+    left: var(--beye-ringify-left);
+  }
 
-    30% {
-        top: var(--beye-ringify-top);
-        left: var(--beye-ringify-left);
-    }
+  30% {
+    top: var(--beye-ringify-top);
+    left: var(--beye-ringify-left);
+  }
 
-    70% {
-        top: var(--beye-top);
-        left: var(--beye-left);
-    }
+  70% {
+    top: var(--beye-top);
+    left: var(--beye-left);
+  }
 
-    to {
-        top: var(--beye-top);
-        left: var(--beye-left);
-    }
+  to {
+    top: var(--beye-top);
+    left: var(--beye-left);
+  }
 }
 
 @keyframes aringify {
-    from {
-        top: var(--aeye-ringify-top);
-        left: var(--aeye-ringify-left);
-    }
+  from {
+    top: var(--aeye-ringify-top);
+    left: var(--aeye-ringify-left);
+  }
 
-    30% {
-        top: var(--aeye-ringify-top);
-        left: var(--aeye-ringify-left);
-    }
+  30% {
+    top: var(--aeye-ringify-top);
+    left: var(--aeye-ringify-left);
+  }
 
-    70% {
-        top: var(--aeye-top);
-        left: var(--aeye-left);
-    }
+  70% {
+    top: var(--aeye-top);
+    left: var(--aeye-left);
+  }
 
-    to {
-        top: var(--aeye-top);
-        left: var(--aeye-left);
-    }
+  to {
+    top: var(--aeye-top);
+    left: var(--aeye-left);
+  }
 }
 
 @keyframes fade-in {
-    from {
-        opacity: 0;
-    }
+  from {
+    opacity: 0;
+  }
 
-    90% {
-        opacity: 0;
-    }
+  90% {
+    opacity: 0;
+  }
 
-    to {
-        opacity: 1;
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fade-out {
-    from {
-        opacity: 1;
-    }
+  from {
+    opacity: 1;
+  }
 
-    30% {
-        opacity: 0;
-    }
+  30% {
+    opacity: 0;
+  }
 
-    to {
-        opacity: 0;
-    }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
 
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }

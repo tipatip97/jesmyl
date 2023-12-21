@@ -1,13 +1,11 @@
-import QRCodeGenerator from "qrcode";
-import { HTMLAttributes } from "react";
+import QRCodeGenerator from 'qrcode';
+import { HTMLAttributes } from 'react';
 
-export default function QRCode(
-  { text, ...props }: HTMLAttributes<HTMLCanvasElement> & { text: string }
-) {
+export default function QRCode({ text, ...props }: HTMLAttributes<HTMLCanvasElement> & { text: string }) {
   return (
     <canvas
       {...props}
-      className={`qr-code ${props.className || ""}`}
+      className={`qr-code ${props.className || ''}`}
       ref={(element) => {
         if (!element) return;
 

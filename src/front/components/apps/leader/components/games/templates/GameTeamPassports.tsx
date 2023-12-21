@@ -1,15 +1,11 @@
-import React from "react";
-import mylib from "../../../../../../complect/my-lib/MyLib";
-import FontSizeContain from "../../../../cm/base/font-size-contain/FontSizeContain";
-import PrintableTemplate from "../../templates/PrintableTemplate";
-import useGames from "../useGames";
-import "./GameTemplates.scss";
+import React from 'react';
+import mylib from '../../../../../../complect/my-lib/MyLib';
+import FontSizeContain from '../../../../cm/base/font-size-contain/FontSizeContain';
+import PrintableTemplate from '../../templates/PrintableTemplate';
+import useGames from '../useGames';
+import './GameTemplates.scss';
 
-export default function GameTeamPassports({
-  selectedTimers,
-}: {
-  selectedTimers?: number[];
-}) {
+export default function GameTeamPassports({ selectedTimers }: { selectedTimers?: number[] }) {
   const { cgame } = useGames();
   const gameTimers = cgame?.timers;
   const joins = cgame?.timerFields?.joins;
@@ -17,11 +13,7 @@ export default function GameTeamPassports({
     (selectedTimers?.length &&
       gameTimers &&
       selectedTimers
-        .map(
-          (wid) =>
-            gameTimers.find((timer) => !timer.isInactive && timer.w === wid)
-              ?.name
-        )
+        .map((wid) => gameTimers.find((timer) => !timer.isInactive && timer.w === wid)?.name)
         .filter((timer) => timer)) ||
     cgame?.timerNames;
 
@@ -39,7 +31,7 @@ export default function GameTeamPassports({
                     <FontSizeContain delay={100}>
                       <div className="rotate-90">{timer}</div>
                     </FontSizeContain>
-                  </div>
+                  </div>,
                 )}
               </React.Fragment>
             );
@@ -50,11 +42,7 @@ export default function GameTeamPassports({
               carouselTimers.push(carouselTimers.splice(0, 1)[0]);
             }
 
-            const pointsNet = mylib.netFromLine(
-              carouselTimers,
-              2,
-              (item) => item
-            );
+            const pointsNet = mylib.netFromLine(carouselTimers, 2, (item) => item);
 
             return (
               <>
@@ -62,9 +50,7 @@ export default function GameTeamPassports({
                   {page(
                     <>
                       <div className="tpl-title">{cgame?.name}</div>
-                      <div className="tpl-subtitle margin-gap">
-                        Паспорт команды "{team.name}"
-                      </div>
+                      <div className="tpl-subtitle margin-gap">Паспорт команды "{team.name}"</div>
                       <div className="table-wrapper">
                         <div className="table">
                           {pointsNet?.map((row, rowi) => {
@@ -72,10 +58,7 @@ export default function GameTeamPassports({
                               <div key={rowi} className="row">
                                 {row.map((timer, timeri) => {
                                   return (
-                                    <div
-                                      key={timeri}
-                                      className="cell"
-                                    >
+                                    <div key={timeri} className="cell">
                                       {timer}
                                     </div>
                                   );
@@ -85,7 +68,7 @@ export default function GameTeamPassports({
                           })}
                         </div>
                       </div>
-                    </>
+                    </>,
                   )}
                 </React.Fragment>
               </>

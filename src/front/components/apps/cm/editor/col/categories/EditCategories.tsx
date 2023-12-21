@@ -1,7 +1,7 @@
-import BrutalItem from "../../../../../../complect/brutal-item/BrutalItem";
-import useCmNav from "../../../base/useCmNav";
-import PhaseCmEditorContainer from "../../phase-editor-container/PhaseCmEditorContainer";
-import { useEditableCols } from "../useEditableCols";
+import BrutalItem from '../../../../../../complect/brutal-item/BrutalItem';
+import useCmNav from '../../../base/useCmNav';
+import PhaseCmEditorContainer from '../../phase-editor-container/PhaseCmEditorContainer';
+import { useEditableCols } from '../useEditableCols';
 
 export default function EditCategories() {
   const cols = useEditableCols();
@@ -18,8 +18,8 @@ export default function EditCategories() {
               <BrutalItem
                 key={`category-on-change_${cat.wid}`}
                 icon="book-open-outline"
-                title={`${cat.name || ""}${cat.name !== cat.initialName ? ` (${cat.initialName})` : ""}`}
-                onClick={() => goTo({ place: "cat", data: { ccatw: cat.wid } })}
+                title={`${cat.name || ''}${cat.name !== cat.initialName ? ` (${cat.initialName})` : ''}`}
+                onClick={() => goTo({ place: 'cat', data: { ccatw: cat.wid } })}
               />
             );
           })}

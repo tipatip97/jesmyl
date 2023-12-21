@@ -1,433 +1,427 @@
 .keyboard-flash {
-    position: absolute;
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  z-index: 1000000000000;
+  overflow: hidden;
+  transition: height 0.2s;
+  background: var(--keyboard-flash-background);
+  pointer-events: none;
+
+  &.active {
+    height: var(--keyboard-flash-height);
+    animation: pointer-events-on 1s forwards;
+  }
+
+  &.more-open {
+    > .keyboard-flash-line {
+      &.bottom-line {
+        > .keyboard-flash-key:not(.more-box):not(.undo-action) {
+          opacity: 0.5;
+          pointer-events: none;
+          filter: blur(5px);
+        }
+      }
+
+      &:not(.bottom-line) {
+        opacity: 0.5;
+        pointer-events: none;
+        filter: blur(5px);
+      }
+    }
+  }
+
+  > .keyboard-flash-line {
     display: flex;
     justify-content: space-around;
-    flex-direction: column;
-    bottom: 0;
-    width: 100%;
-    height: 0;
-    z-index: 1000000000000;
-    overflow: hidden;
-    transition: height .2s;
-    background: var(--keyboard-flash-background);
-    pointer-events: none;
+    height: 100%;
 
-    &.active {
-        height: var(--keyboard-flash-height);
-        animation: pointer-events-on 1s forwards;
+    &.number-type {
+      max-width: 90%;
+      min-width: 200px;
+      width: 100%;
+      margin: auto;
     }
 
-    &.more-open {
-        >.keyboard-flash-line {
-            &.bottom-line {
-                >.keyboard-flash-key:not(.more-box):not(.undo-action) {
-                    opacity: .5;
-                    pointer-events: none;
-                    filter: blur(5px);
-                }
-            }
+    &:not(.bottom-line) {
+      > .keyboard-flash-key:not(.writable) {
+        min-width: 35px;
+      }
+    }
 
-            &:not(.bottom-line) {
-                opacity: .5;
-                pointer-events: none;
-                filter: blur(5px);
+    .keyboard-flash-key {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.2em;
+      border-radius: 0.2em;
+      width: 2.3em;
+      height: 2.6em;
+      cursor: pointer;
+
+      @media screen and (max-width: 350px) {
+        min-width: 1em;
+      }
+
+      @media screen and (min-width: 351px) {
+        min-width: 1.5em;
+      }
+
+      &.more-box {
+        position: relative;
+
+        > .keyboard-flash-key-more-box-list {
+          position: absolute;
+          bottom: 2.6em;
+          overflow-y: auto;
+          overflow-x: visible;
+          max-height: calc(var(--keyboard-flash-height) - 50px);
+          width: 70vw;
+          left: 0;
+
+          > .keyboard-flash-key-more-box-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .key-description {
+              position: absolute;
+              left: 2.3em;
+              white-space: nowrap;
             }
+          }
         }
-    }
+      }
 
-    >.keyboard-flash-line {
-        display: flex;
-        justify-content: space-around;
+      > .key-button {
+        background: var(--keyboard-flash-tool-button-background);
+        padding: 0.2em;
+        border-radius: 0.2em;
+      }
+
+      &.shift-key {
+        position: relative;
+
+        > .key-button {
+          opacity: 1;
+        }
+
+        &.caps-lock > .key-button {
+          opacity: 0.5;
+        }
+
+        &.is-control-key-label:before {
+          content: 'ctrl';
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          font-size: 0.5em;
+          z-index: 1;
+        }
+      }
+
+      &.writable {
         height: 100%;
 
-        &.number-type {
-            max-width: 90%;
-            min-width: 200px;
-            width: 100%;
-            margin: auto;
+        &:not(.self-width) {
+          width: 100%;
         }
+      }
 
-        &:not(.bottom-line) {
-
-            >.keyboard-flash-key:not(.writable) {
-                min-width: 35px;
-            }
+      &:not(.writable) {
+        &.key-in-fix {
+          opacity: 0.5;
         }
+      }
 
+      &.key-in-fix {
+        background: var(--keyboard-flash-tool-button-background);
+      }
 
-        .keyboard-flash-key {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: .2em;
-            border-radius: .2em;
-            width: 2.3em;
-            height: 2.6em;
-            cursor: pointer;
+      &.space-key {
+        width: 50%;
 
-            @media screen and (max-width: 350px) {
-                min-width: 1em;
-            }
-
-            @media screen and (min-width: 351px) {
-                min-width: 1.5em;
-            }
-
-            &.more-box {
-                position: relative;
-
-                >.keyboard-flash-key-more-box-list {
-                    position: absolute;
-                    bottom: 2.6em;
-                    overflow-y: auto;
-                    overflow-x: visible;
-                    max-height: calc(var(--keyboard-flash-height) - 50px);
-                    width: 70vw;
-                    left: 0;
-
-                    >.keyboard-flash-key-more-box-inner {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: flex-start;
-
-                        .key-description {
-                            position: absolute;
-                            left: 2.3em;
-                            white-space: nowrap;
-                        }
-                    }
-                }
-            }
-
-            >.key-button {
-                background: var(--keyboard-flash-tool-button-background);
-                padding: .2em;
-                border-radius: .2em;
-            }
-
-            &.shift-key {
-                position: relative;
-
-                >.key-button {
-                    opacity: 1;
-                }
-
-                &.caps-lock>.key-button {
-                    opacity: .5;
-                }
-
-                &.is-control-key-label:before {
-                    content: 'ctrl';
-                    position: absolute;
-                    bottom: 0;
-                    right: 0;
-                    font-size: .5em;
-                    z-index: 1;
-                }
-            }
-
-            &.writable {
-                height: 100%;
-
-                &:not(.self-width) {
-                    width: 100%;
-                }
-            }
-
-            &:not(.writable) {
-                &.key-in-fix {
-                    opacity: .5;
-                }
-            }
-
-            &.key-in-fix {
-                background: var(--keyboard-flash-tool-button-background);
-            }
-
-            &.space-key {
-                width: 50%;
-
-                >* {
-                    width: 100%;
-                    height: 30px;
-                    background: var(--keyboard-flash-tool-button-background);
-                    padding: .2em;
-                    border-radius: .2em;
-                }
-            }
+        > * {
+          width: 100%;
+          height: 30px;
+          background: var(--keyboard-flash-tool-button-background);
+          padding: 0.2em;
+          border-radius: 0.2em;
         }
+      }
     }
+  }
 }
 
 .input-keyboard-flash-controlled {
-    --cursor-animation: cursor .4s infinite alternate-reverse;
-    --cursor-border-color: transparent;
-    --cursor-border: 1px solid var(--cursor-border-color);
-    position: relative;
-    cursor: text;
+  --cursor-animation: cursor 0.4s infinite alternate-reverse;
+  --cursor-border-color: transparent;
+  --cursor-border: 1px solid var(--cursor-border-color);
+  position: relative;
+  cursor: text;
+  width: 100%;
+
+  .input {
+    padding-left: 3px;
+    background-color: var(--input-keyboard-background);
+  }
+
+  &:not(.with-native-input) {
+    padding-right: 30px;
+  }
+
+  .native-input {
     width: 100%;
+    height: 100%;
+    resize: none;
+    color: var(--color--3);
+    padding-right: 30px;
 
-    .input {
-        padding-left: 3px;
-        background-color: var(--input-keyboard-background);
+    &::placeholder {
+      color: var(--color--4);
     }
+  }
 
-    &:not(.with-native-input) {
-        padding-right: 30px;
+  &.multiline {
+    overflow: hidden;
+
+    .input-keyboard-flash-controlled-char-list {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      .input-keyboard-flash-controlled-char-list-inner {
+        white-space: pre-line;
+      }
     }
+  }
+
+  &:not(.multiline) {
+    height: 1.6em;
 
     .native-input {
-        width: 100%;
-        height: 100%;
-        resize: none;
-        color: var(--color--3);
-        padding-right: 30px;
+      white-space: nowrap;
 
-        &::placeholder {
-            color: var(--color--4);
-        }
-    }
-
-    &.multiline {
-        overflow: hidden;
-
-        .input-keyboard-flash-controlled-char-list {
-            height: 100%;
-            overflow-x: hidden;
-            overflow-y: auto;
-
-            .input-keyboard-flash-controlled-char-list-inner {
-                white-space: pre-line;
-            }
-        }
-    }
-
-    &:not(.multiline) {
-        height: 1.6em;
-
-        .native-input {
-            white-space: nowrap;
-
-            &::-webkit-scrollbar {
-                display: none;
-            }
-        }
-
-        .input-keyboard-flash-controlled-char-list {
-            height: 1.3em;
-            overflow-x: auto;
-            overflow-y: hidden;
-
-            .input-keyboard-flash-controlled-char-list-inner {
-                white-space: nowrap;
-            }
-        }
-    }
-
-    &.without-close-button {
-        padding-right: 0;
-
-
-        .native-input {
-            padding-right: 2px;
-        }
-
-        .icon-button-container>.close-button {
-            display: none;
-        }
-
-        .input-keyboard-flash-controlled-char-list {
-            max-width: 100%;
-        }
-    }
-
-    &.empty-input {
-        &.no-lines {
-            .input-keyboard-flash-controlled-char-list {
-                height: 1.3em;
-                border-left: var(--cursor-border);
-
-                .input-keyboard-flash-controlled-char-list-line {
-                    height: 1.3em;
-                }
-            }
-        }
-
-        &:before {
-            content: attr(placeholder);
-            position: absolute;
-            opacity: .7;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        .icon-button-container>.close-button {
-            display: none;
-        }
-    }
-
-    &.stable-cursor-mode {
-        --cursor-animation: none;
-
-        &.empty-input {
-            &.no-lines {
-                .input-keyboard-flash-controlled-char-list {
-                    border-color: var(--keyboard-flash-color);
-                }
-            }
-        }
-
-        .input-keyboard-flash-controlled-char-list {
-            .input-keyboard-flash-controlled-char-list-inner {
-
-                .input-keyboard-flash-controlled-char-list-line {
-                    &.zero-cursor {
-                        border-color: var(--keyboard-flash-color);
-                    }
-
-                    .input-keyboard-flash-controlled-char {
-                        &.cursor {
-                            border-color: var(--keyboard-flash-color);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    &.focused {
-        &.empty-input {
-            &.no-lines {
-                .input-keyboard-flash-controlled-char-list {
-                    animation: var(--cursor-animation);
-                }
-            }
-        }
-
-        .input-keyboard-flash-controlled-char-list {
-            .input-keyboard-flash-controlled-char-list-inner {
-
-                .input-keyboard-flash-controlled-char-list-line {
-                    &.zero-cursor {
-                        animation: var(--cursor-animation);
-                    }
-
-                    .input-keyboard-flash-controlled-char {
-                        &.cursor {
-                            animation: var(--cursor-animation);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    >.menu-actions-with-selected {
-        position: absolute;
-        display: flex;
-        bottom: -2.3em;
-        background: var(--keyboard-flash-selected-background);
-        color: var(--keyboard-flash-selected-color);
-        z-index: 10000000;
-        border-radius: 0 .5em .5em .5em;
-        padding: 0 .3em;
-        font-size: .7em;
-        transition: opacity .2s;
-
-        >* {
-            padding: .3em;
-            cursor: pointer;
-
-            &:not(:last-child):after {
-                content: "";
-                top: 0.4em;
-                margin-left: 3px;
-                height: 1.2em;
-                position: absolute;
-                border-left: solid 1px var(--keyboard-flash-selected-color);
-                display: inline-block;
-            }
-        }
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
 
     .input-keyboard-flash-controlled-char-list {
+      height: 1.3em;
+      overflow-x: auto;
+      overflow-y: hidden;
 
-        &::-webkit-scrollbar {
-            display: none;
+      .input-keyboard-flash-controlled-char-list-inner {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &.without-close-button {
+    padding-right: 0;
+
+    .native-input {
+      padding-right: 2px;
+    }
+
+    .icon-button-container > .close-button {
+      display: none;
+    }
+
+    .input-keyboard-flash-controlled-char-list {
+      max-width: 100%;
+    }
+  }
+
+  &.empty-input {
+    &.no-lines {
+      .input-keyboard-flash-controlled-char-list {
+        height: 1.3em;
+        border-left: var(--cursor-border);
+
+        .input-keyboard-flash-controlled-char-list-line {
+          height: 1.3em;
         }
+      }
+    }
 
-        .input-keyboard-flash-controlled-char-list-inner {
-            white-space: nowrap;
-            padding-left: 3px;
-            padding-bottom: 3px;
+    &:before {
+      content: attr(placeholder);
+      position: absolute;
+      opacity: 0.7;
+      pointer-events: none;
+      white-space: nowrap;
+    }
 
-            .input-keyboard-flash-controlled-char-list-line {
-                border-left: var(--cursor-border);
-                min-height: 1.4em;
+    .icon-button-container > .close-button {
+      display: none;
+    }
+  }
 
-                .input-keyboard-flash-controlled-char {
-                    position: relative;
-                    display: inline-block;
-                    margin-left: -1px;
-                    white-space: pre;
-                    border-right: var(--cursor-border);
-                    min-width: .2em;
-                    vertical-align: bottom;
-                    min-height: 1.3em;
+  &.stable-cursor-mode {
+    --cursor-animation: none;
 
-                    &.newline-char {
-                        display: block;
-                        height: 0;
-                    }
+    &.empty-input {
+      &.no-lines {
+        .input-keyboard-flash-controlled-char-list {
+          border-color: var(--keyboard-flash-color);
+        }
+      }
+    }
 
-                    &:before {
-                        content: '';
-                        position: absolute;
-                        display: inline-block;
-                        width: .5em;
-                        height: 1.4em;
-                        left: -.2em;
-                    }
+    .input-keyboard-flash-controlled-char-list {
+      .input-keyboard-flash-controlled-char-list-inner {
+        .input-keyboard-flash-controlled-char-list-line {
+          &.zero-cursor {
+            border-color: var(--keyboard-flash-color);
+          }
 
-                    &:first-child {
-                        padding-left: 0;
-                    }
-
-                    &.selected {
-                        background: var(--keyboard-flash-selected-background);
-                        color: var(--keyboard-flash-selected-color);
-                    }
-                }
+          .input-keyboard-flash-controlled-char {
+            &.cursor {
+              border-color: var(--keyboard-flash-color);
             }
+          }
         }
+      }
+    }
+  }
+
+  &.focused {
+    &.empty-input {
+      &.no-lines {
+        .input-keyboard-flash-controlled-char-list {
+          animation: var(--cursor-animation);
+        }
+      }
     }
 
-    >.icon-button-container {
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 100%;
-        display: flex;
-        align-items: center;
+    .input-keyboard-flash-controlled-char-list {
+      .input-keyboard-flash-controlled-char-list-inner {
+        .input-keyboard-flash-controlled-char-list-line {
+          &.zero-cursor {
+            animation: var(--cursor-animation);
+          }
+
+          .input-keyboard-flash-controlled-char {
+            &.cursor {
+              animation: var(--cursor-animation);
+            }
+          }
+        }
+      }
     }
+  }
+
+  > .menu-actions-with-selected {
+    position: absolute;
+    display: flex;
+    bottom: -2.3em;
+    background: var(--keyboard-flash-selected-background);
+    color: var(--keyboard-flash-selected-color);
+    z-index: 10000000;
+    border-radius: 0 0.5em 0.5em 0.5em;
+    padding: 0 0.3em;
+    font-size: 0.7em;
+    transition: opacity 0.2s;
+
+    > * {
+      padding: 0.3em;
+      cursor: pointer;
+
+      &:not(:last-child):after {
+        content: '';
+        top: 0.4em;
+        margin-left: 3px;
+        height: 1.2em;
+        position: absolute;
+        border-left: solid 1px var(--keyboard-flash-selected-color);
+        display: inline-block;
+      }
+    }
+  }
+
+  .input-keyboard-flash-controlled-char-list {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .input-keyboard-flash-controlled-char-list-inner {
+      white-space: nowrap;
+      padding-left: 3px;
+      padding-bottom: 3px;
+
+      .input-keyboard-flash-controlled-char-list-line {
+        border-left: var(--cursor-border);
+        min-height: 1.4em;
+
+        .input-keyboard-flash-controlled-char {
+          position: relative;
+          display: inline-block;
+          margin-left: -1px;
+          white-space: pre;
+          border-right: var(--cursor-border);
+          min-width: 0.2em;
+          vertical-align: bottom;
+          min-height: 1.3em;
+
+          &.newline-char {
+            display: block;
+            height: 0;
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            display: inline-block;
+            width: 0.5em;
+            height: 1.4em;
+            left: -0.2em;
+          }
+
+          &:first-child {
+            padding-left: 0;
+          }
+
+          &.selected {
+            background: var(--keyboard-flash-selected-background);
+            color: var(--keyboard-flash-selected-color);
+          }
+        }
+      }
+    }
+  }
+
+  > .icon-button-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
 }
 
 @keyframes cursor {
-    from {
-        border-color: var(--keyboard-flash-color);
-    }
+  from {
+    border-color: var(--keyboard-flash-color);
+  }
 
-    to {
-        border-color: transparent;
-    }
+  to {
+    border-color: transparent;
+  }
 }
 
 @keyframes pointer-events-on {
-    from {
-        pointer-events: none;
-    }
+  from {
+    pointer-events: none;
+  }
 
-    to {
-        pointer-events: all;
-    }
+  to {
+    pointer-events: all;
+  }
 }

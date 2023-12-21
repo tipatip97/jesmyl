@@ -1,8 +1,8 @@
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
-import { gamerRoomGames } from "../../../useGamerNav";
-import useGamerOfflineRoomsActions from "./hooks/actions";
-import { useGamerRooms } from "./hooks/rooms";
-import { useMyPossibilitiesInRoom } from "./hooks/possibilities";
+import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import { gamerRoomGames } from '../../../useGamerNav';
+import useGamerOfflineRoomsActions from './hooks/actions';
+import { useGamerRooms } from './hooks/rooms';
+import { useMyPossibilitiesInRoom } from './hooks/possibilities';
 
 export default function GamerRoomList() {
   const rooms = useGamerRooms();
@@ -17,11 +17,7 @@ export default function GamerRoomList() {
         const gameData = gamerRoomGames.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data;
 
         return (
-          <div
-            key={room.w}
-            className="face-item"
-            onClick={() => goToRoom(room.w)}
-          >
+          <div key={room.w} className="face-item" onClick={() => goToRoom(room.w)}>
             <div className="face-logo">
               <EvaIcon
                 name={
@@ -34,7 +30,6 @@ export default function GamerRoomList() {
                         : possibilities.isInvalid
                           ? `lock${iconPostfix}`
                           : gameData?.icon ?? `cube${iconPostfix}`
-
                 }
               />
             </div>

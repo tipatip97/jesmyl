@@ -5,9 +5,9 @@ export interface ResizerProps {
   step: number;
   perVal: number;
   value: number;
-  view: "value" | "percents";
+  view: 'value' | 'percents';
   onChange: (px: number, percents: number) => void;
   onRange: (px: number, percents: number) => void;
   onClick: (px: number, percents: number) => void;
   icon: string;
-};
+}

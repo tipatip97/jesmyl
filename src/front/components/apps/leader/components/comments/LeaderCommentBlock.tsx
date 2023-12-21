@@ -1,13 +1,11 @@
-import { ReactNode, useMemo, useState } from "react";
-import EvaButton from "../../../../../complect/eva-icon/EvaButton";
-import EvaIcon, { EvaIconName } from "../../../../../complect/eva-icon/EvaIcon";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import LeaderComment from "./LeaderComment";
-import {
-  LeaderCommentImportable,
-} from "./LeaderComment.model";
-import "./LeaderComment.scss";
-import useLeaderComments from "./useLeaderComments";
+import { ReactNode, useMemo, useState } from 'react';
+import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import EvaIcon, { EvaIconName } from '../../../../../complect/eva-icon/EvaIcon';
+import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import LeaderComment from './LeaderComment';
+import { LeaderCommentImportable } from './LeaderComment.model';
+import './LeaderComment.scss';
+import useLeaderComments from './useLeaderComments';
 
 interface Addition {
   icon: EvaIconName;
@@ -20,7 +18,7 @@ interface Addition {
 const textAdditions = (
   [
     {
-      icon: "clock-outline",
+      icon: 'clock-outline',
       insert: () => {
         const date = new Date();
         return ` ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()} `;
@@ -35,9 +33,7 @@ const textAdditions = (
 });
 
 const textAdditionsMap: Record<string, Addition> = {};
-textAdditions.forEach(
-  (adds) => adds.char && (textAdditionsMap[adds.char] = adds)
-);
+textAdditions.forEach((adds) => adds.char && (textAdditionsMap[adds.char] = adds));
 
 export default function LeaderCommentBlock({
   comments,
@@ -55,7 +51,7 @@ export default function LeaderCommentBlock({
   placeholder: string;
   gamew?: number;
   listw: number;
-  listwNameMask: 'teamw' | 'timerw',
+  listwNameMask: 'teamw' | 'timerw';
   action: string;
   isWaitedToSend?: boolean;
   importantActionOnClick?: (comment: string) => void;
@@ -64,48 +60,42 @@ export default function LeaderCommentBlock({
 }) {
   const [isCommentsShow, setIsCommentsShow] = useState(false);
   const [commentText, setCommentText] = useState('');
-  const { sendingComments, sendComment, isSendingMessagesError } =
-    useLeaderComments();
+  const { sendingComments, sendComment, isSendingMessagesError } = useLeaderComments();
 
   const allComments = useMemo(
     () =>
       (comments || []).concat(
         gamew
-          ? sendingComments
-            ?.map(({ args }) => gamew === args?.gamew && listw === args?.[listwNameMask] ? { ...args, owner: '', fio: '', w: 0 } : null)
-            .filter(it => it) as LeaderCommentImportable[] || []
-          : []
+          ? (sendingComments
+              ?.map(({ args }) =>
+                gamew === args?.gamew && listw === args?.[listwNameMask] ? { ...args, owner: '', fio: '', w: 0 } : null,
+              )
+              .filter((it) => it) as LeaderCommentImportable[]) || []
+          : [],
       ),
-    [comments, gamew, sendingComments, listw, listwNameMask]
+    [comments, gamew, sendingComments, listw, listwNameMask],
   );
   const partOfComments = allComments.slice(-4);
 
   return (
     <div className="leader-comment-block full-width">
       {partOfComments.length !== allComments.length && (
-        <div
-          className="margin-gap pointer"
-          onClick={() => setIsCommentsShow(!isCommentsShow)}
-        >
-          {isCommentsShow
-            ? "Скрыть часть комментариев"
-            : "Показать все комментарии"}
+        <div className="margin-gap pointer" onClick={() => setIsCommentsShow(!isCommentsShow)}>
+          {isCommentsShow ? 'Скрыть часть комментариев' : 'Показать все комментарии'}
         </div>
       )}
-      {(isCommentsShow ? allComments : partOfComments).map(
-        (comment, commenti, commenta) => {
-          return (
-            <LeaderComment
-              key={commenti}
-              className={`${commenti === 0 ? "first" : ""} ${commenti === commenta.length - 1 ? "last" : ""}`}
-              comment={comment}
-              isError={isSendingMessagesError && !comment.w}
-              isWaitedToSend={isWaitedToSend}
-              onRejectSend={() => onRejectSend?.(comment)}
-            />
-          );
-        }
-      )}
+      {(isCommentsShow ? allComments : partOfComments).map((comment, commenti, commenta) => {
+        return (
+          <LeaderComment
+            key={commenti}
+            className={`${commenti === 0 ? 'first' : ''} ${commenti === commenta.length - 1 ? 'last' : ''}`}
+            comment={comment}
+            isError={isSendingMessagesError && !comment.w}
+            isWaitedToSend={isWaitedToSend}
+            onRejectSend={() => onRejectSend?.(comment)}
+          />
+        );
+      })}
       {
         <div className="flex column full-width">
           <KeyboardInput
@@ -124,12 +114,8 @@ export default function LeaderCommentBlock({
               disabled={!commentText}
               onClick={() => {
                 const comment = textAdditions.reduce(
-                  (text, { char, inText }) =>
-                    (char &&
-                      inText &&
-                      text.replace(RegExp(char, "g"), inText)) ||
-                    text,
-                  commentText
+                  (text, { char, inText }) => (char && inText && text.replace(RegExp(char, 'g'), inText)) || text,
+                  commentText,
                 );
                 setCommentText('');
                 newCommentTextChange?.('');

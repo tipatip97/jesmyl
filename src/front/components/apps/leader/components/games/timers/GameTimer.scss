@@ -36,7 +36,7 @@
     }
 
     .control-button {
-      >* {
+      > * {
         --size: 40px;
 
         color: var(--color--3);
@@ -44,15 +44,15 @@
         min-height: var(--size);
       }
 
-      >.start-button {
+      > .start-button {
         --icon-color: var(--color--7);
       }
 
-      >.finish-button {
+      > .finish-button {
         --icon-color: var(--color--4);
       }
 
-      >.reset-button {
+      > .reset-button {
         --icon-color: var(--color--ko);
       }
     }
@@ -86,7 +86,7 @@
 
   &:not(.paused) {
     &::after {
-      content: "000";
+      content: '000';
     }
 
     &.started::after {
@@ -106,21 +106,20 @@
   width: 1em;
 }
 
-
 .table-centered-wrapper {
   display: flex;
   justify-content: center;
   width: 100%;
 
-  >.table {
+  > .table {
     --table-size: 100%;
     width: var(--table-size);
     border: solid var(--text-color) 1px;
 
-    >.row {
+    > .row {
       display: flex;
 
-      >.cell {
+      > .cell {
         display: flex;
         justify-content: center;
         border: solid var(--text-color) 1px;
@@ -136,82 +135,82 @@
 
 @keyframes digit-switcher {
   from {
-    content: "001";
+    content: '001';
   }
 
   5% {
-    content: "014";
+    content: '014';
   }
 
   10% {
-    content: "122";
+    content: '122';
   }
 
   15% {
-    content: "136";
+    content: '136';
   }
 
   20% {
-    content: "249";
+    content: '249';
   }
 
   25% {
-    content: "255";
+    content: '255';
   }
 
   30% {
-    content: "360";
+    content: '360';
   }
 
   35% {
-    content: "374";
+    content: '374';
   }
 
   40% {
-    content: "481";
+    content: '481';
   }
 
   45% {
-    content: "493";
+    content: '493';
   }
 
   50% {
-    content: "502";
+    content: '502';
   }
 
   60% {
-    content: "510";
+    content: '510';
   }
 
   65% {
-    content: "624";
+    content: '624';
   }
 
   70% {
-    content: "632";
+    content: '632';
   }
 
   75% {
-    content: "749";
+    content: '749';
   }
 
   80% {
-    content: "753";
+    content: '753';
   }
 
   85% {
-    content: "866";
+    content: '866';
   }
 
   90% {
-    content: "875";
+    content: '875';
   }
 
   95% {
-    content: "987";
+    content: '987';
   }
 
   100% {
-    content: "999";
+    content: '999';
   }
 }

@@ -1,50 +1,50 @@
 .tuner-application {
-    .tuner-container {
-        padding: 0;
+  .tuner-container {
+    padding: 0;
 
-        &:not(.started) {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    &:not(.started) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-            .tuner-content {
-                display: none;
-            }
-        }
-
-        &.started {
-            .start-button {
-                display: none;
-            }
-
-            .tuner-content {
-                opacity: 1;
-            }
-        }
-
-        .start-button {
-            cursor: pointer;
-            width: 50vmin;
-            height: 50vmin;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--color--2);
-            border-radius: 50%;
-            font-size: 30px;
-        }
-
-        .tuner-content {
-            position: relative;
-            opacity: 0;
-            pointer-events: none;
-            width: 100%;
-            height: 100%;
-            transition: opacity .5s;
-
-            .frequency-bars {
-                position: absolute;
-            }
-        }
+      .tuner-content {
+        display: none;
+      }
     }
+
+    &.started {
+      .start-button {
+        display: none;
+      }
+
+      .tuner-content {
+        opacity: 1;
+      }
+    }
+
+    .start-button {
+      cursor: pointer;
+      width: 50vmin;
+      height: 50vmin;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--color--2);
+      border-radius: 50%;
+      font-size: 30px;
+    }
+
+    .tuner-content {
+      position: relative;
+      opacity: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.5s;
+
+      .frequency-bars {
+        position: absolute;
+      }
+    }
+  }
 }

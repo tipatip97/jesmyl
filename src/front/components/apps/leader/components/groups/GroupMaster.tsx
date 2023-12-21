@@ -1,19 +1,13 @@
-import { useState } from "react";
-import SendButton from "../../../../../complect/sends/send-button/SendButton";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import { LeaderCleans } from "../LeaderCleans";
-import { useLeaderCcontext } from "../contexts/useContexts";
-import SelectHumans from "../people/SelectHumans";
-import { LeaderGroupImportable } from "./Groups.model";
+import { useState } from 'react';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
+import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import { LeaderCleans } from '../LeaderCleans';
+import { useLeaderCcontext } from '../contexts/useContexts';
+import SelectHumans from '../people/SelectHumans';
+import { LeaderGroupImportable } from './Groups.model';
 
-export default function LeaderGroupMaster({
-  group,
-  close,
-}: {
-  group?: LeaderGroupImportable;
-  close: () => void;
-}) {
-  const [name, setName] = useState<string>(group?.name || "");
+export default function LeaderGroupMaster({ group, close }: { group?: LeaderGroupImportable; close: () => void }) {
+  const [name, setName] = useState<string>(group?.name || '');
 
   const [addMentors, updateAddMentors] = useState<number[]>([]);
   const [delMentors, updateDelMentors] = useState<number[]>([]);
@@ -28,14 +22,10 @@ export default function LeaderGroupMaster({
     <div className="full-container flex column padding-giant-gap">
       <div className="flex flex-gap full-width">
         <div>Название:</div>
-        <KeyboardInput
-          value={group?.name}
-          preferLanguage="ru"
-          onInput={(value) => setName(value)}
-        />
+        <KeyboardInput value={group?.name} preferLanguage="ru" onInput={(value) => setName(value)} />
       </div>
       <SelectHumans
-        chooseTitle={`Выбор из участников ${ccontext?.name || "контекста"}`}
+        chooseTitle={`Выбор из участников ${ccontext?.name || 'контекста'}`}
         chosenPlaceholder="Участникам группы"
         chosenTitle="Список участников группы"
         excludedTitle="Лидер"
@@ -49,7 +39,7 @@ export default function LeaderGroupMaster({
         }}
       />
       <SelectHumans
-        chooseTitle={`Выбор из участников ${ccontext?.name || "контекста"}`}
+        chooseTitle={`Выбор из участников ${ccontext?.name || 'контекста'}`}
         chosenPlaceholder="Поиск по лидерам группы"
         chosenTitle="Список лидеров группы"
         excludedTitle="Участник"
@@ -71,33 +61,33 @@ export default function LeaderGroupMaster({
           delMembers,
           delMentors,
         }).length) && (
-          <SendButton
-            title={`Опубликовать ${group ? "изменения" : "группу"}`}
-            confirm
-            onSuccess={() => close()}
-            onSend={() => {
-              if (!ccontext) return;
+        <SendButton
+          title={`Опубликовать ${group ? 'изменения' : 'группу'}`}
+          confirm
+          onSuccess={() => close()}
+          onSend={() => {
+            if (!ccontext) return;
 
-              if (group) {
-                return LeaderCleans.sendGroupChanges(group.w, group.name, {
-                  addMembers,
-                  addMentors,
-                  contextw: ccontext.w,
-                  delMembers,
-                  delMentors,
-                  name,
-                });
-              } else {
-                return LeaderCleans.publicateNewLeaderGroup({
-                  name,
-                  members: addMembers,
-                  mentors: addMentors,
-                  contextw: ccontext.w,
-                });
-              }
-            }}
-          />
-        )}
+            if (group) {
+              return LeaderCleans.sendGroupChanges(group.w, group.name, {
+                addMembers,
+                addMentors,
+                contextw: ccontext.w,
+                delMembers,
+                delMentors,
+                name,
+              });
+            } else {
+              return LeaderCleans.publicateNewLeaderGroup({
+                name,
+                members: addMembers,
+                mentors: addMentors,
+                contextw: ccontext.w,
+              });
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

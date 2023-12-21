@@ -1,8 +1,8 @@
-import { BottomPopupContenterPreparer } from "../../../../../complect/absolute-popup/bottom-popup/model";
-import PrintableBottomItem from "../PrintableBottomItem";
-import GameTeamLists from "./templates/GameTeamLists";
-import GameTeamPassportNames from "./templates/GameTeamPassportNames";
-import GameTeamPassports from "./templates/GameTeamPassports";
+import { BottomPopupContenterPreparer } from '../../../../../complect/absolute-popup/bottom-popup/model';
+import PrintableBottomItem from '../PrintableBottomItem';
+import GameTeamLists from './templates/GameTeamLists';
+import GameTeamPassportNames from './templates/GameTeamPassportNames';
+import GameTeamPassports from './templates/GameTeamPassports';
 
 export default function GameMore({
   selectedTimers,
@@ -10,10 +10,10 @@ export default function GameMore({
   onGameRemove,
   prepare,
 }: {
-  selectedTimers?: number[],
-  close: () => void,
-  onGameRemove: () => void,
-  prepare: BottomPopupContenterPreparer,
+  selectedTimers?: number[];
+  close: () => void;
+  onGameRemove: () => void;
+  prepare: BottomPopupContenterPreparer;
 }) {
   return (
     <>
@@ -29,21 +29,17 @@ export default function GameMore({
         close={close}
         prepare={prepare}
       />
-      <PrintableBottomItem
-        node={<GameTeamLists />}
-        title="Списки команд"
-        close={close}
-        prepare={prepare}
-      />
-      {
-        prepare({
-          items: [{
+      <PrintableBottomItem node={<GameTeamLists />} title="Списки команд" close={close} prepare={prepare} />
+      {prepare({
+        items: [
+          {
             title: 'Удалить игру',
-            icon: "trash-outline",
+            icon: 'trash-outline',
             isError: true,
             onClick: onGameRemove,
-          }]
-        })}
+          },
+        ],
+      })}
     </>
   );
 }

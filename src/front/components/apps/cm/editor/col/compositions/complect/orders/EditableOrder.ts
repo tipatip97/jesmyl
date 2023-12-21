@@ -1,265 +1,295 @@
-import { FreeExecDict, FreeExecDictUniq } from "../../../../../../../../complect/exer/Exer.model";
-import mylib from "../../../../../../../../complect/my-lib/MyLib";
-import { cmExer } from "../../../../../Cm.store";
-import { Order } from "../../../../../col/com/order/Order";
-import { EditableOrderRegion, IExportableOrder, IExportableOrderFieldValues, IExportableOrderTop, InheritancableOrder, OrderRepeats } from "../../../../../col/com/order/Order.model";
-import { EditableCom } from "../../EditableCom";
+import { FreeExecDict, FreeExecDictUniq } from '../../../../../../../../complect/exer/Exer.model';
+import mylib from '../../../../../../../../complect/my-lib/MyLib';
+import { cmExer } from '../../../../../Cm.store';
+import { Order } from '../../../../../col/com/order/Order';
+import {
+  EditableOrderRegion,
+  IExportableOrder,
+  IExportableOrderFieldValues,
+  IExportableOrderTop,
+  InheritancableOrder,
+  OrderRepeats,
+} from '../../../../../col/com/order/Order.model';
+import { EditableCom } from '../../EditableCom';
 
 export class EditableOrder extends Order {
-    _regions?: EditableOrderRegion<EditableOrder>[];
-    com: EditableCom;
-    readonly originWid = this.top.source ? this.top.source.originWid ?? (this.top.source.originWid = this.wid) : this.wid;;
+  _regions?: EditableOrderRegion<EditableOrder>[];
+  com: EditableCom;
+  readonly originWid = this.top.source ? this.top.source.originWid ?? (this.top.source.originWid = this.wid) : this.wid;
 
-    constructor(top: IExportableOrderTop, com: EditableCom) {
-        super(top, com);
-        this.com = com;
+  constructor(top: IExportableOrderTop, com: EditableCom) {
+    super(top, com);
+    this.com = com;
+  }
+
+  get antiIsVisible() {
+    return this.isVisible ? 0 : 1;
+  }
+
+  regionsOrders() {
+    return this.com.orders;
+  }
+
+  get regions(): EditableOrderRegion<EditableOrder>[] | und {
+    if (this._regions === undefined) this.setRegions();
+
+    return this._regions;
+  }
+
+  setField<K extends keyof IExportableOrder>(
+    fieldn: keyof IExportableOrder,
+    value: IExportableOrder[K],
+    args?: Record<string, any>,
+    onFinish?: () => void,
+    refresh = true,
+    onSet?: () => void | null,
+  ) {
+    const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
+      this.exec({
+        prev: (
+          {
+            s: this.type,
+            c: this.chordsi,
+            t: this.texti,
+            o: this.isOpened,
+            r: this.repeats,
+            v: this.isVisible ? 1 : 0,
+            e: this.isEmptyHeader,
+          } as never
+        )[fieldn],
+        value,
+        uniq: this.top.viewIndex,
+        method: 'set',
+        action,
+        onSet,
+        args: mylib.overlap({ fieldn }, args, additionalArgs),
+      });
+    };
+
+    if (this.top.isAnchorInherit) {
+      const wid = this.top.leadOrd?.wid;
+
+      setExec('setAnchorInheritValue', { inhIndex: this.top.anchorInheritIndex, wid, value }, onSet);
+    } else {
+      const action = (
+        {
+          s: 'comSetOrderType',
+          c: 'comSetOrderStringBlock',
+          t: 'comSetOrderStringBlock',
+          o: 'comSetOrderOpenedBlock',
+          r: 'comSetOrderRepeatBlock',
+          v: 'comSetOrderVisibleSign',
+          e: 'comSetOrderEmptiedVal',
+        } as Record<keyof Partial<IExportableOrder>, string>
+      )[fieldn];
+
+      setExec(action, { value }, onSet);
     }
 
-    get antiIsVisible() { return this.isVisible ? 0 : 1; }
+    if (this.top.source) {
+      const inhFieldn = fieldn as keyof InheritancableOrder;
 
-    regionsOrders() {
-        return this.com.orders;
-    }
+      if (this.top.isAnchorInherit) {
+        const src = this.top.leadOrd?.top.source;
+        if (src && !src.inh) src.inh = {} as never;
+        const inh = src?.inh;
 
-    get regions(): EditableOrderRegion<EditableOrder>[] | und {
-        if (this._regions === undefined) this.setRegions();
-
-        return this._regions;
-    }
-
-    setField<K extends keyof IExportableOrder>(fieldn: keyof IExportableOrder, value: IExportableOrder[K], args?: Record<string, any>, onFinish?: () => void, refresh = true, onSet?: () => void | null) {
-        const setExec = (action: string, additionalArgs: {}, onSet?: () => void) => {
-            this.exec({
-                prev: ({
-                    s: this.type,
-                    c: this.chordsi,
-                    t: this.texti,
-                    o: this.isOpened,
-                    r: this.repeats,
-                    v: this.isVisible ? 1 : 0,
-                    e: this.isEmptyHeader
-                } as never)[fieldn],
-                value,
-                uniq: this.top.viewIndex,
-                method: 'set',
-                action,
-                onSet,
-                args: mylib.overlap({ fieldn }, args, additionalArgs)
-            });
-        };
-
-        if (this.top.isAnchorInherit) {
-            const wid = this.top.leadOrd?.wid;
-
-            setExec('setAnchorInheritValue', { inhIndex: this.top.anchorInheritIndex, wid, value }, onSet);
-        } else {
-            const action = ({
-                s: 'comSetOrderType',
-                c: 'comSetOrderStringBlock',
-                t: 'comSetOrderStringBlock',
-                o: 'comSetOrderOpenedBlock',
-                r: 'comSetOrderRepeatBlock',
-                v: 'comSetOrderVisibleSign',
-                e: 'comSetOrderEmptiedVal',
-            } as Record<keyof Partial<IExportableOrder>, string>)[fieldn];
-
-            setExec(action, { value }, onSet);
+        if (inh && this.top.anchorInheritIndex != null) {
+          if (!inh[inhFieldn]) inh[inhFieldn] = {};
+          const inhScope = inh[inhFieldn];
+          if (inhScope) inhScope[this.top.anchorInheritIndex] = value as never;
         }
-
-
-        if (this.top.source) {
-            const inhFieldn = fieldn as keyof InheritancableOrder;
-
-            if (this.top.isAnchorInherit) {
-                const src = this.top.leadOrd?.top.source;
-                if (src && !src.inh) src.inh = {} as never;
-                const inh = src?.inh;
-
-                if (inh && this.top.anchorInheritIndex != null) {
-                    if (!inh[inhFieldn]) inh[inhFieldn] = {};
-                    const inhScope = inh[inhFieldn];
-                    if (inhScope)
-                        inhScope[this.top.anchorInheritIndex] = value as never;
-                }
-            } else this.top.source[inhFieldn] = value as never;
-            this.setExportable(inhFieldn, value as never);
-        }
-
-        if (refresh) {
-            this.com.afterOrderChange();
-            onFinish?.();
-        }
+      } else this.top.source[inhFieldn] = value as never;
+      this.setExportable(inhFieldn, value as never);
     }
 
-    setRepeats(_val?: OrderRepeats | null) { }
-
-    get fieldValues() { return this.getBasicOr('f', {}); }
-    set fieldValues(val) { this.setExportable('f', val); }
-
-    setFieldValue<Key extends keyof IExportableOrderFieldValues>(fieldn: Key, value: IExportableOrderFieldValues[Key]) {
-        this.exec({
-            prev: this.fieldValues[fieldn],
-            value,
-            method: 'set',
-            action: 'comSetOrderFieldValue',
-            args: {
-                value,
-                fieldn,
-            },
-        });
-
-        this.fieldValues[fieldn] = value;
+    if (refresh) {
+      this.com.afterOrderChange();
+      onFinish?.();
     }
+  }
 
-    scope(action: string, uniq?: FreeExecDictUniq, wid?: number | null) {
-        return [this.com.scope(), '->', mylib.def(wid, this.wid), '.', mylib.typ('[action]', action), ':', ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(',')].join('');
-    }
+  setRepeats(_val?: OrderRepeats | null) {}
 
-    isWithHead() {
-        return !this.top.isInherit &&
-            !this.top.isAnchorInheritPlus &&
-            (this.texti != null || this.chordsi != null) &&
-            !this.isEmptyHeader;
-    }
+  get fieldValues() {
+    return this.getBasicOr('f', {});
+  }
+  set fieldValues(val) {
+    this.setExportable('f', val);
+  }
 
-    exec<Value>(bag: FreeExecDict<Value>) {
-        const { scope, args: { wid } = {} } = bag;
+  setFieldValue<Key extends keyof IExportableOrderFieldValues>(fieldn: Key, value: IExportableOrderFieldValues[Key]) {
+    this.exec({
+      prev: this.fieldValues[fieldn],
+      value,
+      method: 'set',
+      action: 'comSetOrderFieldValue',
+      args: {
+        value,
+        fieldn,
+      },
+    });
 
-        cmExer.set({
-            ...bag,
-            scope: this.scope(bag.action, bag.uniq, wid),
-            args: {
-                ordw: mylib.def(wid, this.wid),
-                comw: this.com.wid,
-                name: this.com.name,
-                blockn: this.top.header?.({}, true),
-                isAnchor: this.isAnchor,
-                ...bag.args
-            },
-            generalId: this.com.wid,
-            ...(scope ? { scope } : null)
-        });
-    }
+    this.fieldValues[fieldn] = value;
+  }
 
-    isInheritValue<Key extends keyof InheritancableOrder>(key: Key) {
-        return this.top.isAnchorInherit
-            ? this.top.anchorInheritIndex != null
-            && this.top.leadOrd?.top.source?.inh?.[key]?.[this.top.anchorInheritIndex] == null
-            : this.top.isAnchor && this.top.source?.[key] == null
-    }
+  scope(action: string, uniq?: FreeExecDictUniq, wid?: number | null) {
+    return [
+      this.com.scope(),
+      '->',
+      mylib.def(wid, this.wid),
+      '.',
+      mylib.typ('[action]', action),
+      ':',
+      ([] as (string | number)[]).concat(mylib.def(uniq, '[uniq]') || []).join(','),
+    ].join('');
+  }
 
-    get texti() { return this.getBasic('t'); }
-    set texti(val) { this.setExportable('t', val); }
+  isWithHead() {
+    return (
+      !this.top.isInherit &&
+      !this.top.isAnchorInheritPlus &&
+      (this.texti != null || this.chordsi != null) &&
+      !this.isEmptyHeader
+    );
+  }
 
-    get text() {
-        return (this.texti != null && this.com.texts && this.com.texts[this.texti]) || '';
-    }
+  exec<Value>(bag: FreeExecDict<Value>) {
+    const { scope, args: { wid } = {} } = bag;
 
-    get unique() { return this.top.source?.u ?? this.top.u; }
-    set unique(val) { this.top.source && (this.top.source.u = val); }
+    cmExer.set({
+      ...bag,
+      scope: this.scope(bag.action, bag.uniq, wid),
+      args: {
+        ordw: mylib.def(wid, this.wid),
+        comw: this.com.wid,
+        name: this.com.name,
+        blockn: this.top.header?.({}, true),
+        isAnchor: this.isAnchor,
+        ...bag.args,
+      },
+      generalId: this.com.wid,
+      ...(scope ? { scope } : null),
+    });
+  }
 
-    async setChordPosition(linei: number, pos: number) {
-        const prev = mylib.clone(this.positions?.[linei] || []).sort((a: number, b: number) => a - b);
-        const line = this.positions?.[linei] || [];
-        const posi = line.indexOf(pos);
-        const textLines = (this.text || '').split('\n');
-        const textLine = textLines[linei];
+  isInheritValue<Key extends keyof InheritancableOrder>(key: Key) {
+    return this.top.isAnchorInherit
+      ? this.top.anchorInheritIndex != null &&
+          this.top.leadOrd?.top.source?.inh?.[key]?.[this.top.anchorInheritIndex] == null
+      : this.top.isAnchor && this.top.source?.[key] == null;
+  }
+
+  get texti() {
+    return this.getBasic('t');
+  }
+  set texti(val) {
+    this.setExportable('t', val);
+  }
+
+  get text() {
+    return (this.texti != null && this.com.texts && this.com.texts[this.texti]) || '';
+  }
+
+  get unique() {
+    return this.top.source?.u ?? this.top.u;
+  }
+  set unique(val) {
+    this.top.source && (this.top.source.u = val);
+  }
+
+  async setChordPosition(linei: number, pos: number) {
+    const prev = mylib.clone(this.positions?.[linei] || []).sort((a: number, b: number) => a - b);
+    const line = this.positions?.[linei] || [];
+    const posi = line.indexOf(pos);
+    const textLines = (this.text || '').split('\n');
+    const textLine = textLines[linei];
+    const lineSplitted = textLine.split('');
+    const vowels = this.com.getVowelPositions(textLine);
+
+    posi < 0 ? line.push(pos) : line.splice(posi, 1);
+
+    const positions = line.sort((a, b) => a - b);
+    if (this.positions) this.positions[linei] = positions;
+
+    positions.forEach((pos) => {
+      const vowel = lineSplitted[vowels[pos]];
+
+      if (vowel && vowel.length === 1) lineSplitted[vowels[pos]] = `[${vowel}]`;
+    });
+
+    this.exec({
+      uniq: linei,
+      prev,
+      value: line,
+      method: 'set',
+      action: 'comSetOrderChordPositionLine',
+      args: {
+        linei,
+        value: line,
+        ordw: this.getTargetFirst('w'),
+      },
+      onSet: (exec) => {
         const lineSplitted = textLine.split('');
-        const vowels = this.com.getVowelPositions(textLine);
+        const prev = exec.args?.prev || [];
 
-        posi < 0
-            ? line.push(pos)
-            : line.splice(posi, 1);
+        prev.concat(positions).forEach((pos: number) => {
+          const vowel = lineSplitted[vowels[pos]];
+          if (!vowel || vowel.length !== 1) return;
 
-        const positions = line.sort((a, b) => a - b);
-        if (this.positions) this.positions[linei] = positions;
+          const inPos = positions.indexOf(pos) > -1;
+          const inPrev = prev.indexOf(pos) > -1;
+          const [lbr, rbr] = inPos && inPrev ? ['[', ']'] : !inPrev && inPos ? ['{', '}'] : ['<', '>'];
 
-        positions.forEach(pos => {
-            const vowel = lineSplitted[vowels[pos]];
-
-            if (vowel && vowel.length === 1)
-                lineSplitted[vowels[pos]] = `[${vowel}]`;
+          lineSplitted[vowels[pos]] = lbr + vowel + rbr;
         });
 
-        this.exec({
-            uniq: linei,
-            prev,
-            value: line,
-            method: 'set',
-            action: 'comSetOrderChordPositionLine',
-            args: {
-                linei,
-                value: line,
-                ordw: this.getTargetFirst('w'),
-            },
-            onSet: exec => {
-                const lineSplitted = textLine.split('');
-                const prev = exec.args?.prev || [];
+        const preInPos = line.indexOf(-1) > -1;
+        const preInPrev = prev.indexOf(-1) > -1;
+        const postInPos = line.indexOf(-2) > -1;
+        const postInPrev = prev.indexOf(-2) > -1;
+        const preLabel =
+          preInPos && preInPrev ? ['●'] : preInPos && !preInPrev ? ['★'] : !preInPos && preInPrev ? ['☆'] : [];
+        const postLabel =
+          postInPos && postInPrev ? ['●'] : postInPos && !postInPrev ? ['★'] : !postInPos && postInPrev ? ['☆'] : [];
 
-                prev
-                    .concat(positions)
-                    .forEach((pos: number) => {
-                        const vowel = lineSplitted[vowels[pos]];
-                        if (!vowel || vowel.length !== 1) return;
+        if (exec.args) exec.args.lineTitle = preLabel.concat(lineSplitted).concat(postLabel).join('');
+      },
+    });
+  }
 
-                        const inPos = positions.indexOf(pos) > -1;
-                        const inPrev = prev.indexOf(pos) > -1;
-                        const [lbr, rbr] = inPos && inPrev
-                            ? ['[', ']']
-                            : !inPrev && inPos
-                                ? ['{', '}']
-                                : ['<', '>'];
+  cutChordPositions(line: string, linei: number) {
+    const letters = this.com.getVowelPositions(line);
 
-                        lineSplitted[vowels[pos]] = lbr + vowel + rbr;
-                    });
+    this.positions?.[linei]?.reduceRight((stub, pos) => {
+      if (pos > letters.length - 1) {
+        this.setChordPosition(linei, pos);
+      }
+      return stub;
+    }, 0);
+  }
 
-                const preInPos = line.indexOf(-1) > -1;
-                const preInPrev = prev.indexOf(-1) > -1;
-                const postInPos = line.indexOf(-2) > -1;
-                const postInPrev = prev.indexOf(-2) > -1;
-                const preLabel = preInPos && preInPrev ? ['●'] : preInPos && !preInPrev ? ['★'] : !preInPos && preInPrev ? ['☆'] : [];
-                const postLabel = postInPos && postInPrev ? ['●'] : postInPos && !postInPrev ? ['★'] : !postInPos && postInPrev ? ['☆'] : [];
+  removeInheritance<Key extends keyof IExportableOrder>(key: Key) {
+    this.setField(key, null);
+  }
 
-                if (exec.args)
-                    exec.args.lineTitle = preLabel
-                        .concat(lineSplitted)
-                        .concat(postLabel)
-                        .join('');
-            }
-        });
-    }
+  takeUniq() {
+    if (this.unique != null) return this.unique;
+    const value =
+      this.com.ords.reduce((max: number, ord: IExportableOrder) => (ord.u != null && ord.u > max ? ord.u : max), -1) -
+      -1;
 
-    cutChordPositions(line: string, linei: number) {
-        const letters = this.com.getVowelPositions(line);
+    this.exec({
+      method: 'set',
+      action: 'addOrderUnitUniq',
+      value,
+      args: {
+        value,
+      },
+    });
 
-        this.positions?.[linei]?.reduceRight((stub, pos) => {
-            if (pos > letters.length - 1) {
-                this.setChordPosition(linei, pos);
-            }
-            return stub;
-        }, 0);
-    }
+    this.unique = value;
 
-
-    removeInheritance<Key extends keyof IExportableOrder>(key: Key) {
-        this.setField(key, null);
-    }
-
-    takeUniq() {
-        if (this.unique != null) return this.unique;
-        const value = this.com.ords.reduce((max: number, ord: IExportableOrder) => ord.u != null && ord.u > max ? ord.u : max, -1) - -1;
-
-        this.exec({
-            method: 'set',
-            action: 'addOrderUnitUniq',
-            value,
-            args: {
-                value
-            }
-        });
-
-        this.unique = value;
-
-        return value;
-    }
+    return value;
+  }
 }

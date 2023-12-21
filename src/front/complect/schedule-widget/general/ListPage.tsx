@@ -1,47 +1,49 @@
-import useAuth from "../../../components/index/useAuth";
-import useConnectionState from "../../../components/index/useConnectionState";
-import EvaButton from "../../eva-icon/EvaButton";
-import PhaseContainerConfigurer from "../../phase-container/PhaseContainerConfigurer";
-import { PhaseContainerConfigurerProps } from "../../phase-container/PhaseContainerConfigurer.model";
-import StrongClipboardPicker from "../../strong-control/field/clipboard/Picker";
-import ScheduleCreateWidgetButton from "./CreateButton";
-import ScheduleWidget from "../ScheduleWidget";
-import { IScheduleWidget } from "../ScheduleWidget.model";
-import { useSchedules } from "../useScheduleWidget";
+import useAuth from '../../../components/index/useAuth';
+import useConnectionState from '../../../components/index/useConnectionState';
+import EvaButton from '../../eva-icon/EvaButton';
+import PhaseContainerConfigurer from '../../phase-container/PhaseContainerConfigurer';
+import { PhaseContainerConfigurerProps } from '../../phase-container/PhaseContainerConfigurer.model';
+import StrongClipboardPicker from '../../strong-control/field/clipboard/Picker';
+import ScheduleCreateWidgetButton from './CreateButton';
+import ScheduleWidget from '../ScheduleWidget';
+import { IScheduleWidget } from '../ScheduleWidget.model';
+import { useSchedules } from '../useScheduleWidget';
 
-export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigurerProps, 'content' | 'className'> & {
-    onScheduleObserve: (schedule: IScheduleWidget) => void,
-}) {
-    const schedules = useSchedules();
-    const connectionNode = useConnectionState();
-    const auth = useAuth();
+export default function ScheduleWidgetListPage(
+  props: Omit<PhaseContainerConfigurerProps, 'content' | 'className'> & {
+    onScheduleObserve: (schedule: IScheduleWidget) => void;
+  },
+) {
+  const schedules = useSchedules();
+  const connectionNode = useConnectionState();
+  const auth = useAuth();
 
-    return <PhaseContainerConfigurer
-        {...props}
-        className="ScheduleWidgetPage ScheduleWidgetListPage"
-        head={<span className="flex flex-gap margin-gap">
-            {connectionNode}
-            <StrongClipboardPicker />
-            {props.head}
-        </span>}
-        content={<>
-            {schedules.list.map((schedule) => {
-                if (!schedule.start) return null;
-                return <ScheduleWidget
-                    key={schedule.w}
-                    schedule={schedule}
-                    altActionsNode={<EvaButton
-                        name="bell-outline"
-                        onClick={() => props.onScheduleObserve(schedule)}
-                    />}
-                />;
-            })}
-            {auth && auth.level > 29
-                && <ScheduleCreateWidgetButton
-                    appName="index"
-                    schw={Date.now()}
-                    title=""
-                />}
-        </>}
-    />;
+  return (
+    <PhaseContainerConfigurer
+      {...props}
+      className="ScheduleWidgetPage ScheduleWidgetListPage"
+      head={
+        <span className="flex flex-gap margin-gap">
+          {connectionNode}
+          <StrongClipboardPicker />
+          {props.head}
+        </span>
+      }
+      content={
+        <>
+          {schedules.list.map((schedule) => {
+            if (!schedule.start) return null;
+            return (
+              <ScheduleWidget
+                key={schedule.w}
+                schedule={schedule}
+                altActionsNode={<EvaButton name="bell-outline" onClick={() => props.onScheduleObserve(schedule)} />}
+              />
+            );
+          })}
+          {auth && auth.level > 29 && <ScheduleCreateWidgetButton appName="index" schw={Date.now()} title="" />}
+        </>
+      }
+    />
+  );
 }

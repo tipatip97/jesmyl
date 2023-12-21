@@ -1,2 +1,1 @@
-
-export * from "../../../../back/apps/gamer/gamer.model";
+export * from '../../../../back/apps/gamer/gamer.model';

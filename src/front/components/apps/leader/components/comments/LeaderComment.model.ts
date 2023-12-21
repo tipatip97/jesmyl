@@ -1,20 +1,19 @@
-import { ClientExecutionDict } from "../../../../../complect/exer/Exer.model";
+import { ClientExecutionDict } from '../../../../../complect/exer/Exer.model';
 
 export interface LeaderCommentInitializable {
-    comment: string,
+  comment: string;
 }
 
 export interface LeaderCommentExportable extends LeaderCommentInitializable {
-    gamew: number,
-    timerw?: number,
-    teamw?: number,
+  gamew: number;
+  timerw?: number;
+  teamw?: number;
 }
 
 export interface LeaderCommentImportable extends LeaderCommentInitializable {
-    owner: string,
-    fio: string,
-    w: number,
+  owner: string;
+  fio: string;
+  w: number;
 }
 
 export type SendingComment = ClientExecutionDict<unknown, LeaderCommentExportable>;
-

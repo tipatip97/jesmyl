@@ -1,8 +1,8 @@
-import propsOfClicker from "../../../../../complect/clicker/propsOfClicker";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useAdminNav from "../../useAdminNav";
-import { User } from "./User";
-import "./User.scss";
+import propsOfClicker from '../../../../../complect/clicker/propsOfClicker';
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import useAdminNav from '../../useAdminNav';
+import { User } from './User';
+import './User.scss';
 
 export default function UserFace({ user }: { user: User }) {
   const { goTo } = useAdminNav();

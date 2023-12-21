@@ -1,17 +1,17 @@
 .index-main {
-    position: relative;
+  position: relative;
 
-    .last-update-timestamp {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 3px;
-        text-align: center;
-        font-size: .7em;
-    }
+  .last-update-timestamp {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 3px;
+    text-align: center;
+    font-size: 0.7em;
+  }
 
-    .app-title-label {
-        padding-right: 15px;
-    }
+  .app-title-label {
+    padding-right: 15px;
+  }
 }

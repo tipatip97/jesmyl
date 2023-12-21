@@ -1,33 +1,35 @@
-import { useState } from "react";
-import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useExer from "../../../../../complect/exer/useExer";
-import useFullscreenContent from "../../../../../complect/fullscreen-content/useFullscreenContent";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import { cmExer } from "../../Cm.store";
-import useCmNav from "../../base/useCmNav";
-import ComFace from "../../col/com/face/ComFace";
-import { useEditableCcat } from "../col/categories/useEditableCcat";
-import EditContainerCorrectsInformer from "../edit-container-corrects-informer/EditContainerCorrectsInformer";
-import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
-import MeetingsEventHistory from "./MeetingsEventHistory";
-import { useEditableMeetings } from "./useEditableMeetings";
+import { useState } from 'react';
+import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
+import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import useExer from '../../../../../complect/exer/useExer';
+import useFullscreenContent from '../../../../../complect/fullscreen-content/useFullscreenContent';
+import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import { cmExer } from '../../Cm.store';
+import useCmNav from '../../base/useCmNav';
+import ComFace from '../../col/com/face/ComFace';
+import { useEditableCcat } from '../col/categories/useEditableCcat';
+import EditContainerCorrectsInformer from '../edit-container-corrects-informer/EditContainerCorrectsInformer';
+import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
+import MeetingsEventHistory from './MeetingsEventHistory';
+import { useEditableMeetings } from './useEditableMeetings';
 
 export default function EditMeetingsEvent() {
   const { currentEvent } = useEditableMeetings();
   const { exec } = useExer(cmExer);
   const zcat = useEditableCcat(0);
-  const [term, setTerm] = useState(zcat?.term || "");
+  const [term, setTerm] = useState(zcat?.term || '');
   const { goTo } = useCmNav();
   const [isClosedComList, setIsClosedComList] = useState(true);
   const [popupNode, openPopup] = useBottomPopup((_, prepare) => {
     return prepare({
-      items: [{
-        icon: 'list',
-        title: 'История',
-        onClick: () => openFullscreenContent((close) => <MeetingsEventHistory close={close} />)
-      }]
+      items: [
+        {
+          icon: 'list',
+          title: 'История',
+          onClick: () => openFullscreenContent((close) => <MeetingsEventHistory close={close} />),
+        },
+      ],
     });
   });
   const { openFullscreenContent } = useFullscreenContent();
@@ -58,9 +60,7 @@ export default function EditMeetingsEvent() {
             />
           </EditContainerCorrectsInformer>
 
-          <div className="list-title sticky">
-            {prevComsLength ? "Новый список" : "Прикреплённые песни"}
-          </div>
+          <div className="list-title sticky">{prevComsLength ? 'Новый список' : 'Прикреплённые песни'}</div>
           {comsLength ? (
             currentEvent.coms?.map((com, comi) => (
               <ComFace
@@ -71,7 +71,7 @@ export default function EditMeetingsEvent() {
                   <div className="flex">
                     {comsLength === 1 ? null : (
                       <EvaIcon
-                        name={comi ? "arrow-upward" : "arrow-downward"}
+                        name={comi ? 'arrow-upward' : 'arrow-downward'}
                         className="margin-big-gap-h"
                         onClick={(event) => {
                           event.stopPropagation();
@@ -100,7 +100,7 @@ export default function EditMeetingsEvent() {
 
                 {prevComsLength < 2 ? null : (
                   <EvaIcon
-                    name={comsLength ? "arrowhead-up-outline" : "plus-outline"}
+                    name={comsLength ? 'arrowhead-up-outline' : 'plus-outline'}
                     className="pointer"
                     onClick={(event) => {
                       event.stopPropagation();
@@ -116,11 +116,7 @@ export default function EditMeetingsEvent() {
                   selectable={false}
                   description={
                     <EvaIcon
-                      name={
-                        comsLength
-                          ? "arrow-ios-upward-outline"
-                          : "plus-circle-outline"
-                      }
+                      name={comsLength ? 'arrow-ios-upward-outline' : 'plus-circle-outline'}
                       onClick={(event) => {
                         event.stopPropagation();
                         exec(currentEvent.mergePrevComs([com]));
@@ -135,7 +131,7 @@ export default function EditMeetingsEvent() {
             <span>Все песни</span>
             <EvaIcon
               className="pointer"
-              name={isClosedComList ? "eye-outline" : "eye-off-outline"}
+              name={isClosedComList ? 'eye-outline' : 'eye-off-outline'}
               onClick={() => setIsClosedComList(!isClosedComList)}
             />
           </div>
@@ -156,7 +152,7 @@ export default function EditMeetingsEvent() {
                     com={com}
                     selectable={false}
                     importantOnClick={() => {
-                      goTo({ place: "com", data: { ccomw: com.wid } }, null, true);
+                      goTo({ place: 'com', data: { ccomw: com.wid } }, null, true);
                     }}
                     description={
                       usedComList.indexOf(com) < 0 ? (

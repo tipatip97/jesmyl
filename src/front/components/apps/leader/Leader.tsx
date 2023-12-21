@@ -1,9 +1,9 @@
-import { ReactNode, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import "./Leader.scss";
-import di from "./Leader.store";
-import useLeaderComments from "./components/comments/useLeaderComments";
-import leaderStorage from "./leaderStorage";
+import { ReactNode, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import './Leader.scss';
+import di from './Leader.store';
+import useLeaderComments from './components/comments/useLeaderComments';
+import leaderStorage from './leaderStorage';
 
 let prevSentTs: number = 0;
 

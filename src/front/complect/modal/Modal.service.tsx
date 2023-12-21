@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
-import { ModalConfig } from "./Modal.model";
+import { ReactNode } from 'react';
+import { ModalConfig } from './Modal.model';
 
 class ModalService {
   configs: ModalConfig[] = [];
-  private _error: string = "";
+  private _error: string = '';
   setter?: Function;
   promise?: Promise<any>;
   resolves: ((val: any) => void)[] = [];
@@ -13,7 +13,7 @@ class ModalService {
   }
 
   refresh() {
-    this.setError("");
+    this.setError('');
     this.setter && this.setter(this.configs[0]);
   }
 
@@ -25,16 +25,12 @@ class ModalService {
     return this._error;
   }
 
-  open<RetVal>(
-    config:
-      | Partial<ModalConfig>
-      | ((res: (is: RetVal) => void) => Partial<ModalConfig>)
-  ): Promise<RetVal> {
-    if (typeof config === "function") return new Promise<RetVal>((res) => this.open(config(res)));
+  open<RetVal>(config: Partial<ModalConfig> | ((res: (is: RetVal) => void) => Partial<ModalConfig>)): Promise<RetVal> {
+    if (typeof config === 'function') return new Promise<RetVal>((res) => this.open(config(res)));
 
     const defaults = {
       getInput: (index: number = 0) => {
-        return config.inputs?.filter(input => !Array.isArray(input))[index];
+        return config.inputs?.filter((input) => !Array.isArray(input))[index];
       },
     };
     this.configs.push(Object.assign(defaults, config) as ModalConfig);
@@ -57,12 +53,7 @@ class ModalService {
     return this.configs[0];
   }
 
-  confirm(
-    description: ReactNode,
-    title = "Подтвердить",
-    okButton = "да",
-    cancelButton = "нет"
-  ) {
+  confirm(description: ReactNode, title = 'Подтвердить', okButton = 'да', cancelButton = 'нет') {
     return this.open({
       title,
       description,
@@ -79,21 +70,15 @@ class ModalService {
     });
   }
 
-  prompt(
-    description: ReactNode,
-    value = '',
-    title = "Ответ",
-    okButton = "применить",
-    cancelButton = "отмена"
-  ) {
+  prompt(description: ReactNode, value = '', title = 'Ответ', okButton = 'применить', cancelButton = 'отмена') {
     return this.open<string | null>((res) => ({
       title,
       description,
       inputs: [
         {
           value,
-          onInput: ({ value: val }) => value = val,
-        }
+          onInput: ({ value: val }) => (value = val),
+        },
       ],
       buttons: [
         {
@@ -108,7 +93,7 @@ class ModalService {
     }));
   }
 
-  alert(description: ReactNode, title = "Внимание") {
+  alert(description: ReactNode, title = 'Внимание') {
     return this.open({ title, description });
   }
 }

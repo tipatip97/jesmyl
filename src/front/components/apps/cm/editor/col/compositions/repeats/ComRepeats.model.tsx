@@ -1,4 +1,4 @@
-import { EditableOrder } from "../complect/orders/EditableOrder";
+import { EditableOrder } from '../complect/orders/EditableOrder';
 
 export interface IEditableComLineProps {
   textLine: string;

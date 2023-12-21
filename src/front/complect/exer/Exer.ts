@@ -1,145 +1,147 @@
-import { Auth } from "../../components/index/Index.model";
-import { ExecutionDict, SokiAppName, SokiServerEvent } from "../../models";
-import { soki } from "../../soki";
-import { JStorage } from "../JStorage";
-import mylib from "../my-lib/MyLib";
-import { Exec } from "./Exec";
-import { ClientExecutionDict, ExecRule, ExerStorage, FreeExecDict, FreeExecDictAntiCallback, FreeExecDictAntiCallbackStrategy } from "./Exer.model";
+import { Auth } from '../../components/index/Index.model';
+import { ExecutionDict, SokiAppName, SokiServerEvent } from '../../models';
+import { soki } from '../../soki';
+import { JStorage } from '../JStorage';
+import mylib from '../my-lib/MyLib';
+import { Exec } from './Exec';
+import {
+  ClientExecutionDict,
+  ExecRule,
+  ExerStorage,
+  FreeExecDict,
+  FreeExecDictAntiCallback,
+  FreeExecDictAntiCallbackStrategy,
+} from './Exer.model';
 
 export class Exer<Storage extends ExerStorage> {
-    appName: SokiAppName;
-    execs: Exec<any>[] = [];
-    storage: JStorage<Storage> | nil;
-    key = 'execs' as keyof Storage;
-    rules: ExecRule[] = [];
-    checkedActions: Record<string, true | null> = {};
+  appName: SokiAppName;
+  execs: Exec<any>[] = [];
+  storage: JStorage<Storage> | nil;
+  key = 'execs' as keyof Storage;
+  rules: ExecRule[] = [];
+  checkedActions: Record<string, true | null> = {};
 
-    constructor(appName: SokiAppName, storage: JStorage<Storage, any> | nil) {
-        this.storage = storage;
-        this.appName = appName;
+  constructor(appName: SokiAppName, storage: JStorage<Storage, any> | nil) {
+    this.storage = storage;
+    this.appName = appName;
 
-        this.updateRules();
-    }
+    this.updateRules();
+  }
 
-    async updateRules() {
-        this.rules = [...(await this.storage?.get('rules') as [] || [])];
-    }
+  async updateRules() {
+    this.rules = [...(((await this.storage?.get('rules')) as []) || [])];
+  }
 
-    setIfCan<Value>(freeExec: FreeExecDict<Value>, auth: Auth): Exec<Value> | null {
-        return this.actionAccessedOrNull(freeExec.action, auth) && this.set(freeExec);
-    }
+  setIfCan<Value>(freeExec: FreeExecDict<Value>, auth: Auth): Exec<Value> | null {
+    return this.actionAccessedOrNull(freeExec.action, auth) && this.set(freeExec);
+  }
 
-    clear() {
-        this.execs = [];
-    }
+  clear() {
+    this.execs = [];
+  }
 
-    set<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
-        if (!freeExec) return null;
-        let retExec: Exec<Value> | null = null;
-        const { scope, value, method = 'set', anti, friendly } = freeExec;
-        const exec = { ...freeExec, method };
+  set<Value>(freeExec: FreeExecDict<Value>): Exec<Value> | null {
+    if (!freeExec) return null;
+    let retExec: Exec<Value> | null = null;
+    const { scope, value, method = 'set', anti, friendly } = freeExec;
+    const exec = { ...freeExec, method };
 
-        setTimeout(() => console.info(exec, this.execs));
+    setTimeout(() => console.info(exec, this.execs));
 
-        const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
-        const prevExec: Exec<Value> = this.execs[prevExeci];
-        const lasti = this.execs.length - 1;
-        const lastExec: Exec<Value> = this.execs[lasti];
+    const prevExeci = this.execs.findIndex((ex) => ex.scope === scope && ex.method === method);
+    const prevExec: Exec<Value> = this.execs[prevExeci];
+    const lasti = this.execs.length - 1;
+    const lastExec: Exec<Value> = this.execs[lasti];
 
-        let isPrevented = false;
-        const removeNabors = (nabors: FreeExecDictAntiCallback<Value>[], onFind: () => void) => {
-            const remIndexes: number[] = [];
+    let isPrevented = false;
+    const removeNabors = (nabors: FreeExecDictAntiCallback<Value>[], onFind: () => void) => {
+      const remIndexes: number[] = [];
 
-            for (const anti of nabors) {
-                for (let execi = 0; execi < this.execs.length; execi++) {
-                    const prevent = anti(this.execs[execi]);
+      for (const anti of nabors) {
+        for (let execi = 0; execi < this.execs.length; execi++) {
+          const prevent = anti(this.execs[execi]);
 
-                    if (prevent) {
-                        remIndexes.push(execi);
-                        const startegies = FreeExecDictAntiCallbackStrategy;
-                        const strategy = prevent(startegies);
-                        if (strategy === startegies.RemoveNew) onFind();
-                    }
-                }
-                if (isPrevented) break;
-            }
-            remIndexes.sort((a, b) => b - a).forEach(execi => this.execs.splice(execi, 1));
-        };
-
-        if (anti) removeNabors([anti].flat(), () => isPrevented = true);
-
-        if (isPrevented) return null;
-
-        if (method === 'migrate' && lastExec && lastExec.method === method && lastExec.scope === scope) {
-            if (!Object.keys(value || {}).length) this.execs.splice(lasti, 1);
-            else this.execs.splice(lasti, 1, retExec = new Exec(exec, this.rules));
-
-        } else if (method === 'set') {
-            if (prevExec)
-                if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
-                else {
-                    const needRemove = prevExec.setValue(value, exec);
-                    if (needRemove) {
-                        let isRemove = true;
-                        if (friendly) removeNabors([friendly].flat(), () => isRemove = false);
-                        if (isRemove) this.execs.splice(prevExeci, 1);
-                    }
-                }
-            else if (!mylib.isEq(exec.prev, exec.value))
-                this.execs.push(retExec = new Exec(exec, this.rules));
-        } else if (!prevExec || !mylib.isEq(exec.args, prevExec.args) || exec.args == null) this.execs.push(retExec = new Exec(exec, this.rules));
-
-        exec.scope = scope;
-        switch (mylib.func(exec.onSet).call(exec)) {
-            case mylib.c.REMOVE: this.execs.splice(prevExeci, 1);
+          if (prevent) {
+            remIndexes.push(execi);
+            const startegies = FreeExecDictAntiCallbackStrategy;
+            const strategy = prevent(startegies);
+            if (strategy === startegies.RemoveNew) onFind();
+          }
         }
+        if (isPrevented) break;
+      }
+      remIndexes.sort((a, b) => b - a).forEach((execi) => this.execs.splice(execi, 1));
+    };
 
-        return retExec;
+    if (anti) removeNabors([anti].flat(), () => (isPrevented = true));
+
+    if (isPrevented) return null;
+
+    if (method === 'migrate' && lastExec && lastExec.method === method && lastExec.scope === scope) {
+      if (!Object.keys(value || {}).length) this.execs.splice(lasti, 1);
+      else this.execs.splice(lasti, 1, (retExec = new Exec(exec, this.rules)));
+    } else if (method === 'set') {
+      if (prevExec)
+        if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
+        else {
+          const needRemove = prevExec.setValue(value, exec);
+          if (needRemove) {
+            let isRemove = true;
+            if (friendly) removeNabors([friendly].flat(), () => (isRemove = false));
+            if (isRemove) this.execs.splice(prevExeci, 1);
+          }
+        }
+      else if (!mylib.isEq(exec.prev, exec.value)) this.execs.push((retExec = new Exec(exec, this.rules)));
+    } else if (!prevExec || !mylib.isEq(exec.args, prevExec.args) || exec.args == null)
+      this.execs.push((retExec = new Exec(exec, this.rules)));
+
+    exec.scope = scope;
+    switch (mylib.func(exec.onSet).call(exec)) {
+      case mylib.c.REMOVE:
+        this.execs.splice(prevExeci, 1);
     }
 
-    send<Value>(fixedExecs: ClientExecutionDict<Value> | (ClientExecutionDict<Value>[])) {
-        return this.load([fixedExecs].flat().map(exec => new Exec(exec, this.rules)));
-    }
+    return retExec;
+  }
 
-    load<Value>(fixedExecs?: Exec<Value>[] | nil) {
-        return new Promise<SokiServerEvent | null>((resolve, reject) => {
-            const execs = (fixedExecs || this.execs)
-                .map(exec => exec.forLoad())
-                .filter(ex => ex);
+  send<Value>(fixedExecs: ClientExecutionDict<Value> | ClientExecutionDict<Value>[]) {
+    return this.load([fixedExecs].flat().map((exec) => new Exec(exec, this.rules)));
+  }
 
-            if (!execs.length) {
-                return resolve(null);
-            }
+  load<Value>(fixedExecs?: Exec<Value>[] | nil) {
+    return new Promise<SokiServerEvent | null>((resolve, reject) => {
+      const execs = (fixedExecs || this.execs).map((exec) => exec.forLoad()).filter((ex) => ex);
 
-            soki.send({ execs: execs.filter((dict) => dict) as ExecutionDict[] }, this.appName)
-                .on((result) => {
-                    this.execs = (fixedExecs as Exec<any>[] || this.execs).filter(ex => {
-                        ex.onLoad?.(ex, result);
-                        return ex.del;
-                    });
+      if (!execs.length) {
+        return resolve(null);
+      }
 
-                    resolve(result);
-                },
-                    (err) => reject(err));
-        });
-    }
+      soki.send({ execs: execs.filter((dict) => dict) as ExecutionDict[] }, this.appName).on(
+        (result) => {
+          this.execs = ((fixedExecs as Exec<any>[]) || this.execs).filter((ex) => {
+            ex.onLoad?.(ex, result);
+            return ex.del;
+          });
 
-    actionAccessedOrUnd(action: string | nil, auth: Auth, isNullifyed?: boolean): true | undefined {
-        return this.actionAccessedOrNull(action, auth, isNullifyed) ?? undefined;
-    }
+          resolve(result);
+        },
+        (err) => reject(err),
+      );
+    });
+  }
 
-    actionAccessedOrNull(action: string | nil, auth: Auth, isNullifyed?: boolean): true | null {
-        if (action == null) return isNullifyed ? true : null;
-        if (this.checkedActions[action] !== undefined) return this.checkedActions[action] || null;
-        if (!this.rules?.length) return null;
+  actionAccessedOrUnd(action: string | nil, auth: Auth, isNullifyed?: boolean): true | undefined {
+    return this.actionAccessedOrNull(action, auth, isNullifyed) ?? undefined;
+  }
 
-        const rule = this.rules.find((right) => right.action === action) as ExecRule;
-        if (!rule)
-            console.error(`Зарегистрировано правило на неизвестное действие ${action}`);
+  actionAccessedOrNull(action: string | nil, auth: Auth, isNullifyed?: boolean): true | null {
+    if (action == null) return isNullifyed ? true : null;
+    if (this.checkedActions[action] !== undefined) return this.checkedActions[action] || null;
+    if (!this.rules?.length) return null;
 
-        return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +(auth.level ?? 0) ? true : null) : null);
-    }
+    const rule = this.rules.find((right) => right.action === action) as ExecRule;
+    if (!rule) console.error(`Зарегистрировано правило на неизвестное действие ${action}`);
+
+    return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +(auth.level ?? 0) ? true : null) : null);
+  }
 }
-
-
-

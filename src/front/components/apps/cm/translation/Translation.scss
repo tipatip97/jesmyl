@@ -1,307 +1,336 @@
 .translation-container {
-    --radius: 20px;
-    --size: 50vmin;
-    --max-size: 300px;
-    --min-size: 200px;
+  --radius: 20px;
+  --size: 50vmin;
+  --max-size: 300px;
+  --min-size: 200px;
 
+  position: relative;
+  z-index: 300;
+
+  &.fullscreen {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .translation-screen-wrapper {
     position: relative;
-    z-index: 300;
+    display: inline-block;
+    vertical-align: middle;
+    width: var(--size);
+    height: var(--size);
+    max-width: var(--max-size);
+    max-height: var(--max-size);
+    min-width: var(--min-size);
+    min-height: var(--min-size);
 
-    &.fullscreen {
-        background-color: black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100vw;
-        height: 100vh;
+    .translation-screen-wrapper-inner {
+      user-select: none;
+      cursor: pointer;
+      background: black;
+      white-space: pre;
+      color: var(--color-far);
+      border: solid 1px transparent;
+      font-size: 14px;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      border-radius: var(--radius);
+
+      &.active {
+        border-color: var(--color-far);
+      }
     }
+  }
 
-    .translation-screen-wrapper {
-        position: relative;
-        display: inline-block;
-        vertical-align: middle;
-        width: var(--size);
-        height: var(--size);
-        max-width: var(--max-size);
-        max-height: var(--max-size);
-        min-width: var(--min-size);
-        min-height: var(--min-size);
+  .translation-com-list {
+    width: 50%;
+    height: var(--size);
+    max-height: var(--max-size);
+    min-height: var(--min-size);
+    overflow-x: hidden;
+    overflow-y: auto;
 
-        .translation-screen-wrapper-inner {
-            user-select: none;
-            cursor: pointer;
-            background: black;
-            white-space: pre;
-            color: var(--color-far);
-            border: solid 1px transparent;
-            font-size: 14px;
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            border-radius: var(--radius);
-
-            &.active {
-                border-color: var(--color-far);
-            }
-        }
+    .face-item.current {
+      font-weight: bold;
     }
+  }
 
-    .translation-com-list {
-        width: 50%;
-        height: var(--size);
-        max-height: var(--max-size);
-        min-height: var(--min-size);
-        overflow-x: hidden;
-        overflow-y: auto;
-
-        .face-item.current {
-            font-weight: bold;
-        }
-    }
-
-    &:not(.top).center {
-        .translations-line {
-            .translations-line-item {
-                .translations-line-item-inner {
-                    align-items: center;
-                }
-            }
-        }
-    }
-
+  &:not(.top).center {
     .translations-line {
+      .translations-line-item {
+        .translations-line-item-inner {
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  .translations-line {
+    display: flex;
+    margin: 1em 0;
+    padding: 1em 0;
+    overflow: auto;
+    white-space: nowrap;
+    background: black;
+    color: white;
+    border-radius: var(--radius);
+    scroll-snap-type: x mandatory;
+
+    .translations-line-item {
+      margin: 0 7px;
+      scroll-snap-align: center;
+
+      .translations-line-item-inner {
         display: flex;
-        margin: 1em 0;
-        padding: 1em 0;
-        overflow: auto;
-        white-space: nowrap;
+        user-select: none;
+        cursor: pointer;
         background: black;
+        white-space: pre;
+        color: var(--color-far);
+        border: solid 1px transparent;
+        font-size: 14px;
+        overflow: hidden;
+        text-align: center;
+        height: calc(100% - 1.5em);
+        padding: 5px;
+
+        &.active {
+          border-color: var(--color-far);
+        }
+      }
+    }
+  }
+
+  .control-panel {
+    > .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 30px;
+      width: 100%;
+      border-radius: 15px;
+      background-color: var(--color--1);
+      color: var(--color--4);
+      cursor: pointer;
+
+      &.center {
+        min-width: 40vw;
+      }
+
+      + .button {
+        margin-left: 10px;
+      }
+    }
+
+    > .start-translation {
+      --icon-color: var(--color--5);
+
+      background-color: var(--color--7);
+    }
+  }
+
+  .fullscreen-translation {
+    --safe-gap: 50px;
+    --block-height: 40%;
+    --center-width: 20%;
+    --half-safe-gap: calc(var(--safe-gap) / 3);
+    --block-width: calc((100% - var(--safe-gap) * 2 - var(--center-width)) / 2);
+    --center-left: calc(var(--safe-gap) + var(--block-width));
+
+    background: black;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    z-index: 1000;
+    transition: transform 0.1s;
+
+    &.rotate-fullscreen-translation {
+      transform: rotate(90deg);
+      width: 100vh;
+      height: 100vw;
+
+      .translation-screen-wrapper-inner {
+        width: 100vh !important;
+        height: 100vw !important;
+      }
+    }
+
+    &.open-info {
+      --first-bg: #999;
+      --second-bg: grey;
+
+      .close-info-button {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .open-info-button {
+        opacity: 0;
+      }
+
+      .translation-screen-wrapper-inner {
+        filter: blur(5px);
+      }
+
+      > .info-area {
         color: white;
-        border-radius: var(--radius);
-        scroll-snap-type: x mandatory;
+      }
 
-        .translations-line-item {
-            margin: 0 7px;
-            scroll-snap-align: center;
-
-            .translations-line-item-inner {
-                display: flex;
-                user-select: none;
-                cursor: pointer;
-                background: black;
-                white-space: pre;
-                color: var(--color-far);
-                border: solid 1px transparent;
-                font-size: 14px;
-                overflow: hidden;
-                text-align: center;
-                height: calc(100% - 1.5em);
-                padding: 5px;
-
-                &.active {
-                    border-color: var(--color-far);
-                }
-            }
+      > .center-area {
+        &.top {
+          --gradient-color: var(--first-bg);
+          background: repeating-linear-gradient(
+            -60deg,
+            var(--gradient-color) 0,
+            var(--gradient-color) 1px,
+            transparent 1px,
+            transparent 5px
+          );
         }
+
+        &.bottom {
+          --gradient-color: var(--second-bg);
+          background: repeating-linear-gradient(
+            -60deg,
+            var(--gradient-color) 0,
+            var(--gradient-color) 1px,
+            transparent 1px,
+            transparent 5px
+          );
+        }
+      }
+
+      > .top-area {
+        --gradient-color: var(--second-bg);
+        background: repeating-linear-gradient(
+          -60deg,
+          var(--gradient-color) 0,
+          var(--gradient-color) 1px,
+          transparent 1px,
+          transparent 5px
+        );
+      }
+
+      > .bottom-area {
+        --gradient-color: var(--first-bg);
+        background: repeating-linear-gradient(
+          -60deg,
+          var(--gradient-color) 0,
+          var(--gradient-color) 1px,
+          transparent 1px,
+          transparent 5px
+        );
+      }
     }
 
-    .control-panel {
-        >.button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 30px;
-            width: 100%;
-            border-radius: 15px;
-            background-color: var(--color--1);
-            color: var(--color--4);
-            cursor: pointer;
-
-            &.center {
-                min-width: 40vw;
-            }
-
-            +.button {
-                margin-left: 10px;
-            }
-        }
-
-        >.start-translation {
-            --icon-color: var(--color--5);
-
-            background-color: var(--color--7);
-        }
+    .translation-screen-wrapper-inner {
+      transition: filter 0.2s;
     }
 
-    .fullscreen-translation {
-        --safe-gap: 50px;
-        --block-height: 40%;
-        --center-width: 20%;
-        --half-safe-gap: calc(var(--safe-gap) / 3);
-        --block-width: calc((100% - var(--safe-gap) * 2 - var(--center-width)) / 2);
-        --center-left: calc(var(--safe-gap) + var(--block-width));
-
-        background: black;
-        width: 100vw;
-        height: 100vh;
-        color: white;
-        z-index: 1000;
-        transition: transform .1s;
-
-        &.rotate-fullscreen-translation {
-            transform: rotate(90deg);
-            width: 100vh;
-            height: 100vw;
-
-            .translation-screen-wrapper-inner {
-                width: 100vh !important;
-                height: 100vw !important;
-            }
-        }
-
-        &.open-info {
-            --first-bg: #999;
-            --second-bg: grey;
-
-            .close-info-button {
-                opacity: 1;
-                pointer-events: all;
-            }
-
-            .open-info-button {
-                opacity: 0;
-            }
-
-            .translation-screen-wrapper-inner {
-                filter: blur(5px);
-            }
-
-            >.info-area {
-                color: white;
-            }
-
-            >.center-area {
-                &.top {
-                    --gradient-color: var(--first-bg);
-                    background: repeating-linear-gradient(-60deg, var(--gradient-color) 0, var(--gradient-color) 1px, transparent 1px, transparent 5px);
-                }
-
-                &.bottom {
-                    --gradient-color: var(--second-bg);
-                    background: repeating-linear-gradient(-60deg, var(--gradient-color) 0, var(--gradient-color) 1px, transparent 1px, transparent 5px);
-                }
-            }
-
-            >.top-area {
-                --gradient-color: var(--second-bg);
-                background: repeating-linear-gradient(-60deg, var(--gradient-color) 0, var(--gradient-color) 1px, transparent 1px, transparent 5px);
-            }
-
-            >.bottom-area {
-                --gradient-color: var(--first-bg);
-                background: repeating-linear-gradient(-60deg, var(--gradient-color) 0, var(--gradient-color) 1px, transparent 1px, transparent 5px);
-            }
-        }
-
-        .translation-screen-wrapper-inner {
-            transition: filter .2s;
-        }
-
-        .close-info-button {
-            position: absolute;
-            top: var(--half-safe-gap);
-            right: var(--half-safe-gap);
-            opacity: 0;
-            pointer-events: none;
-            cursor: pointer;
-        }
-
-        .open-info-button {
-            opacity: 1;
-            transition: opacity .4s;
-        }
-
-        >.info-area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #0000;
-            cursor: pointer;
-        }
-
-        >.bottom-area,
-        >.top-area {
-            position: absolute;
-            width: var(--block-width);
-            height: var(--block-height);
-
-            &.left {
-                left: var(--safe-gap);
-            }
-
-            &.right {
-                right: var(--safe-gap);
-            }
-        }
-
-        >.top-area {
-            top: var(--safe-gap);
-        }
-
-        >.bottom-area {
-            bottom: var(--safe-gap);
-        }
-
-        >.center-area {
-            --over-position: calc(0px - var(--safe-gap) * 4);
-            --active-position: calc(0px - var(--safe-gap) / 2.5);
-            --active-second-position: calc(var(--safe-gap) / 1.5);
-
-            position: absolute;
-            width: var(--center-width);
-            left: var(--center-left);
-            height: var(--block-height);
-
-            &.top {
-                top: var(--safe-gap);
-
-                .area-button {
-                    top: var(--over-position);
-
-                    &.show {
-                        top: var(--active-position);
-
-                        &.second {
-                            top: var(--active-second-position);
-                        }
-                    }
-                }
-            }
-
-            &.bottom {
-                bottom: var(--safe-gap);
-
-                .area-button {
-                    bottom: var(--over-position);
-
-                    &.show {
-                        bottom: var(--active-position);
-                    }
-                }
-            }
-
-            .area-button {
-                position: absolute;
-                transition: top .4s, bottom .4s;
-                left: calc(50% - 24px / 2);
-                cursor: pointer;
-                z-index: 10000;
-
-                &.second {
-                    transition: top .5s, bottom .5s, opacity .2s;
-                }
-            }
-        }
+    .close-info-button {
+      position: absolute;
+      top: var(--half-safe-gap);
+      right: var(--half-safe-gap);
+      opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
     }
+
+    .open-info-button {
+      opacity: 1;
+      transition: opacity 0.4s;
+    }
+
+    > .info-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #0000;
+      cursor: pointer;
+    }
+
+    > .bottom-area,
+    > .top-area {
+      position: absolute;
+      width: var(--block-width);
+      height: var(--block-height);
+
+      &.left {
+        left: var(--safe-gap);
+      }
+
+      &.right {
+        right: var(--safe-gap);
+      }
+    }
+
+    > .top-area {
+      top: var(--safe-gap);
+    }
+
+    > .bottom-area {
+      bottom: var(--safe-gap);
+    }
+
+    > .center-area {
+      --over-position: calc(0px - var(--safe-gap) * 4);
+      --active-position: calc(0px - var(--safe-gap) / 2.5);
+      --active-second-position: calc(var(--safe-gap) / 1.5);
+
+      position: absolute;
+      width: var(--center-width);
+      left: var(--center-left);
+      height: var(--block-height);
+
+      &.top {
+        top: var(--safe-gap);
+
+        .area-button {
+          top: var(--over-position);
+
+          &.show {
+            top: var(--active-position);
+
+            &.second {
+              top: var(--active-second-position);
+            }
+          }
+        }
+      }
+
+      &.bottom {
+        bottom: var(--safe-gap);
+
+        .area-button {
+          bottom: var(--over-position);
+
+          &.show {
+            bottom: var(--active-position);
+          }
+        }
+      }
+
+      .area-button {
+        position: absolute;
+        transition:
+          top 0.4s,
+          bottom 0.4s;
+        left: calc(50% - 24px / 2);
+        cursor: pointer;
+        z-index: 10000;
+
+        &.second {
+          transition:
+            top 0.5s,
+            bottom 0.5s,
+            opacity 0.2s;
+        }
+      }
+    }
+  }
 }

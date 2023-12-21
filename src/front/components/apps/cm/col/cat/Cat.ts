@@ -1,8 +1,8 @@
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { BaseNamed } from "../../base/BaseNamed";
-import { Com } from "../com/Com";
-import { catTrackers } from "./Cat.complect";
-import { ComWrap, ICat, IExportableCat } from "./Cat.model";
+import mylib from '../../../../../complect/my-lib/MyLib';
+import { BaseNamed } from '../../base/BaseNamed';
+import { Com } from '../com/Com';
+import { catTrackers } from './Cat.complect';
+import { ComWrap, ICat, IExportableCat } from './Cat.model';
 
 export class Cat extends BaseNamed<IExportableCat> implements ICat {
   searchTimeout: any;
@@ -22,15 +22,23 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
     this.coms = this.putComs();
   }
 
-  get stack() { return this.getBasicOr('s', []); }
-  set stack(val: number[]) { this.setExportable('s', val); }
+  get stack() {
+    return this.getBasicOr('s', []);
+  }
+  set stack(val: number[]) {
+    this.setExportable('s', val);
+  }
 
-  get kind(): string { return this.getBasic('k'); }
-  set kind(val: string) { this.setExportable('k', val); }
+  get kind(): string {
+    return this.getBasic('k');
+  }
+  set kind(val: string) {
+    this.setExportable('k', val);
+  }
 
   putComs() {
     const { select } = catTrackers.find(({ id }) => id === this.kind) || {};
-    this.coms = select ? this.topComs.filter(com => select(com, this)) : [];
+    this.coms = select ? this.topComs.filter((com) => select(com, this)) : [];
 
     this.search();
 
@@ -39,13 +47,17 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
 
   search(term = this.term, isNumberSearch?: boolean) {
     if (term) {
-      this.wraps = mylib.searchRate<ComWrap>(this.coms, term, ['name', 'number', ['orders', mylib.c.INDEX, 'text']], 'com', isNumberSearch);
+      this.wraps = mylib.searchRate<ComWrap>(
+        this.coms,
+        term,
+        ['name', 'number', ['orders', mylib.c.INDEX, 'text']],
+        'com',
+        isNumberSearch,
+      );
+    } else this.wraps = this.coms.map((com) => ({ com }));
 
-    } else this.wraps = this.coms.map(com => ({ com }));
-
-    this.searchedComs = this.wraps.map(wrap => wrap.com);
+    this.searchedComs = this.wraps.map((wrap) => wrap.com);
 
     this.term = term;
   }
-
 }

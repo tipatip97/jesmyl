@@ -1,15 +1,12 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import SourceBased from "../../../../../../complect/SourceBased";
-import { RootState } from "../../../../../../shared/store";
-import { TeamGameImportable } from "../../../Leader.model";
-import di from "../../../Leader.store";
-import leaderStorage from "../../../leaderStorage";
-import { LeaderCleans } from "../../LeaderCleans";
-import {
-  GameTimerImportable,
-  StoragedGameTimerDict
-} from "./GameTimer.model";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import SourceBased from '../../../../../../complect/SourceBased';
+import { RootState } from '../../../../../../shared/store';
+import { TeamGameImportable } from '../../../Leader.model';
+import di from '../../../Leader.store';
+import leaderStorage from '../../../leaderStorage';
+import { LeaderCleans } from '../../LeaderCleans';
+import { GameTimerImportable, StoragedGameTimerDict } from './GameTimer.model';
 
 let runTimeTimers: StoragedGameTimerDict = { news: {} };
 
@@ -29,10 +26,10 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
   const timersStorage = useSelector(gameTimersSelector);
 
   const gameWid = game?.w || 0;
-  const newTimer = topTimerw === undefined
-    ? null
-    : timersStorage?.news?.[gameWid]?.[topTimerw]
-    || (topTimerw === 0 ? getBlankTimer() : null);
+  const newTimer =
+    topTimerw === undefined
+      ? null
+      : timersStorage?.news?.[gameWid]?.[topTimerw] || (topTimerw === 0 ? getBlankTimer() : null);
 
   const gameTimer = topTimerw === undefined ? null : game?.timers?.find((timer) => timer.w === topTimerw);
   const timer = newTimer || gameTimer;
@@ -53,10 +50,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
     timer,
     isNewTimer,
     isTimerStarted: () => !!(timer?.start || timer?.starts?.filter((ts) => ts).length),
-    mapTimer: (
-      map: (timer: GameTimerImportable) => GameTimerImportable,
-      isRejectSave?: boolean
-    ) => {
+    mapTimer: (map: (timer: GameTimerImportable) => GameTimerImportable, isRejectSave?: boolean) => {
       if (newTimer) {
         const mappedTimer = map(newTimer);
         if (!isRejectSave) ret.updateTimer(mappedTimer);
@@ -67,10 +61,9 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
 
       const runTimer = runTimeTimers.news[gameWid]?.[timerTs];
 
-      if (runTimer && game.timers?.some((timer) => timer.ts === runTimer.ts))
-        delete runTimeTimers.news[gameWid];
+      if (runTimer && game.timers?.some((timer) => timer.ts === runTimer.ts)) delete runTimeTimers.news[gameWid];
 
-      const timerStore = { ...await leaderStorage.get("gameTimers") };
+      const timerStore = { ...(await leaderStorage.get('gameTimers')) };
       const area = { ...timerStore.news };
 
       area[gameWid] = { ...area[gameWid], [timerTs]: timer };
@@ -80,19 +73,22 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
       if (area[gameWid] && Object.keys(area[gameWid]).length === 0) delete area[gameWid];
       if (Object.keys(timerStore.news || {}).length === 0) delete timerStore.news;
 
-      leaderStorage.set("gameTimers", timerStore);
+      leaderStorage.set('gameTimers', timerStore);
       dispatch(di.gameTimers(timerStore));
     },
     saveComment: (comment: string) => {
       ret.mapTimer((timer) => ({
         ...timer,
-        comments: [...timer.comments || [], {
-          comment,
-          fio: '',
-          owner: '',
-          ts: SourceBased.makeNewTs(),
-          w: 0,
-        }],
+        comments: [
+          ...(timer.comments || []),
+          {
+            comment,
+            fio: '',
+            owner: '',
+            ts: SourceBased.makeNewTs(),
+            w: 0,
+          },
+        ],
       }));
     },
     startTotalTimer: () => {
@@ -101,8 +97,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
     updateTeamList: (teams: number[] | und) => {
       if (isNewTimer) {
         ret.mapTimer((timer) => ({ ...timer, teams }));
-      } else if (game && timer && teams)
-        return LeaderCleans.updateTimerTeamList(game.w, timer.w, teams);
+      } else if (game && timer && teams) return LeaderCleans.updateTimerTeamList(game.w, timer.w, teams);
 
       return Promise.resolve();
     },
@@ -113,7 +108,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
         return {
           ...timer,
           starts: starts.map((ts) => ts || 0),
-          teams: timer.teams ?? game?.timerFields?.teams ?? game?.teams?.map(timer => timer.w),
+          teams: timer.teams ?? game?.timerFields?.teams ?? game?.teams?.map((timer) => timer.w),
         };
       });
     },

@@ -1,10 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Exer } from "../../complect/exer/Exer";
-import {
-  IndexState,
-  IndexStateError
-} from "./Index.model";
-import indexStorage from "./indexStorage";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Exer } from '../../complect/exer/Exer';
+import { IndexState, IndexStateError } from './Index.model';
+import indexStorage from './indexStorage';
 
 export const indexExer = new Exer('index', indexStorage);
 export const defaultAppName = 'cm';
@@ -46,8 +43,7 @@ export const slice = createSlice({
     setError: (state, action: PayloadAction<IndexStateError>) => {
       if (action.payload.scope) {
         if (action.payload.message == null) delete state.errors[action.payload.scope];
-        else
-          state.errors[action.payload.scope] = action.payload.message;
+        else state.errors[action.payload.scope] = action.payload.message;
       }
     },
     isUseNativeKeyboard: (state, action: PayloadAction<boolean | und>) => {

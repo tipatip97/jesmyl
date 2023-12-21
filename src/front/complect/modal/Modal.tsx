@@ -1,17 +1,13 @@
-import { ReactNode, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import di from "../../components/index/Index.store";
-import { RootState } from "../../shared/store";
-import mylib from "../my-lib/MyLib";
-import {
-  ModalConfig,
-  ModalConfigButton,
-  ModalConfigInput
-} from "./Modal.model";
-import "./Modal.scss";
-import modalService from "./Modal.service";
-import ModalButton from "./ModalButton";
-import TheModalInput from "./ModalInput";
+import { ReactNode, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import di from '../../components/index/Index.store';
+import { RootState } from '../../shared/store';
+import mylib from '../my-lib/MyLib';
+import { ModalConfig, ModalConfigButton, ModalConfigInput } from './Modal.model';
+import './Modal.scss';
+import modalService from './Modal.service';
+import ModalButton from './ModalButton';
+import TheModalInput from './ModalInput';
 
 const getInputId = () => `modal input prefix ${Date.now()}`;
 let inputPrefix = getInputId();
@@ -21,32 +17,29 @@ export const onActionClick = (
   onClick: (config: ModalConfig, clickConfig?: ModalConfig) => void,
   clickConfig: ModalConfig,
   config: Partial<ModalConfig>,
-  event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  event?: React.MouseEvent<HTMLButtonElement, MouseEvent>,
 ) => {
   event?.stopPropagation();
   if (input.modal != null) {
-    if (typeof input.onClick !== "function")
+    if (typeof input.onClick !== 'function')
       modalService.open(
-        typeof input.modal === "function"
+        typeof input.modal === 'function'
           ? mylib.overlap({ title: config.title }, input.modal(clickConfig))
-          : input.modal
+          : input.modal,
       );
     else input.onClick(clickConfig);
-  } else if (typeof input.confirm === "string") {
-    const title = input.confirm.replace("#", "");
+  } else if (typeof input.confirm === 'string') {
+    const title = input.confirm.replace('#', '');
 
     modalService.open({
       title: (input as ModalConfigInput).value || input.title || title,
-      description: `Ты действительно хочешь ${title[0].toLowerCase()}${title.substr(
-        1
-      )}?`,
+      description: `Ты действительно хочешь ${title[0].toLowerCase()}${title.substr(1)}?`,
       buttons: [
         {
-          title: "да",
-          onClick: (inheritConfig: ModalConfig) =>
-            onClick(inheritConfig, clickConfig),
+          title: 'да',
+          onClick: (inheritConfig: ModalConfig) => onClick(inheritConfig, clickConfig),
         },
-        "нет",
+        'нет',
       ],
     });
   } else onClick(clickConfig);
@@ -70,7 +63,7 @@ export default function Modal() {
   modalService.setConfigSetter((config) => setConfig(config));
 
   const asFunc = (val?: Function | boolean | ReactNode) => {
-    if (typeof val === "function") {
+    if (typeof val === 'function') {
       if (config) config.forceUpdate = forceUpdate;
       return val(config);
     } else return val;
@@ -85,8 +78,7 @@ export default function Modal() {
 
   return config == null ? null : (
     <div className="app-modal-window" onClick={onClose}>
-      <div className="app-modal"
-        onClick={(event) => event.stopPropagation()}>
+      <div className="app-modal" onClick={(event) => event.stopPropagation()}>
         <div className="app-modal-title">
           <span className="app-modal-title-label">{config.title}</span>
           {config.withoutCloseButton ? null : (
@@ -96,15 +88,11 @@ export default function Modal() {
           )}
         </div>
 
-        <div
-          className={`app-modal-body${modalService.error ? " with-error" : ""}`}
-        >
+        <div className={`app-modal-body${modalService.error ? ' with-error' : ''}`}>
           <div className="app-modal-body-inner">
             {config.description && (
               <div className="app-modal-description">
-                <span className="app-modal-description-label">
-                  {asFunc(config.description)}
-                </span>
+                <span className="app-modal-description-label">{asFunc(config.description)}</span>
               </div>
             )}
 
@@ -122,7 +110,7 @@ export default function Modal() {
                           forceUpdate={forceUpdate}
                         />
                       )
-                    ) : null
+                    ) : null,
                   )}
               </div>
             )}
@@ -130,19 +118,13 @@ export default function Modal() {
         </div>
 
         <div className="app-modal-footer">
-          {modalService.error && (
-            <div className="app-modal-footer-error">{modalService.error}</div>
-          )}
+          {modalService.error && <div className="app-modal-footer-error">{modalService.error}</div>}
           {!config.theButtons && !config.buttons?.length ? null : (
             <div className="app-modal-footer-button-list">
               <div className="app-modal-footer-button-list-inner">
                 {config.theButtons ||
                   config.buttons?.map((button, buttoni) => (
-                    <ModalButton
-                      key={`modal-button-${buttoni}`}
-                      config={[button, buttoni]}
-                      forceUpdate={forceUpdate}
-                    />
+                    <ModalButton key={`modal-button-${buttoni}`} config={[button, buttoni]} forceUpdate={forceUpdate} />
                   ))}
               </div>
             </div>

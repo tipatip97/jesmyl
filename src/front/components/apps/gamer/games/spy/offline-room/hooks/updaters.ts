@@ -1,11 +1,11 @@
-import { useCallback } from "react";
-import mylib from "../../../../../../../complect/my-lib/MyLib";
-import { useCurrentOfflineRoomUpdater } from "../../../../complect/rooms/offline-room/hooks/actions";
-import { useGamerOfflineRoomsPlayers } from "../../../../complect/rooms/offline-room/hooks/players";
-import { SpyRoomState } from "../../Spy.model";
-import { secretSpyRole, unsecretSpyRole, useSpyActualLocationsNaked } from "../../hooks/locations";
-import { useJoinedOfflineGame } from "./join-game";
-import { useSpyOfflineCurrentRoomState } from "./state";
+import { useCallback } from 'react';
+import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { useCurrentOfflineRoomUpdater } from '../../../../complect/rooms/offline-room/hooks/actions';
+import { useGamerOfflineRoomsPlayers } from '../../../../complect/rooms/offline-room/hooks/players';
+import { SpyRoomState } from '../../Spy.model';
+import { secretSpyRole, unsecretSpyRole, useSpyActualLocationsNaked } from '../../hooks/locations';
+import { useJoinedOfflineGame } from './join-game';
+import { useSpyOfflineCurrentRoomState } from './state';
 
 export default function useSpyOfflineRoomStateUpdaters() {
   const players = useGamerOfflineRoomsPlayers();
@@ -14,18 +14,21 @@ export default function useSpyOfflineRoomStateUpdaters() {
   const state = useSpyOfflineCurrentRoomState();
   const actualLocations = useSpyActualLocationsNaked();
 
-  const updateCurrentState = useCallback((updater: (state: SpyRoomState) => SpyRoomState | void | nil) => {
-    if (!state) return;
-    const newState = updater(state);
+  const updateCurrentState = useCallback(
+    (updater: (state: SpyRoomState) => SpyRoomState | void | nil) => {
+      if (!state) return;
+      const newState = updater(state);
 
-    updateCurrentOfflineRoom((room) => ({
-      ...room,
-      games: {
-        ...room.games,
-        spy: { ...state, ...newState }
-      }
-    }));
-  }, [state, updateCurrentOfflineRoom]);
+      updateCurrentOfflineRoom((room) => ({
+        ...room,
+        games: {
+          ...room.games,
+          spy: { ...state, ...newState },
+        },
+      }));
+    },
+    [state, updateCurrentOfflineRoom],
+  );
 
   const ret = {
     joinGame,
@@ -34,7 +37,7 @@ export default function useSpyOfflineRoomStateUpdaters() {
         return {
           ...state,
           retired: null,
-          roles: null
+          roles: null,
         };
       });
     },
@@ -49,9 +52,7 @@ export default function useSpyOfflineRoomStateUpdaters() {
       }
 
       players?.forEach((player) => {
-        roles[player.login] = secretSpyRole(spies.indexOf(player.login) < 0
-          ? location
-          : "ШПИОН".split(""));
+        roles[player.login] = secretSpyRole(spies.indexOf(player.login) < 0 ? location : 'ШПИОН'.split(''));
       });
 
       updateCurrentOfflineRoom((room) => ({
@@ -62,9 +63,9 @@ export default function useSpyOfflineRoomStateUpdaters() {
             ...state,
             iterations: (state?.iterations || 0) + 1,
             roles,
-            locations: [...state?.locations || [], secretSpyRole(location)],
-          }
-        }
+            locations: [...(state?.locations || []), secretSpyRole(location)],
+          },
+        },
       }));
     },
     switchLocation: (location: string) => {
@@ -72,17 +73,21 @@ export default function useSpyOfflineRoomStateUpdaters() {
         updateCurrentState(() => {
           return {
             ...state,
-            locations: state.locations && state.locations?.some((loc) => unsecretSpyRole(loc) === location)
-              ? state.locations?.filter((loc) => unsecretSpyRole(loc) !== location)
-              : (state.locations || []).concat(secretSpyRole(location.split('')))
+            locations:
+              state.locations && state.locations?.some((loc) => unsecretSpyRole(loc) === location)
+                ? state.locations?.filter((loc) => unsecretSpyRole(loc) !== location)
+                : (state.locations || []).concat(secretSpyRole(location.split(''))),
           };
         });
     },
-    excludeMember: useCallback((memberLogin: string) => {
-      updateCurrentState((state) => {
-        return { ...state, retired: [...state.retired || [], memberLogin] }
-      });
-    }, [updateCurrentState]),
+    excludeMember: useCallback(
+      (memberLogin: string) => {
+        updateCurrentState((state) => {
+          return { ...state, retired: [...(state.retired || []), memberLogin] };
+        });
+      },
+      [updateCurrentState],
+    ),
   };
   return ret;
 }

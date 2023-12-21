@@ -1,9 +1,9 @@
-import { useState } from "react";
-import useAbsoluteFloatPopup from "../../../../../complect/absolute-popup/useAbsoluteFloatPopup";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { LeaderCommentImportable } from "./LeaderComment.model";
-import useLeaderComments from "./useLeaderComments";
+import { useState } from 'react';
+import useAbsoluteFloatPopup from '../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import mylib from '../../../../../complect/my-lib/MyLib';
+import { LeaderCommentImportable } from './LeaderComment.model';
+import useLeaderComments from './useLeaderComments';
 
 const templaterBag = {
   commentTime: (wid: number) => {
@@ -12,20 +12,7 @@ const templaterBag = {
   },
 };
 
-const months = [
-  "янв",
-  "фев",
-  "март",
-  "апр",
-  "май",
-  "июн",
-  "июл",
-  "авг",
-  "сент",
-  "окт",
-  "нояб",
-  "дек",
-];
+const months = ['янв', 'фев', 'март', 'апр', 'май', 'июн', 'июл', 'авг', 'сент', 'окт', 'нояб', 'дек'];
 
 export default function LeaderComment({
   comment,
@@ -34,35 +21,30 @@ export default function LeaderComment({
   isWaitedToSend,
   className,
 }: {
-  comment: LeaderCommentImportable,
-  isError: boolean,
-  onRejectSend?: () => void,
-  isWaitedToSend?: boolean,
-  className?: string,
+  comment: LeaderCommentImportable;
+  isError: boolean;
+  onRejectSend?: () => void;
+  isWaitedToSend?: boolean;
+  className?: string;
 }) {
   const date = comment.w && new Date(comment.w);
   const commentLines = comment.comment.split(/\n/);
   const isNeedCut = commentLines.length > 5 || comment.comment.length > 150;
   const [isHiddenPart, setIsHiddenPart] = useState(isNeedCut);
-  const commentText = isHiddenPart
-    ? commentLines.slice(0, 4).join("\n").slice(0, 150) + " ..."
-    : comment.comment;
+  const commentText = isHiddenPart ? commentLines.slice(0, 4).join('\n').slice(0, 150) + ' ...' : comment.comment;
   const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const { sendAllComments } = useLeaderComments();
 
   return (
     <div
-      className={`${className || ""} margin-gap comment`}
+      className={`${className || ''} margin-gap comment`}
       onContextMenu={
         isError || isWaitedToSend
           ? (event) => {
               event.preventDefault();
               openAbsoluteFloatPopup(
                 <>
-                  <div
-                    className="pointer error-text"
-                    onClick={() => onRejectSend?.()}
-                  >
+                  <div className="pointer error-text" onClick={() => onRejectSend?.()}>
                     Отменить отправку
                   </div>
                   <div className="pointer" onClick={() => sendAllComments()}>
@@ -70,7 +52,7 @@ export default function LeaderComment({
                   </div>
                 </>,
                 event.clientX,
-                event.clientY
+                event.clientY,
               );
             }
           : undefined
@@ -83,23 +65,16 @@ export default function LeaderComment({
             {isWaitedToSend ? (
               <EvaIcon name="pause-circle-outline" />
             ) : isError ? (
-              <EvaIcon
-                className="absolute pos-right error-message"
-                name="alert-circle-outline"
-              />
+              <EvaIcon className="absolute pos-right error-message" name="alert-circle-outline" />
             ) : (
-              <EvaIcon
-                className="rotate absolute pos-right"
-                name="loader-outline"
-              />
+              <EvaIcon className="rotate absolute pos-right" name="loader-outline" />
             )}
           </>
         ) : (
           <>
             <div>{comment.fio}</div>
             <div>
-              {date.getDate()} {months[date.getMonth()]}, {date.getHours()}:
-              {date.getMinutes()}:{date.getSeconds()}
+              {date.getDate()} {months[date.getMonth()]}, {date.getHours()}:{date.getMinutes()}:{date.getSeconds()}
             </div>
           </>
         )}
@@ -112,11 +87,8 @@ export default function LeaderComment({
       </div>
       {isNeedCut && (
         <div className="flex flex-end">
-          <span
-            className="pointer"
-            onClick={() => setIsHiddenPart(!isHiddenPart)}
-          >
-            {isHiddenPart ? "Показать полностью" : "Скрыть часть текста"}
+          <span className="pointer" onClick={() => setIsHiddenPart(!isHiddenPart)}>
+            {isHiddenPart ? 'Показать полностью' : 'Скрыть часть текста'}
           </span>
         </div>
       )}

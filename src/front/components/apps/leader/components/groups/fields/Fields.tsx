@@ -1,23 +1,17 @@
-import { useState } from "react";
-import SendButton from "../../../../../../complect/sends/send-button/SendButton";
-import KeyboardInput from "../../../../../../complect/keyboard/KeyboardInput";
-import useIsRedactArea from "../../../../../../complect/useIsRedactArea";
-import { leaderExer } from "../../../Leader.store";
-import { LeaderCleans } from "../../LeaderCleans";
-import { useLeaderCcontext } from "../../contexts/useContexts";
-import useLeaderGroups from "../useGroups";
+import { useState } from 'react';
+import SendButton from '../../../../../../complect/sends/send-button/SendButton';
+import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
+import useIsRedactArea from '../../../../../../complect/useIsRedactArea';
+import { leaderExer } from '../../../Leader.store';
+import { LeaderCleans } from '../../LeaderCleans';
+import { useLeaderCcontext } from '../../contexts/useContexts';
+import useLeaderGroups from '../useGroups';
 
 export default function LeaderGroupFields() {
   const ccontext = useLeaderCcontext();
   const { cgroup } = useLeaderGroups();
-  const [redactFields, updateRedactFields] = useState<
-    Record<string, string | und>
-  >({});
-  const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(
-    true,
-    null,
-    true,
-  );
+  const [redactFields, updateRedactFields] = useState<Record<string, string | und>>({});
+  const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(true, null, true);
   const fields = LeaderCleans.getContextFieldValues(ccontext, cgroup?.fields) || {};
 
   return (
@@ -31,7 +25,7 @@ export default function LeaderGroupFields() {
           return (
             <div key={blanki} className="flex flex-gap">
               <div className="nowrap">{name}:</div>
-              <div className="color--3 pre-line">{fields[key] || "-"}</div>
+              <div className="color--3 pre-line">{fields[key] || '-'}</div>
             </div>
           );
 
@@ -52,29 +46,27 @@ export default function LeaderGroupFields() {
         );
       })}
       <div className="flex center margin-big-gap">
-        {Object.entries(redactFields).some(
-          ([key, val]) => fields[key] !== val
-        ) && (
-            <SendButton
-              title="Отправить значения"
-              onSuccess={() => {
-                updateRedactFields({});
-                setIsSelfRedact(false);
-              }}
-              onSend={() => {
-                if (cgroup && ccontext)
-                  return leaderExer.send({
-                    action: "setContextGroupFields",
-                    method: "set_all",
-                    args: {
-                      value: redactFields,
-                      groupw: cgroup.w,
-                      contextw: ccontext.w,
-                    },
-                  });
-              }}
-            />
-          )}
+        {Object.entries(redactFields).some(([key, val]) => fields[key] !== val) && (
+          <SendButton
+            title="Отправить значения"
+            onSuccess={() => {
+              updateRedactFields({});
+              setIsSelfRedact(false);
+            }}
+            onSend={() => {
+              if (cgroup && ccontext)
+                return leaderExer.send({
+                  action: 'setContextGroupFields',
+                  method: 'set_all',
+                  args: {
+                    value: redactFields,
+                    groupw: cgroup.w,
+                    contextw: ccontext.w,
+                  },
+                });
+            }}
+          />
+        )}
       </div>
     </>
   );

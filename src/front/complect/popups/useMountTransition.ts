@@ -1,21 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-export default function useMountTransition(isMounted: boolean, className: string, unmountDelay: number): [boolean, string] {
-    const [hasTransitionedIn, setHasTransitionedIn] = useState(false);
+export default function useMountTransition(
+  isMounted: boolean,
+  className: string,
+  unmountDelay: number,
+): [boolean, string] {
+  const [hasTransitionedIn, setHasTransitionedIn] = useState(false);
 
-    useEffect(() => {
-        let timeoutId: any;
+  useEffect(() => {
+    let timeoutId: any;
 
-        if (isMounted && !hasTransitionedIn) {
-            setHasTransitionedIn(true);
-        } else if (!isMounted && hasTransitionedIn) {
-            timeoutId = setTimeout(() => setHasTransitionedIn(false), unmountDelay);
-        }
+    if (isMounted && !hasTransitionedIn) {
+      setHasTransitionedIn(true);
+    } else if (!isMounted && hasTransitionedIn) {
+      timeoutId = setTimeout(() => setHasTransitionedIn(false), unmountDelay);
+    }
 
-        return () => {
-            clearTimeout(timeoutId);
-        }
-    }, [unmountDelay, isMounted, hasTransitionedIn]);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [unmountDelay, isMounted, hasTransitionedIn]);
 
-    return [hasTransitionedIn || isMounted, `${className} ${hasTransitionedIn && isMounted ? 'mounted' : ''}`];
+  return [hasTransitionedIn || isMounted, `${className} ${hasTransitionedIn && isMounted ? 'mounted' : ''}`];
 }

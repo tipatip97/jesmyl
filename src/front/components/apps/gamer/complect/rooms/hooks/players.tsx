@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { GamerRoom, GamerRoomMember, GamerRoomMemberStatus } from "../../../Gamer.model";
-import { useGamerCurrentRoom } from "../room/hooks/current-room";
+import { useMemo } from 'react';
+import { GamerRoom, GamerRoomMember, GamerRoomMemberStatus } from '../../../Gamer.model';
+import { useGamerCurrentRoom } from '../room/hooks/current-room';
 
 const filter = (member: GamerRoomMember) => {
   return !member.isInactive && member.status !== GamerRoomMemberStatus.Requester;

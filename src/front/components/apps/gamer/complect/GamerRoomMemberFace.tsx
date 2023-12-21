@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import { GamerRoomMember, GamerRoomMemberStatus } from "../Gamer.model";
+import { ReactNode } from 'react';
+import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import { GamerRoomMember, GamerRoomMemberStatus } from '../Gamer.model';
 
 export default function RoomMemberFace({
   member,
@@ -14,13 +14,16 @@ export default function RoomMemberFace({
   description?: ReactNode;
   descriptionPlus?: ReactNode;
   onClick?: () => void;
-  isClickable?: boolean,
-  className?: string,
+  isClickable?: boolean;
+  className?: string;
 }) {
   return (
-    <div className={`face-item ${isClickable ? '' : 'not-pointer'} ${className || ''} flex between full-width`} onClick={isClickable ? onClick : undefined}>
+    <div
+      className={`face-item ${isClickable ? '' : 'not-pointer'} ${className || ''} flex between full-width`}
+      onClick={isClickable ? onClick : undefined}
+    >
       <div className="face-logo">
-        <EvaIcon name={member.isInactive ? "slash" : "person-outline"} />
+        <EvaIcon name={member.isInactive ? 'slash' : 'person-outline'} />
       </div>
       <div className="face-title flex between full-width margin-big-gap">
         <span className="ellipsis">{member.name}</span>
@@ -28,13 +31,13 @@ export default function RoomMemberFace({
           {description ?? (
             <>
               {member.status === GamerRoomMemberStatus.Admin
-                ? "Админ"
+                ? 'Админ'
                 : member.status === GamerRoomMemberStatus.Owner
-                  ? "Владелец"
+                  ? 'Владелец'
                   : member.status === GamerRoomMemberStatus.Requester
-                    ? "Ожидает"
-                    : ""}
-              {descriptionPlus ? <div className="fade-05">{descriptionPlus}</div> : ""}
+                    ? 'Ожидает'
+                    : ''}
+              {descriptionPlus ? <div className="fade-05">{descriptionPlus}</div> : ''}
             </>
           )}
         </span>

@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
-import useExer from "../../../../../complect/exer/useExer";
-import { cmExer } from "../../Cm.store";
-import MeetingsInner from "../../lists/meetings/MeetingsInner";
-import PhaseCmEditorContainer from "../phase-editor-container/PhaseCmEditorContainer";
-import EditMeetingsMore from "./EditMeetingsMore";
-import "./Meetings.scss";
-import { useEditableMeetings } from "./useEditableMeetings";
+import { useState } from 'react';
+import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import useExer from '../../../../../complect/exer/useExer';
+import { cmExer } from '../../Cm.store';
+import MeetingsInner from '../../lists/meetings/MeetingsInner';
+import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
+import EditMeetingsMore from './EditMeetingsMore';
+import './Meetings.scss';
+import { useEditableMeetings } from './useEditableMeetings';
 
 export default function EditMeetings() {
   const { meetings, goToEvent } = useEditableMeetings();

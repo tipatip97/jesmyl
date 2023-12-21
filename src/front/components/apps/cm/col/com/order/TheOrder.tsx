@@ -1,13 +1,12 @@
-import React from "react";
-import ComLine from "../line/ComLine";
-import { ITheOrderProps } from "./Order.model";
+import React from 'react';
+import ComLine from '../line/ComLine';
+import { ITheOrderProps } from './Order.model';
 
 export default function TheOrder(props: ITheOrderProps) {
   const { orderUnit, orderUniti, com } = props;
 
   if (
-    (props.isMiniAnchor &&
-      (orderUnit.top.isAnchorInherit || orderUnit.top.isAnchorInheritPlus)) ||
+    (props.isMiniAnchor && (orderUnit.top.isAnchorInherit || orderUnit.top.isAnchorInheritPlus)) ||
     (!props.showInvisibles && !orderUnit.isVisible)
   )
     return null;
@@ -28,57 +27,48 @@ export default function TheOrder(props: ITheOrderProps) {
 
   const isTexted =
     orderUnit.texti == null
-      ? !(!props.chordVisibleVariant ||
-        (!orderUnit.isMin && props.chordVisibleVariant === 1))
+      ? !(!props.chordVisibleVariant || (!orderUnit.isMin && props.chordVisibleVariant === 1))
       : true;
 
   const blockHeader = orderUnit.top.isInherit
     ? null
     : orderUnit.top.header?.({
-      isTexted,
-      repeats: orderUnit.texti == null ? orderUnit.repeatsTitle : "",
-    });
+        isTexted,
+        repeats: orderUnit.texti == null ? orderUnit.repeatsTitle : '',
+      });
 
   const chordedOrd = !!(
     (!orderUnit.chordsi || orderUnit.chordsi > -1) &&
-    (props.chordVisibleVariant === 2 ||
-      (props.chordVisibleVariant === 1 && orderUnit.isMin))
+    (props.chordVisibleVariant === 2 || (props.chordVisibleVariant === 1 && orderUnit.isMin))
   );
 
-  const headerNode = blockHeader && (
-    <div className={`styled-header ${className}`}>{blockHeader}</div>
-  );
+  const headerNode = blockHeader && <div className={`styled-header ${className}`}>{blockHeader}</div>;
 
   const header =
-    typeof props.asHeaderComponent === "function"
+    typeof props.asHeaderComponent === 'function'
       ? props.asHeaderComponent({
-        chordedOrd,
-        orderUnit,
-        orderUniti,
-        com: props.com,
-        isJoinLetters: true,
-        headerNode,
-      })
+          chordedOrd,
+          orderUnit,
+          orderUniti,
+          com: props.com,
+          isJoinLetters: true,
+          headerNode,
+        })
       : headerNode;
 
   if (orderUnit.texti == null) {
-
     if (!orderUnit.chords) return null;
 
     return (
       <div
         id={`com-block-${orderUniti}`}
-        className={'composition-block styled-block flex flex-baseline'
-          + (orderUnit.isVisible ? "" : " invisible")}
+        className={'composition-block styled-block flex flex-baseline' + (orderUnit.isVisible ? '' : ' invisible')}
         ref={(el) => el && (orderUnit.element = el)}
       >
         {header}
         {isTexted && (
-          <div
-            key={orderUniti}
-            className={`styled-block chords-block vertical-middle ${className}`}
-          >
-            {com.chordLabels[orderUniti].map(line => line.join(' ')).join('\n')}
+          <div key={orderUniti} className={`styled-block chords-block vertical-middle ${className}`}>
+            {com.chordLabels[orderUniti].map((line) => line.join(' ')).join('\n')}
           </div>
         )}
       </div>
@@ -88,47 +78,49 @@ export default function TheOrder(props: ITheOrderProps) {
   return (
     <div
       id={`com-block-${orderUniti}`}
-      className={`composition-block styled-block ${className}`
-        + (orderUnit.isVisible ? "" : " invisible")
-        + (chordedOrd ? " chorded-block" : " without-chords")}
+      className={
+        `composition-block styled-block ${className}` +
+        (orderUnit.isVisible ? '' : ' invisible') +
+        (chordedOrd ? ' chorded-block' : ' without-chords')
+      }
       ref={(el) => el && (orderUnit.element = el)}
     >
       {header}
-      {(orderUnit.repeated || "")
-        .split(/\n/)
-        .map((textLine, textLinei, textLinea) => {
-          const words = textLine?.split(/ +/);
+      {(orderUnit.repeated || '').split(/\n/).map((textLine, textLinei, textLinea) => {
+        const words = textLine?.split(/ +/);
 
-          return (
-            <React.Fragment key={textLinei}>
-              {typeof props.asLineComponent === "function"
-                ? props.asLineComponent({
-                  chordedOrd,
-                  textLine,
-                  textLinei,
-                  textLines: textLinea.length,
-                  orderUnit,
-                  orderUniti,
-                  wordCount: words.length,
-                  words,
-                  com: props.com,
-                  isJoinLetters: true,
-                })
-                : <ComLine
-                  chordedOrd={chordedOrd}
-                  textLine={textLine}
-                  textLinei={textLinei}
-                  textLines={textLinea.length}
-                  orderUnit={orderUnit}
-                  orderUniti={orderUniti}
-                  wordCount={words.length}
-                  words={words}
-                  com={props.com}
-                  isJoinLetters />
-              }
-            </React.Fragment>
-          );
-        })}
+        return (
+          <React.Fragment key={textLinei}>
+            {typeof props.asLineComponent === 'function' ? (
+              props.asLineComponent({
+                chordedOrd,
+                textLine,
+                textLinei,
+                textLines: textLinea.length,
+                orderUnit,
+                orderUniti,
+                wordCount: words.length,
+                words,
+                com: props.com,
+                isJoinLetters: true,
+              })
+            ) : (
+              <ComLine
+                chordedOrd={chordedOrd}
+                textLine={textLine}
+                textLinei={textLinei}
+                textLines={textLinea.length}
+                orderUnit={orderUnit}
+                orderUniti={orderUniti}
+                wordCount={words.length}
+                words={words}
+                com={props.com}
+                isJoinLetters
+              />
+            )}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 }

@@ -1,50 +1,50 @@
 .chord-application-redactor {
-    .composition-line {
-        display: inline;
+  .composition-line {
+    display: inline;
+  }
+
+  .binder {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: var(--color--2);
+    vertical-align: middle;
+    cursor: pointer;
+
+    &.active {
+      background-color: var(--color--3);
     }
 
-    .binder {
+    &.pre {
+      margin-right: 0.3em;
+    }
+
+    &.post {
+      margin-left: 0.3em;
+    }
+  }
+
+  .com-letter {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color--2);
+    }
+
+    &.chorded:not(.pre) {
+      > .fragment > * {
         display: inline-block;
-        width: 1em;
-        height: 1em;
-        background-color: var(--color--2);
-        vertical-align: middle;
-        cursor: pointer;
 
-        &.active {
-            background-color: var(--color--3);
+        &:first-letter {
+          background-color: var(--color--ko);
         }
+      }
 
-        &.pre {
-            margin-right: 0.3em;
-        }
-
-        &.post {
-            margin-left: 0.3em;
-        }
+      &:first-letter,
+      &.spaced-word:after,
+      &[attr-chord] > .fragment > *:first-letter {
+        background-color: rgba(255, 209, 0, 0.3);
+      }
     }
-
-    .com-letter {
-        cursor: pointer;
-
-        &:hover {
-            background-color: var(--color--2);
-        }
-
-        &.chorded:not(.pre) {
-            >.fragment>* {
-                display: inline-block;
-
-                &:first-letter {
-                    background-color: var(--color--ko);
-                }
-            }
-
-            &:first-letter,
-            &.spaced-word:after,
-            &[attr-chord]>.fragment>*:first-letter {
-                background-color: rgba(255, 209, 0, .3);
-            }
-        }
-    }
+  }
 }

@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Exer } from "../../../complect/exer/Exer";
-import { LeaderState } from "./Leader.model";
-import leaderStorage from "./leaderStorage";
+import { createSlice } from '@reduxjs/toolkit';
+import { Exer } from '../../../complect/exer/Exer';
+import { LeaderState } from './Leader.model';
+import leaderStorage from './leaderStorage';
 
 export const leaderExer = new Exer('leader', leaderStorage);
 
@@ -13,18 +13,18 @@ const initialState: LeaderState = {
 };
 
 export const slice = createSlice({
-  name: "leader",
+  name: 'leader',
   initialState,
   reducers: {
     ...leaderStorage.initializators([
-      "contexts",
-      "gameTimers",
-      "games",
-      "humanListSortVariant",
-      "people",
-      "rules",
-      "sendingComments",
-      "isSendingMessagesError",
+      'contexts',
+      'gameTimers',
+      'games',
+      'humanListSortVariant',
+      'people',
+      'rules',
+      'sendingComments',
+      'isSendingMessagesError',
     ]),
   },
 });

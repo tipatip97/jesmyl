@@ -1,8 +1,14 @@
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import { TeamGameImportable } from "../../Leader.model";
-import useGames from "./useGames";
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { TeamGameImportable } from '../../Leader.model';
+import useGames from './useGames';
 
-export default function TeamGameFace({ game, importantOnClick }: { game: TeamGameImportable, importantOnClick?: () => void }) {
+export default function TeamGameFace({
+  game,
+  importantOnClick,
+}: {
+  game: TeamGameImportable;
+  importantOnClick?: () => void;
+}) {
   const { goToGame } = useGames();
 
   return (

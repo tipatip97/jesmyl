@@ -1,29 +1,31 @@
-import { ReactNode } from "react";
-import { useBottomPopup } from "../../../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
-import EvaIcon from "../../../../../../../../complect/eva-icon/EvaIcon";
-import useExer from "../../../../../../../../complect/exer/useExer";
-import { ChordVisibleVariant } from "../../../../../Cm.model";
-import { cmExer } from "../../../../../Cm.store";
-import TheOrder from "../../../../../col/com/order/TheOrder";
-import { EditableCom } from "../../EditableCom";
-import { useEditableCcom } from "../../useEditableCcom";
-import { EditableOrder } from "./EditableOrder";
-import OrdersRedactorAdditions from "./OrdersRedactorAdditions";
-import OrdersRedactorOrderTools from "./OrdersRedactorOrderTools";
+import { ReactNode } from 'react';
+import { useBottomPopup } from '../../../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
+import useExer from '../../../../../../../../complect/exer/useExer';
+import { ChordVisibleVariant } from '../../../../../Cm.model';
+import { cmExer } from '../../../../../Cm.store';
+import TheOrder from '../../../../../col/com/order/TheOrder';
+import { EditableCom } from '../../EditableCom';
+import { useEditableCcom } from '../../useEditableCcom';
+import { EditableOrder } from './EditableOrder';
+import OrdersRedactorAdditions from './OrdersRedactorAdditions';
+import OrdersRedactorOrderTools from './OrdersRedactorOrderTools';
 
 interface PopupProps {
-  ccom: EditableCom,
-  ord: EditableOrder,
-  ordi: number,
-  blockHeader: ReactNode,
+  ccom: EditableCom;
+  ord: EditableOrder;
+  ordi: number;
+  blockHeader: ReactNode;
 }
 
 export default function OrdersRedactor() {
   const ccom = useEditableCcom();
-  const [popupToolsNode, , openToolsPopup] = useBottomPopup<PopupProps>((_close, _prepare, props) =>
-    <OrdersRedactorOrderTools {...props} />);
-  const [popupAddsNode, , openAddsPopup] = useBottomPopup<{ ccom: EditableCom }>((_close, _prepare, props) =>
-    <OrdersRedactorAdditions ccom={props.ccom}  />);
+  const [popupToolsNode, , openToolsPopup] = useBottomPopup<PopupProps>((_close, _prepare, props) => (
+    <OrdersRedactorOrderTools {...props} />
+  ));
+  const [popupAddsNode, , openAddsPopup] = useBottomPopup<{ ccom: EditableCom }>((_close, _prepare, props) => (
+    <OrdersRedactorAdditions ccom={props.ccom} />
+  ));
   const { exec } = useExer(cmExer);
 
   if (!ccom) return null;
@@ -39,11 +41,9 @@ export default function OrdersRedactor() {
             isTexted: ord.top.isInherit,
             repeats: ord.repeatsTitle,
           },
-          true
+          true,
         );
-        const blockHeader = ord.top.isInherit
-          ? `${leadHeader} ${ord.type}`
-          : leadHeader;
+        const blockHeader = ord.top.isInherit ? `${leadHeader} ${ord.type}` : leadHeader;
 
         const editNode = !ord.top.isAnchorInherit && (
           <EvaIcon
@@ -55,19 +55,16 @@ export default function OrdersRedactor() {
         const isWithHead = ord.isWithHead();
 
         return (
-          <div
-            key={`order-${ordi}`}
-            className={ord.top.isAnchorInherit ? "inherit-block" : ""}
-          >
+          <div key={`order-${ordi}`} className={ord.top.isAnchorInherit ? 'inherit-block' : ''}>
             <div className="margin-big-gap-h">
               {isWithHead ? null : ord.top.isAnchorInherit ? (
                 <EvaIcon
-                  name={ord.isVisible ? "eye-outline" : "eye-off-outline"}
+                  name={ord.isVisible ? 'eye-outline' : 'eye-off-outline'}
                   onClick={() => {
                     exec(
-                      ord.setField("v", ord.antiIsVisible, {
+                      ord.setField('v', ord.antiIsVisible, {
                         b: blockHeader,
-                      })
+                      }),
                     );
                   }}
                 />
@@ -93,8 +90,8 @@ export default function OrdersRedactor() {
             {ccom.isImpossibleToMigrateOrder(ord, ordi, orda) || (
               <EvaIcon
                 name="swap-outline"
-                className={`pointer ${ccom.isCantMigrateOrder(ord, ordi) ? "disabled" : ""}`}
-                style={{ transform: "rotate(90deg)" }}
+                className={`pointer ${ccom.isCantMigrateOrder(ord, ordi) ? 'disabled' : ''}`}
+                style={{ transform: 'rotate(90deg)' }}
                 onClick={() => exec(ccom.migrateOrder(ord))}
               />
             )}
@@ -102,11 +99,7 @@ export default function OrdersRedactor() {
         );
       })}
       <div className="flex">
-        <EvaIcon
-          name="plus-circle-outline"
-          className="pointer margin-gap-h"
-          onClick={() => openAddsPopup({ ccom })}
-        />
+        <EvaIcon name="plus-circle-outline" className="pointer margin-gap-h" onClick={() => openAddsPopup({ ccom })} />
       </div>
     </div>
   );

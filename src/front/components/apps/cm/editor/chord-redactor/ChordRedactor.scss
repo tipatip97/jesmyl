@@ -1,136 +1,136 @@
 .chord-redactor-content {
-    --simple-border: solid 1px var(--color--3);
+  --simple-border: solid 1px var(--color--3);
 
-    display: grid;
-    width: 100%;
-    height: 100%;
+  display: grid;
+  width: 100%;
+  height: 100%;
 
-    @media screen and (max-width: 410px) {
-        grid-template-areas: 'old' 'list' 'new';
-        grid-template-rows: 5fr 3em 5fr;
-
-        .chord-list {
-            border-bottom: var(--simple-border);
-            overflow: hidden;
-            padding-right: 26px;
-
-            .chords-scroll {
-                display: flex;
-                overflow-x: scroll;
-
-                >* {
-                    display: flex;
-                }
-            }
-
-            .add-chord-button {
-                height: 100%;
-            }
-
-            .chord-base-title {
-                left: 0;
-                width: 1.2em;
-                text-align: center;
-            }
-        }
-    }
-
-    @media screen and (min-width: 411px) {
-        grid-template-areas: 'list old' 'list new';
-        grid-template-columns: 2fr 7fr;
-        grid-template-rows: 1fr 1fr;
-
-        .chord-list {
-            border-right: var(--simple-border);
-            padding-bottom: 26px;
-
-            .chords-scroll {
-                overflow-y: scroll;
-            }
-
-            .add-chord-button {
-                width: 100%;
-            }
-        }
-    }
-
-    &.chord-addition {
-        .chord-list {
-            opacity: .5;
-            pointer-events: none;
-        }
-    }
-
-    .chord-board {
-        .chord-point {
-            &:not(.shadow) {
-                pointer-events: none;
-            }
-
-            &.shadow {
-                stroke: grey;
-                cursor: pointer;
-            }
-
-            &.problem {
-                stroke-width: 18px;
-                stroke: var(--color--ko);
-            }
-        }
-    }
-
-    .chord-base-title {
-        background: var(--color--2);
-    }
-
-    .chord-bare-adder {
-        cursor: pointer;
-        fill: var(--color--1);
-        stroke: var(--color--1);
-
-        &.fill {
-            fill: var(--color--7);
-            stroke: var(--color--7);
-        }
-    }
-
-    .mute-string-indicator {
-        font-size: 15px;
-        cursor: pointer;
-
-        &:not(.button) {
-            pointer-events: none;
-        }
-
-        &.button {
-            stroke: var(--color--4);
-            opacity: .7;
-        }
-    }
+  @media screen and (max-width: 410px) {
+    grid-template-areas: 'old' 'list' 'new';
+    grid-template-rows: 5fr 3em 5fr;
 
     .chord-list {
-        grid-area: list;
-        position: relative;
+      border-bottom: var(--simple-border);
+      overflow: hidden;
+      padding-right: 26px;
 
-        .chords-scroll {
-            width: 100%;
-            height: 100%;
+      .chords-scroll {
+        display: flex;
+        overflow-x: scroll;
+
+        > * {
+          display: flex;
         }
+      }
 
-        .add-chord-button {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            z-index: 1;
-        }
+      .add-chord-button {
+        height: 100%;
+      }
+
+      .chord-base-title {
+        left: 0;
+        width: 1.2em;
+        text-align: center;
+      }
+    }
+  }
+
+  @media screen and (min-width: 411px) {
+    grid-template-areas: 'list old' 'list new';
+    grid-template-columns: 2fr 7fr;
+    grid-template-rows: 1fr 1fr;
+
+    .chord-list {
+      border-right: var(--simple-border);
+      padding-bottom: 26px;
+
+      .chords-scroll {
+        overflow-y: scroll;
+      }
+
+      .add-chord-button {
+        width: 100%;
+      }
+    }
+  }
+
+  &.chord-addition {
+    .chord-list {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  .chord-board {
+    .chord-point {
+      &:not(.shadow) {
+        pointer-events: none;
+      }
+
+      &.shadow {
+        stroke: grey;
+        cursor: pointer;
+      }
+
+      &.problem {
+        stroke-width: 18px;
+        stroke: var(--color--ko);
+      }
+    }
+  }
+
+  .chord-base-title {
+    background: var(--color--2);
+  }
+
+  .chord-bare-adder {
+    cursor: pointer;
+    fill: var(--color--1);
+    stroke: var(--color--1);
+
+    &.fill {
+      fill: var(--color--7);
+      stroke: var(--color--7);
+    }
+  }
+
+  .mute-string-indicator {
+    font-size: 15px;
+    cursor: pointer;
+
+    &:not(.button) {
+      pointer-events: none;
     }
 
-    .old-chord {
-        grid-area: old;
-        border-bottom: var(--simple-border);
+    &.button {
+      stroke: var(--color--4);
+      opacity: 0.7;
+    }
+  }
+
+  .chord-list {
+    grid-area: list;
+    position: relative;
+
+    .chords-scroll {
+      width: 100%;
+      height: 100%;
     }
 
-    .new-chord {
-        grid-area: new;
+    .add-chord-button {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 1;
     }
+  }
+
+  .old-chord {
+    grid-area: old;
+    border-bottom: var(--simple-border);
+  }
+
+  .new-chord {
+    grid-area: new;
+  }
 }

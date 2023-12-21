@@ -1,7 +1,7 @@
-import { HTMLAttributes, ReactNode } from "react";
-import * as pack from "../../resource/eva-icons.json";
-import { MyLib } from "../my-lib/MyLib";
-import styled from "styled-components";
+import { HTMLAttributes, ReactNode } from 'react';
+import * as pack from '../../resource/eva-icons.json';
+import { MyLib } from '../my-lib/MyLib';
+import styled from 'styled-components';
 
 export type EvaIconName = keyof typeof pack;
 
@@ -17,7 +17,7 @@ export default function EvaIcon(
   props: HTMLAttributes<HTMLOrSVGElement> & {
     name: EvaIconName;
     alt?: string;
-  }
+  },
 ) {
   return (
     <>
@@ -29,11 +29,11 @@ export default function EvaIcon(
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          className={'eva-icon '
-            + (props.onClick ? 'pointer ' : '')
-            + (props.className || '')}
+          className={'eva-icon ' + (props.onClick ? 'pointer ' : '') + (props.className || '')}
           fill="var(--icon-color)"
-        >{iconInners[props.name]}</IconEva>
+        >
+          {iconInners[props.name]}
+        </IconEva>
       )}
     </>
   );

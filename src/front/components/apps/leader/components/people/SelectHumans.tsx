@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useIsRedactArea from "../../../../../complect/useIsRedactArea";
-import HumanList from "./HumanList";
-import { SelectHumansComponentProps } from "./People.model";
+import { useEffect, useState } from 'react';
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import useIsRedactArea from '../../../../../complect/useIsRedactArea';
+import HumanList from './HumanList';
+import { SelectHumansComponentProps } from './People.model';
 
 export default function SelectHumans({
   onListsUpdate,
@@ -21,15 +21,9 @@ export default function SelectHumans({
   const [isShowExcluded, setIsShowExcluded] = useState(false);
   const { isRedact, editIcon } = useIsRedactArea(redactable, redact);
 
-  const getHumanList = (
-    isWholeList: boolean,
-    placeholder: string
-  ) => {
+  const getHumanList = (isWholeList: boolean, placeholder: string) => {
     return (
-      <div
-        className={`${isRedact ? "height-30vh-strong" : ""
-          } min-height-30vh over-auto full-width`}
-      >
+      <div className={`${isRedact ? 'height-30vh-strong' : ''} min-height-30vh over-auto full-width`}>
         <HumanList
           className="full-width"
           searcherClass="sticky"
@@ -56,49 +50,35 @@ export default function SelectHumans({
           asHumanMore={
             isRedact
               ? (human) => {
-                if (
-                  excludedTitle &&
-                  excludes?.some((exWid) => exWid === human.w)
-                )
-                  return <div className="error-message">{excludedTitle}</div>;
+                  if (excludedTitle && excludes?.some((exWid) => exWid === human.w))
+                    return <div className="error-message">{excludedTitle}</div>;
 
-                return (
-                  !fixedList || !fixedList.some((wid) => human.w === wid)
-                    ? !addList.some((wid) => human.w === wid)
-                    : delList.some((wid) => human.w === wid)
-                ) ? (
-                  <EvaIcon
-                    name="plus-circle-outline"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (
-                        !fixedList ||
-                        !fixedList.some((wid) => human.w === wid)
-                      )
-                        updateAddList([...addList, human.w]);
-                      updateDelList(
-                        delList.filter((wid) => wid !== human.w)
-                      );
-                    }}
-                  />
-                ) : (
-                  <EvaIcon
-                    name="minus-circle-outline"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (
-                        fixedList &&
-                        fixedList.some((wid) => human.w === wid)
-                      )
-                        updateDelList([...delList, human.w]);
+                  return (
+                    !fixedList || !fixedList.some((wid) => human.w === wid)
+                      ? !addList.some((wid) => human.w === wid)
+                      : delList.some((wid) => human.w === wid)
+                  ) ? (
+                    <EvaIcon
+                      name="plus-circle-outline"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        if (!fixedList || !fixedList.some((wid) => human.w === wid))
+                          updateAddList([...addList, human.w]);
+                        updateDelList(delList.filter((wid) => wid !== human.w));
+                      }}
+                    />
+                  ) : (
+                    <EvaIcon
+                      name="minus-circle-outline"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        if (fixedList && fixedList.some((wid) => human.w === wid)) updateDelList([...delList, human.w]);
 
-                      updateAddList(
-                        addList.filter((wid) => wid !== human.w)
-                      );
-                    }}
-                  />
-                );
-              }
+                        updateAddList(addList.filter((wid) => wid !== human.w));
+                      }}
+                    />
+                  );
+                }
               : undefined
           }
         />
@@ -106,7 +86,7 @@ export default function SelectHumans({
     );
   };
 
-  const chooseNode = getHumanList(true, "Поиск по личностям");
+  const chooseNode = getHumanList(true, 'Поиск по личностям');
   const chosenNode = getHumanList(false, chosenPlaceholder);
 
   useEffect(() => onListsUpdate?.(addList, delList), [addList, delList]);
@@ -118,13 +98,8 @@ export default function SelectHumans({
           <h2>{chooseTitle}</h2>
           {chooseNode}
           {!!(excludes && excludedTitle) && (
-            <div
-              className="pointer"
-              onClick={() => setIsShowExcluded(!isShowExcluded)}
-            >
-              {isShowExcluded
-                ? "Скрыть недоступные личности"
-                : "Показать недоступные личности"}
+            <div className="pointer" onClick={() => setIsShowExcluded(!isShowExcluded)}>
+              {isShowExcluded ? 'Скрыть недоступные личности' : 'Показать недоступные личности'}
             </div>
           )}
         </>

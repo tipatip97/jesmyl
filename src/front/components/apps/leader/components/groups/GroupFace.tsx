@@ -1,15 +1,9 @@
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import { LeaderCleans } from "../LeaderCleans";
-import { LeaderGroupImportable } from "./Groups.model";
-import useLeaderGroups from "./useGroups";
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { LeaderCleans } from '../LeaderCleans';
+import { LeaderGroupImportable } from './Groups.model';
+import useLeaderGroups from './useGroups';
 
-export default function GroupFace({
-  group,
-  onMoreClick,
-}: {
-  group: LeaderGroupImportable;
-  onMoreClick?: () => void;
-}) {
+export default function GroupFace({ group, onMoreClick }: { group: LeaderGroupImportable; onMoreClick?: () => void }) {
   const { goToGroup, humans } = useLeaderGroups();
 
   return (
@@ -24,12 +18,10 @@ export default function GroupFace({
         <span className="face-logo">
           <EvaIcon name="people-outline" />
         </span>
-        <span className={`face-title ${group.isInactive ? "text-strike" : ""}`}>
+        <span className={`face-title ${group.isInactive ? 'text-strike' : ''}`}>
           {group.name}
-          {" - "}
-          <span className="color--3">
-            {LeaderCleans.takeGroupMentorNames(humans, group)}
-          </span>
+          {' - '}
+          <span className="color--3">{LeaderCleans.takeGroupMentorNames(humans, group)}</span>
         </span>
       </div>
       {onMoreClick && (

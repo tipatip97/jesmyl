@@ -1,15 +1,15 @@
-import EvaIcon from "../../../../../../../complect/eva-icon/EvaIcon";
-import useExer from "../../../../../../../complect/exer/useExer";
-import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
-import modalService from "../../../../../../../complect/modal/Modal.service";
-import mylib from "../../../../../../../complect/my-lib/MyLib";
-import useAuth from "../../../../../../index/useAuth";
-import { ChordVisibleVariant } from "../../../../Cm.model";
-import { cmExer } from "../../../../Cm.store";
-import ComOrders from "../../../../col/com/orders/ComOrders";
-import TheCom from "../../../../col/com/TheCom";
-import EditContainerCorrectsInformer from "../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
-import { useEditableCcom } from "../useEditableCcom";
+import EvaIcon from '../../../../../../../complect/eva-icon/EvaIcon';
+import useExer from '../../../../../../../complect/exer/useExer';
+import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
+import modalService from '../../../../../../../complect/modal/Modal.service';
+import mylib from '../../../../../../../complect/my-lib/MyLib';
+import useAuth from '../../../../../../index/useAuth';
+import { ChordVisibleVariant } from '../../../../Cm.model';
+import { cmExer } from '../../../../Cm.store';
+import ComOrders from '../../../../col/com/orders/ComOrders';
+import TheCom from '../../../../col/com/TheCom';
+import EditContainerCorrectsInformer from '../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
+import { useEditableCcom } from '../useEditableCcom';
 
 export default function EditableCompositionMain() {
   const ccom = useEditableCcom();
@@ -21,10 +21,7 @@ export default function EditableCompositionMain() {
   return (
     <>
       {
-        <EditContainerCorrectsInformer
-          corrects={ccom?.corrects.name}
-          className="flex"
-        >
+        <EditContainerCorrectsInformer corrects={ccom?.corrects.name} className="flex">
           <div className="margin-gap-h">Название</div>
           <KeyboardInput
             value={ccom?.name}
@@ -48,9 +45,9 @@ export default function EditableCompositionMain() {
       <div
         className="flex full-width between margin-gap-v pointer"
         onClick={async () => {
-          const dotts = "."
+          const dotts = '.'
             .repeat(12)
-            .split("")
+            .split('')
             .map((_, i) => i)
             .reverse();
           const first = ccom.transPosition;
@@ -58,35 +55,29 @@ export default function EditableCompositionMain() {
           const prev = pos;
 
           modalService.open({
-            title: "Тональность песни",
-            description: () => (
-              <ComOrders
-                com={ccom}
-                chordVisibleVariant={ChordVisibleVariant.Maximal}
-              />
-            ),
+            title: 'Тональность песни',
+            description: () => <ComOrders com={ccom} chordVisibleVariant={ChordVisibleVariant.Maximal} />,
             inputs: dotts.map((position) => {
               return {
-                type: "button",
+                type: 'button',
                 closable: false,
-                value: `${position === first ? "* " : ""
-                  }На ${position} ${mylib.declension(
-                    position,
-                    "полутон",
-                    "полутона",
-                    "полутонов"
-                  )} от базовой`,
+                value: `${position === first ? '* ' : ''}На ${position} ${mylib.declension(
+                  position,
+                  'полутон',
+                  'полутона',
+                  'полутонов',
+                )} от базовой`,
                 style: () => ({
-                  fontWeight: position === pos ? "bold" : undefined,
+                  fontWeight: position === pos ? 'bold' : undefined,
                 }),
                 onClick: () => ccom.setTransPosition((pos = position)),
               };
             }),
             onCloseAcion: () => exec(),
             buttons: [
-              "Подтвердить",
+              'Подтвердить',
               {
-                title: "Отменить",
+                title: 'Отменить',
                 onClick: () => exec(ccom.setTransPosition(prev)),
               },
             ],
@@ -100,22 +91,18 @@ export default function EditableCompositionMain() {
       <div
         className="flex full-width between margin-gap-v pointer"
         onClick={() => {
-          exec(ccom.setField("b", ccom.isBemoled === 1 ? 0 : 1, 0));
+          exec(ccom.setField('b', ccom.isBemoled === 1 ? 0 : 1, 0));
         }}
       >
         <EvaIcon name="hash-outline" />
-        <div className="title half-width  text-center">
-          Сделать {ccom.isBemoled ? "диезным" : "бемольным"}
-        </div>
+        <div className="title half-width  text-center">Сделать {ccom.isBemoled ? 'диезным' : 'бемольным'}</div>
         <div className="half-width" />
       </div>
-      {cmExer.actionAccessedOrNull("canWatch", auth) && (
+      {cmExer.actionAccessedOrNull('canWatch', auth) && (
         <div
           className="flex full-width between error-message margin-gap-v pointer"
           onClick={() => {
-            modalService
-              .confirm(`Удалить песню "${ccom.name}"?`)
-              .then((isRemove) => isRemove && exec(ccom.remove()));
+            modalService.confirm(`Удалить песню "${ccom.name}"?`).then((isRemove) => isRemove && exec(ccom.remove()));
           }}
         >
           <EvaIcon name="trash-2-outline" />
@@ -124,11 +111,7 @@ export default function EditableCompositionMain() {
         </div>
       )}
 
-      <TheCom
-        com={ccom}
-        chordVisibleVariant={ChordVisibleVariant.Maximal}
-        isMiniAnchor={false}
-      />
+      <TheCom com={ccom} chordVisibleVariant={ChordVisibleVariant.Maximal} isMiniAnchor={false} />
     </>
   );
 }

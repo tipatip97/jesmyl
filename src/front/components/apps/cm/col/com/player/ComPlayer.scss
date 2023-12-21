@@ -1,73 +1,74 @@
 .application-container.app_cm {
-    --com-player-size: 30px;
-    --com-player-height: var(--com-player-size);
-    --com-player-expand-height: calc(var(--com-player-size) * 2);
+  --com-player-size: 30px;
+  --com-player-height: var(--com-player-size);
+  --com-player-expand-height: calc(var(--com-player-size) * 2);
 
-    .composition-player {
-        padding: 0 5px;
-        height: var(--com-player-height);
-        width: 100%;
-        font-size: .8em;
-        white-space: nowrap;
-        overflow: hidden;
-        background: var(--color--2);
-        transition: opacity .2s, margin .2s;
+  .composition-player {
+    padding: 0 5px;
+    height: var(--com-player-height);
+    width: 100%;
+    font-size: 0.8em;
+    white-space: nowrap;
+    overflow: hidden;
+    background: var(--color--2);
+    transition:
+      opacity 0.2s,
+      margin 0.2s;
 
-        &.hidden-controls {
-            width: var(--com-player-size);
-            padding: 0;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0);
-            opacity: .5;
-        }
-
-        .current-variant-badge {
-            --size: 1.8em;
-
-            border-radius: 50%;
-            width: var(--size);
-            max-width: var(--size);
-            min-width: var(--size);
-            height: var(--size);
-            min-height: var(--size);
-            max-height: var(--size);
-            background: var(--color--3);
-            color: var(--color--2);
-        }
-
-        .loading-logo {
-            animation: rotate-loading-logo 1s linear infinite;
-        }
-
-        .player-track {
-            position: relative;
-            width: calc(100% - 80px);
-            height: 10px;
-            background: var(--color--1);
-            border-radius: 5px;
-            overflow: hidden;
-            cursor: pointer;
-
-            &:after {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-                width: var(--track-progress-width);
-                background: var(--color--3);
-            }
-        }
+    &.hidden-controls {
+      width: var(--com-player-size);
+      padding: 0;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0);
+      opacity: 0.5;
     }
+
+    .current-variant-badge {
+      --size: 1.8em;
+
+      border-radius: 50%;
+      width: var(--size);
+      max-width: var(--size);
+      min-width: var(--size);
+      height: var(--size);
+      min-height: var(--size);
+      max-height: var(--size);
+      background: var(--color--3);
+      color: var(--color--2);
+    }
+
+    .loading-logo {
+      animation: rotate-loading-logo 1s linear infinite;
+    }
+
+    .player-track {
+      position: relative;
+      width: calc(100% - 80px);
+      height: 10px;
+      background: var(--color--1);
+      border-radius: 5px;
+      overflow: hidden;
+      cursor: pointer;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: var(--track-progress-width);
+        background: var(--color--3);
+      }
+    }
+  }
 }
 
-
 @keyframes rotate-loading-logo {
-    from {
-        transform: scale(.2) rotate(0);
-    }
+  from {
+    transform: scale(0.2) rotate(0);
+  }
 
-    to {
-        transform: scale(.2) rotate(360deg);
-    }
+  to {
+    transform: scale(0.2) rotate(360deg);
+  }
 }

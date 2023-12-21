@@ -9,16 +9,16 @@ import { indexReducer } from '../components/index/Index.store';
 import { routerReducer } from '../components/router/Router.store';
 
 export const store = configureStore({
-    reducer: {
-        index: indexReducer,
-        tuner: tunerReducer,
-        gamer: gamerReducer,
-        cm: cmReducer,
-        complect: complectReducer,
-        leader: leaderReducer,
-        router: routerReducer,
-        strong: strongReducer,
-    },
+  reducer: {
+    index: indexReducer,
+    tuner: tunerReducer,
+    gamer: gamerReducer,
+    cm: cmReducer,
+    complect: complectReducer,
+    leader: leaderReducer,
+    router: routerReducer,
+    strong: strongReducer,
+  },
 });
 
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof store.getState>;

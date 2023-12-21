@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Exer } from "../../../complect/exer/Exer";
-import { CmState } from "./Cm.model";
-import cmStorage from "./cmStorage";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Exer } from '../../../complect/exer/Exer';
+import { CmState } from './Cm.model';
+import cmStorage from './cmStorage';
 
 export const cmExer = new Exer('cm', cmStorage);
 
@@ -21,7 +21,7 @@ const initialState: CmState = {
   isTranslationBlockVisible: true,
   translationBlockPosition: 'center',
   favoriteMeetings: { contexts: [], events: [] },
-  comTopTools: ["mark-com", "fullscreen-mode"],
+  comTopTools: ['mark-com', 'fullscreen-mode'],
 
   numComUpdates: 0,
   numAbsolutePopupUpdates: 0,
@@ -33,7 +33,7 @@ const initialState: CmState = {
 };
 
 export const slice = createSlice({
-  name: "cm",
+  name: 'cm',
   initialState,
   reducers: {
     ...cmStorage.initializators([

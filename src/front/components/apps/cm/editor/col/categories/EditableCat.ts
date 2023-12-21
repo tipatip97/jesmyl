@@ -1,12 +1,11 @@
-import { FreeExecDict } from "../../../../../../complect/exer/Exer.model";
-import mylib from "../../../../../../complect/my-lib/MyLib";
-import { Cat } from "../../../col/cat/Cat";
-import { catTrackers } from "../../../col/cat/Cat.complect";
-import { CatTracker, ComWrap, IExportableCat } from "../../../col/cat/Cat.model";
-import { Com } from "../../../col/com/Com";
-import { EditableCom } from "../compositions/EditableCom";
-import { EditableCol } from "../EditableCol";
-
+import { FreeExecDict } from '../../../../../../complect/exer/Exer.model';
+import mylib from '../../../../../../complect/my-lib/MyLib';
+import { Cat } from '../../../col/cat/Cat';
+import { catTrackers } from '../../../col/cat/Cat.complect';
+import { CatTracker, ComWrap, IExportableCat } from '../../../col/cat/Cat.model';
+import { Com } from '../../../col/com/Com';
+import { EditableCom } from '../compositions/EditableCom';
+import { EditableCol } from '../EditableCol';
 
 export class EditableCat extends Cat {
   coms: EditableCom[];
@@ -28,27 +27,33 @@ export class EditableCat extends Cat {
   search(term = this.term) {
     if (term) {
       if (term === '@1') {
-        this.wraps = this.coms.filter(com => !com.audio.trim()).map(com => ({ com }));
+        this.wraps = this.coms.filter((com) => !com.audio.trim()).map((com) => ({ com }));
       } else if (term === '@2') {
-        this.wraps = this.coms.map(com => {
-          com.texts?.forEach((text, texti) => com.setBlockCorrects('texts', texti, text, true));
-          com.chords?.forEach((chords, chordsi) => com.setBlockCorrects('chords', chordsi, chords, true));
-          com.rename(com.name, null, false, true);
+        this.wraps = this.coms
+          .map((com) => {
+            com.texts?.forEach((text, texti) => com.setBlockCorrects('texts', texti, text, true));
+            com.chords?.forEach((chords, chordsi) => com.setBlockCorrects('chords', chordsi, chords, true));
+            com.rename(com.name, null, false, true);
 
-          return Object.values(com.corrects).some(correct => correct?.isSome()) ? { com } : null;
-        }).filter((wrap) => wrap) as never;
-
+            return Object.values(com.corrects).some((correct) => correct?.isSome()) ? { com } : null;
+          })
+          .filter((wrap) => wrap) as never;
       } else {
-        this.wraps = mylib.searchRate<ComWrap<EditableCom>>(this.coms, term, ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']], 'com') as ComWrap<EditableCom>[];
+        this.wraps = mylib.searchRate<ComWrap<EditableCom>>(
+          this.coms,
+          term,
+          ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']],
+          'com',
+        ) as ComWrap<EditableCom>[];
       }
-    } else this.wraps = this.coms.map(com => ({ com }));
+    } else this.wraps = this.coms.map((com) => ({ com }));
 
     this.term = term;
   }
 
   putComs() {
     const { select } = catTrackers.find(({ id }) => id === this.kind) || {};
-    this.coms = select ? this.topComs.filter(com => select(com, this)) : [];
+    this.coms = select ? this.topComs.filter((com) => select(com, this)) : [];
 
     this.search();
 
@@ -75,8 +80,7 @@ export class EditableCat extends Cat {
       action: 'catClearStack',
       method: 'set',
       anti: ({ action }) => {
-        if (action === 'catClearStack' && !isNeedClear)
-          return (strategy) => strategy.RememberNew;
+        if (action === 'catClearStack' && !isNeedClear) return (strategy) => strategy.RememberNew;
       },
     });
 
@@ -141,4 +145,3 @@ export class EditableCat extends Cat {
     exec?.();
   }
 }
-

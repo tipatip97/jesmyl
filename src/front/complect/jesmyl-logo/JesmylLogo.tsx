@@ -1,11 +1,8 @@
 import './JesmylLogo.scss';
 
-export default function JesmylLogo(props: { className?: string, onAnimationIteration?: () => void }) {
+export default function JesmylLogo(props: { className?: string; onAnimationIteration?: () => void }) {
   return (
-    <div
-      onAnimationIteration={props.onAnimationIteration}
-      className={`jesmyl-smile ${props.className || ''}`}
-    >
+    <div onAnimationIteration={props.onAnimationIteration} className={`jesmyl-smile ${props.className || ''}`}>
       <svg x="0px" y="0px" viewBox="0 0 306 386.64" className="smile-container">
         <path
           className="smile-dot"

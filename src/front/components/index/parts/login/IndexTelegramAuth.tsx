@@ -1,49 +1,49 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { LocalSokiAuth, SokiServerEvent } from "../../../../models";
-import SendButton from "../../../../complect/sends/send-button/SendButton";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import JesmylLogo from "../../../../complect/jesmyl-logo/JesmylLogo";
-import KeyboardInput from "../../../../complect/keyboard/KeyboardInput";
-import useToast from "../../../../complect/modal/useToast";
-import mylib from "../../../../complect/my-lib/MyLib";
-import { RootState } from "../../../../shared/store";
-import { soki } from "../../../../soki";
-import di from "../../Index.store";
-import useIndexNav from "../../complect/useIndexNav";
-import indexStorage from "../../indexStorage";
-import { removePullRequisites } from "../../useAuth";
-import useConnectionState from "../../useConnectionState";
-import { LoginIndex } from "./IndexLoginAuth";
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { LocalSokiAuth, SokiServerEvent } from '../../../../models';
+import SendButton from '../../../../complect/sends/send-button/SendButton';
+import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
+import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
+import useToast from '../../../../complect/modal/useToast';
+import mylib from '../../../../complect/my-lib/MyLib';
+import { RootState } from '../../../../shared/store';
+import { soki } from '../../../../soki';
+import di from '../../Index.store';
+import useIndexNav from '../../complect/useIndexNav';
+import indexStorage from '../../indexStorage';
+import { removePullRequisites } from '../../useAuth';
+import useConnectionState from '../../useConnectionState';
+import { LoginIndex } from './IndexLoginAuth';
 
 const errorsSelector = (state: RootState) => state.index.errors;
 
 export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => void }) {
   const dispatch = useDispatch();
-  const [authCode, setAuthCode] = useState("");
+  const [authCode, setAuthCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const connectionNode = useConnectionState();
   const errors = useSelector(errorsSelector);
   const { navigate } = useIndexNav();
-  const error = (message: string | nil) =>
-    message && <div className="login-error-message">{message}</div>;
+  const error = (message: string | nil) => message && <div className="login-error-message">{message}</div>;
   const [toastNode, showToast] = useToast({ mood: 'ko' });
 
   const onAuthSend = (codeStr?: string) => {
     setIsLoading(true);
 
-    return new Promise<SokiServerEvent>(
-      (res, rej) =>
-        soki.send({ tgAuthorization: codeStr === undefined ? +authCode : +codeStr }, 'index')
-          .on(res, rej, () => setIsLoading(false)));
+    return new Promise<SokiServerEvent>((res, rej) =>
+      soki
+        .send({ tgAuthorization: codeStr === undefined ? +authCode : +codeStr }, 'index')
+        .on(res, rej, () => setIsLoading(false)),
+    );
   };
 
   const setAuthData = async (auth: LocalSokiAuth) => {
     if (auth) {
       dispatch(di.auth(auth));
       indexStorage.set('auth', auth);
-      dispatch(di.currentApp("cm"));
+      dispatch(di.currentApp('cm'));
       removePullRequisites();
     }
   };
@@ -51,7 +51,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
   const onAuthSuccess = ({ tgAuthorization: authorization }: SokiServerEvent) => {
     if (!authorization || !authorization.ok || mylib.isStr(authorization.value)) return;
     setAuthData(authorization.value);
-    navigate(["other"]);
+    navigate(['other']);
   };
 
   return (
@@ -76,10 +76,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                 <li className="children-middle">
                   Запустить бота
                   <span className="margin-gap">
-                    <a
-                      href="https://t.me/jesmylbot"
-                      className="children-middle"
-                    >
+                    <a href="https://t.me/jesmylbot" className="children-middle">
                       <EvaIcon name="telegram" />
                       jesmylbot
                     </a>
@@ -88,10 +85,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                 <li>
                   Состоять в канале
                   <span className="margin-gap">
-                    <a
-                      href="https://t.me/jesmyl_space"
-                      className="children-middle"
-                    >
+                    <a href="https://t.me/jesmyl_space" className="children-middle">
                       <EvaIcon name="telegram" />
                       jesmyl space
                     </a>

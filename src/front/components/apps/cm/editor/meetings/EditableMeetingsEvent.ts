@@ -1,10 +1,10 @@
-import { ClientExecutionDict } from "../../../../../complect/exer/Exer.model";
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { cmExer } from "../../Cm.store";
-import { IExportableMeetingsEvent } from "../../lists/meetings/Meetings.model";
-import { MeetingsEvent } from "../../lists/meetings/MeetingsEvent";
-import { EditableCom } from "../col/compositions/EditableCom";
-import { EditableCols } from "../col/EditableCols";
+import { ClientExecutionDict } from '../../../../../complect/exer/Exer.model';
+import mylib from '../../../../../complect/my-lib/MyLib';
+import { cmExer } from '../../Cm.store';
+import { IExportableMeetingsEvent } from '../../lists/meetings/Meetings.model';
+import { MeetingsEvent } from '../../lists/meetings/MeetingsEvent';
+import { EditableCom } from '../col/compositions/EditableCom';
+import { EditableCols } from '../col/EditableCols';
 
 export class EditableMeetingsEvent extends MeetingsEvent {
   initialName = this.name;
@@ -20,11 +20,16 @@ export class EditableMeetingsEvent extends MeetingsEvent {
   }
 
   takeComs() {
-    return this.cols && this.stack.map(comw => (this.cols as EditableCols).coms.find(com => com.wid === comw)).filter(com => com) as EditableCom[];
+    return (
+      this.cols &&
+      (this.stack
+        .map((comw) => (this.cols as EditableCols).coms.find((com) => com.wid === comw))
+        .filter((com) => com) as EditableCom[])
+    );
   }
 
   scope(...args: (string | number)[]) {
-    return (['meeting-event', this.wid].concat(Array.from(args))).join('.');
+    return ['meeting-event', this.wid].concat(Array.from(args)).join('.');
   }
 
   execArgs() {
@@ -46,7 +51,7 @@ export class EditableMeetingsEvent extends MeetingsEvent {
         eventn: this.name,
         ...bag.args,
         prev: bag.prev,
-      }
+      },
     });
   }
 
@@ -57,8 +62,8 @@ export class EditableMeetingsEvent extends MeetingsEvent {
       prev: this.contextw,
       value: contextw,
       args: {
-        contextw
-      }
+        contextw,
+      },
     });
 
     this.contextw = contextw;
@@ -85,8 +90,8 @@ export class EditableMeetingsEvent extends MeetingsEvent {
       value,
       action: 'setMeetingEventStack',
       args: {
-        value
-      }
+        value,
+      },
     });
   }
 
@@ -98,16 +103,14 @@ export class EditableMeetingsEvent extends MeetingsEvent {
 
       this.stack = isNoPrevComs
         ? mylib.clone(value)
-        : this.stack
-          .filter((comw) => value.indexOf(comw) < 0)
-          .concat(mylib.clone(value));
+        : this.stack.filter((comw) => value.indexOf(comw) < 0).concat(mylib.clone(value));
     });
   }
 
   mergePrevComs(coms?: EditableCom[]) {
     if (coms) {
-      this.mergeStack(coms.map(com => com.wid));
-      this.prevComs = this.prevComs?.filter((prev) => !coms.some(com => prev === com));
+      this.mergeStack(coms.map((com) => com.wid));
+      this.prevComs = this.prevComs?.filter((prev) => !coms.some((com) => prev === com));
     }
   }
 
@@ -116,7 +119,7 @@ export class EditableMeetingsEvent extends MeetingsEvent {
       const stack = [...this.stack];
 
       if (index) [stack[index - 1], stack[index]] = [stack[index], stack[index - 1]];
-      else[stack[index + 1], stack[index]] = [stack[index], stack[index + 1]];
+      else [stack[index + 1], stack[index]] = [stack[index], stack[index + 1]];
 
       this.stack = stack;
     });
@@ -130,7 +133,7 @@ export class EditableMeetingsEvent extends MeetingsEvent {
       action: 'meetingEventRename',
       args: {
         value: name,
-      }
+      },
     });
 
     this.name = name;
@@ -144,10 +147,9 @@ export class EditableMeetingsEvent extends MeetingsEvent {
       method: 'set',
       prev: this.isRegular || 0,
       value,
-      args: { value }
+      args: { value },
     });
 
     this.isRegular = +!this.isRegular as num;
   }
-
 }

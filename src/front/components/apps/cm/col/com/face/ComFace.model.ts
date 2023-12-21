@@ -1,11 +1,10 @@
-import { ReactNode } from "react";
-import { Com } from "../Com";
-
+import { ReactNode } from 'react';
+import { Com } from '../Com';
 
 export interface ComFaceProps {
-    com: Com,
-    importantOnClick?: () => void,
-    groupClass?: string,
-    selectable?: boolean,
-    description?: ReactNode,
+  com: Com;
+  importantOnClick?: () => void;
+  groupClass?: string;
+  selectable?: boolean;
+  description?: ReactNode;
 }

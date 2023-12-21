@@ -1,11 +1,11 @@
-import { useDispatch } from "react-redux";
-import modalService from "../../../../complect/modal/Modal.service";
-import useQRMaster from "../../../../complect/qr-code/useQRMaster";
-import di from "../../Index.store";
-import useIndexNav from "../../complect/useIndexNav";
-import indexStorage from "../../indexStorage";
-import useAuth, { removePullRequisites } from "../../useAuth";
-import { BottomPopupContenter } from "../../../../complect/absolute-popup/bottom-popup/model";
+import { useDispatch } from 'react-redux';
+import modalService from '../../../../complect/modal/Modal.service';
+import useQRMaster from '../../../../complect/qr-code/useQRMaster';
+import di from '../../Index.store';
+import useIndexNav from '../../complect/useIndexNav';
+import indexStorage from '../../indexStorage';
+import useAuth, { removePullRequisites } from '../../useAuth';
+import { BottomPopupContenter } from '../../../../complect/absolute-popup/bottom-popup/model';
 
 export const UserMore: BottomPopupContenter = (_, prepare) => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export const UserMore: BottomPopupContenter = (_, prepare) => {
   const logout = () => {
     dispatch(di.auth(null));
     indexStorage.rem('auth');
-    dispatch(di.currentApp("cm"));
+    dispatch(di.currentApp('cm'));
     removePullRequisites();
     window.location.reload();
   };
@@ -27,17 +27,17 @@ export const UserMore: BottomPopupContenter = (_, prepare) => {
       items: [
         {
           title: 'Выйти из системы',
-          icon: "person-outline",
+          icon: 'person-outline',
           onClick: (event) => {
             event.preventDefault();
             modalService
-              .confirm("Произвести выход из системы?", "Разлогиниться")
-              .then(isLogout => isLogout && logout());
+              .confirm('Произвести выход из системы?', 'Разлогиниться')
+              .then((isLogout) => isLogout && logout());
           },
         },
         {
           title: 'Предъявить JesmyL-паспорт',
-          icon: "qr-code",
+          icon: 'qr-code',
           onClick: (event) => {
             event.preventDefault();
             if (auth.nick && auth.login)
@@ -49,8 +49,8 @@ export const UserMore: BottomPopupContenter = (_, prepare) => {
               });
           },
         },
-      ]
+      ],
     }),
     qrNode,
   ];
-}
+};

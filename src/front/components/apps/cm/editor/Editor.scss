@@ -1,38 +1,38 @@
 .new-composition {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
 
-    .text-heap-textarea {
-        width: 100%;
-        height: 100%;
-        min-height: 50vh;
-        border: 2px dashed var(--text-color);
-        background-color: transparent;
-        outline: 0;
-        resize: none;
-        color: var(--text-color);
-    }
+  .text-heap-textarea {
+    width: 100%;
+    height: 100%;
+    min-height: 50vh;
+    border: 2px dashed var(--text-color);
+    background-color: transparent;
+    outline: 0;
+    resize: none;
+    color: var(--text-color);
+  }
 
-    .parse-com-data-button {
-        --size: 50px;
-        width: var(--size);
-        height: var(--size);
-    }
+  .parse-com-data-button {
+    --size: 50px;
+    width: var(--size);
+    height: var(--size);
+  }
 }
 
 .orders-redactor {
-    --icon-color: var(--color--7);
+  --icon-color: var(--color--7);
 
-    .order-changes-buttons {
-        >* {
-            margin-right: var(--main-gap);
-        }
+  .order-changes-buttons {
+    > * {
+      margin-right: var(--main-gap);
     }
+  }
 
-    .inherit-block {
-        opacity: .2;
-        color: var(--color--7);
-    }
+  .inherit-block {
+    opacity: 0.2;
+    color: var(--color--7);
+  }
 }

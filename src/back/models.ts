@@ -1,75 +1,82 @@
-import { ExecuteReplaceableField, ExecutionArgs, ExecutionMethod, ExecutionSidesDict, ExecutionTrack } from "./complect/executer/Executer.model";
-import { LocalSokiAuth } from "./complect/soki/soki.model";
-import { actionBoxSetSystems } from "./values";
+import {
+  ExecuteReplaceableField,
+  ExecutionArgs,
+  ExecutionMethod,
+  ExecutionSidesDict,
+  ExecutionTrack,
+} from './complect/executer/Executer.model';
+import { LocalSokiAuth } from './complect/soki/soki.model';
+import { actionBoxSetSystems } from './values';
 
-export type ActionBoxSide = ExecutionSidesDict | ((realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) => ExecutionSidesDict | und);
+export type ActionBoxSide =
+  | ExecutionSidesDict
+  | ((realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) => ExecutionSidesDict | und);
 
 export interface ActionTimer {
-    startMs?: number,
-    startId?: string,
-    clearId?: string,
+  startMs?: number;
+  startId?: string;
+  clearId?: string;
 }
 
-export interface ActionBox<Value = any> extends Partial<Record<`/${string}`, ActionBox>>, Partial<Record<`<${string}>`, ActionBox>> {
-    level?: number,
-    scopeNode?: string,
-    shortTitle?: string,
-    title?: string,
-    access?: string,
-    uniqs?: string[],
-    fixAccesses?: Record<string, ExecutionTrack>,
-    side?: ActionBoxSide,
-    expected?: [] | {},
-    setInEachValueItem?: Record<string, Record<string, unknown>>,
-    isSequre?: boolean,
-    setSystems?: ActionBoxSetSystems[],
-    setItemSystems?: ActionBoxSetSystems[],
-    RRej?: number,
-    C?: ActionCRUD,
-    U?: ActionCRUD,
-    D?: ActionCRUD,
-    $$var?: `$$${string}`,
+export interface ActionBox<Value = any>
+  extends Partial<Record<`/${string}`, ActionBox>>,
+    Partial<Record<`<${string}>`, ActionBox>> {
+  level?: number;
+  scopeNode?: string;
+  shortTitle?: string;
+  title?: string;
+  access?: string;
+  uniqs?: string[];
+  fixAccesses?: Record<string, ExecutionTrack>;
+  side?: ActionBoxSide;
+  expected?: [] | {};
+  setInEachValueItem?: Record<string, Record<string, unknown>>;
+  isSequre?: boolean;
+  setSystems?: ActionBoxSetSystems[];
+  setItemSystems?: ActionBoxSetSystems[];
+  RRej?: number;
+  C?: ActionCRUD;
+  U?: ActionCRUD;
+  D?: ActionCRUD;
+  $$var?: `$$${string}`;
 
-    action?: string,
-    timer?: ExecuteReplaceableField<ActionTimer>,
-    method?: ExecutionMethod,
-    value?: ExecuteReplaceableField<Value, {} | null>,
-    args?: ExecutionArgs<string | any[]>,
-};
+  action?: string;
+  timer?: ExecuteReplaceableField<ActionTimer>;
+  method?: ExecutionMethod;
+  value?: ExecuteReplaceableField<Value, {} | null>;
+  args?: ExecutionArgs<string | any[]>;
+}
 
 export interface ActionCRUD {
-    method?: ExecutionMethod,
-    value?: any,
-    args?: ExecutionArgs<string | any[]>,
-    setSystems?: ActionBoxSetSystems[],
-    setItemSystems?: ActionBoxSetSystems[],
-    RRej?: boolean | number,
+  method?: ExecutionMethod;
+  value?: any;
+  args?: ExecutionArgs<string | any[]>;
+  setSystems?: ActionBoxSetSystems[];
+  setItemSystems?: ActionBoxSetSystems[];
+  RRej?: boolean | number;
 }
 
 export type ActionBoxSetSystemsFree = keyof typeof actionBoxSetSystems;
 export type ActionBoxSetSystems = ActionBoxSetSystemsFree | `${ActionBoxSetSystemsFree}:${string}`;
 
-export type ActionBoxValue<Value> =
-    Value extends string | number | boolean
-    ? `{${string}}` | Value | (() => Value)
-    : Value extends Array<infer Val>
+export type ActionBoxValue<Value> = Value extends string | number | boolean
+  ? `{${string}}` | Value | (() => Value)
+  : Value extends Array<infer Val>
     ? Array<ActionBoxValue<Val>>
     : Value extends {}
-    ? { [Key in keyof Value]: ActionBoxValue<Value[Key]> }
-    : Value;
-
+      ? { [Key in keyof Value]: ActionBoxValue<Value[Key]> }
+      : Value;
 
 declare global {
-    type num = 0 | 1;
-    type str = '' | '1';
-    type nil = null | undefined;
-    type und = undefined;
-    type ArrayMapCb<T> = (box: T, boxi: number, boxa: T[]) => T;
-    type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
-    type TimeOut = ReturnType<typeof setTimeout> | und | number;
+  type num = 0 | 1;
+  type str = '' | '1';
+  type nil = null | undefined;
+  type und = undefined;
+  type ArrayMapCb<T> = (box: T, boxi: number, boxa: T[]) => T;
+  type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
+  type TimeOut = ReturnType<typeof setTimeout> | und | number;
 
-    type NonUndefined<T> = T extends undefined ? never : T;
-    type NonNull<T> = T extends null ? never : T;
-    type NonNil<T> = T extends nil ? never : T;
+  type NonUndefined<T> = T extends undefined ? never : T;
+  type NonNull<T> = T extends null ? never : T;
+  type NonNil<T> = T extends nil ? never : T;
 }
-

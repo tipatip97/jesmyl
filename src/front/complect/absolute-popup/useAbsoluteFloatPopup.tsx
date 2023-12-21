@@ -1,10 +1,10 @@
-import { ReactNode, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../shared/store";
-import { switchAbsoluteFloatPopupOpen } from "../Complect.store";
-import useMountTransition from "../popups/useMountTransition";
-import Portal from "../popups/[complect]/Portal";
-import "./AbsolutePopup.scss";
+import { ReactNode, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../shared/store';
+import { switchAbsoluteFloatPopupOpen } from '../Complect.store';
+import useMountTransition from '../popups/useMountTransition';
+import Portal from '../popups/[complect]/Portal';
+import './AbsolutePopup.scss';
 
 let popupContent: ReactNode = null;
 let floatElement: HTMLDivElement | null;
@@ -28,12 +28,7 @@ export default function useAbsoluteFloatPopup() {
       isClosed = true;
       return true;
     },
-    openAbsoluteFloatPopup: (
-      content: ReactNode,
-      x: number,
-      y: number,
-      closable = true
-    ) => {
+    openAbsoluteFloatPopup: (content: ReactNode, x: number, y: number, closable = true) => {
       isClosable = closable;
       isClosed = false;
       onOpenPopup?.(ret.closeAbsoluteFloatPopup);
@@ -43,13 +38,9 @@ export default function useAbsoluteFloatPopup() {
       setTimeout(() => {
         if (!floatElement) return;
         const top =
-          y + floatElement.clientHeight > window.innerHeight
-            ? window.innerHeight - floatElement.clientHeight - 5
-            : y;
+          y + floatElement.clientHeight > window.innerHeight ? window.innerHeight - floatElement.clientHeight - 5 : y;
         const left =
-          x + floatElement.clientWidth > window.innerWidth
-            ? window.innerWidth - floatElement.clientWidth - 5
-            : x;
+          x + floatElement.clientWidth > window.innerWidth ? window.innerWidth - floatElement.clientWidth - 5 : x;
 
         floatElement.style.top = `${top}px`;
         floatElement.style.left = `${left}px`;
@@ -59,40 +50,36 @@ export default function useAbsoluteFloatPopup() {
   return ret;
 }
 
-export function ABSOLUTE__FLOAT__POPUP({
-  onOpen,
-}: {
-  onOpen: (close: () => boolean) => void;
-}) {
+export function ABSOLUTE__FLOAT__POPUP({ onOpen }: { onOpen: (close: () => boolean) => void }) {
   onOpenPopup = onOpen;
-  const { isAbsoluteFloatPopupOpen, closeAbsoluteFloatPopup } =
-    useAbsoluteFloatPopup();
+  const { isAbsoluteFloatPopupOpen, closeAbsoluteFloatPopup } = useAbsoluteFloatPopup();
 
   useEffect(
-    () =>
-      window.addEventListener(
-        "keydown",
-        (event) => event.code === "Escape" && closeAbsoluteFloatPopup()
-      ),
-    []
+    () => window.addEventListener('keydown', (event) => event.code === 'Escape' && closeAbsoluteFloatPopup()),
+    [],
   );
 
-  const [isMounted, className] = useMountTransition(isAbsoluteFloatPopupOpen && !!popupContent, 'absolute-float-popup', 500);
+  const [isMounted, className] = useMountTransition(
+    isAbsoluteFloatPopupOpen && !!popupContent,
+    'absolute-float-popup',
+    500,
+  );
 
-  return <>{
-    isMounted && <Portal>
-      <div
-        className={className}
-        onClick={() => closeAbsoluteFloatPopup()}
-      >
-        <div
-          className={`absolute-popup-content`}
-          onClick={(event) => !isClosable && event.stopPropagation()}
-          ref={(elem) => elem && (floatElement = elem)}
-        >
-          {popupContent}
-        </div>
-      </div>
-    </Portal>
-  }</>;
+  return (
+    <>
+      {isMounted && (
+        <Portal>
+          <div className={className} onClick={() => closeAbsoluteFloatPopup()}>
+            <div
+              className={`absolute-popup-content`}
+              onClick={(event) => !isClosable && event.stopPropagation()}
+              ref={(elem) => elem && (floatElement = elem)}
+            >
+              {popupContent}
+            </div>
+          </div>
+        </Portal>
+      )}
+    </>
+  );
 }

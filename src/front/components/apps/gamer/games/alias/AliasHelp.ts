@@ -1,2 +1,1 @@
-export * from "../../../../../../back/apps/gamer/games/alias/AliasHelp";
-
+export * from '../../../../../../back/apps/gamer/games/alias/AliasHelp';

@@ -1,7 +1,7 @@
-import useExer from "../../../../../../../complect/exer/useExer";
-import { cmExer } from "../../../../Cm.store";
-import { translationPushKinds } from "../../../../col/com/Com.complect";
-import { useEditableCcom } from "../useEditableCcom";
+import useExer from '../../../../../../../complect/exer/useExer';
+import { cmExer } from '../../../../Cm.store';
+import { translationPushKinds } from '../../../../col/com/Com.complect';
+import { useEditableCcom } from '../useEditableCcom';
 
 export default function ComOnTranslations() {
   const ccom = useEditableCcom();
@@ -28,15 +28,10 @@ export default function ComOnTranslations() {
             key={`lines-${linesi}`}
             className="margin-big-gap-v"
             style={{
-              whiteSpace: "pre-wrap",
+              whiteSpace: 'pre-wrap',
             }}
           >
-            {lines?.map((text, texti) => (
-              <div
-                key={`text-${texti}`}
-                dangerouslySetInnerHTML={{ __html: text }}
-              />
-            ))}
+            {lines?.map((text, texti) => <div key={`text-${texti}`} dangerouslySetInnerHTML={{ __html: text }} />)}
           </div>
         );
       })}

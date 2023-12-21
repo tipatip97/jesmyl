@@ -1,11 +1,11 @@
-import BrutalItem from "../../../../complect/brutal-item/BrutalItem";
-import BrutalScreen from "../../../../complect/brutal-screen/BrutalScreen";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import useCmNav from "../base/useCmNav";
-import useSelectedComs from "../base/useSelectedComs";
-import { useCols } from "../cols/useCols";
-import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
-import "./Lists.scss";
+import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
+import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
+import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import useCmNav from '../base/useCmNav';
+import useSelectedComs from '../base/useSelectedComs';
+import { useCols } from '../cols/useCols';
+import PhaseCmContainer from '../complect/phase-container/PhaseCmContainer';
+import './Lists.scss';
 
 export default function Lists() {
   const { goTo } = useCmNav();
@@ -20,22 +20,10 @@ export default function Lists() {
       contentClass="flex between column"
       content={
         <>
-          <BrutalItem
-            icon="star-outline"
-            title="Избранное"
-            onClick={() => goTo("marks")}
-          />
-          <BrutalItem
-            icon="calendar-outline"
-            title="События"
-            onClick={() => goTo("meetings")}
-          />
+          <BrutalItem icon="star-outline" title="Избранное" onClick={() => goTo('marks')} />
+          <BrutalItem icon="calendar-outline" title="События" onClick={() => goTo('meetings')} />
           {selectedComws.length ? (
-            <BrutalItem
-              icon="checkmark-circle-2-outline"
-              title="Выбранное"
-              onClick={() => goTo("selected")}
-            />
+            <BrutalItem icon="checkmark-circle-2-outline" title="Выбранное" onClick={() => goTo('selected')} />
           ) : null}
           <BrutalScreen>
             <div className="title sticky bg-inherit">Тематические:</div>
@@ -46,10 +34,7 @@ export default function Lists() {
                   className="item flex"
                   onClick={() => goTo({ place: 'cat', data: { ccatw: cat.wid } })}
                 >
-                  <EvaIcon
-                    name="book-open-outline"
-                    className="margin-big-gap"
-                  />
+                  <EvaIcon name="book-open-outline" className="margin-big-gap" />
                   <div>{cat.name}</div>
                 </div>
               );

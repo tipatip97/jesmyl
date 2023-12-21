@@ -1,31 +1,31 @@
-import { useState } from "react";
-import SourceBased from "../../../../../complect/SourceBased";
-import Dropdown from "../../../../../complect/dropdown/Dropdown";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import mylib, { AddRestMode } from "../../../../../complect/my-lib/MyLib";
-import { TeamGameImportable } from "../../Leader.model";
-import useLeaderContext from "../contexts/useContexts";
-import HumanFace from "../people/HumanFace";
-import { GameTeamImportable } from "./teams/GameTeams.model";
-import TheGameTeam from "./teams/TheGameTeam";
-import TheButton from "../../../../../complect/Button";
-import EvaButton from "../../../../../complect/eva-icon/EvaButton";
-import { LeaderCleans } from "../LeaderCleans";
-import { useGetRandomTwiceName } from "../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName";
+import { useState } from 'react';
+import SourceBased from '../../../../../complect/SourceBased';
+import Dropdown from '../../../../../complect/dropdown/Dropdown';
+import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import mylib, { AddRestMode } from '../../../../../complect/my-lib/MyLib';
+import { TeamGameImportable } from '../../Leader.model';
+import useLeaderContext from '../contexts/useContexts';
+import HumanFace from '../people/HumanFace';
+import { GameTeamImportable } from './teams/GameTeams.model';
+import TheGameTeam from './teams/TheGameTeam';
+import TheButton from '../../../../../complect/Button';
+import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import { LeaderCleans } from '../LeaderCleans';
+import { useGetRandomTwiceName } from '../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 
 export default function GameTeamListComputer({
   onUpdate,
   noComments,
   game,
 }: {
-  game: TeamGameImportable,
+  game: TeamGameImportable;
   onUpdate: (teams: GameTeamImportable[]) => void;
   noComments?: boolean;
 }) {
   const { contextMembers } = useLeaderContext();
   const [teams, updateTeams] = useState<GameTeamImportable[] | und>();
   const [teamsCount, setTeamsCount] = useState(1);
-  const [addRestMode, setAddRestMode] = useState<AddRestMode>("strong");
+  const [addRestMode, setAddRestMode] = useState<AddRestMode>('strong');
   const nameRandomizer = useGetRandomTwiceName();
 
   const readyMembers = LeaderCleans.membersReadyToPlay(contextMembers);
@@ -41,16 +41,11 @@ export default function GameTeamListComputer({
     restCount,
     `Оставшегося ${restCount} участника`,
     `Оставшихся ${restCount} участника`,
-    `Оставшихся ${restCount} участников`
+    `Оставшихся ${restCount} участников`,
   );
 
   const cantPlayers = contextMembers
-    ?.map(
-      (human, humani) =>
-        !readyMembers.some(({ w }) => w === human.w) && (
-          <HumanFace key={humani} human={human} />
-        )
-    )
+    ?.map((human, humani) => !readyMembers.some(({ w }) => w === human.w) && <HumanFace key={humani} human={human} />)
     .filter((player) => player);
 
   return (
@@ -58,21 +53,13 @@ export default function GameTeamListComputer({
       {
         <>
           <div>
-            Общее количество участников - {readyMembers.length}{" "}
-            {mylib.declension(
-              readyMembers.length,
-              "человек",
-              "человека",
-              "человек"
-            )}
+            Общее количество участников - {readyMembers.length}{' '}
+            {mylib.declension(readyMembers.length, 'человек', 'человека', 'человек')}
           </div>
           <div className="flex full-width">
             <div className="nowrap">Количество команд</div>
             <div className="full-width margin-gap-h">
-              <KeyboardInput
-                type="number"
-                onChange={(value) => setTeamsCount(+value)}
-              />
+              <KeyboardInput type="number" onChange={(value) => setTeamsCount(+value)} />
             </div>
           </div>
           {teamsCount <= readyMembers.length ? (
@@ -81,18 +68,8 @@ export default function GameTeamListComputer({
                 <div>
                   Состав команд по {truncated}
                   {truncated !== countInTeam
-                    ? ` - ${truncated + 1} ${mylib.declension(
-                      truncated + 1,
-                      "человеку",
-                      "человека",
-                      "человек"
-                    )}`
-                    : ` ${mylib.declension(
-                      truncated,
-                      "человеку",
-                      "человека",
-                      "человек"
-                    )}`}
+                    ? ` - ${truncated + 1} ${mylib.declension(truncated + 1, 'человеку', 'человека', 'человек')}`
+                    : ` ${mylib.declension(truncated, 'человеку', 'человека', 'человек')}`}
                 </div>
               ) : null}
               {truncated !== countInTeam ? (
@@ -102,16 +79,15 @@ export default function GameTeamListComputer({
                   items={[
                     {
                       title: `${restLabelPrefix} в сильную команду`,
-                      id: "strong",
+                      id: 'strong',
                     },
                     {
                       title: `${restLabelPrefix} в слабую команду`,
-                      id: "weak",
+                      id: 'weak',
                     },
                     {
-                      title: `${restLabelPrefix} ${restCount === 1 ? "определить" : "распределить"
-                        } случайным образом`,
-                      id: "random",
+                      title: `${restLabelPrefix} ${restCount === 1 ? 'определить' : 'распределить'} случайным образом`,
+                      id: 'random',
                     },
                   ]}
                   onSelect={({ id }) => setAddRestMode(id)}
@@ -122,10 +98,10 @@ export default function GameTeamListComputer({
                   disabled={!teamsCount}
                   onClick={() => {
                     const teams = mylib.groupByFieldsSoftly(
-                      ['isMan', user => user.ufp1 + user.ufp2, 'bDay'],
+                      ['isMan', (user) => user.ufp1 + user.ufp2, 'bDay'],
                       readyMembers,
                       teamsCount,
-                      addRestMode
+                      addRestMode,
                     );
                     const newTeams = teams.map((humans) => {
                       return {
@@ -140,7 +116,7 @@ export default function GameTeamListComputer({
                     onUpdate(newTeams);
                   }}
                 >
-                  Рассчитать{teams ? " заново" : ""}
+                  Рассчитать{teams ? ' заново' : ''}
                 </TheButton>
               </div>
 
@@ -148,7 +124,7 @@ export default function GameTeamListComputer({
                 <>
                   <div
                     className="flex flex-gap margin-gap error-message"
-                    onClick={() => setIsShowCantPlayers(is => !is)}
+                    onClick={() => setIsShowCantPlayers((is) => !is)}
                   >
                     Не войдут {cantPlayers?.length}
                     <EvaButton name={isShowCantPlayers ? 'chevron-up' : 'chevron-down'} />

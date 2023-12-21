@@ -1,27 +1,27 @@
-import { useState } from "react";
-import CopyTextButton from "../../../../../complect/CopyTextButton";
-import SendButton from "../../../../../complect/sends/send-button/SendButton";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import useFullContent from "../../../../../complect/fullscreen-content/useFullContent";
-import modalService from "../../../../../complect/modal/Modal.service";
-import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
-import useLeaderNav from "../../useLeaderNav";
-import { LeaderCleans } from "../LeaderCleans";
-import useLeaderContext from "../contexts/useContexts";
-import HumanFace from "../people/HumanFace";
-import { GameDescription } from "./GameDescription";
-import GameMore from "./GameMore";
-import GameTeamListComputer from "./GameTeamListComputer";
-import OutsiderMore from "./OutsiderMore";
-import TotalScoreTable from "./TotalScoreTable";
-import { GameTeamExportable } from "./teams/GameTeams.model";
-import TheGameTeam from "./teams/TheGameTeam";
-import LeaderGameTimerFace from "./timers/TimerFace";
-import TimerFieldsConfigurer from "./timers/complect/TimerFieldsConfigurer";
-import TimerNameListConfigurer from "./timers/complect/TimerNameListConfigurer";
-import useGameTimer from "./timers/useGameTimer";
-import useCgame from "./useGames";
+import { useState } from 'react';
+import CopyTextButton from '../../../../../complect/CopyTextButton';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
+import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import modalService from '../../../../../complect/modal/Modal.service';
+import PhaseLeaderContainer from '../../phase-container/PhaseLeaderContainer';
+import useLeaderNav from '../../useLeaderNav';
+import { LeaderCleans } from '../LeaderCleans';
+import useLeaderContext from '../contexts/useContexts';
+import HumanFace from '../people/HumanFace';
+import { GameDescription } from './GameDescription';
+import GameMore from './GameMore';
+import GameTeamListComputer from './GameTeamListComputer';
+import OutsiderMore from './OutsiderMore';
+import TotalScoreTable from './TotalScoreTable';
+import { GameTeamExportable } from './teams/GameTeams.model';
+import TheGameTeam from './teams/TheGameTeam';
+import LeaderGameTimerFace from './timers/TimerFace';
+import TimerFieldsConfigurer from './timers/complect/TimerFieldsConfigurer';
+import TimerNameListConfigurer from './timers/complect/TimerNameListConfigurer';
+import useGameTimer from './timers/useGameTimer';
+import useCgame from './useGames';
 
 export default function TheGame() {
   const { cgame } = useCgame();
@@ -30,14 +30,10 @@ export default function TheGame() {
   const [outsiderw, setOutsiderw] = useState(0);
   const [outsiderMoreNode, openOutsiderMore] = useBottomPopup((_, prepare) => {
     if (cgame == null || outsiderw === 0) return null;
-    const outsider = contextMembers.find(member => member.w === outsiderw);
+    const outsider = contextMembers.find((member) => member.w === outsiderw);
     if (outsider === undefined) return null;
 
-    return <OutsiderMore
-      game={cgame}
-      human={outsider}
-      prepare={prepare}
-    />;
+    return <OutsiderMore game={cgame} human={outsider} prepare={prepare} />;
   });
   const [gameMoreNode, openGameMore] = useBottomPopup((close, prepare) => (
     <GameMore
@@ -52,8 +48,7 @@ export default function TheGame() {
   ));
   const [fullNode, openFullContent] = useFullContent(() => <TotalScoreTable selectedTimers={selectedTimers} />);
   const [isTeamsLoading, setIsTeamsLoading] = useState(false);
-  const usedHumans =
-    cgame?.teams?.reduce<number[]>((list, team) => list.concat(team.members), []) || [];
+  const usedHumans = cgame?.teams?.reduce<number[]>((list, team) => list.concat(team.members), []) || [];
 
   const { isTimerStarted } = useGameTimer(cgame);
   const [teams, updateTeams] = useState<GameTeamExportable[] | und>();
@@ -75,11 +70,14 @@ export default function TheGame() {
       />
     ));
 
-  if (!cgame) return <PhaseLeaderContainer
-    className="the-game"
-    headTitle="Игра"
-    content={<div className="error-message flex center">Игра удалена</div>}
-  />;
+  if (!cgame)
+    return (
+      <PhaseLeaderContainer
+        className="the-game"
+        headTitle="Игра"
+        content={<div className="error-message flex center">Игра удалена</div>}
+      />
+    );
 
   return (
     <PhaseLeaderContainer
@@ -111,7 +109,7 @@ export default function TheGame() {
                     updateSelectedTimers(
                       selectedTimers.includes(timer.w)
                         ? selectedTimers.filter((wid) => wid !== timer.w)
-                        : [...selectedTimers, timer.w]
+                        : [...selectedTimers, timer.w],
                     )
                   }
                 />
@@ -120,15 +118,10 @@ export default function TheGame() {
             <LeaderGameTimerFace
               timerw={0}
               game={cgame}
-              namePostfix={isTimerStarted() && (
-                <span className="error-message">(Запущен)</span>
-              )}
+              namePostfix={isTimerStarted() && <span className="error-message">(Запущен)</span>}
             />
             {selectedTimers.length > 1 && (
-              <div
-                className="margin-big-gap pointer flex"
-                onClick={() => openFullContent()}
-              >
+              <div className="margin-big-gap pointer flex" onClick={() => openFullContent()}>
                 <EvaIcon name="eye-outline" className="margin-gap" />
                 Просмотреть объединённые результаты
               </div>
@@ -146,29 +139,18 @@ export default function TheGame() {
           />
           <h2 className="margin-big-gap-v margin-gap">
             <CopyTextButton
-              text={() => cgame.teams?.map(({ name }) => name).join("\n")}
-              description={cgame && !cgame.teams ? "Команды не собраны" : "Команды"}
+              text={() => cgame.teams?.map(({ name }) => name).join('\n')}
+              description={cgame && !cgame.teams ? 'Команды не собраны' : 'Команды'}
               message="Названия команд скопированы"
             />
           </h2>
           {cgame.teams?.map((team, teami) => {
-            return (
-              <TheGameTeam
-                key={teami}
-                team={team}
-                game={cgame}
-                redactable
-              />
-            );
+            return <TheGameTeam key={teami} team={team} game={cgame} redactable />;
           })}
           {!cgame.teams && (
-            <div className={isTeamsLoading ? "disabled" : ""}>
+            <div className={isTeamsLoading ? 'disabled' : ''}>
               {cgame && !cgame.teams && (
-                <GameTeamListComputer
-                  onUpdate={(list) => updateTeams(list)}
-                  game={cgame}
-                  noComments
-                />
+                <GameTeamListComputer onUpdate={(list) => updateTeams(list)} game={cgame} noComments />
               )}
             </div>
           )}

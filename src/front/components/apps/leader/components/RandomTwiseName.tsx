@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import propsOfClicker from "../../../../complect/clicker/propsOfClicker";
-import modalService from "../../../../complect/modal/Modal.service";
-import { useGetRandomTwiceName } from "../../../../complect/hooks/random-twice-name/useGetRandomTwiceName";
+import { useEffect, useState } from 'react';
+import propsOfClicker from '../../../../complect/clicker/propsOfClicker';
+import modalService from '../../../../complect/modal/Modal.service';
+import { useGetRandomTwiceName } from '../../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 
 export default function RandomTwiceName({
   onNameChange,
@@ -9,18 +9,16 @@ export default function RandomTwiceName({
   name,
   className,
 }: {
-  name?: string,
-  canChange?: boolean,
-  onNameChange?: (name: string) => void,
-  className?: string,
+  name?: string;
+  canChange?: boolean;
+  onNameChange?: (name: string) => void;
+  className?: string;
 }) {
-  const [pronoun, noun] = name?.split(" ") || [];
+  const [pronoun, noun] = name?.split(' ') || [];
   const nameRandomizer = useGetRandomTwiceName();
   const getTwiceName = (pronoun?: string | null, noun?: string) =>
-  nameRandomizer(pronoun, noun).join(" ").toUpperCase();
-  const [twiceName, setTwiceName] = useState(
-    getTwiceName(pronoun, noun)
-  );
+    nameRandomizer(pronoun, noun).join(' ').toUpperCase();
+  const [twiceName, setTwiceName] = useState(getTwiceName(pronoun, noun));
 
   useEffect(() => onNameChange?.(twiceName), [twiceName, onNameChange]);
 
@@ -43,23 +41,23 @@ export default function RandomTwiceName({
           let noun: string;
 
           modalService.open({
-            title: "Задать свои слова",
+            title: 'Задать свои слова',
             inputs: [
               {
-                title: "Прилагательное (муж. род)",
+                title: 'Прилагательное (муж. род)',
                 closable: false,
                 onInput: ({ value }) => (pronoun = value),
               },
               {
-                title: "Существительное",
+                title: 'Существительное',
                 closable: false,
                 onInput: ({ value }) => (noun = value),
               },
             ],
             buttons: [
-              "Отмена",
+              'Отмена',
               {
-                title: "Применить",
+                title: 'Применить',
                 onClick: () => {
                   const name = getTwiceName(pronoun, noun);
                   setTwiceName(name);
@@ -67,7 +65,7 @@ export default function RandomTwiceName({
               },
             ],
           });
-        }
+        },
       })}
     >
       {twiceName}

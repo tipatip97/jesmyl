@@ -1,25 +1,24 @@
 export const contextFieldBlankTypeDictAliases = {
-    string: 'Строка',
+  string: 'Строка',
 };
 
 export type ContextFieldBlankType = keyof typeof contextFieldBlankTypeDictAliases;
 
-
 export interface ContextFieldGeneral {
-    key: string;
+  key: string;
 }
 
 export interface ContextFieldBlankImportable extends ContextFieldBlankExportable {
-    w: number;
+  w: number;
 }
 
 export interface ContextFieldValueExportable extends ContextFieldGeneral {
-    value: string;
+  value: string;
 }
 
 export interface ContextFieldBlankExportable extends ContextFieldGeneral {
-    name: string;
-    type: ContextFieldBlankType;
-    value?: string;
-    def?: string;
+  name: string;
+  type: ContextFieldBlankType;
+  value?: string;
+  def?: string;
 }

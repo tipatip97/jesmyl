@@ -1,36 +1,36 @@
-import { useState } from "react";
-import SendButton from "../../../../../complect/sends/send-button/SendButton";
-import Dropdown from "../../../../../complect/dropdown/Dropdown";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import KeyboardInput from "../../../../../complect/keyboard/KeyboardInput";
-import useAuth from "../../../../index/useAuth";
-import { leaderExer } from "../../Leader.store";
-import { LeaderCleans } from "../LeaderCleans";
-import useLeaderContext from "../contexts/useContexts";
-import { HumanExportable, HumanImportable } from "./People.model";
+import { useState } from 'react';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
+import Dropdown from '../../../../../complect/dropdown/Dropdown';
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import useAuth from '../../../../index/useAuth';
+import { leaderExer } from '../../Leader.store';
+import { LeaderCleans } from '../LeaderCleans';
+import useLeaderContext from '../contexts/useContexts';
+import { HumanExportable, HumanImportable } from './People.model';
 
-const ufpLabels = "1".repeat(10).split("");
+const ufpLabels = '1'.repeat(10).split('');
 const isNNull = (it: unknown) => it !== null;
 
 const sexItems = [
   {
     id: true,
-    title: "Мужской",
+    title: 'Мужской',
   },
   {
     id: false,
-    title: "Женский",
+    title: 'Женский',
   },
 ];
 
 const heapItems = [
   {
     id: true,
-    title: "Добавить несколько личностей",
+    title: 'Добавить несколько личностей',
   },
   {
     id: false,
-    title: "Добавление личности",
+    title: 'Добавление личности',
   },
 ];
 
@@ -43,17 +43,20 @@ const lineAsHuman = (line: string, upperExistsNames: string[]): HumanExportable 
 
   if (match == null) return null!;
   const [, humanName, bDay, sex] = match;
-  const name = humanName.trim().replace(/\s+/g, " ");
+  const name = humanName.trim().replace(/\s+/g, ' ');
 
-  if (upperExistsNames.includes(prepareSearchName(name)) || upperExistsNames.includes(prepareSearchName(name.split(' ').reverse().join(' ')))) return null!;
+  if (
+    upperExistsNames.includes(prepareSearchName(name)) ||
+    upperExistsNames.includes(prepareSearchName(name.split(' ').reverse().join(' ')))
+  )
+    return null!;
 
   const [day, month, year] = bDay?.split(/\./) || [];
 
   if (isNaN(new Date(+year, +month - 1, +day).getTime())) return null!;
 
-
   return {
-    notes: "",
+    notes: '',
     name,
     bDay: new Date(+year, +month - 1, +day).getTime(),
     isMan: sex ? !!/м/i.exec(sex) : name.match(/[^аяь]$/i) !== null,
@@ -67,13 +70,11 @@ export default function HumanMaster({
   close,
   pushInCcontextAs,
 }: {
-  human?: HumanImportable,
-  close: () => void,
-  pushInCcontextAs?: 'mentors' | 'members',
+  human?: HumanImportable;
+  close: () => void;
+  pushInCcontextAs?: 'mentors' | 'members';
 }) {
-  const [viewHumanList, updateViewHumanList] = useState<
-    (HumanExportable | string)[] | null
-  >(null);
+  const [viewHumanList, updateViewHumanList] = useState<(HumanExportable | string)[] | null>(null);
   const [name, setName] = useState<string | nil>(human?.name);
   const [notes, setNotes] = useState<string | und>(human?.name);
   const [ufp1, setUfp1] = useState<number | nil>(human?.ufp1);
@@ -105,7 +106,6 @@ export default function HumanMaster({
     return time;
   };
 
-
   return (
     <div className="full-container flex column padding-giant-gap">
       {pushInCcontextAs || human ? null : (
@@ -124,14 +124,19 @@ export default function HumanMaster({
               multiline
               placeholder="Массив личностей"
               onChange={(value) => {
-                const existsNames = humans?.map(human => prepareSearchName(human.name)) ?? [];
+                const existsNames = humans?.map((human) => prepareSearchName(human.name)) ?? [];
 
-                updateViewHumanList(value.split(/\n+/).map((line) => lineAsHuman(line, existsNames)).filter(isNNull));
+                updateViewHumanList(
+                  value
+                    .split(/\n+/)
+                    .map((line) => lineAsHuman(line, existsNames))
+                    .filter(isNNull),
+                );
               }}
             />
           </div>
           {viewHumanList?.map((human, humani) => {
-            if (typeof human === "string") {
+            if (typeof human === 'string') {
               return (
                 <div key={humani} className="error-text">
                   {human}
@@ -144,20 +149,19 @@ export default function HumanMaster({
               <div key={humani} className="margin-big-gap-v">
                 <div>
                   Имя:
-                  <KeyboardInput
-                    value={human.name}
-                    onChange={(value) => human.name = value}
-                  />
+                  <KeyboardInput value={human.name} onChange={(value) => (human.name = value)} />
                 </div>
                 <div>
-                  Пол:{" "}
+                  Пол:{' '}
                   <Dropdown
                     id={human.isMan}
                     items={sexItems}
-                    onSelect={({ id }) => { human.isMan = id; }}
+                    onSelect={({ id }) => {
+                      human.isMan = id;
+                    }}
                   />
                 </div>
-                <div className={bDay.getTime() ? "" : "error-message"}>
+                <div className={bDay.getTime() ? '' : 'error-message'}>
                   Дата рождения:
                   <KeyboardInput
                     value={(bDay.getTime() ? bDay : null)?.toLocaleDateString()}
@@ -169,29 +173,28 @@ export default function HumanMaster({
                 </div>
                 <div>
                   Заметка:
-                  <KeyboardInput
-                    value={human.notes}
-                    onChange={(value) => human.notes = value}
-                  />
+                  <KeyboardInput value={human.notes} onChange={(value) => (human.notes = value)} />
                 </div>
               </div>
             );
           })}
-          {<div
-            className="margin-big-gap pointer"
-            onClick={() => {
-              leaderExer.send({
-                action: "addManyHumans",
-                method: "concat",
-                args: {
-                  value: viewHumanList,
-                },
-              });
-              close();
-            }}
-          >
-            Отправить список
-          </div>}
+          {
+            <div
+              className="margin-big-gap pointer"
+              onClick={() => {
+                leaderExer.send({
+                  action: 'addManyHumans',
+                  method: 'concat',
+                  args: {
+                    value: viewHumanList,
+                  },
+                });
+                close();
+              }}
+            >
+              Отправить список
+            </div>
+          }
         </>
       ) : (
         <>
@@ -201,29 +204,32 @@ export default function HumanMaster({
               value={human?.name}
               setIsUnknownSymbols={(char) => !!/[^а-яё ]/i.exec(char)}
               preferLanguage="ru"
-              onInput={!human
-                ? (value) => takeName(value)
-                : (val, prev) => {
-                  const value = takeName(val);
-                  if (value) {
-                    leaderExer.setIfCan({
-                      action: "setHumanName",
-                      scope: `setHumanName-${human.w}`,
-                      method: "set",
-                      prev,
-                      value,
-                      args: {
-                        wid: human.w,
-                        value,
-                      },
-                    }, auth);
-                  }
-                }}
+              onInput={
+                !human
+                  ? (value) => takeName(value)
+                  : (val, prev) => {
+                      const value = takeName(val);
+                      if (value) {
+                        leaderExer.setIfCan(
+                          {
+                            action: 'setHumanName',
+                            scope: `setHumanName-${human.w}`,
+                            method: 'set',
+                            prev,
+                            value,
+                            args: {
+                              wid: human.w,
+                              value,
+                            },
+                          },
+                          auth,
+                        );
+                      }
+                    }
+              }
             />
           </div>
-          {name == null && (
-            <div className="error-message">Нужно два слова с больших букв</div>
-          )}
+          {name == null && <div className="error-message">Нужно два слова с больших букв</div>}
           <div className="full-width margin-big-gap-v">
             <Dropdown
               id={isMan}
@@ -232,58 +238,59 @@ export default function HumanMaster({
               onSelect={({ id }) => {
                 setIsMan(id);
                 if (human)
-                  leaderExer.setIfCan({
-                    action: "setHumanIsMan",
-                    scope: `setHumanIsMan-${human.w}`,
-                    method: "set",
-                    prev: human.isMan,
-                    value: !isMan,
-                    args: {
-                      wid: human.w,
+                  leaderExer.setIfCan(
+                    {
+                      action: 'setHumanIsMan',
+                      scope: `setHumanIsMan-${human.w}`,
+                      method: 'set',
+                      prev: human.isMan,
                       value: !isMan,
-                      humann: human.name,
+                      args: {
+                        wid: human.w,
+                        value: !isMan,
+                        humann: human.name,
+                      },
                     },
-                  }, auth);
+                    auth,
+                  );
               }}
             />
           </div>
           {(
             [
-              ["УФП1", "ufp1", "setHumanUfp1"],
-              ["УФП2", "ufp2", "setHumanUfp2"],
+              ['УФП1', 'ufp1', 'setHumanUfp1'],
+              ['УФП2', 'ufp2', 'setHumanUfp2'],
             ] as [string, keyof HumanImportable, string][]
           ).map(([label, fieldn, action], placei) => {
             return (
-              <div
-                key={action}
-                className="full-width margin-big-gap-v flex between"
-              >
-                {label + " "}
+              <div key={action} className="full-width margin-big-gap-v flex between">
+                {label + ' '}
                 {ufpLabels.map((_, ufpi) => {
                   return (
                     <EvaIcon
                       key={ufpi}
                       className="pointer"
-                      name={((placei ? ufp2 : ufp1) || 0) - 1 === ufpi
-                        ? "radio-button-on"
-                        : "radio-button-off"}
+                      name={((placei ? ufp2 : ufp1) || 0) - 1 === ufpi ? 'radio-button-on' : 'radio-button-off'}
                       onClick={() => {
                         const value = ufpi + 1;
                         placei ? setUfp2(value) : setUfp1(value);
 
                         if (human) {
-                          leaderExer.setIfCan({
-                            action,
-                            scope: `${action}-${human.w}`,
-                            method: "set",
-                            prev: human[fieldn],
-                            value,
-                            args: {
-                              wid: human.w,
+                          leaderExer.setIfCan(
+                            {
+                              action,
+                              scope: `${action}-${human.w}`,
+                              method: 'set',
+                              prev: human[fieldn],
                               value,
-                              humann: human.name,
+                              args: {
+                                wid: human.w,
+                                value,
+                                humann: human.name,
+                              },
                             },
-                          }, auth);
+                            auth,
+                          );
                         }
                       }}
                     />
@@ -295,116 +302,119 @@ export default function HumanMaster({
           <div className="full-width margin-big-gap-v">
             Дата рождения
             <KeyboardInput
-              value={human?.bDay ? new Date(human.bDay).toLocaleDateString() : ""}
+              value={human?.bDay ? new Date(human.bDay).toLocaleDateString() : ''}
               preferLanguage="ru"
-              onInput={!human
-                ? (value) => takeTime(value)
-                : (value) => {
-                  const time = takeTime(value);
-                  if (time) {
-                    leaderExer.setIfCan({
-                      action: "setHumanBDay",
-                      scope: `setHumanBDay-${human.w}`,
-                      method: "set",
-                      prev: human.bDay,
-                      value: time,
-                      args: {
-                        wid: human.w,
-                        value: time,
-                        humann: human.name,
-                      },
-                    }, auth);
-                  }
-                }}
+              onInput={
+                !human
+                  ? (value) => takeTime(value)
+                  : (value) => {
+                      const time = takeTime(value);
+                      if (time) {
+                        leaderExer.setIfCan(
+                          {
+                            action: 'setHumanBDay',
+                            scope: `setHumanBDay-${human.w}`,
+                            method: 'set',
+                            prev: human.bDay,
+                            value: time,
+                            args: {
+                              wid: human.w,
+                              value: time,
+                              humann: human.name,
+                            },
+                          },
+                          auth,
+                        );
+                      }
+                    }
+              }
             />
           </div>
-          {bDay == null && (
-            <div className="error-message">Некорректная дата</div>
-          )}
+          {bDay == null && <div className="error-message">Некорректная дата</div>}
           <div className="full-width margin-big-gap-v">
             Заметки
             <KeyboardInput
               value={notes}
               preferLanguage="ru"
-              onInput={!human
-                ? (val) => setNotes(val)
-                : (value, prev) => {
-                  leaderExer.setIfCan({
-                    action: "setHumanNotes",
-                    scope: `setHumanNotes-${human.w}`,
-                    method: "set",
-                    prev,
-                    value,
-                    args: {
-                      wid: human.w,
-                      value,
-                      humann: human.name,
-                    },
-                  }, auth);
-                }}
+              onInput={
+                !human
+                  ? (val) => setNotes(val)
+                  : (value, prev) => {
+                      leaderExer.setIfCan(
+                        {
+                          action: 'setHumanNotes',
+                          scope: `setHumanNotes-${human.w}`,
+                          method: 'set',
+                          prev,
+                          value,
+                          args: {
+                            wid: human.w,
+                            value,
+                            humann: human.name,
+                          },
+                        },
+                        auth,
+                      );
+                    }
+              }
             />
           </div>
           <div className="flex around full-width">
             <div
               className="pointer"
               style={{
-                color: isInactive ? "green" : "red",
+                color: isInactive ? 'green' : 'red',
               }}
               onClick={() => {
                 setIsInactive(!isInactive);
                 if (human)
-                  leaderExer.setIfCan({
-                    action: "setHumanInactive",
-                    scope: `setHumanInactive-${human.w}`,
-                    method: "set",
-                    prev: !!human.isInactive,
-                    value: !isInactive,
-                    args: {
-                      wid: human.w,
+                  leaderExer.setIfCan(
+                    {
+                      action: 'setHumanInactive',
+                      scope: `setHumanInactive-${human.w}`,
+                      method: 'set',
+                      prev: !!human.isInactive,
                       value: !isInactive,
-                      humann: human.name,
+                      args: {
+                        wid: human.w,
+                        value: !isInactive,
+                        humann: human.name,
+                      },
                     },
-                  }, auth);
+                    auth,
+                  );
               }}
             >
-              {isInactive
-                ? "Разблокировать личность"
-                : "Заблокировать личность"}
+              {isInactive ? 'Разблокировать личность' : 'Заблокировать личность'}
             </div>
           </div>
           {bDay ? (
             <SendButton
-              title={human ? "Сохранить" : "Добавить"}
-              confirm={human ? null : "Добавить новую личность?"}
+              title={human ? 'Сохранить' : 'Добавить'}
+              confirm={human ? null : 'Добавить новую личность?'}
               onSuccess={(result) => {
                 if (pushInCcontextAs && result && ccontext) {
                   const humanw = result.execs?.list[0]?.value.w;
-                  if (humanw)
-                    LeaderCleans
-                      .addContextHuman(ccontext.w, humanw, pushInCcontextAs)
-                      .then(() => close());
+                  if (humanw) LeaderCleans.addContextHuman(ccontext.w, humanw, pushInCcontextAs).then(() => close());
                 }
               }}
               onSend={() => {
                 if (human) return leaderExer.load();
-                return leaderExer.send(
-                  {
-                    action: "addHuman",
-                    method: "push",
-                    args: {
-                      name,
-                      isMan,
-                      notes,
-                      ufp1,
-                      ufp2,
-                      bDay,
-                      ts: Date.now() + Math.random(),
-                      isInactive,
-                    } as HumanExportable,
-                    onLoad: (exec, result) => {
-
-                    },
-                  });
+                return leaderExer.send({
+                  action: 'addHuman',
+                  method: 'push',
+                  args: {
+                    name,
+                    isMan,
+                    notes,
+                    ufp1,
+                    ufp2,
+                    bDay,
+                    ts: Date.now() + Math.random(),
+                    isInactive,
+                  } as HumanExportable,
+                  onLoad: (exec, result) => {},
+                });
               }}
             />
           ) : null}

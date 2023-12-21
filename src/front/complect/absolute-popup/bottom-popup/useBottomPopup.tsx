@@ -1,15 +1,17 @@
-import { ReactNode, useCallback, useState } from "react";
-import mylib from "../../my-lib/MyLib";
-import "../AbsolutePopup.scss";
-import { BottomPopup } from "./BottomPopup";
-import { bottomPopupContentPreparer } from "./item-preparer";
-import { BottomPopupContenter } from "./model";
-
+import { ReactNode, useCallback, useState } from 'react';
+import mylib from '../../my-lib/MyLib';
+import '../AbsolutePopup.scss';
+import { BottomPopup } from './BottomPopup';
+import { bottomPopupContentPreparer } from './item-preparer';
+import { BottomPopupContenter } from './model';
 
 type OpenCallback = () => void;
 type OpenWithPropsCallback<Props> = (props: Props) => void;
 
-export function useBottomPopup<Props>(contenter: BottomPopupContenter<Props>, topProps: Props = {} as never): [ReactNode, OpenCallback, OpenWithPropsCallback<Props>] {
+export function useBottomPopup<Props>(
+  contenter: BottomPopupContenter<Props>,
+  topProps: Props = {} as never,
+): [ReactNode, OpenCallback, OpenWithPropsCallback<Props>] {
   const [props, setProps] = useState<Props | und>();
   const [isOpen, setIsOpen] = useState(false);
   const [isWasOpen, setIsWasOpen] = useState(false);

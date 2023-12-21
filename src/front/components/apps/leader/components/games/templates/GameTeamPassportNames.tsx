@@ -1,12 +1,8 @@
-import PrintableTemplate from "../../templates/PrintableTemplate";
-import useGames from "../useGames";
-import "./GameTemplates.scss";
+import PrintableTemplate from '../../templates/PrintableTemplate';
+import useGames from '../useGames';
+import './GameTemplates.scss';
 
-export default function GameTeamPassportNames({
-  selectedTimers,
-}: {
-  selectedTimers?: number[];
-}) {
+export default function GameTeamPassportNames({ selectedTimers }: { selectedTimers?: number[] }) {
   const { cgame } = useGames();
   const gameTimers = cgame?.timers;
   const joins = cgame?.timerFields?.joins;
@@ -14,11 +10,7 @@ export default function GameTeamPassportNames({
     (selectedTimers?.length &&
       gameTimers &&
       selectedTimers
-        .map(
-          (wid) =>
-            gameTimers.find((timer) => !timer.isInactive && timer.w === wid)
-              ?.name
-        )
+        .map((wid) => gameTimers.find((timer) => !timer.isInactive && timer.w === wid)?.name)
         .filter((timer) => timer)) ||
     cgame?.timerNames;
 
@@ -38,14 +30,12 @@ export default function GameTeamPassportNames({
               <>
                 <div
                   className="for-print break-inside-avoid padding-giant-gap"
-                  style={{ borderBottom: "dotted 1px black" }}
+                  style={{ borderBottom: 'dotted 1px black' }}
                   key={teami}
                 >
                   <>
                     <div className="tpl-title">{cgame?.name}</div>
-                    <div className="tpl-subtitle margin-gap">
-                      Паспорт команды "{team.name}"
-                    </div>
+                    <div className="tpl-subtitle margin-gap">Паспорт команды "{team.name}"</div>
                   </>
                 </div>
               </>

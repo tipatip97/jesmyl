@@ -1,9 +1,9 @@
-import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
-import PhaseLeaderContainer from "../../phase-container/PhaseLeaderContainer";
-import { useLeaderCcontext } from "../contexts/useContexts";
-import GroupFieldBlanks from "./fields/Blanks";
-import GroupFace from "./GroupFace";
-import { LeaderGroupsMore } from "./GroupsMore";
+import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import PhaseLeaderContainer from '../../phase-container/PhaseLeaderContainer';
+import { useLeaderCcontext } from '../contexts/useContexts';
+import GroupFieldBlanks from './fields/Blanks';
+import GroupFace from './GroupFace';
+import { LeaderGroupsMore } from './GroupsMore';
 
 export default function GroupList() {
   const ccontext = useLeaderCcontext();

@@ -1,105 +1,92 @@
-import { useState } from "react";
-import Dropdown from "../../../../../../../complect/dropdown/Dropdown";
-import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
-import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
-import { TeamGameImportable } from "../../../../Leader.model";
-import { GameTimerImportable, GameTimerMode, GameTimerSortDirection } from "../GameTimer.model";
-import TimerCompetitionsSelector from "./TimerCompetitionsSelector";
-import TimerModeSelector from "./TimerModeSelector";
-import TimerSortRatingVariantSelector from "./TimerSortRatingVariantSelector";
-import { LeaderCleans } from "../../../LeaderCleans";
+import { useState } from 'react';
+import Dropdown from '../../../../../../../complect/dropdown/Dropdown';
+import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
+import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
+import { TeamGameImportable } from '../../../../Leader.model';
+import { GameTimerImportable, GameTimerMode, GameTimerSortDirection } from '../GameTimer.model';
+import TimerCompetitionsSelector from './TimerCompetitionsSelector';
+import TimerModeSelector from './TimerModeSelector';
+import TimerSortRatingVariantSelector from './TimerSortRatingVariantSelector';
+import { LeaderCleans } from '../../../LeaderCleans';
 
 export default function TimerInfoPanel({
-    onNameChange,
-    onMapTimer,
-    timer,
-    game,
-    isNewTimer,
-    mode,
-    sort,
-    joins,
+  onNameChange,
+  onMapTimer,
+  timer,
+  game,
+  isNewTimer,
+  mode,
+  sort,
+  joins,
 }: {
-    game?: TeamGameImportable,
-    timer: GameTimerImportable,
-    joins: number,
-    isNewTimer: boolean,
-    mode: GameTimerMode,
-    sort: GameTimerSortDirection,
-    onNameChange: (name: string) => void,
-    onMapTimer: (map: (timer: GameTimerImportable) => GameTimerImportable, isRejectSave?: boolean) => void
+  game?: TeamGameImportable;
+  timer: GameTimerImportable;
+  joins: number;
+  isNewTimer: boolean;
+  mode: GameTimerMode;
+  sort: GameTimerSortDirection;
+  onNameChange: (name: string) => void;
+  onMapTimer: (map: (timer: GameTimerImportable) => GameTimerImportable, isRejectSave?: boolean) => void;
 }) {
-    const [isWriteName, setIsWriteName] = useState(false);
-    const [name, setName] = useState(timer?.name);
+  const [isWriteName, setIsWriteName] = useState(false);
+  const [name, setName] = useState(timer?.name);
 
-    const changeName = (name: string) => {
-        onMapTimer((timer) => ({ ...timer, name: name }));
-        onNameChange(name);
-        setName(name);
-    };
+  const changeName = (name: string) => {
+    onMapTimer((timer) => ({ ...timer, name: name }));
+    onNameChange(name);
+    setName(name);
+  };
 
-    const membersInGame = game?.teams && LeaderCleans.rateSortedTimerTeams(timer, game, true).length;
+  const membersInGame = game?.teams && LeaderCleans.rateSortedTimerTeams(timer, game, true).length;
 
-    return <>{isNewTimer ? (
+  return (
+    <>
+      {isNewTimer ? (
         <>
-            <span>Название</span>
-            {!isWriteName &&
-                game?.timerNames?.length &&
-                (!name || game.timerNames.includes(name)) ? (
-                <>
-                    <Dropdown
-                        placeholder="Выбрать название"
-                        id={timer.name}
-                        items={game.timerNames.map((name) => ({
-                            id: name,
-                            title: name,
-                        }))}
-                        onSelect={({ id }) => changeName(id)}
-                    />
-                    <EvaButton
-                        name="edit-2-outline"
-                        onClick={() => setIsWriteName(true)}
-                    />
-                </>
-            ) : (
-                <>
-                    <KeyboardInput
-                        preferLanguage="ru"
-                        value={name}
-                        onInput={(value) => changeName(value)}
-                    />
-                    {!game?.timerNames?.length || (
-                        <EvaButton
-                            name="list-outline"
-                            onClick={() => {
-                                setIsWriteName(false);
-                                changeName("");
-                            }}
-                        />
-                    )}
-                </>
-            )}
+          <span>Название</span>
+          {!isWriteName && game?.timerNames?.length && (!name || game.timerNames.includes(name)) ? (
+            <>
+              <Dropdown
+                placeholder="Выбрать название"
+                id={timer.name}
+                items={game.timerNames.map((name) => ({
+                  id: name,
+                  title: name,
+                }))}
+                onSelect={({ id }) => changeName(id)}
+              />
+              <EvaButton name="edit-2-outline" onClick={() => setIsWriteName(true)} />
+            </>
+          ) : (
+            <>
+              <KeyboardInput preferLanguage="ru" value={name} onInput={(value) => changeName(value)} />
+              {!game?.timerNames?.length || (
+                <EvaButton
+                  name="list-outline"
+                  onClick={() => {
+                    setIsWriteName(false);
+                    changeName('');
+                  }}
+                />
+              )}
+            </>
+          )}
         </>
-    ) : (
+      ) : (
         <div>
-            <div className="text-bold color--7">{timer.name}</div>
-            <TimerModeSelector
-                mode={mode}
-                isRedact={false}
-            />
-            <TimerCompetitionsSelector
-                joins={joins}
-                isRedact={false}
-            />
-            <TimerSortRatingVariantSelector isRedact={false} sort={sort} />
-            {mode !== GameTimerMode.Messager && (
-                <div>
-                    Команд участвовало:{" "}
-                    {game?.teams
-                        && (game.teams.length === membersInGame
-                            ? game.teams.length
-                            : `${membersInGame} / ${game.teams.length}`)}
-                </div>
-            )}
+          <div className="text-bold color--7">{timer.name}</div>
+          <TimerModeSelector mode={mode} isRedact={false} />
+          <TimerCompetitionsSelector joins={joins} isRedact={false} />
+          <TimerSortRatingVariantSelector isRedact={false} sort={sort} />
+          {mode !== GameTimerMode.Messager && (
+            <div>
+              Команд участвовало:{' '}
+              {game?.teams &&
+                (game.teams.length === membersInGame ? game.teams.length : `${membersInGame} / ${game.teams.length}`)}
+            </div>
+          )}
         </div>
-    )}</>;
+      )}
+    </>
+  );
 }

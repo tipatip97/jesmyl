@@ -1,119 +1,127 @@
-import smylib from "../../shared/SMyLib";
+import smylib from '../../shared/SMyLib';
 
 const zeroEndTrimReg = /0+$/;
 
 export interface ScheduleWidgetRightTexts<Right> {
-    id: Right,
-    title: string,
-    description?: [string, string?],
-    always?: boolean,
-    hidden?: boolean,
-    role?: string[],
+  id: Right;
+  title: string;
+  description?: [string, string?];
+  always?: boolean;
+  hidden?: boolean;
+  role?: string[];
 }
 
 export class ScheduleWidgetRightsCtrl<Right extends number = number> {
-    texts: ScheduleWidgetRightTexts<Right>[];
-    private enumOrder: Right[];
+  texts: ScheduleWidgetRightTexts<Right>[];
+  private enumOrder: Right[];
 
-    constructor(texts: ScheduleWidgetRightTexts<Right>[], enumOrder?: Right[]) {
-        if (enumOrder === undefined) enumOrder = texts.map(({ id }) => id)
-        this.enumOrder = enumOrder;
+  constructor(texts: ScheduleWidgetRightTexts<Right>[], enumOrder?: Right[]) {
+    if (enumOrder === undefined) enumOrder = texts.map(({ id }) => id);
+    this.enumOrder = enumOrder;
 
-        this.texts = [
-            {
-                id: texts.length + 30,
-                title: '',
-                hidden: true,
-            } as ScheduleWidgetRightTexts<Right>
-        ].concat(texts).sort((a, b) => this.enumOrder.indexOf(a.id) - this.enumOrder.indexOf(b.id));
+    this.texts = [
+      {
+        id: texts.length + 30,
+        title: '',
+        hidden: true,
+      } as ScheduleWidgetRightTexts<Right>,
+    ]
+      .concat(texts)
+      .sort((a, b) => this.enumOrder.indexOf(a.id) - this.enumOrder.indexOf(b.id));
+  }
+
+  getAllRights = () => {
+    return parseInt(Array(this.texts.length).fill('1').join(''), 2);
+  };
+
+  rightLevel = (ruleKey: Right) => this.enumOrder.indexOf(ruleKey);
+
+  collectRights = (...args: Right[]) => {
+    let R = 1;
+    args.forEach((ruleKey) => (R = this.switchRights(R, ruleKey, '1')));
+    return R;
+  };
+
+  includeRightsUpTo = (ruleKey: Right) => {
+    let R = 1;
+    const ind = this.enumOrder.indexOf(ruleKey);
+
+    for (let i = this.enumOrder.length - 1; i >= ind; i--) {
+      R = this.switchRights(R, this.enumOrder[i], '1');
     }
 
-    getAllRights = () => {
-        return parseInt(Array(this.texts.length).fill('1').join(''), 2);
-    };
+    return R;
+  };
 
-    rightLevel = (ruleKey: Right) => this.enumOrder.indexOf(ruleKey);
+  checkIsCan = (R: number | nil, rightR: number | nil) => {
+    return this.rightsBalance(R) >= this.rightsBalance(rightR);
+  };
 
-    collectRights = (...args: Right[]) => {
-        let R = 1;
-        args.forEach(ruleKey => R = this.switchRights(R, ruleKey, '1'));
-        return R;
-    };
+  rightsBalance = (R: number | nil): number => {
+    if (isEmptyR(R)) return -1;
+    const rstr = R.toString(2);
 
-    includeRightsUpTo = (ruleKey: Right) => {
-        let R = 1;
-        const ind = this.enumOrder.indexOf(ruleKey);
+    for (let i = 0; i < this.enumOrder.length; i++) {
+      if (rstr[this.enumOrder[i] as never] !== '1') return i;
+    }
 
-        for (let i = this.enumOrder.length - 1; i >= ind; i--) {
-            R = this.switchRights(R, this.enumOrder[i], '1');
-        }
+    return this.enumOrder.length;
+  };
 
-        return R;
-    };
+  checkIsHasIndividualRights = (R: number | nil, ruleKey: Right) => {
+    if (isEmptyR(R)) return false;
+    return R.toString(2)[ruleKey] === '1';
+  };
 
-    checkIsCan = (R: number | nil, rightR: number | nil) => {
-        return this.rightsBalance(R) >= this.rightsBalance(rightR);
-    };
+  checkIsHasRights = (R: number | nil, ruleKey: Right) => {
+    if (isEmptyR(R)) return false;
+    const rstr = R.toString(2);
+    const ind = this.enumOrder.indexOf(ruleKey);
 
-    rightsBalance = (R: number | nil): number => {
-        if (isEmptyR(R)) return -1;
-        const rstr = R.toString(2);
+    if (ind < 0) return false;
 
-        for (let i = 0; i < this.enumOrder.length; i++) {
-            if (rstr[this.enumOrder[i] as never] !== '1') return i;
-        }
+    for (let i = 0; i <= ind; i++) {
+      if (rstr[this.enumOrder[i]] !== '1') return false;
+    }
 
-        return this.enumOrder.length;
-    };
+    return true;
+  };
 
-    checkIsHasIndividualRights = (R: number | nil, ruleKey: Right) => {
-        if (isEmptyR(R)) return false;
-        return R.toString(2)[ruleKey] === '1';
-    };
+  switchRights = (R: number | nil, ruleKey: Right, set?: '1' | '0' | nil) => {
+    let arr = (R || 1).toString(2).split('');
 
-    checkIsHasRights = (R: number | nil, ruleKey: Right) => {
-        if (isEmptyR(R)) return false;
-        const rstr = R.toString(2);
-        const ind = this.enumOrder.indexOf(ruleKey);
+    if (set == null) arr[ruleKey] = '' + +!+arr[ruleKey];
+    else arr[ruleKey] = set;
 
-        if (ind < 0) return false;
+    const bin = this.texts
+      .map((_, i) => (arr[i] === '1' ? '1' : '0'))
+      .join('')
+      .replace(zeroEndTrimReg, '');
+    return parseInt(bin || '1', 2);
+  };
 
-        for (let i = 0; i <= ind; i++) {
-            if (rstr[this.enumOrder[i]] !== '1') return false;
-        }
+  static switchRights = (R: number | nil, ruleKey: number, len: number) => {
+    let arr = (R || 1).toString(2).split('');
 
-        return true;
-    };
+    arr[ruleKey + 1] = '' + +!+arr[ruleKey + 1];
 
-    switchRights = (R: number | nil, ruleKey: Right, set?: '1' | '0' | nil) => {
-        let arr = (R || 1).toString(2).split('');
+    const bin = Array(len + 1)
+      .fill('')
+      .map((_, i) => (arr[i] === '1' ? '1' : '0'))
+      .join('')
+      .replace(zeroEndTrimReg, '');
 
-        if (set == null) arr[ruleKey] = '' + +!+arr[ruleKey];
-        else arr[ruleKey] = set;
+    return parseInt(bin || '1', 2);
+  };
 
-        const bin = this.texts.map((_, i) => arr[i] === '1' ? '1' : '0').join('').replace(zeroEndTrimReg, '');
-        return parseInt(bin || '1', 2);
-    };
-
-
-    static switchRights = (R: number | nil, ruleKey: number, len: number) => {
-        let arr = (R || 1).toString(2).split('');
-
-        arr[ruleKey + 1] = '' + +!+arr[ruleKey + 1];
-
-        const bin = Array(len + 1).fill('').map((_, i) => arr[i] === '1' ? '1' : '0').join('').replace(zeroEndTrimReg, '');
-
-        return parseInt(bin || '1', 2);
-    };
-
-    static checkIsHasIndividualRights = (R: number | nil, ruleKey: number) => {
-        if (isEmptyR(R)) return false;
-        return R.toString(2)[ruleKey + 1] === '1';
-    };
+  static checkIsHasIndividualRights = (R: number | nil, ruleKey: number) => {
+    if (isEmptyR(R)) return false;
+    return R.toString(2)[ruleKey + 1] === '1';
+  };
 }
 
 const isEmptyR = (R: number | nil): R is nil => R === undefined || R === null || R < 2;
 
 export const packScheduleWidgetInviteLink = (schedulew: number, userMi: number) => {
-    return smylib.md5(schedulew + ':' + userMi);
+  return smylib.md5(schedulew + ':' + userMi);
 };

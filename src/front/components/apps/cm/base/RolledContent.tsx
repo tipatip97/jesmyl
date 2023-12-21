@@ -1,18 +1,16 @@
-import { HTMLAttributes, PropsWithChildren, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import useFullScreen from "../../../../complect/useFullscreen";
-import { RootState } from "../../../../shared/store";
-import { CmRollMode } from "../Cm.model";
-import di from "../Cm.store";
-import useCmNav from "./useCmNav";
+import { HTMLAttributes, PropsWithChildren, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import useFullScreen from '../../../../complect/useFullscreen';
+import { RootState } from '../../../../shared/store';
+import { CmRollMode } from '../Cm.model';
+import di from '../Cm.store';
+import useCmNav from './useCmNav';
 
 const speedRollKfSelector = (state: RootState) => state.cm.speedRollKf;
 
-export default function RollControled(
-  props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>
-) {
+export default function RollControled(props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
   const { toggleRoll, rollMode } = useRoll();
   const [isFullscreen] = useFullScreen();
   speedRollKf = useSelector(speedRollKfSelector);
@@ -23,13 +21,9 @@ export default function RollControled(
       {...props}
       onClick={toggleRoll}
       ref={(element) => element && (container = element.parentElement)}
-      className={'roll-controled-container full-width full-height'
-        + (isFullscreen ? " fullscreen" : "")}
+      className={'roll-controled-container full-width full-height' + (isFullscreen ? ' fullscreen' : '')}
     >
-      <div
-        className={'roll-controls flex column center'
-          + (rollMode === "play" ? " open" : "")}
-      >
+      <div className={'roll-controls flex column center' + (rollMode === 'play' ? ' open' : '')}>
         <EvaIcon
           name="minus"
           onClick={(event) => {
@@ -61,8 +55,7 @@ export default function RollControled(
   );
 }
 
-const setRollInterval = (): number =>
-  (interval = (20 - speedRollKf || 0.7) * 30);
+const setRollInterval = (): number => (interval = (20 - speedRollKf || 0.7) * 30);
 
 let speedRollKf = 10;
 let container: HTMLElement | null = null;
@@ -85,17 +78,17 @@ export function useRoll() {
     },
     speedRollKf,
     toggleRoll: () => {
-      if (rollMode !== "play") {
-        ret.switchRollMode("play");
+      if (rollMode !== 'play') {
+        ret.switchRollMode('play');
         startRoll(ret.switchRollMode);
 
         registerBackAction(() => {
-          const was = rollMode === "play";
+          const was = rollMode === 'play';
           ret.switchRollMode(null);
           return was;
         });
       } else {
-        ret.switchRollMode("pause");
+        ret.switchRollMode('pause');
       }
     },
   };
@@ -103,11 +96,7 @@ export function useRoll() {
 }
 
 const updateSpeedRollKf = (delta: 1 | -1 | 0) => {
-  if (
-    !speedScreen ||
-    (delta && (delta < 0 ? speedRollKf <= 1 : speedRollKf >= 20))
-  )
-    return;
+  if (!speedScreen || (delta && (delta < 0 ? speedRollKf <= 1 : speedRollKf >= 20))) return;
   speedRollKf += delta;
   setRollInterval();
   speedScreen.innerText = (speedRollKf / 10).toFixed(1);
@@ -118,13 +107,13 @@ const startRoll = (switchRollMode: (rollMode: CmRollMode) => void) => {
 
   const scroll = (dec: number, container: HTMLElement) =>
     setTimeout(() => {
-      if (rollMode !== "play") return;
+      if (rollMode !== 'play') return;
       const prevScrollTop = container.scrollTop;
       container.scrollTop += 1;
       const diff = container.scrollTop === prevScrollTop ? 1 : 0;
 
       if (dec > 0) scroll(dec - diff, container);
-      else switchRollMode("pause");
+      else switchRollMode('pause');
     }, interval);
 
   scroll(10, container);
@@ -132,32 +121,32 @@ const startRoll = (switchRollMode: (rollMode: CmRollMode) => void) => {
 
 const RollContent = styled.div`
   padding: 0;
-  transition: padding .3s;
+  transition: padding 0.3s;
 
   &.fullscreen {
-      padding-top: 30%;
+    padding-top: 30%;
   }
 
   .roll-controls {
-      --height: 100px;
+    --height: 100px;
 
-      position: fixed;
-      top: calc(50vh - var(--height) / 2);
-      right: 10px;
-      height: var(--height);
-      opacity: 0;
-      pointer-events: none;
-      cursor: pointer;
-      transition: opacity .7s;
-      z-index: 1;
+    position: fixed;
+    top: calc(50vh - var(--height) / 2);
+    right: 10px;
+    height: var(--height);
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    transition: opacity 0.7s;
+    z-index: 1;
 
-      >* {
-          margin: 5px;
-      }
+    > * {
+      margin: 5px;
+    }
 
-      &.open {
-          opacity: .7;
-          pointer-events: all;
-      }
-}
+    &.open {
+      opacity: 0.7;
+      pointer-events: all;
+    }
+  }
 `;

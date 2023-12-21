@@ -1,11 +1,18 @@
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { BaseNamed } from "../../base/BaseNamed";
-import { blockStyles } from "./block-styles/BlockStyles";
-import { StyleBlock } from "./block-styles/StyleBlock";
-import { chordBemoleEquivalent, gSimpleHashChordReg, gSimpleHashedEachLetterChordReg, iRuUaReg, simpleHashChords, translationPushKinds } from "./Com.complect";
-import { IExportableCom } from "./Com.model";
-import { Order } from "./order/Order";
-import { IExportableOrder, IExportableOrderTop, OrderTopHeaderBag } from "./order/Order.model";
+import mylib from '../../../../../complect/my-lib/MyLib';
+import { BaseNamed } from '../../base/BaseNamed';
+import { blockStyles } from './block-styles/BlockStyles';
+import { StyleBlock } from './block-styles/StyleBlock';
+import {
+  chordBemoleEquivalent,
+  gSimpleHashChordReg,
+  gSimpleHashedEachLetterChordReg,
+  iRuUaReg,
+  simpleHashChords,
+  translationPushKinds,
+} from './Com.complect';
+import { IExportableCom } from './Com.model';
+import { Order } from './order/Order';
+import { IExportableOrder, IExportableOrderTop, OrderTopHeaderBag } from './order/Order.model';
 
 export class Com extends BaseNamed<IExportableCom> {
   initial: Record<string, any>;
@@ -32,42 +39,68 @@ export class Com extends BaseNamed<IExportableCom> {
     this.pullTransPosition(top);
   }
 
-  get texts() { return this.getBasic('t'); }
-  set texts(val) { this.setExportable('t', val); }
+  get texts() {
+    return this.getBasic('t');
+  }
+  set texts(val) {
+    this.setExportable('t', val);
+  }
 
-  get audio() { return this.getBasicOr('a', ''); }
-  set audio(val) { this.setExportable('a', val); }
+  get audio() {
+    return this.getBasicOr('a', '');
+  }
+  set audio(val) {
+    this.setExportable('a', val);
+  }
 
-  get refs() { return this.getBasic('r'); }
-  set refs(val) { this.setExportable('r', val); }
+  get refs() {
+    return this.getBasic('r');
+  }
+  set refs(val) {
+    this.setExportable('r', val);
+  }
 
-  get chords() { return this.getBasic('c'); }
+  get chords() {
+    return this.getBasic('c');
+  }
   set chords(val) {
     this.setExportable('c', val);
     this.resetChordLabels();
   }
 
-  get translationPushKind() { return this.getBasicOr('k', 0); }
-  set translationPushKind(val) { this.setExportable('k', val); }
+  get translationPushKind() {
+    return this.getBasicOr('k', 0);
+  }
+  set translationPushKind(val) {
+    this.setExportable('k', val);
+  }
 
-  get isBemoled() { return this.getBasicOr('b', 0); }
+  get isBemoled() {
+    return this.getBasicOr('b', 0);
+  }
   set isBemoled(val) {
     this.setExportable('b', val ? 1 : 0);
     this.resetChordLabels();
   }
 
-  get initialTransPosition() { return mylib.def(this.initial.p, this.getBasic('p')); }
+  get initialTransPosition() {
+    return mylib.def(this.initial.p, this.getBasic('p'));
+  }
   set initialTransPosition(val) {
     if (this.initial.p == null) this.initial.p = mylib.typ(0, val);
     this.initialTransPos = mylib.typ(0, val);
   }
 
-  get initialTransPos() { return mylib.def(this.initial.pos, this.initial.p, this.getBasic('p')); }
+  get initialTransPos() {
+    return mylib.def(this.initial.pos, this.initial.p, this.getBasic('p'));
+  }
   set initialTransPos(val) {
     if (this.initial.pos == null) this.initial.pos = mylib.typ(0, val);
   }
 
-  get transPosition() { return this.getBasic('p'); }
+  get transPosition() {
+    return this.getBasic('p');
+  }
   set transPosition(value) {
     const v: number = mylib.typ(0, value) as number;
     const val = v > 11 ? v % 12 : v < 0 ? 12 + v : v;
@@ -90,11 +123,19 @@ export class Com extends BaseNamed<IExportableCom> {
     this.isBemoled = this.isBemoled ? 0 : 1;
   }
 
-  get langi() { return this.getBasicOr('l', 0); }
-  set langi(val: number) { this.setExportable('l', val); }
+  get langi() {
+    return this.getBasicOr('l', 0);
+  }
+  set langi(val: number) {
+    this.setExportable('l', val);
+  }
 
-  get langn() { return Com.langs[this.langi || 0]; }
-  static get langs() { return ['русский', 'украинский']; }
+  get langn() {
+    return Com.langs[this.langi || 0];
+  }
+  static get langs() {
+    return ['русский', 'украинский'];
+  }
 
   getVowelPositions(textLine: string) {
     const R = [];
@@ -106,19 +147,13 @@ export class Com extends BaseNamed<IExportableCom> {
     const cindex = simpleHashChords.indexOf(chord);
     const di = cindex - -delta;
     const len = simpleHashChords.length;
-    const nindex = di < 0
-      ? len - -di
-      : di > len
-        ? di % len
-        : di === len || -di === len
-          ? 0
-          : di;
+    const nindex = di < 0 ? len - -di : di > len ? di % len : di === len || -di === len ? 0 : di;
 
     return simpleHashChords[nindex];
   }
 
   transBlock(cblock: string, delta = this.transPosition) {
-    return cblock?.replace(gSimpleHashChordReg, chord => this.transChord(chord, delta));
+    return cblock?.replace(gSimpleHashChordReg, (chord) => this.transChord(chord, delta));
   }
 
   transBlocks(delta?: number) {
@@ -142,7 +177,10 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   getOrderedTexts(isIncluseEndstars = true) {
-    return this.getOrderedBlocks().map((lines, linesi, linesa) => lines?.join('\n') + (isIncluseEndstars && linesa.length - 1 === linesi ? '\n* * *' : ''));
+    return this.getOrderedBlocks().map(
+      (lines, linesi, linesa) =>
+        lines?.join('\n') + (isIncluseEndstars && linesa.length - 1 === linesi ? '\n* * *' : ''),
+    );
   }
 
   isCanAddTranslationPart(ord: Order) {
@@ -150,10 +188,11 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   getOrderedBlocks() {
-    const textBeats = this.orders?.reduce((text, ord) =>
-      text + (!this.isCanAddTranslationPart(ord) ? '' : (text ? '\n' : '') + ord.repeated), '').split(/\n/);
+    const textBeats = this.orders
+      ?.reduce((text, ord) => text + (!this.isCanAddTranslationPart(ord) ? '' : (text ? '\n' : '') + ord.repeated), '')
+      .split(/\n/);
 
-    const texts = this.translationMap().map(peaceSize => {
+    const texts = this.translationMap().map((peaceSize) => {
       return textBeats?.splice(0, peaceSize);
     });
 
@@ -168,7 +207,7 @@ export class Com extends BaseNamed<IExportableCom> {
     const orders = this.orders ?? [];
     const len = orders.length;
 
-    for (let ordi = 0; ordi < len;) {
+    for (let ordi = 0; ordi < len; ) {
       const ord = orders[ordi];
 
       if (!this.isCanAddTranslationPart(ord)) {
@@ -180,8 +219,7 @@ export class Com extends BaseNamed<IExportableCom> {
       let nextOrd = orders[++ordi];
 
       while (nextOrd?.top.isInherit) {
-        if (this.isCanAddTranslationPart(nextOrd))
-          curr += nextOrd.text.split(/\n/).length;
+        if (this.isCanAddTranslationPart(nextOrd)) curr += nextOrd.text.split(/\n/).length;
 
         nextOrd = orders[++ordi];
       }
@@ -190,11 +228,16 @@ export class Com extends BaseNamed<IExportableCom> {
       curr = 0;
     }
 
-    return this._translationMap = kinds.clearList();
+    return (this._translationMap = kinds.clearList());
   }
 
   bracketsTransformed(str = '') {
-    const brackets = [['«', '»'], ['„', '“'], ['"', '"'], ["'", "'"]];
+    const brackets = [
+      ['«', '»'],
+      ['„', '“'],
+      ['"', '"'],
+      ["'", "'"],
+    ];
     let level = 0;
 
     const text = str
@@ -207,10 +250,15 @@ export class Com extends BaseNamed<IExportableCom> {
 
         return pref[0] === '(' && post.endsWith(')')
           ? ''
-          : (pref || '') + all
-            .split('')
-            .map((_br: string, bri: number) => (brackets[brLevel - (isOpen ? -bri : bri)] || ['`', '`'])[isOpen ? 0 : 1])
-            .join('') + (post || '');
+          : (pref || '') +
+              all
+                .split('')
+                .map(
+                  (_br: string, bri: number) =>
+                    (brackets[brLevel - (isOpen ? -bri : bri)] || ['`', '`'])[isOpen ? 0 : 1],
+                )
+                .join('') +
+              (post || '');
       })
       .replace(/\("+ \)$|^\( "+\)/g, '');
 
@@ -238,10 +286,9 @@ export class Com extends BaseNamed<IExportableCom> {
     const orderWid = order.wid;
     const isExcluded = this.excludedModulations.includes(orderWid);
 
-    this.excludedModulations =
-      isExcluded
-        ? this.excludedModulations.filter(ordWid => ordWid !== orderWid)
-        : [...this.excludedModulations, orderWid];
+    this.excludedModulations = isExcluded
+      ? this.excludedModulations.filter((ordWid) => ordWid !== orderWid)
+      : [...this.excludedModulations, orderWid];
 
     this.updateChordLabels();
 
@@ -254,7 +301,7 @@ export class Com extends BaseNamed<IExportableCom> {
     let currTransPosition = this.transPosition;
     let firstChord: string = '';
 
-    this.orders?.forEach(ord => {
+    this.orders?.forEach((ord) => {
       const ordLabels: string[][] = [];
       this._chordLabels?.push(ordLabels);
       const chords = this.actualChords(ord.chordsi, currTransPosition);
@@ -263,38 +310,36 @@ export class Com extends BaseNamed<IExportableCom> {
         currTransPosition = (this.transPosition || 0) + (ord.fieldValues?.md || 0);
       }
 
-      (chords || '')
-        .split(/\s*\n+\s*/)
-        .forEach(line => {
-          const lineLabels: string[] = [];
-          ordLabels.push(lineLabels);
+      (chords || '').split(/\s*\n+\s*/).forEach((line) => {
+        const lineLabels: string[] = [];
+        ordLabels.push(lineLabels);
 
-          (line || '')
-            .split(/ +/)
-            .forEach(chordSchema => {
-              chordSchema
-                .split(/[^#A-Z/0-9]+/i)
-                .forEach(chord => this._usedChords && (this._usedChords[chord.replace(/B/, 'A#')] = chord));
-              lineLabels.push(chordSchema);
-              if (!firstChord) firstChord = chordSchema;
-            });
+        (line || '').split(/ +/).forEach((chordSchema) => {
+          chordSchema
+            .split(/[^#A-Z/0-9]+/i)
+            .forEach((chord) => this._usedChords && (this._usedChords[chord.replace(/B/, 'A#')] = chord));
+          lineLabels.push(chordSchema);
+          if (!firstChord) firstChord = chordSchema;
         });
+      });
     });
 
     this.tonc = this.firstChord = firstChord;
   }
 
   static withBemoles(chords?: string, isSet: num = 0) {
-    return (isSet ? chords?.replace(gSimpleHashedEachLetterChordReg, all => chordBemoleEquivalent[all] || all) : chords)?.replace(/A#/g, 'B');
+    return (
+      isSet ? chords?.replace(gSimpleHashedEachLetterChordReg, (all) => chordBemoleEquivalent[all] || all) : chords
+    )?.replace(/A#/g, 'B');
   }
 
   actualChords(chordsScalar?: string | number, position = this.transPosition) {
-    const chords = mylib.isStr(chordsScalar) ? chordsScalar as string : this.chords?.[chordsScalar as number];
+    const chords = mylib.isStr(chordsScalar) ? (chordsScalar as string) : this.chords?.[chordsScalar as number];
     return chords && Com.withBemoles(this.transBlock(chords, position), this.isBemoled);
   }
 
   get ords(): IExportableOrderTop[] {
-    if (this._ords == null) this._ords = [...this.getBasic('o') || []];
+    if (this._ords == null) this._ords = [...(this.getBasic('o') || [])];
 
     return this._ords as IExportableOrderTop[];
   }
@@ -303,11 +348,12 @@ export class Com extends BaseNamed<IExportableCom> {
     return new Order(top, this);
   }
 
-  get orders(): Order[] | null { return this._o || this.setOrders(); }
+  get orders(): Order[] | null {
+    return this._o || this.setOrders();
+  }
   setOrders() {
     if (!blockStyles) return null;
-    const tops = this.ords
-      .sort((a, b) => a.w - b.w);
+    const tops = this.ords.sort((a, b) => a.w - b.w);
     const orders: ReturnType<typeof this.orderConstructor>[] = [];
     let minimals: [string?, number?][] = [];
     const styles = blockStyles.styles;
@@ -316,9 +362,7 @@ export class Com extends BaseNamed<IExportableCom> {
     let prev, prevOrd;
 
     const getStyle = (o: Partial<IExportableOrderTop> | nil) => {
-      return o && o.s != null
-        ? styles.find((prop: StyleBlock) => prop.key === o.s)
-        : null;
+      return o && o.s != null ? styles.find((prop: StyleBlock) => prop.key === o.s) : null;
     };
 
     const setMin = (src: Partial<IExportableOrderTop>) => {
@@ -331,21 +375,20 @@ export class Com extends BaseNamed<IExportableCom> {
 
     const header = (ord: IExportableOrderTop, style: StyleBlock, numered = true) => {
       const type = style.key.trim();
-      const number = numered && ord.v !== 0
-        ? groups[type] = groups[type] == null
-          ? 1
-          : ord.a == null
-            ? groups[type] + 1
-            : groups[type]
-        : '';
+      const number =
+        numered && ord.v !== 0
+          ? (groups[type] = groups[type] == null ? 1 : ord.a == null ? groups[type] + 1 : groups[type])
+          : '';
 
       return (bag: OrderTopHeaderBag = {}) => {
-        return (style.title[this.langi] || style.title[0])
-          + (bag.isEdit
+        return (
+          (style.title[this.langi] || style.title[0]) +
+          (bag.isEdit
             ? ' №'
-            : (numered ? groups[type] < 2 ? '' : ` ${number}` : '')
-            + (bag.repeats ? ` ×  ${bag.repeats}р. ` : '')
-            + (bag.isTexted ? ':' : ''));
+            : (numered ? (groups[type] < 2 ? '' : ` ${number}`) : '') +
+              (bag.repeats ? ` ×  ${bag.repeats}р. ` : '') +
+              (bag.isTexted ? ':' : ''))
+        );
       };
     };
 
@@ -355,16 +398,18 @@ export class Com extends BaseNamed<IExportableCom> {
         orders.push(this.orderConstructor({ header: () => '' } as never));
         continue;
       }
-      const targetOrd: Order | nil = ordTop.a == null ? null : orders.find(o => o.unique === ordTop.a);
+      const targetOrd: Order | nil = ordTop.a == null ? null : orders.find((o) => o.unique === ordTop.a);
       const top = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, ordTop);
 
       const style = getStyle(top);
 
       if (!style) {
-        orders.push(this.orderConstructor({
-          source: ordTop,
-          header: () => ''
-        } as never));
+        orders.push(
+          this.orderConstructor({
+            source: ordTop,
+            header: () => '',
+          } as never),
+        );
         continue;
       }
 
@@ -374,11 +419,11 @@ export class Com extends BaseNamed<IExportableCom> {
       top.source = ordTop;
       top.isNextInherit = !!getStyle(tops[topi + 1])?.isInherit;
       top.isNextAnchorOrd = !!(ordTop.u != null && tops[topi + 1] && tops[topi + 1].a === ordTop.u);
-      top.isPrevTargetOrd = !!(targetOrd && (tops[topi - 1] === targetOrd.top.source));
+      top.isPrevTargetOrd = !!(targetOrd && tops[topi - 1] === targetOrd.top.source);
       top.targetOrd = targetOrd;
       top.watchOrd = targetOrd;
       top.isAnchor = ordTop.a != null;
-      top.isTarget = ordTop.u != null && tops.some(o => o.a === ordTop.u);
+      top.isTarget = ordTop.u != null && tops.some((o) => o.a === ordTop.u);
       top.viewIndex = viewIndex++;
       top.sourceIndex = tops.indexOf(ordTop);
 
@@ -388,7 +433,7 @@ export class Com extends BaseNamed<IExportableCom> {
       orders.push(newOrder);
 
       top.header = newOrder.isEmptyHeader
-        ? (bag, isRequired) => isRequired ? header(ordTop, style, false)(bag) : ''
+        ? (bag, isRequired) => (isRequired ? header(ordTop, style, false)(bag) : '')
         : targetOrd && targetOrd.top.header! && !top.source.s
           ? targetOrd.top.header
           : header(ordTop, style);
@@ -471,7 +516,7 @@ export class Com extends BaseNamed<IExportableCom> {
         next = tops[++nexti];
         nextStyle = getStyle(next);
       }
-    };
+    }
 
     this._o = orders;
     return orders;

@@ -1,9 +1,9 @@
-import { useState } from "react";
-import SendButton from "../../../../../../../complect/sends/send-button/SendButton";
-import EvaButton from "../../../../../../../complect/eva-icon/EvaButton";
-import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
-import mylib from "../../../../../../../complect/my-lib/MyLib";
-import useIsRedactArea from "../../../../../../../complect/useIsRedactArea";
+import { useState } from 'react';
+import SendButton from '../../../../../../../complect/sends/send-button/SendButton';
+import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
+import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
+import mylib from '../../../../../../../complect/my-lib/MyLib';
+import useIsRedactArea from '../../../../../../../complect/useIsRedactArea';
 
 export default function TimerNameListConfigurer({
   timerNames,
@@ -20,10 +20,7 @@ export default function TimerNameListConfigurer({
 }) {
   const [names, updateNames] = useState<string[]>(timerNames ?? []);
   const [isSending, setIsSending] = useState(false);
-  const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(
-    redactable,
-    redact
-  );
+  const { editIcon, isRedact, setIsSelfRedact } = useIsRedactArea(redactable, redact);
 
   return (
     <div className="margin-gap">
@@ -33,25 +30,25 @@ export default function TimerNameListConfigurer({
       </h2>
       {isRedact ? (
         <>
-          <div className={isSending ? "disabled" : ""}>
+          <div className={isSending ? 'disabled' : ''}>
             {names.map((name, namei) => {
-              return <KeyboardInput
-                key={namei}
-                className="margin-gap-v"
-                value={name}
-                onChange={(value) => {
-                  const newNames = [...names];
-                  newNames[namei] = value;
-                  onUpdate?.(newNames.filter(n => n));
-                  updateNames(newNames);
-                }}
-              />;
+              return (
+                <KeyboardInput
+                  key={namei}
+                  className="margin-gap-v"
+                  value={name}
+                  onChange={(value) => {
+                    const newNames = [...names];
+                    newNames[namei] = value;
+                    onUpdate?.(newNames.filter((n) => n));
+                    updateNames(newNames);
+                  }}
+                />
+              );
             })}
-            {!names.some((name) => !name) && <EvaButton
-              name="plus-circle"
-              className="color--ok"
-              onClick={() => updateNames([...names, ''])}
-            />}
+            {!names.some((name) => !name) && (
+              <EvaButton name="plus-circle" className="color--ok" onClick={() => updateNames([...names, ''])} />
+            )}
           </div>
           {onSend && (
             <div>

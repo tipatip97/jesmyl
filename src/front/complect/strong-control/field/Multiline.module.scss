@@ -1,47 +1,47 @@
 .markdownFieldContent {
-    width: 100%;
+  width: 100%;
 
-    >:first-child {
+  > :first-child {
+    margin-top: 0;
+
+    > :first-child {
+      margin-top: 0;
+      padding-top: 0;
+
+      > :first-child {
         margin-top: 0;
+        padding-top: 0;
 
-        >:first-child {
+        > :first-child {
+          margin-top: 0;
+          padding-top: 0;
+
+          :first-child {
             margin-top: 0;
             padding-top: 0;
-
-            >:first-child {
-                margin-top: 0;
-                padding-top: 0;
-
-                >:first-child {
-                    margin-top: 0;
-                    padding-top: 0;
-
-                    :first-child {
-                        margin-top: 0;
-                        padding-top: 0;
-                    }
-                }
-            }
+          }
         }
+      }
     }
+  }
 
-    .imgContainer {
-        display: block;
-        width: 150px;
-        height: 150px;
-        overflow: auto;
-        background-size: contain;
-        background-repeat: no-repeat;
+  .imgContainer {
+    display: block;
+    width: 150px;
+    height: 150px;
+    overflow: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  table {
+    width: 100%;
+    border-spacing: 0;
+
+    &,
+    th,
+    td {
+      border: 1px solid;
     }
-
-    table {
-        width: 100%;
-        border-spacing: 0;
-
-        &,
-        th,
-        td {
-            border: 1px solid;
-        }
-    }
+  }
 }

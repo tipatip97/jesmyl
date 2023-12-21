@@ -1,9 +1,7 @@
-import { HtmlHTMLAttributes, PropsWithChildren } from "react";
-import styled from "styled-components";
+import { HtmlHTMLAttributes, PropsWithChildren } from 'react';
+import styled from 'styled-components';
 
-export default function BrutalScreen(
-  props: PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>>
-) {
+export default function BrutalScreen(props: PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>>) {
   return (
     <Screen className="flex column custom-align-items" {...props}>
       {props.children}
@@ -24,17 +22,17 @@ const Screen = styled.div`
   overflow: auto;
 
   &::-webkit-scrollbar {
-      display: none;
+    display: none;
   }
 
-  >.title {
-      margin: var(--main-big-gap);
+  > .title {
+    margin: var(--main-big-gap);
   }
 
-  >.item {
-      height: 30px;
-      width: 100%;
-      margin-top: 10px;
-      cursor: pointer;
+  > .item {
+    height: 30px;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
   }
 `;

@@ -1,15 +1,15 @@
-import modalService from "../../../complect/modal/Modal.service";
-import { NavigationConfig } from "../../../complect/nav-configurer/Navigation";
-import { UseNavAction } from "../../../complect/nav-configurer/Navigation.model";
-import useNavConfigurer from "../../../complect/nav-configurer/useNavConfigurer";
-import serviceMaster from "../../../complect/service/serviceMaster";
-import { Index } from "../Index";
-import { IndexNavData, IndexStorage } from "../Index.model";
-import { IndexAuthorization } from "../parts/login/IndexAuthorization";
-import IndexSettings from "../parts/settings/Settings";
-import ScheduleWidgetAlarmScheduleList from "./AlarmScheduleList";
+import modalService from '../../../complect/modal/Modal.service';
+import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
+import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
+import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
+import serviceMaster from '../../../complect/service/serviceMaster';
+import { Index } from '../Index';
+import { IndexNavData, IndexStorage } from '../Index.model';
+import { IndexAuthorization } from '../parts/login/IndexAuthorization';
+import IndexSettings from '../parts/settings/Settings';
+import ScheduleWidgetAlarmScheduleList from './AlarmScheduleList';
 
-import Main from "../parts/main/IndexMain";
+import Main from '../parts/main/IndexMain';
 
 const actions: UseNavAction[] = [];
 const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
@@ -24,25 +24,25 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
 
       return alt.Reject;
     },
-    schw: schw => ({ data: { schw }, path: ['other', 'schedules'] })
+    schw: (schw) => ({ data: { schw }, path: ['other', 'schedules'] }),
   },
   routes: [
     {
-      phase: ["other"],
-      title: "Другое",
-      icon: "arrow-circle-right",
+      phase: ['other'],
+      title: 'Другое',
+      icon: 'arrow-circle-right',
       node: <Main />,
       next: [
         {
-          phase: ["settings"],
+          phase: ['settings'],
           node: <IndexSettings />,
         },
         {
-          phase: ["login"],
+          phase: ['login'],
           node: <IndexAuthorization />,
         },
         {
-          phase: ["schedules"],
+          phase: ['schedules'],
           node: <ScheduleWidgetAlarmScheduleList />,
         },
       ],

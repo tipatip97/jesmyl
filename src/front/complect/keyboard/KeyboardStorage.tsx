@@ -1,30 +1,25 @@
-import { ReactNode } from "react";
-import propsOfClicker from "../clicker/propsOfClicker";
-import EvaIcon from "../eva-icon/EvaIcon";
-import { KeyboardStorageCallbacks } from "./complect/F.Callbacks";
+import { ReactNode } from 'react';
+import propsOfClicker from '../clicker/propsOfClicker';
+import EvaIcon from '../eva-icon/EvaIcon';
+import { KeyboardStorageCallbacks } from './complect/F.Callbacks';
 import {
   KeyboardInputProps,
   KeyboardInputPropsType,
   keyboardKeyTranslateLangs,
   KeyboardKeyTranslateLanguage,
-} from "./Keyboard.model";
+} from './Keyboard.model';
 
-const onTypeDifferent = (type?: KeyboardInputPropsType, callback?: (value: string, prev: string | null) => void,) => {
+const onTypeDifferent = (type?: KeyboardInputPropsType, callback?: (value: string, prev: string | null) => void) => {
   if (type !== 'number' || !callback) return callback;
   return (value: string, prev: string | null) => callback(value || '0', prev);
 };
 
 export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   isNeedValuesInitialize = true;
-  currentLanguage: KeyboardKeyTranslateLanguage = "ru";
+  currentLanguage: KeyboardKeyTranslateLanguage = 'ru';
   private viewFlowChari: number = 0;
 
-  node(
-    props: KeyboardInputProps,
-    forceUpdater: () => void,
-    onBlur: () => void,
-    onFocus: () => void
-  ) {
+  node(props: KeyboardInputProps, forceUpdater: () => void, onBlur: () => void, onFocus: () => void) {
     this.offsetElements = [];
     this.onChange = onTypeDifferent(this.type, props.onChange);
     this.onInput = onTypeDifferent(this.type, props.onInput);
@@ -34,8 +29,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     this.isMultiline = props.multiline;
     this.type = props.type;
     this.maxLength = props.maxLength;
-    this.setIsUnknownSymbols =
-      props.setIsUnknownSymbols || this.dafaultSetIsUnknownSymbols;
+    this.setIsUnknownSymbols = props.setIsUnknownSymbols || this.dafaultSetIsUnknownSymbols;
     this.mapChar = props.mapChar || this.dafaultMapChar;
 
     this.viewFlowChari = 0;
@@ -44,7 +38,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
       this.isNeedValuesInitialize = false;
 
       if (props.preferLanguage) this.currentLanguage = props.preferLanguage;
-      this.isHiddenPassword = this.type === "password";
+      this.isHiddenPassword = this.type === 'password';
 
       setTimeout(() => {
         let isForceUpdated = false;
@@ -58,14 +52,15 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
 
     return (
       <div
-        className={'input-keyboard-flash-controlled input '
-          + (props.className || "")
-          + (this.valueCharLines.length === 0 ? " no-lines" : "")
-          + (this.isFocused ? " focused" : "")
-          + (this.value ? "" : " empty-input")
-          + (props.multiline ? " multiline" : "")
-          + (props.withoutCloseButton ? " without-close-button" : "")
-          + (this.touchNavigationMode || this.isOverflowKeyDown ? " stable-cursor-mode" : "")
+        className={
+          'input-keyboard-flash-controlled input ' +
+          (props.className || '') +
+          (this.valueCharLines.length === 0 ? ' no-lines' : '') +
+          (this.isFocused ? ' focused' : '') +
+          (this.value ? '' : ' empty-input') +
+          (props.multiline ? ' multiline' : '') +
+          (props.withoutCloseButton ? ' without-close-button' : '') +
+          (this.touchNavigationMode || this.isOverflowKeyDown ? ' stable-cursor-mode' : '')
         }
         placeholder={props.placeholder}
         onMouseDown={this.onFlashMouseDown}
@@ -83,34 +78,22 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
           </div>
         </div>
         <div className="icon-button-container">
-          {this.type === "password" ? (
+          {this.type === 'password' ? (
             <EvaIcon
-              name={this.isHiddenPassword ? "eye-outline" : "eye-off-outline"}
+              name={this.isHiddenPassword ? 'eye-outline' : 'eye-off-outline'}
               className="icon-button eye-button"
               onMouseDown={this.onPasswordEyeButton}
             />
           ) : (
-            <EvaIcon
-              name="close"
-              className="icon-button close-button pointer"
-              onMouseDown={this.onClearButton}
-            />
+            <EvaIcon name="close" className="icon-button close-button pointer" onMouseDown={this.onClearButton} />
           )}
         </div>
         {this.nullOrContextMenu() && (
           <div className="menu-actions-with-selected">
-            {this.nullOrCanSelectAll() && (
-              <div onMouseDown={this.onSelectAllButton}>Выделить всё</div>
-            )}
-            {this.nullOrCanCopy() && (
-              <div onMouseDown={this.onCopyButton}>Копировать</div>
-            )}
-            {this.nullOrCanPaste() && (
-              <div onMouseDown={this.onPasteButton}>Вставить</div>
-            )}
-            {this.nullOrCanPasteBefore() && (
-              <div onMouseDown={this.onPasteBeforeButton}>Вставить перёд</div>
-            )}
+            {this.nullOrCanSelectAll() && <div onMouseDown={this.onSelectAllButton}>Выделить всё</div>}
+            {this.nullOrCanCopy() && <div onMouseDown={this.onCopyButton}>Копировать</div>}
+            {this.nullOrCanPaste() && <div onMouseDown={this.onPasteButton}>Вставить</div>}
+            {this.nullOrCanPasteBefore() && <div onMouseDown={this.onPasteBeforeButton}>Вставить перёд</div>}
           </div>
         )}
       </div>
@@ -121,19 +104,12 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     const lineNode = (
       <div
         key={`line ${linei}`}
-        className={`input-keyboard-flash-controlled-char-list-line ${this.isZeroCursorOn(this.viewFlowChari) ? "zero-cursor" : ""}`}
-        onMouseDown={this.onCharMouseDown.bind(
-          this,
-          this.viewFlowChari + line.length
-        )}
-        onMouseOver={this.onCharMouseOver.bind(
-          this,
-          this.viewFlowChari + line.length
-        )}
-        onMouseUp={this.onCharMouseUp.bind(
-          this,
-          this.viewFlowChari + line.length
-        )}
+        className={`input-keyboard-flash-controlled-char-list-line ${
+          this.isZeroCursorOn(this.viewFlowChari) ? 'zero-cursor' : ''
+        }`}
+        onMouseDown={this.onCharMouseDown.bind(this, this.viewFlowChari + line.length)}
+        onMouseOver={this.onCharMouseOver.bind(this, this.viewFlowChari + line.length)}
+        onMouseUp={this.onCharMouseUp.bind(this, this.viewFlowChari + line.length)}
       >
         {line.map(this.valueCharLineNodeMap.bind(this, linei))}
       </div>
@@ -148,9 +124,10 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     return (
       <span
         key={`node-${letteri}`}
-        className={'input-keyboard-flash-controlled-char'
-          + (this.isCursorOn(chari) ? " cursor" : "")
-          + (this.isSelectedChar(chari) ? " selected" : "")
+        className={
+          'input-keyboard-flash-controlled-char' +
+          (this.isCursorOn(chari) ? ' cursor' : '') +
+          (this.isSelectedChar(chari) ? ' selected' : '')
         }
         ref={this.charElementReference.bind(this, linei, chari)}
         onContextMenu={this.onCharContextMenu.bind(this, chari)}
@@ -159,16 +136,12 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
         onMouseOver={this.onCharMouseOver.bind(this, chari)}
         onMouseUp={this.onCharMouseUp.bind(this, chari)}
       >
-        {this.isHiddenPassword ? "●" : letter}
+        {this.isHiddenPassword ? '●' : letter}
       </span>
     );
   };
 
-  charElementReference(
-    linei: number,
-    chari: number,
-    element: HTMLSpanElement | nil
-  ) {
+  charElementReference(linei: number, chari: number, element: HTMLSpanElement | nil) {
     if (element) {
       if (this.isSelected) {
         if (this.selected[1] === chari) {
@@ -189,9 +162,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   }
 
   nullOrContextMenu() {
-    return this.isFocused &&
-      (this.isSelected || this.isContextOpen) &&
-      this.touchNavigationMode !== "delete"
+    return this.isFocused && (this.isSelected || this.isContextOpen) && this.touchNavigationMode !== 'delete'
       ? true
       : null;
   }
@@ -199,10 +170,8 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   nullOrCanSelectAll() {
     return !this.value ||
       (this.isSelected &&
-        ((this.selected[0] === 0 &&
-          this.selected[1] === this.valueChars.length) ||
-          (this.selected[0] === this.valueChars.length &&
-            this.selected[1] === 0)))
+        ((this.selected[0] === 0 && this.selected[1] === this.valueChars.length) ||
+          (this.selected[0] === this.valueChars.length && this.selected[1] === 0)))
       ? null
       : true;
   }
@@ -221,8 +190,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
 
   switchLanguage() {
     const langi = keyboardKeyTranslateLangs.indexOf(this.currentLanguage);
-    if (langi === keyboardKeyTranslateLangs.length - 1)
-      this.currentLanguage = keyboardKeyTranslateLangs[0];
+    if (langi === keyboardKeyTranslateLangs.length - 1) this.currentLanguage = keyboardKeyTranslateLangs[0];
     else this.currentLanguage = keyboardKeyTranslateLangs[langi + 1];
 
     this.forceUpdate();

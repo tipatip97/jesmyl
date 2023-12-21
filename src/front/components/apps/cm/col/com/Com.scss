@@ -1,9 +1,9 @@
 .application-container.app_cm {
-    &.fullscreen-mode {
-        .composition-player {
-            margin-top: -20px;
-            opacity: 0;
-            pointer-events: none;
-        }
+  &.fullscreen-mode {
+    .composition-player {
+      margin-top: -20px;
+      opacity: 0;
+      pointer-events: none;
     }
+  }
 }

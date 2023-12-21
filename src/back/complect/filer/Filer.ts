@@ -6,11 +6,20 @@ import index from '../../apps/index/config';
 import leader from '../../apps/leader/config';
 import smylib, { SMyLib } from '../../shared/SMyLib';
 import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName, SokiClientUpdateCortage } from '../soki/soki.model';
-import { FilerAppConfig, FilerAppRequirement, FilerAppStore, FilerContent, FilerContentData, FilerContents, FilerWatcher, SimpleKeyValue } from './Filer.model';
+import {
+  FilerAppConfig,
+  FilerAppRequirement,
+  FilerAppStore,
+  FilerContent,
+  FilerContentData,
+  FilerContents,
+  FilerWatcher,
+  SimpleKeyValue,
+} from './Filer.model';
 
 export class Filer {
   contents = {} as FilerContents;
-  private watcher: FilerWatcher = () => { };
+  private watcher: FilerWatcher = () => {};
   appConfigs = {
     index,
     cm,
@@ -23,7 +32,7 @@ export class Filer {
     this.watcher = watcher;
   }
 
-  private triggers: { refreshTrigger: string, cb: () => void }[] = [];
+  private triggers: { refreshTrigger: string; cb: () => void }[] = [];
   trigger(triggerName: string) {
     this.triggers.forEach(({ refreshTrigger, cb }) => triggerName === refreshTrigger && cb());
   }
@@ -57,121 +66,121 @@ export class Filer {
       let waits = 0;
       let oks = 0;
 
-      SMyLib
-        .entries(this.appConfigs)
-        .forEach(([appName, app]) => {
-          const content: FilerContent = this.contents[appName] = {} as never;
-          const loadInContent = (name: string, requ: null | FilerAppRequirement, cb?: () => void) => {
-            const {
-              rootPath = '',
-              ext = 'json',
-              level = 0,
-              prepareContent,
-              watch = null,
-              refreshTrigger = '',
-            } = requ === null ? { name } as FilerAppRequirement : requ;
+      SMyLib.entries(this.appConfigs).forEach(([appName, app]) => {
+        const content: FilerContent = (this.contents[appName] = {} as never);
+        const loadInContent = (name: string, requ: null | FilerAppRequirement, cb?: () => void) => {
+          const {
+            rootPath = '',
+            ext = 'json',
+            level = 0,
+            prepareContent,
+            watch = null,
+            refreshTrigger = '',
+          } = requ === null ? ({ name } as FilerAppRequirement) : requ;
 
-            if (refreshTrigger)
-              this.triggers.push({
-                refreshTrigger,
-                cb: () => loadInContent(name, requ, cb),
+          if (refreshTrigger)
+            this.triggers.push({
+              refreshTrigger,
+              cb: () => loadInContent(name, requ, cb),
+            });
+
+          const filename = rootPath ? this.rootFileName(rootPath, ext) : this.fileName(appName, name, ext);
+          const path = rootPath ? this.rootPath(filename) : this.filePath(filename);
+
+          const createExpected = () => {
+            if (app.actions) {
+              const action = app.actions.rules?.find(({ track, expecteds }) => {
+                return expecteds !== undefined && track?.[0] === name;
               });
 
-            const filename = rootPath ? this.rootFileName(rootPath, ext) : this.fileName(appName, name, ext);
-            const path = rootPath ? this.rootPath(filename) : this.filePath(filename);
+              if (action) {
+                const {
+                  expecteds,
+                  track: [trackFitrst],
+                } = action;
+                const [, expected] = expecteds?.find(([trackEnd]) => trackEnd === 1 && trackFitrst === name) ?? [];
+                if (!expected) return;
+                const string = JSON.stringify(expected);
 
-            const createExpected = () => {
-              if (app.actions) {
-                const action = app.actions.rules?.find(({ track, expecteds }) => {
-                  return expecteds !== undefined && track?.[0] === name;
-                });
+                fs.writeFile(path, string, (err) => {
+                  if (err) {
+                    console.error(`!!! WriteError ${filename}`);
+                    cb?.();
+                  } else console.info(`... ExpectedCreted ${filename}`);
 
-                if (action) {
-                  const { expecteds, track: [trackFitrst] } = action;
-                  const [, expected] = expecteds?.find(([trackEnd]) => trackEnd === 1 && trackFitrst === name) ?? [];
-                  if (!expected) return;
-                  const string = JSON.stringify(expected);
-
-                  fs.writeFile(path, string, (err) => {
-                    if (err) {
-                      console.error(`!!! WriteError ${filename}`);
-                      cb?.();
-                    } else console.info(`... ExpectedCreted ${filename}`);
-
-                    const stat = fs.statSync(path);
-
-                    content[name] = {
-                      data: expected,
-                      string,
-                      level,
-                      prepareContent,
-                      mtime: new Date(stat.mtime).getTime(),
-                    };
-                  });
-                } else {
-                  console.error(`!!! NoExpected ${filename}`);
-                  return;
-                }
-              } else {
-                console.info(`!!! NoActions ${filename}`);
-                return;
-              }
-
-              cb?.();
-            };
-
-            waits++;
-            fs.readFile(path, 'utf-8', async (err, stringData) => {
-              oks++;
-              if (!err && stringData) {
-                try {
                   const stat = fs.statSync(path);
-                  const data = JSON.parse(stringData);
 
                   content[name] = {
-                    data,
-                    string: stringData,
-                    mtime: new Date(stat.mtime).getTime(),
+                    data: expected,
+                    string,
                     level,
                     prepareContent,
+                    mtime: new Date(stat.mtime).getTime(),
                   };
-                } catch (e) { }
-                cb?.();
+                });
               } else {
-                if (watch) {
-                  const [watchPath, cb] = watch;
-                  const read = () => {
-                    fs.readFile(watchPath, 'utf-8', (err, fileContent) => {
-                      if (err) return;
-                      try {
-                        const data = cb(fileContent);
-                        const mtime = new Date(fs.statSync(watchPath).mtime).getTime();
-
-                        content[name] = {
-                          data,
-                          string: fileContent,
-                          mtime,
-                          level,
-                          prepareContent,
-                        };
-
-                        this.watcher(appName, name, data, mtime);
-                      } catch (e) { }
-                    });
-                  };
-
-                  fs.watchFile(watchPath, () => read());
-                  read();
-
-                } else createExpected();
+                console.error(`!!! NoExpected ${filename}`);
+                return;
               }
+            } else {
+              console.info(`!!! NoActions ${filename}`);
+              return;
+            }
 
-              if (waits === oks) loadRes();
-            });
+            cb?.();
           };
 
-          SMyLib.entries(app.requirements).forEach(([name, data]) => loadInContent(name, data));
-        });
+          waits++;
+          fs.readFile(path, 'utf-8', async (err, stringData) => {
+            oks++;
+            if (!err && stringData) {
+              try {
+                const stat = fs.statSync(path);
+                const data = JSON.parse(stringData);
+
+                content[name] = {
+                  data,
+                  string: stringData,
+                  mtime: new Date(stat.mtime).getTime(),
+                  level,
+                  prepareContent,
+                };
+              } catch (e) {}
+              cb?.();
+            } else {
+              if (watch) {
+                const [watchPath, cb] = watch;
+                const read = () => {
+                  fs.readFile(watchPath, 'utf-8', (err, fileContent) => {
+                    if (err) return;
+                    try {
+                      const data = cb(fileContent);
+                      const mtime = new Date(fs.statSync(watchPath).mtime).getTime();
+
+                      content[name] = {
+                        data,
+                        string: fileContent,
+                        mtime,
+                        level,
+                        prepareContent,
+                      };
+
+                      this.watcher(appName, name, data, mtime);
+                    } catch (e) {}
+                  });
+                };
+
+                fs.watchFile(watchPath, () => read());
+                read();
+              } else createExpected();
+            }
+
+            if (waits === oks) loadRes();
+          });
+        };
+
+        SMyLib.entries(app.requirements).forEach(([name, data]) => loadInContent(name, data));
+      });
     });
   }
 
@@ -202,9 +211,7 @@ export class Filer {
           const req = this.appConfigs[appName]?.requirements[fileName];
           const rootPath = req?.rootPath;
           const stringContent = JSON.stringify(content.data);
-          const path = rootPath
-            ? this.rootNamePath(rootPath, req.ext)
-            : this.fileNamePath(appName, fileName);
+          const path = rootPath ? this.rootNamePath(rootPath, req.ext) : this.fileNamePath(appName, fileName);
 
           fs.writeFile(path, stringContent, (error) => {
             oks++;
@@ -214,7 +221,7 @@ export class Filer {
             }
             const stat = fs.statSync(path);
             content.string = stringContent;
-            const mtime = content.mtime = new Date(stat.mtime).getTime();
+            const mtime = (content.mtime = new Date(stat.mtime).getTime());
             if (maxLastUpdate < mtime) maxLastUpdate = mtime;
             if (waits === oks) resolve(maxLastUpdate);
           });
@@ -232,7 +239,7 @@ export class Filer {
       let appLastUpdates = { cts: pullAppLastUpdate || 0, ts: pullAppLastUpdate || 0 };
       let indexLastUpdates = { cts: pullIndexLastUpdate || 0, ts: pullIndexLastUpdate || 0 };
 
-      const getContents = ([fixName, fixData]: [string, FilerContentData], ts: { cts: number, ts: number }) => {
+      const getContents = ([fixName, fixData]: [string, FilerContentData], ts: { cts: number; ts: number }) => {
         if (fixData.level > (auth?.level || 0) || ts.ts >= fixData.mtime) return null;
         if (ts.cts < fixData.mtime) ts.cts = fixData.mtime;
 
@@ -243,9 +250,7 @@ export class Filer {
       };
 
       const getRulesData = (config: FilerAppConfig, md5: string | nil) => {
-        return md5 !== config.actions.shortRulesMd5
-          ? { key: 'rules', value: config.actions.shortRules }
-          : null;
+        return md5 !== config.actions.shortRulesMd5 ? { key: 'rules', value: config.actions.shortRules } : null;
       };
 
       const indexMd5 = this.appConfigs.index.actions.shortRulesMd5;
@@ -253,13 +258,11 @@ export class Filer {
 
       return {
         contents: [
-          SMyLib
-            .entries(this.contents.index)
+          SMyLib.entries(this.contents.index)
             .map((entries) => getContents(entries, indexLastUpdates))
             .concat(getRulesData(this.appConfigs.index, pullIndexMd5))
             .filter((data) => data) as SimpleKeyValue<SokiAppName>[],
-          SMyLib
-            .entries(this.contents[appName])
+          SMyLib.entries(this.contents[appName])
             .map((entries) => getContents(entries, appLastUpdates))
             .concat(getRulesData(this.appConfigs[appName], pullAppMd5))
             .filter((data) => data) as SimpleKeyValue<SokiAppName>[],
@@ -271,7 +274,7 @@ export class Filer {
           appLastUpdates.cts === pullAppLastUpdate ? 0 : appLastUpdates.cts,
           appMd5 === pullAppMd5 ? '' : appMd5,
         ],
-      }
+      };
     } catch (error) {
       console.error('CATCHED', error);
 
@@ -283,6 +286,5 @@ export class Filer {
     }
   }
 }
-
 
 export const filer = new Filer();

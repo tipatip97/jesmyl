@@ -1,7 +1,13 @@
-import { Cols } from "../../cols/Cols";
-import { MeetingsEvent } from "./MeetingsEvent";
-import { IExportableMeetingsEvent, IExportableMeetings, MeetingsContextMap, MeetingsContext, IExportableMeetingsContextMap } from "./Meetings.model";
-import mylib from "../../../../../complect/my-lib/MyLib";
+import { Cols } from '../../cols/Cols';
+import { MeetingsEvent } from './MeetingsEvent';
+import {
+  IExportableMeetingsEvent,
+  IExportableMeetings,
+  MeetingsContextMap,
+  MeetingsContext,
+  IExportableMeetingsContextMap,
+} from './Meetings.model';
+import mylib from '../../../../../complect/my-lib/MyLib';
 
 export class Meetings {
   event?: MeetingsEvent;
@@ -13,7 +19,7 @@ export class Meetings {
   constructor({ events, contexts, names }: IExportableMeetings = {} as IExportableMeetings, cols?: Cols) {
     this.stack = events;
     this.contexts = this.takeContexts(contexts || {});
-    this.events = events?.map(event => new MeetingsEvent(event, cols));
+    this.events = events?.map((event) => new MeetingsEvent(event, cols));
     this.event = this.events?.[0];
     this.names = names === undefined ? [] : [...names];
   }
@@ -42,9 +48,9 @@ export class Meetings {
 
     const contexts = Object.entries(this.contexts || {})
       .map(([groupw, path]): null | [number, string, number] => {
-        if (currPath.length === path.context.length && mylib.isEq(currPath, path.context))
-          currGroupw = +groupw;
-        if (currPath.length !== path.context.length - 1 || currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx)) return null;
+        if (currPath.length === path.context.length && mylib.isEq(currPath, path.context)) currGroupw = +groupw;
+        if (currPath.length !== path.context.length - 1 || currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx))
+          return null;
 
         const contexti = path.context[currPath.length];
         const context = this.names[contexti];

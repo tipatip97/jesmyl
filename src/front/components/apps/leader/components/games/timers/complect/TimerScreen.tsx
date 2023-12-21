@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export default function TimerScreen({
   start,
   pause,
   className,
-}: { start: number; pause?: number, className?: string }) {
+}: {
+  start: number;
+  pause?: number;
+  className?: string;
+}) {
   const [current, setCurrent] = useState(0);
   const [timeOut, setTimeOut] = useState<any>();
   const [isWaitForStart, setIsWaitForStart] = useState(true);
@@ -49,13 +53,7 @@ export default function TimerScreen({
   }
 
   return (
-    <div
-      className={
-        'timer-screen '
-        + (pause ? ' paused ' : '')
-        + (start ? ' started ' : '')
-        + (className || '')}
-    >
+    <div className={'timer-screen ' + (pause ? ' paused ' : '') + (start ? ' started ' : '') + (className || '')}>
       {hours && <span className="text-underline">{hours}:</span>}
       {time}
       <span className="milliseconds-digits">{milliseconds}</span>

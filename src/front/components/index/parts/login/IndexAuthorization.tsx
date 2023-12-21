@@ -1,14 +1,9 @@
-import { useState } from "react";
-import IndexLoginAuth from "./IndexLoginAuth";
-import IndexTelegramAuth from "./IndexTelegramAuth";
-
+import { useState } from 'react';
+import IndexLoginAuth from './IndexLoginAuth';
+import IndexTelegramAuth from './IndexTelegramAuth';
 
 export function IndexAuthorization() {
   const [isLoginAuth, setIsLoginAuth] = useState(false);
 
-  return <>
-    {isLoginAuth
-      ? <IndexLoginAuth />
-      : <IndexTelegramAuth onLoginAuth={() => setIsLoginAuth(true)} />}
-  </>;
+  return <>{isLoginAuth ? <IndexLoginAuth /> : <IndexTelegramAuth onLoginAuth={() => setIsLoginAuth(true)} />}</>;
 }

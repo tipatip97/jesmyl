@@ -1,8 +1,8 @@
-import mylib from "../../../../../complect/my-lib/MyLib";
-import PrintableTemplate from "./PrintableTemplate";
+import mylib from '../../../../../complect/my-lib/MyLib';
+import PrintableTemplate from './PrintableTemplate';
 
-const name = "$name{{$name}{????????}}";
-const place = "$initQrPointTarget?{{$initQrPointTarget}{?????????????????}}";
+const name = '$name{{$name}{????????}}';
+const place = '$initQrPointTarget?{{$initQrPointTarget}{?????????????????}}';
 
 const text = `Привет, ${name}! Мы рады тебя приветствовать на нашем корабле. \
 Для обеспечения комфортного пребывания в круизе тебе необходимо пройти все пункты контроля. \
@@ -15,9 +15,7 @@ export default function WelcomePage({ bag }: { bag: Record<string, unknown> }) {
       noder={
         <div className="full-width full-height padding-giant-gap">
           <div className="tpl-title">Допуск к путешествию</div>
-          <div className="margin-big-gap-v white-pre-line">
-            {mylib.stringTemplater(text, bag)}
-          </div>
+          <div className="margin-big-gap-v white-pre-line">{mylib.stringTemplater(text, bag)}</div>
           <div className="table-wrapper">
             <div className="table">
               <div className="row">

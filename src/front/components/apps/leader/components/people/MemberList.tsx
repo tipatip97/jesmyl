@@ -1,32 +1,34 @@
-import { useEffect } from "react";
-import { renderComponentInNewWindow } from "../../../../../..";
-import { LeaderCleans } from "../LeaderCleans";
-import useLeaderContext from "../contexts/useContexts";
-import { LeaderGroupImportable } from "../groups/Groups.model";
-import WelcomePageList from "../templates/WelcomePageList";
-import HumanList from "./HumanList";
-import { HumanImportable, HumanListComponentProps } from "./People.model";
+import { useEffect } from 'react';
+import { renderComponentInNewWindow } from '../../../../../..';
+import { LeaderCleans } from '../LeaderCleans';
+import useLeaderContext from '../contexts/useContexts';
+import { LeaderGroupImportable } from '../groups/Groups.model';
+import WelcomePageList from '../templates/WelcomePageList';
+import HumanList from './HumanList';
+import { HumanImportable, HumanListComponentProps } from './People.model';
 
 export default function MemberList({ ...props }: {} & HumanListComponentProps) {
   const { ccontext, contextMembers } = useLeaderContext();
-  const placeholder = `${ccontext?.name || ""}. Участники`;
+  const placeholder = `${ccontext?.name || ''}. Участники`;
   const humansRef = { current: [] };
 
   const getWelcomePages = (list: { group: LeaderGroupImportable; member: HumanImportable }[]) => {
-    return ccontext && (
-      <WelcomePageList
-        list={list.map(({ group, member }) => ({
-          ...LeaderCleans.getContextFieldValues(ccontext, group.fields),
-          ...member,
-        }))}
-      />
+    return (
+      ccontext && (
+        <WelcomePageList
+          list={list.map(({ group, member }) => ({
+            ...LeaderCleans.getContextFieldValues(ccontext, group.fields),
+            ...member,
+          }))}
+        />
+      )
     );
   };
 
   useEffect(() => {
     if (!ccontext) return;
     const onPrint = (event: KeyboardEvent) => {
-      if (event.code === "BracketRight" && event.ctrlKey) {
+      if (event.code === 'BracketRight' && event.ctrlKey) {
         event.preventDefault();
         renderComponentInNewWindow(
           <>
@@ -36,15 +38,15 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
                 contextMembers,
                 humansRef.current.map(({ wid }) => wid),
                 ccontext.groups,
-              ) || []
+              ) || [],
             )}
-          </>
+          </>,
         );
       }
     };
-    window.addEventListener("keyup", onPrint);
+    window.addEventListener('keyup', onPrint);
     return () => {
-      window.removeEventListener("keyup", onPrint);
+      window.removeEventListener('keyup', onPrint);
     };
   }, [ccontext, contextMembers]);
 
@@ -69,10 +71,8 @@ export default function MemberList({ ...props }: {} & HumanListComponentProps) {
         asHumanMore={({ w }) => {
           const list = LeaderCleans.getMembersInGroups('members', contextMembers, [w], ccontext.groups);
 
-          if (!list?.length)
-            return <div className="error-message nowrap">Вне групп</div>;
-          else if (list.length > 1)
-            return <div className="error-message">В нескольких группах!</div>;
+          if (!list?.length) return <div className="error-message nowrap">Вне групп</div>;
+          else if (list.length > 1) return <div className="error-message">В нескольких группах!</div>;
         }}
       />
     </>

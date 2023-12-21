@@ -1,10 +1,6 @@
-import WelcomePage from "./WelcomePage";
+import WelcomePage from './WelcomePage';
 
-export default function WelcomePageList({
-  list,
-}: {
-  list: Record<string, unknown>[];
-}) {
+export default function WelcomePageList({ list }: { list: Record<string, unknown>[] }) {
   return (
     <>
       {list.map((bag, bagi) => (

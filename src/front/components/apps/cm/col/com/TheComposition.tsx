@@ -1,21 +1,21 @@
-import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import { useBottomPopup } from "../../../../../complect/absolute-popup/bottom-popup/useBottomPopup";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import { RootState } from "../../../../../shared/store";
-import { useChordVisibleVariant } from "../../base/useChordVisibleVariant";
-import useCmNav from "../../base/useCmNav";
-import useLaterComList from "../../base/useLaterComList";
-import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
-import { Com } from "./Com";
-import "./Com.scss";
-import { ComTools } from "./ComTools";
-import TheControlledCom from "./TheControlledCom";
-import ComPlayer from "./player/ComPlayer";
-import { useCcom } from "./useCcom";
-import useComPack from "./useComPack";
-import useMigratableComTools from "./useMigratableComTools";
+import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { RootState } from '../../../../../shared/store';
+import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
+import useCmNav from '../../base/useCmNav';
+import useLaterComList from '../../base/useLaterComList';
+import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
+import { Com } from './Com';
+import './Com.scss';
+import { ComTools } from './ComTools';
+import TheControlledCom from './TheControlledCom';
+import ComPlayer from './player/ComPlayer';
+import { useCcom } from './useCcom';
+import useComPack from './useComPack';
+import useMigratableComTools from './useMigratableComTools';
 
 const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
 
@@ -42,13 +42,7 @@ export default function TheComposition() {
   }, [ccom?.wid]);
 
   if (ccom == null) {
-    return (
-      <ComContainer
-        className="composition-container"
-        headTitle="Упс"
-        content="Песня не найдена("
-      />
-    );
+    return <ComContainer className="composition-container" headTitle="Упс" content="Песня не найдена(" />;
   }
 
   return (
@@ -59,78 +53,73 @@ export default function TheComposition() {
       contentClass="composition-content"
       contentRef={comListElem}
       withoutBackSwipe
-      head={<div className="com-actions-pannel">
-        {topTools.map(({ icon, onClick, tool }) => (
-          <EvaIcon
-            key={tool}
-            name={icon}
-            className="action-button"
-            onClick={() => onClick()}
-          />
-        ))}
-      </div>}
-      content={<>
-        {popupComToolsNode}
-        {comAudio && <ComPlayer src={comAudio} split />}
-        <TheControlledCom
-          com={ccom}
-          comList={comList}
-          chordVisibleVariant={chordVisibleVariant}
-          onComSet={setCom}
-        />
-      </>}
+      head={
+        <div className="com-actions-pannel">
+          {topTools.map(({ icon, onClick, tool }) => (
+            <EvaIcon key={tool} name={icon} className="action-button" onClick={() => onClick()} />
+          ))}
+        </div>
+      }
+      content={
+        <>
+          {popupComToolsNode}
+          {comAudio && <ComPlayer src={comAudio} split />}
+          <TheControlledCom com={ccom} comList={comList} chordVisibleVariant={chordVisibleVariant} onComSet={setCom} />
+        </>
+      }
     />
   );
 }
 
 const ComContainer = styled(PhaseCmContainer)`
   .composition-content {
-      transition: padding-top .2s;
+    transition: padding-top 0.2s;
 
-      .composition-player {
-          --transition-speed: .2s;
+    .composition-player {
+      --transition-speed: 0.2s;
 
-          position: absolute;
-          top: var(--header-height);
-          left: 0;
-          right: 0;
-          z-index: 1;
-          opacity: 0;
-          transition: width var(--transition-speed),
-              background var(--transition-speed),
-              margin var(--transition-speed),
-              opacity var(--transition-speed);
-      }
+      position: absolute;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      z-index: 1;
+      opacity: 0;
+      transition:
+        width var(--transition-speed),
+        background var(--transition-speed),
+        margin var(--transition-speed),
+        opacity var(--transition-speed);
+    }
   }
 
   &.with-open-player {
-      &.expand {
-          --content-padding-top: var(--com-player-expand-height);
-      }
+    &.expand {
+      --content-padding-top: var(--com-player-expand-height);
+    }
 
-      &.min {
-          --content-padding-top: var(--com-player-height);
-      }
+    &.min {
+      --content-padding-top: var(--com-player-height);
+    }
 
-      .composition-content {
-          padding-top: var(--content-padding-top);
-      }
+    .composition-content {
+      padding-top: var(--content-padding-top);
+    }
 
-      .composition-player {
-          opacity: 1;
-      }
+    .composition-player {
+      opacity: 1;
+    }
   }
 
   .com-actions-pannel {
-      max-width: calc(100vw - 130px);
-      height: 40px;
-      padding-left: 10px;
-      white-space: nowrap;
-      overflow-x: scroll;
-      overflow-y: hidden;
+    max-width: calc(100vw - 130px);
+    height: 40px;
+    padding-left: 10px;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
 
-      &::-webkit-scrollbar {
-          display: none;
-      }
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;

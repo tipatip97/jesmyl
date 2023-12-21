@@ -1,15 +1,11 @@
-import { useMemo, useState } from "react";
-import { GameTeamImportable } from "./teams/GameTeams.model";
-import { RateSortedItem } from "./timers/GameTimer.model";
-import TimerScreen from "./timers/complect/TimerScreen";
-import useGames from "./useGames";
-import { LeaderCleans } from "../LeaderCleans";
+import { useMemo, useState } from 'react';
+import { GameTeamImportable } from './teams/GameTeams.model';
+import { RateSortedItem } from './timers/GameTimer.model';
+import TimerScreen from './timers/complect/TimerScreen';
+import useGames from './useGames';
+import { LeaderCleans } from '../LeaderCleans';
 
-export default function TotalScoreTable({
-  selectedTimers,
-}: {
-  selectedTimers: number[];
-}) {
+export default function TotalScoreTable({ selectedTimers }: { selectedTimers: number[] }) {
   const [openScores, updateOpenScores] = useState<number[]>([]);
   const { cgame } = useGames();
 
@@ -19,17 +15,15 @@ export default function TotalScoreTable({
     selectedTimers.forEach((timerWid) => {
       const timer = cgame?.timers?.find((timer) => timer.w === timerWid);
 
-      timer && LeaderCleans.rateSortedTimerTeams(timer, cgame).forEach((rateSorts) => {
-        const { team, start, finish } = rateSorts;
-        if (start && finish && team) {
-          if (rateSortedItemsMap.has(team.w))
-            rateSortedItemsMap.set(
-              team.w,
-              rateSortedItemsMap.get(team.w)?.concat(rateSorts) ?? []
-            );
-          else rateSortedItemsMap.set(team.w, [rateSorts]);
-        }
-      });
+      timer &&
+        LeaderCleans.rateSortedTimerTeams(timer, cgame).forEach((rateSorts) => {
+          const { team, start, finish } = rateSorts;
+          if (start && finish && team) {
+            if (rateSortedItemsMap.has(team.w))
+              rateSortedItemsMap.set(team.w, rateSortedItemsMap.get(team.w)?.concat(rateSorts) ?? []);
+            else rateSortedItemsMap.set(team.w, [rateSorts]);
+          }
+        });
     });
 
     const scores: RateSortedItem[] = [];
@@ -51,7 +45,7 @@ export default function TotalScoreTable({
           finishes: [...finishes, finish] as number[],
           team: item.team,
         }),
-        { start: 0, finish: 0, starts: [], finishes: [] }
+        { start: 0, finish: 0, starts: [], finishes: [] },
       );
 
       scores.push({ start, finish, rowi: -1, team: cgame?.teams?.find(({ w }) => w === teamw) });
@@ -70,10 +64,7 @@ export default function TotalScoreTable({
               onClick={() => {
                 const index = openScores.indexOf(scorei);
                 if (index < 0) updateOpenScores([...openScores, scorei]);
-                else
-                  updateOpenScores(
-                    openScores.filter((scoreIndex) => scoreIndex !== scorei)
-                  );
+                else updateOpenScores(openScores.filter((scoreIndex) => scoreIndex !== scorei));
               }}
             >
               <span>
@@ -89,25 +80,13 @@ export default function TotalScoreTable({
 
                   const scores = LeaderCleans.rateSortedTimerTeams(timer, cgame);
                   const teamScores = scores.find(({ team: t }) => t?.w === team?.w);
-                  const teamInTimer = team && timer.teams?.find(teamw => team.w === teamw);
+                  const teamInTimer = team && timer.teams?.find((teamw) => team.w === teamw);
 
                   return (
-                    !!(
-                      teamInTimer &&
-                      teamScores?.start &&
-                      teamScores?.finish
-                    ) && (
+                    !!(teamInTimer && teamScores?.start && teamScores?.finish) && (
                       <div key={timeri} className="flex flex-gap">
-                        <span
-                          className={`${timer.isInactive ? "text-strike" : ""} text-bold`}
-                        >
-                          {timer.name}
-                        </span>{" "}
-                        -
-                        <TimerScreen
-                          start={teamScores.start}
-                          pause={teamScores.finish}
-                        />
+                        <span className={`${timer.isInactive ? 'text-strike' : ''} text-bold`}>{timer.name}</span> -
+                        <TimerScreen start={teamScores.start} pause={teamScores.finish} />
                       </div>
                     )
                   );

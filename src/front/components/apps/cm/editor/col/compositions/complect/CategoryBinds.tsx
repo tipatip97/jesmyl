@@ -1,9 +1,9 @@
-import useExer from "../../../../../../../complect/exer/useExer";
-import KeyboardInput from "../../../../../../../complect/keyboard/KeyboardInput";
-import { cmExer } from "../../../../Cm.store";
-import EditContainerCorrectsInformer from "../../../edit-container-corrects-informer/EditContainerCorrectsInformer";
-import { useEditableCols } from "../../useEditableCols";
-import { useEditableCcom } from "../useEditableCcom";
+import useExer from '../../../../../../../complect/exer/useExer';
+import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
+import { cmExer } from '../../../../Cm.store';
+import EditContainerCorrectsInformer from '../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
+import { useEditableCols } from '../../useEditableCols';
+import { useEditableCcom } from '../useEditableCcom';
 
 export default function CategoryBinds() {
   const cols = useEditableCols();
@@ -16,14 +16,14 @@ export default function CategoryBinds() {
     <>
       <div className="cat-list-title">Сборники</div>
       {cols?.cats.map((cat) => {
-        return cat.kind !== "dict" ? null : (
+        return cat.kind !== 'dict' ? null : (
           <EditContainerCorrectsInformer
             key={`cat-for-bind-${cat.wid}`}
             corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
           >
             <span>{cat.name} </span>
             <KeyboardInput
-              value={`${ccom.refs?.[cat.wid] || ""}`}
+              value={`${ccom.refs?.[cat.wid] || ''}`}
               type="number"
               onChange={(value) => {
                 if (!+value) {
@@ -36,10 +36,7 @@ export default function CategoryBinds() {
             />
             {ccom.refs?.[cat.wid] != null ? (
               <span className="pointer" onClick={() => exec(ccom.removeNativeNumber(cat, exec))}>
-                {" " +
-                  (isNaN(ccom.refs?.[cat.wid])
-                    ? "Корректно очистить"
-                    : "Удалить")}
+                {' ' + (isNaN(ccom.refs?.[cat.wid]) ? 'Корректно очистить' : 'Удалить')}
               </span>
             ) : null}
           </EditContainerCorrectsInformer>
@@ -47,7 +44,7 @@ export default function CategoryBinds() {
       })}
       <div className="cat-list-title">Списки</div>
       {cols?.cats.map((cat) => {
-        return cat.kind !== "list" ? null : (
+        return cat.kind !== 'list' ? null : (
           <EditContainerCorrectsInformer
             key={`cat-for-bind-${cat.wid}`}
             corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}

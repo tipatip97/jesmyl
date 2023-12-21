@@ -1,30 +1,29 @@
-import { jesmylTgBot } from "../bot";
-import { tglogger } from "../log/log-bot";
-import { prodStartOptions } from "../prod/prod-bot";
-import { JesmylTelegramBot } from "../tg-bot";
+import { jesmylTgBot } from '../bot';
+import { tglogger } from '../log/log-bot';
+import { prodStartOptions } from '../prod/prod-bot';
+import { JesmylTelegramBot } from '../tg-bot';
 
 export const supportTelegramBot = new JesmylTelegramBot({
-    bot: jesmylTgBot,
-    chatId: -1001938269237,
-    logger: tglogger,
+  bot: jesmylTgBot,
+  chatId: -1001938269237,
+  logger: tglogger,
 });
 
-
 supportTelegramBot.onChatMessages(async (bot, message) => {
-    if (!message.text) return;
-    const id = message.from?.id;
+  if (!message.text) return;
+  const id = message.from?.id;
 
-    if (id == null) return;
+  if (id == null) return;
 
-    try {
-        const isCreator = (await bot.getAdmins())[id]?.status === 'creator';
+  try {
+    const isCreator = (await bot.getAdmins())[id]?.status === 'creator';
 
-        if (!isCreator) return;
-    } catch (error) {
-        return;
-    }
+    if (!isCreator) return;
+  } catch (error) {
+    return;
+  }
 
-    if (bot.messageCase('/start', message.text)) {
-        bot.postMessage('Новая авторизация', prodStartOptions);
-    }
+  if (bot.messageCase('/start', message.text)) {
+    bot.postMessage('Новая авторизация', prodStartOptions);
+  }
 });

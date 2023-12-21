@@ -1,16 +1,15 @@
-import { FullScreenContentOpenMode } from "./fullscreen-content/useFullscreenContent";
-
+import { FullScreenContentOpenMode } from './fullscreen-content/useFullscreenContent';
 
 export interface ComplectStorage {
-    rememberExpandes: string[],
+  rememberExpandes: string[];
 }
 
 export interface ComplectState {
-    fullscreenContentOpenMode: FullScreenContentOpenMode,
-    isAbsoluteFloatPopupOpen: boolean,
-    isAbsoluteBottomPopupOpen: boolean,
-    numAbsoluteBottomPopupUpdates: number,
-    isFullscreen: boolean,
-    numExerUpdates: number,
-    isNumberSearch: boolean,
+  fullscreenContentOpenMode: FullScreenContentOpenMode;
+  isAbsoluteFloatPopupOpen: boolean;
+  isAbsoluteBottomPopupOpen: boolean;
+  numAbsoluteBottomPopupUpdates: number;
+  isFullscreen: boolean;
+  numExerUpdates: number;
+  isNumberSearch: boolean;
 }

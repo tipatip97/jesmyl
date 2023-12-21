@@ -1,6 +1,3 @@
+export interface TunerState {}
 
-export interface TunerState {
-}
-
-export interface TunerStorage {
-}
+export interface TunerStorage {}

@@ -1,23 +1,23 @@
-import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { renderComponentInNewWindow } from "../../../../..";
-import { isTouchDevice } from "../../../../complect/device-differences";
-import mylib from "../../../../complect/my-lib/MyLib";
-import { RootState } from "../../../../shared/store";
-import di from "../Cm.store";
-import useCmNav from "../base/useCmNav";
-import { Com } from "../col/com/Com";
-import { useCcom } from "../col/com/useCcom";
-import useComPack from "../col/com/useComPack";
-import TranslationScreen from "./TranslationScreen";
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { renderComponentInNewWindow } from '../../../../..';
+import { isTouchDevice } from '../../../../complect/device-differences';
+import mylib from '../../../../complect/my-lib/MyLib';
+import { RootState } from '../../../../shared/store';
+import di from '../Cm.store';
+import useCmNav from '../base/useCmNav';
+import { Com } from '../col/com/Com';
+import { useCcom } from '../col/com/useCcom';
+import useComPack from '../col/com/useComPack';
+import TranslationScreen from './TranslationScreen';
 
 let currWin: Window | null = null;
 
 const startViewTransition = mylib.isFunc((document as any).startViewTransition)
   ? (callback: () => void) => {
-    (currWin?.document as any)?.startViewTransition(callback);
-    (document as any).startViewTransition(callback);
-  }
+      (currWin?.document as any)?.startViewTransition(callback);
+      (document as any).startViewTransition(callback);
+    }
   : (callback: () => void) => callback();
 
 const translationUpdatesSelector = (state: RootState) => state.cm.translationUpdates;
@@ -40,18 +40,16 @@ export function useTranslation() {
     currWin,
     isSelfTranslation: isTouchDevice,
     isTranslationBlockVisible: isVisible,
-    currText: isVisible ? texts && texts[currTexti] : "",
+    currText: isVisible ? texts && texts[currTexti] : '',
     currTexti,
     texts,
     position: useSelector(translationBlockPositionSelector),
     comPack: useComPack(ccom, true),
     nextText: () => {
-      if (state.texts && currTexti < state.texts.length - 1)
-        startViewTransition(() => state.setTexti(currTexti + 1));
+      if (state.texts && currTexti < state.texts.length - 1) startViewTransition(() => state.setTexti(currTexti + 1));
     },
     prevText: () => {
-      if (currTexti > 0)
-        startViewTransition(() => state.setTexti(currTexti - 1));
+      if (currTexti > 0) startViewTransition(() => state.setTexti(currTexti - 1));
     },
     prevCom: () => {
       const [comList] = state.comPack;
@@ -78,26 +76,16 @@ export function useTranslation() {
     },
     setTexti: (blocki: number) => {
       dispatch(di.translationBlock(blocki));
-      const nextd = window.document.getElementById(
-        `translation-window-line-${blocki}`
-      );
+      const nextd = window.document.getElementById(`translation-window-line-${blocki}`);
 
       if (nextd) {
         const nextParent = nextd.parentElement;
-        if (nextParent)
-          nextParent.scrollLeft =
-            nextd.offsetLeft +
-            nextd.clientWidth / 2 -
-            nextParent.clientWidth / 2;
+        if (nextParent) nextParent.scrollLeft = nextd.offsetLeft + nextd.clientWidth / 2 - nextParent.clientWidth / 2;
       }
     },
     switchVisible: () => dispatch(di.isTranslationBlockVisible(!isVisible)),
     switchPosition: () => {
-      dispatch(
-        di.translationBlockPosition(
-          state.position === "center" ? "top center" : "center"
-        )
-      );
+      dispatch(di.translationBlockPosition(state.position === 'center' ? 'top center' : 'center'));
     },
     closeTranslation: () => {
       currWin?.close();
@@ -115,10 +103,10 @@ export function useTranslation() {
 
       state.setTexti(0);
       if (state.isSelfTranslation) {
-        goTo("translation", null, true);
+        goTo('translation', null, true);
         document.body.requestFullscreen();
         registerBackAction(() => state.closeTranslation());
-      } else goTo("translation");
+      } else goTo('translation');
     },
     watchTranslation: (left: number, top: number, isSetFirstCom = false) => {
       if (currWin) {
@@ -131,30 +119,27 @@ export function useTranslation() {
         if (comList) setCom(comList[0]);
       }
 
-
       renderComponentInNewWindow(
         (win) => {
           currWin = win;
           dispatch(di.riseUpTranslationUpdates());
-          win.document.body.style.margin = "0";
-          win.document.body.style.padding = "0";
-          win.document.body.style.userSelect = "none";
+          win.document.body.style.margin = '0';
+          win.document.body.style.padding = '0';
+          win.document.body.style.userSelect = 'none';
           const closeWin = () => win.close();
 
-          window.addEventListener("unload", closeWin);
-          win.addEventListener("unload", () => {
-            window.removeEventListener("unload", closeWin);
+          window.addEventListener('unload', closeWin);
+          win.addEventListener('unload', () => {
+            window.removeEventListener('unload', closeWin);
             currWin = null;
             dispatch(di.riseUpTranslationUpdates());
           });
 
-          return <TranslationScreen
-            updater={(update) => win.addEventListener("resize", () => update())}
-          />;
+          return <TranslationScreen updater={(update) => win.addEventListener('resize', () => update())} />;
         },
         undefined,
-        "translation-win",
-        `top=${top},left=${left},width=200,height=200`
+        'translation-win',
+        `top=${top},left=${left},width=200,height=200`,
       );
     },
   };
@@ -169,6 +154,5 @@ const getComi = (comw?: number, comList?: Com[] | nil) => {
 
 const scrollToView = (com: Com) => {
   const comFace = document.querySelector(`.face-item.current.wid_${com.wid}`);
-  if (comFace) comFace.scrollIntoView({ block: "center" });
+  if (comFace) comFace.scrollIntoView({ block: 'center' });
 };
-

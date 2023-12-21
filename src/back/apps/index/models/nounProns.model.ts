@@ -1,2 +1,1 @@
-
-export type NounPronsType = Record<"pronouns" | "nouns", Record<string, number>>;
+export type NounPronsType = Record<'pronouns' | 'nouns', Record<string, number>>;

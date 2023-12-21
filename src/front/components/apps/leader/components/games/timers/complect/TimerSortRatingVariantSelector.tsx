@@ -1,5 +1,5 @@
-import Dropdown from "../../../../../../../complect/dropdown/Dropdown";
-import { GameTimerSortDirection } from "../GameTimer.model";
+import Dropdown from '../../../../../../../complect/dropdown/Dropdown';
+import { GameTimerSortDirection } from '../GameTimer.model';
 
 const sortVariantList = [
   {
@@ -10,7 +10,7 @@ const sortVariantList = [
     id: GameTimerSortDirection.Desc,
     title: '"Кто быстрее"',
   },
-]; 
+];
 
 export default function TimerSortRatingVariantSelector({
   sort,
@@ -21,16 +21,16 @@ export default function TimerSortRatingVariantSelector({
   onSelect?: (item: { id: number; title: string }) => void;
   isRedact?: boolean;
 }) {
-  return <>
-    <div className='TimerCompetitionsSelector dropdown-ancestor margin-big-gap-v flex flex-gap full-width'>
-      Принцип рейтинга
-      {isRedact || isRedact == null
-        ? <Dropdown
-          id={sort}
-          items={sortVariantList}
-          onSelect={onSelect}
-        />
-        : <div className='color--3'>{sortVariantList.find(item => item.id === sort)?.title || ' - '}</div>}
-    </div>
-  </>;
+  return (
+    <>
+      <div className="TimerCompetitionsSelector dropdown-ancestor margin-big-gap-v flex flex-gap full-width">
+        Принцип рейтинга
+        {isRedact || isRedact == null ? (
+          <Dropdown id={sort} items={sortVariantList} onSelect={onSelect} />
+        ) : (
+          <div className="color--3">{sortVariantList.find((item) => item.id === sort)?.title || ' - '}</div>
+        )}
+      </div>
+    </>
+  );
 }

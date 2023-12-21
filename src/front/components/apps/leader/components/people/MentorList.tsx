@@ -1,11 +1,11 @@
-import { LeaderCleans } from "../LeaderCleans";
-import { useLeaderCcontext } from "../contexts/useContexts";
-import HumanList from "./HumanList";
-import { HumanListComponentProps } from "./People.model";
+import { LeaderCleans } from '../LeaderCleans';
+import { useLeaderCcontext } from '../contexts/useContexts';
+import HumanList from './HumanList';
+import { HumanListComponentProps } from './People.model';
 
 export default function MentorList(props: HumanListComponentProps) {
   const ccontext = useLeaderCcontext();
-  const placeholder = `Поиск по лидерам ${ccontext?.name || ""}`;
+  const placeholder = `Поиск по лидерам ${ccontext?.name || ''}`;
 
   if (!ccontext) return null;
 

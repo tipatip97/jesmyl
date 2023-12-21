@@ -1,18 +1,12 @@
-import { PropsWithChildren, useState } from "react";
-import {
-  FontSizeContainProps,
-  FontSizeContainResizer,
-} from "./FontSizeContain.model";
+import { PropsWithChildren, useState } from 'react';
+import { FontSizeContainProps, FontSizeContainResizer } from './FontSizeContain.model';
 
-export default function FontSizeContain({
-  delay,
-  ...props
-}: PropsWithChildren<FontSizeContainProps>) {
+export default function FontSizeContain({ delay, ...props }: PropsWithChildren<FontSizeContainProps>) {
   const [isFirst, setIsFirst] = useState(true);
 
   return (
     <div
-      style={{ display: "inline-block" }}
+      style={{ display: 'inline-block' }}
       ref={(element) => {
         if (element) {
           const compute = () => {
@@ -39,8 +33,7 @@ export default function FontSizeContain({
 }
 
 const resize: FontSizeContainResizer = (child, fixOnly?, position?) => {
-  const { clientWidth, clientHeight } =
-    (child.parentElement as HTMLDivElement) || {};
+  const { clientWidth, clientHeight } = (child.parentElement as HTMLDivElement) || {};
   let max = 1000;
   const step = 5;
   let size = 50;
@@ -50,8 +43,8 @@ const resize: FontSizeContainResizer = (child, fixOnly?, position?) => {
     child.style.fontSize = `${size}%`;
     if (
       min < max &&
-      (fixOnly === "height" || clientWidth > child.clientWidth) &&
-      (fixOnly === "width" || clientHeight > child.clientHeight)
+      (fixOnly === 'height' || clientWidth > child.clientWidth) &&
+      (fixOnly === 'width' || clientHeight > child.clientHeight)
     ) {
       size += step;
       min++;
@@ -61,12 +54,11 @@ const resize: FontSizeContainResizer = (child, fixOnly?, position?) => {
   resize();
   child.style.fontSize = `${size - step}%`;
   if (position) {
-    const [vert, hor] = position.split(" ");
+    const [vert, hor] = position.split(' ');
 
-    child.style.marginTop =
-      vert === "center" ? `${(clientHeight - child.clientHeight) / 2}px` : "0";
-    child.style.marginLeft = (hor ? hor === "center" : vert === "center")
+    child.style.marginTop = vert === 'center' ? `${(clientHeight - child.clientHeight) / 2}px` : '0';
+    child.style.marginLeft = (hor ? hor === 'center' : vert === 'center')
       ? `${(clientWidth - child.clientWidth) / 2}px`
-      : "0";
+      : '0';
   }
 };

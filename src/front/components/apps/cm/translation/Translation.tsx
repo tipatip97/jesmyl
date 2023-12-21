@@ -1,22 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import EvaIcon from "../../../../complect/eva-icon/EvaIcon";
-import { RootState } from "../../../../shared/store";
-import di from "../Cm.store";
-import useCmNav from "../base/useCmNav";
-import ComFace from "../col/com/face/ComFace";
-import PhaseCmContainer from "../complect/phase-container/PhaseCmContainer";
-import "./Translation.scss";
-import TranslationScreen from "./TranslationScreen";
-import { useTranslation } from "./useTranslation";
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import { RootState } from '../../../../shared/store';
+import di from '../Cm.store';
+import useCmNav from '../base/useCmNav';
+import ComFace from '../col/com/face/ComFace';
+import PhaseCmContainer from '../complect/phase-container/PhaseCmContainer';
+import './Translation.scss';
+import TranslationScreen from './TranslationScreen';
+import { useTranslation } from './useTranslation';
 
 const isShowTranslationInfoSelector = (state: RootState) => state.cm.isShowTranslationInfo;
 
-export default function Translations({
-  hideComList,
-}: {
-  hideComList?: boolean;
-}) {
+export default function Translations({ hideComList }: { hideComList?: boolean }) {
   const dispatch = useDispatch();
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
   const [isShowTurnButton, setIsShowTurnButton] = useState(false);
@@ -51,40 +47,40 @@ export default function Translations({
       const state = stateRef.current;
 
       switch (event.code) {
-        case "Enter":
+        case 'Enter':
           state.watchTranslation(200, 200);
           break;
 
-        case "ArrowUp":
+        case 'ArrowUp':
           if (event.ctrlKey) state.prevCom();
           break;
 
-        case "ArrowDown":
+        case 'ArrowDown':
           if (event.ctrlKey) state.nextCom();
           break;
 
-        case "ArrowLeft":
+        case 'ArrowLeft':
           state.prevText();
           break;
 
-        case "ArrowRight":
+        case 'ArrowRight':
           state.nextText();
           break;
 
-        case "Escape":
+        case 'Escape':
           if (state.isSelfTranslation) state.closeTranslation();
           else state.switchVisible();
           break;
 
-        case "KeyV":
+        case 'KeyV':
           state.switchVisible();
           break;
 
-        case "KeyF":
+        case 'KeyF':
           state.currWin && state.currWin.focus();
           break;
 
-        case "KeyT":
+        case 'KeyT':
           state.switchPosition();
           break;
       }
@@ -104,28 +100,22 @@ export default function Translations({
       <div className="translation-container fullscreen">
         {
           <div
-            className={`fullscreen-translation ${isShowInfo ? "open-info" : ""} ${isRotateScreen ? "rotate-fullscreen-translation" : ""}`}
+            className={`fullscreen-translation ${isShowInfo ? 'open-info' : ''} ${
+              isRotateScreen ? 'rotate-fullscreen-translation' : ''
+            }`}
           >
             <TranslationScreen
               position={position}
-              updater={(update) =>
-                window.addEventListener("resize", () => update())
-              }
+              updater={(update) => window.addEventListener('resize', () => update())}
             />
-            <div
-              className="top-area info-area left"
-              onDoubleClick={() => prevCom()}
-            >
+            <div className="top-area info-area left" onDoubleClick={() => prevCom()}>
               <div className="description">
                 дважды клик&nbsp;-
                 <br />
                 предыдущая песня
               </div>
             </div>
-            <div
-              className="top-area info-area right"
-              onDoubleClick={() => nextCom()}
-            >
+            <div className="top-area info-area right" onDoubleClick={() => nextCom()}>
               <div className="description">
                 дважды клик&nbsp;-
                 <br />
@@ -137,20 +127,14 @@ export default function Translations({
               onClick={() => dispatch(di.switchShowTranslationInfo(false))}
               name="close-outline"
             />
-            <div
-              className="bottom-area info-area left"
-              onClick={() => prevText()}
-            >
+            <div className="bottom-area info-area left" onClick={() => prevText()}>
               <div className="description">
                 клик&nbsp;-
                 <br />
                 предыдущий слайд
               </div>
             </div>
-            <div
-              className="bottom-area info-area right"
-              onClick={() => nextText()}
-            >
+            <div className="bottom-area info-area right" onClick={() => nextText()}>
               <div className="description">
                 клик&nbsp;-
                 <br />
@@ -170,7 +154,7 @@ export default function Translations({
                 закрыть и&nbsp;инфо
               </div>
               <div
-                className={`area-button ${isShowCloseButton ? "show" : ""}`}
+                className={`area-button ${isShowCloseButton ? 'show' : ''}`}
                 onClick={(event) => {
                   event.stopPropagation();
                   closeTranslation();
@@ -179,7 +163,7 @@ export default function Translations({
                 <EvaIcon name="close-circle-outline" />
               </div>
               <div
-                className={`area-button second open-info-button ${isShowCloseButton ? "show" : ""}`}
+                className={`area-button second open-info-button ${isShowCloseButton ? 'show' : ''}`}
                 onClick={() => dispatch(di.switchShowTranslationInfo(!isShowInfo))}
               >
                 <EvaIcon name="question-mark-circle-outline" />
@@ -198,7 +182,7 @@ export default function Translations({
                 повернуть
               </div>
               <div
-                className={`area-button ${isShowTurnButton ? "show" : ""}`}
+                className={`area-button ${isShowTurnButton ? 'show' : ''}`}
                 onClick={(event) => {
                   event.stopPropagation();
                   rotateScreen(!isRotateScreen);
@@ -219,22 +203,14 @@ export default function Translations({
       content={
         <>
           <div className="flex">
-            <div
-              className="translation-screen-wrapper"
-              onClick={() => switchVisible()}
-            >
+            <div className="translation-screen-wrapper" onClick={() => switchVisible()}>
               <div className="translation-screen-wrapper-inner">
                 <TranslationScreen
                   position={position}
-                  updater={(update) =>
-                    window.addEventListener("resize", () => update())
-                  }
+                  updater={(update) => window.addEventListener('resize', () => update())}
                 />
                 {isTranslationBlockVisible ? null : (
-                  <div
-                    title="esc, V"
-                    className="absolute pos-bottom full-width margin-gap-v text-center"
-                  >
+                  <div title="esc, V" className="absolute pos-bottom full-width margin-gap-v text-center">
                     Нажми для показа
                   </div>
                 )}
@@ -269,9 +245,7 @@ export default function Translations({
                     onClick={() => setTexti(texti)}
                   >
                     <div>{texti + 1}</div>
-                    <div
-                      className={`translations-line-item-inner ${currTexti === texti ? "active" : ""}`}
-                    >
+                    <div className={`translations-line-item-inner ${currTexti === texti ? 'active' : ''}`}>
                       <div dangerouslySetInnerHTML={{ __html: text }} />
                     </div>
                   </div>
@@ -287,33 +261,25 @@ export default function Translations({
               <EvaIcon name="chevron-right-outline" />
             </div>
             <div
-              title={currWin ? "" : "Enter"}
+              title={currWin ? '' : 'Enter'}
               className="start-translation button flex center"
               onClick={(event) => {
                 watchTranslation(
                   (event.view as any).screenLeft + event.clientX - 70,
-                  (event.view as any).screenTop + event.clientY + 70
+                  (event.view as any).screenTop + event.clientY + 70,
                 );
               }}
             >
-              {currWin ? (
-                <EvaIcon name="monitor-outline" />
-              ) : (
-                <EvaIcon name="play-outline" />
-              )}
+              {currWin ? <EvaIcon name="monitor-outline" /> : <EvaIcon name="play-outline" />}
             </div>
             <div
               title="T"
-              className={`button ${position === "center" ? "inactive" : ""}`}
+              className={`button ${position === 'center' ? 'inactive' : ''}`}
               onClick={() => switchPosition()}
             >
               <EvaIcon name="upload-outline" />
             </div>
-            <div
-              title="esc, V"
-              className="button"
-              onClick={() => switchVisible()}
-            >
+            <div title="esc, V" className="button" onClick={() => switchVisible()}>
               <EvaIcon name="square-outline" />
             </div>
           </div>

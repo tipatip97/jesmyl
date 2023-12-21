@@ -1,12 +1,12 @@
-import { useEffect } from "react";
-import useLaterComList from "../../base/useLaterComList";
-import { ChordVisibleVariant } from "../../Cm.model";
-import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
-import "./block-styles/BlockStyles.scss";
-import { Com } from "./Com";
-import "./Com.scss";
-import ComOrders from "./orders/ComOrders";
-import { useCcom } from "./useCcom";
+import { useEffect } from 'react';
+import useLaterComList from '../../base/useLaterComList';
+import { ChordVisibleVariant } from '../../Cm.model';
+import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
+import './block-styles/BlockStyles.scss';
+import { Com } from './Com';
+import './Com.scss';
+import ComOrders from './orders/ComOrders';
+import { useCcom } from './useCcom';
 
 export default function TheCom({
   com: topCom,
@@ -31,13 +31,7 @@ export default function TheCom({
   }, []);
 
   if (com == null) {
-    return (
-      <PhaseCmContainer
-        className="com-container"
-        headTitle="Упс"
-        content="Песня не найдена("
-      />
-    );
+    return <PhaseCmContainer className="com-container" headTitle="Упс" content="Песня не найдена(" />;
   }
 
   return (

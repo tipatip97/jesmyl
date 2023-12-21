@@ -1,29 +1,29 @@
-import cmStorage from "../../cmStorage";
-import { EeStorageStoreType } from "./EeStorage.model";
+import cmStorage from '../../cmStorage';
+import { EeStorageStoreType } from './EeStorage.model';
 
 export class EeStorage {
-    store?: EeStorageStoreType;
+  store?: EeStorageStoreType;
 
-    constructor() {
-        this.load();
-    }
+  constructor() {
+    this.load();
+  }
 
-    async load() {
-        if (this.store != null) return this.store;
-        return this.store = await cmStorage.getOr('eeStorage', {});
-    }
+  async load() {
+    if (this.store != null) return this.store;
+    return (this.store = await cmStorage.getOr('eeStorage', {}));
+  }
 
-    save() {
-        cmStorage.set('eeStorage', this.store || {});
-    }
+  save() {
+    cmStorage.set('eeStorage', this.store || {});
+  }
 
-    get(word: string) {
-        return this.store ? this.store[word] : -1;
-    }
+  get(word: string) {
+    return this.store ? this.store[word] : -1;
+  }
 
-    set(word: string, value: number | number[]) {
-        if (this.store) this.store[word] = value;
-    }
+  set(word: string, value: number | number[]) {
+    if (this.store) this.store[word] = value;
+  }
 }
 
 export const eeStorage = new EeStorage();

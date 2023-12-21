@@ -1,15 +1,15 @@
-import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import DebouncedSearchInput from "../../../../../complect/DebouncedSearchInput";
-import LoadIndicatedContent from "../../../../../complect/load-indicated-content/LoadIndicatedContent";
-import mylib from "../../../../../complect/my-lib/MyLib";
-import { RootState } from "../../../../../shared/store";
-import useCmNav from "../../base/useCmNav";
-import useLaterComList from "../../base/useLaterComList";
-import PhaseCmContainer from "../../complect/phase-container/PhaseCmContainer";
-import ComFace from "../com/face/ComFace";
-import { useCcat } from "./useCcat";
+import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
+import LoadIndicatedContent from '../../../../../complect/load-indicated-content/LoadIndicatedContent';
+import mylib from '../../../../../complect/my-lib/MyLib';
+import { RootState } from '../../../../../shared/store';
+import useCmNav from '../../base/useCmNav';
+import useLaterComList from '../../base/useLaterComList';
+import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
+import ComFace from '../com/face/ComFace';
+import { useCcat } from './useCcat';
 
 const isNumberSearchSelector = (state: RootState) => state.complect.isNumberSearch;
 
@@ -20,11 +20,14 @@ export default function TheCat({ all }: { all?: boolean }) {
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
-  const { nav, appRouteData: { ccomw } } = useCmNav();
+  const {
+    nav,
+    appRouteData: { ccomw },
+  } = useCmNav();
 
   nav.onGeneralFooterButtonClick('all', 'TheCat')(() => scrollToCurrent(true));
 
-  const [term, setTerm] = useState(cat?.term || "");
+  const [term, setTerm] = useState(cat?.term || '');
 
   const scrollToCurrent = (isSync?: boolean) => {
     if (ccomw) {
@@ -32,11 +35,9 @@ export default function TheCat({ all }: { all?: boolean }) {
         if (listRef.current)
           if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
           else {
-            const currentFace = document.querySelector(
-              `.face-item.com-of-cat.current.wid_${ccomw}`
-            );
+            const currentFace = document.querySelector(`.face-item.com-of-cat.current.wid_${ccomw}`);
             if (currentFace) {
-              mylib.scrollToView(currentFace, "top", {
+              mylib.scrollToView(currentFace, 'top', {
                 parent: listRef.current,
                 top: categoryTitleRef.current?.clientHeight ?? 40,
               });
@@ -56,57 +57,41 @@ export default function TheCat({ all }: { all?: boolean }) {
         withoutBackButton={all}
         headClass="flex between full-width"
         head={
-          cat && <DebouncedSearchInput
-            placeholder="Поиск песен"
-            className="debounced-searcher round-styled"
-            initialTerm={term}
-            onSearch={(term) => cat.search(term, isNumberSearch)}
-            debounce={500}
-            onDebounced={() => {
-              if (listRef.current) listRef.current.scrollTop = 0;
-            }}
-            onTermChange={(term) => setTerm(term)}
-          />}
+          cat && (
+            <DebouncedSearchInput
+              placeholder="Поиск песен"
+              className="debounced-searcher round-styled"
+              initialTerm={term}
+              onSearch={(term) => cat.search(term, isNumberSearch)}
+              debounce={500}
+              onDebounced={() => {
+                if (listRef.current) listRef.current.scrollTop = 0;
+              }}
+              onTermChange={(term) => setTerm(term)}
+            />
+          )
+        }
         contentRef={listRef}
         content={
           cat && (
             <>
-              <div className={`later-com-list ${all && !term && laterComs?.length ? "" : "hidden"}`}>
-                <div
-                  className="list-title sticky"
-                  onClick={() => scrollToCurrent()}
-                >
+              <div className={`later-com-list ${all && !term && laterComs?.length ? '' : 'hidden'}`}>
+                <div className="list-title sticky" onClick={() => scrollToCurrent()}>
                   Последние:
                 </div>
-                {laterComs?.map((com) => (
-                  <ComFace
-                    key={com.wid}
-                    com={com}
-                  />
-                ))}
+                {laterComs?.map((com) => <ComFace key={com.wid} com={com} />)}
               </div>
-              <div
-                className="flex between sticky list-title"
-                ref={categoryTitleRef}
-                onClick={() => scrollToCurrent()}
-              >
+              <div className="flex between sticky list-title" ref={categoryTitleRef} onClick={() => scrollToCurrent()}>
                 <div>{cat.name}:</div>
                 {cat.wraps && (
                   <div>
-                    {`${cat.coms.length === cat.wraps.length
-                      ? ""
-                      : `${cat.wraps.length} / `
-                      }${cat.coms.length}`}
+                    {`${cat.coms.length === cat.wraps.length ? '' : `${cat.wraps.length} / `}${cat.coms.length}`}
                   </div>
                 )}
               </div>
               <div className="com-list">
                 {cat.wraps.map((wrap) => (
-                  <ComFace
-                    key={wrap.com.wid}
-                    {...wrap}
-                    groupClass="com-of-cat"
-                  />
+                  <ComFace key={wrap.com.wid} {...wrap} groupClass="com-of-cat" />
                 ))}
               </div>
             </>
@@ -119,16 +104,16 @@ export default function TheCat({ all }: { all?: boolean }) {
 
 const CatPhaseContainer = styled(PhaseCmContainer)`
   .list-title {
-      cursor: ns-resize;
+    cursor: ns-resize;
   }
 
-  >.content {
-      padding-top: 0;
+  > .content {
+    padding-top: 0;
   }
 
   .later-com-list {
-      &.hidden {
-          display: none;
-      }
-}
+    &.hidden {
+      display: none;
+    }
+  }
 `;

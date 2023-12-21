@@ -1,16 +1,15 @@
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import modalService from "../../../../../../../complect/modal/Modal.service";
-import mylib from "../../../../../../../complect/my-lib/MyLib";
-import { GamerGameName, GamerRoom, GamerRoomMember, GamerRoomMemberStatus } from "../../../../Gamer.model";
-import di from "../../../../Gamer.store";
-import gamerStorage from "../../../../gamerStorage";
-import useGamerNav, { gamerOfflineRoomGames } from "../../../../useGamerNav";
-import { useGamerOfflineRoomsContext } from "./context";
-import { useGamerOfflineRoom } from "./current-room";
-import { useGamerOfflineRoomsPassport } from "./passport";
-import { useGamerOfflineRooms } from "./rooms";
-
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import modalService from '../../../../../../../complect/modal/Modal.service';
+import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { GamerGameName, GamerRoom, GamerRoomMember, GamerRoomMemberStatus } from '../../../../Gamer.model';
+import di from '../../../../Gamer.store';
+import gamerStorage from '../../../../gamerStorage';
+import useGamerNav, { gamerOfflineRoomGames } from '../../../../useGamerNav';
+import { useGamerOfflineRoomsContext } from './context';
+import { useGamerOfflineRoom } from './current-room';
+import { useGamerOfflineRoomsPassport } from './passport';
+import { useGamerOfflineRooms } from './rooms';
 
 export default function useGamerOfflineRoomsActions() {
   const dispatch = useDispatch();
@@ -38,28 +37,32 @@ export default function useGamerOfflineRoomsActions() {
     });
   }, [dispatch, readQR, passport]);
 
-  const goToOfflineRoom = useCallback((roomWid: number) => {
-    gamerStorage.set('roomw', roomWid);
-    dispatch(di.roomw(roomWid));
-    goTo('offlineRoom');
-  }, [dispatch, goTo]);
+  const goToOfflineRoom = useCallback(
+    (roomWid: number) => {
+      gamerStorage.set('roomw', roomWid);
+      dispatch(di.roomw(roomWid));
+      goTo('offlineRoom');
+    },
+    [dispatch, goTo],
+  );
 
-  const setRoomGame = useCallback((currentGame: GamerGameName) => {
-    updateCurrentOfflineRoom((room) => ({
-      ...room,
-      currentGame
-    }));
-  }, [updateCurrentOfflineRoom]);
+  const setRoomGame = useCallback(
+    (currentGame: GamerGameName) => {
+      updateCurrentOfflineRoom((room) => ({
+        ...room,
+        currentGame,
+      }));
+    },
+    [updateCurrentOfflineRoom],
+  );
 
   const addNewMember = useCallback(() => {
     const addMember = (member: GamerRoomMember) => {
       updateCurrentOfflineRoom((room) => {
         const newRoom = { ...room, members: [...room.members] };
         const memberi = newRoom.members.findIndex(({ login }) => login === member.login);
-        if (memberi < 0)
-          newRoom.members.push(member);
-        else
-          newRoom.members[memberi] = member;
+        if (memberi < 0) newRoom.members.push(member);
+        else newRoom.members[memberi] = member;
 
         return newRoom;
       });
@@ -71,50 +74,62 @@ export default function useGamerOfflineRoomsActions() {
           login: data.value[0],
           name: data.value[1],
           isInactive: false,
-          status: GamerRoomMemberStatus.Member
+          status: GamerRoomMemberStatus.Member,
         });
       }
     });
   }, [readQR, updateCurrentOfflineRoom]);
 
-  const switchMemberInactive = useCallback((memberLogin: string) => {
-    updateCurrentOfflineRoom((room) => {
-      const members = [...room.members];
-      const memberi = members.findIndex(({ login }) => login === memberLogin);
-      const member = { ...members[memberi] };
-      members[memberi] = member;
-      member.isInactive = !member.isInactive;
-      return { ...room, members };
-    });
-  }, [updateCurrentOfflineRoom]);
+  const switchMemberInactive = useCallback(
+    (memberLogin: string) => {
+      updateCurrentOfflineRoom((room) => {
+        const members = [...room.members];
+        const memberi = members.findIndex(({ login }) => login === memberLogin);
+        const member = { ...members[memberi] };
+        members[memberi] = member;
+        member.isInactive = !member.isInactive;
+        return { ...room, members };
+      });
+    },
+    [updateCurrentOfflineRoom],
+  );
 
-  const addOfflineRoom = useCallback((name: string) => {
-    const { login, fio } = passport || {};
+  const addOfflineRoom = useCallback(
+    (name: string) => {
+      const { login, fio } = passport || {};
 
-    if (!login || !fio) return;
+      if (!login || !fio) return;
 
-    dispatch(di.offlineRooms(
-      [
-        ...offlineRooms || [],
-        {
-          w: Date.now(),
-          name,
-          members: [{
-            login,
-            name: fio,
-            isInactive: false,
-            status: GamerRoomMemberStatus.Owner,
-          }],
-          games: {
-            spy: {}
-          }
-        }
-      ]));
-  }, [dispatch, offlineRooms, passport]);
+      dispatch(
+        di.offlineRooms([
+          ...(offlineRooms || []),
+          {
+            w: Date.now(),
+            name,
+            members: [
+              {
+                login,
+                name: fio,
+                isInactive: false,
+                status: GamerRoomMemberStatus.Owner,
+              },
+            ],
+            games: {
+              spy: {},
+            },
+          },
+        ]),
+      );
+    },
+    [dispatch, offlineRooms, passport],
+  );
 
-  const removeOfflineGame = useCallback(async (roomw: number) => {
-    dispatch(di.offlineRooms((offlineRooms || []).filter(({ w }) => w !== roomw)));
-  }, [dispatch, offlineRooms]);
+  const removeOfflineGame = useCallback(
+    async (roomw: number) => {
+      dispatch(di.offlineRooms((offlineRooms || []).filter(({ w }) => w !== roomw)));
+    },
+    [dispatch, offlineRooms],
+  );
 
   return {
     joinByQrCode,
@@ -133,17 +148,20 @@ export const useOfflineRoomUpdater = (room: GamerRoom | und) => {
   const offlineRooms = useGamerOfflineRooms();
   const dispatch = useDispatch();
 
-  return useCallback((updater: (room: GamerRoom) => GamerRoom | void | nil) => {
-    if (!room) return;
-    const newRoom = updater(room);
-    if (newRoom && newRoom !== room) {
-      const rooms = [...offlineRooms ?? []];
-      const roomw = newRoom.w;
-      const roomi = rooms.findIndex(({ w }) => w === roomw);
-      if (roomi > -1) {
-        rooms[roomi] = newRoom;
-        dispatch(di.offlineRooms(rooms));
+  return useCallback(
+    (updater: (room: GamerRoom) => GamerRoom | void | nil) => {
+      if (!room) return;
+      const newRoom = updater(room);
+      if (newRoom && newRoom !== room) {
+        const rooms = [...(offlineRooms ?? [])];
+        const roomw = newRoom.w;
+        const roomi = rooms.findIndex(({ w }) => w === roomw);
+        if (roomi > -1) {
+          rooms[roomi] = newRoom;
+          dispatch(di.offlineRooms(rooms));
+        }
       }
-    }
-  }, [room, dispatch, offlineRooms]);
+    },
+    [room, dispatch, offlineRooms],
+  );
 };

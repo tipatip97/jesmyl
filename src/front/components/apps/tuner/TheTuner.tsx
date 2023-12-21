@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import PhaseContainerConfigurer from "../../../complect/phase-container/PhaseContainerConfigurer";
-import { TunerApplication } from "./app";
-import "./TunerStyle.scss";
-import "./Tuner.scss";
-import useTunerNav from "./useTunerNav";
+import { useEffect, useState } from 'react';
+import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
+import { TunerApplication } from './app';
+import './TunerStyle.scss';
+import './Tuner.scss';
+import useTunerNav from './useTunerNav';
 
 let tunerContainer: HTMLDivElement | null;
 let tunerApplication: any;
@@ -15,7 +15,7 @@ export default function TheTuner() {
     () => () => {
       tunerContainer = null;
     },
-    []
+    [],
   );
 
   const { goBack } = useTunerNav();
@@ -26,7 +26,7 @@ export default function TheTuner() {
       className="tuner-application"
       withoutBackButton
       headTitle="Тюнер"
-      contentClass={`tuner-container ${started ? "started" : ""}`}
+      contentClass={`tuner-container ${started ? 'started' : ''}`}
       content={
         <>
           <div
@@ -41,9 +41,7 @@ export default function TheTuner() {
             onClick={() => {
               setStarted(true);
               tunerApplication.tuner.init();
-              tunerApplication.frequencyData = new Uint8Array(
-                tunerApplication.tuner.analyser.frequencyBinCount
-              );
+              tunerApplication.frequencyData = new Uint8Array(tunerApplication.tuner.analyser.frequencyBinCount);
             }}
           >
             Start
@@ -57,7 +55,7 @@ export default function TheTuner() {
             <div className="notes">
               <div className="notes-list"></div>
               <div className="frequency">
-                {" "}
+                {' '}
                 <span>Hz</span>
               </div>
             </div>

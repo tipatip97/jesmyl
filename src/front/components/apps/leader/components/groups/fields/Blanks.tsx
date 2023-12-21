@@ -1,42 +1,37 @@
-import { useMemo, useState } from "react";
-import SendButton from "../../../../../../complect/sends/send-button/SendButton";
-import EvaIcon from "../../../../../../complect/eva-icon/EvaIcon";
-import { ClientExecutionDict } from "../../../../../../complect/exer/Exer.model";
-import mylib, { MyLib } from "../../../../../../complect/my-lib/MyLib";
-import { leaderExer } from "../../../Leader.store";
-import { useLeaderCcontext } from "../../contexts/useContexts";
-import { ContextFieldBlankExportable } from "./Blanks.model";
-import ContextFieldBlank from "./FieldBlank";
+import { useMemo, useState } from 'react';
+import SendButton from '../../../../../../complect/sends/send-button/SendButton';
+import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import { ClientExecutionDict } from '../../../../../../complect/exer/Exer.model';
+import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
+import { leaderExer } from '../../../Leader.store';
+import { useLeaderCcontext } from '../../contexts/useContexts';
+import { ContextFieldBlankExportable } from './Blanks.model';
+import ContextFieldBlank from './FieldBlank';
 
 export default function GroupFieldBlanks() {
   const ccontext = useLeaderCcontext();
   const [addList, updateAddList] = useState<ContextFieldBlankExportable[]>([]);
-  const [redactList, updateRedactList] = useState<
-    ContextFieldBlankExportable[]
-  >([]);
+  const [redactList, updateRedactList] = useState<ContextFieldBlankExportable[]>([]);
   const [keysOnRedact, updateKeysOnRedact] = useState<string[]>([]);
-  const { isCanAddNew, isCanPublicate, inclusiveKeys, isEmptyExists } =
-    useMemo(() => {
-      let isEmptyExists = addList.some(({ key, name }) => !key || !name);
-      const keys: string[] = [];
-      const inclusiveKeys = addList
-        .filter(({ key }) => {
-          if (keys.indexOf(key) < 0) {
-            keys.push(key);
-            return false;
-          } else return true;
-        })
-        .map(({ key }) => key);
+  const { isCanAddNew, isCanPublicate, inclusiveKeys, isEmptyExists } = useMemo(() => {
+    let isEmptyExists = addList.some(({ key, name }) => !key || !name);
+    const keys: string[] = [];
+    const inclusiveKeys = addList
+      .filter(({ key }) => {
+        if (keys.indexOf(key) < 0) {
+          keys.push(key);
+          return false;
+        } else return true;
+      })
+      .map(({ key }) => key);
 
-      return {
-        isCanAddNew: !isEmptyExists && !inclusiveKeys.length,
-        isCanPublicate:
-          (!isEmptyExists && !inclusiveKeys.length && !!addList.length) ||
-          !!redactList.length,
-        inclusiveKeys,
-        isEmptyExists,
-      };
-    }, [addList, redactList, keysOnRedact]);
+    return {
+      isCanAddNew: !isEmptyExists && !inclusiveKeys.length,
+      isCanPublicate: (!isEmptyExists && !inclusiveKeys.length && !!addList.length) || !!redactList.length,
+      inclusiveKeys,
+      isEmptyExists,
+    };
+  }, [addList, redactList, keysOnRedact]);
 
   return (
     <>
@@ -50,9 +45,9 @@ export default function GroupFieldBlanks() {
               updateAddList([
                 ...addList,
                 {
-                  name: "",
-                  key: "",
-                  type: "string",
+                  name: '',
+                  key: '',
+                  type: 'string',
                 },
               ]);
             }}
@@ -68,17 +63,12 @@ export default function GroupFieldBlanks() {
             onEditStart={(isSelfRedact) => isSelfRedact && updateKeysOnRedact([...keysOnRedact, blank.key])}
             onRedact={(blank) => {
               const redactBlanks = [...redactList];
-              const redactBlanki = redactBlanks.findIndex(
-                ({ key }) => blank.key === key
-              );
+              const redactBlanki = redactBlanks.findIndex(({ key }) => blank.key === key);
 
-              const realBlank = (ccontext.blanks || []).find(
-                ({ key }) => blank.key === key
-              );
+              const realBlank = (ccontext.blanks || []).find(({ key }) => blank.key === key);
 
               if (realBlank) {
-                if (mylib.isEq(realBlank, blank))
-                  redactBlanks.splice(redactBlanki, 1);
+                if (mylib.isEq(realBlank, blank)) redactBlanks.splice(redactBlanki, 1);
                 else if (redactBlanki < 0) redactBlanks.push(blank);
                 else redactBlanks[redactBlanki] = blank;
               }
@@ -112,15 +102,9 @@ export default function GroupFieldBlanks() {
       })}
       <div className="flex center margin-big-gap">
         {!inclusiveKeys.length || (
-          <div className="error-message">
-            Присутствуют одинаковые ключи ({inclusiveKeys.join(", ")})
-          </div>
+          <div className="error-message">Присутствуют одинаковые ключи ({inclusiveKeys.join(', ')})</div>
         )}
-        {isEmptyExists && (
-          <div className="error-message">
-            Значения "Ключ" и "Название" не должны быть пустыми!
-          </div>
-        )}
+        {isEmptyExists && <div className="error-message">Значения "Ключ" и "Название" не должны быть пустыми!</div>}
         {isCanPublicate && (
           <SendButton
             title="Отправить бланки"
@@ -139,19 +123,14 @@ export default function GroupFieldBlanks() {
                   };
 
                   redactList.forEach((redactBlank) => {
-                    const blank = (ccontext.blanks || []).find(
-                      (blank) => blank.key === redactBlank.key
-                    );
+                    const blank = (ccontext.blanks || []).find((blank) => blank.key === redactBlank.key);
 
                     if (blank) {
                       MyLib.entries(redactBlank).forEach(([fieldn, value]) => {
-                        if (
-                          fieldn !== "key" &&
-                          (blank[fieldn as never] ?? null) !== (value ?? null)
-                        ) {
+                        if (fieldn !== 'key' && (blank[fieldn as never] ?? null) !== (value ?? null)) {
                           execs.push({
-                            action: "setContextGroupFieldBlankField",
-                            method: "set",
+                            action: 'setContextGroupFieldBlankField',
+                            method: 'set',
                             args: {
                               ...generals,
                               key: blank.key,
@@ -166,8 +145,8 @@ export default function GroupFieldBlanks() {
 
                   if (addList.length) {
                     execs.push({
-                      action: "addContextGroupFieldBlanks",
-                      method: "concat",
+                      action: 'addContextGroupFieldBlanks',
+                      method: 'concat',
                       args: {
                         ...generals,
                         list: addList,

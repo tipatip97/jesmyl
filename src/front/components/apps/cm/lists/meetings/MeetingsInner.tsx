@@ -1,12 +1,12 @@
-import { ReactNode, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import BrutalItem from "../../../../../complect/brutal-item/BrutalItem";
-import EvaIcon from "../../../../../complect/eva-icon/EvaIcon";
-import { RootState } from "../../../../../shared/store";
-import di from "../../Cm.store";
-import useCmNav from "../../base/useCmNav";
-import { Meetings } from "./Meetings";
-import { MeetingsEvent } from "./MeetingsEvent";
+import { ReactNode, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
+import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { RootState } from '../../../../../shared/store';
+import di from '../../Cm.store';
+import useCmNav from '../../base/useCmNav';
+import { Meetings } from './Meetings';
+import { MeetingsEvent } from './MeetingsEvent';
 
 const favoriteMeetingsSelector = (state: RootState) => state.cm.favoriteMeetings;
 
@@ -17,12 +17,16 @@ export default function MeetingsInner<Meets extends Meetings>({
   onContextNavigate,
 }: {
   meetings: Meets;
-  onEventClick: (event: NonUndefined<Meets["event"]>) => void;
+  onEventClick: (event: NonUndefined<Meets['event']>) => void;
   onContextNavigate?: (context: number[]) => void;
-  asEventBox?: (event: MeetingsEvent) => ReactNode,
+  asEventBox?: (event: MeetingsEvent) => ReactNode;
 }) {
   const dispatch = useDispatch();
-  const { registerBackAction, appRouteData: { eventContext = [] }, setAppRouteData } = useCmNav();
+  const {
+    registerBackAction,
+    appRouteData: { eventContext = [] },
+    setAppRouteData,
+  } = useCmNav();
   const favorites = useSelector(favoriteMeetingsSelector);
   const setCurrContext = (eventContext: number[]) => setAppRouteData({ eventContext });
 
@@ -44,12 +48,8 @@ export default function MeetingsInner<Meets extends Meetings>({
 
   const [contexts, currContextw] = meetings.getContexts(eventContext);
   const names = eventContext.map((context, contexti) => (
-    <span
-      key={contexti}
-      className="pointer"
-      onClick={() => setCurrContext([...eventContext].slice(0, contexti + 1))}
-    >
-      {contexti ? " - " : ""}
+    <span key={contexti} className="pointer" onClick={() => setCurrContext([...eventContext].slice(0, contexti + 1))}>
+      {contexti ? ' - ' : ''}
       {meetings.names[context]}
     </span>
   ));
@@ -58,7 +58,7 @@ export default function MeetingsInner<Meets extends Meetings>({
     <>
       <div className="margin-gap-v">
         <span onClick={() => setCurrContext([])}>Контекст: </span>
-        {names.length ? names : "Все"}
+        {names.length ? names : 'Все'}
       </div>
       {eventContext.length ? null : (
         <>
@@ -81,9 +81,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                       setCurrContext(context);
                     }}
                   >
-                    {context
-                      ?.map((context) => meetings.names[context])
-                      .join(" - ")}
+                    {context?.map((context) => meetings.names[context]).join(' - ')}
                   </span>
                 }
               />
@@ -97,9 +95,7 @@ export default function MeetingsInner<Meets extends Meetings>({
               <div key={contextwi} className="relative">
                 <BrutalItem
                   icon="folder-outline"
-                  title={
-                    meetings.names[context.context[context.context.length - 1]]
-                  }
+                  title={meetings.names[context.context[context.context.length - 1]]}
                   onClick={() => setCurrContext(context.context)}
                   box={<EvaIcon className="fade-05" name="star" />}
                 />
@@ -107,7 +103,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                   {context.context
                     ?.slice(0, -1)
                     .map((context) => meetings.names[context])
-                    .join(" - ")}
+                    .join(' - ')}
                 </div>
               </div>
             );
@@ -125,27 +121,25 @@ export default function MeetingsInner<Meets extends Meetings>({
             title={event.name}
             onClick={() => onEventClick(event as never)}
             box={
-              asEventBox
-                ? asEventBox(event)
-                : (eventContext.length ? (
-                  <EvaIcon
-                    name={isFavorite ? "star" : "star-outline"}
-                    onClick={(e) => {
-                      e.stopPropagation();
+              asEventBox ? (
+                asEventBox(event)
+              ) : eventContext.length ? (
+                <EvaIcon
+                  name={isFavorite ? 'star' : 'star-outline'}
+                  onClick={(e) => {
+                    e.stopPropagation();
 
-                      dispatch(
-                        di.favoriteMeetings({
-                          ...favorites,
-                          events: isFavorite
-                            ? favorites.events.filter(
-                              (eventw) => eventw !== event.wid
-                            )
-                            : [...favorites.events, event.wid],
-                        })
-                      );
-                    }}
-                  />
-                ) : null)
+                    dispatch(
+                      di.favoriteMeetings({
+                        ...favorites,
+                        events: isFavorite
+                          ? favorites.events.filter((eventw) => eventw !== event.wid)
+                          : [...favorites.events, event.wid],
+                      }),
+                    );
+                  }}
+                />
+              ) : null
             }
           />
         );
@@ -162,7 +156,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             box={
               eventContext.length ? (
                 <EvaIcon
-                  name={isFavorite ? "star" : "star-outline"}
+                  name={isFavorite ? 'star' : 'star-outline'}
                   onClick={(e) => {
                     e.stopPropagation();
 
@@ -170,11 +164,9 @@ export default function MeetingsInner<Meets extends Meetings>({
                       di.favoriteMeetings({
                         ...favorites,
                         contexts: isFavorite
-                          ? favorites.contexts.filter(
-                            (context) => context !== contextw
-                          )
+                          ? favorites.contexts.filter((context) => context !== contextw)
                           : [...favorites.contexts, contextw],
-                      })
+                      }),
                     );
                   }}
                 />

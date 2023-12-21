@@ -1,8 +1,8 @@
-import mylib from "../../../../../../complect/my-lib/MyLib";
-import { LeaderCleans } from "../../LeaderCleans";
-import PrintableTemplate from "../../templates/PrintableTemplate";
-import useGames from "../useGames";
-import "./GameTemplates.scss";
+import mylib from '../../../../../../complect/my-lib/MyLib';
+import { LeaderCleans } from '../../LeaderCleans';
+import PrintableTemplate from '../../templates/PrintableTemplate';
+import useGames from '../useGames';
+import './GameTemplates.scss';
 
 export default function GameTeamLists() {
   const { cgame, ctx } = useGames();
@@ -21,10 +21,7 @@ export default function GameTeamLists() {
               {pointsNet.map((row, rowi) => {
                 return (
                   <>
-                    <tr
-                      key={rowi}
-                      className=" flex-gap full-width between for-print break-inside-avoid"
-                    >
+                    <tr key={rowi} className=" flex-gap full-width between for-print break-inside-avoid">
                       {row?.map((team, teami) => {
                         return (
                           <td
@@ -37,7 +34,9 @@ export default function GameTeamLists() {
                             <h3>{team.name}</h3>
                             {LeaderCleans.extractWidables(ctx.contextMembers, team.members)
                               .filter((member) => !member.isInactive)
-                              .map((member, memberi) => <div key={memberi}>{member.name}</div>)}
+                              .map((member, memberi) => (
+                                <div key={memberi}>{member.name}</div>
+                              ))}
                           </td>
                         );
                       })}

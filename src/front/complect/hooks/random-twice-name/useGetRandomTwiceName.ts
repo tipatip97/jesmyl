@@ -1,32 +1,35 @@
-import { useSelector } from "react-redux";
-import { NounPronsType, makeTwiceKnownName } from "../../../models";
-import { RootState } from "../../../shared/store";
-import mylib from "../../my-lib/MyLib";
+import { useSelector } from 'react-redux';
+import { NounPronsType, makeTwiceKnownName } from '../../../models';
+import { RootState } from '../../../shared/store';
+import mylib from '../../my-lib/MyLib';
 
 const storageSelector = (state: RootState) => state.index.nounPronsWords;
 
-export const makeRandomTwiceName = (storage?: NounPronsType, topPronoun?: string | nil, topNoun?: string | nil): [string, string] => {
-    let pronoun = topPronoun;
-    if (!pronoun && storage) {
-        pronoun = mylib.randomItem(mylib.keys(storage.pronouns), -1);
-    }
+export const makeRandomTwiceName = (
+  storage?: NounPronsType,
+  topPronoun?: string | nil,
+  topNoun?: string | nil,
+): [string, string] => {
+  let pronoun = topPronoun;
+  if (!pronoun && storage) {
+    pronoun = mylib.randomItem(mylib.keys(storage.pronouns), -1);
+  }
 
-    let noun = topNoun;
-    if (!noun && storage) {
-        noun = mylib.randomItem(mylib.keys(storage.nouns).slice(0, -1));
-    }
+  let noun = topNoun;
+  if (!noun && storage) {
+    noun = mylib.randomItem(mylib.keys(storage.nouns).slice(0, -1));
+  }
 
-    if (!pronoun || !noun) return ['', ''];
+  if (!pronoun || !noun) return ['', ''];
 
-    return makeTwiceKnownName(pronoun, noun);
+  return makeTwiceKnownName(pronoun, noun);
 };
 
 export const useGetRandomTwiceName = () => {
-    const storage = useSelector(storageSelector);
+  const storage = useSelector(storageSelector);
 
-    return (topPronoun?: string | nil, topNoun?: string | nil) => makeRandomTwiceName(storage, topPronoun, topNoun);
-}
-
+  return (topPronoun?: string | nil, topNoun?: string | nil) => makeRandomTwiceName(storage, topPronoun, topNoun);
+};
 
 // for (let i = 0; i < 10; i++) console.info(getRandomTwiceName().join(' '));
 

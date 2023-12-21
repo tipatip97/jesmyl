@@ -1,4 +1,4 @@
-import indexStorage from "../components/index/indexStorage";
+import indexStorage from '../components/index/indexStorage';
 
 const classList = document.body.classList;
 const minTouches = 3;
@@ -7,41 +7,36 @@ let timeout: any = null;
 const lsName = 'theme';
 
 (async () => {
-    const bodyClass = await indexStorage.get(lsName);
-    if (bodyClass) classList.add(bodyClass);
+  const bodyClass = await indexStorage.get(lsName);
+  if (bodyClass) classList.add(bodyClass);
 })();
 
 const toggleTheme = () => {
-    const className = 'light-theme';
-    classList.toggle(className);
-    if (!classList.contains(className))
-        indexStorage.rem(lsName);
-    else
-        indexStorage.set(lsName, className);
+  const className = 'light-theme';
+  classList.toggle(className);
+  if (!classList.contains(className)) indexStorage.rem(lsName);
+  else indexStorage.set(lsName, className);
 };
 
 const listenThemeChanges = () => {
-    document.body.addEventListener('touchstart', (event) => {
-        const touches = event.touches.length;
+  document.body.addEventListener('touchstart', (event) => {
+    const touches = event.touches.length;
 
-        if (touches === 4) {
+    if (touches === 4) {
+    } else if (touches >= minTouches && touches <= maxTouches) {
+      timeout = setTimeout(toggleTheme, 500);
+    } else {
+      clearTimeout(timeout);
+    }
+  });
+  document.body.addEventListener('touchend', (event) => {
+    const touches = event.touches.length;
 
-        } else if (touches >= minTouches && touches <= maxTouches) {
-            timeout = setTimeout(toggleTheme, 500);
-        } else {
-            clearTimeout(timeout);
-        }
-    });
-    document.body.addEventListener('touchend', (event) => {
-        const touches = event.touches.length;
-
-        if (touches < minTouches || touches > maxTouches)
-            clearTimeout(timeout);
-    });
-    document.body.addEventListener('keyup', (event) => {
-        if (event.code === 'Space' && event.ctrlKey && event.altKey && event.shiftKey)
-            toggleTheme();
-    });
+    if (touches < minTouches || touches > maxTouches) clearTimeout(timeout);
+  });
+  document.body.addEventListener('keyup', (event) => {
+    if (event.code === 'Space' && event.ctrlKey && event.altKey && event.shiftKey) toggleTheme();
+  });
 };
 
 export default listenThemeChanges;

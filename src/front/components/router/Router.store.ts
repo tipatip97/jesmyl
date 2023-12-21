@@ -1,13 +1,13 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { RouterNavigateCast, RouterNavigateData, RouterState } from "./Router.model";
-import routerStorage from "./routerStorage";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { RouterNavigateCast, RouterNavigateData, RouterState } from './Router.model';
+import routerStorage from './routerStorage';
 
 const initialState: RouterState = {
   isReady: false,
 };
 
 export const slice = createSlice({
-  name: "router",
+  name: 'router',
   initialState,
   reducers: {
     ...routerStorage.initializators([

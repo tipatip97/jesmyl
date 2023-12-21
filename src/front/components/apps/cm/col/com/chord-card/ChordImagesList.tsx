@@ -1,5 +1,5 @@
-import ChordCard from "./ChordCard";
-import { useCcom } from "../useCcom";
+import ChordCard from './ChordCard';
+import { useCcom } from '../useCcom';
 
 export default function ChordImagesList() {
   const ccom = useCcom();
@@ -15,11 +15,14 @@ export default function ChordImagesList() {
                   key={chordName}
                   chordName={chordName}
                   customContent={(card) => {
-                    return <div key={chordName} className="flex column margin-big-gap">
-                      {card || <div className="error-message">Неизвестный аккорд</div>}
-                      {ccom.usedChords?.[chordName] || "?"}
-                    </div>
-                  }} />
+                    return (
+                      <div key={chordName} className="flex column margin-big-gap">
+                        {card || <div className="error-message">Неизвестный аккорд</div>}
+                        {ccom.usedChords?.[chordName] || '?'}
+                      </div>
+                    );
+                  }}
+                />
               );
             })}
       </div>
