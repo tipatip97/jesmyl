@@ -129,7 +129,6 @@ export const aliasGameConfig: ActionBox = {
           getWordPacks(),
           getNounPronsWords(),
         );
-        // console.log(aliasWordPacks.map(it => it.word).slice(0, 20));
         const mapper = (wordi: number) => aliasWordPacks[wordi];
 
         const score = aliasWordPacks
@@ -173,10 +172,6 @@ export const aliasGameConfig: ActionBox = {
     value: props => {
       const state = extractState<GamerAliasRoomState | nil>(props);
       const [speakeri] = state ? AliasHelp.takeSpeakerDetails(state, state.speakeri) : [0];
-      const aliasWordPacks =
-        state &&
-        AliasHelp.getTokenizedWordInfos(state.token, state.dicts, state.lens, getWordPacks(), getNounPronsWords());
-      console.log(aliasWordPacks?.map(it => it.word).slice(0, 20));
       return { speakeri };
     },
   },

@@ -50,7 +50,7 @@ export const useAliasRejectWord = () => {
 
   return useCallback(
     (wordi: number) => {
-      return state?.cor.merge(state.inc).includes(wordi) ? sendExec(currentRoom, 'rejectAliasWord', { wordi }) : null;
+      return state?.cor.concat(state.inc).includes(wordi) ? sendExec(currentRoom, 'rejectAliasWord', { wordi }) : null;
     },
     [currentRoom, state?.cor, state?.inc],
   );
