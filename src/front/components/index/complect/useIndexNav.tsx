@@ -6,10 +6,10 @@ import serviceMaster from '../../../complect/service/serviceMaster';
 import { Index } from '../Index';
 import { IndexNavData, IndexStorage } from '../Index.model';
 import { IndexAuthorization } from '../parts/login/IndexAuthorization';
+import Main from '../parts/main/IndexMain';
+import { IndexConsole } from '../parts/settings/Console';
 import IndexSettings from '../parts/settings/Settings';
 import ScheduleWidgetAlarmScheduleList from './AlarmScheduleList';
-
-import Main from '../parts/main/IndexMain';
 
 const actions: UseNavAction[] = [];
 const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
@@ -36,6 +36,12 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
         {
           phase: ['settings'],
           node: <IndexSettings />,
+          next: [
+            {
+              phase: ['console'],
+              node: <IndexConsole />,
+            },
+          ],
         },
         {
           phase: ['login'],

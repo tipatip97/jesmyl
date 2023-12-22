@@ -1,0 +1,46 @@
+import styled from 'styled-components';
+import mylib from '../../../../../../complect/my-lib/MyLib';
+import { CoderResultNameStyled } from './styles';
+import CopyTextButton from '../../../../../../complect/CopyTextButton';
+
+export const CoderResultSimple = ({ name, value }: { value: unknown; name?: string | number }) => (
+  <span className="flex flex-gap">
+    {name == null ? null : (
+      <span>
+        <CoderResultNameStyled>{name}: </CoderResultNameStyled>
+      </span>
+    )}
+    {value instanceof Error ? (
+      <pre className="color--ko">{'' + value}</pre>
+    ) : (
+      <Simple>
+        {mylib.isRegExp(value) ? (
+          <RegExpResult>{' ' + value}</RegExpResult>
+        ) : mylib.isNan(value as never) ? (
+          'NaN'
+        ) : value == null ? (
+          ' ' + value
+        ) : mylib.isStr(value) || (mylib.isNum(value) && value >= 10) ? (
+          <span className="flex flex-gap">
+            {JSON.stringify(value)} {!!value && <CopyTextButton text={'' + value} />}
+          </span>
+        ) : (
+          JSON.stringify(value)
+        )}
+      </Simple>
+    )}
+  </span>
+);
+
+const Simple = styled.span`
+  & {
+    display: flex;
+    color: #7aa7ef;
+  }
+`;
+
+const RegExpResult = styled.span`
+  & {
+    color: #efd799;
+  }
+`;

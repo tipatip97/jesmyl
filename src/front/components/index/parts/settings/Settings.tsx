@@ -13,6 +13,7 @@ import { RootState } from '../../../../shared/store';
 import { soki } from '../../../../soki';
 import di from '../../Index.store';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
+import useIndexNav from '../../complect/useIndexNav';
 import useAuth from '../../useAuth';
 import useConnectionState from '../../useConnectionState';
 import { Visitor } from './Visitor';
@@ -33,6 +34,7 @@ export default function IndexSettings() {
   const [expands, setExpands] = useState<(AppName | '')[]>([]);
   const [modalNode, toast] = useToast();
   const { appConfigs } = useApps();
+  const { goTo } = useIndexNav();
 
   useEffect(() => {
     soki.send({ subscribe: 'statistic' }, 'index');
@@ -60,6 +62,13 @@ export default function IndexSettings() {
           const passphrase = await modalService.prompt('пароль');
           passphrase && soki.send({ system: { name: 'restartWS', passphrase } }, 'index');
         }}
+      />
+    ),
+    auth.level === 100 && (
+      <BrutalItem
+        icon="code-download"
+        title="Консоль"
+        onClick={() => goTo('console')}
       />
     ),
     <BrutalItem
