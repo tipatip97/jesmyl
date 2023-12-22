@@ -28,6 +28,9 @@ export class SMyLib {
   isFunc(obj: any): obj is Function {
     return typeof obj === 'function';
   }
+  isRegExp(obj: any): obj is RegExp {
+    return obj instanceof RegExp;
+  }
   isAFunc(obj: any): obj is Function {
     return this.isFunc(obj) && obj[Symbol.toStringTag] === 'AsyncFunction';
   }
@@ -44,7 +47,7 @@ export class SMyLib {
     return obj === null || obj === undefined;
   }
   isNan(obj: any): obj is typeof NaN {
-    return isNaN(obj);
+    return isNaN(obj) && this.isNum(obj);
   }
 
   static entries<T>(obj: T): [keyof T, T[keyof T]][] {
