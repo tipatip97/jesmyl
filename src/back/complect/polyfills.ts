@@ -40,11 +40,6 @@ export const setPolyfills = () => {
     return pos < 0 ? this[this.length + pos] : this[pos];
   });
 
-  setArrayProtoMethod('toSorted', function (this: Array<any>, compareFn) {
-    const arr = [...this];
-    return arr.sort(compareFn);
-  });
-
   setArrayProtoMethod('merge', function (this: Array<any>, array) {
     if (array !== undefined) for (let i = 0; i < array.length; i++) this.push(array[i]);
 
@@ -62,6 +57,29 @@ export const setPolyfills = () => {
     const timer = setTimeout(handler, timeout, ...args);
 
     return () => clearTimeout(timer);
+  };
+
+  ///////////////////////////////////
+  // force resigns for unifications//
+  ///////////////////////////////////
+
+  // eslint-disable-next-line no-extend-native
+  Array.prototype.toSorted = function (compareFn) {
+    return [...this].sort(compareFn);
+  };
+
+  // eslint-disable-next-line no-extend-native
+  Array.prototype.sort = function (compareFunction) {
+    for (let i = 0; i < this.length - 1; i++) {
+      for (let j = 0; j < this.length - i - 1; j++) {
+        if (compareFunction !== undefined ? compareFunction(this[j], this[j + 1]) > 0 : this[j] > this[j + 1]) {
+          const temp = this[j];
+          this[j] = this[j + 1];
+          this[j + 1] = temp;
+        }
+      }
+    }
+    return this;
   };
 };
 
