@@ -1,4 +1,5 @@
 import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
 import { useAliasPacks } from '../../hooks/packs';
 
 export const levelGradationTitles = [
@@ -18,6 +19,7 @@ interface Props {
 
 export const AliasSelectedDictsTextInfo = ({ dicts }: Props) => {
   const packs = useAliasPacks();
+  const nounProns = useNounsPronounsLines();
 
   return (
     <>
@@ -30,7 +32,9 @@ export const AliasSelectedDictsTextInfo = ({ dicts }: Props) => {
               : packs[leveli].title +
                   ' (' +
                   (mylib.isNum(packs[leveli].words)
-                    ? level
+                    ? level < 0
+                      ? nounProns.nouns.length
+                      : level
                     : levelGradationTitles[level] +
                       (' - ' +
                         Object.values(packs[leveli].words).reduce((acc, num) => acc + +(num && num <= level), 0))) +

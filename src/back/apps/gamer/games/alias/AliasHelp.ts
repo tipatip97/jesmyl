@@ -94,7 +94,9 @@ export class AliasHelp {
 
       return smylib.isNum(packs[packi].words)
         ? nounsProns
-          ? Math.min(smylib.keys(nounsProns.nouns).length - 1, smylib.keys(nounsProns.pronouns).length - 1)
+          ? max < 0
+            ? smylib.keys(nounsProns.nouns).length - 1
+            : Math.min(smylib.keys(nounsProns.nouns).length - 1, smylib.keys(nounsProns.pronouns).length - 1)
           : 0
         : smylib.keys(packs[packi].words).length - 1;
     });
@@ -133,15 +135,24 @@ export class AliasHelp {
 
       if (smylib.isNum(packWords)) {
         const nouns = smylib.keys(nounsProns.nouns).slice(0, -1);
-        const pronouns = smylib.keys(nounsProns.pronouns).slice(0, -1);
-        const minLen = lens![packi] ?? Math.min(nouns.length, pronouns.length);
+        let minLen = lens![packi] ?? nouns.length;
+        let pronounsSorted: string[] = [];
+        const isSpecialMax = max < 0;
+
+        if (!isSpecialMax) {
+          const pronouns = smylib.keys(nounsProns.pronouns).slice(0, -1);
+          minLen = lens![packi] ?? Math.min(nouns.length, pronouns.length);
+
+          pronounsSorted = this.sortItemsByTokenbit(pronouns.slice(0, minLen), generalTokenbit.reverse());
+        }
 
         const nounsSorted = this.sortItemsByTokenbit(nouns.slice(0, minLen), generalTokenbit);
-        const pronounsSorted = this.sortItemsByTokenbit(pronouns.slice(0, minLen), generalTokenbit.reverse());
 
         packInfos.push(
           nounsSorted.slice(0, max).map((noun, nouni) => {
-            const weight = nounsProns.nouns[noun] + nounsProns.pronouns[pronounsSorted[nouni]];
+            const weight = isSpecialMax
+              ? nounsProns.nouns[noun]
+              : nounsProns.nouns[noun] + nounsProns.pronouns[pronounsSorted[nouni]];
 
             return {
               weight,
@@ -150,7 +161,9 @@ export class AliasHelp {
               minus: 1,
               max: weight,
               plus: weight,
-              word: makeTwiceKnownName(pronounsSorted[nouni], noun).join(' ').toUpperCase(),
+              word: isSpecialMax
+                ? noun.toUpperCase().replace(/[^-а-яё ]/gi, '')
+                : makeTwiceKnownName(pronounsSorted[nouni], noun).join(' ').toUpperCase(),
             };
           }),
         );

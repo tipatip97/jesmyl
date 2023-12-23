@@ -79,7 +79,7 @@ export const aliasGameConfig: ActionBox = {
         const state = extractState<GamerAliasRoomState | nil>(props);
         if (!state) return;
         return {
-          startMs: (state.roundTime || 1) * 1000,
+          startMs: (state.roundTime || 1) * 1000 + 1000,
           startId: speechTimerId(state),
         };
       },

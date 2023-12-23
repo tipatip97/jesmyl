@@ -11,6 +11,8 @@ import { useAliasRoomState } from './hooks/state';
 import { useTokenSortedWordsNaked } from './hooks/token-sorted-words';
 import { useAliasCurrentWordInfo } from './hooks/word';
 
+const emptyFunc = () => {};
+
 export default function AliasObserverContent() {
   const { corrects, incorrects } = useAliasComputeScore();
   const state = useAliasRoomState();
@@ -24,7 +26,7 @@ export default function AliasObserverContent() {
 
   return (
     <div className="relative full-height margin-gap-v">
-      <GamerAliasTimer />
+      <GamerAliasTimer onTimeOut={emptyFunc}/>
       <div>Спикер - {speaker?.name}</div>
       {!state?.startTs && isIManager && (
         <SendButton

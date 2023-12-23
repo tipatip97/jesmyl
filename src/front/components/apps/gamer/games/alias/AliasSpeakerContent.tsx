@@ -17,6 +17,7 @@ const altWordInfo = { minus: 0, weight: 0, plus: 0 };
 
 export default function AliasSpeakerContent() {
   const [isWordSending, setIsWordSending] = useState(false);
+  const [isTimeOut, setIsTimeOut] = useState(false);
 
   const state = useAliasRoomState();
   const wordInfo = useAliasCurrentWordInfo(state);
@@ -27,6 +28,7 @@ export default function AliasSpeakerContent() {
   const { resetSpeech, startSpeech } = useAliasSimpleExecs();
   const myPossibilities = useMyPossibilitiesCurrentRoom();
   const infos = useTokenSortedWordsNaked();
+
   const sendWord = useCallback(
     (scope?: 'cor' | 'inc') => {
       return (event: { preventDefault(): void }) => {
@@ -55,14 +57,14 @@ export default function AliasSpeakerContent() {
 
   return (
     <>
-      {infos.length - 1 !== state.wordsi ? (
+      {isTimeOut ? null : infos.length - 1 !== state.wordsi ? (
         <ShowWordArea
           className={
             'flex column center text-center no-scrollbar' +
             (state.phase === GamerAliasRoomStatePhase.Speech ? ' speech' : '')
           }
         >
-          <GamerAliasTimer />
+          <GamerAliasTimer onTimeOut={setIsTimeOut} />
           {state?.phase === GamerAliasRoomStatePhase.Speech ? (
             <div className="round-button flex center">{wordInfo?.word}</div>
           ) : (

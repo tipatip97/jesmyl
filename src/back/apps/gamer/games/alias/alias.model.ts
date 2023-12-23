@@ -18,7 +18,7 @@ export enum GamerAliasRoomStatePhase {
 export interface AliasWordsPack {
   title: string;
   words: Record<string, number> | number;
-  variants?: number[];
+  variants?: { id: number; title: string }[];
 }
 
 export interface StartAliasRoundState {

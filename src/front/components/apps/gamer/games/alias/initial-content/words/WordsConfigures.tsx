@@ -9,6 +9,7 @@ import { useAliasRoomState } from '../../hooks/state';
 import { useTokenSortedWordsNaked } from '../../hooks/token-sorted-words';
 import { AliasRoomLessWordsCompute } from './LessWordsCompute';
 import { AliasSelectedDictsTextInfo, levelGradationTitles } from './SelectedDictsTextInfo';
+import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
 
 const dreamItems = [10, 30, 50, 70, 100].map(id => ({
   title: `${id} слов`,
@@ -36,6 +37,7 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
   const state = useAliasRoomState();
   const packs = useAliasPacks();
   const infos = useTokenSortedWordsNaked();
+  const nounProns = useNounsPronounsLines();
 
   const [isResortWordsState, setIsResortWords] = useState(initialAliasDictsPropsPart.isResortWords);
 
@@ -73,10 +75,19 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
               selectNode = (
                 <Dropdown
                   id={dicts[packi]}
-                  items={pack.variants.map(count => ({
-                    title: `${count} слов`,
-                    id: count,
-                  }))}
+                  items={pack.variants.map(item => {
+                    return item.id < 0
+                      ? {
+                          ...item,
+                          title: `${item.title} (${nounProns.nouns.length} ${mylib.declension(
+                            nounProns.nouns.length,
+                            'слово',
+                            'слова',
+                            'слов',
+                          )})`,
+                        }
+                      : item;
+                  })}
                   onSelectId={onSelect}
                 />
               );
