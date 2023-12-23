@@ -1,3 +1,5 @@
+import smylib from '../shared/SMyLib';
+
 export const setPolyfills = () => {
   const setArrayProtoMethod = <Name extends keyof typeof Array.prototype>(
     name: Name,
@@ -64,22 +66,13 @@ export const setPolyfills = () => {
   ///////////////////////////////////
 
   // eslint-disable-next-line no-extend-native
-  Array.prototype.toSorted = function (compareFn) {
-    return [...this].sort(compareFn);
+  Array.prototype.toSorted = function (compareFunction) {
+    return smylib.toSorted(this, compareFunction);
   };
 
   // eslint-disable-next-line no-extend-native
   Array.prototype.sort = function (compareFunction) {
-    for (let i = 0; i < this.length - 1; i++) {
-      for (let j = 0; j < this.length - i - 1; j++) {
-        if (compareFunction !== undefined ? compareFunction(this[j], this[j + 1]) > 0 : this[j] > this[j + 1]) {
-          const temp = this[j];
-          this[j] = this[j + 1];
-          this[j + 1] = temp;
-        }
-      }
-    }
-    return this;
+    return smylib.sort(this, compareFunction);
   };
 };
 

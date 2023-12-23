@@ -429,6 +429,23 @@ export class SMyLib {
 
     return value === typer;
   }
+
+  toSorted<Item>(items: Item[], compareFunction?: (a: Item, b: Item) => number) {
+    return [...items].sort(compareFunction);
+  }
+
+  sort<Item>(items: Item[], compareFunction?: (a: Item, b: Item) => number) {
+    for (let i = 0; i < items.length - 1; i++) {
+      for (let j = 0; j < items.length - i - 1; j++) {
+        if (compareFunction !== undefined ? compareFunction(items[j], items[j + 1]) > 0 : items[j] > items[j + 1]) {
+          const temp = items[j];
+          items[j] = items[j + 1];
+          items[j + 1] = temp;
+        }
+      }
+    }
+    return items;
+  }
 }
 
 const smylib = new SMyLib();

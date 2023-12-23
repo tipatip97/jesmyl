@@ -109,7 +109,7 @@ export class AliasHelp {
     let i = 0;
     const len = tokenbit.length;
 
-    return items.toSorted(() => (tokenbit[i++ % len] === '1' ? 1 : -1));
+    return smylib.toSorted(items, () => (tokenbit[i++ % len] === '1' ? 1 : -1));
   };
 
   static getTokenizedWordInfos = (
@@ -214,12 +214,11 @@ export class AliasHelp {
 
       while (true) {
         const infoItemi = packPointerTokenbit[packPointerTokenbiti++ % packPointerTokenbit.length];
-        const infoItem = packInfos[infoItemi][0];
 
-        infoLine.push(infoItem);
-        packInfos[infoItemi].splice(0, 1);
-
-        if (packInfos[infoItemi].length === 0) {
+        if (packInfos[infoItemi]?.length) {
+          infoLine.push(packInfos[infoItemi][0]);
+          packInfos[infoItemi].splice(0, 1);
+        } else {
           if (packInfos.length < 2) break;
           packInfos.splice(infoItemi, 1);
           diffs.splice(infoItemi, 1);
@@ -234,7 +233,9 @@ export class AliasHelp {
 
     const infos = this.sortItemsByTokenbit(infoLine, generalTokenbit);
 
-    for (let i = 0; i < infos.length; i++) infos[i].wordi = i;
+    for (let i = 0; i < infos.length; i++) {
+      if (infos[i]) infos[i].wordi = i;
+    }
 
     return (this.tokenizedWordInfoStorage[token] = infos);
   };
