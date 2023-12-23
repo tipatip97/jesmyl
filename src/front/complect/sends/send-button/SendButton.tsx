@@ -37,7 +37,7 @@ export default function SendButton<Value>(props: SendButtonProps<Value>) {
               ) : isLoading ? (
                 <EvaIcon
                   name="loader-outline"
-                  className="rotate color--5"
+                  className="rotate"
                 />
               ) : null}
             </div>
