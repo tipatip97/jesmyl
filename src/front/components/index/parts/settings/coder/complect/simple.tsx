@@ -33,14 +33,10 @@ export const CoderResultSimple = ({ name, value }: { value: unknown; name?: stri
 );
 
 const Simple = styled.span`
-  & {
-    display: flex;
-    color: #7aa7ef;
-  }
+  display: flex;
+  color: #7aa7ef;
 `;
 
 const RegExpResult = styled.span`
-  & {
-    color: #efd799;
-  }
+  color: #efd799;
 `;

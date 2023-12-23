@@ -156,10 +156,8 @@ export default function ScheduleWidgetBindAtts({
 }
 
 const Secs = styled.div`
-  & {
-    padding-right: var(--margin-gap);
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
+  padding-right: var(--margin-gap);
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;

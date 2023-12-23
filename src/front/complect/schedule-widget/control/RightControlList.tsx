@@ -83,7 +83,5 @@ export default function ScheduleWidgetRightControlList({
 }
 
 const Desc = styled.div`
-  & {
-    font-size: 0.7em;
-  }
+  font-size: 0.7em;
 `;

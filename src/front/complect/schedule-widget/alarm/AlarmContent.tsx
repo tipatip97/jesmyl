@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
 import EvaButton from '../../eva-icon/EvaButton';
 import EvaIcon from '../../eva-icon/EvaIcon';
 import useFullContent, { FullContentValue } from '../../fullscreen-content/useFullContent';
@@ -9,7 +10,6 @@ import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import { useSchedules } from '../useScheduleWidget';
 import ScheduleAlarmDay from './AlarmDay';
 import { ScheduleWidgetAlarmInfoContent } from './InfoContent';
-import styled from 'styled-components';
 
 const msInDay = mylib.howMs.inDay;
 const msInHour = mylib.howMs.inHour;
@@ -375,15 +375,13 @@ export default function ScheduleWidgetAlarmContent({
 }
 
 const Alarm = styled.div`
-  & {
-    --icon-color: var(--color--3);
+  --icon-color: var(--color--3);
 
-    margin-top: calc(0px - var(--main-gap) + 5px);
-    background-color: var(--color--1);
-    padding: var(--main-big-gap) var(--main-gap);
+  margin-top: calc(0px - var(--main-gap) + 5px);
+  background-color: var(--color--1);
+  padding: var(--main-big-gap) var(--main-gap);
 
-    width: calc(100% + var(--main-gap) * 2);
-    height: 4em;
-    color: var(--color--4);
-  }
+  width: calc(100% + var(--main-gap) * 2);
+  height: 4em;
+  color: var(--color--4);
 `;

@@ -204,101 +204,99 @@ export default function IndexLoginAuth() {
 }
 
 export const LoginIndex = styled(PhaseIndexContainer)`
-  & {
-    .logo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+  .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-      > .logo-container {
-        border-radius: 100%;
-        background-color: var(--color--3);
-        padding: 15px;
-
-        > .jesmyl-smile {
-          --jesmyl-smile-color: var(--color--2);
-        }
-      }
-
-      > .text {
-        margin-top: 0.3em;
-        font-size: 2em;
-      }
-    }
-
-    .input-container {
-      --padding-h: 0.8em;
-
-      position: relative;
-      margin: 5px 0;
-      width: 100%;
-      max-width: 500px;
-
-      .icon-button-container {
-        margin-right: 10px;
-      }
-
-      > .input-wrapper {
-        display: flex;
-        position: relative;
-        align-items: center;
-        width: 100%;
-
-        > .input {
-          --input-keyboard-background: var(--color--2);
-          --autofill-background-color: var(--color--2);
-          --autofill-color: var(--text-color);
-
-          border: var(--color--2) 2px solid;
-          border-radius: 0.7em;
-
-          background-color: var(--color--2);
-          padding: 0.5em var(--padding-h);
-          padding-right: 1.5em;
-          width: 100%;
-          height: 60px;
-          color: var(--text-color);
-          font-size: 1.5em;
-
-          &::placeholder {
-            color: var(--text-color);
-          }
-        }
-
-        > .eva-icon {
-          position: absolute;
-          right: var(--padding-h);
-          cursor: pointer;
-        }
-      }
-    }
-
-    .send-button {
-      cursor: pointer;
-      margin: 1.5em 0;
-      border-radius: 0.8em;
+    > .logo-container {
+      border-radius: 100%;
       background-color: var(--color--3);
-      padding: 0.5em 2em;
-      color: var(--color--2);
-      font-size: 1.5em;
+      padding: 15px;
+
+      > .jesmyl-smile {
+        --jesmyl-smile-color: var(--color--2);
+      }
     }
 
-    .login-error-message {
-      position: absolute;
-      bottom: -7px;
+    > .text {
+      margin-top: 0.3em;
+      font-size: 2em;
+    }
+  }
+
+  .input-container {
+    --padding-h: 0.8em;
+
+    position: relative;
+    margin: 5px 0;
+    width: 100%;
+    max-width: 500px;
+
+    .icon-button-container {
+      margin-right: 10px;
+    }
+
+    > .input-wrapper {
+      display: flex;
+      position: relative;
+      align-items: center;
       width: 100%;
-      color: var(--color--ko);
-      text-align: center;
 
-      + .input-wrapper {
-        margin-bottom: 1em;
+      > .input {
+        --input-keyboard-background: var(--color--2);
+        --autofill-background-color: var(--color--2);
+        --autofill-color: var(--text-color);
 
-        > input {
-          border-color: var(--color--ko);
+        border: var(--color--2) 2px solid;
+        border-radius: 0.7em;
+
+        background-color: var(--color--2);
+        padding: 0.5em var(--padding-h);
+        padding-right: 1.5em;
+        width: 100%;
+        height: 60px;
+        color: var(--text-color);
+        font-size: 1.5em;
+
+        &::placeholder {
+          color: var(--text-color);
         }
-        > .eva-icon {
-          --icon-color: var(--color--ko);
-        }
+      }
+
+      > .eva-icon {
+        position: absolute;
+        right: var(--padding-h);
+        cursor: pointer;
+      }
+    }
+  }
+
+  .send-button {
+    cursor: pointer;
+    margin: 1.5em 0;
+    border-radius: 0.8em;
+    background-color: var(--color--3);
+    padding: 0.5em 2em;
+    color: var(--color--2);
+    font-size: 1.5em;
+  }
+
+  .login-error-message {
+    position: absolute;
+    bottom: -7px;
+    width: 100%;
+    color: var(--color--ko);
+    text-align: center;
+
+    + .input-wrapper {
+      margin-bottom: 1em;
+
+      > input {
+        border-color: var(--color--ko);
+      }
+      > .eva-icon {
+        --icon-color: var(--color--ko);
       }
     }
   }

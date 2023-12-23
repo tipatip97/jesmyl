@@ -61,57 +61,51 @@ export default function LocationHideScreen(props: Props) {
 }
 
 const PassControl = styled.div<{ $active: boolean }>`
-  & {
-    ${props =>
-      !props.$active &&
-      css`
-        pointer-events: none;
-        opacity: 0.5;
-      `}
-  }
+  ${props =>
+    !props.$active &&
+    css`
+      pointer-events: none;
+      opacity: 0.5;
+    `}
 `;
 
 const BottomControls = styled.div`
-  & {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas: 'left center right';
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: 'left center right';
 
-    > :nth-child(1) {
-      grid-area: left;
-    }
+  > :nth-child(1) {
+    grid-area: left;
+  }
 
-    > :nth-child(2) {
-      grid-area: center;
-    }
+  > :nth-child(2) {
+    grid-area: center;
+  }
 
-    > :nth-child(3) {
-      grid-area: right;
-    }
+  > :nth-child(3) {
+    grid-area: right;
+  }
 
-    > * {
-      display: flex;
-      align-items: center;
-    }
+  > * {
+    display: flex;
+    align-items: center;
   }
 `;
 
 const HideScreen = styled.div<{ $isOpen: boolean; $width: number | nil }>`
-  & {
-    > .hidden-screen {
-      top: ${props => (props.$isOpen ? 0 : 22)}px;
-      transition: top 0.3s ease-in;
-      border-radius: 4px;
-      padding: 5px 0;
-      width: ${props => (props.$width && props.$width > 250 ? props.$width : 250) + 10}px;
-      height: 30px;
-      overflow: hidden;
+  > .hidden-screen {
+    top: ${props => (props.$isOpen ? 0 : 22)}px;
+    transition: top 0.3s ease-in;
+    border-radius: 4px;
+    padding: 5px 0;
+    width: ${props => (props.$width && props.$width > 250 ? props.$width : 250) + 10}px;
+    height: 30px;
+    overflow: hidden;
 
-      > * {
-        top: ${props => (props.$isOpen ? -2 : -27)}px;
-        transition: top 0.3s ease-in;
-        height: 25px;
-      }
+    > * {
+      top: ${props => (props.$isOpen ? -2 : -27)}px;
+      transition: top 0.3s ease-in;
+      height: 25px;
     }
   }
 `;

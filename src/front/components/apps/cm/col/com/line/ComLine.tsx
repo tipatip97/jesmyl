@@ -117,88 +117,86 @@ export default function ComLine(props: IComLineProps) {
 }
 
 const Line = styled.div`
-  & {
-    .chorded {
-      display: inline-block;
-      position: relative;
-      line-height: 1;
-      white-space: pre;
+  .chorded {
+    display: inline-block;
+    position: relative;
+    line-height: 1;
+    white-space: pre;
 
-      &:not(.pre):not(.post):before {
-        left: 0;
+    &:not(.pre):not(.post):before {
+      left: 0;
+    }
+
+    &:not(.post) {
+      &:before,
+      &:after {
+        position: absolute;
+        top: -1em;
+        z-index: 0;
+        pointer-events: none;
+        font-size: 1em;
       }
 
-      &:not(.post) {
-        &:before,
-        &:after {
-          position: absolute;
-          top: -1em;
-          z-index: 0;
-          pointer-events: none;
-          font-size: 1em;
-        }
-
-        .fragment {
-          &:before {
-            position: absolute;
-            top: -1em;
-            left: 100%;
-            content: attr(attr-pchord);
-          }
-
-          &:after {
-            display: block;
-            margin-top: -1em;
-            content: attr(attr-chord);
-            color: transparent;
-          }
-        }
-      }
-
-      &.spaced-word:not(.post):after {
-        top: 0;
-        width: 0.3em;
-        content: '.';
-        color: transparent;
-      }
-
-      &.pre:before,
-      &:not(.pre):not(.post):before {
-        max-width: 500px;
-        content: attr(attr-chord);
-        white-space: nowrap;
-      }
-
-      &.pre:before {
-        left: -0.5em;
-      }
-
-      &.post {
-        .fragment {
-          display: inline-block;
-          position: relative;
-
-          &:before {
-            display: block;
-            margin-top: -1em;
-            height: 1em;
-            content: attr(attr-chord);
-          }
-        }
-
+      .fragment {
         &:before {
           position: absolute;
           top: -1em;
-          right: 0;
+          left: 100%;
+          content: attr(attr-pchord);
         }
 
         &:after {
-          display: inline-block;
-          position: relative;
-          top: -1em;
-          margin-left: 0.2em;
-          content: attr(attr-pchord);
+          display: block;
+          margin-top: -1em;
+          content: attr(attr-chord);
+          color: transparent;
         }
+      }
+    }
+
+    &.spaced-word:not(.post):after {
+      top: 0;
+      width: 0.3em;
+      content: '.';
+      color: transparent;
+    }
+
+    &.pre:before,
+    &:not(.pre):not(.post):before {
+      max-width: 500px;
+      content: attr(attr-chord);
+      white-space: nowrap;
+    }
+
+    &.pre:before {
+      left: -0.5em;
+    }
+
+    &.post {
+      .fragment {
+        display: inline-block;
+        position: relative;
+
+        &:before {
+          display: block;
+          margin-top: -1em;
+          height: 1em;
+          content: attr(attr-chord);
+        }
+      }
+
+      &:before {
+        position: absolute;
+        top: -1em;
+        right: 0;
+      }
+
+      &:after {
+        display: inline-block;
+        position: relative;
+        top: -1em;
+        margin-left: 0.2em;
+        content: attr(attr-pchord);
       }
     }
   }

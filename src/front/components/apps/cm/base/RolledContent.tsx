@@ -120,35 +120,33 @@ const startRoll = (switchRollMode: (rollMode: CmRollMode) => void) => {
 };
 
 const RollContent = styled.div`
-  & {
-    transition: padding 0.3s;
-    padding: 0;
+  transition: padding 0.3s;
+  padding: 0;
 
-    &.fullscreen {
-      padding-top: 30%;
+  &.fullscreen {
+    padding-top: 30%;
+  }
+
+  .roll-controls {
+    --height: 100px;
+
+    position: fixed;
+    top: calc(50vh - var(--height) / 2);
+    right: 10px;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.7s;
+    cursor: pointer;
+    height: var(--height);
+    pointer-events: none;
+
+    > * {
+      margin: 5px;
     }
 
-    .roll-controls {
-      --height: 100px;
-
-      position: fixed;
-      top: calc(50vh - var(--height) / 2);
-      right: 10px;
-      opacity: 0;
-      z-index: 1;
-      transition: opacity 0.7s;
-      cursor: pointer;
-      height: var(--height);
-      pointer-events: none;
-
-      > * {
-        margin: 5px;
-      }
-
-      &.open {
-        opacity: 0.7;
-        pointer-events: all;
-      }
+    &.open {
+      opacity: 0.7;
+      pointer-events: all;
     }
   }
 `;

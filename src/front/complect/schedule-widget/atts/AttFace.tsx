@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
+import styled from 'styled-components';
+import { scheduleWidgetUserRights } from '../../../models';
 import EvaIcon from '../../eva-icon/EvaIcon';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import { ScheduleWidgetAppAtt, ScheduleWidgetAttKey } from '../ScheduleWidget.model';
-import ScheduleWidgetCustomAtt from './custom/CustomAtt';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
-import { scheduleWidgetUserRights } from '../../../models';
-import styled from 'styled-components';
+import ScheduleWidgetCustomAtt from './custom/CustomAtt';
 
 export default function ScheduleWidgetAttFace({
   tatt,
@@ -102,23 +102,21 @@ export default function ScheduleWidgetAttFace({
 }
 
 const Tatt = styled.div`
-  & {
-    --att-size: 90px;
+  --att-size: 90px;
 
-    position: relative;
-    border-radius: 3px;
-    background-color: var(--color--5);
-    width: var(--att-size);
-    min-width: var(--att-size);
-    max-width: var(--att-size);
-    height: var(--att-size);
-    min-height: var(--att-size);
-    max-height: var(--att-size);
+  position: relative;
+  border-radius: 3px;
+  background-color: var(--color--5);
+  width: var(--att-size);
+  min-width: var(--att-size);
+  max-width: var(--att-size);
+  height: var(--att-size);
+  min-height: var(--att-size);
+  max-height: var(--att-size);
 
-    .close-button {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
+  .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 `;

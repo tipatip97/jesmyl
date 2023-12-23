@@ -93,56 +93,54 @@ export default function TheComposition() {
 }
 
 const ComContainer = styled(PhaseCmContainer)`
-  & {
+  .composition-content {
+    transition: padding-top 0.2s;
+
+    .composition-player {
+      --transition-speed: 0.2s;
+
+      position: absolute;
+      top: var(--header-height);
+      right: 0;
+      left: 0;
+      opacity: 0;
+      z-index: 1;
+      transition:
+        width var(--transition-speed),
+        background var(--transition-speed),
+        margin var(--transition-speed),
+        opacity var(--transition-speed);
+    }
+  }
+
+  &.with-open-player {
+    &.expand {
+      --content-padding-top: var(--com-player-expand-height);
+    }
+
+    &.min {
+      --content-padding-top: var(--com-player-height);
+    }
+
     .composition-content {
-      transition: padding-top 0.2s;
-
-      .composition-player {
-        --transition-speed: 0.2s;
-
-        position: absolute;
-        top: var(--header-height);
-        right: 0;
-        left: 0;
-        opacity: 0;
-        z-index: 1;
-        transition:
-          width var(--transition-speed),
-          background var(--transition-speed),
-          margin var(--transition-speed),
-          opacity var(--transition-speed);
-      }
+      padding-top: var(--content-padding-top);
     }
 
-    &.with-open-player {
-      &.expand {
-        --content-padding-top: var(--com-player-expand-height);
-      }
-
-      &.min {
-        --content-padding-top: var(--com-player-height);
-      }
-
-      .composition-content {
-        padding-top: var(--content-padding-top);
-      }
-
-      .composition-player {
-        opacity: 1;
-      }
+    .composition-player {
+      opacity: 1;
     }
+  }
 
-    .com-actions-pannel {
-      padding-left: 10px;
-      max-width: calc(100vw - 130px);
-      height: 40px;
-      overflow-x: scroll;
-      overflow-y: hidden;
-      white-space: nowrap;
+  .com-actions-pannel {
+    padding-left: 10px;
+    max-width: calc(100vw - 130px);
+    height: 40px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 
-      &::-webkit-scrollbar {
-        display: none;
-      }
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 `;

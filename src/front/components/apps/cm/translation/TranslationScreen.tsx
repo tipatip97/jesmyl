@@ -34,9 +34,7 @@ export default function TranslationScreen(props: TranslationScreenProps) {
 const transitionName = makeWid();
 
 const Screen = styled.div`
-  & {
-    view-transition-name: ${transitionName};
-  }
+  view-transition-name: ${transitionName};
 `;
 
 export const globalTranslationScreenStyle = css`

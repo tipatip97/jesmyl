@@ -192,7 +192,5 @@ export default function ScheduleWidgetEventType(props: {
 }
 
 const SelectItem = styled(StrongDiv)`
-  & {
-    border-radius: 3px;
-  }
+  border-radius: 3px;
 `;

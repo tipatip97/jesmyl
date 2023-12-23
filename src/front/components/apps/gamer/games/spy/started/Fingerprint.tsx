@@ -61,50 +61,48 @@ export const Fingerprint = styled.div<{
   $isScanning: boolean;
   $height?: number;
 }>`
-  & {
-    opacity: 0;
-    transition:
-      opacity 0.2s,
-      top 1s;
+  opacity: 0;
+  transition:
+    opacity 0.2s,
+    top 1s;
 
-    border-radius: 3px;
-    background: var(--color--7);
-    width: 100%;
-    height: 5px;
+  border-radius: 3px;
+  background: var(--color--7);
+  width: 100%;
+  height: 5px;
 
-    ${props =>
-      props.$isScanning &&
+  ${props =>
+    props.$isScanning &&
+    css`
+      opacity: 1;
+      animation: ${fingerprintPanelAnimWid} 1.5s infinite;
+    `}
+
+  ${props => {
+    return (
+      props.$height !== undefined &&
       css`
-        opacity: 1;
-        animation: ${fingerprintPanelAnimWid} 1.5s infinite;
-      `}
-
-    ${props => {
-      return (
-        props.$height !== undefined &&
-        css`
-          @keyframes ${fingerprintPanelAnimWid} {
-            from {
-              top: 0;
-            }
-            20% {
-              top: 0;
-            }
-            40% {
-              top: ${props.$height - 5}px;
-            }
-            60% {
-              top: ${props.$height - 5}px;
-            }
-            80% {
-              top: 0;
-            }
-            to {
-              top: 0;
-            }
+        @keyframes ${fingerprintPanelAnimWid} {
+          from {
+            top: 0;
           }
-        `
-      );
-    }}
-  }
+          20% {
+            top: 0;
+          }
+          40% {
+            top: ${props.$height - 5}px;
+          }
+          60% {
+            top: ${props.$height - 5}px;
+          }
+          80% {
+            top: 0;
+          }
+          to {
+            top: 0;
+          }
+        }
+      `
+    );
+  }}
 `;

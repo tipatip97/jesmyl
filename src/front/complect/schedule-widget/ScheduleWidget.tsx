@@ -299,16 +299,14 @@ export default function ScheduleWidget({
 }
 
 const Widget = styled.div`
-  & {
-    transition: margin 0.3s;
-    padding: 5px;
+  transition: margin 0.3s;
+  padding: 5px;
 
-    &.expand {
-      margin-bottom: 50px;
-    }
+  &.expand {
+    margin-bottom: 50px;
+  }
 
-    .icon-scale-05 {
-      --icon-scale: 0.5;
-    }
+  .icon-scale-05 {
+    --icon-scale: 0.5;
   }
 `;

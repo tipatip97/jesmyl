@@ -61,8 +61,6 @@ export const CodeExecutionScreen = ({ onError, onLog }: Props) => {
 };
 
 const Textarea = styled.textarea`
-  & {
-    height: 30vh;
-    resize: none;
-  }
+  height: 30vh;
+  resize: none;
 `;

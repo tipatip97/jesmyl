@@ -29,7 +29,5 @@ export default function SpyCurrentOfflineGameInfo() {
 }
 
 const OfflineGame = styled.div`
-  & {
-    border: dashed 2px var(--color--3);
-  }
+  border: dashed 2px var(--color--3);
 `;

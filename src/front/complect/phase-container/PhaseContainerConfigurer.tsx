@@ -59,38 +59,36 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
 }
 
 const ContainerPhase = styled.div`
-  & {
-    > .header {
-      transition: var(--fullscreen-transition);
-      margin-top: var(--header-top);
-      background-color: var(--color--1);
-      padding: var(--header-padding);
-      width: 100vw;
-      height: var(--header-height);
+  > .header {
+    transition: var(--fullscreen-transition);
+    margin-top: var(--header-top);
+    background-color: var(--color--1);
+    padding: var(--header-padding);
+    width: 100vw;
+    height: var(--header-height);
 
-      .action-button {
-        cursor: pointer;
-        padding: var(--main-gap);
-      }
+    .action-button {
+      cursor: pointer;
+      padding: var(--main-gap);
+    }
+  }
+
+  > .content {
+    position: static;
+    transition: var(--fullscreen-transition);
+    background-color: var(--color--5);
+    padding: var(--main-gap);
+    width: 100vw;
+    height: var(--content-height);
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &.no-padding-top {
+      padding-top: 0;
     }
 
-    > .content {
-      position: static;
-      transition: var(--fullscreen-transition);
-      background-color: var(--color--5);
-      padding: var(--main-gap);
-      width: 100vw;
-      height: var(--content-height);
-      overflow-x: hidden;
-      overflow-y: auto;
-
-      &.no-padding-top {
-        padding-top: 0;
-      }
-
-      > .phase-content {
-        height: 100%;
-      }
+    > .phase-content {
+      height: 100%;
     }
   }
 `;

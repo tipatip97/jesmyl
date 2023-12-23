@@ -77,7 +77,5 @@ export const IndexConsole = () => {
 };
 
 const Line = styled.div`
-  & {
-    overflow-wrap: anywhere;
-  }
+  overflow-wrap: anywhere;
 `;

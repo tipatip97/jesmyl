@@ -1,7 +1,11 @@
 import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
-import { ScheduleWidgetRightsCtrl } from '../../../../../models';
-import { CustomAttUseRights, CustomAttUseTaleId, customAttUseRights } from '../../../../../models';
+import {
+  CustomAttUseRights,
+  CustomAttUseTaleId,
+  ScheduleWidgetRightsCtrl,
+  customAttUseRights,
+} from '../../../../../models';
 import EvaIcon from '../../../../eva-icon/EvaIcon';
 import mylib from '../../../../my-lib/MyLib';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
@@ -504,49 +508,47 @@ export default function ScheduleKeyValueListAtt({
 }
 
 const StrongField = styled(StrongEditableField)<{ $indent: boolean }>`
-  & {
-    ${props =>
-      props.$indent &&
-      css`
-        --indent: 24px;
+  ${props =>
+    props.$indent &&
+    css`
+      --indent: 24px;
 
-        margin-top: -1.7em;
+      margin-top: -1.7em;
 
-        .markdownFieldContent {
-          ol,
-          ul {
-            padding-inline-start: 15px;
+      .markdownFieldContent {
+        ol,
+        ul {
+          padding-inline-start: 15px;
+
+          > li > ol {
+            list-style-type: lower-latin;
 
             > li > ol {
-              list-style-type: lower-latin;
+              list-style-type: lower-roman;
 
               > li > ol {
-                list-style-type: lower-roman;
-
-                > li > ol {
-                  list-style-type: lower-greek;
-                }
+                list-style-type: lower-greek;
               }
             }
-          }
-
-          > :not(p, div),
-          > p:has([prop-src], table),
-          > div:has([prop-src], table) {
-            &:first-child {
-              margin-left: var(--indent);
-
-              &:not([prop-src]) {
-                width: calc(100% - var(--indent));
-              }
-            }
-          }
-
-          > *:first-child > p:first-child,
-          > p:first-child {
-            text-indent: var(--indent);
           }
         }
-      `}
-  }
+
+        > :not(p, div),
+        > p:has([prop-src], table),
+        > div:has([prop-src], table) {
+          &:first-child {
+            margin-left: var(--indent);
+
+            &:not([prop-src]) {
+              width: calc(100% - var(--indent));
+            }
+          }
+        }
+
+        > *:first-child > p:first-child,
+        > p:first-child {
+          text-indent: var(--indent);
+        }
+      }
+    `}
 `;

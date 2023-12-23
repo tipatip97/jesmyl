@@ -30,17 +30,15 @@ export default function TheButton({
 }
 
 const Button = styled.div`
-  & {
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    border: var(--color--2) 4px solid;
-    border-radius: 2em;
-    padding: 0.5em 2em;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  border: var(--color--2) 4px solid;
+  border-radius: 2em;
+  padding: 0.5em 2em;
 
-    .eva-icon {
-      position: absolute;
-      margin-left: 2px;
-    }
+  .eva-icon {
+    position: absolute;
+    margin-left: 2px;
   }
 `;

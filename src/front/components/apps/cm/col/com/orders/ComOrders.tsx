@@ -48,12 +48,10 @@ export default function ComOrders(props: IComOrdersProps) {
 }
 
 const OrdList = styled.div`
-  & {
-    display: inline-block;
-    transition: padding 0.2s;
-    padding-top: 0.06em;
-    padding-bottom: 100px;
-    min-height: 100%;
-    color: var(--color-far);
-  }
+  display: inline-block;
+  transition: padding 0.2s;
+  padding-top: 0.06em;
+  padding-bottom: 100px;
+  min-height: 100%;
+  color: var(--color-far);
 `;

@@ -144,27 +144,25 @@ export default function GamerRoomContent({
 }
 
 const GamerRoomDiv = styled(PhaseGamerContainer)`
-  & {
-    .gamer-game-palette {
-      display: flex;
+  .gamer-game-palette {
+    display: flex;
 
-      .gamer-game-item {
-        --size: 45vmin;
-        --max-size: 300px;
+    .gamer-game-item {
+      --size: 45vmin;
+      --max-size: 300px;
 
-        border-radius: 20px;
+      border-radius: 20px;
 
-        background: var(--color--1);
-        width: var(--size);
-        max-width: var(--max-size);
-        height: var(--size);
-        max-height: var(--max-size);
+      background: var(--color--1);
+      width: var(--size);
+      max-width: var(--max-size);
+      height: var(--size);
+      max-height: var(--max-size);
 
-        ${IconEva} {
-          --icon-scale: 3;
+      ${IconEva} {
+        --icon-scale: 3;
 
-          margin-top: 30px;
-        }
+        margin-top: 30px;
       }
     }
   }

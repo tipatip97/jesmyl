@@ -32,23 +32,21 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
 }
 
 const ExpandContent = styled.div`
-  & {
-    overflow: auto;
+  overflow: auto;
 
-    .inner-content {
-      padding-top: 50vh;
-    }
+  .inner-content {
+    padding-top: 50vh;
+  }
 
-    .com-number {
-      text-align: center;
-    }
+  .com-number {
+    text-align: center;
+  }
 
-    .com-ord-list {
-      width: 100%;
-    }
+  .com-ord-list {
+    width: 100%;
+  }
 
-    :not(:last-child) .com-ord-list {
-      border-bottom: 2px var(--text-color) dashed;
-    }
+  :not(:last-child) .com-ord-list {
+    border-bottom: 2px var(--text-color) dashed;
   }
 `;

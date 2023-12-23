@@ -1,7 +1,7 @@
 import { HTMLAttributes, ReactNode } from 'react';
+import styled from 'styled-components';
 import * as pack from '../../resource/eva-icons.json';
 import { MyLib } from '../my-lib/MyLib';
-import styled from 'styled-components';
 
 export type EvaIconName = keyof typeof pack;
 
@@ -38,17 +38,15 @@ export default function EvaIcon(
 }
 
 export const IconEva = styled.svg`
-  & {
-    --icon-size: 24px;
-    --icon-scale: 1;
+  --icon-size: 24px;
+  --icon-scale: 1;
 
-    transform: scale(var(--icon-scale));
+  transform: scale(var(--icon-scale));
 
-    width: var(--icon-size);
-    min-width: var(--icon-size);
-    max-width: var(--icon-size);
-    height: var(--icon-size);
-    min-height: var(--icon-size);
-    max-height: var(--icon-size);
-  }
+  width: var(--icon-size);
+  min-width: var(--icon-size);
+  max-width: var(--icon-size);
+  height: var(--icon-size);
+  min-height: var(--icon-size);
+  max-height: var(--icon-size);
 `;

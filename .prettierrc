@@ -5,7 +5,7 @@
   "tabWidth": 2,
   "singleAttributePerLine": true,
   "trailingComma": "all",
-  "plugins": ["prettier-plugin-css-order"],
+  "plugins": [],
   "cssDeclarationSorterOrder": "concentric-css",
   "arrowParens": "avoid"
 }

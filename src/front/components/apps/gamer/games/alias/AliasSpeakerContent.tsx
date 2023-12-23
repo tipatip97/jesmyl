@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { isTouchDevice } from '../../../../../complect/device-differences';
 import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useMyPossibilitiesCurrentRoom } from '../../complect/rooms/room/hooks/possibilities';
@@ -9,9 +10,8 @@ import { useAliasComputeScore } from './hooks/compute-score';
 import { useAliasCurrentTeamNaked } from './hooks/current-team';
 import { useAliasSimpleExecs, useAliasStrikeWord } from './hooks/execs';
 import { useAliasRoomState } from './hooks/state';
-import { useAliasCurrentWordInfo } from './hooks/word';
 import { useTokenSortedWordsNaked } from './hooks/token-sorted-words';
-import { isTouchDevice } from '../../../../../complect/device-differences';
+import { useAliasCurrentWordInfo } from './hooks/word';
 
 const altWordInfo = { minus: 0, weight: 0, plus: 0 };
 
@@ -114,78 +114,70 @@ export default function AliasSpeakerContent() {
 }
 
 const ScoreInc = styled.div`
-  & {
-    display: inline-block;
-    margin-top: -2.5em;
-    margin-bottom: 2.5em;
-  }
+  display: inline-block;
+  margin-top: -2.5em;
+  margin-bottom: 2.5em;
 `;
 
 const Button = styled(EvaButton)`
-  & {
-    --icon-scale: 4;
-  }
+  --icon-scale: 4;
 `;
 
 const AboveButton = styled.div`
-  & {
-    --pos: 40px;
+  --pos: 40px;
 
-    opacity: 0;
-    transition: opacity 0.5s;
+  opacity: 0;
+  transition: opacity 0.5s;
 
-    margin: var(--pos);
-    pointer-events: none;
+  margin: var(--pos);
+  pointer-events: none;
 
-    @media screen and (max-width: 350px) {
-      --icon-scale: 3;
-      --pos: 30px;
-    }
+  @media screen and (max-width: 350px) {
+    --icon-scale: 3;
+    --pos: 30px;
   }
 `;
 
 const ShowWordArea = styled.div`
-  & {
-    --ring-size: 50vmin;
+  --ring-size: 50vmin;
 
-    position: relative;
-    padding: 30px 0;
-    overflow-y: scroll;
+  position: relative;
+  padding: 30px 0;
+  overflow-y: scroll;
 
+  .round-button {
+    cursor: pointer;
+  }
+
+  &.speech {
     .round-button {
-      cursor: pointer;
+      cursor: initial;
+      background: var(--color--2);
+      padding: 0 20vmin;
+      color: var(--color--3);
     }
 
-    &.speech {
-      .round-button {
-        cursor: initial;
-        background: var(--color--2);
-        padding: 0 20vmin;
-        color: var(--color--3);
-      }
-
-      ${AboveButton} {
-        opacity: 1;
-        pointer-events: all;
-      }
+    ${AboveButton} {
+      opacity: 1;
+      pointer-events: all;
     }
+  }
 
-    .loader-icon {
-      --icon-size: 50px;
-    }
+  .loader-icon {
+    --icon-size: 50px;
+  }
 
-    .round-button {
-      transition: background 0.5s;
-      border-radius: var(--ring-size);
+  .round-button {
+    transition: background 0.5s;
+    border-radius: var(--ring-size);
 
-      background: var(--color--7);
-      width: var(--ring-size);
-      min-width: var(--ring-size);
-      max-width: var(--ring-size);
-      height: var(--ring-size);
-      min-height: var(--ring-size);
-      max-height: var(--ring-size);
-      color: var(--color--1);
-    }
+    background: var(--color--7);
+    width: var(--ring-size);
+    min-width: var(--ring-size);
+    max-width: var(--ring-size);
+    height: var(--ring-size);
+    min-height: var(--ring-size);
+    max-height: var(--ring-size);
+    color: var(--color--1);
   }
 `;

@@ -122,19 +122,17 @@ export default function TheCat({ all }: { all?: boolean }) {
 }
 
 const CatPhaseContainer = styled(PhaseCmContainer)`
-  & {
-    .list-title {
-      cursor: ns-resize;
-    }
+  .list-title {
+    cursor: ns-resize;
+  }
 
-    > .content {
-      padding-top: 0;
-    }
+  > .content {
+    padding-top: 0;
+  }
 
-    .later-com-list {
-      &.hidden {
-        display: none;
-      }
+  .later-com-list {
+    &.hidden {
+      display: none;
     }
   }
 `;

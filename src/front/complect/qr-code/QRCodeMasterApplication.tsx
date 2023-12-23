@@ -120,54 +120,52 @@ export function QRCodeMasterApplication({
 }
 
 const Screen = styled.div`
-  & {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
-    opacity: 0;
-    z-index: 10000000;
-    transition: opacity 0.5s;
-    background-color: var(--current-bg);
-    width: 100vw;
-    height: 100%;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  opacity: 0;
+  z-index: 10000000;
+  transition: opacity 0.5s;
+  background-color: var(--current-bg);
+  width: 100vw;
+  height: 100%;
 
-    &.open-reader,
-    &.open-slider {
-      display: flex;
-      opacity: 0.9;
-    }
+  &.open-reader,
+  &.open-slider {
+    display: flex;
+    opacity: 0.9;
+  }
 
-    .qr-container {
-      position: relative;
+  .qr-container {
+    position: relative;
 
-      &.external {
-        .link-anchor {
-          position: absolute;
-          right: 0;
-        }
-      }
-
-      &.internal {
-        &::after {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          opacity: 0.5;
-          background: var(--color--7);
-          content: '';
-        }
+    &.external {
+      .link-anchor {
+        position: absolute;
+        right: 0;
       }
     }
 
-    .qr-code {
-      width: 90vmin;
+    &.internal {
+      &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 0.5;
+        background: var(--color--7);
+        content: '';
+      }
     }
+  }
+
+  .qr-code {
+    width: 90vmin;
   }
 `;
