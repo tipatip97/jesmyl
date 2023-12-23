@@ -27,13 +27,16 @@ export default function AliasSpeakerContent() {
   const { resetSpeech, startSpeech } = useAliasSimpleExecs();
   const myPossibilities = useMyPossibilitiesCurrentRoom();
   const infos = useTokenSortedWordsNaked();
-  const sendWord = useCallback((scope?: 'cor' | 'inc') => {
-    return (event: { preventDefault(): void }) => {
-      event.preventDefault();
-      setIsWordSending(true);
-      scope && strikeWord(scope)?.then(() => setIsWordSending(false));
-    };
-  }, []);
+  const sendWord = useCallback(
+    (scope?: 'cor' | 'inc') => {
+      return (event: { preventDefault(): void }) => {
+        event.preventDefault();
+        setIsWordSending(true);
+        scope && strikeWord(scope)?.then(() => setIsWordSending(false));
+      };
+    },
+    [strikeWord],
+  );
 
   useEffect(() => {
     if (isTouchDevice || !state?.startTs) return;

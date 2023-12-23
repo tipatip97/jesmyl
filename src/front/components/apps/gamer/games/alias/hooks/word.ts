@@ -1,10 +1,10 @@
-import { GamerAliasRoomState } from '../Alias.model';
+import { AliasWordInfo, GamerAliasRoomState } from '../Alias.model';
 import { useAliasRoomState } from './state';
 import { useTokenSortedWordsNaked } from './token-sorted-words';
 
 export const useAliasCurrentWordInfoNaked = () => useAliasCurrentWordInfo(useAliasRoomState());
 
-export const useAliasCurrentWordInfo = (state: GamerAliasRoomState | und) => {
+export const useAliasCurrentWordInfo = (state: GamerAliasRoomState | und): AliasWordInfo | und => {
   return useTokenSortedWordsNaked()[state?.wordsi || 0];
 };
 

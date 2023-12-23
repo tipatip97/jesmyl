@@ -29,7 +29,7 @@ export const useAliasStrikeWord = () => {
 
   return useCallback(
     (scope: 'cor' | 'inc') => {
-      if (!state || !currentRoom) return;
+      if (!state || !currentRoom || !wordInfo) return;
 
       if (teami === null) return null;
 
@@ -40,7 +40,7 @@ export const useAliasStrikeWord = () => {
         word: wordInfo.word,
       });
     },
-    [currentRoom, state, teami, wordInfo.word],
+    [currentRoom, state, teami, wordInfo],
   );
 };
 
