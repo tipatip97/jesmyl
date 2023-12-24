@@ -35,19 +35,22 @@ export default function GamerAliasTimer({ onTimeOut }: { onTimeOut: (is: true) =
 const Timer = styled.div<{ children: number }>`
   position: absolute;
   top: 0;
-  right: 0;
-  transition: width, font-size, color;
+  right: 0.5em;
+  transition: font-size, color;
   transition-duration: 0.5s;
   font-weight: bold;
   text-align: center;
-  width: 3em;
 
   ${props =>
     props.children &&
-    props.children < 6 &&
-    css`
-      font-size: 1.3em;
-      color: var(--color--ko);
-      count: ${props.children};
-    `}
+    (props.children < 10
+      ? css`
+          font-size: 5em;
+          color: var(--color--ko);
+        `
+      : props.children < 16 &&
+        css`
+          font-size: 3em;
+          color: var(--color--7);
+        `)}
 `;
