@@ -68,10 +68,10 @@ export const aliasGameConfig: ActionBox = {
     '<start speech>': {
       action: 'startAliasSpeech',
       method: 'set_all',
-      value: {
+      value: () => ({
         phase: GamerAliasRoomStatePhase.Speech,
-        startTs: '{startTs}',
-      },
+        startTs: Date.now(),
+      }),
     },
     '<start timeout>': {
       action: 'startAliasSpeechTimeout',

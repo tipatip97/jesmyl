@@ -140,7 +140,6 @@ export const useAliasSimpleExecs = () => {
 
         sendExec(currentRoom, 'startAliasSpeech', {
           roomw: currentRoom.w,
-          startTs: Date.now(),
         });
         sendExec(currentRoom, 'startAliasSpeechTimeout');
       },
