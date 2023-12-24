@@ -151,7 +151,7 @@ export class AliasHelp {
         packInfos.push(
           nounsSorted.slice(0, max).map((noun, nouni) => {
             const weight = isSpecialMax
-              ? nounsProns.nouns[noun]
+              ? nounsProns.nouns[noun] - 1
               : nounsProns.nouns[noun] + nounsProns.pronouns[pronounsSorted[nouni]];
 
             return {
@@ -162,7 +162,10 @@ export class AliasHelp {
               max: weight,
               plus: weight,
               word: isSpecialMax
-                ? noun.toUpperCase().replace(/[^-а-яё ]/gi, '')
+                ? noun
+                    .toUpperCase()
+                    .replace(/[^-а-яё ]/gi, '')
+                    .replace(/_/, ' ')
                 : makeTwiceKnownName(pronounsSorted[nouni], noun).join(' ').toUpperCase(),
             };
           }),
