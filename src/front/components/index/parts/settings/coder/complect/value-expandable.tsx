@@ -1,11 +1,12 @@
+import { ReactNode } from 'react';
 import CopyTextButton from '../../../../../../complect/CopyTextButton';
 import { useIsRememberExpand } from '../../../../../../complect/expand/useIsRememberExpand';
 import useToast from '../../../../../../complect/modal/useToast';
 import { CoderResultNameStyled } from './styles';
 
 interface Props {
-  shortValue: unknown;
-  fullValue: unknown;
+  shortValue: string;
+  fullValue: ReactNode;
   name?: string | number;
   onCopy: (() => string | nil) | null;
   scope: string;

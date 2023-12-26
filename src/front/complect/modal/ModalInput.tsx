@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import KeyboardInput from '../keyboard/KeyboardInput';
 import mylib from '../my-lib/MyLib';
 import { onActionClick } from './Modal';
@@ -12,7 +11,7 @@ export default function ModalInput(topProps: TheModalInputProps) {
   else [input] = [topProps.config, ''];
   const isTextArea = input.type === 'textarea';
   const config = modalService.current();
-  const asFunc = (val?: Function | boolean | ReactNode, alt?: any) =>
+  const asFunc = <Value,>(val?: Value, alt?: any) =>
     typeof val === 'function' ? val(config) : alt !== undefined ? alt : val;
 
   const props: Record<string, Function | string> = mylib.overlap(isTextArea ? { rows: 3 } : {}, {

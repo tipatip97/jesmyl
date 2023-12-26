@@ -254,7 +254,7 @@
       position: absolute;
       opacity: 0.7;
       pointer-events: none;
-      content: attr(placeholder);
+      content: attr(attr-placeholder);
       white-space: nowrap;
     }
 

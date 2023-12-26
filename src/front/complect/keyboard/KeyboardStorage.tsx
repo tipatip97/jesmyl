@@ -62,7 +62,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
           (props.withoutCloseButton ? ' without-close-button' : '') +
           (this.touchNavigationMode || this.isOverflowKeyDown ? ' stable-cursor-mode' : '')
         }
-        placeholder={props.placeholder}
+        attr-placeholder={props.placeholder}
         onMouseDown={this.onFlashMouseDown}
         onClick={this.onStopPropagation}
       >

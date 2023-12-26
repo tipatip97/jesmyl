@@ -86,7 +86,7 @@ export default function Modal() {
         onClick={event => event.stopPropagation()}
       >
         <div className="app-modal-title">
-          <span className="app-modal-title-label">{config.title}</span>
+          <span className="app-modal-title-label">{config.title as never}</span>
           {config.withoutCloseButton ? null : (
             <span
               className="app-modal-title-close-icon"
