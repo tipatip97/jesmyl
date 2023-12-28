@@ -4,12 +4,11 @@ import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
 import EvaCheckbox from '../../../../../../../complect/eva-icon/EvaCheckbox';
 import useFullContent from '../../../../../../../complect/fullscreen-content/useFullContent';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
 import { useAliasPacks } from '../../hooks/packs';
 import { useAliasRoomState } from '../../hooks/state';
-import { useTokenSortedWordsNaked } from '../../hooks/token-sorted-words';
 import { AliasRoomLessWordsCompute } from './LessWordsCompute';
 import { AliasSelectedDictsTextInfo, levelGradationTitles } from './SelectedDictsTextInfo';
-import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
 
 const dreamItems = [10, 30, 50, 70, 100].map(id => ({
   title: `${id} слов`,
@@ -36,7 +35,6 @@ interface Props {
 export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Props) => {
   const state = useAliasRoomState();
   const packs = useAliasPacks();
-  const infos = useTokenSortedWordsNaked();
   const nounProns = useNounsPronounsLines();
 
   const [isResortWordsState, setIsResortWords] = useState(initialAliasDictsPropsPart.isResortWords);
@@ -51,10 +49,8 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
   const isResortWords = (stateRef.current.isResortWords = isResortWordsState || isForceResortWords);
 
   useEffect(() => {
-    setIsDictsRejToStart(
-      (!state && !dicts.length) || !!(state && !(infos.length - (state.wordsi || 0)) && !isResortWords),
-    );
-  }, [dicts.length, infos.length, isResortWords, setIsDictsRejToStart, state]);
+    setIsDictsRejToStart((!state && !dicts.length) || !!(state && !state.arsenal && !isResortWords));
+  }, [dicts.length, isResortWords, setIsDictsRejToStart, state]);
 
   const [dictsSelectorNode, openSelectorDicts] = useFullContent(() => {
     return (
@@ -141,7 +137,7 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
       {state && !isResortWords && (
         <EvaButton
           name="book-open-outline"
-          className={'margin-gap-t ' + (infos.length - 1 === state.wordsi ? ' color--ko ' : '')}
+          className={'margin-gap-t ' + (!state.arsenal ? ' color--ko ' : '')}
           postfix={<AliasRoomLessWordsCompute />}
         />
       )}

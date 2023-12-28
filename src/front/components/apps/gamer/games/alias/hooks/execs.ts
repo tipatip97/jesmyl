@@ -7,7 +7,6 @@ import { useGamerCurrentRoom } from '../../../complect/rooms/room/hooks/current-
 import { AliasGameTeam, GamerAliasRoomState, StartAliasRoundProps } from '../Alias.model';
 import { useAliasCurrentTeamNaked } from './current-team';
 import { useAliasRoomState } from './state';
-import { useAliasCurrentWordInfo } from './word';
 
 const sendExec = (room: GamerRoom | und, action: string, args?: {}) => {
   if (!room) return;
@@ -25,22 +24,19 @@ export const useAliasStrikeWord = () => {
   const state = useAliasRoomState();
   const currentRoom = useGamerCurrentRoom();
   const teami = useAliasCurrentTeamNaked('index');
-  const wordInfo = useAliasCurrentWordInfo(state);
 
   return useCallback(
     (scope: 'cor' | 'inc') => {
-      if (!state || !currentRoom || !wordInfo) return;
+      if (!state || !currentRoom || !state.winfo) return;
 
       if (teami === null) return null;
 
       return sendExec(currentRoom, 'strikeAliasWord', {
         roomw: currentRoom.w,
         scope,
-        teami,
-        word: wordInfo.word,
       });
     },
-    [currentRoom, state, teami, wordInfo],
+    [currentRoom, state, teami],
   );
 };
 
@@ -50,7 +46,9 @@ export const useAliasRejectWord = () => {
 
   return useCallback(
     (wordi: number) => {
-      return state?.cor.concat(state.inc).includes(wordi) ? sendExec(currentRoom, 'rejectAliasWord', { wordi }) : null;
+      return state?.cor.concat(state.inc).some(winfo => winfo.wordi === wordi)
+        ? sendExec(currentRoom, 'invertAliasWord', { wordi })
+        : null;
     },
     [currentRoom, state?.cor, state?.inc],
   );

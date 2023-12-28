@@ -4,7 +4,9 @@ import { User } from 'node-telegram-bot-api';
 import WebSocket, { WebSocketServer } from 'ws';
 import cmService from '../../apps/cm/service';
 import { indexService } from '../../apps/index/service';
+import smylib, { SMyLib } from '../../shared/SMyLib';
 import { controlTelegramBot } from '../../sides/telegram-bot/control/control-bot';
+import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
 import { supportTelegramAuthorizations } from '../../sides/telegram-bot/prod/authorize';
 import { prodTelegramBot } from '../../sides/telegram-bot/prod/prod-bot';
 import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
@@ -14,7 +16,6 @@ import { Executer } from '../executer/Executer';
 import { ExecutionDict } from '../executer/Executer.model';
 import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
-import smylib, { SMyLib } from '../../shared/SMyLib';
 import { sokiAuther } from './SokiAuther';
 import {
   LocalSokiAuth,
@@ -181,9 +182,10 @@ export class SokiServer {
     this.capsules.set(client, { auth: null, deviceId: '', version: -1 });
   }
 
-  makePassw(id?: number, nick?: string, level?: number) {
+  makePassw = SokiServer.makePassw;
+  static makePassw(id: number | und, nick: string | und) {
     const date = new Date();
-    return smylib.md5(`{ [${level}]: ${id}.${nick}@${date.getMonth()} - ${date.getFullYear()}} `);
+    return smylib.md5(`{${id}.${nick}@${date.getMonth()} - ${date.getFullYear()}} `);
   }
 
   async reloadFiles() {
@@ -288,7 +290,7 @@ export class SokiServer {
               nick,
               fio: `${user.first_name}${user.last_name !== undefined ? ` ${user.last_name}` : ''}`,
               login: controlTelegramBot.makeLoginFromId(user.id),
-              passw: this.makePassw(user.id, nick, level),
+              passw: this.makePassw(user.id, nick),
               tgId: user.id,
             };
           };
@@ -326,7 +328,7 @@ export class SokiServer {
                 const passw = eventData.auth.passw;
 
                 if (eventData.auth.tgId) {
-                  const passw = this.makePassw(eventData.auth.tgId, eventData.auth.nick, eventData.auth.level);
+                  const passw = this.makePassw(eventData.auth.tgId, eventData.auth.nick);
                   if (eventData.auth.passw !== passw) {
                     sendErrorMessage('Данные авторизации устарели');
                     return;
@@ -547,7 +549,7 @@ export class SokiServer {
       capsule?.auth &&
       capsule.auth.login === eventData.auth?.login &&
       (eventData.auth?.tgId
-        ? eventData.auth.passw === this.makePassw(eventData.auth.tgId, eventData.auth.nick, eventData.auth.level)
+        ? eventData.auth.passw === this.makePassw(eventData.auth.tgId, eventData.auth.nick)
         : await sokiAuther.isCorrectData(eventData.auth))
     ) {
       const appConfig = filer.appConfigs[eventData.appName];

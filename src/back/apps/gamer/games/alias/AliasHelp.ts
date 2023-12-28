@@ -149,23 +149,17 @@ export class AliasHelp {
         const nounsSorted = this.sortItemsByTokenbit(nouns.slice(0, minLen), generalTokenbit);
 
         packInfos.push(
-          nounsSorted.slice(0, max).map((noun, nouni) => {
+          nounsSorted.slice(0, max).map((noun, nouni): AliasWordInfo => {
             const weight = isSpecialMax
               ? nounsProns.nouns[noun] - 1
               : nounsProns.nouns[noun] + nounsProns.pronouns[pronounsSorted[nouni]];
 
             return {
-              weight,
-              packi,
               wordi: nouni,
               minus: 1,
-              max: weight,
               plus: weight,
               word: isSpecialMax
-                ? noun
-                    .toUpperCase()
-                    .replace(/[^-а-яё ]/gi, '')
-                    .replace(/_/, ' ')
+                ? noun.toUpperCase().replace(/[^-а-яё ]/gi, '')
                 : makeTwiceKnownName(pronounsSorted[nouni], noun).join(' ').toUpperCase(),
             };
           }),
@@ -178,15 +172,12 @@ export class AliasHelp {
 
         packInfos.push(
           this.sortItemsByTokenbit(
-            words.slice(0, lens![packi]).map((word, wordi) => {
+            words.slice(0, lens![packi]).map((word, wordi): AliasWordInfo => {
               return {
                 word,
-                max,
                 minus: (max || 0) + 1 - (packWords[word] || 0),
                 wordi,
-                packi,
-                plus: max,
-                weight: packWords[word],
+                plus: packWords[word],
               };
             }),
             generalTokenbit,

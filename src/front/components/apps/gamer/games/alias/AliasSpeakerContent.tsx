@@ -10,8 +10,6 @@ import { useAliasComputeScore } from './hooks/compute-score';
 import { useAliasCurrentTeamNaked } from './hooks/current-team';
 import { useAliasSimpleExecs, useAliasStrikeWord } from './hooks/execs';
 import { useAliasRoomState } from './hooks/state';
-import { useTokenSortedWordsNaked } from './hooks/token-sorted-words';
-import { useAliasCurrentWordInfo } from './hooks/word';
 
 const altWordInfo = { minus: 0, weight: 0, plus: 0 };
 
@@ -20,14 +18,11 @@ export default function AliasSpeakerContent() {
   const [isTimeOut, setIsTimeOut] = useState(false);
 
   const state = useAliasRoomState();
-  const wordInfo = useAliasCurrentWordInfo(state);
   const strikeWord = useAliasStrikeWord();
   const myTeam = useAliasCurrentTeamNaked('team');
-  const { score } = useAliasComputeScore();
-  const { minus, plus } = wordInfo ?? altWordInfo;
+  const score = useAliasComputeScore();
   const { resetSpeech, startSpeech } = useAliasSimpleExecs();
   const myPossibilities = useMyPossibilitiesCurrentRoom();
-  const infos = useTokenSortedWordsNaked();
 
   const sendWord = useCallback(
     (scope?: 'cor' | 'inc') => {
@@ -55,9 +50,11 @@ export default function AliasSpeakerContent() {
 
   if (!state) return null;
 
+  const { minus, plus } = state.winfo ?? altWordInfo;
+
   return (
     <>
-      {isTimeOut ? null : infos.length - 1 !== state.wordsi ? (
+      {isTimeOut ? null : state.arsenal ? (
         <ShowWordArea
           className={
             'flex column center text-center no-scrollbar' +
@@ -66,7 +63,7 @@ export default function AliasSpeakerContent() {
         >
           <GamerAliasTimer onTimeOut={setIsTimeOut} />
           {state?.phase === GamerAliasRoomStatePhase.Speech ? (
-            <div className="round-button flex center">{wordInfo?.word}</div>
+            <div className="round-button flex center">{state.winfo?.word}</div>
           ) : (
             <div
               className="round-button flex center"

@@ -1,3 +1,5 @@
+import * as versionNum from '../back/+version.json';
+import Eventer, { EventerListeners } from '../back/complect/Eventer';
 import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
 import {
@@ -9,9 +11,7 @@ import {
   SokiServerEvent,
 } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
-import * as versionNum from '../back/+version.json';
 import { JStorage } from './complect/JStorage';
-import Eventer, { EventerCallback, EventerListeners, eventerAlt } from './complect/eventer/Eventer';
 import mylib from './complect/my-lib/MyLib';
 import { takeDeviceId } from './components/index/complect/takeDeviceId';
 import indexStorage from './components/index/indexStorage';
@@ -34,15 +34,12 @@ interface ResponseWaiter {
   final?: () => void;
 }
 
-type Waiters = EventerListeners<'auth', boolean>;
-
 let pingTimeout: TimeOut;
-const invokeOnceResult = [eventerAlt.invokeOnce, eventerAlt.passPropagation];
 
 export class SokiTrip {
   ws?: WebSocket;
   isAuthorized = false;
-  waiters: Waiters = { auth: [] };
+  authListeners: EventerListeners<boolean> = [];
   private responseWaiters: ResponseWaiter[] = [];
 
   async appName() {
@@ -50,7 +47,7 @@ export class SokiTrip {
   }
 
   onClose = () => {
-    Eventer.invoke(this.waiters, 'auth', false);
+    Eventer.invoke(this.authListeners, false);
     this.isAuthorized = false;
     setTimeout(() => this.start(), 500);
   };
@@ -101,7 +98,7 @@ export class SokiTrip {
 
           if (event.authorized !== undefined) {
             this.isAuthorized = true;
-            Eventer.invoke(this.waiters, 'auth', true);
+            Eventer.invoke(this.authListeners, true);
             this.pullCurrentAppData(await this.appName());
           }
 
@@ -129,13 +126,13 @@ export class SokiTrip {
     return this;
   }
 
-  onAuthorize(callback: EventerCallback<boolean>, isRejectInitInvoke?: boolean) {
+  onAuthorize(callback: (is: boolean) => void, isRejectInitInvoke?: boolean) {
     return Eventer.listen(
-      this.waiters,
-      'auth',
-      (is, alt) => {
-        callback(is, alt);
-        return invokeOnceResult;
+      this.authListeners,
+      event => {
+        callback(event.value);
+        event.mute();
+        event.stopPropagation();
       },
       isRejectInitInvoke !== true ? this.isAuthorized : undefined,
     );

@@ -1,61 +1,60 @@
-import Eventer, { EventerCallback, eventerAlt } from './Eventer';
+import Eventer, { EventerValueCallback, EventerValueListeners } from '../../../back/complect/Eventer';
 
 type ThrowEventKeyDownKey = 'Escape' | 'Enter';
 
 class ThrowEventClass {
-  private keyDownListens: Record<ThrowEventKeyDownKey, EventerCallback<KeyboardEvent>[]> = {
+  private keyDownListens: Record<ThrowEventKeyDownKey, EventerValueListeners<KeyboardEvent>> = {
     Escape: [],
     Enter: [],
   };
 
-  private windowEvents: Record<'is' | 'focus', EventerCallback<boolean>[]> = {
-    is: [],
-    focus: [],
-  };
+  private windowFocusEvents: EventerValueListeners<boolean> = [];
+  private windowOnlineEvents: EventerValueListeners<boolean> = [];
 
   constructor() {
     window.addEventListener('keydown', event => {
-      Eventer.invoke(this.keyDownListens, event.code as never, event);
+      if (this.keyDownListens[event.code as ThrowEventKeyDownKey])
+        Eventer.invokeValue(this.keyDownListens[event.code as ThrowEventKeyDownKey], event);
     });
 
     window.addEventListener('focus', () => {
-      Eventer.invoke(this.windowEvents, 'focus', true);
+      Eventer.invokeValue(this.windowFocusEvents, true);
     });
     window.addEventListener('blur', () => {
-      Eventer.invoke(this.windowEvents, 'focus', false);
+      Eventer.invokeValue(this.windowFocusEvents, false);
     });
 
     window.addEventListener('online', () => {
-      Eventer.invoke(this.windowEvents, 'is', true);
+      Eventer.invokeValue(this.windowOnlineEvents, true);
     });
     window.addEventListener('offline', () => {
-      Eventer.invoke(this.windowEvents, 'is', false);
+      Eventer.invokeValue(this.windowOnlineEvents, false);
     });
   }
 
-  listenKeyDown = (key: ThrowEventKeyDownKey, cb: EventerCallback<KeyboardEvent>) => {
-    return Eventer.listen(this.keyDownListens, key, cb as never);
+  listenKeyDown = (key: ThrowEventKeyDownKey, cb: EventerValueCallback<KeyboardEvent>) => {
+    return Eventer.listenValue(this.keyDownListens[key], cb);
   };
 
-  muteKeyDown = (key: ThrowEventKeyDownKey, cb: EventerCallback<KeyboardEvent>) => {
-    Eventer.mute(this.keyDownListens, key, cb as never);
+  muteKeyDown = (key: ThrowEventKeyDownKey, cb: EventerValueCallback<KeyboardEvent>) => {
+    Eventer.muteValue(this.keyDownListens[key], cb);
   };
 
-  listenIsOnline = (cb: EventerCallback<boolean>) => {
-    cb(window.navigator?.onLine, eventerAlt);
-    return Eventer.listen(this.windowEvents, 'is', cb);
+  listenIsOnline = (cb: EventerValueCallback<boolean>) => {
+    cb(window.navigator?.onLine);
+    return Eventer.listenValue(this.windowOnlineEvents, cb);
   };
 
-  muteIsOnline = (cb: EventerCallback<boolean>) => {
-    Eventer.mute(this.windowEvents, 'is', cb);
+  muteIsOnline = (cb: EventerValueCallback<boolean>) => {
+    Eventer.muteValue(this.windowOnlineEvents, cb);
   };
 
-  listenIsWinFocused = (cb: EventerCallback<boolean>) => {
-    return Eventer.listen(this.windowEvents, 'focus', cb);
+  listenIsWinFocused = (cb: EventerValueCallback<boolean>) => {
+    return Eventer.listenValue(this.windowFocusEvents, cb);
   };
 
-  muteIsWinFocused = (cb: EventerCallback<boolean>) => {
-    Eventer.mute(this.windowEvents, 'focus', cb);
+  muteIsWinFocused = (cb: EventerValueCallback<boolean>) => {
+    Eventer.muteValue(this.windowFocusEvents, cb);
   };
 }
 

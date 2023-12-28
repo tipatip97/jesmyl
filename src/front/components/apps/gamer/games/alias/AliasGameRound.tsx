@@ -8,11 +8,11 @@ export default function AliasGameRound() {
   const state = useAliasRoomState();
   const isMySpeech = useAliasIsMySpeech();
 
-  if (state && !state.teams.some((team, _, teama) => team.rounds !== teama[0].rounds)) {
+  if (state && (!state.arsenal || !state.teams.some((team, _, teama) => team.rounds !== teama[0].rounds))) {
     const scores = state.teams.map(team => team.score);
     const maxScore = Math.max(...scores);
 
-    if (maxScore >= state.dream) return <AliasGameRoundWin maxScore={maxScore} />;
+    if (!state.arsenal || maxScore >= state.dream) return <AliasGameRoundWin maxScore={maxScore} />;
   }
 
   return isMySpeech ? <AliasSpeakerContent /> : <AliasObserverContent />;

@@ -33,11 +33,14 @@ export interface GamerAliasRoomState extends StartAliasRoundState {
   speaks: number[];
   speakeri: number;
   wordsi: number;
+  arsenal: number;
   startTs: number;
+  win: string;
   lens: number[] | und;
   token: string;
-  cor: number[];
-  inc: number[];
+  cor: AliasWordInfo[];
+  inc: AliasWordInfo[];
+  winfo: AliasWordInfo;
   fix: number[];
   invert: Record<number, string[]>;
 }
@@ -48,8 +51,6 @@ export interface StartAliasRoundProps extends StartAliasRoundState {
 
 export interface AliasWordInfo {
   word: string;
-  weight: number;
-  packi: number;
   wordi: number;
   plus: number;
   minus: number;

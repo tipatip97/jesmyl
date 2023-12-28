@@ -1,15 +1,13 @@
 import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import Eventer, { EventerListeners } from '../../../back/complect/Eventer';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import EvaButton from '../eva-icon/EvaButton';
-import Eventer from '../eventer/Eventer';
 import { ThrowEvent } from '../eventer/ThrowEvent';
 import Portal from '../popups/[complect]/Portal';
 
-const events = {
-  close: [],
-};
+const events: EventerListeners<void> = [];
 
-const swiper = backSwipableContainerMaker(() => Eventer.invoke(events, 'close', undefined));
+const swiper = backSwipableContainerMaker(() => Eventer.invoke(events, undefined));
 
 export type FullContentOpenMode = null | 'open' | 'closable';
 export type FullContentValue<PassValue = unknown> = (close: () => void, passValue?: PassValue) => ReactNode;
@@ -33,7 +31,7 @@ export default function useFullContent<PassValue>(
 
   useEffect(() => {
     if (mode) {
-      const close = Eventer.listen(events, 'close', () => onClose());
+      const close = Eventer.listen(events, () => onClose());
       const escape = ThrowEvent.listenKeyDown('Escape', () => onClose());
 
       return () => {

@@ -2,18 +2,11 @@ import React from 'react';
 import useToast from '../../../../../complect/modal/useToast';
 import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
 import useAuth from '../../../../index/useAuth';
-import { AliasWordInfo } from './Alias.model';
 import { useAliasRejectWord, useAliasSimpleExecs } from './hooks/execs';
 import { useAliasIsMySpeech, useAliasIsMyTeamByAuth } from './hooks/is-my-speech';
 import { useAliasRoomState } from './hooks/state';
 
-export default function AliasGameRoundResultsAnswerList({
-  answers,
-  myIncorrects,
-}: {
-  answers: AliasWordInfo[];
-  myIncorrects?: boolean;
-}) {
+export default function AliasGameRoundResultsAnswerList({ myIncorrects }: { myIncorrects?: boolean }) {
   const state = useAliasRoomState();
   const { fixWord } = useAliasSimpleExecs();
   const rejectWord = useAliasRejectWord();
@@ -27,6 +20,7 @@ export default function AliasGameRoundResultsAnswerList({
 
   if (state?.fix === undefined) return null;
   const fix = state?.fix;
+  const answers = myIncorrects ? state.inc : state.cor;
 
   return (
     <>

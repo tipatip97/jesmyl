@@ -72,12 +72,7 @@ const config: FilerAppConfig = {
             shortTitle: 'Запросить вход',
             method: 'push',
             uniqs: ['login'],
-            args: {
-              login: '#String',
-              fio: '#String',
-            },
             value: {
-              w: '{@setNewWid()}',
               login: '{*login}',
               name: '{*fio}',
               status: 'requester',

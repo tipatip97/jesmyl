@@ -5,6 +5,7 @@ import { NounPronsType } from '../../../index/models/nounProns.model';
 import { AliasHelp } from './AliasHelp';
 import {
   AliasGameTeam,
+  AliasWordInfo,
   AliasWordsPack,
   GamerAliasRoomState,
   GamerAliasRoomStatePhase,
@@ -22,6 +23,9 @@ const clearSpeechTimer = (props: ExecutionArgs | null) => {
     clearId: speechTimerId(state),
   };
 };
+
+const getTokenizedWinfoLine = (state: Pick<GamerAliasRoomState, 'token' | 'dicts' | 'lens'>) =>
+  AliasHelp.getTokenizedWordInfos(state.token, state.dicts, state.lens, getWordPacks(), getNounPronsWords());
 
 const getWordPacks = () => filer.contents.gamer['aliasWordPacks'].data as AliasWordsPack[];
 const getNounPronsWords = () => filer.contents.index['nounPronsWords'].data as NounPronsType;
@@ -54,11 +58,19 @@ export const aliasGameConfig: ActionBox = {
             invert: {},
           };
 
-          if (state != null && props.isResortWords) {
-            AliasHelp.removeTokenizedWordInfos(state.token);
+          if (props.isResortWords || !state?.token) {
+            if (state) AliasHelp.removeTokenizedWordInfos(state.token);
             newState.token = AliasHelp.makeSortToken();
             newState.wordsi = 0;
             newState.lens = AliasHelp.takeLens(null, props.dicts, getWordPacks(), getNounPronsWords());
+
+            const winfos = getTokenizedWinfoLine({
+              dicts: props.dicts,
+              lens: newState.lens,
+              token: newState.token,
+            });
+            newState.arsenal = winfos.length;
+            newState.winfo = winfos[0];
           }
 
           return newState;
@@ -122,16 +134,10 @@ export const aliasGameConfig: ActionBox = {
         if (state == null) return;
         const [speakeri, currTeami] = AliasHelp.takeSpeakerDetails(state);
 
-        const aliasWordPacks = AliasHelp.getTokenizedWordInfos(
-          state.token,
-          state.dicts,
-          state.lens,
-          getWordPacks(),
-          getNounPronsWords(),
-        );
-        const mapper = (wordi: number) => aliasWordPacks[wordi];
+        const winfos = getTokenizedWinfoLine(state);
+        const mapper = (winfo: AliasWordInfo) => winfos[winfo.wordi];
 
-        const score = aliasWordPacks
+        const score = winfos
           ? AliasHelp.computeGameScore(
               state.cor.map(mapper).filter(isIs),
               state.inc.map(mapper).filter(isIs),
@@ -144,6 +150,7 @@ export const aliasGameConfig: ActionBox = {
             method: 'set_all',
             value: {
               speakeri,
+              arsenal: winfos.length - state.wordsi + 1,
             },
           },
           '/wordsi': {
@@ -180,14 +187,23 @@ export const aliasGameConfig: ActionBox = {
     side: props => {
       const state = extractState<GamerAliasRoomState | nil>(props);
 
+      if (state == null) return;
+
+      const winfos = getTokenizedWinfoLine(state);
+      if (winfos[state.wordsi + 1] == null) return;
+
       return {
         '/wordsi': {
           method: 'formula',
           value: 'X + 1',
         },
+        '/winfo': {
+          method: 'set',
+          value: winfos[state.wordsi + 1],
+        },
         '/{scope}': {
           method: 'push',
-          value: state?.wordsi,
+          value: winfos[state.wordsi],
         },
       };
     },
@@ -200,7 +216,7 @@ export const aliasGameConfig: ActionBox = {
   },
   '/invert': {
     expected: {},
-    action: 'rejectAliasWord',
+    action: 'invertAliasWord',
     side: (props, auth) => {
       const invert = extractState<Record<number, number[]>>(props);
       return {

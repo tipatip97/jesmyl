@@ -6,8 +6,8 @@ import TgBot, {
   User,
 } from 'node-telegram-bot-api';
 import smylib from '../../shared/SMyLib';
-import { JTgBotCallbackQuery, JTgBotChatMessageCallback, JesmylTelegramBotWrapper } from './tg-bot-wrapper';
 import { TgLogger } from './log/log-bot';
+import { JTgBotCallbackQuery, JTgBotChatMessageCallback, JesmylTelegramBotWrapper } from './tg-bot-wrapper';
 
 const botName = 'jesmylbot';
 
@@ -49,7 +49,7 @@ export class JesmylTelegramBot {
   }
 
   onChatMessages(cb: JTgBotChatMessageCallback) {
-    this._bot.registerOnChatMessages(
+    this._bot.registerChatMessagesCallback(
       this,
       this.chatId,
       this.logAllAsJSON && this.logger
@@ -62,7 +62,7 @@ export class JesmylTelegramBot {
   }
 
   onChatQueries(cb: JTgBotCallbackQuery) {
-    this._bot.registerQueryListener(
+    this._bot.registerChatCallbackQueryCallback(
       this,
       this.chatId,
       this.logAllAsJSON && this.logger

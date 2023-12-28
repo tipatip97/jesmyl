@@ -5,8 +5,10 @@ export const useAliasIsCantConfirmResults = (state: GamerAliasRoomState | und) =
   return useMemo(() => {
     return (
       state?.invert &&
-      (state.fix.some(fixNid => state.inc.includes(fixNid) && !state.invert![fixNid]?.length) ||
-        state.cor.some(fixNid => !state.fix.includes(fixNid) && state.invert![fixNid]?.length))
+      (state.fix.some(
+        fixWordi => !state.invert![fixWordi]?.length && state.inc.some(winfo => winfo.wordi === fixWordi),
+      ) ||
+        state.cor.some(winfo => !state.fix.includes(winfo.wordi) && state.invert![winfo.wordi]?.length))
     );
   }, [state?.cor, state?.fix, state?.inc, state?.invert]);
 };

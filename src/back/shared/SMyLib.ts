@@ -435,15 +435,20 @@ export class SMyLib {
   }
 
   sort<Item>(items: Item[], compareFunction?: (a: Item, b: Item) => number) {
-    for (let i = 0; i < items.length - 1; i++) {
-      for (let j = 0; j < items.length - i - 1; j++) {
-        if (compareFunction !== undefined ? compareFunction(items[j], items[j + 1]) > 0 : items[j] > items[j + 1]) {
-          const temp = items[j];
-          items[j] = items[j + 1];
-          items[j + 1] = temp;
+    const len = items.length - 1;
+    const compare =
+      compareFunction !== undefined
+        ? (j: number) => compareFunction(items[j], items[j + 1]) > 0
+        : (j: number) => items[j] > items[j + 1];
+
+    for (let i = 0; i < len; i++) {
+      for (let j = 0; j < len - i; j++) {
+        if (compare(j)) {
+          [items[j], items[j + 1]] = [items[j + 1], items[j]];
         }
       }
     }
+
     return items;
   }
 }

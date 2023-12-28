@@ -11,16 +11,13 @@ export default function AliasGameRoundResults() {
   const state = useAliasRoomState();
   const isCantSend = useAliasIsCantConfirmResults(state);
   const { rememberScore } = useAliasSimpleExecs();
-  const { corrects, incorrects, score } = useAliasComputeScore();
+  const score = useAliasComputeScore();
 
   return (
     <div className="full-height over-y-auto">
       <h2>Будет засчитано: {score}</h2>
-      <AliasGameRoundResultsAnswerList answers={corrects} />
-      <AliasGameRoundResultsAnswerList
-        answers={incorrects}
-        myIncorrects
-      />
+      <AliasGameRoundResultsAnswerList />
+      <AliasGameRoundResultsAnswerList myIncorrects />
       {isMySpeech && (
         <div className="flex center margin-gap">
           <SendButton
