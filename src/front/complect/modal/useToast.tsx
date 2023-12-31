@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import Portal from '../popups/[complect]/Portal';
 
 type ModalConfigMood = 'norm' | 'ko' | 'ok';
@@ -36,21 +36,24 @@ export default function useToast(
         </div>
       </Portal>
     ),
-    (content, config) => {
-      setConfig({
-        ...config,
-        isOpen: true,
-        content,
-      });
-      clearTimeout(timer);
-      setTimer(
-        setTimeout(
-          () => {
-            setConfig(prev => ({ ...prev, isOpen: false }));
-          },
-          config?.showTime ?? 3000,
-        ),
-      );
-    },
+    useCallback(
+      (content, config) => {
+        setConfig({
+          ...config,
+          isOpen: true,
+          content,
+        });
+        clearTimeout(timer);
+        setTimer(
+          setTimeout(
+            () => {
+              setConfig(prev => ({ ...prev, isOpen: false }));
+            },
+            config?.showTime ?? 3000,
+          ),
+        );
+      },
+      [timer],
+    ),
   ];
 }
