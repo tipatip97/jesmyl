@@ -6,6 +6,7 @@ import EvaIcon, { IconEva } from '../../../../../complect/eva-icon/EvaIcon';
 import modalService from '../../../../../complect/modal/Modal.service';
 import { useConfirm } from '../../../../../complect/modal/useConfirm';
 import { NavigationThrowNodeProps } from '../../../../../complect/nav-configurer/Navigation.model';
+import useAuth from '../../../../index/useAuth';
 import { GamerGameName, GamerNavData, GamerRoom } from '../../Gamer.model';
 import useGamerNav, { GamerRoomGameSkelet } from '../../useGamerNav';
 import GamerRoomMemberList from '../GamerRoomMemberList';
@@ -32,6 +33,7 @@ export default function GamerRoomContent({
 }) {
   const gameData = games.find(({ phase: [gameName] }) => room?.currentGame === gameName)?.data;
   const [stopGameConfirmNode, stopGame] = useConfirm(() => room && gameData?.onResetGame?.(room));
+  const auth = useAuth();
 
   const [popupNode, openPopup] = useBottomPopup((_, prepare) =>
     prepare({
@@ -51,7 +53,7 @@ export default function GamerRoomContent({
             icon: 'close',
             onClick: () => stopGame('Завершить игру?'),
           },
-        isOwner && {
+        (auth?.level === 100 || isOwner) && {
           title: 'Удалить комнату',
           icon: 'trash-2-outline',
           className: 'color--ko',
