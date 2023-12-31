@@ -690,3 +690,13 @@ input[type='number'] {
     transform: rotate(360deg);
   }
 }
+
+html,
+body {
+  > #telegram-login-jesmylbot {
+    display: none;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+  }
+}

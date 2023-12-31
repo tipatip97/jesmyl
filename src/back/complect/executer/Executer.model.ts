@@ -1,4 +1,4 @@
-import { ActionBoxSetSystems, ActionTimer } from '../../models';
+import { ActionBoxOnFinalCallback, ActionBoxSetSystems, ActionTimer } from '../../models';
 import { LocalSokiAuth, SokiAppName } from '../soki/soki.model';
 
 export type ExecutionMethod =
@@ -109,6 +109,8 @@ export interface RealAccumulatableRule<
   expecteds?: ExecutionExpectations;
   args?: ExecutionArgs<Value, Args, Vars>;
   track: ExecutionTrack;
+  onSuccess?: ActionBoxOnFinalCallback;
+  onFailure?: ActionBoxOnFinalCallback;
   sides?: RealAccumulatableRuleSides;
   accesses: string[];
   setInEachValueItem?: ExecuterSetInEachValueItem;

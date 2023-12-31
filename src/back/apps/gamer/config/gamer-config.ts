@@ -1,7 +1,8 @@
-import { Executer } from '../../complect/executer/Executer';
-import { FilerAppConfig } from '../../complect/filer/Filer.model';
-import { aliasGameConfig } from './games/alias/alias.config';
-import { spyGameConfig } from './games/spy/spy.config';
+import { Executer } from '../../../complect/executer/Executer';
+import { FilerAppConfig } from '../../../complect/filer/Filer.model';
+import { aliasGameConfig } from '../games/alias/alias.config';
+import { spyGameConfig } from '../games/spy/spy.config';
+import { gamerMemberConfig } from './member';
 
 const config: FilerAppConfig = {
   title: 'Игрок',
@@ -38,6 +39,7 @@ const config: FilerAppConfig = {
             {
               login: '{*login}',
               name: '{*fio}',
+              tgId: '{*tgId}',
               status: 'owner',
             },
           ],
@@ -75,49 +77,12 @@ const config: FilerAppConfig = {
             value: {
               login: '{*login}',
               name: '{*fio}',
+              tgId: '{*tgId}',
+              tgMsgId: '{tgMsgId}',
               status: 'requester',
             },
           },
-          '/[login === {login}]': {
-            access: '$amIManager && $isMemberNotOwner',
-            args: {
-              login: '#String',
-            },
-            '/status': {
-              '<add>': {
-                action: 'acceptMemberToRoom',
-                shortTitle: 'Добавить участника',
-                method: 'set',
-                value: 'member',
-              },
-              '<up>': {
-                action: 'riseUpToAdmin',
-                shortTitle: 'Сделать админом',
-                method: 'set',
-                value: 'admin',
-              },
-              '<down>': {
-                action: 'riseDownToUser',
-                shortTitle: 'Понизить до участника',
-                method: 'set',
-                value: 'member',
-              },
-            },
-            '/isInactive': {
-              '<ban>': {
-                action: 'banCurrentRoomMember',
-                shortTitle: 'Заблокировать участника',
-                method: 'set',
-                value: true,
-              },
-              '<unban>': {
-                action: 'unbanCurrentRoomMember',
-                shortTitle: 'Разблокировать участника',
-                method: 'set',
-                value: false,
-              },
-            },
-          },
+          '/[login === {login}]': gamerMemberConfig,
         },
         '/currentGame': {
           action: 'setCurrentGameName',

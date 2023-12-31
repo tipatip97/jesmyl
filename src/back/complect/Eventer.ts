@@ -50,7 +50,7 @@ export default class Eventer {
     listeners.splice(index, 1);
   };
 
-  static invoke = <
+  static invoke = async <
     Lis extends EventerListeners<any, Return>,
     Value extends Lis extends EventerListeners<infer E, Return> ? E : never,
     Return,
@@ -58,7 +58,7 @@ export default class Eventer {
     listeners: Lis,
     value: Value,
     onEachInvoke?: (ret: Return) => void,
-  ): EventerCallbackEvent<Value> => {
+  ) => {
     let i = listeners.length - 1;
     const event: EventerCallbackEvent<Value> = {
       value,
@@ -75,7 +75,7 @@ export default class Eventer {
     };
 
     for (; i > -1; i--) {
-      if (onEachInvoke === undefined) listeners[i](event);
+      if (onEachInvoke === undefined) await listeners[i](event);
       else onEachInvoke(listeners[i](event));
     }
 

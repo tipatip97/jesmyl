@@ -16,6 +16,8 @@ export interface GamerRoomMember {
   name: string;
   status: GamerRoomMemberStatus;
   isInactive: boolean;
+  tgId?: number;
+  tgMsgId?: number | null;
 }
 
 export enum GamerRoomMemberStatus {

@@ -5,10 +5,8 @@ import WebSocket, { WebSocketServer } from 'ws';
 import cmService from '../../apps/cm/service';
 import { indexService } from '../../apps/index/service';
 import smylib, { SMyLib } from '../../shared/SMyLib';
-import { controlTelegramBot } from '../../sides/telegram-bot/control/control-bot';
 import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
 import { supportTelegramAuthorizations } from '../../sides/telegram-bot/prod/authorize';
-import { prodTelegramBot } from '../../sides/telegram-bot/prod/prod-bot';
 import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
 import { sequreMD5Passphrase, sokiWhenRejButTs } from '../../values';
 import { ErrorCatcher } from '../ErrorCatcher';
@@ -16,7 +14,7 @@ import { Executer } from '../executer/Executer';
 import { ExecutionDict } from '../executer/Executer.model';
 import { filer } from '../filer/Filer';
 import { setPolyfills } from '../polyfills';
-import { sokiAuther } from './SokiAuther';
+import { SokiAuther, sokiAuther } from './SokiAuther';
 import {
   LocalSokiAuth,
   SokiAppName,
@@ -26,7 +24,9 @@ import {
   SokiServicePack,
   SokiStatistic,
   SokiSubscribtionName,
+  TelegramNativeAuthUserData,
 } from './soki.model';
+import { tglogger } from '../../sides/telegram-bot/log/log-bot';
 
 setPolyfills();
 ErrorCatcher.logAllErrors();
@@ -182,12 +182,6 @@ export class SokiServer {
     this.capsules.set(client, { auth: null, deviceId: '', version: -1 });
   }
 
-  makePassw = SokiServer.makePassw;
-  static makePassw(id: number | und, nick: string | und) {
-    const date = new Date();
-    return smylib.md5(`{${id}.${nick}@${date.getMonth()} - ${date.getFullYear()}} `);
-  }
-
   async reloadFiles() {
     await filer.load();
     this.send({
@@ -227,6 +221,7 @@ export class SokiServer {
                 },
                 client,
               );
+              tglogger.authorizations(value.nick + ' ' + value.fio);
             })
             .catch((value: string) => {
               this.send(
@@ -243,7 +238,7 @@ export class SokiServer {
 
         const capsule = this.capsules.get(client);
 
-        if (eventBody.connect || eventBody.tgAuthorization) {
+        if (eventBody.connect || eventBody.tgNativeAuthorization || eventBody.tgAuthorization) {
           const sendErrorMessage = (errorMessage: string) => {
             this.send(
               {
@@ -256,68 +251,45 @@ export class SokiServer {
             );
           };
 
-          const getTgAuth = async (tgId: number): Promise<LocalSokiAuth | null> => {
-            const admin = supportTelegramBot.admins[tgId];
-            let user: User | und = admin?.user;
+          if (eventBody.tgAuthorization || eventBody.tgNativeAuthorization) {
+            let user: User | TelegramNativeAuthUserData;
+            let tgAva: string | null = null;
+            let authTypePrefix = 'TG: ';
 
-            try {
-              user = (await prodTelegramBot.tryIsUserMember(tgId)).user;
-            } catch (err) {
-              sendErrorMessage('Пользователь не состоит в канале');
-
-              return null;
-            }
-
-            if (user == null) {
-              sendErrorMessage('Нет публичного имени');
-              return null;
-            }
-
-            let level = 3;
-
-            if (admin !== undefined) {
-              if (admin.status === 'creator') level = 100;
-              else {
-                const adminLevel = parseInt((admin as any).custom_title);
-                if (!isNaN(adminLevel)) level = adminLevel;
-              }
-            }
-
-            const nick = user.username || controlTelegramBot.convertNickFromId(user.id);
-
-            return {
-              level,
-              nick,
-              fio: `${user.first_name}${user.last_name !== undefined ? ` ${user.last_name}` : ''}`,
-              login: controlTelegramBot.makeLoginFromId(user.id),
-              passw: this.makePassw(user.id, nick),
-              tgId: user.id,
-            };
-          };
-
-          if (eventBody.tgAuthorization) {
-            const authId = eventBody.tgAuthorization;
-
-            if (supportTelegramAuthorizations[authId] === undefined) {
-              sendErrorMessage('Не верный код');
+            if (eventBody.tgNativeAuthorization !== undefined) {
+              user = eventBody.tgNativeAuthorization;
+              tgAva = user.photo_url;
+              authTypePrefix = 'TGI: ';
             } else {
-              const { from } = supportTelegramAuthorizations[authId]();
-              const auth = await getTgAuth(from.id);
+              const authId = eventBody.tgAuthorization!;
 
-              if (auth == null) return;
-
-              this.send(
-                {
-                  requestId,
-                  tgAuthorization: {
-                    ok: true,
-                    value: auth,
-                  },
-                  appName,
-                },
-                client,
-              );
+              if (supportTelegramAuthorizations[authId] === undefined) {
+                sendErrorMessage('Не верный код');
+                return;
+              }
+              user = supportTelegramAuthorizations[authId]().from;
             }
+
+            tglogger.authorizations(
+              authTypePrefix + user.first_name + ' ' + (user.last_name || '') + ' ' + (user.username || ''),
+            );
+
+            const auth = await SokiAuther.getTgAuth(user.id, tgAva, sendErrorMessage);
+
+            if (auth == null) return;
+
+            this.send(
+              {
+                requestId,
+                tgAuthorization: {
+                  ok: true,
+                  value: auth,
+                },
+                appName,
+              },
+              client,
+            );
+
             return;
           }
 
@@ -328,13 +300,13 @@ export class SokiServer {
                 const passw = eventData.auth.passw;
 
                 if (eventData.auth.tgId) {
-                  const passw = this.makePassw(eventData.auth.tgId, eventData.auth.nick);
+                  const passw = SokiAuther.makePassw(eventData.auth.tgId, eventData.auth.nick);
                   if (eventData.auth.passw !== passw) {
                     sendErrorMessage('Данные авторизации устарели');
                     return;
                   }
 
-                  auth = await getTgAuth(eventData.auth.tgId);
+                  auth = await SokiAuther.getTgAuth(eventData.auth.tgId, null, sendErrorMessage);
                 } else {
                   const eventLogin = eventData.auth.login;
                   const secretPassw = passw && smylib.md5(passw);
@@ -527,7 +499,7 @@ export class SokiServer {
           this.subscriptions.get(eventBody.unsubscribe)?.delete(client);
         }
 
-        if (eventBody.execs) this.execExecs(appName, eventBody.execs, eventData, capsule, client, requestId);
+        if (eventBody.execs) this.execExecs(appName, eventBody.execs, eventData.auth, capsule?.auth, client, requestId);
       });
 
       client.on('close', () => this.onClientDisconnect(client));
@@ -539,37 +511,36 @@ export class SokiServer {
   async execExecs(
     appName: SokiAppName,
     execs: ExecutionDict[],
-    eventData: SokiClientEvent,
-    capsule: SokiCapsule | undefined,
-    client: WebSocket,
+    eventAuth: LocalSokiAuth | nil,
+    auth: LocalSokiAuth | nil,
+    client?: WebSocket,
     requestId?: string,
   ) {
     if (
-      eventData.appName &&
-      capsule?.auth &&
-      capsule.auth.login === eventData.auth?.login &&
-      (eventData.auth?.tgId
-        ? eventData.auth.passw === this.makePassw(eventData.auth.tgId, eventData.auth.nick)
-        : await sokiAuther.isCorrectData(eventData.auth))
+      auth &&
+      auth.login === eventAuth?.login &&
+      (eventAuth?.tgId
+        ? eventAuth.passw === SokiAuther.makePassw(eventAuth.tgId, eventAuth.nick)
+        : await sokiAuther.isCorrectData(eventAuth))
     ) {
-      const appConfig = filer.appConfigs[eventData.appName];
+      const appConfig = filer.appConfigs[appName];
 
       if (!appConfig) return;
 
-      const contents = filer.contents[eventData.appName];
+      const contents = filer.contents[appName];
       const realParents: Record<string, unknown> = {};
       SMyLib.entries(contents).forEach(([key, val]) => (realParents[key] = val.data));
-      const authLogin = eventData.auth?.login ?? '';
+      const authLogin = eventAuth?.login ?? '';
       const bag: Record<string, unknown> = {};
 
-      return Executer.execute(appConfig, realParents, execs, capsule?.auth).then(
+      return Executer.execute(appConfig, realParents, execs, auth).then(
         async ({ fixes, replacedExecs, errorMessage, rules }) => {
-          const lastUpdate = await filer.saveChanges(fixes, eventData.appName!);
+          const lastUpdate = await filer.saveChanges(fixes, appName!);
           this.send(
             {
               requestId,
               execs: {
-                appName: eventData.appName!,
+                appName,
                 list: replacedExecs,
                 lastUpdate,
               },
@@ -592,14 +563,14 @@ export class SokiServer {
 
                   return res === whenRejButTs ? whenRejButTs : res === true || res == null;
                 }
-              : eventData.appName === 'index'
+              : appName === 'index'
                 ? () => true
-                : capsule => capsule.appName === eventData.appName,
+                : capsule => capsule.appName === appName,
             client,
             {
               requestId,
               execs: {
-                appName: eventData.appName!,
+                appName,
                 list: [],
                 lastUpdate,
               },
@@ -610,12 +581,12 @@ export class SokiServer {
         },
       );
     } else {
-      if (eventData.appName)
+      if (client)
         this.send(
           {
             requestId,
             execs: {
-              appName: eventData.appName,
+              appName,
               list: [],
               lastUpdate: null,
             },
@@ -636,3 +607,5 @@ const sokiServer = new SokiServer();
 supportTelegramBot.getAdmins().finally(() => sokiServer.start());
 
 export default sokiServer;
+
+startTgGamerListener();

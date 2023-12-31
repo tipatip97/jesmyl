@@ -72,7 +72,7 @@ export class JesmylTelegramBotWrapper {
       }
 
       if (this.personalQueryListeners.length > 0 && query.from.id === query.message?.chat.id) {
-        const event = Eventer.invoke(this.personalQueryListeners, query);
+        const event = await Eventer.invoke(this.personalQueryListeners, query);
         if (smylib.isStr(event.stoppedValue)) callback(event.stoppedValue);
       }
     });

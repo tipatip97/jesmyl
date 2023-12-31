@@ -1,7 +1,7 @@
 import fs from 'fs';
 import admin from '../../apps/admin/config';
 import cm from '../../apps/cm/config';
-import gamer from '../../apps/gamer/config';
+import gamer from '../../apps/gamer/config/gamer-config';
 import index from '../../apps/index/config';
 import leader from '../../apps/leader/config';
 import smylib, { SMyLib } from '../../shared/SMyLib';

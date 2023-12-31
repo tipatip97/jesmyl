@@ -1,7 +1,9 @@
+import Eventer, { EventerValueListeners } from '../../../../complect/Eventer';
 import { ExecutionArgs } from '../../../../complect/executer/Executer.model';
 import { filer } from '../../../../complect/filer/Filer';
-import { ActionBox } from '../../../../models';
+import { ActionBox, ActionBoxOnFinalCallback } from '../../../../models';
 import { NounPronsType } from '../../../index/models/nounProns.model';
+import { GamerRoom } from '../../gamer.model';
 import { AliasHelp } from './AliasHelp';
 import {
   AliasGameTeam,
@@ -24,11 +26,25 @@ const clearSpeechTimer = (props: ExecutionArgs | null) => {
   };
 };
 
+const stateChange: EventerValueListeners<GamerRoom> = [];
+
+export const AliasGameActions = {
+  stateChange,
+};
+
 const getTokenizedWinfoLine = (state: Pick<GamerAliasRoomState, 'token' | 'dicts' | 'lens'>) =>
   AliasHelp.getTokenizedWordInfos(state.token, state.dicts, state.lens, getWordPacks(), getNounPronsWords());
 
 const getWordPacks = () => filer.contents.gamer['aliasWordPacks'].data as AliasWordsPack[];
 const getNounPronsWords = () => filer.contents.index['nounPronsWords'].data as NounPronsType;
+const getRooms = () => filer.contents.gamer.rooms?.data as GamerRoom[];
+
+const onPhaseChangeSuccessCallback: ActionBoxOnFinalCallback = args => {
+  if (args?.roomw == null) return;
+  const room = getRooms().find(room => room.w === args.roomw);
+  if (room == null) return;
+  Eventer.invokeValue(stateChange, room);
+};
 
 export const aliasGameConfig: ActionBox = {
   '<phases>': {
@@ -36,6 +52,7 @@ export const aliasGameConfig: ActionBox = {
       expected: {},
       action: 'startAliasRound',
       method: 'set_all',
+      onSuccess: onPhaseChangeSuccessCallback,
       value: (() => {
         const itMembers = (it: AliasGameTeam) => it.members;
         const itZero = () => 0;
@@ -56,6 +73,7 @@ export const aliasGameConfig: ActionBox = {
             inc: [],
             fix: [],
             invert: {},
+            wins: null,
           };
 
           if (props.isResortWords || !state?.token) {
@@ -79,6 +97,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<start speech>': {
       action: 'startAliasSpeech',
+      onSuccess: onPhaseChangeSuccessCallback,
       method: 'set_all',
       value: () => ({
         phase: GamerAliasRoomStatePhase.Speech,
@@ -87,6 +106,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<start timeout>': {
       action: 'startAliasSpeechTimeout',
+      onSuccess: onPhaseChangeSuccessCallback,
       timer: props => {
         const state = extractState<GamerAliasRoomState | nil>(props);
         if (!state) return;
@@ -104,6 +124,7 @@ export const aliasGameConfig: ActionBox = {
     '<pass end>': {
       action: 'resetAliasSpeech',
       method: 'set_all',
+      onSuccess: onPhaseChangeSuccessCallback,
       timer: clearSpeechTimer,
       value: {
         phase: GamerAliasRoomStatePhase.Results,
@@ -112,6 +133,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<reset game>': {
       action: 'resetAliasGame',
+      onSuccess: onPhaseChangeSuccessCallback,
       method: 'set_all',
       timer: clearSpeechTimer,
       value: {
@@ -121,6 +143,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<compute score>': {
       action: 'computeAliasScore',
+      onSuccess: onPhaseChangeSuccessCallback,
       method: 'set_all',
       value: {
         phase: GamerAliasRoomStatePhase.Wait,
@@ -129,52 +152,75 @@ export const aliasGameConfig: ActionBox = {
         fix: [],
         invert: {},
       },
-      side: props => {
-        const state = extractState<GamerAliasRoomState | nil>(props);
-        if (state == null) return;
-        const [speakeri, currTeami] = AliasHelp.takeSpeakerDetails(state);
+      side: (() => {
+        const itNNull = (it: unknown) => it !== null;
 
-        const winfos = getTokenizedWinfoLine(state);
-        const mapper = (winfo: AliasWordInfo) => winfos[winfo.wordi];
+        return props => {
+          const state = extractState<GamerAliasRoomState | nil>(props);
+          if (state == null || props == null) return;
+          const [speakeri, currTeami] = AliasHelp.takeSpeakerDetails(state);
 
-        const score = winfos
-          ? AliasHelp.computeGameScore(
-              state.cor.map(mapper).filter(isIs),
-              state.inc.map(mapper).filter(isIs),
-              state.fix,
-            )
-          : -1000000;
+          const winfos = getTokenizedWinfoLine(state);
+          const mapper = (winfo: AliasWordInfo) => winfos[winfo.wordi];
 
-        return {
-          '/': {
-            method: 'set_all',
-            value: {
-              speakeri,
-              arsenal: winfos.length - state.wordsi + 1,
+          const score =
+            state.teams[currTeami].score +
+            (winfos
+              ? AliasHelp.computeGameScore(
+                  state.cor.map(mapper).filter(isIs),
+                  state.inc.map(mapper).filter(isIs),
+                  props.isTgCompute ? state.invert : state.fix,
+                )
+              : -1000000);
+
+          const arsenal = winfos.length - state.wordsi + 1;
+          const value: Partial<GamerAliasRoomState> = {
+            speakeri,
+            arsenal,
+          };
+
+          if (
+            arsenal < 1 ||
+            (state.teams.some((team, teami) => (currTeami === teami ? score : team.score) >= state.dream) &&
+              !state.teams.some(
+                (team, teami, teama) =>
+                  team.rounds + (currTeami === teami ? 1 : 0) !== teama[0].rounds + (currTeami === 0 ? 1 : 0),
+              ))
+          ) {
+            const scores = state.teams.map((team, teami) => (currTeami === teami ? score : team.score));
+            const maxScore = Math.max(...scores);
+            value.wins = scores.map((score, scorei) => (score === maxScore ? scorei : null!)).filter(itNNull);
+          }
+
+          return {
+            '/': {
+              method: 'set_all',
+              value,
             },
-          },
-          '/wordsi': {
-            method: 'formula',
-            value: 'X + 1',
-          },
-          [`/speaks/${state.speakeri}`]: {
-            method: 'formula',
-            value: 'X + 1',
-          },
-          [`/teams/${currTeami}/score`]: {
-            method: 'set',
-            value: state.teams[currTeami].score + score,
-          },
-          [`/teams/${currTeami}/rounds`]: {
-            method: 'formula',
-            value: 'X + 1',
-          },
-        } as const;
-      },
+            '/wordsi': {
+              method: 'formula',
+              value: 'X + 1',
+            },
+            [`/speaks/${state.speakeri}`]: {
+              method: 'formula',
+              value: 'X + 1',
+            },
+            [`/teams/${currTeami}/score`]: {
+              method: 'set',
+              value: score,
+            },
+            [`/teams/${currTeami}/rounds`]: {
+              method: 'formula',
+              value: 'X + 1',
+            },
+          } as const;
+        };
+      })(),
     },
   },
   '<skip member turn>': {
     action: 'skipTheMemberTurn',
+    onSuccess: onPhaseChangeSuccessCallback,
     method: 'set_all',
     value: props => {
       const state = extractState<GamerAliasRoomState | nil>(props);
@@ -217,6 +263,7 @@ export const aliasGameConfig: ActionBox = {
   '/invert': {
     expected: {},
     action: 'invertAliasWord',
+    onSuccess: onPhaseChangeSuccessCallback,
     side: (props, auth) => {
       const invert = extractState<Record<number, number[]>>(props);
       return {

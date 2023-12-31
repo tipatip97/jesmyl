@@ -21,6 +21,7 @@ export class TgLogger {
     error: 833,
     systemError: 838,
     log: 837,
+    authorizations: 1061,
     codeRequest: 841,
     jsonCode: 871,
   };
@@ -48,6 +49,10 @@ export class TgLogger {
 
   log(text: string) {
     this.bot.postMessage(text, this.replyToScope('log'));
+  }
+
+  authorizations(text: string) {
+    this.bot.postMessage(text, this.replyToScope('authorizations'));
   }
 
   codeRequest(text: string) {

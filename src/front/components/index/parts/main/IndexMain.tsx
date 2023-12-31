@@ -16,6 +16,7 @@ import useConnectionState from '../../useConnectionState';
 import IndexAbout from '../IndexAbout';
 import './IndexMain.scss';
 import { UserMore } from './UserMore';
+import { IndexProfileInfo } from './ProfileInfo';
 
 const isNNull = (it: unknown) => it !== null;
 const currentAppSelector = (state: RootState) => state.index.currentApp;
@@ -64,12 +65,12 @@ export default function IndexMain() {
       head={
         <div className="flex flex-gap">
           {connectionNode}
-          {auth.fio && (
+          {auth.level > 0 && (
             <div
-              className="margin-big-gap-h pointer"
+              className="margin-gap-h pointer"
               onClick={openPopup}
             >
-              {auth.fio}
+              <IndexProfileInfo auth={auth} />
             </div>
           )}
         </div>

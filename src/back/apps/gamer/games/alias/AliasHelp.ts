@@ -4,10 +4,24 @@ import { NounPronsType } from '../../../index/models/nounProns.model';
 import { AliasWordInfo, AliasWordsPack, GamerAliasRoomState } from './alias.model';
 
 export class AliasHelp {
-  static computeGameScore = (corrects: AliasWordInfo[], incorrects: AliasWordInfo[], fix: number[]) => {
+  static computeGameScore = (
+    corrects: AliasWordInfo[],
+    incorrects: AliasWordInfo[],
+    fix: number[] | Record<number, string[]>,
+  ) => {
     return (
-      corrects.reduce((sum, attrs) => sum + (fix.includes(attrs.wordi) ? -attrs.minus : attrs.plus), 0) -
-      incorrects.reduce((sum, attrs) => sum + (fix.includes(attrs.wordi) ? -attrs.plus : attrs.minus), 0)
+      corrects.reduce(
+        (sum, winfo) =>
+          sum +
+          ((Array.isArray(fix) ? fix.includes(winfo.wordi) : fix[winfo.wordi]?.length) ? -winfo.minus : winfo.plus),
+        0,
+      ) -
+      incorrects.reduce(
+        (sum, winfo) =>
+          sum +
+          ((Array.isArray(fix) ? fix.includes(winfo.wordi) : fix[winfo.wordi]?.length) ? -winfo.plus : winfo.minus),
+        0,
+      )
     );
   };
 

@@ -1,6 +1,7 @@
 import WebSocket from 'ws';
 import { ExecutionDict, ExecutionReal } from '../executer/Executer.model';
 import { SimpleKeyValue } from '../filer/Filer.model';
+import { User } from 'node-telegram-bot-api';
 
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader'] as const;
 export type SokiAppName = (typeof sokiAppNames)[number];
@@ -50,10 +51,17 @@ export type SokiClientUpdateCortage = [
   string | nil, // app short rules JSON md5
 ];
 
+export interface TelegramNativeAuthUserData extends Omit<User, 'language_code' | 'is_bot'> {
+  auth_date: number;
+  photo_url: string;
+  hash: string;
+}
+
 export interface SokiClientEventBody {
   connect?: true;
   ping?: true;
   tgAuthorization?: number;
+  tgNativeAuthorization?: TelegramNativeAuthUserData;
   authorization?: { type: 'login'; value: ServerAuthorizationData } | { type: 'register'; value: ServerRegisterData };
   pullData?: SokiClientUpdateCortage;
   execs?: ExecutionDict[];
@@ -116,6 +124,7 @@ export interface BaseSokiAuth {
   nick: string;
   login: string;
   tgId?: number;
+  tgAva?: string;
 }
 
 export interface LocalSokiAuth extends Partial<BaseSokiAuth> {

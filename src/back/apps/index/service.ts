@@ -34,7 +34,7 @@ export const indexService: SokiServiceCallback = (key, value, eventData, capsule
               },
             ];
             sokiServer
-              .execExecs('index', execs, eventData, capsule, client)
+              .execExecs('index', execs, eventData.auth, capsule.auth, client)
               .then(() => resolve('Успешно добавлен в список участников'));
             return true;
           }

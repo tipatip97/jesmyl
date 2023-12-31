@@ -18,6 +18,12 @@ export interface ActionTimer {
   clearId?: string;
 }
 
+export type ActionBoxOnFinalCallback<Value = any, Ret = void> = (
+  args: ExecutionArgs | null,
+  value: Value,
+  auth: LocalSokiAuth | nil,
+) => Ret;
+
 export interface ActionBox<Value = any>
   extends Partial<Record<`/${string}`, ActionBox>>,
     Partial<Record<`<${string}>`, ActionBox>> {
@@ -28,6 +34,8 @@ export interface ActionBox<Value = any>
   access?: string;
   uniqs?: string[];
   fixAccesses?: Record<string, ExecutionTrack>;
+  onSuccess?: ActionBoxOnFinalCallback;
+  onFailure?: ActionBoxOnFinalCallback;
   side?: ActionBoxSide;
   expected?: [] | {};
   setInEachValueItem?: Record<string, Record<string, unknown>>;

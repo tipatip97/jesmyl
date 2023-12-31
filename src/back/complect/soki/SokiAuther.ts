@@ -1,6 +1,10 @@
+import { User } from 'node-telegram-bot-api';
+import smylib from '../../shared/SMyLib';
+import { controlTelegramBot } from '../../sides/telegram-bot/control/control-bot';
+import { prodTelegramBot } from '../../sides/telegram-bot/prod/prod-bot';
+import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
 import { filer } from '../filer/Filer';
 import { LocalSokiAuth, SokiAuth, SokiClientEventBody } from './soki.model';
-import smylib from '../../shared/SMyLib';
 
 export class SokiAuther {
   mtime = 0;
@@ -23,6 +27,56 @@ export class SokiAuther {
       else res(true);
     });
   }
+
+  makePassw = SokiAuther.makePassw;
+  static makePassw(id: number | und, nick: string | und) {
+    const date = new Date();
+    return smylib.md5(`{${id}.${nick}@${date.getMonth()} - ${date.getFullYear()}} `);
+  }
+
+  static getTgAuth = async (
+    tgId: number,
+    tgAva?: string | null,
+    onError?: (errorMessage: string) => void,
+  ): Promise<LocalSokiAuth | null> => {
+    const admin = supportTelegramBot.admins[tgId];
+    let user: User | und = admin?.user;
+
+    try {
+      user = (await prodTelegramBot.tryIsUserMember(tgId)).user;
+    } catch (err) {
+      onError?.('Пользователь не состоит в канале');
+
+      return null;
+    }
+
+    if (user == null) {
+      onError?.('Нет публичного имени');
+      return null;
+    }
+
+    let level = 3;
+
+    if (admin !== undefined) {
+      if (admin.status === 'creator') level = 100;
+      else {
+        const adminLevel = parseInt((admin as any).custom_title);
+        if (!isNaN(adminLevel)) level = adminLevel;
+      }
+    }
+
+    const nick = user.username || controlTelegramBot.convertNickFromId(user.id);
+
+    return {
+      level,
+      nick,
+      fio: `${user.first_name}${user.last_name !== undefined ? ` ${user.last_name}` : ''}`,
+      login: controlTelegramBot.makeLoginFromId(user.id),
+      passw: this.makePassw(user.id, nick),
+      tgId: user.id,
+      tgAva: tgAva === null ? undefined : tgAva,
+    };
+  };
 
   authenticate(event: SokiClientEventBody['authorization']) {
     return new Promise<SokiAuth>((res, rej) => {
