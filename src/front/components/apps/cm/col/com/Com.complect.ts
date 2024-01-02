@@ -107,7 +107,7 @@ export const chordBemoleEquivalent: Record<string, string> = {
 };
 
 export const chordDiezEquivalent: Record<string, string> = {
-  Bb: 'A',
-  Hb: 'A',
+  Bb: 'A#',
+  Hb: 'A#',
 };
 MyLib.entries(chordBemoleEquivalent).forEach(([key, val]) => (chordDiezEquivalent[val] = key));
