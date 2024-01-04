@@ -4,6 +4,7 @@ import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import { CodeExecutionScreen } from './coder/Coder';
 import { CoderResultLine } from './coder/complect/line';
+import { isTouchDevice } from '../../../../complect/device-differences';
 
 const logs: unknown[][] = [];
 
@@ -11,9 +12,10 @@ const itInc = (num: number) => num + 1;
 const eventStopper = (event: { stopPropagation(): void }) => event.stopPropagation();
 
 let forceUpdate = () => {};
-const log = console['log'];
+const scope = isTouchDevice ? 'log' : 'group';
+const log = console[scope];
 
-console['log'] = ((...args: unknown[]) => {
+console[scope] = ((...args: unknown[]) => {
   logs.push(args);
   log(...args);
   forceUpdate();
@@ -67,8 +69,8 @@ export const IndexConsole = () => {
             />
           </Line>
           <CodeExecutionScreen
-            onError={error => console['log'](new Error('' + error))}
-            onLog={console['log']}
+            onError={error => console[scope](new Error('' + error))}
+            onLog={console[scope]}
           />
         </div>
       }
