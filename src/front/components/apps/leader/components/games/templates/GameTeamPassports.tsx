@@ -28,9 +28,10 @@ export default function GameTeamPassports({ selectedTimers }: { selectedTimers?:
               <React.Fragment key={timeri}>
                 {page(
                   <div className="full-width full-height flex center">
-                    <FontSizeContain delay={100}>
-                      <div className="rotate-90">{timer}</div>
-                    </FontSizeContain>
+                    <FontSizeContain
+                      className="rotate-90"
+                      content={timer}
+                    />
                   </div>,
                 )}
               </React.Fragment>
