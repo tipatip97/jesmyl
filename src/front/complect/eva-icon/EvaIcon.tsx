@@ -28,7 +28,6 @@ export default function EvaIcon(
           height="24"
           viewBox="0 0 24 24"
           className={'eva-icon ' + (props.onClick ? 'pointer ' : '') + (props.className || '')}
-          fill="var(--icon-color)"
         >
           {iconInners[props.name]}
         </IconEva>
@@ -41,8 +40,8 @@ export const IconEva = styled.svg`
   --icon-size: 24px;
   --icon-scale: 1;
 
-  transform: scale(var(--icon-scale));
-
+  scale: var(--icon-scale);
+  fill: var(--icon-color);
   width: var(--icon-size);
   min-width: var(--icon-size);
   max-width: var(--icon-size);
