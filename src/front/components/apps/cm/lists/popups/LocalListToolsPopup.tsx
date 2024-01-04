@@ -8,7 +8,7 @@ import FullscreenExpandComList from './FullscreenExpandComList';
 
 export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (_, prepare, coms) => {
   const { openFullscreenContent } = useFullscreenContent();
-  const { goToTranslation, isSelfTranslation: isShowFullscreen } = useTranslation();
+  const { goToTranslation, isShowFullscreen } = useTranslation();
   const { nav } = useCmNav();
   const { shareQrData, qrNode } = useQRMaster();
 
