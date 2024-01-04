@@ -59,6 +59,15 @@
   }
 }
 
+$maxZIndex: 30;
+
+@for $i from 1 through $maxZIndex {
+  *:nth-child(#{$i}) .dropdown-selector {
+    z-index: #{$maxZIndex - $i};
+  }
+}
+
+// todo: remove .dropdown-ancestor sections
 @mixin dropdown-ancestor($zIndex) {
   .dropdown-selector {
     z-index: #{$zIndex};
