@@ -28,7 +28,11 @@ export default function TheCom({
   useEffect(() => {
     const add = setTimeout(() => com && addLaterComw(com.wid), 3000);
     return () => clearTimeout(add);
-  }, []);
+  }, [addLaterComw, com]);
+
+  useEffect(() => {
+    if (com != null) document.title = com.name;
+  }, [com]);
 
   if (com == null) {
     return (
