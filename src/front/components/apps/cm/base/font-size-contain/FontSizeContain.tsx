@@ -1,64 +1,112 @@
-import { PropsWithChildren, useState } from 'react';
-import { FontSizeContainProps, FontSizeContainResizer } from './FontSizeContain.model';
+import { useLayoutEffect, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
+import { FontSizeContainProps } from './FontSizeContain.model';
 
-export default function FontSizeContain({ delay, ...props }: PropsWithChildren<FontSizeContainProps>) {
-  const [isFirst, setIsFirst] = useState(true);
+export default function FontSizeContain({ className, content, html, subUpdate }: FontSizeContainProps) {
+  const [scale, setScale] = useState(1);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const shadowChildRef = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (containerRef.current !== null && shadowChildRef.current !== null) {
+      const newScale = Math.min(
+        containerRef.current.clientHeight / shadowChildRef.current.clientHeight,
+        containerRef.current.clientWidth / shadowChildRef.current.clientWidth,
+      );
+
+      if (newScale !== scale && newScale > 0 && Number.isFinite(newScale) && !isNaN(newScale)) setScale(newScale);
+    }
+  }, [scale, content, html, subUpdate]);
 
   return (
-    <div
-      style={{ display: 'inline-block' }}
-      ref={element => {
-        if (element) {
-          const compute = () => {
-            const res = () => {
-              if (!element.innerText) return;
-              resize(element, props.fixOnly, props.position);
-            };
-
-            res();
-            setTimeout(() => res());
-            if (isFirst) {
-              setIsFirst(false);
-              props.updater?.(res);
-            }
-          };
-          if (delay) setTimeout(compute, delay);
-          else compute();
-        }
-      }}
+    <Container
+      className={className}
+      ref={containerRef}
     >
-      {props.children}
-    </div>
+      {/* {shadowChildRef.current && containerRef.current && (
+        <>
+          <div className="absolute margin-giant-gap-b pos-top">
+            <div className="margin-gap-b">
+              {containerRef.current.clientWidth} / {shadowChildRef.current.clientWidth} ={' '}
+              {containerRef.current.clientWidth / shadowChildRef.current.clientWidth}
+            </div>
+            <div className="margin-giant-gap-b">
+              {containerRef.current.clientHeight} / {shadowChildRef.current.clientHeight} ={' '}
+              {containerRef.current.clientHeight / shadowChildRef.current.clientHeight}
+            </div>
+          </div>
+        </>
+      )} */}
+      {html !== undefined ? (
+        <>
+          <WithHtml
+            __html={html}
+            scale={scale}
+            shadowChildRef={shadowChildRef}
+          />
+        </>
+      ) : (
+        <>
+          <ShadowChild
+            ref={shadowChildRef}
+            className="fsc-children fsc-shadow-child"
+          >
+            {content}
+          </ShadowChild>
+          <Child
+            $scale={scale}
+            className="fsc-children fsc-child"
+          >
+            {content}
+          </Child>
+        </>
+      )}
+    </Container>
   );
 }
 
-const resize: FontSizeContainResizer = (child, fixOnly?, position?) => {
-  const { clientWidth, clientHeight } = (child.parentElement as HTMLDivElement) || {};
-  let max = 1000;
-  const step = 5;
-  let size = 50;
-  let min = 0;
-
-  const resize = () => {
-    child.style.fontSize = `${size}%`;
-    if (
-      min < max &&
-      (fixOnly === 'height' || clientWidth > child.clientWidth) &&
-      (fixOnly === 'width' || clientHeight > child.clientHeight)
-    ) {
-      size += step;
-      min++;
-      resize();
-    }
-  };
-  resize();
-  child.style.fontSize = `${size - step}%`;
-  if (position) {
-    const [vert, hor] = position.split(' ');
-
-    child.style.marginTop = vert === 'center' ? `${(clientHeight - child.clientHeight) / 2}px` : '0';
-    child.style.marginLeft = (hor ? hor === 'center' : vert === 'center')
-      ? `${(clientWidth - child.clientWidth) / 2}px`
-      : '0';
-  }
+const WithHtml = ({
+  shadowChildRef,
+  __html,
+  scale,
+}: {
+  shadowChildRef: { current: HTMLDivElement | null };
+  __html: string;
+  scale: number;
+}) => {
+  return (
+    <>
+      <ShadowChild
+        ref={shadowChildRef}
+        dangerouslySetInnerHTML={{ __html }}
+        className="fsc-children fsc-shadow-child"
+      />
+      <Child
+        $scale={scale}
+        dangerouslySetInnerHTML={{ __html }}
+        className="fsc-children fsc-child"
+      />
+    </>
+  );
 };
+
+const Container = styled.div`
+  position: relative;
+  height: 100%;
+  width: 100%;
+`;
+
+const ShadowChild = styled.div`
+  position: absolute !important;
+  color: transparent !important;
+  pointer-events: none !important;
+`;
+
+const Child = styled.div<{ $scale: number }>`
+  ${props =>
+    props.$scale &&
+    css`
+      scale: ${props.$scale};
+    `}
+`;
