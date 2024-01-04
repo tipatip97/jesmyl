@@ -83,8 +83,13 @@ declare global {
   type ArrayMapCb<T> = (box: T, boxi: number, boxa: T[]) => T;
   type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
   type TimeOut = ReturnType<typeof setTimeout> | und | number;
+  type EventStopper<With = {}> = { stopPropagation(): void } & With;
+  type EventPreventer<With = {}> = { preventDefault(): void } & With;
 
   type NonUndefined<T> = T extends undefined ? never : T;
   type NonNull<T> = T extends null ? never : T;
   type NonNil<T> = T extends nil ? never : T;
+
+  type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+  type XOR<T, U> = (Without<T, U> & U) | (Without<U, T> & T);
 }
