@@ -15,11 +15,8 @@ class StyledComponentsObserver {
 
   listen = (cb: EventerValueCallback<string>): (() => void) => {
     Eventer.listenValue(this.listeners, cb);
-    const ret = () => this.mute(cb);
 
-    console.log(this.listeners);
-
-    if (this.observer !== undefined) return ret;
+    if (this.observer !== undefined) return () => this.mute(cb);
 
     const node = document.querySelector('style[data-styled][data-styled-version]');
 
@@ -36,7 +33,7 @@ class StyledComponentsObserver {
 
     this.observer.observe(node, { childList: true });
 
-    return ret;
+    return () => this.mute(cb);
   };
 }
 
