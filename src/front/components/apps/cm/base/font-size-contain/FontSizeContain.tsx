@@ -1,6 +1,12 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { CSSProperties, useLayoutEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { FontSizeContainProps } from './FontSizeContain.model';
+
+const shadowStyle: CSSProperties = {
+  position: 'absolute',
+  color: 'transparent',
+  pointerEvents: 'none',
+};
 
 export default function FontSizeContain({ className, content, html, subUpdate }: FontSizeContainProps) {
   const [scale, setScale] = useState(1);
@@ -24,20 +30,6 @@ export default function FontSizeContain({ className, content, html, subUpdate }:
       className={className}
       ref={containerRef}
     >
-      {/* {shadowChildRef.current && containerRef.current && (
-        <>
-          <div className="absolute margin-giant-gap-b pos-top">
-            <div className="margin-gap-b">
-              {containerRef.current.clientWidth} / {shadowChildRef.current.clientWidth} ={' '}
-              {containerRef.current.clientWidth / shadowChildRef.current.clientWidth}
-            </div>
-            <div className="margin-giant-gap-b">
-              {containerRef.current.clientHeight} / {shadowChildRef.current.clientHeight} ={' '}
-              {containerRef.current.clientHeight / shadowChildRef.current.clientHeight}
-            </div>
-          </div>
-        </>
-      )} */}
       {html !== undefined ? (
         <>
           <WithHtml
@@ -48,12 +40,13 @@ export default function FontSizeContain({ className, content, html, subUpdate }:
         </>
       ) : (
         <>
-          <ShadowChild
+          <div
             ref={shadowChildRef}
             className="fsc-children fsc-shadow-child"
+            style={shadowStyle}
           >
             {content}
-          </ShadowChild>
+          </div>
           <Child
             $scale={scale}
             className="fsc-children fsc-child"
@@ -77,10 +70,11 @@ const WithHtml = ({
 }) => {
   return (
     <>
-      <ShadowChild
+      <div
         ref={shadowChildRef}
         dangerouslySetInnerHTML={{ __html }}
         className="fsc-children fsc-shadow-child"
+        style={shadowStyle}
       />
       <Child
         $scale={scale}
@@ -95,12 +89,6 @@ const Container = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
-`;
-
-const ShadowChild = styled.div`
-  position: absolute !important;
-  color: transparent !important;
-  pointer-events: none !important;
 `;
 
 const Child = styled.div<{ $scale: number }>`
