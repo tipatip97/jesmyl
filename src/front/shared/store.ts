@@ -19,6 +19,7 @@ export const store = configureStore({
     router: routerReducer,
     strong: strongReducer,
   },
+  middleware: mw => mw({ serializableCheck: false }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
