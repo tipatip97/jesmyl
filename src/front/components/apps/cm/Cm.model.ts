@@ -1,20 +1,22 @@
 import { ClientExecutionDict } from '../../../complect/exer/Exer.model';
 import { EeStorageStoreType } from './base/ee-storage/EeStorage.model';
-import { FontSizeContainPropsPosition } from './base/font-size-contain/FontSizeContain.model';
 import { IExportableSetts } from './col/com/block-styles/BlockStyles.model';
 import { ChordPack } from './col/com/chord-card/ChordCard.model';
 import { MigratableComToolName } from './col/com/Com.model';
 import { IExportableCols } from './cols/Cols.model';
 import { CmEditorStoraged } from './editor/CmEditor.model';
 import { IExportableMeetings } from './lists/meetings/Meetings.model';
+import { TranslationYPosition, TrnslationScreenConfig } from './translation/complect/controlled/model';
 
 export interface CmState extends CmStoraged {
   translationUpdates: number;
   translationBlock: number;
   isTranslationBlockVisible: boolean;
-  translationBlockPosition: FontSizeContainPropsPosition;
+  translationBlockPosition: TranslationYPosition;
   isCmFullscreen: boolean;
   rollModeMarks: boolean;
+  translationScreenConfigs: TrnslationScreenConfig[];
+  currentTranslationConfigi: number;
 
   numComUpdates: number;
   numAbsolutePopupUpdates: number;

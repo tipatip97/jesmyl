@@ -22,6 +22,8 @@ const initialState: CmState = {
   translationBlockPosition: 'center',
   favoriteMeetings: { contexts: [], events: [] },
   comTopTools: ['mark-com', 'fullscreen-mode'],
+  translationScreenConfigs: [],
+  currentTranslationConfigi: 0,
 
   numComUpdates: 0,
   numAbsolutePopupUpdates: 0,
@@ -57,11 +59,17 @@ export const slice = createSlice({
       'settings',
       'speedRollKf',
       'translationBlockPosition',
-      'isTranslationBlockVisible',
       'translationBlock',
+      'translationScreenConfigs',
     ]),
+    currentTranslationConfigi: (state, action: PayloadAction<number>) => {
+      state.currentTranslationConfigi = action.payload;
+    },
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
-      state.isCmFullscreen = action.payload ?? state.isCmFullscreen;
+      state.isCmFullscreen = action.payload ?? !state.isCmFullscreen;
+    },
+    isTranslationBlockVisible: (state, action: PayloadAction<boolean | nil>) => {
+      state.isTranslationBlockVisible = action.payload ?? !state.isTranslationBlockVisible;
     },
     switchIsMiniAnchor: (state, action: PayloadAction<boolean | nil>) => {
       state.isMiniAnchor = action.payload ?? !state.isMiniAnchor;
