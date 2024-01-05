@@ -291,9 +291,23 @@ textarea {
   vertical-align: middle;
 }
 
+.children-middle {
+  > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
 .flex {
   display: flex;
+}
 
+.inline-flex {
+  display: inline-flex;
+}
+
+.flex,
+.inline-flex {
   &.flex-max {
     width: max-content;
   }
@@ -353,17 +367,6 @@ textarea {
 
 .self-start {
   align-self: self-start;
-}
-
-.after-margin-space {
-  margin-right: 0.2em;
-}
-
-.children-middle {
-  > * {
-    display: inline-block;
-    vertical-align: middle;
-  }
 }
 
 .text {
