@@ -9,12 +9,14 @@ const shadowStyle: CSSProperties = {
 };
 
 export default function FontSizeContain({ className, content, html, subUpdate }: FontSizeContainProps) {
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(0);
+  const [isInit, setIsInit] = useState(true);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const shadowChildRef = useRef<HTMLDivElement | null>(null);
 
   useLayoutEffect(() => {
+    if (isInit) setTimeout(setIsInit, 500, false);
     if (containerRef.current !== null && shadowChildRef.current !== null) {
       const newScale = Math.min(
         containerRef.current.clientHeight / shadowChildRef.current.clientHeight,
@@ -23,7 +25,7 @@ export default function FontSizeContain({ className, content, html, subUpdate }:
 
       if (newScale !== scale && newScale > 0 && Number.isFinite(newScale) && !isNaN(newScale)) setScale(newScale);
     }
-  }, [scale, content, html, subUpdate]);
+  }, [scale, content, html, subUpdate, isInit]);
 
   return (
     <Container
