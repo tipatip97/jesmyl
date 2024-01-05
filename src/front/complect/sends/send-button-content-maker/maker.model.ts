@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
+import { CallbackWithDto } from '../useOnSendPromiseCallback';
 
 export type SendButtonContentMakerPropsContent = (
-  onClick: (() => void) | und,
+  onClick: CallbackWithDto,
   error: string,
   isLoading: boolean,
 ) => ReactNode;

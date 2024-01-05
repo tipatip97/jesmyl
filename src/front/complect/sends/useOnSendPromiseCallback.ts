@@ -1,25 +1,27 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useActualRef } from '../useActualRef';
 
-export const useOnSendPromiseCallback = <Value>(
-  onSend?: () => Promise<Value> | void | nil,
+export type CallbackWithDto<Dto = any, Ret = void> = Dto extends never ? () => Ret : (dto: Dto) => Ret;
+
+export const useOnSendPromiseCallback = <Value, Dto = any>(
+  onSend?: CallbackWithDto<Dto, Promise<Value> | void | nil>,
   onSuccess?: ((value: Value) => void) | nil,
   onFailure?: ((error: string) => void) | nil,
 ) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const onSuccessRef = useRef(onSuccess);
-  onSuccessRef.current = onSuccess;
-
-  const onFailureRef = useRef(onFailure);
-  onFailureRef.current = onFailure;
+  const onSuccessRef = useActualRef(onSuccess);
+  const onFailureRef = useActualRef(onFailure);
+  const onSendRef = useActualRef(onSend);
 
   return [
-    useMemo(() => {
-      if (onSend === undefined) return undefined;
+    useMemo((): CallbackWithDto => {
+      if (onSendRef.current === undefined) return () => onSuccessRef.current?.(null as Value);
+      const onSend = onSendRef.current;
 
-      return () => {
-        const promise = onSend();
+      return dto => {
+        const promise = onSend(dto);
 
         if (promise instanceof Promise) {
           setIsLoading(true);
@@ -35,7 +37,7 @@ export const useOnSendPromiseCallback = <Value>(
             });
         }
       };
-    }, [onSend]),
+    }, [onFailureRef, onSendRef, onSuccessRef]),
     error,
     isLoading,
   ] as const;

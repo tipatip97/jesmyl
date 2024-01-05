@@ -1,8 +1,8 @@
-import { useOnSendPromiseCallback } from '../useOnSendPromiseCallback';
+import { CallbackWithDto, useOnSendPromiseCallback } from '../useOnSendPromiseCallback';
 import { SendButtonContentMakerProps } from './maker.model';
 
 interface PropsWithClick {
-  onClick: () => void;
+  onClick: CallbackWithDto;
 }
 
 export const SendButtonContentMakerBody = <Value,>(props: SendButtonContentMakerProps<Value> & PropsWithClick) => {
