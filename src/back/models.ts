@@ -83,8 +83,12 @@ declare global {
   type ArrayMapCb<T> = (box: T, boxi: number, boxa: T[]) => T;
   type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
   type TimeOut = ReturnType<typeof setTimeout> | und | number;
+
   type EventStopper<With = {}> = { stopPropagation(): void } & With;
+  type CallbackStopper = (event: EventStopper) => void;
+
   type EventPreventer<With = {}> = { preventDefault(): void } & With;
+  type CallbackPreventer = (event: EventPreventer) => void;
 
   type NonUndefined<T> = T extends undefined ? never : T;
   type NonNull<T> = T extends null ? never : T;
