@@ -1,9 +1,8 @@
 import { AnyAction, CaseReducer, Dispatch, PayloadAction } from '@reduxjs/toolkit';
-import { JStorageName } from '../app/App.model';
 
 export type JStorageListener<Val> = (val: Val) => void;
 
-export class JStorage<Scope, State = Scope> {
+export class JStorage<Scope, State = Scope, Name extends string = string> {
   private prefix: string;
   private nonCachable: (keyof Scope)[] = [] as never;
   private dbOpen: IDBOpenDBRequest;
@@ -14,13 +13,13 @@ export class JStorage<Scope, State = Scope> {
 
   properties: Record<keyof Scope, any> = {} as never;
 
-  constructor(appName: JStorageName, config?: { nonCachable?: (keyof Scope)[] }) {
-    this.prefix = `[${appName}]:`;
+  constructor(storageName: Name, config?: { nonCachable?: (keyof Scope)[] }) {
+    this.prefix = `[${storageName}]:`;
     if (config?.nonCachable) this.nonCachable = config.nonCachable;
-    this.dbOpen = indexedDB.open(appName);
+    this.dbOpen = indexedDB.open(storageName);
     this.initDB(this.dbOpen);
 
-    (window as any)[`${appName}Storage`] = this;
+    (window as any)[`${storageName}Storage`] = this;
   }
 
   private initDB(dbOpen: IDBOpenDBRequest) {
