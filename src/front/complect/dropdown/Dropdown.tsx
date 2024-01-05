@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import EvaIcon from '../eva-icon/EvaIcon';
 import useToast from '../modal/useToast';
+import { useOnSendPromiseCallback } from '../sends/useOnSendPromiseCallback';
 import { DropdownItem, DropdownProps } from './Dropdown.model';
 import './Dropdown.scss';
+
+const undItem = { id: undefined, title: '' };
+const nullItem = { id: null, title: '' };
 
 export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownItem<Id>>(props: DropdownProps<Id, Item>) {
   const [selectedId, setId] = useState(props.id);
@@ -27,9 +31,19 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
       document.removeEventListener('keydown', onKeydown);
     };
   }, [isDropped]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [modalNode, toast] = useToast();
+  const [onClick, error, isLoading] = useOnSendPromiseCallback(
+    item => {
+      return props.onSelect === undefined ? props.onSelectId?.(item.id) : props.onSelect(item);
+    },
+    isOk => {
+      if (!isOk) setId(props.id);
+    },
+    error => {
+      setId(props.id);
+      toast(error, { mood: 'ko' });
+    },
+  );
 
   return (
     <div
@@ -41,9 +55,27 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
     >
       {modalNode}
       <div className="selected-item ellipsis full-max-width">
-        {selectedItem?.title || <span className="not-selected">{props.placeholder ?? 'Не выбрано'}</span>}
+        {selectedItem?.title || (
+          <span className="not-selected">{props.undTitle ?? props.nullTitle ?? props.placeholder ?? 'Не выбрано'}</span>
+        )}
       </div>
       <div className="item-list">
+        {props.undTitle && (
+          <div
+            className="list-item"
+            onClick={() => onClick(undItem)}
+          >
+            {props.undTitle}
+          </div>
+        )}
+        {props.nullTitle && (
+          <div
+            className="list-item"
+            onClick={() => onClick(nullItem)}
+          >
+            {props.nullTitle}
+          </div>
+        )}
         {props.items.map(item => {
           return (
             item && (
@@ -58,30 +90,8 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
                   event.stopPropagation();
                   setDropped(false);
                   setId(item.id);
-                  const selectResult =
-                    props.onSelect === undefined ? props.onSelectId?.(item.id) : props.onSelect(item);
 
-                  if (selectResult instanceof Promise) {
-                    setIsLoading(true);
-                    setIsError(false);
-
-                    selectResult
-                      .then(isOk => {
-                        setIsLoading(false);
-                        if (!isOk) {
-                          setId(props.id);
-                          setIsError(true);
-                          setTimeout(() => setIsError(false), 3000);
-                        }
-                      })
-                      .catch(error => {
-                        setId(props.id);
-                        setIsLoading(false);
-                        setIsError(true);
-                        setTimeout(() => setIsError(false), 3000);
-                        toast(error, { mood: 'ko' });
-                      });
-                  }
+                  onClick(item);
                 }}
               >
                 {item.title}
@@ -90,7 +100,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
           );
         })}
       </div>
-      {isError ? (
+      {error ? (
         <EvaIcon
           name="alert-circle-outline"
           className="color--ko"

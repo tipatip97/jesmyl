@@ -8,6 +8,8 @@ export interface DropdownProps<Id, Item extends DropdownItem<Id>> {
   onSelect?: (item: Item) => und | void | null | Promise<SokiServerEvent | null>;
   onSelectId?: (item: Id) => und | void | null | Promise<SokiServerEvent | null>;
   className?: string;
+  undTitle?: string;
+  nullTitle?: string;
 }
 
 export interface DropdownItem<Id> {
