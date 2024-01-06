@@ -4,8 +4,7 @@ import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
 import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
-import useFullscreenContent from '../../../../complect/fullscreen-content/useFullscreenContent';
-import useQRMaster from '../../../../complect/qr-code/useQRMaster';
+import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import useApps from '../../../../complect/useApps';
 import navConfigurers from '../../../../shared/navConfigurers';
@@ -14,22 +13,20 @@ import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import useAuth from '../../useAuth';
 import useConnectionState from '../../useConnectionState';
 import IndexAbout from '../IndexAbout';
-import './IndexMain.scss';
-import { UserMore } from './UserMore';
 import { IndexProfileInfo } from './ProfileInfo';
+import { UserMore } from './UserMore';
 
 const isNNull = (it: unknown) => it !== null;
 const currentAppSelector = (state: RootState) => state.index.currentApp;
 
 export default function IndexMain() {
   const currentAppName = useSelector(currentAppSelector);
-  const { openFullscreenContent } = useFullscreenContent();
+  const [aboutNode, openAbout] = useFullContent(() => <IndexAbout />);
   const { goTo } = navConfigurers.index();
   const [popupNode, openPopup] = useBottomPopup(UserMore);
   const { appConfigs, jumpToApp } = useApps();
 
   const auth = useAuth();
-  const { readQR, qrNode } = useQRMaster();
   const connectionNode = useConnectionState();
   const appList = appNames
     .map(appName => {
@@ -51,7 +48,7 @@ export default function IndexMain() {
             name={nav.nav.logo || 'cube-outline'}
             className="margin-big-gap"
           />
-          <div className="app-title-label">{nav.nav.title}</div>
+          {nav.nav.title}
         </div>
       );
     })
@@ -59,7 +56,7 @@ export default function IndexMain() {
 
   return (
     <PhaseIndexContainer
-      className="index-main"
+      className="relative"
       withoutBackButton
       headTitle={appConfigs[currentAppName]?.nav.nav.title || 'Другое'}
       head={
@@ -79,7 +76,7 @@ export default function IndexMain() {
       content={
         <>
           {popupNode}
-          {qrNode}
+          {aboutNode}
           <ScheduleWidgetAlarm
             onGoTo={() => goTo('schedules')}
             isForceShow={auth.level >= 50}
@@ -97,14 +94,14 @@ export default function IndexMain() {
             onClick={() => goTo('settings')}
           />
           <BrutalItem
-            icon="qr-code"
-            title="Читать QR"
-            onClick={() => readQR()}
+            icon="pantone-outline"
+            title="Взаимодействие"
+            onClick={() => goTo('actions')}
           />
           <BrutalItem
             icon="info-outline"
             title="О приложении"
-            onClick={() => openFullscreenContent(<IndexAbout />, true)}
+            onClick={() => openAbout(true)}
           />
           {appList && (
             <BrutalScreen>

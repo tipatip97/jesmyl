@@ -5,6 +5,8 @@ import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer'
 import serviceMaster from '../../../complect/service/serviceMaster';
 import { Index } from '../Index';
 import { IndexNavData, IndexStorage } from '../Index.model';
+import IndexActions from '../parts/actions/Actions';
+import IndexMyFiles from '../parts/actions/files/MyFiles';
 import { IndexAuthorization } from '../parts/login/IndexAuthorization';
 import Main from '../parts/main/IndexMain';
 import { IndexConsole } from '../parts/settings/Console';
@@ -50,6 +52,16 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
         {
           phase: ['schedules'],
           node: <ScheduleWidgetAlarmScheduleList />,
+        },
+        {
+          phase: ['actions'],
+          node: <IndexActions />,
+          next: [
+            {
+              phase: ['files'],
+              node: <IndexMyFiles />,
+            },
+          ],
         },
       ],
     },

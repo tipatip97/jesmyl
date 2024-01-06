@@ -16,7 +16,7 @@ export default function useFullContent<PassValue>(
   content: FullContentValue<PassValue> | nil,
   forceOpenMode?: FullContentOpenMode,
   switchIsForceOpen?: (is: boolean) => void,
-): [ReactNode, (_event?: unknown, isClosable?: boolean, passValue?: PassValue) => void, () => void] {
+): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {
   const [openMode, setOpenMode] = useState<FullContentOpenMode>(null);
   const [passValue, setPassValue] = useState<PassValue>();
   const mode = forceOpenMode === undefined ? openMode : forceOpenMode;
@@ -60,7 +60,7 @@ export default function useFullContent<PassValue>(
         </div>
       </Portal>
     ),
-    (_event, isClosable, passValue) => {
+    (isClosable, passValue) => {
       setOpenMode(isClosable ? 'closable' : 'open');
       setPassValue(passValue);
     },
