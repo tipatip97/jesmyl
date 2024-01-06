@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { css } from 'styled-components';
 import { renderComponentInNewWindow } from '../../../../../../../..';
-import { styledComponentsObserver } from '../../../../../../../complect/StyledComponentsObserver';
 import { RootState } from '../../../../../../../shared/store';
 import di from '../../../../Cm.store';
 import useCmNav from '../../../../base/useCmNav';
@@ -43,15 +42,12 @@ export function useControlledTranslation() {
             dispatch(di.riseUpTranslationUpdates());
             const style = win.document.createElement('style');
             win.document.body.appendChild(style);
-            style.innerText = newWindowBaseStyle;
-
-            const muteObserver = styledComponentsObserver.listen(styleText => style.append(styleText));
+            style.innerHTML = newWindowBaseStyle;
 
             const closeWin = () => win.close();
 
             window.addEventListener('unload', closeWin);
             win.addEventListener('unload', () => {
-              muteObserver();
               window.removeEventListener('unload', closeWin);
               windows[windowi] = null;
               dispatch(di.riseUpTranslationUpdates());
