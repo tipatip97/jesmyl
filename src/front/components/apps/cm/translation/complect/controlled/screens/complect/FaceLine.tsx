@@ -11,7 +11,6 @@ const defaultConfig: TrnslationScreenConfig = {
   paddingHPx: 10,
   paddingVPx: 10,
   paddingFix: false,
-  paddingShowLimits: false,
   proportion: 1,
   color: '#ffffff',
   textAlign: CmTranslateCurrentScreenConfigurationTypeTextAlign.Center,

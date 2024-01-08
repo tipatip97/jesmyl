@@ -7,11 +7,13 @@ import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
 import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
 import Modal from '../complect/modal/Modal';
+import { crossApplicationLinkCoder, jesmylHostName } from '../complect/qr-code/useQRMaster';
 import listenThemeChanges from '../complect/theme-changer';
 import useApps from '../complect/useApps';
 import useFullScreen from '../complect/useFullscreen';
 import di from '../components/index/Index.store';
 import indexStorage from '../components/index/indexStorage';
+import { applyFontFamilyFromMyFiles } from '../components/index/parts/actions/files/utils/set-font-family-effect';
 import routerStoreActions from '../components/router/Router.store';
 import routerStorage from '../components/router/routerStorage';
 import navConfigurers from '../shared/navConfigurers';
@@ -20,17 +22,18 @@ import { appNames } from './App.model';
 import './App.scss';
 import AppFooter from './AppFooter';
 import AppRouter from './AppRouter';
-import { crossApplicationLinkCoder, jesmylHostName } from '../complect/qr-code/useQRMaster';
 
 listenThemeChanges();
 
 const currentAppSelector = (state: RootState) => state.index.currentApp;
+const appFontFamilySelector = (state: RootState) => state.index.appFontFamily;
 const emptyArr: [] = [];
 const setIsReady = () => routerStoreActions.isReady(true);
 
 function App() {
   const dispatch = useDispatch();
   const appName = useSelector(currentAppSelector);
+  const appFontFamily = useSelector(appFontFamilySelector);
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const { goBack, registerBackAction } = navConfigurers[appName]();
@@ -51,12 +54,22 @@ function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [goBack, switchFullscreen]);
 
+  useEffect(() => {
+    if (appFontFamily === undefined) return;
+    applyFontFamilyFromMyFiles(appFontFamily, window);
+    document.body.style.fontFamily = '"' + appFontFamily + '"';
+
+    return () => {
+      document.body.style.fontFamily = '';
+    };
+  }, [appFontFamily]);
+
   routerStorage.initDispatches(dispatch, routerStoreActions, setIsReady);
   indexStorage.initDispatches(dispatch, di);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setTimeout(setIsShowLogo, 1200, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, emptyArr);
 
   useEffect(() => {

@@ -65,11 +65,6 @@ export const CmTranslateCurrentScreenConfigurationProportions = ({
         </div>
         <div className="flex flex-gap">
           <EvaButtonSt
-            name="hash"
-            $isActive={currentConfig.paddingShowLimits}
-            onClick={() => updateConfig({ paddingShowLimits: !currentConfig.paddingShowLimits })}
-          />
-          <EvaButtonSt
             $isActive={currentConfig.paddingFix}
             name={currentConfig.paddingFix ? 'lock-outline' : 'unlock-outline'}
             onClick={() => updateConfig({ paddingFix: !currentConfig.paddingFix })}

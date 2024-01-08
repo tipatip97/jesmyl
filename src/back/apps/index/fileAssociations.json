@@ -1,0 +1,14 @@
+{
+  "font": {
+    "title": "Шрифты",
+    "removeTitle": "файл шрифтов",
+    "icon": "text",
+    "extensions": ["ttf", "otf"]
+  },
+  "other": {
+    "title": "Другие",
+    "removeTitle": "файл",
+    "icon": "more-horizontal",
+    "extensions": []
+  }
+}

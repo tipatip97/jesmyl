@@ -1,15 +1,22 @@
 import { CSSProperties, useLayoutEffect, useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
 import { FontSizeContainProps } from './FontSizeContain.model';
 
-const shadowStyle: CSSProperties = {
+const topShadowStyle: CSSProperties = {
   position: 'absolute',
   color: 'transparent',
   pointerEvents: 'none',
 };
 
-export default function FontSizeContain({ className, content, html, subUpdate }: FontSizeContainProps) {
-  const [scale, setScale] = useState(0);
+export default function FontSizeContain({
+  className,
+  content,
+  html,
+  subUpdate,
+  childStyle,
+  shadowStyle,
+  style,
+}: FontSizeContainProps) {
+  const [scale, setScale] = useState(1);
   const [isInit, setIsInit] = useState(true);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -28,9 +35,10 @@ export default function FontSizeContain({ className, content, html, subUpdate }:
   }, [scale, content, html, subUpdate, isInit]);
 
   return (
-    <Container
-      className={className}
+    <div
+      className={className + ' relative full-height full-width'}
       ref={containerRef}
+      style={style}
     >
       {html !== undefined ? (
         <>
@@ -38,26 +46,22 @@ export default function FontSizeContain({ className, content, html, subUpdate }:
             __html={html}
             scale={scale}
             shadowChildRef={shadowChildRef}
+            shadowStyle={{ ...topShadowStyle, ...shadowStyle }}
+            childStyle={childStyle}
           />
         </>
       ) : (
         <>
           <div
             ref={shadowChildRef}
-            className="fsc-children fsc-shadow-child"
-            style={shadowStyle}
+            style={{ ...topShadowStyle, ...shadowStyle }}
           >
             {content}
           </div>
-          <Child
-            $scale={scale}
-            className="fsc-children fsc-child"
-          >
-            {content}
-          </Child>
+          <div style={{ ...childStyle, transform: `scale(${scale})` }}>{content}</div>
         </>
       )}
-    </Container>
+    </div>
   );
 }
 
@@ -65,38 +69,26 @@ const WithHtml = ({
   shadowChildRef,
   __html,
   scale,
+  childStyle,
+  shadowStyle,
 }: {
   shadowChildRef: { current: HTMLDivElement | null };
   __html: string;
   scale: number;
+  shadowStyle?: CSSProperties;
+  childStyle?: CSSProperties;
 }) => {
   return (
     <>
       <div
         ref={shadowChildRef}
-        dangerouslySetInnerHTML={{ __html }}
-        className="fsc-children fsc-shadow-child"
         style={shadowStyle}
-      />
-      <Child
-        $scale={scale}
         dangerouslySetInnerHTML={{ __html }}
-        className="fsc-children fsc-child"
+      />
+      <div
+        style={{ ...childStyle, transform: `scale(${scale})` }}
+        dangerouslySetInnerHTML={{ __html }}
       />
     </>
   );
 };
-
-const Container = styled.div`
-  position: relative;
-  height: 100%;
-  width: 100%;
-`;
-
-const Child = styled.div<{ $scale: number }>`
-  ${props =>
-    props.$scale &&
-    css`
-      scale: ${props.$scale};
-    `}
-`;

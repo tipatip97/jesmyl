@@ -2,26 +2,20 @@ import { useEffect, useReducer, useState } from 'react';
 import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import EvaIcon, { EvaIconName } from '../../../../../../complect/eva-icon/EvaIcon';
 import mylib from '../../../../../../complect/my-lib/MyLib';
-import { useRemoveMyFile } from '../hooks/on-add-file';
-import { MyFileType } from '../utils/associate-file';
+import { useMyFilesAssociates } from '../hooks/associates';
+import { useRemoveMyFile } from '../hooks/remove-file';
 import { filesStorage } from '../utils/storage';
+import { MyFileType } from '../model';
 
-const titles: Record<MyFileType, { title: string; icon: EvaIconName; removeTitle: string }> = {
-  font: {
-    title: 'Шрифты',
-    removeTitle: 'файл шрифтов',
-    icon: 'text',
-  },
-  other: {
-    title: 'Другие',
-    removeTitle: 'файл',
-    icon: 'more-horizontal',
-  },
-};
+export type FileAssociations = Record<
+  MyFileType,
+  { title: string; icon: EvaIconName; removeTitle: string; extensions: string[] }
+>;
 
 const forceUpdater = (it: number) => it + 1;
 
 export const MyFilesTypeBox = ({ type }: { type: MyFileType }) => {
+  const fileAssociations = useMyFilesAssociates();
   const [files, setFiles] = useState<File[]>([]);
   const [updates, forceUpdate] = useReducer(forceUpdater, 0);
   const removeFile = useRemoveMyFile(type);
@@ -35,14 +29,16 @@ export const MyFilesTypeBox = ({ type }: { type: MyFileType }) => {
     })();
   }, [type, updates]);
 
+  if (fileAssociations === undefined) return null;
+
   return (
     <>
       <div className="flex margin-gap-t padding-gap bgcolor--2">
         <EvaIcon
-          name={titles[type].icon}
+          name={fileAssociations[type].icon}
           className="margin-gap-r"
         />
-        {titles[type].title}
+        {fileAssociations[type].title}
       </div>
       <div className="margin-big-gap-l">
         {files.map(file => {
@@ -54,7 +50,7 @@ export const MyFilesTypeBox = ({ type }: { type: MyFileType }) => {
               {file.name}
               <EvaButton
                 name="close"
-                confirm={`Удалить ${titles[type].removeTitle} "${file.name}"`}
+                confirm={`Удалить ${fileAssociations[type].removeTitle} "${file.name}"`}
                 onClick={() => removeFile(file)}
               />
             </div>

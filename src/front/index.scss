@@ -156,6 +156,20 @@ input[type='button'] {
   white-space: nowrap;
 }
 
+.white-pre {
+  white-space: pre;
+
+  &-children {
+    > * {
+      white-space: pre;
+    }
+  }
+}
+
+.bgcolor-black {
+  background-color: black;
+}
+
 .nowrap {
   white-space: nowrap;
 }

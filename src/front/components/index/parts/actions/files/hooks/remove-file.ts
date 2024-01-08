@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { MyFileType } from '../utils/associate-file';
 import { filesStorage } from '../utils/storage';
+import { MyFileType } from '../model';
 
 export const useRemoveMyFile = (type: MyFileType) => {
   return useCallback(

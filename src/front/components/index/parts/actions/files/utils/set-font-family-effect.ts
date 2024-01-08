@@ -2,7 +2,7 @@ import { filesStorage } from './storage';
 
 const emptyFunc = () => {};
 
-export const setFontFamilyEffect = async (fileName: string, win: Window) => {
+export const applyFontFamilyFromMyFiles = async (fileName: string, win: Window) => {
   const fonts = await filesStorage.get('font');
   if (
     fonts === undefined ||

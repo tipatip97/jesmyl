@@ -18,9 +18,11 @@ import useAuth from '../../useAuth';
 import useConnectionState from '../../useConnectionState';
 import { Visitor } from './Visitor';
 import { Visits } from './Visits';
+import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
 
 const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 const statisticSelector = (state: RootState) => state.index.statistic;
+const appFontFamilySelector = (state: RootState) => state.index.appFontFamily;
 
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
 
@@ -35,6 +37,7 @@ export default function IndexSettings() {
   const [modalNode, toast] = useToast();
   const { appConfigs } = useApps();
   const { goTo } = useIndexNav();
+  const appFontFamily = useSelector(appFontFamilySelector);
 
   useEffect(() => {
     soki.send({ subscribe: 'statistic' }, 'index');
@@ -92,6 +95,16 @@ export default function IndexSettings() {
           timestamp: Date.now() + 300000 * (pushTimestampDir = +!pushTimestampDir),
         });
       }}
+    />,
+    <BrutalItem
+      icon="text"
+      title="Шрифт"
+      box={
+        <FontFamilySelector
+          fontFamily={appFontFamily}
+          onSelect={it => dispatch(di.appFontFamily(it))}
+        />
+      }
     />,
   ].filter(isShow => isShow);
   const connectionNode = useConnectionState('margin-gap');

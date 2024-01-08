@@ -1,6 +1,7 @@
 import { LocalSokiAuth, NounPronsType, ServerAuthorizationData, ServerRegisterData, SokiStatistic } from '../../models';
 import { AppName } from '../../app/App.model';
 import { ScheduleStorage } from '../../complect/schedule-widget/ScheduleWidget.model';
+import { FileAssociations } from './parts/actions/files/complect/MyFilesTypeBox';
 
 export interface IndexState {
   currentApp: AppName;
@@ -11,6 +12,8 @@ export interface IndexState {
   statistic: SokiStatistic | null;
   deviceId: string;
   nounPronsWords?: NounPronsType;
+  fileAssociations?: FileAssociations;
+  appFontFamily?: string;
 
   updateRequisites?: Partial<
     Record<

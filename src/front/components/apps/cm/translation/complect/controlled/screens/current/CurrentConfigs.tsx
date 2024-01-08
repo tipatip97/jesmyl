@@ -1,6 +1,7 @@
 import { CmTranslationConfigsRef } from '../../hooks/configs';
 import { TrnslationScreenConfig } from '../../model';
 import { CmTranslateCurrentScreenConfigurationColor } from './complect/Color';
+import { CmTranslateCurrentScreenConfigurationFontFamily } from './complect/FontFamily';
 import { CmTranslateCurrentScreenConfigurationName } from './complect/Name';
 import { CmTranslateCurrentScreenConfigurationProportions } from './complect/Proportions';
 import { CmTranslateCurrentScreenConfigurationTextAlign } from './complect/TextAlign';
@@ -32,6 +33,10 @@ export const CmTranslateCurrentScreenConfigurations = ({
         currentConfig={currentConfig}
       />
       <CmTranslateCurrentScreenConfigurationTextAlign
+        configsStateRef={configsStateRef}
+        currentConfig={currentConfig}
+      />
+      <CmTranslateCurrentScreenConfigurationFontFamily
         configsStateRef={configsStateRef}
         currentConfig={currentConfig}
       />

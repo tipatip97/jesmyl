@@ -39,6 +39,8 @@ export const slice = createSlice({
       'updateOnRefresher',
       'deviceId',
       'nounPronsWords',
+      'fileAssociations',
+      'appFontFamily',
     ]),
     setError: (state, action: PayloadAction<IndexStateError>) => {
       if (action.payload.scope) {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
@@ -6,23 +6,46 @@ import { RootState } from '../../../../../../shared/store';
 import di from '../../../Cm.store';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
 import { useTranslation } from '../../useTranslation';
+import { backSwipableContainerMaker } from '../../../../../../complect/backSwipableContainerMaker';
+import { useActualRef } from '../../../../../../complect/useActualRef';
 
 const isShowTranslationInfoSelector = (state: RootState) => state.cm.isShowTranslationInfo;
+const emptyObj = {};
+const forceUpdater = (it: number) => it + 1;
 
 export default function TranslationFullscreen() {
   const dispatch = useDispatch();
+  const [forceUpdates, forceUpdate] = useReducer(forceUpdater, 0);
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
   const isShowInfo = useSelector(isShowTranslationInfoSelector);
+  const [swipes, setSwipes] = useState(emptyObj);
 
   const { prevText, nextText, prevCom, nextCom, closeTranslation, permanentText } = useTranslation();
+  const closeTranslationRef = useActualRef(closeTranslation);
+
+  useEffect(() => {
+    setSwipes(backSwipableContainerMaker(() => closeTranslationRef.current()));
+  }, [closeTranslationRef]);
+
+  useEffect(() => {
+    window.addEventListener('resize', forceUpdate);
+    return () => window.removeEventListener('resize', forceUpdate);
+  }, []);
 
   return (
-    <Container className="TranslationFullscreen">
+    <Container
+      className="TranslationFullscreen"
+      {...swipes}
+    >
       {
         <Wrapper className={isShowInfo ? ' open-info ' : ''}>
           <Screen
             className="flex center"
             html={permanentText}
+            shadowStyle={{
+              padding: '5px',
+            }}
+            subUpdate={forceUpdates}
           />
           <div
             className="top-area info-area left"
@@ -105,14 +128,9 @@ const Screen = styled(FontSizeContain)`
   height: 100%;
   color: white;
   font-weight: bold;
-  font-family: montserrat, main, calibri, georgia, times, serif, verdana, arial;
   background-color: black;
   text-align: center;
   white-space: pre;
-
-  .fsc-shadow-child {
-    padding: 5px;
-  }
 `;
 
 const Container = styled.div`

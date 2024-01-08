@@ -10,7 +10,7 @@ export const CmTranslationSlidePreview = ({ stateRef }: { stateRef: ControlledTr
     <Wrapper onClick={() => stateRef.current.switchVisible()}>
       <Inner>
         {currentConfig == null || stateRef.current.currWin == null ? (
-          <TranslationScreen backColor="var(--color--2)" />
+          <TranslationScreen />
         ) : (
           <div className="flex center full-width full-height bgcolor--2">
             <ScreenWithBackground $proportion={currentConfig.proportion}>
@@ -46,7 +46,6 @@ const Wrapper = styled.div`
 export const Inner = styled.div`
   cursor: pointer;
   border-radius: var(--radius);
-  background: black;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -54,7 +53,6 @@ export const Inner = styled.div`
   font-size: 14px;
   user-select: none;
   white-space: pre;
-  overflow: hidden;
 `;
 
 const ScreenWithBackground = styled.div<{ $proportion: number }>`

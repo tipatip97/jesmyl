@@ -6,7 +6,7 @@ export interface TrnslationScreenConfig {
   paddingVPx: number;
   paddingHPx: number;
   paddingFix: boolean;
-  paddingShowLimits: boolean;
+  fontFamily?: string;
   fontWeight: CmTranslateCurrentScreenConfigurationTypeFontWeight;
   color: string;
   textAlign: CmTranslateCurrentScreenConfigurationTypeTextAlign;
