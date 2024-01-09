@@ -1,6 +1,8 @@
-import { useEffect, useReducer } from 'react';
+import { ReactNode, useEffect, useReducer, useState } from 'react';
+import { CSSProperties } from 'styled-components';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import { applyFontFamilyFromMyFiles } from '../../../../../index/parts/actions/files/utils/set-font-family-effect';
+import { takeInteractiveFileBackground } from '../../../../../index/parts/actions/files/utils/take-interactive-file-background';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
 import { TranslationScreenProps } from './Translations.model';
 import { useControlledTranslation } from './hooks';
@@ -13,6 +15,7 @@ export default function TranslationScreen(props: TranslationScreenProps) {
   const { updateConfig, currentConfig, configs } = useCmTranslationConfigs(props.screeni);
   const stateRef = useActualRef(useControlledTranslation());
   const setCurrentConfigiRef = useActualRef(useSetCurrentConfigi());
+  const [background, setBackground] = useState<ReactNode | null>(null);
 
   useEffect(() => {
     if (props.win == null) return;
@@ -108,46 +111,95 @@ export default function TranslationScreen(props: TranslationScreenProps) {
     applyFontFamilyFromMyFiles(currentConfig.fontFamily, props.win ?? window);
   }, [currentConfig?.fontFamily, props.win]);
 
-  return (
-    <FontSizeContain
-      className="inline-flex center white-pre-children bgcolor-black"
-      style={{
-        fontFamily:
-          (currentConfig?.fontFamily && `'${currentConfig.fontFamily}',`) +
-          'montserrat,main,calibri,georgia,times,serif,verdana,arial',
+  useEffect(() => {
+    if (currentConfig?.background === undefined) {
+      setBackground(null);
+      return;
+    }
 
-        ...(currentConfig
-          ? {
-              color: stateRef.current.isVisible ? currentConfig.color : 'transparent',
-              fontWeight: currentConfig.fontWeight,
-              textAlign: currentConfig.textAlign,
-            }
-          : {
-              color: 'white',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }),
-      }}
-      shadowStyle={{
-        padding:
-          currentConfig &&
-          `${
-            currentConfig.paddingFix
-              ? `${currentConfig.paddingVPx}px`
-              : `${currentConfig.paddingVPx}px ${currentConfig.paddingHPx}px`
-          }`,
-        transformOrigin:
-          currentConfig && stateRef.current.positionY !== 'center' ? `center ${currentConfig.paddingVPx}px` : undefined,
-      }}
-      html={stateRef.current.permanentText}
-      subUpdate={
-        stateRef.current.currentConfigi +
-        forceUpdates +
-        (props.proportion === undefined ? 1000 : props.proportion) +
-        (currentConfig === undefined
-          ? 10000
-          : +currentConfig.paddingFix + currentConfig.paddingVPx + currentConfig.paddingHPx)
-      }
-    />
+    const style: CSSProperties = {
+      position: 'absolute',
+      objectFit: 'cover',
+    };
+
+    takeInteractiveFileBackground(
+      currentConfig.background,
+      (type, src) => {
+        if (type === 'video') {
+          setBackground(
+            <video
+              autoPlay
+              muted
+              loop
+              src={src}
+              className="full-width full-height"
+              style={style}
+            />,
+          );
+          return;
+        }
+
+        if (type === 'image') {
+          setBackground(
+            <img
+              alt=""
+              src={src}
+              className="full-width full-height"
+              style={style}
+            />,
+          );
+          return;
+        }
+      },
+      () => setBackground(null),
+    );
+  }, [currentConfig?.background, props.win]);
+
+  return (
+    <div className="relative full-height full-width bgcolor-black">
+      {background}
+      <FontSizeContain
+        className="inline-flex center white-pre-children"
+        style={{
+          fontFamily:
+            (currentConfig?.fontFamily && `'${currentConfig.fontFamily}',`) +
+            'montserrat,main,calibri,georgia,times,serif,verdana,arial',
+
+          ...(currentConfig
+            ? {
+                color: stateRef.current.isVisible ? currentConfig.color : 'transparent',
+                fontWeight: currentConfig.fontWeight,
+                textAlign: currentConfig.textAlign,
+              }
+            : {
+                color: 'white',
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }),
+        }}
+        shadowStyle={{
+          padding:
+            currentConfig &&
+            `${
+              currentConfig.paddingFix
+                ? `${currentConfig.paddingVPx}px`
+                : `${currentConfig.paddingVPx}px ${currentConfig.paddingHPx}px`
+            }`,
+          transformOrigin:
+            currentConfig && stateRef.current.positionY !== 'center'
+              ? `center ${currentConfig.paddingVPx}px`
+              : undefined,
+        }}
+        html={stateRef.current.permanentText}
+        subUpdate={
+          stateRef.current.currentConfigi +
+          forceUpdates +
+          (props.proportion === undefined ? 1000 : props.proportion) +
+          (currentConfig === undefined
+            ? 10000
+            : +currentConfig.paddingFix + currentConfig.paddingVPx + currentConfig.paddingHPx)
+        }
+      />
+    </div>
   );
 }
