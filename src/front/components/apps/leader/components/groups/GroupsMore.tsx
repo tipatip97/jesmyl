@@ -7,9 +7,9 @@ import LeaderGroupMaster from './GroupMaster';
 export const LeaderGroupsMore: BottomPopupContenter = (isOpen, close, prepare) => {
   const [groupMasterNode, openGroupMaster] = useFullContent(close => <LeaderGroupMaster close={close} />);
 
-  return (
-    isOpen && [
-      groupMasterNode,
+  return [
+    groupMasterNode,
+    isOpen && (
       <>
         {prepare({
           items: [
@@ -26,7 +26,7 @@ export const LeaderGroupsMore: BottomPopupContenter = (isOpen, close, prepare) =
           close={close}
           prepare={prepare}
         />
-      </>,
-    ]
-  );
+      </>
+    ),
+  ];
 };

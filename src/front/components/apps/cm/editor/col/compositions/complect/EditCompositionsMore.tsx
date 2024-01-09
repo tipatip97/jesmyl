@@ -1,17 +1,29 @@
-import { bottomPopupContentPreparer } from '../../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
-import useFullscreenContent from '../../../../../../../complect/fullscreen-content/useFullscreenContent';
+import { BottomPopupContenter } from '../../../../../../../complect/absolute-popup/bottom-popup/model';
+import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
+import useFullContent from '../../../../../../../complect/fullscreen-content/useFullContent';
 import NewComposition from './NewComposition';
 
-export default function EditCompositionsMore() {
-  const { openFullscreenContent, closeFullscreenContent } = useFullscreenContent();
+export const EditCompositionsMore: BottomPopupContenter = (isOpen, closePopup) => {
+  const [fullContentNode, openFullContent] = useFullContent(close => (
+    <NewComposition
+      close={() => {
+        close();
+        closePopup();
+      }}
+    />
+  ));
 
-  return bottomPopupContentPreparer({
-    items: [
-      {
-        onClick: () => openFullscreenContent(<NewComposition close={closeFullscreenContent} />),
-        icon: 'plus-circle-outline',
-        title: 'Новая песня',
-      },
-    ],
-  });
-}
+  return [
+    <>{fullContentNode}</>,
+    isOpen && (
+      <EvaButton
+        name="plus-circle-outline"
+        postfix="Новая песня"
+        onClick={() => {
+          openFullContent();
+          closePopup();
+        }}
+      />
+    ),
+  ];
+};

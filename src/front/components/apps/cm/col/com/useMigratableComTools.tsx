@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import useFullscreenContent from '../../../../../complect/fullscreen-content/useFullscreenContent';
+import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
 import useFullScreen from '../../../../../complect/useFullscreen';
 import { RootState } from '../../../../../shared/store';
@@ -30,7 +30,7 @@ export default function useMigratableComTools() {
   const auth = useAuth();
   const { goToTranslation } = useTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] = useChordVisibleVariant();
-  const { openFullscreenContent } = useFullscreenContent();
+  const [fullContentNode, openFullscreenContent] = useFullContent(() => <ChordImagesList />);
   const { toggleSelectedCom, selectedComPosition: isSelected } = useSelectedComs();
   const { isMarked, toggleMarked } = useMarks();
   const [, switchFullscreen] = useFullScreen();
@@ -84,7 +84,7 @@ export default function useMigratableComTools() {
               tool,
               title: 'Изображения аккордов',
               icon: 'image-outline',
-              onClick: () => openFullscreenContent(<ChordImagesList />, true),
+              onClick: () => openFullscreenContent(true),
             };
           case 'selected-toggle':
             return (
@@ -151,7 +151,12 @@ export default function useMigratableComTools() {
   };
 
   return {
-    anchorNode: <>{qrNode}</>,
+    anchorNode: (
+      <>
+        {qrNode}
+        {fullContentNode}
+      </>
+    ),
     comTopTools,
     topTools: makeToolList(spliceMigratableEditableComToolNameList(comTopTools, auth)),
     menuTools: makeToolList(concatMigratableEditableComToolNameList(menuComToolNameList as never, auth)),

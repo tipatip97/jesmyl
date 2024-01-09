@@ -2,21 +2,18 @@ import ComFace from '../../col/com/face/ComFace';
 import { useCols } from '../../cols/useCols';
 import { useEditableMeetings } from './useEditableMeetings';
 
-export default function MeetingsEventHistory({ close }: { close: () => void }) {
+export default function MeetingsEventHistory() {
   const { currentEvent } = useEditableMeetings();
   const cols = useCols();
 
   return (
-    <div
-      className="full-container full-height"
-      onClick={() => close()}
-    >
+    <div className="full-container full-height">
       <div className="margin-gap flex center color--3">История события "{currentEvent?.name}"</div>
       <div className="flex column center">
         {currentEvent?.history?.map(({ w, s }) => {
           return (
             <div
-              key={'' + w}
+              key={w}
               className="margin-big-gap-v"
             >
               <div>{new Date(w).toLocaleString()}</div>

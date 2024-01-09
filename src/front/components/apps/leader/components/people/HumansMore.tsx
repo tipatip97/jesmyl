@@ -23,9 +23,9 @@ export const HumansMoreContenter: BottomPopupContenter<{
     />
   ));
 
-  return (
-    isOpen && [
-      <>{humanMasterNode}</>,
+  return [
+    <>{humanMasterNode}</>,
+    isOpen && (
       <>
         {prepare({
           items: [
@@ -49,7 +49,7 @@ export const HumansMoreContenter: BottomPopupContenter<{
           ],
         })}
         {mylib.func(moreNode).call()}
-      </>,
-    ]
-  );
+      </>
+    ),
+  ];
 };

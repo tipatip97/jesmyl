@@ -1,12 +1,11 @@
 import { bottomPopupContentPreparer } from '../../../../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
 import { BottomPopupContenter } from '../../../../../../../../../complect/absolute-popup/bottom-popup/model';
-import useExer from '../../../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
-import { cmExer } from '../../../../../../Cm.store';
 import { EditableCom } from '../../../EditableCom';
 
 export const OrdersRedactorAdditions: BottomPopupContenter<EditableCom | und> = (isOpen, _close, _prepare, ccom) => {
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const [addTextModalNode, addText] = useModal(({ header, body }, close) => {
     return (
       <>
@@ -61,12 +60,12 @@ export const OrdersRedactorAdditions: BottomPopupContenter<EditableCom | und> = 
     );
   });
 
-  return (
-    isOpen && [
-      <>
-        {addTextModalNode}
-        {addChordsModalNode}
-      </>,
+  return [
+    <>
+      {addTextModalNode}
+      {addChordsModalNode}
+    </>,
+    isOpen && (
       <>
         {bottomPopupContentPreparer({
           items: [
@@ -82,7 +81,7 @@ export const OrdersRedactorAdditions: BottomPopupContenter<EditableCom | und> = 
             },
           ],
         })}
-      </>,
-    ]
-  );
+      </>
+    ),
+  ];
 };

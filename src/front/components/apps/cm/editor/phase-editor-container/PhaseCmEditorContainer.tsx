@@ -1,4 +1,4 @@
-import useExer from '../../../../../complect/exer/useExer';
+import { useShowExerLookIcon } from '../../../../../complect/exer/hooks/look-icon';
 import { PhaseContainerProps } from '../../../../../complect/phase-container/PhaseContainerConfigurer.model';
 import { cmExer } from '../../Cm.store';
 import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
@@ -12,7 +12,7 @@ export default function PhaseCmEditorContainer(props: PhaseContainerProps) {
       head={
         <>
           {props.head}
-          {useExer(cmExer).lookIcon}
+          {useShowExerLookIcon(cmExer)}
         </>
       }
     />

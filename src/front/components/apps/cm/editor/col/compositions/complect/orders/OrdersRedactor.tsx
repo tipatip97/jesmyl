@@ -1,8 +1,7 @@
 import { useBottomPopup } from '../../../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
-import useExer from '../../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
-import { cmExer } from '../../../../../Cm.store';
 import TheOrder from '../../../../../col/com/order/TheOrder';
 import { EditableCom } from '../../EditableCom';
 import { useEditableCcom } from '../../useEditableCcom';
@@ -13,7 +12,7 @@ export default function OrdersRedactor() {
   const ccom = useEditableCcom();
   const [popupToolsNode, , openToolsPopup] = useBottomPopup(OrdersRedactorOrderTools);
   const [popupAddsNode, , openAddsPopup] = useBottomPopup<EditableCom | und>(OrdersRedactorAdditions, ccom);
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   if (!ccom) return null;
 

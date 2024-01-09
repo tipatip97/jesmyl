@@ -1,9 +1,8 @@
 import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
 import EvaCheckbox from '../../../../../../../../../complect/eva-icon/EvaCheckbox';
-import useExer from '../../../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
-import { cmExer } from '../../../../../../Cm.store';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
@@ -14,7 +13,7 @@ export const OrdersRedactorOrderToolsChordBind = ({
   props: OrdersRedactorOrderToolsProps;
   closePopup: () => void;
 }) => {
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   const [modalNode, openModal] = useModal(({ header, body }, close) => {
     return (

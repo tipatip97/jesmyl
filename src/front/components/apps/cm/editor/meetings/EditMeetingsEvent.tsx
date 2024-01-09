@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
-import useExer from '../../../../../complect/exer/useExer';
-import useFullscreenContent from '../../../../../complect/fullscreen-content/useFullscreenContent';
+import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
+import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import { cmExer } from '../../Cm.store';
 import useCmNav from '../../base/useCmNav';
 import ComFace from '../../col/com/face/ComFace';
 import { useEditableCcat } from '../col/categories/useEditableCcat';
@@ -16,26 +16,27 @@ import { useEditableMeetings } from './useEditableMeetings';
 
 export default function EditMeetingsEvent() {
   const { currentEvent } = useEditableMeetings();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const zcat = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || '');
   const { goTo } = useCmNav();
   const [isClosedComList, setIsClosedComList] = useState(true);
-  const [popupNode, openPopup] = useBottomPopup((isOpen, _, prepare) => {
+  const [fullNode, openFullContent] = useFullContent(() => <MeetingsEventHistory />);
+
+  const [popupNode, openPopup] = useBottomPopup((isOpen, close) => {
     return (
-      isOpen &&
-      prepare({
-        items: [
-          {
-            icon: 'list',
-            title: 'История',
-            onClick: () => openFullscreenContent(close => <MeetingsEventHistory close={close} />),
-          },
-        ],
-      })
+      isOpen && (
+        <EvaButton
+          name="list"
+          postfix="История"
+          onClick={() => {
+            openFullContent(true);
+            close();
+          }}
+        />
+      )
     );
   });
-  const { openFullscreenContent } = useFullscreenContent();
 
   if (!currentEvent) return null;
   const usedComList = (currentEvent.coms || []).concat(currentEvent.prevComs || []);
@@ -51,6 +52,7 @@ export default function EditMeetingsEvent() {
       content={
         <>
           {popupNode}
+          {fullNode}
           <EditContainerCorrectsInformer>
             Название
             <KeyboardInput

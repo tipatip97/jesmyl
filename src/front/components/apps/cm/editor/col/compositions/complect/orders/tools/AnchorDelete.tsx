@@ -1,17 +1,15 @@
-import { useConfirm } from '../../../../../../../../../complect/modal/confirm/useConfirm';
 import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
-import useExer from '../../../../../../../../../complect/exer/useExer';
-import { cmExer } from '../../../../../../Cm.store';
+import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
+import { useConfirm } from '../../../../../../../../../complect/modal/confirm/useConfirm';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsAnchorDelete = ({
   props: { ccom, ord, blockHeader },
-  closePopup,
 }: {
   props: OrdersRedactorOrderToolsProps;
   closePopup: () => void;
 }) => {
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const [confirmNode, confirm] = useConfirm();
 
   return (

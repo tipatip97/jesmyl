@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import useExer from '../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import { cmExer } from '../../Cm.store';
 import useCmNav from '../../base/useCmNav';
 import { useEditableMeetings } from './useEditableMeetings';
 
 export default function MeetingsCreator({ close }: { close: () => void }) {
   const [name, setName] = useState('');
   const { meetings } = useEditableMeetings();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const {
     appRouteData: { eventContext = [] },
   } = useCmNav();

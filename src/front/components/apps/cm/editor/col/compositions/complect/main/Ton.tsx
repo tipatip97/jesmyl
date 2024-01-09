@@ -2,11 +2,10 @@ import { useState } from 'react';
 import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
 import EvaCheckbox from '../../../../../../../../complect/eva-icon/EvaCheckbox';
 import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
-import useExer from '../../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../complect/modal/useModal';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
-import { cmExer } from '../../../../../Cm.store';
 import ComOrders from '../../../../../col/com/orders/ComOrders';
 import { EditableCom } from '../../EditableCom';
 
@@ -17,7 +16,7 @@ const dotts = '.'
   .reverse();
 
 export const EditableCompositionMainTon = ({ ccom }: { ccom: EditableCom }) => {
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const [initialPosition] = useState(ccom.transPosition);
 
   const [modalNode, openModal] = useModal(({ header, body, footer }, close) => {

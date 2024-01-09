@@ -41,9 +41,9 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
 
   if (!ccom) return null;
 
-  return (
-    isOpen && [
-      null,
+  return [
+    null,
+    isOpen && (
       <>
         {prepare({
           items: [
@@ -130,8 +130,8 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
             </div>
           ),
         })}
-      </>,
-      <>{anchorNode}</>,
-    ]
-  );
+      </>
+    ),
+    <>{anchorNode}</>,
+  ];
 };

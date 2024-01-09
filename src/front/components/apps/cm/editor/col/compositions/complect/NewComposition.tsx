@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react';
-import { CmMp3Rule } from '../../../../../../../models';
 import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
-import useExer from '../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
+import { CmMp3Rule } from '../../../../../../../models';
 import { RoutePhase } from '../../../../../../router/Router.model';
-import { cmExer } from '../../../../Cm.store';
 import useCmNav from '../../../../base/useCmNav';
 import EditContainerCorrectsInformer from '../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCols } from '../../useEditableCols';
@@ -15,7 +14,7 @@ import ObserveUrlResource from './audio/ObserveUrlResource';
 export default function NewComposition({ close }: { close: () => void }) {
   const { goTo } = useCmNav();
   const cols = useEditableCols();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const [value, setValue] = useState('');
   const [name, setName] = useState('');
   const [isTakeName, setIsTakeName] = useState(true);

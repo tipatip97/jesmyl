@@ -1,9 +1,8 @@
 import { CSSProperties, useCallback, useEffect, useState } from 'react';
-import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
 import EvaIcon from '../../../../../../../complect/eva-icon/EvaIcon';
-import useExer from '../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
+import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
 import { ChordVisibleVariant } from '../../../../Cm.model';
-import { cmExer } from '../../../../Cm.store';
 import ComLine from '../../../../col/com/line/ComLine';
 import { OrderRepeats } from '../../../../col/com/order/Order.model';
 import TheOrder from '../../../../col/com/order/TheOrder';
@@ -14,7 +13,7 @@ import './ComRepeats.scss';
 import { ComRepeatsRemoveButton } from './complect/RemoveButton';
 
 export default function ComRepeats() {
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const [start, setStart] = useState<IEditableComLineProps | null>(null);
   const [xPos, setXPos] = useState(0);
   const [yPos, setYPos] = useState(0);

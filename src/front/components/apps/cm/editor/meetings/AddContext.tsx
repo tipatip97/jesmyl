@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
-import useExer from '../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import { cmExer } from '../../Cm.store';
 import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 import { useEditableMeetings } from './useEditableMeetings';
 
 export default function AddContext({ close, currPath }: { close: () => void; currPath: number[] }) {
   const [name, setName] = useState('');
   const { meetings } = useEditableMeetings();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const [contexts, usedContexts] = meetings?.getNames(currPath) || [[], []];
   const [bindEvents, setBindEvents] = useState<EditableMeetingsEvent[]>([]);
 

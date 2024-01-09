@@ -5,9 +5,9 @@ import LeaderGameMaster from './GameMaster';
 export const GamesMoreContenter: BottomPopupContenter = (isOpen, _, prepare) => {
   const [fullNode, openFull] = useFullContent(close => <LeaderGameMaster close={close} />);
 
-  return (
-    isOpen && [
-      fullNode,
+  return [
+    fullNode,
+    isOpen &&
       prepare({
         items: [
           {
@@ -17,6 +17,5 @@ export const GamesMoreContenter: BottomPopupContenter = (isOpen, _, prepare) => 
           },
         ],
       }),
-    ]
-  );
+  ];
 };

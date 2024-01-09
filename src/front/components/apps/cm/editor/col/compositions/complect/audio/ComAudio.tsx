@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { CmMp3Rule } from '../../../../../../../../models';
 import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
 import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
-import useExer from '../../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import { MyLib } from '../../../../../../../../complect/my-lib/MyLib';
-import { cmExer } from '../../../../../Cm.store';
+import { CmMp3Rule } from '../../../../../../../../models';
 import ComPlayer from '../../../../../col/com/player/ComPlayer';
 import { EditableCom } from '../../EditableCom';
 import { useEditableCcom } from '../../useEditableCcom';
@@ -24,7 +23,7 @@ export default function ComAudio({
 
   const [innerHTML, setInnerHTML] = useState(topHTML);
   const [mp3Rule, setMp3Rule] = useState<CmMp3Rule | und>(topMp3Rule);
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const [hrefs, updateHrefs] = useState<(string | null)[]>([]);
   const [audio, setAudio] = useState(ccom?.audio || '');
   const [openAddBlock, setOpenAddBlock] = useState(false);

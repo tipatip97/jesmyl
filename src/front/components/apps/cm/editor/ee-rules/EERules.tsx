@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
-import useExer from '../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import { eeStorage } from '../../base/ee-storage/EeStorage';
 import { cmExer } from '../../Cm.store';
 import { EditableCom } from '../col/compositions/EditableCom';
@@ -16,7 +16,7 @@ export default function EERules() {
   const [wordList, setWordList] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const cols = useEditableCols();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   const setWord = (word: string, value: number | number[]) => {
     cmExer.set({

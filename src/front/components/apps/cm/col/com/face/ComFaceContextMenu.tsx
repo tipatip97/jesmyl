@@ -1,4 +1,4 @@
-import { bottomPopupContentPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
+import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
 import useSelectedComs from '../../../base/useSelectedComs';
 import ComFaceContextMenuEditorItems from '../../../editor/col/compositions/ComFaceContextMenuEditorItems';
@@ -15,34 +15,28 @@ export default function ComFaceContextMenu({ onClick, com }: { onClick: () => vo
   return (
     <>
       {confirmNode}
-      {bottomPopupContentPreparer({
-        items: [
-          {
-            onClick: () => {
-              onClick();
-              toggleMarked(com.wid);
-            },
-            icon: isComMarked ? 'star-outline' : 'star',
-            title: isComMarked ? 'Удалить из Избранного' : 'Добавить в Избранное',
-          },
-          {
-            icon: isSelected(com) ? 'minus-circle-outline' : 'checkmark-circle-2-outline',
-            title: isSelected(com) ? 'Отменить выбор' : 'Выбрать',
-            onClick: () => toggleSelectedCom(com),
-          },
-          selectedComws.length
-            ? [
-                {
-                  onClick: () => {
-                    confirm('Очистить список выбранных?').then(isClear => isClear && clearSelectedComws());
-                  },
-                  icon: 'close-circle-outline',
-                  title: 'Очистить выбранные',
-                },
-              ]
-            : null,
-        ],
-      })}
+      <EvaButton
+        name={isComMarked ? 'star-outline' : 'star'}
+        postfix={isComMarked ? 'Удалить из Избранного' : 'Добавить в Избранное'}
+        onClick={() => {
+          onClick();
+          toggleMarked(com.wid);
+        }}
+      />
+      <EvaButton
+        name={isSelected(com) ? 'minus-circle-outline' : 'checkmark-circle-2-outline'}
+        postfix={isSelected(com) ? 'Отменить выбор' : 'Выбрать'}
+        onClick={() => toggleSelectedCom(com)}
+      />
+      {!selectedComws.length || (
+        <EvaButton
+          name="close-circle-outline"
+          postfix="Очистить выбранные"
+          onClick={() => {
+            confirm('Очистить список выбранных?').then(isClear => isClear && clearSelectedComws());
+          }}
+        />
+      )}
       <ComFaceContextMenuEditorItems />
     </>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import TheButton from '../../../../../complect/Button';
 import EvaButton from '../../../../../complect/eva-icon/EvaButton';
-import useExer from '../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
 import { cmExer } from '../../Cm.store';
@@ -22,7 +22,7 @@ export default function ChordRedactor() {
   const redactableChord: ChordTrack = redactableChords[currentChord];
   const isExists = chords[currentChord];
   const [newNameError, setNewNameError] = useState('');
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   const setExecution = (pack = redactableChords) => {
     const value: ChordPack = {};

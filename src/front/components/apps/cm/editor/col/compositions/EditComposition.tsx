@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
-import useExer from '../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import { NavigationThrowNodeProps } from '../../../../../../complect/nav-configurer/Navigation.model';
 import useCmNav from '../../../base/useCmNav';
 import { CmNavData } from '../../../Cm.model';
@@ -21,7 +21,7 @@ export default function EditComposition({
 }: NavigationThrowNodeProps<CmNavData>) {
   const ccom = useEditableCcom();
   const { goTo } = useCmNav();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const [isOpenPlayer, setIsOpenPlayer] = useState(false);
   const auth = useAuth();
   const connectionNode = useConnectionState('margin-gap');

@@ -1,11 +1,10 @@
-import useExer from '../../../../../../../complect/exer/useExer';
-import { cmExer } from '../../../../Cm.store';
+import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import { translationPushKinds } from '../../../../col/com/Com.complect';
 import { useEditableCcom } from '../useEditableCcom';
 
 export default function ComOnTranslations() {
   const ccom = useEditableCcom();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   if (!ccom) return null;
 

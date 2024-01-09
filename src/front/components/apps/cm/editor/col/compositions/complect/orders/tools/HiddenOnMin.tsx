@@ -1,6 +1,5 @@
 import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
-import useExer from '../../../../../../../../../complect/exer/useExer';
-import { cmExer } from '../../../../../../Cm.store';
+import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsHiddenOnMin = ({
@@ -10,7 +9,7 @@ export const OrdersRedactorOrderToolsHiddenOnMin = ({
   props: OrdersRedactorOrderToolsProps;
   closePopup: () => void;
 }) => {
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   return (
     <>

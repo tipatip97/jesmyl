@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import Dropdown from '../../../../../../complect/dropdown/Dropdown';
-import useExer from '../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
 import LoadIndicatedContent from '../../../../../../complect/load-indicated-content/LoadIndicatedContent';
-import { cmExer } from '../../../Cm.store';
 import { catTrackers } from '../../../col/cat/Cat.complect';
 import ComFace from '../../../col/com/face/ComFace';
 import EditContainerCorrectsInformer from '../../edit-container-corrects-informer/EditContainerCorrectsInformer';
@@ -14,7 +13,7 @@ export default function EditCategory() {
   const ccat = useEditableCcat();
   const [isShowComs, setIsShowComs] = useState(false);
   const [isCleared, setCleared] = useState(false);
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   if (!ccat) return null;
 

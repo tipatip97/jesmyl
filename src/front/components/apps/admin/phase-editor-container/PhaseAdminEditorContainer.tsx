@@ -1,4 +1,4 @@
-import useExer from '../../../../complect/exer/useExer';
+import { useShowExerLookIcon } from '../../../../complect/exer/hooks/look-icon';
 import { PhaseContainerProps } from '../../../../complect/phase-container/PhaseContainerConfigurer.model';
 import { adminExer } from '../adminExer';
 import PhaseAdminContainer from '../complect/PhaseAdmContainer';
@@ -12,7 +12,7 @@ export default function PhaseAdminEditorContainer(props: PhaseContainerProps) {
       head={
         <>
           {props.head}
-          {useExer(adminExer).lookIcon}
+          {useShowExerLookIcon(adminExer)}
         </>
       }
     />

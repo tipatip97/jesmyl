@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
 import EvaIcon from '../complect/eva-icon/EvaIcon';
-import { FULLSCREEN__CONTENT } from '../complect/fullscreen-content/useFullscreenContent';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
 import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
@@ -114,7 +113,6 @@ function App() {
           className="collapse-fullscreen-button pointer"
           onClick={() => switchFullscreen(false)}
         />
-        <FULLSCREEN__CONTENT onOpen={onOpen} />
         <ABSOLUTE__FLOAT__POPUP onOpen={onOpen} />
         <AppRouter appName={appName} />
         <AppFooter appName={appName} />

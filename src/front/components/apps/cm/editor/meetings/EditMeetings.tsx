@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import useExer from '../../../../../complect/exer/useExer';
-import { cmExer } from '../../Cm.store';
+import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
-import EditMeetingsMore from './EditMeetingsMore';
+import { EditMeetingsMore } from './EditMeetingsMore';
 import './Meetings.scss';
 import { useEditableMeetings } from './useEditableMeetings';
 
 export default function EditMeetings() {
   const { meetings, goToEvent } = useEditableMeetings();
-  useExer(cmExer);
+  useExerExec();
   const [currPath, setCurrPath] = useState<number[]>([]);
-  const [popupNode, openPopup] = useBottomPopup(() => <EditMeetingsMore currPath={currPath} />);
+  const [popupNode, openPopup] = useBottomPopup(EditMeetingsMore, currPath);
 
   if (!meetings) return null;
 

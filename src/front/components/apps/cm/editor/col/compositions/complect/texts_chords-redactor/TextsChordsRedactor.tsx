@@ -1,14 +1,13 @@
 import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
-import useExer from '../../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
-import { cmExer } from '../../../../../Cm.store';
 import EditContainerCorrectsInformer from '../../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCcom } from '../../useEditableCcom';
 import TextAreaRedactor from './TextAreaRedactor';
 
 export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chords' }) {
   const ccom = useEditableCcom();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   if (!ccom) return null;
 

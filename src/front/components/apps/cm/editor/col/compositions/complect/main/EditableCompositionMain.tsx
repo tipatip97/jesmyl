@@ -1,6 +1,6 @@
 import { useConfirm } from '../../../../../../../../complect/modal/confirm/useConfirm';
 import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
-import useExer from '../../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
 import useAuth from '../../../../../../../index/useAuth';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
@@ -12,7 +12,7 @@ import { EditableCompositionMainTon } from './Ton';
 
 export default function EditableCompositionMain() {
   const ccom = useEditableCcom();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const auth = useAuth();
   const [confirmNode, confirm] = useConfirm();
 

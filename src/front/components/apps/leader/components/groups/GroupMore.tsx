@@ -13,9 +13,9 @@ export const LeaderGroupMoreContenter: BottomPopupContenter<{
     />
   ));
 
-  return (
-    isOpen && [
-      groupMasterNode,
+  return [
+    groupMasterNode,
+    isOpen &&
       prepare({
         items: [
           {
@@ -25,6 +25,5 @@ export const LeaderGroupMoreContenter: BottomPopupContenter<{
           },
         ],
       }),
-    ]
-  );
+  ];
 };

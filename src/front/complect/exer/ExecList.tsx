@@ -7,7 +7,7 @@ import LoadIndicatedContent from '../load-indicated-content/LoadIndicatedContent
 import useToast from '../modal/useToast';
 import { Exer } from './Exer';
 import { ExerStorage } from './Exer.model';
-import useExer from './useExer';
+import { useExerExec } from './hooks/useExer';
 
 export default function ExecList<Storage extends ExerStorage>({
   exer,
@@ -17,10 +17,10 @@ export default function ExecList<Storage extends ExerStorage>({
   onLoad: () => void;
 }) {
   const dispatch = useDispatch();
-  const { execs } = useExer(exer);
-  const isDisabledSendButton = execs.some(exec => exec.corrects?.errors?.length);
+  const isDisabledSendButton = exer.execs.some(exec => exec.corrects?.errors?.length);
   const [readyState, setReadyState] = useState(1);
   const [toastNode, toast] = useToast();
+  useExerExec();
 
   return (
     <div className="full-container">
@@ -30,7 +30,7 @@ export default function ExecList<Storage extends ExerStorage>({
         onLoaded={() => readyState !== 2 && onLoad()}
       >
         <div className="flex center column">
-          {execs.map(exec => {
+          {exer.execs.map(exec => {
             return (
               <EditContainerCorrectsInformer
                 key={`exec-list*${exec.scope}+${exec.id}`}

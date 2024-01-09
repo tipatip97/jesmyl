@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ComplectState, ComplectStorage } from './Complect.model';
-import { FullScreenContentOpenMode } from './fullscreen-content/useFullscreenContent';
+import { FullContentOpenMode } from './fullscreen-content/useFullContent';
 import { JStorage } from './JStorage';
 import { NavigationStorage } from './nav-configurer/Navigation.model';
 
@@ -22,7 +22,7 @@ export const slice = createSlice({
   name: 'complect',
   initialState,
   reducers: {
-    setFullscreenContentOpenMode: (state, action: PayloadAction<FullScreenContentOpenMode>) => {
+    setFullscreenContentOpenMode: (state, action: PayloadAction<FullContentOpenMode>) => {
       state.fullscreenContentOpenMode = action.payload;
     },
     switchComplectFullscreen: (state, action: PayloadAction<boolean | nil>) => {

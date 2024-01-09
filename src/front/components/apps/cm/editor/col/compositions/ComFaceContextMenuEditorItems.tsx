@@ -1,39 +1,41 @@
-import { bottomPopupContentPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
-import useExer from '../../../../../../complect/exer/useExer';
-import useFullscreenContent from '../../../../../../complect/fullscreen-content/useFullscreenContent';
+import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
+import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
+import useFullContent from '../../../../../../complect/fullscreen-content/useFullContent';
 import useSelectedComs from '../../../base/useSelectedComs';
-import { cmExer } from '../../../Cm.store';
 import MeetingsInner from '../../../lists/meetings/MeetingsInner';
 import { useEditableMeetings } from '../../meetings/useEditableMeetings';
 
 export default function ComFaceContextMenuEditorItems() {
-  const { openFullscreenContent, closeFullscreenContent } = useFullscreenContent();
   const { meetings, goToEvent } = useEditableMeetings();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
   const { selectedComws } = useSelectedComs();
 
-  return bottomPopupContentPreparer({
-    items: [
-      selectedComws.length
-        ? {
-            title: 'Выбранные в событие',
-            icon: 'calendar-outline',
-            onClick: () =>
-              meetings &&
-              openFullscreenContent(
-                <div className="full-container padding-big-gap">
-                  <MeetingsInner
-                    meetings={meetings}
-                    onEventClick={event => {
-                      exec(event.mergeStack(selectedComws));
-                      goToEvent(event.wid);
-                      closeFullscreenContent();
-                    }}
-                  />
-                </div>,
-              ),
-          }
-        : null,
-    ],
-  });
+  const [fullNode, openFullContent] = useFullContent(
+    close =>
+      meetings && (
+        <div className="full-container padding-big-gap">
+          <MeetingsInner
+            meetings={meetings}
+            onEventClick={event => {
+              exec(event.mergeStack(selectedComws));
+              goToEvent(event.wid);
+              close();
+            }}
+          />
+        </div>
+      ),
+  );
+
+  return (
+    <>
+      {fullNode}
+      {!selectedComws.length || (
+        <EvaButton
+          name="calendar-outline"
+          postfix="Выбранные в событие"
+          onClick={() => openFullContent()}
+        />
+      )}
+    </>
+  );
 }

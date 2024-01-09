@@ -1,6 +1,5 @@
-import useExer from '../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
-import { cmExer } from '../../../../Cm.store';
 import EditContainerCorrectsInformer from '../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCols } from '../../useEditableCols';
 import { useEditableCcom } from '../useEditableCcom';
@@ -8,7 +7,7 @@ import { useEditableCcom } from '../useEditableCcom';
 export default function CategoryBinds() {
   const cols = useEditableCols();
   const ccom = useEditableCcom();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   if (!ccom) return null;
 

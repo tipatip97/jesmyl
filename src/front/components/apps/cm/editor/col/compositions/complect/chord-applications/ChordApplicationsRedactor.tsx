@@ -1,6 +1,5 @@
-import useExer from '../../../../../../../../complect/exer/useExer';
+import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
-import { cmExer } from '../../../../../Cm.store';
 import ComLine from '../../../../../col/com/line/ComLine';
 import TheOrder from '../../../../../col/com/order/TheOrder';
 import { useEditableCcom } from '../../useEditableCcom';
@@ -8,7 +7,7 @@ import './ChordApplicationsRedactor.scss';
 
 export default function ChordApplicationsRedactor() {
   const ccom = useEditableCcom();
-  const { exec } = useExer(cmExer);
+  const exec = useExerExec();
 
   return (
     <div className="chord-application-redactor">

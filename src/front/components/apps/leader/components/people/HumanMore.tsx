@@ -68,12 +68,12 @@ export const HumanMoreContenter: BottomPopupContenter<{
     );
   });
 
-  return (
-    isOpen && [
-      <>
-        {humanMasterNode}
-        {groupsPopupNode}
-      </>,
+  return [
+    <>
+      {humanMasterNode}
+      {groupsPopupNode}
+    </>,
+    isOpen && (
       <>
         {prepare({
           items: [
@@ -90,7 +90,7 @@ export const HumanMoreContenter: BottomPopupContenter<{
           ],
         })}
         {typeof humanMoreAdditions === 'function' ? humanMoreAdditions(human) : humanMoreAdditions}
-      </>,
-    ]
-  );
+      </>
+    ),
+  ];
 };
