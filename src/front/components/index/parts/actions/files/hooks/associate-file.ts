@@ -9,7 +9,7 @@ export const useAssociateTheFileType = () => {
   const associates = useMyFilesAssociates();
   return useMemo(() => {
     return (file: File): MyFileType => {
-      const ext = file.name.replace(extReg, '$1');
+      const ext = file.name.replace(extReg, '$1').toLowerCase();
       return (associates && mylib.keys(associates).find(type => associates[type].extensions.includes(ext))) ?? 'other';
     };
   }, [associates]);
