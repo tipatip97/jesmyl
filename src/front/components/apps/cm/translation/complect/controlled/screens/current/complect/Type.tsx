@@ -31,8 +31,6 @@ export const CmTranslateCurrentScreenConfigurationType = ({
   configsStateRef: CmTranslationConfigsRef;
   currentConfig: TrnslationScreenConfig;
 }) => {
-  const { updateConfig } = configsStateRef.current;
-
   return (
     <>
       <div className="flex flex-gap flex-max">
@@ -40,7 +38,7 @@ export const CmTranslateCurrentScreenConfigurationType = ({
         <Dropdown
           id={currentConfig.fontWeight}
           items={items}
-          onSelectId={fontWeight => updateConfig({ fontWeight })}
+          onSelectId={fontWeight => configsStateRef.current.updateConfig({ fontWeight })}
         />
       </div>
     </>

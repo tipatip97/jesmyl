@@ -12,10 +12,9 @@ export const CmTranslateCurrentScreenConfigurationProportions = ({
   configsStateRef: CmTranslationConfigsRef;
   currentConfig: TrnslationScreenConfig;
 }) => {
-  const { updateConfig } = configsStateRef.current;
   const [paddingHPx, setPaddingHPx] = useState(currentConfig.paddingHPx);
   const [paddingVPx, setPaddingVPx] = useState(currentConfig.paddingVPx);
-  const update = useDebounceAction(updateConfig);
+  const update = useDebounceAction(configsStateRef.current.updateConfig);
 
   useEffect(() => {
     setPaddingHPx(currentConfig.paddingHPx);
@@ -67,7 +66,7 @@ export const CmTranslateCurrentScreenConfigurationProportions = ({
           <EvaButtonSt
             $isActive={currentConfig.paddingFix}
             name={currentConfig.paddingFix ? 'lock-outline' : 'unlock-outline'}
-            onClick={() => updateConfig({ paddingFix: !currentConfig.paddingFix })}
+            onClick={() => configsStateRef.current.updateConfig({ paddingFix: !currentConfig.paddingFix })}
           />
         </div>
       </div>

@@ -1,6 +1,5 @@
 import Dropdown from '../../../../../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../../../../../complect/dropdown/Dropdown.model';
-import { useDebounceAction } from '../../../../../../../../../complect/useDebounceAction';
 import { CmTranslationConfigsRef } from '../../../hooks/configs';
 import { TrnslationScreenConfig } from '../../../model';
 
@@ -37,8 +36,6 @@ export const CmTranslateCurrentScreenConfigurationTextAlign = ({
   configsStateRef: CmTranslationConfigsRef;
   currentConfig: TrnslationScreenConfig;
 }) => {
-  const update = useDebounceAction(configsStateRef.current.updateConfig);
-
   return (
     <>
       <div className="flex flex-gap flex-max">
@@ -46,7 +43,7 @@ export const CmTranslateCurrentScreenConfigurationTextAlign = ({
         <Dropdown
           id={currentConfig.textAlign}
           items={items}
-          onSelectId={textAlign => update({ textAlign })}
+          onSelectId={textAlign => configsStateRef.current.updateConfig({ textAlign })}
         />
       </div>
     </>
