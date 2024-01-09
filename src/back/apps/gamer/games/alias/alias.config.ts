@@ -190,6 +190,9 @@ export const aliasGameConfig: ActionBox = {
             const scores = state.teams.map((team, teami) => (currTeami === teami ? score : team.score));
             const maxScore = Math.max(...scores);
             value.wins = scores.map((score, scorei) => (score === maxScore ? scorei : null!)).filter(itNNull);
+          } else {
+            value.wordsi = state.wordsi + 1;
+            value.winfo = winfos[state.wordsi + 1];
           }
 
           return {
@@ -239,17 +242,16 @@ export const aliasGameConfig: ActionBox = {
       if (winfos[state.wordsi + 1] == null) return;
 
       return {
-        '/wordsi': {
-          method: 'formula',
-          value: 'X + 1',
-        },
-        '/winfo': {
-          method: 'set',
-          value: winfos[state.wordsi + 1],
+        '/': {
+          method: 'set_all',
+          value: {
+            wordsi: state.wordsi + 1,
+            winfo: winfos[state.wordsi + 1],
+          },
         },
         '/{scope}': {
           method: 'push',
-          value: winfos[state.wordsi],
+          value: state.winfo,
         },
       };
     },
