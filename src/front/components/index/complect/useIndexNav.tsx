@@ -1,4 +1,3 @@
-import modalService from '../../../complect/modal/Modal.service';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
@@ -20,9 +19,7 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
   rootPhase: null,
   jumpByLink: {
     swInvite: (value, key, alt) => {
-      serviceMaster('index')<string>(key, value)
-        .then(text => modalService.alert(text, 'Успех'))
-        .catch(errorMessage => modalService.alert(errorMessage));
+      serviceMaster('index')<string>(key, value);
 
       return alt.Reject;
     },

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import EditContainerCorrectsInformer from '../../components/apps/cm/editor/edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { riseUpExerUpdates } from '../Complect.store';
 import EvaIcon from '../eva-icon/EvaIcon';
 import LoadIndicatedContent from '../load-indicated-content/LoadIndicatedContent';
-import EditContainerCorrectsInformer from '../../components/apps/cm/editor/edit-container-corrects-informer/EditContainerCorrectsInformer';
+import useToast from '../modal/useToast';
 import { Exer } from './Exer';
 import { ExerStorage } from './Exer.model';
 import useExer from './useExer';
-import modalService from '../modal/Modal.service';
 
 export default function ExecList<Storage extends ExerStorage>({
   exer,
@@ -20,9 +20,11 @@ export default function ExecList<Storage extends ExerStorage>({
   const { execs } = useExer(exer);
   const isDisabledSendButton = execs.some(exec => exec.corrects?.errors?.length);
   const [readyState, setReadyState] = useState(1);
+  const [toastNode, toast] = useToast();
 
   return (
     <div className="full-container">
+      {toastNode}
       <LoadIndicatedContent
         isLoading={!readyState}
         onLoaded={() => readyState !== 2 && onLoad()}
@@ -51,7 +53,7 @@ export default function ExecList<Storage extends ExerStorage>({
                   setReadyState(1);
                 })
                 .catch(error => {
-                  modalService.alert(error, 'Ошибка');
+                  toast(error, { mood: 'ko' });
                   setReadyState(2);
                 });
             }}

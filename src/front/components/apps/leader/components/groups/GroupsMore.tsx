@@ -4,27 +4,29 @@ import PrintableBottomItem from '../PrintableBottomItem';
 import QRQuest from '../templates/QRQuest';
 import LeaderGroupMaster from './GroupMaster';
 
-export const LeaderGroupsMore: BottomPopupContenter = (close, prepare) => {
+export const LeaderGroupsMore: BottomPopupContenter = (isOpen, close, prepare) => {
   const [groupMasterNode, openGroupMaster] = useFullContent(close => <LeaderGroupMaster close={close} />);
 
-  return [
-    groupMasterNode,
-    <>
-      {prepare({
-        items: [
-          {
-            title: 'Новая группа',
-            icon: 'plus-circle-outline',
-            onClick: () => openGroupMaster(),
-          },
-        ],
-      })}
-      <PrintableBottomItem
-        title="QR квест точки"
-        node={<QRQuest />}
-        close={close}
-        prepare={prepare}
-      />
-    </>,
-  ];
+  return (
+    isOpen && [
+      groupMasterNode,
+      <>
+        {prepare({
+          items: [
+            {
+              title: 'Новая группа',
+              icon: 'plus-circle-outline',
+              onClick: () => openGroupMaster(),
+            },
+          ],
+        })}
+        <PrintableBottomItem
+          title="QR квест точки"
+          node={<QRQuest />}
+          close={close}
+          prepare={prepare}
+        />
+      </>,
+    ]
+  );
 };

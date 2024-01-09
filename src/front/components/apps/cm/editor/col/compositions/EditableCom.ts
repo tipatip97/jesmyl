@@ -677,7 +677,10 @@ export class EditableCom extends Com {
     const anchor = ord.takeUniq();
     const wid = this.getNextOrdWid();
 
-    this.exec({
+    this.ords.push({ a: anchor, w: wid, header: () => '' });
+    this.afterOrderChange();
+
+    return this.exec({
       action: 'comAddOrderAnchorBlock',
       method: 'push',
       args: {
@@ -686,9 +689,6 @@ export class EditableCom extends Com {
         blockn: ord.top.header?.(),
       },
     });
-
-    this.ords.push({ a: anchor, w: wid, header: () => '' });
-    this.afterOrderChange();
   }
 
   setTransPosition(value: number | und) {

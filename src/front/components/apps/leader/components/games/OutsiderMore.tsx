@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { BottomPopupContenterPreparer } from '../../../../../complect/absolute-popup/bottom-popup/model';
-import modalService from '../../../../../complect/modal/Modal.service';
+import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import EvaCheckbox from '../../../../../complect/eva-icon/EvaCheckbox';
+import useModal from '../../../../../complect/modal/useModal';
 import { TeamGameImportable } from '../../Leader.model';
 import { leaderExer } from '../../Leader.store';
 import { HumanImportable } from '../people/People.model';
@@ -14,45 +17,62 @@ export default function OutsiderMore({
   game: TeamGameImportable;
   prepare: BottomPopupContenterPreparer;
 }) {
-  return prepare({
-    items: [
-      {
-        title: 'Определить в команду',
-        icon: 'person-add-outline',
-        onClick: () => {
-          let targetTeam: GameTeamImportable;
+  const [targetTeam, setTargetTeam] = useState<GameTeamImportable | und>();
 
-          modalService.open({
-            description: `В какую команду определить участни${human.isMan ? 'ка' : 'цу'} ${human.name}?`,
-            inputs: game.teams?.map(team => {
-              return {
-                value: team.name,
-                type: 'button',
-                closable: false,
-                onClick: () => (targetTeam = team),
-              };
-            }),
-            buttons: [
-              'Отмена',
-              {
-                title: () => `Добавить в ${targetTeam?.name}`,
-                hidden: () => !targetTeam,
-                onClick: () => {
-                  leaderExer.send({
-                    action: 'addMemberToTeam',
-                    method: 'push',
-                    args: {
-                      humanw: human.w,
-                      teamw: targetTeam.w,
-                      gamew: game.w,
-                    },
-                  });
-                },
-              },
-            ],
-          });
-        },
-      },
-    ],
+  const [modalNode, openModal] = useModal(({ header, body, footer }, closeModal) => {
+    return (
+      <>
+        {header(<>{`В какую команду определить участни${human.isMan ? 'ка' : 'цу'} ${human.name}?`}</>)}
+        {body(
+          <>
+            {game.teams?.map(team => {
+              return (
+                <EvaCheckbox
+                  postfix={team.name}
+                  onChange={() => setTargetTeam(team)}
+                />
+              );
+            })}
+          </>,
+        )}
+        {footer(
+          <div>
+            <EvaButton
+              name="slash"
+              postfix="Отмена"
+              onClick={closeModal}
+            />
+            <EvaButton
+              name="checkmark-circle-outline"
+              postfix={targetTeam?.name}
+              onClick={() => {
+                if (targetTeam === undefined) return;
+
+                leaderExer.send({
+                  action: 'addMemberToTeam',
+                  method: 'push',
+                  args: {
+                    humanw: human.w,
+                    teamw: targetTeam.w,
+                    gamew: game.w,
+                  },
+                });
+              }}
+            />
+          </div>,
+        )}
+      </>
+    );
   });
+
+  return (
+    <>
+      {modalNode}
+      <EvaButton
+        name="person-add-outline"
+        postfix="Определить в команду"
+        onClick={openModal}
+      />
+    </>
+  );
 }

@@ -5,7 +5,7 @@ import { LeaderGroupImportable } from './Groups.model';
 
 export const LeaderGroupMoreContenter: BottomPopupContenter<{
   group?: LeaderGroupImportable;
-}> = (_, prepare, { group }) => {
+}> = (isOpen, _, prepare, { group }) => {
   const [groupMasterNode, openGroupMaster] = useFullContent(close => (
     <LeaderGroupMaster
       close={close}
@@ -13,16 +13,18 @@ export const LeaderGroupMoreContenter: BottomPopupContenter<{
     />
   ));
 
-  return [
-    groupMasterNode,
-    prepare({
-      items: [
-        {
-          title: 'Редактировать',
-          icon: 'edit-outline',
-          onClick: () => openGroupMaster(),
-        },
-      ],
-    }),
-  ];
+  return (
+    isOpen && [
+      groupMasterNode,
+      prepare({
+        items: [
+          {
+            title: 'Редактировать',
+            icon: 'edit-outline',
+            onClick: () => openGroupMaster(),
+          },
+        ],
+      }),
+    ]
+  );
 };

@@ -1,7 +1,8 @@
 import { ReactNode, useEffect, useState } from 'react';
+import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
-import modalService from '../../../../../../complect/modal/Modal.service';
+import { useActualRef } from '../../../../../../complect/useActualRef';
 import useIsRedactArea from '../../../../../../complect/useIsRedactArea';
 import { ContextFieldBlankExportable, contextFieldBlankTypeDictAliases } from './Blanks.model';
 
@@ -80,39 +81,46 @@ export default function ContextFieldBlank({
     ['Конечное значение', valueNode],
   ];
 
+  const onRedactRef = useActualRef(onRedact);
+
   useEffect(() => {
     if (isInit) {
       setIsInit(false);
       return;
     }
-    onRedact?.({ name, def, type, value, key });
-  }, [name, def, type, value, key]);
+    onRedactRef.current?.({ name, def, type, value, key });
+  }, [name, def, type, value, key, isInit, onRedactRef]);
+
+  const [confirmNode, confirm] = useConfirm();
 
   return (
-    <div className="margin-gap padding-gap border--3 relative">
-      <div className="flex flex-end full-width">
-        {addition ? (
-          <EvaIcon
-            name="close"
-            onClick={async () => {
-              if (await modalService.confirm(`Удалить бланк ${name || key}?`)) onDelete?.();
-            }}
-          />
-        ) : (
-          <span className="absolute pos-right pos-top margin-gap">{editIcon}</span>
-        )}
+    <>
+      {confirmNode}
+      <div className="margin-gap padding-gap border--3 relative">
+        <div className="flex flex-end full-width">
+          {addition ? (
+            <EvaIcon
+              name="close"
+              onClick={async () => {
+                if (await confirm(`Удалить бланк ${name || key}?`)) onDelete?.();
+              }}
+            />
+          ) : (
+            <span className="absolute pos-right pos-top margin-gap">{editIcon}</span>
+          )}
+        </div>
+        {net.map(([title, node]) => {
+          return (
+            <div
+              key={title}
+              className="flex flex-gap margin-gap-v"
+            >
+              <span className="nowrap">{title}</span>
+              <span className="color--3 user-select full-width">{node || ' - '}</span>
+            </div>
+          );
+        })}
       </div>
-      {net.map(([title, node]) => {
-        return (
-          <div
-            key={title}
-            className="flex flex-gap margin-gap-v"
-          >
-            <span className="nowrap">{title}</span>
-            <span className="color--3 user-select full-width">{node || ' - '}</span>
-          </div>
-        );
-      })}
-    </div>
+    </>
   );
 }

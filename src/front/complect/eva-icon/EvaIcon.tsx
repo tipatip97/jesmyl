@@ -13,12 +13,7 @@ MyLib.entries(pack).forEach(([icon, __html]) => {
 
 export const evaPackNames: EvaIconName[] = MyLib.keys(pack);
 
-export default function EvaIcon(
-  props: HTMLAttributes<HTMLOrSVGElement> & {
-    name: EvaIconName;
-    alt?: string;
-  },
-) {
+export default function EvaIcon(props: HTMLAttributes<HTMLOrSVGElement> & { name: EvaIconName }) {
   return (
     <>
       {iconInners[props.name] && (

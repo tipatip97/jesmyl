@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import TheButton from '../../../../../../complect/Button';
+import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
-import modalService from '../../../../../../complect/modal/Modal.service';
 import RoomMemberFace from '../../../complect/GamerRoomMemberFace';
 import { useGamerOfflineRoom } from '../../../complect/rooms/offline-room/hooks/current-room';
 import { useGamerOfflineRoomsPassport } from '../../../complect/rooms/offline-room/hooks/passport';
 import { useGamerOfflineRoomsPlayers } from '../../../complect/rooms/offline-room/hooks/players';
 import SpyShowMyRole from '../SpyShowMyRole';
-import { unsecretSpyRole } from '../hooks/locations';
 import { useSpyExcludeMember } from '../hooks/actions';
+import { unsecretSpyRole } from '../hooks/locations';
 import { useSpyOfflineRoomShareGameData } from './hooks/share-game';
 import { useGamerOfflineCurrentRoomSpies } from './hooks/spies';
 import { useSpyOfflineRoomState } from './hooks/state';
@@ -22,6 +22,7 @@ export default function SpyOfflineRoomStartedGame() {
   const shareGameData = useSpyOfflineRoomShareGameData();
   const state = useSpyOfflineRoomState(currentOfflineRoom);
   const spies = useGamerOfflineCurrentRoomSpies(state, players);
+  const [confirmNode, confirm] = useConfirm();
 
   const { finishGame } = useSpyOfflineRoomStateUpdaters();
 
@@ -33,6 +34,7 @@ export default function SpyOfflineRoomStartedGame() {
 
   return (
     <>
+      {confirmNode}
       {currentOfflineRoom && (
         <>
           <h2 className="flex center">Игра #{state?.iterations}</h2>
@@ -61,10 +63,8 @@ export default function SpyOfflineRoomStartedGame() {
                       : 'Шпион'
                     : ''
                 }
-                onClick={() => {
-                  modalService.confirm('Участник выбыл?', 'Выбыл', 'Да', 'Отмена').then(isRetire => {
-                    if (isRetire) excludeMember(member.login);
-                  });
+                onClick={async () => {
+                  if (await confirm('Участник выбыл?', 'Выбыл')) excludeMember(member.login);
                 }}
               />
             );

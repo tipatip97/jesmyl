@@ -16,6 +16,7 @@ export type BottomPopupSkeletIcon = AbsoluteBottomPopupItem | nil | false | Bott
 
 export type BottomPopupContenterPreparer = (props: BottomPopupContentProps) => JSX.Element;
 export type BottomPopupContenter<Props = {}> = (
+  isOpen: boolean,
   close: () => void,
   prepare: BottomPopupContenterPreparer,
   props: Props,
@@ -25,6 +26,7 @@ export type BottomPopupContenter<Props = {}> = (
       ReactNode /* popup content node */,
       ReactNode? /* permanent after open popup node */,
     ]
+  | false
   | JSX.Element
   | nil;
 

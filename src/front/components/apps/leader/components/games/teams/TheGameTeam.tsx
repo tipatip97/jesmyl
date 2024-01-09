@@ -25,17 +25,19 @@ export default function TheGameTeam({
   const [memberw, setMemberw] = useState(0);
   const { contextMembers } = useLeaderContext();
   const teamMembers = LeaderCleans.extractWidables(contextMembers, team.members);
-  const [memberMoreNode, openMemberMore] = useBottomPopup((_, prepare) => {
+  const [memberMoreNode, openMemberMore] = useBottomPopup((isOpen, _, prepare) => {
     const member = teamMembers.find(member => member.w === memberw);
     if (member === undefined) return null;
 
     return (
-      <GameTeamMemberMore
-        human={member}
-        team={team}
-        game={game}
-        prepare={prepare}
-      />
+      isOpen && (
+        <GameTeamMemberMore
+          human={member}
+          team={team}
+          game={game}
+          prepare={prepare}
+        />
+      )
     );
   });
 

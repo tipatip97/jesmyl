@@ -1,4 +1,4 @@
-import modalService from '../../../../../../../complect/modal/Modal.service';
+import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
 
 export default function TimerResetButton({
   onTimerReset,
@@ -7,18 +7,23 @@ export default function TimerResetButton({
   onTimerReset: () => void;
   isCanReset: boolean;
 }) {
+  const [confirmNode, confirm] = useConfirm();
+
   return (
-    <div className="flex around flex-gap margin-big-gap">
-      {isCanReset && (
-        <span
-          className="pointer error-message"
-          onClick={() => {
-            modalService.confirm('Сброс?').then(reset => reset && onTimerReset());
-          }}
-        >
-          Сброс
-        </span>
-      )}
-    </div>
+    <>
+      {confirmNode}
+      <div className="flex around flex-gap margin-big-gap">
+        {isCanReset && (
+          <span
+            className="pointer error-message"
+            onClick={() => {
+              confirm('Сброс?').then(reset => reset && onTimerReset());
+            }}
+          >
+            Сброс
+          </span>
+        )}
+      </div>
+    </>
   );
 }

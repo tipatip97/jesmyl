@@ -34,6 +34,7 @@ export const CmTranslateScreenConfigurationsFace = ({ configi, config }: Props) 
       <span>{config.title}</span>
       <EvaButton
         name="close"
+        confirm="Закрыть окно?"
         onClick={event => {
           event.stopPropagation();
           updateConfig(null, configi);

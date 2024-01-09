@@ -2,13 +2,13 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { ReactNode } from 'react';
 import { LocalSokiAuth, SokiServerEvent } from '../../../../back/complect/soki/soki.model';
 import { EvaIconName } from '../../../complect/eva-icon/EvaIcon';
-import modalService from '../../../complect/modal/Modal.service';
 import mylib from '../../../complect/my-lib/MyLib';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { INavigationRouteChildItem, UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import { QRCodeReaderData } from '../../../complect/qr-code/QRCodeMaster.model';
 import Gamer from './Gamer';
+import { GamerGameName, GamerRoom } from './Gamer.back-model';
 import { GamerNavData, GamerPassport, GamerStorage } from './Gamer.model';
 import di from './Gamer.store';
 import GamerApp from './GamerApp';
@@ -22,7 +22,6 @@ import { toStopAliasGame } from './games/alias/hooks/execs';
 import SpyRoomContent from './games/spy/SpyRoomContent';
 import { SPY_ROLE, unsecretSpyRole } from './games/spy/hooks/locations';
 import { OfflineGameShare } from './games/spy/offline-room/SpyOfflineRoom.model';
-import { GamerGameName, GamerRoom } from './Gamer.back-model';
 
 interface GameData {
   icon: EvaIconName;
@@ -78,10 +77,8 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
         if (!members) return;
         const md5passport = mylib.md5(passport.login);
         const memberi = members.indexOf(md5passport);
-        if (memberi < 0) {
-          modalService.alert('Ты не в игре');
-          return;
-        } else {
+        if (memberi < 0) return;
+        else {
           const newMembers = [...members];
           newMembers[memberi] = '.';
 

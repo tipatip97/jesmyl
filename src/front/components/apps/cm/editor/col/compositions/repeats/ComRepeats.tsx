@@ -1,18 +1,17 @@
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useState } from 'react';
+import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
 import EvaIcon from '../../../../../../../complect/eva-icon/EvaIcon';
 import useExer from '../../../../../../../complect/exer/useExer';
-import modalService from '../../../../../../../complect/modal/Modal.service';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
 import { ChordVisibleVariant } from '../../../../Cm.model';
 import { cmExer } from '../../../../Cm.store';
 import ComLine from '../../../../col/com/line/ComLine';
-import { Order } from '../../../../col/com/order/Order';
 import { OrderRepeats } from '../../../../col/com/order/Order.model';
 import TheOrder from '../../../../col/com/order/TheOrder';
 import { EditableOrder } from '../complect/orders/EditableOrder';
 import { useEditableCcom } from '../useEditableCcom';
 import { IEditableComLineProps } from './ComRepeats.model';
 import './ComRepeats.scss';
+import { ComRepeatsRemoveButton } from './complect/RemoveButton';
 
 export default function ComRepeats() {
   const { exec } = useExer(cmExer);
@@ -22,11 +21,9 @@ export default function ComRepeats() {
   const [isChordBlock, setIsChordBlock] = useState(false);
   const [isReadySetChordBlock, setIsReadySetChordBlock] = useState(false);
   const [flashCount, setFlashCount] = useState(2);
+  const [confirmNode, confirm] = useConfirm();
 
   const ccom = useEditableCcom();
-  const startFlash = '/';
-  const finishFlash = '\\';
-  const flashDivider = '&nbsp;';
   const coln = 'r';
   const { textLinei: startLinei, wordi: startWordi, orderUnit: startOrd } = start || {};
   let startedFlashes = 0;
@@ -34,17 +31,26 @@ export default function ComRepeats() {
   let isInRegion = false;
   let isRegionEnds = false;
 
-  const setField = (ord?: EditableOrder, repeateds?: OrderRepeats | nil, prevs?: OrderRepeats | nil) => {
-    if (!ord) return;
+  const setField = useCallback(
+    (ord?: EditableOrder, repeateds?: OrderRepeats | nil, prevs?: OrderRepeats | nil) => {
+      if (!ord) return;
 
-    const reps = typeof prevs === 'number' ? { '.': prevs } : prevs || {};
-    const repds = typeof repeateds === 'number' ? { '.': repeateds } : repeateds || {};
-    const repeats = { ...reps, ...repds };
-    const keys = Object.keys(repeats);
-    if (repeats['.'] === 0) delete repeats['.'];
+      const reps = typeof prevs === 'number' ? { '.': prevs } : prevs || {};
+      const repds = typeof repeateds === 'number' ? { '.': repeateds } : repeateds || {};
+      const repeats = { ...reps, ...repds };
+      const keys = Object.keys(repeats);
+      if (repeats['.'] === 0) delete repeats['.'];
 
-    exec(ord.setField(coln, keys.length ? (keys.length === 1 && keys[0] === '.' ? repeats['.'] : repeats) : 0));
-  };
+      exec(ord.setField(coln, keys.length ? (keys.length === 1 && keys[0] === '.' ? repeats['.'] : repeats) : 0));
+    },
+    [exec],
+  );
+
+  const reset = useCallback(() => {
+    setStart(null);
+    setFlashCount(2);
+    setIsChordBlock(false);
+  }, []);
 
   useEffect(() => {
     if (isReadySetChordBlock) {
@@ -52,16 +58,11 @@ export default function ComRepeats() {
       reset();
       setIsReadySetChordBlock(false);
     }
-  }, [flashCount, isReadySetChordBlock, startOrd]);
-
-  const reset = () => {
-    setStart(null);
-    setFlashCount(2);
-    setIsChordBlock(false);
-  };
+  }, [flashCount, isReadySetChordBlock, reset, setField, startOrd]);
 
   return (
     <div className={`com-repeats-editor ${start == null ? '' : 'active'}`}>
+      {confirmNode}
       {ccom?.orders?.map((ord, ordi) => {
         if (!ord.isVisible) return null;
 
@@ -116,7 +117,7 @@ export default function ComRepeats() {
                           name="pin-outline"
                           className={`vertical-middle pointer ${ord.isInheritValue('r') ? 'disabled' : ''}`}
                           onClick={() => {
-                            modalService.confirm('Очистить собственные правила повторения?').then(isClear => {
+                            confirm('Очистить собственные правила повторения?').then(isClear => {
                               if (isClear) exec(ord.removeInheritance('r'));
                             });
                           }}
@@ -258,129 +259,16 @@ export default function ComRepeats() {
                   >
                     <EvaIcon name="close-outline" />
                   </div>
-                  {!flashes.length ? null : (
-                    <div
-                      className="button remove"
-                      onClick={async event => {
-                        event.stopPropagation();
-
-                        if (isChordBlock) {
-                          if (
-                            await modalService.confirm(
-                              `Сбросить повторения блока "${startOrd.top.header?.() || ''}"?`,
-                              'Сброс',
-                            )
-                          ) {
-                            startOrd.setField(coln, 0);
-                            reset();
-                          }
-                          return;
-                        }
-
-                        modalService.open({
-                          title: 'Сброс границ',
-                          inputs: ord.regions
-                            ?.filter(({ startLinei, startWordi }) => textLinei === startLinei && wordi === startWordi)
-                            .map(flash => {
-                              const { startLinei, startWordi, endLinei, endWordi, startOrd, endOrd, startKey, count } =
-                                flash;
-                              const fill = (
-                                ord?: Order,
-                                l?: number | nil,
-                                w?: number | nil,
-                                isBeg?: boolean,
-                                fl?: number | und,
-                                fw?: number | und,
-                              ) => {
-                                const lines = (ord?.text || '').split(/\n+/);
-                                return (
-                                  isBeg ? lines.slice(l || 0, fl == null ? fl : fl + 1) : lines.slice(0, (l || 0) + 1)
-                                )
-                                  .map(line =>
-                                    (isBeg
-                                      ? (line || '').split(/ +/).slice(w || 0, fw == null ? fw : fw + 1)
-                                      : (line || '').split(/ +/).slice(0, (w || 0) + 1)
-                                    ).join(' '),
-                                  )
-                                  .join('\n');
-                              };
-
-                              const text =
-                                startFlash.repeat(count || 0) +
-                                flashDivider +
-                                ((startKey || '').startsWith('~')
-                                  ? fill(
-                                      startOrd,
-                                      startLinei,
-                                      startWordi,
-                                      true,
-                                      startLinei ?? undefined,
-                                      startWordi ?? undefined,
-                                    )
-                                  : startOrd === endOrd
-                                    ? fill(
-                                        startOrd,
-                                        startLinei,
-                                        startWordi,
-                                        true,
-                                        endLinei ?? undefined,
-                                        endWordi ?? undefined,
-                                      )
-                                    : `${fill(startOrd, startLinei, startWordi, true)}\n...\n${fill(
-                                        endOrd,
-                                        startLinei,
-                                        startWordi,
-                                        false,
-                                      )}`) +
-                                flashDivider +
-                                finishFlash.repeat(count || 0);
-
-                              return {
-                                title: <pre dangerouslySetInnerHTML={{ __html: text }} />,
-                                value: 'Очистить границы',
-                                type: 'button',
-                                closable: true,
-                                onClick: () => {
-                                  const { startOrd, endOrd, startKey, endKey } = flash;
-                                  const srepeats = mylib.clone(startOrd?.repeats);
-
-                                  if (srepeats && typeof srepeats !== 'number') {
-                                    delete srepeats[startKey];
-                                    setField(startOrd, srepeats);
-                                  } else setField(startOrd, 0);
-
-                                  startOrd?.resetRegions();
-
-                                  if (startOrd !== endOrd && endOrd) {
-                                    const frepeats = {
-                                      ...(typeof endOrd.repeats === 'number'
-                                        ? { '.': endOrd.repeats }
-                                        : endOrd.repeats || {}),
-                                    };
-
-                                    delete frepeats[endKey || '.'];
-                                    setField(endOrd, frepeats);
-                                    endOrd?.resetRegions();
-                                  }
-
-                                  reset();
-                                },
-                              };
-                            }),
-                          buttons: [
-                            {
-                              title: 'Отмена',
-                            },
-                            {
-                              title: 'Сброс',
-                              onClick: () => reset(),
-                            },
-                          ],
-                        });
-                      }}
-                    >
-                      <EvaIcon name="trash-2-outline" />
-                    </div>
+                  {!flashes.length || (
+                    <ComRepeatsRemoveButton
+                      isChordBlock={isChordBlock}
+                      ord={ord}
+                      reset={reset}
+                      setField={setField}
+                      startOrd={startOrd}
+                      textLinei={textLinei}
+                      wordi={wordi}
+                    />
                   )}
                   {[2, 3, 4, 5].map(currFlashCount => {
                     return (

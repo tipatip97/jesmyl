@@ -14,18 +14,20 @@ export default function TheLeaderGroup() {
   const [groupMoreNode, openGroupMore] = useBottomPopup(LeaderGroupMoreContenter, { group: cgroup });
   const [memberw, setMemberw] = useState(0);
   const { ccontext, humans } = useLeaderContext();
-  const [memberMoreNode, openMemberMore] = useBottomPopup((close, prepare) => {
+  const [memberMoreNode, openMemberMore] = useBottomPopup((isOpen, close, prepare) => {
     if (memberw === 0) return null;
     const human = humans?.find(human => human.w === memberw);
     if (human === undefined) return null;
 
     return (
-      <GroupMemberMore
-        fields={LeaderCleans.getContextFieldValues(ccontext, cgroup?.fields)}
-        member={human}
-        close={close}
-        prepare={prepare}
-      />
+      isOpen && (
+        <GroupMemberMore
+          fields={LeaderCleans.getContextFieldValues(ccontext, cgroup?.fields)}
+          member={human}
+          close={close}
+          prepare={prepare}
+        />
+      )
     );
   });
 

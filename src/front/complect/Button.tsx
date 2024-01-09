@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
-import modalService from './modal/Modal.service';
+import { ConfirmContent } from './modal/confirm/ConfirmContent';
 
 export default function TheButton({
   disabled,
@@ -12,19 +12,19 @@ export default function TheButton({
   confirm?: boolean | string;
 }) {
   return (
-    <Button
-      {...props}
-      className={`the-button ${props.className || ''}${disabled ? ' disabled' : ''}`}
-      onClick={
-        !confirm
-          ? onClick
-          : event => {
-              if (onClick)
-                modalService
-                  .confirm(confirm === true ? props.children : confirm, 'Подтверди')
-                  .then(is => is && onClick(event));
-            }
-      }
+    <ConfirmContent
+      confirm={onClick !== undefined && (confirm === true ? props.children : confirm)}
+      content={onConfirm => {
+        return (
+          <Button
+            {...props}
+            className={`the-button ${props.className || ''}${disabled ? ' disabled' : ''}`}
+            onClick={async event => {
+              if (onClick && (await onConfirm())) onClick(event);
+            }}
+          />
+        );
+      }}
     />
   );
 }

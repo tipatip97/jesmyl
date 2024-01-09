@@ -13,7 +13,7 @@ const humanListSortVariantSelector = (state: RootState) => state.leader.humanLis
 export const HumansMoreContenter: BottomPopupContenter<{
   moreNode?: ReactNode;
   fieldLabel?: 'mentors' | 'members';
-}> = (_, prepare, { moreNode, fieldLabel }) => {
+}> = (isOpen, _, prepare, { moreNode, fieldLabel }) => {
   const dispatch = useDispatch();
   const humanListSortVariant = useSelector(humanListSortVariantSelector);
   const [humanMasterNode, openHumanMaster] = useFullContent(close => (
@@ -23,31 +23,33 @@ export const HumansMoreContenter: BottomPopupContenter<{
     />
   ));
 
-  return [
-    <>{humanMasterNode}</>,
-    <>
-      {prepare({
-        items: [
-          {
-            title: 'Добавить нового участника',
-            icon: 'person-add-outline',
-            onClick: () => openHumanMaster(),
-          },
-          {
-            title: 'Сортировать личности',
-            icon: 'bar-chart-2-outline',
-            onClick: event => {
-              event.stopPropagation();
-              const next = mylib.findNext(mylib.keys(humanFieldTranslations), humanListSortVariant);
-              dispatch(di.humanListSortVariant(next));
+  return (
+    isOpen && [
+      <>{humanMasterNode}</>,
+      <>
+        {prepare({
+          items: [
+            {
+              title: 'Добавить нового участника',
+              icon: 'person-add-outline',
+              onClick: () => openHumanMaster(),
             },
-            rightNode: (
-              <div className="abs-action abs-full flex center">{humanFieldTranslations[humanListSortVariant]}</div>
-            ),
-          },
-        ],
-      })}
-      {mylib.func(moreNode).call()}
-    </>,
-  ];
+            {
+              title: 'Сортировать личности',
+              icon: 'bar-chart-2-outline',
+              onClick: event => {
+                event.stopPropagation();
+                const next = mylib.findNext(mylib.keys(humanFieldTranslations), humanListSortVariant);
+                dispatch(di.humanListSortVariant(next));
+              },
+              rightNode: (
+                <div className="abs-action abs-full flex center">{humanFieldTranslations[humanListSortVariant]}</div>
+              ),
+            },
+          ],
+        })}
+        {mylib.func(moreNode).call()}
+      </>,
+    ]
+  );
 };

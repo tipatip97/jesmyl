@@ -16,8 +16,8 @@ export default function HumanFace({
   asMore?: (human: HumanImportable) => ReactNode;
   humanMoreAdditions?: (human: HumanImportable) => ReactNode;
 }) {
-  const [humanMoreNode, openHumanMore] = useBottomPopup((close, prepare) =>
-    HumanMoreContenter(close, prepare, { human, humanMoreAdditions }),
+  const [humanMoreNode, openHumanMore] = useBottomPopup((isOpen, close, prepare) =>
+    HumanMoreContenter(isOpen, close, prepare, { human, humanMoreAdditions }),
   );
   const ccontext = useLeaderCcontext();
   const groups = ccontext?.groups?.filter(

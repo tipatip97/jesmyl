@@ -1,5 +1,5 @@
+import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
 import SendButton from '../../../../../../../complect/sends/send-button/SendButton';
-import modalService from '../../../../../../../complect/modal/Modal.service';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTimerImportable } from '../GameTimer.model';
@@ -25,11 +25,13 @@ export default function TimerPublicateControls({
   game: TeamGameImportable;
 }) {
   const use = useGameTimer(game, generalTimerw);
+  const [confirmNode, confirm] = useConfirm();
 
   if (!game) return null;
 
   return (
     <>
+      {confirmNode}
       {isNewTimer ? (
         <div className="flex around flex-gap margin-big-gap">
           {newCommentText ? (
@@ -63,7 +65,7 @@ export default function TimerPublicateControls({
         <div
           className={`flex center pointer ${timer.isInactive ? 'color--3' : 'error-message'}`}
           onClick={async () => {
-            if (await modalService.confirm(timer.isInactive ? 'Восстановить таймер?' : 'Исключить таймер?'))
+            if (await confirm(timer.isInactive ? 'Восстановить таймер?' : 'Исключить таймер?'))
               LeaderCleans.setIsInactiveGameTimer(game.w, timer.w, !timer.isInactive);
           }}
         >

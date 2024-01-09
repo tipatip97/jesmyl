@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import CopyTextButton from '../../../../../complect/CopyTextButton';
-import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
 import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import modalService from '../../../../../complect/modal/Modal.service';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import PhaseLeaderContainer from '../../phase-container/PhaseLeaderContainer';
 import useLeaderNav from '../../useLeaderNav';
 import { LeaderCleans } from '../LeaderCleans';
@@ -28,30 +28,41 @@ export default function TheGame() {
   const { contextMembers } = useLeaderContext();
   const [selectedTimers, updateSelectedTimers] = useState<number[]>([]);
   const [outsiderw, setOutsiderw] = useState(0);
-  const [outsiderMoreNode, openOutsiderMore] = useBottomPopup((_, prepare) => {
+  const [outsiderMoreNode, openOutsiderMore] = useBottomPopup((isOpen, _, prepare) => {
     if (cgame == null || outsiderw === 0) return null;
     const outsider = contextMembers.find(member => member.w === outsiderw);
     if (outsider === undefined) return null;
 
     return (
-      <OutsiderMore
-        game={cgame}
-        human={outsider}
-        prepare={prepare}
-      />
+      isOpen && (
+        <OutsiderMore
+          game={cgame}
+          human={outsider}
+          prepare={prepare}
+        />
+      )
     );
   });
-  const [gameMoreNode, openGameMore] = useBottomPopup((close, prepare) => (
-    <GameMore
-      close={close}
-      selectedTimers={selectedTimers}
-      prepare={prepare}
-      onGameRemove={async () => {
-        if (cgame && (await modalService.confirm(`Удалить игру "${cgame.name}" окончательно?`)))
-          LeaderCleans.removeGame(cgame.w).then(() => goBack());
-      }}
-    />
-  ));
+
+  const [confirmNode, confirm] = useConfirm();
+
+  const [gameMoreNode, openGameMore] = useBottomPopup(
+    (isOpen, close, prepare) =>
+      isOpen && (
+        <>
+          {confirmNode}
+          <GameMore
+            close={close}
+            selectedTimers={selectedTimers}
+            prepare={prepare}
+            onGameRemove={async () => {
+              if (cgame && (await confirm(`Удалить игру "${cgame.name}" окончательно?`)))
+                LeaderCleans.removeGame(cgame.w).then(() => goBack());
+            }}
+          />
+        </>
+      ),
+  );
   const [fullNode, openFullContent] = useFullContent(() => <TotalScoreTable selectedTimers={selectedTimers} />);
   const [isTeamsLoading, setIsTeamsLoading] = useState(false);
   const usedHumans = cgame?.teams?.reduce<number[]>((list, team) => list.concat(team.members), []) || [];

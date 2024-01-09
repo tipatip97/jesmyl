@@ -6,9 +6,9 @@ import { useGamerCurrentRoom } from './rooms/room/hooks/current-room';
 import { useMyPossibilitiesCurrentRoom } from './rooms/room/hooks/possibilities';
 
 export default function GamerRoomMemberList() {
-  const [popupNode, , openPopup] = useBottomPopup<GamerRoomMember>((_, __, member) => (
-    <GamerRoomMemberMore member={member} />
-  ));
+  const [popupNode, , openPopup] = useBottomPopup<GamerRoomMember>(
+    (isOpen, _, __, member) => isOpen && <GamerRoomMemberMore member={member} />,
+  );
   const amIManager = useMyPossibilitiesCurrentRoom().isManager;
   const currentRoom = useGamerCurrentRoom();
 

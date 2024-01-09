@@ -7,6 +7,7 @@ import './Exec.scss';
 import ExecList from './ExecList';
 import { Exer } from './Exer';
 import { ExerStorage } from './Exer.model';
+import { useCallback } from 'react';
 
 const numExerUpdatesSelector = (state: RootState) => state.complect.numExerUpdates;
 
@@ -16,10 +17,13 @@ export default function useExer<Storage extends ExerStorage>(exer: Exer<Storage>
   const { openFullscreenContent, closeFullscreenContent } = useFullscreenContent();
 
   return {
-    exec: <Value,>(value?: Value) => {
-      dispatch(riseUpExerUpdates());
-      return value;
-    },
+    exec: useCallback(
+      <Value,>(value?: Value) => {
+        dispatch(riseUpExerUpdates());
+        return value;
+      },
+      [dispatch],
+    ),
     execs: exer.execs,
     lookIcon: exer.execs.length ? (
       <span

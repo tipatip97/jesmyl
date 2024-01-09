@@ -21,16 +21,19 @@ export default function EditMeetingsEvent() {
   const [term, setTerm] = useState(zcat?.term || '');
   const { goTo } = useCmNav();
   const [isClosedComList, setIsClosedComList] = useState(true);
-  const [popupNode, openPopup] = useBottomPopup((_, prepare) => {
-    return prepare({
-      items: [
-        {
-          icon: 'list',
-          title: 'История',
-          onClick: () => openFullscreenContent(close => <MeetingsEventHistory close={close} />),
-        },
-      ],
-    });
+  const [popupNode, openPopup] = useBottomPopup((isOpen, _, prepare) => {
+    return (
+      isOpen &&
+      prepare({
+        items: [
+          {
+            icon: 'list',
+            title: 'История',
+            onClick: () => openFullscreenContent(close => <MeetingsEventHistory close={close} />),
+          },
+        ],
+      })
+    );
   });
   const { openFullscreenContent } = useFullscreenContent();
 

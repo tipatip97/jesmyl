@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import modalService from '../../../../../complect/modal/Modal.service';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
 import HumanMaster from './HumanMaster';
@@ -11,7 +11,7 @@ import { HumanImportable } from './People.model';
 export const HumanMoreContenter: BottomPopupContenter<{
   human: HumanImportable;
   humanMoreAdditions?: (human: HumanImportable) => ReactNode;
-}> = (_, prepare, { human, humanMoreAdditions }) => {
+}> = (isOpen, _, prepare, { human, humanMoreAdditions }) => {
   const [humanMasterNode, openHumanMaster] = useFullContent(close => (
     <HumanMaster
       close={close}
@@ -27,59 +27,70 @@ export const HumanMoreContenter: BottomPopupContenter<{
 
   const title = (txt = '', txt2 = '') => `${wraps.length ? 'Переопределить' : 'Определить'}${txt} в группу ${txt2}`;
 
-  const [groupsPopupNode, openGroupsPopup] = useBottomPopup((close, prepare) => {
+  const [confirmNode, confirm] = useConfirm();
+
+  const [groupsPopupNode, openGroupsPopup] = useBottomPopup((isOpen, close, prepare) => {
     const groups = ccontext?.groups;
     if (!groups) return;
     const groupws = wraps.map(({ group: { w } }) => w);
 
-    return prepare({
-      items: groups.map(group => {
-        return {
-          titleNode: (
-            <span>
-              {group.name}
-              <span className="color--7"> {LeaderCleans.takeGroupMentorNames(humans, group)}</span>
-            </span>
-          ),
-          icon: 'people-outline',
-          className: !groupws.includes(group.w) ? '' : 'disabled',
-          onClick: async () => {
-            if (human && (await modalService.confirm(title(` участника "${human.name}"`, `${group.name}?`)))) {
-              LeaderCleans.replaceMemberToGroup(
-                group.w,
-                ccontext.w,
-                human.w,
-                wraps.map(({ group }) => group),
-                participantListName,
-              ).then(() => close());
-            }
-          },
-        };
-      }),
-    });
+    return (
+      isOpen && (
+        <>
+          {confirmNode}
+          {prepare({
+            items: groups.map(group => {
+              return {
+                titleNode: (
+                  <span>
+                    {group.name}
+                    <span className="color--7"> {LeaderCleans.takeGroupMentorNames(humans, group)}</span>
+                  </span>
+                ),
+                icon: 'people-outline',
+                className: !groupws.includes(group.w) ? '' : 'disabled',
+                onClick: async () => {
+                  if (human && (await confirm(title(` участника "${human.name}"`, `${group.name}?`)))) {
+                    LeaderCleans.replaceMemberToGroup(
+                      group.w,
+                      ccontext.w,
+                      human.w,
+                      wraps.map(({ group }) => group),
+                      participantListName,
+                    ).then(() => close());
+                  }
+                },
+              };
+            }),
+          })}
+        </>
+      )
+    );
   });
 
-  return [
-    <>
-      {humanMasterNode}
-      {groupsPopupNode}
-    </>,
-    <>
-      {prepare({
-        items: [
-          {
-            title: 'Редактировать',
-            icon: 'edit-outline',
-            onClick: () => openHumanMaster(),
-          },
-          {
-            title: title(),
-            icon: 'people-outline',
-            onClick: () => setTimeout(openGroupsPopup),
-          },
-        ],
-      })}
-      {typeof humanMoreAdditions === 'function' ? humanMoreAdditions(human) : humanMoreAdditions}
-    </>,
-  ];
+  return (
+    isOpen && [
+      <>
+        {humanMasterNode}
+        {groupsPopupNode}
+      </>,
+      <>
+        {prepare({
+          items: [
+            {
+              title: 'Редактировать',
+              icon: 'edit-outline',
+              onClick: () => openHumanMaster(),
+            },
+            {
+              title: title(),
+              icon: 'people-outline',
+              onClick: () => setTimeout(openGroupsPopup),
+            },
+          ],
+        })}
+        {typeof humanMoreAdditions === 'function' ? humanMoreAdditions(human) : humanMoreAdditions}
+      </>,
+    ]
+  );
 };

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import modalService from '../modal/Modal.service';
+import { ConfirmContent } from '../modal/confirm/ConfirmContent';
 import { StrongControlProps } from './Strong.model';
 import { strongPrepareArgsAndSend, useStrongExerContext } from './useStrongControl';
 
@@ -18,31 +18,36 @@ export default function StrongDiv(
   const exer = useStrongExerContext();
 
   return (
-    <div
-      className={'pointer ' + props.className}
-      onClick={
-        props.scope && props.isCanSend !== false
-          ? async () => {
-              if (props.confirm != null && !(props.confirm && (await modalService.confirm(props.confirm)))) return;
+    <ConfirmContent
+      confirm={props.confirm}
+      content={onConfirm => (
+        <div
+          className={'pointer ' + props.className}
+          onClick={
+            props.scope && props.isCanSend !== false
+              ? async () => {
+                  if (!(await onConfirm())) return;
 
-              props.onClick?.();
-              strongPrepareArgsAndSend(
-                exer,
-                props.scope,
-                props.fieldName,
-                props.cud ?? 'C',
-                undefined,
-                simpleFunc,
-                props.mapExecArgs,
-                props.fieldKey,
-                props.fieldValue,
-              )
-                ?.then(props.onSuccess)
-                .catch(props.onFailure);
-            }
-          : undefined
-      }
-      children={props.children}
+                  props.onClick?.();
+                  strongPrepareArgsAndSend(
+                    exer,
+                    props.scope,
+                    props.fieldName,
+                    props.cud ?? 'C',
+                    undefined,
+                    simpleFunc,
+                    props.mapExecArgs,
+                    props.fieldKey,
+                    props.fieldValue,
+                  )
+                    ?.then(props.onSuccess)
+                    .catch(props.onFailure);
+                }
+              : undefined
+          }
+          children={props.children}
+        />
+      )}
     />
   );
 }

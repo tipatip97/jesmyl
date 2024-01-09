@@ -1,11 +1,9 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import modalService from '../../../../../../../complect/modal/Modal.service';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
 import { GamerGameName, GamerRoom, GamerRoomMember, GamerRoomMemberStatus } from '../../../../Gamer.model';
 import di from '../../../../Gamer.store';
 import gamerStorage from '../../../../gamerStorage';
-import useGamerNav, { gamerOfflineRoomGames } from '../../../../useGamerNav';
+import useGamerNav from '../../../../useGamerNav';
 import { useGamerOfflineRoomsContext } from './context';
 import { useGamerOfflineRoom } from './current-room';
 import { useGamerOfflineRoomsPassport } from './passport';
@@ -19,23 +17,6 @@ export default function useGamerOfflineRoomsActions() {
   const passport = useGamerOfflineRoomsPassport();
 
   const updateCurrentOfflineRoom = useCurrentOfflineRoomUpdater();
-
-  const joinByQrCode = useCallback(() => {
-    if (!passport?.login) {
-      modalService.alert('Не авторизован');
-      return;
-    }
-    readQR(data => {
-      if (!passport?.login) return;
-      if (data.appName === 'gamer' && mylib.isStr(data.key)) {
-        const [gameName] = (data.key as string).split('.');
-        const offSkelet = gamerOfflineRoomGames.find(({ phase: [phase] }) => phase === gameName);
-        if (offSkelet) {
-          offSkelet.data?.qrDataCatcher(dispatch, passport, data);
-        }
-      }
-    });
-  }, [dispatch, readQR, passport]);
 
   const goToOfflineRoom = useCallback(
     (roomWid: number) => {
@@ -132,7 +113,6 @@ export default function useGamerOfflineRoomsActions() {
   );
 
   return {
-    joinByQrCode,
     goToOfflineRoom,
     setRoomGame,
     addNewMember,

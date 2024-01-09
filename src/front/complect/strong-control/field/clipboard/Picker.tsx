@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../shared/store';
 import EvaButton from '../../../eva-icon/EvaButton';
 import { KeyboardInputEvent } from '../../../keyboard/Keyboard.model';
-import modalService from '../../../modal/Modal.service';
+import { useConfirm } from '../../../modal/confirm/useConfirm';
 import useModal from '../../../modal/useModal';
 import { MyLib } from '../../../my-lib/MyLib';
 import di from '../../Strong.store';
@@ -53,6 +53,7 @@ export default function StrongClipboardPicker() {
   const dispatch = useDispatch();
   const [isOpenModal, setIsOpenModal] = useState<boolean | und>();
   const [isCanOpenModal, setIsCanOpenModal] = useState(true);
+  const [confirmNode, confirm] = useConfirm();
 
   useEffect(() => {
     const onPast = () => {
@@ -154,6 +155,7 @@ export default function StrongClipboardPicker() {
   return (
     <>
       {modalNode}
+      {confirmNode}
       <span
         onDrop={async () => {
           if (clipboardFocusedElem) {
@@ -168,7 +170,7 @@ export default function StrongClipboardPicker() {
             }
 
             if (
-              await modalService.confirm(
+              await confirm(
                 <>
                   <span className="color--7">{confirmText}</span>
                   <pre>{text}</pre>

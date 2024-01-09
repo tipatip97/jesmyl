@@ -23,7 +23,7 @@ console[scope] = ((...args: unknown[]) => {
 
 export const IndexConsole = () => {
   const [, setUpdates] = useState(0);
-  const [bottomNode, openBottom] = useBottomPopup((_close, prepare) => {
+  const [bottomNode, openBottom] = useBottomPopup((isOpen, _close, prepare) => {
     return prepare({
       items: [
         {

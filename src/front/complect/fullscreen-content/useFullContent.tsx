@@ -23,7 +23,7 @@ export default function useFullContent<PassValue>(
   const switchIsForceOpenRef = useRef(switchIsForceOpen);
   switchIsForceOpenRef.current = switchIsForceOpen;
 
-  const onClose = useCallback(<El,>(event?: MouseEvent<El>) => {
+  const onClose = useCallback(<El,>(event?: MouseEvent<El> | KeyboardEvent) => {
     event?.stopPropagation();
     setOpenMode(null);
     switchIsForceOpenRef.current?.(false);

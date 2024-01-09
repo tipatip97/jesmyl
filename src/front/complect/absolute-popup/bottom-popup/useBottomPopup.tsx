@@ -10,13 +10,13 @@ type OpenWithPropsCallback<Props> = (props: Props) => void;
 
 export function useBottomPopup<Props>(
   contenter: BottomPopupContenter<Props>,
-  topProps: Props = {} as never,
+  topProps?: Props,
 ): [ReactNode, OpenCallback, OpenWithPropsCallback<Props>] {
   const [props, setProps] = useState<Props | und>();
   const [isOpen, setIsOpen] = useState(false);
   const [isWasOpen, setIsWasOpen] = useState(false);
   const close = useCallback(() => setIsOpen(false), []);
-  const contentScalar = contenter(close, bottomPopupContentPreparer, props === undefined ? topProps! : props);
+  const contentScalar = contenter(isOpen, close, bottomPopupContentPreparer, props === undefined ? topProps! : props);
 
   let throwContent = null;
   let content = null;

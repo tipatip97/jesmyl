@@ -2,13 +2,14 @@ import { useSelector } from 'react-redux';
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
 import { RootState } from '../../../../../../shared/store';
 import { gamerOfflineRoomGames } from '../../../useGamerNav';
+import { GamerOfflineRoomListJoinByQr } from './complect/JoinByQr';
 import useGamerOfflineRoomsActions from './hooks/actions';
 import { useGamerOfflineRooms } from './hooks/rooms';
 
 const currentOfflineGameNameSelector = (state: RootState) => state.gamer.currentOfflineGameName;
 
 export default function GamerOfflineRoomList() {
-  const { joinByQrCode, goToOfflineRoom } = useGamerOfflineRoomsActions();
+  const { goToOfflineRoom } = useGamerOfflineRoomsActions();
   const offlineRooms = useGamerOfflineRooms();
   const currentOfflineGameName = useSelector(currentOfflineGameNameSelector);
   const currentContent =
@@ -18,13 +19,7 @@ export default function GamerOfflineRoomList() {
   return (
     <>
       <h2>Оффлайн комнаты</h2>
-      <span
-        className="flex flex-gap margin-gap pointer"
-        onClick={() => joinByQrCode()}
-      >
-        {currentContent ? 'Перечитать' : 'Присоединиться'}
-        <EvaIcon name="qr-code" />
-      </span>
+      <GamerOfflineRoomListJoinByQr title={currentContent ? 'Перечитать' : 'Присоединиться'} />
       {currentContent}
       {offlineRooms?.map(room => {
         const gameData = gamerOfflineRoomGames.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data;

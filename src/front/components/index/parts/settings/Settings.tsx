@@ -4,7 +4,6 @@ import { AppName, appNames } from '../../../../app/App.model';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import EvaButton from '../../../../complect/eva-icon/EvaButton';
 import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
-import modalService from '../../../../complect/modal/Modal.service';
 import useToast from '../../../../complect/modal/useToast';
 import mylib from '../../../../complect/my-lib/MyLib';
 import Noty from '../../../../complect/notifications/Noti';
@@ -16,9 +15,9 @@ import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import useIndexNav from '../../complect/useIndexNav';
 import useAuth from '../../useAuth';
 import useConnectionState from '../../useConnectionState';
+import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
 import { Visitor } from './Visitor';
 import { Visits } from './Visits';
-import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
 
 const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 const statisticSelector = (state: RootState) => state.index.statistic;
@@ -47,26 +46,6 @@ export default function IndexSettings() {
   }, []);
 
   const settingsList = [
-    (auth.level || 0) >= 50 && (
-      <BrutalItem
-        icon="sync"
-        title="Перечитать файлы"
-        onClick={async () => {
-          const passphrase = await modalService.prompt('пароль');
-          passphrase && soki.send({ system: { name: 'reloadFiles', passphrase } }, 'index');
-        }}
-      />
-    ),
-    (auth.level || 0) >= 80 && (
-      <BrutalItem
-        icon="sync"
-        title="Перезапустить сокет"
-        onClick={async () => {
-          const passphrase = await modalService.prompt('пароль');
-          passphrase && soki.send({ system: { name: 'restartWS', passphrase } }, 'index');
-        }}
-      />
-    ),
     auth.level === 100 && (
       <BrutalItem
         icon="code-download"

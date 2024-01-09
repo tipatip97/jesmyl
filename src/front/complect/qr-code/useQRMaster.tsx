@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { AppName, appNames } from '../../app/App.model';
 import { SokiAppName } from '../../models';
 import LinkCoder from '../link-coder/LinkCoder';
-import modalService from '../modal/Modal.service';
+import useToast from '../modal/useToast';
 import mylib from '../my-lib/MyLib';
 import { NavigationConfig } from '../nav-configurer/Navigation';
 import Portal from '../popups/[complect]/Portal';
@@ -34,13 +34,17 @@ export const crossApplicationLinkCoder = new LinkCoder<Attrs>(jesmylHostName, 'v
 export default function useQRMaster() {
   const { jumpToApp } = useApps();
   const [qr, setQr] = useState<Html5Qrcode | undefined>();
+  const [toastNode, toast] = useToast();
   const qrNode = useMemo(() => {
     return (
-      <Portal>
-        <QRCodeMasterApplication controller={top => (controller = top)} />
-      </Portal>
+      <>
+        {toastNode}
+        <Portal>
+          <QRCodeMasterApplication controller={top => (controller = top)} />
+        </Portal>
+      </>
     );
-  }, []);
+  }, [toastNode]);
 
   const shareData = useCallback((appName: AppName, key: string, value: unknown, externalData?: boolean | string) => {
     try {
@@ -258,12 +262,12 @@ export default function useQRMaster() {
             }
           } else {
             reject();
-            modalService.alert('Ссылка на неизвестное приложение!');
+            toast('Ссылка на неизвестное приложение!', { mood: 'ko' });
           }
         }),
       );
     },
-    [jumpToApp, read],
+    [jumpToApp, read, toast],
   );
 
   return useMemo(() => {

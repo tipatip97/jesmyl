@@ -36,9 +36,9 @@ export default function SpyRoomContent() {
   const resetResults = useSpyResetResults();
 
   const startGame = useSpyStartGame();
-  const [popupNode, , openPopup] = useBottomPopup<GamerRoomMember>((_, __, member) => (
-    <SpyRoomMemberInStartGameMore member={member} />
-  ));
+  const [popupNode, , openPopup] = useBottomPopup<GamerRoomMember>(
+    (isOpen, _, __, member) => isOpen && <SpyRoomMemberInStartGameMore member={member} />,
+  );
 
   const possibilities = useMyPossibilitiesCurrentRoom();
   const amIManager = possibilities.isManager;

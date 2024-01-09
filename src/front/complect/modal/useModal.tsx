@@ -1,6 +1,7 @@
 import { ReactNode, TouchEventHandler, useCallback, useEffect, useState } from 'react';
 import { ThrowEvent } from '../eventer/ThrowEvent';
 import Portal from '../popups/[complect]/Portal';
+import './Modal.scss';
 
 type ModalConfigMood = 'norm' | 'ko' | 'ok';
 
@@ -45,7 +46,10 @@ export default function useModal(
 
   useEffect(() => {
     if (isForceOpen || config.isOpen) {
-      return ThrowEvent.listenKeyDown('Escape', close);
+      return ThrowEvent.listenKeyDown('Escape', event => {
+        event.stopPropagation();
+        close();
+      });
     }
   }, [close, isForceOpen, config.isOpen]);
 

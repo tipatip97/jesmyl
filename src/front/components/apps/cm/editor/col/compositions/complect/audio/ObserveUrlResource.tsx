@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { CmMp3ContainsPageResult } from '../../../../../../../../models';
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
-import modalService from '../../../../../../../../complect/modal/Modal.service';
 import SendButton from '../../../../../../../../complect/sends/send-button/SendButton';
 import serviceMaster from '../../../../../../../../complect/service/serviceMaster';
+import { CmMp3ContainsPageResult } from '../../../../../../../../models';
 import { RootState } from '../../../../../../../../shared/store';
 
 const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;

@@ -1,5 +1,5 @@
 import { bottomPopupContentPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
-import modalService from '../../../../../../complect/modal/Modal.service';
+import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
 import useSelectedComs from '../../../base/useSelectedComs';
 import ComFaceContextMenuEditorItems from '../../../editor/col/compositions/ComFaceContextMenuEditorItems';
 import { useMarks } from '../../../lists/marks/useMarks';
@@ -10,9 +10,11 @@ export default function ComFaceContextMenu({ onClick, com }: { onClick: () => vo
   const { isMarked, toggleMarked } = useMarks();
   const isComMarked = isMarked(com.wid);
   const { clearSelectedComws, selectedComws, selectedComPosition: isSelected, toggleSelectedCom } = useSelectedComs();
+  const [confirmNode, confirm] = useConfirm();
 
   return (
     <>
+      {confirmNode}
       {bottomPopupContentPreparer({
         items: [
           {
@@ -32,7 +34,7 @@ export default function ComFaceContextMenu({ onClick, com }: { onClick: () => vo
             ? [
                 {
                   onClick: () => {
-                    modalService.confirm('Очистить список выбранных?').then(isClear => isClear && clearSelectedComws());
+                    confirm('Очистить список выбранных?').then(isClear => isClear && clearSelectedComws());
                   },
                   icon: 'close-circle-outline',
                   title: 'Очистить выбранные',

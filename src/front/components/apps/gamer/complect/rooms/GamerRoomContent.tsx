@@ -1,10 +1,9 @@
 import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
 import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import EvaIcon, { IconEva } from '../../../../../complect/eva-icon/EvaIcon';
-import modalService from '../../../../../complect/modal/Modal.service';
-import { useConfirm } from '../../../../../complect/modal/useConfirm';
 import { NavigationThrowNodeProps } from '../../../../../complect/nav-configurer/Navigation.model';
 import useAuth from '../../../../index/useAuth';
 import { GamerGameName, GamerNavData, GamerRoom } from '../../Gamer.model';
@@ -32,40 +31,44 @@ export default function GamerRoomContent({
   onGameChange: (gameName: GamerGameName) => void;
 }) {
   const gameData = games.find(({ phase: [gameName] }) => room?.currentGame === gameName)?.data;
-  const [stopGameConfirmNode, stopGame] = useConfirm(() => room && gameData?.onResetGame?.(room));
+  const [confirmNode, confirm] = useConfirm();
   const auth = useAuth();
 
-  const [popupNode, openPopup] = useBottomPopup((_, prepare) =>
-    prepare({
-      items: [
-        config.relativePoint && {
-          title: 'Сменить игру',
-          icon: 'undo-outline',
-          onClick: () => {
-            goTo('needChooseGame', config.relativePoint);
-            setIsForceChoose(true);
+  const [popupNode, openPopup] = useBottomPopup(
+    (isOpen, _, prepare) =>
+      isOpen &&
+      prepare({
+        items: [
+          config.relativePoint && {
+            title: 'Сменить игру',
+            icon: 'undo-outline',
+            onClick: () => {
+              goTo('needChooseGame', config.relativePoint);
+              setIsForceChoose(true);
+            },
           },
-        },
-        isManager &&
-          gameData?.onResetGame &&
-          room && {
-            title: 'Завершить игру',
-            icon: 'close',
-            onClick: () => stopGame('Завершить игру?'),
+          isManager &&
+            gameData?.onResetGame &&
+            room && {
+              title: 'Завершить игру',
+              icon: 'close',
+              onClick: async () => {
+                if (await confirm('Завершить игру?')) return gameData?.onResetGame?.(room);
+              },
+            },
+          (auth?.level === 100 || isOwner) && {
+            title: 'Удалить комнату',
+            icon: 'trash-2-outline',
+            className: 'color--ko',
+            onClick: async () => {
+              if (room && (await confirm(`Удалить комнату ${room.name}?`))) {
+                onRoomRemove(room.w);
+                goBack();
+              }
+            },
           },
-        (auth?.level === 100 || isOwner) && {
-          title: 'Удалить комнату',
-          icon: 'trash-2-outline',
-          className: 'color--ko',
-          onClick: async () => {
-            if (room && (await modalService.confirm(`Удалить комнату ${room.name}?`))) {
-              onRoomRemove(room.w);
-              goBack();
-            }
-          },
-        },
-      ],
-    }),
+        ],
+      }),
   );
   const { goTo, goBack } = useGamerNav();
   const [isForceChoose, setIsForceChoose] = useState(false);
@@ -76,7 +79,7 @@ export default function GamerRoomContent({
     if (!isForceChoose && room?.currentGame && (isNeedChooseGame || room?.currentGame !== config.currentChildPhase)) {
       goTo(room.currentGame, config.relativePoint);
     }
-  }, [isForceChoose, isNeedChooseGame, room?.currentGame, config.relativePoint]);
+  }, [isForceChoose, isNeedChooseGame, room?.currentGame, config.relativePoint, config.currentChildPhase, goTo]);
 
   return (
     <GamerRoomDiv
@@ -96,7 +99,7 @@ export default function GamerRoomContent({
       content={
         <>
           {popupNode}
-          {stopGameConfirmNode}
+          {confirmNode}
           {!room ? (
             <div className="error-message text-center padding-giant-gap">Комната не найдена</div>
           ) : (

@@ -1,16 +1,17 @@
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
 import { gamerRoomGames } from '../../../useGamerNav';
-import useGamerOfflineRoomsActions from './hooks/actions';
-import { useGamerRooms } from './hooks/rooms';
+import useGamerOfflineRoomsActions from './hooks/go-to-room';
 import { useMyPossibilitiesInRoom } from './hooks/possibilities';
+import { useGamerRooms } from './hooks/rooms';
 
 export default function GamerRoomList() {
   const rooms = useGamerRooms();
-  const { goToRoom } = useGamerOfflineRoomsActions();
+  const [goToRoomNode, goToRoom] = useGamerOfflineRoomsActions();
   const memberPossibilities = useMyPossibilitiesInRoom();
 
   return (
     <>
+      {goToRoomNode}
       {rooms?.map(room => {
         const possibilities = memberPossibilities(room);
         const iconPostfix = possibilities.isOwner ? '' : '-outline';

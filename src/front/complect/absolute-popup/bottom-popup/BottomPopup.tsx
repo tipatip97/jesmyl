@@ -3,6 +3,7 @@ import { isTouchDevice } from '../../device-differences';
 import { ThrowEvent } from '../../eventer/ThrowEvent';
 import Portal from '../../popups/[complect]/Portal';
 import useMountTransition from '../../popups/useMountTransition';
+import styled from 'styled-components';
 
 const initialScrollTop = window.innerHeight * 0.3;
 const inactiveScrollTop = window.innerHeight * 0.25;
@@ -91,13 +92,12 @@ export const BottomPopup = ({ content, close }: { content: ReactNode; close: () 
               <div className="absolute full-width flex center margin-gap-v">
                 <div className="badge" />
               </div>
-              <div
+              <Content
                 className="content"
-                // onClick={(event) => !isClosable && event.stopPropagation()}
                 ref={bottomContentContainer}
               >
                 {content}
-              </div>
+              </Content>
             </div>
           </div>
         </Portal>
@@ -105,3 +105,13 @@ export const BottomPopup = ({ content, close }: { content: ReactNode; close: () 
     </>
   );
 };
+
+const Content = styled.div`
+  &:not(.custom-bottom-style) {
+    > :not(.abs-item) {
+      width: 100%;
+      max-width: 450px;
+      margin-bottom: var(--main-big-gap);
+    }
+  }
+`;

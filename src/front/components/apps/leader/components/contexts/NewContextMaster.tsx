@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
+import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
 import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import modalService from '../../../../../complect/modal/Modal.service';
-import HumanList from '../people/HumanList';
 import { LeaderCleans } from '../LeaderCleans';
+import HumanList from '../people/HumanList';
 
 const getHumanList = (
   isWholeList: boolean,
@@ -50,36 +50,41 @@ export default function NewLeaderContextMaster({ close }: { close: () => void })
   const chooseMentorsNode = useMemo(() => getHumanList(true, mentors, updateMentors), [mentors]);
   const mentorsNode = useMemo(() => getHumanList(false, mentors, updateMentors), [mentors]);
 
+  const [confirmNode, confirm] = useConfirm();
+
   return (
-    <div className="full-container padding-giant-gap">
-      <div className="flex flex-gap">
-        Название:
-        <KeyboardInput onChange={setName} />
-      </div>
-      <h2>Выбери участников:</h2>
-      {chooseMembersNode}
-      <h2>Выбери лидеров:</h2>
-      {chooseMentorsNode}
-      <h2>Участники контекста:</h2>
-      {membersNode}
-      <h2>Лидеры контекста:</h2>
-      {mentorsNode}
-      <div className="flex center">
-        <div
-          className="pointer padding-giant-gap"
-          onClick={async () => {
-            if (!(await modalService.confirm('Опубликовать контекст?'))) return;
-            LeaderCleans.publicateNewContext({
-              name,
-              mentors: mentors.sort((a, b) => a - b),
-              members: members.sort((a, b) => a - b),
-            });
-            close();
-          }}
-        >
-          Опубликовать контекст
+    <>
+      {confirmNode}
+      <div className="full-container padding-giant-gap">
+        <div className="flex flex-gap">
+          Название:
+          <KeyboardInput onChange={setName} />
+        </div>
+        <h2>Выбери участников:</h2>
+        {chooseMembersNode}
+        <h2>Выбери лидеров:</h2>
+        {chooseMentorsNode}
+        <h2>Участники контекста:</h2>
+        {membersNode}
+        <h2>Лидеры контекста:</h2>
+        {mentorsNode}
+        <div className="flex center">
+          <div
+            className="pointer padding-giant-gap"
+            onClick={async () => {
+              if (!(await confirm('Опубликовать контекст?'))) return;
+              LeaderCleans.publicateNewContext({
+                name,
+                mentors: mentors.sort((a, b) => a - b),
+                members: members.sort((a, b) => a - b),
+              });
+              close();
+            }}
+          >
+            Опубликовать контекст
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

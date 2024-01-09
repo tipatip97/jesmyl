@@ -15,7 +15,7 @@ import EditComposition from './col/compositions/EditComposition';
 import EditCompositions from './col/compositions/EditCompositions';
 import CategoryBinds from './col/compositions/complect/CategoryBinds';
 import ComOnTranslations from './col/compositions/complect/ComOnTranslations';
-import EditableCompositionMain from './col/compositions/complect/EditableCompositionMain';
+import EditableCompositionMain from './col/compositions/complect/main/EditableCompositionMain';
 import EditableCompositionWatch from './col/compositions/complect/Watch';
 import ComAudio from './col/compositions/complect/audio/ComAudio';
 import ChordApplicationsRedactor from './col/compositions/complect/chord-applications/ChordApplicationsRedactor';

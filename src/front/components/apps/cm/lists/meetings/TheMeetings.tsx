@@ -7,18 +7,20 @@ import { useMeetings } from './useMeetings';
 
 export default function TheMeetings() {
   const { meetings, goToEvent } = useMeetings();
-  const [popupNode, openPopup] = useBottomPopup((_, prepare) =>
-    prepare({
-      items: [
-        {
-          icon: 'list',
-          title: 'Посмотреть заголовки',
-          onClick: () => {
-            openFullscreenContent(<MeetingEventExpandList />);
+  const [popupNode, openPopup] = useBottomPopup(
+    (isOpen, _, prepare) =>
+      isOpen &&
+      prepare({
+        items: [
+          {
+            icon: 'list',
+            title: 'Посмотреть заголовки',
+            onClick: () => {
+              openFullscreenContent(<MeetingEventExpandList />);
+            },
           },
-        },
-      ],
-    }),
+        ],
+      }),
   );
   const { openFullscreenContent } = useFullscreenContent();
 

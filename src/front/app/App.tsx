@@ -6,7 +6,6 @@ import { FULLSCREEN__CONTENT } from '../complect/fullscreen-content/useFullscree
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
 import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
-import Modal from '../complect/modal/Modal';
 import { crossApplicationLinkCoder, jesmylHostName } from '../complect/qr-code/useQRMaster';
 import listenThemeChanges from '../complect/theme-changer';
 import useApps from '../complect/useApps';
@@ -115,7 +114,6 @@ function App() {
           className="collapse-fullscreen-button pointer"
           onClick={() => switchFullscreen(false)}
         />
-        <Modal />
         <FULLSCREEN__CONTENT onOpen={onOpen} />
         <ABSOLUTE__FLOAT__POPUP onOpen={onOpen} />
         <AppRouter appName={appName} />
