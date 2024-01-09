@@ -1,4 +1,16 @@
 {
+  "image": {
+    "title": "Картинки",
+    "removeTitle": "изображение",
+    "icon": "image-outline",
+    "extensions": ["jpeg", "jpg", "png", "gif", "svg"]
+  },
+  "video": {
+    "title": "Видео",
+    "removeTitle": "видео-файл",
+    "icon": "film-outline",
+    "extensions": ["mp4"]
+  },
   "font": {
     "title": "Шрифты",
     "removeTitle": "файл шрифтов",

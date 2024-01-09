@@ -4,8 +4,8 @@ import EvaIcon, { EvaIconName } from '../../../../../../complect/eva-icon/EvaIco
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import { useMyFilesAssociates } from '../hooks/associates';
 import { useRemoveMyFile } from '../hooks/remove-file';
-import { filesStorage } from '../utils/storage';
 import { MyFileType } from '../model';
+import { filesStorage } from '../utils/storage';
 
 export type FileAssociations = Record<
   MyFileType,
@@ -33,12 +33,10 @@ export const MyFilesTypeBox = ({ type }: { type: MyFileType }) => {
 
   return (
     <>
-      <div className="flex margin-gap-t padding-gap bgcolor--2">
-        <EvaIcon
-          name={fileAssociations[type].icon}
-          className="margin-gap-r"
-        />
-        {fileAssociations[type].title}
+      <div className="flex flex-gap margin-gap-t padding-gap bgcolor--2">
+        <EvaIcon name={fileAssociations[type].icon} />
+        <span className="color--3">{fileAssociations[type].title} </span>
+        {!fileAssociations[type].extensions.length || '(.' + fileAssociations[type].extensions.join(', .') + ')'}
       </div>
       <div className="margin-big-gap-l">
         {files.map(file => {
