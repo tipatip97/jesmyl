@@ -115,5 +115,5 @@ export default function TotalScoreTable({ selectedTimers }: { selectedTimers: nu
       });
   }, [scores, openScores, selectedTimers, cgame]);
 
-  return <div className="full-container padding-giant-gap">{scoresNode}</div>;
+  return <div className="padding-giant-gap">{scoresNode}</div>;
 }

@@ -23,7 +23,7 @@ export default function ExecList<Storage extends ExerStorage>({
   useExerExec();
 
   return (
-    <div className="full-container">
+    <>
       {toastNode}
       <LoadIndicatedContent
         isLoading={!readyState}
@@ -60,6 +60,6 @@ export default function ExecList<Storage extends ExerStorage>({
           />
         </div>
       </LoadIndicatedContent>
-    </div>
+    </>
   );
 }

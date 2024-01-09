@@ -15,7 +15,7 @@ export default function MeetingsCreator({ close }: { close: () => void }) {
   const [, currContextw] = meetings?.getContexts(eventContext) || [];
 
   return (
-    <div className="full-container flex column full-height padding-big-gap center">
+    <div className="flex column full-height padding-big-gap center">
       <div className="full-width margin-gap-v flex">
         <div className="margin-gap-h">Название</div>
         <KeyboardInput

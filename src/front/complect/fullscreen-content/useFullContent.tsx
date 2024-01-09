@@ -1,4 +1,5 @@
 import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import Eventer, { EventerListeners } from '../../../back/complect/Eventer';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import EvaButton from '../eva-icon/EvaButton';
@@ -44,8 +45,8 @@ export default function useFullContent<PassValue>(
   return [
     mode && (
       <Portal>
-        <div
-          className={`fullscreen-content-container ${mode || ''}`}
+        <ContainerWrapper
+          className={mode}
           onClick={mode === 'closable' ? onClose : undefined}
           {...swiper}
         >
@@ -56,8 +57,8 @@ export default function useFullContent<PassValue>(
               onClick={onClose}
             />
           )}
-          <div className="full-container padding-big-gap">{content?.(() => setOpenMode(null), passValue)}</div>
-        </div>
+          <Container className="padding-big-gap">{content?.(() => setOpenMode(null), passValue)}</Container>
+        </ContainerWrapper>
       </Portal>
     ),
     (isClosable, passValue) => {
@@ -67,3 +68,32 @@ export default function useFullContent<PassValue>(
     () => setOpenMode(null),
   ];
 }
+
+const ContainerWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100vw;
+  height: 100%;
+
+  &:not(.closable) {
+    > .close-button {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 100;
+      cursor: pointer;
+    }
+  }
+`;
+
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--current-bg);
+  width: 100vw;
+  height: calc(100% - var(--keyboard-flash-height));
+  overflow-y: auto;
+`;

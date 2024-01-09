@@ -50,7 +50,7 @@ export default function LeaderGameTimerMaster({
   const teamNet = teams && mylib.netFromLine(teams, mode === GameTimerMode.TimerTotal ? 1 : joins, team => team);
 
   return (
-    <div className="game-timer-master full-container flex column over-hidden">
+    <div className="game-timer-master flex column over-hidden">
       {isNewTimer && LeaderCleans.isTimerWasPublicate(game.timers, topTimer.ts) ? (
         <div className="flex column center flex-gap full-width full-height">
           <span className="error-message">Этот таймер уже был опубликован! Создай новый.</span>

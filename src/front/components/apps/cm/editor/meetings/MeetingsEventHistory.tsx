@@ -7,7 +7,7 @@ export default function MeetingsEventHistory() {
   const cols = useCols();
 
   return (
-    <div className="full-container full-height">
+    <div className="full-height">
       <div className="margin-gap flex center color--3">История события "{currentEvent?.name}"</div>
       <div className="flex column center">
         {currentEvent?.history?.map(({ w, s }) => {

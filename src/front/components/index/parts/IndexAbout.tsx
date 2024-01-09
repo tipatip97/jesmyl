@@ -11,7 +11,7 @@ export default function IndexAbout() {
   const appVersion = useSelector(appVersionSelector);
 
   return (
-    <div className="full-container flex center">
+    <div className="flex center">
       <div
         className="flex custom-align-items column"
         onClick={event => event.stopPropagation()}

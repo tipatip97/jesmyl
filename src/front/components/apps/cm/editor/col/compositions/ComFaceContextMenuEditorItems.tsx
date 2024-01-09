@@ -13,16 +13,14 @@ export default function ComFaceContextMenuEditorItems() {
   const [fullNode, openFullContent] = useFullContent(
     close =>
       meetings && (
-        <div className="full-container padding-big-gap">
-          <MeetingsInner
-            meetings={meetings}
-            onEventClick={event => {
-              exec(event.mergeStack(selectedComws));
-              goToEvent(event.wid);
-              close();
-            }}
-          />
-        </div>
+        <MeetingsInner
+          meetings={meetings}
+          onEventClick={event => {
+            exec(event.mergeStack(selectedComws));
+            goToEvent(event.wid);
+            close();
+          }}
+        />
       ),
   );
 

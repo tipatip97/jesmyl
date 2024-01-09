@@ -49,7 +49,7 @@ export default function NewComposition({ close }: { close: () => void }) {
 
   return (
     <>
-      <div className="full-container new-composition">
+      <div className="new-composition">
         <div className="title">Новая песня</div>
 
         <EditContainerCorrectsInformer

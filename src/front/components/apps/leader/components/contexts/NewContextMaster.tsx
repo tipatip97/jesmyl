@@ -55,7 +55,7 @@ export default function NewLeaderContextMaster({ close }: { close: () => void })
   return (
     <>
       {confirmNode}
-      <div className="full-container padding-giant-gap">
+      <div className="padding-giant-gap">
         <div className="flex flex-gap">
           Название:
           <KeyboardInput onChange={setName} />

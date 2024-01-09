@@ -20,7 +20,7 @@ export default function PrintableTemplate({
   );
   return (
     (typeof pager === 'function' ? pager(pageNoder) : pager) ?? (
-      <div className="printable-template print-template-page full-container for-print break-inside-avoid">
+      <div className="printable-template print-template-page for-print break-inside-avoid">
         {typeof noder === 'function' ? noder(pageNoder) : noder}
       </div>
     )

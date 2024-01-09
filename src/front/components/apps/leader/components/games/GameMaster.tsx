@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { TeamGameExportable } from '../../Leader.model';
 import { leaderExer } from '../../Leader.store';
 import { useLeaderCcontext } from '../contexts/useContexts';
@@ -21,7 +21,7 @@ export default function LeaderGameMaster({ close }: { close: () => void }) {
   const { cgame } = useGames();
 
   return (
-    <div className="team-maker full-container padding-giant-gap">
+    <div className="team-maker padding-giant-gap">
       <div className="flex full-width margin-big-gap-v">
         <div className="nowrap">Название игры</div>
         <div className="full-width margin-gap-h">

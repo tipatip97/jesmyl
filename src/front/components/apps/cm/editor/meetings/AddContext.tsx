@@ -60,7 +60,7 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
     .filter(item => item);
 
   return (
-    <div className="add-context full-container flex column full-height padding-big-gap center">
+    <div className="add-context flex column full-height padding-big-gap center">
       <KeyboardInput
         className="full-width"
         value={name}

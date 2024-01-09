@@ -16,7 +16,7 @@ export default function NewGamerRoomScreen({ close, offline }: { close: () => vo
   const [name, setName] = useState('');
 
   return (
-    <div className="full-container flex center column padding-giant-gap">
+    <div className="flex center column padding-giant-gap">
       <KeyboardInput
         placeholder="Название комнаты"
         onInput={value => {

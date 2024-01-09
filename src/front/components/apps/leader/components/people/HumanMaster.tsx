@@ -107,7 +107,7 @@ export default function HumanMaster({
   };
 
   return (
-    <div className="full-container flex column padding-giant-gap">
+    <div className="flex column padding-giant-gap">
       {pushInCcontextAs || human ? null : (
         <Dropdown
           id={isHumanHeap}

@@ -19,7 +19,7 @@ export default function LeaderGroupMaster({ group, close }: { group?: LeaderGrou
   if (!ccontext) return null;
 
   return (
-    <div className="full-container flex column padding-giant-gap">
+    <div className="flex column padding-giant-gap">
       <div className="flex flex-gap full-width">
         <div>Название:</div>
         <KeyboardInput
