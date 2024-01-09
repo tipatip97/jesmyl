@@ -17,7 +17,9 @@ export const takeDeviceId = async () => {
   deviceId = await indexStorage.get('deviceId');
   const storage = await indexStorage.get('nounPronsWords');
 
-  if (!deviceId) {
+  if (storage === undefined) return '***S***';
+
+  if (!deviceId || deviceId.startsWith('__')) {
     deviceId = makeRandomTwiceName(storage).join('_') + '_' + takeRandomSymbols();
     indexStorage.set('deviceId', deviceId);
   }
