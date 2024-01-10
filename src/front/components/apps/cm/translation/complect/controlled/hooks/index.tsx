@@ -6,7 +6,7 @@ import di from '../../../../Cm.store';
 import useCmNav from '../../../../base/useCmNav';
 import { Com } from '../../../../col/com/Com';
 import { useTranslation } from '../../../useTranslation';
-import TranslationScreen from '../TranslationScreen';
+import TranslationScreen from '../screen/TranslationScreen';
 import { useCmTranslationConfigs } from './configs';
 
 const translationUpdatesSelector = (state: RootState) => state.cm.translationUpdates;

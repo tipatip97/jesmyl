@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import TranslationScreen from './TranslationScreen';
+import TranslationScreen from './screen/TranslationScreen';
 import { ControlledTranslationStateRef } from './hooks';
 import { useCmTranslationConfigs } from './hooks/configs';
 
