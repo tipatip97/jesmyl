@@ -23,14 +23,10 @@ export function useTranslation() {
   const isVisible = useSelector(isTranslationBlockVisibleSelector);
   const texts = useMemo(() => ccom?.getOrderedTexts(), [ccom]);
   const setCom = (com: Com) => setAppRouteData({ ccomw: com.wid });
-  const text = texts && texts[currTexti];
 
   const state = {
     goTo,
-    goBack,
-    registerBackAction,
-    currText: isVisible ? text : undefined,
-    permanentText: text,
+    text: texts && texts[currTexti],
     isVisible,
     currTexti,
     isShowFullscreen: isTouchDevice,
@@ -38,7 +34,7 @@ export function useTranslation() {
     positionY: useSelector(translationBlockPositionSelector),
     comPack: useComPack(ccom, true),
     nextText: () => {
-      if (state.texts && currTexti < state.texts.length - 1) state.setTexti(currTexti + 1);
+      if (texts && currTexti < texts.length - 1) state.setTexti(currTexti + 1);
     },
     prevText: () => {
       if (currTexti > 0) state.setTexti(currTexti - 1);
@@ -96,7 +92,7 @@ export function useTranslation() {
         state.goTo('translation', null, true);
         document.body.requestFullscreen();
 
-        state.registerBackAction(() => state.closeTranslation());
+        registerBackAction(() => state.closeTranslation());
       } else goTo('translation');
     },
   };

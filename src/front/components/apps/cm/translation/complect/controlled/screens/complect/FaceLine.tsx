@@ -8,9 +8,10 @@ import { CmTranslateScreenConfigurationsFace } from './Face';
 
 const defaultConfig: TranslationScreenConfig = {
   title: 'Трансляция',
-  paddingHPx: 10,
-  paddingVPx: 10,
-  paddingFix: false,
+  left: 10,
+  top: 10,
+  width: 90,
+  height: 90,
   proportion: 1,
   color: '#ffffff',
   textAlign: CmTranslateCurrentScreenConfigurationTypeTextAlign.Center,

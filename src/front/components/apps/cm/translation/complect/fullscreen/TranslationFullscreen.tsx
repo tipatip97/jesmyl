@@ -1,17 +1,18 @@
 import { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
+import { backSwipableContainerMaker } from '../../../../../../complect/backSwipableContainerMaker';
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import { useActualRef } from '../../../../../../complect/useActualRef';
 import { RootState } from '../../../../../../shared/store';
 import di from '../../../Cm.store';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
 import { useTranslation } from '../../useTranslation';
-import { backSwipableContainerMaker } from '../../../../../../complect/backSwipableContainerMaker';
-import { useActualRef } from '../../../../../../complect/useActualRef';
 
 const isShowTranslationInfoSelector = (state: RootState) => state.cm.isShowTranslationInfo;
 const emptyObj = {};
 const forceUpdater = (it: number) => it + 1;
+const style = { padding: '5px' };
 
 export default function TranslationFullscreen() {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export default function TranslationFullscreen() {
   const isShowInfo = useSelector(isShowTranslationInfoSelector);
   const [swipes, setSwipes] = useState(emptyObj);
 
-  const { prevText, nextText, prevCom, nextCom, closeTranslation, permanentText } = useTranslation();
+  const { prevText, nextText, prevCom, nextCom, closeTranslation, text } = useTranslation();
   const closeTranslationRef = useActualRef(closeTranslation);
 
   useEffect(() => {
@@ -41,10 +42,8 @@ export default function TranslationFullscreen() {
         <Wrapper className={isShowInfo ? ' open-info ' : ''}>
           <Screen
             className="flex center"
-            html={permanentText}
-            shadowStyle={{
-              padding: '5px',
-            }}
+            html={text}
+            style={style}
             subUpdate={forceUpdates}
           />
           <div
@@ -131,6 +130,10 @@ const Screen = styled(FontSizeContain)`
   background-color: black;
   text-align: center;
   white-space: pre;
+
+  .shadow-child {
+    padding: 10px;
+  }
 `;
 
 const Container = styled.div`

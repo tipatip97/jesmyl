@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { FontSizeContainProps } from '../../../base/font-size-contain/FontSizeContain.model';
 
 export type TranslationScreenProps = Partial<FontSizeContainProps> & {
@@ -5,4 +6,5 @@ export type TranslationScreenProps = Partial<FontSizeContainProps> & {
   win?: Window;
   proportion?: number;
   canShowLimits?: boolean;
+  innerNode?: ReactNode;
 };

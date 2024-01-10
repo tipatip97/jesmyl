@@ -4,9 +4,10 @@ import { CmTranslateCurrentScreenConfigurationTypeFontWeight } from './screens/c
 
 export interface TranslationScreenConfig {
   title: string;
-  paddingVPx: number;
-  paddingHPx: number;
-  paddingFix: boolean;
+  left: number;
+  top: number;
+  width: number;
+  height: number;
   fontFamily?: string;
   background?: BackgroundNameType;
   fontWeight: CmTranslateCurrentScreenConfigurationTypeFontWeight;

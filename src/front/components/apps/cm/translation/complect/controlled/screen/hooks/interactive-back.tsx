@@ -3,6 +3,11 @@ import { CSSProperties } from 'styled-components';
 import { BackgroundNameType } from '../../../../../../../index/parts/actions/files/complect/BackgroundSelector';
 import { takeInteractiveFileBackground } from '../../../../../../../index/parts/actions/files/utils/take-interactive-file-background';
 
+const style: CSSProperties = {
+  position: 'absolute',
+  objectFit: 'cover',
+};
+
 export const useSetScreenInteractiveBackground = (
   win: Window | nil,
   background: BackgroundNameType | und,
@@ -14,11 +19,6 @@ export const useSetScreenInteractiveBackground = (
       return;
     }
 
-    const style: CSSProperties = {
-      position: 'absolute',
-      objectFit: 'cover',
-    };
-
     takeInteractiveFileBackground(
       background,
       (type, src) => {
@@ -29,7 +29,7 @@ export const useSetScreenInteractiveBackground = (
               muted
               loop
               src={src}
-              className="full-width full-height"
+              className="full-size pointers-none"
               style={style}
             />,
           );
@@ -41,7 +41,7 @@ export const useSetScreenInteractiveBackground = (
             <img
               alt=""
               src={src}
-              className="full-width full-height"
+              className="full-size pointers-none"
               style={style}
             />,
           );

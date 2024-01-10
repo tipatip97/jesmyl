@@ -1,45 +1,95 @@
 import styled, { css } from 'styled-components';
-import TranslationScreen from './screen/TranslationScreen';
+import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
+import useFullContent from '../../../../../../complect/fullscreen-content/useFullContent';
+import { useActualRef } from '../../../../../../complect/useActualRef';
 import { ControlledTranslationStateRef } from './hooks';
 import { useCmTranslationConfigs } from './hooks/configs';
-import { makeWid } from '../../../../../../complect/useWid';
-
-const screenId = makeWid();
+import TranslationScreen from './screen/TranslationScreen';
+import { CmTranslateCurrentScreenPositionConfigurators } from './screens/current/complect/position/Position';
 
 export const CmTranslationSlidePreview = ({ stateRef }: { stateRef: ControlledTranslationStateRef }) => {
-  const { currentConfig } = useCmTranslationConfigs();
+  const configsState = useCmTranslationConfigs();
+  const configsStateRef = useActualRef(configsState);
+
+  const [fullNode, openFull] = useFullContent(() => {
+    return (
+      <>
+        {configsState.currentConfig && (
+          <div className="flex center margin-big-gap-t">
+            <FullContainer className="flex center bgcolor--3">
+              <ScreenWithBackground $proportion={configsState.currentConfig.proportion}>
+                <TranslationScreen
+                  proportion={configsState.currentConfig.proportion}
+                  innerNode={
+                    <CmTranslateCurrentScreenPositionConfigurators
+                      currentConfig={configsState.currentConfig}
+                      configsStateRef={configsStateRef}
+                    />
+                  }
+                />
+              </ScreenWithBackground>
+            </FullContainer>
+          </div>
+        )}
+      </>
+    );
+  });
 
   return (
-    <Wrapper onClick={() => stateRef.current.switchVisible()}>
-      <Inner>
-        {currentConfig == null || stateRef.current.currWin == null ? (
-          <TranslationScreen key={screenId} />
-        ) : (
+    <Wrapper>
+      {fullNode}
+      {configsState.currentConfig == null || stateRef.current.currWin == null ? (
+        <TranslationScreen />
+      ) : (
+        <>
           <div className="flex center full-width full-height bgcolor--2">
-            <ScreenWithBackground $proportion={currentConfig.proportion}>
+            <ScreenWithBackground $proportion={configsState.currentConfig.proportion}>
               <TranslationScreen
-                key={screenId}
-                proportion={currentConfig.proportion}
+                proportion={configsState.currentConfig.proportion}
+                innerNode={
+                  configsState.currentConfig && (
+                    <CmTranslateCurrentScreenPositionConfigurators
+                      currentConfig={configsState.currentConfig}
+                      configsStateRef={configsStateRef}
+                    />
+                  )
+                }
               />
             </ScreenWithBackground>
           </div>
-        )}
-        {stateRef.current.isVisible ? null : (
-          <div
-            title="esc, V"
-            className="absolute pos-bottom full-width margin-gap-v text-center"
-          >
-            Нажми для показа
-          </div>
-        )}
-      </Inner>
+          <FullButton
+            name="maximize-outline"
+            onClick={() => openFull()}
+          />
+        </>
+      )}
     </Wrapper>
   );
 };
 
+const size = '94.5vmin';
+
+const FullContainer = styled.div`
+  height: ${size};
+  min-height: ${size};
+  max-height: ${size};
+
+  width: ${size};
+  min-width: ${size};
+  max-width: ${size};
+`;
+
+const FullButton = styled(EvaButton)`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+`;
+
 const Wrapper = styled.div`
-  display: inline-block;
+  --radius: 20px;
+
   position: relative;
+  display: inline-block;
   vertical-align: middle;
   width: var(--size);
   min-width: var(--min-size);
@@ -47,18 +97,15 @@ const Wrapper = styled.div`
   height: var(--size);
   min-height: var(--min-size);
   max-height: var(--max-size);
-`;
 
-export const Inner = styled.div`
-  cursor: pointer;
-  border-radius: var(--radius);
-  width: 100%;
-  height: 100%;
   overflow: hidden;
   color: var(--color-far);
   font-size: 14px;
   user-select: none;
   white-space: pre;
+
+  cursor: pointer;
+  border-radius: var(--radius);
 `;
 
 const ScreenWithBackground = styled.div<{ $proportion: number }>`

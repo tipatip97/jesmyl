@@ -53,7 +53,6 @@ export default function TranslationControlled() {
 }
 
 const Container = styled(PhaseCmContainer)`
-  --radius: 20px;
   --size: 50vmin;
   --max-size: 300px;
   --min-size: 200px;

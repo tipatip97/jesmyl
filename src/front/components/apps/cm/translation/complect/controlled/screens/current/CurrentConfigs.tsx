@@ -4,7 +4,6 @@ import { CmTranslateCurrentScreenConfigurationBackground } from './complect/Back
 import { CmTranslateCurrentScreenConfigurationColor } from './complect/Color';
 import { CmTranslateCurrentScreenConfigurationFontFamily } from './complect/FontFamily';
 import { CmTranslateCurrentScreenConfigurationName } from './complect/Name';
-import { CmTranslateCurrentScreenConfigurationProportions } from './complect/Proportions';
 import { CmTranslateCurrentScreenConfigurationTextAlign } from './complect/TextAlign';
 import { CmTranslateCurrentScreenConfigurationType } from './complect/Type';
 
@@ -18,10 +17,6 @@ export const CmTranslateCurrentScreenConfigurations = ({
   return (
     <>
       <CmTranslateCurrentScreenConfigurationName
-        configsStateRef={configsStateRef}
-        currentConfig={currentConfig}
-      />
-      <CmTranslateCurrentScreenConfigurationProportions
         configsStateRef={configsStateRef}
         currentConfig={currentConfig}
       />

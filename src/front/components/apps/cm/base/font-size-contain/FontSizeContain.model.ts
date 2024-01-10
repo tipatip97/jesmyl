@@ -1,10 +1,7 @@
-import { ReactNode } from 'react';
-import { CSSProperties } from 'styled-components';
+import { CSSProperties, ReactNode } from 'react';
 
 export type FontSizeContainProps = {
   className?: string;
   subUpdate?: string | number;
   style?: CSSProperties;
-  shadowStyle?: CSSProperties;
-  childStyle?: CSSProperties;
 } & XOR<{ content?: ReactNode }, { html?: string }>;
