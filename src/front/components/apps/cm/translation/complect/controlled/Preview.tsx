@@ -2,6 +2,9 @@ import styled, { css } from 'styled-components';
 import TranslationScreen from './screen/TranslationScreen';
 import { ControlledTranslationStateRef } from './hooks';
 import { useCmTranslationConfigs } from './hooks/configs';
+import { makeWid } from '../../../../../../complect/useWid';
+
+const screenId = makeWid();
 
 export const CmTranslationSlidePreview = ({ stateRef }: { stateRef: ControlledTranslationStateRef }) => {
   const { currentConfig } = useCmTranslationConfigs();
@@ -10,11 +13,14 @@ export const CmTranslationSlidePreview = ({ stateRef }: { stateRef: ControlledTr
     <Wrapper onClick={() => stateRef.current.switchVisible()}>
       <Inner>
         {currentConfig == null || stateRef.current.currWin == null ? (
-          <TranslationScreen />
+          <TranslationScreen key={screenId} />
         ) : (
           <div className="flex center full-width full-height bgcolor--2">
             <ScreenWithBackground $proportion={currentConfig.proportion}>
-              <TranslationScreen proportion={currentConfig.proportion} />
+              <TranslationScreen
+                key={screenId}
+                proportion={currentConfig.proportion}
+              />
             </ScreenWithBackground>
           </div>
         )}
