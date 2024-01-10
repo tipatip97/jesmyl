@@ -1,13 +1,13 @@
 import { BackgroundSelector } from '../../../../../../../../index/parts/actions/files/complect/BackgroundSelector';
 import { CmTranslationConfigsRef } from '../../../hooks/configs';
-import { TrnslationScreenConfig } from '../../../model';
+import { TranslationScreenConfig } from '../../../model';
 
 export const CmTranslateCurrentScreenConfigurationBackground = ({
   configsStateRef,
   currentConfig,
 }: {
   configsStateRef: CmTranslationConfigsRef;
-  currentConfig: TrnslationScreenConfig;
+  currentConfig: TranslationScreenConfig;
 }) => {
   return (
     <>

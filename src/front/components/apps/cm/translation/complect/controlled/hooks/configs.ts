@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../shared/store';
 import di from '../../../../Cm.store';
-import { TrnslationScreenConfig } from '../model';
+import { TranslationScreenConfig } from '../model';
 const windows: (Window | nil)[] = [];
 
 const currentTranslationScreenConfigiSelector = (state: RootState) => state.cm.currentTranslationConfigi;
@@ -29,11 +29,11 @@ export const useCmTranslationConfigs = (configi?: number) => {
   return {
     configs,
     currentConfigi,
-    currentConfig: configs[currentConfigi] as TrnslationScreenConfig | und,
+    currentConfig: configs[currentConfigi] as TranslationScreenConfig | und,
     windows,
     currWin: windows[currentConfigi],
     updateConfig: useCallback(
-      (config: Partial<TrnslationScreenConfig> | null, configi = currentConfigi) => {
+      (config: Partial<TranslationScreenConfig> | null, configi = currentConfigi) => {
         const newConfigs = [...configs];
         if (config === null) {
           newConfigs.splice(configi, 1);

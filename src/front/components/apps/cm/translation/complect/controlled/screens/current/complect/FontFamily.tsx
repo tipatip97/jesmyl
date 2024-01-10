@@ -1,13 +1,13 @@
 import { FontFamilySelector } from '../../../../../../../../index/parts/actions/files/complect/FontFamilySelector';
 import { CmTranslationConfigsRef } from '../../../hooks/configs';
-import { TrnslationScreenConfig } from '../../../model';
+import { TranslationScreenConfig } from '../../../model';
 
 export const CmTranslateCurrentScreenConfigurationFontFamily = ({
   configsStateRef,
   currentConfig,
 }: {
   configsStateRef: CmTranslationConfigsRef;
-  currentConfig: TrnslationScreenConfig;
+  currentConfig: TranslationScreenConfig;
 }) => {
   return (
     <>

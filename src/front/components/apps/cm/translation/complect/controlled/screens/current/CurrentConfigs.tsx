@@ -1,5 +1,5 @@
 import { CmTranslationConfigsRef } from '../../hooks/configs';
-import { TrnslationScreenConfig } from '../../model';
+import { TranslationScreenConfig } from '../../model';
 import { CmTranslateCurrentScreenConfigurationBackground } from './complect/Background';
 import { CmTranslateCurrentScreenConfigurationColor } from './complect/Color';
 import { CmTranslateCurrentScreenConfigurationFontFamily } from './complect/FontFamily';
@@ -13,7 +13,7 @@ export const CmTranslateCurrentScreenConfigurations = ({
   currentConfig,
 }: {
   configsStateRef: CmTranslationConfigsRef;
-  currentConfig: TrnslationScreenConfig;
+  currentConfig: TranslationScreenConfig;
 }) => {
   return (
     <>

@@ -3,14 +3,14 @@ import styled, { css } from 'styled-components';
 import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
 import { useDebounceAction } from '../../../../../../../../../complect/useDebounceAction';
 import { CmTranslationConfigsRef } from '../../../hooks/configs';
-import { TrnslationScreenConfig } from '../../../model';
+import { TranslationScreenConfig } from '../../../model';
 
 export const CmTranslateCurrentScreenConfigurationProportions = ({
   configsStateRef,
   currentConfig,
 }: {
   configsStateRef: CmTranslationConfigsRef;
-  currentConfig: TrnslationScreenConfig;
+  currentConfig: TranslationScreenConfig;
 }) => {
   const [paddingHPx, setPaddingHPx] = useState(currentConfig.paddingHPx);
   const [paddingVPx, setPaddingVPx] = useState(currentConfig.paddingVPx);

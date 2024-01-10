@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { TrnslationScreenConfig } from '../../model';
+import { TranslationScreenConfig } from '../../model';
 import { ActualRef } from '../../../../../../../../complect/useActualRef';
 import { useControlledTranslation } from '../../hooks';
 
 export const useScreenKeyDownListen = (
   win: Window | nil,
-  configs: TrnslationScreenConfig[],
+  configs: TranslationScreenConfig[],
   screeni: number | und,
   setCurrentConfigiRef: ActualRef<(configi: number) => void>,
   stateRef: ActualRef<ReturnType<typeof useControlledTranslation>>,

@@ -6,7 +6,7 @@ import { MigratableComToolName } from './col/com/Com.model';
 import { IExportableCols } from './cols/Cols.model';
 import { CmEditorStoraged } from './editor/CmEditor.model';
 import { IExportableMeetings } from './lists/meetings/Meetings.model';
-import { TranslationYPosition, TrnslationScreenConfig } from './translation/complect/controlled/model';
+import { TranslationYPosition, TranslationScreenConfig } from './translation/complect/controlled/model';
 
 export interface CmState extends CmStoraged {
   translationUpdates: number;
@@ -15,7 +15,7 @@ export interface CmState extends CmStoraged {
   translationBlockPosition: TranslationYPosition;
   isCmFullscreen: boolean;
   rollModeMarks: boolean;
-  translationScreenConfigs: TrnslationScreenConfig[];
+  translationScreenConfigs: TranslationScreenConfig[];
   currentTranslationConfigi: number;
 
   numComUpdates: number;

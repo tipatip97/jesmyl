@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
 import { useCmTranslationConfigs, useSetCurrentConfigi } from '../../hooks/configs';
-import { TrnslationScreenConfig } from '../../model';
+import { TranslationScreenConfig } from '../../model';
 import { CmTranslateCurrentScreenConfigurationTypeTextAlign } from '../current/complect/TextAlign';
 import { CmTranslateCurrentScreenConfigurationTypeFontWeight } from '../current/complect/Type';
 import { CmTranslateScreenConfigurationsFace } from './Face';
 
-const defaultConfig: TrnslationScreenConfig = {
+const defaultConfig: TranslationScreenConfig = {
   title: 'Трансляция',
   paddingHPx: 10,
   paddingVPx: 10,

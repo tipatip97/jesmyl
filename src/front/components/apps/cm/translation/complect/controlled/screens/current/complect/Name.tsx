@@ -1,12 +1,12 @@
 import { CmTranslationConfigsRef } from '../../../hooks/configs';
-import { TrnslationScreenConfig } from '../../../model';
+import { TranslationScreenConfig } from '../../../model';
 
 export const CmTranslateCurrentScreenConfigurationName = ({
   configsStateRef,
   currentConfig,
 }: {
   configsStateRef: CmTranslationConfigsRef;
-  currentConfig: TrnslationScreenConfig;
+  currentConfig: TranslationScreenConfig;
 }) => {
   const { currentConfigi, updateConfig, windows } = configsStateRef.current;
 

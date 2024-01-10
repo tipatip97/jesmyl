@@ -3,11 +3,11 @@ import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
 import { useActualRef } from '../../../../../../../../complect/useActualRef';
 import { useControlledTranslation } from '../../hooks';
 import { useCmTranslationConfigs, useSetCurrentConfigi } from '../../hooks/configs';
-import { TrnslationScreenConfig } from '../../model';
+import { TranslationScreenConfig } from '../../model';
 
 interface Props {
   configi: number;
-  config: TrnslationScreenConfig;
+  config: TranslationScreenConfig;
 }
 
 export const CmTranslateScreenConfigurationsFace = ({ configi, config }: Props) => {

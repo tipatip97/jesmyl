@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from 'react';
-import { TrnslationScreenConfig } from '../../model';
+import { TranslationScreenConfig } from '../../model';
 import { ActualRef } from '../../../../../../../../complect/useActualRef';
 
 const forceUpdater = (it: number) => it + 1;
@@ -7,7 +7,7 @@ const forceUpdater = (it: number) => it + 1;
 export const useScreenWinResizeListen = (
   win: Window | nil,
   screeni: number | und,
-  updateConfig: (config: Partial<TrnslationScreenConfig> | null, configi?: number) => void,
+  updateConfig: (config: Partial<TranslationScreenConfig> | null, configi?: number) => void,
   setCurrentConfigiRef: ActualRef<(configi: number) => void>,
 ) => {
   const [forceUpdates, forceUpdate] = useReducer(forceUpdater, 0);

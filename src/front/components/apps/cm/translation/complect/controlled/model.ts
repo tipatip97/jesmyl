@@ -2,7 +2,7 @@ import { BackgroundNameType } from '../../../../../index/parts/actions/files/com
 import { CmTranslateCurrentScreenConfigurationTypeTextAlign } from './screens/current/complect/TextAlign';
 import { CmTranslateCurrentScreenConfigurationTypeFontWeight } from './screens/current/complect/Type';
 
-export interface TrnslationScreenConfig {
+export interface TranslationScreenConfig {
   title: string;
   paddingVPx: number;
   paddingHPx: number;
@@ -15,7 +15,7 @@ export interface TrnslationScreenConfig {
   proportion: number;
 }
 
-export type TranslationWinUpdateEffectFeedback = (_event?: unknown, config?: TrnslationScreenConfig) => void;
+export type TranslationWinUpdateEffectFeedback = (_event?: unknown, config?: TranslationScreenConfig) => void;
 export type TranslationWinUpdateEffect = (update: TranslationWinUpdateEffectFeedback) => () => void;
 
 export type TranslationYPosition = null | 'center' | 'top';

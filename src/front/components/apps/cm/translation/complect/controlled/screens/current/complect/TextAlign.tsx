@@ -1,7 +1,7 @@
 import Dropdown from '../../../../../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../../../../../complect/dropdown/Dropdown.model';
 import { CmTranslationConfigsRef } from '../../../hooks/configs';
-import { TrnslationScreenConfig } from '../../../model';
+import { TranslationScreenConfig } from '../../../model';
 
 export enum CmTranslateCurrentScreenConfigurationTypeTextAlign {
   Left = 'left',
@@ -34,7 +34,7 @@ export const CmTranslateCurrentScreenConfigurationTextAlign = ({
   currentConfig,
 }: {
   configsStateRef: CmTranslationConfigsRef;
-  currentConfig: TrnslationScreenConfig;
+  currentConfig: TranslationScreenConfig;
 }) => {
   return (
     <>
