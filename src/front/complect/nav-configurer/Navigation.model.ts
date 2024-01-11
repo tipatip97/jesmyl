@@ -9,6 +9,7 @@ import {
 import { EvaIconName } from '../eva-icon/EvaIcon';
 import { Exer } from '../exer/Exer';
 import { ExerStorage } from '../exer/Exer.model';
+import { LocalSokiAuth } from '../../models';
 
 export type SetPhasePayload<Phase, SpecialPhase> = Phase | nil | [Phase | nil, SpecialPhase | nil, boolean?];
 
@@ -67,7 +68,7 @@ export interface INavigationRouteChildItem<
   defaultChild?: RoutePhase;
   // передаётся в useNav() как есть
   data?: Data;
-  accessRule?: string;
+  accessLevel?: number | ((auth: LocalSokiAuth) => boolean);
   next?: INavigationRouteChildItem<NavData>[];
   slideBackOn?: (data: Partial<NavData>) => boolean;
 }

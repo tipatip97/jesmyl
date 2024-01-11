@@ -1,5 +1,5 @@
 import { Auth } from '../../components/index/Index.model';
-import { ExecutionDict, SokiAppName, SokiServerEvent } from '../../models';
+import { ExecutionDict, LocalSokiAuth, SokiAppName, SokiServerEvent } from '../../models';
 import { soki } from '../../soki';
 import { JStorage } from '../JStorage';
 import mylib from '../my-lib/MyLib';
@@ -19,7 +19,6 @@ export class Exer<Storage extends ExerStorage> {
   storage: JStorage<Storage> | nil;
   key = 'execs' as keyof Storage;
   rules: ExecRule[] = [];
-  checkedActions: Record<string, true | null> = {};
 
   constructor(appName: SokiAppName, storage: JStorage<Storage, any> | nil) {
     this.storage = storage;
@@ -30,10 +29,6 @@ export class Exer<Storage extends ExerStorage> {
 
   async updateRules() {
     this.rules = [...(((await this.storage?.get('rules')) as []) || [])];
-  }
-
-  setIfCan<Value>(freeExec: FreeExecDict<Value>, auth: Auth): Exec<Value> | null {
-    return this.actionAccessedOrNull(freeExec.action, auth) && this.set(freeExec);
   }
 
   clear() {
@@ -130,18 +125,13 @@ export class Exer<Storage extends ExerStorage> {
     });
   }
 
-  actionAccessedOrUnd(action: string | nil, auth: Auth, isNullifyed?: boolean): true | undefined {
-    return this.actionAccessedOrNull(action, auth, isNullifyed) ?? undefined;
-  }
-
-  actionAccessedOrNull(action: string | nil, auth: Auth, isNullifyed?: boolean): true | null {
-    if (action == null) return isNullifyed ? true : null;
-    if (this.checkedActions[action] !== undefined) return this.checkedActions[action] || null;
-    if (!this.rules?.length) return null;
-
-    const rule = this.rules.find(right => right.action === action) as ExecRule;
-    if (!rule) console.error(`Зарегистрировано правило на неизвестное действие ${action}`);
-
-    return (this.checkedActions[action] = rule ? ((rule.level || 0) <= +(auth.level ?? 0) ? true : null) : null);
+  levelAccessedOrNull(
+    level: ((auth: LocalSokiAuth, store: any | null) => boolean | null) | number | nil,
+    auth: Auth,
+    isNullifyed?: boolean,
+  ): true | null {
+    if (level == null) return isNullifyed ? true : null;
+    if (mylib.isFunc(level)) return level(auth, null) || null;
+    return level <= +(auth.level ?? 0) ? true : null;
   }
 }

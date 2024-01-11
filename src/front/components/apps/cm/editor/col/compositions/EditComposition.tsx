@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import { useCheckIsAccessed } from '../../../../../../complect/exer/hooks/check-is-accessed';
 import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import { NavigationThrowNodeProps } from '../../../../../../complect/nav-configurer/Navigation.model';
-import useCmNav from '../../../base/useCmNav';
+import useAuth from '../../../../../index/useAuth';
+import useConnectionState from '../../../../../index/useConnectionState';
 import { CmNavData } from '../../../Cm.model';
-import { cmExer } from '../../../Cm.store';
+import useCmNav from '../../../base/useCmNav';
 import ComPlayer from '../../../col/com/player/ComPlayer';
 import { editCompositionNavs } from '../../editorNav';
 import PhaseCmEditorContainer from '../../phase-editor-container/PhaseCmEditorContainer';
 import './EditComposition.scss';
 import { useEditableCcom } from './useEditableCcom';
-import useAuth from '../../../../../index/useAuth';
-import useConnectionState from '../../../../../index/useConnectionState';
 
 export default function EditComposition({
   outletContent,
@@ -24,6 +24,7 @@ export default function EditComposition({
   const exec = useExerExec();
   const [isOpenPlayer, setIsOpenPlayer] = useState(false);
   const auth = useAuth();
+  const checkIsAccessed = useCheckIsAccessed(auth);
   const connectionNode = useConnectionState('margin-gap');
 
   if (!ccom) return null;
@@ -56,8 +57,8 @@ export default function EditComposition({
         ) : (
           <>
             <div className="flex around sticky nav-panel">
-              {editCompositionNavs.map(({ data: { icon, iconText } = {}, phase: [phase], accessRule }) => {
-                if (accessRule && !cmExer.actionAccessedOrNull(accessRule, auth)) return null;
+              {editCompositionNavs.map(({ data: { icon, iconText } = {}, phase: [phase], accessLevel }) => {
+                if (accessLevel != null && !checkIsAccessed(accessLevel)) return null;
                 return (
                   <span
                     key={`editCompositionNavs ${phase}`}

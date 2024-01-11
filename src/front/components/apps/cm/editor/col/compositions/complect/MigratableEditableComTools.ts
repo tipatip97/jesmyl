@@ -8,10 +8,10 @@ import { MigratableEditableComToolName } from '../EditableCom.model';
 export const migratableEditableComToolNameList = ['edit-com'] as const;
 
 export const concatMigratableEditableComToolNameList = (toolList: MigratableComToolName[], auth: Auth) =>
-  cmExer.actionAccessedOrNull('canRedact', auth) ? toolList.concat(migratableEditableComToolNameList) : toolList;
+  cmExer.levelAccessedOrNull(50, auth) ? toolList.concat(migratableEditableComToolNameList) : toolList;
 
 export const spliceMigratableEditableComToolNameList = (toolList: MigratableComToolName[], auth: Auth) =>
-  cmExer.actionAccessedOrNull('canRedact', auth)
+  cmExer.levelAccessedOrNull(50, auth)
     ? toolList
     : toolList.filter(tool => migratableEditableComToolNameList.indexOf(tool as never) < 0);
 

@@ -120,7 +120,7 @@ export const editorRouteItems: INavigationRouteChildItem<
   {
     phase: ['cats'],
     node: <EditCategories />,
-    accessRule: 'canWatch',
+    accessLevel: 100,
     data: {
       title: 'Категории',
       icon: 'book-open-outline',
@@ -150,7 +150,7 @@ export const editorRouteItems: INavigationRouteChildItem<
   {
     phase: ['meetings'],
     node: <EditMeetings />,
-    accessRule: 'canEditMeetings',
+    accessLevel: 50,
     data: {
       title: 'События',
       icon: 'calendar-outline',
@@ -177,7 +177,7 @@ export const editorRouteItems: INavigationRouteChildItem<
   {
     phase: ['chord'],
     node: <ChordRedactor />,
-    accessRule: 'canEditChords',
+    accessLevel: 50,
     data: {
       title: 'Редактор аккордов',
       icon: 'options-2-outline',
@@ -186,7 +186,7 @@ export const editorRouteItems: INavigationRouteChildItem<
   {
     phase: ['mp3Rules'],
     node: <Mp3RulesRedactor />,
-    accessRule: 'canEditMp3Rules',
+    accessLevel: 80,
     data: {
       title: 'Редактор MP3 правил',
       icon: 'music-outline',
@@ -195,7 +195,7 @@ export const editorRouteItems: INavigationRouteChildItem<
   {
     phase: ['e-e'],
     node: <EERules />,
-    accessRule: 'canEditEERules',
+    accessLevel: 100,
     data: {
       title: 'Ё-Е правила',
       icon: 'text-outline',
@@ -204,7 +204,7 @@ export const editorRouteItems: INavigationRouteChildItem<
   {
     phase: ['execs'],
     node: <ExecsVisor />,
-    accessRule: 'canWatch',
+    accessLevel: 100,
     data: {
       title: 'Изменения',
       icon: 'pantone-outline',
@@ -217,6 +217,6 @@ export const editorNav: INavigationRouteRootItem<CmNavData> = {
   node: <Editor />,
   title: 'Редактор',
   icon: 'edit',
-  accessRule: 'canRedact',
+  accessLevel: 50,
   next: editorRouteItems,
 };

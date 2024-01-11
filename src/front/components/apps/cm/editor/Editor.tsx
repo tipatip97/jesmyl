@@ -1,7 +1,7 @@
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
+import { useCheckIsAccessed } from '../../../../complect/exer/hooks/check-is-accessed';
 import useAuth from '../../../index/useAuth';
 import useCmNav from '../base/useCmNav';
-import { cmExer } from '../Cm.store';
 import './Editor.scss';
 import { editorRouteItems } from './editorNav';
 import PhaseCmEditorContainer from './phase-editor-container/PhaseCmEditorContainer';
@@ -9,6 +9,7 @@ import PhaseCmEditorContainer from './phase-editor-container/PhaseCmEditorContai
 export default function Editor() {
   const { goTo } = useCmNav();
   const auth = useAuth();
+  const checkIsAccessed = useCheckIsAccessed(auth);
 
   return (
     <PhaseCmEditorContainer
@@ -17,9 +18,9 @@ export default function Editor() {
       headTitle="Редактор"
       content={
         <>
-          {editorRouteItems.map(({ data: { icon, title } = {}, phase, accessRule }) => {
+          {editorRouteItems.map(({ data: { icon, title } = {}, phase, accessLevel }) => {
             return (
-              (!accessRule || cmExer.actionAccessedOrNull(accessRule, auth)) && (
+              (accessLevel == null || checkIsAccessed(accessLevel)) && (
                 <BrutalItem
                   key={`${icon} ${phase}`}
                   icon={icon || 'question-mark-circle'}

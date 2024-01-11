@@ -1,9 +1,9 @@
 import { bottomPopupContentPreparer } from '../../../../complect/absolute-popup/bottom-popup/item-preparer';
 import { BottomPopupContenter } from '../../../../complect/absolute-popup/bottom-popup/model';
+import { useCheckIsAccessed } from '../../../../complect/exer/hooks/check-is-accessed';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
 import useToast from '../../../../complect/modal/useToast';
 import useAuth from '../../../index/useAuth';
-import { gamerExer } from '../Gamer.store';
 import NewGamerRoomScreen from './rooms/NewGamerRoomScreen';
 import { useGamerOfflineRoomsPassport } from './rooms/offline-room/hooks/passport';
 
@@ -18,6 +18,7 @@ export const GamerMore: BottomPopupContenter = () => {
   ));
   const passport = useGamerOfflineRoomsPassport();
   const [toastNode, toast] = useToast();
+  const checkIsAccessed = useCheckIsAccessed(auth);
 
   return [
     <>
@@ -28,7 +29,7 @@ export const GamerMore: BottomPopupContenter = () => {
     <>
       {bottomPopupContentPreparer({
         items: [
-          gamerExer.actionAccessedOrNull('addNewRoom', auth) && {
+          checkIsAccessed(3) && {
             title: 'Новая комната',
             icon: 'plus',
             onClick: () => openNewRoomMaker(),

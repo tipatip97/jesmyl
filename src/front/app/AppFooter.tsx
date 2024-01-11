@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import EvaIcon from '../complect/eva-icon/EvaIcon';
 import { ExerStorage } from '../complect/exer/Exer.model';
+import { useCheckIsAccessed } from '../complect/exer/hooks/check-is-accessed';
 import { INavigationConfig } from '../complect/nav-configurer/Navigation.model';
 import useIndexNav from '../components/index/complect/useIndexNav';
 import useAuth from '../components/index/useAuth';
@@ -14,6 +15,7 @@ export default function AppFooter({ appName }: { appName: AppName }) {
   const { nav, route, navigate } = navConfigurers[appName]();
   const { route: indexRoute, navigate: indexNavigate, nav: indexNav } = useIndexNav();
   const auth = useAuth();
+  const checkIsAccessed = useCheckIsAccessed(auth);
 
   const [indexPhase] = indexRoute || [];
 
@@ -24,8 +26,9 @@ export default function AppFooter({ appName }: { appName: AppName }) {
   ) => {
     return nav.routes.map(props => {
       if (!props) return null;
-      const { phase, title, icon, accessRule } = props;
-      if (accessRule != null && nav.exer && !nav.exer.actionAccessedOrNull(accessRule, auth)) return null;
+      const { phase, title, icon, accessLevel } = props;
+
+      if (accessLevel != null && !checkIsAccessed(accessLevel)) return null;
       const isActive = setIsActive(phase);
 
       return (

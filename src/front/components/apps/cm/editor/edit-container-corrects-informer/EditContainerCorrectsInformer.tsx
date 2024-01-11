@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, PropsWithChildren } from 'react';
+import { useCheckIsAccessed } from '../../../../../complect/exer/hooks/check-is-accessed';
 import useAuth from '../../../../index/useAuth';
-import { cmExer } from '../../Cm.store';
 import { CorrectsBox } from '../corrects-box/CorrectsBox';
 import { ICorrect } from '../corrects-box/CorrectsBox.model';
 import './EditContainerCorrectsInformer.scss';
@@ -8,7 +8,7 @@ import './EditContainerCorrectsInformer.scss';
 export default function EditContainerCorrectsInformer(
   props: PropsWithChildren<{
     corrects?: CorrectsBox | nil;
-    access?: string;
+    access?: number;
   }> &
     DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
 ) {
@@ -17,9 +17,10 @@ export default function EditContainerCorrectsInformer(
   const errors = corrects?.errors || [];
   const warnings = corrects?.warnings || [];
   const unknowns = corrects?.unknowns || [];
+  const checkIsAccessed = useCheckIsAccessed(auth);
 
   return (
-    cmExer.actionAccessedOrNull(access, auth, true) && (
+    checkIsAccessed(access, true) && (
       <div
         {...props}
         className={`edit-container-corrects-informer ${props.className || ''}`}

@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import useAuth from '../../../../index/useAuth';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { leaderExer } from '../../Leader.store';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
@@ -84,7 +83,6 @@ export default function HumanMaster({
   const [isInactive, setIsInactive] = useState(human?.isInactive);
   const [isMan, setIsMan] = useState(human?.isMan ?? true);
   const { humans, ccontext } = useLeaderContext();
-  const auth = useAuth();
 
   const takeName = (value: string) => {
     if (value.match(/^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$/)) {
@@ -222,20 +220,17 @@ export default function HumanMaster({
                   : (val, prev) => {
                       const value = takeName(val);
                       if (value) {
-                        leaderExer.setIfCan(
-                          {
-                            action: 'setHumanName',
-                            scope: `setHumanName-${human.w}`,
-                            method: 'set',
-                            prev,
+                        leaderExer.set({
+                          action: 'setHumanName',
+                          scope: `setHumanName-${human.w}`,
+                          method: 'set',
+                          prev,
+                          value,
+                          args: {
+                            wid: human.w,
                             value,
-                            args: {
-                              wid: human.w,
-                              value,
-                            },
                           },
-                          auth,
-                        );
+                        });
                       }
                     }
               }
@@ -250,21 +245,18 @@ export default function HumanMaster({
               onSelect={({ id }) => {
                 setIsMan(id);
                 if (human)
-                  leaderExer.setIfCan(
-                    {
-                      action: 'setHumanIsMan',
-                      scope: `setHumanIsMan-${human.w}`,
-                      method: 'set',
-                      prev: human.isMan,
+                  leaderExer.set({
+                    action: 'setHumanIsMan',
+                    scope: `setHumanIsMan-${human.w}`,
+                    method: 'set',
+                    prev: human.isMan,
+                    value: !isMan,
+                    args: {
+                      wid: human.w,
                       value: !isMan,
-                      args: {
-                        wid: human.w,
-                        value: !isMan,
-                        humann: human.name,
-                      },
+                      humann: human.name,
                     },
-                    auth,
-                  );
+                  });
               }}
             />
           </div>
@@ -291,21 +283,18 @@ export default function HumanMaster({
                         placei ? setUfp2(value) : setUfp1(value);
 
                         if (human) {
-                          leaderExer.setIfCan(
-                            {
-                              action,
-                              scope: `${action}-${human.w}`,
-                              method: 'set',
-                              prev: human[fieldn],
+                          leaderExer.set({
+                            action,
+                            scope: `${action}-${human.w}`,
+                            method: 'set',
+                            prev: human[fieldn],
+                            value,
+                            args: {
+                              wid: human.w,
                               value,
-                              args: {
-                                wid: human.w,
-                                value,
-                                humann: human.name,
-                              },
+                              humann: human.name,
                             },
-                            auth,
-                          );
+                          });
                         }
                       }}
                     />
@@ -325,21 +314,18 @@ export default function HumanMaster({
                   : value => {
                       const time = takeTime(value);
                       if (time) {
-                        leaderExer.setIfCan(
-                          {
-                            action: 'setHumanBDay',
-                            scope: `setHumanBDay-${human.w}`,
-                            method: 'set',
-                            prev: human.bDay,
+                        leaderExer.set({
+                          action: 'setHumanBDay',
+                          scope: `setHumanBDay-${human.w}`,
+                          method: 'set',
+                          prev: human.bDay,
+                          value: time,
+                          args: {
+                            wid: human.w,
                             value: time,
-                            args: {
-                              wid: human.w,
-                              value: time,
-                              humann: human.name,
-                            },
+                            humann: human.name,
                           },
-                          auth,
-                        );
+                        });
                       }
                     }
               }
@@ -355,21 +341,18 @@ export default function HumanMaster({
                 !human
                   ? val => setNotes(val)
                   : (value, prev) => {
-                      leaderExer.setIfCan(
-                        {
-                          action: 'setHumanNotes',
-                          scope: `setHumanNotes-${human.w}`,
-                          method: 'set',
-                          prev,
+                      leaderExer.set({
+                        action: 'setHumanNotes',
+                        scope: `setHumanNotes-${human.w}`,
+                        method: 'set',
+                        prev,
+                        value,
+                        args: {
+                          wid: human.w,
                           value,
-                          args: {
-                            wid: human.w,
-                            value,
-                            humann: human.name,
-                          },
+                          humann: human.name,
                         },
-                        auth,
-                      );
+                      });
                     }
               }
             />
@@ -383,21 +366,18 @@ export default function HumanMaster({
               onClick={() => {
                 setIsInactive(!isInactive);
                 if (human)
-                  leaderExer.setIfCan(
-                    {
-                      action: 'setHumanInactive',
-                      scope: `setHumanInactive-${human.w}`,
-                      method: 'set',
-                      prev: !!human.isInactive,
+                  leaderExer.set({
+                    action: 'setHumanInactive',
+                    scope: `setHumanInactive-${human.w}`,
+                    method: 'set',
+                    prev: !!human.isInactive,
+                    value: !isInactive,
+                    args: {
+                      wid: human.w,
                       value: !isInactive,
-                      args: {
-                        wid: human.w,
-                        value: !isInactive,
-                        humann: human.name,
-                      },
+                      humann: human.name,
                     },
-                    auth,
-                  );
+                  });
               }}
             >
               {isInactive ? 'Разблокировать личность' : 'Заблокировать личность'}

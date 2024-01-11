@@ -18,22 +18,6 @@ const config: FilerAppConfig = {
     },
   },
   actions: Executer.prepareActionList({
-    '<canWatch>': {
-      level: 100,
-      action: 'canWatch',
-    },
-    '<canRedact>': {
-      level: 50,
-      action: 'canRedact',
-    },
-    '<canEditMeetings>': {
-      level: 50,
-      action: 'canEditMeetings',
-    },
-    '<canEditChords>': {
-      level: 50,
-      action: 'canEditChords',
-    },
     '/chordTracks': {
       expected: {},
       level: 50,
@@ -450,10 +434,6 @@ const config: FilerAppConfig = {
           },
         },
       },
-    },
-    '<canEditMp3Rules>': {
-      level: 80,
-      action: 'canEditMp3Rules',
     },
     '/mp3Rules': {
       expected: [],

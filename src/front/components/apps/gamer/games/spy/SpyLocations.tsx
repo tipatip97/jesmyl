@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import { useCheckIsAccessed } from '../../../../../complect/exer/hooks/check-is-accessed';
 import useIsExpand from '../../../../../complect/expand/useIsExpand';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import useAuth from '../../../../index/useAuth';
 import { gamerExer } from '../../Gamer.store';
 import { useSpyLocations } from './hooks/locations';
@@ -16,6 +17,7 @@ export default function SpyLocations() {
 
   const locations = useSpyLocations();
   const auth = useAuth();
+  const checkIsAccessed = useCheckIsAccessed(auth);
 
   const isShortNewName = newName.length < 3;
   const incorrectsInNewName = newName.match(incorrectNameReg);
@@ -28,7 +30,7 @@ export default function SpyLocations() {
       {isExpand && (
         <>
           <div>{locations?.map(location => <div key={location}>{location}</div>)}</div>
-          {!isOpenAdder && gamerExer.actionAccessedOrNull('addNewLocation', auth) && (
+          {!isOpenAdder && checkIsAccessed(50) && (
             <EvaButton
               className="margin-gap color--ok"
               name="plus-circle-outline"

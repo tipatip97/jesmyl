@@ -36,7 +36,7 @@ export default function EditCategory() {
           }
           {
             <EditContainerCorrectsInformer
-              access="catSetKind"
+              access={100}
               corrects={ccat?.col.corrects.catSetKind}
             >
               <div className="flex between">

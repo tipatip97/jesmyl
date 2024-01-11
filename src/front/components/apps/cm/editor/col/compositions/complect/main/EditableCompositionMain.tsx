@@ -1,10 +1,10 @@
-import { useConfirm } from '../../../../../../../../complect/modal/confirm/useConfirm';
 import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
+import { useCheckIsAccessed } from '../../../../../../../../complect/exer/hooks/check-is-accessed';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
+import { useConfirm } from '../../../../../../../../complect/modal/confirm/useConfirm';
 import useAuth from '../../../../../../../index/useAuth';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
-import { cmExer } from '../../../../../Cm.store';
 import TheCom from '../../../../../col/com/TheCom';
 import EditContainerCorrectsInformer from '../../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCcom } from '../../useEditableCcom';
@@ -14,6 +14,7 @@ export default function EditableCompositionMain() {
   const ccom = useEditableCcom();
   const exec = useExerExec();
   const auth = useAuth();
+  const checkIsAccessed = useCheckIsAccessed(auth);
   const [confirmNode, confirm] = useConfirm();
 
   if (!ccom) return null;
@@ -57,7 +58,7 @@ export default function EditableCompositionMain() {
         <div className="title half-width  text-center">Сделать {ccom.isBemoled ? 'диезным' : 'бемольным'}</div>
         <div className="half-width" />
       </div>
-      {cmExer.actionAccessedOrNull('canWatch', auth) && (
+      {checkIsAccessed(100) && (
         <div
           className="flex full-width between error-message margin-gap-v pointer"
           onClick={() => {

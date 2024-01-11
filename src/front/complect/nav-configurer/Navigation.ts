@@ -281,8 +281,8 @@ export class NavigationConfig<Storage, NavData = {}> {
       );
 
       return item
-        ? item.accessRule == null ||
-          (this.nav.exer != null && this.nav.exer.actionAccessedOrNull(item.accessRule, auth))
+        ? item.accessLevel == null ||
+          (this.nav.exer != null && this.nav.exer.levelAccessedOrNull(item.accessLevel, auth))
           ? typeof item.node === 'function'
             ? item.node({
                 outletContent: findContent(throwRoute, items),
