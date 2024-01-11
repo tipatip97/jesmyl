@@ -22,8 +22,7 @@ export default function FontSizeContain({ className, content, html, subUpdate, s
         containerRef.current.clientWidth / shadowChildRef.current.clientWidth,
       );
 
-      if (scale > 0 && Number.isFinite(scale) && !isNaN(scale))
-        setChildStyle({ transform: `scale(${scale})`, transformOrigin: scale < 1 ? 'center' : undefined });
+      if (scale > 0 && Number.isFinite(scale) && !isNaN(scale)) setChildStyle({ transform: `scale(${scale})` });
     }
   }, [content, html, subUpdate, isInit]);
 
