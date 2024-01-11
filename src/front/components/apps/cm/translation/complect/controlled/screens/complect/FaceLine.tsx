@@ -8,8 +8,8 @@ import { CmTranslateScreenConfigurationsFace } from './Face';
 
 const defaultConfig: TranslationScreenConfig = {
   title: 'Трансляция',
-  left: 10,
-  top: 10,
+  left: 5,
+  top: 5,
   width: 90,
   height: 90,
   proportion: 1,
