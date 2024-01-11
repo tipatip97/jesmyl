@@ -10,7 +10,7 @@ export const useGetFontSizeContainScreenStyle = (currentConfig: TranslationScree
       ? {
           fontWeight: currentConfig.fontWeight,
           textAlign: currentConfig.textAlign,
-          fontFamily: currentConfig.fontFamily ?? fontFamily,
+          fontFamily: currentConfig.fontFamily === undefined ? fontFamily : `'${currentConfig.fontFamily}'`,
 
           color: isVisible ? currentConfig.color : 'transparent',
           width: currentConfig.width + '%',

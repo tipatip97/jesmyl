@@ -13,7 +13,7 @@ export const useScreenWinResizeListen = (
   const [forceUpdates, forceUpdate] = useReducer(forceUpdater, 0);
 
   useEffect(() => {
-    if (win == null) return;
+    if (win == null || win === window) return;
     let debounceTimeout: TimeOut;
 
     const updater = () => {

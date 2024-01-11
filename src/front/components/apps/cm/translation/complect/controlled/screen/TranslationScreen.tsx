@@ -20,7 +20,7 @@ export default function TranslationScreen(props: TranslationScreenProps) {
   const style = useGetFontSizeContainScreenStyle(currentConfig, stateRef.current.isVisible);
 
   useScreenKeyDownListen(props.win, configs, props.screeni, setCurrentConfigiRef, stateRef);
-  useSetScreenInteractiveBackground(props.win, currentConfig?.background, setBackground);
+  useSetScreenInteractiveBackground(currentConfig?.background, setBackground);
   useSetScreenFontFamily(props.win, currentConfig?.fontFamily);
 
   return (

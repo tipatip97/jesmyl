@@ -9,7 +9,6 @@ const style: CSSProperties = {
 };
 
 export const useSetScreenInteractiveBackground = (
-  win: Window | nil,
   background: BackgroundNameType | und,
   setBackground: (node: ReactNode) => void,
 ) => {
@@ -50,5 +49,5 @@ export const useSetScreenInteractiveBackground = (
       },
       () => setBackground(null),
     );
-  }, [background, setBackground, win]);
+  }, [background, setBackground]);
 };

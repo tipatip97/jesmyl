@@ -39,12 +39,13 @@ export const CmTranslationSlidePreview = ({ stateRef }: { stateRef: ControlledTr
     <Wrapper>
       {fullNode}
       {configsState.currentConfig == null || stateRef.current.currWin == null ? (
-        <TranslationScreen />
+        <TranslationScreen win={window} />
       ) : (
         <>
           <div className="flex center full-width full-height bgcolor--2">
             <ScreenWithBackground $proportion={configsState.currentConfig.proportion}>
               <TranslationScreen
+                win={window}
                 proportion={configsState.currentConfig.proportion}
                 innerNode={
                   configsState.currentConfig && (
@@ -83,6 +84,7 @@ const FullButton = styled(EvaButton)`
   position: absolute;
   top: 5px;
   right: 5px;
+  z-index: 101;
 `;
 
 const Wrapper = styled.div`

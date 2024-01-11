@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { TranslationScreenConfig } from '../../model';
 import { ActualRef } from '../../../../../../../../complect/useActualRef';
 import { useControlledTranslation } from '../../hooks';
+import { TranslationScreenConfig } from '../../model';
 
 export const useScreenKeyDownListen = (
   win: Window | nil,
@@ -16,6 +16,8 @@ export const useScreenKeyDownListen = (
 
       switch (event.code) {
         case 'F5':
+        case 'KeyR':
+          if (!event.ctrlKey || !win || win === window) return;
           // just prevent default + stop propagation
           break;
         case 'Tab':
@@ -69,11 +71,9 @@ export const useScreenKeyDownListen = (
     };
 
     win?.addEventListener('keydown', onKeyTranslations);
-    window.onkeydown = onKeyTranslations;
 
     return () => {
       win?.removeEventListener('keydown', onKeyTranslations);
-      window.onkeydown = null;
     };
   }, [screeni, stateRef, win, setCurrentConfigiRef, configs.length]);
 };
