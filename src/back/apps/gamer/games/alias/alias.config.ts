@@ -32,8 +32,8 @@ export const AliasGameActions = {
   stateChange,
 };
 
-const getTokenizedWinfoLine = (state: Pick<GamerAliasRoomState, 'token' | 'dicts' | 'lens'>) =>
-  AliasHelp.getTokenizedWordInfos(state.token, state.dicts, state.lens, getWordPacks(), getNounPronsWords());
+const getTokenizedWinfoLine = (id: string, dicts: GamerAliasRoomState['dicts']) =>
+  AliasHelp.randomSortedInfos(id, dicts, getWordPacks(), getNounPronsWords());
 
 const getWordPacks = () => filer.contents.gamer['aliasWordPacks'].data as AliasWordsPack[];
 const getNounPronsWords = () => filer.contents.index['nounPronsWords'].data as NounPronsType;
@@ -76,17 +76,14 @@ export const aliasGameConfig: ActionBox = {
             wins: null,
           };
 
-          if (props.isResortWords || !state?.token) {
-            if (state) AliasHelp.removeTokenizedWordInfos(state.token);
-            newState.token = AliasHelp.makeSortToken();
+          if (props.isResortWords) {
             newState.wordsi = 0;
-            newState.lens = AliasHelp.takeLens(null, props.dicts, getWordPacks(), getNounPronsWords());
 
-            const winfos = getTokenizedWinfoLine({
-              dicts: props.dicts,
-              lens: newState.lens,
-              token: newState.token,
-            });
+            newState.id = state?.id ?? '' + Date.now() + Math.random();
+
+            AliasHelp.removeRandomSortedInfos(newState.id);
+
+            const winfos = getTokenizedWinfoLine(newState.id, props.dicts);
             newState.arsenal = winfos.length;
             newState.winfo = winfos[0];
           }
@@ -160,7 +157,7 @@ export const aliasGameConfig: ActionBox = {
           if (state == null || props == null) return;
           const [speakeri, currTeami] = AliasHelp.takeSpeakerDetails(state);
 
-          const winfos = getTokenizedWinfoLine(state);
+          const winfos = getTokenizedWinfoLine(state.id, state.dicts);
           const mapper = (winfo: AliasWordInfo) => winfos[winfo.wordi];
 
           const score =
@@ -238,7 +235,7 @@ export const aliasGameConfig: ActionBox = {
 
       if (state == null) return;
 
-      const winfos = getTokenizedWinfoLine(state);
+      const winfos = getTokenizedWinfoLine(state.id, state.dicts);
       if (winfos[state.wordsi + 1] == null) return;
 
       return {

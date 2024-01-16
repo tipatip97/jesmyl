@@ -36,8 +36,7 @@ export interface GamerAliasRoomState extends StartAliasRoundState {
   arsenal: number;
   startTs: number;
   wins: number[] | null;
-  lens: number[] | und;
-  token: string;
+  id: string;
   cor: AliasWordInfo[];
   inc: AliasWordInfo[];
   winfo: AliasWordInfo;

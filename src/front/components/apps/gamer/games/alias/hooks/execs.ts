@@ -76,7 +76,7 @@ export const useAliasStartRound = (state: GamerAliasRoomState | und, players: Ga
 
       let teams: AliasGameTeam[] = [];
       const teamMembers: GamerRoomMemberLogin[][] = [];
-      const sortedPlayers = mylib.randomSort([...players]);
+      const sortedPlayers = mylib.toRandomSorted([...players]);
 
       while (sortedPlayers.length)
         for (let i = 0; i < props.teamsCount; i++) {
@@ -85,7 +85,7 @@ export const useAliasStartRound = (state: GamerAliasRoomState | und, players: Ga
           if (member) teamMembers[i].push(member.login);
         }
 
-      mylib.randomSort(teamMembers);
+      mylib.toRandomSorted(teamMembers);
 
       if (props.isComputeNewTeams)
         for (let i = 0; i < props.teamsCount; i++) {

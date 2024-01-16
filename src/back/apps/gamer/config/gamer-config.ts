@@ -1,8 +1,13 @@
 import { Executer } from '../../../complect/executer/Executer';
 import { FilerAppConfig } from '../../../complect/filer/Filer.model';
+import { GamerRoom } from '../gamer.model';
+import { AliasHelp } from '../games/alias/AliasHelp';
 import { aliasGameConfig } from '../games/alias/alias.config';
+import { GamerAliasRoomState } from '../games/alias/alias.model';
 import { spyGameConfig } from '../games/spy/spy.config';
 import { gamerMemberConfig } from './member';
+
+const roomsOnRemove: Record<number, GamerRoom | und> = {};
 
 const config: FilerAppConfig = {
   title: 'Игрок',
@@ -57,7 +62,27 @@ const config: FilerAppConfig = {
         args: {
           roomw: '#Number',
         },
-        value: ['w', '===', '{roomw}'],
+        value: args => {
+          if (!args) return;
+          const rooms: GamerRoom[] = args.$$vars?.$$currentValue;
+
+          if (!rooms) return;
+
+          const roomw: number = args.roomw;
+          roomsOnRemove[roomw] = rooms.find(room => room.w === roomw);
+
+          return ['w', '===', roomw];
+        },
+        onSuccess: args => {
+          if (!args) return;
+
+          const room = roomsOnRemove[args.roomw];
+
+          if (!room?.games?.alias) return;
+          const alias = room.games.alias as GamerAliasRoomState;
+
+          AliasHelp.removeRandomSortedInfos(alias.id);
+        },
       },
       '/[w === {roomw}]': {
         args: {
