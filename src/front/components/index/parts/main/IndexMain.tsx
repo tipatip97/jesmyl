@@ -3,7 +3,7 @@ import { appNames } from '../../../../app/App.model';
 import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
-import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import EvaButton from '../../../../complect/eva-icon/EvaButton';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import useApps from '../../../../complect/useApps';
@@ -39,17 +39,13 @@ export default function IndexMain() {
       if (nav.nav.level !== undefined && nav.nav.level > auth.level) return null!;
 
       return (
-        <div
+        <EvaButton
           key={appName}
-          className="item flex"
+          name={nav.nav.logo || 'cube-outline'}
+          className="margin-big-gap-h margin-sm-gap-v flex-max"
+          postfix={nav.nav.title}
           onClick={() => jumpToApp(nav.appName)}
-        >
-          <EvaIcon
-            name={nav.nav.logo || 'cube-outline'}
-            className="margin-big-gap"
-          />
-          {nav.nav.title}
-        </div>
+        />
       );
     })
     .filter(isNNull);
