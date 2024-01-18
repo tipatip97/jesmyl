@@ -256,7 +256,9 @@ export class Filer {
       };
 
       const getRulesData = (config: FilerAppConfig, md5: string | nil) => {
-        return md5 !== config.actions.shortRulesMd5 ? { key: 'rules', value: config.actions.shortRules } : null;
+        return config && md5 !== config.actions.shortRulesMd5
+          ? { key: 'rules', value: config.actions.shortRules }
+          : null;
       };
 
       const indexMd5 = this.appConfigs.index.actions.shortRulesMd5;
