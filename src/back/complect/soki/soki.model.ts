@@ -3,7 +3,7 @@ import { ExecutionDict, ExecutionReal } from '../executer/Executer.model';
 import { SimpleKeyValue } from '../filer/Filer.model';
 import { User } from 'node-telegram-bot-api';
 
-export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader'] as const;
+export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible'] as const;
 export type SokiAppName = (typeof sokiAppNames)[number];
 
 const dir = __dirname.split('/');

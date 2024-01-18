@@ -1,15 +1,16 @@
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
+import { isTouchDevice } from '../../../../../complect/device-differences';
 import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
 import useCmNav from '../../base/useCmNav';
 import { Com } from '../../col/com/Com';
-import { useTranslation } from '../../translation/useTranslation';
+import { useGoToTranslation } from '../../translation/complect/hooks/go-to-translation';
 import FullscreenExpandComList from './FullscreenExpandComList';
 
 export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (isOpen, closePopup, _prepare, coms) => {
   const [fullNode, openFullContent] = useFullContent(() => coms && <FullscreenExpandComList coms={coms} />);
-  const { goToTranslation, isShowFullscreen } = useTranslation();
+  const goToTranslation = useGoToTranslation();
   const { nav } = useCmNav();
   const { shareQrData, qrNode } = useQRMaster();
 
@@ -26,7 +27,7 @@ export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (isOpen, c
           }}
         />
         <EvaButton
-          name={isShowFullscreen ? 'play-outline' : 'monitor-outline'}
+          name={isTouchDevice ? 'play-outline' : 'monitor-outline'}
           postfix="Показывать слайды списка"
           onClick={() => goToTranslation(true)}
         />

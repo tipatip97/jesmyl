@@ -16,14 +16,10 @@ const initialState: CmState = {
   comFontSize: 15,
   chordTracks: {},
   isShowTranslationInfo: true,
-  translationUpdates: 0,
   translationBlock: 0,
-  isTranslationBlockVisible: true,
-  translationBlockPosition: 'center',
   favoriteMeetings: { contexts: [], events: [] },
   comTopTools: ['mark-com', 'fullscreen-mode'],
   translationScreenConfigs: [],
-  currentTranslationConfigi: 0,
 
   numComUpdates: 0,
   numAbsolutePopupUpdates: 0,
@@ -58,18 +54,11 @@ export const slice = createSlice({
       'rules',
       'settings',
       'speedRollKf',
-      'translationBlockPosition',
       'translationBlock',
       'translationScreenConfigs',
     ]),
-    currentTranslationConfigi: (state, action: PayloadAction<number>) => {
-      state.currentTranslationConfigi = action.payload;
-    },
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? !state.isCmFullscreen;
-    },
-    isTranslationBlockVisible: (state, action: PayloadAction<boolean | nil>) => {
-      state.isTranslationBlockVisible = action.payload ?? !state.isTranslationBlockVisible;
     },
     switchIsMiniAnchor: (state, action: PayloadAction<boolean | nil>) => {
       state.isMiniAnchor = action.payload ?? !state.isMiniAnchor;
@@ -85,9 +74,6 @@ export const slice = createSlice({
       state.isShowTranslationInfo = action.payload;
       if (!state.isShowTranslationInfo) cmStorage.set('isShowTranslationInfo', false);
     },
-    riseUpTranslationUpdates: state => {
-      state.translationUpdates++;
-    },
     riseUpComUpdate: state => {
       state.numComUpdates++;
     },
@@ -97,7 +83,7 @@ export const slice = createSlice({
   },
 });
 
-const cmStoreActions = slice.actions;
+export const cmStoreActions = slice.actions;
 export default cmStoreActions;
 
 export const cmReducer = slice.reducer;

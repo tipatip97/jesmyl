@@ -1,65 +1,43 @@
 import { useEffect } from 'react';
-import { ActualRef } from '../../../../../../../../complect/useActualRef';
-import { useControlledTranslation } from '../../hooks';
-import { TranslationScreenConfig } from '../../model';
+import { useScreenTranslationCurrentConfigi } from '../../../../../../+complect/translations/hooks/configs';
+import { useActualRef } from '../../../../../../../../complect/useActualRef';
+import { useCmScreenTranslationComNavigations } from '../../../hooks/com-navigation';
+import { useCmScreenTranslationComTextNavigations } from '../../../hooks/com-texts';
+import { CmTranslationScreenConfig } from '../../model';
 
 export const useScreenKeyDownListen = (
   win: Window | nil,
-  configs: TranslationScreenConfig[],
+  configs: CmTranslationScreenConfig[],
   screeni: number | und,
-  setCurrentConfigiRef: ActualRef<(configi: number) => void>,
-  stateRef: ActualRef<ReturnType<typeof useControlledTranslation>>,
 ) => {
+  const currentConfigiRef = useActualRef(useScreenTranslationCurrentConfigi());
+  const comActionsRef = useActualRef(useCmScreenTranslationComNavigations());
+  const comTextActionsRef = useActualRef(useCmScreenTranslationComTextNavigations());
+
   useEffect(() => {
     const onKeyTranslations = async (event: KeyboardEvent) => {
-      const state = stateRef.current;
-
       switch (event.code) {
         case 'F5':
         case 'KeyR':
           if (!event.ctrlKey || !win || win === window) return;
           // just prevent default + stop propagation
           break;
-        case 'Tab':
-          setCurrentConfigiRef.current(
-            event.shiftKey
-              ? state.currentConfigi === 0
-                ? configs.length - 1
-                : state.currentConfigi - 1
-              : state.currentConfigi === configs.length - 1
-                ? 0
-                : state.currentConfigi + 1,
-          );
-          break;
         case 'ArrowUp':
           if (!event.ctrlKey) return;
-          state.prevCom();
+          comActionsRef.current.prevCom();
           break;
 
         case 'ArrowDown':
           if (!event.ctrlKey) return;
-          state.nextCom();
+          comActionsRef.current.nextCom();
           break;
 
         case 'ArrowLeft':
-          state.prevText();
+          comTextActionsRef.current.prevText();
           break;
 
         case 'ArrowRight':
-          state.nextText();
-          break;
-
-        case 'Escape':
-        case 'KeyV':
-          state.switchVisible();
-          break;
-
-        case 'KeyF':
-          win?.focus();
-          break;
-
-        case 'KeyT':
-          state.switchPosition();
+          comTextActionsRef.current.nextText();
           break;
 
         default:
@@ -75,5 +53,5 @@ export const useScreenKeyDownListen = (
     return () => {
       win?.removeEventListener('keydown', onKeyTranslations);
     };
-  }, [screeni, stateRef, win, setCurrentConfigiRef, configs.length]);
+  }, [screeni, win, configs.length, currentConfigiRef, comActionsRef, comTextActionsRef]);
 };

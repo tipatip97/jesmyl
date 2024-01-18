@@ -1,44 +1,43 @@
-import { CmTranslationConfigsRef } from '../../hooks/configs';
-import { TranslationScreenConfig } from '../../model';
-import { CmTranslateCurrentScreenConfigurationBackground } from './complect/Background';
-import { CmTranslateCurrentScreenConfigurationColor } from './complect/Color';
-import { CmTranslateCurrentScreenConfigurationFontFamily } from './complect/FontFamily';
-import { CmTranslateCurrentScreenConfigurationName } from './complect/Name';
-import { CmTranslateCurrentScreenConfigurationTextAlign } from './complect/TextAlign';
-import { CmTranslateCurrentScreenConfigurationType } from './complect/Type';
+import { ScreenTranslateConfigurationBackground } from '../../../../../../+complect/translations/complect/Background';
+import { ScreenTranslateConfigurationColor } from '../../../../../../+complect/translations/complect/Color';
+import { ScreenTranslateConfigurationFontFamily } from '../../../../../../+complect/translations/complect/FontFamily';
+import { ScreenTranslateConfigurationNameChanger } from '../../../../../../+complect/translations/complect/NameChanger';
+import { ScreenTranslateConfigurationTextAlign } from '../../../../../../+complect/translations/complect/TextAlign';
+import { ScreenTranslateConfigurationType } from '../../../../../../+complect/translations/complect/Type';
+import { useDebounceAction } from '../../../../../../../../complect/useDebounceAction';
+import { useUpdateCmCurrentTranslationConfig } from '../../hooks/update-config';
+import { CmTranslationScreenConfig } from '../../model';
 
-export const CmTranslateCurrentScreenConfigurations = ({
-  configsStateRef,
-  currentConfig,
-}: {
-  configsStateRef: CmTranslationConfigsRef;
-  currentConfig: TranslationScreenConfig;
-}) => {
+interface Props {
+  currentConfig: CmTranslationScreenConfig;
+}
+
+export const CmTranslateCurrentScreenConfigurations = ({ currentConfig }: Props) => {
+  const updateConfig = useUpdateCmCurrentTranslationConfig();
+  const update = useDebounceAction(updateConfig);
+
   return (
     <>
-      <CmTranslateCurrentScreenConfigurationName
-        configsStateRef={configsStateRef}
-        currentConfig={currentConfig}
+      <ScreenTranslateConfigurationNameChanger />
+      <ScreenTranslateConfigurationColor
+        config={currentConfig}
+        updateConfig={update}
       />
-      <CmTranslateCurrentScreenConfigurationColor
-        configsStateRef={configsStateRef}
-        currentConfig={currentConfig}
+      <ScreenTranslateConfigurationType
+        config={currentConfig}
+        updateConfig={update}
       />
-      <CmTranslateCurrentScreenConfigurationType
-        configsStateRef={configsStateRef}
-        currentConfig={currentConfig}
+      <ScreenTranslateConfigurationTextAlign
+        config={currentConfig}
+        updateConfig={update}
       />
-      <CmTranslateCurrentScreenConfigurationTextAlign
-        configsStateRef={configsStateRef}
-        currentConfig={currentConfig}
+      <ScreenTranslateConfigurationFontFamily
+        config={currentConfig}
+        updateConfig={update}
       />
-      <CmTranslateCurrentScreenConfigurationFontFamily
-        configsStateRef={configsStateRef}
-        currentConfig={currentConfig}
-      />
-      <CmTranslateCurrentScreenConfigurationBackground
-        configsStateRef={configsStateRef}
-        currentConfig={currentConfig}
+      <ScreenTranslateConfigurationBackground
+        config={currentConfig}
+        updateConfig={update}
       />
     </>
   );

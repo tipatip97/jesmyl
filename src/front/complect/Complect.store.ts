@@ -3,10 +3,9 @@ import { ComplectState, ComplectStorage } from './Complect.model';
 import { FullContentOpenMode } from './fullscreen-content/useFullContent';
 import { JStorage } from './JStorage';
 import { NavigationStorage } from './nav-configurer/Navigation.model';
+import { FixedResizerLines } from '../components/apps/+complect/translations/complect/model';
 
-export const complectStorage: JStorage<NavigationStorage<ComplectStorage>> = new JStorage<
-  NavigationStorage<ComplectStorage>
->('complect');
+export const complectStorage = new JStorage<NavigationStorage<ComplectStorage>, ComplectState>('complect');
 
 const initialState: ComplectState = {
   fullscreenContentOpenMode: null,
@@ -16,12 +15,31 @@ const initialState: ComplectState = {
   isNumberSearch: false,
   numAbsoluteBottomPopupUpdates: 0,
   numExerUpdates: 0,
+  screenTranslationConfigs: [],
+  rememberExpandes: [],
+  currentTranslationConfigi: 0,
+  isTranslationTextVisible: true,
+  numTranslationsUpdates: 0,
+  currentTranslationTextApp: 'cm',
 };
 
 export const slice = createSlice({
   name: 'complect',
   initialState,
   reducers: {
+    ...complectStorage.initializators([
+      'screenTranslationConfigs',
+      'rules',
+      'rememberExpandes',
+      'currentTranslationConfigi',
+      'currentTranslationTextApp',
+    ]),
+    fixedResizerLines: (state, action: PayloadAction<FixedResizerLines | und>) => {
+      state.fixedResizerLines = action.payload;
+    },
+    isTranslationTextVisible: (state, action: PayloadAction<boolean | und>) => {
+      state.isTranslationTextVisible = action.payload ?? !state.isTranslationTextVisible;
+    },
     setFullscreenContentOpenMode: (state, action: PayloadAction<FullContentOpenMode>) => {
       state.fullscreenContentOpenMode = action.payload;
     },
@@ -43,6 +61,9 @@ export const slice = createSlice({
     riseUpExerUpdates: state => {
       state.numExerUpdates++;
     },
+    riseUpTranslationUpdates: state => {
+      state.numTranslationsUpdates++;
+    },
   },
 });
 
@@ -55,6 +76,8 @@ export const {
   switchComplectFullscreen,
   riseUpExerUpdates,
 } = slice.actions;
+
 export default slice.actions;
+export const complectActions = slice.actions;
 
 export const complectReducer = slice.reducer;

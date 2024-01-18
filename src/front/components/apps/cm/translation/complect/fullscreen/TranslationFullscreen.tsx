@@ -7,7 +7,9 @@ import { useActualRef } from '../../../../../../complect/useActualRef';
 import { RootState } from '../../../../../../shared/store';
 import di from '../../../Cm.store';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
-import { useTranslation } from '../../useTranslation';
+import { useCloseTranslation } from '../hooks/close-translation copy';
+import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
+import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
 
 const isShowTranslationInfoSelector = (state: RootState) => state.cm.isShowTranslationInfo;
 const emptyObj = {};
@@ -21,7 +23,10 @@ export default function TranslationFullscreen() {
   const isShowInfo = useSelector(isShowTranslationInfoSelector);
   const [swipes, setSwipes] = useState(emptyObj);
 
-  const { prevText, nextText, prevCom, nextCom, closeTranslation, text } = useTranslation();
+  const { text, nextText, prevText } = useCmScreenTranslationComTextNavigations();
+  const { nextCom, prevCom } = useCmScreenTranslationComNavigations();
+  const closeTranslation = useCloseTranslation();
+
   const closeTranslationRef = useActualRef(closeTranslation);
 
   useEffect(() => {

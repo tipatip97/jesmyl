@@ -2,6 +2,7 @@ import { AppName } from '../app/App.model';
 import useNavConfigurer from '../complect/nav-configurer/useNavConfigurer';
 import { AdminNavData } from '../components/apps/admin/Admin.model';
 import useAdminNav from '../components/apps/admin/useAdminNav';
+import useBibleNav from '../components/apps/bible/useBibleNav';
 import { CmNavData } from '../components/apps/cm/Cm.model';
 import useCmNav from '../components/apps/cm/base/useCmNav';
 import { GamerNavData } from '../components/apps/gamer/Gamer.model';
@@ -19,6 +20,7 @@ const navConfigurers: Record<AppName, () => ReturnType<typeof useNavConfigurer>>
   admin: useAdminNav as never,
   gamer: useGamerNav as never,
   leader: useLeaderNav as never,
+  bible: useBibleNav as never,
 };
 export default navConfigurers;
 
@@ -29,4 +31,5 @@ export type NavDataRegister = {
   tuner: unknown;
   admin: AdminNavData;
   gamer: GamerNavData;
+  bible: {};
 };

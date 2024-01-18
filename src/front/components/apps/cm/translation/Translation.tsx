@@ -1,7 +1,7 @@
+import TranslationPage from '../../+complect/translations/TranslationPage';
 import { isTouchDevice } from '../../../../complect/device-differences';
-import TranslationControlled from './complect/controlled/TranslationControlled';
 import TranslationFullscreen from './complect/fullscreen/TranslationFullscreen';
 
 export default function Translations() {
-  return isTouchDevice ? <TranslationFullscreen /> : <TranslationControlled />;
+  return isTouchDevice ? <TranslationFullscreen /> : <TranslationPage />;
 }

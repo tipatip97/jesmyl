@@ -15,7 +15,7 @@ import {
   spliceMigratableEditableComToolNameList,
 } from '../../editor/col/compositions/complect/MigratableEditableComTools';
 import { useMarks } from '../../lists/marks/useMarks';
-import { useTranslation } from '../../translation/useTranslation';
+import { useGoToTranslation } from '../../translation/complect/hooks/go-to-translation';
 import { MigratableComTool, MigratableComToolName, menuComToolNameList } from './Com.model';
 import ChordImagesList from './chord-card/ChordImagesList';
 import { useCcom } from './useCcom';
@@ -28,7 +28,7 @@ export default function useMigratableComTools() {
   const dispatch = useDispatch();
   const ccom = useCcom();
   const auth = useAuth();
-  const { goToTranslation } = useTranslation();
+  const goToTranslation = useGoToTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] = useChordVisibleVariant();
   const [fullContentNode, openFullscreenContent] = useFullContent(() => <ChordImagesList />);
   const { toggleSelectedCom, selectedComPosition: isSelected } = useSelectedComs();

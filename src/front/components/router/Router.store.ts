@@ -23,6 +23,8 @@ export const slice = createSlice({
       'leader.data',
       'tuner',
       'tuner.data',
+      'bible',
+      'bible.data',
       'rules',
       'isReady',
     ]),

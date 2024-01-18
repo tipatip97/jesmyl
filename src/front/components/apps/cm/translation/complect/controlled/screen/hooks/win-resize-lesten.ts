@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from 'react';
-import { TranslationScreenConfig } from '../../model';
+import { CmTranslationScreenConfig } from '../../model';
 import { ActualRef } from '../../../../../../../../complect/useActualRef';
 
 const forceUpdater = (it: number) => it + 1;
@@ -7,7 +7,7 @@ const forceUpdater = (it: number) => it + 1;
 export const useScreenWinResizeListen = (
   win: Window | nil,
   screeni: number | und,
-  updateConfig: (config: Partial<TranslationScreenConfig> | null, configi?: number) => void,
+  updateConfig: (config: Partial<CmTranslationScreenConfig> | null, configi: number) => void,
   setCurrentConfigiRef: ActualRef<(configi: number) => void>,
 ) => {
   const [forceUpdates, forceUpdate] = useReducer(forceUpdater, 0);
@@ -18,15 +18,8 @@ export const useScreenWinResizeListen = (
 
     const updater = () => {
       clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => {
-        updateConfig({ proportion: win.innerWidth / win.innerHeight });
-        forceUpdate();
-      }, 300);
+      debounceTimeout = setTimeout(() => forceUpdate(), 300);
     };
-
-    if (screeni !== undefined) {
-      win.onfocus = () => setCurrentConfigiRef.current(screeni);
-    }
 
     win.addEventListener('resize', updater);
     return () => win.removeEventListener('resize', updater);

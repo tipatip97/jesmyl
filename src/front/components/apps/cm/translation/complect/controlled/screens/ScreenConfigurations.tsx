@@ -1,21 +1,16 @@
-import { useActualRef } from '../../../../../../../complect/useActualRef';
-import { useCmTranslationConfigs } from '../hooks/configs';
-import { CmTranslateScreenConfigurationsFaceLine } from './complect/FaceLine';
+import { ScreenTranslationsFaceLine } from '../../../../../+complect/translations/complect/config-line/FaceLine';
+import { useCmScreenTranslationCurrentConfig } from '../hooks/configs';
+import { useUpdateCmTranslationConfig } from '../hooks/update-config';
 import { CmTranslateCurrentScreenConfigurations } from './current/CurrentConfigs';
 
 export const CmTranslateScreenConfigurations = () => {
-  const configsState = useCmTranslationConfigs();
-  const configsStateRef = useActualRef(configsState);
+  const currentConfig = useCmScreenTranslationCurrentConfig();
+  const updateConfig = useUpdateCmTranslationConfig();
 
   return (
     <div className="margin-big-gap-t">
-      <CmTranslateScreenConfigurationsFaceLine />
-      {configsState.currentConfig && (
-        <CmTranslateCurrentScreenConfigurations
-          currentConfig={configsState.currentConfig}
-          configsStateRef={configsStateRef}
-        />
-      )}
+      <ScreenTranslationsFaceLine updateConfig={updateConfig} />
+      {currentConfig && <CmTranslateCurrentScreenConfigurations currentConfig={currentConfig} />}
     </div>
   );
 };

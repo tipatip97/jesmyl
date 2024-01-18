@@ -2,7 +2,9 @@ import { filesStorage } from './storage';
 
 const emptyFunc = () => {};
 
-export const applyFontFamilyFromMyFiles = async (fileName: string, win: Window) => {
+export const applyFontFamilyFromMyFiles = async (fileName?: string, win: Window = window) => {
+  if (fileName === undefined) return;
+
   const fonts = await filesStorage.get('font');
   if (
     fonts === undefined ||

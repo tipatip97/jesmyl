@@ -7,6 +7,7 @@ import { leaderReducer } from '../components/apps/leader/Leader.store';
 import { tunerReducer } from '../components/apps/tuner/Tuner.store';
 import { indexReducer } from '../components/index/Index.store';
 import { routerReducer } from '../components/router/Router.store';
+import { bibleReducer } from '../components/apps/bible/Bible.store';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     leader: leaderReducer,
     router: routerReducer,
     strong: strongReducer,
+    bible: bibleReducer,
   },
   middleware: mw => mw({ serializableCheck: false }),
 });

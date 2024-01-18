@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { complectActions, complectStorage } from '../complect/Complect.store';
 import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
 import EvaIcon from '../complect/eva-icon/EvaIcon';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
@@ -64,6 +65,7 @@ function App() {
 
   routerStorage.initDispatches(dispatch, routerStoreActions, setIsReady);
   indexStorage.initDispatches(dispatch, di);
+  complectStorage.initDispatches(dispatch, complectActions);
 
   useEffect(() => {
     setTimeout(setIsShowLogo, 1200, false);

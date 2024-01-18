@@ -1,22 +1,14 @@
-import { BackgroundNameType } from '../../../../../index/parts/actions/files/complect/BackgroundSelector';
-import { CmTranslateCurrentScreenConfigurationTypeTextAlign } from './screens/current/complect/TextAlign';
-import { CmTranslateCurrentScreenConfigurationTypeFontWeight } from './screens/current/complect/Type';
+import { ScreenTranslateCurrentConfigTypeTextAlign } from '../../../../+complect/translations/complect/TextAlign';
+import { ScreenTranslateConfigTypeFontWeight } from '../../../../+complect/translations/complect/Type';
+import { ScreenTranslationBackgroundConfigs } from '../../../../+complect/translations/complect/model';
 
-export interface TranslationScreenConfig {
-  title: string;
+export interface CmTranslationScreenConfig extends ScreenTranslationBackgroundConfigs {
   left: number;
   top: number;
   width: number;
   height: number;
   fontFamily?: string;
-  background?: BackgroundNameType;
-  fontWeight: CmTranslateCurrentScreenConfigurationTypeFontWeight;
+  fontWeight: ScreenTranslateConfigTypeFontWeight;
   color: string;
-  textAlign: CmTranslateCurrentScreenConfigurationTypeTextAlign;
-  proportion: number;
+  textAlign: ScreenTranslateCurrentConfigTypeTextAlign;
 }
-
-export type TranslationWinUpdateEffectFeedback = (_event?: unknown, config?: TranslationScreenConfig) => void;
-export type TranslationWinUpdateEffect = (update: TranslationWinUpdateEffectFeedback) => () => void;
-
-export type TranslationYPosition = null | 'center' | 'top';

@@ -1,25 +1,24 @@
 import styled from 'styled-components';
-import { useControlledTranslation } from './hooks';
+import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
+import { useCmCurrentComTexts } from '../hooks/get-com-text';
 
-interface Props {
-  stateRef: { current: ReturnType<typeof useControlledTranslation> };
-}
+export const CmTranslationSlideLine = () => {
+  const { currTexti, setTexti } = useCmScreenTranslationComTextNavigations();
+  const texts = useCmCurrentComTexts();
 
-export const CmTranslationSlideLine = ({ stateRef }: Props) => {
-  const state = stateRef.current;
   return (
     <>
-      {state.texts && (
+      {texts && (
         <Line className="no-scrollbar">
-          {state.texts.map((text, texti) => {
+          {texts.map((text, texti) => {
             return (
               <LineItem
                 key={texti}
                 id={`translation-window-line-${texti}`}
-                onClick={() => state.setTexti(texti)}
+                onClick={() => setTexti(texti)}
               >
                 <div>{texti + 1}</div>
-                <CmSlideLineItemInnerStyle className={state.currTexti === texti ? 'active' : ''}>
+                <CmSlideLineItemInnerStyle className={currTexti === texti ? 'active' : ''}>
                   <div dangerouslySetInnerHTML={{ __html: text }} />
                 </CmSlideLineItemInnerStyle>
               </LineItem>
