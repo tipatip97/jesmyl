@@ -159,6 +159,14 @@ input[type='button'] {
 .white-pre {
   white-space: pre;
 
+  &-line {
+    white-space: pre-line;
+  }
+
+  &-wrap {
+    white-space: pre-wrap;
+  }
+
   &-children {
     > * {
       white-space: pre;
@@ -176,18 +184,6 @@ input[type='button'] {
 
 .break-word {
   word-break: break-word;
-}
-
-.white-pre {
-  white-space: pre;
-
-  &-line {
-    white-space: pre-line;
-  }
-
-  &-wrap {
-    white-space: pre-wrap;
-  }
 }
 
 .hidden {
@@ -381,8 +377,14 @@ textarea {
   }
 }
 
-.self-start {
-  align-self: self-start;
+.self {
+  &-start {
+    align-self: self-start;
+  }
+
+  &-center {
+    align-self: center;
+  }
 }
 
 .text {
