@@ -210,14 +210,14 @@
     "passw": "ab32e5d04e70ba7a70d66918cec4bbdb"
   },
   {
-    "level": 30,
+    "level": 50,
     "fio": "Admin",
     "nick": "Admin",
     "login": "e3afed0047b08059d0fada10f400c1e5",
     "passw": "2195a571df9d78b0c09e7d6269c777ca"
   },
   {
-    "level": 30,
+    "level": 100,
     "fio": "Admin1",
     "nick": "Admin1",
     "login": "2e33a9b0b06aa0a01ede70995674ee23",
