@@ -42,6 +42,11 @@ export class MyLib extends SMyLib {
   dayFullTitles = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
   dayShortTitles = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 
+  constructor() {
+    super();
+    (window as any).MyLib = this;
+  }
+
   def(...args: any[]): any {
     const res = args.find(some => some != null);
     return res == null ? args[args.length - 1] : res;
@@ -381,10 +386,6 @@ export class MyLib extends SMyLib {
 
   static values<T extends {} | [], R extends T extends Record<any, infer V> ? V : unknown>(obj: T | nil): R[] {
     return obj ? Object.values(obj) : [];
-  }
-
-  randomSort<Item>(items: Item[]) {
-    return items.sort(() => this.randomOf(-1, 1));
   }
 
   findMap<Item, Val, Def>(items: Item[], cb: (item: Item, index: number, items: Item[]) => Val, def: Def) {
