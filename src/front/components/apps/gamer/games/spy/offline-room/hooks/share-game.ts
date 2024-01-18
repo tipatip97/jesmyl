@@ -22,9 +22,9 @@ export const useSpyOfflineRoomShareGameData = () => {
 
   return useCallback(() => {
     if (!currentOfflineRoom) return;
-    const newSpies = mylib.randomSort([...(spies || [])]);
+    const newSpies = mylib.toRandomSorted([...(spies || [])]);
     const newPlayers = mylib
-      .randomSort([...(players || [])])
+      .toRandomSorted([...(players || [])])
       .filter(({ login }) => !newSpies.includes(login))
       .map(({ login }) => login);
     const myLogin = passport?.login;
