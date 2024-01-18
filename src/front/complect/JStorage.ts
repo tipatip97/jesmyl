@@ -64,8 +64,8 @@ export class JStorage<Scope, State = Scope, Name extends string = string> {
     });
   }
 
-  async getOr<Key extends keyof Scope>(key: Key, def: Scope[Key]): Promise<NonUndefined<Scope[Key]>> {
-    return ((await this.get(key)) ?? def) as never;
+  async getOr<Key extends keyof Scope>(key: Key, def: Scope[Key]) {
+    return ((await this.get(key)) ?? def) as Promise<NonUndefined<Scope[Key]>>;
   }
 
   initializators<Key extends keyof Scope | keyof State>(
