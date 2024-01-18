@@ -18,14 +18,6 @@
     }
   }
 
-  + .dropdown-selector {
-    z-index: 299;
-
-    + .dropdown-selector {
-      z-index: 298;
-    }
-  }
-
   &.dropped {
     border-radius: 5px 5px 0 0;
 
@@ -62,7 +54,8 @@
 $maxZIndex: 30;
 
 @for $i from 1 through $maxZIndex {
-  *:nth-child(#{$i}) .dropdown-selector {
+  *:nth-child(#{$i}) > .dropdown-selector,
+  .dropdown-selector:nth-child(#{$i}) {
     z-index: #{$maxZIndex - $i};
   }
 }
