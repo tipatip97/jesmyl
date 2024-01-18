@@ -30,8 +30,7 @@ export class SokiAuther {
 
   makePassw = SokiAuther.makePassw;
   static makePassw(id: number | und, nick: string | und) {
-    const date = new Date();
-    return smylib.md5(`{${id}.${nick}@${date.getMonth()} - ${date.getFullYear()}} `);
+    return smylib.md5(`{${id}.${nick}} `);
   }
 
   static getTgAuth = async (
