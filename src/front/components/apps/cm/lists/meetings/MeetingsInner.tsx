@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
 import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import { RootState } from '../../../../../shared/store';
-import di from '../../Cm.store';
+import { cmStoreActions } from '../../Cm.store';
 import useCmNav from '../../base/useCmNav';
 import { Meetings } from './Meetings';
 import { MeetingsEvent } from './MeetingsEvent';
@@ -151,7 +151,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                     e.stopPropagation();
 
                     dispatch(
-                      di.favoriteMeetings({
+                      cmStoreActions.favoriteMeetings({
                         ...favorites,
                         events: isFavorite
                           ? favorites.events.filter(eventw => eventw !== event.wid)
@@ -182,7 +182,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                     e.stopPropagation();
 
                     dispatch(
-                      di.favoriteMeetings({
+                      cmStoreActions.favoriteMeetings({
                         ...favorites,
                         contexts: isFavorite
                           ? favorites.contexts.filter(context => context !== contextw)

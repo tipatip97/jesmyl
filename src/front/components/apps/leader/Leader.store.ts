@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Exer } from '../../../complect/exer/Exer';
 import { LeaderState } from './Leader.model';
 import leaderStorage from './leaderStorage';
@@ -24,11 +24,13 @@ export const slice = createSlice({
       'people',
       'rules',
       'sendingComments',
-      'isSendingMessagesError',
     ]),
+    isSendingMessagesError: (state, action: PayloadAction<boolean>) => {
+      state.isSendingMessagesError = action.payload;
+    },
   },
 });
 
-export default slice.actions;
+export const leaderStoreActions = slice.actions;
 
 export const leaderReducer = slice.reducer;

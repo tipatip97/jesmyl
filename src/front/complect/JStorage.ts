@@ -70,7 +70,12 @@ export class JStorage<Scope, State = Scope, Name extends string = string> {
 
   initializators<Key extends keyof Scope | keyof State>(
     keys: Key[],
-  ): Record<Key, CaseReducer<State, { payload: any; type: string }>> {
+  ): {
+    [Key in keyof Scope]-?: CaseReducer<
+      State,
+      { payload: Scope[Key] extends undefined ? Scope[Key] | null : Scope[Key]; type: string }
+    >;
+  } {
     const actions: Record<string, (state: Record<Key, unknown>, action: PayloadAction<unknown>) => void> = {};
     keys.forEach(
       key =>

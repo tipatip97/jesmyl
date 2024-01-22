@@ -14,7 +14,7 @@ export const UserMore: BottomPopupContenter = (isOpen, _, prepare) => {
   const { shareQrData, qrNode } = useQRMaster();
 
   const logout = () => {
-    dispatch(di.auth(null));
+    dispatch(di.auth({ level: 0 }));
     indexStorage.rem('auth');
     dispatch(di.currentApp('cm'));
     removePullRequisites();

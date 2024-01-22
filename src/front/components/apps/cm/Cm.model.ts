@@ -12,7 +12,6 @@ export interface CmState extends CmStoraged {
   translationBlock: number;
   isCmFullscreen: boolean;
   rollModeMarks: boolean;
-  translationScreenConfigs: CmTranslationScreenConfig[];
 
   numComUpdates: number;
   numAbsolutePopupUpdates: number;
@@ -41,6 +40,7 @@ export interface CmStoraged extends CmEditorStoraged {
   comTopTools: MigratableComToolName[];
   isMiniAnchor: boolean;
   playerHideMode: PlayerHideMode;
+  translationScreenConfigs: CmTranslationScreenConfig[];
 
   speedRollKf: number;
 }

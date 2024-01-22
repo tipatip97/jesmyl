@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../shared/store';
-import di, { leaderExer } from '../../Leader.store';
+import { leaderStoreActions, leaderExer } from '../../Leader.store';
 import { SendingComment } from './LeaderComment.model';
 
 const sendingCommentsSelector = (state: RootState) => state.leader.sendingComments;
@@ -21,15 +21,15 @@ export default function useLeaderComments() {
       leaderExer
         .send(execs)
         .then(() => {
-          dispatch(di.sendingComments([]));
-          dispatch(di.isSendingMessagesError(false));
+          dispatch(leaderStoreActions.sendingComments([]));
+          dispatch(leaderStoreActions.isSendingMessagesError(false));
         })
         .catch(() => {
-          dispatch(di.isSendingMessagesError(true));
+          dispatch(leaderStoreActions.isSendingMessagesError(true));
         });
     },
     sendComment: (exec: SendingComment) => {
-      dispatch(di.sendingComments([...(sendingComments || []), exec]));
+      dispatch(leaderStoreActions.sendingComments([...(sendingComments || []), exec]));
     },
   };
   return ret;

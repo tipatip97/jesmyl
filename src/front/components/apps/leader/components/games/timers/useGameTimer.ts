@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SourceBased from '../../../../../../complect/SourceBased';
 import { RootState } from '../../../../../../shared/store';
 import { TeamGameImportable } from '../../../Leader.model';
-import di from '../../../Leader.store';
+import { leaderStoreActions } from '../../../Leader.store';
 import leaderStorage from '../../../leaderStorage';
 import { LeaderCleans } from '../../LeaderCleans';
 import { GameTimerImportable, StoragedGameTimerDict } from './GameTimer.model';
@@ -78,7 +78,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
       if (Object.keys(timerStore.news || {}).length === 0) delete timerStore.news;
 
       leaderStorage.set('gameTimers', timerStore);
-      dispatch(di.gameTimers(timerStore));
+      dispatch(leaderStoreActions.gameTimers(timerStore));
     },
     saveComment: (comment: string) => {
       ret.mapTimer(timer => ({

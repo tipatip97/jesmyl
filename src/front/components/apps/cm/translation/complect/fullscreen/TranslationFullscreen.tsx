@@ -5,7 +5,7 @@ import { backSwipableContainerMaker } from '../../../../../../complect/backSwipa
 import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import { RootState } from '../../../../../../shared/store';
-import di from '../../../Cm.store';
+import { cmStoreActions } from '../../../Cm.store';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
 import { useCloseTranslation } from '../hooks/close-translation copy';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
@@ -73,7 +73,7 @@ export default function TranslationFullscreen() {
           </div>
           <EvaIcon
             className="close-info-button"
-            onClick={() => dispatch(di.switchShowTranslationInfo(false))}
+            onClick={() => dispatch(cmStoreActions.switchShowTranslationInfo(false))}
             name="close-outline"
           />
           <div
@@ -116,7 +116,7 @@ export default function TranslationFullscreen() {
             </div>
             <div
               className={`area-button second open-info-button ${isShowCloseButton ? 'show' : ''}`}
-              onClick={() => dispatch(di.switchShowTranslationInfo(!isShowInfo))}
+              onClick={() => dispatch(cmStoreActions.switchShowTranslationInfo(!isShowInfo))}
             >
               <EvaIcon name="question-mark-circle-outline" />
             </div>

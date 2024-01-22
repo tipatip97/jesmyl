@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../shared/store';
-import di from '../../Cm.store';
+import { cmStoreActions } from '../../Cm.store';
 import cmStorage from '../../cmStorage';
 import { Com } from '../../col/com/Com';
 import { useCols } from '../../cols/useCols';
@@ -27,7 +27,7 @@ export function useMarks() {
     markedComs,
     setMarks: (val: number[]) => {
       cmStorage.set('marks', val);
-      dispatch(di.marks(val));
+      dispatch(cmStoreActions.marks(val));
     },
     toggleMarked: (comw: number) => (ret.isMarked(comw) ? ret.removeMark(comw) : ret.addMarks(comw)),
     addMarks: (comws: number | number[]) =>

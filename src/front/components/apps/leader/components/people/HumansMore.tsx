@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { RootState } from '../../../../../shared/store';
-import di from '../../Leader.store';
+import { leaderStoreActions } from '../../Leader.store';
 import HumanMaster from './HumanMaster';
 import { humanFieldTranslations } from './People.model';
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
@@ -40,7 +40,7 @@ export const HumansMoreContenter: BottomPopupContenter<{
               onClick: event => {
                 event.stopPropagation();
                 const next = mylib.findNext(mylib.keys(humanFieldTranslations), humanListSortVariant);
-                dispatch(di.humanListSortVariant(next));
+                dispatch(leaderStoreActions.humanListSortVariant(next));
               },
               rightNode: (
                 <div className="abs-action abs-full flex center">{humanFieldTranslations[humanListSortVariant]}</div>

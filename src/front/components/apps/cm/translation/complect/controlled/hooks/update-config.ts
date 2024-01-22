@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useScreenTranslationCurrentConfigi } from '../../../../../+complect/translations/hooks/configs';
-import cmStoreActions from '../../../../Cm.store';
+import { cmStoreActions } from '../../../../Cm.store';
 import { CmTranslationScreenConfig } from '../model';
 import { useCmScreenTranslationConfigs } from './configs';
 

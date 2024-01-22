@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../../shared/store';
-import cmStoreActions from '../../../Cm.store';
+import { cmStoreActions } from '../../../Cm.store';
 import { useCmCurrentComTexts } from './get-com-text';
 
 const translationBlockSelector = (state: RootState) => state.cm.translationBlock;

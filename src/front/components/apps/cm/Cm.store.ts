@@ -54,11 +54,13 @@ export const slice = createSlice({
       'rules',
       'settings',
       'speedRollKf',
-      'translationBlock',
       'translationScreenConfigs',
     ]),
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? !state.isCmFullscreen;
+    },
+    translationBlock: (state, action: PayloadAction<number>) => {
+      state.translationBlock = action.payload;
     },
     switchIsMiniAnchor: (state, action: PayloadAction<boolean | nil>) => {
       state.isMiniAnchor = action.payload ?? !state.isMiniAnchor;
