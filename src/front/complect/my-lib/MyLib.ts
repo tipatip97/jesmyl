@@ -388,12 +388,12 @@ export class MyLib extends SMyLib {
     return obj ? Object.values(obj) : [];
   }
 
-  findMap<Item, Val, Def>(items: Item[], cb: (item: Item, index: number, items: Item[]) => Val, def: Def) {
+  findMap<Item, Val, Def extends Val>(items: Item[], cb: (item: Item, index: number, items: Item[]) => Val, def?: Def) {
     for (let i = 0; i < items.length; i++) {
       const val = cb(items[i], i, items);
       if (val) return val;
     }
-    return def;
+    return def as Def;
   }
 
   groupByFieldsSoftly<Item, Fieldn extends keyof Item>(
