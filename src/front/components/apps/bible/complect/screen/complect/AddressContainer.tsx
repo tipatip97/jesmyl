@@ -4,11 +4,12 @@ import { useSetScreenTranslationInteractiveBackground } from '../../../../+compl
 import { useBibleScreenTranslationConfig } from '../../hooks/configs';
 import { useGetBibleScreenTranslationAddressStyle } from '../../hooks/styles/address-style';
 import { BibleTranslationScreenAddressContent } from './AddressContent';
-import { BibleTranslationScreenTechAddressContent } from './TechAddressContent';
+import { BibleTranslationScreenAddressContentPositionConfiguration } from './AddressContentPositionConfiguration';
 
 interface Props {
   screeni: number | und;
   isTech: boolean | und;
+  isPreview: boolean | und;
   isChangeAddressPanelHeight: boolean;
 }
 
@@ -31,12 +32,15 @@ export const BibleTranslationScreenAddressContainer = (props: Props) => {
       >
         {addressBackground}
         {!props.isChangeAddressPanelHeight && props.isTech && currentConfig && (
-          <BibleTranslationScreenTechAddressContent
+          <BibleTranslationScreenAddressContentPositionConfiguration
             screeni={props.screeni}
             wrapperRef={wrapperRef}
           />
         )}
-        <BibleTranslationScreenAddressContent screeni={props.screeni} />
+        <BibleTranslationScreenAddressContent
+          screeni={props.screeni}
+          isPreview={props.isPreview}
+        />
       </div>
     </>
   );

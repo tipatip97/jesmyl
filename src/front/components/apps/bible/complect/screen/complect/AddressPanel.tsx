@@ -5,7 +5,7 @@ import { useScreenTranslationCurrentConfigi } from '../../../../+complect/transl
 import { useBibleScreenTranslationConfig } from '../../hooks/configs';
 import { useUpdateBibleCurrentTranslationConfig } from '../../hooks/update-config';
 
-export const BibleTranslationScreenTechAddressContent = (props: {
+export const BibleTranslationScreenAddressPanel = (props: {
   screeni: number | und;
   wrapperRef: React.RefObject<HTMLDivElement>;
 }) => {
@@ -13,9 +13,17 @@ export const BibleTranslationScreenTechAddressContent = (props: {
   const updateConfig = useUpdateBibleCurrentTranslationConfig();
   const currentConfig = useBibleScreenTranslationConfig(props.screeni ?? currentConfigi);
 
-  const updateConfigAddress = useCallback(
+  const updateConfigAddressPanel = useCallback(
     (config: Partial<ScreenTranslationPositionConfig>) => {
-      if (currentConfig) updateConfig({ ...currentConfig, address: { ...currentConfig.address, ...config } });
+      if (currentConfig)
+        updateConfig({
+          ...currentConfig,
+          addressPanel: {
+            ...currentConfig.addressPanel,
+            ...config,
+            ...(config.height ? { top: 100 - config.height } : null),
+          },
+        });
     },
     [currentConfig, updateConfig],
   );
@@ -25,9 +33,11 @@ export const BibleTranslationScreenTechAddressContent = (props: {
   return (
     <>
       <ScreenTranslateCurrentPositionConfigurators
-        config={currentConfig.address}
-        updateConfig={updateConfigAddress}
+        config={currentConfig.addressPanel}
+        updateConfig={updateConfigAddressPanel}
         wrapperRef={props.wrapperRef}
+        resizeOnly="top"
+        isCantMove
       />
     </>
   );

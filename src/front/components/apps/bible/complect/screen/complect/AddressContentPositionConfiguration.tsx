@@ -5,18 +5,17 @@ import { useScreenTranslationCurrentConfigi } from '../../../../+complect/transl
 import { useBibleScreenTranslationConfig } from '../../hooks/configs';
 import { useUpdateBibleCurrentTranslationConfig } from '../../hooks/update-config';
 
-export const BibleTranslationScreenTechContent = (props: {
+export const BibleTranslationScreenAddressContentPositionConfiguration = (props: {
   screeni: number | und;
   wrapperRef: React.RefObject<HTMLDivElement>;
 }) => {
   const currentConfigi = useScreenTranslationCurrentConfigi();
   const updateConfig = useUpdateBibleCurrentTranslationConfig();
-
   const currentConfig = useBibleScreenTranslationConfig(props.screeni ?? currentConfigi);
 
-  const updateConfigScreen = useCallback(
+  const updateConfigAddress = useCallback(
     (config: Partial<ScreenTranslationPositionConfig>) => {
-      if (currentConfig) updateConfig({ ...currentConfig, screen: { ...currentConfig.screen, ...config } });
+      if (currentConfig) updateConfig({ ...currentConfig, address: { ...currentConfig.address, ...config } });
     },
     [currentConfig, updateConfig],
   );
@@ -26,8 +25,8 @@ export const BibleTranslationScreenTechContent = (props: {
   return (
     <>
       <ScreenTranslateCurrentPositionConfigurators
-        config={currentConfig.screen}
-        updateConfig={updateConfigScreen}
+        config={currentConfig.address}
+        updateConfig={updateConfigAddress}
         wrapperRef={props.wrapperRef}
       />
     </>

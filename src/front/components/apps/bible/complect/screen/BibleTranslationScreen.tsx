@@ -4,12 +4,14 @@ import { useScreenTranslationCurrentConfigi } from '../../../+complect/translati
 import { useSetScreenTranslationInteractiveBackground } from '../../../+complect/translations/hooks/interactive-back';
 import { useApplyScreenFontFamilyEffect } from '../../../+complect/translations/hooks/set-font-family';
 import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import { useBibleAddressVersei } from '../../hooks/address/verses';
 import { useBibleScreenTranslationConfig } from '../hooks/configs';
+import { useBibleScreenTranslationKeyListener } from '../hooks/key-listener';
 import { useGetBibleScreenTranslationWrapperStyle } from '../hooks/styles/wrapper-style';
 import { BibleTranslationScreenAddressContainer } from './complect/AddressContainer';
 import { BibleTranslationScreenContent } from './complect/Content';
-import { BibleTranslationScreenTechAddressPanel } from './complect/TechAddressPanel';
-import { BibleTranslationScreenTechContent } from './complect/TechContent';
+import { BibleTranslationScreenAddressPanel } from './complect/AddressPanel';
+import { BibleTranslationScreenContentConfiguration } from './complect/ContentConfiguration';
 
 export const BibleTranslationScreen = (props: TranslationScreenProps) => {
   const [isChangeAddressPanelHeight, setIsChangeAddressPanelHeight] = useState(true);
@@ -18,6 +20,9 @@ export const BibleTranslationScreen = (props: TranslationScreenProps) => {
   const currentConfig = useBibleScreenTranslationConfig(props.screeni ?? currentConfigi);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const screenWrapperRef = useRef<HTMLDivElement>(null);
+  const versei = useBibleAddressVersei();
+
+  useBibleScreenTranslationKeyListener(versei, props.win);
 
   const wrapperStyle = useGetBibleScreenTranslationWrapperStyle(currentConfig);
 
@@ -44,7 +49,7 @@ export const BibleTranslationScreen = (props: TranslationScreenProps) => {
             }}
           />
           {isChangeAddressPanelHeight && currentConfig && (
-            <BibleTranslationScreenTechAddressPanel
+            <BibleTranslationScreenAddressPanel
               screeni={props.screeni}
               wrapperRef={wrapperRef}
             />
@@ -57,7 +62,7 @@ export const BibleTranslationScreen = (props: TranslationScreenProps) => {
         ref={screenWrapperRef}
       >
         {props.isTech && currentConfig && (
-          <BibleTranslationScreenTechContent
+          <BibleTranslationScreenContentConfiguration
             screeni={props.screeni}
             wrapperRef={screenWrapperRef}
           />
@@ -65,11 +70,13 @@ export const BibleTranslationScreen = (props: TranslationScreenProps) => {
         <BibleTranslationScreenContent
           screeni={props.screeni}
           win={props.win}
+          isPreview={props.isPreview}
         />
       </div>
       <BibleTranslationScreenAddressContainer
         isChangeAddressPanelHeight={isChangeAddressPanelHeight}
         isTech={props.isTech}
+        isPreview={props.isPreview}
         screeni={props.screeni}
       />
     </div>

@@ -32,7 +32,7 @@ export const useBibleScreenTranslationFontSizeAdapter = (content: string, subUpd
     const dec = (param: 'clientHeight' | 'clientWidth') => {
       if (step < 1) return;
 
-      while (wrapper[param] < container[param]) {
+      while (wrapper[param] < container[param] && fontSize > 0) {
         conainerStyle.fontSize = (fontSize -= step) + metric;
       }
     };

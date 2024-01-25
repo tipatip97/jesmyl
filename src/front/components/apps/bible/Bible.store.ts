@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { JStorage } from '../../../complect/JStorage';
 import { NavigationStorage } from '../../../complect/nav-configurer/Navigation.model';
 import { BibleStorage } from './model';
@@ -6,10 +6,19 @@ import { BibleStorage } from './model';
 export const strongStorage = new JStorage<NavigationStorage<BibleStorage>, BibleStorage>('bible');
 
 const initialState: BibleStorage = {
-  currentTranslationVersei: 0,
-  currentTranslationBooki: 0,
-  currentTranslationChapteri: 0,
+  translationVersei: 0,
+  translationBooki: 0,
+  translationChapteri: 0,
   translationScreenConfigs: [],
+  translationSearchZone: 'global',
+  translationSearchTerm: '',
+  translationAddressTerm: '',
+  translationSearchResultSelected: null,
+  translationSearchResultList: [],
+  translationSlideSyncContentUpdatesNum: 0,
+  translationTranslationJoinAddress: null,
+  translationHistory: [],
+  translationPlan: [],
 };
 
 export const slice = createSlice({
@@ -18,11 +27,24 @@ export const slice = createSlice({
   reducers: {
     ...strongStorage.initializators([
       'rules',
-      'currentTranslationVersei',
-      'currentTranslationBooki',
-      'currentTranslationChapteri',
+      'translationVersei',
+      'translationBooki',
+      'translationChapteri',
       'translationScreenConfigs',
+      'translationSearchZone',
+      'translationAddressTerm',
+      'translationSearchTerm',
+      'translationSearchResultList',
+      'translationTranslationJoinAddress',
+      'translationHistory',
+      'translationPlan',
     ]),
+    translationSlideSyncContentUpdatesNum: state => {
+      state.translationSlideSyncContentUpdatesNum++;
+    },
+    translationSearchResultSelected: (state, action: PayloadAction<number | null>) => {
+      state.translationSearchResultSelected = action.payload;
+    },
   },
 });
 
