@@ -44,7 +44,6 @@ export const useScreenTranslationFaceLineListeners = (
               break;
 
             case 'Escape':
-            case 'KeyV':
               if (!event.ctrlKey) switchIsVisible();
               break;
           }
