@@ -4,7 +4,7 @@ import useFullContent from '../../../../../complect/fullscreen-content/useFullCo
 import { TranslationScreen } from '../TranslationScreen';
 import { useScreenTranslationCurrentConfig } from '../hooks/configs';
 
-export const TranslationSlidePreview = () => {
+export const TranslationSlidePreview = ({ isPreview = true }: { isPreview?: boolean }) => {
   const currentConfig = useScreenTranslationCurrentConfig();
 
   const [fullNode, openFull] = useFullContent(() => {
@@ -14,7 +14,10 @@ export const TranslationSlidePreview = () => {
           <div className="flex center margin-big-gap-t">
             <FullContainer className="flex center bgcolor--3">
               <ScreenWithBackground $proportion={currentConfig.proportion}>
-                <TranslationScreen isTech />
+                <TranslationScreen
+                  isTech
+                  isPreview={isPreview}
+                />
               </ScreenWithBackground>
             </FullContainer>
           </div>
@@ -27,12 +30,18 @@ export const TranslationSlidePreview = () => {
     <Wrapper>
       {fullNode}
       {currentConfig === undefined ? (
-        <TranslationScreen win={window} />
+        <TranslationScreen
+          win={window}
+          isPreview={isPreview}
+        />
       ) : (
         <>
           <div className="flex center full-size bgcolor--2">
             <ScreenWithBackground $proportion={currentConfig.proportion}>
-              <TranslationScreen win={window} />
+              <TranslationScreen
+                win={window}
+                isPreview={isPreview}
+              />
             </ScreenWithBackground>
           </div>
           <FullButton
