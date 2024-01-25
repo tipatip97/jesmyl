@@ -18,7 +18,7 @@ export const ScreenTranslationControlPanel = ({ onNext, onPrev }: Props) => {
   const switchIsVisible = useSwitchIsScreenTranslationTextVisible();
 
   return (
-    <div className="flex flex-gap between">
+    <div className="flex flex-gap between margin-big-gap-t">
       <ControlButton onClick={onPrev}>
         <EvaIcon name="chevron-left-outline" />
       </ControlButton>
