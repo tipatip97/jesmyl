@@ -127,21 +127,46 @@ export class SMyLib {
     return what;
   }
 
-  isEq(base: any, source: any) {
+  isEq(base: unknown, source: unknown, isIgnoreArrayItemsOrder?: boolean) {
+    if (base === source) return true;
     if (base == null && base == source) return true;
     if (base == null || source == null) return false;
-    if (base === source) return true;
 
-    const baseType = this.typeOf(base);
-    const srcType = this.typeOf(source);
+    if (this.typeOf(base) !== this.typeOf(source)) return false;
 
-    if (baseType !== srcType) return false;
     if (typeof base === 'object') {
+      if (this.isArr(base) && this.isArr(source)) {
+        if (base.length !== source.length) return false;
+
+        if (isIgnoreArrayItemsOrder) {
+          for (const bVal of base) {
+            let isThere = false;
+
+            for (const sVal of source)
+              if (this.isEq(bVal, sVal, isIgnoreArrayItemsOrder)) {
+                isThere = true;
+                break;
+              }
+
+            if (isThere) return true;
+          }
+
+          return false;
+        } else {
+          for (let basei = 0; basei < base.length; basei++) {
+            if (!this.isEq(base[basei], source[basei], isIgnoreArrayItemsOrder)) return false;
+          }
+
+          return true;
+        }
+      }
+
       const bEntries = Object.entries(base).filter(([, val]) => val !== undefined);
+      const sEntries = Object.entries(source).filter(([, val]) => val !== undefined);
 
       if (
-        bEntries?.length !== Object.values(source).filter(val => val !== undefined).length ||
-        bEntries.some(([bKey, bVal]) => !this.isEq(source[bKey], bVal))
+        bEntries.length !== sEntries.length ||
+        bEntries.some(([bKey, bVal]) => !this.isEq(bVal, source[bKey as never], isIgnoreArrayItemsOrder))
       )
         return false;
     } else if (base !== source) return false;
