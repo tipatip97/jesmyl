@@ -43,7 +43,6 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
     if (match === null) return;
 
     const [, bookn, chapterStr, verseStr, verseSeparator, plusVerseStr] = match;
-    console.log({ bookn, chapterStr, verseStr, verseSeparator, plusVerseStr });
 
     const chapterNumber = chapterStr === undefined ? currentChapteri + 1 : +chapterStr;
     const verseNumber = verseStr === undefined ? currentVarsei + 1 : +verseStr;
