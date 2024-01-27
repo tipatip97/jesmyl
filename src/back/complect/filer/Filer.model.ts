@@ -4,20 +4,21 @@ import { LocalSokiAuth, SokiAppName } from '../soki/soki.model';
 
 export type FilerAppStore = Record<SokiAppName, FilerAppConfig>;
 
-export interface FilerAppRequirement {
+export interface FilerAppRequirement<Data = any> {
   rootPath?: string;
   ext?: string | null;
   level?: number;
-  map?: (data: any) => any;
-  prepareContent?: (data: any, auth?: LocalSokiAuth | null) => any;
-  transform?: (data: any, auth?: LocalSokiAuth | null) => any;
+  map?: (data: Data) => Data;
+  prepareContent?: (data: Data, auth?: LocalSokiAuth | null) => Data;
+  transform?: (data: Data, auth?: LocalSokiAuth | null) => Data;
+  onInit?: (data: Data) => void;
   onCantRead?: (
     isRead: boolean,
     exec: ExecutionDict,
     rule: ExecutionReal,
     auth: LocalSokiAuth | null | undefined,
     bag: any,
-    data: any,
+    data: Data,
     whenRejButTs: typeof sokiWhenRejButTs,
   ) => string | null | typeof sokiWhenRejButTs;
   watch?: [string, (content: string) => any];

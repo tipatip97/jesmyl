@@ -76,6 +76,7 @@ export class Filer {
             prepareContent,
             watch = null,
             refreshTrigger = '',
+            onInit,
           } = requ === null ? ({ name } as FilerAppRequirement) : requ;
 
           if (refreshTrigger)
@@ -137,6 +138,8 @@ export class Filer {
               try {
                 const stat = fs.statSync(path);
                 const data = JSON.parse(stringData);
+
+                onInit?.(data);
 
                 content[name] = {
                   data,
