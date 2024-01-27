@@ -114,6 +114,7 @@ export interface RealAccumulatableRule<
   sides?: RealAccumulatableRuleSides;
   accesses: string[];
   setInEachValueItem?: ExecuterSetInEachValueItem;
+  setEachInParent?: ExecuterSetInEachValueItem;
   RRej?: boolean | number;
   $$vars: Record<`$$${string}`, number>;
 }

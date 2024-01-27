@@ -535,6 +535,7 @@ export class Executer {
     const simpleFields: (keyof ExecutionReal)[] = [
       'action',
       'setInEachValueItem',
+      'setEachInParent',
       'fix',
       'method',
       'expecteds',
@@ -712,6 +713,7 @@ export class Executer {
         const { penultimate, target, lastTrace } = this.checkExpecteds(exec.track, contents, exec.expecteds);
 
         this.setSystemsValues(target, exec.value, exec.setSystems, exec.setItemSystems);
+        this.setInEachValueItem(penultimate, exec.setEachInParent, exec.args);
 
         this.doIt({
           method: exec.method,
@@ -860,6 +862,7 @@ export class Executer {
               rule.args,
             );
             this.setInEachValueItem(rule.value, rule.setInEachValueItem, exec.args, auth);
+            this.setInEachValueItem(penultimate, rule.setEachInParent, exec.args, auth);
 
             this.setSystemsValues(target, rule.value, rule.setSystems, rule.setItemSystems);
 
@@ -982,9 +985,8 @@ export class Executer {
     auth?: LocalSokiAuth | null,
   ) {
     if (!forces) return;
-    const forcesEntries = SMyLib.entries(forces);
 
-    forcesEntries.forEach(([tracky, setts]) => {
+    SMyLib.entries(forces).forEach(([tracky, setts]) => {
       const setDeepper = (trackys: string[], deepItem: unknown) => {
         if (!trackys.length) {
           if (smylib.isObj(deepItem))
