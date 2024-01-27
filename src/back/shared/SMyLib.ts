@@ -6,7 +6,26 @@ export type StringTemplaterArgs<Adds = {}> = {
   switch: () => string;
 } & Adds;
 
+const inSec = 1000;
+const inMin = inSec * 60;
+const inHour = inMin * 60;
+const inDay = inHour * 24;
+
 export class SMyLib {
+  howMs = {
+    inSec,
+    inMin,
+    inHour,
+    inDay,
+  };
+
+  getMilliseconds(monthDays = 30, yearDays = 365) {
+    const inMonth = inDay * monthDays;
+    const inYear = inDay * yearDays;
+
+    return { inSec, inMin, inHour, inDay, inMonth, inYear };
+  }
+
   isObj(obj: any): obj is Record<string, any> {
     return obj instanceof Object && !(obj instanceof Array);
   }

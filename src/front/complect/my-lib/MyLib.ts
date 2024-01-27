@@ -17,11 +17,6 @@ type Ferry<FerryType, ObjName extends keyof FerryType> = Record<ObjName, FerryTy
 
 export type AddRestMode = 'strong' | 'weak' | 'random';
 
-const inSec = 1000;
-const inMin = inSec * 60;
-const inHour = inMin * 60;
-const inDay = inHour * 24;
-
 export class MyLib extends SMyLib {
   c = constants;
 
@@ -268,20 +263,6 @@ export class MyLib extends SMyLib {
     }
 
     return '';
-  }
-
-  howMs = {
-    inSec,
-    inMin,
-    inHour,
-    inDay,
-  };
-
-  getMilliseconds(monthDays = 30, yearDays = 365) {
-    const inMonth = inDay * monthDays;
-    const inYear = inDay * yearDays;
-
-    return { inSec, inMin, inHour, inDay, inMonth, inYear };
   }
 
   getAllProperties(obj: any) {
