@@ -45,8 +45,14 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
 
   return (
     <Selector
-      className={`dropdown-selector flex between ${isDropped ? 'dropped' : ''} ${props.className || ''}`}
-      onClick={() => {
+      className={
+        'dropdown-selector flex between ' +
+        (props.className || '') +
+        (isDropped ? ' dropped' : '') +
+        (props.disabled ? ' disabled' : '')
+      }
+      onClick={event => {
+        if (props.disabled) event.stopPropagation();
         isDropClickedRef.current = true;
         setDropped(!isDropped);
       }}
@@ -75,29 +81,30 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
             {props.nullTitle}
           </div>
         )}
-        {props.items.map(item => {
-          return (
-            item && (
-              <div
-                key={`dropdown-item ${item.id}`}
-                className={
-                  'list-item ' +
-                  (item.disabled ? ' disabled ' : '') +
-                  (item.color ? ` colored color_${item.color} ` : '')
-                }
-                onClick={event => {
-                  event.stopPropagation();
-                  setDropped(false);
-                  setId(item.id);
+        {!props.disabled &&
+          props.items.map(item => {
+            return (
+              item && (
+                <div
+                  key={`dropdown-item ${item.id}`}
+                  className={
+                    'list-item ' +
+                    (item.disabled ? ' disabled ' : '') +
+                    (item.color ? ` colored color_${item.color} ` : '')
+                  }
+                  onClick={event => {
+                    event.stopPropagation();
+                    setDropped(false);
+                    setId(item.id);
 
-                  onClick(item);
-                }}
-              >
-                {item.title}
-              </div>
-            )
-          );
-        })}
+                    onClick(item);
+                  }}
+                >
+                  {item.title}
+                </div>
+              )
+            );
+          })}
       </div>
       {error ? (
         <EvaIcon
