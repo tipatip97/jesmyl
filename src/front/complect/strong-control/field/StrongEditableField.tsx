@@ -14,27 +14,30 @@ const onFocus = onStrongFieldFocus;
 const onBlur = onStrongFieldBlur;
 const onDragStart = onStrongFieldDragStart;
 
+type Props<Key, Value> = StrongControlProps<{
+  fieldKey?: Key;
+  value?: Value;
+  title?: string;
+  description?: ReactNode;
+  disabled?: boolean;
+  type?: 'text' | 'number';
+  icon?: EvaIconName;
+  placeholder?: string;
+  isRedact?: boolean;
+  setSelfRedact?: boolean;
+  isImpossibleEmptyValue?: boolean;
+  postfix?: ReactNode;
+  multiline?: boolean;
+  textClassName?: string;
+  className?: string;
+  onChange?: (value: string) => void | Promise<boolean>;
+  onUpdate?: (value: string) => void | Promise<boolean>;
+  onSend?: (value: string) => void | Promise<SokiServerEvent | null>;
+  onSelfRedactChange?: (is: boolean) => void;
+}>;
+
 export default function StrongEditableField<Key extends string, Value extends string | Partial<Record<Key, string>>>(
-  props: StrongControlProps<{
-    fieldKey?: Key;
-    value?: Value;
-    title?: string;
-    description?: ReactNode;
-    type?: 'text' | 'number';
-    icon?: EvaIconName;
-    placeholder?: string;
-    isRedact?: boolean;
-    setSelfRedact?: boolean;
-    isImpossibleEmptyValue?: boolean;
-    postfix?: ReactNode;
-    multiline?: boolean;
-    textClassName?: string;
-    className?: string;
-    onChange?: (value: string) => void | Promise<boolean>;
-    onUpdate?: (value: string) => void | Promise<boolean>;
-    onSend?: (value: string) => void | Promise<SokiServerEvent | null>;
-    onSelfRedactChange?: (is: boolean) => void;
-  }>,
+  props: Props<Key, Value>,
 ) {
   const value = typeof props.value === 'string' ? props.value : props.value?.[props.fieldKey as never] ?? '';
   const [stateValue, setStateValue] = useState(value);
@@ -156,6 +159,7 @@ export default function StrongEditableField<Key extends string, Value extends st
               placeholder={props.placeholder}
               multiline={props.multiline}
               type={props.type}
+              disabled={props.disabled}
               onChange={val => {
                 setStateValue(val);
                 setIsUserChange(true);
