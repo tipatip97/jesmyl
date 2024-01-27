@@ -13,6 +13,7 @@ import {
   scheduleWidgetRegTypeRights,
   scheduleWidgetUserRights,
 } from '../rights';
+import { indexSchedulesConfigOnInit } from './filer-req-on-init';
 
 interface SchedulesBag {
   users: IScheduleWidgetUser[];
@@ -84,14 +85,15 @@ type ScheduleWidgetOnCantReadExec = ExecutionDict<
 
 type ScheduleWidgetOnCantReadRule = ExecutionReal<unknown, ExecutionArgs<unknown, { schw: number }, {}>>;
 
-export const indexSchedulesConfig: FilerAppRequirement = {
+export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage<string>> = {
+  ...indexSchedulesConfigOnInit,
   onCantRead: (
     isShareData,
     exec: ScheduleWidgetOnCantReadExec,
     rule: ScheduleWidgetOnCantReadRule,
     auth,
     bag: SchedulesBag,
-    schedules: ScheduleStorage<string>,
+    schedules,
     whenRejButTs,
   ): string | null | typeof whenRejButTs => {
     if (rule.RRej === true) return isShareData ? 'block' : null;
@@ -237,6 +239,7 @@ export const indexSchedulesConfig: FilerAppRequirement = {
           types: emptyArray,
           dsc: '',
           topic: '',
+          tgAlertsTime: 0,
           ctrl: {
             cats: emptyArray,
             roles: emptyArray,

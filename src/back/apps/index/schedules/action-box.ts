@@ -1,8 +1,20 @@
-import { ActionBox, ActionBoxValue } from '../../../models';
+import { ActionBox, ActionBoxOnFinalCallback, ActionBoxValue } from '../../../models';
 import { IScheduleWidget } from '../models/ScheduleWidget.model';
 import { ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetUserRights } from '../rights';
+import { indexScheduleSetMessageAlert } from './tg-bot-alerts/tg-alerts';
 
 const emptyArray: [] = [];
+
+const onTgInformingChangeSuccess: ActionBoxOnFinalCallback = (props, _value, auth) => {
+  if (props !== null) indexScheduleSetMessageAlert(props.schw, auth, props.dayi);
+};
+
+const addUserValue = {
+  fio: '{*fio}',
+  login: '{*login}',
+  nick: '{*nick}',
+  tgId: '{*tgId}',
+} as const;
 
 const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
   w: '{schw}',
@@ -13,6 +25,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
   days: emptyArray,
   tatts: emptyArray,
   types: emptyArray,
+  tgAlertsTime: 5,
   start: () => {
     const date = new Date();
     date.setMonth(date.getMonth() + 1);
@@ -23,10 +36,8 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
     cats: ['Основное'],
     users: [
       {
+        ...addUserValue,
         mi: 0,
-        nick: '{*nick}',
-        fio: '{*fio}',
-        login: '{*login}',
         R: scheduleWidgetUserRights.getAllRights(),
       },
     ],
@@ -76,6 +87,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
         app: '#String',
       },
     },
+    onSuccess: onTgInformingChangeSuccess,
     '/[w === {schw}]': {
       scopeNode: 'schw',
       args: {
@@ -96,6 +108,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             value: '#Number',
           },
         },
+        setEachInParent: { 'days.list': { tgAlert: 1 } },
       },
       '/{key}': {
         scopeNode: 'field',
@@ -114,6 +127,22 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             value: '#Num',
           },
         },
+      },
+      '/tgAlerts': {
+        U: {
+          args: {
+            value: '#Num',
+          },
+        },
+        onSuccess: onTgInformingChangeSuccess,
+      },
+      '/tgAlertsTime': {
+        U: {
+          args: {
+            value: '#Number',
+          },
+        },
+        onSuccess: onTgInformingChangeSuccess,
       },
       '/ctrl': {
         '/type': {
@@ -146,7 +175,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
           C: {
             RRej: ScheduleWidgetUserRoleRight.Read,
             setSystems: ['mi'],
-            value: { fio: '{*fio}', nick: '{*nick}', login: '{*login}' },
+            value: addUserValue,
           },
           '<add me by link>': {
             scopeNode: 'addMeByLink',
@@ -157,11 +186,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                   accessActionWithoutUser: true,
                 },
               },
-              value: {
-                fio: '{*fio}',
-                login: '{*login}',
-                nick: '{*nick}',
-              },
+              value: addUserValue,
             },
           },
           '<add user>': {
@@ -178,11 +203,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             '<join>': {
               action: 'joinUserByLink',
               method: 'set_all',
-              value: {
-                fio: '{*fio}',
-                nick: '{*nick}',
-                login: '{*login}',
-              },
+              value: addUserValue,
             },
             '<userData>': {
               scopeNode: 'userData',
@@ -194,6 +215,20 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                   login: '{login}',
                 },
               },
+            },
+            '<tg alerts>': {
+              scopeNode: 'tgAlerts',
+              U: {
+                method: 'set_all',
+                value: {
+                  tgAlerts: '{value}',
+                  tgId: '{*tgId}',
+                },
+                args: {
+                  value: '#Num',
+                },
+              },
+              onSuccess: onTgInformingChangeSuccess,
             },
             '/fio': {
               U: {
@@ -366,11 +401,15 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               },
             },
           },
+          '/tm': {
+            U: {},
+            onSuccess: onTgInformingChangeSuccess,
+          },
           '/{key}': {
             scopeNode: 'field',
             U: {
               args: {
-                key: ['tm', 'title'],
+                key: ['title'],
               },
             },
           },
@@ -389,6 +428,10 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
           scopeNode: 'dayi',
           args: {
             dayi: '#Number',
+          },
+          '/wup': {
+            U: {},
+            onSuccess: onTgInformingChangeSuccess,
           },
           '/{key}': {
             scopeNode: 'field',
@@ -425,11 +468,20 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                 eventMi: '#Number',
               },
             },
+            onSuccess: onTgInformingChangeSuccess,
             '/[mi === {eventMi}]': {
               scopeNode: 'eventMi',
               $$var: '$$event',
               args: {
                 eventMi: '#Number',
+              },
+              '/tgAlert': {
+                action: 'setEventIsNeedTgAlert',
+                method: 'set',
+                args: {
+                  value: [1, 0],
+                },
+                onSuccess: onTgInformingChangeSuccess,
               },
               '/{key}': {
                 scopeNode: 'field',
@@ -451,9 +503,10 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                 scopeNode: 'techField',
                 U: {
                   args: {
-                    key: ['tm', 'type'],
+                    key: ['tm', 'type', 'tgAlert'],
                   },
                 },
+                onSuccess: onTgInformingChangeSuccess,
               },
               '/rate': {
                 expected: {},

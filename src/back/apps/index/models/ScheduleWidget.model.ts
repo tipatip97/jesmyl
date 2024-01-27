@@ -36,6 +36,8 @@ export interface IScheduleWidget<EvaIconName> {
   app: SokiAppName;
   ctrl: IScheduleWidgetCtrl<EvaIconName>;
   lists: IScheduleWidgetLists<EvaIconName>;
+  tgAlerts?: num;
+  tgAlertsTime: number;
 }
 
 export interface IScheduleWidgetDay {
@@ -82,6 +84,7 @@ export interface IScheduleWidgetDayEvent {
   atts?: ScheduleWidgetDayEventAttValues;
   secret?: 1 | 0;
   rate?: Record<number, [number, string]>;
+  tgAlert?: 1 | 0;
 }
 
 export type ScheduleWidgetDayEventAttValues = Record<ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue>;
@@ -124,6 +127,8 @@ export interface IScheduleWidgetUser {
   nick?: string;
   R?: number;
   li?: Record<Cati, UnitMi>;
+  tgId?: number;
+  tgAlerts?: num;
 }
 
 export type AttKey = SokiAppName | 'SCH';

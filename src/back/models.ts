@@ -39,6 +39,7 @@ export interface ActionBox<Value = any>
   side?: ActionBoxSide;
   expected?: [] | {};
   setInEachValueItem?: Record<string, Record<string, unknown>>;
+  setEachInParent?: Record<string, Record<string, unknown>>;
   isSequre?: boolean;
   setSystems?: ActionBoxSetSystems[];
   setItemSystems?: ActionBoxSetSystems[];
