@@ -31,6 +31,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
     this.maxLength = props.maxLength;
     this.setIsUnknownSymbols = props.setIsUnknownSymbols || this.dafaultSetIsUnknownSymbols;
     this.mapChar = props.mapChar || this.dafaultMapChar;
+    this.isDisabled = props.disabled;
 
     this.viewFlowChari = 0;
 
@@ -55,6 +56,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
         className={
           'input-keyboard-flash-controlled input ' +
           (props.className || '') +
+          (props.disabled ? ' disabled' : '') +
           (this.valueCharLines.length === 0 ? ' no-lines' : '') +
           (this.isFocused ? ' focused' : '') +
           (this.value ? '' : ' empty-input') +

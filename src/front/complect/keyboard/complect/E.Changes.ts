@@ -11,9 +11,10 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   setIsUnknownSymbols: (char: string) => boolean = this.dafaultSetIsUnknownSymbols;
   mapChar: (char: string) => ReactNode = this.dafaultMapChar;
   maxLength?: number;
+  isDisabled?: boolean;
 
   replaceAll = (value: string, isRemember = true, isInvokeOnInputEvent = false) => {
-    if (value === this.value) return;
+    if (this.isDisabled || value === this.value) return;
     let val = value;
     if (this.maxLength !== undefined && val.length > this.maxLength) {
       val = value.slice(0, this.maxLength);
@@ -28,6 +29,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   };
 
   protected setValues() {
+    if (this.isDisabled) return;
     let lastLine: ReactNode[] = [];
     const lines: ReactNode[][] = [lastLine];
 
@@ -51,7 +53,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   protected replaceSelected(val?: string): boolean {
-    if (!this.isSelected) return false;
+    if (this.isDisabled || !this.isSelected) return false;
 
     const start = Math.min.apply(null, this.selected);
     const finish = Math.max.apply(null, this.selected);
@@ -71,6 +73,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   private maxLimitedValue(value?: string, selectedChars?: number) {
+    if (this.isDisabled) return;
     if (value !== undefined && this.maxLength !== undefined) {
       const sliceFinish = this.maxLength - (this.value.length - (selectedChars === undefined ? 0 : selectedChars));
       if (sliceFinish > -1) return value.slice(0, sliceFinish);
@@ -81,6 +84,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   private insertValueChars(value: string | undefined, point: number, count: number) {
+    if (this.isDisabled) return 0;
     if (value === undefined || value.length === 0) {
       this.valueChars.splice(point, count);
       return 0;
@@ -93,6 +97,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   backspace(event: KeyboardStorageEvent) {
+    if (this.isDisabled) return;
     if (this.replaceSelected()) return;
     this.remember('backspace');
     if (this.cursorPosition > 0) {
@@ -114,6 +119,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   delete(event: KeyboardStorageEvent) {
+    if (this.isDisabled) return;
     if (this.replaceSelected()) return;
     this.remember('delete');
 
@@ -132,6 +138,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   write(val: string, isRememberAsPart?: boolean) {
+    if (this.isDisabled) return;
     if (this.replaceSelected(val)) return;
     if (
       (val === ' ' && this.prevTypedValue !== ' ') ||
@@ -157,6 +164,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   async paste(position?: 'before' | 'after') {
+    if (this.isDisabled) return;
     const val = await navigator.clipboard.readText();
     const value = this.type === 'number' ? val.replace(/\D+/g, '') : val;
     if (value && position) {
@@ -167,6 +175,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   copy() {
+    if (this.isDisabled) return;
     if (this.isSelected) {
       const [start, finish] = [...this.selected].sort((a, b) => a - b);
       navigator.clipboard.writeText(this.value.slice(start, finish));
@@ -176,6 +185,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   }
 
   cut() {
+    if (this.isDisabled) return;
     if (this.isSelected) {
       const [start, finish] = [...this.selected].sort((a, b) => a - b);
       navigator.clipboard.writeText(this.value.slice(start, finish));

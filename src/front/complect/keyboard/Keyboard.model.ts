@@ -16,6 +16,7 @@ export interface KeyboardInputProps {
   value?: string;
   multiline?: boolean;
   type?: KeyboardInputPropsType;
+  disabled?: boolean;
   preferLanguage?: KeyboardKeyTranslateLanguage;
   withoutCloseButton?: boolean;
   autoFocus?: boolean;
