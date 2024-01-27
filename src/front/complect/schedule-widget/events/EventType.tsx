@@ -131,8 +131,7 @@ export default function ScheduleWidgetEventType(props: {
         )}
         <StrongEditableField
           scope={selfScope}
-          fieldName="field"
-          fieldKey="tm"
+          fieldName="tm"
           type="number"
           value={'' + (props.typeBox.tm ?? '')}
           postfix=" мин"

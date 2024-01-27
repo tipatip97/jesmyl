@@ -1,7 +1,7 @@
 import mylib from '../../my-lib/MyLib';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 import { ScheduleWidgetRights, useScheduleWidgetRights } from '../useScheduleWidget';
-import ScheduleWidgetCleans from './Cleans';
+import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 
 export default function ScheduleWidgetStartTimeText({
   schedule,

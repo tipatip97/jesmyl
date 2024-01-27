@@ -12,6 +12,7 @@ import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useSche
 import './Day.scss';
 import ScheduleWidgetPrintableDay from './PrintableDay';
 import ScheduleWidgetDayEventList from './events/DayEventList';
+import { indexScheduleCheckIsDayIsPast, indexScheduleGetDayStartMs } from '../utils';
 
 const dotReg = /\./;
 
@@ -38,9 +39,8 @@ export default function ScheduleWidgetDay({
   isPrint,
   isCanOpenFull,
 }: ScheduleWidgetDayProps) {
-  const dayStartMs = schedule.start + mylib.howMs.inDay * dayi - (schedule.withTech ? mylib.howMs.inDay : 0);
-  const date = new Date(dayStartMs);
-  const isPastDay = Date.now() > dayStartMs + mylib.howMs.inDay;
+  const date = new Date(indexScheduleGetDayStartMs(schedule, dayi));
+  const isPastDay = indexScheduleCheckIsDayIsPast(schedule, dayi);
   const title = mylib.dayFullTitles[date.getDay()];
   const times: number[] = [];
   const selfScope = takeStrongScopeMaker(scope, ' dayi/', dayi);
@@ -142,7 +142,7 @@ export default function ScheduleWidgetDay({
                 <>
                   <StrongControlDateTimeExtracter
                     scope={selfScope}
-                    fieldName="field"
+                    fieldName="wup"
                     value={day.wup?.toFixed?.(2).replace(dotReg, ' ') || ''}
                     icon="clock-outline"
                     title="Начало дня"
@@ -151,7 +151,6 @@ export default function ScheduleWidgetDay({
                     mapExecArgs={(args, value) => {
                       return {
                         ...args,
-                        key: 'wup',
                         value: +value.replace(/:/, '.'),
                       };
                     }}

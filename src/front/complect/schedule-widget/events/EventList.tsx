@@ -4,7 +4,7 @@ import { EvaIconName } from '../../eva-icon/EvaIcon';
 import useModal from '../../modal/useModal';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import { IScheduleWidget } from '../ScheduleWidget.model';
-import ScheduleWidgetCleans from '../complect/Cleans';
+import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetEventType from './EventType';
 
 const emptyArr: [] = [];

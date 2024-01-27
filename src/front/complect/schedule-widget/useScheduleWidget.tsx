@@ -57,6 +57,7 @@ export const defaultSchwduleWidget: IScheduleWidget = {
   tatts: [],
   types: [],
   app: 'index',
+  tgAlertsTime: 5,
   ctrl: {
     cats: [],
     roles: [],

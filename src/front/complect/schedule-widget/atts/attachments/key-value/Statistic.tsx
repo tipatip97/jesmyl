@@ -2,7 +2,7 @@ import { ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models
 import { CustomAttUseTaleId } from '../../../../../models';
 import CopyTextButton from '../../../../CopyTextButton';
 import mylib from '../../../../my-lib/MyLib';
-import ScheduleWidgetCleans from '../../../complect/Cleans';
+import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
 import { useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
 
 const itNNil = (it: unknown) => it != null;

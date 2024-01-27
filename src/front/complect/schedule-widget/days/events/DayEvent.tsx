@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import ScheduleWidgetCleans from '../../../../../back/apps/index/schedules/utils/Cleans';
 import EvaButton from '../../../eva-icon/EvaButton';
 import EvaIcon from '../../../eva-icon/EvaIcon';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
@@ -8,16 +9,16 @@ import StrongEditableField from '../../../strong-control/field/StrongEditableFie
 import useIsRedactArea from '../../../useIsRedactArea';
 import { IScheduleWidgetDay, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
 import ScheduleWidgetBindAtts from '../../atts/BindAtts';
-import ScheduleWidgetCleans from '../../complect/Cleans';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetDayEventAtts from '../../events/atts/DayEventAtts';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
+import { indexScheduleGetEventFinishMs } from '../../utils';
 import ScheduleWidgetDayEventRating from './DayEventRating';
 
 const msInMin = mylib.howMs.inMin;
-const msInDay = mylib.howMs.inDay;
 
 const mapExecTmArgs = (args: {}) => ({ ...args, techKey: 'tm' });
+const mapExecTgAlertArgs = (args: {}) => ({ ...args, techKey: 'tgAlert' });
 
 export default function ScheduleWidgetDayEvent(props: {
   scope: string;
@@ -26,12 +27,11 @@ export default function ScheduleWidgetDayEvent(props: {
   eventi: number;
   dayi: number;
   day: IScheduleWidgetDay;
-  prevTime: number;
+  eventTimes: number[];
   secretTime: number;
   isShowPeriodsNotTs: boolean;
   onClickOnTs: () => void;
   redact: boolean | nil;
-  wakeupMs: number;
   isPastDay: boolean;
   isLastEvent: boolean;
   bottomContent: (isRedact: boolean) => ReactNode;
@@ -45,12 +45,13 @@ export default function ScheduleWidgetDayEvent(props: {
 
   const now = Date.now();
   const eventTm = ScheduleWidgetCleans.takeEventTm(props.event, box);
-  const eventFinishMs =
-    rights.schedule.start +
-    props.wakeupMs +
-    props.prevTime * msInMin +
-    props.dayi * msInDay -
-    (rights.schedule.withTech ? mylib.howMs.inDay : 0);
+  const wakeupMs = ScheduleWidgetCleans.computeDayWakeUpTime(props.day.wup, 'number');
+  const eventFinishMs = indexScheduleGetEventFinishMs(
+    rights.schedule,
+    wakeupMs,
+    props.dayi,
+    props.eventTimes[props.eventi],
+  );
   const eventStartMs = eventFinishMs - eventTm * msInMin;
   const isPastEvent = now > eventFinishMs;
 
@@ -80,7 +81,9 @@ export default function ScheduleWidgetDayEvent(props: {
     timeMark = `${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
   }
 
-  const timeToTitle = rights.isCanReadSpecials && !props.redact && now > eventStartMs && now < eventFinishMs && (
+  const isCurrentEvent = now > eventStartMs && now < eventFinishMs;
+
+  const timeToTitle = rights.isCanReadSpecials && !props.redact && isCurrentEvent && (
     <div className="absolute pos-left pos-bottom margin-big-gap-l font-size:0.7em">
       {props.isLastEvent
         ? ScheduleWidgetCleans.minutesToTextTemplate(eventFinishMs - now, 'остал$onNum{{ась}{ось}} $num $txt')
@@ -157,6 +160,29 @@ export default function ScheduleWidgetDayEvent(props: {
                   confirm={`Событие ${box.title} ${props.event.secret ? 'больше не секретное' : 'будет секретным'}?`}
                   postfix="Секретное событие"
                 />
+                {props.event.tgAlert === 0 || isPastEvent || isCurrentEvent ? (
+                  <StrongEvaButton
+                    scope={selfScope}
+                    fieldName="techField"
+                    fieldValue={1}
+                    cud="U"
+                    disabled={isPastEvent || isCurrentEvent}
+                    name="bell-off-outline"
+                    postfix="TG-Напоминания не будет"
+                    mapExecArgs={mapExecTgAlertArgs}
+                  />
+                ) : (
+                  <StrongEvaButton
+                    scope={selfScope}
+                    fieldName="techField"
+                    fieldValue={0}
+                    cud="U"
+                    disabled={isPastEvent || isCurrentEvent}
+                    name="bell-outline"
+                    postfix="TG-Напоминание будет"
+                    mapExecArgs={mapExecTgAlertArgs}
+                  />
+                )}
                 <StrongEditableField
                   isRedact
                   scope={selfScope}

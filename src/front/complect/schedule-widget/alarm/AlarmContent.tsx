@@ -5,7 +5,7 @@ import EvaIcon from '../../eva-icon/EvaIcon';
 import useFullContent, { FullContentValue } from '../../fullscreen-content/useFullContent';
 import mylib from '../../my-lib/MyLib';
 import { IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from '../ScheduleWidget.model';
-import ScheduleWidgetCleans from '../complect/Cleans';
+import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import { useSchedules } from '../useScheduleWidget';
 import ScheduleAlarmDay from './AlarmDay';

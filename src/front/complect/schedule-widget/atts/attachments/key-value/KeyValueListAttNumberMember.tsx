@@ -1,6 +1,6 @@
 import { CustomAttUseTaleId } from '../../../../../models';
 import EvaIcon from '../../../../eva-icon/EvaIcon';
-import ScheduleWidgetCleans from '../../../complect/Cleans';
+import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetRoleFace from '../../../control/roles/RoleFace';
 import ScheduleWidgetListUnitFace from '../../../lists/UnitFace';
 import { extractScheduleWidgetRole, useScheduleWidgetRightsContext } from '../../../useScheduleWidget';

@@ -6,7 +6,7 @@ import useModal from '../../modal/useModal';
 import mylib, { MyLib } from '../../my-lib/MyLib';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import { IScheduleWidget, ScheduleWidgetDayEventAttValues } from '../ScheduleWidget.model';
-import ScheduleWidgetCleans from '../complect/Cleans';
+import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import { takeScheduleStrongScopeMaker, useSchedules } from '../useScheduleWidget';
 

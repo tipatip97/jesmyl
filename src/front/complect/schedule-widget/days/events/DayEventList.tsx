@@ -6,10 +6,10 @@ import StrongDiv from '../../../strong-control/StrongDiv';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import useIsRedactArea from '../../../useIsRedactArea';
 import { IScheduleWidgetDay } from '../../ScheduleWidget.model';
-import ScheduleWidgetCleans from '../../complect/Cleans';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetEventList from '../../events/EventList';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
+import { indexScheduleGetDayEventTimes } from '../../utils';
 import ScheduleWidgetDayEvent from './DayEvent';
 import { ScheduleWidgetDayEventEventActions } from './EventActions';
 
@@ -39,8 +39,8 @@ export default function ScheduleWidgetDayEventList({
       <EvaIcon
         name="list"
         className="color--7"
-      />{' '}
-      Распорядок
+      />
+      {' Распорядок'}
     </>,
     isExpand => isExpand && editIcon,
   );
@@ -55,13 +55,10 @@ export default function ScheduleWidgetDayEventList({
   const [moveEventMi, setMoveEventMi] = useState<number | null>(null);
   const movementEvent = moveEventMi !== null ? day.list.find(event => event.mi === moveEventMi) : undefined;
   const movementBox = movementEvent && rights.schedule.types[movementEvent.type];
+  const times = indexScheduleGetDayEventTimes(rights.schedule, day);
 
   let secretTime = 0;
   let isFirstSecrets = true;
-  const times: number[] = [];
-  day.list.forEach(event => {
-    times.push((event.tm || rights.schedule.types[event.type]?.tm || 0) + (times[times.length - 1] || 0));
-  });
 
   useEffect(() => {
     if (isRedact) switchIsExpand(true);
@@ -151,9 +148,8 @@ export default function ScheduleWidgetDayEventList({
                   isLastEvent={eventa.length - 1 === eventi}
                   dayi={dayi}
                   redact={isRedact}
-                  prevTime={times[eventi]}
+                  eventTimes={times}
                   secretTime={secretTime}
-                  wakeupMs={ScheduleWidgetCleans.computeDayWakeUpTime(day.wup, 'number')}
                   isShowPeriodsNotTs={isShowPeriodsNotTs}
                   onClickOnTs={() => setIsShowTsNotPeriods(is => !is)}
                   bottomContent={isRedact =>
