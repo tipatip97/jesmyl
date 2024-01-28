@@ -2,9 +2,9 @@ import { CSSProperties, useMemo } from 'react';
 import { useScreenTranslationPositionsStyles } from '../../../../../../+complect/translations/complect/hooks/position-styles';
 import { useScreenTranslationTextStyles } from '../../../../../../+complect/translations/complect/hooks/text-styles';
 import { useIsScreenTranslationTextVisible } from '../../../../../../+complect/translations/hooks/is-visible';
-import { CmTranslationScreenConfig } from '../../model';
+import { CmTranslationTextScreenConfig } from '../../model';
 
-export const useGetCmScreenTranslationStyle = (currentConfig: CmTranslationScreenConfig | und) => {
+export const useGetCmScreenTranslationStyle = (currentConfig: CmTranslationTextScreenConfig | und) => {
   const isVisible = useIsScreenTranslationTextVisible();
   const textStyles = useScreenTranslationTextStyles(currentConfig);
   const position = useScreenTranslationPositionsStyles(currentConfig);
@@ -14,6 +14,8 @@ export const useGetCmScreenTranslationStyle = (currentConfig: CmTranslationScree
       ? {
           ...textStyles,
           ...position,
+          justifyContent:
+            textStyles.textAlign === 'left' ? 'flex-start' : textStyles.textAlign === 'right' ? 'flex-end' : 'center',
 
           color: isVisible ? currentConfig.color : 'transparent',
         }
