@@ -11,7 +11,7 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
   const fontSize = useSelector(comFontSizeSelector);
 
   return (
-    <ExpandContent className="com-expand-content">
+    <ExpandContent className="com-expand-content full-height">
       <RollControled>
         <div className="inner-content">
           {coms?.map(com => (
