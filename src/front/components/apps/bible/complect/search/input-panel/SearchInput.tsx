@@ -29,7 +29,8 @@ export const BibleSearchPanelSearchInput = ({ inputRef }: Props) => {
     setSelected(null);
   }, [term, setSearchTerm, setSelected]);
 
-  useEffect(() => setTerm(searchTerm), [searchTerm]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setTerm(searchTerm), []);
 
   useEffect(() => {
     if (resultSelected === null || resultList[resultSelected] === undefined) return;
