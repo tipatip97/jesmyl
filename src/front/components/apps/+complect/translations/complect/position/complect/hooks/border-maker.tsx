@@ -142,52 +142,63 @@ export const usePositionConfiguratorResizerBorderMaker = (
                 let top = 0;
                 let left = 0;
 
-                if (vert !== null) {
-                  top = ((rect.offsetTop + event.movementY) / parent.clientHeight) * 100;
+                const move = (isVert: boolean): boolean => {
+                  const posName = isVert ? 'top' : 'left';
+                  const sizeName = isVert ? 'height' : 'width';
+                  const rectPosition = isVert ? rect.offsetTop : rect.offsetLeft;
+                  const parentSize = isVert ? parent.clientHeight : parent.clientWidth;
+                  const rectSize = isVert ? rect.clientHeight : rect.clientWidth;
+                  const movementProp = isVert ? event.movementY : event.movementX;
 
-                  if (vert === 'top') {
-                    rect.style.height = rect.clientHeight - event.movementY + 'px';
-                    rect.style.top = rect.offsetTop + event.movementY + 'px';
-                    height = ((rect.clientHeight - event.movementY) / parent.clientHeight) * 100;
+                  let sizeParam = 0;
+                  let posParam = ((rectPosition + movementProp) / parentSize) * 100;
 
-                    if (horz === null) {
-                      timeout = setTimeout(() => updateConfig({ height, top }), 300);
-                      return;
+                  if (posParam < 0) posParam = 0;
+                  if (posParam > 100) posParam = 100;
+
+                  if (isVert) top = posParam;
+                  else left = posParam;
+
+                  if ((isVert ? vert : horz) === posName) {
+                    let positionPx = rectPosition + movementProp;
+                    let sizePx = rectSize - movementProp;
+
+                    if (positionPx < 0) positionPx = 0;
+                    if (parentSize - positionPx < sizePx) sizePx = parentSize - positionPx;
+
+                    rect.style[sizeName] = sizePx + 'px';
+                    rect.style[posName] = positionPx + 'px';
+                    sizeParam = (sizePx / parentSize) * 100;
+
+                    if (isVert) height = sizeParam;
+                    else width = sizeParam;
+
+                    if ((isVert ? horz : vert) === null) {
+                      timeout = setTimeout(() => updateConfig({ [sizeName]: sizeParam, [posName]: posParam }), 300);
+                      return true;
                     }
                   } else {
-                    rect.style.height = rect.clientHeight + event.movementY + 'px';
-                    height = ((rect.clientHeight + event.movementY) / parent.clientHeight) * 100;
+                    let sizePxParam = rectSize + movementProp;
 
-                    if (horz === null) {
-                      timeout = setTimeout(() => updateConfig({ height }), 300);
-                      return;
+                    if (parentSize - rectPosition < sizePxParam) sizePxParam = parentSize - rectPosition;
+
+                    rect.style[sizeName] = sizePxParam + 'px';
+                    sizeParam = (sizePxParam / parentSize) * 100;
+
+                    if (isVert) height = sizeParam;
+                    else width = sizeParam;
+
+                    if ((isVert ? horz : vert) === null) {
+                      timeout = setTimeout(() => updateConfig({ [sizeName]: sizeParam }), 300);
+                      return true;
                     }
                   }
-                }
 
-                if (horz !== null) {
-                  left = ((rect.offsetLeft + event.movementX) / parent.clientWidth) * 100;
+                  return false;
+                };
 
-                  if (horz === 'left') {
-                    rect.style.width = rect.clientWidth - event.movementX + 'px';
-                    rect.style.left = rect.offsetLeft + event.movementX + 'px';
-
-                    width = ((rect.clientWidth - event.movementX) / parent.clientWidth) * 100;
-
-                    if (vert === null) {
-                      timeout = setTimeout(() => updateConfig({ width, left }), 300);
-                      return;
-                    }
-                  } else {
-                    rect.style.width = rect.clientWidth + event.movementX + 'px';
-                    width = ((rect.clientWidth + event.movementX) / parent.clientWidth) * 100;
-
-                    if (vert === null) {
-                      timeout = setTimeout(() => updateConfig({ width }), 300);
-                      return;
-                    }
-                  }
-                }
+                if (vert !== null && move(true)) return;
+                if (horz !== null && move(false)) return;
 
                 timeout = setTimeout(() => updateConfig({ left, top, height, width }), 300);
               });
