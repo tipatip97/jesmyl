@@ -22,9 +22,13 @@ export default function FontSizeContain({ className, content, html, subUpdate, s
         containerRef.current.clientWidth / shadowChildRef.current.clientWidth,
       );
 
-      if (scale > 0 && Number.isFinite(scale) && !isNaN(scale)) setChildStyle({ transform: `scale(${scale})` });
+      if (scale > 0 && Number.isFinite(scale) && !isNaN(scale))
+        setChildStyle({
+          transform: `scale(${scale})`,
+          transformOrigin: style?.textAlign === 'left' ? 'left' : style?.textAlign === 'right' ? 'right' : 'center',
+        });
     }
-  }, [content, html, subUpdate, isInit]);
+  }, [content, html, subUpdate, isInit, style?.textAlign]);
 
   return (
     <div
