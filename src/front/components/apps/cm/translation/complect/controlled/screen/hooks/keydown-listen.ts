@@ -1,16 +1,9 @@
 import { useEffect } from 'react';
-import { useScreenTranslationCurrentConfigi } from '../../../../../../+complect/translations/hooks/configs';
 import { useActualRef } from '../../../../../../../../complect/useActualRef';
 import { useCmScreenTranslationComNavigations } from '../../../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../../../hooks/com-texts';
-import { CmTranslationScreenConfig } from '../../model';
 
-export const useScreenKeyDownListen = (
-  win: Window | nil,
-  configs: CmTranslationScreenConfig[],
-  screeni: number | und,
-) => {
-  const currentConfigiRef = useActualRef(useScreenTranslationCurrentConfigi());
+export const useScreenKeyDownListen = (win: Window | nil) => {
   const comActionsRef = useActualRef(useCmScreenTranslationComNavigations());
   const comTextActionsRef = useActualRef(useCmScreenTranslationComTextNavigations());
 
@@ -53,5 +46,5 @@ export const useScreenKeyDownListen = (
     return () => {
       win?.removeEventListener('keydown', onKeyTranslations);
     };
-  }, [screeni, win, configs.length, currentConfigiRef, comActionsRef, comTextActionsRef]);
+  }, [comActionsRef, comTextActionsRef, win]);
 };

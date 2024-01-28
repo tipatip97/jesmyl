@@ -7,13 +7,13 @@ import {
 } from '../../../../../+complect/translations/hooks/configs';
 import { useSetScreenTranslationInteractiveBackground } from '../../../../../+complect/translations/hooks/interactive-back';
 import { useApplyScreenFontFamilyEffect } from '../../../../../+complect/translations/hooks/set-font-family';
-import { useSetScreenTranslationCurrentConfigi } from '../../../../../+complect/translations/hooks/with-config';
-import { useActualRef } from '../../../../../../../complect/useActualRef';
 import FontSizeContain from '../../../../base/font-size-contain/FontSizeContain';
 import { FontSizeContainProps } from '../../../../base/font-size-contain/FontSizeContain.model';
-import { useCmScreenTranslationComCurrentText } from '../../hooks/com-texts';
-import { useCmScreenTranslationConfig, useCmScreenTranslationConfigs } from '../hooks/configs';
+import { useCmScreenTranslationComCurrentTexti } from '../../hooks/com-texts';
+import { useCmCurrentComTexts } from '../../hooks/get-com-text';
+import { useCmScreenTranslationConfig } from '../hooks/configs';
 import { useUpdateCmCurrentTranslationConfig } from '../hooks/update-config';
+import { CmTranslationSubScreen } from './CmTranslationSubScreen';
 import { useGetCmScreenTranslationStyle } from './hooks/get-style';
 import { useGetCmScreenTranslationWrapperStyle } from './hooks/get-wrapper-style';
 import { useScreenKeyDownListen } from './hooks/keydown-listen';
@@ -21,23 +21,43 @@ import { useScreenWinResizeListen } from './hooks/win-resize-lesten';
 
 export const CmTranslationScreen = (props: TranslationScreenProps & Partial<FontSizeContainProps>) => {
   const updateConfig = useUpdateCmCurrentTranslationConfig();
-  const setCurrentConfigiRef = useActualRef(useSetScreenTranslationCurrentConfigi());
   const getCurrentConfig = useGetScreenTranslationConfig();
-  const configs = useCmScreenTranslationConfigs();
   const currentConfigi = useScreenTranslationCurrentConfigi();
   const currentConfig = useCmScreenTranslationConfig(props.screeni ?? currentConfigi);
-  const text = useCmScreenTranslationComCurrentText();
+  const texts = useCmCurrentComTexts();
+  const currTexti = useCmScreenTranslationComCurrentTexti();
+  const text = texts?.[currTexti];
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const style = useGetCmScreenTranslationStyle(currentConfig);
   const wrapperStyle = useGetCmScreenTranslationWrapperStyle(currentConfig);
-  const forceUpdates = useScreenWinResizeListen(props.win, props.screeni, updateConfig, setCurrentConfigiRef);
+  const forceUpdates = useScreenWinResizeListen(props.win);
   const background = useSetScreenTranslationInteractiveBackground(
     currentConfig?.isWithBackground ? currentConfig.backgroundInteractive : undefined,
   );
 
-  useScreenKeyDownListen(props.win, configs, props.screeni);
+  const subUpdates = '' + currentConfigi + forceUpdates + getCurrentConfig(currentConfigi)?.proportion;
+
+  useScreenKeyDownListen(props.win);
   useApplyScreenFontFamilyEffect(currentConfig?.fontFamily, props.win);
+  let subScreens = null;
+
+  if (currentConfig?.subs?.next !== undefined) {
+    const config = currentConfig.subs.next;
+
+    subScreens = (
+      <CmTranslationSubScreen
+        config={config}
+        win={props.win}
+        subUpdates={subUpdates}
+        text={texts?.[currTexti + 1] ?? ''}
+        wrapperRef={wrapperRef}
+        isTech={props.isTech}
+        parentConfig={currentConfig}
+        updateConfig={updateConfig}
+      />
+    );
+  }
 
   return (
     <div
@@ -53,18 +73,12 @@ export const CmTranslationScreen = (props: TranslationScreenProps & Partial<Font
           wrapperRef={wrapperRef}
         />
       )}
+      {subScreens}
       <FontSizeContain
-        className="inline-flex center white-pre-children"
+        className="inline-flex white-pre-children"
         style={style}
         html={text}
-        subUpdate={
-          currentConfigi +
-          forceUpdates +
-          (getCurrentConfig(currentConfigi)?.proportion ?? 0) +
-          (currentConfig === undefined
-            ? 10000
-            : currentConfig.width + currentConfig.height + currentConfig.top + currentConfig.left)
-        }
+        subUpdate={subUpdates + (currentConfig === undefined ? '' : currentConfig.width + currentConfig.height)}
       />
     </div>
   );

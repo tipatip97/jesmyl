@@ -5,11 +5,7 @@ import { useCmCurrentComTexts } from './get-com-text';
 
 const translationBlockSelector = (state: RootState) => state.cm.translationBlock;
 
-export const useCmScreenTranslationComCurrentText = () => {
-  const texts = useCmCurrentComTexts();
-  const currTexti = useSelector(translationBlockSelector);
-  return texts && texts[currTexti];
-};
+export const useCmScreenTranslationComCurrentTexti = () => useSelector(translationBlockSelector);
 
 export const useCmScreenTranslationComTextNavigations = () => {
   const dispatch = useDispatch();
