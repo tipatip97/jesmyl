@@ -25,7 +25,7 @@ let items: DropdownItem<ScreenTranslateConfigTypeFontWeight>[] = [
 
 type Props = ScreenTranslationPartialConfigProps<{ fontWeight: ScreenTranslateConfigTypeFontWeight }>;
 
-export const ScreenTranslateConfigurationType = ({ config, updateConfig }: Props) => {
+export const ScreenTranslateConfigurationFontWeight = ({ config, updateConfig }: Props) => {
   return (
     <>
       <div className="flex flex-gap flex-max">

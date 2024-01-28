@@ -1,5 +1,5 @@
 import { ScreenTranslateCurrentConfigTypeTextAlign } from './TextAlign';
-import { ScreenTranslateConfigTypeFontWeight } from './Type';
+import { ScreenTranslateConfigTypeFontWeight } from './FontWeight';
 import {
   ScreenTranslationBackgroundConfigs,
   ScreenTranslationPositionConfig,

@@ -4,7 +4,7 @@ import { ScreenTranslateConfigurationColor } from '../../../../../../+complect/t
 import { ScreenTranslateConfigurationFontFamily } from '../../../../../../+complect/translations/complect/FontFamily';
 import { ScreenTranslateConfigurationNameChanger } from '../../../../../../+complect/translations/complect/NameChanger';
 import { ScreenTranslateConfigurationTextAlign } from '../../../../../../+complect/translations/complect/TextAlign';
-import { ScreenTranslateConfigurationType } from '../../../../../../+complect/translations/complect/Type';
+import { ScreenTranslateConfigurationFontWeight } from '../../../../../../+complect/translations/complect/FontWeight';
 import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
 import { ExpandableContent } from '../../../../../../../../complect/expand/ExpandableContent';
 import { useDebounceAction } from '../../../../../../../../complect/useDebounceAction';
@@ -47,7 +47,7 @@ export const CmTranslateCurrentScreenConfigurations = ({ currentConfig }: Props)
           config={currentConfig}
           updateConfig={update}
         />
-        <ScreenTranslateConfigurationType
+        <ScreenTranslateConfigurationFontWeight
           config={currentConfig}
           updateConfig={update}
         />
@@ -78,7 +78,7 @@ export const CmTranslateCurrentScreenConfigurations = ({ currentConfig }: Props)
                   config={currentConfig.subs.next}
                   updateConfig={putSubConfigUpdate}
                 />
-                <ScreenTranslateConfigurationType
+                <ScreenTranslateConfigurationFontWeight
                   config={currentConfig.subs.next}
                   updateConfig={putSubConfigUpdate}
                 />

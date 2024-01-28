@@ -4,7 +4,7 @@ import { ScreenTranslateConfigurationColor } from '../../+complect/translations/
 import { ScreenTranslateConfigurationFontFamily } from '../../+complect/translations/complect/FontFamily';
 import { ScreenTranslateConfigurationNameChanger } from '../../+complect/translations/complect/NameChanger';
 import { ScreenTranslateConfigurationTextAlign } from '../../+complect/translations/complect/TextAlign';
-import { ScreenTranslateConfigurationType } from '../../+complect/translations/complect/Type';
+import { ScreenTranslateConfigurationFontWeight } from '../../+complect/translations/complect/FontWeight';
 import { ExpandableContent } from '../../../../complect/expand/ExpandableContent';
 import { useActualRef } from '../../../../complect/useActualRef';
 import { useDebounceAction } from '../../../../complect/useDebounceAction';
@@ -34,7 +34,7 @@ export const BibleTranslateCurrentScreenConfigurations = ({ currentConfig }: Pro
         config={currentConfig}
         updateConfig={update}
       />
-      <ScreenTranslateConfigurationType
+      <ScreenTranslateConfigurationFontWeight
         config={currentConfig}
         updateConfig={update}
       />

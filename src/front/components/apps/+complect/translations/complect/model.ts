@@ -1,6 +1,6 @@
 import { BackgroundNameType } from '../../../../index/parts/actions/files/complect/BackgroundSelector';
 import { ScreenTranslateCurrentConfigTypeTextAlign } from './TextAlign';
-import { ScreenTranslateConfigTypeFontWeight } from './Type';
+import { ScreenTranslateConfigTypeFontWeight } from './FontWeight';
 
 export type ScreenTranslationPartialConfigProps<Config> = {
   config: Config;
