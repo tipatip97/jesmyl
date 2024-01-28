@@ -5,6 +5,7 @@ import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
 import useFullScreen from '../../../../complect/useFullscreen';
 import { RootState } from '../../../../shared/store';
 import di from '../Cm.store';
+import useCmNav from './useCmNav';
 
 const speedRollKfSelector = (state: RootState) => state.cm.speedRollKf;
 
@@ -14,12 +15,13 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isRolling, setIsRolling] = useState(false);
+  const { registerBackAction } = useCmNav();
 
   useEffect(() => {
     if (containerRef.current?.parentElement == null || !isRolling) return;
     const node = containerRef.current.parentElement;
     let rollTimeout: TimeOut;
-    let prevScrollTop = 0;
+    let prevScrollTop = -1;
     let countsToStop = 20;
 
     const roll = () => {
@@ -35,13 +37,16 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
 
     roll();
 
-    return () => clearTimeout(rollTimeout);
-  }, [isRolling, speedRollKf]);
+    const unregisterBackAction = registerBackAction(() => {
+      setIsRolling(false);
+      return isRolling;
+    });
 
-  const updateSpeedRollKf = (delta: 1 | -1 | 0) => {
-    if (delta && (delta < 0 ? speedRollKf <= 1 : speedRollKf >= 20)) return;
-    dispatch(di.speedRollKf(speedRollKf + delta));
-  };
+    return () => {
+      unregisterBackAction();
+      clearTimeout(rollTimeout);
+    };
+  }, [isRolling, registerBackAction, speedRollKf]);
 
   return (
     <RollContent
@@ -55,7 +60,8 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
           name="minus"
           onClick={event => {
             event.stopPropagation();
-            updateSpeedRollKf(-1);
+            if (speedRollKf <= 1) return;
+            dispatch(di.speedRollKf(speedRollKf - 1));
           }}
         />
         <div>{(speedRollKf / 10).toFixed(1)}</div>
@@ -63,7 +69,8 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
           name="plus"
           onClick={event => {
             event.stopPropagation();
-            updateSpeedRollKf(1);
+            if (speedRollKf >= 20) return;
+            dispatch(di.speedRollKf(speedRollKf + 1));
           }}
         />
       </div>
