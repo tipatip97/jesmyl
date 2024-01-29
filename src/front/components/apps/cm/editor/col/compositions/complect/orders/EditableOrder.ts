@@ -83,7 +83,7 @@ export class EditableOrder extends Order {
         } as Record<keyof Partial<IExportableOrder>, string>
       )[fieldn];
 
-      setExec(action, { value }, onSet);
+      setExec(action, { value: value ?? null }, onSet);
     }
 
     if (this.top.source) {

@@ -40,7 +40,9 @@ export default function ComRepeats() {
       const keys = Object.keys(repeats);
       if (repeats['.'] === 0) delete repeats['.'];
 
-      exec(ord.setField(coln, keys.length ? (keys.length === 1 && keys[0] === '.' ? repeats['.'] : repeats) : 0));
+      exec(
+        ord.setField(coln, (keys.length ? (keys.length === 1 && keys[0] === '.' ? repeats['.'] : repeats) : 0) ?? 0),
+      );
     },
     [exec],
   );

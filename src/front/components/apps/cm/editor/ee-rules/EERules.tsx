@@ -10,9 +10,13 @@ import { cmExer } from '../../Cm.store';
 import { eeStorage } from '../../base/ee-storage/EeStorage';
 import { useEditableCols } from '../col/useEditableCols';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
-import './EERules.scss';
 
 const radioTitles = ['И е и ё', 'Только е', 'Только ё'];
+const ruUaLettersReg = /[^а-яёіїєґ]+/gi;
+const yoLetterReg = /ё/g;
+const ruUpperLettersReg = /^[А-ЯЁ]/;
+const uaSpecLettersReg = /[іїєґ]/;
+const eLetterReg = /е/;
 
 export default function EERules() {
   const [pageSize, setPageSize] = useState(50);
@@ -54,11 +58,11 @@ export default function EERules() {
             className="margin-gap"
             onClick={() => {
               if (!cols) return;
-              const words: string[] = [];
+              const words = new Set<string>();
               setIsLoading(true);
 
               setTimeout(() => {
-                [
+                let text = [
                   store,
                   cols.cats.map(col => [col.name]),
                   cols.coms.map(col => [col.name, ...(col.texts ?? [])]),
@@ -67,23 +71,22 @@ export default function EERules() {
                   .flat()
                   .flat()
                   .flat()
-                  .forEach(text => {
-                    (isCheckBible ? text || '' : (text || '').toLowerCase())
-                      .replace(/[^а-яёіїєґ]/gi, ' ')
-                      .split(' ')
-                      .forEach(freeWord => {
-                        const word = freeWord.replace(/ё/g, 'е');
-                        if (
-                          (!isCheckBible || !/^[А-ЯЁ]/.test(word)) &&
-                          !/[іїєґ]/.exec(word) &&
-                          words.indexOf(word) < 0 &&
-                          /е/.exec(word)
-                        )
-                          words.push(word);
-                      });
+                  .join(' ');
+
+                (isCheckBible ? text : text.toLowerCase())
+                  .replace(ruUaLettersReg, ' ')
+                  .replace(yoLetterReg, 'е')
+                  .split(' ')
+                  .forEach(word => {
+                    if (
+                      (!isCheckBible || word.search(ruUpperLettersReg) < 0) &&
+                      word.search(uaSpecLettersReg) < 0 &&
+                      word.search(eLetterReg) > -1
+                    )
+                      words.add(word);
                   });
 
-                setWordList(words.sort());
+                setWordList(Array.from(words).sort());
                 setIsLoading(false);
               });
             }}
