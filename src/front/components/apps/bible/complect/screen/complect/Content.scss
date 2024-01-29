@@ -8,7 +8,7 @@
 
   textinbrackets {
     opacity: var(--textinbrackets-opacity, 1);
-    display: var(--textinbrackets-display, none);
+    display: var(--textinbrackets-display, initial);
     color: var(--textinbrackets-color, inherit);
     font-style: var(--textinbrackets-fontStyle, inherit);
   }
