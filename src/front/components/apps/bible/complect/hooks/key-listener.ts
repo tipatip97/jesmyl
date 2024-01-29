@@ -43,10 +43,8 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
         case 'F5':
         case 'Enter':
         case 'NumpadEnter':
-          if (event.ctrlKey) {
-            addToPlan(joinAddress ?? [currentBooki, currentChapteri, versei]);
-            syncSlide(false);
-          } else syncSlide();
+          if (event.ctrlKey) addToPlan(joinAddress ?? [currentBooki, currentChapteri, versei]);
+          else syncSlide();
           break;
       }
     }, win);
