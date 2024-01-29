@@ -46,7 +46,7 @@ export const BibleTranslationArchive = ({ title, list, onRemove }: Props) => {
             >
               <span className="color--7">{takeBibleAddressText(...item, 1)}</span>
               {' - '}
-              {takeBibleSlideText(...item, false)}
+              <span dangerouslySetInnerHTML={{ __html: takeBibleSlideText(...item, false) }} />
             </div>
           );
 
@@ -66,7 +66,7 @@ export const BibleTranslationArchive = ({ title, list, onRemove }: Props) => {
           >
             <span className="color--7">{takeBibleJoinedAddressText(item, 1)}</span>
             {' - '}
-            {takeBibleJoinedAddressSlideText(item, false)}
+            <span dangerouslySetInnerHTML={{ __html: takeBibleJoinedAddressSlideText(item, false) }} />
           </div>
         );
       })}

@@ -8,6 +8,7 @@ import { useBibleCurrentSlideText } from '../../../hooks/texts';
 import { useBibleScreenTranslationConfig } from '../../hooks/configs';
 import { useBibleScreenTranslationFontSizeScreenAdapter } from '../../hooks/font-size-adapter/screen-adapter';
 import { useGetBibleScreenTranslationScreenStyle } from '../../hooks/styles/screen-style';
+import './Content.scss';
 
 interface Props {
   screeni: number | und;
@@ -26,8 +27,8 @@ export const BibleTranslationScreenContent = (props: Props) => {
 
   const screenPreviewContent = useBibleCurrentSlideText();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const addressFullContent = useMemo(() => screenPreviewContent, [fullContentUpdatesNum]);
-  const screenContent = props.isPreview ? screenPreviewContent : addressFullContent;
+  const screenActualContent = useMemo(() => screenPreviewContent, [fullContentUpdatesNum]);
+  const screenContent = props.isPreview ? screenPreviewContent : screenActualContent;
 
   const [screenWrapperRef, screenContentRef] = useBibleScreenTranslationFontSizeScreenAdapter(
     screenContent,
@@ -38,11 +39,14 @@ export const BibleTranslationScreenContent = (props: Props) => {
   return (
     <>
       <div
-        className="absolute flex center"
+        className={'bible-translation-screen-content absolute flex center'}
         style={screenStyle}
         ref={screenWrapperRef}
       >
-        <div ref={screenContentRef}>{screenContent}</div>
+        <div
+          ref={screenContentRef}
+          dangerouslySetInnerHTML={{ __html: screenContent }}
+        />
       </div>
     </>
   );

@@ -16,9 +16,8 @@ export const BibleVerseFace = memo(({ versei, verse }: Props) => {
       className="bible-list-face"
       onClick={putSetVerse(versei, false)}
       onDoubleClick={putSetVerse(versei, true)}
-    >
-      {versei + 1}. {verse}
-    </Face>
+      dangerouslySetInnerHTML={{ __html: `${versei + 1}. ${verse}` }}
+    />
   );
 });
 
@@ -31,9 +30,8 @@ export const BibleVerseFaceWithCtrlKey = memo(({ versei, verse }: Props) => {
       className="bible-list-face"
       onClick={putSetVerse(versei, false)}
       onDoubleClick={putSetVerse(versei, true)}
-    >
-      {versei + 1}. {verse}
-    </Face>
+      dangerouslySetInnerHTML={{ __html: `${versei + 1}. ${verse}` }}
+    />
   );
 });
 

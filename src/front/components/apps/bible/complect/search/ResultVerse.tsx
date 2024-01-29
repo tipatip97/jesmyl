@@ -26,14 +26,13 @@ export const BibleSearchResultVerse = memo(({ booki, chapteri, versei, splitReg,
         {books[booki].titles[1]} {chapteri + 1} {versei + 1}
       </span>
       <span>
-        {textBits.map((bit, biti) => {
+        {textBits.map((__html, biti) => {
           return (
             <span
               key={biti}
               className={biti % 2 ? 'color--7' : undefined}
-            >
-              {bit}
-            </span>
+              dangerouslySetInnerHTML={{ __html }}
+            />
           );
         })}
       </span>

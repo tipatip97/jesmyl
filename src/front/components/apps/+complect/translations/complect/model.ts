@@ -1,6 +1,8 @@
 import { BackgroundNameType } from '../../../../index/parts/actions/files/complect/BackgroundSelector';
-import { ScreenTranslateCurrentConfigTypeTextAlign } from './TextAlign';
+import { ScreenTranslateConfigTypeDisplay } from './Display';
+import { ScreenTranslateCurrentConfigTypeFontStyle } from './FontStyle';
 import { ScreenTranslateConfigTypeFontWeight } from './FontWeight';
+import { ScreenTranslateCurrentConfigTypeTextAlign } from './TextAlign';
 
 export type ScreenTranslationPartialConfigProps<Config> = {
   config: Config;
@@ -15,10 +17,16 @@ export interface ScreenTranslationBackgroundConfigs {
   backgroundColor: string;
 }
 
-export interface ScreenTranslationTextConfig {
+export interface ScreenTranslationSimpleTextConfig {
+  color: string;
+  display?: ScreenTranslateConfigTypeDisplay;
+  opacity?: number;
+  fontStyle?: ScreenTranslateCurrentConfigTypeFontStyle;
+}
+
+export interface ScreenTranslationTextConfig extends ScreenTranslationSimpleTextConfig {
   fontFamily?: string;
   fontWeight: ScreenTranslateConfigTypeFontWeight;
-  color: string;
   textAlign: ScreenTranslateCurrentConfigTypeTextAlign;
 }
 

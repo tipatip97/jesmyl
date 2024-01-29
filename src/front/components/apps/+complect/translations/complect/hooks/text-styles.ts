@@ -11,7 +11,8 @@ export const useScreenTranslationTextStyles = (config: ScreenTranslationTextConf
     return {
       fontWeight: theConfig.fontWeight,
       textAlign: theConfig.textAlign,
+      fontStyle: theConfig.fontStyle,
       fontFamily: theConfig.fontFamily === undefined ? fontFamily : `'${theConfig.fontFamily}'`,
     };
-  }, [theConfig.fontFamily, theConfig.fontWeight, theConfig.textAlign]);
+  }, [theConfig.fontFamily, theConfig.fontStyle, theConfig.fontWeight, theConfig.textAlign]);
 };

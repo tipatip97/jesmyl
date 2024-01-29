@@ -14,6 +14,14 @@ import { BibleTranslationScreenConfig } from '../model';
 const defaultConfig: BibleTranslationScreenConfig = {
   ...defaultScreenTranslationTextConfig,
   ...defaultScreenTranslationBackgroundConfig,
+  insertedtext: {
+    color: '#ffffff',
+    opacity: 0.7,
+  },
+  textinbrackets: {
+    color: '#ffffff',
+    display: 'none',
+  },
   addressPanel: {
     height: 20,
     left: 0,

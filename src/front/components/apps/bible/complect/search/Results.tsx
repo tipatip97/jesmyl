@@ -4,6 +4,7 @@ import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/addres
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleCurrentWholeLowerCaseChapterBookList } from '../../hooks/texts';
+import { BibleTranslationSingleAddress } from '../../model';
 import { BibleSearchResultVerse } from './ResultVerse';
 import {
   useBibleTranslationSearchResultList,
@@ -11,7 +12,6 @@ import {
   useBibleTranslationSearchResultSelected,
 } from './hooks/results';
 import { useBibleSearchTerm, useBibleSearchZone } from './selectors';
-import { BibleTranslationSingleAddress } from '../../model';
 
 interface Props {
   inputRef: React.RefObject<HTMLInputElement>;
