@@ -24,6 +24,7 @@ export class TgLogger {
     authorizations: 1061,
     codeRequest: 841,
     jsonCode: 871,
+    test: 1453,
   };
 
   constructor(bot: JesmylTelegramBot) {
@@ -49,6 +50,10 @@ export class TgLogger {
 
   log(text: string) {
     this.bot.postMessage(text, this.replyToScope('log'));
+  }
+
+  test(text: string) {
+    this.bot.postMessage(text, this.replyToScope('test'));
   }
 
   authorizations(text: string) {
