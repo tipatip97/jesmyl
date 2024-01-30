@@ -98,6 +98,7 @@ export default function StrongInputDateTimeExtracter(
 
       if (isTakeDay || isTakeMonth) {
         const txt = takeInPeriod(takeNextDigit(), '12', 1);
+        date.setDate(1);
         date.setMonth(+txt.trim() - 1);
         dateString = txt + dateString;
       }
