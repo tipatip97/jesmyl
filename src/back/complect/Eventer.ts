@@ -1,15 +1,17 @@
-export interface EventerCallbackEvent<Value> {
+export interface EventerCallbackEvent<Value, StopValue> {
   value: Value;
-  stopPropagation: (stopValue?: any) => void;
-  stoppedValue?: any;
+  stopPropagation: (stopValue?: StopValue) => void;
+  stoppedValue?: StopValue;
   preventDefault: () => void;
   preventedDefault: boolean;
   mute: () => void;
   passValue?: any;
 }
 
-export type EventerCallback<Value, Return = void> = (event: EventerCallbackEvent<Value>) => Return;
-export type EventerListeners<Value, Return = void> = EventerCallback<Value, Return>[];
+export type EventerCallback<Value, Return = void, StopValue = any> = (
+  event: EventerCallbackEvent<Value, StopValue>,
+) => Return;
+export type EventerListeners<Value, Return = void, StopValue = any> = EventerCallback<Value, Return, StopValue>[];
 
 export type EventerValueCallback<Value, Return = void> = (value: Value) => Return;
 export type EventerValueListeners<Value, Return = void> = EventerValueCallback<Value, Return>[];
@@ -19,9 +21,10 @@ export default class Eventer {
     Lis extends EventerListeners<any, Return>,
     Value extends Lis extends EventerListeners<infer E, Return> ? E : never,
     Return,
+    StopValue extends Lis extends EventerListeners<Value, Return, infer E> ? E : never,
   >(
     listeners: Lis,
-    cb: EventerCallback<Value, Return>,
+    cb: EventerCallback<Value, Return, StopValue>,
     invokeInitValue?: Value,
   ) => {
     if (invokeInitValue !== undefined)
@@ -54,13 +57,14 @@ export default class Eventer {
     Lis extends EventerListeners<any, Return>,
     Value extends Lis extends EventerListeners<infer E, Return> ? E : never,
     Return,
+    StopValue extends Lis extends EventerListeners<Value, Return, infer E> ? E : never,
   >(
     listeners: Lis,
     value: Value,
     onEachInvoke?: (ret: Return) => void,
   ) => {
     let i = listeners.length - 1;
-    const event: EventerCallbackEvent<Value> = {
+    const event: EventerCallbackEvent<Value, StopValue> = {
       value,
       mute: () => {
         listeners.splice(i, 1);
