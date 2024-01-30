@@ -1,6 +1,6 @@
 import EvaButton from '../../eva-icon/EvaButton';
 import EvaIcon from '../../eva-icon/EvaIcon';
-import useIsExpand from '../../expand/useIsExpand';
+import { ExpandableContent } from '../../expand/ExpandableContent';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
@@ -28,38 +28,6 @@ export function ScheduleWidgetListCategory({
   const catScope = scope + catScopePostfix;
   const title = <>{cat.title || <span className="text-italic">Список</span>}</>;
   const shortTitles: [string, string] = [cutTitle(cat.titles[0]), cutTitle(cat.titles[1])];
-  const [catTitle, isExpand] = useIsExpand(
-    false,
-    <>
-      <EvaIcon name={cat.icon} /> {title}
-    </>,
-    rights.isCanRedact
-      ? isExpand =>
-          isExpand &&
-          rights.isCanTotalRedact && (
-            <div className="flex flex-gap">
-              <div className="ellipsis max-width:5em">{cat.title.toLowerCase()}</div>
-              {!rights.schedule.lists?.units.some(unit => !unit.title) && (
-                <StrongEvaButton
-                  scope={scope}
-                  fieldName="units"
-                  name="plus"
-                  mapExecArgs={args => {
-                    return {
-                      ...args,
-                      cati,
-                    };
-                  }}
-                />
-              )}
-              <EvaButton
-                name="edit-outline"
-                onClick={screen}
-              />
-            </div>
-          )
-      : null,
-  );
 
   const [modalNode, screen] = useModal(({ header, body }) => {
     return (
@@ -104,26 +72,60 @@ export function ScheduleWidgetListCategory({
   return (
     <>
       {modalNode}
-      <div className="full-width">{catTitle}</div>
-      <div className="margin-big-gap-h">
-        {isExpand &&
-          rights.schedule.lists?.units.map(unit => {
-            if (unit.cat !== cati) return null;
-
-            return (
-              <ScheduleWidgetListUnit
-                key={unit.mi}
-                cat={cat}
-                cati={cati}
-                scheduleScope={scheduleScope}
-                scope={scope}
-                unit={unit}
-                catScopePostfix={catScopePostfix}
-                shortTitles={shortTitles}
+      <ExpandableContent
+        title={
+          <>
+            <EvaIcon name={cat.icon} /> {title}
+          </>
+        }
+        postfix={isExpand =>
+          isExpand &&
+          rights.isCanTotalRedact && (
+            <div className="flex flex-gap">
+              <div className="ellipsis max-width:5em">{cat.title.toLowerCase()}</div>
+              {!rights.schedule.lists?.units.some(unit => !unit.title) && (
+                <StrongEvaButton
+                  scope={scope}
+                  fieldName="units"
+                  name="plus"
+                  mapExecArgs={args => {
+                    return {
+                      ...args,
+                      cati,
+                    };
+                  }}
+                />
+              )}
+              <EvaButton
+                name="edit-outline"
+                onClick={screen}
               />
-            );
-          })}
-      </div>
+            </div>
+          )
+        }
+      >
+        {isExpand => (
+          <div className="margin-big-gap-h">
+            {isExpand &&
+              rights.schedule.lists?.units.map(unit => {
+                if (unit.cat !== cati) return null;
+
+                return (
+                  <ScheduleWidgetListUnit
+                    key={unit.mi}
+                    cat={cat}
+                    cati={cati}
+                    scheduleScope={scheduleScope}
+                    scope={scope}
+                    unit={unit}
+                    catScopePostfix={catScopePostfix}
+                    shortTitles={shortTitles}
+                  />
+                );
+              })}
+          </div>
+        )}
+      </ExpandableContent>
     </>
   );
 }
