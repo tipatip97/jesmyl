@@ -88,7 +88,7 @@ export const startTgGamerListener = () => {
   ]);
 
   jesmylTgBot.listenPersonalQueries(async event => {
-    const send = async (): Promise<string> => {
+    const send = async (): Promise<string | und> => {
       if (event.value.data === undefined || event.value.message === undefined) return 'Неизвестные данные';
 
       const auth = await SokiAuther.getTgAuth(event.value.from.id);
@@ -150,11 +150,11 @@ export const startTgGamerListener = () => {
         if (aliasAlert !== false) return aliasAlert === true ? '' : aliasAlert;
       }
 
-      return 'Неизвестное действие';
+      return undefined;
     };
 
     const sentAnswer = await send();
-    event.stopPropagation(sentAnswer);
+    if (sentAnswer !== undefined) event.stopPropagation(sentAnswer);
   });
 
   jesmylTgBot.listenPersonalMessages(event => {
