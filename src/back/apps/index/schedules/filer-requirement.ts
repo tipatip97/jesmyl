@@ -239,7 +239,7 @@ export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage<string>> 
           types: emptyArray,
           dsc: '',
           topic: '',
-          tgAlertsTime: 0,
+          tgInformTime: 0,
           ctrl: {
             cats: emptyArray,
             roles: emptyArray,

@@ -1,7 +1,7 @@
 import { ActionBox, ActionBoxOnFinalCallback, ActionBoxValue } from '../../../models';
 import { IScheduleWidget } from '../models/ScheduleWidget.model';
 import { ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetUserRights } from '../rights';
-import { indexScheduleSetMessageAlert } from './tg-bot-alerts/tg-alerts';
+import { indexScheduleSetMessageAlert } from './tg-bot-inform/tg-inform';
 
 const emptyArray: [] = [];
 
@@ -25,7 +25,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
   days: emptyArray,
   tatts: emptyArray,
   types: emptyArray,
-  tgAlertsTime: 5,
+  tgInformTime: 5,
   start: () => {
     const date = new Date();
     date.setMonth(date.getMonth() + 1);
@@ -108,7 +108,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             value: '#Number',
           },
         },
-        setEachInParent: { 'days.list': { tgAlert: 1 } },
+        setEachInParent: { 'days.list': { tgInform: 1 } },
         onSuccess: onTgInformingChangeSuccess,
       },
       '/{key}': {
@@ -129,7 +129,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
           },
         },
       },
-      '/tgAlerts': {
+      '/tgInform': {
         U: {
           args: {
             value: '#Num',
@@ -137,7 +137,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
         },
         onSuccess: onTgInformingChangeSuccess,
       },
-      '/tgAlertsTime': {
+      '/tgInformTime': {
         U: {
           args: {
             value: '#Number',
@@ -217,31 +217,28 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                 },
               },
             },
-            '<setUserTgAlerts action>': {
-              action: 'setUserTgAlerts',
+            '<setUserTgInform action>': {
+              action: 'setUserTgInform',
               method: 'set_all',
               value: {
-                tgAlerts: '{value}',
-                tgId: '{*tgId}',
+                tgInform: '{value}',
               },
               args: {
                 value: '#Num',
               },
-              onSuccess: onTgInformingChangeSuccess,
             },
             '<tg alerts>': {
-              scopeNode: 'tgAlerts',
+              scopeNode: 'tgInform',
               U: {
                 method: 'set_all',
                 value: {
-                  tgAlerts: '{value}',
+                  tgInform: '{value}',
                   tgId: '{*tgId}',
                 },
                 args: {
                   value: '#Num',
                 },
               },
-              onSuccess: onTgInformingChangeSuccess,
             },
             '/fio': {
               U: {
@@ -488,13 +485,12 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               args: {
                 eventMi: '#Number',
               },
-              '/tgAlert': {
-                action: 'setEventIsNeedTgAlert',
+              '/tgInform': {
+                action: 'setEventIsNeedTgInform',
                 method: 'set',
                 args: {
                   value: [1, 0],
                 },
-                onSuccess: onTgInformingChangeSuccess,
               },
               '/{key}': {
                 scopeNode: 'field',
@@ -516,7 +512,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                 scopeNode: 'techField',
                 U: {
                   args: {
-                    key: ['tm', 'type', 'tgAlert'],
+                    key: ['tm', 'type', 'tgInform'],
                   },
                 },
                 onSuccess: onTgInformingChangeSuccess,

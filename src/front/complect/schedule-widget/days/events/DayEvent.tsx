@@ -18,7 +18,7 @@ import ScheduleWidgetDayEventRating from './DayEventRating';
 const msInMin = mylib.howMs.inMin;
 
 const mapExecTmArgs = (args: {}) => ({ ...args, techKey: 'tm' });
-const mapExecTgAlertArgs = (args: {}) => ({ ...args, techKey: 'tgAlert' });
+const mapExecTgInformArgs = (args: {}) => ({ ...args, techKey: 'tgInform' });
 
 export default function ScheduleWidgetDayEvent(props: {
   scope: string;
@@ -160,7 +160,7 @@ export default function ScheduleWidgetDayEvent(props: {
                   confirm={`Событие ${box.title} ${props.event.secret ? 'больше не секретное' : 'будет секретным'}?`}
                   postfix="Секретное событие"
                 />
-                {props.event.tgAlert === 0 || isPastEvent || isCurrentEvent ? (
+                {props.event.tgInform === 0 || isPastEvent || isCurrentEvent ? (
                   <StrongEvaButton
                     scope={selfScope}
                     fieldName="techField"
@@ -169,7 +169,7 @@ export default function ScheduleWidgetDayEvent(props: {
                     disabled={isPastEvent || isCurrentEvent}
                     name="bell-off-outline"
                     postfix="TG-Напоминания не будет"
-                    mapExecArgs={mapExecTgAlertArgs}
+                    mapExecArgs={mapExecTgInformArgs}
                   />
                 ) : (
                   <StrongEvaButton
@@ -180,7 +180,7 @@ export default function ScheduleWidgetDayEvent(props: {
                     disabled={isPastEvent || isCurrentEvent}
                     name="bell-outline"
                     postfix="TG-Напоминание будет"
-                    mapExecArgs={mapExecTgAlertArgs}
+                    mapExecArgs={mapExecTgInformArgs}
                   />
                 )}
                 <StrongEditableField

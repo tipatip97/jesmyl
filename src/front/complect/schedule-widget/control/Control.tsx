@@ -10,7 +10,7 @@ import { ScheduleWidgetUserByLinkInvite } from './users/ByLinkInvite';
 import { ScheduleWidgetUserByQrRedactor } from './users/ByQrRedactor';
 import ScheduleWidgetUserList from './users/UserList';
 
-const tgAlertTimesItems = [
+const tgInformTimesItems = [
   { title: 'Напоминать только по началу', id: 0 },
   ...[5, 10, 15, 30].map(time => ({ title: 'Напоминать TG за ' + time + ' мин.', id: time })),
 ];
@@ -54,11 +54,11 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                   confirm={`Сделать первый день ${rights.schedule.withTech ? 'обычным' : 'подготовительным'}?`}
                   className="margin-gap-b"
                 />
-                {rights.schedule.tgAlerts === 0 ? (
+                {rights.schedule.tgInform === 0 ? (
                   <StrongEvaButton
                     scope={scope}
                     cud="U"
-                    fieldName="tgAlerts"
+                    fieldName="tgInform"
                     fieldValue={1}
                     name="bell-off-outline"
                     postfix="TG-Напоминание: отключено"
@@ -68,12 +68,12 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                   <StrongEvaButton
                     scope={scope}
                     cud="U"
-                    fieldName="tgAlerts"
+                    fieldName="tgInform"
                     fieldValue={0}
                     name="bell-outline"
                     postfix={
-                      rights.schedule.tgAlertsTime
-                        ? 'TG-Напоминание: за ' + rights.schedule.tgAlertsTime + ' мин. и в начале события'
+                      rights.schedule.tgInformTime
+                        ? 'TG-Напоминание: за ' + rights.schedule.tgInformTime + ' мин. и в начале события'
                         : 'TG-Напоминание: только по началу события'
                     }
                     className="margin-gap-b"
@@ -82,10 +82,10 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                 <StrongDropdown
                   scope={scope}
                   cud="U"
-                  fieldName="tgAlertsTime"
-                  items={tgAlertTimesItems}
-                  disabled={rights.schedule.tgAlerts === 0}
-                  id={rights.schedule.tgAlertsTime}
+                  fieldName="tgInform"
+                  items={tgInformTimesItems}
+                  disabled={rights.schedule.tgInform === 0}
+                  id={rights.schedule.tgInformTime}
                   className="margin-big-gap-b"
                 />
               </>

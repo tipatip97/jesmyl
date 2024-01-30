@@ -21,7 +21,7 @@ import ScheduleWidgetEventList from './events/EventList';
 import ScheduleWidgetContextWrapper from './general/ContextWrapper';
 import { ScheduleWidgetCopy } from './general/Copy';
 import ScheduleWidgetLists from './lists/Lists';
-import { ScheduleWidgetMyUserTgAlerts } from './tg-alerts/UserTgAlerts';
+import { ScheduleWidgetMyUserTgInform } from './tg-inform/UserTgInform';
 import {
   ScheduleWidgetRights,
   initialScheduleScope,
@@ -213,7 +213,7 @@ export default function ScheduleWidget({
                     </>
                   )}
 
-                  <ScheduleWidgetMyUserTgAlerts
+                  <ScheduleWidgetMyUserTgInform
                     scope={selfScope}
                     schedule={schedule}
                   />
