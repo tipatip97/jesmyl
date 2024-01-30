@@ -1,6 +1,7 @@
-import TgBot, { BotCommand, CallbackQuery, InlineKeyboardButton } from 'node-telegram-bot-api';
+import TgBot, { BotCommand, CallbackQuery, InlineKeyboardButton, User } from 'node-telegram-bot-api';
 import Eventer, { EventerCallback, EventerListeners } from '../../complect/Eventer';
 import smylib from '../../shared/SMyLib';
+import { TgLogger } from './log/log-bot';
 import { JesmylTelegramBot } from './tg-bot';
 
 export type FreeAnswerCallbackQueryOptions = Omit<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
@@ -31,7 +32,8 @@ export class JesmylTelegramBotWrapper {
   private chatCallbackQueryCallbacks: Record<string, JTgBotCallbackQueryWithoutBot> = {};
   private chatMessagesCallbacks: Record<string, JTgBotChatMessageCallbackWithoutBot> = {};
   private personalMessageListeners: EventerListeners<TgBot.Message> = [];
-  private personalQueryListeners: EventerListeners<TgBot.CallbackQuery> = [];
+  private personalQueryListeners: EventerListeners<TgBot.CallbackQuery, void, string | FreeAnswerCallbackQueryOptions> =
+    [];
 
   constructor(token: string, options?: TgBot.ConstructorOptions) {
     this.bot = new TgBot(token, options);
@@ -73,8 +75,30 @@ export class JesmylTelegramBotWrapper {
 
       if (this.personalQueryListeners.length > 0 && query.from.id === query.message?.chat.id) {
         const event = await Eventer.invoke(this.personalQueryListeners, query);
-        if (smylib.isStr(event.stoppedValue)) callback(event.stoppedValue);
+        if (event.stoppedValue !== undefined && (smylib.isStr(event.stoppedValue) || event.stoppedValue.text))
+          callback(event.stoppedValue);
       }
+    });
+  }
+
+  sendMessage(userOrId: User | number, text: string, logger: TgLogger, options?: TgBot.SendMessageOptions | null) {
+    return new Promise<{ ok: false; value: string } | { ok: true; value: TgBot.Message }>(res => {
+      this.bot
+        .sendMessage(smylib.isNum(userOrId) ? userOrId : userOrId.id, text, {
+          parse_mode: 'HTML',
+          ...options,
+        })
+        .then(message => res({ ok: true, value: message }))
+        .catch(() => {
+          logger.error(
+            `Попытка отправки сообщения неизвестному пользователю\n\n<code>${JSON.stringify(
+              userOrId,
+              null,
+              1,
+            )}</code>\n\n${text}`,
+          );
+          res({ ok: false, value: 'Бот @jesmylbot не запущен' });
+        });
     });
   }
 
@@ -82,7 +106,7 @@ export class JesmylTelegramBotWrapper {
     return Eventer.listen(this.personalMessageListeners, cb);
   };
 
-  listenPersonalQueries = (cb: EventerCallback<TgBot.CallbackQuery>) => {
+  listenPersonalQueries = (cb: EventerCallback<TgBot.CallbackQuery, void, string | FreeAnswerCallbackQueryOptions>) => {
     return Eventer.listen(this.personalQueryListeners, cb);
   };
 

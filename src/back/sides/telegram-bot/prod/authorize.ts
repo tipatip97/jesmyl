@@ -1,6 +1,8 @@
 import { CallbackQuery, ChatMember, SendMessageOptions } from 'node-telegram-bot-api';
 import smylib from '../../../shared/SMyLib';
+import { jesmylTgBot } from '../bot';
 import { JTgBotCallbackQuery } from '../tg-bot-wrapper';
+import { tglogger } from '../log/log-bot';
 
 export const supportTelegramAuthorizations: Record<number, () => CallbackQuery> = {};
 const telegramAuthorizationUsers: Record<number, number> = {};
@@ -23,7 +25,7 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
   const id = query.from.id;
 
   const sendMessage = async (text: string, options?: SendMessageOptions) => {
-    const res = await prodBot.sendMessage(query.from, text, options);
+    const res = await jesmylTgBot.sendMessage(query.from, text, tglogger, options);
     if (!res.ok) answer({ text: res.value });
     return res;
   };

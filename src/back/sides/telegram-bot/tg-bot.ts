@@ -3,7 +3,6 @@ import TgBot, {
   InlineKeyboardButton,
   InlineKeyboardMarkup,
   SendMessageOptions,
-  User,
 } from 'node-telegram-bot-api';
 import smylib from '../../shared/SMyLib';
 import { TgLogger } from './log/log-bot';
@@ -148,25 +147,4 @@ export class JesmylTelegramBot {
   messageCase = (prefix: `/${string}`, text: string) => {
     return prefix === text || `${prefix}@${botName}` === text;
   };
-
-  sendMessage(userOrId: User | number, text: string, options?: TgBot.SendMessageOptions) {
-    return new Promise<{ ok: false; value: string } | { ok: true; value: TgBot.Message }>(res => {
-      this._bot.bot
-        .sendMessage(smylib.isNum(userOrId) ? userOrId : userOrId.id, text, {
-          parse_mode: 'HTML',
-          ...options,
-        })
-        .then(message => res({ ok: true, value: message }))
-        .catch(() => {
-          this.logger.error(
-            `Попытка отправки сообщения неизвестному пользователю\n\n<code>${JSON.stringify(
-              userOrId,
-              null,
-              1,
-            )}</code>\n\n${text}`,
-          );
-          res({ ok: false, value: 'Бот @jesmylbot не запущен' });
-        });
-    });
-  }
 }
