@@ -109,6 +109,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
           },
         },
         setEachInParent: { 'days.list': { tgAlert: 1 } },
+        onSuccess: onTgInformingChangeSuccess,
       },
       '/{key}': {
         scopeNode: 'field',
@@ -215,6 +216,18 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                   login: '{login}',
                 },
               },
+            },
+            '<setUserTgAlerts action>': {
+              action: 'setUserTgAlerts',
+              method: 'set_all',
+              value: {
+                tgAlerts: '{value}',
+                tgId: '{*tgId}',
+              },
+              args: {
+                value: '#Num',
+              },
+              onSuccess: onTgInformingChangeSuccess,
             },
             '<tg alerts>': {
               scopeNode: 'tgAlerts',
