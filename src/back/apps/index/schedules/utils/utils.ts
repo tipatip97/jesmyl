@@ -1,5 +1,6 @@
 import smylib from '../../../../shared/SMyLib';
 import { IScheduleWidget, IScheduleWidgetDay } from '../../models/ScheduleWidget.model';
+import ScheduleWidgetCleans from './Cleans';
 
 export const indexScheduleGetDayStartMs = (schedule: IScheduleWidget<string>, dayi: number) => {
   return schedule.start + smylib.howMs.inDay * dayi - (schedule.withTech ? smylib.howMs.inDay : 0);
@@ -17,7 +18,7 @@ export const indexScheduleGetDayEventTimes = (
 
   const times: number[] = [];
   for (const event of day.list)
-    times.push((event.tm || schedule.types[event.type]?.tm || 0) + (times[times.length - 1] || 0));
+    times.push(ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]) + (times[times.length - 1] ?? 0));
 
   return times;
 };
