@@ -1,9 +1,9 @@
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../shared/store';
-import { useCallback } from 'react';
 import { bibleStoreActions } from '../Bible.store';
-import { useBibleTranslationJoinAddress } from './address/address';
 import { useBibleTranslationAddToHistory } from '../complect/archive/history/hooks/history';
+import { useBibleTranslationJoinAddress } from './address/address';
 import { useBibleAddressBooki } from './address/books';
 import { useBibleAddressChapteri } from './address/chapters';
 import { useBibleAddressVersei } from './address/verses';
@@ -21,10 +21,10 @@ export const useBibleTranslationSlideSyncContentSetter = () => {
   const addToHistory = useBibleTranslationAddToHistory();
 
   return useCallback(
-    (isAddToHistory = true, isReplaceFirstNearVersei = false) => {
+    (isReplaceFirstNearVersei = false) => {
       dispatch(bibleStoreActions.translationSlideSyncContentUpdatesNum());
-      if (isAddToHistory)
-        addToHistory(currentJoinAddress ?? [currentBooki, currentChapteri, currentVersei], isReplaceFirstNearVersei);
+
+      addToHistory(currentJoinAddress ?? [currentBooki, currentChapteri, currentVersei], isReplaceFirstNearVersei);
     },
     [addToHistory, currentBooki, currentChapteri, currentJoinAddress, currentVersei, dispatch],
   );

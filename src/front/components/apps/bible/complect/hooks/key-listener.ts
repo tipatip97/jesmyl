@@ -85,11 +85,11 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
       switch (event.code) {
         case 'ArrowLeft':
           limitStepJump(-1);
-          syncSlide(true, true);
+          syncSlide(true);
           break;
         case 'ArrowRight':
           limitStepJump(1);
-          syncSlide(true, true);
+          syncSlide(true);
           break;
         case 'ArrowUp':
           limitStepJump(-1);
