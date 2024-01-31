@@ -1,9 +1,9 @@
 import { FilerAppRequirement } from '../../../complect/filer/Filer.model';
 import { ScheduleStorage } from '../models/ScheduleWidget.model';
-import { indexScheduleSetMessageAlert } from './tg-bot-inform/tg-inform';
+import { indexScheduleSetMessageInform } from './tg-bot-inform/tg-inform';
 
 export const indexSchedulesConfigOnInit: FilerAppRequirement<ScheduleStorage<string>> = {
   onInit: schedules => {
-    schedules.list.forEach(sch => indexScheduleSetMessageAlert(sch));
+    schedules.list.forEach(sch => indexScheduleSetMessageInform(sch));
   },
 };

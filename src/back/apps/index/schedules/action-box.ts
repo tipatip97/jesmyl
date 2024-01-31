@@ -1,12 +1,12 @@
 import { ActionBox, ActionBoxOnFinalCallback, ActionBoxValue } from '../../../models';
 import { IScheduleWidget } from '../models/ScheduleWidget.model';
 import { ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetUserRights } from '../rights';
-import { indexScheduleSetMessageAlert } from './tg-bot-inform/tg-inform';
+import { indexScheduleSetMessageInform } from './tg-bot-inform/tg-inform';
 
 const emptyArray: [] = [];
 
 const onTgInformingChangeSuccess: ActionBoxOnFinalCallback = (props, _value, auth) => {
-  if (props !== null) indexScheduleSetMessageAlert(props.schw, auth, props.dayi);
+  if (props !== null) indexScheduleSetMessageInform(props.schw, auth, props.dayi);
 };
 
 const addUserValue = {
@@ -441,6 +441,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
           },
           '/wup': {
             U: {},
+            setEachInParent: { list: { tgInform: 1 } },
             onSuccess: onTgInformingChangeSuccess,
           },
           '/{key}': {

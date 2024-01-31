@@ -1,4 +1,5 @@
 import nodeSchedule from 'node-schedule';
+import { SendMessageOptions } from 'node-telegram-bot-api';
 import { filer } from '../../../../complect/filer/Filer';
 import { SokiAuther } from '../../../../complect/soki/SokiAuther';
 import sokiServer from '../../../../complect/soki/SokiServer';
@@ -28,7 +29,10 @@ const findUserAdminFunc = (user: IScheduleWidgetUser) =>
 const unsubscribeQueryDataNamePrefix = 'sch-wdgt-unsub:';
 const subscribeQueryDataNamePrefix = 'sch-wdgt-sub:';
 
-export const indexScheduleSetMessageAlert = (
+const putInTgTag = (tag: '' | 'b' | 'i' | 'u' | 's' | 'tg-spoiler' | 'code' | 'pre', text: string) =>
+  tag === '' ? text : `<${tag}>${text}</${tag}>`;
+
+export const indexScheduleSetMessageInform = (
   scheduleScalar: number | IScheduleWidget<string>,
   invokerAuth?: LocalSokiAuth | null,
   invokeDayi?: number,
@@ -49,7 +53,7 @@ export const indexScheduleSetMessageAlert = (
 
   const now = Date.now();
   const daysLen = schedule.days.length;
-  const alertBeforeTime = schedule.tgInformTime;
+  const informBeforeTime = schedule.tgInformTime;
 
   dayLoop: for (let dayi = 0; dayi < daysLen; dayi++) {
     const day = schedule.days[dayi];
@@ -69,40 +73,58 @@ export const indexScheduleSetMessageAlert = (
 
       const minutesRemaning = (eventStartMs - now) / smylib.howMs.inMin;
       const time =
-        event.tgInform !== 0 && alertBeforeTime > 0
-          ? minutesRemaning > alertBeforeTime
-            ? now + (minutesRemaning - alertBeforeTime) * smylib.howMs.inMin + 100
+        event.tgInform !== 0 && informBeforeTime > 0
+          ? minutesRemaning > informBeforeTime
+            ? now + (minutesRemaning - informBeforeTime) * smylib.howMs.inMin + 100
             : minutesRemaning > 0.3
               ? now + 100
               : eventStartMs
           : eventStartMs;
 
       jobs[schedule.w] = nodeSchedule.scheduleJob(time, () => {
-        for (const user of schedule.ctrl.users) {
-          if (user.tgId === undefined || user.tgInform === 0) continue;
-          const isAlertNow = event.tgInform !== 0;
-          const eventTitle = schedule.types[event.type].title;
-          const text =
-            (isAlertNow ? 'Через ' + Math.ceil((eventStartMs - Date.now()) / smylib.howMs.inMin) + ' м. ' : '') +
-            '<b>' +
-            eventTitle +
-            '</b>' +
-            (event.topic ? ': ' + event.topic : '') +
-            (!isAlertNow && event.dsc ? '\n\n' + event.dsc : '') +
-            ('\n\n<i>' + schedule.title + '</i>');
+        const timeToEvent = Math.ceil((eventStartMs - Date.now()) / smylib.howMs.inMin);
+        const isWithDelay = event.tgInform !== 0 && timeToEvent > 0;
 
-          jesmylTgBot.sendMessage(user.tgId, text, tglogger, {
-            reply_markup: {
-              inline_keyboard: [
-                [
-                  {
-                    text: 'Отписаться от ' + schedule.title,
-                    callback_data: unsubscribeQueryDataNamePrefix + schedule.w,
-                  },
-                ],
+        const message =
+          (isWithDelay
+            ? 'Через ' + timeToEvent + smylib.declension(timeToEvent, ' минуту ', ' минуты ', ' минут ')
+            : '') +
+          (isWithDelay
+            ? putInTgTag('b', schedule.types[event.type].title) + (event.topic ? ': ' + event.topic : '')
+            : putInTgTag(
+                event.secret ? 'b' : 'pre',
+                schedule.types[event.type].title + (event.topic ? ': ' + event.topic : ''),
+              )) +
+          '\n\n' +
+          (event.tgInform === 0 && event.dsc ? putInTgTag(event.secret ? 'i' : 'code', event.dsc) + '\n\n' : '') +
+          putInTgTag('i', schedule.title);
+
+        const text = event.secret ? putInTgTag('tg-spoiler', message) : message;
+
+        const options: SendMessageOptions = {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: 'Отписаться от ' + schedule.title,
+                  callback_data: unsubscribeQueryDataNamePrefix + schedule.w,
+                },
               ],
-            },
-          });
+            ],
+          },
+        };
+
+        for (const user of schedule.ctrl.users) {
+          if (
+            user.tgId === undefined ||
+            user.tgInform === 0 ||
+            !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ||
+            (event.secret &&
+              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
+          )
+            continue;
+
+          jesmylTgBot.sendMessage(user.tgId, text, tglogger, options);
         }
 
         if (event.tgInform !== 0) {
@@ -135,8 +157,8 @@ export const indexScheduleSetMessageAlert = (
               auth,
               auth,
             )
-            .then(() => setTimeout(() => indexScheduleSetMessageAlert(schedule.w, invokerAuth, invokeDayi)));
-        } else setTimeout(() => indexScheduleSetMessageAlert(schedule.w, invokerAuth, invokeDayi));
+            .then(() => setTimeout(() => indexScheduleSetMessageInform(schedule.w, invokerAuth, invokeDayi)));
+        } else setTimeout(() => indexScheduleSetMessageInform(schedule.w, invokerAuth, invokeDayi));
       });
 
       break dayLoop;
@@ -155,10 +177,16 @@ jesmylTgBot.listenPersonalQueries(async event => {
     const schedule = getSchedule(schw);
     if (schedule === undefined) return;
 
-    const user = schedule.ctrl.users.find(findUserAdminFunc);
-    if (user === undefined || user.tgId === undefined) return;
+    const userTgId = event.value.from.id;
+    const user = schedule.ctrl.users.find(user => user.tgId === userTgId);
 
-    const userTgId = user.tgId;
+    if (
+      user === undefined ||
+      user.tgId === undefined ||
+      !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read)
+    )
+      return;
+
     const isSubscribe = event.value.data.startsWith(subscribeQueryDataNamePrefix);
 
     const auth = {
