@@ -82,7 +82,7 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                 <StrongDropdown
                   scope={scope}
                   cud="U"
-                  fieldName="tgInform"
+                  fieldName="tgInformTime"
                   items={tgInformTimesItems}
                   disabled={rights.schedule.tgInform === 0}
                   id={rights.schedule.tgInformTime}
