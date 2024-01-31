@@ -1,6 +1,9 @@
 import { ReactNode } from 'react';
-import { packScheduleWidgetInviteLink } from '../../../../models';
-import { scheduleWidgetUserRights } from '../../../../models';
+import {
+  ScheduleWidgetUserRoleRight,
+  packScheduleWidgetInviteLink,
+  scheduleWidgetUserRights,
+} from '../../../../models';
 import ShareEvaButton from '../../../ShareEvaButton';
 import EvaButton from '../../../eva-icon/EvaButton';
 import EvaIcon from '../../../eva-icon/EvaIcon';
@@ -74,10 +77,28 @@ export default function ScheduleWidgetUser({
           </div>,
         )}
         {body(
-          <ScheduleWidgetUserEdit
-            scope={scope}
-            user={user}
-          />,
+          <>
+            <ScheduleWidgetUserEdit
+              scope={scope}
+              user={user}
+            />
+            <div className="margin-big-gap-t">
+              {user.tgInform === 0 ||
+              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ? (
+                <EvaButton
+                  name="bell-off-outline"
+                  postfix="Участник не получает TG-уведомления"
+                  disabled
+                />
+              ) : (
+                <EvaButton
+                  name="bell-outline"
+                  postfix="Участник получает TG-уведомления"
+                  disabled
+                />
+              )}
+            </div>
+          </>,
         )}
       </>
     );
