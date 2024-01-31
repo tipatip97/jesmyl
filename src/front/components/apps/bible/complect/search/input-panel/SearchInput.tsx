@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useSetBibleAddressIndexes } from '../../../hooks/address/address';
 import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';
 import {
@@ -15,22 +15,16 @@ interface Props {
 
 export const BibleSearchPanelSearchInput = ({ inputRef }: Props) => {
   const searchTerm = useBibleSearchTerm();
-  const [term, setTerm] = useState(searchTerm);
   const setSearchTerm = useBibleTranslationSearchTermSetter();
-  const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTerm(event.target.value), []);
+  const onChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(event.target.value),
+    [setSearchTerm],
+  );
   const setAddress = useSetBibleAddressIndexes();
   const setSelected = useBibleTranslationSearchResultSelectedSetter();
   const resultList = useBibleTranslationSearchResultList();
   const resultSelected = useBibleTranslationSearchResultSelected();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
-
-  useEffect(() => {
-    setTimeoutEffect(setSearchTerm, 100, term);
-    setSelected(null);
-  }, [term, setSearchTerm, setSelected]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setTerm(searchTerm), []);
 
   useEffect(() => {
     if (resultSelected === null || resultList[resultSelected] === undefined) return;
@@ -72,7 +66,7 @@ export const BibleSearchPanelSearchInput = ({ inputRef }: Props) => {
   return (
     <BibleSearchPanelInput
       inputRef={inputRef}
-      term={term}
+      term={searchTerm}
       onChange={onChange}
     />
   );

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDebounceValue } from '../../../../../complect/useDebounceValue';
 import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/address';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
@@ -17,9 +18,18 @@ interface Props {
   inputRef: React.RefObject<HTMLInputElement>;
 }
 
+const spacePlusReg = / +/;
+const notRuLettersSpaceReg_gi = /[^а-яё ]/gi;
+const yoLetterReg_g = /[ёе]/g;
+const mapRetArrFunc = (): BibleTranslationSingleAddress[] => [];
+
+const maxItems = 49;
+
+const sortStringsByLength = (a: string, b: string) => b.length - a.length;
+
 export const BibleSearchResults = ({ inputRef }: Props) => {
   const searchZone = useBibleSearchZone();
-  const searchTerm = useBibleSearchTerm();
+  const searchTerm = useDebounceValue(useBibleSearchTerm());
   const lowerBooks = useBibleCurrentWholeLowerCaseChapterBookList();
   const [list, setList] = useState<JSX.Element[]>([]);
   const resultSelected = useBibleTranslationSearchResultSelected();
@@ -37,15 +47,14 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
 
   useEffect(() => {
     if (searchTerm.trim().length < 3) return;
-    const freeTerm = searchTerm.trim().replace(/[^а-яё ]/gi, '');
+    const freeTerm = searchTerm.trim().replace(notRuLettersSpaceReg_gi, '');
     if (freeTerm.length < 3) return;
 
     const lowerTerm = freeTerm.trim().toLowerCase();
-    const lowerWords = lowerTerm.split(/ +/);
-    const founds: BibleTranslationSingleAddress[][] = Array(lowerWords.length)
-      .fill(0)
-      .map(() => []);
-    const splitReg = RegExp('(' + lowerWords.join('|') + ')', 'ig');
+    const lowerWords = lowerTerm.replace(yoLetterReg_g, '[её]').split(spacePlusReg);
+    const founds: BibleTranslationSingleAddress[][] = Array(lowerWords.length).fill(0).map(mapRetArrFunc);
+    const splitReg = RegExp('(' + lowerWords.sort(sortStringsByLength).join('|') + ')', 'ig');
+    const lastFounds = founds[founds.length - 1];
 
     const searchInChapter = (booki: number, chapteri: number, chapter: string[]) => {
       for (let versei = 0; versei < chapter.length; versei++) {
@@ -56,19 +65,29 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
           if (verse.includes(lowerWord)) foundWordsCount++;
         }
 
-        if (foundWordsCount > -1) founds[foundWordsCount].push([booki, chapteri, versei]);
+        if (foundWordsCount > -1) {
+          founds[foundWordsCount].push([booki, chapteri, versei]);
+
+          if (lastFounds.length > maxItems) break;
+        }
       }
     };
 
     if (searchZone === 'global')
-      for (let booki = 0; booki < lowerBooks.length; booki++) {
+      bibleSearchLoop: for (let booki = 0; booki < lowerBooks.length; booki++) {
         const book = lowerBooks[booki];
 
-        for (let chapteri = 0; chapteri < book.length; chapteri++) searchInChapter(booki, chapteri, book[chapteri]);
+        for (let chapteri = 0; chapteri < book.length; chapteri++) {
+          searchInChapter(booki, chapteri, book[chapteri]);
+          if (lastFounds.length > maxItems) break bibleSearchLoop;
+        }
       }
     else searchInChapter(currentBooki, currentChapteri, lowerBooks[currentBooki][currentChapteri]);
 
-    const list = founds.reverse().flat().slice(0, 50);
+    const list = founds
+      .reverse()
+      .flat()
+      .slice(0, maxItems + 1);
 
     setResultList(list);
 
