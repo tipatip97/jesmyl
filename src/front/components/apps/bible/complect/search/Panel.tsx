@@ -1,23 +1,23 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { justBibleStorageSet } from '../../hooks/storage';
 import { BibleSearchZone } from '../../model';
 import { BibleSearchResults } from './Results';
 import { BibleSearchInputPanel } from './input-panel/InputPanel';
-import { useBibleSearchZone, useBibleTranslationSearchZoneSetter } from './selectors';
+import { useBibleSearchZone } from './selectors';
 
 export const BibleSearchPanel = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const searchZone = useBibleSearchZone();
-  const setSearchZone = useBibleTranslationSearchZoneSetter();
 
   const putOnSearchZone = useCallback(
     (zone: BibleSearchZone) => {
       return () => {
-        setSearchZone(zone);
+        justBibleStorageSet('translationSearchZone', zone);
         setTimeout(() => inputRef.current?.select(), 10);
       };
     },
-    [inputRef, setSearchZone],
+    [inputRef],
   );
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const BibleSearchPanel = () => {
 
     window.addEventListener('keyup', onKey);
     return () => window.removeEventListener('keyup', onKey);
-  }, [putOnSearchZone, searchZone, setSearchZone]);
+  }, [putOnSearchZone, searchZone]);
 
   return (
     <div className="full-width">

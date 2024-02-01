@@ -1,16 +1,16 @@
 import { memo } from 'react';
 import styled from 'styled-components';
-import { usePutBibleAddressBookiSetter } from '../../../hooks/address/books';
 import { BibleBook } from '../../../model';
+import { usePutBibleStorageSetter } from '../../../hooks/storage';
 
 export const BibleBookFace = memo(({ book, booki }: { book: BibleBook; booki: number }) => {
-  const putSetBooki = usePutBibleAddressBookiSetter();
+  const putValSetter = usePutBibleStorageSetter();
 
   return (
     <Face
       id={'bible-booki-' + booki}
       className="bible-list-face"
-      onClick={putSetBooki(booki)}
+      onClick={putValSetter('translationBooki', booki)}
     >
       {booki + 1} <span className="title">{book.titles[1]}</span>
     </Face>

@@ -1,17 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { ScreenTranslationControlPanel } from '../+complect/translations/controls/ControllPanel';
 import { TranslationSlidePreview } from '../+complect/translations/controls/Preview';
-import { bibleStoreActions } from './Bible.store';
-import bibleStorage from './bibleStorage';
 import { BibleTranslateScreenConfigurations } from './complect/ScreenConfigurations';
 import { BibleTranslationHistoryArchive } from './complect/archive/history/HistoryArchive';
 import { BibleTranslationPlanArchive } from './complect/archive/plan/PlanArchive';
 import { BibleLists } from './complect/lists/Lists';
 import { BibleSearchPanel } from './complect/search/Panel';
-import { useBibleAddressVerseiUpdater } from './hooks/address/verses';
 import { useBibleSlideSyncContentUpdatesNum } from './hooks/slide-sync';
+import { justBibleStorageSet } from './hooks/storage';
 import { useBibleCurrentAddressText } from './hooks/texts';
 import useBibleNav from './useBibleNav';
 
@@ -19,22 +16,18 @@ interface Props {
   goBackRef: { current: (isForceBack: boolean) => void };
 }
 
-const incrementFunc = (num: number) => num + 1;
-
 export default function BibleTranslationControlled({ goBackRef }: Props) {
-  const dispatch = useDispatch();
   const { goBack } = useBibleNav();
   goBackRef.current = goBack;
-  const setVersei = useBibleAddressVerseiUpdater();
   const [isPreview, setIsPreview] = useState(true);
   const address = useBibleCurrentAddressText();
-  const slideSyncUpdates = useBibleSlideSyncContentUpdatesNum();
-  const [slideSyncNum, setSlideSyncNum] = useState(slideSyncUpdates);
 
-  useEffect(() => setSlideSyncNum(incrementFunc), [address]);
-  useEffect(() => setSlideSyncNum(slideSyncUpdates), [slideSyncUpdates]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const actualAddressContent = useMemo(() => address, [useBibleSlideSyncContentUpdatesNum()]);
 
-  useEffect(() => bibleStorage.initDispatches(dispatch, bibleStoreActions), [dispatch]);
+  useEffect(() => {
+    justBibleStorageSet('translationSlideSyncContentUpdatesNum', num => num + 1);
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -60,7 +53,7 @@ export default function BibleTranslationControlled({ goBackRef }: Props) {
       <TopPanel>
         <div className="flex column">
           <div
-            className={'flex flex-gap margin-gap-b ' + (slideSyncUpdates === slideSyncNum ? 'color--7' : '')}
+            className={'flex flex-gap margin-gap-b ' + (actualAddressContent === address ? 'color--7' : '')}
             onClick={() => setIsPreview(is => !is)}
           >
             <div className={'pointer ' + (isPreview ? 'color--7' : '')}>Предпросмотр</div>
@@ -72,8 +65,8 @@ export default function BibleTranslationControlled({ goBackRef }: Props) {
         <BibleLists />
       </TopPanel>
       <ScreenTranslationControlPanel
-        onNext={() => setVersei(versei => versei + 1)}
-        onPrev={() => setVersei(versei => versei - 1)}
+        onNext={() => justBibleStorageSet('translationVersei', versei => versei + 1)}
+        onPrev={() => justBibleStorageSet('translationVersei', versei => versei - 1)}
       />
       <BibleSearchPanel />
       <BottomGrid className="margin-big-gap-t">

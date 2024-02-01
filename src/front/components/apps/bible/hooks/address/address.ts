@@ -1,55 +1,50 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../../shared/store';
-import { bibleStoreActions } from '../../Bible.store';
+import { useStorageValueGetter } from '../../../../../complect/useStorage';
+import bibleStorage from '../../bibleStorage';
 import { BibleTranslationJoinAddress } from '../../model';
+import { justBibleStorageSet } from '../storage';
 
 export const useBibleTranslationAddressIndexesSetter = () => {
-  const dispatch = useDispatch();
   const setJoin = useBibleTranslationJoinAddressSetter();
 
   return useCallback(
     (booki: number, chapteri: number, versei: number, resultSelectedi?: number) => {
       return () => {
-        dispatch(bibleStoreActions.translationBooki(booki));
-        dispatch(bibleStoreActions.translationChapteri(chapteri));
-        dispatch(bibleStoreActions.translationVersei(versei));
+        justBibleStorageSet('translationBooki', booki);
+        justBibleStorageSet('translationChapteri', chapteri);
+        justBibleStorageSet('translationVersei', versei);
         if (resultSelectedi !== undefined) {
-          dispatch(bibleStoreActions.translationSearchResultSelected(resultSelectedi));
+          justBibleStorageSet('translationSearchResultSelected', resultSelectedi);
           setJoin(null);
         }
       };
     },
-    [dispatch, setJoin],
+    [setJoin],
   );
 };
 
 export const useSetBibleAddressIndexes = () => {
-  const dispatch = useDispatch();
   const setJoin = useBibleTranslationJoinAddressSetter();
 
   return useCallback(
     (booki: number, chapteri: number, versei: number, resultSelectedi?: number) => {
-      dispatch(bibleStoreActions.translationBooki(booki));
-      dispatch(bibleStoreActions.translationChapteri(chapteri));
-      dispatch(bibleStoreActions.translationVersei(versei));
+      justBibleStorageSet('translationBooki', booki);
+      justBibleStorageSet('translationChapteri', chapteri);
+      justBibleStorageSet('translationVersei', versei);
       if (resultSelectedi !== undefined) {
-        dispatch(bibleStoreActions.translationSearchResultSelected(resultSelectedi));
+        justBibleStorageSet('translationSearchResultSelected', resultSelectedi);
         setJoin(null);
       }
     },
-    [dispatch, setJoin],
+    [setJoin],
   );
 };
 
-const joinAddressSelector = (state: RootState) => state.bible.translationTranslationJoinAddress;
-
-export const useBibleTranslationJoinAddress = () => useSelector(joinAddressSelector);
+export const useBibleTranslationJoinAddress = () =>
+  useStorageValueGetter(bibleStorage, 'translationTranslationJoinAddress', null);
 export const useBibleTranslationJoinAddressSetter = () => {
-  const dispatch = useDispatch();
-
   return useCallback(
-    (join: BibleTranslationJoinAddress | null) => dispatch(bibleStoreActions.translationTranslationJoinAddress(join)),
-    [dispatch],
+    (join: BibleTranslationJoinAddress | null) => justBibleStorageSet('translationTranslationJoinAddress', join),
+    [],
   );
 };

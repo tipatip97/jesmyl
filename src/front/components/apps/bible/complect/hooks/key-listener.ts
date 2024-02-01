@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from '../../hooks/address/address';
-import { useBibleAddressBooki, useBibleAddressBookiSetter } from '../../hooks/address/books';
-import { useBibleAddressChapteri, useBibleAddressChapteriSetter } from '../../hooks/address/chapters';
-import { useBibleTranslationAddressVerseiSetter } from '../../hooks/address/verses';
+import { useBibleAddressBooki } from '../../hooks/address/books';
+import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleTranslationSlideSyncContentSetter } from '../../hooks/slide-sync';
+import { useBibleStorageSet } from '../../hooks/storage';
 import { useBibleCurrentWholeChapterBookList } from '../../hooks/texts';
 import { BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslationAddToPlan } from '../archive/plan/hooks/plan';
@@ -19,23 +19,21 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
 
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
+  const bibleSetVal = useBibleStorageSet();
   const chapters = useBibleCurrentWholeChapterBookList();
   const joinAddress = useBibleTranslationJoinAddress();
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
   const addToPlan = useBibleTranslationAddToPlan();
-  const setBooki = useBibleAddressBookiSetter();
-  const setChapteri = useBibleAddressChapteriSetter();
-  const setVersei = useBibleTranslationAddressVerseiSetter();
 
   useEffect(() => {
     if (numberCollection === '') return;
     return setTimeoutEffect(() => {
-      setVersei(+numberCollection - 1);
+      bibleSetVal('translationVersei', +numberCollection - 1);
       setNumberCollection('');
     }, 300);
-  }, [numberCollection, setVersei]);
+  }, [numberCollection, bibleSetVal]);
 
   useEffect(() => {
     return listenWindowKeyDownEffect(event => {
@@ -43,8 +41,12 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
         case 'F5':
         case 'Enter':
         case 'NumpadEnter':
+          event.preventDefault();
           if (event.ctrlKey) addToPlan(joinAddress ?? [currentBooki, currentChapteri, versei]);
           else syncSlide();
+          break;
+        case 'KeyR':
+          if (event.ctrlKey && win !== window) event.preventDefault();
           break;
       }
     }, win);
@@ -67,7 +69,15 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
     return listenWindowKeyDownEffect(event => {
       const limitStepJump = (dir: 1 | -1) => {
         if (event.shiftKey || currentJoinAddress === null) {
-          setVersei(versei + dir);
+          bibleSetVal('translationVersei', versei =>
+            dir < 0
+              ? versei > 0
+                ? versei + dir
+                : versei
+              : versei === chapters[currentBooki][currentChapteri].length - 1
+                ? versei
+                : versei + dir,
+          );
           return;
         }
 
@@ -76,9 +86,9 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
         const chapteri = Math[mathMethod](...mylib.keys(currentJoinAddress[booki]));
         const verses = currentJoinAddress[booki][chapteri];
 
-        setBooki(booki);
-        setChapteri(chapteri);
-        setVersei(Math[mathMethod](...verses) + dir);
+        bibleSetVal('translationBooki', booki);
+        bibleSetVal('translationChapteri', chapteri);
+        bibleSetVal('translationVersei', Math[mathMethod](...verses) + dir);
         setJoin(null);
       };
 
@@ -120,17 +130,5 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
 
       setJoin(mylib.keys(newJoin).length === 0 ? null : newJoin);
     }, win);
-  }, [
-    currentBooki,
-    currentChapteri,
-    chapters,
-    currentJoinAddress,
-    setBooki,
-    setChapteri,
-    setJoin,
-    setVersei,
-    syncSlide,
-    versei,
-    win,
-  ]);
+  }, [currentBooki, currentChapteri, chapters, currentJoinAddress, setJoin, bibleSetVal, syncSlide, versei, win]);
 };

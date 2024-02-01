@@ -4,14 +4,11 @@ import { useDebounceValue } from '../../../../../complect/useDebounceValue';
 import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/address';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
+import { justBibleStorageSet } from '../../hooks/storage';
 import { useBibleCurrentWholeLowerCaseChapterBookList } from '../../hooks/texts';
 import { BibleTranslationSingleAddress } from '../../model';
 import { BibleSearchResultVerse } from './ResultVerse';
-import {
-  useBibleTranslationSearchResultList,
-  useBibleTranslationSearchResultListSetter,
-  useBibleTranslationSearchResultSelected,
-} from './hooks/results';
+import { useBibleTranslationSearchResultList, useBibleTranslationSearchResultSelected } from './hooks/results';
 import { useBibleSearchTerm, useBibleSearchZone } from './selectors';
 
 interface Props {
@@ -21,7 +18,10 @@ interface Props {
 const spacePlusReg = / +/;
 const notRuLettersSpaceReg_gi = /[^а-яё ]/gi;
 const yoLetterReg_g = /[ёе]/g;
+const mapWordsReplaceYoLetter = (word: string) => word.replace(yoLetterReg_g, '[её]');
 const mapRetArrFunc = (): BibleTranslationSingleAddress[] => [];
+const getSplitReg = (lowerWords: string[]) =>
+  RegExp('(' + lowerWords.map(mapWordsReplaceYoLetter).sort(sortStringsByLength).join('|') + ')', 'ig');
 
 const maxItems = 49;
 
@@ -34,7 +34,6 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
   const [list, setList] = useState<JSX.Element[]>([]);
   const resultSelected = useBibleTranslationSearchResultSelected();
   const resultList = useBibleTranslationSearchResultList();
-  const setResultList = useBibleTranslationSearchResultListSetter();
   const onClick = useCallback(() => inputRef.current?.focus(), [inputRef]);
   const setJoin = useBibleTranslationJoinAddressSetter();
 
@@ -51,9 +50,9 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
     if (freeTerm.length < 3) return;
 
     const lowerTerm = freeTerm.trim().toLowerCase();
-    const lowerWords = lowerTerm.replace(yoLetterReg_g, '[её]').split(spacePlusReg);
-    const founds: BibleTranslationSingleAddress[][] = Array(lowerWords.length).fill(0).map(mapRetArrFunc);
-    const splitReg = RegExp('(' + lowerWords.sort(sortStringsByLength).join('|') + ')', 'ig');
+    const lowerWords = lowerTerm.split(spacePlusReg);
+    const founds = Array(lowerWords.length).fill(0).map(mapRetArrFunc);
+    const splitReg = getSplitReg(lowerWords);
     const lastFounds = founds[founds.length - 1];
 
     const searchInChapter = (booki: number, chapteri: number, chapter: string[]) => {
@@ -89,7 +88,7 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
       .flat()
       .slice(0, maxItems + 1);
 
-    setResultList(list);
+    justBibleStorageSet('translationSearchResultList', list);
 
     setList(
       list.map(([booki, chapteri, versei], resulti) => (
@@ -103,7 +102,7 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
         />
       )),
     );
-  }, [currentBooki, currentChapteri, lowerBooks, searchTerm, searchZone, setResultList]);
+  }, [currentBooki, currentChapteri, lowerBooks, searchTerm, searchZone]);
 
   useEffect(() => {
     if (resultSelected === null || resultList[resultSelected] == null) return;

@@ -1,17 +1,16 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import mylib from '../../../../../complect/my-lib/MyLib';
-import { useActualRef } from '../../../../../complect/useActualRef';
-import { RootState } from '../../../../../shared/store';
-import { bibleStoreActions } from '../../Bible.store';
+import { useStorageValueGetter } from '../../../../../complect/useStorage';
+import bibleStorage from '../../bibleStorage';
 import { BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslationSlideSyncContentSetter } from '../slide-sync';
+import { useBibleStorageSet } from '../storage';
 import { chapterBooks } from '../texts';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from './address';
 import { useBibleAddressBooki } from './books';
 import { useBibleAddressChapteri } from './chapters';
 
-const verseiSelector = (state: RootState) => state.bible.translationVersei;
+const useBibleAddressCurrentVersei = () => useStorageValueGetter(bibleStorage, 'translationVersei', 0);
 
 export const useBibleAddressIsCurrentVersei = (versei: number) => {
   const joinAddress = useBibleTranslationJoinAddress();
@@ -26,7 +25,7 @@ export const useBibleAddressIsCurrentVersei = (versei: number) => {
 export const useBibleAddressVersei = () => {
   const currentChapteri = useBibleAddressChapteri();
   const currentBooki = useBibleAddressBooki();
-  const currentVersei = useSelector(verseiSelector);
+  const currentVersei = useBibleAddressCurrentVersei();
 
   return currentVersei < 0
     ? 0
@@ -35,36 +34,20 @@ export const useBibleAddressVersei = () => {
       : currentVersei;
 };
 
-export const useBibleAddressVerseiUpdater = () => {
-  const verseiRef = useActualRef(useBibleAddressVersei());
-  const setVersei = useBibleTranslationAddressVerseiSetter();
-
-  return useCallback(
-    (setter: (versei: number) => number) => setVersei(setter(verseiRef.current)),
-    [setVersei, verseiRef],
-  );
-};
-
-export const useBibleTranslationAddressVerseiSetter = () => {
-  const dispatch = useDispatch();
-
-  return useCallback((versei: number) => dispatch(bibleStoreActions.translationVersei(versei)), [dispatch]);
-};
-
 export const usePutBibleAddressVerseiSetter = () => {
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
-  const setVersei = useBibleTranslationAddressVerseiSetter();
+  const bibleValSet = useBibleStorageSet();
 
   return useCallback(
     (versei: number, isRiseUpUpdats: boolean) => {
       return () => {
         setJoin(null);
-        setVersei(versei);
+        bibleValSet('translationVersei', versei);
         if (isRiseUpUpdats) syncSlide();
       };
     },
-    [setJoin, setVersei, syncSlide],
+    [bibleValSet, setJoin, syncSlide],
   );
 };
 
@@ -73,7 +56,7 @@ export const usePutBibleJoinAddressSetter = () => {
   const currentBooki = useBibleAddressBooki();
   const currentVersei = useBibleAddressVersei();
   const currentJoinAddress = useBibleTranslationJoinAddress();
-  const setVersei = useBibleTranslationAddressVerseiSetter();
+  const bibleValSet = useBibleStorageSet();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
 
@@ -81,7 +64,7 @@ export const usePutBibleJoinAddressSetter = () => {
     (versei: number, isRiseUpUpdats: boolean) => {
       return (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         let newJoin: BibleTranslationJoinAddress | null = { ...currentJoinAddress };
-        setVersei(versei);
+        bibleValSet('translationVersei', versei);
 
         if (currentJoinAddress === null) {
           const verses = ((newJoin[currentBooki] = {} as BibleTranslationJoinAddress[number])[currentChapteri] =
@@ -134,6 +117,6 @@ export const usePutBibleJoinAddressSetter = () => {
         if (isRiseUpUpdats) syncSlide();
       };
     },
-    [currentJoinAddress, setJoin, syncSlide, currentBooki, currentChapteri, currentVersei, setVersei],
+    [currentJoinAddress, bibleValSet, setJoin, syncSlide, currentBooki, currentChapteri, currentVersei],
   );
 };

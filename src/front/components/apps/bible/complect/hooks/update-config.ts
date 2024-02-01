@@ -1,12 +1,10 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { bibleStoreActions } from '../../Bible.store';
+import { useScreenTranslationCurrentConfigi } from '../../../+complect/translations/hooks/configs';
+import { justBibleStorageSet } from '../../hooks/storage';
 import { BibleTranslationScreenConfig } from '../model';
 import { useBibleScreenTranslationConfigs } from './configs';
-import { useScreenTranslationCurrentConfigi } from '../../../+complect/translations/hooks/configs';
 
 export const useUpdateBibleTranslationConfig = () => {
-  const dispatch = useDispatch();
   const configs = useBibleScreenTranslationConfigs();
 
   return useCallback(
@@ -15,9 +13,9 @@ export const useUpdateBibleTranslationConfig = () => {
       if (config === null) {
         newConfigs.splice(configi, 1);
       } else newConfigs[configi] = { ...newConfigs[configi], ...config };
-      dispatch(bibleStoreActions.translationScreenConfigs(newConfigs));
+      justBibleStorageSet('translationScreenConfigs', newConfigs);
     },
-    [configs, dispatch],
+    [configs],
   );
 };
 

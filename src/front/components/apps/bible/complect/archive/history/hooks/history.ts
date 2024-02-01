@@ -1,17 +1,15 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
-import { RootState } from '../../../../../../../shared/store';
-import { bibleStoreActions } from '../../../../Bible.store';
+import { useStorageValueGetter } from '../../../../../../../complect/useStorage';
+import bibleStorage from '../../../../bibleStorage';
+import { justBibleStorageSet, useBibleStorageSet } from '../../../../hooks/storage';
 import { BibleTranslationAddress } from '../../../../model';
 
-const historySelector = (state: RootState) => state.bible.translationHistory;
-
-export const useBibleTranslationHistory = () => useSelector(historySelector);
+export const useBibleTranslationHistory = () => useStorageValueGetter(bibleStorage, 'translationHistory', []);
 
 export const useBibleTranslationAddToHistory = () => {
-  const dispatch = useDispatch();
+  const bibleValSet = useBibleStorageSet();
   const historyRef = useActualRef(useBibleTranslationHistory());
 
   return useCallback(
@@ -30,14 +28,12 @@ export const useBibleTranslationAddToHistory = () => {
       newHistory.unshift(item);
       if (newHistory.length > 50) newHistory.length = 50;
 
-      dispatch(bibleStoreActions.translationHistory(newHistory));
+      bibleValSet('translationHistory', newHistory);
     },
-    [dispatch, historyRef],
+    [bibleValSet, historyRef],
   );
 };
 
 export const useBibleClearTranslationHistorySetter = () => {
-  const dispatch = useDispatch();
-
-  return useCallback(() => dispatch(bibleStoreActions.translationHistory([])), [dispatch]);
+  return useCallback(() => justBibleStorageSet('translationHistory', []), []);
 };

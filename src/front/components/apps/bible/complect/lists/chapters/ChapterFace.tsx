@@ -1,14 +1,14 @@
 import { memo } from 'react';
-import { usePutBibleAddressChapteriSetter } from '../../../hooks/address/chapters';
+import { usePutBibleStorageSetter } from '../../../hooks/storage';
 
 export const BibleChapterFace = memo(({ chapteri }: { chapteri: number }) => {
-  const putSetChapteri = usePutBibleAddressChapteriSetter();
+  const putValSetter = usePutBibleStorageSetter();
 
   return (
     <div
       id={'bible-chapteri-' + chapteri}
       className="bible-list-face"
-      onClick={putSetChapteri(chapteri)}
+      onClick={putValSetter('translationChapteri', chapteri)}
     >
       {chapteri + 1}
     </div>

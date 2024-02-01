@@ -1,16 +1,13 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
-import { RootState } from '../../../../../../../shared/store';
-import { bibleStoreActions } from '../../../../Bible.store';
+import { useStorageValueGetter } from '../../../../../../../complect/useStorage';
+import bibleStorage from '../../../../bibleStorage';
+import { justBibleStorageSet } from '../../../../hooks/storage';
 import { BibleTranslationAddress } from '../../../../model';
 
-const planSelector = (state: RootState) => state.bible.translationPlan;
-
-export const useBibleTranslationPlan = () => useSelector(planSelector);
+export const useBibleTranslationPlan = () => useStorageValueGetter(bibleStorage, 'translationPlan', []);
 
 export const useBibleTranslationAddToPlan = () => {
-  const dispatch = useDispatch();
   const plan = useBibleTranslationPlan();
 
   return useCallback(
@@ -20,14 +17,12 @@ export const useBibleTranslationAddToPlan = () => {
       if (previ > -1) newPlan.splice(previ, 1);
       newPlan.unshift(item);
 
-      dispatch(bibleStoreActions.translationPlan(newPlan));
+      justBibleStorageSet('translationPlan', newPlan);
     },
-    [dispatch, plan],
+    [plan],
   );
 };
 
 export const useBibleClearTranslationPlanSetter = () => {
-  const dispatch = useDispatch();
-
-  return useCallback(() => dispatch(bibleStoreActions.translationPlan([])), [dispatch]);
+  return useCallback(() => justBibleStorageSet('translationPlan', []), []);
 };
