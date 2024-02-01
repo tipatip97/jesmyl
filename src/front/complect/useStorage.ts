@@ -14,11 +14,11 @@ export const useStorageValueGetter = <
 >(
   storage: JStorage<Scope, State>,
   key: Key,
-  defaultValue: DefaultValue,
+  initialValue: DefaultValue,
 ): Value => {
-  const state = useState(defaultValue);
+  const state = useState(storage.properties[key] === undefined ? initialValue : storage.properties[key]);
 
-  useEffect(() => storage.on(key, state[1] as never, defaultValue), emptyArr);
+  useEffect(() => storage.on(key, state[1] as never, initialValue), emptyArr);
 
   return state[0];
 };

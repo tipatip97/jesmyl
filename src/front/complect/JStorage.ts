@@ -20,7 +20,6 @@ export class JStorage<Scope, State = Scope> {
     this.initDB(this.dbOpen);
 
     (window as any)[`${storageName}Storage`] = this;
-    console.log(this.properties);
   }
 
   private initDB(dbOpen: IDBOpenDBRequest) {
@@ -128,9 +127,8 @@ export class JStorage<Scope, State = Scope> {
     }, 90);
   }
 
-  on<Key extends keyof Scope>(key: Key, callback: (value: Scope[Key]) => void, def: Scope[Key]) {
-    this.properties[key] = def;
-
+  on<Key extends keyof Scope>(key: Key, callback: (value: Scope[Key]) => void, initialValue: Scope[Key]) {
+    if (this.properties[key] === undefined) this.properties[key] = initialValue;
     if (this.listens[key] === undefined) this.listens[key] = [];
 
     setTimeout(async () => {
