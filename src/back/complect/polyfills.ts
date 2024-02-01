@@ -90,6 +90,37 @@ const prev: Record<string, any> = {};
 };
 
 declare global {
+  function setTimeoutEffect<const T>(handler: (f: T) => void, timeout: number, f: T): () => void;
+  function setTimeoutEffect<const T1, const T2>(
+    handler: (f: T1, s: T2) => void,
+    timeout: number,
+    f: T1,
+    s: T2,
+  ): () => void;
+  function setTimeoutEffect<const T1, const T2, const T3>(
+    handler: (v1: T1, v2: T2, v3: T3) => void,
+    timeout: number,
+    v1: T1,
+    v2: T2,
+    v3: T3,
+  ): () => void;
+  function setTimeoutEffect<const T1, const T2, const T3, const T4>(
+    handler: (v1: T1, v2: T2, v3: T3, v4: T4) => void,
+    timeout: number,
+    v1: T1,
+    v2: T2,
+    v3: T3,
+    v4: T4,
+  ): () => void;
+  function setTimeoutEffect<const T1, const T2, const T3, const T4, const T5>(
+    handler: (v1: T1, v2: T2, v3: T3, v4: T4, v5: T5) => void,
+    timeout: number,
+    v1: T1,
+    v2: T2,
+    v3: T3,
+    v4: T4,
+    v5: T5,
+  ): () => void;
   function setTimeoutEffect(handler: (...args: any[]) => void, timeout?: number, ...args: any[]): () => void;
   function inspectComponentProps(curr: Record<string, any>, print?: boolean): void;
 
