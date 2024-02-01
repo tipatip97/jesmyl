@@ -1,5 +1,5 @@
 import { AnyAction, CaseReducer, Dispatch, PayloadAction } from '@reduxjs/toolkit';
-import Eventer, { EventerListeners } from '../../back/complect/Eventer';
+import Eventer, { EventerValueListeners } from '../../back/complect/Eventer';
 
 export type JStorageListener<Val> = (val: Val) => void;
 
@@ -10,7 +10,7 @@ export class JStorage<Scope, State = Scope> {
   private dispatch?: Dispatch;
   private actions?: Record<keyof Scope, (val: any) => AnyAction>;
   private isFirstInit = false;
-  private listens: Partial<Record<keyof Scope, EventerListeners<Scope[keyof Scope]>>> = {};
+  private listens: Partial<Record<keyof Scope, EventerValueListeners<Scope[keyof Scope]>>> = {};
 
   properties: Record<keyof Scope, any> = {} as never;
 
@@ -129,7 +129,7 @@ export class JStorage<Scope, State = Scope> {
 
   on<Key extends keyof Scope>(key: Key, callback: (value: Scope[Key]) => void, initialValue: Scope[Key]) {
     if (this.properties[key] === undefined) this.properties[key] = initialValue;
-    if (this.listens[key] === undefined) this.listens[key] = [];
+    if (this.listens[key] === undefined) this.listens[key] = new Set();
 
     setTimeout(async () => {
       const val = await this.get(key);
