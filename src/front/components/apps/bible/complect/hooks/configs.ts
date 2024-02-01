@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import {
   defaultScreenTranslationBackgroundConfig,
   defaultScreenTranslationPositionConfig,
@@ -8,7 +7,8 @@ import {
   useMakeScreenTranslationConfigsFillPack,
   useScreenTranslationCurrentConfigi,
 } from '../../../+complect/translations/hooks/configs';
-import { RootState } from '../../../../../shared/store';
+import { useStorageValueGetter } from '../../../../../complect/useStorage';
+import bibleStorage from '../../bibleStorage';
 import { BibleTranslationScreenConfig } from '../model';
 
 const defaultConfig: BibleTranslationScreenConfig = {
@@ -39,10 +39,13 @@ const defaultConfig: BibleTranslationScreenConfig = {
   },
 };
 
-const configsSelector = (state: RootState) => state.bible.translationScreenConfigs;
+const emptyArr: [] = [];
 
 export const useBibleScreenTranslationConfigs = () =>
-  useMakeScreenTranslationConfigsFillPack(useSelector(configsSelector), defaultConfig);
+  useMakeScreenTranslationConfigsFillPack(
+    useStorageValueGetter(bibleStorage, 'translationScreenConfigs', emptyArr),
+    defaultConfig,
+  );
 
 export const useBibleScreenTranslationConfig = (configi: number | und): BibleTranslationScreenConfig | und => {
   const configs = useBibleScreenTranslationConfigs();
