@@ -23,7 +23,7 @@ export const BibleSearchResultVerse = memo(({ booki, chapteri, versei, splitReg,
       onClick={addressSetter(booki, chapteri, versei, resulti)}
     >
       <span className="color--3 margin-gap-r nowrap">
-        {books[booki].titles[1]} {chapteri + 1} {versei + 1}
+        {books[booki][1]} {chapteri + 1} {versei + 1}
       </span>
       <span>
         {textBits.map((__html, biti) => {

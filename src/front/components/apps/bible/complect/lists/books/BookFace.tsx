@@ -1,9 +1,8 @@
 import { memo } from 'react';
 import styled from 'styled-components';
-import { BibleBook } from '../../../model';
 import { usePutBibleStorageSetter } from '../../../hooks/storage';
 
-export const BibleBookFace = memo(({ book, booki }: { book: BibleBook; booki: number }) => {
+export const BibleBookFace = memo(({ titles, booki }: { titles: [string, string]; booki: number }) => {
   const putValSetter = usePutBibleStorageSetter();
 
   return (
@@ -12,7 +11,7 @@ export const BibleBookFace = memo(({ book, booki }: { book: BibleBook; booki: nu
       className="bible-list-face"
       onClick={putValSetter('translationBooki', booki)}
     >
-      {booki + 1} <span className="title">{book.titles[1]}</span>
+      {booki + 1} <span className="title">{titles[1]}</span>
     </Face>
   );
 });

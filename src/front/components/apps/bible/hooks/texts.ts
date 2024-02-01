@@ -1,14 +1,14 @@
-import * as bibleJSON from '../../../../../back/apps/bible/bible.json';
-import * as chaptersJSON from '../../../../../back/apps/bible/bibleChapters.json';
+import * as bibleTitlesJSON from '../../../../../back/apps/bible/bibleBookTitles.json';
+import * as chaptersJSON from '../../../../../back/apps/bible/rst.json';
 import { MyLib } from '../../../../complect/my-lib/MyLib';
-import { BibleBook, BibleTranslationJoinAddress } from '../model';
+import { BibleTranslationJoinAddress } from '../model';
 import { useBibleTranslationJoinAddress } from './address/address';
 import { useBibleAddressBooki } from './address/books';
 import { useBibleAddressChapteri } from './address/chapters';
 import { useBibleAddressVersei } from './address/verses';
 
 export const chapterBooks: string[][][] = ({ ...chaptersJSON } as any).chapters;
-export const bible: { books: BibleBook[] } = { ...bibleJSON } as never;
+export const bible: { titles: [string, string][] } = { ...bibleTitlesJSON } as never;
 const lowerChapterBooks: string[][][] = [];
 const numSortFunc = (a: number, b: number) => a - b;
 
@@ -28,10 +28,10 @@ export const useBibleCurrentVerseTexts = (): string[] | und => {
   return chapterBooks[useBibleAddressBooki()]?.[currentChapteri];
 };
 
-const lowerBooks = bible.books.map(book => ({ ...book, titles: book.titles.map(title => title.toLowerCase()) }));
+const lowerBooks = bible.titles.map(book => ({ ...book, titles: book.map(title => title.toLowerCase()) }));
 
 export const useBibleCurrentChapterList = () => chapterBooks[useBibleAddressBooki()];
-export const useBibleBookList = () => bible.books;
+export const useBibleBookList = () => bible.titles;
 export const useBibleBookLowerCaseList = () => lowerBooks;
 export const useBibleCurrentWholeLowerCaseChapterBookList = () => lowerChapterBooks;
 export const useBibleCurrentWholeChapterBookList = () => chapterBooks;
@@ -47,7 +47,7 @@ export const takeBibleJoinedAddressSlideText = (joinAddress: BibleTranslationJoi
 
       return (
         (isSetAddress !== false && booka.length > 1
-          ? bible.books[booki].titles[0] + (bookEntries.length > 1 ? '' : ', ' + (1 + +bookEntries[0][0])) + ':\n'
+          ? bible.titles[booki][0] + (bookEntries.length > 1 ? '' : ', ' + (1 + +bookEntries[0][0])) + ':\n'
           : '') +
         bookEntries
           .map(([chapteri, chapter], _, chaptera) => {
@@ -79,14 +79,14 @@ export const useBibleCurrentSlideText = () => {
 };
 
 export const takeBibleAddressText = (booki: number, chapteri: number, versei: number, titleVariant: 0 | 1 = 0) => {
-  return `${bible.books[booki].titles[titleVariant]} ${chapteri + 1}:${versei + 1}`;
+  return `${bible.titles[booki][titleVariant]} ${chapteri + 1}:${versei + 1}`;
 };
 
 export const takeBibleJoinedAddressText = (joinAddress: BibleTranslationJoinAddress, titleVariant: 0 | 1 = 0) => {
   return MyLib.entries(joinAddress)
     .map(([booki, book]) => {
       return (
-        bible.books[booki].titles[titleVariant] +
+        bible.titles[booki][titleVariant] +
         ' ' +
         MyLib.entries(book)
           .map(([chapteri, chapter]) => {

@@ -25,9 +25,4 @@ export interface BibleTranslationJoinAddress {
 export type BibleTranslationSingleAddress = [number, number, number];
 export type BibleTranslationAddress = BibleTranslationSingleAddress | BibleTranslationJoinAddress;
 
-export interface BibleBook {
-  titles: [string, string];
-  i: number;
-}
-
 export type BibleSearchZone = 'global' | 'chapter' | 'address';

@@ -67,8 +67,7 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
       if (booki < 0) booki = currentBooki;
     }
 
-    const bookNameNode =
-      booki === currentBooki ? <span className="color--7">{books[booki].titles[0]}</span> : books[booki].titles[0];
+    const bookNameNode = booki === currentBooki ? <span className="color--7">{books[booki][0]}</span> : books[booki][0];
 
     let chapterNode: ReactNode = chapterNumber;
     let verseNode: ReactNode = verseNumber;

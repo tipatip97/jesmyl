@@ -10,8 +10,8 @@ export const BibleBookList = () => {
       {books.map((book, booki) => {
         return (
           <BibleBookFace
-            key={book.i}
-            book={book}
+            key={book[0]}
+            titles={book}
             booki={booki}
           />
         );
