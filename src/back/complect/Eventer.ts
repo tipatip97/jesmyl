@@ -14,7 +14,9 @@ export type EventerCallback<Value, Return = void, StopValue = any> = (
 export type EventerListeners<Value, Return = void, StopValue = any> = EventerCallback<Value, Return, StopValue>[];
 
 export type EventerValueCallback<Value, Return = void> = (value: Value) => Return;
-export type EventerValueListeners<Value, Return = void> = EventerValueCallback<Value, Return>[];
+export type EventerValueListeners<Value, Return = void> =
+  | EventerValueCallback<Value, Return>[]
+  | Set<EventerValueCallback<Value, Return>>;
 
 export default class Eventer {
   static listen = <
@@ -97,7 +99,8 @@ export default class Eventer {
   ) => {
     if (invokeInitValue !== undefined) cb(invokeInitValue);
 
-    listeners.push(cb);
+    if (Array.isArray(listeners)) listeners.push(cb);
+    else listeners.add(cb);
 
     return () => this.muteValue(listeners, cb);
   };
@@ -110,7 +113,8 @@ export default class Eventer {
     listeners: Lis,
     cb: (value: Value) => Return,
   ) => {
-    listeners.splice(listeners.indexOf(cb), 1);
+    if (Array.isArray(listeners)) listeners.splice(listeners.indexOf(cb), 1);
+    else listeners.delete(cb);
   };
 
   static invokeValue = <
@@ -122,10 +126,12 @@ export default class Eventer {
     value: Value,
     onEachInvoke?: (ret: Return) => void,
   ): Value => {
-    for (let i = listeners.length - 1; i > -1; i--) {
-      if (onEachInvoke === undefined) listeners[i](value);
-      else onEachInvoke(listeners[i](value));
-    }
+    if (Array.isArray(listeners))
+      for (let i = listeners.length - 1; i > -1; i--) {
+        if (onEachInvoke === undefined) listeners[i](value);
+        else onEachInvoke(listeners[i](value));
+      }
+    else listeners.forEach(cb => cb(value));
 
     return value;
   };
