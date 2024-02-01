@@ -1,25 +1,26 @@
 import { AnyAction, CaseReducer, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import Eventer, { EventerListeners } from '../../back/complect/Eventer';
 
 export type JStorageListener<Val> = (val: Val) => void;
 
-export class JStorage<Scope, State = Scope, Name extends string = string> {
-  private prefix: string;
+export class JStorage<Scope, State = Scope> {
   private nonCachable: (keyof Scope)[] = [] as never;
   private dbOpen: IDBOpenDBRequest;
   private isContentInitialized = false;
   private dispatch?: Dispatch;
   private actions?: Record<keyof Scope, (val: any) => AnyAction>;
   private isFirstInit = false;
+  private listens: Partial<Record<keyof Scope, EventerListeners<Scope[keyof Scope]>>> = {};
 
   properties: Record<keyof Scope, any> = {} as never;
 
-  constructor(storageName: Name, config?: { nonCachable?: (keyof Scope)[] }) {
-    this.prefix = `[${storageName}]:`;
+  constructor(storageName: string, config?: { nonCachable?: (keyof Scope)[] }) {
     if (config?.nonCachable) this.nonCachable = config.nonCachable;
     this.dbOpen = indexedDB.open(storageName);
     this.initDB(this.dbOpen);
 
     (window as any)[`${storageName}Storage`] = this;
+    console.log(this.properties);
   }
 
   private initDB(dbOpen: IDBOpenDBRequest) {
@@ -28,9 +29,6 @@ export class JStorage<Scope, State = Scope, Name extends string = string> {
       const db = dbOpen.result;
       if (!db.objectStoreNames.contains('data')) {
         db.createObjectStore('data');
-        Object.keys(localStorage).forEach((name: string) => {
-          if (name.startsWith(this.prefix)) localStorage.removeItem(name);
-        });
       }
     };
   }
@@ -130,12 +128,36 @@ export class JStorage<Scope, State = Scope, Name extends string = string> {
     }, 90);
   }
 
+  on<Key extends keyof Scope>(key: Key, callback: (value: Scope[Key]) => void, def: Scope[Key]) {
+    this.properties[key] = def;
+
+    if (this.listens[key] === undefined) this.listens[key] = [];
+
+    setTimeout(async () => {
+      const val = await this.get(key);
+      if (val === undefined) return;
+      callback(val);
+      this.properties[key] = val;
+    });
+
+    return Eventer.listenValue(this.listens[key]!, callback as never);
+  }
+
   set<Key extends keyof Scope>(key: Key, val: Scope[Key] | ((prevValue: Scope[Key]) => Scope[Key])): void {
     if (val === null) {
       this.rem(key);
+
+      if (this.properties[key] === val) return;
+      if (this.listens[key] !== undefined) Eventer.invokeValue(this.listens[key]!, val as never);
+      this.properties[key] = val;
+
       return;
     }
-    this.properties[key] = typeof val === 'function' ? (val as <V>(v: V) => V)(this.properties[key]) : val;
+    const value = typeof val === 'function' ? (val as <V>(v: V) => V)(this.properties[key]) : val;
+
+    if (this.properties[key] === value) return;
+    if (this.listens[key] !== undefined) Eventer.invokeValue(this.listens[key]!, value);
+    this.properties[key] = value;
 
     if (this.nonCachable.includes(key)) return;
 
@@ -147,7 +169,7 @@ export class JStorage<Scope, State = Scope, Name extends string = string> {
     this.dbOpen.result
       .transaction('data', 'readwrite')
       .objectStore('data')
-      .put(this.properties[key], key as string);
+      .put(value, key as string);
   }
 
   rem(key: keyof Scope) {
