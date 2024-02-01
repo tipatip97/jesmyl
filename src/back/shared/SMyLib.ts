@@ -159,18 +159,18 @@ export class SMyLib {
 
         if (isIgnoreArrayItemsOrder) {
           for (const bVal of base) {
-            let isThere = false;
+            let isNotFound = true;
 
             for (const sVal of source)
               if (this.isEq(bVal, sVal, isIgnoreArrayItemsOrder)) {
-                isThere = true;
+                isNotFound = false;
                 break;
               }
 
-            if (isThere) return true;
+            if (isNotFound) return false;
           }
 
-          return false;
+          return true;
         } else {
           for (let basei = 0; basei < base.length; basei++) {
             if (!this.isEq(base[basei], source[basei], isIgnoreArrayItemsOrder)) return false;
