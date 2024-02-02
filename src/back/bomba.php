@@ -2,7 +2,7 @@
 
 $JSONSeparator = '===JSON:separation===';
 
-if (md5($_GET['pass']) !== 'dbd2f9f2ccd2c687c3e2cf63fc662a78') echoJSONData(['ok' => false]);
+if (md5($_GET['pass']) !== '487a8138a2fd0a5c495c08fdaf200748') echoJSONData(['ok' => false]);
 else {
   $backendTmpDir = './_backend_tmp_dir_';
   $frontendTargetDir = './';
@@ -33,7 +33,11 @@ else {
       if ($res === true) {
         $steps[] = 'zip opened';
         if ($isFront) {
-          deleteForced('./static');
+          if ($_GET['refreshStatic']) {
+            deleteForced('./static');
+            $steps[] = 'static folder removed';
+          }
+
           $zip->extractTo('./');
           $steps[] = 'front files extracted';
 
