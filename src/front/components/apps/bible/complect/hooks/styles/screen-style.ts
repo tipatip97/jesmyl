@@ -9,9 +9,11 @@ export const screenGridArea = 'screen-grid-area';
 const packInnerStyles = <Config extends Partial<Record<'insertedtext' | 'textinbrackets', {}>>>(
   area: 'insertedtext' | 'textinbrackets',
   currentConfig: Config,
+  isVisible: boolean,
 ) => {
   return Object.entries(currentConfig[area] ?? {}).reduce((innerStyles, [key, val]) => {
-    if (val == null) return innerStyles;
+    if (val == null || (key === 'color' && !isVisible)) return innerStyles;
+
     innerStyles[('--' + area + '-' + key) as never] = ('' + val) as never;
     return innerStyles;
   }, {});
@@ -37,8 +39,8 @@ export const useGetBibleScreenTranslationScreenStyle = (currentConfig: BibleTran
     return {
       ...positions,
       ...textStyles,
-      ...packInnerStyles('insertedtext', currentConfig),
-      ...packInnerStyles('textinbrackets', currentConfig),
+      ...packInnerStyles('insertedtext', currentConfig, isVisible),
+      ...packInnerStyles('textinbrackets', currentConfig, isVisible),
       gridArea: screenGridArea,
       textDecoration: 'italic',
 
