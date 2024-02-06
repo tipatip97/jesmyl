@@ -1,36 +1,36 @@
-import { useRef } from 'react';
 import EvaButton from '../../../../complect/eva-icon/EvaButton';
-import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
+import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
+import BibleTranslationControlled from '../../bible/BibleTranslationControlled';
+import { Com } from '../../cm/col/com/Com';
 import CmTranslationControlled from '../../cm/translation/complect/controlled/CmTranslationControlled';
 import { useCurrentTranslationTextApp, useSwitchCurrentTranslationTextApp } from './hooks/current-app';
-import BibleTranslationControlled from '../../bible/BibleTranslationControlled';
 
-const goBack = (_isForceBack?: boolean | undefined) => {};
+interface Props {
+  useNav: () => ReturnType<typeof useNavConfigurer>;
+  comList?: Com[];
+}
 
-export default function TranslationPage() {
+export default function TranslationPage({ useNav, comList }: Props) {
   const app = useCurrentTranslationTextApp();
-  const switchApp = useSwitchCurrentTranslationTextApp();
-  const goBackRef = useRef(goBack);
+  const switchCurrApp = useSwitchCurrentTranslationTextApp();
+  const head = (
+    <EvaButton
+      name={app === 'cm' ? 'book-open-outline' : 'book-outline'}
+      className="margin-gap-r"
+      onClick={() => switchCurrApp()}
+    />
+  );
 
-  return (
-    <PhaseContainerConfigurer
-      goBack={goBackRef.current}
-      className=""
-      headTitle={app === 'cm' ? 'Песня' : 'Библия'}
-      head={
-        <EvaButton
-          name={app === 'cm' ? 'book-open-outline' : 'book-outline'}
-          className="margin-gap-r"
-          onClick={switchApp}
-        />
-      }
-      content={
-        app === 'cm' ? (
-          <CmTranslationControlled goBackRef={goBackRef} />
-        ) : (
-          <BibleTranslationControlled goBackRef={goBackRef} />
-        )
-      }
+  return app === 'cm' ? (
+    <CmTranslationControlled
+      head={head}
+      comList={comList}
+      useNav={useNav}
+    />
+  ) : (
+    <BibleTranslationControlled
+      head={head}
+      useNav={useNav}
     />
   );
 }

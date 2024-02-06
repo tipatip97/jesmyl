@@ -31,6 +31,7 @@ export const useSetBibleAddressIndexes = () => {
       justBibleStorageSet('translationBooki', booki);
       justBibleStorageSet('translationChapteri', chapteri);
       justBibleStorageSet('translationVersei', versei);
+
       if (resultSelectedi !== undefined) {
         justBibleStorageSet('translationSearchResultSelected', resultSelectedi);
         setJoin(null);

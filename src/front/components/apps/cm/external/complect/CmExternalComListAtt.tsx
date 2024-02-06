@@ -12,6 +12,8 @@ import TheComForFullScreen from './TheComForFullScreen';
 
 const itIt = (it: unknown) => it;
 
+const cbStopper: CallbackStopper = event => event.stopPropagation();
+
 export default function CmExternalComListAtt({
   value,
   scope,
@@ -20,7 +22,7 @@ export default function CmExternalComListAtt({
 }: {
   value: CmComBindAttach;
   scope: string;
-  isRedact: boolean;
+  isRedact?: boolean;
   switchIsRedact: (is?: boolean) => void;
 }) {
   const [removedComws, setRemovedComws] = useState<number[]>([]);
@@ -152,26 +154,28 @@ export default function CmExternalComListAtt({
                         showComposition();
                       }}
                       description={
-                        isIncludes ? (
-                          <StrongEvaButton
-                            scope={scope}
-                            fieldName="listKey"
-                            fieldKey="comws"
-                            fieldValue={['.', '===', wrap.com.wid]}
-                            cud="D"
-                            name="minus-square-outline"
-                            className="color--ko"
-                          />
-                        ) : (
-                          <StrongEvaButton
-                            scope={scope}
-                            fieldName="listKey"
-                            fieldKey="comws"
-                            fieldValue={wrap.com.wid}
-                            cud="C"
-                            name="plus-circle-outline"
-                          />
-                        )
+                        <div onClick={cbStopper}>
+                          {isIncludes ? (
+                            <StrongEvaButton
+                              scope={scope}
+                              fieldName="listKey"
+                              fieldKey="comws"
+                              fieldValue={['.', '===', wrap.com.wid]}
+                              cud="D"
+                              name="minus-square-outline"
+                              className="color--ko"
+                            />
+                          ) : (
+                            <StrongEvaButton
+                              scope={scope}
+                              fieldName="listKey"
+                              fieldKey="comws"
+                              fieldValue={wrap.com.wid}
+                              cud="C"
+                              name="plus-circle-outline"
+                            />
+                          )}
+                        </div>
                       }
                     />
                   );

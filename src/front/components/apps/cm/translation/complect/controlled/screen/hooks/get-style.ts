@@ -1,11 +1,12 @@
 import { CSSProperties, useMemo } from 'react';
 import { useScreenTranslationPositionsStyles } from '../../../../../../+complect/translations/complect/hooks/position-styles';
 import { useScreenTranslationTextStyles } from '../../../../../../+complect/translations/complect/hooks/text-styles';
-import { useIsScreenTranslationTextVisible } from '../../../../../../+complect/translations/hooks/is-visible';
 import { CmTranslationTextScreenConfig } from '../../model';
 
-export const useGetCmScreenTranslationStyle = (currentConfig: CmTranslationTextScreenConfig | und) => {
-  const isVisible = useIsScreenTranslationTextVisible();
+export const useGetCmScreenTranslationStyle = (
+  isVisible: boolean,
+  currentConfig: CmTranslationTextScreenConfig | und,
+) => {
   const textStyles = useScreenTranslationTextStyles(currentConfig);
   const position = useScreenTranslationPositionsStyles(currentConfig);
 

@@ -1,5 +1,7 @@
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { TranslationSlidePreview } from '../../../../+complect/translations/controls/Preview';
+import PhaseContainerConfigurer from '../../../../../../complect/phase-container/PhaseContainerConfigurer';
 import useCmNav from '../../../base/useCmNav';
 import ComFace from '../../../col/com/face/ComFace';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
@@ -7,44 +9,56 @@ import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
 import { CmTranslationControlPanel } from './ControllPanel';
 import { CmTranslationSlideLine } from './SlideLine';
 import { CmTranslateScreenConfigurations } from './screens/ScreenConfigurations';
+import { Com } from '../../../col/com/Com';
+import useNavConfigurer from '../../../../../../complect/nav-configurer/useNavConfigurer';
 
 interface Props {
-  goBackRef: { current: (isForceBack: boolean) => void };
+  head: ReactNode;
+  comList?: Com[];
+  useNav: () => ReturnType<typeof useNavConfigurer>;
 }
 
-export default function CmTranslationControlled(props: Props) {
+export default function CmTranslationControlled({ head, comList, useNav }: Props) {
   const nav = useCmNav();
-  props.goBackRef.current = nav.goBack;
+  const goBack = useNav().goBack;
 
-  const [comList] = useCmScreenTranslationComNavigations().comPack;
+  const comPack = useCmScreenTranslationComNavigations();
   const setTexti = useCmScreenTranslationComTextNavigations().setTexti;
 
   return (
-    <Container>
-      <div className="flex">
-        <TranslationSlidePreview />
-        {
-          <div className="translation-com-list">
-            {comList?.map(com => {
-              return (
-                <ComFace
-                  key={com.wid}
-                  com={com}
-                  importantOnClick={() => {
-                    nav.setAppRouteData({ ccomw: com.wid });
-                    setTexti(0);
-                  }}
-                />
-              );
-            })}
+    <PhaseContainerConfigurer
+      goBack={goBack}
+      className=""
+      headTitle="Песня"
+      head={head}
+      content={
+        <Container>
+          <div className="flex">
+            <TranslationSlidePreview />
+            {
+              <div className="translation-com-list">
+                {(comList ?? comPack.comPack[0])?.map(com => {
+                  return (
+                    <ComFace
+                      key={com.wid}
+                      com={com}
+                      importantOnClick={() => {
+                        nav.setAppRouteData({ ccomw: com.wid });
+                        setTexti(0);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            }
           </div>
-        }
-      </div>
 
-      <CmTranslationSlideLine />
-      <CmTranslationControlPanel />
-      <CmTranslateScreenConfigurations />
-    </Container>
+          <CmTranslationSlideLine />
+          <CmTranslationControlPanel />
+          <CmTranslateScreenConfigurations />
+        </Container>
+      }
+    />
   );
 }
 

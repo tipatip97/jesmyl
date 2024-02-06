@@ -22,12 +22,15 @@ import ScheduleWidgetContextWrapper from './general/ContextWrapper';
 import { ScheduleWidgetCopy } from './general/Copy';
 import ScheduleWidgetLists from './lists/Lists';
 import { ScheduleWidgetMyUserTgInform } from './tg-inform/UserTgInform';
+import { ScheduleWidgetWatchLiveTranslationButton } from './live-translations/WatchLiveButton';
 import {
   ScheduleWidgetRights,
   initialScheduleScope,
   takeScheduleStrongScopeMaker,
   useScheduleWidgetRights,
 } from './useScheduleWidget';
+import { ScheduleWidgetGoToLiveTranslationButton } from './live-translations/GoToLiveTranslationButton';
+import { isTouchDevice } from '../device-differences';
 
 const msInMin = mylib.howMs.inMin;
 
@@ -217,6 +220,9 @@ export default function ScheduleWidget({
                     scope={selfScope}
                     schedule={schedule}
                   />
+
+                  <ScheduleWidgetWatchLiveTranslationButton schedule={schedule} />
+                  {isTouchDevice || <ScheduleWidgetGoToLiveTranslationButton />}
 
                   {isRedact && (
                     <>

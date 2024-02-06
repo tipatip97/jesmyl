@@ -49,7 +49,7 @@ export default function TranslationFullscreen() {
             className="flex center"
             html={text}
             style={style}
-            subUpdate={forceUpdates}
+            subUpdates={forceUpdates}
           />
           <div
             className="top-area info-area left"

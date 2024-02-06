@@ -1,6 +1,16 @@
-import { LocalSokiAuth, NounPronsType, ServerAuthorizationData, ServerRegisterData, SokiStatistic } from '../../models';
 import { AppName } from '../../app/App.model';
 import { ScheduleStorage } from '../../complect/schedule-widget/ScheduleWidget.model';
+import {
+  LocalSokiAuth,
+  NounPronsType,
+  ServerAuthorizationData,
+  ServerRegisterData,
+  SokiClientSubData,
+  SokiStatistic,
+} from '../../models';
+import { BibleTranslationScreenConfig } from '../apps/bible/complect/model';
+import { BibleTranslationAddress } from '../apps/bible/model';
+import { CmTranslationScreenConfig } from '../apps/cm/translation/complect/controlled/model';
 import { FileAssociations } from './parts/actions/files/complect/MyFilesTypeBox';
 
 export interface IndexState {
@@ -10,6 +20,7 @@ export interface IndexState {
   schedules: ScheduleStorage;
   errors: Partial<Record<IndexErrorScope, string>>;
   statistic: SokiStatistic | null;
+  liveData: Record<SokiClientSubData, unknown>;
   deviceId: string;
   nounPronsWords?: NounPronsType;
   fileAssociations?: FileAssociations;
@@ -29,6 +40,22 @@ export interface IndexState {
 }
 
 export type IndexErrorScope = keyof ClientRegisterData;
+
+export type IndexStateSchLiveData = Record<
+  SokiClientSubData<'sch', 'index'>,
+  {
+    fio: string;
+    cm?: {
+      texti: number;
+      comw: number;
+      config: CmTranslationScreenConfig;
+    };
+    bible?: {
+      address: BibleTranslationAddress;
+      config: BibleTranslationScreenConfig;
+    };
+  }
+>;
 
 export interface IndexStateError {
   message?: string | nil;
@@ -56,6 +83,7 @@ export interface IndexNavData {
   passport: JesmylPassport;
   swInvite: string;
   schw: number;
+  schTranslationComws: number[];
 }
 
 export interface UserMessage {

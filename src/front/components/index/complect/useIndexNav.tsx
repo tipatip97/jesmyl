@@ -2,6 +2,7 @@ import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import serviceMaster from '../../../complect/service/serviceMaster';
+import { RoutePhasePoint } from '../../router/Router.model';
 import { Index } from '../Index';
 import { IndexNavData, IndexStorage } from '../Index.model';
 import IndexActions from '../parts/actions/Actions';
@@ -11,6 +12,9 @@ import Main from '../parts/main/IndexMain';
 import { IndexConsole } from '../parts/settings/Console';
 import IndexSettings from '../parts/settings/Settings';
 import ScheduleWidgetAlarmScheduleList from './AlarmScheduleList';
+import { IndexScheduleWidgetTranslations } from './translations/LiveTranslations';
+
+export const indexScheduleWidgetTranslationPagePhase: RoutePhasePoint = ['translation'];
 
 const actions: UseNavAction[] = [];
 const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
@@ -49,6 +53,12 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
         {
           phase: ['schedules'],
           node: <ScheduleWidgetAlarmScheduleList />,
+          next: [
+            {
+              phase: indexScheduleWidgetTranslationPagePhase,
+              node: <IndexScheduleWidgetTranslations />,
+            },
+          ],
         },
         {
           phase: ['actions'],

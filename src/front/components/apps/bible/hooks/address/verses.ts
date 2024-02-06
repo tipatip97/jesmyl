@@ -4,7 +4,7 @@ import { useStorageValueGetter } from '../../../../../complect/useStorage';
 import bibleStorage from '../../bibleStorage';
 import { BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslationSlideSyncContentSetter } from '../slide-sync';
-import { useBibleStorageSet } from '../storage';
+import { justBibleStorageSet } from '../storage';
 import { chapterBooks } from '../texts';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from './address';
 import { useBibleAddressBooki } from './books';
@@ -37,17 +37,16 @@ export const useBibleAddressVersei = () => {
 export const usePutBibleAddressVerseiSetter = () => {
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
-  const bibleValSet = useBibleStorageSet();
 
   return useCallback(
     (versei: number, isRiseUpUpdats: boolean) => {
       return () => {
         setJoin(null);
-        bibleValSet('translationVersei', versei);
+        justBibleStorageSet('translationVersei', versei);
         if (isRiseUpUpdats) syncSlide();
       };
     },
-    [bibleValSet, setJoin, syncSlide],
+    [setJoin, syncSlide],
   );
 };
 
@@ -56,7 +55,6 @@ export const usePutBibleJoinAddressSetter = () => {
   const currentBooki = useBibleAddressBooki();
   const currentVersei = useBibleAddressVersei();
   const currentJoinAddress = useBibleTranslationJoinAddress();
-  const bibleValSet = useBibleStorageSet();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
 
@@ -64,7 +62,7 @@ export const usePutBibleJoinAddressSetter = () => {
     (versei: number, isRiseUpUpdats: boolean) => {
       return (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         let newJoin: BibleTranslationJoinAddress | null = { ...currentJoinAddress };
-        bibleValSet('translationVersei', versei);
+        justBibleStorageSet('translationVersei', versei);
 
         if (currentJoinAddress === null) {
           const verses = ((newJoin[currentBooki] = {} as BibleTranslationJoinAddress[number])[currentChapteri] =
@@ -117,6 +115,6 @@ export const usePutBibleJoinAddressSetter = () => {
         if (isRiseUpUpdats) syncSlide();
       };
     },
-    [currentJoinAddress, bibleValSet, setJoin, syncSlide, currentBooki, currentChapteri, currentVersei],
+    [currentJoinAddress, setJoin, syncSlide, currentBooki, currentChapteri, currentVersei],
   );
 };

@@ -117,7 +117,15 @@ export default function ScheduleWidgetDayEventAtt(
     }
 
     attContent ??= isExpand && (
-      <div>{appAtt.result?.(attValue ?? appAtt.initVal, scope, isRedact, is => setIsSelfRedact(is ?? isNIs))}</div>
+      <div>
+        {appAtt.result?.(
+          attValue ?? appAtt.initVal,
+          scope,
+          isRedact,
+          is => setIsSelfRedact(is ?? isNIs),
+          props.schedule,
+        )}
+      </div>
     );
   } catch (error) {
     attContent = <div className="error-message">Контент не доступен</div>;

@@ -1,36 +1,41 @@
 import { useRef, useState } from 'react';
 import { TranslationScreenProps } from '../../../+complect/translations/Translations.model';
-import { useScreenTranslationCurrentConfigi } from '../../../+complect/translations/hooks/configs';
 import { useSetScreenTranslationInteractiveBackground } from '../../../+complect/translations/hooks/interactive-back';
 import { useApplyScreenFontFamilyEffect } from '../../../+complect/translations/hooks/set-font-family';
 import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
-import { useBibleScreenTranslationConfig } from '../hooks/configs';
 import { useBibleScreenTranslationKeyListener } from '../hooks/key-listener';
 import { useGetBibleScreenTranslationWrapperStyle } from '../hooks/styles/wrapper-style';
+import { BibleTranslationScreenConfig } from '../model';
 import { BibleTranslationScreenAddressContainer } from './complect/AddressContainer';
-import { BibleTranslationScreenContent } from './complect/Content';
 import { BibleTranslationScreenAddressPanel } from './complect/AddressPanel';
+import { BibleTranslationScreenContent } from './complect/Content';
 import { BibleTranslationScreenContentConfiguration } from './complect/ContentConfiguration';
 
-export const BibleTranslationScreen = (props: TranslationScreenProps) => {
+interface Props extends TranslationScreenProps {
+  bibleConfig: BibleTranslationScreenConfig | und;
+  addressContent: string;
+  screenContent: string;
+  windowResizeUpdatesNum: number | und;
+  isVisible: boolean;
+}
+
+export const BibleTranslationScreen = (props: Props) => {
   const [isChangeAddressPanelHeight, setIsChangeAddressPanelHeight] = useState(true);
 
-  const currentConfigi = useScreenTranslationCurrentConfigi();
-  const currentConfig = useBibleScreenTranslationConfig(props.screeni ?? currentConfigi);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const screenWrapperRef = useRef<HTMLDivElement>(null);
   const versei = useBibleAddressVersei();
 
   useBibleScreenTranslationKeyListener(versei, props.win);
 
-  const wrapperStyle = useGetBibleScreenTranslationWrapperStyle(currentConfig);
+  const wrapperStyle = useGetBibleScreenTranslationWrapperStyle(props.bibleConfig);
 
   const background = useSetScreenTranslationInteractiveBackground(
-    currentConfig?.isWithBackground ? currentConfig.backgroundInteractive : undefined,
+    props.bibleConfig?.isWithBackground ? props.bibleConfig.backgroundInteractive : undefined,
   );
 
-  useApplyScreenFontFamilyEffect(currentConfig?.fontFamily, props.win);
+  useApplyScreenFontFamilyEffect(props.bibleConfig?.fontFamily, props.win);
 
   return (
     <div
@@ -48,7 +53,7 @@ export const BibleTranslationScreen = (props: TranslationScreenProps) => {
               setIsChangeAddressPanelHeight(is => !is);
             }}
           />
-          {isChangeAddressPanelHeight && currentConfig && (
+          {isChangeAddressPanelHeight && props.bibleConfig && (
             <BibleTranslationScreenAddressPanel
               screeni={props.screeni}
               wrapperRef={wrapperRef}
@@ -61,7 +66,7 @@ export const BibleTranslationScreen = (props: TranslationScreenProps) => {
         className="relative full-size"
         ref={screenWrapperRef}
       >
-        {props.isTech && currentConfig && (
+        {props.isTech && props.bibleConfig && (
           <BibleTranslationScreenContentConfiguration
             screeni={props.screeni}
             wrapperRef={screenWrapperRef}
@@ -71,6 +76,10 @@ export const BibleTranslationScreen = (props: TranslationScreenProps) => {
           screeni={props.screeni}
           win={props.win}
           isPreview={props.isPreview}
+          screenContent={props.screenContent}
+          windowResizeUpdatesNum={props.windowResizeUpdatesNum}
+          bibleConfig={props.bibleConfig}
+          isVisible={props.isVisible}
         />
       </div>
       <BibleTranslationScreenAddressContainer
@@ -78,6 +87,10 @@ export const BibleTranslationScreen = (props: TranslationScreenProps) => {
         isTech={props.isTech}
         isPreview={props.isPreview}
         screeni={props.screeni}
+        bibleConfig={props.bibleConfig}
+        addressContent={props.addressContent}
+        windowResizeUpdatesNum={props.windowResizeUpdatesNum}
+        isVisible={props.isVisible}
       />
     </div>
   );

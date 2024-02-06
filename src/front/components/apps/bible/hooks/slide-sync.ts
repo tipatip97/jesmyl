@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useSwitchIsScreenTranslationTextVisible } from '../../+complect/translations/hooks/is-visible';
 import { useActualRef } from '../../../../complect/useActualRef';
 import { useStorageValueGetter } from '../../../../complect/useStorage';
 import bibleStorage from '../bibleStorage';
@@ -20,10 +21,12 @@ export const useBibleTranslationSlideSyncContentSetter = () => {
   const currentVerseiRef = useActualRef(useBibleAddressVersei());
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const addToHistory = useBibleTranslationAddToHistory();
+  const switchIsVisible = useSwitchIsScreenTranslationTextVisible();
 
   return useCallback(
     (isReplaceFirstNearVersei = false) => {
       justBibleStorageSet('translationSlideSyncContentUpdatesNum', ink);
+      switchIsVisible(true);
 
       setTimeout(() => {
         addToHistory(
@@ -32,6 +35,6 @@ export const useBibleTranslationSlideSyncContentSetter = () => {
         );
       });
     },
-    [addToHistory, currentBookiRef, currentChapteriRef, currentJoinAddress, currentVerseiRef],
+    [addToHistory, currentBookiRef, currentChapteriRef, currentJoinAddress, currentVerseiRef, switchIsVisible],
   );
 };

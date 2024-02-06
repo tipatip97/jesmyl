@@ -1,8 +1,7 @@
 import { useRef } from 'react';
-import { useScreenTranslationCurrentConfigi } from '../../../../+complect/translations/hooks/configs';
 import { useSetScreenTranslationInteractiveBackground } from '../../../../+complect/translations/hooks/interactive-back';
-import { useBibleScreenTranslationConfig } from '../../hooks/configs';
 import { useGetBibleScreenTranslationAddressStyle } from '../../hooks/styles/address-style';
+import { BibleTranslationScreenConfig } from '../../model';
 import { BibleTranslationScreenAddressContent } from './AddressContent';
 import { BibleTranslationScreenAddressContentPositionConfiguration } from './AddressContentPositionConfiguration';
 
@@ -11,17 +10,19 @@ interface Props {
   isTech: boolean | und;
   isPreview: boolean | und;
   isChangeAddressPanelHeight: boolean;
+  bibleConfig: BibleTranslationScreenConfig | und;
+  addressContent: string;
+  windowResizeUpdatesNum: number | und;
+  isVisible: boolean;
 }
 
 export const BibleTranslationScreenAddressContainer = (props: Props) => {
-  const currentConfigi = useScreenTranslationCurrentConfigi();
-  const currentConfig = useBibleScreenTranslationConfig(props.screeni ?? currentConfigi);
   const addressBackground = useSetScreenTranslationInteractiveBackground(
-    currentConfig?.address.isWithBackground ? currentConfig.address.backgroundInteractive : undefined,
+    props.bibleConfig?.address.isWithBackground ? props.bibleConfig.address.backgroundInteractive : undefined,
   );
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const addressContainerStyle = useGetBibleScreenTranslationAddressStyle(currentConfig);
+  const addressContainerStyle = useGetBibleScreenTranslationAddressStyle(props.isVisible, props.bibleConfig);
 
   return (
     <>
@@ -31,7 +32,7 @@ export const BibleTranslationScreenAddressContainer = (props: Props) => {
         ref={wrapperRef}
       >
         {addressBackground}
-        {!props.isChangeAddressPanelHeight && props.isTech && currentConfig && (
+        {!props.isChangeAddressPanelHeight && props.isTech && props.bibleConfig && (
           <BibleTranslationScreenAddressContentPositionConfiguration
             screeni={props.screeni}
             wrapperRef={wrapperRef}
@@ -40,6 +41,9 @@ export const BibleTranslationScreenAddressContainer = (props: Props) => {
         <BibleTranslationScreenAddressContent
           screeni={props.screeni}
           isPreview={props.isPreview}
+          bibleConfig={props.bibleConfig}
+          addressContent={props.addressContent}
+          windowResizeUpdatesNum={props.windowResizeUpdatesNum}
         />
       </div>
     </>

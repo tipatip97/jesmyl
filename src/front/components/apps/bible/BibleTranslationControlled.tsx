@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { ScreenTranslationControlPanel } from '../+complect/translations/controls/ControllPanel';
 import { TranslationSlidePreview } from '../+complect/translations/controls/Preview';
+import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
+import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
 import { BibleTranslateScreenConfigurations } from './complect/ScreenConfigurations';
 import { BibleTranslationHistoryArchive } from './complect/archive/history/HistoryArchive';
 import { BibleTranslationPlanArchive } from './complect/archive/plan/PlanArchive';
@@ -10,15 +12,13 @@ import { BibleSearchPanel } from './complect/search/Panel';
 import { useBibleSlideSyncContentUpdatesNum } from './hooks/slide-sync';
 import { justBibleStorageSet } from './hooks/storage';
 import { useBibleCurrentAddressText } from './hooks/texts';
-import useBibleNav from './useBibleNav';
 
 interface Props {
-  goBackRef: { current: (isForceBack: boolean) => void };
+  head: ReactNode;
+  useNav: () => ReturnType<typeof useNavConfigurer>;
 }
 
-export default function BibleTranslationControlled({ goBackRef }: Props) {
-  const { goBack } = useBibleNav();
-  goBackRef.current = goBack;
+export default function BibleTranslationControlled({ useNav, head }: Props) {
   const [isPreview, setIsPreview] = useState(true);
   const address = useBibleCurrentAddressText();
 
@@ -49,40 +49,48 @@ export default function BibleTranslationControlled({ goBackRef }: Props) {
   }, []);
 
   return (
-    <Container>
-      <TopPanel>
-        <div className="flex column">
-          <div
-            className={'flex flex-gap margin-gap-b ' + (actualAddressContent === address ? 'color--7' : '')}
-            onClick={() => setIsPreview(is => !is)}
-          >
-            <div className={'pointer ' + (isPreview ? 'color--7' : '')}>Предпросмотр</div>
-            {' / '}
-            <div className={'pointer ' + (isPreview ? '' : 'color--7')}>Слайд</div>
-          </div>
-          <TranslationSlidePreview isPreview={isPreview} />
-        </div>
-        <BibleLists />
-      </TopPanel>
-      <ScreenTranslationControlPanel
-        onNext={() => justBibleStorageSet('translationVersei', versei => versei + 1)}
-        onPrev={() => justBibleStorageSet('translationVersei', versei => versei - 1)}
-      />
-      <BibleSearchPanel />
-      <BottomGrid className="margin-big-gap-t">
-        <div grid-configs="">
-          <BibleTranslateScreenConfigurations />
-        </div>
-        <div grid-history="">
-          <BibleTranslationHistoryArchive />
-        </div>
-        <div grid-plan="">
-          <div>
-            <BibleTranslationPlanArchive />
-          </div>
-        </div>
-      </BottomGrid>
-    </Container>
+    <PhaseContainerConfigurer
+      goBack={useNav().goBack}
+      className=""
+      headTitle="Библия"
+      head={head}
+      content={
+        <Container>
+          <TopPanel>
+            <div className="flex column">
+              <div
+                className={'flex flex-gap margin-gap-b ' + (actualAddressContent === address ? 'color--7' : '')}
+                onClick={() => setIsPreview(is => !is)}
+              >
+                <div className={'pointer ' + (isPreview ? 'color--7' : '')}>Предпросмотр</div>
+                {' / '}
+                <div className={'pointer ' + (isPreview ? '' : 'color--7')}>Слайд</div>
+              </div>
+              <TranslationSlidePreview isPreview={isPreview} />
+            </div>
+            <BibleLists />
+          </TopPanel>
+          <ScreenTranslationControlPanel
+            onNext={() => justBibleStorageSet('translationVersei', versei => versei + 1)}
+            onPrev={() => justBibleStorageSet('translationVersei', versei => versei - 1)}
+          />
+          <BibleSearchPanel />
+          <BottomGrid className="margin-big-gap-t">
+            <div grid-configs="">
+              <BibleTranslateScreenConfigurations />
+            </div>
+            <div grid-history="">
+              <BibleTranslationHistoryArchive />
+            </div>
+            <div grid-plan="">
+              <div>
+                <BibleTranslationPlanArchive />
+              </div>
+            </div>
+          </BottomGrid>
+        </Container>
+      }
+    />
   );
 }
 

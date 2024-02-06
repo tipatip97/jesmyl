@@ -20,6 +20,7 @@ export interface ScheduleWidgetAppAtt<AttValue extends any = any> extends Schedu
     scope: string,
     isRedact: boolean,
     switchIsRedact: (isRedact?: boolean) => void,
+    schedule: IScheduleWidget,
   ) => ReactNode;
 }
 

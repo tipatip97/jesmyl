@@ -37,8 +37,8 @@ export const ScreenTranslationControlPanel = ({ onNext, onPrev }: Props) => {
         <EvaIcon name="upload-outline" />
       </ControlButton>
       <ControlButton
-        title="esc, V"
-        onClick={switchIsVisible}
+        title="esc"
+        onClick={() => switchIsVisible()}
       >
         <EvaIcon name="square-outline" />
       </ControlButton>

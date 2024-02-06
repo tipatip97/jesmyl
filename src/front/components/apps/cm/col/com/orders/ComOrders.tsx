@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import TheOrder from '../order/TheOrder';
 import { IComOrdersProps } from './ComOrders.model';
-import styled from 'styled-components';
 
 export default function ComOrders(props: IComOrdersProps) {
   const { com, fontSize } = props;
   const [exMods, updateExMods] = useState<number[]>(com.excludedModulations);
+
+  let specChordedi = 0;
+  let specTextedi = 0;
 
   return (
     <OrdList
@@ -17,11 +20,14 @@ export default function ComOrders(props: IComOrdersProps) {
     >
       {com.orders?.map((orderUnit, orderUniti) => {
         const isExcludedModulation = exMods.includes(orderUnit.wid);
+        const specialClassId =
+          orderUnit.texti == null ? ` com-chorded-block-${specChordedi++} ` : ` com-texted-block-${specTextedi++} `;
 
         return (
           <TheOrder
             key={`order.${orderUniti}`}
             {...props}
+            specialClassId={specialClassId}
             orderUnit={orderUnit}
             orderUniti={orderUniti}
             asHeaderComponent={({ headerNode }) => {

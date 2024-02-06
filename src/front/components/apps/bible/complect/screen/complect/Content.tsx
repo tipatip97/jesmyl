@@ -1,51 +1,38 @@
-import { useMemo } from 'react';
-import {
-  useScreenTranslationCurrentConfig,
-  useScreenTranslationCurrentConfigi,
-} from '../../../../+complect/translations/hooks/configs';
-import { useBibleSlideSyncContentUpdatesNum } from '../../../hooks/slide-sync';
-import { useBibleCurrentSlideText } from '../../../hooks/texts';
-import { useBibleScreenTranslationConfig } from '../../hooks/configs';
 import { useBibleScreenTranslationFontSizeScreenAdapter } from '../../hooks/font-size-adapter/screen-adapter';
 import { useGetBibleScreenTranslationScreenStyle } from '../../hooks/styles/screen-style';
+import { BibleTranslationScreenConfig } from '../../model';
 import './Content.scss';
 
 interface Props {
   screeni: number | und;
   win: Window | und;
   isPreview: boolean | und;
+  screenContent: string;
+  windowResizeUpdatesNum: number | und;
+  bibleConfig: BibleTranslationScreenConfig | und;
+  isVisible: boolean;
 }
 
 export const BibleTranslationScreenContent = (props: Props) => {
-  const currentConfigi = useScreenTranslationCurrentConfigi();
-  const fullContentUpdatesNum = useBibleSlideSyncContentUpdatesNum();
-
-  const currentConfig = useBibleScreenTranslationConfig(props.screeni ?? currentConfigi);
-  const config = useScreenTranslationCurrentConfig();
-
-  const screenStyle = useGetBibleScreenTranslationScreenStyle(currentConfig);
-
-  const screenPreviewContent = useBibleCurrentSlideText();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const screenActualContent = useMemo(() => screenPreviewContent, [fullContentUpdatesNum]);
-  const screenContent = props.isPreview ? screenPreviewContent : screenActualContent;
+  const screenStyle = useGetBibleScreenTranslationScreenStyle(props.isVisible, props.bibleConfig);
 
   const [screenWrapperRef, screenContentRef] = useBibleScreenTranslationFontSizeScreenAdapter(
-    screenContent,
-    currentConfig,
-    config,
+    props.screenContent,
+    props.bibleConfig,
+    props.windowResizeUpdatesNum,
   );
 
   return (
     <>
       <div
-        className={'bible-translation-screen-content absolute flex center'}
+        className="bible-translation-screen-content absolute flex center"
         style={screenStyle}
         ref={screenWrapperRef}
       >
         <div
+          className="fade-00"
           ref={screenContentRef}
-          dangerouslySetInnerHTML={{ __html: screenContent }}
+          dangerouslySetInnerHTML={{ __html: props.screenContent }}
         />
       </div>
     </>

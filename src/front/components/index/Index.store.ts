@@ -16,6 +16,7 @@ const initialState: IndexState = {
   errors: {},
   statistic: null,
   deviceId: '',
+  liveData: {},
 };
 
 export const slice = createSlice({

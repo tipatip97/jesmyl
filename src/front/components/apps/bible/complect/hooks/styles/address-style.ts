@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
 import { CSSProperties } from 'styled-components';
 import { useScreenTranslationBackgroundStyles } from '../../../../+complect/translations/complect/hooks/background-styles';
-import { useIsScreenTranslationTextVisible } from '../../../../+complect/translations/hooks/is-visible';
 import { BibleTranslationScreenConfig } from '../../model';
 
 export const addressGridArea = 'address-grid-area';
 
-export const useGetBibleScreenTranslationAddressStyle = (currentConfig: BibleTranslationScreenConfig | und) => {
-  const isVisible = useIsScreenTranslationTextVisible();
+export const useGetBibleScreenTranslationAddressStyle = (
+  isVisible: boolean,
+  currentConfig: BibleTranslationScreenConfig | und,
+) => {
   const background = useScreenTranslationBackgroundStyles(currentConfig?.address);
 
   return useMemo((): CSSProperties => {

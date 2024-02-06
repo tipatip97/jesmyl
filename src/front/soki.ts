@@ -96,6 +96,8 @@ export class SokiTrip {
             return;
           }
 
+          if (event.liveData !== undefined) indexStorage.set('liveData', event.liveData);
+
           if (event.authorized !== undefined) {
             this.isAuthorized = true;
             Eventer.invoke(this.authListeners, true);

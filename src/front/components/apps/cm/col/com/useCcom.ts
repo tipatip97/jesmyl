@@ -6,11 +6,11 @@ import { useCols } from '../../cols/useCols';
 
 const numComUpdatesSelector = (state: RootState) => state.cm.numComUpdates;
 
-export function useCcom() {
+export function useCcom(topComw?: number) {
   useSelector(numComUpdatesSelector);
   const cols = useCols();
-  const {
-    appRouteData: { ccomw },
-  } = useCmNav();
-  return useMemo(() => cols?.coms.find(com => com.wid === ccomw), [ccomw, cols]);
+  const cmNav = useCmNav();
+  const comw = topComw ?? cmNav.appRouteData.ccomw;
+
+  return useMemo(() => cols?.coms.find(com => com.wid === comw), [comw, cols]);
 }

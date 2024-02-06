@@ -10,5 +10,8 @@ export const useIsScreenTranslationTextVisible = () => useSelector(isTranslation
 export const useSwitchIsScreenTranslationTextVisible = () => {
   const dispatch = useDispatch();
 
-  return useCallback(() => dispatch(complectActions.isTranslationTextVisible()), [dispatch]);
+  return useCallback(
+    (isVisible?: boolean) => dispatch(complectActions.isTranslationTextVisible(isVisible)),
+    [dispatch],
+  );
 };

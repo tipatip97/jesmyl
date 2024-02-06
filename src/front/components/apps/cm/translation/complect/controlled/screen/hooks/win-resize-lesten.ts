@@ -11,7 +11,7 @@ export const useScreenWinResizeListen = (win: Window | nil) => {
 
     const updater = () => {
       clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => forceUpdate(), 300);
+      debounceTimeout = setTimeout(forceUpdate, 300);
     };
 
     win.addEventListener('resize', updater);

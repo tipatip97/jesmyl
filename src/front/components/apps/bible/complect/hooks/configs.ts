@@ -11,7 +11,7 @@ import { useStorageValueGetter } from '../../../../../complect/useStorage';
 import bibleStorage from '../../bibleStorage';
 import { BibleTranslationScreenConfig } from '../model';
 
-const defaultConfig: BibleTranslationScreenConfig = {
+export const defaultBibleConfig: BibleTranslationScreenConfig = {
   ...defaultScreenTranslationTextConfig,
   ...defaultScreenTranslationBackgroundConfig,
   insertedtext: {
@@ -44,7 +44,7 @@ const emptyArr: [] = [];
 export const useBibleScreenTranslationConfigs = () =>
   useMakeScreenTranslationConfigsFillPack(
     useStorageValueGetter(bibleStorage, 'translationScreenConfigs', emptyArr),
-    defaultConfig,
+    defaultBibleConfig,
   );
 
 export const useBibleScreenTranslationConfig = (configi: number | und): BibleTranslationScreenConfig | und => {

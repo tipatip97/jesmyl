@@ -4,6 +4,7 @@ import { ScreenTranslateCurrentPositionConfigurators } from '../../../../../+com
 import { useApplyScreenFontFamilyEffect } from '../../../../../+complect/translations/hooks/set-font-family';
 import FontSizeContain from '../../../../base/font-size-contain/FontSizeContain';
 import { FontSizeContainProps } from '../../../../base/font-size-contain/FontSizeContain.model';
+import { useUpdateCmCurrentTranslationConfig } from '../hooks/update-config';
 import { CmTranslationScreenConfig, CmTranslationTextScreenConfig } from '../model';
 import { cmTranslationSubConfigNext } from '../screens/defaults';
 import { useGetCmScreenTranslationStyle } from './hooks/get-style';
@@ -12,11 +13,11 @@ interface Props {
   config: CmTranslationTextScreenConfig;
   win?: Window;
   text: string;
-  subUpdates: string;
+  subUpdates: string | number | und;
   isTech: boolean | und;
   wrapperRef: React.RefObject<HTMLDivElement>;
   parentConfig: CmTranslationScreenConfig;
-  updateConfig: (config: Partial<CmTranslationScreenConfig> | null) => void;
+  isVisible: boolean;
 }
 
 export const CmTranslationSubScreen = ({
@@ -26,10 +27,11 @@ export const CmTranslationSubScreen = ({
   subUpdates,
   isTech,
   parentConfig,
-  updateConfig,
   wrapperRef,
+  isVisible,
 }: Props & Partial<FontSizeContainProps>) => {
-  const style = useGetCmScreenTranslationStyle(config);
+  const style = useGetCmScreenTranslationStyle(isVisible, config);
+  const updateConfig = useUpdateCmCurrentTranslationConfig();
 
   const updateSubConfig = useCallback(
     (config: Partial<ScreenTranslationPositionConfig>) => {
@@ -56,7 +58,7 @@ export const CmTranslationSubScreen = ({
         className="inline-flex white-pre-children"
         style={style}
         html={text}
-        subUpdate={subUpdates + config.width + config.height}
+        subUpdates={'' + subUpdates + config.width + config.height}
       />
       {isTech && config && (
         <ScreenTranslateCurrentPositionConfigurators

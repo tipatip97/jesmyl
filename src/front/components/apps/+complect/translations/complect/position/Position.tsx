@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { RuleSet, css } from 'styled-components';
 import { RootState } from '../../../../../../shared/store';
+import { useUpdateCmCurrentTranslationConfig } from '../../../../cm/translation/complect/controlled/hooks/update-config';
 import { defaultScreenTranslationPositionConfig } from '../defaults';
 import { FixedResizerLines, ScreenTranslationPositionConfig } from '../model';
 import { PositionConfiguratorsResizersHalfWrapperFixer } from './complect/HalfWrapperFixer';
@@ -18,7 +19,7 @@ export type ScreenResizerResizeOnly = `${Top}${Right}${Bottom}${Left}`;
 
 interface Props {
   config: ScreenTranslationPositionConfig;
-  updateConfig: (config: Partial<ScreenTranslationPositionConfig>) => void;
+  updateConfig?: (config: Partial<ScreenTranslationPositionConfig>) => void;
   resizeOnly?: ScreenResizerResizeOnly;
   isCantMove?: boolean;
   wrapperRef: React.RefObject<HTMLDivElement>;
@@ -28,11 +29,14 @@ const fixedResizerLinesSelector = (state: RootState) => state.complect.fixedResi
 
 export const ScreenTranslateCurrentPositionConfigurators = ({
   config,
-  updateConfig,
   resizeOnly,
   isCantMove,
   wrapperRef,
+  updateConfig: topUpdateConfig,
 }: Props) => {
+  const currUpdateConfig = useUpdateCmCurrentTranslationConfig();
+  const updateConfig = topUpdateConfig ?? currUpdateConfig;
+
   const [top, setTop] = useState(config.top);
   const [left, setLeft] = useState(config.left);
   const [width, setWidth] = useState(config.width);

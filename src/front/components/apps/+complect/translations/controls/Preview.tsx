@@ -4,7 +4,11 @@ import useFullContent from '../../../../../complect/fullscreen-content/useFullCo
 import { TranslationScreen } from '../TranslationScreen';
 import { useScreenTranslationCurrentConfig } from '../hooks/configs';
 
-export const TranslationSlidePreview = ({ isPreview = true }: { isPreview?: boolean }) => {
+interface Props {
+  isPreview?: boolean;
+}
+
+export const TranslationSlidePreview = ({ isPreview = true }: Props) => {
   const currentConfig = useScreenTranslationCurrentConfig();
 
   const [fullNode, openFull] = useFullContent(() => {

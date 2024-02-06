@@ -1,39 +1,22 @@
-import { useMemo } from 'react';
-import {
-  useScreenTranslationCurrentConfig,
-  useScreenTranslationCurrentConfigi,
-} from '../../../../+complect/translations/hooks/configs';
-import { useBibleSlideSyncContentUpdatesNum } from '../../../hooks/slide-sync';
-import { useBibleCurrentAddressText } from '../../../hooks/texts';
-import { useBibleScreenTranslationConfig } from '../../hooks/configs';
 import { useBibleScreenTranslationFontSizeAddressAdapter } from '../../hooks/font-size-adapter/address-adapter';
 import { useGetBibleScreenTranslationAddressTextWrapperStyle } from '../../hooks/styles/address-text-wrapper-style';
+import { BibleTranslationScreenConfig } from '../../model';
 
 interface Props {
   screeni: number | und;
   isPreview: boolean | und;
+  bibleConfig: BibleTranslationScreenConfig | und;
+  addressContent: string;
+  windowResizeUpdatesNum: number | und;
 }
 
 export const BibleTranslationScreenAddressContent = (props: Props) => {
-  const currentConfigi = useScreenTranslationCurrentConfigi();
-  const currentConfig = useBibleScreenTranslationConfig(props.screeni ?? currentConfigi);
-  const fullContentUpdatesNum = useBibleSlideSyncContentUpdatesNum();
-
-  const config = useScreenTranslationCurrentConfig();
-
-  const addressPreviewContent = useBibleCurrentAddressText();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const addressActualContent = useMemo(() => addressPreviewContent, [fullContentUpdatesNum]);
-  const addressContent = props.isPreview ? addressPreviewContent : addressActualContent;
-
-  const addressTextWrapperStyle = useGetBibleScreenTranslationAddressTextWrapperStyle(currentConfig);
+  const addressTextWrapperStyle = useGetBibleScreenTranslationAddressTextWrapperStyle(props.bibleConfig);
   const [addressWrapperRef, addressContentRef] = useBibleScreenTranslationFontSizeAddressAdapter(
-    addressContent,
-    currentConfig,
-    config,
+    props.addressContent,
+    props.bibleConfig,
+    props.windowResizeUpdatesNum,
   );
-
-  if (currentConfig === undefined) return;
 
   return (
     <>
@@ -43,10 +26,10 @@ export const BibleTranslationScreenAddressContent = (props: Props) => {
         ref={addressWrapperRef}
       >
         <div
-          className="nowrap"
+          className="nowrap fade-00"
           ref={addressContentRef}
         >
-          {addressContent}
+          {props.addressContent}
         </div>
       </div>
     </>

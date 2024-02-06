@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import mylib from '../../../../../complect/my-lib/MyLib';
-import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from '../../hooks/address/address';
+import {
+  useBibleTranslationAddressIndexesSetter,
+  useBibleTranslationJoinAddress,
+  useBibleTranslationJoinAddressSetter,
+} from '../../hooks/address/address';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleTranslationSlideSyncContentSetter } from '../../hooks/slide-sync';
-import { useBibleStorageSet } from '../../hooks/storage';
+import { justBibleStorageSet } from '../../hooks/storage';
 import { useBibleCurrentWholeChapterBookList } from '../../hooks/texts';
 import { BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslationAddToPlan } from '../archive/plan/hooks/plan';
@@ -19,21 +23,21 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
 
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
-  const bibleSetVal = useBibleStorageSet();
   const chapters = useBibleCurrentWholeChapterBookList();
   const joinAddress = useBibleTranslationJoinAddress();
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
   const addToPlan = useBibleTranslationAddToPlan();
+  const setAddress = useBibleTranslationAddressIndexesSetter();
 
   useEffect(() => {
     if (numberCollection === '') return;
     return setTimeoutEffect(() => {
-      bibleSetVal('translationVersei', +numberCollection - 1);
+      justBibleStorageSet('translationVersei', +numberCollection - 1);
       setNumberCollection('');
     }, 300);
-  }, [numberCollection, bibleSetVal]);
+  }, [numberCollection]);
 
   useEffect(() => {
     return listenWindowKeyDownEffect(event => {
@@ -69,7 +73,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
     return listenWindowKeyDownEffect(event => {
       const limitStepJump = (dir: 1 | -1) => {
         if (event.shiftKey || currentJoinAddress === null) {
-          bibleSetVal('translationVersei', versei =>
+          justBibleStorageSet('translationVersei', versei =>
             dir < 0
               ? versei > 0
                 ? versei + dir
@@ -86,9 +90,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
         const chapteri = Math[mathMethod](...mylib.keys(currentJoinAddress[booki]));
         const verses = currentJoinAddress[booki][chapteri];
 
-        bibleSetVal('translationBooki', booki);
-        bibleSetVal('translationChapteri', chapteri);
-        bibleSetVal('translationVersei', Math[mathMethod](...verses) + dir);
+        setAddress(booki, chapteri, Math[mathMethod](...verses) + dir);
         setJoin(null);
       };
 
@@ -130,5 +132,5 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
 
       setJoin(mylib.keys(newJoin).length === 0 ? null : newJoin);
     }, win);
-  }, [currentBooki, currentChapteri, chapters, currentJoinAddress, setJoin, bibleSetVal, syncSlide, versei, win]);
+  }, [chapters, currentBooki, currentChapteri, currentJoinAddress, setAddress, setJoin, syncSlide, versei, win]);
 };

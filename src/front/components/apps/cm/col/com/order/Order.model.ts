@@ -110,6 +110,7 @@ export interface ITheOrderProps {
   com: Com;
   chordVisibleVariant: ChordVisibleVariant;
   showInvisibles?: boolean;
+  specialClassId?: string;
 }
 
 export interface IComOrdHeaderProps extends IComOrdProps {

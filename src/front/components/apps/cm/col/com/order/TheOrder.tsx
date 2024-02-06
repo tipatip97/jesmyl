@@ -65,7 +65,11 @@ export default function TheOrder(props: ITheOrderProps) {
     return (
       <div
         id={`com-block-${orderUniti}`}
-        className={'composition-block styled-block flex flex-baseline' + (orderUnit.isVisible ? '' : ' invisible')}
+        className={
+          (props.specialClassId || '') +
+          'composition-block styled-block flex flex-baseline' +
+          (orderUnit.isVisible ? '' : ' invisible')
+        }
         ref={el => el && (orderUnit.element = el)}
       >
         {header}
@@ -85,6 +89,7 @@ export default function TheOrder(props: ITheOrderProps) {
     <div
       id={`com-block-${orderUniti}`}
       className={
+        (props.specialClassId || '') +
         `composition-block styled-block ${className}` +
         (orderUnit.isVisible ? '' : ' invisible') +
         (chordedOrd ? ' chorded-block' : ' without-chords')

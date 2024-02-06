@@ -7,7 +7,7 @@ const shadowStyle: CSSProperties = {
   pointerEvents: 'none',
 };
 
-export default function FontSizeContain({ className, content, html, subUpdate, style }: FontSizeContainProps) {
+export default function FontSizeContain({ className, content, html, subUpdates, style }: FontSizeContainProps) {
   const [childStyle, setChildStyle] = useState<CSSProperties | und>();
   const [isInit, setIsInit] = useState(true);
 
@@ -28,7 +28,7 @@ export default function FontSizeContain({ className, content, html, subUpdate, s
           transformOrigin: style?.textAlign === 'left' ? 'left' : style?.textAlign === 'right' ? 'right' : 'center',
         });
     }
-  }, [content, html, subUpdate, isInit, style?.textAlign]);
+  }, [content, html, subUpdates, isInit, style?.textAlign]);
 
   return (
     <div

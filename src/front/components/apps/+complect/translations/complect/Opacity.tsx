@@ -6,7 +6,8 @@ type Props = ScreenTranslationPartialConfigProps<{ opacity?: number }>;
 export const ScreenTranslateConfigurationOpacity = ({ config, updateConfig }: Props) => {
   const [opacity, setValue] = useState(config.opacity ?? 1);
 
-  useEffect(() => updateConfig({ opacity }), [opacity, updateConfig]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => updateConfig({ opacity }), [opacity]);
 
   return (
     <>

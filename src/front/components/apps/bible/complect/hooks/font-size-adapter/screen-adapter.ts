@@ -1,11 +1,11 @@
-import { ScreenTranslationConfig } from '../../../../+complect/translations/model';
+import { useIsScreenTranslationTextVisible } from '../../../../+complect/translations/hooks/is-visible';
 import { BibleTranslationScreenConfig } from '../../model';
 import { useBibleScreenTranslationFontSizeAdapter } from './adapter';
 
 export const useBibleScreenTranslationFontSizeScreenAdapter = (
   content: string,
   currentConfig: BibleTranslationScreenConfig | und,
-  config: ScreenTranslationConfig | und,
+  windowResizeUpdatesNum: number | und,
 ) => {
   const subUpdater =
     (currentConfig === undefined
@@ -15,7 +15,9 @@ export const useBibleScreenTranslationFontSizeScreenAdapter = (
         currentConfig.address.height +
         currentConfig.fontWeight +
         currentConfig.fontFamily +
-        currentConfig.addressPanel.height) + config?.proportion;
+        currentConfig.addressPanel.height) +
+    windowResizeUpdatesNum +
+    useIsScreenTranslationTextVisible();
 
   return useBibleScreenTranslationFontSizeAdapter(content, subUpdater);
 };

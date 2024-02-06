@@ -1,7 +1,6 @@
 import { CSSProperties, useMemo } from 'react';
 import { useScreenTranslationPositionsStyles } from '../../../../+complect/translations/complect/hooks/position-styles';
 import { useScreenTranslationTextStyles } from '../../../../+complect/translations/complect/hooks/text-styles';
-import { useIsScreenTranslationTextVisible } from '../../../../+complect/translations/hooks/is-visible';
 import { BibleTranslationScreenConfig } from '../../model';
 
 export const screenGridArea = 'screen-grid-area';
@@ -19,8 +18,10 @@ const packInnerStyles = <Config extends Partial<Record<'insertedtext' | 'textinb
   }, {});
 };
 
-export const useGetBibleScreenTranslationScreenStyle = (currentConfig: BibleTranslationScreenConfig | und) => {
-  const isVisible = useIsScreenTranslationTextVisible();
+export const useGetBibleScreenTranslationScreenStyle = (
+  isVisible: boolean,
+  currentConfig: BibleTranslationScreenConfig | und,
+) => {
   const positions = useScreenTranslationPositionsStyles(currentConfig?.screen);
   const textStyles = useScreenTranslationTextStyles(currentConfig);
 

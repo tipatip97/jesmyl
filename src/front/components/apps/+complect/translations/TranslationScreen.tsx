@@ -1,12 +1,12 @@
-import { BibleTranslationScreen } from '../../bible/complect/screen/BibleTranslationScreen';
-import { CmTranslationScreen } from '../../cm/translation/complect/controlled/screen/CmTranslationScreen';
+import { BibleTranslationCurrentScreen } from '../../bible/complect/screen/BibleTranslationCurrentScreen';
+import { CmTranslationCurrentScreen } from '../../cm/translation/complect/controlled/screen/CmTranslationCurrentScreen';
 import { TranslationScreenProps } from './Translations.model';
 import { useCurrentTranslationTextApp } from './hooks/current-app';
 
 export const TranslationScreen = (props: TranslationScreenProps) => {
   return useCurrentTranslationTextApp() === 'cm' ? (
-    <CmTranslationScreen {...props} />
+    <CmTranslationCurrentScreen {...props} />
   ) : (
-    <BibleTranslationScreen {...props} />
+    <BibleTranslationCurrentScreen {...props} />
   );
 };

@@ -104,7 +104,8 @@ export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
                   className="text-underline"
                 />
                 <div className="margin-gap-l">
-                  {blockText || props.appAtt.result?.(att ?? props.appAtt.initVal, '', false, emptyFunc)}
+                  {blockText ||
+                    props.appAtt.result?.(att ?? props.appAtt.initVal, '', false, emptyFunc, props.schedule)}
                 </div>
               </>,
             );

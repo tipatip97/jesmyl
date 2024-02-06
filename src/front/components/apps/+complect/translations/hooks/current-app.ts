@@ -11,7 +11,10 @@ export const useSwitchCurrentTranslationTextApp = () => {
   const dispatch = useDispatch();
   const app = useCurrentTranslationTextApp();
 
-  return useCallback(() => {
-    dispatch(complectActions.currentTranslationTextApp(app === 'cm' ? 'bible' : 'cm'));
-  }, [app, dispatch]);
+  return useCallback(
+    (setApp?: 'cm' | 'bible') => {
+      dispatch(complectActions.currentTranslationTextApp(setApp ?? (app === 'cm' ? 'bible' : 'cm')));
+    },
+    [app, dispatch],
+  );
 };

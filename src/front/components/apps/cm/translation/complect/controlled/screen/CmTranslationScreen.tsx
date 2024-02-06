@@ -1,60 +1,50 @@
 import { useRef } from 'react';
 import { TranslationScreenProps } from '../../../../../+complect/translations/Translations.model';
 import { ScreenTranslateCurrentPositionConfigurators } from '../../../../../+complect/translations/complect/position/Position';
-import {
-  useGetScreenTranslationConfig,
-  useScreenTranslationCurrentConfigi,
-} from '../../../../../+complect/translations/hooks/configs';
 import { useSetScreenTranslationInteractiveBackground } from '../../../../../+complect/translations/hooks/interactive-back';
 import { useApplyScreenFontFamilyEffect } from '../../../../../+complect/translations/hooks/set-font-family';
 import FontSizeContain from '../../../../base/font-size-contain/FontSizeContain';
 import { FontSizeContainProps } from '../../../../base/font-size-contain/FontSizeContain.model';
-import { useCmScreenTranslationComCurrentTexti } from '../../hooks/com-texts';
-import { useCmCurrentComTexts } from '../../hooks/get-com-text';
-import { useCmScreenTranslationConfig } from '../hooks/configs';
-import { useUpdateCmCurrentTranslationConfig } from '../hooks/update-config';
+import { CmTranslationScreenConfig } from '../model';
 import { CmTranslationSubScreen } from './CmTranslationSubScreen';
 import { useGetCmScreenTranslationStyle } from './hooks/get-style';
 import { useGetCmScreenTranslationWrapperStyle } from './hooks/get-wrapper-style';
 import { useScreenKeyDownListen } from './hooks/keydown-listen';
-import { useScreenWinResizeListen } from './hooks/win-resize-lesten';
 
-export const CmTranslationScreen = (props: TranslationScreenProps & Partial<FontSizeContainProps>) => {
-  const updateConfig = useUpdateCmCurrentTranslationConfig();
-  const getCurrentConfig = useGetScreenTranslationConfig();
-  const currentConfigi = useScreenTranslationCurrentConfigi();
-  const currentConfig = useCmScreenTranslationConfig(props.screeni ?? currentConfigi);
-  const texts = useCmCurrentComTexts();
-  const currTexti = useCmScreenTranslationComCurrentTexti();
-  const text = texts?.[currTexti];
+type Props = TranslationScreenProps &
+  Partial<FontSizeContainProps> & {
+    cmConfig: CmTranslationScreenConfig | und;
+    texts: string[];
+    texti: number;
+    isVisible: boolean;
+  };
+
+export const CmTranslationScreen = (props: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const style = useGetCmScreenTranslationStyle(currentConfig);
-  const wrapperStyle = useGetCmScreenTranslationWrapperStyle(currentConfig);
-  const forceUpdates = useScreenWinResizeListen(props.win);
+  const style = useGetCmScreenTranslationStyle(props.isVisible, props.cmConfig);
+  const wrapperStyle = useGetCmScreenTranslationWrapperStyle(props.cmConfig);
   const background = useSetScreenTranslationInteractiveBackground(
-    currentConfig?.isWithBackground ? currentConfig.backgroundInteractive : undefined,
+    props.cmConfig?.isWithBackground ? props.cmConfig.backgroundInteractive : undefined,
   );
 
-  const subUpdates = '' + currentConfigi + forceUpdates + getCurrentConfig(currentConfigi)?.proportion;
-
   useScreenKeyDownListen(props.win);
-  useApplyScreenFontFamilyEffect(currentConfig?.fontFamily, props.win);
+  useApplyScreenFontFamilyEffect(props.cmConfig?.fontFamily, props.win);
   let subScreens = null;
 
-  if (currentConfig?.subs?.next !== undefined) {
-    const config = currentConfig.subs.next;
+  if (props.cmConfig?.subs?.next !== undefined) {
+    const config = props.cmConfig.subs.next;
 
     subScreens = (
       <CmTranslationSubScreen
         config={config}
         win={props.win}
-        subUpdates={subUpdates}
-        text={texts?.[currTexti + 1] ?? ''}
+        subUpdates={props.subUpdates}
+        text={props.texts?.[props.texti + 1] ?? ''}
         wrapperRef={wrapperRef}
         isTech={props.isTech}
-        parentConfig={currentConfig}
-        updateConfig={updateConfig}
+        parentConfig={props.cmConfig}
+        isVisible={props.isVisible}
       />
     );
   }
@@ -66,10 +56,9 @@ export const CmTranslationScreen = (props: TranslationScreenProps & Partial<Font
       ref={wrapperRef}
     >
       {background}
-      {props.isTech && currentConfig && (
+      {props.isTech && props.cmConfig && (
         <ScreenTranslateCurrentPositionConfigurators
-          config={currentConfig}
-          updateConfig={updateConfig}
+          config={props.cmConfig}
           wrapperRef={wrapperRef}
         />
       )}
@@ -77,8 +66,10 @@ export const CmTranslationScreen = (props: TranslationScreenProps & Partial<Font
       <FontSizeContain
         className="inline-flex white-pre-children"
         style={style}
-        html={text}
-        subUpdate={subUpdates + (currentConfig === undefined ? '' : currentConfig.width + currentConfig.height)}
+        html={props.texts[props.texti]}
+        subUpdates={
+          '' + props.subUpdates + (props.cmConfig === undefined ? '' : props.cmConfig.width + props.cmConfig.height)
+        }
       />
     </div>
   );
