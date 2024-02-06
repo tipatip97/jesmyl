@@ -6,6 +6,7 @@ import cmService from '../../apps/cm/service';
 import { indexService } from '../../apps/index/service';
 import smylib, { SMyLib } from '../../shared/SMyLib';
 import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
+import { tglogger } from '../../sides/telegram-bot/log/log-bot';
 import { supportTelegramAuthorizations } from '../../sides/telegram-bot/prod/authorize';
 import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
 import { sequreMD5Passphrase, sokiWhenRejButTs } from '../../values';
@@ -20,21 +21,41 @@ import {
   SokiAppName,
   SokiCapsule,
   SokiClientEvent,
+  SokiClientSubData,
   SokiServerEvent,
   SokiServicePack,
   SokiStatistic,
   SokiSubscribtionName,
   TelegramNativeAuthUserData,
 } from './soki.model';
-import { tglogger } from '../../sides/telegram-bot/log/log-bot';
 
 setPolyfills();
 ErrorCatcher.logAllErrors();
 
+interface SubscribeCapsule {
+  map: Map<WebSocket, SokiCapsule>;
+  onClientSubscribe: (client: WebSocket, capsule: SokiCapsule) => void;
+  onClientUnsubscribe: (client: WebSocket) => void;
+}
+
 export class SokiServer {
-  subscriptions: Map<SokiSubscribtionName, Map<WebSocket, SokiCapsule>> = new Map();
+  subscriptions: Record<SokiSubscribtionName, SubscribeCapsule> = {
+    liveData: {
+      map: new Map(),
+      onClientSubscribe: client => {
+        this.send({ appName: 'index', liveData: this.liveData }, client);
+      },
+      onClientUnsubscribe: () => {},
+    },
+    statistic: {
+      map: new Map(),
+      onClientSubscribe: () => this.sendStatistic(),
+      onClientUnsubscribe: () => this.sendStatistic(),
+    },
+  };
   capsules = new Map<WebSocket, SokiCapsule>();
   lastVisit = new Date().toLocaleDateString();
+  liveData: Record<SokiClientSubData, unknown> = {};
 
   statistic: SokiStatistic = {
     online: 0,
@@ -84,8 +105,8 @@ export class SokiServer {
   }
 
   sendStatistic() {
-    const subscribers = this.subscriptions.get('statistic');
-    if (!subscribers?.size) return;
+    const subscribers = this.subscriptions.statistic.map;
+    if (!subscribers.size) return;
 
     this.statistic.authed = 0;
     this.statistic.online = 0;
@@ -116,7 +137,10 @@ export class SokiServer {
   onClientDisconnect(client: WebSocket) {
     const disconnecter = this.capsules.get(client);
     const isDeleted = this.capsules.delete(client);
-    this.subscriptions.forEach(subs => subs.delete(client));
+
+    smylib.keys(this.subscriptions).forEach(subKey => {
+      if (this.subscriptions[subKey].map.delete(client)) this.subscriptions[subKey].onClientUnsubscribe(client);
+    });
 
     this.sendStatistic();
 
@@ -204,6 +228,22 @@ export class SokiServer {
         if (eventBody.ping) {
           this.send({ requestId, pong: true, appName }, client);
           return;
+        }
+
+        if (eventBody.liveData !== undefined && eventBody.subscribeData) {
+          if (eventBody.liveData === null) delete this.liveData[eventBody.subscribeData];
+          else this.liveData[eventBody.subscribeData] = eventBody.liveData;
+
+          const liveData = { [eventBody.subscribeData]: eventBody.liveData };
+
+          this.subscriptions.liveData.map.forEach((capsule, client) => {
+            if (capsule.subscribeData === undefined) {
+              this.send({ appName: 'index', liveData: this.liveData }, client);
+              return;
+            }
+            if (capsule.subscribeData !== eventBody.subscribeData) return;
+            this.send({ appName, liveData }, client);
+          });
         }
 
         if (eventBody.authorization) {
@@ -490,13 +530,14 @@ export class SokiServer {
         }
 
         if (capsule && eventBody.subscribe) {
-          if (!this.subscriptions.has(eventBody.subscribe)) this.subscriptions.set(eventBody.subscribe, new Map());
-          this.subscriptions.get(eventBody.subscribe)!.set(client, capsule);
-          this.sendStatistic();
+          this.subscriptions[eventBody.subscribe].map.set(client, capsule);
+          this.subscriptions[eventBody.subscribe].onClientSubscribe(client, capsule);
+          capsule.subscribeData = eventBody.subscribeData;
         }
 
         if (eventBody.unsubscribe) {
-          this.subscriptions.get(eventBody.unsubscribe)?.delete(client);
+          this.subscriptions[eventBody.unsubscribe].onClientUnsubscribe(client);
+          this.subscriptions[eventBody.unsubscribe].map.delete(client);
         }
 
         if (eventBody.execs) this.execExecs(appName, eventBody.execs, eventData.auth, capsule?.auth, client, requestId);

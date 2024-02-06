@@ -1,7 +1,7 @@
+import { User } from 'node-telegram-bot-api';
 import WebSocket from 'ws';
 import { ExecutionDict, ExecutionReal } from '../executer/Executer.model';
 import { SimpleKeyValue } from '../filer/Filer.model';
-import { User } from 'node-telegram-bot-api';
 
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible'] as const;
 export type SokiAppName = (typeof sokiAppNames)[number];
@@ -15,6 +15,7 @@ export interface SokiCapsule {
   appName?: SokiAppName;
   deviceId: string;
   version: number;
+  subscribeData?: SokiClientSubData;
 }
 
 export interface SokiServerEvent {
@@ -42,6 +43,7 @@ export interface SokiServerEvent {
     errorMessage?: string;
   };
   statistic?: SokiStatistic;
+  liveData?: Record<SokiClientSubData, unknown>;
 }
 
 export type SokiClientUpdateCortage = [
@@ -68,10 +70,17 @@ export interface SokiClientEventBody {
   system?: { name: 'reloadFiles' | 'restartWS'; passphrase: string };
   service?: SimpleKeyValue;
   subscribe?: SokiSubscribtionName;
+  subscribeData?: SokiClientSubData;
   unsubscribe?: SokiSubscribtionName;
+  liveData?: null | Record<SokiClientSubData, unknown>;
 }
 
-export type SokiSubscribtionName = 'statistic';
+export type SokiClientSubData<
+  Spec extends string = string,
+  AppName extends SokiAppName = SokiAppName,
+> = `${AppName}-${Spec}-${string}`;
+
+export type SokiSubscribtionName = 'statistic' | 'liveData';
 
 export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
 
