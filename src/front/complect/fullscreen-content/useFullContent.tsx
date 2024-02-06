@@ -17,6 +17,7 @@ export default function useFullContent<PassValue>(
   content: FullContentValue<PassValue> | nil,
   forceOpenMode?: FullContentOpenMode,
   switchIsForceOpen?: (is: boolean) => void,
+  altClassName?: string,
 ): [ReactNode, (isClosable?: boolean, passValue?: PassValue) => void, () => void] {
   const [openMode, setOpenMode] = useState<FullContentOpenMode>(null);
   const [passValue, setPassValue] = useState<PassValue>();
@@ -57,7 +58,9 @@ export default function useFullContent<PassValue>(
               onClick={onClose}
             />
           )}
-          <Container className="padding-big-gap">{content?.(() => setOpenMode(null), passValue)}</Container>
+          <Container className={altClassName ?? 'padding-big-gap'}>
+            {content?.(() => setOpenMode(null), passValue)}
+          </Container>
         </ContainerWrapper>
       </Portal>
     ),
