@@ -1033,6 +1033,12 @@ export class Executer {
   static doIt({ method, target, penultimate, lastTrace, value, realArgs, auth, uniqs }: ExecuteDoItProps) {
     return new Promise<boolean>((resolve, reject) => {
       try {
+        if (method === 'delete') {
+          if (penultimate) delete penultimate[lastTrace];
+          resolve(true);
+          return;
+        }
+
         if (value === undefined) {
           resolve(false);
           return;
@@ -1041,9 +1047,6 @@ export class Executer {
         switch (method) {
           case 'set':
             if (penultimate) penultimate[lastTrace] = smylib.clone(value);
-            break;
-          case 'delete':
-            if (penultimate) delete penultimate[lastTrace];
             break;
           case 'set_all':
             if (target) SMyLib.entries(smylib.clone(value)).forEach(([key, val]) => (target[key] = val));
