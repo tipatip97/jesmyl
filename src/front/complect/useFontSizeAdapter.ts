@@ -5,7 +5,11 @@ const metric = 'px';
 const defaultStep = 3;
 const minStep = 1;
 
-export const useBibleScreenTranslationFontSizeAdapter = (content: string, subUpdater: string | number) => {
+export const useBibleScreenTranslationFontSizeAdapter = (
+  content: string,
+  subUpdater: string | number,
+  isCheckWidthOnly?: boolean,
+) => {
   const [isInit, setIsInit] = useState(true);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -14,6 +18,7 @@ export const useBibleScreenTranslationFontSizeAdapter = (content: string, subUpd
     if (isInit) setTimeout(setIsInit, 100, false);
 
     if (isInit || !content || contentRef.current === null || wrapperRef.current === null) return;
+
     const wrapper = wrapperRef.current;
     const container = contentRef.current;
     const conainerStyle = contentRef.current.style;
@@ -25,10 +30,10 @@ export const useBibleScreenTranslationFontSizeAdapter = (content: string, subUpd
     let step = defaultStep;
     let manipulationsCountLimit = 100000;
 
-    const inc = () => {
+    const inc = (param: 'clientHeight' | 'clientWidth') => {
       if (step < 1) return;
 
-      while (wrapper.clientHeight > container.clientHeight && fontSize < 5000) {
+      while (wrapper[param] > container[param] && fontSize < 5000) {
         conainerStyle.fontSize = (fontSize += step) + metric;
         if (manipulationsCountLimit-- < 0) return;
       }
@@ -43,36 +48,35 @@ export const useBibleScreenTranslationFontSizeAdapter = (content: string, subUpd
       }
     };
 
-    let isPhaseTurn = true;
-
-    if (wrapper.clientHeight < container.clientHeight) {
+    const resizeFont = (isDecFirst: boolean, orientParam: 'clientHeight' | 'clientWidth') => {
       do {
-        if (isPhaseTurn) dec('clientHeight');
-        else inc();
+        if (isDecFirst) dec(orientParam);
+        else inc(orientParam);
 
-        isPhaseTurn = !isPhaseTurn;
+        isDecFirst = !isDecFirst;
         step = Math.floor(step / 2);
 
         if (manipulationsCountLimit-- < 0) return;
       } while (step > minStep);
+    };
+
+    if (isCheckWidthOnly) {
+      if (wrapper.clientWidth < container.clientWidth) resizeFont(true, 'clientWidth');
+      else resizeFont(false, 'clientWidth');
+
+      step = 1;
+      dec('clientWidth');
     } else {
-      do {
-        if (isPhaseTurn) inc();
-        else dec('clientHeight');
+      if (wrapper.clientHeight < container.clientHeight) resizeFont(true, 'clientHeight');
+      else resizeFont(false, 'clientHeight');
 
-        isPhaseTurn = !isPhaseTurn;
-        step = Math.floor(step / 2);
-
-        if (manipulationsCountLimit-- < 0) return;
-      } while (step > minStep);
+      step = 1;
+      dec('clientHeight');
+      dec('clientWidth');
     }
 
-    step = 1;
-    dec('clientHeight');
-    dec('clientWidth');
-
     conainerStyle.opacity = prevOpacity || '1';
-  }, [content, isInit, subUpdater]);
+  }, [content, isInit, subUpdater, isCheckWidthOnly]);
 
   return [wrapperRef, contentRef] as const;
 };
