@@ -56,7 +56,7 @@ export const BottomPopup = ({ content, close }: { content: ReactNode; close: () 
               className={
                 'container no-scrollbar' +
                 (isTouchDevice ? '' : ' not-touch-device') +
-                `${scrollableContent ? '' : ' not-'}scrollable-content`
+                (scrollableContent ? ' scrollable-content' : ' not-scrollable-content')
               }
               ref={bottomContainer}
               onScroll={
