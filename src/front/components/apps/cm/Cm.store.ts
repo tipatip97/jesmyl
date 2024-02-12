@@ -68,7 +68,7 @@ export const slice = createSlice({
     },
     setComFontSize: (state, action: PayloadAction<number>) => {
       const size = Math.ceil(action.payload);
-      const fontSize = size < 5 ? 5 : size > 70 ? 70 : size;
+      const fontSize = size < 5 && size > 0 ? 5 : size > 70 ? 70 : size;
       state.comFontSize = fontSize;
       cmStorage.set('comFontSize', fontSize);
     },

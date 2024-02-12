@@ -12,6 +12,7 @@ import { useCols } from '../../cols/useCols';
 import { Com } from './Com';
 import { useCcom } from './useCcom';
 import useMigratableComTools from './useMigratableComTools';
+import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 
 const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
 
@@ -86,16 +87,36 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
               icon: 'format-text-variant-outline',
               rightNode: (
                 <>
-                  <EvaIcon
+                  <EvaButton
                     name="minus-outline"
+                    disabled={fontSize < 0}
                     onClick={event => {
                       event.stopPropagation();
                       dispatch(di.setComFontSize(fontSize - 1));
                     }}
                   />
-                  <div>{fontSize}</div>
-                  <EvaIcon
+                  {fontSize < 0 ? (
+                    <div
+                      onClick={event => {
+                        event.stopPropagation();
+                        dispatch(di.setComFontSize(-fontSize));
+                      }}
+                    >
+                      auto
+                    </div>
+                  ) : (
+                    <div
+                      onClick={event => {
+                        event.stopPropagation();
+                        dispatch(di.setComFontSize(-fontSize));
+                      }}
+                    >
+                      {fontSize}
+                    </div>
+                  )}
+                  <EvaButton
                     name="plus-outline"
+                    disabled={fontSize < 0}
                     onClick={event => {
                       event.stopPropagation();
                       dispatch(di.setComFontSize(fontSize + 1));

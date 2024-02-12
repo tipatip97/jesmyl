@@ -1,4 +1,5 @@
 import { CSSProperties, useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import EvaIcon from '../../../../../../../complect/eva-icon/EvaIcon';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
@@ -9,8 +10,8 @@ import TheOrder from '../../../../col/com/order/TheOrder';
 import { EditableOrder } from '../complect/orders/EditableOrder';
 import { useEditableCcom } from '../useEditableCcom';
 import { IEditableComLineProps } from './ComRepeats.model';
-import './ComRepeats.scss';
 import { ComRepeatsRemoveButton } from './complect/RemoveButton';
+import { useBibleScreenTranslationFontSizeAdapter } from '../../../../../../../complect/useFontSizeAdapter';
 
 export default function ComRepeats() {
   const exec = useExerExec();
@@ -23,6 +24,8 @@ export default function ComRepeats() {
   const [confirmNode, confirm] = useConfirm();
 
   const ccom = useEditableCcom();
+  const [updates, setUpdates] = useState(0);
+  const [wrapperRef, contentRef] = useBibleScreenTranslationFontSizeAdapter(ccom?.name ?? '', updates, true);
   const coln = 'r';
   const { textLinei: startLinei, wordi: startWordi, orderUnit: startOrd } = start || {};
   let startedFlashes = 0;
@@ -33,6 +36,7 @@ export default function ComRepeats() {
   const setField = useCallback(
     (ord?: EditableOrder, repeateds?: OrderRepeats | nil, prevs?: OrderRepeats | nil) => {
       if (!ord) return;
+      setUpdates(num => num + 1);
 
       const reps = typeof prevs === 'number' ? { '.': prevs } : prevs || {};
       const repds = typeof repeateds === 'number' ? { '.': repeateds } : repeateds || {};
@@ -62,249 +66,327 @@ export default function ComRepeats() {
   }, [flashCount, isReadySetChordBlock, reset, setField, startOrd]);
 
   return (
-    <div className={`com-repeats-editor ${start == null ? '' : 'active'}`}>
+    <Content
+      ref={wrapperRef}
+      className={`com-repeats-editor ${start == null ? '' : 'active'}`}
+    >
       {confirmNode}
-      {ccom?.orders?.map((ord, ordi) => {
-        if (!ord.isVisible) return null;
+      <FlexFontSizeContent ref={contentRef}>
+        {ccom?.orders?.map((ord, ordi) => {
+          if (!ord.isVisible) return null;
 
-        return (
-          <div
-            key={`ord-${ordi}`}
-            className="region-editor-block"
-            onClick={
-              ord.text
-                ? undefined
-                : event => {
-                    if (start == null || !isChordBlock) {
-                      setStart({
-                        orderUnit: ord,
-                        textLine: '',
-                        textLinei: 0,
-                        textLines: 0,
-                        wordCount: 0,
-                        wordi: 0,
-                        words: [],
-                      });
+          return (
+            <div
+              key={`ord-${ordi}`}
+              className="region-editor-block"
+              onClick={
+                ord.text
+                  ? undefined
+                  : event => {
+                      if (start == null || !isChordBlock) {
+                        setStart({
+                          orderUnit: ord,
+                          textLine: '',
+                          textLinei: 0,
+                          textLines: 0,
+                          wordCount: 0,
+                          wordi: 0,
+                          words: [],
+                        });
 
-                      setIsChordBlock(true);
-                      setXPos((event.target as any).offsetLeft);
-                      setYPos((event.target as any).offsetTop);
-                    } else {
-                      setIsChordBlock(false);
-                      setIsReadySetChordBlock(true);
-                    }
-                  }
-            }
-          >
-            <TheOrder
-              chordVisibleVariant={ChordVisibleVariant.None}
-              com={ccom}
-              orderUnit={ord}
-              orderUniti={ordi}
-              asHeaderComponent={props => {
-                return (
-                  <>
-                    {props.headerNode}
-                    {ord.top.watchOrd ? (
-                      <>
-                        <EvaIcon
-                          name="undo-outline"
-                          className="vertical-middle pointer margin-gap-h"
-                          onClick={() => {
-                            ord.top.watchOrd?.element?.scrollIntoView();
-                          }}
-                        />
-                        <EvaIcon
-                          name="pin-outline"
-                          className={`vertical-middle pointer ${ord.isInheritValue('r') ? 'disabled' : ''}`}
-                          onClick={() => {
-                            confirm('Очистить собственные правила повторения?').then(isClear => {
-                              if (isClear) exec(ord.removeInheritance('r'));
-                            });
-                          }}
-                        />
-                      </>
-                    ) : null}
-                  </>
-                );
-              }}
-              asLineComponent={props => {
-                return (
-                  <ComLine
-                    {...props}
-                    setWordClass={(props, wordi) => {
-                      if (!start) return '';
-                      const { wordCount, textLinei } = props;
-
-                      const openers = ord.regions?.reduce(
-                        (count: number, { startLinei, startWordi, startKey }) =>
-                          count +
-                          +(textLinei === startLinei && wordi === startWordi && !(startKey || '').startsWith('~')),
-                        0,
-                      );
-                      if (openers) {
-                        if (!isInRegion) beforeFlashes++;
-                        startedFlashes += isInRegion ? openers : 1;
-                      }
-
-                      const prevStarteds = startedFlashes;
-                      const prevEnds = isRegionEnds;
-
-                      const closers = ord.regions?.reduce(
-                        (count, { endLinei, endWordi = wordCount - 1 }) =>
-                          count + +(textLinei === endLinei && wordi === endWordi),
-                        0,
-                      );
-
-                      if (closers) {
-                        if (isInRegion) {
-                          if (startedFlashes && startedFlashes === beforeFlashes) isRegionEnds = true;
-                        } else beforeFlashes--;
-                        startedFlashes -= closers;
-                      }
-
-                      const isLastInRange =
-                        ord === startOrd &&
-                        textLinei === startLinei &&
-                        wordi === startWordi &&
-                        startedFlashes + 1 === prevStarteds;
-
-                      if (isLastInRange) isRegionEnds = true;
-
-                      if (!isInRegion && ord === startOrd && textLinei === startLinei && wordi === startWordi)
-                        isInRegion = true;
-
-                      return isLastInRange ||
-                        (isInRegion && (isLastInRange ? prevStarteds : startedFlashes) <= beforeFlashes && !prevEnds)
-                        ? ''
-                        : 'inactive-word';
-                    }}
-                    onClick={event => {
-                      const clicked = event.nativeEvent
-                        .composedPath()
-                        .find(span => (span as HTMLSpanElement)?.classList?.contains('com-word')) as HTMLSpanElement;
-
-                      const [, wordi] =
-                        (clicked &&
-                          Array.from(clicked.classList)
-                            .find(className => className.startsWith('wordi_'))
-                            ?.split('_')) ||
-                        [];
-
-                      if (wordi == null) return;
-
-                      const { textLinei: linei, textLines: lines, wordCount } = props;
-
-                      if (start == null || isChordBlock) {
-                        setStart({ ...props, orderUnit: ord, wordi: +wordi });
+                        setIsChordBlock(true);
                         setXPos((event.target as any).offsetLeft);
                         setYPos((event.target as any).offsetTop);
-                        setIsChordBlock(false);
                       } else {
-                        const nextLetter = ccom.getRegionNextLetter();
-                        const [startDiap, finishDiap] =
-                          startOrd === ord
-                            ? startLinei === 0 && startWordi === 0 && linei === lines - 1 && +wordi === wordCount - 1
-                              ? ['.']
-                              : [
-                                  `${startLinei}${startWordi ? `:${startWordi}` : ''}${
-                                    startLinei === linei && !startWordi && wordCount - 1 === +wordi
-                                      ? ''
-                                      : `-${linei}${wordCount - 1 === +wordi ? '' : `:${wordi}`}`
-                                  }`,
-                                ]
-                            : [`${nextLetter}${startLinei}:${startWordi}`, `${linei}:${wordi}${nextLetter}`];
+                        setIsChordBlock(false);
+                        setIsReadySetChordBlock(true);
+                      }
+                    }
+              }
+            >
+              <TheOrder
+                chordVisibleVariant={ChordVisibleVariant.None}
+                com={ccom}
+                orderUnit={ord}
+                orderUniti={ordi}
+                asHeaderComponent={props => {
+                  return (
+                    <>
+                      {props.headerNode}
+                      {ord.top.watchOrd ? (
+                        <>
+                          <EvaIcon
+                            name="undo-outline"
+                            className="vertical-middle pointer margin-gap-h"
+                            onClick={() => {
+                              ord.top.watchOrd?.element?.scrollIntoView();
+                            }}
+                          />
+                          <EvaIcon
+                            name="pin-outline"
+                            className={`vertical-middle pointer ${ord.isInheritValue('r') ? 'disabled' : ''}`}
+                            onClick={() => {
+                              confirm('Очистить собственные правила повторения?').then(isClear => {
+                                if (isClear) exec(ord.removeInheritance('r'));
+                              });
+                            }}
+                          />
+                        </>
+                      ) : null}
+                    </>
+                  );
+                }}
+                asLineComponent={props => {
+                  return (
+                    <ComLine
+                      {...props}
+                      setWordClass={(props, wordi) => {
+                        if (!start) return '';
+                        const { wordCount, textLinei } = props;
 
-                        setField(startOrd, { [startDiap]: flashCount }, startOrd?.repeats);
-
-                        if (startOrd !== ord) {
-                          setField(ord, { [finishDiap || '']: flashCount }, ord.repeats);
-                          ord.resetRegions();
+                        const openers = ord.regions?.reduce(
+                          (count: number, { startLinei, startWordi, startKey }) =>
+                            count +
+                            +(textLinei === startLinei && wordi === startWordi && !(startKey || '').startsWith('~')),
+                          0,
+                        );
+                        if (openers) {
+                          if (!isInRegion) beforeFlashes++;
+                          startedFlashes += isInRegion ? openers : 1;
                         }
 
-                        startOrd?.resetRegions();
+                        const prevStarteds = startedFlashes;
+                        const prevEnds = isRegionEnds;
 
-                        reset();
-                        exec();
-                      }
-                    }}
-                  />
-                );
-              }}
-            />
-
-            {(() => {
-              if (!start || start.orderUnit !== ord) return null;
-              const { orderUnit: startOrd, textLinei, wordi } = start;
-
-              const flashes = (ord.regions || []).filter(
-                ({ startLinei, startWordi }) => startLinei === textLinei && startWordi === wordi,
-              );
-
-              return (
-                <div
-                  className={`float-button-panel${start && ord === start.orderUnit ? '' : ' hidden'}`}
-                  style={
-                    {
-                      '--x': xPos,
-                      '--y': yPos,
-                    } as CSSProperties
-                  }
-                >
-                  <div
-                    className="button close"
-                    onClick={event => {
-                      event.stopPropagation();
-                      reset();
-                    }}
-                  >
-                    <EvaIcon name="close-outline" />
-                  </div>
-                  {!flashes.length || (
-                    <ComRepeatsRemoveButton
-                      isChordBlock={isChordBlock}
-                      ord={ord}
-                      reset={reset}
-                      setField={setField}
-                      startOrd={startOrd}
-                      textLinei={textLinei}
-                      wordi={wordi}
-                    />
-                  )}
-                  {[2, 3, 4, 5].map(currFlashCount => {
-                    return (
-                      <div
-                        key={`flash-${currFlashCount}`}
-                        className={`button numeric${flashCount === currFlashCount ? ' active' : ''}`}
-                        onClick={() => setFlashCount(currFlashCount)}
-                      >
-                        {currFlashCount}
-                      </div>
-                    );
-                  })}
-                  {isChordBlock ? null : (
-                    <div
-                      className="button flag"
-                      onClick={() => {
-                        setField(
-                          startOrd,
-                          {
-                            [`~${startLinei}:${startWordi}`]: flashCount - 1,
-                          },
-                          startOrd.repeats,
+                        const closers = ord.regions?.reduce(
+                          (count, { endLinei, endWordi = wordCount - 1 }) =>
+                            count + +(textLinei === endLinei && wordi === endWordi),
+                          0,
                         );
+
+                        if (closers) {
+                          if (isInRegion) {
+                            if (startedFlashes && startedFlashes === beforeFlashes) isRegionEnds = true;
+                          } else beforeFlashes--;
+                          startedFlashes -= closers;
+                        }
+
+                        const isLastInRange =
+                          ord === startOrd &&
+                          textLinei === startLinei &&
+                          wordi === startWordi &&
+                          startedFlashes + 1 === prevStarteds;
+
+                        if (isLastInRange) isRegionEnds = true;
+
+                        if (!isInRegion && ord === startOrd && textLinei === startLinei && wordi === startWordi)
+                          isInRegion = true;
+
+                        return isLastInRange ||
+                          (isInRegion && (isLastInRange ? prevStarteds : startedFlashes) <= beforeFlashes && !prevEnds)
+                          ? ''
+                          : 'inactive-word';
+                      }}
+                      onClick={event => {
+                        const clicked = event.nativeEvent
+                          .composedPath()
+                          .find(span => (span as HTMLSpanElement)?.classList?.contains('com-word')) as HTMLSpanElement;
+
+                        const [, wordi] =
+                          (clicked &&
+                            Array.from(clicked.classList)
+                              .find(className => className.startsWith('wordi_'))
+                              ?.split('_')) ||
+                          [];
+
+                        if (wordi == null) return;
+
+                        const { textLinei: linei, textLines: lines, wordCount } = props;
+
+                        if (start == null || isChordBlock) {
+                          setStart({ ...props, orderUnit: ord, wordi: +wordi });
+                          setXPos((event.target as any).offsetLeft);
+                          setYPos((event.target as any).offsetTop);
+                          setIsChordBlock(false);
+                        } else {
+                          const nextLetter = ccom.getRegionNextLetter();
+                          const [startDiap, finishDiap] =
+                            startOrd === ord
+                              ? startLinei === 0 && startWordi === 0 && linei === lines - 1 && +wordi === wordCount - 1
+                                ? ['.']
+                                : [
+                                    `${startLinei}${startWordi ? `:${startWordi}` : ''}${
+                                      startLinei === linei && !startWordi && wordCount - 1 === +wordi
+                                        ? ''
+                                        : `-${linei}${wordCount - 1 === +wordi ? '' : `:${wordi}`}`
+                                    }`,
+                                  ]
+                              : [`${nextLetter}${startLinei}:${startWordi}`, `${linei}:${wordi}${nextLetter}`];
+
+                          setField(startOrd, { [startDiap]: flashCount }, startOrd?.repeats);
+
+                          if (startOrd !== ord) {
+                            setField(ord, { [finishDiap || '']: flashCount }, ord.repeats);
+                            ord.resetRegions();
+                          }
+
+                          startOrd?.resetRegions();
+
+                          reset();
+                          exec();
+                        }
+                      }}
+                    />
+                  );
+                }}
+              />
+
+              {(() => {
+                if (!start || start.orderUnit !== ord) return null;
+                const { orderUnit: startOrd, textLinei, wordi } = start;
+
+                const flashes = (ord.regions || []).filter(
+                  ({ startLinei, startWordi }) => startLinei === textLinei && startWordi === wordi,
+                );
+
+                return (
+                  <div
+                    className={`float-button-panel${start && ord === start.orderUnit ? '' : ' hidden'}`}
+                    style={
+                      {
+                        '--x': xPos,
+                        '--y': yPos,
+                      } as CSSProperties
+                    }
+                  >
+                    <div
+                      className="button close"
+                      onClick={event => {
+                        event.stopPropagation();
                         reset();
                       }}
                     >
-                      <EvaIcon name="flag-outline" />
+                      <EvaIcon name="close-outline" />
                     </div>
-                  )}
-                </div>
-              );
-            })()}
-          </div>
-        );
-      })}
-    </div>
+                    {!flashes.length || (
+                      <ComRepeatsRemoveButton
+                        isChordBlock={isChordBlock}
+                        ord={ord}
+                        reset={reset}
+                        setField={setField}
+                        startOrd={startOrd}
+                        textLinei={textLinei}
+                        wordi={wordi}
+                      />
+                    )}
+                    {[2, 3, 4, 5].map(currFlashCount => {
+                      return (
+                        <div
+                          key={`flash-${currFlashCount}`}
+                          className={`button numeric${flashCount === currFlashCount ? ' active' : ''}`}
+                          onClick={() => setFlashCount(currFlashCount)}
+                        >
+                          {currFlashCount}
+                        </div>
+                      );
+                    })}
+                    {isChordBlock ? null : (
+                      <div
+                        className="button flag"
+                        onClick={() => {
+                          setField(
+                            startOrd,
+                            {
+                              [`~${startLinei}:${startWordi}`]: flashCount - 1,
+                            },
+                            startOrd.repeats,
+                          );
+                          reset();
+                        }}
+                      >
+                        <EvaIcon name="flag-outline" />
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          );
+        })}
+      </FlexFontSizeContent>
+    </Content>
   );
 }
+
+const FlexFontSizeContent = styled.div`
+  width: max-content;
+`;
+
+const Content = styled.div`
+  position: relative;
+
+  .com-word {
+    cursor: pointer;
+
+    &.inactive-word {
+      pointer-events: none;
+      color: grey;
+    }
+  }
+
+  .float-button-panel {
+    --size: 1.2em;
+
+    display: flex;
+
+    position: absolute;
+    top: calc(var(--y) * 1px - var(--size) * 1.2);
+    left: calc(var(--x) * 1px);
+    transition: 0.5s;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      cursor: pointer;
+      margin-left: 0.2em;
+      border-radius: 0.3em;
+
+      width: var(--size);
+      height: var(--size);
+
+      &.close {
+        --icon-color: var(--color--1);
+
+        background: var(--color--6);
+      }
+
+      &.remove {
+        --icon-color: white;
+
+        background: var(--color--ko);
+      }
+
+      &.flag {
+        --icon-color: var(--color--6);
+
+        background: var(--color--2);
+      }
+
+      &.numeric {
+        background: var(--color--3);
+        color: var(--color--1);
+
+        &.active {
+          background: var(--color--7);
+        }
+      }
+    }
+  }
+`;
