@@ -15,7 +15,7 @@ export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
       <RollControled>
         <div className="inner-content">
           {coms?.map(com => (
-            <div key={`expand-com-number-${com.wid}`}>
+            <div key={com.wid}>
               <div className="com-number">#{com.number}</div>
               <ComOrders
                 com={com}
