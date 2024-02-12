@@ -1,6 +1,6 @@
-import React from 'react';
-import { IComLineProps } from '../order/Order.model';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
+import { IComLineProps } from '../order/Order.model';
 
 const spacePlusReg_g = / +/g;
 const spaceReg = / /;
@@ -8,128 +8,164 @@ const spaceReg = / /;
 export default function ComLine(props: IComLineProps) {
   if (!props.chordedOrd)
     return (
-      <div
+      <Line
         className="composition-line"
         onClick={props.onClick}
       >
-        {props.words.map((word, wordi, worda) => {
+        {props.words.map((word, wordi) => {
           return (
             <span
               key={wordi}
-              className={`com-word wordi_${wordi} ${props.setWordClass?.(props, wordi) || ''}`}
+              className={`com-word wordi_${wordi} ${props.setWordClass?.(props, wordi) ?? ''}`}
             >
-              {word && <span dangerouslySetInnerHTML={{ __html: word }} />}
-              {wordi !== worda.length - 1 && (
-                <>
-                  {' '}
-                  <wbr />
-                </>
-              )}
+              {word && <span dangerouslySetInnerHTML={{ __html: word }} />}{' '}
             </span>
           );
         })}
-      </div>
+      </Line>
     );
 
-  const letters = props.com.getVowelPositions(props.textLine);
-
+  const vowelPositions = props.com.getVowelPositions(props.textLine);
   let chordIndex = 0;
-  const chordsLabels = props.com.chordLabels[props.orderUniti]?.[props.textLinei] || [];
-  const linePoss = props.orderUnit.positions?.[props.textLinei] || [];
+  let points = vowelPositions;
 
-  let points = letters;
+  const chordsLabels = props.com.chordLabels[props.orderUniti]?.[props.textLinei] || [];
+  const linePositions = props.orderUnit.positions?.[props.textLinei] || [];
 
   if (props.isJoinLetters !== false)
-    points = letters.filter(
-      (lett, letti) => !letti || linePoss.includes(letti) || props.textLine[lett].match(spaceReg),
+    points = vowelPositions.filter(
+      (lett, letti) => !letti || linePositions.includes(letti) || props.textLine[lett].match(spaceReg),
     );
 
-  const isHasPre = linePoss.includes(-1);
-  const isHasPost = linePoss.includes(-2);
+  const isHasPre = linePositions.includes(-1);
+  const isHasPost = linePositions.includes(-2);
+
+  let wordBitNodes: ReactNode[] = [];
+  const wordsNodes: ReactNode[] = [];
+  const pushWordNode = (index: number) => {
+    wordsNodes.push(
+      <span
+        key={index}
+        className="nowrap"
+      >
+        {wordBitNodes}
+      </span>,
+      ' ',
+    );
+    wordBitNodes = [];
+  };
+
+  points.forEach((index, indexi, indexa) => {
+    const isLast = indexi === indexa.length - 1;
+    const firstTextBit = indexi === 0 ? props.textLine.slice(0, index) : '';
+    const isChordedFirst = indexi === 0 && isHasPre && firstTextBit === '';
+    const isChordedLast = isLast && isHasPost;
+    const isChorded = linePositions.includes(vowelPositions.indexOf(index));
+    const chordLabel = isChorded ? chordsLabels[chordIndex++ - (isHasPre ? -1 : 0)] || undefined : undefined;
+
+    const chord = isChordedFirst ? chordsLabels[0] : chordLabel;
+    const pchord = isLast && isHasPost ? chordsLabels[chordsLabels.length - 1] : null;
+
+    const baseTextBitOriginal = props.textLine.slice(index, indexa[indexi + 1]);
+    const origBits = baseTextBitOriginal
+      .split(spacePlusReg_g)
+      .map((txt, txti) => (
+        <React.Fragment key={txti}>{txt && <span dangerouslySetInnerHTML={{ __html: txt }} />}</React.Fragment>
+      ));
+
+    const node = (
+      <React.Fragment key={indexi}>
+        {firstTextBit && (
+          <span
+            className={isHasPre ? 'chorded pre' : undefined}
+            dangerouslySetInnerHTML={{ __html: firstTextBit }}
+            attr-chord={isHasPre ? chordsLabels[0] : undefined}
+          />
+        )}
+        <span
+          attr-chord={chord}
+          attr-pchord={pchord}
+          className={
+            `com-letter letteri_${indexi}` +
+            (isChorded || isChordedFirst || isChordedLast ? ' chorded' : '') +
+            (isChordedLast ? ' post' : '') +
+            (isChordedFirst ? ' pre' : '') +
+            (baseTextBitOriginal.match(spaceReg) ? ' spaced-word' : '') +
+            (isChorded && isLast && isHasPost ? ' twice' : '')
+          }
+        >
+          {isChorded || isChordedLast ? (
+            <span
+              className="fragment"
+              attr-chord={chord}
+              attr-pchord={pchord}
+            >
+              {origBits}
+            </span>
+          ) : (
+            origBits
+          )}
+        </span>
+      </React.Fragment>
+    );
+
+    if (baseTextBitOriginal.startsWith(' ')) pushWordNode(indexi);
+
+    wordBitNodes.push(node);
+
+    if (indexa.length - 1 === indexi) pushWordNode(indexi + 1);
+  });
 
   return (
     <Line
       className="composition-line"
       onClick={props.onClick}
     >
-      {points.map((index, indexi, indexa) => {
-        const isLast = indexi === indexa.length - 1;
-        const firstTextBit = indexi === 0 ? props.textLine.slice(0, index) : '';
-        const chordedFirst = indexi === 0 && isHasPre && firstTextBit === '';
-        const chordedLast = isLast && isHasPost;
-        const chorded = linePoss.includes(letters.indexOf(index));
-        const chordLabel = chorded ? chordsLabels[chordIndex++ - (isHasPre ? -1 : 0)] || undefined : undefined;
-
-        const chord = chordedFirst ? chordsLabels[0] : chordLabel;
-        const pchord = isLast && isHasPost ? chordsLabels[chordsLabels.length - 1] : null;
-
-        const baseTextBitOriginal = props.textLine.slice(index, indexa[indexi + 1]);
-        const origBits = baseTextBitOriginal.split(spacePlusReg_g).map((txt, txti, txta) => (
-          <React.Fragment key={txti}>
-            {txt && <span dangerouslySetInnerHTML={{ __html: txt }} />}
-            {txti !== txta.length - 1 && (
-              <>
-                {' '}
-                <wbr />
-              </>
-            )}
-          </React.Fragment>
-        ));
-
-        return (
-          <React.Fragment key={indexi}>
-            {firstTextBit && (
-              <span
-                className={isHasPre ? 'chorded pre' : ''}
-                dangerouslySetInnerHTML={{ __html: firstTextBit }}
-                attr-chord={chordsLabels[0]}
-              />
-            )}
-            <span
-              attr-chord={chord}
-              attr-pchord={pchord}
-              className={
-                `com-letter letteri_${indexi}` +
-                (chorded || chordedFirst || chordedLast ? ' chorded' : '') +
-                (chordedLast ? ' post' : '') +
-                (chordedFirst ? ' pre' : '') +
-                (baseTextBitOriginal.match(spaceReg) ? ' spaced-word' : '') +
-                (chorded && isLast && isHasPost ? ' twice' : '')
-              }
-            >
-              {chorded || chordedLast ? (
-                <span
-                  className="fragment"
-                  attr-chord={chord}
-                  attr-pchord={pchord}
-                >
-                  {origBits}
-                </span>
-              ) : (
-                origBits
-              )}
-            </span>
-          </React.Fragment>
-        );
-      })}
+      {wordsNodes}
     </Line>
   );
 }
 
 const Line = styled.div`
+  white-space: normal;
+
+  * {
+    font-size: 1em;
+
+    &::before,
+    &::after {
+      font-size: 1em;
+    }
+  }
+
   .chorded {
     display: inline-block;
     position: relative;
     line-height: 1;
     white-space: pre;
 
-    &:not(.pre):not(.post):before {
-      left: 0;
+    &.pre,
+    &.post,
+    &.spaced-word {
+      &::before,
+      &::after {
+        color: color-mix(in lch, currentColor 50%, var(--color--7));
+      }
+    }
+
+    &:not(.pre):not(.post) {
+      &.spaced-word::before {
+        left: -0.2em;
+      }
+
+      &::before {
+        left: 0;
+      }
     }
 
     &:not(.post) {
-      &:before,
-      &:after {
+      &::before,
+      &::after {
         position: absolute;
         top: -1em;
         z-index: 0;
@@ -138,37 +174,37 @@ const Line = styled.div`
       }
 
       .fragment {
-        &:before {
+        &::before {
+          content: attr(attr-pchord);
           position: absolute;
           top: -1em;
           left: 100%;
-          content: attr(attr-pchord);
         }
 
-        &:after {
+        &::after {
+          content: attr(attr-chord);
           display: block;
           margin-top: -1em;
-          content: attr(attr-chord);
           color: transparent;
         }
       }
     }
 
-    &.spaced-word:not(.post):after {
+    &.spaced-word:not(.post)::after {
+      content: '.';
       top: 0;
       width: 0.3em;
-      content: '.';
       color: transparent;
     }
 
-    &.pre:before,
-    &:not(.pre):not(.post):before {
-      max-width: 500px;
+    &.pre::before,
+    &:not(.pre):not(.post)::before {
       content: attr(attr-chord);
+      max-width: 500px;
       white-space: nowrap;
     }
 
-    &.pre:before {
+    &.pre::before {
       left: -0.5em;
     }
 
@@ -177,26 +213,26 @@ const Line = styled.div`
         display: inline-block;
         position: relative;
 
-        &:before {
+        &::before {
+          content: attr(attr-chord);
           display: block;
           margin-top: -1em;
           height: 1em;
-          content: attr(attr-chord);
         }
       }
 
-      &:before {
+      &::before {
         position: absolute;
         top: -1em;
         right: 0;
       }
 
-      &:after {
+      &::after {
+        content: attr(attr-pchord);
         display: inline-block;
         position: relative;
         top: -1em;
         margin-left: 0.2em;
-        content: attr(attr-pchord);
       }
     }
   }

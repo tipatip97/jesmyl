@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import { useBibleScreenTranslationFontSizeAdapter } from '../../../../../../complect/useFontSizeAdapter';
@@ -9,6 +9,7 @@ import { IComOrdersProps } from './ComOrders.model';
 export default function ComOrders(props: IComOrdersProps) {
   const { com, fontSize } = props;
   const [exMods, updateExMods] = useState<number[]>(com.excludedModulations);
+  const style = useMemo(() => ({ fontSize: `${fontSize}px` }), [fontSize]);
 
   let specChordedi = 0;
   let specTextedi = 0;
@@ -16,13 +17,7 @@ export default function ComOrders(props: IComOrdersProps) {
   const content = (
     <OrdList
       className="com-ord-list"
-      style={
-        fontSize
-          ? {
-              fontSize: `${fontSize}px`,
-            }
-          : undefined
-      }
+      style={style}
     >
       {com.orders?.map((orderUnit, orderUniti) => {
         const isExcludedModulation = exMods.includes(orderUnit.wid);
@@ -76,7 +71,7 @@ const OrdersWithAdaptiveFontSize = ({ content, com }: { content: ReactNode; com:
     const onResize = () => setWindowResizes(num => num + 1);
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  });
+  }, []);
 
   return (
     <div ref={wrapperRef}>
