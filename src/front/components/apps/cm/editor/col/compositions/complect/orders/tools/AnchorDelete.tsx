@@ -5,6 +5,7 @@ import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsAnchorDelete = ({
   props: { ccom, ord, blockHeader },
+  closePopup,
 }: {
   props: OrdersRedactorOrderToolsProps;
   closePopup: () => void;
@@ -30,7 +31,7 @@ export const OrdersRedactorOrderToolsAnchorDelete = ({
             )
           ) {
             exec(ccom.removeOrderBlock(ord));
-            // closePopup();
+            closePopup();
           }
         }}
       />
