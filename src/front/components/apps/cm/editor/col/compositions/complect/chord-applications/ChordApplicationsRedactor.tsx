@@ -1,16 +1,16 @@
+import styled from 'styled-components';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import ComLine from '../../../../../col/com/line/ComLine';
 import TheOrder from '../../../../../col/com/order/TheOrder';
 import { useEditableCcom } from '../../useEditableCcom';
-import './ChordApplicationsRedactor.scss';
 
 export default function ChordApplicationsRedactor() {
   const ccom = useEditableCcom();
   const exec = useExerExec();
 
   return (
-    <div className="chord-application-redactor">
+    <Content className="chord-application-redactor">
       {ccom?.orders?.map((ord, ordi) => {
         if (!ord.isVisible) return null;
         const chords = ord.chords?.split('\n').map(line => line.split(' '));
@@ -74,6 +74,64 @@ export default function ChordApplicationsRedactor() {
           />
         );
       })}
-    </div>
+    </Content>
   );
 }
+
+const Content = styled.div`
+  max-width: 100vw;
+
+  .composition-line {
+    display: inline;
+  }
+
+  .binder {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: var(--color--2);
+    width: 1em;
+    height: 1em;
+
+    &.active {
+      background-color: var(--color--3);
+    }
+
+    &.pre {
+      margin-right: 0.3em;
+    }
+
+    &.post {
+      margin-left: 0.3em;
+    }
+  }
+
+  .com-letter {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color--2);
+    }
+
+    &:before,
+    &:after {
+      font-size: 1em;
+    }
+
+    &.chorded:not(.pre) {
+      > .fragment > * {
+        display: inline-block;
+
+        &:first-letter {
+          background-color: var(--color--ko);
+        }
+      }
+
+      &:first-letter,
+      &.spaced-word:after,
+      &[attr-chord] > .fragment > *:first-letter {
+        background-color: rgba(255, 209, 0, 0.3);
+      }
+    }
+  }
+`;
