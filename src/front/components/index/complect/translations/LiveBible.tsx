@@ -1,13 +1,13 @@
 import { useEffect, useMemo } from 'react';
 import { soki } from '../../../../soki';
 import TranslationPage from '../../../apps/+complect/translations/TranslationPage';
-import { useBibleScreenTranslationConfigs } from '../../../apps/bible/complect/hooks/configs';
 import { useBibleTranslationJoinAddress } from '../../../apps/bible/hooks/address/address';
 import { useBibleAddressBooki } from '../../../apps/bible/hooks/address/books';
 import { useBibleAddressChapteri } from '../../../apps/bible/hooks/address/chapters';
 import { useBibleAddressVersei } from '../../../apps/bible/hooks/address/verses';
 import { useBibleSlideSyncContentUpdatesNum } from '../../../apps/bible/hooks/slide-sync';
 import { BibleTranslationAddress } from '../../../apps/bible/model';
+import { useBibleScreenTranslationConfigs } from '../../../apps/bible/translations/hooks/configs';
 import useCmNav from '../../../apps/cm/base/useCmNav';
 import { IndexStateSchLiveData } from '../../Index.model';
 import useIndexNav from '../useIndexNav';

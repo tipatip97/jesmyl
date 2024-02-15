@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { BibleTranslationSlide } from '../../../components/apps/bible/complect/BibleTranslationSlide';
-import { BibleTranslationSlideMiniInfo } from '../../../components/apps/bible/complect/BibleTranslationSlideMiniInfo';
+import { BibleTranslationSlide } from '../../../components/apps/bible/translations/BibleTranslationSlide';
+import { BibleTranslationSlideMiniInfo } from '../../../components/apps/bible/translations/BibleTranslationSlideMiniInfo';
 import { CmTranslationSlideMiniInfo } from '../../../components/apps/cm/translation/complect/live/MiniInfo';
 import { CmLiveTranslationScreen } from '../../../components/apps/cm/translation/complect/live/Screen';
 import { IndexStateSchLiveData } from '../../../components/index/Index.model';

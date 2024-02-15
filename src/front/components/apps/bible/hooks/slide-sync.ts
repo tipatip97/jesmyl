@@ -3,7 +3,7 @@ import { useSwitchIsScreenTranslationTextVisible } from '../../+complect/transla
 import { useActualRef } from '../../../../complect/useActualRef';
 import { useStorageValueGetter } from '../../../../complect/useStorage';
 import bibleStorage from '../bibleStorage';
-import { useBibleTranslationAddToHistory } from '../complect/archive/history/hooks/history';
+import { useBibleTranslationAddToHistory } from '../translations/archive/history/hooks/history';
 import { useBibleTranslationJoinAddress } from './address/address';
 import { useBibleAddressBooki } from './address/books';
 import { useBibleAddressChapteri } from './address/chapters';

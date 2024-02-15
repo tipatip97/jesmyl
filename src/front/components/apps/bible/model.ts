@@ -1,4 +1,4 @@
-import { BibleTranslationScreenConfig } from './complect/model';
+import { BibleTranslationScreenConfig } from './translations/model';
 
 export interface BibleStorage {
   translationBooki: number;

@@ -1,6 +1,6 @@
 import EvaButton from '../../../../complect/eva-icon/EvaButton';
 import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
-import BibleTranslationControlled from '../../bible/BibleTranslationControlled';
+import BibleTranslationControlled from '../../bible/translations/BibleTranslationControlled';
 import { Com } from '../../cm/col/com/Com';
 import CmTranslationControlled from '../../cm/translation/complect/controlled/CmTranslationControlled';
 import { useCurrentTranslationTextApp, useSwitchCurrentTranslationTextApp } from './hooks/current-app';

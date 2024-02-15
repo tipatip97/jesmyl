@@ -1,17 +1,17 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { ScreenTranslationControlPanel } from '../+complect/translations/controls/ControllPanel';
-import { TranslationSlidePreview } from '../+complect/translations/controls/Preview';
-import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
-import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
-import { BibleTranslateScreenConfigurations } from './complect/ScreenConfigurations';
-import { BibleTranslationHistoryArchive } from './complect/archive/history/HistoryArchive';
-import { BibleTranslationPlanArchive } from './complect/archive/plan/PlanArchive';
-import { BibleLists } from './complect/lists/Lists';
-import { BibleSearchPanel } from './complect/search/Panel';
-import { useBibleSlideSyncContentUpdatesNum } from './hooks/slide-sync';
-import { justBibleStorageSet } from './hooks/storage';
-import { useBibleCurrentAddressText } from './hooks/texts';
+import { ScreenTranslationControlPanel } from '../../+complect/translations/controls/ControllPanel';
+import { TranslationSlidePreview } from '../../+complect/translations/controls/Preview';
+import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
+import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
+import { useBibleSlideSyncContentUpdatesNum } from '../hooks/slide-sync';
+import { justBibleStorageSet } from '../hooks/storage';
+import { useBibleCurrentAddressText } from '../hooks/texts';
+import { BibleTranslateScreenConfigurations } from './ScreenConfigurations';
+import { BibleTranslationHistoryArchive } from './archive/history/HistoryArchive';
+import { BibleTranslationPlanArchive } from './archive/plan/PlanArchive';
+import { BibleLists } from './lists/Lists';
+import { BibleSearchPanel } from './search/Panel';
 
 interface Props {
   head: ReactNode;

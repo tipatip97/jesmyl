@@ -8,8 +8,8 @@ import {
   SokiClientSubData,
   SokiStatistic,
 } from '../../models';
-import { BibleTranslationScreenConfig } from '../apps/bible/complect/model';
 import { BibleTranslationAddress } from '../apps/bible/model';
+import { BibleTranslationScreenConfig } from '../apps/bible/translations/model';
 import { CmTranslationScreenConfig } from '../apps/cm/translation/complect/controlled/model';
 import { FileAssociations } from './parts/actions/files/complect/MyFilesTypeBox';
 
