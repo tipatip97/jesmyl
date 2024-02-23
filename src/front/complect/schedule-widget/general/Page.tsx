@@ -17,7 +17,7 @@ export default function ScheduleWidgetPage(
     schedule?: IScheduleWidget;
     title: string;
     appName: AppName;
-    altActionsNode?: ReactNode;
+    headTitle: ReactNode;
   },
 ) {
   const { schedule } = useScheduleWidget(props.schedulew);
@@ -28,7 +28,7 @@ export default function ScheduleWidgetPage(
     <PhaseContainerConfigurer
       {...props}
       className="ScheduleWidgetPage"
-      headTitle={props.title}
+      headTitle={props.headTitle}
       head={
         <span className="flex flex-gap margin-gap">
           {connectionNode}
@@ -49,10 +49,7 @@ export default function ScheduleWidgetPage(
               />
             )
           ) : (
-            <ScheduleWidget
-              schedule={schedule}
-              altActionsNode={props.altActionsNode}
-            />
+            <ScheduleWidget schedule={schedule} />
           )
         ) : (
           <ScheduleCreateWidgetButton

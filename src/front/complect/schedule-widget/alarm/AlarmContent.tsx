@@ -100,13 +100,13 @@ export default function ScheduleWidgetAlarmContent({
 
       if (observeSchw !== undefined) {
         schWr = scheduleList.find(wr => wr.sch.w === observeSchw);
-        if (schWr === undefined) node = <span className="color--ko">Расписание не найдено</span>;
+        if (schWr === undefined) node = <span className="color--ko">Мероприятие не найдено</span>;
         else if (schWr.days.length === 0)
           node = (
             <div>
               <ScheduleWidgetTopicTitle
                 titleBox={schWr.sch!}
-                altTitle="Расписание"
+                altTitle="Мероприятие"
                 topicBox={schWr.sch}
               />
               <div className="text-italic">Составляется</div>
@@ -312,7 +312,7 @@ export default function ScheduleWidgetAlarmContent({
             <div>
               <ScheduleWidgetTopicTitle
                 titleBox={willSchWr.sch!}
-                altTitle="Расписание"
+                altTitle="Мероприятие"
                 topicBox={willSchWr.sch}
               />
               {startDate.getDate() === nowDate.getDate() ? (
@@ -355,7 +355,7 @@ export default function ScheduleWidgetAlarmContent({
               <div>
                 <ScheduleWidgetTopicTitle
                   titleBox={observeSchedule.sch!}
-                  altTitle="Расписание"
+                  altTitle="Мероприятие"
                   topicBox={observeSchedule.sch}
                 />
                 <span className="text-italic">Мероприятие прошло</span>

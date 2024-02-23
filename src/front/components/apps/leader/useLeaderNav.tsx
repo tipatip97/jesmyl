@@ -95,7 +95,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
     {
       icon: 'calendar',
       phase: ['schedule'],
-      title: 'Расписание',
+      title: 'Мероприятие',
       node: <LeaderSchedule />,
     },
   ],

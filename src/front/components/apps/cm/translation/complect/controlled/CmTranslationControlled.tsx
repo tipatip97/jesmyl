@@ -16,9 +16,10 @@ interface Props {
   head: ReactNode;
   comList?: Com[];
   useNav: () => ReturnType<typeof useNavConfigurer>;
+  headTitle: ReactNode;
 }
 
-export default function CmTranslationControlled({ head, comList, useNav }: Props) {
+export default function CmTranslationControlled({ head, comList, useNav, headTitle }: Props) {
   const nav = useCmNav();
   const goBack = useNav().goBack;
 
@@ -29,7 +30,7 @@ export default function CmTranslationControlled({ head, comList, useNav }: Props
     <PhaseContainerConfigurer
       goBack={goBack}
       className=""
-      headTitle="Песня"
+      headTitle={headTitle ?? 'Песня'}
       head={head}
       content={
         <Container>

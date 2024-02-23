@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import EvaButton from '../../../../complect/eva-icon/EvaButton';
 import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
 import BibleTranslationControlled from '../../bible/translations/BibleTranslationControlled';
@@ -8,9 +9,10 @@ import { useCurrentTranslationTextApp, useSwitchCurrentTranslationTextApp } from
 interface Props {
   useNav: () => ReturnType<typeof useNavConfigurer>;
   comList?: Com[];
+  headTitle?: ReactNode;
 }
 
-export default function TranslationPage({ useNav, comList }: Props) {
+export default function TranslationPage({ useNav, comList, headTitle }: Props) {
   const app = useCurrentTranslationTextApp();
   const switchCurrApp = useSwitchCurrentTranslationTextApp();
   const head = (
@@ -26,11 +28,13 @@ export default function TranslationPage({ useNav, comList }: Props) {
       head={head}
       comList={comList}
       useNav={useNav}
+      headTitle={headTitle}
     />
   ) : (
     <BibleTranslationControlled
       head={head}
       useNav={useNav}
+      headTitle={headTitle}
     />
   );
 }

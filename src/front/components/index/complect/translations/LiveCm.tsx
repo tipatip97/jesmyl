@@ -13,6 +13,7 @@ export const ScheduleWidgetLiveCmTranslations = ({
   isCantTranslateLive,
   subscribeData,
   fio,
+  headTitle,
 }: LiveTranslationAppProps) => {
   const indexNav = useIndexNav();
   const cmNav = useCmNav();
@@ -58,6 +59,7 @@ export const ScheduleWidgetLiveCmTranslations = ({
     <TranslationPage
       comList={comList}
       useNav={useIndexNav as never}
+      headTitle={headTitle}
     />
   );
 };

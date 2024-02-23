@@ -1,7 +1,8 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import useAuth from '../../components/index/useAuth';
 import ShareEvaButton from '../ShareEvaButton';
+import { isTouchDevice } from '../device-differences';
 import EvaIcon from '../eva-icon/EvaIcon';
 import { useIsRememberExpand } from '../expand/useIsRememberExpand';
 import mylib from '../my-lib/MyLib';
@@ -21,27 +22,24 @@ import ScheduleWidgetEventList from './events/EventList';
 import ScheduleWidgetContextWrapper from './general/ContextWrapper';
 import { ScheduleWidgetCopy } from './general/Copy';
 import ScheduleWidgetLists from './lists/Lists';
-import { ScheduleWidgetMyUserTgInform } from './tg-inform/UserTgInform';
+import { ScheduleWidgetGoToLiveTranslationButton } from './live-translations/GoToLiveTranslationButton';
 import { ScheduleWidgetWatchLiveTranslationButton } from './live-translations/WatchLiveButton';
+import { ScheduleWidgetMyUserTgInform } from './tg-inform/UserTgInform';
 import {
   ScheduleWidgetRights,
   initialScheduleScope,
   takeScheduleStrongScopeMaker,
   useScheduleWidgetRights,
 } from './useScheduleWidget';
-import { ScheduleWidgetGoToLiveTranslationButton } from './live-translations/GoToLiveTranslationButton';
-import { isTouchDevice } from '../device-differences';
 
 const msInMin = mylib.howMs.inMin;
 
 export default function ScheduleWidget({
   schedule,
   rights: topRights,
-  altActionsNode,
 }: {
   schedule?: IScheduleWidget;
   rights?: ScheduleWidgetRights;
-  altActionsNode?: ReactNode;
 }) {
   const selfScope = schedule ? takeScheduleStrongScopeMaker(schedule.w) : '';
   const auth = useAuth();
@@ -54,11 +52,11 @@ export default function ScheduleWidget({
     <ScheduleWidgetTopicTitle
       prefix={<EvaIcon name="calendar-outline" />}
       titleBox={schedule ?? {}}
-      altTitle="Расписание"
+      altTitle="Мероприятие"
       topicBox={schedule}
     />,
     isExpand =>
-      isExpand ? (
+      isExpand && (
         <span className="flex flex-gap">
           {schedule && (
             <ShareEvaButton
@@ -68,13 +66,11 @@ export default function ScheduleWidget({
                 value: schedule.w,
               })}
               title={schedule.title}
-              text={`Расписание ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`}
+              text={`Мероприятие ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`}
             />
           )}
           {editIcon}
         </span>
-      ) : (
-        altActionsNode
       ),
   );
 
@@ -222,7 +218,7 @@ export default function ScheduleWidget({
                   />
 
                   <ScheduleWidgetWatchLiveTranslationButton schedule={schedule} />
-                  {isTouchDevice || <ScheduleWidgetGoToLiveTranslationButton />}
+                  {isTouchDevice || <ScheduleWidgetGoToLiveTranslationButton schedule={schedule} />}
 
                   {isRedact && (
                     <>

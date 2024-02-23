@@ -17,8 +17,8 @@ export default function ScheduleWidgetAlarmScheduleList() {
         <PhaseContainerConfigurer
           goBack={() => setAppRouteData({ schw: undefined })}
           className="ScheduleWidgetAlarmScheduleList"
-          headTitle="Расписание"
-          content={<div className="color--ko flex center margin-giant-gap-v">Расписание не найдено</div>}
+          headTitle="Мероприятие"
+          content={<div className="color--ko flex center margin-giant-gap-v">Мероприятие не найдено</div>}
         />
       );
 
@@ -28,12 +28,18 @@ export default function ScheduleWidgetAlarmScheduleList() {
         appName={schedule.app}
         schedulew={schedule.w}
         schedule={schedule}
-        title={'Расписание ' + schedule.title}
-        altActionsNode={
-          <EvaButton
-            name="bell-off-outline"
-            onClick={() => setAppRouteData({ schw: undefined })}
-          />
+        title={schedule.title}
+        headTitle={
+          <span className="flex flex-gap">
+            {schedule.title}
+            <EvaButton
+              name="close"
+              onClick={event => {
+                event.stopPropagation();
+                setAppRouteData({ schw: undefined });
+              }}
+            />
+          </span>
         }
       />
     );
@@ -41,9 +47,8 @@ export default function ScheduleWidgetAlarmScheduleList() {
 
   return (
     <ScheduleWidgetListPage
-      headTitle="Расписания"
+      headTitle="Мероприятия"
       goBack={goBack}
-      onScheduleObserve={schedule => setAppRouteData({ schw: schedule.w })}
     />
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSchedules } from '../../../../complect/schedule-widget/useScheduleWidget';
 import { soki } from '../../../../soki';
 import { useCurrentTranslationTextApp } from '../../../apps/+complect/translations/hooks/current-app';
 import { useScreenTranslationWindows } from '../../../apps/+complect/translations/hooks/windows';
@@ -15,6 +16,11 @@ export const IndexScheduleWidgetTranslations = () => {
   const windows = useScreenTranslationWindows();
   const isCm = useCurrentTranslationTextApp() === 'cm';
   const [isCantTranslateLive, setIsCantTranslateLive] = useState(true);
+  const schedules = useSchedules();
+  const headTitle =
+    indexNav.appRouteData.schw === undefined
+      ? null
+      : schedules.list.find(schedule => schedule.w === indexNav.appRouteData.schw)?.title;
 
   const subscribeData = `index-sch-${indexNav.appRouteData.schw}:${auth.login}` as const;
 
@@ -38,12 +44,14 @@ export const IndexScheduleWidgetTranslations = () => {
       isCantTranslateLive={isCantTranslateLive}
       fio={auth.fio}
       subscribeData={subscribeData}
+      headTitle={headTitle}
     />
   ) : (
     <IndexScheduleWidgetBibleTranslations
       isCantTranslateLive={isCantTranslateLive}
       fio={auth.fio}
       subscribeData={subscribeData}
+      headTitle={headTitle}
     />
   );
 };

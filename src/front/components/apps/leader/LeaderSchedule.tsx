@@ -40,6 +40,7 @@ export default function LeaderSchedule() {
         withoutBackButton
         schedulew={ccontext.w}
         onMoreClick={openGeneralMore}
+        headTitle={ccontext.name}
         title={ccontext.name}
       />
     </>

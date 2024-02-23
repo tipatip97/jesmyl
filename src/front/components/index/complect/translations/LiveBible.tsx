@@ -17,6 +17,7 @@ export const IndexScheduleWidgetBibleTranslations = ({
   isCantTranslateLive,
   subscribeData,
   fio,
+  headTitle,
 }: LiveTranslationAppProps) => {
   const indexNav = useIndexNav();
   const cmNav = useCmNav();
@@ -48,5 +49,10 @@ export const IndexScheduleWidgetBibleTranslations = ({
     }, 100);
   }, [address, cmNav.appRouteData.ccomw, config, fio, indexNav.appRouteData.schw, isCantTranslateLive, subscribeData]);
 
-  return <TranslationPage useNav={useIndexNav as never} />;
+  return (
+    <TranslationPage
+      useNav={useIndexNav as never}
+      headTitle={headTitle}
+    />
+  );
 };

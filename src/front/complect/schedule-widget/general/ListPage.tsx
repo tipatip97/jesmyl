@@ -1,19 +1,13 @@
 import useAuth from '../../../components/index/useAuth';
 import useConnectionState from '../../../components/index/useConnectionState';
-import EvaButton from '../../eva-icon/EvaButton';
 import PhaseContainerConfigurer from '../../phase-container/PhaseContainerConfigurer';
 import { PhaseContainerConfigurerProps } from '../../phase-container/PhaseContainerConfigurer.model';
 import StrongClipboardPicker from '../../strong-control/field/clipboard/Picker';
-import ScheduleCreateWidgetButton from './CreateButton';
 import ScheduleWidget from '../ScheduleWidget';
-import { IScheduleWidget } from '../ScheduleWidget.model';
 import { useSchedules } from '../useScheduleWidget';
+import ScheduleCreateWidgetButton from './CreateButton';
 
-export default function ScheduleWidgetListPage(
-  props: Omit<PhaseContainerConfigurerProps, 'content' | 'className'> & {
-    onScheduleObserve: (schedule: IScheduleWidget) => void;
-  },
-) {
+export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigurerProps, 'content' | 'className'>) {
   const schedules = useSchedules();
   const connectionNode = useConnectionState();
   const auth = useAuth();
@@ -37,12 +31,6 @@ export default function ScheduleWidgetListPage(
               <ScheduleWidget
                 key={schedule.w}
                 schedule={schedule}
-                altActionsNode={
-                  <EvaButton
-                    name="bell-outline"
-                    onClick={() => props.onScheduleObserve(schedule)}
-                  />
-                }
               />
             );
           })}
