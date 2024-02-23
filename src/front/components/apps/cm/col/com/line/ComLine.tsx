@@ -73,15 +73,26 @@ export default function ComLine(props: IComLineProps) {
         <React.Fragment key={txti}>{txt && <span dangerouslySetInnerHTML={{ __html: txt }} />}</React.Fragment>
       ));
 
+    let firstBitNode: ReactNode = firstTextBit !== '' && (
+      <span
+        className={isHasPre ? 'chorded pre' : undefined}
+        dangerouslySetInnerHTML={{ __html: firstTextBit }}
+        attr-chord={isHasPre ? chordsLabels[0] : undefined}
+      />
+    );
+
+    if (baseTextBitOriginal.startsWith(' ')) {
+      pushWordNode(indexi);
+
+      if (firstTextBit !== '') {
+        wordBitNodes.push(<React.Fragment key={indexi + '-word'}>{firstBitNode}</React.Fragment>, ' ');
+        firstBitNode = null;
+      }
+    }
+
     const node = (
       <React.Fragment key={indexi}>
-        {firstTextBit && (
-          <span
-            className={isHasPre ? 'chorded pre' : undefined}
-            dangerouslySetInnerHTML={{ __html: firstTextBit }}
-            attr-chord={isHasPre ? chordsLabels[0] : undefined}
-          />
-        )}
+        {firstBitNode}
         <span
           attr-chord={chord}
           attr-pchord={pchord}
@@ -108,8 +119,6 @@ export default function ComLine(props: IComLineProps) {
         </span>
       </React.Fragment>
     );
-
-    if (baseTextBitOriginal.startsWith(' ')) pushWordNode(indexi);
 
     wordBitNodes.push(node);
 
