@@ -9,7 +9,7 @@ export interface PhaseContainerProps {
   headClass?: string;
   contentClass?: string;
   withoutBackButton?: boolean;
-  headTitle?: string | number;
+  headTitle?: ReactNode;
   head?: ReactNode;
   content: ReactNode;
   contentRef?: React.LegacyRef<HTMLDivElement>;
