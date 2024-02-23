@@ -29,6 +29,8 @@ export class JesmylTelegramBot {
     this._bot = props.bot;
   }
 
+  register() {}
+
   convertNickFromId = (() => {
     const reg = /./g;
     const callback = (all: string) => 'jesmylibot'[all as never];
@@ -36,7 +38,7 @@ export class JesmylTelegramBot {
     return (id: number, addTPrefix?: boolean) => (addTPrefix === false ? '' : 't:') + ('' + id).replace(reg, callback);
   })();
 
-  makeLoginFromId = (id: number) => 'T' + smylib.md5('' + id).slice(1);
+  static makeLoginFromId = (id: number) => 'T' + smylib.md5('' + id).slice(1);
 
   makeSendMessageOptions(keyboard: (InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][]) {
     return this._bot.makeOptionsKeyboard(this, keyboard);
@@ -73,8 +75,8 @@ export class JesmylTelegramBot {
     );
   }
 
-  deleteMessage(messageId: number) {
-    this._bot.bot.deleteMessage(this.chatId, messageId);
+  deleteMessage(messageId: number, chatId?: number) {
+    this._bot.bot.deleteMessage(chatId ?? this.chatId, messageId);
   }
 
   editMessageText(messageId: number, text: string, keyboard?: SendMessageOptions) {
@@ -123,10 +125,10 @@ export class JesmylTelegramBot {
     });
   }
 
-  postMessage(text: string, options?: TgBot.SendMessageOptions) {
+  postMessage(text: string, options?: TgBot.SendMessageOptions, chatId?: number) {
     if (this.logAllAsJSON) this.logger.jsonCode({ message: text, options });
 
-    return this._bot.bot.sendMessage(this.chatId, text, {
+    return this._bot.bot.sendMessage(chatId ?? this.chatId, text, {
       parse_mode: 'HTML',
       ...options,
     });

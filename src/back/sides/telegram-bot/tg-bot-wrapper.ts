@@ -39,6 +39,10 @@ export class JesmylTelegramBotWrapper {
     this.bot = new TgBot(token, options);
 
     this.bot.on('message', (message, metadata) => {
+      if (this.chatMessagesCallbacks[0] !== undefined) {
+        this.chatMessagesCallbacks[0](message, metadata);
+      }
+
       if (this.chatMessagesCallbacks[message.chat.id] !== undefined) {
         this.chatMessagesCallbacks[message.chat.id](message, metadata);
         return;

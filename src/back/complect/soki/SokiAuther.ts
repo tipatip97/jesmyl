@@ -3,6 +3,7 @@ import smylib from '../../shared/SMyLib';
 import { controlTelegramBot } from '../../sides/telegram-bot/control/control-bot';
 import { prodTelegramBot } from '../../sides/telegram-bot/prod/prod-bot';
 import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
+import { JesmylTelegramBot } from '../../sides/telegram-bot/tg-bot';
 import { filer } from '../filer/Filer';
 import { LocalSokiAuth, SokiAuth, SokiClientEventBody } from './soki.model';
 
@@ -70,7 +71,7 @@ export class SokiAuther {
       level,
       nick,
       fio: `${user.first_name}${user.last_name !== undefined ? ` ${user.last_name}` : ''}`,
-      login: controlTelegramBot.makeLoginFromId(user.id),
+      login: JesmylTelegramBot.makeLoginFromId(user.id),
       passw: this.makePassw(user.id, nick),
       tgId: user.id,
       tgAva: tgAva === null ? undefined : tgAva,
