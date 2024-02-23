@@ -15,11 +15,7 @@ export const BibleSearchInputPanel = ({ inputRef, putOnSearchZone }: Props) => {
   return (
     <div className="flex flex-gap margin-big-gap-t">
       <span className="nowrap">
-        {searchZone === 'global'
-          ? 'Поиск в тексте:'
-          : searchZone === 'chapter'
-            ? 'Поиск по главе:'
-            : 'Поиск по ссылке:'}
+        {searchZone === 'global' ? 'Поиск в тексте:' : searchZone === 'inner' ? 'Поиск по главе:' : 'Поиск по ссылке:'}
       </span>
       {searchZone === 'address' ? (
         <BibleSearchPanelAddressInput inputRef={inputRef} />
@@ -33,8 +29,8 @@ export const BibleSearchInputPanel = ({ inputRef, putOnSearchZone }: Props) => {
         текст
       </SwitchButton>
       <SwitchButton
-        $active={searchZone === 'chapter'}
-        onClick={putOnSearchZone('chapter')}
+        $active={searchZone === 'inner'}
+        onClick={putOnSearchZone('inner')}
       >
         глава
       </SwitchButton>

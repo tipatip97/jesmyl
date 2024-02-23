@@ -13,6 +13,9 @@ import { useBibleSearchTerm, useBibleSearchZone } from './selectors';
 
 interface Props {
   inputRef: React.RefObject<HTMLInputElement>;
+  height?: string;
+  innerZone: 'book' | 'chapter';
+  onClick?: (booki: number, chapteri: number, versei: number) => void;
 }
 
 const spacePlusReg = / +/;
@@ -27,7 +30,7 @@ const maxItems = 49;
 
 const sortStringsByLength = (a: string, b: string) => b.length - a.length;
 
-export const BibleSearchResults = ({ inputRef }: Props) => {
+export const BibleSearchResults = ({ inputRef, height = '100px', innerZone, onClick: userOnClick }: Props) => {
   const searchZone = useBibleSearchZone();
   const searchTerm = useDebounceValue(useBibleSearchTerm());
   const lowerBooks = useBibleCurrentWholeLowerCaseChapterBookList();
@@ -81,7 +84,16 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
           if (lastFounds.length > maxItems) break bibleSearchLoop;
         }
       }
-    else searchInChapter(currentBooki, currentChapteri, lowerBooks[currentBooki][currentChapteri]);
+    else {
+      if (innerZone === 'book') {
+        const book = lowerBooks[currentBooki];
+
+        for (let chapteri = 0; chapteri < book.length; chapteri++) {
+          searchInChapter(currentBooki, chapteri, book[chapteri]);
+          if (lastFounds.length > maxItems) break;
+        }
+      } else searchInChapter(currentBooki, currentChapteri, lowerBooks[currentBooki][currentChapteri]);
+    }
 
     const list = founds
       .reverse()
@@ -99,10 +111,11 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
           versei={versei}
           splitReg={splitReg}
           resulti={resulti}
+          onClick={userOnClick}
         />
       )),
     );
-  }, [currentBooki, currentChapteri, lowerBooks, searchTerm, searchZone]);
+  }, [currentBooki, currentChapteri, innerZone, lowerBooks, searchTerm, searchZone, userOnClick]);
 
   useEffect(() => {
     if (resultSelected === null || resultList[resultSelected] == null) return;
@@ -116,11 +129,18 @@ export const BibleSearchResults = ({ inputRef }: Props) => {
     return () => node.classList.remove('selected');
   }, [resultList, resultSelected, setJoin]);
 
-  return <List onClick={onClick}>{list}</List>;
+  return (
+    <List
+      $height={height}
+      onClick={onClick}
+    >
+      {list}
+    </List>
+  );
 };
 
-const List = styled.div`
-  height: 100px;
+const List = styled.div<{ $height: string }>`
+  height: ${props => props.$height};
   overflow-y: auto;
   overflow-x: hidden;
 

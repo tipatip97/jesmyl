@@ -29,7 +29,8 @@ export const useBibleAddressVersei = () => {
 
   return currentVersei < 0
     ? 0
-    : currentVersei > chapterBooks[currentBooki][currentChapteri].length - 1
+    : chapterBooks[currentBooki]?.[currentChapteri] !== undefined &&
+        currentVersei > chapterBooks[currentBooki][currentChapteri].length - 1
       ? chapterBooks[currentBooki][currentChapteri].length - 1
       : currentVersei;
 };

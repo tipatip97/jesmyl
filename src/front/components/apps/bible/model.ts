@@ -25,4 +25,4 @@ export interface BibleTranslationJoinAddress {
 export type BibleTranslationSingleAddress = [number, number, number];
 export type BibleTranslationAddress = BibleTranslationSingleAddress | BibleTranslationJoinAddress;
 
-export type BibleSearchZone = 'global' | 'chapter' | 'address';
+export type BibleSearchZone = 'global' | 'inner' | 'address';

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { useBibleTranslationAddressIndexesSetter } from '../../hooks/address/address';
-import { useBibleBookList, useBibleCurrentWholeChapterBookList } from '../../hooks/texts';
+import { useBibleBookList, useBibleWholeChapterBookList } from '../../hooks/texts';
 
 interface Props {
   booki: number;
@@ -8,10 +8,11 @@ interface Props {
   versei: number;
   splitReg: RegExp;
   resulti: number;
+  onClick?: (booki: number, chapteri: number, versei: number) => void;
 }
 
-export const BibleSearchResultVerse = memo(({ booki, chapteri, versei, splitReg, resulti }: Props) => {
-  const chapterBooks = useBibleCurrentWholeChapterBookList();
+export const BibleSearchResultVerse = memo(({ booki, chapteri, versei, splitReg, resulti, onClick }: Props) => {
+  const chapterBooks = useBibleWholeChapterBookList();
   const books = useBibleBookList();
   const textBits = chapterBooks[booki][chapteri][versei].split(splitReg);
   const addressSetter = useBibleTranslationAddressIndexesSetter();
@@ -20,7 +21,7 @@ export const BibleSearchResultVerse = memo(({ booki, chapteri, versei, splitReg,
     <div
       id={`bible-search-result-${booki}-${chapteri}-${versei}`}
       className="bible-search-result pointer margin-gap-t flex"
-      onClick={addressSetter(booki, chapteri, versei, resulti)}
+      onClick={addressSetter(booki, chapteri, versei, resulti, onClick)}
     >
       <span className="color--3 margin-gap-r nowrap">
         {books[booki][1]} {chapteri + 1} {versei + 1}

@@ -3,11 +3,7 @@ import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from 
 import { useBibleAddressBooki } from '../../../../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../../../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../../../../hooks/address/verses';
-import {
-  useBibleBookList,
-  useBibleBookLowerCaseList,
-  useBibleCurrentWholeChapterBookList,
-} from '../../../../../hooks/texts';
+import { useBibleBookList, useBibleBookLowerCaseList, useBibleWholeChapterBookList } from '../../../../../hooks/texts';
 
 const addressParserReg = /^(\d?\s*[а-яё]+)?\s?(\d{1,3})[\s:]?(\d{1,3})([-,\s]{0,2})(\d{1,3})?$/;
 const spacePlusReg = /\s+/;
@@ -19,7 +15,7 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
   const currentVarsei = useBibleAddressVersei();
   const lowerBooks = useBibleBookLowerCaseList();
   const books = useBibleBookList();
-  const chapters = useBibleCurrentWholeChapterBookList();
+  const chapters = useBibleWholeChapterBookList();
   const [address, setAddress] = useState<ReactNode>(null);
   const onClickRef = useRef(emptyFunc);
   const setAddressIndexes = useSetBibleAddressIndexes();
@@ -80,14 +76,19 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
 
       onClickRef.current = () => {};
     } else if (
-      verseNumber > chapters[booki][chapterNumber - 1].length ||
-      (plusVerseNumber !== undefined && plusVerseNumber <= verseNumber)
+      chapters[booki]?.[chapterNumber - 1] !== undefined &&
+      (verseNumber > chapters[booki][chapterNumber - 1].length ||
+        (plusVerseNumber !== undefined && plusVerseNumber <= verseNumber))
     ) {
       verseNode = <span className="color--ko">{verseNumber}</span>;
       if (plusVerseNumber !== undefined) plusVerseNode = <span className="color--ko">{plusVerseNumber}</span>;
 
       onClickRef.current = () => {};
-    } else if (plusVerseNumber !== undefined && plusVerseNumber > chapters[booki][chapterNumber - 1].length) {
+    } else if (
+      plusVerseNumber !== undefined &&
+      chapters[booki]?.[chapterNumber - 1] !== undefined &&
+      plusVerseNumber > chapters[booki][chapterNumber - 1].length
+    ) {
       plusVerseNode = <span className="color--ko">{plusVerseNumber}</span>;
 
       onClickRef.current = () => {};

@@ -9,7 +9,7 @@ import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleTranslationSlideSyncContentSetter } from '../../hooks/slide-sync';
 import { justBibleStorageSet } from '../../hooks/storage';
-import { useBibleCurrentWholeChapterBookList } from '../../hooks/texts';
+import { useBibleWholeChapterBookList } from '../../hooks/texts';
 import { BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslationAddToPlan } from '../archive/plan/hooks/plan';
 
@@ -23,7 +23,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
 
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
-  const chapters = useBibleCurrentWholeChapterBookList();
+  const chapters = useBibleWholeChapterBookList();
   const joinAddress = useBibleTranslationJoinAddress();
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
@@ -78,7 +78,8 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
               ? versei > 0
                 ? versei + dir
                 : versei
-              : versei === chapters[currentBooki][currentChapteri].length - 1
+              : chapters[currentBooki]?.[currentChapteri] !== undefined &&
+                  versei === chapters[currentBooki][currentChapteri].length - 1
                 ? versei
                 : versei + dir,
           );
@@ -119,7 +120,11 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
       verses.add(versei);
 
       if (event.code === 'ArrowDown' || event.code === 'ArrowRight') {
-        if (versei < chapters[currentBooki][currentChapteri].length - 1) verses.add(versei + 1);
+        if (
+          chapters[currentBooki]?.[currentChapteri] !== undefined &&
+          versei < chapters[currentBooki][currentChapteri].length - 1
+        )
+          verses.add(versei + 1);
       } else if (versei > 0) verses.delete(versei);
 
       const newJoin: BibleTranslationJoinAddress = {

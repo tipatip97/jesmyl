@@ -10,7 +10,7 @@ export const useBibleAddressChapteri = () => {
 
   return justChapteri < 0
     ? 0
-    : justChapteri > chapterBooks[currentBooki].length - 1
+    : chapterBooks[currentBooki] !== undefined && justChapteri > chapterBooks[currentBooki].length - 1
       ? chapterBooks[currentBooki].length - 1
       : justChapteri;
 };

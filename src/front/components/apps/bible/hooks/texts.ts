@@ -29,12 +29,14 @@ export const useBibleCurrentVerseTexts = (): string[] | und => {
 };
 
 const lowerBooks = bible.titles.map(book => ({ ...book, titles: book.map(title => title.toLowerCase()) }));
+const htmlChapters = chapterBooks.map(book => book.map(chapter => chapter.map(__html => ({ __html }))));
 
 export const useBibleCurrentChapterList = () => chapterBooks[useBibleAddressBooki()];
 export const useBibleBookList = () => bible.titles;
 export const useBibleBookLowerCaseList = () => lowerBooks;
 export const useBibleCurrentWholeLowerCaseChapterBookList = () => lowerChapterBooks;
-export const useBibleCurrentWholeChapterBookList = () => chapterBooks;
+export const useBibleWholeChapterBookList = () => chapterBooks;
+export const useBibleWholeChapterHTMLSBookList = () => htmlChapters;
 
 export const takeBibleSlideText = (booki: number, chapteri: number, versei: number, isSetAddress?: boolean) => {
   return (isSetAddress === false ? '' : versei + 1 + '. ') + chapterBooks[booki]?.[chapteri]?.[versei];

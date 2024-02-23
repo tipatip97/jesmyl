@@ -27,7 +27,7 @@ export const BibleSearchPanel = () => {
           putOnSearchZone('global')();
           break;
         case 'F3':
-          putOnSearchZone('chapter')();
+          putOnSearchZone('inner')();
           break;
         case 'F4':
           putOnSearchZone('address')();
@@ -53,7 +53,10 @@ export const BibleSearchPanel = () => {
         inputRef={inputRef}
         putOnSearchZone={putOnSearchZone}
       />
-      <BibleSearchResults inputRef={inputRef} />
+      <BibleSearchResults
+        inputRef={inputRef}
+        innerZone="chapter"
+      />
     </div>
   );
 };

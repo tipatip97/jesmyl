@@ -8,7 +8,13 @@ export const useBibleTranslationAddressIndexesSetter = () => {
   const setJoin = useBibleTranslationJoinAddressSetter();
 
   return useCallback(
-    (booki: number, chapteri: number, versei: number, resultSelectedi?: number) => {
+    (
+      booki: number,
+      chapteri: number,
+      versei: number,
+      resultSelectedi?: number,
+      onClick?: (booki: number, chapteri: number, versei: number) => void,
+    ) => {
       return () => {
         justBibleStorageSet('translationBooki', booki);
         justBibleStorageSet('translationChapteri', chapteri);
@@ -17,6 +23,8 @@ export const useBibleTranslationAddressIndexesSetter = () => {
           justBibleStorageSet('translationSearchResultSelected', resultSelectedi);
           setJoin(null);
         }
+
+        onClick?.(booki, chapteri, versei);
       };
     },
     [setJoin],
