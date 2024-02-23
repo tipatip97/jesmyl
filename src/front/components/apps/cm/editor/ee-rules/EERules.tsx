@@ -5,7 +5,7 @@ import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
 import EvaCheckbox from '../../../../../complect/eva-icon/EvaCheckbox';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import mylib from '../../../../../complect/my-lib/MyLib';
-import { useBibleCurrentWholeChapterBookList } from '../../../bible/hooks/texts';
+import { useBibleWholeChapterBookList } from '../../../bible/hooks/texts';
 import { cmExer } from '../../Cm.store';
 import { eeStorage } from '../../base/ee-storage/EeStorage';
 import { useEditableCols } from '../col/useEditableCols';
@@ -24,7 +24,7 @@ export default function EERules() {
   const [currentPage, setCurrentPage] = useState(1);
   const cols = useEditableCols();
   const exec = useExerExec();
-  const chapters = useBibleCurrentWholeChapterBookList();
+  const chapters = useBibleWholeChapterBookList();
   const [isCheckBible, setIsCheckBible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [store, setStore] = useState<string[]>([]);
