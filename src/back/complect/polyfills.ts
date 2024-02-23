@@ -61,6 +61,55 @@ export const setPolyfills = () => {
     return () => clearTimeout(timer);
   };
 
+  (globalThis as any).hookEffectLine = () => {
+    const set = new Set<
+      | number
+      | {
+          element: HTMLElement;
+          eventName: string;
+          cb: () => void;
+          options?: boolean | AddEventListenerOptions;
+        }
+    >();
+
+    const setter = {
+      addEventListener: (
+        element: HTMLElement,
+        eventName: string,
+        cb: () => void,
+        options?: boolean | AddEventListenerOptions,
+      ) => {
+        set.add({ element, eventName, cb, options });
+        element.addEventListener(eventName, cb, options);
+
+        return setter;
+      },
+
+      setTimeout: (cb: () => {}, time?: number, ...args: any[]) => {
+        set.add(setTimeout(cb, time, ...args));
+
+        return setter;
+      },
+
+      effect: () => {
+        return () => {
+          set.forEach(param => {
+            if (typeof param === 'number') {
+              clearTimeout(param);
+              return;
+            }
+
+            param.element.removeEventListener(param.eventName, param.cb, param.options);
+          });
+
+          set.clear();
+        };
+      },
+    };
+
+    return setter;
+  };
+
   ///////////////////////////////////
   // force resigns for unifications//
   ///////////////////////////////////
@@ -87,6 +136,17 @@ const prev: Record<string, any> = {};
     );
     prev[c] = curr[c];
   }
+};
+
+type HookEffectLineReturn = {
+  addEventListener: <EventName extends keyof HTMLElementEventMap, Event extends HTMLElementEventMap[EventName]>(
+    elem: HTMLElement | typeof globalThis,
+    eventName: EventName,
+    callback: (event: Event) => void,
+    turn?: boolean,
+  ) => HookEffectLineReturn;
+  setTimeout: (cb: () => void, time?: number, ...args: any[]) => HookEffectLineReturn;
+  effect: () => () => void;
 };
 
 declare global {
@@ -123,6 +183,8 @@ declare global {
   ): () => void;
   function setTimeoutEffect(handler: (...args: any[]) => void, timeout?: number, ...args: any[]): () => void;
   function inspectComponentProps(curr: Record<string, any>, print?: boolean): void;
+
+  function hookEffectLine(): HookEffectLineReturn;
 
   interface Array<T> {
     toSorted: (compareFn?: (a: T, b: T) => number) => T[];
