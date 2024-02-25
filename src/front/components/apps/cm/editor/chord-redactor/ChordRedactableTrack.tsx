@@ -50,7 +50,7 @@ export default function ChordRedactableTrack({
 
                   return (
                     <polygon
-                      key={`chord-bare-adder-${lad}`}
+                      key={lad}
                       className={`chord-bare-adder ${isBare ? 'fill' : ''}`}
                       points={`${x1},${y1} ${x2},${y2} ${x3},${y2}`}
                       onClick={() => {
@@ -68,11 +68,11 @@ export default function ChordRedactableTrack({
                     />
                   );
                 })}
-                {strings.map((strNum, strNumi) => {
+                {strings.map(strNum => {
                   const y = strNum * betweenStr - betweenStr / 2;
 
                   return (
-                    <React.Fragment key={`strin-${strNum}`}>
+                    <React.Fragment key={strNum}>
                       <text
                         className="mute-string-indicator button"
                         x={leftMargin - 5}
@@ -121,7 +121,7 @@ export default function ChordRedactableTrack({
 
                         return (
                           <polyline
-                            key={`chord-shadow-point-${ladNum}-${strNumi}`}
+                            key={ladNum}
                             className={`chord-point shadow${isProblem ? ' problem' : ''}`}
                             points={`${x},${y} ${x},${y}`}
                             onClick={() => {

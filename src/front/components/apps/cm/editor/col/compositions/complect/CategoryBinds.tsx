@@ -17,7 +17,7 @@ export default function CategoryBinds() {
       {cols?.cats.map(cat => {
         return cat.kind !== 'dict' ? null : (
           <EditContainerCorrectsInformer
-            key={`cat-for-bind-${cat.wid}`}
+            key={cat.wid}
             corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
           >
             <span>{cat.name} </span>
@@ -48,7 +48,7 @@ export default function CategoryBinds() {
       {cols?.cats.map(cat => {
         return cat.kind !== 'list' ? null : (
           <EditContainerCorrectsInformer
-            key={`cat-for-bind-${cat.wid}`}
+            key={cat.wid}
             corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
           >
             <span>{cat.name} </span>

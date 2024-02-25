@@ -69,7 +69,7 @@ export default function EditMeetingsEvent() {
           {comsLength ? (
             currentEvent.coms?.map((com, comi) => (
               <ComFace
-                key={`event-${com.wid}`}
+                key={com.wid}
                 com={com}
                 selectable={false}
                 description={
@@ -116,7 +116,7 @@ export default function EditMeetingsEvent() {
               </div>
               {currentEvent.prevComs?.map(com => (
                 <ComFace
-                  key={`event-${com.wid}`}
+                  key={com.wid}
                   com={com}
                   selectable={false}
                   description={
@@ -153,7 +153,7 @@ export default function EditMeetingsEvent() {
               {zcat?.wraps.map(({ com }) => {
                 return (
                   <ComFace
-                    key={`category-for-event${com.wid}`}
+                    key={com.wid}
                     com={com}
                     selectable={false}
                     importantOnClick={() => {

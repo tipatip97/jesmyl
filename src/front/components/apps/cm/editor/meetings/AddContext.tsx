@@ -22,7 +22,7 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
         .map(context => {
           return (
             <div
-              key={`context-${context}`}
+              key={context}
               className="context-item"
               onClick={() => setName(context)}
             >
@@ -43,7 +43,7 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
       if (event.contextw && event.contextw !== currGroupw) return null;
       return (
         <BrutalItem
-          key={`event-${eventi}`}
+          key={eventi}
           icon="calendar-outline"
           title={event.name}
           onClick={() => switchEvent(event)}

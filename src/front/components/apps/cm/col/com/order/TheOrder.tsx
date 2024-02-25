@@ -2,14 +2,20 @@ import React from 'react';
 import ComLine from '../line/ComLine';
 import { ITheOrderProps } from './Order.model';
 
+const regs = {
+  '/\n/': /\n/,
+  '/ +/': / +/,
+};
+
 export default function TheOrder(props: ITheOrderProps) {
-  const { orderUnit, orderUniti, com } = props;
+  const orderUnit = props.orderUnit;
 
   if (
     (props.isMiniAnchor && (orderUnit.top.isAnchorInherit || orderUnit.top.isAnchorInheritPlus)) ||
     (!props.showInvisibles && !orderUnit.isVisible)
   )
     return null;
+  const { orderUniti, com } = props;
 
   const className = orderUnit.top.style?.getStyleName(orderUnit);
 
@@ -97,8 +103,8 @@ export default function TheOrder(props: ITheOrderProps) {
       ref={el => el && (orderUnit.element = el)}
     >
       {header}
-      {(orderUnit.repeated || '').split(/\n/).map((textLine, textLinei, textLinea) => {
-        const words = textLine?.split(/ +/);
+      {(orderUnit.repeatedText() || '').split(regs['/\n/']).map((textLine, textLinei, textLinea) => {
+        const words = textLine?.split(regs['/ +/']);
 
         return (
           <React.Fragment key={textLinei}>

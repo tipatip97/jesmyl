@@ -16,7 +16,7 @@ export default function EditCategories() {
           {cols?.cats.map(cat => {
             return (
               <BrutalItem
-                key={`category-on-change_${cat.wid}`}
+                key={cat.wid}
                 icon="book-open-outline"
                 title={`${cat.name || ''}${cat.name !== cat.initialName ? ` (${cat.initialName})` : ''}`}
                 onClick={() => goTo({ place: 'cat', data: { ccatw: cat.wid } })}

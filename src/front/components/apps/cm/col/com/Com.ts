@@ -14,6 +14,16 @@ import { IExportableCom } from './Com.model';
 import { Order } from './order/Order';
 import { IExportableOrder, IExportableOrderTop, OrderTopHeaderBag } from './order/Order.model';
 
+const regs = {
+  '/\n/': /\n/,
+  '/[A-H]#?/': /[A-H]#?/,
+  '/\\s*\n+\\s*/': /\s*\n+\s*/,
+  '/ +/': / +/,
+  '/[^#A-Z/0-9]+/i': /[^#A-Z/0-9]+/i,
+  '/B/': /B/,
+  '/A#/g': /A#/g,
+};
+
 export class Com extends BaseNamed<IExportableCom> {
   initial: Record<string, any>;
   ton?: number;
@@ -109,7 +119,7 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   getFirstSimpleChord() {
-    return (this.orders?.[0]?.chords ?? this.chords?.[0])?.match(/[A-H]#?/)?.[0];
+    return (this.orders?.[0]?.chords ?? this.chords?.[0])?.match(regs['/[A-H]#?/'])?.[0];
   }
 
   pullTransPosition(obj: IExportableCom) {
@@ -183,18 +193,14 @@ export class Com extends BaseNamed<IExportableCom> {
     );
   }
 
-  isCanAddTranslationPart(ord: Order) {
-    return !!(ord.text && ord.isVisible);
-  }
-
   getOrderedBlocks() {
     const textBeats = this.orders
-      ?.reduce((text, ord) => text + (!this.isCanAddTranslationPart(ord) ? '' : (text ? '\n' : '') + ord.repeated), '')
-      .split(/\n/);
+      ?.reduce((text, ord) => text + (!ord.isRealText() ? '' : (text ? '\n' : '') + ord.repeatedText()), '')
+      .split(regs['/\n/']);
 
-    const texts = this.translationMap().map(peaceSize => {
-      return textBeats?.splice(0, peaceSize);
-    });
+    const texts = this.translationMap()
+      .map(peaceSize => textBeats?.splice(0, peaceSize)!)
+      .filter(txt => txt);
 
     return texts;
   }
@@ -206,20 +212,21 @@ export class Com extends BaseNamed<IExportableCom> {
     let curr = 0;
     const orders = this.orders ?? [];
     const len = orders.length;
+    const newlineReg = /\n/;
 
     for (let ordi = 0; ordi < len; ) {
       const ord = orders[ordi];
 
-      if (!this.isCanAddTranslationPart(ord)) {
+      if (!ord.isRealText()) {
         ordi++;
         continue;
       }
 
-      curr += ord.text.split(/\n/).length;
+      curr += ord.text.split(newlineReg).length;
       let nextOrd = orders[++ordi];
 
       while (nextOrd?.top.isInherit) {
-        if (this.isCanAddTranslationPart(nextOrd)) curr += nextOrd.text.split(/\n/).length;
+        if (nextOrd.isRealText()) curr += nextOrd.text.split(newlineReg).length;
 
         nextOrd = orders[++ordi];
       }
@@ -231,39 +238,44 @@ export class Com extends BaseNamed<IExportableCom> {
     return (this._translationMap = kinds.clearList());
   }
 
-  bracketsTransformed(str = '') {
+  bracketsTransformed = (() => {
     const brackets = [
       ['«', '»'],
       ['„', '“'],
       ['"', '"'],
       ["'", "'"],
     ];
-    let level = 0;
+    const backBrackets = ['`', '`'];
+    const dashReg = /(\s)-+(\s)/g;
+    const openBracketReg = /(\( ?)?("+)( ?\)?)/gs;
+    const closeBracketReg = /\("+ \)$|^\( "+\)/g;
+    const spacesLikeReg = /\s/;
 
-    const text = str
-      .replace(/(\s)-+(\s)/g, '$1—$2')
-      .replace(/(\( ?)?("+)( ?\)?)/gs, function (_, pref = '', all, post = '', index, text) {
-        const pre = text[index - 1];
-        const isOpen = !pre || pre.search(/\s/) + 1;
-        const brLevel = level - (isOpen ? 0 : 1);
-        level -= (isOpen ? -1 : 1) * all.length;
+    return (str = '') => {
+      let level = 0;
 
-        return pref[0] === '(' && post.endsWith(')')
-          ? ''
-          : (pref || '') +
-              all
-                .split('')
-                .map(
-                  (_br: string, bri: number) =>
-                    (brackets[brLevel - (isOpen ? -bri : bri)] || ['`', '`'])[isOpen ? 0 : 1],
-                )
-                .join('') +
-              (post || '');
-      })
-      .replace(/\("+ \)$|^\( "+\)/g, '');
+      const text = str
+        .replace(dashReg, '$1—$2')
+        .replace(openBracketReg, function (_, pref = '', all: string, post = '', index, text) {
+          const pre = text[index - 1];
+          const isOpen = !pre || pre.search(spacesLikeReg) + 1;
+          const brLevel = level - (isOpen ? 0 : 1);
+          level -= (isOpen ? -1 : 1) * all.length;
 
-    return { text, level };
-  }
+          return pref[0] === '(' && post.endsWith(')')
+            ? ''
+            : (pref || '') +
+                all
+                  .split('')
+                  .map((_, bri) => (brackets[brLevel - (isOpen ? -bri : bri)] ?? backBrackets)[isOpen ? 0 : 1])
+                  .join('') +
+                (post || '');
+        })
+        .replace(closeBracketReg, '');
+
+      return { text, level };
+    };
+  })();
 
   get chordLabels(): string[][][] {
     if (this._chordLabels == null) this.updateChordLabels();
@@ -310,14 +322,14 @@ export class Com extends BaseNamed<IExportableCom> {
         currTransPosition = (this.transPosition || 0) + (ord.fieldValues?.md || 0);
       }
 
-      (chords || '').split(/\s*\n+\s*/).forEach(line => {
+      (chords || '').split(regs['/\\s*\n+\\s*/']).forEach(line => {
         const lineLabels: string[] = [];
         ordLabels.push(lineLabels);
 
-        (line || '').split(/ +/).forEach(chordSchema => {
+        (line || '').split(regs['/ +/']).forEach(chordSchema => {
           chordSchema
-            .split(/[^#A-Z/0-9]+/i)
-            .forEach(chord => this._usedChords && (this._usedChords[chord.replace(/B/, 'A#')] = chord));
+            .split(regs['/[^#A-Z/0-9]+/i'])
+            .forEach(chord => this._usedChords && (this._usedChords[chord.replace(regs['/B/'], 'A#')] = chord));
           lineLabels.push(chordSchema);
           if (!firstChord) firstChord = chordSchema;
         });
@@ -330,7 +342,7 @@ export class Com extends BaseNamed<IExportableCom> {
   static withBemoles(chords?: string, isSet: num = 0) {
     return (
       isSet ? chords?.replace(gSimpleHashedEachLetterChordReg, all => chordBemoleEquivalent[all] || all) : chords
-    )?.replace(/A#/g, 'B');
+    )?.replace(regs['/A#/g'], 'B');
   }
 
   actualChords(chordsScalar?: string | number, position = this.transPosition) {

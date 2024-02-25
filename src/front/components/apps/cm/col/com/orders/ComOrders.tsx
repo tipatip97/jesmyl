@@ -26,7 +26,7 @@ export default function ComOrders(props: IComOrdersProps) {
 
         return (
           <TheOrder
-            key={`order.${orderUniti}`}
+            key={orderUniti}
             {...props}
             specialClassId={specialClassId}
             orderUnit={orderUnit}

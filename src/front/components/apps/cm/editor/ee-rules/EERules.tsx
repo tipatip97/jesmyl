@@ -12,11 +12,16 @@ import { useEditableCols } from '../col/useEditableCols';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 
 const radioTitles = ['И е и ё', 'Только е', 'Только ё'];
-const ruUaLettersReg = /[^а-яёіїєґ]+/gi;
-const yoLetterReg = /ё/g;
-const ruUpperLettersReg = /^[А-ЯЁ]/;
-const uaSpecLettersReg = /[іїєґ]/;
-const eLetterReg = /е/;
+
+const regs = {
+  '/[^а-яёіїєґ]+/gi': /[^а-яёіїєґ]+/gi,
+  '/([а-дж-я]*е)/': /([а-дж-я]*е)/,
+  '/^[А-ЯЁ]/': /^[А-ЯЁ]/,
+  '/[іїєґ]/': /[іїєґ]/,
+  '/е/g': /е/g,
+  '/ё/g': /ё/g,
+  '/е/': /е/,
+};
 
 export default function EERules() {
   const [pageSize, setPageSize] = useState(50);
@@ -74,14 +79,14 @@ export default function EERules() {
                   .join(' ');
 
                 (isCheckBible ? text : text.toLowerCase())
-                  .replace(ruUaLettersReg, ' ')
-                  .replace(yoLetterReg, 'е')
+                  .replace(regs['/[^а-яёіїєґ]+/gi'], ' ')
+                  .replace(regs['/ё/g'], 'е')
                   .split(' ')
                   .forEach(word => {
                     if (
-                      (!isCheckBible || word.search(ruUpperLettersReg) < 0) &&
-                      word.search(uaSpecLettersReg) < 0 &&
-                      word.search(eLetterReg) > -1
+                      (!isCheckBible || word.search(regs['/^[А-ЯЁ]/']) < 0) &&
+                      word.search(regs['/[іїєґ]/']) < 0 &&
+                      word.search(regs['/е/']) > -1
                     )
                       words.add(word);
                   });
@@ -105,7 +110,7 @@ export default function EERules() {
               <>
                 {[10, 30, 50].map(size => (
                   <button
-                    key={`page-size-button-switcher${size}`}
+                    key={size}
                     className="margin-gap"
                     disabled={pageSize === size}
                     onClick={() => setPageSize(size)}
@@ -135,7 +140,7 @@ export default function EERules() {
 
                   return (
                     <table
-                      key={`word ${wordi}`}
+                      key={wordi}
                       className="margin-big-gap-v"
                     >
                       <tbody>
@@ -150,9 +155,9 @@ export default function EERules() {
                                 Слово:
                               </th>
                               {parts.map((part, parti) => (
-                                <td key={`ee-word-letters-part-${word}:${part}`}>
+                                <td key={parti}>
                                   {storeType === 2 || (storeType as number[])?.[parti] === 2
-                                    ? part.replace(/е/, 'ё')
+                                    ? part.replace(regs['/е/'], 'ё')
                                     : part}
                                 </td>
                               ))}
@@ -160,19 +165,19 @@ export default function EERules() {
                             <tr>
                               <th>
                                 {radioTitles.map((typeName, type) => (
-                                  <div key={`ee-word-radio-title_${word}:${type}`}>{typeName}</div>
+                                  <div key={type}>{typeName}</div>
                                 ))}
                               </th>
                               {parts.map((part, parti) => (
                                 <td
-                                  key={`ee-word-buttons-part-${word}:${part}`}
+                                  key={parti}
                                   style={{
                                     textAlign: 'right',
                                   }}
                                 >
                                   {part.endsWith('е')
                                     ? radioTitles.map((_, type) => (
-                                        <div key={`ee-word-radio_${word}:${type}`}>
+                                        <div key={type}>
                                           <input
                                             type="radio"
                                             name={`ee-word-radio_${word}-${parti}`}
@@ -182,7 +187,7 @@ export default function EERules() {
                                             checked={storeType === type || (storeType as number[])?.[parti] === type}
                                             onChange={() => {
                                               let track = Array.isArray(storeType) ? storeType.slice(0) : storeType;
-                                              const elen = word.match(/е/g)?.length || 0;
+                                              const elen = word.match(regs['/е/g'])?.length || 0;
 
                                               if (storeType == null) {
                                                 if (elen > 1) {
@@ -207,7 +212,7 @@ export default function EERules() {
                               ))}
                             </tr>
                           </>
-                        ))(word.split(/([а-дж-я]*е)/).filter(w => w))}
+                        ))(word.split(regs['/([а-дж-я]*е)/']).filter(w => w))}
                       </tbody>
                     </table>
                   );

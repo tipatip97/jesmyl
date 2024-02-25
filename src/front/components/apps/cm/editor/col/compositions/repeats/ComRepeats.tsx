@@ -287,7 +287,7 @@ export default function ComRepeats() {
                         </div>
                       );
                     })}
-                    {isChordBlock ? null : (
+                    {isChordBlock || (
                       <div
                         className="button flag"
                         onClick={() => {

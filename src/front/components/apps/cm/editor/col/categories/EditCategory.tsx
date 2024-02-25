@@ -72,7 +72,7 @@ export default function EditCategory() {
             <LoadIndicatedContent isLoading={!ccat.coms.length}>
               {ccat.coms.map(com => (
                 <ComFace
-                  key={`edit-category-com-list-com_${com.wid}`}
+                  key={com.wid}
                   com={com}
                   importantOnClick={() => {}}
                 />

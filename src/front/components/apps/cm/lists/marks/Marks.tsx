@@ -18,7 +18,7 @@ export default function Marks() {
           {popupNode}
           {markedComs?.map(com => (
             <ComFace
-              key={`marked-com-${com.wid}`}
+              key={com.wid}
               com={com}
             />
           ))}

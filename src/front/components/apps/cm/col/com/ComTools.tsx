@@ -143,7 +143,7 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
           footer: (
             <div className="fade-05 full-width margin-gap-v">
               {catMentions(cols, ccom).map((mention, mentioni) => (
-                <React.Fragment key={`mentioni-${mentioni}`}>
+                <React.Fragment key={mentioni}>
                   {mentioni ? ', ' : ''}
                   <span className="nowrap">{mention}</span>
                 </React.Fragment>

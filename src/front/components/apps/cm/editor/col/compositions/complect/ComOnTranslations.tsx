@@ -13,7 +13,7 @@ export default function ComOnTranslations() {
       <div>
         {translationPushKinds.map(({ title }, kindi) => (
           <button
-            key={`kind-${kindi}`}
+            key={kindi}
             disabled={ccom.translationPushKind === kindi}
             onClick={() => exec(ccom.setTranslationPushKind(kindi))}
           >
@@ -24,7 +24,7 @@ export default function ComOnTranslations() {
       {ccom.getOrderedBlocks().map((lines, linesi) => {
         return (
           <div
-            key={`lines-${linesi}`}
+            key={linesi}
             className="margin-big-gap-v"
             style={{
               whiteSpace: 'pre-wrap',
@@ -32,7 +32,7 @@ export default function ComOnTranslations() {
           >
             {lines?.map((text, texti) => (
               <div
-                key={`text-${texti}`}
+                key={texti}
                 dangerouslySetInnerHTML={{ __html: text }}
               />
             ))}

@@ -75,7 +75,7 @@ export default function ChordCardTracked({
         const markDotY = betweenStr * stringsCount;
 
         return (
-          <React.Fragment key={`lad_${ladPos}`}>
+          <React.Fragment key={ladPos}>
             <polyline
               points={`${x},0 ${x},${betweenStr * stringsCount}`}
               className="chord-lad"
@@ -113,7 +113,7 @@ export default function ChordCardTracked({
         const y = betweenStr * stringPos - betweenStr / 2;
 
         return (
-          <React.Fragment key={`chord-string-${stringPos}`}>
+          <React.Fragment key={stringPos}>
             <polyline
               points={`0,${y} ${stringLength},${y}`}
               className="chord-string"
@@ -142,7 +142,7 @@ export default function ChordCardTracked({
 
           return (
             <polyline
-              key={`bare-${trace}+${tracei}`}
+              key={tracei}
               className="chord-point"
               points={`${x},${betweenStr / 2 + betweenStr * (start - 1)} ${x},${betweenStr * finish - betweenStr / 2}`}
             />
@@ -153,7 +153,7 @@ export default function ChordCardTracked({
           const y = betweenStr * +pos - betweenStr / 2;
           return (
             <polyline
-              key={`chord-point-${pos}`}
+              key={pos}
               className="chord-point"
               points={`${x},${y} ${x},${y}`}
             />

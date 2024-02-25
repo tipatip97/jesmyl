@@ -42,7 +42,7 @@ export default function Lists() {
             {cols?.cats.map(cat => {
               return !cat.wid ? null : (
                 <div
-                  key={`thematic-cat-${cat.wid}`}
+                  key={cat.wid}
                   className="item flex"
                   onClick={() => goTo({ place: 'cat', data: { ccatw: cat.wid } })}
                 >

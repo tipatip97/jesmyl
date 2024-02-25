@@ -24,7 +24,7 @@ export default function Mp3RulesRedactor() {
           {redactRules.map(rule => {
             return (
               <Mp3RuleEditor
-                key={`mp3-redact-rule#${rule.w}`}
+                key={rule.w}
                 {...rule}
                 onComplete={newRule => {
                   const index = redactRules.findIndex(({ w }) => rule.w === w);
@@ -50,7 +50,7 @@ export default function Mp3RulesRedactor() {
           {newRules.map(({ w, ...rule }) => {
             return (
               <Mp3RuleEditor
-                key={`mp3-new-rule#${w}`}
+                key={w}
                 {...rule}
                 button={
                   <EvaButton

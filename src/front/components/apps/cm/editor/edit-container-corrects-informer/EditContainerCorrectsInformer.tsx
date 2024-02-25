@@ -37,7 +37,7 @@ export default function EditContainerCorrectsInformer(
             return line.map(({ message, onFix, fixLabel }, correcti) => {
               return (
                 <div
-                  key={`${correct}-corrects-for action : ${correcti}`}
+                  key={correcti}
                   className={`${correct} correct-box`}
                 >
                   {message}

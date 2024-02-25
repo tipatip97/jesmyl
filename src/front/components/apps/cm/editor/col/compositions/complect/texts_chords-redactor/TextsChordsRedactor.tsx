@@ -20,7 +20,7 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
         return (
           <EditContainerCorrectsInformer
             className="margin-big-gap-v"
-            key={`com-text ${ccoln} ${coli}`}
+            key={coli}
             corrects={ccom.corrects[`${ccoln}-block-${coli}`]}
           >
             <div>

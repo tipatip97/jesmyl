@@ -18,7 +18,7 @@ export default function TheMeetingsEvent() {
           {popupNode}
           {currentEvent?.coms?.map(com => (
             <ComFace
-              key={`metting.com-face ${com.wid}`}
+              key={com.wid}
               com={com}
             />
           ))}

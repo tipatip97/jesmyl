@@ -34,7 +34,7 @@ export default function ExecsVisor() {
                 return (
                   flowCom && (
                     <ComFace
-                      key={`com-${comw}`}
+                      key={comw}
                       com={flowCom}
                     />
                   )
@@ -55,7 +55,7 @@ export default function ExecsVisor() {
                   const event = meetings.events?.find(event => event.wid === eventw);
                   return (
                     <div
-                      key={`event-${eventw}`}
+                      key={eventw}
                       className={event ? '' : 'error-message'}
                       onClick={() => eventw && goToEvent(eventw)}
                     >
@@ -110,7 +110,7 @@ export default function ExecsVisor() {
       content={list?.map(exec => {
         return (
           <div
-            key={`exec-${exec.ts}`}
+            key={exec.ts}
             className="exec-visor margin-big-gap-v pointer padding-gap full-width"
           >
             <div className="flex between full-width">

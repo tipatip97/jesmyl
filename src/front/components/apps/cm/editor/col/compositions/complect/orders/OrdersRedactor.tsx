@@ -42,7 +42,7 @@ export default function OrdersRedactor() {
 
         return (
           <div
-            key={`order-${ordi}`}
+            key={ordi}
             className={ord.top.isAnchorInherit ? 'inherit-block' : ''}
           >
             <div className="margin-big-gap-h">

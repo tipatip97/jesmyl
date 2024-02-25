@@ -61,7 +61,7 @@ export default function EditComposition({
                 if (accessLevel != null && !checkIsAccessed(accessLevel)) return null;
                 return (
                   <span
-                    key={`editCompositionNavs ${phase}`}
+                    key={phase}
                     className="pointer"
                     onClick={() => goTo(phase, relativePoint, ccom.isCreated)}
                   >

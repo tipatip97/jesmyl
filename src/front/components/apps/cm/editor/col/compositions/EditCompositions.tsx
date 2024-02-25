@@ -66,11 +66,11 @@ export default function EditCompositions() {
             {zcat?.wraps.map(({ com }, wrapi) => {
               return (
                 <EditContainerCorrectsInformer
-                  key={`coms-etitor_${wrapi}`}
+                  key={wrapi}
                   corrects={new CorrectsBox().merge(...Object.values(com.corrects || {}))}
                 >
                   <ComFace
-                    key={`category-on-change_${com.wid}`}
+                    key={com.wid}
                     com={com}
                     groupClass="editable-com"
                     importantOnClick={() => {
