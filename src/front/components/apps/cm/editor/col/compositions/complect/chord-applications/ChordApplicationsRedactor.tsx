@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
+import { styledHoverBind } from '../../../../../../../../complect/utils/styled-components';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import ComLine from '../../../../../col/com/line/ComLine';
 import TheOrder from '../../../../../col/com/order/TheOrder';
@@ -109,9 +110,9 @@ const Content = styled.div`
   .com-letter {
     cursor: pointer;
 
-    &:hover {
+    ${styledHoverBind(css`
       background-color: var(--color--2);
-    }
+    `)}
 
     &:before,
     &:after {

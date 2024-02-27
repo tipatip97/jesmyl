@@ -18,6 +18,7 @@ export default function ComOrders(props: IComOrdersProps) {
     <OrdList
       className="com-ord-list"
       style={style}
+      ref={props.listRef}
     >
       {com.orders?.map((orderUnit, orderUniti) => {
         const isExcludedModulation = exMods.includes(orderUnit.wid);

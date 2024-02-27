@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, RefObject } from 'react';
 import { ChordVisibleVariant } from '../../../Cm.model';
 import { Com } from '../Com';
 import { IComOrdHeaderProps } from '../order/Order.model';
@@ -10,4 +10,5 @@ export interface IComOrdersProps {
   fontSize?: number;
   chordVisibleVariant: ChordVisibleVariant;
   showInvisibles?: boolean;
+  listRef?: RefObject<HTMLDivElement>;
 }

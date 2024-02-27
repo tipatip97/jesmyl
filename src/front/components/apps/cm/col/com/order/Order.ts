@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../complect/makeRegExp';
 import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
 import SourceBased from '../../../../../../complect/SourceBased';
 import { Com } from '../Com';
@@ -11,18 +12,6 @@ import {
 } from './Order.model';
 
 const emptyArr: [] = [];
-
-const regs = {
-  '/[a-z]$/i': /[a-z]$/i,
-  '/[:a-z]/i': /[:a-z]/i,
-  '/^[a-z]/i': /^[a-z]/i,
-  '/[~:a-z]/i': /[~:a-z]/i,
-  '/\n+/': /\n+/,
-  '/\n/': /\n/,
-  '/ +/': / +/,
-  '/\\s+/': /\s+/,
-  '/[~:]/': /[~:]/,
-};
 
 export class Order extends SourceBased<IExportableOrderTop> {
   _regions?: EditableOrderRegion<Order>[];
@@ -150,7 +139,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
     if (!repeats) return '';
     if (typeof repeats === 'number') return repeats < 2 ? '' : repeats + '';
     if (repeats['.']) return repeats['.'] < 2 ? '' : repeats['.'] + '';
-    const lastLineIndex = this.text.split(regs['/\n/']).length - 1;
+    const lastLineIndex = this.text.split(makeRegExp('/\\n/')).length - 1;
     const region = this.regions?.find(({ startLinei, endLinei }) => startLinei === 0 && endLinei === lastLineIndex);
 
     return region ? region.count + '' : '';
@@ -163,7 +152,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
     else {
       const repeats = this.getTargetFirst('r');
       const nrepeats: SpecielOrderRepeats = {} as never;
-      const reg = /[a-z]/i;
+      const reg = makeRegExp('/[a-z]/i', true);
 
       return MyLib.entries((repeats && (mylib.isNum(repeats) ? { '.': repeats } : repeats)) || nrepeats).reduce(
         (acc, [key, val]) => {
@@ -218,7 +207,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   setRegions<Ord extends Order>() {
-    const text = (this.text || '').split(regs['/\n+/']).map((txt: string) => txt.split(regs['/\\s+/']));
+    const text = (this.text || '').split(makeRegExp('/\\n+/')).map((txt: string) => txt.split(makeRegExp('/\\s+/')));
     const lines = text.length;
 
     this._regions =
@@ -241,7 +230,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
                   count,
                 };
               else if (key.startsWith('~')) {
-                const [, linei, wordi] = key.split(regs['/[~:]/']);
+                const [, linei, wordi] = key.split(makeRegExp('/[~:]/'));
 
                 return {
                   startLinei: +linei,
@@ -260,8 +249,8 @@ export class Order extends SourceBased<IExportableOrderTop> {
                 const letter: string | undefined = (/[a-z]/i.exec(key) || emptyArr)[0];
 
                 if (letter !== undefined) {
-                  const [first, second, third] = key.split(regs['/[:a-z]/i']).map(num => parseInt(num));
-                  const isBeg = key.match(regs['/^[a-z]/i']);
+                  const [first, second, third] = key.split(makeRegExp('/[:a-z]/i')).map(num => parseInt(num));
+                  const isBeg = key.match(makeRegExp('/^[a-z]/i'));
                   let others: number[] = [];
                   let finishKey: string = '';
 
@@ -271,7 +260,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
                       Object.keys(ord.repeats || {}).some(key => {
                         if (key[!isBeg ? 'startsWith' : 'endsWith'](letter)) {
                           others = key
-                            .split(regs['/[:a-z]/i'])
+                            .split(makeRegExp('/[:a-z]/i'))
                             .filter(s => s)
                             .map(num => +num);
                           finishKey = key;
@@ -407,14 +396,14 @@ export class Order extends SourceBased<IExportableOrderTop> {
             td.push(fix * reps[key]);
           };
 
-          if (key.match(regs['/[a-z]$/i'])) {
-            const [linei, wordi] = key.split(regs['/[:a-z]/i']);
+          if (key.match(makeRegExp('/[a-z]$/i'))) {
+            const [linei, wordi] = key.split(makeRegExp('/[:a-z]/i'));
             pushRep(+linei, +wordi, -1);
             return;
           }
 
-          if (key.startsWith('~') || key.match(regs['/^[a-z]/i'])) {
-            const [, linei, wordi] = key.split(regs['/[~:a-z]/i']);
+          if (key.startsWith('~') || key.match(makeRegExp('/^[a-z]/i'))) {
+            const [, linei, wordi] = key.split(makeRegExp('/[~:a-z]/i'));
             pushRep(+linei, +wordi);
             return;
           }
@@ -429,9 +418,9 @@ export class Order extends SourceBased<IExportableOrderTop> {
         });
 
       const repld = text
-        .split(regs['/\n+/'])
+        .split(makeRegExp('/\\n+/'))
         .map((line, linei) => {
-          const words = line.split(regs['/ +/']);
+          const words = line.split(makeRegExp('/ +/'));
 
           const repldLine = words
             .map((word, wordi) => {
