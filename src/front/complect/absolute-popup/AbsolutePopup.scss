@@ -1,5 +1,4 @@
-.absolute-float-popup,
-.absolute-bottom-popup {
+.absolute-float-popup {
   position: absolute;
   top: 0;
   left: 0;
@@ -63,90 +62,6 @@
 
     .abs-item {
       cursor: pointer;
-    }
-  }
-}
-
-.absolute-bottom-popup {
-  &.mounted {
-    opacity: 1;
-    pointer-events: all;
-
-    > .container {
-      top: 0;
-    }
-  }
-
-  > .container {
-    --padding-top: 70vh;
-
-    position: absolute;
-    top: calc(100% - var(--padding-top));
-    left: 0;
-    transition: top 0.5s;
-    padding-top: var(--padding-top);
-    width: 100vw;
-    height: 100%;
-    overflow-x: hidden;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    &.not-touch-device {
-      padding-top: var(--padding-top);
-    }
-
-    &.scrollable-content {
-      overflow-y: auto;
-
-      .badge {
-        border-radius: 3px;
-        background-color: var(--text-color);
-        width: 20px;
-        height: 3px;
-      }
-    }
-
-    > .content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 150;
-      background-color: var(--color--1);
-      padding: 30px;
-      width: 100vw;
-      min-height: 100%;
-      overflow: hidden;
-
-      .abs-item {
-        justify-content: space-between;
-        padding: 7px 0;
-
-        .title {
-          text-align: center;
-        }
-      }
-    }
-
-    .icon-box {
-      --size: 2.5em;
-
-      border-radius: 50%;
-      width: var(--size);
-      min-width: var(--size);
-      max-width: var(--size);
-      height: var(--size);
-      min-height: var(--size);
-      max-height: var(--size);
-
-      &.active {
-        background: var(--color--2);
-      }
-
-      .abs-icon {
-        margin: var(--main-gap);
-      }
     }
   }
 }
