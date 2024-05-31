@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import { IconCubeStrokeRounded } from '@icons/cube';
 import { RootState } from '../../../../../../shared/store';
 import { gamerOfflineRoomGames } from '../../../useGamerNav';
 import { GamerOfflineRoomListJoinByQr } from './complect/JoinByQr';
@@ -30,9 +30,7 @@ export default function GamerOfflineRoomList() {
             className="face-item"
             onClick={() => goToOfflineRoom(room.w)}
           >
-            <div className="face-logo">
-              <EvaIcon name={gameData?.icon ? gameData.icon : 'cube'} />
-            </div>
+            <div className="face-logo">{gameData?.Icon ? <gameData.Icon /> : <IconCubeStrokeRounded />}</div>
             <div className="face-title">
               <span className="color--7">{room.name}</span>
               {gameData?.title ? ` ● ${gameData.title}` : ''}

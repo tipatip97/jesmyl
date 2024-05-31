@@ -8,6 +8,7 @@ import { useCmScreenTranslationComCurrentTexti } from '../../../apps/cm/translat
 import { IndexStateSchLiveData } from '../../Index.model';
 import useIndexNav from '../useIndexNav';
 import { LiveTranslationAppProps } from './model';
+import { useMeetings } from '../../../apps/cm/lists/meetings/useMeetings';
 
 export const ScheduleWidgetLiveCmTranslations = ({
   isCantTranslateLive,
@@ -20,13 +21,18 @@ export const ScheduleWidgetLiveCmTranslations = ({
   const cols = useCols();
   const currTexti = useCmScreenTranslationComCurrentTexti();
   const [config] = useCmScreenTranslationConfigs();
+  const { meetings } = useMeetings();
+  const meeting =
+    indexNav.appRouteData.schTranslationEventw == null
+      ? null
+      : meetings?.stack?.find(event => event.w === indexNav.appRouteData.schTranslationEventw);
 
-  const comList = useMemo(() => {
-    if (cols === undefined) return [];
-    return indexNav.appRouteData.schTranslationComws
-      ?.map(comw => cols.coms.find(com => com.wid === comw)!)
-      .filter(com => com !== undefined);
-  }, [cols, indexNav.appRouteData.schTranslationComws]);
+  const comList =
+    cols === undefined
+      ? []
+      : [...(meeting?.s ?? []), ...(indexNav.appRouteData.schTranslationComws ?? [])]
+          ?.map(comw => cols.coms.find(com => com.wid === comw)!)
+          .filter(com => com !== undefined);
 
   useEffect(() => {
     if (isCantTranslateLive) return;

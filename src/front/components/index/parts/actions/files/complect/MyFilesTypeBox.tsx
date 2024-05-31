@@ -1,15 +1,17 @@
 import { useEffect, useReducer, useState } from 'react';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
-import EvaIcon, { EvaIconName } from '../../../../../../complect/eva-icon/EvaIcon';
 import mylib from '../../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import TheIcon from '../../../../../../complect/the-icon/TheIcon';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
 import { useMyFilesAssociates } from '../hooks/associates';
 import { useRemoveMyFile } from '../hooks/remove-file';
 import { MyFileType } from '../model';
 import { filesStorage } from '../utils/storage';
+import { TheIconName } from '../../../../../../complect/the-icon/model';
 
 export type FileAssociations = Record<
   MyFileType,
-  { title: string; icon: EvaIconName; removeTitle: string; extensions: string[] }
+  { title: string; icon: TheIconName; removeTitle: string; extensions: string[] }
 >;
 
 const forceUpdater = (it: number) => it + 1;
@@ -34,7 +36,7 @@ export const MyFilesTypeBox = ({ type }: { type: MyFileType }) => {
   return (
     <>
       <div className="flex flex-gap margin-gap-t padding-gap bgcolor--2">
-        <EvaIcon name={fileAssociations[type].icon} />
+        <TheIcon name={fileAssociations[type].icon} />
         <span className="color--3">{fileAssociations[type].title} </span>
         {!fileAssociations[type].extensions.length || '(.' + fileAssociations[type].extensions.join(', .') + ')'}
       </div>
@@ -46,8 +48,8 @@ export const MyFilesTypeBox = ({ type }: { type: MyFileType }) => {
               className="flex flex-gap margin-gap-t"
             >
               {file.name}
-              <EvaButton
-                name="close"
+              <IconButton
+                Icon={IconCancel01StrokeRounded}
                 confirm={`Удалить ${fileAssociations[type].removeTitle} "${file.name}"`}
                 onClick={() => removeFile(file)}
               />

@@ -1,8 +1,10 @@
 import { ReactNode, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { CmMp3Rule } from '../../../../../models';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconEdit02StrokeRounded } from '@icons/edit-02';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import { CmMp3Rule } from '../../../../../models';
 import { RootState } from '../../../../../shared/store';
 
 const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
@@ -104,8 +106,8 @@ export default function Mp3RuleEditor(
         )}
         {props.button ||
           (isRedact ? (
-            <EvaButton
-              name="checkmark-circle"
+            <IconButton
+              Icon={IconCheckmarkCircle02StrokeRounded}
               className="color--ok margin-big-gap"
               disabled={!!errorMessage || !attr || !query}
               onClick={() => {
@@ -121,8 +123,8 @@ export default function Mp3RuleEditor(
               }}
             />
           ) : (
-            <EvaButton
-              name="edit-outline"
+            <IconButton
+              Icon={IconEdit02StrokeRounded}
               onClick={() => setIsRedact(true)}
             />
           ))}

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../shared/store';
-import EvaButton from '../../../eva-icon/EvaButton';
+import IconButton from '../../../the-icon/IconButton';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
 import { ClipboardStoreItem } from '../../Strong.model';
 import di from '../../Strong.store';
 import StrongEditableFieldMultiline from '../StrongEditableFieldMultiline';
@@ -29,8 +30,8 @@ export default function StrongClipboardItem({
         onDragStart?.(event);
       }}
     >
-      <EvaButton
-        name="close"
+      <IconButton
+        Icon={IconCancel01StrokeRounded}
         className="absolute pos-top pos-right"
         confirm="Удалить запись?"
         onClick={event => {

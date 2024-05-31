@@ -1,5 +1,6 @@
 import { BottomPopupContenterPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/model';
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
+import { IconUserRemove02StrokeRounded } from '@icons/user-remove-02';
 import { TeamGameImportable } from '../../../Leader.model';
 import { leaderExer } from '../../../Leader.store';
 import { HumanImportable } from '../../people/People.model';
@@ -25,7 +26,7 @@ export default function GameTeamMemberMore({
         items: [
           {
             title: 'Исключить личность',
-            icon: 'person-delete-outline',
+            Icon: IconUserRemove02StrokeRounded,
             onClick: async () => {
               if (game) {
                 const isDel = await confirm(

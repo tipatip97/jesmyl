@@ -1,4 +1,8 @@
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import { IconClock01SolidRounded, IconClock01StrokeRounded } from '@icons/clock-01';
+import { IconCubeStrokeRounded } from '@icons/cube';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
+import { IconSquareLock02SolidRounded, IconSquareLock02StrokeRounded } from '@icons/square-lock-02';
+import { IconUserRemove01SolidRounded, IconUserRemove01StrokeRounded } from '@icons/user-remove-01';
 import { gamerRoomGames } from '../../../useGamerNav';
 import useGamerOfflineRoomsActions from './hooks/go-to-room';
 import { useMyPossibilitiesInRoom } from './hooks/possibilities';
@@ -14,8 +18,23 @@ export default function GamerRoomList() {
       {goToRoomNode}
       {rooms?.map(room => {
         const possibilities = memberPossibilities(room);
-        const iconPostfix = possibilities.isOwner ? '' : '-outline';
+        const isOwner = possibilities.isOwner;
         const gameData = gamerRoomGames.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data;
+        const Icon = possibilities.isUnauthorized
+          ? IconHelpCircleStrokeRounded
+          : possibilities.isRequester
+            ? isOwner
+              ? IconClock01SolidRounded
+              : IconClock01StrokeRounded
+            : possibilities.isInactive
+              ? isOwner
+                ? IconUserRemove01SolidRounded
+                : IconUserRemove01StrokeRounded
+              : possibilities.isInvalid
+                ? isOwner
+                  ? IconSquareLock02SolidRounded
+                  : IconSquareLock02StrokeRounded
+                : gameData?.Icon ?? IconCubeStrokeRounded;
 
         return (
           <div
@@ -24,19 +43,7 @@ export default function GamerRoomList() {
             onClick={() => goToRoom(room.w)}
           >
             <div className="face-logo">
-              <EvaIcon
-                name={
-                  possibilities.isUnauthorized
-                    ? 'question-mark-circle-outline'
-                    : possibilities.isRequester
-                      ? `clock${iconPostfix}`
-                      : possibilities.isInactive
-                        ? `person-delete${iconPostfix}`
-                        : possibilities.isInvalid
-                          ? `lock${iconPostfix}`
-                          : gameData?.icon ?? `cube${iconPostfix}`
-                }
-              />
+              <Icon />
             </div>
             <div className="face-title">
               <span className="color--7">{room.name}</span>

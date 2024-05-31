@@ -34,6 +34,7 @@ export interface CmStoraged extends CmEditorStoraged {
   marks: number[];
   meetings?: IExportableMeetings;
   comFontSize: number;
+  comComments: Record<number, string>;
   chordTracks: ChordPack;
   isShowTranslationInfo: boolean;
   favoriteMeetings: FavoriteMeetings;

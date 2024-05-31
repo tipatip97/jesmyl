@@ -1,6 +1,7 @@
 import useAbsoluteFloatPopup from '../../../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
 import propsOfClicker from '../../../../../../../complect/clicker/propsOfClicker';
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconPlayCircle02StrokeRounded } from '@icons/play-circle-02';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTimerImportable } from '../GameTimer.model';
@@ -22,8 +23,8 @@ export default function TimerControlBoardRowPlayButton({
 
   return (
     <>
-      <EvaButton
-        name="play-circle-outline"
+      <IconButton
+        Icon={IconPlayCircle02StrokeRounded}
         className="start-button"
         onClick={() => onStartForRow(rowi)}
         disabled={!!timer.starts?.[rowi]}

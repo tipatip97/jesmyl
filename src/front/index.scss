@@ -18,6 +18,14 @@ body {
   --color--ok: #9bec69;
 
   --icon-color: var(--color--4);
+
+  --icon-fill: var(--icon-color);
+  --icon-stroke: var(--icon-color);
+  --icon-stroke-width: 2;
+  --icon-opacity: 0.4;
+  --icon-size: 24px;
+  --icon-scale: 1;
+
   --text-color: var(--color--4);
   --current-bg: var(--color--5);
 
@@ -688,24 +696,6 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   appearance: textfield;
   -moz-appearance: textfield;
-}
-
-.rotate {
-  animation: rotate 1s linear infinite;
-
-  &-90 {
-    transform: rotate(90deg);
-  }
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 html,

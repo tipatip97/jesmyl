@@ -31,32 +31,35 @@ export const BibleSearchPanelSearchInput = ({ inputRef }: Props) => {
     if (inputRef.current === null) return;
     const inputNode = inputRef.current;
 
-    const onKey = (event: KeyboardEvent) => {
-      switch (event.code) {
-        case 'Enter':
-          inputNode.blur();
-          syncSlide();
-          justBibleStorageSet('translationSearchResultSelected', null);
+    return hookEffectLine()
+      .addEventListener(inputNode, 'keydown', event => {
+        switch (event.code) {
+          case 'Enter':
+            inputNode.blur();
+            syncSlide();
+            justBibleStorageSet('translationSearchResultSelected', null);
 
-          break;
-        case 'ArrowUp':
-          if (resultSelected !== null && resultSelected > 0)
-            justBibleStorageSet('translationSearchResultSelected', resultSelected - 1);
-          break;
-        case 'ArrowDown':
-          if (resultSelected === null || resultSelected < resultList.length - 1)
-            justBibleStorageSet('translationSearchResultSelected', (resultSelected ?? -1) + 1);
-          break;
-        default:
-          return;
-      }
+            break;
+          case 'ArrowUp':
+            if (resultSelected !== null && resultSelected > 0)
+              justBibleStorageSet('translationSearchResultSelected', resultSelected - 1);
+            break;
+          case 'ArrowDown':
+            if (resultSelected === null || resultSelected < resultList.length - 1)
+              justBibleStorageSet('translationSearchResultSelected', (resultSelected ?? -1) + 1);
+            break;
+          case 'ArrowLeft':
+          case 'ArrowRight':
+            event.stopPropagation();
+            return;
+          default:
+            return;
+        }
 
-      event.stopPropagation();
-      event.preventDefault();
-    };
-
-    inputNode.addEventListener('keydown', onKey);
-    return () => inputNode.removeEventListener('keydown', onKey);
+        event.stopPropagation();
+        event.preventDefault();
+      })
+      .effect();
   }, [inputRef, resultList.length, resultSelected, syncSlide]);
 
   return (

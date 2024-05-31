@@ -1,11 +1,20 @@
 import { ReactNode } from 'react';
 import ScheduleWidgetCleans from '../../../../../back/apps/index/schedules/utils/Cleans';
-import EvaButton from '../../../eva-icon/EvaButton';
-import EvaIcon from '../../../eva-icon/EvaIcon';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
 import mylib, { MyLib } from '../../../my-lib/MyLib';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
+import IconButton from '../../../the-icon/IconButton';
+import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
+import { IconBookmark03StrokeRounded } from '@icons/bookmark-03';
+import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
+import { IconClock01StrokeRounded } from '@icons/clock-01';
+import { IconFile02StrokeRounded } from '@icons/file-02';
+import { IconNotification01StrokeRounded } from '@icons/notification-01';
+import { IconNotificationOff01StrokeRounded } from '@icons/notification-off-01';
+import { IconSquareStrokeRounded } from '@icons/square';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
 import useIsRedactArea from '../../../useIsRedactArea';
 import { IScheduleWidgetDay, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
 import ScheduleWidgetBindAtts from '../../atts/BindAtts';
@@ -125,12 +134,7 @@ export default function ScheduleWidgetDayEvent(props: {
             >
               {timeMark}
             </span>
-            {!isExpandEvent && !!props.event.secret && (
-              <EvaIcon
-                name="eye-off-outline"
-                className="color--ko"
-              />
-            )}
+            {!isExpandEvent && !!props.event.secret && <IconViewOffSlashStrokeRounded className="color--ko" />}
             <ScheduleWidgetTopicTitle
               titleBox={box}
               topicBox={props.event}
@@ -140,9 +144,9 @@ export default function ScheduleWidgetDayEvent(props: {
             (isExpand || isRedact) && editIcon
           ) : isCanExpandEvent ? (
             isExpand ? (
-              <EvaIcon name="chevron-up" />
+              <IconArrowUp01StrokeRounded />
             ) : (
-              <EvaIcon name="chevron-down" />
+              <IconArrowDown01StrokeRounded />
             )
           ) : null}
         </div>
@@ -156,7 +160,7 @@ export default function ScheduleWidgetDayEvent(props: {
                   fieldName="secret"
                   fieldValue={props.event.secret ? 0 : 1}
                   cud="U"
-                  name={props.event.secret ? 'checkmark-square-2-outline' : 'square-outline'}
+                  Icon={props.event.secret ? IconCheckmarkSquare02StrokeRounded : IconSquareStrokeRounded}
                   confirm={`Событие ${box.title} ${props.event.secret ? 'больше не секретное' : 'будет секретным'}?`}
                   postfix="Секретное событие"
                 />
@@ -167,7 +171,7 @@ export default function ScheduleWidgetDayEvent(props: {
                     fieldValue={1}
                     cud="U"
                     disabled={isPastEvent || isCurrentEvent}
-                    name="bell-off-outline"
+                    Icon={IconNotificationOff01StrokeRounded}
                     postfix="TG-Напоминания не будет"
                     mapExecArgs={mapExecTgInformArgs}
                   />
@@ -178,7 +182,7 @@ export default function ScheduleWidgetDayEvent(props: {
                     fieldValue={0}
                     cud="U"
                     disabled={isPastEvent || isCurrentEvent}
-                    name="bell-outline"
+                    Icon={IconNotification01StrokeRounded}
                     postfix="TG-Напоминание будет"
                     mapExecArgs={mapExecTgInformArgs}
                   />
@@ -191,7 +195,7 @@ export default function ScheduleWidgetDayEvent(props: {
                   value={'' + eventTm}
                   postfix=" мин"
                   title="Продолжительность, мин"
-                  icon="clock-outline"
+                  Icon={IconClock01StrokeRounded}
                   mapExecArgs={mapExecTmArgs}
                 />
                 <StrongEditableField
@@ -201,13 +205,13 @@ export default function ScheduleWidgetDayEvent(props: {
                   value={props.event}
                   fieldKey="topic"
                   title="Тема"
-                  icon="bookmark-outline"
+                  Icon={IconBookmark03StrokeRounded}
                 />
               </>
             ) : (
               !!props.event.secret && (
-                <EvaButton
-                  name="eye-off-outline"
+                <IconButton
+                  Icon={IconViewOffSlashStrokeRounded}
                   className="color--ko margin-gap-v"
                   postfix="Это секретное событие"
                 />
@@ -223,7 +227,7 @@ export default function ScheduleWidgetDayEvent(props: {
                 fieldKey="dsc"
                 title="Содержание"
                 textClassName=" "
-                icon="file-text-outline"
+                Icon={IconFile02StrokeRounded}
               />
             )}
             {isRedact ? (

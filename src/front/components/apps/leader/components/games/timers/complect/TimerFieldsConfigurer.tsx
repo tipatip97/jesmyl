@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
-import SendButton from '../../../../../../../complect/sends/send-button/SendButton';
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../../../../complect/eva-icon/EvaIcon';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
+import SendButton from '../../../../../../../complect/sends/send-button/SendButton';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconArrowDown02StrokeRounded } from '@icons/arrow-down-02';
+import { IconArrowUp02StrokeRounded } from '@icons/arrow-up-02';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
 import useIsRedactArea from '../../../../../../../complect/useIsRedactArea';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
@@ -72,8 +74,8 @@ export default function TimerFieldsConfigurer({
           <div className="flex flex-gap">
             Последовательность команд
             {isRedact ? (
-              <EvaButton
-                name="close"
+              <IconButton
+                Icon={IconCancel01StrokeRounded}
                 disabled={!state.teams}
                 onClick={() => updateState('teams', undefined)}
               />
@@ -83,13 +85,14 @@ export default function TimerFieldsConfigurer({
           </div>
           {isRedact &&
             teams?.map((team, teami) => {
+              const Icon = teami ? IconArrowUp02StrokeRounded : IconArrowDown02StrokeRounded;
+
               return (
                 <div
                   key={teami}
                   className={'flex flex-gap' + (state.joins && !((teami + 1) % state.joins) ? ' margin-big-gap-b' : '')}
                 >
-                  <EvaIcon
-                    name={teami ? 'corner-left-up' : 'corner-left-down'}
+                  <Icon
                     className="as-button-circle"
                     onClick={() => {
                       const gameTeamws = game.teams?.map(team => team.w);

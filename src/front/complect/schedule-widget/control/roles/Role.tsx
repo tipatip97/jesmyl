@@ -1,6 +1,16 @@
-import { scheduleWidgetUserRights } from '../../../../models';
 import useAuth from '../../../../components/index/useAuth';
-import EvaButton from '../../../eva-icon/EvaButton';
+import { scheduleWidgetUserRights } from '../../../../models';
+import IconButton from '../../../the-icon/IconButton';
+import { IconArrowReloadHorizontalStrokeRounded } from '@icons/arrow-reload-horizontal';
+import { IconEdit01StrokeRounded } from '@icons/edit-01';
+import { IconFolder01StrokeRounded } from '@icons/folder-01';
+import { IconFolderAddStrokeRounded } from '@icons/folder-add';
+import { IconGithub01StrokeRounded } from '@icons/github-01';
+import { IconGridViewStrokeRounded } from '@icons/grid-view';
+import { IconSchoolReportCardStrokeRounded } from '@icons/school-report-card';
+import { IconUserStrokeRounded } from '@icons/user';
+import { IconUserAdd01StrokeRounded } from '@icons/user-add-01';
+import { IconUserRemove01StrokeRounded } from '@icons/user-remove-01';
 import useModal from '../../../modal/useModal';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
@@ -56,7 +66,7 @@ export default function ScheduleWidgetRole({
                   cud="U"
                   confirm={`Теперь ${user?.fio || user?.nick} займёт роль ${role.title}?`}
                   className="flex flex-gap pointer"
-                  name="person"
+                  Icon={IconUserStrokeRounded}
                   postfix={user?.fio || user?.nick}
                   onSuccess={() => closeModal()}
                 />
@@ -106,7 +116,7 @@ export default function ScheduleWidgetRole({
                       fieldValue={catNamei}
                       cud="U"
                       className="flex flex-gap pointer"
-                      name="folder-outline"
+                      Icon={IconFolder01StrokeRounded}
                       postfix={catName}
                       onSuccess={() => closeModal()}
                     />
@@ -120,7 +130,7 @@ export default function ScheduleWidgetRole({
               <StrongEvaButton
                 scope={scope}
                 fieldName="categories"
-                name="folder-add-outline"
+                Icon={IconFolderAddStrokeRounded}
               />
             )}
           </>,
@@ -140,7 +150,7 @@ export default function ScheduleWidgetRole({
               fieldName="field"
               isRedact
               title="Название"
-              icon="credit-card-outline"
+              Icon={IconSchoolReportCardStrokeRounded}
               value={role}
               fieldKey="title"
               postfix={roleUser && ' - ' + (roleUser.fio || roleUser.nick)}
@@ -148,7 +158,7 @@ export default function ScheduleWidgetRole({
             <ScheduleWidgetIconChange
               scope={roleScope}
               header={`Иконка для роли ${role.title}`}
-              icon={role.icon ?? 'github-outline'}
+              icon={role.icon ?? 'IconGithub01StrokeRounded'}
               used={rights.schedule.ctrl.roles.map(role => role.icon)}
             />
             {rights.isCanTotalRedact && (
@@ -158,7 +168,7 @@ export default function ScheduleWidgetRole({
                     scope={roleScope}
                     fieldName="user"
                     cud="D"
-                    name="person-delete-outline"
+                    Icon={IconUserRemove01StrokeRounded}
                     confirm={
                       <>
                         <span className="color--7">{roleUser.fio || roleUser.nick} </span>
@@ -171,23 +181,23 @@ export default function ScheduleWidgetRole({
                   />
                 )}
                 {roleUser ? (
-                  <EvaButton
-                    name="sync"
+                  <IconButton
+                    Icon={IconArrowReloadHorizontalStrokeRounded}
                     onClick={() => userSetModalScreen()}
                     postfix="Заменить человека"
                     className="flex-max margin-gap-v"
                   />
                 ) : (
-                  <EvaButton
-                    name="person-add-outline"
+                  <IconButton
+                    Icon={IconUserAdd01StrokeRounded}
                     onClick={() => userSetModalScreen()}
                     postfix="Назначить человека"
                     className="flex-max margin-gap-v"
                   />
                 )}
                 {role.mi > 0 && (
-                  <EvaButton
-                    name="grid-outline"
+                  <IconButton
+                    Icon={IconGridViewStrokeRounded}
                     onClick={() => catSetModalScreen()}
                     postfix={`Категория ${rights.schedule.ctrl.cats[role.cat || 0] || 'Основное'}`}
                     className="flex-max margin-gap-v"
@@ -211,8 +221,8 @@ export default function ScheduleWidgetRole({
         role={role}
       />
       {(rights.isCanTotalRedact || (rights.isCanRedact && auth && auth.login === roleUser?.login)) && (
-        <EvaButton
-          name="edit-outline"
+        <IconButton
+          Icon={IconEdit01StrokeRounded}
           onClick={() => redactRoleModalScreen()}
         />
       )}

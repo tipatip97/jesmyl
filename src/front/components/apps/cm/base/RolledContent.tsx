@@ -1,7 +1,8 @@
 import { HTMLAttributes, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import { IconMinusSignStrokeRounded } from '@icons/minus-sign';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import useFullScreen from '../../../../complect/useFullscreen';
 import { RootState } from '../../../../shared/store';
 import di from '../Cm.store';
@@ -56,8 +57,7 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
       className={'roll-controled-container full-width full-height' + (isFullscreen ? ' fullscreen' : '')}
     >
       <div className={'roll-controls flex column center' + (isRolling ? ' open' : '')}>
-        <EvaIcon
-          name="minus"
+        <IconMinusSignStrokeRounded
           onClick={event => {
             event.stopPropagation();
             if (speedRollKf <= 1) return;
@@ -65,8 +65,7 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
           }}
         />
         <div>{(speedRollKf / 10).toFixed(1)}</div>
-        <EvaIcon
-          name="plus"
+        <IconPlusSignStrokeRounded
           onClick={event => {
             event.stopPropagation();
             if (speedRollKf >= 20) return;

@@ -1,7 +1,10 @@
-import EvaButton from '../../../eva-icon/EvaButton';
 import useModal from '../../../modal/useModal';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
+import IconButton from '../../../the-icon/IconButton';
+import { IconCropStrokeRounded } from '@icons/crop';
+import { IconDelete01StrokeRounded } from '@icons/delete-01';
+import { IconShapesStrokeRounded } from '@icons/shapes';
 import { IScheduleWidget, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetEventType from '../../events/EventType';
@@ -48,14 +51,14 @@ export function ScheduleWidgetDayEventEventActions({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="at"
+      <IconButton
+        Icon={IconShapesStrokeRounded}
         postfix="Редактировать шаблон события"
         className="flex-max margin-gap-v"
         onClick={screen}
       />
-      <EvaButton
-        name="crop"
+      <IconButton
+        Icon={IconCropStrokeRounded}
         postfix="Вырезать событие"
         className="flex-max margin-gap-v"
         onClick={onEventCut}
@@ -65,7 +68,7 @@ export function ScheduleWidgetDayEventEventActions({
           scope={scope}
           fieldName="list"
           cud="D"
-          name="trash-2-outline"
+          Icon={IconDelete01StrokeRounded}
           postfix="Удалить событие"
           confirm={
             <ScheduleWidgetTopicTitle

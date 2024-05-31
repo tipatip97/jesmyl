@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { AppName } from '../../../app/App.model';
-import EvaButton from '../../eva-icon/EvaButton';
 import KeyboardInput from '../../keyboard/KeyboardInput';
 import useModal from '../../modal/useModal';
 import useToast from '../../modal/useToast';
 import StrongButton from '../../strong-control/StrongButton';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import IconButton from '../../the-icon/IconButton';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import { initialScheduleScope } from '../useScheduleWidget';
 
 export default function ScheduleCreateWidgetButton({
@@ -37,7 +39,7 @@ export default function ScheduleCreateWidgetButton({
         {footer(
           <div className="flex flex-gap">
             <StrongEvaButton
-              name="plus"
+              Icon={IconPlusSignStrokeRounded}
               scope={initialScheduleScope}
               fieldName="list"
               cud="C"
@@ -61,8 +63,8 @@ export default function ScheduleCreateWidgetButton({
                 };
               }}
             />
-            <EvaButton
-              name="close"
+            <IconButton
+              Icon={IconCancel01StrokeRounded}
               postfix="Отменить"
               className="color--ko"
               onClick={() => {

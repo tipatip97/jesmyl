@@ -1,5 +1,8 @@
 import { useBottomPopup } from '../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import BrutalItem from '../../../complect/brutal-item/BrutalItem';
+import { IconGameController03StrokeRounded } from '@icons/game-controller-03';
+import { IconUserStrokeRounded } from '@icons/user';
+import { IconUserGroupStrokeRounded } from '@icons/user-group';
 import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
 import { useLeaderCcontext } from './components/contexts/useContexts';
 import { CurrentContextSelectPage } from './components/CurrentContextSelectPage';
@@ -43,22 +46,22 @@ export default function LeaderGeneralPage() {
           {generalMoreNode}
           <BrutalItem
             title="Участники"
-            icon="person-outline"
+            icon={<IconUserStrokeRounded />}
             onClick={() => goTo('memberList')}
           />
           <BrutalItem
             title="Лидеры"
-            icon="person-outline"
+            icon={<IconUserGroupStrokeRounded />}
             onClick={() => goTo('leaderList')}
           />
           <BrutalItem
             title="Группы"
-            icon="people-outline"
+            icon={<IconUserStrokeRounded />}
             onClick={() => goTo('groupList')}
           />
           <BrutalItem
             title="Игры"
-            icon="cube-outline"
+            icon={<IconGameController03StrokeRounded />}
             onClick={() => goTo('games')}
           />
         </>

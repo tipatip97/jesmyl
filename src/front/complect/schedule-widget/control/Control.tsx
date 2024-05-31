@@ -1,9 +1,15 @@
-import EvaButton from '../../eva-icon/EvaButton';
-import EvaIcon from '../../eva-icon/EvaIcon';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongDropdown from '../../strong-control/StrongDropdown';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import IconButton from '../../the-icon/IconButton';
+import { IconArrowRight01StrokeRounded } from '@icons/arrow-right-01';
+import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
+import { IconNotification01StrokeRounded } from '@icons/notification-01';
+import { IconNotificationOff01StrokeRounded } from '@icons/notification-off-01';
+import { IconSettings01StrokeRounded } from '@icons/settings-01';
+import { IconSquareStrokeRounded } from '@icons/square';
+import { IconUserStrokeRounded } from '@icons/user';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import ScheduleWidgetRegisterType from './RegisterType';
 import { ScheduleWidgetUserByLinkInvite } from './users/ByLinkInvite';
@@ -49,7 +55,7 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                   cud="U"
                   fieldName="withTech"
                   fieldValue={rights.schedule.withTech ? 0 : 1}
-                  name={rights.schedule.withTech ? 'checkmark-square-2-outline' : 'square-outline'}
+                  Icon={rights.schedule.withTech ? IconCheckmarkSquare02StrokeRounded : IconSquareStrokeRounded}
                   postfix="Первый - технический день"
                   confirm={`Сделать первый день ${rights.schedule.withTech ? 'обычным' : 'подготовительным'}?`}
                   className="margin-gap-b"
@@ -60,7 +66,7 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                     cud="U"
                     fieldName="tgInform"
                     fieldValue={1}
-                    name="bell-off-outline"
+                    Icon={IconNotificationOff01StrokeRounded}
                     postfix="TG-Напоминание: отключено"
                     className="margin-gap-b"
                   />
@@ -70,7 +76,7 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                     cud="U"
                     fieldName="tgInform"
                     fieldValue={0}
-                    name="bell-outline"
+                    Icon={IconNotification01StrokeRounded}
                     postfix={
                       rights.schedule.tgInformTime
                         ? 'TG-Напоминание: за ' + rights.schedule.tgInformTime + ' мин. и в начале события'
@@ -117,22 +123,22 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
     <>
       {modalNode}
       {rights.isCanRedact ? (
-        <EvaButton
-          name="settings-2-outline"
+        <IconButton
+          Icon={IconSettings01StrokeRounded}
           postfix={
             <>
-              Управление <EvaIcon name="chevron-right" />
+              Управление <IconArrowRight01StrokeRounded />
             </>
           }
           onClick={screen}
           className="margin-gap-v flex-max"
         />
       ) : (
-        <EvaButton
-          name="people-outline"
+        <IconButton
+          Icon={IconUserStrokeRounded}
           postfix={
             <>
-              Участники <EvaIcon name="chevron-right" />
+              Участники <IconArrowRight01StrokeRounded />
             </>
           }
           onClick={screen}

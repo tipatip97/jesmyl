@@ -1,14 +1,17 @@
 import { ReactNode, useEffect, useState } from 'react';
-import EvaButton from '../../eva-icon/EvaButton';
-import EvaIcon, { EvaIconName } from '../../eva-icon/EvaIcon';
+import { SokiServerEvent } from '../../../models';
 import KeyboardInput from '../../keyboard/KeyboardInput';
 import useToast from '../../modal/useToast';
+import { TheIconLoading } from '../../the-icon/IconLoading';
+import { IconAlert01StrokeRounded } from '@icons/alert-01';
+import { IconCloudUploadStrokeRounded } from '@icons/cloud-upload';
+import { IconLinkBackwardStrokeRounded } from '@icons/link-backward';
+import { TheIconType } from '../../the-icon/model';
 import useIsRedactArea from '../../useIsRedactArea';
 import { StrongControlProps } from '../Strong.model';
 import { strongPrepareArgsAndSend, useStrongExerContext } from '../useStrongControl';
 import StrongEditableFieldMultiline from './StrongEditableFieldMultiline';
 import { onStrongFieldBlur, onStrongFieldDragStart, onStrongFieldFocus } from './clipboard/Picker';
-import { SokiServerEvent } from '../../../models';
 
 const onFocus = onStrongFieldFocus;
 const onBlur = onStrongFieldBlur;
@@ -21,7 +24,7 @@ type Props<Key, Value> = StrongControlProps<{
   description?: ReactNode;
   disabled?: boolean;
   type?: 'text' | 'number';
-  icon?: EvaIconName;
+  Icon?: TheIconType;
   placeholder?: string;
   isRedact?: boolean;
   setSelfRedact?: boolean;
@@ -113,26 +116,18 @@ export default function StrongEditableField<Key extends string, Value extends st
   }, [isUserChange, value]);
 
   const indicatorNode = isError ? (
-    <EvaIcon
-      name="alert-triangle-outline"
-      className="error-message"
-    />
-  ) : isLoading ? (
-    <EvaIcon
-      name="loader-outline"
-      className="rotate"
-    />
-  ) : stateValue !== value ? (
-    <EvaButton
-      name="undo-outline"
-      className="pointer"
-      onPointerDown={() => setStateValue(value)}
-    />
+    <IconAlert01StrokeRounded className="error-message" />
   ) : (
-    <EvaIcon
-      name="cloud-upload-outline"
-      className="fade-05"
-    />
+    <TheIconLoading isLoading={isLoading}>
+      {stateValue !== value ? (
+        <IconLinkBackwardStrokeRounded
+          className="pointer"
+          onPointerDown={() => setStateValue(value)}
+        />
+      ) : (
+        <IconCloudUploadStrokeRounded className="fade-05" />
+      )}
+    </TheIconLoading>
   );
 
   return (
@@ -146,7 +141,7 @@ export default function StrongEditableField<Key extends string, Value extends st
         <>
           {(props.title || props.setSelfRedact) && (
             <div className="flex flex-gap">
-              {props.icon && <EvaIcon name={props.icon} />}
+              {props.Icon && <props.Icon />}
               {props.title}
               {props.setSelfRedact && editIcon}
               {indicatorNode}
@@ -185,12 +180,7 @@ export default function StrongEditableField<Key extends string, Value extends st
           className="flex flex-gap"
           onDragStart={onDragStart as never}
         >
-          {props.icon && (
-            <EvaIcon
-              name={props.icon}
-              className="color--7 self-start"
-            />
-          )}
+          {props.Icon && <props.Icon className="color--7 self-start" />}
           {value ? (
             props.multiline ? (
               <StrongEditableFieldMultiline value={value} />

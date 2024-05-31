@@ -6,11 +6,12 @@ import { CmAttComStartLiveTranslationButton } from './complect/StartLiveTranslat
 
 export interface CmComBindAttach {
   comws?: number[];
+  eventw?: number;
 }
 
 export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
   '[cm]:coms': {
-    icon: 'music-outline',
+    icon: 'IconPlaylist02StrokeRounded',
     title: 'Песни',
     description: 'Список известных песен',
     initVal: {},

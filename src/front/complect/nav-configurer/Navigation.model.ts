@@ -6,7 +6,7 @@ import {
   RoutePhase,
   RoutePhasePoint,
 } from '../../components/router/Router.model';
-import { EvaIconName } from '../eva-icon/EvaIcon';
+import { TheIconType, TheIconSelfPack } from '../the-icon/model';
 import { Exer } from '../exer/Exer';
 import { ExerStorage } from '../exer/Exer.model';
 import { LocalSokiAuth } from '../../models';
@@ -18,7 +18,7 @@ export type UseNavAction = (isForceBack: boolean) => boolean;
 
 export type FooterItem<Phase> = null | {
   title: string;
-  icon: EvaIconName;
+  icon: TheIconType;
   phases: Phase[];
   activeWithSpecialPhases?: boolean;
   accessRule?: string;
@@ -45,7 +45,7 @@ export interface INavigationConfig<Storage extends ExerStorage, NavData> {
   rootPhase: RoutePhase | null;
   routes: INavigationRouteRootItem<NavData>[];
   exer?: Exer<Storage>;
-  logo?: EvaIconName;
+  Icon?: TheIconType;
   jumpByLink?: JumpByLink<NavData>;
   title: string;
   level?: number;
@@ -75,7 +75,7 @@ export interface INavigationRouteChildItem<
 
 export interface INavigationRouteRootItem<NavData> extends INavigationRouteChildItem<NavData> {
   title: string;
-  icon: EvaIconName;
+  iconSelfPack: TheIconSelfPack;
   markBadge?: (storeData?: NavData) => number | boolean | nil;
 }
 

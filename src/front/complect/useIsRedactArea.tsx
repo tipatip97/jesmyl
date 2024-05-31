@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import EvaButton from './eva-icon/EvaButton';
+import IconButton from './the-icon/IconButton';
+import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconEdit02StrokeRounded } from '@icons/edit-02';
 
 type booleanOrNil = boolean | nil;
 type OnEditStart = ((isSelfRedact: boolean) => void) | nil;
@@ -32,8 +34,8 @@ export function useIsRedactAreaWithInit(
     editIcon:
       redactable && isCanRedact ? (
         !(redact ?? isSelfRedact) ? (
-          <EvaButton
-            name="edit-outline"
+          <IconButton
+            Icon={IconEdit02StrokeRounded}
             className="edit-button"
             onClick={event => {
               event.stopPropagation();
@@ -43,8 +45,8 @@ export function useIsRedactAreaWithInit(
           />
         ) : (
           isShowDoneButton && (
-            <EvaButton
-              name="checkmark-circle-2-outline"
+            <IconButton
+              Icon={IconCheckmarkCircle02StrokeRounded}
               className="edit-button color--ok"
               disabled={redact === true && !isSelfRedact}
               onClick={event => {

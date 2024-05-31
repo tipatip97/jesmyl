@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { IconCheckmarkCircle01StrokeRounded } from '@icons/checkmark-circle-01';
+import { IconRecordStrokeRounded } from '@icons/record';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { leaderExer } from '../../Leader.store';
@@ -273,11 +274,15 @@ export default function HumanMaster({
               >
                 {label + ' '}
                 {ufpLabels.map((_, ufpi) => {
+                  const Icon =
+                    ((placei ? ufp2 : ufp1) || 0) - 1 === ufpi
+                      ? IconCheckmarkCircle01StrokeRounded
+                      : IconRecordStrokeRounded;
+
                   return (
-                    <EvaIcon
+                    <Icon
                       key={ufpi}
                       className="pointer"
-                      name={((placei ? ufp2 : ufp1) || 0) - 1 === ufpi ? 'radio-button-on' : 'radio-button-off'}
                       onClick={() => {
                         const value = ufpi + 1;
                         placei ? setUfp2(value) : setUfp1(value);

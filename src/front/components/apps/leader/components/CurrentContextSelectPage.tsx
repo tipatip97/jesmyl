@@ -1,4 +1,5 @@
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
+import { IconCalendar01StrokeRounded } from '@icons/calendar-01';
 import PhaseLeaderContainer from '../phase-container/PhaseLeaderContainer';
 import useLeaderNav from '../useLeaderNav';
 import { LeaderContextImportable } from './contexts/Contexts.model';
@@ -24,7 +25,7 @@ export function CurrentContextSelectPageInner({ list }: { list: LeaderContextImp
           <BrutalItem
             key={context.w}
             title={context.name}
-            icon="calendar-outline"
+            icon={<IconCalendar01StrokeRounded />}
             onClick={() => setAppRouteData({ contextw: context.w })}
           />
         );

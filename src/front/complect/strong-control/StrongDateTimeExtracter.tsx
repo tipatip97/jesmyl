@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import mylib from '../my-lib/MyLib';
 import { StrongControlProps } from './Strong.model';
 import StrongEditableField from './field/StrongEditableField';
-import { EvaIconName } from '../eva-icon/EvaIcon';
+import { TheIconType } from '../the-icon/model';
 
 type TakeDateComponent = 'NO' | 'year' | 'month' | 'day';
 type TakeTimeComponent = 'hour' | 'min' | 'sec' | 'ms';
@@ -24,7 +24,7 @@ export default function StrongInputDateTimeExtracter(
   props: StrongControlProps & {
     fieldKey?: string;
     value: string;
-    icon?: EvaIconName;
+    Icon?: TheIconType;
     title?: string;
     className?: string;
     takeDate: TakeDateComponent;

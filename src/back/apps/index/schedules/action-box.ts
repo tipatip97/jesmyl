@@ -574,6 +574,12 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                       U: {},
                     },
                   },
+                  '/eventw': {
+                    D: {
+                      method: 'delete',
+                    },
+                    U: {},
+                  },
                   '/list': {
                     scopeNode: 'checkList',
                     C: {

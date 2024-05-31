@@ -1,4 +1,5 @@
-import EvaButton from '../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../complect/the-icon/IconButton';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
 import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
 import ScheduleWidgetListPage from '../../../complect/schedule-widget/general/ListPage';
 import ScheduleWidgetPage from '../../../complect/schedule-widget/general/Page';
@@ -32,8 +33,8 @@ export default function ScheduleWidgetAlarmScheduleList() {
         headTitle={
           <span className="flex flex-gap">
             {schedule.title}
-            <EvaButton
-              name="close"
+            <IconButton
+              Icon={IconCancel01StrokeRounded}
               onClick={event => {
                 event.stopPropagation();
                 setAppRouteData({ schw: undefined });

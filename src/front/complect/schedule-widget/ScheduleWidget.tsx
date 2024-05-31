@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import useAuth from '../../components/index/useAuth';
 import ShareEvaButton from '../ShareEvaButton';
 import { isTouchDevice } from '../device-differences';
-import EvaIcon from '../eva-icon/EvaIcon';
 import { useIsRememberExpand } from '../expand/useIsRememberExpand';
 import mylib from '../my-lib/MyLib';
 import { crossApplicationLinkCoder } from '../qr-code/useQRMaster';
@@ -11,6 +10,14 @@ import StrongButton from '../strong-control/StrongButton';
 import StrongControlDateTimeExtracter from '../strong-control/StrongDateTimeExtracter';
 import StrongEvaButton from '../strong-control/StrongEvaButton';
 import StrongEditableField from '../strong-control/field/StrongEditableField';
+import { IconArrowRight01StrokeRounded } from '@icons/arrow-right-01';
+import { IconBookmark03StrokeRounded } from '@icons/bookmark-03';
+import { IconCalendar03StrokeRounded } from '@icons/calendar-03';
+import { IconDelete02StrokeRounded } from '@icons/delete-02';
+import { IconFile02StrokeRounded } from '@icons/file-02';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconSchoolReportCardStrokeRounded } from '@icons/school-report-card';
+import { IconShapesStrokeRounded } from '@icons/shapes';
 import useIsRedactArea from '../useIsRedactArea';
 import { IScheduleWidget } from './ScheduleWidget.model';
 import ScheduleWidgetCustomAttachments from './atts/custom/CustomAttachments';
@@ -50,7 +57,7 @@ export default function ScheduleWidget({
   const [expandNode, isExpand] = useIsRememberExpand(
     selfScope,
     <ScheduleWidgetTopicTitle
-      prefix={<EvaIcon name="calendar-outline" />}
+      prefix={<IconCalendar03StrokeRounded />}
       titleBox={schedule ?? {}}
       altTitle="Мероприятие"
       topicBox={schedule}
@@ -152,7 +159,7 @@ export default function ScheduleWidget({
                   scope={selfScope}
                   fieldName="start"
                   title="Начало"
-                  icon="calendar-outline"
+                  Icon={IconCalendar03StrokeRounded}
                   value={dateValue}
                   takeDate="day"
                   takeTime="NO"
@@ -175,7 +182,7 @@ export default function ScheduleWidget({
                         fieldKey="title"
                         value={schedule}
                         isRedact
-                        icon="credit-card-outline"
+                        Icon={IconSchoolReportCardStrokeRounded}
                         title="Заголовок"
                       />
                       <StrongEditableField
@@ -184,7 +191,7 @@ export default function ScheduleWidget({
                         fieldKey="topic"
                         value={schedule}
                         isRedact
-                        icon="bookmark-outline"
+                        Icon={IconBookmark03StrokeRounded}
                         title="Название"
                       />
                     </>
@@ -198,7 +205,7 @@ export default function ScheduleWidget({
                       isRedact={isRedact}
                       multiline
                       textClassName=" "
-                      icon="file-text-outline"
+                      Icon={IconFile02StrokeRounded}
                       title="Описание"
                     />
                   )}
@@ -228,10 +235,10 @@ export default function ScheduleWidget({
                         scheduleScope={selfScope}
                         postfix={
                           <>
-                            Шаблоны событий <EvaIcon name="chevron-right" />
+                            Шаблоны событий <IconArrowRight01StrokeRounded />
                           </>
                         }
-                        icon="at"
+                        Icon={IconShapesStrokeRounded}
                         schedule={schedule}
                       />
                       <ScheduleWidgetCustomAttachments
@@ -245,7 +252,7 @@ export default function ScheduleWidget({
                         <StrongEvaButton
                           scope={selfScope}
                           fieldName="days"
-                          name="plus-outline"
+                          Icon={IconPlusSignStrokeRounded}
                           postfix="Добавить день"
                           confirm="Дни удалять не возможно! Создать новый?"
                           className="margin-gap-v"
@@ -257,7 +264,7 @@ export default function ScheduleWidget({
                           fieldName="list"
                           cud="D"
                           className="color--ko"
-                          name="trash-outline"
+                          Icon={IconDelete02StrokeRounded}
                           confirm="Восстановить расписание будет не возможно. Продолжить?"
                           postfix="Удалить расписание"
                           mapExecArgs={args => {

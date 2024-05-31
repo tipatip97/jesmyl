@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import EvaIcon from '../../complect/eva-icon/EvaIcon';
 import { ThrowEvent } from '../../complect/eventer/ThrowEvent';
+import { TheIconLoading } from '../../complect/the-icon/IconLoading';
+import { IconAlert01StrokeRounded } from '@icons/alert-01';
 import { soki } from '../../soki';
 
 export default function useConnectionState(className?: string) {
@@ -25,16 +26,12 @@ export default function useConnectionState(className?: string) {
 
   return isOnline ? (
     isConnected ? null : (
-      <EvaIcon
-        name="loader-outline"
-        className={'rotate ' + className}
+      <TheIconLoading
+        className={className}
         onClick={() => soki.ping(() => setIsConnected(true))}
       />
     )
   ) : (
-    <EvaIcon
-      name="alert-triangle"
-      className={'color--ko ' + className}
-    />
+    <IconAlert01StrokeRounded className={'color--ko ' + className} />
   );
 }

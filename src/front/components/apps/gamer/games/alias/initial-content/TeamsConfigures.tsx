@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
-import EvaCheckbox from '../../../../../../complect/eva-icon/EvaCheckbox';
 import { useGetRandomTwiceName } from '../../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
 import mylib from '../../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../../../complect/the-icon/IconCheckbox';
+import { IconUserStrokeRounded } from '@icons/user';
 import { useGamerRoomPlayers } from '../../../complect/rooms/room/hooks/players';
 import { useAliasMemberList } from '../hooks/member-list';
 import { useAliasRoomState } from '../hooks/state';
@@ -65,7 +66,7 @@ export const AliasRoomTeamsConfigures = ({ isCantStartRound, setIsTeamsRejToStar
   return (
     <>
       {state && (
-        <EvaCheckbox
+        <IconCheckbox
           checked={isComputeNewTeams}
           onChange={setIsComputeNewTeamsState}
           disabled={isCantComputeNewTeams}
@@ -75,8 +76,8 @@ export const AliasRoomTeamsConfigures = ({ isCantStartRound, setIsTeamsRejToStar
       {isComputeNewTeams && (
         <>
           <div className="flex flex-gap margin-gap-v">
-            <EvaButton
-              name="people-outline"
+            <IconButton
+              Icon={IconUserStrokeRounded}
               className="nowrap"
               postfix="Количество команд"
             />
@@ -103,7 +104,7 @@ export const AliasRoomTeamsConfigures = ({ isCantStartRound, setIsTeamsRejToStar
         </>
       )}
       {isComputeNewTeamsState && (
-        <EvaCheckbox
+        <IconCheckbox
           checked={isHystericsModeState}
           onChange={setIsHystericsModeState}
           disabled={isOddPlayersCount || players.length === 2}

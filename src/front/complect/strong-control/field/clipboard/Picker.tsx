@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../shared/store';
-import EvaButton from '../../../eva-icon/EvaButton';
+import IconButton from '../../../the-icon/IconButton';
 import { KeyboardInputEvent } from '../../../keyboard/Keyboard.model';
 import { useConfirm } from '../../../modal/confirm/useConfirm';
 import useModal from '../../../modal/useModal';
@@ -9,6 +9,7 @@ import { MyLib } from '../../../my-lib/MyLib';
 import di from '../../Strong.store';
 import './Clipboard.scss';
 import StrongClipboardItem from './Item';
+import { IconTask01StrokeRounded } from '@icons/task-01';
 
 let clipboardFocusedElem: (EventTarget & HTMLTextAreaElement) | nil = null;
 let updates = 0;
@@ -191,8 +192,8 @@ export default function StrongClipboardPicker() {
         }}
         onDragOver={event => event.preventDefault()}
       >
-        <EvaButton
-          name="clipboard-outline"
+        <IconButton
+          Icon={IconTask01StrokeRounded}
           className={'pointer' + (clipboardFocusedElem === null ? '' : ' color--7')}
           onPointerDown={onClipboardMouseDown}
           onClick={() => {

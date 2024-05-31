@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
-import EvaButton from './eva-icon/EvaButton';
-import useToast from './modal/useToast';
 import useModal from './modal/useModal';
+import useToast from './modal/useToast';
+import IconButton from './the-icon/IconButton';
+import { IconCopy01StrokeRounded } from '@icons/copy-01';
 
 export default function CopyTextButton({
   text,
@@ -46,8 +47,8 @@ export default function CopyTextButton({
         }}
       >
         {description}
-        <EvaButton
-          name="copy"
+        <IconButton
+          Icon={IconCopy01StrokeRounded}
           disabled={disabled}
         />
       </span>

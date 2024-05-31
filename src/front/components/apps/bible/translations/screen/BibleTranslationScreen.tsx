@@ -2,7 +2,8 @@ import { useRef, useState } from 'react';
 import { TranslationScreenProps } from '../../../+complect/translations/Translations.model';
 import { useSetScreenTranslationInteractiveBackground } from '../../../+complect/translations/hooks/interactive-back';
 import { useApplyScreenFontFamilyEffect } from '../../../+complect/translations/hooks/set-font-family';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconCircleArrowDataTransferDiagonalStrokeRounded } from '@icons/circle-arrow-data-transfer-diagonal';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
 import { useBibleScreenTranslationKeyListener } from '../hooks/key-listener';
 import { useGetBibleScreenTranslationWrapperStyle } from '../hooks/styles/wrapper-style';
@@ -45,8 +46,8 @@ export const BibleTranslationScreen = (props: Props) => {
     >
       {props.isTech && (
         <>
-          <EvaButton
-            name="radio-button-on"
+          <IconButton
+            Icon={IconCircleArrowDataTransferDiagonalStrokeRounded}
             className="absolute pos-left pos-bottom z-index:130"
             onClick={event => {
               event.preventDefault();

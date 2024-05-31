@@ -1,5 +1,6 @@
 import useAuth from '../../../../components/index/useAuth';
-import EvaIcon from '../../../eva-icon/EvaIcon';
+import TheIcon from '../../../the-icon/TheIcon';
+import { IconGithubStrokeRounded } from '@icons/github';
 import { IScheduleWidget, IScheduleWidgetRole } from '../../ScheduleWidget.model';
 import { extractScheduleWidgetRoleUser } from '../../useScheduleWidget';
 
@@ -16,7 +17,7 @@ export default function ScheduleWidgetRoleFace({
 
   return (
     <div className={'flex flex-gap' + (auth && roleUser && auth.login === roleUser.login ? ' color--7' : ' color--3')}>
-      <EvaIcon name={role.icon ?? 'github-outline'} />
+      {role.icon ? <TheIcon name={role.icon} /> : <IconGithubStrokeRounded />}
       <div className="face-title">
         {role.title}
         {' - '}

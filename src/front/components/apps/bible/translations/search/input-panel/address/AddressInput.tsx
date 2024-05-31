@@ -16,6 +16,18 @@ export const BibleSearchPanelAddressInput = ({ inputRef }: Props) => {
 
   useEffect(() => setTimeoutEffect(justBibleStorageSet, 100, 'translationAddressTerm', term), [term]);
 
+  useEffect(() => {
+    if (inputRef.current === null) return;
+
+    return hookEffectLine()
+      .addEventListener(inputRef.current, 'keydown', event => {
+        if (event.code === 'ArrowRight' || event.code === 'ArrowLeft') {
+          event.stopPropagation();
+        }
+      })
+      .effect();
+  }, [inputRef]);
+
   return (
     <>
       <BibleSearchPanelInput

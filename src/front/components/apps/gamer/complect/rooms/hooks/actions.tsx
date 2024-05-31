@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { bottomPopupContentPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
+import { IconStarStrokeRounded } from '@icons/star';
 import { GamerGameName, GamerRoomMember } from '../../../Gamer.model';
 import { gamerExer } from '../../../Gamer.store';
 import { useGamerCurrentRoom } from '../room/hooks/current-room';
@@ -39,7 +40,7 @@ export const useGamerRoomActions = (member?: GamerRoomMember) => {
             ) : (
               <>Сделать {nameNode} админом</>
             ),
-            icon: 'star-outline',
+            Icon: IconStarStrokeRounded,
             onClick: () => toggleAdminStatus(member.login),
           },
         ],

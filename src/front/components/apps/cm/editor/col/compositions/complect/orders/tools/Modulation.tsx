@@ -1,8 +1,9 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
-import EvaCheckbox from '../../../../../../../../../complect/eva-icon/EvaCheckbox';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
 import mylib from '../../../../../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
+import { IconFlashStrokeRounded } from '@icons/flash';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
@@ -36,7 +37,7 @@ export const OrdersRedactorOrderToolsModulation = ({
             />
             {intervals.map(position => {
               return (
-                <EvaCheckbox
+                <IconCheckbox
                   key={position}
                   checked={ord.fieldValues.md === position}
                   disabled={ord.fieldValues.md === position}
@@ -61,8 +62,8 @@ export const OrdersRedactorOrderToolsModulation = ({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="flash-outline"
+      <IconButton
+        Icon={IconFlashStrokeRounded}
         postfix="Значение модуляции"
         onClick={openModal}
       />

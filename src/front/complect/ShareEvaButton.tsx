@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
-import EvaButton from './eva-icon/EvaButton';
 import useModal from './modal/useModal';
 import mylib from './my-lib/MyLib';
+import IconButton from './the-icon/IconButton';
+import { IconShare08StrokeRounded } from '@icons/share-08';
 
 type PrepareResult = {
   url?: string;
@@ -28,8 +29,8 @@ export default function ShareEvaButton({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="share-outline"
+      <IconButton
+        Icon={IconShare08StrokeRounded}
         disabled={disabled}
         prefix={description}
         className={className}

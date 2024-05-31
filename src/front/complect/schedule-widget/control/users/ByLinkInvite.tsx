@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import EvaButton from '../../../eva-icon/EvaButton';
+import IconButton from '../../../the-icon/IconButton';
+import { IconLink02StrokeRounded } from '@icons/link-02';
 import KeyboardInput from '../../../keyboard/KeyboardInput';
 import useModal from '../../../modal/useModal';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
@@ -41,8 +42,8 @@ export function ScheduleWidgetUserByLinkInvite({ scope }: StrongComponentProps) 
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="link-2"
+      <IconButton
+        Icon={IconLink02StrokeRounded}
         onClick={screen}
       />
     </>

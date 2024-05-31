@@ -3,6 +3,7 @@ import { BottomPopupContenter } from '../../../../complect/absolute-popup/bottom
 import { useCheckIsAccessed } from '../../../../complect/exer/hooks/check-is-accessed';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
 import useToast from '../../../../complect/modal/useToast';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import useAuth from '../../../index/useAuth';
 import NewGamerRoomScreen from './rooms/NewGamerRoomScreen';
 import { useGamerOfflineRoomsPassport } from './rooms/offline-room/hooks/passport';
@@ -31,12 +32,12 @@ export const GamerMore: BottomPopupContenter = () => {
         items: [
           checkIsAccessed(3) && {
             title: 'Новая комната',
-            icon: 'plus',
+            Icon: IconPlusSignStrokeRounded,
             onClick: () => openNewRoomMaker(),
           },
           {
             title: 'Новая оффлайн комната',
-            icon: 'plus',
+            Icon: IconPlusSignStrokeRounded,
             className: passport ? '' : ' fade-05',
             onClick: () => {
               if (passport) openNewOffRoomMaker();

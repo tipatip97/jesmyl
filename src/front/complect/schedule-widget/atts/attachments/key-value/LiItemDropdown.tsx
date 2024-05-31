@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models';
-import { CustomAttUseTaleId } from '../../../../../models';
-import EvaButton from '../../../../eva-icon/EvaButton';
+import { CustomAttUseTaleId, ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models';
+import IconButton from '../../../../the-icon/IconButton';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
 import mylib from '../../../../my-lib/MyLib';
 import StrongDropdown from '../../../../strong-control/StrongDropdown';
 import { IScheduleWidgetListUnit, IScheduleWidgetRole, IScheduleWidgetUser } from '../../../ScheduleWidget.model';
@@ -82,8 +83,8 @@ export default function ScheduleKeyValueListAttLiItemDropdown({
 
   return (
     <div className="flex flex-gap">
-      <EvaButton
-        name={isShowAll ? 'eye-outline' : 'eye-off-outline'}
+      <IconButton
+        Icon={isShowAll ? IconViewStrokeRounded : IconViewOffSlashStrokeRounded}
         onClick={() => setIsShowAll(!isShowAll)}
       />
       <StrongDropdown

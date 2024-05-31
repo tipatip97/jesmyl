@@ -21,7 +21,9 @@ export const useGoToTranslation = () => {
       setTexti(0);
       if (isTouchDevice) {
         goTo('translation', null, true);
-        document.body.requestFullscreen();
+        try {
+          document.body.requestFullscreen();
+        } catch (e) {}
 
         registerBackAction(() => closeTranslation());
       } else goTo('translation');

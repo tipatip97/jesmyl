@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
-import EvaIcon from '../eva-icon/EvaIcon';
+import { IconArrowLeft02StrokeRounded } from '@icons/arrow-left-02';
+import { IconMoreVerticalCircle01StrokeRounded } from '@icons/more-vertical-circle-01';
 import { PhaseContainerConfigurerProps } from './PhaseContainerConfigurer.model';
 
 let goBack: (isForceBack?: boolean | undefined) => void;
@@ -17,21 +18,15 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
             className={'flex ' + (props.withoutBackButton ? 'margin-big-gap-h' : 'pointer')}
             onClick={props.withoutBackButton ? undefined : () => props.goBack(true)}
           >
-            {!props.withoutBackButton && (
-              <EvaIcon
-                name="arrow-back"
-                className="action-button"
-              />
-            )}
+            {!props.withoutBackButton && <IconArrowLeft02StrokeRounded className="action-button" />}
             {props.headTitle}
           </span>
         )}
         <div className={`head ${props.headClass || 'flex between'}`}>
           {props.head}
           {props.onMoreClick && (
-            <EvaIcon
+            <IconMoreVerticalCircle01StrokeRounded
               className="action-button"
-              name="more-vertical"
               onClick={props.onMoreClick}
             />
           )}

@@ -5,6 +5,7 @@ import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import { CodeExecutionScreen } from './coder/Coder';
 import { CoderResultLine } from './coder/complect/line';
 import { isTouchDevice } from '../../../../complect/device-differences';
+import { IconCancel02StrokeRounded } from '@icons/cancel-02';
 
 const logs: unknown[][] = [];
 
@@ -27,7 +28,7 @@ export const IndexConsole = () => {
     return prepare({
       items: [
         {
-          icon: 'slash',
+          Icon: IconCancel02StrokeRounded,
           title: 'Очистить консоль',
           onClick: () => {
             logs.length = 0;

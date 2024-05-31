@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
 import { useCheckIsAccessed } from '../../../../../../complect/exer/hooks/check-is-accessed';
 import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import { NavigationThrowNodeProps } from '../../../../../../complect/nav-configurer/Navigation.model';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconMusicNote03SolidRounded, IconMusicNote03StrokeRounded } from '@icons/music-note-03';
 import useAuth from '../../../../../index/useAuth';
 import useConnectionState from '../../../../../index/useConnectionState';
 import { CmNavData } from '../../../Cm.model';
@@ -36,8 +36,8 @@ export default function EditComposition({
       head={
         <>
           {connectionNode}
-          <EvaButton
-            name={isOpenPlayer ? 'music' : 'music-outline'}
+          <IconButton
+            Icon={isOpenPlayer ? IconMusicNote03SolidRounded : IconMusicNote03StrokeRounded}
             className="margin-gap"
             onClick={() => setIsOpenPlayer(!isOpenPlayer)}
           />
@@ -57,7 +57,7 @@ export default function EditComposition({
         ) : (
           <>
             <div className="flex around sticky nav-panel">
-              {editCompositionNavs.map(({ data: { icon, iconText } = {}, phase: [phase], accessLevel }) => {
+              {editCompositionNavs.map(({ data: { Icon, iconText } = {}, phase: [phase], accessLevel }) => {
                 if (accessLevel != null && !checkIsAccessed(accessLevel)) return null;
                 return (
                   <span
@@ -65,11 +65,7 @@ export default function EditComposition({
                     className="pointer"
                     onClick={() => goTo(phase, relativePoint, ccom.isCreated)}
                   >
-                    {icon ? (
-                      <EvaIcon name={`${icon}${phase === currentChildPhase ? '' : '-outline'}` as never} />
-                    ) : (
-                      iconText
-                    )}
+                    {Icon ? <Icon /> : iconText}
                   </span>
                 );
               })}

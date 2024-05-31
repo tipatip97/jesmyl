@@ -1,12 +1,15 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { ReactNode } from 'react';
 import { LocalSokiAuth, SokiServerEvent } from '../../../../back/complect/soki/soki.model';
-import { EvaIconName } from '../../../complect/eva-icon/EvaIcon';
 import mylib from '../../../complect/my-lib/MyLib';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { INavigationRouteChildItem, UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import { QRCodeReaderData } from '../../../complect/qr-code/QRCodeMaster.model';
+import { iconPackOfGameController03 } from '@icons/game-controller-03';
+import { iconPackOfPassport } from '@icons/passport';
+import { IconVoiceIdStrokeRounded } from '@icons/voice-id';
+import { TheIconType } from '../../../complect/the-icon/model';
 import Gamer from './Gamer';
 import { GamerGameName, GamerRoom } from './Gamer.back-model';
 import { GamerNavData, GamerPassport, GamerStorage } from './Gamer.model';
@@ -22,9 +25,10 @@ import { toStopAliasGame } from './games/alias/hooks/execs';
 import SpyRoomContent from './games/spy/SpyRoomContent';
 import { SPY_ROLE, unsecretSpyRole } from './games/spy/hooks/locations';
 import { OfflineGameShare } from './games/spy/offline-room/SpyOfflineRoom.model';
+import { IconAnonymousStrokeRounded } from '@icons/anonymous';
 
 interface GameData {
-  icon: EvaIconName;
+  Icon: TheIconType;
   title: string;
   onResetGame?: (room: GamerRoom | und) => Promise<SokiServerEvent | null> | nil;
 }
@@ -40,7 +44,7 @@ export const gamerRoomGames: GamerRoomGameSkelet[] = [
     phase: ['spy'],
     node: <SpyRoomContent />,
     data: {
-      icon: 'search',
+      Icon: IconAnonymousStrokeRounded,
       title: 'Шпион 1.0',
     },
   },
@@ -48,7 +52,7 @@ export const gamerRoomGames: GamerRoomGameSkelet[] = [
     phase: ['alias'],
     node: <AliasRoomContent />,
     data: {
-      icon: 'smiling-face-outline',
+      Icon: IconVoiceIdStrokeRounded,
       title: 'Алиас',
       onResetGame: toStopAliasGame,
     },
@@ -67,7 +71,7 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
     phase: ['spy'],
     node: <SpyOfflineRoomContent />,
     data: {
-      icon: 'search',
+      Icon: IconAnonymousStrokeRounded,
       title: 'Шпион 1.0',
       currentNode: <SpyCurrentOfflineGameInfo />,
       qrDataCatcher: (dispatch, passport, data) => {
@@ -100,11 +104,10 @@ const gamerNavigation = new NavigationConfig<GamerStorage, GamerNavData>('gamer'
   title: 'Игрок',
   root: content => <GamerApp content={content} />,
   rootPhase: 'gamer',
-  logo: 'cube',
   routes: [
     {
       phase: ['gamer'],
-      icon: 'cube',
+      iconSelfPack: iconPackOfGameController03,
       title: 'Игрок',
       node: <Gamer />,
       next: [
@@ -134,7 +137,7 @@ const gamerNavigation = new NavigationConfig<GamerStorage, GamerNavData>('gamer'
     },
     {
       phase: ['passport'],
-      icon: 'credit-card',
+      iconSelfPack: iconPackOfPassport,
       title: 'Паспорт',
       node: <TheGamerPassport />,
     },

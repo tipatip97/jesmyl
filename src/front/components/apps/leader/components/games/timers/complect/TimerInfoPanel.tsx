@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import Dropdown from '../../../../../../../complect/dropdown/Dropdown';
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconLeftToRightListBulletStrokeRounded } from '@icons/left-to-right-list-bullet';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import { TeamGameImportable } from '../../../../Leader.model';
+import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTimerImportable, GameTimerMode, GameTimerSortDirection } from '../GameTimer.model';
 import TimerCompetitionsSelector from './TimerCompetitionsSelector';
 import TimerModeSelector from './TimerModeSelector';
 import TimerSortRatingVariantSelector from './TimerSortRatingVariantSelector';
-import { LeaderCleans } from '../../../LeaderCleans';
+import { IconEdit01StrokeRounded } from '@icons/edit-01';
 
 export default function TimerInfoPanel({
   onNameChange,
@@ -55,8 +57,8 @@ export default function TimerInfoPanel({
                 }))}
                 onSelect={({ id }) => changeName(id)}
               />
-              <EvaButton
-                name="edit-2-outline"
+              <IconButton
+                Icon={IconEdit01StrokeRounded}
                 onClick={() => setIsWriteName(true)}
               />
             </>
@@ -68,8 +70,8 @@ export default function TimerInfoPanel({
                 onInput={value => changeName(value)}
               />
               {!game?.timerNames?.length || (
-                <EvaButton
-                  name="list-outline"
+                <IconButton
+                  Icon={IconLeftToRightListBulletStrokeRounded}
                   onClick={() => {
                     setIsWriteName(false);
                     changeName('');

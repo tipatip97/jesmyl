@@ -2,7 +2,9 @@ import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../shared/store';
 import { switchIsNumberSearch } from './Complect.store';
-import EvaIcon from './eva-icon/EvaIcon';
+import IconButton from './the-icon/IconButton';
+import { IconGridTableStrokeRounded } from '@icons/grid-table';
+import { IconSearchVisualStrokeRounded } from '@icons/search-visual';
 import { KeyboardInputPropsType } from './keyboard/Keyboard.model';
 import KeyboardInput from './keyboard/KeyboardInput';
 
@@ -28,8 +30,8 @@ export default function DebouncedSearchInput(props: {
   return (
     <div className={`debounced-input ${className}`}>
       {withoutIcon || (
-        <EvaIcon
-          name={isNumberSearch ? 'keypad-outline' : 'search-outline'}
+        <IconButton
+          Icon={isNumberSearch ? IconGridTableStrokeRounded : IconSearchVisualStrokeRounded}
           onClick={() => dispatch(switchIsNumberSearch())}
         />
       )}

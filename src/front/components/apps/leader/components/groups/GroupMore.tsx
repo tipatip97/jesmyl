@@ -1,5 +1,6 @@
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { IconEdit01StrokeRounded } from '@icons/edit-01';
 import LeaderGroupMaster from './GroupMaster';
 import { LeaderGroupImportable } from './Groups.model';
 
@@ -20,7 +21,7 @@ export const LeaderGroupMoreContenter: BottomPopupContenter<{
         items: [
           {
             title: 'Редактировать',
-            icon: 'edit-outline',
+            Icon: IconEdit01StrokeRounded,
             onClick: () => openGroupMaster(),
           },
         ],

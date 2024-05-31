@@ -1,4 +1,5 @@
 import BrutalItem from '../../../../../../complect/brutal-item/BrutalItem';
+import { IconBookOpen01StrokeRounded } from '@icons/book-open-01';
 import useCmNav from '../../../base/useCmNav';
 import PhaseCmEditorContainer from '../../phase-editor-container/PhaseCmEditorContainer';
 import { useEditableCols } from '../useEditableCols';
@@ -17,7 +18,7 @@ export default function EditCategories() {
             return (
               <BrutalItem
                 key={cat.wid}
-                icon="book-open-outline"
+                icon={<IconBookOpen01StrokeRounded />}
                 title={`${cat.name || ''}${cat.name !== cat.initialName ? ` (${cat.initialName})` : ''}`}
                 onClick={() => goTo({ place: 'cat', data: { ccatw: cat.wid } })}
               />

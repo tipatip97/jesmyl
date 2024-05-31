@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import EditContainerCorrectsInformer from '../../components/apps/cm/editor/edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { riseUpExerUpdates } from '../Complect.store';
-import EvaIcon from '../eva-icon/EvaIcon';
+import { IconSentStrokeRounded } from '@icons/sent';
 import LoadIndicatedContent from '../load-indicated-content/LoadIndicatedContent';
 import useToast from '../modal/useToast';
 import { Exer } from './Exer';
@@ -41,8 +41,7 @@ export default function ExecList<Storage extends ExerStorage>({
             );
           })}
 
-          <EvaIcon
-            name="paper-plane-outline"
+          <IconSentStrokeRounded
             className={`action-button pointer ${isDisabledSendButton ? 'disabled' : ''}`}
             onClick={() => {
               setReadyState(0);

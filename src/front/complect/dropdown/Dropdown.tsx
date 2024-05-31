@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import EvaIcon from '../eva-icon/EvaIcon';
 import useToast from '../modal/useToast';
 import { useOnSendPromiseCallback } from '../sends/useOnSendPromiseCallback';
+import { IconAlert01StrokeRounded } from '@icons/alert-01';
+import { IconLoading03StrokeRounded } from '@icons/loading-03';
 import { DropdownItem, DropdownProps } from './Dropdown.model';
 
 export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownItem<Id>>(props: DropdownProps<Id, Item>) {
@@ -107,17 +108,9 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
           })}
       </div>
       {error ? (
-        <EvaIcon
-          name="alert-circle-outline"
-          className="color--ko"
-        />
+        <IconAlert01StrokeRounded className="color--ko" />
       ) : (
-        isLoading && (
-          <EvaIcon
-            name="loader-outline"
-            className="rotate"
-          />
-        )
+        isLoading && <IconLoading03StrokeRounded className="rotate" />
       )}
     </Selector>
   );

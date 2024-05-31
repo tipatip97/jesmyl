@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { setPolyfills } from './back/complect/polyfills';
 import App from './front/app/App';
 import './front/index.scss';
 import './front/lib.scss';
@@ -9,6 +8,7 @@ import reportWebVitals from './front/reportWebVitals';
 import * as serviceWorkerRegistration from './front/serviceWorkerRegistration';
 import { store } from './front/shared/store';
 import GlobalStyles from './globalStyles';
+import { setPolyfills } from './front/complect/polyfills';
 
 export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null) => {
   createRoot(node).render(

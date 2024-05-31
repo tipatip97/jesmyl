@@ -1,7 +1,8 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
-import EvaCheckbox from '../../../../../../../../../complect/eva-icon/EvaCheckbox';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
+import { IconOptionStrokeRounded } from '@icons/option';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
@@ -39,7 +40,7 @@ export const OrdersRedactorOrderToolsChordBind = ({
                 targetOrd && (ord.chordsi == null || ord.chordsi === -1) ? targetOrd.chordsi : ord.chordsi;
 
               return (
-                <EvaCheckbox
+                <IconCheckbox
                   key={chordsBlocki}
                   checked={chordsBlocki === chordIndex}
                   disabled={chordsBlocki === chordIndex}
@@ -81,8 +82,8 @@ export const OrdersRedactorOrderToolsChordBind = ({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="options-2-outline"
+      <IconButton
+        Icon={IconOptionStrokeRounded}
         postfix="Аккорды"
         onClick={openModal}
       />

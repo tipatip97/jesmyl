@@ -1,6 +1,9 @@
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
-import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
+import { IconCalendar02StrokeRounded } from '@icons/calendar-02';
+import { IconCheckmarkBadge01StrokeRounded } from '@icons/checkmark-badge-01';
+import { IconStarStrokeRounded } from '@icons/star';
 import useCmNav from '../base/useCmNav';
 import useSelectedComs from '../base/useSelectedComs';
 import { useCols } from '../cols/useCols';
@@ -21,18 +24,18 @@ export default function Lists() {
       content={
         <>
           <BrutalItem
-            icon="star-outline"
+            icon={<IconStarStrokeRounded />}
             title="Избранное"
             onClick={() => goTo('marks')}
           />
           <BrutalItem
-            icon="calendar-outline"
+            icon={<IconCalendar02StrokeRounded />}
             title="События"
             onClick={() => goTo('meetings')}
           />
           {selectedComws.length ? (
             <BrutalItem
-              icon="checkmark-circle-2-outline"
+              icon={<IconCheckmarkBadge01StrokeRounded />}
               title="Выбранное"
               onClick={() => goTo('selected')}
             />
@@ -46,10 +49,7 @@ export default function Lists() {
                   className="item flex"
                   onClick={() => goTo({ place: 'cat', data: { ccatw: cat.wid } })}
                 >
-                  <EvaIcon
-                    name="book-open-outline"
-                    className="margin-big-gap"
-                  />
+                  <IconBookOpen02StrokeRounded className="margin-big-gap" />
                   <div>{cat.name}</div>
                 </div>
               );

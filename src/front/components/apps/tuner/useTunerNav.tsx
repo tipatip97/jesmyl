@@ -1,6 +1,7 @@
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
+import { iconPackOfDashboardSpeed02 } from '@icons/dashboard-speed-02';
 import TheTuner from './TheTuner';
 import { TunerStorage } from './Tuner.model';
 
@@ -8,11 +9,10 @@ const tunerNavigation = new NavigationConfig<TunerStorage>('tuner', {
   title: 'Тюнер',
   root: content => <>{content}</>,
   rootPhase: 'tuner',
-  logo: 'music',
   routes: [
     {
       phase: ['tuner'],
-      icon: 'music',
+      iconSelfPack: iconPackOfDashboardSpeed02,
       title: 'Тюнер',
       node: <TheTuner />,
     },

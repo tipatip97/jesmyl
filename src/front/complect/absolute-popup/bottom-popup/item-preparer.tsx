@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import EvaIcon from '../../eva-icon/EvaIcon';
 import mylib from '../../my-lib/MyLib';
 import { BottomPopupContentProps, BottomPopupSkeletIcon } from './model';
 
@@ -11,7 +10,7 @@ export const bottomPopupContentPreparer = ({ items, footer }: BottomPopupContent
         const map = (item: BottomPopupSkeletIcon, itemi: number): ReactNode => {
           if (!item) return null;
           if (mylib.isArr(item)) return item.map((item, itemi) => map(item, itemi));
-          const { className, icon, titleNode, title, iconWrapperClassName, rightNode, isError, anchorNode, ...other } =
+          const { className, Icon, titleNode, title, iconWrapperClassName, rightNode, isError, anchorNode, ...other } =
             item;
 
           return (
@@ -23,10 +22,7 @@ export const bottomPopupContentPreparer = ({ items, footer }: BottomPopupContent
               {anchorNode}
               <div className="flex flex-gap">
                 <div className={`icon-box ${iconWrapperClassName || ''}`}>
-                  <EvaIcon
-                    name={icon}
-                    className="abs-icon"
-                  />
+                  <Icon className="abs-icon" />
                 </div>
                 <div className="title">{titleNode ?? title}</div>
               </div>

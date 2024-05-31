@@ -1,4 +1,5 @@
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { IconMoreVerticalCircle01StrokeRounded } from '@icons/more-vertical-circle-01';
+import { IconUserStrokeRounded } from '@icons/user';
 import { LeaderCleans } from '../LeaderCleans';
 import { LeaderGroupImportable } from './Groups.model';
 import useLeaderGroups from './useGroups';
@@ -16,7 +17,7 @@ export default function GroupFace({ group, onMoreClick }: { group: LeaderGroupIm
     >
       <div className="face-wrapper">
         <span className="face-logo">
-          <EvaIcon name="people-outline" />
+          <IconUserStrokeRounded />
         </span>
         <span className={`face-title ${group.isInactive ? 'text-strike' : ''}`}>
           {group.name}
@@ -25,8 +26,7 @@ export default function GroupFace({ group, onMoreClick }: { group: LeaderGroupIm
         </span>
       </div>
       {onMoreClick && (
-        <EvaIcon
-          name="more-vertical"
+        <IconMoreVerticalCircle01StrokeRounded
           onClick={event => {
             event.stopPropagation();
             onMoreClick();

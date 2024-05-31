@@ -1,6 +1,9 @@
 import { NavigationConfig } from '../../../../complect/nav-configurer/Navigation';
 import { INavigationRouteChildItem, UseNavAction } from '../../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
+import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
+import { iconPackOfLeftToRightListBullet } from '@icons/left-to-right-list-bullet';
+import { iconPackOfPlaylist01 } from '@icons/playlist-01';
 import { RoutePhasePoint } from '../../../router/Router.model';
 import CmApplication from '../Cm';
 import { CmNavData, CmStorage } from '../Cm.model';
@@ -35,7 +38,7 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
   title: 'Песни возрождённых',
   root: content => <CmApplication content={content} />,
   rootPhase: 'all',
-  logo: 'book-open',
+  Icon: IconBookOpen02StrokeRounded,
   exer: cmExer,
   jumpByLink: {
     selectedComws: selectedComws => ({
@@ -46,14 +49,14 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
   },
   routes: [
     {
-      icon: 'list',
+      iconSelfPack: iconPackOfLeftToRightListBullet,
       phase: ['all'],
       title: 'Все',
       node: <TheCat all />,
       next: [comNav],
     },
     {
-      icon: 'folder',
+      iconSelfPack: iconPackOfPlaylist01,
       phase: ['lists'],
       title: 'Списки',
       node: <Lists />,

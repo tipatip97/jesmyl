@@ -36,18 +36,26 @@ export const useBibleAddressVersei = () => {
 };
 
 export const usePutBibleAddressVerseiSetter = () => {
+  const currentChapteri = useBibleAddressChapteri();
+  const currentBooki = useBibleAddressBooki();
+  const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
 
   return useCallback(
-    (versei: number, isRiseUpUpdats: boolean) => {
+    (versei: number, isDblClick: boolean): (() => void) | null => {
+      if (isDblClick) syncSlide();
+      else setJoin(null);
+
+      justBibleStorageSet('translationVersei', versei);
+
       return () => {
-        setJoin(null);
-        justBibleStorageSet('translationVersei', versei);
-        if (isRiseUpUpdats) syncSlide();
+        if (currentJoinAddress?.[currentBooki]?.[currentChapteri]?.includes(versei)) {
+          setJoin(currentJoinAddress);
+        }
       };
     },
-    [setJoin, syncSlide],
+    [currentBooki, currentChapteri, currentJoinAddress, setJoin, syncSlide],
   );
 };
 

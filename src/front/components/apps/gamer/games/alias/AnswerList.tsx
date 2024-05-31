@@ -1,10 +1,14 @@
 import React from 'react';
 import useToast from '../../../../../complect/modal/useToast';
 import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
+import { IconMinusSignSolidRounded, IconMinusSignStrokeRounded } from '@icons/minus-sign';
+import { IconPlusSignCircleSolidRounded, IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import useAuth from '../../../../index/useAuth';
 import { useAliasRejectWord, useAliasSimpleExecs } from './hooks/execs';
 import { useAliasIsMySpeech, useAliasIsMyTeamByAuth } from './hooks/is-my-speech';
 import { useAliasRoomState } from './hooks/state';
+import { IconCheckmarkSquare02SolidRounded, IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
+import { IconAlert02SolidRounded, IconAlert02StrokeRounded } from '@icons/alert-02';
 
 export default function AliasGameRoundResultsAnswerList({ myIncorrects }: { myIncorrects?: boolean }) {
   const state = useAliasRoomState();
@@ -44,9 +48,15 @@ export default function AliasGameRoundResultsAnswerList({ myIncorrects }: { myIn
               </div>
               {isItMySpeech && !isInvert ? (
                 <EvaSendButton
-                  name={`${(isStriked ? myIncorrects : !myIncorrects) ? 'minus-circle' : 'plus-circle'}${
-                    isStriked ? '-outline' : ''
-                  }`}
+                  Icon={
+                    (isStriked ? myIncorrects : !myIncorrects)
+                      ? isStriked
+                        ? IconMinusSignStrokeRounded
+                        : IconMinusSignSolidRounded
+                      : isStriked
+                        ? IconPlusSignCircleStrokeRounded
+                        : IconPlusSignCircleSolidRounded
+                  }
                   onSend={() => fixWord(wordi)}
                   className="margin-gap-l"
                   onFailure={showKo}
@@ -57,7 +67,15 @@ export default function AliasGameRoundResultsAnswerList({ myIncorrects }: { myIn
               ) : (
                 (isItMySpeech || !isMyTeam) && (
                   <EvaSendButton
-                    name={`${myIncorrects ? 'checkmark-square-2' : 'alert-triangle'}${isStriked ? '-outline' : ''}`}
+                    Icon={
+                      myIncorrects
+                        ? isStriked
+                          ? IconCheckmarkSquare02StrokeRounded
+                          : IconCheckmarkSquare02SolidRounded
+                        : isStriked
+                          ? IconAlert02StrokeRounded
+                          : IconAlert02SolidRounded
+                    }
                     className={'margin-sm-gap-l' + (isInvert ? (myIncorrects ? ' color--ok' : ' color--ko') : '')}
                     onSend={() => (isItMySpeech ? fixWord(wordi) : rejectWord(wordi))}
                     onFailure={showKo}

@@ -1,18 +1,25 @@
 import { useMemo, useState } from 'react';
 import { renderComponentInNewWindow } from '../../../..';
-import EvaButton from '../../eva-icon/EvaButton';
 import useFullContent from '../../fullscreen-content/useFullContent';
 import mylib, { MyLib } from '../../my-lib/MyLib';
 import StrongControlDateTimeExtracter from '../../strong-control/StrongDateTimeExtracter';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
+import IconButton from '../../the-icon/IconButton';
+import { IconBookmark03StrokeRounded } from '@icons/bookmark-03';
+import { IconClock01StrokeRounded } from '@icons/clock-01';
+import { IconFavouriteStrokeRounded } from '@icons/favourite';
+import { IconFile02StrokeRounded } from '@icons/file-02';
+import { IconPrinterStrokeRounded } from '@icons/printer';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
 import useIsRedactArea from '../../useIsRedactArea';
 import { IScheduleWidget, IScheduleWidgetDay } from '../ScheduleWidget.model';
 import ScheduleAlarmDay from '../alarm/AlarmDay';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useScheduleWidget';
+import { indexScheduleCheckIsDayIsPast, indexScheduleGetDayStartMs } from '../utils';
 import './Day.scss';
 import ScheduleWidgetPrintableDay from './PrintableDay';
 import ScheduleWidgetDayEventList from './events/DayEventList';
-import { indexScheduleCheckIsDayIsPast, indexScheduleGetDayStartMs } from '../utils';
 
 const dotReg = /\./;
 
@@ -87,8 +94,8 @@ export default function ScheduleWidgetDay({
           <>, {dayi + 1} день</>
         )}
         {isPrint && (
-          <EvaButton
-            name={print.title ? 'eye-outline' : 'eye-off-outline'}
+          <IconButton
+            Icon={print.title ? IconViewStrokeRounded : IconViewOffSlashStrokeRounded}
             className="not-printable"
             onClick={event => {
               event.stopPropagation();
@@ -100,8 +107,8 @@ export default function ScheduleWidgetDay({
       <div className="edit-day-panel absolute pos-top pos-right margin-gap-t">
         {isPastDay ? (
           <>
-            <EvaButton
-              name={isShowDay ? 'eye-off-outline' : 'eye-outline'}
+            <IconButton
+              Icon={isShowDay ? IconViewOffSlashStrokeRounded : IconViewStrokeRounded}
               onClick={() => setIsShowDay(isNIs)}
             />
             {isShowDay && editIcon}
@@ -121,7 +128,7 @@ export default function ScheduleWidgetDay({
                   value={day}
                   fieldKey="topic"
                   isRedact={isRedact}
-                  icon="bookmark-outline"
+                  Icon={IconBookmark03StrokeRounded}
                   title="Тема дня"
                 />
               )}
@@ -134,7 +141,7 @@ export default function ScheduleWidgetDay({
                   isRedact={isRedact}
                   multiline
                   textClassName=" "
-                  icon="file-text-outline"
+                  Icon={IconFile02StrokeRounded}
                   title="Описание дня"
                 />
               )}
@@ -144,7 +151,7 @@ export default function ScheduleWidgetDay({
                     scope={selfScope}
                     fieldName="wup"
                     value={day.wup?.toFixed?.(2).replace(dotReg, ' ') || ''}
-                    icon="clock-outline"
+                    Icon={IconClock01StrokeRounded}
                     title="Начало дня"
                     takeDate="NO"
                     takeTime="hour-min"
@@ -155,8 +162,8 @@ export default function ScheduleWidgetDay({
                       };
                     }}
                   />
-                  <EvaButton
-                    name="printer-outline"
+                  <IconButton
+                    Icon={IconPrinterStrokeRounded}
                     className="flex-max margin-gap-v"
                     onClick={() =>
                       renderComponentInNewWindow(win => (
@@ -174,8 +181,8 @@ export default function ScheduleWidgetDay({
                 </>
               )}
               {!isRedact && (
-                <EvaButton
-                  name="heart-outline"
+                <IconButton
+                  Icon={IconFavouriteStrokeRounded}
                   className={'flex-max ' + (dayRating < 0 ? 'color--ko' : dayRating > 0 ? 'color--ok' : 'color--3')}
                   postfix={'Рейтинг дня: ' + dayRating}
                 />

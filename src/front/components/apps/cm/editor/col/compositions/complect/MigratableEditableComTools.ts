@@ -1,3 +1,4 @@
+import { IconPencilEdit02StrokeRounded } from '@icons/pencil-edit-02';
 import { Auth } from '../../../../../../index/Index.model';
 import useCmNav from '../../../../base/useCmNav';
 import { cmExer } from '../../../../Cm.store';
@@ -24,7 +25,7 @@ export const getMigratableEditableComTool = (
       return {
         tool,
         title: 'Редактировать',
-        icon: 'edit-outline',
+        Icon: IconPencilEdit02StrokeRounded,
         onClick: () => jumpTo(editComNavPhasePoint),
       };
   }

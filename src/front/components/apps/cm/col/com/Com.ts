@@ -56,6 +56,13 @@ export class Com extends BaseNamed<IExportableCom> {
     this.setExportable('t', val);
   }
 
+  get beatsPerMinute() {
+    return this.getBasic('bpm');
+  }
+  set beatsPerMinute(val) {
+    this.setExportable('bpm', val);
+  }
+
   get audio() {
     return this.getBasicOr('a', '');
   }

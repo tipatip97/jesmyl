@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import Dropdown from '../../../../../../../complect/dropdown/Dropdown';
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
-import EvaCheckbox from '../../../../../../../complect/eva-icon/EvaCheckbox';
 import useFullContent from '../../../../../../../complect/fullscreen-content/useFullContent';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../../../../complect/the-icon/IconCheckbox';
+import { IconBook02StrokeRounded } from '@icons/book-02';
+import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
+import { IconTarget03StrokeRounded } from '@icons/target-03';
 import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
 import { useAliasPacks } from '../../hooks/packs';
 import { useAliasRoomState } from '../../hooks/state';
@@ -121,29 +124,29 @@ export const AliasRoomWordsConfigures = ({ setIsDictsRejToStart, stateRef }: Pro
     <>
       {dictsSelectorNode}
       {state && (
-        <EvaCheckbox
+        <IconCheckbox
           checked={isResortWords}
           onChange={setIsResortWords}
           disabled={isForceResortWords}
           postfix="Перемешать слова"
         />
       )}
-      <EvaButton
-        name="book-outline"
+      <IconButton
+        Icon={IconBook02StrokeRounded}
         className="color--3 margin-gap-t"
         postfix={<AliasSelectedDictsTextInfo dicts={dicts} />}
         onClick={() => openSelectorDicts()}
       />
       {state && !isResortWords && (
-        <EvaButton
-          name="book-open-outline"
+        <IconButton
+          Icon={IconBookOpen02StrokeRounded}
           className={'margin-gap-t ' + (!state.arsenal ? ' color--ko ' : '')}
           postfix={<AliasRoomLessWordsCompute />}
         />
       )}
       <div className="flex flex-gap margin-gap-v dropdown-ancestor">
-        <EvaButton
-          name="award-outline"
+        <IconButton
+          Icon={IconTarget03StrokeRounded}
           className="nowrap"
           postfix="Цель раунда"
         />

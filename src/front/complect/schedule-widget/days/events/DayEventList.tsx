@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import EvaButton from '../../../eva-icon/EvaButton';
-import EvaIcon from '../../../eva-icon/EvaIcon';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
 import StrongDiv from '../../../strong-control/StrongDiv';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
+import { TheIconLoading } from '../../../the-icon/IconLoading';
+import { IconArrowLeftDoubleStrokeRounded } from '@icons/arrow-left-double';
+import { IconCropStrokeRounded } from '@icons/crop';
+import { IconDelete01StrokeRounded } from '@icons/delete-01';
+import { IconLeftToRightListBulletStrokeRounded } from '@icons/left-to-right-list-bullet';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import useIsRedactArea from '../../../useIsRedactArea';
 import { IScheduleWidgetDay } from '../../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
@@ -36,10 +40,7 @@ export default function ScheduleWidgetDayEventList({
   const [listTitle, isExpand, switchIsExpand] = useIsRememberExpand(
     scope,
     <>
-      <EvaIcon
-        name="list"
-        className="color--7"
-      />
+      <IconLeftToRightListBulletStrokeRounded className="color--7" />
       {' Распорядок'}
     </>,
     isExpand => isExpand && editIcon,
@@ -114,7 +115,7 @@ export default function ScheduleWidgetDayEventList({
                         <div className="nowrap">будет здесь</div>
                       </div>
                     )}
-                    <EvaIcon name="arrowhead-left-outline" />
+                    <IconArrowLeftDoubleStrokeRounded />
                   </StrongDiv>
                 </div>
               );
@@ -156,10 +157,7 @@ export default function ScheduleWidgetDayEventList({
                     isRedact && (
                       <>
                         {isReplacementInProcess && moveEventMi === event.mi ? (
-                          <EvaIcon
-                            name="loader-outline"
-                            className="rotate"
-                          />
+                          <TheIconLoading />
                         ) : (
                           <ScheduleWidgetDayEventEventActions
                             scope={scope}
@@ -178,23 +176,15 @@ export default function ScheduleWidgetDayEventList({
                 />
                 {!isIndividualReplacement && isRedact && (
                   <>
-                    {isReplacementInProcess && moveEventMi === event.mi ? (
-                      <EvaIcon
-                        name="loader-outline"
-                        className="rotate"
-                      />
-                    ) : (
-                      <EvaButton
-                        name="crop"
-                        onClick={() => setMoveEventMi(event.mi)}
-                      />
-                    )}
+                    <TheIconLoading isLoading={isReplacementInProcess && moveEventMi === event.mi}>
+                      <IconCropStrokeRounded onClick={() => setMoveEventMi(event.mi)} />
+                    </TheIconLoading>
                     {rights.schedule.types && (
                       <StrongEvaButton
                         scope={scope}
                         fieldName="list"
                         cud="D"
-                        name="trash-2-outline"
+                        Icon={IconDelete01StrokeRounded}
                         confirm={
                           <ScheduleWidgetTopicTitle
                             prefix="Удалить событие "
@@ -225,7 +215,7 @@ export default function ScheduleWidgetDayEventList({
               scheduleScope={scheduleScope}
               selectFieldName="list"
               postfix="Добавить событие"
-              icon="plus-outline"
+              Icon={IconPlusSignStrokeRounded}
               schedule={rights.schedule}
               usedCounts={usedCounts}
             />

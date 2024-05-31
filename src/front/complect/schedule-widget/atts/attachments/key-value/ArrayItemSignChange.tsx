@@ -1,5 +1,6 @@
 import { CustomAttUseTaleId } from '../../../../../models';
-import EvaButton from '../../../../eva-icon/EvaButton';
+import IconButton from '../../../../the-icon/IconButton';
+import { IconArrowReloadHorizontalStrokeRounded } from '@icons/arrow-reload-horizontal';
 import useModal from '../../../../modal/useModal';
 import StrongDiv from '../../../../strong-control/StrongDiv';
 import { IScheduleWidgetListUnit, IScheduleWidgetRole, IScheduleWidgetUser } from '../../../ScheduleWidget.model';
@@ -45,8 +46,8 @@ export default function ScheduleKeyValueListAttArrayItemKeyChange(props: {
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="sync"
+      <IconButton
+        Icon={IconArrowReloadHorizontalStrokeRounded}
         onClick={openModal}
       />
     </>

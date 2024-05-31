@@ -1,4 +1,5 @@
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconCancelSquareStrokeRounded } from '@icons/cancel-square';
 import { GamerRoomMember, GamerRoomMemberStatus } from '../../../Gamer.model';
 import RoomMemberFace from '../../../complect/GamerRoomMemberFace';
 import LocationHideScreen from './LocationHideScreen';
@@ -57,8 +58,8 @@ export default function SpyRoomStartedGame({
         }
         rightContent={
           onFinishGame && (
-            <EvaButton
-              name="close-square-outline"
+            <IconButton
+              Icon={IconCancelSquareStrokeRounded}
               className="color--ko"
               confirm="Завершить игру"
               onClick={onFinishGame}

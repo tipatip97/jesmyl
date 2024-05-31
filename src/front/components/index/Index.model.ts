@@ -84,6 +84,7 @@ export interface IndexNavData {
   swInvite: string;
   schw: number;
   schTranslationComws: number[];
+  schTranslationEventw: number;
 }
 
 export interface UserMessage {

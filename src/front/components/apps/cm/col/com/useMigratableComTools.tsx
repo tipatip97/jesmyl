@@ -1,6 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
+import { IconApproximatelyEqualSquareStrokeRounded } from '@icons/approximately-equal-square';
+import { IconArrowExpand01StrokeRounded } from '@icons/arrow-expand-01';
+import { IconCheckmarkCircle02SolidRounded, IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconComputerStrokeRounded } from '@icons/computer';
+import { IconCongruentToSquareStrokeRounded } from '@icons/congruent-to-square';
+import { IconEqualSignSquareStrokeRounded } from '@icons/equal-sign-square';
+import { IconImageCompositionOvalStrokeRounded } from '@icons/image-composition-oval';
+import { IconMenu01StrokeRounded } from '@icons/menu-01';
+import { IconMinusSignStrokeRounded } from '@icons/minus-sign';
+import { IconQrCodeStrokeRounded } from '@icons/qr-code';
+import { IconStarSolidRounded, IconStarStrokeRounded } from '@icons/star';
+import { IconVynil03SolidRounded, IconVynil03StrokeRounded } from '@icons/vynil-03';
 import useFullScreen from '../../../../../complect/useFullscreen';
 import { RootState } from '../../../../../shared/store';
 import useAuth from '../../../../index/useAuth';
@@ -48,7 +60,7 @@ export default function useMigratableComTools() {
             return {
               tool,
               title: 'Слайды',
-              icon: 'monitor-outline',
+              Icon: IconComputerStrokeRounded,
               onClick: () => {
                 setTimeout(() => goToTranslation());
               },
@@ -57,12 +69,12 @@ export default function useMigratableComTools() {
             return {
               tool,
               title: 'Показать аккорды',
-              icon:
+              Icon:
                 chordVisibleVariant === ChordVisibleVariant.Maximal
-                  ? 'file-text-outline'
+                  ? IconApproximatelyEqualSquareStrokeRounded
                   : chordVisibleVariant === ChordVisibleVariant.Minimal
-                    ? 'file-remove-outline'
-                    : 'file-outline',
+                    ? IconCongruentToSquareStrokeRounded
+                    : IconEqualSignSquareStrokeRounded,
               onClick: () => {
                 setChordVisibleVariant(
                   chordVisibleVariant === ChordVisibleVariant.Maximal
@@ -83,7 +95,7 @@ export default function useMigratableComTools() {
             return {
               tool,
               title: 'Изображения аккордов',
-              icon: 'image-outline',
+              Icon: IconImageCompositionOvalStrokeRounded,
               onClick: () => openFullscreenContent(true),
             };
           case 'selected-toggle':
@@ -91,7 +103,7 @@ export default function useMigratableComTools() {
               ccom && {
                 tool,
                 title: isSelected(ccom) ? 'Убрать из выбранных' : 'Выбрать песню',
-                icon: `checkmark-circle-2${isSelected(ccom) ? '' : '-outline'}`,
+                Icon: isSelected(ccom) ? IconCheckmarkCircle02SolidRounded : IconCheckmarkCircle02StrokeRounded,
                 onClick: () => toggleSelectedCom(ccom),
               }
             );
@@ -100,7 +112,7 @@ export default function useMigratableComTools() {
               ccom && {
                 tool,
                 title: isMarked(ccom.wid) ? 'Удалить избранное' : 'Добавить избранное',
-                icon: isMarked(ccom.wid) ? 'star' : 'star-outline',
+                Icon: isMarked(ccom.wid) ? IconStarSolidRounded : IconStarStrokeRounded,
                 onClick: () => toggleMarked(ccom.wid),
               }
             );
@@ -109,7 +121,7 @@ export default function useMigratableComTools() {
               ccom && {
                 tool,
                 title: 'На весь экран',
-                icon: 'expand-outline',
+                Icon: IconArrowExpand01StrokeRounded,
                 onClick: () => switchFullscreen(true),
               }
             );
@@ -118,7 +130,7 @@ export default function useMigratableComTools() {
               ccom && {
                 tool,
                 title: 'Проигрыватель',
-                icon: playerHideMode ? 'music' : 'music-outline',
+                Icon: playerHideMode ? IconVynil03SolidRounded : IconVynil03StrokeRounded,
                 onClick: () => {
                   dispatch(di.playerHideMode(playerHideMode ? '' : 'min'));
                 },
@@ -129,7 +141,7 @@ export default function useMigratableComTools() {
               ccom && {
                 tool,
                 title: isMiniAnchor ? 'Раскрыть ссылки' : 'Свернуть ссылки',
-                icon: isMiniAnchor ? 'minus' : 'menu',
+                Icon: isMiniAnchor ? IconMinusSignStrokeRounded : IconMenu01StrokeRounded,
                 onClick: () => {
                   dispatch(di.switchIsMiniAnchor(!isMiniAnchor));
                 },
@@ -140,7 +152,7 @@ export default function useMigratableComTools() {
               ccom && {
                 tool,
                 title: 'Поделиться по QR',
-                icon: 'qr-code',
+                Icon: IconQrCodeStrokeRounded,
                 onClick: () => shareQrData(nav.nav, 'ccomw', ccom.wid, true),
               }
             );

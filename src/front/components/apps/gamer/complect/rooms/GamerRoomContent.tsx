@@ -2,9 +2,11 @@ import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
-import EvaIcon, { IconEva } from '../../../../../complect/eva-icon/EvaIcon';
 import { NavigationThrowNodeProps } from '../../../../../complect/nav-configurer/Navigation.model';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconDelete01StrokeRounded } from '@icons/delete-01';
+import { IconLinkBackwardStrokeRounded } from '@icons/link-backward';
 import useAuth from '../../../../index/useAuth';
 import { GamerGameName, GamerNavData, GamerRoom } from '../../Gamer.model';
 import useGamerNav, { GamerRoomGameSkelet } from '../../useGamerNav';
@@ -41,7 +43,7 @@ export default function GamerRoomContent({
         items: [
           config.relativePoint && {
             title: 'Сменить игру',
-            icon: 'undo-outline',
+            Icon: IconLinkBackwardStrokeRounded,
             onClick: () => {
               goTo('needChooseGame', config.relativePoint);
               setIsForceChoose(true);
@@ -51,14 +53,14 @@ export default function GamerRoomContent({
             gameData?.onResetGame &&
             room && {
               title: 'Завершить игру',
-              icon: 'close',
+              Icon: IconCancel01StrokeRounded,
               onClick: async () => {
                 if (await confirm('Завершить игру?')) return gameData?.onResetGame?.(room);
               },
             },
           (auth?.level === 100 || isOwner) && {
             title: 'Удалить комнату',
-            icon: 'trash-2-outline',
+            Icon: IconDelete01StrokeRounded,
             className: 'color--ko',
             onClick: async () => {
               if (room && (await confirm(`Удалить комнату ${room.name}?`))) {
@@ -87,8 +89,8 @@ export default function GamerRoomContent({
       headTitle={room?.name ? `${room.name}` : 'Комната'}
       head={
         gameData && (
-          <EvaButton
-            name={gameData.icon}
+          <IconButton
+            Icon={gameData.Icon}
             className="color--7 margin-gap-r"
             postfix={gameData.title}
           />
@@ -127,7 +129,7 @@ export default function GamerRoomContent({
                                     setIsForceChoose(false);
                                   }}
                                 >
-                                  <EvaIcon name={data.icon} />
+                                  <data.Icon />
                                   <div className="title">{data.title}</div>
                                 </div>
                               );
@@ -164,7 +166,7 @@ const GamerRoomDiv = styled(PhaseGamerContainer)`
       height: var(--size);
       max-height: var(--max-size);
 
-      ${IconEva} {
+      .the-icon {
         --icon-scale: 3;
 
         margin-top: 30px;

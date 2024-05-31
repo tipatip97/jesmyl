@@ -1,4 +1,5 @@
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconQrCodeStrokeRounded } from '@icons/qr-code';
 import useQRMaster from '../../../../../../../complect/qr-code/useQRMaster';
 import { GamerOfflineRoomsContext } from '../hooks/context';
 import { useGamerOfflineRoomJoinByQrCode } from '../hooks/join-by-qr-code';
@@ -19,8 +20,8 @@ const Button = ({ title }: { title: string }) => {
   return (
     <>
       {joinNode}
-      <EvaButton
-        name="qr-code"
+      <IconButton
+        Icon={IconQrCodeStrokeRounded}
         prefix={title}
         onClick={() => joinByQrCode()}
       />

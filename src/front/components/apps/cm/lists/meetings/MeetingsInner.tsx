@@ -1,12 +1,17 @@
 import { ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import TheIcon from '../../../../../complect/the-icon/TheIcon';
+import { IconCalendar01SolidSharp } from '@icons/calendar-01';
 import { RootState } from '../../../../../shared/store';
 import { cmStoreActions } from '../../Cm.store';
 import useCmNav from '../../base/useCmNav';
 import { Meetings } from './Meetings';
 import { MeetingsEvent } from './MeetingsEvent';
+import { IconFolder01StrokeRounded } from '@icons/folder-01';
+import { IconCalendar02StrokeRounded } from '@icons/calendar-02';
+import { IconStarSolidRounded, IconStarStrokeRounded } from '@icons/star';
+import IconButton from '../../../../../complect/the-icon/IconButton';
 
 const favoriteMeetingsSelector = (state: RootState) => state.cm.favoriteMeetings;
 
@@ -74,19 +79,10 @@ export default function MeetingsInner<Meets extends Meetings>({
             return (
               <BrutalItem
                 key={eventwi}
-                icon="calendar-outline"
+                icon={<IconCalendar01SolidSharp />}
                 title={event.name}
                 onClick={() => onEventClick(event as never)}
-                box={
-                  asEventBox ? (
-                    asEventBox(event)
-                  ) : (
-                    <EvaIcon
-                      className="fade-05"
-                      name="star"
-                    />
-                  )
-                }
+                box={asEventBox ? asEventBox(event) : <IconStarSolidRounded className="fade-05" />}
                 description={
                   <span
                     onClick={event => {
@@ -110,15 +106,10 @@ export default function MeetingsInner<Meets extends Meetings>({
                 className="relative"
               >
                 <BrutalItem
-                  icon="folder-outline"
+                  icon={<IconFolder01StrokeRounded />}
                   title={meetings.names[context.context[context.context.length - 1]]}
                   onClick={() => setCurrContext(context.context)}
-                  box={
-                    <EvaIcon
-                      className="fade-05"
-                      name="star"
-                    />
-                  }
+                  box={<IconStarSolidRounded className="fade-05" />}
                 />
                 <div className="absolute flex center full-width pos-bottom fade-05 pointers-none">
                   {context.context
@@ -138,15 +129,15 @@ export default function MeetingsInner<Meets extends Meetings>({
         return (
           <BrutalItem
             key={eventi}
-            icon="calendar-outline"
+            icon={<IconCalendar02StrokeRounded />}
             title={event.name}
             onClick={() => onEventClick(event as never)}
             box={
               asEventBox ? (
                 asEventBox(event)
               ) : eventContext.length ? (
-                <EvaIcon
-                  name={isFavorite ? 'star' : 'star-outline'}
+                <IconButton
+                  Icon={isFavorite ? IconStarSolidRounded : IconStarStrokeRounded}
                   onClick={e => {
                     e.stopPropagation();
 
@@ -171,13 +162,13 @@ export default function MeetingsInner<Meets extends Meetings>({
         return (
           <BrutalItem
             key={groupi}
-            icon="folder-outline"
+            icon={<IconFolder01StrokeRounded />}
             title={contextn}
             onClick={() => setCurrContext([...eventContext, contexti])}
             box={
               eventContext.length ? (
-                <EvaIcon
-                  name={isFavorite ? 'star' : 'star-outline'}
+                <IconButton
+                  Icon={isFavorite ? IconStarSolidRounded : IconStarStrokeRounded}
                   onClick={e => {
                     e.stopPropagation();
 

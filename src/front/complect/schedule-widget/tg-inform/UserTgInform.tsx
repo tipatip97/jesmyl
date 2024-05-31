@@ -1,4 +1,6 @@
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import { IconNotification01StrokeRounded } from '@icons/notification-01';
+import { IconNotificationOff01StrokeRounded } from '@icons/notification-off-01';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 import { takeStrongScopeMaker, useScheduleWidgetRights } from '../useScheduleWidget';
 
@@ -15,7 +17,7 @@ export const ScheduleWidgetMyUserTgInform = ({ scope, schedule }: { scope: strin
       cud="U"
       fieldName="tgInform"
       fieldValue={1}
-      name="bell-off-outline"
+      Icon={IconNotificationOff01StrokeRounded}
       postfix="Не оповещать меня о событиях в TG"
       className="margin-gap-b"
     />
@@ -25,7 +27,7 @@ export const ScheduleWidgetMyUserTgInform = ({ scope, schedule }: { scope: strin
       cud="U"
       fieldName="tgInform"
       fieldValue={0}
-      name="bell-outline"
+      Icon={IconNotification01StrokeRounded}
       postfix="Оповещать меня о событиях в TG"
       className="margin-gap-b"
     />

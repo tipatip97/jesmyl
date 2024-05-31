@@ -1,14 +1,16 @@
 import { ReactNode, useMemo, useState } from 'react';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
-import EvaIcon, { EvaIconName } from '../../../../../complect/eva-icon/EvaIcon';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconClock01StrokeRounded } from '@icons/clock-01';
+import { IconSentStrokeRounded } from '@icons/sent';
+import { TheIconType } from '../../../../../complect/the-icon/model';
 import LeaderComment from './LeaderComment';
 import { LeaderCommentImportable } from './LeaderComment.model';
 import './LeaderComment.scss';
 import useLeaderComments from './useLeaderComments';
 
 interface Addition {
-  icon: EvaIconName;
+  Icon: TheIconType;
   char?: string;
   inText?: string;
   node: ReactNode;
@@ -18,7 +20,7 @@ interface Addition {
 const textAdditions = (
   [
     {
-      icon: 'clock-outline',
+      Icon: IconClock01StrokeRounded,
       insert: () => {
         const date = new Date();
         return ` ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()} `;
@@ -28,7 +30,7 @@ const textAdditions = (
 ).map(item => {
   return {
     ...item,
-    node: <EvaIcon name={item.icon} />,
+    node: <item.Icon />,
   };
 });
 
@@ -112,8 +114,8 @@ export default function LeaderCommentBlock({
             }}
           />
           <div className="flex full-width between margin-gap pointer-children">
-            <EvaButton
-              name="paper-plane-outline"
+            <IconButton
+              Icon={IconSentStrokeRounded}
               disabled={!commentText}
               onClick={() => {
                 const comment = textAdditions.reduce(

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import EvaIcon from '../complect/eva-icon/EvaIcon';
 import { ExerStorage } from '../complect/exer/Exer.model';
 import { useCheckIsAccessed } from '../complect/exer/hooks/check-is-accessed';
 import { INavigationConfig } from '../complect/nav-configurer/Navigation.model';
@@ -26,19 +25,19 @@ export default function AppFooter({ appName }: { appName: AppName }) {
   ) => {
     return nav.routes.map(props => {
       if (!props) return null;
-      const { phase, title, icon, accessLevel } = props;
+      const { phase, title, accessLevel, iconSelfPack } = props;
 
       if (accessLevel != null && !checkIsAccessed(accessLevel)) return null;
       const isActive = setIsActive(phase);
 
       return (
         <div
-          key={`main-footer-item_${icon}`}
+          key={`main-footer-item_${iconSelfPack.name}`}
           className={`footer-item ${isActive ? 'active' : ''}`}
           onClick={() => onClick(phase)}
         >
           <div className="icon-container">
-            <EvaIcon name={`${icon}${isActive ? '' : '-outline'}` as never} />
+            {isActive ? <iconSelfPack.TwotoneRounded /> : <iconSelfPack.BulkRounded />}
           </div>
           <div className="title">{title}</div>
         </div>

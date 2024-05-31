@@ -1,7 +1,7 @@
-import EvaIcon from '../../../complect/eva-icon/EvaIcon';
-import QRCode from '../../../complect/qr-code/QRCode';
-import * as versionNum from '../../../../back/+version.json';
 import { useSelector } from 'react-redux';
+import * as versionNum from '../../../../back/+version.json';
+import { IconTelegramStrokeRounded } from '@icons/telegram';
+import QRCode from '../../../complect/qr-code/QRCode';
 import { RootState } from '../../../shared/store';
 
 const version = { ...versionNum };
@@ -19,14 +19,14 @@ export default function IndexAbout() {
         <div className="padding-giant-gap">
           <QRCode text="https://t.me/jesmyl_space" />
           <div className="flex center">
-            <EvaIcon name="telegram" />
+            <IconTelegramStrokeRounded />
             <a href="https://t.me/jesmyl_space">@jesmyl_space</a>
           </div>
         </div>
         <div className="padding-giant-gap">
           <QRCode text="https://t.me/danikpon" />
           <div className="flex center">
-            <EvaIcon name="telegram" />
+            <IconTelegramStrokeRounded />
             <a href="https://t.me/danikpon">дизайн (3</a>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import EvaCheckbox from '../../../../../complect/eva-icon/EvaCheckbox';
+import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
 import { BackgroundSelector } from '../../../../index/parts/actions/files/complect/BackgroundSelector';
 import { ScreenTranslationBackgroundConfigs, ScreenTranslationPartialConfigProps } from './model';
 
@@ -9,7 +9,7 @@ export const ScreenTranslateConfigurationBackground = ({ config, updateConfig, t
     <>
       <div className="flex flex-gap">
         {title}
-        <EvaCheckbox
+        <IconCheckbox
           checked={config.isWithBackground}
           onChange={() => updateConfig({ isWithBackground: !config.isWithBackground })}
         />

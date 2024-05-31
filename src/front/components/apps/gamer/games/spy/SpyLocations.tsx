@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import { useCheckIsAccessed } from '../../../../../complect/exer/hooks/check-is-accessed';
 import useIsExpand from '../../../../../complect/expand/useIsExpand';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import useAuth from '../../../../index/useAuth';
 import { gamerExer } from '../../Gamer.store';
 import { useSpyLocations } from './hooks/locations';
@@ -31,9 +31,8 @@ export default function SpyLocations() {
         <>
           <div>{locations?.map(location => <div key={location}>{location}</div>)}</div>
           {!isOpenAdder && checkIsAccessed(50) && (
-            <EvaButton
+            <IconPlusSignCircleStrokeRounded
               className="margin-gap color--ok"
-              name="plus-circle-outline"
               onClick={() => setIsOpenAdder(is => !is)}
             />
           )}

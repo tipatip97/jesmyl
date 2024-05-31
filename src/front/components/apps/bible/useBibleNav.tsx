@@ -1,6 +1,9 @@
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
+import { IconBook02StrokeRounded } from '@icons/book-02';
+import { iconPackOfFile02 } from '@icons/file-02';
+import { iconPackOfFileSearch } from '@icons/file-search';
 import { BibleStorage } from './model';
 import { BibleReaderCurrentBookPage } from './reader/book/CurrentBookPage';
 import { BibleReaderSearchPage } from './reader/search/SearchPage';
@@ -9,16 +12,16 @@ const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bib
   title: 'Библия',
   root: content => <>{content}</>,
   rootPhase: 'chapter',
-  logo: 'book',
+  Icon: IconBook02StrokeRounded,
   routes: [
     {
-      icon: 'file-text',
+      iconSelfPack: iconPackOfFile02,
       phase: ['chapter'],
       title: 'Глава',
       node: <BibleReaderCurrentBookPage />,
     },
     {
-      icon: 'search',
+      iconSelfPack: iconPackOfFileSearch,
       phase: ['search'],
       title: 'Поиск',
       node: <BibleReaderSearchPage />,

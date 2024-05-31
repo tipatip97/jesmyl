@@ -1,12 +1,12 @@
 import { SokiAppName } from '../../../complect/soki/soki.model';
 import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight } from '../rights';
 
-export interface ScheduleStorage<EvaIconName> {
-  list: IScheduleWidget<EvaIconName>[];
+export interface ScheduleStorage<TheIconName> {
+  list: IScheduleWidget<TheIconName>[];
 }
 
-export interface IScheduleWidgetLists<EvaIconName> {
-  cats: IScheduleWidgetListCat<EvaIconName>[];
+export interface IScheduleWidgetLists<TheIconName> {
+  cats: IScheduleWidgetListCat<TheIconName>[];
   units: IScheduleWidgetListUnit[];
 }
 
@@ -17,13 +17,13 @@ export interface IScheduleWidgetListUnit {
   dsc: string;
 }
 
-export interface IScheduleWidgetListCat<EvaIconName> {
+export interface IScheduleWidgetListCat<TheIconName> {
   title: string;
-  icon: EvaIconName;
+  icon: TheIconName;
   titles: [string, string];
 }
 
-export interface IScheduleWidget<EvaIconName> {
+export interface IScheduleWidget<TheIconName> {
   w: number;
   start: number;
   title: string;
@@ -32,10 +32,10 @@ export interface IScheduleWidget<EvaIconName> {
   days: IScheduleWidgetDay[];
   withTech?: num;
   types: ScheduleWidgetDayListItemTypeBox[];
-  tatts: ScheduleWidgetAppAttCustomized<EvaIconName>[];
+  tatts: ScheduleWidgetAppAttCustomized<TheIconName>[];
   app: SokiAppName;
-  ctrl: IScheduleWidgetCtrl<EvaIconName>;
-  lists: IScheduleWidgetLists<EvaIconName>;
+  ctrl: IScheduleWidgetCtrl<TheIconName>;
+  lists: IScheduleWidgetLists<TheIconName>;
   tgInform?: num;
   tgInformTime: number;
 }
@@ -54,22 +54,22 @@ export interface ScheduleWidgetDayListItemTypeBox {
   atts?: ScheduleWidgetDayEventAttValues;
 }
 
-export interface ScheduleWidgetAppAttCustomized<EvaIconName> extends ScheduleWidgetAppAttCustomizable<EvaIconName> {
+export interface ScheduleWidgetAppAttCustomized<TheIconName> extends ScheduleWidgetAppAttCustomizable<TheIconName> {
   mi: number;
   isCustomize: true;
 }
 
-export interface ScheduleWidgetAppAttCustomizable<EvaIconName>
-  extends ScheduleWidgetAppAttBasic<EvaIconName, ScheduleWidgetAppAttCustomizableValue> {
+export interface ScheduleWidgetAppAttCustomizable<TheIconName>
+  extends ScheduleWidgetAppAttBasic<TheIconName, ScheduleWidgetAppAttCustomizableValue> {
   use?: number;
   titles?: string[];
   roles?: number;
   list?: number;
 }
 
-export interface IScheduleWidgetCtrl<EvaIconName> {
+export interface IScheduleWidgetCtrl<TheIconName> {
   cats: string[];
-  roles: IScheduleWidgetRole<EvaIconName>[];
+  roles: IScheduleWidgetRole<TheIconName>[];
   users: IScheduleWidgetUser[];
   type: ScheduleWidgetRegType;
   defu: ScheduleWidgetUserRoleRight;
@@ -89,8 +89,8 @@ export interface IScheduleWidgetDayEvent {
 
 export type ScheduleWidgetDayEventAttValues = Record<ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue>;
 
-export interface ScheduleWidgetAppAttBasic<EvaIconName, AttValue extends any = any> {
-  icon: EvaIconName;
+export interface ScheduleWidgetAppAttBasic<TheIconName, AttValue extends any = any> {
+  icon: TheIconName;
   title: string;
   description: string;
   initVal: AttValue;
@@ -109,11 +109,11 @@ export interface ScheduleWidgetAppAttCustomizableValue {
   values?: ScheduleWidgetAppAttCustomizableValueItem[];
 }
 
-export interface IScheduleWidgetRole<EvaIconName> {
+export interface IScheduleWidgetRole<TheIconName> {
   mi: number;
   title: string;
   user?: number;
-  icon?: EvaIconName;
+  icon?: TheIconName;
   cat?: number;
 }
 
@@ -139,25 +139,25 @@ export type ScheduleWidgetDayEventAttValue = Record<string, unknown> | ScheduleW
 
 export type ScheduleWidgetAttRef = [number, number];
 
-export interface Back<EvaIconName, Param = unknown> {
-  ScheduleStorage: ScheduleStorage<EvaIconName>;
-  IScheduleWidget: IScheduleWidget<EvaIconName>;
+export interface Back<TheIconName, Param = unknown> {
+  ScheduleStorage: ScheduleStorage<TheIconName>;
+  IScheduleWidget: IScheduleWidget<TheIconName>;
   IScheduleWidgetDay: IScheduleWidgetDay;
   ScheduleWidgetDayListItemTypeBox: ScheduleWidgetDayListItemTypeBox;
-  ScheduleWidgetAppAttCustomized: ScheduleWidgetAppAttCustomized<EvaIconName>;
-  ScheduleWidgetAppAttCustomizable: ScheduleWidgetAppAttCustomizable<EvaIconName>;
-  IScheduleWidgetCtrl: IScheduleWidgetCtrl<EvaIconName>;
+  ScheduleWidgetAppAttCustomized: ScheduleWidgetAppAttCustomized<TheIconName>;
+  ScheduleWidgetAppAttCustomizable: ScheduleWidgetAppAttCustomizable<TheIconName>;
+  IScheduleWidgetCtrl: IScheduleWidgetCtrl<TheIconName>;
   IScheduleWidgetDayEvent: IScheduleWidgetDayEvent;
   ScheduleWidgetDayEventAttValues: ScheduleWidgetDayEventAttValues;
-  ScheduleWidgetAppAttBasic: ScheduleWidgetAppAttBasic<EvaIconName, Param>;
+  ScheduleWidgetAppAttBasic: ScheduleWidgetAppAttBasic<TheIconName, Param>;
   ScheduleWidgetAppAttCustomizableValue: ScheduleWidgetAppAttCustomizableValue;
-  IScheduleWidgetRole: IScheduleWidgetRole<EvaIconName>;
+  IScheduleWidgetRole: IScheduleWidgetRole<TheIconName>;
   IScheduleWidgetUser: IScheduleWidgetUser;
   AttKey: AttKey;
   ScheduleWidgetAttKey: ScheduleWidgetAttKey;
   ScheduleWidgetDayEventAttValue: ScheduleWidgetDayEventAttValue;
   ScheduleWidgetAttRef: ScheduleWidgetAttRef;
-  IScheduleWidgetLists: IScheduleWidgetLists<EvaIconName>;
+  IScheduleWidgetLists: IScheduleWidgetLists<TheIconName>;
   IScheduleWidgetListUnit: IScheduleWidgetListUnit;
-  IScheduleWidgetListCat: IScheduleWidgetListCat<EvaIconName>;
+  IScheduleWidgetListCat: IScheduleWidgetListCat<TheIconName>;
 }

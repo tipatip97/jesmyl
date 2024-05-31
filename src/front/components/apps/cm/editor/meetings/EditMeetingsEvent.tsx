@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconArrowDown02StrokeRounded } from '@icons/arrow-down-02';
+import { IconArrowUp02StrokeRounded } from '@icons/arrow-up-02';
+import { IconArrowUpDoubleStrokeRounded } from '@icons/arrow-up-double';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
+import { IconLeftToRightListBulletStrokeRounded } from '@icons/left-to-right-list-bullet';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
 import useCmNav from '../../base/useCmNav';
 import ComFace from '../../col/com/face/ComFace';
 import { useEditableCcat } from '../col/categories/useEditableCcat';
@@ -26,8 +34,8 @@ export default function EditMeetingsEvent() {
   const [popupNode, openPopup] = useBottomPopup((isOpen, close) => {
     return (
       isOpen && (
-        <EvaButton
-          name="list"
+        <IconButton
+          Icon={IconLeftToRightListBulletStrokeRounded}
           postfix="История"
           onClick={() => {
             openFullContent(true);
@@ -75,8 +83,8 @@ export default function EditMeetingsEvent() {
                 description={
                   <div className="flex">
                     {comsLength === 1 ? null : (
-                      <EvaIcon
-                        name={comi ? 'arrow-upward' : 'arrow-downward'}
+                      <IconButton
+                        Icon={comi ? IconArrowUp02StrokeRounded : IconArrowDown02StrokeRounded}
                         className="margin-big-gap-h"
                         onClick={event => {
                           event.stopPropagation();
@@ -84,8 +92,7 @@ export default function EditMeetingsEvent() {
                         }}
                       />
                     )}
-                    <EvaIcon
-                      name="close-circle-outline"
+                    <IconHelpCircleStrokeRounded
                       onClick={event => {
                         event.stopPropagation();
                         exec(currentEvent.removeCom(com));
@@ -104,8 +111,8 @@ export default function EditMeetingsEvent() {
                 <span>Предыдущие (не войдут)</span>
 
                 {prevComsLength < 2 ? null : (
-                  <EvaIcon
-                    name={comsLength ? 'arrowhead-up-outline' : 'plus-outline'}
+                  <IconButton
+                    Icon={comsLength ? IconArrowUpDoubleStrokeRounded : IconPlusSignStrokeRounded}
                     className="pointer"
                     onClick={event => {
                       event.stopPropagation();
@@ -120,8 +127,8 @@ export default function EditMeetingsEvent() {
                   com={com}
                   selectable={false}
                   description={
-                    <EvaIcon
-                      name={comsLength ? 'arrow-ios-upward-outline' : 'plus-circle-outline'}
+                    <IconButton
+                      Icon={comsLength ? IconArrowUp02StrokeRounded : IconPlusSignCircleStrokeRounded}
                       onClick={event => {
                         event.stopPropagation();
                         exec(currentEvent.mergePrevComs([com]));
@@ -134,9 +141,9 @@ export default function EditMeetingsEvent() {
           ) : null}
           <div className="list-title sticky">
             <span>Все песни</span>
-            <EvaIcon
+            <IconButton
               className="pointer"
-              name={isClosedComList ? 'eye-outline' : 'eye-off-outline'}
+              Icon={isClosedComList ? IconViewStrokeRounded : IconViewOffSlashStrokeRounded}
               onClick={() => setIsClosedComList(!isClosedComList)}
             />
           </div>
@@ -161,8 +168,7 @@ export default function EditMeetingsEvent() {
                     }}
                     description={
                       usedComList.indexOf(com) < 0 ? (
-                        <EvaIcon
-                          name="plus-circle-outline"
+                        <IconPlusSignCircleStrokeRounded
                           onClick={event => {
                             event.stopPropagation();
                             exec(currentEvent.mergeStack([com.wid]));

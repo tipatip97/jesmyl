@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconEdit01StrokeRounded } from '@icons/edit-01';
 import StrongControlDateTimeExtracter from '../../../../../../../complect/strong-control/StrongDateTimeExtracter';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
@@ -49,8 +51,8 @@ export default function TimerControlBoardCellItem(props: {
       }
     >
       {!props.isNewTimer || (start && pause) ? (
-        <EvaButton
-          name={isTimeRedact ? 'checkmark-circle-2-outline' : 'edit-2-outline'}
+        <IconButton
+          Icon={isTimeRedact ? IconCheckmarkCircle02StrokeRounded : IconEdit01StrokeRounded}
           onClick={() => setIsTimeRedact(is => !is)}
         />
       ) : null}

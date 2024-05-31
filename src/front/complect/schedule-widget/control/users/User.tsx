@@ -5,13 +5,18 @@ import {
   scheduleWidgetUserRights,
 } from '../../../../models';
 import ShareEvaButton from '../../../ShareEvaButton';
-import EvaButton from '../../../eva-icon/EvaButton';
-import EvaIcon from '../../../eva-icon/EvaIcon';
 import useModal from '../../../modal/useModal';
 import useToast from '../../../modal/useToast';
 import useQRMaster, { crossApplicationLinkCoder } from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
+import IconButton from '../../../the-icon/IconButton';
+import { IconEdit02StrokeRounded } from '@icons/edit-02';
+import { IconLink02StrokeRounded } from '@icons/link-02';
+import { IconNotification01StrokeRounded } from '@icons/notification-01';
+import { IconNotificationOff01StrokeRounded } from '@icons/notification-off-01';
+import { IconQrCodeStrokeRounded } from '@icons/qr-code';
+import { IconUserRemove02StrokeRounded } from '@icons/user-remove-02';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import { ScheduleWidgetUserEdit } from './UserEdit';
@@ -53,7 +58,7 @@ export default function ScheduleWidgetUser({
                 scope={takeStrongScopeMaker(scope, ' userMi/', user.mi)}
                 fieldName="userData"
                 cud="U"
-                name="qr-code"
+                Icon={IconQrCodeStrokeRounded}
                 mapExecArgs={async args => {
                   return await readQR(data => {
                     if (data.appName === 'index' && data.key === 'passport') {
@@ -85,14 +90,14 @@ export default function ScheduleWidgetUser({
             <div className="margin-big-gap-t">
               {user.tgInform === 0 ||
               !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ? (
-                <EvaButton
-                  name="bell-off-outline"
+                <IconButton
+                  Icon={IconNotificationOff01StrokeRounded}
                   postfix="Участник не получает TG-уведомления"
                   disabled
                 />
               ) : (
-                <EvaButton
-                  name="bell-outline"
+                <IconButton
+                  Icon={IconNotification01StrokeRounded}
                   postfix="Участник получает TG-уведомления"
                   disabled
                 />
@@ -116,14 +121,11 @@ export default function ScheduleWidgetUser({
               <span className="flex flex-gap color--7">
                 {user.login === undefined ? (
                   <>
-                    <EvaIcon
-                      name="link-2"
-                      className="color--7 icon-scale-05"
-                    />
+                    <IconLink02StrokeRounded className="color--7 icon-scale-05" />
                     {balance < 0 ? null : balance}
                   </>
                 ) : balance < 0 ? (
-                  <EvaIcon name="person-delete-outline" />
+                  <IconUserRemove02StrokeRounded />
                 ) : (
                   balance
                 )}
@@ -155,8 +157,8 @@ export default function ScheduleWidgetUser({
                 }}
               />
             )}
-            <EvaButton
-              name="edit-outline"
+            <IconButton
+              Icon={IconEdit02StrokeRounded}
               className="flex between full-width"
               onClick={screen}
             />

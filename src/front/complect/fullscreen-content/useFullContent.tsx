@@ -2,9 +2,10 @@ import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 
 import styled from 'styled-components';
 import Eventer, { EventerListeners } from '../../../back/complect/Eventer';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
-import EvaButton from '../eva-icon/EvaButton';
+import IconButton from '../the-icon/IconButton';
 import { ThrowEvent } from '../eventer/ThrowEvent';
 import Portal from '../popups/[complect]/Portal';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
 
 const events: EventerListeners<void> = [];
 
@@ -52,8 +53,8 @@ export default function useFullContent<PassValue>(
           {...swiper}
         >
           {mode === 'closable' ? null : (
-            <EvaButton
-              name="close"
+            <IconButton
+              Icon={IconCancel01StrokeRounded}
               className="close-button"
               onClick={onClose}
             />

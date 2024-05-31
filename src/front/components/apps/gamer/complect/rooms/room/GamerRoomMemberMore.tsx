@@ -1,4 +1,6 @@
 import { bottomPopupContentPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconUserBlock01StrokeRounded } from '@icons/user-block-01';
 import useAuth from '../../../../../index/useAuth';
 import { GamerRoomMember } from '../../../Gamer.model';
 import { useGamerRoomActions } from '../hooks/actions';
@@ -18,7 +20,7 @@ export const GamerRoomMemberMore = ({ member }: { member: GamerRoomMember }) => 
         items: [
           possibilities.isRequester && {
             titleNode: <>Принять участника {nameNode}</>,
-            icon: 'plus',
+            Icon: IconPlusSignStrokeRounded,
             onClick: () => acceptMemberToCurrentRoom(member.login),
           },
           !possibilities.isOwner &&
@@ -28,7 +30,7 @@ export const GamerRoomMemberMore = ({ member }: { member: GamerRoomMember }) => 
                   {possibilities.isInactive ? 'Разблокировать участника' : 'Заблокировать участника'} {nameNode}
                 </>
               ),
-              icon: 'slash',
+              Icon: IconUserBlock01StrokeRounded,
               onClick: () =>
                 possibilities.isInactive ? unbanCurrentRoomMember(member.login) : banCurrentRoomMember(member.login),
             },

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import { IconQrCodeStrokeRounded } from '@icons/qr-code';
 import SpyShowMyRole from '../../../games/spy/SpyShowMyRole';
 import { useJoinedOfflineGame } from '../../../games/spy/offline-room/hooks/join-game';
 import { useSpyOfflineRoomReshareGameData } from '../../../games/spy/offline-room/hooks/share-game';
@@ -18,7 +18,7 @@ export default function SpyCurrentOfflineGameInfo() {
               className="flex center flex-gap pointer"
               onClick={() => reshareGameData()}
             >
-              Поделиться <EvaIcon name="qr-code" />
+              Поделиться <IconQrCodeStrokeRounded />
             </div>
             <SpyShowMyRole role={offlineGame.location} />
           </OfflineGame>

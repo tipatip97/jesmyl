@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import { IconUserStrokeRounded } from '@icons/user';
+import { IconUserBlock01StrokeRounded } from '@icons/user-block-01';
 import { GamerRoomMember, GamerRoomMemberStatus } from '../Gamer.model';
 
 export default function RoomMemberFace({
@@ -23,7 +24,7 @@ export default function RoomMemberFace({
       onClick={isClickable ? onClick : undefined}
     >
       <div className="face-logo">
-        <EvaIcon name={member.isInactive ? 'slash' : 'person-outline'} />
+        {member.isInactive ? <IconUserBlock01StrokeRounded /> : <IconUserStrokeRounded />}
       </div>
       <div className="face-title flex between full-width margin-big-gap">
         <span className="ellipsis">{member.name}</span>

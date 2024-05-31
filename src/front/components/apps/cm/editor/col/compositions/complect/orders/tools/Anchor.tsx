@@ -1,6 +1,7 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
+import { IconLink02StrokeRounded } from '@icons/link-02';
 
 export const OrdersRedactorOrderToolsAnchor = ({
   props: { ccom, ord },
@@ -13,8 +14,8 @@ export const OrdersRedactorOrderToolsAnchor = ({
 
   return (
     <>
-      <EvaButton
-        name="link-outline"
+      <IconButton
+        Icon={IconLink02StrokeRounded}
         postfix={`Ссылка на ${ord.top.header?.()}`}
         onClick={() => {
           exec(ccom.addOrderAnchor(ord));

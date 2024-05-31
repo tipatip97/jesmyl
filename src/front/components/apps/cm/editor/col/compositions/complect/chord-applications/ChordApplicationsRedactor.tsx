@@ -123,6 +123,10 @@ const Content = styled.div`
       > .fragment > * {
         display: inline-block;
 
+        &.space-word {
+          background-color: var(--color--ko);
+        }
+
         &:first-letter {
           background-color: var(--color--ko);
         }
@@ -132,6 +136,10 @@ const Content = styled.div`
       &.spaced-word:after,
       &[attr-chord] > .fragment > *:first-letter {
         background-color: rgba(255, 209, 0, 0.3);
+      }
+
+      &[attr-chord].spaced-word > .fragment > *:first-letter {
+        background-color: transparent;
       }
     }
   }

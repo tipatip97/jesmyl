@@ -1,7 +1,8 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
-import EvaCheckbox from '../../../../../../../../../complect/eva-icon/EvaCheckbox';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
+import { IconTextStrokeRounded } from '@icons/text';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
@@ -34,7 +35,7 @@ export const OrdersRedactorOrderToolsChangeText = ({
               if (!text) return null;
 
               return (
-                <EvaCheckbox
+                <IconCheckbox
                   key={texti}
                   className="margin-gap-t"
                   postfix={
@@ -66,8 +67,8 @@ export const OrdersRedactorOrderToolsChangeText = ({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="text-outline"
+      <IconButton
+        Icon={IconTextStrokeRounded}
         postfix="Заменить текст"
         onClick={openModal}
       />

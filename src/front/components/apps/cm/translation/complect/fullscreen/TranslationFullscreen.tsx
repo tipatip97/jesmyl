@@ -2,7 +2,8 @@ import { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { backSwipableContainerMaker } from '../../../../../../complect/backSwipableContainerMaker';
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import { RootState } from '../../../../../../shared/store';
 import { cmStoreActions } from '../../../Cm.store';
@@ -71,10 +72,9 @@ export default function TranslationFullscreen() {
               следующая песня
             </div>
           </div>
-          <EvaIcon
+          <IconCancel01StrokeRounded
             className="close-info-button"
             onClick={() => dispatch(cmStoreActions.switchShowTranslationInfo(false))}
-            name="close-outline"
           />
           <div
             className="bottom-area info-area left"
@@ -112,13 +112,13 @@ export default function TranslationFullscreen() {
               className={`area-button ${isShowCloseButton ? 'show' : ''}`}
               onClick={closeTranslation}
             >
-              <EvaIcon name="close-circle-outline" />
+              <IconHelpCircleStrokeRounded />
             </div>
             <div
               className={`area-button second open-info-button ${isShowCloseButton ? 'show' : ''}`}
               onClick={() => dispatch(cmStoreActions.switchShowTranslationInfo(!isShowInfo))}
             >
-              <EvaIcon name="question-mark-circle-outline" />
+              <IconHelpCircleStrokeRounded />
             </div>
           </div>
         </Wrapper>

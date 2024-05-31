@@ -78,12 +78,30 @@ self.addEventListener('message', event => {
 });
 
 // Any other custom service worker logic can go here.
+const CACHE_NAME = 'v1';
+
+self.addEventListener('activate', async () => {
+  // получаем имена кэшей
+  const cacheNames = await caches.keys();
+  await Promise.all(
+    cacheNames.map(async cacheName => {
+      // Удаляем кэши, которые не относятся к текущей версии
+      if (cacheName !== CACHE_NAME) {
+        await caches.delete(cacheName);
+      }
+    }),
+  );
+});
 
 self.addEventListener('fetch', event => {
   event.respondWith(
     (async function () {
       try {
-        return await fetch(event.request);
+        const resp = await fetch(event.request);
+
+        (await caches.open(CACHE_NAME)).put(event.request, resp.clone());
+
+        return resp;
       } catch (err) {
         return caches.match(event.request).then(it => it!);
       }

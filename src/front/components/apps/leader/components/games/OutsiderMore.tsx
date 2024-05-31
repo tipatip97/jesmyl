@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { BottomPopupContenterPreparer } from '../../../../../complect/absolute-popup/bottom-popup/model';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
-import EvaCheckbox from '../../../../../complect/eva-icon/EvaCheckbox';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
+import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconUserAdd02StrokeRounded } from '@icons/user-add-02';
 import useModal from '../../../../../complect/modal/useModal';
 import { TeamGameImportable } from '../../Leader.model';
 import { leaderExer } from '../../Leader.store';
 import { HumanImportable } from '../people/People.model';
 import { GameTeamImportable } from './teams/GameTeams.model';
+import { IconCancel02StrokeRounded } from '@icons/cancel-02';
 
 export default function OutsiderMore({
   human,
@@ -27,7 +30,7 @@ export default function OutsiderMore({
           <>
             {game.teams?.map(team => {
               return (
-                <EvaCheckbox
+                <IconCheckbox
                   postfix={team.name}
                   onChange={() => setTargetTeam(team)}
                 />
@@ -37,13 +40,13 @@ export default function OutsiderMore({
         )}
         {footer(
           <div>
-            <EvaButton
-              name="slash"
+            <IconButton
+              Icon={IconCancel02StrokeRounded}
               postfix="Отмена"
               onClick={closeModal}
             />
-            <EvaButton
-              name="checkmark-circle-outline"
+            <IconButton
+              Icon={IconCheckmarkCircle02StrokeRounded}
               postfix={targetTeam?.name}
               onClick={() => {
                 if (targetTeam === undefined) return;
@@ -68,8 +71,8 @@ export default function OutsiderMore({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="person-add-outline"
+      <IconButton
+        Icon={IconUserAdd02StrokeRounded}
         postfix="Определить в команду"
         onClick={openModal}
       />

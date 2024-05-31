@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconPencilEdit02StrokeRounded } from '@icons/pencil-edit-02';
 import { TranslationScreen } from '../TranslationScreen';
 import { useScreenTranslationCurrentConfig } from '../hooks/configs';
 
@@ -49,7 +50,7 @@ export const TranslationSlidePreview = ({ isPreview = true }: Props) => {
             </ScreenWithBackground>
           </div>
           <FullButton
-            name="crop-outline"
+            Icon={IconPencilEdit02StrokeRounded}
             onClick={() => openFull()}
           />
         </>
@@ -70,7 +71,7 @@ const FullContainer = styled.div`
   max-width: ${size};
 `;
 
-const FullButton = styled(EvaButton)`
+const FullButton = styled(IconButton)`
   position: absolute;
   top: 5px;
   right: 5px;

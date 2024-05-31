@@ -1,9 +1,9 @@
 import { AreaHTMLAttributes, ReactNode } from 'react';
-import { EvaIconName } from '../../eva-icon/EvaIcon';
+import { TheIconType } from '../../the-icon/model';
 
 export type AbsoluteBottomPopupItem = {
   className?: string;
-  icon: EvaIconName;
+  Icon: TheIconType;
   titleNode?: ReactNode;
   title?: string;
   rightNode?: ReactNode;

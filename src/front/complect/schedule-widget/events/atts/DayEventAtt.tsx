@@ -1,5 +1,7 @@
-import EvaIcon from '../../../eva-icon/EvaIcon';
+import TheIcon from '../../../the-icon/TheIcon';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
+import { IconLink02StrokeRounded } from '@icons/link-02';
+import { IconViewStrokeRounded } from '@icons/view';
 import mylib from '../../../my-lib/MyLib';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import { strongScopeKeyValueSeparator } from '../../../strong-control/useStrongControl';
@@ -42,7 +44,7 @@ export default function ScheduleWidgetDayEventAtt(
   const [attTitleNode, isExpand] = useIsRememberExpand(
     props.scope,
     <>
-      <EvaIcon name={appAtt.icon} />
+      <TheIcon name={appAtt.icon} />
       {appAtt.title}
     </>,
     null,
@@ -69,12 +71,7 @@ export default function ScheduleWidgetDayEventAtt(
 
       if (attValue[0] < 0) {
         isCanRedact = false;
-        notateNode = (
-          <EvaIcon
-            name="eye-outline"
-            className="color--3 icon-scale-05"
-          />
-        );
+        notateNode = <IconViewStrokeRounded className="color--3 icon-scale-05" />;
 
         attContent = isExpand && (
           <ScheduleWidgetDayEventPeriodicTranslation
@@ -86,13 +83,7 @@ export default function ScheduleWidgetDayEventAtt(
             appAtt={appAtt}
           />
         );
-      } else
-        notateNode = (
-          <EvaIcon
-            name="link-2"
-            className="color--3 icon-scale-05"
-          />
-        );
+      } else notateNode = <IconLink02StrokeRounded className="color--3 icon-scale-05" />;
 
       if (props.schedule.days && day && event?.atts) {
         scope = scope.replace(dayPhaseMarkerReg, `$1${dayi}`).replace(eventPhaseMarkerReg, `$1${event.mi}`);
@@ -102,10 +93,7 @@ export default function ScheduleWidgetDayEventAtt(
         if (props.schedule.types)
           linkTitle = isExpand && (
             <div className="flex margin-big-gap-l margin-gap-b">
-              <EvaIcon
-                name="link-2"
-                className="color--3 icon-scale-05"
-              />
+              <IconLink02StrokeRounded className="color--3 icon-scale-05" />
               <ScheduleWidgetTopicTitle
                 titleBox={props.schedule.types[event.type]}
                 topicBox={event}

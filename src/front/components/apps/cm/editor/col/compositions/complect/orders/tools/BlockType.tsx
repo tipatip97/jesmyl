@@ -1,11 +1,12 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
-import EvaCheckbox from '../../../../../../../../../complect/eva-icon/EvaCheckbox';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
 import { blockStyles } from '../../../../../../col/com/block-styles/BlockStyles';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
+import { IconCubeStrokeRounded } from '@icons/cube';
 
 export const OrdersRedactorOrderToolsBlockType = ({
   props: { ccom, ord, ordi },
@@ -33,7 +34,7 @@ export const OrdersRedactorOrderToolsBlockType = ({
 
               const newBlockn = styleBlock.title[ccom.langi || 0];
               return (
-                <EvaCheckbox
+                <IconCheckbox
                   key={styleBlock.key}
                   checked={styleBlock.key === ord.type}
                   disabled={styleBlock.key === ord.type}
@@ -56,8 +57,8 @@ export const OrdersRedactorOrderToolsBlockType = ({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="cube-outline"
+      <IconButton
+        Icon={IconCubeStrokeRounded}
         postfix="Тип блока"
         onClick={openModal}
       />

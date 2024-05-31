@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { IconArrowLeft01StrokeRounded } from '@icons/arrow-left-01';
+import { IconArrowRight01StrokeRounded } from '@icons/arrow-right-01';
+import { IconComputerStrokeRounded } from '@icons/computer';
+import { IconPlayStrokeRounded } from '@icons/play';
+import { IconSquareStrokeRounded } from '@icons/square';
+import { IconUpload04StrokeRounded } from '@icons/upload-04';
 import { useScreenTranslationConfigs } from '../hooks/configs';
 import { useSwitchIsScreenTranslationTextVisible } from '../hooks/is-visible';
 import { useWatchScreenTranslations } from '../hooks/watch-translation';
@@ -20,10 +25,10 @@ export const ScreenTranslationControlPanel = ({ onNext, onPrev }: Props) => {
   return (
     <div className="flex flex-gap between margin-big-gap-t">
       <ControlButton onClick={onPrev}>
-        <EvaIcon name="chevron-left-outline" />
+        <IconArrowLeft01StrokeRounded />
       </ControlButton>
       <ControlButton onClick={onNext}>
-        <EvaIcon name="chevron-right-outline" />
+        <IconArrowRight01StrokeRounded />
       </ControlButton>
       <ControlButton
         title={currWin ? '' : 'Enter'}
@@ -31,16 +36,16 @@ export const ScreenTranslationControlPanel = ({ onNext, onPrev }: Props) => {
         disabled={!configs.length}
         onClick={watchTranslation}
       >
-        {windows.length ? <EvaIcon name="monitor-outline" /> : <EvaIcon name="play-outline" />}
+        {windows.length ? <IconComputerStrokeRounded /> : <IconPlayStrokeRounded />}
       </ControlButton>
       <ControlButton>
-        <EvaIcon name="upload-outline" />
+        <IconUpload04StrokeRounded />
       </ControlButton>
       <ControlButton
         title="esc"
         onClick={() => switchIsVisible()}
       >
-        <EvaIcon name="square-outline" />
+        <IconSquareStrokeRounded />
       </ControlButton>
     </div>
   );

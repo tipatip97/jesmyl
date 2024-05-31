@@ -177,6 +177,7 @@ export class EditableCom extends Com {
         t: '',
         ton: '',
         w: '',
+        bpm: '',
       },
       'com',
       defVal,

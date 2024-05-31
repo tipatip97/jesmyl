@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
+import { IconTelegramStrokeRounded } from '@icons/telegram';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import useToast from '../../../../complect/modal/useToast';
@@ -89,7 +89,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                         href="https://t.me/jesmylbot"
                         className="children-middle"
                       >
-                        <EvaIcon name="telegram" />
+                        <IconTelegramStrokeRounded />
                         jesmylbot
                       </a>
                     </span>
@@ -101,7 +101,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                         href="https://t.me/jesmyl_space"
                         className="children-middle"
                       >
-                        <EvaIcon name="telegram" />
+                        <IconTelegramStrokeRounded />
                         jesmyl space
                       </a>
                     </span>
@@ -142,16 +142,18 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                         value={authCode}
                         placeholder="Одноразовый код"
                         onFocus={async event => {
-                          const codeStr = await navigator.clipboard.readText();
-                          if (authCode === codeStr) return;
+                          try {
+                            const codeStr = await navigator.clipboard.readText();
+                            if (authCode === codeStr) return;
 
-                          if (/^\d{5,6}$/.test(codeStr)) {
-                            setAuthCode(codeStr);
-                            onAuthSend(codeStr)
-                              .catch(showToast)
-                              .then(event => event && onAuthSuccess(event));
-                            event.value(codeStr);
-                          }
+                            if (/^\d{5,6}$/.test(codeStr)) {
+                              setAuthCode(codeStr);
+                              onAuthSend(codeStr)
+                                .catch(showToast)
+                                .then(event => event && onAuthSuccess(event));
+                              event.value(codeStr);
+                            }
+                          } catch (error) {}
                         }}
                       />
                     </div>

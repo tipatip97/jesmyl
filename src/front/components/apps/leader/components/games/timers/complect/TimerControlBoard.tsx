@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import EvaIcon from '../../../../../../../complect/eva-icon/EvaIcon';
 import useToast from '../../../../../../../complect/modal/useToast';
+import { TheIconLoading } from '../../../../../../../complect/the-icon/IconLoading';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTeamImportable } from '../../teams/GameTeams.model';
@@ -109,10 +109,7 @@ export default function TimerControlBoard({
 
       {!teamNet?.length || (
         <div className="table-centered-wrapper relative team-list-table margin-big-gap-v">
-          <EvaIcon
-            name="loader-outline"
-            className={'teams-resort-loader rotate' + (isTeamsResortProcess ? ' in-process ' : '')}
-          />
+          <TheIconLoading className={'teams-resort-loader' + (isTeamsResortProcess ? ' in-process ' : '')} />
           <div className="table">{tableContentNode}</div>
         </div>
       )}

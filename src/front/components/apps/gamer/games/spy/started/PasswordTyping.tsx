@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconToggleOffStrokeRounded } from '@icons/toggle-off';
+import { IconToggleOnStrokeRounded } from '@icons/toggle-on';
 
 const passwLength = 6;
 
@@ -63,7 +65,7 @@ export default function PasswordTyping({
   return (
     <Button
       className="relative pointer"
-      name={isTyping ? 'toggle-right-outline' : 'toggle-left-outline'}
+      Icon={isTyping ? IconToggleOnStrokeRounded : IconToggleOffStrokeRounded}
       onClick={() => {
         setIsTyping(is => !is);
         setPassword('');
@@ -73,7 +75,7 @@ export default function PasswordTyping({
   );
 }
 
-const Button = styled(EvaButton)`
+const Button = styled(IconButton)`
   transform: scale(2);
   margin: 15px 0;
 `;

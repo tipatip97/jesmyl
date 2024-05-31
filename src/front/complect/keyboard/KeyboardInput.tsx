@@ -2,11 +2,28 @@ import React, { ReactNode, memo, useEffect, useMemo, useRef, useState } from 're
 import { useSelector } from 'react-redux';
 import { RootState } from '../../shared/store';
 import propsOfClicker from '../clicker/propsOfClicker';
-import EvaIcon, { EvaIconName } from '../eva-icon/EvaIcon';
+import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
+import { IconArrowTurnBackwardStrokeRounded } from '@icons/arrow-turn-backward';
+import { IconArrowUp03StrokeRounded } from '@icons/arrow-up-03';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconCancel02StrokeRounded } from '@icons/cancel-02';
+import { IconCopy01StrokeRounded } from '@icons/copy-01';
+import { IconEraser01StrokeRounded } from '@icons/eraser-01';
+import { IconFlashStrokeRounded } from '@icons/flash';
+import { IconFlashOffStrokeRounded } from '@icons/flash-off';
+import { IconIdea01StrokeRounded } from '@icons/idea-01';
+import { IconLanguageSkillStrokeRounded } from '@icons/language-skill';
+import { IconLinkBackwardStrokeRounded } from '@icons/link-backward';
+import { IconLinkForwardStrokeRounded } from '@icons/link-forward';
+import { IconTask01StrokeRounded } from '@icons/task-01';
+import { IconTextStrokeRounded } from '@icons/text';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffStrokeRounded } from '@icons/view-off';
 import { keyboardKeyDict, keyboardNumberScreenLines } from './Keyboard.complect';
 import { KeyboardInputProps } from './Keyboard.model';
 import './Keyboard.scss';
 import { KeyboardInputStorage } from './KeyboardStorage';
+import { TheIconType } from '../the-icon/model';
 
 let currentInput: KeyboardInputStorage;
 let topForceUpdate: () => void = () => {};
@@ -107,7 +124,9 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       onPaste:
         onPaste &&
         (async () => {
-          invoke(onPaste, await navigator.clipboard.readText());
+          try {
+            invoke(onPaste, await navigator.clipboard.readText());
+          } catch (error) {}
         }),
       onFocus:
         onFocus &&
@@ -158,6 +177,8 @@ export default function KeyboardInput(props: KeyboardInputProps) {
       );
     }
 
+    const EyeIcon = isHiddenPassword ? IconViewStrokeRounded : IconViewOffStrokeRounded;
+
     return (
       <div
         className={
@@ -171,15 +192,11 @@ export default function KeyboardInput(props: KeyboardInputProps) {
         {type !== 'button' && value && (
           <div className="icon-button-container">
             {type === 'password' ? (
-              <EvaIcon
-                name={isHiddenPassword ? 'eye-outline' : 'eye-off-outline'}
-                onMouseDown={() => setIsHiddenPassword(is => !is)}
-              />
+              <EyeIcon onMouseDown={() => setIsHiddenPassword(is => !is)} />
             ) : (
               !withoutCloseButton &&
               (type !== 'number' || isForceZero || value !== '0') && (
-                <EvaIcon
-                  name="close"
+                <IconCancel01StrokeRounded
                   className="close-button pointer"
                   onMouseDown={() => {
                     isCanBlur = false;
@@ -281,7 +298,7 @@ export const KEYBOARD_FLASH = memo(function ({
   const keyNode = (
     className: string,
     key: string,
-    iconName?: EvaIconName,
+    Icon?: TheIconType,
     onMouseUp?: React.MouseEventHandler<HTMLDivElement>,
     children?: ReactNode,
     onContextMenu?: React.MouseEventHandler<HTMLOrSVGElement>,
@@ -304,14 +321,7 @@ export const KEYBOARD_FLASH = memo(function ({
         {...propsOfClicker({ onCtxMenu: onContextMenu })}
       >
         {children}
-        {iconName ? (
-          <EvaIcon
-            name={iconName}
-            className="key-button"
-          />
-        ) : (
-          <div>{key}</div>
-        )}
+        {Icon ? <Icon className="key-button" /> : <div>{key}</div>}
       </div>
     );
   };
@@ -356,20 +366,20 @@ export const KEYBOARD_FLASH = memo(function ({
               {keyNode(
                 currentInput.canUndo() ? 'full-width' : 'full-width disabled',
                 'UNDO',
-                'corner-up-left-outline',
+                IconLinkBackwardStrokeRounded,
                 () => currentInput.undo(),
               )}
               {keyNode(
                 currentInput.canRedo() ? 'full-width' : 'full-width disabled',
                 'REDO',
-                'corner-up-right-outline',
+                IconLinkForwardStrokeRounded,
                 () => currentInput.redo(),
               )}
               {keyNode('writable self-width', '0')}
-              {keyNode('backspace full-width', 'BACKSPACE', 'backspace-outline', event =>
+              {keyNode('backspace full-width', 'BACKSPACE', IconEraser01StrokeRounded, event =>
                 currentInput.backspace(event),
               )}
-              {keyNode('full-width', 'BLUR', 'arrowhead-down-outline', () => currentInput.blur())}
+              {keyNode('full-width', 'BLUR', IconArrowDown01StrokeRounded, () => currentInput.blur())}
             </div>
           </>
         ) : (
@@ -387,7 +397,7 @@ export const KEYBOARD_FLASH = memo(function ({
                             currentInput.event.ctrlKey ? 'is-control-key-label' : ''
                           }`,
                           'SHIFT',
-                          'arrow-upward-outline',
+                          IconArrowUp03StrokeRounded,
                           () => currentInput.switchCaps(),
                           null,
                           event => {
@@ -404,7 +414,7 @@ export const KEYBOARD_FLASH = memo(function ({
                       ? keyNode(
                           'backspace',
                           'BACKSPACE',
-                          'backspace-outline',
+                          IconEraser01StrokeRounded,
                           event => currentInput.backspace(event),
                           null,
                           undefined,
@@ -420,7 +430,7 @@ export const KEYBOARD_FLASH = memo(function ({
               {keyNode(
                 currentInput.canUndo() ? 'undo-action' : 'undo-action disabled',
                 'UNDO',
-                'corner-up-left-outline',
+                IconLinkBackwardStrokeRounded,
                 event => {
                   event.stopPropagation();
                   setKeyInFix(null);
@@ -430,7 +440,7 @@ export const KEYBOARD_FLASH = memo(function ({
               {keyNode(
                 'more-box',
                 'CLOSE-MORE',
-                moreClosed ? 'bulb-outline' : 'close-outline',
+                moreClosed ? IconIdea01StrokeRounded : IconCancel02StrokeRounded,
                 () => setMoreClosed(!moreClosed),
                 moreClosed ? null : (
                   <div
@@ -441,7 +451,7 @@ export const KEYBOARD_FLASH = memo(function ({
                       {keyNode(
                         '',
                         'WORD-SELECT-MODE',
-                        currentInput.event.ctrlKey ? 'flash-off-outline' : 'flash-outline',
+                        currentInput.event.ctrlKey ? IconFlashOffStrokeRounded : IconFlashStrokeRounded,
                         () => currentInput.switchCtrlKey(),
                         <span className="key-description">Ctrl клавиша</span>,
                       )}
@@ -449,7 +459,7 @@ export const KEYBOARD_FLASH = memo(function ({
                         keyNode(
                           '',
                           'SELECT_ALL',
-                          'text-outline',
+                          IconTextStrokeRounded,
                           () => currentInput.selectAll(),
                           <span className="key-description">Выделить всё</span>,
                         )}
@@ -457,7 +467,7 @@ export const KEYBOARD_FLASH = memo(function ({
                         keyNode(
                           '',
                           'COPY',
-                          'copy-outline',
+                          IconCopy01StrokeRounded,
                           () => currentInput.copy(),
                           <span className="key-description">Копировать</span>,
                         )}
@@ -465,14 +475,14 @@ export const KEYBOARD_FLASH = memo(function ({
                         keyNode(
                           '',
                           'PASTE',
-                          'clipboard-outline',
+                          IconTask01StrokeRounded,
                           () => currentInput.paste(),
                           <span className="key-description">Вставить</span>,
                         )}
                       {keyNode(
                         currentInput.canRedo() ? '' : ' disabled',
                         'REDO',
-                        'corner-up-right-outline',
+                        IconLinkForwardStrokeRounded,
                         event => {
                           event.stopPropagation();
                           setKeyInFix(null);
@@ -487,10 +497,10 @@ export const KEYBOARD_FLASH = memo(function ({
               {keyNode('space-key', ' ', undefined, undefined, null, undefined, event =>
                 currentInput.onTouchNavigationStart('navigate', event.targetTouches[0].clientX),
               )}
-              {keyNode('', 'LANG', 'globe-outline', () => currentInput.switchLanguage(), null)}
+              {keyNode('', 'LANG', IconLanguageSkillStrokeRounded, () => currentInput.switchLanguage(), null)}
               {currentInput.isMultiline
-                ? keyNode('enter', '\n', 'corner-down-left-outline')
-                : keyNode('', 'BLUR', 'arrowhead-down-outline', () => currentInput.blur())}
+                ? keyNode('enter', '\n', IconArrowTurnBackwardStrokeRounded)
+                : keyNode('', 'BLUR', IconArrowDown01StrokeRounded, () => currentInput.blur())}
             </div>
           </>
         )

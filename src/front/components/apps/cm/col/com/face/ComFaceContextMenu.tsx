@@ -1,5 +1,9 @@
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
+import { IconMinusSignCircleStrokeRounded } from '@icons/minus-sign-circle';
+import { IconStarSolidRounded, IconStarStrokeRounded } from '@icons/star';
 import useSelectedComs from '../../../base/useSelectedComs';
 import ComFaceContextMenuEditorItems from '../../../editor/col/compositions/ComFaceContextMenuEditorItems';
 import { useMarks } from '../../../lists/marks/useMarks';
@@ -15,22 +19,22 @@ export default function ComFaceContextMenu({ onClick, com }: { onClick: () => vo
   return (
     <>
       {confirmNode}
-      <EvaButton
-        name={isComMarked ? 'star-outline' : 'star'}
+      <IconButton
+        Icon={isComMarked ? IconStarStrokeRounded : IconStarSolidRounded}
         postfix={isComMarked ? 'Удалить из Избранного' : 'Добавить в Избранное'}
         onClick={() => {
           onClick();
           toggleMarked(com.wid);
         }}
       />
-      <EvaButton
-        name={isSelected(com) ? 'minus-circle-outline' : 'checkmark-circle-2-outline'}
+      <IconButton
+        Icon={isSelected(com) ? IconMinusSignCircleStrokeRounded : IconCheckmarkCircle02StrokeRounded}
         postfix={isSelected(com) ? 'Отменить выбор' : 'Выбрать'}
         onClick={() => toggleSelectedCom(com)}
       />
       {!selectedComws.length || (
-        <EvaButton
-          name="close-circle-outline"
+        <IconButton
+          Icon={IconHelpCircleStrokeRounded}
           postfix="Очистить выбранные"
           onClick={() => {
             confirm('Очистить список выбранных?').then(isClear => isClear && clearSelectedComws());

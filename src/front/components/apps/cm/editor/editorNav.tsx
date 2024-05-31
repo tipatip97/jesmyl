@@ -1,8 +1,26 @@
-import { EvaIconName } from '../../../../complect/eva-icon/EvaIcon';
 import {
   INavigationRouteChildItem,
   INavigationRouteRootItem,
 } from '../../../../complect/nav-configurer/Navigation.model';
+import { iconPackOfArrange } from '@icons/arrange';
+import { iconPackOfBookOpen01 } from '@icons/book-open-01';
+import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
+import { iconPackOfCalendar02 } from '@icons/calendar-02';
+import { IconComputerStrokeRounded } from '@icons/computer';
+import { IconDistributeVerticalTopStrokeRounded } from '@icons/distribute-vertical-top';
+import { iconPackOfEdit01 } from '@icons/edit-01';
+import { iconPackOfEdit02 } from '@icons/edit-02';
+import { iconPackOfHeadphones } from '@icons/headphones';
+import { IconLayers01StrokeRounded } from '@icons/layers-01';
+import { iconPackOfMusicNote01 } from '@icons/music-note-01';
+import { IconPlaylist03StrokeRounded } from '@icons/playlist-03';
+import { IconSchoolReportCardStrokeRounded } from '@icons/school-report-card';
+import { iconPackOfText } from '@icons/text';
+import { IconTextVerticalAlignmentStrokeRounded } from '@icons/text-vertical-alignment';
+import { IconUmbrellaStrokeRounded } from '@icons/umbrella';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconVoiceStrokeRounded } from '@icons/voice';
+import { TheIconType, TheIconSelfPack } from '../../../../complect/the-icon/model';
 import { RoutePhasePoint } from '../../../router/Router.model';
 import { CmNavData } from '../Cm.model';
 import TheComposition from '../col/com/TheComposition';
@@ -15,10 +33,10 @@ import EditComposition from './col/compositions/EditComposition';
 import EditCompositions from './col/compositions/EditCompositions';
 import CategoryBinds from './col/compositions/complect/CategoryBinds';
 import ComOnTranslations from './col/compositions/complect/ComOnTranslations';
-import EditableCompositionMain from './col/compositions/complect/main/EditableCompositionMain';
 import EditableCompositionWatch from './col/compositions/complect/Watch';
 import ComAudio from './col/compositions/complect/audio/ComAudio';
 import ChordApplicationsRedactor from './col/compositions/complect/chord-applications/ChordApplicationsRedactor';
+import EditableCompositionMain from './col/compositions/complect/main/EditableCompositionMain';
 import OrdersRedactor from './col/compositions/complect/orders/OrdersRedactor';
 import TextsChordsRedactor from './col/compositions/complect/texts_chords-redactor/TextsChordsRedactor';
 import ComRepeats from './col/compositions/repeats/ComRepeats';
@@ -31,7 +49,7 @@ import Mp3RulesRedactor from './mp3-rule-redactor/Mp3RulesRedactor';
 export const editCompositionNavs: INavigationRouteChildItem<
   CmNavData,
   {
-    icon?: EvaIconName;
+    Icon?: TheIconType;
     iconText?: string;
   }
 >[] = [
@@ -39,70 +57,70 @@ export const editCompositionNavs: INavigationRouteChildItem<
     phase: ['watch'],
     node: <EditableCompositionWatch />,
     data: {
-      icon: 'eye',
+      Icon: IconViewStrokeRounded,
     },
   },
   {
     phase: ['applications'],
     node: <ChordApplicationsRedactor />,
     data: {
-      icon: 'umbrella',
+      Icon: IconUmbrellaStrokeRounded,
     },
   },
   {
     phase: ['orders'],
     node: <OrdersRedactor />,
     data: {
-      icon: 'grid',
+      Icon: IconDistributeVerticalTopStrokeRounded,
     },
   },
   {
     phase: ['texts'],
     node: <TextsChordsRedactor ccoln="texts" />,
     data: {
-      icon: 'file-text',
+      Icon: IconTextVerticalAlignmentStrokeRounded,
     },
   },
   {
     phase: ['chords'],
     node: <TextsChordsRedactor ccoln="chords" />,
     data: {
-      icon: 'options-2',
+      Icon: IconPlaylist03StrokeRounded,
     },
   },
   {
     phase: ['audio'],
     node: <ComAudio />,
     data: {
-      icon: 'music',
+      Icon: IconVoiceStrokeRounded,
     },
   },
   {
     phase: ['catBinds'],
     node: <CategoryBinds />,
     data: {
-      icon: 'book-open',
+      Icon: IconBookOpen02StrokeRounded,
     },
   },
   {
     phase: ['repeats'],
     node: <ComRepeats />,
     data: {
-      icon: 'layers',
+      Icon: IconLayers01StrokeRounded,
     },
   },
   {
     phase: ['translations'],
     node: <ComOnTranslations />,
     data: {
-      icon: 'monitor',
+      Icon: IconComputerStrokeRounded,
     },
   },
   {
     phase: ['main'],
     node: <EditableCompositionMain />,
     data: {
-      icon: 'credit-card',
+      Icon: IconSchoolReportCardStrokeRounded,
     },
   },
 ];
@@ -114,7 +132,7 @@ export const editorRouteItems: INavigationRouteChildItem<
   CmNavData,
   {
     title: string;
-    icon: EvaIconName;
+    iconSelfPack: TheIconSelfPack;
   }
 >[] = [
   {
@@ -123,7 +141,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     accessLevel: 100,
     data: {
       title: 'Категории',
-      icon: 'book-open-outline',
+      iconSelfPack: iconPackOfBookOpen01,
     },
     next: [
       {
@@ -137,7 +155,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     node: <EditCompositions />,
     data: {
       title: 'Песни',
-      icon: 'headphones-outline',
+      iconSelfPack: iconPackOfHeadphones,
     },
     next: [
       {
@@ -153,7 +171,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     accessLevel: 50,
     data: {
       title: 'События',
-      icon: 'calendar-outline',
+      iconSelfPack: iconPackOfCalendar02,
     },
     next: [
       {
@@ -180,7 +198,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     accessLevel: 50,
     data: {
       title: 'Редактор аккордов',
-      icon: 'options-2-outline',
+      iconSelfPack: iconPackOfArrange,
     },
   },
   {
@@ -189,7 +207,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     accessLevel: 80,
     data: {
       title: 'Редактор MP3 правил',
-      icon: 'music-outline',
+      iconSelfPack: iconPackOfMusicNote01,
     },
   },
   {
@@ -198,7 +216,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     accessLevel: 100,
     data: {
       title: 'Ё-Е правила',
-      icon: 'text-outline',
+      iconSelfPack: iconPackOfText,
     },
   },
   {
@@ -207,7 +225,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     accessLevel: 100,
     data: {
       title: 'Изменения',
-      icon: 'pantone-outline',
+      iconSelfPack: iconPackOfEdit01,
     },
   },
 ];
@@ -216,7 +234,7 @@ export const editorNav: INavigationRouteRootItem<CmNavData> = {
   phase: ['editor'],
   node: <Editor />,
   title: 'Редактор',
-  icon: 'edit',
+  iconSelfPack: iconPackOfEdit02,
   accessLevel: 50,
   next: editorRouteItems,
 };

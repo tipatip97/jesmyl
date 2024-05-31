@@ -1,6 +1,5 @@
 import { HtmlHTMLAttributes, ReactNode } from 'react';
 import styled from 'styled-components';
-import EvaIcon, { EvaIconName } from '../eva-icon/EvaIcon';
 
 export default function BrutalItem({
   onClick,
@@ -9,7 +8,7 @@ export default function BrutalItem({
   box,
   description,
 }: {
-  icon: EvaIconName;
+  icon: JSX.Element;
   title: string;
   box?: ReactNode;
   description?: ReactNode;
@@ -19,12 +18,9 @@ export default function BrutalItem({
       className="flex between relative"
       onClick={onClick}
     >
-      <div className="nowrap over-hidden">
-        <EvaIcon
-          name={icon}
-          className="margin-big-gap vertical-middle"
-        />
-        <div className="ellipsis inline-block vertical-middle">{title}</div>
+      <div className="nowrap over-hidden flex center">
+        <div className="margin-big-gap">{icon}</div>
+        <div className="ellipsis inline-block">{title}</div>
       </div>
       {box && <div className="margin-big-gap flex">{box}</div>}
       {description && (

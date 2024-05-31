@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
 import { ScreenTranslationConfig } from '../../model';
 
 export interface ScreenTranslationsFaceProps {
@@ -24,8 +25,8 @@ export const ScreenTranslationsFace = ({
     >
       <span>{config.title}</span>
       {putOnClose && (
-        <EvaButton
-          name="close"
+        <IconButton
+          Icon={IconCancel01StrokeRounded}
           confirm="Закрыть окно?"
           onClick={putOnClose(configi)}
         />

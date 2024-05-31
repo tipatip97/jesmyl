@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import TheButton from '../../../../../../complect/Button';
+import { IconQrCodeStrokeRounded } from '@icons/qr-code';
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
 import RoomMemberFace from '../../../complect/GamerRoomMemberFace';
 import { useGamerOfflineRoom } from '../../../complect/rooms/offline-room/hooks/current-room';
 import { useGamerOfflineRoomsPassport } from '../../../complect/rooms/offline-room/hooks/passport';
@@ -42,7 +42,7 @@ export default function SpyOfflineRoomStartedGame() {
             className="flex center flex-gap pointer"
             onClick={() => shareGameData()}
           >
-            <EvaIcon name="qr-code" />
+            <IconQrCodeStrokeRounded />
             Оповестить
           </div>
           <div className="flex center margin-big-gap">

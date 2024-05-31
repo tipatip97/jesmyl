@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
 import { CmMp3Rule } from '../../../../../models';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import { RootState } from '../../../../../shared/store';
 import { cmExer } from '../../Cm.store';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import Mp3RuleEditor from './Mp3RuleEditor';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 
 const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
 
@@ -53,8 +55,8 @@ export default function Mp3RulesRedactor() {
                 key={w}
                 {...rule}
                 button={
-                  <EvaButton
-                    name="close-circle-outline"
+                  <IconButton
+                    Icon={IconHelpCircleStrokeRounded}
                     className="color--ko"
                     confirm="Удалить новое правило?"
                     onClick={() => {
@@ -74,12 +76,7 @@ export default function Mp3RulesRedactor() {
           })}
           <h2 className="flex flex-gap">
             Новое правило
-            {!isOpenNewRule && (
-              <EvaButton
-                name="plus-circle"
-                onClick={() => setIsOpenNewRule(true)}
-              />
-            )}
+            {!isOpenNewRule && <IconPlusSignCircleStrokeRounded onClick={() => setIsOpenNewRule(true)} />}
           </h2>
           {isOpenNewRule && (
             <Mp3RuleEditor

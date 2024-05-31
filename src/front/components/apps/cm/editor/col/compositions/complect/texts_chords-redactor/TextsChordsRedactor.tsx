@@ -1,6 +1,8 @@
-import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconGridStrokeRounded } from '@icons/grid';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import EditContainerCorrectsInformer from '../../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCcom } from '../../useEditableCcom';
 import TextAreaRedactor from './TextAreaRedactor';
@@ -24,12 +26,7 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
             corrects={ccom.corrects[`${ccoln}-block-${coli}`]}
           >
             <div>
-              {!coli && (
-                <EvaButton
-                  name="plus-circle-outline"
-                  onClick={() => exec(ccom.insertBlocks(ccoln, -1, ''))}
-                />
-              )}
+              {!coli && <IconPlusSignCircleStrokeRounded onClick={() => exec(ccom.insertBlocks(ccoln, -1, ''))} />}
               <div className="flex between">
                 <div>
                   {coli + 1 + '. '}
@@ -60,16 +57,10 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
                 </div>
                 <span>
                   {!istcoln && /[A-H]b/.exec(col) && (
-                    <EvaButton
-                      name="hash"
-                      onClick={() => exec(ccom.replaceBemoles(coli))}
-                    />
+                    <IconGridStrokeRounded onClick={() => exec(ccom.replaceBemoles(coli))} />
                   )}
                 </span>
-                <EvaButton
-                  name="close"
-                  onClick={() => exec(ccom.removeBlock(ccoln, coli))}
-                />
+                <IconCancel01StrokeRounded onClick={() => exec(ccom.removeBlock(ccoln, coli))} />
               </div>
               <TextAreaRedactor
                 ccoln={ccoln}
@@ -77,10 +68,7 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
                 col={col}
                 onChange={value => exec(ccom.changeBlock(ccoln, coli, value))}
               />
-              <EvaButton
-                name="plus-circle-outline"
-                onClick={() => exec(ccom.insertBlocks(ccoln, coli, ''))}
-              />
+              <IconPlusSignCircleStrokeRounded onClick={() => exec(ccom.insertBlocks(ccoln, coli, ''))} />
             </div>
           </EditContainerCorrectsInformer>
         );

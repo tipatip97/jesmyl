@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import mylib from '../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
+import { IconCopy01StrokeRounded } from '@icons/copy-01';
 import useCmNav from '../../base/useCmNav';
 import ComFace from '../../col/com/face/ComFace';
 import { MeetingsEvent } from './MeetingsEvent';
@@ -99,7 +101,7 @@ export default function MeetingEventExpandList() {
               }}
             >
               {event.name}
-              <EvaButton name={isExpanded ? 'chevron-up' : 'chevron-down'} />
+              <IconButton Icon={isExpanded ? IconArrowUp01StrokeRounded : IconArrowDown01StrokeRounded} />
             </h3>
             {isExpanded &&
               event.coms?.map(com => {
@@ -139,7 +141,7 @@ export default function MeetingEventExpandList() {
             onClick={() => navigator.clipboard.writeText(prepareCopyText())}
           >
             Копировать
-            <EvaIcon name="copy-outline" />
+            <IconCopy01StrokeRounded />
           </span>
         </div>
       </div>

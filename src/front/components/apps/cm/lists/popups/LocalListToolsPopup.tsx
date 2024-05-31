@@ -1,12 +1,16 @@
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import { isTouchDevice } from '../../../../../complect/device-differences';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
+import { IconComputerStrokeRounded } from '@icons/computer';
+import { IconQrCodeStrokeRounded } from '@icons/qr-code';
 import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
 import useCmNav from '../../base/useCmNav';
 import { Com } from '../../col/com/Com';
 import { useGoToTranslation } from '../../translation/complect/hooks/go-to-translation';
 import FullscreenExpandComList from './FullscreenExpandComList';
+import { IconPlayStrokeRounded } from '@icons/play';
 
 export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (isOpen, closePopup, _prepare, coms) => {
   const [fullNode, openFullContent] = useFullContent(() => coms && <FullscreenExpandComList coms={coms} />);
@@ -18,21 +22,21 @@ export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (isOpen, c
     <>{fullNode}</>,
     isOpen && coms && (
       <>
-        <EvaButton
-          name="book-open-outline"
+        <IconButton
+          Icon={IconBookOpen02StrokeRounded}
           postfix="Раскрыть песни списка"
           onClick={() => {
             openFullContent();
             closePopup();
           }}
         />
-        <EvaButton
-          name={isTouchDevice ? 'play-outline' : 'monitor-outline'}
+        <IconButton
+          Icon={isTouchDevice ? IconPlayStrokeRounded : IconComputerStrokeRounded}
           postfix="Показывать слайды списка"
           onClick={() => goToTranslation(true)}
         />
-        <EvaButton
-          name="qr-code"
+        <IconButton
+          Icon={IconQrCodeStrokeRounded}
           postfix="Поделиться по QR"
           onClick={() =>
             shareQrData(

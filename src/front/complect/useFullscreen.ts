@@ -16,9 +16,10 @@ export default function useFullScreen(): [boolean, (isFullscreen?: boolean) => v
     useCallback(
       (isFullscreen?: boolean) => {
         dispatch(switchComplectFullscreen(isFullscreen));
-
-        if (isFullscreen ?? !isFullScreenRef.current) document.body.requestFullscreen();
-        else if (document.fullscreenElement) document.exitFullscreen();
+        try {
+          if (isFullscreen ?? !isFullScreenRef.current) document.body.requestFullscreen();
+          else if (document.fullscreenElement) document.exitFullscreen();
+        } catch (e) {}
       },
       [dispatch, isFullScreenRef],
     ),

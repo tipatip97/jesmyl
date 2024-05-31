@@ -1,8 +1,11 @@
 import { useMemo, useState } from 'react';
-import EvaButton from '../../../eva-icon/EvaButton';
 import useIsExpand from '../../../expand/useIsExpand';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
+import IconButton from '../../../the-icon/IconButton';
+import { IconArrowDownDoubleStrokeRounded } from '@icons/arrow-down-double';
+import { IconArrowUpDoubleStrokeRounded } from '@icons/arrow-up-double';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import { IScheduleWidgetRole } from '../../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetRole from './Role';
@@ -19,7 +22,7 @@ export default function ScheduleWidgetRoleList({ scope }: StrongComponentProps) 
         <StrongEvaButton
           scope={scope}
           fieldName="roles"
-          name="plus"
+          Icon={IconPlusSignStrokeRounded}
           prefix="роль"
           confirm="Добавить новую роль?"
         />
@@ -44,8 +47,8 @@ export default function ScheduleWidgetRoleList({ scope }: StrongComponentProps) 
           const isExpand = catExpands.includes(listi);
           return (
             <div key={listi}>
-              <EvaButton
-                name={isExpand ? 'chevron-up' : 'chevron-down'}
+              <IconButton
+                Icon={isExpand ? IconArrowUpDoubleStrokeRounded : IconArrowDownDoubleStrokeRounded}
                 prefix={rights.schedule.ctrl.cats[listi]}
                 className="flex-max color--4"
                 onClick={() => setCatExpands(isExpand ? catExpands.filter(it => it !== listi) : [...catExpands, listi])}

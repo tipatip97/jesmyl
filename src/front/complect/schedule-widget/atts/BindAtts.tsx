@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { scheduleWidgetUserRights } from '../../../models';
-import EvaButton from '../../eva-icon/EvaButton';
-import EvaIcon from '../../eva-icon/EvaIcon';
+import IconButton from '../../the-icon/IconButton';
+import { IconAttachment01StrokeRounded } from '@icons/attachment-01';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import useModal from '../../modal/useModal';
 import mylib, { MyLib } from '../../my-lib/MyLib';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
@@ -121,10 +122,10 @@ export default function ScheduleWidgetBindAtts({
     <>
       {modalNode}
       <div className="flex flex-gap">
-        <EvaIcon name="attach" />
+        <IconAttachment01StrokeRounded />
         Вложения
-        <EvaButton
-          name="plus-outline"
+        <IconButton
+          Icon={IconPlusSignStrokeRounded}
           onClick={screen}
         />
       </div>

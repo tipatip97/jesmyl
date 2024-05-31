@@ -1,10 +1,12 @@
-import EvaButton from '../../eva-icon/EvaButton';
-import EvaIcon from '../../eva-icon/EvaIcon';
 import { ExpandableContent } from '../../expand/ExpandableContent';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
+import TheIcon from '../../the-icon/TheIcon';
+import { IconEdit02StrokeRounded } from '@icons/edit-02';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconSchoolReportCardStrokeRounded } from '@icons/school-report-card';
 import { IScheduleWidgetListCat } from '../ScheduleWidget.model';
 import ScheduleWidgetIconChange from '../complect/IconChange';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useScheduleWidget';
@@ -43,7 +45,7 @@ export function ScheduleWidgetListCategory({
             <StrongEditableField
               scope={catScope}
               fieldName="field"
-              icon="credit-card-outline"
+              Icon={IconSchoolReportCardStrokeRounded}
               title="Название списка"
               value={cat}
               fieldKey="title"
@@ -75,7 +77,7 @@ export function ScheduleWidgetListCategory({
       <ExpandableContent
         title={
           <>
-            <EvaIcon name={cat.icon} /> {title}
+            <TheIcon name={cat.icon} /> {title}
           </>
         }
         postfix={isExpand =>
@@ -87,7 +89,7 @@ export function ScheduleWidgetListCategory({
                 <StrongEvaButton
                   scope={scope}
                   fieldName="units"
-                  name="plus"
+                  Icon={IconPlusSignStrokeRounded}
                   mapExecArgs={args => {
                     return {
                       ...args,
@@ -96,10 +98,7 @@ export function ScheduleWidgetListCategory({
                   }}
                 />
               )}
-              <EvaButton
-                name="edit-outline"
-                onClick={screen}
-              />
+              <IconEdit02StrokeRounded onClick={screen} />
             </div>
           )
         }

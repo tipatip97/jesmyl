@@ -1,6 +1,9 @@
 import { ReactNode } from 'react';
-import EvaIcon from '../../../eva-icon/EvaIcon';
 import useIsExpand from '../../../expand/useIsExpand';
+import { IconFavouriteStrokeRounded } from '@icons/favourite';
+import { IconHeartbreakStrokeRounded } from '@icons/heartbreak';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
+import { IconMessage01StrokeRounded } from '@icons/message-01';
 import { MyLib } from '../../../my-lib/MyLib';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
@@ -25,7 +28,7 @@ export default function ScheduleWidgetDayEventRating(
   const [titleNode, isExpand] = useIsExpand(
     false,
     <>
-      <EvaIcon name="heart-outline" />
+      <IconFavouriteStrokeRounded />
       Рейтинг события
       <span className="event-rating-display">{ratingSum}</span>
     </>,
@@ -115,12 +118,12 @@ export default function ScheduleWidgetDayEventRating(
                     (ratePoint < 0 ? 'color--ko' : ratePoint > 0 ? 'color--ok' : 'color--3') +
                     (isFill ? '' : ' fade-05')
                   }
-                  name={
+                  Icon={
                     ratePoint < 0
-                      ? 'heart-off-outline'
+                      ? IconHeartbreakStrokeRounded
                       : ratePoint === 0
-                        ? 'question-mark-circle-outline'
-                        : 'heart-outline'
+                        ? IconHelpCircleStrokeRounded
+                        : IconFavouriteStrokeRounded
                   }
                 />
               );
@@ -137,7 +140,7 @@ export default function ScheduleWidgetDayEventRating(
           <StrongEditableField
             scope={rateScope}
             fieldName="description"
-            icon="message-square-outline"
+            Icon={IconMessage01StrokeRounded}
             value={myRate[1]}
             title="Комментарий"
             className="margin-gap-v"

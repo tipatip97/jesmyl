@@ -1,10 +1,11 @@
 import React, { ReactNode, useMemo } from 'react';
-import EvaButton from '../../eva-icon/EvaButton';
-import { EvaIconName } from '../../eva-icon/EvaIcon';
+import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 import useModal from '../../modal/useModal';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import IconButton from '../../the-icon/IconButton';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { TheIconType } from '../../the-icon/model';
 import { IScheduleWidget } from '../ScheduleWidget.model';
-import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetEventType from './EventType';
 
 const emptyArr: [] = [];
@@ -14,7 +15,7 @@ export default function ScheduleWidgetEventList({
   scheduleScope,
   postfix,
   schedule,
-  icon,
+  Icon,
   selectFieldName,
   usedCounts,
 }: {
@@ -23,7 +24,7 @@ export default function ScheduleWidgetEventList({
   selectFieldName: string;
   postfix: ReactNode;
   schedule: IScheduleWidget;
-  icon: EvaIconName;
+  Icon: TheIconType;
   usedCounts?: Record<number, number>;
 }) {
   const types = schedule.types || emptyArr;
@@ -51,7 +52,7 @@ export default function ScheduleWidgetEventList({
                 <StrongEvaButton
                   scope={scheduleScope}
                   fieldName="types"
-                  name="plus-outline"
+                  Icon={IconPlusSignStrokeRounded}
                   confirm="Добавить новый шаблон?"
                 />
               )}
@@ -93,8 +94,8 @@ export default function ScheduleWidgetEventList({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name={icon}
+      <IconButton
+        Icon={Icon}
         postfix={postfix}
         onClick={screen}
       />

@@ -1,6 +1,7 @@
 import TheButton from '../../Button';
-import EvaIcon from '../../eva-icon/EvaIcon';
 import useToast from '../../modal/useToast';
+import { TheIconLoading } from '../../the-icon/IconLoading';
+import { IconAlert02StrokeRounded } from '@icons/alert-02';
 import { SendButtonContentMaker } from '../send-button-content-maker/maker';
 import { SendButtonProps } from './SendButton.model';
 
@@ -30,16 +31,10 @@ export default function SendButton<Value>(props: SendButtonProps<Value>) {
             {props.title}
             <div className="absolute full-height flex center pos-right pos-top margin-big-gap-r">
               {error ? (
-                <EvaIcon
-                  name="alert-circle-outline"
-                  className="error-message"
-                />
-              ) : isLoading ? (
-                <EvaIcon
-                  name="loader-outline"
-                  className="rotate"
-                />
-              ) : null}
+                <IconAlert02StrokeRounded className="error-message" />
+              ) : (
+                <TheIconLoading isLoading={isLoading} />
+              )}
             </div>
           </TheButton>
         );

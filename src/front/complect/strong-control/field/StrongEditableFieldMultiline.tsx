@@ -1,4 +1,4 @@
-import Markdown from 'markdown-to-jsx';
+import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import { useState } from 'react';
 import style from './Multiline.module.scss';
 
@@ -25,7 +25,7 @@ const ImgContainer = (props: { src: string; alt: string }) => {
   );
 };
 
-const options = {
+const options: MarkdownToJSX.Options = {
   overrides: {
     img: ImgContainer,
   },

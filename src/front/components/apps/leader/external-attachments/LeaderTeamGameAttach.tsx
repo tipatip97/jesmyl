@@ -1,4 +1,5 @@
-import EvaButton from '../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../complect/the-icon/IconButton';
+import { IconLinkSquare01StrokeRounded } from '@icons/link-square-01';
 import LeaderApplication from '../Leader';
 import { GameDescription } from '../components/games/GameDescription';
 import LeaderGameTotalScoreTable from '../components/games/LeaderGameTotalScoreTable';
@@ -40,8 +41,8 @@ export default function LeaderTeamGameAttach({
           <span>Не определена</span>
         )}
         {game && (
-          <EvaButton
-            name="external-link-outline"
+          <IconButton
+            Icon={IconLinkSquare01StrokeRounded}
             onClick={() => jumpToGame(game.w)}
           />
         )}

@@ -1,8 +1,10 @@
 import { useConfirm } from '../../../../../../../../complect/modal/confirm/useConfirm';
-import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
 import useModal from '../../../../../../../../complect/modal/useModal';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../../../../complect/the-icon/IconButton';
+import { IconDelete01StrokeRounded } from '@icons/delete-01';
+import { IconRefreshStrokeRounded } from '@icons/refresh';
+import { IconUnavailableStrokeRounded } from '@icons/unavailable';
 import { Order } from '../../../../../col/com/order/Order';
 import { OrderRepeats } from '../../../../../col/com/order/Order.model';
 import { EditableOrder } from '../../complect/orders/EditableOrder';
@@ -112,13 +114,13 @@ export const ComRepeatsRemoveButton = ({ isChordBlock, startOrd, ord, textLinei,
         )}
         {footer(
           <div className="flex flex-big-gap">
-            <EvaButton
-              name="slash"
+            <IconButton
+              Icon={IconUnavailableStrokeRounded}
               postfix="Отмена"
               onClick={closeModal}
             />
-            <EvaButton
-              name="refresh"
+            <IconButton
+              Icon={IconRefreshStrokeRounded}
               postfix="Сброс"
               onClick={() => {
                 closeModal();
@@ -151,7 +153,7 @@ export const ComRepeatsRemoveButton = ({ isChordBlock, startOrd, ord, textLinei,
           modalOpen();
         }}
       >
-        <EvaIcon name="trash-2-outline" />
+        <IconDelete01StrokeRounded />
       </div>
     </>
   );

@@ -2,15 +2,17 @@ import { useCallback } from 'react';
 import { ScreenTranslateConfigurationBackground } from '../../../../../../+complect/translations/complect/Background';
 import { ScreenTranslateConfigurationColor } from '../../../../../../+complect/translations/complect/Color';
 import { ScreenTranslateConfigurationFontFamily } from '../../../../../../+complect/translations/complect/FontFamily';
+import { ScreenTranslateConfigurationFontWeight } from '../../../../../../+complect/translations/complect/FontWeight';
 import { ScreenTranslateConfigurationNameChanger } from '../../../../../../+complect/translations/complect/NameChanger';
 import { ScreenTranslateConfigurationTextAlign } from '../../../../../../+complect/translations/complect/TextAlign';
-import { ScreenTranslateConfigurationFontWeight } from '../../../../../../+complect/translations/complect/FontWeight';
-import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
 import { ExpandableContent } from '../../../../../../../../complect/expand/ExpandableContent';
+import IconButton from '../../../../../../../../complect/the-icon/IconButton';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
 import { useDebounceAction } from '../../../../../../../../complect/useDebounceAction';
 import { useUpdateCmCurrentTranslationConfig } from '../../hooks/update-config';
 import { CmTranslationScreenConfig, CmTranslationTextScreenConfig } from '../../model';
 import { cmTranslationSubConfigNext } from '../defaults';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 
 interface Props {
   currentConfig: CmTranslationScreenConfig;
@@ -67,8 +69,8 @@ export const CmTranslateCurrentScreenConfigurations = ({ currentConfig }: Props)
           <div className="margin-gap-l">
             {currentConfig.subs?.next ? (
               <>
-                <EvaButton
-                  name="close"
+                <IconButton
+                  Icon={IconCancel01StrokeRounded}
                   className="color--ko"
                   postfix="Убрать текст следующего блока"
                   confirm="Убрать текст следующего блока?"
@@ -93,8 +95,8 @@ export const CmTranslateCurrentScreenConfigurations = ({ currentConfig }: Props)
               </>
             ) : (
               <div>
-                <EvaButton
-                  name="plus"
+                <IconButton
+                  Icon={IconPlusSignStrokeRounded}
                   className="margin-big-gap-v"
                   postfix="Вставить окно следующего блока"
                   onClick={onAddSubConfig}

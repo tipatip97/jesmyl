@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
 import useFullContent from '../../../../../../complect/fullscreen-content/useFullContent';
+import { IconClock01StrokeRounded } from '@icons/clock-01';
+import { IconMessage01StrokeRounded } from '@icons/message-01';
 import { TeamGameImportable } from '../../../Leader.model';
 import { LeaderCleans } from '../../LeaderCleans';
 import { GameTimerMode } from './GameTimer.model';
@@ -50,13 +51,11 @@ export default function LeaderGameTimerFace({
             onSelect?.();
           }}
         >
-          <EvaIcon
-            name={
-              LeaderCleans.getTimerConfigurableField('mode', timer, game) === GameTimerMode.Messager
-                ? 'message-circle-outline'
-                : 'clock-outline'
-            }
-          />
+          {LeaderCleans.getTimerConfigurableField('mode', timer, game) === GameTimerMode.Messager ? (
+            <IconMessage01StrokeRounded />
+          ) : (
+            <IconClock01StrokeRounded />
+          )}
         </span>
         <span className="face-title flex between full-width">
           <span className="flex flex-gap">
@@ -72,7 +71,7 @@ export default function LeaderGameTimerFace({
           </span>
           {!!timer.comments?.length && (
             <div>
-              <EvaIcon name="message-square-outline" />
+              <IconMessage01StrokeRounded />
               <sub>{timer.comments.length}</sub>
             </div>
           )}

@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import { RootState } from '../../../../../shared/store';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useCmNav from '../../base/useCmNav';
@@ -61,10 +60,9 @@ export default function TheComposition() {
       withoutBackSwipe
       head={
         <div className="com-actions-pannel">
-          {topTools.map(({ icon, onClick, tool }) => (
-            <EvaIcon
+          {topTools.map(({ Icon, onClick, tool }) => (
+            <Icon
               key={tool}
-              name={icon}
               className="action-button"
               onClick={() => onClick()}
             />

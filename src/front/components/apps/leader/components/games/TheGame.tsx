@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CopyTextButton from '../../../../../complect/CopyTextButton';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import TheIcon from '../../../../../complect/the-icon/TheIcon';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import PhaseLeaderContainer from '../../phase-container/PhaseLeaderContainer';
@@ -22,6 +22,7 @@ import TimerFieldsConfigurer from './timers/complect/TimerFieldsConfigurer';
 import TimerNameListConfigurer from './timers/complect/TimerNameListConfigurer';
 import useGameTimer from './timers/useGameTimer';
 import useCgame from './useGames';
+import { IconViewStrokeRounded } from '@icons/view';
 
 export default function TheGame() {
   const { cgame } = useCgame();
@@ -145,10 +146,7 @@ export default function TheGame() {
                 className="margin-big-gap pointer flex"
                 onClick={() => openFullContent()}
               >
-                <EvaIcon
-                  name="eye-outline"
-                  className="margin-gap"
-                />
+                <IconViewStrokeRounded className="margin-gap" />
                 Просмотреть объединённые результаты
               </div>
             )}

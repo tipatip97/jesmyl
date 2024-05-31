@@ -1,6 +1,7 @@
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
+import { iconPackOfManager } from '@icons/manager';
 import Admin from './Admin';
 import { AdminNavData, AdminStorage } from './Admin.model';
 import AdminApp from './AdminApp';
@@ -11,11 +12,10 @@ const adminNavigation = new NavigationConfig<AdminStorage, AdminNavData>('admin'
   level: 100,
   root: content => <AdminApp content={content} />,
   rootPhase: 'admin',
-  logo: 'twitter',
   routes: [
     {
       phase: ['admin'],
-      icon: 'twitter',
+      iconSelfPack: iconPackOfManager,
       title: 'Админ',
       node: <Admin />,
       next: [

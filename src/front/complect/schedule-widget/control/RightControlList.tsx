@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { ScheduleWidgetRightTexts, ScheduleWidgetRightsCtrl } from '../../../models';
 import { StrongControlProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import { IconToggleOffStrokeRounded } from '@icons/toggle-off';
+import { IconToggleOnStrokeRounded } from '@icons/toggle-on';
 
 export default function ScheduleWidgetRightControlList({
   R,
@@ -59,7 +61,7 @@ export default function ScheduleWidgetRightControlList({
               cud="U"
               disabled={isCantEdit || !isCan || type.always || !!isDisabled?.(type, typei)}
               className={(isReverse ? !isHas : isHas) ? 'color--ok' : 'color--3'}
-              name={(isReverse ? !isHas : isHas) ? 'toggle-right-outline' : 'toggle-left-outline'}
+              Icon={(isReverse ? !isHas : isHas) ? IconToggleOnStrokeRounded : IconToggleOffStrokeRounded}
               mapExecArgs={args => {
                 if (onUpdate !== undefined) {
                   onUpdate(rightCtrl.switchRights(R, type.id));

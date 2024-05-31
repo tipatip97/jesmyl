@@ -1,4 +1,4 @@
-import { EvaIconName } from '../../../../../complect/eva-icon/EvaIcon';
+import { TheIconType } from '../../../../../complect/the-icon/model';
 import { BaseNamedExportables } from '../../base/BaseNamed';
 import { MigratableEditableComToolName } from '../../editor/col/compositions/EditableCom.model';
 import { IExportableOrder } from './order/Order.model';
@@ -13,6 +13,7 @@ export interface IExportableCom extends BaseNamedExportables {
   c?: string[]; // список аккорлов
   r?: Record<string, number>; // правила повторений
   o?: IExportableOrder[]; // порядковые блоки
+  bpm?: number; // ударов в минуту
 
   ton?: number;
 }
@@ -22,7 +23,7 @@ export type SettingsItemName = 'ton' | 'font-size' | 'open-anchors';
 export interface SettingsItem {
   title: string;
   name: SettingsItemName;
-  icon: EvaIconName;
+  icon: TheIconType;
 }
 
 export type MigratableComToolName = (typeof menuComToolNameList)[number] | MigratableEditableComToolName;
@@ -41,7 +42,7 @@ export const menuComToolNameList = [
 
 export interface MigratableComTool {
   title: string;
-  icon: EvaIconName;
+  Icon: TheIconType;
   onClick: () => void | boolean;
   tool: MigratableComToolName;
 }

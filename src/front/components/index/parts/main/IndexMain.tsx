@@ -3,10 +3,17 @@ import { appNames } from '../../../../app/App.model';
 import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
-import EvaButton from '../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../complect/the-icon/IconButton';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
+import { IconAuthorizedStrokeRounded } from '@icons/authorized';
+import { IconComputerSettingsStrokeRounded } from '@icons/computer-settings';
+import { IconCubeStrokeRounded } from '@icons/cube';
+import { IconInformationCircleStrokeRounded } from '@icons/information-circle';
+import { IconRefreshStrokeRounded } from '@icons/refresh';
+import { IconSettings02StrokeRounded } from '@icons/settings-02';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import useApps from '../../../../complect/useApps';
+import { checkIsThereNewSW } from '../../../../serviceWorkerRegistration';
 import navConfigurers from '../../../../shared/navConfigurers';
 import { RootState } from '../../../../shared/store';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
@@ -39,9 +46,9 @@ export default function IndexMain() {
       if (nav.nav.level !== undefined && nav.nav.level > auth.level) return null!;
 
       return (
-        <EvaButton
+        <IconButton
           key={appName}
-          name={nav.nav.logo || 'cube-outline'}
+          Icon={nav.nav.Icon ?? nav.nav.routes[0]?.iconSelfPack.StrokeRounded ?? IconCubeStrokeRounded}
           className="margin-big-gap-h margin-sm-gap-v flex-max"
           postfix={nav.nav.title}
           onClick={() => jumpToApp(nav.appName)}
@@ -79,26 +86,39 @@ export default function IndexMain() {
           />
           {!auth.nick && (
             <BrutalItem
-              icon="person-outline"
+              icon={<IconAuthorizedStrokeRounded />}
               title="Авторизоваться"
               onClick={() => goTo('login')}
             />
           )}
           <BrutalItem
-            icon="settings-2-outline"
+            icon={<IconSettings02StrokeRounded />}
             title="Настройки"
             onClick={() => goTo('settings')}
           />
           <BrutalItem
-            icon="pantone-outline"
+            icon={<IconComputerSettingsStrokeRounded />}
             title="Взаимодействие"
             onClick={() => goTo('actions')}
           />
           <BrutalItem
-            icon="info-outline"
+            icon={<IconInformationCircleStrokeRounded />}
             title="О приложении"
             onClick={() => openAbout(true)}
           />
+          {checkIsThereNewSW(reg => (
+            <BrutalItem
+              icon={<IconRefreshStrokeRounded />}
+              title="Обновить"
+              onClick={() => {
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                  window.location.reload();
+                });
+
+                reg?.waiting?.postMessage({ type: 'SKIP_WAITING' });
+              }}
+            />
+          ))}
           {appList && (
             <BrutalScreen>
               <div className="title">Другие программы</div>

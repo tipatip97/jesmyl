@@ -1,8 +1,13 @@
-import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
 import { useCheckIsAccessed } from '../../../../../../../../complect/exer/hooks/check-is-accessed';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
 import { useConfirm } from '../../../../../../../../complect/modal/confirm/useConfirm';
+import TheIcon from '../../../../../../../../complect/the-icon/TheIcon';
+import { IconDashboardSpeed02StrokeRounded } from '@icons/dashboard-speed-02';
+import { IconDelete01StrokeRounded } from '@icons/delete-01';
+import { IconFlag03StrokeRounded } from '@icons/flag-03';
+import { IconGridStrokeRounded } from '@icons/grid';
+import { IconSchoolReportCardStrokeRounded } from '@icons/school-report-card';
 import useAuth from '../../../../../../../index/useAuth';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import TheCom from '../../../../../col/com/TheCom';
@@ -22,19 +27,27 @@ export default function EditableCompositionMain() {
   return (
     <>
       {confirmNode}
-      {
-        <EditContainerCorrectsInformer
-          corrects={ccom?.corrects.name}
-          className="flex"
-        >
-          <div className="margin-gap-h">Название</div>
-          <KeyboardInput
-            value={ccom?.name}
-            className="full-width"
-            onChange={value => exec(ccom?.rename(value, exec))}
-          />
-        </EditContainerCorrectsInformer>
-      }
+      <EditContainerCorrectsInformer
+        corrects={ccom?.corrects.name}
+        className="flex"
+      >
+        <IconSchoolReportCardStrokeRounded />
+        <div className="margin-gap-h">Название</div>
+        <KeyboardInput
+          value={ccom?.name}
+          className="full-width"
+          onChange={value => exec(ccom?.rename(value, exec))}
+        />
+      </EditContainerCorrectsInformer>
+      <div className="flex full-width between margin-gap-v">
+        <IconDashboardSpeed02StrokeRounded />
+        <div className="margin-gap-h nowrap">Ударов в минуту</div>
+        <KeyboardInput
+          value={'' + (ccom?.beatsPerMinute ?? '')}
+          // className="full-width"
+          onChange={value => exec(ccom.setField('bpm', +value, 0))}
+        />
+      </div>
       <div
         className="flex full-width between margin-gap-v pointer"
         onClick={event => {
@@ -43,7 +56,7 @@ export default function EditableCompositionMain() {
           exec();
         }}
       >
-        <EvaIcon name="flag-outline" />
+        <IconFlag03StrokeRounded />
         <div className="title half-width text-center">Язык</div>
         <div className="half-width text-center">{ccom.langn}</div>
       </div>
@@ -54,7 +67,7 @@ export default function EditableCompositionMain() {
           exec(ccom.setField('b', ccom.isBemoled === 1 ? 0 : 1, 0));
         }}
       >
-        <EvaIcon name="hash-outline" />
+        <IconGridStrokeRounded />
         <div className="title half-width  text-center">Сделать {ccom.isBemoled ? 'диезным' : 'бемольным'}</div>
         <div className="half-width" />
       </div>
@@ -65,7 +78,7 @@ export default function EditableCompositionMain() {
             confirm(`Удалить песню "${ccom.name}"?`).then(isRemove => isRemove && exec(ccom.remove()));
           }}
         >
-          <EvaIcon name="trash-2-outline" />
+          <IconDelete01StrokeRounded />
           <div className="title half-width text-center">Удалить песню</div>
           <div className="half-width" />
         </div>

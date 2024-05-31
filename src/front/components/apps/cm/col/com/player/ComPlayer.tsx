@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import JesmylLogo from '../../../../../../complect/jesmyl-logo/JesmylLogo';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconPauseStrokeRounded } from '@icons/pause';
+import { IconPlayStrokeRounded } from '@icons/play';
 import './ComPlayer.scss';
 import ComPlayerTrack from './ComPlayerTrack';
 
@@ -95,8 +97,8 @@ export default function ComPlayer({ src, split }: { src: string; split?: string 
               <span className="error-message">Файл не найден</span>
             ) : (
               <>
-                <EvaButton
-                  name={`${isPlay ? 'pause' : 'play'}-circle`}
+                <IconButton
+                  Icon={isPlay ? IconPauseStrokeRounded : IconPlayStrokeRounded}
                   onClick={() => {
                     const toggle = () => {
                       if (isPlay) player.pause();

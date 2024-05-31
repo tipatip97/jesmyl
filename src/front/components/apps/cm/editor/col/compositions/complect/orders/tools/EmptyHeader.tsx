@@ -1,5 +1,6 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
+import { IconMessage01StrokeRounded } from '@icons/message-01';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsEmptyHeader = ({
@@ -13,8 +14,8 @@ export const OrdersRedactorOrderToolsEmptyHeader = ({
 
   return (
     <>
-      <EvaButton
-        name="message-square-outline"
+      <IconButton
+        Icon={IconMessage01StrokeRounded}
         postfix={`${props.ord.isEmptyHeader ? 'Вернуть' : 'Убрать'} название блока`}
         onClick={() => {
           exec(

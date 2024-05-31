@@ -1,8 +1,11 @@
 import { CSSProperties, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import EvaIcon from '../../../../../../../complect/eva-icon/EvaIcon';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconFlag03StrokeRounded } from '@icons/flag-03';
+import { IconLinkBackwardStrokeRounded } from '@icons/link-backward';
+import { IconPinStrokeRounded } from '@icons/pin';
 import { ChordVisibleVariant } from '../../../../Cm.model';
 import ComLine from '../../../../col/com/line/ComLine';
 import { OrderRepeats } from '../../../../col/com/order/Order.model';
@@ -114,15 +117,13 @@ export default function ComRepeats() {
                     {props.headerNode}
                     {ord.top.watchOrd ? (
                       <>
-                        <EvaIcon
-                          name="undo-outline"
+                        <IconLinkBackwardStrokeRounded
                           className="vertical-middle pointer margin-gap-h"
                           onClick={() => {
                             ord.top.watchOrd?.element?.scrollIntoView();
                           }}
                         />
-                        <EvaIcon
-                          name="pin-outline"
+                        <IconPinStrokeRounded
                           className={`vertical-middle pointer ${ord.isInheritValue('r') ? 'disabled' : ''}`}
                           onClick={() => {
                             confirm('Очистить собственные правила повторения?').then(isClear => {
@@ -263,7 +264,7 @@ export default function ComRepeats() {
                         reset();
                       }}
                     >
-                      <EvaIcon name="close-outline" />
+                      <IconCancel01StrokeRounded />
                     </div>
                     {!flashes.length || (
                       <ComRepeatsRemoveButton
@@ -301,7 +302,7 @@ export default function ComRepeats() {
                           reset();
                         }}
                       >
-                        <EvaIcon name="flag-outline" />
+                        <IconFlag03StrokeRounded />
                       </div>
                     )}
                   </div>

@@ -1,7 +1,11 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import mylib from '../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconArrowRight02StrokeRounded } from '@icons/arrow-right-02';
+import { IconCalendar03StrokeRounded } from '@icons/calendar-03';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
 import { RootState } from '../../../../../shared/store';
 import ComFace from '../../col/com/face/ComFace';
 import { ExecVision } from '../CmEditor.model';
@@ -59,10 +63,7 @@ export default function ExecsVisor() {
                       className={event ? '' : 'error-message'}
                       onClick={() => eventw && goToEvent(eventw)}
                     >
-                      <EvaIcon
-                        name="calendar-outline"
-                        className="vertical-middle margin-gap"
-                      />
+                      <IconCalendar03StrokeRounded className="vertical-middle margin-gap" />
                       <span className={`vertical-middle `}>{event ? event.name : 'Неизвестное событие'}</span>
                     </div>
                   );
@@ -122,7 +123,11 @@ export default function ExecsVisor() {
                   );
                 }}
               >
-                {<EvaIcon name={lookList.indexOf(exec.ts) < 0 ? 'eye-outline' : 'eye-off-outline'} />}
+                {
+                  <IconButton
+                    Icon={lookList.indexOf(exec.ts) < 0 ? IconViewStrokeRounded : IconViewOffSlashStrokeRounded}
+                  />
+                }
               </span>
             </div>
             {exec.ts && <div>{new Date(exec.ts * 1000).toLocaleString()}</div>}
@@ -134,7 +139,7 @@ export default function ExecsVisor() {
               <>
                 <div>Изменение:</div>
                 {exec.prevNode}
-                <EvaIcon name="arrow-forward-outline" />
+                <IconArrowRight02StrokeRounded />
                 {exec.valueNode}
               </>
             )}

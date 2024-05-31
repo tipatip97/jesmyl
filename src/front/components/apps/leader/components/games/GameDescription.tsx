@@ -2,6 +2,7 @@ import { useState } from 'react';
 import StrongEditableField from '../../../../../complect/strong-control/field/StrongEditableField';
 import { TeamGameImportable } from '../../Leader.model';
 import { LeaderCleans } from '../LeaderCleans';
+import { IconFile02StrokeRounded } from '@icons/file-02';
 
 const newl2moreReg = /\n{2,}/;
 const newlReg = /\n/;
@@ -60,7 +61,7 @@ export function GameDescription({ game, redactable }: { game: TeamGameImportable
         value={value}
         multiline
         title="Рейт. калькулятор"
-        icon={redactable && 'file-text-outline'}
+        Icon={redactable && IconFile02StrokeRounded}
         onSend={redactable && (dsc => LeaderCleans.setGameDescription(game.w, dsc))}
         isRedact={redactable}
         setSelfRedact={redactable}

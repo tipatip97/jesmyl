@@ -1,12 +1,16 @@
 import { useBottomPopup } from '../../../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
+import { IconArrowDataTransferVerticalStrokeRounded } from '@icons/arrow-data-transfer-vertical';
+import { IconEdit02StrokeRounded } from '@icons/edit-02';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import TheOrder from '../../../../../col/com/order/TheOrder';
 import { EditableCom } from '../../EditableCom';
 import { useEditableCcom } from '../../useEditableCcom';
-import { OrdersRedactorAdditions } from './additions/Additions';
 import { OrdersRedactorOrderTools } from './OrdersRedactorOrderTools';
+import { OrdersRedactorAdditions } from './additions/Additions';
 
 export default function OrdersRedactor() {
   const ccom = useEditableCcom();
@@ -32,13 +36,13 @@ export default function OrdersRedactor() {
         const blockHeader = ord.top.isInherit ? `${leadHeader} ${ord.type}` : leadHeader;
 
         const editNode = !ord.top.isAnchorInherit && (
-          <EvaIcon
-            name="edit-outline"
+          <IconEdit02StrokeRounded
             className="margin-gap-h pointer vertical-middle"
             onClick={() => openToolsPopup({ blockHeader, ccom, ord, ordi })}
           />
         );
         const isWithHead = ord.isWithHead();
+        const Icon = ord.isVisible ? IconViewStrokeRounded : IconViewOffSlashStrokeRounded;
 
         return (
           <div
@@ -47,8 +51,7 @@ export default function OrdersRedactor() {
           >
             <div className="margin-big-gap-h">
               {isWithHead ? null : ord.top.isAnchorInherit ? (
-                <EvaIcon
-                  name={ord.isVisible ? 'eye-outline' : 'eye-off-outline'}
+                <Icon
                   onClick={() => {
                     exec(
                       ord.setField('v', ord.antiIsVisible, {
@@ -77,10 +80,8 @@ export default function OrdersRedactor() {
               }}
             />
             {ccom.isImpossibleToMigrateOrder(ord, ordi, orda) || (
-              <EvaIcon
-                name="swap-outline"
+              <IconArrowDataTransferVerticalStrokeRounded
                 className={`pointer ${ccom.isCantMigrateOrder(ord, ordi) ? 'disabled' : ''}`}
-                style={{ transform: 'rotate(90deg)' }}
                 onClick={() => exec(ccom.migrateOrder(ord))}
               />
             )}
@@ -88,8 +89,7 @@ export default function OrdersRedactor() {
         );
       })}
       <div className="flex">
-        <EvaIcon
-          name="plus-circle-outline"
+        <IconPlusSignCircleStrokeRounded
           className="pointer margin-gap-h"
           onClick={() => openAddsPopup(ccom)}
         />

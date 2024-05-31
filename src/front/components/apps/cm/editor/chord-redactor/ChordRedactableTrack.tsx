@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import { ChordTrack } from '../../col/com/chord-card/ChordCard.model';
 import ChordCardTracked from '../../col/com/chord-card/ChordCardTracked';
 
@@ -158,10 +158,7 @@ export default function ChordRedactableTrack({
           }}
         />
         {redactableChord.length < 6 && (
-          <EvaButton
-            name="plus-circle"
-            onClick={() => modifyTrack(track => track.push(0))}
-          />
+          <IconPlusSignCircleStrokeRounded onClick={() => modifyTrack(track => track.push(0))} />
         )}
       </div>
     </>

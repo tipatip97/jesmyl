@@ -1,7 +1,8 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import { useConfirm } from '../../../../../../../../../complect/modal/confirm/useConfirm';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
+import { IconDelete02StrokeRounded } from '@icons/delete-02';
 
 export const OrdersRedactorOrderToolsAnchorDelete = ({
   props: { ccom, ord, blockHeader },
@@ -16,8 +17,8 @@ export const OrdersRedactorOrderToolsAnchorDelete = ({
   return (
     <>
       {confirmNode}
-      <EvaButton
-        name="trash-outline"
+      <IconButton
+        Icon={IconDelete02StrokeRounded}
         className="color--ko"
         postfix={`Удалить ${ord.isAnchor ? 'ссылку на ' : ''} ${blockHeader}`}
         onClick={async () => {

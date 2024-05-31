@@ -1,5 +1,8 @@
 import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
+import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconSquareStrokeRounded } from '@icons/square';
 import { takeStrongScopeMaker } from '../../../useScheduleWidget';
 import { ScheduleChListAtt } from './checkListAtt';
 
@@ -31,7 +34,7 @@ export default function ScheduleCheckListAtt({
               className={'self-start relative z-index:15 color--3 ' + (isDone ? 'fade-05' : '')}
               cud="U"
               isCanSend={!!scope}
-              name={isDone ? 'checkmark-square-outline' : 'square-outline'}
+              Icon={isDone ? IconCheckmarkSquare02StrokeRounded : IconSquareStrokeRounded}
             />
             <StrongEditableField
               scope={itemScope}
@@ -48,7 +51,7 @@ export default function ScheduleCheckListAtt({
         <StrongEvaButton
           scope={attScope}
           fieldName=""
-          name="plus"
+          Icon={IconPlusSignStrokeRounded}
           prefix="Пункт"
         />
       )}

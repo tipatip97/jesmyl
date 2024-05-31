@@ -1,4 +1,6 @@
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconDelete02StrokeRounded } from '@icons/delete-02';
+import { IconPauseStrokeRounded } from '@icons/pause';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTeamImportable } from '../../teams/GameTeams.model';
@@ -22,8 +24,8 @@ export default function TimerControlBoardCellItemStopButton({
   return (
     <>
       {!timer.finishes?.[team.w] ? (
-        <EvaButton
-          name="pause-circle-outline"
+        <IconButton
+          Icon={IconPauseStrokeRounded}
           className="finish-button"
           disabled={!LeaderCleans.getTimerStartTs(timer, game, rowi)}
           onClick={event => {
@@ -34,8 +36,8 @@ export default function TimerControlBoardCellItemStopButton({
           }}
         />
       ) : (
-        <EvaButton
-          name="trash-2-outline"
+        <IconButton
+          Icon={IconDelete02StrokeRounded}
           className="reset-button"
           confirm="Сбросить результат"
           onClick={event => {

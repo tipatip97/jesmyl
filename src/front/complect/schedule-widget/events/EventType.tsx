@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Dropdown from '../../dropdown/Dropdown';
-import EvaButton from '../../eva-icon/EvaButton';
-import EvaIcon from '../../eva-icon/EvaIcon';
 import useModal from '../../modal/useModal';
 import { MyLib } from '../../my-lib/MyLib';
 import StrongDiv from '../../strong-control/StrongDiv';
 import StrongDropdown from '../../strong-control/StrongDropdown';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
 import StrongClipboardPicker from '../../strong-control/field/clipboard/Picker';
+import { IconAlert02StrokeRounded } from '@icons/alert-02';
+import { IconAttachmentStrokeRounded } from '@icons/attachment';
+import { IconClock01StrokeRounded } from '@icons/clock-01';
+import { IconEdit02StrokeRounded } from '@icons/edit-02';
+import { IconSchoolReportCardStrokeRounded } from '@icons/school-report-card';
 import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from '../ScheduleWidget.model';
 import ScheduleWidgetBindAtts from '../atts/BindAtts';
 import { AttTranslatorType, attTranslatorTypes } from '../complect/attTranslatorType';
@@ -66,10 +69,7 @@ export default function ScheduleWidgetEventType(props: {
       {modalNode}
       {props.isRedact || (
         <div className="flex flex-end full-width absolute pos-top pos-right margin-sm-gap z-index:5">
-          <EvaButton
-            name="edit-outline"
-            onClick={screen}
-          />
+          <IconEdit02StrokeRounded onClick={screen} />
         </div>
       )}
       <SelectItem
@@ -94,7 +94,7 @@ export default function ScheduleWidgetEventType(props: {
           fieldName="field"
           value={props.typeBox.title}
           isRedact={props.isRedact}
-          icon="credit-card-outline"
+          Icon={IconSchoolReportCardStrokeRounded}
           title="Название"
           isImpossibleEmptyValue
           onChange={value => {
@@ -125,7 +125,7 @@ export default function ScheduleWidgetEventType(props: {
         />
         {typesError[props.typei] && (
           <div className="flex flex-gap center error-message">
-            <EvaIcon name="alert-circle-outline" />
+            <IconAlert02StrokeRounded />
             {typesError[props.typei]}
           </div>
         )}
@@ -137,7 +137,7 @@ export default function ScheduleWidgetEventType(props: {
           postfix=" мин"
           isRedact={props.isRedact}
           title="Продолжительность, мин"
-          icon="clock-outline"
+          Icon={IconClock01StrokeRounded}
         />
         {props.isRedact ? (
           <ScheduleWidgetBindAtts
@@ -179,7 +179,7 @@ export default function ScheduleWidgetEventType(props: {
           !attEntries || (
             <div>
               <div className="flex flex-gap">
-                <EvaIcon name="attach-2-outline" />
+                <IconAttachmentStrokeRounded />
                 Вложения
               </div>
             </div>

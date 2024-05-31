@@ -1,10 +1,11 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
+import TheIcon from '../../../../../../complect/the-icon/TheIcon';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import useIsRedactArea from '../../../../../../complect/useIsRedactArea';
 import { ContextFieldBlankExportable, contextFieldBlankTypeDictAliases } from './Blanks.model';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
 
 export default function ContextFieldBlank({
   blank,
@@ -99,8 +100,7 @@ export default function ContextFieldBlank({
       <div className="margin-gap padding-gap border--3 relative">
         <div className="flex flex-end full-width">
           {addition ? (
-            <EvaIcon
-              name="close"
+            <IconCancel01StrokeRounded
               onClick={async () => {
                 if (await confirm(`Удалить бланк ${name || key}?`)) onDelete?.();
               }}

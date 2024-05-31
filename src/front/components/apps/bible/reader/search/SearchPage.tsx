@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import EvaCheckbox from '../../../../../complect/eva-icon/EvaCheckbox';
+import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
@@ -33,12 +33,12 @@ export const BibleReaderSearchPage = () => {
       content={
         <>
           <div className="full-size">
-            <EvaCheckbox
+            <IconCheckbox
               checked={searchZone === 'global'}
               postfix="Глобальный поиск"
               onChange={() => justBibleStorageSet('translationSearchZone', 'global')}
             />
-            <EvaCheckbox
+            <IconCheckbox
               checked={searchZone === 'inner' && innerZone === 'book'}
               postfix={
                 <>
@@ -50,7 +50,7 @@ export const BibleReaderSearchPage = () => {
                 setInnerZone('book');
               }}
             />
-            <EvaCheckbox
+            <IconCheckbox
               checked={searchZone === 'inner' && innerZone === 'chapter'}
               postfix={
                 <>

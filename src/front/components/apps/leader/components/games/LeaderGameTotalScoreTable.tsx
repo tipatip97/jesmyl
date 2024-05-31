@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import TheIcon from '../../../../../complect/the-icon/TheIcon';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import { TeamGameImportable } from '../../Leader.model';
 import { LeaderCleans } from '../LeaderCleans';
@@ -9,6 +9,9 @@ import LeaderGameTimerMaster from './timers/GameTimerMaster';
 import TimerRatingBoard from './timers/complect/TimerRatingBoard';
 import TimerSortRatingVariantSelector from './timers/complect/TimerSortRatingVariantSelector';
 import { MyLib } from '../../../../../complect/my-lib/MyLib';
+import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
+import { IconBrowserStrokeRounded } from '@icons/browser';
 
 const itIt = (it: unknown) => it;
 
@@ -93,11 +96,13 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
                 )
               }
             >
-              <EvaIcon name={expandedTimers.includes(timer.w) ? 'chevron-up' : 'chevron-down'} />
+              <IconButton
+                Icon={expandedTimers.includes(timer.w) ? IconArrowUp01StrokeRounded : IconArrowDown01StrokeRounded}
+              />
               <span className="color--3">Таймер</span>
               <span className="color--7">{timer.name}</span>
-              <EvaButton
-                name="browser-outline"
+              <IconButton
+                Icon={IconBrowserStrokeRounded}
                 onClick={event => {
                   event.stopPropagation();
 

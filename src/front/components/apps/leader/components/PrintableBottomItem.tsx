@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 import { renderComponentInNewWindow } from '../../../../..';
 import { BottomPopupContenterPreparer } from '../../../../complect/absolute-popup/bottom-popup/model';
-import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
+import { IconEyeStrokeRounded } from '@icons/eye';
+import { IconPrinterStrokeRounded } from '@icons/printer';
 
 export default function PrintableBottomItem({
   node,
@@ -24,11 +25,10 @@ export default function PrintableBottomItem({
         items: [
           {
             title,
-            icon: 'printer-outline',
+            Icon: IconPrinterStrokeRounded,
             onClick: () => renderComponentInNewWindow(node),
             rightNode: (
-              <EvaIcon
-                name="eye-outline"
+              <IconEyeStrokeRounded
                 onClick={event => {
                   event.stopPropagation();
                   openFullscreenContent();

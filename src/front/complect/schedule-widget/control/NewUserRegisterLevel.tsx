@@ -1,5 +1,6 @@
 import { scheduleWidgetUserRights } from '../../../models';
-import EvaButton from '../../eva-icon/EvaButton';
+import IconButton from '../../the-icon/IconButton';
+import { IconArrowRight01StrokeRounded } from '@icons/arrow-right-01';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
@@ -26,8 +27,8 @@ export default function ScheduleWidgetNewUserRegisterLevel({ scope }: StrongComp
   return (
     <>
       {newUserRightsNode}
-      <EvaButton
-        name="chevron-right"
+      <IconButton
+        Icon={IconArrowRight01StrokeRounded}
         className="margin-big-gap-v margin-gap-l"
         prefix="Права по умолчанию"
         onClick={openNewUserRights}

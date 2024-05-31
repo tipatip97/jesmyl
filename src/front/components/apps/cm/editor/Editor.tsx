@@ -18,12 +18,13 @@ export default function Editor() {
       headTitle="Редактор"
       content={
         <>
-          {editorRouteItems.map(({ data: { icon, title } = {}, phase, accessLevel }) => {
+          {editorRouteItems.map(({ data: { iconSelfPack, title } = {}, phase, accessLevel }) => {
             return (
-              (accessLevel == null || checkIsAccessed(accessLevel)) && (
+              (accessLevel == null || checkIsAccessed(accessLevel)) &&
+              iconSelfPack && (
                 <BrutalItem
-                  key={`${icon} ${phase}`}
-                  icon={icon || 'question-mark-circle'}
+                  key={`${iconSelfPack.name} ${phase}`}
+                  icon={<iconSelfPack.TwotoneRounded />}
                   title={title || ''}
                   onClick={() => goTo(phase)}
                 />

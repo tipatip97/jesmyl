@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import EvaButton from '../../../eva-icon/EvaButton';
+import IconButton from '../../../the-icon/IconButton';
+import { IconQrCodeStrokeRounded } from '@icons/qr-code';
 import useModal from '../../../modal/useModal';
 import useQRMaster from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
@@ -65,8 +66,8 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
     <>
       {modalNode}
       {qrNode}
-      <EvaButton
-        name="qr-code"
+      <IconButton
+        Icon={IconQrCodeStrokeRounded}
         onClick={() =>
           readQR(data => {
             if (data.appName === 'index' && data.key === 'passport') setPassport(data.value);

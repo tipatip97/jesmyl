@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
+import { IconMinusSignCircleStrokeRounded } from '@icons/minus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import { LeaderCleans } from '../LeaderCleans';
 import HumanList from '../people/HumanList';
 
@@ -17,16 +18,14 @@ const getHumanList = (
         list={isWholeList ? undefined : list}
         asHumanMore={human => {
           return list.indexOf(human.w) < 0 ? (
-            <EvaIcon
-              name="plus-circle-outline"
+            <IconPlusSignCircleStrokeRounded
               onClick={event => {
                 event.stopPropagation();
                 updater([...list, human.w]);
               }}
             />
           ) : (
-            <EvaIcon
-              name="minus-circle-outline"
+            <IconMinusSignCircleStrokeRounded
               onClick={event => {
                 event.stopPropagation();
                 updater(list.filter(wid => wid !== human.w));

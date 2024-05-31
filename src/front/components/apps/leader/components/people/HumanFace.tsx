@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { IconAlien02StrokeRounded } from '@icons/alien-02';
+import { IconFlowerPotStrokeRounded } from '@icons/flower-pot';
+import { IconMoreVerticalCircle01StrokeRounded } from '@icons/more-vertical-circle-01';
 import { useLeaderCcontext } from '../contexts/useContexts';
 import { HumanMoreContenter } from './HumanMore';
 import { HumanImportable } from './People.model';
@@ -37,7 +39,7 @@ export default function HumanFace({
       >
         <div className="face-wrapper">
           <span className="face-logo">
-            <EvaIcon name={`${human.isMan ? 'car' : 'gift'}-outline`} />
+            {human.isMan ? <IconAlien02StrokeRounded /> : <IconFlowerPotStrokeRounded />}
           </span>
           <span className={`face-title ${human.isInactive ? 'text-strike' : ''}`}>
             <span className="color--3">{human.name}</span>
@@ -46,8 +48,7 @@ export default function HumanFace({
         </div>
         {asMore?.(human) ||
           (onMoreClick && (
-            <EvaIcon
-              name="more-vertical"
+            <IconMoreVerticalCircle01StrokeRounded
               onClick={event => {
                 event.stopPropagation();
                 onMoreClick();

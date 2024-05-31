@@ -165,13 +165,15 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
 
   async paste(position?: 'before' | 'after') {
     if (this.isDisabled) return;
-    const val = await navigator.clipboard.readText();
-    const value = this.type === 'number' ? val.replace(/\D+/g, '') : val;
-    if (value && position) {
-      this.isSelected = false;
-      this.setCursorPosition(position === 'before' ? Math.min(...this.selected) : Math.max(...this.selected));
-    }
-    value && this.write(value, true);
+    try {
+      const val = await navigator.clipboard.readText();
+      const value = this.type === 'number' ? val.replace(/\D+/g, '') : val;
+      if (value && position) {
+        this.isSelected = false;
+        this.setCursorPosition(position === 'before' ? Math.min(...this.selected) : Math.max(...this.selected));
+      }
+      value && this.write(value, true);
+    } catch (error) {}
   }
 
   copy() {

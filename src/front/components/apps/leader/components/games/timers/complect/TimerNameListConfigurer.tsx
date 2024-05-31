@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import SendButton from '../../../../../../../complect/sends/send-button/SendButton';
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
+import SendButton from '../../../../../../../complect/sends/send-button/SendButton';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import useIsRedactArea from '../../../../../../../complect/useIsRedactArea';
 
 export default function TimerNameListConfigurer({
@@ -47,8 +47,7 @@ export default function TimerNameListConfigurer({
               );
             })}
             {!names.some(name => !name) && (
-              <EvaButton
-                name="plus-circle"
+              <IconPlusSignCircleStrokeRounded
                 className="color--ok"
                 onClick={() => updateNames([...names, ''])}
               />

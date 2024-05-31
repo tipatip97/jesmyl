@@ -1,5 +1,7 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffStrokeRounded } from '@icons/view-off';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsVisibility = ({
@@ -12,8 +14,8 @@ export const OrdersRedactorOrderToolsVisibility = ({
   const exec = useExerExec();
 
   return (
-    <EvaButton
-      name={`eye${ord.isVisible ? '-off' : ''}-outline`}
+    <IconButton
+      Icon={ord.isVisible ? IconViewOffStrokeRounded : IconViewStrokeRounded}
       postfix={ord.isVisible ? 'Скрыть блок' : 'Показать блок'}
       onClick={async () => {
         closePopup();

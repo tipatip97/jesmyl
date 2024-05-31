@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
-import SendButton from '../../../../../../complect/sends/send-button/SendButton';
-import EvaIcon from '../../../../../../complect/eva-icon/EvaIcon';
 import { ClientExecutionDict } from '../../../../../../complect/exer/Exer.model';
 import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
+import SendButton from '../../../../../../complect/sends/send-button/SendButton';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import { leaderExer } from '../../../Leader.store';
 import { useLeaderCcontext } from '../../contexts/useContexts';
 import { ContextFieldBlankExportable } from './Blanks.model';
@@ -38,8 +38,7 @@ export default function GroupFieldBlanks() {
       <h2 className="flex flex-gap">
         Бланки специальных полей
         {isCanAddNew && (
-          <EvaIcon
-            name="plus"
+          <IconPlusSignStrokeRounded
             className="pointer"
             onClick={() => {
               updateAddList([

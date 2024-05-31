@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import TheButton from '../../../../../../complect/Button';
 import Dropdown from '../../../../../../complect/dropdown/Dropdown';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import mylib from '../../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconClock01StrokeRounded } from '@icons/clock-01';
 import GamerRoomMemberList from '../../../complect/GamerRoomMemberList';
 import { useGamerRoomPlayers } from '../../../complect/rooms/room/hooks/players';
 import { useMyPossibilitiesCurrentRoom } from '../../../complect/rooms/room/hooks/possibilities';
@@ -49,8 +50,8 @@ export const AliasRoomInitialContent = () => {
             stateRef={dictsRef}
           />
           <div className="flex flex-gap margin-gap-v dropdown-ancestor">
-            <EvaButton
-              name="clock-outline"
+            <IconButton
+              Icon={IconClock01StrokeRounded}
               className="nowrap"
               postfix="Время раунда"
             />

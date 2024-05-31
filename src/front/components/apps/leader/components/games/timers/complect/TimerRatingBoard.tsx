@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import CopyTextButton from '../../../../../../../complect/CopyTextButton';
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
 import EvaSendButton from '../../../../../../../complect/sends/eva-send-button/EvaSendButton';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconArrowDown02StrokeRounded } from '@icons/arrow-down-02';
+import { IconArrowUp02StrokeRounded } from '@icons/arrow-up-02';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTimerImportable, GameTimerSortDirection } from '../GameTimer.model';
@@ -53,7 +57,7 @@ export default function TimerRatingBoard({
           <div className="flex flex-gap">
             {withoutControls || (
               <EvaSendButton
-                name={sortDirection ? 'arrow-downward-outline' : 'arrow-upward-outline'}
+                Icon={sortDirection ? IconArrowUp02StrokeRounded : IconArrowDown02StrokeRounded}
                 onSend={() => {
                   const val = +!sortDirection;
                   setSortDirection(val);
@@ -81,8 +85,8 @@ export default function TimerRatingBoard({
                       pause={finish}
                     />
                     {withoutControls || (
-                      <EvaButton
-                        name={isHidden ? 'eye-outline' : 'eye-off-outline'}
+                      <IconButton
+                        Icon={isHidden ? IconViewStrokeRounded : IconViewOffSlashStrokeRounded}
                         onClick={() =>
                           setHiddenTeams(list =>
                             isHidden ? list.filter(teamw => teamw !== team.w) : [...list, team.w],

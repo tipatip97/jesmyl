@@ -1,4 +1,6 @@
 import useIsExpand from '../../../../../complect/expand/useIsExpand';
+import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
 import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
 import { useSpyToggleLocation } from './hooks/actions';
 import { useSpyCleanLocations, useSpyLocations } from './hooks/locations';
@@ -24,7 +26,7 @@ export default function SpyRoomLocationsInGame() {
           return (
             <EvaSendButton
               key={location}
-              name={strikedLoc ? 'close-circle-outline' : 'checkmark-circle-2-outline'}
+              Icon={strikedLoc ? IconHelpCircleStrokeRounded : IconCheckmarkCircle02StrokeRounded}
               className={'margin-gap-t ' + (strikedLoc ? ' text-strike ' : '') + (strikedLoc ? ' color--ko ' : '')}
               postfix={location}
               onSend={() => onToggleLocation(secretLoc ?? location)}

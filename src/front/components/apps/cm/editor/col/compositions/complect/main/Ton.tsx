@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
-import EvaCheckbox from '../../../../../../../../complect/eva-icon/EvaCheckbox';
-import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../complect/modal/useModal';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../../../../../complect/the-icon/IconCheckbox';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconNotification01StrokeRounded } from '@icons/notification-01';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import ComOrders from '../../../../../col/com/orders/ComOrders';
 import { EditableCom } from '../../EditableCom';
@@ -31,7 +33,7 @@ export const EditableCompositionMainTon = ({ ccom }: { ccom: EditableCom }) => {
             />
             {dotts.map(position => {
               return (
-                <EvaCheckbox
+                <IconCheckbox
                   key={position}
                   checked={position === ccom.transPosition}
                   disabled={position === ccom.transPosition}
@@ -51,13 +53,13 @@ export const EditableCompositionMainTon = ({ ccom }: { ccom: EditableCom }) => {
         <>
           {footer(
             <div className="flex flex-big-gap">
-              <EvaButton
-                name="checkmark-circle"
+              <IconButton
+                Icon={IconCheckmarkCircle02StrokeRounded}
                 postfix="Подтвердить"
                 onClick={close}
               />
-              <EvaButton
-                name="close"
+              <IconButton
+                Icon={IconCancel01StrokeRounded}
                 postfix="Отмена"
                 className="color--ko"
                 onClick={() => {
@@ -78,7 +80,7 @@ export const EditableCompositionMainTon = ({ ccom }: { ccom: EditableCom }) => {
       onClick={openModal}
     >
       {modalNode}
-      <EvaIcon name="bell-outline" />
+      <IconNotification01StrokeRounded />
       <div className="title half-width text-center">Изменить тональность</div>
       <div className="half-width text-center">{ccom.firstChord}</div>
     </div>

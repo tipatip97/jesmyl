@@ -1,5 +1,6 @@
-import EvaButton from '../../../../../../../../../complect/eva-icon/EvaButton';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
+import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
+import { IconLink02StrokeRounded } from '@icons/link-02';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsHiddenOnMin = ({
@@ -13,8 +14,8 @@ export const OrdersRedactorOrderToolsHiddenOnMin = ({
 
   return (
     <>
-      <EvaButton
-        name="link-outline"
+      <IconButton
+        Icon={IconLink02StrokeRounded}
         postfix={`${props.ord.isOpened ? 'Скрывать' : 'Показывать'} в свёрнутом режиме`}
         onClick={() => {
           exec(

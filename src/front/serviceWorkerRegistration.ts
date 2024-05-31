@@ -10,6 +10,9 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://cra.link/PWA
 
+let swRegistration: ServiceWorkerRegistration | null = null;
+export const checkIsThereNewSW = (cb: (reg: ServiceWorkerRegistration) => any) => swRegistration && cb(swRegistration);
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -61,6 +64,8 @@ function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
+      if (registration.waiting) swRegistration = registration;
+
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {

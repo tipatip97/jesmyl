@@ -1,5 +1,4 @@
-import EvaButton from '../../eva-icon/EvaButton';
-import EvaIcon from '../../eva-icon/EvaIcon';
+import IconButton from '../../the-icon/IconButton';
 import useIsExpand from '../../expand/useIsExpand';
 import useFullContent from '../../fullscreen-content/useFullContent';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
@@ -7,6 +6,9 @@ import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import ScheduleWidgetRoleList from '../control/roles/RoleList';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import { ScheduleWidgetListCategory } from './Category';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconLeftToRightListBulletStrokeRounded } from '@icons/left-to-right-list-bullet';
+import { IconArrowRight01StrokeRounded } from '@icons/arrow-right-01';
 
 export default function ScheduleWidgetLists({
   scope,
@@ -23,7 +25,7 @@ export default function ScheduleWidgetLists({
         <StrongEvaButton
           scope={listsScope}
           fieldName="cats"
-          name="plus"
+          Icon={IconPlusSignStrokeRounded}
           prefix="список"
           confirm="Создать новый список?"
         />
@@ -54,11 +56,11 @@ export default function ScheduleWidgetLists({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="list"
+      <IconButton
+        Icon={IconLeftToRightListBulletStrokeRounded}
         postfix={
           <>
-            Списки <EvaIcon name="chevron-right" />
+            Списки <IconArrowRight01StrokeRounded />
           </>
         }
         onClick={() => screen()}

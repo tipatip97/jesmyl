@@ -1,14 +1,25 @@
 import { useState } from 'react';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import StrongEvaButton from '../../../../../complect/strong-control/StrongEvaButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconArrangeStrokeRounded } from '@icons/arrange';
+import { IconCalendar03StrokeRounded } from '@icons/calendar-03';
+import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
+import { IconLinkBackwardStrokeRounded } from '@icons/link-backward';
+import { IconMinusSignSquareStrokeRounded } from '@icons/minus-sign-square';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconSquareStrokeRounded } from '@icons/square';
 import { ChordVisibleVariant } from '../../Cm.model';
 import { useCcat } from '../../col/cat/useCcat';
 import { Com } from '../../col/com/Com';
 import ComFace from '../../col/com/face/ComFace';
+import MeetingsInner from '../../lists/meetings/MeetingsInner';
+import { useMeetings } from '../../lists/meetings/useMeetings';
 import { CmComBindAttach } from '../cmExternalAttach';
 import TheComForFullScreen from './TheComForFullScreen';
+import { IconDelete01StrokeRounded } from '@icons/delete-01';
+import { IconArrowDataTransferVerticalStrokeRounded } from '@icons/arrow-data-transfer-vertical';
 
 const itIt = (it: unknown) => it;
 
@@ -29,6 +40,8 @@ export default function CmExternalComListAtt({
   const [ccom, setCcom] = useState<Com | und>();
   const cat = useCcat(true);
   const [term, setTerm] = useState(cat?.term || '');
+  const { meetings } = useMeetings();
+  const currentEvent = value.eventw == null ? null : meetings?.stack?.find(event => event.w === value.eventw!);
 
   const [comOrderNode, openComOrder] = useFullContent(() => {
     const comws = value.comws;
@@ -61,8 +74,8 @@ export default function CmExternalComListAtt({
                         beforei: comwi - 1,
                       }}
                       cud="U"
-                      name="swap"
-                      className="color--3 margin-giant-gap-b rotate-90"
+                      Icon={IconArrowDataTransferVerticalStrokeRounded}
+                      className="color--3 margin-giant-gap-b"
                     />
                   )}
                   <StrongEvaButton
@@ -71,7 +84,7 @@ export default function CmExternalComListAtt({
                     fieldKey="comws"
                     fieldValue={['.', '===', comw]}
                     cud="D"
-                    name="trash-2-outline"
+                    Icon={IconDelete01StrokeRounded}
                     onSuccess={
                       removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
                     }
@@ -104,7 +117,7 @@ export default function CmExternalComListAtt({
                         fieldKey="comws"
                         fieldValue={comw}
                         cud="C"
-                        name="undo-outline"
+                        Icon={IconLinkBackwardStrokeRounded}
                         className="color--ok"
                         onSuccess={
                           removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
@@ -120,17 +133,29 @@ export default function CmExternalComListAtt({
       </div>
     );
   });
+
   const [selectorNode] = useFullContent(
     () => {
       return (
         <div className="flex column full-height">
-          <EvaButton
-            name="sync"
-            className="margin-big-gap-v"
-            postfix="Порядок песен"
-            disabled={!value.comws || value.comws.length < 2}
-            onClick={() => openComOrder()}
-          />
+          <div className="flex around full-width margin-big-gap-v">
+            <IconButton
+              Icon={IconCalendar03StrokeRounded}
+              postfix={
+                <div className="flex column">
+                  <div>Событие</div>
+                  {<div className="fade-07">{currentEvent?.n}</div>}
+                </div>
+              }
+              onClick={() => showMeetingBinder()}
+            />
+            <IconButton
+              Icon={IconArrangeStrokeRounded}
+              postfix="Порядок песен"
+              disabled={!value.comws || value.comws.length < 2}
+              onClick={() => openComOrder()}
+            />
+          </div>
           {cat && (
             <>
               <DebouncedSearchInput
@@ -162,7 +187,7 @@ export default function CmExternalComListAtt({
                               fieldKey="comws"
                               fieldValue={['.', '===', wrap.com.wid]}
                               cud="D"
-                              name="minus-square-outline"
+                              Icon={IconMinusSignSquareStrokeRounded}
                               className="color--ko"
                             />
                           ) : (
@@ -172,7 +197,7 @@ export default function CmExternalComListAtt({
                               fieldKey="comws"
                               fieldValue={wrap.com.wid}
                               cud="C"
-                              name="plus-circle-outline"
+                              Icon={IconPlusSignCircleStrokeRounded}
                             />
                           )}
                         </div>
@@ -201,27 +226,59 @@ export default function CmExternalComListAtt({
     );
   });
 
+  const [meetingNode, showMeetingBinder] = useFullContent(() => {
+    return (
+      meetings && (
+        <MeetingsInner
+          meetings={meetings}
+          onEventClick={event => console.log(event)}
+          asEventBox={event =>
+            value.eventw === event.wid ? (
+              <StrongEvaButton
+                scope={scope}
+                fieldName="eventw"
+                cud="D"
+                Icon={IconCheckmarkSquare02StrokeRounded}
+              />
+            ) : (
+              <StrongEvaButton
+                scope={scope}
+                fieldName="eventw"
+                fieldValue={event.wid}
+                cud="U"
+                Icon={IconSquareStrokeRounded}
+              />
+            )
+          }
+        />
+      )
+    );
+  });
+
   return (
     <>
+      {meetingNode}
       {comOrderNode}
       {selectorNode}
       {compositionNode}
       {!value.comws?.length && <div>Песен нет</div>}
-      {value.comws?.map(comw => {
-        const com = cat?.coms.find(com => com.wid === comw);
-        if (com === undefined) return null;
+      {(currentEvent ? (value.comws ? [...currentEvent.s, ...value.comws] : currentEvent.s) : value.comws)?.map(
+        comw => {
+          const com = cat?.coms.find(com => com.wid === comw);
+          if (com === undefined) return null;
 
-        return (
-          <ComFace
-            key={comw}
-            com={com}
-            importantOnClick={() => {
-              setCcom(com);
-              showComposition();
-            }}
-          />
-        );
-      })}
+          return (
+            <ComFace
+              key={comw}
+              com={com}
+              importantOnClick={() => {
+                setCcom(com);
+                showComposition();
+              }}
+            />
+          );
+        },
+      )}
     </>
   );
 }

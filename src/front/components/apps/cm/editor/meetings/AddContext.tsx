@@ -4,6 +4,7 @@ import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 import { useEditableMeetings } from './useEditableMeetings';
+import { IconCalendar01StrokeRounded } from '@icons/calendar-01';
 
 export default function AddContext({ close, currPath }: { close: () => void; currPath: number[] }) {
   const [name, setName] = useState('');
@@ -44,7 +45,7 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
       return (
         <BrutalItem
           key={eventi}
-          icon="calendar-outline"
+          icon={<IconCalendar01StrokeRounded />}
           title={event.name}
           onClick={() => switchEvent(event)}
           box={

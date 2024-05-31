@@ -1,4 +1,5 @@
-import EvaButton from '../../../eva-icon/EvaButton';
+import IconButton from '../../../the-icon/IconButton';
+import { IconLeftToRightListBulletStrokeRounded } from '@icons/left-to-right-list-bullet';
 import { ScheduleWidgetAppAttCustomized } from '../../ScheduleWidget.model';
 
 const itIt = (it: unknown) => it;
@@ -7,8 +8,8 @@ export default function ScheduleWidgetCustomAttTitles({ tatt }: { tatt: Schedule
   return (
     <>
       <div className="flex flex-gap">
-        <EvaButton
-          name="list"
+        <IconButton
+          Icon={IconLeftToRightListBulletStrokeRounded}
           className="color--7"
         />
         <span className="color--7">Заголовки:</span>

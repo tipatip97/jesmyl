@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import useAbsoluteFloatPopup from '../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
 import mylib from '../../../../../complect/my-lib/MyLib';
+import { TheIconLoading } from '../../../../../complect/the-icon/IconLoading';
+import { IconAlert02StrokeRounded } from '@icons/alert-02';
+import { IconPauseStrokeRounded } from '@icons/pause';
 import { LeaderCommentImportable } from './LeaderComment.model';
 import useLeaderComments from './useLeaderComments';
 
@@ -69,17 +71,11 @@ export default function LeaderComment({
           <>
             <div />
             {isWaitedToSend ? (
-              <EvaIcon name="pause-circle-outline" />
+              <IconPauseStrokeRounded />
             ) : isError ? (
-              <EvaIcon
-                className="absolute pos-right error-message"
-                name="alert-circle-outline"
-              />
+              <IconAlert02StrokeRounded className="absolute pos-right error-message" />
             ) : (
-              <EvaIcon
-                className="rotate absolute pos-right"
-                name="loader-outline"
-              />
+              <TheIconLoading className="absolute pos-right" />
             )}
           </>
         ) : (

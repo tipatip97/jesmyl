@@ -1,6 +1,7 @@
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { IconLeftToRightListBulletStrokeRounded } from '@icons/left-to-right-list-bullet';
 import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import MeetingEventExpandList from './MeetingEventExpandList';
 import MeetingsInner from './MeetingsInner';
@@ -13,8 +14,8 @@ export default function TheMeetings() {
   const [popupNode, openPopup] = useBottomPopup(
     (isOpen, close) =>
       isOpen && (
-        <EvaButton
-          name="list"
+        <IconButton
+          Icon={IconLeftToRightListBulletStrokeRounded}
           postfix="Посмотреть заголовки"
           onClick={() => {
             openFullContent();

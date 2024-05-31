@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import EvaButton from '../../../../../../../complect/eva-icon/EvaButton';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconTickDouble02StrokeRounded } from '@icons/tick-double-02';
 import { CmMp3Rule } from '../../../../../../../models';
 import { RoutePhase } from '../../../../../../router/Router.model';
 import useCmNav from '../../../../base/useCmNav';
@@ -102,8 +103,8 @@ export default function NewComposition({ close }: { close: () => void }) {
             topMp3Rule={mp3Rule}
           />
         )}
-        <EvaButton
-          name="done-all-outline"
+        <IconButton
+          Icon={IconTickDouble02StrokeRounded}
           className="parse-com-data-button pointer margin-big-gap"
           onClick={() => {
             publicate();

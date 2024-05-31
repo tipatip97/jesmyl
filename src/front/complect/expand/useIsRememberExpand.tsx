@@ -1,6 +1,7 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { complectStorage } from '../Complect.store';
-import EvaIcon from '../eva-icon/EvaIcon';
+import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
 
 const isNIs = (is: boolean) => !is;
 let expandes: string[] = [];
@@ -47,7 +48,7 @@ export const useIsRememberExpand = (
         onClick={() => switchExpand()}
       >
         {prefix}
-        <EvaIcon name={isExpand ? 'chevron-up' : 'chevron-down'} />
+        {isExpand ? <IconArrowUp01StrokeRounded /> : <IconArrowDown01StrokeRounded />}
       </span>
       {typeof postfix === 'function' ? postfix(isExpand) : postfix}
     </span>,

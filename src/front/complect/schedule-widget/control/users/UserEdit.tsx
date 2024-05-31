@@ -3,6 +3,7 @@ import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../
 import { crossApplicationLinkCoder } from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
+import { IconUserStrokeRounded } from '@icons/user';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetRightControlList from '../RightControlList';
@@ -28,7 +29,7 @@ export function ScheduleWidgetUserEdit({
         isRedact
         setSelfRedact
         title="Имя"
-        icon="person-outline"
+        Icon={IconUserStrokeRounded}
         value={user.fio || user.nick}
         onUpdate={onUpdate && (value => onUpdate('fio', value))}
       />

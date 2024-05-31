@@ -1,12 +1,14 @@
 import { ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { IconSorting05StrokeRounded } from '@icons/sorting-05';
+import { IconUserAdd01StrokeRounded } from '@icons/user-add-01';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { RootState } from '../../../../../shared/store';
 import { leaderStoreActions } from '../../Leader.store';
 import HumanMaster from './HumanMaster';
 import { humanFieldTranslations } from './People.model';
-import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 
 const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
 
@@ -31,12 +33,12 @@ export const HumansMoreContenter: BottomPopupContenter<{
           items: [
             {
               title: 'Добавить нового участника',
-              icon: 'person-add-outline',
+              Icon: IconUserAdd01StrokeRounded,
               onClick: () => openHumanMaster(),
             },
             {
               title: 'Сортировать личности',
-              icon: 'bar-chart-2-outline',
+              Icon: IconSorting05StrokeRounded,
               onClick: event => {
                 event.stopPropagation();
                 const next = mylib.findNext(mylib.keys(humanFieldTranslations), humanListSortVariant);

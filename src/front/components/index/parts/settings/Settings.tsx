@@ -2,11 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppName, appNames } from '../../../../app/App.model';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
-import EvaButton from '../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
 import useToast from '../../../../complect/modal/useToast';
 import mylib from '../../../../complect/my-lib/MyLib';
 import Noty from '../../../../complect/notifications/Noti';
+import IconButton from '../../../../complect/the-icon/IconButton';
+import { IconArrowDownDoubleStrokeRounded } from '@icons/arrow-down-double';
+import { IconArrowUpDoubleStrokeRounded } from '@icons/arrow-up-double';
+import { IconCheckmarkSquare03StrokeRounded } from '@icons/checkmark-square-03';
+import { IconKeyboardStrokeRounded } from '@icons/keyboard';
+import { IconMessage01StrokeRounded } from '@icons/message-01';
+import { IconSourceCodeCircleStrokeRounded } from '@icons/source-code-circle';
+import { IconSquareStrokeRounded } from '@icons/square';
+import { IconTextStrokeRounded } from '@icons/text';
 import useApps from '../../../../complect/useApps';
 import { RootState } from '../../../../shared/store';
 import { soki } from '../../../../soki';
@@ -24,8 +31,6 @@ const statisticSelector = (state: RootState) => state.index.statistic;
 const appFontFamilySelector = (state: RootState) => state.index.appFontFamily;
 
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
-
-let pushTimestampDir = 0;
 
 export default function IndexSettings() {
   const auth = useAuth();
@@ -48,35 +53,30 @@ export default function IndexSettings() {
   const settingsList = [
     auth.level === 100 && (
       <BrutalItem
-        icon="code-download"
+        icon={<IconSourceCodeCircleStrokeRounded />}
         title="Консоль"
         onClick={() => goTo('console')}
       />
     ),
     <BrutalItem
-      icon="keypad-outline"
+      icon={<IconKeyboardStrokeRounded />}
       title="Фирменная клавиатура"
       onClick={async () => {
         dispatch(di.isUseNativeKeyboard());
       }}
-      box={<EvaIcon name={isUseNativeKeyboard ? 'square-outline' : 'checkmark-square-2-outline'} />}
+      box={isUseNativeKeyboard ? <IconSquareStrokeRounded /> : <IconCheckmarkSquare03StrokeRounded />}
     />,
     <BrutalItem
-      icon="message-square-outline"
+      icon={<IconMessage01StrokeRounded />}
       title="Проверить PUSH"
       onClick={() => {
         Noty.checkPermission()
           ?.then(res => toast(`PUSH состояние: ${res}`))
           .catch(() => toast('Ошибка при открытии PUSH', { mood: 'ko' }));
-
-        Noty.simpleNotify('Проверка PUSH', 'Успех!! ', {
-          data: { key: 'evennnt' },
-          timestamp: Date.now() + 300000 * (pushTimestampDir = +!pushTimestampDir),
-        });
       }}
     />,
     <BrutalItem
-      icon="text"
+      icon={<IconTextStrokeRounded />}
       title="Шрифт"
       box={
         <FontFamilySelector
@@ -120,8 +120,10 @@ export default function IndexSettings() {
                       <span className="color--7">Посещений за день </span>
                       {statistic.visits.length ? statistic.visits.length : ' нет'}
                       {(auth.level >= 80 || expands.includes('')) && (
-                        <EvaButton
-                          name={expands.includes('') ? 'chevron-up' : 'chevron-down'}
+                        <IconButton
+                          Icon={
+                            expands.includes('') ? IconArrowUpDoubleStrokeRounded : IconArrowDownDoubleStrokeRounded
+                          }
                           onClick={() =>
                             setExpands(expands.includes('') ? expands.filter(name => name !== '') : [...expands, ''])
                           }
@@ -146,8 +148,12 @@ export default function IndexSettings() {
                             <span className="color--3">Никого</span>
                           )}
                           {((!!visitorCount && auth.level >= 80) || expands.includes(appName)) && (
-                            <EvaButton
-                              name={expands.includes(appName) ? 'chevron-up' : 'chevron-down'}
+                            <IconButton
+                              Icon={
+                                expands.includes(appName)
+                                  ? IconArrowUpDoubleStrokeRounded
+                                  : IconArrowDownDoubleStrokeRounded
+                              }
                               onClick={() =>
                                 setExpands(
                                   expands.includes(appName)

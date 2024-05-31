@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { isTouchDevice } from '../../../../../complect/device-differences';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useMyPossibilitiesCurrentRoom } from '../../complect/rooms/room/hooks/possibilities';
 import { GamerAliasRoomStatePhase } from './Alias.model';
@@ -10,6 +11,7 @@ import { useAliasComputeScore } from './hooks/compute-score';
 import { useAliasCurrentTeamNaked } from './hooks/current-team';
 import { useAliasSimpleExecs, useAliasStrikeWord } from './hooks/execs';
 import { useAliasRoomState } from './hooks/state';
+import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
 
 const altWordInfo = { minus: 0, weight: 0, plus: 0 };
 
@@ -76,7 +78,7 @@ export default function AliasSpeakerContent() {
             <AboveButton className="flex column">
               <ScoreInc>+{plus}</ScoreInc>
               <Button
-                name="checkmark-circle-2-outline"
+                Icon={IconCheckmarkCircle02StrokeRounded}
                 className="color--ok"
                 disabled={isWordSending}
                 onPointerDown={sendWord('cor')}
@@ -86,7 +88,7 @@ export default function AliasSpeakerContent() {
             <AboveButton className="flex column">
               <ScoreInc>-{minus}</ScoreInc>
               <Button
-                name="close-circle-outline"
+                Icon={IconHelpCircleStrokeRounded}
                 className="color--ko"
                 disabled={isWordSending}
                 onPointerDown={sendWord('inc')}
@@ -116,7 +118,7 @@ const ScoreInc = styled.div`
   margin-bottom: 2.5em;
 `;
 
-const Button = styled(EvaButton)`
+const Button = styled(IconButton)`
   --icon-scale: 4;
 `;
 

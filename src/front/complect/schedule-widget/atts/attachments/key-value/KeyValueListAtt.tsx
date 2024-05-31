@@ -1,15 +1,25 @@
 import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
+import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
 import {
   CustomAttUseRights,
   CustomAttUseTaleId,
   ScheduleWidgetRightsCtrl,
   customAttUseRights,
 } from '../../../../../models';
-import EvaIcon from '../../../../eva-icon/EvaIcon';
 import mylib from '../../../../my-lib/MyLib';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
+import { IconArrowMoveLeftDownStrokeRounded } from '@icons/arrow-move-left-down';
+import { IconArrowMoveRightDownStrokeRounded } from '@icons/arrow-move-right-down';
+import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
+import { IconDelete02StrokeRounded } from '@icons/delete-02';
+import { IconLeftToRightListDashStrokeRounded } from '@icons/left-to-right-list-dash';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconSquareStrokeRounded } from '@icons/square';
+import { IconSquareArrowMoveLeftUpStrokeRounded } from '@icons/square-arrow-move-left-up';
+import { IconSquareArrowMoveRightUpStrokeRounded } from '@icons/square-arrow-move-right-up';
+import { IconTextStrokeRounded } from '@icons/text';
 import {
   IScheduleWidgetListUnit,
   IScheduleWidgetRole,
@@ -17,7 +27,6 @@ import {
   ScheduleWidgetAppAttCustomizableValue,
   ScheduleWidgetAppAttCustomized,
 } from '../../../ScheduleWidget.model';
-import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetRoleFace from '../../../control/roles/RoleFace';
 import ScheduleWidgetListUnitFace from '../../../lists/UnitFace';
 import {
@@ -67,14 +76,14 @@ export default function ScheduleKeyValueListAtt({
   if (isRedact) {
     checkboxes = customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Checkboxes) && (
       <div className="flex flex-gap margin-gap-v">
-        <EvaIcon name="checkmark-square-outline" />
+        <IconCheckmarkSquare02StrokeRounded />
         <span className="text-italic">Пункт</span>
         <StrongEvaButton
           scope={attScope}
           fieldName=""
           fieldKey={false}
           fieldValue=""
-          name="plus"
+          Icon={IconPlusSignStrokeRounded}
         />
       </div>
     );
@@ -91,10 +100,10 @@ export default function ScheduleKeyValueListAtt({
               key={titlei}
               className="flex flex-gap"
             >
-              <EvaIcon name="checkmark-square-outline" />
+              <IconCheckmarkSquare02StrokeRounded />
               {title}
               <StrongEvaButton
-                name="plus"
+                Icon={IconPlusSignStrokeRounded}
                 scope={attScope}
                 fieldName=""
                 fieldKey={false}
@@ -108,7 +117,7 @@ export default function ScheduleKeyValueListAtt({
             >
               {title}
               <StrongEvaButton
-                name="plus"
+                Icon={IconPlusSignStrokeRounded}
                 scope={attScope}
                 fieldName=""
                 fieldKey={title}
@@ -138,7 +147,7 @@ export default function ScheduleKeyValueListAtt({
             schedule={rights.schedule}
           />
           <StrongEvaButton
-            name="plus"
+            Icon={IconPlusSignStrokeRounded}
             scope={attScope}
             fieldName=""
             fieldKey={role.mi}
@@ -167,7 +176,7 @@ export default function ScheduleKeyValueListAtt({
           unit={unit}
           postfix={
             <StrongEvaButton
-              name="plus"
+              Icon={IconPlusSignStrokeRounded}
               scope={attScope}
               fieldName=""
               fieldKey={unit.mi + CustomAttUseTaleId.Lists}
@@ -198,10 +207,10 @@ export default function ScheduleKeyValueListAtt({
             key={user.mi}
             className="flex flex-gap"
           >
-            <EvaIcon name="checkmark-square-outline" />
+            <IconCheckmarkSquare02StrokeRounded />
             {user.fio || user.nick}
             <StrongEvaButton
-              name="plus"
+              Icon={IconPlusSignStrokeRounded}
               scope={attScope}
               fieldName=""
               fieldKey={false}
@@ -215,7 +224,7 @@ export default function ScheduleKeyValueListAtt({
           >
             {user.fio || user.nick}
             <StrongEvaButton
-              name="plus"
+              Icon={IconPlusSignStrokeRounded}
               scope={attScope}
               fieldName=""
               fieldKey={user.mi + CustomAttUseTaleId.Users}
@@ -228,10 +237,10 @@ export default function ScheduleKeyValueListAtt({
 
     const itemNode = (
       <div className="flex flex-gap margin-big-gap-v">
-        <EvaIcon name="text" />
+        <IconTextStrokeRounded />
         Пункт
         <StrongEvaButton
-          name="plus"
+          Icon={IconPlusSignStrokeRounded}
           scope={attScope}
           fieldName=""
           fieldKey="Пункт"
@@ -308,7 +317,7 @@ export default function ScheduleKeyValueListAtt({
                       fieldValue={!key}
                       className="self-start relative z-index:15"
                       cud="U"
-                      name={key ? 'checkmark-square-outline' : 'square-outline'}
+                      Icon={key ? IconCheckmarkSquare02StrokeRounded : IconSquareStrokeRounded}
                       isCanSend={!!scope && customAttUseRights.checkIsCan(userR, att.U)}
                     />
                     {mylib.isNum(value) && <KeyValueListAttNumberMember value={value} />}
@@ -336,7 +345,7 @@ export default function ScheduleKeyValueListAtt({
                           cud="U"
                           fieldName="value"
                           fieldValue={mylib.isArr(value) ? '+' : []}
-                          name={mylib.isArr(value) ? 'text' : 'list'}
+                          Icon={mylib.isArr(value) ? IconTextStrokeRounded : IconLeftToRightListDashStrokeRounded}
                         />
                       )}
                     {mylib.isNum(key) && (
@@ -361,7 +370,7 @@ export default function ScheduleKeyValueListAtt({
                       fieldKey={itemMi}
                       className="relative z-index:15 color--7"
                       cud="U"
-                      name={itemi > 0 ? 'corner-right-up-outline' : 'corner-left-down-outline'}
+                      Icon={itemi > 0 ? IconSquareArrowMoveRightUpStrokeRounded : IconArrowMoveLeftDownStrokeRounded}
                     />
                   )}
                   <StrongEvaButton
@@ -371,7 +380,7 @@ export default function ScheduleKeyValueListAtt({
                     className="relative z-index:15 color--ko"
                     cud="D"
                     confirm="Удалить пункт?"
-                    name="trash-2-outline"
+                    Icon={IconDelete02StrokeRounded}
                   />
                 </div>
               )}
@@ -408,7 +417,11 @@ export default function ScheduleKeyValueListAtt({
                                 fieldKey={vali}
                                 className="relative z-index:15 color--7"
                                 cud="U"
-                                name={vali > 0 ? 'corner-left-up-outline' : 'corner-right-down-outline'}
+                                Icon={
+                                  vali > 0
+                                    ? IconSquareArrowMoveLeftUpStrokeRounded
+                                    : IconArrowMoveRightDownStrokeRounded
+                                }
                                 mapExecArgs={args => {
                                   return {
                                     ...args,
@@ -424,7 +437,7 @@ export default function ScheduleKeyValueListAtt({
                               className="relative z-index:15 color--ko"
                               cud="D"
                               confirm="Удалить пункт?"
-                              name="trash-2-outline"
+                              Icon={IconDelete02StrokeRounded}
                             />
                           </div>
                         )}

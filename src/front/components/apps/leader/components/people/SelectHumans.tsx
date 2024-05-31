@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { IconMinusSignCircleStrokeRounded } from '@icons/minus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import useIsRedactArea from '../../../../../complect/useIsRedactArea';
 import HumanList from './HumanList';
 import { SelectHumansComponentProps } from './People.model';
@@ -60,8 +61,7 @@ export default function SelectHumans({
                       ? !addList.some(wid => human.w === wid)
                       : delList.some(wid => human.w === wid)
                   ) ? (
-                    <EvaIcon
-                      name="plus-circle-outline"
+                    <IconPlusSignCircleStrokeRounded
                       onClick={event => {
                         event.stopPropagation();
                         if (!fixedList || !fixedList.some(wid => human.w === wid)) updateAddList([...addList, human.w]);
@@ -69,8 +69,7 @@ export default function SelectHumans({
                       }}
                     />
                   ) : (
-                    <EvaIcon
-                      name="minus-circle-outline"
+                    <IconMinusSignCircleStrokeRounded
                       onClick={event => {
                         event.stopPropagation();
                         if (fixedList && fixedList.some(wid => human.w === wid)) updateDelList([...delList, human.w]);

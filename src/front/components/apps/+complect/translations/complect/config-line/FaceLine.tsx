@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import {
   useAddScreenTranslationConfig,
   useScreenTranslationConfigs,
@@ -74,8 +74,7 @@ export const ScreenTranslationsFaceLine = <Config,>(props: Props<Config>) => {
             />
           );
         })}
-        <EvaButton
-          name="plus"
+        <IconPlusSignStrokeRounded
           className="margin-gap-l"
           onClick={onAdd}
         />

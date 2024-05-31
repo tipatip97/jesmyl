@@ -11,6 +11,7 @@ import useFullContent from '../../fullscreen-content/useFullContent';
 import mylib from '../../my-lib/MyLib';
 import { useStorageValueGetter } from '../../useStorage';
 import { IScheduleWidget } from '../ScheduleWidget.model';
+import { IconComputerStrokeRounded } from '@icons/computer';
 
 export const ScheduleWidgetLiveTranslation = ({
   onClose,
@@ -63,7 +64,7 @@ export const ScheduleWidgetLiveTranslation = ({
           return (
             <BrutalItem
               key={translationId}
-              icon="monitor"
+              icon={<IconComputerStrokeRounded />}
               title={liveData[translationId].fio}
               onClick={() => {
                 setMessageNode(null);

@@ -1,8 +1,8 @@
+import { IconArrowShrink02StrokeRounded } from '@icons/arrow-shrink-02';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { complectActions, complectStorage } from '../complect/Complect.store';
 import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
-import EvaIcon from '../complect/eva-icon/EvaIcon';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
 import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
@@ -110,8 +110,7 @@ function App() {
         </div>
       )}
       <div className={`application-container app_${appName}${isFullscreen ? ' fullscreen-mode' : ''}`}>
-        <EvaIcon
-          name="collapse-outline"
+        <IconArrowShrink02StrokeRounded
           className="collapse-fullscreen-button pointer"
           onClick={() => switchFullscreen(false)}
         />

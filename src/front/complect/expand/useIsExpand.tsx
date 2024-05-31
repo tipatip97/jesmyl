@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react';
-import EvaIcon from '../eva-icon/EvaIcon';
+import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
 
 const isNIs = (is: boolean) => !is;
 
@@ -16,7 +17,7 @@ export default function useIsExpand(
         onClick={() => setIsExpand(!isExpand)}
       >
         {prefix}
-        <EvaIcon name={isExpand ? 'chevron-up' : 'chevron-down'} />
+        {isExpand ? <IconArrowUp01StrokeRounded /> : <IconArrowDown01StrokeRounded />}
       </span>
       {typeof postfix === 'function' ? postfix(isExpand) : postfix}
     </span>,

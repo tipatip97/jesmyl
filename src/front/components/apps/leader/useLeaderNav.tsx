@@ -1,8 +1,11 @@
-import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../models';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import { useSchedules } from '../../../complect/schedule-widget/useScheduleWidget';
+import { iconPackOfCalendar03 } from '@icons/calendar-03';
+import { IconManagerStrokeRounded } from '@icons/manager';
+import { iconPackOfTeacher } from '@icons/teacher';
+import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../models';
 import useAuth from '../../index/useAuth';
 import { RoutePhasePoint } from '../../router/Router.model';
 import { useLeaderContexts } from './components/contexts/useContexts';
@@ -25,7 +28,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
   title: 'Лидер',
   root: content => <LeaderApplication content={content} />,
   rootPhase: 'all',
-  logo: 'navigation-2',
+  Icon: IconManagerStrokeRounded,
   exer: leaderExer,
   jumpByLink: {
     gamew: gamew => ({ path: ['all', 'games', 'game'], data: { gamew } }),
@@ -53,7 +56,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
   },
   routes: [
     {
-      icon: 'navigation-2',
+      iconSelfPack: iconPackOfTeacher,
       phase: ['all'],
       title: 'Лидер',
       node: <LeaderGeneralPage />,
@@ -93,7 +96,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       ],
     },
     {
-      icon: 'calendar',
+      iconSelfPack: iconPackOfCalendar03,
       phase: ['schedule'],
       title: 'Мероприятие',
       node: <LeaderSchedule />,

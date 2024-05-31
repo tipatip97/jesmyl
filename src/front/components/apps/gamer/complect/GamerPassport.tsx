@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import TheButton from '../../../../complect/Button';
-import EvaButton from '../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../complect/eva-icon/EvaIcon';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import mylib from '../../../../complect/my-lib/MyLib';
 import useQRMaster from '../../../../complect/qr-code/useQRMaster';
+import IconButton from '../../../../complect/the-icon/IconButton';
+import { IconEdit02StrokeRounded } from '@icons/edit-02';
+import { IconQrCodeStrokeRounded } from '@icons/qr-code';
 import { LocalSokiAuth } from '../../../../models';
 import useAuth from '../../../index/useAuth';
 import { GamerPassport } from '../Gamer.model';
@@ -91,8 +92,8 @@ export default function TheGamerPassport() {
             <>
               <h2 className="flex center passport-name">
                 <div className="name ellipsis">{passport?.fio}</div>
-                <EvaButton
-                  name="edit-outline"
+                <IconButton
+                  Icon={IconEdit02StrokeRounded}
                   onClick={() => setIsEdit(true)}
                 />
               </h2>
@@ -104,7 +105,7 @@ export default function TheGamerPassport() {
                       if (passport.login && passport.fio) shareQrData(nav, 'passport', [passport.login, passport.fio]);
                     }}
                   >
-                    <EvaIcon name="qr-code" />
+                    <IconQrCodeStrokeRounded />
                     Предъявить
                   </div>
                 </div>

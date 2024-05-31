@@ -36,7 +36,7 @@ export const BibleLists = () => {
 const Lists = styled.div`
   .bible-list-face {
     cursor: pointer;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 
     &.current {
       background-color: var(--color--3);

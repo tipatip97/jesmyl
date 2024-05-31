@@ -1,5 +1,5 @@
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../../models';
 import { ScheduleWidgetAppAtts } from '../../../../complect/schedule-widget/ScheduleWidget.model';
+import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../../models';
 import LeaderTeamGameAttach from './LeaderTeamGameAttach';
 
 export interface LeaderResultBoardAttachValues {
@@ -8,7 +8,7 @@ export interface LeaderResultBoardAttachValues {
 
 export const leaderOwnGameResultBoardAppAtt: ScheduleWidgetAppAtts<'leader', LeaderResultBoardAttachValues> = {
   '[leader]:game': {
-    icon: 'navigation-2-outline',
+    icon: 'IconBasketballHoopStrokeRounded',
     title: 'Игра',
     description: 'Результаты командной игры контекста',
     initVal: {},

@@ -1,17 +1,19 @@
 import { useState } from 'react';
+import TheButton from '../../../../../complect/Button';
 import SourceBased from '../../../../../complect/SourceBased';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
+import { useGetRandomTwiceName } from '../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import mylib, { AddRestMode } from '../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
 import { TeamGameImportable } from '../../Leader.model';
+import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
 import HumanFace from '../people/HumanFace';
 import { GameTeamImportable } from './teams/GameTeams.model';
 import TheGameTeam from './teams/TheGameTeam';
-import TheButton from '../../../../../complect/Button';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
-import { LeaderCleans } from '../LeaderCleans';
-import { useGetRandomTwiceName } from '../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 
 export default function GameTeamListComputer({
   onUpdate,
@@ -138,7 +140,7 @@ export default function GameTeamListComputer({
                     onClick={() => setIsShowCantPlayers(is => !is)}
                   >
                     Не войдут {cantPlayers?.length}
-                    <EvaButton name={isShowCantPlayers ? 'chevron-up' : 'chevron-down'} />
+                    <IconButton Icon={isShowCantPlayers ? IconArrowUp01StrokeRounded : IconArrowDown01StrokeRounded} />
                   </div>
                   {isShowCantPlayers && cantPlayers}
                 </>

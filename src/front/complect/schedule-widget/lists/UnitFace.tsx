@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import EvaIcon from '../../eva-icon/EvaIcon';
+import TheIcon from '../../the-icon/TheIcon';
 import { IScheduleWidgetListUnit } from '../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 
@@ -27,7 +27,7 @@ export default function ScheduleWidgetListUnitFace({
         className={'flex flex-gap pointer' + (rights.myUser?.li?.[unit.cat] === -unit.mi ? ' color--7' : ' color--3')}
         onClick={() => setIsShowMentors(!isShowMentors)}
       >
-        <EvaIcon name={cat?.icon} />
+        <TheIcon name={cat?.icon} />
         {isShowMentors ? (
           mentors.length ? (
             mentors.map(user => user.fio || user.nick).join(', ')

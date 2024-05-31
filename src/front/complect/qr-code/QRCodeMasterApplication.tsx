@@ -1,9 +1,10 @@
 import { ReactNode, useState } from 'react';
 import styled from 'styled-components';
-import EvaIcon from '../eva-icon/EvaIcon';
+import TheIcon from '../the-icon/TheIcon';
 import QRCode from './QRCode';
 import { QRMasterControllerData } from './QRCodeMaster.model';
 import useQRMaster, { qrCodeMasterContainerId } from './useQRMaster';
+import { IconCopy01StrokeRounded } from '@icons/copy-01';
 
 let slideQRCodeTimeout: TimeOut;
 const qrReaderReadAreaSize = Math.min(window.innerHeight, window.innerWidth) * 0.9;
@@ -47,7 +48,7 @@ export function QRCodeMasterApplication({
                       navigator.clipboard.writeText(event.linkValue ? `${qr}\n\n${event.linkValue}` : qr);
                     }}
                   >
-                    <EvaIcon name="copy-outline" />
+                    <IconCopy01StrokeRounded />
                   </div>
                 </div>
               ))

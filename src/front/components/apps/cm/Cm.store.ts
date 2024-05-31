@@ -20,6 +20,7 @@ const initialState: CmState = {
   favoriteMeetings: { contexts: [], events: [] },
   comTopTools: ['mark-com', 'fullscreen-mode'],
   translationScreenConfigs: [],
+  comComments: {},
 
   numComUpdates: 0,
   numAbsolutePopupUpdates: 0,
@@ -55,6 +56,7 @@ export const slice = createSlice({
       'settings',
       'speedRollKf',
       'translationScreenConfigs',
+      'comComments',
     ]),
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? !state.isCmFullscreen;
@@ -65,6 +67,10 @@ export const slice = createSlice({
     switchIsMiniAnchor: (state, action: PayloadAction<boolean | nil>) => {
       state.isMiniAnchor = action.payload ?? !state.isMiniAnchor;
       cmStorage.set('isMiniAnchor', state.isMiniAnchor);
+    },
+    setComComment: (state, action: PayloadAction<{ comw: number; comment: string }>) => {
+      state.comComments = { ...state.comComments, [action.payload.comw]: action.payload.comment };
+      cmStorage.set('comComments', state.comComments);
     },
     setComFontSize: (state, action: PayloadAction<number>) => {
       const size = Math.ceil(action.payload);

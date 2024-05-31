@@ -1,9 +1,10 @@
 import { CustomAttUseTaleId } from '../../../../../models';
-import EvaIcon from '../../../../eva-icon/EvaIcon';
+import TheIcon from '../../../../the-icon/TheIcon';
 import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetRoleFace from '../../../control/roles/RoleFace';
 import ScheduleWidgetListUnitFace from '../../../lists/UnitFace';
 import { extractScheduleWidgetRole, useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
+import { IconUserStrokeRounded } from '@icons/user';
 
 export default function KeyValueListAttNumberMember({ value }: { value: number }) {
   const rights = useScheduleWidgetRightsContext();
@@ -25,7 +26,7 @@ export default function KeyValueListAttNumberMember({ value }: { value: number }
       <div className="color--ko">Участник не найден</div>
     ) : (
       <div className="color--3 flex flex-gap">
-        <EvaIcon name="person" />
+        <IconUserStrokeRounded />
         {user.fio || user.nick}
       </div>
     );

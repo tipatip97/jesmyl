@@ -1,39 +1,39 @@
 import { ReactNode } from 'react';
-import EvaButton from '../../eva-icon/EvaButton';
-import { EvaIconName, evaPackNames } from '../../eva-icon/EvaIcon';
 import useModal from '../../modal/useModal';
-import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import IconButton from '../../the-icon/IconButton';
+import { theIconFromPack } from '../../the-icon/TheIcon';
+import { IconHelpSquareStrokeRounded } from '@icons/help-square';
+import { TheIconName } from '../../the-icon/model';
 
-const icons = evaPackNames.filter(name => name.endsWith('-outline'));
+// const icons = evaPackNames.filter(name => name.endsWith('-outline'));
 
 export default function ScheduleWidgetIconChange(props: {
   scope: string;
-  icon: EvaIconName;
+  icon: TheIconName;
   header: ReactNode;
-  used?: (EvaIconName | und)[];
+  used?: (TheIconName | und)[];
 }) {
   const [modalNode, screen] = useModal(({ header, body }, closeModal) => {
     return (
       <>
         {header(props.header)}
         {body(
-          icons.map(icon => {
-            return (
-              <StrongEvaButton
-                key={icon}
-                scope={props.scope}
-                fieldName="field"
-                fieldKey="icon"
-                fieldValue={icon}
-                name={icon}
-                cud="U"
-                className={
-                  'padding-big-gap' + (props.icon === icon ? ' color--7' : props.used?.includes(icon) ? ' fade-05' : '')
-                }
-                onSuccess={closeModal}
-              />
-            );
-          }),
+          null,
+          // icons.map(icon => {
+          //   return (
+          //     <StrongEvaButton
+          //       key={icon}
+          //       scope={props.scope}
+          //       fieldName="field"
+          //       fieldKey="icon"
+          //       fieldValue={icon}
+          //       name={icon}
+          //       cud="U"
+          //       className={'padding-big-gap' + (false ? ' color--7' : props.used?.includes(icon) ? ' fade-05' : '')}
+          //       onSuccess={closeModal}
+          //     />
+          //   );
+          // }),
         )}
       </>
     );
@@ -42,8 +42,8 @@ export default function ScheduleWidgetIconChange(props: {
   return (
     <>
       {modalNode}
-      <EvaButton
-        name={props.icon}
+      <IconButton
+        Icon={theIconFromPack(props.icon) ?? IconHelpSquareStrokeRounded}
         postfix="Изменить иконку"
         onClick={screen}
         className="flex-max margin-gap-v"

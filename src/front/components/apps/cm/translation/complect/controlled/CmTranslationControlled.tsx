@@ -13,10 +13,10 @@ import { Com } from '../../../col/com/Com';
 import useNavConfigurer from '../../../../../../complect/nav-configurer/useNavConfigurer';
 
 interface Props {
-  head: ReactNode;
+  head?: ReactNode;
   comList?: Com[];
   useNav: () => ReturnType<typeof useNavConfigurer>;
-  headTitle: ReactNode;
+  headTitle?: ReactNode;
 }
 
 export default function CmTranslationControlled({ head, comList, useNav, headTitle }: Props) {
@@ -25,6 +25,7 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
 
   const comPack = useCmScreenTranslationComNavigations();
   const setTexti = useCmScreenTranslationComTextNavigations().setTexti;
+  console.log(comList, comPack);
 
   return (
     <PhaseContainerConfigurer

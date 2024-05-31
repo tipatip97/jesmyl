@@ -18,7 +18,13 @@ export default function ComLine(props: IComLineProps) {
               key={wordi}
               className={`com-word wordi_${wordi} ${props.setWordClass?.(props, wordi) ?? ''}`}
             >
-              {word && <span dangerouslySetInnerHTML={{ __html: word }} />}{' '}
+              {word && <span dangerouslySetInnerHTML={{ __html: word }} />}
+              <span
+                key={wordi + 100000}
+                className={`com-word wordi_${wordi} ${props.setWordClass?.(props, wordi) ?? ''}`}
+              >
+                {' '}
+              </span>
             </span>
           );
         })}
@@ -50,7 +56,12 @@ export default function ComLine(props: IComLineProps) {
       >
         {wordBitNodes}
       </span>,
-      ' ',
+      <span
+        key={index + 100000}
+        className={`com-letter space-word letteri_${index} ${props.setWordClass?.(props, index) ?? ''}`}
+      >
+        {' '}
+      </span>,
     );
     wordBitNodes = [];
   };
@@ -85,7 +96,7 @@ export default function ComLine(props: IComLineProps) {
       pushWordNode(indexi);
 
       if (firstTextBit !== '') {
-        wordBitNodes.push(<React.Fragment key={indexi + '-word'}>{firstBitNode}</React.Fragment>, ' ');
+        wordBitNodes.push(<React.Fragment key={indexi + 100000}>{firstBitNode}</React.Fragment>, ' ');
         firstBitNode = null;
       }
     }
@@ -102,6 +113,7 @@ export default function ComLine(props: IComLineProps) {
             (isChordedLast ? ' post' : '') +
             (isChordedFirst ? ' pre' : '') +
             (baseTextBitOriginal.match(spaceReg) ? ' spaced-word' : '') +
+            (baseTextBitOriginal === ' ' ? ' space-word' : '') +
             (isChorded && isLast && isHasPost ? ' twice' : '')
           }
         >
@@ -152,6 +164,10 @@ const Line = styled.div`
     position: relative;
     line-height: 1;
     white-space: pre;
+
+    &.space-word {
+      top: -1em;
+    }
 
     &.pre,
     &.post,
@@ -204,6 +220,8 @@ const Line = styled.div`
       top: 0;
       width: 0.3em;
       color: transparent;
+      left: -0.3em;
+      height: 1.2em;
     }
 
     &.pre::before,

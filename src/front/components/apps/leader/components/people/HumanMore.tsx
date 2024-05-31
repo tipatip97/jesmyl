@@ -1,8 +1,10 @@
 import { ReactNode } from 'react';
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { IconEdit01StrokeRounded } from '@icons/edit-01';
+import { IconUserStrokeRounded } from '@icons/user';
+import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
 import HumanMaster from './HumanMaster';
@@ -47,7 +49,7 @@ export const HumanMoreContenter: BottomPopupContenter<{
                     <span className="color--7"> {LeaderCleans.takeGroupMentorNames(humans, group)}</span>
                   </span>
                 ),
-                icon: 'people-outline',
+                Icon: IconUserStrokeRounded,
                 className: !groupws.includes(group.w) ? '' : 'disabled',
                 onClick: async () => {
                   if (human && (await confirm(title(` участника "${human.name}"`, `${group.name}?`)))) {
@@ -79,12 +81,12 @@ export const HumanMoreContenter: BottomPopupContenter<{
           items: [
             {
               title: 'Редактировать',
-              icon: 'edit-outline',
+              Icon: IconEdit01StrokeRounded,
               onClick: () => openHumanMaster(),
             },
             {
               title: title(),
-              icon: 'people-outline',
+              Icon: IconUserStrokeRounded,
               onClick: () => setTimeout(openGroupsPopup),
             },
           ],

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import EvaButton from '../../eva-icon/EvaButton';
+import IconButton from '../../the-icon/IconButton';
 import useModal from '../../modal/useModal';
 import mylib from '../../my-lib/MyLib';
 import StrongDiv from '../../strong-control/StrongDiv';
@@ -11,6 +11,7 @@ import {
   ScheduleWidgetAttRef,
 } from '../ScheduleWidget.model';
 import ScheduleWidgetAttFace from './AttFace';
+import { IconLink01StrokeRounded } from '@icons/link-01';
 
 export default function ScheduleWidgetBindAttRefKeyButton({
   atts,
@@ -87,8 +88,8 @@ export default function ScheduleWidgetBindAttRefKeyButton({
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="link-2-outline"
+      <IconButton
+        Icon={IconLink01StrokeRounded}
         disabled={!!atts?.[attKey]}
         className="absolute pos-top pos-right padding-gap"
         onClick={event => {

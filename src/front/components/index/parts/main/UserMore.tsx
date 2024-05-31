@@ -6,6 +6,8 @@ import di from '../../Index.store';
 import useIndexNav from '../../complect/useIndexNav';
 import indexStorage from '../../indexStorage';
 import useAuth, { removePullRequisites } from '../../useAuth';
+import { IconQrCode01StrokeRounded } from '@icons/qr-code-01';
+import { IconUserStrokeRounded } from '@icons/user';
 
 export const UserMore: BottomPopupContenter = (isOpen, _, prepare) => {
   const dispatch = useDispatch();
@@ -30,7 +32,7 @@ export const UserMore: BottomPopupContenter = (isOpen, _, prepare) => {
         items: [
           {
             title: 'Выйти из системы',
-            icon: 'person-outline',
+            Icon: IconUserStrokeRounded,
             onClick: event => {
               event.preventDefault();
               confirm('Произвести выход из системы?', 'Разлогиниться').then(isLogout => isLogout && logout());
@@ -38,7 +40,7 @@ export const UserMore: BottomPopupContenter = (isOpen, _, prepare) => {
           },
           {
             title: 'Предъявить JesmyL-паспорт',
-            icon: 'qr-code',
+            Icon: IconQrCode01StrokeRounded,
             onClick: event => {
               event.preventDefault();
               if (auth.nick && auth.login)

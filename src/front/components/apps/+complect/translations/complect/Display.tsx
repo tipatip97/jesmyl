@@ -1,4 +1,4 @@
-import EvaCheckbox from '../../../../../complect/eva-icon/EvaCheckbox';
+import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
 import { ScreenTranslationPartialConfigProps } from './model';
 
 export type ScreenTranslateConfigTypeDisplay = 'none' | 'initial';
@@ -10,7 +10,7 @@ export const ScreenTranslateConfigurationDisplay = ({ config, updateConfig }: Pr
     <>
       <div className="flex flex-gap flex-max">
         Видимость
-        <EvaCheckbox
+        <IconCheckbox
           checked={config.display !== 'none'}
           onChange={() => updateConfig({ display: config.display === 'initial' ? 'none' : 'initial' })}
         />

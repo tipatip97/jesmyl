@@ -37,7 +37,7 @@ const Button = styled.div`
   border-radius: 2em;
   padding: 0.5em 2em;
 
-  .eva-icon {
+  .the-icon {
     position: absolute;
     margin-left: 2px;
   }

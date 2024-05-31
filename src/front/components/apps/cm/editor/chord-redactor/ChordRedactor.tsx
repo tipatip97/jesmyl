@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import TheButton from '../../../../../complect/Button';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
@@ -12,6 +12,7 @@ import { correctChordNameReg } from '../Editor.complect';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import ChordRedactableTrack from './ChordRedactableTrack';
 import './ChordRedactor.scss';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 
 export default function ChordRedactor() {
   const chords = useChords();
@@ -130,10 +131,7 @@ export default function ChordRedactor() {
           <div className="chord-list">
             <div className="chords-scroll">{chordNodes}</div>
             <div className="add-chord-button flex center">
-              <EvaButton
-                name="plus-circle"
-                onClick={() => setIsNewChord(true)}
-              />
+              <IconPlusSignCircleStrokeRounded onClick={() => setIsNewChord(true)} />
             </div>
           </div>
           <div className="flex column center old-chord">

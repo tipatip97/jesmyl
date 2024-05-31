@@ -1,4 +1,4 @@
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import { IconCubeStrokeRounded } from '@icons/cube';
 import { TeamGameImportable } from '../../Leader.model';
 import useGames from './useGames';
 
@@ -17,7 +17,7 @@ export default function TeamGameFace({
       onClick={importantOnClick || (() => goToGame(game.w))}
     >
       <span className="face-logo">
-        <EvaIcon name="cube-outline" />
+        <IconCubeStrokeRounded />
       </span>
       <span className="face-title">{game.name}</span>
     </div>

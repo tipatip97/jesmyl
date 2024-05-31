@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import TheButton from '../../../../../complect/Button';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
-import EvaCheckbox from '../../../../../complect/eva-icon/EvaCheckbox';
+import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { useBibleWholeChapterBookList } from '../../../bible/hooks/texts';
@@ -98,7 +98,7 @@ export default function EERules() {
           >
             Проверить наличие неизвестных слов
           </TheButton>
-          <EvaCheckbox
+          <IconCheckbox
             postfix="включать библейские слова"
             checked={isCheckBible}
             onChange={setIsCheckBible}

@@ -1,5 +1,6 @@
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { IconUserStrokeRounded } from '@icons/user';
 import LeaderGameMaster from './GameMaster';
 
 export const GamesMoreContenter: BottomPopupContenter = (isOpen, _, prepare) => {
@@ -12,7 +13,7 @@ export const GamesMoreContenter: BottomPopupContenter = (isOpen, _, prepare) => 
         items: [
           {
             title: 'Новая командная игра',
-            icon: 'people-outline',
+            Icon: IconUserStrokeRounded,
             onClick: () => openFull(),
           },
         ],

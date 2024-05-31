@@ -1,6 +1,9 @@
 import { ReactNode } from 'react';
 import propsOfClicker from '../clicker/propsOfClicker';
-import EvaIcon from '../eva-icon/EvaIcon';
+import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
+import { TheIconType } from '../the-icon/model';
 import { KeyboardStorageCallbacks } from './complect/F.Callbacks';
 import {
   KeyboardInputProps,
@@ -81,14 +84,14 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
         </div>
         <div className="icon-button-container">
           {this.type === 'password' ? (
-            <EvaIcon
-              name={this.isHiddenPassword ? 'eye-outline' : 'eye-off-outline'}
-              className="icon-button eye-button"
-              onMouseDown={this.onPasswordEyeButton}
-            />
+            ((Icon: TheIconType) => (
+              <Icon
+                className="icon-button eye-button"
+                onMouseDown={this.onPasswordEyeButton}
+              />
+            ))(this.isHiddenPassword ? IconViewStrokeRounded : IconViewOffSlashStrokeRounded)
           ) : (
-            <EvaIcon
-              name="close"
+            <IconCancel01StrokeRounded
               className="icon-button close-button pointer"
               onMouseDown={this.onClearButton}
             />

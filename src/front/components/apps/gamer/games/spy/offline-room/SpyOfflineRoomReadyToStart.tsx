@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import TheButton from '../../../../../../complect/Button';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconArrowDown02StrokeRounded } from '@icons/arrow-down-02';
+import { IconArrowUp02StrokeRounded } from '@icons/arrow-up-02';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import RoomMemberFace from '../../../complect/GamerRoomMemberFace';
 import useGamerOfflineRoomsActions from '../../../complect/rooms/offline-room/hooks/actions';
 import { useGamerOfflineRoom } from '../../../complect/rooms/offline-room/hooks/current-room';
@@ -28,8 +31,7 @@ export default function SpyOfflineRoomReadyToStart() {
     <>
       <h2 className="flex">
         Участники
-        <EvaButton
-          name="plus-circle-outline"
+        <IconPlusSignCircleStrokeRounded
           className="margin-gap-h"
           onClick={() => addNewMember()}
         />
@@ -49,7 +51,7 @@ export default function SpyOfflineRoomReadyToStart() {
         onClick={() => setIsOpenLocations(!isOpenLocations)}
       >
         Локации
-        <EvaButton name={isOpenLocations ? 'arrow-ios-upward-outline' : 'arrow-ios-downward-outline'} />
+        <IconButton Icon={isOpenLocations ? IconArrowUp02StrokeRounded : IconArrowDown02StrokeRounded} />
       </h2>
       {isOpenLocations &&
         locations?.map(location => {

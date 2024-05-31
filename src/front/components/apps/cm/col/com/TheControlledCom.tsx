@@ -8,6 +8,7 @@ import RollControled from '../../base/RolledContent';
 import { Com } from './Com';
 import './Com.scss';
 import TheCom from './TheCom';
+import TheComComment from './TheComComment';
 
 const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
 const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
@@ -62,6 +63,7 @@ export default function TheControlledCom({
           isMiniAnchor={isMiniAnchor}
           listRef={listRef}
         />
+        <TheComComment comw={com.wid} />
       </WithScrollProgress>
     </RollControled>
   );

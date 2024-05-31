@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CustomAttUseTaleId } from '../../../models';
 import useAuth from '../../../components/index/useAuth';
-import EvaButton from '../../eva-icon/EvaButton';
+import IconButton from '../../the-icon/IconButton';
 import useModal from '../../modal/useModal';
 import mylib, { MyLib } from '../../my-lib/MyLib';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
@@ -9,6 +9,7 @@ import { IScheduleWidget, ScheduleWidgetDayEventAttValues } from '../ScheduleWid
 import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import { takeScheduleStrongScopeMaker, useSchedules } from '../useScheduleWidget';
+import { IconCopy02StrokeRounded } from '@icons/copy-02';
 
 const itNNull = (it: unknown) => it !== null;
 
@@ -55,7 +56,7 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
               <StrongEvaButton
                 scope={scope}
                 fieldName="copy"
-                name="copy"
+                Icon={IconCopy02StrokeRounded}
                 postfix="Скопировать"
                 onSuccess={closeModal}
                 mapExecArgs={args => {
@@ -140,8 +141,8 @@ export function ScheduleWidgetCopy(props: { schw: number }) {
   return (
     <>
       {modalNode}
-      <EvaButton
-        name="copy"
+      <IconButton
+        Icon={IconCopy02StrokeRounded}
         postfix="Скопировать расписание"
         onClick={openModal}
       />

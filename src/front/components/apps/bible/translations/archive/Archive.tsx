@@ -1,4 +1,4 @@
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../hooks/address/address';
 import {
@@ -8,6 +8,7 @@ import {
   takeBibleSlideText,
 } from '../../hooks/texts';
 import { BibleTranslationAddress } from '../../model';
+import { IconDelete01StrokeRounded } from '@icons/delete-01';
 
 interface Props {
   title: string;
@@ -25,8 +26,8 @@ export const BibleTranslationArchive = ({ title, list, onRemove }: Props) => {
     <>
       <div className="archive-title flex flex-gap color--3 margin-gap-b">
         {title}
-        <EvaButton
-          name="trash-2-outline"
+        <IconButton
+          Icon={IconDelete01StrokeRounded}
           className="color--ko"
           confirm={'Очистить раздел ' + title + '?'}
           onClick={onRemove}

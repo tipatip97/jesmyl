@@ -264,7 +264,7 @@ export const LoginIndex = styled(PhaseIndexContainer)`
         }
       }
 
-      > .eva-icon {
+      > .the-icon {
         position: absolute;
         right: var(--padding-h);
         cursor: pointer;
@@ -295,7 +295,7 @@ export const LoginIndex = styled(PhaseIndexContainer)`
       > input {
         border-color: var(--color--ko);
       }
-      > .eva-icon {
+      > .the-icon {
         --icon-color: var(--color--ko);
       }
     }

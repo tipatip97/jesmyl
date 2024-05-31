@@ -1,4 +1,5 @@
 import { bottomPopupContentPreparer } from '../../../../../complect/absolute-popup/bottom-popup/item-preparer';
+import { IconUserRemove01StrokeRounded } from '@icons/user-remove-01';
 import { GamerRoomMember } from '../../Gamer.model';
 import { useGamerRoomActions } from '../../complect/rooms/hooks/actions';
 import { useGamerCurrentRoom } from '../../complect/rooms/room/hooks/current-room';
@@ -18,7 +19,7 @@ export default function SpyRoomMemberInStartGameMore({ member }: { member: Gamer
         items: [
           {
             titleNode: <>Игорк {nameNode} выбыл из игры</>,
-            icon: 'person-delete-outline',
+            Icon: IconUserRemove01StrokeRounded,
             onClick: () => excludeMember(member.login),
           },
         ],

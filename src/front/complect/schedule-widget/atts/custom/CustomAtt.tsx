@@ -1,23 +1,32 @@
 import { ReactNode, useState } from 'react';
-import { ScheduleWidgetRightsCtrl } from '../../../../models';
 import {
   CustomAttUseRights,
+  ScheduleWidgetRightsCtrl,
   customAttUseRights,
   customAttUseRightsTitles,
   scheduleWidgetUserRights,
 } from '../../../../models';
-import EvaButton from '../../../eva-icon/EvaButton';
-import { EvaIconName } from '../../../eva-icon/EvaIcon';
+import { IconBookmark01StrokeRounded } from '@icons/bookmark-01';
+import { IconEdit01StrokeRounded } from '@icons/edit-01';
+import { IconEyeStrokeRounded } from '@icons/eye';
+import { IconFile01StrokeRounded } from '@icons/file-01';
+import { IconPencilEdit01StrokeRounded } from '@icons/pencil-edit-01';
 import useModal from '../../../modal/useModal';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
 import StrongClipboardPicker from '../../../strong-control/field/clipboard/Picker';
+import IconButton from '../../../the-icon/IconButton';
+import { TheIconType } from '../../../the-icon/model';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
 import { ScheduleWidgetAppAttCustomized } from '../../ScheduleWidget.model';
 import ScheduleWidgetIconChange from '../../complect/IconChange';
 import ScheduleWidgetRightControlList from '../../control/RightControlList';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetCustomAttTitles from './CustomAttTitles';
+import { IconSquareStrokeRounded } from '@icons/square';
+import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
+import { theIconFromPack } from '../../../the-icon/TheIcon';
 
 const itIt = (it: unknown) => it;
 const itNIt = (it: unknown) => !it;
@@ -28,16 +37,16 @@ enum WhoCan {
   No,
 }
 
-const whoCanUnits: { action: string; rule: 'R' | 'U'; icon: EvaIconName }[] = [
+const whoCanUnits: { action: string; rule: 'R' | 'U'; Icon: TheIconType }[] = [
   {
     action: 'видит',
     rule: 'R',
-    icon: 'eye-outline',
+    Icon: IconEyeStrokeRounded,
   },
   {
     action: 'редактирует',
     rule: 'U',
-    icon: 'edit-2-outline',
+    Icon: IconPencilEdit01StrokeRounded,
   },
 ];
 
@@ -131,8 +140,8 @@ export default function ScheduleWidgetCustomAtt(
         {isRedact ||
           (isCanRedact && (
             <div className="flex flex-end full-width">
-              <EvaButton
-                name="edit-outline"
+              <IconButton
+                Icon={IconPencilEdit01StrokeRounded}
                 onClick={() => redactModalScreen()}
               />
             </div>
@@ -151,7 +160,7 @@ export default function ScheduleWidgetCustomAtt(
           value={props.tatt}
           isRedact={isRedact}
           isImpossibleEmptyValue
-          icon={isRedact ? 'bookmark-outline' : props.tatt.icon}
+          Icon={isRedact ? IconBookmark01StrokeRounded : theIconFromPack(props.tatt.icon)}
           title="Название"
         />
         <StrongEditableField
@@ -161,7 +170,7 @@ export default function ScheduleWidgetCustomAtt(
           fieldKey="description"
           multiline
           isRedact={isRedact}
-          icon="file-text-outline"
+          Icon={IconFile01StrokeRounded}
           isImpossibleEmptyValue
           title="Описание вложения"
         />
@@ -170,9 +179,9 @@ export default function ScheduleWidgetCustomAtt(
             <div className="margin-big-gap-v">
               {whoCanUnits.map((whoCan, whoCani) => {
                 return (
-                  <EvaButton
+                  <IconButton
                     key={whoCan.rule}
-                    name={whoCan.icon}
+                    Icon={whoCan.Icon}
                     postfix={
                       <div className="full-width flex between">
                         <span className="flex flex-gap">
@@ -182,8 +191,8 @@ export default function ScheduleWidgetCustomAtt(
                           </span>
                         </span>
                         {isRedact && isCanRedact && (
-                          <EvaButton
-                            name="edit-outline"
+                          <IconButton
+                            Icon={IconEdit01StrokeRounded}
                             onClick={() => setWhoCani(whoCani)}
                           />
                         )}
@@ -207,10 +216,10 @@ export default function ScheduleWidgetCustomAtt(
                           fieldName="field"
                           fieldKey="use"
                           cud="U"
-                          name={
+                          Icon={
                             customAttUseRights.checkIsHasIndividualRights(props.tatt.use, id)
-                              ? 'checkmark-square-2-outline'
-                              : 'square-outline'
+                              ? IconCheckmarkSquare02StrokeRounded
+                              : IconSquareStrokeRounded
                           }
                           className={
                             (top ? 'margin-big-gap-l ' : '') +
@@ -243,10 +252,10 @@ export default function ScheduleWidgetCustomAtt(
                                 fieldName="field"
                                 fieldKey="roles"
                                 fieldValue={cati}
-                                name={
+                                Icon={
                                   ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(props.tatt.roles, cati)
-                                    ? 'checkmark-square-outline'
-                                    : 'square-outline'
+                                    ? IconCheckmarkSquare02StrokeRounded
+                                    : IconSquareStrokeRounded
                                 }
                                 className={
                                   ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(props.tatt.roles, cati)
@@ -276,10 +285,10 @@ export default function ScheduleWidgetCustomAtt(
                                 cud="U"
                                 fieldName="field"
                                 fieldKey="list"
-                                name={
+                                Icon={
                                   ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(props.tatt.list, cati)
-                                    ? 'checkmark-square-outline'
-                                    : 'square-outline'
+                                    ? IconCheckmarkSquare02StrokeRounded
+                                    : IconSquareStrokeRounded
                                 }
                                 className={
                                   ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(props.tatt.list, cati)
@@ -323,7 +332,7 @@ export default function ScheduleWidgetCustomAtt(
                             <StrongEvaButton
                               scope={selfScope}
                               fieldName="titles"
-                              name="plus"
+                              Icon={IconPlusSignStrokeRounded}
                             />
                           )}
                         </div>

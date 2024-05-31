@@ -1,10 +1,15 @@
-import EvaButton from '../../eva-icon/EvaButton';
-import EvaIcon from '../../eva-icon/EvaIcon';
 import useIsExpand from '../../expand/useIsExpand';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
+import TheIcon from '../../the-icon/TheIcon';
+import { IconBookmark03StrokeRounded } from '@icons/bookmark-03';
+import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
+import { IconEdit02StrokeRounded } from '@icons/edit-02';
+import { IconFile02StrokeRounded } from '@icons/file-02';
+import { IconSquareStrokeRounded } from '@icons/square';
+import { IconUserRemove02StrokeRounded } from '@icons/user-remove-02';
 import { IScheduleWidgetListCat, IScheduleWidgetListUnit } from '../ScheduleWidget.model';
 import ScheduleWidgetUserList from '../control/users/UserList';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useScheduleWidget';
@@ -31,15 +36,7 @@ export default function ScheduleWidgetListUnit({
   const [unitTitile, isExpand] = useIsExpand(
     false,
     title,
-    rights.isCanRedact
-      ? isExpand =>
-          isExpand && (
-            <EvaButton
-              name="edit-outline"
-              onClick={screen}
-            />
-          )
-      : null,
+    rights.isCanRedact ? isExpand => isExpand && <IconEdit02StrokeRounded onClick={screen} /> : null,
   );
 
   const [modalNode, screen] = useModal(({ header, body }) => {
@@ -47,7 +44,7 @@ export default function ScheduleWidgetListUnit({
       <>
         {header(
           <div className="flex flex-gap">
-            <EvaIcon name={cat.icon} />
+            <TheIcon name={cat.icon} />
             {title}
           </div>,
         )}
@@ -56,7 +53,7 @@ export default function ScheduleWidgetListUnit({
             <StrongEditableField
               scope={unitScope}
               fieldName="field"
-              icon="bookmark-outline"
+              Icon={IconBookmark03StrokeRounded}
               title="Название"
               value={unit}
               fieldKey="title"
@@ -65,7 +62,7 @@ export default function ScheduleWidgetListUnit({
             <StrongEditableField
               scope={unitScope}
               fieldName="field"
-              icon="file-text-outline"
+              Icon={IconFile02StrokeRounded}
               title="Описание"
               value={unit}
               fieldKey="dsc"
@@ -82,7 +79,7 @@ export default function ScheduleWidgetListUnit({
                   <div className="flex flex-gap">
                     {user.li?.[cati] === undefined ? (
                       <StrongEvaButton
-                        name="square-outline"
+                        Icon={IconSquareStrokeRounded}
                         scope={userScope + catScopePostfix}
                         cud="C"
                         fieldName=""
@@ -91,7 +88,7 @@ export default function ScheduleWidgetListUnit({
                         className="nowrap"
                         postfix={
                           user.R === undefined ? (
-                            <EvaIcon name="person-delete-outline" />
+                            <IconUserRemove02StrokeRounded />
                           ) : isForMember ? (
                             shortTitles[1]
                           ) : (
@@ -101,7 +98,7 @@ export default function ScheduleWidgetListUnit({
                       />
                     ) : (
                       <StrongEvaButton
-                        name="checkmark-square-2-outline"
+                        Icon={IconCheckmarkSquare02StrokeRounded}
                         scope={userScope + catScopePostfix}
                         cud="D"
                         fieldName=""
@@ -139,7 +136,7 @@ export default function ScheduleWidgetListUnit({
           <StrongEditableField
             scope={unitScope}
             fieldName="field"
-            icon="file-text-outline"
+            Icon={IconFile02StrokeRounded}
             value={unit}
             title="Описание"
             fieldKey="dsc"

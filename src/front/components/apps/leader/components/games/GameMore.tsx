@@ -1,4 +1,5 @@
 import { BottomPopupContenterPreparer } from '../../../../../complect/absolute-popup/bottom-popup/model';
+import { IconDelete02StrokeRounded } from '@icons/delete-02';
 import PrintableBottomItem from '../PrintableBottomItem';
 import GameTeamLists from './templates/GameTeamLists';
 import GameTeamPassportNames from './templates/GameTeamPassportNames';
@@ -39,7 +40,7 @@ export default function GameMore({
         items: [
           {
             title: 'Удалить игру',
-            icon: 'trash-outline',
+            Icon: IconDelete02StrokeRounded,
             isError: true,
             onClick: onGameRemove,
           },

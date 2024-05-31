@@ -2,7 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import propsOfClicker from '../../../../../complect/clicker/propsOfClicker';
-import EvaIcon from '../../../../../complect/eva-icon/EvaIcon';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconMinusSignStrokeRounded } from '@icons/minus-sign';
+import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconTextFontStrokeRounded } from '@icons/text-font';
 import { RootState } from '../../../../../shared/store';
 import { ChordVisibleVariant } from '../../Cm.model';
 import di from '../../Cm.store';
@@ -12,7 +15,7 @@ import { useCols } from '../../cols/useCols';
 import { Com } from './Com';
 import { useCcom } from './useCcom';
 import useMigratableComTools from './useMigratableComTools';
-import EvaButton from '../../../../../complect/eva-icon/EvaButton';
+import { IconSlidersHorizontalStrokeRounded } from '@icons/sliders-horizontal';
 
 const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
 
@@ -50,12 +53,11 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
           items: [
             {
               className: chordVisibleVariant === ChordVisibleVariant.None ? 'disabled' : '',
-              icon: 'options-2-outline',
+              Icon: IconSlidersHorizontalStrokeRounded,
               title: 'Тональность',
               rightNode: (
                 <>
-                  <EvaIcon
-                    name="minus"
+                  <IconMinusSignStrokeRounded
                     onClick={event => {
                       event.stopPropagation();
                       ccom.transpose(-1);
@@ -71,8 +73,7 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
                   >
                     {ccom.firstChord}
                   </div>
-                  <EvaIcon
-                    name="plus"
+                  <IconPlusSignStrokeRounded
                     onClick={event => {
                       event.stopPropagation();
                       ccom.transpose(1);
@@ -84,11 +85,11 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
             },
             {
               title: 'Размер шрифта',
-              icon: 'format-text-variant-outline',
+              Icon: IconTextFontStrokeRounded,
               rightNode: (
                 <>
-                  <EvaButton
-                    name="minus-outline"
+                  <IconButton
+                    Icon={IconMinusSignStrokeRounded}
                     disabled={fontSize < 0}
                     onClick={event => {
                       event.stopPropagation();
@@ -114,8 +115,8 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
                       {fontSize}
                     </div>
                   )}
-                  <EvaButton
-                    name="plus-outline"
+                  <IconButton
+                    Icon={IconPlusSignStrokeRounded}
                     disabled={fontSize < 0}
                     onClick={event => {
                       event.stopPropagation();

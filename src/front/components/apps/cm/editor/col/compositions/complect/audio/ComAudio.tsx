@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import EvaButton from '../../../../../../../../complect/eva-icon/EvaButton';
-import EvaIcon from '../../../../../../../../complect/eva-icon/EvaIcon';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import { MyLib } from '../../../../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../../../../complect/the-icon/IconButton';
+import { IconGoogleStrokeRounded } from '@icons/google';
+import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import { CmMp3Rule } from '../../../../../../../../models';
 import ComPlayer from '../../../../../col/com/player/ComPlayer';
 import { EditableCom } from '../../EditableCom';
@@ -93,9 +95,9 @@ export default function ComAudio({
               className="flex flex-gap margin-gap-v full-width"
             >
               <ComPlayer src={src} />
-              <EvaButton
+              <IconButton
                 className="error-message"
-                name="close-circle-outline"
+                Icon={IconHelpCircleStrokeRounded}
                 onClick={() => {
                   setAudioExec(srca.map((s, si) => (si !== srci ? s : '')).join('\n'));
                   const newRemoveds = { ...removedSrcs };
@@ -120,8 +122,7 @@ export default function ComAudio({
                 className="flex flex-gap margin-gap-v full-width"
               >
                 <ComPlayer src={src} />
-                <EvaButton
-                  name="plus-circle"
+                <IconPlusSignCircleStrokeRounded
                   onClick={() => {
                     const srcs = audio.split('\n');
                     srcs[+index] = src;
@@ -155,7 +156,7 @@ export default function ComAudio({
                     }
                   }}
                 >
-                  Найти песню в гугл <EvaIcon name="google" />
+                  Найти песню в гугл <IconGoogleStrokeRounded />
                 </span>
               </div>
               <ObserveUrlResource
@@ -176,8 +177,7 @@ export default function ComAudio({
                   className="flex flex-gap margin-gap-v full-width"
                 >
                   <ComPlayer src={src} />
-                  <EvaButton
-                    name="plus-circle"
+                  <IconPlusSignCircleStrokeRounded
                     onClick={() => {
                       updateHrefs(hrefs.filter(href => href !== src));
                       setAudioExec(`${audio}\n${src}`);
@@ -191,8 +191,7 @@ export default function ComAudio({
           })}
         </>
       ) : (
-        <EvaButton
-          name="plus-circle"
+        <IconPlusSignCircleStrokeRounded
           className="color--ok margin-big-gap"
           onClick={() => setOpenAddBlock(true)}
         />

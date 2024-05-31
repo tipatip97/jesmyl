@@ -1,6 +1,8 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import EvaButton from '../../../../../../complect/eva-icon/EvaButton';
+import IconButton from '../../../../../../complect/the-icon/IconButton';
+import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
 import { useBibleScreenTranslationFontSizeAdapter } from '../../../../../../complect/useFontSizeAdapter';
 import { Com } from '../Com';
 import TheOrder from '../order/TheOrder';
@@ -41,7 +43,7 @@ export default function ComOrders(props: IComOrdersProps) {
                     updateExMods(com.toggleModulationInclusion(orderUnit));
                   }}
                 >
-                  <EvaButton name={isExcludedModulation ? 'eye-outline' : 'eye-off-outline'} />
+                  <IconButton Icon={isExcludedModulation ? IconViewStrokeRounded : IconViewOffSlashStrokeRounded} />
                   {headerNode}
                 </span>
               ) : (

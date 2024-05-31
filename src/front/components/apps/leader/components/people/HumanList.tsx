@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
+import { IconMinusSignSquareStrokeRounded } from '@icons/minus-sign-square';
+import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
 import mylib from '../../../../../complect/my-lib/MyLib';
+import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
 import useIsRedactArea from '../../../../../complect/useIsRedactArea';
 import { RootState } from '../../../../../shared/store';
 import PhaseLeaderContainer from '../../phase-container/PhaseLeaderContainer';
@@ -85,13 +87,13 @@ export default function HumanList({
                     <span className="color--3">{excludedLabel}</span>
                   ) : list?.some(humanw => humanw === human.w) ? (
                     <EvaSendButton
-                      name="minus-square-outline"
+                      Icon={IconMinusSignSquareStrokeRounded}
                       className="color--ko"
                       onSend={onRemoveHuman && (() => onRemoveHuman(human))}
                     />
                   ) : (
                     <EvaSendButton
-                      name="plus-circle-outline"
+                      Icon={IconPlusSignCircleStrokeRounded}
                       className="color--7"
                       onSend={onAddHuman && (() => onAddHuman(human))}
                     />
