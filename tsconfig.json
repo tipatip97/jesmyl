@@ -14,7 +14,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@icons/*": ["./src/front/complect/the-icon/icons/*"]
+    }
   },
   "include": ["src", "src/back/complect/exert/exer"]
 }

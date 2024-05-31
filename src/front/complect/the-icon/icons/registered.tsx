@@ -1,0 +1,168 @@
+import { TheIconWrapper } from '../icon-wrapper';
+import { TheIconProps, TheIconSelfPack } from '../model';
+
+const d = {
+  d1: 'M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z',
+  d2: 'M9 12H12.5M9 12V7H12.5C13.8807 7 15 8.11929 15 9.5C15 10.8807 13.8807 12 12.5 12M9 12V17M12.5 12L15 17',
+  d3: 'M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM9 6.25C8.58579 6.25 8.25 6.58579 8.25 7V17C8.25 17.4142 8.58579 17.75 9 17.75C9.41421 17.75 9.75 17.4142 9.75 17V12.75H12.0365L14.3292 17.3354C14.5144 17.7059 14.9649 17.8561 15.3354 17.6708C15.7059 17.4856 15.8561 17.0351 15.6708 16.6646L13.6153 12.5536C14.8609 12.0985 15.75 10.9031 15.75 9.5C15.75 7.70507 14.2949 6.25 12.5 6.25H9ZM12.5 11.25H9.75V7.75H12.5C13.4665 7.75 14.25 8.5335 14.25 9.5C14.25 10.4665 13.4665 11.25 12.5 11.25Z',
+  d4: 'M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12Z',
+  d5: 'M8.25 7C8.25 6.58579 8.58579 6.25 9 6.25H12.5C14.2949 6.25 15.75 7.70507 15.75 9.5C15.75 10.9031 14.8609 12.0985 13.6153 12.5536L15.6708 16.6646C15.8561 17.0351 15.7059 17.4856 15.3354 17.6708C14.9649 17.8561 14.5144 17.7059 14.3292 17.3354L12.0365 12.75H9.75V17C9.75 17.4142 9.41421 17.75 9 17.75C8.58579 17.75 8.25 17.4142 8.25 17V7ZM9.75 11.25H12.5C13.4665 11.25 14.25 10.4665 14.25 9.5C14.25 8.5335 13.4665 7.75 12.5 7.75H9.75V11.25Z',
+  d6: 'M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM9 6.25C8.58579 6.25 8.25 6.58579 8.25 7V17H9.75V12.75H12.0365L14.3292 17.3354L15.6708 16.6646L13.6153 12.5536C14.8609 12.0985 15.75 10.9031 15.75 9.5C15.75 7.70507 14.2949 6.25 12.5 6.25H9ZM12.5 11.25H9.75V7.75H12.5C13.4665 7.75 14.25 8.5335 14.25 9.5C14.25 10.4665 13.4665 11.25 12.5 11.25Z',
+} as const;
+
+export const IconRegisteredStrokeRounded = (props: TheIconProps) => {
+  return (
+    <TheIconWrapper
+      {...props}
+      name="registered-stroke-rounded IconRegisteredStrokeRounded"
+    >
+      <path 
+        d={d.d1} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+      />
+      <path 
+        d={d.d2} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+      />
+    </TheIconWrapper>
+  );
+};
+
+export const IconRegisteredDuotoneRounded = (props: TheIconProps) => {
+  return (
+    <TheIconWrapper
+      {...props}
+      name="registered-duotone-rounded IconRegisteredDuotoneRounded"
+    >
+      <path 
+        opacity="var(--icon-opacity)" 
+        d={d.d1} 
+        fill="var(--icon-fill)" 
+      />
+      <path 
+        d={d.d1} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+      />
+      <path 
+        d={d.d2} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+      />
+    </TheIconWrapper>
+  );
+};
+
+export const IconRegisteredTwotoneRounded = (props: TheIconProps) => {
+  return (
+    <TheIconWrapper
+      {...props}
+      name="registered-twotone-rounded IconRegisteredTwotoneRounded"
+    >
+      <path 
+        d={d.d1} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+      />
+      <path 
+        opacity="var(--icon-opacity)" 
+        d={d.d2} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+      />
+    </TheIconWrapper>
+  );
+};
+
+export const IconRegisteredSolidRounded = (props: TheIconProps) => {
+  return (
+    <TheIconWrapper
+      {...props}
+      name="registered-solid-rounded IconRegisteredSolidRounded"
+    >
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d3} 
+        fill="var(--icon-fill)" 
+      />
+    </TheIconWrapper>
+  );
+};
+
+export const IconRegisteredBulkRounded = (props: TheIconProps) => {
+  return (
+    <TheIconWrapper
+      {...props}
+      name="registered-bulk-rounded IconRegisteredBulkRounded"
+    >
+      <path 
+        opacity="var(--icon-opacity)" 
+        d={d.d4} 
+        fill="var(--icon-fill)" 
+      />
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d5} 
+        fill="var(--icon-fill)" 
+      />
+    </TheIconWrapper>
+  );
+};
+
+export const IconRegisteredStrokeSharp = (props: TheIconProps) => {
+  return (
+    <TheIconWrapper
+      {...props}
+      name="registered-stroke-sharp IconRegisteredStrokeSharp"
+    >
+      <path 
+        d={d.d1} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+      />
+      <path 
+        d={d.d2} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinejoin="round" 
+      />
+    </TheIconWrapper>
+  );
+};
+
+export const IconRegisteredSolidSharp = (props: TheIconProps) => {
+  return (
+    <TheIconWrapper
+      {...props}
+      name="registered-solid-sharp IconRegisteredSolidSharp"
+    >
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d6} 
+        fill="var(--icon-fill)" 
+      />
+    </TheIconWrapper>
+  );
+};
+
+export const iconPackOfRegistered: TheIconSelfPack = {
+  name: 'Registered',
+  StrokeRounded: IconRegisteredStrokeRounded,
+  DuotoneRounded: IconRegisteredDuotoneRounded,
+  TwotoneRounded: IconRegisteredTwotoneRounded,
+  SolidRounded: IconRegisteredSolidRounded,
+  BulkRounded: IconRegisteredBulkRounded,
+  StrokeSharp: IconRegisteredStrokeSharp,
+  SolidSharp: IconRegisteredSolidSharp,
+};
