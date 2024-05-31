@@ -31,5 +31,12 @@
     "attr": "data-audio-file",
     "query": "[data-audio-file].jp-playlist-item",
     "w": 1676442467365.221
+  },
+  {
+    "attr": "src",
+    "query": ".entry-header .wp-audio-shortcode source",
+    "textQuery": "#texts .blocks",
+    "url": "https://fonki.pro",
+    "w": 1713000448432.737
   }
 ]
