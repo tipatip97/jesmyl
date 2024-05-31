@@ -14,7 +14,7 @@ import { ErrorCatcher } from '../ErrorCatcher';
 import { Executer } from '../executer/Executer';
 import { ExecutionDict } from '../executer/Executer.model';
 import { filer } from '../filer/Filer';
-import { setPolyfills } from '../polyfills';
+import { setServerPolyfills } from '../polyfills';
 import { SokiAuther, sokiAuther } from './SokiAuther';
 import {
   LocalSokiAuth,
@@ -29,7 +29,7 @@ import {
   TelegramNativeAuthUserData,
 } from './soki.model';
 
-setPolyfills();
+setServerPolyfills();
 ErrorCatcher.logAllErrors();
 
 interface SubscribeCapsule {
