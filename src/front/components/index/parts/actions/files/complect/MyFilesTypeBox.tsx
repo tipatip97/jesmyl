@@ -2,7 +2,7 @@ import { useEffect, useReducer, useState } from 'react';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import TheIcon from '../../../../../../complect/the-icon/TheIcon';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
 import { useMyFilesAssociates } from '../hooks/associates';
 import { useRemoveMyFile } from '../hooks/remove-file';
 import { MyFileType } from '../model';

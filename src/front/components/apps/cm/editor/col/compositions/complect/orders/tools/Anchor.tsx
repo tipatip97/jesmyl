@@ -1,7 +1,7 @@
 import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
-import { IconLink02StrokeRounded } from '@icons/link-02';
+import { IconLink02StrokeRounded } from '../../../../../../../../../complect/the-icon/icons/link-02';
 
 export const OrdersRedactorOrderToolsAnchor = ({
   props: { ccom, ord },

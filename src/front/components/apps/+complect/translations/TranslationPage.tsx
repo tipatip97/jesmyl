@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import IconButton from '../../../../complect/the-icon/IconButton';
-import { IconBook02StrokeRounded } from '@icons/book-02';
-import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
+import { IconBook02StrokeRounded } from '../../../../complect/the-icon/icons/book-02';
+import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
 import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
 import BibleTranslationControlled from '../../bible/translations/BibleTranslationControlled';
 import { Com } from '../../cm/col/com/Com';

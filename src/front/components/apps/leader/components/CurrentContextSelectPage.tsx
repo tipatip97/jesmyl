@@ -1,5 +1,5 @@
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
-import { IconCalendar01StrokeRounded } from '@icons/calendar-01';
+import { IconCalendar01StrokeRounded } from '../../../../complect/the-icon/icons/calendar-01';
 import PhaseLeaderContainer from '../phase-container/PhaseLeaderContainer';
 import useLeaderNav from '../useLeaderNav';
 import { LeaderContextImportable } from './contexts/Contexts.model';

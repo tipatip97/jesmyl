@@ -1,5 +1,5 @@
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
-import { IconQrCodeStrokeRounded } from '@icons/qr-code';
+import { IconQrCodeStrokeRounded } from '../../../../../../../complect/the-icon/icons/qr-code';
 import useQRMaster from '../../../../../../../complect/qr-code/useQRMaster';
 import { GamerOfflineRoomsContext } from '../hooks/context';
 import { useGamerOfflineRoomJoinByQrCode } from '../hooks/join-by-qr-code';

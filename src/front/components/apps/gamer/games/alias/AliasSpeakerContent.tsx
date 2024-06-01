@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { isTouchDevice } from '../../../../../complect/device-differences';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
+import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useMyPossibilitiesCurrentRoom } from '../../complect/rooms/room/hooks/possibilities';
 import { GamerAliasRoomStatePhase } from './Alias.model';
@@ -11,7 +11,7 @@ import { useAliasComputeScore } from './hooks/compute-score';
 import { useAliasCurrentTeamNaked } from './hooks/current-team';
 import { useAliasSimpleExecs, useAliasStrikeWord } from './hooks/execs';
 import { useAliasRoomState } from './hooks/state';
-import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
+import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 
 const altWordInfo = { minus: 0, weight: 0, plus: 0 };
 

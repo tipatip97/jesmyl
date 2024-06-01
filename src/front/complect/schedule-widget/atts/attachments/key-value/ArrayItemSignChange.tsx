@@ -1,6 +1,6 @@
 import { CustomAttUseTaleId } from '../../../../../models';
 import IconButton from '../../../../the-icon/IconButton';
-import { IconArrowReloadHorizontalStrokeRounded } from '@icons/arrow-reload-horizontal';
+import { IconArrowReloadHorizontalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-reload-horizontal';
 import useModal from '../../../../modal/useModal';
 import StrongDiv from '../../../../strong-control/StrongDiv';
 import { IScheduleWidgetListUnit, IScheduleWidgetRole, IScheduleWidgetUser } from '../../../ScheduleWidget.model';

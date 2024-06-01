@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
-import { IconCheckmarkCircle01StrokeRounded } from '@icons/checkmark-circle-01';
-import { IconRecordStrokeRounded } from '@icons/record';
+import { IconCheckmarkCircle01StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-01';
+import { IconRecordStrokeRounded } from '../../../../../complect/the-icon/icons/record';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { leaderExer } from '../../Leader.store';

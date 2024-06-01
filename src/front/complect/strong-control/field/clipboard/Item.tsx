@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../shared/store';
 import IconButton from '../../../the-icon/IconButton';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconCancel01StrokeRounded } from '../../../../complect/the-icon/icons/cancel-01';
 import { ClipboardStoreItem } from '../../Strong.model';
 import di from '../../Strong.store';
 import StrongEditableFieldMultiline from '../StrongEditableFieldMultiline';

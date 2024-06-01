@@ -1,5 +1,5 @@
 import BrutalItem from '../../../../../../complect/brutal-item/BrutalItem';
-import { IconBookOpen01StrokeRounded } from '@icons/book-open-01';
+import { IconBookOpen01StrokeRounded } from '../../../../../../complect/the-icon/icons/book-open-01';
 import useCmNav from '../../../base/useCmNav';
 import PhaseCmEditorContainer from '../../phase-editor-container/PhaseCmEditorContainer';
 import { useEditableCols } from '../useEditableCols';

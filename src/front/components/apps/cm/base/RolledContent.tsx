@@ -1,8 +1,8 @@
 import { HTMLAttributes, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { IconMinusSignStrokeRounded } from '@icons/minus-sign';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconMinusSignStrokeRounded } from '../../../../complect/the-icon/icons/minus-sign';
+import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
 import useFullScreen from '../../../../complect/useFullscreen';
 import { RootState } from '../../../../shared/store';
 import di from '../Cm.store';

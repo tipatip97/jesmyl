@@ -1,7 +1,7 @@
 import useAbsoluteFloatPopup from '../../../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
 import propsOfClicker from '../../../../../../../complect/clicker/propsOfClicker';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
-import { IconPlayCircle02StrokeRounded } from '@icons/play-circle-02';
+import { IconPlayCircle02StrokeRounded } from '../../../../../../../complect/the-icon/icons/play-circle-02';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTimerImportable } from '../GameTimer.model';

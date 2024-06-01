@@ -3,7 +3,7 @@ import { useCheckIsAccessed } from '../../../../../complect/exer/hooks/check-is-
 import useIsExpand from '../../../../../complect/expand/useIsExpand';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import useAuth from '../../../../index/useAuth';
 import { gamerExer } from '../../Gamer.store';
 import { useSpyLocations } from './hooks/locations';

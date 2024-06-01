@@ -1,8 +1,8 @@
-import { IconClock01SolidRounded, IconClock01StrokeRounded } from '@icons/clock-01';
-import { IconCubeStrokeRounded } from '@icons/cube';
-import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
-import { IconSquareLock02SolidRounded, IconSquareLock02StrokeRounded } from '@icons/square-lock-02';
-import { IconUserRemove01SolidRounded, IconUserRemove01StrokeRounded } from '@icons/user-remove-01';
+import { IconClock01SolidRounded, IconClock01StrokeRounded } from '../../../../../../complect/the-icon/icons/clock-01';
+import { IconCubeStrokeRounded } from '../../../../../../complect/the-icon/icons/cube';
+import { IconHelpCircleStrokeRounded } from '../../../../../../complect/the-icon/icons/help-circle';
+import { IconSquareLock02SolidRounded, IconSquareLock02StrokeRounded } from '../../../../../../complect/the-icon/icons/square-lock-02';
+import { IconUserRemove01SolidRounded, IconUserRemove01StrokeRounded } from '../../../../../../complect/the-icon/icons/user-remove-01';
 import { gamerRoomGames } from '../../../useGamerNav';
 import useGamerOfflineRoomsActions from './hooks/go-to-room';
 import { useMyPossibilitiesInRoom } from './hooks/possibilities';

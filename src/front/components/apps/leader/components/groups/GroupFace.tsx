@@ -1,5 +1,5 @@
-import { IconMoreVerticalCircle01StrokeRounded } from '@icons/more-vertical-circle-01';
-import { IconUserStrokeRounded } from '@icons/user';
+import { IconMoreVerticalCircle01StrokeRounded } from '../../../../../complect/the-icon/icons/more-vertical-circle-01';
+import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
 import { LeaderCleans } from '../LeaderCleans';
 import { LeaderGroupImportable } from './Groups.model';
 import useLeaderGroups from './useGroups';

@@ -3,7 +3,7 @@ import TheButton from '../../../../../../complect/Button';
 import Dropdown from '../../../../../../complect/dropdown/Dropdown';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
-import { IconClock01StrokeRounded } from '@icons/clock-01';
+import { IconClock01StrokeRounded } from '../../../../../../complect/the-icon/icons/clock-01';
 import GamerRoomMemberList from '../../../complect/GamerRoomMemberList';
 import { useGamerRoomPlayers } from '../../../complect/rooms/room/hooks/players';
 import { useMyPossibilitiesCurrentRoom } from '../../../complect/rooms/room/hooks/possibilities';

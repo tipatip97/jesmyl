@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import useModal from './modal/useModal';
 import mylib from './my-lib/MyLib';
 import IconButton from './the-icon/IconButton';
-import { IconShare08StrokeRounded } from '@icons/share-08';
+import { IconShare08StrokeRounded } from '../complect/the-icon/icons/share-08';
 
 type PrepareResult = {
   url?: string;

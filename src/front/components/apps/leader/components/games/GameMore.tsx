@@ -1,5 +1,5 @@
 import { BottomPopupContenterPreparer } from '../../../../../complect/absolute-popup/bottom-popup/model';
-import { IconDelete02StrokeRounded } from '@icons/delete-02';
+import { IconDelete02StrokeRounded } from '../../../../../complect/the-icon/icons/delete-02';
 import PrintableBottomItem from '../PrintableBottomItem';
 import GameTeamLists from './templates/GameTeamLists';
 import GameTeamPassportNames from './templates/GameTeamPassportNames';

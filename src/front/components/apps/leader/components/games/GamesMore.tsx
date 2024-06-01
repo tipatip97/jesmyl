@@ -1,6 +1,6 @@
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import { IconUserStrokeRounded } from '@icons/user';
+import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
 import LeaderGameMaster from './GameMaster';
 
 export const GamesMoreContenter: BottomPopupContenter = (isOpen, _, prepare) => {

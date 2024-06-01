@@ -1,6 +1,6 @@
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import { IconEdit01StrokeRounded } from '@icons/edit-01';
+import { IconEdit01StrokeRounded } from '../../../../../complect/the-icon/icons/edit-01';
 import LeaderGroupMaster from './GroupMaster';
 import { LeaderGroupImportable } from './Groups.model';
 

@@ -6,8 +6,8 @@ import { useGetRandomTwiceName } from '../../../../../complect/hooks/random-twic
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import mylib, { AddRestMode } from '../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
-import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
+import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';
 import { TeamGameImportable } from '../../Leader.model';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';

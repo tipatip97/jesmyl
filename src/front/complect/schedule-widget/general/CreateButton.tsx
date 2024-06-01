@@ -6,8 +6,8 @@ import useToast from '../../modal/useToast';
 import StrongButton from '../../strong-control/StrongButton';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import IconButton from '../../the-icon/IconButton';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconCancel01StrokeRounded } from '../../../complect/the-icon/icons/cancel-01';
+import { IconPlusSignStrokeRounded } from '../../../complect/the-icon/icons/plus-sign';
 import { initialScheduleScope } from '../useScheduleWidget';
 
 export default function ScheduleCreateWidgetButton({

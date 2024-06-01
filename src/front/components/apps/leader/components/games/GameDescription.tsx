@@ -2,7 +2,7 @@ import { useState } from 'react';
 import StrongEditableField from '../../../../../complect/strong-control/field/StrongEditableField';
 import { TeamGameImportable } from '../../Leader.model';
 import { LeaderCleans } from '../LeaderCleans';
-import { IconFile02StrokeRounded } from '@icons/file-02';
+import { IconFile02StrokeRounded } from '../../../../../complect/the-icon/icons/file-02';
 
 const newl2moreReg = /\n{2,}/;
 const newlReg = /\n/;

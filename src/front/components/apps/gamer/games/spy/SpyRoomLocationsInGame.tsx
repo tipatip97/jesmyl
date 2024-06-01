@@ -1,6 +1,6 @@
 import useIsExpand from '../../../../../complect/expand/useIsExpand';
-import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
-import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
+import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
+import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
 import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
 import { useSpyToggleLocation } from './hooks/actions';
 import { useSpyCleanLocations, useSpyLocations } from './hooks/locations';

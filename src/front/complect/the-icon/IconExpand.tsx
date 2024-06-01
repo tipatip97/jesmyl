@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
-import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
+import { IconArrowDown01StrokeRounded } from '../../complect/the-icon/icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '../../complect/the-icon/icons/arrow-up-01';
 
 export default function IconExpand({
   isExpand,

@@ -4,7 +4,7 @@ import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/ut
 import ScheduleWidgetRoleFace from '../../../control/roles/RoleFace';
 import ScheduleWidgetListUnitFace from '../../../lists/UnitFace';
 import { extractScheduleWidgetRole, useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
-import { IconUserStrokeRounded } from '@icons/user';
+import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
 
 export default function KeyValueListAttNumberMember({ value }: { value: number }) {
   const rights = useScheduleWidgetRightsContext();

@@ -1,7 +1,7 @@
 import TheIcon from '../../../the-icon/TheIcon';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
-import { IconLink02StrokeRounded } from '@icons/link-02';
-import { IconViewStrokeRounded } from '@icons/view';
+import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
+import { IconViewStrokeRounded } from '../../../../complect/the-icon/icons/view';
 import mylib from '../../../my-lib/MyLib';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import { strongScopeKeyValueSeparator } from '../../../strong-control/useStrongControl';

@@ -1,9 +1,9 @@
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
-import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
-import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
-import { IconMinusSignCircleStrokeRounded } from '@icons/minus-sign-circle';
-import { IconStarSolidRounded, IconStarStrokeRounded } from '@icons/star';
+import { IconCheckmarkCircle02StrokeRounded } from '../../../../../../complect/the-icon/icons/checkmark-circle-02';
+import { IconHelpCircleStrokeRounded } from '../../../../../../complect/the-icon/icons/help-circle';
+import { IconMinusSignCircleStrokeRounded } from '../../../../../../complect/the-icon/icons/minus-sign-circle';
+import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../../complect/the-icon/icons/star';
 import useSelectedComs from '../../../base/useSelectedComs';
 import ComFaceContextMenuEditorItems from '../../../editor/col/compositions/ComFaceContextMenuEditorItems';
 import { useMarks } from '../../../lists/marks/useMarks';

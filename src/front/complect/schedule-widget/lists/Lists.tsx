@@ -6,9 +6,9 @@ import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import ScheduleWidgetRoleList from '../control/roles/RoleList';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import { ScheduleWidgetListCategory } from './Category';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
-import { IconLeftToRightListBulletStrokeRounded } from '@icons/left-to-right-list-bullet';
-import { IconArrowRight01StrokeRounded } from '@icons/arrow-right-01';
+import { IconPlusSignStrokeRounded } from '../../../complect/the-icon/icons/plus-sign';
+import { IconLeftToRightListBulletStrokeRounded } from '../../../complect/the-icon/icons/left-to-right-list-bullet';
+import { IconArrowRight01StrokeRounded } from '../../../complect/the-icon/icons/arrow-right-01';
 
 export default function ScheduleWidgetLists({
   scope,

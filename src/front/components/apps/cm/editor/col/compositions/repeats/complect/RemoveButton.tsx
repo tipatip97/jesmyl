@@ -2,9 +2,9 @@ import { useConfirm } from '../../../../../../../../complect/modal/confirm/useCo
 import useModal from '../../../../../../../../complect/modal/useModal';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../../../complect/the-icon/IconButton';
-import { IconDelete01StrokeRounded } from '@icons/delete-01';
-import { IconRefreshStrokeRounded } from '@icons/refresh';
-import { IconUnavailableStrokeRounded } from '@icons/unavailable';
+import { IconDelete01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/delete-01';
+import { IconRefreshStrokeRounded } from '../../../../../../../../complect/the-icon/icons/refresh';
+import { IconUnavailableStrokeRounded } from '../../../../../../../../complect/the-icon/icons/unavailable';
 import { Order } from '../../../../../col/com/order/Order';
 import { OrderRepeats } from '../../../../../col/com/order/Order.model';
 import { EditableOrder } from '../../complect/orders/EditableOrder';

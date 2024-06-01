@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import IconButton from '../../../the-icon/IconButton';
-import { IconQrCodeStrokeRounded } from '@icons/qr-code';
+import { IconQrCodeStrokeRounded } from '../../../../complect/the-icon/icons/qr-code';
 import useModal from '../../../modal/useModal';
 import useQRMaster from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';

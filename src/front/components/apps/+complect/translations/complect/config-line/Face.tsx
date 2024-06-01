@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
 import { ScreenTranslationConfig } from '../../model';
 
 export interface ScreenTranslationsFaceProps {

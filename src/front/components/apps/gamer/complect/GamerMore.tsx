@@ -3,7 +3,7 @@ import { BottomPopupContenter } from '../../../../complect/absolute-popup/bottom
 import { useCheckIsAccessed } from '../../../../complect/exer/hooks/check-is-accessed';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
 import useToast from '../../../../complect/modal/useToast';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
 import useAuth from '../../../index/useAuth';
 import NewGamerRoomScreen from './rooms/NewGamerRoomScreen';
 import { useGamerOfflineRoomsPassport } from './rooms/offline-room/hooks/passport';

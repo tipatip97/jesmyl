@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { CustomAttUseTaleId, ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models';
 import IconButton from '../../../../the-icon/IconButton';
-import { IconViewStrokeRounded } from '@icons/view';
-import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
+import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
+import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
 import mylib from '../../../../my-lib/MyLib';
 import StrongDropdown from '../../../../strong-control/StrongDropdown';
 import { IScheduleWidgetListUnit, IScheduleWidgetRole, IScheduleWidgetUser } from '../../../ScheduleWidget.model';

@@ -11,12 +11,12 @@ import useQRMaster, { crossApplicationLinkCoder } from '../../../qr-code/useQRMa
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import IconButton from '../../../the-icon/IconButton';
-import { IconEdit02StrokeRounded } from '@icons/edit-02';
-import { IconLink02StrokeRounded } from '@icons/link-02';
-import { IconNotification01StrokeRounded } from '@icons/notification-01';
-import { IconNotificationOff01StrokeRounded } from '@icons/notification-off-01';
-import { IconQrCodeStrokeRounded } from '@icons/qr-code';
-import { IconUserRemove02StrokeRounded } from '@icons/user-remove-02';
+import { IconEdit02StrokeRounded } from '../../../../complect/the-icon/icons/edit-02';
+import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
+import { IconNotification01StrokeRounded } from '../../../../complect/the-icon/icons/notification-01';
+import { IconNotificationOff01StrokeRounded } from '../../../../complect/the-icon/icons/notification-off-01';
+import { IconQrCodeStrokeRounded } from '../../../../complect/the-icon/icons/qr-code';
+import { IconUserRemove02StrokeRounded } from '../../../../complect/the-icon/icons/user-remove-02';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import { ScheduleWidgetUserEdit } from './UserEdit';

@@ -2,13 +2,13 @@ import React, { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './front/app/App';
+import { setPolyfills } from './front/complect/polyfills';
 import './front/index.scss';
 import './front/lib.scss';
 import reportWebVitals from './front/reportWebVitals';
 import * as serviceWorkerRegistration from './front/serviceWorkerRegistration';
 import { store } from './front/shared/store';
 import GlobalStyles from './globalStyles';
-import { setPolyfills } from './front/complect/polyfills';
 
 export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null) => {
   createRoot(node).render(

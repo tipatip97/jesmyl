@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { IconMinusSignCircleStrokeRounded } from '@icons/minus-sign-circle';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconMinusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import useIsRedactArea from '../../../../../complect/useIsRedactArea';
 import HumanList from './HumanList';
 import { SelectHumansComponentProps } from './People.model';

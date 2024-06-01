@@ -11,7 +11,7 @@ import useFullContent from '../../fullscreen-content/useFullContent';
 import mylib from '../../my-lib/MyLib';
 import { useStorageValueGetter } from '../../useStorage';
 import { IScheduleWidget } from '../ScheduleWidget.model';
-import { IconComputerStrokeRounded } from '@icons/computer';
+import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
 
 export const ScheduleWidgetLiveTranslation = ({
   onClose,

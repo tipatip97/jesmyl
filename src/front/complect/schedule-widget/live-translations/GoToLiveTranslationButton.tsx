@@ -1,6 +1,6 @@
 import useIndexNav, { indexScheduleWidgetTranslationPagePhase } from '../../../components/index/complect/useIndexNav';
 import IconButton from '../../the-icon/IconButton';
-import { IconComputerStrokeRounded } from '@icons/computer';
+import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 
 export const ScheduleWidgetGoToLiveTranslationButton = ({ schedule }: { schedule: IScheduleWidget }) => {

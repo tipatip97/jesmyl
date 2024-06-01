@@ -9,9 +9,9 @@ import LeaderGameTimerMaster from './timers/GameTimerMaster';
 import TimerRatingBoard from './timers/complect/TimerRatingBoard';
 import TimerSortRatingVariantSelector from './timers/complect/TimerSortRatingVariantSelector';
 import { MyLib } from '../../../../../complect/my-lib/MyLib';
-import { IconArrowDown01StrokeRounded } from '@icons/arrow-down-01';
-import { IconArrowUp01StrokeRounded } from '@icons/arrow-up-01';
-import { IconBrowserStrokeRounded } from '@icons/browser';
+import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';
+import { IconBrowserStrokeRounded } from '../../../../../complect/the-icon/icons/browser';
 
 const itIt = (it: unknown) => it;
 

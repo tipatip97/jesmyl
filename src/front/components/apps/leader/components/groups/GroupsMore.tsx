@@ -1,6 +1,6 @@
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import PrintableBottomItem from '../PrintableBottomItem';
 import QRQuest from '../templates/QRQuest';
 import LeaderGroupMaster from './GroupMaster';

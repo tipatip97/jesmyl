@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { IconCheckmarkSquare04StrokeRounded } from '@icons/checkmark-square-04';
-import { IconSquareStrokeRounded } from '@icons/square';
+import { IconCheckmarkSquare04StrokeRounded } from '../../complect/the-icon/icons/checkmark-square-04';
+import { IconSquareStrokeRounded } from '../../complect/the-icon/icons/square';
 
 export default function IconCheckbox(props: {
   checked?: boolean;

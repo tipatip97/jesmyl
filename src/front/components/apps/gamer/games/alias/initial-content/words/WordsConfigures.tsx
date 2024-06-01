@@ -4,9 +4,9 @@ import useFullContent from '../../../../../../../complect/fullscreen-content/use
 import mylib from '../../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../../complect/the-icon/IconCheckbox';
-import { IconBook02StrokeRounded } from '@icons/book-02';
-import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
-import { IconTarget03StrokeRounded } from '@icons/target-03';
+import { IconBook02StrokeRounded } from '../../../../../../../complect/the-icon/icons/book-02';
+import { IconBookOpen02StrokeRounded } from '../../../../../../../complect/the-icon/icons/book-open-02';
+import { IconTarget03StrokeRounded } from '../../../../../../../complect/the-icon/icons/target-03';
 import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
 import { useAliasPacks } from '../../hooks/packs';
 import { useAliasRoomState } from '../../hooks/state';

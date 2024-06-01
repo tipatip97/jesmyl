@@ -1,9 +1,9 @@
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
-import { IconBook02StrokeRounded } from '@icons/book-02';
-import { iconPackOfFile02 } from '@icons/file-02';
-import { iconPackOfFileSearch } from '@icons/file-search';
+import { IconBook02StrokeRounded } from '../../../complect/the-icon/icons/book-02';
+import { iconPackOfFile02 } from '../../../complect/the-icon/icons/file-02';
+import { iconPackOfFileSearch } from '../../../complect/the-icon/icons/file-search';
 import { BibleStorage } from './model';
 import { BibleReaderCurrentBookPage } from './reader/book/CurrentBookPage';
 import { BibleReaderSearchPage } from './reader/search/SearchPage';

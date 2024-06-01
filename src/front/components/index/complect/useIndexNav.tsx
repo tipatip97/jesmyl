@@ -2,7 +2,7 @@ import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import serviceMaster from '../../../complect/service/serviceMaster';
-import { iconPackOfCircleArrowRight02 } from '@icons/circle-arrow-right-02';
+import { iconPackOfCircleArrowRight02 } from '../../../complect/the-icon/icons/circle-arrow-right-02';
 import { RoutePhasePoint } from '../../router/Router.model';
 import { Index } from '../Index';
 import { IndexNavData, IndexStorage } from '../Index.model';

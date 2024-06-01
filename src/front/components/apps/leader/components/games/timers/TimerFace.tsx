@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import useFullContent from '../../../../../../complect/fullscreen-content/useFullContent';
-import { IconClock01StrokeRounded } from '@icons/clock-01';
-import { IconMessage01StrokeRounded } from '@icons/message-01';
+import { IconClock01StrokeRounded } from '../../../../../../complect/the-icon/icons/clock-01';
+import { IconMessage01StrokeRounded } from '../../../../../../complect/the-icon/icons/message-01';
 import { TeamGameImportable } from '../../../Leader.model';
 import { LeaderCleans } from '../../LeaderCleans';
 import { GameTimerMode } from './GameTimer.model';

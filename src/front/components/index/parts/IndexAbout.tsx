@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import * as versionNum from '../../../../back/+version.json';
-import { IconTelegramStrokeRounded } from '@icons/telegram';
+import { IconTelegramStrokeRounded } from '../../../complect/the-icon/icons/telegram';
 import QRCode from '../../../complect/qr-code/QRCode';
 import { RootState } from '../../../shared/store';
 

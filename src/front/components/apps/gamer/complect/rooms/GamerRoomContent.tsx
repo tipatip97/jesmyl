@@ -4,9 +4,9 @@ import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-po
 import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
 import { NavigationThrowNodeProps } from '../../../../../complect/nav-configurer/Navigation.model';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
-import { IconDelete01StrokeRounded } from '@icons/delete-01';
-import { IconLinkBackwardStrokeRounded } from '@icons/link-backward';
+import { IconCancel01StrokeRounded } from '../../../../../complect/the-icon/icons/cancel-01';
+import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
+import { IconLinkBackwardStrokeRounded } from '../../../../../complect/the-icon/icons/link-backward';
 import useAuth from '../../../../index/useAuth';
 import { GamerGameName, GamerNavData, GamerRoom } from '../../Gamer.model';
 import useGamerNav, { GamerRoomGameSkelet } from '../../useGamerNav';

@@ -1,6 +1,6 @@
 import { BottomPopupContenterPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/model';
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
-import { IconUserRemove02StrokeRounded } from '@icons/user-remove-02';
+import { IconUserRemove02StrokeRounded } from '../../../../../../complect/the-icon/icons/user-remove-02';
 import { TeamGameImportable } from '../../../Leader.model';
 import { leaderExer } from '../../../Leader.store';
 import { HumanImportable } from '../../people/People.model';

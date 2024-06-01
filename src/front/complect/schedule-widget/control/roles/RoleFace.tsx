@@ -1,6 +1,6 @@
 import useAuth from '../../../../components/index/useAuth';
 import TheIcon from '../../../the-icon/TheIcon';
-import { IconGithubStrokeRounded } from '@icons/github';
+import { IconGithubStrokeRounded } from '../../../../complect/the-icon/icons/github';
 import { IScheduleWidget, IScheduleWidgetRole } from '../../ScheduleWidget.model';
 import { extractScheduleWidgetRoleUser } from '../../useScheduleWidget';
 

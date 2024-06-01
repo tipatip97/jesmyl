@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import IconButton from '../../../the-icon/IconButton';
-import { IconLink02StrokeRounded } from '@icons/link-02';
+import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
 import KeyboardInput from '../../../keyboard/KeyboardInput';
 import useModal from '../../../modal/useModal';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';

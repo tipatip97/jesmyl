@@ -1,9 +1,9 @@
 import { NavigationConfig } from '../../../../complect/nav-configurer/Navigation';
 import { INavigationRouteChildItem, UseNavAction } from '../../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
-import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
-import { iconPackOfLeftToRightListBullet } from '@icons/left-to-right-list-bullet';
-import { iconPackOfPlaylist01 } from '@icons/playlist-01';
+import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
+import { iconPackOfLeftToRightListBullet } from '../../../../complect/the-icon/icons/left-to-right-list-bullet';
+import { iconPackOfPlaylist01 } from '../../../../complect/the-icon/icons/playlist-01';
 import { RoutePhasePoint } from '../../../router/Router.model';
 import CmApplication from '../Cm';
 import { CmNavData, CmStorage } from '../Cm.model';

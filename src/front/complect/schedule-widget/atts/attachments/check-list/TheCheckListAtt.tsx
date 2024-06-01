@@ -1,8 +1,8 @@
 import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
-import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
-import { IconSquareStrokeRounded } from '@icons/square';
+import { IconCheckmarkSquare02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-square-02';
+import { IconPlusSignStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign';
+import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
 import { takeStrongScopeMaker } from '../../../useScheduleWidget';
 import { ScheduleChListAtt } from './checkListAtt';
 

@@ -1,5 +1,5 @@
 import { bottomPopupContentPreparer } from '../../../../../complect/absolute-popup/bottom-popup/item-preparer';
-import { IconUserRemove01StrokeRounded } from '@icons/user-remove-01';
+import { IconUserRemove01StrokeRounded } from '../../../../../complect/the-icon/icons/user-remove-01';
 import { GamerRoomMember } from '../../Gamer.model';
 import { useGamerRoomActions } from '../../complect/rooms/hooks/actions';
 import { useGamerCurrentRoom } from '../../complect/rooms/room/hooks/current-room';

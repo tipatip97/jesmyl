@@ -9,7 +9,7 @@ import { MyLib } from '../../../my-lib/MyLib';
 import di from '../../Strong.store';
 import './Clipboard.scss';
 import StrongClipboardItem from './Item';
-import { IconTask01StrokeRounded } from '@icons/task-01';
+import { IconTask01StrokeRounded } from '../../../../complect/the-icon/icons/task-01';
 
 let clipboardFocusedElem: (EventTarget & HTMLTextAreaElement) | nil = null;
 let updates = 0;

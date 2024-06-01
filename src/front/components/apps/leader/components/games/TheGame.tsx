@@ -22,7 +22,7 @@ import TimerFieldsConfigurer from './timers/complect/TimerFieldsConfigurer';
 import TimerNameListConfigurer from './timers/complect/TimerNameListConfigurer';
 import useGameTimer from './timers/useGameTimer';
 import useCgame from './useGames';
-import { IconViewStrokeRounded } from '@icons/view';
+import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 
 export default function TheGame() {
   const { cgame } = useCgame();

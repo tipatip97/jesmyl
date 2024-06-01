@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import useModal from '../../modal/useModal';
 import IconButton from '../../the-icon/IconButton';
 import { theIconFromPack } from '../../the-icon/TheIcon';
-import { IconHelpSquareStrokeRounded } from '@icons/help-square';
+import { IconHelpSquareStrokeRounded } from '../../../complect/the-icon/icons/help-square';
 import { TheIconName } from '../../the-icon/model';
 
 // const icons = evaPackNames.filter(name => name.endsWith('-outline'));

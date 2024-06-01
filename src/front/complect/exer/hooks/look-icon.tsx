@@ -1,5 +1,5 @@
 import useFullContent from '../../fullscreen-content/useFullContent';
-import { IconEyeStrokeRounded } from '@icons/eye';
+import { IconEyeStrokeRounded } from '../../../complect/the-icon/icons/eye';
 import ExecList from '../ExecList';
 import { Exer } from '../Exer';
 import { ExerStorage } from '../Exer.model';

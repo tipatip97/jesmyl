@@ -1,8 +1,8 @@
 import { ReactNode, useMemo, useState } from 'react';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconClock01StrokeRounded } from '@icons/clock-01';
-import { IconSentStrokeRounded } from '@icons/sent';
+import { IconClock01StrokeRounded } from '../../../../../complect/the-icon/icons/clock-01';
+import { IconSentStrokeRounded } from '../../../../../complect/the-icon/icons/sent';
 import { TheIconType } from '../../../../../complect/the-icon/model';
 import LeaderComment from './LeaderComment';
 import { LeaderCommentImportable } from './LeaderComment.model';

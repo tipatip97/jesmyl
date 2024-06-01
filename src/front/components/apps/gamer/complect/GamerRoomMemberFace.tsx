@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { IconUserStrokeRounded } from '@icons/user';
-import { IconUserBlock01StrokeRounded } from '@icons/user-block-01';
+import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
+import { IconUserBlock01StrokeRounded } from '../../../../complect/the-icon/icons/user-block-01';
 import { GamerRoomMember, GamerRoomMemberStatus } from '../Gamer.model';
 
 export default function RoomMemberFace({

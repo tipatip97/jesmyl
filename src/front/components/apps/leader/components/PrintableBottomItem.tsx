@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 import { renderComponentInNewWindow } from '../../../../..';
 import { BottomPopupContenterPreparer } from '../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
-import { IconEyeStrokeRounded } from '@icons/eye';
-import { IconPrinterStrokeRounded } from '@icons/printer';
+import { IconEyeStrokeRounded } from '../../../../complect/the-icon/icons/eye';
+import { IconPrinterStrokeRounded } from '../../../../complect/the-icon/icons/printer';
 
 export default function PrintableBottomItem({
   node,

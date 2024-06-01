@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconViewStrokeRounded } from '@icons/view';
-import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
+import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
+import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
 import { SPY_ROLE } from './hooks/locations';
 
 export default function SpyShowMyRole({ role }: { role: string }) {

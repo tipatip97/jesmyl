@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
-import { IconTickDouble02StrokeRounded } from '@icons/tick-double-02';
+import { IconTickDouble02StrokeRounded } from '../../../../../../../complect/the-icon/icons/tick-double-02';
 import { CmMp3Rule } from '../../../../../../../models';
 import { RoutePhase } from '../../../../../../router/Router.model';
 import useCmNav from '../../../../base/useCmNav';

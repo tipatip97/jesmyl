@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconPencilEdit02StrokeRounded } from '@icons/pencil-edit-02';
+import { IconPencilEdit02StrokeRounded } from '../../../../../complect/the-icon/icons/pencil-edit-02';
 import { TranslationScreen } from '../TranslationScreen';
 import { useScreenTranslationCurrentConfig } from '../hooks/configs';
 

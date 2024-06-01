@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
+import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
 import { CmMp3Rule } from '../../../../../models';
 import { RootState } from '../../../../../shared/store';
 import { cmExer } from '../../Cm.store';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import Mp3RuleEditor from './Mp3RuleEditor';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 
 const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
 

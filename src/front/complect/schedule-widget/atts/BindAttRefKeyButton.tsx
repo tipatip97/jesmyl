@@ -11,7 +11,7 @@ import {
   ScheduleWidgetAttRef,
 } from '../ScheduleWidget.model';
 import ScheduleWidgetAttFace from './AttFace';
-import { IconLink01StrokeRounded } from '@icons/link-01';
+import { IconLink01StrokeRounded } from '../../../complect/the-icon/icons/link-01';
 
 export default function ScheduleWidgetBindAttRefKeyButton({
   atts,

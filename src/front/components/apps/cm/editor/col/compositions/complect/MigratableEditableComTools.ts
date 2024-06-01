@@ -1,4 +1,4 @@
-import { IconPencilEdit02StrokeRounded } from '@icons/pencil-edit-02';
+import { IconPencilEdit02StrokeRounded } from '../../../../../../../complect/the-icon/icons/pencil-edit-02';
 import { Auth } from '../../../../../../index/Index.model';
 import useCmNav from '../../../../base/useCmNav';
 import { cmExer } from '../../../../Cm.store';

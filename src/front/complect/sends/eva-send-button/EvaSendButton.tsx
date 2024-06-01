@@ -1,6 +1,6 @@
 import useToast from '../../modal/useToast';
 import IconButton from '../../the-icon/IconButton';
-import { IconLoading03SolidRounded } from '@icons/loading-03';
+import { IconLoading03SolidRounded } from '../../../complect/the-icon/icons/loading-03';
 import { SendButtonContentMaker } from '../send-button-content-maker/maker';
 import { EvaSendButtonProps } from './EvaSendButton.model';
 

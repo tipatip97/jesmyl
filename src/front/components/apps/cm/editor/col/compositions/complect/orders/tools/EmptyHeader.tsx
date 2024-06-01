@@ -1,6 +1,6 @@
 import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
-import { IconMessage01StrokeRounded } from '@icons/message-01';
+import { IconMessage01StrokeRounded } from '../../../../../../../../../complect/the-icon/icons/message-01';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsEmptyHeader = ({

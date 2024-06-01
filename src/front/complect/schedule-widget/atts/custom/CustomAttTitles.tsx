@@ -1,5 +1,5 @@
 import IconButton from '../../../the-icon/IconButton';
-import { IconLeftToRightListBulletStrokeRounded } from '@icons/left-to-right-list-bullet';
+import { IconLeftToRightListBulletStrokeRounded } from '../../../../complect/the-icon/icons/left-to-right-list-bullet';
 import { ScheduleWidgetAppAttCustomized } from '../../ScheduleWidget.model';
 
 const itIt = (it: unknown) => it;

@@ -7,12 +7,12 @@ import { ScreenTranslateConfigurationNameChanger } from '../../../../../../+comp
 import { ScreenTranslateConfigurationTextAlign } from '../../../../../../+complect/translations/complect/TextAlign';
 import { ExpandableContent } from '../../../../../../../../complect/expand/ExpandableContent';
 import IconButton from '../../../../../../../../complect/the-icon/IconButton';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconCancel01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/cancel-01';
 import { useDebounceAction } from '../../../../../../../../complect/useDebounceAction';
 import { useUpdateCmCurrentTranslationConfig } from '../../hooks/update-config';
 import { CmTranslationScreenConfig, CmTranslationTextScreenConfig } from '../../model';
 import { cmTranslationSubConfigNext } from '../defaults';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconPlusSignStrokeRounded } from '../../../../../../../../complect/the-icon/icons/plus-sign';
 
 interface Props {
   currentConfig: CmTranslationScreenConfig;

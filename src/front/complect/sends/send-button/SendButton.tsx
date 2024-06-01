@@ -1,7 +1,7 @@
 import TheButton from '../../Button';
 import useToast from '../../modal/useToast';
 import { TheIconLoading } from '../../the-icon/IconLoading';
-import { IconAlert02StrokeRounded } from '@icons/alert-02';
+import { IconAlert02StrokeRounded } from '../../../complect/the-icon/icons/alert-02';
 import { SendButtonContentMaker } from '../send-button-content-maker/maker';
 import { SendButtonProps } from './SendButton.model';
 

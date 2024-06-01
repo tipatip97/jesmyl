@@ -2,8 +2,8 @@ import { useState } from 'react';
 import useAbsoluteFloatPopup from '../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { TheIconLoading } from '../../../../../complect/the-icon/IconLoading';
-import { IconAlert02StrokeRounded } from '@icons/alert-02';
-import { IconPauseStrokeRounded } from '@icons/pause';
+import { IconAlert02StrokeRounded } from '../../../../../complect/the-icon/icons/alert-02';
+import { IconPauseStrokeRounded } from '../../../../../complect/the-icon/icons/pause';
 import { LeaderCommentImportable } from './LeaderComment.model';
 import useLeaderComments from './useLeaderComments';
 

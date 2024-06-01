@@ -6,8 +6,8 @@ import di from '../../Index.store';
 import useIndexNav from '../../complect/useIndexNav';
 import indexStorage from '../../indexStorage';
 import useAuth, { removePullRequisites } from '../../useAuth';
-import { IconQrCode01StrokeRounded } from '@icons/qr-code-01';
-import { IconUserStrokeRounded } from '@icons/user';
+import { IconQrCode01StrokeRounded } from '../../../../complect/the-icon/icons/qr-code-01';
+import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
 
 export const UserMore: BottomPopupContenter = (isOpen, _, prepare) => {
   const dispatch = useDispatch();

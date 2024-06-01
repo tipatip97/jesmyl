@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { scheduleWidgetUserRights } from '../../../models';
-import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
-import { IconLink02StrokeRounded } from '@icons/link-02';
+import { IconHelpCircleStrokeRounded } from '../../../complect/the-icon/icons/help-circle';
+import { IconLink02StrokeRounded } from '../../../complect/the-icon/icons/link-02';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import TheIcon from '../../the-icon/TheIcon';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconCancel01StrokeRounded } from '../../../complect/the-icon/icons/cancel-01';
 import { ScheduleWidgetAppAtt, ScheduleWidgetAttKey } from '../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import ScheduleWidgetCustomAtt from './custom/CustomAtt';

@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import useModal from './modal/useModal';
 import useToast from './modal/useToast';
 import IconButton from './the-icon/IconButton';
-import { IconCopy01StrokeRounded } from '@icons/copy-01';
+import { IconCopy01StrokeRounded } from '../complect/the-icon/icons/copy-01';
 
 export default function CopyTextButton({
   text,

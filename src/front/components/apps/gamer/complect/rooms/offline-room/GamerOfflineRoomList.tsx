@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { IconCubeStrokeRounded } from '@icons/cube';
+import { IconCubeStrokeRounded } from '../../../../../../complect/the-icon/icons/cube';
 import { RootState } from '../../../../../../shared/store';
 import { gamerOfflineRoomGames } from '../../../useGamerNav';
 import { GamerOfflineRoomListJoinByQr } from './complect/JoinByQr';

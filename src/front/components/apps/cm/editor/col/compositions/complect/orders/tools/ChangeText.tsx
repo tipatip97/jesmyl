@@ -2,7 +2,7 @@ import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useE
 import useModal from '../../../../../../../../../complect/modal/useModal';
 import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
-import { IconTextStrokeRounded } from '@icons/text';
+import { IconTextStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/text';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';

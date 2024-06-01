@@ -1,6 +1,6 @@
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
-import { IconLink02StrokeRounded } from '@icons/link-02';
+import { IconLink02StrokeRounded } from '../../../../../../../../../complect/the-icon/icons/link-02';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsHiddenOnMin = ({

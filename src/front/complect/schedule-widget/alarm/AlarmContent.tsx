@@ -4,10 +4,10 @@ import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cl
 import useFullContent, { FullContentValue } from '../../fullscreen-content/useFullContent';
 import mylib from '../../my-lib/MyLib';
 import IconButton from '../../the-icon/IconButton';
-import { IconArrowRight01StrokeRounded } from '@icons/arrow-right-01';
-import { IconCalendar01StrokeRounded } from '@icons/calendar-01';
-import { IconLeftToRightListDashStrokeRounded } from '@icons/left-to-right-list-dash';
-import { IconSmileStrokeRounded } from '@icons/smile';
+import { IconArrowRight01StrokeRounded } from '../../../complect/the-icon/icons/arrow-right-01';
+import { IconCalendar01StrokeRounded } from '../../../complect/the-icon/icons/calendar-01';
+import { IconLeftToRightListDashStrokeRounded } from '../../../complect/the-icon/icons/left-to-right-list-dash';
+import { IconSmileStrokeRounded } from '../../../complect/the-icon/icons/smile';
 import { IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from '../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import { useSchedules } from '../useScheduleWidget';

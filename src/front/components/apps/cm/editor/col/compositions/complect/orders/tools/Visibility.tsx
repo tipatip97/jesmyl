@@ -1,7 +1,7 @@
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
-import { IconViewStrokeRounded } from '@icons/view';
-import { IconViewOffStrokeRounded } from '@icons/view-off';
+import { IconViewStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/view';
+import { IconViewOffStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/view-off';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsVisibility = ({

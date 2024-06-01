@@ -3,7 +3,7 @@ import { TranslationScreenProps } from '../../../+complect/translations/Translat
 import { useSetScreenTranslationInteractiveBackground } from '../../../+complect/translations/hooks/interactive-back';
 import { useApplyScreenFontFamilyEffect } from '../../../+complect/translations/hooks/set-font-family';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconCircleArrowDataTransferDiagonalStrokeRounded } from '@icons/circle-arrow-data-transfer-diagonal';
+import { IconCircleArrowDataTransferDiagonalStrokeRounded } from '../../../../../complect/the-icon/icons/circle-arrow-data-transfer-diagonal';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
 import { useBibleScreenTranslationKeyListener } from '../hooks/key-listener';
 import { useGetBibleScreenTranslationWrapperStyle } from '../hooks/styles/wrapper-style';

@@ -1,7 +1,7 @@
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
-import { iconPackOfDashboardSpeed02 } from '@icons/dashboard-speed-02';
+import { iconPackOfDashboardSpeed02 } from '../../../complect/the-icon/icons/dashboard-speed-02';
 import TheTuner from './TheTuner';
 import { TunerStorage } from './Tuner.model';
 

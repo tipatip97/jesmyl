@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
-import { IconMinusSignCircleStrokeRounded } from '@icons/minus-sign-circle';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconMinusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import { LeaderCleans } from '../LeaderCleans';
 import HumanList from '../people/HumanList';
 

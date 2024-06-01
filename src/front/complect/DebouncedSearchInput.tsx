@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../shared/store';
 import { switchIsNumberSearch } from './Complect.store';
 import IconButton from './the-icon/IconButton';
-import { IconGridTableStrokeRounded } from '@icons/grid-table';
-import { IconSearchVisualStrokeRounded } from '@icons/search-visual';
+import { IconGridTableStrokeRounded } from '../complect/the-icon/icons/grid-table';
+import { IconSearchVisualStrokeRounded } from '../complect/the-icon/icons/search-visual';
 import { KeyboardInputPropsType } from './keyboard/Keyboard.model';
 import KeyboardInput from './keyboard/KeyboardInput';
 

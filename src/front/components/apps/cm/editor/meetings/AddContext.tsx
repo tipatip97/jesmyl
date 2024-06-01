@@ -4,7 +4,7 @@ import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 import { useEditableMeetings } from './useEditableMeetings';
-import { IconCalendar01StrokeRounded } from '@icons/calendar-01';
+import { IconCalendar01StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-01';
 
 export default function AddContext({ close, currPath }: { close: () => void; currPath: number[] }) {
   const [name, setName] = useState('');

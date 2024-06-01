@@ -1,6 +1,6 @@
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
-import { IconFile02StrokeRounded } from '@icons/file-02';
-import { IconQrCode01StrokeRounded } from '@icons/qr-code-01';
+import { IconFile02StrokeRounded } from '../../../../complect/the-icon/icons/file-02';
+import { IconQrCode01StrokeRounded } from '../../../../complect/the-icon/icons/qr-code-01';
 import useQRMaster from '../../../../complect/qr-code/useQRMaster';
 import navConfigurers from '../../../../shared/navConfigurers';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';

@@ -3,11 +3,11 @@ import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
 import { useConfirm } from '../../../../../../../../complect/modal/confirm/useConfirm';
 import TheIcon from '../../../../../../../../complect/the-icon/TheIcon';
-import { IconDashboardSpeed02StrokeRounded } from '@icons/dashboard-speed-02';
-import { IconDelete01StrokeRounded } from '@icons/delete-01';
-import { IconFlag03StrokeRounded } from '@icons/flag-03';
-import { IconGridStrokeRounded } from '@icons/grid';
-import { IconSchoolReportCardStrokeRounded } from '@icons/school-report-card';
+import { IconDashboardSpeed02StrokeRounded } from '../../../../../../../../complect/the-icon/icons/dashboard-speed-02';
+import { IconDelete01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/delete-01';
+import { IconFlag03StrokeRounded } from '../../../../../../../../complect/the-icon/icons/flag-03';
+import { IconGridStrokeRounded } from '../../../../../../../../complect/the-icon/icons/grid';
+import { IconSchoolReportCardStrokeRounded } from '../../../../../../../../complect/the-icon/icons/school-report-card';
 import useAuth from '../../../../../../../index/useAuth';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import TheCom from '../../../../../col/com/TheCom';

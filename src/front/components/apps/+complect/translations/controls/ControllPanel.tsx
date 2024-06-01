@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { IconArrowLeft01StrokeRounded } from '@icons/arrow-left-01';
-import { IconArrowRight01StrokeRounded } from '@icons/arrow-right-01';
-import { IconComputerStrokeRounded } from '@icons/computer';
-import { IconPlayStrokeRounded } from '@icons/play';
-import { IconSquareStrokeRounded } from '@icons/square';
-import { IconUpload04StrokeRounded } from '@icons/upload-04';
+import { IconArrowLeft01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-left-01';
+import { IconArrowRight01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-right-01';
+import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
+import { IconPlayStrokeRounded } from '../../../../../complect/the-icon/icons/play';
+import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
+import { IconUpload04StrokeRounded } from '../../../../../complect/the-icon/icons/upload-04';
 import { useScreenTranslationConfigs } from '../hooks/configs';
 import { useSwitchIsScreenTranslationTextVisible } from '../hooks/is-visible';
 import { useWatchScreenTranslations } from '../hooks/watch-translation';

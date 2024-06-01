@@ -6,9 +6,9 @@ import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { INavigationRouteChildItem, UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import { QRCodeReaderData } from '../../../complect/qr-code/QRCodeMaster.model';
-import { iconPackOfGameController03 } from '@icons/game-controller-03';
-import { iconPackOfPassport } from '@icons/passport';
-import { IconVoiceIdStrokeRounded } from '@icons/voice-id';
+import { iconPackOfGameController03 } from '../../../complect/the-icon/icons/game-controller-03';
+import { iconPackOfPassport } from '../../../complect/the-icon/icons/passport';
+import { IconVoiceIdStrokeRounded } from '../../../complect/the-icon/icons/voice-id';
 import { TheIconType } from '../../../complect/the-icon/model';
 import Gamer from './Gamer';
 import { GamerGameName, GamerRoom } from './Gamer.back-model';
@@ -25,7 +25,7 @@ import { toStopAliasGame } from './games/alias/hooks/execs';
 import SpyRoomContent from './games/spy/SpyRoomContent';
 import { SPY_ROLE, unsecretSpyRole } from './games/spy/hooks/locations';
 import { OfflineGameShare } from './games/spy/offline-room/SpyOfflineRoom.model';
-import { IconAnonymousStrokeRounded } from '@icons/anonymous';
+import { IconAnonymousStrokeRounded } from '../../../complect/the-icon/icons/anonymous';
 
 interface GameData {
   Icon: TheIconType;

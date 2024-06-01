@@ -3,7 +3,7 @@ import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cl
 import useModal from '../../modal/useModal';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import IconButton from '../../the-icon/IconButton';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconPlusSignStrokeRounded } from '../../../complect/the-icon/icons/plus-sign';
 import { TheIconType } from '../../the-icon/model';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 import ScheduleWidgetEventType from './EventType';

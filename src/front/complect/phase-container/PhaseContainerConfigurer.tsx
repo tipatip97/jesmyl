@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
-import { IconArrowLeft02StrokeRounded } from '@icons/arrow-left-02';
-import { IconMoreVerticalCircle01StrokeRounded } from '@icons/more-vertical-circle-01';
+import { IconArrowLeft02StrokeRounded } from '../../complect/the-icon/icons/arrow-left-02';
+import { IconMoreVerticalCircle01StrokeRounded } from '../../complect/the-icon/icons/more-vertical-circle-01';
 import { PhaseContainerConfigurerProps } from './PhaseContainerConfigurer.model';
 
 let goBack: (isForceBack?: boolean | undefined) => void;

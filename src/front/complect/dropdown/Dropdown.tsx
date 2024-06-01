@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useToast from '../modal/useToast';
 import { useOnSendPromiseCallback } from '../sends/useOnSendPromiseCallback';
-import { IconAlert01StrokeRounded } from '@icons/alert-01';
-import { IconLoading03StrokeRounded } from '@icons/loading-03';
+import { IconAlert01StrokeRounded } from '../../complect/the-icon/icons/alert-01';
+import { IconLoading03StrokeRounded } from '../../complect/the-icon/icons/loading-03';
 import { DropdownItem, DropdownProps } from './Dropdown.model';
 
 export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownItem<Id>>(props: DropdownProps<Id, Item>) {

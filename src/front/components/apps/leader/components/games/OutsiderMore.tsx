@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { BottomPopupContenterPreparer } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
-import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
-import { IconUserAdd02StrokeRounded } from '@icons/user-add-02';
+import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
+import { IconUserAdd02StrokeRounded } from '../../../../../complect/the-icon/icons/user-add-02';
 import useModal from '../../../../../complect/modal/useModal';
 import { TeamGameImportable } from '../../Leader.model';
 import { leaderExer } from '../../Leader.store';
 import { HumanImportable } from '../people/People.model';
 import { GameTeamImportable } from './teams/GameTeams.model';
-import { IconCancel02StrokeRounded } from '@icons/cancel-02';
+import { IconCancel02StrokeRounded } from '../../../../../complect/the-icon/icons/cancel-02';
 
 export default function OutsiderMore({
   human,

@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
-import { IconViewStrokeRounded } from '@icons/view';
-import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
+import { IconViewStrokeRounded } from '../../../../../../complect/the-icon/icons/view';
+import { IconViewOffSlashStrokeRounded } from '../../../../../../complect/the-icon/icons/view-off-slash';
 import { useBibleScreenTranslationFontSizeAdapter } from '../../../../../../complect/useFontSizeAdapter';
 import { Com } from '../Com';
 import TheOrder from '../order/TheOrder';

@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import propsOfClicker from '../../../../../complect/clicker/propsOfClicker';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconMinusSignStrokeRounded } from '@icons/minus-sign';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
-import { IconTextFontStrokeRounded } from '@icons/text-font';
+import { IconMinusSignStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign';
+import { IconPlusSignStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign';
+import { IconTextFontStrokeRounded } from '../../../../../complect/the-icon/icons/text-font';
 import { RootState } from '../../../../../shared/store';
 import { ChordVisibleVariant } from '../../Cm.model';
 import di from '../../Cm.store';
@@ -15,7 +15,7 @@ import { useCols } from '../../cols/useCols';
 import { Com } from './Com';
 import { useCcom } from './useCcom';
 import useMigratableComTools from './useMigratableComTools';
-import { IconSlidersHorizontalStrokeRounded } from '@icons/sliders-horizontal';
+import { IconSlidersHorizontalStrokeRounded } from '../../../../../complect/the-icon/icons/sliders-horizontal';
 
 const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
 

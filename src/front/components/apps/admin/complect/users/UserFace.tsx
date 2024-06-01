@@ -1,6 +1,6 @@
 import propsOfClicker from '../../../../../complect/clicker/propsOfClicker';
 import TheIcon from '../../../../../complect/the-icon/TheIcon';
-import { IconUserStrokeRounded } from '@icons/user';
+import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
 import useAdminNav from '../../useAdminNav';
 import { User } from './User';
 import './User.scss';

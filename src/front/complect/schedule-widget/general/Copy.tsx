@@ -9,7 +9,7 @@ import { IScheduleWidget, ScheduleWidgetDayEventAttValues } from '../ScheduleWid
 import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import { takeScheduleStrongScopeMaker, useSchedules } from '../useScheduleWidget';
-import { IconCopy02StrokeRounded } from '@icons/copy-02';
+import { IconCopy02StrokeRounded } from '../../../complect/the-icon/icons/copy-02';
 
 const itNNull = (it: unknown) => it !== null;
 

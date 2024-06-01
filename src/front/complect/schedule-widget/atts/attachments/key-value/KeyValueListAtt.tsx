@@ -10,16 +10,16 @@ import {
 import mylib from '../../../../my-lib/MyLib';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
-import { IconArrowMoveLeftDownStrokeRounded } from '@icons/arrow-move-left-down';
-import { IconArrowMoveRightDownStrokeRounded } from '@icons/arrow-move-right-down';
-import { IconCheckmarkSquare02StrokeRounded } from '@icons/checkmark-square-02';
-import { IconDelete02StrokeRounded } from '@icons/delete-02';
-import { IconLeftToRightListDashStrokeRounded } from '@icons/left-to-right-list-dash';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
-import { IconSquareStrokeRounded } from '@icons/square';
-import { IconSquareArrowMoveLeftUpStrokeRounded } from '@icons/square-arrow-move-left-up';
-import { IconSquareArrowMoveRightUpStrokeRounded } from '@icons/square-arrow-move-right-up';
-import { IconTextStrokeRounded } from '@icons/text';
+import { IconArrowMoveLeftDownStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-move-left-down';
+import { IconArrowMoveRightDownStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-move-right-down';
+import { IconCheckmarkSquare02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-square-02';
+import { IconDelete02StrokeRounded } from '../../../../../complect/the-icon/icons/delete-02';
+import { IconLeftToRightListDashStrokeRounded } from '../../../../../complect/the-icon/icons/left-to-right-list-dash';
+import { IconPlusSignStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign';
+import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
+import { IconSquareArrowMoveLeftUpStrokeRounded } from '../../../../../complect/the-icon/icons/square-arrow-move-left-up';
+import { IconSquareArrowMoveRightUpStrokeRounded } from '../../../../../complect/the-icon/icons/square-arrow-move-right-up';
+import { IconTextStrokeRounded } from '../../../../../complect/the-icon/icons/text';
 import {
   IScheduleWidgetListUnit,
   IScheduleWidgetRole,

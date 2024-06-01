@@ -5,7 +5,7 @@ import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import IconButton from '../the-icon/IconButton';
 import { ThrowEvent } from '../eventer/ThrowEvent';
 import Portal from '../popups/[complect]/Portal';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
+import { IconCancel01StrokeRounded } from '../../complect/the-icon/icons/cancel-01';
 
 const events: EventerListeners<void> = [];
 

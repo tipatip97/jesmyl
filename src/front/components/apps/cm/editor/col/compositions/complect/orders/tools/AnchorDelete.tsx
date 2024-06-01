@@ -2,7 +2,7 @@ import IconButton from '../../../../../../../../../complect/the-icon/IconButton'
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import { useConfirm } from '../../../../../../../../../complect/modal/confirm/useConfirm';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
-import { IconDelete02StrokeRounded } from '@icons/delete-02';
+import { IconDelete02StrokeRounded } from '../../../../../../../../../complect/the-icon/icons/delete-02';
 
 export const OrdersRedactorOrderToolsAnchorDelete = ({
   props: { ccom, ord, blockHeader },

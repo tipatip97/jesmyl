@@ -2,8 +2,8 @@ import { bottomPopupContentPreparer } from '../../../../../../../../../complect/
 import { BottomPopupContenter } from '../../../../../../../../../complect/absolute-popup/bottom-popup/model';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
-import { IconOptionStrokeRounded } from '@icons/option';
-import { IconTextStrokeRounded } from '@icons/text';
+import { IconOptionStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/option';
+import { IconTextStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/text';
 import { EditableCom } from '../../../EditableCom';
 
 export const OrdersRedactorAdditions: BottomPopupContenter<EditableCom | und> = (isOpen, _close, _prepare, ccom) => {

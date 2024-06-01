@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { IconQrCodeStrokeRounded } from '@icons/qr-code';
+import { IconQrCodeStrokeRounded } from '../../../../../../complect/the-icon/icons/qr-code';
 import SpyShowMyRole from '../../../games/spy/SpyShowMyRole';
 import { useJoinedOfflineGame } from '../../../games/spy/offline-room/hooks/join-game';
 import { useSpyOfflineRoomReshareGameData } from '../../../games/spy/offline-room/hooks/share-game';

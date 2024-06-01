@@ -5,7 +5,7 @@ import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import { CodeExecutionScreen } from './coder/Coder';
 import { CoderResultLine } from './coder/complect/line';
 import { isTouchDevice } from '../../../../complect/device-differences';
-import { IconCancel02StrokeRounded } from '@icons/cancel-02';
+import { IconCancel02StrokeRounded } from '../../../../complect/the-icon/icons/cancel-02';
 
 const logs: unknown[][] = [];
 

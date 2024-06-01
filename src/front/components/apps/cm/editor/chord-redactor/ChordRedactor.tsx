@@ -12,7 +12,7 @@ import { correctChordNameReg } from '../Editor.complect';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import ChordRedactableTrack from './ChordRedactableTrack';
 import './ChordRedactor.scss';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 
 export default function ChordRedactor() {
   const chords = useChords();

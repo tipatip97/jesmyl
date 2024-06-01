@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import { IconAlien02StrokeRounded } from '@icons/alien-02';
-import { IconFlowerPotStrokeRounded } from '@icons/flower-pot';
-import { IconMoreVerticalCircle01StrokeRounded } from '@icons/more-vertical-circle-01';
+import { IconAlien02StrokeRounded } from '../../../../../complect/the-icon/icons/alien-02';
+import { IconFlowerPotStrokeRounded } from '../../../../../complect/the-icon/icons/flower-pot';
+import { IconMoreVerticalCircle01StrokeRounded } from '../../../../../complect/the-icon/icons/more-vertical-circle-01';
 import { useLeaderCcontext } from '../contexts/useContexts';
 import { HumanMoreContenter } from './HumanMore';
 import { HumanImportable } from './People.model';

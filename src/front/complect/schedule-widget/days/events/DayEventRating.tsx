@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import useIsExpand from '../../../expand/useIsExpand';
-import { IconFavouriteStrokeRounded } from '@icons/favourite';
-import { IconHeartbreakStrokeRounded } from '@icons/heartbreak';
-import { IconHelpCircleStrokeRounded } from '@icons/help-circle';
-import { IconMessage01StrokeRounded } from '@icons/message-01';
+import { IconFavouriteStrokeRounded } from '../../../../complect/the-icon/icons/favourite';
+import { IconHeartbreakStrokeRounded } from '../../../../complect/the-icon/icons/heartbreak';
+import { IconHelpCircleStrokeRounded } from '../../../../complect/the-icon/icons/help-circle';
+import { IconMessage01StrokeRounded } from '../../../../complect/the-icon/icons/message-01';
 import { MyLib } from '../../../my-lib/MyLib';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';

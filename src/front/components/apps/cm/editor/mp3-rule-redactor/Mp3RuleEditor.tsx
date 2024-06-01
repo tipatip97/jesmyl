@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react';
 import { useSelector } from 'react-redux';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconCheckmarkCircle02StrokeRounded } from '@icons/checkmark-circle-02';
-import { IconEdit02StrokeRounded } from '@icons/edit-02';
+import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
+import { IconEdit02StrokeRounded } from '../../../../../complect/the-icon/icons/edit-02';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import { CmMp3Rule } from '../../../../../models';
 import { RootState } from '../../../../../shared/store';

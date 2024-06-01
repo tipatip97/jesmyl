@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import { ChordTrack } from '../../col/com/chord-card/ChordCard.model';
 import ChordCardTracked from '../../col/com/chord-card/ChordCardTracked';
 

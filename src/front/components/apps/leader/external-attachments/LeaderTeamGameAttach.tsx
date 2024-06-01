@@ -1,5 +1,5 @@
 import IconButton from '../../../../complect/the-icon/IconButton';
-import { IconLinkSquare01StrokeRounded } from '@icons/link-square-01';
+import { IconLinkSquare01StrokeRounded } from '../../../../complect/the-icon/icons/link-square-01';
 import LeaderApplication from '../Leader';
 import { GameDescription } from '../components/games/GameDescription';
 import LeaderGameTotalScoreTable from '../components/games/LeaderGameTotalScoreTable';

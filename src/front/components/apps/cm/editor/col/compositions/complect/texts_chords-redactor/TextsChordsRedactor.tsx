@@ -1,8 +1,8 @@
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
-import { IconCancel01StrokeRounded } from '@icons/cancel-01';
-import { IconGridStrokeRounded } from '@icons/grid';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconCancel01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/cancel-01';
+import { IconGridStrokeRounded } from '../../../../../../../../complect/the-icon/icons/grid';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../../../../complect/the-icon/icons/plus-sign-circle';
 import EditContainerCorrectsInformer from '../../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCcom } from '../../useEditableCcom';
 import TextAreaRedactor from './TextAreaRedactor';

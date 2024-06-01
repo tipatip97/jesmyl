@@ -1,4 +1,4 @@
-import { IconArrowShrink02StrokeRounded } from '@icons/arrow-shrink-02';
+import { IconArrowShrink02StrokeRounded } from '../complect/the-icon/icons/arrow-shrink-02';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { complectActions, complectStorage } from '../complect/Complect.store';

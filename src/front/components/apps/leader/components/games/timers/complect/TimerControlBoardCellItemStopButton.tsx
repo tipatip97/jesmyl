@@ -1,6 +1,6 @@
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
-import { IconDelete02StrokeRounded } from '@icons/delete-02';
-import { IconPauseStrokeRounded } from '@icons/pause';
+import { IconDelete02StrokeRounded } from '../../../../../../../complect/the-icon/icons/delete-02';
+import { IconPauseStrokeRounded } from '../../../../../../../complect/the-icon/icons/pause';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTeamImportable } from '../../teams/GameTeams.model';

@@ -6,7 +6,7 @@ import { ChordVisibleVariant } from '../../../../../../Cm.model';
 import { blockStyles } from '../../../../../../col/com/block-styles/BlockStyles';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
-import { IconCubeStrokeRounded } from '@icons/cube';
+import { IconCubeStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/cube';
 
 export const OrdersRedactorOrderToolsBlockType = ({
   props: { ccom, ord, ordi },

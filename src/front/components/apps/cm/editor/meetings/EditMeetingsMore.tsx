@@ -2,8 +2,8 @@ import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bot
 import { useCheckIsAccessed } from '../../../../../complect/exer/hooks/check-is-accessed';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconFolderAddStrokeRounded } from '@icons/folder-add';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
+import { IconFolderAddStrokeRounded } from '../../../../../complect/the-icon/icons/folder-add';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import useAuth from '../../../../index/useAuth';
 import AddContext from './AddContext';
 import MeetingsCreator from './MeetingsCreator';

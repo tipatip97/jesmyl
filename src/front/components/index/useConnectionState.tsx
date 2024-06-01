@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ThrowEvent } from '../../complect/eventer/ThrowEvent';
 import { TheIconLoading } from '../../complect/the-icon/IconLoading';
-import { IconAlert01StrokeRounded } from '@icons/alert-01';
+import { IconAlert01StrokeRounded } from '../../complect/the-icon/icons/alert-01';
 import { soki } from '../../soki';
 
 export default function useConnectionState(className?: string) {

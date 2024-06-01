@@ -8,7 +8,7 @@ import {
   takeBibleSlideText,
 } from '../../hooks/texts';
 import { BibleTranslationAddress } from '../../model';
-import { IconDelete01StrokeRounded } from '@icons/delete-01';
+import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
 
 interface Props {
   title: string;

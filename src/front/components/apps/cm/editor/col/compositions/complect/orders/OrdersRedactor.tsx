@@ -1,10 +1,10 @@
 import { useBottomPopup } from '../../../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
-import { IconArrowDataTransferVerticalStrokeRounded } from '@icons/arrow-data-transfer-vertical';
-import { IconEdit02StrokeRounded } from '@icons/edit-02';
-import { IconPlusSignCircleStrokeRounded } from '@icons/plus-sign-circle';
-import { IconViewStrokeRounded } from '@icons/view';
-import { IconViewOffSlashStrokeRounded } from '@icons/view-off-slash';
+import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
+import { IconEdit02StrokeRounded } from '../../../../../../../../complect/the-icon/icons/edit-02';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../../../../complect/the-icon/icons/plus-sign-circle';
+import { IconViewStrokeRounded } from '../../../../../../../../complect/the-icon/icons/view';
+import { IconViewOffSlashStrokeRounded } from '../../../../../../../../complect/the-icon/icons/view-off-slash';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import TheOrder from '../../../../../col/com/order/TheOrder';
 import { EditableCom } from '../../EditableCom';

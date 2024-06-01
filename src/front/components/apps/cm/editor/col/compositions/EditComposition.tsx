@@ -3,7 +3,7 @@ import { useCheckIsAccessed } from '../../../../../../complect/exer/hooks/check-
 import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import { NavigationThrowNodeProps } from '../../../../../../complect/nav-configurer/Navigation.model';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
-import { IconMusicNote03SolidRounded, IconMusicNote03StrokeRounded } from '@icons/music-note-03';
+import { IconMusicNote03SolidRounded, IconMusicNote03StrokeRounded } from '../../../../../../complect/the-icon/icons/music-note-03';
 import useAuth from '../../../../../index/useAuth';
 import useConnectionState from '../../../../../index/useConnectionState';
 import { CmNavData } from '../../../Cm.model';

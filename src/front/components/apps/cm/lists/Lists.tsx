@@ -1,9 +1,9 @@
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
-import { IconBookOpen02StrokeRounded } from '@icons/book-open-02';
-import { IconCalendar02StrokeRounded } from '@icons/calendar-02';
-import { IconCheckmarkBadge01StrokeRounded } from '@icons/checkmark-badge-01';
-import { IconStarStrokeRounded } from '@icons/star';
+import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
+import { IconCalendar02StrokeRounded } from '../../../../complect/the-icon/icons/calendar-02';
+import { IconCheckmarkBadge01StrokeRounded } from '../../../../complect/the-icon/icons/checkmark-badge-01';
+import { IconStarStrokeRounded } from '../../../../complect/the-icon/icons/star';
 import useCmNav from '../base/useCmNav';
 import useSelectedComs from '../base/useSelectedComs';
 import { useCols } from '../cols/useCols';

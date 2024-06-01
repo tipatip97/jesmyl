@@ -1,4 +1,4 @@
-import { IconCubeStrokeRounded } from '@icons/cube';
+import { IconCubeStrokeRounded } from '../../../../../complect/the-icon/icons/cube';
 import { TeamGameImportable } from '../../Leader.model';
 import useGames from './useGames';
 

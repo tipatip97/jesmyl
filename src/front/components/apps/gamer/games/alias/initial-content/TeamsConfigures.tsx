@@ -4,7 +4,7 @@ import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../complect/the-icon/IconCheckbox';
-import { IconUserStrokeRounded } from '@icons/user';
+import { IconUserStrokeRounded } from '../../../../../../complect/the-icon/icons/user';
 import { useGamerRoomPlayers } from '../../../complect/rooms/room/hooks/players';
 import { useAliasMemberList } from '../hooks/member-list';
 import { useAliasRoomState } from '../hooks/state';

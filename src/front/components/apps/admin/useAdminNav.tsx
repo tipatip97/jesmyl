@@ -1,7 +1,7 @@
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
-import { iconPackOfManager } from '@icons/manager';
+import { iconPackOfManager } from '../../../complect/the-icon/icons/manager';
 import Admin from './Admin';
 import { AdminNavData, AdminStorage } from './Admin.model';
 import AdminApp from './AdminApp';

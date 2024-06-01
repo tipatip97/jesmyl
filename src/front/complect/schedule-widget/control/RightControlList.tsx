@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { ScheduleWidgetRightTexts, ScheduleWidgetRightsCtrl } from '../../../models';
 import { StrongControlProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
-import { IconToggleOffStrokeRounded } from '@icons/toggle-off';
-import { IconToggleOnStrokeRounded } from '@icons/toggle-on';
+import { IconToggleOffStrokeRounded } from '../../../complect/the-icon/icons/toggle-off';
+import { IconToggleOnStrokeRounded } from '../../../complect/the-icon/icons/toggle-on';
 
 export default function ScheduleWidgetRightControlList({
   R,

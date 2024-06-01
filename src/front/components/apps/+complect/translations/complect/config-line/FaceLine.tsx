@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
-import { IconPlusSignStrokeRounded } from '@icons/plus-sign';
+import { IconPlusSignStrokeRounded } from '../../../../../../complect/the-icon/icons/plus-sign';
 import {
   useAddScreenTranslationConfig,
   useScreenTranslationConfigs,

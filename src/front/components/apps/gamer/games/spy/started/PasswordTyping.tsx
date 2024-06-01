@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
-import { IconToggleOffStrokeRounded } from '@icons/toggle-off';
-import { IconToggleOnStrokeRounded } from '@icons/toggle-on';
+import { IconToggleOffStrokeRounded } from '../../../../../../complect/the-icon/icons/toggle-off';
+import { IconToggleOnStrokeRounded } from '../../../../../../complect/the-icon/icons/toggle-on';
 
 const passwLength = 6;
 

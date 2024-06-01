@@ -1,5 +1,5 @@
 import IconButton from '../../../../../../complect/the-icon/IconButton';
-import { IconCancelSquareStrokeRounded } from '@icons/cancel-square';
+import { IconCancelSquareStrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-square';
 import { GamerRoomMember, GamerRoomMemberStatus } from '../../../Gamer.model';
 import RoomMemberFace from '../../../complect/GamerRoomMemberFace';
 import LocationHideScreen from './LocationHideScreen';
