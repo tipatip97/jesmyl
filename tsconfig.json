@@ -15,9 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "paths": {
-      "@icons/*": ["./src/front/complect/the-icon/icons/*"]
-    }
+    "paths": {}
   },
   "include": ["src", "src/back/complect/exert/exer"]
 }
