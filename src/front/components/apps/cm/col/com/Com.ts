@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../complect/makeRegExp';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { BaseNamed } from '../../base/BaseNamed';
 import { blockStyles } from './block-styles/BlockStyles';
@@ -13,16 +14,6 @@ import {
 import { IExportableCom } from './Com.model';
 import { Order } from './order/Order';
 import { IExportableOrder, IExportableOrderTop, OrderTopHeaderBag } from './order/Order.model';
-
-const regs = {
-  '/\n/': /\n/,
-  '/[A-H]#?/': /[A-H]#?/,
-  '/\\s*\n+\\s*/': /\s*\n+\s*/,
-  '/ +/': / +/,
-  '/[^#A-Z/0-9]+/i': /[^#A-Z/0-9]+/i,
-  '/B/': /B/,
-  '/A#/g': /A#/g,
-};
 
 export class Com extends BaseNamed<IExportableCom> {
   initial: Record<string, any>;
@@ -126,7 +117,7 @@ export class Com extends BaseNamed<IExportableCom> {
   }
 
   getFirstSimpleChord() {
-    return (this.orders?.[0]?.chords ?? this.chords?.[0])?.match(regs['/[A-H]#?/'])?.[0];
+    return (this.orders?.[0]?.chords ?? this.chords?.[0])?.match(makeRegExp('/[A-H]#?/'))?.[0];
   }
 
   pullTransPosition(obj: IExportableCom) {
@@ -203,7 +194,7 @@ export class Com extends BaseNamed<IExportableCom> {
   getOrderedBlocks() {
     const textBeats = this.orders
       ?.reduce((text, ord) => text + (!ord.isRealText() ? '' : (text ? '\n' : '') + ord.repeatedText()), '')
-      .split(regs['/\n/']);
+      .split(makeRegExp('/\\n/'));
 
     const texts = this.translationMap()
       .map(peaceSize => textBeats?.splice(0, peaceSize)!)
@@ -329,14 +320,14 @@ export class Com extends BaseNamed<IExportableCom> {
         currTransPosition = (this.transPosition || 0) + (ord.fieldValues?.md || 0);
       }
 
-      (chords || '').split(regs['/\\s*\n+\\s*/']).forEach(line => {
+      (chords || '').split(makeRegExp('/\\s*\\n+\\s*/')).forEach(line => {
         const lineLabels: string[] = [];
         ordLabels.push(lineLabels);
 
-        (line || '').split(regs['/ +/']).forEach(chordSchema => {
+        (line || '').split(makeRegExp('/ +/')).forEach(chordSchema => {
           chordSchema
-            .split(regs['/[^#A-Z/0-9]+/i'])
-            .forEach(chord => this._usedChords && (this._usedChords[chord.replace(regs['/B/'], 'A#')] = chord));
+            .split(makeRegExp('/[^#A-Z/0-9]+/i'))
+            .forEach(chord => this._usedChords && (this._usedChords[chord.replace(makeRegExp('/B/'), 'A#')] = chord));
           lineLabels.push(chordSchema);
           if (!firstChord) firstChord = chordSchema;
         });
@@ -349,7 +340,7 @@ export class Com extends BaseNamed<IExportableCom> {
   static withBemoles(chords?: string, isSet: num = 0) {
     return (
       isSet ? chords?.replace(gSimpleHashedEachLetterChordReg, all => chordBemoleEquivalent[all] || all) : chords
-    )?.replace(regs['/A#/g'], 'B');
+    )?.replace(makeRegExp('/A#/g'), 'B');
   }
 
   actualChords(chordsScalar?: string | number, position = this.transPosition) {

@@ -25,7 +25,6 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
 
   const comPack = useCmScreenTranslationComNavigations();
   const setTexti = useCmScreenTranslationComTextNavigations().setTexti;
-  console.log(comList, comPack);
 
   return (
     <PhaseContainerConfigurer

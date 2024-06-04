@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import IconButton from '../../../the-icon/IconButton';
 import { IconQrCodeStrokeRounded } from '../../../../complect/the-icon/icons/qr-code';
 import useModal from '../../../modal/useModal';
 import useQRMaster from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongButton from '../../../strong-control/StrongButton';
+import IconButton from '../../../the-icon/IconButton';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import { ScheduleWidgetUserEdit } from './UserEdit';
@@ -24,7 +24,8 @@ export function ScheduleWidgetUserByQrRedactor({ scope }: StrongComponentProps) 
         <>
           {header(
             <>
-              {oldUser == null ? 'Добавление' : 'Редактирование'} участника{' '}
+              {oldUser == null ? 'Добавление' : 'Редактирование'}
+              {' участника '}
               <span className="color--7">{user.fio ?? user.nick}</span>
             </>,
           )}

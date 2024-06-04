@@ -1,12 +1,12 @@
 import useIsExpand from '../../../../../complect/expand/useIsExpand';
-import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
-import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
 import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
+import { IconCancelCircleStrokeRounded } from '../../../../../complect/the-icon/icons/cancel-circle';
+import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { useSpyToggleLocation } from './hooks/actions';
 import { useSpyCleanLocations, useSpyLocations } from './hooks/locations';
 import { useSpyRoomStateNaked } from './hooks/state';
 
-export default function SpyRoomLocationsInGame() {
+export default function SpyRoomLocationsInGame({ amIManager }: { amIManager?: boolean }) {
   const [title, isExpand] = useIsExpand(false, <h2>Локации</h2>);
 
   const onToggleLocation = useSpyToggleLocation();
@@ -26,10 +26,10 @@ export default function SpyRoomLocationsInGame() {
           return (
             <EvaSendButton
               key={location}
-              Icon={strikedLoc ? IconHelpCircleStrokeRounded : IconCheckmarkCircle02StrokeRounded}
+              Icon={strikedLoc ? IconCancelCircleStrokeRounded : IconCheckmarkCircle02StrokeRounded}
               className={'margin-gap-t ' + (strikedLoc ? ' text-strike ' : '') + (strikedLoc ? ' color--ko ' : '')}
               postfix={location}
-              onSend={() => onToggleLocation(secretLoc ?? location)}
+              onSend={amIManager ? () => onToggleLocation(secretLoc ?? location) : undefined}
             />
           );
         })}

@@ -231,7 +231,7 @@ export default function CmExternalComListAtt({
       meetings && (
         <MeetingsInner
           meetings={meetings}
-          onEventClick={event => console.log(event)}
+          onEventClick={event => event}
           asEventBox={event =>
             value.eventw === event.wid ? (
               <StrongEvaButton
@@ -261,7 +261,7 @@ export default function CmExternalComListAtt({
       {comOrderNode}
       {selectorNode}
       {compositionNode}
-      {!value.comws?.length && <div>Песен нет</div>}
+      {!currentEvent && !value.comws?.length && <div>Песен нет</div>}
       {(currentEvent ? (value.comws ? [...currentEvent.s, ...value.comws] : currentEvent.s) : value.comws)?.map(
         comw => {
           const com = cat?.coms.find(com => com.wid === comw);

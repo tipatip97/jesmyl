@@ -1,10 +1,9 @@
 import { ReactNode, useState } from 'react';
 import styled from 'styled-components';
-import TheIcon from '../the-icon/TheIcon';
+import { IconCopy01StrokeRounded } from '../../complect/the-icon/icons/copy-01';
 import QRCode from './QRCode';
 import { QRMasterControllerData } from './QRCodeMaster.model';
 import useQRMaster, { qrCodeMasterContainerId } from './useQRMaster';
-import { IconCopy01StrokeRounded } from '../../complect/the-icon/icons/copy-01';
 
 let slideQRCodeTimeout: TimeOut;
 const qrReaderReadAreaSize = Math.min(window.innerHeight, window.innerWidth) * 0.9;
@@ -12,8 +11,10 @@ let tsInterval = 100;
 
 export function QRCodeMasterApplication({
   controller,
+  openError,
 }: {
   controller: (ctrl: (data: QRMasterControllerData) => TimeOut) => void;
+  openError: string;
 }) {
   const [isOpenReader, setIsOpenReader] = useState(false);
   const [isOpenQRSlider, setIsOpenQRSlider] = useState(false);
@@ -97,9 +98,10 @@ export function QRCodeMasterApplication({
       }}
     >
       <div
-        style={{ width: `${qrReaderReadAreaSize}px` }}
+        style={{ width: `${qrReaderReadAreaSize}px`, position: 'relative' }}
         id={qrCodeMasterContainerId}
       />
+      {openError && <div className="color--ko">{openError}</div>}
       {isOpenReader &&
         (partsToLoad ? (
           <div>

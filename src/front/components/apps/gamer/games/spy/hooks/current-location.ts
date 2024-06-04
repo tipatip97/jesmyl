@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { GamerRoomMember } from '../../../Gamer.model';
 import { useGamerRoomPlayers } from '../../../complect/rooms/room/hooks/players';
 import { SpyRoomState } from '../Spy.model';
-import { unsecretSpyRole } from './locations';
+import { SPY_ROLE, unsecretSpyRole } from './locations';
 import { useSpyRoomStateNaked } from './state';
 
 const itIt = (it: unknown) => it;
@@ -13,6 +13,13 @@ export const useSpyCurrentLocation = (state: SpyRoomState | und, players: GamerR
   return useMemo(() => {
     const roles = state?.roles;
 
-    return roles == null ? '' : players?.map(player => unsecretSpyRole(roles[player.login] || '')).find(itIt);
+    return roles == null
+      ? ''
+      : players
+          ?.map(player => {
+            const location = unsecretSpyRole(roles[player.login] || '');
+            return location === SPY_ROLE ? null : location;
+          })
+          .find(itIt);
   }, [players, state?.roles]);
 };

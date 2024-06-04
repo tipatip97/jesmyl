@@ -1,11 +1,7 @@
 import React from 'react';
+import { makeRegExp } from '../../../../../../complect/makeRegExp';
 import ComLine from '../line/ComLine';
 import { ITheOrderProps } from './Order.model';
-
-const regs = {
-  '/\n/': /\n/,
-  '/ +/': / +/,
-};
 
 export default function TheOrder(props: ITheOrderProps) {
   const orderUnit = props.orderUnit;
@@ -91,6 +87,8 @@ export default function TheOrder(props: ITheOrderProps) {
     );
   }
 
+  const lines = (orderUnit.repeatedText() || '').split(makeRegExp('/\\n/'));
+
   return (
     <div
       id={`com-block-${orderUniti}`}
@@ -103,8 +101,8 @@ export default function TheOrder(props: ITheOrderProps) {
       ref={el => el && (orderUnit.element = el)}
     >
       {header}
-      {(orderUnit.repeatedText() || '').split(regs['/\n/']).map((textLine, textLinei, textLinea) => {
-        const words = textLine?.split(regs['/ +/']);
+      {lines.map((textLine, textLinei, textLinea) => {
+        const words = textLine?.split(makeRegExp('/ +/'));
 
         return (
           <React.Fragment key={textLinei}>
@@ -118,6 +116,7 @@ export default function TheOrder(props: ITheOrderProps) {
                 orderUniti,
                 wordCount: words.length,
                 words,
+                prevLinesCount: 1,
                 com: props.com,
                 isJoinLetters: true,
               })
@@ -126,6 +125,7 @@ export default function TheOrder(props: ITheOrderProps) {
                 chordedOrd={chordedOrd}
                 textLine={textLine}
                 textLinei={textLinei}
+                prevLinesCount={1}
                 textLines={textLinea.length}
                 orderUnit={orderUnit}
                 orderUniti={orderUniti}

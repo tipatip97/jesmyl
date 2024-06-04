@@ -20,7 +20,7 @@ export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
     result: (value, scope, isRedact, switchIsRedact, schedule) => {
       return (
         <>
-          {isTouchDevice || !value.comws?.length || (
+          {isTouchDevice || (!value.eventw && !value.comws?.length) || (
             <CmAttComStartLiveTranslationButton
               value={value}
               schedule={schedule}

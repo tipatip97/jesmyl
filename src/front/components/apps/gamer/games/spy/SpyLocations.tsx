@@ -10,7 +10,7 @@ import { useSpyLocations } from './hooks/locations';
 
 const incorrectNameReg = /[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i;
 
-export default function SpyLocations() {
+export default function SpyLocations({ isForceShow }: { isForceShow?: boolean }) {
   const [isOpenAdder, setIsOpenAdder] = useState(false);
   const [newName, setNewName] = useState('');
   const [title, isExpand] = useIsExpand(false, <h2>Все локации</h2>);
@@ -18,6 +18,9 @@ export default function SpyLocations() {
   const locations = useSpyLocations();
   const auth = useAuth();
   const checkIsAccessed = useCheckIsAccessed(auth);
+
+  const locationsNode = <div>{locations?.map(location => <div key={location}>{location}</div>)}</div>;
+  if (isForceShow) return locationsNode;
 
   const isShortNewName = newName.length < 3;
   const incorrectsInNewName = newName.match(incorrectNameReg);
@@ -29,7 +32,7 @@ export default function SpyLocations() {
       {title}
       {isExpand && (
         <>
-          <div>{locations?.map(location => <div key={location}>{location}</div>)}</div>
+          {locationsNode}
           {!isOpenAdder && checkIsAccessed(50) && (
             <IconPlusSignCircleStrokeRounded
               className="margin-gap color--ok"

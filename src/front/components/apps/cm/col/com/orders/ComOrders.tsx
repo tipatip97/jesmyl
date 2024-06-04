@@ -9,7 +9,7 @@ import TheOrder from '../order/TheOrder';
 import { IComOrdersProps } from './ComOrders.model';
 
 export default function ComOrders(props: IComOrdersProps) {
-  const { com, fontSize } = props;
+  const { com, fontSize, asLineComponent } = props;
   const [exMods, updateExMods] = useState<number[]>(com.excludedModulations);
   const style = useMemo(() => ({ fontSize: `${fontSize}px` }), [fontSize]);
 
@@ -34,6 +34,7 @@ export default function ComOrders(props: IComOrdersProps) {
             specialClassId={specialClassId}
             orderUnit={orderUnit}
             orderUniti={orderUniti}
+            asLineComponent={asLineComponent}
             asHeaderComponent={({ headerNode }) => {
               return orderUnit.top.style?.isModulation ? (
                 <span

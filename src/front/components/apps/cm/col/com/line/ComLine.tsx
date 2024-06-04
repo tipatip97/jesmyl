@@ -6,10 +6,12 @@ const spacePlusReg_g = / +/g;
 const spaceReg = / /;
 
 export default function ComLine(props: IComLineProps) {
+  const className = `composition-line line-num-${props.textLinei}`;
+
   if (!props.chordedOrd)
     return (
       <Line
-        className="composition-line"
+        className={className}
         onClick={props.onClick}
       >
         {props.words.map((word, wordi) => {
@@ -139,7 +141,7 @@ export default function ComLine(props: IComLineProps) {
 
   return (
     <Line
-      className="composition-line"
+      className={className}
       onClick={props.onClick}
     >
       {wordsNodes}

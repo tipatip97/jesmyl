@@ -1,8 +1,7 @@
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
-import RoomMemberFace from '../../complect/GamerRoomMemberFace';
 import { GamerRoomMember } from '../../Gamer.model';
+import RoomMemberFace from '../../complect/GamerRoomMemberFace';
 import { SpyRoomState } from './Spy.model';
-import { SPY_ROLE } from './hooks/locations';
 
 export default function SpyRoomGameFinished({
   state,
@@ -22,13 +21,7 @@ export default function SpyRoomGameFinished({
   return (
     <div>
       <div className="padding-big-gap text-center color--3">Игру завершил {state.finisher?.name}</div>
-      <div className="padding-gap text-center color--3">
-        {location == null || location === SPY_ROLE ? (
-          <span className="error-message">Все шпионы</span>
-        ) : (
-          `Локация - ${location}`
-        )}
-      </div>
+      <div className="padding-gap text-center color--3">Локация - {location}</div>
       {members?.map((member, memberi) => {
         return (
           <RoomMemberFace

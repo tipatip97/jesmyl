@@ -48,7 +48,7 @@ export const useSpyStartGame = () => {
   const actualLocations = useSpyActualLocationsNaked();
 
   return useCallback(
-    (spiesCount: number) => {
+    (spiesCount: number, roundTm: number) => {
       if (!currentRoom || !players) return;
 
       const roles: Record<string, string> = {};
@@ -72,6 +72,7 @@ export const useSpyStartGame = () => {
           roles,
           location: secretSpyRole(location),
           spiesCount,
+          roundTm,
           name: new Array(4).fill(1).map(() => getSpyRandomSymbol(wordSpyParts)),
         },
       });

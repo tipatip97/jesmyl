@@ -34,17 +34,21 @@ export const crossApplicationLinkCoder = new LinkCoder<Attrs>(jesmylHostName, 'v
 export default function useQRMaster() {
   const { jumpToApp } = useApps();
   const [qr, setQr] = useState<Html5Qrcode | undefined>();
+  const [openError, setOpenError] = useState('');
   const [toastNode, toast] = useToast();
   const qrNode = useMemo(() => {
     return (
       <>
         {toastNode}
         <Portal>
-          <QRCodeMasterApplication controller={top => (controller = top)} />
+          <QRCodeMasterApplication
+            controller={top => (controller = top)}
+            openError={openError}
+          />
         </Portal>
       </>
     );
-  }, [toastNode]);
+  }, [openError, toastNode]);
 
   const shareData = useCallback((appName: AppName, key: string, value: unknown, externalData?: boolean | string) => {
     try {
@@ -241,10 +245,23 @@ export default function useQRMaster() {
                   closeReader();
                 }
               }
-            } catch (e) {}
+            } catch (error) {
+              console.error(error);
+              qr.stop();
+              if (!(error instanceof Error)) return;
+              setOpenError('' + (error.message || error));
+            }
           },
-          () => {},
-        ).catch(() => {});
+          error => {
+            console.error(error);
+            qr.stop();
+            setOpenError('' + error);
+          },
+        ).catch(error => {
+          console.error(error);
+          qr.stop();
+          setOpenError('' + (error.message || error.stack || error));
+        });
       });
     },
     [closeReader],

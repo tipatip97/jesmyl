@@ -131,6 +131,7 @@ export interface IComLineProps extends IComOrdProps {
   textLines: number;
   wordCount: number;
   words: string[];
+  prevLinesCount?: number;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
   setWordClass?: (props: IComLineProps, wordi: number) => string;
 }

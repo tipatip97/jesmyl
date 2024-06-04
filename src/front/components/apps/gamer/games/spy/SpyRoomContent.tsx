@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import Dropdown from '../../../../../complect/dropdown/Dropdown';
+import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import mylib from '../../../../../complect/my-lib/MyLib';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import useAuth from '../../../../index/useAuth';
 import { GamerRoomMember } from '../../Gamer.model';
 import GamerRoomMemberList from '../../complect/GamerRoomMemberList';
@@ -21,6 +23,17 @@ import { useSpyMyRole } from './hooks/my-role';
 import { useGamerCurrentRoomSpies } from './hooks/spies';
 import { useSpyRoomState } from './hooks/state';
 import SpyRoomStartedGame from './started/StartedGame';
+
+const defRoundTm = 480;
+const roundTms = [300, defRoundTm, 600, 720].map((id): DropdownItem<number> => {
+  const minutes = Math.floor(id / 60);
+  const seconds = ('' + (id - minutes * 60)).padStart(2, '0');
+
+  return {
+    id,
+    title: `${minutes}:${seconds}`,
+  };
+});
 
 export default function SpyRoomContent() {
   const auth = useAuth();
@@ -44,6 +57,7 @@ export default function SpyRoomContent() {
   const amIManager = possibilities.isManager;
   const canPlayMembers = useGamerMembersCanPlay(currentRoom);
   const [spyCount, setSpyCount] = useState(1);
+  const [roundTm, setRoundTm] = useState(defRoundTm);
 
   if (!currentRoom) return null;
 
@@ -69,6 +83,8 @@ export default function SpyRoomContent() {
         ) : (
           <SpyRoomStartedGame
             iterations={state.iterations}
+            startMs={state.startMs}
+            roundTm={state.roundTm}
             myRole={myRole}
             retired={state.retired ?? []}
             isMeInactive={possibilities.isInactive}
@@ -83,7 +99,7 @@ export default function SpyRoomContent() {
       ) : (
         <>
           <GamerRoomMemberList />
-          <SpyRoomLocationsInGame />
+          <SpyRoomLocationsInGame amIManager={amIManager} />
           {!actualLocations.length ? (
             <div className="color--3 margin-big-gap text-center">Свободных локаций не осталось</div>
           ) : (
@@ -101,12 +117,20 @@ export default function SpyRoomContent() {
                     value={'' + spyCount}
                   />
                 </div>
+                <div className="full-width">
+                  <span>Время раунда:</span>
+                  <Dropdown
+                    id={roundTm}
+                    items={roundTms}
+                    onSelectId={setRoundTm}
+                  />
+                </div>
                 {players && (
                   <div className="flex center padding-giant-gap">
                     <SendButton
                       title="Начать игру"
                       disabled={!spyCount || players.length < spyCount}
-                      onSend={() => startGame(spyCount)}
+                      onSend={() => startGame(spyCount, roundTm)}
                     />
                   </div>
                 )}

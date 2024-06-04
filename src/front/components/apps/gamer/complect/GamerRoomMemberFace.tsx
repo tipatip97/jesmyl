@@ -3,6 +3,16 @@ import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user'
 import { IconUserBlock01StrokeRounded } from '../../../../complect/the-icon/icons/user-block-01';
 import { GamerRoomMember, GamerRoomMemberStatus } from '../Gamer.model';
 
+interface Props {
+  member: GamerRoomMember;
+  description?: ReactNode;
+  descriptionPlus?: ReactNode;
+  onClick?: () => void;
+  isClickable?: boolean;
+  className?: string;
+  icon?: ReactNode;
+}
+
 export default function RoomMemberFace({
   member,
   description,
@@ -10,21 +20,15 @@ export default function RoomMemberFace({
   onClick,
   isClickable = true,
   className,
-}: {
-  member: GamerRoomMember;
-  description?: ReactNode;
-  descriptionPlus?: ReactNode;
-  onClick?: () => void;
-  isClickable?: boolean;
-  className?: string;
-}) {
+  icon,
+}: Props) {
   return (
     <div
       className={`face-item ${isClickable ? '' : 'not-pointer'} ${className || ''} flex between full-width`}
       onClick={isClickable ? onClick : undefined}
     >
       <div className="face-logo">
-        {member.isInactive ? <IconUserBlock01StrokeRounded /> : <IconUserStrokeRounded />}
+        {icon ? icon : member.isInactive ? <IconUserBlock01StrokeRounded /> : <IconUserStrokeRounded />}
       </div>
       <div className="face-title flex between full-width margin-big-gap">
         <span className="ellipsis">{member.name}</span>

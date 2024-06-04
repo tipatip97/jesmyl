@@ -1,6 +1,5 @@
 import useToast from '../../modal/useToast';
-import IconButton from '../../the-icon/IconButton';
-import { IconLoading03SolidRounded } from '../../../complect/the-icon/icons/loading-03';
+import { TheIconLoading } from '../../the-icon/IconLoading';
 import { SendButtonContentMaker } from '../send-button-content-maker/maker';
 import { EvaSendButtonProps } from './EvaSendButton.model';
 
@@ -19,10 +18,11 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
         const sysClassName = (props.disabled ? ' disabled ' : ' pointer ') + (error ? ' color--ko ' : '');
 
         return props.prefix === undefined && props.postfix === undefined ? (
-          <IconButton
-            Icon={isLoading ? IconLoading03SolidRounded : props.Icon}
+          <TheIconLoading
+            isLoading={isLoading}
             className={sysClassName + (isLoading ? ' rotate ' : '') + (props.className || '')}
             onClick={onClick}
+            Icon={props.Icon}
           />
         ) : (
           <span
@@ -30,9 +30,10 @@ export default function EvaSendButton<Value>(props: EvaSendButtonProps<Value>) {
             onClick={onClick}
           >
             {props.prefix}
-            <IconButton
-              Icon={isLoading ? IconLoading03SolidRounded : props.Icon}
-              className={sysClassName + (isLoading ? ' rotate ' : '')}
+            <TheIconLoading
+              isLoading={isLoading}
+              className={sysClassName}
+              Icon={props.Icon}
             />
             {props.postfix}
           </span>

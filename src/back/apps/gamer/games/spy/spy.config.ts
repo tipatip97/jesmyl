@@ -43,6 +43,14 @@ export const spyGameConfig: ActionBox = {
         method: 'set',
         value: '{spiesCount}',
       },
+      '/startMs': {
+        method: 'set',
+        value: () => Date.now(),
+      },
+      '/roundTm': {
+        method: 'set',
+        value: '{roundTm}',
+      },
     },
     '/roles': {
       action: 'startSpyGame',

@@ -1,8 +1,9 @@
 import { ReactNode, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { SPY_ROLE } from '../hooks/locations';
 import FingerprintScreen from './Fingerprint';
 import PasswordTyping from './PasswordTyping';
-import { SPY_ROLE } from '../hooks/locations';
+import { SpyRoomGameTimer } from './Timer';
 
 const isTouchDevice =
   'ontouchstart' in window || navigator.maxTouchPoints > 0 || (navigator as any).msMaxTouchPoints > 0;
@@ -12,6 +13,8 @@ interface Props {
   leftContent: ReactNode;
   rightContent: ReactNode;
   isAllSpiesFound?: boolean;
+  startMs?: number;
+  roundTm?: number;
 }
 
 export default function LocationHideScreen(props: Props) {
@@ -21,6 +24,10 @@ export default function LocationHideScreen(props: Props) {
 
   return (
     <div className="full-width flex center column margin-b ig-gap-h">
+      <SpyRoomGameTimer
+        startMs={props.startMs}
+        roundTm={props.roundTm}
+      />
       <HideScreen
         className="relative flex center column"
         $isOpen={isOpen || !!props.isAllSpiesFound}
