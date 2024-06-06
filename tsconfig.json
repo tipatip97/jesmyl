@@ -17,5 +17,6 @@
     "jsx": "react-jsx",
     "paths": {}
   },
-  "include": ["src", "src/back/complect/exert/exer"]
+  "include": ["src", "src/back/complect/exert/exer"],
+  "exclude": ["src/front/complect/the-icon/icons"]
 }
