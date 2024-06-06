@@ -8,7 +8,7 @@ body {
   --header-padding-top: 23px;
   --header-padding: var(--header-padding-top) var(--main-gap) var(--main-gap) var(--main-gap);
   --header-content-height: 50px;
-  --footer-height: 70px;
+  --footer-height: 85px;
   --fullscreen-transition: top 0.3s, bottom 0.3s, height 0.3s, margin-top 0.3s;
   --header-top: 0px;
   --header-height: calc(var(--header-padding-top) + var(--header-content-height));
@@ -182,7 +182,8 @@ body {
       position: absolute;
       bottom: var(--footer-bottom);
       justify-content: space-around;
-      align-items: center;
+      align-items: flex-start;
+      padding-top: 10px;
       opacity: var(--footer-opacity);
       z-index: 200;
       transition: var(--fullscreen-transition);

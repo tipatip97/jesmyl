@@ -3,7 +3,6 @@ import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model'
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import { useSchedules } from '../../../complect/schedule-widget/useScheduleWidget';
 import { iconPackOfCalendar03 } from '../../../complect/the-icon/icons/calendar-03';
-import { IconManagerStrokeRounded } from '../../../complect/the-icon/icons/manager';
 import { iconPackOfTeacher } from '../../../complect/the-icon/icons/teacher';
 import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../models';
 import useAuth from '../../index/useAuth';
@@ -28,7 +27,6 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
   title: 'Лидер',
   root: content => <LeaderApplication content={content} />,
   rootPhase: 'all',
-  Icon: IconManagerStrokeRounded,
   exer: leaderExer,
   jumpByLink: {
     gamew: gamew => ({ path: ['all', 'games', 'game'], data: { gamew } }),

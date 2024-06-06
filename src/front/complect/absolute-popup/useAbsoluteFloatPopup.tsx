@@ -1,9 +1,9 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../shared/store';
 import { switchAbsoluteFloatPopupOpen } from '../Complect.store';
-import useMountTransition from '../popups/useMountTransition';
 import Portal from '../popups/[complect]/Portal';
+import useMountTransition from '../popups/useMountTransition';
 import './AbsolutePopup.scss';
 
 let popupContent: ReactNode = null;
