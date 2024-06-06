@@ -3,7 +3,10 @@ import useFullContent from '../../../../../complect/fullscreen-content/useFullCo
 import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
 import { IconApproximatelyEqualSquareStrokeRounded } from '../../../../../complect/the-icon/icons/approximately-equal-square';
 import { IconArrowExpand01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-expand-01';
-import { IconCheckmarkCircle02SolidRounded, IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
+import {
+  IconCheckmarkCircle02SolidRounded,
+  IconCheckmarkCircle02StrokeRounded,
+} from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
 import { IconCongruentToSquareStrokeRounded } from '../../../../../complect/the-icon/icons/congruent-to-square';
 import { IconEqualSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/equal-sign-square';
@@ -102,9 +105,9 @@ export default function useMigratableComTools() {
             return (
               ccom && {
                 tool,
-                title: isSelected(ccom) ? 'Убрать из выбранных' : 'Выбрать песню',
-                Icon: isSelected(ccom) ? IconCheckmarkCircle02SolidRounded : IconCheckmarkCircle02StrokeRounded,
-                onClick: () => toggleSelectedCom(ccom),
+                title: isSelected(ccom.wid) ? 'Убрать из выбранных' : 'Выбрать песню',
+                Icon: isSelected(ccom.wid) ? IconCheckmarkCircle02SolidRounded : IconCheckmarkCircle02StrokeRounded,
+                onClick: () => toggleSelectedCom(ccom.wid),
               }
             );
           case 'mark-com':

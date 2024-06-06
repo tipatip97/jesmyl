@@ -1,10 +1,8 @@
-import ComFace from '../../col/com/face/ComFace';
-import { useCols } from '../../cols/useCols';
+import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import { useEditableMeetings } from './useEditableMeetings';
 
 export default function MeetingsEventHistory() {
   const { currentEvent } = useEditableMeetings();
-  const cols = useCols();
 
   return (
     <div className="full-height">
@@ -17,14 +15,7 @@ export default function MeetingsEventHistory() {
               className="margin-big-gap-v"
             >
               <div>{new Date(w).toLocaleString()}</div>
-              {s?.map(comw => {
-                const com = cols?.coms.find(com => com.wid === comw);
-                return (
-                  <div key={'' + comw}>
-                    {com ? <ComFace com={com} /> : <span className="error-message">Неизвестная песня</span>}
-                  </div>
-                );
-              })}
+              <ComFaceList list={s} />
             </div>
           );
         })}

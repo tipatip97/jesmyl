@@ -1,16 +1,16 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { TranslationSlidePreview } from '../../../../+complect/translations/controls/Preview';
+import useNavConfigurer from '../../../../../../complect/nav-configurer/useNavConfigurer';
 import PhaseContainerConfigurer from '../../../../../../complect/phase-container/PhaseContainerConfigurer';
 import useCmNav from '../../../base/useCmNav';
-import ComFace from '../../../col/com/face/ComFace';
+import { Com } from '../../../col/com/Com';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
 import { CmTranslationControlPanel } from './ControllPanel';
 import { CmTranslationSlideLine } from './SlideLine';
 import { CmTranslateScreenConfigurations } from './screens/ScreenConfigurations';
-import { Com } from '../../../col/com/Com';
-import useNavConfigurer from '../../../../../../complect/nav-configurer/useNavConfigurer';
+import { ComFaceList } from '../../../col/com/face/list/ComFaceList';
 
 interface Props {
   head?: ReactNode;
@@ -38,18 +38,13 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
             <TranslationSlidePreview />
             {
               <div className="translation-com-list">
-                {(comList ?? comPack.comPack[0])?.map(com => {
-                  return (
-                    <ComFace
-                      key={com.wid}
-                      com={com}
-                      importantOnClick={() => {
-                        nav.setAppRouteData({ ccomw: com.wid });
-                        setTexti(0);
-                      }}
-                    />
-                  );
-                })}
+                <ComFaceList
+                  list={comList ?? comPack.comPack[0]}
+                  importantOnClick={com => {
+                    nav.setAppRouteData({ ccomw: com.wid });
+                    setTexti(0);
+                  }}
+                />
               </div>
             }
           </div>

@@ -12,7 +12,7 @@ let localIMeetings: IExportableMeetings | nil;
 const meetingsSelector = (state: RootState) => state.cm.meetings;
 
 export function useMeetings() {
-  const imeetings = useSelector(meetingsSelector);
+  const imeetings: IExportableMeetings | und = useSelector(meetingsSelector);
   const {
     goTo,
     appRouteData: { eventw },

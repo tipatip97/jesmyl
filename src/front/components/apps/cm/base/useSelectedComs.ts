@@ -20,12 +20,12 @@ export default function useSelectedComs() {
   const ret = {
     selectedComws,
     takeSelectedComs,
-    selectedComPosition: (com: Com) => selectedComws.indexOf(com.wid) + 1,
+    selectedComPosition: (comWid: number) => selectedComws.indexOf(comWid) + 1,
     updateSelectedComws: (selectedComws: number[]) => setAppRouteData({ selectedComws }),
     clearSelectedComws: () => ret.updateSelectedComws([]),
-    toggleSelectedCom: (com: Com) => {
+    toggleSelectedCom: (comWid: number) => {
       ret.updateSelectedComws(
-        ret.selectedComPosition(com) ? selectedComws.filter(comw => com.wid !== comw) : [...selectedComws, com.wid],
+        ret.selectedComPosition(comWid) ? selectedComws.filter(comw => comWid !== comw) : [...selectedComws, comWid],
       );
     },
   };

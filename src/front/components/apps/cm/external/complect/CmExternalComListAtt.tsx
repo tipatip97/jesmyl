@@ -4,8 +4,10 @@ import useFullContent from '../../../../../complect/fullscreen-content/useFullCo
 import StrongEvaButton from '../../../../../complect/strong-control/StrongEvaButton';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconArrangeStrokeRounded } from '../../../../../complect/the-icon/icons/arrange';
+import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
 import { IconCalendar03StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-03';
 import { IconCheckmarkSquare02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-square-02';
+import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
 import { IconLinkBackwardStrokeRounded } from '../../../../../complect/the-icon/icons/link-backward';
 import { IconMinusSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-square';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
@@ -13,13 +15,11 @@ import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/
 import { ChordVisibleVariant } from '../../Cm.model';
 import { useCcat } from '../../col/cat/useCcat';
 import { Com } from '../../col/com/Com';
-import ComFace from '../../col/com/face/ComFace';
+import { ComFace } from '../../col/com/face/ComFace';
 import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import { useMeetings } from '../../lists/meetings/useMeetings';
 import { CmComBindAttach } from '../cmExternalAttach';
 import TheComForFullScreen from './TheComForFullScreen';
-import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
-import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
 
 const itIt = (it: unknown) => it;
 
@@ -58,11 +58,12 @@ export default function CmExternalComListAtt({
             <ComFace
               key={comw}
               com={com}
+              comi={comwi}
               importantOnClick={() => {
                 setCcom(com);
                 showComposition();
               }}
-              description={
+              description={() => (
                 <div className="flex flex-gap">
                   {!comwi || (
                     <StrongEvaButton
@@ -91,14 +92,14 @@ export default function CmExternalComListAtt({
                     className="color--ko"
                   />
                 </div>
-              }
+              )}
             />
           );
         })}
         {!uniqRemovedComws.length || (
           <>
             <h2>Удалённые песни</h2>
-            {uniqRemovedComws.map(comw => {
+            {uniqRemovedComws.map((comw, comwi) => {
               const com = cat?.coms.find(com => com.wid === comw);
 
               return (
@@ -106,11 +107,12 @@ export default function CmExternalComListAtt({
                   <ComFace
                     key={com.wid}
                     com={com}
+                    comi={comwi}
                     importantOnClick={() => {
                       setCcom(com);
                       showComposition();
                     }}
-                    description={
+                    description={() => (
                       <StrongEvaButton
                         scope={scope}
                         fieldName="listKey"
@@ -123,7 +125,7 @@ export default function CmExternalComListAtt({
                           removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
                         }
                       />
-                    }
+                    )}
                   />
                 )
               );
@@ -167,18 +169,19 @@ export default function CmExternalComListAtt({
                 onTermChange={term => setTerm(term)}
               />
               <div className="margin-gap-t full-height full-width over-y-auto">
-                {cat.wraps.map(wrap => {
+                {cat.wraps.map((wrap, wrapi) => {
                   const isIncludes = value.comws?.includes(wrap.com.wid);
 
                   return (
                     <ComFace
                       key={wrap.com.wid}
+                      comi={wrapi}
                       {...wrap}
                       importantOnClick={() => {
                         setCcom(wrap.com);
                         showComposition();
                       }}
-                      description={
+                      description={() => (
                         <div onClick={cbStopper}>
                           {isIncludes ? (
                             <StrongEvaButton
@@ -201,7 +204,7 @@ export default function CmExternalComListAtt({
                             />
                           )}
                         </div>
-                      }
+                      )}
                     />
                   );
                 })}
@@ -263,7 +266,7 @@ export default function CmExternalComListAtt({
       {compositionNode}
       {!currentEvent && !value.comws?.length && <div>Песен нет</div>}
       {(currentEvent ? (value.comws ? [...currentEvent.s, ...value.comws] : currentEvent.s) : value.comws)?.map(
-        comw => {
+        (comw, comwi) => {
           const com = cat?.coms.find(com => com.wid === comw);
           if (com === undefined) return null;
 
@@ -271,6 +274,7 @@ export default function CmExternalComListAtt({
             <ComFace
               key={comw}
               com={com}
+              comi={comwi}
               importantOnClick={() => {
                 setCcom(com);
                 showComposition();

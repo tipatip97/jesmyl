@@ -7,12 +7,11 @@ import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../../c
 import useSelectedComs from '../../../base/useSelectedComs';
 import ComFaceContextMenuEditorItems from '../../../editor/col/compositions/ComFaceContextMenuEditorItems';
 import { useMarks } from '../../../lists/marks/useMarks';
-import { Com } from '../Com';
 import './ComFace.scss';
 
-export default function ComFaceContextMenu({ onClick, com }: { onClick: () => void; com: Com }) {
+export default function ComFaceContextMenu({ onClick, comWid }: { onClick: () => void; comWid: number }) {
   const { isMarked, toggleMarked } = useMarks();
-  const isComMarked = isMarked(com.wid);
+  const isComMarked = isMarked(comWid);
   const { clearSelectedComws, selectedComws, selectedComPosition: isSelected, toggleSelectedCom } = useSelectedComs();
   const [confirmNode, confirm] = useConfirm();
 
@@ -24,13 +23,13 @@ export default function ComFaceContextMenu({ onClick, com }: { onClick: () => vo
         postfix={isComMarked ? 'Удалить из Избранного' : 'Добавить в Избранное'}
         onClick={() => {
           onClick();
-          toggleMarked(com.wid);
+          toggleMarked(comWid);
         }}
       />
       <IconButton
-        Icon={isSelected(com) ? IconMinusSignCircleStrokeRounded : IconCheckmarkCircle02StrokeRounded}
-        postfix={isSelected(com) ? 'Отменить выбор' : 'Выбрать'}
-        onClick={() => toggleSelectedCom(com)}
+        Icon={isSelected(comWid) ? IconMinusSignCircleStrokeRounded : IconCheckmarkCircle02StrokeRounded}
+        postfix={isSelected(comWid) ? 'Отменить выбор' : 'Выбрать'}
+        onClick={() => toggleSelectedCom(comWid)}
       />
       {!selectedComws.length || (
         <IconButton

@@ -15,7 +15,7 @@ import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-ico
 import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
 import useCmNav from '../../base/useCmNav';
-import ComFace from '../../col/com/face/ComFace';
+import { ComFace } from '../../col/com/face/ComFace';
 import { useEditableCcat } from '../col/categories/useEditableCcat';
 import EditContainerCorrectsInformer from '../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
@@ -79,8 +79,9 @@ export default function EditMeetingsEvent() {
               <ComFace
                 key={com.wid}
                 com={com}
+                comi={comi}
                 selectable={false}
-                description={
+                description={() => (
                   <div className="flex">
                     {comsLength === 1 ? null : (
                       <IconButton
@@ -99,7 +100,7 @@ export default function EditMeetingsEvent() {
                       }}
                     />
                   </div>
-                }
+                )}
               />
             ))
           ) : (
@@ -121,12 +122,13 @@ export default function EditMeetingsEvent() {
                   />
                 )}
               </div>
-              {currentEvent.prevComs?.map(com => (
+              {currentEvent.prevComs?.map((com, comi) => (
                 <ComFace
                   key={com.wid}
                   com={com}
+                  comi={comi}
                   selectable={false}
-                  description={
+                  description={() => (
                     <IconButton
                       Icon={comsLength ? IconArrowUp02StrokeRounded : IconPlusSignCircleStrokeRounded}
                       onClick={event => {
@@ -134,7 +136,7 @@ export default function EditMeetingsEvent() {
                         exec(currentEvent.mergePrevComs([com]));
                       }}
                     />
-                  }
+                  )}
                 />
               ))}
             </>
@@ -157,16 +159,17 @@ export default function EditMeetingsEvent() {
                 debounce={500}
                 onTermChange={term => setTerm(term)}
               />
-              {zcat?.wraps.map(({ com }) => {
+              {zcat?.wraps.map(({ com }, wrapi) => {
                 return (
                   <ComFace
                     key={com.wid}
                     com={com}
+                    comi={wrapi}
                     selectable={false}
                     importantOnClick={() => {
                       goTo({ place: 'com', data: { ccomw: com.wid } }, null, true);
                     }}
-                    description={
+                    description={() =>
                       usedComList.indexOf(com) < 0 ? (
                         <IconPlusSignCircleStrokeRounded
                           onClick={event => {

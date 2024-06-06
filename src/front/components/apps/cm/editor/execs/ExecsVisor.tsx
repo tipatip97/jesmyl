@@ -7,7 +7,7 @@ import { IconCalendar03StrokeRounded } from '../../../../../complect/the-icon/ic
 import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
 import { RootState } from '../../../../../shared/store';
-import ComFace from '../../col/com/face/ComFace';
+import { ComFace } from '../../col/com/face/ComFace';
 import { ExecVision } from '../CmEditor.model';
 import { EditableCom } from '../col/compositions/EditableCom';
 import { useEditableCols } from '../col/useEditableCols';
@@ -33,13 +33,14 @@ export default function ExecsVisor() {
             mylib.isNum(value) &&
             [value]
               .flat()
-              .map((comw: number) => {
+              .map((comw, comwi) => {
                 flowCom = cols.coms.find(com => com.wid === comw);
                 return (
                   flowCom && (
                     <ComFace
                       key={comw}
                       com={flowCom}
+                      comi={comwi}
                     />
                   )
                 );

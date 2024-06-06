@@ -6,7 +6,7 @@ import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/i
 import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';
 import { IconCopy01StrokeRounded } from '../../../../../complect/the-icon/icons/copy-01';
 import useCmNav from '../../base/useCmNav';
-import ComFace from '../../col/com/face/ComFace';
+import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import { MeetingsEvent } from './MeetingsEvent';
 import { useMeetings } from './useMeetings';
 
@@ -103,16 +103,7 @@ export default function MeetingEventExpandList() {
               {event.name}
               <IconButton Icon={isExpanded ? IconArrowUp01StrokeRounded : IconArrowDown01StrokeRounded} />
             </h3>
-            {isExpanded &&
-              event.coms?.map(com => {
-                return (
-                  <ComFace
-                    key={com.wid}
-                    com={com}
-                    importantOnClick={() => {}}
-                  />
-                );
-              })}
+            {isExpanded && <ComFaceList list={event.coms} />}
           </div>
         );
       })}

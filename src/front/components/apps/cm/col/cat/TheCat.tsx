@@ -8,7 +8,7 @@ import { RootState } from '../../../../../shared/store';
 import useCmNav from '../../base/useCmNav';
 import useLaterComList from '../../base/useLaterComList';
 import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
-import ComFace from '../com/face/ComFace';
+import { ComFaceList } from '../com/face/list/ComFaceList';
 import { useCcat } from './useCcat';
 
 const isNumberSearchSelector = (state: RootState) => state.complect.isNumberSearch;
@@ -35,7 +35,7 @@ export default function TheCat({ all }: { all?: boolean }) {
         if (listRef.current)
           if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
           else {
-            const currentFace = document.querySelector(`.face-item.com-of-cat.current.wid_${ccomw}`);
+            const currentFace = document.getElementById(`com_face_wid_${ccomw}`);
             if (currentFace) {
               mylib.scrollToView(currentFace, 'top', {
                 parent: listRef.current,
@@ -85,12 +85,10 @@ export default function TheCat({ all }: { all?: boolean }) {
                 >
                   Последние:
                 </div>
-                {laterComs?.map(com => (
-                  <ComFace
-                    key={com.wid}
-                    com={com}
-                  />
-                ))}
+                <ComFaceList
+                  list={laterComs}
+                  isWithoutIds
+                />
               </div>
               <div
                 className="flex between sticky list-title"
@@ -105,13 +103,10 @@ export default function TheCat({ all }: { all?: boolean }) {
                 )}
               </div>
               <div className="com-list">
-                {cat.wraps.map(wrap => (
-                  <ComFace
-                    key={wrap.com.wid}
-                    {...wrap}
-                    groupClass="com-of-cat"
-                  />
-                ))}
+                <ComFaceList
+                  list={cat.wraps.map(({ com }) => com)}
+                  isNeedRenderingDelay
+                />
               </div>
             </>
           )

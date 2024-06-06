@@ -8,7 +8,7 @@ const colsSelector = (state: RootState) => state.cm.cols;
 let localCols: EditableCols | und;
 let localICols: IExportableCols | und;
 
-export function useEditableCols() {
+export function useEditableCols(): EditableCols | und {
   const cols = useSelector(colsSelector);
 
   if (!cols) return;

@@ -1,6 +1,6 @@
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import useSelectedComs from '../../base/useSelectedComs';
-import ComFace from '../../col/com/face/ComFace';
+import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import { LocalListToolsPopup } from '../popups/LocalListToolsPopup';
 
@@ -16,12 +16,7 @@ export default function SelectedComs() {
       content={
         <>
           {popup}
-          {coms.map(com => (
-            <ComFace
-              key={com.wid}
-              com={com}
-            />
-          ))}
+          <ComFaceList list={coms} />
         </>
       }
     />

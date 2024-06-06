@@ -7,6 +7,7 @@ import {
   RoutePhasePoint,
   RoutePhasePointVariated,
   RoutePlaceVariated,
+  RouterState,
 } from '../../components/router/Router.model';
 import di from '../../components/router/Router.store';
 import { RootState } from '../../shared/store';
@@ -27,7 +28,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
 
   const dispatch = useDispatch();
   const [isFullScreen, switchFullscreen] = useFullScreen();
-  const routerStore = useSelector(routerStoreSelector);
+  const routerStore: RouterState = useSelector(routerStoreSelector);
   const appRouteCast = routerStore[appName];
   const route =
     appRouteCast?.last === undefined ? null : appRouteCast.net.find(([phase]) => appRouteCast.last === phase);

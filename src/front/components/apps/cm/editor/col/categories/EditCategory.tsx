@@ -4,7 +4,7 @@ import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
 import LoadIndicatedContent from '../../../../../../complect/load-indicated-content/LoadIndicatedContent';
 import { catTrackers } from '../../../col/cat/Cat.complect';
-import ComFace from '../../../col/com/face/ComFace';
+import { ComFaceList } from '../../../col/com/face/list/ComFaceList';
 import EditContainerCorrectsInformer from '../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import PhaseCmEditorContainer from '../../phase-editor-container/PhaseCmEditorContainer';
 import { useEditableCcat } from './useEditableCcat';
@@ -70,13 +70,10 @@ export default function EditCategory() {
           }
           {isShowComs ? (
             <LoadIndicatedContent isLoading={!ccat.coms.length}>
-              {ccat.coms.map(com => (
-                <ComFace
-                  key={com.wid}
-                  com={com}
-                  importantOnClick={() => {}}
-                />
-              ))}
+              <ComFaceList
+                list={ccat.coms}
+                importantOnClick={() => {}}
+              />
             </LoadIndicatedContent>
           ) : null}
         </>

@@ -5,18 +5,19 @@ import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import LoadIndicatedContent from '../../../../../../complect/load-indicated-content/LoadIndicatedContent';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import useCmNav from '../../../base/useCmNav';
-import ComFace from '../../../col/com/face/ComFace';
+import { ComFace } from '../../../col/com/face/ComFace';
 import { useCcom } from '../../../col/com/useCcom';
 import { CorrectsBox } from '../../corrects-box/CorrectsBox';
 import EditContainerCorrectsInformer from '../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import PhaseCmEditorContainer from '../../phase-editor-container/PhaseCmEditorContainer';
+import { EditableCat } from '../categories/EditableCat';
 import { useEditableCcat } from '../categories/useEditableCcat';
 import { EditCompositionsMore } from './complect/EditCompositionsMore';
 
 export default function EditCompositions() {
   const ccom = useCcom();
   const { goTo } = useCmNav();
-  const zcat = useEditableCcat(0);
+  const zcat: EditableCat | und = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || '');
   const [popupNode, openPopup] = useBottomPopup(EditCompositionsMore);
   useExerExec();
@@ -25,7 +26,7 @@ export default function EditCompositions() {
   const scrollToCurrent = () => {
     if (ccom) {
       setTimeout(() => {
-        const currentFace = document.querySelector(`.face-item.editable-com.current.wid_${ccom.wid}`);
+        const currentFace = document.querySelector(`com_face_wid_${ccom.wid}`);
         if (listRef.current && currentFace) {
           mylib.scrollToView(currentFace, 'top', {
             parent: listRef.current,
@@ -72,6 +73,7 @@ export default function EditCompositions() {
                   <ComFace
                     key={com.wid}
                     com={com}
+                    comi={wrapi}
                     groupClass="editable-com"
                     importantOnClick={() => {
                       goTo({ place: 'com', data: { ccomw: com.wid } }, null, com.isCreated);

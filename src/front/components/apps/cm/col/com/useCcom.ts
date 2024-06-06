@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../shared/store';
 import useCmNav from '../../base/useCmNav';
 import { useCols } from '../../cols/useCols';
+import { Com } from './Com';
 
 const numComUpdatesSelector = (state: RootState) => state.cm.numComUpdates;
 
-export function useCcom(topComw?: number) {
+export function useCcom(topComw?: number): Com | und {
   useSelector(numComUpdatesSelector);
   const cols = useCols();
   const cmNav = useCmNav();

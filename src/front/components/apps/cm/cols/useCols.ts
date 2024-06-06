@@ -8,7 +8,7 @@ const colsSelector = (state: RootState) => state.cm.cols;
 let localCols: Cols | und;
 let localICols: IExportableCols | und;
 
-export function useCols() {
+export function useCols(): Cols | und {
   const cols = useSelector(colsSelector);
 
   if (!cols) return;
