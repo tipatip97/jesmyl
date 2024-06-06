@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 6V2',
   d2: 'M12 22C18 22 19.5 17.49 19.5 12C19.5 6.50998 18 2 12 2C5.99993 2 4.5 6.50996 4.5 12C4.5 17.49 5.99993 22 12 22Z',
   d3: 'M10.5 7.5C10.5 7.03406 10.5 6.80109 10.5761 6.61732C10.6776 6.37229 10.8723 6.17761 11.1173 6.07612C11.3011 6 11.5341 6 12 6C12.4659 6 12.6989 6 12.8827 6.07612C13.1277 6.17761 13.3224 6.37229 13.4239 6.61732C13.5 6.80109 13.5 7.03406 13.5 7.5V9.5C13.5 9.96594 13.5 10.1989 13.4239 10.3827C13.3224 10.6277 13.1277 10.8224 12.8827 10.9239C12.6989 11 12.4659 11 12 11C11.5341 11 11.3011 11 11.1173 10.9239C10.8723 10.8224 10.6776 10.6277 10.5761 10.3827C10.5 10.1989 10.5 9.96594 10.5 9.5V7.5Z',
@@ -12,9 +13,9 @@ const d = {
   d8: 'M13.5 6H10.5V10H13.5V6Z',
   d9: 'M12.75 1.25V5.23103H13.5C13.9142 5.23103 14.25 5.56718 14.25 5.98184V9.98618C14.25 10.4008 13.9142 10.737 13.5 10.737H10.5C10.0858 10.737 9.75 10.4008 9.75 9.98618V5.98184C9.75 5.56718 10.0858 5.23103 10.5 5.23103H11.25V1.25C8.44205 1.42862 6.54052 2.62507 5.36262 4.52618C4.12483 6.52394 3.75 9.20059 3.75 11.9883C3.75 14.7761 4.12483 17.4528 5.36262 19.4505C6.64252 21.5163 8.7768 22.75 12 22.75C15.2231 22.75 17.3574 21.5162 18.6373 19.4505C19.8751 17.4527 20.25 14.7761 20.25 11.9883C20.25 9.20059 19.8751 6.52395 18.6373 4.52619C17.4594 2.62509 15.5579 1.42864 12.75 1.25Z',
   d10: 'M11.25 6.73266V9.23537H12.75V6.73266H11.25Z',
-} as const;
+};
 
-export const IconMouse10StrokeRounded = (props: TheIconProps) => {
+export const IconMouse10StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -41,7 +42,7 @@ export const IconMouse10StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMouse10DuotoneRounded = (props: TheIconProps) => {
+export const IconMouse10DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -75,7 +76,7 @@ export const IconMouse10DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMouse10TwotoneRounded = (props: TheIconProps) => {
+export const IconMouse10TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -103,7 +104,7 @@ export const IconMouse10TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMouse10SolidRounded = (props: TheIconProps) => {
+export const IconMouse10SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -119,7 +120,7 @@ export const IconMouse10SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMouse10BulkRounded = (props: TheIconProps) => {
+export const IconMouse10BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -140,7 +141,7 @@ export const IconMouse10BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMouse10StrokeSharp = (props: TheIconProps) => {
+export const IconMouse10StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -168,7 +169,7 @@ export const IconMouse10StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMouse10SolidSharp = (props: TheIconProps) => {
+export const IconMouse10SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

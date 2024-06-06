@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14 14.8135V9.18646C14 6.04126 14 4.46866 13.0747 4.0773C12.1494 3.68593 11.0603 4.79793 8.88232 7.02192C7.75439 8.17365 7.11085 8.42869 5.50604 8.42869C4.10257 8.42869 3.40084 8.42869 2.89675 8.77262C1.85035 9.48655 2.00852 10.882 2.00852 12C2.00852 13.118 1.85035 14.5134 2.89675 15.2274C3.40084 15.5713 4.10257 15.5713 5.50604 15.5713C7.11085 15.5713 7.75439 15.8264 8.88232 16.9781C11.0603 19.2021 12.1494 20.3141 13.0747 19.9227C14 19.5313 14 17.9587 14 14.8135Z',
   d2: 'M18 10L22 14M18 14L22 10',
   d3: 'M14 14.8135V9.18646C14 6.04126 14 4.46866 13.0747 4.0773C12.1494 3.68593 11.0603 4.79793 8.88232 7.02192C7.75439 8.17365 7.11085 8.42869 5.50604 8.42869C4.10257 8.42869 3.40084 8.42869 2.89675 8.77262C1.85035 9.48655 2.00852 10.882 2.00852 12C2.00852 13.118 1.85035 14.5134 2.89675 15.2274C3.40084 15.5713 4.10257 15.5713 5.50604 15.5713C7.11085 15.5713 7.75439 15.8264 8.88232 16.9781C11.0604 19.2021 12.1494 20.3141 13.0747 19.9227C14 19.5313 14 17.9587 14 14.8135Z',
@@ -11,9 +12,9 @@ const d = {
   d7: 'M2.07215 15.5138L7.00159 15.4861L13.9512 19.9903C14.0176 20.034 13.994 19.9424 13.994 19.8628V12.0059V4.13737C13.994 4.05779 14.0176 3.96612 13.9512 4.00985L7.00159 8.51407L2.07215 8.48641C2.01701 8.48641 2.00195 8.52923 2.00195 8.58446V12.003V15.4157C2.00195 15.4709 2.01701 15.5138 2.07215 15.5138Z',
   d8: 'M14.3587 3.34171C14.5995 3.47317 14.7493 3.72564 14.7493 4V20C14.7493 20.2744 14.5995 20.5268 14.3587 20.6583C14.1179 20.7898 13.8245 20.7792 13.5937 20.6309L6.77971 16.25H2C1.58579 16.25 1.25 15.9142 1.25 15.5V8.5C1.25 8.08579 1.58579 7.75 2 7.75H6.77971L13.5937 3.36914C13.8245 3.22076 14.1179 3.21024 14.3587 3.34171Z',
   d9: 'M18.1288 12.0001L16.3359 10.2072L17.7502 8.79297L19.543 10.5859L21.3359 8.79297L22.7502 10.2072L20.9573 12.0001L22.7502 13.793L21.3359 15.2072L19.543 13.4143L17.7502 15.2072L16.3359 13.793L18.1288 12.0001Z',
-} as const;
+};
 
-export const IconVolumeMute02StrokeRounded = (props: TheIconProps) => {
+export const IconVolumeMute02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -36,7 +37,7 @@ export const IconVolumeMute02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVolumeMute02DuotoneRounded = (props: TheIconProps) => {
+export const IconVolumeMute02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -64,7 +65,7 @@ export const IconVolumeMute02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVolumeMute02TwotoneRounded = (props: TheIconProps) => {
+export const IconVolumeMute02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -88,7 +89,7 @@ export const IconVolumeMute02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVolumeMute02SolidRounded = (props: TheIconProps) => {
+export const IconVolumeMute02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -108,7 +109,7 @@ export const IconVolumeMute02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVolumeMute02BulkRounded = (props: TheIconProps) => {
+export const IconVolumeMute02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -129,7 +130,7 @@ export const IconVolumeMute02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVolumeMute02StrokeSharp = (props: TheIconProps) => {
+export const IconVolumeMute02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -150,7 +151,7 @@ export const IconVolumeMute02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconVolumeMute02SolidSharp = (props: TheIconProps) => {
+export const IconVolumeMute02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

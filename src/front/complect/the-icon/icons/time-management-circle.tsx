@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7 19.5C7 20.8807 5.88071 22 4.5 22C3.11929 22 2 20.8807 2 19.5C2 18.1193 3.11929 17 4.5 17C5.88071 17 7 18.1193 7 19.5Z',
   d2: 'M22 19.5C22 20.8807 20.8807 22 19.5 22C18.1193 22 17 20.8807 17 19.5C17 18.1193 18.1193 17 19.5 17C20.8807 17 22 18.1193 22 19.5Z',
   d3: 'M19.5 17C19.3321 14.547 18.3951 14 15.227 14H8.77296C5.60493 14 4.66788 14.547 4.5 17',
@@ -19,9 +20,9 @@ const d = {
   d15: 'M11.5 7L13.5 5M16.5 6.5C16.5 8.98528 14.4853 11 12 11C9.51472 11 7.5 8.98528 7.5 6.5C7.5 4.01472 9.51472 2 12 2C14.4853 2 16.5 4.01472 16.5 6.5Z',
   d16: 'M3.50178 13.9997C3.50198 13.4475 3.94963 13 4.50178 13H19.5C20.0523 13 20.5 13.4477 20.5 14V17H18.5V15H5.50143L5.50073 17.0003L3.50073 16.9997L3.50178 13.9997Z',
   d17: 'M12 1.25C9.1005 1.25 6.75 3.6005 6.75 6.5C6.75 9.3995 9.1005 11.75 12 11.75C14.8995 11.75 17.25 9.3995 17.25 6.5C17.25 3.6005 14.8995 1.25 12 1.25ZM12.2072 7.70718L14.2072 5.70718L12.793 4.29297L10.793 6.29297L12.2072 7.70718Z',
-} as const;
+};
 
-export const IconTimeManagementCircleStrokeRounded = (props: TheIconProps) => {
+export const IconTimeManagementCircleStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -54,7 +55,7 @@ export const IconTimeManagementCircleStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTimeManagementCircleDuotoneRounded = (props: TheIconProps) => {
+export const IconTimeManagementCircleDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -109,7 +110,7 @@ export const IconTimeManagementCircleDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTimeManagementCircleTwotoneRounded = (props: TheIconProps) => {
+export const IconTimeManagementCircleTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -143,7 +144,7 @@ export const IconTimeManagementCircleTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTimeManagementCircleSolidRounded = (props: TheIconProps) => {
+export const IconTimeManagementCircleSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -173,7 +174,7 @@ export const IconTimeManagementCircleSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTimeManagementCircleBulkRounded = (props: TheIconProps) => {
+export const IconTimeManagementCircleBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -208,7 +209,7 @@ export const IconTimeManagementCircleBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTimeManagementCircleStrokeSharp = (props: TheIconProps) => {
+export const IconTimeManagementCircleStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -240,7 +241,7 @@ export const IconTimeManagementCircleStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTimeManagementCircleSolidSharp = (props: TheIconProps) => {
+export const IconTimeManagementCircleSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

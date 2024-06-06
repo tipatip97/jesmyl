@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 8H20',
   d2: 'M17.5 6V11',
   d3: 'M2 6V21',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M17.5 4.25C17.0858 4.25 16.75 4.58579 16.75 5C16.75 5.41421 17.0858 5.75 17.5 5.75C17.9142 5.75 18.25 5.41421 18.25 5C18.25 4.58579 17.9142 4.25 17.5 4.25ZM15.25 5C15.25 3.75736 16.2574 2.75 17.5 2.75C18.7426 2.75 19.75 3.75736 19.75 5C19.75 6.24264 18.7426 7.25 17.5 7.25C16.2574 7.25 15.25 6.24264 15.25 5Z',
   d18: 'M1.25 5.25H2.75V7.5H16.75V6.25H18.25V7.5H21V9H18.25V11.25H16.75V9H14C7.7868 9 2.75 14.0368 2.75 20.25V21.25H1.25V5.25Z',
   d19: 'M17.5 10.75C14.6005 10.75 12.25 13.1005 12.25 16C12.25 18.8995 14.6005 21.25 17.5 21.25C20.3995 21.25 22.75 18.8995 22.75 16C22.75 13.1005 20.3995 10.75 17.5 10.75ZM18.25 16.0365V13.75H16.75V16.9635L18.8354 18.0062L19.5062 16.6646L18.25 16.0365Z',
-} as const;
+};
 
-export const IconHangingClockStrokeRounded = (props: TheIconProps) => {
+export const IconHangingClockStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -80,7 +81,7 @@ export const IconHangingClockStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHangingClockDuotoneRounded = (props: TheIconProps) => {
+export const IconHangingClockDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -135,7 +136,7 @@ export const IconHangingClockDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHangingClockTwotoneRounded = (props: TheIconProps) => {
+export const IconHangingClockTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -194,7 +195,7 @@ export const IconHangingClockTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHangingClockSolidRounded = (props: TheIconProps) => {
+export const IconHangingClockSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -228,7 +229,7 @@ export const IconHangingClockSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHangingClockBulkRounded = (props: TheIconProps) => {
+export const IconHangingClockBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -266,7 +267,7 @@ export const IconHangingClockBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHangingClockStrokeSharp = (props: TheIconProps) => {
+export const IconHangingClockStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -320,7 +321,7 @@ export const IconHangingClockStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconHangingClockSolidSharp = (props: TheIconProps) => {
+export const IconHangingClockSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

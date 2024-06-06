@@ -1,17 +1,16 @@
 import { ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
-import TheIcon from '../../../../../complect/the-icon/TheIcon';
+import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCalendar01SolidSharp } from '../../../../../complect/the-icon/icons/calendar-01';
+import { IconCalendar02StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-02';
+import { IconFolder01StrokeRounded } from '../../../../../complect/the-icon/icons/folder-01';
+import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
 import { RootState } from '../../../../../shared/store';
 import { cmStoreActions } from '../../Cm.store';
 import useCmNav from '../../base/useCmNav';
 import { Meetings } from './Meetings';
 import { MeetingsEvent } from './MeetingsEvent';
-import { IconFolder01StrokeRounded } from '../../../../../complect/the-icon/icons/folder-01';
-import { IconCalendar02StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-02';
-import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
-import IconButton from '../../../../../complect/the-icon/IconButton';
 
 const favoriteMeetingsSelector = (state: RootState) => state.cm.favoriteMeetings;
 

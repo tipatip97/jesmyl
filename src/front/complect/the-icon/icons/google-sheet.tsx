@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M15 2.5V4C15 5.41421 15 6.12132 15.4393 6.56066C15.8787 7 16.5858 7 18 7H19.5',
   d2: 'M4 16V8C4 5.17157 4 3.75736 4.87868 2.87868C5.75736 2 7.17157 2 10 2H14.1716C14.5803 2 14.7847 2 14.9685 2.07612C15.1522 2.15224 15.2968 2.29676 15.5858 2.58579L19.4142 6.41421C19.7032 6.70324 19.8478 6.84776 19.9239 7.03153C20 7.2153 20 7.41968 20 7.82843V16C20 18.8284 20 20.2426 19.1213 21.1213C18.2426 22 16.8284 22 14 22H10C7.17157 22 5.75736 22 4.87868 21.1213C4 20.2426 4 18.8284 4 16Z',
   d3: 'M12 11V14M12 14V17M12 14H7.5M12 14H16.5M9.5 17H14.5C15.4428 17 15.9142 17 16.2071 16.7071C16.5 16.4142 16.5 15.9428 16.5 15V13C16.5 12.0572 16.5 11.5858 16.2071 11.2929C15.9142 11 15.4428 11 14.5 11H9.5C8.55719 11 8.08579 11 7.79289 11.2929C7.5 11.5858 7.5 12.0572 7.5 13V15C7.5 15.9428 7.5 16.4142 7.79289 16.7071C8.08579 17 8.55719 17 9.5 17Z',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M12.0211 11.0361V14.0361M12.0211 14.0361V17.0361M12.0211 14.0361H7.52112M12.0211 14.0361H16.5211M7.52112 17.0361H16.5211V11.0361H7.52112V17.0361Z',
   d11: 'M4.00061 21.9329V2.01094C4.00061 2.00544 4.00508 2.00098 4.0106 2.00098H14.99L19.9994 7.02V21.9891C19.9994 21.9946 19.9949 21.999 19.9894 21.999L4.01056 21.9428C4.00506 21.9428 4.00061 21.9384 4.00061 21.9329Z',
   d12: 'M4 1.25L14.25 1.25L14.25 7.75L20.75 7.75L20.75 22C20.75 22.4142 20.4142 22.75 20 22.75L4 22.75C3.58579 22.75 3.25 22.4142 3.25 22L3.25 2C3.25 1.58579 3.58579 1.25 4 1.25ZM15.75 1.68934L20.3107 6.25L15.75 6.25L15.75 1.68934ZM7.5 11.25C7.08579 11.25 6.75 11.5858 6.75 12L6.75 18C6.75 18.4142 7.08579 18.75 7.5 18.75L16.5 18.75C16.9142 18.75 17.25 18.4142 17.25 18L17.25 12C17.25 11.5858 16.9142 11.25 16.5 11.25L7.5 11.25ZM8.25 14.25V12.75H11.25V14.25H8.25ZM12.75 14.25V12.75L15.75 12.75V14.25L12.75 14.25ZM12.75 17.25V15.75L15.75 15.75V17.25L12.75 17.25ZM11.25 15.75V17.25H8.25V15.75H11.25Z',
-} as const;
+};
 
-export const IconGoogleSheetStrokeRounded = (props: TheIconProps) => {
+export const IconGoogleSheetStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -47,7 +48,7 @@ export const IconGoogleSheetStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleSheetDuotoneRounded = (props: TheIconProps) => {
+export const IconGoogleSheetDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -85,7 +86,7 @@ export const IconGoogleSheetDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleSheetTwotoneRounded = (props: TheIconProps) => {
+export const IconGoogleSheetTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -117,7 +118,7 @@ export const IconGoogleSheetTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleSheetSolidRounded = (props: TheIconProps) => {
+export const IconGoogleSheetSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconGoogleSheetSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleSheetBulkRounded = (props: TheIconProps) => {
+export const IconGoogleSheetBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -158,7 +159,7 @@ export const IconGoogleSheetBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleSheetStrokeSharp = (props: TheIconProps) => {
+export const IconGoogleSheetStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -184,7 +185,7 @@ export const IconGoogleSheetStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleSheetSolidSharp = (props: TheIconProps) => {
+export const IconGoogleSheetSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

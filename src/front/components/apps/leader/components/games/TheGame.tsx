@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import CopyTextButton from '../../../../../complect/CopyTextButton';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
-import TheIcon from '../../../../../complect/the-icon/TheIcon';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { useConfirm } from '../../../../../complect/modal/confirm/useConfirm';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
+import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import PhaseLeaderContainer from '../../phase-container/PhaseLeaderContainer';
 import useLeaderNav from '../../useLeaderNav';
 import { LeaderCleans } from '../LeaderCleans';
@@ -22,7 +22,6 @@ import TimerFieldsConfigurer from './timers/complect/TimerFieldsConfigurer';
 import TimerNameListConfigurer from './timers/complect/TimerNameListConfigurer';
 import useGameTimer from './timers/useGameTimer';
 import useCgame from './useGames';
-import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 
 export default function TheGame() {
   const { cgame } = useCgame();

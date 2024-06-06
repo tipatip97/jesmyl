@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M6.5 6.15642C7.16531 5.38547 7.58503 5 8.10017 5C8.73332 5 9.22232 5.58231 10.2003 6.74694L12.4677 9.44699C13.4892 10.6634 14 11.2716 14 12C14 12.7284 13.4892 13.3366 12.4677 14.553L10.2003 17.2531C9.22232 18.4177 8.73332 19 8.10017 19C7.58503 19 7.16531 18.6145 6.5 17.8436',
   d2: 'M2 12H8',
   d3: 'M13 19L16.5118 14.6032C17.5039 13.361 18 12.7398 18 12C18 11.2602 17.5039 10.639 16.5118 9.39683L13 5',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M16.8622 4.5083L22.5226 11.3612C22.8254 11.7278 22.8254 12.2688 22.5226 12.6354L16.8622 19.4883L15.4297 18.2141L20.5638 11.9983L15.4297 5.78253L16.8622 4.5083Z',
   d15: 'M7.25 13H1.25V11H7.25V13Z',
   d16: 'M14.75 11.8691L8.00003 4.11914L3.31348 9.5H8.74928V14.5H3.54143L8.00003 19.6191L14.75 11.8691Z',
-} as const;
+};
 
-export const IconKeyframesMultipleRemoveStrokeRounded = (props: TheIconProps) => {
+export const IconKeyframesMultipleRemoveStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -57,7 +58,7 @@ export const IconKeyframesMultipleRemoveStrokeRounded = (props: TheIconProps) =>
   );
 };
 
-export const IconKeyframesMultipleRemoveDuotoneRounded = (props: TheIconProps) => {
+export const IconKeyframesMultipleRemoveDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -99,7 +100,7 @@ export const IconKeyframesMultipleRemoveDuotoneRounded = (props: TheIconProps) =
   );
 };
 
-export const IconKeyframesMultipleRemoveTwotoneRounded = (props: TheIconProps) => {
+export const IconKeyframesMultipleRemoveTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -139,7 +140,7 @@ export const IconKeyframesMultipleRemoveTwotoneRounded = (props: TheIconProps) =
   );
 };
 
-export const IconKeyframesMultipleRemoveSolidRounded = (props: TheIconProps) => {
+export const IconKeyframesMultipleRemoveSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -171,7 +172,7 @@ export const IconKeyframesMultipleRemoveSolidRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconKeyframesMultipleRemoveBulkRounded = (props: TheIconProps) => {
+export const IconKeyframesMultipleRemoveBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -206,7 +207,7 @@ export const IconKeyframesMultipleRemoveBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframesMultipleRemoveStrokeSharp = (props: TheIconProps) => {
+export const IconKeyframesMultipleRemoveStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -236,7 +237,7 @@ export const IconKeyframesMultipleRemoveStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframesMultipleRemoveSolidSharp = (props: TheIconProps) => {
+export const IconKeyframesMultipleRemoveSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

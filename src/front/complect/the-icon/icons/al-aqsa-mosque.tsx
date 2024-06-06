@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14 22V18C14 16.8954 13.1046 16 12 16C10.8954 16 10 16.8954 10 18V22',
   d2: 'M18 12L20.7022 13.0133C21.7801 13.4175 22 13.7348 22 14.886V22H18V12Z',
   d3: 'M2 14.886C2 13.7348 2.21988 13.4175 3.29775 13.0133L6 12V22H2V14.886Z',
@@ -32,9 +33,9 @@ const d = {
   d28: 'M12.75 3.05146V1.74988H11.25V3.05184C8.3541 3.45711 6.35244 6.17078 6.81701 8.99988H6V10.4999H7.25V12.7499H8.75V10.4999H15.25V12.7499H16.75V10.4999H18V8.99988H17.1857C17.6505 6.16988 15.6474 3.45539 12.75 3.05146Z',
   d29: 'M6 11.7501C5.87402 11.7501 5.75529 11.7812 5.65106 11.8361L1.66459 13.8293C1.4105 13.9563 1.25 14.216 1.25 14.5001V22.2501H9.25V15.7501L14.75 15.7501V22.2501H22.75V14.5001C22.75 14.216 22.5895 13.9563 22.3354 13.8293L18.3489 11.8361C18.2447 11.7812 18.126 11.7501 18 11.7501H6ZM2.75 14.9636L5.25 13.7136V20.7501H2.75V14.9636ZM18.75 13.7136V20.7501H21.25V14.9636L18.75 13.7136Z',
   d30: 'M13.25 22.2501V17.2501H10.75V22.2501H13.25Z',
-} as const;
+};
 
-export const IconAlAqsaMosqueStrokeRounded = (props: TheIconProps) => {
+export const IconAlAqsaMosqueStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -102,7 +103,7 @@ export const IconAlAqsaMosqueStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlAqsaMosqueDuotoneRounded = (props: TheIconProps) => {
+export const IconAlAqsaMosqueDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -180,7 +181,7 @@ export const IconAlAqsaMosqueDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlAqsaMosqueTwotoneRounded = (props: TheIconProps) => {
+export const IconAlAqsaMosqueTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -250,7 +251,7 @@ export const IconAlAqsaMosqueTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlAqsaMosqueSolidRounded = (props: TheIconProps) => {
+export const IconAlAqsaMosqueSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -288,7 +289,7 @@ export const IconAlAqsaMosqueSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlAqsaMosqueBulkRounded = (props: TheIconProps) => {
+export const IconAlAqsaMosqueBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -337,7 +338,7 @@ export const IconAlAqsaMosqueBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlAqsaMosqueStrokeSharp = (props: TheIconProps) => {
+export const IconAlAqsaMosqueStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -392,7 +393,7 @@ export const IconAlAqsaMosqueStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconAlAqsaMosqueSolidSharp = (props: TheIconProps) => {
+export const IconAlAqsaMosqueSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

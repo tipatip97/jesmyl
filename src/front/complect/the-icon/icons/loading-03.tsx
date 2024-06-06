@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 3V6',
   d2: 'M12 18V21',
   d3: 'M21 12L18 12',
@@ -34,409 +35,409 @@ const d = {
   d30: 'M4.22138 18.3636L7.0498 15.5352L8.46402 16.9494L5.63559 19.7778L4.22138 18.3636Z',
   d31: 'M16.9502 15.5352L19.7786 18.3636L18.3644 19.7778L15.536 16.9494L16.9502 15.5352Z',
   d32: 'M5.63574 4.22266L8.46417 7.05108L7.04996 8.4653L4.22153 5.63687L5.63574 4.22266Z',
-} as const;
+};
 
-export const IconLoading03StrokeRounded = (props: TheIconProps) => {
+export const IconLoading03StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
       name="loading-03-stroke-rounded IconLoading03StrokeRounded"
     >
-      <path
-        d={d.d1}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d1} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d2}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d2} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d3}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d3} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d4}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d4} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d5}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d5} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d6}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d6} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d7}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d7} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d8}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d8} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
     </TheIconWrapper>
   );
 };
 
-export const IconLoading03DuotoneRounded = (props: TheIconProps) => {
+export const IconLoading03DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
       name="loading-03-duotone-rounded IconLoading03DuotoneRounded"
     >
-      <path
-        d={d.d1}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d1} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d2}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d2} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d3}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d3} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d4}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d4} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d5}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d5} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d6}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d6} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d7}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d7} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d8}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d8} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
     </TheIconWrapper>
   );
 };
 
-export const IconLoading03TwotoneRounded = (props: TheIconProps) => {
+export const IconLoading03TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
       name="loading-03-twotone-rounded IconLoading03TwotoneRounded"
     >
-      <path
-        d={d.d1}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d1} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        opacity="var(--icon-opacity)"
-        d={d.d2}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        opacity="var(--icon-opacity)" 
+        d={d.d2} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        opacity="var(--icon-opacity)"
-        d={d.d3}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        opacity="var(--icon-opacity)" 
+        d={d.d3} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d4}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d4} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        opacity="var(--icon-opacity)"
-        d={d.d5}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        opacity="var(--icon-opacity)" 
+        d={d.d5} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d6}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d6} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        opacity="var(--icon-opacity)"
-        d={d.d7}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        opacity="var(--icon-opacity)" 
+        d={d.d7} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
-      <path
-        d={d.d8}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
-        strokeLinecap="round"
+      <path 
+        d={d.d8} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
+        strokeLinecap="round" 
       />
     </TheIconWrapper>
   );
 };
 
-export const IconLoading03SolidRounded = (props: TheIconProps) => {
+export const IconLoading03SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
       name="loading-03-solid-rounded IconLoading03SolidRounded"
     >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d9}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d9} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d10}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d10} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d11}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d11} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d12}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d12} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d13}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d13} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d14}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d14} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d15}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d15} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d16}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d16} 
+        fill="var(--icon-fill)" 
       />
     </TheIconWrapper>
   );
 };
 
-export const IconLoading03BulkRounded = (props: TheIconProps) => {
+export const IconLoading03BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
       name="loading-03-bulk-rounded IconLoading03BulkRounded"
     >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d9}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d9} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        opacity="var(--icon-opacity)"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d10}
-        fill="var(--icon-fill)"
+      <path 
+        opacity="var(--icon-opacity)" 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d10} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        opacity="var(--icon-opacity)"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d11}
-        fill="var(--icon-fill)"
+      <path 
+        opacity="var(--icon-opacity)" 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d11} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d12}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d12} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        opacity="var(--icon-opacity)"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d13}
-        fill="var(--icon-fill)"
+      <path 
+        opacity="var(--icon-opacity)" 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d13} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d14}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d14} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        opacity="var(--icon-opacity)"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d15}
-        fill="var(--icon-fill)"
+      <path 
+        opacity="var(--icon-opacity)" 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d15} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d16}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d16} 
+        fill="var(--icon-fill)" 
       />
     </TheIconWrapper>
   );
 };
 
-export const IconLoading03StrokeSharp = (props: TheIconProps) => {
+export const IconLoading03StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
       name="loading-03-stroke-sharp IconLoading03StrokeSharp"
     >
-      <path
-        d={d.d17}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
+      <path 
+        d={d.d17} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
       />
-      <path
-        d={d.d18}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
+      <path 
+        d={d.d18} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
       />
-      <path
-        d={d.d19}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
+      <path 
+        d={d.d19} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
       />
-      <path
-        d={d.d20}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
+      <path 
+        d={d.d20} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
       />
-      <path
-        d={d.d21}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
+      <path 
+        d={d.d21} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
       />
-      <path
-        d={d.d22}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
+      <path 
+        d={d.d22} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
       />
-      <path
-        d={d.d23}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
+      <path 
+        d={d.d23} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
       />
-      <path
-        d={d.d24}
-        stroke="var(--icon-stroke)"
-        strokeWidth="var(--icon-stroke-width)"
+      <path 
+        d={d.d24} 
+        stroke="var(--icon-stroke)" 
+        strokeWidth="var(--icon-stroke-width)" 
       />
     </TheIconWrapper>
   );
 };
 
-export const IconLoading03SolidSharp = (props: TheIconProps) => {
+export const IconLoading03SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
       name="loading-03-solid-sharp IconLoading03SolidSharp"
     >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d25}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d25} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d26}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d26} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d27}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d27} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d28}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d28} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d29}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d29} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d30}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d30} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d31}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d31} 
+        fill="var(--icon-fill)" 
       />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d={d.d32}
-        fill="var(--icon-fill)"
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d={d.d32} 
+        fill="var(--icon-fill)" 
       />
     </TheIconWrapper>
   );

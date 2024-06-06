@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 20H12.0118',
   d2: 'M8.25 17C10.25 15 13.75 15 15.75 17',
   d3: 'M18.5 14C14.7324 10.6667 9.5 10.6667 5.5 14',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M18.5226 13.1329L17.2095 14.6411C13.8893 11.8 9.36334 11.7715 5.79082 14.6447L4.47704 13.1353C8.77358 9.63752 14.415 9.60646 18.5226 13.1329Z',
   d15: 'M11.499 19C10.9467 19 10.499 19.4477 10.499 20C10.499 20.5523 10.9467 21 11.499 21H11.5108C12.0631 21 12.5108 20.5523 12.5108 20C12.5108 19.4477 12.0631 19 11.5108 19H11.499Z',
   d16: 'M22.5007 4.34547L16.7952 10.6204L14.0537 7.87892L15.4679 6.46471L16.7264 7.72319L21.0209 3L22.5007 4.34547Z',
-} as const;
+};
 
-export const IconWifiConnected03StrokeRounded = (props: TheIconProps) => {
+export const IconWifiConnected03StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -65,7 +66,7 @@ export const IconWifiConnected03StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWifiConnected03DuotoneRounded = (props: TheIconProps) => {
+export const IconWifiConnected03DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -114,7 +115,7 @@ export const IconWifiConnected03DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWifiConnected03TwotoneRounded = (props: TheIconProps) => {
+export const IconWifiConnected03TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -160,7 +161,7 @@ export const IconWifiConnected03TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWifiConnected03SolidRounded = (props: TheIconProps) => {
+export const IconWifiConnected03SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -190,7 +191,7 @@ export const IconWifiConnected03SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWifiConnected03BulkRounded = (props: TheIconProps) => {
+export const IconWifiConnected03BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -223,7 +224,7 @@ export const IconWifiConnected03BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWifiConnected03StrokeSharp = (props: TheIconProps) => {
+export const IconWifiConnected03StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -263,7 +264,7 @@ export const IconWifiConnected03StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconWifiConnected03SolidSharp = (props: TheIconProps) => {
+export const IconWifiConnected03SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

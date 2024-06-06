@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M21 21H10C6.70017 21 5.05025 21 4.02513 19.9749C3 18.9497 3 17.2998 3 14V3',
   d2: 'M4.5 19.5L21 3',
   d3: 'M15 4H15.009',
@@ -26,9 +27,9 @@ const d = {
   d22: 'M7.49707 8H9.50605V10H7.49707V8Z',
   d23: 'M19.4915 10H21.5004V12H19.4915V10Z',
   d24: 'M12.4949 16H14.5039V18H12.4949V16Z',
-} as const;
+};
 
-export const IconQqPlotStrokeRounded = (props: TheIconProps) => {
+export const IconQqPlotStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -86,7 +87,7 @@ export const IconQqPlotStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconQqPlotDuotoneRounded = (props: TheIconProps) => {
+export const IconQqPlotDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -145,7 +146,7 @@ export const IconQqPlotDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconQqPlotTwotoneRounded = (props: TheIconProps) => {
+export const IconQqPlotTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -208,7 +209,7 @@ export const IconQqPlotTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconQqPlotSolidRounded = (props: TheIconProps) => {
+export const IconQqPlotSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -254,7 +255,7 @@ export const IconQqPlotSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconQqPlotBulkRounded = (props: TheIconProps) => {
+export const IconQqPlotBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -311,7 +312,7 @@ export const IconQqPlotBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconQqPlotStrokeSharp = (props: TheIconProps) => {
+export const IconQqPlotStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -368,7 +369,7 @@ export const IconQqPlotStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconQqPlotSolidSharp = (props: TheIconProps) => {
+export const IconQqPlotSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

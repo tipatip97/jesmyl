@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7.75024 7.56659C9.66926 4.5222 10.6288 3 12 3C13.3712 3 14.3307 4.52219 16.2498 7.56658L18.4941 11.1271C21.2362 15.4772 22.6072 17.6522 21.7426 19.3261C20.878 21 18.3834 21 13.3944 21H10.6056C5.61655 21 3.12205 21 2.25742 19.3261C1.3928 17.6522 2.76382 15.4772 5.50587 11.1271L7.75024 7.56659Z',
   d2: 'M3.5 15H9M20.5 15H15M7 9H17',
   d3: 'M12 9L12 21',
@@ -20,9 +21,9 @@ const d = {
   d16: 'M15.6365 8.00024L12.0007 1.45581L8.36491 8.00024H15.6365Z',
   d17: 'M16.7476 10.0002H13.0015L13.0015 21.7502H23.2753L20.0809 16.0002L15.0015 16.0002V14.0002L18.9698 14.0002L16.7476 10.0002Z',
   d18: 'M11.0015 21.7502L11.0015 10.0002H7.2538L5.03158 14.0002H9.00146V16.0002H3.92047L0.726074 21.7502H11.0015Z',
-} as const;
+};
 
-export const IconPyramidMaslowoStrokeRounded = (props: TheIconProps) => {
+export const IconPyramidMaslowoStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -51,7 +52,7 @@ export const IconPyramidMaslowoStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPyramidMaslowoDuotoneRounded = (props: TheIconProps) => {
+export const IconPyramidMaslowoDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -91,7 +92,7 @@ export const IconPyramidMaslowoDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPyramidMaslowoTwotoneRounded = (props: TheIconProps) => {
+export const IconPyramidMaslowoTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -112,7 +113,7 @@ export const IconPyramidMaslowoTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPyramidMaslowoSolidRounded = (props: TheIconProps) => {
+export const IconPyramidMaslowoSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -128,7 +129,7 @@ export const IconPyramidMaslowoSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPyramidMaslowoBulkRounded = (props: TheIconProps) => {
+export const IconPyramidMaslowoBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -162,7 +163,7 @@ export const IconPyramidMaslowoBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPyramidMaslowoStrokeSharp = (props: TheIconProps) => {
+export const IconPyramidMaslowoStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -189,7 +190,7 @@ export const IconPyramidMaslowoStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPyramidMaslowoSolidSharp = (props: TheIconProps) => {
+export const IconPyramidMaslowoSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

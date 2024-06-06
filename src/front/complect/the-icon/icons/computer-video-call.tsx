@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14 2H10C6.72077 2 5.08116 2 3.91891 2.81382C3.48891 3.1149 3.1149 3.48891 2.81382 3.91891C2 5.08116 2 6.72077 2 10C2 13.2792 2 14.9188 2.81382 16.0811C3.1149 16.5111 3.48891 16.8851 3.91891 17.1862C5.08116 18 6.72077 18 10 18H14C17.2792 18 18.9188 18 20.0811 17.1862C20.5111 16.8851 20.8851 16.5111 21.1862 16.0811C22 14.9188 22 13.2792 22 10C22 6.72077 22 5.08116 21.1862 3.91891C20.8851 3.48891 20.5111 3.1149 20.0811 2.81382C18.9188 2 17.2792 2 14 2Z',
   d2: 'M14.5 22L14.1845 21.5811C13.4733 20.6369 13.2969 19.1944 13.7468 18M9.5 22L9.8155 21.5811C10.5267 20.6369 10.7031 19.1944 10.2532 18',
   d3: 'M7 22H17',
@@ -19,9 +20,9 @@ const d = {
   d15: 'M10 20.25H7V22.25H17V20.25H14V17.5H10V20.25Z',
   d16: 'M9.25 8C9.25 6.48122 10.4812 5.25 12 5.25C13.5188 5.25 14.75 6.48122 14.75 8C14.75 9.51878 13.5188 10.75 12 10.75C10.4812 10.75 9.25 9.51878 9.25 8Z',
   d17: 'M7.38799 13.5665C9.50904 10.5722 14.4231 10.3817 16.6181 13.5752C16.7758 13.8047 16.7934 14.1027 16.6637 14.3492C16.5341 14.5957 16.2785 14.75 16 14.75H8C7.71959 14.75 7.4626 14.5936 7.3338 14.3445C7.205 14.0954 7.22591 13.7953 7.38799 13.5665Z',
-} as const;
+};
 
-export const IconComputerVideoCallStrokeRounded = (props: TheIconProps) => {
+export const IconComputerVideoCallStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -55,7 +56,7 @@ export const IconComputerVideoCallStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconComputerVideoCallDuotoneRounded = (props: TheIconProps) => {
+export const IconComputerVideoCallDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -96,7 +97,7 @@ export const IconComputerVideoCallDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconComputerVideoCallTwotoneRounded = (props: TheIconProps) => {
+export const IconComputerVideoCallTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -132,7 +133,7 @@ export const IconComputerVideoCallTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconComputerVideoCallSolidRounded = (props: TheIconProps) => {
+export const IconComputerVideoCallSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -156,7 +157,7 @@ export const IconComputerVideoCallSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconComputerVideoCallBulkRounded = (props: TheIconProps) => {
+export const IconComputerVideoCallBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -188,7 +189,7 @@ export const IconComputerVideoCallBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconComputerVideoCallStrokeSharp = (props: TheIconProps) => {
+export const IconComputerVideoCallStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -221,7 +222,7 @@ export const IconComputerVideoCallStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconComputerVideoCallSolidSharp = (props: TheIconProps) => {
+export const IconComputerVideoCallSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M18 11H18.009',
   d2: 'M20 4H20.009',
   d3: 'M11 6H11.009',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M10.3711 9.625H12.3801V11.625H10.3711V9.625Z',
   d18: 'M8.37109 14.625H10.3801V16.625H8.37109V14.625Z',
   d19: 'M4.5 19.5V2.5H2.5V20.5C2.5 21.0523 2.94772 21.5 3.5 21.5H21.5V19.5H4.5Z',
-} as const;
+};
 
-export const IconChartScatterStrokeRounded = (props: TheIconProps) => {
+export const IconChartScatterStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -74,7 +75,7 @@ export const IconChartScatterStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartScatterDuotoneRounded = (props: TheIconProps) => {
+export const IconChartScatterDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -126,7 +127,7 @@ export const IconChartScatterDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartScatterTwotoneRounded = (props: TheIconProps) => {
+export const IconChartScatterTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -182,7 +183,7 @@ export const IconChartScatterTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartScatterSolidRounded = (props: TheIconProps) => {
+export const IconChartScatterSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -228,7 +229,7 @@ export const IconChartScatterSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartScatterBulkRounded = (props: TheIconProps) => {
+export const IconChartScatterBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -277,7 +278,7 @@ export const IconChartScatterBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartScatterStrokeSharp = (props: TheIconProps) => {
+export const IconChartScatterStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -328,7 +329,7 @@ export const IconChartScatterStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconChartScatterSolidSharp = (props: TheIconProps) => {
+export const IconChartScatterSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

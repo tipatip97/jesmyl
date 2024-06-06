@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5 5C3.14864 6.79995 2 9.3082 2 12.0825C2 17.5598 6.47715 22 12 22C14.7255 22 17.1962 20.9187 19 19.165',
   d2: 'M15.5 16C14.8828 19.5318 13.6403 22 12 22C9.79086 22 8 17.5228 8 12C8 10.7687 8.08902 9.58934 8.25184 8.5',
   d3: 'M2 12H12',
@@ -29,9 +30,9 @@ const d = {
   d25: 'M9.7057 2.02797C9.99839 1.71759 10.333 1.44629 10.7061 1.25C9.11263 1.44072 7.62574 1.9795 6.32318 2.78838L8.17338 4.63858C8.19076 4.59349 8.2083 4.54874 8.22601 4.50434C8.6175 3.52283 9.10878 2.66095 9.7057 2.02797Z',
   d26: 'M1.24902 13.0071H6.99667C7.09128 15.492 7.53337 17.7591 8.22601 19.4957C8.6175 20.4772 9.10878 21.3391 9.7057 21.972C9.99839 22.2824 10.333 22.5537 10.7061 22.75C5.68122 22.1486 1.71619 18.086 1.24902 13.0071Z',
   d27: 'M10.9921 10.9929H9.00681C9.03301 10.3578 9.08364 9.74366 9.15573 9.15646L10.9921 10.9929Z',
-} as const;
+};
 
-export const IconNoInternetStrokeRounded = (props: TheIconProps) => {
+export const IconNoInternetStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -70,7 +71,7 @@ export const IconNoInternetStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNoInternetDuotoneRounded = (props: TheIconProps) => {
+export const IconNoInternetDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -139,7 +140,7 @@ export const IconNoInternetDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNoInternetTwotoneRounded = (props: TheIconProps) => {
+export const IconNoInternetTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -179,7 +180,7 @@ export const IconNoInternetTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNoInternetSolidRounded = (props: TheIconProps) => {
+export const IconNoInternetSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -231,7 +232,7 @@ export const IconNoInternetSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNoInternetBulkRounded = (props: TheIconProps) => {
+export const IconNoInternetBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -286,7 +287,7 @@ export const IconNoInternetBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNoInternetStrokeSharp = (props: TheIconProps) => {
+export const IconNoInternetStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -326,7 +327,7 @@ export const IconNoInternetStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconNoInternetSolidSharp = (props: TheIconProps) => {
+export const IconNoInternetSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

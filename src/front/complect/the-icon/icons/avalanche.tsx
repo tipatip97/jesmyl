@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 21H11.6547C14.1755 21 15.4359 21 15.8711 20.1706C16.3063 19.3412 15.6107 18.2648 14.2196 16.112L6.93559 4.83965C6.13925 3.60728 5.74108 2.9911 5.17984 3.0001C3.95309 3.01976 2.5 6 2 7',
   d2: 'M10 5C10.6024 6.2142 11.1505 7.01476 12 8',
   d3: 'M2 7C2.19944 7.58943 2.32706 8.50266 2.75554 8.96655C3.00648 9.23823 3.39002 9.34981 3.75053 9.25601C4.29307 9.11485 4.61512 8.53558 5.1267 8.33278C5.36623 8.23783 5.63377 8.23783 5.8733 8.33278C6.51536 8.5873 6.92764 9.39686 7.63967 9.49121C8.32392 9.58188 8.66629 8.9708 9 8.47768',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M1 21.0066H16.9813C16.9893 21.0066 16.9941 20.9977 16.9896 20.9911L7.99528 7.50148M7.99528 7.50148L5.00832 3.01227C5.00436 3.00633 4.99563 3.00632 4.99167 3.01227L2 7.50148L2.99596 9.99234C2.99814 9.99777 3.00449 10.0002 3.00972 9.99757L5 9.00205L6.99026 9.99756C6.9955 10.0002 7.00186 9.99776 7.00403 9.99231L7.99528 7.50148Z',
   d13: 'M11.3613 8.55471L9.36133 5.55471L11.0254 4.44531L13.0254 7.44531L11.3613 8.55471Z',
   d14: 'M6.08005 2.68417C5.89922 2.41292 5.5948 2.25 5.2688 2.25C4.94281 2.25 4.63838 2.41292 4.45755 2.68417L1.24806 7.49841L2.41354 10.4121C2.5148 10.6653 2.71744 10.8645 2.97231 10.9614C3.22717 11.0583 3.51096 11.044 3.75484 10.9221L5.2688 10.1651L6.78277 10.9221C7.02664 11.044 7.31044 11.0583 7.5653 10.9614C7.82016 10.8645 8.0228 10.6653 8.12407 10.4121L8.41069 9.69554L15.147 19.8L1.24806 19.7999L1.24805 21.7499L19.6276 21.75C19.6917 21.75 19.7556 21.7418 19.8177 21.7255C21.4762 21.291 22.7509 19.8507 22.7509 18.0791C22.7509 16.1874 21.3051 14.683 19.479 14.3597C19.2824 12.0469 17.1643 10.25 14.7629 10.25C14.0419 10.25 13.2515 10.3913 12.5557 10.6835C12.269 10.8039 11.9833 10.9567 11.7215 11.1463L6.08005 2.68417Z',
-} as const;
+};
 
-export const IconAvalancheStrokeRounded = (props: TheIconProps) => {
+export const IconAvalancheStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -55,7 +56,7 @@ export const IconAvalancheStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAvalancheDuotoneRounded = (props: TheIconProps) => {
+export const IconAvalancheDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -97,7 +98,7 @@ export const IconAvalancheDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAvalancheTwotoneRounded = (props: TheIconProps) => {
+export const IconAvalancheTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -136,7 +137,7 @@ export const IconAvalancheTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAvalancheSolidRounded = (props: TheIconProps) => {
+export const IconAvalancheSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -156,7 +157,7 @@ export const IconAvalancheSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAvalancheBulkRounded = (props: TheIconProps) => {
+export const IconAvalancheBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -181,7 +182,7 @@ export const IconAvalancheBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAvalancheStrokeSharp = (props: TheIconProps) => {
+export const IconAvalancheStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -207,7 +208,7 @@ export const IconAvalancheStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconAvalancheSolidSharp = (props: TheIconProps) => {
+export const IconAvalancheSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M11 2C7.22876 2 5.34315 2 4.17157 3.12874C3 4.25748 3 6.07416 3 9.70753V17.9808C3 20.2867 3 21.4396 3.77285 21.8523C5.26947 22.6514 8.0768 19.9852 9.41 19.1824C10.1832 18.7168 10.5698 18.484 11 18.484C11.4302 18.484 11.8168 18.7168 12.59 19.1824C13.9232 19.9852 16.7305 22.6514 18.2272 21.8523C19 21.4396 19 20.2867 19 17.9808V11.5',
   d2: 'M3.5 7H11',
   d3: 'M21 2L14 8.99954M21 9L14 2.00046',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M18.0428 4.04296L20.8359 1.25L22.2501 2.66426L19.4571 5.45713L22.2501 8.25L20.8359 9.66426L18.0428 6.8713L15.2501 9.6638L13.8359 8.24954L16.6285 5.45713L13.8359 2.66472L15.2501 1.25046L18.0428 4.04296Z',
   d12: 'M13.1298 1.25H2.5C2.30109 1.25 2.11032 1.32902 1.96967 1.46967C1.82902 1.61032 1.75 1.80109 1.75 2V6.25H13.7147L14.5074 5.45736L11.7148 2.66502L13.1298 1.25Z',
   d13: 'M12.2146 7.75H1.75V22.75L10.5 18.375L19.25 22.75V10.1997L18.043 8.99277L15.2503 11.7853L11.7148 8.2497L12.2146 7.75Z',
-} as const;
+};
 
-export const IconBookmarkRemove01StrokeRounded = (props: TheIconProps) => {
+export const IconBookmarkRemove01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -47,7 +48,7 @@ export const IconBookmarkRemove01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkRemove01DuotoneRounded = (props: TheIconProps) => {
+export const IconBookmarkRemove01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -82,7 +83,7 @@ export const IconBookmarkRemove01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkRemove01TwotoneRounded = (props: TheIconProps) => {
+export const IconBookmarkRemove01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -113,7 +114,7 @@ export const IconBookmarkRemove01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkRemove01SolidRounded = (props: TheIconProps) => {
+export const IconBookmarkRemove01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -137,7 +138,7 @@ export const IconBookmarkRemove01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkRemove01BulkRounded = (props: TheIconProps) => {
+export const IconBookmarkRemove01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -164,7 +165,7 @@ export const IconBookmarkRemove01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkRemove01StrokeSharp = (props: TheIconProps) => {
+export const IconBookmarkRemove01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -191,7 +192,7 @@ export const IconBookmarkRemove01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkRemove01SolidSharp = (props: TheIconProps) => {
+export const IconBookmarkRemove01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

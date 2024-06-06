@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28248 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28248 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088Z',
   d2: 'M2.5 9L21.5 9',
   d3: 'M2.5 15L21.5 15',
@@ -23,9 +24,9 @@ const d = {
   d19: 'M10 3L10 21H8L8 3H10Z',
   d20: 'M21 16L3 16V14L21 14V16Z',
   d21: 'M21 10L3 10V8L21 8V10Z',
-} as const;
+};
 
-export const IconGridTableStrokeRounded = (props: TheIconProps) => {
+export const IconGridTableStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -62,7 +63,7 @@ export const IconGridTableStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGridTableDuotoneRounded = (props: TheIconProps) => {
+export const IconGridTableDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -104,7 +105,7 @@ export const IconGridTableDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGridTableTwotoneRounded = (props: TheIconProps) => {
+export const IconGridTableTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -143,7 +144,7 @@ export const IconGridTableTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGridTableSolidRounded = (props: TheIconProps) => {
+export const IconGridTableSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -183,7 +184,7 @@ export const IconGridTableSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGridTableBulkRounded = (props: TheIconProps) => {
+export const IconGridTableBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -225,7 +226,7 @@ export const IconGridTableBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGridTableStrokeSharp = (props: TheIconProps) => {
+export const IconGridTableStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -261,7 +262,7 @@ export const IconGridTableStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGridTableSolidSharp = (props: TheIconProps) => {
+export const IconGridTableSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

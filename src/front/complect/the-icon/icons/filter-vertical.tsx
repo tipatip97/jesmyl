@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7 21L7 18',
   d2: 'M17 21L17 15',
   d3: 'M17 6L17 3',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M8 3L8 9L6 9L6 3L8 3Z',
   d19: 'M13.25 5.25H20.75V12.75H13.25V5.25Z',
   d20: 'M3.25 11.25H10.75V18.75H3.25V11.25Z',
-} as const;
+};
 
-export const IconFilterVerticalStrokeRounded = (props: TheIconProps) => {
+export const IconFilterVerticalStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -72,7 +73,7 @@ export const IconFilterVerticalStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterVerticalDuotoneRounded = (props: TheIconProps) => {
+export const IconFilterVerticalDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -130,7 +131,7 @@ export const IconFilterVerticalDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterVerticalTwotoneRounded = (props: TheIconProps) => {
+export const IconFilterVerticalTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -180,7 +181,7 @@ export const IconFilterVerticalTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterVerticalSolidRounded = (props: TheIconProps) => {
+export const IconFilterVerticalSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -226,7 +227,7 @@ export const IconFilterVerticalSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterVerticalBulkRounded = (props: TheIconProps) => {
+export const IconFilterVerticalBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -274,7 +275,7 @@ export const IconFilterVerticalBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterVerticalStrokeSharp = (props: TheIconProps) => {
+export const IconFilterVerticalStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -318,7 +319,7 @@ export const IconFilterVerticalStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterVerticalSolidSharp = (props: TheIconProps) => {
+export const IconFilterVerticalSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

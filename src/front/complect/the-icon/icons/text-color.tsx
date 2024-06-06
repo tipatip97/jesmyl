@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 21H21',
   d2: 'M19 18L15.6247 9.15847C14.0574 5.05282 13.2737 3 12 3C10.7263 3 9.94261 5.05282 8.37527 9.15847L5 18',
   d3: 'M8 11H16',
@@ -11,9 +12,9 @@ const d = {
   d7: 'M19 18L12.5 3H11.5L5 18M7.5 13H16.5',
   d8: 'M21 22H3V20H21V22Z',
   d9: 'M10.8431 2H13.1561L19.9171 17.6024L18.082 18.3976L16.1764 14H7.82277L5.91714 18.3976L4.08203 17.6024L10.8431 2ZM8.68944 12H15.3097L11.9996 4.3612L8.68944 12Z',
-} as const;
+};
 
-export const IconTextColorStrokeRounded = (props: TheIconProps) => {
+export const IconTextColorStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -41,7 +42,7 @@ export const IconTextColorStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextColorDuotoneRounded = (props: TheIconProps) => {
+export const IconTextColorDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -74,7 +75,7 @@ export const IconTextColorDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextColorTwotoneRounded = (props: TheIconProps) => {
+export const IconTextColorTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -103,7 +104,7 @@ export const IconTextColorTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextColorSolidRounded = (props: TheIconProps) => {
+export const IconTextColorSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -125,7 +126,7 @@ export const IconTextColorSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextColorBulkRounded = (props: TheIconProps) => {
+export const IconTextColorBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -148,7 +149,7 @@ export const IconTextColorBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextColorStrokeSharp = (props: TheIconProps) => {
+export const IconTextColorStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -169,7 +170,7 @@ export const IconTextColorStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTextColorSolidSharp = (props: TheIconProps) => {
+export const IconTextColorSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

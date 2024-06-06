@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 4C2 5.10457 2.89543 6 4 6C5.10457 6 6 5.10457 6 4C6 2.89543 5.10457 2 4 2C2.89543 2 2 2.89543 2 4Z',
   d2: 'M2 12C2 13.1046 2.89543 14 4 14C5.10457 14 6 13.1046 6 12C6 10.8954 5.10457 10 4 10C2.89543 10 2 10.8954 2 12Z',
   d3: 'M2 20C2 21.1046 2.89543 22 4 22C5.10457 22 6 21.1046 6 20C6 18.8954 5.10457 18 4 18C2.89543 18 2 18.8954 2 20Z',
@@ -20,9 +21,9 @@ const d = {
   d16: 'M9.25 20C9.25 18.4812 10.4812 17.25 12 17.25C13.5188 17.25 14.75 18.4812 14.75 20C14.75 21.5188 13.5188 22.75 12 22.75C10.4812 22.75 9.25 21.5188 9.25 20Z',
   d17: 'M17.25 12C17.25 10.4812 18.4812 9.25 20 9.25C21.5188 9.25 22.75 10.4812 22.75 12C22.75 13.5188 21.5188 14.75 20 14.75C18.4812 14.75 17.25 13.5188 17.25 12Z',
   d18: 'M17.25 20C17.25 18.4812 18.4812 17.25 20 17.25C21.5188 17.25 22.75 18.4812 22.75 20C22.75 21.5188 21.5188 22.75 20 22.75C18.4812 22.75 17.25 21.5188 17.25 20Z',
-} as const;
+};
 
-export const IconDialpadCircle01StrokeRounded = (props: TheIconProps) => {
+export const IconDialpadCircle01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -77,7 +78,7 @@ export const IconDialpadCircle01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDialpadCircle01DuotoneRounded = (props: TheIconProps) => {
+export const IconDialpadCircle01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -147,7 +148,7 @@ export const IconDialpadCircle01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDialpadCircle01TwotoneRounded = (props: TheIconProps) => {
+export const IconDialpadCircle01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -205,7 +206,7 @@ export const IconDialpadCircle01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDialpadCircle01SolidRounded = (props: TheIconProps) => {
+export const IconDialpadCircle01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -251,7 +252,7 @@ export const IconDialpadCircle01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDialpadCircle01BulkRounded = (props: TheIconProps) => {
+export const IconDialpadCircle01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -301,7 +302,7 @@ export const IconDialpadCircle01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDialpadCircle01StrokeSharp = (props: TheIconProps) => {
+export const IconDialpadCircle01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -356,7 +357,7 @@ export const IconDialpadCircle01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconDialpadCircle01SolidSharp = (props: TheIconProps) => {
+export const IconDialpadCircle01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

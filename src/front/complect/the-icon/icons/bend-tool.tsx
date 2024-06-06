@@ -1,15 +1,16 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5 18C5 10 10 4 17 4',
   d2: 'M16.25 4C16.25 2.48122 17.4812 1.25 19 1.25C20.5188 1.25 21.75 2.48122 21.75 4C21.75 5.51878 20.5188 6.75 19 6.75C17.4812 6.75 16.25 5.51878 16.25 4Z',
   d3: 'M2.25 20C2.25 18.4812 3.48122 17.25 5 17.25C6.51878 17.25 7.75 18.4812 7.75 20C7.75 21.5188 6.51878 22.75 5 22.75C3.48122 22.75 2.25 21.5188 2.25 20Z',
   d4: 'M17 5C10.6985 5 6 10.3937 6 18C6 18.5523 5.55228 19 5 19C4.44772 19 4 18.5523 4 18C4 9.60627 9.3015 3 17 3C17.5523 3 18 3.44772 18 4C18 4.55228 17.5523 5 17 5Z',
   d5: 'M17 5C10.6985 5 6 10.3937 6 18H4C4 9.60627 9.3015 3 17 3V5Z',
-} as const;
+};
 
-export const IconBendToolStrokeRounded = (props: TheIconProps) => {
+export const IconBendToolStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -39,7 +40,7 @@ export const IconBendToolStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBendToolDuotoneRounded = (props: TheIconProps) => {
+export const IconBendToolDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconBendToolDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBendToolTwotoneRounded = (props: TheIconProps) => {
+export const IconBendToolTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -112,7 +113,7 @@ export const IconBendToolTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBendToolSolidRounded = (props: TheIconProps) => {
+export const IconBendToolSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -136,7 +137,7 @@ export const IconBendToolSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBendToolBulkRounded = (props: TheIconProps) => {
+export const IconBendToolBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -161,7 +162,7 @@ export const IconBendToolBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBendToolStrokeSharp = (props: TheIconProps) => {
+export const IconBendToolStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -191,7 +192,7 @@ export const IconBendToolStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBendToolSolidSharp = (props: TheIconProps) => {
+export const IconBendToolSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14.5 6C15.2766 6 15.6649 6 15.9711 6.12687C16.3795 6.29602 16.704 6.62048 16.8731 7.02886C17 7.33515 17 7.72343 17 8.5C17 9.27657 17 9.66485 16.8731 9.97114C16.704 10.3795 16.3795 10.704 15.9711 10.8731C15.6649 11 15.2766 11 14.5 11L9.5 11C8.72343 11 8.33515 11 8.02886 10.8731C7.62048 10.704 7.29602 10.3795 7.12687 9.97114C7 9.66485 7 9.27657 7 8.5C7 7.72343 7 7.33515 7.12687 7.02886C7.29602 6.62048 7.62048 6.29602 8.02886 6.12687C8.33515 6 8.72343 6 9.5 6L14.5 6Z',
   d2: 'M11 17H9M9 17L7 17M9 17L9 19M9 17L9 15',
   d3: 'M17 18V16',
@@ -17,9 +18,9 @@ const d = {
   d13: 'M21 2H3V22H21V2Z',
   d14: 'M17 6H7V11H17V6Z',
   d15: 'M3 1.25C2.58579 1.25 2.25 1.58579 2.25 2V22C2.25 22.4142 2.58579 22.75 3 22.75H21C21.4142 22.75 21.75 22.4142 21.75 22V2C21.75 1.58579 21.4142 1.25 21 1.25H3ZM8.25 19L8.25 17.25H6.5V15.75H8.25V14H9.75V15.75H11.5V17.25H9.75L9.75 19H8.25ZM16.75 15V18H15.25V15H16.75ZM6 5H18V11H6V5Z',
-} as const;
+};
 
-export const IconGameboyStrokeRounded = (props: TheIconProps) => {
+export const IconGameboyStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -54,7 +55,7 @@ export const IconGameboyStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGameboyDuotoneRounded = (props: TheIconProps) => {
+export const IconGameboyDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -96,7 +97,7 @@ export const IconGameboyDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGameboyTwotoneRounded = (props: TheIconProps) => {
+export const IconGameboyTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -132,7 +133,7 @@ export const IconGameboyTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGameboySolidRounded = (props: TheIconProps) => {
+export const IconGameboySolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -148,7 +149,7 @@ export const IconGameboySolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGameboyBulkRounded = (props: TheIconProps) => {
+export const IconGameboyBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -181,7 +182,7 @@ export const IconGameboyBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGameboyStrokeSharp = (props: TheIconProps) => {
+export const IconGameboyStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -214,7 +215,7 @@ export const IconGameboyStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGameboySolidSharp = (props: TheIconProps) => {
+export const IconGameboySolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

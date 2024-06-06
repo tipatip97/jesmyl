@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7 6.00049C5.77936 6.00415 5.10383 6.03335 4.54873 6.26634C3.7712 6.59269 3.13801 7.19552 2.76811 7.96158C2.46618 8.58687 2.41677 9.38799 2.31796 10.9902L2.16312 13.5009C1.91739 17.4853 1.79452 19.4775 2.96369 20.7388C4.13285 22 6.10252 22 10.0419 22H13.9581C17.8975 22 19.8672 22 21.0363 20.7388C22.2055 19.4775 22.0826 17.4853 21.8369 13.5009L21.682 10.9902C21.5832 9.38799 21.5338 8.58687 21.2319 7.96158C20.862 7.19552 20.2288 6.59269 19.4513 6.26634C18.8962 6.03335 18.2206 6.00415 17 6.00049',
   d2: 'M17 7L16.1142 4.78543C15.732 3.82996 15.3994 2.7461 14.4166 2.25955C13.8924 2 13.2616 2 12 2C10.7384 2 10.1076 2 9.58335 2.25955C8.6006 2.7461 8.26801 3.82996 7.88583 4.78543L7 7',
   d3: 'M16.2079 14.7476C16.3447 14.3566 16.1386 13.9288 15.7476 13.7921C15.3566 13.6553 14.9288 13.8614 14.7921 14.2524L16.2079 14.7476ZM9.20794 14.2524C9.07118 13.8614 8.64335 13.6553 8.25237 13.7921C7.86139 13.9288 7.6553 14.3566 7.79206 14.7476L9.20794 14.2524ZM11.25 18.5C11.25 18.9142 11.5858 19.25 12 19.25C12.4142 19.25 12.75 18.9142 12.75 18.5H11.25ZM13 11.25V13.25H14.5V11.25H13ZM11 13.25V11.25H9.5V13.25H11ZM12 14.25C11.4477 14.25 11 13.8023 11 13.25H9.5C9.5 14.6307 10.6193 15.75 12 15.75V14.25ZM13 13.25C13 13.8023 12.5523 14.25 12 14.25V15.75C13.3807 15.75 14.5 14.6307 14.5 13.25H13ZM12 10.25C12.5523 10.25 13 10.6977 13 11.25H14.5C14.5 9.86929 13.3807 8.75 12 8.75V10.25ZM12 8.75C10.6193 8.75 9.5 9.86929 9.5 11.25H11C11 10.6977 11.4477 10.25 12 10.25V8.75ZM14.7921 14.2524C14.3832 15.4213 13.2832 16.25 12 16.25V17.75C13.9485 17.75 15.5979 16.4917 16.2079 14.7476L14.7921 14.2524ZM12 16.25C10.7168 16.25 9.61682 15.4213 9.20794 14.2524L7.79206 14.7476C8.40211 16.4917 10.0515 17.75 12 17.75V16.25ZM11.25 17V18.5H12.75V17H11.25Z',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M16.5148 6.00899C16.7733 5.95716 20.1138 5.98739 21.4925 6.00899L22.0176 21.9724L12.0732 21.9824H2.01953L2.49435 6.05265C2.4961 5.99941 2.48459 6.01772 2.55935 6.01772C3.96386 5.99627 7.24339 5.95832 7.49615 6.00899M17.0088 7.99395L15.5126 1.98242H12.0991L8.50168 1.98271L6.99918 7.99894',
   d15: 'M8.51074 14.5088C9.10862 16.2091 10.425 17.0012 11.999 17.0012M11.999 17.0012V19.0183M11.999 17.0012C13.5731 17.0012 14.9339 16.1962 15.5012 14.5088M12.0059 14.4805C11.0388 14.4805 10.2549 13.6965 10.2549 12.7295V10.7588C10.2549 9.79175 11.0388 9.00781 12.0059 9.00781C12.9729 9.00781 13.7568 9.79175 13.7568 10.7588V12.7295C13.7568 13.6965 12.9729 14.4805 12.0059 14.4805Z',
   d16: 'M1.77301 5.97784C1.78564 5.57295 2.11679 5.25127 2.52099 5.25127H6.92546L7.92344 1.25049H16.0766L17.0743 5.25049H22.2043L22.75 22.7505H1.25L1.77301 5.97784ZM12.0009 8.25049C10.6202 8.25049 9.50091 9.36978 9.50091 10.7505V12.7505C9.50091 14.1312 10.6202 15.2505 12.0009 15.2505C13.3816 15.2505 14.5009 14.1312 14.5009 12.7505V10.7505C14.5009 9.36978 13.3816 8.25049 12.0009 8.25049ZM12.0009 16.2505C10.7177 16.2505 9.61773 15.4218 9.20885 14.2529L7.79297 14.7481C8.32296 16.2633 9.63739 17.4119 11.2509 17.6872V19.0005H12.7509V17.6872C14.3644 17.4119 15.6789 16.2633 16.2088 14.7481L14.793 14.2529C14.3841 15.4218 13.2841 16.2505 12.0009 16.2505Z',
-} as const;
+};
 
-export const IconCameraMicrophone01StrokeRounded = (props: TheIconProps) => {
+export const IconCameraMicrophone01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -47,7 +48,7 @@ export const IconCameraMicrophone01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraMicrophone01DuotoneRounded = (props: TheIconProps) => {
+export const IconCameraMicrophone01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -88,7 +89,7 @@ export const IconCameraMicrophone01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraMicrophone01TwotoneRounded = (props: TheIconProps) => {
+export const IconCameraMicrophone01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -125,7 +126,7 @@ export const IconCameraMicrophone01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraMicrophone01SolidRounded = (props: TheIconProps) => {
+export const IconCameraMicrophone01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -141,7 +142,7 @@ export const IconCameraMicrophone01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraMicrophone01BulkRounded = (props: TheIconProps) => {
+export const IconCameraMicrophone01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -164,7 +165,7 @@ export const IconCameraMicrophone01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraMicrophone01StrokeSharp = (props: TheIconProps) => {
+export const IconCameraMicrophone01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -184,7 +185,7 @@ export const IconCameraMicrophone01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraMicrophone01SolidSharp = (props: TheIconProps) => {
+export const IconCameraMicrophone01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3.5 5L17.5 19',
   d2: 'M2.5 13.5L6 17L6.73256 16.2326M16.5 6L12.593 10.093',
   d3: 'M7.5 13.5L11 17L13.1977 14.6977M21.5 6L15.1512 12.6512',
@@ -13,9 +14,9 @@ const d = {
   d9: 'M1.25 13.4138L2.66421 11.9996L7.25038 16.5858L5.83617 18L1.25 13.4138Z',
   d10: 'M15.6963 13.6134L14.2496 12.2324L21.25 5L22.7492 6.5L15.6963 13.6134Z',
   d11: 'M13.329 13.353L14.7757 14.7339L11.1808 18.5L6.25 13.5692L7.66421 12.1549L11.1476 15.6383L13.329 13.353Z',
-} as const;
+};
 
-export const IconCheckUnread04StrokeRounded = (props: TheIconProps) => {
+export const IconCheckUnread04StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -46,7 +47,7 @@ export const IconCheckUnread04StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckUnread04DuotoneRounded = (props: TheIconProps) => {
+export const IconCheckUnread04DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -77,7 +78,7 @@ export const IconCheckUnread04DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckUnread04TwotoneRounded = (props: TheIconProps) => {
+export const IconCheckUnread04TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconCheckUnread04TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckUnread04SolidRounded = (props: TheIconProps) => {
+export const IconCheckUnread04SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -138,7 +139,7 @@ export const IconCheckUnread04SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckUnread04BulkRounded = (props: TheIconProps) => {
+export const IconCheckUnread04BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -168,7 +169,7 @@ export const IconCheckUnread04BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckUnread04StrokeSharp = (props: TheIconProps) => {
+export const IconCheckUnread04StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -196,7 +197,7 @@ export const IconCheckUnread04StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckUnread04SolidSharp = (props: TheIconProps) => {
+export const IconCheckUnread04SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

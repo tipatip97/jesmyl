@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 4H13',
   d2: 'M6 8H8',
   d3: 'M15 12.5H15.5',
@@ -36,9 +37,9 @@ const d = {
   d32: 'M3 4.25V17.7833C3 18.3172 3.42736 18.75 3.95455 18.75H6.34091V16.8167H4.90909V4.25H3Z',
   d33: 'M13.5 4.25H11.5909V16.75H10.25V18.75H13.5V4.25Z',
   d34: 'M14.75 6H18.75V8H17.75V10H15.75V8H14.75V6Z',
-} as const;
+};
 
-export const IconToyTrainStrokeRounded = (props: TheIconProps) => {
+export const IconToyTrainStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -113,7 +114,7 @@ export const IconToyTrainStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToyTrainDuotoneRounded = (props: TheIconProps) => {
+export const IconToyTrainDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -193,7 +194,7 @@ export const IconToyTrainDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToyTrainTwotoneRounded = (props: TheIconProps) => {
+export const IconToyTrainTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -271,7 +272,7 @@ export const IconToyTrainTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToyTrainSolidRounded = (props: TheIconProps) => {
+export const IconToyTrainSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -322,7 +323,7 @@ export const IconToyTrainSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToyTrainBulkRounded = (props: TheIconProps) => {
+export const IconToyTrainBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -379,7 +380,7 @@ export const IconToyTrainBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToyTrainStrokeSharp = (props: TheIconProps) => {
+export const IconToyTrainStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -441,7 +442,7 @@ export const IconToyTrainStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconToyTrainSolidSharp = (props: TheIconProps) => {
+export const IconToyTrainSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

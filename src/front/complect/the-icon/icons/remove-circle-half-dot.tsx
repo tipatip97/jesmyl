@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M16 12L8 12',
   d2: 'M2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2',
   d3: 'M4.64856 5.07876C4.78691 4.93211 4.92948 4.7895 5.0761 4.65111M7.94733 2.72939C8.12884 2.6478 8.31313 2.57128 8.5 2.5M2.73172 7.94192C2.64925 8.12518 2.57195 8.31127 2.5 8.5',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M6.46516 5.16397C7.17644 4.58729 7.97892 4.11975 8.84709 3.78626L8.14622 1.9617C7.08348 2.36992 6.10259 2.94169 5.23422 3.64574L6.46516 5.16397Z',
   d11: 'M3.78626 8.84708C4.11975 7.97891 4.58729 7.17644 5.16397 6.46516L3.64574 5.23422C2.94169 6.10259 2.36992 7.08348 1.9617 8.14622L3.78626 8.84708Z',
   d12: 'M7 11H17V13H7V11Z',
-} as const;
+};
 
-export const IconRemoveCircleHalfDotStrokeRounded = (props: TheIconProps) => {
+export const IconRemoveCircleHalfDotStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -46,7 +47,7 @@ export const IconRemoveCircleHalfDotStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRemoveCircleHalfDotDuotoneRounded = (props: TheIconProps) => {
+export const IconRemoveCircleHalfDotDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconRemoveCircleHalfDotDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRemoveCircleHalfDotTwotoneRounded = (props: TheIconProps) => {
+export const IconRemoveCircleHalfDotTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -113,7 +114,7 @@ export const IconRemoveCircleHalfDotTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRemoveCircleHalfDotSolidRounded = (props: TheIconProps) => {
+export const IconRemoveCircleHalfDotSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -135,7 +136,7 @@ export const IconRemoveCircleHalfDotSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRemoveCircleHalfDotBulkRounded = (props: TheIconProps) => {
+export const IconRemoveCircleHalfDotBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -158,7 +159,7 @@ export const IconRemoveCircleHalfDotBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRemoveCircleHalfDotStrokeSharp = (props: TheIconProps) => {
+export const IconRemoveCircleHalfDotStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -187,7 +188,7 @@ export const IconRemoveCircleHalfDotStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconRemoveCircleHalfDotSolidSharp = (props: TheIconProps) => {
+export const IconRemoveCircleHalfDotSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

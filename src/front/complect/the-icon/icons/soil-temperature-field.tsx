@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 3C4.86377 3 5.79565 3 6.53073 3.30448C7.51085 3.71046 8.28954 4.48915 8.69552 5.46927C9 6.20435 9 7.13623 9 9C7.13623 9 6.20435 9 5.46927 8.69552C4.48915 8.28954 3.71046 7.51085 3.30448 6.53073C3 5.79565 3 4.86377 3 3Z',
   d2: 'M13 5C11.7575 5 11.1362 5 10.6462 5.20299C9.99277 5.47364 9.47364 5.99277 9.20299 6.64618C9 7.13623 9 7.75749 9 9C10.2425 9 10.8638 9 11.3538 8.79701C12.0072 8.52636 12.5264 8.00723 12.797 7.35382C13 6.86377 13 6.24251 13 5Z',
   d3: 'M9 9V14',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M3 16L13 16L13 18L3 18L3 16Z',
   d19: 'M3 19L13 19L13 21L3 21L3 19Z',
   d20: 'M18.75 21.75C20.4069 21.75 21.75 20.4069 21.75 18.75C21.75 17.6396 21.1467 16.6701 20.25 16.1513V9.75H17.25V16.1513C16.3533 16.6701 15.75 17.6396 15.75 18.75C15.75 20.4069 17.0931 21.75 18.75 21.75Z',
-} as const;
+};
 
-export const IconSoilTemperatureFieldStrokeRounded = (props: TheIconProps) => {
+export const IconSoilTemperatureFieldStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -76,7 +77,7 @@ export const IconSoilTemperatureFieldStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoilTemperatureFieldDuotoneRounded = (props: TheIconProps) => {
+export const IconSoilTemperatureFieldDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -144,7 +145,7 @@ export const IconSoilTemperatureFieldDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoilTemperatureFieldTwotoneRounded = (props: TheIconProps) => {
+export const IconSoilTemperatureFieldTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -199,7 +200,7 @@ export const IconSoilTemperatureFieldTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoilTemperatureFieldSolidRounded = (props: TheIconProps) => {
+export const IconSoilTemperatureFieldSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -223,7 +224,7 @@ export const IconSoilTemperatureFieldSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoilTemperatureFieldBulkRounded = (props: TheIconProps) => {
+export const IconSoilTemperatureFieldBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -255,7 +256,7 @@ export const IconSoilTemperatureFieldBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoilTemperatureFieldStrokeSharp = (props: TheIconProps) => {
+export const IconSoilTemperatureFieldStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -305,7 +306,7 @@ export const IconSoilTemperatureFieldStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSoilTemperatureFieldSolidSharp = (props: TheIconProps) => {
+export const IconSoilTemperatureFieldSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

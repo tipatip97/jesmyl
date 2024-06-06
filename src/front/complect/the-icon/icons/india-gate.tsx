@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 22H22',
   d2: 'M15 22V16.2727C15 14.4653 13.6569 13 12 13C10.3431 13 9 14.4653 9 16.2727V22',
   d3: 'M17 10L20 10',
@@ -29,9 +30,9 @@ const d = {
   d25: 'M4.25 1.25H19.75V6H17.8125V3.15H6.1875V6H4.25V1.25Z',
   d26: 'M22 7H2V5H22V7Z',
   d27: 'M3.46967 5.46967C3.61032 5.32902 3.80109 5.25 4 5.25H20C20.4142 5.25 20.75 5.58579 20.75 6V9.25H17V10.75H20.75L20.75 22H3.25V10.75H7V9.25H3.25V6C3.25 5.80109 3.32902 5.61032 3.46967 5.46967ZM8.25 15C8.25 14.5858 8.58579 14.25 9 14.25H15C15.4142 14.25 15.75 14.5858 15.75 15V22H14.25V15.75H9.75V22H8.25V15ZM13.5 10.75H10.5L10.5 9.25H13.5V10.75Z',
-} as const;
+};
 
-export const IconIndiaGateStrokeRounded = (props: TheIconProps) => {
+export const IconIndiaGateStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -97,7 +98,7 @@ export const IconIndiaGateStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconIndiaGateDuotoneRounded = (props: TheIconProps) => {
+export const IconIndiaGateDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -168,7 +169,7 @@ export const IconIndiaGateDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconIndiaGateTwotoneRounded = (props: TheIconProps) => {
+export const IconIndiaGateTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -237,7 +238,7 @@ export const IconIndiaGateTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconIndiaGateSolidRounded = (props: TheIconProps) => {
+export const IconIndiaGateSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -265,7 +266,7 @@ export const IconIndiaGateSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconIndiaGateBulkRounded = (props: TheIconProps) => {
+export const IconIndiaGateBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -310,7 +311,7 @@ export const IconIndiaGateBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconIndiaGateStrokeSharp = (props: TheIconProps) => {
+export const IconIndiaGateStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -367,7 +368,7 @@ export const IconIndiaGateStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconIndiaGateSolidSharp = (props: TheIconProps) => {
+export const IconIndiaGateSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M22 11.5667C22 16.8499 17.5222 21.1334 12 21.1334C11.3507 21.1343 10.7032 21.0742 10.0654 20.9545C9.60633 20.8682 9.37678 20.8251 9.21653 20.8496C9.05627 20.8741 8.82918 20.9948 8.37499 21.2364C7.09014 21.9197 5.59195 22.161 4.15111 21.893C4.69874 21.2194 5.07275 20.4112 5.23778 19.5448C5.33778 19.0148 5.09 18.5 4.71889 18.1231C3.03333 16.4115 2 14.1051 2 11.5667C2 6.28357 6.47778 2 12 2C17.5222 2 22 6.28357 22 11.5667Z',
   d2: 'M10 9.84615C10 8.82655 10.8954 8 12 8C13.1046 8 14 8.82655 14 9.84615C14 10.2137 13.8837 10.5561 13.6831 10.8438C13.0854 11.7012 12 12.5189 12 13.5385V14',
   d3: 'M12 16.5H12.009',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M9.50024 9.75292C9.50024 8.37168 10.6195 7.25195 12.0002 7.25195C13.3809 7.25195 14.5002 8.37168 14.5002 9.75292C14.5002 11.1342 13.3809 12.2539 12.0002 12.2539V14.2547M12.0002 15.7552V17.2558',
   d11: 'M12 21.0082C17.5216 21.0082 21.9978 16.7531 21.9978 11.5041C21.9978 6.25513 17.5216 2 12 2C6.47837 2 2.0022 6.25513 2.0022 11.5041C2.0022 14.1818 3.16355 16.5119 5.00624 18.2923L4.00525 21.9874C4.00305 21.9955 4.0113 22.0026 4.019 21.9991L7.99487 20.2149C9.22111 20.7251 10.5758 21.0082 12 21.0082Z',
   d12: 'M12 1.25C6.10029 1.25 1.25 5.80369 1.25 11.5C1.25 14.2189 2.36071 16.6855 4.16134 18.5143L3.25001 22.75L8.01735 21.0233C9.25046 21.4925 10.5948 21.75 12 21.75C17.8997 21.75 22.75 17.1963 22.75 11.5C22.75 5.80369 17.8997 1.25 12 1.25ZM10.25 9.875C10.25 8.9085 11.0335 8.125 12 8.125C12.9665 8.125 13.75 8.9085 13.75 9.875C13.75 10.8415 12.9665 11.625 12 11.625H11.25V14.375H12.75V13.038C14.1833 12.6995 15.25 11.4118 15.25 9.875C15.25 8.08007 13.7949 6.625 12 6.625C10.2051 6.625 8.75 8.08007 8.75 9.875H10.25ZM11.25 15.875V17.375H12.75V15.875H11.25Z',
-} as const;
+};
 
-export const IconBubbleChatQuestionStrokeRounded = (props: TheIconProps) => {
+export const IconBubbleChatQuestionStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -45,7 +46,7 @@ export const IconBubbleChatQuestionStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBubbleChatQuestionDuotoneRounded = (props: TheIconProps) => {
+export const IconBubbleChatQuestionDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -79,7 +80,7 @@ export const IconBubbleChatQuestionDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBubbleChatQuestionTwotoneRounded = (props: TheIconProps) => {
+export const IconBubbleChatQuestionTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconBubbleChatQuestionTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBubbleChatQuestionSolidRounded = (props: TheIconProps) => {
+export const IconBubbleChatQuestionSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -126,7 +127,7 @@ export const IconBubbleChatQuestionSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBubbleChatQuestionBulkRounded = (props: TheIconProps) => {
+export const IconBubbleChatQuestionBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -147,7 +148,7 @@ export const IconBubbleChatQuestionBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBubbleChatQuestionStrokeSharp = (props: TheIconProps) => {
+export const IconBubbleChatQuestionStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -167,7 +168,7 @@ export const IconBubbleChatQuestionStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBubbleChatQuestionSolidSharp = (props: TheIconProps) => {
+export const IconBubbleChatQuestionSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

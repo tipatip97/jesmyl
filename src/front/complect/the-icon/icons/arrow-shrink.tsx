@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14.2299 17.9947C14.2194 17.2447 13.7042 14.7612 14.2307 14.2347C14.7573 13.7083 17.24 14.2247 17.9897 14.2355M20.9997 20.9981L14.6149 14.6146',
   d2: 'M9.7698 17.9947C9.7803 17.2447 10.2955 14.7612 9.769 14.2347C9.24247 13.7083 6.75975 14.2247 6.01005 14.2355M3 20.9981L9.38478 14.6146',
   d3: 'M6.00765 9.76133C6.75739 9.7709 9.24092 10.2832 9.76664 9.75585C10.2922 9.22853 9.77284 6.74581 9.76116 5.99592M9.37715 9.36743L3.00195 3.00244',
@@ -42,9 +43,9 @@ const d = {
   d38: 'M11.0001 13H4.00012V15H7.58594L2 20.5857L3.41421 21.9999L9.00012 16.4142V20H11.0001V13Z',
   d39: 'M19 13H13V19H15V16.4141L20.5858 21.9999L22 20.5857L16.4143 15H19V13Z',
   d40: 'M16.4142 9.00046H20V11.0005H13V4.00046H15V7.58628L20.5858 2.00049L22 3.4147L16.4142 9.00046Z',
-} as const;
+};
 
-export const IconArrowShrinkStrokeRounded = (props: TheIconProps) => {
+export const IconArrowShrinkStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -82,7 +83,7 @@ export const IconArrowShrinkStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrowShrinkDuotoneRounded = (props: TheIconProps) => {
+export const IconArrowShrinkDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -122,7 +123,7 @@ export const IconArrowShrinkDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrowShrinkTwotoneRounded = (props: TheIconProps) => {
+export const IconArrowShrinkTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -180,7 +181,7 @@ export const IconArrowShrinkTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrowShrinkSolidRounded = (props: TheIconProps) => {
+export const IconArrowShrinkSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -206,7 +207,7 @@ export const IconArrowShrinkSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrowShrinkBulkRounded = (props: TheIconProps) => {
+export const IconArrowShrinkBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -252,7 +253,7 @@ export const IconArrowShrinkBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrowShrinkStrokeSharp = (props: TheIconProps) => {
+export const IconArrowShrinkStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -306,7 +307,7 @@ export const IconArrowShrinkStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconArrowShrinkSolidSharp = (props: TheIconProps) => {
+export const IconArrowShrinkSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

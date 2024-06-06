@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 11L12 20',
   d2: 'M14 9C14 10.1046 13.1046 11 12 11C10.8954 11 10 10.1046 10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9Z',
   d3: 'M16.9588 6C17.6186 6.86961 18 7.89801 18 9C18 10.102 17.6186 11.1304 16.9588 12M7.04117 6C6.38143 6.86961 6 7.89801 6 9C6 10.102 6.38143 11.1304 7.04117 12',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M17 9.3466C17 8.48344 16.703 7.66387 16.1622 6.95101L17.7555 5.74219C18.5342 6.76854 19 8.00576 19 9.3466C19 10.6874 18.5342 11.9247 17.7555 12.951L16.1622 11.7422C16.703 11.0293 17 10.2098 17 9.3466Z',
   d13: 'M7.83785 6.95101C7.29702 7.66387 7 8.48344 7 9.3466C7 10.2098 7.29702 11.0293 7.83785 11.7422L6.2445 12.951C5.46584 11.9247 5 10.6874 5 9.3466C5 8.00576 5.46584 6.76854 6.2445 5.74219L7.83785 6.95101Z',
   d14: 'M12 6.34668C10.3431 6.34668 9 7.68983 9 9.34668C9 10.6529 9.83481 11.7641 11 12.176V20.25H13V12.176C14.1652 11.7641 15 10.6529 15 9.34668C15 7.68983 13.6569 6.34668 12 6.34668Z',
-} as const;
+};
 
-export const IconCellularNetworkStrokeRounded = (props: TheIconProps) => {
+export const IconCellularNetworkStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -53,7 +54,7 @@ export const IconCellularNetworkStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCellularNetworkDuotoneRounded = (props: TheIconProps) => {
+export const IconCellularNetworkDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -93,7 +94,7 @@ export const IconCellularNetworkDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCellularNetworkTwotoneRounded = (props: TheIconProps) => {
+export const IconCellularNetworkTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -130,7 +131,7 @@ export const IconCellularNetworkTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCellularNetworkSolidRounded = (props: TheIconProps) => {
+export const IconCellularNetworkSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -160,7 +161,7 @@ export const IconCellularNetworkSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCellularNetworkBulkRounded = (props: TheIconProps) => {
+export const IconCellularNetworkBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -193,7 +194,7 @@ export const IconCellularNetworkBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCellularNetworkStrokeSharp = (props: TheIconProps) => {
+export const IconCellularNetworkStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -226,7 +227,7 @@ export const IconCellularNetworkStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCellularNetworkSolidSharp = (props: TheIconProps) => {
+export const IconCellularNetworkSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

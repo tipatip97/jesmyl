@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 8H21M16 12V21M8 12V3M12 16H3',
   d2: 'M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z',
   d3: 'M16 12V21M12 16H3M8 12V3M12 8H21',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M17 21.5189C20.4189 19.7194 22.75 16.1319 22.75 12C22.75 10.9588 22.602 9.95216 22.3258 9H16.0004C16.6281 9.83566 17 10.8744 17 12V21.5189Z',
   d12: 'M21.5189 7C19.7194 3.58115 16.1319 1.25 12 1.25C10.9588 1.25 9.95216 1.39803 9 1.67418V7.99963C9.83566 7.37194 10.8744 7 12 7H21.5189Z',
   d13: 'M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z',
-} as const;
+};
 
-export const IconCameraLensStrokeRounded = (props: TheIconProps) => {
+export const IconCameraLensStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -47,7 +48,7 @@ export const IconCameraLensStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraLensDuotoneRounded = (props: TheIconProps) => {
+export const IconCameraLensDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -84,7 +85,7 @@ export const IconCameraLensDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraLensTwotoneRounded = (props: TheIconProps) => {
+export const IconCameraLensTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -114,7 +115,7 @@ export const IconCameraLensTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraLensSolidRounded = (props: TheIconProps) => {
+export const IconCameraLensSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -145,7 +146,7 @@ export const IconCameraLensSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraLensBulkRounded = (props: TheIconProps) => {
+export const IconCameraLensBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -179,7 +180,7 @@ export const IconCameraLensBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraLensStrokeSharp = (props: TheIconProps) => {
+export const IconCameraLensStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -209,7 +210,7 @@ export const IconCameraLensStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraLensSolidSharp = (props: TheIconProps) => {
+export const IconCameraLensSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

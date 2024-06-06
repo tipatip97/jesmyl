@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 11.3151 21.9311 10.6462 21.8 10',
   d2: 'M8 12.5C8 12.5 9.5 12.5 11.5 16C11.5 16 17.0588 6.83333 22 5',
   d3: 'M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z',
@@ -10,9 +11,9 @@ const d = {
   d6: 'M15 2.4578C14.053 2.16035 13.0452 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 10.9548 21.8396 9.94704 21.5422 9',
   d7: 'M8.5 9.5L12 13L21.0002 3',
   d8: 'M12 22.75C6.06294 22.75 1.25 17.9371 1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C14.6463 1.25 17.0692 2.20617 18.9422 3.79186L11.9618 11.5476L9.20711 8.79289L7.79289 10.2071L12.0382 14.4524L20.345 5.22281C21.8487 7.07208 22.75 9.43078 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75Z',
-} as const;
+};
 
-export const IconCheckmarkCircle03StrokeRounded = (props: TheIconProps) => {
+export const IconCheckmarkCircle03StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -35,7 +36,7 @@ export const IconCheckmarkCircle03StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckmarkCircle03DuotoneRounded = (props: TheIconProps) => {
+export const IconCheckmarkCircle03DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -63,7 +64,7 @@ export const IconCheckmarkCircle03DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckmarkCircle03TwotoneRounded = (props: TheIconProps) => {
+export const IconCheckmarkCircle03TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -87,7 +88,7 @@ export const IconCheckmarkCircle03TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckmarkCircle03SolidRounded = (props: TheIconProps) => {
+export const IconCheckmarkCircle03SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -101,7 +102,7 @@ export const IconCheckmarkCircle03SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckmarkCircle03BulkRounded = (props: TheIconProps) => {
+export const IconCheckmarkCircle03BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -123,7 +124,7 @@ export const IconCheckmarkCircle03BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckmarkCircle03StrokeSharp = (props: TheIconProps) => {
+export const IconCheckmarkCircle03StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -143,7 +144,7 @@ export const IconCheckmarkCircle03StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCheckmarkCircle03SolidSharp = (props: TheIconProps) => {
+export const IconCheckmarkCircle03SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

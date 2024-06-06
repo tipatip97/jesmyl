@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 15V7C2 5.11438 2 4.17157 2.58579 3.58579C3.17157 3 4.11438 3 6 3H18C19.8856 3 20.8284 3 21.4142 3.58579C22 4.17157 22 5.11438 22 7V15C22 16.8856 22 17.8284 21.4142 18.4142C20.8284 19 19.8856 19 18 19H6C4.11438 19 3.17157 19 2.58579 18.4142C2 17.8284 2 16.8856 2 15Z',
   d2: 'M19 6.00895V6M19 9.00447V8.99553M19 12V11.9911',
   d3: 'M5 14V8C5 7.05719 5 6.58579 5.29289 6.29289C5.58579 6 6.05719 6 7 6H14C14.9428 6 15.4142 6 15.7071 6.29289C16 6.58579 16 7.05719 16 8V14C16 14.9428 16 15.4142 15.7071 15.7071C15.4142 16 14.9428 16 14 16H7C6.05719 16 5.58579 16 5.29289 15.7071C5 15.4142 5 14.9428 5 14Z',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M5 18V21M19 18V21',
   d15: 'M1.25 3.375C1.25 2.96079 1.58579 2.625 2 2.625H22C22.4142 2.625 22.75 2.96079 22.75 3.375V18.375C22.75 18.7892 22.4142 19.125 22 19.125H2C1.58579 19.125 1.25 18.7892 1.25 18.375V3.375ZM16 6.375H5V15.375H16V6.375ZM20 8.38395V6.375H18V8.38395H20ZM20 11.3795V9.37053H18V11.3795H20ZM20 14.375V12.3661H18V14.375H20Z',
   d16: 'M4 21.375V18.375H6V21.375H4ZM18 21.375V18.375H20V21.375H18Z',
-} as const;
+};
 
-export const IconMicrowaveStrokeRounded = (props: TheIconProps) => {
+export const IconMicrowaveStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -55,7 +56,7 @@ export const IconMicrowaveStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMicrowaveDuotoneRounded = (props: TheIconProps) => {
+export const IconMicrowaveDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -97,7 +98,7 @@ export const IconMicrowaveDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMicrowaveTwotoneRounded = (props: TheIconProps) => {
+export const IconMicrowaveTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -134,7 +135,7 @@ export const IconMicrowaveTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMicrowaveSolidRounded = (props: TheIconProps) => {
+export const IconMicrowaveSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -156,7 +157,7 @@ export const IconMicrowaveSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMicrowaveBulkRounded = (props: TheIconProps) => {
+export const IconMicrowaveBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -185,7 +186,7 @@ export const IconMicrowaveBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMicrowaveStrokeSharp = (props: TheIconProps) => {
+export const IconMicrowaveStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -219,7 +220,7 @@ export const IconMicrowaveStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMicrowaveSolidSharp = (props: TheIconProps) => {
+export const IconMicrowaveSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M13 4H11C8.64298 4 7.46447 4 6.73223 4.73223C6 5.46447 6 6.64298 6 9V15C6 17.357 6 18.5355 6.73223 19.2678C7.46447 20 8.64298 20 11 20H13C15.357 20 16.5355 20 17.2678 19.2678C18 18.5355 18 17.357 18 15V9C18 6.64298 18 5.46447 17.2678 4.73223C16.5355 4 15.357 4 13 4Z',
   d2: 'M2 17.5C2.82843 17.5 3.5 16.8284 3.5 16V8C3.5 7.17157 2.82843 6.5 2 6.5',
   d3: 'M22 17.5C21.1716 17.5 20.5 16.8284 20.5 16V8C20.5 7.17157 21.1716 6.5 22 6.5',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M5.25 3.25H18.75V20.75H5.25V3.25Z',
   d11: 'M19.75 5.75H22.75V7.25H21.25V16.75H22.75V18.25H19.75V5.75Z',
   d12: 'M1.25 5.75H4.25V18.25H1.25V16.75H2.75V7.25H1.25V5.75Z',
-} as const;
+};
 
-export const IconCarouselHorizontal02StrokeRounded = (props: TheIconProps) => {
+export const IconCarouselHorizontal02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -47,7 +48,7 @@ export const IconCarouselHorizontal02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCarouselHorizontal02DuotoneRounded = (props: TheIconProps) => {
+export const IconCarouselHorizontal02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -83,7 +84,7 @@ export const IconCarouselHorizontal02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCarouselHorizontal02TwotoneRounded = (props: TheIconProps) => {
+export const IconCarouselHorizontal02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -116,7 +117,7 @@ export const IconCarouselHorizontal02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCarouselHorizontal02SolidRounded = (props: TheIconProps) => {
+export const IconCarouselHorizontal02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -142,7 +143,7 @@ export const IconCarouselHorizontal02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCarouselHorizontal02BulkRounded = (props: TheIconProps) => {
+export const IconCarouselHorizontal02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -169,7 +170,7 @@ export const IconCarouselHorizontal02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCarouselHorizontal02StrokeSharp = (props: TheIconProps) => {
+export const IconCarouselHorizontal02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -197,7 +198,7 @@ export const IconCarouselHorizontal02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCarouselHorizontal02SolidSharp = (props: TheIconProps) => {
+export const IconCarouselHorizontal02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

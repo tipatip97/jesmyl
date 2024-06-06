@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 6L13 6',
   d2: 'M3 12L13 12',
   d3: 'M3 18L13 18',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M3 17.25L13 17.25V19.25L3 19.25V17.25Z',
   d19: 'M16.5 14H20.25C20.6642 14 21 14.3358 21 14.75V17.75C21 18.1642 20.6642 18.5 20.25 18.5H18.0003V20H21V21.5H17.2503C16.8361 21.5 16.5003 21.1642 16.5003 20.75V17.75C16.5003 17.3358 16.8361 17 17.2503 17H19.5V15.5H16.5V14Z',
   d20: 'M17.75 4H17V2.5H18.5C18.9142 2.5 19.25 2.83579 19.25 3.25V8.5H20V10H17V8.5H17.75V4Z',
-} as const;
+};
 
-export const IconRightToLeftListNumberStrokeRounded = (props: TheIconProps) => {
+export const IconRightToLeftListNumberStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -66,7 +67,7 @@ export const IconRightToLeftListNumberStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListNumberDuotoneRounded = (props: TheIconProps) => {
+export const IconRightToLeftListNumberDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -111,7 +112,7 @@ export const IconRightToLeftListNumberDuotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconRightToLeftListNumberTwotoneRounded = (props: TheIconProps) => {
+export const IconRightToLeftListNumberTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -156,7 +157,7 @@ export const IconRightToLeftListNumberTwotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconRightToLeftListNumberSolidRounded = (props: TheIconProps) => {
+export const IconRightToLeftListNumberSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -194,7 +195,7 @@ export const IconRightToLeftListNumberSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListNumberBulkRounded = (props: TheIconProps) => {
+export const IconRightToLeftListNumberBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -235,7 +236,7 @@ export const IconRightToLeftListNumberBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListNumberStrokeSharp = (props: TheIconProps) => {
+export const IconRightToLeftListNumberStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -276,7 +277,7 @@ export const IconRightToLeftListNumberStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListNumberSolidSharp = (props: TheIconProps) => {
+export const IconRightToLeftListNumberSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

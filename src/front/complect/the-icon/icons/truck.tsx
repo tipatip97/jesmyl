@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M11 17H15M13.5 7H14.4429C15.7533 7 16.4086 7 16.9641 7.31452C17.5196 7.62904 17.89 8.20972 18.6308 9.37107C19.1502 10.1854 19.6955 10.7765 20.4622 11.3024C21.2341 11.8318 21.6012 12.0906 21.8049 12.506C22 12.9038 22 13.375 22 14.3173C22 15.5596 22 16.1808 21.651 16.5755C21.636 16.5925 21.6207 16.609 21.6049 16.625C21.2375 17 20.6594 17 19.503 17H19',
   d2: 'M13 7L13.9942 9.48556C14.4813 10.7034 14.7249 11.3123 15.2328 11.6561C15.7407 12 16.3965 12 17.7081 12H21',
   d3: 'M4.86957 17C3.51684 17 2.84048 17 2.42024 16.5607C2 16.1213 2 15.4142 2 14V7C2 5.58579 2 4.87868 2.42024 4.43934C2.84048 4 3.51684 4 4.86957 4H10.1304C11.4832 4 12.1595 4 12.5798 4.43934C13 4.87868 13 5.58579 13 7V17H8.69565',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M19.5 18.25C19.5 19.6307 18.3807 20.75 17 20.75C15.6193 20.75 14.5 19.6307 14.5 18.25C14.5 16.8693 15.6193 15.75 17 15.75C18.3807 15.75 19.5 16.8693 19.5 18.25Z',
   d13: 'M9.5 18.25C9.5 19.6307 8.38071 20.75 7 20.75C5.61929 20.75 4.5 19.6307 4.5 18.25C4.5 16.8693 5.61929 15.75 7 15.75C8.38071 15.75 9.5 16.8693 9.5 18.25Z',
   d14: 'M1.25 4C1.25 3.58579 1.58579 3.25 2 3.25H13C13.4142 3.25 13.75 3.58579 13.75 4V6.25H17.9773C18.2672 6.25 18.5415 6.38278 18.7226 6.61087L22.5408 11.4186C22.6762 11.5891 22.75 11.8009 22.75 12.0192V17.7885C22.75 18.3195 22.3226 18.75 21.7955 18.75H20.717C20.7388 18.5864 20.75 18.4195 20.75 18.25C20.75 16.1789 19.0711 14.5 17 14.5C14.9289 14.5 13.25 16.1789 13.25 18.25C13.25 18.4195 13.2612 18.5864 13.283 18.75H13.2045C13.1679 18.75 13.1318 18.7479 13.0963 18.7439C13.0647 18.7479 13.0326 18.75 13 18.75H10.717C10.7388 18.5864 10.75 18.4195 10.75 18.25C10.75 16.1789 9.07107 14.5 7 14.5C4.92893 14.5 3.25 16.1789 3.25 18.25C3.25 18.4195 3.26125 18.5864 3.28304 18.75H2C1.58579 18.75 1.25 18.4142 1.25 18V4ZM17.5185 8.17285L20.8409 12.3563H16V8.17285H17.5185Z',
-} as const;
+};
 
-export const IconTruckStrokeRounded = (props: TheIconProps) => {
+export const IconTruckStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -61,7 +62,7 @@ export const IconTruckStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTruckDuotoneRounded = (props: TheIconProps) => {
+export const IconTruckDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -109,7 +110,7 @@ export const IconTruckDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTruckTwotoneRounded = (props: TheIconProps) => {
+export const IconTruckTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -153,7 +154,7 @@ export const IconTruckTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTruckSolidRounded = (props: TheIconProps) => {
+export const IconTruckSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -179,7 +180,7 @@ export const IconTruckSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTruckBulkRounded = (props: TheIconProps) => {
+export const IconTruckBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -210,7 +211,7 @@ export const IconTruckBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTruckStrokeSharp = (props: TheIconProps) => {
+export const IconTruckStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -251,7 +252,7 @@ export const IconTruckStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTruckSolidSharp = (props: TheIconProps) => {
+export const IconTruckSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

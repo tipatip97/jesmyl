@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M6 8V21M18 8V21',
   d2: 'M3 8H21M3 12H21',
   d3: 'M10 8L10 12M14 8L14 12',
@@ -17,9 +18,9 @@ const d = {
   d13: 'M21 9.25H3V7.25H21V9.25ZM21 13.25H3V11.25H21V13.25Z',
   d14: 'M11 12.25L11 8.25L9 8.25L9 12.25L11 12.25ZM15 12.25L15 8.25L13 8.25L13 12.25L15 12.25Z',
   d15: 'M12.0008 9.19217C8.09687 9.19217 4.72518 6.92324 3.10382 3.63434L4.89768 2.75C6.19815 5.38796 8.89368 7.19217 12.0008 7.19217C15.1078 7.19217 17.8034 5.38796 19.1038 2.75L20.8977 3.63434C19.2763 6.92324 15.9046 9.19217 12.0008 9.19217Z',
-} as const;
+};
 
-export const IconTorriGateStrokeRounded = (props: TheIconProps) => {
+export const IconTorriGateStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -57,7 +58,7 @@ export const IconTorriGateStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTorriGateDuotoneRounded = (props: TheIconProps) => {
+export const IconTorriGateDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -106,7 +107,7 @@ export const IconTorriGateDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTorriGateTwotoneRounded = (props: TheIconProps) => {
+export const IconTorriGateTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -145,7 +146,7 @@ export const IconTorriGateTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTorriGateSolidRounded = (props: TheIconProps) => {
+export const IconTorriGateSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -161,7 +162,7 @@ export const IconTorriGateSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTorriGateBulkRounded = (props: TheIconProps) => {
+export const IconTorriGateBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -198,7 +199,7 @@ export const IconTorriGateBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTorriGateStrokeSharp = (props: TheIconProps) => {
+export const IconTorriGateStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -232,7 +233,7 @@ export const IconTorriGateStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTorriGateSolidSharp = (props: TheIconProps) => {
+export const IconTorriGateSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

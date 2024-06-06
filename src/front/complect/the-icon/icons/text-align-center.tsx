@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 3H21',
   d2: 'M8 9H16',
   d3: 'M3 15H21',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M16 10H8V8H16V10Z',
   d11: 'M21 16H3V14H21V16Z',
   d12: 'M16 22H8V20H16V22Z',
-} as const;
+};
 
-export const IconTextAlignCenterStrokeRounded = (props: TheIconProps) => {
+export const IconTextAlignCenterStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -54,7 +55,7 @@ export const IconTextAlignCenterStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextAlignCenterDuotoneRounded = (props: TheIconProps) => {
+export const IconTextAlignCenterDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -95,7 +96,7 @@ export const IconTextAlignCenterDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextAlignCenterTwotoneRounded = (props: TheIconProps) => {
+export const IconTextAlignCenterTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -135,7 +136,7 @@ export const IconTextAlignCenterTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextAlignCenterSolidRounded = (props: TheIconProps) => {
+export const IconTextAlignCenterSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -169,7 +170,7 @@ export const IconTextAlignCenterSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextAlignCenterBulkRounded = (props: TheIconProps) => {
+export const IconTextAlignCenterBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -205,7 +206,7 @@ export const IconTextAlignCenterBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextAlignCenterStrokeSharp = (props: TheIconProps) => {
+export const IconTextAlignCenterStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -239,7 +240,7 @@ export const IconTextAlignCenterStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTextAlignCenterSolidSharp = (props: TheIconProps) => {
+export const IconTextAlignCenterSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

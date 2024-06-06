@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 5.5L12 5.5',
   d2: 'M3 12L12 12',
   d3: 'M3 18.5L12 18.5',
@@ -20,9 +21,9 @@ const d = {
   d16: 'M3 19.5L13 19.5V17.5L3 17.5L3 19.5Z',
   d17: 'M18.5 6.86638L19.3105 8.25581L20.6062 7.5L19.8058 6.1279H21V4.6279H19.8058L20.6062 3.25581L19.3105 2.5L18.5 3.88943L17.6895 2.5L16.3938 3.25581L17.1942 4.6279H16V6.1279H17.1942L16.3938 7.5L17.6895 8.25581L18.5 6.86638Z',
   d18: 'M18.5 20.1105L19.3105 21.4999L20.6062 20.7441L19.8058 19.372H21V17.872H19.8058L20.6062 16.4999L19.3105 15.7441L18.5 17.1336L17.6895 15.7441L16.3938 16.4999L17.1942 17.872H16V19.372H17.1942L16.3938 20.7441L17.6895 21.4999L18.5 20.1105Z',
-} as const;
+};
 
-export const IconLeftToRightListStar01StrokeRounded = (props: TheIconProps) => {
+export const IconLeftToRightListStar01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -64,7 +65,7 @@ export const IconLeftToRightListStar01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLeftToRightListStar01DuotoneRounded = (props: TheIconProps) => {
+export const IconLeftToRightListStar01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -109,7 +110,7 @@ export const IconLeftToRightListStar01DuotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconLeftToRightListStar01TwotoneRounded = (props: TheIconProps) => {
+export const IconLeftToRightListStar01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -154,7 +155,7 @@ export const IconLeftToRightListStar01TwotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconLeftToRightListStar01SolidRounded = (props: TheIconProps) => {
+export const IconLeftToRightListStar01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -194,7 +195,7 @@ export const IconLeftToRightListStar01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLeftToRightListStar01BulkRounded = (props: TheIconProps) => {
+export const IconLeftToRightListStar01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -237,7 +238,7 @@ export const IconLeftToRightListStar01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLeftToRightListStar01StrokeSharp = (props: TheIconProps) => {
+export const IconLeftToRightListStar01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -277,7 +278,7 @@ export const IconLeftToRightListStar01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconLeftToRightListStar01SolidSharp = (props: TheIconProps) => {
+export const IconLeftToRightListStar01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

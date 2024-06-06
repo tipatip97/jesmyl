@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M20.9427 16.8354C20.2864 12.8866 18.2432 9.94613 16.467 8.219C15.9501 7.71642 15.6917 7.46513 15.1208 7.23257C14.5499 7 14.0592 7 13.0778 7H10.9222C9.94081 7 9.4501 7 8.87922 7.23257C8.30834 7.46513 8.04991 7.71642 7.53304 8.219C5.75682 9.94613 3.71361 12.8866 3.05727 16.8354C2.56893 19.7734 5.27927 22 8.30832 22H15.6917C18.7207 22 21.4311 19.7734 20.9427 16.8354Z',
   d2: 'M7.25662 4.44287C7.05031 4.14258 6.75128 3.73499 7.36899 3.64205C8.00392 3.54651 8.66321 3.98114 9.30855 3.97221C9.89237 3.96413 10.1898 3.70519 10.5089 3.33548C10.8449 2.94617 11.3652 2 12 2C12.6348 2 13.1551 2.94617 13.4911 3.33548C13.8102 3.70519 14.1076 3.96413 14.6914 3.97221C15.3368 3.98114 15.9961 3.54651 16.631 3.64205C17.2487 3.73499 16.9497 4.14258 16.7434 4.44287L15.8105 5.80064C15.4115 6.38146 15.212 6.67187 14.7944 6.83594C14.3769 7 13.8373 7 12.7582 7H11.2418C10.1627 7 9.6231 7 9.20556 6.83594C8.78802 6.67187 8.5885 6.38146 8.18945 5.80064L7.25662 4.44287Z',
   d3: 'M13.6267 12.9186C13.4105 12.1205 12.3101 11.4003 10.9892 11.9391C9.66829 12.4778 9.45847 14.2113 11.4565 14.3955C12.3595 14.4787 12.9483 14.2989 13.4873 14.8076C14.0264 15.3162 14.1265 16.7308 12.7485 17.112C11.3705 17.4932 10.006 16.8976 9.85742 16.0517M11.8417 10.9927V11.7531M11.8417 17.2293V17.9927',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M9.03068 7.03558L7.01794 3.52358C7.01378 3.51632 7.01988 3.50748 7.02816 3.50876L10.0177 3.97105L12.0173 2.0019C12.0212 1.99803 12.0275 1.99807 12.0314 2.00199L13.9817 3.97105L16.9713 3.50875C16.9796 3.50747 16.9857 3.51628 16.9815 3.52354L14.9851 7.03558',
   d13: 'M12.5301 1.46967C12.2372 1.17678 11.7623 1.17678 11.4694 1.46967L9.74234 3.19675L7.12306 2.7602C6.8374 2.71259 6.54986 2.8337 6.38433 3.07133C6.21881 3.30897 6.20489 3.62066 6.34857 3.8721L7.70737 6.25H16.2921L17.6509 3.8721C17.7946 3.62066 17.7807 3.30897 17.6152 3.07133C17.4497 2.8337 17.1621 2.71259 16.8765 2.7602L14.2572 3.19675L12.5301 1.46967Z',
   d14: 'M7.25421 7.75H16.7457C17.4654 8.56197 18.266 9.55911 19.0128 10.6648C20.2204 12.4526 21.3288 14.5845 21.6825 16.7124C21.9733 18.4618 21.3013 19.997 20.1465 21.0691C19.0032 22.1305 17.3822 22.75 15.6916 22.75H8.30828C6.6177 22.75 4.99674 22.1305 3.85345 21.0691C2.6986 19.997 2.0266 18.4618 2.31737 16.7124C2.67106 14.5845 3.7795 12.4526 4.98713 10.6648C5.73395 9.55911 6.53449 8.56197 7.25421 7.75ZM10.1355 12.0893C10.454 11.8505 10.8356 11.6781 11.2498 11.5836V10.75H12.7498V11.5845C13.5384 11.7652 14.2345 12.2303 14.5644 12.9303L13.2075 13.5697C13.0903 13.321 12.6681 13 11.9998 13C11.5941 13 11.2556 13.1243 11.0355 13.2893C10.8157 13.4542 10.7498 13.6248 10.7498 13.75C10.7498 13.8752 10.8157 14.0458 11.0355 14.2107C11.2556 14.3757 11.5941 14.5 11.9998 14.5C12.6986 14.5 13.3602 14.7115 13.864 15.0893C14.368 15.4673 14.7498 16.0468 14.7498 16.75C14.7498 17.4532 14.368 18.0327 13.864 18.4107C13.5455 18.6495 13.1639 18.8219 12.7498 18.9164V19.75H11.2498V18.9155C10.4611 18.7348 9.76501 18.2697 9.43512 17.5697L10.792 16.9303C10.9092 17.179 11.3314 17.5 11.9998 17.5C12.4055 17.5 12.7439 17.3757 12.964 17.2107C13.1838 17.0458 13.2498 16.8752 13.2498 16.75C13.2498 16.6248 13.1838 16.4542 12.964 16.2893C12.7439 16.1243 12.4055 16 11.9998 16C11.3009 16 10.6393 15.7885 10.1355 15.4107C9.63154 15.0327 9.24976 14.4532 9.24976 13.75C9.24976 13.0468 9.63154 12.4673 10.1355 12.0893Z',
-} as const;
+};
 
-export const IconMoneyBag02StrokeRounded = (props: TheIconProps) => {
+export const IconMoneyBag02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -48,7 +49,7 @@ export const IconMoneyBag02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoneyBag02DuotoneRounded = (props: TheIconProps) => {
+export const IconMoneyBag02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconMoneyBag02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoneyBag02TwotoneRounded = (props: TheIconProps) => {
+export const IconMoneyBag02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -111,7 +112,7 @@ export const IconMoneyBag02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoneyBag02SolidRounded = (props: TheIconProps) => {
+export const IconMoneyBag02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -127,7 +128,7 @@ export const IconMoneyBag02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoneyBag02BulkRounded = (props: TheIconProps) => {
+export const IconMoneyBag02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -154,7 +155,7 @@ export const IconMoneyBag02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoneyBag02StrokeSharp = (props: TheIconProps) => {
+export const IconMoneyBag02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -182,7 +183,7 @@ export const IconMoneyBag02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMoneyBag02SolidSharp = (props: TheIconProps) => {
+export const IconMoneyBag02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

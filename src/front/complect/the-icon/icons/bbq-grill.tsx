@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9 15L6 22',
   d2: 'M15 15L18 22',
   d3: 'M12 15L12 22',
@@ -29,9 +30,9 @@ const d = {
   d25: 'M16.5 19.75H7.5V18.25H16.5V19.75Z',
   d26: 'M19.75 7.25V8C19.75 12.2802 16.2802 15.75 12 15.75C7.71979 15.75 4.25 12.2802 4.25 8V7.25H19.75Z',
   d27: 'M3 9.25H5V10.75H3V9.25ZM21 10.75H19V9.25H21V10.75Z',
-} as const;
+};
 
-export const IconBbqGrillStrokeRounded = (props: TheIconProps) => {
+export const IconBbqGrillStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -84,7 +85,7 @@ export const IconBbqGrillStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBbqGrillDuotoneRounded = (props: TheIconProps) => {
+export const IconBbqGrillDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -142,7 +143,7 @@ export const IconBbqGrillDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBbqGrillTwotoneRounded = (props: TheIconProps) => {
+export const IconBbqGrillTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -198,7 +199,7 @@ export const IconBbqGrillTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBbqGrillSolidRounded = (props: TheIconProps) => {
+export const IconBbqGrillSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -230,7 +231,7 @@ export const IconBbqGrillSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBbqGrillBulkRounded = (props: TheIconProps) => {
+export const IconBbqGrillBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -257,7 +258,7 @@ export const IconBbqGrillBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBbqGrillStrokeSharp = (props: TheIconProps) => {
+export const IconBbqGrillStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -297,7 +298,7 @@ export const IconBbqGrillStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBbqGrillSolidSharp = (props: TheIconProps) => {
+export const IconBbqGrillSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

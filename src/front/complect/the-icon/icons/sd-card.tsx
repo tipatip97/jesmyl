@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5.5 8.89922V8C5.5 5.17157 5.5 3.75736 6.37868 2.87868C7.25736 2 8.67157 2 11.5 2H14.5C17.3284 2 18.7426 2 19.6213 2.87868C20.5 3.75736 20.5 5.17157 20.5 8V14C20.5 17.7712 20.5 19.6569 19.3284 20.8284C18.1569 22 16.2712 22 12.5 22H10.6254C7.69689 22 6.23263 22 5.19651 21.2702C4.8212 21.0058 4.49421 20.6788 4.22984 20.3035C3.5 19.2674 3.5 17.8031 3.5 14.8746V14.6008C3.5 14.0589 3.5 13.7879 3.54625 13.5276C3.60289 13.2088 3.71077 12.9012 3.8657 12.6169C3.99221 12.3847 4.16148 12.1732 4.5 11.75C4.83852 11.3268 5.00779 11.1153 5.1343 10.8831C5.28923 10.5988 5.39711 10.2912 5.45375 9.97241C5.5 9.71207 5.5 9.44112 5.5 8.89922Z',
   d2: 'M16.5 6V9',
   d3: 'M13 6V9',
@@ -12,9 +13,9 @@ const d = {
   d8: 'M5.5 2V1.25H4.75V2H5.5ZM5.5 10L6.12404 10.416L6.25 10.2271V10H5.5ZM20.5 2H21.25C21.25 1.58579 20.9142 1.25 20.5 1.25V2ZM20.5 22V22.75C20.9142 22.75 21.25 22.4142 21.25 22H20.5ZM3.5 22H2.75C2.75 22.4142 3.08579 22.75 3.5 22.75V22ZM3.5 13L2.87596 12.584L2.75 12.7729V13H3.5ZM4.75 2V10H6.25V2H4.75ZM5.5 2.75H20.5V1.25H5.5V2.75ZM19.75 2V22H21.25V2H19.75ZM20.5 21.25H3.5V22.75H20.5V21.25ZM4.25 22V13H2.75V22H4.25ZM4.87596 9.58397L2.87596 12.584L4.12404 13.416L6.12404 10.416L4.87596 9.58397Z',
   d9: 'M16.5 5V9M13 5V9M9.5 5V9',
   d10: 'M5.5 2V10L3.5 13V22H20.5V2H5.5ZM8.5 5V9H10.5V5H8.5ZM12 5V9H14V5H12ZM15.5 5V9H17.5V5H15.5Z',
-} as const;
+};
 
-export const IconSdCardStrokeRounded = (props: TheIconProps) => {
+export const IconSdCardStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -48,7 +49,7 @@ export const IconSdCardStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSdCardDuotoneRounded = (props: TheIconProps) => {
+export const IconSdCardDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -87,7 +88,7 @@ export const IconSdCardDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSdCardTwotoneRounded = (props: TheIconProps) => {
+export const IconSdCardTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -124,7 +125,7 @@ export const IconSdCardTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSdCardSolidRounded = (props: TheIconProps) => {
+export const IconSdCardSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -140,7 +141,7 @@ export const IconSdCardSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSdCardBulkRounded = (props: TheIconProps) => {
+export const IconSdCardBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -161,7 +162,7 @@ export const IconSdCardBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSdCardStrokeSharp = (props: TheIconProps) => {
+export const IconSdCardStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -181,7 +182,7 @@ export const IconSdCardStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSdCardSolidSharp = (props: TheIconProps) => {
+export const IconSdCardSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

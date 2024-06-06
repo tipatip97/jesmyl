@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M10.5 4.31818V15.6818C10.5 16.4448 10.5 16.8263 10.3644 17.1231C10.2146 17.4514 9.95135 17.7146 9.62312 17.8644C9.3263 18 8.94481 18 8.18182 18C6.14717 18 5.12985 18 4.33834 17.6385C3.46306 17.2388 2.7612 16.5369 2.36147 15.6617C2 14.8701 2 13.8528 2 11.8182V8.18182C2 6.14717 2 5.12985 2.36147 4.33834C2.7612 3.46306 3.46306 2.7612 4.33834 2.36147C5.12985 2 6.14717 2 8.18182 2C8.94481 2 9.3263 2 9.62312 2.13555C9.95135 2.28545 10.2146 2.54865 10.3644 2.87688C10.5 3.17369 10.5 3.55519 10.5 4.31818Z',
   d2: 'M6.25019 14L6.24121 14',
   d3: 'M17.7502 10L17.7412 10',
@@ -19,9 +20,9 @@ const d = {
   d15: 'M17.75 19V15M19.75 17H15.75',
   d16: 'M2.25 6C2.25 3.37665 4.37665 1.25 7 1.25H11.25V18.75H7C4.37665 18.75 2.25 16.6234 2.25 14V6ZM7.75 15H5.74102L5.74102 13H7.75L7.75 15ZM6 5V6.25H4.75V7.75H6V9H7.5V7.75H8.75V6.25H7.5V5H6Z',
   d17: 'M17 5.25C19.6234 5.25 21.75 7.37665 21.75 10V18C21.75 20.6234 19.6234 22.75 17 22.75H12.75V5.25H17ZM18.25 11L16.241 11L16.241 9L18.25 9L18.25 11ZM18 19V17.75H19.25V16.25H18V15H16.5V16.25H15.25V17.75H16.5V19H18Z',
-} as const;
+};
 
-export const IconNintendoSwitchStrokeRounded = (props: TheIconProps) => {
+export const IconNintendoSwitchStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -73,7 +74,7 @@ export const IconNintendoSwitchStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNintendoSwitchDuotoneRounded = (props: TheIconProps) => {
+export const IconNintendoSwitchDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -130,7 +131,7 @@ export const IconNintendoSwitchDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNintendoSwitchTwotoneRounded = (props: TheIconProps) => {
+export const IconNintendoSwitchTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -186,7 +187,7 @@ export const IconNintendoSwitchTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNintendoSwitchSolidRounded = (props: TheIconProps) => {
+export const IconNintendoSwitchSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -208,7 +209,7 @@ export const IconNintendoSwitchSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNintendoSwitchBulkRounded = (props: TheIconProps) => {
+export const IconNintendoSwitchBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -241,7 +242,7 @@ export const IconNintendoSwitchBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNintendoSwitchStrokeSharp = (props: TheIconProps) => {
+export const IconNintendoSwitchStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -287,7 +288,7 @@ export const IconNintendoSwitchStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconNintendoSwitchSolidSharp = (props: TheIconProps) => {
+export const IconNintendoSwitchSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

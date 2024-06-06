@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M4 3H8.42109C9.35119 3 9.81624 3 9.94012 3.28013C10.064 3.56026 9.74755 3.89632 9.11466 4.56842L5.47691 8.43158C4.84402 9.10368 4.52757 9.43974 4.65145 9.71987C4.77533 10 5.24038 10 6.17048 10H10',
   d2: 'M4 21L6.10557 16.3053C6.49585 15.4351 6.69098 15 7 15C7.30902 15 7.50415 15.4351 7.89443 16.3053L10 21',
   d3: 'M17.5 20V4M17.5 20C16.7998 20 15.4915 18.0057 15 17.5M17.5 20C18.2002 20 19.5085 18.0057 20 17.5',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M7.71875 4H4.44193V2H11.1651L7.16511 9H10.4419V11H3.71875L7.71875 4Z',
   d13: 'M6.23702 13.6636H8.64646L11.3835 21.3272L9.5 21.9999L7.44174 16.2368L5.38348 21.9999L3.5 21.3272L6.23702 13.6636Z',
   d14: 'M18.2929 4V17.5858L19.0858 16.7929L20.5 18.2071L17.2929 21.4142L14.0858 18.2071L15.5 16.7929L16.2929 17.5858V4H18.2929Z',
-} as const;
+};
 
-export const IconArrangeByLettersZAStrokeRounded = (props: TheIconProps) => {
+export const IconArrangeByLettersZAStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -49,7 +50,7 @@ export const IconArrangeByLettersZAStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrangeByLettersZADuotoneRounded = (props: TheIconProps) => {
+export const IconArrangeByLettersZADuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -91,7 +92,7 @@ export const IconArrangeByLettersZADuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrangeByLettersZATwotoneRounded = (props: TheIconProps) => {
+export const IconArrangeByLettersZATwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -123,7 +124,7 @@ export const IconArrangeByLettersZATwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrangeByLettersZASolidRounded = (props: TheIconProps) => {
+export const IconArrangeByLettersZASolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -151,7 +152,7 @@ export const IconArrangeByLettersZASolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrangeByLettersZABulkRounded = (props: TheIconProps) => {
+export const IconArrangeByLettersZABulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -181,7 +182,7 @@ export const IconArrangeByLettersZABulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconArrangeByLettersZAStrokeSharp = (props: TheIconProps) => {
+export const IconArrangeByLettersZAStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -206,7 +207,7 @@ export const IconArrangeByLettersZAStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconArrangeByLettersZASolidSharp = (props: TheIconProps) => {
+export const IconArrangeByLettersZASolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 22C12.2443 22 12.4714 21.8869 12.9256 21.6608L16.5766 19.8432C18.1922 19.039 19 18.6368 19 18V10M12 22C11.7557 22 11.5286 21.8869 11.0744 21.6608L7.42337 19.8432C5.80779 19.039 5 18.6368 5 18V10M12 22V14M19 10C19 9.36317 18.1922 8.96103 16.5766 8.15675L12.9256 6.33919C12.4714 6.11306 12.2443 6 12 6C11.7557 6 11.5286 6.11306 11.0744 6.33919L7.42337 8.15675C5.80779 8.96103 5 9.36317 5 10M19 10C19 10.6368 18.1922 11.039 16.5766 11.8432L12.9256 13.6608C12.4714 13.8869 12.2443 14 12 14M5 10C5 10.6368 5.80779 11.039 7.42337 11.8432L11.0744 13.6608C11.5286 13.8869 11.7557 14 12 14',
   d2: 'M22 21L19 18.5',
   d3: 'M12 2V6',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M19.6402 17.3568L22.6402 19.8568L21.3599 21.3932L18.3599 18.8932L19.6402 17.3568Z',
   d13: 'M11 5.625V1.625H13V5.625H11Z',
   d14: 'M5.64023 18.8932L2.64023 21.3932L1.35986 19.8568L4.35986 17.3568L5.64023 18.8932Z',
-} as const;
+};
 
-export const IconBlockchain02StrokeRounded = (props: TheIconProps) => {
+export const IconBlockchain02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -55,7 +56,7 @@ export const IconBlockchain02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBlockchain02DuotoneRounded = (props: TheIconProps) => {
+export const IconBlockchain02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -97,7 +98,7 @@ export const IconBlockchain02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBlockchain02TwotoneRounded = (props: TheIconProps) => {
+export const IconBlockchain02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -137,7 +138,7 @@ export const IconBlockchain02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBlockchain02SolidRounded = (props: TheIconProps) => {
+export const IconBlockchain02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -171,7 +172,7 @@ export const IconBlockchain02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBlockchain02BulkRounded = (props: TheIconProps) => {
+export const IconBlockchain02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -208,7 +209,7 @@ export const IconBlockchain02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBlockchain02StrokeSharp = (props: TheIconProps) => {
+export const IconBlockchain02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -242,7 +243,7 @@ export const IconBlockchain02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBlockchain02SolidSharp = (props: TheIconProps) => {
+export const IconBlockchain02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 10.0021C2.02895 6.58807 2.21848 4.70599 3.45963 3.46485C4.92448 2 7.28212 2 11.9974 2C16.7127 2 19.0703 2 20.5352 3.46485C22 4.9297 22 7.28733 22 12.0026C22 16.7179 22 19.0755 20.5352 20.5404C19.294 21.7815 17.4119 21.9711 13.9979 22',
   d2: 'M4.99871 13C3.82845 13.0351 3.13074 13.1652 2.64796 13.648C2.16519 14.1307 2.03507 14.8285 2 15.9987M8.00129 13C9.17155 13.0351 9.86926 13.1652 10.352 13.648C10.8348 14.1307 10.9649 14.8285 11 15.9987M11 19.0013C10.9649 20.1715 10.8348 20.8693 10.352 21.352C9.86926 21.8348 9.17155 21.9649 8.00129 22M4.99872 22C3.82846 21.9649 3.13074 21.8348 2.64796 21.352C2.16519 20.8693 2.03507 20.1715 2 19.0013',
   d3: 'M16.4127 11.0064L13.5096 10.9395C13.0781 10.9296 12.7326 10.5952 12.7277 10.1828L12.6965 7.53881M20.0282 3.76643L13.2808 10.3674',
@@ -17,9 +18,9 @@ const d = {
   d13: 'M1.25044 2.22721C1.25047 1.6875 1.688 1.25 2.22771 1.25L21.7727 1.25011C22.3124 1.25011 22.7499 1.68765 22.7499 2.22738V21.7727C22.7499 22.0318 22.647 22.2804 22.4637 22.4637C22.2804 22.647 22.0318 22.7499 21.7727 22.7499L13.9545 22.7499V20.7954L20.7954 20.7954V3.20464L3.20492 3.20454L3.20454 10.0475L1.25 10.0474L1.25044 2.22721Z',
   d14: 'M12.9774 11.0227L12.9774 4.67045L14.9319 4.67045L14.9319 7.6861L21.0818 1.53624L22.4639 2.91831L16.314 9.06817L19.3297 9.06817L19.3297 11.0227L12.9774 11.0227Z',
   d15: 'M5.15905 12L5.1591 13.9545L3.20457 13.9546L3.20454 15.9091L1.25 15.9091L1.25006 12.0001L5.15905 12ZM10.0454 13.9546L8.09216 13.9546L8.09213 12L11.0227 12C11.2819 12 11.5304 12.103 11.7137 12.2862C11.897 12.4695 12 12.7181 12 12.9773V15.9078H10.0454V13.9546ZM1.25005 21.7727L1.25 18.8409L3.20454 18.8409L3.20457 20.7954H5.15908V22.75H2.22732C1.68759 22.75 1.25006 22.3124 1.25005 21.7727ZM10.0454 20.7954V18.8409H12V22.75H8.09088V20.7954H10.0454Z',
-} as const;
+};
 
-export const IconMinimizeScreenStrokeRounded = (props: TheIconProps) => {
+export const IconMinimizeScreenStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -50,7 +51,7 @@ export const IconMinimizeScreenStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMinimizeScreenDuotoneRounded = (props: TheIconProps) => {
+export const IconMinimizeScreenDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -83,7 +84,7 @@ export const IconMinimizeScreenDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMinimizeScreenTwotoneRounded = (props: TheIconProps) => {
+export const IconMinimizeScreenTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -115,7 +116,7 @@ export const IconMinimizeScreenTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMinimizeScreenSolidRounded = (props: TheIconProps) => {
+export const IconMinimizeScreenSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -135,7 +136,7 @@ export const IconMinimizeScreenSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMinimizeScreenBulkRounded = (props: TheIconProps) => {
+export const IconMinimizeScreenBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -156,7 +157,7 @@ export const IconMinimizeScreenBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMinimizeScreenStrokeSharp = (props: TheIconProps) => {
+export const IconMinimizeScreenStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -182,7 +183,7 @@ export const IconMinimizeScreenStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMinimizeScreenSolidSharp = (props: TheIconProps) => {
+export const IconMinimizeScreenSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

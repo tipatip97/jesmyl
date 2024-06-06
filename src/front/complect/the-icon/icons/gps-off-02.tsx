@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M20.5137 12C20.5137 16.6944 16.7081 20.5 12.0137 20.5C7.31925 20.5 3.51367 16.6944 3.51367 12C3.51367 7.30558 7.31925 3.5 12.0137 3.5C16.7081 3.5 20.5137 7.30558 20.5137 12Z',
   d2: 'M15.0002 9L9.00019 15M15.0002 15L9.00019 9',
   d3: 'M22.5 12H20.5',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M12 20V22',
   d18: 'M13 3.05493C17.1716 3.51608 20.4839 6.82838 20.9451 11H22.75V13H20.9451C20.4839 17.1716 17.1716 20.4839 13 20.9451V22.75H11V20.9451C6.82838 20.4839 3.51608 17.1716 3.05493 13H1.25V11H3.05493C3.51608 6.82838 6.82838 3.51608 11 3.05493V1.25H13V3.05493ZM12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5Z',
   d19: 'M13.4172 12.0001L15.7101 14.293L14.2959 15.7072L12.003 13.4143L9.71011 15.7072L8.2959 14.293L10.5888 12.0001L8.2959 9.70718L9.71011 8.29297L12.003 10.5859L14.2959 8.29297L15.7101 9.70718L13.4172 12.0001Z',
-} as const;
+};
 
-export const IconGpsOff02StrokeRounded = (props: TheIconProps) => {
+export const IconGpsOff02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -72,7 +73,7 @@ export const IconGpsOff02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGpsOff02DuotoneRounded = (props: TheIconProps) => {
+export const IconGpsOff02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -126,7 +127,7 @@ export const IconGpsOff02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGpsOff02TwotoneRounded = (props: TheIconProps) => {
+export const IconGpsOff02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -180,7 +181,7 @@ export const IconGpsOff02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGpsOff02SolidRounded = (props: TheIconProps) => {
+export const IconGpsOff02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -226,7 +227,7 @@ export const IconGpsOff02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGpsOff02BulkRounded = (props: TheIconProps) => {
+export const IconGpsOff02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -276,7 +277,7 @@ export const IconGpsOff02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGpsOff02StrokeSharp = (props: TheIconProps) => {
+export const IconGpsOff02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -322,7 +323,7 @@ export const IconGpsOff02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGpsOff02SolidSharp = (props: TheIconProps) => {
+export const IconGpsOff02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

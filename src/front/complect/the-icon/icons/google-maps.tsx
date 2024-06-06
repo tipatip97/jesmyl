@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9 17L18 6',
   d2: 'M6 12L14 2.5',
   d3: 'M7 5L10 7.5',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M5.41604 13.4922C5.76165 14.0871 6.16235 14.645 6.56231 15.1628C6.8372 15.5187 7.11796 15.8634 7.38351 16.1895L7.44982 16.2709C7.5978 16.4526 7.74019 16.628 7.87571 16.7984L11.8749 12.2476C10.3771 12.1909 9.13889 11.1207 8.82625 9.70309L5.41604 13.4922Z',
   d18: 'M12.3657 5.77035C13.8092 5.932 14.9669 7.03914 15.205 8.45812L18.4266 4.79222C17.7283 3.7018 16.7755 2.78187 15.6214 2.15298L12.3657 5.77035Z',
   d19: 'M19.1607 6.22918L8.81363 18.0034C9.21385 18.5265 9.63743 19.1064 10.0256 19.7006C10.6094 20.5944 11.0796 21.4708 11.2884 22.2051C11.3801 22.5275 11.6747 22.7499 12.01 22.75C12.3453 22.7501 12.6399 22.5278 12.7318 22.2054C12.9933 21.2873 13.5716 20.2437 14.2867 19.1986C14.995 18.1636 15.8044 17.1742 16.4904 16.3641C17.4072 15.2935 18.2182 14.1383 18.9123 12.9145C18.9201 12.9006 18.9275 12.8866 18.9345 12.8723C19.987 10.7057 19.9751 8.29264 19.1607 6.22918Z',
-} as const;
+};
 
-export const IconGoogleMapsStrokeRounded = (props: TheIconProps) => {
+export const IconGoogleMapsStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -67,7 +68,7 @@ export const IconGoogleMapsStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleMapsDuotoneRounded = (props: TheIconProps) => {
+export const IconGoogleMapsDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -118,7 +119,7 @@ export const IconGoogleMapsDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleMapsTwotoneRounded = (props: TheIconProps) => {
+export const IconGoogleMapsTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -165,7 +166,7 @@ export const IconGoogleMapsTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleMapsSolidRounded = (props: TheIconProps) => {
+export const IconGoogleMapsSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -195,7 +196,7 @@ export const IconGoogleMapsSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleMapsBulkRounded = (props: TheIconProps) => {
+export const IconGoogleMapsBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -231,7 +232,7 @@ export const IconGoogleMapsBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleMapsStrokeSharp = (props: TheIconProps) => {
+export const IconGoogleMapsStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -275,7 +276,7 @@ export const IconGoogleMapsStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleMapsSolidSharp = (props: TheIconProps) => {
+export const IconGoogleMapsSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M4 21C4 19.8954 3.10457 19 2 19M8 21C8 17.6863 5.31371 15 2 15M12 21C12 15.4772 7.52285 11 2 11',
   d2: 'M3 8.00027C3.0779 6.12787 3.32904 4.97985 4.1387 4.17164C5.31244 3 7.20153 3 10.9797 3H13.9853C17.7634 3 19.6525 3 20.8263 4.17164C22 5.34327 22 7.229 22 11.0004V12.0005C22 15.7719 22 17.6577 20.8263 18.8293C19.7612 19.8924 18.1071 19.9909 14.9871 20',
   d3: 'M9.65 20C6.51516 20 4.94774 20 3.97387 18.7552C3 17.5104 3 15.5069 3 11.5C3 7.49306 3 5.48959 3.97387 4.2448C4.94774 3 6.51516 3 9.65 3L15.35 3C18.4848 3 20.0523 3 21.0261 4.2448C22 5.48959 22 7.49306 22 11.5C22 15.5069 22 17.5104 21.0261 18.7552C20.0523 20 18.4848 20 15.35 20L9.65 20Z',
@@ -10,9 +11,9 @@ const d = {
   d6: 'M15 20H22V3H3V8',
   d7: 'M2 12C6.97056 12 11 16.0294 11 21H13C13 14.9249 8.07513 10 2 10V12ZM2 16C4.76142 16 7 18.2386 7 21H9C9 17.134 5.86599 14 2 14V16ZM2 20C2.55228 20 3 20.4477 3 21H5C5 19.3431 3.65685 18 2 18V20Z',
   d8: 'M2 3C2 2.44772 2.44772 2 3 2H22C22.5523 2 23 2.44772 23 3V20C23 20.5523 22.5523 21 22 21H15V19H21V4H4V8H2V3Z',
-} as const;
+};
 
-export const IconMirroringScreenStrokeRounded = (props: TheIconProps) => {
+export const IconMirroringScreenStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -34,7 +35,7 @@ export const IconMirroringScreenStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirroringScreenDuotoneRounded = (props: TheIconProps) => {
+export const IconMirroringScreenDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -61,7 +62,7 @@ export const IconMirroringScreenDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirroringScreenTwotoneRounded = (props: TheIconProps) => {
+export const IconMirroringScreenTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -84,7 +85,7 @@ export const IconMirroringScreenTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirroringScreenSolidRounded = (props: TheIconProps) => {
+export const IconMirroringScreenSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -106,7 +107,7 @@ export const IconMirroringScreenSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirroringScreenBulkRounded = (props: TheIconProps) => {
+export const IconMirroringScreenBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -129,7 +130,7 @@ export const IconMirroringScreenBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirroringScreenStrokeSharp = (props: TheIconProps) => {
+export const IconMirroringScreenStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -151,7 +152,7 @@ export const IconMirroringScreenStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMirroringScreenSolidSharp = (props: TheIconProps) => {
+export const IconMirroringScreenSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

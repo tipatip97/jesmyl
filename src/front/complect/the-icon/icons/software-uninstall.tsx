@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9.5 10C9.5 11.1046 10.3954 12 11.5 12C12.6046 12 13.5 11.1046 13.5 10C13.5 8.89543 12.6046 8 11.5 8C10.3954 8 9.5 8.89543 9.5 10Z',
   d2: 'M4.57026 14C3.88958 12.8233 3.5 11.4571 3.5 10C3.5 5.58172 7.08172 2 11.5 2C15.9183 2 19.5 5.58172 19.5 10C19.5 11.4571 19.1104 12.8233 18.4297 14',
   d3: 'M13.35 22H5.65C4.38598 22 3.75398 22 3.29997 21.6148C3.10343 21.448 2.93468 21.2337 2.80335 20.9842C2.5 20.4076 2.5 19.6051 2.5 18C2.5 16.3949 2.5 15.5924 2.80335 15.0158C2.93468 14.7663 3.10343 14.552 3.29997 14.3852C3.75398 14 4.38598 14 5.65 14H19.5',
@@ -25,9 +26,9 @@ const d = {
   d21: 'M18.1288 19.543L16.3359 21.3359L17.7501 22.7502L19.543 20.9573L21.3359 22.7502L22.7501 21.3359L20.9572 19.543L22.7501 17.7502L21.3359 16.3359L19.543 18.1288L17.7501 16.3359L16.3359 17.7502L18.1288 19.543Z',
   d22: 'M1.24988 15C1.24988 14.5858 1.58566 14.25 1.99988 14.25H19.9999C20.4141 14.25 20.7499 14.5858 20.7499 15V15.1545L19.5431 16.3613L17.7502 14.5684L14.5682 17.7503L16.3611 19.5432L14.5682 21.3361L15.9821 22.75H1.99988C1.58566 22.75 1.24988 22.4142 1.24988 22V15ZM12.9999 19.5H8.99988V17.5H12.9999V19.5Z',
   d23: 'M19.5183 22.75H19.5679L19.5431 22.7252L19.5183 22.75Z',
-} as const;
+};
 
-export const IconSoftwareUninstallStrokeRounded = (props: TheIconProps) => {
+export const IconSoftwareUninstallStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -68,7 +69,7 @@ export const IconSoftwareUninstallStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareUninstallDuotoneRounded = (props: TheIconProps) => {
+export const IconSoftwareUninstallDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -119,7 +120,7 @@ export const IconSoftwareUninstallDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareUninstallTwotoneRounded = (props: TheIconProps) => {
+export const IconSoftwareUninstallTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -163,7 +164,7 @@ export const IconSoftwareUninstallTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareUninstallSolidRounded = (props: TheIconProps) => {
+export const IconSoftwareUninstallSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -193,7 +194,7 @@ export const IconSoftwareUninstallSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareUninstallBulkRounded = (props: TheIconProps) => {
+export const IconSoftwareUninstallBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -229,7 +230,7 @@ export const IconSoftwareUninstallBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareUninstallStrokeSharp = (props: TheIconProps) => {
+export const IconSoftwareUninstallStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -263,7 +264,7 @@ export const IconSoftwareUninstallStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareUninstallSolidSharp = (props: TheIconProps) => {
+export const IconSoftwareUninstallSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

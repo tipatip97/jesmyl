@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M18.9349 13.9453L18.2646 10.2968C17.9751 8.72096 17.8303 7.93303 17.257 7.46651C16.6837 7 15.8602 7 14.2132 7H9.78685C8.1398 7 7.31628 7 6.74298 7.46651C6.16968 7.93303 6.02492 8.72096 5.73538 10.2968L5.06506 13.9453C4.46408 17.2162 4.16359 18.8517 5.08889 19.9259C6.01419 21 7.72355 21 11.1423 21H12.8577C16.2765 21 17.9858 21 18.9111 19.9259C19.8364 18.8517 19.5359 17.2162 18.9349 13.9453Z',
   d2: 'M12 10.5V17M9.5 15L12 17.5L14.5 15',
   d3: 'M21 11C21.1568 10.9209 21.2931 10.8212 21.4142 10.6955C22 10.0875 22 9.10893 22 7.15176C22 5.1946 22 4.21602 21.4142 3.60801C20.8284 3 19.8856 3 18 3L6 3C4.11438 3 3.17157 3 2.58579 3.60801C2 4.21602 2 5.1946 2 7.15176C2 9.10893 2 10.0875 2.58579 10.6955C2.70688 10.8212 2.84322 10.9209 3 11',
@@ -13,9 +14,9 @@ const d = {
   d9: 'M20 11H22V3H2V11H4',
   d10: 'M6 6.25C5.60652 6.25 5.27994 6.55409 5.25191 6.94656L4.25191 20.9466C4.23707 21.1542 4.30923 21.3587 4.4511 21.5111C4.59298 21.6635 4.79181 21.75 5 21.75H19C19.2082 21.75 19.407 21.6635 19.5489 21.5111C19.6908 21.3587 19.7629 21.1542 19.7481 20.9466L18.7481 6.94656C18.7201 6.55409 18.3935 6.25 18 6.25H6ZM12.7501 15.6893V9.75H11.2501V15.6893L9.50011 13.9393L8.43945 15L12.0001 18.5607L15.5608 15L14.5001 13.9393L12.7501 15.6893Z',
   d11: 'M1 3.25C1 2.69772 1.44772 2.25 2 2.25H22C22.5523 2.25 23 2.69772 23 3.25V11.25C23 11.8023 22.5523 12.25 22 12.25H20V10.25H21V4.25H3V10.25H4V12.25H2C1.44772 12.25 1 11.8023 1 11.25V3.25Z',
-} as const;
+};
 
-export const IconReverseWithdrawal01StrokeRounded = (props: TheIconProps) => {
+export const IconReverseWithdrawal01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -44,7 +45,7 @@ export const IconReverseWithdrawal01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconReverseWithdrawal01DuotoneRounded = (props: TheIconProps) => {
+export const IconReverseWithdrawal01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -78,7 +79,7 @@ export const IconReverseWithdrawal01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconReverseWithdrawal01TwotoneRounded = (props: TheIconProps) => {
+export const IconReverseWithdrawal01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -108,7 +109,7 @@ export const IconReverseWithdrawal01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconReverseWithdrawal01SolidRounded = (props: TheIconProps) => {
+export const IconReverseWithdrawal01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -130,7 +131,7 @@ export const IconReverseWithdrawal01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconReverseWithdrawal01BulkRounded = (props: TheIconProps) => {
+export const IconReverseWithdrawal01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -157,7 +158,7 @@ export const IconReverseWithdrawal01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconReverseWithdrawal01StrokeSharp = (props: TheIconProps) => {
+export const IconReverseWithdrawal01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -186,7 +187,7 @@ export const IconReverseWithdrawal01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconReverseWithdrawal01SolidSharp = (props: TheIconProps) => {
+export const IconReverseWithdrawal01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

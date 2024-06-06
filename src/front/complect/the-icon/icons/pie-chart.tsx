@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M20.5 15.8278C17.9985 21.756 9.86407 23.4835 5.20143 18.8641C0.629484 14.3347 2.04493 6.12883 8.05653 3.5',
   d2: 'M17.6831 12.5C19.5708 12.5 20.5146 12.5 21.1241 11.655C21.1469 11.6234 21.1848 11.5667 21.2052 11.5336C21.7527 10.6471 21.4705 9.966 20.9063 8.60378C20.3946 7.36853 19.6447 6.24615 18.6993 5.30073C17.7538 4.35531 16.6315 3.60536 15.3962 3.0937C14.034 2.52946 13.3529 2.24733 12.4664 2.79477C12.4333 2.81523 12.3766 2.85309 12.345 2.87587C11.5 3.4854 11.5 4.42922 11.5 6.31686V8.42748C11.5 10.3473 11.5 11.3072 12.0964 11.9036C12.6928 12.5 13.6527 12.5 15.5725 12.5H17.6831Z',
   d3: 'M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 11.6584 21.482 11.3211 21.4468 10.9888C21.4001 11.1668 21.3213 11.3456 21.2052 11.5336C21.1848 11.5667 21.1469 11.6234 21.1241 11.655C20.5146 12.5 19.5708 12.5 17.6831 12.5H15.5725C13.6527 12.5 12.6928 12.5 12.0964 11.9036C11.5 11.3072 11.5 10.3473 11.5 8.42748V6.31686C11.5 4.42922 11.5 3.4854 12.345 2.87587C12.3766 2.85309 12.4333 2.81523 12.4664 2.79477C12.6544 2.67867 12.8332 2.59988 13.0112 2.55318C12.6789 2.51803 12.3416 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z',
@@ -10,9 +11,9 @@ const d = {
   d6: 'M21.4718 12.5C21.671 9.85979 20.82 7.13848 18.7986 5.13585C16.7723 3.12841 14.0904 2.31961 11.5 2.5333V12.5H21.4718Z',
   d7: 'M11.4383 1.78579C14.2249 1.55592 17.1293 2.42626 19.3264 4.60301C21.5202 6.77639 22.4336 9.72085 22.2196 12.5564L22.1673 13.25H10.75V1.84257L11.4383 1.78579Z',
   d8: 'M9.25 2.12305C4.92455 3.32478 1.75 7.29164 1.75 12C1.75 17.6609 6.33908 22.25 12 22.25C16.7083 22.25 20.6752 19.0754 21.8769 14.7499H9.25V2.12305Z',
-} as const;
+};
 
-export const IconPieChartStrokeRounded = (props: TheIconProps) => {
+export const IconPieChartStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -33,7 +34,7 @@ export const IconPieChartStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPieChartDuotoneRounded = (props: TheIconProps) => {
+export const IconPieChartDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -59,7 +60,7 @@ export const IconPieChartDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPieChartTwotoneRounded = (props: TheIconProps) => {
+export const IconPieChartTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconPieChartTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPieChartSolidRounded = (props: TheIconProps) => {
+export const IconPieChartSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -99,7 +100,7 @@ export const IconPieChartSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPieChartBulkRounded = (props: TheIconProps) => {
+export const IconPieChartBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -118,7 +119,7 @@ export const IconPieChartBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPieChartStrokeSharp = (props: TheIconProps) => {
+export const IconPieChartStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -139,7 +140,7 @@ export const IconPieChartStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPieChartSolidSharp = (props: TheIconProps) => {
+export const IconPieChartSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

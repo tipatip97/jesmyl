@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M6.48311 3.65819C6.11715 3.25395 5.58823 3 5 3C3.89543 3 3 3.89543 3 5C3 5.58823 3.25395 6.11716 3.65819 6.48311C4.01303 6.80434 4.48366 7 5 7C6.10457 7 7 6.10457 7 5C7 4.48366 6.80434 4.01303 6.48311 3.65819ZM6.48311 3.65819C8.0644 2.6103 9.96093 2 12 2C12.6849 2 13.3538 2.06886 14 2.20004M20.353 6.5C21.394 8.0779 22 9.96818 22 12C22 12.6849 21.9311 13.3538 21.8 14M17.5169 20.3418C15.9356 21.3897 14.0391 22 12 22C11.3151 22 10.6462 21.9311 10 21.8M17.5169 20.3418C17.8828 20.7461 18.4118 21 19 21C20.1046 21 21 20.1046 21 19C21 18.4118 20.7461 17.8828 20.3418 17.5169C19.987 17.1957 19.5163 17 19 17C17.8954 17 17 17.8954 17 19C17 19.5163 17.1957 19.987 17.5169 20.3418ZM3.65819 17.5169C2.6103 15.9356 2 14.0391 2 12C2 11.3151 2.06886 10.6462 2.20004 10M3.65819 17.5169C3.25395 17.8828 3 18.4118 3 19C3 20.1046 3.89543 21 5 21C5.58823 21 6.11715 20.7461 6.48311 20.3418C6.80434 19.987 7 19.5163 7 19C7 17.8954 6.10457 17 5 17C4.48366 17 4.01303 17.1957 3.65819 17.5169ZM21 5C21 6.10457 20.1046 7 19 7C17.8954 7 17 6.10457 17 5C17 4.48366 17.1957 4.01303 17.5169 3.65819C17.8828 3.25395 18.4118 3 19 3C20.1046 3 21 3.89543 21 5Z',
   d2: 'M8 10.4778C9.14883 9.54314 10.5209 9 11.9946 9C13.4729 9 14.849 9.54657 16 10.4866M14.1743 13C13.5182 12.5909 12.7779 12.3607 11.9946 12.3607C11.2152 12.3607 10.4784 12.5886 9.82477 12.9938',
   d3: 'M12 16H12.0064',
@@ -20,9 +21,9 @@ const d = {
   d16: 'M11.9928 8C10.2635 8 8.67331 8.63946 7.36719 9.70203L8.62934 11.2535C9.62088 10.4468 10.7747 10 11.9928 10C13.2147 10 14.3721 10.4496 15.3657 11.2611L16.6308 9.71209C15.3224 8.64352 13.7276 8 11.9928 8Z',
   d17: 'M11.9928 11.3607C11.0129 11.3607 10.0954 11.6484 9.29607 12.144L10.35 13.8437C10.858 13.5288 11.4139 13.3607 11.9928 13.3607C12.5746 13.3607 13.1333 13.5304 13.6434 13.8485L14.7017 12.1515C13.8996 11.6513 12.9777 11.3607 11.9928 11.3607Z',
   d18: 'M11.9968 15C11.4463 15 11 15.4477 11 16C11 16.5523 11.4463 17 11.9968 17H12.0032C12.5537 17 13 16.5523 13 16C13 15.4477 12.5537 15 12.0032 15H11.9968Z',
-} as const;
+};
 
-export const IconSharedWifiStrokeRounded = (props: TheIconProps) => {
+export const IconSharedWifiStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -52,7 +53,7 @@ export const IconSharedWifiStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSharedWifiDuotoneRounded = (props: TheIconProps) => {
+export const IconSharedWifiDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -87,7 +88,7 @@ export const IconSharedWifiDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSharedWifiTwotoneRounded = (props: TheIconProps) => {
+export const IconSharedWifiTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -118,7 +119,7 @@ export const IconSharedWifiTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSharedWifiSolidRounded = (props: TheIconProps) => {
+export const IconSharedWifiSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -156,7 +157,7 @@ export const IconSharedWifiSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSharedWifiBulkRounded = (props: TheIconProps) => {
+export const IconSharedWifiBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -197,7 +198,7 @@ export const IconSharedWifiBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSharedWifiStrokeSharp = (props: TheIconProps) => {
+export const IconSharedWifiStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -226,7 +227,7 @@ export const IconSharedWifiStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSharedWifiSolidSharp = (props: TheIconProps) => {
+export const IconSharedWifiSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

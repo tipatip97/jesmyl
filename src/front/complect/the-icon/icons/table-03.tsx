@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M22 4L2 4',
   d2: 'M3 4V4.65609C3 5.62272 3.228 6.57118 3.65961 7.40006L4.20846 8.45408C5.18551 10.3304 5.26288 12.6519 4.41361 14.609L3.29319 17.191C3.10038 17.6353 3 18.1253 3 18.6221V20M21 4V4.65609C21 5.62272 20.772 6.57118 20.3404 7.40006L19.7915 8.45408C18.8145 10.3304 18.7371 12.6519 19.5864 14.609L20.7068 17.191C20.8996 17.6353 21 18.1253 21 18.6221V20',
   d3: 'M5 12H19',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M14.5 7L13.5 8.5H10.5L9.5 7',
   d18: 'M18.5 16.9117H5.5V14.9117H18.5V16.9117Z',
   d19: 'M2 5.5H3.00828C3.05665 6.5032 3.31623 7.48539 3.77266 8.36192L4.32151 9.41593C5.15793 11.0222 5.2267 13.0276 4.49625 14.7109L3.37584 17.2929C3.1271 17.8662 3 18.492 3 19.1221V20.5H5V19.1221C5 18.7587 5.07367 18.4045 5.21055 18.0891L6.33096 15.5071C6.64343 14.787 6.84608 14.0246 6.93968 13.25L17.0603 13.25C17.1539 14.0246 17.3566 14.787 17.669 15.5071L18.7895 18.0891C18.9263 18.4045 19 18.7586 19 19.1221V20.5H21V19.1221C21 18.492 20.8729 17.8662 20.6242 17.2929L19.5037 14.7109C18.7733 13.0276 18.8421 11.0222 19.6785 9.41593L20.2273 8.36192C20.6838 7.48539 20.9434 6.5032 20.9917 5.5H22V3.5L2 3.5V5.5ZM8.875 7.91603L9.875 9.41603C10.0141 9.62468 10.2483 9.75001 10.499 9.75001H13.499C13.7498 9.75001 13.984 9.62468 14.1231 9.41603L15.1231 7.91603L13.875 7.08398L13.0976 8.25001H10.9004L10.1231 7.08398L8.875 7.91603Z',
-} as const;
+};
 
-export const IconTable03StrokeRounded = (props: TheIconProps) => {
+export const IconTable03StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -68,7 +69,7 @@ export const IconTable03StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTable03DuotoneRounded = (props: TheIconProps) => {
+export const IconTable03DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -118,7 +119,7 @@ export const IconTable03DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTable03TwotoneRounded = (props: TheIconProps) => {
+export const IconTable03TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -164,7 +165,7 @@ export const IconTable03TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTable03SolidRounded = (props: TheIconProps) => {
+export const IconTable03SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -186,7 +187,7 @@ export const IconTable03SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTable03BulkRounded = (props: TheIconProps) => {
+export const IconTable03BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -213,7 +214,7 @@ export const IconTable03BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTable03StrokeSharp = (props: TheIconProps) => {
+export const IconTable03StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -253,7 +254,7 @@ export const IconTable03StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTable03SolidSharp = (props: TheIconProps) => {
+export const IconTable03SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

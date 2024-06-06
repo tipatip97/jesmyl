@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M4.94436 8.04069L10.8282 8.04069M2 18L7.49762 12.5862C7.70914 12.3779 8.03957 12.3544 8.27806 12.5308L12.5239 15.6712C12.774 15.8563 13.1229 15.8204 13.3306 15.5883L21.2849 6.70262M18.1084 6H20.9306C21.4785 6 21.9259 6.44077 21.9371 6.99179L22 10.0649',
   d2: 'M2 18L6.73422 13.2658C7.3363 12.6637 7.63734 12.3627 8.01892 12.3415C8.40049 12.3204 8.73294 12.5863 9.39782 13.1183L11.5173 14.8138C12.2193 15.3754 12.5703 15.6562 12.9679 15.6225C13.3656 15.5887 13.6642 15.2527 14.2615 14.5808L21 7M18 6H20C20.9428 6 21.4142 6 21.7071 6.29289C22 6.58579 22 7.05719 22 8V10',
   d3: 'M5 8H11',
@@ -13,9 +14,9 @@ const d = {
   d9: 'M17 6H22V11',
   d10: 'M19.0859 7.5H16.5002V5.5H22.5002V11.5H20.5002V8.91421L11.5002 17.9142L7.50015 13.9142L2.91421 18.5001L1.5 17.0859L7.50015 11.0858L11.5002 15.0858L19.0859 7.5Z',
   d11: 'M10.5002 9.5H4.50024V7.5H10.5002V9.5Z',
-} as const;
+};
 
-export const IconAutoConversationsStrokeRounded = (props: TheIconProps) => {
+export const IconAutoConversationsStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -32,7 +33,7 @@ export const IconAutoConversationsStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAutoConversationsDuotoneRounded = (props: TheIconProps) => {
+export const IconAutoConversationsDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -57,7 +58,7 @@ export const IconAutoConversationsDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAutoConversationsTwotoneRounded = (props: TheIconProps) => {
+export const IconAutoConversationsTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -89,7 +90,7 @@ export const IconAutoConversationsTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAutoConversationsSolidRounded = (props: TheIconProps) => {
+export const IconAutoConversationsSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -109,7 +110,7 @@ export const IconAutoConversationsSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAutoConversationsBulkRounded = (props: TheIconProps) => {
+export const IconAutoConversationsBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -130,7 +131,7 @@ export const IconAutoConversationsBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAutoConversationsStrokeSharp = (props: TheIconProps) => {
+export const IconAutoConversationsStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -157,7 +158,7 @@ export const IconAutoConversationsStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconAutoConversationsSolidSharp = (props: TheIconProps) => {
+export const IconAutoConversationsSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

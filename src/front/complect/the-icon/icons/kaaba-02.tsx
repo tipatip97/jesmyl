@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M21 22V5C21 3.58579 21 2.87868 20.5607 2.43934C20.1213 2 19.4142 2 18 2H6C4.58579 2 3.87868 2 3.43934 2.43934C3 2.87868 3 3.58579 3 5V22',
   d2: 'M7 17C7 16.0572 7 15.5858 7.29289 15.2929C7.58579 15 8.05719 15 9 15H10C10.9428 15 11.4142 15 11.7071 15.2929C12 15.5858 12 16.0572 12 17V22H7V17Z',
   d3: 'M2 22H22',
@@ -27,9 +28,9 @@ const d = {
   d23: 'M21.75 19.75H12.75V22.75H21C21.4142 22.75 21.75 22.4142 21.75 22V19.75Z',
   d24: 'M11.25 15.75V22.75H7.75V15.75H11.25Z',
   d25: 'M6.25 22.75V19.75H2.25V22C2.25 22.4142 2.58579 22.75 3 22.75H6.25Z',
-} as const;
+};
 
-export const IconKaaba02StrokeRounded = (props: TheIconProps) => {
+export const IconKaaba02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -88,7 +89,7 @@ export const IconKaaba02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKaaba02DuotoneRounded = (props: TheIconProps) => {
+export const IconKaaba02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -154,7 +155,7 @@ export const IconKaaba02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKaaba02TwotoneRounded = (props: TheIconProps) => {
+export const IconKaaba02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -216,7 +217,7 @@ export const IconKaaba02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKaaba02SolidRounded = (props: TheIconProps) => {
+export const IconKaaba02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -250,7 +251,7 @@ export const IconKaaba02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKaaba02BulkRounded = (props: TheIconProps) => {
+export const IconKaaba02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -296,7 +297,7 @@ export const IconKaaba02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKaaba02StrokeSharp = (props: TheIconProps) => {
+export const IconKaaba02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -342,7 +343,7 @@ export const IconKaaba02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconKaaba02SolidSharp = (props: TheIconProps) => {
+export const IconKaaba02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

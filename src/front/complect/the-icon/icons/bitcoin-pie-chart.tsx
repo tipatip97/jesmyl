@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z',
   d2: 'M19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12Z',
   d3: 'M12 2V5M19 12H22M19 19L17 17',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M11.2615 1.25049C5.66765 1.63599 1.24951 6.29584 1.24951 11.9876C1.24951 17.9318 6.06822 22.7505 12.0124 22.7505C14.7142 22.7505 17.1836 21.7549 19.0735 20.1106L16.9425 17.9796C15.602 19.0838 13.8847 19.7469 12.0124 19.7469C7.72706 19.7469 4.25311 16.2729 4.25311 11.9876C4.25311 7.95557 7.32849 4.64185 11.2615 4.26417V1.25049Z',
   d12: 'M18.0044 16.9177L20.1355 19.0487C21.6261 17.3353 22.5836 15.1458 22.7495 12.7385H19.7358C19.5842 14.3177 18.9592 15.7586 18.0044 16.9177Z',
   d13: 'M5.74951 12.0005C5.74951 15.4523 8.54773 18.2505 11.9995 18.2505C15.4513 18.2505 18.2495 15.4523 18.2495 12.0005C18.2495 8.54871 15.4513 5.75049 11.9995 5.75049C8.54773 5.75049 5.74951 8.54871 5.74951 12.0005ZM12.7495 8.58382V7.25049H11.2495V8.58382L8.74951 8.58382V10.0838H9.68701L9.68701 13.9172L8.74951 13.9172V15.4172L11.2495 15.4172V16.7505H12.7495V15.4172H13.562C14.5389 15.4172 15.2495 14.5873 15.2495 13.6672V13.0005C15.2495 12.6381 15.1393 12.2897 14.946 12.0005C15.1393 11.7113 15.2495 11.3629 15.2495 11.0005V10.3338C15.2495 9.41365 14.5389 8.58382 13.562 8.58382H12.7495ZM11.187 11.2505L11.187 10.0838L13.562 10.0838C13.6207 10.0838 13.7495 10.1494 13.7495 10.3338V11.0005C13.7495 11.1849 13.6207 11.2505 13.562 11.2505L11.187 11.2505ZM11.187 12.7505L13.562 12.7505C13.6207 12.7505 13.7495 12.8161 13.7495 13.0005V13.6672C13.7495 13.8516 13.6207 13.9172 13.562 13.9172H11.187V12.7505Z',
-} as const;
+};
 
-export const IconBitcoinPieChartStrokeRounded = (props: TheIconProps) => {
+export const IconBitcoinPieChartStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -51,7 +52,7 @@ export const IconBitcoinPieChartStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBitcoinPieChartDuotoneRounded = (props: TheIconProps) => {
+export const IconBitcoinPieChartDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -90,7 +91,7 @@ export const IconBitcoinPieChartDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBitcoinPieChartTwotoneRounded = (props: TheIconProps) => {
+export const IconBitcoinPieChartTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -125,7 +126,7 @@ export const IconBitcoinPieChartTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBitcoinPieChartSolidRounded = (props: TheIconProps) => {
+export const IconBitcoinPieChartSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -153,7 +154,7 @@ export const IconBitcoinPieChartSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBitcoinPieChartBulkRounded = (props: TheIconProps) => {
+export const IconBitcoinPieChartBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -184,7 +185,7 @@ export const IconBitcoinPieChartBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBitcoinPieChartStrokeSharp = (props: TheIconProps) => {
+export const IconBitcoinPieChartStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -215,7 +216,7 @@ export const IconBitcoinPieChartStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBitcoinPieChartSolidSharp = (props: TheIconProps) => {
+export const IconBitcoinPieChartSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

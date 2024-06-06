@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M6.5 9.5C6.5 6.46243 8.96243 4 12 4C15.0376 4 17.5 6.46243 17.5 9.5V16C17.5 17.4142 17.5 18.1213 17.0607 18.5607C16.6213 19 15.9142 19 14.5 19H9.5C8.08579 19 7.37868 19 6.93934 18.5607C6.5 18.1213 6.5 17.4142 6.5 16V9.5Z',
   d2: 'M20 11V17',
   d3: 'M15 19V22',
@@ -25,9 +26,9 @@ const d = {
   d21: 'M3 17.25V11.25H5V17.25H3Z',
   d22: 'M18.25 19.25V11H5.75V19.25C5.75 19.6642 6.08579 20 6.5 20H17.5C17.9142 20 18.25 19.6642 18.25 19.25Z',
   d23: 'M9.07991 4.22269C7.16854 5.23456 5.84504 7.20883 5.75491 9.5H18.2451C18.155 7.20906 16.8317 5.23495 14.9207 4.22298L16.1004 2.65L14.9004 1.75L13.4594 3.67131C12.9912 3.55931 12.5025 3.5 12 3.5C11.4977 3.5 11.0093 3.55925 10.5413 3.67115L9.10039 1.75L7.90039 2.65L9.07991 4.22269Z',
-} as const;
+};
 
-export const IconAndroidStrokeRounded = (props: TheIconProps) => {
+export const IconAndroidStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -84,7 +85,7 @@ export const IconAndroidStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAndroidDuotoneRounded = (props: TheIconProps) => {
+export const IconAndroidDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -146,7 +147,7 @@ export const IconAndroidDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAndroidTwotoneRounded = (props: TheIconProps) => {
+export const IconAndroidTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -205,7 +206,7 @@ export const IconAndroidTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAndroidSolidRounded = (props: TheIconProps) => {
+export const IconAndroidSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -253,7 +254,7 @@ export const IconAndroidSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAndroidBulkRounded = (props: TheIconProps) => {
+export const IconAndroidBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -295,7 +296,7 @@ export const IconAndroidBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAndroidStrokeSharp = (props: TheIconProps) => {
+export const IconAndroidStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -346,7 +347,7 @@ export const IconAndroidStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconAndroidSolidSharp = (props: TheIconProps) => {
+export const IconAndroidSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

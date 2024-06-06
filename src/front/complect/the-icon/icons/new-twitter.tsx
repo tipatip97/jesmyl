@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 21L10.5484 13.4516M21 3L13.4516 10.5484M13.4516 10.5484L8 3H3L10.5484 13.4516M13.4516 10.5484L21 21H16L10.5484 13.4516',
   d2: 'M8 3H3L10.5484 13.4516L16 21H21L13.4516 10.5484L8 3Z',
   d3: 'M3 21L10.5484 13.4516M21 3L13.4516 10.5484',
@@ -10,9 +11,9 @@ const d = {
   d6: 'M2.53557 20.0856L20.0856 2.53557C20.4663 2.15481 21.0837 2.15481 21.4644 2.53557C21.8452 2.91633 21.8452 3.53367 21.4644 3.91443L3.91443 21.4644C3.53367 21.8452 2.91634 21.8452 2.53557 21.4644C2.15481 21.0837 2.15481 20.4663 2.53557 20.0856Z',
   d7: 'M1.75006 2.25H8.16673L22.2501 21.75H15.8334L1.75006 2.25Z',
   d8: 'M22.2497 2.24951L4.45448 21.7495H1.74969L19.5449 2.24951H22.2497Z',
-} as const;
+};
 
-export const IconNewTwitterStrokeRounded = (props: TheIconProps) => {
+export const IconNewTwitterStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -29,7 +30,7 @@ export const IconNewTwitterStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNewTwitterDuotoneRounded = (props: TheIconProps) => {
+export const IconNewTwitterDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -51,7 +52,7 @@ export const IconNewTwitterDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNewTwitterTwotoneRounded = (props: TheIconProps) => {
+export const IconNewTwitterTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -76,7 +77,7 @@ export const IconNewTwitterTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNewTwitterSolidRounded = (props: TheIconProps) => {
+export const IconNewTwitterSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -90,7 +91,7 @@ export const IconNewTwitterSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNewTwitterBulkRounded = (props: TheIconProps) => {
+export const IconNewTwitterBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -109,7 +110,7 @@ export const IconNewTwitterBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNewTwitterStrokeSharp = (props: TheIconProps) => {
+export const IconNewTwitterStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -125,7 +126,7 @@ export const IconNewTwitterStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconNewTwitterSolidSharp = (props: TheIconProps) => {
+export const IconNewTwitterSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

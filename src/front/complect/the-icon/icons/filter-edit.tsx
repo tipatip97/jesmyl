@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M13.2423 17.5C13.1952 17.8033 13.1528 18.0485 13.1161 18.2442C12.8873 19.4657 11.1552 20.2006 10.228 20.8563C9.67601 21.2466 9.00625 20.782 8.93473 20.1778C8.79838 19.0261 8.54156 16.6864 8.26122 13.2614C8.23604 12.9539 8.08681 12.6761 7.85941 12.5061C5.37096 10.6456 3.59759 8.59915 2.62929 7.44867C2.32955 7.09253 2.23133 6.8319 2.17228 6.3728C1.97006 4.8008 1.86896 4.0148 2.3299 3.5074C2.79085 3 3.60599 3 5.23628 3H16.7677C18.398 3 19.2131 3 19.674 3.5074C19.8976 3.75346 19.9889 4.06504 20.0007 4.5',
   d2: 'M20.8624 7.43922L21.5567 8.13158C22.1441 8.71737 22.1441 9.66711 21.5567 10.2529L17.9192 13.9486C17.6331 14.2339 17.2671 14.4263 16.8693 14.5004L14.6149 14.9884C14.259 15.0655 13.942 14.7503 14.0183 14.3951L14.4981 12.1598C14.5724 11.7631 14.7653 11.3981 15.0515 11.1128L18.7352 7.43921C19.3226 6.85343 20.275 6.85343 20.8624 7.43922Z',
   d3: 'M2.62601 7.44867C3.59527 8.59915 5.37039 10.6456 7.8613 12.5061C8.08893 12.6761 8.2383 12.9539 8.26351 13.2614C8.54413 16.6864 8.8012 19.0261 8.93769 20.1778C9.00928 20.782 9.6797 21.2466 10.2322 20.8563C10.4424 20.7079 10.6938 20.5553 10.9598 20.394C11.8683 19.8428 12.946 19.1891 13.1231 18.2442C13.2651 17.4876 13.4931 15.992 13.7404 13.2614C13.768 12.9567 13.9168 12.6821 14.1426 12.5135C14.2337 12.4455 14.324 12.3772 14.4132 12.3087C14.5262 11.8628 14.6984 11.4446 15.0316 11.1117L18.3427 7.80388C18.6763 7.47055 18.8432 7.30385 19.0168 7.20375C19.2241 7.0842 19.4525 7.01727 19.6834 7.00293C19.7678 6.82048 19.8127 6.62708 19.8454 6.37281C20.0478 4.8008 20.149 4.0148 19.6875 3.5074C19.2262 3 18.4103 3 16.7784 3H5.23558C3.60367 3 2.78773 3 2.32632 3.5074C1.86493 4.0148 1.96613 4.8008 2.16855 6.3728C2.22765 6.8319 2.32597 7.09253 2.62601 7.44867Z',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M19.4559 7.06882L14.0031 12.5105L14.0029 15.0442H16.4798L21.9714 9.57685C22.0106 9.53779 22.0106 9.47434 21.9714 9.43526L19.5974 7.06878C19.5583 7.02979 19.495 7.02981 19.4559 7.06882Z',
   d11: 'M18.9697 6.46967C19.2626 6.17678 19.7374 6.17678 20.0303 6.46967L22.5303 8.96967C22.8232 9.26256 22.8232 9.73744 22.5303 10.0303L16.8107 15.75H13.25V12.1893L18.9697 6.46967Z',
   d12: 'M2 2.25C1.80106 2.25 1.61027 2.32904 1.46961 2.46973C1.32896 2.61041 1.24996 2.80122 1.25 3.00016L1.25094 7.35131L7.28792 12.3829L8.25459 21.0828C8.28167 21.3265 8.42618 21.5416 8.64159 21.6588C8.85699 21.776 9.11608 21.7805 9.33541 21.6708L13.6869 19.4951L14.0076 17.25H11.75V11.568L17.909 5.40901C18.6814 4.63665 19.8756 4.54319 20.75 5.12865V3C20.75 2.58579 20.4142 2.25 20 2.25H2Z',
-} as const;
+};
 
-export const IconFilterEditStrokeRounded = (props: TheIconProps) => {
+export const IconFilterEditStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -40,7 +41,7 @@ export const IconFilterEditStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterEditDuotoneRounded = (props: TheIconProps) => {
+export const IconFilterEditDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -69,7 +70,7 @@ export const IconFilterEditDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterEditTwotoneRounded = (props: TheIconProps) => {
+export const IconFilterEditTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -94,7 +95,7 @@ export const IconFilterEditTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterEditSolidRounded = (props: TheIconProps) => {
+export const IconFilterEditSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -112,7 +113,7 @@ export const IconFilterEditSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterEditBulkRounded = (props: TheIconProps) => {
+export const IconFilterEditBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -131,7 +132,7 @@ export const IconFilterEditBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterEditStrokeSharp = (props: TheIconProps) => {
+export const IconFilterEditStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -151,7 +152,7 @@ export const IconFilterEditStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterEditSolidSharp = (props: TheIconProps) => {
+export const IconFilterEditSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

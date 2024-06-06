@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9.7812 3.09766L5.6718 5.89369C4.3639 6.78359 3.70995 7.22854 3.35498 7.90548C3 8.58242 3 9.38456 3 10.9888V17.9176C3 19.8421 3 20.8043 3.58579 21.4021C4.17157 22 5.11438 22 7 22H17C18.8856 22 19.8284 22 20.4142 21.4021C21 20.8043 21 19.8421 21 17.9176V10.9888C21 9.38456 21 8.58242 20.645 7.90548C20.29 7.22854 19.6361 6.78359 18.3282 5.89369L14.2188 3.09766C13.1433 2.36589 12.6056 2 12 2C11.3944 2 10.8567 2.36589 9.7812 3.09766Z',
   d2: 'M7 22V15C7 13.1144 7 12.1716 7.58579 11.5858C8.17157 11 9.11438 11 11 11H13C14.8856 11 15.8284 11 16.4142 11.5858C17 12.1716 17 13.1144 17 15V22',
   d3: 'M7 14H17',
@@ -23,9 +24,9 @@ const d = {
   d19: 'M7.75 22.75H16.25V19.75H7.75V22.75Z',
   d20: 'M7.75 16.75V18.25H16.25V16.75H7.75Z',
   d21: 'M16.25 15.25H7.75V13.75H16.25V15.25Z',
-} as const;
+};
 
-export const IconGarageStrokeRounded = (props: TheIconProps) => {
+export const IconGarageStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -70,7 +71,7 @@ export const IconGarageStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGarageDuotoneRounded = (props: TheIconProps) => {
+export const IconGarageDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -120,7 +121,7 @@ export const IconGarageDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGarageTwotoneRounded = (props: TheIconProps) => {
+export const IconGarageTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -152,7 +153,7 @@ export const IconGarageTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGarageSolidRounded = (props: TheIconProps) => {
+export const IconGarageSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -168,7 +169,7 @@ export const IconGarageSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGarageBulkRounded = (props: TheIconProps) => {
+export const IconGarageBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -195,7 +196,7 @@ export const IconGarageBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGarageStrokeSharp = (props: TheIconProps) => {
+export const IconGarageStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -230,7 +231,7 @@ export const IconGarageStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGarageSolidSharp = (props: TheIconProps) => {
+export const IconGarageSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

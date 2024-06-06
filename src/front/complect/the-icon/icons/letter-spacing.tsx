@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 22V2',
   d2: 'M22 22V2',
   d3: 'M7 18L10.6534 7.48635C10.9447 6.81279 11.4878 5.99657 11.9467 6.00001C12.6263 6.00511 12.9827 6.70758 13.3774 7.48635C13.7721 8.26513 17 18 17 18M9.01312 12.9912L14.8945 12.9293',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M3 2L3 22L1 22L1 2L3 2Z',
   d13: 'M23 2L23 22L21 22L21 2L23 2Z',
   d14: 'M10.8068 5H13.1928L17.9361 17.6489L16.0635 18.3511L14.4318 14H9.56781L7.93613 18.3511L6.06348 17.6489L10.8068 5ZM10.3178 12H13.6818L11.9998 7.51467L10.3178 12Z',
-} as const;
+};
 
-export const IconLetterSpacingStrokeRounded = (props: TheIconProps) => {
+export const IconLetterSpacingStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -47,7 +48,7 @@ export const IconLetterSpacingStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLetterSpacingDuotoneRounded = (props: TheIconProps) => {
+export const IconLetterSpacingDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconLetterSpacingDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLetterSpacingTwotoneRounded = (props: TheIconProps) => {
+export const IconLetterSpacingTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -112,7 +113,7 @@ export const IconLetterSpacingTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLetterSpacingSolidRounded = (props: TheIconProps) => {
+export const IconLetterSpacingSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -140,7 +141,7 @@ export const IconLetterSpacingSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLetterSpacingBulkRounded = (props: TheIconProps) => {
+export const IconLetterSpacingBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -169,7 +170,7 @@ export const IconLetterSpacingBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLetterSpacingStrokeSharp = (props: TheIconProps) => {
+export const IconLetterSpacingStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -197,7 +198,7 @@ export const IconLetterSpacingStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconLetterSpacingSolidSharp = (props: TheIconProps) => {
+export const IconLetterSpacingSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

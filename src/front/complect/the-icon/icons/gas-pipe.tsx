@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 17.5H8M8 20.5H2',
   d2: 'M16 17.5H22M22 20.5H16',
   d3: 'M13.5 12H10.5V16H13.5V12Z',
@@ -25,9 +26,9 @@ const d = {
   d21: 'M7.25 15.25H16.75V22.75H7.25V15.25Z',
   d22: 'M5.75 16.75H1.25V21.25H5.75V16.75Z',
   d23: 'M18.25 21.25H22.75V16.75H18.25V21.25Z',
-} as const;
+};
 
-export const IconGasPipeStrokeRounded = (props: TheIconProps) => {
+export const IconGasPipeStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -77,7 +78,7 @@ export const IconGasPipeStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGasPipeDuotoneRounded = (props: TheIconProps) => {
+export const IconGasPipeDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -148,7 +149,7 @@ export const IconGasPipeDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGasPipeTwotoneRounded = (props: TheIconProps) => {
+export const IconGasPipeTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -202,7 +203,7 @@ export const IconGasPipeTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGasPipeSolidRounded = (props: TheIconProps) => {
+export const IconGasPipeSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -234,7 +235,7 @@ export const IconGasPipeSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGasPipeBulkRounded = (props: TheIconProps) => {
+export const IconGasPipeBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -272,7 +273,7 @@ export const IconGasPipeBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGasPipeStrokeSharp = (props: TheIconProps) => {
+export const IconGasPipeStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -318,7 +319,7 @@ export const IconGasPipeStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGasPipeSolidSharp = (props: TheIconProps) => {
+export const IconGasPipeSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

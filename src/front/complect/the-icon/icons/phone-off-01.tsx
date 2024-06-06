@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9 2L9.089 2.53402C9.28188 3.69129 9.37832 4.26993 9.77519 4.62204C10.1892 4.98934 10.7761 5 12 5C13.2239 5 13.8108 4.98934 14.2248 4.62204C14.6217 4.26993 14.7181 3.69129 14.911 2.53402L15 2',
   d2: 'M11 19H13',
   d3: 'M2 2L22 22',
@@ -25,9 +26,9 @@ const d = {
   d21: 'M5.18198 2H19V15.818M19 18.9989V22H5V4.99887',
   d22: 'M8.4269 1.25H4.99414C4.92874 1.25 4.8653 1.25837 4.80483 1.2741L19.7441 16.2134V2C19.7441 1.58579 19.4084 1.25 18.9941 1.25H15.5583L14.5584 4.74999H9.4269L8.4269 1.25ZM4.24414 22C4.24414 22.4142 4.57993 22.75 4.99414 22.75H18.9941C19.4084 22.75 19.7441 22.4142 19.7441 22V19.7489L4.24414 4.24894V22ZM9.98693 1.25H13.9983L13.4269 3.24999H10.5584L9.98693 1.25ZM10.498 19.75H13.498V18.25H10.498V19.75Z',
   d23: 'M21.3338 22.75L1.24805 2.66421L2.66226 1.25L22.748 21.3358L21.3338 22.75Z',
-} as const;
+};
 
-export const IconPhoneOff01StrokeRounded = (props: TheIconProps) => {
+export const IconPhoneOff01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -71,7 +72,7 @@ export const IconPhoneOff01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPhoneOff01DuotoneRounded = (props: TheIconProps) => {
+export const IconPhoneOff01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -120,7 +121,7 @@ export const IconPhoneOff01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPhoneOff01TwotoneRounded = (props: TheIconProps) => {
+export const IconPhoneOff01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -159,7 +160,7 @@ export const IconPhoneOff01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPhoneOff01SolidRounded = (props: TheIconProps) => {
+export const IconPhoneOff01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -181,7 +182,7 @@ export const IconPhoneOff01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPhoneOff01BulkRounded = (props: TheIconProps) => {
+export const IconPhoneOff01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -214,7 +215,7 @@ export const IconPhoneOff01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPhoneOff01StrokeSharp = (props: TheIconProps) => {
+export const IconPhoneOff01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -247,7 +248,7 @@ export const IconPhoneOff01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPhoneOff01SolidSharp = (props: TheIconProps) => {
+export const IconPhoneOff01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

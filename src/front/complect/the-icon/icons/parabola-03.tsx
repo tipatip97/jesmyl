@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M21 2C21 10.2843 16.9706 17 12 17C7.02944 17 3 10.2843 3 2',
   d2: 'M2 20H22',
   d3: 'M9.5 4.5C11.1 2.68572 11.45 2 12 2M14.5 4.5C12.9 2.68572 12.55 2 12 2M12 2V22',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M12.0001 1.5L15.7072 5.20711L14.293 6.62132L13.0001 5.32843V22.5005H11.0001V5.32843L9.70718 6.62132L8.29297 5.20711L12.0001 1.5Z',
   d12: 'M22 21.501H2V19.501H22V21.501Z',
   d13: 'M6.49353 12.5931C8.02608 15.1473 10.004 16.501 12 16.501C13.996 16.501 15.9739 15.1473 17.5065 12.5931C19.0271 10.0587 20 6.49303 20 2.50098H22C22 6.79319 20.9582 10.7275 19.2215 13.6221C17.4966 16.4968 14.9745 18.501 12 18.501C9.02546 18.501 6.50336 16.4968 4.77855 13.6221C3.04179 10.7275 2 6.79319 2 2.50098H4C4 6.49303 4.97293 10.0587 6.49353 12.5931Z',
-} as const;
+};
 
-export const IconParabola03StrokeRounded = (props: TheIconProps) => {
+export const IconParabola03StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -46,7 +47,7 @@ export const IconParabola03StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParabola03DuotoneRounded = (props: TheIconProps) => {
+export const IconParabola03DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -80,7 +81,7 @@ export const IconParabola03DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParabola03TwotoneRounded = (props: TheIconProps) => {
+export const IconParabola03TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconParabola03TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParabola03SolidRounded = (props: TheIconProps) => {
+export const IconParabola03SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -136,7 +137,7 @@ export const IconParabola03SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParabola03BulkRounded = (props: TheIconProps) => {
+export const IconParabola03BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -163,7 +164,7 @@ export const IconParabola03BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParabola03StrokeSharp = (props: TheIconProps) => {
+export const IconParabola03StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -188,7 +189,7 @@ export const IconParabola03StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconParabola03SolidSharp = (props: TheIconProps) => {
+export const IconParabola03SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

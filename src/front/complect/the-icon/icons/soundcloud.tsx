@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M8 6V19M5.00018 9.87917V18.9079M2 11.6296V17.1574',
   d2: 'M17.4776 10.6001C17.485 10.6 17.4925 10.6 17.5 10.6C19.9853 10.6 22 12.4804 22 14.8C22 17.1196 19.9853 19 17.5 19H14M17.4776 10.6001C17.4924 10.4463 17.5 10.2907 17.5 10.1333C17.5 7.29827 15.0376 5 12 5H11V19M17.4776 10.6001C17.3753 11.6589 16.9286 12.625 16.2428 13.4',
   d3: 'M17.5 10.1333C17.5 7.29827 15.0376 5 12 5C11.4477 5 11 5.44772 11 6V19H14H17.5C19.9853 19 22 17.1196 22 14.8C22 12.4804 19.9853 10.6 17.5 10.6L17.4776 10.6001C17.4924 10.4463 17.5 10.2907 17.5 10.1333Z',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M4.25018 19.6579V9.87917H5.75018V19.6579H4.25018Z',
   d11: 'M1.25 17.9074V11.6296H2.75V17.9074H1.25Z',
   d12: 'M12 4.25C15.3215 4.25 18.1146 6.71493 18.2452 9.89994C20.7562 10.2389 22.75 12.2646 22.75 14.8C22.75 17.5817 20.3499 19.75 17.5 19.75H10.25V4.25H12Z',
-} as const;
+};
 
-export const IconSoundcloudStrokeRounded = (props: TheIconProps) => {
+export const IconSoundcloudStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -40,7 +41,7 @@ export const IconSoundcloudStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoundcloudDuotoneRounded = (props: TheIconProps) => {
+export const IconSoundcloudDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -69,7 +70,7 @@ export const IconSoundcloudDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoundcloudTwotoneRounded = (props: TheIconProps) => {
+export const IconSoundcloudTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -94,7 +95,7 @@ export const IconSoundcloudTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoundcloudSolidRounded = (props: TheIconProps) => {
+export const IconSoundcloudSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -114,7 +115,7 @@ export const IconSoundcloudSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoundcloudBulkRounded = (props: TheIconProps) => {
+export const IconSoundcloudBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -135,7 +136,7 @@ export const IconSoundcloudBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoundcloudStrokeSharp = (props: TheIconProps) => {
+export const IconSoundcloudStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -156,7 +157,7 @@ export const IconSoundcloudStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSoundcloudSolidSharp = (props: TheIconProps) => {
+export const IconSoundcloudSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

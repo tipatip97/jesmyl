@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M4 18.001C2.74418 16.3295 2 14.2516 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 14.2516 21.2558 16.3295 20 18.001',
   d2: 'M7.52779 16C6.57771 14.9385 6 13.5367 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 13.5367 17.4223 14.9385 16.4722 16',
   d3: 'M12 12V22M9 22H15',
@@ -12,9 +13,9 @@ const d = {
   d8: 'M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 13.9761 20.3643 15.8009 19.2858 17.2848L20.8746 18.4998C22.2104 16.6787 23 14.4302 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 14.4302 1.78926 16.6789 3.12504 18.5L4.71413 17.2848C3.6357 15.8009 3 13.976 3 12Z',
   d9: 'M7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 13.0615 16.6701 14.0442 16.1064 14.8535L17.6963 16.0693C18.5165 14.9227 19 13.5169 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 13.5169 5.48345 14.9226 6.30371 16.0692L7.89352 14.8535C7.32984 14.0442 7 13.0614 7 12Z',
   d10: 'M11 21V12H13V21H15V23H9V21H11Z',
-} as const;
+};
 
-export const IconInternetAntenna03StrokeRounded = (props: TheIconProps) => {
+export const IconInternetAntenna03StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -42,7 +43,7 @@ export const IconInternetAntenna03StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconInternetAntenna03DuotoneRounded = (props: TheIconProps) => {
+export const IconInternetAntenna03DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -75,7 +76,7 @@ export const IconInternetAntenna03DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconInternetAntenna03TwotoneRounded = (props: TheIconProps) => {
+export const IconInternetAntenna03TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -105,7 +106,7 @@ export const IconInternetAntenna03TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconInternetAntenna03SolidRounded = (props: TheIconProps) => {
+export const IconInternetAntenna03SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconInternetAntenna03SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconInternetAntenna03BulkRounded = (props: TheIconProps) => {
+export const IconInternetAntenna03BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -162,7 +163,7 @@ export const IconInternetAntenna03BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconInternetAntenna03StrokeSharp = (props: TheIconProps) => {
+export const IconInternetAntenna03StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -190,7 +191,7 @@ export const IconInternetAntenna03StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconInternetAntenna03SolidSharp = (props: TheIconProps) => {
+export const IconInternetAntenna03SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

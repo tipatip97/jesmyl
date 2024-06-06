@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M6.5 9H5.5M10.5 9H9.5M6.5 6H5.5M10.5 6H9.5',
   d2: 'M18.5 15H17.5M18.5 11H17.5',
   d3: 'M14 8V22H18C19.8856 22 20.8284 22 21.4142 21.4142C22 20.8284 22 19.8856 22 18V12C22 10.1144 22 9.17157 21.4142 8.58579C20.8284 8 19.8856 8 18 8H14ZM14 8C14 5.17157 14 3.75736 13.1213 2.87868C12.2426 2 10.8284 2 8 2C5.17157 2 3.75736 2 2.87868 2.87868C2 3.75736 2 5.17157 2 8V10',
@@ -30,9 +31,9 @@ const d = {
   d26: 'M2.22727 1.25C1.68754 1.25 1.25 1.68754 1.25 2.22727V11.0227H3.20455V3.20455H12.9773V21.7727C12.9773 22.3124 13.4148 22.75 13.9545 22.75L21.7727 22.75C22.0319 22.75 22.2805 22.647 22.4638 22.4638C22.647 22.2805 22.75 22.0319 22.75 21.7727V8.09088C22.75 7.55115 22.3125 7.11361 21.7727 7.11361H14.9318V2.22727C14.9318 1.68754 14.4943 1.25 13.9545 1.25H2.22727ZM19 10.25H17V11.75H19V10.25ZM19 14.25H17V15.75H19V14.25Z',
   d27: 'M3.25 14C3.25 12.4812 4.48122 11.25 6 11.25C7.51878 11.25 8.75 12.4812 8.75 14C8.75 15.5188 7.51878 16.75 6 16.75C4.48122 16.75 3.25 15.5188 3.25 14Z',
   d28: 'M2.63035 18.7444C3.47183 17.8673 4.65909 17.25 6 17.25C7.34091 17.25 8.52817 17.8673 9.36965 18.7444C10.207 19.6172 10.75 20.7969 10.75 22C10.75 22.4142 10.4142 22.75 10 22.75H2C1.58579 22.75 1.25 22.4142 1.25 22C1.25 20.7969 1.79304 19.6172 2.63035 18.7444Z',
-} as const;
+};
 
-export const IconPermanentJobStrokeRounded = (props: TheIconProps) => {
+export const IconPermanentJobStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -73,7 +74,7 @@ export const IconPermanentJobStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPermanentJobDuotoneRounded = (props: TheIconProps) => {
+export const IconPermanentJobDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -121,7 +122,7 @@ export const IconPermanentJobDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPermanentJobTwotoneRounded = (props: TheIconProps) => {
+export const IconPermanentJobTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -163,7 +164,7 @@ export const IconPermanentJobTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPermanentJobSolidRounded = (props: TheIconProps) => {
+export const IconPermanentJobSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -193,7 +194,7 @@ export const IconPermanentJobSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPermanentJobBulkRounded = (props: TheIconProps) => {
+export const IconPermanentJobBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -229,7 +230,7 @@ export const IconPermanentJobBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPermanentJobStrokeSharp = (props: TheIconProps) => {
+export const IconPermanentJobStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -267,7 +268,7 @@ export const IconPermanentJobStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPermanentJobSolidSharp = (props: TheIconProps) => {
+export const IconPermanentJobSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

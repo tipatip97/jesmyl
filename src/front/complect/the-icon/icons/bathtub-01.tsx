@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M6 20L5 21M18 20L19 21',
   d2: 'M3 12V13C3 16.2998 3 17.9497 4.02513 18.9749C5.05025 20 6.70017 20 10 20H14C17.2998 20 18.9497 20 19.9749 18.9749C21 17.9497 21 16.2998 21 13V12',
   d3: 'M2 12H22',
@@ -23,9 +24,9 @@ const d = {
   d19: 'M22 12.25H2V10.25H22V12.25Z',
   d20: 'M6.5234 4.25C5.68205 4.25 5 4.93205 5 5.7734V11.25H3V5.7734C3 3.82748 4.57748 2.25 6.5234 2.25C8.08481 2.25 9.45999 3.27764 9.90241 4.77506L9.95902 4.96665L8.04098 5.53335L7.98438 5.34175L8.94339 5.05841L7.98438 5.34175C7.79309 4.69432 7.19851 4.25 6.5234 4.25Z',
   d21: 'M11.1249 5.03085L8.62488 7.03085L7.37549 5.46912L9.87549 3.46912L11.1249 5.03085Z',
-} as const;
+};
 
-export const IconBathtub01StrokeRounded = (props: TheIconProps) => {
+export const IconBathtub01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -66,7 +67,7 @@ export const IconBathtub01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBathtub01DuotoneRounded = (props: TheIconProps) => {
+export const IconBathtub01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -112,7 +113,7 @@ export const IconBathtub01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBathtub01TwotoneRounded = (props: TheIconProps) => {
+export const IconBathtub01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -149,7 +150,7 @@ export const IconBathtub01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBathtub01SolidRounded = (props: TheIconProps) => {
+export const IconBathtub01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -175,7 +176,7 @@ export const IconBathtub01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBathtub01BulkRounded = (props: TheIconProps) => {
+export const IconBathtub01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -200,7 +201,7 @@ export const IconBathtub01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBathtub01StrokeSharp = (props: TheIconProps) => {
+export const IconBathtub01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -236,7 +237,7 @@ export const IconBathtub01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBathtub01SolidSharp = (props: TheIconProps) => {
+export const IconBathtub01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

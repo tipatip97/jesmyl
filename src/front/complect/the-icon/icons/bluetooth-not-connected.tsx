@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M4 3.99316L20 20.0139',
   d2: 'M12.0094 7.97988C12.0094 6.85164 11.8211 4.37383 12.4988 3.62166C13.3394 2.88749 16.666 5.7015 18.2835 7.05527C17.4525 7.90748 17.0866 8.7261 14.6659 10.5224',
   d3: 'M17.5002 17.5094C14.6596 19.5714 13.4835 20.7984 12.6288 20.4349C12.5439 20.3988 12.4741 20.3347 12.427 20.2553C11.9013 19.3692 12.0095 17.0485 12.0095 15.9707V11.9932L4.97754 16.7062',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M20.3358 21.75L2.25 3.66421L3.66421 2.25L21.75 20.3358L20.3358 21.75Z',
   d18: 'M11.5019 2.63283C11.8124 2.4545 12.1945 2.45581 12.5038 2.63627L18.5025 6.13624C18.7841 6.30056 18.9679 6.59186 18.995 6.91678C19.0222 7.24171 18.8892 7.55946 18.6387 7.76819L14.6942 11.1602L13.2745 9.74049L16.2626 7.14488L12.9999 5.24123V9.46588L10.9999 7.46588V3.5C10.9999 3.14192 11.1913 2.81117 11.5019 2.63283Z',
   d19: 'M12.4237 11.0944C12.775 11.2589 12.9995 11.6118 12.9996 11.9998L13.0007 18.7589L16.9956 16.428L18.0035 18.1555L12.5049 21.3637C12.1957 21.5442 11.8135 21.5455 11.503 21.3672C11.1925 21.1889 11.001 20.8582 11.001 20.5002L10.9999 14.1347L6.63974 17.7682L5.35938 16.2318L11.3594 11.2318C11.6575 10.9834 12.0723 10.9298 12.4237 11.0944Z',
-} as const;
+};
 
-export const IconBluetoothNotConnectedStrokeRounded = (props: TheIconProps) => {
+export const IconBluetoothNotConnectedStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -53,7 +54,7 @@ export const IconBluetoothNotConnectedStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBluetoothNotConnectedDuotoneRounded = (props: TheIconProps) => {
+export const IconBluetoothNotConnectedDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -88,7 +89,7 @@ export const IconBluetoothNotConnectedDuotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconBluetoothNotConnectedTwotoneRounded = (props: TheIconProps) => {
+export const IconBluetoothNotConnectedTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -119,7 +120,7 @@ export const IconBluetoothNotConnectedTwotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconBluetoothNotConnectedSolidRounded = (props: TheIconProps) => {
+export const IconBluetoothNotConnectedSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -147,7 +148,7 @@ export const IconBluetoothNotConnectedSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBluetoothNotConnectedBulkRounded = (props: TheIconProps) => {
+export const IconBluetoothNotConnectedBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -176,7 +177,7 @@ export const IconBluetoothNotConnectedBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBluetoothNotConnectedStrokeSharp = (props: TheIconProps) => {
+export const IconBluetoothNotConnectedStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -202,7 +203,7 @@ export const IconBluetoothNotConnectedStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBluetoothNotConnectedSolidSharp = (props: TheIconProps) => {
+export const IconBluetoothNotConnectedSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14.9805 7.01562C14.9805 7.01562 15.4805 7.51562 15.9805 8.51562C15.9805 8.51562 17.5687 6.01562 18.9805 5.51562',
   d2: 'M9.99485 2.02141C7.49638 1.91562 5.56612 2.20344 5.56612 2.20344C4.34727 2.29059 2.01146 2.97391 2.01148 6.9646C2.0115 10.9214 1.98564 15.7993 2.01148 17.744C2.01148 18.932 2.7471 21.7034 5.29326 21.8519C8.3881 22.0324 13.9627 22.0708 16.5205 21.8519C17.2051 21.8133 19.4846 21.2758 19.7731 18.7957C20.072 16.2264 20.0125 14.4407 20.0125 14.0157',
   d3: 'M21.9999 7.01562C21.9999 9.77705 19.7591 12.0156 16.995 12.0156C14.231 12.0156 11.9902 9.77705 11.9902 7.01562C11.9902 4.2542 14.231 2.01562 16.995 2.01562C19.7591 2.01562 21.9999 4.2542 21.9999 7.01562Z',
@@ -31,9 +32,9 @@ const d = {
   d27: 'M17 1.25C13.8244 1.25 11.25 3.82436 11.25 7C11.25 10.1756 13.8244 12.75 17 12.75C20.1756 12.75 22.75 10.1756 22.75 7C22.75 3.82436 20.1756 1.25 17 1.25ZM19.7804 6.03039L18.7197 4.96973L16.2501 7.4394L15.2804 6.46973L14.2197 7.53039L16.2501 9.56072L19.7804 6.03039Z',
   d28: 'M12 14H6V12H12V14Z',
   d29: 'M16 18L6 18L6 16L16 16V18Z',
-} as const;
+};
 
-export const IconDocumentValidationStrokeRounded = (props: TheIconProps) => {
+export const IconDocumentValidationStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -75,7 +76,7 @@ export const IconDocumentValidationStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDocumentValidationDuotoneRounded = (props: TheIconProps) => {
+export const IconDocumentValidationDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -122,7 +123,7 @@ export const IconDocumentValidationDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDocumentValidationTwotoneRounded = (props: TheIconProps) => {
+export const IconDocumentValidationTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -169,7 +170,7 @@ export const IconDocumentValidationTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDocumentValidationSolidRounded = (props: TheIconProps) => {
+export const IconDocumentValidationSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -191,7 +192,7 @@ export const IconDocumentValidationSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDocumentValidationBulkRounded = (props: TheIconProps) => {
+export const IconDocumentValidationBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -224,7 +225,7 @@ export const IconDocumentValidationBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDocumentValidationStrokeSharp = (props: TheIconProps) => {
+export const IconDocumentValidationStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -254,7 +255,7 @@ export const IconDocumentValidationStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconDocumentValidationSolidSharp = (props: TheIconProps) => {
+export const IconDocumentValidationSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

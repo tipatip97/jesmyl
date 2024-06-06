@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M19 12C19 13.6569 17.6569 15 16 15C14.3431 15 13 13.6569 13 12C13 10.3431 14.3431 9 16 9C17.6569 9 19 10.3431 19 12Z',
   d2: 'M16 6H8C4.68629 6 2 8.68629 2 12C2 15.3137 4.68629 18 8 18H16C19.3137 18 22 15.3137 22 12C22 8.68629 19.3137 6 16 6Z',
   d3: 'M8 6H16C19.3137 6 22 8.68629 22 12C22 15.3137 19.3137 18 16 18H8C4.68629 18 2 15.3137 2 12C2 8.68629 4.68629 6 8 6ZM16 15C17.6569 15 19 13.6569 19 12C19 10.3431 17.6569 9 16 9C14.3431 9 13 10.3431 13 12C13 13.6569 14.3431 15 16 15Z',
@@ -11,9 +12,9 @@ const d = {
   d7: 'M22 6H2V18H22V6Z',
   d8: 'M19 9H13V15H19V9Z',
   d9: 'M2 5.25C1.58579 5.25 1.25 5.58579 1.25 6V18C1.25 18.4142 1.58579 18.75 2 18.75H22C22.4142 18.75 22.75 18.4142 22.75 18V6C22.75 5.58579 22.4142 5.25 22 5.25H2ZM19.75 8.25H12.25V15.75H19.75V8.25Z',
-} as const;
+};
 
-export const IconToggleOnStrokeRounded = (props: TheIconProps) => {
+export const IconToggleOnStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -33,7 +34,7 @@ export const IconToggleOnStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToggleOnDuotoneRounded = (props: TheIconProps) => {
+export const IconToggleOnDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -60,7 +61,7 @@ export const IconToggleOnDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToggleOnTwotoneRounded = (props: TheIconProps) => {
+export const IconToggleOnTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconToggleOnTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToggleOnSolidRounded = (props: TheIconProps) => {
+export const IconToggleOnSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -97,7 +98,7 @@ export const IconToggleOnSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToggleOnBulkRounded = (props: TheIconProps) => {
+export const IconToggleOnBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -116,7 +117,7 @@ export const IconToggleOnBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconToggleOnStrokeSharp = (props: TheIconProps) => {
+export const IconToggleOnStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -137,7 +138,7 @@ export const IconToggleOnStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconToggleOnSolidSharp = (props: TheIconProps) => {
+export const IconToggleOnSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

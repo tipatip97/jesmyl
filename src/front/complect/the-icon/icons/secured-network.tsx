@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M6 13C6 9.68629 8.68629 7 12 7C15.3137 7 18 9.68629 18 13C18 16.3137 15.3137 19 12 19C8.68629 19 6 16.3137 6 13Z',
   d2: 'M15.5 8V5.52063C15.5 3.57624 13.933 2 12 2C10.067 2 8.5 3.57624 8.5 5.52063V8',
   d3: 'M11.9998 13H12.0088',
@@ -11,9 +12,9 @@ const d = {
   d7: 'M7.5 5.77063C7.5 3.2795 9.50919 1.25 12 1.25C14.4908 1.25 16.5 3.2795 16.5 5.77063V8.25H14.5V5.77063C14.5 4.37298 13.3752 3.25 12 3.25C10.6248 3.25 9.5 4.37298 9.5 5.77063V8.25H7.5V5.77063Z',
   d8: 'M12 6.25C8.27208 6.25 5.25 9.27208 5.25 13C5.25 16.7279 8.27208 19.75 12 19.75C15.7279 19.75 18.75 16.7279 18.75 13C18.75 9.27208 15.7279 6.25 12 6.25ZM13 12H11V14H13V12Z',
   d9: 'M11 20.75V18.75H13V20.75H20V22.75H4V20.75H11Z',
-} as const;
+};
 
-export const IconSecuredNetworkStrokeRounded = (props: TheIconProps) => {
+export const IconSecuredNetworkStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -47,7 +48,7 @@ export const IconSecuredNetworkStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSecuredNetworkDuotoneRounded = (props: TheIconProps) => {
+export const IconSecuredNetworkDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -86,7 +87,7 @@ export const IconSecuredNetworkDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSecuredNetworkTwotoneRounded = (props: TheIconProps) => {
+export const IconSecuredNetworkTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -122,7 +123,7 @@ export const IconSecuredNetworkTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSecuredNetworkSolidRounded = (props: TheIconProps) => {
+export const IconSecuredNetworkSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -144,7 +145,7 @@ export const IconSecuredNetworkSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSecuredNetworkBulkRounded = (props: TheIconProps) => {
+export const IconSecuredNetworkBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -167,7 +168,7 @@ export const IconSecuredNetworkBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSecuredNetworkStrokeSharp = (props: TheIconProps) => {
+export const IconSecuredNetworkStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -203,7 +204,7 @@ export const IconSecuredNetworkStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSecuredNetworkSolidSharp = (props: TheIconProps) => {
+export const IconSecuredNetworkSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

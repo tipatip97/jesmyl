@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7 15V7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7V15C17 16.6547 16.6547 17 15 17H9C7.34533 17 7 16.6547 7 15Z',
   d2: 'M10 6L11 5',
   d3: 'M11 8.5L13 6.5',
@@ -23,9 +24,9 @@ const d = {
   d19: 'M3 22.25V8.25H5V22.25H3ZM19 22.25V8.25H21V22.25H19Z',
   d20: 'M20 21.25H4V19.25H20V21.25Z',
   d21: 'M7 13.5H4V11.5H7V13.5ZM20 13.5H17V11.5H20V13.5Z',
-} as const;
+};
 
-export const IconMirrorStrokeRounded = (props: TheIconProps) => {
+export const IconMirrorStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -77,7 +78,7 @@ export const IconMirrorStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirrorDuotoneRounded = (props: TheIconProps) => {
+export const IconMirrorDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -134,7 +135,7 @@ export const IconMirrorDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirrorTwotoneRounded = (props: TheIconProps) => {
+export const IconMirrorTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -189,7 +190,7 @@ export const IconMirrorTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirrorSolidRounded = (props: TheIconProps) => {
+export const IconMirrorSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -217,7 +218,7 @@ export const IconMirrorSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirrorBulkRounded = (props: TheIconProps) => {
+export const IconMirrorBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -250,7 +251,7 @@ export const IconMirrorBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMirrorStrokeSharp = (props: TheIconProps) => {
+export const IconMirrorStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -289,7 +290,7 @@ export const IconMirrorStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMirrorSolidSharp = (props: TheIconProps) => {
+export const IconMirrorSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

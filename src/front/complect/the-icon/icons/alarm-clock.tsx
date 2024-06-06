@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5 19L3 21M19 19L21 21',
   d2: 'M19 3.5697L19.5955 3.27195C20.4408 2.84932 20.7583 2.89769 21.4303 3.5697C22.1023 4.2417 22.1507 4.55924 21.728 5.4045L21.4303 6M5 3.5697L4.4045 3.27195C3.55924 2.84932 3.2417 2.89769 2.5697 3.5697C1.89769 4.2417 1.84932 4.55924 2.27195 5.4045L2.5697 6',
   d3: 'M12 9.5V13.5L14 15.5',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M1.25 5.78479L4.26437 2.85449L5.66856 4.28523L2.65419 7.21553L1.25 5.78479ZM21.3458 7.21554L18.3314 4.28524L19.7356 2.8545L22.75 5.7848L21.3458 7.21554Z',
   d19: 'M12 22.5C16.9706 22.5 21 18.4706 21 13.5C21 8.52944 16.9706 4.5 12 4.5C7.02944 4.5 3 8.52944 3 13.5C3 18.4706 7.02944 22.5 12 22.5ZM12.75 13.6893V9H11.25V14.3107L13.9697 17.0303L15.0303 15.9697L12.75 13.6893Z',
   d20: 'M11 3.5H9V1.5H15V3.5H13V5H11V3.5Z',
-} as const;
+};
 
-export const IconAlarmClockStrokeRounded = (props: TheIconProps) => {
+export const IconAlarmClockStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -75,7 +76,7 @@ export const IconAlarmClockStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlarmClockDuotoneRounded = (props: TheIconProps) => {
+export const IconAlarmClockDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -132,7 +133,7 @@ export const IconAlarmClockDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlarmClockTwotoneRounded = (props: TheIconProps) => {
+export const IconAlarmClockTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -185,7 +186,7 @@ export const IconAlarmClockTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlarmClockSolidRounded = (props: TheIconProps) => {
+export const IconAlarmClockSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -221,7 +222,7 @@ export const IconAlarmClockSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlarmClockBulkRounded = (props: TheIconProps) => {
+export const IconAlarmClockBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -256,7 +257,7 @@ export const IconAlarmClockBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlarmClockStrokeSharp = (props: TheIconProps) => {
+export const IconAlarmClockStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -296,7 +297,7 @@ export const IconAlarmClockStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconAlarmClockSolidSharp = (props: TheIconProps) => {
+export const IconAlarmClockSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

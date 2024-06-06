@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 3H21',
   d2: 'M3 21H21',
   d3: 'M3 9H5',
@@ -24,9 +25,9 @@ const d = {
   d20: 'M2 14H5V16H2V14Z',
   d21: 'M19 14H22V16H19V14Z',
   d22: 'M7.25 8C7.25 7.58579 7.58579 7.25 8 7.25H16C16.4142 7.25 16.75 7.58579 16.75 8V16C16.75 16.4142 16.4142 16.75 16 16.75H8C7.58579 16.75 7.25 16.4142 7.25 16V8Z',
-} as const;
+};
 
-export const IconTextCenterlineMiddleStrokeRounded = (props: TheIconProps) => {
+export const IconTextCenterlineMiddleStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -85,7 +86,7 @@ export const IconTextCenterlineMiddleStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineMiddleDuotoneRounded = (props: TheIconProps) => {
+export const IconTextCenterlineMiddleDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -149,7 +150,7 @@ export const IconTextCenterlineMiddleDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineMiddleTwotoneRounded = (props: TheIconProps) => {
+export const IconTextCenterlineMiddleTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -212,7 +213,7 @@ export const IconTextCenterlineMiddleTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineMiddleSolidRounded = (props: TheIconProps) => {
+export const IconTextCenterlineMiddleSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -262,7 +263,7 @@ export const IconTextCenterlineMiddleSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineMiddleBulkRounded = (props: TheIconProps) => {
+export const IconTextCenterlineMiddleBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -317,7 +318,7 @@ export const IconTextCenterlineMiddleBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineMiddleStrokeSharp = (props: TheIconProps) => {
+export const IconTextCenterlineMiddleStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -376,7 +377,7 @@ export const IconTextCenterlineMiddleStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineMiddleSolidSharp = (props: TheIconProps) => {
+export const IconTextCenterlineMiddleSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

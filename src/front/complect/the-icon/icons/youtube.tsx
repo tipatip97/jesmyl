@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 20.5C13.8097 20.5 15.5451 20.3212 17.1534 19.9934C19.1623 19.5839 20.1668 19.3791 21.0834 18.2006C22 17.0221 22 15.6693 22 12.9635V11.0365C22 8.33073 22 6.97787 21.0834 5.79937C20.1668 4.62088 19.1623 4.41613 17.1534 4.00662C15.5451 3.67877 13.8097 3.5 12 3.5C10.1903 3.5 8.45489 3.67877 6.84656 4.00662C4.83766 4.41613 3.83321 4.62088 2.9166 5.79937C2 6.97787 2 8.33073 2 11.0365V12.9635C2 15.6693 2 17.0221 2.9166 18.2006C3.83321 19.3791 4.83766 19.5839 6.84656 19.9934C8.45489 20.3212 10.1903 20.5 12 20.5Z',
   d2: 'M15.9621 12.3129C15.8137 12.9187 15.0241 13.3538 13.4449 14.2241C11.7272 15.1705 10.8684 15.6438 10.1728 15.4615C9.9372 15.3997 9.7202 15.2911 9.53799 15.1438C9 14.7089 9 13.8059 9 12C9 10.1941 9 9.29112 9.53799 8.85618C9.7202 8.70886 9.9372 8.60029 10.1728 8.53854C10.8684 8.35621 11.7272 8.82945 13.4449 9.77593C15.0241 10.6462 15.8137 11.0813 15.9621 11.6871C16.0126 11.8933 16.0126 12.1067 15.9621 12.3129Z',
   d3: 'M17.1534 19.9934C15.5451 20.3212 13.8097 20.5 12 20.5C10.1903 20.5 8.45489 20.3212 6.84656 19.9934C4.83766 19.5839 3.83321 19.3791 2.9166 18.2006C2 17.0221 2 15.6693 2 12.9635V11.0365C2 8.33073 2 6.97787 2.9166 5.79937C3.83321 4.62088 4.83766 4.41613 6.84656 4.00662C8.45489 3.67877 10.1903 3.5 12 3.5C13.8097 3.5 15.5451 3.67877 17.1534 4.00662C19.1623 4.41613 20.1668 4.62088 21.0834 5.79937C22 6.97787 22 8.33073 22 11.0365V12.9635C22 15.6693 22 17.0221 21.0834 18.2006C20.1668 19.3791 19.1623 19.5839 17.1534 19.9934ZM13.4449 14.2241C15.0241 13.3538 15.8137 12.9187 15.9621 12.3129C16.0126 12.1067 16.0126 11.8933 15.9621 11.6871C15.8137 11.0813 15.0241 10.6462 13.4449 9.77593C11.7272 8.82945 10.8684 8.35621 10.1728 8.53854C9.9372 8.60029 9.7202 8.70887 9.53799 8.85618C9 9.29112 9 10.1941 9 12C9 13.8059 9 14.7089 9.53799 15.1438C9.7202 15.2911 9.9372 15.3997 10.1728 15.4615C10.8684 15.6438 11.7272 15.1705 13.4449 14.2241Z',
@@ -11,9 +12,9 @@ const d = {
   d7: 'M16 12L8.99982 8V16L16 12Z',
   d8: 'M22 5C19.2145 4.37208 15.752 4 12 4C8.24798 4 4.78554 4.37208 2 5V19C4.78554 19.6279 8.24798 20 12 20C15.752 20 19.2145 19.6279 22 19V5Z',
   d9: 'M12 3.25C8.20223 3.25 4.68347 3.62627 1.83507 4.26836L1.25 4.40025L1.25 19.5998L1.83507 19.7316C4.68347 20.3737 8.20223 20.75 12 20.75C15.7978 20.75 19.3165 20.3737 22.1649 19.7316L22.75 19.5998L22.75 4.40025L22.1649 4.26836C19.3165 3.62627 15.7978 3.25 12 3.25ZM9 7.5L17 12L9 16.5L9 7.5Z',
-} as const;
+};
 
-export const IconYoutubeStrokeRounded = (props: TheIconProps) => {
+export const IconYoutubeStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -34,7 +35,7 @@ export const IconYoutubeStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconYoutubeDuotoneRounded = (props: TheIconProps) => {
+export const IconYoutubeDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -62,7 +63,7 @@ export const IconYoutubeDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconYoutubeTwotoneRounded = (props: TheIconProps) => {
+export const IconYoutubeTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -84,7 +85,7 @@ export const IconYoutubeTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconYoutubeSolidRounded = (props: TheIconProps) => {
+export const IconYoutubeSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -100,7 +101,7 @@ export const IconYoutubeSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconYoutubeBulkRounded = (props: TheIconProps) => {
+export const IconYoutubeBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -119,7 +120,7 @@ export const IconYoutubeBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconYoutubeStrokeSharp = (props: TheIconProps) => {
+export const IconYoutubeStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -140,7 +141,7 @@ export const IconYoutubeStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconYoutubeSolidSharp = (props: TheIconProps) => {
+export const IconYoutubeSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

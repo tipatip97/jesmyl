@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5 16L10 13M14 11L19 8M12 5V10M12 14V19M5 8L10 11M14 13L19 16',
   d2: 'M20.5 9.00001V14.5M13.5 20.5L19 17.5M4.5 17.5L10.5 20.5M3.5 15V9.00001M4.5 6.5L10.5 3.5M19.5 6.5L13.5 3.5',
   d3: 'M12 9.75L14 10.875V13.125L12 14.25L10 13.125V10.875L12 9.75Z',
@@ -24,9 +25,9 @@ const d = {
   d20: 'M18.25 16.5C18.25 15.2574 19.2574 14.25 20.5 14.25C21.7426 14.25 22.75 15.2574 22.75 16.5C22.75 17.7426 21.7426 18.75 20.5 18.75C19.2574 18.75 18.25 17.7426 18.25 16.5Z',
   d21: 'M1.25 16.5C1.25 15.2574 2.25736 14.25 3.5 14.25C4.74264 14.25 5.75 15.2574 5.75 16.5C5.75 17.7426 4.74264 18.75 3.5 18.75C2.25736 18.75 1.25 17.7426 1.25 16.5Z',
   d22: 'M11.6323 9.09632C11.8606 8.96789 12.1394 8.96789 12.3677 9.09632L14.3677 10.2213C14.6039 10.3542 14.75 10.604 14.75 10.875V13.125C14.75 13.396 14.6039 13.6458 14.3677 13.7787L12.3677 14.9037C12.1394 15.0321 11.8606 15.0321 11.6323 14.9037L9.6323 13.7787C9.39615 13.6458 9.25 13.396 9.25 13.125V10.875C9.25 10.604 9.39615 10.3542 9.6323 10.2213L11.6323 9.09632Z',
-} as const;
+};
 
-export const IconNanoTechnologyStrokeRounded = (props: TheIconProps) => {
+export const IconNanoTechnologyStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -96,7 +97,7 @@ export const IconNanoTechnologyStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNanoTechnologyDuotoneRounded = (props: TheIconProps) => {
+export const IconNanoTechnologyDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -173,7 +174,7 @@ export const IconNanoTechnologyDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNanoTechnologyTwotoneRounded = (props: TheIconProps) => {
+export const IconNanoTechnologyTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -245,7 +246,7 @@ export const IconNanoTechnologyTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNanoTechnologySolidRounded = (props: TheIconProps) => {
+export const IconNanoTechnologySolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -295,7 +296,7 @@ export const IconNanoTechnologySolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNanoTechnologyBulkRounded = (props: TheIconProps) => {
+export const IconNanoTechnologyBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -347,7 +348,7 @@ export const IconNanoTechnologyBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNanoTechnologyStrokeSharp = (props: TheIconProps) => {
+export const IconNanoTechnologyStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -417,7 +418,7 @@ export const IconNanoTechnologyStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconNanoTechnologySolidSharp = (props: TheIconProps) => {
+export const IconNanoTechnologySolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

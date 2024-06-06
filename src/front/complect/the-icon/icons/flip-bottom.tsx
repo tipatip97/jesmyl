@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14.3332 2L9.66658 2M20.9849 7.5C21.0021 7.99962 21.0029 8.49991 21.0015 9M3.01507 7.5C2.99791 7.99962 2.99703 8.49991 2.99853 9M20.4629 4.74533C19.9788 3.78698 19.1975 3.00864 18.237 2.52818M5.82028 2.5C4.83352 2.9779 4.03078 3.76801 3.53707 4.74532',
   d2: 'M18.495 12C20.453 12 20.9931 12.6378 20.9931 14.5C20.9931 17.0317 21.243 19.9537 18.7448 21.3971C17.7014 22 16.3005 22 13.4988 22L10.5012 22C7.69947 22 6.29863 22 5.25521 21.3971C2.75702 19.9537 3.00695 17.0317 3.00695 14.5C3.00695 12.5404 3.64422 12 5.50502 12L18.495 12Z',
   d3: 'M18.4969 12C20.455 12 20.995 12.6378 20.995 14.5C20.995 17.0317 21.2449 19.9537 18.7467 21.3971C17.7033 22 16.3025 22 13.5008 22L10.5031 22C7.70143 22 6.30059 22 5.25716 21.3971C2.75898 19.9537 3.0089 17.0317 3.0089 14.5C3.0089 12.5404 3.64618 12 5.50697 12L18.4969 12Z',
@@ -11,9 +12,9 @@ const d = {
   d7: 'M2.99805 11.9854H21.001V21.8991C21.001 21.9543 20.9562 21.999 20.901 21.999H3.09805C3.04282 21.999 2.99805 21.9543 2.99805 21.8991V11.9854Z',
   d8: 'M20.7751 1.24951C21.3135 1.24951 21.75 1.68705 21.75 2.22678V5.1586H19.8003V3.20406H17.8491V1.24951L20.7751 1.24951ZM19.8003 9.0677L19.8003 7.11315L21.75 7.11315L21.75 9.06769L19.8003 9.0677ZM12.9749 1.24951L15.8994 1.24951V3.20406H12.9749V1.24951ZM8.10056 1.24951L11.0251 1.24951V3.20406L8.10056 3.20406V1.24951ZM3.22486 1.24951L6.15085 1.24951V3.20406H4.2051L4.21582 5.15322L2.26613 5.16399L2.25001 2.23217C2.24858 1.97205 2.35066 1.7221 2.53363 1.53766C2.71661 1.35321 2.96538 1.24951 3.22486 1.24951ZM2.25 9.06769L2.25 7.11315H4.19972V9.06769H2.25Z',
   d9: 'M21.7469 21.7729C21.7469 22.3127 21.3104 22.7502 20.772 22.7502H3.23149C2.69336 22.7502 2.25701 22.3131 2.25663 21.7736L2.24902 11.0229L21.7469 11.0229V21.7729Z',
-} as const;
+};
 
-export const IconFlipBottomStrokeRounded = (props: TheIconProps) => {
+export const IconFlipBottomStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -34,7 +35,7 @@ export const IconFlipBottomStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipBottomDuotoneRounded = (props: TheIconProps) => {
+export const IconFlipBottomDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -60,7 +61,7 @@ export const IconFlipBottomDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipBottomTwotoneRounded = (props: TheIconProps) => {
+export const IconFlipBottomTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -82,7 +83,7 @@ export const IconFlipBottomTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipBottomSolidRounded = (props: TheIconProps) => {
+export const IconFlipBottomSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -102,7 +103,7 @@ export const IconFlipBottomSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipBottomBulkRounded = (props: TheIconProps) => {
+export const IconFlipBottomBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -123,7 +124,7 @@ export const IconFlipBottomBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipBottomStrokeSharp = (props: TheIconProps) => {
+export const IconFlipBottomStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -144,7 +145,7 @@ export const IconFlipBottomStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipBottomSolidSharp = (props: TheIconProps) => {
+export const IconFlipBottomSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

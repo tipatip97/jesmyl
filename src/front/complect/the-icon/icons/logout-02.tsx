@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M11 3L10.3374 3.23384C7.75867 4.144 6.46928 4.59908 5.73464 5.63742C5 6.67576 5 8.0431 5 10.7778V13.2222C5 15.9569 5 17.3242 5.73464 18.3626C6.46928 19.4009 7.75867 19.856 10.3374 20.7662L11 21',
   d2: 'M21 12L11 12M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5',
   d3: 'M10.3374 3.23384L11 3V21L10.3374 20.7662C7.75867 19.856 6.46928 19.4009 5.73464 18.3626C5 17.3242 5 15.9569 5 13.2222V10.7778C5 8.0431 5 6.67576 5.73464 5.63742C6.46928 4.59908 7.75867 4.144 10.3374 3.23384Z',
@@ -11,9 +12,9 @@ const d = {
   d7: 'M10 12H19.2642M16.9998 9L20 12L16.9998 15',
   d8: 'M9.59923 2L10.5 3.80794L5.01418 6.56061L5.01418 17.4394L10.5 20.1921L9.59923 22L3 18.6887L3 5.31135L9.59923 2Z',
   d9: 'M17.2926 8.29287L21 12L17.2926 15.7071L15.8784 14.2929L17.1714 13H9.58574V11H17.1714L15.8784 9.70713L17.2926 8.29287Z',
-} as const;
+};
 
-export const IconLogout02StrokeRounded = (props: TheIconProps) => {
+export const IconLogout02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -36,7 +37,7 @@ export const IconLogout02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLogout02DuotoneRounded = (props: TheIconProps) => {
+export const IconLogout02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -64,7 +65,7 @@ export const IconLogout02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLogout02TwotoneRounded = (props: TheIconProps) => {
+export const IconLogout02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -88,7 +89,7 @@ export const IconLogout02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLogout02SolidRounded = (props: TheIconProps) => {
+export const IconLogout02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -108,7 +109,7 @@ export const IconLogout02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLogout02BulkRounded = (props: TheIconProps) => {
+export const IconLogout02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -129,7 +130,7 @@ export const IconLogout02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLogout02StrokeSharp = (props: TheIconProps) => {
+export const IconLogout02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -149,7 +150,7 @@ export const IconLogout02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconLogout02SolidSharp = (props: TheIconProps) => {
+export const IconLogout02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

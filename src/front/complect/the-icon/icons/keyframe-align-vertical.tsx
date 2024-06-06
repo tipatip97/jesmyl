@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M10.8546 8.89114C11.3832 8.29705 11.6475 8 12 8C12.3525 8 12.6168 8.29705 13.1454 8.89114L14.4455 10.3522C15.1485 11.1423 15.5 11.5374 15.5 12C15.5 12.4626 15.1485 12.8577 14.4455 13.6478L13.1454 15.1089C12.6168 15.703 12.3525 16 12 16C11.6475 16 11.3832 15.703 10.8546 15.1089L9.55451 13.6478C8.8515 12.8577 8.5 12.4626 8.5 12C8.5 11.5374 8.8515 11.1423 9.55451 10.3522L10.8546 8.89114Z',
   d2: 'M12 19L12 22',
   d3: 'M12 2L12 5',
@@ -12,9 +13,9 @@ const d = {
   d8: 'M11.9883 6.75L16.4883 12L11.9883 17.25L7.48828 12L11.9883 6.75Z',
   d9: 'M11 22L11 19L13 19L13 22L11 22Z',
   d10: 'M11 5L11 2L13 2L13 5L11 5Z',
-} as const;
+};
 
-export const IconKeyframeAlignVerticalStrokeRounded = (props: TheIconProps) => {
+export const IconKeyframeAlignVerticalStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -43,7 +44,7 @@ export const IconKeyframeAlignVerticalStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframeAlignVerticalDuotoneRounded = (props: TheIconProps) => {
+export const IconKeyframeAlignVerticalDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -77,7 +78,7 @@ export const IconKeyframeAlignVerticalDuotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconKeyframeAlignVerticalTwotoneRounded = (props: TheIconProps) => {
+export const IconKeyframeAlignVerticalTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -108,7 +109,7 @@ export const IconKeyframeAlignVerticalTwotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconKeyframeAlignVerticalSolidRounded = (props: TheIconProps) => {
+export const IconKeyframeAlignVerticalSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -134,7 +135,7 @@ export const IconKeyframeAlignVerticalSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframeAlignVerticalBulkRounded = (props: TheIconProps) => {
+export const IconKeyframeAlignVerticalBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -162,7 +163,7 @@ export const IconKeyframeAlignVerticalBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframeAlignVerticalStrokeSharp = (props: TheIconProps) => {
+export const IconKeyframeAlignVerticalStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -187,7 +188,7 @@ export const IconKeyframeAlignVerticalStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframeAlignVerticalSolidSharp = (props: TheIconProps) => {
+export const IconKeyframeAlignVerticalSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

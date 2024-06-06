@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 2H21',
   d2: 'M3 22H21',
   d3: 'M9.47266 8.5089L11.2737 6.37457C11.6424 5.93304 12.2676 5.92923 12.6732 6.37457L14.4529 8.5089M11.9734 7.08454V11.408L11.9719 16.9994M14.4727 15.5751L12.6716 17.7094C12.3029 18.1509 11.6777 18.1548 11.2721 17.7094L9.4924 15.5751',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M21 3H3V1H21V3Z',
   d13: 'M21 23H3V21H21V23Z',
   d14: 'M12.0005 4.58594L15.2075 7.79298L13.7933 9.2072L13.0004 8.41431V15.5856L13.7928 14.793L15.2072 16.2071L12.0006 19.4143L8.79297 16.2073L10.2071 14.7929L11.0004 15.5862V8.41402L10.2071 9.20726L8.79297 7.79293L12.0005 4.58594Z',
-} as const;
+};
 
-export const IconParagraphSpacingStrokeRounded = (props: TheIconProps) => {
+export const IconParagraphSpacingStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -49,7 +50,7 @@ export const IconParagraphSpacingStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParagraphSpacingDuotoneRounded = (props: TheIconProps) => {
+export const IconParagraphSpacingDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconParagraphSpacingDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParagraphSpacingTwotoneRounded = (props: TheIconProps) => {
+export const IconParagraphSpacingTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -114,7 +115,7 @@ export const IconParagraphSpacingTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParagraphSpacingSolidRounded = (props: TheIconProps) => {
+export const IconParagraphSpacingSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -140,7 +141,7 @@ export const IconParagraphSpacingSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParagraphSpacingBulkRounded = (props: TheIconProps) => {
+export const IconParagraphSpacingBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -167,7 +168,7 @@ export const IconParagraphSpacingBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconParagraphSpacingStrokeSharp = (props: TheIconProps) => {
+export const IconParagraphSpacingStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -194,7 +195,7 @@ export const IconParagraphSpacingStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconParagraphSpacingSolidSharp = (props: TheIconProps) => {
+export const IconParagraphSpacingSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

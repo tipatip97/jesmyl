@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M21 21H10C6.70017 21 5.05025 21 4.02513 19.9749C3 18.9497 3 17.2998 3 14V3',
   d2: 'M10 7L12 7',
   d3: 'M18 7L20 7',
@@ -26,9 +27,9 @@ const d = {
   d22: 'M18.5007 15.5L15.5007 15.5L15.5007 13.5L18.5007 13.5L18.5007 15.5Z',
   d23: 'M9.50073 16.5L9.50073 4.5L11.5007 4.5L11.5007 16.5L9.50073 16.5Z',
   d24: 'M17.5007 16.5L17.5007 4.5L19.5007 4.5L19.5007 16.5L17.5007 16.5Z',
-} as const;
+};
 
-export const IconChartHighLowStrokeRounded = (props: TheIconProps) => {
+export const IconChartHighLowStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -86,7 +87,7 @@ export const IconChartHighLowStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartHighLowDuotoneRounded = (props: TheIconProps) => {
+export const IconChartHighLowDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -145,7 +146,7 @@ export const IconChartHighLowDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartHighLowTwotoneRounded = (props: TheIconProps) => {
+export const IconChartHighLowTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -177,7 +178,7 @@ export const IconChartHighLowTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartHighLowSolidRounded = (props: TheIconProps) => {
+export const IconChartHighLowSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -205,7 +206,7 @@ export const IconChartHighLowSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartHighLowBulkRounded = (props: TheIconProps) => {
+export const IconChartHighLowBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -235,7 +236,7 @@ export const IconChartHighLowBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartHighLowStrokeSharp = (props: TheIconProps) => {
+export const IconChartHighLowStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -287,7 +288,7 @@ export const IconChartHighLowStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconChartHighLowSolidSharp = (props: TheIconProps) => {
+export const IconChartHighLowSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

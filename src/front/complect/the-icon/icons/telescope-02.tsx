@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M19 22L14 13L9 22',
   d2: 'M15.9196 4L7.02715 9.2559C6.04492 9.83645 5.70838 11.1222 6.27548 12.1278L7.30228 13.9485C7.86937 14.954 9.12535 15.2985 10.1076 14.718L19 9.46209',
   d3: 'M16.2195 4.45572C15.7677 3.67278 16.0358 2.67162 16.8184 2.21959C17.601 1.76755 18.6017 2.03581 19.0535 2.81876L21.7805 7.54428C22.2323 8.32723 21.9642 9.32838 21.1816 9.78042C20.399 10.2325 19.3983 9.96419 18.9465 9.18124L16.2195 4.45572Z',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M16.6953 1.82027C17.8368 1.16092 19.2963 1.55235 19.9552 2.69402L22.6822 7.41954C23.3409 8.561 22.9501 10.0208 21.8088 10.68C20.6673 11.3393 19.2078 10.9479 18.549 9.80624L15.822 5.08073C15.1632 3.93926 15.554 2.47951 16.6953 1.82027Z',
   d15: 'M3.96339 16.2691L6.87313 14.6198L5.88691 12.8799L3.0133 14.5087L2.76004 14.0394L1 14.9893L2.47634 17.7248L4.23638 16.7749L3.96339 16.2691Z',
   d16: 'M14.3456 4.50537L4.24609 10.4732L7.9648 17.2909L18.1104 11.2957L14.3456 4.50537Z',
-} as const;
+};
 
-export const IconTelescope02StrokeRounded = (props: TheIconProps) => {
+export const IconTelescope02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -57,7 +58,7 @@ export const IconTelescope02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelescope02DuotoneRounded = (props: TheIconProps) => {
+export const IconTelescope02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -99,7 +100,7 @@ export const IconTelescope02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelescope02TwotoneRounded = (props: TheIconProps) => {
+export const IconTelescope02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -137,7 +138,7 @@ export const IconTelescope02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelescope02SolidRounded = (props: TheIconProps) => {
+export const IconTelescope02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -161,7 +162,7 @@ export const IconTelescope02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelescope02BulkRounded = (props: TheIconProps) => {
+export const IconTelescope02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -188,7 +189,7 @@ export const IconTelescope02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelescope02StrokeSharp = (props: TheIconProps) => {
+export const IconTelescope02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -222,7 +223,7 @@ export const IconTelescope02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTelescope02SolidSharp = (props: TheIconProps) => {
+export const IconTelescope02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

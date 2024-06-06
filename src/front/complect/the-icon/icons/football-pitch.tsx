@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 8.57143C2 6.41644 2 5.33894 2.58579 4.66947C3.17157 4 4.11438 4 6 4H18C19.8856 4 20.8284 4 21.4142 4.66947C22 5.33894 22 6.41644 22 8.57143V15.4286C22 17.5836 22 18.6611 21.4142 19.3305C20.8284 20 19.8856 20 18 20H6C4.11438 20 3.17157 20 2.58579 19.3305C2 18.6611 2 17.5836 2 15.4286V8.57143Z',
   d2: 'M12 10V5M12 14V19',
   d3: 'M22 9H19.5C18.9477 9 18.5 9.44772 18.5 10V14C18.5 14.5523 18.9477 15 19.5 15H22',
@@ -25,9 +26,9 @@ const d = {
   d21: 'M12 10.75C11.3096 10.75 10.75 11.3096 10.75 12C10.75 12.6904 11.3096 13.25 12 13.25C12.6904 13.25 13.25 12.6904 13.25 12C13.25 11.3096 12.6904 10.75 12 10.75Z',
   d22: 'M1.25 9.75V14.25H3.75V9.75H1.25Z',
   d23: 'M22.75 9.75H20.25V14.25H22.75V9.75Z',
-} as const;
+};
 
-export const IconFootballPitchStrokeRounded = (props: TheIconProps) => {
+export const IconFootballPitchStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -71,7 +72,7 @@ export const IconFootballPitchStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFootballPitchDuotoneRounded = (props: TheIconProps) => {
+export const IconFootballPitchDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -122,7 +123,7 @@ export const IconFootballPitchDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFootballPitchTwotoneRounded = (props: TheIconProps) => {
+export const IconFootballPitchTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -169,7 +170,7 @@ export const IconFootballPitchTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFootballPitchSolidRounded = (props: TheIconProps) => {
+export const IconFootballPitchSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -199,7 +200,7 @@ export const IconFootballPitchSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFootballPitchBulkRounded = (props: TheIconProps) => {
+export const IconFootballPitchBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -220,7 +221,7 @@ export const IconFootballPitchBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFootballPitchStrokeSharp = (props: TheIconProps) => {
+export const IconFootballPitchStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -261,7 +262,7 @@ export const IconFootballPitchStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFootballPitchSolidSharp = (props: TheIconProps) => {
+export const IconFootballPitchSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

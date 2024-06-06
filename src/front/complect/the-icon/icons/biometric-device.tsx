@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5 9C5 5.70017 5 4.05025 6.02513 3.02513C7.05025 2 8.70017 2 12 2C15.2998 2 16.9497 2 17.9749 3.02513C19 4.05025 19 5.70017 19 9V15C19 18.2998 19 19.9497 17.9749 20.9749C16.9497 22 15.2998 22 12 22C8.70017 22 7.05025 22 6.02513 20.9749C5 19.9497 5 18.2998 5 15V9Z',
   d2: 'M16 13V10.5C16 8.29086 14.2091 6.5 12 6.5C9.79086 6.5 8 8.29086 8 10.5V13',
   d3: 'M13.5 11V10.5C13.5 9.67157 12.8284 9 12 9C11.1716 9 10.5 9.67157 10.5 10.5V14M13.5 13.5V15',
@@ -13,9 +14,9 @@ const d = {
   d9: 'M12 18C12.5523 18 13 18.4477 13 19V19.01C13 19.5623 12.5523 20.01 12 20.01C11.4477 20.01 11 19.5623 11 19.01V19C11 18.4477 11.4477 18 12 18Z',
   d10: 'M19 2H5V22H19V2Z',
   d11: 'M19.75 1.25L4.25 1.25L4.25 22.75L19.75 22.75L19.75 1.25ZM12 5.75C9.37665 5.75 7.25 7.87665 7.25 10.5L7.25 13.75L8.75 13.75V10.5C8.75 8.70507 10.2051 7.25 12 7.25C13.7949 7.25 15.25 8.70507 15.25 10.5L15.25 13.75H16.75L16.75 10.5C16.75 7.87665 14.6234 5.75 12 5.75ZM9.75 10.5C9.75 9.25736 10.7574 8.25 12 8.25C13.2426 8.25 14.25 9.25736 14.25 10.5V11.75H12.75V10.5C12.75 10.0858 12.4142 9.75 12 9.75C11.5858 9.75 11.25 10.0858 11.25 10.5V14.75H9.75V10.5ZM14.25 12.75V15.75H12.75V12.75H14.25ZM13 20.01L13 18L11 18V20.01L13 20.01Z',
-} as const;
+};
 
-export const IconBiometricDeviceStrokeRounded = (props: TheIconProps) => {
+export const IconBiometricDeviceStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -52,7 +53,7 @@ export const IconBiometricDeviceStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBiometricDeviceDuotoneRounded = (props: TheIconProps) => {
+export const IconBiometricDeviceDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -94,7 +95,7 @@ export const IconBiometricDeviceDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBiometricDeviceTwotoneRounded = (props: TheIconProps) => {
+export const IconBiometricDeviceTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconBiometricDeviceTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBiometricDeviceSolidRounded = (props: TheIconProps) => {
+export const IconBiometricDeviceSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -149,7 +150,7 @@ export const IconBiometricDeviceSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBiometricDeviceBulkRounded = (props: TheIconProps) => {
+export const IconBiometricDeviceBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -182,7 +183,7 @@ export const IconBiometricDeviceBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBiometricDeviceStrokeSharp = (props: TheIconProps) => {
+export const IconBiometricDeviceStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -216,7 +217,7 @@ export const IconBiometricDeviceStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBiometricDeviceSolidSharp = (props: TheIconProps) => {
+export const IconBiometricDeviceSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

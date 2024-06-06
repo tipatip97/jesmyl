@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 3H21',
   d2: 'M3 21H21',
   d3: 'M15 9H21',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M14 8H22V10H14V8Z',
   d15: 'M14 14H22V16H14V14Z',
   d16: 'M2 8C2 7.58579 2.33579 7.25 2.75 7.25H10.75C11.1642 7.25 11.5 7.58579 11.5 8V16C11.5 16.4142 11.1642 16.75 10.75 16.75H2.75C2.33579 16.75 2 16.4142 2 16V8Z',
-} as const;
+};
 
-export const IconTextCenterlineRightStrokeRounded = (props: TheIconProps) => {
+export const IconTextCenterlineRightStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -65,7 +66,7 @@ export const IconTextCenterlineRightStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineRightDuotoneRounded = (props: TheIconProps) => {
+export const IconTextCenterlineRightDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -115,7 +116,7 @@ export const IconTextCenterlineRightDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineRightTwotoneRounded = (props: TheIconProps) => {
+export const IconTextCenterlineRightTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -162,7 +163,7 @@ export const IconTextCenterlineRightTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineRightSolidRounded = (props: TheIconProps) => {
+export const IconTextCenterlineRightSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -200,7 +201,7 @@ export const IconTextCenterlineRightSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineRightBulkRounded = (props: TheIconProps) => {
+export const IconTextCenterlineRightBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -241,7 +242,7 @@ export const IconTextCenterlineRightBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineRightStrokeSharp = (props: TheIconProps) => {
+export const IconTextCenterlineRightStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -286,7 +287,7 @@ export const IconTextCenterlineRightStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCenterlineRightSolidSharp = (props: TheIconProps) => {
+export const IconTextCenterlineRightSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

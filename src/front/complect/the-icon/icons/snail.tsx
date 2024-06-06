@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9.57687 14C9.57687 16.5 11.5 20 15.5399 20C19.5798 20 21.9999 16.866 21.9999 13C21.9999 8.02944 17.7699 4 12.0615 4C6.41519 4 1.41338 8.25529 2.0558 15.3865C2.08969 15.7628 2.34812 16.0843 2.71438 16.1769C5.41315 16.8591 8.18768 15.8637 9.57687 14ZM9.57687 14C9.57687 8.87223 17.5276 7.79116 17.5276 13C17.5276 14.4689 16.4999 15.7264 15.043 16.2456',
   d2: 'M15.5399 20C19.5798 20 21.9999 16.866 21.9999 13C21.9999 8.02944 17.7699 4 12.0615 4C6.41519 4 1.41338 8.25529 2.0558 15.3865C2.08969 15.7628 2.34812 16.0843 2.71438 16.1769C5.41315 16.8591 8.18768 15.8637 9.57687 14C9.57687 16.5 11.5 20 15.5399 20Z',
   d3: 'M15.043 16.2456C16.4999 15.7264 17.5276 14.4689 17.5276 13C17.5276 7.79116 9.57687 8.87223 9.57687 14C9.57687 16.5 11.5 20 15.5399 20C19.5798 20 21.9999 16.866 21.9999 13C21.9999 8.02944 17.7699 4 12.0615 4C6.41519 4 1.41338 8.25529 2.0558 15.3865',
@@ -9,9 +10,9 @@ const d = {
   d5: 'M10.3281 14.0101C10.3281 11.9076 11.9435 10.5976 13.6508 10.3739C14.4971 10.263 15.2844 10.436 15.8407 10.8477C16.3731 11.2417 16.7789 11.9153 16.7789 13.0091C16.7789 14.1049 16.008 15.1171 14.7925 15.5507C14.4023 15.6899 14.1987 16.1193 14.3378 16.5099C14.4768 16.9005 14.9059 17.1042 15.296 16.965C16.9942 16.3592 18.2789 14.8538 18.2789 13.0091C18.2789 11.4958 17.6908 10.3495 16.7324 9.64031C15.798 8.94887 14.5975 8.73557 13.4562 8.8851C11.1882 9.18221 8.82812 10.9797 8.82812 14.0101C8.82812 14.4878 8.87506 15.0515 8.99149 15.6574L10.3354 14.6159C10.3293 14.3935 10.3281 14.1893 10.3281 14.0101Z',
   d6: 'M9.61035 14C9.61035 16.5 11.5282 20 15.5569 20C19.5857 20 21.999 16.866 21.999 13C21.999 8.02944 17.7807 4 12.0881 4C6.45742 4 1.41348 8.86874 2.05412 16C4.74543 16.6822 8.22501 15.8637 9.61035 14ZM9.61035 14C9.61035 8.87223 17.5391 7.79116 17.5391 13C17.5391 14.4689 16.5142 15.7264 15.0614 16.2456',
   d7: 'M9.05817 15.5511C9.3042 16.5432 9.78172 17.5529 10.4961 18.4158C11.609 19.7602 13.301 20.75 15.5578 20.75C17.7819 20.75 19.6007 19.878 20.8544 18.4433C22.0988 17.0192 22.75 15.0851 22.75 13C22.75 7.55916 18.1375 3.25 12.089 3.25C6.00112 3.25 0.629479 8.51353 1.30806 16.0671L1.35561 16.5964L1.87076 16.727C3.35025 17.102 5.02076 17.0614 6.50849 16.6814C6.91632 16.5772 7.31819 16.4455 7.7038 16.2857C7.47527 15.5131 7.36133 14.7355 7.36133 14.0003C7.36133 10.0452 10.4614 7.76347 13.2829 7.39318C14.7173 7.20493 16.3299 7.4584 17.6411 8.43043C19.0237 9.45532 19.7901 11.0728 19.7901 13.0003C19.7901 14.2357 19.3819 15.336 18.7188 16.2334L17.6411 15.1558C18.0504 14.5307 18.29 13.797 18.29 13.0002C18.29 11.4893 17.704 10.3442 16.7478 9.63539C15.8153 8.94417 14.6172 8.73087 13.4781 8.88037C11.2139 9.1775 8.86128 10.9745 8.86128 14.0002C8.86128 14.4955 8.92667 15.0208 9.05817 15.5511C9.05819 15.5511 9.05816 15.5511 9.05817 15.5511Z',
-} as const;
+};
 
-export const IconSnailStrokeRounded = (props: TheIconProps) => {
+export const IconSnailStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -27,7 +28,7 @@ export const IconSnailStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSnailDuotoneRounded = (props: TheIconProps) => {
+export const IconSnailDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -48,7 +49,7 @@ export const IconSnailDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSnailTwotoneRounded = (props: TheIconProps) => {
+export const IconSnailTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -71,7 +72,7 @@ export const IconSnailTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSnailSolidRounded = (props: TheIconProps) => {
+export const IconSnailSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -85,7 +86,7 @@ export const IconSnailSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSnailBulkRounded = (props: TheIconProps) => {
+export const IconSnailBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -104,7 +105,7 @@ export const IconSnailBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSnailStrokeSharp = (props: TheIconProps) => {
+export const IconSnailStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -119,7 +120,7 @@ export const IconSnailStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSnailSolidSharp = (props: TheIconProps) => {
+export const IconSnailSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

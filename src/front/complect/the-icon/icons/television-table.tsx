@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M18 14H6C3.518 14 3 14.518 3 17V19C3 21.482 3.518 22 6 22H18C20.482 22 21 21.482 21 19V17C21 14.518 20.482 14 18 14Z',
   d2: 'M7 18H8',
   d3: 'M16 18H17',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M12.75 13.25V22.75H21C21.4142 22.75 21.75 22.4142 21.75 22V14C21.75 13.5858 21.4142 13.25 21 13.25H12.75ZM15.5 18.75H17.5V17.25H15.5V18.75Z',
   d18: 'M5.25 2C5.25 1.58579 5.58579 1.25 6 1.25H18C18.4142 1.25 18.75 1.58579 18.75 2V11C18.75 11.4142 18.4142 11.75 18 11.75H6C5.58579 11.75 5.25 11.4142 5.25 11V2Z',
   d19: 'M9.75 11C9.75 10.5858 10.0858 10.25 10.5 10.25H13.5C13.9142 10.25 14.25 10.5858 14.25 11V14C14.25 14.4142 13.9142 14.75 13.5 14.75H10.5C10.0858 14.75 9.75 14.4142 9.75 14V11Z',
-} as const;
+};
 
-export const IconTelevisionTableStrokeRounded = (props: TheIconProps) => {
+export const IconTelevisionTableStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -75,7 +76,7 @@ export const IconTelevisionTableStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelevisionTableDuotoneRounded = (props: TheIconProps) => {
+export const IconTelevisionTableDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -132,7 +133,7 @@ export const IconTelevisionTableDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelevisionTableTwotoneRounded = (props: TheIconProps) => {
+export const IconTelevisionTableTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -187,7 +188,7 @@ export const IconTelevisionTableTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelevisionTableSolidRounded = (props: TheIconProps) => {
+export const IconTelevisionTableSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -211,7 +212,7 @@ export const IconTelevisionTableSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelevisionTableBulkRounded = (props: TheIconProps) => {
+export const IconTelevisionTableBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -236,7 +237,7 @@ export const IconTelevisionTableBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTelevisionTableStrokeSharp = (props: TheIconProps) => {
+export const IconTelevisionTableStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -282,7 +283,7 @@ export const IconTelevisionTableStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTelevisionTableSolidSharp = (props: TheIconProps) => {
+export const IconTelevisionTableSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

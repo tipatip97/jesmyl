@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5 19.25V21.25M19 19.25V21.25',
   d2: 'M2 11.25C2 8.42157 2 7.00736 2.87868 6.12868C3.75736 5.25 5.17157 5.25 8 5.25H16C18.8284 5.25 20.2426 5.25 21.1213 6.12868C22 7.00736 22 8.42157 22 11.25V13.25C22 16.0784 22 17.4926 21.1213 18.3713C20.2426 19.25 18.8284 19.25 16 19.25H8C5.17157 19.25 3.75736 19.25 2.87868 18.3713C2 17.4926 2 16.0784 2 13.25V11.25Z',
   d3: 'M10 5.25L9.45858 3.86345C9.43124 3.79345 9.41757 3.75845 9.40111 3.72421C9.38465 3.68997 9.36672 3.65897 9.33088 3.59696C9.14894 3.28225 9.03695 3.11285 8.841 3.00067C8.2572 2.66644 6.7428 2.66644 6.159 3.00067C5.96305 3.11285 5.85106 3.28225 5.66912 3.59697C5.63328 3.65897 5.61535 3.68997 5.59889 3.72421C5.58243 3.75845 5.56876 3.79345 5.54142 3.86345L5 5.25',
@@ -23,9 +24,9 @@ const d = {
   d19: 'M4 21.5V18.5H6V21.5H4ZM18 21.5V18.5H20V21.5H18Z',
   d20: 'M5.49131 2.5H9.50687L10.6955 5.47153L9.30273 6.0286L8.49131 4H6.50687L5.69545 6.0286L4.30273 5.47153L5.49131 2.5Z',
   d21: 'M2 5C1.80109 5 1.61032 5.07902 1.46967 5.21967C1.32902 5.36032 1.25 5.55109 1.25 5.75V18.75C1.25 19.1642 1.58579 19.5 2 19.5H22C22.4142 19.5 22.75 19.1642 22.75 18.75V5.75C22.75 5.33579 22.4142 5 22 5H2ZM12.5 9.5C12.3011 9.5 12.1103 9.57902 11.9697 9.71967C11.829 9.86032 11.75 10.0511 11.75 10.25V14.2499C11.75 14.6642 12.0858 14.9999 12.5 14.9999H15C15.4142 14.9999 15.75 14.6642 15.75 14.2499V10.25C15.75 9.83579 15.4142 9.50001 15 9.50001L12.5 9.5ZM13.25 13.4999V11L14.25 11V13.4999H13.25ZM7.25 15V9.50001H5.75V15H7.25ZM18.25 15V9.50001H16.75V15H18.25ZM10.259 10.25H8.75V11.75H10.259V10.25ZM10.259 12.75H8.75V14.25H10.259V12.75Z',
-} as const;
+};
 
-export const IconDigitalClockStrokeRounded = (props: TheIconProps) => {
+export const IconDigitalClockStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -59,7 +60,7 @@ export const IconDigitalClockStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDigitalClockDuotoneRounded = (props: TheIconProps) => {
+export const IconDigitalClockDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -98,7 +99,7 @@ export const IconDigitalClockDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDigitalClockTwotoneRounded = (props: TheIconProps) => {
+export const IconDigitalClockTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -132,7 +133,7 @@ export const IconDigitalClockTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDigitalClockSolidRounded = (props: TheIconProps) => {
+export const IconDigitalClockSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -160,7 +161,7 @@ export const IconDigitalClockSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDigitalClockBulkRounded = (props: TheIconProps) => {
+export const IconDigitalClockBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -187,7 +188,7 @@ export const IconDigitalClockBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDigitalClockStrokeSharp = (props: TheIconProps) => {
+export const IconDigitalClockStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -221,7 +222,7 @@ export const IconDigitalClockStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconDigitalClockSolidSharp = (props: TheIconProps) => {
+export const IconDigitalClockSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

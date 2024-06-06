@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M11.7453 14.85L6.90439 12V7C6.90439 4.79086 8.72952 3 10.9809 3C12.3782 3 13.6113 3.6898 14.3458 4.74128',
   d2: 'M9.59961 19.1791C10.3266 20.2757 11.5866 21.0008 13.0192 21.0008C15.2707 21.0008 17.0958 19.21 17.0958 17.0008V12.0008L12.1612 9.0957',
   d3: 'M9.45166 13.5L9.45123 7.66938L13.8642 5.16938C15.814 4.06481 18.3072 4.72031 19.4329 6.63348C20.1593 7.86806 20.1388 9.32466 19.5089 10.4995',
@@ -28,9 +29,9 @@ const d = {
   d24: 'M11.7453 14.85L6.90437 12V7C6.90437 4.79086 8.72951 3 10.9809 3C12.3782 3 13.6113 3.6898 14.3458 4.74128',
   d25: 'M4.48865 13.4993C3.85852 14.6742 3.83789 16.131 4.56441 17.3657C5.69012 19.2789 8.1833 19.9344 10.1331 18.8298L14.5461 16.3298L14.642 10.7344',
   d26: 'M17.0951 17.6309C18.4408 17.5734 19.7287 16.8634 20.4521 15.634C21.5778 13.7209 20.9098 11.2745 18.96 10.1699L14.547 7.66992L9.48828 10.4255',
-} as const;
+};
 
-export const IconChatGptStrokeRounded = (props: TheIconProps) => {
+export const IconChatGptStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -82,7 +83,7 @@ export const IconChatGptStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChatGptDuotoneRounded = (props: TheIconProps) => {
+export const IconChatGptDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -149,7 +150,7 @@ export const IconChatGptDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChatGptTwotoneRounded = (props: TheIconProps) => {
+export const IconChatGptTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -204,7 +205,7 @@ export const IconChatGptTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChatGptSolidRounded = (props: TheIconProps) => {
+export const IconChatGptSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -242,7 +243,7 @@ export const IconChatGptSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChatGptBulkRounded = (props: TheIconProps) => {
+export const IconChatGptBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -283,7 +284,7 @@ export const IconChatGptBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChatGptStrokeSharp = (props: TheIconProps) => {
+export const IconChatGptStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -323,7 +324,7 @@ export const IconChatGptStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconChatGptSolidSharp = (props: TheIconProps) => {
+export const IconChatGptSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

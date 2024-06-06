@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M18 2V4M6 2V4',
   d2: 'M11.05 22C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.4765 5.68186 21.4996 7.80438 21.5 12',
   d3: 'M3 8H21',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M14 15L17.5 18.5M17.5 18.5L21 22M17.5 18.5L21 15M17.5 18.5L14 22',
   d13: 'M16.5 1.5V3H7.5V1.5H5.5V3H3C2.58579 3 2.25 3.33579 2.25 3.75V21.525C2.25 22.0635 2.68652 22.5 3.225 22.5H11V20.55H4.2V9.5H19.8V13.025H21.75V3.75C21.75 3.33579 21.4142 3 21 3H18.5V1.5H16.5Z',
   d14: 'M15.1288 18.293L12.3359 15.5002L13.7502 14.0859L16.543 16.8788L19.3359 14.0859L20.7502 15.5002L17.9573 18.293L20.7502 21.0859L19.3359 22.5002L16.543 19.7073L13.7502 22.5002L12.3359 21.0859L15.1288 18.293Z',
-} as const;
+};
 
-export const IconCalendarRemove01StrokeRounded = (props: TheIconProps) => {
+export const IconCalendarRemove01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -56,7 +57,7 @@ export const IconCalendarRemove01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCalendarRemove01DuotoneRounded = (props: TheIconProps) => {
+export const IconCalendarRemove01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -99,7 +100,7 @@ export const IconCalendarRemove01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCalendarRemove01TwotoneRounded = (props: TheIconProps) => {
+export const IconCalendarRemove01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -138,7 +139,7 @@ export const IconCalendarRemove01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCalendarRemove01SolidRounded = (props: TheIconProps) => {
+export const IconCalendarRemove01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -164,7 +165,7 @@ export const IconCalendarRemove01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCalendarRemove01BulkRounded = (props: TheIconProps) => {
+export const IconCalendarRemove01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -191,7 +192,7 @@ export const IconCalendarRemove01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCalendarRemove01StrokeSharp = (props: TheIconProps) => {
+export const IconCalendarRemove01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -226,7 +227,7 @@ export const IconCalendarRemove01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCalendarRemove01SolidSharp = (props: TheIconProps) => {
+export const IconCalendarRemove01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 21H22',
   d2: 'M20 18L20 16',
   d3: 'M16 15L16 10',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M13 9.5L13 12.5L11 12.5L11 9.5L13 9.5Z',
   d18: 'M9 2.5L9 9.5L7 9.5L7 2.5L9 2.5Z',
   d19: 'M5 7.5L5 9.5L3 9.5L3 7.5L5 7.5Z',
-} as const;
+};
 
-export const IconWaterfallDown03StrokeRounded = (props: TheIconProps) => {
+export const IconWaterfallDown03StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -75,7 +76,7 @@ export const IconWaterfallDown03StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWaterfallDown03DuotoneRounded = (props: TheIconProps) => {
+export const IconWaterfallDown03DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -128,7 +129,7 @@ export const IconWaterfallDown03DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWaterfallDown03TwotoneRounded = (props: TheIconProps) => {
+export const IconWaterfallDown03TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -182,7 +183,7 @@ export const IconWaterfallDown03TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWaterfallDown03SolidRounded = (props: TheIconProps) => {
+export const IconWaterfallDown03SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -228,7 +229,7 @@ export const IconWaterfallDown03SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWaterfallDown03BulkRounded = (props: TheIconProps) => {
+export const IconWaterfallDown03BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -277,7 +278,7 @@ export const IconWaterfallDown03BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconWaterfallDown03StrokeSharp = (props: TheIconProps) => {
+export const IconWaterfallDown03StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -323,7 +324,7 @@ export const IconWaterfallDown03StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconWaterfallDown03SolidSharp = (props: TheIconProps) => {
+export const IconWaterfallDown03SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

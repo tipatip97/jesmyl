@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 7H21',
   d2: 'M16.5 2L13.5 7',
   d3: 'M9.5 2L6.5 7',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M16.9414 1.75L14.7614 5.75H21.25V2.5C21.25 2.08579 20.9142 1.75 20.5 1.75H16.9414Z',
   d19: 'M1.75 7.25H21.25V12.75H15.75V15.75H12.75V21.25H2.5C2.08579 21.25 1.75 20.9142 1.75 20.5V7.25Z',
   d20: 'M19.25 19.25V22.25H17.25V19.25H14.25V17.25H17.25V14.25H19.25V17.25H22.25V19.25H19.25Z',
-} as const;
+};
 
-export const IconPlayListAddStrokeRounded = (props: TheIconProps) => {
+export const IconPlayListAddStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -64,7 +65,7 @@ export const IconPlayListAddStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListAddDuotoneRounded = (props: TheIconProps) => {
+export const IconPlayListAddDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -109,7 +110,7 @@ export const IconPlayListAddDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListAddTwotoneRounded = (props: TheIconProps) => {
+export const IconPlayListAddTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -150,7 +151,7 @@ export const IconPlayListAddTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListAddSolidRounded = (props: TheIconProps) => {
+export const IconPlayListAddSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -182,7 +183,7 @@ export const IconPlayListAddSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListAddBulkRounded = (props: TheIconProps) => {
+export const IconPlayListAddBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -217,7 +218,7 @@ export const IconPlayListAddBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListAddStrokeSharp = (props: TheIconProps) => {
+export const IconPlayListAddStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -257,7 +258,7 @@ export const IconPlayListAddStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListAddSolidSharp = (props: TheIconProps) => {
+export const IconPlayListAddSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

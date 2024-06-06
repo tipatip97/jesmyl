@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M21.5 12.5V11.05C21.5 7.01949 21.5 5.00424 20.2479 3.75212C18.9958 2.5 16.9805 2.5 12.95 2.5H11.05C7.01949 2.5 5.00424 2.5 3.75212 3.75212C2.5 5.00424 2.5 7.01949 2.5 11.05V12.95C2.5 16.9805 2.5 18.9958 3.75212 20.2479C5.00424 21.5 7.01949 21.5 11.05 21.5H12.5',
   d2: 'M15.4515 15.859C16.4572 15.265 17.3349 15.5044 17.8621 15.8857C18.0783 16.042 18.1864 16.1202 18.25 16.1202C18.3136 16.1202 18.4217 16.042 18.6379 15.8857C19.1651 15.5044 20.0428 15.265 21.0485 15.859C22.3682 16.6386 22.6669 19.2104 19.6227 21.3801C19.0429 21.7934 18.7529 22 18.25 22C17.7471 22 17.4571 21.7934 16.8773 21.3801C13.8331 19.2104 14.1318 16.6386 15.4515 15.859Z',
   d3: 'M14.9609 11.782C14.8347 12.2297 14.2381 12.546 13.0449 13.1787C11.8914 13.7903 11.3147 14.0961 10.8499 13.9732C10.6578 13.9224 10.4827 13.8259 10.3415 13.6929C10 13.3713 10 12.7475 10 11.5C10 10.2525 10 9.6287 10.3415 9.30711C10.4827 9.17415 10.6578 9.07763 10.8499 9.02681C11.3147 8.90388 11.8914 9.20969 13.0449 9.82131C14.2381 10.454 14.8347 10.7703 14.9609 11.218C15.013 11.4028 15.013 11.5972 14.9609 11.782Z',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M1.25 2.225C1.25 1.68652 1.68652 1.25 2.225 1.25H19.775C20.3135 1.25 20.75 1.68652 20.75 2.225V11.975H18.8V3.2H3.2V18.8H11V20.75H2.225C1.68652 20.75 1.25 20.3135 1.25 19.775V2.225Z',
   d12: 'M8.75 15V7L15.25 11L8.75 15Z',
   d13: 'M17.5147 14.4812C17.6999 14.558 17.862 14.6458 17.9989 14.7317C18.1358 14.6458 18.2979 14.558 18.483 14.4812C19.1357 14.2106 20.0586 14.0883 21.0888 14.6225C22.421 15.3132 23.0207 16.93 22.6302 18.5193C22.231 20.1443 20.8362 21.723 18.2554 22.6571L17.9989 22.75L17.7424 22.6571C15.1616 21.723 13.7668 20.1443 13.3676 18.5193C12.9771 16.93 13.5767 15.3132 14.909 14.6225C15.9391 14.0883 16.862 14.2106 17.5147 14.4812Z',
-} as const;
+};
 
-export const IconPlayListFavourite02StrokeRounded = (props: TheIconProps) => {
+export const IconPlayListFavourite02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -45,7 +46,7 @@ export const IconPlayListFavourite02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListFavourite02DuotoneRounded = (props: TheIconProps) => {
+export const IconPlayListFavourite02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -80,7 +81,7 @@ export const IconPlayListFavourite02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListFavourite02TwotoneRounded = (props: TheIconProps) => {
+export const IconPlayListFavourite02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -109,7 +110,7 @@ export const IconPlayListFavourite02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListFavourite02SolidRounded = (props: TheIconProps) => {
+export const IconPlayListFavourite02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconPlayListFavourite02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListFavourite02BulkRounded = (props: TheIconProps) => {
+export const IconPlayListFavourite02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -159,7 +160,7 @@ export const IconPlayListFavourite02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListFavourite02StrokeSharp = (props: TheIconProps) => {
+export const IconPlayListFavourite02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -187,7 +188,7 @@ export const IconPlayListFavourite02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPlayListFavourite02SolidSharp = (props: TheIconProps) => {
+export const IconPlayListFavourite02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

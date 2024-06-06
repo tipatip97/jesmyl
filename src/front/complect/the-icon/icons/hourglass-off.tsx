@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5 5.01953C5 8.8814 8.13401 12.0121 12 12.0121C8.13401 12.0121 5 15.1427 5 19.0046V22.0014M19 19.0046V22.0014',
   d2: 'M19 22.0015H4',
   d3: 'M2 2.02246L22 22.0011',
@@ -26,9 +27,9 @@ const d = {
   d22: 'M19.75 21.75L4.25 21.75V18.825C4.25 15.8883 5.86256 13.3306 8.24512 12C5.86256 10.6694 4.25 8.11173 4.25 5.175V4.24976L6.2936 6.29336C6.74488 8.63956 8.58914 10.4858 10.9255 10.9252L19.75 19.7498V21.75Z',
   d23: 'M21 1V3H6.53577L4.53577 1H21Z',
   d24: 'M3 21H20V23H3V21Z',
-} as const;
+};
 
-export const IconHourglassOffStrokeRounded = (props: TheIconProps) => {
+export const IconHourglassOffStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -64,7 +65,7 @@ export const IconHourglassOffStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHourglassOffDuotoneRounded = (props: TheIconProps) => {
+export const IconHourglassOffDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -105,7 +106,7 @@ export const IconHourglassOffDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHourglassOffTwotoneRounded = (props: TheIconProps) => {
+export const IconHourglassOffTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -142,7 +143,7 @@ export const IconHourglassOffTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHourglassOffSolidRounded = (props: TheIconProps) => {
+export const IconHourglassOffSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -168,7 +169,7 @@ export const IconHourglassOffSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHourglassOffBulkRounded = (props: TheIconProps) => {
+export const IconHourglassOffBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -195,7 +196,7 @@ export const IconHourglassOffBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHourglassOffStrokeSharp = (props: TheIconProps) => {
+export const IconHourglassOffStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -222,7 +223,7 @@ export const IconHourglassOffStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconHourglassOffSolidSharp = (props: TheIconProps) => {
+export const IconHourglassOffSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

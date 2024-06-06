@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M13 4L3 4',
   d2: 'M11 19L3 19',
   d3: 'M21 19L17 19',
@@ -35,9 +36,9 @@ const d = {
   d31: 'M11 10.5L21 10.5L21 12.5L11 12.5L11 10.5Z',
   d32: 'M18 3L21 3L21 5L18 5L18 3Z',
   d33: 'M3 10.5L6 10.5L6 12.5L3 12.5L3 10.5Z',
-} as const;
+};
 
-export const IconPreferenceHorizontalStrokeRounded = (props: TheIconProps) => {
+export const IconPreferenceHorizontalStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconPreferenceHorizontalStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPreferenceHorizontalDuotoneRounded = (props: TheIconProps) => {
+export const IconPreferenceHorizontalDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -198,7 +199,7 @@ export const IconPreferenceHorizontalDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPreferenceHorizontalTwotoneRounded = (props: TheIconProps) => {
+export const IconPreferenceHorizontalTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -275,7 +276,7 @@ export const IconPreferenceHorizontalTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPreferenceHorizontalSolidRounded = (props: TheIconProps) => {
+export const IconPreferenceHorizontalSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -339,7 +340,7 @@ export const IconPreferenceHorizontalSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPreferenceHorizontalBulkRounded = (props: TheIconProps) => {
+export const IconPreferenceHorizontalBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -406,7 +407,7 @@ export const IconPreferenceHorizontalBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPreferenceHorizontalStrokeSharp = (props: TheIconProps) => {
+export const IconPreferenceHorizontalStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -467,7 +468,7 @@ export const IconPreferenceHorizontalStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPreferenceHorizontalSolidSharp = (props: TheIconProps) => {
+export const IconPreferenceHorizontalSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z',
   d2: 'M8 6.99997C8 6.99997 10.946 3.00001 12 3C13.0541 2.99999 16 7 16 7',
   d3: 'M16 17C16 17 13.054 21 12 21C10.9459 21 8 17 8 17',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M12 8.5L15.5 12L12 15.5L8.5 12L12 8.5Z',
   d13: 'M12 3L16 7L8 6.99997L12 3Z',
   d14: 'M12 21L16 17L8 17L12 21Z',
-} as const;
+};
 
-export const IconVerticalScrollPointStrokeRounded = (props: TheIconProps) => {
+export const IconVerticalScrollPointStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -49,7 +50,7 @@ export const IconVerticalScrollPointStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVerticalScrollPointDuotoneRounded = (props: TheIconProps) => {
+export const IconVerticalScrollPointDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -85,7 +86,7 @@ export const IconVerticalScrollPointDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVerticalScrollPointTwotoneRounded = (props: TheIconProps) => {
+export const IconVerticalScrollPointTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -117,7 +118,7 @@ export const IconVerticalScrollPointTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVerticalScrollPointSolidRounded = (props: TheIconProps) => {
+export const IconVerticalScrollPointSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -139,7 +140,7 @@ export const IconVerticalScrollPointSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVerticalScrollPointBulkRounded = (props: TheIconProps) => {
+export const IconVerticalScrollPointBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -162,7 +163,7 @@ export const IconVerticalScrollPointBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconVerticalScrollPointStrokeSharp = (props: TheIconProps) => {
+export const IconVerticalScrollPointStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -187,7 +188,7 @@ export const IconVerticalScrollPointStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconVerticalScrollPointSolidSharp = (props: TheIconProps) => {
+export const IconVerticalScrollPointSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M11 16.5C11 16.5 12.5 17 13.25 19C13.25 19 16.8235 13.1667 20 12',
   d2: 'M4 5H18',
   d3: 'M4 10H15',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M3 4H19V6H3V4Z',
   d13: 'M3 9H16V11H3V9Z',
   d14: 'M3 14H7V16H3V14Z',
-} as const;
+};
 
-export const IconTextCheckStrokeRounded = (props: TheIconProps) => {
+export const IconTextCheckStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -53,7 +54,7 @@ export const IconTextCheckStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCheckDuotoneRounded = (props: TheIconProps) => {
+export const IconTextCheckDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -93,7 +94,7 @@ export const IconTextCheckDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCheckTwotoneRounded = (props: TheIconProps) => {
+export const IconTextCheckTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -131,7 +132,7 @@ export const IconTextCheckTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCheckSolidRounded = (props: TheIconProps) => {
+export const IconTextCheckSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -163,7 +164,7 @@ export const IconTextCheckSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCheckBulkRounded = (props: TheIconProps) => {
+export const IconTextCheckBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -198,7 +199,7 @@ export const IconTextCheckBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCheckStrokeSharp = (props: TheIconProps) => {
+export const IconTextCheckStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -232,7 +233,7 @@ export const IconTextCheckStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTextCheckSolidSharp = (props: TheIconProps) => {
+export const IconTextCheckSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

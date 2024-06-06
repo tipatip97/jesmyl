@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9.5 10C9.5 12.6667 9 15.3333 7 18M14.5 10C14.5 12.6667 15 15.3333 17 18',
   d2: 'M15.5 5.42857C15.5 6.18741 15.2483 6.88867 14.8223 7.45663C14.4776 7.91614 14.134 8 13.5704 8H10.4296C9.866 8 9.52236 7.91614 9.17768 7.45663C8.75166 6.88867 8.5 6.18741 8.5 5.42857C8.5 3.53502 10.067 2 12 2C13.933 2 15.5 3.53502 15.5 5.42857Z',
   d3: 'M8 10H16',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M20.5001 22.75H3.49988L4.99988 18.75H18.9999L20.5001 22.75Z',
   d13: 'M16.0002 10.7501H15.2647C15.3526 12.9448 15.861 15.0958 17.3818 17.2501H6.61853C8.13931 15.0958 8.64769 12.9448 8.73562 10.7501H8.00016V9.25012H16.0002V10.7501Z',
   d14: 'M12.0002 1.25012C9.65303 1.25012 7.75024 3.15291 7.75024 5.50012C7.75024 6.32615 7.98638 7.09769 8.39418 7.75012H15.6063C16.0141 7.09769 16.2502 6.32615 16.2502 5.50012C16.2502 3.15291 14.3475 1.25012 12.0002 1.25012Z',
-} as const;
+};
 
-export const IconChessPawnStrokeRounded = (props: TheIconProps) => {
+export const IconChessPawnStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -56,7 +57,7 @@ export const IconChessPawnStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChessPawnDuotoneRounded = (props: TheIconProps) => {
+export const IconChessPawnDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -104,7 +105,7 @@ export const IconChessPawnDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChessPawnTwotoneRounded = (props: TheIconProps) => {
+export const IconChessPawnTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -144,7 +145,7 @@ export const IconChessPawnTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChessPawnSolidRounded = (props: TheIconProps) => {
+export const IconChessPawnSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -168,7 +169,7 @@ export const IconChessPawnSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChessPawnBulkRounded = (props: TheIconProps) => {
+export const IconChessPawnBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -197,7 +198,7 @@ export const IconChessPawnBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChessPawnStrokeSharp = (props: TheIconProps) => {
+export const IconChessPawnStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -230,7 +231,7 @@ export const IconChessPawnStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconChessPawnSolidSharp = (props: TheIconProps) => {
+export const IconChessPawnSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

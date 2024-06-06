@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M21 21H10C6.70017 21 5.05025 21 4.02513 19.9749C3 18.9497 3 17.2998 3 14V3',
   d2: 'M8 3C8 9.07513 10.6863 14 14 14C17.3137 14 20 9.07513 20 3',
   d3: 'M6 17H6.00898M8.9982 17H9.00718M11.9964 17H12.0054M14.9946 17H15.0036M17.9928 17H18.0018M20.991 17H21',
@@ -12,9 +13,9 @@ const d = {
   d8: 'M4.00049 19.5V2.5H2.00049V20.5C2.00049 21.0523 2.4482 21.5 3.00049 21.5H21.0005V19.5H4.00049Z',
   d9: 'M17.3652 9.79932C18.3565 7.98206 19.0005 5.40322 19.0005 2.5L21.0005 2.5C21.0005 5.67191 20.3014 8.59308 19.121 10.757C17.9613 12.8832 16.1948 14.5 14.0005 14.5C11.8061 14.5 10.0397 12.8832 8.87995 10.757C7.69961 8.59307 7.00049 5.67191 7.00049 2.5L9.00049 2.5C9.00049 5.40322 9.64451 7.98206 10.6357 9.79932C11.6476 11.6544 12.8811 12.5 14.0005 12.5C15.1198 12.5 16.3534 11.6544 17.3652 9.79932Z',
   d10: 'M5.00049 15.5H7.00946V17.5H5.00049V15.5ZM7.99869 15.5H10.0077V17.5H7.99869V15.5ZM10.9969 15.5H13.0059V17.5H10.9969V15.5ZM13.9951 15.5H16.0041V17.5H13.9951V15.5ZM16.9933 15.5H19.0023V17.5H16.9933V15.5ZM19.9915 15.5H22.0005V17.5H19.9915V15.5Z',
-} as const;
+};
 
-export const IconChartMinimumStrokeRounded = (props: TheIconProps) => {
+export const IconChartMinimumStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -44,7 +45,7 @@ export const IconChartMinimumStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMinimumDuotoneRounded = (props: TheIconProps) => {
+export const IconChartMinimumDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -75,7 +76,7 @@ export const IconChartMinimumDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMinimumTwotoneRounded = (props: TheIconProps) => {
+export const IconChartMinimumTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -106,7 +107,7 @@ export const IconChartMinimumTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMinimumSolidRounded = (props: TheIconProps) => {
+export const IconChartMinimumSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -134,7 +135,7 @@ export const IconChartMinimumSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMinimumBulkRounded = (props: TheIconProps) => {
+export const IconChartMinimumBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -163,7 +164,7 @@ export const IconChartMinimumBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMinimumStrokeSharp = (props: TheIconProps) => {
+export const IconChartMinimumStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -192,7 +193,7 @@ export const IconChartMinimumStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMinimumSolidSharp = (props: TheIconProps) => {
+export const IconChartMinimumSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

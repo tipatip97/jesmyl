@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M8 16L21 16',
   d2: 'M16 16L16 3',
   d3: 'M8 21L8 10',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M21.6463 16.7499C19.8926 20.3047 16.2318 22.75 11.9999 22.75C10.8668 22.75 9.7746 22.5747 8.74899 22.2497V16.7499H21.6463Z',
   d19: 'M7.24899 21.6459C5.11718 20.5939 3.38447 18.856 2.33904 16.7203L7.24899 11.8105V21.6459Z',
   d20: 'M1.73516 15.2029L10.9384 5.99988L7.27827 2.33975C3.70823 4.08797 1.24994 7.7569 1.24994 12C1.24994 13.1155 1.41984 14.1913 1.73516 15.2029Z',
-} as const;
+};
 
-export const IconPicasaStrokeRounded = (props: TheIconProps) => {
+export const IconPicasaStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -75,7 +76,7 @@ export const IconPicasaStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPicasaDuotoneRounded = (props: TheIconProps) => {
+export const IconPicasaDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconPicasaDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPicasaTwotoneRounded = (props: TheIconProps) => {
+export const IconPicasaTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -157,7 +158,7 @@ export const IconPicasaTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPicasaSolidRounded = (props: TheIconProps) => {
+export const IconPicasaSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -187,7 +188,7 @@ export const IconPicasaSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPicasaBulkRounded = (props: TheIconProps) => {
+export const IconPicasaBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -220,7 +221,7 @@ export const IconPicasaBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPicasaStrokeSharp = (props: TheIconProps) => {
+export const IconPicasaStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -267,7 +268,7 @@ export const IconPicasaStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPicasaSolidSharp = (props: TheIconProps) => {
+export const IconPicasaSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

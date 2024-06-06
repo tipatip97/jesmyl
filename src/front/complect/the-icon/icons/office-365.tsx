@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M4 18V6L14.5 2L20 4V20L14.5 22L4 18ZM4 18L14 18.5V6L8.5 7.5V15.5L4 18Z',
   d2: 'M14.5 2L20 4V20L14.5 22L5 18L14 18.5V6L8.5 7.5V15.5L4 17.5V6L14.5 2Z',
   d3: 'M14.5 2L20 4V20L14.5 22L4 18V6L14.5 2Z',
@@ -11,9 +12,9 @@ const d = {
   d7: 'M4 18L14 18.5V6L8.5 7.5V15.5L4 18Z',
   d8: 'M5.38506 18.0693L14 18.5V6L8.5 7.5V15.5L4.48494 17.7306M20 4L14.5 2L4 6V18L14.5 22L20 20V4Z',
   d9: 'M20.75 3.51435L14.4939 1.25L3.24997 5.51346L3.24997 18.4865L3.25039 18.4867L8.50119 15.4841L8.50119 7.52134L14.0012 6.02832L14.0012 18.4701L3.25102 18.4869L14.4939 22.75L20.75 20.4856L20.75 3.51435Z',
-} as const;
+};
 
-export const IconOffice365StrokeRounded = (props: TheIconProps) => {
+export const IconOffice365StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -30,7 +31,7 @@ export const IconOffice365StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconOffice365DuotoneRounded = (props: TheIconProps) => {
+export const IconOffice365DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -52,7 +53,7 @@ export const IconOffice365DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconOffice365TwotoneRounded = (props: TheIconProps) => {
+export const IconOffice365TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -77,7 +78,7 @@ export const IconOffice365TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconOffice365SolidRounded = (props: TheIconProps) => {
+export const IconOffice365SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -93,7 +94,7 @@ export const IconOffice365SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconOffice365BulkRounded = (props: TheIconProps) => {
+export const IconOffice365BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -114,7 +115,7 @@ export const IconOffice365BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconOffice365StrokeSharp = (props: TheIconProps) => {
+export const IconOffice365StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -130,7 +131,7 @@ export const IconOffice365StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconOffice365SolidSharp = (props: TheIconProps) => {
+export const IconOffice365SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M11 8V14M15 8V14',
   d2: 'M7 14L18 14',
   d3: 'M16 14L18 20',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M8 14L18 14',
   d15: 'M6 8H18V10',
   d16: 'M5.49159 18.0377C5.1883 17.7287 4.91046 17.3985 4.661 17.0498L3 18.2382C4.95634 20.9725 8.26845 22.75 12 22.75C15.7316 22.75 19.0437 20.9725 21 18.2382L19.339 17.0498C19.0923 17.3945 18.8179 17.7213 18.5186 18.0273L17.3868 14.6318H18V12.6318H16V8.63184H17V9.63184H19V7.63184C19 7.07955 18.5523 6.63184 18 6.63184H6.71085L4.89737 1.25L3 1.88246L6.96023 13.6318L5.49159 18.0377ZM7.15849 19.3615L8.73505 14.6318H15.2786L16.8528 19.3546C15.4656 20.2074 13.7994 20.7076 12 20.7076C10.2055 20.7076 8.54346 20.2101 7.15849 19.3615ZM10 8.63184H7.38477L8.73262 12.6318H10V8.63184ZM14 8.63184H12V12.6318H14V8.63184Z',
-} as const;
+};
 
-export const IconRockingChairStrokeRounded = (props: TheIconProps) => {
+export const IconRockingChairStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -72,7 +73,7 @@ export const IconRockingChairStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRockingChairDuotoneRounded = (props: TheIconProps) => {
+export const IconRockingChairDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -108,7 +109,7 @@ export const IconRockingChairDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRockingChairTwotoneRounded = (props: TheIconProps) => {
+export const IconRockingChairTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -161,7 +162,7 @@ export const IconRockingChairTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRockingChairSolidRounded = (props: TheIconProps) => {
+export const IconRockingChairSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -189,7 +190,7 @@ export const IconRockingChairSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRockingChairBulkRounded = (props: TheIconProps) => {
+export const IconRockingChairBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -212,7 +213,7 @@ export const IconRockingChairBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRockingChairStrokeSharp = (props: TheIconProps) => {
+export const IconRockingChairStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -258,7 +259,7 @@ export const IconRockingChairStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconRockingChairSolidSharp = (props: TheIconProps) => {
+export const IconRockingChairSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

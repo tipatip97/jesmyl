@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M21.0002 19.0826V15.9174C21.0002 14.1482 21.0002 13.2636 20.4601 13.0435C19.9199 12.8233 19.2842 13.4488 18.0128 14.6998C17.3509 15.351 16.9662 15.4911 16.0419 15.4911C15.2226 15.4911 14.813 15.4911 14.5187 15.6846C13.9152 16.0814 14.0002 16.8627 14.0002 17.5C14.0002 18.1373 13.9152 18.9186 14.5187 19.3154C14.813 19.5089 15.2226 19.5089 16.0419 19.5089C16.9662 19.5089 17.3509 19.649 18.0128 20.3002C19.2842 21.5512 19.9199 22.1767 20.4601 21.9565C21.0002 21.7364 21.0002 20.8518 21.0002 19.0826Z',
   d2: 'M12 22H10.7273C7.46607 22 5.83546 22 4.70307 21.2022C4.37862 20.9736 4.09058 20.7025 3.8477 20.3971C3 19.3313 3 17.7966 3 14.7273V12.1818C3 9.21865 3 7.73706 3.46894 6.55375C4.22281 4.65142 5.81714 3.15088 7.83836 2.44135C9.09563 2 10.6698 2 13.8182 2C15.6173 2 16.5168 2 17.2352 2.2522C18.3902 2.65765 19.3012 3.5151 19.732 4.60214C20 5.27832 20 6.12494 20 7.81818V10',
   d3: 'M3 12C3 10.1591 4.49238 8.66667 6.33333 8.66667C6.99912 8.66667 7.78404 8.78333 8.43137 8.60988C9.00652 8.45576 9.45576 8.00652 9.60988 7.43136C9.78333 6.78404 9.66667 5.99912 9.66667 5.33333C9.66667 3.49238 11.1591 2 13 2',
@@ -12,9 +13,9 @@ const d = {
   d8: 'M13.998 19.5005L13.9981 15.5099C13.9981 15.5044 14.0026 15.4999 14.0081 15.4999H16.9949L20.9828 13.0052C20.9894 13.001 20.998 13.0058 20.998 13.0137V21.9936C20.998 22.0015 20.9894 22.0063 20.9828 22.0021L17.0071 19.5106H14.008C14.0025 19.5106 13.998 19.5061 13.998 19.5005Z',
   d9: 'M21.2492 22.7501V13.75L17.248 16.25H14.248V20.25H17.248L21.2492 22.7501Z',
   d10: 'M21.25 2.22727C21.25 1.68754 20.8141 1.25 20.2763 1.25H10.1362L2.75 8.66338V21.7727C2.75 22.3125 3.18593 22.75 3.72368 22.75H12.5131V20.7955H4.69727V10.0455H11.5131L11.5131 3.20459H19.3025V11H21.25V2.22727Z',
-} as const;
+};
 
-export const IconFileAudioStrokeRounded = (props: TheIconProps) => {
+export const IconFileAudioStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -45,7 +46,7 @@ export const IconFileAudioStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFileAudioDuotoneRounded = (props: TheIconProps) => {
+export const IconFileAudioDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconFileAudioDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFileAudioTwotoneRounded = (props: TheIconProps) => {
+export const IconFileAudioTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -113,7 +114,7 @@ export const IconFileAudioTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFileAudioSolidRounded = (props: TheIconProps) => {
+export const IconFileAudioSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -131,7 +132,7 @@ export const IconFileAudioSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFileAudioBulkRounded = (props: TheIconProps) => {
+export const IconFileAudioBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -150,7 +151,7 @@ export const IconFileAudioBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFileAudioStrokeSharp = (props: TheIconProps) => {
+export const IconFileAudioStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -170,7 +171,7 @@ export const IconFileAudioStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFileAudioSolidSharp = (props: TheIconProps) => {
+export const IconFileAudioSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

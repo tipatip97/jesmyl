@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M1.99805 2L21.998 22',
   d2: 'M17.5 13.11C17.92 12.75 18.718 12.48 18.8948 12.5042C19.5577 12.4383 19.927 12.9128 20.3059 13.373C21.2493 14.5188 21.7209 15.0918 21.8935 15.7236C22.0328 16.2334 22.078 16.836 21.778 17.496',
   d3: 'M6.99805 14.3046C6.99805 13.8694 6.98583 13.4782 6.63396 13.1722C6.50598 13.0609 6.3363 12.9836 5.99696 12.829C5.54806 12.6246 5.32361 12.5224 5.10121 12.5044C4.43396 12.4504 4.07497 12.9058 3.69018 13.3732C2.7468 14.519 2.27511 15.0919 2.10251 15.7237C1.96323 16.2336 1.96323 16.7668 2.10251 17.2766C2.35425 18.1981 3.14957 18.9705 3.73826 19.6856C4.10934 20.1363 4.46382 20.5475 5.10121 20.496C5.32361 20.478 5.54806 20.3757 5.99696 20.1713C6.3363 20.0167 6.50598 19.9394 6.63396 19.8281C6.98583 19.5221 6.99805 19.131 6.99805 18.6957V14.3046Z',
@@ -26,9 +27,9 @@ const d = {
   d22: 'M12.001 4.75C15.3147 4.75 18.001 7.43629 18.001 10.75V12.0164L16.3688 12.8325L22.0306 18.4943C22.2367 18.2227 22.4014 17.9445 22.5164 17.6437C22.6759 17.2263 22.7555 16.7925 22.7508 16.3549C22.7555 15.9173 22.6759 15.4836 22.5164 15.0662C22.3086 14.5226 21.9385 14.0529 21.455 13.5623C21.0766 13.1783 20.5922 12.7463 20.001 12.2305V10.75C20.001 6.33172 16.4193 2.75 12.001 2.75C10.3763 2.75 8.8647 3.23432 7.60274 4.06646L9.05698 5.5207C9.92673 5.02999 10.9312 4.75 12.001 4.75Z',
   d23: 'M19.1141 21.25L16.251 19.8185V16.2502L20.2565 20.2557C20.0279 20.4566 19.7814 20.6705 19.5172 20.9L19.1141 21.25Z',
   d24: 'M4.00098 10.75V12.2306C3.40971 12.7464 2.92531 13.1784 2.54693 13.5624C2.06347 14.053 1.69332 14.5227 1.4856 15.0662C1.32607 15.4837 1.24642 15.9174 1.25118 16.355C1.24642 16.7926 1.32607 17.2264 1.4856 17.6438C1.69332 18.1873 2.06347 18.6571 2.54693 19.1477C3.02386 19.6317 3.66925 20.192 4.48475 20.9001L4.88789 21.2501L7.75098 19.8186V12.8915L6.00098 12.0165V10.75C6.00098 9.41204 6.43891 8.17637 7.17926 7.17851L5.75345 5.7527C4.65683 7.12188 4.00098 8.85935 4.00098 10.75Z',
-} as const;
+};
 
-export const IconHeadphoneMuteStrokeRounded = (props: TheIconProps) => {
+export const IconHeadphoneMuteStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -62,7 +63,7 @@ export const IconHeadphoneMuteStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHeadphoneMuteDuotoneRounded = (props: TheIconProps) => {
+export const IconHeadphoneMuteDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -101,7 +102,7 @@ export const IconHeadphoneMuteDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHeadphoneMuteTwotoneRounded = (props: TheIconProps) => {
+export const IconHeadphoneMuteTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -137,7 +138,7 @@ export const IconHeadphoneMuteTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHeadphoneMuteSolidRounded = (props: TheIconProps) => {
+export const IconHeadphoneMuteSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -165,7 +166,7 @@ export const IconHeadphoneMuteSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHeadphoneMuteBulkRounded = (props: TheIconProps) => {
+export const IconHeadphoneMuteBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -194,7 +195,7 @@ export const IconHeadphoneMuteBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHeadphoneMuteStrokeSharp = (props: TheIconProps) => {
+export const IconHeadphoneMuteStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -220,7 +221,7 @@ export const IconHeadphoneMuteStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconHeadphoneMuteSolidSharp = (props: TheIconProps) => {
+export const IconHeadphoneMuteSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

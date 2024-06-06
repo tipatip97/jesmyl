@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5.5166 3C4.68817 3 4.0166 3.67157 4.0166 4.5C4.0166 5.32843 4.68817 6 5.5166 6C6.34503 6 7.0166 5.32843 7.0166 4.5C7.0166 3.67157 6.34503 3 5.5166 3Z',
   d2: 'M18.5166 3C17.6882 3 17.0166 3.67157 17.0166 4.5C17.0166 5.32843 17.6882 6 18.5166 6C19.345 6 20.0166 5.32843 20.0166 4.5C20.0166 3.67157 19.345 3 18.5166 3Z',
   d3: 'M10.0166 6H10.5166',
@@ -43,9 +44,9 @@ const d = {
   d39: 'M16.25 4.5C16.25 3.25736 17.2574 2.25 18.5 2.25C19.7426 2.25 20.75 3.25736 20.75 4.5C20.75 5.74264 19.7426 6.75 18.5 6.75C17.2574 6.75 16.25 5.74264 16.25 4.5Z',
   d40: 'M14.25 11.5C14.25 9.32463 16.2654 7.75 18.5 7.75C20.7346 7.75 22.75 9.32463 22.75 11.5V12.25H14.25V11.5Z',
   d41: 'M14.25 16.25V15.5C14.25 14.2574 13.2426 13.25 12 13.25C10.7574 13.25 9.75 14.2574 9.75 15.5V16.25H8.25V21.75H15.75V16.25H14.25ZM11.25 15.5C11.25 15.0858 11.5858 14.75 12 14.75C12.4142 14.75 12.75 15.0858 12.75 15.5V16.25H11.25V15.5Z',
-} as const;
+};
 
-export const IconPeerToPeer03StrokeRounded = (props: TheIconProps) => {
+export const IconPeerToPeer03StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -108,7 +109,7 @@ export const IconPeerToPeer03StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPeerToPeer03DuotoneRounded = (props: TheIconProps) => {
+export const IconPeerToPeer03DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -196,7 +197,7 @@ export const IconPeerToPeer03DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPeerToPeer03TwotoneRounded = (props: TheIconProps) => {
+export const IconPeerToPeer03TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -262,7 +263,7 @@ export const IconPeerToPeer03TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPeerToPeer03SolidRounded = (props: TheIconProps) => {
+export const IconPeerToPeer03SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -312,7 +313,7 @@ export const IconPeerToPeer03SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPeerToPeer03BulkRounded = (props: TheIconProps) => {
+export const IconPeerToPeer03BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -366,7 +367,7 @@ export const IconPeerToPeer03BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPeerToPeer03StrokeSharp = (props: TheIconProps) => {
+export const IconPeerToPeer03StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -407,7 +408,7 @@ export const IconPeerToPeer03StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPeerToPeer03SolidSharp = (props: TheIconProps) => {
+export const IconPeerToPeer03SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

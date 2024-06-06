@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 7C9.23858 7 7 9.23857 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7Z',
   d2: 'M17.7366 6.26337L21.5 2.5M17.7366 6.26337C17.297 5.82377 17.5833 4.02148 17.6966 3M17.7366 6.26337C18.1762 6.70297 19.9785 6.41666 21 6.30336',
   d3: 'M6.26337 17.7366L2.5 21.5M6.26337 17.7366C5.82377 17.297 4.02148 17.5833 3 17.6966M6.26337 17.7366C6.70297 18.1762 6.41666 19.9785 6.30336 21',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M2.66378 1.25049L4.95664 3.54352V1.95757H6.95664V6.958L1.9565 6.9573L1.95678 4.9573L3.54221 4.95752L1.24951 2.66465L2.66378 1.25049Z',
   d19: 'M1.95659 17.0435L6.95702 17.0435L6.95632 22.0436L4.95632 22.0433L4.95654 20.4579L2.66367 22.7506L1.24951 21.3363L3.54254 19.0435H1.95659V17.0435Z',
   d20: 'M17.0424 17.0435L22.0425 17.0442L22.0422 19.0442L20.4568 19.0439L22.7495 21.3368L21.3352 22.751L19.0424 20.4579V22.0439H17.0424L17.0424 17.0435Z',
-} as const;
+};
 
-export const IconCentralizedStrokeRounded = (props: TheIconProps) => {
+export const IconCentralizedStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -69,7 +70,7 @@ export const IconCentralizedStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCentralizedDuotoneRounded = (props: TheIconProps) => {
+export const IconCentralizedDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -119,7 +120,7 @@ export const IconCentralizedDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCentralizedTwotoneRounded = (props: TheIconProps) => {
+export const IconCentralizedTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -165,7 +166,7 @@ export const IconCentralizedTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCentralizedSolidRounded = (props: TheIconProps) => {
+export const IconCentralizedSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -203,7 +204,7 @@ export const IconCentralizedSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCentralizedBulkRounded = (props: TheIconProps) => {
+export const IconCentralizedBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -242,7 +243,7 @@ export const IconCentralizedBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCentralizedStrokeSharp = (props: TheIconProps) => {
+export const IconCentralizedStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -277,7 +278,7 @@ export const IconCentralizedStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCentralizedSolidSharp = (props: TheIconProps) => {
+export const IconCentralizedSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

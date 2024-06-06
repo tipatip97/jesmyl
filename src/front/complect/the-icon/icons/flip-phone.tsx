@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14.5 4H5.5V15.5C5.5 19.0899 8.41015 22 12 22C15.5899 22 18.5 19.0899 18.5 15.5V8C18.5 6.11438 18.5 5.17157 17.9142 4.58579C17.3284 4 16.3856 4 14.5 4Z',
   d2: 'M11 18H13',
   d3: 'M8.5 8.42857C8.5 8.02959 8.5 7.83009 8.55612 7.66972C8.65663 7.38247 8.88247 7.15663 9.16972 7.05612C9.33009 7 9.52959 7 9.92857 7H14.0714C14.4704 7 14.6699 7 14.8303 7.05612C15.1175 7.15663 15.3434 7.38247 15.4439 7.66972C15.5 7.83009 15.5 8.02959 15.5 8.42857V9C15.5 9.4645 15.5 9.69675 15.4692 9.89109C15.2998 10.9608 14.4608 11.7998 13.3911 11.9692C13.1968 12 12.4645 12 12 12C11.5355 12 10.8032 12 10.6089 11.9692C9.53918 11.7998 8.70021 10.9608 8.53078 9.89109C8.5 9.69675 8.5 9.4645 8.5 9V8.42857Z',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M10.5 18H13.5',
   d13: 'M5.5 5L5.5 2',
   d14: 'M6.75 3.75L6.75 1.75H4.75V15C4.75 19.0041 7.99594 22.25 12 22.25C16.0041 22.25 19.25 19.0041 19.25 15V4.5C19.25 4.08579 18.9142 3.75 18.5 3.75H6.75ZM16 7H8V12H16V7ZM10.5 16.75V18.25H13.5V16.75H10.5Z',
-} as const;
+};
 
-export const IconFlipPhoneStrokeRounded = (props: TheIconProps) => {
+export const IconFlipPhoneStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -54,7 +55,7 @@ export const IconFlipPhoneStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipPhoneDuotoneRounded = (props: TheIconProps) => {
+export const IconFlipPhoneDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -97,7 +98,7 @@ export const IconFlipPhoneDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipPhoneTwotoneRounded = (props: TheIconProps) => {
+export const IconFlipPhoneTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -135,7 +136,7 @@ export const IconFlipPhoneTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipPhoneSolidRounded = (props: TheIconProps) => {
+export const IconFlipPhoneSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -151,7 +152,7 @@ export const IconFlipPhoneSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipPhoneBulkRounded = (props: TheIconProps) => {
+export const IconFlipPhoneBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -178,7 +179,7 @@ export const IconFlipPhoneBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipPhoneStrokeSharp = (props: TheIconProps) => {
+export const IconFlipPhoneStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -211,7 +212,7 @@ export const IconFlipPhoneStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFlipPhoneSolidSharp = (props: TheIconProps) => {
+export const IconFlipPhoneSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

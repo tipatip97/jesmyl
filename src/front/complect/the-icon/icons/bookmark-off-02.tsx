@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M20 19.9429C19.9381 20.9761 19.7617 21.5725 19.259 21.8481C17.7592 22.6701 14.946 19.9276 13.61 19.1019C12.8352 18.623 12.4478 18.3836 12.0167 18.3836C11.5856 18.3836 11.1982 18.623 10.4234 19.1019C9.08741 19.9276 6.27421 22.6701 4.77446 21.8481C4 21.4236 4 20.2377 4 17.866V9.35632C4 7.18055 4 5.63815 4.23168 4.5',
   d2: 'M20 16V9.70753C20 6.07416 20 4.25748 18.8284 3.12874C17.6569 2 15.7712 2 12 2C9.39647 2 7.69163 2 6.5 2.37139',
   d3: 'M2 2L22 22',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M21.3358 22.75L1.25 2.66421L2.66421 1.25L22.75 21.3358L21.3358 22.75Z',
   d12: 'M20 1.25C20.4142 1.25 20.75 1.58579 20.75 2V17.2145L4.78553 1.25H20Z',
   d13: 'M20.75 22.75L12 18.375L3.25 22.75V3.25L20.75 20.75V22.75Z',
-} as const;
+};
 
-export const IconBookmarkOff02StrokeRounded = (props: TheIconProps) => {
+export const IconBookmarkOff02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -48,7 +49,7 @@ export const IconBookmarkOff02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkOff02DuotoneRounded = (props: TheIconProps) => {
+export const IconBookmarkOff02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -84,7 +85,7 @@ export const IconBookmarkOff02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkOff02TwotoneRounded = (props: TheIconProps) => {
+export const IconBookmarkOff02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -116,7 +117,7 @@ export const IconBookmarkOff02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkOff02SolidRounded = (props: TheIconProps) => {
+export const IconBookmarkOff02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -140,7 +141,7 @@ export const IconBookmarkOff02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkOff02BulkRounded = (props: TheIconProps) => {
+export const IconBookmarkOff02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -165,7 +166,7 @@ export const IconBookmarkOff02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkOff02StrokeSharp = (props: TheIconProps) => {
+export const IconBookmarkOff02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -187,7 +188,7 @@ export const IconBookmarkOff02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBookmarkOff02SolidSharp = (props: TheIconProps) => {
+export const IconBookmarkOff02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

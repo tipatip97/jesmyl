@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M11.0065 21.5H9.60546C6.02021 21.5 4.22759 21.5 3.11379 20.365C2 19.2301 2 17.4034 2 13.75C2 10.0966 2 8.26992 3.11379 7.13496C4.22759 6 6.02021 6 9.60546 6H13.4082C16.9934 6 18.7861 6 19.8999 7.13496C20.7568 8.00819 20.9544 9.2909 21 11.5V13',
   d2: 'M19 18.5H16M16 21.5C14.3431 21.5 13 20.1569 13 18.5C13 16.8431 14.3431 15.5 16 15.5M19 21.5C20.6569 21.5 22 20.1569 22 18.5C22 16.8431 20.6569 15.5 19 15.5',
   d3: 'M15.9998 6L15.9004 5.69094C15.4054 4.15089 15.1579 3.38087 14.5686 2.94043C13.9794 2.5 13.1967 2.5 11.6313 2.5H11.3682C9.8028 2.5 9.02011 2.5 8.43087 2.94043C7.84162 3.38087 7.59411 4.15089 7.0991 5.69094L6.99976 6',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M7.24147 2.40931C7.35855 2.01906 7.73308 1.75 8.15925 1.75H14.8408C15.2669 1.75 15.6415 2.01906 15.7585 2.40931L16.713 5.59098C16.8579 6.07372 16.5643 6.57686 16.0575 6.71479C15.5506 6.85271 15.0223 6.57319 14.8775 6.09045L14.1208 3.5681H8.87923L8.12252 6.09045C7.9777 6.57319 7.4494 6.85271 6.94253 6.71479C6.43565 6.57686 6.14215 6.07372 6.28697 5.59098L7.24147 2.40931Z',
   d12: 'M16 16.25C14.7574 16.25 13.75 17.2574 13.75 18.5C13.75 19.7426 14.7574 20.75 16 20.75V22.25C13.9289 22.25 12.25 20.5711 12.25 18.5C12.25 16.4289 13.9289 14.75 16 14.75V16.25ZM19 14.75C21.0711 14.75 22.75 16.4289 22.75 18.5C22.75 20.5711 21.0711 22.25 19 22.25V20.75C20.2426 20.75 21.25 19.7426 21.25 18.5C21.25 17.2574 20.2426 16.25 19 16.25V14.75ZM16 17.75H19V19.25H16V17.75Z',
   d13: 'M2 5.25C1.58579 5.25 1.25 5.58579 1.25 6V21.5C1.25 21.9142 1.58579 22.25 2 22.25H12.3258C11.3534 21.2971 10.75 19.969 10.75 18.5C10.75 15.6005 13.1005 13.25 16 13.25H19C20.0083 13.25 20.9502 13.5343 21.75 14.027V6C21.75 5.58579 21.4142 5.25 21 5.25H2Z',
-} as const;
+};
 
-export const IconJobLinkStrokeRounded = (props: TheIconProps) => {
+export const IconJobLinkStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -44,7 +45,7 @@ export const IconJobLinkStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconJobLinkDuotoneRounded = (props: TheIconProps) => {
+export const IconJobLinkDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -76,7 +77,7 @@ export const IconJobLinkDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconJobLinkTwotoneRounded = (props: TheIconProps) => {
+export const IconJobLinkTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -104,7 +105,7 @@ export const IconJobLinkTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconJobLinkSolidRounded = (props: TheIconProps) => {
+export const IconJobLinkSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -128,7 +129,7 @@ export const IconJobLinkSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconJobLinkBulkRounded = (props: TheIconProps) => {
+export const IconJobLinkBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -153,7 +154,7 @@ export const IconJobLinkBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconJobLinkStrokeSharp = (props: TheIconProps) => {
+export const IconJobLinkStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -180,7 +181,7 @@ export const IconJobLinkStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconJobLinkSolidSharp = (props: TheIconProps) => {
+export const IconJobLinkSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

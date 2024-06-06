@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14.002 4.5C14.3775 4.16667 14.6982 4 15.068 4C15.7661 4 16.2896 4.59409 17.3365 5.78228L19.9113 8.70448C21.3036 10.2847 21.9998 11.0747 21.9998 12C21.9998 12.9253 21.3036 13.7153 19.9113 15.2955L17.3365 18.2177C16.2896 19.4059 15.7661 20 15.068 20C14.6982 20 14.3775 19.8333 14.002 19.5',
   d2: 'M7 5.4398C7.86196 4.47993 8.35392 4 8.98862 4C9.69478 4 10.2243 4.59409 11.2832 5.78228L13.8875 8.70448C15.2959 10.2847 16 11.0747 16 12C16 12.9253 15.2959 13.7153 13.8876 15.2955L11.2832 18.2177C10.2243 19.4059 9.69478 20 8.98862 20C8.35392 20 7.86196 19.5201 7 18.5602',
   d3: 'M2 12H9',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M12.8066 19.2569L14.4198 21L22.7486 12L14.4198 3L12.8067 4.74313L14.1087 6.20791L14.4198 5.8717L20.091 12L14.4198 18.1283L14.1086 17.7921L12.8066 19.2569Z',
   d11: 'M8.25 13H1.25V11H8.25V13Z',
   d12: 'M17.2504 12L9.2505 3L3.47266 9.5H9.75085V14.5H3.47266L9.2505 21L17.2504 12Z',
-} as const;
+};
 
-export const IconKeyframesDoubleRemoveStrokeRounded = (props: TheIconProps) => {
+export const IconKeyframesDoubleRemoveStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -44,7 +45,7 @@ export const IconKeyframesDoubleRemoveStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframesDoubleRemoveDuotoneRounded = (props: TheIconProps) => {
+export const IconKeyframesDoubleRemoveDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -77,7 +78,7 @@ export const IconKeyframesDoubleRemoveDuotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconKeyframesDoubleRemoveTwotoneRounded = (props: TheIconProps) => {
+export const IconKeyframesDoubleRemoveTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -106,7 +107,7 @@ export const IconKeyframesDoubleRemoveTwotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconKeyframesDoubleRemoveSolidRounded = (props: TheIconProps) => {
+export const IconKeyframesDoubleRemoveSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -132,7 +133,7 @@ export const IconKeyframesDoubleRemoveSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframesDoubleRemoveBulkRounded = (props: TheIconProps) => {
+export const IconKeyframesDoubleRemoveBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -160,7 +161,7 @@ export const IconKeyframesDoubleRemoveBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframesDoubleRemoveStrokeSharp = (props: TheIconProps) => {
+export const IconKeyframesDoubleRemoveStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -185,7 +186,7 @@ export const IconKeyframesDoubleRemoveStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconKeyframesDoubleRemoveSolidSharp = (props: TheIconProps) => {
+export const IconKeyframesDoubleRemoveSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

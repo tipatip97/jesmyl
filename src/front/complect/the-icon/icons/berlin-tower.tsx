@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5C14.2091 5 16 6.79086 16 9Z',
   d2: 'M9.5 12.5C9.5 14.5 8 20 7 22',
   d3: 'M14.5 12.5C14.5 14.5 16 20 17 22',
@@ -17,9 +18,9 @@ const d = {
   d13: 'M15.4421 17.0279C14.9416 15.2763 14.6056 13.4373 14.6056 12.5923H12.6056C12.6056 13.7473 13.0195 15.8291 13.519 17.5774C14.0254 19.3496 14.6704 21.1683 15.2111 22.2499L17 21.3555C16.5408 20.437 15.9357 18.7557 15.4421 17.0279Z',
   d14: 'M12.9998 1.75L12.9998 4.75L10.9998 4.75L10.9998 1.75L12.9998 1.75Z',
   d15: 'M15.9998 16.75H7.99976V14.75H15.9998V16.75Z',
-} as const;
+};
 
-export const IconBerlinTowerStrokeRounded = (props: TheIconProps) => {
+export const IconBerlinTowerStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -62,7 +63,7 @@ export const IconBerlinTowerStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBerlinTowerDuotoneRounded = (props: TheIconProps) => {
+export const IconBerlinTowerDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconBerlinTowerDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBerlinTowerTwotoneRounded = (props: TheIconProps) => {
+export const IconBerlinTowerTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -155,7 +156,7 @@ export const IconBerlinTowerTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBerlinTowerSolidRounded = (props: TheIconProps) => {
+export const IconBerlinTowerSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -175,7 +176,7 @@ export const IconBerlinTowerSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBerlinTowerBulkRounded = (props: TheIconProps) => {
+export const IconBerlinTowerBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -196,7 +197,7 @@ export const IconBerlinTowerBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconBerlinTowerStrokeSharp = (props: TheIconProps) => {
+export const IconBerlinTowerStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -236,7 +237,7 @@ export const IconBerlinTowerStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconBerlinTowerSolidSharp = (props: TheIconProps) => {
+export const IconBerlinTowerSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

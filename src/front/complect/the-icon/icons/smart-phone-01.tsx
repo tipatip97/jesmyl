@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5 9C5 5.70017 5 4.05025 6.02513 3.02513C7.05025 2 8.70017 2 12 2C15.2998 2 16.9497 2 17.9749 3.02513C19 4.05025 19 5.70017 19 9V15C19 18.2998 19 19.9497 17.9749 20.9749C16.9497 22 15.2998 22 12 22C8.70017 22 7.05025 22 6.02513 20.9749C5 19.9497 5 18.2998 5 15V9Z',
   d2: 'M11 19H13',
   d3: 'M9 2L9.089 2.53402C9.28188 3.69129 9.37832 4.26993 9.77519 4.62204C10.1892 4.98934 10.7761 5 12 5C13.2239 5 13.8108 4.98934 14.2248 4.62204C14.6217 4.26993 14.7181 3.69129 14.911 2.53402L15 2',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M10.5 19H13.5',
   d11: 'M9 2L10 5H14L15 2',
   d12: 'M5 1.25H8.43276L9.43276 4.74999H14.5642L15.5642 1.25H19C19.4142 1.25 19.75 1.58579 19.75 2V22C19.75 22.4142 19.4142 22.75 19 22.75H5C4.58579 22.75 4.25 22.4142 4.25 22V2C4.25 1.58579 4.58579 1.25 5 1.25ZM9.99279 1.25H14.0042L13.4328 3.24999H10.5642L9.99279 1.25ZM10.5 19.75H13.5V18.25H10.5V19.75Z',
-} as const;
+};
 
-export const IconSmartPhone01StrokeRounded = (props: TheIconProps) => {
+export const IconSmartPhone01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -45,7 +46,7 @@ export const IconSmartPhone01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhone01DuotoneRounded = (props: TheIconProps) => {
+export const IconSmartPhone01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -79,7 +80,7 @@ export const IconSmartPhone01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhone01TwotoneRounded = (props: TheIconProps) => {
+export const IconSmartPhone01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconSmartPhone01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhone01SolidRounded = (props: TheIconProps) => {
+export const IconSmartPhone01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -126,7 +127,7 @@ export const IconSmartPhone01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhone01BulkRounded = (props: TheIconProps) => {
+export const IconSmartPhone01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -151,7 +152,7 @@ export const IconSmartPhone01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhone01StrokeSharp = (props: TheIconProps) => {
+export const IconSmartPhone01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -178,7 +179,7 @@ export const IconSmartPhone01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhone01SolidSharp = (props: TheIconProps) => {
+export const IconSmartPhone01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

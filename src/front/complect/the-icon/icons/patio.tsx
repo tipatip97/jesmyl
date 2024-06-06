@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M22 16C21.6936 15.3871 21.0672 15 20.382 15H3.61803C2.93283 15 2.30643 15.3871 2 16',
   d2: 'M3 22H21',
   d3: 'M5 15V22M9.5 15V22M14.5 15V22M19 15V22',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M10.25 22.75H13.75V14.25H10.25V22.75Z',
   d18: 'M8.75 14.25H5C4.58579 14.25 4.25 14.5858 4.25 15V22C4.25 22.4142 4.58579 22.75 5 22.75H8.75V14.25Z',
   d19: 'M15.25 14.25V22.75H19C19.4142 22.75 19.75 22.4142 19.75 22V15C19.75 14.5858 19.4142 14.25 19 14.25H15.25Z',
-} as const;
+};
 
-export const IconPatioStrokeRounded = (props: TheIconProps) => {
+export const IconPatioStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -64,7 +65,7 @@ export const IconPatioStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPatioDuotoneRounded = (props: TheIconProps) => {
+export const IconPatioDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -121,7 +122,7 @@ export const IconPatioDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPatioTwotoneRounded = (props: TheIconProps) => {
+export const IconPatioTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -163,7 +164,7 @@ export const IconPatioTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPatioSolidRounded = (props: TheIconProps) => {
+export const IconPatioSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -197,7 +198,7 @@ export const IconPatioSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPatioBulkRounded = (props: TheIconProps) => {
+export const IconPatioBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -232,7 +233,7 @@ export const IconPatioBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPatioStrokeSharp = (props: TheIconProps) => {
+export const IconPatioStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -271,7 +272,7 @@ export const IconPatioStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPatioSolidSharp = (props: TheIconProps) => {
+export const IconPatioSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M19.0045 19H4.8005C3.78202 19 3 18.1508 3 17.1527C3 16.427 3.34173 15.7438 3.92239 15.3084C5.16997 14.373 5.08548 12.887 5.15897 11.491C5.24716 9.8159 5.93091 8.14023 7 7.00002',
   d2: 'M9.49997 5.5C10.2958 5.17734 11.0937 5 12.0025 5C15.6474 5 18.6545 7.85223 18.8461 11.491C18.9196 12.887 18.8351 14.373 20.0827 15.3084C20.6224 15.7131 20.9557 16.332 21 17',
   d3: 'M10.5 3.125C10.5 3.95343 11.1716 5 12 5C12.8284 5 13.5 3.95343 13.5 3.125C13.5 2.29657 12.8284 2 12 2C11.1716 2 10.5 2.29657 10.5 3.125Z',
@@ -23,9 +24,9 @@ const d = {
   d19: 'M21.3358 22.75L1.25 2.66418L2.66422 1.24997L22.75 21.3358L21.3358 22.75Z',
   d20: 'M19.5904 11.4516C19.3779 7.41442 16.0425 4.24995 11.9998 4.24995C10.7765 4.24995 9.61792 4.53971 8.59107 5.05571L21.7498 18.2144V16.5C21.7498 16.32 21.6851 16.146 21.5675 16.0098L19.5914 13.721V11.4712L19.5904 11.4516Z',
   d21: 'M2.24978 16.5V19.75H19.7498L6.55103 6.55121C5.30884 7.82775 4.50968 9.54204 4.40918 11.4516L4.40815 11.4712V13.721L2.43208 16.0098C2.31448 16.146 2.24978 16.32 2.24978 16.5Z',
-} as const;
+};
 
-export const IconNotificationOff01StrokeRounded = (props: TheIconProps) => {
+export const IconNotificationOff01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -67,7 +68,7 @@ export const IconNotificationOff01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNotificationOff01DuotoneRounded = (props: TheIconProps) => {
+export const IconNotificationOff01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -114,7 +115,7 @@ export const IconNotificationOff01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNotificationOff01TwotoneRounded = (props: TheIconProps) => {
+export const IconNotificationOff01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -152,7 +153,7 @@ export const IconNotificationOff01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNotificationOff01SolidRounded = (props: TheIconProps) => {
+export const IconNotificationOff01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -188,7 +189,7 @@ export const IconNotificationOff01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNotificationOff01BulkRounded = (props: TheIconProps) => {
+export const IconNotificationOff01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -221,7 +222,7 @@ export const IconNotificationOff01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconNotificationOff01StrokeSharp = (props: TheIconProps) => {
+export const IconNotificationOff01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -254,7 +255,7 @@ export const IconNotificationOff01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconNotificationOff01SolidSharp = (props: TheIconProps) => {
+export const IconNotificationOff01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

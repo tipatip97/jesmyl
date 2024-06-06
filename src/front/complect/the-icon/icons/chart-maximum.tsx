@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M21 21H10C6.70017 21 5.05025 21 4.02513 19.9749C3 18.9497 3 17.2998 3 14V3',
   d2: 'M6 6H6.00898M8.9982 6H9.00718M11.9964 6H12.0054M14.9946 6H15.0036M17.9928 6H18.0018M20.991 6H21',
   d3: 'M19 21C19 14.3726 16.3137 9 13 9C9.68629 9 7 14.3726 7 21',
@@ -13,9 +14,9 @@ const d = {
   d9: 'M4 19.5V2.5H2V20.5C2 21.0523 2.44772 21.5 3 21.5H21V19.5H4Z',
   d10: 'M5 4.5H7.00898V6.5H5V4.5ZM7.9982 4.5H10.0072V6.5H7.9982V4.5ZM10.9964 4.5H13.0054V6.5H10.9964V4.5ZM13.9946 4.5H16.0036V6.5H13.9946V4.5ZM16.9928 4.5H19.0018V6.5H16.9928V4.5ZM19.991 4.5H22V6.5H19.991V4.5Z',
   d11: 'M9.65179 12.4619C8.64906 14.4674 8 17.3079 8 20.5H6C6 17.0647 6.69409 13.9052 7.86293 11.5675C9.00187 9.28963 10.7603 7.5 13 7.5C15.2397 7.5 16.9981 9.28963 18.1371 11.5675C19.3059 13.9052 20 17.0647 20 20.5H18C18 17.3079 17.3509 14.4674 16.3482 12.4619C15.3156 10.3967 14.074 9.5 13 9.5C11.926 9.5 10.6844 10.3967 9.65179 12.4619Z',
-} as const;
+};
 
-export const IconChartMaximumStrokeRounded = (props: TheIconProps) => {
+export const IconChartMaximumStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -44,7 +45,7 @@ export const IconChartMaximumStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMaximumDuotoneRounded = (props: TheIconProps) => {
+export const IconChartMaximumDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -74,7 +75,7 @@ export const IconChartMaximumDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMaximumTwotoneRounded = (props: TheIconProps) => {
+export const IconChartMaximumTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -104,7 +105,7 @@ export const IconChartMaximumTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMaximumSolidRounded = (props: TheIconProps) => {
+export const IconChartMaximumSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -126,7 +127,7 @@ export const IconChartMaximumSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMaximumBulkRounded = (props: TheIconProps) => {
+export const IconChartMaximumBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -155,7 +156,7 @@ export const IconChartMaximumBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMaximumStrokeSharp = (props: TheIconProps) => {
+export const IconChartMaximumStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -184,7 +185,7 @@ export const IconChartMaximumStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconChartMaximumSolidSharp = (props: TheIconProps) => {
+export const IconChartMaximumSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

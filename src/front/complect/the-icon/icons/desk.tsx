@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 8H21V12C21 14.357 21 15.5355 20.2678 16.2678C19.5355 17 18.357 17 16 17H8C5.64298 17 4.46447 17 3.73223 16.2678C3 15.5355 3 14.357 3 12V8Z',
   d2: 'M7 6C7 4.11438 7 3.17157 7.58579 2.58579C8.17157 2 9.11438 2 11 2H13C14.8856 2 15.8284 2 16.4142 2.58579C17 3.17157 17 4.11438 17 6V8H7V6Z',
   d3: 'M5 17V22M19 17V22',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M7 20.75V16.75H9V20.75H7ZM15 20.75V16.75H17V20.75H15Z',
   d18: 'M23 8.75L1 8.75V10.75H2.25V16.75C2.25 17.1642 2.58579 17.5 3 17.5H21C21.4142 17.5 21.75 17.1642 21.75 16.75V10.75H23V8.75Z',
   d19: 'M7 1.25C6.58579 1.25 6.25 1.58579 6.25 2V7.25L17.75 7.25V2C17.75 1.58579 17.4142 1.25 17 1.25H7Z',
-} as const;
+};
 
-export const IconDeskStrokeRounded = (props: TheIconProps) => {
+export const IconDeskStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -63,7 +64,7 @@ export const IconDeskStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDeskDuotoneRounded = (props: TheIconProps) => {
+export const IconDeskDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -108,7 +109,7 @@ export const IconDeskDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDeskTwotoneRounded = (props: TheIconProps) => {
+export const IconDeskTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -150,7 +151,7 @@ export const IconDeskTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDeskSolidRounded = (props: TheIconProps) => {
+export const IconDeskSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -180,7 +181,7 @@ export const IconDeskSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDeskBulkRounded = (props: TheIconProps) => {
+export const IconDeskBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -212,7 +213,7 @@ export const IconDeskBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconDeskStrokeSharp = (props: TheIconProps) => {
+export const IconDeskStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -250,7 +251,7 @@ export const IconDeskStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconDeskSolidSharp = (props: TheIconProps) => {
+export const IconDeskSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

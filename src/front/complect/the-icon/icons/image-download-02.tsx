@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M17 7.5C17.4915 8.0057 18.7998 10 19.5 10M22 7.5C21.5085 8.0057 20.2002 10 19.5 10M19.5 10V2',
   d2: 'M20.9999 13C20.998 17.147 20.9472 19.2703 19.6088 20.6088C18.2175 22 15.9783 22 11.5 22C7.02166 22 4.78249 22 3.39124 20.6088C2 19.2175 2 16.9783 2 12.5C2 8.02166 2 5.78249 3.39124 4.39124C4.78249 3 7.02166 3 11.5 3C11.6699 3 14 3.00008 14 3.00008',
   d3: 'M2 14.1354C2.61902 14.0455 3.24484 14.0011 3.87171 14.0027C6.52365 13.9466 9.11064 14.7729 11.1711 16.3342C13.082 17.7821 14.4247 19.7749 15 22',
@@ -17,9 +18,9 @@ const d = {
   d13: 'M14 7L17 10L20 7M17 2V9.19025',
   d14: 'M2 3.50024C2 2.94796 2.44772 2.50024 3 2.50024H12V4.50024H4V12.7517C6.77422 12.71 9.4821 13.5867 11.6484 15.238C13.4445 16.607 14.7743 18.4373 15.4826 20.5002H17.0587C16.6174 19.0158 15.899 17.632 14.9492 16.4093C15.959 15.9724 17.0064 15.7461 18.0719 15.7503C18.7212 15.7498 19.3657 15.8359 20 16.0049V10.5002H22V21.5002C22 22.0525 21.5523 22.5002 21 22.5002H3C2.44772 22.5002 2 22.0525 2 21.5002V3.50024Z',
   d15: 'M17.293 10.9137L21.0002 7.20662L19.5859 5.7924L18.293 7.0853V1.49951H16.293V7.0853L15.0002 5.7924L13.5859 7.20662L17.293 10.9137Z',
-} as const;
+};
 
-export const IconImageDownload02StrokeRounded = (props: TheIconProps) => {
+export const IconImageDownload02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -54,7 +55,7 @@ export const IconImageDownload02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconImageDownload02DuotoneRounded = (props: TheIconProps) => {
+export const IconImageDownload02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -94,7 +95,7 @@ export const IconImageDownload02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconImageDownload02TwotoneRounded = (props: TheIconProps) => {
+export const IconImageDownload02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -131,7 +132,7 @@ export const IconImageDownload02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconImageDownload02SolidRounded = (props: TheIconProps) => {
+export const IconImageDownload02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -157,7 +158,7 @@ export const IconImageDownload02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconImageDownload02BulkRounded = (props: TheIconProps) => {
+export const IconImageDownload02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -184,7 +185,7 @@ export const IconImageDownload02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconImageDownload02StrokeSharp = (props: TheIconProps) => {
+export const IconImageDownload02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -217,7 +218,7 @@ export const IconImageDownload02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconImageDownload02SolidSharp = (props: TheIconProps) => {
+export const IconImageDownload02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

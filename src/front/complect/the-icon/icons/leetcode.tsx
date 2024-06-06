@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M13.8514 3L4.62921 12C3.79026 12.8187 3.79026 14.1462 4.62921 14.9649L10.1841 20.386C11.0231 21.2047 12.3833 21.2047 13.2222 20.386L15.9997 17.6754',
   d2: 'M6.33203 10.3377L10.1836 6.57889C11.0226 5.76016 12.3828 5.76016 13.2217 6.57889L15.9992 9.28943',
   d3: 'M11 13H20',
@@ -13,9 +14,9 @@ const d = {
   d9: 'M12 5L16 9',
   d10: 'M10 11.9999H21V14.0164H10V11.9999Z',
   d11: 'M13.8284 4.94234L15.8284 2.92586L14.4142 1.5L3 13.0082L12.4142 22.5L17.8284 17.0412L16.4142 15.6153L12.4142 19.6483L5.82843 13.0082L12.4142 6.3682L16.4142 10.4012L17.8284 8.97529L13.8284 4.94234Z',
-} as const;
+};
 
-export const IconLeetcodeStrokeRounded = (props: TheIconProps) => {
+export const IconLeetcodeStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -46,7 +47,7 @@ export const IconLeetcodeStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLeetcodeDuotoneRounded = (props: TheIconProps) => {
+export const IconLeetcodeDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -82,7 +83,7 @@ export const IconLeetcodeDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLeetcodeTwotoneRounded = (props: TheIconProps) => {
+export const IconLeetcodeTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -114,7 +115,7 @@ export const IconLeetcodeTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLeetcodeSolidRounded = (props: TheIconProps) => {
+export const IconLeetcodeSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -134,7 +135,7 @@ export const IconLeetcodeSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLeetcodeBulkRounded = (props: TheIconProps) => {
+export const IconLeetcodeBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -155,7 +156,7 @@ export const IconLeetcodeBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLeetcodeStrokeSharp = (props: TheIconProps) => {
+export const IconLeetcodeStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -189,7 +190,7 @@ export const IconLeetcodeStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconLeetcodeSolidSharp = (props: TheIconProps) => {
+export const IconLeetcodeSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

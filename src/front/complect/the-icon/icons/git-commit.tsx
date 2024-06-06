@@ -1,14 +1,15 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 3L12 8.5M12 21L12 15',
   d2: 'M12 2C12.5523 2 13 2.44772 13 3L13 8.5C13 9.05228 12.5523 9.5 12 9.5C11.4477 9.5 11 9.05228 11 8.5L11 3C11 2.44772 11.4477 2 12 2ZM12 14C12.5523 14 13 14.4477 13 15L13 21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21L11 15C11 14.4477 11.4477 14 12 14Z',
   d3: 'M8.25 12C8.25 9.92893 9.92893 8.25 12 8.25C14.0711 8.25 15.75 9.92893 15.75 12C15.75 14.0711 14.0711 15.75 12 15.75C9.92893 15.75 8.25 14.0711 8.25 12Z',
   d4: 'M11 8.5L11 3L13 3L13 8.5L11 8.5ZM11 21L11 15L13 15L13 21L11 21Z',
-} as const;
+};
 
-export const IconGitCommitStrokeRounded = (props: TheIconProps) => {
+export const IconGitCommitStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -31,7 +32,7 @@ export const IconGitCommitStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitCommitDuotoneRounded = (props: TheIconProps) => {
+export const IconGitCommitDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -60,7 +61,7 @@ export const IconGitCommitDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitCommitTwotoneRounded = (props: TheIconProps) => {
+export const IconGitCommitTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -84,7 +85,7 @@ export const IconGitCommitTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitCommitSolidRounded = (props: TheIconProps) => {
+export const IconGitCommitSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -106,7 +107,7 @@ export const IconGitCommitSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitCommitBulkRounded = (props: TheIconProps) => {
+export const IconGitCommitBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -129,7 +130,7 @@ export const IconGitCommitBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitCommitStrokeSharp = (props: TheIconProps) => {
+export const IconGitCommitStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -152,7 +153,7 @@ export const IconGitCommitStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGitCommitSolidSharp = (props: TheIconProps) => {
+export const IconGitCommitSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

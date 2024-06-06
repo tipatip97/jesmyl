@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9.5 2V4',
   d2: 'M14.5 2V4',
   d3: 'M9.5 20V22',
@@ -25,9 +26,9 @@ const d = {
   d21: 'M22 14.5H19.5M22 9.5L19.5 9.5',
   d22: 'M8.5 4.5V2H10.5V4.5H8.5ZM13.5 4.5V2H15.5V4.5H13.5ZM2 8.5H4.5V10.5H2V8.5ZM19.5 8.5H22V10.5H19.5V8.5ZM2 13.5H4.5V15.5H2V13.5ZM19.5 13.5H22V15.5H19.5V13.5ZM8.5 22V19.5H10.5V22H8.5ZM13.5 22V19.5H15.5V22H13.5Z',
   d23: 'M4.5 3.75C4.08579 3.75 3.75 4.08579 3.75 4.5V19.5C3.75 19.9142 4.08579 20.25 4.5 20.25H19.5C19.9142 20.25 20.25 19.9142 20.25 19.5V4.5C20.25 4.08579 19.9142 3.75 19.5 3.75H4.5ZM12.8953 8.44716L11.6189 10.9999H15.6189L12.8953 16.4472L11.1064 15.5527L12.3828 12.9999H8.38281L11.1064 7.55273L12.8953 8.44716Z',
-} as const;
+};
 
-export const IconCpuChargeStrokeRounded = (props: TheIconProps) => {
+export const IconCpuChargeStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -106,7 +107,7 @@ export const IconCpuChargeStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCpuChargeDuotoneRounded = (props: TheIconProps) => {
+export const IconCpuChargeDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -190,7 +191,7 @@ export const IconCpuChargeDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCpuChargeTwotoneRounded = (props: TheIconProps) => {
+export const IconCpuChargeTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -277,7 +278,7 @@ export const IconCpuChargeTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCpuChargeSolidRounded = (props: TheIconProps) => {
+export const IconCpuChargeSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -299,7 +300,7 @@ export const IconCpuChargeSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCpuChargeBulkRounded = (props: TheIconProps) => {
+export const IconCpuChargeBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -326,7 +327,7 @@ export const IconCpuChargeBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCpuChargeStrokeSharp = (props: TheIconProps) => {
+export const IconCpuChargeStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -371,7 +372,7 @@ export const IconCpuChargeStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCpuChargeSolidSharp = (props: TheIconProps) => {
+export const IconCpuChargeSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 21H6',
   d2: 'M9.75 3C9.75 2.58579 9.41421 2.25 9 2.25C8.58579 2.25 8.25 2.58579 8.25 3H9.75ZM8.25 21C8.25 21.4142 8.58579 21.75 9 21.75C9.41421 21.75 9.75 21.4142 9.75 21H8.25ZM8.25 3V21H9.75V3H8.25Z',
   d3: 'M16 6C16 5.37191 16 5.05787 15.9194 4.78267C15.7518 4.21026 15.3066 3.71716 14.7541 3.49226C14.4886 3.38413 14.1885 3.35347 13.5884 3.29216C12.1695 3.14718 10.3874 3 9 3C7.61262 3 5.83047 3.14718 4.41161 3.29216C3.8115 3.35347 3.51144 3.38413 3.24586 3.49226C2.69344 3.71716 2.24816 4.21026 2.08057 4.78267C2 5.05787 2 5.37191 2 6',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M8 20V3H10V20H12V22H6V20H8Z',
   d13: 'M1.29288 2.2929C1.48042 2.10536 1.73478 2 2 2L16.0001 2.00002C16.5524 2.00002 17.0001 2.44773 17.0001 3.00002V6.00002H15.0001V4.00002L3.00003 4L3.00008 5.99999L1.00008 6.00004L1 3.00003C0.999993 2.73481 1.10535 2.48044 1.29288 2.2929Z',
   d14: 'M18.0005 5H22.0005C22.5528 5 23.0005 5.44772 23.0005 6V9C23.0005 9.55228 22.5528 10 22.0005 10H20V11H23.0005V13H19C18.4477 13 18 12.5523 18 12V9C18 8.44772 18.4477 8 19 8H21.0005V7H18.0005V5Z',
-} as const;
+};
 
-export const IconTextSuperscriptStrokeRounded = (props: TheIconProps) => {
+export const IconTextSuperscriptStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -52,7 +53,7 @@ export const IconTextSuperscriptStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextSuperscriptDuotoneRounded = (props: TheIconProps) => {
+export const IconTextSuperscriptDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -76,7 +77,7 @@ export const IconTextSuperscriptDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextSuperscriptTwotoneRounded = (props: TheIconProps) => {
+export const IconTextSuperscriptTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -111,7 +112,7 @@ export const IconTextSuperscriptTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextSuperscriptSolidRounded = (props: TheIconProps) => {
+export const IconTextSuperscriptSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -131,7 +132,7 @@ export const IconTextSuperscriptSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextSuperscriptBulkRounded = (props: TheIconProps) => {
+export const IconTextSuperscriptBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -152,7 +153,7 @@ export const IconTextSuperscriptBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTextSuperscriptStrokeSharp = (props: TheIconProps) => {
+export const IconTextSuperscriptStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -180,7 +181,7 @@ export const IconTextSuperscriptStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTextSuperscriptSolidSharp = (props: TheIconProps) => {
+export const IconTextSuperscriptSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12 22C11.1818 22 10.4002 21.6708 8.83693 21.0123C4.94564 19.3734 3 18.5539 3 17.1754V7.54234M12 22C12.8182 22 13.5998 21.6708 15.1631 21.0123C19.0544 19.3734 21 18.5539 21 17.1754V7.54234M12 22V12.0292M21 7.54234C21 8.15478 20.1984 8.54152 18.5953 9.315L15.6741 10.7244C13.8712 11.5943 12.9697 12.0292 12 12.0292M21 7.54234C21 6.9299 20.1984 6.54316 18.5953 5.76969L17 5M3 7.54234C3 8.15478 3.80157 8.54152 5.40472 9.315L8.32592 10.7244C10.1288 11.5943 11.0303 12.0292 12 12.0292M3 7.54234C3 6.9299 3.80157 6.54317 5.40472 5.76969L7 5M6 13.0263L8 14.0234',
   d2: 'M10 2L12 4M12 4L14 6M12 4L10 6M12 4L14 2',
   d3: 'M21 17.4839C21 18.7742 19.0544 19.5413 15.1631 21.0755C13.5998 21.6918 12.8182 22 12 22C11.1818 22 10.4002 21.6918 8.83693 21.0755C4.94564 19.5413 3 18.7742 3 17.4839L3 8L12 12.0645L21 8V17.4839Z',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M3 8V17.9891L11.9713 21.9912C11.9974 22.0029 12.0272 22.0029 12.0533 21.9912L21 18.0066V8.01497M12.0123 12.0375V21.4894',
   d13: 'M2.25 7.50011V17.9874L11.6954 22.1854C11.8893 22.2715 12.1107 22.2715 12.3046 22.1854L21.75 17.9874V7.5C21.75 7.20361 21.5754 6.93483 21.3046 6.81445L16.8046 4.81445L16.1954 6.18517L19.1533 7.49981L12 10.6791L4.84666 7.49981L7.8046 6.18517L7.1954 4.81445L2.6954 6.81445C2.42455 6.93483 2.25 7.20372 2.25 7.50011ZM5.83594 13.5062L8.16512 14.6707V12.9937L5.83594 11.8291V13.5062Z',
   d14: 'M10.9384 4.28033L9.46875 5.75L10.5294 6.81066L11.9991 5.34099L13.4688 6.81066L14.5294 5.75L13.0597 4.28033L14.5294 2.81066L13.4688 1.75L11.9991 3.21967L10.5294 1.75L9.46875 2.81066L10.9384 4.28033Z',
-} as const;
+};
 
-export const IconPackageOutOfStockStrokeRounded = (props: TheIconProps) => {
+export const IconPackageOutOfStockStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -41,7 +42,7 @@ export const IconPackageOutOfStockStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPackageOutOfStockDuotoneRounded = (props: TheIconProps) => {
+export const IconPackageOutOfStockDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -69,7 +70,7 @@ export const IconPackageOutOfStockDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPackageOutOfStockTwotoneRounded = (props: TheIconProps) => {
+export const IconPackageOutOfStockTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -100,7 +101,7 @@ export const IconPackageOutOfStockTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPackageOutOfStockSolidRounded = (props: TheIconProps) => {
+export const IconPackageOutOfStockSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -122,7 +123,7 @@ export const IconPackageOutOfStockSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPackageOutOfStockBulkRounded = (props: TheIconProps) => {
+export const IconPackageOutOfStockBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -149,7 +150,7 @@ export const IconPackageOutOfStockBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconPackageOutOfStockStrokeSharp = (props: TheIconProps) => {
+export const IconPackageOutOfStockStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -182,7 +183,7 @@ export const IconPackageOutOfStockStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconPackageOutOfStockSolidSharp = (props: TheIconProps) => {
+export const IconPackageOutOfStockSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

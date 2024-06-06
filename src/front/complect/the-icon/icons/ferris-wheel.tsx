@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M8 22L10.6843 14.3518C11.2346 12.7839 11.5097 12 12 12C12.4903 12 12.7654 12.7839 13.3157 14.3518L16 22',
   d2: 'M14 4C14 5.10457 13.1046 6 12 6C10.8954 6 10 5.10457 10 4C10 2.89543 10.8954 2 12 2C13.1046 2 14 2.89543 14 4Z',
   d3: 'M19 10C17.8954 10 17 9.10457 17 8C17 6.89543 17.8954 6 19 6C20.1046 6 21 6.89543 21 8C21 9.10457 20.1046 10 19 10Z',
@@ -24,9 +25,9 @@ const d = {
   d20: 'M2.25 16.25C2.25 14.7312 3.48122 13.5 5 13.5C6.51878 13.5 7.75 14.7312 7.75 16.25C7.75 17.7688 6.51878 19 5 19C3.48122 19 2.25 17.7688 2.25 16.25Z',
   d21: 'M2.25 8C2.25 6.48122 3.48122 5.25 5 5.25C6.51878 5.25 7.75 6.48122 7.75 8C7.75 9.51878 6.51878 10.75 5 10.75C3.48122 10.75 2.25 9.51878 2.25 8Z',
   d22: 'M16.25 16.25C16.25 14.7312 17.4812 13.5 19 13.5C20.5188 13.5 21.75 14.7312 21.75 16.25C21.75 17.7688 20.5188 19 19 19C17.4812 19 16.25 17.7688 16.25 16.25Z',
-} as const;
+};
 
-export const IconFerrisWheelStrokeRounded = (props: TheIconProps) => {
+export const IconFerrisWheelStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -74,7 +75,7 @@ export const IconFerrisWheelStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFerrisWheelDuotoneRounded = (props: TheIconProps) => {
+export const IconFerrisWheelDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -127,7 +128,7 @@ export const IconFerrisWheelDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFerrisWheelTwotoneRounded = (props: TheIconProps) => {
+export const IconFerrisWheelTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -176,7 +177,7 @@ export const IconFerrisWheelTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFerrisWheelSolidRounded = (props: TheIconProps) => {
+export const IconFerrisWheelSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -218,7 +219,7 @@ export const IconFerrisWheelSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFerrisWheelBulkRounded = (props: TheIconProps) => {
+export const IconFerrisWheelBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -266,7 +267,7 @@ export const IconFerrisWheelBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFerrisWheelStrokeSharp = (props: TheIconProps) => {
+export const IconFerrisWheelStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -324,7 +325,7 @@ export const IconFerrisWheelStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFerrisWheelSolidSharp = (props: TheIconProps) => {
+export const IconFerrisWheelSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

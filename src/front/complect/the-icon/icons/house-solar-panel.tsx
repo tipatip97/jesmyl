@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3.96586 5.79755L4.56916 4.39672C5.06999 3.23383 5.32041 2.65238 5.81138 2.32619C6.30235 2 6.92711 2 8.17664 2H15.8234C17.0729 2 17.6976 2 18.1886 2.32619C18.6796 2.65238 18.93 3.23383 19.4308 4.39672L20.0341 5.79755C20.8508 7.69388 21.2592 8.64205 20.8221 9.32102C20.3849 10 19.3661 10 17.3285 10H6.67147C4.63387 10 3.61507 10 3.17794 9.32102C2.7408 8.64205 3.14915 7.69388 3.96586 5.79755Z',
   d2: 'M4.5 10V15C4.5 16.8856 4.5 17.8284 5.08579 18.4142C5.55733 18.8858 6.26022 18.9777 7.5 18.9957M19.5 10V15C19.5 16.8856 19.5 17.8284 18.9142 18.4142C18.4427 18.8858 17.7398 18.9777 16.5 18.9957',
   d3: 'M13 14L10.4058 17.0672C10.0891 17.4778 9.93078 17.6831 10.0289 17.8416C10.127 18 10.4124 18 10.9833 18H13.0167C13.5876 18 13.873 18 13.9711 18.1584C14.0692 18.3169 13.9109 18.5222 13.5942 18.9328L10.9833 22',
@@ -31,9 +32,9 @@ const d = {
   d27: 'M20.0198 5.25H15.1856L14.8523 1.25H18.5198L20.0198 5.25Z',
   d28: 'M8.8067 5.25L9.14004 1.25H5.48046L3.97944 5.25H8.8067Z',
   d29: 'M3.41656 6.75L2.29586 9.7365C2.20943 9.96683 2.24145 10.2249 2.38156 10.4271C2.52166 10.6293 2.75204 10.75 2.99805 10.75L8.34837 10.75L8.6817 6.75H3.41656Z',
-} as const;
+};
 
-export const IconHouseSolarPanelStrokeRounded = (props: TheIconProps) => {
+export const IconHouseSolarPanelStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -78,7 +79,7 @@ export const IconHouseSolarPanelStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHouseSolarPanelDuotoneRounded = (props: TheIconProps) => {
+export const IconHouseSolarPanelDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -128,7 +129,7 @@ export const IconHouseSolarPanelDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHouseSolarPanelTwotoneRounded = (props: TheIconProps) => {
+export const IconHouseSolarPanelTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -174,7 +175,7 @@ export const IconHouseSolarPanelTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHouseSolarPanelSolidRounded = (props: TheIconProps) => {
+export const IconHouseSolarPanelSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -200,7 +201,7 @@ export const IconHouseSolarPanelSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHouseSolarPanelBulkRounded = (props: TheIconProps) => {
+export const IconHouseSolarPanelBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -249,7 +250,7 @@ export const IconHouseSolarPanelBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHouseSolarPanelStrokeSharp = (props: TheIconProps) => {
+export const IconHouseSolarPanelStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -287,7 +288,7 @@ export const IconHouseSolarPanelStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconHouseSolarPanelSolidSharp = (props: TheIconProps) => {
+export const IconHouseSolarPanelSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

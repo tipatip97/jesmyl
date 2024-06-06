@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z',
   d2: 'M13 16L12.1339 13.2M7 16L7.86614 13.2M7.86614 13.2L8.59031 10.8589C9.17989 8.95298 9.47468 8 10 8C10.5253 8 10.8201 8.95298 11.4097 10.8589L12.1339 13.2M7.86614 13.2H12.1339',
   d3: 'M16 16V11',
@@ -13,9 +14,9 @@ const d = {
   d9: 'M21 3V21H3V3H21Z',
   d10: 'M6.5 16.25L9.5 8.25H10.5L13.5 16.25M8 12.75H12M16.5 16.25V10.25M16.5 9.25V7.75',
   d11: 'M3 2.25C2.58579 2.25 2.25 2.58579 2.25 3L2.25 21C2.25 21.4142 2.58579 21.75 3 21.75L21 21.75C21.4142 21.75 21.75 21.4142 21.75 21L21.75 3C21.75 2.58579 21.4142 2.25 21 2.25L3 2.25ZM14.2014 15.9867L11.0189 7.5L8.97937 7.5L5.79688 15.9867L7.20137 16.5133L8.33137 13.5L11.6669 13.5L12.7969 16.5133L14.2014 15.9867ZM11.1044 12L8.89387 12L9.99912 9.05267L11.1044 12ZM17.2491 9.25V7.75H15.7491V9.25H17.2491ZM17.2491 16.25V10.25H15.7491L15.7491 16.25H17.2491Z',
-} as const;
+};
 
-export const IconAdobeIllustratorStrokeRounded = (props: TheIconProps) => {
+export const IconAdobeIllustratorStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -52,7 +53,7 @@ export const IconAdobeIllustratorStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAdobeIllustratorDuotoneRounded = (props: TheIconProps) => {
+export const IconAdobeIllustratorDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -94,7 +95,7 @@ export const IconAdobeIllustratorDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAdobeIllustratorTwotoneRounded = (props: TheIconProps) => {
+export const IconAdobeIllustratorTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -118,7 +119,7 @@ export const IconAdobeIllustratorTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAdobeIllustratorSolidRounded = (props: TheIconProps) => {
+export const IconAdobeIllustratorSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -134,7 +135,7 @@ export const IconAdobeIllustratorSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAdobeIllustratorBulkRounded = (props: TheIconProps) => {
+export const IconAdobeIllustratorBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -155,7 +156,7 @@ export const IconAdobeIllustratorBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAdobeIllustratorStrokeSharp = (props: TheIconProps) => {
+export const IconAdobeIllustratorStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -176,7 +177,7 @@ export const IconAdobeIllustratorStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconAdobeIllustratorSolidSharp = (props: TheIconProps) => {
+export const IconAdobeIllustratorSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

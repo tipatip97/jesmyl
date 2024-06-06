@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5.67181 13.9095C10 15.9322 14 7.84169 21 11.8869L18 2.78502C13.4239 -0.299918 8.56286 6.85641 3 4.62523L8.00007 22',
   d2: 'M19 7C13.5 3.00003 9 11.9999 4.5 8.99991',
   d3: 'M8 4.90476L10.8235 13M13.1765 3L16 10.619',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M11.9006 2.32588C11.4175 2.52363 10.9447 2.73793 10.4856 2.94608L10.4403 2.96659C9.67401 3.31397 8.93089 3.65084 8.20022 3.92549L9.84857 8.05881C10.1099 7.94247 10.3751 7.8224 10.6445 7.70041C10.8337 7.61472 11.0254 7.52795 11.2191 7.44093C11.9859 7.09646 12.7861 6.74726 13.614 6.45334L11.9006 2.32588Z',
   d15: 'M6.76409 4.37371C5.5698 4.65571 4.39025 4.67161 3.17621 4.18431L1.75 3.61186L3.27053 8.8995C4.39834 9.47484 5.57304 9.48324 6.86945 9.16279C7.39355 9.03325 7.92381 8.85389 8.46644 8.64242L6.76409 4.37371Z',
   d16: 'M10.6535 14.1266L9.02194 10.0354C8.42356 10.2685 7.82391 10.472 7.22939 10.619C6.09876 10.8984 4.94052 10.9868 3.78544 10.6901L7.18154 22.5L8.62492 22.0843L6.65969 15.2503C7.49456 15.3264 8.3042 15.1476 9.07699 14.857C9.59263 14.663 10.1229 14.4054 10.6535 14.1266Z',
-} as const;
+};
 
-export const IconRacingFlagStrokeRounded = (props: TheIconProps) => {
+export const IconRacingFlagStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -51,7 +52,7 @@ export const IconRacingFlagStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRacingFlagDuotoneRounded = (props: TheIconProps) => {
+export const IconRacingFlagDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -93,7 +94,7 @@ export const IconRacingFlagDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRacingFlagTwotoneRounded = (props: TheIconProps) => {
+export const IconRacingFlagTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -118,7 +119,7 @@ export const IconRacingFlagTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRacingFlagSolidRounded = (props: TheIconProps) => {
+export const IconRacingFlagSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -138,7 +139,7 @@ export const IconRacingFlagSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRacingFlagBulkRounded = (props: TheIconProps) => {
+export const IconRacingFlagBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -159,7 +160,7 @@ export const IconRacingFlagBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRacingFlagStrokeSharp = (props: TheIconProps) => {
+export const IconRacingFlagStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -186,7 +187,7 @@ export const IconRacingFlagStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconRacingFlagSolidSharp = (props: TheIconProps) => {
+export const IconRacingFlagSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7 5C7 4.05719 7 3.58579 7.29289 3.29289C7.58579 3 8.05719 3 9 3C9.94281 3 10.4142 3 10.7071 3.29289C11 3.58579 11 4.05719 11 5V9C11 9.94281 11 10.4142 10.7071 10.7071C10.4142 11 9.94281 11 9 11C8.05719 11 7.58579 11 7.29289 10.7071C7 10.4142 7 9.94281 7 9V5Z',
   d2: 'M13 15C13 14.0572 13 13.5858 13.2929 13.2929C13.5858 13 14.0572 13 15 13C15.9428 13 16.4142 13 16.7071 13.2929C17 13.5858 17 14.0572 17 15C17 15.9428 17 16.4142 16.7071 16.7071C16.4142 17 15.9428 17 15 17C14.0572 17 13.5858 17 13.2929 16.7071C13 16.4142 13 15.9428 13 15Z',
   d3: 'M9 19C9 18.0572 9 17.5858 9.29289 17.2929C9.58579 17 10.0572 17 11 17H19C19.9428 17 20.4142 17 20.7071 17.2929C21 17.5858 21 18.0572 21 19C21 19.9428 21 20.4142 20.7071 20.7071C20.4142 21 19.9428 21 19 21H11C10.0572 21 9.58579 21 9.29289 20.7071C9 20.4142 9 19.9428 9 19Z',
@@ -19,9 +20,9 @@ const d = {
   d15: 'M7 7H3V15H7V7Z',
   d16: 'M21 21V17L17 17V13H13V17L9 17V21L21 21Z',
   d17: 'M7 3H11V11H7V15H3V7H7V3Z',
-} as const;
+};
 
-export const IconTetrisStrokeRounded = (props: TheIconProps) => {
+export const IconTetrisStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -51,7 +52,7 @@ export const IconTetrisStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTetrisDuotoneRounded = (props: TheIconProps) => {
+export const IconTetrisDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -96,7 +97,7 @@ export const IconTetrisDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTetrisTwotoneRounded = (props: TheIconProps) => {
+export const IconTetrisTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -122,7 +123,7 @@ export const IconTetrisTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTetrisSolidRounded = (props: TheIconProps) => {
+export const IconTetrisSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -144,7 +145,7 @@ export const IconTetrisSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTetrisBulkRounded = (props: TheIconProps) => {
+export const IconTetrisBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -172,7 +173,7 @@ export const IconTetrisBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconTetrisStrokeSharp = (props: TheIconProps) => {
+export const IconTetrisStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -202,7 +203,7 @@ export const IconTetrisStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconTetrisSolidSharp = (props: TheIconProps) => {
+export const IconTetrisSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

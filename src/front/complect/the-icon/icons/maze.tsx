@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M14 2.5L14 7C14 8.88562 14 9.82843 14.5858 10.4142C15.1716 11 16.1144 11 18 11',
   d2: 'M21.5 15H15M10 15H15M15 15V21.5',
   d3: 'M2.5 10H5C6.88562 10 7.82843 10 8.41421 9.41421C9 8.82843 9 7.88562 9 6',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M21 3H3V21H21V3Z',
   d15: 'M14.75 2.25V10.25H18V11.75H14C13.5858 11.75 13.25 11.4142 13.25 11V2.25H3C2.58579 2.25 2.25 2.58579 2.25 3V9.25H8.25V6H9.75V10C9.75 10.4142 9.41421 10.75 9 10.75H2.25V14.25H7V15.75H2.25V21C2.25 21.4142 2.58579 21.75 3 21.75H14.25V15.75H10V14.25H21.75V3C21.75 2.58579 21.4142 2.25 21 2.25H14.75Z',
   d16: 'M21.75 15.75H15.75V21.75H21C21.4142 21.75 21.75 21.4142 21.75 21V15.75Z',
-} as const;
+};
 
-export const IconMazeStrokeRounded = (props: TheIconProps) => {
+export const IconMazeStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -64,7 +65,7 @@ export const IconMazeStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMazeDuotoneRounded = (props: TheIconProps) => {
+export const IconMazeDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -113,7 +114,7 @@ export const IconMazeDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMazeTwotoneRounded = (props: TheIconProps) => {
+export const IconMazeTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -159,7 +160,7 @@ export const IconMazeTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMazeSolidRounded = (props: TheIconProps) => {
+export const IconMazeSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -177,7 +178,7 @@ export const IconMazeSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMazeBulkRounded = (props: TheIconProps) => {
+export const IconMazeBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -198,7 +199,7 @@ export const IconMazeBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMazeStrokeSharp = (props: TheIconProps) => {
+export const IconMazeStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -238,7 +239,7 @@ export const IconMazeStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMazeSolidSharp = (props: TheIconProps) => {
+export const IconMazeSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

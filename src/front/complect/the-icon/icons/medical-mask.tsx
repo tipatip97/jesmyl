@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M10 8.5H8.70711C8.25435 8.5 7.82014 8.67986 7.5 9M14 8.5H15.2929C15.7456 8.5 16.1799 8.67986 16.5 9',
   d2: 'M7.31313 17.9198C6.89597 16.5535 6.89576 14.4497 7.31168 13.0825C7.57009 12.2331 8.29788 12 9.11765 12H14.8823C15.701 12 16.4284 12.2327 16.6872 13.0807C17.1043 14.4476 17.1043 16.5524 16.6872 17.9193C16.4284 18.7673 15.701 19 14.8823 19H9.11765C8.29936 19 7.57194 18.7675 7.31313 17.9198Z',
   d3: 'M7 13.5L2 12M17 13.5L22 12M7 17.5L3.5 17M17 17.5L20.5 17',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M16.5 12H7.5V18H16.5V12Z',
   d11: 'M7.5 13.5L2 12M16.5 13.5L22 12M7.5 17L3 16M16.5 17L21 16',
   d12: 'M11.9983 22.75C16.4788 22.75 20.3192 20.0089 21.9338 16.1121L17.2491 17.5535V17.9996C17.2491 18.4138 16.9133 18.7496 16.4991 18.7496H7.49913C7.08492 18.7496 6.74913 18.4138 6.74913 17.9996V17.5535L2.06257 16.1115C3.67702 20.0086 7.51751 22.75 11.9983 22.75ZM22.7463 12.2078C22.7322 12.9504 22.6429 13.6745 22.4855 14.3729L17.2491 15.9841V14.0402L22.7463 12.2078ZM1.33183 10.6533C1.99441 5.35185 6.51733 1.25 11.9983 1.25C17.4794 1.25 22.0025 5.35213 22.6648 10.6538L17.2491 12.459V11.9996C17.2491 11.5854 16.9133 11.2496 16.4991 11.2496L7.49913 11.2496C7.08492 11.2496 6.74913 11.5854 6.74913 11.9996V12.459L1.33183 10.6533ZM1.51093 14.3724C1.35362 13.674 1.26428 12.9498 1.25024 12.2072L6.74913 14.0402V15.9841L1.51093 14.3724ZM8.24913 12.7496V17.2496H15.7491L15.7491 12.7496L8.24913 12.7496ZM8.70643 7.75C8.05477 7.75 7.42979 8.00887 6.96899 8.46967L8.02965 9.53033C8.20915 9.35084 8.45259 9.25 8.70643 9.25H9.99932V7.75H8.70643ZM13.9993 9.25H15.2922C15.5461 9.25 15.7895 9.35084 15.969 9.53033L17.0297 8.46967C16.5689 8.00887 15.9439 7.75 15.2922 7.75H13.9993V9.25Z',
-} as const;
+};
 
-export const IconMedicalMaskStrokeRounded = (props: TheIconProps) => {
+export const IconMedicalMaskStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -55,7 +56,7 @@ export const IconMedicalMaskStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMedicalMaskDuotoneRounded = (props: TheIconProps) => {
+export const IconMedicalMaskDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -104,7 +105,7 @@ export const IconMedicalMaskDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMedicalMaskTwotoneRounded = (props: TheIconProps) => {
+export const IconMedicalMaskTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -145,7 +146,7 @@ export const IconMedicalMaskTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMedicalMaskSolidRounded = (props: TheIconProps) => {
+export const IconMedicalMaskSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -161,7 +162,7 @@ export const IconMedicalMaskSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMedicalMaskBulkRounded = (props: TheIconProps) => {
+export const IconMedicalMaskBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -188,7 +189,7 @@ export const IconMedicalMaskBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMedicalMaskStrokeSharp = (props: TheIconProps) => {
+export const IconMedicalMaskStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -223,7 +224,7 @@ export const IconMedicalMaskStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMedicalMaskSolidSharp = (props: TheIconProps) => {
+export const IconMedicalMaskSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

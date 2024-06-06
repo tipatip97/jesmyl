@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M8.5 17H4C2.34533 17 2 17.3453 2 19V20C2 21.6547 2.34533 22 4 22H20C21.6547 22 22 21.6547 22 20V19C22 17.3453 21.6547 17 20 17H15.5',
   d2: 'M9 12H6C4.34533 12 4 12.3453 4 14V17M15 12H18C19.6547 12 20 12.3453 20 14V17',
   d3: 'M6 12V9C6 7.34533 6.34533 7 8 7H16C17.6547 7 18 7.34533 18 9V12',
@@ -29,9 +30,9 @@ const d = {
   d25: 'M6.28695 22.75L7.3807 17.75H1.25V22.75H6.28695Z',
   d26: 'M3.25 16.25V12.75H8.47445L7.70883 16.25H3.25Z',
   d27: 'M5.25 11.25V7.75H9.5682L8.80258 11.25H5.25Z',
-} as const;
+};
 
-export const IconMayanPyramidStrokeRounded = (props: TheIconProps) => {
+export const IconMayanPyramidStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -76,7 +77,7 @@ export const IconMayanPyramidStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMayanPyramidDuotoneRounded = (props: TheIconProps) => {
+export const IconMayanPyramidDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -126,7 +127,7 @@ export const IconMayanPyramidDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMayanPyramidTwotoneRounded = (props: TheIconProps) => {
+export const IconMayanPyramidTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -172,7 +173,7 @@ export const IconMayanPyramidTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMayanPyramidSolidRounded = (props: TheIconProps) => {
+export const IconMayanPyramidSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -214,7 +215,7 @@ export const IconMayanPyramidSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMayanPyramidBulkRounded = (props: TheIconProps) => {
+export const IconMayanPyramidBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -262,7 +263,7 @@ export const IconMayanPyramidBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMayanPyramidStrokeSharp = (props: TheIconProps) => {
+export const IconMayanPyramidStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -304,7 +305,7 @@ export const IconMayanPyramidStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMayanPyramidSolidSharp = (props: TheIconProps) => {
+export const IconMayanPyramidSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

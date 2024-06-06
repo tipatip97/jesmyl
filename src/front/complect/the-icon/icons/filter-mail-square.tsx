@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 11.5C2 7.02166 2 4.78249 3.39124 3.39124C4.78249 2 7.02166 2 11.5 2C15.9783 2 18.2175 2 19.6088 3.39124C21 4.78249 21 7.02166 21 11.5C21 15.9783 21 18.2175 19.6088 19.6088C18.2175 21 15.9783 21 11.5 21C7.02166 21 4.78249 21 3.39124 19.6088C2 18.2175 2 15.9783 2 11.5Z',
   d2: 'M8.5 11.5L14.5001 11.5',
   d3: 'M9.5 15H13.5',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M8 12.0001L15.9999 12M10 15.5H14M7 8.5H17',
   d11: 'M21 3H3V21H21V3Z',
   d12: 'M3 2.25C2.58579 2.25 2.25 2.58579 2.25 3V21C2.25 21.4142 2.58579 21.75 3 21.75H21C21.4142 21.75 21.75 21.4142 21.75 21V3C21.75 2.58579 21.4142 2.25 21 2.25H3ZM7 9.5H17V7.5H7V9.5ZM8.00001 13.0001L15.9999 13L15.9999 11L7.99999 11.0001L8.00001 13.0001ZM10 16.5H14V14.5H10V16.5Z',
-} as const;
+};
 
-export const IconFilterMailSquareStrokeRounded = (props: TheIconProps) => {
+export const IconFilterMailSquareStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -52,7 +53,7 @@ export const IconFilterMailSquareStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterMailSquareDuotoneRounded = (props: TheIconProps) => {
+export const IconFilterMailSquareDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -93,7 +94,7 @@ export const IconFilterMailSquareDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterMailSquareTwotoneRounded = (props: TheIconProps) => {
+export const IconFilterMailSquareTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -132,7 +133,7 @@ export const IconFilterMailSquareTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterMailSquareSolidRounded = (props: TheIconProps) => {
+export const IconFilterMailSquareSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -148,7 +149,7 @@ export const IconFilterMailSquareSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterMailSquareBulkRounded = (props: TheIconProps) => {
+export const IconFilterMailSquareBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -181,7 +182,7 @@ export const IconFilterMailSquareBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterMailSquareStrokeSharp = (props: TheIconProps) => {
+export const IconFilterMailSquareStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -203,7 +204,7 @@ export const IconFilterMailSquareStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFilterMailSquareSolidSharp = (props: TheIconProps) => {
+export const IconFilterMailSquareSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

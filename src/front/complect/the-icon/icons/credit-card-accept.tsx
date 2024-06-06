@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M11 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C21.8957 6.57684 21.9897 8.11799 21.999 11',
   d2: 'M2 9H22',
   d3: 'M14 18C14 18 15 18 16 20C16 20 19.1765 15 22 14',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M16.043 18.4218L21.3359 13.1289L22.7502 14.5431L16.043 21.2502L13.3359 18.5431L14.7502 17.1289L16.043 18.4218Z',
   d13: 'M1.25 3.5C1.25 3.08579 1.58579 2.75 2 2.75H22C22.4142 2.75 22.75 3.08579 22.75 3.5V7.75H1.25V3.5Z',
   d14: 'M1.25 9.25H22.75V12.4212L21.3362 11.0073L16.0433 16.3002L14.7504 15.0073L11.2148 18.5429L12.922 20.25H2C1.58579 20.25 1.25 19.9142 1.25 19.5V9.25Z',
-} as const;
+};
 
-export const IconCreditCardAcceptStrokeRounded = (props: TheIconProps) => {
+export const IconCreditCardAcceptStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -48,7 +49,7 @@ export const IconCreditCardAcceptStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardAcceptDuotoneRounded = (props: TheIconProps) => {
+export const IconCreditCardAcceptDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -83,7 +84,7 @@ export const IconCreditCardAcceptDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardAcceptTwotoneRounded = (props: TheIconProps) => {
+export const IconCreditCardAcceptTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -114,7 +115,7 @@ export const IconCreditCardAcceptTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardAcceptSolidRounded = (props: TheIconProps) => {
+export const IconCreditCardAcceptSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -136,7 +137,7 @@ export const IconCreditCardAcceptSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardAcceptBulkRounded = (props: TheIconProps) => {
+export const IconCreditCardAcceptBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -159,7 +160,7 @@ export const IconCreditCardAcceptBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardAcceptStrokeSharp = (props: TheIconProps) => {
+export const IconCreditCardAcceptStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -186,7 +187,7 @@ export const IconCreditCardAcceptStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardAcceptSolidSharp = (props: TheIconProps) => {
+export const IconCreditCardAcceptSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

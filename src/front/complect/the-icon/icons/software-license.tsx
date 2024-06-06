@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z',
   d2: 'M2.5 9H21.5',
   d3: 'M6.99981 6H7.00879',
@@ -20,9 +21,9 @@ const d = {
   d16: 'M8 13L10 15L8 17',
   d17: 'M3 2.25C2.58579 2.25 2.25 2.58579 2.25 3V8.25H21.75V3C21.75 2.58579 21.4142 2.25 21 2.25H3ZM6 4.25H8.00898V6.25H6V4.25ZM10 4.25H12.009V6.25H10V4.25Z',
   d18: 'M21.75 9.75H2.25V21C2.25 21.4142 2.58579 21.75 3 21.75L21 21.75C21.1989 21.75 21.3897 21.671 21.5303 21.5303C21.671 21.3897 21.75 21.1989 21.75 21V9.75ZM7.46875 14.17L8.93842 15.6397L7.46875 17.1094L8.52941 18.17L11.0597 15.6397L8.52941 13.1094L7.46875 14.17ZM11.9991 18.3897H15.9991V16.8897H11.9991V18.3897Z',
-} as const;
+};
 
-export const IconSoftwareLicenseStrokeRounded = (props: TheIconProps) => {
+export const IconSoftwareLicenseStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -71,7 +72,7 @@ export const IconSoftwareLicenseStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareLicenseDuotoneRounded = (props: TheIconProps) => {
+export const IconSoftwareLicenseDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -125,7 +126,7 @@ export const IconSoftwareLicenseDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareLicenseTwotoneRounded = (props: TheIconProps) => {
+export const IconSoftwareLicenseTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -176,7 +177,7 @@ export const IconSoftwareLicenseTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareLicenseSolidRounded = (props: TheIconProps) => {
+export const IconSoftwareLicenseSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -192,7 +193,7 @@ export const IconSoftwareLicenseSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareLicenseBulkRounded = (props: TheIconProps) => {
+export const IconSoftwareLicenseBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -225,7 +226,7 @@ export const IconSoftwareLicenseBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareLicenseStrokeSharp = (props: TheIconProps) => {
+export const IconSoftwareLicenseStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -272,7 +273,7 @@ export const IconSoftwareLicenseStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSoftwareLicenseSolidSharp = (props: TheIconProps) => {
+export const IconSoftwareLicenseSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

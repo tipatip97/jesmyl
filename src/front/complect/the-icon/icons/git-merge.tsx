@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7 20C8.10457 20 9 19.1046 9 18C9 16.8954 8.10457 16 7 16C5.89543 16 5 16.8954 5 18C5 19.1046 5.89543 20 7 20Z',
   d2: 'M7 8C8.10457 8 9 7.10457 9 6C9 4.89543 8.10457 4 7 4C5.89543 4 5 4.89543 5 6C5 7.10457 5.89543 8 7 8Z',
   d3: 'M17 14C18.1046 14 19 13.1046 19 12C19 10.8954 18.1046 10 17 10C15.8954 10 15 10.8954 15 12C15 13.1046 15.8954 14 17 14Z',
@@ -17,9 +18,9 @@ const d = {
   d13: 'M17 13.9766C18.1046 13.9766 19 13.0811 19 11.9766C19 10.872 18.1046 9.97656 17 9.97656C15.8954 9.97656 15 10.872 15 11.9766C15 13.0811 15.8954 13.9766 17 13.9766Z',
   d14: 'M7 7.97656V15.9766M7 12.0323H15',
   d15: 'M6 16L6 8H8V11H15V13H8L8 16H6Z',
-} as const;
+};
 
-export const IconGitMergeStrokeRounded = (props: TheIconProps) => {
+export const IconGitMergeStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -51,7 +52,7 @@ export const IconGitMergeStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitMergeDuotoneRounded = (props: TheIconProps) => {
+export const IconGitMergeDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -98,7 +99,7 @@ export const IconGitMergeDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitMergeTwotoneRounded = (props: TheIconProps) => {
+export const IconGitMergeTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -131,7 +132,7 @@ export const IconGitMergeTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitMergeSolidRounded = (props: TheIconProps) => {
+export const IconGitMergeSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -165,7 +166,7 @@ export const IconGitMergeSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitMergeBulkRounded = (props: TheIconProps) => {
+export const IconGitMergeBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -200,7 +201,7 @@ export const IconGitMergeBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitMergeStrokeSharp = (props: TheIconProps) => {
+export const IconGitMergeStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -233,7 +234,7 @@ export const IconGitMergeStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGitMergeSolidSharp = (props: TheIconProps) => {
+export const IconGitMergeSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

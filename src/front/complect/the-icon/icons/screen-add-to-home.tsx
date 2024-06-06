@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7.06899 5C7.20477 4.13105 7.46172 3.5086 7.94804 3.02513C8.97918 2 10.6388 2 13.958 2C17.2773 2 18.9369 2 19.968 3.02513C20.9991 4.05025 20.9991 5.70017 20.9991 9V15C20.9991 18.2998 20.9991 19.9497 19.968 20.9749C18.9369 22 17.2773 22 13.958 22C10.6388 22 8.97918 22 7.94804 20.9749C7.29268 20.3233 7.05384 19.4194 6.9668 18',
   d2: 'M14 19H14.009',
   d3: 'M6.44344 7.95215H9.92289C10.3586 7.96711 11.0175 8.49825 11.0175 8.9086V12.5141M2.99902 15.9521L10.2668 8.74919',
@@ -21,9 +22,9 @@ const d = {
   d17: 'M2.9834 16.0069L10.5025 8.4615M6.42272 7.97852H10.9838V12.5644',
   d18: 'M6.38763 7H11.9591V12.5714H9.95906V10.4142L3.66617 16.7071L2.25195 15.2929L8.54485 9H6.38763V7Z',
   d19: 'M6.4677 1.46969C6.60836 1.32902 6.79913 1.25 6.99805 1.25H20.9992C21.4134 1.25 21.7492 1.58579 21.7492 2V22C21.7492 22.4142 21.4134 22.75 20.9992 22.75H6.99919C6.58499 22.75 6.24921 22.4142 6.24919 22L6.24884 15.8904L8.3179 13.8214H13.2073V5.75H6.24826L6.24805 2.00004C6.24804 1.80112 6.32705 1.61035 6.4677 1.46969ZM15.0109 18H13.002V20H15.0109V18Z',
-} as const;
+};
 
-export const IconScreenAddToHomeStrokeRounded = (props: TheIconProps) => {
+export const IconScreenAddToHomeStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -53,7 +54,7 @@ export const IconScreenAddToHomeStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconScreenAddToHomeDuotoneRounded = (props: TheIconProps) => {
+export const IconScreenAddToHomeDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -88,7 +89,7 @@ export const IconScreenAddToHomeDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconScreenAddToHomeTwotoneRounded = (props: TheIconProps) => {
+export const IconScreenAddToHomeTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -119,7 +120,7 @@ export const IconScreenAddToHomeTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconScreenAddToHomeSolidRounded = (props: TheIconProps) => {
+export const IconScreenAddToHomeSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -139,7 +140,7 @@ export const IconScreenAddToHomeSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconScreenAddToHomeBulkRounded = (props: TheIconProps) => {
+export const IconScreenAddToHomeBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -164,7 +165,7 @@ export const IconScreenAddToHomeBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconScreenAddToHomeStrokeSharp = (props: TheIconProps) => {
+export const IconScreenAddToHomeStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -192,7 +193,7 @@ export const IconScreenAddToHomeStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconScreenAddToHomeSolidSharp = (props: TheIconProps) => {
+export const IconScreenAddToHomeSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

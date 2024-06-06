@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M20.0165 19.4118L21.4236 16.8293C21.811 16.1181 22.0048 15.7625 21.9999 15.3776C21.995 14.9927 21.7923 14.642 21.3869 13.9404L15.9448 4.52296C15.5155 3.78003 15.3009 3.40856 14.9431 3.20428C14.5852 3 14.1493 3 13.2773 3H10.7227C9.85074 3 9.41475 3 9.05694 3.20428C8.69913 3.40856 8.48447 3.78003 8.05515 4.52296L2.61306 13.9404C2.20767 14.642 2.00497 14.9927 2.00009 15.3776C1.99521 15.7625 2.18895 16.1181 2.57643 16.8293L3.98351 19.4118C4.40512 20.1856 4.61592 20.5725 4.97988 20.7862C5.34384 21 5.7918 21 6.68772 21H17.3123C18.2082 21 18.6562 21 19.0201 20.7862C19.3841 20.5725 19.5949 20.1856 20.0165 19.4118Z',
   d2: 'M9 4L16 15',
   d3: 'M5.5 20.5L12 9',
@@ -20,9 +21,9 @@ const d = {
   d16: 'M9.61724 2.25L15.6554 2.25004L22.7158 14.2499H16.6645L9.61724 2.25Z',
   d17: 'M22.749 15.7499H16.2441C16.2349 15.75 16.2257 15.75 16.2165 15.7499H9.16908C9.14489 15.7499 9.12096 15.7487 9.09734 15.7465L5.56147 21.75H19.723L22.749 15.7499Z',
   d18: 'M9.97884 14.2499L12.4498 10.0544L14.9137 14.2499H9.97884Z',
-} as const;
+};
 
-export const IconGoogleDriveStrokeRounded = (props: TheIconProps) => {
+export const IconGoogleDriveStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -60,7 +61,7 @@ export const IconGoogleDriveStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleDriveDuotoneRounded = (props: TheIconProps) => {
+export const IconGoogleDriveDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -108,7 +109,7 @@ export const IconGoogleDriveDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleDriveTwotoneRounded = (props: TheIconProps) => {
+export const IconGoogleDriveTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconGoogleDriveTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleDriveSolidRounded = (props: TheIconProps) => {
+export const IconGoogleDriveSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -155,7 +156,7 @@ export const IconGoogleDriveSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleDriveBulkRounded = (props: TheIconProps) => {
+export const IconGoogleDriveBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -179,7 +180,7 @@ export const IconGoogleDriveBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleDriveStrokeSharp = (props: TheIconProps) => {
+export const IconGoogleDriveStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -215,7 +216,7 @@ export const IconGoogleDriveStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGoogleDriveSolidSharp = (props: TheIconProps) => {
+export const IconGoogleDriveSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

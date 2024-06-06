@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C21.8957 6.57684 21.9897 8.11799 21.999 11',
   d2: 'M2 9H22',
   d3: 'M22 14L16 20M22 20L16 14',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M1.25 3.5C1.25 3.08579 1.58579 2.75 2 2.75H22C22.4142 2.75 22.75 3.08579 22.75 3.5V7.75H1.25V3.5Z',
   d11: 'M1.25 9.25H22.75V13.1283L21.3362 11.7145L19.0433 14.0074L16.7504 11.7145L13.2148 15.25L15.5077 17.5429L13.2148 19.8358L13.629 20.25H2C1.58579 20.25 1.25 19.9142 1.25 19.5V9.25Z',
   d12: 'M20.4573 17.543L22.7502 19.8359L21.3359 21.2502L19.043 18.9573L16.7502 21.2502L15.3359 19.8359L17.6288 17.543L15.3359 15.2502L16.7502 13.8359L19.043 16.1288L21.3359 13.8359L22.7502 15.2502L20.4573 17.543Z',
-} as const;
+};
 
-export const IconCreditCardNotAcceptStrokeRounded = (props: TheIconProps) => {
+export const IconCreditCardNotAcceptStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -45,7 +46,7 @@ export const IconCreditCardNotAcceptStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardNotAcceptDuotoneRounded = (props: TheIconProps) => {
+export const IconCreditCardNotAcceptDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -79,7 +80,7 @@ export const IconCreditCardNotAcceptDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardNotAcceptTwotoneRounded = (props: TheIconProps) => {
+export const IconCreditCardNotAcceptTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -109,7 +110,7 @@ export const IconCreditCardNotAcceptTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardNotAcceptSolidRounded = (props: TheIconProps) => {
+export const IconCreditCardNotAcceptSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconCreditCardNotAcceptSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardNotAcceptBulkRounded = (props: TheIconProps) => {
+export const IconCreditCardNotAcceptBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -158,7 +159,7 @@ export const IconCreditCardNotAcceptBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardNotAcceptStrokeSharp = (props: TheIconProps) => {
+export const IconCreditCardNotAcceptStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -186,7 +187,7 @@ export const IconCreditCardNotAcceptStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCreditCardNotAcceptSolidSharp = (props: TheIconProps) => {
+export const IconCreditCardNotAcceptSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

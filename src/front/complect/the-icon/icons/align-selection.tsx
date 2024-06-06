@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M20 6V18M18 4H6M18 20H6M4 18V6',
   d2: 'M22 4C22 5.10457 21.1046 6 20 6C18.8954 6 18 5.10457 18 4C18 2.89543 18.8954 2 20 2C21.1046 2 22 2.89543 22 4Z',
   d3: 'M6 4C6 5.10457 5.10457 6 4 6C2.89543 6 2 5.10457 2 4C2 2.89543 2.89543 2 4 2C5.10457 2 6 2.89543 6 4Z',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M17.25 20C17.25 18.4812 18.4812 17.25 20 17.25C21.5188 17.25 22.75 18.4812 22.75 20C22.75 21.5188 21.5188 22.75 20 22.75C18.4812 22.75 17.25 21.5188 17.25 20Z',
   d11: 'M1.25 20C1.25 18.4812 2.48122 17.25 4 17.25C5.51878 17.25 6.75 18.4812 6.75 20C6.75 21.5188 5.51878 22.75 4 22.75C2.48122 22.75 1.25 21.5188 1.25 20Z',
   d12: 'M6 3H18V5H6V3ZM3 18V6H5V18H3ZM21 6V18H19V6H21ZM18 21H6V19H18V21Z',
-} as const;
+};
 
-export const IconAlignSelectionStrokeRounded = (props: TheIconProps) => {
+export const IconAlignSelectionStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -53,7 +54,7 @@ export const IconAlignSelectionStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlignSelectionDuotoneRounded = (props: TheIconProps) => {
+export const IconAlignSelectionDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -95,7 +96,7 @@ export const IconAlignSelectionDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlignSelectionTwotoneRounded = (props: TheIconProps) => {
+export const IconAlignSelectionTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconAlignSelectionTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlignSelectionSolidRounded = (props: TheIconProps) => {
+export const IconAlignSelectionSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -165,7 +166,7 @@ export const IconAlignSelectionSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlignSelectionBulkRounded = (props: TheIconProps) => {
+export const IconAlignSelectionBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -198,7 +199,7 @@ export const IconAlignSelectionBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconAlignSelectionStrokeSharp = (props: TheIconProps) => {
+export const IconAlignSelectionStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -238,7 +239,7 @@ export const IconAlignSelectionStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconAlignSelectionSolidSharp = (props: TheIconProps) => {
+export const IconAlignSelectionSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

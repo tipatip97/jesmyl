@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M18 2V4M6 2V4',
   d2: 'M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z',
   d3: 'M3 8H21',
@@ -20,9 +21,9 @@ const d = {
   d16: 'M13.4996 13.9999H13.5086',
   d17: 'M5.75 5.75V1.5H7.25V5.75H5.75ZM16.75 5.75V1.5H18.25V5.75H16.75Z',
   d18: 'M2.25 3.75C2.25 3.33579 2.58579 3 3 3H21C21.4142 3 21.75 3.33579 21.75 3.75V21.75C21.75 22.1642 21.4142 22.5 21 22.5H3C2.58579 22.5 2.25 22.1642 2.25 21.75V3.75ZM20.25 8H3.75V4.5H20.25V8ZM11.0818 13.1066C10.4314 13.4985 10 14.209 10 15.0193C10 16.2513 10.9987 17.2501 12.2308 17.2501C13.0411 17.2501 13.7515 16.8187 14.1435 16.1682L15.8565 17.2005C15.1178 18.4265 13.7709 19.2501 12.2308 19.2501C9.89418 19.2501 8 17.3559 8 15.0193C8 13.4791 8.8236 12.1323 10.0496 11.3936L11.0818 13.1066ZM13.5 12.75C12.9477 12.75 12.5 13.1977 12.5 13.75C12.5 14.3023 12.9477 14.75 13.5 14.75H13.509C14.0613 14.75 14.509 14.3023 14.509 13.75C14.509 13.1977 14.0613 12.75 13.509 12.75H13.5Z',
-} as const;
+};
 
-export const IconRamadhanMonthStrokeRounded = (props: TheIconProps) => {
+export const IconRamadhanMonthStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -66,7 +67,7 @@ export const IconRamadhanMonthStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRamadhanMonthDuotoneRounded = (props: TheIconProps) => {
+export const IconRamadhanMonthDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -115,7 +116,7 @@ export const IconRamadhanMonthDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRamadhanMonthTwotoneRounded = (props: TheIconProps) => {
+export const IconRamadhanMonthTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -162,7 +163,7 @@ export const IconRamadhanMonthTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRamadhanMonthSolidRounded = (props: TheIconProps) => {
+export const IconRamadhanMonthSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -184,7 +185,7 @@ export const IconRamadhanMonthSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRamadhanMonthBulkRounded = (props: TheIconProps) => {
+export const IconRamadhanMonthBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -213,7 +214,7 @@ export const IconRamadhanMonthBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRamadhanMonthStrokeSharp = (props: TheIconProps) => {
+export const IconRamadhanMonthStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -254,7 +255,7 @@ export const IconRamadhanMonthStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconRamadhanMonthSolidSharp = (props: TheIconProps) => {
+export const IconRamadhanMonthSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

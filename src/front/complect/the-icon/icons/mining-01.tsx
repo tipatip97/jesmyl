@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M8 17C6.89543 17 6 17.8954 6 19C6 20.1046 6.89543 21 8 21C9.10457 21 10 20.1046 10 19C10 17.8954 9.10457 17 8 17Z',
   d2: 'M12.874 8C12.9562 7.68038 13 7.3453 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 7.3453 5.04375 7.68038 5.12602 8',
   d3: 'M14.751 3.00765C14.8334 3.00257 14.9166 3 15.0003 3C17.2095 3 19.0003 4.79086 19.0003 7C19.0003 7.3453 18.9566 7.68038 18.8743 8',
@@ -20,9 +21,9 @@ const d = {
   d16: 'M18.2153 19.7519V19C18.2153 18.3096 16.6593 16.75 15.9735 16.75C15.2877 16.75 13.7318 18.3096 13.7318 19V19.75H10.268V19C10.268 18.3096 8.7121 16.75 8.02629 16.75C7.34049 16.75 5.78453 18.3096 5.78453 19V19.75H2.37887L1.25 7.25H22.75L21.6211 19.7409L18.2153 19.7519Z',
   d17: 'M4.41602 5.75H13.5836C13.0349 3.73308 11.1906 2.25 8.99983 2.25C6.80908 2.25 4.96473 3.73308 4.41602 5.75Z',
   d18: 'M15.125 5.75H19.5839C19.0351 3.73308 17.1908 2.25 15 2.25C14.4289 2.25 13.8813 2.35081 13.374 2.5356C14.2483 3.39233 14.8721 4.50385 15.125 5.75Z',
-} as const;
+};
 
-export const IconMining01StrokeRounded = (props: TheIconProps) => {
+export const IconMining01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -66,7 +67,7 @@ export const IconMining01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMining01DuotoneRounded = (props: TheIconProps) => {
+export const IconMining01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -120,7 +121,7 @@ export const IconMining01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMining01TwotoneRounded = (props: TheIconProps) => {
+export const IconMining01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -166,7 +167,7 @@ export const IconMining01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMining01SolidRounded = (props: TheIconProps) => {
+export const IconMining01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -200,7 +201,7 @@ export const IconMining01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMining01BulkRounded = (props: TheIconProps) => {
+export const IconMining01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -235,7 +236,7 @@ export const IconMining01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMining01StrokeSharp = (props: TheIconProps) => {
+export const IconMining01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -277,7 +278,7 @@ export const IconMining01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMining01SolidSharp = (props: TheIconProps) => {
+export const IconMining01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

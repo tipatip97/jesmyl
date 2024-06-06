@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M17 6.5C17.4915 7.0057 18.7998 9 19.5 9M22 6.5C21.5085 7.0057 20.2002 9 19.5 9M19.5 9V3',
   d2: 'M16.75 18C17.3235 17.1916 17.7446 16.2813 18 15.3219C15.7006 15.6252 13.3471 14.4775 12.1157 12.2135C10.8843 9.94939 11.1247 7.21203 12.5219 5.24984C10.6594 4.74879 8.61836 4.98806 6.823 6.08837C3.1672 8.32888 1.91462 13.2911 4.0253 17.1718C4.18331 17.4623 4.35569 17.7385 4.54094 18',
   d3: 'M2 21H22',
@@ -13,9 +14,9 @@ const d = {
   d9: 'M18.793 9.91406L22.0002 6.70696L20.5859 5.29274L19.793 6.08564V2.49985L17.793 2.49985V6.08564L17.0002 5.29274L15.5859 6.70696L18.793 9.91406Z',
   d10: 'M7.07982 5.17209C3.18029 7.58495 1.84422 12.9289 4.09561 17.1081C4.26416 17.4209 4.44803 17.7184 4.64562 18H17.6686C18.2804 17.1294 18.7295 16.1491 19.002 15.1158C16.5492 15.4425 14.0389 14.2065 12.7254 11.7683C11.4119 9.33012 11.6683 6.38219 13.1586 4.26906C11.172 3.72946 8.99487 3.98715 7.07982 5.17209Z',
   d11: 'M22 21.5H2V19.5H22V21.5Z',
-} as const;
+};
 
-export const IconMoonsetStrokeRounded = (props: TheIconProps) => {
+export const IconMoonsetStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -45,7 +46,7 @@ export const IconMoonsetStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoonsetDuotoneRounded = (props: TheIconProps) => {
+export const IconMoonsetDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -80,7 +81,7 @@ export const IconMoonsetDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoonsetTwotoneRounded = (props: TheIconProps) => {
+export const IconMoonsetTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconMoonsetTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoonsetSolidRounded = (props: TheIconProps) => {
+export const IconMoonsetSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -134,7 +135,7 @@ export const IconMoonsetSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoonsetBulkRounded = (props: TheIconProps) => {
+export const IconMoonsetBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -159,7 +160,7 @@ export const IconMoonsetBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconMoonsetStrokeSharp = (props: TheIconProps) => {
+export const IconMoonsetStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -186,7 +187,7 @@ export const IconMoonsetStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconMoonsetSolidSharp = (props: TheIconProps) => {
+export const IconMoonsetSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

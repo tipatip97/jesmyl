@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M18 5.5L19 4.5M5 4.5L6 5.5',
   d2: 'M12 9.5V13.5L14 15.5',
   d3: 'M12 3.5V2',
@@ -18,9 +19,9 @@ const d = {
   d14: 'M5.46875 6.03039L3.96875 4.53039L5.02941 3.46973L6.52941 4.96973L5.46875 6.03039ZM20.0294 4.53039L18.5294 6.03039L17.4688 4.96973L18.9688 3.46973L20.0294 4.53039Z',
   d15: 'M12 3.25C6.61522 3.25 2.25 7.61522 2.25 13C2.25 18.3848 6.61522 22.75 12 22.75C17.3848 22.75 21.75 18.3848 21.75 13C21.75 7.61522 17.3848 3.25 12 3.25ZM12.75 13.1893V8.5H11.25V13.8107L13.9697 16.5303L15.0303 15.4697L12.75 13.1893Z',
   d16: 'M11.25 2.75H9V1.25H15V2.75H12.75V3.5H11.25V2.75Z',
-} as const;
+};
 
-export const IconStopWatchStrokeRounded = (props: TheIconProps) => {
+export const IconStopWatchStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -65,7 +66,7 @@ export const IconStopWatchStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStopWatchDuotoneRounded = (props: TheIconProps) => {
+export const IconStopWatchDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -116,7 +117,7 @@ export const IconStopWatchDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStopWatchTwotoneRounded = (props: TheIconProps) => {
+export const IconStopWatchTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -163,7 +164,7 @@ export const IconStopWatchTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStopWatchSolidRounded = (props: TheIconProps) => {
+export const IconStopWatchSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -191,7 +192,7 @@ export const IconStopWatchSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStopWatchBulkRounded = (props: TheIconProps) => {
+export const IconStopWatchBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -218,7 +219,7 @@ export const IconStopWatchBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStopWatchStrokeSharp = (props: TheIconProps) => {
+export const IconStopWatchStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -252,7 +253,7 @@ export const IconStopWatchStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconStopWatchSolidSharp = (props: TheIconProps) => {
+export const IconStopWatchSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

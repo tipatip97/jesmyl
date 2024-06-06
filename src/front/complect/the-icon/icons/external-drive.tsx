@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M20 14V10C20 6.22876 20 4.34315 18.8973 3.17157C17.7947 2 16.02 2 12.4706 2L11.5294 2C7.98001 2 6.20531 2 5.10266 3.17157C4 4.34315 4 6.22876 4 10L4 14C4 17.7712 4 19.6569 5.10266 20.8284C6.20531 22 7.98001 22 11.5294 22H12.4706C16.02 22 17.7947 22 18.8973 20.8284C20 19.6569 20 17.7712 20 14Z',
   d2: 'M16 18H16.009',
   d3: 'M4 15L20 15',
@@ -17,9 +18,9 @@ const d = {
   d13: 'M7 6L11 6',
   d14: 'M7 9L11 9',
   d15: 'M3.25 2C3.25 1.58579 3.58579 1.25 4 1.25H20C20.4142 1.25 20.75 1.58579 20.75 2V14.25L3.25 14.25V2ZM3.25 15.75L20.75 15.75V22C20.75 22.4142 20.4142 22.75 20 22.75H4C3.58579 22.75 3.25 22.4142 3.25 22V15.75ZM16.9973 18.25H14.9883V20.25H16.9973V18.25ZM11 6.75L7 6.75L7 5.25L11 5.25V6.75ZM7 9.75H11V8.25L7 8.25L7 9.75Z',
-} as const;
+};
 
-export const IconExternalDriveStrokeRounded = (props: TheIconProps) => {
+export const IconExternalDriveStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -62,7 +63,7 @@ export const IconExternalDriveStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconExternalDriveDuotoneRounded = (props: TheIconProps) => {
+export const IconExternalDriveDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconExternalDriveDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconExternalDriveTwotoneRounded = (props: TheIconProps) => {
+export const IconExternalDriveTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -155,7 +156,7 @@ export const IconExternalDriveTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconExternalDriveSolidRounded = (props: TheIconProps) => {
+export const IconExternalDriveSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -171,7 +172,7 @@ export const IconExternalDriveSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconExternalDriveBulkRounded = (props: TheIconProps) => {
+export const IconExternalDriveBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -198,7 +199,7 @@ export const IconExternalDriveBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconExternalDriveStrokeSharp = (props: TheIconProps) => {
+export const IconExternalDriveStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -239,7 +240,7 @@ export const IconExternalDriveStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconExternalDriveSolidSharp = (props: TheIconProps) => {
+export const IconExternalDriveSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

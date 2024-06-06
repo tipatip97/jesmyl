@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 12H22',
   d2: 'M12 22L12 2',
   d3: 'M21 8C18.2386 8 16 5.76142 16 3',
@@ -14,9 +15,9 @@ const d = {
   d10: 'M13 2L13 22L11 22L11 2L13 2Z',
   d11: 'M17 3C17 5.20914 18.7909 7 21 7L21 9C17.6863 9 15 6.31371 15 3L17 3Z',
   d12: 'M7 21C7 18.7909 5.20914 17 3 17L3 15C6.31371 15 9 17.6863 9 21L7 21Z',
-} as const;
+};
 
-export const IconHyperboleStrokeRounded = (props: TheIconProps) => {
+export const IconHyperboleStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -50,7 +51,7 @@ export const IconHyperboleStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHyperboleDuotoneRounded = (props: TheIconProps) => {
+export const IconHyperboleDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -79,7 +80,7 @@ export const IconHyperboleDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHyperboleTwotoneRounded = (props: TheIconProps) => {
+export const IconHyperboleTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -115,7 +116,7 @@ export const IconHyperboleTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHyperboleSolidRounded = (props: TheIconProps) => {
+export const IconHyperboleSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -143,7 +144,7 @@ export const IconHyperboleSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHyperboleBulkRounded = (props: TheIconProps) => {
+export const IconHyperboleBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -171,7 +172,7 @@ export const IconHyperboleBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconHyperboleStrokeSharp = (props: TheIconProps) => {
+export const IconHyperboleStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -205,7 +206,7 @@ export const IconHyperboleStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconHyperboleSolidSharp = (props: TheIconProps) => {
+export const IconHyperboleSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

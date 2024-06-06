@@ -1,11 +1,10 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
-import TheIcon from '../../../../../../complect/the-icon/TheIcon';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
+import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
+import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import useIsRedactArea from '../../../../../../complect/useIsRedactArea';
 import { ContextFieldBlankExportable, contextFieldBlankTypeDictAliases } from './Blanks.model';
-import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
 
 export default function ContextFieldBlank({
   blank,

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M6 8L6 16',
   d2: 'M18 16V12C18 9.17157 18 7.75736 17.1213 6.87868C16.2426 6 14.8284 6 12 6L11 6M11 6C11 5.29977 12.9943 3.99153 13.5 3.5M11 6C11 6.70023 12.9943 8.00847 13.5 8.5',
   d3: 'M6 8.13647V16.3791',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M3.25 18.2286C3.25 16.7099 4.48122 15.4786 6 15.4786C7.51878 15.4786 8.75 16.7099 8.75 18.2286C8.75 19.7474 7.51878 20.9786 6 20.9786C4.48122 20.9786 3.25 19.7474 3.25 18.2286Z',
   d19: 'M3.25 6.22864C3.25 4.70985 4.48122 3.47864 6 3.47864C7.51878 3.47864 8.75 4.70985 8.75 6.22864C8.75 7.74742 7.51878 8.97864 6 8.97864C4.48122 8.97864 3.25 7.74742 3.25 6.22864Z',
   d20: 'M15.25 18.2286C15.25 16.7099 16.4812 15.4786 18 15.4786C19.5188 15.4786 20.75 16.7099 20.75 18.2286C20.75 19.7474 19.5188 20.9786 18 20.9786C16.4812 20.9786 15.25 19.7474 15.25 18.2286Z',
-} as const;
+};
 
-export const IconGitPullRequestStrokeRounded = (props: TheIconProps) => {
+export const IconGitPullRequestStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -66,7 +67,7 @@ export const IconGitPullRequestStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitPullRequestDuotoneRounded = (props: TheIconProps) => {
+export const IconGitPullRequestDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -126,7 +127,7 @@ export const IconGitPullRequestDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitPullRequestTwotoneRounded = (props: TheIconProps) => {
+export const IconGitPullRequestTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -167,7 +168,7 @@ export const IconGitPullRequestTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitPullRequestSolidRounded = (props: TheIconProps) => {
+export const IconGitPullRequestSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -211,7 +212,7 @@ export const IconGitPullRequestSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitPullRequestBulkRounded = (props: TheIconProps) => {
+export const IconGitPullRequestBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -257,7 +258,7 @@ export const IconGitPullRequestBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconGitPullRequestStrokeSharp = (props: TheIconProps) => {
+export const IconGitPullRequestStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -300,7 +301,7 @@ export const IconGitPullRequestStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconGitPullRequestSolidSharp = (props: TheIconProps) => {
+export const IconGitPullRequestSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

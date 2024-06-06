@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M5.5 15.5L2.61096 5.5905C2.04631 3.6603 1.76399 2.6952 2.24574 2.21566C2.72749 1.73612 3.60877 2.105 5.37133 2.84278L11.692 5.48851C13.1841 6.11304 13.8363 6.06315 15.2313 5.24565L18.7973 3.15593C20.3091 2.26998 21.065 1.827 21.5902 2.19348C22.1155 2.55996 22.0396 3.47742 21.8877 5.31232L21.3335 12.0109C21.1225 14.5617 20.6625 15.2995 18.1681 15.9572L10 18',
   d2: 'M9.98703 17C9.98703 18.1046 8.87064 19 7.49351 19C6.11638 19 5 18.1046 5 17C5 15.8954 6.11638 15 7.49351 15C8.87064 15 9.98703 15.8954 9.98703 17ZM9.98703 17C10.0493 17.7724 10.0064 20.5 7.00254 22',
   d3: 'M21.8877 5.31232L21.3335 12.0109C21.1225 14.5617 20.6625 15.2995 18.1681 15.9572L10 18C10.4 14.4 7.16667 14.8333 5.5 15.5L2.61096 5.5905C2.04631 3.6603 1.76399 2.6952 2.24574 2.21566C2.72749 1.73612 3.60877 2.105 5.37133 2.84278L11.692 5.48851C13.1841 6.11304 13.8363 6.06315 15.2313 5.24565L18.7973 3.15593C20.3091 2.26998 21.065 1.827 21.5902 2.19348C22.1155 2.55996 22.0396 3.47742 21.8877 5.31232Z',
@@ -10,9 +11,9 @@ const d = {
   d6: 'M9.98372 17.0067C9.98372 18.1118 8.86786 19.0076 7.49137 19.0076C6.11488 19.0076 4.99902 18.1118 4.99902 17.0067C4.99902 15.9017 6.11488 15.0059 7.49137 15.0059C8.86786 15.0059 9.98372 15.9017 9.98372 17.0067ZM9.98372 17.0067C10.046 17.7795 10.0031 20.5083 7.00063 22.0089',
   d7: 'M5.47202 15.3525L1.99057 2.01841C1.98852 2.01055 1.99619 2.00365 2.00378 2.00652L12.5224 5.98817L21.9734 2.02693C21.9806 2.02391 21.9884 2.02996 21.9872 2.03768L19.9978 14.9905L10.3724 17.9123',
   d8: 'M2.57532 1.31435C2.23365 1.18357 1.8479 1.25534 1.57549 1.50037C1.30308 1.74539 1.18956 2.12269 1.28128 2.4783L4.63372 15.4775C4.35081 15.8965 4.18207 16.3956 4.18207 16.9616C4.18207 18.7797 5.92295 19.9076 7.59648 19.9076C7.77928 19.9076 7.96288 19.8941 8.14492 19.8678C7.7981 20.2785 7.32462 20.6695 6.67998 20.9929L7.55327 22.75C9.69768 21.6741 10.539 20.0358 10.8515 18.7255L20.69 15.76L22.7386 2.38131C22.7924 2.02977 22.6529 1.67646 22.3737 1.4577C22.0946 1.23895 21.7195 1.18895 21.3933 1.327L12.4714 5.1021L2.57532 1.31435ZM10.9914 16.6329L18.9458 14.2353L20.5408 3.81871L12.869 7.06489C12.6372 7.16296 12.3767 7.16749 12.1417 7.07754L3.64828 3.82666L6.33105 14.2291C6.73716 14.0893 7.16902 14.0157 7.59648 14.0157C9.16669 14.0157 10.7962 15.0086 10.9914 16.6329ZM6.13678 16.9616C6.13678 16.6103 6.57811 15.9796 7.59648 15.9796C8.61485 15.9796 9.05618 16.6103 9.05618 16.9616C9.05618 17.3129 8.61485 17.9436 7.59648 17.9436C6.57811 17.9436 6.13678 17.3129 6.13678 16.9616Z',
-} as const;
+};
 
-export const IconLassoTool02StrokeRounded = (props: TheIconProps) => {
+export const IconLassoTool02StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -36,7 +37,7 @@ export const IconLassoTool02StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLassoTool02DuotoneRounded = (props: TheIconProps) => {
+export const IconLassoTool02DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -65,7 +66,7 @@ export const IconLassoTool02DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLassoTool02TwotoneRounded = (props: TheIconProps) => {
+export const IconLassoTool02TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -90,7 +91,7 @@ export const IconLassoTool02TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLassoTool02SolidRounded = (props: TheIconProps) => {
+export const IconLassoTool02SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -110,7 +111,7 @@ export const IconLassoTool02SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLassoTool02BulkRounded = (props: TheIconProps) => {
+export const IconLassoTool02BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -131,7 +132,7 @@ export const IconLassoTool02BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLassoTool02StrokeSharp = (props: TheIconProps) => {
+export const IconLassoTool02StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -152,7 +153,7 @@ export const IconLassoTool02StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconLassoTool02SolidSharp = (props: TheIconProps) => {
+export const IconLassoTool02SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

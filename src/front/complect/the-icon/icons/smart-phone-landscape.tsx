@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M9 19C5.70017 19 4.05025 19 3.02513 17.9749C2 16.9497 2 15.2998 2 12C2 8.70017 2 7.05025 3.02513 6.02513C4.05025 5 5.70017 5 9 5L15 5C18.2998 5 19.9497 5 20.9749 6.02513C22 7.05025 22 8.70017 22 12C22 15.2998 22 16.9497 20.9749 17.9749C19.9497 19 18.2998 19 15 19L9 19Z',
   d2: 'M19 13L19 11',
   d3: 'M2 15L2.53402 14.911C3.74122 14.7098 4.31845 14.6028 4.66642 14.1724C5 13.7599 5 13.1732 5 12C5 10.7761 4.98934 10.1892 4.62204 9.77519C4.26993 9.37832 3.69129 9.28188 2.53402 9.089L2 9',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M2 15L5 14L5 10L2 9',
   d12: 'M19 13.5L19 10.5',
   d13: 'M1.25 19V15.5672L4.74999 14.5672L4.74999 9.43579L1.25 8.43579V5C1.25 4.58579 1.58579 4.25 2 4.25H22C22.4142 4.25 22.75 4.58579 22.75 5V19C22.75 19.4142 22.4142 19.75 22 19.75L2 19.75C1.58579 19.75 1.25 19.4142 1.25 19ZM1.25 14.0072V9.99582L3.24999 10.5672L3.24999 13.4358L1.25 14.0072ZM19.75 13.5V10.5H18.25V13.5H19.75Z',
-} as const;
+};
 
-export const IconSmartPhoneLandscapeStrokeRounded = (props: TheIconProps) => {
+export const IconSmartPhoneLandscapeStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -46,7 +47,7 @@ export const IconSmartPhoneLandscapeStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhoneLandscapeDuotoneRounded = (props: TheIconProps) => {
+export const IconSmartPhoneLandscapeDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -86,7 +87,7 @@ export const IconSmartPhoneLandscapeDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhoneLandscapeTwotoneRounded = (props: TheIconProps) => {
+export const IconSmartPhoneLandscapeTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -117,7 +118,7 @@ export const IconSmartPhoneLandscapeTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhoneLandscapeSolidRounded = (props: TheIconProps) => {
+export const IconSmartPhoneLandscapeSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -133,7 +134,7 @@ export const IconSmartPhoneLandscapeSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhoneLandscapeBulkRounded = (props: TheIconProps) => {
+export const IconSmartPhoneLandscapeBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -158,7 +159,7 @@ export const IconSmartPhoneLandscapeBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhoneLandscapeStrokeSharp = (props: TheIconProps) => {
+export const IconSmartPhoneLandscapeStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -185,7 +186,7 @@ export const IconSmartPhoneLandscapeStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconSmartPhoneLandscapeSolidSharp = (props: TheIconProps) => {
+export const IconSmartPhoneLandscapeSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

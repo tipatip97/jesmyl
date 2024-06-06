@@ -1,17 +1,16 @@
 import { useMemo, useState } from 'react';
-import IconButton from '../../../../../complect/the-icon/IconButton';
-import TheIcon from '../../../../../complect/the-icon/TheIcon';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { MyLib } from '../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-01';
+import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';
+import { IconBrowserStrokeRounded } from '../../../../../complect/the-icon/icons/browser';
 import { TeamGameImportable } from '../../Leader.model';
 import { LeaderCleans } from '../LeaderCleans';
 import { GameTeamImportable } from './teams/GameTeams.model';
 import LeaderGameTimerMaster from './timers/GameTimerMaster';
 import TimerRatingBoard from './timers/complect/TimerRatingBoard';
 import TimerSortRatingVariantSelector from './timers/complect/TimerSortRatingVariantSelector';
-import { MyLib } from '../../../../../complect/my-lib/MyLib';
-import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-01';
-import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';
-import { IconBrowserStrokeRounded } from '../../../../../complect/the-icon/icons/browser';
 
 const itIt = (it: unknown) => it;
 

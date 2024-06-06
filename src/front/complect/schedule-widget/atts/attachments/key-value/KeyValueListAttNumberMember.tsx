@@ -1,10 +1,9 @@
-import { CustomAttUseTaleId } from '../../../../../models';
-import TheIcon from '../../../../the-icon/TheIcon';
 import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
+import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
+import { CustomAttUseTaleId } from '../../../../../models';
 import ScheduleWidgetRoleFace from '../../../control/roles/RoleFace';
 import ScheduleWidgetListUnitFace from '../../../lists/UnitFace';
 import { extractScheduleWidgetRole, useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
-import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
 
 export default function KeyValueListAttNumberMember({ value }: { value: number }) {
   const rights = useScheduleWidgetRightsContext();

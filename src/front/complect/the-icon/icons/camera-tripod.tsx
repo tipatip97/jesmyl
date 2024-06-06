@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M2 10C2 6.49335 2 4.74003 2.90796 3.55992C3.07418 3.34388 3.25989 3.14579 3.46243 2.96849C4.56878 2 6.21252 2 9.5 2H14.5C17.7875 2 19.4312 2 20.5376 2.96849C20.7401 3.14579 20.9258 3.34388 21.092 3.55992C22 4.74003 22 6.49335 22 10C22 13.5066 22 15.26 21.092 16.4401C20.9258 16.6561 20.7401 16.8542 20.5376 17.0315C19.4312 18 17.7875 18 14.5 18H9.5C6.21252 18 4.56878 18 3.46243 17.0315C3.25989 16.8542 3.07418 16.6561 2.90796 16.4401C2 15.26 2 13.5066 2 10Z',
   d2: 'M17 22L12.8333 18M7 22L11.1667 18',
   d3: 'M12 18L12 23',
@@ -15,9 +16,9 @@ const d = {
   d11: 'M22 18V2H2V18H22Z',
   d12: 'M7 21L11.1667 18M12.8333 18L17 21M12 18V22',
   d13: 'M1.25 2C1.25 1.58579 1.58579 1.25 2 1.25H22C22.4142 1.25 22.75 1.58579 22.75 2V18C22.75 18.4142 22.4142 18.75 22 18.75H14.5431L17.5827 20.9385L16.4141 22.5615L12.9984 20.1022V22.75H10.9984V20.1022L7.58267 22.5615L6.41406 20.9385L9.45361 18.75H2C1.58579 18.75 1.25 18.4142 1.25 18V2ZM12 13.5C13.933 13.5 15.5 11.933 15.5 10C15.5 8.067 13.933 6.5 12 6.5C10.067 6.5 8.5 8.067 8.5 10C8.5 11.933 10.067 13.5 12 13.5Z',
-} as const;
+};
 
-export const IconCameraTripodStrokeRounded = (props: TheIconProps) => {
+export const IconCameraTripodStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -52,7 +53,7 @@ export const IconCameraTripodStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraTripodDuotoneRounded = (props: TheIconProps) => {
+export const IconCameraTripodDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -94,7 +95,7 @@ export const IconCameraTripodDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraTripodTwotoneRounded = (props: TheIconProps) => {
+export const IconCameraTripodTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -130,7 +131,7 @@ export const IconCameraTripodTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraTripodSolidRounded = (props: TheIconProps) => {
+export const IconCameraTripodSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -158,7 +159,7 @@ export const IconCameraTripodSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraTripodBulkRounded = (props: TheIconProps) => {
+export const IconCameraTripodBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -183,7 +184,7 @@ export const IconCameraTripodBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraTripodStrokeSharp = (props: TheIconProps) => {
+export const IconCameraTripodStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -212,7 +213,7 @@ export const IconCameraTripodStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCameraTripodSolidSharp = (props: TheIconProps) => {
+export const IconCameraTripodSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

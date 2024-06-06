@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M3 5L15 5',
   d2: 'M19 5L21 5',
   d3: 'M3 12L15 12',
@@ -26,9 +27,9 @@ const d = {
   d22: 'M18 11L21 11V13L18 13V11Z',
   d23: 'M3 18L15 18V20L3 20V18Z',
   d24: 'M18 18L21 18V20L18 20V18Z',
-} as const;
+};
 
-export const IconRightToLeftListDashStrokeRounded = (props: TheIconProps) => {
+export const IconRightToLeftListDashStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -74,7 +75,7 @@ export const IconRightToLeftListDashStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListDashDuotoneRounded = (props: TheIconProps) => {
+export const IconRightToLeftListDashDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -123,7 +124,7 @@ export const IconRightToLeftListDashDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListDashTwotoneRounded = (props: TheIconProps) => {
+export const IconRightToLeftListDashTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -173,7 +174,7 @@ export const IconRightToLeftListDashTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListDashSolidRounded = (props: TheIconProps) => {
+export const IconRightToLeftListDashSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -219,7 +220,7 @@ export const IconRightToLeftListDashSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListDashBulkRounded = (props: TheIconProps) => {
+export const IconRightToLeftListDashBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -268,7 +269,7 @@ export const IconRightToLeftListDashBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListDashStrokeSharp = (props: TheIconProps) => {
+export const IconRightToLeftListDashStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -308,7 +309,7 @@ export const IconRightToLeftListDashStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftListDashSolidSharp = (props: TheIconProps) => {
+export const IconRightToLeftListDashSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

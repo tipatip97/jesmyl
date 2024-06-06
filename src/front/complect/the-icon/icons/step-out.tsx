@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M18 10L19.8398 8.41421C20.6133 7.74755 21 7.41421 21 7C21 6.58579 20.6133 6.25245 19.8398 5.58579L18 4',
   d2: 'M12 18V15C12 11.2288 12 9.34315 13.1716 8.17157C14.3431 7 16.2288 7 20 7H21',
   d3: 'M3 21H9',
@@ -16,9 +17,9 @@ const d = {
   d12: 'M17.4999 2.5L21.5 6.5003L17.4999 10.5004L16.0857 9.08616L17.6716 7.5003L12.5 7.5003V17.5003H10.5V6.5003C10.5 5.94802 10.9477 5.5003 11.5 5.5003L17.6716 5.5003L16.0857 3.91421L17.4999 2.5Z',
   d13: 'M8.5 21.5H2.5V19.5H8.5V21.5Z',
   d14: 'M20.5 21.5H14.5V19.5H20.5V21.5Z',
-} as const;
+};
 
-export const IconStepOutStrokeRounded = (props: TheIconProps) => {
+export const IconStepOutStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -56,7 +57,7 @@ export const IconStepOutStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStepOutDuotoneRounded = (props: TheIconProps) => {
+export const IconStepOutDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -90,7 +91,7 @@ export const IconStepOutDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStepOutTwotoneRounded = (props: TheIconProps) => {
+export const IconStepOutTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -129,7 +130,7 @@ export const IconStepOutTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStepOutSolidRounded = (props: TheIconProps) => {
+export const IconStepOutSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -155,7 +156,7 @@ export const IconStepOutSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStepOutBulkRounded = (props: TheIconProps) => {
+export const IconStepOutBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -183,7 +184,7 @@ export const IconStepOutBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconStepOutStrokeSharp = (props: TheIconProps) => {
+export const IconStepOutStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -210,7 +211,7 @@ export const IconStepOutStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconStepOutSolidSharp = (props: TheIconProps) => {
+export const IconStepOutSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

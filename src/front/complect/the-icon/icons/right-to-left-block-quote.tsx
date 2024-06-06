@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M7 6L15 6',
   d2: 'M5 12L15 12',
   d3: 'M7 18L15 18',
@@ -17,9 +18,9 @@ const d = {
   d13: 'M15.5 13L4.5 13L4.5 11L15.5 11L15.5 13Z',
   d14: 'M15.5 19L7.5 19L7.5 17L15.5 17L15.5 19Z',
   d15: 'M17.5 21L17.5 3L19.5 3L19.5 21L17.5 21Z',
-} as const;
+};
 
-export const IconRightToLeftBlockQuoteStrokeRounded = (props: TheIconProps) => {
+export const IconRightToLeftBlockQuoteStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -54,7 +55,7 @@ export const IconRightToLeftBlockQuoteStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftBlockQuoteDuotoneRounded = (props: TheIconProps) => {
+export const IconRightToLeftBlockQuoteDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -92,7 +93,7 @@ export const IconRightToLeftBlockQuoteDuotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconRightToLeftBlockQuoteTwotoneRounded = (props: TheIconProps) => {
+export const IconRightToLeftBlockQuoteTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -129,7 +130,7 @@ export const IconRightToLeftBlockQuoteTwotoneRounded = (props: TheIconProps) => 
   );
 };
 
-export const IconRightToLeftBlockQuoteSolidRounded = (props: TheIconProps) => {
+export const IconRightToLeftBlockQuoteSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -163,7 +164,7 @@ export const IconRightToLeftBlockQuoteSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftBlockQuoteBulkRounded = (props: TheIconProps) => {
+export const IconRightToLeftBlockQuoteBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -200,7 +201,7 @@ export const IconRightToLeftBlockQuoteBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftBlockQuoteStrokeSharp = (props: TheIconProps) => {
+export const IconRightToLeftBlockQuoteStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -231,7 +232,7 @@ export const IconRightToLeftBlockQuoteStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconRightToLeftBlockQuoteSolidSharp = (props: TheIconProps) => {
+export const IconRightToLeftBlockQuoteSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M20 22V19C20 17.1144 20 16.1716 19.4142 15.5858C18.8284 15 17.8856 15 16 15H14L12 17L10 15H8C6.11438 15 5.17157 15 4.58579 15.5858C4 16.1716 4 17.1144 4 19V22',
   d2: 'M16 15V22',
   d3: 'M8 15V22',
@@ -25,9 +26,9 @@ const d = {
   d21: 'M8.75 14.4272L9.39956 14.25H10.3107L12 15.9393L13.6893 14.25H14.6004L15.25 14.4272L15.25 22.75H8.75V14.4272ZM7.25 22.75L7.25 14.8362L3.25 15.9272L3.25 22.75H7.25ZM16.75 22.75V14.8362L20.75 15.9272V22.75L16.75 22.75Z',
   d22: 'M9.25 6.75V9C9.25 10.5188 10.4812 11.75 12 11.75C13.5188 11.75 14.75 10.5188 14.75 9V6.75H16.25V9C16.25 11.3472 14.3472 13.25 12 13.25C9.65279 13.25 7.75 11.3472 7.75 9V6.75H9.25Z',
   d23: 'M6.75 6.75H7.75723C7.872 4.7714 9.34033 3.15598 11.25 2.81597V1.25H12.75V2.81597C14.6597 3.15598 16.128 4.7714 16.2428 6.75H17.25V8.25H6.75V6.75Z',
-} as const;
+};
 
-export const IconLaborStrokeRounded = (props: TheIconProps) => {
+export const IconLaborStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -79,7 +80,7 @@ export const IconLaborStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLaborDuotoneRounded = (props: TheIconProps) => {
+export const IconLaborDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -141,7 +142,7 @@ export const IconLaborDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLaborTwotoneRounded = (props: TheIconProps) => {
+export const IconLaborTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -189,7 +190,7 @@ export const IconLaborTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLaborSolidRounded = (props: TheIconProps) => {
+export const IconLaborSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -221,7 +222,7 @@ export const IconLaborSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLaborBulkRounded = (props: TheIconProps) => {
+export const IconLaborBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -261,7 +262,7 @@ export const IconLaborBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconLaborStrokeSharp = (props: TheIconProps) => {
+export const IconLaborStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -307,7 +308,7 @@ export const IconLaborStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconLaborSolidSharp = (props: TheIconProps) => {
+export const IconLaborSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M12.0579 22C16.9725 22 21.0638 18.4937 21.9416 13.8586C22.1996 12.4967 21.5931 12.5686 20.3101 12.3438C19.3996 12.1844 18.5498 11.5667 18.2333 10.588C18.0178 9.9216 17.9376 9.89475 17.2352 9.86554C15.7861 9.80529 14.625 8.2689 15.2032 7.02602C15.419 6.56236 15.412 6.50892 15.0078 6.19448C14.3005 5.6443 13.9706 4.6166 14.0978 3.62604C14.2347 2.5591 14.3147 2.1747 13.1854 2.05455C7.45657 1.44501 2 6.0196 2 11.9948C2 17.5205 6.50308 22 12.0579 22Z',
   d2: 'M11.0078 12L10.9988 12',
   d3: 'M6.00781 10L5.99883 10',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M17 14L15 16',
   d19: 'M6.5 14.5L8.5 16.5',
   d20: 'M1.25 12C1.25 6.06129 6.05559 1.25 11.9799 1.25C12.8012 1.25 13.6018 1.34258 14.3716 1.5182L15.2122 1.70998L14.9035 2.51813C14.7874 2.82209 14.7235 3.1527 14.7235 3.5C14.7235 4.49492 15.2509 5.36792 16.0458 5.85182L16.9202 6.38409L16.1493 7.05858C15.8859 7.28905 15.7218 7.6251 15.7218 8C15.7218 8.68871 16.2796 9.25 16.9714 9.25C17.2025 9.25 17.4167 9.18795 17.6009 9.08019L18.6447 8.46944L18.7224 9.6799C18.8145 11.113 20.0055 12.25 21.4637 12.25C21.5851 12.25 21.7042 12.2422 21.8208 12.2271L22.75 12.1066L22.6599 13.043C22.1358 18.4924 17.5534 22.75 11.9799 22.75C6.05559 22.75 1.25 17.9387 1.25 12ZM11.9645 12C11.9645 12.5523 11.5186 13 10.9685 13H10.9596C10.4095 13 9.96359 12.5523 9.96359 12C9.96359 11.4477 10.4095 11 10.9596 11H10.9685C11.5186 11 11.9645 11.4477 11.9645 12ZM5.98865 11C6.53871 11 6.98462 10.5523 6.98462 10C6.98462 9.44771 6.53871 9 5.98865 9H5.9797C5.42964 9 4.98373 9.44771 4.98373 10C4.98373 10.5523 5.42964 11 5.9797 11H5.98865ZM12.9605 18C12.9605 18.5523 12.5145 19 11.9645 19H11.9555C11.4055 19 10.9596 18.5523 10.9596 18C10.9596 17.4477 11.4055 17 11.9555 17H11.9645C12.5145 17 12.9605 17.4477 12.9605 18ZM9.93363 4.96973L8.43967 6.46973L9.49606 7.53039L10.99 6.03039L9.93363 4.96973ZM14.4155 15.4697L16.4075 13.4697L17.4638 14.5304L15.4719 16.5304L14.4155 15.4697ZM7.00796 13.9697L8.99991 15.9697L7.94352 17.0304L5.95158 15.0304L7.00796 13.9697Z',
-} as const;
+};
 
-export const IconCookieStrokeRounded = (props: TheIconProps) => {
+export const IconCookieStrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -81,7 +82,7 @@ export const IconCookieStrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCookieDuotoneRounded = (props: TheIconProps) => {
+export const IconCookieDuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -143,7 +144,7 @@ export const IconCookieDuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCookieTwotoneRounded = (props: TheIconProps) => {
+export const IconCookieTwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -204,7 +205,7 @@ export const IconCookieTwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCookieSolidRounded = (props: TheIconProps) => {
+export const IconCookieSolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -220,7 +221,7 @@ export const IconCookieSolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCookieBulkRounded = (props: TheIconProps) => {
+export const IconCookieBulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -271,7 +272,7 @@ export const IconCookieBulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconCookieStrokeSharp = (props: TheIconProps) => {
+export const IconCookieStrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -325,7 +326,7 @@ export const IconCookieStrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconCookieSolidSharp = (props: TheIconProps) => {
+export const IconCookieSolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}

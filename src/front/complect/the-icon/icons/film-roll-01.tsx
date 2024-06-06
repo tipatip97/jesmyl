@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { TheIconWrapper } from '../icon-wrapper';
 import { TheIconProps, TheIconSelfPack } from '../model';
 
-const d = {
+const d: Record<string, string> = {
   d1: 'M4 4.5H13V22H4V4.5Z',
   d2: 'M6 4L6.32918 3.34164C6.44315 3.1137 6.50014 2.99973 6.56517 2.90086C6.88933 2.40808 7.41449 2.08351 8.00021 2.01396C8.11773 2 8.24515 2 8.5 2C8.75485 2 8.88227 2 8.99979 2.01396C9.58551 2.08351 10.1107 2.40808 10.4348 2.90086C10.4999 2.99973 10.5568 3.1137 10.6708 3.34164L11 4',
   d3: 'M3 4.5H14',
@@ -22,9 +23,9 @@ const d = {
   d18: 'M4.75 3.75C4.33579 3.75 4 4.08579 4 4.5V20.75H2.75V22.75H15.75V20.75H14.5V4.5C14.5 4.08579 14.1642 3.75 13.75 3.75H4.75Z',
   d19: 'M12 1.25H6.5V3.5H2.75V5.5H15.75V3.5H12V1.25ZM10.5 3.5V2.75H8V3.5H10.5Z',
   d20: 'M19.25 8.67004L13.25 8.67L13.25 6.75L20.25 6.75005C20.8023 6.75005 21.25 7.17986 21.25 7.71005V12.99C21.25 13.311 21.0829 13.6107 20.8047 13.7888L18.25 15.4238V17.79C18.25 18.3202 17.8023 18.75 17.25 18.75H13.25V16.83H16.25V14.91C16.25 14.589 16.4171 14.2893 16.6953 14.1112L19.25 12.4762V8.67004Z',
-} as const;
+};
 
-export const IconFilmRoll01StrokeRounded = (props: TheIconProps) => {
+export const IconFilmRoll01StrokeRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -67,7 +68,7 @@ export const IconFilmRoll01StrokeRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilmRoll01DuotoneRounded = (props: TheIconProps) => {
+export const IconFilmRoll01DuotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -115,7 +116,7 @@ export const IconFilmRoll01DuotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilmRoll01TwotoneRounded = (props: TheIconProps) => {
+export const IconFilmRoll01TwotoneRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -160,7 +161,7 @@ export const IconFilmRoll01TwotoneRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilmRoll01SolidRounded = (props: TheIconProps) => {
+export const IconFilmRoll01SolidRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -192,7 +193,7 @@ export const IconFilmRoll01SolidRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilmRoll01BulkRounded = (props: TheIconProps) => {
+export const IconFilmRoll01BulkRounded: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -229,7 +230,7 @@ export const IconFilmRoll01BulkRounded = (props: TheIconProps) => {
   );
 };
 
-export const IconFilmRoll01StrokeSharp = (props: TheIconProps) => {
+export const IconFilmRoll01StrokeSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
@@ -268,7 +269,7 @@ export const IconFilmRoll01StrokeSharp = (props: TheIconProps) => {
   );
 };
 
-export const IconFilmRoll01SolidSharp = (props: TheIconProps) => {
+export const IconFilmRoll01SolidSharp: FC<TheIconProps> = (props: TheIconProps): JSX.Element => {
   return (
     <TheIconWrapper
       {...props}
