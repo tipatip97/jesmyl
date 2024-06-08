@@ -66,7 +66,7 @@ export interface IndexStorage extends IndexState {
   currentApp: AppName;
   rejectedComponents: string[];
   registeredApps: AppName[];
-  theme: 'light-theme';
+  theme: 'reverse-theme';
   rules: [];
 
   updateOnRefresher: boolean;

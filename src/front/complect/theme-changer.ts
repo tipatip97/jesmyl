@@ -12,7 +12,7 @@ const lsName = 'theme';
 })();
 
 const toggleTheme = () => {
-  const className = 'light-theme';
+  const className = 'reverse-theme';
   classList.toggle(className);
   if (!classList.contains(className)) indexStorage.rem(lsName);
   else indexStorage.set(lsName, className);
