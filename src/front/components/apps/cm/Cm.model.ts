@@ -41,6 +41,7 @@ export interface CmStoraged extends CmEditorStoraged {
   comTopTools: MigratableComToolName[];
   isMiniAnchor: boolean;
   playerHideMode: PlayerHideMode;
+  isMetronomeHide: boolean;
   translationScreenConfigs: CmTranslationScreenConfig[];
 
   speedRollKf: number;

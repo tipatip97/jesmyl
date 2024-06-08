@@ -21,11 +21,13 @@ import EditContainerCorrectsInformer from '../edit-container-corrects-informer/E
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import MeetingsEventHistory from './MeetingsEventHistory';
 import { useEditableMeetings } from './useEditableMeetings';
+import { EditableCat } from '../col/categories/EditableCat';
+import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 
 export default function EditMeetingsEvent() {
-  const { currentEvent } = useEditableMeetings();
+  const currentEvent: EditableMeetingsEvent | und = useEditableMeetings().currentEvent;
   const exec = useExerExec();
-  const zcat = useEditableCcat(0);
+  const zcat: EditableCat | und = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || '');
   const { goTo } = useCmNav();
   const [isClosedComList, setIsClosedComList] = useState(true);

@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import useCmNav from '../../../base/useCmNav';
 import { useEditableCols } from '../useEditableCols';
+import { EditableCols } from '../EditableCols';
 
 export function useEditableCcat(catw?: number) {
-  const cols = useEditableCols();
+  const cols: EditableCols | und = useEditableCols();
   const {
     appRouteData: { ccatw },
   } = useCmNav();

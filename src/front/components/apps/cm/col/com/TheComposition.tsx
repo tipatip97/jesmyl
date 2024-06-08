@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { Metronome } from '../../../../../complect/metronome/Metronome';
 import { RootState } from '../../../../../shared/store';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useCmNav from '../../base/useCmNav';
@@ -17,6 +18,7 @@ import useComPack from './useComPack';
 import useMigratableComTools from './useMigratableComTools';
 
 const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
+const isMetronomeHideSelector = (state: RootState) => state.cm.isMetronomeHide;
 
 export default function TheComposition() {
   const [chordVisibleVariant] = useChordVisibleVariant();
@@ -26,6 +28,7 @@ export default function TheComposition() {
   const { topTools } = useMigratableComTools();
   const [comList] = useComPack(ccom);
   const playerHideMode = useSelector(playerHideModeSelector);
+  const isMetronomeHide = useSelector(isMetronomeHideSelector);
   const comAudio = ccom?.audio.trim();
   const { setAppRouteData } = useCmNav();
   const setCom = (com: Com) => setAppRouteData({ ccomw: com.wid });
@@ -52,7 +55,11 @@ export default function TheComposition() {
 
   return (
     <ComContainer
-      className={`composition-container ${playerHideMode && comAudio ? `with-open-player ${playerHideMode}` : ''}`}
+      className={
+        'composition-container' +
+        (playerHideMode && comAudio ? ` with-open-player ${playerHideMode}` : '') +
+        (isMetronomeHide ? ' hide-metronome' : '')
+      }
       headTitle={ccom.number}
       onMoreClick={openPopuComTools}
       contentClass="composition-content"
@@ -78,6 +85,10 @@ export default function TheComposition() {
               split
             />
           )}
+          <Metronome
+            meterSize={ccom.meterSize}
+            bpm={ccom.beatsPerMinute}
+          />
           <TheControlledCom
             com={ccom}
             comList={comList}
@@ -102,6 +113,7 @@ const ComContainer = styled(PhaseCmContainer)`
       right: 0;
       left: 0;
       opacity: 0;
+      pointer-events: none;
       z-index: 1;
       transition:
         width var(--transition-speed),
@@ -109,6 +121,10 @@ const ComContainer = styled(PhaseCmContainer)`
         margin var(--transition-speed),
         opacity var(--transition-speed);
     }
+  }
+
+  &.hide-metronome .com-metronome {
+    display: none;
   }
 
   &.with-open-player {
@@ -126,6 +142,7 @@ const ComContainer = styled(PhaseCmContainer)`
 
     .composition-player {
       opacity: 1;
+      pointer-events: all;
     }
   }
 

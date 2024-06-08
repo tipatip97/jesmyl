@@ -9,6 +9,10 @@ import {
 } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
 import { IconCongruentToSquareStrokeRounded } from '../../../../../complect/the-icon/icons/congruent-to-square';
+import {
+  IconDashboardSpeed01SolidRounded,
+  IconDashboardSpeed01StrokeRounded,
+} from '../../../../../complect/the-icon/icons/dashboard-speed-01';
 import { IconEqualSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/equal-sign-square';
 import { IconImageCompositionOvalStrokeRounded } from '../../../../../complect/the-icon/icons/image-composition-oval';
 import { IconMenu01StrokeRounded } from '../../../../../complect/the-icon/icons/menu-01';
@@ -38,6 +42,7 @@ import { useCcom } from './useCcom';
 const comTopToolsSelector = (state: RootState) => state.cm.comTopTools;
 const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
 const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
+const isMetronomeHideSelector = (state: RootState) => state.cm.isMetronomeHide;
 
 export default function useMigratableComTools() {
   const dispatch = useDispatch();
@@ -52,6 +57,7 @@ export default function useMigratableComTools() {
   const comTopTools = useSelector(comTopToolsSelector);
   const isMiniAnchor = useSelector(isMiniAnchorSelector);
   const playerHideMode = useSelector(playerHideModeSelector);
+  const isMetronomeHide = useSelector(isMetronomeHideSelector);
   const nav = useCmNav();
   const { shareQrData, qrNode } = useQRMaster();
 
@@ -136,6 +142,17 @@ export default function useMigratableComTools() {
                 Icon: playerHideMode ? IconVynil03SolidRounded : IconVynil03StrokeRounded,
                 onClick: () => {
                   dispatch(di.playerHideMode(playerHideMode ? '' : 'min'));
+                },
+              }
+            );
+          case 'hide-metronome':
+            return (
+              ccom && {
+                tool,
+                title: 'Метроном',
+                Icon: isMetronomeHide ? IconDashboardSpeed01StrokeRounded : IconDashboardSpeed01SolidRounded,
+                onClick: () => {
+                  dispatch(di.isMetronomeHide(!isMetronomeHide));
                 },
               }
             );

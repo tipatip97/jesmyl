@@ -1,3 +1,5 @@
+import Dropdown from '../../../../../../../../complect/dropdown/Dropdown';
+import { DropdownItem } from '../../../../../../../../complect/dropdown/Dropdown.model';
 import { useCheckIsAccessed } from '../../../../../../../../complect/exer/hooks/check-is-accessed';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
@@ -13,6 +15,17 @@ import TheCom from '../../../../../col/com/TheCom';
 import EditContainerCorrectsInformer from '../../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCcom } from '../../useEditableCcom';
 import { EditableCompositionMainTon } from './Ton';
+
+const meterSizeItems: DropdownItem<3 | 4>[] = [
+  {
+    id: 4,
+    title: '4/4',
+  },
+  {
+    id: 3,
+    title: '3/4',
+  },
+];
 
 export default function EditableCompositionMain() {
   const ccom = useEditableCcom();
@@ -43,8 +56,17 @@ export default function EditableCompositionMain() {
         <div className="margin-gap-h nowrap">Ударов в минуту</div>
         <KeyboardInput
           value={'' + (ccom?.beatsPerMinute ?? '')}
-          // className="full-width"
+          type="number"
           onChange={value => exec(ccom.setField('bpm', +value, 0))}
+        />
+      </div>
+      <div className="flex full-width between margin-gap-v">
+        <IconDashboardSpeed02StrokeRounded />
+        <div className="margin-gap-h nowrap">Размерность</div>
+        <Dropdown
+          id={ccom.meterSize}
+          items={meterSizeItems}
+          onSelectId={value => exec(ccom.setField('s', value, meterSizeItems[0].id))}
         />
       </div>
       <div

@@ -21,6 +21,7 @@ const initialState: CmState = {
   comTopTools: ['mark-com', 'fullscreen-mode'],
   translationScreenConfigs: [],
   comComments: {},
+  isMetronomeHide: true,
 
   numComUpdates: 0,
   numAbsolutePopupUpdates: 0,
@@ -52,6 +53,7 @@ export const slice = createSlice({
       'meetings',
       'mp3Rules',
       'playerHideMode',
+      'isMetronomeHide',
       'rules',
       'settings',
       'speedRollKf',

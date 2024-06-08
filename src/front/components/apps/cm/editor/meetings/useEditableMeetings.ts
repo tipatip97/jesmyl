@@ -13,13 +13,13 @@ let localIMeetings: IExportableMeetings | nil;
 const meetingsSelector = (state: RootState) => state.cm.meetings;
 
 export function useEditableMeetings() {
-  const imeetings = useSelector(meetingsSelector);
+  const imeetings: IExportableMeetings | und = useSelector(meetingsSelector);
   const {
     jumpTo,
     appRouteData: { eventw },
   } = useCmNav();
   const cols = useEditableCols();
-  const meetings = useMemo(() => {
+  const meetings: EditableMeetings | nil = useMemo(() => {
     if (!cols) return;
     if (localIMeetings && localIMeetings === imeetings) return localMeetings;
 

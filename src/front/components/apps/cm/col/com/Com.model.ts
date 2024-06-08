@@ -14,6 +14,7 @@ export interface IExportableCom extends BaseNamedExportables {
   r?: Record<string, number>; // правила повторений
   o?: IExportableOrder[]; // порядковые блоки
   bpm?: number; // ударов в минуту
+  s?: 3 | 4; // размерность песни
 
   ton?: number;
 }
@@ -38,6 +39,7 @@ export const menuComToolNameList = [
   'share-by-qr',
   'is-mini-anchor',
   'open-player',
+  'hide-metronome',
 ] as const;
 
 export interface MigratableComTool {

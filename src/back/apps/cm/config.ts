@@ -176,6 +176,24 @@ const config: FilerAppConfig = {
               value: '#Num',
             },
           },
+          '/bpm': {
+            level: 50,
+            action: 'setComBeatsPerMinute',
+            title: 'Значение ударов в минуту песни "$name" изменено на $value',
+            method: 'set',
+            args: {
+              value: '#Number',
+            },
+          },
+          '/s': {
+            level: 50,
+            action: 'setComMeterSize',
+            title: 'Значение размерности песни "$name" изменено на $value/4',
+            method: 'set',
+            args: {
+              value: [3, 4],
+            },
+          },
           '/p': {
             level: 60,
             action: 'comSetTransPosition',
