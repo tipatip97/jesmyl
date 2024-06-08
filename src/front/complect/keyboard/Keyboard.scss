@@ -161,13 +161,16 @@
   --cursor-animation: cursor 0.4s infinite alternate-reverse;
   --cursor-border-color: transparent;
   --cursor-border: 1px solid var(--cursor-border-color);
+
   position: relative;
   cursor: text;
   width: 100%;
+  text-align: inherit;
 
   .input {
     background-color: var(--input-keyboard-background);
     padding-left: 3px;
+    text-align: inherit;
   }
 
   &:not(.with-native-input) {
@@ -180,6 +183,7 @@
     height: 100%;
     resize: none;
     color: var(--color--3);
+    text-align: inherit;
 
     &::placeholder {
       color: var(--color--4);
