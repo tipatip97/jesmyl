@@ -1,5 +1,6 @@
 import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
+import mylib from '../my-lib/MyLib';
 
 export const TheIconWrapper = ({ ...attrs }: HTMLAttributes<HTMLOrSVGElement> & { name: string }) => {
   return (
@@ -36,14 +37,25 @@ export const StyledSvg = styled.svg`
       stroke-dashoffset: var(--stroke-length);
       animation: ${props => props.theme.id(AnimationName)} 1s ease forwards;
 
-      ${[2, 3, 4, 5, 6, 7].reduce(
-        (acc, i) => `${acc}
-          &:nth-child(${i}) {
-            animation-delay: ${i / 10}s;
-          }
-          `,
-        '',
-      )}
+      ${(() => {
+        let arr = [2, 3, 4, 5, 6, 7];
+        let result = '';
+        let nthChild = 2;
+
+        while (arr.length) {
+          const index = mylib.randomOf(0, arr.length - 1);
+
+          result += `
+            &:nth-child(${nthChild++}) {
+              animation-delay: ${arr[index] / 10}s;
+            }
+          `;
+
+          arr.splice(index, 1);
+        }
+
+        return result;
+      })()}
     }
 
     @keyframes ${props => props.theme.id(AnimationName)} {
