@@ -2,8 +2,9 @@ import { useMemo } from 'react';
 import useCmNav from '../../../base/useCmNav';
 import { useEditableCcat } from '../categories/useEditableCcat';
 import { EditableCat } from '../categories/EditableCat';
+import { EditableCom } from './EditableCom';
 
-export function useEditableCcom() {
+export function useEditableCcom(): EditableCom | und {
   const zcat: EditableCat | und = useEditableCcat(0);
   const {
     appRouteData: { ccomw },

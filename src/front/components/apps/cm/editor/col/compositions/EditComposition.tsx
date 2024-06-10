@@ -3,7 +3,10 @@ import { useCheckIsAccessed } from '../../../../../../complect/exer/hooks/check-
 import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import { NavigationThrowNodeProps } from '../../../../../../complect/nav-configurer/Navigation.model';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
-import { IconMusicNote03SolidRounded, IconMusicNote03StrokeRounded } from '../../../../../../complect/the-icon/icons/music-note-03';
+import {
+  IconMusicNote03SolidRounded,
+  IconMusicNote03StrokeRounded,
+} from '../../../../../../complect/the-icon/icons/music-note-03';
 import useAuth from '../../../../../index/useAuth';
 import useConnectionState from '../../../../../index/useConnectionState';
 import { CmNavData } from '../../../Cm.model';
@@ -57,7 +60,7 @@ export default function EditComposition({
         ) : (
           <>
             <div className="flex around sticky nav-panel">
-              {editCompositionNavs.map(({ data: { Icon, iconText } = {}, phase: [phase], accessLevel }) => {
+              {editCompositionNavs.map(({ data: { iconPack, iconText } = {}, phase: [phase], accessLevel }) => {
                 if (accessLevel != null && !checkIsAccessed(accessLevel)) return null;
                 return (
                   <span
@@ -65,7 +68,15 @@ export default function EditComposition({
                     className="pointer"
                     onClick={() => goTo(phase, relativePoint, ccom.isCreated)}
                   >
-                    {Icon ? <Icon /> : iconText}
+                    {iconPack ? (
+                      phase === currentChildPhase ? (
+                        <iconPack.StrokeRounded className="color--7" />
+                      ) : (
+                        <iconPack.BulkRounded />
+                      )
+                    ) : (
+                      iconText
+                    )}
                   </span>
                 );
               })}

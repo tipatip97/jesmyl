@@ -4,23 +4,23 @@ import {
 } from '../../../../complect/nav-configurer/Navigation.model';
 import { iconPackOfArrange } from '../../../../complect/the-icon/icons/arrange';
 import { iconPackOfBookOpen01 } from '../../../../complect/the-icon/icons/book-open-01';
-import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
+import { iconPackOfBookOpen02 } from '../../../../complect/the-icon/icons/book-open-02';
 import { iconPackOfCalendar02 } from '../../../../complect/the-icon/icons/calendar-02';
-import { IconComputerStrokeRounded } from '../../../../complect/the-icon/icons/computer';
-import { IconDistributeVerticalTopStrokeRounded } from '../../../../complect/the-icon/icons/distribute-vertical-top';
+import { iconPackOfComputer } from '../../../../complect/the-icon/icons/computer';
+import { iconPackOfDistributeVerticalTop } from '../../../../complect/the-icon/icons/distribute-vertical-top';
 import { iconPackOfEdit01 } from '../../../../complect/the-icon/icons/edit-01';
 import { iconPackOfEdit02 } from '../../../../complect/the-icon/icons/edit-02';
 import { iconPackOfHeadphones } from '../../../../complect/the-icon/icons/headphones';
-import { IconLayers01StrokeRounded } from '../../../../complect/the-icon/icons/layers-01';
+import { iconPackOfLayers01 } from '../../../../complect/the-icon/icons/layers-01';
 import { iconPackOfMusicNote01 } from '../../../../complect/the-icon/icons/music-note-01';
-import { IconPlaylist03StrokeRounded } from '../../../../complect/the-icon/icons/playlist-03';
-import { IconSchoolReportCardStrokeRounded } from '../../../../complect/the-icon/icons/school-report-card';
+import { iconPackOfPlaylist03 } from '../../../../complect/the-icon/icons/playlist-03';
+import { iconPackOfSchoolReportCard } from '../../../../complect/the-icon/icons/school-report-card';
 import { iconPackOfText } from '../../../../complect/the-icon/icons/text';
-import { IconTextVerticalAlignmentStrokeRounded } from '../../../../complect/the-icon/icons/text-vertical-alignment';
-import { IconUmbrellaStrokeRounded } from '../../../../complect/the-icon/icons/umbrella';
-import { IconViewStrokeRounded } from '../../../../complect/the-icon/icons/view';
-import { IconVoiceStrokeRounded } from '../../../../complect/the-icon/icons/voice';
-import { TheIconType, TheIconSelfPack } from '../../../../complect/the-icon/model';
+import { iconPackOfTextVerticalAlignment } from '../../../../complect/the-icon/icons/text-vertical-alignment';
+import { iconPackOfUmbrella } from '../../../../complect/the-icon/icons/umbrella';
+import { iconPackOfView } from '../../../../complect/the-icon/icons/view';
+import { iconPackOfVoice } from '../../../../complect/the-icon/icons/voice';
+import { TheIconSelfPack } from '../../../../complect/the-icon/model';
 import { RoutePhasePoint } from '../../../router/Router.model';
 import { CmNavData } from '../Cm.model';
 import TheComposition from '../col/com/TheComposition';
@@ -49,7 +49,7 @@ import Mp3RulesRedactor from './mp3-rule-redactor/Mp3RulesRedactor';
 export const editCompositionNavs: INavigationRouteChildItem<
   CmNavData,
   {
-    Icon?: TheIconType;
+    iconPack?: TheIconSelfPack;
     iconText?: string;
   }
 >[] = [
@@ -57,70 +57,70 @@ export const editCompositionNavs: INavigationRouteChildItem<
     phase: ['watch'],
     node: <EditableCompositionWatch />,
     data: {
-      Icon: IconViewStrokeRounded,
+      iconPack: iconPackOfView,
     },
   },
   {
     phase: ['applications'],
     node: <ChordApplicationsRedactor />,
     data: {
-      Icon: IconUmbrellaStrokeRounded,
+      iconPack: iconPackOfUmbrella,
     },
   },
   {
     phase: ['orders'],
     node: <OrdersRedactor />,
     data: {
-      Icon: IconDistributeVerticalTopStrokeRounded,
+      iconPack: iconPackOfDistributeVerticalTop,
     },
   },
   {
     phase: ['texts'],
     node: <TextsChordsRedactor ccoln="texts" />,
     data: {
-      Icon: IconTextVerticalAlignmentStrokeRounded,
+      iconPack: iconPackOfTextVerticalAlignment,
     },
   },
   {
     phase: ['chords'],
     node: <TextsChordsRedactor ccoln="chords" />,
     data: {
-      Icon: IconPlaylist03StrokeRounded,
+      iconPack: iconPackOfPlaylist03,
     },
   },
   {
     phase: ['audio'],
     node: <ComAudio />,
     data: {
-      Icon: IconVoiceStrokeRounded,
+      iconPack: iconPackOfVoice,
     },
   },
   {
     phase: ['catBinds'],
     node: <CategoryBinds />,
     data: {
-      Icon: IconBookOpen02StrokeRounded,
+      iconPack: iconPackOfBookOpen02,
     },
   },
   {
     phase: ['repeats'],
     node: <ComRepeats />,
     data: {
-      Icon: IconLayers01StrokeRounded,
+      iconPack: iconPackOfLayers01,
     },
   },
   {
     phase: ['translations'],
     node: <ComOnTranslations />,
     data: {
-      Icon: IconComputerStrokeRounded,
+      iconPack: iconPackOfComputer,
     },
   },
   {
     phase: ['main'],
     node: <EditableCompositionMain />,
     data: {
-      Icon: IconSchoolReportCardStrokeRounded,
+      iconPack: iconPackOfSchoolReportCard,
     },
   },
 ];
