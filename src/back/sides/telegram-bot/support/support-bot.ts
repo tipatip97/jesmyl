@@ -7,6 +7,7 @@ export const supportTelegramBot = new JesmylTelegramBot({
   bot: jesmylTgBot,
   chatId: -1001938269237,
   logger: tglogger,
+  uniqPrefix: '+',
 });
 
 supportTelegramBot.onChatMessages(async (bot, message) => {

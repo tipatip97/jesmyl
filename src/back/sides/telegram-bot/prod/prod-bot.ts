@@ -9,6 +9,7 @@ export const prodTelegramBot = new JesmylTelegramBot({
   chatId: -1001304718820,
   logger: tglogger,
   logAllAsJSON: true,
+  uniqPrefix: '!',
 });
 
 export const prodStartOptions: SendMessageOptions = prodTelegramBot.makeSendMessageOptions([

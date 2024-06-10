@@ -10,6 +10,7 @@ export const controlTelegramBot = new JesmylTelegramBot({
   bot: jesmylTgBot,
   chatId: -1002054074700,
   logger: tglogger,
+  uniqPrefix: ':',
 });
 
 const devStartOptions: SendMessageOptions = controlTelegramBot.makeSendMessageOptions([

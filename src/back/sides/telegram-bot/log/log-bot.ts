@@ -6,6 +6,7 @@ const logTelegramBot = new JesmylTelegramBot({
   bot: jesmylTgBot,
   chatId: -1002087759235,
   logger: null!,
+  uniqPrefix: '#',
 });
 
 logTelegramBot.postMessage('>>> Сервис логирования запущен');

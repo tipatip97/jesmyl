@@ -3,6 +3,7 @@ import TgBot, {
   InlineKeyboardButton,
   InlineKeyboardMarkup,
   SendMessageOptions,
+  User,
 } from 'node-telegram-bot-api';
 import smylib from '../../shared/SMyLib';
 import { TgLogger } from './log/log-bot';
@@ -11,25 +12,49 @@ import { JTgBotCallbackQuery, JTgBotChatMessageCallback, JesmylTelegramBotWrappe
 const botName = 'jesmylbot';
 
 const emptyAdmins = { 0: {} as never };
+const emojiesSet: Set<string> = new Set();
 
 export type FreeAnswerCallbackQueryOptions = Omit<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
 
 export class JesmylTelegramBot {
-  private chatId: number;
+  chatId: number;
   logger: TgLogger;
   private logAllAsJSON?: boolean;
   private _bot: JesmylTelegramBotWrapper;
   admins: Record<number, ChatMember> = emptyAdmins;
   botName = botName;
+  uniqPrefix: string;
+  sendMessage: (
+    userOrId: User | number,
+    text: string,
+    options?: TgBot.SendMessageOptions | null,
+  ) => ReturnType<typeof this._bot.sendMessage>;
 
-  constructor(props: { logAllAsJSON?: boolean; chatId: number; bot: JesmylTelegramBotWrapper; logger: TgLogger }) {
+  constructor(props: {
+    logAllAsJSON?: boolean;
+    chatId: number;
+    bot: JesmylTelegramBotWrapper;
+    logger: TgLogger;
+    uniqPrefix: string;
+  }) {
     this.logger = props.logger;
     this.chatId = props.chatId;
     this.logAllAsJSON = props.logAllAsJSON;
     this._bot = props.bot;
+    this.sendMessage = (userOrId, text, options) =>
+      this._bot.sendMessage(userOrId, text, props.logger, { parse_mode: 'HTML', ...options });
+
+    if (emojiesSet.has(props.uniqPrefix)) throw Error(`ununique uniqPrefix ${props.uniqPrefix}`);
+
+    emojiesSet.add(props.uniqPrefix);
+    this.uniqPrefix = props.uniqPrefix;
   }
 
   register() {}
+
+  getChat() {
+    return this._bot.bot.getChat(this.chatId);
+  }
 
   convertNickFromId = (() => {
     const reg = /./g;

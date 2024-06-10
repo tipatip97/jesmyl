@@ -30,7 +30,7 @@ export class JesmylTelegramBotWrapper {
   bot: TgBot;
   private fromOptionsOnCallbackQueryCallback: Record<string, JTgBotCallbackQueryWithoutBot> = {};
   private chatCallbackQueryCallbacks: Record<string, JTgBotCallbackQueryWithoutBot> = {};
-  private chatMessagesCallbacks: Record<string, JTgBotChatMessageCallbackWithoutBot> = {};
+  private chatMessagesCallbacks: Record<string, JTgBotChatMessageCallbackWithoutBot[]> = {};
   private personalMessageListeners: EventerListeners<TgBot.Message> = [];
   private personalQueryListeners: EventerListeners<TgBot.CallbackQuery, void, string | FreeAnswerCallbackQueryOptions> =
     [];
@@ -40,11 +40,11 @@ export class JesmylTelegramBotWrapper {
 
     this.bot.on('message', (message, metadata) => {
       if (this.chatMessagesCallbacks[0] !== undefined) {
-        this.chatMessagesCallbacks[0](message, metadata);
+        this.chatMessagesCallbacks[0].forEach(cb => cb(message, metadata));
       }
 
       if (this.chatMessagesCallbacks[message.chat.id] !== undefined) {
-        this.chatMessagesCallbacks[message.chat.id](message, metadata);
+        this.chatMessagesCallbacks[message.chat.id].forEach(cb => cb(message, metadata));
         return;
       }
 
@@ -125,25 +125,34 @@ export class JesmylTelegramBotWrapper {
   ) {
     keyboard.flat().forEach(key => {
       if (!key.callback_data || !key.cb) return;
+      const cbData = `${bot.uniqPrefix}${key.callback_data}`;
 
-      if (isRewriteButtonOnSameKey !== true && this.fromOptionsOnCallbackQueryCallback[key.callback_data] !== undefined)
+      if (isRewriteButtonOnSameKey !== true && this.fromOptionsOnCallbackQueryCallback[cbData] !== undefined)
         throw Error('Повторяющиеся ключи callback_query');
 
       const cb = key.cb;
 
-      this.fromOptionsOnCallbackQueryCallback[key.callback_data] = (message, answer) => cb(bot, message, answer);
-      delete (key as any).cb;
+      this.fromOptionsOnCallbackQueryCallback[cbData] = (message, answer) => cb(bot, message, answer);
     });
 
     return {
       reply_markup: {
-        inline_keyboard: keyboard,
+        inline_keyboard: keyboard.map(line => {
+          return line.map(key => {
+            return {
+              ...key,
+              callback_data: `${bot.uniqPrefix}${key.callback_data}`,
+            };
+          });
+        }),
       },
     };
   }
 
   registerChatMessagesCallback(bot: JesmylTelegramBot, chatId: number, cb: JTgBotChatMessageCallback) {
-    this.chatMessagesCallbacks[chatId] = (message, metadata) => cb(bot, message, metadata);
+    if (this.chatMessagesCallbacks[chatId] == null)
+      this.chatMessagesCallbacks[chatId] = [(message, metadata) => cb(bot, message, metadata)];
+    else this.chatMessagesCallbacks[chatId].push((message, metadata) => cb(bot, message, metadata));
   }
 
   registerChatCallbackQueryCallback(bot: JesmylTelegramBot, chatId: number, cb: JTgBotCallbackQuery) {
