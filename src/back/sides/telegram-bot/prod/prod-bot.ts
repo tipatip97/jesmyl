@@ -3,6 +3,7 @@ import { jesmylTgBot } from '../bot';
 import { tglogger } from '../log/log-bot';
 import { JesmylTelegramBot } from '../tg-bot';
 import { authorizeTelegramCb } from './authorize';
+import { gul94iAdminTelegramBot, gul94iTelegramBot } from '../gul94i/gul94i-bot';
 
 export const prodTelegramBot = new JesmylTelegramBot({
   bot: jesmylTgBot,
@@ -48,3 +49,6 @@ prodTelegramBot.onChatMessages((bot, message) => {
 
 if (!'change message')
   prodTelegramBot.editMessageText(551, prodStartMessage(prodTelegramBot.botName), prodStartOptions);
+
+gul94iTelegramBot.register();
+gul94iAdminTelegramBot.register();
