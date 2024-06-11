@@ -3,7 +3,7 @@ import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from 
 import { useBibleAddressBooki } from '../../../../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../../../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../../../../hooks/address/verses';
-import { useBibleBookList, useBibleBookLowerCaseList, useBibleWholeChapterBookList } from '../../../../../hooks/texts';
+import { useBibleBookList, useBibleChaptersCombine } from '../../../../../hooks/texts';
 
 const addressParserReg = /^(\d?\s*[а-яё]+)?\s?(\d{1,3})[\s:]?(\d{1,3})([-,\s]{0,2})(\d{1,3})?$/;
 const spacePlusReg = /\s+/;
@@ -13,9 +13,8 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
   const currentVarsei = useBibleAddressVersei();
-  const lowerBooks = useBibleBookLowerCaseList();
   const books = useBibleBookList();
-  const chapters = useBibleWholeChapterBookList();
+  const { chapters, lowerBooks } = useBibleChaptersCombine();
   const [address, setAddress] = useState<ReactNode>(null);
   const onClickRef = useRef(emptyFunc);
   const setAddressIndexes = useSetBibleAddressIndexes();
@@ -32,7 +31,7 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
   }, [inputRef]);
 
   useEffect(() => {
-    if (term.length < 1) return;
+    if (lowerBooks === undefined || chapters === undefined || term.length < 1) return;
 
     const match = term.trim().toLowerCase().match(addressParserReg);
 
@@ -50,15 +49,14 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
     else {
       const bookNameWithoutSpace = bookn.replace(spacePlusReg, '');
 
-      if (booki < 0)
-        booki = lowerBooks.findIndex(book => book.titles.includes(bookn) || book.titles.includes(bookNameWithoutSpace));
+      if (booki < 0) booki = lowerBooks.findIndex(book => book.includes(bookn) || book.includes(bookNameWithoutSpace));
       if (booki < 0)
         booki = lowerBooks.findIndex(book =>
-          book.titles.some(title => title.startsWith(bookn) || title.startsWith(bookNameWithoutSpace)),
+          book.some(title => title.startsWith(bookn) || title.startsWith(bookNameWithoutSpace)),
         );
       if (booki < 0)
         booki = lowerBooks.findIndex(book =>
-          book.titles.some(title => title.includes(bookn) || title.includes(bookNameWithoutSpace)),
+          book.some(title => title.includes(bookn) || title.includes(bookNameWithoutSpace)),
         );
       if (booki < 0) booki = currentBooki;
     }

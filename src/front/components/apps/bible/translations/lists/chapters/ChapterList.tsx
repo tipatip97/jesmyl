@@ -7,7 +7,7 @@ export const BibleChapterList = () => {
 
   return (
     <Container>
-      {chapters.map((_chapter, chapteri) => {
+      {chapters?.map((_chapter, chapteri) => {
         return (
           <BibleChapterFace
             key={chapteri}

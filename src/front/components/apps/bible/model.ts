@@ -1,6 +1,8 @@
 import { BibleTranslationScreenConfig } from './translations/model';
 
 export interface BibleStorage {
+  rst: { chapters: string[][][] };
+
   translationBooki: number;
   translationChapteri: number;
   translationVersei: number;

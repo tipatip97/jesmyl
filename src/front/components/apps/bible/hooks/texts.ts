@@ -1,45 +1,96 @@
+import { useEffect } from 'react';
 import * as bibleTitlesJSON from '../../../../../back/apps/bible/bibleBookTitles.json';
-import * as chaptersJSON from '../../../../../back/apps/bible/rst.json';
 import { MyLib } from '../../../../complect/my-lib/MyLib';
+import { useStorageMappedValueGetter } from '../../../../complect/useStorage';
+import { soki } from '../../../../soki';
+import bibleStorage from '../bibleStorage';
 import { BibleTranslationJoinAddress } from '../model';
 import { useBibleTranslationJoinAddress } from './address/address';
 import { useBibleAddressBooki } from './address/books';
 import { useBibleAddressChapteri } from './address/chapters';
 import { useBibleAddressVersei } from './address/verses';
 
-export const chapterBooks: string[][][] = ({ ...chaptersJSON } as any).chapters;
 export const bible: { titles: [string, string][] } = { ...bibleTitlesJSON } as never;
-const lowerChapterBooks: string[][][] = [];
+
+let chapterBooks: string[][][] | null = null;
+let rstChapterCombine: ChapterCombine;
+const lowerChapters: string[][][] = [];
 const numSortFunc = (a: number, b: number) => a - b;
+const defRstChapterCombine: ChapterCombine = {};
 
-for (const book of chapterBooks) {
-  const lowerBook = (lowerChapterBooks[lowerChapterBooks.length] = [] as string[][]);
-
-  for (const chapter of book) {
-    const lowerChapter = (lowerBook[lowerBook.length] = [] as string[]);
-
-    for (const verse of chapter) lowerChapter[lowerChapter.length] = verse.toLowerCase();
-  }
+interface ChapterCombine {
+  chapters?: string[][][];
+  lowerBooks?: string[][];
+  lowerChapters?: string[][][];
+  htmlChapters?: { __html: string }[][][];
 }
+
+const mapChapters = ({ chapters }: { chapters: string[][][] }): ChapterCombine => {
+  if (rstChapterCombine) return rstChapterCombine;
+  chapterBooks = chapters;
+
+  for (const book of chapters) {
+    const lowerBook = (lowerChapters[lowerChapters.length] = [] as string[][]);
+
+    for (const chapter of book) {
+      const lowerChapter = (lowerBook[lowerBook.length] = [] as string[]);
+
+      for (const verse of chapter) lowerChapter[lowerChapter.length] = verse.toLowerCase();
+    }
+  }
+
+  const lowerBooks = bible.titles.map(book => book.map(title => title.toLowerCase()));
+  const htmlChapters = chapters.map(book => book.map(chapter => chapter.map(__html => ({ __html }))));
+
+  return (rstChapterCombine = {
+    lowerBooks,
+    chapters,
+    lowerChapters,
+    htmlChapters,
+  });
+};
+
+export const useBibleChaptersCombine = () => {
+  return useStorageMappedValueGetter(bibleStorage, 'rst', defRstChapterCombine, mapChapters);
+};
 
 export const useBibleCurrentVerseTexts = (): string[] | und => {
   const currentChapteri = useBibleAddressChapteri();
+  const currentBooki = useBibleAddressBooki();
 
-  return chapterBooks[useBibleAddressBooki()]?.[currentChapteri];
+  return useBibleChaptersCombine().chapters?.[currentBooki]?.[currentChapteri];
 };
 
-const lowerBooks = bible.titles.map(book => ({ ...book, titles: book.map(title => title.toLowerCase()) }));
-const htmlChapters = chapterBooks.map(book => book.map(chapter => chapter.map(__html => ({ __html }))));
+export const useLoadBibleChaptersCombine = () => {
+  const combine = useBibleChaptersCombine();
 
-export const useBibleCurrentChapterList = () => chapterBooks[useBibleAddressBooki()];
+  useEffect(() => {
+    if (combine.chapters != null) return;
+
+    const timeout = setTimeout(() => soki.pullCurrentAppData('bible'), 1000);
+
+    return () => clearTimeout(timeout);
+  }, [combine.chapters]);
+
+  return combine;
+};
+
+export const useBibleCurrentChapterList = () => {
+  const currentBooki = useBibleAddressBooki();
+  return useBibleChaptersCombine().chapters?.[currentBooki];
+};
 export const useBibleBookList = () => bible.titles;
-export const useBibleBookLowerCaseList = () => lowerBooks;
-export const useBibleCurrentWholeLowerCaseChapterBookList = () => lowerChapterBooks;
-export const useBibleWholeChapterBookList = () => chapterBooks;
-export const useBibleWholeChapterHTMLSBookList = () => htmlChapters;
 
-export const takeBibleSlideText = (booki: number, chapteri: number, versei: number, isSetAddress?: boolean) => {
-  return (isSetAddress === false ? '' : versei + 1 + '. ') + chapterBooks[booki]?.[chapteri]?.[versei];
+export const takeBibleSlideText = (
+  chapterBooks: string[][][] | und,
+  booki: number,
+  chapteri: number,
+  versei: number,
+  isSetAddress?: boolean,
+) => {
+  return chapterBooks
+    ? (isSetAddress === false ? '' : versei + 1 + '. ') + chapterBooks[booki]?.[chapteri]?.[versei]
+    : '';
 };
 
 export const takeBibleJoinedAddressSlideText = (joinAddress: BibleTranslationJoinAddress, isSetAddress?: boolean) => {
@@ -60,7 +111,7 @@ export const takeBibleJoinedAddressSlideText = (joinAddress: BibleTranslationJoi
               .map(
                 versei =>
                   (isSetAddress === false ? '' : `${chapterPrefix}${versei + 1}. `) +
-                  (chapterBooks[booki]?.[chapteri]?.[versei] ?? ''),
+                  (chapterBooks?.[booki]?.[chapteri]?.[versei] ?? ''),
               )
               .join('\n');
           })
@@ -75,8 +126,9 @@ export const useBibleCurrentSlideText = () => {
   const currentChapteri = useBibleAddressChapteri();
   const currentVersei = useBibleAddressVersei();
   const joinAddress = useBibleTranslationJoinAddress();
+  const { chapters } = useBibleChaptersCombine();
 
-  if (joinAddress === null) return takeBibleSlideText(currentBooki, currentChapteri, currentVersei);
+  if (joinAddress === null) return takeBibleSlideText(chapters, currentBooki, currentChapteri, currentVersei);
   return takeBibleJoinedAddressSlideText(joinAddress);
 };
 

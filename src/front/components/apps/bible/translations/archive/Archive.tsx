@@ -1,14 +1,15 @@
-import IconButton from '../../../../../complect/the-icon/IconButton';
 import mylib from '../../../../../complect/my-lib/MyLib';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
 import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../hooks/address/address';
 import {
   takeBibleAddressText,
   takeBibleJoinedAddressSlideText,
   takeBibleJoinedAddressText,
   takeBibleSlideText,
+  useBibleChaptersCombine,
 } from '../../hooks/texts';
 import { BibleTranslationAddress } from '../../model';
-import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
 
 interface Props {
   title: string;
@@ -21,6 +22,7 @@ const itemClassName = 'nowrap pointer margin-gap-b';
 export const BibleTranslationArchive = ({ title, list, onRemove }: Props) => {
   const setAddress = useSetBibleAddressIndexes();
   const setJoinAddress = useBibleTranslationJoinAddressSetter();
+  const { chapters } = useBibleChaptersCombine();
 
   return (
     <>
@@ -47,7 +49,7 @@ export const BibleTranslationArchive = ({ title, list, onRemove }: Props) => {
             >
               <span className="color--7">{takeBibleAddressText(...item, 1)}</span>
               {' - '}
-              <span dangerouslySetInnerHTML={{ __html: takeBibleSlideText(...item, false) }} />
+              <span dangerouslySetInnerHTML={{ __html: takeBibleSlideText(chapters, ...item, false) }} />
             </div>
           );
 

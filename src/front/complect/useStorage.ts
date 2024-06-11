@@ -10,15 +10,35 @@ export const useStorageValueGetter = <
   State,
   Key extends keyof Scope,
   Value extends Scope[Key],
-  DefaultValue extends Value,
+  InitialValue extends Value,
 >(
   storage: JStorage<Scope, State>,
   key: Key,
-  initialValue: DefaultValue,
+  initialValue: InitialValue,
 ): Value => {
   const state = useState(storage.properties[key] === undefined ? initialValue : storage.properties[key]);
 
   useEffect(() => storage.on(key, state[1] as never, initialValue), emptyArr);
+
+  return state[0];
+};
+
+export const useStorageMappedValueGetter = <
+  Scope,
+  State,
+  Key extends keyof Scope,
+  Value extends Scope[Key],
+  Mapper extends (value: Value) => unknown,
+  RetValue extends Mapper extends (value: Value) => infer Ret ? Ret : never,
+>(
+  storage: JStorage<Scope, State>,
+  key: Key,
+  initialValue: RetValue,
+  mapper: Mapper,
+): RetValue => {
+  const state = useState(storage.properties[key] === undefined ? initialValue : storage.properties[key]);
+
+  useEffect(() => storage.on<Key, Value, RetValue>(key, val => state[1](mapper(val)), initialValue), emptyArr);
 
   return state[0];
 };

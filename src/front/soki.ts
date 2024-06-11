@@ -157,7 +157,7 @@ export class SokiTrip {
     indexStorage.rem('updateRequisites');
   }
 
-  private async pullCurrentAppData(appName: SokiAppName) {
+  async pullCurrentAppData(appName: SokiAppName) {
     const {
       index: [indexLastUpdate = 0, indexRulesMd5 = ''] = [],
       [appName]: [appLastUpdate = 0, appRulesMd5 = ''] = [],

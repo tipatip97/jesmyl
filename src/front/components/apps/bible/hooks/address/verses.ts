@@ -5,10 +5,10 @@ import bibleStorage from '../../bibleStorage';
 import { BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslationSlideSyncContentSetter } from '../slide-sync';
 import { justBibleStorageSet } from '../storage';
-import { chapterBooks } from '../texts';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from './address';
 import { useBibleAddressBooki } from './books';
 import { useBibleAddressChapteri } from './chapters';
+import { useBibleChaptersCombine } from '../texts';
 
 const useBibleAddressCurrentVersei = () => useStorageValueGetter(bibleStorage, 'translationVersei', 0);
 
@@ -26,12 +26,13 @@ export const useBibleAddressVersei = () => {
   const currentChapteri = useBibleAddressChapteri();
   const currentBooki = useBibleAddressBooki();
   const currentVersei = useBibleAddressCurrentVersei();
+  const { chapters } = useBibleChaptersCombine();
 
   return currentVersei < 0
     ? 0
-    : chapterBooks[currentBooki]?.[currentChapteri] !== undefined &&
-        currentVersei > chapterBooks[currentBooki][currentChapteri].length - 1
-      ? chapterBooks[currentBooki][currentChapteri].length - 1
+    : chapters?.[currentBooki]?.[currentChapteri] != null &&
+        currentVersei > chapters[currentBooki][currentChapteri].length - 1
+      ? chapters[currentBooki][currentChapteri].length - 1
       : currentVersei;
 };
 

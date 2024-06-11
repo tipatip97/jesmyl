@@ -6,7 +6,7 @@ import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigur
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useBibleSlideSyncContentUpdatesNum } from '../hooks/slide-sync';
 import { justBibleStorageSet } from '../hooks/storage';
-import { useBibleCurrentAddressText } from '../hooks/texts';
+import { useBibleCurrentAddressText, useLoadBibleChaptersCombine } from '../hooks/texts';
 import { BibleTranslateScreenConfigurations } from './ScreenConfigurations';
 import { BibleTranslationHistoryArchive } from './archive/history/HistoryArchive';
 import { BibleTranslationPlanArchive } from './archive/plan/PlanArchive';
@@ -22,6 +22,7 @@ interface Props {
 export default function BibleTranslationControlled({ useNav, head, headTitle }: Props) {
   const [isPreview, setIsPreview] = useState(true);
   const address = useBibleCurrentAddressText();
+  useLoadBibleChaptersCombine();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const actualAddressContent = useMemo(() => address, [useBibleSlideSyncContentUpdatesNum()]);

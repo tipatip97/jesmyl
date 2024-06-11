@@ -8,6 +8,7 @@ import { useBibleAddressVersei } from '../../hooks/address/verses';
 import { useBibleScreenTranslationKeyListener } from '../hooks/key-listener';
 import { useGetBibleScreenTranslationWrapperStyle } from '../hooks/styles/wrapper-style';
 import { BibleTranslationScreenConfig } from '../model';
+import { BibleTranslationScreenContentLoading } from './ContentLoading';
 import { BibleTranslationScreenAddressContainer } from './complect/AddressContainer';
 import { BibleTranslationScreenAddressPanel } from './complect/AddressPanel';
 import { BibleTranslationScreenContent } from './complect/Content';
@@ -37,6 +38,10 @@ export const BibleTranslationScreen = (props: Props) => {
   );
 
   useApplyScreenFontFamilyEffect(props.bibleConfig?.fontFamily, props.win);
+
+  if (!props.screenContent) {
+    return <BibleTranslationScreenContentLoading />;
+  }
 
   return (
     <div

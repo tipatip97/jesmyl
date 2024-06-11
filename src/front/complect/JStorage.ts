@@ -127,12 +127,16 @@ export class JStorage<Scope, State = Scope> {
     }, 90);
   }
 
-  on<Key extends keyof Scope>(key: Key, callback: (value: Scope[Key]) => void, initialValue: Scope[Key]) {
+  on<Key extends keyof Scope, Value extends Scope[Key], InitialValue>(
+    key: Key,
+    callback: (value: Value) => void,
+    initialValue: InitialValue,
+  ) {
     if (this.properties[key] === undefined) this.properties[key] = initialValue;
     if (this.listens[key] === undefined) this.listens[key] = new Set();
 
     setTimeout(async () => {
-      const val = await this.get(key);
+      const val = (await this.get(key)) as Value | und;
       if (val === undefined) return;
       callback(val);
       this.properties[key] = val;

@@ -15,9 +15,17 @@ export const BibleReaderBook = ({ chapterList, currentChapteri, currentVersei, c
   const isScrollingRef = useRef(false);
   const isResizingRef = useRef(false);
   const [resizeNum, setResizeNum] = useState(0);
+  const [isScrolledToCurrent, setIsScrolledToCurrent] = useState(false);
 
   useEffect(() => {
-    if (!currentChapteri || currentVersei === undefined || isScrollingRef.current || listRef.current === null) return;
+    if (
+      isScrolledToCurrent ||
+      currentChapteri === undefined ||
+      currentVersei === undefined ||
+      isScrollingRef.current ||
+      listRef.current === null
+    )
+      return;
     const listNode = listRef.current;
 
     setTimeout(() => {
@@ -26,8 +34,9 @@ export const BibleReaderBook = ({ chapterList, currentChapteri, currentVersei, c
         ?.scrollIntoView({ block: 'start' });
 
       listNode.scrollTop += 3;
+      setIsScrolledToCurrent(true);
     }, 100);
-  }, [currentChapteri, currentVersei, resizeNum]);
+  }, [currentChapteri, currentVersei, isScrolledToCurrent, resizeNum]);
 
   useEffect(() => {
     if (listRef.current === null) return;

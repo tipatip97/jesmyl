@@ -6,8 +6,7 @@ import { SimpleKeyValue } from '../filer/Filer.model';
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible'] as const;
 export type SokiAppName = (typeof sokiAppNames)[number];
 
-const dir = __dirname.split('/');
-dir.length -= 2;
+const dir = __dirname.split('/').slice(0, -2);
 export const rootDirective = dir.join('/');
 
 export interface SokiCapsule {

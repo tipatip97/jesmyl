@@ -9,7 +9,7 @@ import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleTranslationSlideSyncContentSetter } from '../../hooks/slide-sync';
 import { justBibleStorageSet } from '../../hooks/storage';
-import { useBibleWholeChapterBookList } from '../../hooks/texts';
+import { useBibleChaptersCombine } from '../../hooks/texts';
 import { BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslationAddToPlan } from '../archive/plan/hooks/plan';
 
@@ -23,7 +23,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
 
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
-  const chapters = useBibleWholeChapterBookList();
+  const { chapters } = useBibleChaptersCombine();
   const joinAddress = useBibleTranslationJoinAddress();
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
@@ -78,7 +78,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
               ? versei > 0
                 ? versei + dir
                 : versei
-              : chapters[currentBooki]?.[currentChapteri] !== undefined &&
+              : chapters?.[currentBooki]?.[currentChapteri] !== undefined &&
                   versei === chapters[currentBooki][currentChapteri].length - 1
                 ? versei
                 : versei + dir,
@@ -121,7 +121,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
 
       if (event.code === 'ArrowDown' || event.code === 'ArrowRight') {
         if (
-          chapters[currentBooki]?.[currentChapteri] !== undefined &&
+          chapters?.[currentBooki]?.[currentChapteri] !== undefined &&
           versei < chapters[currentBooki][currentChapteri].length - 1
         )
           verses.add(versei + 1);

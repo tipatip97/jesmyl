@@ -5,7 +5,7 @@ import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/addres
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { justBibleStorageSet } from '../../hooks/storage';
-import { useBibleCurrentWholeLowerCaseChapterBookList } from '../../hooks/texts';
+import { useBibleChaptersCombine } from '../../hooks/texts';
 import { BibleTranslationSingleAddress } from '../../model';
 import { BibleSearchResultVerse } from './ResultVerse';
 import { useBibleTranslationSearchResultList, useBibleTranslationSearchResultSelected } from './hooks/results';
@@ -33,7 +33,7 @@ const sortStringsByLength = (a: string, b: string) => b.length - a.length;
 export const BibleSearchResults = ({ inputRef, height = '100px', innerZone, onClick: userOnClick }: Props) => {
   const searchZone = useBibleSearchZone();
   const searchTerm = useDebounceValue(useBibleSearchTerm());
-  const lowerBooks = useBibleCurrentWholeLowerCaseChapterBookList();
+  const { lowerChapters } = useBibleChaptersCombine();
   const [list, setList] = useState<JSX.Element[]>([]);
   const resultSelected = useBibleTranslationSearchResultSelected();
   const resultList = useBibleTranslationSearchResultList();
@@ -48,7 +48,7 @@ export const BibleSearchResults = ({ inputRef, height = '100px', innerZone, onCl
   }
 
   useEffect(() => {
-    if (searchTerm.trim().length < 3) return;
+    if (lowerChapters === undefined || searchTerm.trim().length < 3) return;
     const freeTerm = searchTerm.trim().replace(notRuLettersSpaceReg_gi, '');
     if (freeTerm.length < 3) return;
 
@@ -76,8 +76,8 @@ export const BibleSearchResults = ({ inputRef, height = '100px', innerZone, onCl
     };
 
     if (searchZone === 'global')
-      bibleSearchLoop: for (let booki = 0; booki < lowerBooks.length; booki++) {
-        const book = lowerBooks[booki];
+      bibleSearchLoop: for (let booki = 0; booki < lowerChapters.length; booki++) {
+        const book = lowerChapters[booki];
 
         for (let chapteri = 0; chapteri < book.length; chapteri++) {
           searchInChapter(booki, chapteri, book[chapteri]);
@@ -86,13 +86,13 @@ export const BibleSearchResults = ({ inputRef, height = '100px', innerZone, onCl
       }
     else {
       if (innerZone === 'book') {
-        const book = lowerBooks[currentBooki];
+        const book = lowerChapters[currentBooki];
 
         for (let chapteri = 0; chapteri < book.length; chapteri++) {
           searchInChapter(currentBooki, chapteri, book[chapteri]);
           if (lastFounds.length > maxItems) break;
         }
-      } else searchInChapter(currentBooki, currentChapteri, lowerBooks[currentBooki][currentChapteri]);
+      } else searchInChapter(currentBooki, currentChapteri, lowerChapters[currentBooki][currentChapteri]);
     }
 
     const list = founds
@@ -115,7 +115,7 @@ export const BibleSearchResults = ({ inputRef, height = '100px', innerZone, onCl
         />
       )),
     );
-  }, [currentBooki, currentChapteri, innerZone, lowerBooks, searchTerm, searchZone, userOnClick]);
+  }, [currentBooki, currentChapteri, innerZone, lowerChapters, searchTerm, searchZone, userOnClick]);
 
   useEffect(() => {
     if (resultSelected === null || resultList[resultSelected] == null) return;

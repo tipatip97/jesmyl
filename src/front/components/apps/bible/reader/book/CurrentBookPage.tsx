@@ -6,7 +6,7 @@ import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
 import { justBibleStorageSet } from '../../hooks/storage';
-import { useBibleBookList, useBibleCurrentAddressText, useBibleWholeChapterHTMLSBookList } from '../../hooks/texts';
+import { useBibleBookList, useBibleChaptersCombine, useBibleCurrentAddressText } from '../../hooks/texts';
 import useBibleNav from '../../useBibleNav';
 import { BibleReaderBook } from './BookPage';
 
@@ -16,7 +16,7 @@ export const BibleReaderCurrentBookPage = () => {
   const currentChapteri = useBibleAddressChapteri();
   const currentVersei = useBibleAddressVersei();
   const bookTitles = useBibleBookList();
-  const chaptersList = useBibleWholeChapterHTMLSBookList();
+  const { htmlChapters } = useBibleChaptersCombine();
   const [booki, setBooki] = useState(currentBooki);
   const [chapteri, setChapteri] = useState(currentChapteri);
 
@@ -44,7 +44,7 @@ export const BibleReaderCurrentBookPage = () => {
   const [chapterSelectNode, openChapterSelect] = useFullContent(() => {
     return (
       <>
-        {chaptersList[booki].map((chapter, chapteri) => {
+        {htmlChapters?.[booki].map((chapter, chapteri) => {
           return (
             <ItemFace
               key={chapteri}
@@ -69,7 +69,7 @@ export const BibleReaderCurrentBookPage = () => {
   const [verseSelectNode, openVerseSelect] = useFullContent(() => {
     return (
       <>
-        {chaptersList[booki][chapteri].map((_, versei) => {
+        {htmlChapters?.[booki][chapteri].map((_, versei) => {
           return (
             <ItemFace
               key={versei}
@@ -106,12 +106,14 @@ export const BibleReaderCurrentBookPage = () => {
           {chapterSelectNode}
           {bookSelectNode}
           {verseSelectNode}
-          <BibleReaderBook
-            chapterList={chaptersList[currentBooki]}
-            currentChapteri={currentChapteri}
-            currentVersei={currentVersei}
-            currentBooki={currentBooki}
-          />
+          {htmlChapters && (
+            <BibleReaderBook
+              chapterList={htmlChapters[currentBooki]}
+              currentChapteri={currentChapteri}
+              currentVersei={currentVersei}
+              currentBooki={currentBooki}
+            />
+          )}
         </>
       }
     />

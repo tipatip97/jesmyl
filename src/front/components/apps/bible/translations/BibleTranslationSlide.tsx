@@ -5,6 +5,7 @@ import {
   takeBibleJoinedAddressSlideText,
   takeBibleJoinedAddressText,
   takeBibleSlideText,
+  useLoadBibleChaptersCombine,
 } from '../hooks/texts';
 import { BibleTranslationAddress } from '../model';
 import { BibleTranslationScreenConfig } from './model';
@@ -17,6 +18,8 @@ interface Props {
 
 export const BibleTranslationSlide = ({ address, config }: Props) => {
   const [updates, setUpdates] = useState(0);
+  const { chapters } = useLoadBibleChaptersCombine();
+
   useEffect(() => {
     let i = 0;
     const onResize = () => setUpdates(++i);
@@ -31,7 +34,7 @@ export const BibleTranslationSlide = ({ address, config }: Props) => {
         isVisible
         screenContent={
           Array.isArray(address)
-            ? takeBibleSlideText(address[0], address[1], address[2])
+            ? takeBibleSlideText(chapters, address[0], address[1], address[2])
             : takeBibleJoinedAddressSlideText(address)
         }
         addressContent={
