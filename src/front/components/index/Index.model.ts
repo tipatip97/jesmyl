@@ -35,8 +35,6 @@ export interface IndexState {
       ]
     >
   >;
-  numModalUpdates: number;
-  isUseNativeKeyboard?: boolean;
 }
 
 export type IndexErrorScope = keyof ClientRegisterData;

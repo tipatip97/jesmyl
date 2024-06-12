@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import mylib from '../my-lib/MyLib';
 
 export const TheIconWrapper = ({ ...attrs }: HTMLAttributes<HTMLOrSVGElement> & { name: string }) => {
@@ -13,8 +13,6 @@ export const TheIconWrapper = ({ ...attrs }: HTMLAttributes<HTMLOrSVGElement> & 
     />
   );
 };
-
-const AnimationName = ['sign'] as const;
 
 export const StyledSvg = styled.svg`
   --icon-size: 24px;
@@ -30,38 +28,49 @@ export const StyledSvg = styled.svg`
   min-height: var(--icon-size);
   max-height: var(--icon-size);
 
-  &:not(.no-animate) {
-    path {
-      --stroke-length: 80;
-      stroke-dasharray: var(--stroke-length);
-      stroke-dashoffset: var(--stroke-length);
-      animation: ${props => props.theme.id(AnimationName)} 1s ease forwards;
+  ${props => props.theme.isCanPlayAnimations() && iconWrapperAnimation}
+`;
 
-      ${(() => {
-        let arr = [2, 3, 4, 5, 6, 7];
-        let result = '';
-        let nthChild = 2;
+const AnimationName = ['sign'] as const;
 
-        while (arr.length) {
-          const index = mylib.randomOf(0, arr.length - 1);
+const iconWrapperAnimation = css`
+  path {
+    --stroke-length: 80;
+    stroke-dasharray: var(--stroke-length);
+    stroke-dashoffset: var(--stroke-length);
+    animation: ${props => props.theme.id(AnimationName)} 1s ease forwards;
+  }
 
+  ${(() => {
+    const parentArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    let result = '';
+
+    for (let i = 0; i < parentArr.length; i++) {
+      const arr = parentArr.slice(0, parentArr[i] + 1);
+      let nthChild = 1;
+
+      while (arr.length) {
+        const index = mylib.randomOf(0, arr.length - 1);
+        const delay = arr[index] - 1;
+
+        if (delay)
           result += `
-            &:nth-child(${nthChild++}) {
-              animation-delay: ${arr[index] / 10}s;
-            }
-          `;
+              &:has(:nth-child(${parentArr[i] + 1}):last-child) path:nth-child(${nthChild}) {
+                animation-delay: ${delay / 10}s;
+              }
+            `;
 
-          arr.splice(index, 1);
-        }
-
-        return result;
-      })()}
+        arr.splice(index, 1);
+        nthChild++;
+      }
     }
 
-    @keyframes ${props => props.theme.id(AnimationName)} {
-      to {
-        stroke-dashoffset: 0;
-      }
+    return result;
+  })()}
+
+  @keyframes ${props => props.theme.id(AnimationName)} {
+    to {
+      stroke-dashoffset: 0;
     }
   }
 `;

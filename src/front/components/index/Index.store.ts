@@ -10,9 +10,7 @@ const initialState: IndexState = {
   currentApp: defaultAppName,
   appVersion: 0,
   auth: { level: 0 },
-  isUseNativeKeyboard: true,
   schedules: { list: [] },
-  numModalUpdates: 0,
   errors: {},
   statistic: null,
   deviceId: '',
@@ -28,8 +26,6 @@ export const slice = createSlice({
       'auth',
       'currentApp',
       'errors',
-      'isUseNativeKeyboard',
-      'numModalUpdates',
       'registeredApps',
       'rejectedComponents',
       'rules',
@@ -48,13 +44,6 @@ export const slice = createSlice({
         if (action.payload.message == null) delete state.errors[action.payload.scope];
         else state.errors[action.payload.scope] = action.payload.message;
       }
-    },
-    isUseNativeKeyboard: (state, action: PayloadAction<boolean | und>) => {
-      state.isUseNativeKeyboard = action.payload ?? !state.isUseNativeKeyboard;
-      indexStorage.set('isUseNativeKeyboard', state.isUseNativeKeyboard);
-    },
-    riseUpModalUpdates: state => {
-      state.numModalUpdates++;
     },
   },
 });

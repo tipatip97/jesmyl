@@ -6,19 +6,20 @@ import useToast from '../../../../complect/modal/useToast';
 import mylib from '../../../../complect/my-lib/MyLib';
 import Noty from '../../../../complect/notifications/Noti';
 import IconButton from '../../../../complect/the-icon/IconButton';
+import IconCheckbox from '../../../../complect/the-icon/IconCheckbox';
 import { IconArrowDownDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-down-double';
 import { IconArrowUpDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-up-double';
-import { IconCheckmarkSquare03StrokeRounded } from '../../../../complect/the-icon/icons/checkmark-square-03';
 import { IconKeyboardStrokeRounded } from '../../../../complect/the-icon/icons/keyboard';
 import { IconMessage01StrokeRounded } from '../../../../complect/the-icon/icons/message-01';
+import { IconPaintBoardStrokeRounded } from '../../../../complect/the-icon/icons/paint-board';
 import { IconSourceCodeCircleStrokeRounded } from '../../../../complect/the-icon/icons/source-code-circle';
-import { IconSquareStrokeRounded } from '../../../../complect/the-icon/icons/square';
 import { IconTextStrokeRounded } from '../../../../complect/the-icon/icons/text';
 import useApps from '../../../../complect/useApps';
 import { RootState } from '../../../../shared/store';
 import { soki } from '../../../../soki';
 import di from '../../Index.store';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
+import { indexSimpleValIsPlayAnimations, indexSimpleValIsUseNativeKeyboard } from '../../complect/index.simpleValues';
 import useIndexNav from '../../complect/useIndexNav';
 import useAuth from '../../useAuth';
 import useConnectionState from '../../useConnectionState';
@@ -26,7 +27,6 @@ import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector
 import { Visitor } from './Visitor';
 import { Visits } from './Visits';
 
-const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 const statisticSelector = (state: RootState) => state.index.statistic;
 const appFontFamilySelector = (state: RootState) => state.index.appFontFamily;
 
@@ -35,7 +35,6 @@ const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'ч�
 export default function IndexSettings() {
   const auth = useAuth();
   const dispatch = useDispatch();
-  const isUseNativeKeyboard = useSelector(isUseNativeKeyboardSelector);
   const statistic = useSelector(statisticSelector);
   const [expands, setExpands] = useState<(AppName | '')[]>([]);
   const [modalNode, toast] = useToast();
@@ -61,10 +60,19 @@ export default function IndexSettings() {
     <BrutalItem
       icon={<IconKeyboardStrokeRounded />}
       title="Фирменная клавиатура"
-      onClick={async () => {
-        dispatch(di.isUseNativeKeyboard());
-      }}
-      box={isUseNativeKeyboard ? <IconSquareStrokeRounded /> : <IconCheckmarkSquare03StrokeRounded />}
+      onClick={indexSimpleValIsUseNativeKeyboard.switch}
+      box={
+        <IconCheckbox
+          simpleValuer={indexSimpleValIsUseNativeKeyboard}
+          negativeValue
+        />
+      }
+    />,
+    <BrutalItem
+      icon={<IconPaintBoardStrokeRounded />}
+      title="Анимации"
+      onClick={indexSimpleValIsPlayAnimations.switch}
+      box={<IconCheckbox simpleValuer={indexSimpleValIsPlayAnimations} />}
     />,
     <BrutalItem
       icon={<IconMessage01StrokeRounded />}

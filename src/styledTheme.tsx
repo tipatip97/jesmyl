@@ -1,3 +1,5 @@
+import { indexSimpleValIsPlayAnimations } from './front/components/index/complect/index.simpleValues';
+
 const idMap = new Map<readonly [string], string>();
 const letters: Record<string, string> = { '.': 'o' };
 'uniqjesmyl'.split('').forEach((letter, letteri) => {
@@ -17,6 +19,7 @@ export const styledDefaultTheme = {
 
     return id;
   },
+  isCanPlayAnimations: () => indexSimpleValIsPlayAnimations.get(),
 } as const;
 
 export type StyledDefaultTheme = typeof styledDefaultTheme;

@@ -1,7 +1,4 @@
 import React, { ReactNode, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../shared/store';
-import propsOfClicker from '../clicker/propsOfClicker';
 import { IconArrowDown01StrokeRounded } from '../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowTurnBackwardStrokeRounded } from '../../complect/the-icon/icons/arrow-turn-backward';
 import { IconArrowUp03StrokeRounded } from '../../complect/the-icon/icons/arrow-up-03';
@@ -19,21 +16,21 @@ import { IconTask01StrokeRounded } from '../../complect/the-icon/icons/task-01';
 import { IconTextStrokeRounded } from '../../complect/the-icon/icons/text';
 import { IconViewStrokeRounded } from '../../complect/the-icon/icons/view';
 import { IconViewOffStrokeRounded } from '../../complect/the-icon/icons/view-off';
+import { indexSimpleValIsUseNativeKeyboard } from '../../components/index/complect/index.simpleValues';
+import propsOfClicker from '../clicker/propsOfClicker';
+import { TheIconType } from '../the-icon/model';
 import { keyboardKeyDict, keyboardNumberScreenLines } from './Keyboard.complect';
 import { KeyboardInputProps } from './Keyboard.model';
 import './Keyboard.scss';
 import { KeyboardInputStorage } from './KeyboardStorage';
-import { TheIconType } from '../the-icon/model';
 
 let currentInput: KeyboardInputStorage;
 let topForceUpdate: () => void = () => {};
 let topOnBlur: () => void = () => {};
 let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => {};
-const isUseNativeKeyboardSelector = (state: RootState) => state.index.isUseNativeKeyboard;
 
 export default function KeyboardInput(props: KeyboardInputProps) {
   const input = useMemo(() => new KeyboardInputStorage(), []);
-  const isNative = useSelector(isUseNativeKeyboardSelector);
   const [updates, setUpdates] = useState(0);
   const nativeRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   const [value, setValue] = useState(props.value);
@@ -54,8 +51,8 @@ export default function KeyboardInput(props: KeyboardInputProps) {
   }, [props.type]);
 
   useEffect(() => {
-    !isNative && value && input.replaceAll(value, false, true);
-  }, [value, input, isNative]);
+    !indexSimpleValIsUseNativeKeyboard.get() && value && input.replaceAll(value, false, true);
+  }, [value, input]);
 
   const valueGetterSetter = (set?: string) => {
     if (currentInput !== undefined) {
@@ -70,7 +67,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
 
     return '';
   };
-  if (isNative || props.type === 'button') {
+  if (indexSimpleValIsUseNativeKeyboard.get() || props.type === 'button') {
     let isCanBlur = true;
     const {
       className,
@@ -262,7 +259,6 @@ export const KEYBOARD_FLASH = memo(function ({
   const [updates, setUpdates] = useState(0);
   const [moreClosed, setMoreClosed] = useState(true);
   const [keyInFix, setKeyInFix] = useState<string | null>(null);
-  const isNative = useSelector(isUseNativeKeyboardSelector);
   topForceUpdate = () => setUpdates(updates + 1);
   topOnBlur = () => onBlur();
   topOnFocus = () => onFocus(currentInput);
@@ -293,7 +289,7 @@ export const KEYBOARD_FLASH = memo(function ({
     };
   }, []);
 
-  if (isNative) return null;
+  if (indexSimpleValIsUseNativeKeyboard.get()) return null;
 
   const keyNode = (
     className: string,
