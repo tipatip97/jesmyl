@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { DocTitle } from '../../../../../complect/DocTitle';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { Metronome } from '../../../../../complect/metronome/Metronome';
 import { RootState } from '../../../../../shared/store';
@@ -79,6 +80,7 @@ export default function TheComposition() {
       content={
         <>
           {popupComToolsNode}
+          <DocTitle title={ccom.name} />
           {comAudio && (
             <ComPlayer
               src={comAudio}

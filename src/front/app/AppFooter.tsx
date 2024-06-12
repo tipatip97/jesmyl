@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useMemo } from 'react';
+import { DocTitle } from '../complect/DocTitle';
 import { ExerStorage } from '../complect/exer/Exer.model';
 import { useCheckIsAccessed } from '../complect/exer/hooks/check-is-accessed';
 import { INavigationConfig } from '../complect/nav-configurer/Navigation.model';
@@ -7,8 +8,6 @@ import useAuth from '../components/index/useAuth';
 import { RoutePhasePoint } from '../components/router/Router.model';
 import navConfigurers from '../shared/navConfigurers';
 import { AppName } from './App.model';
-
-const docTitle = document.title;
 
 export default function AppFooter({ appName }: { appName: AppName }) {
   const { nav, route, navigate } = navConfigurers[appName]();
@@ -45,18 +44,19 @@ export default function AppFooter({ appName }: { appName: AppName }) {
     });
   };
 
-  useEffect(() => {
+  const title = useMemo(() => {
     const [phase] = indexRoute || route || [];
     const routes = indexRoute ? indexNav.nav.routes : route ? nav.nav.routes : [];
     const footerRoute = routes.find(route => route.phase[0] === phase);
 
     if (!footerRoute) return;
 
-    document.title = `${footerRoute.title} - ${docTitle}`;
-  }, [indexNav, indexPhase, indexRoute, nav, route]);
+    return footerRoute.title;
+  }, [indexNav, indexRoute, nav, route]);
 
   return (
     <div className="footer">
+      {title && <DocTitle title={title} />}
       {putItems(
         nav.nav,
         phase => {
