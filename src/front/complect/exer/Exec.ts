@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { CorrectsBox } from '../../components/apps/cm/editor/corrects-box/CorrectsBox';
 import { ExecutionMethod, ShortRealRule, SokiServerEvent } from '../../models';
 import SourceBased from '../SourceBased';
@@ -7,7 +6,7 @@ import { ClientExecutionDict, ExecRule, FreeExecDict } from './Exer.model';
 
 export class Exec<Value> extends SourceBased<ClientExecutionDict> {
   scope?: string;
-  title: ReactNode = '';
+  title = '';
   prev?: Value;
   value?: Value;
   method?: ExecutionMethod;

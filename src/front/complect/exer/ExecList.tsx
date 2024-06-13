@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { IconSentStrokeRounded } from '../../complect/the-icon/icons/sent';
 import EditContainerCorrectsInformer from '../../components/apps/cm/editor/edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { riseUpExerUpdates } from '../Complect.store';
-import { IconSentStrokeRounded } from '../../complect/the-icon/icons/sent';
 import LoadIndicatedContent from '../load-indicated-content/LoadIndicatedContent';
 import useToast from '../modal/useToast';
 import { Exer } from './Exer';
@@ -36,13 +36,18 @@ export default function ExecList<Storage extends ExerStorage>({
                 key={`exec-list*${exec.scope}+${exec.id}`}
                 corrects={exec?.corrects}
               >
-                {exec.title}
+                {
+                  <div
+                    className="white-pre-line"
+                    dangerouslySetInnerHTML={{ __html: exec.title }}
+                  />
+                }
               </EditContainerCorrectsInformer>
             );
           })}
 
           <IconSentStrokeRounded
-            className={`action-button pointer ${isDisabledSendButton ? 'disabled' : ''}`}
+            className={`action-button pointer margin-giant-gap-v ${isDisabledSendButton ? 'disabled' : ''}`}
             onClick={() => {
               setReadyState(0);
               exer
