@@ -3,4 +3,7 @@ export type TranslationScreenProps = {
   win?: Window;
   isTech?: boolean;
   isPreview?: boolean;
+  forceViewApp?: TranslationViewApp;
 };
+
+export type TranslationViewApp = 'cm' | 'bible';

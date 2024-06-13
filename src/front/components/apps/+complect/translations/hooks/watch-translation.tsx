@@ -1,6 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { css } from 'styled-components';
 import { renderComponentInNewWindow } from '../../../../../..';
+import { CurrentForceViweAppContext } from '../Translation.contexts';
 import { TranslationScreen } from '../TranslationScreen';
 import { useGetScreenTranslationConfig, useScreenTranslationConfigs } from './configs';
 import { useScreenTranslationWindows, useUpdateScreenTranslationWindows } from './windows';
@@ -10,6 +11,7 @@ export const useWatchScreenTranslations = () => {
   const windows = useScreenTranslationWindows();
   const configs = useScreenTranslationConfigs();
   const updateWindows = useUpdateScreenTranslationWindows();
+  const forceViewApp = useContext(CurrentForceViweAppContext);
 
   return useCallback(() => {
     if (configs.length === windows.length) return;
@@ -40,6 +42,7 @@ export const useWatchScreenTranslations = () => {
             <TranslationScreen
               screeni={windowi}
               win={win}
+              forceViewApp={forceViewApp}
             />
           );
         },
@@ -53,7 +56,7 @@ export const useWatchScreenTranslations = () => {
     for (let windowi = 0; windowi < len; windowi++) watch(windowi);
 
     updateWindows(newWindows);
-  }, [configs.length, getCurrentConfig, updateWindows, windows]);
+  }, [configs.length, forceViewApp, getCurrentConfig, updateWindows, windows]);
 };
 
 const newWindowBaseStyle =

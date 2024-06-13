@@ -1,3 +1,4 @@
+import { TranslationViewApp } from '../components/apps/+complect/translations/Translations.model';
 import { FixedResizerLines } from '../components/apps/+complect/translations/complect/model';
 import { ScreenTranslationConfig } from '../components/apps/+complect/translations/model';
 import { FullContentOpenMode } from './fullscreen-content/useFullContent';
@@ -7,7 +8,7 @@ export interface ComplectStorage {
   screenTranslationConfigs: ScreenTranslationConfig[];
   currentTranslationConfigi: number;
   isTranslationTextVisible: boolean;
-  currentTranslationTextApp: 'cm' | 'bible';
+  currentTranslationTextApp: TranslationViewApp;
 }
 
 export interface ComplectState extends ComplectStorage {
