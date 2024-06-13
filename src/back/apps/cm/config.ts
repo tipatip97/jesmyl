@@ -239,7 +239,7 @@ const config: FilerAppConfig = {
             level: 50,
             action: 'changeBlocks',
             title:
-              'В Песне "$name" $prev?{{изменён}{добавлен}} $ink{{$index}{-й}} блок $switch{{$coln}{t}{Текстов}{c}{Аккордов}}',
+              'В Песне "$name" $prev?{{изменён}{добавлен}} $ink{{$index}{-й}} блок $switch{{$coln}{t}{Текстов}{c}{Аккордов}}:\n\n<b>Было:</b>\n$prev;\n\n<b>Стало:</b>\n$value;',
             method: 'set',
             args: {
               value: '#String',
