@@ -51,6 +51,7 @@ export const aliasGameConfig: ActionBox = {
     '<start round>': {
       expected: {},
       action: 'startAliasRound',
+      title: 'Алиас раунд начался',
       method: 'set_all',
       onSuccess: onPhaseChangeSuccessCallback,
       value: (() => {
@@ -94,6 +95,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<start speech>': {
       action: 'startAliasSpeech',
+      title: 'Алиас - игрок начал говорить',
       onSuccess: onPhaseChangeSuccessCallback,
       method: 'set_all',
       value: () => ({
@@ -103,6 +105,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<start timeout>': {
       action: 'startAliasSpeechTimeout',
+      title: 'Установлен таймер обратного отсчёта для раунда',
       onSuccess: onPhaseChangeSuccessCallback,
       timer: props => {
         const state = extractState<GamerAliasRoomState | nil>(props);
@@ -120,6 +123,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<pass end>': {
       action: 'resetAliasSpeech',
+      title: 'Алиас - сброс спичаа игровка',
       method: 'set_all',
       onSuccess: onPhaseChangeSuccessCallback,
       timer: clearSpeechTimer,
@@ -130,6 +134,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<reset game>': {
       action: 'resetAliasGame',
+      title: 'Алиас - игра окончена',
       onSuccess: onPhaseChangeSuccessCallback,
       method: 'set_all',
       timer: clearSpeechTimer,
@@ -140,6 +145,7 @@ export const aliasGameConfig: ActionBox = {
     },
     '<compute score>': {
       action: 'computeAliasScore',
+      title: 'Алиас - подсчёт очков окончен',
       onSuccess: onPhaseChangeSuccessCallback,
       method: 'set_all',
       value: {
@@ -220,6 +226,7 @@ export const aliasGameConfig: ActionBox = {
   },
   '<skip member turn>': {
     action: 'skipTheMemberTurn',
+    title: 'Алиас - пропуск хода игрока',
     onSuccess: onPhaseChangeSuccessCallback,
     method: 'set_all',
     value: props => {
@@ -230,6 +237,7 @@ export const aliasGameConfig: ActionBox = {
   },
   '<strike word>': {
     action: 'strikeAliasWord',
+    title: 'Алиас - слово $switch{{$scope}{cor}{отгадано}{inc}{сброшено}}',
     side: props => {
       const state = extractState<GamerAliasRoomState | nil>(props);
 
@@ -256,12 +264,14 @@ export const aliasGameConfig: ActionBox = {
   '/fix': {
     expected: [],
     action: 'fixAliasWord',
+    title: 'Алиас - зафиксировано замечание к слову',
     method: 'toggle',
     value: '{wordi}',
   },
   '/invert': {
     expected: {},
     action: 'invertAliasWord',
+    title: 'Алиас - замечание к слову принято',
     onSuccess: onPhaseChangeSuccessCallback,
     side: (props, auth) => {
       const invert = extractState<Record<number, number[]>>(props);
