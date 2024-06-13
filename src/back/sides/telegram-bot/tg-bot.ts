@@ -5,6 +5,7 @@ import TgBot, {
   SendMessageOptions,
   User,
 } from 'node-telegram-bot-api';
+import { Stream } from 'stream';
 import smylib from '../../shared/SMyLib';
 import { TgLogger } from './log/log-bot';
 import { JTgBotCallbackQuery, JTgBotChatMessageCallback, JesmylTelegramBotWrapper } from './tg-bot-wrapper';
@@ -56,6 +57,34 @@ export class JesmylTelegramBot {
     return this._bot.bot.getChat(this.chatId);
   }
 
+  forwardMessage(fromChatId: TgBot.ChatId, messageId: number, options?: TgBot.ForwardMessageOptions) {
+    return this._bot.bot.forwardMessage(this.chatId, fromChatId, messageId, options);
+  }
+
+  sendPhoto(photo: string | Stream | Buffer, options?: TgBot.SendPhotoOptions, fileOptions?: TgBot.FileOptions) {
+    return this._bot.bot.sendPhoto(this.chatId, photo, { parse_mode: 'HTML', ...options }, fileOptions);
+  }
+
+  async sendMediaBased(message: TgBot.Message, options?: TgBot.SendPhotoOptions, fileOptions?: TgBot.FileOptions) {
+    const [actionName, field] = message.photo
+      ? (['sendPhoto', message.photo[0].file_id] as const)
+      : message.video
+        ? (['sendVideo', message.video.file_id] as const)
+        : message.audio
+          ? (['sendAudio', message.audio.file_id] as const)
+          : message.document
+            ? (['sendDocument', message.document.file_id] as const)
+            : message.voice
+              ? (['sendVoice', message.voice.file_id] as const)
+              : message.sticker
+                ? (['sendSticker', message.sticker.file_id] as const)
+                : ([null, null] as const);
+
+    if (actionName === null) throw Error;
+
+    return this._bot.bot[actionName](this.chatId, field, { parse_mode: 'HTML', ...options }, fileOptions);
+  }
+
   convertNickFromId = (() => {
     const reg = /./g;
     const callback = (all: string) => 'jesmylibot'[all as never];
@@ -65,8 +94,8 @@ export class JesmylTelegramBot {
 
   static makeLoginFromId = (id: number) => 'T' + smylib.md5('' + id).slice(1);
 
-  makeSendMessageOptions(keyboard: (InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][]) {
-    return this._bot.makeOptionsKeyboard(this, keyboard);
+  makeSendMessageOptions(keyboard: (InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][], keyPrefix?: string) {
+    return this._bot.makeOptionsKeyboard(this, keyboard, false, keyPrefix);
   }
 
   refreshAdmins() {
@@ -104,9 +133,9 @@ export class JesmylTelegramBot {
     this._bot.bot.deleteMessage(chatId ?? this.chatId, messageId);
   }
 
-  editMessageText(messageId: number, text: string, keyboard?: SendMessageOptions) {
+  async editMessageText(messageId: number, text: string, keyboard?: SendMessageOptions) {
     try {
-      this._bot.bot
+      await this._bot.bot
         .editMessageText(text, {
           chat_id: this.chatId,
           message_id: messageId,
@@ -120,10 +149,13 @@ export class JesmylTelegramBot {
         })
         .then(
           this.logAllAsJSON
-            ? message => {
+            ? async message => {
                 if (message)
-                  if (message === true) this.logger.log(`Изменено сообщение в чате:\n\n` + text);
-                  else this.logger.log(`Изменено сообщение #${messageId} в чате ${message.chat.title}:\n\n` + text);
+                  if (message === true) return await this.logger.log(`Изменено сообщение в чате:\n\n` + text);
+                  else
+                    return await this.logger.log(
+                      `Изменено сообщение #${messageId} в чате ${message.chat.title}:\n\n` + text,
+                    );
               }
             : undefined,
         );

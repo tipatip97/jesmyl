@@ -6,6 +6,7 @@ import cmService from '../../apps/cm/service';
 import { indexService } from '../../apps/index/service';
 import smylib, { SMyLib } from '../../shared/SMyLib';
 import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
+import { jesmylChangesBot } from '../../sides/telegram-bot/jesmylChangesBot';
 import { tglogger } from '../../sides/telegram-bot/log/log-bot';
 import { supportTelegramAuthorizations } from '../../sides/telegram-bot/prod/authorize';
 import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
@@ -540,7 +541,25 @@ export class SokiServer {
           this.subscriptions[eventBody.unsubscribe].map.delete(client);
         }
 
-        if (eventBody.execs) this.execExecs(appName, eventBody.execs, eventData.auth, capsule?.auth, client, requestId);
+        if (eventBody.execs)
+          this.execExecs(appName, eventBody.execs, eventData.auth, capsule?.auth, client, requestId).then(result => {
+            if (result === undefined || appName !== 'cm') return;
+
+            if (result.errorMessage !== undefined) jesmylChangesBot.postMessage(result.errorMessage);
+            else {
+              jesmylChangesBot.postMessage(
+                `<b>${eventData.auth?.fio ?? 'Нет имени'}` +
+                  (eventData.auth?.nick ? ` @${eventData.auth.nick}` : '') +
+                  `</b>:\n\n${appName}:\n${result.replacedExecs.map(this.extractTitle).join('\n\n')}` +
+                  `\n\n\nJSON изменений:\n<blockquote expandable>` +
+                  JSON.stringify(result.replacedExecs, null, ' ') +
+                  `</blockquote>\n\nАвтор:\n<blockquote expandable>` +
+                  (eventData.auth ? JSON.stringify(eventData.auth, null, ' ') : 'Не авторизоан') +
+                  `</blockquote>`,
+                { disable_notification: true },
+              );
+            }
+          });
       });
 
       client.on('close', () => this.onClientDisconnect(client));
@@ -574,53 +593,53 @@ export class SokiServer {
       const authLogin = eventAuth?.login ?? '';
       const bag: Record<string, unknown> = {};
 
-      return Executer.execute(appConfig, realParents, execs, auth).then(
-        async ({ fixes, replacedExecs, errorMessage, rules }) => {
-          const lastUpdate = await filer.saveChanges(fixes, appName!);
-          this.send(
-            {
-              requestId,
-              execs: {
-                appName,
-                list: replacedExecs,
-                lastUpdate,
-              },
-              errorMessage,
+      return Executer.execute(appConfig, realParents, execs, auth).then(async props => {
+        const lastUpdate = await filer.saveChanges(props.fixes, appName!);
+        this.send(
+          {
+            requestId,
+            execs: {
               appName,
+              list: props.replacedExecs,
+              lastUpdate,
             },
-            fixes[0] === 'schedules'
-              ? (capsule, _, whenRejButTs) => {
-                  const res =
-                    capsule.auth?.login === authLogin ||
-                    appConfig.requirements['schedules']?.onCantRead?.(
-                      true,
-                      replacedExecs[0],
-                      rules[0],
-                      capsule.auth,
-                      bag,
-                      realParents.schedules,
-                      whenRejButTs,
-                    );
+            errorMessage: props.errorMessage,
+            appName,
+          },
+          props.fixes[0] === 'schedules'
+            ? (capsule, _, whenRejButTs) => {
+                const res =
+                  capsule.auth?.login === authLogin ||
+                  appConfig.requirements['schedules']?.onCantRead?.(
+                    true,
+                    props.replacedExecs[0],
+                    props.rules[0],
+                    capsule.auth,
+                    bag,
+                    realParents.schedules,
+                    whenRejButTs,
+                  );
 
-                  return res === whenRejButTs ? whenRejButTs : res === true || res == null;
-                }
-              : appName === 'index'
-                ? () => true
-                : capsule => capsule.appName === appName,
-            client,
-            {
-              requestId,
-              execs: {
-                appName,
-                list: [],
-                lastUpdate,
-              },
-              errorMessage,
+                return res === whenRejButTs ? whenRejButTs : res === true || res == null;
+              }
+            : appName === 'index'
+              ? () => true
+              : capsule => capsule.appName === appName,
+          client,
+          {
+            requestId,
+            execs: {
               appName,
+              list: [],
+              lastUpdate,
             },
-          );
-        },
-      );
+            errorMessage: props.errorMessage,
+            appName,
+          },
+        );
+
+        return props;
+      });
     } else {
       if (client)
         this.send(
@@ -641,6 +660,8 @@ export class SokiServer {
       throw 'Не авторизован';
     }
   }
+
+  extractTitle = (exec: { title?: string }) => exec.title ?? '';
 }
 
 const sokiServer = new SokiServer();

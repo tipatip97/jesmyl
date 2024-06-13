@@ -2,7 +2,7 @@ import { SendMessageOptions } from 'node-telegram-bot-api';
 import { jesmylTgBot } from '../bot';
 import { JesmylTelegramBot } from '../tg-bot';
 
-const logTelegramBot = new JesmylTelegramBot({
+export const logTelegramBot = new JesmylTelegramBot({
   bot: jesmylTgBot,
   chatId: -1002087759235,
   logger: null!,
@@ -50,7 +50,7 @@ export class TgLogger {
   }
 
   log(text: string) {
-    this.bot.postMessage(text, this.replyToScope('log'));
+    return this.bot.postMessage(text, this.replyToScope('log'));
   }
 
   test(text: string) {

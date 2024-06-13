@@ -1,16 +1,17 @@
 import { SendMessageOptions } from 'node-telegram-bot-api';
 import { jesmylTgBot } from '../bot';
+import { gul94iAdminTelegramBot, gul94iTelegramBot } from '../gul94i/gul94i-bot';
+import { jesmylChangesBot } from '../jesmylChangesBot';
 import { tglogger } from '../log/log-bot';
 import { JesmylTelegramBot } from '../tg-bot';
 import { authorizeTelegramCb } from './authorize';
-import { gul94iAdminTelegramBot, gul94iTelegramBot } from '../gul94i/gul94i-bot';
 
 export const prodTelegramBot = new JesmylTelegramBot({
   bot: jesmylTgBot,
   chatId: -1001304718820,
   logger: tglogger,
   logAllAsJSON: true,
-  uniqPrefix: '!',
+  uniqPrefix: '',
 });
 
 export const prodStartOptions: SendMessageOptions = prodTelegramBot.makeSendMessageOptions([
@@ -52,3 +53,4 @@ if (!'change message')
 
 gul94iTelegramBot.register();
 gul94iAdminTelegramBot.register();
+jesmylChangesBot.register();

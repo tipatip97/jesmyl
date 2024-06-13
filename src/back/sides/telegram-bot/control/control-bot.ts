@@ -1,7 +1,8 @@
 import { SendMessageOptions } from 'node-telegram-bot-api';
 import sokiServer from '../../../complect/soki/SokiServer';
 import { jesmylTgBot } from '../bot';
-import { tglogger } from '../log/log-bot';
+import { tgBotUrlController } from '../complect/url-controller';
+import { logTelegramBot, tglogger } from '../log/log-bot';
 import { prodTelegramBot } from '../prod/prod-bot';
 import { supportTelegramBot } from '../support/support-bot';
 import { JesmylTelegramBot } from '../tg-bot';
@@ -56,3 +57,5 @@ controlTelegramBot.onChatMessages(async (bot, message) => {
     bot.postMessage('Действия', devStartOptions);
   }
 });
+
+tgBotUrlController(controlTelegramBot, logTelegramBot);

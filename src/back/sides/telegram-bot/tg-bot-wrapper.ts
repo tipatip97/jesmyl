@@ -122,13 +122,16 @@ export class JesmylTelegramBotWrapper {
     bot: JesmylTelegramBot,
     keyboard: (InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][],
     isRewriteButtonOnSameKey?: boolean,
+    keyPrefix?: string,
   ) {
+    const prefix = `${bot.uniqPrefix}${keyPrefix ? ` ${keyPrefix}` : ''}`;
+
     keyboard.flat().forEach(key => {
       if (!key.callback_data || !key.cb) return;
-      const cbData = `${bot.uniqPrefix}${key.callback_data}`;
+      const cbData = `${prefix}${key.callback_data}`;
 
       if (isRewriteButtonOnSameKey !== true && this.fromOptionsOnCallbackQueryCallback[cbData] !== undefined)
-        throw Error('Повторяющиеся ключи callback_query');
+        throw Error(`Повторяющиеся ключи callback_query: ${cbData}`);
 
       const cb = key.cb;
 
@@ -141,7 +144,7 @@ export class JesmylTelegramBotWrapper {
           return line.map(key => {
             return {
               ...key,
-              callback_data: `${bot.uniqPrefix}${key.callback_data}`,
+              callback_data: `${prefix}${key.callback_data}`,
             };
           });
         }),

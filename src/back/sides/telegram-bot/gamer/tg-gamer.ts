@@ -105,7 +105,7 @@ export const startTgGamerListener = () => {
 
         const execute = async (action: string, args?: Record<string, unknown>): Promise<void> => {
           if (member !== undefined && args !== undefined) args.login = member.login;
-          return await sokiServer.execExecs('gamer', [{ action, args: { ...args, roomw } }], auth, auth);
+          await sokiServer.execExecs('gamer', [{ action, args: { ...args, roomw } }], auth, auth);
         };
 
         const member = room.members.find(member => member.login === auth.login);

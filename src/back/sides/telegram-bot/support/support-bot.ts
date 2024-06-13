@@ -1,6 +1,6 @@
 import { jesmylTgBot } from '../bot';
 import { tgBotUrlController } from '../complect/url-controller';
-import { tglogger } from '../log/log-bot';
+import { logTelegramBot, tglogger } from '../log/log-bot';
 import { prodStartOptions } from '../prod/prod-bot';
 import { JesmylTelegramBot } from '../tg-bot';
 
@@ -11,7 +11,7 @@ export const supportTelegramBot = new JesmylTelegramBot({
   uniqPrefix: '+',
 });
 
-tgBotUrlController(supportTelegramBot);
+tgBotUrlController(supportTelegramBot, logTelegramBot, '&');
 
 supportTelegramBot.onChatMessages(async (bot, message) => {
   if (!message.text) return;

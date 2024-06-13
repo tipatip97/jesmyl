@@ -1,15 +1,20 @@
 import TelegramBot, { SendMessageOptions } from 'node-telegram-bot-api';
-import { SMyLib } from '../../../shared/SMyLib';
-import { jesmylTgBot } from '../bot';
 import { JesmylTelegramBot } from '../tg-bot';
 import { JTgBotCallbackQuery } from '../tg-bot-wrapper';
 
-export const tgBotUrlController = async (tgBot: JesmylTelegramBot, adminBot?: JesmylTelegramBot) => {
+const getFullName = ({ first_name, last_name }: { first_name: string; last_name?: string }) =>
+  `${first_name}${last_name === undefined ? '' : ` ${last_name}`}`;
+
+export const tgBotUrlController = async (
+  targetBot: JesmylTelegramBot,
+  adminBot: JesmylTelegramBot,
+  keyPrefix?: string,
+) => {
   let chat: TelegramBot.Chat | null = null;
   let knownUrls: string[] = [];
 
   const urlWordParts = '-\\w\\d@_%';
-  const domainRegStr = `[${urlWordParts}]+\\.[${urlWordParts}./]{2,}`;
+  const domainRegStr = `\\w[${urlWordParts}]+\\.[${urlWordParts}./]{2,}`;
   const urlRegStr = `${domainRegStr}[${urlWordParts}?.#=$&]*`;
 
   const urlReg = RegExp(`(${urlRegStr})`);
@@ -20,74 +25,72 @@ export const tgBotUrlController = async (tgBot: JesmylTelegramBot, adminBot?: Je
 
   const message1Separation = `.
 Попытка отправить сообщение содержащее следующие неизвестные ссылки в группе `;
+  const messageJSONSeparation = `JSON-код сообщения следующего содержания:`;
   const message2Separation = `
 Отправку такого сообщения нужно подтвердить Админу.
 
 `;
-
-  const sendToAdmin = (text: string, altUserId?: number, options?: TelegramBot.SendMessageOptions) => {
-    if (adminBot === undefined) {
-      if (altUserId !== undefined) {
-        tgBot.sendMessage(altUserId, text, options);
-        return;
-      }
-
-      SMyLib.entries(tgBot.admins).forEach(([_id, member]) => {
-        if (!member.user || member.user.is_bot) return;
-        try {
-          tgBot.sendMessage(member.user.id, text, options);
-        } catch (e) {}
-      });
-      return;
-    }
-
-    adminBot.postMessage(text, options);
-  };
-
-  tgBot.refreshAdmins();
+  targetBot.refreshAdmins();
 
   const keys: (TelegramBot.InlineKeyboardButton & { cb: JTgBotCallbackQuery })[][] = [
     [
       {
         text: 'Отправить',
         callback_data: 'send-URL-message',
-        cb: (_bot, query) => {
-          const text = query.message?.text;
-          if (!text || query.message === undefined) return;
-          const message = `<b>${text.split(message1Separation)[0]}</b>:\n\n${text.split(message2Separation)[1]}`;
+        cb: async (_bot, query, answer) => {
+          try {
+            if (query.message === undefined) return;
+            const text = query.message.text ?? query.message.caption;
+            if (!text) return;
 
-          if (adminBot) adminBot.deleteMessage(query.message.message_id);
-          else if (query.message.from) jesmylTgBot.bot.deleteMessage(query.message.from.id, query.message.message_id);
+            const jsonSplittedMessage = text.split(messageJSONSeparation);
+            const parsedMessage: TelegramBot.Message = JSON.parse(jsonSplittedMessage[1]);
 
-          tgBot.postMessage(message);
-          sendToAdmin(
-            'В чат' +
-              (chat === null ? '' : ` <b>${chat.title}</b>`) +
-              ` отправлено сообщение\n\n<blockquote expandable>${message}</blockquote>`,
-            query.from.id,
-          );
+            const messageText = `<b>${text.split(message1Separation)[0]}</b>:\n\n${
+              jsonSplittedMessage[0].split(message2Separation)[1]
+            }`;
+
+            try {
+              await targetBot.sendMediaBased(parsedMessage, {
+                caption: messageText,
+                reply_to_message_id: parsedMessage.media_group_id ? parsedMessage.message_id + 1 : undefined,
+              });
+            } catch (error) {
+              if (parsedMessage.media_group_id)
+                try {
+                  await targetBot.sendMediaBased(parsedMessage, { caption: messageText });
+                } catch (error) {
+                  await targetBot.postMessage(messageText);
+                }
+              else await targetBot.postMessage(messageText);
+            }
+
+            adminBot.deleteMessage(query.message.message_id);
+            adminBot.postMessage(
+              'В чат' +
+                (chat === null ? '' : ` <b>${chat.title}</b>`) +
+                ` отправлено сообщение\n\n<blockquote expandable>${messageText}</blockquote>`,
+            );
+          } catch (error) {
+            answer({ text: '' + error });
+          }
         },
       },
       {
         text: 'Отменить',
         callback_data: `delete-URL-message`,
-        cb: (_bot, query) => {
-          if (!query.message?.text) return;
-          const messageText =
-            '<b>Отмена отправки сообщения:</b>\n\n<tg-spoiler><b>ТЕКСТ\nОТПРАВЛЕННОГО\nСООБЩЕНИЯ</b>:\n\n' +
-            query.message.text.split(message2Separation)[1] +
-            '</tg-spoiler>';
+        cb: async (_bot, query, answer) => {
+          try {
+            if (!query.message?.text) return;
+            const messageText =
+              '<b>Отмена отправки сообщения:</b>\n\n<tg-spoiler><b>ТЕКСТ\nОТПРАВЛЕННОГО\nСООБЩЕНИЯ</b>:\n\n' +
+              query.message.text.split(message2Separation)[1] +
+              '</tg-spoiler>';
 
-          if (adminBot) {
-            adminBot.editMessageText(query.message.message_id, messageText);
-            return;
+            await adminBot.editMessageText(query.message.message_id, messageText);
+          } catch (error) {
+            answer({ text: '' + error });
           }
-
-          jesmylTgBot.bot.editMessageText(messageText, {
-            chat_id: query.from.id,
-            message_id: query.message.message_id,
-            parse_mode: 'HTML',
-          });
         },
       },
     ],
@@ -99,16 +102,16 @@ export const tgBotUrlController = async (tgBot: JesmylTelegramBot, adminBot?: Je
           const knowns = await refreshDescription();
           await bot.refreshAdmins();
 
-          sendToAdmin(`Информация группы перечитана. Известные ссылки:\n\n${knowns.join('\n')}`);
+          adminBot.postMessage(`Информация группы перечитана. Известные ссылки:\n\n${knowns.join('\n')}`);
         },
       },
     ],
   ];
 
-  const botOptions: SendMessageOptions = (adminBot ?? tgBot).makeSendMessageOptions(keys);
+  const botOptions: SendMessageOptions = adminBot.makeSendMessageOptions(keys, keyPrefix);
 
   const refreshDescription = async () => {
-    chat = await tgBot.getChat();
+    chat = await targetBot.getChat();
     chat.description?.replace(domainReg, (all, address) => {
       knownUrlsSet.add(address);
       return all;
@@ -120,13 +123,18 @@ export const tgBotUrlController = async (tgBot: JesmylTelegramBot, adminBot?: Je
 
   refreshDescription();
 
-  tgBot.onChatMessages(async (bot, message) => {
-    if (message.from == null || message.text === undefined || message.from.is_bot) return;
-
+  targetBot.onChatMessages(async (bot, message) => {
+    if (message.from == null || message.from.is_bot) return;
     if (bot.admins[message.from.id] != null) return;
 
+    const sendText = message.text ?? message.caption;
+
+    if (sendText === undefined) return;
+
     const usedUnknownUrls: string[] = [];
-    const urlParts = message.text.split(urlReg);
+    const urlParts = sendText.split(urlReg);
+
+    if (urlParts == null) return;
 
     for (let i = 0; i < urlParts.length; i += 2) {
       const url = urlParts[i + 1];
@@ -136,6 +144,7 @@ export const tgBotUrlController = async (tgBot: JesmylTelegramBot, adminBot?: Je
     }
 
     if (usedUnknownUrls.length === 0) return;
+
     const messageFrom = message.from;
     bot.deleteMessage(message.message_id);
 
@@ -154,17 +163,24 @@ export const tgBotUrlController = async (tgBot: JesmylTelegramBot, adminBot?: Je
       setTimeout(() => bot.deleteMessage(sentMessage.message_id), deleteTime * 1000);
     }
 
-    sendToAdmin(
+    try {
+      await adminBot.sendMediaBased(message, { caption: 'Это вложение содержится в следующем сообщении' });
+    } catch (error) {}
+
+    adminBot.postMessage(
       (messageFrom.username ? `@${messageFrom.username}, ` : '') +
-        `${messageFrom.first_name || ''}${messageFrom.last_name ? ` ${messageFrom.last_name}` : ''}` +
+        getFullName(messageFrom) +
         message1Separation +
         `<b>${message.chat.title}</b>:\n` +
         usedUnknownUrls.map(makeUrlHyperlink).join('\n') +
         message2Separation +
         '<blockquote expandable>' +
-        message.text +
+        sendText +
+        '</blockquote>' +
+        messageJSONSeparation +
+        '<blockquote expandable>' +
+        JSON.stringify(message) +
         '</blockquote>',
-      undefined,
       botOptions,
     );
   });
