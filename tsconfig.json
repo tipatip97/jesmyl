@@ -18,5 +18,5 @@
     "paths": {}
   },
   "include": ["src", "src/back/complect/exert/exer"],
-  "exclude": ["src/front/complect/the-icon/icons"]
+  "exclude": ["./src/front/complect/the-icon/icons"]
 }
