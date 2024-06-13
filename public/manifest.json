@@ -1,27 +1,51 @@
 {
-    "name": "Jesus my Lord",
-    "short_name": "JesmyL",
-    "description": "Сборник приложений",
-    "prefer_related_applications": false,
-    "intent_filters": {
-      "scope_url_scheme": "https",
-      "scope_url_host": "jesmyl.ru",
-      "scope_url_path": "/"
+  "name": "Jesus my Lord",
+  "short_name": "JesmyL",
+  "description": "Сборник приложений",
+  "prefer_related_applications": false,
+  "intent_filters": {
+    "scope_url_scheme": "https",
+    "scope_url_host": "jesmyl.ru",
+    "scope_url_path": "/"
+  },
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
-    "icons": [
-        {
-            "src": "android-chrome-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "android-chrome-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ],
-    "start_url": ".",
-    "display": "standalone",
-    "theme_color": "#587455",
-    "background_color": "#587455"
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#587455",
+  "background_color": "#587455",
+  "capture_links": "existing_client_event",
+  "url_handlers": [
+    {
+      "origin": "https://jesmyl.ru"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Песни возрождённых",
+      "url": "/"
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "//": "window.launchQueue",
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "image/*": [".jpeg", ".jpg", ".png"]
+      }
+    }
+  ]
 }
