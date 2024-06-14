@@ -25,15 +25,25 @@
   "theme_color": "#587455",
   "background_color": "#587455",
   "capture_links": "existing_client_event",
+  "categories": ["christian", "христианское", "песни", "хвала", "для Иисуса Христа", "JesmyL"],
   "url_handlers": [
     {
       "origin": "https://jesmyl.ru"
     }
   ],
+  "share_target": {
+    "action": "/share",
+    "method": "GET",
+    "params": {
+      "title": "shareText",
+      "text": "shareDescription"
+    }
+  },
   "shortcuts": [
     {
       "name": "Песни возрождённых",
-      "url": "/"
+      "url": "/?gotoApp=cm",
+      "description": "Перейти к приложению"
     }
   ],
   "launch_handler": {
