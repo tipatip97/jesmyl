@@ -92,6 +92,10 @@ self.addEventListener('activate', async () => {
     }),
   );
 });
+const errorHTML = `
+  <h2>Приложение не успело прогрузиться и сохраниться</h2>
+  <p>На данном этапе необходимо иметь соединение с сетью</p>
+`;
 
 self.addEventListener('fetch', event => {
   event.respondWith(
@@ -103,7 +107,11 @@ self.addEventListener('fetch', event => {
 
         return resp;
       } catch (err) {
-        return caches.match(event.request).then(it => it!);
+        try {
+          return await caches.match(event.request).then(it => it!);
+        } catch (error) {
+          return new Response(errorHTML, { headers: { 'Content-Type': 'text/html' } });
+        }
       }
     })(),
   );
