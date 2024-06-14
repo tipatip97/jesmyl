@@ -3,7 +3,10 @@ import { BaseNamedExportables } from '../../base/BaseNamed';
 import { MigratableEditableComToolName } from '../../editor/col/compositions/EditableCom.model';
 import { IExportableOrder } from './order/Order.model';
 
+export type ComWid = number;
+
 export interface IExportableCom extends BaseNamedExportables {
+  w: ComWid;
   k?: number; // вариант группировки строк для трансляций
   p?: number; // позиции аккордов
   l?: number; // язык песни
@@ -11,7 +14,6 @@ export interface IExportableCom extends BaseNamedExportables {
   a?: string; // аудио файлы
   t?: string[]; // список текстов
   c?: string[]; // список аккорлов
-  r?: Record<string, number>; // правила повторений
   o?: IExportableOrder[]; // порядковые блоки
   bpm?: number; // ударов в минуту
   s?: 3 | 4; // размерность песни

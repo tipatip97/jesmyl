@@ -4,16 +4,20 @@ import { Cat } from '../../../col/cat/Cat';
 import { catTrackers } from '../../../col/cat/Cat.complect';
 import { CatTracker, ComWrap, IExportableCat } from '../../../col/cat/Cat.model';
 import { Com } from '../../../col/com/Com';
+import { CorrectsBox } from '../../corrects-box/CorrectsBox';
 import { EditableCom } from '../compositions/EditableCom';
 import { EditableCol } from '../EditableCol';
 
 export class EditableCat extends Cat {
+  corrects: Record<string, CorrectsBox | nil> = {};
   coms: EditableCom[];
   topComs: EditableCom[];
   initialName: string;
   term: string = '';
   wraps: ComWrap<EditableCom>[] = [];
   col: EditableCol<IExportableCat>;
+
+  initial: Cat;
 
   constructor(top: IExportableCat, coms: EditableCom[]) {
     super(top, coms);
@@ -22,6 +26,7 @@ export class EditableCat extends Cat {
     this.initialName = this.name;
 
     this.coms = this.putComs();
+    this.initial = new Cat(mylib.clone(top), this.coms);
   }
 
   search(term = this.term) {
@@ -87,6 +92,14 @@ export class EditableCat extends Cat {
     this.stack = value;
   }
 
+  remove(isRemoved = true) {
+    this.col.removeCol('cat', isRemoved);
+  }
+
+  comeBack() {
+    this.col.comeBackCol('cat');
+  }
+
   setKind({ title, id }: CatTracker, onSet?: () => void) {
     this.exec({
       action: 'catSetKind',
@@ -143,5 +156,73 @@ export class EditableCat extends Cat {
       this.stack.splice(index, 1);
     }
     exec?.();
+  }
+
+  removeNativeNumber(com: Com, exec?: <Val>(v?: Val) => Val | nil) {
+    delete this.corrects[`setCatNativeNum:${com.wid}`];
+
+    let dict = this.dict;
+    if (dict == null) {
+      dict = this.dict = {};
+    }
+    const prev = this.initial.dict?.[com.wid];
+    delete dict[com.wid];
+    this.exec({
+      action: 'deleteCatNativeNum',
+      method: 'delete',
+      uniq: com.wid,
+      prev,
+      args: {
+        catn: this.name,
+        name: com.name,
+        catw: com.wid,
+      },
+      anti: [
+        ({ action, args }) => {
+          if (action === 'setCatNativeNum' && (args ? args.catw === com.wid && args.comw === this.wid : false))
+            return strategy => (null == prev ? strategy.RemoveNew : strategy.RememberNew);
+        },
+      ],
+    });
+    exec?.();
+  }
+
+  setNativeNumber(com: Com, numberStr: string) {
+    const value = parseInt(numberStr);
+    const corrects = (this.corrects[`setCatNativeNum:${com.wid}`] = new CorrectsBox(
+      numberStr.match(/^0|\D|^$/)
+        ? [
+            {
+              message: 'Некорректное значение номера',
+            },
+          ]
+        : null,
+    ));
+    let dict = this.dict;
+    if (dict == null) {
+      dict = this.dict = {};
+    }
+    dict[com.wid] = value;
+    this.dict = dict;
+
+    this.exec({
+      action: 'setCatNativeNum',
+      prev: this.initial.dict?.[com.wid],
+      method: 'set',
+      value,
+      uniq: com.wid,
+      anti: ({ action, args }) => {
+        if (action === 'deleteCatNativeNum' && (args ? args.catw === com.wid && args.comw === this.wid : false))
+          return strategy => strategy.RememberNew;
+      },
+      args: {
+        catn: this.name,
+        name: com.name,
+        value,
+        comw: com.wid,
+      },
+      corrects,
+    });
+    return numberStr;
   }
 }

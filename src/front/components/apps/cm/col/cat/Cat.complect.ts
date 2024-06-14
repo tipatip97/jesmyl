@@ -11,12 +11,12 @@ export const catTrackers: CatTracker[] = [
   {
     title: 'Сборник',
     id: 'dict',
-    select: (com: Com, cat: Cat) => !!com.refs?.[cat.wid],
+    select: (com: Com, cat: Cat) => !!cat.dict?.[com.wid],
   },
   {
     title: 'Список',
     id: 'list',
-    select: (com: Com, cat: Cat) => cat.stack?.indexOf(com.wid) > -1,
+    select: (com: Com, cat: Cat) => cat.stack?.includes(com.wid),
   },
   {
     title: 'Язык - Русский',

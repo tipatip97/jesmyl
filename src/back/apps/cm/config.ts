@@ -110,6 +110,31 @@ const config: FilerAppConfig = {
               },
             },
           },
+          '/d': {
+            expected: {},
+            '/{comw}': {
+              level: 50,
+              action: 'setCatNativeNum',
+              title: 'Песня "$name" $value?{{в категории "$catn" обозначена №$value}{отнесена к категории "$catn"}}',
+              method: 'set',
+              args: {
+                catw: '#Number',
+                value: '#Number',
+              },
+            },
+            '<remove>': {
+              '/{comw}': {
+                level: 50,
+                action: 'deleteCatNativeNum',
+                title:
+                  'Нативный номер$prev{{ (№$prev)}} песни "$name", ранее обозначенный в категории "$catn", был удалён',
+                method: 'delete',
+                args: {
+                  catw: '#Number',
+                },
+              },
+            },
+          },
         },
       },
       '/coms': {
@@ -210,29 +235,6 @@ const config: FilerAppConfig = {
             method: 'set',
             args: {
               value: '#Num',
-            },
-          },
-          '/r': {
-            expected: {},
-            '/{catw}': {
-              level: 50,
-              action: 'setNativeNum',
-              title: 'Песня "$name" $value?{{в категории "$catn" обозначена №$value}{отнесена к категории "$catn"}}',
-              method: 'set',
-              args: {
-                catw: '#Number',
-                value: '#Number',
-              },
-            },
-            '/r': {
-              level: 50,
-              action: 'removeNativeNum',
-              title:
-                'Нативный номер$prev{{ (№$prev)}} песни "$name", ранее обозначенный в категории "$catn", был удалён',
-              method: 'remove',
-              args: {
-                value: '#Number',
-              },
             },
           },
           '/{coln}/{index}': {

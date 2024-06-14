@@ -173,7 +173,6 @@ export class EditableCom extends Com {
         n: '',
         o: '',
         p: '',
-        r: '',
         t: '',
         ton: '',
         w: '',
@@ -208,50 +207,6 @@ export class EditableCom extends Com {
 
   comeBack() {
     this.col.comeBackCol('com');
-  }
-
-  setNativeNumber(cat: Cat, numberStr: string) {
-    const number = parseInt(numberStr);
-
-    const corrects = (this.corrects[`setNativeNum:${cat.wid}`] = new CorrectsBox(
-      numberStr.match(/^0|\D|^$/)
-        ? [
-            {
-              message: 'Некорректное значение номера',
-            },
-          ]
-        : null,
-    ));
-
-    let refs = this.refs;
-
-    if (refs == null) {
-      refs = this.refs = {};
-    }
-
-    refs[cat.wid] = number;
-
-    this.refs = refs;
-
-    this.exec({
-      action: 'setNativeNum',
-      prev: this.initial.refs?.[cat.wid],
-      method: 'set',
-      value: number,
-      uniq: cat.wid,
-      anti: ({ action, args }) => {
-        if (action === 'removeNativeNum' && (args ? args.catw === cat.wid && args.comw === this.wid : false))
-          return strategy => strategy.RememberNew;
-      },
-      args: {
-        catn: cat.name,
-        value: number,
-        catw: cat.wid,
-      },
-      corrects,
-    });
-
-    return numberStr;
   }
 
   async parseBlocksFromClipboard(value: string, cb?: (blocks: string[]) => boolean) {
@@ -829,35 +784,6 @@ export class EditableCom extends Com {
     });
 
     return name.replace(/[^а-я!]+$/i, '');
-  }
-
-  removeNativeNumber(cat: Cat, exec?: <Val>(v?: Val) => Val | nil) {
-    delete this.corrects[`setNativeNum:${cat.wid}`];
-
-    let refs = this.refs;
-    if (refs == null || mylib.isArr(refs)) {
-      refs = this.refs = {};
-    }
-    const prev = this.initial.refs?.[cat.wid];
-    delete refs[cat.wid];
-
-    this.exec({
-      action: 'removeNativeNum',
-      method: 'remove',
-      uniq: cat.wid,
-      prev,
-      args: {
-        catn: cat.name,
-        value: cat.wid,
-      },
-      anti: [
-        ({ action, args }) => {
-          if (action === 'setNativeNum' && (args ? args.catw === cat.wid && args.comw === this.wid : false))
-            return strategy => (null == prev ? strategy.RemoveNew : strategy.RememberNew);
-        },
-      ],
-    });
-    exec?.();
   }
 
   blockCorrects(

@@ -22,12 +22,11 @@ const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
 const catMentions = (cols?: Cols, com?: Com): string[] => {
   if (!cols || !com) return [];
   const wid = com.wid;
-  const refs = com.refs || {};
   const natives: string[] = [];
 
   const inCats = cols.cats
     .filter(cat => {
-      if (refs[cat.wid]) natives.push(`${cat.name} ${refs[cat.wid]}`);
+      if (cat.dict[wid] != null) natives.push(`${cat.name} ${cat.dict[wid]}`);
       return cat.stack.includes(wid);
     })
     .map(cat => cat.name);

@@ -29,6 +29,13 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
     this.setExportable('s', val);
   }
 
+  get dict() {
+    return this.getBasicOr('d', {});
+  }
+  set dict(val) {
+    this.setExportable('d', val);
+  }
+
   get kind(): string {
     return this.getBasic('k');
   }

@@ -68,13 +68,6 @@ export class Com extends BaseNamed<IExportableCom> {
     this.setExportable('a', val);
   }
 
-  get refs() {
-    return this.getBasic('r');
-  }
-  set refs(val) {
-    this.setExportable('r', val);
-  }
-
   get chords() {
     return this.getBasic('c');
   }

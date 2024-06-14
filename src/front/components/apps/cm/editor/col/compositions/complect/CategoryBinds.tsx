@@ -18,27 +18,27 @@ export default function CategoryBinds() {
         return cat.kind !== 'dict' ? null : (
           <EditContainerCorrectsInformer
             key={cat.wid}
-            corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
+            corrects={ccom?.corrects[`setCatNativeNum:${cat.wid}`]}
           >
             <span>{cat.name} </span>
             <KeyboardInput
-              value={`${ccom.refs?.[cat.wid] || ''}`}
+              value={`${cat.dict?.[ccom.wid] || ''}`}
               type="number"
               onChange={value => {
                 if (!+value) {
-                  if (ccom.refs?.[cat.wid]) exec(ccom.removeNativeNumber(cat, exec));
+                  if (cat.dict?.[ccom.wid]) exec(cat.removeNativeNumber(ccom, exec));
                   return;
                 }
                 if (value.match(/\D/)) return;
-                exec(ccom.setNativeNumber(cat, value));
+                exec(cat.setNativeNumber(ccom, value));
               }}
             />
-            {ccom.refs?.[cat.wid] != null ? (
+            {cat.dict?.[ccom.wid] != null ? (
               <span
-                className="pointer"
-                onClick={() => exec(ccom.removeNativeNumber(cat, exec))}
+                className="pointer color--ko"
+                onClick={() => exec(cat.removeNativeNumber(ccom, exec))}
               >
-                {' ' + (isNaN(ccom.refs?.[cat.wid]) ? 'Корректно очистить' : 'Удалить')}
+                {isNaN(cat.dict?.[ccom.wid]) ? 'Корректно очистить' : 'Удалить'}
               </span>
             ) : null}
           </EditContainerCorrectsInformer>
@@ -49,7 +49,7 @@ export default function CategoryBinds() {
         return cat.kind !== 'list' ? null : (
           <EditContainerCorrectsInformer
             key={cat.wid}
-            corrects={ccom?.corrects[`setNativeNum:${cat.wid}`]}
+            corrects={ccom?.corrects[`setCatNativeNum:${cat.wid}`]}
           >
             <span>{cat.name} </span>
             <input
