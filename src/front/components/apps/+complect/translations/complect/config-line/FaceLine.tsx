@@ -12,13 +12,14 @@ import { useSetScreenTranslationCurrentConfigi, useUpdateScreenTranslationConfig
 import { ScreenTranslationsFace } from './Face';
 import { useScreenTranslationFaceLineListeners } from './hooks/listeners';
 import { useScreenTranslationPutOnFaceClose } from './hooks/put-on-face-close';
+import { ScreenTranslationConfig } from '../../model';
 
 interface Props<Config> {
   updateConfig: (config: Config | null, configi: number) => void;
 }
 
 export const ScreenTranslationsFaceLine = <Config,>(props: Props<Config>) => {
-  const configs = useScreenTranslationConfigs();
+  const configs: ScreenTranslationConfig[] = useScreenTranslationConfigs();
   const windows = useScreenTranslationWindows();
   const updateConfig = useUpdateScreenTranslationConfig();
   const setCurrentConfigi = useSetScreenTranslationCurrentConfigi();

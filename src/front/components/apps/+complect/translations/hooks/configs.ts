@@ -11,7 +11,7 @@ const defaultConfig: ScreenTranslationConfig = {
 
 const configsSelector = (state: RootState) => state.complect.screenTranslationConfigs;
 
-export const useScreenTranslationConfigs = () => useSelector(configsSelector);
+export const useScreenTranslationConfigs: () => ScreenTranslationConfig[] = () => useSelector(configsSelector);
 
 export const useMakeScreenTranslationConfigsFillPack = <Config>(configs: Config[], defaultConfig: Config) => {
   return useSelector(configsSelector).map((_, configi) => {
