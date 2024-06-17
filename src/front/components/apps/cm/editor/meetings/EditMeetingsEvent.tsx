@@ -8,7 +8,7 @@ import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconArrowDown02StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-02';
 import { IconArrowUp02StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-02';
 import { IconArrowUpDoubleStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-double';
-import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
+import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
 import { IconLeftToRightListBulletStrokeRounded } from '../../../../../complect/the-icon/icons/left-to-right-list-bullet';
 import { IconPlusSignStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
@@ -16,13 +16,13 @@ import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/vi
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
 import useCmNav from '../../base/useCmNav';
 import { ComFace } from '../../col/com/face/ComFace';
+import { EditableCat } from '../col/categories/EditableCat';
 import { useEditableCcat } from '../col/categories/useEditableCcat';
 import EditContainerCorrectsInformer from '../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
+import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 import MeetingsEventHistory from './MeetingsEventHistory';
 import { useEditableMeetings } from './useEditableMeetings';
-import { EditableCat } from '../col/categories/EditableCat';
-import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 
 export default function EditMeetingsEvent() {
   const currentEvent: EditableMeetingsEvent | und = useEditableMeetings().currentEvent;
@@ -95,7 +95,8 @@ export default function EditMeetingsEvent() {
                         }}
                       />
                     )}
-                    <IconHelpCircleStrokeRounded
+                    <IconDelete01StrokeRounded
+                      className="color--ko"
                       onClick={event => {
                         event.stopPropagation();
                         exec(currentEvent.removeCom(com));
@@ -116,7 +117,7 @@ export default function EditMeetingsEvent() {
                 {prevComsLength < 2 ? null : (
                   <IconButton
                     Icon={comsLength ? IconArrowUpDoubleStrokeRounded : IconPlusSignStrokeRounded}
-                    className="pointer"
+                    className="pointer color--ok"
                     onClick={event => {
                       event.stopPropagation();
                       exec(currentEvent.mergePrevComs(currentEvent.prevComs));

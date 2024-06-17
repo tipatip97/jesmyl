@@ -10,7 +10,7 @@ import { EditableMeetings } from './EditableMeetings';
 let localMeetings: EditableMeetings | nil;
 let localIMeetings: IExportableMeetings | nil;
 
-const meetingsSelector = (state: RootState) => state.cm.meetings;
+const meetingsSelector: (state: RootState) => IExportableMeetings | und = (state: RootState) => state.cm.meetings;
 
 export function useEditableMeetings() {
   const imeetings: IExportableMeetings | und = useSelector(meetingsSelector);
