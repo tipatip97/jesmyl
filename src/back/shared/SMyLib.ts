@@ -70,7 +70,7 @@ export class SMyLib {
   }
 
   static entries<T>(obj: T): [keyof T, T[keyof T]][] {
-    return (obj == null ? [] : Object.entries(obj)) as never;
+    return (obj == null ? [] : Object.entries(obj ?? {})) as never;
   }
 
   static keys<T>(obj: T): T extends Record<infer Key, any> ? Key[] : string[] {
@@ -92,6 +92,12 @@ export class SMyLib {
         return call([].concat(self.isFunc(func) ? func() : []));
       },
     };
+  }
+
+  execIfFunc(funcScalar: unknown, ...args: unknown[]) {
+    if (!this.isFunc(funcScalar)) return funcScalar;
+
+    return funcScalar(...args);
   }
 
   mapFilter = <Item, Val>(

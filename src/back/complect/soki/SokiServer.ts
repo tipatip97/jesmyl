@@ -661,7 +661,11 @@ export class SokiServer {
     }
   }
 
-  extractTitle = (exec: { title?: string }) => exec.title ?? '';
+  extractTitle = (exec: {
+    title?: string | ((exec: Record<string, unknown>) => string);
+    shortTitle?: string;
+    args?: Record<string, unknown>;
+  }) => (smylib.execIfFunc(exec.title, exec.args) || exec.shortTitle) ?? '';
 }
 
 const sokiServer = new SokiServer();

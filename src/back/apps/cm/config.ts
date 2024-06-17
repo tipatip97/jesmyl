@@ -1,5 +1,21 @@
 import { Executer } from '../../complect/executer/Executer';
+import { filer } from '../../complect/filer/Filer';
 import { FilerAppConfig } from '../../complect/filer/Filer.model';
+import smylib from '../../shared/SMyLib';
+
+const itIt = (it: unknown) => it;
+
+const makeComNames = (wids: number | number[]): string => {
+  const coms: { n: string; w: number }[] = filer.contents.cm?.cols?.data.coms;
+
+  if (!Array.isArray(coms)) return '';
+
+  const getComName = (wid: number) => coms.find(com => com.w === wid)?.n;
+
+  if (smylib.isNum(wids)) return getComName(wids) ?? '';
+
+  return wids.map(getComName).filter(itIt).join('\n');
+};
 
 const config: FilerAppConfig = {
   title: 'Аккорд Мастер',
@@ -559,7 +575,10 @@ const config: FilerAppConfig = {
             '/s': {
               level: 50,
               action: 'setMeetingEventStack',
-              title: 'В событии "$eventn" изменён список песен',
+              shortTitle: 'В событии "$eventn" изменён список песен',
+              title: args => {
+                return `В событии "$eventn" изменён список песен:\n\n${makeComNames(args.value as number[])}`;
+              },
               method: 'set',
               args: {
                 value: '#List',

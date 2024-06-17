@@ -213,7 +213,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
     this._regions =
       this.repeats === 0
         ? []
-        : Object.entries(mylib.isNum(this.repeats) ? { '.': this.repeats } : this.repeats || {}).map(
+        : MyLib.entries(mylib.isNum(this.repeats) ? { '.': this.repeats } : this.repeats || {}).map(
             ([key, count]: [string, number]): EditableOrderRegion<Ord> => {
               if (key === '.')
                 return {

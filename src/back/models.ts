@@ -30,7 +30,7 @@ export interface ActionBox<Value = any>
   level?: number;
   scopeNode?: string;
   shortTitle?: string;
-  title?: string;
+  title?: string | ((args: Record<string, unknown>) => string);
   access?: string;
   uniqs?: string[];
   fixAccesses?: Record<string, ExecutionTrack>;

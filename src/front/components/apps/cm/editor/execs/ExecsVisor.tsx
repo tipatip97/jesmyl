@@ -8,19 +8,20 @@ import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/vi
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
 import { RootState } from '../../../../../shared/store';
 import { ComFace } from '../../col/com/face/ComFace';
-import { ExecVision } from '../CmEditor.model';
+import { Exec, ExecVision } from '../CmEditor.model';
 import { EditableCom } from '../col/compositions/EditableCom';
 import { useEditableCols } from '../col/useEditableCols';
+import { EditableMeetingsEvent } from '../meetings/EditableMeetingsEvent';
 import { useEditableMeetings } from '../meetings/useEditableMeetings';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import './ExecsVisor.scss';
 
-const execsSelector = (state: RootState) => state.cm.execs;
+const execsSelector: (state: RootState) => Exec[] | und = (state: RootState) => state.cm.execs;
 const rulesSelector = (state: RootState) => state.cm.rules;
 
 export default function ExecsVisor() {
   const [lookList, setLookList] = useState<(number | nil)[]>([]);
-  const execs = useSelector(execsSelector);
+  const execs: Exec[] | und = useSelector(execsSelector);
   const rules = useSelector(rulesSelector);
   const cols = useEditableCols();
   const { meetings, goToEvent } = useEditableMeetings();
@@ -57,7 +58,7 @@ export default function ExecsVisor() {
                 .flat()
                 .map((eventw: number) => {
                   if (eventw == null) return null;
-                  const event = meetings.events?.find(event => event.wid === eventw);
+                  const event = meetings.events?.find((event: EditableMeetingsEvent) => event.wid === eventw);
                   return (
                     <div
                       key={eventw}
@@ -133,7 +134,9 @@ export default function ExecsVisor() {
             </div>
             {exec.ts && <div>{new Date(exec.ts * 1000).toLocaleString()}</div>}
             <div>
-              <strong>{mylib.stringTemplater(exec.title || '', exec.args)}</strong>
+              <strong>
+                {mylib.stringTemplater(mylib.execIfFunc(exec.title, exec.args) || exec.shortTitle || '', exec.args)}
+              </strong>
             </div>
             <div>{exec.specials}</div>
             {lookList.indexOf(exec.ts) < 0 ? null : (

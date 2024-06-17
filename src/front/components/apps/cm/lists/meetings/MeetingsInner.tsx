@@ -6,6 +6,7 @@ import { IconCalendar01SolidSharp } from '../../../../../complect/the-icon/icons
 import { IconCalendar02StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-02';
 import { IconFolder01StrokeRounded } from '../../../../../complect/the-icon/icons/folder-01';
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
+import { useActualRef } from '../../../../../complect/useActualRef';
 import { RootState } from '../../../../../shared/store';
 import { cmStoreActions } from '../../Cm.store';
 import useCmNav from '../../base/useCmNav';
@@ -32,13 +33,15 @@ export default function MeetingsInner<Meets extends Meetings>({
     setAppRouteData,
   } = useCmNav();
   const favorites = useSelector(favoriteMeetingsSelector);
-  const setCurrContext = (eventContext: number[]) => setAppRouteData({ eventContext });
+  const setCurrContextRef = useActualRef((eventContext: number[]) => setAppRouteData({ eventContext }));
+  const onContextNavigateRef = useActualRef(onContextNavigate);
+  const eventContextRef = useActualRef(eventContext);
 
   useEffect(() => {
-    onContextNavigate?.(eventContext);
+    onContextNavigateRef.current?.(eventContextRef.current);
     const deregister = registerBackAction(isForceBack => {
-      if (!isForceBack && eventContext.length) {
-        setCurrContext(eventContext.slice(0, -1));
+      if (!isForceBack && eventContextRef.current.length) {
+        setCurrContextRef.current(eventContextRef.current.slice(0, -1));
         return true;
       }
       return false;
@@ -46,16 +49,16 @@ export default function MeetingsInner<Meets extends Meetings>({
     return () => {
       deregister();
     };
-  }, [eventContext, onContextNavigate]);
+  }, [eventContextRef, onContextNavigateRef, registerBackAction, setCurrContextRef]);
 
   if (!meetings) return null;
 
-  const [contexts, currContextw] = meetings.getContexts(eventContext);
-  const names = eventContext.map((context, contexti) => (
+  const [contexts, currContextw] = meetings.getContexts(eventContextRef.current);
+  const names = eventContextRef.current.map((context, contexti) => (
     <span
       key={contexti}
       className="pointer"
-      onClick={() => setCurrContext([...eventContext].slice(0, contexti + 1))}
+      onClick={() => setCurrContextRef.current([...eventContextRef.current].slice(0, contexti + 1))}
     >
       {contexti ? ' - ' : ''}
       {meetings.names[context]}
@@ -65,10 +68,10 @@ export default function MeetingsInner<Meets extends Meetings>({
   return (
     <>
       <div className="margin-gap-v">
-        <span onClick={() => setCurrContext([])}>Контекст: </span>
+        <span onClick={() => setCurrContextRef.current([])}>Контекст: </span>
         {names.length ? names : 'Все'}
       </div>
-      {eventContext.length ? null : (
+      {eventContextRef.current.length ? null : (
         <>
           {favorites.events.map((eventw, eventwi) => {
             const event = meetings.events?.find(event => event.wid === eventw);
@@ -86,7 +89,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                   <span
                     onClick={event => {
                       event.stopPropagation();
-                      setCurrContext(context);
+                      setCurrContextRef.current(context);
                     }}
                   >
                     {context?.map(context => meetings.names[context]).join(' - ')}
@@ -107,7 +110,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                 <BrutalItem
                   icon={<IconFolder01StrokeRounded />}
                   title={meetings.names[context.context[context.context.length - 1]]}
-                  onClick={() => setCurrContext(context.context)}
+                  onClick={() => setCurrContextRef.current(context.context)}
                   box={<IconStarSolidRounded className="fade-05" />}
                 />
                 <div className="absolute flex center full-width pos-bottom fade-05 pointers-none">
@@ -134,7 +137,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             box={
               asEventBox ? (
                 asEventBox(event)
-              ) : eventContext.length ? (
+              ) : eventContextRef.current.length ? (
                 <IconButton
                   Icon={isFavorite ? IconStarSolidRounded : IconStarStrokeRounded}
                   onClick={e => {
@@ -163,9 +166,9 @@ export default function MeetingsInner<Meets extends Meetings>({
             key={groupi}
             icon={<IconFolder01StrokeRounded />}
             title={contextn}
-            onClick={() => setCurrContext([...eventContext, contexti])}
+            onClick={() => setCurrContextRef.current([...eventContextRef.current, contexti])}
             box={
-              eventContext.length ? (
+              eventContextRef.current.length ? (
                 <IconButton
                   Icon={isFavorite ? IconStarSolidRounded : IconStarStrokeRounded}
                   onClick={e => {

@@ -38,16 +38,20 @@ export const translationPushKinds = [
     0: 4,
   },
 ].map(rule => {
-  const rules = Object.entries(rule)
+  const rules = MyLib.entries(rule)
     .map(([key, val]) => [+key, val])
-    .sort(([a], [b]) => (a === 0 ? 1 : b === 0 ? -1 : Math.abs(a) - Math.abs(b) || a - b));
+    .sort(([a], [b]) =>
+      a === undefined || a === 0 ? 1 : b === undefined || b === 0 ? -1 : Math.abs(a) - Math.abs(b) || a - b,
+    );
   const list: number[] = [];
   const push = (num: number) => list.push(num) + 1;
 
   return {
     title: rules
       .map(([key, val]) =>
-        key ? `${key < 0 ? `=${-key}` : key}:${val < 0 ? `~${-val}` : val}` : `[${val < 0 ? `~${-val}` : val}]`,
+        key
+          ? `${key < 0 ? `=${-key}` : key}:${val !== undefined && val < 0 ? `~${-val}` : val}`
+          : `[${val !== undefined && val < 0 ? `~${-val}` : val}]`,
       )
       .join(','),
     clearList: () => {
@@ -58,7 +62,7 @@ export const translationPushKinds = [
     list: () => list,
     push: (num: number) => {
       rules.some(([key, val]): number => {
-        if (key === 0 && val === 0) return push(num);
+        if (key === undefined || val === undefined || (key === 0 && val === 0)) return push(num);
 
         if (key && val > 0 && val < 10) {
           if (num <= key || -key === num) {

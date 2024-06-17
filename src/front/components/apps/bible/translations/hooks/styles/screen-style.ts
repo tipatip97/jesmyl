@@ -2,6 +2,7 @@ import { CSSProperties, useMemo } from 'react';
 import { useScreenTranslationPositionsStyles } from '../../../../+complect/translations/complect/hooks/position-styles';
 import { useScreenTranslationTextStyles } from '../../../../+complect/translations/complect/hooks/text-styles';
 import { BibleTranslationScreenConfig } from '../../model';
+import { MyLib } from '../../../../../../complect/my-lib/MyLib';
 
 export const screenGridArea = 'screen-grid-area';
 
@@ -10,7 +11,7 @@ const packInnerStyles = <Config extends Partial<Record<'insertedtext' | 'textinb
   currentConfig: Config,
   isVisible: boolean,
 ) => {
-  return Object.entries(currentConfig[area] ?? {}).reduce((innerStyles, [key, val]) => {
+  return MyLib.entries(currentConfig[area] ?? {}).reduce((innerStyles, [key, val]) => {
     if (val == null || (key === 'color' && !isVisible)) return innerStyles;
 
     innerStyles[('--' + area + '-' + key) as never] = ('' + val) as never;

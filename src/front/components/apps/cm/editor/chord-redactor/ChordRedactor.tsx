@@ -58,7 +58,7 @@ export default function ChordRedactor() {
   const chordNodes = useMemo(() => {
     const chordBoxes: Record<string, string[]> = {};
     let box: [string, number][] = [];
-    const sorted = Object.entries({ ...redactableChords, ...chords }).sort();
+    const sorted = MyLib.entries({ ...redactableChords, ...chords }).sort();
     const pushBox = () => {
       const names = box
         .map(([name, lad]) => [name, Math.trunc(lad)] as [string, number])
@@ -66,10 +66,11 @@ export default function ChordRedactor() {
           return aLad - bLad ? aLad - bLad : aChord > bChord ? 1 : -1;
         })
         .map(([name]) => name);
-      chordBoxes[names[0][0]] = names;
+      chordBoxes[names[0]?.[0]] = names;
     };
 
     sorted.forEach(([chordName, [lad]]) => {
+      if (!mylib.isStr(chordName)) return;
       const chordBase = box[0]?.[0]?.[0];
       if (chordBase === undefined || chordName.startsWith(chordBase)) {
         box.push([chordName, lad as number]);

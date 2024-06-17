@@ -4,6 +4,8 @@ import SourceBased from '../SourceBased';
 import mylib from '../my-lib/MyLib';
 import { ClientExecutionDict, ExecRule, FreeExecDict } from './Exer.model';
 
+const execKeys: (keyof Exec<any>)[] = ['scope', 'onLoad', 'value', 'args', 'generalId', 'createByPath', 'muted'];
+
 export class Exec<Value> extends SourceBased<ClientExecutionDict> {
   scope?: string;
   title = '';
@@ -14,7 +16,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
   action: string;
   generalId?: string;
   createByPath?: boolean;
-  id = (Date.now() - -Math.random()).toString();
+  id = `${Date.now()}${Math.random()}`;
   del?: boolean = false;
   muted?: boolean;
   errors?: string[];
@@ -35,7 +37,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
     if (exec.method === 'set') this.prev = mylib.clone(exec.prev);
     this.corrects = exec.corrects;
 
-    this.setReals(exec, ['scope', 'onLoad', 'value', 'args', 'generalId', 'createByPath', 'muted']);
+    this.setReals(exec, execKeys);
 
     this.rule = rules.find(rule => rule.action === this.action);
     if (!this.rule) console.error(`Неизвестное правило "${this.action}"`);
@@ -45,9 +47,12 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
   }
 
   updateTitle() {
-    const rule = this.rule;
-    if (!rule?.title) return;
-    this.title = mylib.stringTemplater(rule.title, this.args);
+    if (this.rule === undefined) return;
+
+    this.title = mylib.stringTemplater(
+      mylib.func(this.rule.title).call(this.args) || this.rule.shortTitle || 'Неизвестное правило',
+      this.args,
+    );
   }
 
   forLoad() {

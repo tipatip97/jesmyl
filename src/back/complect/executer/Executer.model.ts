@@ -125,7 +125,7 @@ export interface ShortRealRule<
   Vars = Partial<Record<string, unknown>>,
 > {
   action: string;
-  title?: string;
+  title?: string | ((args: Record<string, unknown>) => string);
   shortTitle?: string;
   level?: number;
   isSequre?: boolean;

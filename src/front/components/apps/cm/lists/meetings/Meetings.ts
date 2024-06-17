@@ -7,7 +7,7 @@ import {
   MeetingsContext,
   IExportableMeetingsContextMap,
 } from './Meetings.model';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
 
 export class Meetings {
   event?: MeetingsEvent;
@@ -18,14 +18,14 @@ export class Meetings {
 
   constructor({ events, contexts, names }: IExportableMeetings = {} as IExportableMeetings, cols?: Cols) {
     this.stack = events;
-    this.contexts = this.takeContexts(contexts || {});
+    this.contexts = this.takeContexts(contexts);
     this.events = events?.map(event => new MeetingsEvent(event, cols));
     this.event = this.events?.[0];
     this.names = names === undefined ? [] : [...names];
   }
 
   takeContexts(contexts: IExportableMeetingsContextMap) {
-    return Object.entries(contexts).reduce((ctxs, [contextw, context]) => {
+    return MyLib.entries(contexts).reduce((ctxs, [contextw, context]) => {
       ctxs[contextw as never] = new MeetingsContext(context);
       return ctxs;
     }, {} as MeetingsContextMap);
@@ -46,7 +46,7 @@ export class Meetings {
   getContexts(currPath: number[]): [[number, string, number][], number | null] {
     let currGroupw: number | null = null;
 
-    const contexts = Object.entries(this.contexts || {})
+    const contexts = MyLib.entries(this.contexts)
       .map(([groupw, path]): null | [number, string, number] => {
         if (currPath.length === path.context.length && mylib.isEq(currPath, path.context)) currGroupw = +groupw;
         if (currPath.length !== path.context.length - 1 || currPath.some((ctx, ctxi) => path.context[ctxi] !== ctx))

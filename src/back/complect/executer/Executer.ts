@@ -597,7 +597,7 @@ export class Executer {
 
     const ret = {
       track,
-      title: rule.title && smylib.stringTemplater(rule.title, allArgs),
+      title: rule.title && smylib.stringTemplater(smylib.execIfFunc(rule.title, allArgs), allArgs),
       args: allArgs,
     } as ExecutionReal;
 
@@ -629,7 +629,7 @@ export class Executer {
     contents: Record<string, unknown>,
     realArgs?: ExecutionArgs,
     auth?: LocalSokiAuth | null,
-    { shortTitle, title }: { shortTitle?: string; title?: string } = {},
+    { shortTitle, title }: { shortTitle?: string; title?: string | ((args: Record<string, unknown>) => string) } = {},
   ) {
     return new Promise<boolean>((resolve, reject) => {
       sides = smylib.isFunc(sides) ? (this.replaceArgs(sides, realArgs, auth) as never) : sides;
@@ -639,9 +639,14 @@ export class Executer {
         if (trackTail) {
           const track = topTrack.slice(0, trackTail[0]).concat(trackTail[1]);
           const { lastTrace, penultimate, target } = this.tracker(track, contents, args, undefined, auth);
+          const titleScalar = shortTitle || title;
 
           if (value === this.stubEmpty) {
-            reject(`Неизвестное значение попутных модификаций ${lastTrace} для действия "${shortTitle || title}"`);
+            reject(
+              `Неизвестное значение попутных модификаций ${lastTrace} для действия "${
+                (titleScalar && (smylib.isStr(titleScalar) ? titleScalar : args ? titleScalar(args) : '')) || shortTitle
+              }"`,
+            );
             return true;
           }
 
