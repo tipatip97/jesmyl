@@ -166,3 +166,17 @@ export type SokiServiceCallback = (
   client: WebSocket,
 ) => Promise<any>;
 export type SokiServicePack = Partial<Record<SokiAppName, SokiServiceCallback>>;
+
+export interface SokiServerDoActionProps {
+  appName: SokiAppName;
+  eventData: SokiClientEvent;
+  eventBody: SokiClientEventBody;
+  client: WebSocket;
+  capsule: SokiCapsule | und;
+  requestId: string | und;
+}
+
+export type SokiServerDoAction<Name extends string> = Record<
+  `doOn${Name}`,
+  (props: SokiServerDoActionProps) => Promise<boolean> // вернуть (boolean) отвечающий на вопрос "прервать ли дальнейшие операции?"
+>;
