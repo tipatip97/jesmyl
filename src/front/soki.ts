@@ -222,18 +222,19 @@ export class SokiTrip {
 
         this.ws.send(JSON.stringify(sendEvent));
       }
-    } catch (event) {}
+    } catch (error) {}
   }
 
-  send = (body: SokiClientEventBody, appName: SokiAppName): { on: ResponseWaiterCallback } => {
+  send = (
+    body: SokiClientEventBody,
+    appName: SokiAppName,
+    isRejectInitInvoke: boolean = true,
+  ): { on: ResponseWaiterCallback } => {
     let requestId: string | und;
 
     Promise.resolve().then(() => {
       if (this.isAuthorized) this.sendForce(body, appName, requestId);
-      else
-        this.onAuthorize(() => {
-          this.sendForce(body, appName, requestId);
-        }, true);
+      else this.onAuthorize(() => this.sendForce(body, appName, requestId), isRejectInitInvoke);
     });
 
     return {

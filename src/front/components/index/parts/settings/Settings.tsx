@@ -43,7 +43,7 @@ export default function IndexSettings() {
   const appFontFamily = useSelector(appFontFamilySelector);
 
   useEffect(() => {
-    soki.send({ subscribe: 'statistic' }, 'index');
+    soki.send({ subscribe: 'statistic' }, 'index', false);
     return () => {
       soki.send({ unsubscribe: 'statistic' }, 'index');
     };
