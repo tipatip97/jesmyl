@@ -92,27 +92,54 @@ self.addEventListener('activate', async () => {
     }),
   );
 });
+
+const fromNetwork = (request: Request) =>
+  new Promise<Response>((fulfill, reject) => {
+    fetch(request).then(response => {
+      fulfill(response);
+      update(request);
+    }, reject);
+  });
+
+const fromCache = (request: Request) => caches.open(CACHE_NAME).then(cache => cache.match(request));
+const update = (request: Request) =>
+  caches.open(CACHE_NAME).then(cache => fetch(request).then(response => cache.put(request, response)));
+
 const errorHTML = `
   <h2>Приложение не успело прогрузиться и сохраниться</h2>
   <p>На данном этапе необходимо иметь соединение с сетью</p>
 `;
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    (async function () {
+self.addEventListener('fetch', evt => {
+  evt.respondWith(
+    (async () => {
       try {
-        const resp = await fetch(event.request);
-
-        (await caches.open(CACHE_NAME)).put(event.request, resp.clone());
-
-        return resp;
-      } catch (err) {
-        try {
-          return await caches.match(event.request).then(it => it!);
-        } catch (error) {
-          return new Response(errorHTML, { headers: { 'Content-Type': 'text/html' } });
-        }
+        return await fromNetwork(evt.request);
+      } catch (error) {
+        return (await fromCache(evt.request)) || new Response(errorHTML, { headers: { 'Content-Type': 'text/html' } });
       }
     })(),
   );
+
+  evt.waitUntil(update(evt.request));
 });
+
+// self.addEventListener('fetch', event => {
+//   event.respondWith(
+//     (async function () {
+//       try {
+//         const resp = await fetch(event.request);
+
+//         (await caches.open(CACHE_NAME)).put(event.request, resp.clone());
+
+//         return resp;
+//       } catch (err) {
+//         try {
+//           return await caches.match(event.request).then(it => it!);
+//         } catch (error) {
+//           return new Response(errorHTML, { headers: { 'Content-Type': 'text/html' } });
+//         }
+//       }
+//     })(),
+//   );
+// });
