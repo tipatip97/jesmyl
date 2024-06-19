@@ -9,7 +9,7 @@ export default function useConnectionState(className?: string) {
   const [isOnline, setIsOnline] = useState(true);
   const [isFocused, setIsFocused] = useState(true);
 
-  useEffect(() => soki.onAuthorize(setIsConnected), []);
+  useEffect(() => soki.onConnected(setIsConnected), []);
   useEffect(() => ThrowEvent.listenIsOnline(setIsOnline), []);
   useEffect(() => ThrowEvent.listenIsWinFocused(setIsFocused), []);
   useEffect(() => {

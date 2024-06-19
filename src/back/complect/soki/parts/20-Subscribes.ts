@@ -21,9 +21,7 @@ export class SokiServerSubscribes extends SokiServerTransfers implements SokiSer
   subscriptions: Record<SokiSubscribtionName, SubscribeCapsule> = {
     liveData: {
       map: new Map(),
-      onClientSubscribe: client => {
-        this.send({ appName: 'index', liveData: this.liveData }, client);
-      },
+      onClientSubscribe: client => this.send({ appName: 'index', liveData: this.liveData }, client),
       onClientUnsubscribe: () => {},
     },
     statistic: {
@@ -72,13 +70,15 @@ export class SokiServerSubscribes extends SokiServerTransfers implements SokiSer
   }
 
   async doOnSubscribes({ capsule, client, eventBody }: SokiServerDoActionProps) {
-    if (capsule && eventBody.subscribe) {
+    if (capsule === undefined) return false;
+
+    if (eventBody.subscribe !== undefined) {
       this.subscriptions[eventBody.subscribe].map.set(client, capsule);
       this.subscriptions[eventBody.subscribe].onClientSubscribe(client, capsule);
       capsule.subscribeData = eventBody.subscribeData;
     }
 
-    if (eventBody.unsubscribe) {
+    if (eventBody.unsubscribe !== undefined) {
       this.subscriptions[eventBody.unsubscribe].onClientUnsubscribe(client);
       this.subscriptions[eventBody.unsubscribe].map.delete(client);
     }

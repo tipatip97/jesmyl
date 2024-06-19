@@ -11,6 +11,8 @@ export class SokiServerLiveTransfers extends SokiServerSubscribes implements Sok
     const liveData = { [eventBody.subscribeData]: eventBody.liveData };
 
     this.subscriptions.liveData.map.forEach((capsule, client) => {
+      if (client === undefined) return;
+
       if (capsule.subscribeData === undefined) {
         this.send({ appName: 'index', liveData: this.liveData }, client);
         return;

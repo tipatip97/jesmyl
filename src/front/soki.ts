@@ -9,6 +9,7 @@ import {
   SokiClientEventBody,
   SokiClientUpdateCortage,
   SokiServerEvent,
+  SokiSubscribtionName,
 } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
@@ -38,9 +39,10 @@ let pingTimeout: TimeOut;
 
 export class SokiTrip {
   ws?: WebSocket;
-  isAuthorized = false;
+  isConnected = false;
   authListeners: EventerListeners<boolean> = [];
   private responseWaiters: ResponseWaiter[] = [];
+  private subscriptions: Partial<Record<SokiSubscribtionName, SokiClientEventBody>> = {};
 
   async appName() {
     return await indexStorage.getOr('currentApp', 'cm');
@@ -48,7 +50,7 @@ export class SokiTrip {
 
   onClose = () => {
     Eventer.invoke(this.authListeners, false);
-    this.isAuthorized = false;
+    this.isConnected = false;
     setTimeout(() => this.start(), 500);
   };
 
@@ -59,7 +61,6 @@ export class SokiTrip {
       { connect: true },
       await this.appName(),
       '',
-      await takeDeviceId(),
       `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}\n${navigator.userAgent}`,
     );
   };
@@ -99,9 +100,11 @@ export class SokiTrip {
           if (event.liveData !== undefined) indexStorage.set('liveData', event.liveData);
 
           if (event.authorized !== undefined) {
-            this.isAuthorized = true;
+            this.isConnected = true;
             Eventer.invoke(this.authListeners, true);
-            this.pullCurrentAppData(await this.appName());
+            const appName = await this.appName();
+            this.pullCurrentAppData(appName);
+            mylib.values(this.subscriptions).forEach(body => body && this.sendForce(body, appName));
           }
 
           if (event.system) {
@@ -128,16 +131,11 @@ export class SokiTrip {
     return this;
   }
 
-  onAuthorize(callback: (is: boolean) => void, isRejectInitInvoke?: boolean) {
-    return Eventer.listen(
-      this.authListeners,
-      event => {
-        callback(event.value);
-        event.mute();
-        event.stopPropagation();
-      },
-      isRejectInitInvoke !== true ? this.isAuthorized : undefined,
-    );
+  onConnected(callback: (is: boolean) => void) {
+    return Eventer.listen(this.authListeners, event => {
+      callback(event.value);
+      event.mute();
+    });
   }
 
   setLastUpdates(appName: SokiAppName, pullCortage: SokiClientUpdateCortage) {
@@ -201,40 +199,42 @@ export class SokiTrip {
     this.pullCurrentAppData(appName);
   }
 
-  async sendForce(
-    body: SokiClientEventBody,
-    appName: SokiAppName,
-    requestId?: string,
-    deviceId: string = '',
-    browser?: string,
-  ) {
-    try {
-      if (this.ws && this.ws.readyState === this.ws.OPEN) {
-        const sendEvent: SokiClientEvent = {
-          requestId,
-          body,
-          auth: await indexStorage.get('auth'),
-          appName,
-          deviceId,
-          version: version.num,
-          browser,
-        };
+  async sendForce(body: SokiClientEventBody, appName: SokiAppName, requestId?: string, browser?: string) {
+    let tries = 20;
 
-        this.ws.send(JSON.stringify(sendEvent));
+    const trySend = async () => {
+      if (tries-- < 0) return;
+      try {
+        if (this.ws && this.ws.readyState === this.ws.OPEN) {
+          const sendEvent: SokiClientEvent = {
+            requestId,
+            body,
+            auth: await indexStorage.get('auth'),
+            appName,
+            deviceId: await takeDeviceId(),
+            version: version.num,
+            browser,
+          };
+
+          if (body.subscribe) this.subscriptions[body.subscribe] = body;
+          if (body.unsubscribe) delete this.subscriptions[body.unsubscribe];
+
+          this.ws.send(JSON.stringify(sendEvent));
+        } else setTimeout(trySend, 100);
+      } catch (error) {
+        setTimeout(trySend, 100);
       }
-    } catch (error) {}
+    };
+
+    trySend();
   }
 
-  send = (
-    body: SokiClientEventBody,
-    appName: SokiAppName,
-    isRejectInitInvoke: boolean = true,
-  ): { on: ResponseWaiterCallback } => {
+  send = (body: SokiClientEventBody, appName: SokiAppName): { on: ResponseWaiterCallback } => {
     let requestId: string | und;
 
     Promise.resolve().then(() => {
-      if (this.isAuthorized) this.sendForce(body, appName, requestId);
-      else this.onAuthorize(() => this.sendForce(body, appName, requestId), isRejectInitInvoke);
+      if (this.isConnected) this.sendForce(body, appName, requestId);
+      else this.onConnected(() => this.sendForce(body, appName, requestId));
     });
 
     return {

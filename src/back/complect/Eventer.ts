@@ -68,10 +68,7 @@ export default class Eventer {
     let i = listeners.length - 1;
     const event: EventerCallbackEvent<Value, StopValue> = {
       value,
-      mute: () => {
-        listeners.splice(i, 1);
-        i++;
-      },
+      mute: () => listeners.splice(i, 1),
       preventDefault: () => (event.preventedDefault = true),
       preventedDefault: false,
       stopPropagation: stopValue => {

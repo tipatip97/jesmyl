@@ -13,7 +13,6 @@ ErrorCatcher.logAllErrors();
 export class SokiServer extends SokiServerAuthorization {
   start() {
     new WebSocketServer({ port: 4446 }).on('connection', (client: WebSocket) => {
-      this.onClientConnect(client);
       this.sendStatistic();
 
       client.on('message', async (data: WebSocket.RawData) => {
