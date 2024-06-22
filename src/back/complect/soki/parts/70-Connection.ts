@@ -79,6 +79,7 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
         });
 
       this.capsules.set(client, { auth, deviceId: eventData.deviceId, version: eventData.version });
+      this.clients.set(eventData.deviceId, client);
 
       this.send({ authorized: true, appName }, client);
       console.info(

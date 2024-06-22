@@ -4,6 +4,7 @@ import { SokiCapsule, SokiServerEvent } from '../soki.model';
 
 export class SokiServerTransfers {
   capsules = new Map<WebSocket, SokiCapsule>();
+  clients = new Map<string, WebSocket>();
 
   send(
     data: SokiServerEvent,

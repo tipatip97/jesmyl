@@ -4,13 +4,13 @@ import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
 import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { setServerPolyfills } from '../polyfills';
-import { SokiServerAuthorization } from './parts/100-Authorization';
+import { SokiServerDownloads } from './parts/110-Downloads';
 import { SokiClientEvent, SokiServerDoActionProps } from './soki.model';
 
 setServerPolyfills();
 ErrorCatcher.logAllErrors();
 
-export class SokiServer extends SokiServerAuthorization {
+export class SokiServer extends SokiServerDownloads {
   start() {
     new WebSocketServer({ port: 4446 }).on('connection', (client: WebSocket) => {
       this.sendStatistic();
@@ -40,6 +40,7 @@ export class SokiServer extends SokiServerAuthorization {
         if (await this.doOnServiceActions(doProps)) return;
         if (await this.doOnSubscribes(doProps)) return;
         if (await this.doOnExecs(doProps)) return;
+        if (await this.doOnDownloads(doProps)) return;
       });
 
       client.on('close', () => this.onClientDisconnect(client));

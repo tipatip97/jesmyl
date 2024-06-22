@@ -43,6 +43,10 @@ export interface SokiServerEvent {
   };
   statistic?: SokiStatistic;
   liveData?: Record<SokiClientSubData, unknown>;
+  download?: {
+    key: string;
+    value: string;
+  };
 }
 
 export type SokiClientUpdateCortage = [
@@ -72,6 +76,7 @@ export interface SokiClientEventBody {
   subscribeData?: SokiClientSubData;
   unsubscribe?: SokiSubscribtionName;
   liveData?: null | Record<SokiClientSubData, unknown>;
+  download?: string;
 }
 
 export type SokiClientSubData<
