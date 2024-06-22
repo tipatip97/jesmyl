@@ -13,8 +13,8 @@ export const tgBotUrlController = async (
   let chat: TelegramBot.Chat | null = null;
   let knownUrls: string[] = [];
 
-  const urlWordParts = '-\\w\\d@_%';
-  const domainRegStr = `\\w[${urlWordParts}]+\\.[${urlWordParts}./]{2,}`;
+  const urlWordParts = '-\\w@_%';
+  const domainRegStr = `[a-z][${urlWordParts}]+\\.[${urlWordParts}./]{2,}`;
   const urlRegStr = `${domainRegStr}[${urlWordParts}?.#=$&]*`;
 
   const urlReg = RegExp(`(${urlRegStr})`);
