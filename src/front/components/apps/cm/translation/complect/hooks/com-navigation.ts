@@ -8,7 +8,7 @@ import { useCmScreenTranslationComTextNavigations } from './com-texts';
 export const useCmScreenTranslationComNavigations = () => {
   const { setAppRouteData } = useCmNav();
   const ccom = useCcom();
-  const setCom = useCallback((com: Com) => setAppRouteData({ ccomw: com.wid }), [setAppRouteData]);
+  const setCom: (com: Com) => void = useCallback((com: Com) => setAppRouteData({ ccomw: com.wid }), [setAppRouteData]);
 
   const comPack = useComPack(ccom, true);
   const { setTexti } = useCmScreenTranslationComTextNavigations();

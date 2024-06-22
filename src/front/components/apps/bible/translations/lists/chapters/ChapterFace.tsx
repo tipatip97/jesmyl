@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { usePutBibleChapteriSetter } from '../../../hooks/address/chapters';
 
-export const BibleChapterFace = memo(({ chapteri }: { chapteri: number }) => {
+export default memo(function BibleChapterFace({ chapteri }: { chapteri: number }): JSX.Element {
   const putValSetter = usePutBibleChapteriSetter();
 
   return (

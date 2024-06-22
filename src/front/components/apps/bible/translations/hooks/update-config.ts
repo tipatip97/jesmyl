@@ -5,7 +5,7 @@ import { BibleTranslationScreenConfig } from '../model';
 import { useBibleScreenTranslationConfigs } from './configs';
 
 export const useUpdateBibleTranslationConfig = () => {
-  const configs = useBibleScreenTranslationConfigs();
+  const configs: BibleTranslationScreenConfig[] = useBibleScreenTranslationConfigs();
 
   return useCallback(
     (config: Partial<BibleTranslationScreenConfig> | null, configi: number) => {

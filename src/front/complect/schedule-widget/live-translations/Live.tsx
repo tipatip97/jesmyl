@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { BibleTranslationSlide } from '../../../components/apps/bible/translations/BibleTranslationSlide';
-import { BibleTranslationSlideMiniInfo } from '../../../components/apps/bible/translations/BibleTranslationSlideMiniInfo';
+import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
+import BibleTranslationSlide from '../../../components/apps/bible/translations/BibleTranslationSlide';
+import BibleTranslationSlideMiniInfo from '../../../components/apps/bible/translations/BibleTranslationSlideMiniInfo';
 import { CmTranslationSlideMiniInfo } from '../../../components/apps/cm/translation/complect/live/MiniInfo';
 import { CmLiveTranslationScreen } from '../../../components/apps/cm/translation/complect/live/Screen';
 import { IndexStateSchLiveData } from '../../../components/index/Index.model';
@@ -11,7 +12,6 @@ import useFullContent from '../../fullscreen-content/useFullContent';
 import mylib from '../../my-lib/MyLib';
 import { useStorageValueGetter } from '../../useStorage';
 import { IScheduleWidget } from '../ScheduleWidget.model';
-import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
 
 export const ScheduleWidgetLiveTranslation = ({
   onClose,

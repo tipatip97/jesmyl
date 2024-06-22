@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useBibleBookList } from '../../../hooks/texts';
-import { BibleBookFace } from './BookFace';
+import BibleBookFace from './BookFace';
 
-export const BibleBookList = () => {
+export default function BibleBookList() {
   const books = useBibleBookList();
 
   return (
@@ -18,7 +18,7 @@ export const BibleBookList = () => {
       })}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   overflow-y: auto;

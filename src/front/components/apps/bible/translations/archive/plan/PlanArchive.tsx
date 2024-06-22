@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../../hooks/address/address';
-import { BibleTranslationArchive } from '../Archive';
+import BibleTranslationArchive from '../Archive';
 import { useBibleClearTranslationPlanSetter, useBibleTranslationPlan } from './hooks/plan';
 
-export const BibleTranslationPlanArchive = () => {
+export default memo(function BibleTranslationPlanArchive(): JSX.Element {
   const plan = useBibleTranslationPlan();
   const clearPlan = useBibleClearTranslationPlanSetter();
   const [selectedItemi, setSelectedItemi] = useState<number | null>(null);
@@ -17,66 +17,56 @@ export const BibleTranslationPlanArchive = () => {
     if (inputRef.current === null) return;
     const inputNode = inputRef.current;
 
-    const onWindowKey = (event: KeyboardEvent) => {
-      if (event.code === 'F1') {
-        event.preventDefault();
-        setSelectedItemi(0);
-        inputNode.focus();
-        return;
-      }
-    };
-
-    const onInputKey = (event: KeyboardEvent) => {
-      if (selectedItemi !== null) {
-        switch (event.code) {
-          case 'ArrowDown':
-            event.preventDefault();
-            event.stopPropagation();
-            if (selectedItemi + 1 < plan.length) setSelectedItemi(selectedItemi + 1);
-            break;
-          case 'ArrowUp':
-            event.preventDefault();
-            event.stopPropagation();
-            if (selectedItemi > 0) setSelectedItemi(selectedItemi - 1);
-            break;
-          case 'Enter':
-            event.stopPropagation();
-            setSelectedItemi(null);
-            inputNode.blur();
-            const item = plan[selectedItemi];
-            if (mylib.isArr(item)) {
-              setAddress(...item);
-              setJoinAddress(null);
-            } else {
-              setJoinAddress(item);
-
-              const booki = Math.max(...mylib.keys(item));
-              const chapteri = Math.max(...mylib.keys(item[booki]));
-
-              setAddress(booki, chapteri, Math.max(...item[booki][chapteri]));
-            }
-
-            break;
-          case 'Escape':
-            event.stopPropagation();
-            setSelectedItemi(null);
-            inputNode.blur();
-            break;
+    return hookEffectLine()
+      .addEventListener(window, 'keydown', event => {
+        if (event.code === 'F1') {
+          event.preventDefault();
+          setSelectedItemi(0);
+          inputNode.focus();
+          return;
         }
-      }
-    };
+      })
+      .addEventListener(inputNode, 'keydown', event => {
+        if (selectedItemi !== null) {
+          switch (event.code) {
+            case 'ArrowDown':
+              event.preventDefault();
+              event.stopPropagation();
+              if (selectedItemi + 1 < plan.length) setSelectedItemi(selectedItemi + 1);
+              break;
+            case 'ArrowUp':
+              event.preventDefault();
+              event.stopPropagation();
+              if (selectedItemi > 0) setSelectedItemi(selectedItemi - 1);
+              break;
+            case 'Enter':
+              event.stopPropagation();
+              setSelectedItemi(null);
+              inputNode.blur();
+              const item = plan[selectedItemi];
+              if (mylib.isArr(item)) {
+                setAddress(...item);
+                setJoinAddress(null);
+              } else {
+                setJoinAddress(item);
 
-    const onInputBlur = () => setSelectedItemi(null);
+                const booki = Math.max(...mylib.keys(item));
+                const chapteri = Math.max(...mylib.keys(item[booki]));
 
-    inputNode.addEventListener('keydown', onInputKey);
-    inputNode.addEventListener('blur', onInputBlur);
-    window.addEventListener('keydown', onWindowKey);
+                setAddress(booki, chapteri, Math.max(...item[booki][chapteri]));
+              }
 
-    return () => {
-      inputNode.removeEventListener('keydown', onInputKey);
-      inputNode.removeEventListener('blur', onInputBlur);
-      window.removeEventListener('keydown', onWindowKey);
-    };
+              break;
+            case 'Escape':
+              event.stopPropagation();
+              setSelectedItemi(null);
+              inputNode.blur();
+              break;
+          }
+        }
+      })
+      .addEventListener(inputNode, 'blur', () => setSelectedItemi(null))
+      .effect();
   }, [plan, plan.length, selectedItemi, setAddress, setJoinAddress]);
 
   useEffect(() => {
@@ -101,7 +91,7 @@ export const BibleTranslationPlanArchive = () => {
       </Plan>
     </>
   );
-};
+});
 
 const Plan = styled.div`
   .current {

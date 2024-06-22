@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { justBibleStorageSet } from '../../hooks/storage';
-import { BibleReaderChapter } from './complect/Chapter';
+import BibleReaderChapter from './complect/Chapter';
 
 interface Props {
-  chapterList: { __html: string }[][];
+  chapterList: { __html: string }[][] | und;
   currentBooki: number;
   currentChapteri?: number;
   currentVersei?: number;
 }
 
-export const BibleReaderBook = ({ chapterList, currentChapteri, currentVersei, currentBooki }: Props) => {
+export default function BibleReaderBook({ chapterList, currentChapteri, currentVersei, currentBooki }: Props): JSX.Element {
   const listRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
   const isResizingRef = useRef(false);
@@ -116,7 +116,7 @@ export const BibleReaderBook = ({ chapterList, currentChapteri, currentVersei, c
   return (
     <>
       <List ref={listRef}>
-        {chapterList.map((chapterList, chapteri) => {
+        {chapterList?.map((chapterList, chapteri) => {
           return (
             <BibleReaderChapter
               key={chapteri}
@@ -141,6 +141,7 @@ const List = styled.div`
   textinbrackets {
     opacity: 0.6;
     font-style: italic;
+    pointer-events: none;
   }
 `;
 

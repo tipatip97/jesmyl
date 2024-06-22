@@ -1,15 +1,15 @@
 import styled, { css } from 'styled-components';
 import { BibleSearchZone } from '../../../model';
 import { useBibleSearchZone } from '../selectors';
-import { BibleSearchPanelAddressInput } from './address/AddressInput';
-import { BibleSearchPanelSearchInput } from './SearchInput';
+import BibleSearchPanelSearchInput from './SearchInput';
+import BibleSearchPanelAddressInput from './address/AddressInput';
 
 interface Props {
   inputRef: React.RefObject<HTMLInputElement>;
   putOnSearchZone: (zone: BibleSearchZone) => () => void;
 }
 
-export const BibleSearchInputPanel = ({ inputRef, putOnSearchZone }: Props) => {
+export default function BibleSearchInputPanel({ inputRef, putOnSearchZone }: Props) {
   const searchZone = useBibleSearchZone();
 
   return (
@@ -42,7 +42,7 @@ export const BibleSearchInputPanel = ({ inputRef, putOnSearchZone }: Props) => {
       </SwitchButton>
     </div>
   );
-};
+}
 
 const SwitchButton = styled.div<{ $active: boolean }>`
   cursor: pointer;

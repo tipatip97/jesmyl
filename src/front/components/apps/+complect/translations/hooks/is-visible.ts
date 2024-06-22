@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { complectActions } from '../../../../../complect/Complect.store';
 import { RootState } from '../../../../../shared/store';
 
-const isTranslationTextVisibleSelector = (state: RootState) => state.complect.isTranslationTextVisible;
+const isTranslationTextVisibleSelector: (state: RootState) => boolean = state =>
+  state.complect.isTranslationTextVisible;
 
 export const useIsScreenTranslationTextVisible = () => useSelector(isTranslationTextVisibleSelector);
 

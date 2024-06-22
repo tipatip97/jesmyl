@@ -2,7 +2,12 @@ import { memo } from 'react';
 import styled from 'styled-components';
 import { usePutBibleBookiSetter } from '../../../hooks/address/books';
 
-export const BibleBookFace = memo(({ titles, booki }: { titles: [string, string]; booki: number }) => {
+interface Props {
+  titles: [string, string];
+  booki: number;
+}
+
+export default memo(function BibleBookFace({ titles, booki }: Props): JSX.Element {
   const putValSetter = usePutBibleBookiSetter();
 
   return (

@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { BibleTranslationCurrentScreen } from '../../bible/translations/screen/BibleTranslationCurrentScreen';
+import BibleTranslatesContextProvider from '../../bible/translates/TranslatesContext';
+import BibleTranslationCurrentScreen from '../../bible/translations/screen/BibleTranslationCurrentScreen';
 import { CmTranslationCurrentScreen } from '../../cm/translation/complect/controlled/screen/CmTranslationCurrentScreen';
 import { CurrentForceViweAppContext } from './Translation.contexts';
 import { TranslationScreenProps } from './Translations.model';
@@ -12,6 +13,8 @@ export const TranslationScreen = (props: TranslationScreenProps) => {
   return (forceViewApp ?? props.forceViewApp ?? app) === 'cm' ? (
     <CmTranslationCurrentScreen {...props} />
   ) : (
-    <BibleTranslationCurrentScreen {...props} />
+    <BibleTranslatesContextProvider>
+      <BibleTranslationCurrentScreen {...props} />
+    </BibleTranslatesContextProvider>
   );
 };

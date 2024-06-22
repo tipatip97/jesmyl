@@ -18,7 +18,7 @@ interface Props {
   currentConfig: BibleTranslationScreenConfig;
 }
 
-export const BibleTranslateCurrentScreenConfigurations = ({ currentConfig }: Props) => {
+export default function BibleTranslateCurrentScreenConfigurations({ currentConfig }: Props) {
   const updateConfig = useUpdateBibleCurrentTranslationConfig();
   const update = useDebounceAction(updateConfig);
   const configRef = useActualRef(currentConfig);
@@ -128,4 +128,4 @@ export const BibleTranslateCurrentScreenConfigurations = ({ currentConfig }: Pro
       </ExpandableContent>
     </>
   );
-};
+}

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useBibleCurrentChapterList } from '../../../hooks/texts';
-import { BibleChapterFace } from './ChapterFace';
+import BibleChapterFace from './ChapterFace';
 
-export const BibleChapterList = () => {
+export default function BibleChapterList() {
   const chapters = useBibleCurrentChapterList();
 
   return (
@@ -17,7 +17,7 @@ export const BibleChapterList = () => {
       })}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   width: 2.5em;

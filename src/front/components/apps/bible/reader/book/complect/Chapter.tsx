@@ -1,7 +1,13 @@
 import { memo } from 'react';
-import { BibleReaderVerseText } from './Verse';
+import BibleReaderVerseText from './Verse';
 
-export const BibleReaderChapter = memo(({ list, chapteri }: { list: { __html: string }[]; chapteri: number }) => {
+export default memo(function BibleReaderChapter({
+  list,
+  chapteri,
+}: {
+  list: { __html: string }[];
+  chapteri: number;
+}): JSX.Element {
   return (
     <>
       <h2

@@ -6,7 +6,7 @@ interface Props {
   chapteri: number;
 }
 
-export const BibleReaderVerseText = memo(({ html, versei, chapteri }: Props) => {
+export default memo(function BibleReaderVerseText({ html, versei, chapteri }: Props): JSX.Element {
   return (
     <div
       attr-chapteri={chapteri}

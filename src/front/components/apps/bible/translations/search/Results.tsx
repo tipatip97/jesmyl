@@ -5,9 +5,10 @@ import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/addres
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { justBibleStorageSet } from '../../hooks/storage';
-import { useBibleChaptersCombine } from '../../hooks/texts';
 import { BibleTranslationSingleAddress } from '../../model';
-import { BibleSearchResultVerse } from './ResultVerse';
+import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
+import { useBibleShowTranslates } from '../../translates/hooks';
+import BibleSearchResultVerse from './ResultVerse';
 import { useBibleTranslationSearchResultList, useBibleTranslationSearchResultSelected } from './hooks/results';
 import { useBibleSearchTerm, useBibleSearchZone } from './selectors';
 
@@ -30,10 +31,11 @@ const maxItems = 49;
 
 const sortStringsByLength = (a: string, b: string) => b.length - a.length;
 
-export const BibleSearchResults = ({ inputRef, height = '100px', innerZone, onClick: userOnClick }: Props) => {
+export default function BibleSearchResults({ inputRef, height = '100px', innerZone, onClick: userOnClick }: Props) {
   const searchZone = useBibleSearchZone();
   const searchTerm = useDebounceValue(useBibleSearchTerm());
-  const { lowerChapters } = useBibleChaptersCombine();
+  const showTranslates = useBibleShowTranslates();
+  const lowerChapters = useBibleTranslatesContext()[showTranslates[0]]?.lowerChapters;
   const [list, setList] = useState<JSX.Element[]>([]);
   const resultSelected = useBibleTranslationSearchResultSelected();
   const resultList = useBibleTranslationSearchResultList();
@@ -137,7 +139,7 @@ export const BibleSearchResults = ({ inputRef, height = '100px', innerZone, onCl
       {list}
     </List>
   );
-};
+}
 
 const List = styled.div<{ $height: string }>`
   height: ${props => props.$height};

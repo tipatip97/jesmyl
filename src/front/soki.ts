@@ -107,10 +107,6 @@ export class SokiTrip {
             mylib.values(this.subscriptions).forEach(body => body && this.sendForce(body, appName));
           }
 
-          if (event.system) {
-            if (event.system.name === 'reloadFiles') this.pullCurrentAppData(await this.appName());
-          }
-
           if (event.execs && event.appName) {
             const execs = event.execs;
             const appStore = appStorage[event.appName];
@@ -124,6 +120,15 @@ export class SokiTrip {
           }
 
           if (event.statistic) indexStorage.refreshAreas(['statistic'], event as never);
+
+          if (event.download) {
+            const appStore = appStorage[event.appName];
+            try {
+              appStore.set(event.download.key, JSON.parse(event.download.value));
+            } catch (error) {
+              appStore.set(event.download.key, event.download.value);
+            }
+          }
         }
       } catch (e) {}
     };

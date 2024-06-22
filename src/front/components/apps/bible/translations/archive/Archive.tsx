@@ -1,15 +1,13 @@
+import { memo } from 'react';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
 import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../hooks/address/address';
-import {
-  takeBibleAddressText,
-  takeBibleJoinedAddressSlideText,
-  takeBibleJoinedAddressText,
-  takeBibleSlideText,
-  useBibleChaptersCombine,
-} from '../../hooks/texts';
 import { BibleTranslationAddress } from '../../model';
+import BibleTranslationArchiveJoinedAddressText from './JoinedAddress';
+import BibleTranslationArchiveJoinedContentText from './JoinedContentText';
+import BibleTranslationArchiveSingleAddressText from './SingleAddressText';
+import BibleTranslationArchiveSingleContentText from './SingleContentText';
 
 interface Props {
   title: string;
@@ -19,19 +17,18 @@ interface Props {
 
 const itemClassName = 'nowrap pointer margin-gap-b';
 
-export const BibleTranslationArchive = ({ title, list, onRemove }: Props) => {
+export default memo(function BibleTranslationArchive({ title, list, onRemove }: Props): JSX.Element {
   const setAddress = useSetBibleAddressIndexes();
   const setJoinAddress = useBibleTranslationJoinAddressSetter();
-  const { chapters } = useBibleChaptersCombine();
 
   return (
     <>
-      <div className="archive-title flex flex-gap color--3 margin-gap-b">
+      <div className="archive-title flex flex-gap color--3 bgcolor--2 margin-gap-b">
         {title}
         <IconButton
           Icon={IconDelete01StrokeRounded}
           className="color--ko"
-          confirm={'Очистить раздел ' + title + '?'}
+          confirm={`Очистить раздел ${title}?`}
           onClick={onRemove}
         />
       </div>
@@ -47,9 +44,11 @@ export const BibleTranslationArchive = ({ title, list, onRemove }: Props) => {
                 setAddress(...item);
               }}
             >
-              <span className="color--7">{takeBibleAddressText(...item, 1)}</span>
+              <span className="color--7">
+                <BibleTranslationArchiveSingleAddressText item={item} />
+              </span>
               {' - '}
-              <span dangerouslySetInnerHTML={{ __html: takeBibleSlideText(chapters, ...item, false) }} />
+              <BibleTranslationArchiveSingleContentText item={item} />
             </div>
           );
 
@@ -67,12 +66,14 @@ export const BibleTranslationArchive = ({ title, list, onRemove }: Props) => {
               setAddress(booki, chapteri, Math.max(...item[booki][chapteri]));
             }}
           >
-            <span className="color--7">{takeBibleJoinedAddressText(item, 1)}</span>
+            <span className="color--7">
+              <BibleTranslationArchiveJoinedAddressText item={item} />
+            </span>
             {' - '}
-            <span dangerouslySetInnerHTML={{ __html: takeBibleJoinedAddressSlideText(item, false) }} />
+            <BibleTranslationArchiveJoinedContentText item={item} />
           </div>
         );
       })}
     </>
   );
-};
+});

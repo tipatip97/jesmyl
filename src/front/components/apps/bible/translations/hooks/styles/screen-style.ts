@@ -3,6 +3,7 @@ import { useScreenTranslationPositionsStyles } from '../../../../+complect/trans
 import { useScreenTranslationTextStyles } from '../../../../+complect/translations/complect/hooks/text-styles';
 import { BibleTranslationScreenConfig } from '../../model';
 import { MyLib } from '../../../../../../complect/my-lib/MyLib';
+import { verseTranslateTitleCssVariableName } from '../../complect';
 
 export const screenGridArea = 'screen-grid-area';
 
@@ -47,6 +48,7 @@ export const useGetBibleScreenTranslationScreenStyle = (
       textDecoration: 'italic',
 
       color: isVisible ? currentConfig.color : 'transparent',
-    };
+      [verseTranslateTitleCssVariableName]: isVisible ? 'grey' : 'transparent',
+    } as never;
   }, [currentConfig, isVisible, positions, textStyles]);
 };

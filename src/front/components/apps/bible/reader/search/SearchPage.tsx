@@ -5,15 +5,15 @@ import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { justBibleStorageSet } from '../../hooks/storage';
 import { useBibleBookList } from '../../hooks/texts';
-import { BibleSearchResults } from '../../translations/search/Results';
-import { BibleSearchPanelSearchInput } from '../../translations/search/input-panel/SearchInput';
+import BibleSearchResults from '../../translations/search/Results';
+import BibleSearchPanelSearchInput from '../../translations/search/input-panel/SearchInput';
 import { useBibleSearchZone } from '../../translations/search/selectors';
 import useBibleNav from '../../useBibleNav';
 
 const resetSelected = () => justBibleStorageSet('translationSearchResultSelected', null);
 const emptyArr: [] = [];
 
-export const BibleReaderSearchPage = () => {
+export default function BibleReaderSearchPage() {
   const { goBack, navigateToRoot } = useBibleNav();
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
@@ -77,4 +77,4 @@ export const BibleReaderSearchPage = () => {
       }
     />
   );
-};
+}

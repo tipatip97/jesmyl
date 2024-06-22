@@ -1,7 +1,11 @@
+import { BibleTranslate, BibleTranslateLine } from './translates/complect';
 import { BibleTranslationScreenConfig } from './translations/model';
 
-export interface BibleStorage {
+export interface BibleStorage extends Record<BibleTranslate, undefined | { chapters: string[][][] }> {
   rst: { chapters: string[][][] };
+
+  myTranslates: BibleTranslateLine;
+  showTranslates: BibleTranslateLine;
 
   translationBooki: number;
   translationChapteri: number;

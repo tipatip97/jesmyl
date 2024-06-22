@@ -4,13 +4,13 @@ import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-
 import { justBibleStorageSet } from '../../../hooks/storage';
 import { useBibleTranslationSearchResultList, useBibleTranslationSearchResultSelected } from '../hooks/results';
 import { useBibleSearchTerm } from '../selectors';
-import { BibleSearchPanelInput } from './Input';
+import BibleSearchPanelInput from './Input';
 
 interface Props {
   inputRef: React.RefObject<HTMLInputElement>;
 }
 
-export const BibleSearchPanelSearchInput = ({ inputRef }: Props) => {
+export default function BibleSearchPanelSearchInput({ inputRef }: Props) {
   const searchTerm = useBibleSearchTerm();
   const onChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => justBibleStorageSet('translationSearchTerm', event.target.value),
@@ -69,4 +69,4 @@ export const BibleSearchPanelSearchInput = ({ inputRef }: Props) => {
       onChange={onChange}
     />
   );
-};
+}

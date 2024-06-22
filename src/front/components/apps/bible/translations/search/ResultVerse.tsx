@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import { useBibleTranslationAddressIndexesSetter } from '../../hooks/address/address';
-import { useBibleBookList, useBibleChaptersCombine } from '../../hooks/texts';
+import { useBibleBookList } from '../../hooks/texts';
+import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
+import { useBibleShowTranslates } from '../../translates/hooks';
 
 interface Props {
   booki: number;
@@ -11,10 +13,18 @@ interface Props {
   onClick?: (booki: number, chapteri: number, versei: number) => void;
 }
 
-export const BibleSearchResultVerse = memo(({ booki, chapteri, versei, splitReg, resulti, onClick }: Props) => {
-  const { chapters } = useBibleChaptersCombine();
+export default memo(function BibleSearchResultVerse({
+  booki,
+  chapteri,
+  versei,
+  splitReg,
+  resulti,
+  onClick,
+}: Props): JSX.Element {
+  const showTranslates = useBibleShowTranslates();
   const books = useBibleBookList();
-  const textBits = chapters?.[booki][chapteri][versei].split(splitReg);
+  const textBits =
+    useBibleTranslatesContext()[showTranslates[0]]?.chapters?.[booki]?.[chapteri]?.[versei]?.split(splitReg);
   const addressSetter = useBibleTranslationAddressIndexesSetter();
 
   return (

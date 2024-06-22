@@ -1,28 +1,29 @@
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import { TranslationScreenProps } from '../../../+complect/translations/Translations.model';
 import { useSetScreenTranslationInteractiveBackground } from '../../../+complect/translations/hooks/interactive-back';
 import { useApplyScreenFontFamilyEffect } from '../../../+complect/translations/hooks/set-font-family';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCircleArrowDataTransferDiagonalStrokeRounded } from '../../../../../complect/the-icon/icons/circle-arrow-data-transfer-diagonal';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
+import { BibleTranslationAddress } from '../../model';
 import { useBibleScreenTranslationKeyListener } from '../hooks/key-listener';
 import { useGetBibleScreenTranslationWrapperStyle } from '../hooks/styles/wrapper-style';
 import { BibleTranslationScreenConfig } from '../model';
-import { BibleTranslationScreenContentLoading } from './ContentLoading';
 import { BibleTranslationScreenAddressContainer } from './complect/AddressContainer';
 import { BibleTranslationScreenAddressPanel } from './complect/AddressPanel';
-import { BibleTranslationScreenContent } from './complect/Content';
+import BibleTranslationScreenContent from './complect/Content';
 import { BibleTranslationScreenContentConfiguration } from './complect/ContentConfiguration';
 
 interface Props extends TranslationScreenProps {
   bibleConfig: BibleTranslationScreenConfig | und;
-  addressContent: string;
-  screenContent: string;
+  address?: BibleTranslationAddress;
+  addressText?: string;
+  text?: string;
   windowResizeUpdatesNum: number | und;
   isVisible: boolean;
 }
 
-export const BibleTranslationScreen = (props: Props) => {
+export default memo(function BibleTranslationScreen(props: Props) {
   const [isChangeAddressPanelHeight, setIsChangeAddressPanelHeight] = useState(true);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -38,10 +39,6 @@ export const BibleTranslationScreen = (props: Props) => {
   );
 
   useApplyScreenFontFamilyEffect(props.bibleConfig?.fontFamily, props.win);
-
-  if (!props.screenContent) {
-    return <BibleTranslationScreenContentLoading />;
-  }
 
   return (
     <div
@@ -79,25 +76,26 @@ export const BibleTranslationScreen = (props: Props) => {
           />
         )}
         <BibleTranslationScreenContent
+          text={props.text}
           screeni={props.screeni}
           win={props.win}
           isPreview={props.isPreview}
-          screenContent={props.screenContent}
           windowResizeUpdatesNum={props.windowResizeUpdatesNum}
           bibleConfig={props.bibleConfig}
           isVisible={props.isVisible}
         />
       </div>
       <BibleTranslationScreenAddressContainer
+        address={props.address}
+        addressText={props.addressText}
         isChangeAddressPanelHeight={isChangeAddressPanelHeight}
         isTech={props.isTech}
         isPreview={props.isPreview}
         screeni={props.screeni}
         bibleConfig={props.bibleConfig}
-        addressContent={props.addressContent}
         windowResizeUpdatesNum={props.windowResizeUpdatesNum}
         isVisible={props.isVisible}
       />
     </div>
   );
-};
+});

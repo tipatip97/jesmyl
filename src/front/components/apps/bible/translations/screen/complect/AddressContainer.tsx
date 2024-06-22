@@ -1,8 +1,9 @@
 import { useRef } from 'react';
 import { useSetScreenTranslationInteractiveBackground } from '../../../../+complect/translations/hooks/interactive-back';
+import { BibleTranslationAddress } from '../../../model';
 import { useGetBibleScreenTranslationAddressStyle } from '../../hooks/styles/address-style';
 import { BibleTranslationScreenConfig } from '../../model';
-import { BibleTranslationScreenAddressContent } from './AddressContent';
+import BibleTranslationScreenAddressContent from './AddressContent';
 import { BibleTranslationScreenAddressContentPositionConfiguration } from './AddressContentPositionConfiguration';
 
 interface Props {
@@ -11,12 +12,13 @@ interface Props {
   isPreview: boolean | und;
   isChangeAddressPanelHeight: boolean;
   bibleConfig: BibleTranslationScreenConfig | und;
-  addressContent: string;
+  address?: BibleTranslationAddress;
+  addressText?: string;
   windowResizeUpdatesNum: number | und;
   isVisible: boolean;
 }
 
-export const BibleTranslationScreenAddressContainer = (props: Props) => {
+export const BibleTranslationScreenAddressContainer: React.FC<Props> = props => {
   const addressBackground = useSetScreenTranslationInteractiveBackground(
     props.bibleConfig?.address.isWithBackground ? props.bibleConfig.address.backgroundInteractive : undefined,
   );
@@ -39,10 +41,11 @@ export const BibleTranslationScreenAddressContainer = (props: Props) => {
           />
         )}
         <BibleTranslationScreenAddressContent
+          address={props.address}
+          addressText={props.addressText}
           screeni={props.screeni}
           isPreview={props.isPreview}
           bibleConfig={props.bibleConfig}
-          addressContent={props.addressContent}
           windowResizeUpdatesNum={props.windowResizeUpdatesNum}
         />
       </div>

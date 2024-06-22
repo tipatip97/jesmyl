@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { ScreenTranslationsFaceLine } from '../../+complect/translations/complect/config-line/FaceLine';
 import { ExpandableContent } from '../../../../complect/expand/ExpandableContent';
-import { BibleTranslateCurrentScreenConfigurations } from './CurrentConfigs';
+import BibleTranslateCurrentScreenConfigurations from './CurrentConfigs';
 import { useBibleScreenTranslationCurrentConfig } from './hooks/configs';
 import { useUpdateBibleCurrentTranslationConfig } from './hooks/update-config';
 
-export const BibleTranslateScreenConfigurations = () => {
+export default memo(function BibleTranslateScreenConfigurations(): JSX.Element {
   const currentConfig = useBibleScreenTranslationCurrentConfig();
   const updateConfig = useUpdateBibleCurrentTranslationConfig();
 
@@ -20,4 +21,4 @@ export const BibleTranslateScreenConfigurations = () => {
       )}
     </div>
   );
-};
+});

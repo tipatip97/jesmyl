@@ -3,6 +3,7 @@ import { useSchedules } from '../../../../complect/schedule-widget/useScheduleWi
 import { soki } from '../../../../soki';
 import { useCurrentTranslationTextApp } from '../../../apps/+complect/translations/hooks/current-app';
 import { useScreenTranslationWindows } from '../../../apps/+complect/translations/hooks/windows';
+import BibleTranslatesContextProvider from '../../../apps/bible/translates/TranslatesContext';
 import useAuth from '../../useAuth';
 import useIndexNav from '../useIndexNav';
 import { IndexScheduleWidgetBibleTranslations } from './LiveBible';
@@ -47,11 +48,13 @@ export const IndexScheduleWidgetTranslations = () => {
       headTitle={headTitle}
     />
   ) : (
-    <IndexScheduleWidgetBibleTranslations
-      isCantTranslateLive={isCantTranslateLive}
-      fio={auth.fio}
-      subscribeData={subscribeData}
-      headTitle={headTitle}
-    />
+    <BibleTranslatesContextProvider>
+      <IndexScheduleWidgetBibleTranslations
+        isCantTranslateLive={isCantTranslateLive}
+        fio={auth.fio}
+        subscribeData={subscribeData}
+        headTitle={headTitle}
+      />
+    </BibleTranslatesContextProvider>
   );
 };

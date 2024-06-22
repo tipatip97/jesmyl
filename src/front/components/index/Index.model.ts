@@ -8,7 +8,6 @@ import {
   SokiClientSubData,
   SokiStatistic,
 } from '../../models';
-import { BibleTranslationAddress } from '../apps/bible/model';
 import { BibleTranslationScreenConfig } from '../apps/bible/translations/model';
 import { CmTranslationScreenConfig } from '../apps/cm/translation/complect/controlled/model';
 import { FileAssociations } from './parts/actions/files/complect/MyFilesTypeBox';
@@ -49,7 +48,8 @@ export type IndexStateSchLiveData = Record<
       config: CmTranslationScreenConfig;
     };
     bible?: {
-      address: BibleTranslationAddress;
+      text: string;
+      addressText: string;
       config: BibleTranslationScreenConfig;
     };
   }

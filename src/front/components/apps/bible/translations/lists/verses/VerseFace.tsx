@@ -1,55 +1,17 @@
-import { memo, useEffect, useRef } from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
-import { useActualRef } from '../../../../../../complect/useActualRef';
-import { usePutBibleAddressVerseiSetter, usePutBibleJoinAddressSetter } from '../../../hooks/address/verses';
+import { verseIdPrefix } from './VerseList';
 
 interface Props {
   verse: string;
   versei: number;
 }
 
-export const BibleVerseFace = memo(({ versei, verse }: Props) => {
-  const setVerseRef = useActualRef(usePutBibleAddressVerseiSetter());
-  const verseNodeRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (verseNodeRef.current === null) return;
-
-    let clickTimeout: TimeOut;
-    let comeBack: (() => void) | null = null;
-    let isDblClick = false;
-
-    verseNodeRef.current.innerHTML = `${versei + 1}. ${verse}`;
-    verseNodeRef.current.id = `bible-versei-${versei}`;
-    verseNodeRef.current.classList.add('bible-list-face');
-
-    verseNodeRef.current.onmousedown = () => {
-      comeBack?.();
-      comeBack = setVerseRef.current(versei, isDblClick);
-      isDblClick = true;
-
-      clearTimeout(clickTimeout);
-      clickTimeout = setTimeout(() => {
-        comeBack = null;
-        isDblClick = false;
-      }, 500);
-    };
-
-    return () => clearTimeout(clickTimeout);
-  }, [setVerseRef, verse, versei]);
-
-  return <Face ref={verseNodeRef} />;
-});
-
-export const BibleVerseFaceWithCtrlKey = memo(({ versei, verse }: Props) => {
-  const putSetVerse = usePutBibleJoinAddressSetter();
-
+export default memo(function BibleVerseFace({ versei, verse }: Props): JSX.Element {
   return (
     <Face
-      id={'bible-versei-' + versei}
+      id={verseIdPrefix + versei}
       className="bible-list-face"
-      onClick={putSetVerse(versei, false)}
-      onDoubleClick={putSetVerse(versei, true)}
       dangerouslySetInnerHTML={{ __html: `${versei + 1}. ${verse}` }}
     />
   );

@@ -3,7 +3,7 @@ import { RootState } from '../../../../../../shared/store';
 import { cmStoreActions } from '../../../Cm.store';
 import { useCmCurrentComTexts } from './get-com-text';
 
-const translationBlockSelector = (state: RootState) => state.cm.translationBlock;
+const translationBlockSelector: (state: RootState) => number = state => state.cm.translationBlock;
 
 export const useCmScreenTranslationComCurrentTexti = () => useSelector(translationBlockSelector);
 

@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
+import IconButton from '../../../../complect/the-icon/IconButton';
+import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
 import { soki } from '../../../../soki';
-import TranslationPage from '../../../apps/+complect/translations/TranslationPage';
+import { useSwitchCurrentTranslationTextApp } from '../../../apps/+complect/translations/hooks/current-app';
 import useCmNav from '../../../apps/cm/base/useCmNav';
 import { useCols } from '../../../apps/cm/cols/useCols';
 import { useMeetings } from '../../../apps/cm/lists/meetings/useMeetings';
+import CmTranslationControlled from '../../../apps/cm/translation/complect/controlled/CmTranslationControlled';
 import { useCmScreenTranslationConfigs } from '../../../apps/cm/translation/complect/controlled/hooks/configs';
 import { useCmScreenTranslationComCurrentTexti } from '../../../apps/cm/translation/complect/hooks/com-texts';
 import { IndexStateSchLiveData } from '../../Index.model';
@@ -22,6 +25,8 @@ export const ScheduleWidgetLiveCmTranslations = ({
   const currTexti = useCmScreenTranslationComCurrentTexti();
   const [config] = useCmScreenTranslationConfigs();
   const { meetings } = useMeetings();
+  const switchCurrApp = useSwitchCurrentTranslationTextApp();
+
   const meeting =
     indexNav.appRouteData.schTranslationEventw == null
       ? null
@@ -62,7 +67,14 @@ export const ScheduleWidgetLiveCmTranslations = ({
   ]);
 
   return (
-    <TranslationPage
+    <CmTranslationControlled
+      head={
+        <IconButton
+          Icon={IconBookOpen02StrokeRounded}
+          className="margin-gap-r"
+          onClick={() => switchCurrApp()}
+        />
+      }
       comList={comList}
       useNav={useIndexNav as never}
       headTitle={headTitle}

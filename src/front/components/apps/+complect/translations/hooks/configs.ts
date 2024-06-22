@@ -9,7 +9,8 @@ const defaultConfig: ScreenTranslationConfig = {
   proportion: 1,
 };
 
-const configsSelector = (state: RootState) => state.complect.screenTranslationConfigs;
+const configsSelector: (state: RootState) => ScreenTranslationConfig[] = state =>
+  state.complect.screenTranslationConfigs;
 
 export const useScreenTranslationConfigs: () => ScreenTranslationConfig[] = () => useSelector(configsSelector);
 
@@ -53,7 +54,7 @@ export const useGetScreenTranslationConfig = () => {
   return useCallback((configi: number): ScreenTranslationConfig | nil => configs[configi], [configs]);
 };
 
-export const useScreenTranslationCurrentConfigi = () => useSelector(currentConfigiSelector);
+export const useScreenTranslationCurrentConfigi: () => number = () => useSelector(currentConfigiSelector);
 
 export const useScreenTranslationCurrentConfig = (): ScreenTranslationConfig | und =>
   useScreenTranslationConfigs()[useScreenTranslationCurrentConfigi()];

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 import { IconArrowLeft01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-left-01';
 import { IconArrowRight01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-right-01';
@@ -15,7 +16,7 @@ interface Props {
   onNext: () => void;
 }
 
-export const ScreenTranslationControlPanel = ({ onNext, onPrev }: Props) => {
+export const ScreenTranslationControlPanel = memo(function ScreenTranslationControlPanel({ onNext, onPrev }: Props) {
   const configs = useScreenTranslationConfigs();
   const windows = useScreenTranslationWindows();
   const currWin = useScreenTranslationCurrentWindow();
@@ -49,7 +50,7 @@ export const ScreenTranslationControlPanel = ({ onNext, onPrev }: Props) => {
       </ControlButton>
     </div>
   );
-};
+});
 
 const ControlButton = styled.button`
   display: flex;

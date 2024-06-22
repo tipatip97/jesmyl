@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { justBibleStorageSet } from '../../../../hooks/storage';
 import { useBibleAddressTerm } from '../../selectors';
-import { BibleSearchPanelInput } from '../Input';
+import BibleSearchPanelInput from '../Input';
 import { useBibleTransformAddressTermToAddress } from './hooks/transformers';
 
 interface Props {
   inputRef: React.RefObject<HTMLInputElement>;
 }
 
-export const BibleSearchPanelAddressInput = ({ inputRef }: Props) => {
+export default memo(function BibleSearchPanelAddressInput({ inputRef }: Props) {
   const addressTerm = useBibleAddressTerm();
   const [term, setTerm] = useState(addressTerm);
   const address = useBibleTransformAddressTermToAddress(term, inputRef);
@@ -38,4 +38,4 @@ export const BibleSearchPanelAddressInput = ({ inputRef }: Props) => {
       <div className="full-width">{address}</div>
     </>
   );
-};
+});

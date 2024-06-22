@@ -3,7 +3,8 @@ import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from 
 import { useBibleAddressBooki } from '../../../../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../../../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../../../../hooks/address/verses';
-import { useBibleBookList, useBibleChaptersCombine } from '../../../../../hooks/texts';
+import { useBibleBookList } from '../../../../../hooks/texts';
+import { useBibleTranslatesContext } from '../../../../../translates/TranslatesContext';
 
 const addressParserReg = /^(\d?\s*[а-яё]+)?\s?(\d{1,3})[\s:]?(\d{1,3})([-,\s]{0,2})(\d{1,3})?$/;
 const spacePlusReg = /\s+/;
@@ -14,7 +15,7 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
   const currentChapteri = useBibleAddressChapteri();
   const currentVarsei = useBibleAddressVersei();
   const books = useBibleBookList();
-  const { chapters, lowerBooks } = useBibleChaptersCombine();
+  const { chapters, lowerBooks } = useBibleTranslatesContext().rst ?? {};
   const [address, setAddress] = useState<ReactNode>(null);
   const onClickRef = useRef(emptyFunc);
   const setAddressIndexes = useSetBibleAddressIndexes();
@@ -22,12 +23,14 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
 
   useEffect(() => {
     if (inputRef.current === null) return;
-    inputRef.current.addEventListener('keydown', event => {
-      if (event.code === 'Enter') {
+    return hookEffectLine()
+      .addEventListener(inputRef.current, 'keydown', event => {
+        if (event.code !== 'Enter') return;
+
         onClickRef.current();
         inputRef.current?.blur();
-      }
-    });
+      })
+      .effect();
   }, [inputRef]);
 
   useEffect(() => {
@@ -67,15 +70,18 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
     let verseNode: ReactNode = verseNumber;
     let plusVerseNode: ReactNode = plusVerseNumber;
 
-    if (chapterNumber > chapters[booki].length) {
+    if (chapters[booki] == null) return;
+    const book = chapters[booki]!;
+
+    if (chapterNumber > book.length) {
       chapterNode = <span className="color--ko">{chapterNumber}</span>;
       verseNode = <span className="color--ko">{verseNumber}</span>;
       if (plusVerseNumber !== undefined) plusVerseNode = <span className="color--ko">{plusVerseNumber}</span>;
 
       onClickRef.current = () => {};
     } else if (
-      chapters[booki]?.[chapterNumber - 1] !== undefined &&
-      (verseNumber > chapters[booki][chapterNumber - 1].length ||
+      book[chapterNumber - 1] !== undefined &&
+      (verseNumber > book[chapterNumber - 1].length ||
         (plusVerseNumber !== undefined && plusVerseNumber <= verseNumber))
     ) {
       verseNode = <span className="color--ko">{verseNumber}</span>;
@@ -84,8 +90,8 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
       onClickRef.current = () => {};
     } else if (
       plusVerseNumber !== undefined &&
-      chapters[booki]?.[chapterNumber - 1] !== undefined &&
-      plusVerseNumber > chapters[booki][chapterNumber - 1].length
+      book[chapterNumber - 1] !== undefined &&
+      plusVerseNumber > book[chapterNumber - 1].length
     ) {
       plusVerseNode = <span className="color--ko">{plusVerseNumber}</span>;
 

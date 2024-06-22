@@ -2,21 +2,33 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
+import { BibleAddressSingle } from '../../address/Single';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
 import { justBibleStorageSet } from '../../hooks/storage';
-import { useBibleBookList, useBibleChaptersCombine, useBibleCurrentAddressText } from '../../hooks/texts';
+import { useBibleBookList } from '../../hooks/texts';
+import BibleTranslatesContextProvider, { useBibleTranslatesContext } from '../../translates/TranslatesContext';
+import { useBibleShowTranslates } from '../../translates/hooks';
 import useBibleNav from '../../useBibleNav';
-import { BibleReaderBook } from './BookPage';
+import BibleReaderBook from './BookPage';
 
-export const BibleReaderCurrentBookPage = () => {
+export default function BibleReaderCurrentBookPage() {
+  return (
+    <BibleTranslatesContextProvider>
+      <Content />
+    </BibleTranslatesContextProvider>
+  );
+}
+
+function Content() {
   const { goBack } = useBibleNav();
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
   const currentVersei = useBibleAddressVersei();
   const bookTitles = useBibleBookList();
-  const { htmlChapters } = useBibleChaptersCombine();
+  const showTranslates = useBibleShowTranslates();
+  const htmlChapters = useBibleTranslatesContext()[showTranslates[0]]?.htmlChapters;
   const [booki, setBooki] = useState(currentBooki);
   const [chapteri, setChapteri] = useState(currentChapteri);
 
@@ -44,7 +56,7 @@ export const BibleReaderCurrentBookPage = () => {
   const [chapterSelectNode, openChapterSelect] = useFullContent(() => {
     return (
       <>
-        {htmlChapters?.[booki].map((chapter, chapteri) => {
+        {htmlChapters?.[booki]?.map((chapter, chapteri) => {
           return (
             <ItemFace
               key={chapteri}
@@ -69,7 +81,7 @@ export const BibleReaderCurrentBookPage = () => {
   const [verseSelectNode, openVerseSelect] = useFullContent(() => {
     return (
       <>
-        {htmlChapters?.[booki][chapteri].map((_, versei) => {
+        {htmlChapters?.[booki]?.[chapteri].map((_, versei) => {
           return (
             <ItemFace
               key={versei}
@@ -98,7 +110,7 @@ export const BibleReaderCurrentBookPage = () => {
           className="pointer"
           onClick={() => openBookSelect(true)}
         >
-          {useBibleCurrentAddressText()}
+          <BibleAddressSingle />
         </span>
       }
       content={
@@ -118,7 +130,7 @@ export const BibleReaderCurrentBookPage = () => {
       }
     />
   );
-};
+}
 
 const ItemFace = styled.div`
   --size: calc((100vw - var(--main-big-gap) * 2 - 12 * 3px) / 5);

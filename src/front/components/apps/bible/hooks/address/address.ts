@@ -7,28 +7,25 @@ import { justBibleStorageSet } from '../storage';
 export const useBibleTranslationAddressIndexesSetter = () => {
   const setJoin = useBibleTranslationJoinAddressSetter();
 
-  return useCallback(
-    (
-      booki: number,
-      chapteri: number,
-      versei: number,
-      resultSelectedi?: number,
-      onClick?: (booki: number, chapteri: number, versei: number) => void,
-    ) => {
-      return () => {
-        justBibleStorageSet('translationBooki', booki);
-        justBibleStorageSet('translationChapteri', chapteri);
-        justBibleStorageSet('translationVersei', versei);
-        if (resultSelectedi !== undefined) {
-          justBibleStorageSet('translationSearchResultSelected', resultSelectedi);
-          setJoin(null);
-        }
+  return (
+    booki: number,
+    chapteri: number,
+    versei: number,
+    resultSelectedi?: number,
+    onClick?: (booki: number, chapteri: number, versei: number) => void,
+  ) => {
+    return () => {
+      justBibleStorageSet('translationBooki', booki);
+      justBibleStorageSet('translationChapteri', chapteri);
+      justBibleStorageSet('translationVersei', versei);
+      if (resultSelectedi !== undefined) {
+        justBibleStorageSet('translationSearchResultSelected', resultSelectedi);
+        setJoin(null);
+      }
 
-        onClick?.(booki, chapteri, versei);
-      };
-    },
-    [setJoin],
-  );
+      onClick?.(booki, chapteri, versei);
+    };
+  };
 };
 
 export const useSetBibleAddressIndexes = () => {
@@ -51,6 +48,7 @@ export const useSetBibleAddressIndexes = () => {
 
 export const useBibleTranslationJoinAddress = () =>
   useStorageValueGetter(bibleStorage, 'translationTranslationJoinAddress', null);
+
 export const useBibleTranslationJoinAddressSetter = () => {
   return useCallback(
     (join: BibleTranslationJoinAddress | null) => justBibleStorageSet('translationTranslationJoinAddress', join),

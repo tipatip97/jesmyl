@@ -5,8 +5,8 @@ import { IconBook02StrokeRounded } from '../../../complect/the-icon/icons/book-0
 import { iconPackOfFile02 } from '../../../complect/the-icon/icons/file-02';
 import { iconPackOfFileSearch } from '../../../complect/the-icon/icons/file-search';
 import { BibleStorage } from './model';
-import { BibleReaderCurrentBookPage } from './reader/book/CurrentBookPage';
-import { BibleReaderSearchPage } from './reader/search/SearchPage';
+import BibleReaderCurrentBookPage from './reader/book/CurrentBookPage';
+import BibleReaderSearchPage from './reader/search/SearchPage';
 
 const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bible', {
   title: 'Библия',
