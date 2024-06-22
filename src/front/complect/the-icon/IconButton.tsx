@@ -10,6 +10,7 @@ export default function IconButton(props: {
   prefix?: null | ReactNode;
   postfix?: null | ReactNode;
   className?: string;
+  iconClassName?: string;
   onClick?: (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent> | KeyboardEvent) => void;
   onPointerDown?: (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent> | React.TouchEvent) => void;
 }) {
@@ -51,7 +52,7 @@ export default function IconButton(props: {
                 onTouchStart={isTouchDevice ? props.onPointerDown : undefined}
               >
                 {props.prefix}
-                <props.Icon />
+                <props.Icon className={props.iconClassName} />
                 {props.postfix}
               </span>
             )}
