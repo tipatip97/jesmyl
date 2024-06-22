@@ -4,47 +4,59 @@ export const setPolyfills = () => {
   setServerPolyfills();
 
   (globalThis as any).hookEffectLine = () => {
-    const set = new Set<
-      | number
-      | {
-          element: HTMLElement;
-          eventName: string;
-          cb: () => void;
-          options?: boolean | AddEventListenerOptions;
-        }
-    >();
+    const timeoutsSet = new Set<TimeOut>();
+    const eventListeners = new Set<Parameters<EffectListener>>();
+    const debounceTimers: TimeOut[] = [];
+    let debounceTimersRegistered = 0;
 
     const setter = {
-      addEventListener: (
-        element: HTMLElement,
-        eventName: string,
-        cb: () => void,
-        options?: boolean | AddEventListenerOptions,
-      ) => {
-        set.add({ element, eventName, cb, options });
-        element.addEventListener(eventName, cb, options);
+      addEventListener: (...args: Parameters<EffectListener>) => {
+        eventListeners.add(args);
+        const [element, ...otherArgs] = args;
+        element.addEventListener(...otherArgs);
+
+        return setter;
+      },
+      addEventDebouncedListener: (...args: Parameters<DebouncedEffectListener>) => {
+        const timeri = debounceTimersRegistered++;
+        const [timerMs, element, eventName, callback] = args;
+        const debounceCallback = (event: Parameters<typeof callback>[0]) => {
+          clearTimeout(debounceTimers[timeri]);
+          debounceTimers[timeri] = setTimeout(callback, timerMs, event);
+        };
+
+        eventListeners.add([element, eventName, debounceCallback]);
+
+        element.addEventListener(eventName, debounceCallback);
 
         return setter;
       },
 
       setTimeout: (cb: () => {}, time?: number, ...args: any[]) => {
-        set.add(setTimeout(cb, time, ...args));
+        timeoutsSet.add(setTimeout(cb, time, ...args));
 
         return setter;
       },
 
-      effect: () => {
-        return () => {
-          set.forEach(param => {
-            if (typeof param === 'number') {
-              clearTimeout(param);
-              return;
-            }
+      clearTimeout: (timeout: TimeOut) => {
+        timeoutsSet.add(timeout);
 
-            param.element.removeEventListener(param.eventName, param.cb, param.options);
+        return setter;
+      },
+
+      effect: (onUnmount?: () => void) => {
+        return () => {
+          onUnmount?.();
+          timeoutsSet.forEach(param => clearTimeout(param));
+          debounceTimers.forEach(param => clearTimeout(param));
+
+          eventListeners.forEach(param => {
+            const [element, ...otherProps] = param;
+            element.removeEventListener(...otherProps);
           });
 
-          set.clear();
+          eventListeners.clear();
+          timeoutsSet.clear();
         };
       },
     };
@@ -53,15 +65,30 @@ export const setPolyfills = () => {
   };
 };
 
+type EffectListener = <EventName extends keyof HTMLElementEventMap, Event extends HTMLElementEventMap[EventName]>(
+  elem: HTMLElement | typeof globalThis | Window,
+  eventName: EventName,
+  callback: (event: Event) => void,
+  turn?: boolean,
+) => HookEffectLineReturn;
+
+type DebouncedEffectListener = <
+  EventName extends keyof HTMLElementEventMap,
+  Event extends HTMLElementEventMap[EventName],
+>(
+  timerMs: number,
+  elem: HTMLElement | typeof globalThis | Window,
+  eventName: EventName,
+  callback: (event: Event) => void,
+  turn?: boolean,
+) => HookEffectLineReturn;
+
 type HookEffectLineReturn = {
-  addEventListener: <EventName extends keyof HTMLElementEventMap, Event extends HTMLElementEventMap[EventName]>(
-    elem: HTMLElement | typeof globalThis,
-    eventName: EventName,
-    callback: (event: Event) => void,
-    turn?: boolean,
-  ) => HookEffectLineReturn;
+  addEventListener: EffectListener;
+  addEventDebouncedListener: DebouncedEffectListener;
   setTimeout: (cb: () => void, time?: number, ...args: any[]) => HookEffectLineReturn;
-  effect: () => () => void;
+  clearTimeout: (timeout: TimeOut) => HookEffectLineReturn;
+  effect: (onUnmount?: () => void) => () => void;
 };
 
 declare global {
