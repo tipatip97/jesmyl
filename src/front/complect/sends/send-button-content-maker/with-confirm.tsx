@@ -10,7 +10,11 @@ export const SendButtonContentMakerWithConfirm = <Value,>(props: SendButtonConte
       {confirmNode}
       <SendButtonContentMakerBody<Value>
         {...props}
-        onClick={async () => props.onSend && (await confirm(props.confirm)) && props.onSend()}
+        onClick={async () => {
+          try {
+            if (props.onSend && (await confirm(props.confirm))) props.onSend();
+          } catch (error) {}
+        }}
       />
     </>
   );

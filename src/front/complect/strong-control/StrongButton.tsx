@@ -12,6 +12,7 @@ export default function StrongButton(
     confirm?: ReactNode;
     className?: string;
     onSuccess?: () => void;
+    disabled?: boolean;
   },
 ) {
   const exer = useStrongExerContext();
@@ -22,6 +23,7 @@ export default function StrongButton(
       {modalNode}
       <SendButton
         title={props.title}
+        disabled={props.disabled}
         confirm={props.confirm}
         onSuccess={props.onSuccess}
         onFailure={errorMessage => toast(errorMessage, { mood: 'ko' })}
