@@ -118,10 +118,11 @@ export class SMyLib {
     const items: Item[] = [];
     const arrClone = [...arr];
 
-    for (let i = 0; i < arr.length; i++) items.push(arrClone.splice(this.randomIndex(arrClone), 1)[0]);
+    for (let i = 0; i < arr.length; i++) items.push(arrClone.splice(this.randomOf(0, arrClone.length - 1), 1)[0]);
 
     return items;
   };
+
   randomOf = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
   randomIndex = (arr: unknown[] | string, sliceEnd?: number) =>
     this.randomOf(0, arr.length - 1 + (sliceEnd === undefined ? 0 : sliceEnd));
