@@ -10,10 +10,6 @@ const constants = {
 };
 
 type Trace = string | (typeof constants)[keyof typeof constants];
-type Ferry<FerryType, ObjName extends keyof FerryType> = Record<ObjName, FerryType[ObjName]> & {
-  deep: number;
-  rate: number;
-};
 
 export type AddRestMode = 'strong' | 'weak' | 'random';
 
@@ -93,24 +89,23 @@ export class MyLib extends SMyLib {
     );
   }
 
-  searchRate<FerryType, ObjName extends keyof FerryType = keyof FerryType>(
-    objects: FerryType[ObjName][],
+  searchRate<T, R extends { item: T; deep: number; rate: number; field: string }, RetItem extends R = R>(
+    items: T[],
     searchWord: string,
     places: (Trace[] | Trace)[],
-    objName: ObjName,
     isNumberSearch?: boolean,
-  ): FerryType[] {
+  ): RetItem[] {
     const normalWords = isNumberSearch
       ? searchWord.split(/0+/).filter(word => word)
       : searchWord.split(/[^а-яёa-z0-9ґї'ʼє]+/i).filter(word => word);
     const words = normalWords.map(word => word.toLowerCase());
     const wordRegs = normalWords.map(word => this.internationalWordReg(word, isNumberSearch));
 
-    return objects
-      .reduce((ferries: Ferry<FerryType, ObjName>[], object, objecti) => {
+    return items
+      .reduce((ferries: RetItem[], item, itemi) => {
         let rate = 0;
         let deep = 0;
-        const ferry = (): Ferry<FerryType, ObjName> => ({ [objName]: object, deep, rate }) as never;
+        const ferry = (): RetItem[] => ({ item, deep, rate }) as never;
 
         if (
           places.some((place, placei) => {
@@ -120,8 +115,8 @@ export class MyLib extends SMyLib {
               if (
                 words.some(word =>
                   word && words.length > 1
-                    ? (objecti + num).toString() === word
-                    : (objecti + num).toString().startsWith(word),
+                    ? (itemi + num).toString() === word
+                    : (itemi + num).toString().startsWith(word),
                 )
               ) {
                 rate = 1;
@@ -164,13 +159,13 @@ export class MyLib extends SMyLib {
               return searched;
             };
 
-            return search(place, object, placei);
+            return search(place, item, placei);
           })
         )
           return ferries.concat(ferry());
         else return ferries;
       }, [])
-      .sort((a, b) => a.rate - b.rate) as never;
+      .sort((a, b) => a.rate - b.rate);
   }
 
   correctRegExp(str: string, flags = '', transformer?: (str: string, reps: number) => string) {
