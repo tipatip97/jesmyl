@@ -497,7 +497,8 @@ textarea {
 .relative {
   &.pos- {
     &bottom,
-    &sea {
+    &sea,
+    &all {
       bottom: 0;
 
       &-over {
@@ -506,19 +507,22 @@ textarea {
     }
 
     &top,
-    &ski {
+    &ski,
+    &all {
       top: 0;
     }
 
     &left,
     &ski,
-    &sea {
+    &sea,
+    &all {
       left: 0;
     }
 
     &right,
     &ski,
-    &sea {
+    &sea,
+    &all {
       right: 0;
     }
   }
