@@ -15,16 +15,16 @@ export default function ScheduleWidgetUserPhoto({ user, justRenderItOnEmpty }: P
   useEffect(() => {
     (async () => {
       if (user.tgId) {
-        const src = await scheduleWidgetPhotosStorage.get(`${user.tgId}`);
+        const src = await scheduleWidgetPhotosStorage.get(`tg.${user.tgId}`);
         if (src) setSrc(src);
-        return scheduleWidgetPhotosStorage.on(`${user.tgId!}`, setSrc, '');
+        return scheduleWidgetPhotosStorage.on(`tg.${user.tgId}`, setSrc, '');
       }
 
-      const src = await scheduleWidgetPhotosStorage.get(`${rights.schedule.w}/${user.mi}`);
+      const src = await scheduleWidgetPhotosStorage.get(`${rights.schedule.w}/mi:${user.mi}`);
 
       if (src) setSrc(src);
 
-      return scheduleWidgetPhotosStorage.on(`${rights.schedule.w}/${user.mi}`, setSrc, '');
+      return scheduleWidgetPhotosStorage.on(`${rights.schedule.w}/mi:${user.mi}`, setSrc, '');
     })();
   }, [rights.schedule.w, user.mi, user.tgId]);
 

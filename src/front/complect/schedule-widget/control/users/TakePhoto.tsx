@@ -97,7 +97,10 @@ function Camera({ close, user }: Props & { close: () => void }) {
             Icon={IconCheckmarkBadge01StrokeRounded}
             onClick={async () => {
               stream?.getTracks().forEach(track => track.stop());
-              scheduleWidgetPhotosStorage.set(user.tgId ? `${user.tgId}` : `${rights.schedule.w}/${user.mi}`, src);
+              scheduleWidgetPhotosStorage.set(
+                user.tgId ? `tg.${user.tgId}` : `${rights.schedule.w}/mi:${user.mi}`,
+                src,
+              );
               close();
             }}
           />
