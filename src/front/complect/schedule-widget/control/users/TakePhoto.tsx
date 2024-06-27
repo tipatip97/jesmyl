@@ -5,7 +5,7 @@ import IconButton from '../../../the-icon/IconButton';
 import { IconCamera01StrokeRounded } from '../../../the-icon/icons/camera-01';
 import { IconCheckmarkBadge01StrokeRounded } from '../../../the-icon/icons/checkmark-badge-01';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
-import { scheduleWidgetPhotosStorage } from '../../storage';
+import { getScheduleWidgetUserPhotoStorageKey, scheduleWidgetPhotosStorage } from '../../storage';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 
 interface Props {
@@ -97,10 +97,7 @@ function Camera({ close, user }: Props & { close: () => void }) {
             Icon={IconCheckmarkBadge01StrokeRounded}
             onClick={async () => {
               stream?.getTracks().forEach(track => track.stop());
-              scheduleWidgetPhotosStorage.set(
-                user.tgId ? `tg.${user.tgId}` : `${rights.schedule.w}/mi:${user.mi}`,
-                src,
-              );
+              scheduleWidgetPhotosStorage.set(getScheduleWidgetUserPhotoStorageKey(user, rights.schedule), src);
               close();
             }}
           />

@@ -7,6 +7,9 @@ export enum IScheduleWidgetWid {
 export enum IScheduleWidgetUserMi {
   number = 1,
 }
+export enum IScheduleWidgetUserLogin {
+  string = 'string',
+}
 export enum IScheduleWidgetTeamMi {
   number = 1,
 }
@@ -183,7 +186,7 @@ export interface IScheduleWidgetRole<TheIconName> {
 
 export interface IScheduleWidgetUser {
   mi: IScheduleWidgetUserMi;
-  login?: string;
+  login?: IScheduleWidgetUserLogin;
   fio?: string;
   nick?: string;
   R?: number;

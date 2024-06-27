@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
-import { scheduleWidgetPhotosStorage } from '../../storage';
+import { getScheduleWidgetUserPhotoStorageKey, scheduleWidgetPhotosStorage } from '../../storage';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 
 interface Props {
@@ -13,28 +13,20 @@ export default function ScheduleWidgetUserPhoto({ user, justRenderItOnEmpty }: P
   const [src, setSrc] = useState('');
 
   useEffect(() => {
-    (async () => {
-      if (user.tgId) {
-        const src = await scheduleWidgetPhotosStorage.get(`tg.${user.tgId}`);
-        if (src) setSrc(src);
-        return scheduleWidgetPhotosStorage.on(`tg.${user.tgId}`, setSrc, '');
-      }
+    const key = getScheduleWidgetUserPhotoStorageKey(user, rights.schedule);
 
-      const src = await scheduleWidgetPhotosStorage.get(`${rights.schedule.w}/mi:${user.mi}`);
+    (async () => setSrc((await scheduleWidgetPhotosStorage.get(key)) || ''))();
 
-      if (src) setSrc(src);
-
-      return scheduleWidgetPhotosStorage.on(`${rights.schedule.w}/mi:${user.mi}`, setSrc, '');
-    })();
-  }, [rights.schedule.w, user.mi, user.tgId]);
+    return scheduleWidgetPhotosStorage.on(key, setSrc, '');
+  }, [rights.schedule, user]);
 
   if (justRenderItOnEmpty !== undefined) {
-    return <>{!src && justRenderItOnEmpty}</>;
+    return <>{src === '' && justRenderItOnEmpty}</>;
   }
 
   return (
     <>
-      {src && (
+      {src !== '' && (
         <img
           src={src}
           alt=""
