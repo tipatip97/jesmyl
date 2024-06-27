@@ -11,6 +11,7 @@ export interface DropdownProps<Id, Item extends DropdownItem<Id>> {
   undTitle?: string;
   nullTitle?: string;
   disabled?: boolean;
+  hiddenIds?: (Id | null)[];
 }
 
 export interface DropdownItem<Id> {

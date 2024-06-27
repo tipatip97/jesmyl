@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import useToast from '../modal/useToast';
-import { useOnSendPromiseCallback } from '../sends/useOnSendPromiseCallback';
 import { IconAlert01StrokeRounded } from '../../complect/the-icon/icons/alert-01';
 import { IconLoading03StrokeRounded } from '../../complect/the-icon/icons/loading-03';
+import useToast from '../modal/useToast';
+import { useOnSendPromiseCallback } from '../sends/useOnSendPromiseCallback';
 import { DropdownItem, DropdownProps } from './Dropdown.model';
+
+let lastDroppedCloser: () => void = () => {};
 
 export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownItem<Id>>(props: DropdownProps<Id, Item>) {
   const [selectedId, setId] = useState(props.id);
@@ -14,22 +16,6 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
 
   useEffect(() => setId(props.id), [props.id]);
 
-  useEffect(() => {
-    const close = () => {
-      if (!isDropClickedRef.current) setDropped(false);
-      isDropClickedRef.current = false;
-    };
-    const onKeydown = (event: KeyboardEvent) => {
-      if (isDropped && event.key === 'Escape') close();
-    };
-    window.addEventListener('click', close);
-    window.addEventListener('keydown', onKeydown);
-
-    return () => {
-      window.removeEventListener('click', close);
-      window.removeEventListener('keydown', onKeydown);
-    };
-  }, [isDropped]);
   const [modalNode, toast] = useToast();
   const [onClick, error, isLoading] = useOnSendPromiseCallback(
     item => {
@@ -53,8 +39,17 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
         (props.disabled ? ' disabled' : '')
       }
       onClick={event => {
-        if (props.disabled) event.stopPropagation();
+        if (props.disabled) {
+          event.stopPropagation();
+          return;
+        }
+
         isDropClickedRef.current = true;
+
+        lastDroppedCloser();
+
+        if (!isDropped) lastDroppedCloser = () => setDropped(false);
+
         setDropped(!isDropped);
       }}
     >
@@ -84,26 +79,27 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
         )}
         {!props.disabled &&
           props.items.map(item => {
-            return (
-              item && (
-                <div
-                  key={`dropdown-item ${item.id}`}
-                  className={
-                    'list-item ' +
-                    (item.disabled ? ' disabled ' : '') +
-                    (item.color ? ` colored color_${item.color} ` : '')
-                  }
-                  onClick={event => {
-                    event.stopPropagation();
-                    setDropped(false);
-                    setId(item.id);
+            if (!item) return null;
+            if (props.hiddenIds?.includes(item.id)) return null;
 
-                    onClick(item);
-                  }}
-                >
-                  {item.title}
-                </div>
-              )
+            return (
+              <div
+                key={`dropdown-item ${item.id}`}
+                className={
+                  'list-item ' +
+                  (item.disabled ? ' disabled ' : '') +
+                  (item.color ? ` colored color_${item.color} ` : '')
+                }
+                onClick={event => {
+                  event.stopPropagation();
+                  setDropped(false);
+                  setId(item.id);
+
+                  onClick(item);
+                }}
+              >
+                {item.title}
+              </div>
             );
           })}
       </div>
