@@ -267,25 +267,26 @@ export default function useQRMaster() {
     [closeReader],
   );
 
-  const readQR = useCallback(
-    <Ret,>(callback?: (data: QRCodeReaderData<unknown, never>) => Ret | null): Promise<Ret | null> => {
-      return new Promise((resolve, reject) =>
-        read().then(data => {
-          if (data.appName === 'index' || appNames.some(appName => appName === data.appName)) {
-            if (callback) resolve(callback(data));
-            else {
-              resolve(null);
-              jumpToApp(data.appName, data.key, data.value);
+  const readQR: <Ret>(callback?: (data: QRCodeReaderData<unknown, never>) => Ret | null) => Promise<Ret | null> =
+    useCallback(
+      callback => {
+        return new Promise((resolve, reject) =>
+          read().then(data => {
+            if (data.appName === 'index' || appNames.some(appName => appName === data.appName)) {
+              if (callback) resolve(callback(data));
+              else {
+                resolve(null);
+                jumpToApp(data.appName, data.key, data.value);
+              }
+            } else {
+              reject();
+              toast('Ссылка на неизвестное приложение!', { mood: 'ko' });
             }
-          } else {
-            reject();
-            toast('Ссылка на неизвестное приложение!', { mood: 'ko' });
-          }
-        }),
-      );
-    },
-    [jumpToApp, read, toast],
-  );
+          }),
+        );
+      },
+      [jumpToApp, read, toast],
+    );
 
   return useMemo(() => {
     return {
