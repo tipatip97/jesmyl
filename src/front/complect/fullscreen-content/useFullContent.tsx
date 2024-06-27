@@ -35,7 +35,10 @@ export default function useFullContent<PassValue>(
   useEffect(() => {
     if (mode) {
       const close = Eventer.listen(events, () => onClose());
-      const escape = ThrowEvent.listenKeyDown('Escape', () => onClose());
+      const escape = ThrowEvent.listenKeyDown('Escape', event => {
+        event.stopPropagation();
+        onClose();
+      });
 
       return () => {
         close();

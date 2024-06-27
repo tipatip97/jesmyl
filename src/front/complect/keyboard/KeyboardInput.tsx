@@ -100,6 +100,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
     const nativeProps = {
       className: 'native-input input ',
       onClick: (event: any) => {
+        event.stopPropagation();
         otherProps.onClick?.({
           name: 'click',
           blur: () => nativeRef.current?.blur(),

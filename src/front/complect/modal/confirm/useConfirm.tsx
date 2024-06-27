@@ -52,7 +52,12 @@ export const useConfirm = () => {
         </>
       );
     },
-    is => !is && setIsModalOpen(false),
+    is => {
+      if (is) return;
+
+      setIsModalOpen(false);
+      onResolveRef.current(false);
+    },
     isModalOpen,
   );
 
