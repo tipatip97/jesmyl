@@ -1,9 +1,14 @@
-import Eventer, { EventerValueCallback, EventerValueListeners } from '../../../back/complect/Eventer';
+import Eventer, {
+  EventerCallback,
+  EventerListeners,
+  EventerValueCallback,
+  EventerValueListeners,
+} from '../../../back/complect/Eventer';
 
 type ThrowEventKeyDownKey = 'Escape' | 'Enter';
 
 class ThrowEventClass {
-  private keyDownListens: Record<ThrowEventKeyDownKey, EventerValueListeners<KeyboardEvent>> = {
+  private keyDownListens: Record<ThrowEventKeyDownKey, EventerListeners<KeyboardEvent>> = {
     Escape: [],
     Enter: [],
   };
@@ -14,7 +19,7 @@ class ThrowEventClass {
   constructor() {
     window.addEventListener('keydown', event => {
       if (this.keyDownListens[event.code as ThrowEventKeyDownKey])
-        Eventer.invokeValue(this.keyDownListens[event.code as ThrowEventKeyDownKey], event);
+        Eventer.invoke(this.keyDownListens[event.code as ThrowEventKeyDownKey], event);
     });
 
     window.addEventListener('focus', () => {
@@ -32,12 +37,12 @@ class ThrowEventClass {
     });
   }
 
-  listenKeyDown = (key: ThrowEventKeyDownKey, cb: EventerValueCallback<KeyboardEvent>) => {
-    return Eventer.listenValue(this.keyDownListens[key], cb);
+  listenKeyDown = (key: ThrowEventKeyDownKey, cb: EventerCallback<KeyboardEvent>) => {
+    return Eventer.listen(this.keyDownListens[key], cb);
   };
 
-  muteKeyDown = (key: ThrowEventKeyDownKey, cb: EventerValueCallback<KeyboardEvent>) => {
-    Eventer.muteValue(this.keyDownListens[key], cb);
+  muteKeyDown = (key: ThrowEventKeyDownKey, cb: EventerCallback<KeyboardEvent>) => {
+    Eventer.mute(this.keyDownListens[key], cb);
   };
 
   listenIsOnline = (cb: EventerValueCallback<boolean>) => {
