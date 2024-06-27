@@ -12,7 +12,7 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -30,7 +30,7 @@ precacheAndRoute(self.__WB_MANIFEST);
 const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
-  ({ request, url }: { request: Request; url: URL }) => {
+  ({ request, url }) => {
     // If this isn't a navigation, skip.
     if (request.mode !== 'navigate') {
       return false;
@@ -52,6 +52,8 @@ registerRoute(
   },
   createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html'),
 );
+
+registerRoute(({ url }) => !url.pathname.endsWith('.mp3'), new NetworkFirst());
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
@@ -78,51 +80,50 @@ self.addEventListener('message', event => {
 });
 
 // Any other custom service worker logic can go here.
-const CACHE_NAME = 'v1';
+// const CACHE_NAME = 'v1';
 
-self.addEventListener('activate', async () => {
-  // получаем имена кэшей
-  const cacheNames = await caches.keys();
-  await Promise.all(
-    cacheNames.map(async cacheName => {
-      // Удаляем кэши, которые не относятся к текущей версии
-      if (cacheName !== CACHE_NAME) {
-        await caches.delete(cacheName);
-      }
-    }),
-  );
-});
+// self.addEventListener('activate', async () => {
+//   // получаем имена кэшей
+//   const cacheNames = await caches.keys();
+//   await Promise.all(
+//     cacheNames.map(async cacheName => {
+//       // Удаляем кэши, которые не относятся к текущей версии
+//       if (cacheName !== CACHE_NAME) {
+//         await caches.delete(cacheName);
+//       }
+//     }),
+//   );
+// });
 
-const fromNetwork = (request: Request) =>
-  new Promise<Response>((fulfill, reject) => {
-    fetch(request).then(response => {
-      fulfill(response);
-      update(request);
-    }, reject);
-  });
+// const fromNetwork = async (request: Request) => {
+//   const response = await fetch(request);
+//   update(request);
 
-const fromCache = (request: Request) => caches.open(CACHE_NAME).then(cache => cache.match(request));
-const update = (request: Request) =>
-  caches.open(CACHE_NAME).then(cache => fetch(request).then(response => cache.put(request, response)));
+//   return response;
+// };
 
-const errorHTML = `
-  <h2>Приложение не успело прогрузиться и сохраниться</h2>
-  <p>На данном этапе необходимо иметь соединение с сетью</p>
-`;
+// const fromCache = (request: Request) => caches.open(CACHE_NAME).then(cache => cache.match(request));
+// const update = (request: Request) =>
+//   caches.open(CACHE_NAME).then(cache => fetch(request).then(response => cache.put(request, response)));
 
-self.addEventListener('fetch', evt => {
-  evt.respondWith(
-    (async () => {
-      try {
-        return await fromNetwork(evt.request);
-      } catch (error) {
-        return (await fromCache(evt.request)) || new Response(errorHTML, { headers: { 'Content-Type': 'text/html' } });
-      }
-    })(),
-  );
+// const errorHTML = `
+//   <h2>Приложение не успело прогрузиться и сохраниться</h2>
+//   <p>На данном этапе необходимо иметь соединение с сетью</p>
+// `;
 
-  evt.waitUntil(update(evt.request));
-});
+// self.addEventListener('fetch', evt => {
+//   evt.respondWith(
+//     (async () => {
+//       try {
+//         return await fromNetwork(evt.request);
+//       } catch (error) {
+//         return (await fromCache(evt.request)) || new Response(errorHTML, { headers: { 'Content-Type': 'text/html' } });
+//       }
+//     })(),
+//   );
+
+//   evt.waitUntil(update(evt.request));
+// });
 
 // self.addEventListener('fetch', event => {
 //   event.respondWith(
