@@ -82,7 +82,8 @@ export interface SokiClientEventBody {
 export type SokiClientSubData<
   Spec extends string = string,
   AppName extends SokiAppName = SokiAppName,
-> = `${AppName}-${Spec}-${string}`;
+  Id extends number | string = string,
+> = `${AppName}-${Spec}-${Id}${`:${string | ''}` | ''}`;
 
 export type SokiSubscribtionName = 'statistic' | 'liveData';
 
