@@ -541,6 +541,7 @@ export class Executer {
       'expecteds',
       'setSystems',
       'setItemSystems',
+      'uniqs',
     ];
 
     return (
@@ -1019,20 +1020,16 @@ export class Executer {
     });
   }
 
-  static ununiqErrorMessage(
-    uniqs: string[] | Record<string, string> | undefined,
-    target: Record<string, unknown>[],
-    value: any,
-  ) {
-    if (!uniqs) return null;
-    const key = (smylib.isArr(uniqs) ? uniqs : Object.keys(uniqs)).find(key => {
-      if (key === '.') return target.includes(value);
-      else return target.some(val => val[key] === value[key]);
+  static filterUniqs(uniqs: string[] | und, target: Record<string, unknown>[], value: any) {
+    if (uniqs == null || value == null) return value;
+
+    const uniqVals = [value].flat().filter((val: any) => {
+      return !uniqs.some(key => (key === '.' ? target.includes(val) : target.some(t => t?.[key] === val?.[key])));
     });
 
-    if (key == null) return null;
-    if (smylib.isArr(uniqs)) return key ? `Неуникальное значение ${key}` : null;
-    else return uniqs[key];
+    if (uniqVals.length === 0) return undefined;
+    if (smylib.isArr(value)) return uniqVals;
+    return uniqVals[0];
   }
 
   static doIt({ method, target, penultimate, lastTrace, value, realArgs, auth, uniqs }: ExecuteDoItProps) {
@@ -1072,15 +1069,14 @@ export class Executer {
               console.error(e);
             }
             break;
-          case 'push':
+          case 'push': {
             const pushTarget = smylib.isArr(target) ? target : (penultimate[lastTrace] = []);
-            const error = this.ununiqErrorMessage(uniqs, pushTarget, value);
-            if (error) {
-              reject(error);
-              return;
-            }
-            pushTarget?.push(smylib.clone(value));
+            const val = this.filterUniqs(uniqs, pushTarget, value);
+            if (val == null) break;
+
+            pushTarget?.push(smylib.clone(val));
             break;
+          }
           case 'toggle':
             if (!smylib.isArr(target)) {
               reject(`Целевой объект (${smylib.typeOf(target)?.replace('is', '')}) не является массивом`);
@@ -1120,12 +1116,9 @@ export class Executer {
           case 'concat':
             const concatTarget = smylib.isArr(target) ? target : (penultimate[lastTrace] = []);
             if (smylib.isArr(value)) {
-              const error = this.ununiqErrorMessage(uniqs, concatTarget, value);
-              if (error) {
-                reject(error);
-                return;
-              }
-              smylib.clone(value).forEach(val => concatTarget.push(val));
+              const val: [] = this.filterUniqs(uniqs, concatTarget, value);
+              if (val == null) break;
+              concatTarget.push(...smylib.clone(val));
             }
             break;
           case 'remove':

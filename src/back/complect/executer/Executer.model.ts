@@ -34,7 +34,7 @@ export interface ExecuteDoItProps {
   value: any;
   realArgs?: ExecutionArgs;
   auth?: LocalSokiAuth | null;
-  uniqs?: string[] | Record<string, string>;
+  uniqs?: string[];
 }
 
 export interface ExecuteFeedbacks {
@@ -137,7 +137,7 @@ export interface ExecutionReal<Value = unknown, Args = Record<string, unknown>, 
     ShortRealRule<Value, Args, Vars> {
   method: ExecutionMethod;
   value: any | ((props: ExecuteDoItProps) => any);
-  uniqs?: string[] | Record<string, string>;
+  uniqs?: string[];
   fix: ExecutionRuleTrackBeat;
   fixedAccesses?: FixedAccesses;
   setSystems?: ActionBoxSetSystems[];
