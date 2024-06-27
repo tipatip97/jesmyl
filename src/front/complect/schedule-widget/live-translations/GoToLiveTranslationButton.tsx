@@ -1,9 +1,8 @@
+import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
 import useIndexNav, { indexScheduleWidgetTranslationPagePhase } from '../../../components/index/complect/useIndexNav';
 import IconButton from '../../the-icon/IconButton';
-import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
-import { IScheduleWidget } from '../ScheduleWidget.model';
 
-export const ScheduleWidgetGoToLiveTranslationButton = ({ schedule }: { schedule: IScheduleWidget }) => {
+export const ScheduleWidgetGoToLiveTranslationButton = () => {
   const indexNav = useIndexNav();
 
   if (indexNav.appRouteData.schTranslationComws === undefined) return;
@@ -13,11 +12,7 @@ export const ScheduleWidgetGoToLiveTranslationButton = ({ schedule }: { schedule
       <IconButton
         Icon={IconComputerStrokeRounded}
         className="margin-gap-v"
-        onClick={() => {
-          indexNav.jumpTo(indexScheduleWidgetTranslationPagePhase);
-          indexNav.setAppRouteData({ schw: schedule.w });
-        }}
-        postfix="Моя трансляция"
+        onClick={() => indexNav.jumpTo(indexScheduleWidgetTranslationPagePhase)}
       />
     </>
   );

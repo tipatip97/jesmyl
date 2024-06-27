@@ -1,25 +1,29 @@
-import { ReactNode } from 'react';
-import {
-  ScheduleWidgetUserRoleRight,
-  packScheduleWidgetInviteLink,
-  scheduleWidgetUserRights,
-} from '../../../../models';
-import ShareEvaButton from '../../../ShareEvaButton';
-import useModal from '../../../modal/useModal';
-import useToast from '../../../modal/useToast';
-import useQRMaster, { crossApplicationLinkCoder } from '../../../qr-code/useQRMaster';
-import { StrongComponentProps } from '../../../strong-control/Strong.model';
-import StrongEvaButton from '../../../strong-control/StrongEvaButton';
-import IconButton from '../../../the-icon/IconButton';
+import { ReactNode, useState } from 'react';
 import { IconEdit02StrokeRounded } from '../../../../complect/the-icon/icons/edit-02';
 import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
 import { IconNotification01StrokeRounded } from '../../../../complect/the-icon/icons/notification-01';
 import { IconNotificationOff01StrokeRounded } from '../../../../complect/the-icon/icons/notification-off-01';
 import { IconQrCodeStrokeRounded } from '../../../../complect/the-icon/icons/qr-code';
 import { IconUserRemove02StrokeRounded } from '../../../../complect/the-icon/icons/user-remove-02';
+import {
+  ScheduleWidgetUserRoleRight,
+  packScheduleWidgetInviteLink,
+  scheduleWidgetUserRights,
+} from '../../../../models';
+import ShareEvaButton from '../../../ShareEvaButton';
+import Modal from '../../../modal/Modal/Modal';
+import { ModalBody } from '../../../modal/Modal/ModalBody';
+import { ModalHeader } from '../../../modal/Modal/ModalHeader';
+import useToast from '../../../modal/useToast';
+import useQRMaster, { crossApplicationLinkCoder } from '../../../qr-code/useQRMaster';
+import { StrongComponentProps } from '../../../strong-control/Strong.model';
+import StrongEvaButton from '../../../strong-control/StrongEvaButton';
+import IconButton from '../../../the-icon/IconButton';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
+import ScheduleWidgetUserTakePhoto from './TakePhoto';
 import { ScheduleWidgetUserEdit } from './UserEdit';
+import ScheduleWidgetUserPhoto from './UserPhoto';
 
 export default function ScheduleWidgetUser({
   scope,
@@ -39,75 +43,7 @@ export default function ScheduleWidgetUser({
   const { readQR, qrNode } = useQRMaster();
 
   const [toastNode, toast] = useToast();
-  const [modalNode, screen] = useModal(({ header, body }) => {
-    return (
-      <>
-        {header(
-          <div className="flex between flex-gap">
-            <span>
-              {userName}
-              {'- '}
-              {balance < 0
-                ? user.R == null
-                  ? 'Новый'
-                  : 'в блоке'
-                : scheduleWidgetUserRights.texts[balance]?.role?.[0] || 'Неизвестный'}
-            </span>
-            {user.login === undefined && (
-              <StrongEvaButton
-                scope={takeStrongScopeMaker(scope, ' userMi/', user.mi)}
-                fieldName="userData"
-                cud="U"
-                Icon={IconQrCodeStrokeRounded}
-                mapExecArgs={async args => {
-                  return await readQR(data => {
-                    if (data.appName === 'index' && data.key === 'passport') {
-                      const valueLogin = (data.value as { login: '' }).login;
-                      if (rights.schedule.ctrl.users.some(user => valueLogin === user.login)) {
-                        toast('Пользователь уже является участником!', {
-                          mood: 'ko',
-                        });
-                        return;
-                      }
-                    }
-
-                    return {
-                      ...args,
-                      ...(data.value as {}),
-                    };
-                  });
-                }}
-              />
-            )}
-          </div>,
-        )}
-        {body(
-          <>
-            <ScheduleWidgetUserEdit
-              scope={scope}
-              user={user}
-            />
-            <div className="margin-big-gap-t">
-              {user.tgInform === 0 ||
-              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ? (
-                <IconButton
-                  Icon={IconNotificationOff01StrokeRounded}
-                  postfix="Участник не получает TG-уведомления"
-                  disabled
-                />
-              ) : (
-                <IconButton
-                  Icon={IconNotification01StrokeRounded}
-                  postfix="Участник получает TG-уведомления"
-                  disabled
-                />
-              )}
-            </div>
-          </>,
-        )}
-      </>
-    );
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const userNode = (
     <div className="flex flex-gap between margin-gap-v">
@@ -160,7 +96,7 @@ export default function ScheduleWidgetUser({
             <IconButton
               Icon={IconEdit02StrokeRounded}
               className="flex between full-width"
-              onClick={screen}
+              onClick={() => setIsModalOpen(true)}
             />
           </span>
         </>
@@ -170,7 +106,75 @@ export default function ScheduleWidgetUser({
 
   return (
     <>
-      {modalNode}
+      {isModalOpen && (
+        <Modal onClose={setIsModalOpen}>
+          <ModalHeader>
+            <div className="flex between flex-gap">
+              <span>
+                {userName}
+                {'- '}
+                {balance < 0
+                  ? user.R == null
+                    ? 'Новый'
+                    : 'в блоке'
+                  : scheduleWidgetUserRights.texts[balance]?.role?.[0] || 'Неизвестный'}
+              </span>
+              <span className="flex flex-gap">
+                <ScheduleWidgetUserTakePhoto user={user} />
+                {user.login === undefined && (
+                  <StrongEvaButton
+                    scope={takeStrongScopeMaker(scope, ' userMi/', user.mi)}
+                    fieldName="userData"
+                    cud="U"
+                    Icon={IconQrCodeStrokeRounded}
+                    mapExecArgs={async args => {
+                      return await readQR(data => {
+                        if (data.appName === 'index' && data.key === 'passport') {
+                          const valueLogin = (data.value as { login: '' }).login;
+                          if (rights.schedule.ctrl.users.some(user => valueLogin === user.login)) {
+                            toast('Пользователь уже является участником!', { mood: 'ko' });
+                            return;
+                          }
+                        }
+
+                        return {
+                          ...args,
+                          ...(data.value as {}),
+                        };
+                      });
+                    }}
+                  />
+                )}
+              </span>
+            </div>
+          </ModalHeader>
+          <ModalBody>
+            <ScheduleWidgetUserEdit
+              scope={scope}
+              user={user}
+            />
+            <div className="margin-big-gap-t">
+              {user.tgInform === 0 ||
+              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ? (
+                <IconButton
+                  Icon={IconNotificationOff01StrokeRounded}
+                  postfix="Участник не получает TG-уведомления"
+                  disabled
+                />
+              ) : (
+                <IconButton
+                  Icon={IconNotification01StrokeRounded}
+                  postfix="Участник получает TG-уведомления"
+                  disabled
+                />
+              )}
+            </div>
+            <div className="flex center full-width margin-big-gap-t">
+              <ScheduleWidgetUserPhoto user={user} />
+            </div>
+          </ModalBody>
+        </Modal>
+      )}
       {toastNode}
       {qrNode}
       {asUserPlusPrefix === undefined

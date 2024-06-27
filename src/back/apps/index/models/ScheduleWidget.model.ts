@@ -1,6 +1,33 @@
 import { SokiAppName } from '../../../complect/soki/soki.model';
 import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight } from '../rights';
 
+export enum IScheduleWidgetWid {
+  number = 1,
+}
+export enum IScheduleWidgetUserMi {
+  number = 1,
+}
+export enum IScheduleWidgetTeamMi {
+  number = 1,
+}
+export enum IScheduleWidgetTeamGameMi {
+  number = 1,
+}
+export enum IScheduleWidgetDayEventMi {
+  number = 1,
+}
+
+export enum IScheduleWidgetUserCati {
+  number = 1,
+}
+export enum IScheduleWidgetUserUnitMi {
+  number = 1,
+}
+
+export enum IScheduleWidgetUserTgId {
+  number = 1,
+}
+
 export interface ScheduleStorage<TheIconName> {
   list: IScheduleWidget<TheIconName>[];
 }
@@ -12,7 +39,7 @@ export interface IScheduleWidgetLists<TheIconName> {
 
 export interface IScheduleWidgetListUnit {
   mi: number;
-  cat: number;
+  cat: IScheduleWidgetUserCati;
   title: string;
   dsc: string;
 }
@@ -24,7 +51,7 @@ export interface IScheduleWidgetListCat<TheIconName> {
 }
 
 export interface IScheduleWidget<TheIconName> {
-  w: number;
+  w: IScheduleWidgetWid;
   start: number;
   title: string;
   topic: string;
@@ -35,6 +62,7 @@ export interface IScheduleWidget<TheIconName> {
   tatts: ScheduleWidgetAppAttCustomized<TheIconName>[];
   app: SokiAppName;
   ctrl: IScheduleWidgetCtrl<TheIconName>;
+  games?: IScheduleWidgetTeamGames;
   lists: IScheduleWidgetLists<TheIconName>;
   tgInform?: num;
   tgInformTime: number;
@@ -76,7 +104,7 @@ export interface IScheduleWidgetCtrl<TheIconName> {
 }
 
 export interface IScheduleWidgetDayEvent {
-  mi: number;
+  mi: IScheduleWidgetDayEventMi;
   type: number;
   topic?: string;
   dsc?: string;
@@ -109,6 +137,42 @@ export interface ScheduleWidgetAppAttCustomizableValue {
   values?: ScheduleWidgetAppAttCustomizableValueItem[];
 }
 
+export interface IScheduleWidgetTeamCriteria {
+  title: string;
+  sorts: Record<IScheduleWidgetUserMi, number>;
+}
+
+export interface IScheduleWidgetTeamMember {
+  mi: IScheduleWidgetUserMi;
+}
+
+export interface IScheduleWidgetExportableTeam {
+  users: IScheduleWidgetTeamMember[];
+}
+
+export interface IScheduleWidgetTeam extends IScheduleWidgetExportableTeam {
+  title: string;
+  mi: IScheduleWidgetTeamMi;
+}
+
+export enum IScheduleWidgetTeamGameStrikedMemberState {
+  Removed = 1,
+  Exists,
+}
+
+export interface IScheduleWidgetTeamGame {
+  title: string;
+  teams: IScheduleWidgetTeam[];
+  strikedMembers?: Record<IScheduleWidgetUserMi, IScheduleWidgetTeamGameStrikedMemberState>;
+  mi: IScheduleWidgetTeamGameMi;
+}
+
+export interface IScheduleWidgetTeamGames {
+  list: IScheduleWidgetTeamGame[];
+  criterias: IScheduleWidgetTeamCriteria[];
+  strikedUsers?: IScheduleWidgetUserMi[];
+}
+
 export interface IScheduleWidgetRole<TheIconName> {
   mi: number;
   title: string;
@@ -117,17 +181,14 @@ export interface IScheduleWidgetRole<TheIconName> {
   cat?: number;
 }
 
-type Cati = number;
-type UnitMi = number;
-
 export interface IScheduleWidgetUser {
-  mi: number;
+  mi: IScheduleWidgetUserMi;
   login?: string;
   fio?: string;
   nick?: string;
   R?: number;
-  li?: Record<Cati, UnitMi>;
-  tgId?: number;
+  li?: Record<IScheduleWidgetUserCati, IScheduleWidgetUserUnitMi>;
+  tgId?: IScheduleWidgetUserTgId;
   tgInform?: num;
 }
 

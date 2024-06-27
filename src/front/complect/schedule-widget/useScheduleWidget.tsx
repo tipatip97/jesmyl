@@ -1,14 +1,14 @@
 import React, { useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { appAttsStore } from '../../components/complect/appScheduleAttrsStorage';
+import useAuth from '../../components/index/useAuth';
 import {
+  LocalSokiAuth,
   ScheduleWidgetRegType,
   ScheduleWidgetUserRoleRight,
   scheduleWidgetRegTypeRights,
   scheduleWidgetUserRights,
 } from '../../models';
-import { LocalSokiAuth } from '../../models';
-import { appAttsStore } from '../../components/complect/appScheduleAttrsStorage';
-import useAuth from '../../components/index/useAuth';
 import { RootState } from '../../shared/store';
 import mylib, { MyLib } from '../my-lib/MyLib';
 import { strongScopeMakerBuilder } from '../strong-control/useStrongControl';
@@ -47,8 +47,8 @@ export const ScheduleWidgetAppAttsContext = React.createContext<[ScheduleWidgetA
 ]);
 export const useScheduleWidgetAppAttsContext = () => useContext(ScheduleWidgetAppAttsContext);
 
-export const defaultSchwduleWidget: IScheduleWidget = {
-  w: 0,
+export const defaultScheduleWidget: IScheduleWidget = {
+  w: 0 as never,
   start: 0,
   title: '',
   topic: '',
@@ -64,6 +64,10 @@ export const defaultSchwduleWidget: IScheduleWidget = {
     type: ScheduleWidgetRegType.Private,
     users: [],
     defu: ScheduleWidgetUserRoleRight.Read,
+  },
+  games: {
+    criterias: [],
+    list: [],
   },
   lists: {
     cats: [],
@@ -100,7 +104,7 @@ export const ScheduleWidgetRightsContext = React.createContext<ScheduleWidgetRig
   isSwHideContent: false,
   isSwPublic: false,
   auth: { level: 0 },
-  schedule: defaultSchwduleWidget,
+  schedule: defaultScheduleWidget,
 });
 export const useScheduleWidgetRightsContext = () => useContext(ScheduleWidgetRightsContext);
 export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?: ScheduleWidgetRights) => {
@@ -122,7 +126,7 @@ export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?
         isSwPublic: false,
         isSwPrivate: false,
         myUser: undefined,
-        schedule: defaultSchwduleWidget,
+        schedule: defaultScheduleWidget,
       };
 
     const myUser = schedule.ctrl.users.find(user => user.login === auth.login);
@@ -195,6 +199,8 @@ export type ScheduleWidgetScopePhase =
   | 'roleMi'
   | 'userMi'
   | 'cati'
+  | 'criti'
+  | 'gameMi'
   | 'unitMi';
 
 export const takeStrongScopeMaker = strongScopeMakerBuilder<ScheduleWidgetScopePhase>();

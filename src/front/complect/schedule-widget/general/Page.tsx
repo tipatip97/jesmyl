@@ -10,6 +10,7 @@ import ScheduleWidget from '../ScheduleWidget';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 import useScheduleWidget, { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
 import ScheduleCreateWidgetButton from './CreateButton';
+import { ScheduleWidgetGoToLiveTranslationButton } from '../live-translations/GoToLiveTranslationButton';
 
 export default function ScheduleWidgetPage(
   props: Omit<PhaseContainerConfigurerProps, 'content' | 'className'> & {
@@ -32,6 +33,7 @@ export default function ScheduleWidgetPage(
       head={
         <span className="flex flex-gap margin-gap">
           {connectionNode}
+          <ScheduleWidgetGoToLiveTranslationButton />
           <StrongClipboardPicker />
           {props.head}
         </span>

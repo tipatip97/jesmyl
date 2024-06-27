@@ -1,8 +1,3 @@
-import useModal from '../../modal/useModal';
-import { StrongComponentProps } from '../../strong-control/Strong.model';
-import StrongDropdown from '../../strong-control/StrongDropdown';
-import StrongEvaButton from '../../strong-control/StrongEvaButton';
-import IconButton from '../../the-icon/IconButton';
 import { IconArrowRight01StrokeRounded } from '../../../complect/the-icon/icons/arrow-right-01';
 import { IconCheckmarkSquare02StrokeRounded } from '../../../complect/the-icon/icons/checkmark-square-02';
 import { IconNotification01StrokeRounded } from '../../../complect/the-icon/icons/notification-01';
@@ -10,8 +5,14 @@ import { IconNotificationOff01StrokeRounded } from '../../../complect/the-icon/i
 import { IconSettings01StrokeRounded } from '../../../complect/the-icon/icons/settings-01';
 import { IconSquareStrokeRounded } from '../../../complect/the-icon/icons/square';
 import { IconUserStrokeRounded } from '../../../complect/the-icon/icons/user';
+import useModal from '../../modal/useModal';
+import { StrongComponentProps } from '../../strong-control/Strong.model';
+import StrongDropdown from '../../strong-control/StrongDropdown';
+import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import IconButton from '../../the-icon/IconButton';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import ScheduleWidgetRegisterType from './RegisterType';
+import { ScheduleWidgetUserAddByExcel } from './users/excel/AddByExcel';
 import { ScheduleWidgetUserByLinkInvite } from './users/ByLinkInvite';
 import { ScheduleWidgetUserByQrRedactor } from './users/ByQrRedactor';
 import ScheduleWidgetUserList from './users/UserList';
@@ -40,7 +41,8 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                 rights.isCanRedactUsers &&
                 (isExpand =>
                   isExpand && (
-                    <span className="flex flex-gap">
+                    <span className="flex flex-gap qwq">
+                      <ScheduleWidgetUserAddByExcel scope={scope} />
                       <ScheduleWidgetUserByLinkInvite scope={scope} />
                       <ScheduleWidgetUserByQrRedactor scope={scope} />
                     </span>

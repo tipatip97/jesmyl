@@ -1,5 +1,9 @@
+import { filer } from '../../../complect/filer/Filer';
 import { ActionBox, ActionBoxOnFinalCallback, ActionBoxValue } from '../../../models';
+import smylib from '../../../shared/SMyLib';
+import { makeTwiceKnownName } from '../complect/makeTwiceKnownName';
 import { IScheduleWidget } from '../models/ScheduleWidget.model';
+import { NounPronsType } from '../models/nounProns.model';
 import { ScheduleWidgetUserRoleRight, scheduleWidgetRegTypeRights, scheduleWidgetUserRights } from '../rights';
 import { indexScheduleSetMessageInform } from './tg-bot-inform/tg-inform';
 
@@ -8,6 +12,8 @@ const emptyArray: [] = [];
 const onTgInformingChangeSuccess: ActionBoxOnFinalCallback = (props, _value, auth) => {
   if (props !== null) indexScheduleSetMessageInform(props.schw, auth, props.dayi);
 };
+
+const getNounPronsWords = () => filer.contents.index['nounPronsWords'].data as NounPronsType;
 
 const addUserValue = {
   fio: '{*fio}',
@@ -37,7 +43,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
     users: [
       {
         ...addUserValue,
-        mi: 0,
+        mi: 0 as never,
         R: scheduleWidgetUserRights.getAllRights(),
       },
     ],
@@ -52,6 +58,10 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
     type: scheduleWidgetRegTypeRights.collectRights(),
     defu: scheduleWidgetUserRights.collectRights(ScheduleWidgetUserRoleRight.Read),
   },
+  games: {
+    criterias: [{ title: 'Сила', sorts: {} as never }],
+    list: [],
+  },
   lists: {
     cats: [
       {
@@ -62,7 +72,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
     ],
     units: [
       {
-        cat: 0,
+        cat: 0 as never,
         mi: 1,
         title: 'Первая',
         dsc: '',
@@ -196,6 +206,17 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               setSystems: ['mi'],
             },
           },
+          '<add users>': {
+            scopeNode: 'addUsers',
+            setInEachValueItem: {
+              '.': { R: scheduleWidgetUserRights.collectRights(ScheduleWidgetUserRoleRight.Read) },
+            },
+            U: {
+              setItemSystems: ['mi'],
+              method: 'concat',
+              uniqs: ['fio'],
+            },
+          },
           '/[mi === {userMi}]': {
             scopeNode: 'userMi',
             args: {
@@ -290,6 +311,73 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               },
             },
           },
+        },
+      },
+      '/games': {
+        scopeNode: 'games',
+        expected: { criterias: [], list: [], strikedUsers: [] },
+        '/criterias': {
+          scopeNode: 'criterias',
+          C: {
+            value: {
+              title: '',
+              sorts: [],
+            },
+          },
+          '/{criti}': {
+            scopeNode: 'criti',
+            args: {
+              criti: '#Number',
+            },
+            '/title': {
+              U: {},
+            },
+            '/sorts': {
+              U: {
+                method: 'set_all',
+              },
+            },
+          },
+        },
+        '/list': {
+          C: {
+            setSystems: ['mi'],
+            value: {
+              title: 'Новая игра',
+              teams: [],
+            },
+          },
+          '/[mi === {gameMi}]': {
+            scopeNode: 'gameMi',
+            args: {
+              gameMi: '#Number',
+            },
+            '/title': {
+              U: {},
+            },
+            '/teams': {
+              scopeNode: 'teams',
+              '<create teams>': {
+                setInEachValueItem: {
+                  '.': {
+                    title: () =>
+                      makeTwiceKnownName(
+                        smylib.randomItem(smylib.keys(getNounPronsWords().pronouns)),
+                        smylib.randomItem(smylib.keys(getNounPronsWords().nouns)),
+                      ).join(' '),
+                  },
+                },
+                C: {
+                  setItemSystems: ['mi'],
+                  method: 'set',
+                },
+              },
+            },
+          },
+        },
+        '/strikedUsers': {
+          C: {},
+          D: {},
         },
       },
       '/lists': {

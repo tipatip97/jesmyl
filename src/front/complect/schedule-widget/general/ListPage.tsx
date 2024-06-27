@@ -4,6 +4,7 @@ import PhaseContainerConfigurer from '../../phase-container/PhaseContainerConfig
 import { PhaseContainerConfigurerProps } from '../../phase-container/PhaseContainerConfigurer.model';
 import StrongClipboardPicker from '../../strong-control/field/clipboard/Picker';
 import ScheduleWidget from '../ScheduleWidget';
+import { ScheduleWidgetGoToLiveTranslationButton } from '../live-translations/GoToLiveTranslationButton';
 import { useSchedules } from '../useScheduleWidget';
 import ScheduleCreateWidgetButton from './CreateButton';
 
@@ -19,6 +20,7 @@ export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigu
       head={
         <span className="flex flex-gap margin-gap">
           {connectionNode}
+          <ScheduleWidgetGoToLiveTranslationButton />
           <StrongClipboardPicker />
           {props.head}
         </span>

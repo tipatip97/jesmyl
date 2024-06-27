@@ -1,15 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import useAuth from '../../components/index/useAuth';
-import ShareEvaButton from '../ShareEvaButton';
-import { isTouchDevice } from '../device-differences';
-import { useIsRememberExpand } from '../expand/useIsRememberExpand';
-import mylib from '../my-lib/MyLib';
-import { crossApplicationLinkCoder } from '../qr-code/useQRMaster';
-import StrongButton from '../strong-control/StrongButton';
-import StrongControlDateTimeExtracter from '../strong-control/StrongDateTimeExtracter';
-import StrongEvaButton from '../strong-control/StrongEvaButton';
-import StrongEditableField from '../strong-control/field/StrongEditableField';
 import { IconArrowRight01StrokeRounded } from '../../complect/the-icon/icons/arrow-right-01';
 import { IconBookmark03StrokeRounded } from '../../complect/the-icon/icons/bookmark-03';
 import { IconCalendar03StrokeRounded } from '../../complect/the-icon/icons/calendar-03';
@@ -18,6 +8,15 @@ import { IconFile02StrokeRounded } from '../../complect/the-icon/icons/file-02';
 import { IconPlusSignStrokeRounded } from '../../complect/the-icon/icons/plus-sign';
 import { IconSchoolReportCardStrokeRounded } from '../../complect/the-icon/icons/school-report-card';
 import { IconShapesStrokeRounded } from '../../complect/the-icon/icons/shapes';
+import useAuth from '../../components/index/useAuth';
+import ShareEvaButton from '../ShareEvaButton';
+import { useIsRememberExpand } from '../expand/useIsRememberExpand';
+import mylib from '../my-lib/MyLib';
+import { crossApplicationLinkCoder } from '../qr-code/useQRMaster';
+import StrongButton from '../strong-control/StrongButton';
+import StrongControlDateTimeExtracter from '../strong-control/StrongDateTimeExtracter';
+import StrongEvaButton from '../strong-control/StrongEvaButton';
+import StrongEditableField from '../strong-control/field/StrongEditableField';
 import useIsRedactArea from '../useIsRedactArea';
 import { IScheduleWidget } from './ScheduleWidget.model';
 import ScheduleWidgetCustomAttachments from './atts/custom/CustomAttachments';
@@ -29,7 +28,6 @@ import ScheduleWidgetEventList from './events/EventList';
 import ScheduleWidgetContextWrapper from './general/ContextWrapper';
 import { ScheduleWidgetCopy } from './general/Copy';
 import ScheduleWidgetLists from './lists/Lists';
-import { ScheduleWidgetGoToLiveTranslationButton } from './live-translations/GoToLiveTranslationButton';
 import { ScheduleWidgetWatchLiveTranslationButton } from './live-translations/WatchLiveButton';
 import { ScheduleWidgetMyUserTgInform } from './tg-inform/UserTgInform';
 import {
@@ -225,7 +223,6 @@ export default function ScheduleWidget({
                   />
 
                   <ScheduleWidgetWatchLiveTranslationButton schedule={schedule} />
-                  {isTouchDevice || <ScheduleWidgetGoToLiveTranslationButton schedule={schedule} />}
 
                   {isRedact && (
                     <>

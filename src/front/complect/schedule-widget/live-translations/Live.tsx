@@ -20,7 +20,7 @@ export const ScheduleWidgetLiveTranslation = ({
   onClose: (isOpen: boolean) => void;
   schedule: IScheduleWidget;
 }) => {
-  const liveData: IndexStateSchLiveData = useStorageValueGetter(indexStorage, 'liveData', {});
+  const liveData: IndexStateSchLiveData = useStorageValueGetter(indexStorage, 'liveData', {} as never);
   const [subscribeData, setSubscribeData] = useState<keyof IndexStateSchLiveData | und>();
   const [messageNode, setMessageNode] = useState<JSX.Element | null>(null);
 
@@ -85,7 +85,7 @@ export const ScheduleWidgetLiveTranslation = ({
   }, [liveData, onClose, schedule.w, subscribeData]);
 
   useEffect(() => {
-    soki.send({ subscribe: 'liveData', subscribeData }, 'index');
+    soki.send({ subscribe: 'liveData', subscribeData: subscribeData }, 'index');
 
     return () => {
       soki.send({ unsubscribe: 'liveData' }, 'index');

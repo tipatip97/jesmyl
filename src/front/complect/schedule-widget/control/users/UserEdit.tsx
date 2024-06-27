@@ -1,9 +1,12 @@
-import { packScheduleWidgetInviteLink } from '../../../../models';
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../../models';
+import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
+import {
+  ScheduleWidgetUserRoleRight,
+  packScheduleWidgetInviteLink,
+  scheduleWidgetUserRights,
+} from '../../../../models';
 import { crossApplicationLinkCoder } from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
-import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetRightControlList from '../RightControlList';

@@ -1,15 +1,16 @@
-import useIsExpand from '../../expand/useIsExpand';
-import useModal from '../../modal/useModal';
-import { StrongComponentProps } from '../../strong-control/Strong.model';
-import StrongEvaButton from '../../strong-control/StrongEvaButton';
-import StrongEditableField from '../../strong-control/field/StrongEditableField';
-import TheIcon from '../../the-icon/TheIcon';
 import { IconBookmark03StrokeRounded } from '../../../complect/the-icon/icons/bookmark-03';
 import { IconCheckmarkSquare02StrokeRounded } from '../../../complect/the-icon/icons/checkmark-square-02';
 import { IconEdit02StrokeRounded } from '../../../complect/the-icon/icons/edit-02';
 import { IconFile02StrokeRounded } from '../../../complect/the-icon/icons/file-02';
 import { IconSquareStrokeRounded } from '../../../complect/the-icon/icons/square';
 import { IconUserRemove02StrokeRounded } from '../../../complect/the-icon/icons/user-remove-02';
+import { IScheduleWidgetUserCati } from '../../../models';
+import useIsExpand from '../../expand/useIsExpand';
+import useModal from '../../modal/useModal';
+import { StrongComponentProps } from '../../strong-control/Strong.model';
+import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import StrongEditableField from '../../strong-control/field/StrongEditableField';
+import TheIcon from '../../the-icon/TheIcon';
 import { IScheduleWidgetListCat, IScheduleWidgetListUnit } from '../ScheduleWidget.model';
 import ScheduleWidgetUserList from '../control/users/UserList';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useScheduleWidget';
@@ -26,18 +27,13 @@ export default function ScheduleWidgetListUnit({
   scheduleScope: string;
   unit: IScheduleWidgetListUnit;
   cat: IScheduleWidgetListCat;
-  cati: number;
+  cati: IScheduleWidgetUserCati;
   catScopePostfix: string;
   shortTitles: [string, string];
 }>) {
   const rights = useScheduleWidgetRightsContext();
   const unitScope = takeStrongScopeMaker(scope, ' unitMi/', unit.mi);
   const title = <>{unit.title || <span className="text-italic">Без названия</span>}</>;
-  const [unitTitile, isExpand] = useIsExpand(
-    false,
-    title,
-    rights.isCanRedact ? isExpand => isExpand && <IconEdit02StrokeRounded onClick={screen} /> : null,
-  );
 
   const [modalNode, screen] = useModal(({ header, body }) => {
     return (
@@ -126,6 +122,12 @@ export default function ScheduleWidgetListUnit({
       </>
     );
   });
+
+  const [unitTitile, isExpand] = useIsExpand(
+    false,
+    title,
+    rights.isCanRedact ? isExpand => isExpand && <IconEdit02StrokeRounded onClick={screen} /> : null,
+  );
 
   return (
     <>
