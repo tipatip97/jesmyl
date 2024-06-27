@@ -1,5 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import Portal from '../popups/[complect]/Portal';
+import { StyledModal, StyledModalScreen, StyledModalScreenWrapper } from './styled';
 
 type ModalConfigMood = 'norm' | 'ko' | 'ok';
 
@@ -29,11 +30,13 @@ export default function useToast(
   return [
     config.isOpen && (
       <Portal>
-        <div className="modal-application-screen type_toast">
-          <div className="modal-screen-wrapper type_toast">
-            <div className={'modal-screen type_toast mood mood_' + (topConfig ?? config).mood}>{config.content}</div>
-          </div>
-        </div>
+        <StyledModal className="type_toast">
+          <StyledModalScreenWrapper className="type_toast">
+            <StyledModalScreen className={'type_toast mood mood_' + (topConfig ?? config).mood}>
+              {config.content}
+            </StyledModalScreen>
+          </StyledModalScreenWrapper>
+        </StyledModal>
       </Portal>
     ),
     useCallback(

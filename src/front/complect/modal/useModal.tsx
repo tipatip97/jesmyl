@@ -1,7 +1,15 @@
 import { ReactNode, TouchEventHandler, useCallback, useEffect, useState } from 'react';
 import { ThrowEvent } from '../eventer/ThrowEvent';
 import Portal from '../popups/[complect]/Portal';
-import './Modal.scss';
+import { useActualRef } from '../useActualRef';
+import {
+  StyledModal,
+  StyledModalBody,
+  StyledModalFooter,
+  StyledModalHeader,
+  StyledModalScreen,
+  StyledModalScreenWrapper,
+} from './styled';
 
 type ModalConfigMood = 'norm' | 'ko' | 'ok';
 
@@ -24,10 +32,10 @@ const defaultUseModalConfig: UseModalConfig = {
 };
 
 const modalElements = {
-  actionButton: (content: ReactNode) => <div className="modal-action-button">{content}</div>,
-  header: (content: ReactNode) => <div className="modal-header">{content}</div>,
-  body: (content: ReactNode) => <div className="modal-body margin-big-gap-v">{content}</div>,
-  footer: (content: ReactNode) => <div className="modal-footer">{content}</div>,
+  actionButton: (content: ReactNode) => <div className="color--7">{content}</div>,
+  header: (content: ReactNode) => <StyledModalHeader>{content}</StyledModalHeader>,
+  body: (content: ReactNode) => <StyledModalBody className="margin-big-gap-v">{content}</StyledModalBody>,
+  footer: (content: ReactNode) => <StyledModalFooter>{content}</StyledModalFooter>,
 };
 
 type Contenter = (elements: typeof modalElements, close: () => void) => JSX.Element;
@@ -38,11 +46,13 @@ export default function useModal(
   isForceOpen?: boolean,
 ): [ReactNode, (_event?: any, content?: Contenter, config?: ScreenModalConfig) => void, () => void] {
   const [config, setConfig] = useState(defaultUseModalConfig);
+  const onOpenSwitchRef = useActualRef(onOpenSwitch);
+
   const close = useCallback(() => {
     config.onOpenSwitch?.();
-    onOpenSwitch?.(false);
+    onOpenSwitchRef.current?.(false);
     setConfig(prev => ({ ...prev, isOpen: false }));
-  }, [config, onOpenSwitch]);
+  }, [config, onOpenSwitchRef]);
 
   useEffect(() => {
     if (isForceOpen || config.isOpen) {
@@ -56,23 +66,23 @@ export default function useModal(
   return [
     (isForceOpen || config.isOpen) && (
       <Portal>
-        <div
+        <StyledModal
           onTouchStart={stoppedEvent}
-          className={'modal-application-screen type_screen' + (isForceOpen === false ? ' force-hidden' : '')}
+          className={'type_screen' + (isForceOpen === false ? ' force-hidden' : '')}
           onClick={event => {
             event.stopPropagation();
             close();
           }}
         >
-          <div className="modal-screen-wrapper type_screen">
-            <div
-              className={'modal-screen type_screen mood mood_' + config.mood}
+          <StyledModalScreenWrapper className="type_screen">
+            <StyledModalScreen
+              className={'type_screen mood mood_' + config.mood}
               onClick={event => event.stopPropagation()}
             >
               {config.content === undefined ? topContent?.(modalElements, close) : config.content(modalElements, close)}
-            </div>
-          </div>
-        </div>
+            </StyledModalScreen>
+          </StyledModalScreenWrapper>
+        </StyledModal>
       </Portal>
     ),
     (_event, content, config) => {
