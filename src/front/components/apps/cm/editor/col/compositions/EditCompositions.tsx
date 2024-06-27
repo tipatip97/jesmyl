@@ -64,7 +64,7 @@ export default function EditCompositions() {
         contentRef={listRef}
         content={
           <>
-            {zcat?.wraps.map(({ com }, wrapi) => {
+            {zcat?.wraps.map(({ item: com }, wrapi) => {
               return (
                 <EditContainerCorrectsInformer
                   key={wrapi}

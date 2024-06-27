@@ -1,6 +1,7 @@
 import { AppName } from '../../app/App.model';
 import { ScheduleStorage } from '../../complect/schedule-widget/ScheduleWidget.model';
 import {
+  IScheduleWidgetWid,
   LocalSokiAuth,
   NounPronsType,
   ServerAuthorizationData,
@@ -38,21 +39,23 @@ export interface IndexState {
 
 export type IndexErrorScope = keyof ClientRegisterData;
 
+export type IndexStateSchLiveDataValue = {
+  fio: string;
+  cm?: {
+    texti: number;
+    comw: number;
+    config: CmTranslationScreenConfig;
+  };
+  bible?: {
+    text: string;
+    addressText: string;
+    config: BibleTranslationScreenConfig;
+  };
+};
+
 export type IndexStateSchLiveData = Record<
-  SokiClientSubData<'sch', 'index'>,
-  {
-    fio: string;
-    cm?: {
-      texti: number;
-      comw: number;
-      config: CmTranslationScreenConfig;
-    };
-    bible?: {
-      text: string;
-      addressText: string;
-      config: BibleTranslationScreenConfig;
-    };
-  }
+  SokiClientSubData<'sch', 'index', IScheduleWidgetWid>,
+  IndexStateSchLiveDataValue
 >;
 
 export interface IndexStateError {

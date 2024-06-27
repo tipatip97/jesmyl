@@ -12,7 +12,7 @@ export default function Admin() {
   const [term, setTerm] = useState('');
   const [userList, setUserList] = useState(users);
   const search = (term: string, users: User[]) => {
-    setUserList(term ? mylib.searchRate<{ user: User }>(users, term, ['name'], 'user').map(({ user }) => user) : users);
+    setUserList(term ? mylib.searchRate(users, term, ['name']).map(({ item }) => item) : users);
   };
 
   useEffect(() => search(term, users), [term, users]);

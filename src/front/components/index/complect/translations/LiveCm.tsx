@@ -9,7 +9,7 @@ import { useMeetings } from '../../../apps/cm/lists/meetings/useMeetings';
 import CmTranslationControlled from '../../../apps/cm/translation/complect/controlled/CmTranslationControlled';
 import { useCmScreenTranslationConfigs } from '../../../apps/cm/translation/complect/controlled/hooks/configs';
 import { useCmScreenTranslationComCurrentTexti } from '../../../apps/cm/translation/complect/hooks/com-texts';
-import { IndexStateSchLiveData } from '../../Index.model';
+import { IndexStateSchLiveDataValue } from '../../Index.model';
 import useIndexNav from '../useIndexNav';
 import { LiveTranslationAppProps } from './model';
 
@@ -45,7 +45,7 @@ export const ScheduleWidgetLiveCmTranslations = ({
     return setTimeoutEffect(() => {
       if (indexNav.appRouteData.schw === undefined || cmNav.appRouteData.ccomw === undefined) return;
 
-      const liveData: IndexStateSchLiveData[never] = {
+      const liveData: IndexStateSchLiveDataValue = {
         fio,
         cm: {
           comw: cmNav.appRouteData.ccomw,

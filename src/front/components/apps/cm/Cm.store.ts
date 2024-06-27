@@ -22,6 +22,9 @@ const initialState: CmState = {
   translationScreenConfigs: [],
   comComments: {},
   isMetronomeHide: true,
+  metronomeAccentes: '1000',
+  metronomeMainSound: '380',
+  metronomeSecondarySound: '200',
 
   numComUpdates: 0,
   numAbsolutePopupUpdates: 0,
@@ -59,6 +62,9 @@ export const slice = createSlice({
       'speedRollKf',
       'translationScreenConfigs',
       'comComments',
+      'metronomeAccentes',
+      'metronomeMainSound',
+      'metronomeSecondarySound',
     ]),
     switchCmFullscreen: (state, action: PayloadAction<boolean | nil>) => {
       state.isCmFullscreen = action.payload ?? !state.isCmFullscreen;

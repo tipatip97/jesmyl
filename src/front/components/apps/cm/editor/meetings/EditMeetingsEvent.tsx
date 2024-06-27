@@ -162,7 +162,7 @@ export default function EditMeetingsEvent() {
                 debounce={500}
                 onTermChange={term => setTerm(term)}
               />
-              {zcat?.wraps.map(({ com }, wrapi) => {
+              {zcat?.wraps.map(({ item: com }, wrapi) => {
                 return (
                   <ComFace
                     key={com.wid}

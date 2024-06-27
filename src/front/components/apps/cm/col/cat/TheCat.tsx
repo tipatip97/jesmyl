@@ -104,7 +104,7 @@ export default function TheCat({ all }: { all?: boolean }) {
               </div>
               <div className="com-list">
                 <ComFaceList
-                  list={cat.wraps.map(({ com }) => com)}
+                  list={cat.wraps.map(({ item }) => item)}
                   isNeedRenderingDelay
                 />
               </div>

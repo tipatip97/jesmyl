@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { SokiClientSubData } from '../../../../models';
 import { soki } from '../../../../soki';
-import { IndexStateSchLiveData } from '../../../index/Index.model';
+import { IndexStateSchLiveDataValue } from '../../../index/Index.model';
 import useIndexNav from '../../../index/complect/useIndexNav';
 import useCmNav from '../../cm/base/useCmNav';
 import { useBibleScreenTranslationConfigs } from './hooks/configs';
@@ -24,7 +24,7 @@ export default function BibleLiveTranslation({ text, fio, subscribeData, address
     return setTimeoutEffect(() => {
       if (indexNav.appRouteData.schw === undefined || cmNav.appRouteData.ccomw === undefined) return;
 
-      const liveData: IndexStateSchLiveData[never] = {
+      const liveData: IndexStateSchLiveDataValue = {
         fio,
         bible: {
           text,

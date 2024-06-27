@@ -170,15 +170,16 @@ export default function CmExternalComListAtt({
               />
               <div className="margin-gap-t full-height full-width over-y-auto">
                 {cat.wraps.map((wrap, wrapi) => {
-                  const isIncludes = value.comws?.includes(wrap.com.wid);
+                  const isIncludes = value.comws?.includes(wrap.item.wid);
 
                   return (
                     <ComFace
-                      key={wrap.com.wid}
+                      key={wrap.item.wid}
                       comi={wrapi}
                       {...wrap}
+                      com={wrap.item}
                       importantOnClick={() => {
-                        setCcom(wrap.com);
+                        setCcom(wrap.item);
                         showComposition();
                       }}
                       description={() => (
@@ -188,7 +189,7 @@ export default function CmExternalComListAtt({
                               scope={scope}
                               fieldName="listKey"
                               fieldKey="comws"
-                              fieldValue={['.', '===', wrap.com.wid]}
+                              fieldValue={['.', '===', wrap.item.wid]}
                               cud="D"
                               Icon={IconMinusSignSquareStrokeRounded}
                               className="color--ko"
@@ -198,7 +199,7 @@ export default function CmExternalComListAtt({
                               scope={scope}
                               fieldName="listKey"
                               fieldKey="comws"
-                              fieldValue={wrap.com.wid}
+                              fieldValue={wrap.item.wid}
                               cud="C"
                               Icon={IconPlusSignCircleStrokeRounded}
                             />

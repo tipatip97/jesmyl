@@ -43,6 +43,9 @@ export interface CmStoraged extends CmEditorStoraged {
   playerHideMode: PlayerHideMode;
   isMetronomeHide: boolean;
   translationScreenConfigs: CmTranslationScreenConfig[];
+  metronomeAccentes: string;
+  metronomeMainSound: `${number}`;
+  metronomeSecondarySound: `${number}`;
 
   speedRollKf: number;
 }

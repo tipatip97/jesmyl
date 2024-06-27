@@ -32,7 +32,7 @@ export class EditableCat extends Cat {
   search(term = this.term) {
     if (term) {
       if (term === '@1') {
-        this.wraps = this.coms.filter(com => !com.audio.trim()).map(com => ({ com }));
+        this.wraps = this.coms.filter(com => !com.audio.trim()).map(com => ({ item: com }));
       } else if (term === '@2') {
         this.wraps = this.coms
           .map(com => {
@@ -44,14 +44,13 @@ export class EditableCat extends Cat {
           })
           .filter(wrap => wrap) as never;
       } else {
-        this.wraps = mylib.searchRate<ComWrap<EditableCom>>(
-          this.coms,
-          term,
-          ['name', mylib.c.POSITION, ['orders', mylib.c.INDEX, 'text']],
-          'com',
-        ) as ComWrap<EditableCom>[];
+        this.wraps = mylib.searchRate(this.coms, term, [
+          'name',
+          mylib.c.POSITION,
+          ['orders', mylib.c.INDEX, 'text'],
+        ]) as ComWrap<EditableCom>[];
       }
-    } else this.wraps = this.coms.map(com => ({ com }));
+    } else this.wraps = this.coms.map(com => ({ item: com }));
 
     this.term = term;
   }

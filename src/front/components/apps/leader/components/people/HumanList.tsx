@@ -2,10 +2,10 @@ import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import { IconMinusSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-square';
-import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
+import { IconMinusSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-square';
+import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import useIsRedactArea from '../../../../../complect/useIsRedactArea';
 import { RootState } from '../../../../../shared/store';
 import PhaseLeaderContainer from '../../phase-container/PhaseLeaderContainer';
@@ -48,9 +48,7 @@ export default function HumanList({
       humans ??
       [];
     const filteredHumans = [
-      ...(term
-        ? mylib.searchRate<{ human: HumanImportable }>(memoHumans, term, ['name'], 'human').map(({ human }) => human)
-        : memoHumans),
+      ...(term ? mylib.searchRate(memoHumans, term, ['name']).map(({ item: human }) => human) : memoHumans),
     ];
 
     if (!term) {

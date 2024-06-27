@@ -20,7 +20,7 @@ export interface IExportableCat extends BaseNamedExportables {
 }
 
 export interface ComWrap<C = Com> {
-  com: C;
+  item: C;
   deep?: number;
   field?: string;
   rate?: number;

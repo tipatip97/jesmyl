@@ -13,4 +13,4 @@ export const GamerOfflineRoomsContext = React.createContext<ContextProps>({
   shareQrData: () => {},
 });
 
-export const useGamerOfflineRoomsContext = () => useContext(GamerOfflineRoomsContext);
+export const useGamerOfflineRoomsContext: () => ContextProps = () => useContext(GamerOfflineRoomsContext);
