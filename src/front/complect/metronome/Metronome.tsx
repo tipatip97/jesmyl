@@ -1,12 +1,15 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import cmStoreActions from '../../components/apps/cm/Cm.store';
+import { RootState } from '../../shared/store';
 import { isTouchDevice } from '../device-differences';
 import KeyboardInput from '../keyboard/KeyboardInput';
 import { IconMinusSignCircleBulkRounded } from '../the-icon/icons/minus-sign-circle';
 import { IconPauseSolidRounded } from '../the-icon/icons/pause';
 import { IconPlaySolidRounded } from '../the-icon/icons/play';
 import { IconPlusSignCircleBulkRounded } from '../the-icon/icons/plus-sign-circle';
-import { useActualRef } from '../useActualRef';
+import { ActualRef, useActualRef } from '../useActualRef';
 
 interface Props {
   meterSize: 3 | 4 | und;
@@ -15,16 +18,20 @@ interface Props {
 
 const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
 var context = new AudioContext();
-
+const metronomeAccentesSelector: (state: RootState) => string = state => state.cm.metronomeAccentes;
+const metronomeMainSoundSelector: (state: RootState) => string = state => state.cm.metronomeMainSound;
+const metronomeSecondarySoundSelector: (state: RootState) => string = state => state.cm.metronomeSecondarySound;
 let lastTs: number;
 
 export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
+  const dispatch = useDispatch();
   const [userBpm, setUserBpm] = useState(bpm);
   const [userMeterSize, setUserMeterSize] = useState(meterSize);
   const currentDotMemo = useMemo(() => ({ current: 0 }), []);
-  const [accentes, setAccentes] = useState('1000');
+  const accentes: ActualRef<string> = useActualRef(useSelector(metronomeAccentesSelector));
+  const metronomeMainSound: string = useSelector(metronomeMainSoundSelector);
+  const metronomeSecondarySound: string = useSelector(metronomeSecondarySoundSelector);
   const actualUserMeterSize = useActualRef(userMeterSize);
-  const actualAccentes = useActualRef(accentes);
   const actualUserBpm = useActualRef(userBpm);
 
   const [isPlay, setIsPlay] = useState(false);
@@ -71,7 +78,7 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
       if (curTime < context.currentTime + 0.1) {
         var note = context.createOscillator();
 
-        if (actualAccentes.current[currentDotMemo.current] === '1') note.frequency.value = accentPitch;
+        if (accentes.current[currentDotMemo.current] === '1') note.frequency.value = accentPitch;
         else note.frequency.value = secondaryPitch;
 
         note.connect(context.destination);
@@ -108,41 +115,16 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
       accentRangeNode.removeEventListener('input', onSecondaryRangeChange);
       secondaryRangeNode.removeEventListener('input', onAccentRangeChange);
     };
-  }, [actualAccentes, actualUserBpm, actualUserMeterSize, currentDotMemo, isPlay]);
+  }, [accentes, actualUserBpm, actualUserMeterSize, currentDotMemo, isPlay]);
 
   return (
-    <div className="com-metronome flex around full-width">
+    <Main className="com-metronome flex around full-width">
       <div
         ref={playButtonRef}
         className="pointer"
       >
         {isPlay ? <IconPauseSolidRounded /> : <IconPlaySolidRounded />}
       </div>
-      <StyledMeterDots
-        ref={meterDotsRef}
-        className="flex flex-gap"
-      >
-        {Array(userMeterSize)
-          .fill(1)
-          .map((_und, doti) => {
-            return (
-              <i
-                key={doti}
-                className={`strong-size${accentes[doti] === '1' ? ' accent' : ''}`}
-                onClick={() =>
-                  setAccentes(
-                    accentes
-                      .split('')
-                      .map((num, numi) => (numi === doti ? (num === '1' ? '0' : '1') : num))
-                      .join(''),
-                  )
-                }
-              />
-            );
-          })}
-      </StyledMeterDots>
-      <div onClick={() => setUserMeterSize(userMeterSize === 3 ? 4 : 3)}>{userMeterSize}/4</div>
-
       <label className="flex column center flex-gap">
         <IconMinusSignCircleBulkRounded
           className="pointer"
@@ -164,25 +146,71 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
         onMouseDown={isTouchDevice ? undefined : touchBpm}
         onTouchStart={isTouchDevice ? touchBpm : undefined}
       />
+      <StyledMeterDots
+        ref={meterDotsRef}
+        className="flex flex-gap"
+      >
+        {Array(userMeterSize)
+          .fill(1)
+          .map((_und, doti) => {
+            return (
+              <i
+                key={doti}
+                className={`strong-size${accentes.current[doti] === '1' ? ' accent' : ''}`}
+                onClick={() =>
+                  dispatch(
+                    cmStoreActions.metronomeAccentes(
+                      accentes.current
+                        .split('')
+                        .map((num, numi) => (numi === doti ? (num === '1' ? '0' : '1') : num))
+                        .join(''),
+                    ),
+                  )
+                }
+              />
+            );
+          })}
+      </StyledMeterDots>
+      <div onClick={() => setUserMeterSize(userMeterSize === 3 ? 4 : 3)}>{userMeterSize}/4</div>
+
       <div className="flex column">
         <input
           ref={accentRangeRef}
+          className="main"
           type="range"
           min="0"
           max="500"
-          defaultValue="380"
+          defaultValue={metronomeMainSound}
+          onChange={event => {
+            const value = event.currentTarget.value;
+            clearTimeout(changeMainSoundTimeout);
+            changeMainSoundTimeout = setTimeout(() => {
+              dispatch(cmStoreActions.metronomeMainSound(`${+value}`));
+            }, 300);
+          }}
         />
         <input
           ref={secondaryRangeRef}
+          className="secondary"
           type="range"
           min="0"
           max="500"
-          defaultValue="200"
+          defaultValue={metronomeSecondarySound}
+          onChange={event => {
+            const value = event.currentTarget.value;
+            clearTimeout(changeSecondarySoundTimeout);
+            changeSecondarySoundTimeout = setTimeout(() => {
+              dispatch(cmStoreActions.metronomeSecondarySound(`${+value}`));
+            }, 300);
+          }}
         />
       </div>
-    </div>
+    </Main>
   );
 };
+
+let changeMainSoundTimeout: TimeOut;
+let changeSecondarySoundTimeout: TimeOut;
 
 const PulseAnimationName1 = ['pulse1'] as const;
 const PulseAnimationName2 = ['pulse2'] as const;
@@ -234,4 +262,71 @@ const StyledTapButton = styled.div`
 
   background-color: var(--color--7);
   border-radius: var(--size);
+`;
+
+const Main = styled.div`
+  --dot-size: 10px;
+
+  input[type='range'].secondary {
+    opacity: 0.7;
+  }
+
+  /*********** Baseline, reset styles ***********/
+  input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  /* Removes default focus */
+  input[type='range']:focus {
+    outline: none;
+  }
+
+  /******** Chrome, Safari, Opera and Edge Chromium styles ********/
+  /* slider track */
+  input[type='range']::-webkit-slider-runnable-track {
+    background-color: var(--color--7);
+    border-radius: 4rem;
+    height: var(--dot-size);
+  }
+
+  /* slider thumb */
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: 2px; /* Centers thumb on the track */
+    background-color: #808080;
+    border-radius: var(--dot-size);
+    height: var(--dot-size);
+    width: var(--dot-size);
+  }
+
+  input[type='range']:focus::-webkit-slider-thumb {
+    outline: 3px solid #808080;
+    outline-offset: 0.125rem;
+  }
+
+  /*********** Firefox styles ***********/
+  /* slider track */
+  input[type='range']::-moz-range-track {
+    background-color: var(--color--7);
+    border-radius: var(--dot-size);
+    height: var(--dot-size);
+  }
+
+  /* slider thumb */
+  input[type='range']::-moz-range-thumb {
+    background-color: #808080;
+    border: none; /*Removes extra border that FF applies*/
+    border-radius: var(--dot-size);
+    height: var(--dot-size);
+    width: var(--dot-size);
+  }
+
+  input[type='range']:focus::-moz-range-thumb {
+    outline: 3px solid #808080;
+    outline-offset: 0.125rem;
+  }
 `;
