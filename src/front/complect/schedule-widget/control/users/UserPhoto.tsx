@@ -6,9 +6,11 @@ import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 interface Props {
   user: IScheduleWidgetUser;
   justRenderItOnEmpty?: React.ReactNode;
+  or?: React.ReactNode;
+  className?: string;
 }
 
-export default function ScheduleWidgetUserPhoto({ user, justRenderItOnEmpty }: Props) {
+export default function ScheduleWidgetUserPhoto({ user, justRenderItOnEmpty, className, or }: Props) {
   const rights = useScheduleWidgetRightsContext();
   const [src, setSrc] = useState('');
 
@@ -26,11 +28,14 @@ export default function ScheduleWidgetUserPhoto({ user, justRenderItOnEmpty }: P
 
   return (
     <>
-      {src !== '' && (
+      {src !== '' ? (
         <img
           src={src}
           alt=""
+          className={className}
         />
+      ) : (
+        or
       )}
     </>
   );

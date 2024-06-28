@@ -6,18 +6,21 @@ import { IScheduleWidgetUser } from '../../../../ScheduleWidget.model';
 import { HistoryAdder } from './model';
 
 interface Props {
+  start: number;
+  end: number;
   addInHistoryRef: { current: HistoryAdder };
   setStart: (start: number) => void;
   setEnd: (end: number) => void;
-  setCorrect: (correct: 'left' | 'right' | null) => void;
+  setCorrect: (correct: 'left' | 'right' | nil) => void;
   setSortedUsers: (users: IScheduleWidgetUser[]) => void;
+  sortedUsers: IScheduleWidgetUser[];
 }
 
 interface HistoryItem {
   start: number;
   end: number;
   users: IScheduleWidgetUser[];
-  correct: 'left' | 'right';
+  correct?: 'left' | 'right';
 }
 
 const emptyArr: [] = [];
@@ -28,6 +31,9 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenHistory({
   setSortedUsers,
   setStart,
   setCorrect,
+  end,
+  start,
+  sortedUsers,
 }: Props) {
   const [history, setHistory] = useState<HistoryItem[]>(emptyArr);
   const [point, setPoint] = useState<number | null>(null);
@@ -84,6 +90,9 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenHistory({
           const newPoint = point === null ? history.length - 1 : point - 1;
           setPoint(newPoint);
           setItem(newPoint);
+
+          if (point !== null) return;
+          setHistory([...history, { start, end, users: sortedUsers }]);
         }}
       />
       <StyledRedo
@@ -123,7 +132,7 @@ const StyledHistory = styled.div<{ $historyLength: number; $point: number | null
             ${disabledButtonCss}
           }
         `
-      : props.$point === null || props.$historyLength <= props.$point
+      : props.$point === null || props.$historyLength - 1 <= props.$point
         ? css`
             ${StyledRedo} {
               ${disabledButtonCss}

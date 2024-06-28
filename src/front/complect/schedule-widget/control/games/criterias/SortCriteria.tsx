@@ -72,7 +72,7 @@ export default function ScheduleWidgetSortCriteria({ scope, criteria }: StrongCo
         uncriteriedUsers={uncriteriedUsers}
         usersForSort={usersForSort}
         close={close}
-        insertUser={insertUser}
+        singleInsertUser={insertUser}
       />
     );
   });
