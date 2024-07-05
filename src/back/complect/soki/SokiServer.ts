@@ -40,6 +40,8 @@ export class SokiServer extends SokiServerDownloads {
         if (await this.doOnServiceActions(doProps)) return;
         if (await this.doOnSubscribes(doProps)) return;
         if (await this.doOnExecs(doProps)) return;
+        if (await this.doOnShareData(doProps)) return;
+        if (await this.doOnGetShared(doProps)) return;
         if (await this.doOnDownloads(doProps)) return;
       });
 

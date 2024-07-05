@@ -2,6 +2,7 @@ import { User } from 'node-telegram-bot-api';
 import WebSocket from 'ws';
 import { ExecutionDict, ExecutionReal } from '../executer/Executer.model';
 import { SimpleKeyValue } from '../filer/Filer.model';
+import { SokiSharedKey, SokiSharedValueType } from './values';
 
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible'] as const;
 export type SokiAppName = (typeof sokiAppNames)[number];
@@ -47,7 +48,17 @@ export interface SokiServerEvent {
     key: string;
     value: string;
   };
+  sharedData?: SokiSharedData;
 }
+
+export type SokiSharedData = {
+  key: SokiSharedKey;
+  value: Record<string, unknown>;
+};
+
+export type SokiSharedDataValuesBox = Partial<{
+  [Key in SokiSharedKey]: (data: SokiSharedValueType[Key]) => void;
+}>;
 
 export type SokiClientUpdateCortage = [
   number | nil, // index last update
@@ -77,6 +88,14 @@ export interface SokiClientEventBody {
   unsubscribe?: SokiSubscribtionName;
   liveData?: null | Record<SokiClientSubData, unknown>;
   download?: string;
+  shareData?: {
+    key: SokiSharedKey;
+    value: Record<string, unknown>;
+  };
+  getShared?: {
+    prefix?: string;
+    key: SokiSharedKey;
+  };
 }
 
 export type SokiClientSubData<
