@@ -29,6 +29,7 @@ export const renderComponentInNewWindow = (
   url?: string | URL,
   target?: string,
   features?: string,
+  htmlNode?: HTMLElement,
 ) => {
   const linkNode = document.querySelector("link[href][rel='stylesheet']") as HTMLLinkElement | null;
 
@@ -54,8 +55,11 @@ export const renderComponentInNewWindow = (
     div.classList.add('above-container');
     win.document.body.appendChild(div);
 
-    renderApplication(typeof reactNode === 'function' ? reactNode(win as never) : reactNode, div);
+    if (htmlNode !== undefined) div.appendChild(htmlNode);
+    else renderApplication(typeof reactNode === 'function' ? reactNode(win as never) : reactNode, div);
   }
+
+  return win;
 };
 
 // If you want your app to work offline and load faster, you can change
