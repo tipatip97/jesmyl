@@ -23,7 +23,7 @@ interface Props extends TranslationScreenProps {
   isVisible: boolean;
 }
 
-export default memo(function BibleTranslationScreen(props: Props) {
+export const BibleTranslationScreen = memo(function BibleTranslationScreen(props: Props) {
   const [isChangeAddressPanelHeight, setIsChangeAddressPanelHeight] = useState(true);
 
   const wrapperRef = useRef<HTMLDivElement>(null);

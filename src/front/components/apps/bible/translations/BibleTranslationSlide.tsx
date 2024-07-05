@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BibleTranslationAddress } from '../model';
 import { BibleTranslationScreenConfig } from './model';
-import BibleTranslationScreen from './screen/BibleTranslationScreen';
+import { BibleTranslationScreen } from './screen/BibleTranslationScreen';
 
 interface Props {
   text: string;

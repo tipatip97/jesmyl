@@ -3,7 +3,7 @@ import { justBibleStorageSet } from '../hooks/storage';
 import BibleModulesTranslationsRedactButton from './Add';
 import { useBibleMyTranslates, useBibleShowTranslates } from './hooks';
 
-export default memo(function BibleModulesTranslations(): JSX.Element {
+export const BibleModulesTranslations = memo(function BibleModules(): JSX.Element {
   const myTranslates = useBibleMyTranslates();
   const showTranslates = useBibleShowTranslates();
 

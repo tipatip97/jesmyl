@@ -5,7 +5,7 @@ import {
 } from '../../../+complect/translations/hooks/configs';
 import { useIsScreenTranslationTextVisible } from '../../../+complect/translations/hooks/is-visible';
 import { useBibleScreenTranslationConfig } from '../hooks/configs';
-import BibleTranslationScreen from './BibleTranslationScreen';
+import { BibleTranslationScreen } from './BibleTranslationScreen';
 
 export default function BibleTranslationCurrentScreen(props: TranslationScreenProps) {
   const currentConfigi = useScreenTranslationCurrentConfigi();

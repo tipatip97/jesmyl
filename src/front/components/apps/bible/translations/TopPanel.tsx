@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TranslationSlidePreview } from '../../+complect/translations/controls/Preview';
 import BibleLists from './lists/Lists';
 
-export default memo(function BibleTranslationControlledTopPanel(): JSX.Element {
+export const BibleTranslationControlledTopPanel = memo(function TopPanel(): JSX.Element {
   const [isPreview, setIsPreview] = useState(true);
 
   return (

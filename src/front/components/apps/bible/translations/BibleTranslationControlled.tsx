@@ -5,9 +5,9 @@ import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigur
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { justBibleStorageSet } from '../hooks/storage';
 import { useLoadBibleChaptersCombine } from '../hooks/texts';
-import BibleModulesTranslations from '../translates/Translations';
+import { BibleModulesTranslations } from '../translates/Translations';
 import BibleTranslationControlledBottomPanel from './BottomPanel';
-import BibleTranslationControlledTopPanel from './TopPanel';
+import { BibleTranslationControlledTopPanel } from './TopPanel';
 import BibleSearchPanel from './search/Panel';
 
 interface Props {
