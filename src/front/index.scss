@@ -83,6 +83,10 @@ body,
   background-color: var(--color--ko);
 }
 
+.bgcolor--white {
+  background-color: white;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
   outline: 0;
@@ -286,6 +290,10 @@ textarea {
 
 .vertical-middle {
   vertical-align: middle;
+}
+
+.vertical-top {
+  vertical-align: top;
 }
 
 .children-middle {
