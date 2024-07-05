@@ -39,7 +39,7 @@ export interface IndexState {
 
 export type IndexErrorScope = keyof ClientRegisterData;
 
-export type IndexStateSchLiveDataValue = {
+export type IndexSchWTranslationLiveDataValue = {
   fio: string;
   cm?: {
     texti: number;
@@ -51,12 +51,12 @@ export type IndexStateSchLiveDataValue = {
     addressText: string;
     config: BibleTranslationScreenConfig;
   };
+  markdown?: string;
 };
 
-export type IndexStateSchLiveData = Record<
-  SokiClientSubData<'sch', 'index', IScheduleWidgetWid>,
-  IndexStateSchLiveDataValue
->;
+export type ScheduleWidgetTranslationLiveDataKey = SokiClientSubData<'sch', 'index', IScheduleWidgetWid>;
+
+export type IndexStateSchLiveData = Record<ScheduleWidgetTranslationLiveDataKey, IndexSchWTranslationLiveDataValue>;
 
 export interface IndexStateError {
   message?: string | nil;

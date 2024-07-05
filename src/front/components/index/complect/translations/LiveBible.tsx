@@ -9,41 +9,44 @@ import BibleTranslationControlled from '../../../apps/bible/translations/BibleTr
 import useIndexNav from '../useIndexNav';
 import { LiveTranslationAppProps } from './model';
 
-export const IndexScheduleWidgetBibleTranslations: React.FC<LiveTranslationAppProps> = memo(
-  function IndexScheduleWidgetBibleTranslations({ isCantTranslateLive, subscribeData, fio, headTitle }) {
-    const switchCurrApp = useSwitchCurrentTranslationTextApp();
+export const IndexScheduleWidgetBibleTranslations: React.FC<LiveTranslationAppProps> = memo(function BibleTr({
+  isCantTranslateLive,
+  subscribeData,
+  fio,
+  headTitle,
+}) {
+  const switchCurrApp = useSwitchCurrentTranslationTextApp();
 
-    return (
-      <>
-        {isCantTranslateLive || (
-          <BibleAddress>
-            {(_, addressText) => (
-              <BibleTextContent>
-                {(_, text) => (
-                  <BibleLiveTranslation
-                    text={text}
-                    addressText={addressText}
-                    fio={fio}
-                    isCantTranslateLive={isCantTranslateLive}
-                    subscribeData={subscribeData}
-                  />
-                )}
-              </BibleTextContent>
-            )}
-          </BibleAddress>
-        )}
-        <BibleTranslationControlled
-          head={
-            <IconButton
-              Icon={IconBook02StrokeRounded}
-              className="margin-gap-r"
-              onClick={() => switchCurrApp()}
-            />
-          }
-          useNav={useIndexNav as never}
-          headTitle={headTitle}
-        />
-      </>
-    );
-  },
-);
+  return (
+    <>
+      {isCantTranslateLive || (
+        <BibleAddress>
+          {(_, addressText) => (
+            <BibleTextContent>
+              {(_, text) => (
+                <BibleLiveTranslation
+                  text={text}
+                  addressText={addressText}
+                  fio={fio}
+                  isCantTranslateLive={isCantTranslateLive}
+                  subscribeData={subscribeData}
+                />
+              )}
+            </BibleTextContent>
+          )}
+        </BibleAddress>
+      )}
+      <BibleTranslationControlled
+        head={
+          <IconButton
+            Icon={IconBook02StrokeRounded}
+            className="margin-gap-r"
+            onClick={() => switchCurrApp()}
+          />
+        }
+        useNav={useIndexNav as never}
+        headTitle={headTitle}
+      />
+    </>
+  );
+});
