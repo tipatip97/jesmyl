@@ -16,15 +16,16 @@ import {
   IScheduleWidget,
   IScheduleWidgetRole,
   IScheduleWidgetUser,
+  ScheduleStorage,
   ScheduleWidgetAppAtts,
   ScheduleWidgetAttRefs,
 } from './ScheduleWidget.model';
 import ScheduleKeyValueListAtt from './atts/attachments/key-value/KeyValueListAtt';
 import { scheduleOwnAtts } from './atts/attachments/ownAtts';
 
-const schedulesSelector = (state: RootState) => state.index.schedules;
+const schedulesSelector = (state: RootState): ScheduleStorage => state.index.schedules;
 
-export const useSchedules = () => useSelector(schedulesSelector);
+export const useSchedules: () => ScheduleStorage = () => useSelector(schedulesSelector);
 
 export default function useScheduleWidget(schedulew?: number, schedule?: IScheduleWidget) {
   const schedules = useSchedules();

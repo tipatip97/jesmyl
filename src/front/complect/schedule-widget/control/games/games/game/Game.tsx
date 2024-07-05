@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { ExpandableContent } from '../../../../../expand/ExpandableContent';
 import StrongEditableField from '../../../../../strong-control/field/StrongEditableField';
 import { IconPencilEdit01StrokeRounded } from '../../../../../the-icon/icons/pencil-edit-01';
-import ScheduleWidgetTeamGameTeam from '../Team';
-import ScheduleWidgetTeamGameSetTeamsButton from './SetTeamsButton';
 import { useSchWGameContext, useSchWGameScopeContext } from '../Games';
+import ScheduleWidgetTeamGameTeam from '../Team';
+import { ScheduleWidgetTeamGamePrintTeamsButton } from './PrintTeamsButton';
+import ScheduleWidgetTeamGameSetTeamsButton from './SetTeamsButton';
+import { ScheduleWidgetTeamGameTranslateTeamsButton } from './TranslateTeamsButton';
 
 export default function ScheduleWidgetTeamGame() {
   const [isRenaming, setIsRenaming] = useState(false);
@@ -26,6 +28,8 @@ export default function ScheduleWidgetTeamGame() {
           setIsRenaming(is => !is);
         }}
       />
+      <ScheduleWidgetTeamGameTranslateTeamsButton />
+      <ScheduleWidgetTeamGamePrintTeamsButton />
     </h3>
   );
 

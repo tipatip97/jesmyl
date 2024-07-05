@@ -1,10 +1,5 @@
 import { useMemo, useState } from 'react';
 import { renderComponentInNewWindow } from '../../../..';
-import useFullContent from '../../fullscreen-content/useFullContent';
-import mylib, { MyLib } from '../../my-lib/MyLib';
-import StrongControlDateTimeExtracter from '../../strong-control/StrongDateTimeExtracter';
-import StrongEditableField from '../../strong-control/field/StrongEditableField';
-import IconButton from '../../the-icon/IconButton';
 import { IconBookmark03StrokeRounded } from '../../../complect/the-icon/icons/bookmark-03';
 import { IconClock01StrokeRounded } from '../../../complect/the-icon/icons/clock-01';
 import { IconFavouriteStrokeRounded } from '../../../complect/the-icon/icons/favourite';
@@ -12,6 +7,11 @@ import { IconFile02StrokeRounded } from '../../../complect/the-icon/icons/file-0
 import { IconPrinterStrokeRounded } from '../../../complect/the-icon/icons/printer';
 import { IconViewStrokeRounded } from '../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../complect/the-icon/icons/view-off-slash';
+import useFullContent from '../../fullscreen-content/useFullContent';
+import mylib, { MyLib } from '../../my-lib/MyLib';
+import StrongControlDateTimeExtracter from '../../strong-control/StrongDateTimeExtracter';
+import StrongEditableField from '../../strong-control/field/StrongEditableField';
+import IconButton from '../../the-icon/IconButton';
 import useIsRedactArea from '../../useIsRedactArea';
 import { IScheduleWidget, IScheduleWidgetDay } from '../ScheduleWidget.model';
 import ScheduleAlarmDay from '../alarm/AlarmDay';

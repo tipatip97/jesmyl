@@ -31,6 +31,11 @@ export enum IScheduleWidgetUserTgId {
   number = 1,
 }
 
+export type ScheduleWidgetPhotoKey =
+  | `${IScheduleWidgetWid}/mi:${IScheduleWidgetUserMi}`
+  | `tg.${IScheduleWidgetUserTgId}`
+  | `login.${IScheduleWidgetUserLogin}`;
+
 export interface ScheduleStorage<TheIconName> {
   list: IScheduleWidget<TheIconName>[];
 }
@@ -190,7 +195,7 @@ export interface IScheduleWidgetUser {
   fio?: string;
   nick?: string;
   R?: number;
-  li?: Record<IScheduleWidgetUserCati, IScheduleWidgetUserUnitMi>;
+  li?: Record<number, IScheduleWidgetUserUnitMi>;
   tgId?: IScheduleWidgetUserTgId;
   tgInform?: num;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { getScheduleWidgetUserPhotoStorageKey, scheduleWidgetPhotosStorage } from '../../storage';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
@@ -23,13 +24,13 @@ export default function ScheduleWidgetUserPhoto({ user, justRenderItOnEmpty, cla
   }, [rights.schedule, user]);
 
   if (justRenderItOnEmpty !== undefined) {
-    return <>{src === '' && justRenderItOnEmpty}</>;
+    return <>{src === '' ? justRenderItOnEmpty : or}</>;
   }
 
   return (
     <>
       {src !== '' ? (
-        <img
+        <StyledImg
           src={src}
           alt=""
           className={className}
@@ -40,3 +41,8 @@ export default function ScheduleWidgetUserPhoto({ user, justRenderItOnEmpty, cla
     </>
   );
 }
+
+const StyledImg = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+`;

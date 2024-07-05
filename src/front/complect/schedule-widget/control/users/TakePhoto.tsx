@@ -7,6 +7,7 @@ import { IconCheckmarkBadge01StrokeRounded } from '../../../the-icon/icons/check
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { getScheduleWidgetUserPhotoStorageKey, scheduleWidgetPhotosStorage } from '../../storage';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
+import ScheduleWidgetUserPhoto from './UserPhoto';
 
 interface Props {
   user: IScheduleWidgetUser;
@@ -99,16 +100,19 @@ function Camera({ close, user }: Props & { close: () => void }) {
     <>
       <div className="full-size flex column around">
         {error && <div className="color--ko">{error}</div>}
+        <div>{user.fio}</div>
         <canvas
           ref={canvasRef}
           hidden
         />
         <div className="flex flex-gap column center">
-          {src && (
-            <img
+          {src ? (
+            <StyledImg
               src={src}
               alt=""
             />
+          ) : (
+            <ScheduleWidgetUserPhoto user={user} />
           )}
           <StyledVideoWrapper ref={videoWrapperRef}>
             <StyledVideo
@@ -118,7 +122,7 @@ function Camera({ close, user }: Props & { close: () => void }) {
           </StyledVideoWrapper>
         </div>
         <div className="flex half-width between">
-          <StyledCameraButton
+          <StyledActionButton
             Icon={IconCheckmarkBadge01StrokeRounded}
             disabled={!src}
             onClick={async () => {
@@ -127,7 +131,7 @@ function Camera({ close, user }: Props & { close: () => void }) {
               close();
             }}
           />
-          <StyledCameraButton
+          <StyledActionButton
             Icon={IconCamera01StrokeRounded}
             onClick={() => {
               if (videoRef.current === null || canvasRef.current === null || videoWrapperRef.current === null) return;
@@ -148,8 +152,6 @@ function Camera({ close, user }: Props & { close: () => void }) {
               const width = isLandscape ? videoHeight * (widthProportion / heightProportion) : videoWidth;
               const height = isLandscape ? videoHeight : videoWidth * (heightProportion / widthProportion);
 
-              console.log(videoWidth, videoHeight);
-
               const imageData = context.getImageData(
                 (videoWidth - width) / 2,
                 0,
@@ -157,10 +159,10 @@ function Camera({ close, user }: Props & { close: () => void }) {
                 videoWrapper.clientHeight,
               );
 
-              var newCan = document.createElement('canvas');
+              const newCan = document.createElement('canvas');
               newCan.width = width;
               newCan.height = height;
-              var newCtx = newCan.getContext('2d');
+              const newCtx = newCan.getContext('2d');
 
               if (newCtx === null) return;
 
@@ -177,11 +179,16 @@ function Camera({ close, user }: Props & { close: () => void }) {
   );
 }
 
+const StyledImg = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+`;
+
 const StyledVideo = styled.video`
   max-height: 40dvh;
 `;
 
-const StyledCameraButton = styled(IconButton)`
+const StyledActionButton = styled(IconButton)`
   --icon-scale: 3;
 `;
 

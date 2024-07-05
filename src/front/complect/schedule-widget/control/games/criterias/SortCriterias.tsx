@@ -4,6 +4,7 @@ import { StrongComponentProps } from '../../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
 import { IconPlusSignStrokeRounded } from '../../../../the-icon/icons/plus-sign';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
+import { ScheduleWidgetShareButtons } from '../ShareButtons';
 import ScheduleWidgetSortCriteria from './SortCriteria';
 
 export default function ScheduleWidgetSortCriterias({ scope }: StrongComponentProps) {
@@ -22,6 +23,8 @@ export default function ScheduleWidgetSortCriterias({ scope }: StrongComponentPr
             confirm="Добавить новый критерий?"
           />
         </h3>
+
+        <ScheduleWidgetShareButtons prefix="Фотографии" />
 
         {rights.schedule.games?.criterias.map((criteria, criteriai) => {
           return (

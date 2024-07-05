@@ -4,47 +4,35 @@ import BibleTranslationSlide from '../../../components/apps/bible/translations/B
 import BibleTranslationSlideMiniInfo from '../../../components/apps/bible/translations/BibleTranslationSlideMiniInfo';
 import { CmTranslationSlideMiniInfo } from '../../../components/apps/cm/translation/complect/live/MiniInfo';
 import { CmLiveTranslationScreen } from '../../../components/apps/cm/translation/complect/live/Screen';
-import { IndexStateSchLiveData } from '../../../components/index/Index.model';
+import { IndexStateSchLiveData, ScheduleWidgetTranslationLiveDataKey } from '../../../components/index/Index.model';
 import indexStorage from '../../../components/index/indexStorage';
+import useAuth from '../../../components/index/useAuth';
 import { soki } from '../../../soki';
 import BrutalItem from '../../brutal-item/BrutalItem';
-import useFullContent from '../../fullscreen-content/useFullContent';
 import mylib from '../../my-lib/MyLib';
 import { useStorageValueGetter } from '../../useStorage';
 import { IScheduleWidget } from '../ScheduleWidget.model';
+import { ScheduleWidgetMarkdownLiveTranslation } from './MarkdownLive';
+import { ScreenTranslationControlPanelShowMdButton } from '../../../components/apps/+complect/translations/controls/ShowMdButton';
 
-export const ScheduleWidgetLiveTranslation = ({
-  onClose,
-  schedule,
-}: {
+interface Props {
   onClose: (isOpen: boolean) => void;
   schedule: IScheduleWidget;
-}) => {
+  isShowMarkdownOnly?: boolean;
+}
+
+export const ScheduleWidgetLiveTranslation = ({ onClose, schedule, isShowMarkdownOnly }: Props) => {
   const liveData: IndexStateSchLiveData = useStorageValueGetter(indexStorage, 'liveData', {} as never);
-  const [subscribeData, setSubscribeData] = useState<keyof IndexStateSchLiveData | und>();
+  const [subscribeData, setSubscribeData] = useState<ScheduleWidgetTranslationLiveDataKey | und>();
   const [messageNode, setMessageNode] = useState<JSX.Element | null>(null);
-
-  const [node] = useFullContent(
-    () => {
-      if (messageNode !== null) return messageNode;
-      if (subscribeData === undefined) return;
-      if (liveData[subscribeData] == null) return <div className="flex center full-size">Трансляция завершена</div>;
-
-      return liveData[subscribeData].cm ? (
-        <CmLiveTranslationScreen {...liveData[subscribeData].cm!} />
-      ) : (
-        <BibleTranslationSlide {...liveData[subscribeData].bible!} />
-      );
-    },
-    'open',
-    onClose,
-    '',
-  );
+  const auth = useAuth();
 
   useEffect(() => {
     if (subscribeData !== undefined) return;
-    const schedulePrefix: keyof IndexStateSchLiveData = `index-sch-${schedule.w}:`;
-    const dataNames = mylib.keys(liveData).filter(name => name.startsWith(schedulePrefix));
+    const schedulePrefix: ScheduleWidgetTranslationLiveDataKey = `index-sch-${schedule.w}:`;
+    const dataNames = mylib
+      .keys(liveData)
+      .filter(name => name.startsWith(schedulePrefix) && !name.startsWith(`${schedulePrefix}${auth.login}`));
 
     if (dataNames.length === 0) {
       setMessageNode(<div className="flex center full-size">Трансляций нет</div>);
@@ -61,20 +49,24 @@ export const ScheduleWidgetLiveTranslation = ({
       <div className="flex center column full-height margin-gap-h">
         <div className="margin-gap-v">Сейчас трансляцию ведут несколько человек:</div>
         {dataNames.map(translationId => {
+          const translation = liveData[translationId];
+
           return (
             <BrutalItem
               key={translationId}
               icon={<IconComputerStrokeRounded />}
-              title={liveData[translationId].fio}
+              title={translation.fio}
               onClick={() => {
                 setMessageNode(null);
                 setSubscribeData(translationId);
               }}
               box={
-                liveData[translationId].cm ? (
-                  <CmTranslationSlideMiniInfo {...liveData[translationId].cm!} />
+                translation.cm !== undefined ? (
+                  <CmTranslationSlideMiniInfo {...translation.cm} />
+                ) : translation.bible !== undefined ? (
+                  <BibleTranslationSlideMiniInfo {...translation.bible} />
                 ) : (
-                  <BibleTranslationSlideMiniInfo {...liveData[translationId].bible!} />
+                  <>Текст</>
                 )
               }
             />
@@ -82,7 +74,7 @@ export const ScheduleWidgetLiveTranslation = ({
         })}
       </div>,
     );
-  }, [liveData, onClose, schedule.w, subscribeData]);
+  }, [auth.login, liveData, onClose, schedule.w, subscribeData]);
 
   useEffect(() => {
     soki.send({ subscribe: 'liveData', subscribeData: subscribeData }, 'index');
@@ -92,5 +84,21 @@ export const ScheduleWidgetLiveTranslation = ({
     };
   }, [schedule.w, subscribeData]);
 
-  return <>{node}</>;
+  if (messageNode !== null) return messageNode;
+  if (subscribeData === undefined) return;
+
+  const translation = liveData[subscribeData];
+  if (translation == null) return <div className="flex center full-size">Трансляция завершена</div>;
+
+  return translation.markdown ? (
+    <ScheduleWidgetMarkdownLiveTranslation md={translation.markdown} />
+  ) : isShowMarkdownOnly ? (
+    <div className="full-size flex center">
+      <ScreenTranslationControlPanelShowMdButton />
+    </div>
+  ) : translation.cm !== undefined ? (
+    <CmLiveTranslationScreen {...translation.cm} />
+  ) : translation.bible !== undefined ? (
+    <BibleTranslationSlide {...translation.bible} />
+  ) : null;
 };
