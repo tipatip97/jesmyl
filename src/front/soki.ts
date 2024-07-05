@@ -9,11 +9,13 @@ import {
   SokiClientEventBody,
   SokiClientUpdateCortage,
   SokiServerEvent,
+  SokiSharedDataValuesBox,
   SokiSubscribtionName,
 } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
 import { JStorage } from './complect/JStorage';
 import mylib from './complect/my-lib/MyLib';
+import { onGetSharedScheduleWidgetData } from './complect/schedule-widget/on-shareds';
 import { takeDeviceId } from './components/index/complect/takeDeviceId';
 import indexStorage from './components/index/indexStorage';
 import { appStorage } from './shared/jstorages';
@@ -43,6 +45,9 @@ export class SokiTrip {
   authListeners: EventerListeners<boolean> = [];
   private responseWaiters: ResponseWaiter[] = [];
   private subscriptions: Partial<Record<SokiSubscribtionName, SokiClientEventBody>> = {};
+  private onGetSharedData: SokiSharedDataValuesBox = {
+    ...onGetSharedScheduleWidgetData,
+  };
 
   async appName() {
     return await indexStorage.getOr('currentApp', 'cm');
@@ -120,6 +125,9 @@ export class SokiTrip {
           }
 
           if (event.statistic) indexStorage.refreshAreas(['statistic'], event as never);
+
+          if (event.sharedData !== undefined)
+            this.onGetSharedData[event.sharedData.key]?.(event.sharedData.value as never);
 
           if (event.download) {
             const appStore = appStorage[event.appName];
