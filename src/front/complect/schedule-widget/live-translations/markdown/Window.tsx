@@ -1,8 +1,7 @@
+import { useAtomValue } from '../../../scoped-storages/atoms/useAtom';
 import { ScheduleWidgetMarkdownLiveTranslation } from '../MarkdownLive';
-import { useMarkdownTranslation } from './storage';
+import { markdownTranslationAtom } from './atoms';
 
 export const ScheduleWidgetMarkdownTranslationWindow = () => {
-  const { markdown } = useMarkdownTranslation('markdown');
-
-  return <ScheduleWidgetMarkdownLiveTranslation md={markdown} />;
+  return <ScheduleWidgetMarkdownLiveTranslation md={useAtomValue(markdownTranslationAtom)} />;
 };

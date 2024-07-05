@@ -6,7 +6,8 @@ import { soki } from '../../../../soki';
 import { NewWindow } from '../../../NewWindow';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import { ScheduleWidgetMarkdownTranslationWindow } from './Window';
-import { useMarkdownTranslation } from './storage';
+import { markdownTranslationAtom } from './atoms';
+import { useAtomSet } from '../../../scoped-storages/atoms';
 
 interface Props {
   md?: string;
@@ -16,7 +17,7 @@ export const ScheduleWidgetMarkdownTranslation = ({ md = '' }: Props) => {
   const rights = useScheduleWidgetRightsContext();
   const auth = useAuth();
   const [markdown, setMarkdown] = useState(md);
-  const { setMd } = useMarkdownTranslation('setMd');
+  const setMd = useAtomSet(markdownTranslationAtom);
   const subscribeData = `index-sch-${rights.schedule.w}:${auth.login}` as const;
 
   useEffect(() => setMarkdown(md), [md]);
