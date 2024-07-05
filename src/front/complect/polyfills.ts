@@ -3,6 +3,12 @@ import { setServerPolyfills } from '../../back/complect/polyfills';
 export const setPolyfills = () => {
   setServerPolyfills();
 
+  const clearTimeouts = (param: TimeOut) => clearTimeout(param);
+  const remListens = (param: any[]) => {
+    const [element, ...otherProps] = param;
+    element.removeEventListener(...otherProps);
+  };
+
   (globalThis as any).hookEffectLine = () => {
     const timeoutsSet = new Set<TimeOut>();
     const eventListeners = new Set<Parameters<EffectListener>>();
@@ -47,13 +53,10 @@ export const setPolyfills = () => {
       effect: (onUnmount?: () => void) => {
         return () => {
           onUnmount?.();
-          timeoutsSet.forEach(param => clearTimeout(param));
-          debounceTimers.forEach(param => clearTimeout(param));
+          timeoutsSet.forEach(clearTimeouts);
+          debounceTimers.forEach(clearTimeouts);
 
-          eventListeners.forEach(param => {
-            const [element, ...otherProps] = param;
-            element.removeEventListener(...otherProps);
-          });
+          eventListeners.forEach(remListens);
 
           eventListeners.clear();
           timeoutsSet.clear();
