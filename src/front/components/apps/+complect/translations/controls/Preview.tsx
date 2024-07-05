@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconPencilEdit02StrokeRounded } from '../../../../../complect/the-icon/icons/pencil-edit-02';
 import { TranslationScreen } from '../TranslationScreen';
@@ -11,11 +12,12 @@ interface Props {
 
 export const TranslationSlidePreview = ({ isPreview = true }: Props) => {
   const currentConfig = useScreenTranslationCurrentConfig();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const [fullNode, openFull] = useFullContent(() => {
-    return (
-      <>
-        {currentConfig && (
+  return (
+    <Wrapper>
+      {isSettingsOpen && currentConfig && (
+        <FullContent onClose={setIsSettingsOpen}>
           <div className="flex center margin-big-gap-t">
             <FullContainer className="flex center bgcolor--3">
               <ScreenWithBackground $proportion={currentConfig.proportion}>
@@ -26,14 +28,8 @@ export const TranslationSlidePreview = ({ isPreview = true }: Props) => {
               </ScreenWithBackground>
             </FullContainer>
           </div>
-        )}
-      </>
-    );
-  });
-
-  return (
-    <Wrapper>
-      {fullNode}
+        </FullContent>
+      )}
       {currentConfig === undefined ? (
         <TranslationScreen
           win={window}
@@ -51,7 +47,7 @@ export const TranslationSlidePreview = ({ isPreview = true }: Props) => {
           </div>
           <FullButton
             Icon={IconPencilEdit02StrokeRounded}
-            onClick={() => openFull()}
+            onClick={() => setIsSettingsOpen(true)}
           />
         </>
       )}

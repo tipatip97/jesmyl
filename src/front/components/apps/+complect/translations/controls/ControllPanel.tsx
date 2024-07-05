@@ -5,18 +5,18 @@ import { IconArrowRight01StrokeRounded } from '../../../../../complect/the-icon/
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
 import { IconPlayStrokeRounded } from '../../../../../complect/the-icon/icons/play';
 import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
-import { IconUpload04StrokeRounded } from '../../../../../complect/the-icon/icons/upload-04';
 import { useScreenTranslationConfigs } from '../hooks/configs';
 import { useSwitchIsScreenTranslationTextVisible } from '../hooks/is-visible';
 import { useWatchScreenTranslations } from '../hooks/watch-translation';
 import { useScreenTranslationCurrentWindow, useScreenTranslationWindows } from '../hooks/windows';
+import { ScreenTranslationControlPanelShowMdButton } from './ShowMdButton';
 
 interface Props {
   onPrev: () => void;
   onNext: () => void;
 }
 
-export const ScreenTranslationControlPanel = memo(function ScreenTranslationControlPanel({ onNext, onPrev }: Props) {
+export const ScreenTranslationControlPanel = memo(function ControlPanel({ onNext, onPrev }: Props) {
   const configs = useScreenTranslationConfigs();
   const windows = useScreenTranslationWindows();
   const currWin = useScreenTranslationCurrentWindow();
@@ -39,9 +39,7 @@ export const ScreenTranslationControlPanel = memo(function ScreenTranslationCont
       >
         {windows.length ? <IconComputerStrokeRounded /> : <IconPlayStrokeRounded />}
       </ControlButton>
-      <ControlButton>
-        <IconUpload04StrokeRounded />
-      </ControlButton>
+      <ScreenTranslationControlPanelShowMdButton Parent={ControlButton} />
       <ControlButton
         title="esc"
         onClick={() => switchIsVisible()}
