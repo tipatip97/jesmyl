@@ -1,15 +1,15 @@
 import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Eventer, { EventerListeners } from '../../../back/complect/Eventer';
+import { IconCancel01StrokeRounded } from '../../complect/the-icon/icons/cancel-01';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
-import IconButton from '../the-icon/IconButton';
 import { ThrowEvent } from '../eventer/ThrowEvent';
 import Portal from '../popups/[complect]/Portal';
-import { IconCancel01StrokeRounded } from '../../complect/the-icon/icons/cancel-01';
+import IconButton from '../the-icon/IconButton';
 
-const events: EventerListeners<void> = [];
+const swipeEvents: EventerListeners<void> = [];
 
-const swiper = backSwipableContainerMaker(() => Eventer.invoke(events, undefined));
+const swiper = backSwipableContainerMaker(() => Eventer.invoke(swipeEvents, undefined));
 
 export type FullContentOpenMode = null | 'open' | 'closable';
 export type FullContentValue<PassValue = unknown> = (close: () => void, passValue?: PassValue) => ReactNode;
@@ -34,14 +34,16 @@ export default function useFullContent<PassValue>(
 
   useEffect(() => {
     if (mode) {
-      const close = Eventer.listen(events, () => onClose());
-      const escape = ThrowEvent.listenKeyDown('Escape', event => {
+      const close: CallbackStopper = event => {
         event.stopPropagation();
         onClose();
-      });
+      };
+
+      const swipeClose = Eventer.listen(swipeEvents, close);
+      const escape = ThrowEvent.listenKeyDown('Escape', close);
 
       return () => {
-        close();
+        swipeClose();
         escape();
       };
     }
